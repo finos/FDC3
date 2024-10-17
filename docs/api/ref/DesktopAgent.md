@@ -14,7 +14,7 @@ An FDC3 Desktop Agent is a desktop component (or aggregate of components) that s
 
 A Desktop Agent can be connected to one or more App Directories and will use directories for application identity and discovery. Typically, a Desktop Agent will contain the proprietary logic of a given platform, handling functionality like explicit application interop workflows where security, consistency, and implementation requirements are proprietary.
 
-For details of how implementations of the `DesktopAgent` are made available to applications please see [Supported Platforms](supported-platforms).
+For details of how implementations of the `DesktopAgent` are made available to applications please see [Supported Platforms](../supported-platforms).
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
@@ -293,7 +293,7 @@ fdc3.addIntentListener("CreateOrder", (context) => {
 //Handle a raised intent and return a PrivateChannel over which response will be sent
 fdc3.addIntentListener("QuoteStream", async (context) => {
   const channel: PrivateChannel = await fdc3.createPrivateChannel();
-  const symbol = context.id.symbol;
+  const symbol = context.id.ticker;
 
   // Called when the remote side adds a context listener
   const addContextListener = channel.onAddContextListener((contextType) => {

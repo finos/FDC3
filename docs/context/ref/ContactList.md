@@ -21,6 +21,31 @@ The contact list schema does not explicitly include identifiers in the `id` sect
 ## Properties
 
 <details>
+  <summary><code>id</code></summary>
+
+**type**: `object`
+
+<details>
+  <summary><code>Additional Properties</code></summary>
+
+**type**: `string`
+
+</details>
+
+One or more identifiers that refer to the contact list in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future.
+
+</details>
+
+<details>
+  <summary><code>name</code></summary>
+
+**type**: `string`
+
+An optional human-readable summary of the contact list
+
+</details>
+
+<details>
   <summary><code>contacts</code> <strong>(required)</strong></summary>
 
 **type**: `array`

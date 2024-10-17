@@ -1,14 +1,12 @@
 ---
 id: desktopAgentCommunicationProtocol
 sidebar_label: Desktop Agent Communication Protocol 
-title: Desktop Agent Communication Protocol  (next)
+title: Desktop Agent Communication Protocol (next)
 ---
-
-# Desktop Agent Communication Protocol (DACP)
 
 :::info _[@experimental](../fdc3-compliance#experimental-features)_
 
-The Desktop Agent Communication Protocol (DACP) is an experimental feature added to FDC3 in 2.2. Limited aspects of its design may change in future versions and it is exempted from the FDC3 Standard's normal versioning and deprecation polices in order to facilitate any necessary change.
+FDC3's Desktop Agent Communication Protocol (DACP) is an experimental feature added to FDC3 in 2.2. Limited aspects of its design may change in future versions and it is exempted from the FDC3 Standard's normal versioning and deprecation polices in order to facilitate any necessary change.
 
 :::
 
@@ -23,7 +21,7 @@ DACP messages are defined in [JSON Schema](https://json-schema.org/) in the [FDC
 TypeScript types representing all DACP and WCP messages are generated from the JSON Schema source and can be imported from the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3):
 
 ```ts
-import {BrowserTypes} from '@finos/fdc3';
+import { BrowserTypes } from "@finos/fdc3";
 ```
 
 :::
@@ -81,9 +79,9 @@ The design of the Desktop Agent Communication Protocol is guided by the followin
 
 Hence, that design is based on the assumption that all messaging between applications passes through an entity that acts as the 'Desktop Agent' and routes those messages on to the appropriate recipients (for example a context message broadcast by an app to a channel is routed onto other apps that have added a listener to that channel, or an intent and context pair raised by an application is routed to another app chosen to resolve that intent). While implementations based on a shared bus are possible, they have not been specifically considered in the design of the DACP messages.
 
-Further, the design of the DACP is based on the assumption that applications will interact with an implementation of the [`DesktopAgent`](../ref/DesktopAgent) interface, with the DACP used behind the scenes to support communication between the implementation of that interface and an entity acting as the Desktop Agent which is running in another process or location, necessitating the use of a 'wire protocol' for communication. For example, [Browser-Resident Desktop Agent](./browserResidentDesktopAgents) implementations use the [FDC3 Web Communication Protocol (WCP)](./webConnectionProtocol.md) to connect a 'Desktop Agent Proxy', provided by the `getAgent()` implementation in the [`@finos/fdc3` npm module], and a Desktop Agent running in another frame or window which is communicated with via the DACP.
+Further, the design of the DACP is based on the assumption that applications will interact with an implementation of the [`DesktopAgent`](../ref/DesktopAgent) interface, with the DACP used behind the scenes to support communication between the implementation of that interface and an entity acting as the Desktop Agent which is running in another process or location, necessitating the use of a 'wire protocol' for communication. For example, [Browser-Resident Desktop Agent](./browserResidentDesktopAgents) implementations use the [FDC3 Web Communication Protocol (WCP)](./webConnectionProtocol.md) to connect a 'Desktop Agent Proxy', provided by the `getAgent()` implementation in the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3), and a Desktop Agent running in another frame or window which is communicated with via the DACP.
 
-As a Desktop Agent is expected to act as a router for messages sent through the Desktop Agent API, the DACP provides message exchanges for the registration and unregistration of listeners for particular message types (e.g. events, contexts broadcast on user channels, contexts broadcast on other channel types, raised intents etc.). In most cases, apps can register multiple listeners for the same messages (often filtered for different context or event types). However, where multiple listeners are present, only a single DACP message should be sent representing the action taken in the FDC3 API (e.g. broadcasting a message to a channel) and any multiplexing to multiple listeners should be applied at the receiving end. For example, when working with the WCP, this should be handled by the Desktop Agent Proxy implementation provided by the `getAgent()` implementation.
+As a Desktop Agent is expected to act as a router for messages sent through the Desktop Agent API, the DACP provides message exchanges for the registration and un-registration of listeners for particular message types (e.g. events, contexts broadcast on user channels, contexts broadcast on other channel types, raised intents etc.). In most cases, apps can register multiple listeners for the same messages (often filtered for different context or event types). However, where multiple listeners are present, only a single DACP message should be sent representing the action taken in the FDC3 API (e.g. broadcasting a message to a channel) and any multiplexing to multiple listeners should be applied at the receiving end. For example, when working with the WCP, this should be handled by the Desktop Agent Proxy implementation provided by the `getAgent()` implementation.
 
 ## Message Definitions Supporting FDC3 API calls
 
@@ -141,7 +139,7 @@ An additional request and response used to deliver an [`IntentResult`](../ref/Ty
 
 Please note this exchange (and the `IntentResolution.getResult()` API call) support `void` results from a raised intent and hence this message exchange should occur for all raised intents, including those that do not return a result. In such cases, the void intent result allows resolution of the `IntentResolution.getResult()` API call and indicates that the intent handler has finished running.
 
-Request and response for removing the intent listener ([`Listener.unsubscribe()`](../ref/Types#listener))::
+Request and response for removing the intent listener ([`Listener.unsubscribe()`](../ref/Types#listener)):
 
 - [`intentListenerUnsubscribeRequest`](https://fdc3.finos.org/schemas/next/api/intentListenerUnsubscribeRequest.schema.json)
 - [`intentListenerUnsubscribeResponse`](https://fdc3.finos.org/schemas/next/api/intentListenerUnsubscribeResponse.schema.json)
@@ -242,7 +240,7 @@ Request and response used to implement the [`getInfo()`](../ref/DesktopAgent#get
 
 #### `getOrCreateChannel()`
 
-Request and response used to implement the [`getOrCreateChannel()`](../ref/DesktopAgent#getorcreatechannel] API call:
+Request and response used to implement the [`getOrCreateChannel()`](../ref/DesktopAgent#getorcreatechannel) API call:
 
 - [`getOrCreateChannelRequest`](https://fdc3.finos.org/schemas/next/api/getOrCreateChannelRequest.schema.json)
 - [`getOrCreateChannelResponse`](https://fdc3.finos.org/schemas/next/api/getOrCreateChannelResponse.schema.json)
@@ -287,7 +285,16 @@ sequenceDiagram
     AppB ->> DesktopAgent: addContextListenerRequest
     DesktopAgent ->> AppB: addContextListenerResponse
     DesktopAgent ->> AppB: broadcastEvent
+    DesktopAgent ->> AppA: openResponse<br/>(with AppIdentifier)
 ```
+
+However, if the app opened doesn't add a context listener within a timeout (defined by the Desktop Agent) then the `openResponse` should be sent with `AppTimeout` error from the [`OpenError`](../ref/Errors#openerror) enumeration.
+
+:::tip
+
+Desktop Agents MUST allow at least 15 seconds for an app to add a context listener before timing out (see [Desktop Agent API Standard Compliance](https://fdc3.finos.org/docs/next/api/spec#desktop-agent-api-standard-compliance) for more detail) and applications SHOULD add their listeners as soon as possible to keep the delay short (see the [addContextListener reference doc](https://fdc3.finos.org/docs/next/api/ref/DesktopAgent#addcontextlistener)).
+
+:::
 
 #### `raiseIntent()`
 
@@ -300,13 +307,15 @@ An additional response message is provided for the delivery of an `IntentResult`
 
 - [`raiseIntentResultResponse`](https://fdc3.finos.org/schemas/next/api/raiseIntentResultResponse.schema.json)
 
+There is no request message to indicate a call to the `resolution.getResult()` function of `IntentResolution`. Hence, Desktop Agents should always send this additional response message to indicate the status of the intent handling function and to deliver its result (or void if none was returned).
+
 :::tip
 
 See [`addIntentListener`](#addintentlistener) above for details of the messages used for the resolving app to deliver the result to the Desktop Agent.
 
 :::
 
-Where there are multiple options for resolving a raised intents, there are two possible versions of the resulting message exchanges. Which to use depends on whether the Desktop Agent uses an intent resolver user interface (or other suitable mechanism) that it controls, or one injected into the application (for example an iframe injected by a `getAgent()` implementation into an application window) to perform resolution.
+Where there are multiple options for resolving a raised intent, there are two possible versions of the resulting message exchanges. Which to use depends on whether the Desktop Agent uses an intent resolver user interface (or other suitable mechanism) that it controls, or one injected into the application (for example an iframe injected by a `getAgent()` implementation into an application window) to perform resolution.
 
 When working with an injected interface, the Desktop Agent should respond with a `raiseIntentResponse` containing a `RaiseIntentNeedsResolutionResponsePayload`:
 
@@ -316,7 +325,6 @@ title: Intent resolution with injected Intent Resolver iframe
 ---
 sequenceDiagram
     AppA ->> DesktopAgent: raiseIntentRequest
-    DesktopAgent ->> AppB: intentEvent
     DesktopAgent ->> AppA: raiseIntentResponse
     Note left of DesktopAgent: raiseIntentResponse includes a<br/> RaiseIntentNeedsResolutionResponsePayload<br/>containing an AppIntent
     break when AppIntent return with multiple options
@@ -340,11 +348,11 @@ title: Intent resolution with Desktop Agent provided Intent Resolver
 ---
 sequenceDiagram
     AppA ->> DesktopAgent: raiseIntentRequest
-    DesktopAgent ->> AppB: intentEvent
     break DA determines there are multiple options
         DesktopAgent-->AppA: Desktop Agent displays an<br/>IntentResolver UI
         AppA-->DesktopAgent: User picks an option
     end
+    DesktopAgent ->> AppB: intentEvent
     DesktopAgent ->> AppA: raiseIntentResponse
     Note left of DesktopAgent: DesktopAgent responds<br/>to the original<br/>raiseIntentRequest message with<br/>a RaiseIntentSuccessResponsePayload
     AppB ->> DesktopAgent: intentResultRequest
@@ -431,19 +439,19 @@ Additional procedures are defined in the [Browser Resident Desktop Agents specif
 
 Desktop Agent implementations, such as those based on the [Browser Resident Desktop Agents specification](./browserResidentDesktopAgents) and [Web Connection Protocol](./webConnectionProtocol), may either provide their own user interfaces (or other appropriate mechanisms) for the selection of User Channels or Intent Resolution, or they may work with implementations injected into the application (for example, as described in the [Web Connection Protocol](./webConnectionProtocol#providing-channel-selector-and-intent-resolver-uis) and implemented in [`getAgent()`](../ref/GetAgent)).
 
-Where injected user interfaces are used, standardized messaging is needed to communicate with those interfaces. This is provided in the DACP via the following 'iframe' messages, which are governed by the [`iFrameMessage`](https://fdc3.finos.org/schemas/next/api/iFrameMessage.schema.json) schema. The following messages are provided:
+Where injected user interfaces are used, standardized messaging is needed to communicate with those interfaces. This is provided in the DACP via the following 'iframe' messages, which are governed by the [`Fdc3UserInterfaceMessage`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterface.schema.json) schema. The following messages are provided:
 
-- [`iFrameHello`](https://fdc3.finos.org/schemas/next/api/iFrameHello.schema.json): Sent by the iframe to its `window.parent` frame to initiate communication and to provide initial CSS to apply to the frame. This message should have a `MessagePort` appended over which further communication will be conducted.
-- [`iFrameHandshake`](https://fdc3.finos.org/schemas/next/api/iFrameHandshake.schema.json):  Response to the `iFrameHello` message sent by the application frame, which should be sent over the `MessagePort`. Includes details of the FDC3 version that the application is using.
-- [`iFrameDrag`](https://fdc3.finos.org/schemas/next/api/iFrameDrag.schema.json): Message sent by the iframe to indicate that it is being dragged to a new position and including offsets to indicate direction and distance.
-- [`iFrameRestyle`](https://fdc3.finos.org/schemas/next/api/iFrameRestyle.schema.json): Message sent by the iframe to indicate that its frame should have updated CSS applied to it, for example to support a channel selector interface that can be 'popped open' or an intent resolver that wishes to resize itself to show additional content.
+- [`Fdc3UserInterfaceHello`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceHello.schema.json): Sent by the iframe to its `window.parent` frame to initiate communication and to provide initial CSS to apply to the frame. This message should have a `MessagePort` appended over which further communication will be conducted.
+- [`Fdc3UserInterfaceHandshake`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceHandshake.schema.json):  Response to the `Fdc3UserInterfaceHello` message sent by the application frame, which should be sent over the `MessagePort`. Includes details of the FDC3 version that the application is using.
+- [`Fdc3UserInterfaceDrag`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceDrag.schema.json): Message sent by the iframe to indicate that it is being dragged to a new position and including offsets to indicate direction and distance.
+- [`Fdc3UserInterfaceRestyle`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceRestyle.schema.json): Message sent by the iframe to indicate that its frame should have updated CSS applied to it, for example to support a channel selector interface that can be 'popped open' or an intent resolver that wishes to resize itself to show additional content.
 
-Messages are also provided that are specific to each interface type provided by a Desktop Agent. The following messages are specific to Channel Selector user interfaces:
+Messages are also provided that are specific to each user interface type provided by a Desktop Agent. The following messages are specific to Channel Selector user interfaces:
 
-- [`iFrameChannels`](https://fdc3.finos.org/schemas/next/api/iFrameChannels.schema.json): Sent by the parent frame to initialize a Channel Selector user interface by providing metadata for the Desktop Agent's user channels and details of any channel that is already selected. This message will typically be sent by a `getAgent()` implementation immediately after the `iFrameHandshake` and before making the injected iframe visible.
-- [`iFrameChannelSelected`](https://fdc3.finos.org/schemas/next/api/iFrameChannelSelected.schema.json): Sent by the Channel Selector to indicate that a channel has been selected or deselected.
+- [`Fdc3UserInterfaceChannels`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceChannels.schema.json): Sent by the parent frame to initialize a Channel Selector user interface by providing metadata for the Desktop Agent's user channels and details of any channel that is already selected. This message will typically be sent by a `getAgent()` implementation immediately after the `fdc3UserInterfaceHandshake` and before making the injected iframe visible.
+- [`Fdc3UserInterfaceChannelSelected`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceChannelSelected.schema.json): Sent by the Channel Selector to indicate that a channel has been selected or deselected.
 
 Messages specific to Intent Resolver user interfaces:
 
-- [`iFrameResolve`](https://fdc3.finos.org/schemas/next/api/iFrameResolve.schema.json): Sent by the parent frame to initialize a Intent Resolver user interface to resolve a raised intent, before making it visible. The message includes the context object sent with the intent and an array of one or more [`AppIntent`](../ref/Metadata#appintent) objects representing the resolution options for the intent ([`raiseIntent`](../ref/DesktopAgent#raiseintent)) or context ([`raiseIntentForContext`](../ref/DesktopAgent#raiseintentforcontext)) that was raised.
-- [`iFrameResolveAction`](https://fdc3.finos.org/schemas/next/api/iFrameResolveAction.schema.json): Sent by the Intent Resolver to indicate actions taken by the user in the interface, including hovering over an option, clicking a cancel button, or selecting a resolution option. The Intent Resolver should be hidden by the `getAgent()` implementaiton after a resolution option is selected.
+- [`Fdc3UserInterfaceResolve`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceResolve.schema.json): Sent by the parent frame to initialize an Intent Resolver user interface to resolve a raised intent, before making the iframe visible. The message includes the context object sent with the intent and an array of one or more [`AppIntent`](../ref/Metadata#appintent) objects representing the resolution options for the intent ([`raiseIntent`](../ref/DesktopAgent#raiseintent)) or context ([`raiseIntentForContext`](../ref/DesktopAgent#raiseintentforcontext)) that was raised.
+- [`Fdc3UserInterfaceResolveAction`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceResolveAction.schema.json): Sent by the Intent Resolver to indicate actions taken by the user in the interface, including hovering over an option, clicking a cancel button, or selecting a resolution option. The Intent Resolver should be hidden by the `getAgent()` implementation after a resolution option is selected to ensure that it does not interfere with user's ongoing interaction with the app's user interface.
