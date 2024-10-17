@@ -12,26 +12,11 @@
           "const": "fdc3.chat.searchCriteria"
         },
         "criteria": {
-          "title": "Criteria array",
+          "title": "Search Criteria array",
           "description": "An array of criteria that should match chats returned from by a search.\n\n⚠️ Operators (and/or/not) are not defined in `fdc3.chat.searchCriteria`. It is up to the application that processes the FDC3 Intent to choose and apply the operators between the criteria.\n\nEmpty search criteria can be supported to allow resetting of filters.",
           "type": "array",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "instrument.schema.json#"
-              },
-              {
-                "$ref": "organization.schema.json#"
-              },
-              {
-                "$ref": "contact.schema.json#"
-              },
-              {
-                "type": "string",
-                "title": "Free text",
-                "description": "Free text to be used for a keyword search"
-              }
-            ]
+            "$ref": "#/$defs/SearchCriteria"
           }
         }
       },
@@ -41,6 +26,29 @@
     },
     { "$ref": "context.schema.json#/definitions/BaseContext" }
   ],
+  "$defs": {
+    "SearchCriteria": {
+      "type": "object",
+      "title": "Search Criteria",
+      "description": "An individual criteria against which to match chat messages, based on an FDC3 context or free-text string.",
+      "oneOf": [
+        {
+          "$ref": "instrument.schema.json#"
+        },
+        {
+          "$ref": "organization.schema.json#"
+        },
+        {
+          "$ref": "contact.schema.json#"
+        },
+        {
+          "type": "string",
+          "title": "Free text",
+          "description": "Free text to be used for a keyword search"
+        }
+      ]
+    }
+  },
   "examples": [
     {
       "type": "fdc3.chat.searchCriteria",

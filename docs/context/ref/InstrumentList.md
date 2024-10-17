@@ -21,6 +21,31 @@ The instrument list schema does not explicitly include identifiers in the `id` s
 ## Properties
 
 <details>
+  <summary><code>id</code></summary>
+
+**type**: `object`
+
+<details>
+  <summary><code>Additional Properties</code></summary>
+
+**type**: `string`
+
+</details>
+
+One or more identifiers that refer to the instrument list in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future.
+
+</details>
+
+<details>
+  <summary><code>name</code></summary>
+
+**type**: `string`
+
+An optional human-readable summary of the instrument list
+
+</details>
+
+<details>
   <summary><code>instruments</code> <strong>(required)</strong></summary>
 
 **type**: `array`

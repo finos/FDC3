@@ -1,27 +1,27 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/api/iframeResolve.schema.json",
-  "title": "iframe Resolve",
-  "description": "Setup message sent by the DA proxy code in getAgent() to an intent resolver UI in an iframe with the resolver data to setup the UI.",
+  "$id": "https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceResolve.schema.json",
+  "title": "Fdc3 UserInterface Resolve",
+  "description": "Setup message sent by the DA proxy code in getAgent() to an intent resolver UI with the resolver data to setup the UI.",
   "type": "object",
   "allOf": [
     {
-      "$ref": "#/$defs/IframeResolveBase"
+      "$ref": "#/$defs/Fdc3UserInterfaceResolveBase"
     },
     {
-      "$ref": "iFrameMessage.schema.json"
+      "$ref": "fdc3UserInterfaceMessage.schema.json"
     }
   ],
   "$defs": {
-    "IframeResolveBase": {
+    "Fdc3UserInterfaceResolveBase": {
       "type": "object",
       "properties": {
         "type": {
-          "title": "iframeResolve Message Type",
-          "const": "iframeResolve"
+          "title": "Fdc3 UserInterface Resolve Message Type",
+          "const": "Fdc3UserInterfaceResolve"
         },
         "payload": {
-          "title": "iframeResolve Payload",
+          "title": "Fdc3 UserInterface Resolve Payload",
           "type": "object",
           "properties": {
             "context": {

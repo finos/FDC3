@@ -3,6 +3,7 @@ import { exhaustiveStringTuple } from './typeHelpers';
 
 const STANDARD_INTENTS = exhaustiveStringTuple<StandardIntent>()(
   'CreateInteraction',
+  'CreateOrUpdateProfile',
   'SendChatMessage',
   'StartCall',
   'StartChat',

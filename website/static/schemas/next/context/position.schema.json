@@ -20,6 +20,19 @@
           "type": "number",
           "title": "The size of the holding represented by this position",
           "description": "The amount of the holding, e.g. a number of shares"
+        },
+        "id": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Position Identifiers",
+          "description": "One or more identifiers that refer to the position in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future."
+        },
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "description": "An optional human-readable name for the position"
         }
       },
       "required": [

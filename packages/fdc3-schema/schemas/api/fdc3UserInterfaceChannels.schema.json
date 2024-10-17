@@ -1,27 +1,27 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/api/iframeChannels.schema.json",
-  "title": "iframe Channels",
+  "$id": "https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceChannels.schema.json",
+  "title": "Fdc3 UserInterface Channels",
   "description": "Setup message sent by the DA proxy code in getAgent() to a channel selector UI in an iframe with the channel definitions and current channel selection.",
   "type": "object",
   "allOf": [
     {
-      "$ref": "#/$defs/IframeChannelsBase"
+      "$ref": "#/$defs/Fdc3UserInterfaceChannelsBase"
     },
     {
-      "$ref": "iFrameMessage.schema.json"
+      "$ref": "fdc3UserInterfaceMessage.schema.json"
     }
   ],
   "$defs": {
-    "IframeChannelsBase": {
+    "Fdc3UserInterfaceChannelsBase": {
       "type": "object",
       "properties": {
         "type": {
-          "title": "iframeChannels Message Type",
-          "const": "iframeChannels"
+          "title": "Fdc3 UserInterface Channels Message Type",
+          "const": "Fdc3UserInterfaceChannels"
         },
         "payload": {
-          "title": "iframeChannels Payload",
+          "title": "Fdc3 UserInterface Channels Payload",
           "type": "object",
           "properties": {
             "userChannels": {

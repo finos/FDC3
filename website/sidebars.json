@@ -50,13 +50,15 @@
         "items": [
           "intents/spec",
           "intents/ref/CreateInteraction",
+          "intents/ref/CreateOrUpdateProfile",
+          "intents/ref/SendChatMessage",
           "intents/ref/StartCall",
           "intents/ref/StartChat",
           "intents/ref/StartEmail",
-          "intents/ref/SendChatMessage",
           "intents/ref/ViewAnalysis",
-          "intents/ref/ViewChat",
           "intents/ref/ViewChart",
+          "intents/ref/ViewChat",
+          "intents/ref/ViewContact",
           "intents/ref/ViewHoldings",
           "intents/ref/ViewInstrument",
           "intents/ref/ViewInteractions",
@@ -65,8 +67,7 @@
           "intents/ref/ViewOrders",
           "intents/ref/ViewProfile",
           "intents/ref/ViewQuote",
-          "intents/ref/ViewResearch",
-          "intents/ref/ViewContact"
+          "intents/ref/ViewResearch"
         ]
       },
       {

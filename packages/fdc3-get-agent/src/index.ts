@@ -13,7 +13,7 @@ export { getAgent }
  */
 export function fdc3Ready(waitForMs = DEFAULT_WAIT_FOR_MS): Promise<DesktopAgent> {
     return getAgent({
-        timeout: waitForMs,
+        timeoutMs: waitForMs,
         dontSetWindowFdc3: false,
         channelSelector: true,
         intentResolver: true

@@ -836,7 +836,7 @@ And an error enumeration is created for errors related to bridging that may occu
 ```typescript
 enum BridgingError {
   /** Returned if a Desktop Agent did not return a response, via Desktop Agent Bridging,
-   * within the alloted timeout. */
+   * within the allotted timeout. */
   ResponseTimedOut = 'ResponseToBridgeTimedOut',
   /** Returned if a Desktop Agent that has been targeted by a particular request has
    * been disconnected from the Bridge before a response has been received from it. */

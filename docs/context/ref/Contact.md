@@ -47,6 +47,15 @@ Identifiers that relate to the Contact represented by this context
 
 </details>
 
+<details>
+  <summary><code>name</code></summary>
+
+**type**: `string`
+
+An optional human-readable name for the contact
+
+</details>
+
 ## Example
 
 ```json

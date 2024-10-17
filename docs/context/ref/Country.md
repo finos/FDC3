@@ -71,6 +71,15 @@ Three-letter ISO country code. Deprecated in FDC3 2.0 in favour of the version p
 
 </details>
 
+<details>
+  <summary><code>name</code></summary>
+
+**type**: `string`
+
+An optional human-readable name for the country
+
+</details>
+
 ## Example
 
 ```json
