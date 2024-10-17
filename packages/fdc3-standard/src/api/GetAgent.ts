@@ -82,7 +82,7 @@ export type GetAgentType = (params?: GetAgentParams) => Promise<DesktopAgent>;
  * a Desktop Agent or suitable proxy to one that works with FDC3 Web Connection
  * and Desktop Agent Communication Protocols.
  */
-type GetAgentParams = {
+export type GetAgentParams = {
   timeoutMs?: number;
   identityUrl?: string;
   channelSelector?: boolean;
