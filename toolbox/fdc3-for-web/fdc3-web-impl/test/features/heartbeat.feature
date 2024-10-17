@@ -11,15 +11,15 @@ Feature: Heartbeat Messages Between Apps and Server
     When "libraryApp/a1" is opened with connection id "a1"
     And "a1" sends validate
     And we wait for a period of "500" ms
-    And "libraryApp/a1" sends a heartbeat response
+    And "libraryApp/a1" sends a heartbeat response to eventUuid "a1_1"
     And we wait for a period of "500" ms
-    And "libraryApp/a1" sends a heartbeat response
+    And "libraryApp/a1" sends a heartbeat response to eventUuid "a1_2"
     And we wait for a period of "500" ms
-    And "libraryApp/a1" sends a heartbeat response
+    And "libraryApp/a1" sends a heartbeat response to eventUuid "a1_3"
     And we wait for a period of "500" ms
-    And "libraryApp/a1" sends a heartbeat response
+    And "libraryApp/a1" sends a heartbeat response to eventUuid "a1_4"
     And we wait for a period of "500" ms
-    And "libraryApp/a1" sends a heartbeat response
+    And "libraryApp/a1" sends a heartbeat response to eventUuid "a1_5"
     And we wait for a period of "500" ms
     Then I test the liveness of "libraryApp/a1"
     Then "{result}" is true
