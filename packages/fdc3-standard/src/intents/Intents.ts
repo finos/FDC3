@@ -8,6 +8,7 @@
  */
 export type StandardIntent =
   | 'CreateInteraction'
+  | 'CreateOrUpdateProfile'
   | 'SendChatMessage'
   | 'StartCall'
   | 'StartChat'
@@ -36,6 +37,7 @@ export type Intent = StandardIntent | (string & {});
  */
 export enum Intents {
   CreateInteraction = 'CreateInteraction',
+  CreateOrUpdateProfile = 'CreateOrUpdateProfile',
   SendChatMessage = 'SendChatMessage',
   StartCall = 'StartCall',
   StartChat = 'StartChat',

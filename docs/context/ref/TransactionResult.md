@@ -36,6 +36,7 @@ The status of the transaction being reported.
 
 **type**: [Context](/docs/next/context/spec#the-context-interface)
 
+
 A context object returned by the transaction, possibly with updated data.
 
 </details>

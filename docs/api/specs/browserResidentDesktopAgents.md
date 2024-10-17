@@ -6,15 +6,15 @@ title: Browser-Resident Desktop Agents (next)
 
 :::info _[@experimental](../fdc3-compliance#experimental-features)_
 
-Browser Resident Desktop Agents are an experimental feature added to FDC3 in 2.2. Limited aspects of their design may change in future versions and they are exempted from the FDC3 Standard's normal versioning and deprecation polices in order to facilitate any necessary change.
+Browser Resident Desktop Agents (DAs) are an experimental feature added to FDC3 in 2.2. Limited aspects of their design may change in future versions and they are exempted from the FDC3 Standard's normal versioning and deprecation policies in order to facilitate any necessary change.
 
 :::
 
-This document specifies the required behavior for Browser-Resident Desktop Agents (DA). Such agents allow FDC3 applications running directly in a browser to participate in FDC3 interop by way of a `getAgent()` function that is provided by the [`@finos.fdc3` NPM module](https://www.npmjs.com/package/@finos/fdc3) and a standardized communication protocol. This approach is in contrast to "Preload DAs" which run on technology that allows the FDC3 interface to be injected (such as Electron, WebView2 or a browser-extension based implementation).
+This document specifies the required behavior for Browser-Resident Desktop Agents (DA). Such agents allow FDC3 applications running directly in a browser to participate in FDC3 interop by way of a `getAgent()` function that is provided by the [`@finos/fdc3` NPM module](https://www.npmjs.com/package/@finos/fdc3) and a standardized communication protocol. This approach is in contrast to "Preload DAs" which run on technology that allows the FDC3 interface to be injected (such as Electron, WebView2 or a browser-extension based implementation).
 
 This specification only applies to apps running in a browser and therefore assumes use of JavaScript/TypeScript and HTML APIs. Implementations in other languages such as .NET are not covered.
 
-Along with this specification, a new general connection strategy has been established for FDC3 compliant web-applications: FDC3 compliant apps SHOULD make use of `getAgent()` function provided by the [`@finos/fdc3` NPM module](https://www.npmjs.com/package/@finos/fdc3) to retrieve their FDC3 interface (an instance of an implementation of the [`DesktopAgent`](../ref/DesktopAgent) interface). Apps that follow these guidelines will be able to interop through either Browser-Resident DAs or [Preload DAs](./preloadDesktopAgents) without code modification. We refer to this concept as Write Once Run Anywhere (WORA).
+Along with this specification, a new general connection strategy has been established for FDC3 compliant web-applications: FDC3 compliant apps SHOULD make use of `getAgent()` function provided by the [`@finos/fdc3` NPM module](https://www.npmjs.com/package/@finos/fdc3) to retrieve their FDC3 interface (an instance of an implementation of the [`DesktopAgent`](../ref/DesktopAgent) interface). Apps that follow these guidelines will be able to interop through either Browser-Resident DAs or [Preload DAs](./preloadDesktopAgents) without the inclusion of code or libraries specific to a particular Desktop Agent vendor or implementation. We refer to this concept as Write Once Run Anywhere (WORA).
 
 :::info
 
@@ -24,21 +24,21 @@ Prior to FDC3 2.2, only [Preload Desktop Agents](./preloadDesktopAgents) were su
 
 :::note
 
-This document only covers the requirements for _implementors of Browser-Resident DAs_. The `getAgent()` function that applications use to gain access to an fdc3 interface is provided by the [`@finos/fdc3` NPM module](https://www.npmjs.com/package/@finos/fdc3). Many behavioral details of `getAgent()` are purposefully omitted from this document in order to reduce the required scope of understanding. Please refer to the [getAgent() specification in the FDC3 Web Connection Protocol](webConnectionProtocol.md) for information on how the client side operates.
+This document covers the requirements for _implementors of Browser-Resident Desktop Agents_. The `getAgent()` function that applications use to gain access to an FDC3 interface is provided by the [`@finos/fdc3` NPM module](https://www.npmjs.com/package/@finos/fdc3). Many behavioral details of `getAgent()` are purposefully omitted from this document in order to reduce the required scope of understanding. Please refer to the [getAgent() specification in the FDC3 Web Connection Protocol](webConnectionProtocol.md) for information on how the client side operates or [supported platforms](../supported-platforms) for details of how to access the Desktop Agent API in an application.
 
 :::
 
 :::tip
 
-When referencing "DA" in this document we will hereafter always mean a "Browser-Resident Desktop Agent" - code that runs in a browser page (iframe or window) and which conforms to this specification.
+When referencing "DA" in the subsequent sections of this document we will hereafter always mean a "Browser-Resident Desktop Agent" - code that runs in a browser page (iframe or window) and which conforms to this specification.
 
 :::
 
 ## Launching apps
 
-As a prerequisite for running FDC3 in the browser, a DA must first exist as running code in a browser window (See failover functions for an exception to this rule), although that code MAY also connect to or rely on remotely hosted services. We will refer to this window as the "DA Window".
+As a prerequisite for launching an app via FDC3 in the browser, a DA must first exist as running code in a browser window (See failover functions for an exception to this rule), although that code MAY also connect to or rely on remotely hosted services. We will refer to this window as the "DA Window".
 
-As the DA typically acts as a launcher for applications, it will often be the case that the DA window is related to the application window(s) in that it may have create the application window with `window.open()` or by creating an iframe and loading the application URL into it. Hence, the DA window may be referred to as a 'parent' (window or frame) of the application frame and the relationship may be used to implement communication between the frames.
+As the DA typically acts as a launcher for applications, it will often be the case that the DA window is related to the application window(s) in that it may have created the application window with `window.open()` or have created an iframe and loaded the application URL into it. Hence, the DA window may be referred to as a 'parent' (window or frame) of the application frame and the relationship may be used to implement communication between the frames.
 
 :::note
 
@@ -46,26 +46,32 @@ It is possible to have multiple DA Windows. For instance, a DA may propagate its
 
 :::
 
-When an app runs `getAgent()`, it checks for the existence of `window.parent`, `window.opener` and `window.parent.opener` (and will continue up the chain of parent frames, e.g. `window.parent.parent`, `window.parent.parent.opener` until the reference to the next parent is equal to the current one (e.g. `window.parent.parent === window.parent` indicating that the frame does not have a parent). `getAgent()` will then send a standardized `WCP1Hello` message to each parent window or frame reference via [`postMessage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) in to discover a DA.
+When an app runs `getAgent()`, it checks for the existence of `window.parent`, `window.opener` and `window.parent.opener` (and will continue up the chain of parent frames, e.g. `window.parent.parent`, `window.parent.parent.opener` until the reference to the next parent is equal to the current one (e.g. `window.parent.parent === window.parent` indicating that the frame does not have a parent). `getAgent()` will then send a standardized `WCP1Hello` message to each parent window or frame reference via [`postMessage`](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) in order to discover a DA.
 
 Hence, apps may be launched:
 
-1) By creating iframes in a DA Window
-2) By calling `window.open` from a DA Window
-3) By creating iframes in a window that was opened from a DA Window
+1. By creating iframes in a DA Window
+2. By calling `window.open` from a DA Window
+3. By creating iframes in a window that was opened from a DA Window
 
 and the Desktop Agent application will be found in a 'parent' of the application frame.
 
 ## Responding to app instance connections - Web Connection Protocol (WCP)
 
-Browser Resident DAs MUST call `window.addEventListener("message",...)` to receive incoming connection requests from apps, in the form of [`"WCP1Hello"`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json) messages defined in the [Web Connection Protocol](./webConnectionProtocol).
+Browser Resident DAs MUST call `window.addEventListener("message", ...)` to receive incoming connection requests from apps, in the form of [`"WCP1Hello"`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json) messages defined in the [Web Connection Protocol](./webConnectionProtocol).
 
 Upon receiving an incoming [`"WCP1Hello"`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json) the Desktop Agent MUST either:
 
-1) Respond with a [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) message (as defined in the [Web Connection Protocol](./webConnectionProtocol)).
+1. Respond with a [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) message (as defined in the [Web Connection Protocol](./webConnectionProtocol)).
     - This message indicates that `getAgent()` should create an iframe, load the provided URL (for an adaptor to the Desktop Agent) into it and then restart the connection process by sending [`"WCP1Hello"`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json) to the iframe.
-2) Create a [`MessageChannel`](https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API) with two entangled `MessagePort` instances that will be used for further communication with the application.
-    - Before returning one of `MessagePort` instances, the DA MUST set up event listeners to to receive and process a [`"WCP4ValidateAppIdentity"`](https://fdc3.finos.org/schemas/next/api/WCP4ValidateAppIdentity.schema.json) message from the application.
+
+    :::warning
+
+    The [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) directives [frame-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-src), [child-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/child-src) and [default-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/default-src) can prevent iframes injected into an application from loading content. Where these are used in app implementations, please advise app implementors to include domains from which the adaptor content is served.
+
+    :::
+2. Create a [`MessageChannel`](https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API) with two entangled `MessagePort` instances that will be used for further communication with the application.
+    - Before returning one of `MessagePort` instances, the DA MUST set up event listeners to receive and process a [`"WCP4ValidateAppIdentity"`](https://fdc3.finos.org/schemas/next/api/WCP4ValidateAppIdentity.schema.json) message from the application.
     - To deliver the `MessagePort`, the DA MUST respond to the event's `source` window by responding with a [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) message (as defined in the [Web Connection Protocol](./webConnectionProtocol)) and append `port2` from the `MessageChannel` to the message.
 
 All further communication is conducted over the `MessageChannel`. The Desktop Agent should consider the newly created port to be inactive until a [`"WCP4ValidateAppIdentity"`](https://fdc3.finos.org/schemas/next/api/WCP4ValidateAppIdentity.schema.json) message is received via the `MessagePort` and successfully processed.
@@ -81,7 +87,7 @@ As web applications may vary their URL during use, or serve multiple application
 - `identityUrl`: the URL to match to the app directory record.
 - `actualUrl`: the current URL of the application, which MUST be captured automatically by the `getAgent()` implementation.
 
-Applications _may_ specify the `identityUrl` value as an argument to `getAgent()`. If not specified, the `getAgent()` implementation MUST use the current URL of the application. The Desktop Agent must validate that the origin of the `identityUrl` is the same as the origin of _both_ the `actualUrl` and the `WCPValidateAppIdentity` message sent over the `MessagePort`. The Desktop Agent MUST then match the URL to that of applications known to the Desktop Agent.
+Applications _may_ specify the `identityUrl` value as an argument to `getAgent()`. If not specified, the `getAgent()` implementation MUST use the current URL of the application. The Desktop Agent MUST validate that the origin of the `identityUrl` is the same as the origin of _both_ the `actualUrl` and the `WCPValidateAppIdentity` message sent over the `MessagePort`. The Desktop Agent MUST then match the URL to that of applications known to the Desktop Agent.
 
 The `actualUrl` field may be used for logging and debug purposes by the Desktop Agent and it differing from the `identityUrl` indicates that the application provided an override via `getAgent()`.
 
@@ -90,9 +96,9 @@ Owing to the fact that the different parts of a URL (origin, path, search parame
 For example, given an identity URL `url`, and an array of App Directory records `appDRecords`, a Desktop Agent MAY implement matching as follows:
 
 ```js
-/** Return the AppD record whose URL best matches the input URL or `null` if no match is found.
- *  To be considered a match all elements of the AppD URL (origin, path, searchParams and hash)
- *  must be found in the input URL.
+/** Return the AppD record whose URL best matches the input URL or `null` if no
+ *  match is found. To be considered a match all elements of the AppD URL 
+ *  (origin, path, searchParams and hash) MUST be found in the input URL.
  *  The best match is the AppD URL that contains the most elements from the
  *  input URL.
  */  
@@ -114,8 +120,8 @@ let matchUrlToAppD = (url, appDRecords) => {
     const matchScores = [];
 
     //score appD records based on the match of their URL to the input URL
-    // if any component of the appD record URL is missing from input URL, score 0
-    // otherwise count the number of input elements matched 
+    // if any component of the appD record URL is missing from input URL, 
+    // score 0 otherwise count the number of input elements matched.
     appDRecords.map((record) => {
         //record must contain a URL
         if (!record.details?.url) { return; }
@@ -191,7 +197,7 @@ For more details on the connection process, please see the documentation for the
 
 ### Disconnects
 
-DAs are responsible for tracking when app windows close or navigates, which is necessary to provide accurate responses to the `findIntent`, `findIntentsByContext` & `findInstances` API calls, and to correctly resolve raised intents. 
+DAs are responsible for tracking when app windows close or navigates, which is necessary to provide accurate responses to the `findIntent`, `findIntentsByContext` & `findInstances` API calls, and to correctly resolve raised intents.
 
 :::info
 
@@ -205,11 +211,11 @@ Checking whether an application has closed may be achieved by a number of approa
   - However, it should be noted that the `closed` will be `false` if the window has navigated same-domain, but is no longer an FDC3 app or has become a different FDC3 app. Hence, checking the `closed` property will not catch all cases.
   - If an equivalent `WindowProxy` object (`WindowProxy` objects can be compared with `==` and will be equivalent if they represent the same window) is received from a different application the DA should consider the original application using that `WindowProxy` to have closed.
 - By receiving a `WCP6Goodbye` message from the application when it is closing. The `getAgent()` implementation automates the sending of this message via the HTML Standard's [Page Life Cycle API](https://wicg.github.io/page-lifecycle/spec.html). Specifically, the `getAgent()` implementation MUST attempt to detect windows closing by listening for the `pagehide` event and considering a window to be closed if the event's `persisted` property is `false`.
-  - Note that the pagehide event may not fire if the window's render thread crashes or is closed while 'frozen'.
+  - Note that the `pagehide` event may not fire if the window's render thread crashes or is closed while 'frozen'.
 - By polling the application for responses via the `heartbeatEvent` and `heartbeatAcknowledgement` messages provided in the [Desktop Agent Communication Protocol](./desktopAgentCommunicationProtocol#checking-apps-are-alive). These message may be used for both periodic and on-demand polling by DA implementations. On-demand polling could, for example, be used to check that all instances returned in a findIntent response or displayed in an intent resolver are still alive.
   - Desktop Agents MAY determine their own timeout, or support configuration, to be used for considering an application to have closed as this may be affected by the implementation details of app and DAs.
 
-Finally, Desktop Agents SHOULD retain instance details for applications that have closed as they may appear to close during navigation events, or may navigate away and then navigate back. By retaining the instance data (`instanceId`, `instanceUuid` and `WindowProxy`) the same instance identity can be maintained or reissued. There is no standard length of time that such details should be retained, hance, Desktop Agents MAY determine for themselves how long to retain instance details for closed instances.
+Finally, Desktop Agents SHOULD retain instance details for applications that have closed as they may appear to close during navigation events, or may navigate away and then navigate back. By retaining the instance data (`instanceId`, `instanceUuid` and `WindowProxy`) the same instance identity can be maintained or reissued. There is no standard length of time that such details should be retained, hence, Desktop Agents MAY determine for themselves how long to retain instance details for closed instances.
 
 ## Responding to app communications with Desktop Agent Communication Protocol (DACP)
 
@@ -217,24 +223,43 @@ After validating an application's identity and any instance identity to be reuse
 
 ## Implementing DAs in hidden iframes
 
-As described above, DA providers can leverage hidden iframes to establish a communication mechanism that is independent of a Parent window. This approach allows apps to connect to a DA even when they were not opened by that DA.
+As described above, DA providers can leverage hidden iframes to establish a communication mechanism that is independent of a parent window or frame. This approach allows apps to reconnect to a DA even when the parent window or frame has closed, or to connect a DA they've started themselves via a `failover` function.
 
-The hidden iframe url can be provided in two ways:
+The hidden iframe URL can be provided in two ways:
 
-1) By a Parent window - This allows DAs to redirect communications to via a hidden iframe that loads a known URL. The main benefit of this approach is that it can allow a system to continue to operate even if the parent window is closed.
-
-2) By a `failover` function - When no parent DA can be found (such as when a tab is opened directly by an end user) then a failover function can create a hidden iframe and return a reference to it (a `WindowProxy`) to initiate communication with via the WCP and DACP in the same way as we do with a parent window. Alternatively, a `DesktopAgent` implementation maybe loaded directly and returned from the failover function, which `getAgent()` will pass-through.
+1. By a Parent window or frame - This allows DAs to handle communication via a hidden iframe that loads a known URL. The main benefit of this approach is that it can allow a system to continue to operate even if the parent window or frame is closed.
+2. By a `failover` function - When no parent DA can be found (such as when a tab is opened directly by an end user) then a failover function can create a hidden iframe and return a reference to it (a `WindowProxy`) that is used to initiate communication via the WCP in the same way as we do with a parent window or frame. Alternatively, a `DesktopAgent` implementation may be loaded directly and returned from the `failover` function, which `getAgent()` will pass-through.
 
 ## Channel Selector and Intent Resolver User Interfaces
 
-Channel Selector and Intent Resolver user-interfaces are normally provided by Desktop Agents to applications. However, when running in a web browser a DA may not have the ability to present a channel selector in a window that has been opened with `window.open()` and it may be challenging to display a secondary window over the application when needed (due to pop-up blocking and user preferences).
+Channel Selector and Intent Resolver user-interfaces are normally provided by Desktop Agents to applications. However, when running in a web browser, a DA may not have the ability to present a channel selector in a window that has been opened with `window.open()`, and it may be challenging to display a secondary window over the application when needed (due to pop-up blocking and user preferences).
 
-The `getAgent()` implementation can facilitate the injection and management of iframes in an application window. An app may use the optional `channelSelector` and `intentResolver` parameters to the `getAgent()` to indicate whether or not they need these interfaces (for example they may not raise intents or may provide their own resolver UI based on the DA API's `findIntent` or `findIntentsForContext` functions so they don't need a DA-provided interface). These parameters are forwarded onto the Desktop Agent in the `WCP1Hello` connection message.
+The `getAgent()` implementation can facilitate the injection and management of iframes in an application window. An app may provide the optional `channelSelector` and `intentResolver` parameters to the `getAgent()` to indicate whether or not they need these interfaces. For example, the apps may not raise intents. Some apps may also resolve intents internally by leveraging the Desktop Agent's `findIntent` or `findIntentsForContext` API functions. In these situations, the apps won't need a DA-provided interface. Once an app calls `getAgent()`, the parameters that the app provides are forwarded onto the Desktop Agent in the `WCP1Hello` connection message.
 
-Desktop Agents may implement their own user interfaces for channel selection and intent resolution. The URL for each interface may be returned in the `channelSelectorUrl` and `intentResolverUrl` properties of the payload of the `WCP3Handshake` message sent by the DA during the connection sequence. Alternatively, if the Desktop Agent is be able to provide these user interfaces by other means (for example DAs that render applications in iframes within a window they control may use other iframes to render these UIs) or if they app indicated that it did not need them then `channelSelectorUrl` and `intentResolverUrl` may be set to `false`. Finally, `channelSelectorUrl` and `intentResolverUrl` may be set to `true` to indicate that `getAgent()` should use the default reference implementations of these UIs provided via the <https://fdc3.finsos.org> website.
+Desktop Agents may implement their own user interfaces for channel selection and intent resolution. The URL for each interface may be returned in the `channelSelectorUrl` and `intentResolverUrl` properties of the payload of the `WCP3Handshake` message sent by the DA during the connection sequence. Alternatively, if the Desktop Agent is able to provide these user interfaces by other means (for example DAs that render applications in iframes within a window they control may use other iframes to render these UIs) or if they app indicated that it did not need them then `channelSelectorUrl` and `intentResolverUrl` may be set to `false`. Finally, `channelSelectorUrl` and `intentResolverUrl` may be set to `true` to indicate that `getAgent()` should use the default reference implementations of these UIs provided via the <https://fdc3.finsos.org> website.
 
-Communication between the `DesktopAgentProxy` and the iframes it injects is achieved via a similar mechanism to that used for communication between an App and the Desktop Agent: a `MessageChannel` is established between the app and iframe, via a `postMessage` sent from the iframe (`iFrameHello`) and responded to by the `DesktopAgentProxy` in the app's window (`iFrameHandshake`), with a `MessagePort` from a `MessageChannel` appended.
+:::warning
 
-A further set of messages are provided for working with the injected user interfaces over their `MessageChannel` as part of the DACP, these are: `iFrameRestyle`, `iFrameDrag`, `iFrameChannels`, `iFrameChannelSelected`, `iFrameResolve` and `iFrameResolveAction`.
+The [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) directives [frame-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-src), [child-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/child-src) and [default-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/default-src) can prevent iframes injected into an application from loading content. Where these are used in app implementations, please advise app implementors to include domains from which the UI implementations are served (including [fdc3.finos.org](https://fdc3.finos.org/) if you are working with the reference Intent Resolver and Channel Selector UIs).
+
+:::
+
+User interface iframes are initially injected into the application window with CSS that prevents their display:
+
+```css
+{
+    width: "0";
+    height: "0";
+    position: "fixed";
+}
+```
+
+and are always displayed with `position: "fixed"` so that they are not part of the document flow.
+
+Implementations of the UIs may then indicate a limited set of CSS to apply to their frame in the initial `Fdc3UserInterfaceHello` message (when the width and height will be removed if not explicitly set in that message), and later adjust that via `Fdc3UserInterfaceRestyle`. See the [Controlling injected User Interfaces section](./desktopAgentCommunicationProtocol#controlling-injected-user-interfaces-section) in the DACP specification for more details.
+
+Communication between the `DesktopAgentProxy` and the iframes it injects is achieved via a similar mechanism to that used for communication between an App and the Desktop Agent: a `MessageChannel` is established between the app and iframe, via a `postMessage` sent from the iframe (`Fdc3UserInterfaceHello`) and responded to by the `DesktopAgentProxy` in the app's window (`Fdc3UserInterfaceHandshake`), with a `MessagePort` from a `MessageChannel` appended.
+
+A further set of messages are provided for working with the injected user interfaces over their `MessageChannel` as part of the DACP, these are: `Fdc3UserInterfaceRestyle`, `Fdc3UserInterfaceDrag`, `Fdc3UserInterfaceChannels`, `Fdc3UserInterfaceChannelSelected`, `Fdc3UserInterfaceResolve` and `Fdc3UserInterfaceResolveAction`.
 
 See the [Desktop Agent Communication Protocol](./desktopAgentCommunicationProtocol) (DACP) for more details.

@@ -30,16 +30,9 @@
 		"HeartbeatEventPayload": {
 			"title": "heartbeat Event Payload",
 			"type": "object",
-			"properties": {
-				"timestamp": {
-					"title": "Timestamp",
-					"description": "The time at which the heartbeat event was sent, which should be quoted in the response",
-					"type": "string",
-            		"format": "date-time"
-				}
-			},
+			"properties": {},
 			"additionalProperties": false,
-			"required": ["timestamp"]
+			"required": []
 		}
 	}
 }
