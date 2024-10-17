@@ -40,7 +40,7 @@ window.addEventListener("load", () => {
 
     // ISSUE: 1302
     parent.postMessage({
-        type: "iframeHello",
+        type: "fdc3UserInterfaceHello",
         payload: {
             initialCSS: DEFAULT_COLLAPSED_CSS,
             implementationDetails: "Demo Channel Selector v1.0"
@@ -57,7 +57,7 @@ window.addEventListener("load", () => {
         if (e.data.type == 'iframeHandshake') {
             // ok, port is ready, send the iframe position detials
             myPort.postMessage({ type: "iframeRestyle", payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
-        } else if (e.data.type == 'iframeChannels') {
+        } else if (e.data.type == 'fdc3UserInterfaceChannels') {
             const details = e.data as IframeChannels
             console.log(JSON.stringify("CHANNEL DETAILS: " + JSON.stringify(details)))
             channels = details.payload.userChannels
@@ -86,7 +86,7 @@ window.addEventListener("load", () => {
             a.onclick = () => {
                 changeSize(false)
                 channelId = channel.id
-                myPort.postMessage({ type: "iframeChannelSelected", payload: { selected: channel.id } })
+                myPort.postMessage({ type: "fdc3UserInterfaceSelected", payload: { selected: channel.id } })
             }
         })
 

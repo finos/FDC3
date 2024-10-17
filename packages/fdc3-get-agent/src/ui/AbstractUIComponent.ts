@@ -74,7 +74,7 @@ export abstract class AbstractUIComponent implements Connectable {
         return new Promise((resolve, _reject) => {
             const ml = (e: MessageEvent) => {
                 // console.log("Received UI Message: " + JSON.stringify(e.data))
-                if ((e.source == this.iframe?.contentWindow) && (e.data.type == 'iframeHello')) {
+                if ((e.source == this.iframe?.contentWindow) && (e.data.type == 'fdc3UserInterfaceHello')) {
                     const helloData = e.data as IframeHello
                     if (helloData.payload.initialCSS) {
                         this.themeContainer(helloData.payload.initialCSS)

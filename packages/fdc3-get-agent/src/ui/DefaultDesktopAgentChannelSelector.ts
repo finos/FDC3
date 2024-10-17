@@ -25,7 +25,7 @@ export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent impl
         this.port = port
 
         port.addEventListener("message", (e) => {
-            if (e.data.type == 'iframeChannelSelected') {
+            if (e.data.type == 'fdc3UserInterfaceSelected') {
                 const choice = e.data as IframeChannelSelected
                 if ((choice.payload.selected) && (this.callback)) {
                     this.callback(choice.payload.selected)
@@ -37,7 +37,7 @@ export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent impl
     updateChannel(channelId: string | null, availableChannels: Channel[]): void {
         // also send to the iframe
         this.port!!.postMessage({
-            type: 'iframeChannels',
+            type: 'fdc3UserInterfaceChannels',
             payload: {
                 selected: channelId,
                 userChannels: availableChannels.map(ch => {
