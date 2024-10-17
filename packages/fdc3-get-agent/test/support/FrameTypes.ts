@@ -38,7 +38,7 @@ export function handleChannelSelectorComms(_value: string, parent: MockWindow, s
         parent.dispatchEvent({
             type: "message",
             data: {
-                type: "iframeHello",
+                type: "fdc3UserInterfaceHello",
                 payload: {
                     initialCSS: {
                         "width": "100px"
@@ -79,7 +79,7 @@ export function handleIntentResolverComms(_value: string, parent: MockWindow, so
         parent.dispatchEvent({
             type: "message",
             data: {
-                type: "iframeHello",
+                type: "fdc3UserInterfaceHello",
                 payload: {
                     initialCSS: {
                         "width": "100px"

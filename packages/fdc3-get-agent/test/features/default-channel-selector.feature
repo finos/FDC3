@@ -16,5 +16,5 @@ Feature: Default Channel Selector
     And we wait for a period of "200" ms
     Then "{lastChannelSelectorMessage}" is an object with the following contents
       | type           | payload.selected | payload.userChannels[0].id | payload.userChannels[1].id | payload.userChannels[2].id |
-      | iframeChannels | one              | one                        | two                        | three                      |
+      | fdc3UserInterfaceChannels | one              | one                        | two                        | three                      |
     And I call "{document}" with "shutdown"

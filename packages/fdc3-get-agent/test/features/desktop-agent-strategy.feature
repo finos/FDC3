@@ -58,8 +58,8 @@ Feature: Different Strategies for Accessing the Desktop Agent
       | message   | WCP1Hello     |
       | message   | WCP2LoadUrl   |
       | message   | WCP3Handshake |
-      | message   | iframeHello   |
-      | message   | iframeHello   |
+      | message   | fdc3UserInterfaceHello   |
+      | message   | fdc3UserInterfaceHello   |
       | fdc3Ready | {null}        |
     Then I call "{document}" with "shutdown"
     And I call "{desktopAgent}" with "disconnect"

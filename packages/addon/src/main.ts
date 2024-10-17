@@ -135,7 +135,7 @@ const openChannelIframe = (e: MouseEvent) => {
 
       // User clicked on one of the channels in the channel selector
       // @ts-ignore: Explicit fall-through to iframeHandshake
-      case "iframeChannelSelected": {
+      case "fdc3UserInterfaceSelected": {
         // STEP 4B: Receive user selection information from iframe
         selected = data.channel;
       }
@@ -144,7 +144,7 @@ const openChannelIframe = (e: MouseEvent) => {
       case "iframeHandshake": {
         // STEP 3A: Send channel data to iframe
         channel.port1.postMessage({
-          type: "iframeChannels",
+          type: "fdc3UserInterfaceChannels",
           channels: recommendedChannels,
           selected
         });
@@ -171,7 +171,7 @@ const openChannelIframe = (e: MouseEvent) => {
   });
 
   // STEP 1A: Send port to iframe
-  iframe.contentWindow?.postMessage({ type: 'iframeHello' }, '*', [channel.port2]);
+  iframe.contentWindow?.postMessage({ type: 'fdc3UserInterfaceHello' }, '*', [channel.port2]);
 };
 
 const openResolverIframe = (e: MouseEvent )=> {
@@ -203,7 +203,7 @@ const openResolverIframe = (e: MouseEvent )=> {
   iframe!.parentElement?.setAttribute("data-visible", "true");
 
   // STEP 1A: Send port to iframe
-  iframe!.contentWindow?.postMessage({ type: 'iframeHello' }, '*', [channel.port2]);
+  iframe!.contentWindow?.postMessage({ type: 'fdc3UserInterfaceHello' }, '*', [channel.port2]);
 };
 
 window.addEventListener('load', () => {
