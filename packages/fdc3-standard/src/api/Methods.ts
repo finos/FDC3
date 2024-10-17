@@ -26,53 +26,48 @@ import { Context } from '@kite9/fdc3-context'
 
 const UnavailableError = new Error('FDC3 DesktopAgent not available at `window.fdc3`.');
 
-function rejectIfNoGlobal(f: () => Promise<any>) {
-  return window.fdc3 ? f() : Promise.reject(UnavailableError);
-}
-
-
 function isString(app: AppIdentifier | string | undefined): app is string {
   return !!app && typeof app === 'string';
 }
 
 export function open(app: AppIdentifier | string, context?: Context): Promise<AppIdentifier> {
   if (isString(app)) {
-    return rejectIfNoGlobal(() => window.fdc3.open(app, context));
+    return window.fdc3 ? window.fdc3.open(app, context) : Promise.reject(UnavailableError);
   } else {
-    return rejectIfNoGlobal(() => window.fdc3.open(app, context));
+    return window.fdc3 ? window.fdc3.open(app, context) : Promise.reject(UnavailableError);
   }
 }
 
 export function findIntent(intent: Intent, context?: Context, resultType?: string): Promise<AppIntent> {
-  return rejectIfNoGlobal(() => window.fdc3.findIntent(intent, context, resultType));
+  return window.fdc3 ? window.fdc3.findIntent(intent, context, resultType) : Promise.reject(UnavailableError);
 }
 
 export function findIntentsByContext(context: Context, resultType?: string): Promise<AppIntent[]> {
-  return rejectIfNoGlobal(() => window.fdc3.findIntentsByContext(context, resultType));
+  return window.fdc3 ? window.fdc3.findIntentsByContext(context, resultType) : Promise.reject(UnavailableError);
 }
 
 export function broadcast(context: Context): Promise<void> {
-  return rejectIfNoGlobal(() => window.fdc3.broadcast(context));
+  return window.fdc3 ? window.fdc3.broadcast(context) : Promise.reject(UnavailableError);
 }
 
 export function raiseIntent(intent: Intent, context: Context, app?: AppIdentifier | string): Promise<IntentResolution> {
   if (isString(app)) {
-    return rejectIfNoGlobal(() => window.fdc3.raiseIntent(intent, context, app));
+    return window.fdc3 ? window.fdc3.raiseIntent(intent, context, app) : Promise.reject(UnavailableError);
   } else {
-    return rejectIfNoGlobal(() => window.fdc3.raiseIntent(intent, context, app));
+    return window.fdc3 ? window.fdc3.raiseIntent(intent, context, app) : Promise.reject(UnavailableError);
   }
 }
 
 export function raiseIntentForContext(context: Context, app?: AppIdentifier | string): Promise<IntentResolution> {
   if (isString(app)) {
-    return rejectIfNoGlobal(() => window.fdc3.raiseIntentForContext(context, app));
+    return window.fdc3 ? window.fdc3.raiseIntentForContext(context, app) : Promise.reject(UnavailableError);
   } else {
-    return rejectIfNoGlobal(() => window.fdc3.raiseIntentForContext(context, app));
+    return window.fdc3 ? window.fdc3.raiseIntentForContext(context, app) : Promise.reject(UnavailableError);
   }
 }
 
 export function addIntentListener(intent: Intent, handler: IntentHandler): Promise<Listener> {
-  return rejectIfNoGlobal(() => window.fdc3.addIntentListener(intent, handler));
+  return window.fdc3 ? window.fdc3.addIntentListener(intent, handler) : Promise.reject(UnavailableError);
 }
 
 export function addContextListener(
@@ -81,74 +76,78 @@ export function addContextListener(
 ): Promise<Listener> {
   //Handle (deprecated) function signature that allowed contextType argument to be omitted
   if (typeof contextTypeOrHandler !== 'function') {
-    return rejectIfNoGlobal(() => window.fdc3.addContextListener(contextTypeOrHandler, handler as ContextHandler));
+    return window.fdc3 ? window.fdc3.addContextListener(contextTypeOrHandler, handler as ContextHandler) : Promise.reject(UnavailableError);
   } else {
-    return rejectIfNoGlobal(() => window.fdc3.addContextListener(null, contextTypeOrHandler as ContextHandler));
+    return window.fdc3 ? window.fdc3.addContextListener(null, contextTypeOrHandler as ContextHandler) : Promise.reject(UnavailableError);
   }
 }
 
 export function addEventListener(eventType: FDC3EventTypes, handler: EventHandler): Promise<Listener> {
-  return rejectIfNoGlobal(() => window.fdc3.addEventListener(eventType, handler));
+  return window.fdc3 ? window.fdc3.addEventListener(eventType, handler) : Promise.reject(UnavailableError);
 }
 
 export function getUserChannels(): Promise<Channel[]> {
-  return rejectIfNoGlobal(() => {
+  if (window.fdc3) {
     //fallback to getSystemChannels for FDC3 <2.0 implementations
     if (window.fdc3.getUserChannels) {
       return window.fdc3.getUserChannels();
     } else {
       return window.fdc3.getSystemChannels();
     }
-  });
+  } else {
+    return Promise.reject(UnavailableError);
+  };
 }
 
 export function getSystemChannels(): Promise<Channel[]> {
-  //fallforward to getUserChannels for FDC3 2.0+ implementations
+  //fall-forward to getUserChannels for FDC3 2.0+ implementations
   return getUserChannels();
 }
 
 export function joinUserChannel(channelId: string): Promise<void> {
-  return rejectIfNoGlobal(() => {
+  if (window.fdc3) {
     //fallback to joinChannel for FDC3 <2.0 implementations
     if (window.fdc3.joinUserChannel) {
       return window.fdc3.joinUserChannel(channelId);
     } else {
       return window.fdc3.joinChannel(channelId);
     }
-  });
+  } else {
+    return Promise.reject(UnavailableError);
+  }
 }
 
 export function joinChannel(channelId: string): Promise<void> {
-  //fallforward to joinUserChannel for FDC3 2.0+ implementations
+  //fall-forward to joinUserChannel for FDC3 2.0+ implementations
   return joinUserChannel(channelId);
 }
 
 export function getOrCreateChannel(channelId: string): Promise<Channel> {
-  return rejectIfNoGlobal(() => window.fdc3.getOrCreateChannel(channelId));
+  return window.fdc3 ? window.fdc3.getOrCreateChannel(channelId) : Promise.reject(UnavailableError);
 }
 
 export function getCurrentChannel(): Promise<Channel | null> {
-  return rejectIfNoGlobal(() => window.fdc3.getCurrentChannel());
+  return window.fdc3 ? window.fdc3.getCurrentChannel() : Promise.reject(UnavailableError);
 }
 
 export function leaveCurrentChannel(): Promise<void> {
-  return rejectIfNoGlobal(() => window.fdc3.leaveCurrentChannel());
+  return window.fdc3 ? window.fdc3.leaveCurrentChannel() : Promise.reject(UnavailableError);
 }
 
 export function createPrivateChannel(): Promise<PrivateChannel> {
-  return rejectIfNoGlobal(() => window.fdc3.createPrivateChannel());
+  return window.fdc3 ? window.fdc3.createPrivateChannel() : Promise.reject(UnavailableError);
 }
 
 export function getInfo(): Promise<ImplementationMetadata> {
-  return rejectIfNoGlobal(() => window.fdc3.getInfo());
+  return window.fdc3 ? window.fdc3.getInfo() : Promise.reject(UnavailableError);
 }
 
 export function getAppMetadata(app: AppIdentifier): Promise<AppMetadata> {
-  return rejectIfNoGlobal(() => window.fdc3.getAppMetadata(app));
+  return window.fdc3 ? window.fdc3.getAppMetadata(app) : Promise.reject(UnavailableError);
 }
 
 export function findInstances(app: AppIdentifier): Promise<AppIdentifier[]> {
-  return rejectIfNoGlobal(() => window.fdc3.findInstances(app));
+  return window.fdc3 ? window.fdc3.findInstances(app) : Promise.reject(UnavailableError);
 }
 
 /**
