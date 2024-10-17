@@ -19,7 +19,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "tsc --module es2022",
-    "test": "tsc; jest --verbose",
+    "test": "tsc && jest",
     "lint": "eslint src/ --fix"
   },
   "prettier": {

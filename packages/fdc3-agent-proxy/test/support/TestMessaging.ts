@@ -106,7 +106,7 @@ export class TestMessaging extends AbstractMessaging {
 
     constructor(channelState: { [key: string]: Context[] }) {
         super({
-            timeout: 0,
+            timeoutMs: 0,
             channelSelector: false,
             intentResolver: false,
             dontSetWindowFdc3: false
