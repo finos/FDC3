@@ -1176,8 +1176,8 @@ export interface MouseOffsets {
 
 /**
  * Handshake message sent back to a user interface from the DA proxy code (setup by
- * `getAgent()`) over the `MessagePort` provide in the preceding iFrameHello message,
- * confirming that it is listening to the `MessagePort` for further communication.
+ * `getAgent()`) over the `MessagePort` provided in the preceding Fdc3UserInterfaceHello
+ * message, confirming that it is listening to the `MessagePort` for further communication.
  *
  * A message used to communicate with user interface frames injected by `getAgent()` for
  * displaying UI elements such as the intent resolver or channel selector. Used for messages

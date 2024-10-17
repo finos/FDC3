@@ -76,7 +76,7 @@ Given('The intent resolver sends an intent selection message', async function (t
     const port = handleResolve("{document.iframes[0].messageChannels[0].port2}", this)
 
     port.postMessage({
-        type: 'iframeResolveAction',
+        type: 'Fdc3UserInterfaceResolveAction',
         payload: {
             action: 'click',
             appIdentifier: {
@@ -91,7 +91,7 @@ Given('The intent resolver cancels the intent selection message', async function
     const port = handleResolve("{document.iframes[0].messageChannels[0].port2}", this)
 
     port.postMessage({
-        type: 'iframeResolveAction',
+        type: 'Fdc3UserInterfaceResolveAction',
         payload: {
             action: 'cancel'
         }
