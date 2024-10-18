@@ -37,6 +37,8 @@ export enum ResolveError {
   IntentDeliveryFailed = 'IntentDeliveryFailed',
   /** Returned if a call to one of the `raiseIntent` functions is made with an invalid context argument. Contexts should be Objects with at least a `type` field that has a `string` value.*/
   MalformedContext = 'MalformedContext',
+  /** Returned if `fdc3.addIntentListener` is called for the intent repeatedly without unsubscribing, i.e. a listener was previously added for specified intent. */
+  IntentListenerConflict = 'IntentListenerConflict',
   /** @experimental Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.*/
   DesktopAgentNotFound = 'DesktopAgentNotFound',
 }
