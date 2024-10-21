@@ -44,7 +44,7 @@ FDC3 is hosted within, and governed by the policies of, the [Fintech Open Source
 
 ## Where should I go next?
 
-- Have a look at the [supported platforms](supported-platforms) or [common use cases](use-cases/overview).
+- Have a look at the [API's supported platforms](api/supported-platforms) or [common use cases](use-cases/overview).
 - Visit FDC3 [on GitHub](https://github.com/finos/FDC3).
 - Download and install our [npm package](https://www.npmjs.com/package/@finos/fdc3).
 - Try out an FDC3-compliant implementation, e.g. this [browser extension](https://github.com/finos/fdc3-desktop-agent).

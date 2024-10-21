@@ -28,6 +28,11 @@
               "description": "FactSet Permanent Identifier representing the contact"
             }
           }
+        },
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "description": "An optional human-readable name for the contact"
         }
       },
       "required": [

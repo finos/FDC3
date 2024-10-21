@@ -26,12 +26,18 @@
       "additionalProperties": true
     },
     "meta": {
-      "$ref": "#/$defs/ConnectionStepMeta"
+      "oneOf": [
+        {
+          "$ref": "#/$defs/DisconnectStepMeta"
+        },
+        {
+          "$ref": "#/$defs/ConnectionStepMeta"
+        }
+      ]
     }
   },
   "required": [
     "type",
-    "payload",
     "meta"
   ],
   "additionalProperties": false,
@@ -51,6 +57,20 @@
       "required": [
         "timestamp",
         "connectionAttemptUuid"
+      ],
+      "additionalProperties": false
+    },
+    "DisconnectStepMeta": {
+      "title": "Disconnect Metadata",
+      "description": "Metadata for a disconnection step message",
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "timestamp"
       ],
       "additionalProperties": false
     }

@@ -41,12 +41,8 @@ Contacts to add to the chat
 
 **One of:**
 
-**type**: `string`
-
-
-**type**: [Message](Message)
-
-
+- **type**: `string`
+- **type**: [Message](Message)
 
 An initial message to post in the chat when created.
 

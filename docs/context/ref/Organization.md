@@ -58,6 +58,15 @@ Identifiers for the organization, at least one must be provided.
 
 </details>
 
+<details>
+  <summary><code>name</code></summary>
+
+**type**: `string`
+
+An optional human-readable name of the organization
+
+</details>
+
 ## Example
 
 ```json

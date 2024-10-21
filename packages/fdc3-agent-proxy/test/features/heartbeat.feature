@@ -8,7 +8,7 @@ Feature: Heartbeats
     When messaging receives a heartbeat event
     And messaging will have posts
       | matches_type             |
-      | heartbeatAcknowledgement |
+      | heartbeatAcknowledgementRequest |
 
   Scenario: Saying Goodbye
     When I call "{api}" with "disconnect"

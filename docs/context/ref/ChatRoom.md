@@ -32,6 +32,13 @@ The name of the service that hosts the chat
 
 **type**: `object`
 
+<details>
+  <summary><code>Additional Properties</code></summary>
+
+**type**: `string`
+
+</details>
+
 Identifier(s) for the chat - currently unstandardized
 
 </details>

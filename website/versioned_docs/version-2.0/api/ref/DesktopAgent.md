@@ -132,7 +132,7 @@ fdc3.addIntentListener("CreateOrder", (context) => {
 //Handle a raised intent and return a PrivateChannel over which response will be sent
 fdc3.addIntentListener("QuoteStream", async (context) => {
   const channel: PrivateChannel = await fdc3.createPrivateChannel();
-  const symbol = context.id.symbol;
+  const symbol = context.id.ticker;
 
   // Called when the remote side adds a context listener
   const addContextListener = channel.onAddContextListener((contextType) => {

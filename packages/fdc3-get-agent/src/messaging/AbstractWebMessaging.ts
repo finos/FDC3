@@ -36,7 +36,7 @@ export abstract class AbstractWebMessaging extends AbstractMessaging {
      */
     storeInstanceUuid(vr: WebConnectionProtocol5ValidateAppIdentitySuccessResponse) {
         const details: DesktopAgentDetails = {
-            agentType: WebDesktopAgentType.PROXY_PARENT,
+            agentType: WebDesktopAgentType.ProxyParent,
             instanceUuid: vr.payload.instanceUuid,
             appId: vr.payload.appId,
             instanceId: vr.payload.instanceId,
@@ -53,7 +53,7 @@ export abstract class AbstractWebMessaging extends AbstractMessaging {
 
         if (detailsStr) {
             const details = JSON.parse(detailsStr) as DesktopAgentDetails
-            if (details.agentType == WebDesktopAgentType.PROXY_PARENT) {
+            if (details.agentType == WebDesktopAgentType.ProxyParent) {
                 return details.instanceUuid
             }
         }

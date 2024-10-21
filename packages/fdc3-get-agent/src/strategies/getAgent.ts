@@ -64,7 +64,7 @@ export const getAgent: GetAgentType = (optionsOverride?: GetAgentParams) => {
         dontSetWindowFdc3: true,
         channelSelector: true,
         intentResolver: true,
-        timeout: DEFAULT_WAIT_FOR_MS,
+        timeoutMs: DEFAULT_WAIT_FOR_MS,
         identityUrl: globalThis.window.location.href
     }
 
@@ -104,7 +104,7 @@ export const getAgent: GetAgentType = (optionsOverride?: GetAgentParams) => {
  */
 export function fdc3Ready(waitForMs = DEFAULT_WAIT_FOR_MS): Promise<DesktopAgent> {
     const agent = getAgent({
-        timeout: waitForMs,
+        timeoutMs: waitForMs,
         dontSetWindowFdc3: false,
         channelSelector: true,
         intentResolver: true

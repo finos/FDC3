@@ -63,6 +63,11 @@
             }
           }
         },
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "description": "An optional human-readable name for the instrument"
+        },
         "market": {
           "description": "The `market` map can be used to further specify the instrument and help achieve interoperability between disparate data sources. This is especially useful when using an `id` field that is not globally unique.",
           "type": "object",

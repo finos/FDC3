@@ -11,6 +11,19 @@
         "type": {
           "const": "fdc3.orderList"
         },
+        "id": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Order List Identifiers",
+          "description": "One or more identifiers that refer to the order list in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future."
+        },
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "description": "An optional human-readable summary of the order list"
+        },
         "orders": {
           "type": "array",
           "items": {

@@ -133,7 +133,7 @@ Given('a browser document in {string} and window in {string}', async function (t
 
 Given("the session identity is set to {string}", async function (this: CustomWorld, id: string) {
     const details: DesktopAgentDetails = {
-        agentType: WebDesktopAgentType.PROXY_PARENT,
+        agentType: WebDesktopAgentType.ProxyParent,
         instanceUuid: handleResolve(id, this),
         appId: 'cucumber-app',
         instanceId: 'uuid-0'

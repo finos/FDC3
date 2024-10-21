@@ -9,8 +9,9 @@
  * to be interpreted as JSON input, rather than JSONSchema).
  * 
  * Individual file arguments will be interpreted as 'additional' schema files
- * that will be referenced from the other schemas and may not have top-level output 
- * schemas generated, while folders of files w
+ * that will be referenced from the other schemas and will not have top-level output 
+ * schemas generated, while folders will be listed and the schema files they contain
+ * added as inputs and will have top-level types generated. 
  * 
  *  */
 
