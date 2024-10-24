@@ -18,28 +18,10 @@
       "description": "A request for details of apps available to resolve a particular intent and context pair.",
       "properties": {
         "type": {
-          "title": "FindIntent Request Message Type",
-          "const": "findIntentRequest"
+          "$ref": "../api/findIntentRequest.schema.json#/$defs/FindIntentRequestType"
         },
         "payload": {
-          "title": "FindIntent Request Payload",
-          "type": "object",
-          "properties": {
-            "intent": {
-              "title": "Intent name",
-              "type": "string"
-            },
-            "context": {
-              "title": "Context argument",
-              "$ref": "../context/context.schema.json"
-            },
-            "resultType": {
-              "title": "Result type argument",
-              "type": "string"
-            }
-          },
-          "required": ["intent"],
-          "additionalProperties": false
+          "$ref": "../api/findIntentRequest.schema.json#/$defs/FindIntentRequestPayload"
         },
         "meta": {
           "title" : "FindIntent Request Metadata",

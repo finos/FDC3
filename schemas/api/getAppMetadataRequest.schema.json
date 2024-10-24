@@ -1,0 +1,44 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/getAppMetadataRequest.schema.json",
+	"type": "object",
+	"title": "GetAppMetadata Request",
+	"description": "A request for metadata about an app.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/GetAppMetadataRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/GetAppMetadataRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"GetAppMetadataRequestType": {
+			"title": "GetAppMetadata Request Message Type",
+			"const": "getAppMetadataRequest"
+		},
+		"GetAppMetadataRequestPayload": {
+			"title": "GetAppMetadata Request Payload",
+			"type": "object",
+			"properties": {
+				"app": {
+					"$ref": "api.schema.json#/definitions/AppIdentifier"
+				}
+			},
+			"required": [
+				"app"
+			],
+			"additionalProperties": false
+		}
+	}
+}

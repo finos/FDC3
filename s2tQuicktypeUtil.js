@@ -7,44 +7,66 @@
  * quicktype bug in command line argument handling (where a directory is used
  * as input the source language argument is ignored which causes our schemas
  * to be interpreted as JSON input, rather than JSONSchema).
- * Bug issue:
+ * 
+ * Individual file arguments will be interpreted as 'additional' schema files
+ * that will be referenced from the other schemas and will not have top-level output 
+ * schemas generated, while folders will be listed and the schema files they contain
+ * added as inputs and will have top-level types generated. 
+ * 
  *  */
 
 const path = require('path');
 const fs = require('fs');
+const { forEachChild } = require('typescript');
 const exec = require('child_process').exec;
 
 const args = process.argv.slice(2);
 const outputFile = args.pop();
 const inputs = args;
+const toProcess = [];
 
-console.log('Inputs: ' + inputs.join(' | '));
+console.log('Inputs schema files: ' + inputs.join(' | '));
 console.log('Output file argument: ' + outputFile);
 
 let sources = '';
+let additionalSchemaFiles = ''
 
-let dirIndex = 0;
+//skip duplicate paths (we might want to specify some files to go first, and might duplicate them)
+const allPaths = new Set();
 
-while (dirIndex < inputs.length) {
-  if (inputs[dirIndex].endsWith('.schema.json')) {
-    sources += `--src ${path.join(inputs[dirIndex])} `;
+const addAPath = (aPath,paths,sources,type) => {
+  if (!paths.has(aPath)) {
+    paths.add(aPath)
+    return sources + ` ${type} ${aPath}`;
   } else {
-    fs.readdirSync(inputs[dirIndex], { withFileTypes: true }).forEach(file => {
+    console.log(`skipping duplicate path ${aPath}`);
+    return sources;
+  }
+}
+
+//process the content of folders to produce code for top-level types
+let inputIndex = 0;
+while (inputIndex < inputs.length) {
+  if (inputs[inputIndex].endsWith('.schema.json')) {
+    //add individual files with -S as additional schema files used in references (rather than ones that need a top-level output)
+    additionalSchemaFiles = addAPath(path.join(inputs[inputIndex]),allPaths,additionalSchemaFiles, "-S");
+  } else {
+    fs.readdirSync(inputs[inputIndex], { withFileTypes: true }).forEach(file => {
       if (file.isDirectory()) {
-        inputs.push(path.join(inputs[dirIndex], file.name));
+        inputs.push(path.join(inputs[inputIndex], file.name));
       } else if (file.name.endsWith('.schema.json')) {
-        sources += `--src ${path.join(inputs[dirIndex], file.name)} `;
+        sources = addAPath(path.join(inputs[inputIndex], file.name),allPaths,sources, "--src");
       }
     });
   }
-  dirIndex++;
+  inputIndex++;
 }
 
 // Normalise path to local quicktype executable.
 //const quicktypeExec = "node " + ["..","quicktype","dist","index.js"].join(path.sep);
-const quicktypeExec = ['.', 'node_modules', '.bin', 'quicktype'].join(path.sep);
+const quicktypeExec = ['..', 'node_modules', '.bin', 'quicktype'].join(path.sep);
 
-const command = `${quicktypeExec} --prefer-const-values --prefer-unions -s schema -o ${outputFile} ${sources}`;
+const command = `${quicktypeExec} --prefer-const-values --prefer-unions -s schema -o ${outputFile} ${additionalSchemaFiles} ${sources}`;
 console.log('command to run: ' + command);
 
 exec(command, function(error, stdout, stderr) {

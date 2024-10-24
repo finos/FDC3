@@ -1,0 +1,57 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/privateChannelDisconnectResponse.schema.json",
+	"type": "object",
+	"title": "PrivateChannelDisconnect Response",
+	"description": "A response to a privateChannelDisconnect request.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/PrivateChannelDisconnectResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/PrivateChannelDisconnectSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/PrivateChannelDisconnectErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"PrivateChannelDisconnectResponseType": {
+			"title": "PrivateChannelDisconnect Response Message Type",
+			"const": "privateChannelDisconnectResponse"
+		},
+		"PrivateChannelDisconnectSuccessResponsePayload": {
+			"title": "PrivateChannelDisconnect Response Payload",
+			"type": "object",
+			"properties": {},
+			"additionalProperties": false
+		},
+		"PrivateChannelDisconnectErrorResponsePayload": {
+			"title": "PrivateChannelDisconnect Error Response Payload",
+			"type": "object",
+			"properties": {
+				"error": {
+					"$ref": "api.schema.json#/definitions/ChannelError"
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}

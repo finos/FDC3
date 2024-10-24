@@ -35,7 +35,7 @@ function rejectIfNoGlobal(f: () => Promise<any>) {
 }
 
 /**
- * Utility function that returns a promise that will resolve immeadiately
+ * Utility function that returns a promise that will resolve immediately
  * if the desktop agent API is found at `window.fdc3`. If the API is found,
  * the promise will resolve when the `fdc3Ready` event is received or if it
  * is found at the end of the specified timeout. If the API is not found, it
@@ -46,6 +46,9 @@ function rejectIfNoGlobal(f: () => Promise<any>) {
  * const intentListener = await addIntentListener("ViewChart", intentHandlerFn);
  * ```
  *
+ * There is no need to use this function if you are using `await getAgent()` to 
+ * retrieve a Desktop Agent as it already waits for the Desktop Agent to be ready. 
+ * 
  * @param waitForMs The number of milliseconds to wait for the FDC3 API to be
  * ready. Defaults to 5 seconds.
  */
