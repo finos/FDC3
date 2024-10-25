@@ -132,7 +132,7 @@ Context may also be received via this listener if the application was launched v
 
 Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the Desktop Agent implementation.
 
-Adding multiple context listeners on the same or overlapping types (i.e. specific `contextType` and `null` type) SHOULD be allowed, and SHOULD trigger all ContextHandlers when a relevant context type is broadcast on the current user channel. Please note, that this behavior differes from [`fdc3.addIntentListener`](#addintentlistener) call; refer to the relevant documentation for more detials. 
+Adding multiple context listeners on the same or overlapping types (i.e. specific `contextType` and `null` type) SHOULD be allowed, and SHOULD trigger all ContextHandlers when a relevant context type is broadcast on the current user channel. Please note, that this behavior differs from [`fdc3.addIntentListener`](#addintentlistener) call; refer to the relevant documentation for more details. 
 
 **Examples:**
 
@@ -266,7 +266,7 @@ The [`PrivateChannel`](PrivateChannel) type is provided to support synchronizati
 
 Optional metadata about each intent & context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
 
- Adding multiple intent listeners on the same type MUST be rejected with the [`ResolverError.IntentListenerConflict`](Errors#resolveerror), unless the previous listener was removed first though [`listener.unsubscribe`](Types#unsubscribe)
+ Adding multiple intent listeners on the same type MUST be rejected with the [`ResolveError.IntentListenerConflict`](Errors#resolveerror), unless the previous listener was removed first though [`listener.unsubscribe`](Types#unsubscribe)
 
 **Examples:**
 

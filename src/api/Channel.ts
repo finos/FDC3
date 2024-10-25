@@ -71,7 +71,7 @@ export interface Channel {
    *
    * Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
    * 
-   * Adding multiple context listeners on the same or overlapping types (i.e. named type and null type) SHOULD be allowed, and SHOULD trigger all contextHandlers when a relevant context type is broadcast on the current channel.
+   * Adding multiple context listeners on the same or overlapping types (i.e. named type and null type) SHOULD be allowed, and SHOULD trigger all context handlers when a relevant context type is broadcast on the current channel.
    *
    */
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
