@@ -174,7 +174,7 @@ If, when this function is called, the channel already contains context that woul
 
 Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
 
-Adding multiple context listeners on the same or overlapping types (i.e. specific `contextType` and `null` type) SHOULD be allowed, and SHOULD trigger all ContextHandlers when a relevant context type is broadcast on the current channel. 
+Adding multiple context listeners on the same or overlapping types (i.e. specific `contextType` and `null` type) MUST be allowed, and MUST trigger all ContextHandlers when a relevant context type is broadcast on the current channel. 
 
 **Examples:**
 
