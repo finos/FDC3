@@ -306,7 +306,7 @@ export interface DesktopAgent {
    *
    * Optional metadata about the raised intent, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
    * 
-   * Adding multiple intent listeners on the same type MUST be rejected with the `ResolverError.IntentListenerConflict`, unless the previous listener was removed first though `listener.unsubscribe`
+   * Adding multiple intent listeners on the same type MUST be rejected with the `ResolveError.IntentListenerConflict`, unless the previous listener was removed first though `listener.unsubscribe`
    *
    * ```javascript
    * //Handle a raised intent

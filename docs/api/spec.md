@@ -525,7 +525,7 @@ When an instance of an application is launched, it is expected to add an [`Inten
 
 Intent handlers SHOULD be registered via [`fdc3.addIntentListener`](ref/DesktopAgent#addintentlistener) within 15 seconds of the application launch (the minimum timeout Desktop Agents are required to provide) in order to be widely compatible with Desktop Agent implementations. Individual Desktop Agent implementations MAY support longer timeouts or configuration to control or extend timeouts.
 
-Single listener can be added for the specific intent at a time. Therefore, if the application attempts to call [`fdc3.addIntentListener`](ref/DesktopAgent#addintentlistener) passing the same `intent` the second time, before unsubscribing to the previously added listener, Desktop Agent MUST reject it with `ResolverError.IntentListenerConflict` error.
+A single handler can be added for each specific intent. If the application attempts to call [`fdc3.addIntentListener`](ref/DesktopAgent#addintentlistener) passing the same `intent` a second time, before unsubscribing to the previously added listener, the Desktop Agent MUST reject it with an `Error` Object with the message given by [`ResolveError.IntentListenerConflict`](ref/Errors#resolveerror).
 
 ### Originating App Metadata
 
