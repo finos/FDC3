@@ -132,7 +132,7 @@ Context may also be received via this listener if the application was launched v
 
 Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the Desktop Agent implementation.
 
-Adding multiple context listeners on the same or overlapping types (i.e. specific `contextType` and `null` type) SHOULD be allowed, and SHOULD trigger all ContextHandlers when a relevant context type is broadcast on the current user channel. Please note, that this behavior differs from [`fdc3.addIntentListener`](#addintentlistener) call; refer to the relevant documentation for more details. 
+Adding multiple context listeners on the same or overlapping types (i.e. specific `contextType` and `null` type) MUST be allowed, and MUST trigger all ContextHandlers when a relevant context type is broadcast on the current user channel. Please note, that this behavior differs from [`fdc3.addIntentListener`](#addintentlistener) call; refer to the relevant documentation for more details. 
 
 **Examples:**
 
@@ -532,7 +532,7 @@ Task<IEnumerable<IAppIdentifier>> FindInstances(IAppIdentifier app);
 
 Find all the available instances for a particular application.
 
-If the application is not known to the agent, the returned promise should be rejected with the `ResolverError.NoAppsFound` error message. However, if the application is known but there are no instances of the specified app the returned promise should resolve to an empty array.
+If the application is not known to the agent, the returned promise should be rejected with the `ResolveError.NoAppsFound` error message. However, if the application is known but there are no instances of the specified app the returned promise should resolve to an empty array.
 
 If the request fails for another reason, the promise MUST be rejected with an `Error` Object with a `message` chosen from the [`ResolveError`](Errors#resolveerror) enumeration, or (if connected to a Desktop Agent Bridge) the [`BridgingError`](Errors#bridgingerror) enumeration.
 
