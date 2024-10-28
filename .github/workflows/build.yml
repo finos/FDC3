@@ -12,9 +12,8 @@ jobs:
     strategy:
       matrix:
         node-version:
-          - 16.x
-          # - 18.x
-          # - 20.x
+          - 18.x
+          - 20.x
 
     steps:
     - name: Checkout repository
@@ -36,19 +35,3 @@ jobs:
       # Tests sometimes hang, and will run until stopped. Timeout to prevent all the minutes from being eaten.
       timeout-minutes: 5
 
-    - name: Generate report
-      run: npm run report
-
-    - name: Top level file and folder list?
-      run: ls ${{ github.workspace }}
-
-    - name: Read file contents
-      uses: guibranco/github-file-reader-action-v2@latest
-      id: read_file
-      with:
-        path: "${{ github.workspace }}/nyc-coverage-report/coverage-summary.json"
-
-    - name: Post the coverage summary as a comment
-      uses: sidx1024/report-nyc-coverage-github-action@v1.2.7
-      with:
-        coverage_file: "${{ github.workspace }}/nyc-coverage-report/coverage-summary.json"
