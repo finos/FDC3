@@ -84,7 +84,7 @@ window.addEventListener("load", () => {
 
         // set up Desktop Agent Proxy interface here
         // disabling rule for checks on origin of messages - this could be improved by validating for origins we know we are working with
-        // nosemgrep: javascript.browser.security.insufficient-postmessage-origin-validation.insufficient-postmessage-origin-       validation
+        // nosemgrep: javascript.browser.security.insufficient-postmessage-origin-validation.insufficient-postmessage-origin-validation
         window.addEventListener(
             "message",
             (e) => {
