@@ -50,4 +50,4 @@ jobs:
     - name: Post the coverage summary as a comment
       uses: sidx1024/report-nyc-coverage-github-action@v1.2.7
       with:
-        coverage_file: "nyc-coverage-report/coverage-summary.json"
+        coverage_file: "${{ github.workspace }}/nyc-coverage-report/coverage-summary.json"
