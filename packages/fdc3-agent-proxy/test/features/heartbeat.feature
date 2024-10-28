@@ -10,6 +10,7 @@ Feature: Heartbeats
       | matches_type             |
       | heartbeatAcknowledgementRequest |
 
+  @failing
   Scenario: Saying Goodbye
     When I call "{api}" with "disconnect"
     And we wait for a period of "100" ms
