@@ -39,6 +39,12 @@ jobs:
     - name: Top level file and folder list?
       run: ls ${{ github.workspace }}
 
+    - name: What's in coverage report folder?
+      run: ls ${{ github.workspace }}/.nyc_output
+
+    - name: What's in coverage report folder?
+      run: ls ${{ github.workspace }}/nyc-coverage-report
+
     - name: Post the coverage summary as a comment
       uses: sidx1024/report-nyc-coverage-github-action@v1.2.7
       with:
