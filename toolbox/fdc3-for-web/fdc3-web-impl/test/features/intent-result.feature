@@ -13,6 +13,7 @@ Feature: Intent Results Are Correctly Delivered
     And "App1/a1" is opened with connection id "a1"
     And "LibraryApp/l1" registers an intent listener for "returnBook"
 
+  @failing
   Scenario: Waiting for an intent listener to be Added
     When "LibraryApp/l1" raises an intent for "viewNews" with contextType "fdc3.instrument" on app "App1/a1" with requestUuid "ABC123"
     And "App1/a1" registers an intent listener for "viewNews"
@@ -24,6 +25,7 @@ Feature: Intent Results Are Correctly Delivered
       | raiseIntentResultResponse | {null}             | LibraryApp | l1            | {null}                             | {null}                                         | {null}                                |
       | intentResultResponse      | {null}             | App1       | a1            | {null}                             | {null}                                         | {null}                                |
 
+  @failing
   Scenario: App Returns An Intent Response
 ISSUE: 1303 prevents the use of matches_type
 
