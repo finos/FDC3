@@ -21,7 +21,7 @@ To run the website locally
 
 ```yarn start```
 
-This will open the home page or browse to <https://localhost:3000>
+This will open the home page or browse to [https://localhost:3000](https://localhost:3000)
 
 Note that the page opens on the current release version of the docs and you will be changing the latest version. Click the version selector in the top left hand corner
 
