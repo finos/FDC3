@@ -1,4 +1,4 @@
-name: Node.js CI Build
+name: Node.js CI Build and Test
 
 # Controls when the workflow will run on any branch
 on:
@@ -25,5 +25,23 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Run tests
+    - name: Build
       run: npm run build
+
+    - name: Run tests
+      run: npm test
+      timeout-minutes: 20
+
+    - name: Merge Results 1
+      run: npm run merge
+      if: always()
+
+    - name: Merge Results 2
+      run: npm run merge2
+      if: always()
+
+    - name: Report NYC coverage
+      uses: sidx1024/report-nyc-coverage-github-action@v1.2.7
+      if: always()
+      with:
+        coverage_file: "coverage/complete.json"
