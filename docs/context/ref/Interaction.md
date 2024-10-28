@@ -79,16 +79,12 @@ The time range over which the interaction occurred
 
 **One of:**
 
-**type**: `string` with values:
+- **type**: `string` with values:
 - `Instant Message`,
 - `Email`,
 - `Call`,
 - `Meeting`
-
-
-**type**: `string`
-
-
+- **type**: `string`
 
 `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or `'Meeting'` although other string values are permitted.
 

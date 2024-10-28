@@ -1,6 +1,6 @@
 {
 	"$schema": "http://json-schema.org/draft-07/schema#",
-	"$id": "https://fdc3.finos.org/schemas/next/api/heartbeatAcknowledgement.schema.json",
+	"$id": "https://fdc3.finos.org/schemas/next/api/heartbeatAcknowledgementRequest.schema.json",
 	"type": "object",
 	"title": "HeartbeatAcknowledgement Request",
 	"description": "A request that serves as an acknowledgement of a heartbeat event from the Desktop Agent and indicates that an application window or frame is still alive.",
@@ -31,16 +31,15 @@
 			"title": "heartbeatAcknowledgement Request Payload",
 			"type": "object",
 			"properties": {
-				"timestamp": {
-					"title": "Timestamp",
-					"description": "The timestamp of the heartbeatEvent that is being acknowledged.",
+				"heartbeatEventUuid": {
+					"title": "Heartbeat Event Uuid",
 					"type": "string",
-            		"format": "date-time"
+					"description": "The eventUuid value of the HeartbeatEvent that the acknowledgement being sent relates to."
 				}
 			},
 			"additionalProperties": false,
 			"required": [
-				"timestamp"
+				"heartbeatEventUuid"
 			]
 		}
 	}

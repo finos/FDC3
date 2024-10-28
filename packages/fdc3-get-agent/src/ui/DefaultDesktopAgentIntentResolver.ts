@@ -4,8 +4,8 @@ import { AbstractUIComponent } from "./AbstractUIComponent";
 import { BrowserTypes } from "@kite9/fdc3-schema";
 import { Context } from "@kite9/fdc3-context";
 
-type IframeResolveAction = BrowserTypes.IframeResolveAction
-type IframeResolve = BrowserTypes.IframeResolve
+type Fdc3UserInterfaceResolveAction = BrowserTypes.Fdc3UserInterfaceResolveAction
+type Fdc3UserInterfaceResolve = BrowserTypes.Fdc3UserInterfaceResolve
 
 /**
  * Works with the desktop agent to provide a resolution to the intent choices.
@@ -17,7 +17,7 @@ export class DefaultDesktopAgentIntentResolver extends AbstractUIComponent imple
     private pendingResolve: ((x: IntentResolutionChoice | void) => void) | null = null
 
     constructor(url: string | null) {
-        super(url ?? "https://fdc3.finos.org/webui/channel_selector.html", "FDC3 Intent Resolver")
+        super(url ?? "https://fdc3.finos.org/webui/intent_resolver.html", "FDC3 Intent Resolver")
     }
 
     async setupMessagePort(port: MessagePort): Promise<void> {
@@ -26,8 +26,8 @@ export class DefaultDesktopAgentIntentResolver extends AbstractUIComponent imple
 
         this.port.addEventListener("message", (e) => {
             console.log("Got resolve action")
-            if (e.data.type == 'iframeResolveAction') {
-                const choice = e.data as IframeResolveAction
+            if (e.data.type == 'Fdc3UserInterfaceResolveAction') {
+                const choice = e.data as Fdc3UserInterfaceResolveAction
                 if ((choice.payload.action == 'click') && (this.pendingResolve)) {
                     this.pendingResolve({
                         appId: choice.payload.appIdentifier!!,
@@ -49,12 +49,12 @@ export class DefaultDesktopAgentIntentResolver extends AbstractUIComponent imple
 
 
         this.port?.postMessage({
-            type: 'iframeResolve',
+            type: 'Fdc3UserInterfaceResolve',
             payload: {
                 appIntents,
                 context
             }
-        } as IframeResolve)
+        } as Fdc3UserInterfaceResolve)
 
         return out
     }

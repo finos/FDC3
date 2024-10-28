@@ -8,6 +8,7 @@
  */
 export type StandardIntent =
   | 'CreateInteraction'
+  | 'CreateOrUpdateProfile'
   | 'SendChatMessage'
   | 'StartCall'
   | 'StartChat'
@@ -29,8 +30,6 @@ export type StandardIntent =
 /**
  * @see https://fdc3.finos.org/docs/intents/spec
  */
-// disable linter rule that dislikes {} - its necessary here to stop the TS compiler reducing this type to string
-// eslint-disable-next-line @typescript-eslint/ban-types
 export type Intent = StandardIntent | (string & {});
 
 /**
@@ -38,6 +37,7 @@ export type Intent = StandardIntent | (string & {});
  */
 export enum Intents {
   CreateInteraction = 'CreateInteraction',
+  CreateOrUpdateProfile = 'CreateOrUpdateProfile',
   SendChatMessage = 'SendChatMessage',
   StartCall = 'StartCall',
   StartChat = 'StartChat',

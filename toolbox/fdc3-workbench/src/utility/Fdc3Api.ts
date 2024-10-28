@@ -4,9 +4,9 @@
  */
 import * as fdc3_2 from "@kite9/fdc3";
 import * as fdc3_1 from "fdc3-1.2";
-import { fdc3Ready } from '@kite9/fdc3'
+import { fdc3Ready } from "@kite9/fdc3";
 
-const fdc3ReadyPromise = fdc3Ready()
+const fdc3ReadyPromise = fdc3Ready();
 interface fdc3_1IntentResolution extends fdc3_1.IntentResolution {
 	getResult?: any;
 	resultContext?: any;
@@ -62,9 +62,14 @@ export type Context = fdc3_1.Context | fdc3_2.Context;
 
 export type PrivateChannel = fdc3_2.PrivateChannel;
 
-export type IntentTargetOption = { appId: string, metadata: AppMetadata, instances: fdc3_2.AppMetadata[], launchNew: boolean };
+export type IntentTargetOption = {
+	appId: string;
+	metadata: AppMetadata;
+	instances: fdc3_2.AppMetadata[];
+	launchNew: boolean;
+};
 
-export type ContextTargetOption = { intent: string, targetOptions: IntentTargetOption[] };
+export type ContextTargetOption = { intent: string; targetOptions: IntentTargetOption[] };
 
 class Fdc3Api {
 	fdc3Methods: typeof fdc3_1 | typeof fdc3_2;
@@ -85,10 +90,7 @@ class Fdc3Api {
 		return await this.fdc3Methods.addIntentListener(intent, handler);
 	}
 
-	async addContextListener(
-		contextTypeOrNull: string | null,
-		handler: fdc3_1.ContextHandler | fdc3_2.ContextHandler
-	) {
+	async addContextListener(contextTypeOrNull: string | null, handler: fdc3_1.ContextHandler | fdc3_2.ContextHandler) {
 		if (window.fdc3Version === "2.0") {
 			return await fdc3_2.addContextListener(contextTypeOrNull, handler);
 		} else {
@@ -98,24 +100,26 @@ class Fdc3Api {
 				return await fdc3_1.addContextListener(contextTypeOrNull, handler);
 			}
 		}
-
 	}
 
 	async raiseIntent(intent: string, context: fdc3_1.Context | fdc3_2.Context, app?: AppMetadata | undefined) {
 		if (window.fdc3Version === "2.0") {
-			return await fdc3_2.raiseIntent(intent, context, app ? {
-				appId: app?.appId ? app.appId : "",
-				instanceId: (app as fdc3_2.AppMetadata)?.instanceId,
-			} : undefined);
+			return await fdc3_2.raiseIntent(
+				intent,
+				context,
+				app
+					? {
+							appId: app?.appId ? app.appId : "",
+							instanceId: (app as fdc3_2.AppMetadata)?.instanceId,
+						}
+					: undefined
+			);
 		} else {
 			return fdc3_1.raiseIntent(intent, context, app?.appId ?? app?.name ?? undefined);
 		}
 	}
 
-	async raiseIntentForContext(
-		context: fdc3_1.Context & fdc3_2.Context,
-		app?: AppMetadata
-	) {
+	async raiseIntentForContext(context: fdc3_1.Context & fdc3_2.Context, app?: AppMetadata) {
 		if (window.fdc3Version === "2.0") {
 			return await fdc3_2.raiseIntentForContext(context, app as fdc3_2.AppMetadata);
 		} else {
@@ -144,7 +148,7 @@ class Fdc3Api {
 	}
 
 	fdc3Ready(waitForMs?: number | undefined) {
-		return fdc3ReadyPromise
+		return fdc3ReadyPromise;
 	}
 
 	async getOrCreateChannel(channelId: string) {
@@ -191,7 +195,7 @@ class Fdc3Api {
 						appId: currentApp.appId,
 						metadata: metadata,
 						instances: [],
-						launchNew: false
+						launchNew: false,
 					};
 					if (currentApp.instanceId) {
 						option.instances.push(currentApp);
@@ -207,7 +211,6 @@ class Fdc3Api {
 					}
 				}
 			});
-
 		} else {
 			//no instances in FDC3 < 2
 			appIntent = appIntent as fdc3_1.AppIntent;
@@ -219,10 +222,9 @@ class Fdc3Api {
 						appId: currentApp.appId ?? currentApp.name,
 						metadata: currentApp as fdc3_2.AppMetadata, //hack to avoid type error
 						instances: [],
-						launchNew: true
+						launchNew: true,
 					});
 				}
-
 			});
 		}
 
@@ -252,7 +254,7 @@ class Fdc3Api {
 							appId: currentApp.appId,
 							metadata: metadata,
 							instances: [],
-							launchNew: false
+							launchNew: false,
 						};
 						if (currentApp.instanceId) {
 							option.instances.push(currentApp);
@@ -264,14 +266,15 @@ class Fdc3Api {
 						if (currentApp.instanceId) {
 							//deduplicate instances
 							let foundInstance = foundApp.instances.find((instance) => instance.instanceId === currentApp.instanceId);
-							if (!foundInstance) { foundApp.instances.push(currentApp); }
+							if (!foundInstance) {
+								foundApp.instances.push(currentApp);
+							}
 						} else {
 							foundApp.launchNew = true;
 						}
 					}
 				});
 			});
-
 		} else {
 			appIntents = appIntents as fdc3_1.AppIntent[];
 			appIntents.forEach((currentIntent) => {
@@ -283,11 +286,10 @@ class Fdc3Api {
 							appId: currentApp.appId ?? currentApp.name,
 							metadata: currentApp as fdc3_2.AppMetadata, //hack to avoid type error
 							instances: [],
-							launchNew: true
+							launchNew: true,
 						});
 					}
 				});
-
 			});
 		}
 

@@ -1,6 +1,6 @@
 {
   "name": "@kite9/fdc3-web-impl",
-  "version": "2.2.0-beta.25",
+  "version": "2.2.0-beta.29",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -19,11 +19,11 @@
   "scripts": {
     "clean": "rimraf dist && rimraf cucumber-report.html && rimraf coverage && rimraf .nyc_output && rimraf node_modules",
     "directory-openapi": "npx openapi-typescript ../../../packages/fdc3-standard/src/app-directory/specification/appd.schema.json --output generated/directory-schema.ts",
-    "test": "npm run directory-openapi; tsc; nyc --reporter=lcov --reporter=text cucumber-js",
+    "test": "npm run directory-openapi && tsc && nyc --reporter=lcov --reporter=text cucumber-js",
     "build": "npm run directory-openapi && tsc --module es2022"
   },
   "dependencies": {
-    "@kite9/fdc3-standard": "2.2.0-beta.25",
+    "@kite9/fdc3-standard": "2.2.0-beta.29",
     "@types/uuid": "^10.0.0",
     "uuid": "^9.0.1"
   },
@@ -32,27 +32,27 @@
     "@cucumber/html-formatter": "11.0.4",
     "@cucumber/pretty-formatter": "1.0.1",
     "@kite9/fdc3-common": "2.2.0-beta.6",
-    "@kite9/testing": "2.2.0-beta.25",
+    "@kite9/testing": "2.2.0-beta.29",
     "@types/expect": "24.3.0",
     "@types/lodash": "4.14.167",
-    "@types/node": "^20.14.11",
+    "@types/node": "^20.16.11",
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "7.1.1",
     "@typescript-eslint/parser": "7.1.0",
     "cucumber-console-formatter": "1.0.0",
     "eslint": "8.57.0",
     "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "3.3.1",
     "expect": "^29.7.0",
     "is-ci": "2.0.0",
     "jsonpath-plus": "^9.0.0",
     "nyc": "15.1.0",
-    "openapi-typescript": "^6.7.4",
+    "openapi-typescript": "^6.7.6",
     "prettier": "3.2.5",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.2",
+    "typescript": "^5.6.3",
     "uuid": "^9.0.1"
   }
 }

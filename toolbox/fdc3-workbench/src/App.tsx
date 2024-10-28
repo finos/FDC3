@@ -45,16 +45,16 @@ const mainTheme = createTheme({
 			underline: "hover",
 		},
 		MuiTableCell: {
-			padding: "normal"
-		}
+			padding: "normal",
+		},
 	},
 	overrides: {
 		MuiTableCell: {
 			root: {
-				padding: "1px"
-			}
-		}
-	}
+				padding: "1px",
+			},
+		},
+	},
 });
 
 mainTheme.typography.h4 = {
@@ -101,17 +101,17 @@ const useStyles = makeStyles((theme: Theme) =>
 				cursor: "default",
 			},
 			".MuiInputBase-root": {
-				marginBlockEnd: "0px"
+				marginBlockEnd: "0px",
 			},
 			".MuiListSubheader-root": {
 				lineHeight: "24px",
-				marginBlockStart: "10px"
+				marginBlockStart: "10px",
 			},
 			".MuiMenuItem-root": {
 				fontSize: "0.9rem",
 				marginBlockEnd: "5px",
-				marginBlockStart: "5px"
-			}
+				marginBlockStart: "5px",
+			},
 		},
 		root: {
 			flexGrow: 1,
@@ -287,8 +287,8 @@ export const App = observer(() => {
 								<Typography variant="body1">
 									For web applications to be FDC3-enabled, they need to run in the context of an agent that makes the
 									FDC3 API available to the application. This desktop agent is also responsible for launching and
-									coordinating applications. It could be a browser extension, web app, or full-fledged desktop
-									container framework.
+									coordinating applications. It could be a browser extension, web app, or full-fledged desktop container
+									framework.
 								</Typography>
 								<Typography variant="body1">
 									See the FDC3 standard documentation for details on{" "}

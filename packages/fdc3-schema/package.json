@@ -1,6 +1,6 @@
 {
   "name": "@kite9/fdc3-schema",
-  "version": "2.2.0-beta.25",
+  "version": "2.2.0-beta.29",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -22,22 +22,25 @@
     "generate": "npm run mkdirs && npm run typegen-browser && npm run typegen-bridging && npm run lint",
     "build": "npm run generate && tsc --module es2022",
     "test": "npm run generate && tsc",
-    "lint": "eslint generated/ --ext .ts --fix",
+    "lint": "eslint generated/ --fix",
     "typegen-browser": "cd schemas && node ../s2tQuicktypeUtil.js api/api.schema.json api/common.schema.json ../../fdc3-context/schemas/context/context.schema.json api ../generated/api/BrowserTypes.ts",
     "typegen-bridging": "cd schemas && node ../s2tQuicktypeUtil.js api/api.schema.json api/common.schema.json api/broadcastRequest.schema.json api/findInstancesRequest.schema.json api/findInstancesResponse.schema.json api/findIntentRequest.schema.json api/findIntentResponse.schema.json api/findIntentsByContextRequest.schema.json api/findIntentsByContextResponse.schema.json api/getAppMetadataRequest.schema.json api/getAppMetadataResponse.schema.json api/openRequest.schema.json api/openResponse.schema.json api/raiseIntentRequest.schema.json api/raiseIntentResponse.schema.json api/raiseIntentResultResponse.schema.json ../../fdc3-context/schemas/context/context.schema.json bridging ../generated/bridging/BridgingTypes.ts"
   },
   "devDependencies": {
-    "@types/jest": "29.5.12",
-    "@typescript-eslint/eslint-plugin": "7.1.1",
-    "@typescript-eslint/parser": "7.1.0",
-    "eslint": "8.57.0",
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.12.0",
+    "@types/jest": "29.5.13",
+    "@typescript-eslint/eslint-plugin": "8.9.0",
+    "@typescript-eslint/parser": "8.9.0",
+    "eslint": "9.12.0",
     "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-jest": "27.9.0",
-    "eslint-plugin-jsx-a11y": "^6.8.0",
+    "eslint-plugin-jest": "28.8.3",
+    "eslint-plugin-jsx-a11y": "^6.10.0",
+    "globals": "^15.11.0",
     "quicktype": "23.0.78",
     "rimraf": "^6.0.1",
-    "ts-jest": "29.1.2",
-    "tslib": "^2.0.1",
-    "typescript": "^5.3.2"
+    "ts-jest": "29.2.5",
+    "tslib": "^2.7.0",
+    "typescript": "~5.5.0"
   }
 }

@@ -3,8 +3,8 @@ import { ChannelSelector } from "@kite9/fdc3-standard"
 import { AbstractUIComponent } from "./AbstractUIComponent";
 import { BrowserTypes } from "@kite9/fdc3-schema";
 
-type IframeChannels = BrowserTypes.IframeChannels
-type IframeChannelSelected = BrowserTypes.IframeChannelSelected
+type Fdc3UserInterfaceChannels = BrowserTypes.Fdc3UserInterfaceChannels
+type Fdc3UserInterfaceChannelSelected = BrowserTypes.Fdc3UserInterfaceChannelSelected
 
 /**
  * Works with the desktop agent to provide a simple channel selector.
@@ -14,7 +14,7 @@ type IframeChannelSelected = BrowserTypes.IframeChannelSelected
  */
 export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent implements ChannelSelector {
 
-    private callback: ((channelId: string) => void) | null = null
+    private callback: ((channelId: string | null) => void) | null = null
 
     constructor(url: string | null) {
         super(url ?? "https://fdc3.finos.org/webui/channel_selector.html", "FDC3 Channel Selector")
@@ -25,9 +25,9 @@ export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent impl
         this.port = port
 
         port.addEventListener("message", (e) => {
-            if (e.data.type == 'fdc3UserInterfaceSelected') {
-                const choice = e.data as IframeChannelSelected
-                if ((choice.payload.selected) && (this.callback)) {
+            if (e.data.type == 'Fdc3UserInterfaceChannelSelected') {
+                const choice = e.data as Fdc3UserInterfaceChannelSelected
+                if (this.callback) {
                     this.callback(choice.payload.selected)
                 }
             }
@@ -37,7 +37,7 @@ export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent impl
     updateChannel(channelId: string | null, availableChannels: Channel[]): void {
         // also send to the iframe
         this.port!!.postMessage({
-            type: 'fdc3UserInterfaceChannels',
+            type: 'Fdc3UserInterfaceChannels',
             payload: {
                 selected: channelId,
                 userChannels: availableChannels.map(ch => {
@@ -48,10 +48,10 @@ export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent impl
                 })
             }
 
-        } as IframeChannels)
+        } as Fdc3UserInterfaceChannels)
     }
 
-    setChannelChangeCallback(callback: (channelId: string) => void): void {
+    setChannelChangeCallback(callback: (channelId: string | null) => void): void {
         this.callback = callback
     }
 
