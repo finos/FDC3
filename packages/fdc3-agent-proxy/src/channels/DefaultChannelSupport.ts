@@ -32,7 +32,7 @@ export class DefaultChannelSupport implements ChannelSupport {
     constructor(messaging: Messaging, channelSelector: ChannelSelector) {
         this.messaging = messaging;
         this.channelSelector = channelSelector
-        this.channelSelector.setChannelChangeCallback((channelId: string) => {
+        this.channelSelector.setChannelChangeCallback((channelId: string | null) => {
             if (channelId == null) {
                 this.leaveUserChannel()
             } else {

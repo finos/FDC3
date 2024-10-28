@@ -59,7 +59,7 @@ export class SimpleChannelSelector implements ChannelSelector {
         this.cw.props['channels'] = availableChannels
     }
 
-    setChannelChangeCallback(_callback: (channelId: string) => void): void {
+    setChannelChangeCallback(_callback: (channelId: string | null) => void): void {
     }
 
     async connect(): Promise<void> {
