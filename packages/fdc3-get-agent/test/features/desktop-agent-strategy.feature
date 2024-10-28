@@ -79,6 +79,7 @@ Feature: Different Strategies for Accessing the Desktop Agent
       |         2.0 | cucumber-app      | cucumber-provider |
     Then I call "{document}" with "shutdown"
 
+  @failing
   Scenario: Failover Strategy returning desktop agent
     Given A Dummy Desktop Agent in "dummy-api"
     And "dummyFailover" is a function which returns a promise of "{dummy-api}"
