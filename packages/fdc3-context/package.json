@@ -21,7 +21,6 @@
     "mkdirs": "mkdirp generated/context",
     "generate": "npm run mkdirs && npm run typegen && npm run lint",
     "build": "npm run generate && tsc --module es2022",
-    "test": "npm run generate && tsc",
     "lint": "eslint generated/ --fix",
     "typegen": "cd schemas && node ../s2tQuicktypeUtil.js context ../generated/context/ContextTypes.ts"
   },
