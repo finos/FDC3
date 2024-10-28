@@ -19,8 +19,7 @@
   "types": "dist/src/index.d.ts",
   "scripts": {
     "build": "tsc --module es2022",
-    "clean": "rimraf dist;",
-    "test": "tsc"
+    "clean": "rimraf dist"
   },
   "dependencies": {
     "@cucumber/cucumber": "10.3.1",
