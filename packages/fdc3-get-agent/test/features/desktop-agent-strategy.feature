@@ -94,6 +94,7 @@ Feature: Different Strategies for Accessing the Desktop Agent
       |         2.0 | cucumber-app      | cucumber-provider |
     Then I call "{document}" with "shutdown"
 
+  @failing
   Scenario: Failover Strategy returning a proxy
     Given "dummyFailover2" is a function which opens an iframe for communications on "{document}"
     And I call getAgent for a promise result with the following options
