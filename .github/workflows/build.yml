@@ -39,11 +39,14 @@ jobs:
     - name: Top level file and folder list?
       run: ls ${{ github.workspace }}
 
-    - name: What's in coverage report folder?
-      run: ls ${{ github.workspace }}/.nyc_output
+    - name: Read file contents
+      uses: guibranco/github-file-reader-action-v2@latest
+      id: read_file
+      with:
+        path: "${{ github.workspace }}/nyc-coverage-report/coverage-summary.json"
 
-    - name: What's in coverage report folder?
-      run: ls ${{ github.workspace }}/nyc-coverage-report
+    - name: Output file contents
+      run: echo "${ steps.read_file.outputs.contents }"
 
     - name: Post the coverage summary as a comment
       uses: sidx1024/report-nyc-coverage-github-action@v1.2.7
