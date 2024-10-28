@@ -139,14 +139,23 @@ const fillList = ({apps, openApps}, intent, callback) => {
 };
 
 // STEP 1B: Receive port from parent
-window.addEventListener('message', ({ ports }) => {
-  // STEP 3B: Receive channel data from parent
-  ports[0].onmessage = ({ data }) => {
-    setup(data, msg => {
-      // STEP 4A: Send user selection information to parent
-      ports[0].postMessage(msg);
-    });
-  };
-  // STEP 2A: Send confirmation over port to parent
-  ports[0].postMessage({type: 'Fdc3UserInterfaceHandshake'});
+// we may not know the origin of the parent in advance so disabling this check
+//   this might be improved if it s possible to get the origin of the parent window (cross-domain) and only respond to that
+// nosemgrep: javascript.browser.security.insufficient-postmessage-origin-validation.insufficient-postmessage-origin-
+       validation
+window.addEventListener('message', ({ origin, ports }) => {
+  //only accept a port from the window we are embeded in:
+  if(window.location.ancestorOrigins.contains(origin)){
+    // STEP 3B: Receive channel data from parent
+    ports[0].onmessage = ({ data }) => {
+      setup(data, msg => {
+        // STEP 4A: Send user selection information to parent
+        ports[0].postMessage(msg);
+      });
+    };
+    // STEP 2A: Send confirmation over port to parent
+    ports[0].postMessage({type: 'Fdc3UserInterfaceHandshake'});
+  } else {
+    console.warn(`Ignoring postMessage from unknonw (non-ancestor) origin: ${origin}`);
+  }
 });
