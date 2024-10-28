@@ -29,8 +29,8 @@ jobs:
       run: npm run build
 
     - name: Run tests
-      run: npm test
-      timeout-minutes: 20
+      run: npm run test
+      timeout-minutes: 5
 
     - name: Merge Results 1
       run: npm run merge
