@@ -3,14 +3,14 @@ import { v4 as uuid } from 'uuid'
 import { APP_GOODBYE, APP_HELLO, DA_HELLO, FDC3_APP_EVENT } from "../../message-types";
 import { DemoServerContext } from "./DemoServerContext";
 import { FDC3_2_1_JSONDirectory } from "./FDC3_2_1_JSONDirectory";
-import { DefaultFDC3Server, DirectoryApp, ServerContext } from "@kite9/fdc3-web-impl";
+import { AppRegistration, DefaultFDC3Server, DirectoryApp, ServerContext } from "@kite9/fdc3-web-impl";
 import { ChannelState, ChannelType } from "@kite9/fdc3-web-impl/src/handlers/BroadcastHandler";
 import { link } from "./util";
 import { BrowserTypes } from "@kite9/fdc3-schema";
 
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL
 
-function createAppStartButton(app: DirectoryApp, sc: ServerContext<any>): HTMLDivElement {
+function createAppStartButton(app: DirectoryApp, sc: ServerContext<AppRegistration>): HTMLDivElement {
     const div = document.createElement("div") as HTMLDivElement
     div.classList.add("app")
     const h3 = document.createElement("h3")
@@ -55,8 +55,8 @@ window.addEventListener("load", () => {
         socket.emit(DA_HELLO, desktopAgentUUID)
 
         const directory = new FDC3_2_1_JSONDirectory()
-        await directory.load("/static/da/appd.json")
-        //await directory.load("/static/da/local-conformance-2_0.v2.json")
+        //await directory.load("/static/da/appd.json")
+        await directory.load("/static/da/local-conformance-2_0.v2.json")
         //await directory.load("/static/da/training-appd.v2.json")
         const sc = new DemoServerContext(socket, directory)
 
@@ -68,6 +68,7 @@ window.addEventListener("load", () => {
         const fdc3Server = new DefaultFDC3Server(sc, directory, channelDetails, true, 20000, 10000)
 
         socket.on(FDC3_APP_EVENT, (msg, from) => {
+            console.log(`App Event ${JSON.stringify(msg, null, 2)} from ${from}`)
             fdc3Server.receive(msg, from)
         })
 

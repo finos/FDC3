@@ -13,7 +13,7 @@ export class NullChannelSelector implements ChannelSelector, Connectable {
     updateChannel(_channelId: string | null, _availableChannels: Channel[]): void {
     }
 
-    setChannelChangeCallback(_callback: (channelId: string) => void): void {
+    setChannelChangeCallback(_callback: (channelId: string | null) => void): void {
     }
 
 

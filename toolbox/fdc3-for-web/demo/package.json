@@ -1,7 +1,7 @@
 {
   "name": "@kite9/demo",
   "private": true,
-  "version": "2.2.0-beta.25",
+  "version": "2.2.0-beta.29",
   "scripts": {
     "dev": "nodemon -w src/server src/server/main.ts"
   },
@@ -13,7 +13,7 @@
     "vite": "^5.4.9"
   },
   "dependencies": {
-    "@kite9/fdc3": "2.2.0-beta.25",
+    "@kite9/fdc3": "2.2.0-beta.29",
     "@types/uuid": "^10.0.0",
     "@types/ws": "^8.5.12",
     "express": "^4.21.1",
