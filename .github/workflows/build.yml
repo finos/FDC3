@@ -36,6 +36,9 @@ jobs:
     - name: Merge Results
       run: npm run report
 
+    - name: Can I get a file list?
+      run: ls ${{ github.workspace }}
+
     - name: Report NYC coverage
       uses: sidx1024/report-nyc-coverage-github-action@v1.2.7
       with:
