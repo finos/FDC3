@@ -134,17 +134,17 @@ const openChannelIframe = (e: MouseEvent) => {
     switch (data.type) {
 
       // User clicked on one of the channels in the channel selector
-      // @ts-ignore: Explicit fall-through to iframeHandshake
-      case "iframeChannelSelected": {
+      // @ts-ignore: Explicit fall-through to Fdc3UserInterfaceHandshake
+      case "Fdc3UserInterfaceChannelSelected": {
         // STEP 4B: Receive user selection information from iframe
         selected = data.channel;
       }
 
       // Handshake completed. Send channel data to iframe
-      case "iframeHandshake": {
+      case "Fdc3UserInterfaceHandshake": {
         // STEP 3A: Send channel data to iframe
         channel.port1.postMessage({
-          type: "iframeChannels",
+          type: "Fdc3UserInterfaceChannels",
           channels: recommendedChannels,
           selected
         });
@@ -165,13 +165,13 @@ const openChannelIframe = (e: MouseEvent) => {
   resizeButton.setAttribute("data-visible", "true");
   resizeButton.addEventListener("click", () => {
     expanded = !expanded;
-    channel.port1.postMessage({ type: "iframeChannelResize", expanded })
+    channel.port1.postMessage({ type: "Fdc3UserInterfaceChannelResize", expanded })
     iframe.setAttribute("data-expanded", `${expanded}`);
     resizeButton.textContent = expanded ? "Collapse" : "Expand";
   });
 
   // STEP 1A: Send port to iframe
-  iframe.contentWindow?.postMessage({ type: 'iframeHello' }, '*', [channel.port2]);
+  iframe.contentWindow?.postMessage({ type: 'Fdc3UserInterfaceHello' }, '*', [channel.port2]);
 };
 
 const openResolverIframe = (e: MouseEvent )=> {
@@ -180,13 +180,13 @@ const openResolverIframe = (e: MouseEvent )=> {
   // STEP 2B: Receive confirmation over port from iframe
   channel.port1.onmessage = ({ data }) => {
     switch (data.type) {
-      case "iframeHandshake": {
+      case "Fdc3UserInterfaceHandshake": {
         // STEP 3A: Send channel data to iframe
         channel.port1.postMessage(exampleResolverData);
         break;
       }
-      case "iframeResolveAction":
-      case "iframeResolve": {
+      case "Fdc3UserInterfaceResolveAction":
+      case "Fdc3UserInterfaceResolve": {
         // STEP 4B: Receive user selection information from iframe
 
         // TODO - prettyPrintJson dependency is not referenced, re-enable when added
@@ -203,7 +203,7 @@ const openResolverIframe = (e: MouseEvent )=> {
   iframe!.parentElement?.setAttribute("data-visible", "true");
 
   // STEP 1A: Send port to iframe
-  iframe!.contentWindow?.postMessage({ type: 'iframeHello' }, '*', [channel.port2]);
+  iframe!.contentWindow?.postMessage({ type: 'Fdc3UserInterfaceHello' }, '*', [channel.port2]);
 };
 
 window.addEventListener('load', () => {

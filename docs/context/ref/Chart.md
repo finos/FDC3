@@ -79,6 +79,7 @@ The type of chart that should be plotted
 
 **type**: [Context](/docs/next/context/spec#the-context-interface)
 
+
 </details>
 
 It is common for charts to support other configuration, such as indicators, annotations etc., which do not have standardized formats, but may be included in the `otherConfig` array as context objects.

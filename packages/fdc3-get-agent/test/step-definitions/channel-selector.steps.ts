@@ -24,7 +24,7 @@ Given('The channel selector sends a channel change message for channel {string}'
     const port = handleResolve("{document.iframes[0].messageChannels[0].port2}", this)
 
     port.postMessage({
-        type: 'iframeChannelSelected',
+        type: 'Fdc3UserInterfaceChannelSelected',
         payload: {
             selected: channel
         }

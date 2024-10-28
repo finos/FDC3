@@ -32,7 +32,7 @@ const setup = (data, callback) => {
 
   document.getElementById("cancel").addEventListener("click", () => {
     callback({
-      type: "iframeResolveAction",
+      type: "Fdc3UserInterfaceResolveAction",
       action: "cancel"
     });
   })
@@ -60,7 +60,7 @@ const fillList = ({apps, openApps}, intent, callback) => {
     node.appendChild(span);
 
     node.addEventListener('mouseenter', () => callback({
-      type: "iframeResolveAction",
+      type: "Fdc3UserInterfaceResolveAction",
       appId,
       intent,
       action: "hover",
@@ -68,14 +68,14 @@ const fillList = ({apps, openApps}, intent, callback) => {
     }));
     node.addEventListener('click', () => {
       callback({
-        type: "iframeResolveAction",
+        type: "Fdc3UserInterfaceResolveAction",
         appId,
         intent,
         action: "click",
         newOrOpen: "new"
       });
       callback({
-        type: "iframeResolve",
+        type: "Fdc3UserInterfaceResolve",
         appId,
         intent,
         newOrOpen: "new"
@@ -108,7 +108,7 @@ const fillList = ({apps, openApps}, intent, callback) => {
     node.appendChild(span);
 
     node.addEventListener('mouseenter', () => callback({
-      type: "iframeResolveAction",
+      type: "Fdc3UserInterfaceResolveAction",
       appId,
       windowId,
       intent,
@@ -117,7 +117,7 @@ const fillList = ({apps, openApps}, intent, callback) => {
     }));
     node.addEventListener('click', () => {
       callback({
-        type: "iframeResolveAction",
+        type: "Fdc3UserInterfaceResolveAction",
         appId,
         windowId,
         intent,
@@ -125,7 +125,7 @@ const fillList = ({apps, openApps}, intent, callback) => {
         newOrOpen: "open"
       });
       callback({
-        type: "iframeResolve",
+        type: "Fdc3UserInterfaceResolve",
         appId,
         intent,
         windowId,
@@ -148,5 +148,5 @@ window.addEventListener('message', ({ ports }) => {
     });
   };
   // STEP 2A: Send confirmation over port to parent
-  ports[0].postMessage({type: 'iframeHandshake'});
+  ports[0].postMessage({type: 'Fdc3UserInterfaceHandshake'});
 });

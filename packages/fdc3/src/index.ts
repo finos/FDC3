@@ -14,6 +14,6 @@ export { getAgent, fdc3Ready };
 /** Might not be needed */
 declare global {
     interface Window {
-        fdc3: DesktopAgent;
+        fdc3?: DesktopAgent;
     }
 }
