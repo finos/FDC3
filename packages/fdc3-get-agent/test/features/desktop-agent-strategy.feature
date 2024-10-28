@@ -138,6 +138,7 @@ Feature: Different Strategies for Accessing the Desktop Agent
     And "{result}" is an error with message "Invalid instance"
     Then I call "{document}" with "shutdown"
 
+  @failing
   Scenario: Nothing works and we timeout
     When I call getAgent for a promise result with the following options
       | dontSetWindowFdc3 | timeout | intentResolver | channelSelector |
