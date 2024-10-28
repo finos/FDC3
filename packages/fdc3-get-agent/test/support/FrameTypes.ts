@@ -3,7 +3,7 @@ import { MockWindow } from "./MockWindow"
 import { CHANNEL_SELECTOR_URL, EMBED_URL, INTENT_RESPOLVER_URL } from "./MockFDC3Server"
 import { BrowserTypes } from "@kite9/fdc3-schema"
 
-type IframeHello = BrowserTypes.IframeHello
+type Fdc3UserInterfaceHello = BrowserTypes.Fdc3UserInterfaceHello
 type WebConnectionProtocol3Handshake = BrowserTypes.WebConnectionProtocol3Handshake
 
 /**
@@ -38,13 +38,13 @@ export function handleChannelSelectorComms(_value: string, parent: MockWindow, s
         parent.dispatchEvent({
             type: "message",
             data: {
-                type: "iframeHello",
+                type: "Fdc3UserInterfaceHello",
                 payload: {
                     initialCSS: {
                         "width": "100px"
                     }
                 }
-            } as IframeHello,
+            } as Fdc3UserInterfaceHello,
             origin: CHANNEL_SELECTOR_URL,
             source,
             ports: [connection.port1]
@@ -52,10 +52,10 @@ export function handleChannelSelectorComms(_value: string, parent: MockWindow, s
 
 
         connection.port2.onmessage = (e) => {
-            if (e.data.type == 'iframeHandshake') {
+            if (e.data.type == 'Fdc3UserInterfaceHandshake') {
                 setTimeout(() => {
                     connection.port2.postMessage({
-                        type: 'iframeRestyle',
+                        type: 'Fdc3UserInterfaceRestyle',
                         payload: {
                             css: {
                                 "width": "100px"
@@ -79,23 +79,23 @@ export function handleIntentResolverComms(_value: string, parent: MockWindow, so
         parent.dispatchEvent({
             type: "message",
             data: {
-                type: "iframeHello",
+                type: "Fdc3UserInterfaceHello",
                 payload: {
                     initialCSS: {
                         "width": "100px"
                     }
                 }
-            } as IframeHello,
+            } as Fdc3UserInterfaceHello,
             origin: INTENT_RESPOLVER_URL,
             source,
             ports: [connection.port1]
         } as any as Event)
 
         connection.port2.onmessage = (e) => {
-            if (e.type == 'iframeHandshake') {
+            if (e.type == 'Fdc3UserInterfaceHandshake') {
                 setTimeout(() => {
                     connection.port2.postMessage({
-                        type: 'iframeRestyle',
+                        type: 'Fdc3UserInterfaceRestyle',
                         payload: {
                             css: {
                                 "width": "100px"

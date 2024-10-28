@@ -4,14 +4,14 @@ import { HeartbeatAcknowledgementRequest } from "@kite9/fdc3-schema/generated/ap
 import { createMeta } from "./generic.steps";
 import { HeartbeatHandler } from "../../src/handlers/HeartbeatHandler";
 
-Given('{string} sends a heartbeat response', function (this: CustomWorld, appStr: string) {
+Given('{string} sends a heartbeat response to eventUuid {string}', function (this: CustomWorld, appStr: string, eventUuid: string) {
     const meta = createMeta(this, appStr)
     const uuid = this.sc.getInstanceUUID(meta.source)!!
 
     const message = {
         meta,
         payload: {
-            timestamp: new Date()
+            heartbeatEventUuid: eventUuid
         },
         type: 'heartbeatAcknowledgementRequest'
     } as HeartbeatAcknowledgementRequest

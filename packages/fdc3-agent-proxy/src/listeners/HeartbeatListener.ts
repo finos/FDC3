@@ -1,4 +1,4 @@
-import { HeartbeatAcknowledgementRequest } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
+import { HeartbeatAcknowledgementRequest, HeartbeatEvent } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 import { Messaging } from "../Messaging";
 import { RegisterableListener } from "./RegisterableListener";
 
@@ -14,21 +14,18 @@ export class HeartbeatListener implements RegisterableListener {
 
     filter(m: any): boolean {
         return m.type === "heartbeatEvent"
-
     }
 
     action(_m: any): void {
         this.messaging.post({
-
             type: "heartbeatAcknowledgementRequest",
             meta: {
                 requestUuid: this.messaging.createUUID(),
                 timestamp: new Date()
             },
             payload: {
-                timestamp: new Date()
+                heartbeatEventUuid: (_m as HeartbeatEvent).meta.eventUuid
             }
-
         } as HeartbeatAcknowledgementRequest)
         console.log("Heartbeat acknowledged")
     }

@@ -37,6 +37,11 @@
               "deprecated": true
             }
           }
+        },
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "description": "An optional human-readable name for the country"
         }
       },
       "required": [
