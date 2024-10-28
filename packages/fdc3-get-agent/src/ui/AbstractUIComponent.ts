@@ -1,4 +1,4 @@
-import { IframeHello, InitialCSS, UpdatedCSS } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
+import { Fdc3UserInterfaceHello, InitialCSS, UpdatedCSS } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 import { Connectable } from "@kite9/fdc3-standard";
 
 export interface CSSPositioning { [key: string]: string }
@@ -57,7 +57,7 @@ export abstract class AbstractUIComponent implements Connectable {
     async setupMessagePort(port: MessagePort): Promise<void> {
         port.addEventListener("message", (e) => {
             const data = e.data
-            if (data.type == 'iframeRestyle') {
+            if (data.type == 'Fdc3UserInterfaceRestyle') {
                 // console.log(`Restyling ${JSON.stringify(data.payload)}`)
                 const css = data.payload.updatedCSS
                 this.themeContainer(css)
@@ -67,15 +67,15 @@ export abstract class AbstractUIComponent implements Connectable {
 
     async messagePortReady(port: MessagePort) {
         // tells the iframe it can start posting
-        port.postMessage({ type: "iframeHandshake" })
+        port.postMessage({ type: "Fdc3UserInterfaceHandshake" })
     }
 
     private awaitHello(): Promise<MessagePort> {
         return new Promise((resolve, _reject) => {
             const ml = (e: MessageEvent) => {
                 // console.log("Received UI Message: " + JSON.stringify(e.data))
-                if ((e.source == this.iframe?.contentWindow) && (e.data.type == 'fdc3UserInterfaceHello')) {
-                    const helloData = e.data as IframeHello
+                if ((e.source == this.iframe?.contentWindow) && (e.data.type == 'Fdc3UserInterfaceHello')) {
+                    const helloData = e.data as Fdc3UserInterfaceHello
                     if (helloData.payload.initialCSS) {
                         this.themeContainer(helloData.payload.initialCSS)
                     }

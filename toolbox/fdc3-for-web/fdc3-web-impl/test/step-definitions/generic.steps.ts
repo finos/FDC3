@@ -91,8 +91,6 @@ export function createMeta(cw: CustomWorld, appStr: string) {
 Given('A newly instantiated FDC3 Server', function (this: CustomWorld) {
     const apps = this.props[APP_FIELD] ?? []
     const d = new BasicDirectory(apps)
-
-
     this.sc = new TestServerContext(this)
     this.server = new DefaultFDC3Server(this.sc, d, defaultChannels(), false, 2000, 2000)
 });

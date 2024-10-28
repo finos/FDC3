@@ -3,6 +3,7 @@ import { CustomWorld } from '../world';
 import { contextMap, createMeta } from './generic.steps';
 import { matchData } from '@kite9/testing';
 import { BrowserTypes } from '@kite9/fdc3-schema';
+import { State } from '../../src/ServerContext';
 
 type OpenRequest = BrowserTypes.OpenRequest
 type GetAppMetadataRequest = BrowserTypes.GetAppMetadataRequest
@@ -14,9 +15,8 @@ When('{string} is opened with connection id {string}', function (this: CustomWor
   const meta = createMeta(this, app)
   this.sc.setInstanceDetails(uuid, {
     ...meta.source,
-    connected: true
+    state: State.Connected
   })
-  this.sc.setAppConnected(meta.source)
 });
 
 When('{string} is closed', function (this: CustomWorld, app: string) {
@@ -37,7 +37,7 @@ When('{string} sends validate', function (this: CustomWorld, uuid: string) {
       identityUrl: "something"
     }
   }
-  this.sc.setAppConnected(identity!!)
+  this.sc.setAppState(identity?.instanceId!!, State.Connected)
   this.server.receive(message, uuid)
 });
 

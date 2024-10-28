@@ -1,6 +1,7 @@
 {
   "intents": [
     "CreateInteraction",
+    "CreateOrUpdateProfile",
     "SendChatMessage",
     "StartCall",
     "StartChat",

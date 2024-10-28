@@ -8,7 +8,7 @@ import { CustomWorld } from "../world";
 Given('A Channel Selector in {string} with callback piping to {string}', async function (this: CustomWorld, field: string, cb: string) {
     const cs = new DefaultDesktopAgentChannelSelector(CHANNEL_SELECTOR_URL);
 
-    cs.setChannelChangeCallback((channelId: string) => {
+    cs.setChannelChangeCallback((channelId: string | null) => {
         this.props[cb] = channelId
     })
 
@@ -24,7 +24,7 @@ Given('The channel selector sends a channel change message for channel {string}'
     const port = handleResolve("{document.iframes[0].messageChannels[0].port2}", this)
 
     port.postMessage({
-        type: 'fdc3UserInterfaceSelected',
+        type: 'Fdc3UserInterfaceChannelSelected',
         payload: {
             selected: channel
         }

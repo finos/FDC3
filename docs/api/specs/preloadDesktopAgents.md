@@ -5,7 +5,7 @@ title: Preload Desktop Agents (next)
 ---
 
 
-A Preload Desktop Agent is an FDC3 Desktop Agents (DA) supporting web applications that 'injects' or 'preloads' scripts into web windows which provide access to an FDC3 Desktop Agent API implementation. This document specifies the required behavior for a Preload Desktop Agent (DA).
+A Preload Desktop Agent is an FDC3 Desktop Agent (DA) supporting web applications that 'inject' or 'preload' scripts into web windows which provide access to an FDC3 Desktop Agent API implementation. This document specifies the required behavior for a Preload Desktop Agent (DA).
 
 :::info
 

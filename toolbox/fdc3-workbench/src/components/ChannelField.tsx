@@ -119,7 +119,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		},
 		rightPadding: {
 			paddingRight: theme.spacing(0.5),
-		}
+		},
 	})
 );
 
@@ -182,7 +182,9 @@ export const ChannelField = observer(
 			let foundChannel = currentChannelList.find((currentChannel: any) => currentChannel.id === channel);
 			if (foundChannel) {
 				setContextItem(context);
-				runInAction(() => { foundChannel.context = context });
+				runInAction(() => {
+					foundChannel.context = context;
+				});
 			}
 		};
 
@@ -222,7 +224,9 @@ export const ChannelField = observer(
 				newListener = newValue;
 			}
 
-			runInAction(() => { foundChannel.currentListener = newListener });
+			runInAction(() => {
+				foundChannel.currentListener = newListener;
+			});
 			foundChannel.listenerError = "";
 		};
 
@@ -294,7 +298,11 @@ export const ChannelField = observer(
 												<FileCopyIcon />
 											</IconButton>
 										</Tooltip>
-										<Link onClick={openApiDocsLink} target="FDC3APIDocs" href="https://fdc3.finos.org/docs/api/ref/Channel#broadcast">
+										<Link
+											onClick={openApiDocsLink}
+											target="FDC3APIDocs"
+											href="https://fdc3.finos.org/docs/api/ref/Channel#broadcast"
+										>
 											<InfoOutlinedIcon />
 										</Link>
 									</Grid>
@@ -317,7 +325,7 @@ export const ChannelField = observer(
 											filterOptions={filterOptions}
 											options={contextListenersOptions}
 											getOptionLabel={getOptionLabel}
-											getOptionSelected={(option, value) => option.type === value.type }
+											getOptionSelected={(option, value) => option.type === value.type}
 											freeSolo={true}
 											renderOption={(option) => option.type}
 											renderInput={(params) => (
@@ -354,12 +362,21 @@ export const ChannelField = observer(
 												<FileCopyIcon />
 											</IconButton>
 										</Tooltip>
-										<Link onClick={openApiDocsLink} target="FDC3APIDocs" href="https://fdc3.finos.org/docs/api/ref/Channel#addcontextlistener">
+										<Link
+											onClick={openApiDocsLink}
+											target="FDC3APIDocs"
+											href="https://fdc3.finos.org/docs/api/ref/Channel#addcontextlistener"
+										>
 											<InfoOutlinedIcon />
 										</Link>
 									</Grid>
 								</Grid>
-								<Button variant="contained" color="secondary" onClick={() => handleRemoveOrDisconnect(channel)} className={classes.secondMargin}>
+								<Button
+									variant="contained"
+									color="secondary"
+									onClick={() => handleRemoveOrDisconnect(channel)}
+									className={classes.secondMargin}
+								>
 									{isPrivateChannel ? "Disconnect" : "Discard Channel"}
 								</Button>
 								<div className={classes.border}></div>

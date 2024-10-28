@@ -555,6 +555,7 @@ export interface DesktopAgent {
    * Adds a listener for incoming context broadcasts from the Desktop Agent.
    * @deprecated use `addContextListener(null, handler)` instead of `addContextListener(handler)`. Provided for backwards compatibility with versions FDC3 standard <2.0.
    */
+  // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
   addContextListener(handler: ContextHandler): Promise<Listener>;
 
   /**
@@ -575,6 +576,7 @@ export interface DesktopAgent {
    * let instanceMetadata = await fdc3.open('myApp');
    * ```
    */
+  // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
   open(name: string, context?: Context): Promise<AppIdentifier>;
 
   /**
@@ -585,6 +587,7 @@ export interface DesktopAgent {
    * await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
    * ```
    */
+  // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
   raiseIntent(intent: Intent, context: Context, name: string): Promise<IntentResolution>;
 
   /**
@@ -595,5 +598,6 @@ export interface DesktopAgent {
    * await fdc3.raiseIntentForContext(context, targetAppName);
    * ```
    */
+  // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
   raiseIntentForContext(context: Context, name: string): Promise<IntentResolution>;
 }

@@ -19,9 +19,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Typescript definitions for getAgent() and related types
 * Typescript definitions for Browser Communication Protocol (BCP). These constitute the internal "wire protocol" that the "@finos/fdc3" library uses to communicate with Browser-Resident DAs.
 * Typescript definitions for Web Connection Protocol (WCP). These constitute the messages used to establish connectivity between "@finos/fdc3" and a Browser-Resident DA.
+* Added support for broadcast actions to the `fdc3.action` context type, allowing an Action to represent the broadcast of a specified context to an app or user channel. ([#1368](https://github.com/finos/FDC3/pull/1368))
 
 ### Changed
 
+* `window.fdc3` is now an optional property and may or may not be defined. Applications should now use `getAgent()` as the recommended way of retrieving a reference to the FDC3 API. ([#1386](https://github.com/finos/FDC3/pull/1386))
 * `Listener.unsubscribe()` was made async (the return type was changed from `void` to `Promise<void>`) for consistency with the rest of the API. ([#1305](https://github.com/finos/FDC3/pull/1305))
 * Added reference materials and supported platforms information for FDC3 in .NET via the [finos/fdc3-dotnet](https://github.com/finos/fdc3-dotnet) project. ([#1108](https://github.com/finos/FDC3/pull/1108))
 * The supported platforms page in the FDC3 documentation was moved into the API section as the information it provides all relates to FDC3 Desktop Agent API implementations. ([#1108](https://github.com/finos/FDC3/pull/1108))
@@ -36,6 +38,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 * Added missing `desktopAgent` field to ImplementationMetadata objects returned for all agents connect to a DesktopAgent bridge in Connection Step 6 connectAgentsUpdate messages and refined the schema used to collect this info in step 3 handshake. ([#1177](https://github.com/finos/FDC3/pull/1177))
 * Removed the `version` field from `IntentResolution` as there are no version fields for intents in the FDC3 API definitions and hence the field has no purpose. ([#1170](https://github.com/finos/FDC3/pull/1170))
+
+* Fixed error in the Client-side example from `PrivateChannel` and `addIntentListener` by correcting `id.symbol` to `id.ticker` to align with the `fdc3.instrument` context. ([#1314](https://github.com/finos/FDC3/pull/1314))
 
 ## [npm v2.1.1] - 2024-06-28
 
