@@ -33,11 +33,11 @@ jobs:
       # Tests sometimes hang, and will run until stopped. Timeout to prevent all the minutes from being eaten.
       timeout-minutes: 5
 
-    - name: Merge Results
+    - name: Generate report
       run: npm run report
 
     - name: Can I get a file list?
-      run: ls ${{ github.workspace }}
+      run: ls -R ${{ github.workspace }}
 
     - name: Report NYC coverage
       uses: sidx1024/report-nyc-coverage-github-action@v1.2.7
