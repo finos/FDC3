@@ -97,7 +97,7 @@ or in JSON Schema as:
 
 :::note
 
-This is a simplified version of the schema for illustrative purposes, the fully documented Context schema, which is composed with other FDC3 Standard context schemas, can be found at: <https://fdc3.finos.org/schemas/next/context/context.schema.json>.
+This is a simplified version of the schema for illustrative purposes, the fully documented Context schema, which is composed with other FDC3 Standard context schemas, can be found at: https://fdc3.finos.org/schemas/next/context/context.schema.json [https://fdc3.finos.org/schemas/next/context/context.schema.json](https://fdc3.finos.org/schemas/next/context/context.schema.json).
 
 :::
 

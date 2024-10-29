@@ -2,11 +2,20 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/context/action.schema.json",
   "title": "Action",
-  "description": "A representation of an FDC3 Action (specified via a Context or Context & Intent) that can be inserted inside another object, for example a chat message.\n\nThe action may be completed by calling `fdc3.raiseIntent()` with the specified Intent and Context, or, if only a context is specified, by calling `fdc3.raiseIntentForContext()` (which the Desktop Agent will resolve by presenting the user with a list of available Intents for the Context).\n\nAccepts an optional `app` parameter in order to specify a specific app.",
+  "description": "A representation of an FDC3 Action (specified via a Context or Context & Intent) that can be inserted inside another object, for example a chat message.\n\nThe action may be completed by calling:\n- `fdc3.raiseIntent()` with the specified Intent and Context\n- `fdc3.raiseIntentForContext()` if only a context is specified, (which the Desktop Agent will resolve by presenting the user with a list of available Intents for the Context).\n- `channel.broadcast()` with the specified Context, if the `broadcast` action has been defined.\n\nAccepts an optional `app` parameter in order to specify a specific app.",
   "allOf": [{
       "type": "object",
       "properties": {
         "type": { "const": "fdc3.action" },
+        "action": {
+          "title": "Action Type",
+          "description": "The **action** field indicates the type of action:\n- **raiseIntent** :  If no action or `raiseIntent` is specified, then `fdc3.raiseIntent` or `fdc3.raiseIntentForContext` will be called with the specified context (and intent if given).\n- **broadcast** : If `broadcast` and a `channelId` are specified then `fdc3.getOrCreateChannel(channelId)` is called to retrieve the channel and broadcast the context to it with `channel.broadcast(context)`. If no `channelId` has been specified, the context should be broadcast to the current channel (`fdc3.broadcast()`)",
+          "type": "string",
+          "enum": [
+            "broadcast",
+            "raiseIntent"
+          ]
+        },
         "title": {
           "title": "Action Title",
           "description": "A human readable display name for the action",
@@ -22,9 +31,14 @@
           "description": "A context object with which the action will be performed",
           "$ref": "context.schema.json#"
         },
+        "channelId": {
+          "title": "Channel ID",
+          "description": "Optional channel on which to broadcast the context. The `channelId` property is ignored unless the `action` is broadcast.",
+          "type": "string"
+        },
         "app": {
           "title": "Action Target App",
-          "description": "An optional target application identifier that should perform the action",
+          "description": "An optional target application identifier that should perform the action. The `app` property is ignored unless the action is raiseIntent.",
           "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
         }
       },
@@ -37,6 +51,7 @@
   "examples": [
     {
       "type": "fdc3.action",
+      "action": "raiseIntent",
       "title": "Click to view Chart",
       "intent": "ViewChart",
       "context": {
@@ -59,6 +74,29 @@
       "app" :{
           "appId": "MyChartViewingApp",
           "instanceId": "instance1"
+      }
+    },
+    {
+      "type": "fdc3.action",
+      "action": "broadcast",
+      "channelId": "Channel 1",
+      "title": "Click to view Chart",
+      "context": {
+          "type": "fdc3.chart",
+          "instruments": [
+              {
+                  "type": "fdc3.instrument",
+                  "id": {
+                      "ticker": "EURUSD"
+                  }
+              }
+          ],
+          "range": {
+              "type": "fdc3.dateRange",
+              "starttime": "2020-09-01T08:00:00.000Z",
+              "endtime": "2020-10-31T08:00:00.000Z"
+          },
+          "style": "candle"
       }
     }
   ]

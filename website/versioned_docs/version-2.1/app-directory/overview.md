@@ -138,7 +138,7 @@ A launcher can then easily construct a URI by:
 3. URI port is default `https/443`, but can be overridden by the launcher
 4. URI url is by default `/api/appd/(version)/apps` . Calls that are made without version MUST automatically default to latest, i.e. `/api/appd/apps/app1` should return the same result as `/api/appd/v2/apps/app1".
 
-The resulting URI to retrieve application data for `app1` would be <https://appd.foo.com/api/appd/v2/apps/app1@appd.foo.com>  
+The resulting URI to retrieve application data for `app1` would be https://appd.foo.com/api/appd/v2/apps/app1@appd.foo.com [https://appd.foo.com/api/appd/v2/apps/app1@appd.foo.com](https://appd.foo.com/api/appd/v2/apps/app1@appd.foo.com)  
 
 ### DNS/SRV Records
 

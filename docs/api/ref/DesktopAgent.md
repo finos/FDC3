@@ -1476,7 +1476,7 @@ Not implemented
 </TabItem>
 </Tabs>
 
-Adds a listener for incoming context broadcasts from the Desktop Agent. Provided for backwards compatibility with versions FDC3 standard <2.0.
+Adds a listener for incoming context broadcasts from the Desktop Agent. Provided for backwards compatibility with versions FDC3 standard\<2.0.
 
 **See also:**
 
@@ -1550,7 +1550,7 @@ Not implemented
 </TabItem>
 </Tabs>
 
-Version of `open` that launches an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
+Version of `open` that launches an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard\<2.0.
 
 **See also:**
 
@@ -1575,7 +1575,7 @@ Not implemented
 </TabItem>
 </Tabs>
 
-Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
+Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard\<2.0.
 
 **See also:**
 
@@ -1600,7 +1600,7 @@ Not implemented
 </TabItem>
 </Tabs>
 
-Version of `raiseIntentForContext` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
+Version of `raiseIntentForContext` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard\<2.0.
 
 **See also:**
 
