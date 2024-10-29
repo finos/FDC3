@@ -10,7 +10,7 @@ Desktop Agent Bridging is an experimental feature added to FDC3 in 2.1, hence, i
 
 :::
 
-<!-- ## TODO list
+\<!-- ## TODO list
 
 * Expand on how the DAB should create the JWT token (and its claims, which must change to avoid replay attacks) which it sends out in the `hello` message for DAs to validate.
 * Link to BackPlane project somewhere 
