@@ -34,7 +34,7 @@ For each intent, it reference the applications that support that intent.
 interface AppMetadata extends AppIdentifier {
   /**
    *  The 'friendly' app name. This field was used with the `open` and
-   *  `raiseIntent` calls in FDC3 <2.0, which now require an `AppIdentifier`
+   *  `raiseIntent` calls in FDC3\<2.0, which now require an `AppIdentifier`
    *  with `appId` set. 
    * 
    *  Note that for display purposes the `title` field should be used, if set,

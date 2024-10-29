@@ -731,7 +731,7 @@ await fdc3.raiseIntentForContext(context, targetAppIdentifier);
 addContextListener(handler: ContextHandler): Promise<Listener>;
 ```
 
-Adds a listener for incoming context broadcasts from the Desktop Agent. Provided for backwards compatibility with versions FDC3 standard <2.0.
+Adds a listener for incoming context broadcasts from the Desktop Agent. Provided for backwards compatibility with versions FDC3 standard\<2.0.
 
 #### See also
 
@@ -765,7 +765,7 @@ Alias to the [`joinUserChannel`](#joinuserchannel) function provided for backwar
 open(name: String, context?: Context): Promise<AppIdentifier>;
 ```
 
-Version of `open` that launches an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
+Version of `open` that launches an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard\<2.0.
 
 #### See also
 
@@ -777,7 +777,7 @@ Version of `open` that launches an app by name rather than `AppIdentifier`. Prov
 raiseIntent(intent: string, context: Context, name: String): Promise<IntentResolution>;
 ```
 
-Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
+Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard\<2.0.
 
 #### See also
 
@@ -789,7 +789,7 @@ Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`
 raiseIntentForContext(context: Context, name: String): Promise<IntentResolution>;;
 ```
 
-Version of `raiseIntentForContext` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
+Version of `raiseIntentForContext` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard\<2.0.
 
 #### See also
 

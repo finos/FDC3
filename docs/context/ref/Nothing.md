@@ -18,7 +18,7 @@ Notes:
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/next/context/nothing.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/nothing.schema.json))
+[https://fdc3.finos.org/schemas/next/context/nothing.schema.json](https://fdc3.finos.org/schemas/next/context/nothing.schema.json) ([github](https://github.com/finos/FDC3/tree/main/schemas/context/nothing.schema.json))
 
 ## Type
 
