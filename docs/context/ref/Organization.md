@@ -12,7 +12,7 @@ It is valid to include extra properties and metadata as part of the organization
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/next/context/organization.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/organization.schema.json))
+[https://fdc3.finos.org/schemas/next/context/organization.schema.json](https://fdc3.finos.org/schemas/next/context/organization.schema.json) ([github](https://github.com/finos/FDC3/tree/main/schemas/context/organization.schema.json))
 
 ## Type
 

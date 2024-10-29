@@ -10,7 +10,7 @@ A context type representing the result of a transaction initiated via FDC3, whic
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/next/context/transactionresult.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/transactionresult.schema.json))
+[https://fdc3.finos.org/schemas/next/context/transactionresult.schema.json](https://fdc3.finos.org/schemas/next/context/transactionresult.schema.json) ([github](https://github.com/finos/FDC3/tree/main/schemas/context/transactionresult.schema.json))
 
 ## Type
 

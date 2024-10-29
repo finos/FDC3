@@ -7,7 +7,7 @@ title: API Overview (next)
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-The role of FDC3 API is to establish a baseline interface for interoperability between applications. Because FDC3 is largely an agreement between existing platforms and applications, standards should be optimized for ease of adoption rather than functional completeness. Functionality absent from a FDC3 specification is in no way a commentary on its importance.
+The role  of FDC3 API is to establish a baseline interface for interoperability between applications. Because FDC3 is largely an agreement between existing platforms and applications, standards should be optimized for ease of adoption rather than functional completeness. Functionality absent from a FDC3 specification is in no way a commentary on its importance.
 
 The following sections examine the API's use-cases and core concepts. The API is fully defined in both subsequent pages of this Part and a full set of TypeScript definitions in the [src](https://github.com/finos/FDC3/tree/main/src/api) directory of the [FDC3 GitHub repository](https://github.com/finos/FDC3/).
 

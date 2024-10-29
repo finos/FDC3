@@ -11,7 +11,7 @@ export default function Training() {
 
 			<div className={styles.trainingList}>
 				<div className={styles.trainingItem}>
-					<h2>Introduction to FDC3 (LFEL1000)</h2>
+					<h2>Introduction  to FDC3 (LFEL1000)</h2>
 					<img className={styles.trainingImage} src="/img/training/LFEL1000.png" />
 					<p>This <strong>FREE</strong> entry-level course is designed for business technologists who are looking to adopt application interoperability within their technology landscape and for developers who want to build interoperable applications using the FDC3 Standard.</p>
 					<a className={styles.cta} href="https://training.linuxfoundation.org/express-learning/introduction-to-fdc3-lfel1000/">MORE</a>
