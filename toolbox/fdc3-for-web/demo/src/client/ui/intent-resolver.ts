@@ -34,7 +34,7 @@ window.addEventListener("load", () => {
 
     // ISSUE: 1302
     parent.postMessage({
-        type: "iframeHello",
+        type: "fdc3UserInterfaceHello",
         payload: {
             initialCSS: DEFAULT_COLLAPSED_CSS,
             implementationDetails: "Demo Intent Resolver v1.0"
