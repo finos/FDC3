@@ -31,8 +31,8 @@ const TimeoutError = new Error('Timed out waiting for `fdc3Ready` event.');
 const UnexpectedError = new Error('`fdc3Ready` event fired, but `window.fdc3` not set to DesktopAgent.');
 
 /**
- * @deprecated This function depends on window.fdc3 (which may not be set for web-based desktop agents) 
- * and does not wait on the fdc3Ready event, so it may return errors on container-based desktop agents.
+ * @deprecated This function depends on window.fdc3 (which may not be set for web-based Desktop Agents) 
+ * and does not wait on the fdc3Ready event, so it may return errors on container-based Desktop Agents.
  * Use `const fdc3 = getAgent()` to retrieve (and wait for) a reference to the FDC3 API instead.
  */
 function rejectIfNoGlobal(f: () => Promise<any>) {
@@ -41,7 +41,7 @@ function rejectIfNoGlobal(f: () => Promise<any>) {
 
 /**
  * Utility function that returns a promise that will resolve immediately
- * if the desktop agent API is found at `window.fdc3`. If the API is found,
+ * if the DesktopAgent API is found at `window.fdc3`. If the API is found,
  * the promise will resolve when the `fdc3Ready` event is received or if it
  * is found at the end of the specified timeout. If the API is not found, it
  * will reject with an error.
@@ -58,7 +58,7 @@ function rejectIfNoGlobal(f: () => Promise<any>) {
  * ready. Defaults to 5 seconds.
  * 
  * @deprecated This function depends on window.fdc3 (which may not be set for 
- * web-based desktop agents). Use `const fdc3 = getAgent()` to retrieve (and 
+ * web-based Desktop Agents). Use `const fdc3 = getAgent()` to retrieve (and 
  * wait for) a reference to the FDC3 API instead.
  */
 export const fdc3Ready = async (waitForMs = DEFAULT_TIMEOUT): Promise<void> => {
