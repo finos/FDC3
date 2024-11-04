@@ -51,7 +51,7 @@ import { BrowserTypes } from "@finos/fdc3";
 
 :::
 
-WCP messages are derived from a base schema, [WCPConnectionStep](https://fdc3.finos.org/schemas/next/api/.schema.json), which defines a common structure for the messages:
+WCP messages are derived from a base schema, [`WCPConnectionStep`](https://fdc3.finos.org/schemas/next/api/.schema.json), which defines a common structure for the messages:
 
 ```json
 {
@@ -259,7 +259,7 @@ See the [Browser-Resident Desktop Agent Specification](./browserResidentDesktopA
 
 If no existing instance identity (`instanceId` and `instanceUuid`) is provided, or instance identity validation fails (as the `instanceUuid` is not known, or either the `appId` or `WindowProxy` objects don't match the previous connection), then the Desktop Agent MUST assign new `instanceId` and `instanceUuid` values.
 
-The Desktop Agent MUST then respond with a [WCP5ValidateAppIdentityResponse](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityResponse.schema.json) message containing the assigned `appId`, `instanceId` and `instanceUuid` values and the [`ImplementationMetadata`](../ref/Metadata#implementationmetadata) object for the Desktop Agent. This message indicates that the Desktop Agent will accept the application and we can begin processing [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol) messages relating to FDC3 API calls over the `MessagePort`.
+The Desktop Agent MUST then respond with a [`WCP5ValidateAppIdentityResponse`](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityResponse.schema.json) message containing the assigned `appId`, `instanceId` and `instanceUuid` values and the [`ImplementationMetadata`](../ref/Metadata#implementationmetadata) object for the Desktop Agent. This message indicates that the Desktop Agent will accept the application and we can begin processing [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol) messages relating to FDC3 API calls over the `MessagePort`.
 
 ### Step 3: Persist DesktopAgentDetails to SessionStorage
 
