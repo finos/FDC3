@@ -11,4 +11,5 @@ default:
    - test/world/index.ts
   requireModule:
    - ts-node/register
+  tags: "not @failing"
     

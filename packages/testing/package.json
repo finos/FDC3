@@ -19,7 +19,7 @@
   "types": "dist/src/index.d.ts",
   "scripts": {
     "build": "tsc --module es2022",
-    "clean": "rimraf dist;",
+    "clean": "rimraf dist",
     "test": "tsc"
   },
   "dependencies": {

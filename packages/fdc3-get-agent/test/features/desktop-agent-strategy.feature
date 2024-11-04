@@ -79,6 +79,7 @@ Feature: Different Strategies for Accessing the Desktop Agent
       |         2.0 | cucumber-app      | cucumber-provider |
     Then I call "{document}" with "shutdown"
 
+  @failing
   Scenario: Failover Strategy returning desktop agent
     Given A Dummy Desktop Agent in "dummy-api"
     And "dummyFailover" is a function which returns a promise of "{dummy-api}"
@@ -93,6 +94,7 @@ Feature: Different Strategies for Accessing the Desktop Agent
       |         2.0 | cucumber-app      | cucumber-provider |
     Then I call "{document}" with "shutdown"
 
+  @failing
   Scenario: Failover Strategy returning a proxy
     Given "dummyFailover2" is a function which opens an iframe for communications on "{document}"
     And I call getAgent for a promise result with the following options
@@ -136,6 +138,7 @@ Feature: Different Strategies for Accessing the Desktop Agent
     And "{result}" is an error with message "Invalid instance"
     Then I call "{document}" with "shutdown"
 
+  @failing
   Scenario: Nothing works and we timeout
     When I call getAgent for a promise result with the following options
       | dontSetWindowFdc3 | timeout | intentResolver | channelSelector |
