@@ -9,7 +9,7 @@
 
 ## Contributor License Agreement
 
-<!--- All contributions to FDC3 must be made under an active contributor license agreement and the [Community Specification License](https://github.com/finos/FDC3/blob/main/LICENSE.md). This will be checked by the EasyCLA tool (https://easycla.lfx.linuxfoundation.org/) that runs automatically on every PR. If you've not contributed to FDC3 before, look for a comment on your PR shortly after it is raised and follow the instructions to have establish a CLA or ohave it acknowledged by the EasyCLA tool. -->
+<!--- All contributions to FDC3 must be made under an active contributor license agreement and the [Community Specification License](https://github.com/finos/FDC3/blob/main/LICENSE.md). This will be checked by the EasyCLA tool (https://easycla.lfx.linuxfoundation.org/) that runs automatically on every PR. If you've not contributed to FDC3 before, look for a comment on your PR shortly after it is raised and follow the instructions to establish a CLA or have it acknowledged by the EasyCLA tool. -->
 
 - [ ] I acknowledge that a contributor license agreement is required and that I have one in place or will seek to put one in place ASAP.
 
