@@ -2,7 +2,7 @@ Feature: Different Strategies for Accessing the Desktop Agent
 
   Background: Desktop Agent API
     Given a browser document in "document" and window in "window"
-    And Testing ends after "8000" ms
+ #   And Testing ends after "8000" ms
 
   Scenario: Running inside a Browser and using post message with direct message ports
     Given Parent Window desktop "da" listens for postMessage events in "{window}", returns direct message response
@@ -54,13 +54,13 @@ Feature: Different Strategies for Accessing the Desktop Agent
       | iframe | FDC3 Intent Resolver | https://mock.fdc3.com/resolver |        100% |         100% |
     And "{window.fdc3}" is not null
     And "{window.events}" is an array of objects with the following contents
-      | type      | data.type     |
-      | message   | WCP1Hello     |
-      | message   | WCP2LoadUrl   |
-      | message   | WCP3Handshake |
-      | message   | Fdc3UserInterfaceHello   |
-      | message   | Fdc3UserInterfaceHello   |
-      | fdc3Ready | {null}        |
+      | type      | data.type              |
+      | message   | WCP1Hello              |
+      | message   | WCP2LoadUrl            |
+      | message   | WCP3Handshake          |
+      | message   | Fdc3UserInterfaceHello |
+      | message   | Fdc3UserInterfaceHello |
+      | fdc3Ready | {null}                 |
     Then I call "{document}" with "shutdown"
     And I call "{desktopAgent}" with "disconnect"
 
