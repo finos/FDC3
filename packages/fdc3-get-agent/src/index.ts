@@ -10,6 +10,9 @@ export { getAgent }
  * 
  * @param waitForMs Amount of time to wait before failing the promise (20 seconds is the default).
  * @returns A DesktopAgent promise.
+ * 
+ * @deprecated This function is provided for backwards compatibility.  Use `const fdc3 = getAgent()` to retrieve (and 
+ * wait for) a reference to the FDC3 API instead.
  */
 export function fdc3Ready(waitForMs = DEFAULT_WAIT_FOR_MS): Promise<DesktopAgent> {
     return getAgent({

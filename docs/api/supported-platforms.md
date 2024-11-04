@@ -82,7 +82,7 @@ Hence, FDC3 apps SHOULD obtain access to a `DesktopAgent` object (`fdc3`) by imp
 
 In prior versions of FDC3 (<= 2.1) Apps were required to use the 'Desktop Agent Preload' interface, i.e. they relied on the existence of the `window.fdc3` object, which meant that apps running in a standard web browser had to import libraries specific to the Desktop Agent implementation in use. From FDC3 2.2 onwards the 'Desktop Agent Proxy' interface is available, which allows apps in a standard web browser to connect to any Desktop Agent that implements that interface.
 
-Hence, from FDC3 2.2 onwards apps SHOULD call the `getAgent()` to retrieve a `DesktopAgent` API interface.
+Hence, from FDC3 2.2 onwards apps SHOULD call `getAgent()` to retrieve a `DesktopAgent` API interface.
 
 :::
 
@@ -90,11 +90,7 @@ As web applications can navigate to or be navigated by users to different URLs a
 
 ### Usage
 
-Once you've retrieved a `DesktopAgent` interface, there are two main ways FDC3 can be used from web applications:
-
-#### 1. Direct Usage
-
-Simply use the interface you've retrieved and address the API directly:
+Once you've retrieved a `DesktopAgent` interface you may use its functions to communicate with the Desktop Agent and through it, other applications:
 
 ```js
 import { DesktopAgent, getAgent } from "@finos/fdc3";
@@ -109,25 +105,6 @@ async function sendData(desktopAgent: DesktopAgent) {
 const desktopAgent: DesktopAgent = await getAgent();
 await sendData(desktopAgent);
 ```
-
-#### 2. ES6-style Function Wrappers
-
-The npm package provides a wrapper around FDC3, allowing you to use it with ES6 import syntax:
-
-```javascript
-import { raiseIntent } from "@finos/fdc3";
-
-await raiseIntent("ViewAnalysis", {
-    type: "fdc3.instrument",
-    id: { ticker: "AAPL" }
-});
-```
-
-:::tip
-
-Please note that the wrapper functions will not work with the `dontSetWindowFdc3` parameter to `getAgent()` set to `true` as they rely on finding the `DesktopAgent` reference at `window.fdc3`.
-
-:::
 
 ## Native
 
