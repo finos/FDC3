@@ -168,8 +168,7 @@
             ]
         },
         "IntentMetadata": {
-            "description": "Intent descriptor.",
-            "title": "IntentMetadata",
+            "description": "Metadata describing an Intent.",
             "type": "object",
             "properties": {
                 "name": {

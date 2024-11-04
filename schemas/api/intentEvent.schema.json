@@ -43,7 +43,7 @@
 				},
 				"originatingApp": {
 					"title": "Originating AppIdentifier",
-					"description": "Details of the application instance that raised the intent",
+					"description": "Details of the application instance that raised the intent.",
 					"$ref": "api.schema.json#/definitions/AppIdentifier"
 				},
 				"raiseIntentRequestUuid": {

@@ -147,9 +147,9 @@ export interface AddContextListenerRequestMeta {
  *
  * Details of the application instance that broadcast the context.
  *
- * The App resolution option chosen
+ * The App resolution option chosen.
  *
- * Details of the application instance that raised the intent
+ * Details of the application instance that raised the intent.
  *
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
@@ -206,7 +206,7 @@ export interface AddContextListenerRequestPayload {
  */
 export interface AddContextListenerResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -223,7 +223,7 @@ export interface AddContextListenerResponse {
 }
 
 /**
- * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+ * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
  */
 export interface AddContextListenerResponseMeta {
     requestUuid:  string;
@@ -310,7 +310,7 @@ export interface AddEventListenerRequestPayload {
  */
 export interface AddEventListenerResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -395,7 +395,7 @@ export interface AddIntentListenerRequestPayload {
  */
 export interface AddIntentListenerResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -476,7 +476,7 @@ export type EventMessageType = "addEventListenerEvent" | "broadcastEvent" | "cha
  */
 export interface AgentResponseMessage {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AgentResponseMessageMeta;
     /**
@@ -493,7 +493,7 @@ export interface AgentResponseMessage {
 }
 
 /**
- * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+ * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
  */
 export interface AgentResponseMessageMeta {
     requestUuid:  string;
@@ -729,7 +729,7 @@ export interface BroadcastRequestPayload {
  */
 export interface BroadcastResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -839,7 +839,7 @@ export interface ContextListenerUnsubscribeRequestPayload {
  */
 export interface ContextListenerUnsubscribeResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -901,7 +901,7 @@ export interface CreatePrivateChannelRequestPayload {
  */
 export interface CreatePrivateChannelResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -1038,7 +1038,7 @@ export interface EventListenerUnsubscribeRequestPayload {
  */
 export interface EventListenerUnsubscribeResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -1485,7 +1485,7 @@ export interface Image {
 /**
  * Details of the intent whose relationship to resolving applications is being described.
  *
- * Intent descriptor.
+ * Metadata describing an Intent.
  */
 export interface IntentMetadata {
     /**
@@ -1527,11 +1527,11 @@ export interface Fdc3UserInterfaceResolveAction {
 export interface Fdc3UserInterfaceResolveActionPayload {
     action: Action;
     /**
-     * The App resolution option chosen
+     * The App resolution option chosen.
      */
     appIdentifier?: AppIdentifier;
     /**
-     * The intent resolved
+     * The intent resolved.
      */
     intent?: string;
 }
@@ -1615,7 +1615,7 @@ export interface UpdatedCSS {
      */
     width?: string;
     /**
-     * The updated zindex to apply to the iframe.
+     * The updated zIndex to apply to the iframe.
      */
     zIndex?: string;
     [property: string]: any;
@@ -1666,7 +1666,7 @@ export interface FindInstancesRequestPayload {
  */
 export interface FindInstancesResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -1771,7 +1771,7 @@ export interface FindIntentRequestPayload {
  */
 export interface FindIntentResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -1845,7 +1845,7 @@ export interface FindIntentsByContextRequestPayload {
  */
 export interface FindIntentsByContextResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -1917,7 +1917,7 @@ export interface GetAppMetadataRequestPayload {
  */
 export interface GetAppMetadataResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -1989,7 +1989,7 @@ export interface GetCurrentChannelRequestPayload {
  */
 export interface GetCurrentChannelResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2048,7 +2048,7 @@ export interface GetCurrentContextRequest {
  */
 export interface GetCurrentContextRequestPayload {
     /**
-     * The id of the channel to return the current context of
+     * The id of the channel to return the current context of.
      */
     channelId: string;
     /**
@@ -2071,7 +2071,7 @@ export interface GetCurrentContextRequestPayload {
  */
 export interface GetCurrentContextResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2147,7 +2147,7 @@ export interface GetInfoRequestPayload {
  */
 export interface GetInfoResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2281,7 +2281,7 @@ export interface GetOrCreateChannelRequestPayload {
  */
 export interface GetOrCreateChannelResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2352,7 +2352,7 @@ export interface GetUserChannelsRequestPayload {
  */
 export interface GetUserChannelsResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2489,7 +2489,7 @@ export interface IntentEventPayload {
      */
     intent: string;
     /**
-     * Details of the application instance that raised the intent
+     * Details of the application instance that raised the intent.
      */
     originatingApp?: AppIdentifier;
     /**
@@ -2545,7 +2545,7 @@ export interface IntentListenerUnsubscribeRequestPayload {
  */
 export interface IntentListenerUnsubscribeResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2622,7 +2622,7 @@ export interface IntentResult {
  */
 export interface IntentResultResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2671,7 +2671,7 @@ export interface JoinUserChannelRequest {
  */
 export interface JoinUserChannelRequestPayload {
     /**
-     * The id of the channel to join
+     * The id of the channel to join.
      */
     channelId: string;
 }
@@ -2691,7 +2691,7 @@ export interface JoinUserChannelRequestPayload {
  */
 export interface JoinUserChannelResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2761,7 +2761,7 @@ export interface LeaveCurrentChannelRequestPayload {
  */
 export interface LeaveCurrentChannelResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2838,7 +2838,7 @@ export interface OpenRequestPayload {
  */
 export interface OpenResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2934,7 +2934,7 @@ export type PrivateChannelEventListenerTypes = "onAddContextListener" | "onUnsub
  */
 export interface PrivateChannelAddEventListenerResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -3011,7 +3011,7 @@ export interface PrivateChannelDisconnectRequestPayload {
  */
 export interface PrivateChannelDisconnectResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -3203,7 +3203,7 @@ export interface PrivateChannelUnsubscribeEventListenerRequestPayload {
  */
 export interface PrivateChannelUnsubscribeEventListenerResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -3266,7 +3266,7 @@ export interface RaiseIntentForContextRequestPayload {
  */
 export interface RaiseIntentForContextResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -3406,7 +3406,7 @@ export interface RaiseIntentRequestPayload {
  */
 export interface RaiseIntentResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -3471,7 +3471,7 @@ export interface RaiseIntentResponsePayload {
  */
 export interface RaiseIntentResultResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -3511,7 +3511,7 @@ export interface RaiseIntentResultResponsePayload {
  */
 export interface WebConnectionProtocol1Hello {
     /**
-     * Metadata for this connection step message
+     * Metadata for a Web Connection Protocol message.
      */
     meta: WebConnectionProtocol1HelloMeta;
     /**
@@ -3525,11 +3525,7 @@ export interface WebConnectionProtocol1Hello {
 }
 
 /**
- * Metadata for this connection step message
- *
- * Metadata for this connection step message.
- *
- * Metadata for a disconnection step message.
+ * Metadata for a Web Connection Protocol message.
  */
 export interface WebConnectionProtocol1HelloMeta {
     connectionAttemptUuid: string;
@@ -3582,7 +3578,7 @@ export interface WebConnectionProtocol1HelloPayload {
  */
 export interface WebConnectionProtocol2LoadURL {
     /**
-     * Metadata for this connection step message
+     * Metadata for a Web Connection Protocol message.
      */
     meta: WebConnectionProtocol1HelloMeta;
     /**
@@ -3621,7 +3617,7 @@ export interface WebConnectionProtocol2LoadURLPayload {
  */
 export interface WebConnectionProtocol3Handshake {
     /**
-     * Metadata for this connection step message
+     * Metadata for a Web Connection Protocol message.
      */
     meta: WebConnectionProtocol1HelloMeta;
     /**
@@ -3668,7 +3664,7 @@ export interface WebConnectionProtocol3HandshakePayload {
  */
 export interface WebConnectionProtocol4ValidateAppIdentity {
     /**
-     * Metadata for this connection step message.
+     * Metadata for a Web Connection Protocol message.
      */
     meta: WebConnectionProtocol1HelloMeta;
     /**
@@ -3718,7 +3714,7 @@ export interface WebConnectionProtocol4ValidateAppIdentityPayload {
  */
 export interface WebConnectionProtocol5ValidateAppIdentityFailedResponse {
     /**
-     * Metadata for this connection step message.
+     * Metadata for a Web Connection Protocol message.
      */
     meta: WebConnectionProtocol1HelloMeta;
     /**
@@ -3750,7 +3746,7 @@ export interface WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload 
  */
 export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
     /**
-     * Metadata for this connection step message
+     * Metadata for a Web Connection Protocol message.
      */
     meta: WebConnectionProtocol1HelloMeta;
     /**
@@ -3802,7 +3798,7 @@ export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload
  */
 export interface WebConnectionProtocol6Goodbye {
     /**
-     * Metadata for a disconnection step message.
+     * Metadata for a Web Connection Protocol message.
      */
     meta: WebConnectionProtocol6GoodbyeMeta;
     /**
@@ -3812,11 +3808,7 @@ export interface WebConnectionProtocol6Goodbye {
 }
 
 /**
- * Metadata for a disconnection step message.
- *
- * Metadata for this connection step message
- *
- * Metadata for this connection step message.
+ * Metadata for a Web Connection Protocol message.
  */
 export interface WebConnectionProtocol6GoodbyeMeta {
     timestamp: Date;
@@ -3831,7 +3823,10 @@ export interface WebConnectionProtocol6GoodbyeMeta {
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocolMessage {
-    meta: WebConnectionProtocolMessageMeta;
+    /**
+     * Metadata for a Web Connection Protocol message.
+     */
+    meta: ConnectionStepMetadata;
     /**
      * The message payload, containing data pertaining to this connection step.
      */
@@ -3843,13 +3838,9 @@ export interface WebConnectionProtocolMessage {
 }
 
 /**
- * Metadata for a disconnection step message.
- *
- * Metadata for this connection step message
- *
- * Metadata for this connection step message.
+ * Metadata for a Web Connection Protocol message.
  */
-export interface WebConnectionProtocolMessageMeta {
+export interface ConnectionStepMetadata {
     timestamp:              Date;
     connectionAttemptUuid?: string;
 }
@@ -5457,11 +5448,11 @@ const typeMap: any = {
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "WebConnectionProtocolMessage": o([
-        { json: "meta", js: "meta", typ: r("WebConnectionProtocolMessageMeta") },
+        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
         { json: "payload", js: "payload", typ: u(undefined, m("any")) },
         { json: "type", js: "type", typ: r("ConnectionStepMessageType") },
     ], false),
-    "WebConnectionProtocolMessageMeta": o([
+    "ConnectionStepMetadata": o([
         { json: "timestamp", js: "timestamp", typ: Date },
         { json: "connectionAttemptUuid", js: "connectionAttemptUuid", typ: u(undefined, "") },
     ], false),
