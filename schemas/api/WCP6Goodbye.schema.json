@@ -22,7 +22,7 @@
         },
         "meta": {
           "title": "Disconnect Metadata",
-          "description": "Metadata for a disconnection step message",
+          "description": "Metadata for a disconnection step message.",
           "$ref": "WCPConnectionStep.schema.json#/$defs/DisconnectStepMeta"
         }
       },

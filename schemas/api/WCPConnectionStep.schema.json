@@ -44,7 +44,7 @@
   "$defs": {
     "ConnectionStepMeta": {
       "title": "Connection Step Metadata",
-      "description": "Metadata for this connection step message",
+      "description": "Metadata for this connection step message.",
       "type": "object",
       "properties": {
         "connectionAttemptUuid": {
@@ -62,7 +62,7 @@
     },
     "DisconnectStepMeta": {
       "title": "Disconnect Metadata",
-      "description": "Metadata for a disconnection step message",
+      "description": "Metadata for a disconnection step message.",
       "type": "object",
       "properties": {
         "timestamp": {

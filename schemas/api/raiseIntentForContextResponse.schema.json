@@ -41,7 +41,7 @@
 		},
 		"RaiseIntentForContextNeedsResolutionResponsePayload": {
 			"title": "RaiseIntentForContext NeedsResolution Response Payload",
-			"description": "Response to a raiseIntentForContext request that needs additional resolution (i.e. show an intent resolver UI)",
+			"description": "Response to a raiseIntentForContext request that needs additional resolution (i.e. show an intent resolver UI).",
 			"type": "object",
 			"properties": {
 				"appIntents": {
