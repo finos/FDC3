@@ -36,8 +36,12 @@ jobs:
       run: npm run merge2
       if: always()
 
+    - name: Create Report
+      run: npm run report
+      if: always()
+
     - name: Report NYC coverage
       uses: sidx1024/report-nyc-coverage-github-action@v1.2.7
       if: always()
       with:
-        coverage_file: "coverage/complete.json"
+        coverage_file: "nyc-coverage-report/coverage-summary.json"
