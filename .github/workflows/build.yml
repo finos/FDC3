@@ -1,4 +1,4 @@
-name: Node.js CI Build
+name: Node.js CI Build and Test
 
 # Controls when the workflow will run on any branch
 on:
@@ -11,7 +11,9 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
+        node-version:
+          - 18.x
+          - 20.x
 
     steps:
     - name: Checkout repository
@@ -25,5 +27,11 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Run tests
+    - name: Build
       run: npm run build
+
+    - name: Run tests
+      run: npm run test
+      # Tests sometimes hang, and will run until stopped. Timeout to prevent all the minutes from being eaten.
+      timeout-minutes: 5
+

@@ -19,6 +19,7 @@
   "scripts": {
     "build": "tsc --module es2022",
     "test": "tsc && nyc --reporter=lcov --reporter=text cucumber-js",
+    "report": "nyc merge .nyc_output ../../.nyc_output/fdc3-agent-proxy.json",
     "clean": "rimraf dist && rimraf cucumber-report.html && rimraf coverage && rimraf .nyc_output && rimraf node_modules"
   },
   "dependencies": {

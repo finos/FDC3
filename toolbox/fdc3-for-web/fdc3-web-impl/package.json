@@ -20,6 +20,7 @@
     "clean": "rimraf dist && rimraf cucumber-report.html && rimraf coverage && rimraf .nyc_output && rimraf node_modules",
     "directory-openapi": "npx openapi-typescript ../../../packages/fdc3-standard/src/app-directory/specification/appd.schema.json --output generated/directory-schema.ts",
     "test": "npm run directory-openapi && tsc && nyc --reporter=lcov --reporter=text cucumber-js",
+    "report": "nyc merge .nyc_output ../../../.nyc_output/fdc3-web-impl.json",
     "build": "npm run directory-openapi && tsc --module es2022"
   },
   "dependencies": {
