@@ -87,7 +87,7 @@
             ]
         },
         "AppMetadata": {
-            "description": "Extends an `AppIdentifier`, describing an application or instance of an application, with additional descriptive metadata that is usually provided by an FDC3 App Directory that the desktop agent connects to.\n\nThe additional information from an app directory can aid in rendering UI elements, such as a launcher menu or resolver UI. This includes a title, description, tooltip and icon and screenshot URLs.\n\nNote that as `AppMetadata` instances are also `AppIdentifiers` they may be passed to the `app` argument of `fdc3.open`, `fdc3.raiseIntent` etc.",
+            "description": "Extends an `AppIdentifier`, describing an application or instance of an application, with additional descriptive metadata that is usually provided by an FDC3 App Directory that the Desktop Agent connects to.\n\nThe additional information from an app directory can aid in rendering UI elements, such as a launcher menu or resolver UI. This includes a title, description, tooltip and icon and screenshot URLs.\n\nNote that as `AppMetadata` instances are also `AppIdentifiers` they may be passed to the `app` argument of `fdc3.open`, `fdc3.raiseIntent` etc.",
             "title": "AppMetadata",
             "type": "object",
             "properties": {
