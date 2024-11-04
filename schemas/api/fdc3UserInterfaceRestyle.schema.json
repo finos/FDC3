@@ -31,7 +31,7 @@
               "properties": {
                 "height": {"type": "string", "title": "height", "description": "The updated height of the iframe."},
                 "width": {"type": "string", "title": "width", "description": "The updated width of the iframe."},
-                "zIndex": {"type": "string", "title": "zIndex", "description": "The updated zindex to apply to the iframe."},
+                "zIndex": {"type": "string", "title": "zIndex", "description": "The updated zIndex to apply to the iframe."},
                 "left": {"type": "string", "title": "left", "description": "The initial left property to apply to the iframe."},
                 "top": {"type": "string", "title": "top", "description": "The initial top property to apply to the iframe."},
                 "bottom": {"type": "string", "title": "bottom", "description": "The initial bottom property to apply to the iframe."},

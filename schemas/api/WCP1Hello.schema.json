@@ -55,8 +55,6 @@
           "required": ["identityUrl","actualUrl","fdc3Version"]
         },
         "meta": {
-          "title": "Connection Step Metadata",
-          "description": "Metadata for this connection step message",
           "$ref": "WCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"
         }
       },
