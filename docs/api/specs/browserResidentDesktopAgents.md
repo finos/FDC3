@@ -84,7 +84,7 @@ App identity is validated and an `appId` assigned by matching the application to
 
 As web applications may vary their URL during use, or serve multiple applications from the same origin (differentiated by path, search params and/or hash), care must be taken in matching URLs to AppD records. Two URLs are sent to the Desktop Agent in the [`"WCP4ValidateAppIdentity"`](https://fdc3.finos.org/schemas/next/api/WCP4ValidateAppIdentity.schema.json) message:
 
-- `identityUrl`: the URL to match to the app directory record.
+- `identityUrl`: the URL to match to the App Directory record.
 - `actualUrl`: the current URL of the application, which MUST be captured automatically by the `getAgent()` implementation.
 
 Applications _may_ specify the `identityUrl` value as an argument to `getAgent()`. If not specified, the `getAgent()` implementation MUST use the current URL of the application. The Desktop Agent MUST validate that the origin of the `identityUrl` is the same as the origin of _both_ the `actualUrl` and the `WCPValidateAppIdentity` message sent over the `MessagePort`. The Desktop Agent MUST then match the URL to that of applications known to the Desktop Agent.
