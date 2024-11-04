@@ -20,7 +20,7 @@
 - [ ] Is a CHANGELOG.md entry included?
 - [ ] Does this PR include changes to the Desktop Agent or Channel API?
   - [ ] If yes, were both documentation (/docs) and sources updated?<br/>
-        *jsDoc comments are normally on the API interfaces and types are usually matched to the main documentation*
+        *jsDoc comments are on the API interfaces and types should be matched to the main documentation in /docs*
   - [ ] If yes, are conformance test definitions (/toolbox/fdc3-conformance) still correct and complete?<br/>
         *Conformance test definitions should cover all **required**, aspects of an FDC3 Desktop Agent implementation, which are usually marked with a **MUST** keyword, and  optional features (**SHOULD** or **MAY**) where the format of those features is defined*
   - [ ] If yes, were changes applied to the Bridging and FDC3 for Web protocol schemas<br/>
