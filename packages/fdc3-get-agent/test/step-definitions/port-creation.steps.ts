@@ -36,6 +36,9 @@ Given("{string} pipes messages to {string}", async function (this: CustomWorld, 
     }
 })
 
+/**
+ * Avoid checking this in as a line in .features - just used for debugging
+ */
 Given('Testing ends after {string} ms', function (string) {
     setTimeout(() => {
         process.exit();
