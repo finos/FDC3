@@ -28,7 +28,7 @@
     },
     "meta": {
       "title": "Event Metadata",
-      "description": "Metadata for messages sent by a Desktop Agent to an App notifying it of an event.",
+      "description": "Metadata for messages sent by a Desktop Agent to an app notifying it of an event.",
       "type": "object",
       "properties": {
         "timestamp": {
