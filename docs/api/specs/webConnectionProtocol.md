@@ -87,7 +87,7 @@ The WCP algorithm (coordinated between the `getAgent()` implementation and Deskt
 1. Locate a Desktop Agent interface
 2. Validate app & instance identity
 3. Persist connection details to SessionStorage
-4. Return DesktopAgent interface
+4. Return Desktop Agent interface
 5. Disconnect
 
 ### Step 1: Locate a Desktop Agent interface
@@ -171,7 +171,7 @@ const discoverProxyCandidates = (): WindowProxy[] => {
 Setup a timer for specified timeout, and then for each `candidate` found, attempt to establish communication with it as follows:
 
   1. Add a listener (`candidate.addEventListener("message", (event) => {})`) to receive response messages from the `candidate`.
-  2. Send a [`"WCP1Hello"`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json) message to it via `postMessage`.
+  2. Send a [`WCP1Hello`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json) message to it via `postMessage`.
 
   ```ts
   const hello = {
@@ -245,7 +245,7 @@ In Desktop Agent Proxy interfaces, identity is ascertained via the [`WCP4Validat
 
 An app identity is determined and an `appId` assigned by matching the application to an AppD record already known to the Desktop Agent, based on the `identityUrl` provided in the [`WCP4ValidateAppIdentity`](/schemas/next/api/WCP4ValidateAppIdentity.schema.json) message. An additional `actualUrl` field MUST also be provided to indicate whether the app overrode its `identityUrl` and to allow for logging. The origin (protocol, domain and port) of the `identityUrl`, `actualUrl` and the `MessageEvent.origin` field of the original `WCP1Hello` message that started the connection flow MUST all match. See the [Browser-Resident Desktop Agent Specification](./browserResidentDesktopAgents#validating-app-identity) for details of how to match an `identityUrl` to the `details.url` field of an AppD record.
 
-If the app identity is not recognized, the Desktop Agent MUST respond with a [WCP5ValidateAppIdentityFailedResponse](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityFailedResponse.schema.json) message and stop handling further messages on the `MessagePort`. On receiving this message, the `getAgent()` implementation should reject with an Error object with the `AccessDenied` message from the [`AgentError`](../ref/Errors#agenterror) enumeration.
+If the app identity is not recognized, the Desktop Agent MUST respond with a [`WCP5ValidateAppIdentityFailedResponse`](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityFailedResponse.schema.json) message and stop handling further messages on the `MessagePort`. On receiving this message, the `getAgent()` implementation should reject with an Error object with the `AccessDenied` message from the [`AgentError`](../ref/Errors#agenterror) enumeration.
 
 If the app identity is recognized the Desktop Agent will assign the appropriate appId and move on to determining the instance identity.
 
@@ -292,7 +292,7 @@ Where a `DesktopAgent` or 'Desktop Agent Proxy' implementation was successfully 
 
 Desktop Agent Preload interfaces, as used in container-based Desktop Agent implementations, are usually able to track the lifecycle and current URL of windows that host web apps in their scope. Hence, there is currently no requirement nor means for an app to indicate that it is closing, rather it is the responsibility of the Desktop Agent to update its internal state when an app closes or changes identity.
 
-However, Browser Resident Desktop Agents working with a Desktop Agent Proxy interface may have more trouble tracking child windows and frames. Hence, a specific WCP message ([WCP6Goodbye](https://fdc3.finos.org/schemas/next/api/WCP6Goodbye.schema.json)) is provided for the `getAgent()` implementation to indicate that an app is disconnecting from the Desktop Agent and will not communicate further unless and until it reconnects via the WCP. The `getAgent()` implementation MUST listen for the `pagehide` event from the HTML Standard's [Page Life Cycle API](https://html.spec.whatwg.org/multipage/document-lifecycle.html#document-lifecycle) ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/pagehide_event), [Chrome for Developers](https://developer.chrome.com/docs/web-platform/page-lifecycle-api#developer-recommendations-for-each-state)) and send [WCP6Goodbye](https://fdc3.finos.org/schemas/next/api/WCP6Goodbye.schema.json) if it receives an event where the `persisted` property is `false`.
+However, Browser Resident Desktop Agents working with a Desktop Agent Proxy interface may have more trouble tracking child windows and frames. Hence, a specific WCP message ([`WCP6Goodbye`](https://fdc3.finos.org/schemas/next/api/WCP6Goodbye.schema.json)) is provided for the `getAgent()` implementation to indicate that an app is disconnecting from the Desktop Agent and will not communicate further unless and until it reconnects via the WCP. The `getAgent()` implementation MUST listen for the `pagehide` event from the HTML Standard's [Page Life Cycle API](https://html.spec.whatwg.org/multipage/document-lifecycle.html#document-lifecycle) ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/pagehide_event), [Chrome for Developers](https://developer.chrome.com/docs/web-platform/page-lifecycle-api#developer-recommendations-for-each-state)) and send [`WCP6Goodbye`](https://fdc3.finos.org/schemas/next/api/WCP6Goodbye.schema.json) if it receives an event where the `persisted` property is `false`.
 
 As it is possible for a page to close without firing this event in some circumstances (e.g. where a browser render thread crashes), other procedures for detecting disconnection may also be used, these are described in the [Browser Resident Desktop Agents specification](./browserResidentDesktopAgents#disconnects) and [Desktop Agent Communication Protocol](./desktopAgentCommunicationProtocol#checking-apps-are-alive).
 
