@@ -1366,7 +1366,7 @@ export interface AppIntent {
 /**
  * Extends an `AppIdentifier`, describing an application or instance of an application, with
  * additional descriptive metadata that is usually provided by an FDC3 App Directory that
- * the desktop agent connects to.
+ * the Desktop Agent connects to.
  *
  * The additional information from an app directory can aid in rendering UI elements, such
  * as a launcher menu or resolver UI. This includes a title, description, tooltip and icon
