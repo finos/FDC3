@@ -2,7 +2,6 @@ default:
   format: 
     - html:cucumber-report.html
     - "@cucumber/pretty-formatter"
-    - junit
   paths: 
    - test/features/*.feature
   require: 
