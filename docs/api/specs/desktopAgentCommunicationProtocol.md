@@ -77,7 +77,7 @@ The design of the Desktop Agent Communication Protocol is guided by the followin
 
 > A Desktop Agent is a desktop component (or aggregate of components) that serves as a launcher and message router (broker) for applications in its domain.
 
-Hence, that design is based on the assumption that all messaging between applications passes through an entity that acts as the 'Desktop Agent' and routes those messages on to the appropriate recipients (for example a context message broadcast by an app to a channel is routed onto other apps that have added a listener to that channel, or an intent and context pair raised by an application is routed to another app chosen to resolve that intent). While implementations based on a shared bus are possible, they have not been specifically considered in the design of the DACP messages.
+Hence, that design is based on the assumption that all messaging between applications passes through an entity that acts as the 'Desktop Agent' and routes those messages on to the appropriate recipients (for example, a context message broadcast by an app to a channel is routed onto other apps that have added a listener to that channel, or an intent and context pair raised by an application is routed to another app chosen to resolve that intent). While implementations based on a shared bus are possible, they have not been specifically considered in the design of the DACP messages.
 
 Further, the design of the DACP is based on the assumption that applications will interact with an implementation of the [`DesktopAgent`](../ref/DesktopAgent) interface, with the DACP used behind the scenes to support communication between the implementation of that interface and an entity acting as the Desktop Agent which is running in another process or location, necessitating the use of a 'wire protocol' for communication. For example, [Browser-Resident Desktop Agent](./browserResidentDesktopAgents) implementations use the [FDC3 Web Communication Protocol (WCP)](./webConnectionProtocol.md) to connect a 'Desktop Agent Proxy', provided by the `getAgent()` implementation in the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3), and a Desktop Agent running in another frame or window which is communicated with via the DACP.
 
@@ -307,7 +307,7 @@ An additional response message is provided for the delivery of an `IntentResult`
 
 - [`raiseIntentResultResponse`](https://fdc3.finos.org/schemas/next/api/raiseIntentResultResponse.schema.json)
 
-There is no request message to indicate a call to the `resolution.getResult()` function of `IntentResolution`. Hence, Desktop Agents should always send this additional response message to indicate the status of the intent handling function and to deliver its result (or void if none was returned).
+There is no request message to indicate a call to the `resolution.getResult()` function of `IntentResolution`. Hence, Desktop Agents MUST send this additional response message to indicate the status of the intent handling function and to deliver its result (or void if none was returned).
 
 :::tip
 
