@@ -6,12 +6,14 @@ on:
 
 # Define the jobs for this workflow
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
+        node-version:
+          - 18.x
+          - 20.x
 
     steps:
     - name: Checkout repository
@@ -27,21 +29,8 @@ jobs:
 
     - name: Run tests
       run: npm run test
+      # Tests sometimes hang, and will run until stopped. Timeout to prevent all the minutes from being eaten.
+      timeout-minutes: 5
 
-    - name: Merge Results 1
-      run: npm run merge
-      if: always()
 
-    - name: Merge Results 2
-      run: npm run merge2
-      if: always()
 
-    - name: Create Report
-      run: npm run report
-      if: always()
-
-    - name: Report NYC coverage
-      uses: sidx1024/report-nyc-coverage-github-action@v1.2.7
-      if: always()
-      with:
-        coverage_file: "nyc-coverage-report/coverage-summary.json"
