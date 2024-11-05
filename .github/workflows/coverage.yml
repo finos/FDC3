@@ -43,5 +43,5 @@ jobs:
       with:
         path: "**/test-results.xml"
         name: "Test Results"
-        reporter: "junit"
+        reporter: "jest-junit"
       if: always()
