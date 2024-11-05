@@ -1,3 +1,10 @@
+---
+id: Intents Tests
+sidebar_label: Intents Tests
+title: Intents Tests
+hide_title: true
+---
+
 # Intents Tests
 
 ## Version 1.2 Intents Tests ![1.2](https://img.shields.io/badge/FDC3-1.2-green)
