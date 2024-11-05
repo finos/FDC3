@@ -72,7 +72,7 @@ FDC3 adopts the following experimental features policy:
 
 ## Conformance testing
 
-The FDC3 Standards include a set of definitions for conformance tests that may be used to determine if a Desktop Agent API implementation conforms to a particular standard version, to help disambiguate complex parts of the FDC3 Standard and to enable test-driven development of a Desktop Agent implementation. The current set of tests focus on the Desktop Agent API and the interface to it. There are no tests currently defined for the Intents, Context, AppD or Bridging Parts of the FDC3 Standard. Hence, conformance for those parts of the Standard must be determined manually.
+The FDC3 Standards include a set of [definitions for conformance tests](api/conformance/Conformance-Overview) that may be used to determine if a Desktop Agent API implementation conforms to a particular standard version, to help disambiguate complex parts of the FDC3 Standard and to enable test-driven development of a Desktop Agent implementation. The current set of tests focus on the Desktop Agent API and the interface to it. There are no tests currently defined for the Intents, Context, AppD or Bridging Parts of the FDC3 Standard. Hence, conformance for those parts of the Standard must be determined manually.
 
 The FDC3 Conformance tests are implemented for JavaScript/TypeScript web applications by the [FDC3 Conformance Framework](https://github.com/finos/FDC3-conformance-framework). Desktop Agent implementors working with web interfaces (Desktop Agent Preload or Desktop Agent Proxy) can clone the conformance framework and run the tests locally to determine if their agent is compliant with the Standard.
 
