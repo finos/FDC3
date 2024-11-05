@@ -34,7 +34,7 @@
 				"channelId": {
 					"type": "string",
 					"title": "Channel Id",
-					"description": "The Id of the Channel that the broadcast was sent on"
+					"description": "The Id of the Channel that the broadcast was sent on."
 				},
 				"context": {
 					"$ref": "../context/context.schema.json",

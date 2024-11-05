@@ -22,7 +22,7 @@ For the purposes of this Standard, the following definitions apply. Other terms 
 - **bridging**: Shorthand for the exchange of messages across a Desktop Agent Bridge for the purposes of extending interop between apps managed by different Desktop Agents.
 - **Bridge Connection Protocol (BCP)**: A defined set of steps for a Desktop Agent to connect to a Desktop Agent Bridge.
 - **Bridge Messaging Protocol (BMP)**: Protocol for Desktop Agents to communicate with each other over a Desktop Agent Bridge.
-**Browser Resident Desktop Agent (DA)**: A Desktop Agent loaded in a window or frame within a web browser (in contrast to a Desktop Agent that "injects" a global fdc3 object) that is communicated with via a Desktop Agent Proxy.
+- **Browser Resident Desktop Agent**: A Desktop Agent loaded in a window or frame within a web browser (in contrast to a Desktop Agent that "injects" a global fdc3 object) that is communicated with via a Desktop Agent Proxy.
 - **Channel**: A grouping of apps for the purposes of sharing stateful pieces of data. A secondary interface of the FDC3 API.
 - **context channels**: A mechanism to allow sets of apps to share stateful pieces of data among themselves, and to be alerted when that data changes.
 - **context**: Shorthand for context data.
@@ -46,7 +46,7 @@ For the purposes of this Standard, the following definitions apply. Other terms 
 - **raising an intent**: The act of requesting, via the FDC3 API/Desktop Agent that a specified action be performed by another application, using specified context data as input.
 - **resolver**: A facility of a Desktop Agent used to map a raised intent and associated context object to an application that will perform the action represented by the intent, using the context object as input. Where multiple applications can resolve the intent, a resolver will often display a user-interface allowing a user to pick from the available applications that support the intent and type of context supplied.
 - **resolving an intent**: The act of mapping a specified intent and context object to an application.
-**SessionStorage**: A JavaScript storage API defined by the HTML Standard's Web Storage API](https://html.spec.whatwg.org/multipage/webstorage.html#webstorage) that persists data for web apps within the scope of a specific window or tab. SessionStorage is identical to the LocalStorage API but is scoped to a particular window/tab, as defined by the HTML Standard: <https://html.spec.whatwg.org/multipage/webstorage.html#dom-sessionstorage>
+- **SessionStorage**: A JavaScript storage API defined by the HTML Standard's Web Storage API](https://html.spec.whatwg.org/multipage/webstorage.html#webstorage) that persists data for web apps within the scope of a specific window or tab. SessionStorage is identical to the LocalStorage API but is scoped to a particular window/tab, as defined by the HTML Standard: <https://html.spec.whatwg.org/multipage/webstorage.html#dom-sessionstorage>
 - **standard intent**: An intent defined by this Standard.
 - **UUID**: Universally Unique IDentifier, synonymous with GUID. Defined by [IETF RFC4122](references).
 - **Web Connection Protocol (WCP)**: A defined set of steps for a web application to connect to Desktop Agents that implement any of the interfaces defined for web applications in the FDC3 Standard, including both preloaded Desktop Agent interfaces and Browser-based Desktop Agents that work with a Desktop Agent Proxy.

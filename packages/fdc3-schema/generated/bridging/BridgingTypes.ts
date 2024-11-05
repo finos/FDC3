@@ -220,7 +220,7 @@ export interface BridgeParticipantIdentifier {
     desktopAgent: string;
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId?: string;
     /**
@@ -274,7 +274,7 @@ export interface BridgeParticipantIdentifier {
 export interface SourceIdentifier {
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId?: string;
     /**
@@ -519,7 +519,7 @@ export interface BroadcastAgentRequestMeta {
 export interface SourceObject {
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId: string;
     /**
@@ -543,7 +543,7 @@ export interface SourceObject {
  */
 export interface BroadcastAgentRequestPayload {
     /**
-     * The Id of the Channel that the broadcast was sent on
+     * The Id of the Channel that the broadcast was sent on.
      */
     channelId: string;
     /**
@@ -614,7 +614,7 @@ export interface Context {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -703,7 +703,7 @@ export interface BroadcastBridgeRequestMeta {
 export interface MetaSource {
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId: string;
     /**
@@ -727,7 +727,7 @@ export interface MetaSource {
  */
 export interface BroadcastBridgeRequestPayload {
     /**
-     * The Id of the Channel that the broadcast was sent on
+     * The Id of the Channel that the broadcast was sent on.
      */
     channelId: string;
     /**
@@ -1084,7 +1084,7 @@ export interface PayloadClass {
 }
 
 /**
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -1108,7 +1108,7 @@ export type FindInstancesErrors = "DesktopAgentNotFound" | "IntentDeliveryFailed
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -1210,7 +1210,7 @@ export interface DestinationObject {
     desktopAgent: string;
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId?: string;
     /**
@@ -1248,7 +1248,7 @@ export interface FindInstancesAgentRequestPayload {
 export interface AppIdentifier {
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId: string;
     /**
@@ -1268,7 +1268,7 @@ export interface AppIdentifier {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -1306,7 +1306,7 @@ export interface FindInstancesAgentResponsePayload {
 /**
  * Extends an `AppIdentifier`, describing an application or instance of an application, with
  * additional descriptive metadata that is usually provided by an FDC3 App Directory that
- * the desktop agent connects to.
+ * the Desktop Agent connects to.
  *
  * The additional information from an app directory can aid in rendering UI elements, such
  * as a launcher menu or resolver UI. This includes a title, description, tooltip and icon
@@ -1318,11 +1318,11 @@ export interface FindInstancesAgentResponsePayload {
 export interface AppMetadata {
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId: string;
     /**
-     * A longer, multi-paragraph description for the application that could include markup
+     * A longer, multi-paragraph description for the application that could include markup.
      */
     description?: string;
     /**
@@ -1331,7 +1331,7 @@ export interface AppMetadata {
      */
     desktopAgent?: string;
     /**
-     * A list of icon URLs for the application that can be used to render UI elements
+     * A list of icon URLs for the application that can be used to render UI elements.
      */
     icons?: Icon[];
     /**
@@ -1361,15 +1361,15 @@ export interface AppMetadata {
     resultType?: null | string;
     /**
      * Images representing the app in common usage scenarios that can be used to render UI
-     * elements
+     * elements.
      */
     screenshots?: Image[];
     /**
-     * A more user-friendly application title that can be used to render UI elements
+     * A more user-friendly application title that can be used to render UI elements.
      */
     title?: string;
     /**
-     * A tooltip for the application that can be used to render UI elements
+     * A tooltip for the application that can be used to render UI elements.
      */
     tooltip?: string;
     /**
@@ -1379,8 +1379,7 @@ export interface AppMetadata {
 }
 
 /**
- * SPDX-License-Identifier: Apache-2.0
- * Copyright FINOS FDC3 contributors - see NOTICE file
+ * Describes an Icon images that may be used to represent the application.
  */
 export interface Icon {
     /**
@@ -1388,7 +1387,7 @@ export interface Icon {
      */
     size?: string;
     /**
-     * The icon url
+     * The icon url.
      */
     src: string;
     /**
@@ -1398,8 +1397,8 @@ export interface Icon {
 }
 
 /**
- * SPDX-License-Identifier: Apache-2.0
- * Copyright FINOS FDC3 contributors - see NOTICE file
+ * Describes an image file, typically a screenshot, that often represents the application in
+ * a common usage scenario.
  */
 export interface Image {
     /**
@@ -1554,7 +1553,7 @@ export interface FindInstancesBridgeRequestMeta {
 export interface MetaSourceObject {
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId?: string;
     /**
@@ -1649,7 +1648,7 @@ export interface FindIntentAgentErrorResponsePayload {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -1705,7 +1704,7 @@ export interface FindIntentAgentRequestPayload {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -1746,7 +1745,7 @@ export interface FindIntentAgentResponsePayload {
 }
 
 /**
- * An interface that relates an intent to apps
+ * An interface that relates an intent to apps.
  */
 export interface AppIntent {
     /**
@@ -1762,7 +1761,7 @@ export interface AppIntent {
 /**
  * Details of the intent whose relationship to resolving applications is being described.
  *
- * Intent descriptor
+ * Metadata describing an Intent.
  */
 export interface IntentMetadata {
     /**
@@ -1770,7 +1769,7 @@ export interface IntentMetadata {
      */
     displayName?: string;
     /**
-     * The unique name of the intent that can be invoked by the raiseIntent call
+     * The unique name of the intent that can be invoked by the raiseIntent call.
      */
     name: string;
 }
@@ -1938,7 +1937,7 @@ export interface FindIntentsByContextAgentErrorResponsePayload {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -1994,7 +1993,7 @@ export interface FindIntentsByContextAgentRequestPayload {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -2197,7 +2196,7 @@ export interface GetAppMetadataAgentErrorResponsePayload {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -2295,7 +2294,7 @@ export interface AppObject {
     desktopAgent: string;
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId: string;
     /**
@@ -2310,7 +2309,7 @@ export interface AppObject {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -2525,7 +2524,7 @@ export type OpenErrorResponsePayload = "AppNotFound" | "AppTimeout" | "DesktopAg
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -2626,7 +2625,7 @@ export interface AppToOpen {
     desktopAgent: string;
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId: string;
     /**
@@ -2641,7 +2640,7 @@ export interface AppToOpen {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -2903,7 +2902,7 @@ export interface MetaDestination {
     desktopAgent: string;
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId: string;
     /**
@@ -2932,7 +2931,7 @@ export interface PrivateChannelBroadcastAgentRequestPayload {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -3039,7 +3038,7 @@ export interface PrivateChannelEventListenerAddedAgentRequestPayload {
 }
 
 /**
- * Event listener type names for Private Channel events
+ * Event listener type names for Private Channel events.
  */
 export type PrivateChannelEventListenerTypes = "onAddContextListener" | "onUnsubscribe" | "onDisconnect";
 
@@ -3047,7 +3046,7 @@ export type PrivateChannelEventListenerTypes = "onAddContextListener" | "onUnsub
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -3154,7 +3153,7 @@ export interface PrivateChannelEventListenerRemovedAgentRequestPayload {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -3264,7 +3263,7 @@ export interface PrivateChannelOnAddContextListenerAgentRequestPayload {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -3373,7 +3372,7 @@ export interface PrivateChannelOnDisconnectAgentRequestPayload {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -3483,7 +3482,7 @@ export interface PrivateChannelOnUnsubscribeAgentRequestPayload {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -3571,7 +3570,7 @@ export interface RaiseIntentAgentErrorResponseMeta {
 }
 
 /**
- * Used if a raiseIntent request resulted in an error
+ * Used if a raiseIntent request resulted in an error.
  *
  * Error message payload containing an standardized error string.
  */
@@ -3586,7 +3585,7 @@ export interface RaiseIntentAgentErrorResponsePayload {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -3686,7 +3685,7 @@ export interface AppDestinationIdentifier {
     desktopAgent: string;
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId: string;
     /**
@@ -3701,7 +3700,7 @@ export interface AppDestinationIdentifier {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -3739,13 +3738,13 @@ export interface RaiseIntentAgentResponseMeta {
  */
 export interface RaiseIntentAgentResponsePayload {
     /**
-     * Used if the raiseIntent request was successfully resolved
+     * Used if the raiseIntent request was successfully resolved.
      */
     intentResolution: IntentResolution;
 }
 
 /**
- * Used if the raiseIntent request was successfully resolved
+ * Used if the raiseIntent request was successfully resolved.
  *
  * IntentResolution provides a standard format for data returned upon resolving an intent.
  *
@@ -3818,7 +3817,7 @@ export interface RaiseIntentBridgeErrorResponseMeta {
 }
 
 /**
- * Used if a raiseIntent request resulted in an error
+ * Used if a raiseIntent request resulted in an error.
  *
  * The error message payload contains details of an error return to the app or agent that
  * raised the original request.
@@ -3913,7 +3912,7 @@ export interface RaiseIntentBridgeResponseMeta {
  */
 export interface RaiseIntentBridgeResponsePayload {
     /**
-     * Used if the raiseIntent request was successfully resolved
+     * Used if the raiseIntent request was successfully resolved.
      */
     intentResolution: IntentResolution;
 }
@@ -3972,7 +3971,7 @@ export type RaiseIntentResultErrorMessage = "IntentHandlerRejected" | "NoResultR
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -4067,11 +4066,11 @@ export interface DisplayMetadata {
      */
     color?: string;
     /**
-     * A URL of an image that can be used to display this channel
+     * A URL of an image that can be used to display this channel.
      */
     glyph?: string;
     /**
-     * A user-readable name for this channel, e.g: `"Red"`
+     * A user-readable name for this channel, e.g: `"Red"`.
      */
     name?: string;
 }

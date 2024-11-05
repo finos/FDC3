@@ -22,7 +22,7 @@ enum AgentError {
     AgentNotFound = "AgentNotFound",
 
     /** Returned if validation of the app identity by the Desktop Agent 
-     * Failed or the app is not being allowed to connect to the Desktop Agent 
+     * failed or the app is not being allowed to connect to the Desktop Agent 
      * for another reason. */ 
     AccessDenied = "AccessDenied",
 
@@ -30,8 +30,8 @@ enum AgentError {
      * up communication with a Desktop Agent. */ 
     ErrorOnConnect = "ErrorOnConnect",
 
-    /** Returned if either the failover function itself, or what it returned,  
-     * was not the right type. */ 
+    /** Returned if the failover function is not a function, or it did not
+     * resolve to one of the allowed types.*/ 
     InvalidFailover = "InvalidFailover",
 } 
 ```

@@ -23,7 +23,7 @@
     "payload": {
       "title": "Message payload",
       "type": "object",
-      "description": "The message payload",
+      "description": "The message payload.",
       "additionalProperties": true
     }
   },

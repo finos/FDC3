@@ -28,8 +28,8 @@ import { Context } from '@kite9/fdc3-context'
 const UnavailableError = new Error('FDC3 DesktopAgent not available at `window.fdc3`.');
 
 /**
- * @deprecated This function depends on window.fdc3 (which may not be set for web-based desktop agents) 
- * and does not wait on the fdc3Ready event, so it may return errors on container-based desktop agents.
+ * @deprecated This function depends on window.fdc3 (which may not be set for web-based Desktop Agents) 
+ * and does not wait on the fdc3Ready event, so it may return errors on container-based Desktop Agents.
  * Use `const fdc3 = getAgent()` to retrieve (and wait for) a reference to the FDC3 API instead.
  */
 function rejectIfNoGlobal(f: (fdc3: DesktopAgent) => Promise<any>) {

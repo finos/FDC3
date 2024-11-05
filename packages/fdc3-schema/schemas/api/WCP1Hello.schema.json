@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json",
   "title": "Web Connection Protocol 1 Hello",
-  "description": "Hello message sent by an application to a parent window or frame when attempting to establish connectivity to a Desktop Agent",
+  "description": "Hello message sent by an application to a parent window or frame when attempting to establish connectivity to a Desktop Agent.",
   "type": "object",
   "allOf": [
     {
@@ -55,8 +55,6 @@
           "required": ["identityUrl","actualUrl","fdc3Version"]
         },
         "meta": {
-          "title": "Connection Step Metadata",
-          "description": "Metadata for this connection step message",
           "$ref": "WCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"
         }
       },
