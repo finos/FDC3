@@ -47,9 +47,8 @@ jobs:
 
       if: always()
 
-    - name: Upload test summary
-      uses: actions/upload-artifact@v3
+    - name: PR comment with file
+      uses: thollander/actions-comment-pull-request@v3
       with:
-        name: test-summary
-        path: test-summary.md
+        file-path: test-summary.md
       if: always()
