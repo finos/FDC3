@@ -33,7 +33,7 @@
 			"properties": {
 				"channelId": {
 					"title": "Channel Id",
-					"description": "The id of the channel to join",
+					"description": "The id of the channel to join.",
 					"type": "string"
 				}
 			},

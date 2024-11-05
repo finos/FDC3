@@ -3,7 +3,7 @@
 	"$id": "https://fdc3.finos.org/schemas/next/api/addEventListenerRequest.schema.json",
 	"type": "object",
 	"title": "AddEventListener Request",
-	"description": "A request to add an event listener for a specified event type to the DesktopAgent.",
+	"description": "A request to add an event listener for a specified event type to the Desktop Agent.",
 	"allOf": [
 		{
 			"$ref": "appRequest.schema.json"

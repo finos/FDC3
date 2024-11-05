@@ -67,7 +67,7 @@ Upon receiving an incoming [`"WCP1Hello"`](https://fdc3.finos.org/schemas/next/a
 
     :::warning
 
-    The [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) directives [frame-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-src), [child-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/child-src) and [default-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/default-src) can prevent iframes injected into an application from loading content. Where these are used in app implementations, please advise app implementors to include domains from which the adaptor content is served.
+    The [Content-Security-Policy](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy) directives [frame-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-src), [child-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/child-src) and [default-src](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/default-src) can prevent iframes injected into an application from loading content. Wherever these are used in app implementations, please advise app implementors to include domains from which the adaptor content is served.
 
     :::
 2. Create a [`MessageChannel`](https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API) with two entangled `MessagePort` instances that will be used for further communication with the application.
@@ -82,9 +82,9 @@ The first message received by the Desktop Agent on `MessagePort` `port1` from an
 
 App identity is validated and an `appId` assigned by matching the application to an AppD record already known to the Desktop Agent. This is achieved by matching  `identityUrl` (supplied by the application via the `getAgent()` implementation) to the `details.url` field of the known App Directory records.
 
-As web applications may vary their URL during use, or serve multiple applications from the same origin (differentiated by path, search params and/or hash), care must be taken in matching URLs to appD records. Two URLs are sent to the Desktop Agent in the [`"WCP4ValidateAppIdentity"`](https://fdc3.finos.org/schemas/next/api/WCP4ValidateAppIdentity.schema.json) message:
+As web applications may vary their URL during use, or serve multiple applications from the same origin (differentiated by path, search params and/or hash), care must be taken in matching URLs to AppD records. Two URLs are sent to the Desktop Agent in the [`"WCP4ValidateAppIdentity"`](https://fdc3.finos.org/schemas/next/api/WCP4ValidateAppIdentity.schema.json) message:
 
-- `identityUrl`: the URL to match to the app directory record.
+- `identityUrl`: the URL to match to the App Directory record.
 - `actualUrl`: the current URL of the application, which MUST be captured automatically by the `getAgent()` implementation.
 
 Applications _may_ specify the `identityUrl` value as an argument to `getAgent()`. If not specified, the `getAgent()` implementation MUST use the current URL of the application. The Desktop Agent MUST validate that the origin of the `identityUrl` is the same as the origin of _both_ the `actualUrl` and the `WCPValidateAppIdentity` message sent over the `MessagePort`. The Desktop Agent MUST then match the URL to that of applications known to the Desktop Agent.
@@ -119,9 +119,9 @@ let matchUrlToAppD = (url, appDRecords) => {
                                
     const matchScores = [];
 
-    //score appD records based on the match of their URL to the input URL
-    // if any component of the appD record URL is missing from input URL, 
-    // score 0 otherwise count the number of input elements matched.
+    //score AppD records based on the match of their URL to the input URL
+    // if any component of the AppD record URL is missing from input URL score 0, 
+    // otherwise count the number of input elements matched.
     appDRecords.map((record) => {
         //record must contain a URL
         if (!record.details?.url) { return; }
@@ -133,7 +133,7 @@ let matchUrlToAppD = (url, appDRecords) => {
         if (parsedUrl.origin !== inputUrl.origin) { return; }
         let score = 1;
         
-        //path must match if present in appD record - Path of "/" is ignored
+        //path must match if present in AppD record - Path of "/" is ignored
         const appDPath = trimTrailingSlash(parsedUrl.pathname);
         if (appDPath) {
             if (trimTrailingSlash(inputUrl.pathname) != appDPath) {
@@ -143,7 +143,7 @@ let matchUrlToAppD = (url, appDRecords) => {
             }
         }
         
-        //hash must match if present in appD record
+        //hash must match if present in AppD record
         if (parsedUrl.hash) {
             if (inputUrl.hash != parsedUrl.hash) {
                 return; 
@@ -153,7 +153,7 @@ let matchUrlToAppD = (url, appDRecords) => {
         }
         
         if (!!parsedUrl.search) {
-            //search params present in appD record must be present in URL
+            //search params present in AppD record must be present in URL
             const recordSearchKeys = parsedUrl.searchParams.keys().toArray();
             for (let i=0; i<recordSearchKeys.length; i++) {
                 const key = recordSearchKeys[i];
@@ -197,7 +197,7 @@ For more details on the connection process, please see the documentation for the
 
 ### Disconnects
 
-DAs are responsible for tracking when app windows close or navigates, which is necessary to provide accurate responses to the `findIntent`, `findIntentsByContext` & `findInstances` API calls, and to correctly resolve raised intents.
+DAs are responsible for tracking when app windows close or navigate, which is necessary to provide accurate responses to the `findIntent`, `findIntentsByContext` & `findInstances` API calls, and to correctly resolve raised intents.
 
 :::info
 
@@ -227,7 +227,7 @@ As described above, DA providers can leverage hidden iframes to establish a comm
 
 The hidden iframe URL can be provided in two ways:
 
-1. By a Parent window or frame - This allows DAs to handle communication via a hidden iframe that loads a known URL. The main benefit of this approach is that it can allow a system to continue to operate even if the parent window or frame is closed.
+1. By a parent window or frame - This allows DAs to handle communication via a hidden iframe that loads a known URL. The main benefit of this approach is that it can allow a system to continue to operate even if the parent window or frame is closed.
 2. By a `failover` function - When no parent DA can be found (such as when a tab is opened directly by an end user) then a failover function can create a hidden iframe and return a reference to it (a `WindowProxy`) that is used to initiate communication via the WCP in the same way as we do with a parent window or frame. Alternatively, a `DesktopAgent` implementation may be loaded directly and returned from the `failover` function, which `getAgent()` will pass-through.
 
 ## Channel Selector and Intent Resolver User Interfaces
@@ -236,7 +236,7 @@ Channel Selector and Intent Resolver user-interfaces are normally provided by De
 
 The `getAgent()` implementation can facilitate the injection and management of iframes in an application window. An app may provide the optional `channelSelector` and `intentResolver` parameters to the `getAgent()` to indicate whether or not they need these interfaces. For example, the apps may not raise intents. Some apps may also resolve intents internally by leveraging the Desktop Agent's `findIntent` or `findIntentsForContext` API functions. In these situations, the apps won't need a DA-provided interface. Once an app calls `getAgent()`, the parameters that the app provides are forwarded onto the Desktop Agent in the `WCP1Hello` connection message.
 
-Desktop Agents may implement their own user interfaces for channel selection and intent resolution. The URL for each interface may be returned in the `channelSelectorUrl` and `intentResolverUrl` properties of the payload of the `WCP3Handshake` message sent by the DA during the connection sequence. Alternatively, if the Desktop Agent is able to provide these user interfaces by other means (for example DAs that render applications in iframes within a window they control may use other iframes to render these UIs) or if they app indicated that it did not need them then `channelSelectorUrl` and `intentResolverUrl` may be set to `false`. Finally, `channelSelectorUrl` and `intentResolverUrl` may be set to `true` to indicate that `getAgent()` should use the default reference implementations of these UIs provided via the <https://fdc3.finsos.org> website.
+Desktop Agents MAY implement their own user interfaces for channel selection and intent resolution. The URL for each interface may be returned in the `channelSelectorUrl` and `intentResolverUrl` properties of the payload of the `WCP3Handshake` message sent by the DA during the connection sequence. Alternatively, if the Desktop Agent is able to provide these user interfaces by other means (for example DAs that render applications in iframes within a window they control may use other iframes to render these UIs) or if they app indicated that it did not need them then `channelSelectorUrl` and `intentResolverUrl` MAY be set to `false`. Finally, `channelSelectorUrl` and `intentResolverUrl` MAY be set to `true` to indicate that `getAgent()` should use the default reference implementations of these UIs provided via the <https://fdc3.finsos.org> website.
 
 :::warning
 
@@ -258,7 +258,7 @@ and are always displayed with `position: "fixed"` so that they are not part of t
 
 Implementations of the UIs may then indicate a limited set of CSS to apply to their frame in the initial `Fdc3UserInterfaceHello` message (when the width and height will be removed if not explicitly set in that message), and later adjust that via `Fdc3UserInterfaceRestyle`. See the [Controlling injected User Interfaces section](./desktopAgentCommunicationProtocol#controlling-injected-user-interfaces-section) in the DACP specification for more details.
 
-Communication between the `DesktopAgentProxy` and the iframes it injects is achieved via a similar mechanism to that used for communication between an App and the Desktop Agent: a `MessageChannel` is established between the app and iframe, via a `postMessage` sent from the iframe (`Fdc3UserInterfaceHello`) and responded to by the `DesktopAgentProxy` in the app's window (`Fdc3UserInterfaceHandshake`), with a `MessagePort` from a `MessageChannel` appended.
+Communication between the `DesktopAgentProxy` and the iframes it injects is achieved via a similar mechanism to that used for communication between an app and the Desktop Agent: a `MessageChannel` is established between the app and iframe, via a `postMessage` sent from the iframe (`Fdc3UserInterfaceHello`) and responded to by the `DesktopAgentProxy` in the app's window (`Fdc3UserInterfaceHandshake`), with a `MessagePort` from a `MessageChannel` appended.
 
 A further set of messages are provided for working with the injected user interfaces over their `MessageChannel` as part of the DACP, these are: `Fdc3UserInterfaceRestyle`, `Fdc3UserInterfaceDrag`, `Fdc3UserInterfaceChannels`, `Fdc3UserInterfaceChannelSelected`, `Fdc3UserInterfaceResolve` and `Fdc3UserInterfaceResolveAction`.
 

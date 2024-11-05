@@ -116,7 +116,7 @@ export interface WebConnectionProtocol1Hello {
  */
 export interface WebConnectionProtocol1HelloMeta {
     connectionAttemptUuid: string;
-    timestamp:             Date;
+    timestamp: Date;
 }
 
 /**
@@ -607,7 +607,7 @@ export interface WebConnectionProtocolMessage {
  * Metadata for this connection step message
  */
 export interface WebConnectionProtocolMessageMeta {
-    timestamp:              Date;
+    timestamp: Date;
     connectionAttemptUuid?: string;
 }
 
@@ -652,7 +652,7 @@ export interface AddContextListenerRequestMeta {
      * purposes but a Desktop Agent should make its own determination of the source of a message
      * to avoid spoofing.
      */
-    source?:   AppIdentifier;
+    source?: AppIdentifier;
     timestamp: Date;
 }
 
@@ -674,11 +674,11 @@ export interface AddContextListenerRequestMeta {
  * Field that represents the source application that the request being responded to was
  * received from, for debugging purposes.
  *
- * Details of the application instance that broadcast the context
+ * Details of the application instance that broadcast the context.
  *
- * The App resolution option chosen
+ * The App resolution option chosen.
  *
- * Details of the application instance that raised the intent
+ * Details of the application instance that raised the intent.
  *
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
@@ -687,7 +687,7 @@ export interface AddContextListenerRequestMeta {
 export interface AppIdentifier {
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId: string;
     /**
@@ -735,7 +735,7 @@ export interface AddContextListenerRequestPayload {
  */
 export interface AddContextListenerResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -752,16 +752,16 @@ export interface AddContextListenerResponse {
 }
 
 /**
- * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+ * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
  */
 export interface AddContextListenerResponseMeta {
-    requestUuid:  string;
+    requestUuid: string;
     responseUuid: string;
     /**
      * Field that represents the source application that the request being responded to was
      * received from, for debugging purposes.
      */
-    source?:   AppIdentifier;
+    source?: AppIdentifier;
     timestamp: Date;
 }
 
@@ -771,7 +771,7 @@ export interface AddContextListenerResponseMeta {
  * unsuccessful.
  */
 export interface AddContextListenerResponsePayload {
-    error?:        PurpleError;
+    error?: PurpleError;
     listenerUUID?: string;
 }
 
@@ -791,7 +791,7 @@ export type PurpleError = "AccessDenied" | "CreationFailed" | "MalformedContext"
  */
 
 /**
- * A request to add an event listener for a specified event type to the DesktopAgent.
+ * A request to add an event listener for a specified event type to the Desktop Agent.
  *
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
@@ -839,7 +839,7 @@ export interface AddEventListenerRequestPayload {
  */
 export interface AddEventListenerResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -861,7 +861,7 @@ export interface AddEventListenerResponse {
  * unsuccessful.
  */
 export interface AddEventListenerResponsePayload {
-    error?:        ResponsePayloadError;
+    error?: ResponsePayloadError;
     listenerUUID?: string;
 }
 
@@ -924,7 +924,7 @@ export interface AddIntentListenerRequestPayload {
  */
 export interface AddIntentListenerResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -946,7 +946,7 @@ export interface AddIntentListenerResponse {
  * unsuccessful.
  */
 export interface AddIntentListenerResponsePayload {
-    error?:        FluffyError;
+    error?: FluffyError;
     listenerUUID?: string;
     [property: string]: any;
 }
@@ -971,7 +971,7 @@ export type FluffyError = "MalformedContext" | "DesktopAgentNotFound" | "Resolve
  */
 export interface AgentEventMessage {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
+     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
      */
     meta: AgentEventMessageMeta;
     /**
@@ -986,7 +986,7 @@ export interface AgentEventMessage {
 }
 
 /**
- * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
+ * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
  */
 export interface AgentEventMessageMeta {
     eventUuid: string;
@@ -1005,7 +1005,7 @@ export type EventMessageType = "addEventListenerEvent" | "broadcastEvent" | "cha
  */
 export interface AgentResponseMessage {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AgentResponseMessageMeta;
     /**
@@ -1022,16 +1022,16 @@ export interface AgentResponseMessage {
 }
 
 /**
- * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+ * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
  */
 export interface AgentResponseMessageMeta {
-    requestUuid:  string;
+    requestUuid: string;
     responseUuid: string;
     /**
      * Field that represents the source application that the request being responded to was
      * received from, for debugging purposes.
      */
-    source?:   AppIdentifier;
+    source?: AppIdentifier;
     timestamp: Date;
 }
 
@@ -1081,7 +1081,7 @@ export interface AppRequestMessageMeta {
      * purposes but a Desktop Agent should make its own determination of the source of a message
      * to avoid spoofing.
      */
-    source?:   AppIdentifier;
+    source?: AppIdentifier;
     timestamp: Date;
 }
 
@@ -1100,7 +1100,7 @@ export type RequestMessageType = "addContextListenerRequest" | "addEventListener
  */
 export interface BroadcastEvent {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
+     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
      */
     meta: BroadcastEventMeta;
     /**
@@ -1115,7 +1115,7 @@ export interface BroadcastEvent {
 }
 
 /**
- * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
+ * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
  */
 export interface BroadcastEventMeta {
     eventUuid: string;
@@ -1136,7 +1136,7 @@ export interface BroadcastEventPayload {
      */
     context: Context;
     /**
-     * Details of the application instance that broadcast the context
+     * Details of the application instance that broadcast the context.
      */
     originatingApp?: AppIdentifier;
 }
@@ -1236,7 +1236,7 @@ export interface BroadcastRequest {
  */
 export interface BroadcastRequestPayload {
     /**
-     * The Id of the Channel that the broadcast was sent on
+     * The Id of the Channel that the broadcast was sent on.
      */
     channelId: string;
     /**
@@ -1258,7 +1258,7 @@ export interface BroadcastRequestPayload {
  */
 export interface BroadcastResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -1297,7 +1297,7 @@ export interface BroadcastResponseResponsePayload {
  */
 export interface ChannelChangedEvent {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
+     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
      */
     meta: BroadcastEventMeta;
     /**
@@ -1368,7 +1368,7 @@ export interface ContextListenerUnsubscribeRequestPayload {
  */
 export interface ContextListenerUnsubscribeResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -1430,7 +1430,7 @@ export interface CreatePrivateChannelRequestPayload {
  */
 export interface CreatePrivateChannelResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -1452,7 +1452,7 @@ export interface CreatePrivateChannelResponse {
  * unsuccessful.
  */
 export interface CreatePrivateChannelResponsePayload {
-    error?:          PurpleError;
+    error?: PurpleError;
     privateChannel?: Channel;
 }
 
@@ -1506,11 +1506,11 @@ export interface DisplayMetadata {
      */
     color?: string;
     /**
-     * A URL of an image that can be used to display this channel
+     * A URL of an image that can be used to display this channel.
      */
     glyph?: string;
     /**
-     * A user-readable name for this channel, e.g: `"Red"`
+     * A user-readable name for this channel, e.g: `"Red"`.
      */
     name?: string;
 }
@@ -1567,7 +1567,7 @@ export interface EventListenerUnsubscribeRequestPayload {
  */
 export interface EventListenerUnsubscribeResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -1598,7 +1598,7 @@ export interface EventListenerUnsubscribeResponse {
  */
 export interface Fdc3UserInterfaceChannelSelected {
     /**
-     * The message payload
+     * The message payload.
      */
     payload: Fdc3UserInterfaceChannelSelectedPayload;
     /**
@@ -1608,12 +1608,12 @@ export interface Fdc3UserInterfaceChannelSelected {
 }
 
 /**
- * The message payload
+ * The message payload.
  */
 export interface Fdc3UserInterfaceChannelSelectedPayload {
     /**
      * The id of the channel that should be currently selected, or `null` if none should be
-     * selected
+     * selected.
      */
     selected: null | string;
 }
@@ -1632,7 +1632,7 @@ export interface Fdc3UserInterfaceChannelSelectedPayload {
  */
 export interface Fdc3UserInterfaceChannels {
     /**
-     * The message payload
+     * The message payload.
      */
     payload: Fdc3UserInterfaceChannelsPayload;
     /**
@@ -1642,12 +1642,12 @@ export interface Fdc3UserInterfaceChannels {
 }
 
 /**
- * The message payload
+ * The message payload.
  */
 export interface Fdc3UserInterfaceChannelsPayload {
     /**
      * The id of the channel that should be currently selected, or `null` if none should be
-     * selected
+     * selected.
      */
     selected: null | string;
     /**
@@ -1664,7 +1664,7 @@ export interface Fdc3UserInterfaceChannelsPayload {
  * Message from a UI iframe to the DA proxy (setup by `getAgent()`) indicating that the user
  * is dragging the UI to a new location and providing the offset to apply to the location.
  * The DA proxy implementation should limit the location to the current bounds of the
- * window's viewport
+ * window's viewport.
  *
  * A message used to communicate with user interface frames injected by `getAgent()` for
  * displaying UI elements such as the intent resolver or channel selector. Used for messages
@@ -1672,7 +1672,7 @@ export interface Fdc3UserInterfaceChannelsPayload {
  */
 export interface Fdc3UserInterfaceDrag {
     /**
-     * The message payload
+     * The message payload.
      */
     payload: Fdc3UserInterfaceDragPayload;
     /**
@@ -1682,17 +1682,17 @@ export interface Fdc3UserInterfaceDrag {
 }
 
 /**
- * The message payload
+ * The message payload.
  */
 export interface Fdc3UserInterfaceDragPayload {
     /**
-     * The offset to move the frame by
+     * The offset to move the frame by.
      */
     mouseOffsets: MouseOffsets;
 }
 
 /**
- * The offset to move the frame by
+ * The offset to move the frame by.
  */
 export interface MouseOffsets {
     x: number;
@@ -1714,7 +1714,7 @@ export interface MouseOffsets {
  */
 export interface Fdc3UserInterfaceHandshake {
     /**
-     * The message payload
+     * The message payload.
      */
     payload: Fdc3UserInterfaceHandshakePayload;
     /**
@@ -1724,7 +1724,7 @@ export interface Fdc3UserInterfaceHandshake {
 }
 
 /**
- * The message payload
+ * The message payload.
  */
 export interface Fdc3UserInterfaceHandshakePayload {
     /**
@@ -1748,7 +1748,7 @@ export interface Fdc3UserInterfaceHandshakePayload {
  */
 export interface Fdc3UserInterfaceHello {
     /**
-     * The message payload
+     * The message payload.
      */
     payload: Fdc3UserInterfaceHelloPayload;
     /**
@@ -1758,7 +1758,7 @@ export interface Fdc3UserInterfaceHello {
 }
 
 /**
- * The message payload
+ * The message payload.
  */
 export interface Fdc3UserInterfaceHelloPayload {
     /**
@@ -1778,43 +1778,43 @@ export interface Fdc3UserInterfaceHelloPayload {
  */
 export interface InitialCSS {
     /**
-     * The initial bottom property to apply to the iframe
+     * The initial bottom property to apply to the iframe.
      */
     bottom?: string;
     /**
-     * The initial height of the iframe
+     * The initial height of the iframe.
      */
     height?: string;
     /**
-     * The initial left property to apply to the iframe
+     * The initial left property to apply to the iframe.
      */
     left?: string;
     /**
-     * The maximum height to apply to the iframe
+     * The maximum height to apply to the iframe.
      */
     maxHeight?: string;
     /**
-     * The maximum with to apply to the iframe
+     * The maximum with to apply to the iframe.
      */
     maxWidth?: string;
     /**
-     * The initial right property to apply to the iframe
+     * The initial right property to apply to the iframe.
      */
     right?: string;
     /**
-     * The initial top property to apply to the iframe
+     * The initial top property to apply to the iframe.
      */
     top?: string;
     /**
-     * The transition property to apply to the iframe
+     * The transition property to apply to the iframe.
      */
     transition?: string;
     /**
-     * The initial width of the iframe
+     * The initial width of the iframe.
      */
     width?: string;
     /**
-     * The initial zindex to apply to the iframe
+     * The initial zindex to apply to the iframe.
      */
     zIndex?: string;
     [property: string]: any;
@@ -1831,7 +1831,7 @@ export interface InitialCSS {
  */
 export interface Fdc3UserInterfaceMessage {
     /**
-     * The message payload
+     * The message payload.
      */
     payload?: { [key: string]: any };
     /**
@@ -1855,7 +1855,7 @@ export type Fdc3UserInterfaceMessageType = "Fdc3UserInterfaceHello" | "Fdc3UserI
  */
 export interface Fdc3UserInterfaceResolve {
     /**
-     * The message payload
+     * The message payload.
      */
     payload: Fdc3UserInterfaceResolvePayload;
     /**
@@ -1865,18 +1865,18 @@ export interface Fdc3UserInterfaceResolve {
 }
 
 /**
- * The message payload
+ * The message payload.
  */
 export interface Fdc3UserInterfaceResolvePayload {
     /**
      * An array of AppIntent objects defining the resolution options.
      */
     appIntents: AppIntent[];
-    context:    Context;
+    context: Context;
 }
 
 /**
- * An interface that relates an intent to apps
+ * An interface that relates an intent to apps.
  *
  * Used if a raiseIntent request requires additional resolution (e.g. by showing an intent
  * resolver) before it can be handled.
@@ -1895,7 +1895,7 @@ export interface AppIntent {
 /**
  * Details of the intent whose relationship to resolving applications is being described.
  *
- * Intent descriptor
+ * Metadata describing an Intent.
  */
 export interface IntentMetadata {
     /**
@@ -1903,7 +1903,7 @@ export interface IntentMetadata {
      */
     displayName?: string;
     /**
-     * The unique name of the intent that can be invoked by the raiseIntent call
+     * The unique name of the intent that can be invoked by the raiseIntent call.
      */
     name: string;
 }
@@ -1922,7 +1922,7 @@ export interface IntentMetadata {
  */
 export interface Fdc3UserInterfaceResolveAction {
     /**
-     * The message payload
+     * The message payload.
      */
     payload: Fdc3UserInterfaceResolveActionPayload;
     /**
@@ -1932,16 +1932,16 @@ export interface Fdc3UserInterfaceResolveAction {
 }
 
 /**
- * The message payload
+ * The message payload.
  */
 export interface Fdc3UserInterfaceResolveActionPayload {
     action: Action;
     /**
-     * The App resolution option chosen
+     * The App resolution option chosen.
      */
     appIdentifier?: AppIdentifier;
     /**
-     * The intent resolved
+     * The intent resolved.
      */
     intent?: string;
 }
@@ -1963,7 +1963,7 @@ export type Action = "hover" | "click" | "cancel";
  */
 export interface Fdc3UserInterfaceRestyle {
     /**
-     * The message payload
+     * The message payload.
      */
     payload: Fdc3UserInterfaceRestylePayload;
     /**
@@ -1973,7 +1973,7 @@ export interface Fdc3UserInterfaceRestyle {
 }
 
 /**
- * The message payload
+ * The message payload.
  */
 export interface Fdc3UserInterfaceRestylePayload {
     /**
@@ -1989,43 +1989,43 @@ export interface Fdc3UserInterfaceRestylePayload {
  */
 export interface UpdatedCSS {
     /**
-     * The initial bottom property to apply to the iframe
+     * The initial bottom property to apply to the iframe.
      */
     bottom?: string;
     /**
-     * The updated height of the iframe
+     * The updated height of the iframe.
      */
     height?: string;
     /**
-     * The initial left property to apply to the iframe
+     * The initial left property to apply to the iframe.
      */
     left?: string;
     /**
-     * The updated maximum height to apply to the iframe
+     * The updated maximum height to apply to the iframe.
      */
     maxHeight?: string;
     /**
-     * The updated maximum with to apply to the iframe
+     * The updated maximum with to apply to the iframe.
      */
     maxWidth?: string;
     /**
-     * The initial right property to apply to the iframe
+     * The initial right property to apply to the iframe.
      */
     right?: string;
     /**
-     * The initial top property to apply to the iframe
+     * The initial top property to apply to the iframe.
      */
     top?: string;
     /**
-     * The updated transition property to apply to the iframe
+     * The updated transition property to apply to the iframe.
      */
     transition?: string;
     /**
-     * The updated width of the iframe
+     * The updated width of the iframe.
      */
     width?: string;
     /**
-     * The updated zindex to apply to the iframe
+     * The updated zIndex to apply to the iframe.
      */
     zIndex?: string;
     [property: string]: any;
@@ -2076,7 +2076,7 @@ export interface FindInstancesRequestPayload {
  */
 export interface FindInstancesResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2102,7 +2102,7 @@ export interface FindInstancesResponse {
  * resulted in an error and including a standardized error message.
  */
 export interface FindInstancesResponsePayload {
-    error?:          FindInstancesErrors;
+    error?: FindInstancesErrors;
     appIdentifiers?: AppMetadata[];
 }
 
@@ -2163,8 +2163,8 @@ export interface FindIntentRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentRequestPayload {
-    context?:    Context;
-    intent:      string;
+    context?: Context;
+    intent: string;
     resultType?: string;
 }
 
@@ -2181,7 +2181,7 @@ export interface FindIntentRequestPayload {
  */
 export interface FindIntentResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2203,7 +2203,7 @@ export interface FindIntentResponse {
  * unsuccessful.
  */
 export interface FindIntentResponsePayload {
-    error?:     FindInstancesErrors;
+    error?: FindInstancesErrors;
     appIntent?: AppIntent;
 }
 
@@ -2238,7 +2238,7 @@ export interface FindIntentsByContextRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentsByContextRequestPayload {
-    context:     Context;
+    context: Context;
     resultType?: string;
 }
 
@@ -2255,7 +2255,7 @@ export interface FindIntentsByContextRequestPayload {
  */
 export interface FindIntentsByContextResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2277,7 +2277,7 @@ export interface FindIntentsByContextResponse {
  * unsuccessful.
  */
 export interface FindIntentsByContextResponsePayload {
-    error?:      FindInstancesErrors;
+    error?: FindInstancesErrors;
     appIntents?: AppIntent[];
 }
 
@@ -2327,7 +2327,7 @@ export interface GetAppMetadataRequestPayload {
  */
 export interface GetAppMetadataResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2349,7 +2349,7 @@ export interface GetAppMetadataResponse {
  * unsuccessful.
  */
 export interface GetAppMetadataResponsePayload {
-    error?:       FindInstancesErrors;
+    error?: FindInstancesErrors;
     appMetadata?: AppMetadata;
 }
 
@@ -2399,7 +2399,7 @@ export interface GetCurrentChannelRequestPayload {
  */
 export interface GetCurrentChannelResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2421,7 +2421,7 @@ export interface GetCurrentChannelResponse {
  * unsuccessful.
  */
 export interface GetCurrentChannelResponsePayload {
-    error?:   ResponsePayloadError;
+    error?: ResponsePayloadError;
     channel?: Channel | null;
 }
 
@@ -2458,7 +2458,7 @@ export interface GetCurrentContextRequest {
  */
 export interface GetCurrentContextRequestPayload {
     /**
-     * The id of the channel to return the current context of
+     * The id of the channel to return the current context of.
      */
     channelId: string;
     /**
@@ -2481,7 +2481,7 @@ export interface GetCurrentContextRequestPayload {
  */
 export interface GetCurrentContextResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2506,7 +2506,7 @@ export interface GetCurrentContextResponsePayload {
     error?: PurpleError;
     /**
      * The most recently broadcast context object (of the specified type, if one was specified),
-     * or `null` if none was available in the channel
+     * or `null` if none was available in the channel.
      */
     context?: null | Context;
 }
@@ -2518,7 +2518,7 @@ export interface GetCurrentContextResponsePayload {
 
 /**
  * Request to retrieve information about the FDC3 Desktop Agent implementation  and the
- * metadata of the calling application according to the desktop agent.
+ * metadata of the calling application according to the Desktop Agent.
  *
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
@@ -2557,7 +2557,7 @@ export interface GetInfoRequestPayload {
  */
 export interface GetInfoResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2579,7 +2579,7 @@ export interface GetInfoResponse {
  * unsuccessful.
  */
 export interface GetInfoResponsePayload {
-    error?:                  ResponsePayloadError;
+    error?: ResponsePayloadError;
     implementationMetadata?: ImplementationMetadata;
 }
 
@@ -2633,7 +2633,7 @@ export interface GetOrCreateChannelRequestPayload {
  */
 export interface GetOrCreateChannelResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2655,7 +2655,7 @@ export interface GetOrCreateChannelResponse {
  * unsuccessful.
  */
 export interface GetOrCreateChannelResponsePayload {
-    error?:   PurpleError;
+    error?: PurpleError;
     channel?: Channel;
 }
 
@@ -2704,7 +2704,7 @@ export interface GetUserChannelsRequestPayload {
  */
 export interface GetUserChannelsResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2726,7 +2726,7 @@ export interface GetUserChannelsResponse {
  * unsuccessful.
  */
 export interface GetUserChannelsResponsePayload {
-    error?:        PurpleError;
+    error?: PurpleError;
     userChannels?: Channel[];
 }
 
@@ -2781,7 +2781,7 @@ export interface HeartbeatAcknowledgementRequestPayload {
  */
 export interface HeartbeatEvent {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
+     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
      */
     meta: BroadcastEventMeta;
     /**
@@ -2814,7 +2814,7 @@ export interface HeartbeatEventPayload {
  */
 export interface IntentEvent {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
+     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
      */
     meta: BroadcastEventMeta;
     /**
@@ -2841,7 +2841,7 @@ export interface IntentEventPayload {
      */
     intent: string;
     /**
-     * Details of the application instance that raised the intent
+     * Details of the application instance that raised the intent.
      */
     originatingApp?: AppIdentifier;
     /**
@@ -2897,7 +2897,7 @@ export interface IntentListenerUnsubscribeRequestPayload {
  */
 export interface IntentListenerUnsubscribeResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2949,7 +2949,7 @@ export interface IntentResultRequestPayload {
      * The eventUuid value of the intentEvent that the result being sent relates to.
      */
     intentEventUuid: string;
-    intentResult:    IntentResult;
+    intentResult: IntentResult;
     /**
      * The requestUuid value of the raiseIntentRequest that the result being sent relates to.
      */
@@ -2974,7 +2974,7 @@ export interface IntentResult {
  */
 export interface IntentResultResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -3023,7 +3023,7 @@ export interface JoinUserChannelRequest {
  */
 export interface JoinUserChannelRequestPayload {
     /**
-     * The id of the channel to join
+     * The id of the channel to join.
      */
     channelId: string;
 }
@@ -3043,7 +3043,7 @@ export interface JoinUserChannelRequestPayload {
  */
 export interface JoinUserChannelResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -3113,7 +3113,7 @@ export interface LeaveCurrentChannelRequestPayload {
  */
 export interface LeaveCurrentChannelResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -3190,7 +3190,7 @@ export interface OpenRequestPayload {
  */
 export interface OpenResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -3212,7 +3212,7 @@ export interface OpenResponse {
  * unsuccessful.
  */
 export interface OpenResponsePayload {
-    error?:         OpenErrorResponsePayload;
+    error?: OpenErrorResponsePayload;
     appIdentifier?: AppIdentifier;
 }
 
@@ -3269,7 +3269,7 @@ export interface TPayload {
 /**
  * The type of PrivateChannel event that the listener should be applied to.
  *
- * Event listener type names for Private Channel events
+ * Event listener type names for Private Channel events.
  */
 export type PrivateChannelEventListenerTypes = "onAddContextListener" | "onUnsubscribe" | "onDisconnect";
 
@@ -3286,7 +3286,7 @@ export type PrivateChannelEventListenerTypes = "onAddContextListener" | "onUnsub
  */
 export interface PrivateChannelAddEventListenerResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -3308,7 +3308,7 @@ export interface PrivateChannelAddEventListenerResponse {
  * unsuccessful.
  */
 export interface PrivateChannelAddEventListenerResponsePayload {
-    error?:        PurpleError;
+    error?: PurpleError;
     listenerUUID?: string;
     [property: string]: any;
 }
@@ -3363,7 +3363,7 @@ export interface PrivateChannelDisconnectRequestPayload {
  */
 export interface PrivateChannelDisconnectResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -3401,7 +3401,7 @@ export interface PrivateChannelDisconnectResponsePayload {
  */
 export interface PrivateChannelOnAddContextListenerEvent {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
+     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
      */
     meta: BroadcastEventMeta;
     /**
@@ -3443,7 +3443,7 @@ export interface PrivateChannelOnAddContextListenerEventPayload {
  */
 export interface PrivateChannelOnDisconnectEvent {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
+     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
      */
     meta: BroadcastEventMeta;
     /**
@@ -3480,7 +3480,7 @@ export interface PrivateChannelOnDisconnectEventPayload {
  */
 export interface PrivateChannelOnUnsubscribeEvent {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
+     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
      */
     meta: BroadcastEventMeta;
     /**
@@ -3555,7 +3555,7 @@ export interface PrivateChannelUnsubscribeEventListenerRequestPayload {
  */
 export interface PrivateChannelUnsubscribeEventListenerResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -3601,7 +3601,7 @@ export interface RaiseIntentForContextRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface RaiseIntentForContextRequestPayload {
-    app?:    AppIdentifier;
+    app?: AppIdentifier;
     context: Context;
 }
 
@@ -3618,7 +3618,7 @@ export interface RaiseIntentForContextRequestPayload {
  */
 export interface RaiseIntentForContextResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -3648,9 +3648,9 @@ export interface RaiseIntentForContextResponse {
  * (`appIntents`) or Error (`error`).
  *
  * Response to a raiseIntentForContext request that needs additional resolution (i.e. show
- * an intent resolver UI)
+ * an intent resolver UI).
  *
- * Used if a raiseIntent request resulted in an error
+ * Used if a raiseIntent request resulted in an error.
  */
 export interface RaiseIntentForContextResponsePayload {
     /**
@@ -3658,7 +3658,7 @@ export interface RaiseIntentForContextResponsePayload {
      */
     error?: FindInstancesErrors;
     /**
-     * Used if the raiseIntent request was successfully resolved
+     * Used if the raiseIntent request was successfully resolved.
      */
     intentResolution?: IntentResolution;
     /**
@@ -3669,7 +3669,7 @@ export interface RaiseIntentForContextResponsePayload {
 }
 
 /**
- * Used if the raiseIntent request was successfully resolved
+ * Used if the raiseIntent request was successfully resolved.
  *
  * IntentResolution provides a standard format for data returned upon resolving an intent.
  *
@@ -3740,9 +3740,9 @@ export interface RaiseIntentRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface RaiseIntentRequestPayload {
-    app?:    AppIdentifier;
+    app?: AppIdentifier;
     context: Context;
-    intent:  string;
+    intent: string;
 }
 
 /**
@@ -3758,7 +3758,7 @@ export interface RaiseIntentRequestPayload {
  */
 export interface RaiseIntentResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -3790,7 +3790,7 @@ export interface RaiseIntentResponse {
  * Response to a raiseIntent request that needs additional resolution (i.e. show an intent
  * resolver UI).
  *
- * Used if a raiseIntent request resulted in an error
+ * Used if a raiseIntent request resulted in an error.
  */
 export interface RaiseIntentResponsePayload {
     /**
@@ -3798,7 +3798,7 @@ export interface RaiseIntentResponsePayload {
      */
     error?: FindInstancesErrors;
     /**
-     * Used if the raiseIntent request was successfully resolved
+     * Used if the raiseIntent request was successfully resolved.
      */
     intentResolution?: IntentResolution;
     /**
@@ -3823,7 +3823,7 @@ export interface RaiseIntentResponsePayload {
  */
 export interface RaiseIntentResultResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -3845,7 +3845,7 @@ export interface RaiseIntentResultResponse {
  * unsuccessful.
  */
 export interface RaiseIntentResultResponsePayload {
-    error?:        ResponsePayloadError;
+    error?: ResponsePayloadError;
     intentResult?: IntentResult;
 }
 
@@ -4558,7 +4558,7 @@ function transform(val: any, typ: any, getProps: any, key: any = '', parent: any
             const typ = typs[i];
             try {
                 return transform(val, typ, getProps);
-            } catch (_) {}
+            } catch (_) { }
         }
         return invalidValue(typs, val, key, parent);
     }
@@ -4617,9 +4617,9 @@ function transform(val: any, typ: any, getProps: any, key: any = '', parent: any
     if (Array.isArray(typ)) return transformEnum(typ, val);
     if (typeof typ === "object") {
         return typ.hasOwnProperty("unionMembers") ? transformUnion(typ.unionMembers, val)
-            : typ.hasOwnProperty("arrayItems")    ? transformArray(typ.arrayItems, val)
-            : typ.hasOwnProperty("props")         ? transformObject(getProps(typ), typ.additional, val)
-            : invalidValue(typ, val, key, parent);
+            : typ.hasOwnProperty("arrayItems") ? transformArray(typ.arrayItems, val)
+                : typ.hasOwnProperty("props") ? transformObject(getProps(typ), typ.additional, val)
+                    : invalidValue(typ, val, key, parent);
     }
     // Numbers can be parsed by Date but shouldn't be.
     if (typ === Date && typeof val !== "number") return transformDate(val);

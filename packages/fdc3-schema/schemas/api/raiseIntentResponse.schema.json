@@ -45,7 +45,7 @@
 			"properties": {
 				"intentResolution": {
 					"title": "Intent Resolution",
-					"description": "Used if the raiseIntent request was successfully resolved",
+					"description": "Used if the raiseIntent request was successfully resolved.",
 					"$ref": "api.schema.json#/definitions/IntentResolution"
 				}
 			},
@@ -72,7 +72,7 @@
 		},
 		"RaiseIntentErrorResponsePayload": {
 			"title": "RaiseIntent Error Response Payload",
-			"description": "Used if a raiseIntent request resulted in an error",
+			"description": "Used if a raiseIntent request resulted in an error.",
 			"type": "object",
 			"properties": {
 				"error": {

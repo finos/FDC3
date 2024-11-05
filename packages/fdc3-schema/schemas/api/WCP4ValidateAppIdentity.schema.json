@@ -38,7 +38,7 @@
             },
             "instanceId": {
               "title": "instanceId",
-              "description": "If an application has previously connected to the desktop agent, it may specify its prior instance id and associated instance UUID to request the same same instance Id be assigned.",
+              "description": "If an application has previously connected to the Desktop Agent, it may specify its prior instance id and associated instance UUID to request the same same instance Id be assigned.",
               "type": "string"
             },
             "instanceUuid": {
@@ -53,8 +53,6 @@
           ]
         },
         "meta": {
-          "title": "Connection Step Metadata",
-          "description": "Metadata for this connection step message",
           "$ref": "WCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"
         }
       },
