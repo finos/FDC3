@@ -38,10 +38,8 @@ jobs:
       with:
         coverage_file: "nyc-coverage-report/coverage-summary.json"
 
-    - name: Test Report
-      uses: n-ryu/test-reporter@v0.0.2
+    - name: Create test summary
+      uses: test-summary/action@dist
       with:
-        path: "**/test-results.xml"
-        name: "Test Results"
-        reporter: "jest-junit"
+        paths: "**/test-results.xml"
       if: always()
