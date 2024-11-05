@@ -89,14 +89,14 @@
 
 /**
  * Hello message sent by an application to a parent window or frame when attempting to
- * establish connectivity to a Desktop Agent
+ * establish connectivity to a Desktop Agent.
  *
  * A message used during the connection flow for an application to a Desktop Agent in a
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocol1Hello {
     /**
-     * Metadata for this connection step message
+     * Metadata for a Web Connection Protocol message.
      */
     meta: WebConnectionProtocol1HelloMeta;
     /**
@@ -110,13 +110,11 @@ export interface WebConnectionProtocol1Hello {
 }
 
 /**
- * Metadata for this connection step message
- *
- * Metadata for a disconnection step message
+ * Metadata for a Web Connection Protocol message.
  */
 export interface WebConnectionProtocol1HelloMeta {
     connectionAttemptUuid: string;
-    timestamp: Date;
+    timestamp:             Date;
 }
 
 /**
@@ -158,14 +156,14 @@ export interface WebConnectionProtocol1HelloPayload {
 /**
  * Response from a Desktop Agent to an application requesting access to it indicating that
  * it should load a specified URL into a hidden iframe in order to establish connectivity to
- * a Desktop Agent
+ * a Desktop Agent.
  *
  * A message used during the connection flow for an application to a Desktop Agent in a
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocol2LoadURL {
     /**
-     * Metadata for this connection step message
+     * Metadata for a Web Connection Protocol message.
      */
     meta: WebConnectionProtocol1HelloMeta;
     /**
@@ -185,7 +183,7 @@ export interface WebConnectionProtocol2LoadURLPayload {
     /**
      * A URL which can be used to establish communication with the Desktop Agent, via loading
      * the URL into an iframe and restarting the Web Connection protocol with the iframe as the
-     * target
+     * target.
      */
     iframeUrl: string;
     [property: string]: any;
@@ -204,7 +202,7 @@ export interface WebConnectionProtocol2LoadURLPayload {
  */
 export interface WebConnectionProtocol3Handshake {
     /**
-     * Metadata for this connection step message
+     * Metadata for a Web Connection Protocol message.
      */
     meta: WebConnectionProtocol1HelloMeta;
     /**
@@ -251,7 +249,7 @@ export interface WebConnectionProtocol3HandshakePayload {
  */
 export interface WebConnectionProtocol4ValidateAppIdentity {
     /**
-     * Metadata for this connection step message
+     * Metadata for a Web Connection Protocol message.
      */
     meta: WebConnectionProtocol1HelloMeta;
     /**
@@ -279,7 +277,7 @@ export interface WebConnectionProtocol4ValidateAppIdentityPayload {
      */
     identityUrl: string;
     /**
-     * If an application has previously connected to the desktop agent, it may specify its prior
+     * If an application has previously connected to the Desktop Agent, it may specify its prior
      * instance id and associated instance UUID to request the same same instance Id be assigned.
      */
     instanceId?: string;
@@ -301,7 +299,7 @@ export interface WebConnectionProtocol4ValidateAppIdentityPayload {
  */
 export interface WebConnectionProtocol5ValidateAppIdentityFailedResponse {
     /**
-     * Metadata for this connection step message
+     * Metadata for a Web Connection Protocol message.
      */
     meta: WebConnectionProtocol1HelloMeta;
     /**
@@ -326,14 +324,14 @@ export interface WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload 
  */
 
 /**
- * Message sent by the Desktop Agent to an app after successful identity validation
+ * Message sent by the Desktop Agent to an app after successful identity validation.
  *
  * A message used during the connection flow for an application to a Desktop Agent in a
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
     /**
-     * Metadata for this connection step message
+     * Metadata for a Web Connection Protocol message.
      */
     meta: WebConnectionProtocol1HelloMeta;
     /**
@@ -351,12 +349,12 @@ export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
  */
 export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload {
     /**
-     * The appId that the app's identity was validated against
+     * The appId that the app's identity was validated against.
      */
     appId: string;
     /**
      * Implementation metadata for the Desktop Agent, which includes an appMetadata element
-     * containing a copy of the app's own metadata
+     * containing a copy of the app's own metadata.
      */
     implementationMetadata: ImplementationMetadata;
     /**
@@ -365,14 +363,14 @@ export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload
     instanceId: string;
     /**
      * Instance UUID associated with the instanceId granted, which may be used to retrieve the
-     * same instance Id if the app is reloaded or navigates.
+     * same instanceId if the app is reloaded or navigates.
      */
     instanceUuid: string;
 }
 
 /**
  * Implementation metadata for the Desktop Agent, which includes an appMetadata element
- * containing a copy of the app's own metadata
+ * containing a copy of the app's own metadata.
  *
  * Includes Metadata for the current application.
  *
@@ -411,7 +409,7 @@ export interface ImplementationMetadata {
  *
  * Extends an `AppIdentifier`, describing an application or instance of an application, with
  * additional descriptive metadata that is usually provided by an FDC3 App Directory that
- * the desktop agent connects to.
+ * the Desktop Agent connects to.
  *
  * The additional information from an app directory can aid in rendering UI elements, such
  * as a launcher menu or resolver UI. This includes a title, description, tooltip and icon
@@ -423,11 +421,11 @@ export interface ImplementationMetadata {
 export interface AppMetadata {
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId: string;
     /**
-     * A longer, multi-paragraph description for the application that could include markup
+     * A longer, multi-paragraph description for the application that could include markup.
      */
     description?: string;
     /**
@@ -436,7 +434,7 @@ export interface AppMetadata {
      */
     desktopAgent?: string;
     /**
-     * A list of icon URLs for the application that can be used to render UI elements
+     * A list of icon URLs for the application that can be used to render UI elements.
      */
     icons?: Icon[];
     /**
@@ -466,15 +464,15 @@ export interface AppMetadata {
     resultType?: null | string;
     /**
      * Images representing the app in common usage scenarios that can be used to render UI
-     * elements
+     * elements.
      */
     screenshots?: Image[];
     /**
-     * A more user-friendly application title that can be used to render UI elements
+     * A more user-friendly application title that can be used to render UI elements.
      */
     title?: string;
     /**
-     * A tooltip for the application that can be used to render UI elements
+     * A tooltip for the application that can be used to render UI elements.
      */
     tooltip?: string;
     /**
@@ -484,8 +482,7 @@ export interface AppMetadata {
 }
 
 /**
- * SPDX-License-Identifier: Apache-2.0
- * Copyright FINOS FDC3 contributors - see NOTICE file
+ * Describes an Icon images that may be used to represent the application.
  */
 export interface Icon {
     /**
@@ -493,7 +490,7 @@ export interface Icon {
      */
     size?: string;
     /**
-     * The icon url
+     * The icon url.
      */
     src: string;
     /**
@@ -503,8 +500,8 @@ export interface Icon {
 }
 
 /**
- * SPDX-License-Identifier: Apache-2.0
- * Copyright FINOS FDC3 contributors - see NOTICE file
+ * Describes an image file, typically a screenshot, that often represents the application in
+ * a common usage scenario.
  */
 export interface Image {
     /**
@@ -563,7 +560,7 @@ export interface OptionalFeatures {
  */
 export interface WebConnectionProtocol6Goodbye {
     /**
-     * Metadata for a disconnection step message
+     * Metadata for a Web Connection Protocol message.
      */
     meta: WebConnectionProtocol6GoodbyeMeta;
     /**
@@ -573,9 +570,7 @@ export interface WebConnectionProtocol6Goodbye {
 }
 
 /**
- * Metadata for a disconnection step message
- *
- * Metadata for this connection step message
+ * Metadata for a Web Connection Protocol message.
  */
 export interface WebConnectionProtocol6GoodbyeMeta {
     timestamp: Date;
@@ -590,7 +585,10 @@ export interface WebConnectionProtocol6GoodbyeMeta {
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocolMessage {
-    meta: WebConnectionProtocolMessageMeta;
+    /**
+     * Metadata for a Web Connection Protocol message.
+     */
+    meta: ConnectionStepMetadata;
     /**
      * The message payload, containing data pertaining to this connection step.
      */
@@ -602,12 +600,10 @@ export interface WebConnectionProtocolMessage {
 }
 
 /**
- * Metadata for a disconnection step message
- *
- * Metadata for this connection step message
+ * Metadata for a Web Connection Protocol message.
  */
-export interface WebConnectionProtocolMessageMeta {
-    timestamp: Date;
+export interface ConnectionStepMetadata {
+    timestamp:              Date;
     connectionAttemptUuid?: string;
 }
 
@@ -652,7 +648,7 @@ export interface AddContextListenerRequestMeta {
      * purposes but a Desktop Agent should make its own determination of the source of a message
      * to avoid spoofing.
      */
-    source?: AppIdentifier;
+    source?:   AppIdentifier;
     timestamp: Date;
 }
 
@@ -755,13 +751,13 @@ export interface AddContextListenerResponse {
  * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
  */
 export interface AddContextListenerResponseMeta {
-    requestUuid: string;
+    requestUuid:  string;
     responseUuid: string;
     /**
      * Field that represents the source application that the request being responded to was
      * received from, for debugging purposes.
      */
-    source?: AppIdentifier;
+    source?:   AppIdentifier;
     timestamp: Date;
 }
 
@@ -771,7 +767,7 @@ export interface AddContextListenerResponseMeta {
  * unsuccessful.
  */
 export interface AddContextListenerResponsePayload {
-    error?: PurpleError;
+    error?:        PurpleError;
     listenerUUID?: string;
 }
 
@@ -861,7 +857,7 @@ export interface AddEventListenerResponse {
  * unsuccessful.
  */
 export interface AddEventListenerResponsePayload {
-    error?: ResponsePayloadError;
+    error?:        ResponsePayloadError;
     listenerUUID?: string;
 }
 
@@ -946,7 +942,7 @@ export interface AddIntentListenerResponse {
  * unsuccessful.
  */
 export interface AddIntentListenerResponsePayload {
-    error?: FluffyError;
+    error?:        FluffyError;
     listenerUUID?: string;
     [property: string]: any;
 }
@@ -1025,13 +1021,13 @@ export interface AgentResponseMessage {
  * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
  */
 export interface AgentResponseMessageMeta {
-    requestUuid: string;
+    requestUuid:  string;
     responseUuid: string;
     /**
      * Field that represents the source application that the request being responded to was
      * received from, for debugging purposes.
      */
-    source?: AppIdentifier;
+    source?:   AppIdentifier;
     timestamp: Date;
 }
 
@@ -1081,7 +1077,7 @@ export interface AppRequestMessageMeta {
      * purposes but a Desktop Agent should make its own determination of the source of a message
      * to avoid spoofing.
      */
-    source?: AppIdentifier;
+    source?:   AppIdentifier;
     timestamp: Date;
 }
 
@@ -1452,7 +1448,7 @@ export interface CreatePrivateChannelResponse {
  * unsuccessful.
  */
 export interface CreatePrivateChannelResponsePayload {
-    error?: PurpleError;
+    error?:          PurpleError;
     privateChannel?: Channel;
 }
 
@@ -1651,7 +1647,7 @@ export interface Fdc3UserInterfaceChannelsPayload {
      */
     selected: null | string;
     /**
-     * User Channel definitions
+     * User Channel definitions.```````s
      */
     userChannels: Channel[];
 }
@@ -1872,7 +1868,7 @@ export interface Fdc3UserInterfaceResolvePayload {
      * An array of AppIntent objects defining the resolution options.
      */
     appIntents: AppIntent[];
-    context: Context;
+    context:    Context;
 }
 
 /**
@@ -2102,7 +2098,7 @@ export interface FindInstancesResponse {
  * resulted in an error and including a standardized error message.
  */
 export interface FindInstancesResponsePayload {
-    error?: FindInstancesErrors;
+    error?:          FindInstancesErrors;
     appIdentifiers?: AppMetadata[];
 }
 
@@ -2118,7 +2114,7 @@ export interface FindInstancesResponsePayload {
  * should be used in the first (WCP1Hello) message and should be quoted in all subsequent
  * messages to link them to the same connection attempt.
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -2163,8 +2159,8 @@ export interface FindIntentRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentRequestPayload {
-    context?: Context;
-    intent: string;
+    context?:    Context;
+    intent:      string;
     resultType?: string;
 }
 
@@ -2203,7 +2199,7 @@ export interface FindIntentResponse {
  * unsuccessful.
  */
 export interface FindIntentResponsePayload {
-    error?: FindInstancesErrors;
+    error?:     FindInstancesErrors;
     appIntent?: AppIntent;
 }
 
@@ -2238,7 +2234,7 @@ export interface FindIntentsByContextRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentsByContextRequestPayload {
-    context: Context;
+    context:     Context;
     resultType?: string;
 }
 
@@ -2277,7 +2273,7 @@ export interface FindIntentsByContextResponse {
  * unsuccessful.
  */
 export interface FindIntentsByContextResponsePayload {
-    error?: FindInstancesErrors;
+    error?:      FindInstancesErrors;
     appIntents?: AppIntent[];
 }
 
@@ -2349,7 +2345,7 @@ export interface GetAppMetadataResponse {
  * unsuccessful.
  */
 export interface GetAppMetadataResponsePayload {
-    error?: FindInstancesErrors;
+    error?:       FindInstancesErrors;
     appMetadata?: AppMetadata;
 }
 
@@ -2421,7 +2417,7 @@ export interface GetCurrentChannelResponse {
  * unsuccessful.
  */
 export interface GetCurrentChannelResponsePayload {
-    error?: ResponsePayloadError;
+    error?:   ResponsePayloadError;
     channel?: Channel | null;
 }
 
@@ -2579,7 +2575,7 @@ export interface GetInfoResponse {
  * unsuccessful.
  */
 export interface GetInfoResponsePayload {
-    error?: ResponsePayloadError;
+    error?:                  ResponsePayloadError;
     implementationMetadata?: ImplementationMetadata;
 }
 
@@ -2655,7 +2651,7 @@ export interface GetOrCreateChannelResponse {
  * unsuccessful.
  */
 export interface GetOrCreateChannelResponsePayload {
-    error?: PurpleError;
+    error?:   PurpleError;
     channel?: Channel;
 }
 
@@ -2726,7 +2722,7 @@ export interface GetUserChannelsResponse {
  * unsuccessful.
  */
 export interface GetUserChannelsResponsePayload {
-    error?: PurpleError;
+    error?:        PurpleError;
     userChannels?: Channel[];
 }
 
@@ -2949,7 +2945,7 @@ export interface IntentResultRequestPayload {
      * The eventUuid value of the intentEvent that the result being sent relates to.
      */
     intentEventUuid: string;
-    intentResult: IntentResult;
+    intentResult:    IntentResult;
     /**
      * The requestUuid value of the raiseIntentRequest that the result being sent relates to.
      */
@@ -3212,7 +3208,7 @@ export interface OpenResponse {
  * unsuccessful.
  */
 export interface OpenResponsePayload {
-    error?: OpenErrorResponsePayload;
+    error?:         OpenErrorResponsePayload;
     appIdentifier?: AppIdentifier;
 }
 
@@ -3308,7 +3304,7 @@ export interface PrivateChannelAddEventListenerResponse {
  * unsuccessful.
  */
 export interface PrivateChannelAddEventListenerResponsePayload {
-    error?: PurpleError;
+    error?:        PurpleError;
     listenerUUID?: string;
     [property: string]: any;
 }
@@ -3601,7 +3597,7 @@ export interface RaiseIntentForContextRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface RaiseIntentForContextRequestPayload {
-    app?: AppIdentifier;
+    app?:    AppIdentifier;
     context: Context;
 }
 
@@ -3740,9 +3736,9 @@ export interface RaiseIntentRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface RaiseIntentRequestPayload {
-    app?: AppIdentifier;
+    app?:    AppIdentifier;
     context: Context;
-    intent: string;
+    intent:  string;
 }
 
 /**
@@ -3845,7 +3841,7 @@ export interface RaiseIntentResultResponse {
  * unsuccessful.
  */
 export interface RaiseIntentResultResponsePayload {
-    error?: ResponsePayloadError;
+    error?:        ResponsePayloadError;
     intentResult?: IntentResult;
 }
 
@@ -4558,7 +4554,7 @@ function transform(val: any, typ: any, getProps: any, key: any = '', parent: any
             const typ = typs[i];
             try {
                 return transform(val, typ, getProps);
-            } catch (_) { }
+            } catch (_) {}
         }
         return invalidValue(typs, val, key, parent);
     }
@@ -4617,9 +4613,9 @@ function transform(val: any, typ: any, getProps: any, key: any = '', parent: any
     if (Array.isArray(typ)) return transformEnum(typ, val);
     if (typeof typ === "object") {
         return typ.hasOwnProperty("unionMembers") ? transformUnion(typ.unionMembers, val)
-            : typ.hasOwnProperty("arrayItems") ? transformArray(typ.arrayItems, val)
-                : typ.hasOwnProperty("props") ? transformObject(getProps(typ), typ.additional, val)
-                    : invalidValue(typ, val, key, parent);
+            : typ.hasOwnProperty("arrayItems")    ? transformArray(typ.arrayItems, val)
+            : typ.hasOwnProperty("props")         ? transformObject(getProps(typ), typ.additional, val)
+            : invalidValue(typ, val, key, parent);
     }
     // Numbers can be parsed by Date but shouldn't be.
     if (typ === Date && typeof val !== "number") return transformDate(val);
@@ -4768,11 +4764,11 @@ const typeMap: any = {
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "WebConnectionProtocolMessage": o([
-        { json: "meta", js: "meta", typ: r("WebConnectionProtocolMessageMeta") },
+        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
         { json: "payload", js: "payload", typ: u(undefined, m("any")) },
         { json: "type", js: "type", typ: r("ConnectionStepMessageType") },
     ], false),
-    "WebConnectionProtocolMessageMeta": o([
+    "ConnectionStepMetadata": o([
         { json: "timestamp", js: "timestamp", typ: Date },
         { json: "connectionAttemptUuid", js: "connectionAttemptUuid", typ: u(undefined, "") },
     ], false),

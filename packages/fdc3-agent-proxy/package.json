@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "build": "tsc --module es2022",
-    "test": "tsc && nyc --reporter=lcov --reporter=text cucumber-js",
+    "test": "tsc && nyc --reporter=lcov --reporter=text  --reporter json  cucumber-js",
     "clean": "rimraf dist && rimraf cucumber-report.html && rimraf coverage && rimraf .nyc_output && rimraf node_modules"
   },
   "dependencies": {
