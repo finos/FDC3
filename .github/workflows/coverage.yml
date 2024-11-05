@@ -41,6 +41,6 @@ jobs:
     - name: Test Report
       uses: n-ryu/test-reporter@v0.0.2
       with:
-        path: **/test-results.xml
+        path: "**/test-results.xml"
         name: "Test Results"
       if: always()
