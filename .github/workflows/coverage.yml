@@ -38,14 +38,9 @@ jobs:
       with:
         coverage_file: "nyc-coverage-report/coverage-summary.json"
 
-    - name: Test Summary
-      uses: test-summary/action@v2
+    - name: Test Report
+      uses: n-ryu/test-reporter@v0.0.2
       with:
-        paths: | 
-          packages/fdc3-get-agent/test-results.xml
-          packages/fdc3-agent-proxy/test-results.xml
-          packages/fdc3-standard/test-results.xml
-          toolbox/fdc3-for-web/fdc3-web-impl/test-results.xml
-        show: "pass, skip, fail"
-        output: "summary.md"
+        path: **/test-results.xml
+        name: "Test Results"
       if: always()
