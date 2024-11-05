@@ -27,7 +27,7 @@
             "type": "category",
             "label": "Conformance Tests",
             "items": [
-              "api/conformance/Overview",
+              "api/conformance/Conformance-Overview",
               "api/conformance/Basic-Tests",
               "api/conformance/App-Channel-Tests",
               "api/conformance/User-Channel-Tests",
@@ -88,6 +88,7 @@
           "context/ref/Country",
           "context/ref/Currency",
           "context/ref/Email",
+          "context/ref/FileAttachment",
           "context/ref/Instrument",
           "context/ref/InstrumentList",
           "context/ref/Interaction",

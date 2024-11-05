@@ -1,4 +1,11 @@
-# FDC3 Conformance Testing
+---
+id: Conformance-Overview
+sidebar_label: Overview
+title: FDC3 Conformance Tests
+hide_title: true
+---
+
+# FDC3 Conformance Tests
 
 This section contains test definitions that are used to test for conformance of a Desktop Agent API implementation with FDC3.
 

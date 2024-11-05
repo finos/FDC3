@@ -1,5 +1,5 @@
 ---
-id: Basic Tests
+id: Basic-Tests
 sidebar_label: Basic Tests
 title: Basic Tests
 hide_title: true
