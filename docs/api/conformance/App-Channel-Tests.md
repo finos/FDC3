@@ -1,5 +1,5 @@
 ---
-id: App Channel Tests
+id: App-Channel-Tests
 sidebar_label: App Channel Tests
 title: App Channel Tests
 hide_title: true

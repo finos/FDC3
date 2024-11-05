@@ -78,7 +78,11 @@ The FDC3 Conformance tests are implemented for JavaScript/TypeScript web applica
 
 Once a Desktop Agent has passed the conformance tests locally, its authors can [apply for a formal certification of compliance with the Standard from FINOS](https://github.com/finos/FDC3-conformance-framework/blob/main/instructions.md). Please note the [Terms and Conditions](https://github.com/finos/FDC3-conformance-framework/blob/main/terms-conditions/FDC3-Certified-Terms.md) of the Conformance Program.
 
-![Certified conformant with FDC3 1.2 badge](/img/community/certified-1.2.png), [Certified conformant with FDC3 2.0 badge](/img/community/certified-2.0.png)
+import badge_12 from '/img/community/certified-1.2.png';
+import badge_20 from '/img/community/certified-2.0.png';
+
+<img src={badge_12} alt="Certified conformant with FDC3 1.2 badge" style={{width: 200}} />
+<img src={badge_20} alt="Certified conformant with FDC3 2.0 badge" style={{width: 200}} />
 
 ## Intellectual Property Claims
 
