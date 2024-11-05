@@ -11,5 +11,5 @@ module.exports = {
     testEnvironment: "jsdom",
     "reporters": [ "default", "jest-junit" ],
     "collectCoverage": true,
-    "coverageReporters": [ "lcov", "text"]
+    "coverageReporters": [ "lcov", "text", "json"]
 };
