@@ -1,5 +1,11 @@
+---
+id: Metadata Tests
+sidebar_label: Metadata Tests
+title: Metadata Tests
+hide_title: true
+---
 
-# Metadata & Instance Test Cases 
+# Metadata & Instance Test Cases
 
 You will need to pre-populate the AppDirectory with the following items:
 
