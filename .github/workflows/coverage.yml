@@ -1,4 +1,4 @@
-name: Node.js CI Coverage
+name: Node.js CI Tests and Coverage
 
 # Controls when the workflow will run on any branch
 on:
@@ -45,3 +45,14 @@ jobs:
       if: always()
       with:
         coverage_file: "nyc-coverage-report/coverage-summary.json"
+
+    - name: Test Summary
+      uses: test-summary/action@v2
+      with:
+        paths: | 
+          packages/fdc3-get-agent/test-results.xml
+          packages/fdc3-agent-proxy/test-results.xml
+          packages/fdc3-standard/test-results.xml
+          toolbox/fdc3-for-web/fdc3-web-impl/test-results.xml
+        show: "all"
+      if: always()
