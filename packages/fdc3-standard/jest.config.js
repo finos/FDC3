@@ -9,5 +9,7 @@ module.exports = {
     },
     testRegex: ".+\\.test\\.ts?$",
     testEnvironment: "jsdom",
-    "reporters": [ "default", "jest-junit" ]
+    "reporters": [ "default", "jest-junit" ],
+    "collectCoverage": true,
+    "coverageReporters": [ "lcov", "text"]
 };

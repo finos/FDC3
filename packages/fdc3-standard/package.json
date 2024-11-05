@@ -19,7 +19,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "build": "tsc --module es2022",
-    "test": "tsc && nyc --reporter=lcov --reporter=text  jest",
+    "test": "tsc && jest",
     "lint": "eslint src/ --fix"
   },
   "prettier": {
@@ -52,7 +52,6 @@
     "jest-environment-jsdom": "29.7.0",
     "jest-junit": "^16.0.0",
     "jest-mock-extended": "3.0.5",
-    "nyc": "^17.1.0",
     "prettier": "3.2.5",
     "quicktype": "23.0.78",
     "rimraf": "^6.0.1",
