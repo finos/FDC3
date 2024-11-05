@@ -9,10 +9,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        node-version: [20.x]
-
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -20,7 +16,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: 20.x
 
     - name: Install dependencies
       run: npm install
@@ -50,5 +46,6 @@ jobs:
           packages/fdc3-agent-proxy/test-results.xml
           packages/fdc3-standard/test-results.xml
           toolbox/fdc3-for-web/fdc3-web-impl/test-results.xml
-        show: "all"
+        show: "pass, skip, fail"
+        output: "summary.md"
       if: always()
