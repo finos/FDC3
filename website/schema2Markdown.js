@@ -10,12 +10,12 @@ function processProperty(propertyName, propertyDetails, required, currentSchemaF
     if (propertyName === 'type') {
         //skip rendering the type property as it should be rendered at the top level
         return markdownContent;
-    }   
-    
+    }
+
     if (wrapInDetails) { markdownContent += "<details>\n" };
     markdownContent += `  <summary><code>${propertyName}</code>${required ? " <strong>(required)</strong>" : ""}</summary>\n\n`;
-    
-    //Note this block doesn't support inline property definitions... only base types and references, 
+
+    //Note this block doesn't support inline property definitions... only base types and references,
     //  it will not render an object or array defined inline beyond stating that it is one
     if (propertyDetails.type) {
         //if enum doesn't exist, its ignored
@@ -24,7 +24,7 @@ function processProperty(propertyName, propertyDetails, required, currentSchemaF
         if (propertyDetails.type == "object") {
             if (propertyDetails.properties && Object.entries(propertyDetails.properties).length > 0) {
                 markdownContent += '**Subproperties:**\n\n';
-                
+
                 for (const [subpropertyName, subpropertyDetails] of Object.entries(propertyDetails.properties)) {
                     let subPropRequired = propertyDetails?.required?.includes(subpropertyName) ?? false;
                     markdownContent += processProperty(subpropertyName, subpropertyDetails, subPropRequired, currentSchemaFilePath);
@@ -74,7 +74,7 @@ function processProperty(propertyName, propertyDetails, required, currentSchemaF
 
     if (wrapInDetails) { markdownContent += "</details>" }
     markdownContent += "\n\n";
-    
+
     return markdownContent;
 }
 
@@ -116,7 +116,7 @@ function renderRef(contextRef, currentSchemaFilePath) {
         //render the content as it won't have its own page
         const referencedSchemaData = retrievePathInSchema(schemaData, objectPath);
         const referencedTitle = referencedSchemaData.title ?? "";
-        
+
         return processProperty(referencedTitle, referencedSchemaData, false, currentSchemaFilePath, false);
 
     } else {
@@ -142,19 +142,19 @@ function renderRef(contextRef, currentSchemaFilePath) {
             //custom handling for other standard parts...
             return `**type**: ${standardPart}/${title}\n`;
 
-            //TODO handle API schema refs 
+            //TODO handle API schema refs
             // - which are currently split across two different docs pages (Types and Metadata)
             // - perhaps reunite these pages and just link to the resulting page.
         }
     }
-    
-    
+
+
 }
 
 function hasAllOf(allOfArray) {
-    return Array.isArray(allOfArray) && 
-        allOfArray.length > 0 && 
-        allOfArray[0] != null && 
+    return Array.isArray(allOfArray) &&
+        allOfArray.length > 0 &&
+        allOfArray[0] != null &&
         allOfArray[0].properties != null
 }
 
@@ -164,14 +164,14 @@ function hasProperties(schema) {
 
 // Function to generate Markdown content from JSON schema
 function generateObjectMD(schema, objectName, schemaFolderName, filePath) {
-    //If the schema doesn't contain a title, 
+    //If the schema doesn't contain a title,
     // it may have been embedded in a definition who's name would have been passed in
     title = schema.title ?? objectName;
 
     let markdownContent = `# ${title}\n\n`;
 
     if (schema.description != null) {
-        markdownContent += `${escapeExperimental(schema.description)}\n\n`; 
+        markdownContent += `${escapeExperimental(schema.description)}\n\n`;
     }
 
     //If the schema has a top level enum (e.g. API error schemas) then it needs rendering here.
@@ -183,7 +183,7 @@ function generateObjectMD(schema, objectName, schemaFolderName, filePath) {
      const workingPath = filePath.replaceAll("\\","/");
     const url = schema.$id;
     const githubUrl = workingPath.replace("../schemas/", `https://github.com/finos/FDC3/tree/main/schemas/`);
-    markdownContent += `## Schema\n\n<${url}> ([github](${githubUrl}))\n\n`;
+    markdownContent += `## Schema\n\n[${url}](${url}) ([github](${githubUrl}))\n\n`;
 
     if (hasAllOf(schema.allOf) || hasProperties(schema)) {
         // Extract properties, required fields, and $ref from the first allOf object
@@ -191,15 +191,15 @@ function generateObjectMD(schema, objectName, schemaFolderName, filePath) {
         if (hasAllOf(schema.allOf)) {
             root = schema.allOf[0];
         }
-        
+
         const properties = root.properties;
         const requiredProperties = root.required;
         const typeString = properties?.type?.const;
         const ref = root.$ref;
-                
+
         markdownContent += `## Type\n\n`;
         markdownContent += `\`${typeString}\`\n\n`;
-        markdownContent += `## Properties\n\n`; 
+        markdownContent += `## Properties\n\n`;
 
         for (const [propertyName, propertyDetails] of Object.entries(properties)) {
             if (propertyName != "type"){
@@ -218,7 +218,7 @@ function generateObjectMD(schema, objectName, schemaFolderName, filePath) {
             } else {
                 markdownContent += `## Example\n\n`;
             }
-            
+
             schema.examples.forEach((example) => {
                 markdownContent += '```json\n';
                 markdownContent += JSON.stringify(example, null, 2);
@@ -269,13 +269,13 @@ function processSchemaFile(schemaFile, schemaFolderName) {
 }
 /**
  * Given a path to a schema file, retrieves the schema file contents.
- * If a currentFilePath is specified the path is resolved relative to it 
+ * If a currentFilePath is specified the path is resolved relative to it
  * (as it is assumed that the path to be resolved is relative to that file).
- * 
+ *
  * Does not support retrieving schemas via a full URL.
- * 
- * @param {string} schemaFilePath 
- * @param {string} currentFilePath 
+ *
+ * @param {string} schemaFilePath
+ * @param {string} currentFilePath
  * @returns Contents of the referenced schema file
  */
 function retrieveSchemaFile (schemaFilePath, currentFilePath) {
@@ -291,7 +291,7 @@ function retrieveSchemaFile (schemaFilePath, currentFilePath) {
         pathComponents.push(schemaFilePathData.base);
         resolvedPath = path.join(...pathComponents);
     }
-    
+
     //read the file
     return fse.readJSONSync(resolvedPath);
 }
@@ -306,9 +306,9 @@ function retrieveFolderName (schemaFilePath) {
 
 /**
  * Retrieve the content at a particular path in a schema object.
- * @param {*} schemaData 
- * @param {*} pathInSchema 
- * @returns 
+ * @param {*} schemaData
+ * @param {*} pathInSchema
+ * @returns
  */
 function retrievePathInSchema(schemaData, pathInSchema) {
     let outputData = schemaData;
@@ -323,18 +323,18 @@ function retrievePathInSchema(schemaData, pathInSchema) {
 }
 
 /**
- * Retrieves the title element from a schema object, with an optional path 
+ * Retrieves the title element from a schema object, with an optional path
  * (e.g. to a definition) within that schema.
- * @param {*} schemaData 
- * @param {*} pathInSchema 
- * @returns 
+ * @param {*} schemaData
+ * @param {*} pathInSchema
+ * @returns
  */
 function retrieveTitleFromSchemaData(schemaData, pathInSchema) {
     //if a path within the schema was specified, navigate to it
     if (pathInSchema){
         schemaData = retrievePathInSchema(schemaData, pathInSchema);
     }
-    
+
     if (schemaData?.title) {
         return schemaData.title;
     } else {
@@ -359,7 +359,7 @@ function parseSchemaFolder(schemaFolderName) {
     // Process each schema file
     let sidebarItems = [];
     for (const schemaFile of schemaFiles) {
-        
+
         if (path.basename(schemaFile) === "context.schema.json"){
             console.log(`  Skipping ${schemaFile}`);
         } else {
@@ -376,7 +376,7 @@ function main() {
     console.log("Generating Context reference pages...")
     //generate markdown docs for the current schema versions in the current docs draft
 
-    let sidebarObject = fse.readJsonSync(`./sidebars.json`)    
+    let sidebarObject = fse.readJsonSync(`./sidebars.json`)
 
     let sidebarContextObject = {
         "type": "category",
@@ -399,7 +399,7 @@ function main() {
             elem.items = sidebarContextObject.items;
             console.log("Replaced content of 'Context Data Part' of website navigation.");
         }
-        
+
     });
 
     //or create it if not found
