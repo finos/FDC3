@@ -47,7 +47,7 @@ interface DesktopAgent {
   getCurrentChannel() : Promise<Channel | null>;
   leaveCurrentChannel() : Promise<void>;
 
-  // non-context events 
+  // non-context events
   addEventListener(type: FDC3EventTypes  | null, handler: EventHandler): Promise<Listener>;
 
   //implementation info
