@@ -35,8 +35,8 @@ Also we assume a fourth app **D** that is going to discover the intents in the o
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
-| D   | 1. Raise          | `fdc3.raiseIntent(‘sharedTestingIntent1’, {testContextY})`<br>starts app B.                       |
-| B   | 2. Gather Context | `fdc.addIntentListener(‘sharedTestingIntent1’)`<br>Receives testContextY, matching that sent by D |
+| D   | 1. Raise          | `fdc3.raiseIntent(‘sharedTestingIntent1’, {testContextY})`<br/>starts app B.                       |
+| B   | 2. Gather Context | `fdc.addIntentListener(‘sharedTestingIntent1’)`<br/>Receives testContextY, matching that sent by D |
 
 -  `SingleResolve1`: Perform above test
 -  `TargetedResolve1`: Use `fdc3.raiseIntent(‘aTestingIntent’, {testContextX}, <A’s App Name>)` to start app A, otherwise, as above
@@ -117,8 +117,8 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 | App   | Step           | Details                                                                                           |
 |-------|----------------|---------------------------------------------------------------------------------------------------|
-| Test  | 1. Raise        | `fdc3.raiseIntent("aTestingIntent", testContextX)`<br>starts app A.                       |
-| A     | 2. Receive Intent & Context | After starting up, A runs `fdc3.addIntentListener("aTestingIntent1")` to register its listener.<br>It then receives `testContextX`, matching that sent by Test |
+| Test  | 1. Raise        | `fdc3.raiseIntent("aTestingIntent", testContextX)`<br/>starts app A.                       |
+| A     | 2. Receive Intent & Context | After starting up, A runs `fdc3.addIntentListener("aTestingIntent1")` to register its listener.<br/>It then receives `testContextX`, matching that sent by Test |
 | Test  | 3. IntentResolution          | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App A's `appId` and `instanceId` set.**                       |
 
 - `2.0-RaiseIntentSingleResolve`: Perform above test
@@ -127,12 +127,12 @@ Finally, please note that this is a larger set of apps than were required for 1.
   - Otherwise, as above.
 - `2.0-RaiseIntentTargetedInstanceResolveOpen`: Repeat the above test, but:
   - Before the first step, use `let appIdentifier = await fdc3.open({appId: "<A's appId>"})` to start A and retrieve its `AppIdentifier` with instance details.
-  - Then in the first step, use `fdc3.raiseIntent("aTestingIntent", testContextX, appIdentifier)` to target the running instance of app A. 
+  - Then in the first step, use `fdc3.raiseIntent("aTestingIntent", testContextX, appIdentifier)` to target the running instance of app A.
   - Confirm that the intent is delivered to the correct instance and that another instance is NOT started. Otherwise, as above.
 - `2.0-RaiseIntentTargetedInstanceResolveFindInstances`: Repeat the above test, but:
   - Before the first step, use `let appIdentifier = await fdc3.open({appId: "<A's appId>"})` to start A.
   - Then use `const instances = await fdc3.findInstances({appId: "<A's appId>"})` to retrieve a list of instances of app A. Confirm that only one is present and retrieve its `AppIdentifier`, confirming that it contains an `instanceId` field that matches that returned by the `fdc3.open` call.
-  - Then in the first step, use `fdc3.raiseIntent("aTestingIntent", testContextX, appIdentifier)` to target the running instance of app A. 
+  - Then in the first step, use `fdc3.raiseIntent("aTestingIntent", testContextX, appIdentifier)` to target the running instance of app A.
   - Confirm that the intent is delivered to the correct instance and that another instance is NOT started. Otherwise, as above.
 - `2.0-RaiseIntentFailedResolve`: Perform above test, but:
   - Use `fdc3.raiseIntent("aTestingIntent", testContextY)`.  Note that no app supports this intent and context combination.**
@@ -147,24 +147,24 @@ Finally, please note that this is a larger set of apps than were required for 1.
   - Use `fdc3.raiseIntent("sharedTestingIntent2", testContextY, {appId: "<H's appId>"})`.
   - You should receive a JavaScript Error with the message `ResolveError.IntentDeliveryFailed` (as this app is configured for the intent and context pair, but does not add any intent listeners).
   - **Note:  Test will need an extended timeout to allow for this to be returned in time by the desktop agent, which will have a vendor-defined timeout.**
-- `2.0-RaiseIntentFailTargetedAppResolve4`: Perform above test, but: 
+- `2.0-RaiseIntentFailTargetedAppResolve4`: Perform above test, but:
   - `fdc3.raiseIntent("sharedTestingIntent2", testContextY, {appId: "<I's appId>"})`
   - You should receive a JavaScript Error with the message `ResolveError.IntentDeliveryFailed` (as this app is configured for the intent and context pair, but adds intent listeners of the wrong type.
   - **Note:  Test will need an extended timeout to allow for this to be returned in time by the desktop agent, which will have a vendor-defined timeout.**
 - `2.0-RaiseIntentFailTargetedAppInstanceResolve1`: Perform above test, but:
   - First spawn an instance of App **A** and collect its `AppIdentifier` with `const appIdentifier = await fdc3.open({appId: "<A's appId>"})`.
-  - Then use `fdc3.raiseIntent("aTestingIntent", testContextY, appIdentifier)` to target that instance.  
+  - Then use `fdc3.raiseIntent("aTestingIntent", testContextY, appIdentifier)` to target that instance.
   - You should receive a JavaScript Error with the message `ResolveError.NoAppsFound` (since A doesn't support this context type).
 - `2.0-RaiseIntentFailTargetedAppInstanceResolve2`: Perform above test, but:
-  - Use `fdc3.raiseIntent("aTestingIntent", testContextX, {appId: "<A's appId>", instanceId "NonExistentInstanceId"})`.  
+  - Use `fdc3.raiseIntent("aTestingIntent", testContextX, {appId: "<A's appId>", instanceId "NonExistentInstanceId"})`.
   - You should receive a JavaScript Error with the message `ResolveError.TargetInstanceUnavailable`.
 
 ### Raise Intent Result (void result)
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1. Raise          | `fdc3.raiseIntent("aTestingIntent", testContextX)`<br>starts app A.                       |
-| A       | 2. Receive Intent & Context | After starting up, A runs `fdc3.addIntentListener("aTestingIntent")` to register its listener.<br>It then receives `testContextX`, matching that sent by Test |
+| Test   | 1. Raise          | `fdc3.raiseIntent("aTestingIntent", testContextX)`<br/>starts app A.                       |
+| A       | 2. Receive Intent & Context | After starting up, A runs `fdc3.addIntentListener("aTestingIntent")` to register its listener.<br/>It then receives `testContextX`, matching that sent by Test |
 | Test   | 3. IntentResolution          | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App A's `appId` and `instanceId` set.                     |
 | Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.                        |
 | A       | 5. return void          | A should return `void` after a short delay (e.g. 5 seconds).                        |
@@ -178,8 +178,8 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1. Raise          | `fdc3.raiseIntent("sharedTestingIntent1", testContextY)`<br>starts app **B**. |
-| B      | 2. Receive Intent & Context | After starting up, B runs `fdc3.addIntentListener("sharedTestingIntent1")` to register its listener.<br>It then receives `testContextY`, matching that sent by Test |
+| Test   | 1. Raise          | `fdc3.raiseIntent("sharedTestingIntent1", testContextY)`<br/>starts app **B**. |
+| B      | 2. Receive Intent & Context | After starting up, B runs `fdc3.addIntentListener("sharedTestingIntent1")` to register its listener.<br/>It then receives `testContextY`, matching that sent by Test |
 | Test   | 3. IntentResolution          | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App B's `appId` and `instanceId` set. |
 | Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly. |
 | B      | 5. return `testContextY`          | B should return a `testContextY` instance after a short delay (e.g. 5 seconds). |
@@ -193,8 +193,8 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 | App   | Step                          | Details                                                                                           |
 |-------|-----------------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1. Raise Intent          | Test raises an intent with `fdc3.raiseIntent("sharedTestingIntent2", testContextY, {appId: "<E's appId>"})`<br>starts app E. |
-| E       | 2. Receive Intent & Context     | After starting up, E runs `fdc3.addIntentListener("sharedTestingIntent2")` to register its listener.<br>It them receives `testContextY`, matching that sent by Test |
+| Test   | 1. Raise Intent          | Test raises an intent with `fdc3.raiseIntent("sharedTestingIntent2", testContextY, {appId: "<E's appId>"})`<br/>starts app E. |
+| E       | 2. Receive Intent & Context     | After starting up, E runs `fdc3.addIntentListener("sharedTestingIntent2")` to register its listener.<br/>It them receives `testContextY`, matching that sent by Test |
 | Test   | 3. IntentResolution   | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App E's `appId` and `instanceId` set.   |
 | Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.  |
 | E       | 5. return Channel | E should retrieve a Channel object via `fdc3.getOrCreateChannel("someChannelName")` and return it immediately. |
@@ -227,11 +227,11 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 | App  | Step                 | Details                                                                                                                                    |
 |-------|-----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1. Raise intent | Test raises an intent with `fdc3.raiseIntent(‘"kTestingIntent", testContextX, {appId: "<K's appId>"})`<br>starts app K. |
-| K       | 2. Receive Intent & Context     | After starting up, K runs `fdc3.addIntentListener("kTestingIntent")` to register its listener.<br>It them receives `testContextX`, matching that sent by Test |
+| Test   | 1. Raise intent | Test raises an intent with `fdc3.raiseIntent(‘"kTestingIntent", testContextX, {appId: "<K's appId>"})`<br/>starts app K. |
+| K       | 2. Receive Intent & Context     | After starting up, K runs `fdc3.addIntentListener("kTestingIntent")` to register its listener.<br/>It them receives `testContextX`, matching that sent by Test |
 | Test   | 3. IntentResolution   | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App K's `appId` and `instanceId` set.   |
 | Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.  |
-| K       | 5. Create PrivateChannel and setup event listeners | K should create a `PrivateChannel` object via `const privChan = await fdc3.createPrivateChannel()`,<br>it should then add listeners for the 3 events offered + a context listener via:<br>- `const listener1 = await privChan.onAddContextListener(handler1);`<br>- `const listener2 = await privChan.onUnsubscribe(handler2);`<br>- `const listener3 = await privChan.onDisconnect(handler3);`<br>- `const listener4 = await privChan.addContextListener("testContextX", handler4)`<br>it should then return the `PrivateChannel`. |
+| K       | 5. Create PrivateChannel and setup event listeners | K should create a `PrivateChannel` object via `const privChan = await fdc3.createPrivateChannel()`,<br/>it should then add listeners for the 3 events offered + a context listener via:<br/>- `const listener1 = await privChan.onAddContextListener(handler1);`<br/>- `const listener2 = await privChan.onUnsubscribe(handler2);`<br/>- `const listener3 = await privChan.onDisconnect(handler3);`<br/>- `const listener4 = await privChan.addContextListener("testContextX", handler4)`<br/>it should then return the `PrivateChannel`. |
 | Test   | 6. receive PrivateChannel  | The promise received by Test from `resolution.getResult()` should resolve to a `PrivateChannel` object. Confirm that the `type` of the Channel object is "private".
 | Test   | 7. addContextListener | Test should add a context listener to the PrivateChannel object via `const listener1 = privChan.addContextListener("testContextZ", handler)` |
 | K       | 8. Receive event & broadcast context | The `onAddContextListener` handler (`listener1`) added in step 5 should fire after Test adds its listener. Once it has, K should broadcast a short stream of `testContextZ` objects, with consecutive integer values in them (e.g. 1-5). |
@@ -248,7 +248,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 ### Resolving Ambiguous Intents
 
-FDC3 Desktop Agent MUST provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to raiseIntentForContext that return multiple options). This is often accomplished by providing a user interface allowing the user to select the desired target application or intent and application. 
+FDC3 Desktop Agent MUST provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to raiseIntentForContext that return multiple options). This is often accomplished by providing a user interface allowing the user to select the desired target application or intent and application.
 
 As the methods of resolving ambiguous intents are often user interactive, it is either difficult or impossible to implement an automated test for this. Hence, manual tests should be performed as a final step in a conformance test. These tests are based on the same applications defined for and used in other intent tests - however a separate manual test app should be provided to enable the test.
 
