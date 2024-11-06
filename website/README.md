@@ -24,7 +24,7 @@ To create a new version of the website, a number of NPM scripts need to be run t
 
 3. Check that the version script has done what it needs to:
     - The new website version should exist in _website/versioned_docs_
-        - Links to schema files should have been updated to the versioned links, e.g. check *website/versioned_docs/version-2.1/context/ref/Context.md* has a link like https://fdc3.finos.org/schemas/2.1/context/context.schema.json [https://fdc3.finos.org/schemas/2.1/context/context.schema.json](https://fdc3.finos.org/schemas/2.1/context/context.schema.json) (where '2.1' would be 'next' in the pre-draft)
+        - Links to schema files should have been updated to the versioned links, e.g. check *website/versioned_docs/version-2.1/context/ref/Context.md* has a link like <https://fdc3.finos.org/schemas/2.1/context/context.schema.json> (where '2.1' would be 'next' in the pre-draft)
         - The overview docs (often called spec.md) should have had '(next)' in their titles replaced with the version, e.g. '(2.1)', e.g. check *website/versioned_docs/version-2.1/api/spec.md*
     - A new set of schemas should exist in *website/static/schemas*
         - Check all schema files/folders got copied, including *api/*, *context/*, *bridging/*, *bridgingAsyncAPI/* and the *appd* files.
@@ -58,5 +58,5 @@ To create a new version of the website, a number of NPM scripts need to be run t
 
 9. Merge the PR - website and NPM module will be deployed automatically.
 
-10. Goto https://github.com/finos/FDC3/releases [https://github.com/finos/FDC3/releases](https://github.com/finos/FDC3/releases) and create a new release and tag for the new version.
+10. Goto <https://github.com/finos/FDC3/releases> and create a new release and tag for the new version.
     - Copy the change log into the release description.
