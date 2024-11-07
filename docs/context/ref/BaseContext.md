@@ -8,7 +8,7 @@ sidebar_label: BaseContext
 
 ## Schema
 
-<https://github.com/finos/FDC3/tree/main/schemas/context/context.schema.json>
+[https://github.com/finos/FDC3/tree/main/schemas/context/context.schema.json](https://github.com/finos/FDC3/tree/main/schemas/context/context.schema.json)
 
 ## Type
 
@@ -29,4 +29,3 @@ sidebar_label: BaseContext
 **type**: `object`
 
 </details>
-

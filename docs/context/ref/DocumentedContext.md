@@ -8,7 +8,7 @@ sidebar_label: DocumentedContext
 
 ## Schema
 
-<https://github.com/finos/FDC3/tree/main/schemas/context/context.schema.json>
+[https://github.com/finos/FDC3/tree/main/schemas/context/context.schema.json](https://github.com/finos/FDC3/tree/main/schemas/context/context.schema.json)
 
 ## Type
 

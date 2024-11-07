@@ -17,7 +17,7 @@ In addition to handling requests to plot charts, a charting application may use 
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/next/context/chart.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/chart.schema.json))
+[https://fdc3.finos.org/schemas/next/context/chart.schema.json](https://fdc3.finos.org/schemas/next/context/chart.schema.json) ([github](https://github.com/finos/FDC3/tree/main/schemas/context/chart.schema.json))
 
 ## Type
 

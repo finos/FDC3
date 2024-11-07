@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `Context`
 
-The `fdc3.context` type defines the basic contract or "shape" for all data exchanged by FDC3 operations. As such, it is not 
+The `fdc3.context` type defines the basic contract or "shape" for all data exchanged by FDC3 operations. As such, it is not
 really meant to be used on its own, but is imported by more specific type definitions (standardised or custom) to provide
 the structure and properties shared by all FDC3 context data types.
 
@@ -24,7 +24,7 @@ can be expected to have, but this can always be extended with custom fields as a
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/context.schema.json>
+[https://fdc3.finos.org/schemas/2.1/context/context.schema.json](https://fdc3.finos.org/schemas/2.1/context/context.schema.json)
 
 ## Details
 

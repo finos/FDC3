@@ -18,7 +18,7 @@ Accepts an optional `app` parameter in order to specify a specific app.
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/action.schema.json>
+[https://fdc3.finos.org/schemas/2.1/context/action.schema.json](https://fdc3.finos.org/schemas/2.1/context/action.schema.json)
 
 ## Details
 
