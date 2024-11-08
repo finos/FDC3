@@ -27,7 +27,7 @@ export class HeartbeatListener implements RegisterableListener {
                 heartbeatEventUuid: (_m as HeartbeatEvent).meta.eventUuid
             }
         } as HeartbeatAcknowledgementRequest)
-        console.log("Heartbeat acknowledged")
+        console.debug("Heartbeat acknowledged")
     }
 
     async register(): Promise<void> {
