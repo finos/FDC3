@@ -23,7 +23,7 @@ export abstract class AbstractMessaging implements Messaging {
 
     abstract createMeta(): object
 
-    constructor(options: GetAgentParams, connectionAttemptUuid: string, timeout: number = 10000) {
+    constructor(options: GetAgentParams, connectionAttemptUuid: string, timeout: number = 10016) {
         this.options = options
         this.connectionAttemptUuid = connectionAttemptUuid
         this.timeout = timeout
