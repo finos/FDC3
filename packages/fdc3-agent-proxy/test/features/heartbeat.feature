@@ -7,10 +7,9 @@ Feature: Heartbeats
   Scenario: Send A Heartbeat
     When messaging receives a heartbeat event
     And messaging will have posts
-      | matches_type             |
+      | matches_type                    |
       | heartbeatAcknowledgementRequest |
 
-  @failing
   Scenario: Saying Goodbye
     When I call "{api}" with "disconnect"
     And we wait for a period of "100" ms
