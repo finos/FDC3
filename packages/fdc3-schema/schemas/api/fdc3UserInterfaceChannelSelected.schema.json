@@ -26,7 +26,7 @@
           "properties": {
             "selected": {
               "title": "Selected Channel",
-              "description": "The id of the channel that should be currently selected, or `null` if none should be selected",
+              "description": "The id of the channel that should be currently selected, or `null` if none should be selected.",
               "oneOf": [
                 {"type": "string"}, {"type": "null"}
               ]

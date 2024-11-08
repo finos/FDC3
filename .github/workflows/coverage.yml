@@ -1,0 +1,54 @@
+name: Node.js CI Tests and Coverage
+
+# Controls when the workflow will run on any branch
+on:
+  pull_request:
+
+# Define the jobs for this workflow
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20.x
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm run test
+
+    - name: Merge Results
+      run: npm run merge
+      if: always()
+
+    - name: Create Report
+      run: npm run report
+      if: always()
+
+    - name: Report NYC coverage
+      uses: sidx1024/report-nyc-coverage-github-action@v1.2.7
+      if: always()
+      with:
+        coverage_file: "nyc-coverage-report/coverage-summary.json"
+
+    - name: Create test summary
+      uses: test-summary/action@dist
+      with:
+        paths: "**/test-results.xml"
+        show: "fail, skip"
+        output: test-summary.md
+
+      if: always()
+
+    - name: PR comment with file
+      uses: thollander/actions-comment-pull-request@v3
+      with:
+        file-path: test-summary.md
+      if: always()

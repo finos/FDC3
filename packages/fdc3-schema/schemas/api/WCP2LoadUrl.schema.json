@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json",
   "title": "Web Connection Protocol 2 Load Url",
-  "description": "Response from a Desktop Agent to an application requesting access to it indicating that it should load a specified URL into a hidden iframe in order to establish connectivity to a Desktop Agent",
+  "description": "Response from a Desktop Agent to an application requesting access to it indicating that it should load a specified URL into a hidden iframe in order to establish connectivity to a Desktop Agent.",
   "type": "object",
   "allOf": [
     {
@@ -27,7 +27,7 @@
             "iframeUrl": {
               "title": "iframe URL",
               "type": "string",
-              "description": "A URL which can be used to establish communication with the Desktop Agent, via loading the URL into an iframe and restarting the Web Connection protocol with the iframe as the target",
+              "description": "A URL which can be used to establish communication with the Desktop Agent, via loading the URL into an iframe and restarting the Web Connection protocol with the iframe as the target.",
               "format": "uri"
             }
           },
@@ -36,8 +36,6 @@
           ]
         },
         "meta": {
-          "title": "Connection Step Metadata",
-          "description": "Metadata for this connection step message",
           "$ref": "WCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"
         }
       },

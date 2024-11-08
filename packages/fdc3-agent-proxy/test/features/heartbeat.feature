@@ -7,7 +7,7 @@ Feature: Heartbeats
   Scenario: Send A Heartbeat
     When messaging receives a heartbeat event
     And messaging will have posts
-      | matches_type             |
+      | matches_type                    |
       | heartbeatAcknowledgementRequest |
 
   Scenario: Saying Goodbye

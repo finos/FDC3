@@ -1,7 +1,8 @@
-import { IframeHello, IframeRestyle } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 import { BrowserTypes } from "@kite9/fdc3-schema";
 
-type IframeChannels = BrowserTypes.IframeChannels
+type IframeChannels = BrowserTypes.Fdc3UserInterfaceChannels
+type IframeRestyle = BrowserTypes.Fdc3UserInterfaceRestyle
+type IframeHello = BrowserTypes.Fdc3UserInterfaceHello
 
 var channels: any[] = []
 var channelId: string | null = null
@@ -40,7 +41,7 @@ window.addEventListener("load", () => {
 
     // ISSUE: 1302
     parent.postMessage({
-        type: "iframeHello",
+        type: "fdc3UserInterfaceHello",
         payload: {
             initialCSS: DEFAULT_COLLAPSED_CSS,
             implementationDetails: "Demo Channel Selector v1.0"
@@ -49,15 +50,15 @@ window.addEventListener("load", () => {
 
     function changeSize(expanded: boolean) {
         document.body.setAttribute("data-expanded", "" + expanded);
-        myPort.postMessage({ type: "iframeRestyle", payload: { updatedCSS: expanded ? DEFAULT_EXPANDED_CSS : DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
+        myPort.postMessage({ type: "Fdc3UserInterfaceRestyle", payload: { updatedCSS: expanded ? DEFAULT_EXPANDED_CSS : DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
     }
 
     myPort.addEventListener("message", (e) => {
         console.log(e.data.type)
         if (e.data.type == 'iframeHandshake') {
             // ok, port is ready, send the iframe position detials
-            myPort.postMessage({ type: "iframeRestyle", payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
-        } else if (e.data.type == 'iframeChannels') {
+            myPort.postMessage({ type: "Fdc3UserInterfaceRestyle", payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
+        } else if (e.data.type == 'fdc3UserInterfaceChannels') {
             const details = e.data as IframeChannels
             console.log(JSON.stringify("CHANNEL DETAILS: " + JSON.stringify(details)))
             channels = details.payload.userChannels
@@ -86,7 +87,7 @@ window.addEventListener("load", () => {
             a.onclick = () => {
                 changeSize(false)
                 channelId = channel.id
-                myPort.postMessage({ type: "iframeChannelSelected", payload: { selected: channel.id } })
+                myPort.postMessage({ type: "fdc3UserInterfaceSelected", payload: { selected: channel.id } })
             }
         })
 

@@ -55,8 +55,8 @@ window.addEventListener("load", () => {
         socket.emit(DA_HELLO, desktopAgentUUID)
 
         const directory = new FDC3_2_1_JSONDirectory()
-        //await directory.load("/static/da/appd.json")
-        await directory.load("/static/da/local-conformance-2_0.v2.json")
+        await directory.load("/static/da/appd.json")
+        //await directory.load("/static/da/local-conformance-2_0.v2.json")
         //await directory.load("/static/da/training-appd.v2.json")
         const sc = new DemoServerContext(socket, directory)
 
@@ -65,7 +65,7 @@ window.addEventListener("load", () => {
             { id: "two", type: ChannelType.user, context: [], displayMetadata: { name: "THE BLUE CHANNEL", color: "blue" } },
             { id: "three", type: ChannelType.user, context: [], displayMetadata: { name: "THE GREEN CHANNEL", color: "green" } }
         ]
-        const fdc3Server = new DefaultFDC3Server(sc, directory, channelDetails, true, 20000, 10000)
+        const fdc3Server = new DefaultFDC3Server(sc, directory, channelDetails, true, 20000, 10017)
 
         socket.on(FDC3_APP_EVENT, (msg, from) => {
             console.log(`App Event ${JSON.stringify(msg, null, 2)} from ${from}`)
@@ -82,7 +82,9 @@ window.addEventListener("load", () => {
             appList.appendChild(createAppStartButton(app, sc))
         })
 
-        // set up desktop agent handler here using FDC3 Web Loader (or whatever we call it)
+        // set up Desktop Agent Proxy interface here
+        // disabling rule for checks on origin of messages - this could be improved by validating for origins we know we are working with
+        // nosemgrep: javascript.browser.security.insufficient-postmessage-origin-validation.insufficient-postmessage-origin-validation
         window.addEventListener(
             "message",
             (e) => {

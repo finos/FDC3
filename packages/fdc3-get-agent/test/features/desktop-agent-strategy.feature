@@ -2,7 +2,7 @@ Feature: Different Strategies for Accessing the Desktop Agent
 
   Background: Desktop Agent API
     Given a browser document in "document" and window in "window"
-    And Testing ends after "8000" ms
+  #  And Testing ends after "8000" ms
 
   Scenario: Running inside a Browser and using post message with direct message ports
     Given Parent Window desktop "da" listens for postMessage events in "{window}", returns direct message response
@@ -54,13 +54,13 @@ Feature: Different Strategies for Accessing the Desktop Agent
       | iframe | FDC3 Intent Resolver | https://mock.fdc3.com/resolver |        100% |         100% |
     And "{window.fdc3}" is not null
     And "{window.events}" is an array of objects with the following contents
-      | type      | data.type     |
-      | message   | WCP1Hello     |
-      | message   | WCP2LoadUrl   |
-      | message   | WCP3Handshake |
-      | message   | Fdc3UserInterfaceHello   |
-      | message   | Fdc3UserInterfaceHello   |
-      | fdc3Ready | {null}        |
+      | type      | data.type              |
+      | message   | WCP1Hello              |
+      | message   | WCP2LoadUrl            |
+      | message   | WCP3Handshake          |
+      | message   | Fdc3UserInterfaceHello |
+      | message   | Fdc3UserInterfaceHello |
+      | fdc3Ready | {null}                 |
     Then I call "{document}" with "shutdown"
     And I call "{desktopAgent}" with "disconnect"
 
@@ -83,8 +83,8 @@ Feature: Different Strategies for Accessing the Desktop Agent
     Given A Dummy Desktop Agent in "dummy-api"
     And "dummyFailover" is a function which returns a promise of "{dummy-api}"
     And I call getAgent for a promise result with the following options
-      | failover        | timeout |
-      | {dummyFailover} |    1000 |
+      | failover        | timeoutMs |
+      | {dummyFailover} |      1000 |
     And I refer to "{result}" as "theAPIPromise"
     Then the promise "{theAPIPromise}" should resolve
     And I call "{result}" with "getInfo"
@@ -96,8 +96,8 @@ Feature: Different Strategies for Accessing the Desktop Agent
   Scenario: Failover Strategy returning a proxy
     Given "dummyFailover2" is a function which opens an iframe for communications on "{document}"
     And I call getAgent for a promise result with the following options
-      | failover         | timeout |
-      | {dummyFailover2} |    1000 |
+      | failover         | timeoutMs |
+      | {dummyFailover2} |      1000 |
     And I refer to "{result}" as "theAPIPromise"
     Then the promise "{theAPIPromise}" should resolve
     And I call "{result}" with "getInfo"
@@ -138,8 +138,8 @@ Feature: Different Strategies for Accessing the Desktop Agent
 
   Scenario: Nothing works and we timeout
     When I call getAgent for a promise result with the following options
-      | dontSetWindowFdc3 | timeout | intentResolver | channelSelector |
-      | true              |    1000 | false          | false           |
+      | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
+      | true              |      1000 | false          | false           |
     And I refer to "{result}" as "theAPIPromise"
     Then the promise "{theAPIPromise}" should resolve
     And "{result}" is an error with message "AgentNotFound"
@@ -148,12 +148,12 @@ Feature: Different Strategies for Accessing the Desktop Agent
     Given Parent Window desktop "da" listens for postMessage events in "{window}", returns direct message response
     And we wait for a period of "200" ms
     And I call getAgent for a promise result with the following options
-      | dontSetWindowFdc3 | timeout | intentResolver | channelSelector |
-      | true              |    8000 | false          | false           |
+      | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
+      | true              |      8000 | false          | false           |
     And I refer to "{result}" as "theAPIPromise1"
     And I call getAgent for a promise result with the following options
-      | dontSetWindowFdc3 | timeout | intentResolver | channelSelector |
-      | true              |    8000 | false          | false           |
+      | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
+      | true              |      8000 | false          | false           |
     And I refer to "{result}" as "theAPIPromise2"
     Then the promise "{theAPIPromise1}" should resolve
     And I refer to "{result}" as "desktopAgent1"

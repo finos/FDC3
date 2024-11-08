@@ -26,7 +26,6 @@ export * from './api/Methods';
 export * from './api/PrivateChannel';
 export * from './api/RecommendedChannels';
 export * from './api/Types';
-export * from './api/Events'
 export * from './api/Events';
 export * from './api/GetAgent';
 export * from './context/ContextType';

@@ -50,7 +50,7 @@
 				},
 				"originatingApp": {
 					"title": "Originating AppIdentifier",
-					"description": "Details of the application instance that broadcast the context",
+					"description": "Details of the application instance that broadcast the context.",
 					"$ref": "api.schema.json#/definitions/AppIdentifier"
 				}
 			},
