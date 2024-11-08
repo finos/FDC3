@@ -44,8 +44,7 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
         })
         .catch(async (error) => {
             if (options.failover) {
-                const o = await handleWindowProxy(options, () => { return options.failover!!(options) })
-                return o
+                return await handleWindowProxy(options, () => { return options.failover!!(options) })
             } else {
                 throw error
             }
