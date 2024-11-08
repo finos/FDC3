@@ -21,6 +21,7 @@ export class HeartbeatListener implements RegisterableListener {
             type: "heartbeatAcknowledgementRequest",
             meta: {
                 requestUuid: this.messaging.createUUID(),
+                timestamp: new Date()
             },
             payload: {
                 heartbeatEventUuid: (_m as HeartbeatEvent).meta.eventUuid
