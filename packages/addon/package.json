@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "clean": "rimraf dist",
+    "clean": "npx rimraf dist",
     "preview": "vite preview"
   },
   "devDependencies": {
