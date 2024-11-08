@@ -7,10 +7,12 @@ import { RegisterableListener } from "./RegisterableListener"
  */
 export abstract class AbstractListener<X> implements RegisterableListener {
 
+    private readonly messaging: Messaging
     readonly handler: X
     id: string | null = null
 
-    constructor(private readonly messaging: Messaging, private readonly payloadDetails: Record<string, string | null>, handler: X, private readonly subscribeType: string, private readonly unsubscribeType: string) {
+    constructor(messaging: Messaging, private readonly payloadDetails: Record<string, string | null>, handler: X, private readonly subscribeType: string, private readonly unsubscribeType: string) {
+        this.messaging = messaging
         this.handler = handler
     }
 
