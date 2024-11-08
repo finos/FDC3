@@ -1,9 +1,10 @@
-import { IframeHello, IframeRestyle } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 import { AppIdentifier } from "@kite9/fdc3-standard";
 import { BrowserTypes } from "@kite9/fdc3-schema";
 
-type IframeResolveAction = BrowserTypes.IframeResolveAction
-type IframeResolvePayload = BrowserTypes.IframeResolvePayload
+type IframeResolveAction = BrowserTypes.Fdc3UserInterfaceResolveAction
+type IframeResolvePayload = BrowserTypes.Fdc3UserInterfaceResolvePayload
+type IframeRestyle = BrowserTypes.Fdc3UserInterfaceRestyle
+type IframeHello = BrowserTypes.Fdc3UserInterfaceHello
 
 const DEFAULT_COLLAPSED_CSS = {
     position: "fixed",
@@ -42,11 +43,11 @@ window.addEventListener("load", () => {
     } as any as IframeHello, "*", [mc.port2]);
 
     function callback(intent: string | null, app: AppIdentifier | null) {
-        myPort.postMessage({ type: "iframeRestyle", payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
+        myPort.postMessage({ type: "Fdc3UserInterfaceRestyle", payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
 
         if (intent && app) {
             myPort.postMessage({
-                type: "iframeResolveAction",
+                type: "Fdc3UserInterfaceResolveAction",
                 payload: {
                     action: "click",
                     appIdentifier: app,
@@ -55,7 +56,7 @@ window.addEventListener("load", () => {
             } as IframeResolveAction)
         } else {
             myPort.postMessage({
-                type: "iframeResolveAction",
+                type: "Fdc3UserInterfaceResolveAction",
                 payload: {
                     action: "cancel"
                 }
@@ -65,9 +66,9 @@ window.addEventListener("load", () => {
 
     myPort.addEventListener("message", (e) => {
         if (e.data.type == 'iframeHandshake') {
-            myPort.postMessage({ type: "iframeRestyle", payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
+            myPort.postMessage({ type: "Fdc3UserInterfaceRestyle", payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
         } else if (e.data.type == 'iframeResolve') {
-            myPort.postMessage({ type: "iframeRestyle", payload: { updatedCSS: DEFAULT_EXPANDED_CSS } } as IframeRestyle)
+            myPort.postMessage({ type: "Fdc3UserInterfaceRestyle", payload: { updatedCSS: DEFAULT_EXPANDED_CSS } } as IframeRestyle)
             Array.from(list.children).forEach(i => i.remove())
             const details = e.data.payload as IframeResolvePayload
             details.appIntents.forEach(intent => {
