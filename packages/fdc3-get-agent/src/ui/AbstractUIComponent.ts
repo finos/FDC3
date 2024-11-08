@@ -9,7 +9,6 @@ export const INITIAL_CONTAINER_CSS = {
     position: "fixed"
 }
 
-
 export const ALLOWED_CSS_ELEMENTS = [
     "width",
     "height",
@@ -58,7 +57,6 @@ export abstract class AbstractUIComponent implements Connectable {
         port.addEventListener("message", (e) => {
             const data = e.data
             if (data.type == 'Fdc3UserInterfaceRestyle') {
-                // console.log(`Restyling ${JSON.stringify(data.payload)}`)
                 const css = data.payload.updatedCSS
                 this.themeContainer(css)
             }
@@ -73,7 +71,6 @@ export abstract class AbstractUIComponent implements Connectable {
     private awaitHello(): Promise<MessagePort> {
         return new Promise((resolve, _reject) => {
             const ml = (e: MessageEvent) => {
-                // console.log("Received UI Message: " + JSON.stringify(e.data))
                 if ((e.source == this.iframe?.contentWindow) && (e.data.type == 'Fdc3UserInterfaceHello')) {
                     const helloData = e.data as Fdc3UserInterfaceHello
                     if (helloData.payload.initialCSS) {
@@ -104,15 +101,17 @@ export abstract class AbstractUIComponent implements Connectable {
     }
 
     themeContainer(css: UpdatedCSS | InitialCSS) {
-        if (css) {
-            for (let i = 0; i < ALLOWED_CSS_ELEMENTS.length; i++) {
-                const k = ALLOWED_CSS_ELEMENTS[i]
-                const value: string | undefined = css[(k as string)]
-                if (value != null) {
-                    this.container?.style.setProperty(k, value)
-                } else {
-                    this.container?.style.removeProperty(k)
-                }
+        if (!css) {
+            return
+        }
+
+        for (let i = 0; i < ALLOWED_CSS_ELEMENTS.length; i++) {
+            const k = ALLOWED_CSS_ELEMENTS[i]
+            const value: string | undefined = css[(k as string)]
+            if (value !== undefined) {
+                this.container?.style.setProperty(k, value)
+            } else {
+                this.container?.style.removeProperty(k)
             }
         }
     }
