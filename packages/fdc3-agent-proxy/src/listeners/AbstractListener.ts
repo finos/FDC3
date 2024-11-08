@@ -7,7 +7,7 @@ import { RegisterableListener } from "./RegisterableListener"
  */
 export abstract class AbstractListener<X> implements RegisterableListener {
 
-    private readonly messaging: Messaging
+    readonly messaging: Messaging
     readonly handler: X
     id: string | null = null
 
