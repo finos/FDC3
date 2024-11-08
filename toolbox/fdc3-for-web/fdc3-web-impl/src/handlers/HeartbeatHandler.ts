@@ -119,7 +119,6 @@ export class HeartbeatHandler implements MessageHandler {
                 eventUuid: sc.createUUID(),
             },
             payload: {
-                timestamp: new Date()
             }
         } as BrowserTypes.HeartbeatEvent, app.instanceId!!)
     }
