@@ -25,27 +25,29 @@ export class DefaultChannel implements Channel {
     }
 
     async broadcast(context: Context): Promise<void> {
-        const done = await this.messaging.exchange<BroadcastResponse>({
+        const request: BroadcastRequest = {
             meta: this.messaging.createMeta(),
             payload: {
                 channelId: this.id,
                 context
             },
             type: "broadcastRequest"
-        } as BroadcastRequest, 'broadcastResponse')
-        console.log("broadcast done", done)
+        };
+        await this.messaging.exchange<BroadcastResponse>(request, 'broadcastResponse')
     }
 
     async getCurrentContext(contextType?: string | undefined): Promise<Context | null> {
-        // first, ensure channel state is up-to-date
-        const response = await this.messaging.exchange<GetCurrentContextResponse>({
+        const request: GetCurrentContextRequest = {
             meta: this.messaging.createMeta(),
             payload: {
                 channelId: this.id,
                 contextType: contextType ?? null
             },
             type: "getCurrentContextRequest"
-        } as GetCurrentContextRequest, 'getCurrentContextResponse')
+        };
+
+        // first, ensure channel state is up-to-date
+        const response = await this.messaging.exchange<GetCurrentContextResponse>(request, 'getCurrentContextResponse')
 
         return response.payload.context ?? null
     }

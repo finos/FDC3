@@ -8,6 +8,8 @@ import { DefaultContextListener } from "../listeners/DefaultContextListener";
 type PrivateChannelDisconnectRequest = BrowserTypes.PrivateChannelDisconnectRequest
 type PrivateChannelDisconnectResponse = BrowserTypes.PrivateChannelDisconnectResponse
 
+
+
 export class DefaultPrivateChannel extends DefaultChannel implements PrivateChannel {
 
     constructor(messaging: Messaging, id: string) {
@@ -50,7 +52,7 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
             }
         }
 
-        throw new Error("Unsupported event type: " + type)
+        throw new Error(`Unsupported event type: ${type}`)
     }
 
     onAddContextListener(handler: (contextType?: string | undefined) => void): Listener {
@@ -72,13 +74,14 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
     }
 
     async disconnect(): Promise<void> {
-        await this.messaging.exchange<PrivateChannelDisconnectResponse>({
+        const request: PrivateChannelDisconnectRequest = {
             meta: this.messaging.createMeta(),
             payload: {
                 channelId: this.id,
             },
             type: "privateChannelDisconnectRequest"
-        } as PrivateChannelDisconnectRequest, 'privateChannelDisconnectResponse')
+        };
+        await this.messaging.exchange<PrivateChannelDisconnectResponse>(request, 'privateChannelDisconnectResponse')
     }
 
     async addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {

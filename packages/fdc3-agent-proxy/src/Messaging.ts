@@ -29,7 +29,11 @@ export interface Messaging extends Connectable {
      */
     unregister(id: string): void
 
-    createMeta(): object /* ISSUE: #1275 */
+    /**
+     * The exact definition necessary for createMeta() is currently up in the air. See issue #1275.
+     * TODO: Use better typing.
+     */
+    createMeta(): any;
 
     /**
      * Waits for a specific matching message
