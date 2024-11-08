@@ -11,7 +11,6 @@ import { Context } from "@kite9/fdc3-context";
 type RaiseIntentForContextRequest = BrowserTypes.RaiseIntentForContextRequest
 type RaiseIntentForContextResponse = BrowserTypes.RaiseIntentForContextResponse
 type FindIntentResponse = BrowserTypes.FindIntentResponse
-type AddContextListenerRequestMeta = BrowserTypes.AddContextListenerRequestMeta
 type FindIntentsByContextRequest = BrowserTypes.FindIntentsByContextRequest
 type FindIntentsByContextResponse = BrowserTypes.FindIntentsByContextResponse
 type RaiseIntentRequest = BrowserTypes.RaiseIntentRequest
@@ -19,26 +18,26 @@ type RaiseIntentResultResponse = BrowserTypes.RaiseIntentResultResponse
 type RaiseIntentResponse = BrowserTypes.RaiseIntentResponse
 type FindIntentRequest = BrowserTypes.FindIntentRequest
 
-function convertIntentResult(m: RaiseIntentResultResponse, messaging: Messaging): Promise<IntentResult> {
-    const result = m.payload.intentResult!!
-    if (result.channel) {
-        const c = result.channel!!;
-        switch (c.type) {
-            case 'private':
-                return new Promise((resolve) => resolve(new DefaultPrivateChannel(messaging, c.id)))
-            case 'app':
-            case 'user':
-            default:
-                return new Promise((resolve) => resolve(new DefaultChannel(messaging, c.id, c.type, c.displayMetadata)))
+const convertIntentResult = async ({payload}: RaiseIntentResultResponse, messaging: Messaging): Promise<IntentResult> => {
+    const result = payload.intentResult;
+    if(result?.channel){
+      const {channel} = result;
+      switch(channel.type){
+        case "private": {
+          return new DefaultPrivateChannel(messaging, channel.id);
         }
-    } else if (result.context) {
-        return new Promise((resolve) => {
-            resolve(result.context)
-        })
+        case "app":
+        case "user":
+        default: {
+          return new DefaultChannel(messaging, channel.id, channel.type, channel.displayMetadata);
+        }
+      }
+    } else if(result?.context){
+      return result.context;
     } else {
-        return new Promise((resolve) => (resolve()))
+      return;
     }
-}
+  }
 
 export class DefaultIntentSupport implements IntentSupport {
 
@@ -58,7 +57,7 @@ export class DefaultIntentSupport implements IntentSupport {
                 context,
                 resultType
             },
-            meta: this.messaging.createMeta() as any /* ISSUE: #1275 */
+            meta: this.messaging.createMeta()
         }
 
         const result = await this.messaging.exchange(messageOut, "findIntentResponse") as FindIntentResponse
@@ -67,7 +66,7 @@ export class DefaultIntentSupport implements IntentSupport {
             throw new Error(ResolveError.NoAppsFound)
         } else {
             return {
-                intent: appIntent.intent as any /* ISSUE: 1295 */,
+                intent: appIntent.intent,
                 apps: appIntent.apps
             }
         }
@@ -79,12 +78,12 @@ export class DefaultIntentSupport implements IntentSupport {
             payload: {
                 context
             },
-            meta: this.messaging.createMeta() as AddContextListenerRequestMeta /* ISSUE: #1275 */
+            meta: this.messaging.createMeta()
         }
 
-        const result = await this.messaging.exchange(messageOut, "findIntentsByContextResponse") as FindIntentsByContextResponse
-        const appIntents = result.payload.appIntents!!
-        if (appIntents.length == 0) {
+        const result: FindIntentsByContextResponse = await this.messaging.exchange(messageOut, "findIntentsByContextResponse")
+        const appIntents = result.payload.appIntents
+        if (!appIntents || appIntents.length == 0) {
             throw new Error(ResolveError.NoAppsFound)
         } else {
             return appIntents
@@ -111,11 +110,11 @@ export class DefaultIntentSupport implements IntentSupport {
                 context,
                 app: app
             },
-            meta: meta as any /* ISSUE: #1275 */
+            meta
         }
 
         var resultPromise = this.createResultPromise(messageOut)
-        var response = await this.messaging.exchange(messageOut, "raiseIntentResponse", ResolveError.IntentDeliveryFailed) as RaiseIntentResponse
+        var response: RaiseIntentResponse = await this.messaging.exchange(messageOut, "raiseIntentResponse", ResolveError.IntentDeliveryFailed)
 
         if (response.payload.appIntent) {
             // we need to invoke the resolver
@@ -144,11 +143,11 @@ export class DefaultIntentSupport implements IntentSupport {
                 context,
                 app: app
             },
-            meta: this.messaging.createMeta() as any /* ISSUE: #1275 */
+            meta: this.messaging.createMeta()
         }
 
         const resultPromise = this.createResultPromise(messageOut)
-        const response = await this.messaging.exchange(messageOut, "raiseIntentForContextResponse", ResolveError.IntentDeliveryFailed) as RaiseIntentForContextResponse
+        const response: RaiseIntentForContextResponse = await this.messaging.exchange(messageOut, "raiseIntentForContextResponse", ResolveError.IntentDeliveryFailed)
         if (response.payload.appIntents) {
             // we need to invoke the resolver
             const result: IntentResolutionChoice | void = await this.intentResolver.chooseIntent(response.payload.appIntents as any[], context)
@@ -158,7 +157,7 @@ export class DefaultIntentSupport implements IntentSupport {
                 throw new Error(ResolveError.UserCancelled)
             }
         } else {
-            const details = response.payload.intentResolution!!
+            const details = response.payload.intentResolution!
             return new DefaultIntentResolution(
                 this.messaging,
                 resultPromise,
