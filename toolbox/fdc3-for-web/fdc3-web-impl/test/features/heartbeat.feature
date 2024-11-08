@@ -7,7 +7,6 @@ Feature: Heartbeat Messages Between Apps and Server
       | returnBook  | fdc3.book    | {empty}     |
     And A newly instantiated FDC3 Server with heartbeat checking
 
-  @failing
   Scenario: App Responds to heartbeats
     When "libraryApp/a1" is opened with connection id "a1"
     And "a1" sends validate
@@ -38,7 +37,6 @@ Feature: Heartbeat Messages Between Apps and Server
       | instanceId | state     |
       | a1         | Connected |
 
-  @failing
   Scenario: App Doesn't Respond to heartbeats
 Apps are considered dead if they don't respond to a heartbeat request within 2 seconds
 

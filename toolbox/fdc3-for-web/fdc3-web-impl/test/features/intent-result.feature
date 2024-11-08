@@ -5,7 +5,7 @@ Feature: Intent Results Are Correctly Delivered
     And "libraryApp" is an app with the following intents
       | Intent Name | Context Type | Result Type |
       | returnBook  | fdc3.book    | {empty}     |
-    And "App1/a1" is an app with the following intents
+    And "App1" is an app with the following intents
       | Intent Name | Context Type    | Result Type |
       | viewNews    | fdc3.instrument | {empty}     |
     And A newly instantiated FDC3 Server
@@ -13,7 +13,6 @@ Feature: Intent Results Are Correctly Delivered
     And "App1/a1" is opened with connection id "a1"
     And "LibraryApp/l1" registers an intent listener for "returnBook"
 
-  @failing
   Scenario: Waiting for an intent listener to be Added
     When "LibraryApp/l1" raises an intent for "viewNews" with contextType "fdc3.instrument" on app "App1/a1" with requestUuid "ABC123"
     And "App1/a1" registers an intent listener for "viewNews"
@@ -25,7 +24,6 @@ Feature: Intent Results Are Correctly Delivered
       | raiseIntentResultResponse | {null}             | LibraryApp | l1            | {null}                             | {null}                                         | {null}                                |
       | intentResultResponse      | {null}             | App1       | a1            | {null}                             | {null}                                         | {null}                                |
 
-  @failing
   Scenario: App Returns An Intent Response
 ISSUE: 1303 prevents the use of matches_type
 
@@ -35,7 +33,7 @@ ISSUE: 1303 prevents the use of matches_type
       | msg.type                  | msg.meta.eventUuid | msg.meta.requestUuid | to.appId   | to.instanceId | msg.payload.raiseIntentRequestUuid | msg.payload.intentResolution.source.instanceId | msg.payload.intentResult.context.type |
       | intentEvent               | uuid7              | {null}               | LibraryApp | l1            | ABC123                             | {null}                                         | {null}                                |
       | raiseIntentResponse       | {null}             | ABC123               | App1       | a1            | {null}                             | l1                                             | {null}                                |
-      | raiseIntentResultResponse | {null}             | uuid9                | App1       | a1            | {null}                             | {null}                                         | fdc3.book                             |
+      | raiseIntentResultResponse | {null}             | ABC123               | App1       | a1            | {null}                             | {null}                                         | fdc3.book                             |
       | intentResultResponse      | {null}             | uuid9                | LibraryApp | l1            | {null}                             | {null}                                         | {null}                                |
 
   Scenario: App Returns An Intent Result
