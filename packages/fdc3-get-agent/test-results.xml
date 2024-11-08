@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<testsuite failures="0" skipped="0" name="cucumber-js" time="5.271719173999999" tests="12">
-  <testcase classname="Default Channel Selector" name="Channel Selector Requests Channel Change" time="0.209627037">
+<testsuite failures="0" skipped="0" name="cucumber-js" time="7.629038722000001" tests="14">
+  <testcase classname="Default Channel Selector" name="Channel Selector Requests Channel Change" time="0.20906641400000003">
     <system-out><![CDATA[Given a browser document in "document" and window in "window".............passed
 And A Channel Selector in "channel-selector" with callback piping to "c...passed
 Given User Channels one, two and three in "channel-list"..................passed
@@ -9,7 +9,7 @@ And we wait for a period of "200" ms......................................passed
 Then "{cb}" is "one"......................................................passed
 And I call "{document}" with "shutdown"...................................passed]]></system-out>
   </testcase>
-  <testcase classname="Default Channel Selector" name="Updating channel information in the channel selector" time="0.206793368">
+  <testcase classname="Default Channel Selector" name="Updating channel information in the channel selector" time="0.207696204">
     <system-out><![CDATA[Given a browser document in "document" and window in "window".............passed
 And A Channel Selector in "channel-selector" with callback piping to "c...passed
 Given User Channels one, two and three in "channel-list"..................passed
@@ -18,7 +18,7 @@ And we wait for a period of "200" ms......................................passed
 Then "{lastChannelSelectorMessage}" is an object with the following con...passed
 And I call "{document}" with "shutdown"...................................passed]]></system-out>
   </testcase>
-  <testcase classname="Default Intent Resolver" name="App Requests Intent Resolution" time="0.211864409">
+  <testcase classname="Default Intent Resolver" name="App Requests Intent Resolution" time="0.210361536">
     <system-out><![CDATA[Given a browser document in "document" and window in "window".............passed
 And An Intent Resolver in "intent-resolver"...............................passed
 And "instrumentContext" is a "fdc3.instrument" context....................passed
@@ -32,7 +32,7 @@ And "{result}" is an object with the following contents...................passed
 And I call "{document}" with "shutdown"...................................passed
 And I call "{intent-resolver}" with "disconnect"..........................passed]]></system-out>
   </testcase>
-  <testcase classname="Default Intent Resolver" name="Intent Resolution Cancelled" time="0.208435037">
+  <testcase classname="Default Intent Resolver" name="Intent Resolution Cancelled" time="0.21108224300000003">
     <system-out><![CDATA[Given a browser document in "document" and window in "window".............passed
 And An Intent Resolver in "intent-resolver"...............................passed
 And "instrumentContext" is a "fdc3.instrument" context....................passed
@@ -46,7 +46,7 @@ And "{result}" is undefined...............................................passed
 And I call "{document}" with "shutdown"...................................passed
 And I call "{intent-resolver}" with "disconnect"..........................passed]]></system-out>
   </testcase>
-  <testcase classname="Death of the Desktop Agent" name="Loaded in the browser, but the user navigates away" time="0.526012621">
+  <testcase classname="Death of the Desktop Agent" name="Loaded in the browser, but the user navigates away" time="0.5304617859999999">
     <system-out><![CDATA[Given a browser document in "document" and window in "window".............passed
 Given Parent Window desktop "da" listens for postMessage events in "{wi...passed
 And we wait for a period of "200" ms......................................passed
@@ -58,7 +58,7 @@ When "{window}" pagehide occurs...........................................passed
 Then theAgentPromise is cleared...........................................passed
 And I call "{document}" with "shutdown"...................................passed]]></system-out>
   </testcase>
-  <testcase classname="Different Strategies for Accessing the Desktop Agent" name="Running inside a Browser and using post message with direct message ports" time="0.5184942830000001">
+  <testcase classname="Different Strategies for Accessing the Desktop Agent" name="Running inside a Browser and using post message with direct message ports" time="0.521914415">
     <system-out><![CDATA[Given a browser document in "document" and window in "window".............passed
 Given Parent Window desktop "da" listens for postMessage events in "{wi...passed
 And we wait for a period of "200" ms......................................passed
@@ -75,7 +75,7 @@ And "{window.events}" is an array of objects with the following content...passed
 Then I call "{document}" with "shutdown"..................................passed
 And I call "{desktopAgent}" with "disconnect".............................passed]]></system-out>
   </testcase>
-  <testcase classname="Different Strategies for Accessing the Desktop Agent" name="Running inside a Browser using the embedded iframe strategy" time="0.5232379070000001">
+  <testcase classname="Different Strategies for Accessing the Desktop Agent" name="Running inside a Browser using the embedded iframe strategy" time="0.5199947020000002">
     <system-out><![CDATA[Given a browser document in "document" and window in "window".............passed
 Given Parent Window desktop "da" listens for postMessage events in "{wi...passed
 And we wait for a period of "200" ms......................................passed
@@ -96,7 +96,7 @@ And "{window.events}" is an array of objects with the following content...passed
 Then I call "{document}" with "shutdown"..................................passed
 And I call "{desktopAgent}" with "disconnect".............................passed]]></system-out>
   </testcase>
-  <testcase classname="Different Strategies for Accessing the Desktop Agent" name="Running inside an Electron Container." time="0.50659758">
+  <testcase classname="Different Strategies for Accessing the Desktop Agent" name="Running inside an Electron Container." time="0.5062550349999999">
     <system-out><![CDATA[Given a browser document in "document" and window in "window".............passed
 Given A Dummy Desktop Agent in "dummy-api"................................passed
 And I call fdc3Ready for a promise result.................................passed
@@ -108,7 +108,7 @@ And I call "{result}" with "getInfo"......................................passed
 Then "{result}" is an object with the following contents..................passed
 Then I call "{document}" with "shutdown"..................................passed]]></system-out>
   </testcase>
-  <testcase classname="Different Strategies for Accessing the Desktop Agent" name="Failover Strategy returning desktop agent" time="1.0134837829999999">
+  <testcase classname="Different Strategies for Accessing the Desktop Agent" name="Failover Strategy returning desktop agent" time="1.0176623670000002">
     <system-out><![CDATA[Given a browser document in "document" and window in "window".............passed
 Given A Dummy Desktop Agent in "dummy-api"................................passed
 And "dummyFailover" is a function which returns a promise of "{dummy-ap...passed
@@ -119,7 +119,17 @@ And I call "{result}" with "getInfo"......................................passed
 Then "{result}" is an object with the following contents..................passed
 Then I call "{document}" with "shutdown"..................................passed]]></system-out>
   </testcase>
-  <testcase classname="Different Strategies for Accessing the Desktop Agent" name="Recovery from SessionState" time="0.513084455">
+  <testcase classname="Different Strategies for Accessing the Desktop Agent" name="Failover Strategy returning a proxy" time="1.3253763280000002">
+    <system-out><![CDATA[Given a browser document in "document" and window in "window".............passed
+Given "dummyFailover2" is a function which opens an iframe for communic...passed
+And I call getAgent for a promise result with the following options.......passed
+And I refer to "{result}" as "theAPIPromise"..............................passed
+Then the promise "{theAPIPromise}" should resolve.........................passed
+And I call "{result}" with "getInfo"......................................passed
+Then "{result}" is an object with the following contents..................passed
+Then I call "{document}" with "shutdown"..................................passed]]></system-out>
+  </testcase>
+  <testcase classname="Different Strategies for Accessing the Desktop Agent" name="Recovery from SessionState" time="0.5238257869999999">
     <system-out><![CDATA[Given a browser document in "document" and window in "window".............passed
 Given Parent Window desktop "da" listens for postMessage events in "{wi...passed
 And an existing app instance in "instanceID"..............................passed
@@ -131,7 +141,7 @@ Then the promise "{theAPIPromise}" should resolve.........................passed
 Then I call "{document}" with "shutdown"..................................passed
 And I call "{desktopAgent}" with "disconnect".............................passed]]></system-out>
   </testcase>
-  <testcase classname="Different Strategies for Accessing the Desktop Agent" name="Failed Recovery from SessionState" time="0.30818582699999997">
+  <testcase classname="Different Strategies for Accessing the Desktop Agent" name="Failed Recovery from SessionState" time="0.31336920599999996">
     <system-out><![CDATA[Given a browser document in "document" and window in "window".............passed
 Given Parent Window desktop "da" listens for postMessage events in "{wi...passed
 And we wait for a period of "200" ms......................................passed
@@ -142,7 +152,14 @@ Then the promise "{theAPIPromise}" should resolve.........................passed
 And "{result}" is an error with message "Invalid instance"................passed
 Then I call "{document}" with "shutdown"..................................passed]]></system-out>
   </testcase>
-  <testcase classname="Different Strategies for Accessing the Desktop Agent" name="Someone calls getAgent twice" time="0.5259028670000002">
+  <testcase classname="Different Strategies for Accessing the Desktop Agent" name="Nothing works and we timeout" time="1.012989956">
+    <system-out><![CDATA[Given a browser document in "document" and window in "window".............passed
+When I call getAgent for a promise result with the following options......passed
+And I refer to "{result}" as "theAPIPromise"..............................passed
+Then the promise "{theAPIPromise}" should resolve.........................passed
+And "{result}" is an error with message "AgentNotFound"...................passed]]></system-out>
+  </testcase>
+  <testcase classname="Different Strategies for Accessing the Desktop Agent" name="Someone calls getAgent twice" time="0.518982743">
     <system-out><![CDATA[Given a browser document in "document" and window in "window".............passed
 Given Parent Window desktop "da" listens for postMessage events in "{wi...passed
 And we wait for a period of "200" ms......................................passed
