@@ -35,24 +35,27 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
             }
         }
 
-        if (type) {
-            switch (type) {
-                case "addContextListener":
-                    const a = new PrivateChannelEventListenerType(this.messaging, this.id, "onAddContextListener", wrapEventHandlerString());
-                    await a.register()
-                    return a;
-                case "unsubscribe":
-                    const u = new PrivateChannelEventListenerType(this.messaging, this.id, "onUnsubscribe", wrapEventHandlerString());
-                    await u.register()
-                    return u;
-                case "disconnect":
-                    const d = new PrivateChannelEventListenerVoid(this.messaging, this.id, wrapEventHandlerVoid());
-                    await d.register()
-                    return d;
+        switch (type) {
+            case "addContextListener": {
+                const a = new PrivateChannelEventListenerType(this.messaging, this.id, "onAddContextListener", wrapEventHandlerString());
+                await a.register()
+                return a;
+            }
+            case "unsubscribe": {
+                const u = new PrivateChannelEventListenerType(this.messaging, this.id, "onUnsubscribe", wrapEventHandlerString());
+                await u.register()
+                return u;
+            }
+            case "disconnect": {
+                const d = new PrivateChannelEventListenerVoid(this.messaging, this.id, wrapEventHandlerVoid());
+                await d.register()
+                return d;
+            }
+            default: {
+                throw new Error(`Unsupported event type: ${type}`)
             }
         }
 
-        throw new Error(`Unsupported event type: ${type}`)
     }
 
     onAddContextListener(handler: (contextType?: string | undefined) => void): Listener {
