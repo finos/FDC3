@@ -95,9 +95,25 @@ FDC3 is now a monorepo containing the following modules:
 | `toolbox/fdc3-for-web/demo`          | -not released-                                         | A reference implementation of an FDC3-For-The-Web Desktop Agent, using the above implementation and conforming to FDC3 2.0 from the  [FDC3 Conformance Framework](https://github.com/finos/FDC3-conformance-framework) |                       |
 | `packages/fdc3`                      | `@finos/fdc3` (npm)                                    | A complete roll-up of the `fdc3-agent-proxy`, `fdc3-context`, `fdc3-schema` and `fdc3-get-agent` sub-modules.  This is intended to be the main entry point for typescript / javascript applications using FDC3         |                       |
 
-From the root package, you can run `npm run build` to build all the modules, or `npm run test` to run all the tests.
+#### Building and Running The FDC3 Modules
+
+From the root package, you can run `npm run build` to build all the modules, or `npm run test` to run all the tests.  `npm run dev` will start the `demo` and `fdc3-workbench` modules.
 
 For installation and usage instructions, see: <https://fdc3.finos.org/docs/supported-platforms#usage>
+
+#### Bumping Version Numbers (for maintainers)
+
+It's important that all of the versions of the submodules stay on the same version, and that the references between them are consistent to that version.  To change the version number (say before or after a release) run the following:
+
+```
+// first, update version number in package.json
+npm login
+npm version <new version from package.json> --workspaces // changes the version number in all submodule package.json files
+npm run syncpack                          // sycnhronizes version numbers
+npm up                                    // fixes node_module references
+npm run build                             // builds all the modules against the new version
+npm publish --access=public --workspaces  // this step performs a manual release of the npm modules (not needed with GitHub actions releases)
+```
 
 ## Getting Involved
 
