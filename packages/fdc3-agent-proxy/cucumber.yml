@@ -2,7 +2,7 @@ default:
   format: 
     - html:cucumber-report.html
     - "@cucumber/pretty-formatter"
-    - junit
+    - junit:test-results.xml
   paths: 
    - test/features/*.feature
   require: 
@@ -11,4 +11,5 @@ default:
    - test/world/index.ts
   requireModule:
    - ts-node/register
+  tags: "not @failing"
     

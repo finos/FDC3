@@ -26,6 +26,8 @@
       "additionalProperties": true
     },
     "meta": {
+      "title": "Connection Step Metadata",
+      "description": "Metadata for a Web Connection Protocol message.",
       "oneOf": [
         {
           "$ref": "#/$defs/DisconnectStepMeta"
@@ -43,8 +45,6 @@
   "additionalProperties": false,
   "$defs": {
     "ConnectionStepMeta": {
-      "title": "Connection Step Metadata",
-      "description": "Metadata for this connection step message",
       "type": "object",
       "properties": {
         "connectionAttemptUuid": {
@@ -61,8 +61,6 @@
       "additionalProperties": false
     },
     "DisconnectStepMeta": {
-      "title": "Disconnect Metadata",
-      "description": "Metadata for a disconnection step message",
       "type": "object",
       "properties": {
         "timestamp": {

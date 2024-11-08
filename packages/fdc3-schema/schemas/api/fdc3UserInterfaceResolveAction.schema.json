@@ -40,11 +40,11 @@
         "intent": {
           "title": "Intent name",
           "type": "string",
-          "description": "The intent resolved"
+          "description": "The intent resolved."
         },
         "appIdentifier": {
           "title": "AppIdentifier",
-          "description": "The App resolution option chosen",
+          "description": "The App resolution option chosen.",
           "$ref": "api.schema.json#/definitions/AppIdentifier"
         },
         "action": {

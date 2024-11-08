@@ -3,7 +3,7 @@ import { BasicDesktopAgent, DefaultChannelSupport, DefaultAppSupport, DefaultInt
 import { ConnectionDetails, MessagePortMessaging } from "./MessagePortMessaging";
 import { DefaultDesktopAgentIntentResolver } from "../ui/DefaultDesktopAgentIntentResolver";
 import { DefaultDesktopAgentChannelSelector } from "../ui/DefaultDesktopAgentChannelSelector";
-import { NullIntentResolver } from "../ui/NullIIntentResolver";
+import { NullIntentResolver } from "../ui/NullIntentResolver";
 import { NullChannelSelector } from "../ui/NullChannelSelector";
 import { ChannelSelector } from "@kite9/fdc3-standard";
 

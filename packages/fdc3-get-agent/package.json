@@ -18,14 +18,14 @@
   ],
   "scripts": {
     "build": "tsc --module es2022",
-    "test": "tsc && nyc --reporter=lcov --reporter=text cucumber-js",
-    "clean": "rimraf dist && rimraf cucumber-report.html && rimraf coverage && rimraf .nyc_output && rimraf node_modules"
+    "test": "tsc && nyc --reporter=lcov --reporter=text --reporter json cucumber-js",
+    "clean": "rimraf dist cucumber-report.html coverage .nyc_output node_modules test-results.xml"
   },
   "dependencies": {
-    "@kite9/fdc3-standard": "2.2.0-beta.29",
     "@kite9/fdc3-agent-proxy": "2.2.0-beta.29",
-    "@kite9/fdc3-schema": "2.2.0-beta.29",
     "@kite9/fdc3-context": "2.2.0-beta.29",
+    "@kite9/fdc3-schema": "2.2.0-beta.29",
+    "@kite9/fdc3-standard": "2.2.0-beta.29",
     "@types/uuid": "^10.0.0",
     "uuid": "^9.0.1"
   },
@@ -36,7 +36,7 @@
     "@types/node": "^20.14.11",
     "@types/wtfnode": "^0.7.3",
     "expect": "^29.7.0",
-    "jsonpath-plus": "^9.0.0",
+    "jsonpath-plus": "^10.1.0",
     "nyc": "15.1.0",
     "rimraf": "^6.0.1",
     "tsx": "^4.19.1",

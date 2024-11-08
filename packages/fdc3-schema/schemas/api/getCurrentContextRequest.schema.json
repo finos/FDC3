@@ -33,7 +33,7 @@
 			"properties": {
 				"channelId": {
 					"title": "Channel Id",
-					"description": "The id of the channel to return the current context of",
+					"description": "The id of the channel to return the current context of.",
 					"type": "string"
 				},
 				"contextType": {
