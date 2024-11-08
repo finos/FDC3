@@ -151,7 +151,6 @@ window.addEventListener("load", () => {
   myPort.addEventListener("message", (e) => {
     if (e.data.type == 'ResolverIntents') {
       const details = e.data as ResolverIntents
-      // console.log(JSON.stringify("INTENT DETAILS: " + JSON.stringify(details)))
 
       setup(details, callback)
     }
