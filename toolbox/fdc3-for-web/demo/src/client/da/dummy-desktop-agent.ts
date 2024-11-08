@@ -65,7 +65,7 @@ window.addEventListener("load", () => {
             { id: "two", type: ChannelType.user, context: [], displayMetadata: { name: "THE BLUE CHANNEL", color: "blue" } },
             { id: "three", type: ChannelType.user, context: [], displayMetadata: { name: "THE GREEN CHANNEL", color: "green" } }
         ]
-        const fdc3Server = new DefaultFDC3Server(sc, directory, channelDetails, true, 20000, 10000)
+        const fdc3Server = new DefaultFDC3Server(sc, directory, channelDetails, true, 20000, 10017)
 
         socket.on(FDC3_APP_EVENT, (msg, from) => {
             console.log(`App Event ${JSON.stringify(msg, null, 2)} from ${from}`)
