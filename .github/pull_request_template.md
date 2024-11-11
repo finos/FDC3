@@ -19,9 +19,9 @@
 
 - [ ] **Issue**: If a change was made to the FDC3 Standard, was an issue linked above?
 - [ ] **CHANGELOG**: Is a *CHANGELOG.md* entry included?
-- [ ] **API changes**: Does this PR include changes to any of the FDC3 API (`DesktopAgent`, `Channel`, `PrivateChannel`, `Listener`, `Bridging`)?
-  - [ ] **Docs & Sources**: f yes, were both documentation (/docs) and sources updated?<br/>
-        *jsDoc comments are on interfaces and types should be matched to the main documentation in /docs*
+- [ ] **API changes**: Does this PR include changes to any of the FDC3 APIs (`DesktopAgent`, `Channel`, `PrivateChannel`, `Listener`, `Bridging`)?
+  - [ ] **Docs & Sources**: If yes, were both documentation (/docs) and sources updated?<br/>
+        *JSDoc comments on interfaces and types should be matched to the main documentation in /docs*
   - [ ] **Conformance tests**: If yes, are conformance test definitions (/toolbox/fdc3-conformance) still correct and complete?<br/>
         *Conformance test definitions should cover all **required** aspects of an FDC3 Desktop Agent implementation, which are usually marked with a **MUST** keyword, and  optional features (**SHOULD** or **MAY**) where the format of those features is defined*
   - [ ] **Schemas**: If yes, were changes applied to the Bridging and FDC3 for Web protocol schemas?<br/>
