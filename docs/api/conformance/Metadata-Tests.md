@@ -6,6 +6,7 @@ hide_title: true
 ---
 
 # Metadata & Instance Test Cases
+<!-- markdownlint-disable MD033 -->
 
 You will need to pre-populate the AppDirectory with the following items:
 
@@ -13,16 +14,16 @@ You will need to pre-populate the AppDirectory with the following items:
 |-----|------------------------------------------|
 | A   | Generic AppD Record which contains at least the following fields:<br />- `name`<br />- `version`<br />- `title`<br />- `tooltip`<br />- `description`<br />- `icons` (`Array<Icon>`)<br />- `screenshots` (`Array<Image>`)<br />- `interop.intents.listensFor` (`aTestingIntent` with at least context type `testContextX`)  |
 
-## Retrieve `AppMetadata` ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
+## Retrieve `AppMetadata`
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
 | Test   | 1.getAppMetadata    | Retrieve metadata for the configured app A with <br/> `const metadata1 = await fdc3.getAppMetadata({appId: "<A's appId>"})`  |
 | Test   | 2.Confirm    | Compare the `AppMetadata` object to the expected definition for the fields provided above during setup and ensure that the metadata matches. An `instanceId` should NOT be set  |
 
-- `GetAppMetadata`: perform the above steps
+- `GetAppMetadata`: perform the above steps.
 
-## Instance Metadata ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
+## Instance Metadata
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
@@ -33,9 +34,9 @@ You will need to pre-populate the AppDirectory with the following items:
 | Test   | 5.getAppMetadata2    | Retrieve metadata for the second instance of the app with <br/>`const metadata2 = fdc3.getAppMetadata(appIdentifier2)`  |
 | Test   | 6.Confirm2    | An `instanceId` should be provided, confirm that it matches the one in `appIdentifier2`  |
 
-- `AppInstanceMetadata`: Perform the above steps
+- `AppInstanceMetadata`: Perform the above steps.
 
-## Finding Instances ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
+## Finding Instances
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
@@ -46,7 +47,7 @@ You will need to pre-populate the AppDirectory with the following items:
 | Test   | 5.Confirm1 | Check that `resolution.source` matches `appIdentifier1` |
 | A | 6.ConfirmReceipt | Ensure that the instance of app A represented by `appIdentifier1` received the raised intent |
 
-- `FindInstances`: Perform the above steps
+- `FindInstances`: Perform the above steps.
 
 ## Getting Info For The Agent
 
@@ -57,7 +58,7 @@ You will need to pre-populate the AppDirectory with the following items:
 | Test   | 3.CheckProvider  | Check that the `provider` variable is present and not an empty string  |
 | Test   | 4.CheckFeatures  | ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) Check that the `optionalFeatures`, `optionalFeatures.OriginatingAppMetadata` and `optionalFeatures.UserChannelMembershipAPIs` variables are all present and that the latter two provide boolean values  |
 
-- ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `GetInfo1`: Perform the above steps 
+- `GetInfo1`: Perform the above steps.
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
@@ -65,4 +66,4 @@ You will need to pre-populate the AppDirectory with the following items:
 | A | 2.getInfo     |   Retrieve the `ImplementationMetadata` for the DesktopAgent with: <br  />`fdc3.getInfo().then((implMetadata) => {  ... subsequent steps ...}` <br/> This should include `AppMetadata` for the retrieving app. |
 | A + Test | 3.Confirm  | Check that `implMetadata.appMetadata` contains an `appId` and `instanceId` matching that retrieved in the first step (will require transmission of the details from A to Test or vice-versa). Also compare the `AppMetadata` object to the expected definition for the fields provided above during setup and ensure that the metadata matches. |
 
-- ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `GetInfo2`: Perform the above steps. 
+- `GetInfo2`: Perform the above steps.
