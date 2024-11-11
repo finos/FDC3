@@ -27,5 +27,5 @@
   - [ ] If yes, were changes applied to the Bridging and FDC3 for Web protocol schemas?<br/>
         *The Web Connection protocol and Desktop Agent Communication Protocol schemas must be able to support all necessary aspects of the Desktop Agent API, while Bridging must support those aspects necessary for Desktop Agents to communicate with each other*
 - [ ] Were schema files (Context, bridging, FDC3 for Web) modified in this PR
-  - [ ] If yes, was code generation (`npm run build`) run and the results checked in?
+  - [ ] If yes, was code generation (`npm run build`) run and the results checked in?<br/>
         *Generated code will be found at `/src/api/BrowserTypes.ts`,  `/src/context/ContextTypes.ts`, or `/src/bridging/BridgingTypes.ts`*
