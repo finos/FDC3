@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Typescript definitions for Web Connection Protocol (WCP). These constitute the messages used to establish connectivity between "@finos/fdc3" and a Browser-Resident DA. ([#1191](https://github.com/finos/FDC3/pull/1191))
 * Added support for broadcast actions to the `fdc3.action` context type, allowing an Action to represent the broadcast of a specified context to an app or user channel. ([#1368](https://github.com/finos/FDC3/pull/1368))
 * Added conformance tests into the FDC3 API documentation in the current version and backported into 2.0 and 2.1. Removed outdated 1.2 conformance tests (which are preserved in the older 2.0 and 2.1 versions). ([#1417](https://github.com/finos/FDC3/pull/1417)).
+* Added conformance tests to documentation for features introduced in FDC3 2.2 (`fdc3.addEventListener`, `PrivateChannel.addEventListener` and `getAgent`). ([#1425](https://github.com/finos/FDC3/pull/1425))
 
 ### Changed
 
