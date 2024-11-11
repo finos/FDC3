@@ -10,6 +10,20 @@ hide_title: true
 
 _These are some basic sanity tests implemented in the FDC3 Conformance Framework.  It is expected that Desktop Agent testers will run these first before commencing the much more thorough tests in section 2 onwards._
 
+## Connection
+
+![2.2+](https://img.shields.io/badge/FDC3-2.2+-purple) In FDC3 2.2, a new interface was introduced to support Browser-based FDC3 Desktop Agents, known as a 'Desktop Agent Proxy', and a new [`getAgent`](../ref/GetAgent) API call was introduced to all apps to retrieve the Desktop Agent API via that interface or the existing 'Desktop Agent Preload' interface. This test pack checks that the a connection is made correctly via `getAgent`.
+
+| App | Step            | Description                                              |
+|-----|-----------------|----------------------------------------------------------|
+| A   | `getAgent`      | A calls `getAgent` and waits for the promise to resolve to a `DesktopAgent` instance. |
+| A   | `getInfo`       | A can call the `getInfo()` method on the `DesktopAgent` instance to get the `ImplementationMetadata` object. <br /> Check that fdc3Version is set to 2.2.  <br />Check that provider and providerVersion are populated. |
+| A   | `getUserChannels`| A can call the `getUserChannels()` method on the `DesktopAgent` instance to get the `Channel` objects representing the system channels.<br />Check **user** channels are returned.|
+
+- `GetAgentAPI`: Perform the above test.
+
+## Basic API Usage
+
 - `BasicCL1`: You can create a context listener by calling `fdc3.addContextListener('fdc3.contact',<handler>)`.  A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
 - `BasicCL2`: You can create an **unfiltered** context listener by calling `fdc3.addContextListener(null,<handler>)`.  A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
 - `BasicIL1`: You can create an intent listener by calling `fdc3.addIntentListener(<intent name>,<handler>)`. A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
