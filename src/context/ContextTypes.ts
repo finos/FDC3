@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, Portfolio, Position, Product, TimeRange, Trade, TradeList, TransactionResult, Valuation } from "./file";
+//   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, FileAttachment, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, Portfolio, Position, Product, TimeRange, Trade, TradeList, TransactionResult, Valuation } from "./file";
 //
 //   const action = Convert.toAction(json);
 //   const chart = Convert.toChart(json);
@@ -14,6 +14,7 @@
 //   const country = Convert.toCountry(json);
 //   const currency = Convert.toCurrency(json);
 //   const email = Convert.toEmail(json);
+//   const fileAttachment = Convert.toFileAttachment(json);
 //   const instrument = Convert.toInstrument(json);
 //   const instrumentList = Convert.toInstrumentList(json);
 //   const interaction = Convert.toInteraction(json);
@@ -548,7 +549,7 @@ export interface MessageObject {
      * A map of string IDs to entities that should be attached to the message, such as an action
      * to perform, a file attachment, or other FDC3 context object.
      */
-    entities?: { [key: string]: PurpleAction };
+    entities?: { [key: string]: EntityValue };
     /**
      * A map of string mime-type to string content
      */
@@ -572,9 +573,9 @@ export interface MessageObject {
  *
  * Accepts an optional `app` parameter in order to specify a specific app.
  *
- * A File attachment encoded in the form of a data URI
+ * A File attachment encoded in the form of a data URI. Can be added to a Message.
  */
-export interface PurpleAction {
+export interface EntityValue {
     /**
      * The **action** field indicates the type of action:
      * - **raiseIntent** :  If no action or `raiseIntent` is specified, then `fdc3.raiseIntent`
@@ -614,11 +615,11 @@ export interface PurpleAction {
     type:   EntityType;
     id?:    { [key: string]: any };
     name?:  string;
-    data?:  PurpleData;
+    data?:  EntityData;
     [property: string]: any;
 }
 
-export interface PurpleData {
+export interface EntityData {
     /**
      * A data URI encoding the content of the file to be attached
      */
@@ -636,7 +637,7 @@ export interface PurpleData {
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
-export type EntityType = "fdc3.action" | "fdc3.entity.fileAttachment";
+export type EntityType = "fdc3.action" | "fdc3.fileAttachment";
 
 /**
  * A map of string mime-type to string content
@@ -1229,6 +1230,36 @@ export type EmailRecipientsType = "fdc3.contact" | "fdc3.contactList";
  */
 
 /**
+ * A File attachment encoded in the form of a data URI. Can be added to a Message.
+ */
+export interface FileAttachment {
+    data:  FileAttachmentData;
+    type:  "fdc3.fileAttachment";
+    id?:   { [key: string]: any };
+    name?: string;
+    [property: string]: any;
+}
+
+export interface FileAttachmentData {
+    /**
+     * A data URI encoding the content of the file to be attached
+     */
+    dataUri: string;
+    /**
+     * The name of the attached file
+     */
+    name: string;
+    [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+
+/**
  * A financial instrument from any asset class.
  */
 export interface Instrument {
@@ -1466,7 +1497,7 @@ export interface Message {
      * A map of string IDs to entities that should be attached to the message, such as an action
      * to perform, a file attachment, or other FDC3 context object.
      */
-    entities?: { [key: string]: FluffyAction };
+    entities?: { [key: string]: EntityValue };
     /**
      * A map of string mime-type to string content
      */
@@ -1474,77 +1505,6 @@ export interface Message {
     type:  "fdc3.message";
     id?:   { [key: string]: any };
     name?: string;
-    [property: string]: any;
-}
-
-/**
- * A representation of an FDC3 Action (specified via a Context or Context & Intent) that can
- * be inserted inside another object, for example a chat message.
- *
- * The action may be completed by calling:
- * - `fdc3.raiseIntent()` with the specified Intent and Context
- * - `fdc3.raiseIntentForContext()` if only a context is specified, (which the Desktop Agent
- * will resolve by presenting the user with a list of available Intents for the Context).
- * - `channel.broadcast()` with the specified Context, if the `broadcast` action has been
- * defined.
- *
- * Accepts an optional `app` parameter in order to specify a specific app.
- *
- * A File attachment encoded in the form of a data URI
- */
-export interface FluffyAction {
-    /**
-     * The **action** field indicates the type of action:
-     * - **raiseIntent** :  If no action or `raiseIntent` is specified, then `fdc3.raiseIntent`
-     * or `fdc3.raiseIntentForContext` will be called with the specified context (and intent if
-     * given).
-     * - **broadcast** : If `broadcast` and a `channelId` are specified then
-     * `fdc3.getOrCreateChannel(channelId)` is called to retrieve the channel and broadcast the
-     * context to it with `channel.broadcast(context)`. If no `channelId` has been specified,
-     * the context should be broadcast to the current channel (`fdc3.broadcast()`)
-     */
-    action?: ActionType;
-    /**
-     * An optional target application identifier that should perform the action. The `app`
-     * property is ignored unless the action is raiseIntent.
-     */
-    app?: AppIdentifier;
-    /**
-     * Optional channel on which to broadcast the context. The `channelId` property is ignored
-     * unless the `action` is broadcast.
-     */
-    channelId?: string;
-    /**
-     * A context object with which the action will be performed
-     */
-    context?: ContextElement;
-    /**
-     * Optional Intent to raise to perform the actions. Should reference an intent type name,
-     * such as those defined in the FDC3 Standard. If intent is not set then
-     * `fdc3.raiseIntentForContext` should be used to perform the action as this will usually
-     * allow the user to choose the intent to raise.
-     */
-    intent?: string;
-    /**
-     * A human readable display name for the action
-     */
-    title?: string;
-    type:   EntityType;
-    id?:    { [key: string]: any };
-    name?:  string;
-    data?:  FluffyData;
-    [property: string]: any;
-}
-
-export interface FluffyData {
-    /**
-     * A data URI encoding the content of the file to be attached
-     */
-    dataUri: string;
-    /**
-     * The name of the attached file
-     */
-    name: string;
     [property: string]: any;
 }
 
@@ -2265,6 +2225,14 @@ export class Convert {
         return JSON.stringify(uncast(value, r("Email")), null, 2);
     }
 
+    public static toFileAttachment(json: string): FileAttachment {
+        return cast(JSON.parse(json), r("FileAttachment"));
+    }
+
+    public static fileAttachmentToJson(value: FileAttachment): string {
+        return JSON.stringify(uncast(value, r("FileAttachment")), null, 2);
+    }
+
     public static toInstrument(json: string): Instrument {
         return cast(JSON.parse(json), r("Instrument"));
     }
@@ -2632,13 +2600,13 @@ const typeMap: any = {
         { json: "FDS_ID", js: "FDS_ID", typ: u(undefined, "") },
     ], "any"),
     "MessageObject": o([
-        { json: "entities", js: "entities", typ: u(undefined, m(r("PurpleAction"))) },
+        { json: "entities", js: "entities", typ: u(undefined, m(r("EntityValue"))) },
         { json: "text", js: "text", typ: u(undefined, r("PurpleMessageText")) },
         { json: "type", js: "type", typ: r("MessageType") },
         { json: "id", js: "id", typ: u(undefined, m("any")) },
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
-    "PurpleAction": o([
+    "EntityValue": o([
         { json: "action", js: "action", typ: u(undefined, r("ActionType")) },
         { json: "app", js: "app", typ: u(undefined, r("AppIdentifier")) },
         { json: "channelId", js: "channelId", typ: u(undefined, "") },
@@ -2648,9 +2616,9 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("EntityType") },
         { json: "id", js: "id", typ: u(undefined, m("any")) },
         { json: "name", js: "name", typ: u(undefined, "") },
-        { json: "data", js: "data", typ: u(undefined, r("PurpleData")) },
+        { json: "data", js: "data", typ: u(undefined, r("EntityData")) },
     ], "any"),
-    "PurpleData": o([
+    "EntityData": o([
         { json: "dataUri", js: "dataUri", typ: "" },
         { json: "name", js: "name", typ: "" },
     ], "any"),
@@ -2768,6 +2736,16 @@ const typeMap: any = {
         { json: "email", js: "email", typ: u(undefined, "") },
         { json: "FDS_ID", js: "FDS_ID", typ: u(undefined, "") },
     ], "any"),
+    "FileAttachment": o([
+        { json: "data", js: "data", typ: r("FileAttachmentData") },
+        { json: "type", js: "type", typ: r("FileAttachmentType") },
+        { json: "id", js: "id", typ: u(undefined, m("any")) },
+        { json: "name", js: "name", typ: u(undefined, "") },
+    ], "any"),
+    "FileAttachmentData": o([
+        { json: "dataUri", js: "dataUri", typ: "" },
+        { json: "name", js: "name", typ: "" },
+    ], "any"),
     "Instrument": o([
         { json: "id", js: "id", typ: r("FluffyInstrumentIdentifiers") },
         { json: "market", js: "market", typ: u(undefined, r("PurpleMarket")) },
@@ -2814,27 +2792,11 @@ const typeMap: any = {
         { json: "URI", js: "URI", typ: u(undefined, "") },
     ], "any"),
     "Message": o([
-        { json: "entities", js: "entities", typ: u(undefined, m(r("FluffyAction"))) },
+        { json: "entities", js: "entities", typ: u(undefined, m(r("EntityValue"))) },
         { json: "text", js: "text", typ: u(undefined, r("FluffyMessageText")) },
         { json: "type", js: "type", typ: r("MessageType") },
         { json: "id", js: "id", typ: u(undefined, m("any")) },
         { json: "name", js: "name", typ: u(undefined, "") },
-    ], "any"),
-    "FluffyAction": o([
-        { json: "action", js: "action", typ: u(undefined, r("ActionType")) },
-        { json: "app", js: "app", typ: u(undefined, r("AppIdentifier")) },
-        { json: "channelId", js: "channelId", typ: u(undefined, "") },
-        { json: "context", js: "context", typ: u(undefined, r("ContextElement")) },
-        { json: "intent", js: "intent", typ: u(undefined, "") },
-        { json: "title", js: "title", typ: u(undefined, "") },
-        { json: "type", js: "type", typ: r("EntityType") },
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
-        { json: "name", js: "name", typ: u(undefined, "") },
-        { json: "data", js: "data", typ: u(undefined, r("FluffyData")) },
-    ], "any"),
-    "FluffyData": o([
-        { json: "dataUri", js: "dataUri", typ: "" },
-        { json: "name", js: "name", typ: "" },
     ], "any"),
     "FluffyMessageText": o([
         { json: "text/markdown", js: "text/markdown", typ: u(undefined, "") },
@@ -2990,7 +2952,7 @@ const typeMap: any = {
     ],
     "EntityType": [
         "fdc3.action",
-        "fdc3.entity.fileAttachment",
+        "fdc3.fileAttachment",
     ],
     "MessageType": [
         "fdc3.message",
@@ -3024,6 +2986,9 @@ const typeMap: any = {
     ],
     "EmailType": [
         "fdc3.email",
+    ],
+    "FileAttachmentType": [
+        "fdc3.fileAttachment",
     ],
     "InstrumentListType": [
         "fdc3.instrumentList",
