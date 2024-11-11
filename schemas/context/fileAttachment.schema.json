@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/context/fileAttachment.schema.json",
+  "type": "object",
+  "title": "File Attachment",
+  "description": "A File attachment encoded in the form of a data URI. Can be added to a Message.",
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "fdc3.fileAttachment"
+        },
+        "data": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "File name",
+              "description": "The name of the attached file"
+            },
+            "dataUri": {
+              "type": "string",
+              "format": "uri",
+              "title": "",
+              "description": "A data URI encoding the content of the file to be attached"
+            }
+          },
+          "required": [
+            "name",
+            "dataUri"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "data"
+      ]
+    },
+    {
+      "$ref": "context.schema.json#/definitions/BaseContext"
+    }
+  ],
+  "examples": [
+    {
+      "type": "fdc3.fileAttachment",
+      "data": {
+        "name": "myImage.png",
+        "dataUri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII"
+      }
+    }
+  ]
+}
