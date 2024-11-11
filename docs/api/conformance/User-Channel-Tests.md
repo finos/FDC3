@@ -54,3 +54,19 @@ hide_title: true
 - `UCFilteredUsageUnsubscribe`: Perform above test, except that after joining, **A** then `unsubscribe()`s from the channel using the `listener.unsubscribe` function. Check that **A** does NOT receive anything.
 - `UCFilteredUsageLeave`: Perform above test, except that immediately after joining, **A** _leaves the channel_, and so receives nothing.
 - `UCFilteredUsageNoJoin`: Perform the above test, but skip step 2 so that **A** does NOT join a channel. Confirm that the _current channel_ for **A** is NOT set before continuing with the rest of the test.  **A** should receive nothing.
+
+## Event on channel changed
+
+![2.2+](https://img.shields.io/badge/FDC3-2.2+-purple) In FDC3 2.2, a new interface `addEventListener` function was added allowing an app to listen for events raised. In 2.2 only one event is supported, `userChannelChanged`.
+
+An FDC3 Desktop Agent MUST provide a method to set the current User Channel for an application. This is often accomplished by providing a control within the user interface of a window or frame, allowing the user to select the desired channel.
+
+As the method of setting the user channel is user interactive, it is either difficult or impossible to implement an automated test for this. Hence, manual tests should be performed as a final step in a conformance test. A separate manual test app should be provided to enable the test.
+
+| App | Step | Details |
+|---|---|---|
+| ChannelChangedEvent | 1. Open the test application | A dedicated test application for  FDC3ChannelChangedEvent should be opened. |
+| ChannelChangedEvent | 2. Register for `userChannelChanged` event | `await fdc3.addEventListener("userChannelChanged", handler);`<br />The `handler` function should log or render details of events received|
+| User | 3. Set User Channel | The user should set the current user channel of the app and change it a few times. Details of each change should be displayed by the test app. |
+
+- `2.2-ChannelChangedEvent`: ![2.2+](https://img.shields.io/badge/FDC3-2.2+-purple) Perform the above test.
