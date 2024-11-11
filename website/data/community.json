@@ -22,8 +22,7 @@
     "image": "/img/training/LFEL1000.png",
     "infoLink": "https://training.linuxfoundation.org/express-learning/introduction-to-fdc3-lfel1000/",
     "type": "tools-and-training",
-    "badges": [
-    ],
+    "badges": [],
     "description": "<p>This <strong>FREE</strong> entry-level course is designed for business technologists who are looking to adopt application interoperability within their technology landscape and for developers who want to build interoperable applications using the FDC3 Standard.</p>"
   },
   {
@@ -32,8 +31,7 @@
     "image": "/img/training/LFD237.png",
     "infoLink": "https://training.linuxfoundation.org/training/developing-solutions-with-fdc3-lfd237/",
     "type": "tools-and-training",
-    "badges": [
-    ],
+    "badges": [],
     "description": "<p>This course is designed for developers who are looking to build interoperable applications using the FDC3 standard, as well as community participants who provide FDC3 technology and services.</p><p>LFD237 is priced at $299 but free seats are available to FINOS members.</p>"
   },
   {
@@ -42,8 +40,7 @@
     "image": "/img/training/FCFP.png",
     "infoLink": "https://training.linuxfoundation.org/certification/finos-certified-fdc3-practitioner/",
     "type": "tools-and-training",
-    "badges": [
-    ],
+    "badges": [],
     "description": "<p>The FCFP is a professional certification designed for technical business analysts, software developers and FDC3 implementers in the finance, insurance, banking, and investment industries.</p><p>FCFP is priced at $250 but free seats are available to FINOS members.</p>"
   },
   {
@@ -183,7 +180,7 @@
           }
         ]
       },
-       {
+      {
         "src": "/img/community/certified-2.0.png",
         "items": [
           {
@@ -230,7 +227,7 @@
             "link": "https://www.finos.org/press/finos-announces-fdc3-2.1"
           }
         ]
-      }    
+      }
     ]
   },
   {
@@ -435,7 +432,7 @@
     "description": "Connectifi provides FDC3 interop as a cloud service, empowering organizations to connect anything, anywhere, in a security-first environment that does not require installs.\n\nUse Connectifi to leverage FDC3 in standard browser and mobile environments, to expand the reach and ROI of your existing desktop tech stack, and to create secure and verifiable interop channels between mission critical applications.",
     "badges": [],
     "type": "platform-provider",
-     "conformance": [
+    "conformance": [
       {
         "src": "/img/community/certified-1.2.png",
         "items": [
@@ -444,7 +441,7 @@
             "link": "https://www.finos.org/blog/fdc3-news-1.2-agent-conformance-language-bindings"
           }
         ]
-      }  
+      }
     ]
   },
   {
@@ -486,14 +483,14 @@
     "badges": [],
     "type": "other"
   },
- {
+  {
     "title": "CAS Workflow",
     "publisher": "comitFS",
     "image": "https://www.comitfs.com/assets/img/logo@2x.webp",
     "infoLink": "https://www.comitfs.com/cas-workflow.html",
     "docsLink": "",
     "description": "comitFS has been delivering a Telephony Integration Middleware dedicated to the the financial community for 20 years. Recently we have been exploring how to leverage FDC3 capabilities to bring call control and call based contextual data to user's desktops.",
-        "badges": [
+    "badges": [
       {
         "text": "FDC3 1.2 Supported"
       },
@@ -541,5 +538,39 @@
     "type": "demos",
     "badges": [],
     "description": "The Connectifi FDC3 Sandbox is a free FDC3 development tool that uses the Connectifi cloud service to securely enable interoperability across applications regardless of technology or device they are running on.  It uses the FDC3 standard and works without installs so that FDC3 can be used directly in a browser, bridging across desktop containers and across devices."
+  },
+  {
+    "title": "Morgan Stanley",
+    "publisher": "Morgan Stanley",
+    "image": "/img/users/MorganStanley.png",
+    "infoLink": "https://github.com/morganstanley/ComposeUI",
+    "docsLink": "https://morganstanley.github.io/ComposeUI/documentation",
+    "type": "platform-provider",
+    "badges": [],
+    "conformance": [
+      {
+        "src": "",
+        "items": []
+      },
+      {
+        "src": "/img/community/certified-2.0.png",
+        "items": [
+          {
+            "text": "Morgan Stanley ComposeUI version alpha-5 Certified Conformant With FDC3 2.0 Specification on 30th September 2024",
+            "link": "https://www.finos.org/press/fdc3-2.0-blackrock-morgan-stanley-lead-charge"
+          }
+        ]
+      }
+    ],
+    "description": "ComposeUI is a .NET based general UI Container and Unified UI and App host which enables the hosting of Web and desktop content. It supports desktop and web applications in order to provide an evergreen alternative to Electron by the use of WebView2."
+  },
+  {
+    "title": "Morgan Stanley",
+    "publisher": "Morgan Stanley",
+    "image": "/img/users/MorganStanley.png",
+    "infoLink": "https://www.morganstanley.com",
+    "description": "Morgan Stanley believes that open standards like FDC3 are essential for unlocking new scenarios and efficiencies in user experience on the desktop for both our employees and our clients.",
+    "badges": [],
+    "type": "adopter"
   }
 ]
