@@ -34,7 +34,7 @@ hide_title: true
 | App | Step            | Description                                              |
 |-----|-----------------|----------------------------------------------------------|
 | A   | 1. Opening App     |App A opens app B with an `fdc3.instrument` Context Object by calling a function (see below) |
-| B   | 2. Receive Context | Add an untyped context listener via: <br/>`fdc3.addContextListener(null, handler)` <br /> B receives an `fdc3.instrument` Context Object matching that passed to the `fdc3.open() call made by A |
+| B   | 2. Receive Context | Add an untyped context listener via: <br />`fdc3.addContextListener(null, handler)` <br /> B receives an `fdc3.instrument` Context Object matching that passed to the `fdc3.open() call made by A |
 
 - `AOpensBWithContext3`:  **A** uses an `AppMetadata` or `AppIdentifier` to open B, via:
   - `fdc3.open({appId: “<app B ID>”}, <fdc3.instrument context>)`
