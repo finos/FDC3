@@ -17,13 +17,15 @@
 
 <!--- Checklist to be completed by reviewers, and pre-checked by the authors of a PR -->
 
+- [ ] If a change was made to the FDC3 Standard, was an issue linked above?
 - [ ] Is a CHANGELOG.md entry included?
-- [ ] Does this PR include changes to the Desktop Agent or Channel API?
+- [ ] Does this PR include changes to any of the FDC3 API (`DesktopAgent`, `Channel`, `PrivateChannel`, `Listener`, `Bridging`)?
   - [ ] If yes, were both documentation (/docs) and sources updated?<br/>
-        *jsDoc comments are on the API interfaces and types should be matched to the main documentation in /docs*
+        *jsDoc comments are on interfaces and types should be matched to the main documentation in /docs*
   - [ ] If yes, are conformance test definitions (/toolbox/fdc3-conformance) still correct and complete?<br/>
         *Conformance test definitions should cover all **required** aspects of an FDC3 Desktop Agent implementation, which are usually marked with a **MUST** keyword, and  optional features (**SHOULD** or **MAY**) where the format of those features is defined*
-  - [ ] If yes, were changes applied to the Bridging and FDC3 for Web protocol schemas<br/>
+  - [ ] If yes, were changes applied to the Bridging and FDC3 for Web protocol schemas?<br/>
         *The Web Connection protocol and Desktop Agent Communication Protocol schemas must be able to support all necessary aspects of the Desktop Agent API, while Bridging must support those aspects necessary for Desktop Agents to communicate with each other*
 - [ ] Were schema files (Context, bridging, FDC3 for Web) modified in this PR
   - [ ] If yes, was code generation (`npm run build`) run and the results checked in?
+        *Generated code will be found at `/src/api/BrowserTypes.ts`,  `/src/context/ContextTypes.ts`, or `/src/bridging/BridgingTypes.ts`*
