@@ -9,9 +9,11 @@
       "title": "Event Message Type",
       "type": "string",
       "enum": [
-        "intentEvent",
+        "addEventListenerEvent",
         "broadcastEvent",
         "channelChangedEvent",
+        "heartbeatEvent",
+        "intentEvent",
         "privateChannelOnAddContextListenerEvent",
         "privateChannelOnDisconnectEvent",
         "privateChannelOnUnsubscribeEvent"
@@ -26,14 +28,14 @@
     },
     "meta": {
       "title": "Event Metadata",
-      "description": "Metadata for messages sent by a Desktop Agent to an App notifying it of an event.",
+      "description": "Metadata for messages sent by a Desktop Agent to an app notifying it of an event.",
       "type": "object",
       "properties": {
         "timestamp": {
           "$ref": "common.schema.json#/$defs/Timestamp"
         },
         "eventUuid": {
-          "$ref": "common.schema.json#/$defs/ResponseUuid"
+          "$ref": "common.schema.json#/$defs/EventUuid"
         }
       },
       "required": ["timestamp", "eventUuid"],

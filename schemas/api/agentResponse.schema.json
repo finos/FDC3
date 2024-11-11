@@ -10,10 +10,12 @@
       "type": "string",
       "enum": [
         "addContextListenerResponse",
+        "addEventListenerResponse",
         "addIntentListenerResponse",
         "broadcastResponse",
         "contextListenerUnsubscribeResponse",
         "createPrivateChannelResponse",
+        "eventListenerUnsubscribeResponse",
         "findInstancesResponse",
         "findIntentResponse",
         "findIntentsByContextResponse",
@@ -24,6 +26,7 @@
         "getOrCreateChannelResponse",
         "getUserChannelsResponse",
         "intentListenerUnsubscribeResponse",
+        "intentResultResponse",
         "joinUserChannelResponse",
         "leaveCurrentChannelResponse",
         "openResponse",
@@ -62,7 +65,7 @@
     },
     "meta": {
       "title": "Agent Response Message Metadata",
-      "description": "Metadata for messages sent by a Desktop Agent to an App in response to an API call",
+      "description": "Metadata for messages sent by a Desktop Agent to an app in response to an API call.",
       "type": "object",
       "properties": {
         "timestamp": {

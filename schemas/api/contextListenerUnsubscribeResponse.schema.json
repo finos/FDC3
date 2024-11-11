@@ -3,7 +3,7 @@
 	"$id": "https://fdc3.finos.org/schemas/next/api/contextListenerUnsubscribeResponse.schema.json",
 	"type": "object",
 	"title": "ContextListenerUnsubscribe Response",
-	"description": "A response to a request to a contextListenerUnsubscribe request.",
+	"description": "A response to a contextListenerUnsubscribe request.",
 	"allOf": [
 		{
 			"$ref": "agentResponse.schema.json"

@@ -1,0 +1,58 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceRestyle.schema.json",
+  "title": "Fdc3 UserInterface Restyle",
+  "description": "Message from a UI frame to the DA proxy code (setup by `getAgent()`) with updated styling information to apply to it. Can be used to implement a pop-open or close interaction or other transition needed by a UI implementation.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/Fdc3UserInterfaceRestyleBase"
+    },
+    {
+      "$ref": "fdc3UserInterfaceMessage.schema.json"
+    }
+  ],
+  "$defs": {
+    "Fdc3UserInterfaceRestyleBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Fdc3 UserInterface Restyle Message Type",
+          "const": "Fdc3UserInterfaceRestyle"
+        },
+        "payload": {
+          "title": "Fdc3 UserInterface Restyle Payload",
+          "type": "object",
+          "properties": {
+            "updatedCSS": {
+              "title": "Updated CSS",
+              "type": "object",
+              "description": "A constrained set of styling properties that should be applied to the frame. Note `position` cannot be set, and should always be `fixed`.",
+              "properties": {
+                "height": {"type": "string", "title": "height", "description": "The updated height of the iframe."},
+                "width": {"type": "string", "title": "width", "description": "The updated width of the iframe."},
+                "zIndex": {"type": "string", "title": "zIndex", "description": "The updated zIndex to apply to the iframe."},
+                "left": {"type": "string", "title": "left", "description": "The initial left property to apply to the iframe."},
+                "top": {"type": "string", "title": "top", "description": "The initial top property to apply to the iframe."},
+                "bottom": {"type": "string", "title": "bottom", "description": "The initial bottom property to apply to the iframe."},
+                "right": {"type": "string", "title": "right", "description": "The initial right property to apply to the iframe."},
+                "transition": {"type": "string", "title": "transition", "description": "The updated transition property to apply to the iframe."},
+                "maxHeight": {"type": "string", "title": "maxHeight", "description": "The updated maximum height to apply to the iframe."},
+                "maxWidth": {"type": "string", "title": "maxWidth", "description": "The updated maximum with to apply to the iframe."}
+              },
+              "required": []
+            }
+          },
+          "additionalProperties": false,
+          "required": ["updatedCSS"]
+        }
+      },
+      "required": [
+        "type",
+        "payload"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
+

@@ -14,7 +14,8 @@
         "WCP3Handshake",
         "WCP4ValidateAppIdentity",
         "WCP5ValidateAppIdentityFailedResponse",
-        "WCP5ValidateAppIdentityResponse"
+        "WCP5ValidateAppIdentityResponse",
+        "WCP6Goodbye"
       ],
       "description": "Identifies the type of the connection step message."
     },
@@ -25,19 +26,25 @@
       "additionalProperties": true
     },
     "meta": {
-      "$ref": "#/$defs/ConnectionStepMeta"
+      "title": "Connection Step Metadata",
+      "description": "Metadata for a Web Connection Protocol message.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/DisconnectStepMeta"
+        },
+        {
+          "$ref": "#/$defs/ConnectionStepMeta"
+        }
+      ]
     }
   },
   "required": [
     "type",
-    "payload",
     "meta"
   ],
   "additionalProperties": false,
   "$defs": {
     "ConnectionStepMeta": {
-      "title": "Connection Step Metadata",
-      "description": "Metadata for this connection step message",
       "type": "object",
       "properties": {
         "connectionAttemptUuid": {
@@ -50,6 +57,18 @@
       "required": [
         "timestamp",
         "connectionAttemptUuid"
+      ],
+      "additionalProperties": false
+    },
+    "DisconnectStepMeta": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "timestamp"
       ],
       "additionalProperties": false
     }

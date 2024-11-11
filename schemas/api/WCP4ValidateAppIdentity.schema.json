@@ -24,20 +24,21 @@
           "title": "WCP4ValidateAppIdentity Payload",
           "type": "object",
           "properties": {
-            "appId": {
-              "title": "appId",
-              "description": "appId for the application attempting to connect. The appId must be fully qualified (appId@host.domain.appD) such that the URL for the appD record can be determined for identity validation purposes, or appDUrl must also be specified.",
-              "type": "string"
+            "identityUrl": {
+              "title": "Identity URL",
+              "description": "URL to use for the identity of the application. Desktop Agents MUST validate that the origin of the message matches the URL, but MAY implement custom comparison logic.",
+              "type": "string",
+              "format": "uri"
             },
-            "appDUrl": {
-              "title": "appDUrl",
-              "description": "URL for an App Directory record that provides identity details for the application attempting to connect",
+            "actualUrl": {
+              "title": "Actual URL",
+              "description": "The current URL of the page attempting to connect. This may differ from the identityUrl, but the origins MUST match.",
               "type": "string",
               "format": "uri"
             },
             "instanceId": {
               "title": "instanceId",
-              "description": "If an application has previously connected to the desktop agent, it may specify its prior instance id and associated instance UUID to request the same same instance Id be assigned.",
+              "description": "If an application has previously connected to the Desktop Agent, it may specify its prior instance id and associated instance UUID to request the same same instance Id be assigned.",
               "type": "string"
             },
             "instanceUuid": {
@@ -48,10 +49,12 @@
           },
           "additionalProperties": false,
           "required": [
-            "appId"
+            "identityUrl", "actualUrl"
           ]
         },
-        "meta": true
+        "meta": {
+          "$ref": "WCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"
+        }
       },
       "required": [
         "type",

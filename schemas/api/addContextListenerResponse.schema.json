@@ -3,7 +3,7 @@
 	"$id": "https://fdc3.finos.org/schemas/next/api/addContextListenerResponse.schema.json",
 	"type": "object",
 	"title": "AddContextListener Response",
-	"description": "A response to a addContextListener request.",
+	"description": "A response to a addContextListener request. Where the listener was added to the current user channel (channelId == null), and this app has already been added to a user channel, client code should make a subsequent request to get the current context of that channel for this listener and then call its handler with it.",
 	"allOf": [
 		{
 			"$ref": "agentResponse.schema.json"

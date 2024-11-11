@@ -40,7 +40,7 @@
 			"properties": {
 				"context": {
 					"title": "Current Context",
-					"description": "The most recently broadcast context object (of the specified type, if one was specified), or `null` if none was available in the channel",
+					"description": "The most recently broadcast context object (of the specified type, if one was specified), or `null` if none was available in the channel.",
 					"oneOf": [
 						{ "$ref": "../context/context.schema.json" },
 						{ "type": "null" }

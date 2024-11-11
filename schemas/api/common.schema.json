@@ -3,17 +3,17 @@
   "$id": "https://fdc3.finos.org/schemas/next/api/common.schema.json",
   "title": "Common definitions",
   "type": "object",
-  "description": "Common definitions that are referenced in the API and Bridging wire protocol schemas",
+  "description": "Common definitions that are referenced in the API and Bridging Wire Protocol schemas.",
   "$defs": {
     "ConnectionAttemptUuid": {
       "title": "Connection Attempt UUID",
       "type": "string",
-      "description": "Unique identifier for a for an attempt to connect to a Desktop Agent"
+      "description": "Unique identifier for a for an attempt to connect to a Desktop Agent. A Unique UUID should be used in the first (WCP1Hello) message and should be quoted in all subsequent messages to link them to the same connection attempt."
     },
     "RequestUuid": {
       "title": "Request UUID",
       "type": "string",
-      "description": "Unique identifier for a request or event message. Required in all message types"
+      "description": "Unique identifier for a request or event message. Required in all message types."
     },
     "ResponseUuid": {
       "title": "Response UUID",
@@ -34,7 +34,7 @@
       "title": "Timestamp",
       "type": "string",
       "format": "date-time",
-      "description": "Timestamp at which the message was generated"
+      "description": "Timestamp at which the message was generated."
     },
     "ErrorMessages": {
       "oneOf": [
@@ -57,7 +57,7 @@
     },
     "PrivateChannelEventListenerTypes": {
       "title": "Private Channel Event Listener Types",
-      "description": "Event listener type names for Private Channel events",
+      "description": "Event listener type names for Private Channel events.",
       "type": "string",
       "enum": [
         "onAddContextListener",

@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 The role of FDC3 API is to establish a baseline interface for interoperability between applications. Because FDC3 is largely an agreement between existing platforms and applications, standards should be optimized for ease of adoption rather than functional completeness. Functionality absent from a FDC3 specification is in no way a commentary on its importance.
 
-The following sections examine the API's use-cases and core concepts. The APIs a fully defined in both subsequent pages of this Part and a full set of TypeScript definitions in the [src](https://github.com/finos/FDC3/tree/main/src/api) directory of the [FDC3 GitHub repository](https://github.com/finos/FDC3/).
+The following sections examine the API's use-cases and core concepts. The API is fully defined in both subsequent pages of this Part and a full set of TypeScript definitions in the [src](https://github.com/finos/FDC3/tree/main/src/api) directory of the [FDC3 GitHub repository](https://github.com/finos/FDC3/).
 
 ## Components
 
@@ -48,16 +48,17 @@ The FDC3 API specification consists of interfaces.  It is expected that each Des
 - [`Channel`](ref/Channel)
 - [`PrivateChannel`](ref/PrivateChannel)
 - [`Listener`](ref/Types#listener)
+- [Utility types](ref/Types) and [Metadata Objects](ref/Metadata).
 
-Other interfaces defined in the spec are not critical to define as concrete types.  Rather, the Desktop Agent should expect to have objects of the interface shape passed into or out of their library.
+The means to access the main FDC3 API interface (a `DesktopAgent` implementation) is defined separately for each language in which FDC3 is implemented. These definitions are important as they affect whether applications can be written in a vendor agnostic format so that they run under any Standards-conformant implementation.
 
 ### Implementation language
 
 FDC3 and the Desktop Agent API it defines are intended to be independent of particular programming languages and platforms and hence the original definitions, produced in TypeScript, may be translated into other languages. However, this also places limitations on the API definitions as they need to be widely implementable in other languages.
 
-Specifically, the use of ['unions'](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) of primitive values in API type and metadata objects, or function parameters SHOULD be avoided as they often cannot be replicated in other languages. Unions of more complex types (such as specific [Context](ref/Context) Types) may be used where a suitable interface is available or can be created to allow the required polymorphism in languages other than TypeScript.
+Specifically, the use of ['unions'](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) of primitive values in API type and metadata objects, or function parameters SHOULD be avoided as they often cannot be replicated in other languages. Unions of more complex types (such as specific [Context](../context/spec#the-context-interface) Types) may be used where a suitable interface is available or can be created to allow the required polymorphism in languages other than TypeScript.
 
-For implementation details relating to particular languages, and how to access the API in those languages, please see [Supported Platforms](supported-platforms).
+For implementation details relating to particular languages, and how to access the API in those languages, please see [Supported Platforms](./supported-platforms).
 
 ### Standards vs. Implementation
 
@@ -78,7 +79,7 @@ Are all areas of functionality that any feature-complete desktop agent would imp
 
 A goal of the FDC3 Standard is that applications running in different Desktop Agent contexts on the same desktop, or operated by the same user, would be able to interoperate and that one Desktop Agent context would be able to discover and launch an application in another Desktop Application context. As Desktop Agent interop is supported by common standards for APIs an app in one Desktop Agent context would not need to know a different syntax to launch or interact with an app in another Desktop Agent context.
 
-Inter-agent communication at the API layer may be achieved via the [Desktop Agent Bridging Part of the FDC3 Standard](../agent-bridging/spec) ([@experimental](../fdc3-compliance#experimental-features)), which defines an independent service that Desktop Agents may connect to, and a protocol for the exchange of messages relating to FDC3 API calls. Hence, by implementing support for Desktop Agent Bridging, a platform may extend interop across applications running in multiple Desktop Agent contexts.
+Inter-agent communication at the API layer may be achieved via the [Desktop Agent Bridging Part of the FDC3 Standard](../agent-bridging/spec) ([@experimental](../fdc3-compliance#experimental-features)), which defines an independent service that Desktop Agents may connect to (via the Bridge Connection Protocol or BCP), and a protocol for the exchange of messages relating to FDC3 API calls (the Bridge Messaging Protocol or BMP). Hence, by implementing support for Desktop Agent Bridging, a platform may extend interop across applications running in multiple Desktop Agent contexts.
 
 Desktop Agent Bridging provides message exchanges and a workflow for performing intent resolution across multiple agents. Hence, app discovery is supported across the agents connected to the bridge for intent-based workflows. Further, as channels are also supported by bridging, context sharing also works across multiple agents.
 
@@ -130,7 +131,6 @@ An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
 - Make metadata about each context message or intent and context message received (including the app that originated the message) available to the receiving application.
 - Prevent external apps from listening or publishing on a [`PrivateChannel`](ref/PrivateChannel) that they did not request or provide.
 - Enforce compliance with the expected behavior of intents (where Intents specify a contract that is enforceable by schema, for example, return object types) and return an error if the interface is not met.
-- Implement [`validateAppIdentity()`](ref/DesktopAgent#validateappidentity).
 
 An FDC3 Standard compliant Desktop Agent implementation **MAY**:
 
@@ -182,12 +182,12 @@ Since version 1.2 of the FDC3 Standard it may do so via the [`fdc3.getInfo()`](r
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
+import { compareVersionNumbers, versionIsAtLeast } from "@finos/fdc3";
 
-if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), '1.2')) {
+if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), "1.2")) {
   await fdc3.raiseIntentForContext(context);
 } else {
-  await fdc3.raiseIntent('ViewChart', context);
+  await fdc3.raiseIntent("ViewChart", context);
 }
 ```
 
@@ -207,8 +207,8 @@ The [`ImplementationMetadata`](ref/Metadata#implementationmetadata) object retur
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-let implementationMetadata = await fdc3.getInfo();
-let {appId, instanceId} = implementationMetadata.appMetadata;
+const implementationMetadata = await fdc3.getInfo();
+const { appId, instanceId } = implementationMetadata.appMetadata;
 
 ```
 
@@ -274,26 +274,34 @@ await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
 const appIntent = await fdc3.findIntent("ViewContact", context, "fdc3.contact");
 try {
   const resolution = await fdc3.raiseIntent(appIntent.intent, context, appIntent.apps[0].name);
-  const result = await resolution.getResult();
-  console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
-} catch(error) {
-  console.error(`${resolution.source} returned a result error: ${error}`);
+  try {
+    const result = await resolution.getResult();
+    console.log(`${resolution.source} returned ${JSON.stringify(result)}`);
+  } catch(resultError: ResultError) {
+    console.error(`${resolution.source} returned an error: ${resultError.message}`);
+  }
+} catch(resolveError: ResolveError) {
+  console.error(`${JSON.stringify(appIntent.apps[0])} returned an error: ${resolveError.message}`);
 }
 
 //Find apps to resolve an intent and return a channel
 const appIntent = await fdc3.findIntent("QuoteStream", context, "channel");
 try {
   const resolution = await fdc3.raiseIntent(appIntent.intent, context, appIntent.apps[0].name);
-  const result = await resolution.getResult();
-  if (result && result.addContextListener) {
-    result.addContextListener(null, (context) => { 
-      console.log(`received context: ${JSON.stringify(context)}`); 
-    });
-  } else {
-    console.log(`${resolution.source} didn't return a channel! Result: ${JSON.stringify(result)}`);
+  try {
+    const result = await resolution.getResult();
+    if (result && result.addContextListener) {
+      result.addContextListener(null, (context) => { 
+        console.log(`received context: ${JSON.stringify(context)}`); 
+      });
+    } else {
+      console.log(`${resolution.source} didn't return a channel! Result: ${JSON.stringify(result)}`);
+    }
+  } catch(resultError: ResultError) {
+    console.error(`${resolution.source} returned an error: ${resultError.message}`);
   }
-} catch(error) {
-  console.error(`${resolution.source} returned a result error: ${error}`);
+} catch (resolveError: ResolveError) {
+  console.error(`${JSON.stringify(appIntent.apps[0])} returned an error: ${resolveError.message}`);
 }
 
 //Find apps that can perform any intent with the specified context
@@ -381,9 +389,9 @@ For example, to raise a specific intent:
 
 ```ts
 try {
-  const resolution = await fdc3.raiseIntent('StageOrder', context);
+  const resolution = await fdc3.raiseIntent("StageOrder", context);
 }
-catch (err){ ... }
+catch (err: ResolveError) { ... }
 ```
 
 </TabItem>
@@ -411,8 +419,7 @@ try {
   if (resolution.data) {
     const orderId = resolution.data.id;
   }
-}
-catch (err){ ... }
+} catch (err: ResolveError) { ... }
 ```
 
 </TabItem>
@@ -440,13 +447,13 @@ Use metadata about the resolving app instance to target a further intent
 
 ```ts
 try {
-  const resolution = await fdc3.raiseIntent('StageOrder', context);
+  const resolution = await fdc3.raiseIntent("StageOrder", context);
   ...
 
   //some time later
   await agent.raiseIntent("UpdateOrder", context, resolution.source);
 }
-catch (err) { ... }
+catch (err: ResolveError) { ... }
 ```
 
 </TabItem>
@@ -478,13 +485,13 @@ try {
   /* Detect whether the result is Context or a Channel by checking for properties unique to Channels. */
   if (result && result.broadcast) { 
     console.log(`${resolution.source} returned a channel with id ${result.id}`);
-  } else if (result){
+  } else if (result) {
     console.log(`${resolution.source} returned data: ${JSON.stringify(result)}`);
   } else {
     console.error(`${resolution.source} didn't return anything`);
   }
-} catch(error) {
-  console.error(`${resolution.source} returned a data error: ${error}`);
+} catch(err: ResultError) {
+  console.error(`${resolution.source} returned a data error: ${err.message}`);
 }
 ```
 
@@ -606,7 +613,7 @@ To find a User channel, one calls:
 ```ts
 // returns an array of channels
 const allChannels = await fdc3.getUserChannels();
-const redChannel = allChannels.find(c => c.id === 'red');
+const redChannel = allChannels.find(c => c.id === "red");
 ```
 
 </TabItem>
@@ -656,75 +663,75 @@ Future versions of the FDC3 Standard may support connections between desktop age
 ```ts
 const recommendedChannels = [
   {
-    id: 'fdc3.channel.1',
-    type: 'user',
+    id: "fdc3.channel.1",
+    type: "user",
     displayMetadata: {
-      name: 'Channel 1',
-      color: 'red',
-      glyph: '1',
+      name: "Channel 1",
+      color: "red",
+      glyph: "1",
     },
   },
   {
-    id: 'fdc3.channel.2',
-    type: 'user',
+    id: "fdc3.channel.2",
+    type: "user",
     displayMetadata: {
-      name: 'Channel 2',
-      color: 'orange',
-      glyph: '2',
+      name: "Channel 2",
+      color: "orange",
+      glyph: "2",
     },
   },
   {
-    id: 'fdc3.channel.3',
-    type: 'user',
+    id: "fdc3.channel.3",
+    type: "user",
     displayMetadata: {
-      name: 'Channel 3',
-      color: 'yellow',
-      glyph: '3',
+      name: "Channel 3",
+      color: "yellow",
+      glyph: "3",
     },
   },
   {
-    id: 'fdc3.channel.4',
-    type: 'user',
+    id: "fdc3.channel.4",
+    type: "user",
     displayMetadata: {
-      name: 'Channel 4',
-      color: 'green',
-      glyph: '4',
+      name: "Channel 4",
+      color: "green",
+      glyph: "4",
     },
   },
   {
-    id: 'fdc3.channel.5',
-    type: 'user',
+    id: "fdc3.channel.5",
+    type: "user",
     displayMetadata: {
-      name: 'Channel 5',
-      color: 'cyan',
-      glyph: '5',
+      name: "Channel 5",
+      color: "cyan",
+      glyph: "5",
     },
   },
   {
-    id: 'fdc3.channel.6',
-    type: 'user',
+    id: "fdc3.channel.6",
+    type: "user",
     displayMetadata: {
-      name: 'Channel 6',
-      color: 'blue',
-      glyph: '6',
+      name: "Channel 6",
+      color: "blue",
+      glyph: "6",
     },
   },
   {
-    id: 'fdc3.channel.7',
-    type: 'user',
+    id: "fdc3.channel.7",
+    type: "user",
     displayMetadata: {
-      name: 'Channel 7',
-      color: 'magenta',
-      glyph: '7',
+      name: "Channel 7",
+      color: "magenta",
+      glyph: "7",
     },
   },
   {
-    id: 'fdc3.channel.8',
-    type: 'user',
+    id: "fdc3.channel.8",
+    type: "user",
     displayMetadata: {
-      name: 'Channel 8',
-      color: 'purple',
-      glyph: '8',
+      name: "Channel 8",
+      color: "purple",
+      glyph: "8",
     },
   },
 ];
@@ -744,7 +751,7 @@ To get (or create) a [`Channel`](ref/Channel) reference, then interact with it:
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-const appChannel = await fdc3.getOrCreateChannel('my_custom_channel');
+const appChannel = await fdc3.getOrCreateChannel("my_custom_channel");
 // get the current context of the channel
 const current = await appChannel.getCurrentContext();
 // add a listener
@@ -783,7 +790,7 @@ let joinedChannel = await fdc3.getCurrentChannel()
 const listener = await fdc3.addContextListener(null, context => { ... });
 
 //retrieve an App channel and add a listener that is specific to that channel
-const myChannel = await fdc3.getOrCreateChannel('my_custom_channel');
+const myChannel = await fdc3.getOrCreateChannel("my_custom_channel");
 const myChannelListener = await myChannel.addContextListener(null, context => { ... });
 
 fdc3.joinChannel('blue')

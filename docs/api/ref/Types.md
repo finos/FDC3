@@ -171,6 +171,14 @@ interface DesktopAgentIdentifier {
 ```
 
 </TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
+```
+
+</TabItem>
+
 </Tabs>
 
 (Experimental) Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios where a request needs to be directed to a Desktop Agent rather than a specific app, or a response message is returned by the Desktop Agent (or more specifically its resolver) rather than a specific app. Used as a substitute for `AppIdentifier` in cases where no app details are available or are appropriate.
@@ -246,14 +254,14 @@ Represented as a union type in TypeScript, however, this type may be rendered as
 
 ## `Listener`
 
-A Listener object is returned when an application subscribes to intents or context broadcasts via the [`addIntentListener`](DesktopAgent#addintentlistener) or [`addContextListener`](DesktopAgent#addcontextlistener) methods on the [DesktopAgent](DesktopAgent) object.
+A Listener object is returned when an application subscribes to intents or context broadcasts via the [`addIntentListener`](DesktopAgent#addintentlistener), [`addContextListener`](DesktopAgent#addcontextlistener) or [`addEventListener`](DesktopAgent#addeventlistener) on the [DesktopAgent](DesktopAgent) object or (PrivateChannel#addeventlistener) on the [PrivateChannel](PrivateChannel) object.
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 interface Listener {
-  unsubscribe(): void;
+  unsubscribe(): Promise<void>;
 }
 ```
 
@@ -276,7 +284,7 @@ interface IListener
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-unsubscribe(): void;
+unsubscribe(): Promise<void>;
 ```
 
 </TabItem>

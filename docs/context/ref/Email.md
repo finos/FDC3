@@ -1,57 +1,67 @@
 ---
-id: Email
-sidebar_label: Email
 title: Email
-hide_title: true
----
-# `Email`
+sidebar_label: Email
 
-A collection of information to be used to initiate an email with a Contact or ContactList
+---
+
+# Email
+
+A collection of information to be used to initiate an email with a Contact or ContactList.
+
+## Schema
+
+<https://fdc3.finos.org/schemas/next/context/email.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/email.schema.json))
 
 ## Type
 
 `fdc3.email`
 
-## Schema
+## Properties
 
-<https://fdc3.finos.org/schemas/next/context/email.schema.json>
+<details>
+  <summary><code>recipients</code> <strong>(required)</strong></summary>
 
-## Details
+**One of:**
 
-| Property          | Type                                  | Required | Example Value       |
-|-------------------|---------------------------------------|----------|---------------------|
-| `type`            | string                                | Yes      | `'fdc3.email'` |
-| `recipients`      | fdc3.contact or fdc3.contactList      | Yes      | `{ type: "fdc3.contact", name: "John Doe", id: { "email": "john@sample.com" } }` |
-| `subject`         | string                                | No       | `'The information you requested'`            |
-| `textBody`        | string                                | No       | `'Blah, blah, bah`         |
+- **type**: [Contact](Contact)
+- **type**: [ContactList](ContactList)
+
+One or more recipients for the email.
+
+</details>
+
+<details>
+  <summary><code>subject</code></summary>
+
+**type**: `string`
+
+Subject line for the email.
+
+</details>
+
+<details>
+  <summary><code>textBody</code></summary>
+
+**type**: `string`
+
+Body content for the email.
+
+</details>
 
 ## Example
 
-```js
-const email = {
-  type: 'fdc3.email',
-  recipients: {
-    type: 'fdc3.contact',
-    name: 'Jane Doe',
-    id: {
-      email: 'jane.doe@example.com'
+```json
+{
+  "type": "fdc3.email",
+  "recipients": {
+    "type": "fdc3.contact",
+    "name": "Jane Doe",
+    "id": {
+      "email": "jane.doe@example.com"
     }
   },
-  subject: 'The information you requested',
-  textBody: 'Blah, blah, blah ...'
+  "subject": "The information you requested",
+  "textBody": "Blah, blah, blah ..."
 }
-
-
-fdc3.raiseIntent("StartEmail", email)
 ```
 
-## See Also
-
-Other Types
-
-- [Contact](Contact)
-- [ContactList](ContactList)
-
-Intents
-
-- [StartEmail](../../intents/ref/StartEmail)

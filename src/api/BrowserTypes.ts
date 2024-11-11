@@ -1,16 +1,16 @@
 // To parse this data:
 //
-//   import { Convert, AppRequestMessage, AgentResponseMessage, AgentEventMessage, AddContextListenerRequest, AddContextListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, IframeChannelDrag, IframeChannelResize, IframeChannels, IframeChannelSelected, IframeHandshake, IframeHello, IframeMessage, IframeResolve, IframeResolveAction, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEventEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocolMessage } from "./file";
+//   import { Convert, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, Fdc3UserInterfaceChannels, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceDrag, Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, Fdc3UserInterfaceMessage, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage } from "./file";
 //
-//   const fDC3DesktopAgentAPISchemas = Convert.toFDC3DesktopAgentAPISchemas(json);
-//   const commonDefinitions = Convert.toCommonDefinitions(json);
-//   const appRequestMessage = Convert.toAppRequestMessage(json);
-//   const agentResponseMessage = Convert.toAgentResponseMessage(json);
-//   const agentEventMessage = Convert.toAgentEventMessage(json);
 //   const addContextListenerRequest = Convert.toAddContextListenerRequest(json);
 //   const addContextListenerResponse = Convert.toAddContextListenerResponse(json);
+//   const addEventListenerRequest = Convert.toAddEventListenerRequest(json);
+//   const addEventListenerResponse = Convert.toAddEventListenerResponse(json);
 //   const addIntentListenerRequest = Convert.toAddIntentListenerRequest(json);
 //   const addIntentListenerResponse = Convert.toAddIntentListenerResponse(json);
+//   const agentEventMessage = Convert.toAgentEventMessage(json);
+//   const agentResponseMessage = Convert.toAgentResponseMessage(json);
+//   const appRequestMessage = Convert.toAppRequestMessage(json);
 //   const broadcastEvent = Convert.toBroadcastEvent(json);
 //   const broadcastRequest = Convert.toBroadcastRequest(json);
 //   const broadcastResponse = Convert.toBroadcastResponse(json);
@@ -19,12 +19,23 @@
 //   const contextListenerUnsubscribeResponse = Convert.toContextListenerUnsubscribeResponse(json);
 //   const createPrivateChannelRequest = Convert.toCreatePrivateChannelRequest(json);
 //   const createPrivateChannelResponse = Convert.toCreatePrivateChannelResponse(json);
+//   const eventListenerUnsubscribeRequest = Convert.toEventListenerUnsubscribeRequest(json);
+//   const eventListenerUnsubscribeResponse = Convert.toEventListenerUnsubscribeResponse(json);
+//   const fdc3UserInterfaceChannels = Convert.toFdc3UserInterfaceChannels(json);
+//   const fdc3UserInterfaceChannelSelected = Convert.toFdc3UserInterfaceChannelSelected(json);
+//   const fdc3UserInterfaceDrag = Convert.toFdc3UserInterfaceDrag(json);
+//   const fdc3UserInterfaceHandshake = Convert.toFdc3UserInterfaceHandshake(json);
+//   const fdc3UserInterfaceHello = Convert.toFdc3UserInterfaceHello(json);
+//   const fdc3UserInterfaceMessage = Convert.toFdc3UserInterfaceMessage(json);
+//   const fdc3UserInterfaceResolve = Convert.toFdc3UserInterfaceResolve(json);
+//   const fdc3UserInterfaceResolveAction = Convert.toFdc3UserInterfaceResolveAction(json);
+//   const fdc3UserInterfaceRestyle = Convert.toFdc3UserInterfaceRestyle(json);
 //   const findInstancesRequest = Convert.toFindInstancesRequest(json);
 //   const findInstancesResponse = Convert.toFindInstancesResponse(json);
 //   const findIntentRequest = Convert.toFindIntentRequest(json);
 //   const findIntentResponse = Convert.toFindIntentResponse(json);
 //   const findIntentsByContextRequest = Convert.toFindIntentsByContextRequest(json);
-//   const findIntentsByContextsByContextResponse = Convert.toFindIntentsByContextsByContextResponse(json);
+//   const findIntentsByContextResponse = Convert.toFindIntentsByContextResponse(json);
 //   const getAppMetadataRequest = Convert.toGetAppMetadataRequest(json);
 //   const getAppMetadataResponse = Convert.toGetAppMetadataResponse(json);
 //   const getCurrentChannelRequest = Convert.toGetCurrentChannelRequest(json);
@@ -37,18 +48,13 @@
 //   const getOrCreateChannelResponse = Convert.toGetOrCreateChannelResponse(json);
 //   const getUserChannelsRequest = Convert.toGetUserChannelsRequest(json);
 //   const getUserChannelsResponse = Convert.toGetUserChannelsResponse(json);
-//   const iframeChannelDrag = Convert.toIframeChannelDrag(json);
-//   const iframeChannelResize = Convert.toIframeChannelResize(json);
-//   const iframeChannels = Convert.toIframeChannels(json);
-//   const iframeChannelSelected = Convert.toIframeChannelSelected(json);
-//   const iframeHandshake = Convert.toIframeHandshake(json);
-//   const iframeHello = Convert.toIframeHello(json);
-//   const iframeMessage = Convert.toIframeMessage(json);
-//   const iframeResolve = Convert.toIframeResolve(json);
-//   const iframeResolveAction = Convert.toIframeResolveAction(json);
+//   const heartbeatAcknowledgementRequest = Convert.toHeartbeatAcknowledgementRequest(json);
+//   const heartbeatEvent = Convert.toHeartbeatEvent(json);
 //   const intentEvent = Convert.toIntentEvent(json);
 //   const intentListenerUnsubscribeRequest = Convert.toIntentListenerUnsubscribeRequest(json);
 //   const intentListenerUnsubscribeResponse = Convert.toIntentListenerUnsubscribeResponse(json);
+//   const intentResultRequest = Convert.toIntentResultRequest(json);
+//   const intentResultResponse = Convert.toIntentResultResponse(json);
 //   const joinUserChannelRequest = Convert.toJoinUserChannelRequest(json);
 //   const joinUserChannelResponse = Convert.toJoinUserChannelResponse(json);
 //   const leaveCurrentChannelRequest = Convert.toLeaveCurrentChannelRequest(json);
@@ -61,7 +67,7 @@
 //   const privateChannelDisconnectResponse = Convert.toPrivateChannelDisconnectResponse(json);
 //   const privateChannelOnAddContextListenerEvent = Convert.toPrivateChannelOnAddContextListenerEvent(json);
 //   const privateChannelOnDisconnectEvent = Convert.toPrivateChannelOnDisconnectEvent(json);
-//   const privateChannelOnUnsubscribeEventEvent = Convert.toPrivateChannelOnUnsubscribeEventEvent(json);
+//   const privateChannelOnUnsubscribeEvent = Convert.toPrivateChannelOnUnsubscribeEvent(json);
 //   const privateChannelUnsubscribeEventListenerRequest = Convert.toPrivateChannelUnsubscribeEventListenerRequest(json);
 //   const privateChannelUnsubscribeEventListenerResponse = Convert.toPrivateChannelUnsubscribeEventListenerResponse(json);
 //   const raiseIntentForContextRequest = Convert.toRaiseIntentForContextRequest(json);
@@ -75,194 +81,18 @@
 //   const webConnectionProtocol4ValidateAppIdentity = Convert.toWebConnectionProtocol4ValidateAppIdentity(json);
 //   const webConnectionProtocol5ValidateAppIdentityFailedResponse = Convert.toWebConnectionProtocol5ValidateAppIdentityFailedResponse(json);
 //   const webConnectionProtocol5ValidateAppIdentitySuccessResponse = Convert.toWebConnectionProtocol5ValidateAppIdentitySuccessResponse(json);
+//   const webConnectionProtocol6Goodbye = Convert.toWebConnectionProtocol6Goodbye(json);
 //   const webConnectionProtocolMessage = Convert.toWebConnectionProtocolMessage(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
 
 /**
- * A request message from an FDC3-enabled app to a Desktop Agent.
- */
-export interface AppRequestMessage {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AppRequestMessageMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: { [key: string]: any };
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: RequestMessageType;
-}
-
-/**
- * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
- */
-export interface AppRequestMessageMeta {
-    requestUuid: string;
-    /**
-     * Field that represents the source application that a request or response was received
-     * from. Please note that this may be set by an app or Desktop Agent proxy for debugging
-     * purposes but a Desktop Agent should make its own determination of the source of a message
-     * to avoid spoofing.
-     */
-    source?:   AppIdentifier;
-    timestamp: Date;
-}
-
-/**
- * Field that represents the source application that a request or response was received
- * from. Please note that this may be set by an app or Desktop Agent proxy for debugging
- * purposes but a Desktop Agent should make its own determination of the source of a message
- * to avoid spoofing.
- *
- * Identifies an application, or instance of an application, and is used to target FDC3 API
- * calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application
- * instances.
- *
- * Will always include at least an `appId` field, which uniquely identifies a specific app.
- *
- * If the `instanceId` field is set then the `AppMetadata` object represents a specific
- * instance of the application that may be addressed using that Id.
- *
- * Field that represents the source application that the request being responded to was
- * received from, for debugging purposes.
- *
- * The App resolution option chosen
- *
- * Details of the application instance that raised the intent
- *
- * Identifier for the app instance that was selected (or started) to resolve the intent.
- * `source.instanceId` MUST be set, indicating the specific app instance that
- * received the intent.
- */
-export interface AppIdentifier {
-    /**
-     * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
-     */
-    appId: string;
-    /**
-     * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
-     * identify the Desktop Agent to target.
-     */
-    desktopAgent?: string;
-    /**
-     * An optional instance identifier, indicating that this object represents a specific
-     * instance of the application described.
-     */
-    instanceId?: string;
-    [property: string]: any;
-}
-
-/**
- * Identifies the type of the message and it is typically set to the FDC3 function name that
- * the message relates to, e.g. 'findIntent', with 'Request' appended.
- */
-export type RequestMessageType = "addContextListenerRequest" | "addIntentListenerRequest" | "broadcastRequest" | "contextListenerUnsubscribeRequest" | "createPrivateChannelRequest" | "findInstancesRequest" | "findIntentRequest" | "findIntentsByContextRequest" | "getAppMetadataRequest" | "getCurrentChannelRequest" | "getCurrentContextRequest" | "getInfoRequest" | "getOrCreateChannelRequest" | "getUserChannelsRequest" | "intentListenerUnsubscribeRequest" | "joinUserChannelRequest" | "leaveCurrentChannelRequest" | "openRequest" | "privateChannelAddEventListenerRequest" | "privateChannelDisconnectRequest" | "privateChannelUnsubscribeEventListenerRequest" | "raiseIntentForContextRequest" | "raiseIntentRequest";
-
-/**
- * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
- * payload contains an `error` property, the request was unsuccessful.
- */
-export interface AgentResponseMessage {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
-     */
-    meta: AgentResponseMessageMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: AgentResponseMessageResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: ResponseMessageType;
-}
-
-/**
- * Metadata for messages sent by a Desktop Agent to an App in response to an API call
- */
-export interface AgentResponseMessageMeta {
-    requestUuid:  string;
-    responseUuid: string;
-    /**
-     * Field that represents the source application that the request being responded to was
-     * received from, for debugging purposes.
-     */
-    source?:   AppIdentifier;
-    timestamp: Date;
-}
-
-/**
- * A payload for a response to an API call that will contain any return values or an `error`
- * property containing a standardized error message indicating that the request was
- * unsuccessful.
- */
-export interface AgentResponseMessageResponsePayload {
-    error?: ResponsePayloadError;
-    [property: string]: any;
-}
-
-/**
- * Constants representing the errors that can be encountered when calling the `open` method
- * on the DesktopAgent object (`fdc3`).
- *
- * Constants representing the errors that can be encountered when calling the `findIntent`,
- * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
- * DesktopAgent (`fdc3`).
- */
-export type ResponsePayloadError = "AccessDenied" | "CreationFailed" | "MalformedContext" | "NoChannelFound" | "AppNotFound" | "AppTimeout" | "DesktopAgentNotFound" | "ErrorOnLaunch" | "ResolverUnavailable" | "IntentDeliveryFailed" | "NoAppsFound" | "ResolverTimeout" | "TargetAppUnavailable" | "TargetInstanceUnavailable" | "UserCancelledResolution" | "IntentHandlerRejected" | "NoResultReturned" | "AgentDisconnected" | "NotConnectedToBridge" | "ResponseToBridgeTimedOut" | "MalformedMessage";
-
-/**
- * Identifies the type of the message and it is typically set to the FDC3 function name that
- * the message relates to, e.g. 'findIntent', with 'Response' appended.
- */
-export type ResponseMessageType = "addContextListenerResponse" | "addIntentListenerResponse" | "broadcastResponse" | "contextListenerUnsubscribeResponse" | "createPrivateChannelResponse" | "findInstancesResponse" | "findIntentResponse" | "findIntentsByContextResponse" | "getAppMetadataResponse" | "getCurrentChannelResponse" | "getCurrentContextResponse" | "getInfoResponse" | "getOrCreateChannelResponse" | "getUserChannelsResponse" | "intentListenerUnsubscribeResponse" | "joinUserChannelResponse" | "leaveCurrentChannelResponse" | "openResponse" | "privateChannelAddEventListenerResponse" | "privateChannelDisconnectResponse" | "privateChannelUnsubscribeEventListenerResponse" | "raiseIntentForContextResponse" | "raiseIntentResponse" | "raiseIntentResultResponse";
-
-/**
- * A message from a Desktop Agent to an FDC3-enabled app representing an event.
- */
-export interface AgentEventMessage {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
-     */
-    meta: AgentEventMessageMeta;
-    /**
-     * The message payload contains details of the event that the app is being notified about.
-     */
-    payload: { [key: string]: any };
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: EventMessageType;
-}
-
-/**
- * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
- */
-export interface AgentEventMessageMeta {
-    eventUuid: string;
-    timestamp: Date;
-}
-
-/**
- * Identifies the type of the message and it is typically set to the FDC3 function name that
- * the message relates to, e.g. 'findIntent', with 'Response' appended.
- */
-export type EventMessageType = "intentEvent" | "broadcastEvent" | "channelChangedEvent" | "privateChannelOnAddContextListenerEvent" | "privateChannelOnDisconnectEvent" | "privateChannelOnUnsubscribeEvent";
-
-/**
  * A request to add a context listener to a specified Channel OR to the current user
- * channel.
+ * channel. Where the listener is added to the current user channel (channelId == null), and
+ * this app has already been added to a user channel, client code should make a subsequent
+ * request to get the current context of that channel for this listener and then call its
+ * handler with it.
  *
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
@@ -298,6 +128,53 @@ export interface AddContextListenerRequestMeta {
 }
 
 /**
+ * Field that represents the source application that a request or response was received
+ * from. Please note that this may be set by an app or Desktop Agent proxy for debugging
+ * purposes but a Desktop Agent should make its own determination of the source of a message
+ * to avoid spoofing.
+ *
+ * Identifies an application, or instance of an application, and is used to target FDC3 API
+ * calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application
+ * instances.
+ *
+ * Will always include at least an `appId` field, which uniquely identifies a specific app.
+ *
+ * If the `instanceId` field is set then the `AppMetadata` object represents a specific
+ * instance of the application that may be addressed using that Id.
+ *
+ * Field that represents the source application that the request being responded to was
+ * received from, for debugging purposes.
+ *
+ * Details of the application instance that broadcast the context.
+ *
+ * The App resolution option chosen.
+ *
+ * Details of the application instance that raised the intent.
+ *
+ * Identifier for the app instance that was selected (or started) to resolve the intent.
+ * `source.instanceId` MUST be set, indicating the specific app instance that
+ * received the intent.
+ */
+export interface AppIdentifier {
+    /**
+     * The unique application identifier located within a specific application directory
+     * instance. An example of an appId might be 'app@sub.root'.
+     */
+    appId: string;
+    /**
+     * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
+     * identify the Desktop Agent to target.
+     */
+    desktopAgent?: string;
+    /**
+     * An optional instance identifier, indicating that this object represents a specific
+     * instance of the application described.
+     */
+    instanceId?: string;
+    [property: string]: any;
+}
+
+/**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface AddContextListenerRequestPayload {
@@ -319,14 +196,17 @@ export interface AddContextListenerRequestPayload {
  */
 
 /**
- * A response to a addContextListener request.
+ * A response to a addContextListener request. Where the listener was added to the current
+ * user channel (channelId == null), and this app has already been added to a user channel,
+ * client code should make a subsequent request to get the current context of that channel
+ * for this listener and then call its handler with it.
  *
  * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface AddContextListenerResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -343,7 +223,7 @@ export interface AddContextListenerResponse {
 }
 
 /**
- * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+ * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
  */
 export interface AddContextListenerResponseMeta {
     requestUuid:  string;
@@ -375,6 +255,96 @@ export interface AddContextListenerResponsePayload {
  * DesktopAgent (`fdc3`).
  */
 export type PurpleError = "AccessDenied" | "CreationFailed" | "MalformedContext" | "NoChannelFound";
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ */
+
+/**
+ * A request to add an event listener for a specified event type to the Desktop Agent.
+ *
+ * A request message from an FDC3-enabled app to a Desktop Agent.
+ */
+export interface AddEventListenerRequest {
+    /**
+     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+     */
+    meta: AddContextListenerRequestMeta;
+    /**
+     * The message payload typically contains the arguments to FDC3 API functions.
+     */
+    payload: AddEventListenerRequestPayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Request' appended.
+     */
+    type: "addEventListenerRequest";
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface AddEventListenerRequestPayload {
+    /**
+     * The type of the event to be listened to or `null` to listen to all event types.
+     */
+    type: "USER_CHANNEL_CHANGED" | null;
+}
+
+/**
+ * The type of a (non-context and non-intent) event that may be received via the FDC3 API's
+ * addEventListener function.
+ */
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ */
+
+/**
+ * A response to an addEventListener request.
+ *
+ * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
+ * payload contains an `error` property, the request was unsuccessful.
+ */
+export interface AddEventListenerResponse {
+    /**
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+     */
+    meta: AddContextListenerResponseMeta;
+    /**
+     * A payload for a response to an API call that will contain any return values or an `error`
+     * property containing a standardized error message indicating that the request was
+     * unsuccessful.
+     */
+    payload: AddEventListenerResponsePayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Response' appended.
+     */
+    type: "addEventListenerResponse";
+}
+
+/**
+ * A payload for a response to an API call that will contain any return values or an `error`
+ * property containing a standardized error message indicating that the request was
+ * unsuccessful.
+ */
+export interface AddEventListenerResponsePayload {
+    error?:        ResponsePayloadError;
+    listenerUUID?: string;
+}
+
+/**
+ * Constants representing the errors that can be encountered when calling the `open` method
+ * on the DesktopAgent object (`fdc3`).
+ *
+ * Constants representing the errors that can be encountered when calling the `findIntent`,
+ * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
+ * DesktopAgent (`fdc3`).
+ */
+export type ResponsePayloadError = "AccessDenied" | "CreationFailed" | "MalformedContext" | "NoChannelFound" | "AppNotFound" | "AppTimeout" | "DesktopAgentNotFound" | "ErrorOnLaunch" | "ResolverUnavailable" | "IntentDeliveryFailed" | "NoAppsFound" | "ResolverTimeout" | "TargetAppUnavailable" | "TargetInstanceUnavailable" | "UserCancelledResolution" | "IntentHandlerRejected" | "NoResultReturned" | "AgentDisconnected" | "NotConnectedToBridge" | "ResponseToBridgeTimedOut" | "MalformedMessage";
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -425,7 +395,7 @@ export interface AddIntentListenerRequestPayload {
  */
 export interface AddIntentListenerResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -468,14 +438,140 @@ export type FluffyError = "MalformedContext" | "DesktopAgentNotFound" | "Resolve
  */
 
 /**
+ * A message from a Desktop Agent to an FDC3-enabled app representing an event.
+ */
+export interface AgentEventMessage {
+    /**
+     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
+     */
+    meta: AgentEventMessageMeta;
+    /**
+     * The message payload contains details of the event that the app is being notified about.
+     */
+    payload: { [key: string]: any };
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Response' appended.
+     */
+    type: EventMessageType;
+}
+
+/**
+ * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
+ */
+export interface AgentEventMessageMeta {
+    eventUuid: string;
+    timestamp: Date;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ */
+export type EventMessageType = "addEventListenerEvent" | "broadcastEvent" | "channelChangedEvent" | "heartbeatEvent" | "intentEvent" | "privateChannelOnAddContextListenerEvent" | "privateChannelOnDisconnectEvent" | "privateChannelOnUnsubscribeEvent";
+
+/**
+ * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
+ * payload contains an `error` property, the request was unsuccessful.
+ */
+export interface AgentResponseMessage {
+    /**
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+     */
+    meta: AgentResponseMessageMeta;
+    /**
+     * A payload for a response to an API call that will contain any return values or an `error`
+     * property containing a standardized error message indicating that the request was
+     * unsuccessful.
+     */
+    payload: AgentResponseMessageResponsePayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Response' appended.
+     */
+    type: ResponseMessageType;
+}
+
+/**
+ * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+ */
+export interface AgentResponseMessageMeta {
+    requestUuid:  string;
+    responseUuid: string;
+    /**
+     * Field that represents the source application that the request being responded to was
+     * received from, for debugging purposes.
+     */
+    source?:   AppIdentifier;
+    timestamp: Date;
+}
+
+/**
+ * A payload for a response to an API call that will contain any return values or an `error`
+ * property containing a standardized error message indicating that the request was
+ * unsuccessful.
+ */
+export interface AgentResponseMessageResponsePayload {
+    error?: ResponsePayloadError;
+    [property: string]: any;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ */
+export type ResponseMessageType = "addContextListenerResponse" | "addEventListenerResponse" | "addIntentListenerResponse" | "broadcastResponse" | "contextListenerUnsubscribeResponse" | "createPrivateChannelResponse" | "eventListenerUnsubscribeResponse" | "findInstancesResponse" | "findIntentResponse" | "findIntentsByContextResponse" | "getAppMetadataResponse" | "getCurrentChannelResponse" | "getCurrentContextResponse" | "getInfoResponse" | "getOrCreateChannelResponse" | "getUserChannelsResponse" | "intentListenerUnsubscribeResponse" | "intentResultResponse" | "joinUserChannelResponse" | "leaveCurrentChannelResponse" | "openResponse" | "privateChannelAddEventListenerResponse" | "privateChannelDisconnectResponse" | "privateChannelUnsubscribeEventListenerResponse" | "raiseIntentForContextResponse" | "raiseIntentResponse" | "raiseIntentResultResponse";
+
+/**
+ * A request message from an FDC3-enabled app to a Desktop Agent.
+ */
+export interface AppRequestMessage {
+    /**
+     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+     */
+    meta: AppRequestMessageMeta;
+    /**
+     * The message payload typically contains the arguments to FDC3 API functions.
+     */
+    payload: { [key: string]: any };
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Request' appended.
+     */
+    type: RequestMessageType;
+}
+
+/**
+ * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+ */
+export interface AppRequestMessageMeta {
+    requestUuid: string;
+    /**
+     * Field that represents the source application that a request or response was received
+     * from. Please note that this may be set by an app or Desktop Agent proxy for debugging
+     * purposes but a Desktop Agent should make its own determination of the source of a message
+     * to avoid spoofing.
+     */
+    source?:   AppIdentifier;
+    timestamp: Date;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ */
+export type RequestMessageType = "addContextListenerRequest" | "addEventListenerRequest" | "addIntentListenerRequest" | "broadcastRequest" | "contextListenerUnsubscribeRequest" | "createPrivateChannelRequest" | "eventListenerUnsubscribeRequest" | "findInstancesRequest" | "findIntentRequest" | "findIntentsByContextRequest" | "getAppMetadataRequest" | "getCurrentChannelRequest" | "getCurrentContextRequest" | "getInfoRequest" | "getOrCreateChannelRequest" | "getUserChannelsRequest" | "heartbeatAcknowledgementRequest" | "intentListenerUnsubscribeRequest" | "intentResultRequest" | "joinUserChannelRequest" | "leaveCurrentChannelRequest" | "openRequest" | "privateChannelAddEventListenerRequest" | "privateChannelDisconnectRequest" | "privateChannelUnsubscribeEventListenerRequest" | "raiseIntentForContextRequest" | "raiseIntentRequest";
+
+/**
  * An event message from the Desktop Agent to an app indicating that context has been
- * broadcast on a channel it is listening to.
+ * broadcast on a channel it is listening to, or specifically to this app instance if it was
+ * launched via `fdc3.open` and context was passed.
  *
  * A message from a Desktop Agent to an FDC3-enabled app representing an event.
  */
 export interface BroadcastEvent {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
+     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
      */
     meta: BroadcastEventMeta;
     /**
@@ -490,7 +586,7 @@ export interface BroadcastEvent {
 }
 
 /**
- * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
+ * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
  */
 export interface BroadcastEventMeta {
     eventUuid: string;
@@ -502,13 +598,18 @@ export interface BroadcastEventMeta {
  */
 export interface BroadcastEventPayload {
     /**
-     * The Id of the channel that the broadcast was sent on.
+     * The Id of the channel that the broadcast was sent on. May be `null` if the context is
+     * being broadcast due to a call `fdc3.open` that passed context.
      */
-    channelId: string;
+    channelId: null | string;
     /**
      * The context object that was broadcast.
      */
     context: Context;
+    /**
+     * Details of the application instance that broadcast the context.
+     */
+    originatingApp?: AppIdentifier;
 }
 
 /**
@@ -517,6 +618,10 @@ export interface BroadcastEventPayload {
  * The context object that is to be broadcast.
  *
  * The context object passed with the raised intent.
+ *
+ * If a Context object is passed in, this object will be provided to the opened application
+ * via a contextListener. The Context argument is functionally equivalent to opening the
+ * target app with no context and broadcasting the context directly to it.
  *
  * The `fdc3.context` type defines the basic contract or "shape" for all data exchanged by
  * FDC3 operations. As such, it is not really meant to be used on its own, but is imported
@@ -602,7 +707,7 @@ export interface BroadcastRequest {
  */
 export interface BroadcastRequestPayload {
     /**
-     * The Id of the Channel that the broadcast was sent on
+     * The Id of the Channel that the broadcast was sent on.
      */
     channelId: string;
     /**
@@ -624,7 +729,7 @@ export interface BroadcastRequestPayload {
  */
 export interface BroadcastResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -663,7 +768,7 @@ export interface BroadcastResponseResponsePayload {
  */
 export interface ChannelChangedEvent {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
+     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
      */
     meta: BroadcastEventMeta;
     /**
@@ -727,14 +832,14 @@ export interface ContextListenerUnsubscribeRequestPayload {
  */
 
 /**
- * A response to a request to a contextListenerUnsubscribe request.
+ * A response to a contextListenerUnsubscribe request.
  *
  * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface ContextListenerUnsubscribeResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -796,7 +901,7 @@ export interface CreatePrivateChannelRequestPayload {
  */
 export interface CreatePrivateChannelResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -872,11 +977,11 @@ export interface DisplayMetadata {
      */
     color?: string;
     /**
-     * A URL of an image that can be used to display this channel
+     * A URL of an image that can be used to display this channel.
      */
     glyph?: string;
     /**
-     * A user-readable name for this channel, e.g: `"Red"`
+     * A user-readable name for this channel, e.g: `"Red"`.
      */
     name?: string;
 }
@@ -890,6 +995,634 @@ export type Type = "app" | "private" | "user";
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ */
+
+/**
+ * A request to unsubscribe an event listener.
+ *
+ * A request message from an FDC3-enabled app to a Desktop Agent.
+ */
+export interface EventListenerUnsubscribeRequest {
+    /**
+     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+     */
+    meta: AddContextListenerRequestMeta;
+    /**
+     * The message payload typically contains the arguments to FDC3 API functions.
+     */
+    payload: EventListenerUnsubscribeRequestPayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Request' appended.
+     */
+    type: "eventListenerUnsubscribeRequest";
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface EventListenerUnsubscribeRequestPayload {
+    listenerUUID: string;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ */
+
+/**
+ * A response to an eventListenerUnsubscribe request.
+ *
+ * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
+ * payload contains an `error` property, the request was unsuccessful.
+ */
+export interface EventListenerUnsubscribeResponse {
+    /**
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+     */
+    meta: AddContextListenerResponseMeta;
+    /**
+     * A payload for a response to an API call that will contain any return values or an `error`
+     * property containing a standardized error message indicating that the request was
+     * unsuccessful.
+     */
+    payload: BroadcastResponseResponsePayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Response' appended.
+     */
+    type: "eventListenerUnsubscribeResponse";
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ */
+
+/**
+ * Setup message sent by the DA proxy code in getAgent() to a channel selector UI in an
+ * iframe with the channel definitions and current channel selection.
+ *
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
+ */
+export interface Fdc3UserInterfaceChannels {
+    /**
+     * The message payload.
+     */
+    payload: Fdc3UserInterfaceChannelsPayload;
+    /**
+     * Identifies the type of the message to or from the user interface frame.
+     */
+    type: "Fdc3UserInterfaceChannels";
+}
+
+/**
+ * The message payload.
+ */
+export interface Fdc3UserInterfaceChannelsPayload {
+    /**
+     * The id of the channel that should be currently selected, or `null` if none should be
+     * selected.
+     */
+    selected: null | string;
+    /**
+     * User Channel definitions.```````s
+     */
+    userChannels: Channel[];
+}
+
+/**
+ * Identifies the type of the message to or from the user interface frame.
+ */
+
+/**
+ * Message from a channel selector UI to the DA proxy sent when the channel selection
+ * changes.
+ *
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
+ */
+export interface Fdc3UserInterfaceChannelSelected {
+    /**
+     * The message payload.
+     */
+    payload: Fdc3UserInterfaceChannelSelectedPayload;
+    /**
+     * Identifies the type of the message to or from the user interface frame.
+     */
+    type: "Fdc3UserInterfaceChannelSelected";
+}
+
+/**
+ * The message payload.
+ */
+export interface Fdc3UserInterfaceChannelSelectedPayload {
+    /**
+     * The id of the channel that should be currently selected, or `null` if none should be
+     * selected.
+     */
+    selected: null | string;
+}
+
+/**
+ * Identifies the type of the message to or from the user interface frame.
+ */
+
+/**
+ * Message from a UI iframe to the DA proxy (setup by `getAgent()`) indicating that the user
+ * is dragging the UI to a new location and providing the offset to apply to the location.
+ * The DA proxy implementation should limit the location to the current bounds of the
+ * window's viewport.
+ *
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
+ */
+export interface Fdc3UserInterfaceDrag {
+    /**
+     * The message payload.
+     */
+    payload: Fdc3UserInterfaceDragPayload;
+    /**
+     * Identifies the type of the message to or from the user interface frame.
+     */
+    type: "Fdc3UserInterfaceDrag";
+}
+
+/**
+ * The message payload.
+ */
+export interface Fdc3UserInterfaceDragPayload {
+    /**
+     * The offset to move the frame by.
+     */
+    mouseOffsets: MouseOffsets;
+}
+
+/**
+ * The offset to move the frame by.
+ */
+export interface MouseOffsets {
+    x: number;
+    y: number;
+}
+
+/**
+ * Identifies the type of the message to or from the user interface frame.
+ */
+
+/**
+ * Handshake message sent back to a user interface from the DA proxy code (setup by
+ * `getAgent()`) over the `MessagePort` provide in the preceding iFrameHello message,
+ * confirming that it is listening to the `MessagePort` for further communication.
+ *
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
+ */
+export interface Fdc3UserInterfaceHandshake {
+    /**
+     * The message payload.
+     */
+    payload: Fdc3UserInterfaceHandshakePayload;
+    /**
+     * Identifies the type of the message to or from the user interface frame.
+     */
+    type: "Fdc3UserInterfaceHandshake";
+}
+
+/**
+ * The message payload.
+ */
+export interface Fdc3UserInterfaceHandshakePayload {
+    /**
+     * The version of FDC3 API that the Desktop Agent will provide support for.
+     */
+    fdc3Version: string;
+}
+
+/**
+ * Identifies the type of the message to or from the user interface frame.
+ */
+
+/**
+ * Hello message sent by a UI to the Desktop Agent proxy setup by `getAgent()` to indicate
+ * it is ready to communicate, containing initial CSS to set on the iframe, and including an
+ * appended `MessagePort` to be used for further communication.
+ *
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
+ */
+export interface Fdc3UserInterfaceHello {
+    /**
+     * The message payload.
+     */
+    payload: Fdc3UserInterfaceHelloPayload;
+    /**
+     * Identifies the type of the message to or from the user interface frame.
+     */
+    type: "Fdc3UserInterfaceHello";
+}
+
+/**
+ * The message payload.
+ */
+export interface Fdc3UserInterfaceHelloPayload {
+    /**
+     * Details about the UI implementation, such as vendor and version, for logging purposes.
+     */
+    implementationDetails: string;
+    /**
+     * A constrained set of styling properties that should be set on the user interface before
+     * it is displayed. Note `position` cannot be specified and should always be set to `fixed`.
+     */
+    initialCSS: InitialCSS;
+}
+
+/**
+ * A constrained set of styling properties that should be set on the user interface before
+ * it is displayed. Note `position` cannot be specified and should always be set to `fixed`.
+ */
+export interface InitialCSS {
+    /**
+     * The initial bottom property to apply to the iframe.
+     */
+    bottom?: string;
+    /**
+     * The initial height of the iframe.
+     */
+    height?: string;
+    /**
+     * The initial left property to apply to the iframe.
+     */
+    left?: string;
+    /**
+     * The maximum height to apply to the iframe.
+     */
+    maxHeight?: string;
+    /**
+     * The maximum with to apply to the iframe.
+     */
+    maxWidth?: string;
+    /**
+     * The initial right property to apply to the iframe.
+     */
+    right?: string;
+    /**
+     * The initial top property to apply to the iframe.
+     */
+    top?: string;
+    /**
+     * The transition property to apply to the iframe.
+     */
+    transition?: string;
+    /**
+     * The initial width of the iframe.
+     */
+    width?: string;
+    /**
+     * The initial zindex to apply to the iframe.
+     */
+    zIndex?: string;
+    [property: string]: any;
+}
+
+/**
+ * Identifies the type of the message to or from the user interface frame.
+ */
+
+/**
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
+ */
+export interface Fdc3UserInterfaceMessage {
+    /**
+     * The message payload.
+     */
+    payload?: { [key: string]: any };
+    /**
+     * Identifies the type of the message to or from the user interface frame.
+     */
+    type: Fdc3UserInterfaceMessageType;
+}
+
+/**
+ * Identifies the type of the message to or from the user interface frame.
+ */
+export type Fdc3UserInterfaceMessageType = "Fdc3UserInterfaceHello" | "Fdc3UserInterfaceHandshake" | "Fdc3UserInterfaceRestyle" | "Fdc3UserInterfaceDrag" | "Fdc3UserInterfaceResolve" | "Fdc3UserInterfaceResolveAction" | "Fdc3UserInterfaceChannels" | "Fdc3UserInterfaceChannelSelected";
+
+/**
+ * Setup message sent by the DA proxy code in getAgent() to an intent resolver UI with the
+ * resolver data to setup the UI.
+ *
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
+ */
+export interface Fdc3UserInterfaceResolve {
+    /**
+     * The message payload.
+     */
+    payload: Fdc3UserInterfaceResolvePayload;
+    /**
+     * Identifies the type of the message to or from the user interface frame.
+     */
+    type: "Fdc3UserInterfaceResolve";
+}
+
+/**
+ * The message payload.
+ */
+export interface Fdc3UserInterfaceResolvePayload {
+    /**
+     * An array of AppIntent objects defining the resolution options.
+     */
+    appIntents: AppIntent[];
+    context:    Context;
+}
+
+/**
+ * An interface that relates an intent to apps.
+ *
+ * Used if a raiseIntent request requires additional resolution (e.g. by showing an intent
+ * resolver) before it can be handled.
+ */
+export interface AppIntent {
+    /**
+     * Details of applications that can resolve the intent.
+     */
+    apps: AppMetadata[];
+    /**
+     * Details of the intent whose relationship to resolving applications is being described.
+     */
+    intent: IntentMetadata;
+}
+
+/**
+ * Extends an `AppIdentifier`, describing an application or instance of an application, with
+ * additional descriptive metadata that is usually provided by an FDC3 App Directory that
+ * the Desktop Agent connects to.
+ *
+ * The additional information from an app directory can aid in rendering UI elements, such
+ * as a launcher menu or resolver UI. This includes a title, description, tooltip and icon
+ * and screenshot URLs.
+ *
+ * Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passed to the
+ * `app` argument of `fdc3.open`, `fdc3.raiseIntent` etc.
+ *
+ * The calling application instance's own metadata, according to the Desktop Agent (MUST
+ * include at least the `appId` and `instanceId`).
+ */
+export interface AppMetadata {
+    /**
+     * The unique application identifier located within a specific application directory
+     * instance. An example of an appId might be 'app@sub.root'.
+     */
+    appId: string;
+    /**
+     * A longer, multi-paragraph description for the application that could include markup.
+     */
+    description?: string;
+    /**
+     * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
+     * identify the Desktop Agent to target.
+     */
+    desktopAgent?: string;
+    /**
+     * A list of icon URLs for the application that can be used to render UI elements.
+     */
+    icons?: Icon[];
+    /**
+     * An optional instance identifier, indicating that this object represents a specific
+     * instance of the application described.
+     */
+    instanceId?: string;
+    /**
+     * An optional set of, implementation specific, metadata fields that can be used to
+     * disambiguate instances, such as a window title or screen position. Must only be set if
+     * `instanceId` is set.
+     */
+    instanceMetadata?: { [key: string]: any };
+    /**
+     * The 'friendly' app name.
+     * This field was used with the `open` and `raiseIntent` calls in FDC3 <2.0, which now
+     * require an `AppIdentifier` wth `appId` set.
+     * Note that for display purposes the `title` field should be used, if set, in preference to
+     * this field.
+     */
+    name?: string;
+    /**
+     * The type of output returned for any intent specified during resolution. May express a
+     * particular context type (e.g. "fdc3.instrument"), channel (e.g. "channel") or a channel
+     * that will receive a specified type (e.g. "channel<fdc3.instrument>").
+     */
+    resultType?: null | string;
+    /**
+     * Images representing the app in common usage scenarios that can be used to render UI
+     * elements.
+     */
+    screenshots?: Image[];
+    /**
+     * A more user-friendly application title that can be used to render UI elements.
+     */
+    title?: string;
+    /**
+     * A tooltip for the application that can be used to render UI elements.
+     */
+    tooltip?: string;
+    /**
+     * The Version of the application.
+     */
+    version?: string;
+}
+
+/**
+ * Describes an Icon images that may be used to represent the application.
+ */
+export interface Icon {
+    /**
+     * The icon dimension, formatted as `<height>x<width>`.
+     */
+    size?: string;
+    /**
+     * The icon url.
+     */
+    src: string;
+    /**
+     * Icon media type. If not present the Desktop Agent may use the src file extension.
+     */
+    type?: string;
+}
+
+/**
+ * Describes an image file, typically a screenshot, that often represents the application in
+ * a common usage scenario.
+ */
+export interface Image {
+    /**
+     * Caption for the image.
+     */
+    label?: string;
+    /**
+     * The image dimension, formatted as `<height>x<width>`.
+     */
+    size?: string;
+    /**
+     * The image url.
+     */
+    src: string;
+    /**
+     * Image media type. If not present the Desktop Agent may use the src file extension.
+     */
+    type?: string;
+}
+
+/**
+ * Details of the intent whose relationship to resolving applications is being described.
+ *
+ * Metadata describing an Intent.
+ */
+export interface IntentMetadata {
+    /**
+     * Display name for the intent.
+     */
+    displayName?: string;
+    /**
+     * The unique name of the intent that can be invoked by the raiseIntent call.
+     */
+    name: string;
+}
+
+/**
+ * Identifies the type of the message to or from the user interface frame.
+ */
+
+/**
+ * Message from an intent resolver UI to DA proxy code in getAgent() reporting a user
+ * action.
+ *
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
+ */
+export interface Fdc3UserInterfaceResolveAction {
+    /**
+     * The message payload.
+     */
+    payload: Fdc3UserInterfaceResolveActionPayload;
+    /**
+     * Identifies the type of the message to or from the user interface frame.
+     */
+    type: "Fdc3UserInterfaceResolveAction";
+}
+
+/**
+ * The message payload.
+ */
+export interface Fdc3UserInterfaceResolveActionPayload {
+    action: Action;
+    /**
+     * The App resolution option chosen.
+     */
+    appIdentifier?: AppIdentifier;
+    /**
+     * The intent resolved.
+     */
+    intent?: string;
+}
+
+export type Action = "hover" | "click" | "cancel";
+
+/**
+ * Identifies the type of the message to or from the user interface frame.
+ */
+
+/**
+ * Message from a UI frame to the DA proxy code (setup by `getAgent()`) with updated styling
+ * information to apply to it. Can be used to implement a pop-open or close interaction or
+ * other transition needed by a UI implementation.
+ *
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
+ */
+export interface Fdc3UserInterfaceRestyle {
+    /**
+     * The message payload.
+     */
+    payload: Fdc3UserInterfaceRestylePayload;
+    /**
+     * Identifies the type of the message to or from the user interface frame.
+     */
+    type: "Fdc3UserInterfaceRestyle";
+}
+
+/**
+ * The message payload.
+ */
+export interface Fdc3UserInterfaceRestylePayload {
+    /**
+     * A constrained set of styling properties that should be applied to the frame. Note
+     * `position` cannot be set, and should always be `fixed`.
+     */
+    updatedCSS: UpdatedCSS;
+}
+
+/**
+ * A constrained set of styling properties that should be applied to the frame. Note
+ * `position` cannot be set, and should always be `fixed`.
+ */
+export interface UpdatedCSS {
+    /**
+     * The initial bottom property to apply to the iframe.
+     */
+    bottom?: string;
+    /**
+     * The updated height of the iframe.
+     */
+    height?: string;
+    /**
+     * The initial left property to apply to the iframe.
+     */
+    left?: string;
+    /**
+     * The updated maximum height to apply to the iframe.
+     */
+    maxHeight?: string;
+    /**
+     * The updated maximum with to apply to the iframe.
+     */
+    maxWidth?: string;
+    /**
+     * The initial right property to apply to the iframe.
+     */
+    right?: string;
+    /**
+     * The initial top property to apply to the iframe.
+     */
+    top?: string;
+    /**
+     * The updated transition property to apply to the iframe.
+     */
+    transition?: string;
+    /**
+     * The updated width of the iframe.
+     */
+    width?: string;
+    /**
+     * The updated zIndex to apply to the iframe.
+     */
+    zIndex?: string;
+    [property: string]: any;
+}
+
+/**
+ * Identifies the type of the message to or from the user interface frame.
  */
 
 /**
@@ -933,7 +1666,7 @@ export interface FindInstancesRequestPayload {
  */
 export interface FindInstancesResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -964,126 +1697,6 @@ export interface FindInstancesResponsePayload {
 }
 
 /**
- * Extends an `AppIdentifier`, describing an application or instance of an application, with
- * additional descriptive metadata that is usually provided by an FDC3 App Directory that
- * the desktop agent connects to.
- *
- * The additional information from an app directory can aid in rendering UI elements, such
- * as a launcher menu or resolver UI. This includes a title, description, tooltip and icon
- * and screenshot URLs.
- *
- * Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passed to the
- * `app` argument of `fdc3.open`, `fdc3.raiseIntent` etc.
- *
- * The calling application instance's own metadata, according to the Desktop Agent (MUST
- * include at least the `appId` and `instanceId`).
- */
-export interface AppMetadata {
-    /**
-     * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
-     */
-    appId: string;
-    /**
-     * A longer, multi-paragraph description for the application that could include markup
-     */
-    description?: string;
-    /**
-     * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
-     * identify the Desktop Agent to target.
-     */
-    desktopAgent?: string;
-    /**
-     * A list of icon URLs for the application that can be used to render UI elements
-     */
-    icons?: Icon[];
-    /**
-     * An optional instance identifier, indicating that this object represents a specific
-     * instance of the application described.
-     */
-    instanceId?: string;
-    /**
-     * An optional set of, implementation specific, metadata fields that can be used to
-     * disambiguate instances, such as a window title or screen position. Must only be set if
-     * `instanceId` is set.
-     */
-    instanceMetadata?: { [key: string]: any };
-    /**
-     * The 'friendly' app name.
-     * This field was used with the `open` and `raiseIntent` calls in FDC3 <2.0, which now
-     * require an `AppIdentifier` wth `appId` set.
-     * Note that for display purposes the `title` field should be used, if set, in preference to
-     * this field.
-     */
-    name?: string;
-    /**
-     * The type of output returned for any intent specified during resolution. May express a
-     * particular context type (e.g. "fdc3.instrument"), channel (e.g. "channel") or a channel
-     * that will receive a specified type (e.g. "channel<fdc3.instrument>").
-     */
-    resultType?: null | string;
-    /**
-     * Images representing the app in common usage scenarios that can be used to render UI
-     * elements
-     */
-    screenshots?: Image[];
-    /**
-     * A more user-friendly application title that can be used to render UI elements
-     */
-    title?: string;
-    /**
-     * A tooltip for the application that can be used to render UI elements
-     */
-    tooltip?: string;
-    /**
-     * The Version of the application.
-     */
-    version?: string;
-}
-
-/**
- * SPDX-License-Identifier: Apache-2.0
- * Copyright FINOS FDC3 contributors - see NOTICE file
- */
-export interface Icon {
-    /**
-     * The icon dimension, formatted as `<height>x<width>`.
-     */
-    size?: string;
-    /**
-     * The icon url
-     */
-    src: string;
-    /**
-     * Icon media type. If not present the Desktop Agent may use the src file extension.
-     */
-    type?: string;
-}
-
-/**
- * SPDX-License-Identifier: Apache-2.0
- * Copyright FINOS FDC3 contributors - see NOTICE file
- */
-export interface Image {
-    /**
-     * Caption for the image.
-     */
-    label?: string;
-    /**
-     * The image dimension, formatted as `<height>x<width>`.
-     */
-    size?: string;
-    /**
-     * The image url.
-     */
-    src: string;
-    /**
-     * Image media type. If not present the Desktop Agent may use the src file extension.
-     */
-    type?: string;
-}
-
-/**
  * Constants representing the errors that can be encountered when calling the `open` method
  * on the DesktopAgent object (`fdc3`).
  *
@@ -1091,7 +1704,7 @@ export interface Image {
  * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
  * DesktopAgent (`fdc3`).
  *
- * Unique identifier for a request or event message. Required in all message types
+ * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
  * a RequestUuid.
@@ -1100,7 +1713,13 @@ export interface Image {
  * response to addContextListener, addIntentListener or one of the PrivateChannel event
  * listeners and used to identify it in messages (e.g. when unsubscribing).
  *
- * Unique identifier for a for an attempt to connect to a Desktop Agent
+ * Unique identifier for an event message sent from a Desktop Agent to an app.
+ *
+ * Unique identifier for a for an attempt to connect to a Desktop Agent. A Unique UUID
+ * should be used in the first (WCP1Hello) message and should be quoted in all subsequent
+ * messages to link them to the same connection attempt.
+ *
+ * Should be set if the raiseIntent request returned an error.
  */
 export type FindInstancesErrors = "MalformedContext" | "DesktopAgentNotFound" | "ResolverUnavailable" | "IntentDeliveryFailed" | "NoAppsFound" | "ResolverTimeout" | "TargetAppUnavailable" | "TargetInstanceUnavailable" | "UserCancelledResolution" | "AgentDisconnected" | "NotConnectedToBridge" | "ResponseToBridgeTimedOut" | "MalformedMessage";
 
@@ -1152,7 +1771,7 @@ export interface FindIntentRequestPayload {
  */
 export interface FindIntentResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -1176,36 +1795,6 @@ export interface FindIntentResponse {
 export interface FindIntentResponsePayload {
     error?:     FindInstancesErrors;
     appIntent?: AppIntent;
-}
-
-/**
- * An interface that relates an intent to apps
- */
-export interface AppIntent {
-    /**
-     * Details of applications that can resolve the intent.
-     */
-    apps: AppMetadata[];
-    /**
-     * Details of the intent whose relationship to resolving applications is being described.
-     */
-    intent: IntentMetadata;
-}
-
-/**
- * Details of the intent whose relationship to resolving applications is being described.
- *
- * Intent descriptor
- */
-export interface IntentMetadata {
-    /**
-     * Display name for the intent.
-     */
-    displayName: string;
-    /**
-     * The unique name of the intent that can be invoked by the raiseIntent call
-     */
-    name: string;
 }
 
 /**
@@ -1254,9 +1843,9 @@ export interface FindIntentsByContextRequestPayload {
  * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
  * payload contains an `error` property, the request was unsuccessful.
  */
-export interface FindIntentsByContextsByContextResponse {
+export interface FindIntentsByContextResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -1264,7 +1853,7 @@ export interface FindIntentsByContextsByContextResponse {
      * property containing a standardized error message indicating that the request was
      * unsuccessful.
      */
-    payload: FindIntentsByContextsByContextResponsePayload;
+    payload: FindIntentsByContextResponsePayload;
     /**
      * Identifies the type of the message and it is typically set to the FDC3 function name that
      * the message relates to, e.g. 'findIntent', with 'Response' appended.
@@ -1277,7 +1866,7 @@ export interface FindIntentsByContextsByContextResponse {
  * property containing a standardized error message indicating that the request was
  * unsuccessful.
  */
-export interface FindIntentsByContextsByContextResponsePayload {
+export interface FindIntentsByContextResponsePayload {
     error?:      FindInstancesErrors;
     appIntents?: AppIntent[];
 }
@@ -1328,7 +1917,7 @@ export interface GetAppMetadataRequestPayload {
  */
 export interface GetAppMetadataResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -1400,7 +1989,7 @@ export interface GetCurrentChannelRequestPayload {
  */
 export interface GetCurrentChannelResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -1459,7 +2048,7 @@ export interface GetCurrentContextRequest {
  */
 export interface GetCurrentContextRequestPayload {
     /**
-     * The id of the channel to return the current context of
+     * The id of the channel to return the current context of.
      */
     channelId: string;
     /**
@@ -1482,7 +2071,7 @@ export interface GetCurrentContextRequestPayload {
  */
 export interface GetCurrentContextResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -1507,7 +2096,7 @@ export interface GetCurrentContextResponsePayload {
     error?: PurpleError;
     /**
      * The most recently broadcast context object (of the specified type, if one was specified),
-     * or `null` if none was available in the channel
+     * or `null` if none was available in the channel.
      */
     context?: null | Context;
 }
@@ -1519,7 +2108,7 @@ export interface GetCurrentContextResponsePayload {
 
 /**
  * Request to retrieve information about the FDC3 Desktop Agent implementation  and the
- * metadata of the calling application according to the desktop agent.
+ * metadata of the calling application according to the Desktop Agent.
  *
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
@@ -1558,7 +2147,7 @@ export interface GetInfoRequestPayload {
  */
 export interface GetInfoResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -1586,7 +2175,7 @@ export interface GetInfoResponsePayload {
 
 /**
  * Implementation metadata for the Desktop Agent, which includes an appMetadata element
- * containing a copy of the app's own metadata
+ * containing a copy of the app's own metadata.
  *
  * Includes Metadata for the current application.
  *
@@ -1692,7 +2281,7 @@ export interface GetOrCreateChannelRequestPayload {
  */
 export interface GetOrCreateChannelResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -1763,7 +2352,7 @@ export interface GetUserChannelsRequestPayload {
  */
 export interface GetUserChannelsResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -1795,350 +2384,74 @@ export interface GetUserChannelsResponsePayload {
  */
 
 /**
- * Message from the channel selector UI to the DA proxy when the user drags the selector to
- * a new location.
+ * A request that serves as an acknowledgement of a heartbeat event from the Desktop Agent
+ * and indicates that an application window or frame is still alive.
  *
- * A message used to communicate with iframes injected by `getAgent()` for displaying UI
- * elements such as the intent resolver or channel selector. Used for messages sent in
- * either direction.
+ * A request message from an FDC3-enabled app to a Desktop Agent.
  */
-export interface IframeChannelDrag {
+export interface HeartbeatAcknowledgementRequest {
     /**
-     * The message payload
+     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
      */
-    payload: IframeChannelDragPayload;
+    meta: AddContextListenerRequestMeta;
     /**
-     * Identifies the type of the message to or from the iframe.
+     * The message payload typically contains the arguments to FDC3 API functions.
      */
-    type: "iframeChannelDrag";
+    payload: HeartbeatAcknowledgementRequestPayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Request' appended.
+     */
+    type: "heartbeatAcknowledgementRequest";
 }
 
 /**
- * The message payload
+ * The message payload typically contains the arguments to FDC3 API functions.
  */
-export interface IframeChannelDragPayload {
+export interface HeartbeatAcknowledgementRequestPayload {
     /**
-     * The offset to move the frame by
+     * The eventUuid value of the HeartbeatEvent that the acknowledgement being sent relates to.
      */
-    mouse: MouseClass;
+    heartbeatEventUuid: string;
 }
 
 /**
- * The offset to move the frame by
- */
-export interface MouseClass {
-    offsetX: number;
-    offsetY: number;
-}
-
-/**
- * Identifies the type of the message to or from the iframe.
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
  */
 
 /**
- * Message from the channel selector UI to the DA proxy when the user hits a toggle button
- * that opens or closes the selector or otherwise resizes it. Includes the size that it
- * should change to and the corner (if any) at which the change should be made.
+ * A heartbeat message from the Desktop Agent to an app indicating that the Desktop Agent is
+ * alive and that the application should send a heartbeatResponseRequest to the agent in
+ * response.
  *
- * A message used to communicate with iframes injected by `getAgent()` for displaying UI
- * elements such as the intent resolver or channel selector. Used for messages sent in
- * either direction.
+ * A message from a Desktop Agent to an FDC3-enabled app representing an event.
  */
-export interface IframeChannelResize {
+export interface HeartbeatEvent {
     /**
-     * The message payload
+     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
      */
-    payload: IframeChannelResizePayload;
+    meta: BroadcastEventMeta;
     /**
-     * Identifies the type of the message to or from the iframe.
+     * The message payload contains details of the event that the app is being notified about.
      */
-    type: "iframeChannelResize";
+    payload: HeartbeatEventPayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Response' appended.
+     */
+    type: "heartbeatEvent";
 }
 
 /**
- * The message payload
+ * The message payload contains details of the event that the app is being notified about.
  */
-export interface IframeChannelResizePayload {
-    /**
-     * The updated dimensions of the UI
-     */
-    dimensions: DimensionsClass;
-    /**
-     * When resizing anchor at the indicated location,
-     * e.g.
-     * - for top-left and a larger size: the bottom right corner should move down and out.
-     * - for top and smaller size: both the bottom corners should move in and up.
-     */
-    resizeAnchor: Resizing;
+export interface HeartbeatEventPayload {
 }
 
 /**
- * The updated dimensions of the UI
- */
-export interface DimensionsClass {
-    height: number;
-    width:  number;
-}
-
-/**
- * When resizing anchor at the indicated location,
- * e.g.
- * - for top-left and a larger size: the bottom right corner should move down and out.
- * - for top and smaller size: both the bottom corners should move in and up.
- */
-export type Resizing = "top-left" | "top" | "top-right" | "right" | "bottom-right" | "bottom" | "bottom-left" | "left" | "center";
-
-/**
- * Identifies the type of the message to or from the iframe.
- */
-
-/**
- * Setup message sent by the DA proxy code in getAgent() to a channel selector UI in an
- * iframe with the channel definitions and current channel selection.
- *
- * A message used to communicate with iframes injected by `getAgent()` for displaying UI
- * elements such as the intent resolver or channel selector. Used for messages sent in
- * either direction.
- */
-export interface IframeChannels {
-    /**
-     * The message payload
-     */
-    payload: IframeChannelsPayload;
-    /**
-     * Identifies the type of the message to or from the iframe.
-     */
-    type: "iframeChannels";
-}
-
-/**
- * The message payload
- */
-export interface IframeChannelsPayload {
-    /**
-     * If the channel selector was previously displayed in this window its location may be
-     * restored by setting the location coordinates
-     */
-    location?: Location;
-    /**
-     * The id of the channel that should be currently selected, or `null` if none should be
-     * selected
-     */
-    selected: null | string;
-    /**
-     * User Channel definitions
-     */
-    userChannels: Channel[];
-}
-
-/**
- * If the channel selector was previously displayed in this window its location may be
- * restored by setting the location coordinates
- */
-export interface Location {
-    x: number;
-    y: number;
-}
-
-/**
- * Identifies the type of the message to or from the iframe.
- */
-
-/**
- * Message from the channel selector UI to the DA proxy sent when the channel selection
- * changes.
- *
- * A message used to communicate with iframes injected by `getAgent()` for displaying UI
- * elements such as the intent resolver or channel selector. Used for messages sent in
- * either direction.
- */
-export interface IframeChannelSelected {
-    /**
-     * The message payload
-     */
-    payload: IframeChannelSelectedPayload;
-    /**
-     * Identifies the type of the message to or from the iframe.
-     */
-    type: "iframeChannelSelected";
-}
-
-/**
- * The message payload
- */
-export interface IframeChannelSelectedPayload {
-    /**
-     * The id of the channel that should be currently selected, or `null` if none should be
-     * selected
-     */
-    selected: null | string;
-}
-
-/**
- * Identifies the type of the message to or from the iframe.
- */
-
-/**
- * Handshake message sent back by an iframe to the DA proxy code indicating that it is setup
- * and ready to communicate over the MessagePort.
- *
- * A message used to communicate with iframes injected by `getAgent()` for displaying UI
- * elements such as the intent resolver or channel selector. Used for messages sent in
- * either direction.
- */
-export interface IframeHandshake {
-    /**
-     * The message payload
-     */
-    payload: IframeHandshakePayload;
-    /**
-     * Identifies the type of the message to or from the iframe.
-     */
-    type: "iframeHandshake";
-}
-
-/**
- * The message payload
- */
-export interface IframeHandshakePayload {
-    /**
-     * Details about the UI implementation in the iframe, such as vendor and version, for
-     * logging purposes.
-     */
-    implementationDetails: string;
-}
-
-/**
- * Identifies the type of the message to or from the iframe.
- */
-
-/**
- * Hello message sent by the DA proxy code in getAgent() to an iframe, that it has injected
- * into the page, with a MessagePort appended that should be used for subsequent
- * communication steps.
- *
- * A message used to communicate with iframes injected by `getAgent()` for displaying UI
- * elements such as the intent resolver or channel selector. Used for messages sent in
- * either direction.
- */
-export interface IframeHello {
-    /**
-     * The message payload
-     */
-    payload: IframeHelloPayload;
-    /**
-     * Identifies the type of the message to or from the iframe.
-     */
-    type: "iframeHello";
-}
-
-/**
- * The message payload
- */
-export interface IframeHelloPayload {
-    /**
-     * The version of FDC3 API that the Desktop Agent proxy is providing support for.
-     */
-    fdc3Version: string;
-}
-
-/**
- * Identifies the type of the message to or from the iframe.
- */
-
-/**
- * A message used to communicate with iframes injected by `getAgent()` for displaying UI
- * elements such as the intent resolver or channel selector. Used for messages sent in
- * either direction.
- */
-export interface IframeMessage {
-    /**
-     * The message payload
-     */
-    payload?: { [key: string]: any };
-    /**
-     * Identifies the type of the message to or from the iframe.
-     */
-    type: IframeMessageType;
-}
-
-/**
- * Identifies the type of the message to or from the iframe.
- */
-export type IframeMessageType = "iframeHello" | "iframeHandshake" | "iframeResolve" | "iframeResolveAction" | "iframeChannels" | "iframeChannelSelected" | "iframeChannelResize" | "iframeChannelDrag";
-
-/**
- * Setup message sent by the DA proxy code in getAgent() to an intent resolver UI in an
- * iframe with the resolver data to setup the UI.
- *
- * A message used to communicate with iframes injected by `getAgent()` for displaying UI
- * elements such as the intent resolver or channel selector. Used for messages sent in
- * either direction.
- */
-export interface IframeResolve {
-    /**
-     * The message payload
-     */
-    payload: IframeResolvePayload;
-    /**
-     * Identifies the type of the message to or from the iframe.
-     */
-    type: "iframeResolve";
-}
-
-/**
- * The message payload
- */
-export interface IframeResolvePayload {
-    /**
-     * An array of AppIntent objects defining the resolution options.
-     */
-    appIntents: AppIntent[];
-    context:    Context;
-}
-
-/**
- * Identifies the type of the message to or from the iframe.
- */
-
-/**
- * Message from an intent resolver UI in an iframe to DA proxy code in getAgent() reporting
- * a user action.
- *
- * A message used to communicate with iframes injected by `getAgent()` for displaying UI
- * elements such as the intent resolver or channel selector. Used for messages sent in
- * either direction.
- */
-export interface IframeResolveAction {
-    /**
-     * The message payload
-     */
-    payload: IframeResolveActionPayload;
-    /**
-     * Identifies the type of the message to or from the iframe.
-     */
-    type: "iframeResolveAction";
-}
-
-/**
- * The message payload
- */
-export interface IframeResolveActionPayload {
-    action: Action;
-    /**
-     * The App resolution option chosen
-     */
-    appIdentifier?: AppIdentifier;
-    /**
-     * The intent resolved
-     */
-    intent?: string;
-}
-
-export type Action = "hover" | "click" | "cancel";
-
-/**
- * Identifies the type of the message to or from the iframe.
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
  */
 
 /**
@@ -2149,7 +2462,7 @@ export type Action = "hover" | "click" | "cancel";
  */
 export interface IntentEvent {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
+     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
      */
     meta: BroadcastEventMeta;
     /**
@@ -2176,9 +2489,14 @@ export interface IntentEventPayload {
      */
     intent: string;
     /**
-     * Details of the application instance that raised the intent
+     * Details of the application instance that raised the intent.
      */
     originatingApp?: AppIdentifier;
+    /**
+     * The requestUuid value of the raiseIntentRequest that the intentEvent being sent relates
+     * to.
+     */
+    raiseIntentRequestUuid: string;
 }
 
 /**
@@ -2220,14 +2538,14 @@ export interface IntentListenerUnsubscribeRequestPayload {
  */
 
 /**
- * A response to a request to a intentListenerUnsubscribe request.
+ * A response to a intentListenerUnsubscribe request.
  *
  * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface IntentListenerUnsubscribeResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2249,7 +2567,86 @@ export interface IntentListenerUnsubscribeResponse {
  */
 
 /**
- * Request to join the app to the specified User channel.
+ * A request to deliver a result for an intent (which may include a `void` result that just
+ * indicates that the handler has run, returning no result). The result is tied to the
+ * intentEvent it relates to by quoting the `eventUuid` of the intentEvent in its payload.
+ *
+ * A request message from an FDC3-enabled app to a Desktop Agent.
+ */
+export interface IntentResultRequest {
+    /**
+     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+     */
+    meta: AddContextListenerRequestMeta;
+    /**
+     * The message payload typically contains the arguments to FDC3 API functions.
+     */
+    payload: IntentResultRequestPayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Request' appended.
+     */
+    type: "intentResultRequest";
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface IntentResultRequestPayload {
+    /**
+     * The eventUuid value of the intentEvent that the result being sent relates to.
+     */
+    intentEventUuid: string;
+    intentResult:    IntentResult;
+    /**
+     * The requestUuid value of the raiseIntentRequest that the result being sent relates to.
+     */
+    raiseIntentRequestUuid: string;
+}
+
+export interface IntentResult {
+    context?: Context;
+    channel?: Channel;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ */
+
+/**
+ * A response to a request to deliver an intent result.
+ *
+ * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
+ * payload contains an `error` property, the request was unsuccessful.
+ */
+export interface IntentResultResponse {
+    /**
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+     */
+    meta: AddContextListenerResponseMeta;
+    /**
+     * A payload for a response to an API call that will contain any return values or an `error`
+     * property containing a standardized error message indicating that the request was
+     * unsuccessful.
+     */
+    payload: BroadcastResponseResponsePayload;
+    /**
+     * Identifies the type of the message and it is typically set to the FDC3 function name that
+     * the message relates to, e.g. 'findIntent', with 'Response' appended.
+     */
+    type: "intentResultResponse";
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ */
+
+/**
+ * Request to join the app to the specified User channel. On successfully joining a channel,
+ * client code should make subsequent requests to get the current context of that channel
+ * for all registered context listeners and then call their handlers with it.
  *
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
@@ -2274,7 +2671,7 @@ export interface JoinUserChannelRequest {
  */
 export interface JoinUserChannelRequestPayload {
     /**
-     * The id of the channel to join
+     * The id of the channel to join.
      */
     channelId: string;
 }
@@ -2285,14 +2682,16 @@ export interface JoinUserChannelRequestPayload {
  */
 
 /**
- * A response to a joinUserChannel request.
+ * A response to a joinUserChannel request. On receipt of this response, client code should
+ * make subsequent requests to get the current context of that channel for all registered
+ * context listeners and then call their handlers with it.
  *
  * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface JoinUserChannelResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2362,7 +2761,7 @@ export interface LeaveCurrentChannelRequestPayload {
  */
 export interface LeaveCurrentChannelResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2418,6 +2817,12 @@ export interface OpenRequest {
  */
 export interface OpenRequestPayload {
     app: AppIdentifier;
+    /**
+     * If a Context object is passed in, this object will be provided to the opened application
+     * via a contextListener. The Context argument is functionally equivalent to opening the
+     * target app with no context and broadcasting the context directly to it.
+     */
+    context?: Context;
 }
 
 /**
@@ -2433,7 +2838,7 @@ export interface OpenRequestPayload {
  */
 export interface OpenResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2475,8 +2880,7 @@ export type OpenErrorResponsePayload = "MalformedContext" | "AppNotFound" | "App
  */
 
 /**
- * An event message from the Desktop Agent to an app indicating that another app has added a
- * context listener to a specific PrivateChannel.
+ * A request to add an event listener to a specific PrivateChannel.
  *
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
@@ -2501,15 +2905,21 @@ export interface PrivateChannelAddEventListenerRequest {
  */
 export interface TPayload {
     /**
-     * The type of the context listener to add to the channel, or null if it should listen to
-     * all types.
+     * The type of PrivateChannel event that the listener should be applied to.
      */
-    contextType: null | string;
+    listenerType: PrivateChannelEventListenerTypes;
     /**
      * The Id of the PrivateChannel that the listener should be added to.
      */
     privateChannelId: string;
 }
+
+/**
+ * The type of PrivateChannel event that the listener should be applied to.
+ *
+ * Event listener type names for Private Channel events.
+ */
+export type PrivateChannelEventListenerTypes = "onAddContextListener" | "onUnsubscribe" | "onDisconnect";
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -2524,7 +2934,7 @@ export interface TPayload {
  */
 export interface PrivateChannelAddEventListenerResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2601,7 +3011,7 @@ export interface PrivateChannelDisconnectRequestPayload {
  */
 export interface PrivateChannelDisconnectResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2639,7 +3049,7 @@ export interface PrivateChannelDisconnectResponsePayload {
  */
 export interface PrivateChannelOnAddContextListenerEvent {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
+     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
      */
     meta: BroadcastEventMeta;
     /**
@@ -2681,7 +3091,7 @@ export interface PrivateChannelOnAddContextListenerEventPayload {
  */
 export interface PrivateChannelOnDisconnectEvent {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
+     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
      */
     meta: BroadcastEventMeta;
     /**
@@ -2716,15 +3126,15 @@ export interface PrivateChannelOnDisconnectEventPayload {
  *
  * A message from a Desktop Agent to an FDC3-enabled app representing an event.
  */
-export interface PrivateChannelOnUnsubscribeEventEvent {
+export interface PrivateChannelOnUnsubscribeEvent {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App notifying it of an event.
+     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
      */
     meta: BroadcastEventMeta;
     /**
      * The message payload contains details of the event that the app is being notified about.
      */
-    payload: PrivateChannelOnUnsubscribeEventEventPayload;
+    payload: PrivateChannelOnUnsubscribeEventPayload;
     /**
      * Identifies the type of the message and it is typically set to the FDC3 function name that
      * the message relates to, e.g. 'findIntent', with 'Response' appended.
@@ -2735,7 +3145,7 @@ export interface PrivateChannelOnUnsubscribeEventEvent {
 /**
  * The message payload contains details of the event that the app is being notified about.
  */
-export interface PrivateChannelOnUnsubscribeEventEventPayload {
+export interface PrivateChannelOnUnsubscribeEventPayload {
     /**
      * The type of the context listener unsubscribed from the channel by another app, or null if
      * it was listening to all types.
@@ -2793,7 +3203,7 @@ export interface PrivateChannelUnsubscribeEventListenerRequestPayload {
  */
 export interface PrivateChannelUnsubscribeEventListenerResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -2856,13 +3266,17 @@ export interface RaiseIntentForContextRequestPayload {
  */
 export interface RaiseIntentForContextResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
      * A payload for a response to an API call that will contain any return values or an `error`
      * property containing a standardized error message indicating that the request was
      * unsuccessful.
+     *
+     * There are 3 possible responses to a raiseIntentForContext request, each of which sets a
+     * single property in the payload: Success (`intentResolution`), Needs further resolution
+     * (`appIntents`) or Error (`error`).
      */
     payload: RaiseIntentForContextResponsePayload;
     /**
@@ -2877,20 +3291,34 @@ export interface RaiseIntentForContextResponse {
  * property containing a standardized error message indicating that the request was
  * unsuccessful.
  *
- * Response to a raiseIntent request that was successfully resolved
+ * There are 3 possible responses to a raiseIntentForContext request, each of which sets a
+ * single property in the payload: Success (`intentResolution`), Needs further resolution
+ * (`appIntents`) or Error (`error`).
  *
  * Response to a raiseIntentForContext request that needs additional resolution (i.e. show
- * an intent resolver UI)
+ * an intent resolver UI).
  *
- * Response to a raiseIntent request that resulted in an error
+ * Used if a raiseIntent request resulted in an error.
  */
 export interface RaiseIntentForContextResponsePayload {
-    error?:            FindInstancesErrors;
+    /**
+     * Should be set if the raiseIntent request returned an error.
+     */
+    error?: FindInstancesErrors;
+    /**
+     * Used if the raiseIntent request was successfully resolved.
+     */
     intentResolution?: IntentResolution;
-    appIntents?:       AppIntent[];
+    /**
+     * Used if a raiseIntentForContext request requires additional resolution (e.g. by showing
+     * an intent resolver) before it can be handled.
+     */
+    appIntents?: AppIntent[];
 }
 
 /**
+ * Used if the raiseIntent request was successfully resolved.
+ *
  * IntentResolution provides a standard format for data returned upon resolving an intent.
  *
  * ```javascript
@@ -2978,13 +3406,17 @@ export interface RaiseIntentRequestPayload {
  */
 export interface RaiseIntentResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
      * A payload for a response to an API call that will contain any return values or an `error`
      * property containing a standardized error message indicating that the request was
      * unsuccessful.
+     *
+     * There are 3 possible responses to a raiseIntent request, each of which sets a single
+     * property in the payload: Success (`intentResolution`), Needs further resolution
+     * (`appIntent`) or Error (`error`).
      */
     payload: RaiseIntentResponsePayload;
     /**
@@ -2999,17 +3431,29 @@ export interface RaiseIntentResponse {
  * property containing a standardized error message indicating that the request was
  * unsuccessful.
  *
- * Response to a raiseIntent request that was successfully resolved
+ * There are 3 possible responses to a raiseIntent request, each of which sets a single
+ * property in the payload: Success (`intentResolution`), Needs further resolution
+ * (`appIntent`) or Error (`error`).
  *
  * Response to a raiseIntent request that needs additional resolution (i.e. show an intent
- * resolver UI)
+ * resolver UI).
  *
- * Response to a raiseIntent request that resulted in an error
+ * Used if a raiseIntent request resulted in an error.
  */
 export interface RaiseIntentResponsePayload {
-    error?:            FindInstancesErrors;
+    /**
+     * Should be set if the raiseIntent request returned an error.
+     */
+    error?: FindInstancesErrors;
+    /**
+     * Used if the raiseIntent request was successfully resolved.
+     */
     intentResolution?: IntentResolution;
-    appIntent?:        AppIntent;
+    /**
+     * Used if a raiseIntent request requires additional resolution (e.g. by showing an intent
+     * resolver) before it can be handled.
+     */
+    appIntent?: AppIntent;
 }
 
 /**
@@ -3019,13 +3463,15 @@ export interface RaiseIntentResponsePayload {
 
 /**
  * A secondary response to a request to raise an intent used to deliver the intent result.
+ * This message should quote the original requestUuid of the raiseIntentRequest message in
+ * its `meta.requestUuid` field.
  *
  * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface RaiseIntentResultResponse {
     /**
-     * Metadata for messages sent by a Desktop Agent to an App in response to an API call
+     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
      */
     meta: AddContextListenerResponseMeta;
     /**
@@ -3033,7 +3479,7 @@ export interface RaiseIntentResultResponse {
      * property containing a standardized error message indicating that the request was
      * unsuccessful.
      */
-    payload: ResponsePayload;
+    payload: RaiseIntentResultResponsePayload;
     /**
      * Identifies the type of the message and it is typically set to the FDC3 function name that
      * the message relates to, e.g. 'findIntent', with 'Response' appended.
@@ -3046,14 +3492,9 @@ export interface RaiseIntentResultResponse {
  * property containing a standardized error message indicating that the request was
  * unsuccessful.
  */
-export interface ResponsePayload {
+export interface RaiseIntentResultResponsePayload {
     error?:        ResponsePayloadError;
     intentResult?: IntentResult;
-}
-
-export interface IntentResult {
-    context?: Context;
-    channel?: Channel;
 }
 
 /**
@@ -3063,13 +3504,16 @@ export interface IntentResult {
 
 /**
  * Hello message sent by an application to a parent window or frame when attempting to
- * establish connectivity to a Desktop Agent
+ * establish connectivity to a Desktop Agent.
  *
  * A message used during the connection flow for an application to a Desktop Agent in a
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocol1Hello {
-    meta: ConnectionStepMetadata;
+    /**
+     * Metadata for a Web Connection Protocol message.
+     */
+    meta: WebConnectionProtocol1HelloMeta;
     /**
      * The message payload, containing data pertaining to this connection step.
      */
@@ -3081,9 +3525,9 @@ export interface WebConnectionProtocol1Hello {
 }
 
 /**
- * Metadata for this connection step message
+ * Metadata for a Web Connection Protocol message.
  */
-export interface ConnectionStepMetadata {
+export interface WebConnectionProtocol1HelloMeta {
     connectionAttemptUuid: string;
     timestamp:             Date;
 }
@@ -3093,8 +3537,14 @@ export interface ConnectionStepMetadata {
  */
 export interface WebConnectionProtocol1HelloPayload {
     /**
-     * A flag that may be used to indicate that a channel selector UI is or is not required. If
-     * the app includes its own UI for displaying
+     * The current URL of the page attempting to connect. This may differ from the identityUrl,
+     * but the origins MUST match.
+     */
+    actualUrl: string;
+    /**
+     * A flag that may be used to indicate that a channel selector user interface is or is not
+     * required. Set to `false` if the app includes its own interface for selecting channels or
+     * does not work with user channels.
      */
     channelSelector?: boolean;
     /**
@@ -3102,10 +3552,15 @@ export interface WebConnectionProtocol1HelloPayload {
      */
     fdc3Version: string;
     /**
-     * A flag that may be used to indicate that an intent resolver is or is not required. Set to
-     * false if no intents, or only targeted intents, are raised
+     * URL to use for the identity of the application. Desktop Agents MUST validate that the
+     * origin of the message matches the URL, but MAY implement custom comparison logic.
      */
-    resolver?: boolean;
+    identityUrl: string;
+    /**
+     * A flag that may be used to indicate that an intent resolver is or is not required. Set to
+     * `false` if no intents, or only targeted intents, are raised.
+     */
+    intentResolver?: boolean;
     [property: string]: any;
 }
 
@@ -3116,13 +3571,16 @@ export interface WebConnectionProtocol1HelloPayload {
 /**
  * Response from a Desktop Agent to an application requesting access to it indicating that
  * it should load a specified URL into a hidden iframe in order to establish connectivity to
- * a Desktop Agent
+ * a Desktop Agent.
  *
  * A message used during the connection flow for an application to a Desktop Agent in a
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocol2LoadURL {
-    meta: ConnectionStepMetadata;
+    /**
+     * Metadata for a Web Connection Protocol message.
+     */
+    meta: WebConnectionProtocol1HelloMeta;
     /**
      * The message payload, containing data pertaining to this connection step.
      */
@@ -3140,7 +3598,7 @@ export interface WebConnectionProtocol2LoadURLPayload {
     /**
      * A URL which can be used to establish communication with the Desktop Agent, via loading
      * the URL into an iframe and restarting the Web Connection protocol with the iframe as the
-     * target
+     * target.
      */
     iframeUrl: string;
     [property: string]: any;
@@ -3158,7 +3616,10 @@ export interface WebConnectionProtocol2LoadURLPayload {
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocol3Handshake {
-    meta: ConnectionStepMetadata;
+    /**
+     * Metadata for a Web Connection Protocol message.
+     */
+    meta: WebConnectionProtocol1HelloMeta;
     /**
      * The message payload, containing data pertaining to this connection step.
      */
@@ -3174,21 +3635,21 @@ export interface WebConnectionProtocol3Handshake {
  */
 export interface WebConnectionProtocol3HandshakePayload {
     /**
-     * Indicates whether a channel selector UI is required and the URL to use to do so. Set to
-     * `true` to use the default or `false` to disable the channel selector (as the Desktop
-     * Agent will handle another way)
+     * Indicates whether a channel selector user interface is required and the URL to use to do
+     * so. Set to `true` to use the default or `false` to disable the channel selector (as the
+     * Desktop Agent will handle it another way).
      */
-    channelSelector: boolean | string;
+    channelSelectorUrl: boolean | string;
     /**
      * The version of FDC3 API that the Desktop Agent will provide support for.
      */
     fdc3Version: string;
     /**
-     * Indicates whether an intent resolver UI is required and the URL to use to do so. Set to
-     * `true` to use the default or `false` to disable the intent resolver (as the Desktop Agent
-     * will handle another way)
+     * Indicates whether an intent resolver user interface is required and the URL to use to do
+     * so. Set to `true` to use the default or `false` to disable the intent resolver (as the
+     * Desktop Agent will handle it another way).
      */
-    resolver: boolean | string;
+    intentResolverUrl: boolean | string;
 }
 
 /**
@@ -3202,7 +3663,10 @@ export interface WebConnectionProtocol3HandshakePayload {
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocol4ValidateAppIdentity {
-    meta: ConnectionStepMetadata;
+    /**
+     * Metadata for a Web Connection Protocol message.
+     */
+    meta: WebConnectionProtocol1HelloMeta;
     /**
      * The message payload, containing data pertaining to this connection step.
      */
@@ -3218,18 +3682,17 @@ export interface WebConnectionProtocol4ValidateAppIdentity {
  */
 export interface WebConnectionProtocol4ValidateAppIdentityPayload {
     /**
-     * URL for an App Directory record that provides identity details for the application
-     * attempting to connect
+     * The current URL of the page attempting to connect. This may differ from the identityUrl,
+     * but the origins MUST match.
      */
-    appDUrl?: string;
+    actualUrl: string;
     /**
-     * appId for the application attempting to connect. The appId must be fully qualified
-     * (appId@host.domain.appD) such that the URL for the appD record can be determined for
-     * identity validation purposes, or appDUrl must also be specified.
+     * URL to use for the identity of the application. Desktop Agents MUST validate that the
+     * origin of the message matches the URL, but MAY implement custom comparison logic.
      */
-    appId: string;
+    identityUrl: string;
     /**
-     * If an application has previously connected to the desktop agent, it may specify its prior
+     * If an application has previously connected to the Desktop Agent, it may specify its prior
      * instance id and associated instance UUID to request the same same instance Id be assigned.
      */
     instanceId?: string;
@@ -3250,7 +3713,10 @@ export interface WebConnectionProtocol4ValidateAppIdentityPayload {
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocol5ValidateAppIdentityFailedResponse {
-    meta: ConnectionStepMetadata;
+    /**
+     * Metadata for a Web Connection Protocol message.
+     */
+    meta: WebConnectionProtocol1HelloMeta;
     /**
      * The message payload, containing data pertaining to this connection step.
      */
@@ -3273,13 +3739,16 @@ export interface WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload 
  */
 
 /**
- * Message sent by the Desktop Agent to an app after successful identity validation
+ * Message sent by the Desktop Agent to an app after successful identity validation.
  *
  * A message used during the connection flow for an application to a Desktop Agent in a
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
-    meta: ConnectionStepMetadata;
+    /**
+     * Metadata for a Web Connection Protocol message.
+     */
+    meta: WebConnectionProtocol1HelloMeta;
     /**
      * The message payload, containing data pertaining to this connection step.
      */
@@ -3295,12 +3764,12 @@ export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
  */
 export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload {
     /**
-     * The appId that the app's identity was validated against
+     * The appId that the app's identity was validated against.
      */
     appId: string;
     /**
      * Implementation metadata for the Desktop Agent, which includes an appMetadata element
-     * containing a copy of the app's own metadata
+     * containing a copy of the app's own metadata.
      */
     implementationMetadata: ImplementationMetadata;
     /**
@@ -3309,9 +3778,40 @@ export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload
     instanceId: string;
     /**
      * Instance UUID associated with the instanceId granted, which may be used to retrieve the
-     * same instance Id if the app is reloaded or navigates.
+     * same instanceId if the app is reloaded or navigates.
      */
     instanceUuid: string;
+}
+
+/**
+ * Identifies the type of the connection step message.
+ */
+
+/**
+ * Goodbye message to be sent to the Desktop Agent when disconnecting (e.g. when closing the
+ * window or navigating). Desktop Agents should close the MessagePort after receiving this
+ * message, but retain instance details in case the application reconnects (e.g. after a
+ * navigation event).
+ *
+ * A message used during the connection flow for an application to a Desktop Agent in a
+ * browser window. Used for messages sent in either direction.
+ */
+export interface WebConnectionProtocol6Goodbye {
+    /**
+     * Metadata for a Web Connection Protocol message.
+     */
+    meta: WebConnectionProtocol6GoodbyeMeta;
+    /**
+     * Identifies the type of the connection step message.
+     */
+    type: "WCP6Goodbye";
+}
+
+/**
+ * Metadata for a Web Connection Protocol message.
+ */
+export interface WebConnectionProtocol6GoodbyeMeta {
+    timestamp: Date;
 }
 
 /**
@@ -3323,11 +3823,14 @@ export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload
  * browser window. Used for messages sent in either direction.
  */
 export interface WebConnectionProtocolMessage {
+    /**
+     * Metadata for a Web Connection Protocol message.
+     */
     meta: ConnectionStepMetadata;
     /**
      * The message payload, containing data pertaining to this connection step.
      */
-    payload: { [key: string]: any };
+    payload?: { [key: string]: any };
     /**
      * Identifies the type of the connection step message.
      */
@@ -3335,53 +3838,21 @@ export interface WebConnectionProtocolMessage {
 }
 
 /**
+ * Metadata for a Web Connection Protocol message.
+ */
+export interface ConnectionStepMetadata {
+    timestamp:              Date;
+    connectionAttemptUuid?: string;
+}
+
+/**
  * Identifies the type of the connection step message.
  */
-export type ConnectionStepMessageType = "WCP1Hello" | "WCP2LoadUrl" | "WCP3Handshake" | "WCP4ValidateAppIdentity" | "WCP5ValidateAppIdentityFailedResponse" | "WCP5ValidateAppIdentityResponse";
+export type ConnectionStepMessageType = "WCP1Hello" | "WCP2LoadUrl" | "WCP3Handshake" | "WCP4ValidateAppIdentity" | "WCP5ValidateAppIdentityFailedResponse" | "WCP5ValidateAppIdentityResponse" | "WCP6Goodbye";
 
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 export class Convert {
-    public static toFDC3DesktopAgentAPISchemas(json: string): any {
-        return cast(JSON.parse(json), "any");
-    }
-
-    public static fDC3DesktopAgentAPISchemasToJson(value: any): string {
-        return JSON.stringify(uncast(value, "any"), null, 2);
-    }
-
-    public static toCommonDefinitions(json: string): { [key: string]: any } {
-        return cast(JSON.parse(json), m("any"));
-    }
-
-    public static commonDefinitionsToJson(value: { [key: string]: any }): string {
-        return JSON.stringify(uncast(value, m("any")), null, 2);
-    }
-
-    public static toAppRequestMessage(json: string): AppRequestMessage {
-        return cast(JSON.parse(json), r("AppRequestMessage"));
-    }
-
-    public static appRequestMessageToJson(value: AppRequestMessage): string {
-        return JSON.stringify(uncast(value, r("AppRequestMessage")), null, 2);
-    }
-
-    public static toAgentResponseMessage(json: string): AgentResponseMessage {
-        return cast(JSON.parse(json), r("AgentResponseMessage"));
-    }
-
-    public static agentResponseMessageToJson(value: AgentResponseMessage): string {
-        return JSON.stringify(uncast(value, r("AgentResponseMessage")), null, 2);
-    }
-
-    public static toAgentEventMessage(json: string): AgentEventMessage {
-        return cast(JSON.parse(json), r("AgentEventMessage"));
-    }
-
-    public static agentEventMessageToJson(value: AgentEventMessage): string {
-        return JSON.stringify(uncast(value, r("AgentEventMessage")), null, 2);
-    }
-
     public static toAddContextListenerRequest(json: string): AddContextListenerRequest {
         return cast(JSON.parse(json), r("AddContextListenerRequest"));
     }
@@ -3398,6 +3869,22 @@ export class Convert {
         return JSON.stringify(uncast(value, r("AddContextListenerResponse")), null, 2);
     }
 
+    public static toAddEventListenerRequest(json: string): AddEventListenerRequest {
+        return cast(JSON.parse(json), r("AddEventListenerRequest"));
+    }
+
+    public static addEventListenerRequestToJson(value: AddEventListenerRequest): string {
+        return JSON.stringify(uncast(value, r("AddEventListenerRequest")), null, 2);
+    }
+
+    public static toAddEventListenerResponse(json: string): AddEventListenerResponse {
+        return cast(JSON.parse(json), r("AddEventListenerResponse"));
+    }
+
+    public static addEventListenerResponseToJson(value: AddEventListenerResponse): string {
+        return JSON.stringify(uncast(value, r("AddEventListenerResponse")), null, 2);
+    }
+
     public static toAddIntentListenerRequest(json: string): AddIntentListenerRequest {
         return cast(JSON.parse(json), r("AddIntentListenerRequest"));
     }
@@ -3412,6 +3899,30 @@ export class Convert {
 
     public static addIntentListenerResponseToJson(value: AddIntentListenerResponse): string {
         return JSON.stringify(uncast(value, r("AddIntentListenerResponse")), null, 2);
+    }
+
+    public static toAgentEventMessage(json: string): AgentEventMessage {
+        return cast(JSON.parse(json), r("AgentEventMessage"));
+    }
+
+    public static agentEventMessageToJson(value: AgentEventMessage): string {
+        return JSON.stringify(uncast(value, r("AgentEventMessage")), null, 2);
+    }
+
+    public static toAgentResponseMessage(json: string): AgentResponseMessage {
+        return cast(JSON.parse(json), r("AgentResponseMessage"));
+    }
+
+    public static agentResponseMessageToJson(value: AgentResponseMessage): string {
+        return JSON.stringify(uncast(value, r("AgentResponseMessage")), null, 2);
+    }
+
+    public static toAppRequestMessage(json: string): AppRequestMessage {
+        return cast(JSON.parse(json), r("AppRequestMessage"));
+    }
+
+    public static appRequestMessageToJson(value: AppRequestMessage): string {
+        return JSON.stringify(uncast(value, r("AppRequestMessage")), null, 2);
     }
 
     public static toBroadcastEvent(json: string): BroadcastEvent {
@@ -3478,6 +3989,94 @@ export class Convert {
         return JSON.stringify(uncast(value, r("CreatePrivateChannelResponse")), null, 2);
     }
 
+    public static toEventListenerUnsubscribeRequest(json: string): EventListenerUnsubscribeRequest {
+        return cast(JSON.parse(json), r("EventListenerUnsubscribeRequest"));
+    }
+
+    public static eventListenerUnsubscribeRequestToJson(value: EventListenerUnsubscribeRequest): string {
+        return JSON.stringify(uncast(value, r("EventListenerUnsubscribeRequest")), null, 2);
+    }
+
+    public static toEventListenerUnsubscribeResponse(json: string): EventListenerUnsubscribeResponse {
+        return cast(JSON.parse(json), r("EventListenerUnsubscribeResponse"));
+    }
+
+    public static eventListenerUnsubscribeResponseToJson(value: EventListenerUnsubscribeResponse): string {
+        return JSON.stringify(uncast(value, r("EventListenerUnsubscribeResponse")), null, 2);
+    }
+
+    public static toFdc3UserInterfaceChannels(json: string): Fdc3UserInterfaceChannels {
+        return cast(JSON.parse(json), r("Fdc3UserInterfaceChannels"));
+    }
+
+    public static fdc3UserInterfaceChannelsToJson(value: Fdc3UserInterfaceChannels): string {
+        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceChannels")), null, 2);
+    }
+
+    public static toFdc3UserInterfaceChannelSelected(json: string): Fdc3UserInterfaceChannelSelected {
+        return cast(JSON.parse(json), r("Fdc3UserInterfaceChannelSelected"));
+    }
+
+    public static fdc3UserInterfaceChannelSelectedToJson(value: Fdc3UserInterfaceChannelSelected): string {
+        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceChannelSelected")), null, 2);
+    }
+
+    public static toFdc3UserInterfaceDrag(json: string): Fdc3UserInterfaceDrag {
+        return cast(JSON.parse(json), r("Fdc3UserInterfaceDrag"));
+    }
+
+    public static fdc3UserInterfaceDragToJson(value: Fdc3UserInterfaceDrag): string {
+        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceDrag")), null, 2);
+    }
+
+    public static toFdc3UserInterfaceHandshake(json: string): Fdc3UserInterfaceHandshake {
+        return cast(JSON.parse(json), r("Fdc3UserInterfaceHandshake"));
+    }
+
+    public static fdc3UserInterfaceHandshakeToJson(value: Fdc3UserInterfaceHandshake): string {
+        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceHandshake")), null, 2);
+    }
+
+    public static toFdc3UserInterfaceHello(json: string): Fdc3UserInterfaceHello {
+        return cast(JSON.parse(json), r("Fdc3UserInterfaceHello"));
+    }
+
+    public static fdc3UserInterfaceHelloToJson(value: Fdc3UserInterfaceHello): string {
+        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceHello")), null, 2);
+    }
+
+    public static toFdc3UserInterfaceMessage(json: string): Fdc3UserInterfaceMessage {
+        return cast(JSON.parse(json), r("Fdc3UserInterfaceMessage"));
+    }
+
+    public static fdc3UserInterfaceMessageToJson(value: Fdc3UserInterfaceMessage): string {
+        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceMessage")), null, 2);
+    }
+
+    public static toFdc3UserInterfaceResolve(json: string): Fdc3UserInterfaceResolve {
+        return cast(JSON.parse(json), r("Fdc3UserInterfaceResolve"));
+    }
+
+    public static fdc3UserInterfaceResolveToJson(value: Fdc3UserInterfaceResolve): string {
+        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceResolve")), null, 2);
+    }
+
+    public static toFdc3UserInterfaceResolveAction(json: string): Fdc3UserInterfaceResolveAction {
+        return cast(JSON.parse(json), r("Fdc3UserInterfaceResolveAction"));
+    }
+
+    public static fdc3UserInterfaceResolveActionToJson(value: Fdc3UserInterfaceResolveAction): string {
+        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceResolveAction")), null, 2);
+    }
+
+    public static toFdc3UserInterfaceRestyle(json: string): Fdc3UserInterfaceRestyle {
+        return cast(JSON.parse(json), r("Fdc3UserInterfaceRestyle"));
+    }
+
+    public static fdc3UserInterfaceRestyleToJson(value: Fdc3UserInterfaceRestyle): string {
+        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceRestyle")), null, 2);
+    }
+
     public static toFindInstancesRequest(json: string): FindInstancesRequest {
         return cast(JSON.parse(json), r("FindInstancesRequest"));
     }
@@ -3518,12 +4117,12 @@ export class Convert {
         return JSON.stringify(uncast(value, r("FindIntentsByContextRequest")), null, 2);
     }
 
-    public static toFindIntentsByContextsByContextResponse(json: string): FindIntentsByContextsByContextResponse {
-        return cast(JSON.parse(json), r("FindIntentsByContextsByContextResponse"));
+    public static toFindIntentsByContextResponse(json: string): FindIntentsByContextResponse {
+        return cast(JSON.parse(json), r("FindIntentsByContextResponse"));
     }
 
-    public static findIntentsByContextsByContextResponseToJson(value: FindIntentsByContextsByContextResponse): string {
-        return JSON.stringify(uncast(value, r("FindIntentsByContextsByContextResponse")), null, 2);
+    public static findIntentsByContextResponseToJson(value: FindIntentsByContextResponse): string {
+        return JSON.stringify(uncast(value, r("FindIntentsByContextResponse")), null, 2);
     }
 
     public static toGetAppMetadataRequest(json: string): GetAppMetadataRequest {
@@ -3622,76 +4221,20 @@ export class Convert {
         return JSON.stringify(uncast(value, r("GetUserChannelsResponse")), null, 2);
     }
 
-    public static toIframeChannelDrag(json: string): IframeChannelDrag {
-        return cast(JSON.parse(json), r("IframeChannelDrag"));
+    public static toHeartbeatAcknowledgementRequest(json: string): HeartbeatAcknowledgementRequest {
+        return cast(JSON.parse(json), r("HeartbeatAcknowledgementRequest"));
     }
 
-    public static iframeChannelDragToJson(value: IframeChannelDrag): string {
-        return JSON.stringify(uncast(value, r("IframeChannelDrag")), null, 2);
+    public static heartbeatAcknowledgementRequestToJson(value: HeartbeatAcknowledgementRequest): string {
+        return JSON.stringify(uncast(value, r("HeartbeatAcknowledgementRequest")), null, 2);
     }
 
-    public static toIframeChannelResize(json: string): IframeChannelResize {
-        return cast(JSON.parse(json), r("IframeChannelResize"));
+    public static toHeartbeatEvent(json: string): HeartbeatEvent {
+        return cast(JSON.parse(json), r("HeartbeatEvent"));
     }
 
-    public static iframeChannelResizeToJson(value: IframeChannelResize): string {
-        return JSON.stringify(uncast(value, r("IframeChannelResize")), null, 2);
-    }
-
-    public static toIframeChannels(json: string): IframeChannels {
-        return cast(JSON.parse(json), r("IframeChannels"));
-    }
-
-    public static iframeChannelsToJson(value: IframeChannels): string {
-        return JSON.stringify(uncast(value, r("IframeChannels")), null, 2);
-    }
-
-    public static toIframeChannelSelected(json: string): IframeChannelSelected {
-        return cast(JSON.parse(json), r("IframeChannelSelected"));
-    }
-
-    public static iframeChannelSelectedToJson(value: IframeChannelSelected): string {
-        return JSON.stringify(uncast(value, r("IframeChannelSelected")), null, 2);
-    }
-
-    public static toIframeHandshake(json: string): IframeHandshake {
-        return cast(JSON.parse(json), r("IframeHandshake"));
-    }
-
-    public static iframeHandshakeToJson(value: IframeHandshake): string {
-        return JSON.stringify(uncast(value, r("IframeHandshake")), null, 2);
-    }
-
-    public static toIframeHello(json: string): IframeHello {
-        return cast(JSON.parse(json), r("IframeHello"));
-    }
-
-    public static iframeHelloToJson(value: IframeHello): string {
-        return JSON.stringify(uncast(value, r("IframeHello")), null, 2);
-    }
-
-    public static toIframeMessage(json: string): IframeMessage {
-        return cast(JSON.parse(json), r("IframeMessage"));
-    }
-
-    public static iframeMessageToJson(value: IframeMessage): string {
-        return JSON.stringify(uncast(value, r("IframeMessage")), null, 2);
-    }
-
-    public static toIframeResolve(json: string): IframeResolve {
-        return cast(JSON.parse(json), r("IframeResolve"));
-    }
-
-    public static iframeResolveToJson(value: IframeResolve): string {
-        return JSON.stringify(uncast(value, r("IframeResolve")), null, 2);
-    }
-
-    public static toIframeResolveAction(json: string): IframeResolveAction {
-        return cast(JSON.parse(json), r("IframeResolveAction"));
-    }
-
-    public static iframeResolveActionToJson(value: IframeResolveAction): string {
-        return JSON.stringify(uncast(value, r("IframeResolveAction")), null, 2);
+    public static heartbeatEventToJson(value: HeartbeatEvent): string {
+        return JSON.stringify(uncast(value, r("HeartbeatEvent")), null, 2);
     }
 
     public static toIntentEvent(json: string): IntentEvent {
@@ -3716,6 +4259,22 @@ export class Convert {
 
     public static intentListenerUnsubscribeResponseToJson(value: IntentListenerUnsubscribeResponse): string {
         return JSON.stringify(uncast(value, r("IntentListenerUnsubscribeResponse")), null, 2);
+    }
+
+    public static toIntentResultRequest(json: string): IntentResultRequest {
+        return cast(JSON.parse(json), r("IntentResultRequest"));
+    }
+
+    public static intentResultRequestToJson(value: IntentResultRequest): string {
+        return JSON.stringify(uncast(value, r("IntentResultRequest")), null, 2);
+    }
+
+    public static toIntentResultResponse(json: string): IntentResultResponse {
+        return cast(JSON.parse(json), r("IntentResultResponse"));
+    }
+
+    public static intentResultResponseToJson(value: IntentResultResponse): string {
+        return JSON.stringify(uncast(value, r("IntentResultResponse")), null, 2);
     }
 
     public static toJoinUserChannelRequest(json: string): JoinUserChannelRequest {
@@ -3814,12 +4373,12 @@ export class Convert {
         return JSON.stringify(uncast(value, r("PrivateChannelOnDisconnectEvent")), null, 2);
     }
 
-    public static toPrivateChannelOnUnsubscribeEventEvent(json: string): PrivateChannelOnUnsubscribeEventEvent {
-        return cast(JSON.parse(json), r("PrivateChannelOnUnsubscribeEventEvent"));
+    public static toPrivateChannelOnUnsubscribeEvent(json: string): PrivateChannelOnUnsubscribeEvent {
+        return cast(JSON.parse(json), r("PrivateChannelOnUnsubscribeEvent"));
     }
 
-    public static privateChannelOnUnsubscribeEventEventToJson(value: PrivateChannelOnUnsubscribeEventEvent): string {
-        return JSON.stringify(uncast(value, r("PrivateChannelOnUnsubscribeEventEvent")), null, 2);
+    public static privateChannelOnUnsubscribeEventToJson(value: PrivateChannelOnUnsubscribeEvent): string {
+        return JSON.stringify(uncast(value, r("PrivateChannelOnUnsubscribeEvent")), null, 2);
     }
 
     public static toPrivateChannelUnsubscribeEventListenerRequest(json: string): PrivateChannelUnsubscribeEventListenerRequest {
@@ -3924,6 +4483,14 @@ export class Convert {
 
     public static webConnectionProtocol5ValidateAppIdentitySuccessResponseToJson(value: WebConnectionProtocol5ValidateAppIdentitySuccessResponse): string {
         return JSON.stringify(uncast(value, r("WebConnectionProtocol5ValidateAppIdentitySuccessResponse")), null, 2);
+    }
+
+    public static toWebConnectionProtocol6Goodbye(json: string): WebConnectionProtocol6Goodbye {
+        return cast(JSON.parse(json), r("WebConnectionProtocol6Goodbye"));
+    }
+
+    public static webConnectionProtocol6GoodbyeToJson(value: WebConnectionProtocol6Goodbye): string {
+        return JSON.stringify(uncast(value, r("WebConnectionProtocol6Goodbye")), null, 2);
     }
 
     public static toWebConnectionProtocolMessage(json: string): WebConnectionProtocolMessage {
@@ -4088,44 +4655,6 @@ function r(name: string) {
 }
 
 const typeMap: any = {
-    "AppRequestMessage": o([
-        { json: "meta", js: "meta", typ: r("AppRequestMessageMeta") },
-        { json: "payload", js: "payload", typ: m("any") },
-        { json: "type", js: "type", typ: r("RequestMessageType") },
-    ], false),
-    "AppRequestMessageMeta": o([
-        { json: "requestUuid", js: "requestUuid", typ: "" },
-        { json: "source", js: "source", typ: u(undefined, r("AppIdentifier")) },
-        { json: "timestamp", js: "timestamp", typ: Date },
-    ], false),
-    "AppIdentifier": o([
-        { json: "appId", js: "appId", typ: "" },
-        { json: "desktopAgent", js: "desktopAgent", typ: u(undefined, "") },
-        { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
-    ], "any"),
-    "AgentResponseMessage": o([
-        { json: "meta", js: "meta", typ: r("AgentResponseMessageMeta") },
-        { json: "payload", js: "payload", typ: r("AgentResponseMessageResponsePayload") },
-        { json: "type", js: "type", typ: r("ResponseMessageType") },
-    ], false),
-    "AgentResponseMessageMeta": o([
-        { json: "requestUuid", js: "requestUuid", typ: "" },
-        { json: "responseUuid", js: "responseUuid", typ: "" },
-        { json: "source", js: "source", typ: u(undefined, r("AppIdentifier")) },
-        { json: "timestamp", js: "timestamp", typ: Date },
-    ], false),
-    "AgentResponseMessageResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("ResponsePayloadError")) },
-    ], "any"),
-    "AgentEventMessage": o([
-        { json: "meta", js: "meta", typ: r("AgentEventMessageMeta") },
-        { json: "payload", js: "payload", typ: m("any") },
-        { json: "type", js: "type", typ: r("EventMessageType") },
-    ], false),
-    "AgentEventMessageMeta": o([
-        { json: "eventUuid", js: "eventUuid", typ: "" },
-        { json: "timestamp", js: "timestamp", typ: Date },
-    ], false),
     "AddContextListenerRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
         { json: "payload", js: "payload", typ: r("AddContextListenerRequestPayload") },
@@ -4136,6 +4665,11 @@ const typeMap: any = {
         { json: "source", js: "source", typ: u(undefined, r("AppIdentifier")) },
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
+    "AppIdentifier": o([
+        { json: "appId", js: "appId", typ: "" },
+        { json: "desktopAgent", js: "desktopAgent", typ: u(undefined, "") },
+        { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
+    ], "any"),
     "AddContextListenerRequestPayload": o([
         { json: "channelId", js: "channelId", typ: u(null, "") },
         { json: "contextType", js: "contextType", typ: u(null, "") },
@@ -4155,6 +4689,23 @@ const typeMap: any = {
         { json: "error", js: "error", typ: u(undefined, r("PurpleError")) },
         { json: "listenerUUID", js: "listenerUUID", typ: u(undefined, "") },
     ], false),
+    "AddEventListenerRequest": o([
+        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
+        { json: "payload", js: "payload", typ: r("AddEventListenerRequestPayload") },
+        { json: "type", js: "type", typ: r("AddEventListenerRequestType") },
+    ], false),
+    "AddEventListenerRequestPayload": o([
+        { json: "type", js: "type", typ: u(r("FDC3EventType"), null) },
+    ], false),
+    "AddEventListenerResponse": o([
+        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
+        { json: "payload", js: "payload", typ: r("AddEventListenerResponsePayload") },
+        { json: "type", js: "type", typ: r("AddEventListenerResponseType") },
+    ], false),
+    "AddEventListenerResponsePayload": o([
+        { json: "error", js: "error", typ: u(undefined, r("ResponsePayloadError")) },
+        { json: "listenerUUID", js: "listenerUUID", typ: u(undefined, "") },
+    ], false),
     "AddIntentListenerRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
         { json: "payload", js: "payload", typ: r("AddIntentListenerRequestPayload") },
@@ -4172,6 +4723,39 @@ const typeMap: any = {
         { json: "error", js: "error", typ: u(undefined, r("FluffyError")) },
         { json: "listenerUUID", js: "listenerUUID", typ: u(undefined, "") },
     ], "any"),
+    "AgentEventMessage": o([
+        { json: "meta", js: "meta", typ: r("AgentEventMessageMeta") },
+        { json: "payload", js: "payload", typ: m("any") },
+        { json: "type", js: "type", typ: r("EventMessageType") },
+    ], false),
+    "AgentEventMessageMeta": o([
+        { json: "eventUuid", js: "eventUuid", typ: "" },
+        { json: "timestamp", js: "timestamp", typ: Date },
+    ], false),
+    "AgentResponseMessage": o([
+        { json: "meta", js: "meta", typ: r("AgentResponseMessageMeta") },
+        { json: "payload", js: "payload", typ: r("AgentResponseMessageResponsePayload") },
+        { json: "type", js: "type", typ: r("ResponseMessageType") },
+    ], false),
+    "AgentResponseMessageMeta": o([
+        { json: "requestUuid", js: "requestUuid", typ: "" },
+        { json: "responseUuid", js: "responseUuid", typ: "" },
+        { json: "source", js: "source", typ: u(undefined, r("AppIdentifier")) },
+        { json: "timestamp", js: "timestamp", typ: Date },
+    ], false),
+    "AgentResponseMessageResponsePayload": o([
+        { json: "error", js: "error", typ: u(undefined, r("ResponsePayloadError")) },
+    ], "any"),
+    "AppRequestMessage": o([
+        { json: "meta", js: "meta", typ: r("AppRequestMessageMeta") },
+        { json: "payload", js: "payload", typ: m("any") },
+        { json: "type", js: "type", typ: r("RequestMessageType") },
+    ], false),
+    "AppRequestMessageMeta": o([
+        { json: "requestUuid", js: "requestUuid", typ: "" },
+        { json: "source", js: "source", typ: u(undefined, r("AppIdentifier")) },
+        { json: "timestamp", js: "timestamp", typ: Date },
+    ], false),
     "BroadcastEvent": o([
         { json: "meta", js: "meta", typ: r("BroadcastEventMeta") },
         { json: "payload", js: "payload", typ: r("BroadcastEventPayload") },
@@ -4182,8 +4766,9 @@ const typeMap: any = {
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "BroadcastEventPayload": o([
-        { json: "channelId", js: "channelId", typ: "" },
+        { json: "channelId", js: "channelId", typ: u(null, "") },
         { json: "context", js: "context", typ: r("Context") },
+        { json: "originatingApp", js: "originatingApp", typ: u(undefined, r("AppIdentifier")) },
     ], false),
     "Context": o([
         { json: "id", js: "id", typ: u(undefined, m("any")) },
@@ -4254,22 +4839,87 @@ const typeMap: any = {
         { json: "glyph", js: "glyph", typ: u(undefined, "") },
         { json: "name", js: "name", typ: u(undefined, "") },
     ], false),
-    "FindInstancesRequest": o([
+    "EventListenerUnsubscribeRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("FindInstancesRequestPayload") },
-        { json: "type", js: "type", typ: r("FindInstancesRequestType") },
+        { json: "payload", js: "payload", typ: r("EventListenerUnsubscribeRequestPayload") },
+        { json: "type", js: "type", typ: r("EventListenerUnsubscribeRequestType") },
     ], false),
-    "FindInstancesRequestPayload": o([
-        { json: "app", js: "app", typ: r("AppIdentifier") },
+    "EventListenerUnsubscribeRequestPayload": o([
+        { json: "listenerUUID", js: "listenerUUID", typ: "" },
     ], false),
-    "FindInstancesResponse": o([
+    "EventListenerUnsubscribeResponse": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("FindInstancesResponsePayload") },
-        { json: "type", js: "type", typ: r("FindInstancesResponseType") },
+        { json: "payload", js: "payload", typ: r("BroadcastResponseResponsePayload") },
+        { json: "type", js: "type", typ: r("EventListenerUnsubscribeResponseType") },
     ], false),
-    "FindInstancesResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("FindInstancesErrors")) },
-        { json: "appIdentifiers", js: "appIdentifiers", typ: u(undefined, a(r("AppMetadata"))) },
+    "Fdc3UserInterfaceChannels": o([
+        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceChannelsPayload") },
+        { json: "type", js: "type", typ: r("Fdc3UserInterfaceChannelsType") },
+    ], false),
+    "Fdc3UserInterfaceChannelsPayload": o([
+        { json: "selected", js: "selected", typ: u(null, "") },
+        { json: "userChannels", js: "userChannels", typ: a(r("Channel")) },
+    ], false),
+    "Fdc3UserInterfaceChannelSelected": o([
+        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceChannelSelectedPayload") },
+        { json: "type", js: "type", typ: r("Fdc3UserInterfaceChannelSelectedType") },
+    ], false),
+    "Fdc3UserInterfaceChannelSelectedPayload": o([
+        { json: "selected", js: "selected", typ: u(null, "") },
+    ], false),
+    "Fdc3UserInterfaceDrag": o([
+        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceDragPayload") },
+        { json: "type", js: "type", typ: r("Fdc3UserInterfaceDragType") },
+    ], false),
+    "Fdc3UserInterfaceDragPayload": o([
+        { json: "mouseOffsets", js: "mouseOffsets", typ: r("MouseOffsets") },
+    ], false),
+    "MouseOffsets": o([
+        { json: "x", js: "x", typ: 0 },
+        { json: "y", js: "y", typ: 0 },
+    ], false),
+    "Fdc3UserInterfaceHandshake": o([
+        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceHandshakePayload") },
+        { json: "type", js: "type", typ: r("Fdc3UserInterfaceHandshakeType") },
+    ], false),
+    "Fdc3UserInterfaceHandshakePayload": o([
+        { json: "fdc3Version", js: "fdc3Version", typ: "" },
+    ], false),
+    "Fdc3UserInterfaceHello": o([
+        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceHelloPayload") },
+        { json: "type", js: "type", typ: r("Fdc3UserInterfaceHelloType") },
+    ], false),
+    "Fdc3UserInterfaceHelloPayload": o([
+        { json: "implementationDetails", js: "implementationDetails", typ: "" },
+        { json: "initialCSS", js: "initialCSS", typ: r("InitialCSS") },
+    ], false),
+    "InitialCSS": o([
+        { json: "bottom", js: "bottom", typ: u(undefined, "") },
+        { json: "height", js: "height", typ: u(undefined, "") },
+        { json: "left", js: "left", typ: u(undefined, "") },
+        { json: "maxHeight", js: "maxHeight", typ: u(undefined, "") },
+        { json: "maxWidth", js: "maxWidth", typ: u(undefined, "") },
+        { json: "right", js: "right", typ: u(undefined, "") },
+        { json: "top", js: "top", typ: u(undefined, "") },
+        { json: "transition", js: "transition", typ: u(undefined, "") },
+        { json: "width", js: "width", typ: u(undefined, "") },
+        { json: "zIndex", js: "zIndex", typ: u(undefined, "") },
+    ], "any"),
+    "Fdc3UserInterfaceMessage": o([
+        { json: "payload", js: "payload", typ: u(undefined, m("any")) },
+        { json: "type", js: "type", typ: r("Fdc3UserInterfaceMessageType") },
+    ], false),
+    "Fdc3UserInterfaceResolve": o([
+        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceResolvePayload") },
+        { json: "type", js: "type", typ: r("Fdc3UserInterfaceResolveType") },
+    ], false),
+    "Fdc3UserInterfaceResolvePayload": o([
+        { json: "appIntents", js: "appIntents", typ: a(r("AppIntent")) },
+        { json: "context", js: "context", typ: r("Context") },
+    ], false),
+    "AppIntent": o([
+        { json: "apps", js: "apps", typ: a(r("AppMetadata")) },
+        { json: "intent", js: "intent", typ: r("IntentMetadata") },
     ], false),
     "AppMetadata": o([
         { json: "appId", js: "appId", typ: "" },
@@ -4296,6 +4946,55 @@ const typeMap: any = {
         { json: "src", js: "src", typ: "" },
         { json: "type", js: "type", typ: u(undefined, "") },
     ], false),
+    "IntentMetadata": o([
+        { json: "displayName", js: "displayName", typ: u(undefined, "") },
+        { json: "name", js: "name", typ: "" },
+    ], false),
+    "Fdc3UserInterfaceResolveAction": o([
+        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceResolveActionPayload") },
+        { json: "type", js: "type", typ: r("Fdc3UserInterfaceResolveActionType") },
+    ], false),
+    "Fdc3UserInterfaceResolveActionPayload": o([
+        { json: "action", js: "action", typ: r("Action") },
+        { json: "appIdentifier", js: "appIdentifier", typ: u(undefined, r("AppIdentifier")) },
+        { json: "intent", js: "intent", typ: u(undefined, "") },
+    ], false),
+    "Fdc3UserInterfaceRestyle": o([
+        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceRestylePayload") },
+        { json: "type", js: "type", typ: r("Fdc3UserInterfaceRestyleType") },
+    ], false),
+    "Fdc3UserInterfaceRestylePayload": o([
+        { json: "updatedCSS", js: "updatedCSS", typ: r("UpdatedCSS") },
+    ], false),
+    "UpdatedCSS": o([
+        { json: "bottom", js: "bottom", typ: u(undefined, "") },
+        { json: "height", js: "height", typ: u(undefined, "") },
+        { json: "left", js: "left", typ: u(undefined, "") },
+        { json: "maxHeight", js: "maxHeight", typ: u(undefined, "") },
+        { json: "maxWidth", js: "maxWidth", typ: u(undefined, "") },
+        { json: "right", js: "right", typ: u(undefined, "") },
+        { json: "top", js: "top", typ: u(undefined, "") },
+        { json: "transition", js: "transition", typ: u(undefined, "") },
+        { json: "width", js: "width", typ: u(undefined, "") },
+        { json: "zIndex", js: "zIndex", typ: u(undefined, "") },
+    ], "any"),
+    "FindInstancesRequest": o([
+        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
+        { json: "payload", js: "payload", typ: r("FindInstancesRequestPayload") },
+        { json: "type", js: "type", typ: r("FindInstancesRequestType") },
+    ], false),
+    "FindInstancesRequestPayload": o([
+        { json: "app", js: "app", typ: r("AppIdentifier") },
+    ], false),
+    "FindInstancesResponse": o([
+        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
+        { json: "payload", js: "payload", typ: r("FindInstancesResponsePayload") },
+        { json: "type", js: "type", typ: r("FindInstancesResponseType") },
+    ], false),
+    "FindInstancesResponsePayload": o([
+        { json: "error", js: "error", typ: u(undefined, r("FindInstancesErrors")) },
+        { json: "appIdentifiers", js: "appIdentifiers", typ: u(undefined, a(r("AppMetadata"))) },
+    ], false),
     "FindIntentRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
         { json: "payload", js: "payload", typ: r("FindIntentRequestPayload") },
@@ -4315,14 +5014,6 @@ const typeMap: any = {
         { json: "error", js: "error", typ: u(undefined, r("FindInstancesErrors")) },
         { json: "appIntent", js: "appIntent", typ: u(undefined, r("AppIntent")) },
     ], false),
-    "AppIntent": o([
-        { json: "apps", js: "apps", typ: a(r("AppMetadata")) },
-        { json: "intent", js: "intent", typ: r("IntentMetadata") },
-    ], false),
-    "IntentMetadata": o([
-        { json: "displayName", js: "displayName", typ: "" },
-        { json: "name", js: "name", typ: "" },
-    ], false),
     "FindIntentsByContextRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
         { json: "payload", js: "payload", typ: r("FindIntentsByContextRequestPayload") },
@@ -4332,12 +5023,12 @@ const typeMap: any = {
         { json: "context", js: "context", typ: r("Context") },
         { json: "resultType", js: "resultType", typ: u(undefined, "") },
     ], false),
-    "FindIntentsByContextsByContextResponse": o([
+    "FindIntentsByContextResponse": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("FindIntentsByContextsByContextResponsePayload") },
-        { json: "type", js: "type", typ: r("FindIntentsByContextsByContextResponseType") },
+        { json: "payload", js: "payload", typ: r("FindIntentsByContextResponsePayload") },
+        { json: "type", js: "type", typ: r("FindIntentsByContextResponseType") },
     ], false),
-    "FindIntentsByContextsByContextResponsePayload": o([
+    "FindIntentsByContextResponsePayload": o([
         { json: "error", js: "error", typ: u(undefined, r("FindInstancesErrors")) },
         { json: "appIntents", js: "appIntents", typ: u(undefined, a(r("AppIntent"))) },
     ], false),
@@ -4453,83 +5144,20 @@ const typeMap: any = {
         { json: "error", js: "error", typ: u(undefined, r("PurpleError")) },
         { json: "userChannels", js: "userChannels", typ: u(undefined, a(r("Channel"))) },
     ], false),
-    "IframeChannelDrag": o([
-        { json: "payload", js: "payload", typ: r("IframeChannelDragPayload") },
-        { json: "type", js: "type", typ: r("IframeChannelDragType") },
+    "HeartbeatAcknowledgementRequest": o([
+        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
+        { json: "payload", js: "payload", typ: r("HeartbeatAcknowledgementRequestPayload") },
+        { json: "type", js: "type", typ: r("HeartbeatAcknowledgementRequestType") },
     ], false),
-    "IframeChannelDragPayload": o([
-        { json: "mouse", js: "mouse", typ: r("MouseClass") },
+    "HeartbeatAcknowledgementRequestPayload": o([
+        { json: "heartbeatEventUuid", js: "heartbeatEventUuid", typ: "" },
     ], false),
-    "MouseClass": o([
-        { json: "offsetX", js: "offsetX", typ: 0 },
-        { json: "offsetY", js: "offsetY", typ: 0 },
+    "HeartbeatEvent": o([
+        { json: "meta", js: "meta", typ: r("BroadcastEventMeta") },
+        { json: "payload", js: "payload", typ: r("HeartbeatEventPayload") },
+        { json: "type", js: "type", typ: r("HeartbeatEventType") },
     ], false),
-    "IframeChannelResize": o([
-        { json: "payload", js: "payload", typ: r("IframeChannelResizePayload") },
-        { json: "type", js: "type", typ: r("IframeChannelResizeType") },
-    ], false),
-    "IframeChannelResizePayload": o([
-        { json: "dimensions", js: "dimensions", typ: r("DimensionsClass") },
-        { json: "resizeAnchor", js: "resizeAnchor", typ: r("Resizing") },
-    ], false),
-    "DimensionsClass": o([
-        { json: "height", js: "height", typ: 0 },
-        { json: "width", js: "width", typ: 0 },
-    ], false),
-    "IframeChannels": o([
-        { json: "payload", js: "payload", typ: r("IframeChannelsPayload") },
-        { json: "type", js: "type", typ: r("IframeChannelsType") },
-    ], false),
-    "IframeChannelsPayload": o([
-        { json: "location", js: "location", typ: u(undefined, r("Location")) },
-        { json: "selected", js: "selected", typ: u(null, "") },
-        { json: "userChannels", js: "userChannels", typ: a(r("Channel")) },
-    ], false),
-    "Location": o([
-        { json: "x", js: "x", typ: 0 },
-        { json: "y", js: "y", typ: 0 },
-    ], false),
-    "IframeChannelSelected": o([
-        { json: "payload", js: "payload", typ: r("IframeChannelSelectedPayload") },
-        { json: "type", js: "type", typ: r("IframeChannelSelectedType") },
-    ], false),
-    "IframeChannelSelectedPayload": o([
-        { json: "selected", js: "selected", typ: u(null, "") },
-    ], false),
-    "IframeHandshake": o([
-        { json: "payload", js: "payload", typ: r("IframeHandshakePayload") },
-        { json: "type", js: "type", typ: r("IframeHandshakeType") },
-    ], false),
-    "IframeHandshakePayload": o([
-        { json: "implementationDetails", js: "implementationDetails", typ: "" },
-    ], false),
-    "IframeHello": o([
-        { json: "payload", js: "payload", typ: r("IframeHelloPayload") },
-        { json: "type", js: "type", typ: r("IframeHelloType") },
-    ], false),
-    "IframeHelloPayload": o([
-        { json: "fdc3Version", js: "fdc3Version", typ: "" },
-    ], false),
-    "IframeMessage": o([
-        { json: "payload", js: "payload", typ: u(undefined, m("any")) },
-        { json: "type", js: "type", typ: r("IframeMessageType") },
-    ], false),
-    "IframeResolve": o([
-        { json: "payload", js: "payload", typ: r("IframeResolvePayload") },
-        { json: "type", js: "type", typ: r("IframeResolveType") },
-    ], false),
-    "IframeResolvePayload": o([
-        { json: "appIntents", js: "appIntents", typ: a(r("AppIntent")) },
-        { json: "context", js: "context", typ: r("Context") },
-    ], false),
-    "IframeResolveAction": o([
-        { json: "payload", js: "payload", typ: r("IframeResolveActionPayload") },
-        { json: "type", js: "type", typ: r("IframeResolveActionType") },
-    ], false),
-    "IframeResolveActionPayload": o([
-        { json: "action", js: "action", typ: r("Action") },
-        { json: "appIdentifier", js: "appIdentifier", typ: u(undefined, r("AppIdentifier")) },
-        { json: "intent", js: "intent", typ: u(undefined, "") },
+    "HeartbeatEventPayload": o([
     ], false),
     "IntentEvent": o([
         { json: "meta", js: "meta", typ: r("BroadcastEventMeta") },
@@ -4540,6 +5168,7 @@ const typeMap: any = {
         { json: "context", js: "context", typ: r("Context") },
         { json: "intent", js: "intent", typ: "" },
         { json: "originatingApp", js: "originatingApp", typ: u(undefined, r("AppIdentifier")) },
+        { json: "raiseIntentRequestUuid", js: "raiseIntentRequestUuid", typ: "" },
     ], false),
     "IntentListenerUnsubscribeRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
@@ -4553,6 +5182,25 @@ const typeMap: any = {
         { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
         { json: "payload", js: "payload", typ: r("BroadcastResponseResponsePayload") },
         { json: "type", js: "type", typ: r("IntentListenerUnsubscribeResponseType") },
+    ], false),
+    "IntentResultRequest": o([
+        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
+        { json: "payload", js: "payload", typ: r("IntentResultRequestPayload") },
+        { json: "type", js: "type", typ: r("IntentResultRequestType") },
+    ], false),
+    "IntentResultRequestPayload": o([
+        { json: "intentEventUuid", js: "intentEventUuid", typ: "" },
+        { json: "intentResult", js: "intentResult", typ: r("IntentResult") },
+        { json: "raiseIntentRequestUuid", js: "raiseIntentRequestUuid", typ: "" },
+    ], false),
+    "IntentResult": o([
+        { json: "context", js: "context", typ: u(undefined, r("Context")) },
+        { json: "channel", js: "channel", typ: u(undefined, r("Channel")) },
+    ], false),
+    "IntentResultResponse": o([
+        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
+        { json: "payload", js: "payload", typ: r("BroadcastResponseResponsePayload") },
+        { json: "type", js: "type", typ: r("IntentResultResponseType") },
     ], false),
     "JoinUserChannelRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
@@ -4592,6 +5240,7 @@ const typeMap: any = {
     ], false),
     "OpenRequestPayload": o([
         { json: "app", js: "app", typ: r("AppIdentifier") },
+        { json: "context", js: "context", typ: u(undefined, r("Context")) },
     ], false),
     "OpenResponse": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
@@ -4608,7 +5257,7 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("PrivateChannelAddEventListenerRequestType") },
     ], false),
     "TPayload": o([
-        { json: "contextType", js: "contextType", typ: u(null, "") },
+        { json: "listenerType", js: "listenerType", typ: r("PrivateChannelEventListenerTypes") },
         { json: "privateChannelId", js: "privateChannelId", typ: "" },
     ], false),
     "PrivateChannelAddEventListenerResponse": o([
@@ -4653,12 +5302,12 @@ const typeMap: any = {
     "PrivateChannelOnDisconnectEventPayload": o([
         { json: "privateChannelId", js: "privateChannelId", typ: "" },
     ], false),
-    "PrivateChannelOnUnsubscribeEventEvent": o([
+    "PrivateChannelOnUnsubscribeEvent": o([
         { json: "meta", js: "meta", typ: r("BroadcastEventMeta") },
-        { json: "payload", js: "payload", typ: r("PrivateChannelOnUnsubscribeEventEventPayload") },
-        { json: "type", js: "type", typ: r("PrivateChannelOnUnsubscribeEventEventType") },
+        { json: "payload", js: "payload", typ: r("PrivateChannelOnUnsubscribeEventPayload") },
+        { json: "type", js: "type", typ: r("PrivateChannelOnUnsubscribeEventType") },
     ], false),
-    "PrivateChannelOnUnsubscribeEventEventPayload": o([
+    "PrivateChannelOnUnsubscribeEventPayload": o([
         { json: "contextType", js: "contextType", typ: u(null, "") },
         { json: "privateChannelId", js: "privateChannelId", typ: "" },
     ], false),
@@ -4720,33 +5369,31 @@ const typeMap: any = {
     ], false),
     "RaiseIntentResultResponse": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("ResponsePayload") },
+        { json: "payload", js: "payload", typ: r("RaiseIntentResultResponsePayload") },
         { json: "type", js: "type", typ: r("RaiseIntentResultResponseType") },
     ], false),
-    "ResponsePayload": o([
+    "RaiseIntentResultResponsePayload": o([
         { json: "error", js: "error", typ: u(undefined, r("ResponsePayloadError")) },
         { json: "intentResult", js: "intentResult", typ: u(undefined, r("IntentResult")) },
     ], false),
-    "IntentResult": o([
-        { json: "context", js: "context", typ: u(undefined, r("Context")) },
-        { json: "channel", js: "channel", typ: u(undefined, r("Channel")) },
-    ], false),
     "WebConnectionProtocol1Hello": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
         { json: "payload", js: "payload", typ: r("WebConnectionProtocol1HelloPayload") },
         { json: "type", js: "type", typ: r("WebConnectionProtocol1HelloType") },
     ], false),
-    "ConnectionStepMetadata": o([
+    "WebConnectionProtocol1HelloMeta": o([
         { json: "connectionAttemptUuid", js: "connectionAttemptUuid", typ: "" },
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "WebConnectionProtocol1HelloPayload": o([
+        { json: "actualUrl", js: "actualUrl", typ: "" },
         { json: "channelSelector", js: "channelSelector", typ: u(undefined, true) },
         { json: "fdc3Version", js: "fdc3Version", typ: "" },
-        { json: "resolver", js: "resolver", typ: u(undefined, true) },
+        { json: "identityUrl", js: "identityUrl", typ: "" },
+        { json: "intentResolver", js: "intentResolver", typ: u(undefined, true) },
     ], "any"),
     "WebConnectionProtocol2LoadURL": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
         { json: "payload", js: "payload", typ: r("WebConnectionProtocol2LoadURLPayload") },
         { json: "type", js: "type", typ: r("WebConnectionProtocol2LoadURLType") },
     ], false),
@@ -4754,28 +5401,28 @@ const typeMap: any = {
         { json: "iframeUrl", js: "iframeUrl", typ: "" },
     ], "any"),
     "WebConnectionProtocol3Handshake": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
         { json: "payload", js: "payload", typ: r("WebConnectionProtocol3HandshakePayload") },
         { json: "type", js: "type", typ: r("WebConnectionProtocol3HandshakeType") },
     ], false),
     "WebConnectionProtocol3HandshakePayload": o([
-        { json: "channelSelector", js: "channelSelector", typ: u(true, "") },
+        { json: "channelSelectorUrl", js: "channelSelectorUrl", typ: u(true, "") },
         { json: "fdc3Version", js: "fdc3Version", typ: "" },
-        { json: "resolver", js: "resolver", typ: u(true, "") },
+        { json: "intentResolverUrl", js: "intentResolverUrl", typ: u(true, "") },
     ], false),
     "WebConnectionProtocol4ValidateAppIdentity": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
         { json: "payload", js: "payload", typ: r("WebConnectionProtocol4ValidateAppIdentityPayload") },
         { json: "type", js: "type", typ: r("WebConnectionProtocol4ValidateAppIdentityType") },
     ], false),
     "WebConnectionProtocol4ValidateAppIdentityPayload": o([
-        { json: "appDUrl", js: "appDUrl", typ: u(undefined, "") },
-        { json: "appId", js: "appId", typ: "" },
+        { json: "actualUrl", js: "actualUrl", typ: "" },
+        { json: "identityUrl", js: "identityUrl", typ: "" },
         { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
         { json: "instanceUuid", js: "instanceUuid", typ: u(undefined, "") },
     ], false),
     "WebConnectionProtocol5ValidateAppIdentityFailedResponse": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
         { json: "payload", js: "payload", typ: r("WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload") },
         { json: "type", js: "type", typ: r("WebConnectionProtocol5ValidateAppIdentityFailedResponseType") },
     ], false),
@@ -4783,7 +5430,7 @@ const typeMap: any = {
         { json: "message", js: "message", typ: u(undefined, "") },
     ], false),
     "WebConnectionProtocol5ValidateAppIdentitySuccessResponse": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
         { json: "payload", js: "payload", typ: r("WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload") },
         { json: "type", js: "type", typ: r("WebConnectionProtocol5ValidateAppIdentitySuccessResponseType") },
     ], false),
@@ -4793,35 +5440,39 @@ const typeMap: any = {
         { json: "instanceId", js: "instanceId", typ: "" },
         { json: "instanceUuid", js: "instanceUuid", typ: "" },
     ], false),
+    "WebConnectionProtocol6Goodbye": o([
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol6GoodbyeMeta") },
+        { json: "type", js: "type", typ: r("WebConnectionProtocol6GoodbyeType") },
+    ], false),
+    "WebConnectionProtocol6GoodbyeMeta": o([
+        { json: "timestamp", js: "timestamp", typ: Date },
+    ], false),
     "WebConnectionProtocolMessage": o([
         { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
-        { json: "payload", js: "payload", typ: m("any") },
+        { json: "payload", js: "payload", typ: u(undefined, m("any")) },
         { json: "type", js: "type", typ: r("ConnectionStepMessageType") },
     ], false),
-    "RequestMessageType": [
+    "ConnectionStepMetadata": o([
+        { json: "timestamp", js: "timestamp", typ: Date },
+        { json: "connectionAttemptUuid", js: "connectionAttemptUuid", typ: u(undefined, "") },
+    ], false),
+    "AddContextListenerRequestType": [
         "addContextListenerRequest",
-        "addIntentListenerRequest",
-        "broadcastRequest",
-        "contextListenerUnsubscribeRequest",
-        "createPrivateChannelRequest",
-        "findInstancesRequest",
-        "findIntentRequest",
-        "findIntentsByContextRequest",
-        "getAppMetadataRequest",
-        "getCurrentChannelRequest",
-        "getCurrentContextRequest",
-        "getInfoRequest",
-        "getOrCreateChannelRequest",
-        "getUserChannelsRequest",
-        "intentListenerUnsubscribeRequest",
-        "joinUserChannelRequest",
-        "leaveCurrentChannelRequest",
-        "openRequest",
-        "privateChannelAddEventListenerRequest",
-        "privateChannelDisconnectRequest",
-        "privateChannelUnsubscribeEventListenerRequest",
-        "raiseIntentForContextRequest",
-        "raiseIntentRequest",
+    ],
+    "PurpleError": [
+        "AccessDenied",
+        "CreationFailed",
+        "MalformedContext",
+        "NoChannelFound",
+    ],
+    "AddContextListenerResponseType": [
+        "addContextListenerResponse",
+    ],
+    "FDC3EventType": [
+        "USER_CHANNEL_CHANGED",
+    ],
+    "AddEventListenerRequestType": [
+        "addEventListenerRequest",
     ],
     "ResponsePayloadError": [
         "AccessDenied",
@@ -4846,51 +5497,8 @@ const typeMap: any = {
         "TargetInstanceUnavailable",
         "UserCancelledResolution",
     ],
-    "ResponseMessageType": [
-        "addContextListenerResponse",
-        "addIntentListenerResponse",
-        "broadcastResponse",
-        "contextListenerUnsubscribeResponse",
-        "createPrivateChannelResponse",
-        "findInstancesResponse",
-        "findIntentResponse",
-        "findIntentsByContextResponse",
-        "getAppMetadataResponse",
-        "getCurrentChannelResponse",
-        "getCurrentContextResponse",
-        "getInfoResponse",
-        "getOrCreateChannelResponse",
-        "getUserChannelsResponse",
-        "intentListenerUnsubscribeResponse",
-        "joinUserChannelResponse",
-        "leaveCurrentChannelResponse",
-        "openResponse",
-        "privateChannelAddEventListenerResponse",
-        "privateChannelDisconnectResponse",
-        "privateChannelUnsubscribeEventListenerResponse",
-        "raiseIntentForContextResponse",
-        "raiseIntentResponse",
-        "raiseIntentResultResponse",
-    ],
-    "EventMessageType": [
-        "broadcastEvent",
-        "channelChangedEvent",
-        "intentEvent",
-        "privateChannelOnAddContextListenerEvent",
-        "privateChannelOnDisconnectEvent",
-        "privateChannelOnUnsubscribeEvent",
-    ],
-    "AddContextListenerRequestType": [
-        "addContextListenerRequest",
-    ],
-    "PurpleError": [
-        "AccessDenied",
-        "CreationFailed",
-        "MalformedContext",
-        "NoChannelFound",
-    ],
-    "AddContextListenerResponseType": [
-        "addContextListenerResponse",
+    "AddEventListenerResponseType": [
+        "addEventListenerResponse",
     ],
     "AddIntentListenerRequestType": [
         "addIntentListenerRequest",
@@ -4908,6 +5516,74 @@ const typeMap: any = {
     ],
     "AddIntentListenerResponseType": [
         "addIntentListenerResponse",
+    ],
+    "EventMessageType": [
+        "addEventListenerEvent",
+        "broadcastEvent",
+        "channelChangedEvent",
+        "heartbeatEvent",
+        "intentEvent",
+        "privateChannelOnAddContextListenerEvent",
+        "privateChannelOnDisconnectEvent",
+        "privateChannelOnUnsubscribeEvent",
+    ],
+    "ResponseMessageType": [
+        "addContextListenerResponse",
+        "addEventListenerResponse",
+        "addIntentListenerResponse",
+        "broadcastResponse",
+        "contextListenerUnsubscribeResponse",
+        "createPrivateChannelResponse",
+        "eventListenerUnsubscribeResponse",
+        "findInstancesResponse",
+        "findIntentResponse",
+        "findIntentsByContextResponse",
+        "getAppMetadataResponse",
+        "getCurrentChannelResponse",
+        "getCurrentContextResponse",
+        "getInfoResponse",
+        "getOrCreateChannelResponse",
+        "getUserChannelsResponse",
+        "intentListenerUnsubscribeResponse",
+        "intentResultResponse",
+        "joinUserChannelResponse",
+        "leaveCurrentChannelResponse",
+        "openResponse",
+        "privateChannelAddEventListenerResponse",
+        "privateChannelDisconnectResponse",
+        "privateChannelUnsubscribeEventListenerResponse",
+        "raiseIntentForContextResponse",
+        "raiseIntentResponse",
+        "raiseIntentResultResponse",
+    ],
+    "RequestMessageType": [
+        "addContextListenerRequest",
+        "addEventListenerRequest",
+        "addIntentListenerRequest",
+        "broadcastRequest",
+        "contextListenerUnsubscribeRequest",
+        "createPrivateChannelRequest",
+        "eventListenerUnsubscribeRequest",
+        "findInstancesRequest",
+        "findIntentRequest",
+        "findIntentsByContextRequest",
+        "getAppMetadataRequest",
+        "getCurrentChannelRequest",
+        "getCurrentContextRequest",
+        "getInfoRequest",
+        "getOrCreateChannelRequest",
+        "getUserChannelsRequest",
+        "heartbeatAcknowledgementRequest",
+        "intentListenerUnsubscribeRequest",
+        "intentResultRequest",
+        "joinUserChannelRequest",
+        "leaveCurrentChannelRequest",
+        "openRequest",
+        "privateChannelAddEventListenerRequest",
+        "privateChannelDisconnectRequest",
+        "privateChannelUnsubscribeEventListenerRequest",
+        "raiseIntentForContextRequest",
+        "raiseIntentRequest",
     ],
     "BroadcastEventType": [
         "broadcastEvent",
@@ -4937,6 +5613,51 @@ const typeMap: any = {
     ],
     "CreatePrivateChannelResponseType": [
         "createPrivateChannelResponse",
+    ],
+    "EventListenerUnsubscribeRequestType": [
+        "eventListenerUnsubscribeRequest",
+    ],
+    "EventListenerUnsubscribeResponseType": [
+        "eventListenerUnsubscribeResponse",
+    ],
+    "Fdc3UserInterfaceChannelsType": [
+        "Fdc3UserInterfaceChannels",
+    ],
+    "Fdc3UserInterfaceChannelSelectedType": [
+        "Fdc3UserInterfaceChannelSelected",
+    ],
+    "Fdc3UserInterfaceDragType": [
+        "Fdc3UserInterfaceDrag",
+    ],
+    "Fdc3UserInterfaceHandshakeType": [
+        "Fdc3UserInterfaceHandshake",
+    ],
+    "Fdc3UserInterfaceHelloType": [
+        "Fdc3UserInterfaceHello",
+    ],
+    "Fdc3UserInterfaceMessageType": [
+        "Fdc3UserInterfaceChannelSelected",
+        "Fdc3UserInterfaceChannels",
+        "Fdc3UserInterfaceDrag",
+        "Fdc3UserInterfaceHandshake",
+        "Fdc3UserInterfaceHello",
+        "Fdc3UserInterfaceResolve",
+        "Fdc3UserInterfaceResolveAction",
+        "Fdc3UserInterfaceRestyle",
+    ],
+    "Fdc3UserInterfaceResolveType": [
+        "Fdc3UserInterfaceResolve",
+    ],
+    "Action": [
+        "cancel",
+        "click",
+        "hover",
+    ],
+    "Fdc3UserInterfaceResolveActionType": [
+        "Fdc3UserInterfaceResolveAction",
+    ],
+    "Fdc3UserInterfaceRestyleType": [
+        "Fdc3UserInterfaceRestyle",
     ],
     "FindInstancesRequestType": [
         "findInstancesRequest",
@@ -4968,7 +5689,7 @@ const typeMap: any = {
     "FindIntentsByContextRequestType": [
         "findIntentsByContextRequest",
     ],
-    "FindIntentsByContextsByContextResponseType": [
+    "FindIntentsByContextResponseType": [
         "findIntentsByContextResponse",
     ],
     "GetAppMetadataRequestType": [
@@ -5007,55 +5728,11 @@ const typeMap: any = {
     "GetUserChannelsResponseType": [
         "getUserChannelsResponse",
     ],
-    "IframeChannelDragType": [
-        "iframeChannelDrag",
+    "HeartbeatAcknowledgementRequestType": [
+        "heartbeatAcknowledgementRequest",
     ],
-    "Resizing": [
-        "bottom",
-        "bottom-left",
-        "bottom-right",
-        "center",
-        "left",
-        "right",
-        "top",
-        "top-left",
-        "top-right",
-    ],
-    "IframeChannelResizeType": [
-        "iframeChannelResize",
-    ],
-    "IframeChannelsType": [
-        "iframeChannels",
-    ],
-    "IframeChannelSelectedType": [
-        "iframeChannelSelected",
-    ],
-    "IframeHandshakeType": [
-        "iframeHandshake",
-    ],
-    "IframeHelloType": [
-        "iframeHello",
-    ],
-    "IframeMessageType": [
-        "iframeChannelDrag",
-        "iframeChannelResize",
-        "iframeChannelSelected",
-        "iframeChannels",
-        "iframeHandshake",
-        "iframeHello",
-        "iframeResolve",
-        "iframeResolveAction",
-    ],
-    "IframeResolveType": [
-        "iframeResolve",
-    ],
-    "Action": [
-        "cancel",
-        "click",
-        "hover",
-    ],
-    "IframeResolveActionType": [
-        "iframeResolveAction",
+    "HeartbeatEventType": [
+        "heartbeatEvent",
     ],
     "IntentEventType": [
         "intentEvent",
@@ -5065,6 +5742,12 @@ const typeMap: any = {
     ],
     "IntentListenerUnsubscribeResponseType": [
         "intentListenerUnsubscribeResponse",
+    ],
+    "IntentResultRequestType": [
+        "intentResultRequest",
+    ],
+    "IntentResultResponseType": [
+        "intentResultResponse",
     ],
     "JoinUserChannelRequestType": [
         "joinUserChannelRequest",
@@ -5096,6 +5779,11 @@ const typeMap: any = {
     "OpenResponseType": [
         "openResponse",
     ],
+    "PrivateChannelEventListenerTypes": [
+        "onAddContextListener",
+        "onDisconnect",
+        "onUnsubscribe",
+    ],
     "PrivateChannelAddEventListenerRequestType": [
         "privateChannelAddEventListenerRequest",
     ],
@@ -5114,7 +5802,7 @@ const typeMap: any = {
     "PrivateChannelOnDisconnectEventType": [
         "privateChannelOnDisconnectEvent",
     ],
-    "PrivateChannelOnUnsubscribeEventEventType": [
+    "PrivateChannelOnUnsubscribeEventType": [
         "privateChannelOnUnsubscribeEvent",
     ],
     "PrivateChannelUnsubscribeEventListenerRequestType": [
@@ -5156,6 +5844,9 @@ const typeMap: any = {
     "WebConnectionProtocol5ValidateAppIdentitySuccessResponseType": [
         "WCP5ValidateAppIdentityResponse",
     ],
+    "WebConnectionProtocol6GoodbyeType": [
+        "WCP6Goodbye",
+    ],
     "ConnectionStepMessageType": [
         "WCP1Hello",
         "WCP2LoadUrl",
@@ -5163,5 +5854,6 @@ const typeMap: any = {
         "WCP4ValidateAppIdentity",
         "WCP5ValidateAppIdentityFailedResponse",
         "WCP5ValidateAppIdentityResponse",
+        "WCP6Goodbye",
     ],
 };

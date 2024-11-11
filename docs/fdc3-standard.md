@@ -33,7 +33,6 @@ For more details on FDC3's versioning, deprecation and experimental features pol
 - [Compliance information](fdc3-compliance)
 - [Glossary](fdc3-glossary)
 - [References](references)
-- [Supported Platforms](supported-platforms)
 - [API Part](api/spec)
 - [Intents Part](intents/spec)
 - [Context Data Part](context/spec)

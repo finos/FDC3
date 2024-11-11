@@ -31,10 +31,13 @@
           },
           "additionalProperties": false
         },
-        "meta": true
+        "meta": {
+          "$ref": "WCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"
+        }
       },
       "required": [
         "type",
+        "payload",
         "meta"
       ],
       "additionalProperties": false

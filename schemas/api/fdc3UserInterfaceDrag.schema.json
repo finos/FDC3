@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceDrag.schema.json",
+  "title": "Fdc3 UserInterface Drag",
+  "description": "Message from a UI iframe to the DA proxy (setup by `getAgent()`) indicating that the user is dragging the UI to a new location and providing the offset to apply to the location. The DA proxy implementation should limit the location to the current bounds of the window's viewport.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/Fdc3UserInterfaceDragBase"
+    },
+    {
+      "$ref": "fdc3UserInterfaceMessage.schema.json"
+    }
+  ],
+  "$defs": {
+    "Fdc3UserInterfaceDragBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Fdc3 UserInterface Drag Message Type",
+          "const": "Fdc3UserInterfaceDrag"
+        },
+        "payload": {
+          "title": "Fdc3 UserInterface Drag Payload",
+          "type": "object",
+          "properties": {
+            "mouseOffsets": {
+              "title": "Mouse Offsets",
+              "description": "The offset to move the frame by.",
+              "type": "object",
+              "properties": {
+                "x": {
+                  "type": "integer"
+                },
+                "y": {
+                  "type": "integer"
+                }
+              },
+              "required": ["x", "y"],
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false,
+          "required": ["mouseOffsets"]
+        }
+      },
+      "required": [
+        "type",
+        "payload"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
+

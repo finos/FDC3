@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/context/chatRoom.schema.json",
   "type": "object",
-  "title": "Chat Room",
+  "title": "ChatRoom",
   "description": "Reference to the chat room which could be used to send a message to the room",
   "allOf": [{
     "type": "object",
@@ -16,7 +16,10 @@
       "id": { 
         "title": "Chat room id",
         "description": "Identifier(s) for the chat - currently unstandardized",
-        "type": "object"
+        "type": "object",
+        "additionalProperties": {
+          "type": "string"
+        }
       },
       "url": { 
         "title": "Chat URL",

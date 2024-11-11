@@ -1,64 +1,77 @@
 ---
-id: ChatRoom
+title: ChatRoom
 sidebar_label: ChatRoom
-title: Contact
-hide_title: true
----
-# `ChatRoom`
 
-Reference to the chat room, which could be used later to send a message to the room.
+---
+
+# ChatRoom
+
+Reference to the chat room which could be used to send a message to the room
+
+## Schema
+
+<https://fdc3.finos.org/schemas/next/context/chatRoom.schema.json> ([github](https://github.com/finos/FDC3/tree/main/schemas/context/chatRoom.schema.json))
 
 ## Type
 
 `fdc3.chat.room`
 
-## Schema
+## Properties
 
-<https://fdc3.finos.org/schemas/next/context/chatRoom.schema.json>
+<details>
+  <summary><code>providerName</code> <strong>(required)</strong></summary>
 
-## Details
+**type**: `string`
 
-| Property    | Type    | Required | Example Value     |
-|-------------|---------|----------|-------------------|
-| `type`      | string  | Yes      | `'fdc3.chat.room'`  |
-| `providerName`      | string  | Yes       | `'Symphony'`      |
-| `id`  | object  | Yes       | `{ streamId: 'j75xqXy25NBOdacUI3FNBH', anyOtherKey: 'abcdef'}` |
-| `url` | string  | No       | `'http://symphony.com/ref/room/j75xqXy25NBOdacUI3FNBH___pqSsuJRdA'`      |
-| `name` | string  | No       | `'My new room'`      |
+The name of the service that hosts the chat
 
-The `url` is a universal url to access to the room. It could be opened from a browser, a mobile app, etc...
+</details>
+
+<details>
+  <summary><code>id</code> <strong>(required)</strong></summary>
+
+**type**: `object`
+
+<details>
+  <summary><code>Additional Properties</code></summary>
+
+**type**: `string`
+
+</details>
+
+Identifier(s) for the chat - currently unstandardized
+
+</details>
+
+<details>
+  <summary><code>url</code></summary>
+
+**type**: `string`
+
+Universal url to access to the room. It could be opened from a browser, a mobile app, etc...
+
+</details>
+
+<details>
+  <summary><code>name</code></summary>
+
+**type**: `string`
+
+Display name for the chat room
+
+</details>
 
 ## Example
 
-```js
-const chatRoom = {
-  type: "fdc3.chat.room",
-  providerName: "Symphony",
-  id: {
-      streamId: "j75xqXy25NBOdacUI3FNBH"
+```json
+{
+  "type": "fdc3.chat.room",
+  "providerName": "Symphony",
+  "id": {
+    "streamId": "j75xqXy25NBOdacUI3FNBH"
   },
-  url: "http://symphony.com/ref/room/j75xqXy25NBOdacUI3FNBH___pqSsuJRdA",
-  name: 'My new room'
-};
-
-//Chat rooms are returned by the StartChat intent as a result
-const intentResolution = await fdc3.raiseIntent("StartChat", context);
-
-try {
-    const chatRooms = await intentResolution.getResult():
-} catch (error) {
-   //chat room were not created...
+  "url": "http://symphony.com/ref/room/j75xqXy25NBOdacUI3FNBH___pqSsuJRdA",
+  "name": "My new room"
 }
 ```
 
-## See Also
-
-Other Types
-* [ChatInitSettings](ChatInitSettings)
-
-Intents
-- [StartChat](../../intents/ref/StartChat)
-- [SendChatMessage](../../intents/ref/SendChatMessage)
-
-FINOS Financial Objects
-- [Contact](https://fo.finos.org/docs/objects/contact)

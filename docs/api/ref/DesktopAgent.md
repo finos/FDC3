@@ -14,7 +14,7 @@ An FDC3 Desktop Agent is a desktop component (or aggregate of components) that s
 
 A Desktop Agent can be connected to one or more App Directories and will use directories for application identity and discovery. Typically, a Desktop Agent will contain the proprietary logic of a given platform, handling functionality like explicit application interop workflows where security, consistency, and implementation requirements are proprietary.
 
-For details of how implementations of the `DesktopAgent` are made available to applications please see [Supported Platforms](supported-platforms).
+For details of how implementations of the `DesktopAgent` are made available to applications please see [Supported Platforms](../supported-platforms).
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
@@ -48,7 +48,7 @@ interface DesktopAgent {
   leaveCurrentChannel() : Promise<void>;
 
   // non-context events 
-  addEventListener(type: FDC3EventType  | null, handler: EventHandler): Promise<Listener>;
+  addEventListener(type: FDC3EventTypes  | null, handler: EventHandler): Promise<Listener>;
 
   //implementation info
   getInfo(): Promise<ImplementationMetadata>;
@@ -178,9 +178,23 @@ var contactListener = await _desktopAgent.AddContextListener<Contact>("fdc3.cont
 - [`ContextHandler`](Types#contexthandler)
 
 ### `addEventListener`
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
-addEventListener(type: FDC3EventType  | null, handler: EventHandler): Promise<Listener>;
+addEventListener(type: FDC3EventTypes  | null, handler: EventHandler): Promise<Listener>;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
+```
+
+</TabItem>
+</Tabs>
 
 Registers a handler for non-context and non-intent events from the Desktop Agent. If the consumer is only interested in an event of a particular type, they can specify that type. If the consumer is able to receive events of any type or will inspect types received, then they can pass `null` as the `type` parameter to receive all event types.
 
@@ -188,18 +202,34 @@ Whenever the handler function is called it will be passed an event object with d
 
 **Examples:**
 
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```js
 // any event type
 const listener = await fdc3.addEventListener(null, event => { ... });
 
 // listener for a specific event type that logs its details
-const userChannelChangedListener = await fdc3.addEventListener(FDC3EventType.USER_CHANNEL_CHANGED, event => { 
+const userChannelChangedListener = await fdc3.addEventListener("userChannelChanged ", event => { 
   console.log(`Received event ${event.type}\n\tDetails: ${event.details}`);
   //do something else with the event
 });
-````
+```
+</TabItem>
+<TabItem value="dotnet" label=".NET">
 
+```
+Not implemented
+```
 
+</TabItem>
+</Tabs>
+
+**See also:**
+
+- [`FDC3EventTypes`](./Events#fdc3eventtypes)
+- [`FDC3Event`](./Events#fdc3event)
+- [`EventHandler`](./Events#eventhandler)
 
 ### `addIntentListener`
 
@@ -263,7 +293,7 @@ fdc3.addIntentListener("CreateOrder", (context) => {
 //Handle a raised intent and return a PrivateChannel over which response will be sent
 fdc3.addIntentListener("QuoteStream", async (context) => {
   const channel: PrivateChannel = await fdc3.createPrivateChannel();
-  const symbol = context.id.symbol;
+  const symbol = context.id.ticker;
 
   // Called when the remote side adds a context listener
   const addContextListener = channel.onAddContextListener((contextType) => {
@@ -1437,6 +1467,13 @@ addContextListener(handler: ContextHandler): Promise<Listener>;
 ```
 
 </TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
+```
+
+</TabItem>
 </Tabs>
 
 Adds a listener for incoming context broadcasts from the Desktop Agent. Provided for backwards compatibility with versions FDC3 standard <2.0.
@@ -1455,6 +1492,13 @@ getSystemChannels() : Promise<Array<Channel>>;
 ```
 
 </TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
+```
+
+</TabItem>
 </Tabs>
 
 Alias to the [`getUserChannels`](#getuserchannels) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
@@ -1469,6 +1513,13 @@ Alias to the [`getUserChannels`](#getuserchannels) function provided for backwar
 
 ```ts
 joinChannel(channelId: string) : Promise<void>;
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
 ```
 
 </TabItem>
@@ -1490,6 +1541,13 @@ open(name: string, context?: Context): Promise<AppIdentifier>;
 ```
 
 </TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
+```
+
+</TabItem>
 </Tabs>
 
 Version of `open` that launches an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
@@ -1508,6 +1566,13 @@ raiseIntent(intent: string, context: Context, name: string): Promise<IntentResol
 ```
 
 </TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
+```
+
+</TabItem>
 </Tabs>
 
 Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard <2.0.
@@ -1523,6 +1588,13 @@ Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`
 
 ```ts
 raiseIntentForContext(context: Context, name: string): Promise<IntentResolution>;
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
 ```
 
 </TabItem>

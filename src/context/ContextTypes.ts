@@ -38,18 +38,37 @@
  * A representation of an FDC3 Action (specified via a Context or Context & Intent) that can
  * be inserted inside another object, for example a chat message.
  *
- * The action may be completed by calling `fdc3.raiseIntent()` with the specified Intent and
- * Context, or, if only a context is specified, by calling `fdc3.raiseIntentForContext()`
- * (which the Desktop Agent will resolve by presenting the user with a list of available
- * Intents for the Context).
+ * The action may be completed by calling:
+ * - `fdc3.raiseIntent()` with the specified Intent and Context
+ * - `fdc3.raiseIntentForContext()` if only a context is specified, (which the Desktop Agent
+ * will resolve by presenting the user with a list of available Intents for the Context).
+ * - `channel.broadcast()` with the specified Context, if the `broadcast` action has been
+ * defined.
  *
  * Accepts an optional `app` parameter in order to specify a specific app.
  */
 export interface Action {
     /**
-     * An optional target application identifier that should perform the action
+     * The **action** field indicates the type of action:
+     * - **raiseIntent** :  If no action or `raiseIntent` is specified, then `fdc3.raiseIntent`
+     * or `fdc3.raiseIntentForContext` will be called with the specified context (and intent if
+     * given).
+     * - **broadcast** : If `broadcast` and a `channelId` are specified then
+     * `fdc3.getOrCreateChannel(channelId)` is called to retrieve the channel and broadcast the
+     * context to it with `channel.broadcast(context)`. If no `channelId` has been specified,
+     * the context should be broadcast to the current channel (`fdc3.broadcast()`)
      */
-    app?: ActionTargetApp;
+    action?: ActionType;
+    /**
+     * An optional target application identifier that should perform the action. The `app`
+     * property is ignored unless the action is raiseIntent.
+     */
+    app?: AppIdentifier;
+    /**
+     * Optional channel on which to broadcast the context. The `channelId` property is ignored
+     * unless the `action` is broadcast.
+     */
+    channelId?: string;
     /**
      * A context object with which the action will be performed
      */
@@ -72,7 +91,20 @@ export interface Action {
 }
 
 /**
- * An optional target application identifier that should perform the action
+ * The **action** field indicates the type of action:
+ * - **raiseIntent** :  If no action or `raiseIntent` is specified, then `fdc3.raiseIntent`
+ * or `fdc3.raiseIntentForContext` will be called with the specified context (and intent if
+ * given).
+ * - **broadcast** : If `broadcast` and a `channelId` are specified then
+ * `fdc3.getOrCreateChannel(channelId)` is called to retrieve the channel and broadcast the
+ * context to it with `channel.broadcast(context)`. If no `channelId` has been specified,
+ * the context should be broadcast to the current channel (`fdc3.broadcast()`)
+ */
+export type ActionType = "broadcast" | "raiseIntent";
+
+/**
+ * An optional target application identifier that should perform the action. The `app`
+ * property is ignored unless the action is raiseIntent.
  *
  * Identifies an application, or instance of an application, and is used to target FDC3 API
  * calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application
@@ -83,7 +115,7 @@ export interface Action {
  * If the `instanceId` field is set then the `AppMetadata` object represents a specific
  * instance of the application that may be addressed using that Id.
  */
-export interface ActionTargetApp {
+export interface AppIdentifier {
     /**
      * The unique application identifier located within a specific application directory
      * instance. An example of an appId might be 'app@sub.root'
@@ -207,7 +239,7 @@ export interface Chart {
 }
 
 /**
- * financial instrument that relates to the definition of this product
+ * A financial instrument that relates to the definition of this product
  *
  *
  *
@@ -236,8 +268,11 @@ export interface InstrumentElement {
      * `id` field that is not globally unique.
      */
     market?: OrganizationMarket;
-    type:    "fdc3.instrument";
-    name?:   string;
+    /**
+     * An optional human-readable name for the instrument
+     */
+    name?: string;
+    type:  "fdc3.instrument";
     [property: string]: any;
 }
 
@@ -258,35 +293,35 @@ export interface InstrumentElement {
  */
 export interface PurpleInstrumentIdentifiers {
     /**
-     * <https://www.bloomberg.com/>
+     * https://www.bloomberg.com/
      */
     BBG?: string;
     /**
-     * <https://www.cusip.com/>
+     * https://www.cusip.com/
      */
     CUSIP?: string;
     /**
-     * <https://www.factset.com/>
+     * https://www.factset.com/
      */
     FDS_ID?: string;
     /**
-     * <https://www.openfigi.com/>
+     * https://www.openfigi.com/
      */
     FIGI?: string;
     /**
-     * <https://www.isin.org/>
+     * https://www.isin.org/
      */
     ISIN?: string;
     /**
-     * <https://permid.org/>
+     * https://permid.org/
      */
     PERMID?: string;
     /**
-     * <https://www.refinitiv.com/>
+     * https://www.refinitiv.com/
      */
     RIC?: string;
     /**
-     * <https://www.lseg.com/sedol>
+     * https://www.lseg.com/sedol
      */
     SEDOL?: string;
     /**
@@ -303,15 +338,15 @@ export interface PurpleInstrumentIdentifiers {
  */
 export interface OrganizationMarket {
     /**
-     * <https://www.bloomberg.com/>
+     * https://www.bloomberg.com/
      */
     BBG?: string;
     /**
-     * <https://www.iso.org/iso-3166-country-codes.html>
+     * https://www.iso.org/iso-3166-country-codes.html
      */
     COUNTRY_ISOALPHA2?: string;
     /**
-     * <https://en.wikipedia.org/wiki/Market_Identifier_Code>
+     * https://en.wikipedia.org/wiki/Market_Identifier_Code
      */
     MIC?: string;
     /**
@@ -375,7 +410,7 @@ export interface TimeRangeObject {
      * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
      */
     startTime?: Date;
-    type:       "fdc3.timerange";
+    type:       "fdc3.timeRange";
     id?:        { [key: string]: any };
     name?:      string;
     [property: string]: any;
@@ -442,9 +477,16 @@ export interface ContactListObject {
      * An array of contact contexts that forms the list.
      */
     contacts: ContactElement[];
-    type:     "fdc3.contactList";
-    id?:      { [key: string]: any };
-    name?:    string;
+    /**
+     * One or more identifiers that refer to the contact list in an OMS, EMS or related system.
+     * Specific key names for systems are expected to be standardized in future.
+     */
+    id?: { [key: string]: string };
+    /**
+     * An optional human-readable summary of the contact list
+     */
+    name?: string;
+    type:  "fdc3.contactList";
     [property: string]: any;
 }
 
@@ -457,9 +499,12 @@ export interface ContactElement {
     /**
      * Identifiers that relate to the Contact represented by this context
      */
-    id:    PurpleContactIdentifiers;
-    type:  "fdc3.contact";
+    id: PurpleContactIdentifiers;
+    /**
+     * An optional human-readable name for the contact
+     */
     name?: string;
+    type:  "fdc3.contact";
     [property: string]: any;
 }
 
@@ -518,10 +563,12 @@ export interface MessageObject {
  * A representation of an FDC3 Action (specified via a Context or Context & Intent) that can
  * be inserted inside another object, for example a chat message.
  *
- * The action may be completed by calling `fdc3.raiseIntent()` with the specified Intent and
- * Context, or, if only a context is specified, by calling `fdc3.raiseIntentForContext()`
- * (which the Desktop Agent will resolve by presenting the user with a list of available
- * Intents for the Context).
+ * The action may be completed by calling:
+ * - `fdc3.raiseIntent()` with the specified Intent and Context
+ * - `fdc3.raiseIntentForContext()` if only a context is specified, (which the Desktop Agent
+ * will resolve by presenting the user with a list of available Intents for the Context).
+ * - `channel.broadcast()` with the specified Context, if the `broadcast` action has been
+ * defined.
  *
  * Accepts an optional `app` parameter in order to specify a specific app.
  *
@@ -529,9 +576,26 @@ export interface MessageObject {
  */
 export interface PurpleAction {
     /**
-     * An optional target application identifier that should perform the action
+     * The **action** field indicates the type of action:
+     * - **raiseIntent** :  If no action or `raiseIntent` is specified, then `fdc3.raiseIntent`
+     * or `fdc3.raiseIntentForContext` will be called with the specified context (and intent if
+     * given).
+     * - **broadcast** : If `broadcast` and a `channelId` are specified then
+     * `fdc3.getOrCreateChannel(channelId)` is called to retrieve the channel and broadcast the
+     * context to it with `channel.broadcast(context)`. If no `channelId` has been specified,
+     * the context should be broadcast to the current channel (`fdc3.broadcast()`)
      */
-    app?: ActionTargetApp;
+    action?: ActionType;
+    /**
+     * An optional target application identifier that should perform the action. The `app`
+     * property is ignored unless the action is raiseIntent.
+     */
+    app?: AppIdentifier;
+    /**
+     * Optional channel on which to broadcast the context. The `channelId` property is ignored
+     * unless the `action` is broadcast.
+     */
+    channelId?: string;
     /**
      * A context object with which the action will be performed
      */
@@ -650,7 +714,7 @@ export interface ChatRoomObject {
     /**
      * Identifier(s) for the chat - currently unstandardized
      */
-    id: { [key: string]: any };
+    id: { [key: string]: string };
     /**
      * Display name for the chat room
      */
@@ -689,7 +753,7 @@ export interface ChatRoom {
     /**
      * Identifier(s) for the chat - currently unstandardized
      */
-    id: { [key: string]: any };
+    id: { [key: string]: string };
     /**
      * Display name for the chat room
      */
@@ -729,7 +793,7 @@ export interface ChatSearchCriteria {
 }
 
 /**
- * financial instrument that relates to the definition of this product
+ * A financial instrument that relates to the definition of this product
  *
  *
  *
@@ -772,8 +836,15 @@ export interface OrganizationObject {
      * `id` field that is not globally unique.
      */
     market?: OrganizationMarket;
-    type:    TentacledInteractionType;
-    name?:   string;
+    /**
+     * An optional human-readable name for the instrument
+     *
+     * An optional human-readable name of the organization
+     *
+     * An optional human-readable name for the contact
+     */
+    name?: string;
+    type:  TentacledInteractionType;
     [property: string]: any;
 }
 
@@ -798,15 +869,15 @@ export interface OrganizationObject {
  */
 export interface Identifiers {
     /**
-     * <https://www.bloomberg.com/>
+     * https://www.bloomberg.com/
      */
     BBG?: string;
     /**
-     * <https://www.cusip.com/>
+     * https://www.cusip.com/
      */
     CUSIP?: string;
     /**
-     * <https://www.factset.com/>
+     * https://www.factset.com/
      *
      * FactSet Permanent Identifier representing the organization
      *
@@ -814,25 +885,25 @@ export interface Identifiers {
      */
     FDS_ID?: string;
     /**
-     * <https://www.openfigi.com/>
+     * https://www.openfigi.com/
      */
     FIGI?: string;
     /**
-     * <https://www.isin.org/>
+     * https://www.isin.org/
      */
     ISIN?: string;
     /**
-     * <https://permid.org/>
+     * https://permid.org/
      *
      * Refinitiv Permanent Identifiers, or PermID for the organization
      */
     PERMID?: string;
     /**
-     * <https://www.refinitiv.com/>
+     * https://www.refinitiv.com/
      */
     RIC?: string;
     /**
-     * <https://www.lseg.com/sedol>
+     * https://www.lseg.com/sedol
      */
     SEDOL?: string;
     /**
@@ -875,9 +946,12 @@ export interface Contact {
     /**
      * Identifiers that relate to the Contact represented by this context
      */
-    id:    FluffyContactIdentifiers;
-    type:  "fdc3.contact";
+    id: FluffyContactIdentifiers;
+    /**
+     * An optional human-readable name for the contact
+     */
     name?: string;
+    type:  "fdc3.contact";
     [property: string]: any;
 }
 
@@ -908,9 +982,16 @@ export interface ContactList {
      * An array of contact contexts that forms the list.
      */
     contacts: ContactElement[];
-    type:     "fdc3.contactList";
-    id?:      { [key: string]: any };
-    name?:    string;
+    /**
+     * One or more identifiers that refer to the contact list in an OMS, EMS or related system.
+     * Specific key names for systems are expected to be standardized in future.
+     */
+    id?: { [key: string]: string };
+    /**
+     * An optional human-readable summary of the contact list
+     */
+    name?: string;
+    type:  "fdc3.contactList";
     [property: string]: any;
 }
 
@@ -986,9 +1067,12 @@ export interface Context {
  * applications.
  */
 export interface Country {
-    id:    CountryID;
-    type:  "fdc3.country";
+    id: CountryID;
+    /**
+     * An optional human-readable name for the country
+     */
     name?: string;
+    type:  "fdc3.country";
     [property: string]: any;
 }
 
@@ -1092,10 +1176,18 @@ export interface Email {
 export interface EmailRecipients {
     /**
      * Identifiers that relate to the Contact represented by this context
+     *
+     * One or more identifiers that refer to the contact list in an OMS, EMS or related system.
+     * Specific key names for systems are expected to be standardized in future.
      */
-    id?:   EmailRecipientsID;
-    type:  EmailRecipientsType;
+    id?: ContactTIdentifiers;
+    /**
+     * An optional human-readable name for the contact
+     *
+     * An optional human-readable summary of the contact list
+     */
     name?: string;
+    type:  EmailRecipientsType;
     /**
      * An array of contact contexts that forms the list.
      */
@@ -1105,8 +1197,11 @@ export interface EmailRecipients {
 
 /**
  * Identifiers that relate to the Contact represented by this context
+ *
+ * One or more identifiers that refer to the contact list in an OMS, EMS or related system.
+ * Specific key names for systems are expected to be standardized in future.
  */
-export interface EmailRecipientsID {
+export interface ContactTIdentifiers {
     /**
      * The email address for the contact
      */
@@ -1159,8 +1254,11 @@ export interface Instrument {
      * `id` field that is not globally unique.
      */
     market?: PurpleMarket;
-    type:    "fdc3.instrument";
-    name?:   string;
+    /**
+     * An optional human-readable name for the instrument
+     */
+    name?: string;
+    type:  "fdc3.instrument";
     [property: string]: any;
 }
 
@@ -1181,35 +1279,35 @@ export interface Instrument {
  */
 export interface FluffyInstrumentIdentifiers {
     /**
-     * <https://www.bloomberg.com/>
+     * https://www.bloomberg.com/
      */
     BBG?: string;
     /**
-     * <https://www.cusip.com/>
+     * https://www.cusip.com/
      */
     CUSIP?: string;
     /**
-     * <https://www.factset.com/>
+     * https://www.factset.com/
      */
     FDS_ID?: string;
     /**
-     * <https://www.openfigi.com/>
+     * https://www.openfigi.com/
      */
     FIGI?: string;
     /**
-     * <https://www.isin.org/>
+     * https://www.isin.org/
      */
     ISIN?: string;
     /**
-     * <https://permid.org/>
+     * https://permid.org/
      */
     PERMID?: string;
     /**
-     * <https://www.refinitiv.com/>
+     * https://www.refinitiv.com/
      */
     RIC?: string;
     /**
-     * <https://www.lseg.com/sedol>
+     * https://www.lseg.com/sedol
      */
     SEDOL?: string;
     /**
@@ -1226,15 +1324,15 @@ export interface FluffyInstrumentIdentifiers {
  */
 export interface PurpleMarket {
     /**
-     * <https://www.bloomberg.com/>
+     * https://www.bloomberg.com/
      */
     BBG?: string;
     /**
-     * <https://www.iso.org/iso-3166-country-codes.html>
+     * https://www.iso.org/iso-3166-country-codes.html
      */
     COUNTRY_ISOALPHA2?: string;
     /**
-     * <https://en.wikipedia.org/wiki/Market_Identifier_Code>
+     * https://en.wikipedia.org/wiki/Market_Identifier_Code
      */
     MIC?: string;
     /**
@@ -1256,12 +1354,19 @@ export interface PurpleMarket {
  */
 export interface InstrumentList {
     /**
+     * One or more identifiers that refer to the instrument list in an OMS, EMS or related
+     * system. Specific key names for systems are expected to be standardized in future.
+     */
+    id?: { [key: string]: string };
+    /**
      * An array of instrument contexts that forms the list.
      */
     instruments: InstrumentElement[];
-    type:        "fdc3.instrumentList";
-    id?:         { [key: string]: any };
-    name?:       string;
+    /**
+     * An optional human-readable summary of the instrument list
+     */
+    name?: string;
+    type:  "fdc3.instrumentList";
     [property: string]: any;
 }
 
@@ -1376,10 +1481,12 @@ export interface Message {
  * A representation of an FDC3 Action (specified via a Context or Context & Intent) that can
  * be inserted inside another object, for example a chat message.
  *
- * The action may be completed by calling `fdc3.raiseIntent()` with the specified Intent and
- * Context, or, if only a context is specified, by calling `fdc3.raiseIntentForContext()`
- * (which the Desktop Agent will resolve by presenting the user with a list of available
- * Intents for the Context).
+ * The action may be completed by calling:
+ * - `fdc3.raiseIntent()` with the specified Intent and Context
+ * - `fdc3.raiseIntentForContext()` if only a context is specified, (which the Desktop Agent
+ * will resolve by presenting the user with a list of available Intents for the Context).
+ * - `channel.broadcast()` with the specified Context, if the `broadcast` action has been
+ * defined.
  *
  * Accepts an optional `app` parameter in order to specify a specific app.
  *
@@ -1387,9 +1494,26 @@ export interface Message {
  */
 export interface FluffyAction {
     /**
-     * An optional target application identifier that should perform the action
+     * The **action** field indicates the type of action:
+     * - **raiseIntent** :  If no action or `raiseIntent` is specified, then `fdc3.raiseIntent`
+     * or `fdc3.raiseIntentForContext` will be called with the specified context (and intent if
+     * given).
+     * - **broadcast** : If `broadcast` and a `channelId` are specified then
+     * `fdc3.getOrCreateChannel(channelId)` is called to retrieve the channel and broadcast the
+     * context to it with `channel.broadcast(context)`. If no `channelId` has been specified,
+     * the context should be broadcast to the current channel (`fdc3.broadcast()`)
      */
-    app?: ActionTargetApp;
+    action?: ActionType;
+    /**
+     * An optional target application identifier that should perform the action. The `app`
+     * property is ignored unless the action is raiseIntent.
+     */
+    app?: AppIdentifier;
+    /**
+     * Optional channel on which to broadcast the context. The `channelId` property is ignored
+     * unless the `action` is broadcast.
+     */
+    channelId?: string;
     /**
      * A context object with which the action will be performed
      */
@@ -1526,7 +1650,7 @@ export interface ProductObject {
      */
     id: { [key: string]: string };
     /**
-     * financial instrument that relates to the definition of this product
+     * A financial instrument that relates to the definition of this product
      */
     instrument?: InstrumentElement;
     /**
@@ -1561,12 +1685,19 @@ export interface ProductObject {
  */
 export interface OrderList {
     /**
+     * One or more identifiers that refer to the order list in an OMS, EMS or related system.
+     * Specific key names for systems are expected to be standardized in future.
+     */
+    id?: { [key: string]: string };
+    /**
+     * An optional human-readable summary of the order list
+     */
+    name?: string;
+    /**
      * An array of order contexts that forms the list.
      */
     orders: OrderElement[];
     type:   "fdc3.orderList";
-    id?:    { [key: string]: any };
-    name?:  string;
     [property: string]: any;
 }
 
@@ -1627,9 +1758,12 @@ export interface Organization {
     /**
      * Identifiers for the organization, at least one must be provided.
      */
-    id:    OrganizationIdentifiers;
-    type:  "fdc3.organization";
+    id: OrganizationIdentifiers;
+    /**
+     * An optional human-readable name of the organization
+     */
     name?: string;
+    type:  "fdc3.organization";
     [property: string]: any;
 }
 
@@ -1679,12 +1813,19 @@ export interface OrganizationIdentifiers {
  */
 export interface Portfolio {
     /**
+     * One or more identifiers that refer to the portfolio in an OMS, EMS or related system.
+     * Specific key names for systems are expected to be standardized in future.
+     */
+    id?: { [key: string]: string };
+    /**
+     * An optional human-readable name for the portfolio
+     */
+    name?: string;
+    /**
      * The List of Positions which make up the Portfolio
      */
     positions: PositionElement[];
     type:      "fdc3.portfolio";
-    id?:       { [key: string]: any };
-    name?:     string;
     [property: string]: any;
 }
 
@@ -1706,11 +1847,18 @@ export interface PositionElement {
     /**
      * The amount of the holding, e.g. a number of shares
      */
-    holding:    number;
+    holding: number;
+    /**
+     * One or more identifiers that refer to the position in an OMS, EMS or related system.
+     * Specific key names for systems are expected to be standardized in future.
+     */
+    id?:        { [key: string]: string };
     instrument: InstrumentElement;
-    type:       "fdc3.position";
-    id?:        { [key: string]: any };
-    name?:      string;
+    /**
+     * An optional human-readable name for the position
+     */
+    name?: string;
+    type:  "fdc3.position";
     [property: string]: any;
 }
 
@@ -1746,11 +1894,18 @@ export interface Position {
     /**
      * The amount of the holding, e.g. a number of shares
      */
-    holding:    number;
+    holding: number;
+    /**
+     * One or more identifiers that refer to the position in an OMS, EMS or related system.
+     * Specific key names for systems are expected to be standardized in future.
+     */
+    id?:        { [key: string]: string };
     instrument: InstrumentElement;
-    type:       "fdc3.position";
-    id?:        { [key: string]: any };
-    name?:      string;
+    /**
+     * An optional human-readable name for the position
+     */
+    name?: string;
+    type:  "fdc3.position";
     [property: string]: any;
 }
 
@@ -1772,7 +1927,7 @@ export interface Product {
      */
     id: { [key: string]: string };
     /**
-     * financial instrument that relates to the definition of this product
+     * A financial instrument that relates to the definition of this product
      */
     instrument?: InstrumentElement;
     /**
@@ -1826,7 +1981,7 @@ export interface TimeRange {
      * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
      */
     startTime?: Date;
-    type:       "fdc3.timerange";
+    type:       "fdc3.timeRange";
     id?:        { [key: string]: any };
     name?:      string;
     [property: string]: any;
@@ -1880,12 +2035,19 @@ export interface Trade {
  */
 export interface TradeList {
     /**
+     * One or more identifiers that refer to the trade list in an OMS, EMS or related system.
+     * Specific key names for systems are expected to be standardized in future.
+     */
+    id?: { [key: string]: string };
+    /**
+     * An optional human-readable name for the trade list
+     */
+    name?: string;
+    /**
      * An array of trade contexts that forms the list.
      */
     trades: TradeElement[];
     type:   "fdc3.tradeList";
-    id?:    { [key: string]: any };
-    name?:  string;
     [property: string]: any;
 }
 
@@ -1938,6 +2100,10 @@ export interface TransactionResult {
      * A context object returned by the transaction, possibly with updated data.
      */
     context?: ContextElement;
+    /**
+     * A human readable message describing the outcome of the transaction.
+     */
+    message?: string;
     /**
      * The status of the transaction being reported.
      */
@@ -2382,15 +2548,17 @@ function r(name: string) {
 
 const typeMap: any = {
     "Action": o([
-        { json: "app", js: "app", typ: u(undefined, r("ActionTargetApp")) },
+        { json: "action", js: "action", typ: u(undefined, r("ActionType")) },
+        { json: "app", js: "app", typ: u(undefined, r("AppIdentifier")) },
+        { json: "channelId", js: "channelId", typ: u(undefined, "") },
         { json: "context", js: "context", typ: r("ContextElement") },
         { json: "intent", js: "intent", typ: u(undefined, "") },
         { json: "title", js: "title", typ: "" },
-        { json: "type", js: "type", typ: r("ActionType") },
+        { json: "type", js: "type", typ: r("ActionTypeEnum") },
         { json: "id", js: "id", typ: u(undefined, m("any")) },
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
-    "ActionTargetApp": o([
+    "AppIdentifier": o([
         { json: "appId", js: "appId", typ: "" },
         { json: "desktopAgent", js: "desktopAgent", typ: u(undefined, "") },
         { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
@@ -2412,8 +2580,8 @@ const typeMap: any = {
     "InstrumentElement": o([
         { json: "id", js: "id", typ: r("PurpleInstrumentIdentifiers") },
         { json: "market", js: "market", typ: u(undefined, r("OrganizationMarket")) },
-        { json: "type", js: "type", typ: r("PurpleInteractionType") },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("PurpleInteractionType") },
     ], "any"),
     "PurpleInstrumentIdentifiers": o([
         { json: "BBG", js: "BBG", typ: u(undefined, "") },
@@ -2450,14 +2618,14 @@ const typeMap: any = {
     ], "any"),
     "ContactListObject": o([
         { json: "contacts", js: "contacts", typ: a(r("ContactElement")) },
-        { json: "type", js: "type", typ: r("ContactListType") },
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
+        { json: "id", js: "id", typ: u(undefined, m("")) },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("ContactListType") },
     ], "any"),
     "ContactElement": o([
         { json: "id", js: "id", typ: r("PurpleContactIdentifiers") },
-        { json: "type", js: "type", typ: r("FluffyInteractionType") },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("FluffyInteractionType") },
     ], "any"),
     "PurpleContactIdentifiers": o([
         { json: "email", js: "email", typ: u(undefined, "") },
@@ -2471,7 +2639,9 @@ const typeMap: any = {
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "PurpleAction": o([
-        { json: "app", js: "app", typ: u(undefined, r("ActionTargetApp")) },
+        { json: "action", js: "action", typ: u(undefined, r("ActionType")) },
+        { json: "app", js: "app", typ: u(undefined, r("AppIdentifier")) },
+        { json: "channelId", js: "channelId", typ: u(undefined, "") },
         { json: "context", js: "context", typ: u(undefined, r("ContextElement")) },
         { json: "intent", js: "intent", typ: u(undefined, "") },
         { json: "title", js: "title", typ: u(undefined, "") },
@@ -2503,14 +2673,14 @@ const typeMap: any = {
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "ChatRoomObject": o([
-        { json: "id", js: "id", typ: m("any") },
+        { json: "id", js: "id", typ: m("") },
         { json: "name", js: "name", typ: u(undefined, "") },
         { json: "providerName", js: "providerName", typ: "" },
         { json: "type", js: "type", typ: r("ChatRoomType") },
         { json: "url", js: "url", typ: u(undefined, "") },
     ], "any"),
     "ChatRoom": o([
-        { json: "id", js: "id", typ: m("any") },
+        { json: "id", js: "id", typ: m("") },
         { json: "name", js: "name", typ: u(undefined, "") },
         { json: "providerName", js: "providerName", typ: "" },
         { json: "type", js: "type", typ: r("ChatRoomType") },
@@ -2525,8 +2695,8 @@ const typeMap: any = {
     "OrganizationObject": o([
         { json: "id", js: "id", typ: r("Identifiers") },
         { json: "market", js: "market", typ: u(undefined, r("OrganizationMarket")) },
-        { json: "type", js: "type", typ: r("TentacledInteractionType") },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("TentacledInteractionType") },
     ], "any"),
     "Identifiers": o([
         { json: "BBG", js: "BBG", typ: u(undefined, "") },
@@ -2543,8 +2713,8 @@ const typeMap: any = {
     ], "any"),
     "Contact": o([
         { json: "id", js: "id", typ: r("FluffyContactIdentifiers") },
-        { json: "type", js: "type", typ: r("FluffyInteractionType") },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("FluffyInteractionType") },
     ], "any"),
     "FluffyContactIdentifiers": o([
         { json: "email", js: "email", typ: u(undefined, "") },
@@ -2552,9 +2722,9 @@ const typeMap: any = {
     ], "any"),
     "ContactList": o([
         { json: "contacts", js: "contacts", typ: a(r("ContactElement")) },
-        { json: "type", js: "type", typ: r("ContactListType") },
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
+        { json: "id", js: "id", typ: u(undefined, m("")) },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("ContactListType") },
     ], "any"),
     "Context": o([
         { json: "id", js: "id", typ: u(undefined, m("any")) },
@@ -2563,8 +2733,8 @@ const typeMap: any = {
     ], "any"),
     "Country": o([
         { json: "id", js: "id", typ: r("CountryID") },
-        { json: "type", js: "type", typ: r("CountryType") },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("CountryType") },
     ], "any"),
     "CountryID": o([
         { json: "COUNTRY_ISOALPHA2", js: "COUNTRY_ISOALPHA2", typ: u(undefined, "") },
@@ -2589,20 +2759,20 @@ const typeMap: any = {
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "EmailRecipients": o([
-        { json: "id", js: "id", typ: u(undefined, r("EmailRecipientsID")) },
-        { json: "type", js: "type", typ: r("EmailRecipientsType") },
+        { json: "id", js: "id", typ: u(undefined, r("ContactTIdentifiers")) },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("EmailRecipientsType") },
         { json: "contacts", js: "contacts", typ: u(undefined, a(r("ContactElement"))) },
     ], "any"),
-    "EmailRecipientsID": o([
+    "ContactTIdentifiers": o([
         { json: "email", js: "email", typ: u(undefined, "") },
         { json: "FDS_ID", js: "FDS_ID", typ: u(undefined, "") },
     ], "any"),
     "Instrument": o([
         { json: "id", js: "id", typ: r("FluffyInstrumentIdentifiers") },
         { json: "market", js: "market", typ: u(undefined, r("PurpleMarket")) },
-        { json: "type", js: "type", typ: r("PurpleInteractionType") },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("PurpleInteractionType") },
     ], "any"),
     "FluffyInstrumentIdentifiers": o([
         { json: "BBG", js: "BBG", typ: u(undefined, "") },
@@ -2622,10 +2792,10 @@ const typeMap: any = {
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "InstrumentList": o([
+        { json: "id", js: "id", typ: u(undefined, m("")) },
         { json: "instruments", js: "instruments", typ: a(r("InstrumentElement")) },
-        { json: "type", js: "type", typ: r("InstrumentListType") },
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("InstrumentListType") },
     ], "any"),
     "Interaction": o([
         { json: "description", js: "description", typ: "" },
@@ -2651,7 +2821,9 @@ const typeMap: any = {
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "FluffyAction": o([
-        { json: "app", js: "app", typ: u(undefined, r("ActionTargetApp")) },
+        { json: "action", js: "action", typ: u(undefined, r("ActionType")) },
+        { json: "app", js: "app", typ: u(undefined, r("AppIdentifier")) },
+        { json: "channelId", js: "channelId", typ: u(undefined, "") },
         { json: "context", js: "context", typ: u(undefined, r("ContextElement")) },
         { json: "intent", js: "intent", typ: u(undefined, "") },
         { json: "title", js: "title", typ: u(undefined, "") },
@@ -2689,10 +2861,10 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("ProductType") },
     ], "any"),
     "OrderList": o([
+        { json: "id", js: "id", typ: u(undefined, m("")) },
+        { json: "name", js: "name", typ: u(undefined, "") },
         { json: "orders", js: "orders", typ: a(r("OrderElement")) },
         { json: "type", js: "type", typ: r("OrderListType") },
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
-        { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "OrderElement": o([
         { json: "details", js: "details", typ: u(undefined, r("FluffyOrderDetails")) },
@@ -2705,8 +2877,8 @@ const typeMap: any = {
     ], "any"),
     "Organization": o([
         { json: "id", js: "id", typ: r("OrganizationIdentifiers") },
-        { json: "type", js: "type", typ: r("StickyInteractionType") },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("StickyInteractionType") },
     ], "any"),
     "OrganizationIdentifiers": o([
         { json: "FDS_ID", js: "FDS_ID", typ: u(undefined, "") },
@@ -2714,24 +2886,24 @@ const typeMap: any = {
         { json: "PERMID", js: "PERMID", typ: u(undefined, "") },
     ], "any"),
     "Portfolio": o([
+        { json: "id", js: "id", typ: u(undefined, m("")) },
+        { json: "name", js: "name", typ: u(undefined, "") },
         { json: "positions", js: "positions", typ: a(r("PositionElement")) },
         { json: "type", js: "type", typ: r("PortfolioType") },
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
-        { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "PositionElement": o([
         { json: "holding", js: "holding", typ: 3.14 },
+        { json: "id", js: "id", typ: u(undefined, m("")) },
         { json: "instrument", js: "instrument", typ: r("InstrumentElement") },
-        { json: "type", js: "type", typ: r("PositionType") },
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("PositionType") },
     ], "any"),
     "Position": o([
         { json: "holding", js: "holding", typ: 3.14 },
+        { json: "id", js: "id", typ: u(undefined, m("")) },
         { json: "instrument", js: "instrument", typ: r("InstrumentElement") },
-        { json: "type", js: "type", typ: r("PositionType") },
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
         { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "type", js: "type", typ: r("PositionType") },
     ], "any"),
     "Product": o([
         { json: "id", js: "id", typ: m("") },
@@ -2753,10 +2925,10 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("TradeType") },
     ], "any"),
     "TradeList": o([
+        { json: "id", js: "id", typ: u(undefined, m("")) },
+        { json: "name", js: "name", typ: u(undefined, "") },
         { json: "trades", js: "trades", typ: a(r("TradeElement")) },
         { json: "type", js: "type", typ: r("TradeListType") },
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
-        { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "TradeElement": o([
         { json: "id", js: "id", typ: m("") },
@@ -2766,6 +2938,7 @@ const typeMap: any = {
     ], "any"),
     "TransactionResult": o([
         { json: "context", js: "context", typ: u(undefined, r("ContextElement")) },
+        { json: "message", js: "message", typ: u(undefined, "") },
         { json: "status", js: "status", typ: r("TransactionStatus") },
         { json: "type", js: "type", typ: r("TransactionResultType") },
         { json: "id", js: "id", typ: u(undefined, m("any")) },
@@ -2782,13 +2955,17 @@ const typeMap: any = {
         { json: "name", js: "name", typ: u(undefined, "") },
     ], "any"),
     "ActionType": [
+        "broadcast",
+        "raiseIntent",
+    ],
+    "ActionTypeEnum": [
         "fdc3.action",
     ],
     "PurpleInteractionType": [
         "fdc3.instrument",
     ],
     "TimeRangeType": [
-        "fdc3.timerange",
+        "fdc3.timeRange",
     ],
     "ChartStyle": [
         "bar",

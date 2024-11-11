@@ -29,9 +29,9 @@
               "type": "string",
               "description": "The version of FDC3 API that the Desktop Agent will provide support for."
             },
-            "resolver": {
+            "intentResolverUrl": {
               "title": "Resolver URL",
-              "description": "Indicates whether an intent resolver UI is required and the URL to use to do so. Set to `true` to use the default or `false` to disable the intent resolver (as the Desktop Agent will handle another way)",
+              "description": "Indicates whether an intent resolver user interface is required and the URL to use to do so. Set to `true` to use the default or `false` to disable the intent resolver (as the Desktop Agent will handle it another way).",
               "oneOf": [
                 {
                   "type": "string",
@@ -42,9 +42,9 @@
                 }
               ]
             },
-            "channelSelector": {
+            "channelSelectorUrl": {
               "title": "Channel Selector URL",
-              "description": "Indicates whether a channel selector UI is required and the URL to use to do so. Set to `true` to use the default or `false` to disable the channel selector (as the Desktop Agent will handle another way)",
+              "description": "Indicates whether a channel selector user interface is required and the URL to use to do so. Set to `true` to use the default or `false` to disable the channel selector (as the Desktop Agent will handle it another way).",
               "oneOf": [
                 {
                   "type": "string",
@@ -59,11 +59,13 @@
           "additionalProperties": false,
           "required": [
             "fdc3Version",
-            "resolver",
-            "channelSelector"
+            "intentResolverUrl",
+            "channelSelectorUrl"
           ]
         },
-        "meta": true
+        "meta": {
+          "$ref": "WCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"
+        }
       },
       "required": [
         "type",

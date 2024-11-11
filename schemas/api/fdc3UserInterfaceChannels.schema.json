@@ -1,32 +1,32 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/api/iframeChannels.schema.json",
-  "title": "iframe Channels",
+  "$id": "https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceChannels.schema.json",
+  "title": "Fdc3 UserInterface Channels",
   "description": "Setup message sent by the DA proxy code in getAgent() to a channel selector UI in an iframe with the channel definitions and current channel selection.",
   "type": "object",
   "allOf": [
     {
-      "$ref": "#/$defs/IframeChannelsBase"
+      "$ref": "#/$defs/Fdc3UserInterfaceChannelsBase"
     },
     {
-      "$ref": "iFrameMessage.schema.json"
+      "$ref": "fdc3UserInterfaceMessage.schema.json"
     }
   ],
   "$defs": {
-    "IframeChannelsBase": {
+    "Fdc3UserInterfaceChannelsBase": {
       "type": "object",
       "properties": {
         "type": {
-          "title": "iframeChannels Message Type",
-          "const": "iframeChannels"
+          "title": "Fdc3 UserInterface Channels Message Type",
+          "const": "Fdc3UserInterfaceChannels"
         },
         "payload": {
-          "title": "iframeChannels Payload",
+          "title": "Fdc3 UserInterface Channels Payload",
           "type": "object",
           "properties": {
             "userChannels": {
               "title": "User Channels",
-              "description": "User Channel definitions",
+              "description": "User Channel definitions.```````s",
               "type": "array",
               "items": {
                 "$ref": "api.schema.json#/definitions/Channel"
@@ -34,25 +34,10 @@
             },
             "selected": {
               "title": "Selected Channel",
-              "description": "The id of the channel that should be currently selected, or `null` if none should be selected",
+              "description": "The id of the channel that should be currently selected, or `null` if none should be selected.",
               "oneOf": [
                 {"type": "string"}, {"type": "null"}
               ]
-            },
-            "location": {
-              "title": "Location",
-              "description": "If the channel selector was previously displayed in this window its location may be restored by setting the location coordinates",
-              "type": "object",
-              "properties": {
-                "x": {
-                  "type": "integer"
-                },
-                "y": {
-                  "type": "integer"
-                }
-              },
-              "required": ["x", "y"],
-              "additionalProperties": false
             }
           },
           "additionalProperties": false,

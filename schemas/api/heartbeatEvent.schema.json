@@ -1,0 +1,38 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/heartbeatEvent.schema.json",
+	"type": "object",
+	"title": "Heartbeat Event",
+	"description": "A heartbeat message from the Desktop Agent to an app indicating that the Desktop Agent is alive and that the application should send a heartbeatResponseRequest to the agent in response.",
+	"allOf": [
+		{
+			"$ref": "agentEvent.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/HeartbeatEventType"
+				},
+				"payload": {
+					"$ref": "#/$defs/HeartbeatEventPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"HeartbeatEventType": {
+			"title": "Heartbeat Event Message Type",
+			"const": "heartbeatEvent"
+		},
+		"HeartbeatEventPayload": {
+			"title": "heartbeat Event Payload",
+			"type": "object",
+			"properties": {},
+			"additionalProperties": false,
+			"required": []
+		}
+	}
+}
