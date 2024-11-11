@@ -19,7 +19,7 @@ Further, as FDC3 2.1 does not introduce changes to the Desktop Agent API, the co
 
 You can find the implementation of these tests in the [FDC3 Conformance Framework](https://github.com/finos/FDC3-conformance-framework) project.
 
-There are currently 6 sections to the tests.  Where tests apply to a particular version of FDC3, this is labelled with icons in the header, like so: ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
+There are currently 6 sections to the tests.  
 
 - [Basic Tests](Basic-Tests.md)
 - [Open Tests](Open-Tests.md)
@@ -27,3 +27,9 @@ There are currently 6 sections to the tests.  Where tests apply to a particular 
 - [App Channel Tests](App-Channel-Tests.md)
 - [Metadata Tests](Metadata-Tests.md)
 - [Intents Tests](Intents-Tests.md)
+
+:::info
+
+Where tests were introduced in this version of FDC3, they are labelled with an in the header, like so: ![2.2](https://img.shields.io/badge/FDC3-2.2-purple)
+
+:::
