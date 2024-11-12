@@ -1,8 +1,9 @@
 import { BasicDirectory } from "@kite9/fdc3-web-impl/src/directory/BasicDirectory";
 import { DirectoryApp } from "@kite9/fdc3-web-impl/src/directory/DirectoryInterface";
 
-function loadRemotely(u: string) {
-    return fetch(u).then((response) => response.json());
+async function loadRemotely(u: string) {
+    const response = await fetch(u);
+    return await response.json();
 }
 
 async function load(url: string): Promise<DirectoryApp[]> {
