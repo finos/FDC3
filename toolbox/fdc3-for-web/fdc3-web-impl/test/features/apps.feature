@@ -43,8 +43,6 @@ Feature: Opening and Requesting App Details
       | WCP5ValidateAppIdentityResponse | {null}                          | {null}                               | storageApp        | uuid-0                 | uuid-0        | storageApp |
 
   Scenario: Opening An App With Context
-ISSUE: 1310 causes this to fail right now
-
     When "libraryApp/a1" opens app "storageApp" with context data "fdc3.instrument"
     And "uuid-0" sends validate
     And we wait for a period of "100" ms
