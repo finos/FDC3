@@ -96,7 +96,8 @@ class PendingIntent {
     async accept(arg0: ListenerRegistration): Promise<void> {
         if ((arg0.appId == this.appId.appId) &&
             (arg0.intentName == this.r.intent) &&
-            ((arg0.instanceId == this.appId.instanceId) || (this.appId.instanceId == undefined))) {
+            ((arg0.instanceId == this.appId.instanceId) || (this.appId.instanceId == undefined))
+        ) {
             this.complete = true
             this.ih.pendingIntents.delete(this)
             forwardRequest(this.r, { appId: arg0.appId, instanceId: arg0.instanceId }, this.sc, this.ih)
@@ -498,9 +499,7 @@ export class IntentHandler implements MessageHandler {
         const activeApps = await sc.getConnectedApps()
         const matching = this.regs.filter(r => r.intentName == intentName)
 
-        //console.log(`Matched listeners returned ${matching.length}`)
         const active = matching.filter(r => activeApps.find(a => a.instanceId == r.instanceId))
-        //console.log(`Active listeners returned ${active.length}`)
 
         return active
     }

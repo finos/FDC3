@@ -34,7 +34,6 @@ export class BasicFDC3Server implements FDC3Server {
     }
 
     receive(message: AppRequestMessage | WebConnectionProtocol4ValidateAppIdentity, from: InstanceID): void {
-        // this.sc.log(`MessageReceived: \n ${JSON.stringify(message, null, 2)}`)
         this.handlers.forEach(h => h.accept(message, this.sc, from))
     }
 
