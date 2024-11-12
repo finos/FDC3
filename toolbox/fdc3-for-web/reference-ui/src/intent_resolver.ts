@@ -116,7 +116,7 @@ const fillList = (ai: AppIntent[], intent: string, callback: (s: IframeResolveAc
   const openList = document.getElementById('open-list')!!
   openList.innerHTML = '';
 
-  openApps.forEach(({ appId, title, icons, instanceId }) => {
+  openApps.forEach(({ appId, title, icons }) => {
     const node = document.createElement('div');
     node.setAttribute('tabIndex', '0');
     node.setAttribute("data-appId", appId);
@@ -163,7 +163,7 @@ window.addEventListener("load", () => {
   myPort.onmessage = ({data}) => {
     console.debug("Received message: ", data);
     switch(data.type){
-      case Fdc3UserInterfaceHandshake": {
+      case "Fdc3UserInterfaceHandshake": {
         break;
       }
       case "iframeResolve": {
