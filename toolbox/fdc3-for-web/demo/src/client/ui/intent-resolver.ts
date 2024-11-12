@@ -34,43 +34,49 @@ window.addEventListener("load", () => {
     const list = document.getElementById("intent-list")!!
 
     // ISSUE: 1302
-    parent.postMessage({
-        type: "fdc3UserInterfaceHello",
+    const helloMessage: IframeHello = {
+        type: "Fdc3UserInterfaceHello",
         payload: {
             initialCSS: DEFAULT_COLLAPSED_CSS,
             implementationDetails: "Demo Intent Resolver v1.0"
         }
-    } as any as IframeHello, "*", [mc.port2]);
+    }
+    parent.postMessage(helloMessage, "*", [mc.port2]);
 
     function callback(intent: string | null, app: AppIdentifier | null) {
-        myPort.postMessage({ type: "Fdc3UserInterfaceRestyle", payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
+        const restyleMessage: IframeRestyle = { type: "Fdc3UserInterfaceRestyle", payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } }
+        myPort.postMessage(restyleMessage)
 
         if (intent && app) {
-            myPort.postMessage({
+            const message: IframeResolveAction = {
                 type: "Fdc3UserInterfaceResolveAction",
                 payload: {
                     action: "click",
                     appIdentifier: app,
                     intent: intent
                 }
-            } as IframeResolveAction)
+            }
+            myPort.postMessage(message)
         } else {
-            myPort.postMessage({
+            const message: IframeResolveAction = {
                 type: "Fdc3UserInterfaceResolveAction",
                 payload: {
                     action: "cancel"
                 }
-            } as IframeResolveAction)
+            }
+            myPort.postMessage(message)
         }
     }
 
     myPort.addEventListener("message", (e) => {
         if (e.data.type == 'iframeHandshake') {
-            myPort.postMessage({ type: "Fdc3UserInterfaceRestyle", payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
+            const message: IframeRestyle = { type: "Fdc3UserInterfaceRestyle", payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } }
+            myPort.postMessage(message)
         } else if (e.data.type == 'iframeResolve') {
-            myPort.postMessage({ type: "Fdc3UserInterfaceRestyle", payload: { updatedCSS: DEFAULT_EXPANDED_CSS } } as IframeRestyle)
+            const message: IframeRestyle = { type: "Fdc3UserInterfaceRestyle", payload: { updatedCSS: DEFAULT_EXPANDED_CSS } }
+            myPort.postMessage(message)
             Array.from(list.children).forEach(i => i.remove())
-            const details = e.data.payload as IframeResolvePayload
+            const details: IframeResolvePayload = e.data.payload
             details.appIntents.forEach(intent => {
 
                 intent.apps.forEach(app => {
@@ -99,6 +105,5 @@ window.addEventListener("load", () => {
     document.getElementById("cancel")!!.addEventListener("click", () => {
         callback(null, null);
     })
-
 
 })

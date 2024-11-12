@@ -19,20 +19,16 @@ function getQueryVariable(variable: string): string {
 }
 
 function getConnectionAttemptUuid(): string {
-    const uuid = getQueryVariable("connectionAttemptUuid")
-    return uuid
+    return getQueryVariable("connectionAttemptUuid")
 }
 
 function getSource(): string {
-    const source = getQueryVariable("instanceId")
-    return source
+    return getQueryVariable("instanceId")
 }
 
 function getDeskopAgentId(): string {
-    const id = getQueryVariable("desktopAgentId")
-    return id
+    return getQueryVariable("desktopAgentId")
 }
-
 
 window.addEventListener("load", () => {
 

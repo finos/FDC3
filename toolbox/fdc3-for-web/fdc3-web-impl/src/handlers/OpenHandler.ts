@@ -209,18 +209,22 @@ export class OpenHandler implements MessageHandler {
         }
 
         function returnError() {
-            sc.post({
+            const message: WebConnectionProtocol5ValidateAppIdentityFailedResponse = {
                 meta: responseMeta,
                 type: 'WCP5ValidateAppIdentityFailedResponse',
                 payload: {
                     message: 'App Instance not found'
                 }
-            } as WebConnectionProtocol5ValidateAppIdentityFailedResponse, from)
+            }
+            sc.post(message, from)
         }
 
         function returnSuccess(appIdentity: AppIdentifier) {
+            if(!appIdentity.instanceId){
+                throw new Error("App does not include an instanceId, can't ")
+            }
             const aopMetadata = _this.filterPublicDetails(_this.directory.retrieveAppsById(appIdentity.appId)[0], appIdentity)
-            sc.post({
+            const message: WebConnectionProtocol5ValidateAppIdentitySuccessResponse = {
                 meta: responseMeta,
                 type: 'WCP5ValidateAppIdentityResponse',
                 payload: {
@@ -239,7 +243,8 @@ export class OpenHandler implements MessageHandler {
                         appMetadata: aopMetadata
                     }
                 }
-            } as WebConnectionProtocol5ValidateAppIdentitySuccessResponse, appIdentity.instanceId!!)
+            }
+            sc.post(message, appIdentity.instanceId!!)
         }
 
         if (arg0.payload.instanceUuid) {
