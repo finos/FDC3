@@ -1,4 +1,7 @@
-import { IframeChannelsPayload, Channel } from "@kite9/fdc3-common";
+import { BrowserTypes } from "@kite9/fdc3";
+
+type Channel = BrowserTypes.Channel
+type Fdc3UserInterfaceChannelsPayload = BrowserTypes.Fdc3UserInterfaceChannelsPayload
 
 
 const fillChannels = (data: Channel[], selected: string | null, messageClickedChannel: (s: string | null) => void) => {
@@ -54,7 +57,7 @@ window.addEventListener("load", () => {
       }
       case "fdc3UserInterfaceChannels": {
         logo.removeEventListener("click", expand);
-        const {userChannels, selected} = data.payload as IframeChannelsPayload;
+        const {userChannels, selected} = data.payload as Fdc3UserInterfaceChannelsPayload;
         fillChannels(userChannels, selected, (channelStr) => {
           myPort.postMessage({
             type: "fdc3UserInterfaceSelected",
