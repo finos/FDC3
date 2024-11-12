@@ -2,6 +2,7 @@ import { AppIdentifier, ImplementationMetadata, GetAgentParams } from "@kite9/fd
 import { Messaging } from "../Messaging";
 import { RegisterableListener } from "../listeners/RegisterableListener";
 import { BrowserTypes } from "@kite9/fdc3-schema";
+import { AddContextListenerRequestMeta } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
 
 type WebConnectionProtocol4ValidateAppIdentity = BrowserTypes.WebConnectionProtocol4ValidateAppIdentity
@@ -12,6 +13,7 @@ export abstract class AbstractMessaging implements Messaging {
     private readonly options: GetAgentParams
     private readonly connectionAttemptUuid: string
     private readonly timeout: number
+    private readonly actualUrl: string
     private appId: AppIdentifier | null = null
     private implementationMetadata: ImplementationMetadata | null = null
 
@@ -21,12 +23,13 @@ export abstract class AbstractMessaging implements Messaging {
     abstract register(l: RegisterableListener): void
     abstract unregister(id: string): void
 
-    abstract createMeta(): object
+    abstract createMeta(): AddContextListenerRequestMeta
 
-    constructor(options: GetAgentParams, connectionAttemptUuid: string, timeout: number = 10016) {
+    constructor(options: GetAgentParams, connectionAttemptUuid: string, actualUrl: string, timeout: number = 10016) {
         this.options = options
         this.connectionAttemptUuid = connectionAttemptUuid
         this.timeout = timeout
+        this.actualUrl = actualUrl
     }
 
     getSource(): AppIdentifier {
@@ -132,7 +135,7 @@ export abstract class AbstractMessaging implements Messaging {
             },
             payload: {
                 identityUrl: this.options.identityUrl!!,
-                actualUrl
+                actualUrl: this.actualUrl,
                 instanceUuid
             }
         }
