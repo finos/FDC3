@@ -18,7 +18,10 @@ export function doesRowMatch(cw: PropsWorld, t: Record<string, string>, data: an
             }
 
             const validator: Ajv = cw.props['ajv']
-            const validate = validator.getSchema('https://fdc3.finos.org/schemas/next/api/' + actual + '.schema.json')!!
+            const validate = validator.getSchema('https://fdc3.finos.org/schemas/next/api/' + actual + '.schema.json')
+            if (validate == undefined) {
+                throw Error("No schema found for " + actual)
+            }
             const valid = validate(valdata)
             if (!valid) {
                 try {

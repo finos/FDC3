@@ -50,8 +50,10 @@ When('{string} revalidates', function (this: CustomWorld, uuid: string) {
       timestamp: new Date()
     },
     payload: {
-      instanceUuid: uuid
-    } as any /* ISSUE: 1301 */
+      instanceUuid: uuid,
+      actualUrl: "something",
+      identityUrl: "something"
+    }
   }
 
   this.server.receive(message, uuid)

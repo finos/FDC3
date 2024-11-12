@@ -142,7 +142,7 @@ export abstract class AbstractMessaging implements Messaging {
                 timestamp: new Date()
             },
             payload: {
-                // @ts-expect-error: We need to provide a fallback identityUrl, in case one isn't provided to us. We haven't gotten that working yet.
+                // @ts-expect-error: TODO: Provide a fallback identityUrl, in case one isn't provided
                 identityUrl: this.options.identityUrl,
                 instanceUuid: this.retrieveInstanceUuid()
             }

@@ -15,20 +15,20 @@ const fillChannels = (data: Channel[], selected: string | null, messageClickedCh
     const span = document.createElement('span');
     span.classList.add('glyph');
 
-    if(displayMetadata?.color){
+    if (displayMetadata?.color) {
       span.style.color = displayMetadata.color;
       span.style.borderColor = displayMetadata.color;
     }
     span.textContent = displayMetadata?.glyph ?? '';
     node.appendChild(span);
 
-    if(displayMetadata?.name){
+    if (displayMetadata?.name) {
       const span2 = document.createElement('span');
       span2.classList.add('name');
       span2.textContent = displayMetadata.name;
       node.appendChild(span2);
     }
-    
+
     list.appendChild(node);
     node.addEventListener('click', () => {
       messageClickedChannel(id)
@@ -48,16 +48,16 @@ window.addEventListener("load", () => {
   const mc = new MessageChannel();
   const myPort = mc.port1;
   myPort.start();
-  myPort.onmessage = ({data}) => {
+  myPort.onmessage = ({ data }) => {
     console.debug("Received message: ", data);
-    switch(data.type){
+    switch (data.type) {
       case "iframeHandshake": {
         collapse();
         break;
       }
       case "fdc3UserInterfaceChannels": {
         logo.removeEventListener("click", expand);
-        const {userChannels, selected} = data.payload as Fdc3UserInterfaceChannelsPayload;
+        const { userChannels, selected } = data.payload as Fdc3UserInterfaceChannelsPayload;
         fillChannels(userChannels, selected, (channelStr) => {
           myPort.postMessage({
             type: "fdc3UserInterfaceSelected",
@@ -79,8 +79,8 @@ window.addEventListener("load", () => {
     type: "fdc3UserInterfaceHello",
     payload: {
       initialCSS: {
-        width: `${8*4}px`,
-        height: `${8*5}px`,
+        width: `${8 * 4}px`,
+        height: `${8 * 5}px`,
         right: "2px",
         bottom: "2px",
         zIndex: "1000",
@@ -114,8 +114,8 @@ window.addEventListener("load", () => {
       type: "fdc3UserInterfaceRestyle",
       payload: {
         updatedCSS: {
-          width: `${8*4}px`,
-          height: `${8*5}px`,
+          width: `${8 * 4}px`,
+          height: `${8 * 5}px`,
           right: "2px",
           bottom: "2px",
           zIndex: "1000",

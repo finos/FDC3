@@ -110,7 +110,7 @@ export class DefaultIntentSupport implements IntentSupport {
                 context,
                 app: app
             },
-            meta
+            meta: meta
         }
 
         var resultPromise = this.createResultPromise(messageOut)
@@ -133,7 +133,7 @@ export class DefaultIntentSupport implements IntentSupport {
                 details.source,
                 details.intent
             )
-        } 
+        }
     }
 
     async raiseIntentForContext(context: Context, app?: AppIdentifier | undefined): Promise<IntentResolution> {
