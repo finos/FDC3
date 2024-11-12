@@ -5,7 +5,7 @@ import { CustomWorld } from '../world/index';
 import { BrowserTypes } from '@kite9/fdc3-schema';
 import { CHANNEL_STATE } from '@kite9/testing';
 import { ApiEvent } from '@kite9/fdc3-standard';
-import { ChannelChangedEvent } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { ChannelChangedEvent, PrivateChannelOnAddContextListenerEvent } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 type BroadcastEvent = BrowserTypes.BroadcastEvent
 type AgentResponseMessage = BrowserTypes.AgentResponseMessage
@@ -42,7 +42,7 @@ Given('{string} is a {string} context', function (this: CustomWorld, field: stri
   this.props[field] = contextMap[type];
 })
 
-Given('{string} is a {string} message on channel {string} with context {string}', function (this: CustomWorld, field: string, type: string, channel: string, context: string) {
+Given('{string} is a BroadcastEvent message on channel {string} with context {string}', function (this: CustomWorld, field: string, channel: string, context: string) {
   const message = {
     meta: {
       ...this.messaging!!.createEventMeta(),
@@ -51,7 +51,7 @@ Given('{string} is a {string} message on channel {string} with context {string}'
       "channelId": handleResolve(channel, this),
       "context": contextMap[context]
     },
-    type: type
+    type: 'broadcastEvent'
   } as BroadcastEvent
 
   this.props[field] = message;
@@ -97,15 +97,40 @@ Given('{string} is a channelChangedEvent message on channel {string}', function 
   this.props[field] = message;
 })
 
-Given('{string} is a {string} message on channel {string} with contextType as {string}', function (this: CustomWorld, field: string, type: string, channel: string, contextType: string) {
+Given('{string} is a PrivateChannelOnUnsubscribeEvent message on channel {string} with contextType as {string}', function (this: CustomWorld, field: string, channel: string, contextType: string) {
   const message = {
     meta: this.messaging!!.createEventMeta(),
     payload: {
       privateChannelId: handleResolve(channel, this),
       contextType
     },
-    type
+    type: 'privateChannelOnUnsubscribeEvent'
   } as PrivateChannelOnUnsubscribeEvent
+
+  this.props[field] = message;
+})
+
+Given('{string} is a PrivateChannelOnAddContextListenerEvent message on channel {string} with contextType as {string}', function (this: CustomWorld, field: string, channel: string, contextType: string) {
+  const message = {
+    meta: this.messaging!!.createEventMeta(),
+    payload: {
+      privateChannelId: handleResolve(channel, this),
+      contextType
+    },
+    type: 'privateChannelOnAddContextListenerEvent'
+  } as PrivateChannelOnAddContextListenerEvent
+
+  this.props[field] = message;
+})
+
+Given('{string} is a PrivateChannelOnDisconnectEvent message on channel {string}', function (this: CustomWorld, field: string, channel: string) {
+  const message = {
+    meta: this.messaging!!.createEventMeta(),
+    payload: {
+      privateChannelId: handleResolve(channel, this),
+    },
+    type: 'privateChannelOnDisconnectEvent'
+  } as PrivateChannelOnDisconnectEvent
 
   this.props[field] = message;
 })
