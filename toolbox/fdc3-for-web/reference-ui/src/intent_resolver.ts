@@ -6,8 +6,6 @@ const setup = (data: IframeResolvePayload, callback: (s: IframeResolveActionPayl
   document.body.setAttribute("data-visible", "true");
   document.querySelector("dialog")?.showModal();
 
-  console.log("setup data:", data);
-
   const intentSelect = document.getElementById("displayIntent") as HTMLSelectElement
 
   const justIntents = data.appIntents.map(({intent}) => intent)
@@ -51,8 +49,6 @@ const setup = (data: IframeResolvePayload, callback: (s: IframeResolveActionPayl
       action: "cancel"
     });
   });
-
-  console.log(document.body);
 }
 
 function createIcon(icons: Icon[] | undefined): HTMLElement {
@@ -166,9 +162,9 @@ window.addEventListener("load", () => {
       case "Fdc3UserInterfaceHandshake": {
         break;
       }
-      case "iframeResolve": {
+      case "IframeResolve": {
         myPort.postMessage({
-          type: "iframeRestyle",
+          type: "IframeRestyle",
           payload: {
             updatedCSS: {
               width: "100%",
@@ -183,12 +179,12 @@ window.addEventListener("load", () => {
         setup(data.payload, (s) => {
           document.querySelector("dialog")?.close();
           myPort.postMessage({
-            type: "iframeResolveAction",
+            type: "IframeResolveAction",
             payload: s
           });
 
           myPort.postMessage({
-            type: "fdc3UserInterfaceRestyle",
+            type: "Fdc3UserInterfaceRestyle",
             payload: {
               updatedCSS: {
                 width: "0",
@@ -203,7 +199,7 @@ window.addEventListener("load", () => {
   };
 
   parent.postMessage({
-    type: "fdc3UserInterfaceHello",
+    type: "Fdc3UserInterfaceHello",
     payload: {
       initialCSS: {
         width: "0",
