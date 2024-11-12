@@ -103,7 +103,8 @@ export class MockFDC3Server implements FDC3Server {
                     }
                 }
                 source.postMessage(message, origin, [details.externalPort])
-            });
+            }
+        );
     }
 }
 
