@@ -63,35 +63,46 @@ export class MockFDC3Server implements FDC3Server {
                 const source = event.source as Window
                 const origin = event.origin;
 
-                console.log("Received: " + JSON.stringify(event.data));
-                if (data.type == "WCP1Hello") {
-                    if (this.useIframe) {
-                        source.postMessage({
-                            type: "WCP2LoadUrl",
-                            meta: {
-                                connectionAttemptUuid: data.meta.connectionAttemptUuid,
-                                timestamp: new Date()
-                            },
-                            payload: {
-                                iframeUrl: EMBED_URL + "?connectionAttemptUuid=" + data.meta.connectionAttemptUuid
-                            }
-                        } as WebConnectionProtocol2LoadURL, origin)
-                    } else {
-                        const details = this.tsc.getMatchingInstance(data.payload.identityUrl)
-                        source.postMessage({
-                            type: "WCP3Handshake",
-                            meta: {
-                                connectionAttemptUuid: data.meta.connectionAttemptUuid,
-                                timestamp: new Date()
-                            },
-                            payload: {
-                                fdc3Version: "2.2",
-                                intentResolverUrl: INTENT_RESPOLVER_URL,
-                                channelSelectorUrl: CHANNEL_SELECTOR_URL,
-                            }
-                        } as WebConnectionProtocol3Handshake, origin, [details!!.externalPort])
+                if (data.type !== "WCP1Hello") {
+                    return
+                }
+
+                // Using an iframe
+                if (this.useIframe) {
+                    const message: WebConnectionProtocol2LoadURL = {
+                        type: "WCP2LoadUrl",
+                        meta: {
+                            connectionAttemptUuid: data.meta.connectionAttemptUuid,
+                            timestamp: new Date()
+                        },
+                        payload: {
+                            iframeUrl: EMBED_URL + "?connectionAttemptUuid=" + data.meta.connectionAttemptUuid
+                        }
+                    }
+                    source.postMessage(message, origin)
+                    return
+                }
+
+                // Not using an iframe
+                const details = this.tsc.getMatchingInstance(data.payload.identityUrl)
+
+                if(!details){
+                    throw new Error("Unable to find the matching instance. Handshake can not complete without other hand.")
+                }
+
+                const message = {
+                    type: "WCP3Handshake",
+                    meta: {
+                        connectionAttemptUuid: data.meta.connectionAttemptUuid,
+                        timestamp: new Date()
+                    },
+                    payload: {
+                        fdc3Version: "2.2",
+                        intentResolverUrl: INTENT_RESPOLVER_URL,
+                        channelSelectorUrl: CHANNEL_SELECTOR_URL,
                     }
                 }
+                source.postMessage(message, origin, [details.externalPort])
             });
     }
 }
