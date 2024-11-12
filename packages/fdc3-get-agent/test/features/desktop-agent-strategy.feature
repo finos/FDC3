@@ -2,7 +2,6 @@ Feature: Different Strategies for Accessing the Desktop Agent
 
   Background: Desktop Agent API
     Given a browser document in "document" and window in "window"
-  #  And Testing ends after "8000" ms
 
   Scenario: Running inside a Browser and using post message with direct message ports
     Given Parent Window desktop "da" listens for postMessage events in "{window}", returns direct message response
