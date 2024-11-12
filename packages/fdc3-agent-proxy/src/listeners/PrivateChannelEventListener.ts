@@ -1,8 +1,5 @@
 import { Messaging } from "../Messaging"
 import { AbstractListener } from "./AbstractListener"
-import { BrowserTypes } from "@kite9/fdc3-schema"
-
-type BroadcastEvent = BrowserTypes.BroadcastEvent
 
 type EVENT_TYPES_WITH_TYPE_HANDLER = "onAddContextListener" | "onUnsubscribe"
 export type EVENT_TYPES = EVENT_TYPES_WITH_TYPE_HANDLER | "onDisconnect"
@@ -28,8 +25,8 @@ abstract class AbstractPrivateChannelEventListener<X> extends AbstractListener<X
         this.listenerType = listenerType
     }
 
-    filter(m: BroadcastEvent) {
-        return (m.type == EVENT_NAMES[this.listenerType]) && (this.privateChannelId == (m.payload as any)?.privateChannelId); /* ISSUE: 1293 */
+    filter(m: any) {
+        return (m.type == EVENT_NAMES[this.listenerType]) && (this.privateChannelId == m.payload.privateChannelId);
     }
 
     abstract action(m: any): void
