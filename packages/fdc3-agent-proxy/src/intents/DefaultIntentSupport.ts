@@ -58,7 +58,7 @@ export class DefaultIntentSupport implements IntentSupport {
                 context,
                 resultType
             },
-            meta: this.messaging.createMeta() as any /* ISSUE: #1275 */
+            meta: this.messaging.createMeta()
         }
 
         const result = await this.messaging.exchange(messageOut, "findIntentResponse") as FindIntentResponse
@@ -79,7 +79,7 @@ export class DefaultIntentSupport implements IntentSupport {
             payload: {
                 context
             },
-            meta: this.messaging.createMeta() as AddContextListenerRequestMeta /* ISSUE: #1275 */
+            meta: this.messaging.createMeta()
         }
 
         const result = await this.messaging.exchange(messageOut, "findIntentsByContextResponse") as FindIntentsByContextResponse
@@ -111,7 +111,7 @@ export class DefaultIntentSupport implements IntentSupport {
                 context,
                 app: app
             },
-            meta: meta as any /* ISSUE: #1275 */
+            meta: meta
         }
 
         var resultPromise = this.createResultPromise(messageOut)
@@ -134,7 +134,7 @@ export class DefaultIntentSupport implements IntentSupport {
                 details.source,
                 details.intent
             )
-        } 
+        }
     }
 
     async raiseIntentForContext(context: Context, app?: AppIdentifier | undefined): Promise<IntentResolution> {
@@ -144,7 +144,7 @@ export class DefaultIntentSupport implements IntentSupport {
                 context,
                 app: app
             },
-            meta: this.messaging.createMeta() as any /* ISSUE: #1275 */
+            meta: this.messaging.createMeta()
         }
 
         const resultPromise = this.createResultPromise(messageOut)

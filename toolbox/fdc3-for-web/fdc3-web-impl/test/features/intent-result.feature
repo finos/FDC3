@@ -25,8 +25,6 @@ Feature: Intent Results Are Correctly Delivered
       | intentResultResponse      | {null}             | App1       | a1            | {null}                             | {null}                                         | {null}                                |
 
   Scenario: App Returns An Intent Response
-ISSUE: 1303 prevents the use of matches_type
-
     When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "LibraryApp/l1" with requestUuid "ABC123"
     When "LibraryApp/l1" sends a intentResultRequest with eventUuid "uuid7" and contextType "fdc3.book" and raiseIntentUuid "ABC123"
     Then messaging will have outgoing posts
@@ -47,8 +45,6 @@ ISSUE: 1303 prevents the use of matches_type
       | intentResultResponse      | {null}             | LibraryApp | l1            | {null}                             | {null}                                         | {null}                              |
 
   Scenario: App Returns A Void Intent Result
-  ISSUE: 1303 prevents the use of matches_type
-
     When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "LibraryApp/l1" with requestUuid "ABC123"
     When "LibraryApp/l1" sends a intentResultRequest with eventUuid "uuid7" and void contents and raiseIntentUuid "ABC123"
     Then messaging will have outgoing posts
