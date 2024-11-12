@@ -49,11 +49,11 @@ window.addEventListener("load", () => {
   myPort.onmessage = ({ data }) => {
     console.debug("Received message: ", data);
     switch (data.type) {
-      case "iframeHandshake": {
+      case "IframeHandshake": {
         collapse();
         break;
       }
-      case "fdc3UserInterfaceChannels": {
+      case "Fdc3UserInterfaceChannels": {
         logo.removeEventListener("click", expand);
         const { userChannels, selected } = data.payload as IframeChannelsPayload;
         fillChannels(userChannels, selected, (channelStr) => {
@@ -74,7 +74,7 @@ window.addEventListener("load", () => {
   };
 
   parent.postMessage({
-    type: "fdc3UserInterfaceHello",
+    type: "Fdc3UserInterfaceHello",
     payload: {
       initialCSS: {
         width: `${8 * 4}px`,
@@ -92,7 +92,7 @@ window.addEventListener("load", () => {
   const expand = () => {
     document.body.setAttribute("data-expanded", "true");
     myPort.postMessage({
-      type: "fdc3UserInterfaceRestyle",
+      type: "Fdc3UserInterfaceRestyle",
       payload: {
         updatedCSS: {
           width: `100%`,
@@ -109,7 +109,7 @@ window.addEventListener("load", () => {
 
   const collapse = () => {
     myPort.postMessage({
-      type: "fdc3UserInterfaceRestyle",
+      type: "Fdc3UserInterfaceRestyle",
       payload: {
         updatedCSS: {
           width: `${8 * 4}px`,
