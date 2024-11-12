@@ -100,6 +100,10 @@ export abstract class AbstractUIComponent implements Connectable {
         document.body.appendChild(this.container)
     }
 
+    private toKebabCase(str: String) {
+        return str.replace(/[A-Z]/g, (match) => "-" + match.toLowerCase());
+    }
+
     themeContainer(css: UpdatedCSS | InitialCSS) {
         if (!css) {
             return

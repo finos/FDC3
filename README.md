@@ -76,9 +76,9 @@ The specifications are informed by agreed [business use cases](https://fdc3.fino
 - All that is required is a "desktop agent" that supports the FDC3 standard, which is responsible for coordinating application interactions.
 - Get started using FDC3 on the web with TypeScript by reading the [supported platforms](https://fdc3.finos.org/docs/supported-platforms) page.
 
-### FDC3 npm module
+## FDC3 Project Structure
 
-FDC3 is now a monorepo containing the following modules:
+This project (the FDC3 Standard repo) is now a monorepo containing the following modules:
 
 | Directory                            | Release Coordinates                                    | Purpose                                                                                                                                                                                                                | Testing / Coverage    |
 |--------------------------------------|--------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------|
@@ -95,13 +95,13 @@ FDC3 is now a monorepo containing the following modules:
 | `toolbox/fdc3-for-web/demo`          | -not released-                                         | A reference implementation of an FDC3-For-The-Web Desktop Agent, using the above implementation and conforming to FDC3 2.0 from the  [FDC3 Conformance Framework](https://github.com/finos/FDC3-conformance-framework) |                       |
 | `packages/fdc3`                      | `@finos/fdc3` (npm)                                    | A complete roll-up of the `fdc3-agent-proxy`, `fdc3-context`, `fdc3-schema` and `fdc3-get-agent` sub-modules.  This is intended to be the main entry point for typescript / javascript applications using FDC3         |                       |
 
-#### Building and Running The FDC3 Modules
+### Building and Running The FDC3 Modules
 
 From the root package, you can run `npm run build` to build all the modules, or `npm run test` to run all the tests.  `npm run dev` will start the `demo` and `fdc3-workbench` modules.
 
 For installation and usage instructions, see: <https://fdc3.finos.org/docs/supported-platforms#usage>
 
-#### Bumping Version Numbers (for maintainers)
+### Bumping Version Numbers (for maintainers)
 
 It's important that all of the versions of the submodules stay on the same version, and that the references between them are consistent to that version.  To change the version number (say before or after a release) run the following:
 

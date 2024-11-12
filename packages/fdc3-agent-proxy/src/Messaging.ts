@@ -1,5 +1,6 @@
 import { Connectable, AppIdentifier, ImplementationMetadata } from "@kite9/fdc3-standard";
 import { RegisterableListener } from "./listeners/RegisterableListener";
+import { AddContextListenerRequestMeta } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
 export interface Messaging extends Connectable {
 
@@ -29,11 +30,7 @@ export interface Messaging extends Connectable {
      */
     unregister(id: string): void
 
-    /**
-     * The exact definition necessary for createMeta() is currently up in the air. See issue #1275.
-     * TODO: Use better typing.
-     */
-    createMeta(): any;
+    createMeta(): AddContextListenerRequestMeta
 
     /**
      * Waits for a specific matching message
