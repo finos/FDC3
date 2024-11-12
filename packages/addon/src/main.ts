@@ -83,20 +83,6 @@ const exampleResolverData: ResolverIntents = {
   appIntents: [
     {
       apps: [{
-        appId: "chartiq",
-        description: "Chart IQ is the most powerful charting library on the market",
-        icons: [{
-          src: "https://res.cloudinary.com/apideck/image/upload/v1561415965/catalog/chartiq/icon128x128.jpg"
-        }],
-        title: "ChartIQ"
-      }],
-      intent: {
-        name: "ViewChart",
-        displayName: "View Chart"
-      }
-    },
-    {
-      apps: [{
         appId: "trading-view-chart",
         description: "TradingView is a social network for traders and investors on Stock, Futures and Forex markets!",
         icons: [{
