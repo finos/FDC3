@@ -103,15 +103,19 @@ export abstract class AbstractUIComponent implements Connectable {
         document.body.appendChild(this.container)
     }
 
+    private toKebabCase(str: String) {
+        return str.replace(/[A-Z]/g, (match) => "-" + match.toLowerCase());
+    }
+
     themeContainer(css: UpdatedCSS | InitialCSS) {
         if (css) {
             for (let i = 0; i < ALLOWED_CSS_ELEMENTS.length; i++) {
                 const k = ALLOWED_CSS_ELEMENTS[i]
                 const value: string | undefined = css[(k as string)]
                 if (value != null) {
-                    this.container?.style.setProperty(k, value)
+                    this.container!.style[k] = value
                 } else {
-                    this.container?.style.removeProperty(k)
+                    delete this.container!.style[k]
                 }
             }
         }

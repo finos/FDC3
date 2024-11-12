@@ -132,8 +132,9 @@ export abstract class AbstractMessaging implements Messaging {
             },
             payload: {
                 identityUrl: this.options.identityUrl!!,
+                actualUrl
                 instanceUuid
-            } as any /* ISSUE: 1301 */
+            }
         }
 
         return requestMessage
