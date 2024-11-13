@@ -1,0 +1,44 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/joinUserChannelRequest.schema.json",
+	"type": "object",
+	"title": "JoinUserChannel Request",
+	"description": "Request to join the app to the specified User channel. On successfully joining a channel, client code should make subsequent requests to get the current context of that channel for all registered context listeners and then call their handlers with it.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/JoinUserChannelRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/JoinUserChannelRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"JoinUserChannelRequestType": {
+			"title": "JoinUserChannel Request Message Type",
+			"const": "joinUserChannelRequest"
+		},
+		"JoinUserChannelRequestPayload": {
+			"title": "JoinUserChannel Request Payload",
+			"type": "object",
+			"properties": {
+				"channelId": {
+					"title": "Channel Id",
+					"description": "The id of the channel to join.",
+					"type": "string"
+				}
+			},
+			"additionalProperties": false,
+			"required": ["channelId"]
+		}
+	}
+}

@@ -1,0 +1,67 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/getUserChannelsResponse.schema.json",
+	"type": "object",
+	"title": "GetUserChannels Response",
+	"description": "A response to a getUserChannels request.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/GetUserChannelsResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/GetUserChannelsSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/GetUserChannelsErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"GetUserChannelsResponseType": {
+			"title": "GetUserChannels Response Message Type",
+			"const": "getUserChannelsResponse"
+		},
+		"GetUserChannelsSuccessResponsePayload": {
+			"title": "GetUserChannels Response Payload",
+			"type": "object",
+			"properties": {
+				"userChannels": {
+					"type": "array",
+					"items": {
+						"$ref": "api.schema.json#/definitions/Channel"
+					}
+				}
+			},
+			"required": [
+				"userChannels"
+			],
+			"additionalProperties": false
+		},
+		"GetUserChannelsErrorResponsePayload": {
+			"title": "GetUserChannels Error Response Payload",
+			"type": "object",
+			"properties": {
+				"error": {
+					"$ref": "api.schema.json#/definitions/ChannelError"
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}
