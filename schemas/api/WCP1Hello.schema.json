@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json",
+  "title": "Web Connection Protocol 1 Hello",
+  "description": "Hello message sent by an application to a parent window or frame when attempting to establish connectivity to a Desktop Agent.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/WCP1HelloBase"
+    },
+    {
+      "$ref": "WCPConnectionStep.schema.json"
+    }
+  ],
+  "$defs": {
+    "WCP1HelloBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "WCP1Hello Message Type",
+          "const": "WCP1Hello"
+        },
+        "payload": {
+          "title": "WCP1Hello Payload",
+          "type": "object",
+          "properties": {
+            "identityUrl": {
+              "title": "Identity URL",
+              "description": "URL to use for the identity of the application. Desktop Agents MUST validate that the origin of the message matches the URL, but MAY implement custom comparison logic.",
+              "type": "string",
+              "format": "uri"
+            },
+            "actualUrl": {
+              "title": "Actual URL",
+              "description": "The current URL of the page attempting to connect. This may differ from the identityUrl, but the origins MUST match.",
+              "type": "string",
+              "format": "uri"
+            },
+            "fdc3Version": {
+              "title": "FDC3 version",
+              "description": "The version of FDC3 API that the app supports.",
+              "type": "string"
+            },
+            "intentResolver": {
+              "title": "Intent Resolver Required",
+              "description": "A flag that may be used to indicate that an intent resolver is or is not required. Set to `false` if no intents, or only targeted intents, are raised.",
+              "type": "boolean"
+            },
+            "channelSelector": {
+              "title": "Channel Selector Required",
+              "description": "A flag that may be used to indicate that a channel selector user interface is or is not required. Set to `false` if the app includes its own interface for selecting channels or does not work with user channels.",
+              "type": "boolean"
+            }
+          },
+          "required": ["identityUrl","actualUrl","fdc3Version"]
+        },
+        "meta": {
+          "$ref": "WCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"
+        }
+      },
+      "required": [ "type", "payload", "meta"],
+      "additionalProperties": false
+    }
+  }
+}

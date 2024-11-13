@@ -12,13 +12,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added requirement that Standard versions SHOULD avoid the use unions in context and API definitions wherever possible as these can be hard to replicate and MUST avoid unions of primitive types as these can be impossible to replicate in other languages. ([#120](https://github.com/finos/FDC3/pull/1200))
 * Added `addEventListener` to the `DesktopAgent` API to provide support for event listener for non-context and non-intent events, including a `userChannelChanged` event ([#1207](https://github.com/finos/FDC3/pull/1207))
 * Added an `async` `addEventListener` function to the `PrivateChannel` API to replace the deprecated, synchronous `onAddContextListener`, `onUnsubscribe` and `onDisconnect` functions and to keep consistency with the DesktopAgent API. ([#1305](https://github.com/finos/FDC3/pull/1305))
+* Added reference materials and supported platforms information for FDC3 in .NET via the [finos/fdc3-dotnet](https://github.com/finos/fdc3-dotnet) project. ([#1108](https://github.com/finos/FDC3/pull/1108))
+* Specifications for getAgent() and Browser-Resident Desktop Agents. ([#1191](https://github.com/finos/FDC3/pull/1191))
+* Specification for Preload Desktop Agents. This content was previously in the supported platforms section. It had been revised and amended to include recommended behavior related to the new validateAppIdentity() function. ([#1191](https://github.com/finos/FDC3/pull/1191))
+* Added optional validateAppIdentity() function to DesktopAgent interface. ([#1191](https://github.com/finos/FDC3/pull/1191))
+* Typescript definitions for getAgent() and related types. ([#1191](https://github.com/finos/FDC3/pull/1191))
+* Typescript definitions for Desktop Agent Communication Protocol (DACP). These constitute the internal "wire protocol" that the "@finos/fdc3" library uses to communicate with Browser-Resident DAs. ([#1191](https://github.com/finos/FDC3/pull/1191))
+* Typescript definitions for Web Connection Protocol (WCP). These constitute the messages used to establish connectivity between "@finos/fdc3" and a Browser-Resident DA. ([#1191](https://github.com/finos/FDC3/pull/1191))
 * Added support for broadcast actions to the `fdc3.action` context type, allowing an Action to represent the broadcast of a specified context to an app or user channel. ([#1368](https://github.com/finos/FDC3/pull/1368))
 
 ### Changed
 
+* `window.fdc3` is now an optional property and may or may not be defined. Applications should now use `getAgent()` as the recommended way of retrieving a reference to the FDC3 API. ([#1386](https://github.com/finos/FDC3/pull/1386))
 * `Listener.unsubscribe()` was made async (the return type was changed from `void` to `Promise<void>`) for consistency with the rest of the API. ([#1305](https://github.com/finos/FDC3/pull/1305))
 * Added reference materials and supported platforms information for FDC3 in .NET via the [finos/fdc3-dotnet](https://github.com/finos/fdc3-dotnet) project. ([#1108](https://github.com/finos/FDC3/pull/1108))
 * The supported platforms page in the FDC3 documentation was moved into the API section as the information it provides all relates to FDC3 Desktop Agent API implementations. ([#1108](https://github.com/finos/FDC3/pull/1108))
+* FDC3 apps are now encouraged to instantiate their FDC3 interface (DesktopAgent) using the `getAgent()` function provided by the `@finos/fdc3` module. This will allow apps to interoperate in either traditional Preload DAs (i.e. Electron) as well as the new Browser-Resident DAs. ([#1191](https://github.com/finos/FDC3/pull/1191))
 
 ### Deprecated
 
@@ -71,7 +80,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Updated definition of the `otherConfig` element of the `Chart` context type from an Object to an array of Contexts as this allows the `type` of each additional item of config to be examined before it is used ([#985](https://github.com/finos/FDC3/pull/985))
 * Corrected the appD `interop.appChannels` metadata to use an `id` field to identify channels, rather than `name` ([#981](https://github.com/finos/FDC3/pull/981))
 * The App Directory OpenAPI schema was converted from YAML to JSON Schema, containing the same definitions. ([#1035](https://github.com/finos/FDC3/pull/1035))
-* Switched to union types (from enums) for constrained string values in generated source files as they provide better type checking and cross-compatability of types. ([#1093](https://github.com/finos/FDC3/pull/1093))
+* Switched to union types (from enums) for constrained string values in generated source files as they provide better type checking and cross-compatibility of types. ([#1093](https://github.com/finos/FDC3/pull/1093))
 
 ### Deprecated
 
@@ -87,7 +96,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Further clarified the difference between the behavior of User channels and other channel types on joinUserChannel/addContextListener. ([#971](https://github.com/finos/FDC3/pull/971))
 * Clarified description of the behavior of `IntentResolution.getResult()` when the intent handler returned void (which is not an error). ([#1004](https://github.com/finos/FDC3/pull/1004))
 * An error was fixed in the appD schema where launch details sub-schemas were combined with `oneOf`, rather than `anyOf`. This causes validation errors for web or online native apps as their details elements overlap on a `url` field. ([#1034](https://github.com/finos/FDC3/pull/1034))
-* The appD `icon` and `screenshot` sub-schemas were updated to require the `src` value is set and restrict additional values, ensuring that common mistakes (such as ussing a `url` rather than `src` field are caught by the schemas when used to validate. ([#1037](https://github.com/finos/FDC3/pull/1037))
+* The appD `icon` and `screenshot` sub-schemas were updated to require the `src` value is set and restrict additional values, ensuring that common mistakes (such as using a `url` rather than `src` field are caught by the schemas when used to validate. ([#1037](https://github.com/finos/FDC3/pull/1037))
 * Linting, spell checking other corrections were applied to markdown syntax throughout the FDC3 documentation ([#1032](https://github.com/finos/FDC3/pull/1032))
 * Corrected bad example URLs in the App Directory overview/discovery page in the current and past versions as they did not agree with the paths provided in the API specification and OpenAPI schema.  ([#1060](https://github.com/finos/FDC3/pull/1060))
 
@@ -115,8 +124,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added a field to specify the Context type that intent can return to the AppD Application schema and extended the findIntent API calls to be able to use it for resolution. ([#499](https://github.com/finos/FDC3/pull/499))
 * Added the ability to return a Channel from an intent (via the `IntentResult` type), resolver support for intents that return Channels and the concept of PrivateChannels. ([#508](https://github.com/finos/FDC3/pull/508))
 * Added error `UserCancelled` to the `ResolveError` enumeration to be used when user closes the resolver UI or otherwise cancels resolution of a raised intent ([#522](https://github.com/finos/FDC3/pull/522))
-* Added `IntentDeliveryFailed` to the `ResolveError` enumeration to be used when delivery of an intent and context to a targetted app or instance fails. ([#601](https://github.com/finos/FDC3/pull/601))
-* Added an `instanceId` (and optional `instanceMetadata`) field to `AppMetadata` allowing it to refer to specific app instances and thereby supporting targetting of intents to specific app instances. Also added a `findInstances()` function to the desktop agent and `TargetAppUnavailable` and `TargetInstanceUnavailable` Errors to the `ResolveError` enumeration. ([#509](https://github.com/finos/FDC3/pull/509))
+* Added `IntentDeliveryFailed` to the `ResolveError` enumeration to be used when delivery of an intent and context to a targeted app or instance fails. ([#601](https://github.com/finos/FDC3/pull/601))
+* Added an `instanceId` (and optional `instanceMetadata`) field to `AppMetadata` allowing it to refer to specific app instances and thereby supporting targeting of intents to specific app instances. Also added a `findInstances()` function to the desktop agent and `TargetAppUnavailable` and `TargetInstanceUnavailable` Errors to the `ResolveError` enumeration. ([#509](https://github.com/finos/FDC3/pull/509))
 * Added a References and Bibliography section to the Standard's documentation to hold links to 'normative references' and other documentation that is useful for understanding the standard ([#530](https://github.com/finos/FDC3/pull/530))
 * Added a Trademarks page to website to acknowledge trademarks used within the Standard not owned by FINOS or the Linux Foundation ([#534](https://github.com/finos/FDC3/pull/534))
 * Added details of FDC3's existing versioning and deprecation policies to the FDC3 compliance page ([#539](https://github.com/finos/FDC3/pull/539))
@@ -144,7 +153,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added `categories` field and recommended categories list to AppD application records to enable category based browsing of AppDs ([#673](https://github.com/finos/FDC3/pull/673))
 * Added an `interop` field to AppD application records, replacing the `intents` field, to more fully describe an app's use of FDC3 and enable search for apps that 'interoperate' with a selected app ([#697](https://github.com/finos/FDC3/pull/697))
 * Added `AppIdentifier` type, which is a new parent of `AppMetadata` and clarifies required fields for API call parameters which now prefer `appId` and `instanceId` over `name` ([#722](https://github.com/finos/FDC3/pull/722))
-* Added a `getAppMetdata()` function to the desktop agent that can be used to retrieve the full `AppMetadata` for an `AppIdentifier` and reduced types such as `IntentResolution.source` and `ContextMetadata.source` from `AppMetadata` to `AppIdentifier` to clarify what fields a developer can rely on and that they should manually retrieve the full `AppMetadata` when they need it for display purposes. ([#751](https://github.com/finos/FDC3/pull/751))
+* Added a `getAppMetadata()` function to the desktop agent that can be used to retrieve the full `AppMetadata` for an `AppIdentifier` and reduced types such as `IntentResolution.source` and `ContextMetadata.source` from `AppMetadata` to `AppIdentifier` to clarify what fields a developer can rely on and that they should manually retrieve the full `AppMetadata` when they need it for display purposes. ([#751](https://github.com/finos/FDC3/pull/751))
 
 ### Changed
 
@@ -249,7 +258,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 * Build an npm package with exported TypeScript typings for API, Context Data and `window.fdc3` global ([#252](https://github.com/finos/FDC3/pull/252))
-* Export helper enums for names of standardised `Intents` and `ContextTypes` ([#264](https://github.com/finos/FDC3/pull/264))
+* Export helper enums for names of standardized `Intents` and `ContextTypes` ([#264](https://github.com/finos/FDC3/pull/264))
 * Export API operations as ES6 functions that can be directly imported ([#266](https://github.com/finos/FDC3/pull/266))
 * Check for the existence of `window.fdc3` in ES6 functions, and reject or throw if not defined ([#356](https://github.com/finos/FDC3/pull/356))
 
@@ -319,13 +328,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 * General cleanup of spelling, grammar and punctuation ([#34](https://github.com/finos/FDC3/pull/34))
-* Use cases callout on website landing page ([#54](https://github.com/finos/FDC3/pull/54))
+* Use cases call-out on website landing page ([#54](https://github.com/finos/FDC3/pull/54))
 * Proofreading of docs ([#62](https://github.com/finos/FDC3/pull/62))
 
 ### Fixed
 
 * Remove unnecessary dates from use case file names ([#41](https://github.com/finos/FDC3/pull/41))
-* Header colouring on responsive website ([#56](https://github.com/finos/FDC3/pull/56))
+* Header coloring on responsive website ([#56](https://github.com/finos/FDC3/pull/56))
 * Workflow numbers in Use Case 1 ([#60](https://github.com/finos/FDC3/pull/60))
 * Examples in Intent Overview ([#65](https://github.com/finos/FDC3/pull/65))
 * Errors in DesktopAgent API Reference ([#66](https://github.com/finos/FDC3/pull/66))

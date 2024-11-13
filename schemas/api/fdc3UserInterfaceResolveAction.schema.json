@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceResolveAction.schema.json",
+  "title": "Fdc3 UserInterface Resolve Action",
+  "description": "Message from an intent resolver UI to DA proxy code in getAgent() reporting a user action.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/Fdc3UserInterfaceResolveActionBase"
+    },
+    {
+      "$ref": "fdc3UserInterfaceMessage.schema.json"
+    }
+  ],
+  "$defs": {
+    "Fdc3UserInterfaceResolveActionBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Fdc3 UserInterface ResolveAction Message Type",
+          "const": "Fdc3UserInterfaceResolveAction"
+        },
+        "payload": {
+          "oneOf": [
+            { "$ref": "#/$defs/Fdc3UserInterfaceResolveActionPayload"},
+            { "$ref": "#/$defs/Fdc3UserInterfaceResolveCancelPayload"}
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    "Fdc3UserInterfaceResolveActionPayload": {
+      "title": "Fdc3 UserInterface Resolve Action Payload",
+      "type": "object",
+      "properties": {
+        "intent": {
+          "title": "Intent name",
+          "type": "string",
+          "description": "The intent resolved."
+        },
+        "appIdentifier": {
+          "title": "AppIdentifier",
+          "description": "The App resolution option chosen.",
+          "$ref": "api.schema.json#/definitions/AppIdentifier"
+        },
+        "action": {
+          "anyOf": [
+            {
+              "type": "string",
+              "const": "hover"
+            },
+            {
+              "type": "string",
+              "const": "click"
+            }
+          ]
+        }
+      },
+      "required": [
+        "intent",
+        "appIdentifier",
+        "action"
+      ],
+      "additionalProperties": false
+    },
+    "Fdc3UserInterfaceResolveCancelPayload": {
+      "title": "Fdc3 UserInterface Resolve Cancel Payload",
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "const": "cancel"
+        }
+      },
+      "required": [
+        "action"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

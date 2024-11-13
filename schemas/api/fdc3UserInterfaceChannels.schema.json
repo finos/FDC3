@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceChannels.schema.json",
+  "title": "Fdc3 UserInterface Channels",
+  "description": "Setup message sent by the DA proxy code in getAgent() to a channel selector UI in an iframe with the channel definitions and current channel selection.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/Fdc3UserInterfaceChannelsBase"
+    },
+    {
+      "$ref": "fdc3UserInterfaceMessage.schema.json"
+    }
+  ],
+  "$defs": {
+    "Fdc3UserInterfaceChannelsBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Fdc3 UserInterface Channels Message Type",
+          "const": "Fdc3UserInterfaceChannels"
+        },
+        "payload": {
+          "title": "Fdc3 UserInterface Channels Payload",
+          "type": "object",
+          "properties": {
+            "userChannels": {
+              "title": "User Channels",
+              "description": "User Channel definitions.```````s",
+              "type": "array",
+              "items": {
+                "$ref": "api.schema.json#/definitions/Channel"
+              }
+            },
+            "selected": {
+              "title": "Selected Channel",
+              "description": "The id of the channel that should be currently selected, or `null` if none should be selected.",
+              "oneOf": [
+                {"type": "string"}, {"type": "null"}
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": ["userChannels", "selected"]
+        }
+      },
+      "required": [
+        "type",
+        "payload"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
+
