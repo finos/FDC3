@@ -1,0 +1,63 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/broadcastEvent.schema.json",
+	"type": "object",
+	"title": "broadcast Event",
+	"description": "An event message from the Desktop Agent to an app indicating that context has been broadcast on a channel it is listening to, or specifically to this app instance if it was launched via `fdc3.open` and context was passed.",
+	"allOf": [
+		{
+			"$ref": "agentEvent.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/BroadcastEventType"
+				},
+				"payload": {
+					"$ref": "#/$defs/BroadcastEventPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"BroadcastEventType": {
+			"title": "Broadcast Event Message Type",
+			"const": "broadcastEvent"
+		},
+		"BroadcastEventPayload": {
+			"title": "broadcast Event Payload",
+			"type": "object",
+			"properties": {
+				"channelId": {
+					"title": "channel Id",
+					"description": "The Id of the channel that the broadcast was sent on. May be `null` if the context is being broadcast due to a call `fdc3.open` that passed context.",
+					"oneOf": [
+						{
+							"type": "string"
+						},
+						{
+							"type": "null"
+						}
+					]
+				},
+				"context": {
+					"$ref": "../context/context.schema.json",
+					"title": "Context",
+					"description": "The context object that was broadcast."
+				},
+				"originatingApp": {
+					"title": "Originating AppIdentifier",
+					"description": "Details of the application instance that broadcast the context.",
+					"$ref": "api.schema.json#/definitions/AppIdentifier"
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"channelId", "context"
+			]
+		}
+	}
+}

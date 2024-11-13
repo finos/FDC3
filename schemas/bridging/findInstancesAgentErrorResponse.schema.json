@@ -18,23 +18,10 @@
       "description": "A response to a findInstances request that contains an error.",
       "properties": {
         "type": {
-          "title": "FindInstances Response Message Type",
-          "const": "findInstancesResponse"
+          "$ref": "../api/findInstancesResponse.schema.json#/$defs/FindInstancesResponseType"
         },
         "payload": {
-          "title": "FindInstances Error Response Payload",
-          "type": "object",
-          "properties": {
-            "error": {
-              "title": "FindInstances Error Message",
-              "oneOf": [
-                { "$ref": "../api/api.schema.json#/definitions/ResolveError" },
-                { "$ref": "../api/api.schema.json#/definitions/BridgingError" }
-              ]
-            }
-          },
-          "required": ["error"],
-          "additionalProperties": false
+          "$ref": "../api/findInstancesResponse.schema.json#/$defs/FindInstancesErrorResponsePayload"
         },
         "meta": {
           "title": "FindInstances Response Metadata",

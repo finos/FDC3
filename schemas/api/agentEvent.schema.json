@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/agentEvent.schema.json",
+  "title": "Agent Event Message",
+  "type": "object",
+  "description": "A message from a Desktop Agent to an FDC3-enabled app representing an event.",
+  "properties": {
+    "type": {
+      "title": "Event Message Type",
+      "type": "string",
+      "enum": [
+        "addEventListenerEvent",
+        "broadcastEvent",
+        "channelChangedEvent",
+        "heartbeatEvent",
+        "intentEvent",
+        "privateChannelOnAddContextListenerEvent",
+        "privateChannelOnDisconnectEvent",
+        "privateChannelOnUnsubscribeEvent"
+      ],
+      "description": "Identifies the type of the message and it is typically set to the FDC3 function name that the message relates to, e.g. 'findIntent', with 'Response' appended."
+    },
+    "payload": {
+      "title": "Event Payload",
+      "type": "object",
+      "description": "The message payload contains details of the event that the app is being notified about.",
+      "additionalProperties": true
+    },
+    "meta": {
+      "title": "Event Metadata",
+      "description": "Metadata for messages sent by a Desktop Agent to an app notifying it of an event.",
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        },
+        "eventUuid": {
+          "$ref": "common.schema.json#/$defs/EventUuid"
+        }
+      },
+      "required": ["timestamp", "eventUuid"],
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "required": ["type", "payload", "meta"]
+}

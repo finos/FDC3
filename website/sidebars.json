@@ -16,6 +16,7 @@
         "items": [
           "api/spec",
           "api/supported-platforms",
+          "api/ref/GetAgent",
           "api/ref/DesktopAgent",
           "api/ref/Channel",
           "api/ref/PrivateChannel",
@@ -23,6 +24,16 @@
           "api/ref/Metadata",
           "api/ref/Errors",
           "api/ref/Events",
+          {
+            "type": "category",
+            "label": "Desktop Agent Specs",
+            "items": [
+              "api/specs/preloadDesktopAgents",
+              "api/specs/browserDesktopAgents",
+              "api/specs/webConnectionProtocol",
+              "api/specs/desktopAgentCommunicationProtocol"
+            ]
+          },
           {
             "type": "category",
             "label": "Conformance Tests",

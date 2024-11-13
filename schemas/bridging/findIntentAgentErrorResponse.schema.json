@@ -18,23 +18,10 @@
       "description": "A response to a findIntent request that contains an error.",
       "properties": {
         "type": {
-          "title": "FindIntent Response Message Type",
-          "const": "findIntentResponse"
+          "$ref": "../api/findIntentResponse.schema.json#/$defs/FindIntentResponseType"
         },
         "payload": {
-          "title": "FindIntent Error Response Payload",
-          "type": "object",
-          "properties": {
-            "error": {
-              "title": "FindIntent Error Message",
-              "oneOf": [
-                { "$ref": "../api/api.schema.json#/definitions/ResolveError" },
-                { "$ref": "../api/api.schema.json#/definitions/BridgingError" }
-              ]
-            }
-          },
-          "required": ["error"],
-          "additionalProperties": false
+          "$ref": "../api/findIntentResponse.schema.json#/$defs/FindIntentErrorResponsePayload"
         },
         "meta": {
           "title": "FindIntent Response Metadata",

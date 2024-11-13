@@ -18,23 +18,10 @@
       "description": "A response to a findIntentsByContext request that contains an error.",
       "properties": {
         "type": {
-          "title": "FindIntentsByContext Response Message Type",
-          "const": "findIntentsByContextResponse"
+          "$ref": "../api/findIntentsByContextResponse.schema.json#/$defs/FindIntentsByContextResponseType"
         },
         "payload": {
-          "title": "FindIntentsByContext Error Response Payload",
-          "type": "object",
-          "properties": {
-            "error": {
-              "title": "FindIntentsByContext Error Message",
-              "oneOf": [
-                { "$ref": "../api/api.schema.json#/definitions/ResolveError" },
-                { "$ref": "../api/api.schema.json#/definitions/BridgingError" }
-              ]
-            }
-          },
-          "additionalProperties": false,
-          "required": ["error"]
+          "$ref": "../api/findIntentsByContextResponse.schema.json#/$defs/FindIntentsByContextErrorResponsePayload"
         },
         "meta": {
           "title": "FindIntentsByContext Response Metadata",

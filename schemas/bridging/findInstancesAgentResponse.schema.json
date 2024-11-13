@@ -18,27 +18,12 @@
       "description": "A response to a findInstances request.",
       "properties": {
         "type": {
-          "title": "FindInstances Response Message Type",
-          "const": "findInstancesResponse"
+          "$ref": "../api/findInstancesResponse.schema.json#/$defs/FindInstancesResponseType"
         },
         "payload": {
-          "title": "FindInstances Response Payload",
-          "type": "object",
-          "properties": {
-            "appIdentifiers": {
-              "type": "array",
-              "items": {
-                "$ref": "../api/api.schema.json#/definitions/AppMetadata"
-              }
-            }
-          },
-          "required": ["appIdentifiers"],
-          "additionalProperties": false
+          "$ref": "../api/findInstancesResponse.schema.json#/$defs/FindInstancesSuccessResponsePayload"
         },
-        "meta": {
-          "title": "FindInstances Response Metadata",
-          "type": "object"
-        }
+        "meta": true
       },
       "additionalProperties": false
     }

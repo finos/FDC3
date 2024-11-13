@@ -1,0 +1,46 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityFailedResponse.schema.json",
+  "title": "Web Connection Protocol 5 Validate App Identity Failed Response",
+  "description": "Message sent by the Desktop Agent to an app if their identity validation fails.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/WCP5ValidateAppIdentityFailedResponseBase"
+    },
+    {
+      "$ref": "WCPConnectionStep.schema.json"
+    }
+  ],
+  "$defs": {
+    "WCP5ValidateAppIdentityFailedResponseBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "WCP5ValidateAppIdentityFailedResponse Message Type",
+          "const": "WCP5ValidateAppIdentityFailedResponse"
+        },
+        "payload": {
+          "title": "WCP5ValidateAppIdentityFailedResponse Payload",
+          "type": "object",
+          "properties": {
+            "message": {
+              "title": "Identity Validation failed message",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "meta": {
+          "$ref": "WCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"
+        }
+      },
+      "required": [
+        "type",
+        "payload",
+        "meta"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
