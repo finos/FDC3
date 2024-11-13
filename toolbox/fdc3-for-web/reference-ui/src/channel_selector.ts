@@ -1,6 +1,5 @@
 import { IframeChannelsPayload, Channel } from "@kite9/fdc3-common";
-
-
+import { Fdc3UserInterfaceHello, Fdc3UserInterfaceRestyle } from "@kite9/fdc3-schema/dist/generated/api/BrowserTypes";
 
 const fillChannels = (data: Channel[], selected: string | null, messageClickedChannel: (s: string | null) => void) => {
   const list = document.getElementById('list')!!;
@@ -73,9 +72,10 @@ window.addEventListener("load", () => {
     }
   };
 
-  parent.postMessage({
+  const helloMessage: Fdc3UserInterfaceHello = {
     type: "Fdc3UserInterfaceHello",
     payload: {
+      implementationDetails: "",
       initialCSS: {
         width: `${8 * 4}px`,
         height: `${8 * 5}px`,
@@ -87,28 +87,30 @@ window.addEventListener("load", () => {
 
       }
     }
-  }, "*", [mc.port2]);
+  }
+  parent.postMessage(helloMessage, "*", [mc.port2]);
 
   const expand = () => {
     document.body.setAttribute("data-expanded", "true");
-    myPort.postMessage({
+    const restyleMessage: Fdc3UserInterfaceRestyle = {
       type: "Fdc3UserInterfaceRestyle",
       payload: {
         updatedCSS: {
           width: `100%`,
           height: `100%`,
-          top: 0,
-          left: 0,
+          top: "0",
+          left: "0",
           zIndex: "1000",
           "z-index": "1000",
           position: "fixed"
         }
       }
-    });
+    }
+    myPort.postMessage(restyleMessage);
   }
 
   const collapse = () => {
-    myPort.postMessage({
+    const restyleMessage: Fdc3UserInterfaceRestyle = {
       type: "Fdc3UserInterfaceRestyle",
       payload: {
         updatedCSS: {
@@ -121,7 +123,8 @@ window.addEventListener("load", () => {
           position: "fixed"
         }
       }
-    });
+    }
+    myPort.postMessage(restyleMessage);
 
     // If you immediately change to the logo, before the iframe has a chance to finish restyling,
     // you see a flicker of a giant, colored logo.
