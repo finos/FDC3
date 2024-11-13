@@ -76,14 +76,6 @@ The FDC3 Standards include a set of [definitions for conformance tests](api/conf
 
 The current set of tests focus on the Desktop Agent API and the interface to it. Tests are not yet defined for the App Directory API or Bridging API Parts of the FDC3 Standard, hence, conformance to those parts of the Standard must be determined manually.
 
-:::warning
-
-Additions to the conformance tests for functionality introduced in FDC3 2.2 are still to be defined.
-
-Further, as FDC3 2.1 does not introduce changes to the Desktop Agent API, the conformance test set for FDC3 2.0 remains current at this time. Please see the [FDC3 2.1 Changelog entry](https://github.com/finos/FDC3/blob/main/CHANGELOG.md#fdc3-standard-21---2023-09-13) for more details.
-
-:::
-
 The FDC3 Conformance tests are implemented for JavaScript/TypeScript web applications by the [FDC3 Conformance Framework](https://github.com/finos/FDC3-conformance-framework). Desktop Agent implementors working with web interfaces (Desktop Agent Preload or Desktop Agent Proxy) can clone the conformance framework and run the tests locally to determine if their agent is compliant with the Standard.
 
 Once a Desktop Agent has passed the conformance tests locally, its authors can [apply for a formal certification of compliance with the Standard from FINOS](https://github.com/finos/FDC3-conformance-framework/blob/main/instructions.md). Please note the [Terms and Conditions](https://github.com/finos/FDC3-conformance-framework/blob/main/terms-conditions/FDC3-Certified-Terms.md) of the Conformance Program.
