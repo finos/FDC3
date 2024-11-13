@@ -350,7 +350,7 @@ function retrieveTitleFromSchemaData(schemaData, pathInSchema) {
 }
 
 function parseSchemaFolder(schemaFolderName) {
-    const schemaFolder = `./static/schemas/2.1/${schemaFolderName}`;
+    const schemaFolder = `./static/schemas/next/${schemaFolderName}`;
     
     console.debug("Parsing schema folder: ", schemaFolder);
 
