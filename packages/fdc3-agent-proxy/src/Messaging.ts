@@ -1,6 +1,6 @@
 import { Connectable, AppIdentifier, ImplementationMetadata } from "@kite9/fdc3-standard";
 import { RegisterableListener } from "./listeners/RegisterableListener";
-import { AddContextListenerRequest, AddContextListenerRequestMeta } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
+import { AddContextListenerRequestMeta } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
 export interface Messaging extends Connectable {
 

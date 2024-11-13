@@ -141,58 +141,6 @@
             "version": "1.0.0",
             "publisher": "FINOS",
             "icons": []
-        },
-        {
-            "appId": "grid",
-            "name": "grid",
-            "title": "AG-Grid",
-            "type": "web",
-            "details": {
-                "url": "http://localhost:8095/static/ag-grid/index.html"
-            },
-            "interop": {
-                "intents": {
-                    "raises": {
-                        "ViewChart": [
-                            "fdc3.instrument"
-                        ]
-                    }
-                },
-                "userChannels": {
-                    "broadcasts": [
-                        "fdc3.instrument"
-                    ],
-                    "listensFor": [
-                        "fdc3.instrument"
-                    ]
-                }
-            }
-        },
-        {
-            "appId": "chartiq",
-            "name": "chartiq",
-            "title": "ChartIQ",
-            "type": "web",
-            "details": {
-                "url": "http://localhost:8095/static/chartiq/index.html"
-            },
-            "interop": {
-                "intents": {
-                    "listensFor": {
-                        "ViewChart": {
-                            "displayName": "View Chart",
-                            "contexts": [
-                                "fdc3.instrument"
-                            ]
-                        }
-                    }
-                },
-                "userChannels": {
-                    "broadcasts": [
-                        "fdc3.instrument"
-                    ]
-                }
-            }
         }
     ],
     "message": "OK"
