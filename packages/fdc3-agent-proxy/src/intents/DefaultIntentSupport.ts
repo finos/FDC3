@@ -11,7 +11,6 @@ import { Context } from "@kite9/fdc3-context";
 type RaiseIntentForContextRequest = BrowserTypes.RaiseIntentForContextRequest
 type RaiseIntentForContextResponse = BrowserTypes.RaiseIntentForContextResponse
 type FindIntentResponse = BrowserTypes.FindIntentResponse
-type AddContextListenerRequestMeta = BrowserTypes.AddContextListenerRequestMeta
 type FindIntentsByContextRequest = BrowserTypes.FindIntentsByContextRequest
 type FindIntentsByContextResponse = BrowserTypes.FindIntentsByContextResponse
 type RaiseIntentRequest = BrowserTypes.RaiseIntentRequest

@@ -8,7 +8,7 @@ type IframeHello = BrowserTypes.Fdc3UserInterfaceHello
 
 const DEFAULT_COLLAPSED_CSS = {
     position: "fixed",
-    'z-index': 1000,
+    zIndex: 1000,
     right: "0",
     bottom: "0",
     width: "0",
@@ -33,7 +33,6 @@ window.addEventListener("load", () => {
 
     const list = document.getElementById("intent-list")!!
 
-    // ISSUE: 1302
     parent.postMessage({
         type: "fdc3UserInterfaceHello",
         payload: {

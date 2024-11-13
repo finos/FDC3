@@ -10,7 +10,7 @@ var channelId: string | null = null
 
 const DEFAULT_COLLAPSED_CSS = {
     position: "fixed",
-    'z-index': 1000,
+    zIndex: 1000,
     right: "10px",
     bottom: "10px",
     width: "50px",
@@ -39,7 +39,6 @@ window.addEventListener("load", () => {
     myPort.start()
 
 
-    // ISSUE: 1302
     parent.postMessage({
         type: "fdc3UserInterfaceHello",
         payload: {

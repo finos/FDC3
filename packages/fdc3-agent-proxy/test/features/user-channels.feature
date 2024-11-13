@@ -4,8 +4,8 @@ Feature: Basic User Channels Support
     Given User Channels one, two and three
     Given schemas loaded
     Given A Desktop Agent in "api"
-    Given "instrumentMessageOne" is a "broadcastEvent" message on channel "one" with context "fdc3.instrument"
-    Given "countryMessageOne" is a "broadcastEvent" message on channel "one" with context "fdc3.country"
+    Given "instrumentMessageOne" is a BroadcastEvent message on channel "one" with context "fdc3.instrument"
+    Given "countryMessageOne" is a BroadcastEvent message on channel "one" with context "fdc3.country"
     Given "instrumentContext" is a "fdc3.instrument" context
     Given "userChannelMessage1" is a channelChangedEvent message on channel "one"
     Given "userChannelMessage2" is a channelChangedEvent message on channel "two"

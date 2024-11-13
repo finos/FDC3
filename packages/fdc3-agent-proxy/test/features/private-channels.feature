@@ -6,7 +6,7 @@ Feature: Basic Private Channels Support
     And A Desktop Agent in "api"
     And I call "{api}" with "createPrivateChannel"
     And I refer to "{result}" as "privateChannel"
-    And "instrumentMessageOne" is a "broadcastEvent" message on channel "{privateChannel.id}" with context "fdc3.instrument"
+    And "instrumentMessageOne" is a BroadcastEvent message on channel "{privateChannel.id}" with context "fdc3.instrument"
 
   Scenario: Adding and then unsubscribing a context listener will send a notification of each event to the agent
     Given "contextHandler" pipes context to "context"
@@ -38,7 +38,7 @@ Feature: Basic Private Channels Support
       | privateChannelUnsubscribeEventListenerRequest | {null}               | {null}                   | {theListener.id}     | privateChannelUnsubscribeEventListenerRequest |
 
   Scenario: Adding an "onAddContextListener" on a given Private Channel to receive a notification
-    Given "onAddContextListenerMessage" is a "privateChannelOnAddContextListenerEvent" message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
+    Given "onAddContextListenerMessage" is a PrivateChannelOnAddContextListenerEvent message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
     And "typesHandler" pipes events to "types"
     When I call "{privateChannel}" with "addEventListener" with parameters "addContextListener" and "{typesHandler}"
     And we wait for a period of "100" ms
@@ -59,7 +59,7 @@ Feature: Basic Private Channels Support
       | privateChannelUnsubscribeEventListenerRequest | {null}               | {null}                   | {theListener.id}     | privateChannelUnsubscribeEventListenerRequest |
 
   Scenario: Adding an "onUnsubscribe" on a given Private Channel to receive a notification
-    Given "onUnsubscribeListenerMessage" is a "privateChannelOnUnsubscribeEvent" message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
+    Given "onUnsubscribeListenerMessage" is a PrivateChannelOnUnsubscribeEvent message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
     And "typesHandler" pipes events to "types"
     When I call "{privateChannel}" with "addEventListener" with parameters "unsubscribe" and "{typesHandler}"
     And we wait for a period of "100" ms
@@ -80,7 +80,7 @@ Feature: Basic Private Channels Support
       | privateChannelUnsubscribeEventListenerRequest | {null}               | {null}                   | {theListener.id}     | privateChannelUnsubscribeEventListenerRequest |
 
   Scenario: Adding an "onDisconnect" on a given Private Channel to receive a notification
-    Given "onDisconnectListenerMessage" is a "privateChannelOnDisconnectEvent" message on channel "{privateChannel.id}"
+    Given "onDisconnectListenerMessage" is a PrivateChannelOnDisconnectEvent message on channel "{privateChannel.id}"
     And "voidHandler" is a invocation counter into "count"
     When I call "{privateChannel}" with "addEventListener" with parameters "disconnect" and "{voidHandler}"
     And we wait for a period of "100" ms

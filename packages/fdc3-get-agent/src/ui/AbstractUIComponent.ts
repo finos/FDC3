@@ -14,14 +14,14 @@ export const ALLOWED_CSS_ELEMENTS = [
     "width",
     "height",
     "position",
-    "z-index",
+    "zIndex",
     "left",
     "right",
     "top",
     "bottom",
     "transition",
-    "max-height",
-    "max-width",
+    "maxHeight",
+    "maxWidth",
     "display"
 ]
 
@@ -113,9 +113,9 @@ export abstract class AbstractUIComponent implements Connectable {
                 const k = ALLOWED_CSS_ELEMENTS[i]
                 const value: string | undefined = css[(k as string)]
                 if (value != null) {
-                    this.container!.style[k] = value
+                    this.container!.style.setProperty(this.toKebabCase(k), value)
                 } else {
-                    delete this.container!.style[k]
+                    this.container!.style.removeProperty(this.toKebabCase(k))
                 }
             }
         }
