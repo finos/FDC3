@@ -1,0 +1,53 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/findIntentRequest.schema.json",
+	"type": "object",
+	"title": "FindIntent Request",
+	"description": "A request for details of apps available to resolve a particular intent and context pair.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/FindIntentRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/FindIntentRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"FindIntentRequestType": {
+			"title": "FindIntent Request Message Type",
+			"const": "findIntentRequest"
+		},
+		"FindIntentRequestPayload": {
+			"title": "FindIntent Request Payload",
+			"type": "object",
+			"properties": {
+				"intent": {
+					"title": "Intent name",
+					"type": "string"
+				},
+				"context": {
+					"title": "Context argument",
+					"$ref": "../context/context.schema.json"
+				},
+				"resultType": {
+					"title": "Result type argument",
+					"type": "string"
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"intent"
+			]
+		}
+	}
+}

@@ -1,0 +1,69 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/getCurrentContextResponse.schema.json",
+	"type": "object",
+	"title": "GetCurrentContext Response",
+	"description": "A response to a getCurrentContext request.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/GetCurrentContextResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/GetCurrentContextSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/GetCurrentContextErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"GetCurrentContextResponseType": {
+			"title": "GetCurrentContext Response Message Type",
+			"const": "getCurrentContextResponse"
+		},
+		"GetCurrentContextSuccessResponsePayload": {
+			"title": "GetCurrentContext Response Payload",
+			"type": "object",
+			"properties": {
+				"context": {
+					"title": "Current Context",
+					"description": "The most recently broadcast context object (of the specified type, if one was specified), or `null` if none was available in the channel.",
+					"oneOf": [
+						{ "$ref": "../context/context.schema.json" },
+						{ "type": "null" }
+					]
+				}
+			},
+			"required": [
+				"context"
+			],
+			"additionalProperties": false
+		},
+		"GetCurrentContextErrorResponsePayload": {
+			"title": "GetCurrentContext Error Response Payload",
+			"type": "object",
+			"properties": {
+				"error": {
+					"$ref": "api.schema.json#/definitions/ChannelError"
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}
