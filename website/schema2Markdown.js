@@ -231,7 +231,7 @@ function generateObjectMD(schema, objectName, schemaFolderName, filePath) {
         // outputDocName must not contain any spaces
         const outputDocName = `${title.replace(/\s+/g, '')}`;
         const outputDocsPath = `${schemaFolderName}/ref/${outputDocName}`;
-        const outputFilePath = `../docs/${schemaFolderName}/ref/${outputDocName}.md`;
+        const outputFilePath = `./docs/${schemaFolderName}/ref/${outputDocName}.md`;
 
         fse.outputFileSync(outputFilePath, `---\n${yaml.dump(frontMatter)}\n---\n\n${markdownContent}`);
 
@@ -350,11 +350,15 @@ function retrieveTitleFromSchemaData(schemaData, pathInSchema) {
 }
 
 function parseSchemaFolder(schemaFolderName) {
+    const schemaFolder = `./static/schemas/2.1/${schemaFolderName}`;
+    
+    console.debug("Parsing schema folder: ", schemaFolder);
+
     // Read all files in the schema folder
-    const schemaFiles = fse.readdirSync("../schemas/"+schemaFolderName)
-    .filter(file => file.endsWith('.json'))
-    // nosemgrep
-    .map(file => path.join("../schemas/"+schemaFolderName, file));
+    const schemaFiles = fse.readdirSync(schemaFolder)
+        .filter(file => file.endsWith('.json'))
+        // nosemgrep
+        .map(file => path.join(schemaFolder, file));
 
     // Process each schema file
     let sidebarItems = [];
