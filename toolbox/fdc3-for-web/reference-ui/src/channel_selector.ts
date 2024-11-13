@@ -49,7 +49,7 @@ window.addEventListener("load", () => {
   myPort.onmessage = ({ data }) => {
     console.debug("Received message: ", data);
     switch (data.type) {
-      case "IframeHandshake": {
+      case "Fdc3UserInterfaceHandshake ": {
         collapse();
         break;
       }
@@ -58,7 +58,7 @@ window.addEventListener("load", () => {
         const { userChannels, selected } = data.payload as IframeChannelsPayload;
         fillChannels(userChannels, selected, (channelStr) => {
           myPort.postMessage({
-            type: "fdc3UserInterfaceSelected",
+            type: "Fdc3UserInterfaceSelected",
             payload: {
               selected: channelStr || null
             }

@@ -162,7 +162,7 @@ window.addEventListener("load", () => {
       case "Fdc3UserInterfaceHandshake": {
         break;
       }
-      case "IframeResolve": {
+      case "Fdc3UserInterfaceResolve": {
         myPort.postMessage({
           type: "IframeRestyle",
           payload: {
@@ -179,7 +179,7 @@ window.addEventListener("load", () => {
         setup(data.payload, (s) => {
           document.querySelector("dialog")?.close();
           myPort.postMessage({
-            type: "IframeResolveAction",
+            type: "Fdc3UserInterfaceResolveAction",
             payload: s
           });
 

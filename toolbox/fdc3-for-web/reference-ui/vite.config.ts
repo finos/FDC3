@@ -4,6 +4,6 @@ import { defineConfig } from "vite";
 export default defineConfig({
 	server: { port: 4000 },
 	build: {
-		outDir: "../../../website/static/ui"
+		outDir: "../../../website/static/reference-ui"
 	}
 });
