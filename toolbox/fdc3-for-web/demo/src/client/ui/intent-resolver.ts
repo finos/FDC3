@@ -1,6 +1,6 @@
 import { AppIdentifier } from "@kite9/fdc3-standard";
 import { BrowserTypes } from "@kite9/fdc3-schema";
-import { FDC3_USER_INTERFACE_HANDSHAKE_TYPE, FDC3_USER_INTERFACE_HELLO_TYPE, FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE, FDC3_USER_INTERFACE_RESTYLE_TYPE } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
+import { FDC3_USER_INTERFACE_HANDSHAKE_TYPE, FDC3_USER_INTERFACE_HELLO_TYPE, FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE, FDC3_USER_INTERFACE_RESOLVE_TYPE, FDC3_USER_INTERFACE_RESTYLE_TYPE } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
 type IframeResolveAction = BrowserTypes.Fdc3UserInterfaceResolveAction
 type IframeResolvePayload = BrowserTypes.Fdc3UserInterfaceResolvePayload
@@ -67,7 +67,7 @@ window.addEventListener("load", () => {
     myPort.addEventListener("message", (e) => {
         if (e.data.type == FDC3_USER_INTERFACE_HANDSHAKE_TYPE) {
             myPort.postMessage({ type: FDC3_USER_INTERFACE_RESTYLE_TYPE, payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
-        } else if (e.data.type == FDC3_USER_INTERFACE_RESTYLE_TYPE) {
+        } else if (e.data.type == FDC3_USER_INTERFACE_RESOLVE_TYPE) {
             myPort.postMessage({ type: FDC3_USER_INTERFACE_RESTYLE_TYPE, payload: { updatedCSS: DEFAULT_EXPANDED_CSS } } as IframeRestyle)
             Array.from(list.children).forEach(i => i.remove())
             const details = e.data.payload as IframeResolvePayload

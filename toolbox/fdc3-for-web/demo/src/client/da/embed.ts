@@ -1,7 +1,6 @@
 import { io } from "socket.io-client"
-import { link } from "./util";
+import { link, UI, UI_URLS } from "./util";
 import { APP_HELLO } from "../../message-types";
-import { UI, UI_URLS } from "./dummy-desktop-agent";
 
 const appWindow = window.parent;
 
