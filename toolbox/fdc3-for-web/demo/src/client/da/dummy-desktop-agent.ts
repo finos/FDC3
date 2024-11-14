@@ -36,9 +36,21 @@ function getApproach(): Approach {
     return out;
 }
 
-enum UI { DEFAULT, DEMO }
+export enum UI { DEFAULT, DEMO }
 
-function getUi(): UI {
+export const UI_URLS = {
+    [UI.DEMO]: {
+        intentResolverUrl: window.location.origin + "/static/da/intent-resolver.html",
+        channelSelectorUrl: window.location.origin + "/static/da/channel-selector.html",
+    },
+    [UI.DEFAULT]: {
+        // TODO: REPLACE WITH FDC3.FINOS.ORG URLS AFTER GO-LIVE
+        intentResolverUrl: "http://localhost:4002/intent-resolver.html",
+        channelSelectorUrl: "http://localhost:4002/channel-selector.html",
+    }
+}
+
+function getUIKey(): UI {
     const cb = document.getElementById("ui") as HTMLInputElement;
     const val = cb.value
     var out: UI = UI[val as keyof typeof UI]; //Works with --noImplicitAny
@@ -104,7 +116,7 @@ window.addEventListener("load", () => {
                                 timestamp: new Date()
                             },
                             payload: {
-                                iframeUrl: window.location.origin + `/static/da/embed.html?connectionAttemptUuid=${data.meta.connectionAttemptUuid}&desktopAgentId=${desktopAgentUUID}&instanceId=${instance?.instanceId}`
+                                iframeUrl: window.location.origin + `/static/da/embed.html?connectionAttemptUuid=${data.meta.connectionAttemptUuid}&desktopAgentId=${desktopAgentUUID}&instanceId=${instance?.instanceId}&UI=${getUIKey()}`
                             }
                         } as WebConnectionProtocol2LoadURL, origin)
                     } else {
@@ -113,6 +125,8 @@ window.addEventListener("load", () => {
                         link(socket, channel, instance.instanceId!!)
 
                         socket.emit(APP_HELLO, desktopAgentUUID, instance.instanceId)
+
+                        const ui = UI_URLS[getUIKey()]
 
                         // sned the other end of the channel to the app
                         source.postMessage({
@@ -123,8 +137,7 @@ window.addEventListener("load", () => {
                             },
                             payload: {
                                 fdc3Version: "2.2",
-                                intentResolverUrl: window.location.origin + "/static/da/intent-resolver.html",
-                                channelSelectorUrl: window.location.origin + "/static/da/channel-selector.html",
+                                ...ui
                             }
                         }, origin, [channel.port1])
                     }
