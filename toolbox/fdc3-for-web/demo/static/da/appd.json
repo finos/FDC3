@@ -46,10 +46,10 @@
             "appId": "workbench",
             "name": "FDC3 Workbench",
             "title": "FDC3 Workbench",
-            "description": "Part of the WebFDC3 Demo - Port of the FDC3 Workbench.  Must be started separately on localhost:3000",
+            "description": "Part of the WebFDC3 Demo - Port of the FDC3 Workbench.  Must be started separately on localhost:4001",
             "type": "web",
             "details": {
-                "url": "http://localhost:3000/toolbox/fdc3-workbench/"
+                "url": "http://localhost:4001/toolbox/fdc3-workbench/"
             },
             "hostManifests": {},
             "version": "1.0.0",

@@ -5,7 +5,7 @@ import { DemoServerContext } from "./DemoServerContext";
 import { FDC3_2_1_JSONDirectory } from "./FDC3_2_1_JSONDirectory";
 import { AppRegistration, DefaultFDC3Server, DirectoryApp, ServerContext } from "@kite9/fdc3-web-impl";
 import { ChannelState, ChannelType } from "@kite9/fdc3-web-impl/src/handlers/BroadcastHandler";
-import { link } from "./util";
+import { link, UI, UI_URLS } from "./util";
 import { BrowserTypes } from "@kite9/fdc3-schema";
 
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL
@@ -36,19 +36,7 @@ function getApproach(): Approach {
     return out;
 }
 
-export enum UI { DEFAULT, DEMO }
 
-export const UI_URLS = {
-    [UI.DEMO]: {
-        intentResolverUrl: window.location.origin + "/static/da/intent-resolver.html",
-        channelSelectorUrl: window.location.origin + "/static/da/channel-selector.html",
-    },
-    [UI.DEFAULT]: {
-        // TODO: REPLACE WITH FDC3.FINOS.ORG URLS AFTER GO-LIVE
-        intentResolverUrl: "http://localhost:4002/intent-resolver.html",
-        channelSelectorUrl: "http://localhost:4002/channel-selector.html",
-    }
-}
 
 function getUIKey(): UI {
     const cb = document.getElementById("ui") as HTMLInputElement;
