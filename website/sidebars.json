@@ -86,6 +86,7 @@
           "context/ref/Country",
           "context/ref/Currency",
           "context/ref/Email",
+          "context/ref/FileAttachment",
           "context/ref/Instrument",
           "context/ref/InstrumentList",
           "context/ref/Interaction",

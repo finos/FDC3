@@ -1,16 +1,16 @@
 ---
-title: Chat Message
-sidebar_label: Chat Message
+title: ChatMessage
+sidebar_label: ChatMessage
 
 ---
 
-# Chat Message
+# ChatMessage
 
 A context representing a chat message. Typically used to send the message or to pre-populate a message for sending.
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/chatMessage.schema.json> ([github](static/schemas/2.1/context/chatMessage.schema.json))
+<https://fdc3.finos.org/schemas/next/context/chatMessage.schema.json> ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/chatMessage.schema.json))
 
 ## Type
 
@@ -21,7 +21,7 @@ A context representing a chat message. Typically used to send the message or to 
 <details>
   <summary><code>chatRoom</code> <strong>(required)</strong></summary>
 
-**type**: [Chat Room](ChatRoom)
+**type**: [ChatRoom](ChatRoom)
 
 </details>
 
@@ -29,8 +29,6 @@ A context representing a chat message. Typically used to send the message or to 
   <summary><code>message</code> <strong>(required)</strong></summary>
 
 **type**: [Message](Message)
-
-The content of the message to post in the chat when created.
 
 </details>
 

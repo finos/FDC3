@@ -16,7 +16,7 @@ The position schema does not explicitly include identifiers in the `id` section,
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/position.schema.json> ([github](static/schemas/2.1/context/position.schema.json))
+<https://fdc3.finos.org/schemas/next/context/position.schema.json> ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/position.schema.json))
 
 ## Type
 
@@ -39,6 +39,31 @@ The position schema does not explicitly include identifiers in the `id` section,
 **type**: `number`
 
 The amount of the holding, e.g. a number of shares
+
+</details>
+
+<details>
+  <summary><code>id</code></summary>
+
+**type**: `object`
+
+<details>
+  <summary><code>Additional Properties</code></summary>
+
+**type**: `string`
+
+</details>
+
+One or more identifiers that refer to the position in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future.
+
+</details>
+
+<details>
+  <summary><code>name</code></summary>
+
+**type**: `string`
+
+An optional human-readable name for the position
 
 </details>
 

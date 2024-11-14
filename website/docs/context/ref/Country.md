@@ -18,7 +18,7 @@ Notes:
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/country.schema.json> ([github](static/schemas/2.1/context/country.schema.json))
+<https://fdc3.finos.org/schemas/next/context/country.schema.json> ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/country.schema.json))
 
 ## Type
 
@@ -68,6 +68,15 @@ Two-letter ISO country code. Deprecated in FDC3 2.0 in favour of the version pre
 Three-letter ISO country code. Deprecated in FDC3 2.0 in favour of the version prefixed with `COUNTRY_`.
 
 </details>
+
+</details>
+
+<details>
+  <summary><code>name</code></summary>
+
+**type**: `string`
+
+An optional human-readable name for the country
 
 </details>
 

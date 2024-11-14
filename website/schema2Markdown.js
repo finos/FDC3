@@ -180,9 +180,12 @@ function generateObjectMD(schema, objectName, schemaFolderName, filePath) {
     }
 
     //if working on windows you may have the wrong slashes...
-     const workingPath = filePath.replaceAll("\\","/");
+    const workingPath = filePath.replaceAll("\\","/");
     const url = schema.$id;
-    const githubUrl = workingPath.replace("../schemas/", `https://github.com/finos/FDC3/tree/main/schemas/`);
+    const githubUrl = workingPath.includes('context') 
+        ? workingPath.replace("static/schemas/next/", `https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/`)
+        : workingPath.replace("static/schemas/next/", `https://github.com/finos/FDC3/tree/main/packages/fdc3-schema/schemas/`);
+
     markdownContent += `## Schema\n\n<${url}> ([github](${githubUrl}))\n\n`;
 
     if (hasAllOf(schema.allOf) || hasProperties(schema)) {

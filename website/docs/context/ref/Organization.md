@@ -12,7 +12,7 @@ It is valid to include extra properties and metadata as part of the organization
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/organization.schema.json> ([github](static/schemas/2.1/context/organization.schema.json))
+<https://fdc3.finos.org/schemas/next/context/organization.schema.json> ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/organization.schema.json))
 
 ## Type
 
@@ -55,6 +55,15 @@ FactSet Permanent Identifier representing the organization
 </details>
 
 Identifiers for the organization, at least one must be provided.
+
+</details>
+
+<details>
+  <summary><code>name</code></summary>
+
+**type**: `string`
+
+An optional human-readable name of the organization
 
 </details>
 

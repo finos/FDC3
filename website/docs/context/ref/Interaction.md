@@ -10,7 +10,7 @@ An `Interaction` is a significant direct exchange of ideas or information betwee
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/interaction.schema.json> ([github](static/schemas/2.1/context/interaction.schema.json))
+<https://fdc3.finos.org/schemas/next/context/interaction.schema.json> ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/interaction.schema.json))
 
 ## Type
 
@@ -77,7 +77,7 @@ The time range over which the interaction occurred
 <details>
   <summary><code>interactionType</code> <strong>(required)</strong></summary>
 
-**Any of:**
+**One of:**
 
 - **type**: `string` with values:
 - `Instant Message`,

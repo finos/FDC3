@@ -1,16 +1,16 @@
 ---
-title: Chat Search Criteria
-sidebar_label: Chat Search Criteria
+title: ChatSearchCriteria
+sidebar_label: ChatSearchCriteria
 
 ---
 
-# Chat Search Criteria
+# ChatSearchCriteria
 
 A context type that represents a simple search criterion, based on a list of other context objects, that can be used to search or filter messages in a chat application.
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/chatSearchCriteria.schema.json> ([github](static/schemas/2.1/context/chatSearchCriteria.schema.json))
+<https://fdc3.finos.org/schemas/next/context/chatSearchCriteria.schema.json> ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/chatSearchCriteria.schema.json))
 
 ## Type
 
@@ -26,12 +26,19 @@ A context type that represents a simple search criterion, based on a list of oth
 <details>
   <summary><code>Items</code></summary>
 
-**Any of:**
+  <summary><code>Search Criteria</code></summary>
+
+**One of:**
 
 - **type**: [Instrument](Instrument)
 - **type**: [Organization](Organization)
 - **type**: [Contact](Contact)
 - **type**: `string`
+
+An individual criteria against which to match chat messages, based on an FDC3 context or free-text string.
+
+
+
 
 </details>
 

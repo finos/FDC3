@@ -10,7 +10,7 @@ A context type representing the result of a transaction initiated via FDC3, whic
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/transactionresult.schema.json> ([github](static/schemas/2.1/context/transactionresult.schema.json))
+<https://fdc3.finos.org/schemas/next/context/transactionresult.schema.json> ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/transactionresult.schema.json))
 
 ## Type
 
@@ -38,6 +38,15 @@ The status of the transaction being reported.
 
 
 A context object returned by the transaction, possibly with updated data.
+
+</details>
+
+<details>
+  <summary><code>message</code></summary>
+
+**type**: `string`
+
+A human readable message describing the outcome of the transaction.
 
 </details>
 
