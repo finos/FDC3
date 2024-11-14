@@ -10,8 +10,8 @@ app.get("/iframe", (_, res) => {
 });
 
 
-const httpServer = ViteExpress.listen(app, 8095, () =>
-  console.log("Server is listening on port 8095..."),
+const httpServer = ViteExpress.listen(app, 4000, () =>
+  console.log("Server is listening on port 4000. Head to http://localhost:4000/static/da/index.html"),
 );
 
 const io = new Server(httpServer)
