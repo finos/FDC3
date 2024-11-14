@@ -20,6 +20,8 @@
     "clean": "rimraf dist && rimraf generated",
     "mkdirs": "mkdirp generated/api && mkdirp generated/bridging",
     "generate": "npm run mkdirs && npm run typegen-browser && npm run typegen-bridging && npm run lint",
+    "generate-type-predicates": "ts-node code-generation/generate-type-predicates.ts",
+    "generate-new": "npm run mkdirs && npm run typegen-browser && npm run typegen-bridging && npm run generate-type-predicates && npm run lint",
     "build": "npm run generate && tsc --module es2022",
     "lint": "eslint generated/ --fix",
     "test": "npm run generate && tsc",
@@ -40,6 +42,7 @@
     "quicktype": "23.0.78",
     "rimraf": "^6.0.1",
     "ts-jest": "29.2.5",
+    "ts-morph": "^24.0.0",
     "tslib": "^2.7.0",
     "typescript": "~5.5.0"
   }
