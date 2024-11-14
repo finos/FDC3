@@ -5867,6 +5867,8 @@ export function isWebConnectionProtocol1Hello(value: any): value is WebConnectio
     }
 }
 
+export const WEB_CONNECTION_PROTOCOL1_HELLO_TYPE = "WebConnectionProtocol1Hello";
+
 export function isWebConnectionProtocol2LoadURL(value: any): value is WebConnectionProtocol2LoadURL {
     try {
         Convert.webConnectionProtocol2LoadURLToJson(value);
@@ -5875,6 +5877,8 @@ export function isWebConnectionProtocol2LoadURL(value: any): value is WebConnect
         return false;
     }
 }
+
+export const WEB_CONNECTION_PROTOCOL2_LOAD_U_R_L_TYPE = "WebConnectionProtocol2LoadURL";
 
 export function isWebConnectionProtocol3Handshake(value: any): value is WebConnectionProtocol3Handshake {
     try {
@@ -5885,6 +5889,8 @@ export function isWebConnectionProtocol3Handshake(value: any): value is WebConne
     }
 }
 
+export const WEB_CONNECTION_PROTOCOL3_HANDSHAKE_TYPE = "WebConnectionProtocol3Handshake";
+
 export function isWebConnectionProtocol4ValidateAppIdentity(value: any): value is WebConnectionProtocol4ValidateAppIdentity {
     try {
         Convert.webConnectionProtocol4ValidateAppIdentityToJson(value);
@@ -5893,6 +5899,8 @@ export function isWebConnectionProtocol4ValidateAppIdentity(value: any): value i
         return false;
     }
 }
+
+export const WEB_CONNECTION_PROTOCOL4_VALIDATE_APP_IDENTITY_TYPE = "WebConnectionProtocol4ValidateAppIdentity";
 
 export function isWebConnectionProtocol5ValidateAppIdentityFailedResponse(value: any): value is WebConnectionProtocol5ValidateAppIdentityFailedResponse {
     try {
@@ -5903,6 +5911,8 @@ export function isWebConnectionProtocol5ValidateAppIdentityFailedResponse(value:
     }
 }
 
+export const WEB_CONNECTION_PROTOCOL5_VALIDATE_APP_IDENTITY_FAILED_RESPONSE_TYPE = "WebConnectionProtocol5ValidateAppIdentityFailedResponse";
+
 export function isWebConnectionProtocol5ValidateAppIdentitySuccessResponse(value: any): value is WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
     try {
         Convert.webConnectionProtocol5ValidateAppIdentitySuccessResponseToJson(value);
@@ -5911,6 +5921,8 @@ export function isWebConnectionProtocol5ValidateAppIdentitySuccessResponse(value
         return false;
     }
 }
+
+export const WEB_CONNECTION_PROTOCOL5_VALIDATE_APP_IDENTITY_SUCCESS_RESPONSE_TYPE = "WebConnectionProtocol5ValidateAppIdentitySuccessResponse";
 
 export function isWebConnectionProtocol6Goodbye(value: any): value is WebConnectionProtocol6Goodbye {
     try {
@@ -5921,6 +5933,8 @@ export function isWebConnectionProtocol6Goodbye(value: any): value is WebConnect
     }
 }
 
+export const WEB_CONNECTION_PROTOCOL6_GOODBYE_TYPE = "WebConnectionProtocol6Goodbye";
+
 export function isWebConnectionProtocolMessage(value: any): value is WebConnectionProtocolMessage {
     try {
         Convert.webConnectionProtocolMessageToJson(value);
@@ -5929,6 +5943,8 @@ export function isWebConnectionProtocolMessage(value: any): value is WebConnecti
         return false;
     }
 }
+
+export const WEB_CONNECTION_PROTOCOL_MESSAGE_TYPE = "WebConnectionProtocolMessage";
 
 export function isAddContextListenerRequest(value: any): value is AddContextListenerRequest {
     try {
@@ -5939,6 +5955,8 @@ export function isAddContextListenerRequest(value: any): value is AddContextList
     }
 }
 
+export const ADD_CONTEXT_LISTENER_REQUEST_TYPE = "AddContextListenerRequest";
+
 export function isAddContextListenerResponse(value: any): value is AddContextListenerResponse {
     try {
         Convert.addContextListenerResponseToJson(value);
@@ -5947,6 +5965,8 @@ export function isAddContextListenerResponse(value: any): value is AddContextLis
         return false;
     }
 }
+
+export const ADD_CONTEXT_LISTENER_RESPONSE_TYPE = "AddContextListenerResponse";
 
 export function isAddEventListenerRequest(value: any): value is AddEventListenerRequest {
     try {
@@ -5957,6 +5977,8 @@ export function isAddEventListenerRequest(value: any): value is AddEventListener
     }
 }
 
+export const ADD_EVENT_LISTENER_REQUEST_TYPE = "AddEventListenerRequest";
+
 export function isAddEventListenerResponse(value: any): value is AddEventListenerResponse {
     try {
         Convert.addEventListenerResponseToJson(value);
@@ -5965,6 +5987,8 @@ export function isAddEventListenerResponse(value: any): value is AddEventListene
         return false;
     }
 }
+
+export const ADD_EVENT_LISTENER_RESPONSE_TYPE = "AddEventListenerResponse";
 
 export function isAddIntentListenerRequest(value: any): value is AddIntentListenerRequest {
     try {
@@ -5975,6 +5999,8 @@ export function isAddIntentListenerRequest(value: any): value is AddIntentListen
     }
 }
 
+export const ADD_INTENT_LISTENER_REQUEST_TYPE = "AddIntentListenerRequest";
+
 export function isAddIntentListenerResponse(value: any): value is AddIntentListenerResponse {
     try {
         Convert.addIntentListenerResponseToJson(value);
@@ -5983,6 +6009,8 @@ export function isAddIntentListenerResponse(value: any): value is AddIntentListe
         return false;
     }
 }
+
+export const ADD_INTENT_LISTENER_RESPONSE_TYPE = "AddIntentListenerResponse";
 
 export function isAgentEventMessage(value: any): value is AgentEventMessage {
     try {
@@ -5993,6 +6021,8 @@ export function isAgentEventMessage(value: any): value is AgentEventMessage {
     }
 }
 
+export const AGENT_EVENT_MESSAGE_TYPE = "AgentEventMessage";
+
 export function isAgentResponseMessage(value: any): value is AgentResponseMessage {
     try {
         Convert.agentResponseMessageToJson(value);
@@ -6001,6 +6031,8 @@ export function isAgentResponseMessage(value: any): value is AgentResponseMessag
         return false;
     }
 }
+
+export const AGENT_RESPONSE_MESSAGE_TYPE = "AgentResponseMessage";
 
 export function isAppRequestMessage(value: any): value is AppRequestMessage {
     try {
@@ -6011,6 +6043,8 @@ export function isAppRequestMessage(value: any): value is AppRequestMessage {
     }
 }
 
+export const APP_REQUEST_MESSAGE_TYPE = "AppRequestMessage";
+
 export function isBroadcastEvent(value: any): value is BroadcastEvent {
     try {
         Convert.broadcastEventToJson(value);
@@ -6019,6 +6053,8 @@ export function isBroadcastEvent(value: any): value is BroadcastEvent {
         return false;
     }
 }
+
+export const BROADCAST_EVENT_TYPE = "BroadcastEvent";
 
 export function isBroadcastRequest(value: any): value is BroadcastRequest {
     try {
@@ -6029,6 +6065,8 @@ export function isBroadcastRequest(value: any): value is BroadcastRequest {
     }
 }
 
+export const BROADCAST_REQUEST_TYPE = "BroadcastRequest";
+
 export function isBroadcastResponse(value: any): value is BroadcastResponse {
     try {
         Convert.broadcastResponseToJson(value);
@@ -6037,6 +6075,8 @@ export function isBroadcastResponse(value: any): value is BroadcastResponse {
         return false;
     }
 }
+
+export const BROADCAST_RESPONSE_TYPE = "BroadcastResponse";
 
 export function isChannelChangedEvent(value: any): value is ChannelChangedEvent {
     try {
@@ -6047,6 +6087,8 @@ export function isChannelChangedEvent(value: any): value is ChannelChangedEvent 
     }
 }
 
+export const CHANNEL_CHANGED_EVENT_TYPE = "ChannelChangedEvent";
+
 export function isContextListenerUnsubscribeRequest(value: any): value is ContextListenerUnsubscribeRequest {
     try {
         Convert.contextListenerUnsubscribeRequestToJson(value);
@@ -6055,6 +6097,8 @@ export function isContextListenerUnsubscribeRequest(value: any): value is Contex
         return false;
     }
 }
+
+export const CONTEXT_LISTENER_UNSUBSCRIBE_REQUEST_TYPE = "ContextListenerUnsubscribeRequest";
 
 export function isContextListenerUnsubscribeResponse(value: any): value is ContextListenerUnsubscribeResponse {
     try {
@@ -6065,6 +6109,8 @@ export function isContextListenerUnsubscribeResponse(value: any): value is Conte
     }
 }
 
+export const CONTEXT_LISTENER_UNSUBSCRIBE_RESPONSE_TYPE = "ContextListenerUnsubscribeResponse";
+
 export function isCreatePrivateChannelRequest(value: any): value is CreatePrivateChannelRequest {
     try {
         Convert.createPrivateChannelRequestToJson(value);
@@ -6073,6 +6119,8 @@ export function isCreatePrivateChannelRequest(value: any): value is CreatePrivat
         return false;
     }
 }
+
+export const CREATE_PRIVATE_CHANNEL_REQUEST_TYPE = "CreatePrivateChannelRequest";
 
 export function isCreatePrivateChannelResponse(value: any): value is CreatePrivateChannelResponse {
     try {
@@ -6083,6 +6131,8 @@ export function isCreatePrivateChannelResponse(value: any): value is CreatePriva
     }
 }
 
+export const CREATE_PRIVATE_CHANNEL_RESPONSE_TYPE = "CreatePrivateChannelResponse";
+
 export function isEventListenerUnsubscribeRequest(value: any): value is EventListenerUnsubscribeRequest {
     try {
         Convert.eventListenerUnsubscribeRequestToJson(value);
@@ -6091,6 +6141,8 @@ export function isEventListenerUnsubscribeRequest(value: any): value is EventLis
         return false;
     }
 }
+
+export const EVENT_LISTENER_UNSUBSCRIBE_REQUEST_TYPE = "EventListenerUnsubscribeRequest";
 
 export function isEventListenerUnsubscribeResponse(value: any): value is EventListenerUnsubscribeResponse {
     try {
@@ -6101,6 +6153,8 @@ export function isEventListenerUnsubscribeResponse(value: any): value is EventLi
     }
 }
 
+export const EVENT_LISTENER_UNSUBSCRIBE_RESPONSE_TYPE = "EventListenerUnsubscribeResponse";
+
 export function isFdc3UserInterfaceChannelSelected(value: any): value is Fdc3UserInterfaceChannelSelected {
     try {
         Convert.fdc3UserInterfaceChannelSelectedToJson(value);
@@ -6109,6 +6163,8 @@ export function isFdc3UserInterfaceChannelSelected(value: any): value is Fdc3Use
         return false;
     }
 }
+
+export const FDC3_USER_INTERFACE_CHANNEL_SELECTED_TYPE = "Fdc3UserInterfaceChannelSelected";
 
 export function isFdc3UserInterfaceChannels(value: any): value is Fdc3UserInterfaceChannels {
     try {
@@ -6119,6 +6175,8 @@ export function isFdc3UserInterfaceChannels(value: any): value is Fdc3UserInterf
     }
 }
 
+export const FDC3_USER_INTERFACE_CHANNELS_TYPE = "Fdc3UserInterfaceChannels";
+
 export function isFdc3UserInterfaceDrag(value: any): value is Fdc3UserInterfaceDrag {
     try {
         Convert.fdc3UserInterfaceDragToJson(value);
@@ -6127,6 +6185,8 @@ export function isFdc3UserInterfaceDrag(value: any): value is Fdc3UserInterfaceD
         return false;
     }
 }
+
+export const FDC3_USER_INTERFACE_DRAG_TYPE = "Fdc3UserInterfaceDrag";
 
 export function isFdc3UserInterfaceHandshake(value: any): value is Fdc3UserInterfaceHandshake {
     try {
@@ -6137,6 +6197,8 @@ export function isFdc3UserInterfaceHandshake(value: any): value is Fdc3UserInter
     }
 }
 
+export const FDC3_USER_INTERFACE_HANDSHAKE_TYPE = "Fdc3UserInterfaceHandshake";
+
 export function isFdc3UserInterfaceHello(value: any): value is Fdc3UserInterfaceHello {
     try {
         Convert.fdc3UserInterfaceHelloToJson(value);
@@ -6145,6 +6207,8 @@ export function isFdc3UserInterfaceHello(value: any): value is Fdc3UserInterface
         return false;
     }
 }
+
+export const FDC3_USER_INTERFACE_HELLO_TYPE = "Fdc3UserInterfaceHello";
 
 export function isFdc3UserInterfaceMessage(value: any): value is Fdc3UserInterfaceMessage {
     try {
@@ -6155,6 +6219,8 @@ export function isFdc3UserInterfaceMessage(value: any): value is Fdc3UserInterfa
     }
 }
 
+export const FDC3_USER_INTERFACE_MESSAGE_TYPE = "Fdc3UserInterfaceMessage";
+
 export function isFdc3UserInterfaceResolve(value: any): value is Fdc3UserInterfaceResolve {
     try {
         Convert.fdc3UserInterfaceResolveToJson(value);
@@ -6163,6 +6229,8 @@ export function isFdc3UserInterfaceResolve(value: any): value is Fdc3UserInterfa
         return false;
     }
 }
+
+export const FDC3_USER_INTERFACE_RESOLVE_TYPE = "Fdc3UserInterfaceResolve";
 
 export function isFdc3UserInterfaceResolveAction(value: any): value is Fdc3UserInterfaceResolveAction {
     try {
@@ -6173,6 +6241,8 @@ export function isFdc3UserInterfaceResolveAction(value: any): value is Fdc3UserI
     }
 }
 
+export const FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE = "Fdc3UserInterfaceResolveAction";
+
 export function isFdc3UserInterfaceRestyle(value: any): value is Fdc3UserInterfaceRestyle {
     try {
         Convert.fdc3UserInterfaceRestyleToJson(value);
@@ -6181,6 +6251,8 @@ export function isFdc3UserInterfaceRestyle(value: any): value is Fdc3UserInterfa
         return false;
     }
 }
+
+export const FDC3_USER_INTERFACE_RESTYLE_TYPE = "Fdc3UserInterfaceRestyle";
 
 export function isFindInstancesRequest(value: any): value is FindInstancesRequest {
     try {
@@ -6191,6 +6263,8 @@ export function isFindInstancesRequest(value: any): value is FindInstancesReques
     }
 }
 
+export const FIND_INSTANCES_REQUEST_TYPE = "FindInstancesRequest";
+
 export function isFindInstancesResponse(value: any): value is FindInstancesResponse {
     try {
         Convert.findInstancesResponseToJson(value);
@@ -6199,6 +6273,8 @@ export function isFindInstancesResponse(value: any): value is FindInstancesRespo
         return false;
     }
 }
+
+export const FIND_INSTANCES_RESPONSE_TYPE = "FindInstancesResponse";
 
 export function isFindIntentRequest(value: any): value is FindIntentRequest {
     try {
@@ -6209,6 +6285,8 @@ export function isFindIntentRequest(value: any): value is FindIntentRequest {
     }
 }
 
+export const FIND_INTENT_REQUEST_TYPE = "FindIntentRequest";
+
 export function isFindIntentResponse(value: any): value is FindIntentResponse {
     try {
         Convert.findIntentResponseToJson(value);
@@ -6217,6 +6295,8 @@ export function isFindIntentResponse(value: any): value is FindIntentResponse {
         return false;
     }
 }
+
+export const FIND_INTENT_RESPONSE_TYPE = "FindIntentResponse";
 
 export function isFindIntentsByContextRequest(value: any): value is FindIntentsByContextRequest {
     try {
@@ -6227,6 +6307,8 @@ export function isFindIntentsByContextRequest(value: any): value is FindIntentsB
     }
 }
 
+export const FIND_INTENTS_BY_CONTEXT_REQUEST_TYPE = "FindIntentsByContextRequest";
+
 export function isFindIntentsByContextResponse(value: any): value is FindIntentsByContextResponse {
     try {
         Convert.findIntentsByContextResponseToJson(value);
@@ -6235,6 +6317,8 @@ export function isFindIntentsByContextResponse(value: any): value is FindIntents
         return false;
     }
 }
+
+export const FIND_INTENTS_BY_CONTEXT_RESPONSE_TYPE = "FindIntentsByContextResponse";
 
 export function isGetAppMetadataRequest(value: any): value is GetAppMetadataRequest {
     try {
@@ -6245,6 +6329,8 @@ export function isGetAppMetadataRequest(value: any): value is GetAppMetadataRequ
     }
 }
 
+export const GET_APP_METADATA_REQUEST_TYPE = "GetAppMetadataRequest";
+
 export function isGetAppMetadataResponse(value: any): value is GetAppMetadataResponse {
     try {
         Convert.getAppMetadataResponseToJson(value);
@@ -6253,6 +6339,8 @@ export function isGetAppMetadataResponse(value: any): value is GetAppMetadataRes
         return false;
     }
 }
+
+export const GET_APP_METADATA_RESPONSE_TYPE = "GetAppMetadataResponse";
 
 export function isGetCurrentChannelRequest(value: any): value is GetCurrentChannelRequest {
     try {
@@ -6263,6 +6351,8 @@ export function isGetCurrentChannelRequest(value: any): value is GetCurrentChann
     }
 }
 
+export const GET_CURRENT_CHANNEL_REQUEST_TYPE = "GetCurrentChannelRequest";
+
 export function isGetCurrentChannelResponse(value: any): value is GetCurrentChannelResponse {
     try {
         Convert.getCurrentChannelResponseToJson(value);
@@ -6271,6 +6361,8 @@ export function isGetCurrentChannelResponse(value: any): value is GetCurrentChan
         return false;
     }
 }
+
+export const GET_CURRENT_CHANNEL_RESPONSE_TYPE = "GetCurrentChannelResponse";
 
 export function isGetCurrentContextRequest(value: any): value is GetCurrentContextRequest {
     try {
@@ -6281,6 +6373,8 @@ export function isGetCurrentContextRequest(value: any): value is GetCurrentConte
     }
 }
 
+export const GET_CURRENT_CONTEXT_REQUEST_TYPE = "GetCurrentContextRequest";
+
 export function isGetCurrentContextResponse(value: any): value is GetCurrentContextResponse {
     try {
         Convert.getCurrentContextResponseToJson(value);
@@ -6289,6 +6383,8 @@ export function isGetCurrentContextResponse(value: any): value is GetCurrentCont
         return false;
     }
 }
+
+export const GET_CURRENT_CONTEXT_RESPONSE_TYPE = "GetCurrentContextResponse";
 
 export function isGetInfoRequest(value: any): value is GetInfoRequest {
     try {
@@ -6299,6 +6395,8 @@ export function isGetInfoRequest(value: any): value is GetInfoRequest {
     }
 }
 
+export const GET_INFO_REQUEST_TYPE = "GetInfoRequest";
+
 export function isGetInfoResponse(value: any): value is GetInfoResponse {
     try {
         Convert.getInfoResponseToJson(value);
@@ -6307,6 +6405,8 @@ export function isGetInfoResponse(value: any): value is GetInfoResponse {
         return false;
     }
 }
+
+export const GET_INFO_RESPONSE_TYPE = "GetInfoResponse";
 
 export function isGetOrCreateChannelRequest(value: any): value is GetOrCreateChannelRequest {
     try {
@@ -6317,6 +6417,8 @@ export function isGetOrCreateChannelRequest(value: any): value is GetOrCreateCha
     }
 }
 
+export const GET_OR_CREATE_CHANNEL_REQUEST_TYPE = "GetOrCreateChannelRequest";
+
 export function isGetOrCreateChannelResponse(value: any): value is GetOrCreateChannelResponse {
     try {
         Convert.getOrCreateChannelResponseToJson(value);
@@ -6325,6 +6427,8 @@ export function isGetOrCreateChannelResponse(value: any): value is GetOrCreateCh
         return false;
     }
 }
+
+export const GET_OR_CREATE_CHANNEL_RESPONSE_TYPE = "GetOrCreateChannelResponse";
 
 export function isGetUserChannelsRequest(value: any): value is GetUserChannelsRequest {
     try {
@@ -6335,6 +6439,8 @@ export function isGetUserChannelsRequest(value: any): value is GetUserChannelsRe
     }
 }
 
+export const GET_USER_CHANNELS_REQUEST_TYPE = "GetUserChannelsRequest";
+
 export function isGetUserChannelsResponse(value: any): value is GetUserChannelsResponse {
     try {
         Convert.getUserChannelsResponseToJson(value);
@@ -6343,6 +6449,8 @@ export function isGetUserChannelsResponse(value: any): value is GetUserChannelsR
         return false;
     }
 }
+
+export const GET_USER_CHANNELS_RESPONSE_TYPE = "GetUserChannelsResponse";
 
 export function isHeartbeatAcknowledgementRequest(value: any): value is HeartbeatAcknowledgementRequest {
     try {
@@ -6353,6 +6461,8 @@ export function isHeartbeatAcknowledgementRequest(value: any): value is Heartbea
     }
 }
 
+export const HEARTBEAT_ACKNOWLEDGEMENT_REQUEST_TYPE = "HeartbeatAcknowledgementRequest";
+
 export function isHeartbeatEvent(value: any): value is HeartbeatEvent {
     try {
         Convert.heartbeatEventToJson(value);
@@ -6361,6 +6471,8 @@ export function isHeartbeatEvent(value: any): value is HeartbeatEvent {
         return false;
     }
 }
+
+export const HEARTBEAT_EVENT_TYPE = "HeartbeatEvent";
 
 export function isIntentEvent(value: any): value is IntentEvent {
     try {
@@ -6371,6 +6483,8 @@ export function isIntentEvent(value: any): value is IntentEvent {
     }
 }
 
+export const INTENT_EVENT_TYPE = "IntentEvent";
+
 export function isIntentListenerUnsubscribeRequest(value: any): value is IntentListenerUnsubscribeRequest {
     try {
         Convert.intentListenerUnsubscribeRequestToJson(value);
@@ -6379,6 +6493,8 @@ export function isIntentListenerUnsubscribeRequest(value: any): value is IntentL
         return false;
     }
 }
+
+export const INTENT_LISTENER_UNSUBSCRIBE_REQUEST_TYPE = "IntentListenerUnsubscribeRequest";
 
 export function isIntentListenerUnsubscribeResponse(value: any): value is IntentListenerUnsubscribeResponse {
     try {
@@ -6389,6 +6505,8 @@ export function isIntentListenerUnsubscribeResponse(value: any): value is Intent
     }
 }
 
+export const INTENT_LISTENER_UNSUBSCRIBE_RESPONSE_TYPE = "IntentListenerUnsubscribeResponse";
+
 export function isIntentResultRequest(value: any): value is IntentResultRequest {
     try {
         Convert.intentResultRequestToJson(value);
@@ -6397,6 +6515,8 @@ export function isIntentResultRequest(value: any): value is IntentResultRequest 
         return false;
     }
 }
+
+export const INTENT_RESULT_REQUEST_TYPE = "IntentResultRequest";
 
 export function isIntentResultResponse(value: any): value is IntentResultResponse {
     try {
@@ -6407,6 +6527,8 @@ export function isIntentResultResponse(value: any): value is IntentResultRespons
     }
 }
 
+export const INTENT_RESULT_RESPONSE_TYPE = "IntentResultResponse";
+
 export function isJoinUserChannelRequest(value: any): value is JoinUserChannelRequest {
     try {
         Convert.joinUserChannelRequestToJson(value);
@@ -6415,6 +6537,8 @@ export function isJoinUserChannelRequest(value: any): value is JoinUserChannelRe
         return false;
     }
 }
+
+export const JOIN_USER_CHANNEL_REQUEST_TYPE = "JoinUserChannelRequest";
 
 export function isJoinUserChannelResponse(value: any): value is JoinUserChannelResponse {
     try {
@@ -6425,6 +6549,8 @@ export function isJoinUserChannelResponse(value: any): value is JoinUserChannelR
     }
 }
 
+export const JOIN_USER_CHANNEL_RESPONSE_TYPE = "JoinUserChannelResponse";
+
 export function isLeaveCurrentChannelRequest(value: any): value is LeaveCurrentChannelRequest {
     try {
         Convert.leaveCurrentChannelRequestToJson(value);
@@ -6433,6 +6559,8 @@ export function isLeaveCurrentChannelRequest(value: any): value is LeaveCurrentC
         return false;
     }
 }
+
+export const LEAVE_CURRENT_CHANNEL_REQUEST_TYPE = "LeaveCurrentChannelRequest";
 
 export function isLeaveCurrentChannelResponse(value: any): value is LeaveCurrentChannelResponse {
     try {
@@ -6443,6 +6571,8 @@ export function isLeaveCurrentChannelResponse(value: any): value is LeaveCurrent
     }
 }
 
+export const LEAVE_CURRENT_CHANNEL_RESPONSE_TYPE = "LeaveCurrentChannelResponse";
+
 export function isOpenRequest(value: any): value is OpenRequest {
     try {
         Convert.openRequestToJson(value);
@@ -6451,6 +6581,8 @@ export function isOpenRequest(value: any): value is OpenRequest {
         return false;
     }
 }
+
+export const OPEN_REQUEST_TYPE = "OpenRequest";
 
 export function isOpenResponse(value: any): value is OpenResponse {
     try {
@@ -6461,6 +6593,8 @@ export function isOpenResponse(value: any): value is OpenResponse {
     }
 }
 
+export const OPEN_RESPONSE_TYPE = "OpenResponse";
+
 export function isPrivateChannelAddEventListenerRequest(value: any): value is PrivateChannelAddEventListenerRequest {
     try {
         Convert.privateChannelAddEventListenerRequestToJson(value);
@@ -6469,6 +6603,8 @@ export function isPrivateChannelAddEventListenerRequest(value: any): value is Pr
         return false;
     }
 }
+
+export const PRIVATE_CHANNEL_ADD_EVENT_LISTENER_REQUEST_TYPE = "PrivateChannelAddEventListenerRequest";
 
 export function isPrivateChannelAddEventListenerResponse(value: any): value is PrivateChannelAddEventListenerResponse {
     try {
@@ -6479,6 +6615,8 @@ export function isPrivateChannelAddEventListenerResponse(value: any): value is P
     }
 }
 
+export const PRIVATE_CHANNEL_ADD_EVENT_LISTENER_RESPONSE_TYPE = "PrivateChannelAddEventListenerResponse";
+
 export function isPrivateChannelDisconnectRequest(value: any): value is PrivateChannelDisconnectRequest {
     try {
         Convert.privateChannelDisconnectRequestToJson(value);
@@ -6487,6 +6625,8 @@ export function isPrivateChannelDisconnectRequest(value: any): value is PrivateC
         return false;
     }
 }
+
+export const PRIVATE_CHANNEL_DISCONNECT_REQUEST_TYPE = "PrivateChannelDisconnectRequest";
 
 export function isPrivateChannelDisconnectResponse(value: any): value is PrivateChannelDisconnectResponse {
     try {
@@ -6497,6 +6637,8 @@ export function isPrivateChannelDisconnectResponse(value: any): value is Private
     }
 }
 
+export const PRIVATE_CHANNEL_DISCONNECT_RESPONSE_TYPE = "PrivateChannelDisconnectResponse";
+
 export function isPrivateChannelOnAddContextListenerEvent(value: any): value is PrivateChannelOnAddContextListenerEvent {
     try {
         Convert.privateChannelOnAddContextListenerEventToJson(value);
@@ -6505,6 +6647,8 @@ export function isPrivateChannelOnAddContextListenerEvent(value: any): value is 
         return false;
     }
 }
+
+export const PRIVATE_CHANNEL_ON_ADD_CONTEXT_LISTENER_EVENT_TYPE = "PrivateChannelOnAddContextListenerEvent";
 
 export function isPrivateChannelOnDisconnectEvent(value: any): value is PrivateChannelOnDisconnectEvent {
     try {
@@ -6515,6 +6659,8 @@ export function isPrivateChannelOnDisconnectEvent(value: any): value is PrivateC
     }
 }
 
+export const PRIVATE_CHANNEL_ON_DISCONNECT_EVENT_TYPE = "PrivateChannelOnDisconnectEvent";
+
 export function isPrivateChannelOnUnsubscribeEvent(value: any): value is PrivateChannelOnUnsubscribeEvent {
     try {
         Convert.privateChannelOnUnsubscribeEventToJson(value);
@@ -6523,6 +6669,8 @@ export function isPrivateChannelOnUnsubscribeEvent(value: any): value is Private
         return false;
     }
 }
+
+export const PRIVATE_CHANNEL_ON_UNSUBSCRIBE_EVENT_TYPE = "PrivateChannelOnUnsubscribeEvent";
 
 export function isPrivateChannelUnsubscribeEventListenerRequest(value: any): value is PrivateChannelUnsubscribeEventListenerRequest {
     try {
@@ -6533,6 +6681,8 @@ export function isPrivateChannelUnsubscribeEventListenerRequest(value: any): val
     }
 }
 
+export const PRIVATE_CHANNEL_UNSUBSCRIBE_EVENT_LISTENER_REQUEST_TYPE = "PrivateChannelUnsubscribeEventListenerRequest";
+
 export function isPrivateChannelUnsubscribeEventListenerResponse(value: any): value is PrivateChannelUnsubscribeEventListenerResponse {
     try {
         Convert.privateChannelUnsubscribeEventListenerResponseToJson(value);
@@ -6541,6 +6691,8 @@ export function isPrivateChannelUnsubscribeEventListenerResponse(value: any): va
         return false;
     }
 }
+
+export const PRIVATE_CHANNEL_UNSUBSCRIBE_EVENT_LISTENER_RESPONSE_TYPE = "PrivateChannelUnsubscribeEventListenerResponse";
 
 export function isRaiseIntentForContextRequest(value: any): value is RaiseIntentForContextRequest {
     try {
@@ -6551,6 +6703,8 @@ export function isRaiseIntentForContextRequest(value: any): value is RaiseIntent
     }
 }
 
+export const RAISE_INTENT_FOR_CONTEXT_REQUEST_TYPE = "RaiseIntentForContextRequest";
+
 export function isRaiseIntentForContextResponse(value: any): value is RaiseIntentForContextResponse {
     try {
         Convert.raiseIntentForContextResponseToJson(value);
@@ -6559,6 +6713,8 @@ export function isRaiseIntentForContextResponse(value: any): value is RaiseInten
         return false;
     }
 }
+
+export const RAISE_INTENT_FOR_CONTEXT_RESPONSE_TYPE = "RaiseIntentForContextResponse";
 
 export function isRaiseIntentRequest(value: any): value is RaiseIntentRequest {
     try {
@@ -6569,6 +6725,8 @@ export function isRaiseIntentRequest(value: any): value is RaiseIntentRequest {
     }
 }
 
+export const RAISE_INTENT_REQUEST_TYPE = "RaiseIntentRequest";
+
 export function isRaiseIntentResponse(value: any): value is RaiseIntentResponse {
     try {
         Convert.raiseIntentResponseToJson(value);
@@ -6577,6 +6735,8 @@ export function isRaiseIntentResponse(value: any): value is RaiseIntentResponse 
         return false;
     }
 }
+
+export const RAISE_INTENT_RESPONSE_TYPE = "RaiseIntentResponse";
 
 export function isRaiseIntentResultResponse(value: any): value is RaiseIntentResultResponse {
     try {
@@ -6587,8 +6747,91 @@ export function isRaiseIntentResultResponse(value: any): value is RaiseIntentRes
     }
 }
 
+export const RAISE_INTENT_RESULT_RESPONSE_TYPE = "RaiseIntentResultResponse";
+
 export type RequestMessage = AddContextListenerRequest | AddEventListenerRequest | AddIntentListenerRequest | BroadcastRequest | ContextListenerUnsubscribeRequest | CreatePrivateChannelRequest | EventListenerUnsubscribeRequest | FindInstancesRequest | FindIntentRequest | FindIntentsByContextRequest | GetAppMetadataRequest | GetCurrentChannelRequest | GetCurrentContextRequest | GetInfoRequest | GetOrCreateChannelRequest | GetUserChannelsRequest | HeartbeatAcknowledgementRequest | IntentListenerUnsubscribeRequest | IntentResultRequest | JoinUserChannelRequest | LeaveCurrentChannelRequest | OpenRequest | PrivateChannelAddEventListenerRequest | PrivateChannelDisconnectRequest | PrivateChannelUnsubscribeEventListenerRequest | RaiseIntentForContextRequest | RaiseIntentRequest;
 
 export type ResponseMessage = WebConnectionProtocol5ValidateAppIdentityFailedResponse | WebConnectionProtocol5ValidateAppIdentitySuccessResponse | AddContextListenerResponse | AddEventListenerResponse | AddIntentListenerResponse | BroadcastResponse | ContextListenerUnsubscribeResponse | CreatePrivateChannelResponse | EventListenerUnsubscribeResponse | FindInstancesResponse | FindIntentResponse | FindIntentsByContextResponse | GetAppMetadataResponse | GetCurrentChannelResponse | GetCurrentContextResponse | GetInfoResponse | GetOrCreateChannelResponse | GetUserChannelsResponse | IntentListenerUnsubscribeResponse | IntentResultResponse | JoinUserChannelResponse | LeaveCurrentChannelResponse | OpenResponse | PrivateChannelAddEventListenerResponse | PrivateChannelDisconnectResponse | PrivateChannelUnsubscribeEventListenerResponse | RaiseIntentForContextResponse | RaiseIntentResponse | RaiseIntentResultResponse;
 
 export type EventMessage = BroadcastEvent | ChannelChangedEvent | HeartbeatEvent | IntentEvent | PrivateChannelOnAddContextListenerEvent | PrivateChannelOnDisconnectEvent | PrivateChannelOnUnsubscribeEvent;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

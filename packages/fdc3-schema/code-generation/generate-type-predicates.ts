@@ -28,7 +28,10 @@ const matchedInterfaces = convertFunctions.map(func => {
 }).filter(((value => value != null) as <T>(value: T | null | undefined) => value is T));
 
 // write a type predicate for each matched interface
-matchedInterfaces.forEach(matched => writePredicate(matched.matchingInterface, matched.func));
+matchedInterfaces.forEach(matched => {
+    writePredicate(matched.matchingInterface, matched.func)
+    writeTypeConstant(matched.matchingInterface)
+});
 
 writeUnionType("RequestMessage", interfaces, "Request");
 writeUnionType("ResponseMessage", interfaces, "Response");
@@ -48,6 +51,13 @@ export function ${predicateName}(value: any): value is ${matchingInterface.getNa
 }`);
 }
 
+function writeTypeConstant(matchingInterface: InterfaceDeclaration): void {
+
+    sourceFile.addStatements(`
+        export const ${matchingInterface.getName().replaceAll(/([A-Z])/g, '_$1').toUpperCase().substring(1)}_TYPE = "${matchingInterface.getName()}";
+    `);
+
+}
 
 
 function writeUnionType(unionName: string, interfaces: InterfaceDeclaration[], nameEndsWith: string): void {
@@ -56,7 +66,7 @@ function writeUnionType(unionName: string, interfaces: InterfaceDeclaration[], n
         .filter(interfaceName => interfaceName.length > nameEndsWith.length && interfaceName.indexOf(nameEndsWith) === interfaceName.length - nameEndsWith.length);
 
     sourceFile.addStatements(`
-export type ${unionName} = ${matchingInterfaces.join(" | ")};`);
+    export type ${unionName} = ${matchingInterfaces.join(" | ")}; `);
 }
 
 sourceFile.formatText();
