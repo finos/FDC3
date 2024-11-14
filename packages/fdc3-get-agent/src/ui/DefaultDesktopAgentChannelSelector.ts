@@ -2,6 +2,7 @@ import { Channel } from "@kite9/fdc3-standard";
 import { ChannelSelector } from "@kite9/fdc3-standard"
 import { AbstractUIComponent } from "./AbstractUIComponent";
 import { BrowserTypes } from "@kite9/fdc3-schema";
+import { FDC3_USER_INTERFACE_CHANNEL_SELECTED_TYPE, FDC3_USER_INTERFACE_CHANNELS_TYPE } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
 type Fdc3UserInterfaceChannels = BrowserTypes.Fdc3UserInterfaceChannels
 type Fdc3UserInterfaceChannelSelected = BrowserTypes.Fdc3UserInterfaceChannelSelected
@@ -25,7 +26,7 @@ export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent impl
         this.port = port
 
         port.addEventListener("message", (e) => {
-            if (e.data.type == 'Fdc3UserInterfaceChannelSelected') {
+            if (e.data.type == FDC3_USER_INTERFACE_CHANNEL_SELECTED_TYPE) {
                 const choice = e.data as Fdc3UserInterfaceChannelSelected
                 if (this.callback) {
                     this.callback(choice.payload.selected)
@@ -37,7 +38,7 @@ export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent impl
     updateChannel(channelId: string | null, availableChannels: Channel[]): void {
         // also send to the iframe
         this.port!!.postMessage({
-            type: 'Fdc3UserInterfaceChannels',
+            type: FDC3_USER_INTERFACE_CHANNELS_TYPE,
             payload: {
                 selected: channelId,
                 userChannels: availableChannels.map(ch => {

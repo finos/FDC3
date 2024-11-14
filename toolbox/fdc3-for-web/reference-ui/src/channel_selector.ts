@@ -1,5 +1,5 @@
 import { IframeChannelsPayload, Channel } from "@kite9/fdc3-common";
-import { Fdc3UserInterfaceHello, Fdc3UserInterfaceRestyle } from "@kite9/fdc3-schema/dist/generated/api/BrowserTypes";
+import { FDC3_USER_INTERFACE_CHANNEL_SELECTED_TYPE, FDC3_USER_INTERFACE_HELLO_TYPE, FDC3_USER_INTERFACE_RESTYLE_TYPE, Fdc3UserInterfaceHello, Fdc3UserInterfaceRestyle, isFdc3UserInterfaceChannels, isFdc3UserInterfaceHandshake } from "@kite9/fdc3-schema/dist/generated/api/BrowserTypes";
 
 const fillChannels = (data: Channel[], selected: string | null, messageClickedChannel: (s: string | null) => void) => {
   const list = document.getElementById('list')!!;
@@ -47,33 +47,29 @@ window.addEventListener("load", () => {
   myPort.start();
   myPort.onmessage = ({ data }) => {
     console.debug("Received message: ", data);
-    switch (data.type) {
-      case "Fdc3UserInterfaceHandshake ": {
-        collapse();
-        break;
-      }
-      case "Fdc3UserInterfaceChannels": {
-        logo.removeEventListener("click", expand);
-        const { userChannels, selected } = data.payload as IframeChannelsPayload;
-        fillChannels(userChannels, selected, (channelStr) => {
-          myPort.postMessage({
-            type: "Fdc3UserInterfaceSelected",
-            payload: {
-              selected: channelStr || null
-            }
-          });
-          collapse();
+
+    if (isFdc3UserInterfaceHandshake(data)) {
+      collapse();
+    } else if (isFdc3UserInterfaceChannels(data)) {
+      logo.removeEventListener("click", expand);
+      const { userChannels, selected } = data.payload as IframeChannelsPayload;
+      fillChannels(userChannels, selected, (channelStr) => {
+        myPort.postMessage({
+          type: FDC3_USER_INTERFACE_CHANNEL_SELECTED_TYPE,
+          payload: {
+            selected: channelStr || null
+          }
         });
-        const selectedChannel = userChannels.find((c) => c.id === selected);
-        logo.style.fill = selectedChannel?.displayMetadata?.color ?? "white";
-        logo.addEventListener("click", expand);
-        break;
-      }
+        collapse();
+      });
+      const selectedChannel = userChannels.find((c) => c.id === selected);
+      logo.style.fill = selectedChannel?.displayMetadata?.color ?? "white";
+      logo.addEventListener("click", expand);
     }
   };
 
   const helloMessage: Fdc3UserInterfaceHello = {
-    type: "Fdc3UserInterfaceHello",
+    type: FDC3_USER_INTERFACE_HELLO_TYPE,
     payload: {
       implementationDetails: "",
       initialCSS: {
@@ -93,7 +89,7 @@ window.addEventListener("load", () => {
   const expand = () => {
     document.body.setAttribute("data-expanded", "true");
     const restyleMessage: Fdc3UserInterfaceRestyle = {
-      type: "Fdc3UserInterfaceRestyle",
+      type: FDC3_USER_INTERFACE_RESTYLE_TYPE,
       payload: {
         updatedCSS: {
           width: `100%`,
@@ -111,7 +107,7 @@ window.addEventListener("load", () => {
 
   const collapse = () => {
     const restyleMessage: Fdc3UserInterfaceRestyle = {
-      type: "Fdc3UserInterfaceRestyle",
+      type: FDC3_USER_INTERFACE_RESTYLE_TYPE,
       payload: {
         updatedCSS: {
           width: `${8 * 4}px`,

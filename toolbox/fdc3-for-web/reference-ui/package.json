@@ -14,6 +14,6 @@
     "vite": "^5.2.0"
   },
   "dependencies": {
-    "@kite9/fdc3-common": "2.2.0-beta.6"
+    "@kite9/fdc3": "2.2.0-beta.29"
   }
 }

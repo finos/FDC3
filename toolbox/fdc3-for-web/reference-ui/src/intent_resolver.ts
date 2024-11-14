@@ -1,6 +1,7 @@
 import { Icon } from "@kite9/fdc3";
 import { AppIntent } from "@kite9/fdc3";
 import { BrowserTypes } from "@kite9/fdc3-schema";
+import { FDC3_USER_INTERFACE_HELLO_TYPE, FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE, FDC3_USER_INTERFACE_RESTYLE_TYPE, isFdc3UserInterfaceResolve } from "@kite9/fdc3-schema/dist/generated/api/BrowserTypes";
 
 type Fdc3UserInterfaceHello = BrowserTypes.Fdc3UserInterfaceHello;
 type Fdc3UserInterfaceRestyle = BrowserTypes.Fdc3UserInterfaceRestyle;
@@ -14,7 +15,7 @@ const setup = (data: Fdc3UserInterfaceResolve["payload"], callback: (payload: Fd
 
   const intentSelect = document.getElementById("displayIntent") as HTMLSelectElement
 
-  const justIntents = data.appIntents.map(({intent}) => intent)
+  const justIntents = data.appIntents.map(({ intent }) => intent)
   const doneIntents = new Set()
 
   justIntents.forEach(({ name, displayName }) => {
@@ -162,54 +163,50 @@ window.addEventListener("load", () => {
   const mc = new MessageChannel();
   const myPort = mc.port1;
   myPort.start();
-  myPort.onmessage = ({data}) => {
+  myPort.onmessage = ({ data }) => {
     console.debug("Received message: ", data);
-    switch(data.type){
-      case "Fdc3UserInterfaceHandshake": {
-        break;
+    if (isFdc3UserInterfaceResolve(data)) {
+      const restyleMessage: Fdc3UserInterfaceRestyle = {
+        type: FDC3_USER_INTERFACE_RESTYLE_TYPE,
+        payload: {
+          updatedCSS: {
+            width: "100%",
+            height: "100%",
+            top: "0",
+            left: "0",
+            position: "fixed"
+          }
+        }
       }
-      case "Fdc3UserInterfaceResolve": {
+      myPort.postMessage(restyleMessage);
+
+      setup(data.payload, (payload) => {
+        document.querySelector("dialog")?.close();
+        const resolveAction: Fdc3UserInterfaceResolveAction = {
+          type: FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE,
+          payload
+        }
+        myPort.postMessage(resolveAction);
+
         const restyleMessage: Fdc3UserInterfaceRestyle = {
-          type: "Fdc3UserInterfaceRestyle",
+          type: FDC3_USER_INTERFACE_RESTYLE_TYPE,
           payload: {
             updatedCSS: {
-              width: "100%",
-              height: "100%",
-              top: "0",
-              left: "0",
-              position: "fixed"
+              width: "0",
+              height: "0"
             }
           }
         }
+
         myPort.postMessage(restyleMessage);
 
-        setup(data.payload, (payload) => {
-          document.querySelector("dialog")?.close();
-          const resolveAction: Fdc3UserInterfaceResolveAction = {
-            type: "Fdc3UserInterfaceResolveAction",
-            payload
-          }
-          myPort.postMessage(resolveAction);
-
-          const restyleMessage: Fdc3UserInterfaceRestyle = {
-            type: "Fdc3UserInterfaceRestyle",
-            payload: {
-              updatedCSS: {
-                width: "0",
-                height: "0"
-              }
-            }
-          }
-
-          myPort.postMessage(restyleMessage);
-
-        })
-      }
+      })
     }
+
   };
 
   const helloMessage: Fdc3UserInterfaceHello = {
-    type: "Fdc3UserInterfaceHello",
+    type: FDC3_USER_INTERFACE_HELLO_TYPE,
     payload: {
       implementationDetails: "",
       initialCSS: {
