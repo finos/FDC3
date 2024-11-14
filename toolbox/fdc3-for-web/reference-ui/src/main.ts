@@ -1,4 +1,3 @@
-import { ResolverIntents } from "@kite9/fdc3-common";
 import "./style.css";
 
 // Channel data
@@ -78,7 +77,7 @@ const recommendedChannels = [
 ];
 
 // Example resolver data
-const exampleResolverData: ResolverIntents = {
+const exampleResolverData = {
   type: "ResolverIntents",
   appIntents: [
     {

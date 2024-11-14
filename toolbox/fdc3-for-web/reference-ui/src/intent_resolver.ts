@@ -1,12 +1,16 @@
 import { Icon } from "@kite9/fdc3";
 import { AppIntent } from "@kite9/fdc3";
-import { IframeResolveActionPayload, IframeResolvePayload } from "@kite9/fdc3-common";
+import { BrowserTypes } from "@kite9/fdc3-schema";
 
-const setup = (data: IframeResolvePayload, callback: (s: IframeResolveActionPayload) => void) => {
+type Fdc3UserInterfaceHello = BrowserTypes.Fdc3UserInterfaceHello;
+type Fdc3UserInterfaceRestyle = BrowserTypes.Fdc3UserInterfaceRestyle;
+type Fdc3UserInterfaceResolve = BrowserTypes.Fdc3UserInterfaceResolve;
+type Fdc3UserInterfaceResolveAction = BrowserTypes.Fdc3UserInterfaceResolveAction;
+
+
+const setup = (data: Fdc3UserInterfaceResolve["payload"], callback: (payload: Fdc3UserInterfaceResolveAction["payload"]) => void) => {
   document.body.setAttribute("data-visible", "true");
   document.querySelector("dialog")?.showModal();
-
-  console.log("setup data:", data);
 
   const intentSelect = document.getElementById("displayIntent") as HTMLSelectElement
 
@@ -51,8 +55,6 @@ const setup = (data: IframeResolvePayload, callback: (s: IframeResolveActionPayl
       action: "cancel"
     });
   });
-
-  console.log(document.body);
 }
 
 function createIcon(icons: Icon[] | undefined): HTMLElement {
@@ -66,7 +68,7 @@ function createIcon(icons: Icon[] | undefined): HTMLElement {
   return img
 }
 
-const fillList = (ai: AppIntent[], intent: string, callback: (s: IframeResolveActionPayload) => void) => {
+const fillList = (ai: AppIntent[], intent: string, callback: (payload: Fdc3UserInterfaceResolveAction["payload"]) => void) => {
   const allApps = ai.flatMap(a => a.apps)
   const openApps = allApps.filter(a => a.instanceId)
   const newApps = allApps.filter(a => !a.instanceId)
@@ -116,7 +118,7 @@ const fillList = (ai: AppIntent[], intent: string, callback: (s: IframeResolveAc
   const openList = document.getElementById('open-list')!!
   openList.innerHTML = '';
 
-  openApps.forEach(({ appId, title, icons, instanceId }) => {
+  openApps.forEach(({ appId, title, icons }) => {
     const node = document.createElement('div');
     node.setAttribute('tabIndex', '0');
     node.setAttribute("data-appId", appId);
@@ -163,12 +165,12 @@ window.addEventListener("load", () => {
   myPort.onmessage = ({data}) => {
     console.debug("Received message: ", data);
     switch(data.type){
-      case Fdc3UserInterfaceHandshake": {
+      case "Fdc3UserInterfaceHandshake": {
         break;
       }
-      case "iframeResolve": {
-        myPort.postMessage({
-          type: "iframeRestyle",
+      case "Fdc3UserInterfaceResolve": {
+        const restyleMessage: Fdc3UserInterfaceRestyle = {
+          type: "Fdc3UserInterfaceRestyle",
           payload: {
             updatedCSS: {
               width: "100%",
@@ -178,38 +180,43 @@ window.addEventListener("load", () => {
               position: "fixed"
             }
           }
-        });
+        }
+        myPort.postMessage(restyleMessage);
 
-        setup(data.payload, (s) => {
+        setup(data.payload, (payload) => {
           document.querySelector("dialog")?.close();
-          myPort.postMessage({
-            type: "iframeResolveAction",
-            payload: s
-          });
+          const resolveAction: Fdc3UserInterfaceResolveAction = {
+            type: "Fdc3UserInterfaceResolveAction",
+            payload
+          }
+          myPort.postMessage(resolveAction);
 
-          myPort.postMessage({
-            type: "fdc3UserInterfaceRestyle",
+          const restyleMessage: Fdc3UserInterfaceRestyle = {
+            type: "Fdc3UserInterfaceRestyle",
             payload: {
               updatedCSS: {
                 width: "0",
                 height: "0"
               }
             }
-          });
+          }
+
+          myPort.postMessage(restyleMessage);
 
         })
       }
     }
   };
 
-  parent.postMessage({
-    type: "fdc3UserInterfaceHello",
+  const helloMessage: Fdc3UserInterfaceHello = {
+    type: "Fdc3UserInterfaceHello",
     payload: {
+      implementationDetails: "",
       initialCSS: {
         width: "0",
         height: "0"
       }
     }
-  }, "*", [mc.port2]);
-
+  }
+  parent.postMessage(helloMessage, "*", [mc.port2]);
 });
