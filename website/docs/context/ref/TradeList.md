@@ -12,7 +12,7 @@ The TradeList schema does not explicitly include identifiers in the id section, 
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/tradeList.schema.json> ([github](static/schemas/2.1/context/tradeList.schema.json))
+<https://fdc3.finos.org/schemas/next/context/tradeList.schema.json> ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/tradeList.schema.json))
 
 ## Type
 
@@ -33,6 +33,31 @@ The TradeList schema does not explicitly include identifiers in the id section, 
 </details>
 
 An array of trade contexts that forms the list.
+
+</details>
+
+<details>
+  <summary><code>id</code></summary>
+
+**type**: `object`
+
+<details>
+  <summary><code>Additional Properties</code></summary>
+
+**type**: `string`
+
+</details>
+
+One or more identifiers that refer to the trade list in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future.
+
+</details>
+
+<details>
+  <summary><code>name</code></summary>
+
+**type**: `string`
+
+An optional human-readable name for the trade list
 
 </details>
 

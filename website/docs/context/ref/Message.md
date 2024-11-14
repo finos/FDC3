@@ -10,7 +10,7 @@ A chat message to be sent through an instant messaging application. Can contain 
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/message.schema.json> ([github](static/schemas/2.1/context/message.schema.json))
+<https://fdc3.finos.org/schemas/next/context/message.schema.json> ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/message.schema.json))
 
 ## Type
 
@@ -55,10 +55,10 @@ A map of string mime-type to string content
 <details>
   <summary><code>Additional Properties</code></summary>
 
-**Any of:**
+**One of:**
 
 - **type**: [Action](Action)
-- **type**: `object`
+- **type**: [File Attachment](FileAttachment)
 
 </details>
 

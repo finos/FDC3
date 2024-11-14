@@ -10,7 +10,7 @@ A financial instrument from any asset class.
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/instrument.schema.json> ([github](static/schemas/2.1/context/instrument.schema.json))
+<https://fdc3.finos.org/schemas/next/context/instrument.schema.json> ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/instrument.schema.json))
 
 ## Type
 
@@ -30,7 +30,7 @@ A financial instrument from any asset class.
 
 **type**: `string`
 
-<https://www.bloomberg.com/>
+https://www.bloomberg.com/
 
 </details>
 
@@ -39,7 +39,7 @@ A financial instrument from any asset class.
 
 **type**: `string`
 
-<https://www.cusip.com/>
+https://www.cusip.com/
 
 </details>
 
@@ -48,7 +48,7 @@ A financial instrument from any asset class.
 
 **type**: `string`
 
-<https://www.factset.com/>
+https://www.factset.com/
 
 </details>
 
@@ -57,7 +57,7 @@ A financial instrument from any asset class.
 
 **type**: `string`
 
-<https://www.openfigi.com/>
+https://www.openfigi.com/
 
 </details>
 
@@ -66,7 +66,7 @@ A financial instrument from any asset class.
 
 **type**: `string`
 
-<https://www.isin.org/>
+https://www.isin.org/
 
 </details>
 
@@ -75,7 +75,7 @@ A financial instrument from any asset class.
 
 **type**: `string`
 
-<https://permid.org/>
+https://permid.org/
 
 </details>
 
@@ -84,7 +84,7 @@ A financial instrument from any asset class.
 
 **type**: `string`
 
- <https://www.refinitiv.com/>
+https://www.refinitiv.com/
 
 </details>
 
@@ -93,7 +93,7 @@ A financial instrument from any asset class.
 
 **type**: `string`
 
-<https://www.lseg.com/sedol>
+https://www.lseg.com/sedol
 
 </details>
 
@@ -116,6 +116,15 @@ If the identifier you want to share is not a ticker or one of the other standard
 </details>
 
 <details>
+  <summary><code>name</code></summary>
+
+**type**: `string`
+
+An optional human-readable name for the instrument
+
+</details>
+
+<details>
   <summary><code>market</code></summary>
 
 **type**: `object`
@@ -127,7 +136,7 @@ If the identifier you want to share is not a ticker or one of the other standard
 
 **type**: `string`
 
-<https://en.wikipedia.org/wiki/Market_Identifier_Code>
+https://en.wikipedia.org/wiki/Market_Identifier_Code
 
 </details>
 
@@ -145,7 +154,7 @@ Human readable market name
 
 **type**: `string`
 
-<https://www.iso.org/iso-3166-country-codes.html>
+https://www.iso.org/iso-3166-country-codes.html
 
 </details>
 
@@ -154,7 +163,7 @@ Human readable market name
 
 **type**: `string`
 
-<https://www.bloomberg.com/>
+https://www.bloomberg.com/
 
 </details>
 

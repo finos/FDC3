@@ -2,11 +2,11 @@
   "scripts": {
     "clean": "npx rimraf build .docusaurus",
     "examples": "docusaurus-examples",
-    "prestart": "node schema2Markdown.js",
+    "prestart": "npm run copy-schemas && npm run copy-appd && node schema2Markdown.js",
     "start": "docusaurus start",
     "prebuild": "npm run copy-schemas && npm run copy-appd && node schema2Markdown.js && npm run copy-workbench && npm run copy-explained",
     "build": "docusaurus build",
-    "copy-schemas": "del-cli static/schemas/next/*/ && cpy \"../packages/fdc3-schema/schemas/**\" static/schemas/next/ && cpy \"../packages/fdc3-context/schemas/context/\" static/schemas/next/context/",
+    "copy-schemas": "del-cli static/schemas/next/*/ && cpy \"../packages/fdc3-schema/schemas/**\" static/schemas/next/ && cpy \"../packages/fdc3-context/schemas/context\" static/schemas/next/",
     "copy-appd": "cpy \"../packages/fdc3-standard/src/app-directory/specification/*.schema.json\" \"static/schemas/next/\"",
     "build-workbench": "cd ../toolbox/fdc3-workbench && npm install && npm run build",
     "copy-workbench": "del-cli static/toolbox/fdc3-workbench && npm run build-workbench && cpy \"../toolbox/fdc3-workbench/build/**\" static/toolbox/fdc3-workbench",

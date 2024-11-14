@@ -17,7 +17,7 @@ In addition to handling requests to plot charts, a charting application may use 
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/chart.schema.json> ([github](static/schemas/2.1/context/chart.schema.json))
+<https://fdc3.finos.org/schemas/next/context/chart.schema.json> ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/chart.schema.json))
 
 ## Type
 
@@ -44,9 +44,7 @@ An array of instrument contexts whose data should be plotted.
 <details>
   <summary><code>range</code></summary>
 
-**All of:**
-
-- **type**: [TimeRange](TimeRange)
+**type**: [TimeRange](TimeRange)
 
 The time range that should be plotted
 
