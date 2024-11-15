@@ -82,7 +82,7 @@
       "title": "Response Error Details",
       "type": "array",
       "items": {
-        "$ref": "#/$defs/ErrorMessages"
+        "$ref": "../api/common.schema.json#/$defs/ErrorMessages"
       },
       "description": "Array of error message strings for responses that were not returned to the bridge before the timeout or because an error occurred. Should be the same length as the `errorSources` array and ordered the same. May be omitted if all sources responded without errors."
     },
