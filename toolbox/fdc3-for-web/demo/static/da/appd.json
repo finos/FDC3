@@ -7,7 +7,7 @@
             "description": "App will connect to the desktop agent and broadcast on the red channel when you hit the button",
             "type": "web",
             "details": {
-                "url": "http://localhost:8095/static/app1/index.html"
+                "url": "http://localhost:4000/static/app1/index.html"
             },
             "hostManifests": {},
             "version": "1.0.0",
@@ -21,7 +21,7 @@
             "description": "App will connect to the desktop agent on startup and listen to messages on the red channel",
             "type": "web",
             "details": {
-                "url": "http://localhost:8095/static/app2/index.html"
+                "url": "http://localhost:4000/static/app2/index.html"
             },
             "hostManifests": {},
             "version": "1.0.0",
@@ -35,7 +35,7 @@
             "description": "App creates two APIs to the desktop agent, broadcasts in one and listens in the other.",
             "type": "web",
             "details": {
-                "url": "http://localhost:8095/static/app3/index.html"
+                "url": "http://localhost:4000/static/app3/index.html"
             },
             "hostManifests": {},
             "version": "1.0.0",
@@ -46,10 +46,10 @@
             "appId": "workbench",
             "name": "FDC3 Workbench",
             "title": "FDC3 Workbench",
-            "description": "Part of the WebFDC3 Demo - Port of the FDC3 Workbench.  Must be started separately on localhost:3000",
+            "description": "Part of the WebFDC3 Demo - Port of the FDC3 Workbench.  Must be started separately on localhost:4001",
             "type": "web",
             "details": {
-                "url": "http://localhost:3000/toolbox/fdc3-workbench/"
+                "url": "http://localhost:4001/toolbox/fdc3-workbench/"
             },
             "hostManifests": {},
             "version": "1.0.0",
@@ -63,7 +63,7 @@
             "description": "Listens for the ViewNews intent only",
             "type": "web",
             "details": {
-                "url": "http://localhost:8095/static/app4/index.html"
+                "url": "http://localhost:4000/static/app4/index.html"
             },
             "hostManifests": {},
             "version": "1.0.0",
@@ -89,7 +89,7 @@
             "description": "Listens for the ViewNews intent only",
             "type": "web",
             "details": {
-                "url": "http://localhost:8095/static/app5/index.html"
+                "url": "http://localhost:4000/static/app5/index.html"
             },
             "hostManifests": {},
             "version": "1.0.0",
@@ -121,7 +121,7 @@
             "description": "App asks for the result of a ViewQuote intent",
             "type": "web",
             "details": {
-                "url": "http://localhost:8095/static/app6/index.html"
+                "url": "http://localhost:4000/static/app6/index.html"
             },
             "hostManifests": {},
             "version": "1.0.0",
@@ -135,7 +135,7 @@
             "description": "App asks for the result of a ViewNews intent",
             "type": "web",
             "details": {
-                "url": "http://localhost:8095/static/app7/index.html"
+                "url": "http://localhost:4000/static/app7/index.html"
             },
             "hostManifests": {},
             "version": "1.0.0",
