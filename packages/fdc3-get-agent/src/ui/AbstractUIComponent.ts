@@ -67,7 +67,7 @@ export abstract class AbstractUIComponent implements Connectable {
 
     async messagePortReady(port: MessagePort) {
         // tells the iframe it can start posting
-        port.postMessage({ type: FDC3_USER_INTERFACE_HANDSHAKE_TYPE })
+        port.postMessage({ type: FDC3_USER_INTERFACE_HANDSHAKE_TYPE, payload: {} })
     }
 
     private awaitHello(): Promise<MessagePort> {
