@@ -5,7 +5,7 @@ import { DemoServerContext } from "./DemoServerContext";
 import { FDC3_2_1_JSONDirectory } from "./FDC3_2_1_JSONDirectory";
 import { AppRegistration, DefaultFDC3Server, DirectoryApp, ServerContext } from "@kite9/fdc3-web-impl";
 import { ChannelState, ChannelType } from "@kite9/fdc3-web-impl/src/handlers/BroadcastHandler";
-import { link } from "./util";
+import { link, UI, UI_URLS } from "./util";
 import { BrowserTypes } from "@kite9/fdc3-schema";
 
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL
@@ -36,9 +36,9 @@ function getApproach(): Approach {
     return out;
 }
 
-enum UI { DEFAULT, DEMO }
 
-function getUi(): UI {
+
+function getUIKey(): UI {
     const cb = document.getElementById("ui") as HTMLInputElement;
     const val = cb.value
     var out: UI = UI[val as keyof typeof UI]; //Works with --noImplicitAny
@@ -104,7 +104,7 @@ window.addEventListener("load", () => {
                                 timestamp: new Date()
                             },
                             payload: {
-                                iframeUrl: window.location.origin + `/static/da/embed.html?connectionAttemptUuid=${data.meta.connectionAttemptUuid}&desktopAgentId=${desktopAgentUUID}&instanceId=${instance?.instanceId}`
+                                iframeUrl: window.location.origin + `/static/da/embed.html?connectionAttemptUuid=${data.meta.connectionAttemptUuid}&desktopAgentId=${desktopAgentUUID}&instanceId=${instance?.instanceId}&UI=${getUIKey()}`
                             }
                         } as WebConnectionProtocol2LoadURL, origin)
                     } else {
@@ -113,6 +113,8 @@ window.addEventListener("load", () => {
                         link(socket, channel, instance.instanceId!!)
 
                         socket.emit(APP_HELLO, desktopAgentUUID, instance.instanceId)
+
+                        const ui = UI_URLS[getUIKey()]
 
                         // sned the other end of the channel to the app
                         source.postMessage({
@@ -123,8 +125,7 @@ window.addEventListener("load", () => {
                             },
                             payload: {
                                 fdc3Version: "2.2",
-                                intentResolverUrl: window.location.origin + "/static/da/intent-resolver.html",
-                                channelSelectorUrl: window.location.origin + "/static/da/channel-selector.html",
+                                ...ui
                             }
                         }, origin, [channel.port1])
                     }

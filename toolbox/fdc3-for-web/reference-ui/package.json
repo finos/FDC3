@@ -1,5 +1,5 @@
 {
-  "name": "addon",
+  "name": "fdc3-for-web-reference-ui",
   "private": true,
   "version": "2.1.1",
   "type": "module",
@@ -14,6 +14,6 @@
     "vite": "^5.2.0"
   },
   "dependencies": {
-    "@kite9/fdc3": "2.1.1"
+    "@kite9/fdc3": "2.2.0-beta.29"
   }
 }

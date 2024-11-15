@@ -1,16 +1,21 @@
 import { Icon } from "@kite9/fdc3";
 import { AppIntent } from "@kite9/fdc3";
-import { IframeResolveActionPayload, IframeResolvePayload } from "@kite9/fdc3-common";
+import { BrowserTypes } from "@kite9/fdc3-schema";
+import { FDC3_USER_INTERFACE_HELLO_TYPE, FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE, FDC3_USER_INTERFACE_RESTYLE_TYPE, isFdc3UserInterfaceResolve } from "@kite9/fdc3-schema/dist/generated/api/BrowserTypes";
 
-const setup = (data: IframeResolvePayload, callback: (s: IframeResolveActionPayload) => void) => {
+type Fdc3UserInterfaceHello = BrowserTypes.Fdc3UserInterfaceHello;
+type Fdc3UserInterfaceRestyle = BrowserTypes.Fdc3UserInterfaceRestyle;
+type Fdc3UserInterfaceResolve = BrowserTypes.Fdc3UserInterfaceResolve;
+type Fdc3UserInterfaceResolveAction = BrowserTypes.Fdc3UserInterfaceResolveAction;
+
+
+const setup = (data: Fdc3UserInterfaceResolve["payload"], callback: (payload: Fdc3UserInterfaceResolveAction["payload"]) => void) => {
   document.body.setAttribute("data-visible", "true");
   document.querySelector("dialog")?.showModal();
 
-  console.log("setup data:", data);
-
   const intentSelect = document.getElementById("displayIntent") as HTMLSelectElement
 
-  const justIntents = data.appIntents.map(({intent}) => intent)
+  const justIntents = data.appIntents.map(({ intent }) => intent)
   const doneIntents = new Set()
 
   justIntents.forEach(({ name, displayName }) => {
@@ -51,8 +56,6 @@ const setup = (data: IframeResolvePayload, callback: (s: IframeResolveActionPayl
       action: "cancel"
     });
   });
-
-  console.log(document.body);
 }
 
 function createIcon(icons: Icon[] | undefined): HTMLElement {
@@ -66,7 +69,7 @@ function createIcon(icons: Icon[] | undefined): HTMLElement {
   return img
 }
 
-const fillList = (ai: AppIntent[], intent: string, callback: (s: IframeResolveActionPayload) => void) => {
+const fillList = (ai: AppIntent[], intent: string, callback: (payload: Fdc3UserInterfaceResolveAction["payload"]) => void) => {
   const allApps = ai.flatMap(a => a.apps)
   const openApps = allApps.filter(a => a.instanceId)
   const newApps = allApps.filter(a => !a.instanceId)
@@ -116,7 +119,7 @@ const fillList = (ai: AppIntent[], intent: string, callback: (s: IframeResolveAc
   const openList = document.getElementById('open-list')!!
   openList.innerHTML = '';
 
-  openApps.forEach(({ appId, title, icons, instanceId }) => {
+  openApps.forEach(({ appId, title, icons }) => {
     const node = document.createElement('div');
     node.setAttribute('tabIndex', '0');
     node.setAttribute("data-appId", appId);
@@ -160,56 +163,57 @@ window.addEventListener("load", () => {
   const mc = new MessageChannel();
   const myPort = mc.port1;
   myPort.start();
-  myPort.onmessage = ({data}) => {
+  myPort.onmessage = ({ data }) => {
     console.debug("Received message: ", data);
-    switch(data.type){
-      case Fdc3UserInterfaceHandshake": {
-        break;
+    if (isFdc3UserInterfaceResolve(data)) {
+      const restyleMessage: Fdc3UserInterfaceRestyle = {
+        type: FDC3_USER_INTERFACE_RESTYLE_TYPE,
+        payload: {
+          updatedCSS: {
+            width: "100%",
+            height: "100%",
+            top: "0",
+            left: "0",
+            position: "fixed"
+          }
+        }
       }
-      case "iframeResolve": {
-        myPort.postMessage({
-          type: "iframeRestyle",
+      myPort.postMessage(restyleMessage);
+
+      setup(data.payload, (payload) => {
+        document.querySelector("dialog")?.close();
+        const resolveAction: Fdc3UserInterfaceResolveAction = {
+          type: FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE,
+          payload
+        }
+        myPort.postMessage(resolveAction);
+
+        const restyleMessage: Fdc3UserInterfaceRestyle = {
+          type: FDC3_USER_INTERFACE_RESTYLE_TYPE,
           payload: {
             updatedCSS: {
-              width: "100%",
-              height: "100%",
-              top: "0",
-              left: "0",
-              position: "fixed"
+              width: "0",
+              height: "0"
             }
           }
-        });
+        }
 
-        setup(data.payload, (s) => {
-          document.querySelector("dialog")?.close();
-          myPort.postMessage({
-            type: "iframeResolveAction",
-            payload: s
-          });
+        myPort.postMessage(restyleMessage);
 
-          myPort.postMessage({
-            type: "fdc3UserInterfaceRestyle",
-            payload: {
-              updatedCSS: {
-                width: "0",
-                height: "0"
-              }
-            }
-          });
-
-        })
-      }
+      })
     }
+
   };
 
-  parent.postMessage({
-    type: "fdc3UserInterfaceHello",
+  const helloMessage: Fdc3UserInterfaceHello = {
+    type: FDC3_USER_INTERFACE_HELLO_TYPE,
     payload: {
+      implementationDetails: "",
       initialCSS: {
         width: "0",
         height: "0"
       }
     }
-  }, "*", [mc.port2]);
-
+  }
+  parent.postMessage(helloMessage, "*", [mc.port2]);
 });
