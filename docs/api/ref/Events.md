@@ -77,7 +77,7 @@ type FDC3EventTypes = "userChannelChanged";
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-enum FDC3EventTypes 
+enum FDC3EventType 
 {
   UserChannelChanged
 }
