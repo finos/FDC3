@@ -1,9 +1,9 @@
 import { FDC3_USER_INTERFACE_RESTYLE_TYPE } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
-import { DEFAULT_COLLAPSED_CSS } from "./channel-selector";
+import { DEFAULT_COLLAPSED_CSS, Position } from "./channel-selector";
 
-export function dragElement(elmnt: HTMLElement, myPort: MessagePort) {
+export function dragElement(elmnt: HTMLElement, myPort: MessagePort, position: Position) {
     var posXDrag = 0, posYDrag = 0, posXStart = 0, posYStart = 0;
-    var top = 0, left = 0;
+    var top = parseInt(position.top), left = parseInt(position.left);
 
 
     elmnt.onmousedown = dragMouseDown;
@@ -30,6 +30,7 @@ export function dragElement(elmnt: HTMLElement, myPort: MessagePort) {
         elmnt.style.bottom = ''
         elmnt.style.width = DEFAULT_COLLAPSED_CSS.width
         elmnt.style.height = DEFAULT_COLLAPSED_CSS.height
+        console.log("fireGrow")
     }
 
     function fireShrink() {
@@ -43,6 +44,7 @@ export function dragElement(elmnt: HTMLElement, myPort: MessagePort) {
                 }
             }
         });
+
         setTimeout(() => {
             elmnt.style.right = '0px'
             elmnt.style.bottom = '0px'
