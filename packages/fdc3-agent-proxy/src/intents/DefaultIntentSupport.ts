@@ -96,7 +96,6 @@ export class DefaultIntentSupport implements IntentSupport {
             (m.type == 'raiseIntentResultResponse') &&
             (m.meta.requestUuid == messageOut.meta.requestUuid)))
 
-
         const ir = await convertIntentResult(rp, this.messaging)
         return ir
     }

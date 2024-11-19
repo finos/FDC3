@@ -1,20 +1,22 @@
 import { AbstractWebMessaging } from './AbstractWebMessaging'
 import { RegisterableListener } from "@kite9/fdc3-agent-proxy"
-import { GetAgentParams } from "@kite9/fdc3-standard"
+import { GetAgentParams, WebDesktopAgentType } from "@kite9/fdc3-standard"
 import { v4 as uuidv4 } from "uuid"
 import { BrowserTypes } from "@kite9/fdc3-schema";
-import { AddContextListenerRequestMeta } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { AppRequestMessage } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 type WebConnectionProtocol3Handshake = BrowserTypes.WebConnectionProtocol3Handshake
 
 /**
- * Details needed to set up the Messaging instance
+ * Details needed to set up the Messaging instance and Desktop AgentDetails record
  */
 export type ConnectionDetails = {
     connectionAttemptUuid: string
     handshake: WebConnectionProtocol3Handshake,
     messagePort: MessagePort,
     actualUrl: string,
-    options: GetAgentParams
+    options: GetAgentParams,
+    agentType: WebDesktopAgentType,
+    agentUrl?: string,
 }
 
 export class MessagePortMessaging extends AbstractWebMessaging {
@@ -22,8 +24,8 @@ export class MessagePortMessaging extends AbstractWebMessaging {
     private readonly cd: ConnectionDetails
     private readonly listeners: Map<string, RegisterableListener> = new Map()
 
-    constructor(cd: ConnectionDetails, deliveryTimeoutMs?: number) {
-        super(cd.options, cd.connectionAttemptUuid, cd.actualUrl, deliveryTimeoutMs)
+    constructor(cd: ConnectionDetails) {
+        super(cd.options, cd.connectionAttemptUuid, cd.actualUrl);
         this.cd = cd;
 
         this.cd.messagePort.onmessage = (m) => {
@@ -52,11 +54,11 @@ export class MessagePortMessaging extends AbstractWebMessaging {
         this.listeners.delete(id)
     }
 
-    createMeta(): AddContextListenerRequestMeta {
+    createMeta(): AppRequestMessage['meta'] {
         return {
             "requestUuid": this.createUUID(),
             "timestamp": new Date(),
-            "source": this.getSource()
+            "source": super.getSource()!
         }
     }
 

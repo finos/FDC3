@@ -35,7 +35,22 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
     }
 
     async getInfo(): Promise<ImplementationMetadata> {
-        return this.handshake.getImplementationMetadata()
+        let impl = await this.handshake.getImplementationMetadata();
+        //handle potential null during start-up
+        //TODO: introduce queuing to prevent early calls
+        if (!impl) { 
+            impl = {
+                fdc3Version: "unknown",
+                provider: "unknown",
+                optionalFeatures: {
+                    OriginatingAppMetadata: false,
+                    UserChannelMembershipAPIs: false,
+                    DesktopAgentBridging: false
+                },
+                appMetadata: {appId: "unknown"}
+            };
+        }
+        return impl;
     }
 
     async broadcast(context: Context): Promise<void> {

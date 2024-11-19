@@ -1,5 +1,5 @@
 import { AgentError, DesktopAgent, GetAgentParams } from "@kite9/fdc3-standard";
-import { Loader } from "./Loader";
+import { DesktopAgentSelection, Loader } from "./Loader";
 
 
 
@@ -8,9 +8,11 @@ import { Loader } from "./Loader";
  */
 export class TimeoutLoader implements Loader {
 
-    done = false
+    done = false;
 
-    poll(endTime: number, resolve: (value: DesktopAgent | void) => void, reject: (reason?: any) => void) {
+    //TODO: replace polling with an actual timeout
+
+    poll(endTime: number, resolve: (value: DesktopAgentSelection | void) => void, reject: (reason?: any) => void) {
         const timeRemaining = endTime - Date.now()
 
         if ((timeRemaining > 0) && (this.done == false)) {
@@ -26,10 +28,10 @@ export class TimeoutLoader implements Loader {
         this.done = true;
     }
 
-    get(params: GetAgentParams): Promise<DesktopAgent | void> {
-        return new Promise<DesktopAgent | void>((resolve, reject) => {
-            const endPollTime = Date.now() + params.timeoutMs!!
-            this.poll(endPollTime, resolve, reject)
+    get(params: GetAgentParams): Promise<DesktopAgentSelection | void> {
+        return new Promise<DesktopAgentSelection | void>((resolve, reject) => {
+            const endPollTime = Date.now() + params.timeoutMs!!;
+            this.poll(endPollTime, resolve, reject);
         });
     }
 }

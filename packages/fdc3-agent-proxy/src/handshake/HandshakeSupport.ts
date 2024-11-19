@@ -6,5 +6,5 @@ import { ImplementationMetadata, Connectable } from "@kite9/fdc3-standard"
  */
 export interface HandshakeSupport extends Connectable {
 
-    getImplementationMetadata(): Promise<ImplementationMetadata>
+    getImplementationMetadata(): Promise<ImplementationMetadata | null>
 }

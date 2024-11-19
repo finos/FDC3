@@ -49,7 +49,7 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler> {
             payload: {
                 intentResolution: {
                     intent: m.payload.intent,
-                    source: this.messaging.getSource()
+                    source: this.messaging.getSource()!
                 }
             }
         };
