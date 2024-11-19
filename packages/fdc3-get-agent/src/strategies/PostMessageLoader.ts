@@ -1,11 +1,7 @@
-import { AgentError, GetAgentParams, WebDesktopAgentType } from '@kite9/fdc3-standard';
+import { GetAgentParams } from '@kite9/fdc3-standard';
 import { createDesktopAgentAPI } from '../messaging/message-port';
 import { v4 as uuidv4 } from 'uuid';
-import { ConnectionDetails } from '../messaging/MessagePortMessaging';
 import { DesktopAgentSelection, Loader } from './Loader';
-import { FDC3_VERSION } from './getAgent';
-import { retrieveDesktopAgentDetails } from '../sessionStorage/DesktopAgentDetails';
-import { isWebConnectionProtocol2LoadURL, isWebConnectionProtocol3Handshake, isWebConnectionProtocol5ValidateAppIdentityFailedResponse, isWebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol1Hello, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocolMessage } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { HelloHandler } from './HelloHandler';
 import { IdentityValidationHandler } from './IdentityValidationHandler';
 

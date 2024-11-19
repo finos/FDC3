@@ -26,10 +26,15 @@ export class DesktopAgentPreloadLoader implements Loader {
                     identityUrl: globalThis.window.location.href,
                     actualUrl: globalThis.window.location.href,
                     appId: implMetadata.appMetadata.appId,
-                    instanceId: implMetadata.appMetadata.instanceId,
-                    instanceUuid: implMetadata.appMetadata.instanceId // preload DAs don't issue these so repeat the instanceId
-                } 
+                    instanceId: implMetadata.appMetadata.instanceId ?? "unknown",
+                    instanceUuid: implMetadata.appMetadata.instanceId ?? "unknown" // TODO: preload DAs don't issue these so repeat the instanceId
+                }
             };
+
+            if (selection.details.instanceId === "unknown"){
+                console.warn("The DesktopAgent did not return an instanceId in the app's metadata", implMetadata);
+            }
+
             resolve(selection);
         } else if ((timeRemaining > 0) && (this.done == false)) {
             setTimeout(() => this.poll(endTime, resolve, reject), 100);

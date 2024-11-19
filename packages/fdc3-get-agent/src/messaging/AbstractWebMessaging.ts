@@ -44,10 +44,6 @@ export abstract class AbstractWebMessaging extends AbstractMessaging {
     return super.getSource();
   }
 
-  waitFor<X>(filter: (m: any) => boolean, timeoutErrorMessage?: string): Promise<X> {
-    return super.waitFor<X>(filter, timeoutErrorMessage);
-  }
-
   private async exchangeValidationWithId<X>(message: any, connectionAttemptUuid: string): Promise<X> {
     const prom = super.waitFor(
       (m: WebConnectionProtocolMessage | AgentResponseMessage) => {
@@ -84,9 +80,9 @@ export abstract class AbstractWebMessaging extends AbstractMessaging {
 
     super.setImplementationMetadata(validationResponse.payload.implementationMetadata);
 
-    //TODO: need to do something with the instanceUuid...
+    // //TODO: need to do something with the instanceUuid...
 
-    this.storeMyDesktopAgentDetails(validationResponse, /* need to set agent Type and agentUrl if any */)
+    // this.storeMyDesktopAgentDetails(validationResponse, /* need to set agent Type and agentUrl if any */)
   }
 
   async disconnect(): Promise<void> {
@@ -94,59 +90,59 @@ export abstract class AbstractWebMessaging extends AbstractMessaging {
     super.setImplementationMetadata(null);
   }
 
-  /**
-   * Sends the validate message through the message port
-   */
-  private createValidationMessage(): WebConnectionProtocol4ValidateAppIdentity {
-    const requestMessage: WebConnectionProtocol4ValidateAppIdentity = {
-        type: 'WCP4ValidateAppIdentity',
-        meta: {
-          connectionAttemptUuid: this.connectionAttemptUuid,
-          timestamp: new Date(),
-        },
-        payload: {
-          identityUrl: this.options.identityUrl ?? this.actualUrl,
-          actualUrl: this.actualUrl
-        }
-    };
-    const persistedDetails = this.retrieveMyDesktopAgentDetails();
+  // /**
+  //  * Sends the validate message through the message port
+  //  */
+  // private createValidationMessage(): WebConnectionProtocol4ValidateAppIdentity {
+  //   const requestMessage: WebConnectionProtocol4ValidateAppIdentity = {
+  //       type: 'WCP4ValidateAppIdentity',
+  //       meta: {
+  //         connectionAttemptUuid: this.connectionAttemptUuid,
+  //         timestamp: new Date(),
+  //       },
+  //       payload: {
+  //         identityUrl: this.options.identityUrl ?? this.actualUrl,
+  //         actualUrl: this.actualUrl
+  //       }
+  //   };
+  //   const persistedDetails = this.retrieveMyDesktopAgentDetails();
     
-    if (persistedDetails) {
-        requestMessage.payload.instanceId = persistedDetails.instanceId;
-        requestMessage.payload.instanceUuid = persistedDetails.instanceUuid;
-    }
+  //   if (persistedDetails) {
+  //       requestMessage.payload.instanceId = persistedDetails.instanceId;
+  //       requestMessage.payload.instanceUuid = persistedDetails.instanceUuid;
+  //   }
 
-    return requestMessage;
-  }
+  //   return requestMessage;
+  // }
 
-  /** Used to persist data on the connection, which can later be used to ensure
-   *  reconnection to the same Desktop Agent and to request the same instanceId.
-   */
-  storeMyDesktopAgentDetails(
-    validationResponse: WebConnectionProtocol5ValidateAppIdentitySuccessResponse,
-    agentType: WebDesktopAgentType,
-    agentUrl?: string
-  ) {
-    //create the details object to persist
-    const details: DesktopAgentDetails = {
-      agentType,
-      identityUrl: this.options.identityUrl!,
-      actualUrl: this.actualUrl!,
-      agentUrl: agentUrl ?? undefined,
-      appId: validationResponse.payload.appId,
-      instanceUuid: validationResponse.payload.instanceUuid,
-      instanceId: validationResponse.payload.instanceId,
-    };
+  // /** Used to persist data on the connection, which can later be used to ensure
+  //  *  reconnection to the same Desktop Agent and to request the same instanceId.
+  //  */
+  // storeMyDesktopAgentDetails(
+  //   validationResponse: WebConnectionProtocol5ValidateAppIdentitySuccessResponse,
+  //   agentType: WebDesktopAgentType,
+  //   agentUrl?: string
+  // ) {
+  //   //create the details object to persist
+  //   const details: DesktopAgentDetails = {
+  //     agentType,
+  //     identityUrl: this.options.identityUrl!,
+  //     actualUrl: this.actualUrl!,
+  //     agentUrl: agentUrl ?? undefined,
+  //     appId: validationResponse.payload.appId,
+  //     instanceUuid: validationResponse.payload.instanceUuid,
+  //     instanceId: validationResponse.payload.instanceId,
+  //   };
   
-    storeDesktopAgentDetails(details);
-  }
+  //   storeDesktopAgentDetails(details);
+  // }
 
-  /** Retrieves persisted data about previous connections for this specific app
-   *  (identified by the identityUrl). Used to ensure reconnection to the same
-   *  agent and to request the same instanceId.
-   */
-  retrieveMyDesktopAgentDetails(): DesktopAgentDetails | null {
-    return retrieveDesktopAgentDetails(this.options.identityUrl!);
-  }
+  // /** Retrieves persisted data about previous connections for this specific app
+  //  *  (identified by the identityUrl). Used to ensure reconnection to the same
+  //  *  agent and to request the same instanceId.
+  //  */
+  // retrieveMyDesktopAgentDetails(): DesktopAgentDetails | null {
+  //   return retrieveDesktopAgentDetails(this.options.identityUrl!);
+  // }
 
 }
