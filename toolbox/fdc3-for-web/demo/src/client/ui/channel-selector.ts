@@ -26,14 +26,14 @@ const DEFAULT_EXPANDED_CSS = {
 }
 
 export type Position = {
-    right: string,
-    bottom: string
+    left: string,
+    top: string
 }
 
 
 const position: Position = {
-    right: "10px",
-    bottom: "10px",
+    left: "10px",
+    top: "10px",
 }
 
 window.addEventListener("load", () => {
@@ -78,7 +78,7 @@ window.addEventListener("load", () => {
     })
 
 
-    dragElement(logo, myPort) /*, () => {
+    dragElement(logo, myPort, position) /*, () => {
         list.innerHTML = ''
         channels.forEach(channel => {
 
