@@ -3,7 +3,7 @@ import { DesktopAgentPreloadLoader } from './DesktopAgentPreloadLoader'
 import { PostMessageLoader } from './PostMessageLoader'
 import { TimeoutLoader } from './TimeoutLoader'
 import { storeDesktopAgentDetails, retrieveAllDesktopAgentDetails } from '../sessionStorage/DesktopAgentDetails';
-import { handleFailover } from './FailoverHandler';
+import { FailoverHandler } from './FailoverHandler';
 
 const DEFAULT_WAIT_FOR_MS = 750;
 
@@ -59,8 +59,12 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
     .catch(async (error) => {
         if (options.failover != undefined) {
             try {
-                //TODO: ensure a timeout is also applied to the failover, to avoid getting stuck here
-                const selection = await handleFailover(options, options.failover);
+                //TODO: consider adding a timeout for the failover, to avoid getting stuck here
+                //  However there is an argument to be made for hanging out in case the 
+                //  function eventually returns, e.g. after an external DA started up
+                
+                const failoverHandler = new FailoverHandler(options);
+                const selection = await failoverHandler.handleFailover();
 
                 //store details of the connection in SessionStorage
                 const desktopAgentDetails: DesktopAgentDetails = {
@@ -74,7 +78,6 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
                 };
                 storeDesktopAgentDetails(desktopAgentDetails);
 
-                
                 return selection.agent;
             } catch (e) {
                 console.error("Desktop agent not found. Error reported during failover", e);

@@ -38,7 +38,8 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
         let impl = await this.handshake.getImplementationMetadata();
         //handle potential null during start-up
         //TODO: introduce queuing to prevent early calls
-        if (!impl) { 
+        if (!impl) {
+            console.error("Implementation data was not available");
             impl = {
                 fdc3Version: "unknown",
                 provider: "unknown",

@@ -9,9 +9,10 @@ import { ConnectionDetails } from '../messaging/MessagePortMessaging';
 import { FDC3_VERSION } from './getAgent';
 
 export class HelloHandler {
-  constructor(options: GetAgentParams, connectionAttemptUuid: string) {
+  constructor(options: GetAgentParams, connectionAttemptUuid: string, agentType: WebDesktopAgentType = WebDesktopAgentType.ProxyParent) {
     this.options = options;
 		this.connectionAttemptUuid = connectionAttemptUuid;
+		this.agentType = agentType;
 		this.helloResponseListener = null;
   }
 
@@ -20,6 +21,12 @@ export class HelloHandler {
 
 	/** UUID used to filter messages */
 	connectionAttemptUuid: string;
+
+	/** The agentType to set, which may change if we're asked to load a URL into an iframe */
+	agentType: WebDesktopAgentType;
+
+	/** If we're asked to load a URL into an iframe, it is stored here to be saved in Session Storage */
+  agentUrl: string | null = null;
 
   /** Reference to event listener used for responses from Desktop Agents -
    *  Used to remove them when no longer needed.
@@ -52,8 +59,8 @@ export class HelloHandler {
   }
 
   /**
-   * The desktop agent requests that the client opens a URL in order to provide a
-   * message port.
+   * Handle a request from a desktop agent that the client loads an adaptor URL
+	 * into an iframe instead of working with the parent window.
    */
   openFrame(url: string) {
     const IFRAME_ID = 'fdc3-communications-embedded-iframe';
@@ -87,9 +94,6 @@ export class HelloHandler {
 
   /** Listen for WCP responses from 'parent' windows and frames and handle them */
   listenForHelloResponses(): Promise<ConnectionDetails> {
-    let agentType = WebDesktopAgentType.ProxyParent;
-    let agentUrl: string | null = null;
-
     return new Promise<ConnectionDetails>((resolve, _reject) => {
       // setup listener for message and retrieve JS URL from it
       this.helloResponseListener = (event: MessageEvent<WebConnectionProtocolMessage>) => {
@@ -101,8 +105,8 @@ export class HelloHandler {
             this.openFrame(url);
 
             //note the iframe URL and desktop agent type have changed
-            agentType = WebDesktopAgentType.ProxyUrl;
-            agentUrl = url;
+            this.agentType = WebDesktopAgentType.ProxyUrl;
+            this.agentUrl = url;
 
             //n.b event listener remains in place to receive messages from the iframe
           } else if (isWebConnectionProtocol3Handshake(data)) {
@@ -112,18 +116,15 @@ export class HelloHandler {
               messagePort: event.ports[0],
               options: this.options,
               actualUrl: globalThis.window.location.href,
-              agentType: agentType,
-              agentUrl: agentUrl ?? undefined,
+              agentType: this.agentType,
+              agentUrl: this.agentUrl ?? undefined,
             });
 
             //remove the event listener as we've received a messagePort to use
-            if (this.helloResponseListener != null) {
-              globalThis.window.removeEventListener('message', this.helloResponseListener);
-              this.helloResponseListener = null;
-            }
+            this.cancel();
           } else {
             console.debug(
-              `Ignoring message unexpected message in PostMessageLoader (because its not WCP2LoadUrl or WCP3Handshake).`,
+              `Ignoring message unexpected message in HelloHandler (because its not WCP2LoadUrl or WCP3Handshake).`,
               data
             );
           }

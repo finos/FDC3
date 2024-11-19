@@ -111,7 +111,7 @@ export class IdentityValidationHandler {
               data
             );
           }
-					
+
         } else {
           console.debug(
             `Ignoring message with invalid connectionAttemptUuid. Expected ${this.connectionAttemptUuid}, received: ${data?.meta?.connectionAttemptUuid}`,
@@ -124,4 +124,10 @@ export class IdentityValidationHandler {
       this.messagePort.addEventListener('message', this.idValidationResponseListener);
     });
   }
+
+	cancel(): void {
+		if (this.idValidationResponseListener) {
+      this.messagePort.removeEventListener('message', this.idValidationResponseListener);
+    }
+	}
 }
