@@ -34,7 +34,7 @@ export class DefaultHandshakeSupport implements HandshakeSupport {
         return this.messaging.disconnect()
     }
 
-    async getImplementationMetadata(): Promise<ImplementationMetadata> {
+    async getImplementationMetadata(): Promise<ImplementationMetadata | null> {
         return this.messaging.getImplementationMetadata()
     }
 

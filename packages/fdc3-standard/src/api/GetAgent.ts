@@ -103,11 +103,11 @@ export type DesktopAgentDetails = {
 
   /** The URL that was previously sent to the Desktop Agent
    * to establish the app's identity.*/
-  identityUrl?: string;
+  identityUrl: string;
 
   /** The current URL at the time of the last connection to
    * a Desktop Agent.*/
-  actualUrl?: string;
+  actualUrl: string;
 
   /** Optional URL field that should be used to store any
    *  URL that was used to connect to a Desktop Agent. URLs
@@ -159,3 +159,5 @@ export enum WebDesktopAgentType {
    *  function that was passed by the application. */
   Failover = 'FAILOVER',
 }
+
+export const DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX = 'fdc3-desktop-agent-details';
