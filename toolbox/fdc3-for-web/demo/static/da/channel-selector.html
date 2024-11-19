@@ -19,17 +19,48 @@
       body[data-expanded="false"] #selector {
         display: none;
       }
+
+      .background,
+      .selector {
+          left: 0;
+          right: 0;
+          top: 0;
+          bottom: 0;
+          position: fixed;
+      }
+
+      .background {
+        z-index: 1;
+        background-color: #22222242; 
+      }
+
+      .selector {
+        z-index: 2;
+        background-color: #fff;
+      }
+
+      .logo {
+        z-index: 3;
+        position: fixed;
+     }
+      
     </style>
   </head>
 
   <body data-expanded="false">
-    <div id="selector" style="background-color: #ddd">
+
+
+    <div class="background" id="background">
+    </div>
+    
+    <div id="selector" class="selector" style="background-color: #ddd">
       <h1>Channel Selector</h1>
+      <button id="close">Close</button>
       <ul id="channel-list"></ul>
 
-      <button id="close">Close</button>
+   
     </div>
-    <div id="logo">
+    <div id="logo" class="logo">
       <img src="noun-mailbox-6010513.png" alt="Demo Icon" width="100%" />
     </div>
   </body>
