@@ -1,14 +1,12 @@
-import { DesktopAgentDetails, WebDesktopAgentType, GetAgentParams, AppIdentifier, DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX } from '@kite9/fdc3-standard';
+import { GetAgentParams, AppIdentifier } from '@kite9/fdc3-standard';
 import { RegisterableListener, AbstractMessaging } from '@kite9/fdc3-agent-proxy';
 import {
   AppRequestMessage,
   WebConnectionProtocolMessage,
   AgentResponseMessage,
-  WebConnectionProtocol4ValidateAppIdentity,
   WebConnectionProtocol5ValidateAppIdentitySuccessResponse,
   isWebConnectionProtocolMessage
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
-import { storeDesktopAgentDetails, retrieveAllDesktopAgentDetails, retrieveDesktopAgentDetails } from '../sessionStorage/DesktopAgentDetails';
 
 
 /**
@@ -17,16 +15,14 @@ import { storeDesktopAgentDetails, retrieveAllDesktopAgentDetails, retrieveDeskt
 export abstract class AbstractWebMessaging extends AbstractMessaging {
   private readonly options: GetAgentParams;
   private readonly connectionAttemptUuid: string;
-  private readonly actualUrl: string;
 
-  constructor(options: GetAgentParams, connectionAttemptUuid: string, actualUrl: string) {
+  constructor(options: GetAgentParams, connectionAttemptUuid: string) {
     super();
     if (!options.timeoutMs) {
       options.timeoutMs = 10016;
     }
     this.options = options;
     this.connectionAttemptUuid = connectionAttemptUuid;
-    this.actualUrl = actualUrl;
   }
 
   abstract post(message: object): Promise<void>;
@@ -42,25 +38,6 @@ export abstract class AbstractWebMessaging extends AbstractMessaging {
 
   getSource(): AppIdentifier | null {
     return super.getSource();
-  }
-
-  private async exchangeValidationWithId<X>(message: any, connectionAttemptUuid: string): Promise<X> {
-    const prom = super.waitFor(
-      (m: WebConnectionProtocolMessage | AgentResponseMessage) => {
-        if (isWebConnectionProtocolMessage(m)) {
-            return m.meta.connectionAttemptUuid == connectionAttemptUuid;
-        } else {
-          return false;
-        }
-      }
-    );
-    this.post(message);
-    const out: any = await prom;
-    if (out?.payload?.message) {
-      throw new Error(out.payload.message);
-    } else {
-      return out;
-    }
   }
 
   /**
