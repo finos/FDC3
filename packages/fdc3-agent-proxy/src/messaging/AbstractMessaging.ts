@@ -9,6 +9,7 @@ export abstract class AbstractMessaging implements Messaging {
     private readonly options: GetAgentParams
     private readonly connectionAttemptUuid: string
     private readonly timeout: number
+    private readonly actualUrl: string
     private appId: AppIdentifier | null = null
     private implementationMetadata: ImplementationMetadata | null = null
 
@@ -20,10 +21,11 @@ export abstract class AbstractMessaging implements Messaging {
 
     abstract createMeta(): RequestMetadata
 
-    constructor(options: GetAgentParams, connectionAttemptUuid: string, timeout: number = 10016) {
+    constructor(options: GetAgentParams, connectionAttemptUuid: string, actualUrl: string, timeout: number = 10016) {
         this.options = options
         this.connectionAttemptUuid = connectionAttemptUuid
         this.timeout = timeout
+        this.actualUrl = actualUrl
     }
 
     getSource(): AppIdentifier {
@@ -140,8 +142,8 @@ export abstract class AbstractMessaging implements Messaging {
                 timestamp: new Date()
             },
             payload: {
-                // @ts-expect-error: TODO: Provide a fallback identityUrl, in case one isn't provided
-                identityUrl: this.options.identityUrl,
+                identityUrl: this.options.identityUrl ?? this.actualUrl,
+                actualUrl: this.actualUrl,
                 instanceUuid: this.retrieveInstanceUuid()
             }
         }

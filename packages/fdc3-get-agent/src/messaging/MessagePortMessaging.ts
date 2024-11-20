@@ -3,6 +3,7 @@ import { RegisterableListener } from "@kite9/fdc3-agent-proxy"
 import { GetAgentParams } from "@kite9/fdc3-standard"
 import { v4 as uuidv4 } from "uuid"
 import { BrowserTypes } from "@kite9/fdc3-schema";
+import { AddContextListenerRequestMeta } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 type WebConnectionProtocol3Handshake = BrowserTypes.WebConnectionProtocol3Handshake
 
 /**
@@ -12,6 +13,7 @@ export type ConnectionDetails = {
     connectionAttemptUuid: string
     handshake: WebConnectionProtocol3Handshake,
     messagePort: MessagePort,
+    actualUrl: string,
     options: GetAgentParams
 }
 
@@ -21,7 +23,7 @@ export class MessagePortMessaging extends AbstractWebMessaging {
     private readonly listeners: Map<string, RegisterableListener> = new Map()
 
     constructor(cd: ConnectionDetails, deliveryTimeoutMs?: number) {
-        super(cd.options, cd.connectionAttemptUuid, deliveryTimeoutMs)
+        super(cd.options, cd.connectionAttemptUuid, cd.actualUrl, deliveryTimeoutMs)
         this.cd = cd;
 
         this.cd.messagePort.onmessage = (m) => {
@@ -53,7 +55,7 @@ export class MessagePortMessaging extends AbstractWebMessaging {
         this.listeners.delete(id)
     }
 
-    createMeta(): object {
+    createMeta(): AddContextListenerRequestMeta {
         return {
             "requestUuid": this.createUUID(),
             "timestamp": new Date(),

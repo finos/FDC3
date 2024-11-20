@@ -3,6 +3,7 @@ import { IntentResolver, IntentResolutionChoice } from '@kite9/fdc3-standard'
 import { AbstractUIComponent } from "./AbstractUIComponent";
 import { BrowserTypes } from "@kite9/fdc3-schema";
 import { Context } from "@kite9/fdc3-context";
+import { FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE, FDC3_USER_INTERFACE_RESOLVE_TYPE } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
 type Fdc3UserInterfaceResolveAction = BrowserTypes.Fdc3UserInterfaceResolveAction
 type Fdc3UserInterfaceResolve = BrowserTypes.Fdc3UserInterfaceResolve
@@ -26,7 +27,7 @@ export class DefaultDesktopAgentIntentResolver extends AbstractUIComponent imple
 
         this.port.addEventListener("message", (e) => {
             console.log("Got resolve action")
-            if (e.data.type == 'Fdc3UserInterfaceResolveAction') {
+            if (e.data.type == FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE) {
                 const choice = e.data as Fdc3UserInterfaceResolveAction
                 if ((choice.payload.action == 'click') && (this.pendingResolve)) {
                     this.pendingResolve({
@@ -49,7 +50,7 @@ export class DefaultDesktopAgentIntentResolver extends AbstractUIComponent imple
 
 
         this.port?.postMessage({
-            type: 'Fdc3UserInterfaceResolve',
+            type: FDC3_USER_INTERFACE_RESOLVE_TYPE,
             payload: {
                 appIntents,
                 context

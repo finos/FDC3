@@ -1,6 +1,4 @@
-import { BrowserTypes } from "@kite9/fdc3-schema";
-import { Fdc3UserInterfaceChannels, Fdc3UserInterfaceHello, Fdc3UserInterfaceRestyle } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
-
+import { Fdc3UserInterfaceChannels, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceHello, Fdc3UserInterfaceRestyle } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
 // TODO: Update typings
 let channels: any[] = []
@@ -9,7 +7,7 @@ let channelId: string | null = null
 
 const DEFAULT_COLLAPSED_CSS = {
     position: "fixed",
-    'z-index': 1000,
+    zIndex: "1000",
     right: "10px",
     bottom: "10px",
     width: "50px",
@@ -18,11 +16,11 @@ const DEFAULT_COLLAPSED_CSS = {
 
 const DEFAULT_EXPANDED_CSS = {
     position: "fixed",
-    'z-index': 1000,
+    zIndex: "1000",
     right: "10px",
     bottom: "10px",
     width: "450px",
-    'max-height': "600px",
+    maxHeight: "600px",
     transition: "all 0.5s ease-out allow-discrete"
 }
 
@@ -60,7 +58,7 @@ window.addEventListener("load", () => {
 
     myPort.addEventListener("message", (e) => {
         if (e.data.type == 'iframeHandshake') {
-            // ok, port is ready, send the iframe position detials
+            // ok, port is ready, send the iframe position details
             const restyleMessage: Fdc3UserInterfaceRestyle = {
                 type: "Fdc3UserInterfaceRestyle", 
                 payload: { 
@@ -96,12 +94,13 @@ window.addEventListener("load", () => {
             a.onclick = () => {
                 changeSize(false)
                 channelId = channel.id
-                myPort.postMessage({ 
-                    type: "Fdc3UserInterfaceSelected", 
+                const message: Fdc3UserInterfaceChannelSelected = { 
+                    type: "Fdc3UserInterfaceChannelSelected", 
                     payload: { 
                         selected: channel.id 
                     } 
-                })
+                }
+                myPort.postMessage(message)
             }
         })
 

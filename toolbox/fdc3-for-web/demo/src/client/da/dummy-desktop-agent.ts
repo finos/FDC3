@@ -5,7 +5,7 @@ import { DemoServerContext } from "./DemoServerContext";
 import { FDC3_2_1_JSONDirectory } from "./FDC3_2_1_JSONDirectory";
 import { AppRegistration, DefaultFDC3Server, DirectoryApp, ServerContext } from "@kite9/fdc3-web-impl";
 import { ChannelState, ChannelType } from "@kite9/fdc3-web-impl/src/handlers/BroadcastHandler";
-import { link } from "./util";
+import { link, UI, UI_URLS } from "./util";
 import { BrowserTypes } from "@kite9/fdc3-schema";
 
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL
@@ -26,13 +26,19 @@ function createAppStartButton(app: DirectoryApp, sc: ServerContext<AppRegistrati
     return div
 }
 
-
 enum Approach { IFRAME, PARENT_POST_MESSAGE }
 
 function getApproach(): Approach {
     const cb = document.getElementById("approach") as HTMLInputElement;
     const val = cb.value
     var out: Approach = Approach[val as keyof typeof Approach]; //Works with --noImplicitAny
+    return out;
+}
+
+function getUIKey(): UI {
+    const cb = document.getElementById("ui") as HTMLInputElement;
+    const val = cb.value
+    var out: UI = UI[val as keyof typeof UI]; //Works with --noImplicitAny
     return out;
 }
 
@@ -81,8 +87,42 @@ window.addEventListener("load", () => {
                 const source = event.source as Window
                 const origin = event.origin;
 
-                if (data.type !== "WCP1Hello") {
-                    return
+                console.log("Received: " + JSON.stringify(event.data));
+                if (data.type == "WCP1Hello") {
+                    if (getApproach() == Approach.IFRAME) {
+                        const instance = sc.getInstanceForWindow(source)
+                        source.postMessage({
+                            type: "WCP2LoadUrl",
+                            meta: {
+                                connectionAttemptUuid: data.meta.connectionAttemptUuid,
+                                timestamp: new Date()
+                            },
+                            payload: {
+                                iframeUrl: window.location.origin + `/static/da/embed.html?connectionAttemptUuid=${data.meta.connectionAttemptUuid}&desktopAgentId=${desktopAgentUUID}&instanceId=${instance?.instanceId}&UI=${getUIKey()}`
+                            }
+                        } as WebConnectionProtocol2LoadURL, origin)
+                    } else {
+                        const instance = sc.getInstanceForWindow(source)!!
+                        const channel = new MessageChannel()
+                        link(socket, channel, instance.instanceId!!)
+
+                        socket.emit(APP_HELLO, desktopAgentUUID, instance.instanceId)
+
+                        const ui = UI_URLS[getUIKey()]
+
+                        // send the other end of the channel to the app
+                        source.postMessage({
+                            type: 'WCP3Handshake',
+                            meta: {
+                                connectionAttemptUuid: data.meta.connectionAttemptUuid,
+                                timestamp: new Date()
+                            },
+                            payload: {
+                                fdc3Version: "2.2",
+                                ...ui
+                            }
+                        }, origin, [channel.port1])
+                    }
                 }
 
                 // If this is in an iframe...
@@ -113,7 +153,7 @@ window.addEventListener("load", () => {
 
                 socket.emit(APP_HELLO, desktopAgentUUID, instance.instanceId)
 
-                // sned the other end of the channel to the app
+                // send the other end of the channel to the app
                 source.postMessage({
                     type: 'WCP3Handshake',
                     meta: {

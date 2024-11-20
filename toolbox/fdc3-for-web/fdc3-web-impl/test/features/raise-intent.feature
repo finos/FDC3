@@ -16,6 +16,12 @@ Feature: Raising Intents
     And "listenerApp/b1" is opened with connection id "b1"
     And "listenerApp/b1" registers an intent listener for "returnBook"
 
+  Scenario: Context Not Handled By App
+    When "App1/a1" raises an intent for "borrowBook" with contextType "fdc3.magazine" on app "listenerApp/b1"
+    Then messaging will have outgoing posts
+      | msg.type            | msg.payload.error | to.instanceId |
+      | raiseIntentResponse | NoAppsFound       | a1            |
+
   Scenario: Raising an Intent to a Non-Existent App
     And "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "completelyMadeUp"
     Then messaging will have outgoing posts
@@ -112,3 +118,8 @@ Feature: Raising Intents
       | msg.payload.error | msg.type            |
       | NoAppsFound       | raiseIntentResponse |
 
+  Scenario: Raising An Invalid Intent (non existent intent  but valid app)
+    When "App1/a1" raises an intent for "nonExistentIntent" with contextType "fdc3.book" on app "listenerApp/b1"
+    Then messaging will have outgoing posts
+      | msg.payload.error | msg.type            |
+      | NoAppsFound       | raiseIntentResponse |

@@ -89,7 +89,8 @@ export function helloExchange(options: GetAgentParams, connectionAttemptUuid: st
                         connectionAttemptUuid: connectionAttemptUuid,
                         handshake: data,
                         messagePort: event.ports[0],
-                        options: options
+                        options: options,
+                        actualUrl: globalThis.window.location.href
                     })
                 }
             }
@@ -116,7 +117,8 @@ export function handleWindowProxy(options: GetAgentParams, provider: () => Promi
                     connectionAttemptUuid: handshake.meta.connectionAttemptUuid,
                     handshake: data,
                     messagePort: event.ports[0],
-                    options: options
+                    options: options,
+                    actualUrl: globalThis.window.location.href
                 }))
             }
         }

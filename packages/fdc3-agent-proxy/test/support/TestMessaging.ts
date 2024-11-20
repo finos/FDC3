@@ -109,7 +109,7 @@ export class TestMessaging extends AbstractMessaging {
             channelSelector: false,
             intentResolver: false,
             dontSetWindowFdc3: false
-        }, "test", 200)
+        }, "test", "myActualUrl", 200)
 
         this.channelState = channelState
         this.automaticResponses = [
