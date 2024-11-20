@@ -41,7 +41,6 @@ export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent impl
                 selected: channelId,
                 userChannels: availableChannels.map(ch => {
                     return {
-                        // TODO: Is this the correct type to return for these channels?
                         type: "user",
                         id: ch.id,
                         displayMetadata: ch.displayMetadata
