@@ -1,10 +1,8 @@
 import { Channel } from "@kite9/fdc3-standard";
 import { ChannelSelector } from "@kite9/fdc3-standard"
 import { AbstractUIComponent } from "./AbstractUIComponent";
-import { BrowserTypes } from "@kite9/fdc3-schema";
+import { Fdc3UserInterfaceChannels, Fdc3UserInterfaceChannelSelected, isFdc3UserInterfaceChannelSelected } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
-type Fdc3UserInterfaceChannels = BrowserTypes.Fdc3UserInterfaceChannels
-type Fdc3UserInterfaceChannelSelected = BrowserTypes.Fdc3UserInterfaceChannelSelected
 
 /**
  * Works with the desktop agent to provide a simple channel selector.
@@ -25,8 +23,11 @@ export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent impl
         this.port = port
 
         port.addEventListener("message", (e) => {
-            if (e.data.type !== 'Fdc3UserInterfaceChannelSelected') {
-                return
+            if (isFdc3UserInterfaceChannelSelected(e.data)) {
+                const choice = e.data
+                if (this.callback) {
+                    this.callback(choice.payload.selected)
+                }
             }
 
             const choice: Fdc3UserInterfaceChannelSelected = e.data

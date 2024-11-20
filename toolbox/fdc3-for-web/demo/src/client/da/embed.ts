@@ -1,5 +1,5 @@
 import { io } from "socket.io-client"
-import { link } from "./util";
+import { link, UI, UI_URLS } from "./util";
 import { APP_HELLO } from "../../message-types";
 
 const appWindow = window.parent;
@@ -26,8 +26,13 @@ function getSource(): string {
     return getQueryVariable("instanceId")
 }
 
-function getDeskopAgentId(): string {
+function getDesktopAgentId(): string {
     return getQueryVariable("desktopAgentId")
+}
+
+function getUIKey(): UI {
+    const ui = getQueryVariable("UI")
+    return parseInt(ui) as UI
 }
 
 window.addEventListener("load", () => {
@@ -35,7 +40,7 @@ window.addEventListener("load", () => {
     const socket = io()
     const channel = new MessageChannel()
     const source = getSource()
-    const desktopAgentUUID = getDeskopAgentId()
+    const desktopAgentUUID = getDesktopAgentId()
 
     socket.on("connect", () => {
 
@@ -43,7 +48,9 @@ window.addEventListener("load", () => {
 
         socket.emit(APP_HELLO, desktopAgentUUID, source)
 
-        // sned the other end of the channel to the app
+        const ui = UI_URLS[getUIKey()]
+
+        // send the other end of the channel to the app
         appWindow.postMessage({
             type: 'WCP3Handshake',
             meta: {
@@ -52,8 +59,7 @@ window.addEventListener("load", () => {
             },
             payload: {
                 fdc3Version: "2.2",
-                intentResolverUrl: window.location.origin + "/static/da/intent-resolver.html",
-                channelSelectorUrl: window.location.origin + "/static/da/channel-selector.html",
+                ...ui
             }
         }, "*", [channel.port1])
 

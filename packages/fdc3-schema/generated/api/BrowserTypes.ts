@@ -114,7 +114,7 @@ export interface WebConnectionProtocol1Hello {
  */
 export interface WebConnectionProtocol1HelloMeta {
     connectionAttemptUuid: string;
-    timestamp:             Date;
+    timestamp: Date;
 }
 
 /**
@@ -603,7 +603,7 @@ export interface WebConnectionProtocolMessage {
  * Metadata for a Web Connection Protocol message.
  */
 export interface ConnectionStepMetadata {
-    timestamp:              Date;
+    timestamp: Date;
     connectionAttemptUuid?: string;
 }
 
@@ -648,7 +648,7 @@ export interface AddContextListenerRequestMeta {
      * purposes but a Desktop Agent should make its own determination of the source of a message
      * to avoid spoofing.
      */
-    source?:   AppIdentifier;
+    source?: AppIdentifier;
     timestamp: Date;
 }
 
@@ -751,13 +751,13 @@ export interface AddContextListenerResponse {
  * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
  */
 export interface AddContextListenerResponseMeta {
-    requestUuid:  string;
+    requestUuid: string;
     responseUuid: string;
     /**
      * Field that represents the source application that the request being responded to was
      * received from, for debugging purposes.
      */
-    source?:   AppIdentifier;
+    source?: AppIdentifier;
     timestamp: Date;
 }
 
@@ -767,7 +767,7 @@ export interface AddContextListenerResponseMeta {
  * unsuccessful.
  */
 export interface AddContextListenerResponsePayload {
-    error?:        PurpleError;
+    error?: PurpleError;
     listenerUUID?: string;
 }
 
@@ -857,7 +857,7 @@ export interface AddEventListenerResponse {
  * unsuccessful.
  */
 export interface AddEventListenerResponsePayload {
-    error?:        ResponsePayloadError;
+    error?: ResponsePayloadError;
     listenerUUID?: string;
 }
 
@@ -942,7 +942,7 @@ export interface AddIntentListenerResponse {
  * unsuccessful.
  */
 export interface AddIntentListenerResponsePayload {
-    error?:        FluffyError;
+    error?: FluffyError;
     listenerUUID?: string;
     [property: string]: any;
 }
@@ -1021,13 +1021,13 @@ export interface AgentResponseMessage {
  * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
  */
 export interface AgentResponseMessageMeta {
-    requestUuid:  string;
+    requestUuid: string;
     responseUuid: string;
     /**
      * Field that represents the source application that the request being responded to was
      * received from, for debugging purposes.
      */
-    source?:   AppIdentifier;
+    source?: AppIdentifier;
     timestamp: Date;
 }
 
@@ -1077,7 +1077,7 @@ export interface AppRequestMessageMeta {
      * purposes but a Desktop Agent should make its own determination of the source of a message
      * to avoid spoofing.
      */
-    source?:   AppIdentifier;
+    source?: AppIdentifier;
     timestamp: Date;
 }
 
@@ -1448,7 +1448,7 @@ export interface CreatePrivateChannelResponse {
  * unsuccessful.
  */
 export interface CreatePrivateChannelResponsePayload {
-    error?:          PurpleError;
+    error?: PurpleError;
     privateChannel?: Channel;
 }
 
@@ -1868,7 +1868,7 @@ export interface Fdc3UserInterfaceResolvePayload {
      * An array of AppIntent objects defining the resolution options.
      */
     appIntents: AppIntent[];
-    context:    Context;
+    context: Context;
 }
 
 /**
@@ -2098,7 +2098,7 @@ export interface FindInstancesResponse {
  * resulted in an error and including a standardized error message.
  */
 export interface FindInstancesResponsePayload {
-    error?:          FindInstancesErrors;
+    error?: FindInstancesErrors;
     appIdentifiers?: AppMetadata[];
 }
 
@@ -2159,8 +2159,8 @@ export interface FindIntentRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentRequestPayload {
-    context?:    Context;
-    intent:      string;
+    context?: Context;
+    intent: string;
     resultType?: string;
 }
 
@@ -2199,7 +2199,7 @@ export interface FindIntentResponse {
  * unsuccessful.
  */
 export interface FindIntentResponsePayload {
-    error?:     FindInstancesErrors;
+    error?: FindInstancesErrors;
     appIntent?: AppIntent;
 }
 
@@ -2234,7 +2234,7 @@ export interface FindIntentsByContextRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentsByContextRequestPayload {
-    context:     Context;
+    context: Context;
     resultType?: string;
 }
 
@@ -2273,7 +2273,7 @@ export interface FindIntentsByContextResponse {
  * unsuccessful.
  */
 export interface FindIntentsByContextResponsePayload {
-    error?:      FindInstancesErrors;
+    error?: FindInstancesErrors;
     appIntents?: AppIntent[];
 }
 
@@ -2345,7 +2345,7 @@ export interface GetAppMetadataResponse {
  * unsuccessful.
  */
 export interface GetAppMetadataResponsePayload {
-    error?:       FindInstancesErrors;
+    error?: FindInstancesErrors;
     appMetadata?: AppMetadata;
 }
 
@@ -2417,7 +2417,7 @@ export interface GetCurrentChannelResponse {
  * unsuccessful.
  */
 export interface GetCurrentChannelResponsePayload {
-    error?:   ResponsePayloadError;
+    error?: ResponsePayloadError;
     channel?: Channel | null;
 }
 
@@ -2575,7 +2575,7 @@ export interface GetInfoResponse {
  * unsuccessful.
  */
 export interface GetInfoResponsePayload {
-    error?:                  ResponsePayloadError;
+    error?: ResponsePayloadError;
     implementationMetadata?: ImplementationMetadata;
 }
 
@@ -2651,7 +2651,7 @@ export interface GetOrCreateChannelResponse {
  * unsuccessful.
  */
 export interface GetOrCreateChannelResponsePayload {
-    error?:   PurpleError;
+    error?: PurpleError;
     channel?: Channel;
 }
 
@@ -2722,7 +2722,7 @@ export interface GetUserChannelsResponse {
  * unsuccessful.
  */
 export interface GetUserChannelsResponsePayload {
-    error?:        PurpleError;
+    error?: PurpleError;
     userChannels?: Channel[];
 }
 
@@ -2945,7 +2945,7 @@ export interface IntentResultRequestPayload {
      * The eventUuid value of the intentEvent that the result being sent relates to.
      */
     intentEventUuid: string;
-    intentResult:    IntentResult;
+    intentResult: IntentResult;
     /**
      * The requestUuid value of the raiseIntentRequest that the result being sent relates to.
      */
@@ -3208,7 +3208,7 @@ export interface OpenResponse {
  * unsuccessful.
  */
 export interface OpenResponsePayload {
-    error?:         OpenErrorResponsePayload;
+    error?: OpenErrorResponsePayload;
     appIdentifier?: AppIdentifier;
 }
 
@@ -3304,7 +3304,7 @@ export interface PrivateChannelAddEventListenerResponse {
  * unsuccessful.
  */
 export interface PrivateChannelAddEventListenerResponsePayload {
-    error?:        PurpleError;
+    error?: PurpleError;
     listenerUUID?: string;
     [property: string]: any;
 }
@@ -3597,7 +3597,7 @@ export interface RaiseIntentForContextRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface RaiseIntentForContextRequestPayload {
-    app?:    AppIdentifier;
+    app?: AppIdentifier;
     context: Context;
 }
 
@@ -3736,9 +3736,9 @@ export interface RaiseIntentRequest {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface RaiseIntentRequestPayload {
-    app?:    AppIdentifier;
+    app?: AppIdentifier;
     context: Context;
-    intent:  string;
+    intent: string;
 }
 
 /**
@@ -3841,7 +3841,7 @@ export interface RaiseIntentResultResponse {
  * unsuccessful.
  */
 export interface RaiseIntentResultResponsePayload {
-    error?:        ResponsePayloadError;
+    error?: ResponsePayloadError;
     intentResult?: IntentResult;
 }
 
@@ -4554,7 +4554,7 @@ function transform(val: any, typ: any, getProps: any, key: any = '', parent: any
             const typ = typs[i];
             try {
                 return transform(val, typ, getProps);
-            } catch (_) {}
+            } catch (_) { }
         }
         return invalidValue(typs, val, key, parent);
     }
@@ -4613,9 +4613,9 @@ function transform(val: any, typ: any, getProps: any, key: any = '', parent: any
     if (Array.isArray(typ)) return transformEnum(typ, val);
     if (typeof typ === "object") {
         return typ.hasOwnProperty("unionMembers") ? transformUnion(typ.unionMembers, val)
-            : typ.hasOwnProperty("arrayItems")    ? transformArray(typ.arrayItems, val)
-            : typ.hasOwnProperty("props")         ? transformObject(getProps(typ), typ.additional, val)
-            : invalidValue(typ, val, key, parent);
+            : typ.hasOwnProperty("arrayItems") ? transformArray(typ.arrayItems, val)
+                : typ.hasOwnProperty("props") ? transformObject(getProps(typ), typ.additional, val)
+                    : invalidValue(typ, val, key, parent);
     }
     // Numbers can be parsed by Date but shouldn't be.
     if (typ === Date && typeof val !== "number") return transformDate(val);
@@ -5857,3 +5857,981 @@ const typeMap: any = {
         "raiseIntentResultResponse",
     ],
 };
+
+export function isWebConnectionProtocol1Hello(value: any): value is WebConnectionProtocol1Hello {
+    try {
+        Convert.webConnectionProtocol1HelloToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const WEB_CONNECTION_PROTOCOL1_HELLO_TYPE = "WebConnectionProtocol1Hello";
+
+export function isWebConnectionProtocol2LoadURL(value: any): value is WebConnectionProtocol2LoadURL {
+    try {
+        Convert.webConnectionProtocol2LoadURLToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const WEB_CONNECTION_PROTOCOL2_LOAD_U_R_L_TYPE = "WebConnectionProtocol2LoadURL";
+
+export function isWebConnectionProtocol3Handshake(value: any): value is WebConnectionProtocol3Handshake {
+    try {
+        Convert.webConnectionProtocol3HandshakeToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const WEB_CONNECTION_PROTOCOL3_HANDSHAKE_TYPE = "WebConnectionProtocol3Handshake";
+
+export function isWebConnectionProtocol4ValidateAppIdentity(value: any): value is WebConnectionProtocol4ValidateAppIdentity {
+    try {
+        Convert.webConnectionProtocol4ValidateAppIdentityToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const WEB_CONNECTION_PROTOCOL4_VALIDATE_APP_IDENTITY_TYPE = "WebConnectionProtocol4ValidateAppIdentity";
+
+export function isWebConnectionProtocol5ValidateAppIdentityFailedResponse(value: any): value is WebConnectionProtocol5ValidateAppIdentityFailedResponse {
+    try {
+        Convert.webConnectionProtocol5ValidateAppIdentityFailedResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const WEB_CONNECTION_PROTOCOL5_VALIDATE_APP_IDENTITY_FAILED_RESPONSE_TYPE = "WebConnectionProtocol5ValidateAppIdentityFailedResponse";
+
+export function isWebConnectionProtocol5ValidateAppIdentitySuccessResponse(value: any): value is WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
+    try {
+        Convert.webConnectionProtocol5ValidateAppIdentitySuccessResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const WEB_CONNECTION_PROTOCOL5_VALIDATE_APP_IDENTITY_SUCCESS_RESPONSE_TYPE = "WebConnectionProtocol5ValidateAppIdentitySuccessResponse";
+
+export function isWebConnectionProtocol6Goodbye(value: any): value is WebConnectionProtocol6Goodbye {
+    try {
+        Convert.webConnectionProtocol6GoodbyeToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const WEB_CONNECTION_PROTOCOL6_GOODBYE_TYPE = "WebConnectionProtocol6Goodbye";
+
+export function isWebConnectionProtocolMessage(value: any): value is WebConnectionProtocolMessage {
+    try {
+        Convert.webConnectionProtocolMessageToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const WEB_CONNECTION_PROTOCOL_MESSAGE_TYPE = "WebConnectionProtocolMessage";
+
+export function isAddContextListenerRequest(value: any): value is AddContextListenerRequest {
+    try {
+        Convert.addContextListenerRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const ADD_CONTEXT_LISTENER_REQUEST_TYPE = "AddContextListenerRequest";
+
+export function isAddContextListenerResponse(value: any): value is AddContextListenerResponse {
+    try {
+        Convert.addContextListenerResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const ADD_CONTEXT_LISTENER_RESPONSE_TYPE = "AddContextListenerResponse";
+
+export function isAddEventListenerRequest(value: any): value is AddEventListenerRequest {
+    try {
+        Convert.addEventListenerRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const ADD_EVENT_LISTENER_REQUEST_TYPE = "AddEventListenerRequest";
+
+export function isAddEventListenerResponse(value: any): value is AddEventListenerResponse {
+    try {
+        Convert.addEventListenerResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const ADD_EVENT_LISTENER_RESPONSE_TYPE = "AddEventListenerResponse";
+
+export function isAddIntentListenerRequest(value: any): value is AddIntentListenerRequest {
+    try {
+        Convert.addIntentListenerRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const ADD_INTENT_LISTENER_REQUEST_TYPE = "AddIntentListenerRequest";
+
+export function isAddIntentListenerResponse(value: any): value is AddIntentListenerResponse {
+    try {
+        Convert.addIntentListenerResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const ADD_INTENT_LISTENER_RESPONSE_TYPE = "AddIntentListenerResponse";
+
+export function isAgentEventMessage(value: any): value is AgentEventMessage {
+    try {
+        Convert.agentEventMessageToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const AGENT_EVENT_MESSAGE_TYPE = "AgentEventMessage";
+
+export function isAgentResponseMessage(value: any): value is AgentResponseMessage {
+    try {
+        Convert.agentResponseMessageToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const AGENT_RESPONSE_MESSAGE_TYPE = "AgentResponseMessage";
+
+export function isAppRequestMessage(value: any): value is AppRequestMessage {
+    try {
+        Convert.appRequestMessageToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const APP_REQUEST_MESSAGE_TYPE = "AppRequestMessage";
+
+export function isBroadcastEvent(value: any): value is BroadcastEvent {
+    try {
+        Convert.broadcastEventToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const BROADCAST_EVENT_TYPE = "BroadcastEvent";
+
+export function isBroadcastRequest(value: any): value is BroadcastRequest {
+    try {
+        Convert.broadcastRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const BROADCAST_REQUEST_TYPE = "BroadcastRequest";
+
+export function isBroadcastResponse(value: any): value is BroadcastResponse {
+    try {
+        Convert.broadcastResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const BROADCAST_RESPONSE_TYPE = "BroadcastResponse";
+
+export function isChannelChangedEvent(value: any): value is ChannelChangedEvent {
+    try {
+        Convert.channelChangedEventToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const CHANNEL_CHANGED_EVENT_TYPE = "ChannelChangedEvent";
+
+export function isContextListenerUnsubscribeRequest(value: any): value is ContextListenerUnsubscribeRequest {
+    try {
+        Convert.contextListenerUnsubscribeRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const CONTEXT_LISTENER_UNSUBSCRIBE_REQUEST_TYPE = "ContextListenerUnsubscribeRequest";
+
+export function isContextListenerUnsubscribeResponse(value: any): value is ContextListenerUnsubscribeResponse {
+    try {
+        Convert.contextListenerUnsubscribeResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const CONTEXT_LISTENER_UNSUBSCRIBE_RESPONSE_TYPE = "ContextListenerUnsubscribeResponse";
+
+export function isCreatePrivateChannelRequest(value: any): value is CreatePrivateChannelRequest {
+    try {
+        Convert.createPrivateChannelRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const CREATE_PRIVATE_CHANNEL_REQUEST_TYPE = "CreatePrivateChannelRequest";
+
+export function isCreatePrivateChannelResponse(value: any): value is CreatePrivateChannelResponse {
+    try {
+        Convert.createPrivateChannelResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const CREATE_PRIVATE_CHANNEL_RESPONSE_TYPE = "CreatePrivateChannelResponse";
+
+export function isEventListenerUnsubscribeRequest(value: any): value is EventListenerUnsubscribeRequest {
+    try {
+        Convert.eventListenerUnsubscribeRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const EVENT_LISTENER_UNSUBSCRIBE_REQUEST_TYPE = "EventListenerUnsubscribeRequest";
+
+export function isEventListenerUnsubscribeResponse(value: any): value is EventListenerUnsubscribeResponse {
+    try {
+        Convert.eventListenerUnsubscribeResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const EVENT_LISTENER_UNSUBSCRIBE_RESPONSE_TYPE = "EventListenerUnsubscribeResponse";
+
+export function isFdc3UserInterfaceChannelSelected(value: any): value is Fdc3UserInterfaceChannelSelected {
+    try {
+        Convert.fdc3UserInterfaceChannelSelectedToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FDC3_USER_INTERFACE_CHANNEL_SELECTED_TYPE = "Fdc3UserInterfaceChannelSelected";
+
+export function isFdc3UserInterfaceChannels(value: any): value is Fdc3UserInterfaceChannels {
+    try {
+        Convert.fdc3UserInterfaceChannelsToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FDC3_USER_INTERFACE_CHANNELS_TYPE = "Fdc3UserInterfaceChannels";
+
+export function isFdc3UserInterfaceDrag(value: any): value is Fdc3UserInterfaceDrag {
+    try {
+        Convert.fdc3UserInterfaceDragToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FDC3_USER_INTERFACE_DRAG_TYPE = "Fdc3UserInterfaceDrag";
+
+export function isFdc3UserInterfaceHandshake(value: any): value is Fdc3UserInterfaceHandshake {
+    try {
+        Convert.fdc3UserInterfaceHandshakeToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FDC3_USER_INTERFACE_HANDSHAKE_TYPE = "Fdc3UserInterfaceHandshake";
+
+export function isFdc3UserInterfaceHello(value: any): value is Fdc3UserInterfaceHello {
+    try {
+        Convert.fdc3UserInterfaceHelloToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FDC3_USER_INTERFACE_HELLO_TYPE = "Fdc3UserInterfaceHello";
+
+export function isFdc3UserInterfaceMessage(value: any): value is Fdc3UserInterfaceMessage {
+    try {
+        Convert.fdc3UserInterfaceMessageToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FDC3_USER_INTERFACE_MESSAGE_TYPE = "Fdc3UserInterfaceMessage";
+
+export function isFdc3UserInterfaceResolve(value: any): value is Fdc3UserInterfaceResolve {
+    try {
+        Convert.fdc3UserInterfaceResolveToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FDC3_USER_INTERFACE_RESOLVE_TYPE = "Fdc3UserInterfaceResolve";
+
+export function isFdc3UserInterfaceResolveAction(value: any): value is Fdc3UserInterfaceResolveAction {
+    try {
+        Convert.fdc3UserInterfaceResolveActionToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE = "Fdc3UserInterfaceResolveAction";
+
+export function isFdc3UserInterfaceRestyle(value: any): value is Fdc3UserInterfaceRestyle {
+    try {
+        Convert.fdc3UserInterfaceRestyleToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FDC3_USER_INTERFACE_RESTYLE_TYPE = "Fdc3UserInterfaceRestyle";
+
+export function isFindInstancesRequest(value: any): value is FindInstancesRequest {
+    try {
+        Convert.findInstancesRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FIND_INSTANCES_REQUEST_TYPE = "FindInstancesRequest";
+
+export function isFindInstancesResponse(value: any): value is FindInstancesResponse {
+    try {
+        Convert.findInstancesResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FIND_INSTANCES_RESPONSE_TYPE = "FindInstancesResponse";
+
+export function isFindIntentRequest(value: any): value is FindIntentRequest {
+    try {
+        Convert.findIntentRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FIND_INTENT_REQUEST_TYPE = "FindIntentRequest";
+
+export function isFindIntentResponse(value: any): value is FindIntentResponse {
+    try {
+        Convert.findIntentResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FIND_INTENT_RESPONSE_TYPE = "FindIntentResponse";
+
+export function isFindIntentsByContextRequest(value: any): value is FindIntentsByContextRequest {
+    try {
+        Convert.findIntentsByContextRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FIND_INTENTS_BY_CONTEXT_REQUEST_TYPE = "FindIntentsByContextRequest";
+
+export function isFindIntentsByContextResponse(value: any): value is FindIntentsByContextResponse {
+    try {
+        Convert.findIntentsByContextResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FIND_INTENTS_BY_CONTEXT_RESPONSE_TYPE = "FindIntentsByContextResponse";
+
+export function isGetAppMetadataRequest(value: any): value is GetAppMetadataRequest {
+    try {
+        Convert.getAppMetadataRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_APP_METADATA_REQUEST_TYPE = "GetAppMetadataRequest";
+
+export function isGetAppMetadataResponse(value: any): value is GetAppMetadataResponse {
+    try {
+        Convert.getAppMetadataResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_APP_METADATA_RESPONSE_TYPE = "GetAppMetadataResponse";
+
+export function isGetCurrentChannelRequest(value: any): value is GetCurrentChannelRequest {
+    try {
+        Convert.getCurrentChannelRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_CURRENT_CHANNEL_REQUEST_TYPE = "GetCurrentChannelRequest";
+
+export function isGetCurrentChannelResponse(value: any): value is GetCurrentChannelResponse {
+    try {
+        Convert.getCurrentChannelResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_CURRENT_CHANNEL_RESPONSE_TYPE = "GetCurrentChannelResponse";
+
+export function isGetCurrentContextRequest(value: any): value is GetCurrentContextRequest {
+    try {
+        Convert.getCurrentContextRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_CURRENT_CONTEXT_REQUEST_TYPE = "GetCurrentContextRequest";
+
+export function isGetCurrentContextResponse(value: any): value is GetCurrentContextResponse {
+    try {
+        Convert.getCurrentContextResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_CURRENT_CONTEXT_RESPONSE_TYPE = "GetCurrentContextResponse";
+
+export function isGetInfoRequest(value: any): value is GetInfoRequest {
+    try {
+        Convert.getInfoRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_INFO_REQUEST_TYPE = "GetInfoRequest";
+
+export function isGetInfoResponse(value: any): value is GetInfoResponse {
+    try {
+        Convert.getInfoResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_INFO_RESPONSE_TYPE = "GetInfoResponse";
+
+export function isGetOrCreateChannelRequest(value: any): value is GetOrCreateChannelRequest {
+    try {
+        Convert.getOrCreateChannelRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_OR_CREATE_CHANNEL_REQUEST_TYPE = "GetOrCreateChannelRequest";
+
+export function isGetOrCreateChannelResponse(value: any): value is GetOrCreateChannelResponse {
+    try {
+        Convert.getOrCreateChannelResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_OR_CREATE_CHANNEL_RESPONSE_TYPE = "GetOrCreateChannelResponse";
+
+export function isGetUserChannelsRequest(value: any): value is GetUserChannelsRequest {
+    try {
+        Convert.getUserChannelsRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_USER_CHANNELS_REQUEST_TYPE = "GetUserChannelsRequest";
+
+export function isGetUserChannelsResponse(value: any): value is GetUserChannelsResponse {
+    try {
+        Convert.getUserChannelsResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_USER_CHANNELS_RESPONSE_TYPE = "GetUserChannelsResponse";
+
+export function isHeartbeatAcknowledgementRequest(value: any): value is HeartbeatAcknowledgementRequest {
+    try {
+        Convert.heartbeatAcknowledgementRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const HEARTBEAT_ACKNOWLEDGEMENT_REQUEST_TYPE = "HeartbeatAcknowledgementRequest";
+
+export function isHeartbeatEvent(value: any): value is HeartbeatEvent {
+    try {
+        Convert.heartbeatEventToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const HEARTBEAT_EVENT_TYPE = "HeartbeatEvent";
+
+export function isIntentEvent(value: any): value is IntentEvent {
+    try {
+        Convert.intentEventToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const INTENT_EVENT_TYPE = "IntentEvent";
+
+export function isIntentListenerUnsubscribeRequest(value: any): value is IntentListenerUnsubscribeRequest {
+    try {
+        Convert.intentListenerUnsubscribeRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const INTENT_LISTENER_UNSUBSCRIBE_REQUEST_TYPE = "IntentListenerUnsubscribeRequest";
+
+export function isIntentListenerUnsubscribeResponse(value: any): value is IntentListenerUnsubscribeResponse {
+    try {
+        Convert.intentListenerUnsubscribeResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const INTENT_LISTENER_UNSUBSCRIBE_RESPONSE_TYPE = "IntentListenerUnsubscribeResponse";
+
+export function isIntentResultRequest(value: any): value is IntentResultRequest {
+    try {
+        Convert.intentResultRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const INTENT_RESULT_REQUEST_TYPE = "IntentResultRequest";
+
+export function isIntentResultResponse(value: any): value is IntentResultResponse {
+    try {
+        Convert.intentResultResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const INTENT_RESULT_RESPONSE_TYPE = "IntentResultResponse";
+
+export function isJoinUserChannelRequest(value: any): value is JoinUserChannelRequest {
+    try {
+        Convert.joinUserChannelRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const JOIN_USER_CHANNEL_REQUEST_TYPE = "JoinUserChannelRequest";
+
+export function isJoinUserChannelResponse(value: any): value is JoinUserChannelResponse {
+    try {
+        Convert.joinUserChannelResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const JOIN_USER_CHANNEL_RESPONSE_TYPE = "JoinUserChannelResponse";
+
+export function isLeaveCurrentChannelRequest(value: any): value is LeaveCurrentChannelRequest {
+    try {
+        Convert.leaveCurrentChannelRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const LEAVE_CURRENT_CHANNEL_REQUEST_TYPE = "LeaveCurrentChannelRequest";
+
+export function isLeaveCurrentChannelResponse(value: any): value is LeaveCurrentChannelResponse {
+    try {
+        Convert.leaveCurrentChannelResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const LEAVE_CURRENT_CHANNEL_RESPONSE_TYPE = "LeaveCurrentChannelResponse";
+
+export function isOpenRequest(value: any): value is OpenRequest {
+    try {
+        Convert.openRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const OPEN_REQUEST_TYPE = "OpenRequest";
+
+export function isOpenResponse(value: any): value is OpenResponse {
+    try {
+        Convert.openResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const OPEN_RESPONSE_TYPE = "OpenResponse";
+
+export function isPrivateChannelAddEventListenerRequest(value: any): value is PrivateChannelAddEventListenerRequest {
+    try {
+        Convert.privateChannelAddEventListenerRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const PRIVATE_CHANNEL_ADD_EVENT_LISTENER_REQUEST_TYPE = "PrivateChannelAddEventListenerRequest";
+
+export function isPrivateChannelAddEventListenerResponse(value: any): value is PrivateChannelAddEventListenerResponse {
+    try {
+        Convert.privateChannelAddEventListenerResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const PRIVATE_CHANNEL_ADD_EVENT_LISTENER_RESPONSE_TYPE = "PrivateChannelAddEventListenerResponse";
+
+export function isPrivateChannelDisconnectRequest(value: any): value is PrivateChannelDisconnectRequest {
+    try {
+        Convert.privateChannelDisconnectRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const PRIVATE_CHANNEL_DISCONNECT_REQUEST_TYPE = "PrivateChannelDisconnectRequest";
+
+export function isPrivateChannelDisconnectResponse(value: any): value is PrivateChannelDisconnectResponse {
+    try {
+        Convert.privateChannelDisconnectResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const PRIVATE_CHANNEL_DISCONNECT_RESPONSE_TYPE = "PrivateChannelDisconnectResponse";
+
+export function isPrivateChannelOnAddContextListenerEvent(value: any): value is PrivateChannelOnAddContextListenerEvent {
+    try {
+        Convert.privateChannelOnAddContextListenerEventToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const PRIVATE_CHANNEL_ON_ADD_CONTEXT_LISTENER_EVENT_TYPE = "PrivateChannelOnAddContextListenerEvent";
+
+export function isPrivateChannelOnDisconnectEvent(value: any): value is PrivateChannelOnDisconnectEvent {
+    try {
+        Convert.privateChannelOnDisconnectEventToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const PRIVATE_CHANNEL_ON_DISCONNECT_EVENT_TYPE = "PrivateChannelOnDisconnectEvent";
+
+export function isPrivateChannelOnUnsubscribeEvent(value: any): value is PrivateChannelOnUnsubscribeEvent {
+    try {
+        Convert.privateChannelOnUnsubscribeEventToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const PRIVATE_CHANNEL_ON_UNSUBSCRIBE_EVENT_TYPE = "PrivateChannelOnUnsubscribeEvent";
+
+export function isPrivateChannelUnsubscribeEventListenerRequest(value: any): value is PrivateChannelUnsubscribeEventListenerRequest {
+    try {
+        Convert.privateChannelUnsubscribeEventListenerRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const PRIVATE_CHANNEL_UNSUBSCRIBE_EVENT_LISTENER_REQUEST_TYPE = "PrivateChannelUnsubscribeEventListenerRequest";
+
+export function isPrivateChannelUnsubscribeEventListenerResponse(value: any): value is PrivateChannelUnsubscribeEventListenerResponse {
+    try {
+        Convert.privateChannelUnsubscribeEventListenerResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const PRIVATE_CHANNEL_UNSUBSCRIBE_EVENT_LISTENER_RESPONSE_TYPE = "PrivateChannelUnsubscribeEventListenerResponse";
+
+export function isRaiseIntentForContextRequest(value: any): value is RaiseIntentForContextRequest {
+    try {
+        Convert.raiseIntentForContextRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const RAISE_INTENT_FOR_CONTEXT_REQUEST_TYPE = "RaiseIntentForContextRequest";
+
+export function isRaiseIntentForContextResponse(value: any): value is RaiseIntentForContextResponse {
+    try {
+        Convert.raiseIntentForContextResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const RAISE_INTENT_FOR_CONTEXT_RESPONSE_TYPE = "RaiseIntentForContextResponse";
+
+export function isRaiseIntentRequest(value: any): value is RaiseIntentRequest {
+    try {
+        Convert.raiseIntentRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const RAISE_INTENT_REQUEST_TYPE = "RaiseIntentRequest";
+
+export function isRaiseIntentResponse(value: any): value is RaiseIntentResponse {
+    try {
+        Convert.raiseIntentResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const RAISE_INTENT_RESPONSE_TYPE = "RaiseIntentResponse";
+
+export function isRaiseIntentResultResponse(value: any): value is RaiseIntentResultResponse {
+    try {
+        Convert.raiseIntentResultResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const RAISE_INTENT_RESULT_RESPONSE_TYPE = "RaiseIntentResultResponse";
+
+export type RequestMessage = AddContextListenerRequest | AddEventListenerRequest | AddIntentListenerRequest | BroadcastRequest | ContextListenerUnsubscribeRequest | CreatePrivateChannelRequest | EventListenerUnsubscribeRequest | FindInstancesRequest | FindIntentRequest | FindIntentsByContextRequest | GetAppMetadataRequest | GetCurrentChannelRequest | GetCurrentContextRequest | GetInfoRequest | GetOrCreateChannelRequest | GetUserChannelsRequest | HeartbeatAcknowledgementRequest | IntentListenerUnsubscribeRequest | IntentResultRequest | JoinUserChannelRequest | LeaveCurrentChannelRequest | OpenRequest | PrivateChannelAddEventListenerRequest | PrivateChannelDisconnectRequest | PrivateChannelUnsubscribeEventListenerRequest | RaiseIntentForContextRequest | RaiseIntentRequest;
+
+export type ResponseMessage = WebConnectionProtocol5ValidateAppIdentityFailedResponse | WebConnectionProtocol5ValidateAppIdentitySuccessResponse | AddContextListenerResponse | AddEventListenerResponse | AddIntentListenerResponse | BroadcastResponse | ContextListenerUnsubscribeResponse | CreatePrivateChannelResponse | EventListenerUnsubscribeResponse | FindInstancesResponse | FindIntentResponse | FindIntentsByContextResponse | GetAppMetadataResponse | GetCurrentChannelResponse | GetCurrentContextResponse | GetInfoResponse | GetOrCreateChannelResponse | GetUserChannelsResponse | IntentListenerUnsubscribeResponse | IntentResultResponse | JoinUserChannelResponse | LeaveCurrentChannelResponse | OpenResponse | PrivateChannelAddEventListenerResponse | PrivateChannelDisconnectResponse | PrivateChannelUnsubscribeEventListenerResponse | RaiseIntentForContextResponse | RaiseIntentResponse | RaiseIntentResultResponse;
+
+export type EventMessage = BroadcastEvent | ChannelChangedEvent | HeartbeatEvent | IntentEvent | PrivateChannelOnAddContextListenerEvent | PrivateChannelOnDisconnectEvent | PrivateChannelOnUnsubscribeEvent;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

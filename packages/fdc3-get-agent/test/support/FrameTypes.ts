@@ -2,6 +2,7 @@ import { CustomWorld } from "../world"
 import { MockWindow } from "./MockWindow"
 import { CHANNEL_SELECTOR_URL, EMBED_URL, INTENT_RESPOLVER_URL } from "./MockFDC3Server"
 import { BrowserTypes } from "@kite9/fdc3-schema"
+import { FDC3_USER_INTERFACE_HANDSHAKE_TYPE, FDC3_USER_INTERFACE_HELLO_TYPE, FDC3_USER_INTERFACE_RESTYLE_TYPE } from "@kite9/fdc3-schema/dist/generated/api/BrowserTypes"
 
 type Fdc3UserInterfaceHello = BrowserTypes.Fdc3UserInterfaceHello
 type WebConnectionProtocol3Handshake = BrowserTypes.WebConnectionProtocol3Handshake
@@ -38,7 +39,7 @@ export function handleChannelSelectorComms(_value: string, parent: MockWindow, s
         parent.dispatchEvent({
             type: "message",
             data: {
-                type: "Fdc3UserInterfaceHello",
+                type: FDC3_USER_INTERFACE_HELLO_TYPE,
                 payload: {
                     initialCSS: {
                         "width": "100px"
@@ -52,10 +53,10 @@ export function handleChannelSelectorComms(_value: string, parent: MockWindow, s
 
 
         connection.port2.onmessage = (e) => {
-            if (e.data.type == 'Fdc3UserInterfaceHandshake') {
+            if (e.data.type == FDC3_USER_INTERFACE_HANDSHAKE_TYPE) {
                 setTimeout(() => {
                     connection.port2.postMessage({
-                        type: 'Fdc3UserInterfaceRestyle',
+                        type: FDC3_USER_INTERFACE_RESTYLE_TYPE,
                         payload: {
                             css: {
                                 "width": "100px"
@@ -79,7 +80,7 @@ export function handleIntentResolverComms(_value: string, parent: MockWindow, so
         parent.dispatchEvent({
             type: "message",
             data: {
-                type: "Fdc3UserInterfaceHello",
+                type: FDC3_USER_INTERFACE_HELLO_TYPE,
                 payload: {
                     initialCSS: {
                         "width": "100px"
@@ -92,10 +93,10 @@ export function handleIntentResolverComms(_value: string, parent: MockWindow, so
         } as any as Event)
 
         connection.port2.onmessage = (e) => {
-            if (e.type == 'Fdc3UserInterfaceHandshake') {
+            if (e.type == FDC3_USER_INTERFACE_HANDSHAKE_TYPE) {
                 setTimeout(() => {
                     connection.port2.postMessage({
-                        type: 'Fdc3UserInterfaceRestyle',
+                        type: FDC3_USER_INTERFACE_RESTYLE_TYPE,
                         payload: {
                             css: {
                                 "width": "100px"

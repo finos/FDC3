@@ -1,5 +1,6 @@
-import { Fdc3UserInterfaceHello, InitialCSS, UpdatedCSS } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
+import { Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, InitialCSS, isFdc3UserInterfaceHello, isFdc3UserInterfaceRestyle, UpdatedCSS } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 import { Connectable } from "@kite9/fdc3-standard";
+import { FDC3_VERSION } from "../strategies/getAgent";
 
 export interface CSSPositioning { [key: string]: string }
 
@@ -13,14 +14,14 @@ export const ALLOWED_CSS_ELEMENTS = [
     "width",
     "height",
     "position",
-    "z-index",
+    "zIndex",
     "left",
     "right",
     "top",
     "bottom",
     "transition",
-    "max-height",
-    "max-width",
+    "maxHeight",
+    "maxWidth",
     "display"
 ]
 
@@ -56,7 +57,7 @@ export abstract class AbstractUIComponent implements Connectable {
     async setupMessagePort(port: MessagePort): Promise<void> {
         port.addEventListener("message", (e) => {
             const data = e.data
-            if (data.type == 'Fdc3UserInterfaceRestyle') {
+            if (isFdc3UserInterfaceRestyle(data)) {
                 const css = data.payload.updatedCSS
                 this.themeContainer(css)
             }
@@ -65,13 +66,19 @@ export abstract class AbstractUIComponent implements Connectable {
 
     async messagePortReady(port: MessagePort) {
         // tells the iframe it can start posting
-        port.postMessage({ type: "Fdc3UserInterfaceHandshake" })
+        const handshake: Fdc3UserInterfaceHandshake = { 
+            type: "Fdc3UserInterfaceHandshake", 
+            payload: {
+                fdc3Version: FDC3_VERSION
+            } 
+        };
+        port.postMessage(handshake);
     }
 
     private awaitHello(): Promise<MessagePort> {
         return new Promise((resolve, _reject) => {
             const ml = (e: MessageEvent) => {
-                if ((e.source == this.iframe?.contentWindow) && (e.data.type == 'Fdc3UserInterfaceHello')) {
+                if ((e.source == this.iframe?.contentWindow) && (isFdc3UserInterfaceHello(e.data))) {
                     const helloData = e.data as Fdc3UserInterfaceHello
                     if (helloData.payload.initialCSS) {
                         this.themeContainer(helloData.payload.initialCSS)
@@ -100,6 +107,10 @@ export abstract class AbstractUIComponent implements Connectable {
         document.body.appendChild(this.container)
     }
 
+    private toKebabCase(str: String) {
+        return str.replace(/[A-Z]/g, (match) => "-" + match.toLowerCase());
+    }
+
     themeContainer(css: UpdatedCSS | InitialCSS) {
         if (!css) {
             return
@@ -109,9 +120,9 @@ export abstract class AbstractUIComponent implements Connectable {
             const k = ALLOWED_CSS_ELEMENTS[i]
             const value: string | undefined = css[(k as string)]
             if (value !== undefined) {
-                this.container?.style.setProperty(k, value)
+                this.container?.style.setProperty(this.toKebabCase(k), value)
             } else {
-                this.container?.style.removeProperty(k)
+                this.container?.style.removeProperty(this.toKebabCase(k))
             }
         }
     }

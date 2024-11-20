@@ -4,8 +4,8 @@ Feature: Channel Listeners Support
     Given schemas loaded
     Given User Channels one, two and three
     Given A Desktop Agent in "api1"
-    Given "instrumentMessageOne" is a "broadcastEvent" message on channel "channel-name" with context "fdc3.instrument"
-    Given "countryMessageOne" is a "broadcastEvent" message on channel "channel-name" with context "fdc3.country"
+    Given "instrumentMessageOne" is a BroadcastEvent message on channel "channel-name" with context "fdc3.instrument"
+    Given "countryMessageOne" is a BroadcastEvent message on channel "channel-name" with context "fdc3.country"
     Given "instrumentContext" is a "fdc3.instrument" context
     Given "resultHandler" pipes context to "contexts"
 

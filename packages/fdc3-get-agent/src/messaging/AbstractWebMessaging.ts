@@ -11,8 +11,8 @@ export const DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY = "fdc3-desktop-agent-det
  */
 export abstract class AbstractWebMessaging extends AbstractMessaging {
 
-    constructor(options: GetAgentParams, connectionAttemptUuid: string, timeout?: number) {
-        super(options, connectionAttemptUuid, timeout)
+    constructor(options: GetAgentParams, connectionAttemptUuid: string, actualUrl: string, timeout?: number) {
+        super(options, connectionAttemptUuid, actualUrl, timeout)
     }
 
     abstract createUUID(): string
