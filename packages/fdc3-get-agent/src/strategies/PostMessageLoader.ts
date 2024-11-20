@@ -31,7 +31,19 @@ function _recursePossibleTargets(startWindow: Window, w: Window, found: Window[]
   }
 }
 
+/** Loader for Desktop Agent Proxy implementations. Attempts to 
+ *  connect to parent windows or frames via teh Web Connection Protocol,
+ *  which may include setting up an iframe to load an adaptor URL.
+ *  A previously persisted adaptor URL may be passed to skip the
+ *  discovery of parent windows and to move straight to loading that. 
+ */
 export class PostMessageLoader implements Loader {
+
+  constructor(previousUrl?: string) {
+    this.previousUrl = previousUrl ?? null;
+  }
+
+  previousUrl: string | null;
   connectionAttemptUuid = uuidv4();
   
   helloHandler?: HelloHandler;
@@ -49,17 +61,27 @@ export class PostMessageLoader implements Loader {
           reject(new Error(AgentError.AgentNotFound));
       }, options.timeoutMs ?? DEFAULT_TIMEOUT_MS);
     
-      const targets: Window[] = [];
-      collectPossibleTargets(globalThis.window, targets);
-
+      
       this.helloHandler = new HelloHandler(options, this.connectionAttemptUuid);
 
       // ok, begin the process
       const handshakePromise = this.helloHandler.listenForHelloResponses();
 
-      // use of origin '*': See https://github.com/finos/FDC3/issues/1316
-      for (let t = 0; t < targets.length; t++) {
-        this.helloHandler.sendWCP1Hello(targets[t], '*');
+      if (this.previousUrl) {
+        console.debug(`Loading previously used adaptor URL: ${this.previousUrl}`);
+
+        //skip looking for target parent windows and open an iframe immediately
+        this.helloHandler.openFrame(this.previousUrl);
+        
+      } else {
+        //collect target parent window references
+        const targets: Window[] = [];
+        collectPossibleTargets(globalThis.window, targets);
+
+        // use of origin '*': See https://github.com/finos/FDC3/issues/1316
+        for (let t = 0; t < targets.length; t++) {
+          this.helloHandler.sendWCP1Hello(targets[t], '*');
+        }
       }
 
       // wait for one of the windows to respond
