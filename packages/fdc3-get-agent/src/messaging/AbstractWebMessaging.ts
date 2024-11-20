@@ -1,7 +1,8 @@
 import { DesktopAgentDetails, WebDesktopAgentType, GetAgentParams, } from "@kite9/fdc3-standard";
 import { RegisterableListener, AbstractMessaging } from "@kite9/fdc3-agent-proxy";
-import { BrowserTypes } from "@kite9/fdc3-schema";
-type WebConnectionProtocol5ValidateAppIdentitySuccessResponse = BrowserTypes.WebConnectionProtocol5ValidateAppIdentitySuccessResponse
+import { AppRequestMessage, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
+
+type RequestMetadata = AppRequestMessage["meta"];
 
 export const DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY = "fdc3-desktop-agent-details"
 
@@ -20,7 +21,7 @@ export abstract class AbstractWebMessaging extends AbstractMessaging {
     abstract register(l: RegisterableListener): void
     abstract unregister(id: string): void
 
-    abstract createMeta(): object
+    abstract createMeta(): RequestMetadata
 
     /**
      * Note that we also key by the window name as well, in case multiple iframes are using the same session storage.

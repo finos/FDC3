@@ -1,10 +1,8 @@
 import { AppIdentifier, ImplementationMetadata, GetAgentParams } from "@kite9/fdc3-standard";
 import { Messaging } from "../Messaging";
 import { RegisterableListener } from "../listeners/RegisterableListener";
-import { BrowserTypes } from "@kite9/fdc3-schema";
-
-type WebConnectionProtocol4ValidateAppIdentity = BrowserTypes.WebConnectionProtocol4ValidateAppIdentity
-type WebConnectionProtocol5ValidateAppIdentitySuccessResponse = BrowserTypes.WebConnectionProtocol5ValidateAppIdentitySuccessResponse
+import { AppRequestMessage, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
+type RequestMetadata = AppRequestMessage["meta"];
 
 export abstract class AbstractMessaging implements Messaging {
 
@@ -20,7 +18,7 @@ export abstract class AbstractMessaging implements Messaging {
     abstract register(l: RegisterableListener): void
     abstract unregister(id: string): void
 
-    abstract createMeta(): object
+    abstract createMeta(): RequestMetadata
 
     constructor(options: GetAgentParams, connectionAttemptUuid: string, timeout: number = 10016) {
         this.options = options

@@ -1,6 +1,8 @@
 import { Connectable, AppIdentifier, ImplementationMetadata } from "@kite9/fdc3-standard";
 import { RegisterableListener } from "./listeners/RegisterableListener";
-import { AddContextListenerRequestMeta } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
+import { AppRequestMessage } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
+
+type RequestMetadata = AppRequestMessage["meta"];
 
 export interface Messaging extends Connectable {
 
@@ -30,7 +32,7 @@ export interface Messaging extends Connectable {
      */
     unregister(id: string): void
 
-    createMeta(): AddContextListenerRequestMeta
+    createMeta(): RequestMetadata
 
     /**
      * Waits for a specific matching message

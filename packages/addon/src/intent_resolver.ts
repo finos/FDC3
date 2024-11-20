@@ -112,7 +112,7 @@ const fillList = (ai: AppIntent[], intent: string, callback: (s: IframeResolveAc
   const openList = document.getElementById('open-list')!!
   openList.innerHTML = '';
 
-  openApps.forEach(({ appId, title, icons }) => {
+  openApps.forEach(({ appId, title, icons, instanceId }) => {
     const node = document.createElement('div');
     node.setAttribute('tabIndex', '0');
     node.setAttribute("data-appId", appId);
@@ -130,7 +130,8 @@ const fillList = (ai: AppIntent[], intent: string, callback: (s: IframeResolveAc
         action: "click",
         intent,
         appIdentifier: {
-          appId
+          appId,
+          instanceId
         }
       })
     });
@@ -140,7 +141,8 @@ const fillList = (ai: AppIntent[], intent: string, callback: (s: IframeResolveAc
         action: "hover",
         intent,
         appIdentifier: {
-          appId
+          appId,
+          instanceId
         }
       })
     });
