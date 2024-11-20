@@ -3,9 +3,10 @@ import { CustomWorld } from "../world";
 import { handleResolve } from "@kite9/testing";
 import { DefaultDesktopAgentIntentResolver } from "../../src/ui/DefaultDesktopAgentIntentResolver";
 import { INTENT_RESPOLVER_URL } from "../support/MockFDC3Server";
+import { Context } from "@kite9/fdc3-context";
 
 // TODO: Replace 'any' with useful typings
-const contextMap: Record<string, any> = {
+const contextMap: Record<string, Context> = {
     "fdc3.instrument": {
         "type": "fdc3.instrument",
         "name": "Apple",

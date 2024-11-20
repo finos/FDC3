@@ -1,8 +1,6 @@
 import { BrowserTypes } from "@kite9/fdc3-schema";
+import { Fdc3UserInterfaceChannels, Fdc3UserInterfaceHello, Fdc3UserInterfaceRestyle } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
-type IframeChannels = BrowserTypes.Fdc3UserInterfaceChannels
-type IframeRestyle = BrowserTypes.Fdc3UserInterfaceRestyle
-type IframeHello = BrowserTypes.Fdc3UserInterfaceHello
 
 // TODO: Update typings
 let channels: any[] = []
@@ -40,7 +38,7 @@ window.addEventListener("load", () => {
 
 
     // ISSUE: 1302
-    const helloMessage: IframeHello = {
+    const helloMessage: Fdc3UserInterfaceHello = {
         type: "Fdc3UserInterfaceHello",
         payload: {
             initialCSS: DEFAULT_COLLAPSED_CSS,
@@ -51,7 +49,7 @@ window.addEventListener("load", () => {
 
     function changeSize(expanded: boolean) {
         document.body.setAttribute("data-expanded", `${expanded}`);
-        const restyleMessage: IframeRestyle = {
+        const restyleMessage: Fdc3UserInterfaceRestyle = {
             type: "Fdc3UserInterfaceRestyle", 
             payload: { 
                 updatedCSS: expanded ? DEFAULT_EXPANDED_CSS : DEFAULT_COLLAPSED_CSS 
@@ -63,7 +61,7 @@ window.addEventListener("load", () => {
     myPort.addEventListener("message", (e) => {
         if (e.data.type == 'iframeHandshake') {
             // ok, port is ready, send the iframe position detials
-            const restyleMessage: IframeRestyle = {
+            const restyleMessage: Fdc3UserInterfaceRestyle = {
                 type: "Fdc3UserInterfaceRestyle", 
                 payload: { 
                     updatedCSS: DEFAULT_COLLAPSED_CSS 
@@ -71,7 +69,7 @@ window.addEventListener("load", () => {
             }
             myPort.postMessage(restyleMessage)
         } else if (e.data.type == 'fdc3UserInterfaceChannels') {
-            const details: IframeChannels = e.data
+            const details: Fdc3UserInterfaceChannels = e.data
             channels = details.payload.userChannels
             channelId = details.payload.selected
 
