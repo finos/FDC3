@@ -40,9 +40,11 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
             case WebDesktopAgentType.Preload:
                 strategies = [new DesktopAgentPreloadLoader()];
                 break;
-            case WebDesktopAgentType.ProxyParent:
             case WebDesktopAgentType.ProxyUrl:
-                //TODO: make use of persisted agentUrl
+                //agentUrl will only be used by PostMessageLoader if not falsey
+                strategies = [new PostMessageLoader(persistedData.agentUrl)];
+                break;
+            case WebDesktopAgentType.ProxyParent:
                 strategies = [new PostMessageLoader()];
                 break;
             case WebDesktopAgentType.Failover:
@@ -119,7 +121,7 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
                     throw e;
                 }
             } else {
-                //We didn't manage to find an agent. Suppress any actual error and throw a value from AgentError
+                //We didn't manage to find an agent.
                 console.log("Desktop agent not found. Error reported during discovery", error);
                 throw new Error(AgentError.AgentNotFound);
             }
