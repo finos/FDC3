@@ -82,7 +82,7 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
 
             this.instances.push(connectionDetails)
             internalPort.onmessage = (msg) => {
-                console.debug(`Received message on internalPort ${appId}: `, msg.data)
+                console.debug(`Received message on internalPort`, appId, msg.data)
                 this.cw.mockFDC3Server?.receive(msg.data, connectionDetails.instanceId)
             }
 

@@ -59,7 +59,7 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
      * Post an outgoing message to a particular app
      */
     async post(message: object, to: InstanceID): Promise<void> {
-        console.debug(`Responding to ${to} with:`, message)
+        console.debug(`Responding to app instance:`, to, message)
         this.socket.emit(FDC3_DA_EVENT, message, to)
     }
 
@@ -74,7 +74,8 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
 
     goodbye(id: string) {
         this.connections = this.connections.filter(i => i.instanceId !== id)
-        console.debug(`Closed ${id}. Open apps:`, this.connections.map(i => i.instanceId)))
+        console.debug(`Closed instance`, id)
+        console.debug(`Open apps:`, this.connections.map(i => i.instanceId));
     }
 
     openTab(url: string): Window {
