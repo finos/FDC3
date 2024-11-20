@@ -44,7 +44,7 @@ export type GetAgentType = (params?: GetAgentParams) => Promise<DesktopAgent>;
  *
  * @property {number} timeoutMs Number of milliseconds to allow for an FDC3
  * implementation to be found before calling the failover function or
- * rejecting (default 750). Note that the timeout is cancelled as soon as a
+ * rejecting (default 1000). Note that the timeout is cancelled as soon as a
  * Desktop Agent is detected. There may be additional set-up steps to perform
  * which will happen outside the timeout.
  *
@@ -161,3 +161,5 @@ export enum WebDesktopAgentType {
 }
 
 export const DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX = 'fdc3-desktop-agent-details';
+
+export const DEFAULT_TIMEOUT_MS = 1000;

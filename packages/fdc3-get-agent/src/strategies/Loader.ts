@@ -6,9 +6,9 @@ import { GetAgentParams } from '@kite9/fdc3-standard';
  */
 export interface Loader {
   /**
-   * Promise will either resolve to a DesktopAgent or _resolve_ to an error (not reject)
+   * Promise will either resolve to a DesktopAgent or reject with an error
    */
-  get(options: GetAgentParams): Promise<DesktopAgentSelection | void>;
+  get(options: GetAgentParams): Promise<DesktopAgentSelection>;
 
   cancel(): void;
 }
@@ -24,8 +24,8 @@ export interface DesktopAgentSelection {
     identityUrl: string;
     actualUrl: string;
     agentUrl?: string;
-    appId?: string;
-    instanceId?: string;
-    instanceUuid?: string;
+    appId: string;
+    instanceId: string;
+    instanceUuid: string;
   };
 }

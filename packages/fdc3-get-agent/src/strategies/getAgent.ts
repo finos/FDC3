@@ -1,13 +1,18 @@
-import { DesktopAgent, GetAgentType, GetAgentParams, AgentError, DesktopAgentDetails, WebDesktopAgentType } from '@kite9/fdc3-standard'
-import { DesktopAgentPreloadLoader } from './DesktopAgentPreloadLoader'
-import { PostMessageLoader } from './PostMessageLoader'
-import { TimeoutLoader } from './TimeoutLoader'
-import { storeDesktopAgentDetails, retrieveAllDesktopAgentDetails } from '../sessionStorage/DesktopAgentDetails';
+import { DesktopAgent, GetAgentType, GetAgentParams, AgentError, DesktopAgentDetails, WebDesktopAgentType, DEFAULT_TIMEOUT_MS } from '@kite9/fdc3-standard';
+import { DesktopAgentPreloadLoader } from './DesktopAgentPreloadLoader';
+import { PostMessageLoader } from './PostMessageLoader';
+import { storeDesktopAgentDetails } from '../sessionStorage/DesktopAgentDetails';
 import { FailoverHandler } from './FailoverHandler';
 
-const DEFAULT_WAIT_FOR_MS = 750;
-
 export const FDC3_VERSION = "2.2"
+
+// TypeGuards used to examine results of Loaders
+const isRejected = (input: PromiseSettledResult<unknown>): input is PromiseRejectedResult => 
+    input.status === 'rejected'
+  
+const isFulfilled = <T>(input: PromiseSettledResult<T>): input is PromiseFulfilledResult<T> => 
+    input.status === 'fulfilled'
+
 
 /**
  * For now, we only allow a single call to getAgent per application, so 
@@ -27,19 +32,21 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
 
     const DEFAULT_STRATEGIES = [
         new DesktopAgentPreloadLoader(),
-        new PostMessageLoader(),
-        new TimeoutLoader()
-    ]
+        new PostMessageLoader()
+    ];
+
+
 
     //TODO: retrieve persisted data and only use a previous strategy if one exists
     const promises = DEFAULT_STRATEGIES.map(s => s.get(options));
+    
+    return Promise.allSettled(promises)
+    .then(async results => {
+        //review results
+        const daResult = results.find(isFulfilled);
 
-    return Promise.race(promises)
-    .then(selection => {
-        // first, cancel the timeout etc.
-        DEFAULT_STRATEGIES.forEach(s => s.cancel())
-        // either the timeout completes first with an error, or one of the other strategies completes with a DesktopAgent.
-        if (selection) {
+        if (daResult) {
+            const selection = daResult.value;
             const desktopAgentDetails: DesktopAgentDetails = {
                 agentType: selection.details.agentType,
                 identityUrl: selection.details.identityUrl,
@@ -53,40 +60,46 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
 
             return selection.agent;
         } else {
-            throw new Error(AgentError.AgentNotFound)
-        }
-    })
-    .catch(async (error) => {
-        if (options.failover != undefined) {
-            try {
-                //TODO: consider adding a timeout for the failover, to avoid getting stuck here
-                //  However there is an argument to be made for hanging out in case the 
-                //  function eventually returns, e.g. after an external DA started up
-                
-                const failoverHandler = new FailoverHandler(options);
-                const selection = await failoverHandler.handleFailover();
+            //if we received any error other than AgentError.AgentNotFound, throw it
+            const errors = results.filter(isRejected);
+            const error = errors.find((aRejection) => {
+                aRejection.reason?.message !== AgentError.AgentNotFound;
+            });
+            if (error){
+                throw error;
 
-                //store details of the connection in SessionStorage
-                const desktopAgentDetails: DesktopAgentDetails = {
-                    agentType: WebDesktopAgentType.Failover,
-                    identityUrl: selection.details.identityUrl,
-                    actualUrl: selection.details.actualUrl,
-                    agentUrl: selection.details.agentUrl ?? undefined,
-                    appId: selection.details.appId,
-                    instanceId: selection.details.instanceId,
-                    instanceUuid: selection.details.instanceUuid
-                };
-                storeDesktopAgentDetails(desktopAgentDetails);
-
-                return selection.agent;
-            } catch (e) {
-                console.error("Desktop agent not found. Error reported during failover", e);
-                throw e;
+            } else if (options.failover != undefined) {
+                //Proceed with the failover
+                try {
+                    //TODO: consider adding a timeout for the failover, to avoid getting stuck here
+                    //  However there is an argument to be made for hanging out in case the 
+                    //  function eventually returns, e.g. after an external DA started up
+                    
+                    const failoverHandler = new FailoverHandler(options);
+                    const selection = await failoverHandler.handleFailover();
+    
+                    //store details of the connection in SessionStorage
+                    const desktopAgentDetails: DesktopAgentDetails = {
+                        agentType: WebDesktopAgentType.Failover,
+                        identityUrl: selection.details.identityUrl,
+                        actualUrl: selection.details.actualUrl,
+                        agentUrl: selection.details.agentUrl ?? undefined,
+                        appId: selection.details.appId,
+                        instanceId: selection.details.instanceId,
+                        instanceUuid: selection.details.instanceUuid
+                    };
+                    storeDesktopAgentDetails(desktopAgentDetails);
+    
+                    return selection.agent;
+                } catch (e) {
+                    console.error("Desktop agent not found. Error reported during failover", e);
+                    throw e;
+                }
+            } else {
+                //We didn't manage to find an agent. Suppress any actual error and throw a value from AgentError
+                console.log("Desktop agent not found. Error reported during discovery", error);
+                throw new Error(AgentError.AgentNotFound);
             }
-        } else {
-            //We didn't manage to find an agent. Suppress any actual error and throw a value from AgentError
-            console.log("Desktop agent not found. Error reported during discovery", error);
-            throw new Error(AgentError.AgentNotFound);
         }
     });
 }
@@ -129,7 +142,7 @@ export const getAgent: GetAgentType = (params?: GetAgentParams) => {
         dontSetWindowFdc3: true,
         channelSelector: true,
         intentResolver: true,
-        timeoutMs: DEFAULT_WAIT_FOR_MS,
+        timeoutMs: DEFAULT_TIMEOUT_MS,
         identityUrl: globalThis.window.location.href
     };
 
@@ -154,12 +167,13 @@ export const getAgent: GetAgentType = (params?: GetAgentParams) => {
 }
 
 /**
- * Replaces the original fdc3Ready function from FDC3 2.0 with a new one that uses the new getAgent function.
+ * Replaces the original fdc3Ready function from FDC3 2.0 with a new one that uses the 
+ * new getAgent function.
  * 
  * @param waitForMs Amount of time to wait before failing the promise (20 seconds is the default).
  * @returns A DesktopAgent promise.
  */
-export function fdc3Ready(waitForMs = DEFAULT_WAIT_FOR_MS): Promise<DesktopAgent> {
+export function fdc3Ready(waitForMs = DEFAULT_TIMEOUT_MS): Promise<DesktopAgent> {
     return getAgent({
         timeoutMs: waitForMs,
         dontSetWindowFdc3: false,
