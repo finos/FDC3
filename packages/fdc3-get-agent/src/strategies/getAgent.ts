@@ -1,8 +1,9 @@
 import { DesktopAgent, GetAgentType, GetAgentParams, AgentError, DesktopAgentDetails, WebDesktopAgentType, DEFAULT_TIMEOUT_MS } from '@kite9/fdc3-standard';
 import { DesktopAgentPreloadLoader } from './DesktopAgentPreloadLoader';
 import { PostMessageLoader } from './PostMessageLoader';
-import { storeDesktopAgentDetails } from '../sessionStorage/DesktopAgentDetails';
+import { retrieveDesktopAgentDetails, storeDesktopAgentDetails } from '../sessionStorage/DesktopAgentDetails';
 import { FailoverHandler } from './FailoverHandler';
+import { Loader } from './Loader';
 
 export const FDC3_VERSION = "2.2"
 
@@ -30,15 +31,37 @@ export function getAgentPromise(): Promise<DesktopAgent> | null {
 
 function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
 
-    const DEFAULT_STRATEGIES = [
-        new DesktopAgentPreloadLoader(),
-        new PostMessageLoader()
-    ];
+    let strategies: Loader[];
 
+    //Retrieve persisted connection data limit to a previous strategy if one exists
+    const persistedData = retrieveDesktopAgentDetails(options.identityUrl ?? globalThis.window.location.href);
+    if (persistedData) {
+        switch (persistedData.agentType) {
+            case WebDesktopAgentType.Preload:
+                strategies = [new DesktopAgentPreloadLoader()];
+                break;
+            case WebDesktopAgentType.ProxyParent:
+            case WebDesktopAgentType.ProxyUrl:
+                //TODO: make use of persisted agentUrl
+                strategies = [new PostMessageLoader()];
+                break;
+            case WebDesktopAgentType.Failover:
+                strategies = [];
+                break;
+            default:
+                strategies = [
+                    new DesktopAgentPreloadLoader(),
+                    new PostMessageLoader()
+                ];
+        }
+    } else {
+        strategies = [
+            new DesktopAgentPreloadLoader(),
+            new PostMessageLoader()
+        ];
+    }
 
-
-    //TODO: retrieve persisted data and only use a previous strategy if one exists
-    const promises = DEFAULT_STRATEGIES.map(s => s.get(options));
+    const promises = strategies.map(s => s.get(options));
     
     return Promise.allSettled(promises)
     .then(async results => {
