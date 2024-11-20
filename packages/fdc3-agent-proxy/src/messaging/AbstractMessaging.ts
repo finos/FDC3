@@ -29,7 +29,7 @@ export abstract class AbstractMessaging implements Messaging {
   }
 
   waitFor<X>(
-    filter: (m: WebConnectionProtocolMessage | AgentResponseMessage) => boolean,
+    filter: (m: AgentResponseMessage) => boolean,
     timeoutErrorMessage?: string
   ): Promise<X> {
     const id = this.createUUID();
@@ -59,7 +59,7 @@ export abstract class AbstractMessaging implements Messaging {
     });
   }
 
-  async exchange<X>(message: any, expectedTypeName: string, timeoutErrorMessage?: string): Promise<X> {
+  async exchange<X>(message: AppRequestMessage, expectedTypeName: string, timeoutErrorMessage?: string): Promise<X> {
     const errorMessage =
       timeoutErrorMessage ?? `Timeout waiting for ${expectedTypeName} with requestUuid ${message.meta.requestUuid}`;
     const prom = this.waitFor((m) => {
