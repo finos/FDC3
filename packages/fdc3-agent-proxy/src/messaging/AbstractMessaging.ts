@@ -4,13 +4,11 @@ import { RegisterableListener } from '../listeners/RegisterableListener';
 import {
   AgentResponseMessage,
   isAgentResponseMessage,
-  WebConnectionProtocolMessage,
   AppRequestMessage
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 export abstract class AbstractMessaging implements Messaging {
-  private appIdentifier: AppIdentifier | null = null;
-  private implementationMetadata: ImplementationMetadata | null = null;
+  private implementationMetadata: ImplementationMetadata;
 
   abstract createUUID(): string;
   abstract post(message: object): Promise<void>;
@@ -22,19 +20,17 @@ export abstract class AbstractMessaging implements Messaging {
 
   abstract getTimeoutMs(): number;
 
-  constructor() {}
-
-  getSource(): AppIdentifier | null {
-    return this.appIdentifier;
+  constructor(implementationMetadata: ImplementationMetadata) {
+    this.implementationMetadata = implementationMetadata;
   }
 
-  waitFor<X>(
+  waitFor<X extends AgentResponseMessage>(
     filter: (m: AgentResponseMessage) => boolean,
     timeoutErrorMessage?: string
   ): Promise<X> {
     const id = this.createUUID();
     return new Promise<X>((resolve, reject) => {
-      var done = false;
+      let done = false;
       const l: RegisterableListener = {
         id,
         filter: filter,
@@ -59,10 +55,10 @@ export abstract class AbstractMessaging implements Messaging {
     });
   }
 
-  async exchange<X>(message: AppRequestMessage, expectedTypeName: string, timeoutErrorMessage?: string): Promise<X> {
+  async exchange<X extends AgentResponseMessage>(message: AppRequestMessage, expectedTypeName: string, timeoutErrorMessage?: string): Promise<X> {
     const errorMessage =
       timeoutErrorMessage ?? `Timeout waiting for ${expectedTypeName} with requestUuid ${message.meta.requestUuid}`;
-    const prom = this.waitFor((m) => {
+    const prom = this.waitFor<X>((m) => {
       if (isAgentResponseMessage(m)) {
         return m.type == expectedTypeName && m.meta.requestUuid == message.meta.requestUuid;
       } else {
@@ -70,7 +66,7 @@ export abstract class AbstractMessaging implements Messaging {
       }
     }, errorMessage);
     this.post(message);
-    const out: any = await prom;
+    const out: X = await prom;
     if (out?.payload?.error) {
       throw new Error(out.payload.error);
     } else {
@@ -78,20 +74,15 @@ export abstract class AbstractMessaging implements Messaging {
     }
   }
 
-  async getImplementationMetadata(): Promise<ImplementationMetadata | null> {
+  getImplementationMetadata(): ImplementationMetadata {
     return this.implementationMetadata;
   }
 
-  setImplementationMetadata(impl: ImplementationMetadata | null) {
-    this.implementationMetadata = impl;
-  }
-
-  async getAppIdentifier(): Promise<AppIdentifier | null> {
-    return this.appIdentifier;
-  }
-
-  setAppIdentifier(ident: AppIdentifier | null) {
-    this.appIdentifier = ident;
+  getAppIdentifier(): AppIdentifier {
+    return {
+      appId: this.implementationMetadata.appMetadata.appId,
+      instanceId: this.implementationMetadata.appMetadata.instanceId
+    };
   }
 
   abstract connect(): Promise<void>;
