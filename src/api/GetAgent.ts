@@ -92,7 +92,8 @@ type GetAgentParams = {
 };
 
 /** Type representing the format of data stored by `getAgent`
- *  in Session Storage. */
+ *  in Session Storage. The `identityUrl` of each app is used
+ *  as the key. */
 export type SessionStorageFormat = {
   /** */
   [key: string]: DesktopAgentDetails
