@@ -1,7 +1,7 @@
 import { FDC3_USER_INTERFACE_RESTYLE_TYPE } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 import { DEFAULT_COLLAPSED_CSS, Position } from "./channel-selector";
 
-export function dragElement(elmnt: HTMLElement, myPort: MessagePort, position: Position) {
+export function dragElement(elmnt: HTMLElement, myPort: MessagePort) {
     var posXDrag = 0, posYDrag = 0, posXStart = 0, posYStart = 0;
     var top = 0, left = 0, screenX = 0, screenY = 0
 
@@ -46,19 +46,19 @@ export function dragElement(elmnt: HTMLElement, myPort: MessagePort, position: P
         }
     }
 
-    function setTopAndLeft() {
-        if (position.left) {
-            left = parseInt(position.left)
-        } else {
-            left = screenX - parseInt(position.right) - elmnt.offsetWidth
-        }
+    // function setTopAndLeft() {
+    //     if (position.left) {
+    //         left = parseInt(position.left)
+    //     } else {
+    //         left = screenX - parseInt(position.right) - elmnt.offsetWidth
+    //     }
 
-        if (position.top) {
-            top = parseInt(position.top)
-        } else {
-            top = screenY - parseInt(position.bottom) - elmnt.offsetHeight
-        }
-    }
+    //     if (position.top) {
+    //         top = parseInt(position.top)
+    //     } else {
+    //         top = screenY - parseInt(position.bottom) - elmnt.offsetHeight
+    //     }
+    // }
 
     function fireShrink() {
         myPort.postMessage({
@@ -84,8 +84,7 @@ export function dragElement(elmnt: HTMLElement, myPort: MessagePort, position: P
     function dragMouseDown(e: MouseEvent) {
         e.preventDefault();
         // get the mouse cursor position at startup:
-        left =
-            posXStart = left + e.clientX;
+        posXStart = left + e.clientX;
         posYStart = top + e.clientY;
         document.onmouseup = closeDragElement;
         // call a function whenever the cursor moves:
