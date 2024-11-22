@@ -1,5 +1,7 @@
-import { FDC3_USER_INTERFACE_HANDSHAKE_TYPE, FDC3_USER_INTERFACE_HELLO_TYPE, FDC3_USER_INTERFACE_RESTYLE_TYPE, Fdc3UserInterfaceHello, InitialCSS, UpdatedCSS } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
+import { BrowserTypes } from "@kite9/fdc3-schema";
 import { Connectable } from "@kite9/fdc3-standard";
+
+const { FDC3_USER_INTERFACE_HANDSHAKE_TYPE, FDC3_USER_INTERFACE_HELLO_TYPE, FDC3_USER_INTERFACE_RESTYLE_TYPE, Fdc3UserInterfaceHello, InitialCSS, UpdatedCSS` } = BrowserTypes`
 
 export interface CSSPositioning { [key: string]: string }
 
@@ -107,7 +109,7 @@ export abstract class AbstractUIComponent implements Connectable {
         return str.replace(/[A-Z]/g, (match) => "-" + match.toLowerCase());
     }
 
-    themeContainer(css: UpdatedCSS | InitialCSS) {
+    themeContainer(css: BrowserTypes.UpdatedCSS | BrowserTypes.InitialCSS) {
         if (css) {
             for (let i = 0; i < ALLOWED_CSS_ELEMENTS.length; i++) {
                 const k = ALLOWED_CSS_ELEMENTS[i]
