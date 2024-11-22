@@ -1,0 +1,64 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/raiseIntentResultResponse.schema.json",
+	"type": "object",
+	"title": "RaiseIntentResult Response",
+	"description": "A secondary response to a request to raise an intent used to deliver the intent result. This message should quote the original requestUuid of the raiseIntentRequest message in its `meta.requestUuid` field.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/RaiseIntentResultResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/RaiseIntentResultSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/RaiseIntentResultErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"RaiseIntentResultResponseType": {
+			"title": "RaiseIntentResult Response Message Type",
+			"const": "raiseIntentResultResponse"
+		},
+		"RaiseIntentResultSuccessResponsePayload": {
+			"title": "RaiseIntent Result Response Payload",
+			"type": "object",
+			"properties": {
+				"intentResult": {
+					"$ref": "api.schema.json#/definitions/IntentResult"
+				}
+			},
+			"required": [
+				"intentResult"
+			],
+			"additionalProperties": false
+		},
+		"RaiseIntentResultErrorResponsePayload": {
+			"title": "RaiseIntentResult Error Response Payload",
+			"type": "object",
+			"properties": {
+				"error": {
+					"$ref": "common.schema.json#/$defs/ErrorMessages"
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}

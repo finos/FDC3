@@ -552,7 +552,7 @@ export interface DesktopAgent {
   getAppMetadata(app: AppIdentifier): Promise<AppMetadata>;
 
   //---------------------------------------------------------------------------------------------
-  //Deprecated function signatures
+  // Deprecated function signatures
   //---------------------------------------------------------------------------------------------
 
   /**

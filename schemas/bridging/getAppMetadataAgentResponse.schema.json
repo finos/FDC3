@@ -18,19 +18,10 @@
       "description": "A response to a getAppMetadata request.",
       "properties": {
         "type": {
-          "title": "GetAppMetadata Response Message Type",
-          "const": "getAppMetadataResponse"
+          "$ref": "../api/getAppMetadataResponse.schema.json#/$defs/GetAppMetadataResponseType"
         },
         "payload": {
-          "title": "GetAppMetadata Response Payload",
-          "type": "object",
-          "properties": {
-            "appMetadata": {
-              "$ref": "../api/api.schema.json#/definitions/AppMetadata"
-            }
-          },
-          "required": ["appMetadata"],
-          "additionalProperties": false
+          "$ref": "../api/getAppMetadataResponse.schema.json#/$defs/GetAppMetadataSuccessResponsePayload"
         },
         "meta": {
           "title": "GetAppMetadata Response Metadata",

@@ -1,0 +1,64 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/getOrCreateChannelResponse.schema.json",
+	"type": "object",
+	"title": "GetOrCreateChannel Response",
+	"description": "A response to a getOrCreateChannel request.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/GetOrCreateChannelResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/GetOrCreateChannelSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/GetOrCreateChannelErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"GetOrCreateChannelResponseType": {
+			"title": "GetOrCreateChannel Response Message Type",
+			"const": "getOrCreateChannelResponse"
+		},
+		"GetOrCreateChannelSuccessResponsePayload": {
+			"title": "GetOrCreateChannel Response Payload",
+			"type": "object",
+			"properties": {
+				"channel": {
+					"$ref": "api.schema.json#/definitions/Channel"
+				}
+			},
+			"required": [
+				"channel"
+			],
+			"additionalProperties": false
+		},
+		"GetOrCreateChannelErrorResponsePayload": {
+			"title": "GetOrCreateChannel Error Response Payload",
+			"type": "object",
+			"properties": {
+				"error": {
+					"$ref": "api.schema.json#/definitions/ChannelError"
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}

@@ -1,0 +1,37 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/getCurrentChannelRequest.schema.json",
+	"type": "object",
+	"title": "GetCurrentChannel Request",
+	"description": "A request to return the Channel object for the current User channel membership. Returns `null` if the app is not joined to a channel.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/GetCurrentChannelRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/GetCurrentChannelRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"GetCurrentChannelRequestType": {
+			"title": "GetCurrentChannel Request Message Type",
+			"const": "getCurrentChannelRequest"
+		},
+		"GetCurrentChannelRequestPayload": {
+			"title": "GetCurrentChannel Request Payload",
+			"type": "object",
+			"properties": {},
+			"additionalProperties": false
+		}
+	}
+}

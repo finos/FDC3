@@ -1,0 +1,56 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/getCurrentContextRequest.schema.json",
+	"type": "object",
+	"title": "GetCurrentContext Request",
+	"description": "A request to return the current context (either of a specified type or most recent broadcast) of a specified Channel. Returns `null` if no context (of the requested type if one was specified) is available in the channel.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/GetCurrentContextRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/GetCurrentContextRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"GetCurrentContextRequestType": {
+			"title": "GetCurrentContext Request Message Type",
+			"const": "getCurrentContextRequest"
+		},
+		"GetCurrentContextRequestPayload": {
+			"title": "GetCurrentContext Request Payload",
+			"type": "object",
+			"properties": {
+				"channelId": {
+					"title": "Channel Id",
+					"description": "The id of the channel to return the current context of.",
+					"type": "string"
+				},
+				"contextType": {
+					"title": "Context type",
+					"description": "The type of context to return for OR `null` indicating that the most recently broadcast context on the channel should be returned.",
+					"oneOf": [
+						{
+							"type": "string"
+						},
+						{
+							"type": "null"
+						}
+					]
+				}
+			},
+			"required": ["channelId", "contextType"],
+			"additionalProperties": false
+		}
+	}
+}

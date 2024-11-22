@@ -57,7 +57,7 @@
           "type": "object",
           "properties": {
             "timestamp": {
-              "$ref": "common.schema.json#/$defs/Timestamp"
+              "$ref": "../api/common.schema.json#/$defs/Timestamp"
             }
           },
           "additionalProperties": false,

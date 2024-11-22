@@ -43,9 +43,9 @@ In any Desktop Agent Bridging scenario, it is expected that each DA is being ope
 
 The Desktop Agent Bridging Part of the FDC3 Standard is composed of three components:
 
-- **[Connection](#connection)**: A means for Desktop Agents to communicate with a bridge, and through that bridge, with each other.
-- **[Connection Protocol](#connection-protocol)**: A protocol defining message exchanges necessary to connect to a Bridge and to perform initial state synchronization.
-- **[Messaging Protocol](#messaging-protocol)**: A protocol defining message exchanges that allow FDC3 API interop to extend across multiple Desktop Agents.
+- **[Bridge Connection](#connection)**: A means for Desktop Agents to communicate with a bridge, and through that bridge, with each other.
+- **[Bridge Connection Protocol (BCP)](#bridge-connection-protocol)**: A protocol defining message exchanges necessary to connect to a Bridge and to perform initial state synchronization.
+- **[Bridge Messaging Protocol (BMP)](#bridge-messaging-protocol)**: A protocol defining message exchanges that allow FDC3 API interop to extend across multiple Desktop Agents.
 
 Detail on each of these components is defined in the following sections.
 
@@ -69,7 +69,7 @@ Agent Bridging is introduced in FDC3 2.1 as an [@experimental](../fdc3-complianc
 
 ### JSON Message Protocol & JSON Schema
 
-The connection and messaging protocols that the Desktop Agent Bridging Part defines are based on messages encoded in JSON. [JSON Schema](https://json-schema.org/) is used to define the format of each message in the protocol and should be considered the 'source of truth' for each and may be used to validate that individual messages are in the correct format. However, examples are provided in the documentation in TypeScript and JavaScript formats for convenience. TypeScript interfaces for individual messages, included in the FDC3 NPM module, are generated from the JSON Schema source files using [quicktype](https://quicktype.io/).
+The Bridge Connection Protocol (BCP) and Bridge Messaging Protocols (BMP) that the Desktop Agent Bridging Part defines are based on messages encoded in JSON. [JSON Schema](https://json-schema.org/) is used to define the format of each message in the protocol. These schema files should be considered the 'source of truth' for each and may be used to validate that individual messages are in the correct format. However, examples are provided in the documentation in TypeScript and JavaScript formats for convenience. TypeScript interfaces for individual messages, included in the FDC3 NPM module, are generated from the JSON Schema source files using [quicktype](https://quicktype.io/).
 
 ## Connection
 
@@ -156,7 +156,7 @@ Both DAs and bridge implementations SHOULD support at least connection to the re
 
 As the bridge binds its websocket on the loopback address (127.0.0.1) it cannot be connected to from another device. Hence, an instance of the standalone bridge may be run on each device and those instances exchange messages by other means in order to implement the bridge cross-device.
 
-## Connection Protocol
+## Bridge Connection Protocol
 
 On connection to the bridge's websocket, a handshake must be completed that may include an authentication step before a name is assigned to the Desktop Agent for use in routing messages. The purpose of the handshake is to allow:
 
@@ -435,7 +435,7 @@ Desktop Agents SHOULD provide visual feedback to end users when they or other ag
 
 Although not part of the connection protocol, it should be noted that the `connectedAgentsUpdate` message sent in step 6 should also be sent whenever an agent disconnects from the bridge to update other agents. If any agents remain connected, then the `channelState` does not change and can be omitted. However, if the last agent disconnects the bridge SHOULD discard its internal `channelState`, instead of issuing the update.
 
-## Messaging Protocol
+## Bridge Messaging Protocol
 
 In order for Desktop Agents to communicate with the Desktop Agent Bridge and thereby other Desktop Agents, a messaging protocol is required. FDC3 supports both 'fire and forget' interactions (such as the broadcast of context messages) and interactions with specific responses (such as raising intents and returning a resolution and optional result), both of which must be handled by that messaging protocol and message formats it defines, as described in this section.
 
@@ -836,7 +836,7 @@ And an error enumeration is created for errors related to bridging that may occu
 ```typescript
 enum BridgingError {
   /** Returned if a Desktop Agent did not return a response, via Desktop Agent Bridging,
-   * within the alloted timeout. */
+   * within the allotted timeout. */
   ResponseTimedOut = 'ResponseToBridgeTimedOut',
   /** Returned if a Desktop Agent that has been targeted by a particular request has
    * been disconnected from the Bridge before a response has been received from it. */
@@ -1006,7 +1006,7 @@ However, `PrivateChannel` instances allow the registration of additional event h
 
 #### Message Schemas and generated sources
 
-JSONSchema definitions are provided for all Desktop Agent Bridging message exchanges (see links in each reference page), which may be used to validate the correct generation of messages to or from a bridge (a separate schema is provided for the agent and bridge versions of each message).
+JSONSchema definitions are provided for all Desktop Agent Bridging message exchanges defined by the Bridge Messaging Protocol (see links in each reference page), which may be used to validate the correct generation of messages to or from a bridge (a separate schema is provided for the agent and bridge versions of each message).
 
 The JSONSchema definitions are also used to generate TypeScript interfaces for the messages to aid in implementation of a Desktop Agent Bridge or client library. These may be imported from the FDC3 npm module:
 
