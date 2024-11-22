@@ -39,6 +39,7 @@
     "eslint-plugin-jest": "28.8.3",
     "eslint-plugin-jsx-a11y": "^6.10.0",
     "globals": "^15.11.0",
+    "message-await": "^1.1.0",
     "quicktype": "23.0.78",
     "rimraf": "^6.0.1",
     "ts-jest": "29.2.5",
