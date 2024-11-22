@@ -1,0 +1,61 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/intentEvent.schema.json",
+	"type": "object",
+	"title": "intent Event",
+	"description": "An event message from the Desktop Agent to an app indicating that it has been selected to resolve a raised intent and context.",
+	"allOf": [
+		{
+			"$ref": "agentEvent.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/IntentEventType"
+				},
+				"payload": {
+					"$ref": "#/$defs/IntentEventPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"IntentEventType": {
+			"title": "Intent Event Message Type",
+			"const": "intentEvent"
+		},
+		"IntentEventPayload": {
+			"title": "Intent Event Payload",
+			"type": "object",
+			"properties": {
+				"intent": {
+					"title": "Intent",
+					"description": "The intent that was raised.",
+					"type": "string"
+				},
+				"context": {
+					"$ref": "../context/context.schema.json",
+					"title": "Context",
+					"description": "The context object passed with the raised intent."
+				},
+				"originatingApp": {
+					"title": "Originating AppIdentifier",
+					"description": "Details of the application instance that raised the intent.",
+					"$ref": "api.schema.json#/definitions/AppIdentifier"
+				},
+				"raiseIntentRequestUuid": {
+					"title": "raiseIntentRequest UUID",
+					"type": "string",
+					"description": "The requestUuid value of the raiseIntentRequest that the intentEvent being sent relates to."
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"intent", "context", "raiseIntentRequestUuid"
+			]
+		}
+	}
+}

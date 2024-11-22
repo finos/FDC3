@@ -18,19 +18,10 @@
       "description": "A response to a findIntent request.",
       "properties": {
         "type": {
-          "title": "FindIntent Response Message Type",
-          "const": "findIntentResponse"
+          "$ref": "../api/findIntentResponse.schema.json#/$defs/FindIntentResponseType"
         },
         "payload": {
-          "title": "FindIntent Response Payload",
-          "type": "object",
-          "properties": {
-            "appIntent": {
-              "$ref": "../api/api.schema.json#/definitions/AppIntent"
-            }
-          },
-          "required": ["appIntent"],
-          "additionalProperties": false
+          "$ref": "../api/findIntentResponse.schema.json#/$defs/FindIntentSuccessResponsePayload"
         },
         "meta": {
           "title": "FindIntent Response Metadata",

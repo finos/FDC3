@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json",
+  "title": "Web Connection Protocol 3 Handshake",
+  "description": "Handshake message sent by the Desktop Agent to the app (with a MessagePort appended) that should be used for subsequent communication steps.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/WCP3HandshakeBase"
+    },
+    {
+      "$ref": "WCPConnectionStep.schema.json"
+    }
+  ],
+  "$defs": {
+    "WCP3HandshakeBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "WCP3Handshake Message Type",
+          "const": "WCP3Handshake"
+        },
+        "payload": {
+          "title": "WCP3Handshake Payload",
+          "type": "object",
+          "properties": {
+            "fdc3Version": {
+              "title": "FDC3 version",
+              "type": "string",
+              "description": "The version of FDC3 API that the Desktop Agent will provide support for."
+            },
+            "intentResolverUrl": {
+              "title": "Resolver URL",
+              "description": "Indicates whether an intent resolver user interface is required and the URL to use to do so. Set to `true` to use the default or `false` to disable the intent resolver (as the Desktop Agent will handle it another way).",
+              "oneOf": [
+                {
+                  "type": "string",
+                  "format": "uri"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            },
+            "channelSelectorUrl": {
+              "title": "Channel Selector URL",
+              "description": "Indicates whether a channel selector user interface is required and the URL to use to do so. Set to `true` to use the default or `false` to disable the channel selector (as the Desktop Agent will handle it another way).",
+              "oneOf": [
+                {
+                  "type": "string",
+                  "format": "uri"
+                },
+                {
+                  "type": "boolean"
+                }
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "fdc3Version",
+            "intentResolverUrl",
+            "channelSelectorUrl"
+          ]
+        },
+        "meta": {
+          "$ref": "WCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"
+        }
+      },
+      "required": [
+        "type",
+        "payload",
+        "meta"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

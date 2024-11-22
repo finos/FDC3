@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityResponse.schema.json",
+  "title": "Web Connection Protocol 5 Validate App Identity Success Response",
+  "description": "Message sent by the Desktop Agent to an app after successful identity validation.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/WCP5ValidateAppIdentityResponseBase"
+    },
+    {
+      "$ref": "WCPConnectionStep.schema.json"
+    }
+  ],
+  "$defs": {
+    "WCP5ValidateAppIdentityResponseBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "WCP5ValidateAppIdentityResponse Message Type",
+          "const": "WCP5ValidateAppIdentityResponse"
+        },
+        "payload": {
+          "title": "WCP5ValidateAppIdentityResponse Payload",
+          "type": "object",
+          "properties": {
+            "appId": {
+              "title": "appId",
+              "description": "The appId that the app's identity was validated against.",
+              "type": "string"
+            },
+            "instanceId": {
+              "title": "instanceId",
+              "description": "The instance Id granted to the application by the Desktop Agent.",
+              "type": "string"
+            },
+            "instanceUuid": {
+              "title": "instanceUuid",
+              "description": "Instance UUID associated with the instanceId granted, which may be used to retrieve the same instanceId if the app is reloaded or navigates.",
+              "type": "string"
+            },
+            "implementationMetadata": {
+              "title": "ImplementationMetadata",
+              "description": "Implementation metadata for the Desktop Agent, which includes an appMetadata element containing a copy of the app's own metadata.",
+              "$ref": "api.schema.json#/definitions/ImplementationMetadata"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "appId",
+            "instanceId",
+            "instanceUuid",
+            "implementationMetadata"
+          ]
+        },
+        "meta": {
+          "$ref": "WCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"
+        }
+      },
+      "required": [
+        "type",
+        "payload",
+        "meta"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

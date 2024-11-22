@@ -1,0 +1,37 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/createPrivateChannelRequest.schema.json",
+	"type": "object",
+	"title": "CreatePrivateChannel Request",
+	"description": "Request to return a Channel with an auto-generated identity that is intended for private communication between applications.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/CreatePrivateChannelRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/CreatePrivateChannelRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"CreatePrivateChannelRequestType": {
+			"title": "CreatePrivateChannel Request Message Type",
+			"const": "createPrivateChannelRequest"
+		},
+		"CreatePrivateChannelRequestPayload": {
+			"title": "CreatePrivateChannel Request Payload",
+			"type": "object",
+			"properties": {},
+			"additionalProperties": false
+		}
+	}
+}

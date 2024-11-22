@@ -1,0 +1,48 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/findIntentsByContextRequest.schema.json",
+	"type": "object",
+	"title": "FindIntentsByContext Request",
+	"description": "A request for details of intents and apps available to resolve them for a particular context.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/FindIntentsByContextRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/FindIntentsByContextRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"FindIntentsByContextRequestType": {
+			"title": "FindIntentsByContext Request Message Type",
+			"const": "findIntentsByContextRequest"
+		},
+		"FindIntentsByContextRequestPayload": {
+			"title": "FindIntentsByContext Request Payload",
+			"type": "object",
+			"properties": {
+				"context": {
+					"$ref": "../context/context.schema.json"
+				},
+				"resultType": {
+				  "title": "Result type argument",
+				  "type": "string"
+				}
+			},
+			"required": [
+				"context"
+			],
+			"additionalProperties": false
+		}
+	}
+}

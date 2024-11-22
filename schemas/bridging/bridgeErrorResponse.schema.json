@@ -16,7 +16,7 @@
       "description": "The error message payload contains details of an error return to the app or agent that raised the original request.",
       "properties": {
         "error": {
-          "$ref": "common.schema.json#/$defs/ErrorMessages"
+          "$ref": "../api/common.schema.json#/$defs/ErrorMessages"
         }
       }
     },
@@ -33,13 +33,13 @@
       "type": "object",
       "properties": {
         "requestUuid": {
-          "$ref": "common.schema.json#/$defs/RequestUuid"
+          "$ref": "../api/common.schema.json#/$defs/RequestUuid"
         },
         "responseUuid": {
-          "$ref": "common.schema.json#/$defs/ResponseUuid"
+          "$ref": "../api/common.schema.json#/$defs/ResponseUuid"
         },
         "timestamp": {
-          "$ref": "common.schema.json#/$defs/Timestamp"
+          "$ref": "../api/common.schema.json#/$defs/Timestamp"
         },
         "errorSources": {
          "$ref": "common.schema.json#/$defs/BridgeResponseErrorSources"
