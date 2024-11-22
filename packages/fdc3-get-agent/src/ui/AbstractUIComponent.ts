@@ -1,6 +1,6 @@
 import { Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, InitialCSS, isFdc3UserInterfaceHello, isFdc3UserInterfaceRestyle, UpdatedCSS } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 import { Connectable } from "@kite9/fdc3-standard";
-import { FDC3_VERSION } from "../strategies/getAgent";
+import { FDC3_VERSION } from "../Fdc3Version";
 
 export interface CSSPositioning { [key: string]: string }
 
@@ -133,5 +133,4 @@ export abstract class AbstractUIComponent implements Connectable {
         ifrm.style.height = "100%"
         ifrm.style.border = "0"
     }
-
 }
