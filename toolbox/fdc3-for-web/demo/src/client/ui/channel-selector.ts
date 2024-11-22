@@ -27,13 +27,17 @@ const DEFAULT_EXPANDED_CSS = {
 
 export type Position = {
     left: string,
-    top: string
+    top: string,
+    bottom: string,
+    right: string
 }
 
 
 const position: Position = {
-    left: "10px",
-    top: "10px",
+    right: "10px",
+    bottom: "10px",
+    left: "",
+    top: ""
 }
 
 window.addEventListener("load", () => {
