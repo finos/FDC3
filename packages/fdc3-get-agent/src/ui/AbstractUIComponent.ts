@@ -1,7 +1,8 @@
 import { BrowserTypes } from "@kite9/fdc3-schema";
+import { Fdc3UserInterfaceHello } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 import { Connectable } from "@kite9/fdc3-standard";
 
-const { FDC3_USER_INTERFACE_HANDSHAKE_TYPE, FDC3_USER_INTERFACE_HELLO_TYPE, FDC3_USER_INTERFACE_RESTYLE_TYPE, Fdc3UserInterfaceHello, InitialCSS, UpdatedCSS` } = BrowserTypes`
+const { FDC3_USER_INTERFACE_HANDSHAKE_TYPE, FDC3_USER_INTERFACE_HELLO_TYPE, FDC3_USER_INTERFACE_RESTYLE_TYPE } = BrowserTypes
 
 export interface CSSPositioning { [key: string]: string }
 
@@ -60,7 +61,7 @@ export abstract class AbstractUIComponent implements Connectable {
         port.addEventListener("message", (e) => {
             const data = e.data
             if (data.type == FDC3_USER_INTERFACE_RESTYLE_TYPE) {
-                // console.log(`Restyling ${JSON.stringify(data.payload)}`)
+                // console.log(`Restyling ${ JSON.stringify(data.payload) } `)
                 const css = data.payload.updatedCSS
                 this.themeContainer(css)
             }
