@@ -1,67 +1,82 @@
-import { Messaging } from "../Messaging"
-import { RegisterableListener } from "./RegisterableListener"
+import {
+  AgentEventMessage,
+  AgentResponseMessage,
+  AppRequestMessage,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { Messaging } from '../Messaging';
+import { RegisterableListener } from './RegisterableListener';
 
 /**
  * Common to all listeners - they need to be registered and unregistered with messaging and also
- * send notification messsages when connected and disconnected
+ * send notification messages when connected and disconnected
  */
 export abstract class AbstractListener<X> implements RegisterableListener {
+  readonly messaging: Messaging;
+  private readonly subscribeRequestType: AppRequestMessage['type'];
+  private readonly subscribeResponseType: AgentResponseMessage['type'];
+  private readonly unsubscribeRequestType: AppRequestMessage['type'];
+  private readonly unsubscribeResponseType: AgentResponseMessage['type'];
+  private readonly payloadDetails: Record<string, string | null>;
+  id: string | null = null;
+  readonly handler: X;
 
-    readonly messaging: Messaging
-    private readonly subscribeType: string
-    private readonly unsubscribeType: string
-    private readonly payloadDetails: Record<string, string | null>
-    id: string | null = null
-    readonly handler: X
+  constructor(
+    messaging: Messaging,
+    payloadDetails: Record<string, string | null>,
+    handler: X,
+    subscribeRequestType: AppRequestMessage['type'],
+    subscribeResponseType: AgentResponseMessage['type'],
+    unsubscribeRequestType: AppRequestMessage['type'],
+    unsubscribeResponseType: AgentResponseMessage['type']
+  ) {
+    this.messaging = messaging;
+    this.handler = handler;
+    this.payloadDetails = payloadDetails;
+    this.subscribeRequestType = subscribeRequestType;
+    this.subscribeResponseType = subscribeResponseType;
+    this.unsubscribeRequestType = unsubscribeRequestType;
+    this.unsubscribeResponseType = unsubscribeResponseType;
+  }
 
-    constructor(messaging: Messaging, payloadDetails: Record<string, string | null>, handler: X, subscribeType: string, unsubscribeType: string) {
-        this.messaging = messaging
-        this.handler = handler
-        this.payloadDetails = payloadDetails
-        this.subscribeType = subscribeType
-        this.unsubscribeType = unsubscribeType
+  abstract filter(m: AgentEventMessage): boolean;
+
+  abstract action(m: AgentEventMessage): void;
+
+  async listenerNotification(
+    requestType: AppRequestMessage['type'],
+    responseType: AgentResponseMessage['type']
+  ): Promise<string | null> {
+    let notificationMessage: AppRequestMessage;
+    if (this.id) {
+      notificationMessage = {
+        meta: this.messaging.createMeta(),
+        payload: {
+          listenerUUID: this.id,
+        },
+        type: requestType,
+      };
+    } else {
+      // send subscription notification
+      notificationMessage = {
+        meta: this.messaging.createMeta(),
+        payload: {
+          ...this.payloadDetails,
+        },
+        type: requestType,
+      };
     }
 
-    abstract filter(m: any): boolean
+    const response = await this.messaging.exchange<AgentResponseMessage>(notificationMessage, responseType!);
+    return response?.payload?.listenerUUID ?? null;
+  }
 
-    abstract action(m: any): void
+  async unsubscribe(): Promise<void> {
+    this.messaging.unregister(this.id!);
+    await this.listenerNotification(this.unsubscribeRequestType, this.unsubscribeResponseType);
+  }
 
-    async listenerNotification(type: string): Promise<string | null> {
-        const requestType = type + "Request"
-        const responseType = type + "Response"
-        var notificationMessage: any
-        if (this.id) {
-            notificationMessage = {
-                meta: this.messaging.createMeta(),
-                payload: {
-                    listenerUUID: this.id
-                },
-                type: requestType
-            }
-        } else {
-            // send subscription notification
-            notificationMessage = {
-                meta: this.messaging.createMeta(),
-                payload: {
-                    ...this.payloadDetails
-                },
-                type: requestType
-            }
-        }
-
-        const response = await this.messaging.exchange<any>(notificationMessage, responseType!!)
-        return response?.payload?.listenerUUID ?? null
-
-    }
-
-    async unsubscribe(): Promise<void> {
-        this.messaging.unregister(this.id!!)
-        await this.listenerNotification(this.unsubscribeType)
-    }
-
-    async register() {
-        const id = await this.listenerNotification(this.subscribeType)!!
-        this.id = id
-        this.messaging.register(this)
-    }
+  async register() {
+    this.id = await this.listenerNotification(this.subscribeRequestType, this.subscribeResponseType);
+    this.messaging.register(this);
+  }
 }

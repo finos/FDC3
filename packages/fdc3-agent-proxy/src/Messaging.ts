@@ -2,18 +2,13 @@ import { Connectable, AppIdentifier, ImplementationMetadata } from '@kite9/fdc3-
 import { RegisterableListener } from './listeners/RegisterableListener';
 import {
   AppRequestMessage,
-  AgentResponseMessage,
-  WebConnectionProtocolMessage
+  AgentResponseMessage
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 export interface Messaging extends Connectable {
-  /**
-   * Source information to apply to outgoing messages
-   */
-  getSource(): AppIdentifier | null;
 
   /**
-   * UUID for outgoing message
+   * Creates UUIDs used in outgoing messages
    */
   createUUID(): string;
 
@@ -28,18 +23,19 @@ export interface Messaging extends Connectable {
   register(l: RegisterableListener): void;
 
   /**
-   * Unregisters a listener with the id given above
+   * Unregister a listener with the given id
    * @param id
    */
   unregister(id: string): void;
 
+  /** Create a metadata element to attach to outgoing messages. */
   createMeta(): AppRequestMessage['meta'];
 
   /**
    * Waits for a specific matching message
    */
-  waitFor<X>(
-    filter: (m: WebConnectionProtocolMessage | AgentResponseMessage) => boolean,
+  waitFor<X extends AgentResponseMessage>(
+    filter: (m: AgentResponseMessage) => boolean,
     timeoutErrorMessage?: string
   ): Promise<X>;
 
@@ -47,15 +43,16 @@ export interface Messaging extends Connectable {
    *
    * @param message Performs a request / response message pass
    */
-  exchange<X>(message: object, expectedTypeName: string, timeoutErrorMessage?: string): Promise<X>;
+  exchange<X extends AgentResponseMessage>(message: object, expectedTypeName: string, timeoutErrorMessage?: string): Promise<X>;
 
   /**
    * Implementation metadata retrieved through the validation process
    */
-  getImplementationMetadata(): Promise<ImplementationMetadata | null>;
+  getImplementationMetadata(): ImplementationMetadata;
 
   /**
-   * App identification retrieved through the validation process
+   * App identification used to provide source information used in
+   * message meta elements, IntentResolution etc..
    */
-  getAppIdentifier(): Promise<AppIdentifier | null>;
+  getAppIdentifier(): AppIdentifier;
 }

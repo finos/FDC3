@@ -2,13 +2,7 @@ import { IntentHandler, IntentResult, AppIdentifier } from "@kite9/fdc3-standard
 import { Context } from "@kite9/fdc3-context";
 import { Messaging } from "../Messaging";
 import { AbstractListener } from "./AbstractListener";
-import { BrowserTypes } from "@kite9/fdc3-schema";
-
-type RaiseIntentResponse = BrowserTypes.RaiseIntentResponse
-type IntentResultResponse = BrowserTypes.IntentResultResponse
-type BridgeIntentResult = BrowserTypes.IntentResult
-type IntentEvent = BrowserTypes.IntentEvent
-type IntentResultRequest = BrowserTypes.IntentResultRequest
+import { IntentEvent, IntentResultRequest, IntentResultResponse, RaiseIntentResponse } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
 export class DefaultIntentListener extends AbstractListener<IntentHandler> {
 
@@ -18,22 +12,24 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler> {
         super(messaging,
             { intent },
             action,
-            "addIntentListener",
-            "intentListenerUnsubscribe")
-
-        this.intent = intent
+            "addIntentListenerRequest",
+            "addIntentListenerResponse",
+            "intentListenerUnsubscribeRequest",
+            "intentListenerUnsubscribeResponse"
+        );
+        this.intent = intent;
     }
 
     filter(m: IntentEvent): boolean {
-        return (m.type == 'intentEvent') && (m.payload.intent == this.intent)
+        return (m.type == 'intentEvent') && (m.payload.intent == this.intent);
     }
 
     action(m: IntentEvent): void {
-        this.handleIntentResponse(m)
+        this.handleIntentResponse(m);
 
         const done = this.handler(m.payload.context, {
             source: m.payload.originatingApp as AppIdentifier
-        })
+        });
 
         this.handleIntentResult(done, m);
     }
@@ -49,7 +45,7 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler> {
             payload: {
                 intentResolution: {
                     intent: m.payload.intent,
-                    source: this.messaging.getSource()!
+                    source: this.messaging.getAppIdentifier()
                 }
             }
         };
@@ -70,7 +66,7 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler> {
             }
         };
 
-        return out
+        return out;
     }
 
     private handleIntentResult(done: Promise<IntentResult> | void, m: IntentEvent) {
@@ -86,11 +82,9 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler> {
     }
 }
 
-function convertIntentResult(intentResult: IntentResult): BridgeIntentResult {
-    if (intentResult == null) {
-        return {
-            // empty result
-        }
+function convertIntentResult(intentResult: IntentResult): IntentResultRequest["payload"]["intentResult"] {
+    if (!intentResult) { //consider any falsey result to be void...
+        return {}; // void result
     }
     switch (intentResult.type) {
         case 'user':
