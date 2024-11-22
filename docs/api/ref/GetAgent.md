@@ -159,23 +159,29 @@ Failover functions MUST be asynchronous and MUST resolve to one of the following
 
 ## Persisted Connection Data
 
-The `getAgent()` function uses [`SessionStorage`](https://html.spec.whatwg.org/multipage/webstorage.html) ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)) to persist information on an instance of an app and how it connected to a Desktop Agent in order to ensure a consistent connection type and `instanceId` when reconnecting after navigation or refresh events. Applications are not expected to interact with this information directly, rather it is set and used by the `getAgent()` implementation.
+The `getAgent()` function uses [`SessionStorage`](https://html.spec.whatwg.org/multipage/webstorage.html) ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)) to persist information on an instance of an app and how it connected to a Desktop Agent in order to ensure a consistent connection type and `instanceId` when reconnecting after navigation or refresh events. 
 
 :::info
-Apps do not need to and SHOULD NOT interact with data persisted in SessionStorage by `getAgent`. 
+Apps do not need to and SHOULD NOT interact with data persisted in SessionStorage by `getAgent` directly, rather it is set and used by the `getAgent()` implementation.
 :::
 
-SessionStorage is used as it is scoped to a single browser window and the current origin, ensuring apps in different windows or on different origins access different storage. However, as multiple iframes from the same-domain embedded within a window can share a SessionStorage instance, and multiple applications can be hosted on the same origin and be navigated to and from within a window, additional scoping is applied.
+SessionStorage is used as for persistence as it is scoped to a single browser window and the current origin, ensuring apps in different windows or on different origins access different storage. However, as multiple iframes from the same-domain embedded within a window can share a SessionStorage instance, and multiple applications can be hosted on the same origin and be navigated to and from within a window, additional scoping is applied.
 
-To differentiate storage for multiple iframes the name of the browsing context (`window.name`) is used to generate the key used in SessionStorage, by concatenating the string `"FDC3-Desktop-Agent-Details-"` with `window.name`. The `window.name` remains stable during same-origin navigation and is persisted by the browser in its [session history](https://html.spec.whatwg.org/multipage/nav-history-apis.html#nav-traversal-apis).
+To differentiate storage for multiple iframes the name of the browsing context (`window.name`) is used to generate the key used in SessionStorage by concatenating the string `"FDC3-Desktop-Agent-Details-"` with `window.name`. The `window.name` remains stable during same-origin navigation and is persisted by the browser in its [session history](https://html.spec.whatwg.org/multipage/nav-history-apis.html#nav-traversal-apis) and is appropriate for scoping to a particular browsing context (window or iframe). Desktop Agents should assign a unique name to each window and iframe when they are created to facilitate such scoping. If no name is assigned, then the `getAgent` will assign a UUID as a unique name for that browsing context.
 
-Hence, Desktop Agents should assign a unique name to each window and iframe. If no name is assigned, then `getAgent` will assign a UUID as a unique name for the browsing context.
+The data persisted is structured as an object conforming to the `SessionStorageFormat` type below, with the `identityUrl` of the app used as the key (if no `identityUrl` is provided the `actualUrl` is used instead), with the value conforming to the `DesktopAgentDetails` type. Hence, the data might be retrieved as follows:
 
-The data stored is structured as an object with the `identityUrl` of the app as the key (if no `identityUrl` is provided the `actualUrl` is used instead), with the value conforming to the `DesktopAgentDetails` type below:
+```ts
+const sessionData:SessionStorageFormat = sessionStorage.get("FDC3-Desktop-Agent-Details-myWindowName");
+const agentDetails: DesktopAgentDetails = sessionStorage["myApIdentityUrl"];
+```
+
+### Type Definitions
 
 ```ts
 /** Type representing the format of data stored by `getAgent`
- *  in Session Storage. */
+ *  in Session Storage. The `identityUrl` of each app is used
+ *  as the key. */
 type SessionStorageFormat = {
     /** */
     [key: string]: DesktopAgentDetails
