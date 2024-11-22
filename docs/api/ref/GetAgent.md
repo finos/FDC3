@@ -161,7 +161,7 @@ Failover functions MUST be asynchronous and MUST resolve to one of the following
 
 The `getAgent()` function uses [`SessionStorage`](https://html.spec.whatwg.org/multipage/webstorage.html) ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)) to persist information on an instance of an app and how it connected to a Desktop Agent in order to ensure a consistent connection type and `instanceId` when reconnecting after navigation or refresh events. 
 
-:::info
+:::warning
 Apps do not need to and SHOULD NOT interact with data persisted in SessionStorage by `getAgent` directly, rather it is set and used by the `getAgent()` implementation.
 :::
 
@@ -172,7 +172,7 @@ To differentiate storage for multiple iframes the name of the browsing context (
 The data persisted is structured as an object conforming to the `SessionStorageFormat` type below, with the `identityUrl` of the app used as the key (if no `identityUrl` is provided the `actualUrl` is used instead), with the value conforming to the `DesktopAgentDetails` type. Hence, the data might be retrieved as follows:
 
 ```ts
-const sessionData:SessionStorageFormat = sessionStorage.get("FDC3-Desktop-Agent-Details-myWindowName");
+const sessionData: SessionStorageFormat = sessionStorage.get("FDC3-Desktop-Agent-Details-myWindowName");
 const agentDetails: DesktopAgentDetails = sessionStorage["myApIdentityUrl"];
 ```
 
