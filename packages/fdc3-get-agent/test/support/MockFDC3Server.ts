@@ -11,7 +11,6 @@ import { BrowserTypes } from "@kite9/fdc3-schema"
 
 type AppRequestMessage = BrowserTypes.AppRequestMessage
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL
-type WebConnectionProtocol3Handshake = BrowserTypes.WebConnectionProtocol3Handshake
 
 export const dummyInstanceId = { appId: "Test App Id", instanceId: "1" }
 
@@ -19,7 +18,7 @@ export const EMBED_URL = "http://localhost:8080/static/da/embed.html"
 
 export const CHANNEL_SELECTOR_URL = "https://mock.fdc3.com/channelSelector"
 
-export const INTENT_RESPOLVER_URL = "https://mock.fdc3.com/resolver"
+export const INTENT_RESOLVER_URL = "https://mock.fdc3.com/resolver"
 
 export class MockFDC3Server implements FDC3Server {
 
@@ -98,7 +97,7 @@ export class MockFDC3Server implements FDC3Server {
                     },
                     payload: {
                         fdc3Version: "2.2",
-                        intentResolverUrl: INTENT_RESPOLVER_URL,
+                        intentResolverUrl: INTENT_RESOLVER_URL,
                         channelSelectorUrl: CHANNEL_SELECTOR_URL,
                     }
                 }

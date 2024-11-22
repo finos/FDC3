@@ -1,7 +1,6 @@
 import { Given, Then } from "@cucumber/cucumber";
 import { CustomWorld } from "../world";
 import { handleResolve } from "@kite9/testing";
-var wtf = require('wtfnode')
 
 
 Given('{string} receives a {string} message for the {string} and creates port {string}', async function (this: CustomWorld, frame: string, type: string, _item: string, port: string) {
