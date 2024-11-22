@@ -30,7 +30,7 @@
             ]
         },
         "Icon": {
-            "description": "Describes an Icon images that may be used to represent the application.",
+            "description": "Describes an Icon image that may be used to represent the application.",
             "title": "Icon",
             "type": "object",
             "properties": {

@@ -482,7 +482,7 @@ export interface AppMetadata {
 }
 
 /**
- * Describes an Icon images that may be used to represent the application.
+ * Describes an Icon image that may be used to represent the application.
  */
 export interface Icon {
     /**
@@ -2513,7 +2513,7 @@ export interface GetCurrentContextResponsePayload {
  */
 
 /**
- * Request to retrieve information about the FDC3 Desktop Agent implementation  and the
+ * Request to retrieve information about the FDC3 Desktop Agent implementation and the
  * metadata of the calling application according to the Desktop Agent.
  *
  * A request message from an FDC3-enabled app to a Desktop Agent.
