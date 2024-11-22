@@ -109,7 +109,7 @@ interface FDC3Event extends ApiEvent{
 ```csharp
 interface IFDC3Event<T> : IApiEvent
 {
-  FDC3EventTypes Type { get; }
+  FDC3EventType Type { get; }
   T Details { get; }
 }
 ```
@@ -150,7 +150,7 @@ class Details
 
 interface IFDC3ChannelChangedEvent : IFDC3Event
 {
-  FDC3EventTypes Type { get; }
+  FDC3EventType Type { get; }
   Details Details { get; } // TODO 
 }
 ```
@@ -175,7 +175,7 @@ type PrivateChannelEventTypes = "addContextListener" | "unsubscribe" | "disconne
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-enum PrivateChannelEventTypes
+enum PrivateChannelEventType
 {
   AddContextListener, 
   Unsubscribe,
@@ -209,7 +209,7 @@ interface PrivateChannelEvent extends ApiEvent {
 ```csharp
 interface IPrivateChannelEventt<T> : IApiEvent
 {
-  PrivateChannelEventTypes Type { get; }
+  PrivateChannelEventType Type { get; }
   T Details { get; }
 }
 ```
@@ -249,7 +249,7 @@ class Details
 
 interface IPrivateChannelAddContextListenerEvent : IPrivateChannelEvent
 {
-  PrivateChannelEventTypes Type { get; }
+  PrivateChannelEventType Type { get; }
   Details Details { get; }
 }
 ```
@@ -285,7 +285,7 @@ class Details
 
 interface IPrivateChannelUnsubscribeEvent : IPrivateChannelEvent
 {
-  PrivateChannelEventTypes Type { get; }
+  PrivateChannelEventType Type { get; }
   Details Details { get; } 
 }
 ```
@@ -313,7 +313,7 @@ export interface PrivateChannelDisconnectEvent extends PrivateChannelEvent {
 
 ```csharp
 public interface IPrivateChannelDisconnectEvent : IPrivateChannelEvent {
-  PrivateChannelEventTypes Type { get; }
+  PrivateChannelEventType Type { get; }
 }
 ```
 
