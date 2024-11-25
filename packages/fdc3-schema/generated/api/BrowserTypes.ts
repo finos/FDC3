@@ -2907,7 +2907,7 @@ export interface TPayload {
     /**
      * The type of PrivateChannel event that the listener should be applied to.
      */
-    listenerType: PrivateChannelEventListenerTypes;
+    listenerType: PrivateChannelEventListenerTypes | null;
     /**
      * The Id of the PrivateChannel that the listener should be added to.
      */
@@ -2915,8 +2915,6 @@ export interface TPayload {
 }
 
 /**
- * The type of PrivateChannel event that the listener should be applied to.
- *
  * Event listener type names for Private Channel events.
  */
 export type PrivateChannelEventListenerTypes = "onAddContextListener" | "onUnsubscribe" | "onDisconnect";
@@ -5257,7 +5255,7 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("PrivateChannelAddEventListenerRequestType") },
     ], false),
     "TPayload": o([
-        { json: "listenerType", js: "listenerType", typ: r("PrivateChannelEventListenerTypes") },
+        { json: "listenerType", js: "listenerType", typ: u(r("PrivateChannelEventListenerTypes"), null) },
         { json: "privateChannelId", js: "privateChannelId", typ: "" },
     ], false),
     "PrivateChannelAddEventListenerResponse": o([
