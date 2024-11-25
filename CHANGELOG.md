@@ -15,7 +15,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added reference materials and supported platforms information for FDC3 in .NET via the [finos/fdc3-dotnet](https://github.com/finos/fdc3-dotnet) project. ([#1108](https://github.com/finos/FDC3/pull/1108))
 * Specifications for getAgent() and Browser-Resident Desktop Agents. ([#1191](https://github.com/finos/FDC3/pull/1191))
 * Specification for Preload Desktop Agents. This content was previously in the supported platforms section. It had been revised and amended to include recommended behavior related to the new validateAppIdentity() function. ([#1191](https://github.com/finos/FDC3/pull/1191))
-* Added optional validateAppIdentity() function to DesktopAgent interface. ([#1191](https://github.com/finos/FDC3/pull/1191))
 * Typescript definitions for getAgent() and related types. ([#1191](https://github.com/finos/FDC3/pull/1191))
 * Typescript definitions for Desktop Agent Communication Protocol (DACP). These constitute the internal "wire protocol" that the "@finos/fdc3" library uses to communicate with Browser-Resident DAs. ([#1191](https://github.com/finos/FDC3/pull/1191))
 * Typescript definitions for Web Connection Protocol (WCP). These constitute the messages used to establish connectivity between "@finos/fdc3" and a Browser-Resident DA. ([#1191](https://github.com/finos/FDC3/pull/1191))
@@ -23,7 +22,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added utility functions `isStandardContextType(contextType: string)`, `isStandardIntent(intent: string)`,`getPossibleContextsForIntent(intent: StandardIntent)`. ([#1139](https://github.com/finos/FDC3/pull/1139))
 * Added support for event listening outside of intent or context listnener. Added new function `addEventListener`, type `EventHandler`,  enum `FDC3EventType` and interfaces `FDC3Event` and `FDC3ChannelChangedEvent`. ([#1207](https://github.com/finos/FDC3/pull/1207))
 * Added new `CreateOrUpdateProfile` intent. ([#1359](https://github.com/finos/FDC3/pull/1359))
-* Added conformance tests into the FDC3 API documentation in the current version and backported into 2.0 and 2.1. Removed outdated 1.2 conformance tests (which are preserved in the older 2.0 and 2.1 versions). ([#1417](https://github.com/finos/FDC3/pull/1417)).
+* Added conformance tests into the FDC3 API documentation in the current version and back-ported into 2.0 and 2.1. Removed outdated 1.2 conformance tests (which are preserved in the older 2.0 and 2.1 versions). ([#1417](https://github.com/finos/FDC3/pull/1417)).
+* Added conformance tests to documentation for features introduced in FDC3 2.2 (`fdc3.addEventListener`, `PrivateChannel.addEventListener` and `getAgent`). ([#1425](https://github.com/finos/FDC3/pull/1425))
 
 ### Changed
 
