@@ -10,6 +10,7 @@ import { BrowserTypes } from '@kite9/fdc3-schema';
 import { DefaultChannel } from './DefaultChannel';
 import { Messaging } from '../Messaging';
 import {
+  PrivateChannelNullEventListener,
   PrivateChannelAddContextEventListener,
   PrivateChannelDisconnectEventListener,
   PrivateChannelUnsubscribeEventListener,
@@ -26,64 +27,54 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
   }
 
   async addEventListener(type: PrivateChannelEventTypes | null, handler: EventHandler): Promise<Listener> {
-    function wrapEventHandlerString(): (m: string | null) => void {
-      return (m: string | null) => {
-        handler({
-          type,
-          details: m,
-        } as ApiEvent);
-      };
+    let a: RegisterableListener;
+    switch (type) {
+      case 'addContextListener':
+        a = new PrivateChannelAddContextEventListener(this.messaging, this.id, handler);
+        break;
+      case 'unsubscribe':
+        a = new PrivateChannelUnsubscribeEventListener(this.messaging, this.id, handler);
+        break;
+      case 'disconnect':
+        a = new PrivateChannelDisconnectEventListener(this.messaging, this.id, handler);
+        break;
+      case null:
+        a = new PrivateChannelNullEventListener(this.messaging, this.id, handler);
+        break;
+      default:
+        throw new Error('Unsupported event type: ' + type);
     }
-
-    function wrapEventHandlerVoid(): () => void {
-      return () => {
-        handler({
-          type,
-        } as ApiEvent);
-      };
-    }
-
-    if (type) {
-      let a: RegisterableListener;
-      switch (type) {
-        case 'addContextListener':
-          a = new PrivateChannelAddContextEventListener(this.messaging, this.id, wrapEventHandlerString());
-          break;
-        case 'unsubscribe':
-          a = new PrivateChannelUnsubscribeEventListener(this.messaging, this.id, wrapEventHandlerString());
-          break;
-        case 'disconnect':
-          a = new PrivateChannelDisconnectEventListener(this.messaging, this.id, wrapEventHandlerVoid());
-          break;
-      }
-      await a.register();
-      return a;
-    }
-
-    throw new Error('Unsupported event type: ' + type);
+    await a.register();
+    return a;
   }
 
   //implementations of the deprecated listener functions
   onAddContextListener(handler: (contextType?: string) => void): Listener {
-    const l = new PrivateChannelAddContextEventListener(this.messaging, this.id, (contextType: string | null) => {
-        //Adapt handler type for differences between addEventListener and onAddContextListener handler types
-        handler(contextType !== null ? contextType : undefined);
-    });
+    //Adapt handler type for differences between addEventListener and onAddContextListener handler types
+    const adapterHandler: EventHandler = (event: ApiEvent) => { 
+      handler(event.details.contextType ?? undefined);
+    };
+    const l = new PrivateChannelAddContextEventListener(this.messaging, this.id, adapterHandler);
     l.register();
     return l;
   }
 
   onUnsubscribe(handler: (contextType?: string) => void): Listener {
-    const l = new PrivateChannelUnsubscribeEventListener(this.messaging, this.id, (contextType: string | null) => {
-      //Adapt handler type differences between addEventListener and onUnsubscribe handler types
-      handler(contextType !== null ? contextType : undefined);
-    });
+    //Adapt handler type for differences between addEventListener and onUnsubscribeListener handler types
+    const adapterHandler: EventHandler = (event: ApiEvent) => { 
+      handler(event.details.contextType ?? undefined);
+    };
+    const l = new PrivateChannelUnsubscribeEventListener(this.messaging, this.id, adapterHandler);
     l.register();
     return l;
   }
 
   onDisconnect(handler: () => void): Listener {
-    const l = new PrivateChannelDisconnectEventListener(this.messaging, this.id, handler);
+    //Adapt handler type for differences between addEventListener and onDisconnectListener handler types
+    const adapterHandler: EventHandler = (_event: ApiEvent) => { 
+      handler();
+    };
+    const l = new PrivateChannelDisconnectEventListener(this.messaging, this.id, adapterHandler);
     l.register();
     return l;
   }

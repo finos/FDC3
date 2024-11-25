@@ -5,7 +5,7 @@ import {
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { Messaging } from '../Messaging';
 import { AbstractListener } from './AbstractListener';
-import { PrivateChannelEventTypes } from '@kite9/fdc3-standard';
+import { EventHandler, PrivateChannelAddContextListenerEvent, PrivateChannelDisconnectEvent, PrivateChannelEvent, PrivateChannelEventTypes, PrivateChannelUnsubscribeEvent } from '@kite9/fdc3-standard';
 
 type PrivateChannelEventMessages =
   | PrivateChannelOnAddContextListenerEvent
@@ -13,23 +13,20 @@ type PrivateChannelEventMessages =
   | PrivateChannelOnDisconnectEvent;
 type PrivateChannelEventMessageTypes = PrivateChannelEventMessages['type'];
 
-abstract class AbstractPrivateChannelEventListener<
-  X extends (() => void) | ((s: string | null) => void),
-> extends AbstractListener<X> {
+abstract class AbstractPrivateChannelEventListener extends AbstractListener<(msg: PrivateChannelEventMessages) => void> {
   readonly privateChannelId: string;
-  readonly eventMessageType: PrivateChannelEventMessageTypes;
-  readonly eventType: PrivateChannelEventTypes;
+  readonly eventMessageTypes: PrivateChannelEventMessageTypes[];
 
   constructor(
     messaging: Messaging,
     privateChannelId: string,
-    eventMessageType: PrivateChannelEventMessageTypes,
-    eventType: PrivateChannelEventTypes,
-    handler: X
+    eventMessageTypes: PrivateChannelEventMessageTypes[],
+    eventType: PrivateChannelEventTypes | null,
+    handler: (msg: PrivateChannelEventMessages) => void
   ) {
     super(
       messaging,
-      { privateChannelId, eventMessageType },
+      { privateChannelId, listenerType: eventType },
       handler,
       'privateChannelAddEventListenerRequest',
       'privateChannelAddEventListenerResponse',
@@ -37,44 +34,110 @@ abstract class AbstractPrivateChannelEventListener<
       'privateChannelUnsubscribeEventListenerResponse'
     );
     this.privateChannelId = privateChannelId;
-    this.eventMessageType = eventMessageType;
-    this.eventType = eventType;
+    this.eventMessageTypes = eventMessageTypes;
   }
 
-  filter(m: PrivateChannelEventMessages) {
-    return m.type == this.eventMessageType && this.privateChannelId == m.payload.privateChannelId;
+  filter(m: PrivateChannelEventMessages): boolean {
+    return this.eventMessageTypes.includes(m.type) && this.privateChannelId == m.payload.privateChannelId;
   }
 
-  abstract action(m: PrivateChannelEventMessages): void;
-}
-
-export class PrivateChannelDisconnectEventListener extends AbstractPrivateChannelEventListener<() => void> {
-  constructor(messaging: Messaging, channelId: string, handler: () => void) {
-    super(messaging, channelId, 'privateChannelOnDisconnectEvent', 'disconnect', handler);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  action(_m: PrivateChannelOnDisconnectEvent): void {
-    this.handler();
+  action(m: PrivateChannelEventMessages): void {
+    this.handler(m);
   }
 }
 
-export class PrivateChannelAddContextEventListener extends AbstractPrivateChannelEventListener<(contextType: string | null) => void> {
-    constructor(messaging: Messaging, channelId: string, handler: (contextType: string | null) => void) {
-      super(messaging, channelId, 'privateChannelOnAddContextListenerEvent', 'addContextListener', handler);
-    }
-  
-    action(m: PrivateChannelOnAddContextListenerEvent): void {
-      this.handler(m.payload.contextType);
-    }
-  }
+export class PrivateChannelNullEventListener extends AbstractPrivateChannelEventListener {
+  constructor(messaging: Messaging, channelId: string, handler: EventHandler) {
+    const wrappedHandler = (msg: PrivateChannelEventMessages) => {
+      let type: PrivateChannelEventTypes;
+      let details: PrivateChannelAddContextListenerEvent["details"] | PrivateChannelUnsubscribeEvent["details"] | PrivateChannelDisconnectEvent["details"]
+      switch (msg.type) {
+        case "privateChannelOnAddContextListenerEvent": 
+          type = "addContextListener";
+          details = { contextType: msg.payload.contextType }
+          break;
+        case "privateChannelOnUnsubscribeEvent":
+          type = "unsubscribe";
+          details = { contextType: msg.payload.contextType } 
+          break;
+        case "privateChannelOnDisconnectEvent":
+          type = "disconnect";
+          details: null
+          break;
+      }
+      
+      const event: PrivateChannelEvent = {
+        type,
+        details
+      };
+      handler(event);
+    };
 
-  export class PrivateChannelUnsubscribeEventListener extends AbstractPrivateChannelEventListener<(contextType: string | null) => void> {
-    constructor(messaging: Messaging, channelId: string, handler: (contextType: string | null) => void) {
-      super(messaging, channelId, 'privateChannelOnUnsubscribeEvent', 'unsubscribe', handler);
-    }
-  
-    action(m: PrivateChannelOnAddContextListenerEvent): void {
-      this.handler(m.payload.contextType);
-    }
+    super(
+      messaging,
+      channelId,
+      [
+        'privateChannelOnAddContextListenerEvent',
+        'privateChannelOnUnsubscribeEvent',
+        'privateChannelOnDisconnectEvent',
+      ],
+      'addContextListener',
+      wrappedHandler
+    );
   }
+}
+
+export class PrivateChannelDisconnectEventListener extends AbstractPrivateChannelEventListener {
+  constructor(messaging: Messaging, channelId: string, handler: EventHandler) {
+    const wrappedHandler = (msg: PrivateChannelEventMessages) => {
+      if (msg.type === "privateChannelOnDisconnectEvent") {
+        const event: PrivateChannelDisconnectEvent = {
+          type: "disconnect",
+          details: null
+        };
+        handler(event);
+      } else {
+        console.error("PrivateChannelDisconnectEventListener was called for a different message type!", msg);
+      }
+      
+    };
+
+    super(messaging, channelId, ['privateChannelOnDisconnectEvent'], 'disconnect', wrappedHandler);
+  }
+}
+
+export class PrivateChannelAddContextEventListener extends AbstractPrivateChannelEventListener {
+  constructor(messaging: Messaging, channelId: string, handler: EventHandler) {
+    const wrappedHandler = (msg: PrivateChannelEventMessages) => {
+      if (msg.type === "privateChannelOnAddContextListenerEvent") {
+        const event: PrivateChannelAddContextListenerEvent = {
+          type: "addContextListener",
+          details: { contextType: msg.payload.contextType }
+        };
+        handler(event);
+      } else {
+        console.error("PrivateChannelDisconnectEventListener was called for a different message type!", msg);
+      }
+      
+    };
+    super(messaging, channelId, ['privateChannelOnAddContextListenerEvent'], 'addContextListener', wrappedHandler);
+  }
+}
+
+export class PrivateChannelUnsubscribeEventListener extends AbstractPrivateChannelEventListener {
+  constructor(messaging: Messaging, channelId: string, handler: EventHandler) {
+    const wrappedHandler = (msg: PrivateChannelEventMessages) => {
+      if (msg.type === "privateChannelOnUnsubscribeEvent") {
+        const event: PrivateChannelUnsubscribeEvent = {
+          type: "unsubscribe",
+          details: { contextType: msg.payload.contextType }
+        };
+        handler(event);
+      } else {
+        console.error("PrivateChannelDisconnectEventListener was called for a different message type!", msg);
+      }
+      
+    };
+    super(messaging, channelId, ['privateChannelOnUnsubscribeEvent'], 'unsubscribe', wrappedHandler);
+  }
+}
