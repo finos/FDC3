@@ -1,4 +1,11 @@
-# Open Tests 
+---
+id: Open-Tests
+sidebar_label: Open Tests
+title: Open Tests
+hide_title: true
+---
+
+# Open Tests
 
 ## A Opens B  
 
