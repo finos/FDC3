@@ -119,7 +119,7 @@ export type ActionType = "broadcast" | "raiseIntent";
 export interface AppIdentifier {
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId: string;
     /**
