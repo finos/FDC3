@@ -173,7 +173,7 @@ The data persisted is structured as an object conforming to the `SessionStorageF
 
 ```ts
 const sessionData: SessionStorageFormat = sessionStorage.get("FDC3-Desktop-Agent-Details-myWindowName");
-const agentDetails: DesktopAgentDetails = sessionStorage["myApIdentityUrl"];
+const agentDetails: DesktopAgentDetails = sessionData["myApIdentityUrl"];
 ```
 
 ### Type Definitions
