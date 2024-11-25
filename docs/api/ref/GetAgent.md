@@ -115,7 +115,7 @@ As web applications can navigate to or be navigated by users to different URLs a
 
 :::
 
-Finally, if there is still no Desktop Agent available, or an issue prevents connection to it, the `getAgent()` function will reject it's promise with a message from the [`AgentError`](./Errors#agenterror) enumeration.
+Finally, if there is still no Desktop Agent available, or an issue prevents connection to it, the `getAgent()` function will reject its promise with a message from the [`AgentError`](./Errors#agenterror) enumeration.
 
 ## Injected iframes for adaptors and user interfaces
 

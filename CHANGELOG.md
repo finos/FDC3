@@ -20,6 +20,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Typescript definitions for Desktop Agent Communication Protocol (DACP). These constitute the internal "wire protocol" that the "@finos/fdc3" library uses to communicate with Browser-Resident DAs. ([#1191](https://github.com/finos/FDC3/pull/1191))
 * Typescript definitions for Web Connection Protocol (WCP). These constitute the messages used to establish connectivity between "@finos/fdc3" and a Browser-Resident DA. ([#1191](https://github.com/finos/FDC3/pull/1191))
 * Added support for broadcast actions to the `fdc3.action` context type, allowing an Action to represent the broadcast of a specified context to an app or user channel. ([#1368](https://github.com/finos/FDC3/pull/1368))
+* Added utility functions `isStandardContextType(contextType: string)`, `isStandardIntent(intent: string)`,`getPossibleContextsForIntent(intent: StandardIntent)`. ([#1139](https://github.com/finos/FDC3/pull/1139))
+* Added support for event listening outside of intent or context listnener. Added new function `addEventListener`, type `EventHandler`,  enum `FDC3EventType` and interfaces `FDC3Event` and `FDC3ChannelChangedEvent`. ([#1207](https://github.com/finos/FDC3/pull/1207))
+* Added new `CreateOrUpdateProfile` intent. ([#1359](https://github.com/finos/FDC3/pull/1359))
 
 ### Changed
 
@@ -28,19 +31,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added reference materials and supported platforms information for FDC3 in .NET via the [finos/fdc3-dotnet](https://github.com/finos/fdc3-dotnet) project. ([#1108](https://github.com/finos/FDC3/pull/1108))
 * The supported platforms page in the FDC3 documentation was moved into the API section as the information it provides all relates to FDC3 Desktop Agent API implementations. ([#1108](https://github.com/finos/FDC3/pull/1108))
 * FDC3 apps are now encouraged to instantiate their FDC3 interface (DesktopAgent) using the `getAgent()` function provided by the `@finos/fdc3` module. This will allow apps to interoperate in either traditional Preload DAs (i.e. Electron) as well as the new Browser-Resident DAs. ([#1191](https://github.com/finos/FDC3/pull/1191))
+* `ContextType` and `Intent` (`string`) types were created for use in DesktopAgent API signatures - they are unions of standardized values and `string`, enabling autocomplete/IntelliSense in IDEs when working with the FDC3 API. ([#1139](https://github.com/finos/FDC3/pull/1139))
 
 ### Deprecated
 
 * Made `IntentMetadata.displayName` optional as it is deprecated. ([#1280](https://github.com/finos/FDC3/pull/1280))
 * Deprecated `PrivateChannel`'s synchronous `onAddContextListener`, `onUnsubscribe` and `onDisconnect` functions in favour of an `async` `addEventListener` function consistent with the one added to `DesktopAgent` in #1207. ([#1305](https://github.com/finos/FDC3/pull/1305))
+* The `ContextTypes` and `Intents` enums were deprecated in favour of the new ContextType and Intent unions. ([#1139](https://github.com/finos/FDC3/pull/1139))
 
 ### Fixed
 
 * Spin off fileAttachment into its own schema, and correct related examples ([1255](https://github.com/finos/FDC3/issues/1255))
 * Added missing `desktopAgent` field to ImplementationMetadata objects returned for all agents connect to a DesktopAgent bridge in Connection Step 6 connectAgentsUpdate messages and refined the schema used to collect this info in step 3 handshake. ([#1177](https://github.com/finos/FDC3/pull/1177))
 * Removed the `version` field from `IntentResolution` as there are no version fields for intents in the FDC3 API definitions and hence the field has no purpose. ([#1170](https://github.com/finos/FDC3/pull/1170))
-
 * Fixed error in the Client-side example from `PrivateChannel` and `addIntentListener` by correcting `id.symbol` to `id.ticker` to align with the `fdc3.instrument` context. ([#1314](https://github.com/finos/FDC3/pull/1314))
+* Added missing `resultType` argument to `findIntent` agent request in the Bridging Schema. ([#1154](https://github.com/finos/FDC3/pull/1154)) 
+* Added missing `resultType` argument to `findIntentByContext` agent request in the Bridging Schema. ([#1212](https://github.com/finos/FDC3/pull/1212)) 
+* Added missing id and name fields from the context base schema to respective context schemas (`Contact`, `ContactList`, `Country`, `InstrumentList`, `OrderList`, `Organization`, `Portfolio`, `Position`, `TradeList`). ([#1360](https://github.com/finos/FDC3/pull/1360))
+* Revised FDC3 charter to include well-known language from the FDC3 introduction, better describe FDC3's scope, focus on financial applications, update application types, etc. ([#1079](https://github.com/finos/FDC3/pull/1079))
 
 ## [npm v2.1.1] - 2024-06-28
 
