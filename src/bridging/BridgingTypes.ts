@@ -1379,7 +1379,7 @@ export interface AppMetadata {
 }
 
 /**
- * Describes an Icon images that may be used to represent the application.
+ * Describes an Icon image that may be used to represent the application.
  */
 export interface Icon {
     /**
