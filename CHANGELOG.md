@@ -24,7 +24,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added support for event listening outside of intent or context listnener. Added new function `addEventListener`, type `EventHandler`,  enum `FDC3EventType` and interfaces `FDC3Event` and `FDC3ChannelChangedEvent`. ([#1207](https://github.com/finos/FDC3/pull/1207))
 * Added new `CreateOrUpdateProfile` intent. ([#1359](https://github.com/finos/FDC3/pull/1359))
 
-
 ### Changed
 
 * `window.fdc3` is now an optional property and may or may not be defined. Applications should now use `getAgent()` as the recommended way of retrieving a reference to the FDC3 API. ([#1386](https://github.com/finos/FDC3/pull/1386))
