@@ -42,41 +42,37 @@ export abstract class AbstractListener<X> implements RegisterableListener {
 
   abstract action(m: AgentEventMessage): void;
 
-  async listenerNotification(
-    requestType: AppRequestMessage['type'],
-    responseType: AgentResponseMessage['type']
-  ): Promise<string | null> {
-    let notificationMessage: AppRequestMessage;
+  async unsubscribe(): Promise<void> {
     if (this.id) {
-      notificationMessage = {
-        meta: this.messaging.createMeta(),
-        payload: {
-          listenerUUID: this.id,
-        },
-        type: requestType,
-      };
+        this.messaging.unregister(this.id!);
+        const notificationMessage: AppRequestMessage = {
+            meta: this.messaging.createMeta(),
+            payload: {
+            listenerUUID: this.id,
+            },
+            type: this.unsubscribeRequestType,
+        };
+        await this.messaging.exchange<AgentResponseMessage>(notificationMessage, this.unsubscribeResponseType);
+        return;
     } else {
-      // send subscription notification
-      notificationMessage = {
+        console.error("This listener doesn't have an id and hence can't be removed!");
+    }
+  }
+
+  async register(): Promise<void> {
+    const notificationMessage: AppRequestMessage = {
         meta: this.messaging.createMeta(),
         payload: {
           ...this.payloadDetails,
         },
-        type: requestType,
+        type: this.subscribeRequestType,
       };
-    }
+      const response = await this.messaging.exchange<AgentResponseMessage>(notificationMessage, this.subscribeResponseType);
+      this.id = (response?.payload?.listenerUUID) ?? null;
 
-    const response = await this.messaging.exchange<AgentResponseMessage>(notificationMessage, responseType!);
-    return response?.payload?.listenerUUID ?? null;
-  }
-
-  async unsubscribe(): Promise<void> {
-    this.messaging.unregister(this.id!);
-    await this.listenerNotification(this.unsubscribeRequestType, this.unsubscribeResponseType);
-  }
-
-  async register() {
-    this.id = await this.listenerNotification(this.subscribeRequestType, this.subscribeResponseType);
-    this.messaging.register(this);
+      if (!this.id){
+        console.error("The Desktop Agent's response did not include a listenerUUID, which will mean this listener can't be removed!", response);
+      }
+      this.messaging.register(this);
   }
 }
