@@ -1,4 +1,4 @@
-import { GetAgentParams, DesktopAgent, WebDesktopAgentType, AgentError } from '@kite9/fdc3-standard';
+import { GetAgentParams, DesktopAgent, WebDesktopAgentType, AgentError, AppIdentifier } from '@kite9/fdc3-standard';
 import { createDesktopAgentAPI } from '../messaging/message-port';
 import { DesktopAgentSelection } from './Loader';
 import { v4 as uuidv4 } from 'uuid';
@@ -87,8 +87,12 @@ export class FailoverHandler {
         const idValidationPromise = this.identityValidationHandler.listenForIDValidationResponses();
         this.identityValidationHandler.sendIdValidationMessage()
         const idDetails = await idValidationPromise;
+        const appIdentifier: AppIdentifier = {
+          appId: idDetails.payload.appId,
+          instanceId: idDetails.payload.instanceId
+        };
         const desktopAgentSelection: DesktopAgentSelection = {
-          agent: await createDesktopAgentAPI(connectionDetails),
+          agent: await createDesktopAgentAPI(connectionDetails, appIdentifier),
           details: {
             agentType: connectionDetails.agentType,
             agentUrl: connectionDetails.agentUrl ?? undefined,
@@ -103,6 +107,7 @@ export class FailoverHandler {
         return desktopAgentSelection;
       } catch (e) {
         //identity validation may have failed
+        console.error("Error during identity validation of Failover", e);
         throw e;
       }   
     }

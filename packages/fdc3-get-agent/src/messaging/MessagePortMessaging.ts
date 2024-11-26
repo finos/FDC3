@@ -1,6 +1,5 @@
-import { AbstractWebMessaging } from './AbstractWebMessaging'
-import { RegisterableListener } from "@kite9/fdc3-agent-proxy"
-import { GetAgentParams, ImplementationMetadata, WebDesktopAgentType } from "@kite9/fdc3-standard"
+import { AbstractMessaging, RegisterableListener } from "@kite9/fdc3-agent-proxy"
+import { AppIdentifier, GetAgentParams, ImplementationMetadata, WebDesktopAgentType } from "@kite9/fdc3-standard"
 import { v4 as uuidv4 } from "uuid"
 import { BrowserTypes } from "@kite9/fdc3-schema";
 import { AppRequestMessage } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
@@ -19,13 +18,14 @@ export type ConnectionDetails = {
     agentUrl?: string,
 }
 
-export class MessagePortMessaging extends AbstractWebMessaging {
+const DEFAULT_TIMEOUT = 10016;
+export class MessagePortMessaging extends AbstractMessaging {
 
     private readonly cd: ConnectionDetails
     private readonly listeners: Map<string, RegisterableListener> = new Map()
 
-    constructor(cd: ConnectionDetails, impl: ImplementationMetadata) {
-        super(cd.options, impl);
+    constructor(cd: ConnectionDetails, appIdentifier: AppIdentifier) {
+        super(appIdentifier);
         this.cd = cd;
 
         this.cd.messagePort.onmessage = (m) => {
@@ -62,16 +62,12 @@ export class MessagePortMessaging extends AbstractWebMessaging {
         }
     }
 
-    // waitFor<X>(filter: (m: AgentResponseMessage) => boolean, timeoutErrorMessage?: string): Promise<X> {
-    //     // console.log("Waiting for", filter, timeoutErrorMessage)
-    //     return super.waitFor<X>(filter, timeoutErrorMessage).then((v: X) => {
-    //         // console.log("Wait over ", v, timeoutErrorMessage)
-    //         return v;
-    //     })
-    // }
+    getTimeoutMs(): number {
+        return this.cd.options.timeoutMs ?? DEFAULT_TIMEOUT;
+    }
 
     async disconnect(): Promise<void> {
-        await super.disconnect()
+        await this.disconnect()
         this.cd.messagePort.close()
     }
 }

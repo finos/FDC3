@@ -1,16 +1,16 @@
-import { DesktopAgent } from "@kite9/fdc3-standard";
-import { BasicDesktopAgent, DefaultChannelSupport, DefaultAppSupport, DefaultIntentSupport, DefaultHandshakeSupport, ChannelSupport } from "@kite9/fdc3-agent-proxy";
+import { AppIdentifier, DesktopAgent } from "@kite9/fdc3-standard";
+import { BasicDesktopAgent, DefaultChannelSupport, DefaultAppSupport, DefaultIntentSupport, ChannelSupport, DefaultHeartbeatSupport } from "@kite9/fdc3-agent-proxy";
 import { ConnectionDetails, MessagePortMessaging } from "./MessagePortMessaging";
 import { DefaultDesktopAgentIntentResolver } from "../ui/DefaultDesktopAgentIntentResolver";
 import { DefaultDesktopAgentChannelSelector } from "../ui/DefaultDesktopAgentChannelSelector";
 import { NullIntentResolver } from "../ui/NullIntentResolver";
 import { NullChannelSelector } from "../ui/NullChannelSelector";
 import { ChannelSelector } from "@kite9/fdc3-standard";
-import { DesktopAgentSelection } from "../strategies/Loader";
+
 /**
  * Given a message port, constructs a desktop agent to communicate via that.
  */
-export async function createDesktopAgentAPI(cd: ConnectionDetails): Promise<DesktopAgent> {
+export async function createDesktopAgentAPI(cd: ConnectionDetails, appIdentifier: AppIdentifier): Promise<DesktopAgent> {
 
     cd.messagePort.start();
 
@@ -22,7 +22,7 @@ export async function createDesktopAgentAPI(cd: ConnectionDetails): Promise<Desk
         }
     }
 
-    const messaging = new MessagePortMessaging(cd);
+    const messaging = new MessagePortMessaging(cd, appIdentifier);
 
     const useResolver = cd.handshake.payload.intentResolverUrl && cd.options.intentResolver;
     const useSelector = cd.handshake.payload.channelSelectorUrl && cd.options.channelSelector;
@@ -35,7 +35,7 @@ export async function createDesktopAgentAPI(cd: ConnectionDetails): Promise<Desk
         new DefaultDesktopAgentChannelSelector(string(cd.handshake.payload.channelSelectorUrl))
         : new NullChannelSelector();
 
-    const hs = new DefaultHandshakeSupport(messaging);
+    const hs = new DefaultHeartbeatSupport(messaging);
     const cs = new DefaultChannelSupport(messaging, channelSelector);
     const is = new DefaultIntentSupport(messaging, intentResolver);
     const as = new DefaultAppSupport(messaging);
