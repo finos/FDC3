@@ -1,4 +1,5 @@
 import {
+  PrivateChannelAddEventListenerRequest,
   PrivateChannelOnAddContextListenerEvent,
   PrivateChannelOnDisconnectEvent,
   PrivateChannelOnUnsubscribeEvent,
@@ -13,7 +14,7 @@ type PrivateChannelEventMessages =
   | PrivateChannelOnDisconnectEvent;
 type PrivateChannelEventMessageTypes = PrivateChannelEventMessages['type'];
 
-abstract class AbstractPrivateChannelEventListener extends AbstractListener<(msg: PrivateChannelEventMessages) => void> {
+abstract class AbstractPrivateChannelEventListener extends AbstractListener<(msg: PrivateChannelEventMessages) => void, PrivateChannelAddEventListenerRequest> {
   readonly privateChannelId: string;
   readonly eventMessageTypes: PrivateChannelEventMessageTypes[];
 

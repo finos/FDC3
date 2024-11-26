@@ -2,9 +2,9 @@ import { IntentHandler, IntentResult, AppIdentifier } from "@kite9/fdc3-standard
 import { Context } from "@kite9/fdc3-context";
 import { Messaging } from "../Messaging";
 import { AbstractListener } from "./AbstractListener";
-import { IntentEvent, IntentResultRequest, IntentResultResponse, RaiseIntentResponse } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
+import { AddIntentListenerRequest, IntentEvent, IntentResultRequest, IntentResultResponse, RaiseIntentResponse } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
-export class DefaultIntentListener extends AbstractListener<IntentHandler> {
+export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIntentListenerRequest> {
 
     readonly intent: string
 

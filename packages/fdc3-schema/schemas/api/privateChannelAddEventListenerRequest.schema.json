@@ -28,7 +28,7 @@
 			"const": "privateChannelAddEventListenerRequest"
 		},
 		"PrivateChannelAddEventListenerRequestPayload": {
-			"title": "privateChannelAddEventListener Event Payload",
+			"title": "PrivateChannelAddEventListener Request Payload",
 			"type": "object",
 			"properties": {
 				"privateChannelId": {
@@ -40,12 +40,11 @@
 					"title": "Event listener type",
 					"description": "The type of PrivateChannel event that the listener should be applied to, or null for all event types.",
 					"oneOf" : [
-						{ "$ref": "common.schema.json#/$defs/PrivateChannelEventListenerTypes" },
+						{ "$ref": "api.schema.json#/definitions/PrivateChannelEventType" },
 						{
 							"type": "null"
 						}
 					]
-					
 				}
 			},
 			"additionalProperties": false,

@@ -54,16 +54,6 @@
           "$ref": "api.schema.json#/definitions/BridgingError"
         }
       ]
-    },
-    "PrivateChannelEventListenerTypes": {
-      "title": "Private Channel Event Listener Types",
-      "description": "Event listener type names for Private Channel events.",
-      "type": "string",
-      "enum": [
-        "onAddContextListener",
-        "onUnsubscribe",
-        "onDisconnect"
-      ]
     }
   }
 }
