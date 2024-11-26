@@ -38,11 +38,14 @@
 				},
 				"listenerType": {
 					"title": "Event listener type",
-					"description": "The type of PrivateChannel event that the listener should be applied to.",
-					"oneOf": [
+					"description": "The type of PrivateChannel event that the listener should be applied to, or null for all event types.",
+					"oneOf" : [
 						{ "$ref": "common.schema.json#/$defs/PrivateChannelEventListenerTypes" },
-						{ "type": "null" }
+						{
+							"type": "null"
+						}
 					]
+					
 				}
 			},
 			"additionalProperties": false,
