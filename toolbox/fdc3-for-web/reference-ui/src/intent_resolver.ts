@@ -1,7 +1,7 @@
 import { Icon } from "@kite9/fdc3";
 import { AppIntent } from "@kite9/fdc3";
 import { BrowserTypes } from "@kite9/fdc3-schema";
-import { FDC3_USER_INTERFACE_HELLO_TYPE, FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE, FDC3_USER_INTERFACE_RESTYLE_TYPE, isFdc3UserInterfaceResolve } from "@kite9/fdc3-schema/dist/generated/api/BrowserTypes";
+import { isFdc3UserInterfaceResolve } from "@kite9/fdc3-schema/dist/generated/api/BrowserTypes";
 
 type Fdc3UserInterfaceHello = BrowserTypes.Fdc3UserInterfaceHello;
 type Fdc3UserInterfaceRestyle = BrowserTypes.Fdc3UserInterfaceRestyle;
@@ -167,7 +167,7 @@ window.addEventListener("load", () => {
     console.debug("Received message: ", data);
     if (isFdc3UserInterfaceResolve(data)) {
       const restyleMessage: Fdc3UserInterfaceRestyle = {
-        type: FDC3_USER_INTERFACE_RESTYLE_TYPE,
+        type: "Fdc3UserInterfaceRestyle",
         payload: {
           updatedCSS: {
             width: "100%",
@@ -183,13 +183,13 @@ window.addEventListener("load", () => {
       setup(data.payload, (payload) => {
         document.querySelector("dialog")?.close();
         const resolveAction: Fdc3UserInterfaceResolveAction = {
-          type: FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE,
+          type: "Fdc3UserInterfaceResolveAction",
           payload
         }
         myPort.postMessage(resolveAction);
 
         const restyleMessage: Fdc3UserInterfaceRestyle = {
-          type: FDC3_USER_INTERFACE_RESTYLE_TYPE,
+          type: "Fdc3UserInterfaceRestyle",
           payload: {
             updatedCSS: {
               width: "0",
@@ -206,7 +206,7 @@ window.addEventListener("load", () => {
   };
 
   const helloMessage: Fdc3UserInterfaceHello = {
-    type: FDC3_USER_INTERFACE_HELLO_TYPE,
+    type: "Fdc3UserInterfaceHello",
     payload: {
       implementationDetails: "",
       initialCSS: {
