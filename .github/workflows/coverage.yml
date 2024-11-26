@@ -26,15 +26,12 @@ jobs:
 
     - name: Merge Results
       run: npm run merge
-      if: always()
 
     - name: Create Report
       run: npm run report
-      if: always()
 
     - name: Report NYC coverage
       uses: sidx1024/report-nyc-coverage-github-action@v1.2.7
-      if: always()
       with:
         coverage_file: "nyc-coverage-report/coverage-summary.json"
 
@@ -45,10 +42,7 @@ jobs:
         show: "fail, skip"
         output: test-summary.md
 
-      if: always()
-
     - name: PR comment with file
       uses: thollander/actions-comment-pull-request@v3
       with:
         file-path: test-summary.md
-      if: always()
