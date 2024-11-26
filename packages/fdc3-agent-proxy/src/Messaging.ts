@@ -1,11 +1,11 @@
-import { Connectable, AppIdentifier, ImplementationMetadata } from '@kite9/fdc3-standard';
+import { /*Connectable,*/ AppIdentifier, ImplementationMetadata } from '@kite9/fdc3-standard';
 import { RegisterableListener } from './listeners/RegisterableListener';
 import {
   AppRequestMessage,
   AgentResponseMessage
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
-export interface Messaging extends Connectable {
+export interface Messaging /*extends Connectable*/ {
 
   /**
    * Creates UUIDs used in outgoing messages
@@ -46,13 +46,11 @@ export interface Messaging extends Connectable {
   exchange<X extends AgentResponseMessage>(message: object, expectedTypeName: string, timeoutErrorMessage?: string): Promise<X>;
 
   /**
-   * Implementation metadata retrieved through the validation process
-   */
-  getImplementationMetadata(): ImplementationMetadata;
-
-  /**
    * App identification used to provide source information used in
    * message meta elements, IntentResolution etc..
    */
   getAppIdentifier(): AppIdentifier;
+
+  /** Disconnects the underlying message transport. */
+  disconnect(): Promise<void>
 }

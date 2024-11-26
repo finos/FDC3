@@ -13,8 +13,7 @@ import { RegisterableListener } from "./listeners/RegisterableListener";
 import { DefaultAppSupport } from "./apps/DefaultAppSupport";
 import { AppSupport } from "./apps/AppSupport";
 
-import { HandshakeSupport } from "./handshake/HandshakeSupport";
-import { DefaultHandshakeSupport } from "./handshake/DefaultHandshakeSupport";
+import { DefaultHeartbeatSupport } from "./heartbeat/DefaultHeartbeatSupport";
 
 import { Connectable } from "@kite9/fdc3-standard";
 
@@ -29,8 +28,7 @@ export {
     DefaultAppSupport,
     DefaultChannelSupport,
     DefaultIntentSupport,
-    type HandshakeSupport,
-    DefaultHandshakeSupport,
+    DefaultHeartbeatSupport,
     RegisterableListener,
     Connectable,
 }

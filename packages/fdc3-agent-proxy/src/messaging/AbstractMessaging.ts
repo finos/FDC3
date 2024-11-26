@@ -8,7 +8,8 @@ import {
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 export abstract class AbstractMessaging implements Messaging {
-  private implementationMetadata: ImplementationMetadata;
+  // private implementationMetadata: ImplementationMetadata;
+  private appIdentifier: AppIdentifier;
 
   abstract createUUID(): string;
   abstract post(message: object): Promise<void>;
@@ -20,8 +21,8 @@ export abstract class AbstractMessaging implements Messaging {
 
   abstract getTimeoutMs(): number;
 
-  constructor(implementationMetadata: ImplementationMetadata) {
-    this.implementationMetadata = implementationMetadata;
+  constructor(appIdentifier: AppIdentifier) {
+    this.appIdentifier = appIdentifier;
   }
 
   waitFor<X extends AgentResponseMessage>(
@@ -74,18 +75,9 @@ export abstract class AbstractMessaging implements Messaging {
     }
   }
 
-  getImplementationMetadata(): ImplementationMetadata {
-    return this.implementationMetadata;
-  }
-
   getAppIdentifier(): AppIdentifier {
-    return {
-      appId: this.implementationMetadata.appMetadata.appId,
-      instanceId: this.implementationMetadata.appMetadata.instanceId
-    };
+    return this.appIdentifier;
   }
-
-  abstract connect(): Promise<void>;
 
   abstract disconnect(): Promise<void>;
 }

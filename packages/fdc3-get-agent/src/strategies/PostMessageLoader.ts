@@ -1,4 +1,4 @@
-import { AgentError, DEFAULT_TIMEOUT_MS, GetAgentParams } from '@kite9/fdc3-standard';
+import { AgentError, AppIdentifier, DEFAULT_TIMEOUT_MS, GetAgentParams } from '@kite9/fdc3-standard';
 import { createDesktopAgentAPI } from '../messaging/message-port';
 import { v4 as uuidv4 } from 'uuid';
 import { DesktopAgentSelection, Loader } from './Loader';
@@ -103,8 +103,12 @@ export class PostMessageLoader implements Loader {
 
       try {
         const idDetails = await idValidationPromise;
+        const appIdentifier: AppIdentifier = {
+          appId: idDetails.payload.appId,
+          instanceId: idDetails.payload.instanceId
+        };
         const desktopAgentSelection: DesktopAgentSelection = {
-          agent: await createDesktopAgentAPI(connectionDetails),
+          agent: await createDesktopAgentAPI(connectionDetails, appIdentifier),
           details: {
             agentType: connectionDetails.agentType,
             agentUrl: connectionDetails.agentUrl ?? undefined,
@@ -115,7 +119,7 @@ export class PostMessageLoader implements Loader {
             instanceUuid: idDetails.payload.instanceUuid
           },
         };
-
+        
         resolve(desktopAgentSelection);
       } catch (e) {
         //id validation may have failed

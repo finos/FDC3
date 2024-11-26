@@ -2,9 +2,9 @@ import { AppIdentifier, AppMetadata, ContextHandler, DesktopAgent, EventHandler,
 import { ChannelSupport } from "./channels/ChannelSupport";
 import { AppSupport } from "./apps/AppSupport";
 import { IntentSupport } from "./intents/IntentSupport";
-import { HandshakeSupport } from "./handshake/HandshakeSupport";
 import { Connectable } from "@kite9/fdc3-standard";
 import { Context } from "@kite9/fdc3-context";
+import { HeartbeatSupport } from "./heartbeat/HeartbeatSupport";
 
 /**
  * This splits out the functionality of the desktop agent into 
@@ -12,18 +12,18 @@ import { Context } from "@kite9/fdc3-context";
  */
 export class BasicDesktopAgent implements DesktopAgent, Connectable {
 
-    readonly handshake: HandshakeSupport
-    readonly channels: ChannelSupport
-    readonly intents: IntentSupport
-    readonly apps: AppSupport
-    readonly connectables: Connectable[]
+    readonly heartbeat: HeartbeatSupport;
+    readonly channels: ChannelSupport;
+    readonly intents: IntentSupport;
+    readonly apps: AppSupport;
+    readonly connectables: Connectable[];
 
-    constructor(handshake: HandshakeSupport, channels: ChannelSupport, intents: IntentSupport, apps: AppSupport, connectables: Connectable[]) {
-        this.handshake = handshake
-        this.intents = intents
-        this.channels = channels
-        this.apps = apps
-        this.connectables = connectables
+    constructor(heartbeat: HeartbeatSupport, channels: ChannelSupport, intents: IntentSupport, apps: AppSupport, connectables: Connectable[]) {
+        this.heartbeat = heartbeat;
+        this.intents = intents;
+        this.channels = channels;
+        this.apps = apps;
+        this.connectables = connectables;
     }
 
     async addEventListener(type: FDC3EventTypes | null, handler: EventHandler): Promise<Listener> {
@@ -34,24 +34,8 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
         }
     }
 
-    async getInfo(): Promise<ImplementationMetadata> {
-        let impl = await this.handshake.getImplementationMetadata();
-        //handle potential null during start-up
-        //TODO: introduce queuing to prevent early calls
-        if (!impl) {
-            console.error("Implementation data was not available");
-            impl = {
-                fdc3Version: "unknown",
-                provider: "unknown",
-                optionalFeatures: {
-                    OriginatingAppMetadata: false,
-                    UserChannelMembershipAPIs: false,
-                    DesktopAgentBridging: false
-                },
-                appMetadata: {appId: "unknown"}
-            };
-        }
-        return impl;
+    getInfo(): Promise<ImplementationMetadata> {
+        return this.apps.getImplementationMetadata();
     }
 
     async broadcast(context: Context): Promise<void> {
