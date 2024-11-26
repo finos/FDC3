@@ -1,9 +1,8 @@
-import { AppIdentifier, ImplementationMetadata } from '@kite9/fdc3-standard';
+import { AppIdentifier } from '@kite9/fdc3-standard';
 import { Messaging } from '../Messaging';
 import { RegisterableListener } from '../listeners/RegisterableListener';
 import {
   AgentResponseMessage,
-  isAgentResponseMessage,
   AppRequestMessage
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
@@ -56,15 +55,11 @@ export abstract class AbstractMessaging implements Messaging {
     });
   }
 
-  async exchange<X extends AgentResponseMessage>(message: AppRequestMessage, expectedTypeName: string, timeoutErrorMessage?: string): Promise<X> {
+  async exchange<X extends AgentResponseMessage>(message: AppRequestMessage, expectedTypeName: AgentResponseMessage["type"], timeoutErrorMessage?: string): Promise<X> {
     const errorMessage =
       timeoutErrorMessage ?? `Timeout waiting for ${expectedTypeName} with requestUuid ${message.meta.requestUuid}`;
     const prom = this.waitFor<X>((m) => {
-      if (isAgentResponseMessage(m)) {
-        return m.type == expectedTypeName && m.meta.requestUuid == message.meta.requestUuid;
-      } else {
-        return false;
-      }
+      return m.type == expectedTypeName && m.meta.requestUuid == message.meta.requestUuid;
     }, errorMessage);
     this.post(message);
     const out: X = await prom;

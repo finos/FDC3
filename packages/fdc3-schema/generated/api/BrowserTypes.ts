@@ -403,7 +403,7 @@ export interface AddIntentListenerResponse {
      * property containing a standardized error message indicating that the request was
      * unsuccessful.
      */
-    payload: AddIntentListenerResponsePayload;
+    payload: PayloadObject;
     /**
      * Identifies the type of the message and it is typically set to the FDC3 function name that
      * the message relates to, e.g. 'findIntent', with 'Response' appended.
@@ -416,7 +416,7 @@ export interface AddIntentListenerResponse {
  * property containing a standardized error message indicating that the request was
  * unsuccessful.
  */
-export interface AddIntentListenerResponsePayload {
+export interface PayloadObject {
     error?: FluffyError;
     listenerUUID?: string;
     [property: string]: any;
@@ -433,30 +433,6 @@ export interface AddIntentListenerResponsePayload {
 export type FluffyError = "MalformedContext" | "DesktopAgentNotFound" | "ResolverUnavailable" | "IntentDeliveryFailed" | "NoAppsFound" | "ResolverTimeout" | "TargetAppUnavailable" | "TargetInstanceUnavailable" | "UserCancelledResolution";
 
 /**
- * Identifies the type of the message and it is typically set to the FDC3 function name that
- * the message relates to, e.g. 'findIntent', with 'Response' appended.
- */
-
-/**
- * A message from a Desktop Agent to an FDC3-enabled app representing an event.
- */
-export interface AgentEventMessage {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
-     */
-    meta: AgentEventMessageMeta;
-    /**
-     * The message payload contains details of the event that the app is being notified about.
-     */
-    payload: { [key: string]: any };
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: EventMessageType;
-}
-
-/**
  * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
  */
 export interface AgentEventMessageMeta {
@@ -469,28 +445,6 @@ export interface AgentEventMessageMeta {
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  */
 export type EventMessageType = "addEventListenerEvent" | "broadcastEvent" | "channelChangedEvent" | "heartbeatEvent" | "intentEvent" | "privateChannelOnAddContextListenerEvent" | "privateChannelOnDisconnectEvent" | "privateChannelOnUnsubscribeEvent";
-
-/**
- * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
- * payload contains an `error` property, the request was unsuccessful.
- */
-export interface AgentResponseMessage {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AgentResponseMessageMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: AgentResponseMessageResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: ResponseMessageType;
-}
 
 /**
  * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
@@ -521,25 +475,6 @@ export interface AgentResponseMessageResponsePayload {
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  */
 export type ResponseMessageType = "addContextListenerResponse" | "addEventListenerResponse" | "addIntentListenerResponse" | "broadcastResponse" | "contextListenerUnsubscribeResponse" | "createPrivateChannelResponse" | "eventListenerUnsubscribeResponse" | "findInstancesResponse" | "findIntentResponse" | "findIntentsByContextResponse" | "getAppMetadataResponse" | "getCurrentChannelResponse" | "getCurrentContextResponse" | "getInfoResponse" | "getOrCreateChannelResponse" | "getUserChannelsResponse" | "intentListenerUnsubscribeResponse" | "intentResultResponse" | "joinUserChannelResponse" | "leaveCurrentChannelResponse" | "openResponse" | "privateChannelAddEventListenerResponse" | "privateChannelDisconnectResponse" | "privateChannelUnsubscribeEventListenerResponse" | "raiseIntentForContextResponse" | "raiseIntentResponse" | "raiseIntentResultResponse";
-
-/**
- * A request message from an FDC3-enabled app to a Desktop Agent.
- */
-export interface AppRequestMessage {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AppRequestMessageMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: { [key: string]: any };
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: RequestMessageType;
-}
 
 /**
  * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
@@ -2892,7 +2827,7 @@ export interface PrivateChannelAddEventListenerRequest {
     /**
      * The message payload typically contains the arguments to FDC3 API functions.
      */
-    payload: TPayload;
+    payload: PrivateChannelAddEventListenerRequestPayload;
     /**
      * Identifies the type of the message and it is typically set to the FDC3 function name that
      * the message relates to, e.g. 'findIntent', with 'Request' appended.
@@ -2903,11 +2838,12 @@ export interface PrivateChannelAddEventListenerRequest {
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
-export interface TPayload {
+export interface PrivateChannelAddEventListenerRequestPayload {
     /**
-     * The type of PrivateChannel event that the listener should be applied to.
+     * The type of PrivateChannel event that the listener should be applied to, or null for all
+     * event types.
      */
-    listenerType: PrivateChannelEventListenerTypes | null;
+    listenerType: PrivateChannelEventType | null;
     /**
      * The Id of the PrivateChannel that the listener should be added to.
      */
@@ -2915,9 +2851,9 @@ export interface TPayload {
 }
 
 /**
- * Event listener type names for Private Channel events.
+ * Type defining valid type strings for Private Channel events.
  */
-export type PrivateChannelEventListenerTypes = "onAddContextListener" | "onUnsubscribe" | "onDisconnect";
+export type PrivateChannelEventType = "addContextListener" | "unsubscribe" | "disconnect";
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -2956,7 +2892,6 @@ export interface PrivateChannelAddEventListenerResponse {
 export interface PrivateChannelAddEventListenerResponsePayload {
     error?: PurpleError;
     listenerUUID?: string;
-    [property: string]: any;
 }
 
 /**
@@ -4714,10 +4649,10 @@ const typeMap: any = {
     ], false),
     "AddIntentListenerResponse": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("AddIntentListenerResponsePayload") },
+        { json: "payload", js: "payload", typ: r("PayloadObject") },
         { json: "type", js: "type", typ: r("AddIntentListenerResponseType") },
     ], false),
-    "AddIntentListenerResponsePayload": o([
+    "PayloadObject": o([
         { json: "error", js: "error", typ: u(undefined, r("FluffyError")) },
         { json: "listenerUUID", js: "listenerUUID", typ: u(undefined, "") },
     ], "any"),
@@ -5251,11 +5186,11 @@ const typeMap: any = {
     ], false),
     "PrivateChannelAddEventListenerRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("TPayload") },
+        { json: "payload", js: "payload", typ: r("PrivateChannelAddEventListenerRequestPayload") },
         { json: "type", js: "type", typ: r("PrivateChannelAddEventListenerRequestType") },
     ], false),
-    "TPayload": o([
-        { json: "listenerType", js: "listenerType", typ: u(r("PrivateChannelEventListenerTypes"), null) },
+    "PrivateChannelAddEventListenerRequestPayload": o([
+        { json: "listenerType", js: "listenerType", typ: u(r("PrivateChannelEventType"), null) },
         { json: "privateChannelId", js: "privateChannelId", typ: "" },
     ], false),
     "PrivateChannelAddEventListenerResponse": o([
@@ -5266,7 +5201,7 @@ const typeMap: any = {
     "PrivateChannelAddEventListenerResponsePayload": o([
         { json: "error", js: "error", typ: u(undefined, r("PurpleError")) },
         { json: "listenerUUID", js: "listenerUUID", typ: u(undefined, "") },
-    ], "any"),
+    ], false),
     "PrivateChannelDisconnectRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
         { json: "payload", js: "payload", typ: r("PrivateChannelDisconnectRequestPayload") },
@@ -5777,10 +5712,10 @@ const typeMap: any = {
     "OpenResponseType": [
         "openResponse",
     ],
-    "PrivateChannelEventListenerTypes": [
-        "onAddContextListener",
-        "onDisconnect",
-        "onUnsubscribe",
+    "PrivateChannelEventType": [
+        "addContextListener",
+        "disconnect",
+        "unsubscribe",
     ],
     "PrivateChannelAddEventListenerRequestType": [
         "privateChannelAddEventListenerRequest",
@@ -5856,7 +5791,23 @@ const typeMap: any = {
     ],
 };
 
+export type AppRequestMessage = AddContextListenerRequest | AddEventListenerRequest | AddIntentListenerRequest | BroadcastRequest | ContextListenerUnsubscribeRequest | CreatePrivateChannelRequest | EventListenerUnsubscribeRequest | FindInstancesRequest | FindIntentRequest | FindIntentsByContextRequest | GetAppMetadataRequest | GetCurrentChannelRequest | GetCurrentContextRequest | GetInfoRequest | GetOrCreateChannelRequest | GetUserChannelsRequest | HeartbeatAcknowledgementRequest | IntentListenerUnsubscribeRequest | IntentResultRequest | JoinUserChannelRequest | LeaveCurrentChannelRequest | OpenRequest | PrivateChannelAddEventListenerRequest | PrivateChannelDisconnectRequest | PrivateChannelUnsubscribeEventListenerRequest | RaiseIntentForContextRequest | RaiseIntentRequest;
+
+export type AgentResponseMessage = AddContextListenerResponse | AddEventListenerResponse | AddIntentListenerResponse | BroadcastResponse | ContextListenerUnsubscribeResponse | CreatePrivateChannelResponse | EventListenerUnsubscribeResponse | FindInstancesResponse | FindIntentResponse | FindIntentsByContextResponse | GetAppMetadataResponse | GetCurrentChannelResponse | GetCurrentContextResponse | GetInfoResponse | GetOrCreateChannelResponse | GetUserChannelsResponse | IntentListenerUnsubscribeResponse | IntentResultResponse | JoinUserChannelResponse | LeaveCurrentChannelResponse | OpenResponse | PrivateChannelAddEventListenerResponse | PrivateChannelDisconnectResponse | PrivateChannelUnsubscribeEventListenerResponse | RaiseIntentForContextResponse | RaiseIntentResponse | RaiseIntentResultResponse;
+
+export type AgentEventMessage = BroadcastEvent | ChannelChangedEvent | HeartbeatEvent | IntentEvent | PrivateChannelOnAddContextListenerEvent | PrivateChannelOnDisconnectEvent | PrivateChannelOnUnsubscribeEvent;
+
+/**
+ * Returns true if the value has a type property with value 'addContextListenerRequest'. This is a fast check that does not check the format of the message
+ */
 export function isAddContextListenerRequest(value: any): value is AddContextListenerRequest {
+    return value != null && value.type === 'addContextListenerRequest';
+}
+
+/**
+ * Returns true if value is a valid AddContextListenerRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidAddContextListenerRequest(value: any): value is AddContextListenerRequest {
     try {
         Convert.addContextListenerRequestToJson(value);
         return true;
@@ -5867,7 +5818,17 @@ export function isAddContextListenerRequest(value: any): value is AddContextList
 
 export const ADD_CONTEXT_LISTENER_REQUEST_TYPE = "AddContextListenerRequest";
 
+/**
+ * Returns true if the value has a type property with value 'addContextListenerResponse'. This is a fast check that does not check the format of the message
+ */
 export function isAddContextListenerResponse(value: any): value is AddContextListenerResponse {
+    return value != null && value.type === 'addContextListenerResponse';
+}
+
+/**
+ * Returns true if value is a valid AddContextListenerResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidAddContextListenerResponse(value: any): value is AddContextListenerResponse {
     try {
         Convert.addContextListenerResponseToJson(value);
         return true;
@@ -5878,7 +5839,17 @@ export function isAddContextListenerResponse(value: any): value is AddContextLis
 
 export const ADD_CONTEXT_LISTENER_RESPONSE_TYPE = "AddContextListenerResponse";
 
+/**
+ * Returns true if the value has a type property with value 'addEventListenerRequest'. This is a fast check that does not check the format of the message
+ */
 export function isAddEventListenerRequest(value: any): value is AddEventListenerRequest {
+    return value != null && value.type === 'addEventListenerRequest';
+}
+
+/**
+ * Returns true if value is a valid AddEventListenerRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidAddEventListenerRequest(value: any): value is AddEventListenerRequest {
     try {
         Convert.addEventListenerRequestToJson(value);
         return true;
@@ -5889,7 +5860,17 @@ export function isAddEventListenerRequest(value: any): value is AddEventListener
 
 export const ADD_EVENT_LISTENER_REQUEST_TYPE = "AddEventListenerRequest";
 
+/**
+ * Returns true if the value has a type property with value 'addEventListenerResponse'. This is a fast check that does not check the format of the message
+ */
 export function isAddEventListenerResponse(value: any): value is AddEventListenerResponse {
+    return value != null && value.type === 'addEventListenerResponse';
+}
+
+/**
+ * Returns true if value is a valid AddEventListenerResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidAddEventListenerResponse(value: any): value is AddEventListenerResponse {
     try {
         Convert.addEventListenerResponseToJson(value);
         return true;
@@ -5900,7 +5881,17 @@ export function isAddEventListenerResponse(value: any): value is AddEventListene
 
 export const ADD_EVENT_LISTENER_RESPONSE_TYPE = "AddEventListenerResponse";
 
+/**
+ * Returns true if the value has a type property with value 'addIntentListenerRequest'. This is a fast check that does not check the format of the message
+ */
 export function isAddIntentListenerRequest(value: any): value is AddIntentListenerRequest {
+    return value != null && value.type === 'addIntentListenerRequest';
+}
+
+/**
+ * Returns true if value is a valid AddIntentListenerRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidAddIntentListenerRequest(value: any): value is AddIntentListenerRequest {
     try {
         Convert.addIntentListenerRequestToJson(value);
         return true;
@@ -5911,7 +5902,17 @@ export function isAddIntentListenerRequest(value: any): value is AddIntentListen
 
 export const ADD_INTENT_LISTENER_REQUEST_TYPE = "AddIntentListenerRequest";
 
+/**
+ * Returns true if the value has a type property with value 'addIntentListenerResponse'. This is a fast check that does not check the format of the message
+ */
 export function isAddIntentListenerResponse(value: any): value is AddIntentListenerResponse {
+    return value != null && value.type === 'addIntentListenerResponse';
+}
+
+/**
+ * Returns true if value is a valid AddIntentListenerResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidAddIntentListenerResponse(value: any): value is AddIntentListenerResponse {
     try {
         Convert.addIntentListenerResponseToJson(value);
         return true;
@@ -5922,40 +5923,17 @@ export function isAddIntentListenerResponse(value: any): value is AddIntentListe
 
 export const ADD_INTENT_LISTENER_RESPONSE_TYPE = "AddIntentListenerResponse";
 
-export function isAgentEventMessage(value: any): value is AgentEventMessage {
-    try {
-        Convert.agentEventMessageToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
-}
-
-export const AGENT_EVENT_MESSAGE_TYPE = "AgentEventMessage";
-
-export function isAgentResponseMessage(value: any): value is AgentResponseMessage {
-    try {
-        Convert.agentResponseMessageToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
-}
-
-export const AGENT_RESPONSE_MESSAGE_TYPE = "AgentResponseMessage";
-
-export function isAppRequestMessage(value: any): value is AppRequestMessage {
-    try {
-        Convert.appRequestMessageToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
-}
-
-export const APP_REQUEST_MESSAGE_TYPE = "AppRequestMessage";
-
+/**
+ * Returns true if the value has a type property with value 'broadcastEvent'. This is a fast check that does not check the format of the message
+ */
 export function isBroadcastEvent(value: any): value is BroadcastEvent {
+    return value != null && value.type === 'broadcastEvent';
+}
+
+/**
+ * Returns true if value is a valid BroadcastEvent. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidBroadcastEvent(value: any): value is BroadcastEvent {
     try {
         Convert.broadcastEventToJson(value);
         return true;
@@ -5966,7 +5944,17 @@ export function isBroadcastEvent(value: any): value is BroadcastEvent {
 
 export const BROADCAST_EVENT_TYPE = "BroadcastEvent";
 
+/**
+ * Returns true if the value has a type property with value 'broadcastRequest'. This is a fast check that does not check the format of the message
+ */
 export function isBroadcastRequest(value: any): value is BroadcastRequest {
+    return value != null && value.type === 'broadcastRequest';
+}
+
+/**
+ * Returns true if value is a valid BroadcastRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidBroadcastRequest(value: any): value is BroadcastRequest {
     try {
         Convert.broadcastRequestToJson(value);
         return true;
@@ -5977,7 +5965,17 @@ export function isBroadcastRequest(value: any): value is BroadcastRequest {
 
 export const BROADCAST_REQUEST_TYPE = "BroadcastRequest";
 
+/**
+ * Returns true if the value has a type property with value 'broadcastResponse'. This is a fast check that does not check the format of the message
+ */
 export function isBroadcastResponse(value: any): value is BroadcastResponse {
+    return value != null && value.type === 'broadcastResponse';
+}
+
+/**
+ * Returns true if value is a valid BroadcastResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidBroadcastResponse(value: any): value is BroadcastResponse {
     try {
         Convert.broadcastResponseToJson(value);
         return true;
@@ -5988,7 +5986,17 @@ export function isBroadcastResponse(value: any): value is BroadcastResponse {
 
 export const BROADCAST_RESPONSE_TYPE = "BroadcastResponse";
 
+/**
+ * Returns true if the value has a type property with value 'channelChangedEvent'. This is a fast check that does not check the format of the message
+ */
 export function isChannelChangedEvent(value: any): value is ChannelChangedEvent {
+    return value != null && value.type === 'channelChangedEvent';
+}
+
+/**
+ * Returns true if value is a valid ChannelChangedEvent. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidChannelChangedEvent(value: any): value is ChannelChangedEvent {
     try {
         Convert.channelChangedEventToJson(value);
         return true;
@@ -5999,7 +6007,17 @@ export function isChannelChangedEvent(value: any): value is ChannelChangedEvent 
 
 export const CHANNEL_CHANGED_EVENT_TYPE = "ChannelChangedEvent";
 
+/**
+ * Returns true if the value has a type property with value 'contextListenerUnsubscribeRequest'. This is a fast check that does not check the format of the message
+ */
 export function isContextListenerUnsubscribeRequest(value: any): value is ContextListenerUnsubscribeRequest {
+    return value != null && value.type === 'contextListenerUnsubscribeRequest';
+}
+
+/**
+ * Returns true if value is a valid ContextListenerUnsubscribeRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidContextListenerUnsubscribeRequest(value: any): value is ContextListenerUnsubscribeRequest {
     try {
         Convert.contextListenerUnsubscribeRequestToJson(value);
         return true;
@@ -6010,7 +6028,17 @@ export function isContextListenerUnsubscribeRequest(value: any): value is Contex
 
 export const CONTEXT_LISTENER_UNSUBSCRIBE_REQUEST_TYPE = "ContextListenerUnsubscribeRequest";
 
+/**
+ * Returns true if the value has a type property with value 'contextListenerUnsubscribeResponse'. This is a fast check that does not check the format of the message
+ */
 export function isContextListenerUnsubscribeResponse(value: any): value is ContextListenerUnsubscribeResponse {
+    return value != null && value.type === 'contextListenerUnsubscribeResponse';
+}
+
+/**
+ * Returns true if value is a valid ContextListenerUnsubscribeResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidContextListenerUnsubscribeResponse(value: any): value is ContextListenerUnsubscribeResponse {
     try {
         Convert.contextListenerUnsubscribeResponseToJson(value);
         return true;
@@ -6021,7 +6049,17 @@ export function isContextListenerUnsubscribeResponse(value: any): value is Conte
 
 export const CONTEXT_LISTENER_UNSUBSCRIBE_RESPONSE_TYPE = "ContextListenerUnsubscribeResponse";
 
+/**
+ * Returns true if the value has a type property with value 'createPrivateChannelRequest'. This is a fast check that does not check the format of the message
+ */
 export function isCreatePrivateChannelRequest(value: any): value is CreatePrivateChannelRequest {
+    return value != null && value.type === 'createPrivateChannelRequest';
+}
+
+/**
+ * Returns true if value is a valid CreatePrivateChannelRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidCreatePrivateChannelRequest(value: any): value is CreatePrivateChannelRequest {
     try {
         Convert.createPrivateChannelRequestToJson(value);
         return true;
@@ -6032,7 +6070,17 @@ export function isCreatePrivateChannelRequest(value: any): value is CreatePrivat
 
 export const CREATE_PRIVATE_CHANNEL_REQUEST_TYPE = "CreatePrivateChannelRequest";
 
+/**
+ * Returns true if the value has a type property with value 'createPrivateChannelResponse'. This is a fast check that does not check the format of the message
+ */
 export function isCreatePrivateChannelResponse(value: any): value is CreatePrivateChannelResponse {
+    return value != null && value.type === 'createPrivateChannelResponse';
+}
+
+/**
+ * Returns true if value is a valid CreatePrivateChannelResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidCreatePrivateChannelResponse(value: any): value is CreatePrivateChannelResponse {
     try {
         Convert.createPrivateChannelResponseToJson(value);
         return true;
@@ -6043,7 +6091,17 @@ export function isCreatePrivateChannelResponse(value: any): value is CreatePriva
 
 export const CREATE_PRIVATE_CHANNEL_RESPONSE_TYPE = "CreatePrivateChannelResponse";
 
+/**
+ * Returns true if the value has a type property with value 'eventListenerUnsubscribeRequest'. This is a fast check that does not check the format of the message
+ */
 export function isEventListenerUnsubscribeRequest(value: any): value is EventListenerUnsubscribeRequest {
+    return value != null && value.type === 'eventListenerUnsubscribeRequest';
+}
+
+/**
+ * Returns true if value is a valid EventListenerUnsubscribeRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidEventListenerUnsubscribeRequest(value: any): value is EventListenerUnsubscribeRequest {
     try {
         Convert.eventListenerUnsubscribeRequestToJson(value);
         return true;
@@ -6054,7 +6112,17 @@ export function isEventListenerUnsubscribeRequest(value: any): value is EventLis
 
 export const EVENT_LISTENER_UNSUBSCRIBE_REQUEST_TYPE = "EventListenerUnsubscribeRequest";
 
+/**
+ * Returns true if the value has a type property with value 'eventListenerUnsubscribeResponse'. This is a fast check that does not check the format of the message
+ */
 export function isEventListenerUnsubscribeResponse(value: any): value is EventListenerUnsubscribeResponse {
+    return value != null && value.type === 'eventListenerUnsubscribeResponse';
+}
+
+/**
+ * Returns true if value is a valid EventListenerUnsubscribeResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidEventListenerUnsubscribeResponse(value: any): value is EventListenerUnsubscribeResponse {
     try {
         Convert.eventListenerUnsubscribeResponseToJson(value);
         return true;
@@ -6065,7 +6133,17 @@ export function isEventListenerUnsubscribeResponse(value: any): value is EventLi
 
 export const EVENT_LISTENER_UNSUBSCRIBE_RESPONSE_TYPE = "EventListenerUnsubscribeResponse";
 
+/**
+ * Returns true if the value has a type property with value 'Fdc3UserInterfaceChannels'. This is a fast check that does not check the format of the message
+ */
 export function isFdc3UserInterfaceChannels(value: any): value is Fdc3UserInterfaceChannels {
+    return value != null && value.type === 'Fdc3UserInterfaceChannels';
+}
+
+/**
+ * Returns true if value is a valid Fdc3UserInterfaceChannels. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFdc3UserInterfaceChannels(value: any): value is Fdc3UserInterfaceChannels {
     try {
         Convert.fdc3UserInterfaceChannelsToJson(value);
         return true;
@@ -6076,7 +6154,17 @@ export function isFdc3UserInterfaceChannels(value: any): value is Fdc3UserInterf
 
 export const FDC3_USER_INTERFACE_CHANNELS_TYPE = "Fdc3UserInterfaceChannels";
 
+/**
+ * Returns true if the value has a type property with value 'Fdc3UserInterfaceChannelSelected'. This is a fast check that does not check the format of the message
+ */
 export function isFdc3UserInterfaceChannelSelected(value: any): value is Fdc3UserInterfaceChannelSelected {
+    return value != null && value.type === 'Fdc3UserInterfaceChannelSelected';
+}
+
+/**
+ * Returns true if value is a valid Fdc3UserInterfaceChannelSelected. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFdc3UserInterfaceChannelSelected(value: any): value is Fdc3UserInterfaceChannelSelected {
     try {
         Convert.fdc3UserInterfaceChannelSelectedToJson(value);
         return true;
@@ -6087,7 +6175,17 @@ export function isFdc3UserInterfaceChannelSelected(value: any): value is Fdc3Use
 
 export const FDC3_USER_INTERFACE_CHANNEL_SELECTED_TYPE = "Fdc3UserInterfaceChannelSelected";
 
+/**
+ * Returns true if the value has a type property with value 'Fdc3UserInterfaceDrag'. This is a fast check that does not check the format of the message
+ */
 export function isFdc3UserInterfaceDrag(value: any): value is Fdc3UserInterfaceDrag {
+    return value != null && value.type === 'Fdc3UserInterfaceDrag';
+}
+
+/**
+ * Returns true if value is a valid Fdc3UserInterfaceDrag. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFdc3UserInterfaceDrag(value: any): value is Fdc3UserInterfaceDrag {
     try {
         Convert.fdc3UserInterfaceDragToJson(value);
         return true;
@@ -6098,7 +6196,17 @@ export function isFdc3UserInterfaceDrag(value: any): value is Fdc3UserInterfaceD
 
 export const FDC3_USER_INTERFACE_DRAG_TYPE = "Fdc3UserInterfaceDrag";
 
+/**
+ * Returns true if the value has a type property with value 'Fdc3UserInterfaceHandshake'. This is a fast check that does not check the format of the message
+ */
 export function isFdc3UserInterfaceHandshake(value: any): value is Fdc3UserInterfaceHandshake {
+    return value != null && value.type === 'Fdc3UserInterfaceHandshake';
+}
+
+/**
+ * Returns true if value is a valid Fdc3UserInterfaceHandshake. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFdc3UserInterfaceHandshake(value: any): value is Fdc3UserInterfaceHandshake {
     try {
         Convert.fdc3UserInterfaceHandshakeToJson(value);
         return true;
@@ -6109,7 +6217,17 @@ export function isFdc3UserInterfaceHandshake(value: any): value is Fdc3UserInter
 
 export const FDC3_USER_INTERFACE_HANDSHAKE_TYPE = "Fdc3UserInterfaceHandshake";
 
+/**
+ * Returns true if the value has a type property with value 'Fdc3UserInterfaceHello'. This is a fast check that does not check the format of the message
+ */
 export function isFdc3UserInterfaceHello(value: any): value is Fdc3UserInterfaceHello {
+    return value != null && value.type === 'Fdc3UserInterfaceHello';
+}
+
+/**
+ * Returns true if value is a valid Fdc3UserInterfaceHello. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFdc3UserInterfaceHello(value: any): value is Fdc3UserInterfaceHello {
     try {
         Convert.fdc3UserInterfaceHelloToJson(value);
         return true;
@@ -6120,7 +6238,10 @@ export function isFdc3UserInterfaceHello(value: any): value is Fdc3UserInterface
 
 export const FDC3_USER_INTERFACE_HELLO_TYPE = "Fdc3UserInterfaceHello";
 
-export function isFdc3UserInterfaceMessage(value: any): value is Fdc3UserInterfaceMessage {
+/**
+ * Returns true if value is a valid Fdc3UserInterfaceMessage. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFdc3UserInterfaceMessage(value: any): value is Fdc3UserInterfaceMessage {
     try {
         Convert.fdc3UserInterfaceMessageToJson(value);
         return true;
@@ -6131,7 +6252,17 @@ export function isFdc3UserInterfaceMessage(value: any): value is Fdc3UserInterfa
 
 export const FDC3_USER_INTERFACE_MESSAGE_TYPE = "Fdc3UserInterfaceMessage";
 
+/**
+ * Returns true if the value has a type property with value 'Fdc3UserInterfaceResolve'. This is a fast check that does not check the format of the message
+ */
 export function isFdc3UserInterfaceResolve(value: any): value is Fdc3UserInterfaceResolve {
+    return value != null && value.type === 'Fdc3UserInterfaceResolve';
+}
+
+/**
+ * Returns true if value is a valid Fdc3UserInterfaceResolve. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFdc3UserInterfaceResolve(value: any): value is Fdc3UserInterfaceResolve {
     try {
         Convert.fdc3UserInterfaceResolveToJson(value);
         return true;
@@ -6142,7 +6273,17 @@ export function isFdc3UserInterfaceResolve(value: any): value is Fdc3UserInterfa
 
 export const FDC3_USER_INTERFACE_RESOLVE_TYPE = "Fdc3UserInterfaceResolve";
 
+/**
+ * Returns true if the value has a type property with value 'Fdc3UserInterfaceResolveAction'. This is a fast check that does not check the format of the message
+ */
 export function isFdc3UserInterfaceResolveAction(value: any): value is Fdc3UserInterfaceResolveAction {
+    return value != null && value.type === 'Fdc3UserInterfaceResolveAction';
+}
+
+/**
+ * Returns true if value is a valid Fdc3UserInterfaceResolveAction. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFdc3UserInterfaceResolveAction(value: any): value is Fdc3UserInterfaceResolveAction {
     try {
         Convert.fdc3UserInterfaceResolveActionToJson(value);
         return true;
@@ -6153,7 +6294,17 @@ export function isFdc3UserInterfaceResolveAction(value: any): value is Fdc3UserI
 
 export const FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE = "Fdc3UserInterfaceResolveAction";
 
+/**
+ * Returns true if the value has a type property with value 'Fdc3UserInterfaceRestyle'. This is a fast check that does not check the format of the message
+ */
 export function isFdc3UserInterfaceRestyle(value: any): value is Fdc3UserInterfaceRestyle {
+    return value != null && value.type === 'Fdc3UserInterfaceRestyle';
+}
+
+/**
+ * Returns true if value is a valid Fdc3UserInterfaceRestyle. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFdc3UserInterfaceRestyle(value: any): value is Fdc3UserInterfaceRestyle {
     try {
         Convert.fdc3UserInterfaceRestyleToJson(value);
         return true;
@@ -6164,7 +6315,17 @@ export function isFdc3UserInterfaceRestyle(value: any): value is Fdc3UserInterfa
 
 export const FDC3_USER_INTERFACE_RESTYLE_TYPE = "Fdc3UserInterfaceRestyle";
 
+/**
+ * Returns true if the value has a type property with value 'findInstancesRequest'. This is a fast check that does not check the format of the message
+ */
 export function isFindInstancesRequest(value: any): value is FindInstancesRequest {
+    return value != null && value.type === 'findInstancesRequest';
+}
+
+/**
+ * Returns true if value is a valid FindInstancesRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFindInstancesRequest(value: any): value is FindInstancesRequest {
     try {
         Convert.findInstancesRequestToJson(value);
         return true;
@@ -6175,7 +6336,17 @@ export function isFindInstancesRequest(value: any): value is FindInstancesReques
 
 export const FIND_INSTANCES_REQUEST_TYPE = "FindInstancesRequest";
 
+/**
+ * Returns true if the value has a type property with value 'findInstancesResponse'. This is a fast check that does not check the format of the message
+ */
 export function isFindInstancesResponse(value: any): value is FindInstancesResponse {
+    return value != null && value.type === 'findInstancesResponse';
+}
+
+/**
+ * Returns true if value is a valid FindInstancesResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFindInstancesResponse(value: any): value is FindInstancesResponse {
     try {
         Convert.findInstancesResponseToJson(value);
         return true;
@@ -6186,7 +6357,17 @@ export function isFindInstancesResponse(value: any): value is FindInstancesRespo
 
 export const FIND_INSTANCES_RESPONSE_TYPE = "FindInstancesResponse";
 
+/**
+ * Returns true if the value has a type property with value 'findIntentRequest'. This is a fast check that does not check the format of the message
+ */
 export function isFindIntentRequest(value: any): value is FindIntentRequest {
+    return value != null && value.type === 'findIntentRequest';
+}
+
+/**
+ * Returns true if value is a valid FindIntentRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFindIntentRequest(value: any): value is FindIntentRequest {
     try {
         Convert.findIntentRequestToJson(value);
         return true;
@@ -6197,7 +6378,17 @@ export function isFindIntentRequest(value: any): value is FindIntentRequest {
 
 export const FIND_INTENT_REQUEST_TYPE = "FindIntentRequest";
 
+/**
+ * Returns true if the value has a type property with value 'findIntentResponse'. This is a fast check that does not check the format of the message
+ */
 export function isFindIntentResponse(value: any): value is FindIntentResponse {
+    return value != null && value.type === 'findIntentResponse';
+}
+
+/**
+ * Returns true if value is a valid FindIntentResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFindIntentResponse(value: any): value is FindIntentResponse {
     try {
         Convert.findIntentResponseToJson(value);
         return true;
@@ -6208,7 +6399,17 @@ export function isFindIntentResponse(value: any): value is FindIntentResponse {
 
 export const FIND_INTENT_RESPONSE_TYPE = "FindIntentResponse";
 
+/**
+ * Returns true if the value has a type property with value 'findIntentsByContextRequest'. This is a fast check that does not check the format of the message
+ */
 export function isFindIntentsByContextRequest(value: any): value is FindIntentsByContextRequest {
+    return value != null && value.type === 'findIntentsByContextRequest';
+}
+
+/**
+ * Returns true if value is a valid FindIntentsByContextRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFindIntentsByContextRequest(value: any): value is FindIntentsByContextRequest {
     try {
         Convert.findIntentsByContextRequestToJson(value);
         return true;
@@ -6219,7 +6420,17 @@ export function isFindIntentsByContextRequest(value: any): value is FindIntentsB
 
 export const FIND_INTENTS_BY_CONTEXT_REQUEST_TYPE = "FindIntentsByContextRequest";
 
+/**
+ * Returns true if the value has a type property with value 'findIntentsByContextResponse'. This is a fast check that does not check the format of the message
+ */
 export function isFindIntentsByContextResponse(value: any): value is FindIntentsByContextResponse {
+    return value != null && value.type === 'findIntentsByContextResponse';
+}
+
+/**
+ * Returns true if value is a valid FindIntentsByContextResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFindIntentsByContextResponse(value: any): value is FindIntentsByContextResponse {
     try {
         Convert.findIntentsByContextResponseToJson(value);
         return true;
@@ -6230,7 +6441,17 @@ export function isFindIntentsByContextResponse(value: any): value is FindIntents
 
 export const FIND_INTENTS_BY_CONTEXT_RESPONSE_TYPE = "FindIntentsByContextResponse";
 
+/**
+ * Returns true if the value has a type property with value 'getAppMetadataRequest'. This is a fast check that does not check the format of the message
+ */
 export function isGetAppMetadataRequest(value: any): value is GetAppMetadataRequest {
+    return value != null && value.type === 'getAppMetadataRequest';
+}
+
+/**
+ * Returns true if value is a valid GetAppMetadataRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetAppMetadataRequest(value: any): value is GetAppMetadataRequest {
     try {
         Convert.getAppMetadataRequestToJson(value);
         return true;
@@ -6241,7 +6462,17 @@ export function isGetAppMetadataRequest(value: any): value is GetAppMetadataRequ
 
 export const GET_APP_METADATA_REQUEST_TYPE = "GetAppMetadataRequest";
 
+/**
+ * Returns true if the value has a type property with value 'getAppMetadataResponse'. This is a fast check that does not check the format of the message
+ */
 export function isGetAppMetadataResponse(value: any): value is GetAppMetadataResponse {
+    return value != null && value.type === 'getAppMetadataResponse';
+}
+
+/**
+ * Returns true if value is a valid GetAppMetadataResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetAppMetadataResponse(value: any): value is GetAppMetadataResponse {
     try {
         Convert.getAppMetadataResponseToJson(value);
         return true;
@@ -6252,7 +6483,17 @@ export function isGetAppMetadataResponse(value: any): value is GetAppMetadataRes
 
 export const GET_APP_METADATA_RESPONSE_TYPE = "GetAppMetadataResponse";
 
+/**
+ * Returns true if the value has a type property with value 'getCurrentChannelRequest'. This is a fast check that does not check the format of the message
+ */
 export function isGetCurrentChannelRequest(value: any): value is GetCurrentChannelRequest {
+    return value != null && value.type === 'getCurrentChannelRequest';
+}
+
+/**
+ * Returns true if value is a valid GetCurrentChannelRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetCurrentChannelRequest(value: any): value is GetCurrentChannelRequest {
     try {
         Convert.getCurrentChannelRequestToJson(value);
         return true;
@@ -6263,7 +6504,17 @@ export function isGetCurrentChannelRequest(value: any): value is GetCurrentChann
 
 export const GET_CURRENT_CHANNEL_REQUEST_TYPE = "GetCurrentChannelRequest";
 
+/**
+ * Returns true if the value has a type property with value 'getCurrentChannelResponse'. This is a fast check that does not check the format of the message
+ */
 export function isGetCurrentChannelResponse(value: any): value is GetCurrentChannelResponse {
+    return value != null && value.type === 'getCurrentChannelResponse';
+}
+
+/**
+ * Returns true if value is a valid GetCurrentChannelResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetCurrentChannelResponse(value: any): value is GetCurrentChannelResponse {
     try {
         Convert.getCurrentChannelResponseToJson(value);
         return true;
@@ -6274,7 +6525,17 @@ export function isGetCurrentChannelResponse(value: any): value is GetCurrentChan
 
 export const GET_CURRENT_CHANNEL_RESPONSE_TYPE = "GetCurrentChannelResponse";
 
+/**
+ * Returns true if the value has a type property with value 'getCurrentContextRequest'. This is a fast check that does not check the format of the message
+ */
 export function isGetCurrentContextRequest(value: any): value is GetCurrentContextRequest {
+    return value != null && value.type === 'getCurrentContextRequest';
+}
+
+/**
+ * Returns true if value is a valid GetCurrentContextRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetCurrentContextRequest(value: any): value is GetCurrentContextRequest {
     try {
         Convert.getCurrentContextRequestToJson(value);
         return true;
@@ -6285,7 +6546,17 @@ export function isGetCurrentContextRequest(value: any): value is GetCurrentConte
 
 export const GET_CURRENT_CONTEXT_REQUEST_TYPE = "GetCurrentContextRequest";
 
+/**
+ * Returns true if the value has a type property with value 'getCurrentContextResponse'. This is a fast check that does not check the format of the message
+ */
 export function isGetCurrentContextResponse(value: any): value is GetCurrentContextResponse {
+    return value != null && value.type === 'getCurrentContextResponse';
+}
+
+/**
+ * Returns true if value is a valid GetCurrentContextResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetCurrentContextResponse(value: any): value is GetCurrentContextResponse {
     try {
         Convert.getCurrentContextResponseToJson(value);
         return true;
@@ -6296,7 +6567,17 @@ export function isGetCurrentContextResponse(value: any): value is GetCurrentCont
 
 export const GET_CURRENT_CONTEXT_RESPONSE_TYPE = "GetCurrentContextResponse";
 
+/**
+ * Returns true if the value has a type property with value 'getInfoRequest'. This is a fast check that does not check the format of the message
+ */
 export function isGetInfoRequest(value: any): value is GetInfoRequest {
+    return value != null && value.type === 'getInfoRequest';
+}
+
+/**
+ * Returns true if value is a valid GetInfoRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetInfoRequest(value: any): value is GetInfoRequest {
     try {
         Convert.getInfoRequestToJson(value);
         return true;
@@ -6307,7 +6588,17 @@ export function isGetInfoRequest(value: any): value is GetInfoRequest {
 
 export const GET_INFO_REQUEST_TYPE = "GetInfoRequest";
 
+/**
+ * Returns true if the value has a type property with value 'getInfoResponse'. This is a fast check that does not check the format of the message
+ */
 export function isGetInfoResponse(value: any): value is GetInfoResponse {
+    return value != null && value.type === 'getInfoResponse';
+}
+
+/**
+ * Returns true if value is a valid GetInfoResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetInfoResponse(value: any): value is GetInfoResponse {
     try {
         Convert.getInfoResponseToJson(value);
         return true;
@@ -6318,7 +6609,17 @@ export function isGetInfoResponse(value: any): value is GetInfoResponse {
 
 export const GET_INFO_RESPONSE_TYPE = "GetInfoResponse";
 
+/**
+ * Returns true if the value has a type property with value 'getOrCreateChannelRequest'. This is a fast check that does not check the format of the message
+ */
 export function isGetOrCreateChannelRequest(value: any): value is GetOrCreateChannelRequest {
+    return value != null && value.type === 'getOrCreateChannelRequest';
+}
+
+/**
+ * Returns true if value is a valid GetOrCreateChannelRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetOrCreateChannelRequest(value: any): value is GetOrCreateChannelRequest {
     try {
         Convert.getOrCreateChannelRequestToJson(value);
         return true;
@@ -6329,7 +6630,17 @@ export function isGetOrCreateChannelRequest(value: any): value is GetOrCreateCha
 
 export const GET_OR_CREATE_CHANNEL_REQUEST_TYPE = "GetOrCreateChannelRequest";
 
+/**
+ * Returns true if the value has a type property with value 'getOrCreateChannelResponse'. This is a fast check that does not check the format of the message
+ */
 export function isGetOrCreateChannelResponse(value: any): value is GetOrCreateChannelResponse {
+    return value != null && value.type === 'getOrCreateChannelResponse';
+}
+
+/**
+ * Returns true if value is a valid GetOrCreateChannelResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetOrCreateChannelResponse(value: any): value is GetOrCreateChannelResponse {
     try {
         Convert.getOrCreateChannelResponseToJson(value);
         return true;
@@ -6340,7 +6651,17 @@ export function isGetOrCreateChannelResponse(value: any): value is GetOrCreateCh
 
 export const GET_OR_CREATE_CHANNEL_RESPONSE_TYPE = "GetOrCreateChannelResponse";
 
+/**
+ * Returns true if the value has a type property with value 'getUserChannelsRequest'. This is a fast check that does not check the format of the message
+ */
 export function isGetUserChannelsRequest(value: any): value is GetUserChannelsRequest {
+    return value != null && value.type === 'getUserChannelsRequest';
+}
+
+/**
+ * Returns true if value is a valid GetUserChannelsRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetUserChannelsRequest(value: any): value is GetUserChannelsRequest {
     try {
         Convert.getUserChannelsRequestToJson(value);
         return true;
@@ -6351,7 +6672,17 @@ export function isGetUserChannelsRequest(value: any): value is GetUserChannelsRe
 
 export const GET_USER_CHANNELS_REQUEST_TYPE = "GetUserChannelsRequest";
 
+/**
+ * Returns true if the value has a type property with value 'getUserChannelsResponse'. This is a fast check that does not check the format of the message
+ */
 export function isGetUserChannelsResponse(value: any): value is GetUserChannelsResponse {
+    return value != null && value.type === 'getUserChannelsResponse';
+}
+
+/**
+ * Returns true if value is a valid GetUserChannelsResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetUserChannelsResponse(value: any): value is GetUserChannelsResponse {
     try {
         Convert.getUserChannelsResponseToJson(value);
         return true;
@@ -6362,7 +6693,17 @@ export function isGetUserChannelsResponse(value: any): value is GetUserChannelsR
 
 export const GET_USER_CHANNELS_RESPONSE_TYPE = "GetUserChannelsResponse";
 
+/**
+ * Returns true if the value has a type property with value 'heartbeatAcknowledgementRequest'. This is a fast check that does not check the format of the message
+ */
 export function isHeartbeatAcknowledgementRequest(value: any): value is HeartbeatAcknowledgementRequest {
+    return value != null && value.type === 'heartbeatAcknowledgementRequest';
+}
+
+/**
+ * Returns true if value is a valid HeartbeatAcknowledgementRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidHeartbeatAcknowledgementRequest(value: any): value is HeartbeatAcknowledgementRequest {
     try {
         Convert.heartbeatAcknowledgementRequestToJson(value);
         return true;
@@ -6373,7 +6714,17 @@ export function isHeartbeatAcknowledgementRequest(value: any): value is Heartbea
 
 export const HEARTBEAT_ACKNOWLEDGEMENT_REQUEST_TYPE = "HeartbeatAcknowledgementRequest";
 
+/**
+ * Returns true if the value has a type property with value 'heartbeatEvent'. This is a fast check that does not check the format of the message
+ */
 export function isHeartbeatEvent(value: any): value is HeartbeatEvent {
+    return value != null && value.type === 'heartbeatEvent';
+}
+
+/**
+ * Returns true if value is a valid HeartbeatEvent. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidHeartbeatEvent(value: any): value is HeartbeatEvent {
     try {
         Convert.heartbeatEventToJson(value);
         return true;
@@ -6384,7 +6735,17 @@ export function isHeartbeatEvent(value: any): value is HeartbeatEvent {
 
 export const HEARTBEAT_EVENT_TYPE = "HeartbeatEvent";
 
+/**
+ * Returns true if the value has a type property with value 'intentEvent'. This is a fast check that does not check the format of the message
+ */
 export function isIntentEvent(value: any): value is IntentEvent {
+    return value != null && value.type === 'intentEvent';
+}
+
+/**
+ * Returns true if value is a valid IntentEvent. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidIntentEvent(value: any): value is IntentEvent {
     try {
         Convert.intentEventToJson(value);
         return true;
@@ -6395,7 +6756,17 @@ export function isIntentEvent(value: any): value is IntentEvent {
 
 export const INTENT_EVENT_TYPE = "IntentEvent";
 
+/**
+ * Returns true if the value has a type property with value 'intentListenerUnsubscribeRequest'. This is a fast check that does not check the format of the message
+ */
 export function isIntentListenerUnsubscribeRequest(value: any): value is IntentListenerUnsubscribeRequest {
+    return value != null && value.type === 'intentListenerUnsubscribeRequest';
+}
+
+/**
+ * Returns true if value is a valid IntentListenerUnsubscribeRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidIntentListenerUnsubscribeRequest(value: any): value is IntentListenerUnsubscribeRequest {
     try {
         Convert.intentListenerUnsubscribeRequestToJson(value);
         return true;
@@ -6406,7 +6777,17 @@ export function isIntentListenerUnsubscribeRequest(value: any): value is IntentL
 
 export const INTENT_LISTENER_UNSUBSCRIBE_REQUEST_TYPE = "IntentListenerUnsubscribeRequest";
 
+/**
+ * Returns true if the value has a type property with value 'intentListenerUnsubscribeResponse'. This is a fast check that does not check the format of the message
+ */
 export function isIntentListenerUnsubscribeResponse(value: any): value is IntentListenerUnsubscribeResponse {
+    return value != null && value.type === 'intentListenerUnsubscribeResponse';
+}
+
+/**
+ * Returns true if value is a valid IntentListenerUnsubscribeResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidIntentListenerUnsubscribeResponse(value: any): value is IntentListenerUnsubscribeResponse {
     try {
         Convert.intentListenerUnsubscribeResponseToJson(value);
         return true;
@@ -6417,7 +6798,17 @@ export function isIntentListenerUnsubscribeResponse(value: any): value is Intent
 
 export const INTENT_LISTENER_UNSUBSCRIBE_RESPONSE_TYPE = "IntentListenerUnsubscribeResponse";
 
+/**
+ * Returns true if the value has a type property with value 'intentResultRequest'. This is a fast check that does not check the format of the message
+ */
 export function isIntentResultRequest(value: any): value is IntentResultRequest {
+    return value != null && value.type === 'intentResultRequest';
+}
+
+/**
+ * Returns true if value is a valid IntentResultRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidIntentResultRequest(value: any): value is IntentResultRequest {
     try {
         Convert.intentResultRequestToJson(value);
         return true;
@@ -6428,7 +6819,17 @@ export function isIntentResultRequest(value: any): value is IntentResultRequest 
 
 export const INTENT_RESULT_REQUEST_TYPE = "IntentResultRequest";
 
+/**
+ * Returns true if the value has a type property with value 'intentResultResponse'. This is a fast check that does not check the format of the message
+ */
 export function isIntentResultResponse(value: any): value is IntentResultResponse {
+    return value != null && value.type === 'intentResultResponse';
+}
+
+/**
+ * Returns true if value is a valid IntentResultResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidIntentResultResponse(value: any): value is IntentResultResponse {
     try {
         Convert.intentResultResponseToJson(value);
         return true;
@@ -6439,7 +6840,17 @@ export function isIntentResultResponse(value: any): value is IntentResultRespons
 
 export const INTENT_RESULT_RESPONSE_TYPE = "IntentResultResponse";
 
+/**
+ * Returns true if the value has a type property with value 'joinUserChannelRequest'. This is a fast check that does not check the format of the message
+ */
 export function isJoinUserChannelRequest(value: any): value is JoinUserChannelRequest {
+    return value != null && value.type === 'joinUserChannelRequest';
+}
+
+/**
+ * Returns true if value is a valid JoinUserChannelRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidJoinUserChannelRequest(value: any): value is JoinUserChannelRequest {
     try {
         Convert.joinUserChannelRequestToJson(value);
         return true;
@@ -6450,7 +6861,17 @@ export function isJoinUserChannelRequest(value: any): value is JoinUserChannelRe
 
 export const JOIN_USER_CHANNEL_REQUEST_TYPE = "JoinUserChannelRequest";
 
+/**
+ * Returns true if the value has a type property with value 'joinUserChannelResponse'. This is a fast check that does not check the format of the message
+ */
 export function isJoinUserChannelResponse(value: any): value is JoinUserChannelResponse {
+    return value != null && value.type === 'joinUserChannelResponse';
+}
+
+/**
+ * Returns true if value is a valid JoinUserChannelResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidJoinUserChannelResponse(value: any): value is JoinUserChannelResponse {
     try {
         Convert.joinUserChannelResponseToJson(value);
         return true;
@@ -6461,7 +6882,17 @@ export function isJoinUserChannelResponse(value: any): value is JoinUserChannelR
 
 export const JOIN_USER_CHANNEL_RESPONSE_TYPE = "JoinUserChannelResponse";
 
+/**
+ * Returns true if the value has a type property with value 'leaveCurrentChannelRequest'. This is a fast check that does not check the format of the message
+ */
 export function isLeaveCurrentChannelRequest(value: any): value is LeaveCurrentChannelRequest {
+    return value != null && value.type === 'leaveCurrentChannelRequest';
+}
+
+/**
+ * Returns true if value is a valid LeaveCurrentChannelRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidLeaveCurrentChannelRequest(value: any): value is LeaveCurrentChannelRequest {
     try {
         Convert.leaveCurrentChannelRequestToJson(value);
         return true;
@@ -6472,7 +6903,17 @@ export function isLeaveCurrentChannelRequest(value: any): value is LeaveCurrentC
 
 export const LEAVE_CURRENT_CHANNEL_REQUEST_TYPE = "LeaveCurrentChannelRequest";
 
+/**
+ * Returns true if the value has a type property with value 'leaveCurrentChannelResponse'. This is a fast check that does not check the format of the message
+ */
 export function isLeaveCurrentChannelResponse(value: any): value is LeaveCurrentChannelResponse {
+    return value != null && value.type === 'leaveCurrentChannelResponse';
+}
+
+/**
+ * Returns true if value is a valid LeaveCurrentChannelResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidLeaveCurrentChannelResponse(value: any): value is LeaveCurrentChannelResponse {
     try {
         Convert.leaveCurrentChannelResponseToJson(value);
         return true;
@@ -6483,7 +6924,17 @@ export function isLeaveCurrentChannelResponse(value: any): value is LeaveCurrent
 
 export const LEAVE_CURRENT_CHANNEL_RESPONSE_TYPE = "LeaveCurrentChannelResponse";
 
+/**
+ * Returns true if the value has a type property with value 'openRequest'. This is a fast check that does not check the format of the message
+ */
 export function isOpenRequest(value: any): value is OpenRequest {
+    return value != null && value.type === 'openRequest';
+}
+
+/**
+ * Returns true if value is a valid OpenRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidOpenRequest(value: any): value is OpenRequest {
     try {
         Convert.openRequestToJson(value);
         return true;
@@ -6494,7 +6945,17 @@ export function isOpenRequest(value: any): value is OpenRequest {
 
 export const OPEN_REQUEST_TYPE = "OpenRequest";
 
+/**
+ * Returns true if the value has a type property with value 'openResponse'. This is a fast check that does not check the format of the message
+ */
 export function isOpenResponse(value: any): value is OpenResponse {
+    return value != null && value.type === 'openResponse';
+}
+
+/**
+ * Returns true if value is a valid OpenResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidOpenResponse(value: any): value is OpenResponse {
     try {
         Convert.openResponseToJson(value);
         return true;
@@ -6505,7 +6966,17 @@ export function isOpenResponse(value: any): value is OpenResponse {
 
 export const OPEN_RESPONSE_TYPE = "OpenResponse";
 
+/**
+ * Returns true if the value has a type property with value 'privateChannelAddEventListenerRequest'. This is a fast check that does not check the format of the message
+ */
 export function isPrivateChannelAddEventListenerRequest(value: any): value is PrivateChannelAddEventListenerRequest {
+    return value != null && value.type === 'privateChannelAddEventListenerRequest';
+}
+
+/**
+ * Returns true if value is a valid PrivateChannelAddEventListenerRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidPrivateChannelAddEventListenerRequest(value: any): value is PrivateChannelAddEventListenerRequest {
     try {
         Convert.privateChannelAddEventListenerRequestToJson(value);
         return true;
@@ -6516,7 +6987,17 @@ export function isPrivateChannelAddEventListenerRequest(value: any): value is Pr
 
 export const PRIVATE_CHANNEL_ADD_EVENT_LISTENER_REQUEST_TYPE = "PrivateChannelAddEventListenerRequest";
 
+/**
+ * Returns true if the value has a type property with value 'privateChannelAddEventListenerResponse'. This is a fast check that does not check the format of the message
+ */
 export function isPrivateChannelAddEventListenerResponse(value: any): value is PrivateChannelAddEventListenerResponse {
+    return value != null && value.type === 'privateChannelAddEventListenerResponse';
+}
+
+/**
+ * Returns true if value is a valid PrivateChannelAddEventListenerResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidPrivateChannelAddEventListenerResponse(value: any): value is PrivateChannelAddEventListenerResponse {
     try {
         Convert.privateChannelAddEventListenerResponseToJson(value);
         return true;
@@ -6527,7 +7008,17 @@ export function isPrivateChannelAddEventListenerResponse(value: any): value is P
 
 export const PRIVATE_CHANNEL_ADD_EVENT_LISTENER_RESPONSE_TYPE = "PrivateChannelAddEventListenerResponse";
 
+/**
+ * Returns true if the value has a type property with value 'privateChannelDisconnectRequest'. This is a fast check that does not check the format of the message
+ */
 export function isPrivateChannelDisconnectRequest(value: any): value is PrivateChannelDisconnectRequest {
+    return value != null && value.type === 'privateChannelDisconnectRequest';
+}
+
+/**
+ * Returns true if value is a valid PrivateChannelDisconnectRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidPrivateChannelDisconnectRequest(value: any): value is PrivateChannelDisconnectRequest {
     try {
         Convert.privateChannelDisconnectRequestToJson(value);
         return true;
@@ -6538,7 +7029,17 @@ export function isPrivateChannelDisconnectRequest(value: any): value is PrivateC
 
 export const PRIVATE_CHANNEL_DISCONNECT_REQUEST_TYPE = "PrivateChannelDisconnectRequest";
 
+/**
+ * Returns true if the value has a type property with value 'privateChannelDisconnectResponse'. This is a fast check that does not check the format of the message
+ */
 export function isPrivateChannelDisconnectResponse(value: any): value is PrivateChannelDisconnectResponse {
+    return value != null && value.type === 'privateChannelDisconnectResponse';
+}
+
+/**
+ * Returns true if value is a valid PrivateChannelDisconnectResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidPrivateChannelDisconnectResponse(value: any): value is PrivateChannelDisconnectResponse {
     try {
         Convert.privateChannelDisconnectResponseToJson(value);
         return true;
@@ -6549,7 +7050,17 @@ export function isPrivateChannelDisconnectResponse(value: any): value is Private
 
 export const PRIVATE_CHANNEL_DISCONNECT_RESPONSE_TYPE = "PrivateChannelDisconnectResponse";
 
+/**
+ * Returns true if the value has a type property with value 'privateChannelOnAddContextListenerEvent'. This is a fast check that does not check the format of the message
+ */
 export function isPrivateChannelOnAddContextListenerEvent(value: any): value is PrivateChannelOnAddContextListenerEvent {
+    return value != null && value.type === 'privateChannelOnAddContextListenerEvent';
+}
+
+/**
+ * Returns true if value is a valid PrivateChannelOnAddContextListenerEvent. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidPrivateChannelOnAddContextListenerEvent(value: any): value is PrivateChannelOnAddContextListenerEvent {
     try {
         Convert.privateChannelOnAddContextListenerEventToJson(value);
         return true;
@@ -6560,7 +7071,17 @@ export function isPrivateChannelOnAddContextListenerEvent(value: any): value is 
 
 export const PRIVATE_CHANNEL_ON_ADD_CONTEXT_LISTENER_EVENT_TYPE = "PrivateChannelOnAddContextListenerEvent";
 
+/**
+ * Returns true if the value has a type property with value 'privateChannelOnDisconnectEvent'. This is a fast check that does not check the format of the message
+ */
 export function isPrivateChannelOnDisconnectEvent(value: any): value is PrivateChannelOnDisconnectEvent {
+    return value != null && value.type === 'privateChannelOnDisconnectEvent';
+}
+
+/**
+ * Returns true if value is a valid PrivateChannelOnDisconnectEvent. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidPrivateChannelOnDisconnectEvent(value: any): value is PrivateChannelOnDisconnectEvent {
     try {
         Convert.privateChannelOnDisconnectEventToJson(value);
         return true;
@@ -6571,7 +7092,17 @@ export function isPrivateChannelOnDisconnectEvent(value: any): value is PrivateC
 
 export const PRIVATE_CHANNEL_ON_DISCONNECT_EVENT_TYPE = "PrivateChannelOnDisconnectEvent";
 
+/**
+ * Returns true if the value has a type property with value 'privateChannelOnUnsubscribeEvent'. This is a fast check that does not check the format of the message
+ */
 export function isPrivateChannelOnUnsubscribeEvent(value: any): value is PrivateChannelOnUnsubscribeEvent {
+    return value != null && value.type === 'privateChannelOnUnsubscribeEvent';
+}
+
+/**
+ * Returns true if value is a valid PrivateChannelOnUnsubscribeEvent. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidPrivateChannelOnUnsubscribeEvent(value: any): value is PrivateChannelOnUnsubscribeEvent {
     try {
         Convert.privateChannelOnUnsubscribeEventToJson(value);
         return true;
@@ -6582,7 +7113,17 @@ export function isPrivateChannelOnUnsubscribeEvent(value: any): value is Private
 
 export const PRIVATE_CHANNEL_ON_UNSUBSCRIBE_EVENT_TYPE = "PrivateChannelOnUnsubscribeEvent";
 
+/**
+ * Returns true if the value has a type property with value 'privateChannelUnsubscribeEventListenerRequest'. This is a fast check that does not check the format of the message
+ */
 export function isPrivateChannelUnsubscribeEventListenerRequest(value: any): value is PrivateChannelUnsubscribeEventListenerRequest {
+    return value != null && value.type === 'privateChannelUnsubscribeEventListenerRequest';
+}
+
+/**
+ * Returns true if value is a valid PrivateChannelUnsubscribeEventListenerRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidPrivateChannelUnsubscribeEventListenerRequest(value: any): value is PrivateChannelUnsubscribeEventListenerRequest {
     try {
         Convert.privateChannelUnsubscribeEventListenerRequestToJson(value);
         return true;
@@ -6593,7 +7134,17 @@ export function isPrivateChannelUnsubscribeEventListenerRequest(value: any): val
 
 export const PRIVATE_CHANNEL_UNSUBSCRIBE_EVENT_LISTENER_REQUEST_TYPE = "PrivateChannelUnsubscribeEventListenerRequest";
 
+/**
+ * Returns true if the value has a type property with value 'privateChannelUnsubscribeEventListenerResponse'. This is a fast check that does not check the format of the message
+ */
 export function isPrivateChannelUnsubscribeEventListenerResponse(value: any): value is PrivateChannelUnsubscribeEventListenerResponse {
+    return value != null && value.type === 'privateChannelUnsubscribeEventListenerResponse';
+}
+
+/**
+ * Returns true if value is a valid PrivateChannelUnsubscribeEventListenerResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidPrivateChannelUnsubscribeEventListenerResponse(value: any): value is PrivateChannelUnsubscribeEventListenerResponse {
     try {
         Convert.privateChannelUnsubscribeEventListenerResponseToJson(value);
         return true;
@@ -6604,7 +7155,17 @@ export function isPrivateChannelUnsubscribeEventListenerResponse(value: any): va
 
 export const PRIVATE_CHANNEL_UNSUBSCRIBE_EVENT_LISTENER_RESPONSE_TYPE = "PrivateChannelUnsubscribeEventListenerResponse";
 
+/**
+ * Returns true if the value has a type property with value 'raiseIntentForContextRequest'. This is a fast check that does not check the format of the message
+ */
 export function isRaiseIntentForContextRequest(value: any): value is RaiseIntentForContextRequest {
+    return value != null && value.type === 'raiseIntentForContextRequest';
+}
+
+/**
+ * Returns true if value is a valid RaiseIntentForContextRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidRaiseIntentForContextRequest(value: any): value is RaiseIntentForContextRequest {
     try {
         Convert.raiseIntentForContextRequestToJson(value);
         return true;
@@ -6615,7 +7176,17 @@ export function isRaiseIntentForContextRequest(value: any): value is RaiseIntent
 
 export const RAISE_INTENT_FOR_CONTEXT_REQUEST_TYPE = "RaiseIntentForContextRequest";
 
+/**
+ * Returns true if the value has a type property with value 'raiseIntentForContextResponse'. This is a fast check that does not check the format of the message
+ */
 export function isRaiseIntentForContextResponse(value: any): value is RaiseIntentForContextResponse {
+    return value != null && value.type === 'raiseIntentForContextResponse';
+}
+
+/**
+ * Returns true if value is a valid RaiseIntentForContextResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidRaiseIntentForContextResponse(value: any): value is RaiseIntentForContextResponse {
     try {
         Convert.raiseIntentForContextResponseToJson(value);
         return true;
@@ -6626,7 +7197,17 @@ export function isRaiseIntentForContextResponse(value: any): value is RaiseInten
 
 export const RAISE_INTENT_FOR_CONTEXT_RESPONSE_TYPE = "RaiseIntentForContextResponse";
 
+/**
+ * Returns true if the value has a type property with value 'raiseIntentRequest'. This is a fast check that does not check the format of the message
+ */
 export function isRaiseIntentRequest(value: any): value is RaiseIntentRequest {
+    return value != null && value.type === 'raiseIntentRequest';
+}
+
+/**
+ * Returns true if value is a valid RaiseIntentRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidRaiseIntentRequest(value: any): value is RaiseIntentRequest {
     try {
         Convert.raiseIntentRequestToJson(value);
         return true;
@@ -6637,7 +7218,17 @@ export function isRaiseIntentRequest(value: any): value is RaiseIntentRequest {
 
 export const RAISE_INTENT_REQUEST_TYPE = "RaiseIntentRequest";
 
+/**
+ * Returns true if the value has a type property with value 'raiseIntentResponse'. This is a fast check that does not check the format of the message
+ */
 export function isRaiseIntentResponse(value: any): value is RaiseIntentResponse {
+    return value != null && value.type === 'raiseIntentResponse';
+}
+
+/**
+ * Returns true if value is a valid RaiseIntentResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidRaiseIntentResponse(value: any): value is RaiseIntentResponse {
     try {
         Convert.raiseIntentResponseToJson(value);
         return true;
@@ -6648,7 +7239,17 @@ export function isRaiseIntentResponse(value: any): value is RaiseIntentResponse 
 
 export const RAISE_INTENT_RESPONSE_TYPE = "RaiseIntentResponse";
 
+/**
+ * Returns true if the value has a type property with value 'raiseIntentResultResponse'. This is a fast check that does not check the format of the message
+ */
 export function isRaiseIntentResultResponse(value: any): value is RaiseIntentResultResponse {
+    return value != null && value.type === 'raiseIntentResultResponse';
+}
+
+/**
+ * Returns true if value is a valid RaiseIntentResultResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidRaiseIntentResultResponse(value: any): value is RaiseIntentResultResponse {
     try {
         Convert.raiseIntentResultResponseToJson(value);
         return true;
@@ -6659,7 +7260,17 @@ export function isRaiseIntentResultResponse(value: any): value is RaiseIntentRes
 
 export const RAISE_INTENT_RESULT_RESPONSE_TYPE = "RaiseIntentResultResponse";
 
+/**
+ * Returns true if the value has a type property with value 'WCP1Hello'. This is a fast check that does not check the format of the message
+ */
 export function isWebConnectionProtocol1Hello(value: any): value is WebConnectionProtocol1Hello {
+    return value != null && value.type === 'WCP1Hello';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol1Hello. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol1Hello(value: any): value is WebConnectionProtocol1Hello {
     try {
         Convert.webConnectionProtocol1HelloToJson(value);
         return true;
@@ -6670,7 +7281,17 @@ export function isWebConnectionProtocol1Hello(value: any): value is WebConnectio
 
 export const WEB_CONNECTION_PROTOCOL1_HELLO_TYPE = "WebConnectionProtocol1Hello";
 
+/**
+ * Returns true if the value has a type property with value 'WCP2LoadUrl'. This is a fast check that does not check the format of the message
+ */
 export function isWebConnectionProtocol2LoadURL(value: any): value is WebConnectionProtocol2LoadURL {
+    return value != null && value.type === 'WCP2LoadUrl';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol2LoadURL. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol2LoadURL(value: any): value is WebConnectionProtocol2LoadURL {
     try {
         Convert.webConnectionProtocol2LoadURLToJson(value);
         return true;
@@ -6681,7 +7302,17 @@ export function isWebConnectionProtocol2LoadURL(value: any): value is WebConnect
 
 export const WEB_CONNECTION_PROTOCOL2_LOAD_U_R_L_TYPE = "WebConnectionProtocol2LoadURL";
 
+/**
+ * Returns true if the value has a type property with value 'WCP3Handshake'. This is a fast check that does not check the format of the message
+ */
 export function isWebConnectionProtocol3Handshake(value: any): value is WebConnectionProtocol3Handshake {
+    return value != null && value.type === 'WCP3Handshake';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol3Handshake. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol3Handshake(value: any): value is WebConnectionProtocol3Handshake {
     try {
         Convert.webConnectionProtocol3HandshakeToJson(value);
         return true;
@@ -6692,7 +7323,17 @@ export function isWebConnectionProtocol3Handshake(value: any): value is WebConne
 
 export const WEB_CONNECTION_PROTOCOL3_HANDSHAKE_TYPE = "WebConnectionProtocol3Handshake";
 
+/**
+ * Returns true if the value has a type property with value 'WCP4ValidateAppIdentity'. This is a fast check that does not check the format of the message
+ */
 export function isWebConnectionProtocol4ValidateAppIdentity(value: any): value is WebConnectionProtocol4ValidateAppIdentity {
+    return value != null && value.type === 'WCP4ValidateAppIdentity';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol4ValidateAppIdentity. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol4ValidateAppIdentity(value: any): value is WebConnectionProtocol4ValidateAppIdentity {
     try {
         Convert.webConnectionProtocol4ValidateAppIdentityToJson(value);
         return true;
@@ -6703,7 +7344,17 @@ export function isWebConnectionProtocol4ValidateAppIdentity(value: any): value i
 
 export const WEB_CONNECTION_PROTOCOL4_VALIDATE_APP_IDENTITY_TYPE = "WebConnectionProtocol4ValidateAppIdentity";
 
+/**
+ * Returns true if the value has a type property with value 'WCP5ValidateAppIdentityFailedResponse'. This is a fast check that does not check the format of the message
+ */
 export function isWebConnectionProtocol5ValidateAppIdentityFailedResponse(value: any): value is WebConnectionProtocol5ValidateAppIdentityFailedResponse {
+    return value != null && value.type === 'WCP5ValidateAppIdentityFailedResponse';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol5ValidateAppIdentityFailedResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol5ValidateAppIdentityFailedResponse(value: any): value is WebConnectionProtocol5ValidateAppIdentityFailedResponse {
     try {
         Convert.webConnectionProtocol5ValidateAppIdentityFailedResponseToJson(value);
         return true;
@@ -6714,7 +7365,17 @@ export function isWebConnectionProtocol5ValidateAppIdentityFailedResponse(value:
 
 export const WEB_CONNECTION_PROTOCOL5_VALIDATE_APP_IDENTITY_FAILED_RESPONSE_TYPE = "WebConnectionProtocol5ValidateAppIdentityFailedResponse";
 
+/**
+ * Returns true if the value has a type property with value 'WCP5ValidateAppIdentityResponse'. This is a fast check that does not check the format of the message
+ */
 export function isWebConnectionProtocol5ValidateAppIdentitySuccessResponse(value: any): value is WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
+    return value != null && value.type === 'WCP5ValidateAppIdentityResponse';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol5ValidateAppIdentitySuccessResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol5ValidateAppIdentitySuccessResponse(value: any): value is WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
     try {
         Convert.webConnectionProtocol5ValidateAppIdentitySuccessResponseToJson(value);
         return true;
@@ -6725,7 +7386,17 @@ export function isWebConnectionProtocol5ValidateAppIdentitySuccessResponse(value
 
 export const WEB_CONNECTION_PROTOCOL5_VALIDATE_APP_IDENTITY_SUCCESS_RESPONSE_TYPE = "WebConnectionProtocol5ValidateAppIdentitySuccessResponse";
 
+/**
+ * Returns true if the value has a type property with value 'WCP6Goodbye'. This is a fast check that does not check the format of the message
+ */
 export function isWebConnectionProtocol6Goodbye(value: any): value is WebConnectionProtocol6Goodbye {
+    return value != null && value.type === 'WCP6Goodbye';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol6Goodbye. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol6Goodbye(value: any): value is WebConnectionProtocol6Goodbye {
     try {
         Convert.webConnectionProtocol6GoodbyeToJson(value);
         return true;
@@ -6736,7 +7407,10 @@ export function isWebConnectionProtocol6Goodbye(value: any): value is WebConnect
 
 export const WEB_CONNECTION_PROTOCOL6_GOODBYE_TYPE = "WebConnectionProtocol6Goodbye";
 
-export function isWebConnectionProtocolMessage(value: any): value is WebConnectionProtocolMessage {
+/**
+ * Returns true if value is a valid WebConnectionProtocolMessage. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocolMessage(value: any): value is WebConnectionProtocolMessage {
     try {
         Convert.webConnectionProtocolMessageToJson(value);
         return true;
@@ -6745,91 +7419,4 @@ export function isWebConnectionProtocolMessage(value: any): value is WebConnecti
     }
 }
 
-export const WEB_CONNECTION_PROTOCOL_MESSAGE_TYPE = "WebConnectionProtocolMessage";
-
-export type RequestMessage = AddContextListenerRequest | AddEventListenerRequest | AddIntentListenerRequest | BroadcastRequest | ContextListenerUnsubscribeRequest | CreatePrivateChannelRequest | EventListenerUnsubscribeRequest | FindInstancesRequest | FindIntentRequest | FindIntentsByContextRequest | GetAppMetadataRequest | GetCurrentChannelRequest | GetCurrentContextRequest | GetInfoRequest | GetOrCreateChannelRequest | GetUserChannelsRequest | HeartbeatAcknowledgementRequest | IntentListenerUnsubscribeRequest | IntentResultRequest | JoinUserChannelRequest | LeaveCurrentChannelRequest | OpenRequest | PrivateChannelAddEventListenerRequest | PrivateChannelDisconnectRequest | PrivateChannelUnsubscribeEventListenerRequest | RaiseIntentForContextRequest | RaiseIntentRequest;
-
-export type ResponseMessage = AddContextListenerResponse | AddEventListenerResponse | AddIntentListenerResponse | BroadcastResponse | ContextListenerUnsubscribeResponse | CreatePrivateChannelResponse | EventListenerUnsubscribeResponse | FindInstancesResponse | FindIntentResponse | FindIntentsByContextResponse | GetAppMetadataResponse | GetCurrentChannelResponse | GetCurrentContextResponse | GetInfoResponse | GetOrCreateChannelResponse | GetUserChannelsResponse | IntentListenerUnsubscribeResponse | IntentResultResponse | JoinUserChannelResponse | LeaveCurrentChannelResponse | OpenResponse | PrivateChannelAddEventListenerResponse | PrivateChannelDisconnectResponse | PrivateChannelUnsubscribeEventListenerResponse | RaiseIntentForContextResponse | RaiseIntentResponse | RaiseIntentResultResponse | WebConnectionProtocol5ValidateAppIdentityFailedResponse | WebConnectionProtocol5ValidateAppIdentitySuccessResponse;
-
-export type EventMessage = BroadcastEvent | ChannelChangedEvent | HeartbeatEvent | IntentEvent | PrivateChannelOnAddContextListenerEvent | PrivateChannelOnDisconnectEvent | PrivateChannelOnUnsubscribeEvent;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+export const WEB_CONNECTION_PROTOCOL_MESSAGE_TYPE = "WebConnectionProtocolMessage";   

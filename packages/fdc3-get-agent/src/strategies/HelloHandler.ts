@@ -82,7 +82,7 @@ export class HelloHandler {
     ifrm.style.position = 'fixed';
 
     //Wait for the iframe to load... then send it a hello message
-    ifrm.onload = event => {
+    ifrm.onload = _event => {
       if (ifrm.contentWindow) {
         this.sendWCP1Hello(ifrm.contentWindow, '*');
       } else {
