@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/api/common.schema.json",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/common.schema.json",
   "title": "Bridge Common definitions",
   "type": "object",
   "description": "Common definitions that are referenced only in the Bridging wire protocol schemas",
@@ -82,7 +82,7 @@
       "title": "Response Error Details",
       "type": "array",
       "items": {
-        "$ref": "#/$defs/ErrorMessages"
+        "$ref": "../api/common.schema.json#/$defs/ErrorMessages"
       },
       "description": "Array of error message strings for responses that were not returned to the bridge before the timeout or because an error occurred. Should be the same length as the `errorSources` array and ordered the same. May be omitted if all sources responded without errors."
     },
