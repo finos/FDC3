@@ -1,5 +1,5 @@
 import { IframeChannelsPayload, Channel } from "@kite9/fdc3-common";
-import { FDC3_USER_INTERFACE_CHANNEL_SELECTED_TYPE, FDC3_USER_INTERFACE_CHANNELS_TYPE, FDC3_USER_INTERFACE_HANDSHAKE_TYPE, FDC3_USER_INTERFACE_HELLO_TYPE, FDC3_USER_INTERFACE_RESTYLE_TYPE, Fdc3UserInterfaceHello, Fdc3UserInterfaceRestyle } from "@kite9/fdc3-schema/dist/generated/api/BrowserTypes";
+import { Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceHello, Fdc3UserInterfaceRestyle, isFdc3UserInterfaceChannels, isFdc3UserInterfaceHandshake } from "@kite9/fdc3-schema/dist/generated/api/BrowserTypes";
 
 const fillChannels = (data: Channel[], selected: string | null, messageClickedChannel: (s: string | null) => void) => {
   const list = document.getElementById('list')!!;
@@ -48,18 +48,19 @@ window.addEventListener("load", () => {
   myPort.onmessage = ({ data }) => {
     console.debug("Received message: ", data);
 
-    if (data.type == FDC3_USER_INTERFACE_HANDSHAKE_TYPE) {
+    if (isFdc3UserInterfaceHandshake(data)) {
       collapse();
-    } else if (data.type == FDC3_USER_INTERFACE_CHANNELS_TYPE) {
+    } else if (isFdc3UserInterfaceChannels(data)) {
       logo.removeEventListener("click", expand);
       const { userChannels, selected } = data.payload as IframeChannelsPayload;
       fillChannels(userChannels, selected, (channelStr) => {
-        myPort.postMessage({
-          type: FDC3_USER_INTERFACE_CHANNEL_SELECTED_TYPE,
+        const message: Fdc3UserInterfaceChannelSelected = {
+          type: "Fdc3UserInterfaceChannelSelected",
           payload: {
             selected: channelStr || null
           }
-        });
+        };
+        myPort.postMessage(message);
         collapse();
       });
       const selectedChannel = userChannels.find((c) => c.id === selected);
@@ -70,7 +71,7 @@ window.addEventListener("load", () => {
   };
 
   const helloMessage: Fdc3UserInterfaceHello = {
-    type: FDC3_USER_INTERFACE_HELLO_TYPE,
+    type: "Fdc3UserInterfaceHello",
     payload: {
       implementationDetails: "",
       initialCSS: {
@@ -90,7 +91,7 @@ window.addEventListener("load", () => {
   const expand = () => {
     document.body.setAttribute("data-expanded", "true");
     const restyleMessage: Fdc3UserInterfaceRestyle = {
-      type: FDC3_USER_INTERFACE_RESTYLE_TYPE,
+      type: "Fdc3UserInterfaceRestyle",
       payload: {
         updatedCSS: {
           width: `100%`,
@@ -108,7 +109,7 @@ window.addEventListener("load", () => {
 
   const collapse = () => {
     const restyleMessage: Fdc3UserInterfaceRestyle = {
-      type: FDC3_USER_INTERFACE_RESTYLE_TYPE,
+      type: "Fdc3UserInterfaceRestyle",
       payload: {
         updatedCSS: {
           width: `${8 * 4}px`,
