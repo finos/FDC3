@@ -145,7 +145,7 @@ interface FDC3ChannelChangedEvent extends FDC3Event {
 ```csharp
 class Details 
 {
-  string? currentChannelId { get; }
+  string? CurrentChannelId { get; }
 }
 
 interface IFDC3ChannelChangedEvent : IFDC3Event
@@ -207,7 +207,7 @@ interface PrivateChannelEvent extends ApiEvent {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-interface IPrivateChannelEventt<T> : IApiEvent
+interface IPrivateChannelEvent<T> : IApiEvent
 {
   PrivateChannelEventType Type { get; }
   T Details { get; }
@@ -244,7 +244,7 @@ interface PrivateChannelAddContextListenerEvent extends PrivateChannelEvent {
 ```csharp
 class Details 
 {
-  string? contextType { get; }
+  string? ContextType { get; }
 }
 
 interface IPrivateChannelAddContextListenerEvent : IPrivateChannelEvent
@@ -280,7 +280,7 @@ interface PrivateChannelUnsubscribeEvent extends PrivateChannelEvent {
 ```csharp
 class Details 
 {
-  string? contextType { get; }
+  string? ContextType { get; }
 }
 
 interface IPrivateChannelUnsubscribeEvent : IPrivateChannelEvent
