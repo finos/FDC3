@@ -18,11 +18,12 @@ export const DEFAULT_COLLAPSED_CSS = {
 }
 
 const DEFAULT_EXPANDED_CSS = {
-    width: "450px",
-    height: "600px",
+    left: "0",
+    right: "0",
+    top: "0",
+    bottom: "0",
     position: "fixed",
-    zIndex: "1000",
-    transition: "all 0.5s ease-out allow-discrete"
+    zIndex: "1000"
 }
 
 export type Position = {
@@ -31,7 +32,6 @@ export type Position = {
     bottom: string,
     right: string
 }
-
 
 const position: Position = {
     right: "10px",
@@ -44,6 +44,9 @@ window.addEventListener("load", () => {
     const parent = window.parent;
     const logo = document.getElementById("logo")!!
     const close = document.getElementById("close")!!
+    const drag = document.getElementById("drag")!!
+    const selector = document.getElementById("selector")!!
+    const list = document.getElementById("channel-list")!!
 
     const mc = new MessageChannel();
     const myPort = mc.port1
@@ -61,8 +64,22 @@ window.addEventListener("load", () => {
     } as any as IframeHello, "*", [mc.port2]);
 
     function changeSize(expanded: boolean) {
-        document.body.setAttribute("data-expanded", "" + expanded);
-        myPort.postMessage({ type: FDC3_USER_INTERFACE_RESTYLE_TYPE, payload: { updatedCSS: expanded ? { ...DEFAULT_EXPANDED_CSS, ...position } : { ...DEFAULT_COLLAPSED_CSS, ...position } } } as IframeRestyle)
+        document.body.setAttribute("data-expanded", "none");
+        if (expanded) {
+            myPort.postMessage({ type: FDC3_USER_INTERFACE_RESTYLE_TYPE, payload: { updatedCSS: DEFAULT_EXPANDED_CSS } } as IframeRestyle)
+            selector.style.left = position.left
+            selector.style.top = position.top
+            selector.style.right = position.right
+            selector.style.bottom = position.bottom
+            setTimeout(() => {
+                document.body.setAttribute("data-expanded", "selector");
+            }, 20)
+        } else {
+            myPort.postMessage({ type: FDC3_USER_INTERFACE_RESTYLE_TYPE, payload: { updatedCSS: { ...DEFAULT_COLLAPSED_CSS, ...position } } } as IframeRestyle)
+            setTimeout(() => {
+                document.body.setAttribute("data-expanded", "logo");
+            }, 20)
+        }
     }
 
     myPort.addEventListener("message", (e) => {
@@ -81,36 +98,32 @@ window.addEventListener("load", () => {
         }
     })
 
+    close.addEventListener("click", () => {
+        changeSize(false)
+    })
 
-    dragElement(logo, myPort, position) /*, () => {
+    logo.addEventListener("click", () => {
         list.innerHTML = ''
         channels.forEach(channel => {
 
-            const li = document.createElement("li")
+            const li = document.createElement("div")
             li.style.backgroundColor = channel.displayMetadata.color
-            const a = document.createElement("a")
             const description = document.createElement("em")
             description.textContent = channel.displayMetadata.name = (channel.id == channelId ? " CURRENT CHANNEL " : "")
-            a.textContent = channel.id
+            li.textContent = channel.id
 
-            li.appendChild(a)
             li.appendChild(description)
             list.appendChild(li)
-            a.setAttribute("href", "#")
-            a.onclick = () => {
+            li.onclick = () => {
                 changeSize(false)
                 channelId = channel.id
                 myPort.postMessage({ type: FDC3_USER_INTERFACE_CHANNEL_SELECTED_TYPE, payload: { selected: channel.id } })
             }
         })
-
-        // ask the parent container to increase the window size
         changeSize(true)
-    }) */
-
-    close.addEventListener("click", () => {
-        changeSize(false)
     })
 
+
+    dragElement(drag, selector, position)
 
 })

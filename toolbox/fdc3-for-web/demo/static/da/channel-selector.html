@@ -4,64 +4,118 @@
     <meta charset="UTF-8" />
     <script type="module" src="/src/client/ui/channel-selector.ts"></script>
     <style>
-      body[data-expanded="true"] #logo {
+      body #logo,
+      body #selector {
         display: none;
       }
 
-      body[data-expanded="true"] #selector {
+      body[data-expanded="selector"] #selector {
+        display: flex;
+      }
+
+      body[data-expanded="logo"] #logo {
         display: block;
       }
 
-      body[data-expanded="false"] #logo {
-        display: block;
-      }
-
-      body[data-expanded="false"] #selector {
-        display: none;
-      }
-
-      .background,
       .selector {
-          left: 0;
-          right: 0;
-          top: 0;
-          bottom: 0;
+          width: 400px;
+          height: 300px;
           position: fixed;
       }
 
       .background {
-        z-index: 1;
-        background-color: #22222242; 
+        z-index: 999;
+        width: 100%;
+        height: 100%;
+        background-color: #22222222; 
       }
 
       .selector {
         z-index: 2;
         background-color: #fff;
+        right: 10px;
+        bottom: 10px;
       }
 
       .logo {
         z-index: 3;
         position: fixed;
+        left: 0;
+        top: 0;
+     }
+
+     .selector {
+      border-radius: .5rem;
+      border: 1px solid black;
+      font-family: Arial, Helvetica, sans-serif;
+      display: flex;
+      flex-direction: column;
+     }
+
+     .header {
+      display: flex;
+      flex-basis: 2rem;
+      margin-top: .5rem;
+      flex-grow: 0
+     }
+
+     .header img {
+      flex-grow: 0;
+      flex-basis: 1.5rem;
+      width: 1.5rem;
+    }
+
+     .header h1 {
+      flex-grow: 1;
+      font-size: 1.5rem;
+      margin: .5rem;
+     }
+
+     .channel-list {
+      flex-grow: 1;
+      background-color: white;
+      border: 1px solid black;
+      margin: .5rem;
+      overflow-y: scroll;
+      flex-basis: 10rem;
+      border-radius: .5rem;
+     }
+
+     .channel-list div {
+      padding: .5rem;
+      margin: .5rem;
+      border-radius: .5rem;
+      color: white;
+     }
+
+     #drag {
+      cursor: move;
      }
       
     </style>
   </head>
 
-  <body data-expanded="false">
+  <body data-expanded="logo">
 
 
     <div class="background" id="background">
     </div>
     
     <div id="selector" class="selector" style="background-color: #ddd">
-      <h1>Channel Selector</h1>
-      <button id="close">Close</button>
-      <ul id="channel-list"></ul>
-
-   
+      <div class="header">
+        <h1>Channel Selector</h1>
+        <img id="close" src="close.svg" alt="Drag">        
+        <img id="drag" src="drag.svg" alt="Drag">        
+      </div>
+      <div id="channel-list" class="channel-list">
+          <div>blib</div>
+          <div>blib</div>
+          <div>blib</div>
+          <div>blib</div>
+      </div>
     </div>
     <div id="logo" class="logo">
-      <img src="noun-mailbox-6010513.png" alt="Demo Icon" width="100%" />
+      <img src="channel.svg" alt="Channel Selector" width="100%" />
     </div>
   </body>
 </html>
