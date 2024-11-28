@@ -26,13 +26,8 @@ export default [
 
         plugins: [
             nodeResolve(),
-            // resolve({
-            //     mainFields: ['module', 'main', "browser"],
-            //     extensions: [...RESOLVE_DEFAULTS.extensions, '.cjs', '.mjs', '.jsx'],
-            // }),
-            // all bundled external modules need to be converted from CJS to ESM
             commonjs({
-                // use a regex to make sure to include eventual hoisted packages
+                // use a regex to make sure to include eventual hoisted packages (RM:  what is this?)
                 include: /\/regenerator-runtime\//,
             }),
             json(),
