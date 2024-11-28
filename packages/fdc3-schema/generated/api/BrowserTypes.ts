@@ -1,7 +1,15 @@
 // To parse this data:
 //
-//   import { Convert, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, Fdc3UserInterfaceChannels, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceDrag, Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, Fdc3UserInterfaceMessage, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage } from "./file";
+//   import { Convert, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceChannels, Fdc3UserInterfaceDrag, Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, Fdc3UserInterfaceMessage, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse } from "./file";
 //
+//   const webConnectionProtocol1Hello = Convert.toWebConnectionProtocol1Hello(json);
+//   const webConnectionProtocol2LoadURL = Convert.toWebConnectionProtocol2LoadURL(json);
+//   const webConnectionProtocol3Handshake = Convert.toWebConnectionProtocol3Handshake(json);
+//   const webConnectionProtocol4ValidateAppIdentity = Convert.toWebConnectionProtocol4ValidateAppIdentity(json);
+//   const webConnectionProtocol5ValidateAppIdentityFailedResponse = Convert.toWebConnectionProtocol5ValidateAppIdentityFailedResponse(json);
+//   const webConnectionProtocol5ValidateAppIdentitySuccessResponse = Convert.toWebConnectionProtocol5ValidateAppIdentitySuccessResponse(json);
+//   const webConnectionProtocol6Goodbye = Convert.toWebConnectionProtocol6Goodbye(json);
+//   const webConnectionProtocolMessage = Convert.toWebConnectionProtocolMessage(json);
 //   const addContextListenerRequest = Convert.toAddContextListenerRequest(json);
 //   const addContextListenerResponse = Convert.toAddContextListenerResponse(json);
 //   const addEventListenerRequest = Convert.toAddEventListenerRequest(json);
@@ -21,8 +29,8 @@
 //   const createPrivateChannelResponse = Convert.toCreatePrivateChannelResponse(json);
 //   const eventListenerUnsubscribeRequest = Convert.toEventListenerUnsubscribeRequest(json);
 //   const eventListenerUnsubscribeResponse = Convert.toEventListenerUnsubscribeResponse(json);
-//   const fdc3UserInterfaceChannels = Convert.toFdc3UserInterfaceChannels(json);
 //   const fdc3UserInterfaceChannelSelected = Convert.toFdc3UserInterfaceChannelSelected(json);
+//   const fdc3UserInterfaceChannels = Convert.toFdc3UserInterfaceChannels(json);
 //   const fdc3UserInterfaceDrag = Convert.toFdc3UserInterfaceDrag(json);
 //   const fdc3UserInterfaceHandshake = Convert.toFdc3UserInterfaceHandshake(json);
 //   const fdc3UserInterfaceHello = Convert.toFdc3UserInterfaceHello(json);
@@ -75,17 +83,534 @@
 //   const raiseIntentRequest = Convert.toRaiseIntentRequest(json);
 //   const raiseIntentResponse = Convert.toRaiseIntentResponse(json);
 //   const raiseIntentResultResponse = Convert.toRaiseIntentResultResponse(json);
-//   const webConnectionProtocol1Hello = Convert.toWebConnectionProtocol1Hello(json);
-//   const webConnectionProtocol2LoadURL = Convert.toWebConnectionProtocol2LoadURL(json);
-//   const webConnectionProtocol3Handshake = Convert.toWebConnectionProtocol3Handshake(json);
-//   const webConnectionProtocol4ValidateAppIdentity = Convert.toWebConnectionProtocol4ValidateAppIdentity(json);
-//   const webConnectionProtocol5ValidateAppIdentityFailedResponse = Convert.toWebConnectionProtocol5ValidateAppIdentityFailedResponse(json);
-//   const webConnectionProtocol5ValidateAppIdentitySuccessResponse = Convert.toWebConnectionProtocol5ValidateAppIdentitySuccessResponse(json);
-//   const webConnectionProtocol6Goodbye = Convert.toWebConnectionProtocol6Goodbye(json);
-//   const webConnectionProtocolMessage = Convert.toWebConnectionProtocolMessage(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
+
+/**
+ * Hello message sent by an application to a parent window or frame when attempting to
+ * establish connectivity to a Desktop Agent.
+ *
+ * A message used during the connection flow for an application to a Desktop Agent in a
+ * browser window. Used for messages sent in either direction.
+ */
+export interface WebConnectionProtocol1Hello {
+    /**
+     * Metadata for a Web Connection Protocol message.
+     */
+    meta: WebConnectionProtocol1HelloMeta;
+    /**
+     * The message payload, containing data pertaining to this connection step.
+     */
+    payload: WebConnectionProtocol1HelloPayload;
+    /**
+     * Identifies the type of the connection step message.
+     */
+    type: "WCP1Hello";
+}
+
+/**
+ * Metadata for a Web Connection Protocol message.
+ */
+export interface WebConnectionProtocol1HelloMeta {
+    connectionAttemptUuid: string;
+    timestamp: Date;
+}
+
+/**
+ * The message payload, containing data pertaining to this connection step.
+ */
+export interface WebConnectionProtocol1HelloPayload {
+    /**
+     * The current URL of the page attempting to connect. This may differ from the identityUrl,
+     * but the origins MUST match.
+     */
+    actualUrl: string;
+    /**
+     * A flag that may be used to indicate that a channel selector user interface is or is not
+     * required. Set to `false` if the app includes its own interface for selecting channels or
+     * does not work with user channels.
+     */
+    channelSelector?: boolean;
+    /**
+     * The version of FDC3 API that the app supports.
+     */
+    fdc3Version: string;
+    /**
+     * URL to use for the identity of the application. Desktop Agents MUST validate that the
+     * origin of the message matches the URL, but MAY implement custom comparison logic.
+     */
+    identityUrl: string;
+    /**
+     * A flag that may be used to indicate that an intent resolver is or is not required. Set to
+     * `false` if no intents, or only targeted intents, are raised.
+     */
+    intentResolver?: boolean;
+    [property: string]: any;
+}
+
+/**
+ * Identifies the type of the connection step message.
+ */
+
+/**
+ * Response from a Desktop Agent to an application requesting access to it indicating that
+ * it should load a specified URL into a hidden iframe in order to establish connectivity to
+ * a Desktop Agent.
+ *
+ * A message used during the connection flow for an application to a Desktop Agent in a
+ * browser window. Used for messages sent in either direction.
+ */
+export interface WebConnectionProtocol2LoadURL {
+    /**
+     * Metadata for a Web Connection Protocol message.
+     */
+    meta: WebConnectionProtocol1HelloMeta;
+    /**
+     * The message payload, containing data pertaining to this connection step.
+     */
+    payload: WebConnectionProtocol2LoadURLPayload;
+    /**
+     * Identifies the type of the connection step message.
+     */
+    type: "WCP2LoadUrl";
+}
+
+/**
+ * The message payload, containing data pertaining to this connection step.
+ */
+export interface WebConnectionProtocol2LoadURLPayload {
+    /**
+     * A URL which can be used to establish communication with the Desktop Agent, via loading
+     * the URL into an iframe and restarting the Web Connection protocol with the iframe as the
+     * target.
+     */
+    iframeUrl: string;
+    [property: string]: any;
+}
+
+/**
+ * Identifies the type of the connection step message.
+ */
+
+/**
+ * Handshake message sent by the Desktop Agent to the app (with a MessagePort appended) that
+ * should be used for subsequent communication steps.
+ *
+ * A message used during the connection flow for an application to a Desktop Agent in a
+ * browser window. Used for messages sent in either direction.
+ */
+export interface WebConnectionProtocol3Handshake {
+    /**
+     * Metadata for a Web Connection Protocol message.
+     */
+    meta: WebConnectionProtocol1HelloMeta;
+    /**
+     * The message payload, containing data pertaining to this connection step.
+     */
+    payload: WebConnectionProtocol3HandshakePayload;
+    /**
+     * Identifies the type of the connection step message.
+     */
+    type: "WCP3Handshake";
+}
+
+/**
+ * The message payload, containing data pertaining to this connection step.
+ */
+export interface WebConnectionProtocol3HandshakePayload {
+    /**
+     * Indicates whether a channel selector user interface is required and the URL to use to do
+     * so. Set to `true` to use the default or `false` to disable the channel selector (as the
+     * Desktop Agent will handle it another way).
+     */
+    channelSelectorUrl: boolean | string;
+    /**
+     * The version of FDC3 API that the Desktop Agent will provide support for.
+     */
+    fdc3Version: string;
+    /**
+     * Indicates whether an intent resolver user interface is required and the URL to use to do
+     * so. Set to `true` to use the default or `false` to disable the intent resolver (as the
+     * Desktop Agent will handle it another way).
+     */
+    intentResolverUrl: boolean | string;
+}
+
+/**
+ * Identifies the type of the connection step message.
+ */
+
+/**
+ * Identity Validation request from an app attempting to connect to a Desktop Agent.
+ *
+ * A message used during the connection flow for an application to a Desktop Agent in a
+ * browser window. Used for messages sent in either direction.
+ */
+export interface WebConnectionProtocol4ValidateAppIdentity {
+    /**
+     * Metadata for a Web Connection Protocol message.
+     */
+    meta: WebConnectionProtocol1HelloMeta;
+    /**
+     * The message payload, containing data pertaining to this connection step.
+     */
+    payload: WebConnectionProtocol4ValidateAppIdentityPayload;
+    /**
+     * Identifies the type of the connection step message.
+     */
+    type: "WCP4ValidateAppIdentity";
+}
+
+/**
+ * The message payload, containing data pertaining to this connection step.
+ */
+export interface WebConnectionProtocol4ValidateAppIdentityPayload {
+    /**
+     * The current URL of the page attempting to connect. This may differ from the identityUrl,
+     * but the origins MUST match.
+     */
+    actualUrl: string;
+    /**
+     * URL to use for the identity of the application. Desktop Agents MUST validate that the
+     * origin of the message matches the URL, but MAY implement custom comparison logic.
+     */
+    identityUrl: string;
+    /**
+     * If an application has previously connected to the Desktop Agent, it may specify its prior
+     * instance id and associated instance UUID to request the same same instance Id be assigned.
+     */
+    instanceId?: string;
+    /**
+     * Instance UUID associated with the requested instanceId.
+     */
+    instanceUuid?: string;
+}
+
+/**
+ * Identifies the type of the connection step message.
+ */
+
+/**
+ * Message sent by the Desktop Agent to an app if their identity validation fails.
+ *
+ * A message used during the connection flow for an application to a Desktop Agent in a
+ * browser window. Used for messages sent in either direction.
+ */
+export interface WebConnectionProtocol5ValidateAppIdentityFailedResponse {
+    /**
+     * Metadata for a Web Connection Protocol message.
+     */
+    meta: WebConnectionProtocol1HelloMeta;
+    /**
+     * The message payload, containing data pertaining to this connection step.
+     */
+    payload: WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload;
+    /**
+     * Identifies the type of the connection step message.
+     */
+    type: "WCP5ValidateAppIdentityFailedResponse";
+}
+
+/**
+ * The message payload, containing data pertaining to this connection step.
+ */
+export interface WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload {
+    message?: string;
+}
+
+/**
+ * Identifies the type of the connection step message.
+ */
+
+/**
+ * Message sent by the Desktop Agent to an app after successful identity validation.
+ *
+ * A message used during the connection flow for an application to a Desktop Agent in a
+ * browser window. Used for messages sent in either direction.
+ */
+export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
+    /**
+     * Metadata for a Web Connection Protocol message.
+     */
+    meta: WebConnectionProtocol1HelloMeta;
+    /**
+     * The message payload, containing data pertaining to this connection step.
+     */
+    payload: WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload;
+    /**
+     * Identifies the type of the connection step message.
+     */
+    type: "WCP5ValidateAppIdentityResponse";
+}
+
+/**
+ * The message payload, containing data pertaining to this connection step.
+ */
+export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload {
+    /**
+     * The appId that the app's identity was validated against.
+     */
+    appId: string;
+    /**
+     * Implementation metadata for the Desktop Agent, which includes an appMetadata element
+     * containing a copy of the app's own metadata.
+     */
+    implementationMetadata: ImplementationMetadata;
+    /**
+     * The instance Id granted to the application by the Desktop Agent.
+     */
+    instanceId: string;
+    /**
+     * Instance UUID associated with the instanceId granted, which may be used to retrieve the
+     * same instanceId if the app is reloaded or navigates.
+     */
+    instanceUuid: string;
+}
+
+/**
+ * Implementation metadata for the Desktop Agent, which includes an appMetadata element
+ * containing a copy of the app's own metadata.
+ *
+ * Includes Metadata for the current application.
+ *
+ * Metadata relating to the FDC3 Desktop Agent implementation and its provider.
+ */
+export interface ImplementationMetadata {
+    /**
+     * The calling application instance's own metadata, according to the Desktop Agent (MUST
+     * include at least the `appId` and `instanceId`).
+     */
+    appMetadata: AppMetadata;
+    /**
+     * The version number of the FDC3 specification that the implementation provides.
+     * The string must be a numeric semver version, e.g. 1.2 or 1.2.1.
+     */
+    fdc3Version: string;
+    /**
+     * Metadata indicating whether the Desktop Agent implements optional features of
+     * the Desktop Agent API.
+     */
+    optionalFeatures: OptionalFeatures;
+    /**
+     * The name of the provider of the Desktop Agent implementation (e.g. Finsemble, Glue42,
+     * OpenFin etc.).
+     */
+    provider: string;
+    /**
+     * The version of the provider of the Desktop Agent implementation (e.g. 5.3.0).
+     */
+    providerVersion?: string;
+}
+
+/**
+ * The calling application instance's own metadata, according to the Desktop Agent (MUST
+ * include at least the `appId` and `instanceId`).
+ *
+ * Extends an `AppIdentifier`, describing an application or instance of an application, with
+ * additional descriptive metadata that is usually provided by an FDC3 App Directory that
+ * the Desktop Agent connects to.
+ *
+ * The additional information from an app directory can aid in rendering UI elements, such
+ * as a launcher menu or resolver UI. This includes a title, description, tooltip and icon
+ * and screenshot URLs.
+ *
+ * Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passed to the
+ * `app` argument of `fdc3.open`, `fdc3.raiseIntent` etc.
+ */
+export interface AppMetadata {
+    /**
+     * The unique application identifier located within a specific application directory
+     * instance. An example of an appId might be 'app@sub.root'.
+     */
+    appId: string;
+    /**
+     * A longer, multi-paragraph description for the application that could include markup.
+     */
+    description?: string;
+    /**
+     * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
+     * identify the Desktop Agent to target.
+     */
+    desktopAgent?: string;
+    /**
+     * A list of icon URLs for the application that can be used to render UI elements.
+     */
+    icons?: Icon[];
+    /**
+     * An optional instance identifier, indicating that this object represents a specific
+     * instance of the application described.
+     */
+    instanceId?: string;
+    /**
+     * An optional set of, implementation specific, metadata fields that can be used to
+     * disambiguate instances, such as a window title or screen position. Must only be set if
+     * `instanceId` is set.
+     */
+    instanceMetadata?: { [key: string]: any };
+    /**
+     * The 'friendly' app name.
+     * This field was used with the `open` and `raiseIntent` calls in FDC3 <2.0, which now
+     * require an `AppIdentifier` wth `appId` set.
+     * Note that for display purposes the `title` field should be used, if set, in preference to
+     * this field.
+     */
+    name?: string;
+    /**
+     * The type of output returned for any intent specified during resolution. May express a
+     * particular context type (e.g. "fdc3.instrument"), channel (e.g. "channel") or a channel
+     * that will receive a specified type (e.g. "channel<fdc3.instrument>").
+     */
+    resultType?: null | string;
+    /**
+     * Images representing the app in common usage scenarios that can be used to render UI
+     * elements.
+     */
+    screenshots?: Image[];
+    /**
+     * A more user-friendly application title that can be used to render UI elements.
+     */
+    title?: string;
+    /**
+     * A tooltip for the application that can be used to render UI elements.
+     */
+    tooltip?: string;
+    /**
+     * The Version of the application.
+     */
+    version?: string;
+}
+
+/**
+ * Describes an Icon image that may be used to represent the application.
+ */
+export interface Icon {
+    /**
+     * The icon dimension, formatted as `<height>x<width>`.
+     */
+    size?: string;
+    /**
+     * The icon url.
+     */
+    src: string;
+    /**
+     * Icon media type. If not present the Desktop Agent may use the src file extension.
+     */
+    type?: string;
+}
+
+/**
+ * Describes an image file, typically a screenshot, that often represents the application in
+ * a common usage scenario.
+ */
+export interface Image {
+    /**
+     * Caption for the image.
+     */
+    label?: string;
+    /**
+     * The image dimension, formatted as `<height>x<width>`.
+     */
+    size?: string;
+    /**
+     * The image url.
+     */
+    src: string;
+    /**
+     * Image media type. If not present the Desktop Agent may use the src file extension.
+     */
+    type?: string;
+}
+
+/**
+ * Metadata indicating whether the Desktop Agent implements optional features of
+ * the Desktop Agent API.
+ */
+export interface OptionalFeatures {
+    /**
+     * Used to indicate whether the experimental Desktop Agent Bridging
+     * feature is implemented by the Desktop Agent.
+     */
+    DesktopAgentBridging: boolean;
+    /**
+     * Used to indicate whether the exposure of 'originating app metadata' for
+     * context and intent messages is supported by the Desktop Agent.
+     */
+    OriginatingAppMetadata: boolean;
+    /**
+     * Used to indicate whether the optional `fdc3.joinUserChannel`,
+     * `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
+     * the Desktop Agent.
+     */
+    UserChannelMembershipAPIs: boolean;
+}
+
+/**
+ * Identifies the type of the connection step message.
+ */
+
+/**
+ * Goodbye message to be sent to the Desktop Agent when disconnecting (e.g. when closing the
+ * window or navigating). Desktop Agents should close the MessagePort after receiving this
+ * message, but retain instance details in case the application reconnects (e.g. after a
+ * navigation event).
+ *
+ * A message used during the connection flow for an application to a Desktop Agent in a
+ * browser window. Used for messages sent in either direction.
+ */
+export interface WebConnectionProtocol6Goodbye {
+    /**
+     * Metadata for a Web Connection Protocol message.
+     */
+    meta: WebConnectionProtocol6GoodbyeMeta;
+    /**
+     * Identifies the type of the connection step message.
+     */
+    type: "WCP6Goodbye";
+}
+
+/**
+ * Metadata for a Web Connection Protocol message.
+ */
+export interface WebConnectionProtocol6GoodbyeMeta {
+    timestamp: Date;
+}
+
+/**
+ * Identifies the type of the connection step message.
+ */
+
+/**
+ * A message used during the connection flow for an application to a Desktop Agent in a
+ * browser window. Used for messages sent in either direction.
+ */
+export interface WebConnectionProtocolMessage {
+    /**
+     * Metadata for a Web Connection Protocol message.
+     */
+    meta: ConnectionStepMetadata;
+    /**
+     * The message payload, containing data pertaining to this connection step.
+     */
+    payload?: { [key: string]: any };
+    /**
+     * Identifies the type of the connection step message.
+     */
+    type: ConnectionStepMessageType;
+}
+
+/**
+ * Metadata for a Web Connection Protocol message.
+ */
+export interface ConnectionStepMetadata {
+    timestamp: Date;
+    connectionAttemptUuid?: string;
+}
+
+/**
+ * Identifies the type of the connection step message.
+ */
+export type ConnectionStepMessageType = "WCP1Hello" | "WCP2LoadUrl" | "WCP3Handshake" | "WCP4ValidateAppIdentity" | "WCP5ValidateAppIdentityFailedResponse" | "WCP5ValidateAppIdentityResponse" | "WCP6Goodbye";
 
 /**
  * A request to add a context listener to a specified Channel OR to the current user
@@ -995,6 +1520,40 @@ export interface EventListenerUnsubscribeResponse {
  */
 
 /**
+ * Message from a channel selector UI to the DA proxy sent when the channel selection
+ * changes.
+ *
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
+ */
+export interface Fdc3UserInterfaceChannelSelected {
+    /**
+     * The message payload.
+     */
+    payload: Fdc3UserInterfaceChannelSelectedPayload;
+    /**
+     * Identifies the type of the message to or from the user interface frame.
+     */
+    type: "Fdc3UserInterfaceChannelSelected";
+}
+
+/**
+ * The message payload.
+ */
+export interface Fdc3UserInterfaceChannelSelectedPayload {
+    /**
+     * The id of the channel that should be currently selected, or `null` if none should be
+     * selected.
+     */
+    selected: null | string;
+}
+
+/**
+ * Identifies the type of the message to or from the user interface frame.
+ */
+
+/**
  * Setup message sent by the DA proxy code in getAgent() to a channel selector UI in an
  * iframe with the channel definitions and current channel selection.
  *
@@ -1026,40 +1585,6 @@ export interface Fdc3UserInterfaceChannelsPayload {
      * User Channel definitions.```````s
      */
     userChannels: Channel[];
-}
-
-/**
- * Identifies the type of the message to or from the user interface frame.
- */
-
-/**
- * Message from a channel selector UI to the DA proxy sent when the channel selection
- * changes.
- *
- * A message used to communicate with user interface frames injected by `getAgent()` for
- * displaying UI elements such as the intent resolver or channel selector. Used for messages
- * sent in either direction.
- */
-export interface Fdc3UserInterfaceChannelSelected {
-    /**
-     * The message payload.
-     */
-    payload: Fdc3UserInterfaceChannelSelectedPayload;
-    /**
-     * Identifies the type of the message to or from the user interface frame.
-     */
-    type: "Fdc3UserInterfaceChannelSelected";
-}
-
-/**
- * The message payload.
- */
-export interface Fdc3UserInterfaceChannelSelectedPayload {
-    /**
-     * The id of the channel that should be currently selected, or `null` if none should be
-     * selected.
-     */
-    selected: null | string;
 }
 
 /**
@@ -1299,125 +1824,6 @@ export interface AppIntent {
 }
 
 /**
- * Extends an `AppIdentifier`, describing an application or instance of an application, with
- * additional descriptive metadata that is usually provided by an FDC3 App Directory that
- * the Desktop Agent connects to.
- *
- * The additional information from an app directory can aid in rendering UI elements, such
- * as a launcher menu or resolver UI. This includes a title, description, tooltip and icon
- * and screenshot URLs.
- *
- * Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passed to the
- * `app` argument of `fdc3.open`, `fdc3.raiseIntent` etc.
- *
- * The calling application instance's own metadata, according to the Desktop Agent (MUST
- * include at least the `appId` and `instanceId`).
- */
-export interface AppMetadata {
-    /**
-     * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'.
-     */
-    appId: string;
-    /**
-     * A longer, multi-paragraph description for the application that could include markup.
-     */
-    description?: string;
-    /**
-     * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
-     * identify the Desktop Agent to target.
-     */
-    desktopAgent?: string;
-    /**
-     * A list of icon URLs for the application that can be used to render UI elements.
-     */
-    icons?: Icon[];
-    /**
-     * An optional instance identifier, indicating that this object represents a specific
-     * instance of the application described.
-     */
-    instanceId?: string;
-    /**
-     * An optional set of, implementation specific, metadata fields that can be used to
-     * disambiguate instances, such as a window title or screen position. Must only be set if
-     * `instanceId` is set.
-     */
-    instanceMetadata?: { [key: string]: any };
-    /**
-     * The 'friendly' app name.
-     * This field was used with the `open` and `raiseIntent` calls in FDC3 <2.0, which now
-     * require an `AppIdentifier` wth `appId` set.
-     * Note that for display purposes the `title` field should be used, if set, in preference to
-     * this field.
-     */
-    name?: string;
-    /**
-     * The type of output returned for any intent specified during resolution. May express a
-     * particular context type (e.g. "fdc3.instrument"), channel (e.g. "channel") or a channel
-     * that will receive a specified type (e.g. "channel<fdc3.instrument>").
-     */
-    resultType?: null | string;
-    /**
-     * Images representing the app in common usage scenarios that can be used to render UI
-     * elements.
-     */
-    screenshots?: Image[];
-    /**
-     * A more user-friendly application title that can be used to render UI elements.
-     */
-    title?: string;
-    /**
-     * A tooltip for the application that can be used to render UI elements.
-     */
-    tooltip?: string;
-    /**
-     * The Version of the application.
-     */
-    version?: string;
-}
-
-/**
- * Describes an Icon images that may be used to represent the application.
- */
-export interface Icon {
-    /**
-     * The icon dimension, formatted as `<height>x<width>`.
-     */
-    size?: string;
-    /**
-     * The icon url.
-     */
-    src: string;
-    /**
-     * Icon media type. If not present the Desktop Agent may use the src file extension.
-     */
-    type?: string;
-}
-
-/**
- * Describes an image file, typically a screenshot, that often represents the application in
- * a common usage scenario.
- */
-export interface Image {
-    /**
-     * Caption for the image.
-     */
-    label?: string;
-    /**
-     * The image dimension, formatted as `<height>x<width>`.
-     */
-    size?: string;
-    /**
-     * The image url.
-     */
-    src: string;
-    /**
-     * Image media type. If not present the Desktop Agent may use the src file extension.
-     */
-    type?: string;
-}
-
-/**
  * Details of the intent whose relationship to resolving applications is being described.
  *
  * Metadata describing an Intent.
@@ -1639,6 +2045,10 @@ export interface FindInstancesResponsePayload {
  * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
  * DesktopAgent (`fdc3`).
  *
+ * Unique identifier for a for an attempt to connect to a Desktop Agent. A Unique UUID
+ * should be used in the first (WCP1Hello) message and should be quoted in all subsequent
+ * messages to link them to the same connection attempt.
+ *
  * Unique identifier for a request or event message. Required in all message types.
  *
  * Unique identifier for a response to a specific message and must always be accompanied by
@@ -1649,10 +2059,6 @@ export interface FindInstancesResponsePayload {
  * listeners and used to identify it in messages (e.g. when unsubscribing).
  *
  * Unique identifier for an event message sent from a Desktop Agent to an app.
- *
- * Unique identifier for a for an attempt to connect to a Desktop Agent. A Unique UUID
- * should be used in the first (WCP1Hello) message and should be quoted in all subsequent
- * messages to link them to the same connection attempt.
  *
  * Should be set if the raiseIntent request returned an error.
  */
@@ -2106,64 +2512,6 @@ export interface GetInfoResponse {
 export interface GetInfoResponsePayload {
     error?: ResponsePayloadError;
     implementationMetadata?: ImplementationMetadata;
-}
-
-/**
- * Implementation metadata for the Desktop Agent, which includes an appMetadata element
- * containing a copy of the app's own metadata.
- *
- * Includes Metadata for the current application.
- *
- * Metadata relating to the FDC3 Desktop Agent implementation and its provider.
- */
-export interface ImplementationMetadata {
-    /**
-     * The calling application instance's own metadata, according to the Desktop Agent (MUST
-     * include at least the `appId` and `instanceId`).
-     */
-    appMetadata: AppMetadata;
-    /**
-     * The version number of the FDC3 specification that the implementation provides.
-     * The string must be a numeric semver version, e.g. 1.2 or 1.2.1.
-     */
-    fdc3Version: string;
-    /**
-     * Metadata indicating whether the Desktop Agent implements optional features of
-     * the Desktop Agent API.
-     */
-    optionalFeatures: OptionalFeatures;
-    /**
-     * The name of the provider of the Desktop Agent implementation (e.g. Finsemble, Glue42,
-     * OpenFin etc.).
-     */
-    provider: string;
-    /**
-     * The version of the provider of the Desktop Agent implementation (e.g. 5.3.0).
-     */
-    providerVersion?: string;
-}
-
-/**
- * Metadata indicating whether the Desktop Agent implements optional features of
- * the Desktop Agent API.
- */
-export interface OptionalFeatures {
-    /**
-     * Used to indicate whether the experimental Desktop Agent Bridging
-     * feature is implemented by the Desktop Agent.
-     */
-    DesktopAgentBridging: boolean;
-    /**
-     * Used to indicate whether the exposure of 'originating app metadata' for
-     * context and intent messages is supported by the Desktop Agent.
-     */
-    OriginatingAppMetadata: boolean;
-    /**
-     * Used to indicate whether the optional `fdc3.joinUserChannel`,
-     * `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
-     * the Desktop Agent.
-     */
-    UserChannelMembershipAPIs: boolean;
 }
 
 /**
@@ -3437,357 +3785,73 @@ export interface RaiseIntentResultResponsePayload {
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  */
 
-/**
- * Hello message sent by an application to a parent window or frame when attempting to
- * establish connectivity to a Desktop Agent.
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol1Hello {
-    /**
-     * Metadata for a Web Connection Protocol message.
-     */
-    meta: WebConnectionProtocol1HelloMeta;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: WebConnectionProtocol1HelloPayload;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP1Hello";
-}
-
-/**
- * Metadata for a Web Connection Protocol message.
- */
-export interface WebConnectionProtocol1HelloMeta {
-    connectionAttemptUuid: string;
-    timestamp: Date;
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebConnectionProtocol1HelloPayload {
-    /**
-     * The current URL of the page attempting to connect. This may differ from the identityUrl,
-     * but the origins MUST match.
-     */
-    actualUrl: string;
-    /**
-     * A flag that may be used to indicate that a channel selector user interface is or is not
-     * required. Set to `false` if the app includes its own interface for selecting channels or
-     * does not work with user channels.
-     */
-    channelSelector?: boolean;
-    /**
-     * The version of FDC3 API that the app supports.
-     */
-    fdc3Version: string;
-    /**
-     * URL to use for the identity of the application. Desktop Agents MUST validate that the
-     * origin of the message matches the URL, but MAY implement custom comparison logic.
-     */
-    identityUrl: string;
-    /**
-     * A flag that may be used to indicate that an intent resolver is or is not required. Set to
-     * `false` if no intents, or only targeted intents, are raised.
-     */
-    intentResolver?: boolean;
-    [property: string]: any;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * Response from a Desktop Agent to an application requesting access to it indicating that
- * it should load a specified URL into a hidden iframe in order to establish connectivity to
- * a Desktop Agent.
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol2LoadURL {
-    /**
-     * Metadata for a Web Connection Protocol message.
-     */
-    meta: WebConnectionProtocol1HelloMeta;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: WebConnectionProtocol2LoadURLPayload;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP2LoadUrl";
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebConnectionProtocol2LoadURLPayload {
-    /**
-     * A URL which can be used to establish communication with the Desktop Agent, via loading
-     * the URL into an iframe and restarting the Web Connection protocol with the iframe as the
-     * target.
-     */
-    iframeUrl: string;
-    [property: string]: any;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * Handshake message sent by the Desktop Agent to the app (with a MessagePort appended) that
- * should be used for subsequent communication steps.
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol3Handshake {
-    /**
-     * Metadata for a Web Connection Protocol message.
-     */
-    meta: WebConnectionProtocol1HelloMeta;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: WebConnectionProtocol3HandshakePayload;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP3Handshake";
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebConnectionProtocol3HandshakePayload {
-    /**
-     * Indicates whether a channel selector user interface is required and the URL to use to do
-     * so. Set to `true` to use the default or `false` to disable the channel selector (as the
-     * Desktop Agent will handle it another way).
-     */
-    channelSelectorUrl: boolean | string;
-    /**
-     * The version of FDC3 API that the Desktop Agent will provide support for.
-     */
-    fdc3Version: string;
-    /**
-     * Indicates whether an intent resolver user interface is required and the URL to use to do
-     * so. Set to `true` to use the default or `false` to disable the intent resolver (as the
-     * Desktop Agent will handle it another way).
-     */
-    intentResolverUrl: boolean | string;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * Identity Validation request from an app attempting to connect to a Desktop Agent.
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol4ValidateAppIdentity {
-    /**
-     * Metadata for a Web Connection Protocol message.
-     */
-    meta: WebConnectionProtocol1HelloMeta;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: WebConnectionProtocol4ValidateAppIdentityPayload;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP4ValidateAppIdentity";
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebConnectionProtocol4ValidateAppIdentityPayload {
-    /**
-     * The current URL of the page attempting to connect. This may differ from the identityUrl,
-     * but the origins MUST match.
-     */
-    actualUrl: string;
-    /**
-     * URL to use for the identity of the application. Desktop Agents MUST validate that the
-     * origin of the message matches the URL, but MAY implement custom comparison logic.
-     */
-    identityUrl: string;
-    /**
-     * If an application has previously connected to the Desktop Agent, it may specify its prior
-     * instance id and associated instance UUID to request the same same instance Id be assigned.
-     */
-    instanceId?: string;
-    /**
-     * Instance UUID associated with the requested instanceId.
-     */
-    instanceUuid?: string;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * Message sent by the Desktop Agent to an app if their identity validation fails.
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol5ValidateAppIdentityFailedResponse {
-    /**
-     * Metadata for a Web Connection Protocol message.
-     */
-    meta: WebConnectionProtocol1HelloMeta;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP5ValidateAppIdentityFailedResponse";
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload {
-    message?: string;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * Message sent by the Desktop Agent to an app after successful identity validation.
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
-    /**
-     * Metadata for a Web Connection Protocol message.
-     */
-    meta: WebConnectionProtocol1HelloMeta;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP5ValidateAppIdentityResponse";
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload {
-    /**
-     * The appId that the app's identity was validated against.
-     */
-    appId: string;
-    /**
-     * Implementation metadata for the Desktop Agent, which includes an appMetadata element
-     * containing a copy of the app's own metadata.
-     */
-    implementationMetadata: ImplementationMetadata;
-    /**
-     * The instance Id granted to the application by the Desktop Agent.
-     */
-    instanceId: string;
-    /**
-     * Instance UUID associated with the instanceId granted, which may be used to retrieve the
-     * same instanceId if the app is reloaded or navigates.
-     */
-    instanceUuid: string;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * Goodbye message to be sent to the Desktop Agent when disconnecting (e.g. when closing the
- * window or navigating). Desktop Agents should close the MessagePort after receiving this
- * message, but retain instance details in case the application reconnects (e.g. after a
- * navigation event).
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol6Goodbye {
-    /**
-     * Metadata for a Web Connection Protocol message.
-     */
-    meta: WebConnectionProtocol6GoodbyeMeta;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP6Goodbye";
-}
-
-/**
- * Metadata for a Web Connection Protocol message.
- */
-export interface WebConnectionProtocol6GoodbyeMeta {
-    timestamp: Date;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocolMessage {
-    /**
-     * Metadata for a Web Connection Protocol message.
-     */
-    meta: ConnectionStepMetadata;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload?: { [key: string]: any };
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: ConnectionStepMessageType;
-}
-
-/**
- * Metadata for a Web Connection Protocol message.
- */
-export interface ConnectionStepMetadata {
-    timestamp: Date;
-    connectionAttemptUuid?: string;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-export type ConnectionStepMessageType = "WCP1Hello" | "WCP2LoadUrl" | "WCP3Handshake" | "WCP4ValidateAppIdentity" | "WCP5ValidateAppIdentityFailedResponse" | "WCP5ValidateAppIdentityResponse" | "WCP6Goodbye";
-
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 export class Convert {
+    public static toWebConnectionProtocol1Hello(json: string): WebConnectionProtocol1Hello {
+        return cast(JSON.parse(json), r("WebConnectionProtocol1Hello"));
+    }
+
+    public static webConnectionProtocol1HelloToJson(value: WebConnectionProtocol1Hello): string {
+        return JSON.stringify(uncast(value, r("WebConnectionProtocol1Hello")), null, 2);
+    }
+
+    public static toWebConnectionProtocol2LoadURL(json: string): WebConnectionProtocol2LoadURL {
+        return cast(JSON.parse(json), r("WebConnectionProtocol2LoadURL"));
+    }
+
+    public static webConnectionProtocol2LoadURLToJson(value: WebConnectionProtocol2LoadURL): string {
+        return JSON.stringify(uncast(value, r("WebConnectionProtocol2LoadURL")), null, 2);
+    }
+
+    public static toWebConnectionProtocol3Handshake(json: string): WebConnectionProtocol3Handshake {
+        return cast(JSON.parse(json), r("WebConnectionProtocol3Handshake"));
+    }
+
+    public static webConnectionProtocol3HandshakeToJson(value: WebConnectionProtocol3Handshake): string {
+        return JSON.stringify(uncast(value, r("WebConnectionProtocol3Handshake")), null, 2);
+    }
+
+    public static toWebConnectionProtocol4ValidateAppIdentity(json: string): WebConnectionProtocol4ValidateAppIdentity {
+        return cast(JSON.parse(json), r("WebConnectionProtocol4ValidateAppIdentity"));
+    }
+
+    public static webConnectionProtocol4ValidateAppIdentityToJson(value: WebConnectionProtocol4ValidateAppIdentity): string {
+        return JSON.stringify(uncast(value, r("WebConnectionProtocol4ValidateAppIdentity")), null, 2);
+    }
+
+    public static toWebConnectionProtocol5ValidateAppIdentityFailedResponse(json: string): WebConnectionProtocol5ValidateAppIdentityFailedResponse {
+        return cast(JSON.parse(json), r("WebConnectionProtocol5ValidateAppIdentityFailedResponse"));
+    }
+
+    public static webConnectionProtocol5ValidateAppIdentityFailedResponseToJson(value: WebConnectionProtocol5ValidateAppIdentityFailedResponse): string {
+        return JSON.stringify(uncast(value, r("WebConnectionProtocol5ValidateAppIdentityFailedResponse")), null, 2);
+    }
+
+    public static toWebConnectionProtocol5ValidateAppIdentitySuccessResponse(json: string): WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
+        return cast(JSON.parse(json), r("WebConnectionProtocol5ValidateAppIdentitySuccessResponse"));
+    }
+
+    public static webConnectionProtocol5ValidateAppIdentitySuccessResponseToJson(value: WebConnectionProtocol5ValidateAppIdentitySuccessResponse): string {
+        return JSON.stringify(uncast(value, r("WebConnectionProtocol5ValidateAppIdentitySuccessResponse")), null, 2);
+    }
+
+    public static toWebConnectionProtocol6Goodbye(json: string): WebConnectionProtocol6Goodbye {
+        return cast(JSON.parse(json), r("WebConnectionProtocol6Goodbye"));
+    }
+
+    public static webConnectionProtocol6GoodbyeToJson(value: WebConnectionProtocol6Goodbye): string {
+        return JSON.stringify(uncast(value, r("WebConnectionProtocol6Goodbye")), null, 2);
+    }
+
+    public static toWebConnectionProtocolMessage(json: string): WebConnectionProtocolMessage {
+        return cast(JSON.parse(json), r("WebConnectionProtocolMessage"));
+    }
+
+    public static webConnectionProtocolMessageToJson(value: WebConnectionProtocolMessage): string {
+        return JSON.stringify(uncast(value, r("WebConnectionProtocolMessage")), null, 2);
+    }
+
     public static toAddContextListenerRequest(json: string): AddContextListenerRequest {
         return cast(JSON.parse(json), r("AddContextListenerRequest"));
     }
@@ -3940,20 +4004,20 @@ export class Convert {
         return JSON.stringify(uncast(value, r("EventListenerUnsubscribeResponse")), null, 2);
     }
 
-    public static toFdc3UserInterfaceChannels(json: string): Fdc3UserInterfaceChannels {
-        return cast(JSON.parse(json), r("Fdc3UserInterfaceChannels"));
-    }
-
-    public static fdc3UserInterfaceChannelsToJson(value: Fdc3UserInterfaceChannels): string {
-        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceChannels")), null, 2);
-    }
-
     public static toFdc3UserInterfaceChannelSelected(json: string): Fdc3UserInterfaceChannelSelected {
         return cast(JSON.parse(json), r("Fdc3UserInterfaceChannelSelected"));
     }
 
     public static fdc3UserInterfaceChannelSelectedToJson(value: Fdc3UserInterfaceChannelSelected): string {
         return JSON.stringify(uncast(value, r("Fdc3UserInterfaceChannelSelected")), null, 2);
+    }
+
+    public static toFdc3UserInterfaceChannels(json: string): Fdc3UserInterfaceChannels {
+        return cast(JSON.parse(json), r("Fdc3UserInterfaceChannels"));
+    }
+
+    public static fdc3UserInterfaceChannelsToJson(value: Fdc3UserInterfaceChannels): string {
+        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceChannels")), null, 2);
     }
 
     public static toFdc3UserInterfaceDrag(json: string): Fdc3UserInterfaceDrag {
@@ -4371,70 +4435,6 @@ export class Convert {
     public static raiseIntentResultResponseToJson(value: RaiseIntentResultResponse): string {
         return JSON.stringify(uncast(value, r("RaiseIntentResultResponse")), null, 2);
     }
-
-    public static toWebConnectionProtocol1Hello(json: string): WebConnectionProtocol1Hello {
-        return cast(JSON.parse(json), r("WebConnectionProtocol1Hello"));
-    }
-
-    public static webConnectionProtocol1HelloToJson(value: WebConnectionProtocol1Hello): string {
-        return JSON.stringify(uncast(value, r("WebConnectionProtocol1Hello")), null, 2);
-    }
-
-    public static toWebConnectionProtocol2LoadURL(json: string): WebConnectionProtocol2LoadURL {
-        return cast(JSON.parse(json), r("WebConnectionProtocol2LoadURL"));
-    }
-
-    public static webConnectionProtocol2LoadURLToJson(value: WebConnectionProtocol2LoadURL): string {
-        return JSON.stringify(uncast(value, r("WebConnectionProtocol2LoadURL")), null, 2);
-    }
-
-    public static toWebConnectionProtocol3Handshake(json: string): WebConnectionProtocol3Handshake {
-        return cast(JSON.parse(json), r("WebConnectionProtocol3Handshake"));
-    }
-
-    public static webConnectionProtocol3HandshakeToJson(value: WebConnectionProtocol3Handshake): string {
-        return JSON.stringify(uncast(value, r("WebConnectionProtocol3Handshake")), null, 2);
-    }
-
-    public static toWebConnectionProtocol4ValidateAppIdentity(json: string): WebConnectionProtocol4ValidateAppIdentity {
-        return cast(JSON.parse(json), r("WebConnectionProtocol4ValidateAppIdentity"));
-    }
-
-    public static webConnectionProtocol4ValidateAppIdentityToJson(value: WebConnectionProtocol4ValidateAppIdentity): string {
-        return JSON.stringify(uncast(value, r("WebConnectionProtocol4ValidateAppIdentity")), null, 2);
-    }
-
-    public static toWebConnectionProtocol5ValidateAppIdentityFailedResponse(json: string): WebConnectionProtocol5ValidateAppIdentityFailedResponse {
-        return cast(JSON.parse(json), r("WebConnectionProtocol5ValidateAppIdentityFailedResponse"));
-    }
-
-    public static webConnectionProtocol5ValidateAppIdentityFailedResponseToJson(value: WebConnectionProtocol5ValidateAppIdentityFailedResponse): string {
-        return JSON.stringify(uncast(value, r("WebConnectionProtocol5ValidateAppIdentityFailedResponse")), null, 2);
-    }
-
-    public static toWebConnectionProtocol5ValidateAppIdentitySuccessResponse(json: string): WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
-        return cast(JSON.parse(json), r("WebConnectionProtocol5ValidateAppIdentitySuccessResponse"));
-    }
-
-    public static webConnectionProtocol5ValidateAppIdentitySuccessResponseToJson(value: WebConnectionProtocol5ValidateAppIdentitySuccessResponse): string {
-        return JSON.stringify(uncast(value, r("WebConnectionProtocol5ValidateAppIdentitySuccessResponse")), null, 2);
-    }
-
-    public static toWebConnectionProtocol6Goodbye(json: string): WebConnectionProtocol6Goodbye {
-        return cast(JSON.parse(json), r("WebConnectionProtocol6Goodbye"));
-    }
-
-    public static webConnectionProtocol6GoodbyeToJson(value: WebConnectionProtocol6Goodbye): string {
-        return JSON.stringify(uncast(value, r("WebConnectionProtocol6Goodbye")), null, 2);
-    }
-
-    public static toWebConnectionProtocolMessage(json: string): WebConnectionProtocolMessage {
-        return cast(JSON.parse(json), r("WebConnectionProtocolMessage"));
-    }
-
-    public static webConnectionProtocolMessageToJson(value: WebConnectionProtocolMessage): string {
-        return JSON.stringify(uncast(value, r("WebConnectionProtocolMessage")), null, 2);
-    }
 }
 
 function invalidValue(typ: any, val: any, key: any, parent: any = ''): never {
@@ -4590,6 +4590,123 @@ function r(name: string) {
 }
 
 const typeMap: any = {
+    "WebConnectionProtocol1Hello": o([
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
+        { json: "payload", js: "payload", typ: r("WebConnectionProtocol1HelloPayload") },
+        { json: "type", js: "type", typ: r("WebConnectionProtocol1HelloType") },
+    ], false),
+    "WebConnectionProtocol1HelloMeta": o([
+        { json: "connectionAttemptUuid", js: "connectionAttemptUuid", typ: "" },
+        { json: "timestamp", js: "timestamp", typ: Date },
+    ], false),
+    "WebConnectionProtocol1HelloPayload": o([
+        { json: "actualUrl", js: "actualUrl", typ: "" },
+        { json: "channelSelector", js: "channelSelector", typ: u(undefined, true) },
+        { json: "fdc3Version", js: "fdc3Version", typ: "" },
+        { json: "identityUrl", js: "identityUrl", typ: "" },
+        { json: "intentResolver", js: "intentResolver", typ: u(undefined, true) },
+    ], "any"),
+    "WebConnectionProtocol2LoadURL": o([
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
+        { json: "payload", js: "payload", typ: r("WebConnectionProtocol2LoadURLPayload") },
+        { json: "type", js: "type", typ: r("WebConnectionProtocol2LoadURLType") },
+    ], false),
+    "WebConnectionProtocol2LoadURLPayload": o([
+        { json: "iframeUrl", js: "iframeUrl", typ: "" },
+    ], "any"),
+    "WebConnectionProtocol3Handshake": o([
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
+        { json: "payload", js: "payload", typ: r("WebConnectionProtocol3HandshakePayload") },
+        { json: "type", js: "type", typ: r("WebConnectionProtocol3HandshakeType") },
+    ], false),
+    "WebConnectionProtocol3HandshakePayload": o([
+        { json: "channelSelectorUrl", js: "channelSelectorUrl", typ: u(true, "") },
+        { json: "fdc3Version", js: "fdc3Version", typ: "" },
+        { json: "intentResolverUrl", js: "intentResolverUrl", typ: u(true, "") },
+    ], false),
+    "WebConnectionProtocol4ValidateAppIdentity": o([
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
+        { json: "payload", js: "payload", typ: r("WebConnectionProtocol4ValidateAppIdentityPayload") },
+        { json: "type", js: "type", typ: r("WebConnectionProtocol4ValidateAppIdentityType") },
+    ], false),
+    "WebConnectionProtocol4ValidateAppIdentityPayload": o([
+        { json: "actualUrl", js: "actualUrl", typ: "" },
+        { json: "identityUrl", js: "identityUrl", typ: "" },
+        { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
+        { json: "instanceUuid", js: "instanceUuid", typ: u(undefined, "") },
+    ], false),
+    "WebConnectionProtocol5ValidateAppIdentityFailedResponse": o([
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
+        { json: "payload", js: "payload", typ: r("WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload") },
+        { json: "type", js: "type", typ: r("WebConnectionProtocol5ValidateAppIdentityFailedResponseType") },
+    ], false),
+    "WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload": o([
+        { json: "message", js: "message", typ: u(undefined, "") },
+    ], false),
+    "WebConnectionProtocol5ValidateAppIdentitySuccessResponse": o([
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
+        { json: "payload", js: "payload", typ: r("WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload") },
+        { json: "type", js: "type", typ: r("WebConnectionProtocol5ValidateAppIdentitySuccessResponseType") },
+    ], false),
+    "WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload": o([
+        { json: "appId", js: "appId", typ: "" },
+        { json: "implementationMetadata", js: "implementationMetadata", typ: r("ImplementationMetadata") },
+        { json: "instanceId", js: "instanceId", typ: "" },
+        { json: "instanceUuid", js: "instanceUuid", typ: "" },
+    ], false),
+    "ImplementationMetadata": o([
+        { json: "appMetadata", js: "appMetadata", typ: r("AppMetadata") },
+        { json: "fdc3Version", js: "fdc3Version", typ: "" },
+        { json: "optionalFeatures", js: "optionalFeatures", typ: r("OptionalFeatures") },
+        { json: "provider", js: "provider", typ: "" },
+        { json: "providerVersion", js: "providerVersion", typ: u(undefined, "") },
+    ], false),
+    "AppMetadata": o([
+        { json: "appId", js: "appId", typ: "" },
+        { json: "description", js: "description", typ: u(undefined, "") },
+        { json: "desktopAgent", js: "desktopAgent", typ: u(undefined, "") },
+        { json: "icons", js: "icons", typ: u(undefined, a(r("Icon"))) },
+        { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
+        { json: "instanceMetadata", js: "instanceMetadata", typ: u(undefined, m("any")) },
+        { json: "name", js: "name", typ: u(undefined, "") },
+        { json: "resultType", js: "resultType", typ: u(undefined, u(null, "")) },
+        { json: "screenshots", js: "screenshots", typ: u(undefined, a(r("Image"))) },
+        { json: "title", js: "title", typ: u(undefined, "") },
+        { json: "tooltip", js: "tooltip", typ: u(undefined, "") },
+        { json: "version", js: "version", typ: u(undefined, "") },
+    ], false),
+    "Icon": o([
+        { json: "size", js: "size", typ: u(undefined, "") },
+        { json: "src", js: "src", typ: "" },
+        { json: "type", js: "type", typ: u(undefined, "") },
+    ], false),
+    "Image": o([
+        { json: "label", js: "label", typ: u(undefined, "") },
+        { json: "size", js: "size", typ: u(undefined, "") },
+        { json: "src", js: "src", typ: "" },
+        { json: "type", js: "type", typ: u(undefined, "") },
+    ], false),
+    "OptionalFeatures": o([
+        { json: "DesktopAgentBridging", js: "DesktopAgentBridging", typ: true },
+        { json: "OriginatingAppMetadata", js: "OriginatingAppMetadata", typ: true },
+        { json: "UserChannelMembershipAPIs", js: "UserChannelMembershipAPIs", typ: true },
+    ], false),
+    "WebConnectionProtocol6Goodbye": o([
+        { json: "meta", js: "meta", typ: r("WebConnectionProtocol6GoodbyeMeta") },
+        { json: "type", js: "type", typ: r("WebConnectionProtocol6GoodbyeType") },
+    ], false),
+    "WebConnectionProtocol6GoodbyeMeta": o([
+        { json: "timestamp", js: "timestamp", typ: Date },
+    ], false),
+    "WebConnectionProtocolMessage": o([
+        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
+        { json: "payload", js: "payload", typ: u(undefined, m("any")) },
+        { json: "type", js: "type", typ: r("ConnectionStepMessageType") },
+    ], false),
+    "ConnectionStepMetadata": o([
+        { json: "timestamp", js: "timestamp", typ: Date },
+        { json: "connectionAttemptUuid", js: "connectionAttemptUuid", typ: u(undefined, "") },
+    ], false),
     "AddContextListenerRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
         { json: "payload", js: "payload", typ: r("AddContextListenerRequestPayload") },
@@ -4787,6 +4904,13 @@ const typeMap: any = {
         { json: "payload", js: "payload", typ: r("BroadcastResponseResponsePayload") },
         { json: "type", js: "type", typ: r("EventListenerUnsubscribeResponseType") },
     ], false),
+    "Fdc3UserInterfaceChannelSelected": o([
+        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceChannelSelectedPayload") },
+        { json: "type", js: "type", typ: r("Fdc3UserInterfaceChannelSelectedType") },
+    ], false),
+    "Fdc3UserInterfaceChannelSelectedPayload": o([
+        { json: "selected", js: "selected", typ: u(null, "") },
+    ], false),
     "Fdc3UserInterfaceChannels": o([
         { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceChannelsPayload") },
         { json: "type", js: "type", typ: r("Fdc3UserInterfaceChannelsType") },
@@ -4794,13 +4918,6 @@ const typeMap: any = {
     "Fdc3UserInterfaceChannelsPayload": o([
         { json: "selected", js: "selected", typ: u(null, "") },
         { json: "userChannels", js: "userChannels", typ: a(r("Channel")) },
-    ], false),
-    "Fdc3UserInterfaceChannelSelected": o([
-        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceChannelSelectedPayload") },
-        { json: "type", js: "type", typ: r("Fdc3UserInterfaceChannelSelectedType") },
-    ], false),
-    "Fdc3UserInterfaceChannelSelectedPayload": o([
-        { json: "selected", js: "selected", typ: u(null, "") },
     ], false),
     "Fdc3UserInterfaceDrag": o([
         { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceDragPayload") },
@@ -4855,31 +4972,6 @@ const typeMap: any = {
     "AppIntent": o([
         { json: "apps", js: "apps", typ: a(r("AppMetadata")) },
         { json: "intent", js: "intent", typ: r("IntentMetadata") },
-    ], false),
-    "AppMetadata": o([
-        { json: "appId", js: "appId", typ: "" },
-        { json: "description", js: "description", typ: u(undefined, "") },
-        { json: "desktopAgent", js: "desktopAgent", typ: u(undefined, "") },
-        { json: "icons", js: "icons", typ: u(undefined, a(r("Icon"))) },
-        { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
-        { json: "instanceMetadata", js: "instanceMetadata", typ: u(undefined, m("any")) },
-        { json: "name", js: "name", typ: u(undefined, "") },
-        { json: "resultType", js: "resultType", typ: u(undefined, u(null, "")) },
-        { json: "screenshots", js: "screenshots", typ: u(undefined, a(r("Image"))) },
-        { json: "title", js: "title", typ: u(undefined, "") },
-        { json: "tooltip", js: "tooltip", typ: u(undefined, "") },
-        { json: "version", js: "version", typ: u(undefined, "") },
-    ], false),
-    "Icon": o([
-        { json: "size", js: "size", typ: u(undefined, "") },
-        { json: "src", js: "src", typ: "" },
-        { json: "type", js: "type", typ: u(undefined, "") },
-    ], false),
-    "Image": o([
-        { json: "label", js: "label", typ: u(undefined, "") },
-        { json: "size", js: "size", typ: u(undefined, "") },
-        { json: "src", js: "src", typ: "" },
-        { json: "type", js: "type", typ: u(undefined, "") },
     ], false),
     "IntentMetadata": o([
         { json: "displayName", js: "displayName", typ: u(undefined, "") },
@@ -5033,18 +5125,6 @@ const typeMap: any = {
     "GetInfoResponsePayload": o([
         { json: "error", js: "error", typ: u(undefined, r("ResponsePayloadError")) },
         { json: "implementationMetadata", js: "implementationMetadata", typ: u(undefined, r("ImplementationMetadata")) },
-    ], false),
-    "ImplementationMetadata": o([
-        { json: "appMetadata", js: "appMetadata", typ: r("AppMetadata") },
-        { json: "fdc3Version", js: "fdc3Version", typ: "" },
-        { json: "optionalFeatures", js: "optionalFeatures", typ: r("OptionalFeatures") },
-        { json: "provider", js: "provider", typ: "" },
-        { json: "providerVersion", js: "providerVersion", typ: u(undefined, "") },
-    ], false),
-    "OptionalFeatures": o([
-        { json: "DesktopAgentBridging", js: "DesktopAgentBridging", typ: true },
-        { json: "OriginatingAppMetadata", js: "OriginatingAppMetadata", typ: true },
-        { json: "UserChannelMembershipAPIs", js: "UserChannelMembershipAPIs", typ: true },
     ], false),
     "GetOrCreateChannelRequest": o([
         { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
@@ -5311,86 +5391,36 @@ const typeMap: any = {
         { json: "error", js: "error", typ: u(undefined, r("ResponsePayloadError")) },
         { json: "intentResult", js: "intentResult", typ: u(undefined, r("IntentResult")) },
     ], false),
-    "WebConnectionProtocol1Hello": o([
-        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
-        { json: "payload", js: "payload", typ: r("WebConnectionProtocol1HelloPayload") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol1HelloType") },
-    ], false),
-    "WebConnectionProtocol1HelloMeta": o([
-        { json: "connectionAttemptUuid", js: "connectionAttemptUuid", typ: "" },
-        { json: "timestamp", js: "timestamp", typ: Date },
-    ], false),
-    "WebConnectionProtocol1HelloPayload": o([
-        { json: "actualUrl", js: "actualUrl", typ: "" },
-        { json: "channelSelector", js: "channelSelector", typ: u(undefined, true) },
-        { json: "fdc3Version", js: "fdc3Version", typ: "" },
-        { json: "identityUrl", js: "identityUrl", typ: "" },
-        { json: "intentResolver", js: "intentResolver", typ: u(undefined, true) },
-    ], "any"),
-    "WebConnectionProtocol2LoadURL": o([
-        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
-        { json: "payload", js: "payload", typ: r("WebConnectionProtocol2LoadURLPayload") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol2LoadURLType") },
-    ], false),
-    "WebConnectionProtocol2LoadURLPayload": o([
-        { json: "iframeUrl", js: "iframeUrl", typ: "" },
-    ], "any"),
-    "WebConnectionProtocol3Handshake": o([
-        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
-        { json: "payload", js: "payload", typ: r("WebConnectionProtocol3HandshakePayload") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol3HandshakeType") },
-    ], false),
-    "WebConnectionProtocol3HandshakePayload": o([
-        { json: "channelSelectorUrl", js: "channelSelectorUrl", typ: u(true, "") },
-        { json: "fdc3Version", js: "fdc3Version", typ: "" },
-        { json: "intentResolverUrl", js: "intentResolverUrl", typ: u(true, "") },
-    ], false),
-    "WebConnectionProtocol4ValidateAppIdentity": o([
-        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
-        { json: "payload", js: "payload", typ: r("WebConnectionProtocol4ValidateAppIdentityPayload") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol4ValidateAppIdentityType") },
-    ], false),
-    "WebConnectionProtocol4ValidateAppIdentityPayload": o([
-        { json: "actualUrl", js: "actualUrl", typ: "" },
-        { json: "identityUrl", js: "identityUrl", typ: "" },
-        { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
-        { json: "instanceUuid", js: "instanceUuid", typ: u(undefined, "") },
-    ], false),
-    "WebConnectionProtocol5ValidateAppIdentityFailedResponse": o([
-        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
-        { json: "payload", js: "payload", typ: r("WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol5ValidateAppIdentityFailedResponseType") },
-    ], false),
-    "WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload": o([
-        { json: "message", js: "message", typ: u(undefined, "") },
-    ], false),
-    "WebConnectionProtocol5ValidateAppIdentitySuccessResponse": o([
-        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
-        { json: "payload", js: "payload", typ: r("WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol5ValidateAppIdentitySuccessResponseType") },
-    ], false),
-    "WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload": o([
-        { json: "appId", js: "appId", typ: "" },
-        { json: "implementationMetadata", js: "implementationMetadata", typ: r("ImplementationMetadata") },
-        { json: "instanceId", js: "instanceId", typ: "" },
-        { json: "instanceUuid", js: "instanceUuid", typ: "" },
-    ], false),
-    "WebConnectionProtocol6Goodbye": o([
-        { json: "meta", js: "meta", typ: r("WebConnectionProtocol6GoodbyeMeta") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol6GoodbyeType") },
-    ], false),
-    "WebConnectionProtocol6GoodbyeMeta": o([
-        { json: "timestamp", js: "timestamp", typ: Date },
-    ], false),
-    "WebConnectionProtocolMessage": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
-        { json: "payload", js: "payload", typ: u(undefined, m("any")) },
-        { json: "type", js: "type", typ: r("ConnectionStepMessageType") },
-    ], false),
-    "ConnectionStepMetadata": o([
-        { json: "timestamp", js: "timestamp", typ: Date },
-        { json: "connectionAttemptUuid", js: "connectionAttemptUuid", typ: u(undefined, "") },
-    ], false),
+    "WebConnectionProtocol1HelloType": [
+        "WCP1Hello",
+    ],
+    "WebConnectionProtocol2LoadURLType": [
+        "WCP2LoadUrl",
+    ],
+    "WebConnectionProtocol3HandshakeType": [
+        "WCP3Handshake",
+    ],
+    "WebConnectionProtocol4ValidateAppIdentityType": [
+        "WCP4ValidateAppIdentity",
+    ],
+    "WebConnectionProtocol5ValidateAppIdentityFailedResponseType": [
+        "WCP5ValidateAppIdentityFailedResponse",
+    ],
+    "WebConnectionProtocol5ValidateAppIdentitySuccessResponseType": [
+        "WCP5ValidateAppIdentityResponse",
+    ],
+    "WebConnectionProtocol6GoodbyeType": [
+        "WCP6Goodbye",
+    ],
+    "ConnectionStepMessageType": [
+        "WCP1Hello",
+        "WCP2LoadUrl",
+        "WCP3Handshake",
+        "WCP4ValidateAppIdentity",
+        "WCP5ValidateAppIdentityFailedResponse",
+        "WCP5ValidateAppIdentityResponse",
+        "WCP6Goodbye",
+    ],
     "AddContextListenerRequestType": [
         "addContextListenerRequest",
     ],
@@ -5555,11 +5585,11 @@ const typeMap: any = {
     "EventListenerUnsubscribeResponseType": [
         "eventListenerUnsubscribeResponse",
     ],
-    "Fdc3UserInterfaceChannelsType": [
-        "Fdc3UserInterfaceChannels",
-    ],
     "Fdc3UserInterfaceChannelSelectedType": [
         "Fdc3UserInterfaceChannelSelected",
+    ],
+    "Fdc3UserInterfaceChannelsType": [
+        "Fdc3UserInterfaceChannels",
     ],
     "Fdc3UserInterfaceDragType": [
         "Fdc3UserInterfaceDrag",
@@ -5761,34 +5791,1634 @@ const typeMap: any = {
     "RaiseIntentResultResponseType": [
         "raiseIntentResultResponse",
     ],
-    "WebConnectionProtocol1HelloType": [
-        "WCP1Hello",
-    ],
-    "WebConnectionProtocol2LoadURLType": [
-        "WCP2LoadUrl",
-    ],
-    "WebConnectionProtocol3HandshakeType": [
-        "WCP3Handshake",
-    ],
-    "WebConnectionProtocol4ValidateAppIdentityType": [
-        "WCP4ValidateAppIdentity",
-    ],
-    "WebConnectionProtocol5ValidateAppIdentityFailedResponseType": [
-        "WCP5ValidateAppIdentityFailedResponse",
-    ],
-    "WebConnectionProtocol5ValidateAppIdentitySuccessResponseType": [
-        "WCP5ValidateAppIdentityResponse",
-    ],
-    "WebConnectionProtocol6GoodbyeType": [
-        "WCP6Goodbye",
-    ],
-    "ConnectionStepMessageType": [
-        "WCP1Hello",
-        "WCP2LoadUrl",
-        "WCP3Handshake",
-        "WCP4ValidateAppIdentity",
-        "WCP5ValidateAppIdentityFailedResponse",
-        "WCP5ValidateAppIdentityResponse",
-        "WCP6Goodbye",
-    ],
 };
+
+export type AppRequestMessage = AddContextListenerRequest | AddEventListenerRequest | AddIntentListenerRequest | BroadcastRequest | ContextListenerUnsubscribeRequest | CreatePrivateChannelRequest | EventListenerUnsubscribeRequest | FindInstancesRequest | FindIntentRequest | FindIntentsByContextRequest | GetAppMetadataRequest | GetCurrentChannelRequest | GetCurrentContextRequest | GetInfoRequest | GetOrCreateChannelRequest | GetUserChannelsRequest | HeartbeatAcknowledgementRequest | IntentListenerUnsubscribeRequest | IntentResultRequest | JoinUserChannelRequest | LeaveCurrentChannelRequest | OpenRequest | PrivateChannelAddEventListenerRequest | PrivateChannelDisconnectRequest | PrivateChannelUnsubscribeEventListenerRequest | RaiseIntentForContextRequest | RaiseIntentRequest;
+
+export type AgentResponseMessage = AddContextListenerResponse | AddEventListenerResponse | AddIntentListenerResponse | BroadcastResponse | ContextListenerUnsubscribeResponse | CreatePrivateChannelResponse | EventListenerUnsubscribeResponse | FindInstancesResponse | FindIntentResponse | FindIntentsByContextResponse | GetAppMetadataResponse | GetCurrentChannelResponse | GetCurrentContextResponse | GetInfoResponse | GetOrCreateChannelResponse | GetUserChannelsResponse | IntentListenerUnsubscribeResponse | IntentResultResponse | JoinUserChannelResponse | LeaveCurrentChannelResponse | OpenResponse | PrivateChannelAddEventListenerResponse | PrivateChannelDisconnectResponse | PrivateChannelUnsubscribeEventListenerResponse | RaiseIntentForContextResponse | RaiseIntentResponse | RaiseIntentResultResponse;
+
+export type AgentEventMessage = BroadcastEvent | ChannelChangedEvent | HeartbeatEvent | IntentEvent | PrivateChannelOnAddContextListenerEvent | PrivateChannelOnDisconnectEvent | PrivateChannelOnUnsubscribeEvent;
+
+/**
+ * Returns true if the value has a type property with value 'WCP1Hello'. This is a fast check that does not check the format of the message
+ */
+export function isWebConnectionProtocol1Hello(value: any): value is WebConnectionProtocol1Hello {
+    return value != null && value.type === 'WCP1Hello';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol1Hello. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol1Hello(value: any): value is WebConnectionProtocol1Hello {
+    try {
+        Convert.webConnectionProtocol1HelloToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const WEB_CONNECTION_PROTOCOL1_HELLO_TYPE = "WebConnectionProtocol1Hello";
+
+/**
+ * Returns true if the value has a type property with value 'WCP2LoadUrl'. This is a fast check that does not check the format of the message
+ */
+export function isWebConnectionProtocol2LoadURL(value: any): value is WebConnectionProtocol2LoadURL {
+    return value != null && value.type === 'WCP2LoadUrl';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol2LoadURL. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol2LoadURL(value: any): value is WebConnectionProtocol2LoadURL {
+    try {
+        Convert.webConnectionProtocol2LoadURLToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const WEB_CONNECTION_PROTOCOL2_LOAD_U_R_L_TYPE = "WebConnectionProtocol2LoadURL";
+
+/**
+ * Returns true if the value has a type property with value 'WCP3Handshake'. This is a fast check that does not check the format of the message
+ */
+export function isWebConnectionProtocol3Handshake(value: any): value is WebConnectionProtocol3Handshake {
+    return value != null && value.type === 'WCP3Handshake';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol3Handshake. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol3Handshake(value: any): value is WebConnectionProtocol3Handshake {
+    try {
+        Convert.webConnectionProtocol3HandshakeToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const WEB_CONNECTION_PROTOCOL3_HANDSHAKE_TYPE = "WebConnectionProtocol3Handshake";
+
+/**
+ * Returns true if the value has a type property with value 'WCP4ValidateAppIdentity'. This is a fast check that does not check the format of the message
+ */
+export function isWebConnectionProtocol4ValidateAppIdentity(value: any): value is WebConnectionProtocol4ValidateAppIdentity {
+    return value != null && value.type === 'WCP4ValidateAppIdentity';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol4ValidateAppIdentity. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol4ValidateAppIdentity(value: any): value is WebConnectionProtocol4ValidateAppIdentity {
+    try {
+        Convert.webConnectionProtocol4ValidateAppIdentityToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const WEB_CONNECTION_PROTOCOL4_VALIDATE_APP_IDENTITY_TYPE = "WebConnectionProtocol4ValidateAppIdentity";
+
+/**
+ * Returns true if the value has a type property with value 'WCP5ValidateAppIdentityFailedResponse'. This is a fast check that does not check the format of the message
+ */
+export function isWebConnectionProtocol5ValidateAppIdentityFailedResponse(value: any): value is WebConnectionProtocol5ValidateAppIdentityFailedResponse {
+    return value != null && value.type === 'WCP5ValidateAppIdentityFailedResponse';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol5ValidateAppIdentityFailedResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol5ValidateAppIdentityFailedResponse(value: any): value is WebConnectionProtocol5ValidateAppIdentityFailedResponse {
+    try {
+        Convert.webConnectionProtocol5ValidateAppIdentityFailedResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const WEB_CONNECTION_PROTOCOL5_VALIDATE_APP_IDENTITY_FAILED_RESPONSE_TYPE = "WebConnectionProtocol5ValidateAppIdentityFailedResponse";
+
+/**
+ * Returns true if the value has a type property with value 'WCP5ValidateAppIdentityResponse'. This is a fast check that does not check the format of the message
+ */
+export function isWebConnectionProtocol5ValidateAppIdentitySuccessResponse(value: any): value is WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
+    return value != null && value.type === 'WCP5ValidateAppIdentityResponse';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol5ValidateAppIdentitySuccessResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol5ValidateAppIdentitySuccessResponse(value: any): value is WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
+    try {
+        Convert.webConnectionProtocol5ValidateAppIdentitySuccessResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const WEB_CONNECTION_PROTOCOL5_VALIDATE_APP_IDENTITY_SUCCESS_RESPONSE_TYPE = "WebConnectionProtocol5ValidateAppIdentitySuccessResponse";
+
+/**
+ * Returns true if the value has a type property with value 'WCP6Goodbye'. This is a fast check that does not check the format of the message
+ */
+export function isWebConnectionProtocol6Goodbye(value: any): value is WebConnectionProtocol6Goodbye {
+    return value != null && value.type === 'WCP6Goodbye';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol6Goodbye. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol6Goodbye(value: any): value is WebConnectionProtocol6Goodbye {
+    try {
+        Convert.webConnectionProtocol6GoodbyeToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const WEB_CONNECTION_PROTOCOL6_GOODBYE_TYPE = "WebConnectionProtocol6Goodbye";
+
+/**
+ * Returns true if value is a valid WebConnectionProtocolMessage. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocolMessage(value: any): value is WebConnectionProtocolMessage {
+    try {
+        Convert.webConnectionProtocolMessageToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const WEB_CONNECTION_PROTOCOL_MESSAGE_TYPE = "WebConnectionProtocolMessage";
+
+/**
+ * Returns true if the value has a type property with value 'addContextListenerRequest'. This is a fast check that does not check the format of the message
+ */
+export function isAddContextListenerRequest(value: any): value is AddContextListenerRequest {
+    return value != null && value.type === 'addContextListenerRequest';
+}
+
+/**
+ * Returns true if value is a valid AddContextListenerRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidAddContextListenerRequest(value: any): value is AddContextListenerRequest {
+    try {
+        Convert.addContextListenerRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const ADD_CONTEXT_LISTENER_REQUEST_TYPE = "AddContextListenerRequest";
+
+/**
+ * Returns true if the value has a type property with value 'addContextListenerResponse'. This is a fast check that does not check the format of the message
+ */
+export function isAddContextListenerResponse(value: any): value is AddContextListenerResponse {
+    return value != null && value.type === 'addContextListenerResponse';
+}
+
+/**
+ * Returns true if value is a valid AddContextListenerResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidAddContextListenerResponse(value: any): value is AddContextListenerResponse {
+    try {
+        Convert.addContextListenerResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const ADD_CONTEXT_LISTENER_RESPONSE_TYPE = "AddContextListenerResponse";
+
+/**
+ * Returns true if the value has a type property with value 'addEventListenerRequest'. This is a fast check that does not check the format of the message
+ */
+export function isAddEventListenerRequest(value: any): value is AddEventListenerRequest {
+    return value != null && value.type === 'addEventListenerRequest';
+}
+
+/**
+ * Returns true if value is a valid AddEventListenerRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidAddEventListenerRequest(value: any): value is AddEventListenerRequest {
+    try {
+        Convert.addEventListenerRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const ADD_EVENT_LISTENER_REQUEST_TYPE = "AddEventListenerRequest";
+
+/**
+ * Returns true if the value has a type property with value 'addEventListenerResponse'. This is a fast check that does not check the format of the message
+ */
+export function isAddEventListenerResponse(value: any): value is AddEventListenerResponse {
+    return value != null && value.type === 'addEventListenerResponse';
+}
+
+/**
+ * Returns true if value is a valid AddEventListenerResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidAddEventListenerResponse(value: any): value is AddEventListenerResponse {
+    try {
+        Convert.addEventListenerResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const ADD_EVENT_LISTENER_RESPONSE_TYPE = "AddEventListenerResponse";
+
+/**
+ * Returns true if the value has a type property with value 'addIntentListenerRequest'. This is a fast check that does not check the format of the message
+ */
+export function isAddIntentListenerRequest(value: any): value is AddIntentListenerRequest {
+    return value != null && value.type === 'addIntentListenerRequest';
+}
+
+/**
+ * Returns true if value is a valid AddIntentListenerRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidAddIntentListenerRequest(value: any): value is AddIntentListenerRequest {
+    try {
+        Convert.addIntentListenerRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const ADD_INTENT_LISTENER_REQUEST_TYPE = "AddIntentListenerRequest";
+
+/**
+ * Returns true if the value has a type property with value 'addIntentListenerResponse'. This is a fast check that does not check the format of the message
+ */
+export function isAddIntentListenerResponse(value: any): value is AddIntentListenerResponse {
+    return value != null && value.type === 'addIntentListenerResponse';
+}
+
+/**
+ * Returns true if value is a valid AddIntentListenerResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidAddIntentListenerResponse(value: any): value is AddIntentListenerResponse {
+    try {
+        Convert.addIntentListenerResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const ADD_INTENT_LISTENER_RESPONSE_TYPE = "AddIntentListenerResponse";
+
+/**
+ * Returns true if the value has a type property with value 'broadcastEvent'. This is a fast check that does not check the format of the message
+ */
+export function isBroadcastEvent(value: any): value is BroadcastEvent {
+    return value != null && value.type === 'broadcastEvent';
+}
+
+/**
+ * Returns true if value is a valid BroadcastEvent. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidBroadcastEvent(value: any): value is BroadcastEvent {
+    try {
+        Convert.broadcastEventToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const BROADCAST_EVENT_TYPE = "BroadcastEvent";
+
+/**
+ * Returns true if the value has a type property with value 'broadcastRequest'. This is a fast check that does not check the format of the message
+ */
+export function isBroadcastRequest(value: any): value is BroadcastRequest {
+    return value != null && value.type === 'broadcastRequest';
+}
+
+/**
+ * Returns true if value is a valid BroadcastRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidBroadcastRequest(value: any): value is BroadcastRequest {
+    try {
+        Convert.broadcastRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const BROADCAST_REQUEST_TYPE = "BroadcastRequest";
+
+/**
+ * Returns true if the value has a type property with value 'broadcastResponse'. This is a fast check that does not check the format of the message
+ */
+export function isBroadcastResponse(value: any): value is BroadcastResponse {
+    return value != null && value.type === 'broadcastResponse';
+}
+
+/**
+ * Returns true if value is a valid BroadcastResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidBroadcastResponse(value: any): value is BroadcastResponse {
+    try {
+        Convert.broadcastResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const BROADCAST_RESPONSE_TYPE = "BroadcastResponse";
+
+/**
+ * Returns true if the value has a type property with value 'channelChangedEvent'. This is a fast check that does not check the format of the message
+ */
+export function isChannelChangedEvent(value: any): value is ChannelChangedEvent {
+    return value != null && value.type === 'channelChangedEvent';
+}
+
+/**
+ * Returns true if value is a valid ChannelChangedEvent. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidChannelChangedEvent(value: any): value is ChannelChangedEvent {
+    try {
+        Convert.channelChangedEventToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const CHANNEL_CHANGED_EVENT_TYPE = "ChannelChangedEvent";
+
+/**
+ * Returns true if the value has a type property with value 'contextListenerUnsubscribeRequest'. This is a fast check that does not check the format of the message
+ */
+export function isContextListenerUnsubscribeRequest(value: any): value is ContextListenerUnsubscribeRequest {
+    return value != null && value.type === 'contextListenerUnsubscribeRequest';
+}
+
+/**
+ * Returns true if value is a valid ContextListenerUnsubscribeRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidContextListenerUnsubscribeRequest(value: any): value is ContextListenerUnsubscribeRequest {
+    try {
+        Convert.contextListenerUnsubscribeRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const CONTEXT_LISTENER_UNSUBSCRIBE_REQUEST_TYPE = "ContextListenerUnsubscribeRequest";
+
+/**
+ * Returns true if the value has a type property with value 'contextListenerUnsubscribeResponse'. This is a fast check that does not check the format of the message
+ */
+export function isContextListenerUnsubscribeResponse(value: any): value is ContextListenerUnsubscribeResponse {
+    return value != null && value.type === 'contextListenerUnsubscribeResponse';
+}
+
+/**
+ * Returns true if value is a valid ContextListenerUnsubscribeResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidContextListenerUnsubscribeResponse(value: any): value is ContextListenerUnsubscribeResponse {
+    try {
+        Convert.contextListenerUnsubscribeResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const CONTEXT_LISTENER_UNSUBSCRIBE_RESPONSE_TYPE = "ContextListenerUnsubscribeResponse";
+
+/**
+ * Returns true if the value has a type property with value 'createPrivateChannelRequest'. This is a fast check that does not check the format of the message
+ */
+export function isCreatePrivateChannelRequest(value: any): value is CreatePrivateChannelRequest {
+    return value != null && value.type === 'createPrivateChannelRequest';
+}
+
+/**
+ * Returns true if value is a valid CreatePrivateChannelRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidCreatePrivateChannelRequest(value: any): value is CreatePrivateChannelRequest {
+    try {
+        Convert.createPrivateChannelRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const CREATE_PRIVATE_CHANNEL_REQUEST_TYPE = "CreatePrivateChannelRequest";
+
+/**
+ * Returns true if the value has a type property with value 'createPrivateChannelResponse'. This is a fast check that does not check the format of the message
+ */
+export function isCreatePrivateChannelResponse(value: any): value is CreatePrivateChannelResponse {
+    return value != null && value.type === 'createPrivateChannelResponse';
+}
+
+/**
+ * Returns true if value is a valid CreatePrivateChannelResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidCreatePrivateChannelResponse(value: any): value is CreatePrivateChannelResponse {
+    try {
+        Convert.createPrivateChannelResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const CREATE_PRIVATE_CHANNEL_RESPONSE_TYPE = "CreatePrivateChannelResponse";
+
+/**
+ * Returns true if the value has a type property with value 'eventListenerUnsubscribeRequest'. This is a fast check that does not check the format of the message
+ */
+export function isEventListenerUnsubscribeRequest(value: any): value is EventListenerUnsubscribeRequest {
+    return value != null && value.type === 'eventListenerUnsubscribeRequest';
+}
+
+/**
+ * Returns true if value is a valid EventListenerUnsubscribeRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidEventListenerUnsubscribeRequest(value: any): value is EventListenerUnsubscribeRequest {
+    try {
+        Convert.eventListenerUnsubscribeRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const EVENT_LISTENER_UNSUBSCRIBE_REQUEST_TYPE = "EventListenerUnsubscribeRequest";
+
+/**
+ * Returns true if the value has a type property with value 'eventListenerUnsubscribeResponse'. This is a fast check that does not check the format of the message
+ */
+export function isEventListenerUnsubscribeResponse(value: any): value is EventListenerUnsubscribeResponse {
+    return value != null && value.type === 'eventListenerUnsubscribeResponse';
+}
+
+/**
+ * Returns true if value is a valid EventListenerUnsubscribeResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidEventListenerUnsubscribeResponse(value: any): value is EventListenerUnsubscribeResponse {
+    try {
+        Convert.eventListenerUnsubscribeResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const EVENT_LISTENER_UNSUBSCRIBE_RESPONSE_TYPE = "EventListenerUnsubscribeResponse";
+
+/**
+ * Returns true if the value has a type property with value 'Fdc3UserInterfaceChannelSelected'. This is a fast check that does not check the format of the message
+ */
+export function isFdc3UserInterfaceChannelSelected(value: any): value is Fdc3UserInterfaceChannelSelected {
+    return value != null && value.type === 'Fdc3UserInterfaceChannelSelected';
+}
+
+/**
+ * Returns true if value is a valid Fdc3UserInterfaceChannelSelected. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFdc3UserInterfaceChannelSelected(value: any): value is Fdc3UserInterfaceChannelSelected {
+    try {
+        Convert.fdc3UserInterfaceChannelSelectedToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FDC3_USER_INTERFACE_CHANNEL_SELECTED_TYPE = "Fdc3UserInterfaceChannelSelected";
+
+/**
+ * Returns true if the value has a type property with value 'Fdc3UserInterfaceChannels'. This is a fast check that does not check the format of the message
+ */
+export function isFdc3UserInterfaceChannels(value: any): value is Fdc3UserInterfaceChannels {
+    return value != null && value.type === 'Fdc3UserInterfaceChannels';
+}
+
+/**
+ * Returns true if value is a valid Fdc3UserInterfaceChannels. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFdc3UserInterfaceChannels(value: any): value is Fdc3UserInterfaceChannels {
+    try {
+        Convert.fdc3UserInterfaceChannelsToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FDC3_USER_INTERFACE_CHANNELS_TYPE = "Fdc3UserInterfaceChannels";
+
+/**
+ * Returns true if the value has a type property with value 'Fdc3UserInterfaceDrag'. This is a fast check that does not check the format of the message
+ */
+export function isFdc3UserInterfaceDrag(value: any): value is Fdc3UserInterfaceDrag {
+    return value != null && value.type === 'Fdc3UserInterfaceDrag';
+}
+
+/**
+ * Returns true if value is a valid Fdc3UserInterfaceDrag. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFdc3UserInterfaceDrag(value: any): value is Fdc3UserInterfaceDrag {
+    try {
+        Convert.fdc3UserInterfaceDragToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FDC3_USER_INTERFACE_DRAG_TYPE = "Fdc3UserInterfaceDrag";
+
+/**
+ * Returns true if the value has a type property with value 'Fdc3UserInterfaceHandshake'. This is a fast check that does not check the format of the message
+ */
+export function isFdc3UserInterfaceHandshake(value: any): value is Fdc3UserInterfaceHandshake {
+    return value != null && value.type === 'Fdc3UserInterfaceHandshake';
+}
+
+/**
+ * Returns true if value is a valid Fdc3UserInterfaceHandshake. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFdc3UserInterfaceHandshake(value: any): value is Fdc3UserInterfaceHandshake {
+    try {
+        Convert.fdc3UserInterfaceHandshakeToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FDC3_USER_INTERFACE_HANDSHAKE_TYPE = "Fdc3UserInterfaceHandshake";
+
+/**
+ * Returns true if the value has a type property with value 'Fdc3UserInterfaceHello'. This is a fast check that does not check the format of the message
+ */
+export function isFdc3UserInterfaceHello(value: any): value is Fdc3UserInterfaceHello {
+    return value != null && value.type === 'Fdc3UserInterfaceHello';
+}
+
+/**
+ * Returns true if value is a valid Fdc3UserInterfaceHello. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFdc3UserInterfaceHello(value: any): value is Fdc3UserInterfaceHello {
+    try {
+        Convert.fdc3UserInterfaceHelloToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FDC3_USER_INTERFACE_HELLO_TYPE = "Fdc3UserInterfaceHello";
+
+/**
+ * Returns true if value is a valid Fdc3UserInterfaceMessage. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFdc3UserInterfaceMessage(value: any): value is Fdc3UserInterfaceMessage {
+    try {
+        Convert.fdc3UserInterfaceMessageToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FDC3_USER_INTERFACE_MESSAGE_TYPE = "Fdc3UserInterfaceMessage";
+
+/**
+ * Returns true if the value has a type property with value 'Fdc3UserInterfaceResolve'. This is a fast check that does not check the format of the message
+ */
+export function isFdc3UserInterfaceResolve(value: any): value is Fdc3UserInterfaceResolve {
+    return value != null && value.type === 'Fdc3UserInterfaceResolve';
+}
+
+/**
+ * Returns true if value is a valid Fdc3UserInterfaceResolve. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFdc3UserInterfaceResolve(value: any): value is Fdc3UserInterfaceResolve {
+    try {
+        Convert.fdc3UserInterfaceResolveToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FDC3_USER_INTERFACE_RESOLVE_TYPE = "Fdc3UserInterfaceResolve";
+
+/**
+ * Returns true if the value has a type property with value 'Fdc3UserInterfaceResolveAction'. This is a fast check that does not check the format of the message
+ */
+export function isFdc3UserInterfaceResolveAction(value: any): value is Fdc3UserInterfaceResolveAction {
+    return value != null && value.type === 'Fdc3UserInterfaceResolveAction';
+}
+
+/**
+ * Returns true if value is a valid Fdc3UserInterfaceResolveAction. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFdc3UserInterfaceResolveAction(value: any): value is Fdc3UserInterfaceResolveAction {
+    try {
+        Convert.fdc3UserInterfaceResolveActionToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE = "Fdc3UserInterfaceResolveAction";
+
+/**
+ * Returns true if the value has a type property with value 'Fdc3UserInterfaceRestyle'. This is a fast check that does not check the format of the message
+ */
+export function isFdc3UserInterfaceRestyle(value: any): value is Fdc3UserInterfaceRestyle {
+    return value != null && value.type === 'Fdc3UserInterfaceRestyle';
+}
+
+/**
+ * Returns true if value is a valid Fdc3UserInterfaceRestyle. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFdc3UserInterfaceRestyle(value: any): value is Fdc3UserInterfaceRestyle {
+    try {
+        Convert.fdc3UserInterfaceRestyleToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FDC3_USER_INTERFACE_RESTYLE_TYPE = "Fdc3UserInterfaceRestyle";
+
+/**
+ * Returns true if the value has a type property with value 'findInstancesRequest'. This is a fast check that does not check the format of the message
+ */
+export function isFindInstancesRequest(value: any): value is FindInstancesRequest {
+    return value != null && value.type === 'findInstancesRequest';
+}
+
+/**
+ * Returns true if value is a valid FindInstancesRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFindInstancesRequest(value: any): value is FindInstancesRequest {
+    try {
+        Convert.findInstancesRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FIND_INSTANCES_REQUEST_TYPE = "FindInstancesRequest";
+
+/**
+ * Returns true if the value has a type property with value 'findInstancesResponse'. This is a fast check that does not check the format of the message
+ */
+export function isFindInstancesResponse(value: any): value is FindInstancesResponse {
+    return value != null && value.type === 'findInstancesResponse';
+}
+
+/**
+ * Returns true if value is a valid FindInstancesResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFindInstancesResponse(value: any): value is FindInstancesResponse {
+    try {
+        Convert.findInstancesResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FIND_INSTANCES_RESPONSE_TYPE = "FindInstancesResponse";
+
+/**
+ * Returns true if the value has a type property with value 'findIntentRequest'. This is a fast check that does not check the format of the message
+ */
+export function isFindIntentRequest(value: any): value is FindIntentRequest {
+    return value != null && value.type === 'findIntentRequest';
+}
+
+/**
+ * Returns true if value is a valid FindIntentRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFindIntentRequest(value: any): value is FindIntentRequest {
+    try {
+        Convert.findIntentRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FIND_INTENT_REQUEST_TYPE = "FindIntentRequest";
+
+/**
+ * Returns true if the value has a type property with value 'findIntentResponse'. This is a fast check that does not check the format of the message
+ */
+export function isFindIntentResponse(value: any): value is FindIntentResponse {
+    return value != null && value.type === 'findIntentResponse';
+}
+
+/**
+ * Returns true if value is a valid FindIntentResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFindIntentResponse(value: any): value is FindIntentResponse {
+    try {
+        Convert.findIntentResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FIND_INTENT_RESPONSE_TYPE = "FindIntentResponse";
+
+/**
+ * Returns true if the value has a type property with value 'findIntentsByContextRequest'. This is a fast check that does not check the format of the message
+ */
+export function isFindIntentsByContextRequest(value: any): value is FindIntentsByContextRequest {
+    return value != null && value.type === 'findIntentsByContextRequest';
+}
+
+/**
+ * Returns true if value is a valid FindIntentsByContextRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFindIntentsByContextRequest(value: any): value is FindIntentsByContextRequest {
+    try {
+        Convert.findIntentsByContextRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FIND_INTENTS_BY_CONTEXT_REQUEST_TYPE = "FindIntentsByContextRequest";
+
+/**
+ * Returns true if the value has a type property with value 'findIntentsByContextResponse'. This is a fast check that does not check the format of the message
+ */
+export function isFindIntentsByContextResponse(value: any): value is FindIntentsByContextResponse {
+    return value != null && value.type === 'findIntentsByContextResponse';
+}
+
+/**
+ * Returns true if value is a valid FindIntentsByContextResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFindIntentsByContextResponse(value: any): value is FindIntentsByContextResponse {
+    try {
+        Convert.findIntentsByContextResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const FIND_INTENTS_BY_CONTEXT_RESPONSE_TYPE = "FindIntentsByContextResponse";
+
+/**
+ * Returns true if the value has a type property with value 'getAppMetadataRequest'. This is a fast check that does not check the format of the message
+ */
+export function isGetAppMetadataRequest(value: any): value is GetAppMetadataRequest {
+    return value != null && value.type === 'getAppMetadataRequest';
+}
+
+/**
+ * Returns true if value is a valid GetAppMetadataRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetAppMetadataRequest(value: any): value is GetAppMetadataRequest {
+    try {
+        Convert.getAppMetadataRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_APP_METADATA_REQUEST_TYPE = "GetAppMetadataRequest";
+
+/**
+ * Returns true if the value has a type property with value 'getAppMetadataResponse'. This is a fast check that does not check the format of the message
+ */
+export function isGetAppMetadataResponse(value: any): value is GetAppMetadataResponse {
+    return value != null && value.type === 'getAppMetadataResponse';
+}
+
+/**
+ * Returns true if value is a valid GetAppMetadataResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetAppMetadataResponse(value: any): value is GetAppMetadataResponse {
+    try {
+        Convert.getAppMetadataResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_APP_METADATA_RESPONSE_TYPE = "GetAppMetadataResponse";
+
+/**
+ * Returns true if the value has a type property with value 'getCurrentChannelRequest'. This is a fast check that does not check the format of the message
+ */
+export function isGetCurrentChannelRequest(value: any): value is GetCurrentChannelRequest {
+    return value != null && value.type === 'getCurrentChannelRequest';
+}
+
+/**
+ * Returns true if value is a valid GetCurrentChannelRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetCurrentChannelRequest(value: any): value is GetCurrentChannelRequest {
+    try {
+        Convert.getCurrentChannelRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_CURRENT_CHANNEL_REQUEST_TYPE = "GetCurrentChannelRequest";
+
+/**
+ * Returns true if the value has a type property with value 'getCurrentChannelResponse'. This is a fast check that does not check the format of the message
+ */
+export function isGetCurrentChannelResponse(value: any): value is GetCurrentChannelResponse {
+    return value != null && value.type === 'getCurrentChannelResponse';
+}
+
+/**
+ * Returns true if value is a valid GetCurrentChannelResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetCurrentChannelResponse(value: any): value is GetCurrentChannelResponse {
+    try {
+        Convert.getCurrentChannelResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_CURRENT_CHANNEL_RESPONSE_TYPE = "GetCurrentChannelResponse";
+
+/**
+ * Returns true if the value has a type property with value 'getCurrentContextRequest'. This is a fast check that does not check the format of the message
+ */
+export function isGetCurrentContextRequest(value: any): value is GetCurrentContextRequest {
+    return value != null && value.type === 'getCurrentContextRequest';
+}
+
+/**
+ * Returns true if value is a valid GetCurrentContextRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetCurrentContextRequest(value: any): value is GetCurrentContextRequest {
+    try {
+        Convert.getCurrentContextRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_CURRENT_CONTEXT_REQUEST_TYPE = "GetCurrentContextRequest";
+
+/**
+ * Returns true if the value has a type property with value 'getCurrentContextResponse'. This is a fast check that does not check the format of the message
+ */
+export function isGetCurrentContextResponse(value: any): value is GetCurrentContextResponse {
+    return value != null && value.type === 'getCurrentContextResponse';
+}
+
+/**
+ * Returns true if value is a valid GetCurrentContextResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetCurrentContextResponse(value: any): value is GetCurrentContextResponse {
+    try {
+        Convert.getCurrentContextResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_CURRENT_CONTEXT_RESPONSE_TYPE = "GetCurrentContextResponse";
+
+/**
+ * Returns true if the value has a type property with value 'getInfoRequest'. This is a fast check that does not check the format of the message
+ */
+export function isGetInfoRequest(value: any): value is GetInfoRequest {
+    return value != null && value.type === 'getInfoRequest';
+}
+
+/**
+ * Returns true if value is a valid GetInfoRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetInfoRequest(value: any): value is GetInfoRequest {
+    try {
+        Convert.getInfoRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_INFO_REQUEST_TYPE = "GetInfoRequest";
+
+/**
+ * Returns true if the value has a type property with value 'getInfoResponse'. This is a fast check that does not check the format of the message
+ */
+export function isGetInfoResponse(value: any): value is GetInfoResponse {
+    return value != null && value.type === 'getInfoResponse';
+}
+
+/**
+ * Returns true if value is a valid GetInfoResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetInfoResponse(value: any): value is GetInfoResponse {
+    try {
+        Convert.getInfoResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_INFO_RESPONSE_TYPE = "GetInfoResponse";
+
+/**
+ * Returns true if the value has a type property with value 'getOrCreateChannelRequest'. This is a fast check that does not check the format of the message
+ */
+export function isGetOrCreateChannelRequest(value: any): value is GetOrCreateChannelRequest {
+    return value != null && value.type === 'getOrCreateChannelRequest';
+}
+
+/**
+ * Returns true if value is a valid GetOrCreateChannelRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetOrCreateChannelRequest(value: any): value is GetOrCreateChannelRequest {
+    try {
+        Convert.getOrCreateChannelRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_OR_CREATE_CHANNEL_REQUEST_TYPE = "GetOrCreateChannelRequest";
+
+/**
+ * Returns true if the value has a type property with value 'getOrCreateChannelResponse'. This is a fast check that does not check the format of the message
+ */
+export function isGetOrCreateChannelResponse(value: any): value is GetOrCreateChannelResponse {
+    return value != null && value.type === 'getOrCreateChannelResponse';
+}
+
+/**
+ * Returns true if value is a valid GetOrCreateChannelResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetOrCreateChannelResponse(value: any): value is GetOrCreateChannelResponse {
+    try {
+        Convert.getOrCreateChannelResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_OR_CREATE_CHANNEL_RESPONSE_TYPE = "GetOrCreateChannelResponse";
+
+/**
+ * Returns true if the value has a type property with value 'getUserChannelsRequest'. This is a fast check that does not check the format of the message
+ */
+export function isGetUserChannelsRequest(value: any): value is GetUserChannelsRequest {
+    return value != null && value.type === 'getUserChannelsRequest';
+}
+
+/**
+ * Returns true if value is a valid GetUserChannelsRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetUserChannelsRequest(value: any): value is GetUserChannelsRequest {
+    try {
+        Convert.getUserChannelsRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_USER_CHANNELS_REQUEST_TYPE = "GetUserChannelsRequest";
+
+/**
+ * Returns true if the value has a type property with value 'getUserChannelsResponse'. This is a fast check that does not check the format of the message
+ */
+export function isGetUserChannelsResponse(value: any): value is GetUserChannelsResponse {
+    return value != null && value.type === 'getUserChannelsResponse';
+}
+
+/**
+ * Returns true if value is a valid GetUserChannelsResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidGetUserChannelsResponse(value: any): value is GetUserChannelsResponse {
+    try {
+        Convert.getUserChannelsResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const GET_USER_CHANNELS_RESPONSE_TYPE = "GetUserChannelsResponse";
+
+/**
+ * Returns true if the value has a type property with value 'heartbeatAcknowledgementRequest'. This is a fast check that does not check the format of the message
+ */
+export function isHeartbeatAcknowledgementRequest(value: any): value is HeartbeatAcknowledgementRequest {
+    return value != null && value.type === 'heartbeatAcknowledgementRequest';
+}
+
+/**
+ * Returns true if value is a valid HeartbeatAcknowledgementRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidHeartbeatAcknowledgementRequest(value: any): value is HeartbeatAcknowledgementRequest {
+    try {
+        Convert.heartbeatAcknowledgementRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const HEARTBEAT_ACKNOWLEDGEMENT_REQUEST_TYPE = "HeartbeatAcknowledgementRequest";
+
+/**
+ * Returns true if the value has a type property with value 'heartbeatEvent'. This is a fast check that does not check the format of the message
+ */
+export function isHeartbeatEvent(value: any): value is HeartbeatEvent {
+    return value != null && value.type === 'heartbeatEvent';
+}
+
+/**
+ * Returns true if value is a valid HeartbeatEvent. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidHeartbeatEvent(value: any): value is HeartbeatEvent {
+    try {
+        Convert.heartbeatEventToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const HEARTBEAT_EVENT_TYPE = "HeartbeatEvent";
+
+/**
+ * Returns true if the value has a type property with value 'intentEvent'. This is a fast check that does not check the format of the message
+ */
+export function isIntentEvent(value: any): value is IntentEvent {
+    return value != null && value.type === 'intentEvent';
+}
+
+/**
+ * Returns true if value is a valid IntentEvent. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidIntentEvent(value: any): value is IntentEvent {
+    try {
+        Convert.intentEventToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const INTENT_EVENT_TYPE = "IntentEvent";
+
+/**
+ * Returns true if the value has a type property with value 'intentListenerUnsubscribeRequest'. This is a fast check that does not check the format of the message
+ */
+export function isIntentListenerUnsubscribeRequest(value: any): value is IntentListenerUnsubscribeRequest {
+    return value != null && value.type === 'intentListenerUnsubscribeRequest';
+}
+
+/**
+ * Returns true if value is a valid IntentListenerUnsubscribeRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidIntentListenerUnsubscribeRequest(value: any): value is IntentListenerUnsubscribeRequest {
+    try {
+        Convert.intentListenerUnsubscribeRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const INTENT_LISTENER_UNSUBSCRIBE_REQUEST_TYPE = "IntentListenerUnsubscribeRequest";
+
+/**
+ * Returns true if the value has a type property with value 'intentListenerUnsubscribeResponse'. This is a fast check that does not check the format of the message
+ */
+export function isIntentListenerUnsubscribeResponse(value: any): value is IntentListenerUnsubscribeResponse {
+    return value != null && value.type === 'intentListenerUnsubscribeResponse';
+}
+
+/**
+ * Returns true if value is a valid IntentListenerUnsubscribeResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidIntentListenerUnsubscribeResponse(value: any): value is IntentListenerUnsubscribeResponse {
+    try {
+        Convert.intentListenerUnsubscribeResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const INTENT_LISTENER_UNSUBSCRIBE_RESPONSE_TYPE = "IntentListenerUnsubscribeResponse";
+
+/**
+ * Returns true if the value has a type property with value 'intentResultRequest'. This is a fast check that does not check the format of the message
+ */
+export function isIntentResultRequest(value: any): value is IntentResultRequest {
+    return value != null && value.type === 'intentResultRequest';
+}
+
+/**
+ * Returns true if value is a valid IntentResultRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidIntentResultRequest(value: any): value is IntentResultRequest {
+    try {
+        Convert.intentResultRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const INTENT_RESULT_REQUEST_TYPE = "IntentResultRequest";
+
+/**
+ * Returns true if the value has a type property with value 'intentResultResponse'. This is a fast check that does not check the format of the message
+ */
+export function isIntentResultResponse(value: any): value is IntentResultResponse {
+    return value != null && value.type === 'intentResultResponse';
+}
+
+/**
+ * Returns true if value is a valid IntentResultResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidIntentResultResponse(value: any): value is IntentResultResponse {
+    try {
+        Convert.intentResultResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const INTENT_RESULT_RESPONSE_TYPE = "IntentResultResponse";
+
+/**
+ * Returns true if the value has a type property with value 'joinUserChannelRequest'. This is a fast check that does not check the format of the message
+ */
+export function isJoinUserChannelRequest(value: any): value is JoinUserChannelRequest {
+    return value != null && value.type === 'joinUserChannelRequest';
+}
+
+/**
+ * Returns true if value is a valid JoinUserChannelRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidJoinUserChannelRequest(value: any): value is JoinUserChannelRequest {
+    try {
+        Convert.joinUserChannelRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const JOIN_USER_CHANNEL_REQUEST_TYPE = "JoinUserChannelRequest";
+
+/**
+ * Returns true if the value has a type property with value 'joinUserChannelResponse'. This is a fast check that does not check the format of the message
+ */
+export function isJoinUserChannelResponse(value: any): value is JoinUserChannelResponse {
+    return value != null && value.type === 'joinUserChannelResponse';
+}
+
+/**
+ * Returns true if value is a valid JoinUserChannelResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidJoinUserChannelResponse(value: any): value is JoinUserChannelResponse {
+    try {
+        Convert.joinUserChannelResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const JOIN_USER_CHANNEL_RESPONSE_TYPE = "JoinUserChannelResponse";
+
+/**
+ * Returns true if the value has a type property with value 'leaveCurrentChannelRequest'. This is a fast check that does not check the format of the message
+ */
+export function isLeaveCurrentChannelRequest(value: any): value is LeaveCurrentChannelRequest {
+    return value != null && value.type === 'leaveCurrentChannelRequest';
+}
+
+/**
+ * Returns true if value is a valid LeaveCurrentChannelRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidLeaveCurrentChannelRequest(value: any): value is LeaveCurrentChannelRequest {
+    try {
+        Convert.leaveCurrentChannelRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const LEAVE_CURRENT_CHANNEL_REQUEST_TYPE = "LeaveCurrentChannelRequest";
+
+/**
+ * Returns true if the value has a type property with value 'leaveCurrentChannelResponse'. This is a fast check that does not check the format of the message
+ */
+export function isLeaveCurrentChannelResponse(value: any): value is LeaveCurrentChannelResponse {
+    return value != null && value.type === 'leaveCurrentChannelResponse';
+}
+
+/**
+ * Returns true if value is a valid LeaveCurrentChannelResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidLeaveCurrentChannelResponse(value: any): value is LeaveCurrentChannelResponse {
+    try {
+        Convert.leaveCurrentChannelResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const LEAVE_CURRENT_CHANNEL_RESPONSE_TYPE = "LeaveCurrentChannelResponse";
+
+/**
+ * Returns true if the value has a type property with value 'openRequest'. This is a fast check that does not check the format of the message
+ */
+export function isOpenRequest(value: any): value is OpenRequest {
+    return value != null && value.type === 'openRequest';
+}
+
+/**
+ * Returns true if value is a valid OpenRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidOpenRequest(value: any): value is OpenRequest {
+    try {
+        Convert.openRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const OPEN_REQUEST_TYPE = "OpenRequest";
+
+/**
+ * Returns true if the value has a type property with value 'openResponse'. This is a fast check that does not check the format of the message
+ */
+export function isOpenResponse(value: any): value is OpenResponse {
+    return value != null && value.type === 'openResponse';
+}
+
+/**
+ * Returns true if value is a valid OpenResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidOpenResponse(value: any): value is OpenResponse {
+    try {
+        Convert.openResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const OPEN_RESPONSE_TYPE = "OpenResponse";
+
+/**
+ * Returns true if the value has a type property with value 'privateChannelAddEventListenerRequest'. This is a fast check that does not check the format of the message
+ */
+export function isPrivateChannelAddEventListenerRequest(value: any): value is PrivateChannelAddEventListenerRequest {
+    return value != null && value.type === 'privateChannelAddEventListenerRequest';
+}
+
+/**
+ * Returns true if value is a valid PrivateChannelAddEventListenerRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidPrivateChannelAddEventListenerRequest(value: any): value is PrivateChannelAddEventListenerRequest {
+    try {
+        Convert.privateChannelAddEventListenerRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const PRIVATE_CHANNEL_ADD_EVENT_LISTENER_REQUEST_TYPE = "PrivateChannelAddEventListenerRequest";
+
+/**
+ * Returns true if the value has a type property with value 'privateChannelAddEventListenerResponse'. This is a fast check that does not check the format of the message
+ */
+export function isPrivateChannelAddEventListenerResponse(value: any): value is PrivateChannelAddEventListenerResponse {
+    return value != null && value.type === 'privateChannelAddEventListenerResponse';
+}
+
+/**
+ * Returns true if value is a valid PrivateChannelAddEventListenerResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidPrivateChannelAddEventListenerResponse(value: any): value is PrivateChannelAddEventListenerResponse {
+    try {
+        Convert.privateChannelAddEventListenerResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const PRIVATE_CHANNEL_ADD_EVENT_LISTENER_RESPONSE_TYPE = "PrivateChannelAddEventListenerResponse";
+
+/**
+ * Returns true if the value has a type property with value 'privateChannelDisconnectRequest'. This is a fast check that does not check the format of the message
+ */
+export function isPrivateChannelDisconnectRequest(value: any): value is PrivateChannelDisconnectRequest {
+    return value != null && value.type === 'privateChannelDisconnectRequest';
+}
+
+/**
+ * Returns true if value is a valid PrivateChannelDisconnectRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidPrivateChannelDisconnectRequest(value: any): value is PrivateChannelDisconnectRequest {
+    try {
+        Convert.privateChannelDisconnectRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const PRIVATE_CHANNEL_DISCONNECT_REQUEST_TYPE = "PrivateChannelDisconnectRequest";
+
+/**
+ * Returns true if the value has a type property with value 'privateChannelDisconnectResponse'. This is a fast check that does not check the format of the message
+ */
+export function isPrivateChannelDisconnectResponse(value: any): value is PrivateChannelDisconnectResponse {
+    return value != null && value.type === 'privateChannelDisconnectResponse';
+}
+
+/**
+ * Returns true if value is a valid PrivateChannelDisconnectResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidPrivateChannelDisconnectResponse(value: any): value is PrivateChannelDisconnectResponse {
+    try {
+        Convert.privateChannelDisconnectResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const PRIVATE_CHANNEL_DISCONNECT_RESPONSE_TYPE = "PrivateChannelDisconnectResponse";
+
+/**
+ * Returns true if the value has a type property with value 'privateChannelOnAddContextListenerEvent'. This is a fast check that does not check the format of the message
+ */
+export function isPrivateChannelOnAddContextListenerEvent(value: any): value is PrivateChannelOnAddContextListenerEvent {
+    return value != null && value.type === 'privateChannelOnAddContextListenerEvent';
+}
+
+/**
+ * Returns true if value is a valid PrivateChannelOnAddContextListenerEvent. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidPrivateChannelOnAddContextListenerEvent(value: any): value is PrivateChannelOnAddContextListenerEvent {
+    try {
+        Convert.privateChannelOnAddContextListenerEventToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const PRIVATE_CHANNEL_ON_ADD_CONTEXT_LISTENER_EVENT_TYPE = "PrivateChannelOnAddContextListenerEvent";
+
+/**
+ * Returns true if the value has a type property with value 'privateChannelOnDisconnectEvent'. This is a fast check that does not check the format of the message
+ */
+export function isPrivateChannelOnDisconnectEvent(value: any): value is PrivateChannelOnDisconnectEvent {
+    return value != null && value.type === 'privateChannelOnDisconnectEvent';
+}
+
+/**
+ * Returns true if value is a valid PrivateChannelOnDisconnectEvent. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidPrivateChannelOnDisconnectEvent(value: any): value is PrivateChannelOnDisconnectEvent {
+    try {
+        Convert.privateChannelOnDisconnectEventToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const PRIVATE_CHANNEL_ON_DISCONNECT_EVENT_TYPE = "PrivateChannelOnDisconnectEvent";
+
+/**
+ * Returns true if the value has a type property with value 'privateChannelOnUnsubscribeEvent'. This is a fast check that does not check the format of the message
+ */
+export function isPrivateChannelOnUnsubscribeEvent(value: any): value is PrivateChannelOnUnsubscribeEvent {
+    return value != null && value.type === 'privateChannelOnUnsubscribeEvent';
+}
+
+/**
+ * Returns true if value is a valid PrivateChannelOnUnsubscribeEvent. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidPrivateChannelOnUnsubscribeEvent(value: any): value is PrivateChannelOnUnsubscribeEvent {
+    try {
+        Convert.privateChannelOnUnsubscribeEventToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const PRIVATE_CHANNEL_ON_UNSUBSCRIBE_EVENT_TYPE = "PrivateChannelOnUnsubscribeEvent";
+
+/**
+ * Returns true if the value has a type property with value 'privateChannelUnsubscribeEventListenerRequest'. This is a fast check that does not check the format of the message
+ */
+export function isPrivateChannelUnsubscribeEventListenerRequest(value: any): value is PrivateChannelUnsubscribeEventListenerRequest {
+    return value != null && value.type === 'privateChannelUnsubscribeEventListenerRequest';
+}
+
+/**
+ * Returns true if value is a valid PrivateChannelUnsubscribeEventListenerRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidPrivateChannelUnsubscribeEventListenerRequest(value: any): value is PrivateChannelUnsubscribeEventListenerRequest {
+    try {
+        Convert.privateChannelUnsubscribeEventListenerRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const PRIVATE_CHANNEL_UNSUBSCRIBE_EVENT_LISTENER_REQUEST_TYPE = "PrivateChannelUnsubscribeEventListenerRequest";
+
+/**
+ * Returns true if the value has a type property with value 'privateChannelUnsubscribeEventListenerResponse'. This is a fast check that does not check the format of the message
+ */
+export function isPrivateChannelUnsubscribeEventListenerResponse(value: any): value is PrivateChannelUnsubscribeEventListenerResponse {
+    return value != null && value.type === 'privateChannelUnsubscribeEventListenerResponse';
+}
+
+/**
+ * Returns true if value is a valid PrivateChannelUnsubscribeEventListenerResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidPrivateChannelUnsubscribeEventListenerResponse(value: any): value is PrivateChannelUnsubscribeEventListenerResponse {
+    try {
+        Convert.privateChannelUnsubscribeEventListenerResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const PRIVATE_CHANNEL_UNSUBSCRIBE_EVENT_LISTENER_RESPONSE_TYPE = "PrivateChannelUnsubscribeEventListenerResponse";
+
+/**
+ * Returns true if the value has a type property with value 'raiseIntentForContextRequest'. This is a fast check that does not check the format of the message
+ */
+export function isRaiseIntentForContextRequest(value: any): value is RaiseIntentForContextRequest {
+    return value != null && value.type === 'raiseIntentForContextRequest';
+}
+
+/**
+ * Returns true if value is a valid RaiseIntentForContextRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidRaiseIntentForContextRequest(value: any): value is RaiseIntentForContextRequest {
+    try {
+        Convert.raiseIntentForContextRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const RAISE_INTENT_FOR_CONTEXT_REQUEST_TYPE = "RaiseIntentForContextRequest";
+
+/**
+ * Returns true if the value has a type property with value 'raiseIntentForContextResponse'. This is a fast check that does not check the format of the message
+ */
+export function isRaiseIntentForContextResponse(value: any): value is RaiseIntentForContextResponse {
+    return value != null && value.type === 'raiseIntentForContextResponse';
+}
+
+/**
+ * Returns true if value is a valid RaiseIntentForContextResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidRaiseIntentForContextResponse(value: any): value is RaiseIntentForContextResponse {
+    try {
+        Convert.raiseIntentForContextResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const RAISE_INTENT_FOR_CONTEXT_RESPONSE_TYPE = "RaiseIntentForContextResponse";
+
+/**
+ * Returns true if the value has a type property with value 'raiseIntentRequest'. This is a fast check that does not check the format of the message
+ */
+export function isRaiseIntentRequest(value: any): value is RaiseIntentRequest {
+    return value != null && value.type === 'raiseIntentRequest';
+}
+
+/**
+ * Returns true if value is a valid RaiseIntentRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidRaiseIntentRequest(value: any): value is RaiseIntentRequest {
+    try {
+        Convert.raiseIntentRequestToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const RAISE_INTENT_REQUEST_TYPE = "RaiseIntentRequest";
+
+/**
+ * Returns true if the value has a type property with value 'raiseIntentResponse'. This is a fast check that does not check the format of the message
+ */
+export function isRaiseIntentResponse(value: any): value is RaiseIntentResponse {
+    return value != null && value.type === 'raiseIntentResponse';
+}
+
+/**
+ * Returns true if value is a valid RaiseIntentResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidRaiseIntentResponse(value: any): value is RaiseIntentResponse {
+    try {
+        Convert.raiseIntentResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const RAISE_INTENT_RESPONSE_TYPE = "RaiseIntentResponse";
+
+/**
+ * Returns true if the value has a type property with value 'raiseIntentResultResponse'. This is a fast check that does not check the format of the message
+ */
+export function isRaiseIntentResultResponse(value: any): value is RaiseIntentResultResponse {
+    return value != null && value.type === 'raiseIntentResultResponse';
+}
+
+/**
+ * Returns true if value is a valid RaiseIntentResultResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidRaiseIntentResultResponse(value: any): value is RaiseIntentResultResponse {
+    try {
+        Convert.raiseIntentResultResponseToJson(value);
+        return true;
+    } catch (_e: any) {
+        return false;
+    }
+}
+
+export const RAISE_INTENT_RESULT_RESPONSE_TYPE = "RaiseIntentResultResponse";   
