@@ -10,6 +10,10 @@
   "publishConfig": {
     "tag": "latest"
   },
+  "exports": {
+    "import": "./dist/src/index.js",
+    "require": "./dist/index.cjs"
+  },
   "license": "Apache-2.0",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -18,12 +22,19 @@
   ],
   "scripts": {
     "clean": "rimraf dist",
-    "build": "tsc --module es2022"
+    "build": "tsc --module es2022 && npx rollup -c rollup.config.mjs src/index.ts --file dist/index.cjs --format cjs"
   },
   "dependencies": {
-    "@kite9/fdc3-standard": "2.2.0-beta.29",
-    "@kite9/fdc3-schema": "2.2.0-beta.29",
+    "@kite9/fdc3-context": "2.2.0-beta.29",
     "@kite9/fdc3-get-agent": "2.2.0-beta.29",
-    "@kite9/fdc3-context": "2.2.0-beta.29"
+    "@kite9/fdc3-schema": "2.2.0-beta.29",
+    "@kite9/fdc3-standard": "2.2.0-beta.29"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.1",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-typescript": "^12.1.1",
+    "rollup": "^4.27.4"
   }
 }
