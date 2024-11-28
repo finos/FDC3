@@ -17,8 +17,8 @@
     "dist"
   ],
   "scripts": {
-    "clean": "npm run rimraf dist && npm run rimraf generated",
-    "mkdirs": "npm run mkdirp generated/api && npm run mkdirp generated/bridging",
+    "clean": "npx rimraf dist && npx rimraf generated",
+    "mkdirs": "npx mkdirp generated/api && npx mkdirp generated/bridging",
     "generate-type-predicates": "ts-node code-generation/generate-type-predicates.ts",
     "generate": "npm run mkdirs && npm run typegen-browser && npm run typegen-bridging && npm run generate-type-predicates && npm run lint",
     "generate-new": "npm run mkdirs && npm run typegen-browser && npm run typegen-bridging && npm run generate-type-predicates && npm run lint",
