@@ -1,6 +1,7 @@
 import { AgentError, DEFAULT_TIMEOUT_MS, DesktopAgent, WebDesktopAgentType } from "@kite9/fdc3-standard";
 import { GetAgentParams } from "@kite9/fdc3-standard";
 import { DesktopAgentSelection, Loader } from "./Loader";
+import { Logger } from "../util/Logger";
 
 /**
  * This approach will resolve the loader promise if the fdc3Ready event occurs.
@@ -14,9 +15,13 @@ export class DesktopAgentPreloadLoader implements Loader {
     readyEventHandler: (() => void) | null = null;
     /** Overall timeout */
     timeout: NodeJS.Timeout | null = null;
+    
+    /** Reference to the get fn's Promise's reject call - used when cancelling. */
+    rejectFn: ((reason?: any) => void) | null  = null;
 
     async poll(resolve: (value: DesktopAgentSelection) => void) {    
         if (globalThis.window.fdc3) {
+            Logger.debug(`DesktopAgentPreloadLoader.get(): Discovered DA through polling...`);
             this.prepareSelection(globalThis.window.fdc3, resolve);
         } else {
             if (!this.done) {
@@ -26,6 +31,9 @@ export class DesktopAgentPreloadLoader implements Loader {
     }
 
     async prepareSelection(fdc3: DesktopAgent, resolve: (value: DesktopAgentSelection) => void) {
+        //note that we've found an agent and will be settling our get promise
+        this.rejectFn = null;
+
         //stop polling and listening for fdc3Ready
         this.cancel();
 
@@ -44,25 +52,31 @@ export class DesktopAgentPreloadLoader implements Loader {
         };
 
         if (selection.details.instanceId === "unknown"){
-            console.warn("The DesktopAgent did not return an instanceId in the app's metadata", implMetadata);
+            Logger.warn("The DesktopAgent did not return an instanceId in the app's metadata", implMetadata);
         }
         
         resolve(selection);
     }
 
     get(options: GetAgentParams): Promise<DesktopAgentSelection> {
+        Logger.debug(`DesktopAgentPreloadLoader.get(): Initiating search for Desktop Agent Preload`);
         return new Promise<DesktopAgentSelection>((resolve, reject) => {
+            //save reject fn in case we get cancelled
+            this.rejectFn = reject;
+
             //do an initial check
             if (globalThis.window.fdc3) {
                 this.prepareSelection(globalThis.window.fdc3, resolve);
             } else {
                 //setup a timeout so that we can reject if don't find anything
                 this.timeout = setTimeout(() => {
+                    Logger.debug(`DesktopAgentPreloadLoader.get(): timeout`);
                     reject(new Error(AgentError.AgentNotFound));
                 }, options.timeoutMs ?? DEFAULT_TIMEOUT_MS);
                 
                 //listen for the fdc3Ready event
                 this.readyEventHandler = () => {
+                    Logger.debug(`DesktopAgentPreloadLoader.get(): discovered DA through fdc3Ready event`);
                     if (globalThis.window.fdc3) {
                         this.prepareSelection(globalThis.window.fdc3, resolve);
                     }
@@ -76,7 +90,12 @@ export class DesktopAgentPreloadLoader implements Loader {
     }
 
     cancel(): void {
+        Logger.debug("Cleaning up DesktopAgentPreloadLoader");
         this.done = true;
+        if (this.rejectFn){
+            this.rejectFn(new Error(AgentError.AgentNotFound));
+            this.rejectFn = null;
+        }
         if (this.timeout) {
             clearTimeout(this.timeout);
         }

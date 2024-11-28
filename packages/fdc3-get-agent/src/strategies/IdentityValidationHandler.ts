@@ -7,6 +7,7 @@ import {
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { GetAgentParams, AgentError } from '@kite9/fdc3-standard';
 import { retrieveDesktopAgentDetails } from '../sessionStorage/DesktopAgentDetails';
+import { Logger } from '../util/Logger';
 
 /** Timeout allowed for id validation to occur and for the DA to respond with details.
  * This is additional to the app's specified timeout for discovery - we have already
@@ -54,6 +55,8 @@ export class IdentityValidationHandler {
         actualUrl,
       },
     };
+    Logger.log(`IdentityValidationHandler: sending validation message`, requestMessage);
+          
     const persistedDetails = retrieveDesktopAgentDetails(identityUrl);
 
     if (persistedDetails) {
@@ -69,11 +72,13 @@ export class IdentityValidationHandler {
     return new Promise<WebConnectionProtocol5ValidateAppIdentitySuccessResponse>((resolve, reject) => {
       //timeout for id validation only
       const timeout = setTimeout(() => {
+        Logger.log(`IdentityValidationHandler: timeout`);
+    
         if (this.idValidationResponseListener) {
           //remove the event listener as we won't proceed further
           this.messagePort.removeEventListener('message', this.idValidationResponseListener);
         }
-        console.error(
+        Logger.error(
           `The Desktop Agent didn't respond to ID validation within ${ID_VALIDATION_TIMEOUT / 1000} seconds`
         );
         reject(AgentError.ErrorOnConnect);
@@ -82,6 +87,8 @@ export class IdentityValidationHandler {
       // setup listener for message and retrieve JS URL from it
       this.idValidationResponseListener = (event: MessageEvent<WebConnectionProtocolMessage>) => {
         const data = event.data;
+        Logger.debug(`IdentityValidationHandler: received message`, data);
+    
         if (data?.meta?.connectionAttemptUuid == this.connectionAttemptUuid) {
           if (isWebConnectionProtocol5ValidateAppIdentitySuccessResponse(data)) {
             //passed validation
@@ -90,8 +97,8 @@ export class IdentityValidationHandler {
               //remove the event listener as we've received a messagePort to use
               this.messagePort.removeEventListener('message', this.idValidationResponseListener);
             }
-            console.debug(
-              `Validated app identity, appId: ${data.payload.appId}, instanceId: ${data.payload.instanceId}`
+            Logger.debug(
+              `IdentityValidationHandler: Validated app identity, appId: ${data.payload.appId}, instanceId: ${data.payload.instanceId}`
             );
             resolve(data);
 
@@ -102,19 +109,19 @@ export class IdentityValidationHandler {
               //remove the event listener as we've received a messagePort to use
               this.messagePort.removeEventListener('message', this.idValidationResponseListener);
             }
-            console.error(`App identity validation failed: ${data.payload.message ?? 'No reason given'}`);
+            Logger.error(`IdentityValidationHandler: App identity validation failed: ${data.payload.message ?? 'No reason given'}`);
             reject(AgentError.AccessDenied);
 
           } else {
-            console.debug(
-              `Ignoring message unexpected message in PostMessageLoader (because its not a WCP5 message).`,
+            Logger.debug(
+              `IdentityValidationHandler: Ignoring message unexpected message in PostMessageLoader (because its not a WCP5 message).`,
               data
             );
           }
 
         } else {
-          console.debug(
-            `Ignoring message with invalid connectionAttemptUuid. Expected ${this.connectionAttemptUuid}, received: ${data?.meta?.connectionAttemptUuid}`,
+          Logger.debug(
+            `IdentityValidationHandler: Ignoring message with invalid connectionAttemptUuid. Expected ${this.connectionAttemptUuid}, received: ${data?.meta?.connectionAttemptUuid}`,
             data
           );
         }

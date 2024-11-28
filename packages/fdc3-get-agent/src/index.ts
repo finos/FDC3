@@ -2,7 +2,6 @@ import { DesktopAgent } from '@kite9/fdc3-standard'
 import { getAgent } from './strategies/getAgent';
 const DEFAULT_WAIT_FOR_MS = 20000;
 
-
 export { getAgent }
 
 /**
