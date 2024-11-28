@@ -6,6 +6,7 @@ import { DefaultDesktopAgentChannelSelector } from "../ui/DefaultDesktopAgentCha
 import { NullIntentResolver } from "../ui/NullIntentResolver";
 import { NullChannelSelector } from "../ui/NullChannelSelector";
 import { ChannelSelector } from "@kite9/fdc3-standard";
+import { Logger } from "../util/Logger";
 
 /**
  * Given a message port, constructs a desktop agent to communicate via that.
@@ -57,8 +58,13 @@ async function populateChannelSelector(cs: ChannelSupport, channelSelector: Chan
 
 function handleDisconnectOnPageHide(da: DesktopAgent) {
     globalThis.window.addEventListener("pagehide", (event) => {
+        Logger.log(`Received pagehide event with persisted ${event.persisted}`);
+        
         //the page is being destroyed, disconnect from the DA
         if (!event.persisted) { 
+            //TODO: send WCP6Goodbye
+
+            //TODO: change this to more directly close the MessagePort
             if ((da as any).disconnect) {
                 (da as any).disconnect();
             }

@@ -4,6 +4,7 @@ import { DesktopAgentSelection } from './Loader';
 import { v4 as uuidv4 } from 'uuid';
 import { HelloHandler } from './HelloHandler';
 import { IdentityValidationHandler } from './IdentityValidationHandler';
+import { Logger } from '../util/Logger';
 
 /** TypeGuard for a Desktop Agent */
 function isDesktopAgent(da: WindowProxy | DesktopAgent): da is DesktopAgent {
@@ -73,7 +74,7 @@ export class FailoverHandler {
           //send a hello message
           this.helloHandler.sendWCP1Hello(failoverResult, '*');
         } else {
-          console.error('Failover function returned an invalid result', failoverResult);
+          Logger.error('Failover function returned an invalid result', failoverResult);
           throw new Error(AgentError.InvalidFailover);
         }
       } else {
@@ -107,7 +108,7 @@ export class FailoverHandler {
         return desktopAgentSelection;
       } catch (e) {
         //identity validation may have failed
-        console.error("Error during identity validation of Failover", e);
+        Logger.error("Error during identity validation of Failover", e);
         throw e;
       }   
     }

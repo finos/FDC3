@@ -3,6 +3,7 @@ import {
   DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX,
 } from '@kite9/fdc3-standard';
 import { v4 as uuidv4 } from 'uuid';
+import { Logger } from '../util/Logger';
 
 export function createUUID(): string {
   return uuidv4();
@@ -25,6 +26,7 @@ export function sessionKey(): string {
  *  reconnection to the same Desktop Agent and to request the same instanceId.
  */
 export function storeDesktopAgentDetails(details: DesktopAgentDetails){
+  Logger.debug(`DesktopAgentDetails: Storing Desktop Agent details:`, details);
 	//check if there are existing details in storage to update
 	let detailsToStore = retrieveAllDesktopAgentDetails();
 	if (!detailsToStore) {
@@ -44,7 +46,7 @@ export function retrieveAllDesktopAgentDetails(): Record<string, DesktopAgentDet
     try {
       return JSON.parse(detailsStr) as Record<string, DesktopAgentDetails>;
     } catch (e) {
-      console.error(`FDC3 connection data couldn't be parsed\nstorage key: ${sessionKey()}\nvalue: ${detailsStr}`);
+      Logger.error(`DesktopAgentDetails: FDC3 connection data couldn't be parsed\nstorage key: ${sessionKey()}\nvalue: ${detailsStr}`);
       return null;
     }
   } else {
@@ -57,7 +59,9 @@ export function retrieveAllDesktopAgentDetails(): Record<string, DesktopAgentDet
    *  agent and to request the same instanceId.
    */
 export function retrieveDesktopAgentDetails(identityUrl: string): DesktopAgentDetails | null {
-    const allDetails = retrieveAllDesktopAgentDetails();
+  
+  const allDetails = retrieveAllDesktopAgentDetails();
+  Logger.log(`DesktopAgentDetails: retrieveDesktopAgentDetails:`, allDetails);  
     if (allDetails) {
       return allDetails[identityUrl];
     } else {

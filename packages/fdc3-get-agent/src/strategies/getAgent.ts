@@ -4,6 +4,7 @@ import { PostMessageLoader } from './PostMessageLoader';
 import { retrieveDesktopAgentDetails, storeDesktopAgentDetails } from '../sessionStorage/DesktopAgentDetails';
 import { FailoverHandler } from './FailoverHandler';
 import { Loader } from './Loader';
+import { Logger } from '../util/Logger';
 
 export const FDC3_VERSION = "2.2"
 
@@ -30,7 +31,7 @@ export function getAgentPromise(): Promise<DesktopAgent> | null {
 }
 
 function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
-
+    Logger.log("Initiating Desktop Agent discovery...");
     let strategies: Loader[];
 
     //Retrieve persisted connection data limit to a previous strategy if one exists
@@ -63,14 +64,21 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
         ];
     }
 
-    const promises = strategies.map(s => s.get(options));
-    
+    const promises = strategies.map(s => s.get(options).then((selection) => {
+        //cancel other strategies if we selected a DA
+        strategies.forEach(s => s.cancel());
+        return selection;
+    }));
+
+    Logger.debug("Waiting for discovery promises to settle...")
     return Promise.allSettled(promises)
     .then(async results => {
         //review results
         const daResult = results.find(isFulfilled);
+        Logger.debug(`Discovery results: ${JSON.stringify(results)}`);
 
         if (daResult) {
+            
             const selection = daResult.value;
             const desktopAgentDetails: DesktopAgentDetails = {
                 agentType: selection.details.agentType,
@@ -82,11 +90,13 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
                 instanceUuid: selection.details.instanceUuid
             };
             storeDesktopAgentDetails(desktopAgentDetails);
-
+            Logger.log(`Desktop Agent located via discovery, appId: ${desktopAgentDetails.appId}, instanceId: ${desktopAgentDetails.instanceId}`);
             return selection.agent;
         } else {
             //if we received any error other than AgentError.AgentNotFound, throw it
             const errors = results.filter(isRejected);
+
+            Logger.debug(`Discovery errors: ${JSON.stringify(errors)}`);
             const error = errors.find((aRejection) => {
                 aRejection.reason?.message !== AgentError.AgentNotFound;
             });
@@ -94,6 +104,7 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
                 throw error;
 
             } else if (options.failover != undefined) {
+                Logger.debug(`Calling failover fn...`);
                 //Proceed with the failover
                 try {
                     //TODO: consider adding a timeout for the failover, to avoid getting stuck here
@@ -114,15 +125,16 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
                         instanceUuid: selection.details.instanceUuid
                     };
                     storeDesktopAgentDetails(desktopAgentDetails);
-    
+                    Logger.log(`Desktop Agent located via failover, appId: ${desktopAgentDetails.appId}, instanceId: ${desktopAgentDetails.instanceId}`);
+            
                     return selection.agent;
                 } catch (e) {
-                    console.error("Desktop agent not found. Error reported during failover", e);
+                    Logger.error("Desktop agent not found. Error reported during failover", e);
                     throw e;
                 }
             } else {
                 //We didn't manage to find an agent.
-                console.log("Desktop agent not found. Error reported during discovery", error);
+                Logger.error("Desktop agent not found. Error reported during discovery", error);
                 throw new Error(AgentError.AgentNotFound);
             }
         }
@@ -183,6 +195,8 @@ export const getAgent: GetAgentType = (params?: GetAgentParams) => {
         }
         return da;
     };
+
+    Logger.debug(`Got options: ${JSON.stringify(options)}`);
 
     if (!theAgentPromise) {
         theAgentPromise = initAgentPromise(options).then(handleSetWindowFdc3);

@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { DesktopAgentSelection, Loader } from './Loader';
 import { HelloHandler } from './HelloHandler';
 import { IdentityValidationHandler } from './IdentityValidationHandler';
+import { Logger } from '../util/Logger';
 
 /**
  * Recursive search for all possible parent frames (windows) that we may
@@ -13,6 +14,7 @@ import { IdentityValidationHandler } from './IdentityValidationHandler';
  */
 function collectPossibleTargets(startWindow: Window, found: Window[]) {
   _recursePossibleTargets(startWindow, startWindow, found);
+  Logger.debug(`Possible parent windows/frames found: ${found.length}`);
 }
 
 function _recursePossibleTargets(startWindow: Window, w: Window, found: Window[]) {
@@ -21,11 +23,11 @@ function _recursePossibleTargets(startWindow: Window, w: Window, found: Window[]
       found.push(w);
     }
 
-    if (found.indexOf(w.opener) == -1 && w != startWindow) {
+    if (found.indexOf(w.opener) == -1 && w.opener != startWindow) {
       _recursePossibleTargets(startWindow, w.opener, found);
     }
 
-    if (found.indexOf(w.parent) == -1 && w != startWindow) {
+    if (found.indexOf(w.parent) == -1 && w.parent != startWindow) {
       _recursePossibleTargets(startWindow, w.parent, found);
     }
   }
@@ -52,23 +54,29 @@ export class PostMessageLoader implements Loader {
   /** Initial timeout (released once a MessagePort is received - additional steps are outside timeout) */
   timeout: NodeJS.Timeout | null = null;
 
+  /** Reference to the get fn's Promise's reject call - used when cancelling. */
+  rejectFn: ((reason?: any) => void) | null  = null;
+
   get(options: GetAgentParams): Promise<DesktopAgentSelection> {
+    Logger.debug(`PostMessageLoader.get(): Initiating search for Desktop Agent Proxy`);
     return new Promise<DesktopAgentSelection>(async (resolve, reject) => {
-      
+      //save reject fn in case we get cancelled
+      this.rejectFn = reject;
+
       //setup a timeout so we can reject if it runs out 
       this.timeout = setTimeout(() => {
+          Logger.debug(`PostMessageLoader.get(): timeout`);
           this.cancel();
           reject(new Error(AgentError.AgentNotFound));
       }, options.timeoutMs ?? DEFAULT_TIMEOUT_MS);
     
-      
       this.helloHandler = new HelloHandler(options, this.connectionAttemptUuid);
 
       // ok, begin the process
       const handshakePromise = this.helloHandler.listenForHelloResponses();
 
       if (this.previousUrl) {
-        console.debug(`Loading previously used adaptor URL: ${this.previousUrl}`);
+        Logger.debug(`PostMessageLoader.get(): Loading previously used adaptor URL: ${this.previousUrl}`);
 
         //skip looking for target parent windows and open an iframe immediately
         this.helloHandler.openFrame(this.previousUrl);
@@ -90,6 +98,9 @@ export class PostMessageLoader implements Loader {
       //  WCP3Handshake response.
       // If no WCP3Handshake is ever received this will not resolve
       const connectionDetails = await handshakePromise;
+
+      //prevent us being cancelled
+      this.rejectFn = null;
 
       //cancel the initial timeout as we got a handshake response
       if (this.timeout) {
@@ -129,6 +140,14 @@ export class PostMessageLoader implements Loader {
   }
 
   cancel(): void {
+    Logger.debug("Cleaning up PostMessageLoader");
+
+    //if we're being cancelled while still running, reject the promise
+    if (this.rejectFn){
+      this.rejectFn(new Error(AgentError.AgentNotFound));
+      this.rejectFn = null;
+    }
+
     //cancel the timeout
     if (this.timeout) {
       clearTimeout(this.timeout);
@@ -139,6 +158,7 @@ export class PostMessageLoader implements Loader {
       this.helloHandler.cancel();
     }
 
+    //TODO Decide if we should NOT do this - there may be a race on timeout cancellations
     if (this.identityValidationHandler){
       this.identityValidationHandler.cancel();
     }

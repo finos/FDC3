@@ -67,7 +67,6 @@ export class MessagePortMessaging extends AbstractMessaging {
     }
 
     async disconnect(): Promise<void> {
-        await this.disconnect()
         this.cd.messagePort.close()
     }
 }

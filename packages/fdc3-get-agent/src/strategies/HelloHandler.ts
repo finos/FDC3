@@ -7,6 +7,7 @@ import {
 import { GetAgentParams, WebDesktopAgentType } from '@kite9/fdc3-standard';
 import { ConnectionDetails } from '../messaging/MessagePortMessaging';
 import { FDC3_VERSION } from './getAgent';
+import { Logger } from '../util/Logger';
 
 export class HelloHandler {
   constructor(options: GetAgentParams, connectionAttemptUuid: string, agentType: WebDesktopAgentType = WebDesktopAgentType.ProxyParent) {
@@ -63,6 +64,8 @@ export class HelloHandler {
 	 * into an iframe instead of working with the parent window.
    */
   openFrame(url: string) {
+    Logger.debug(`HelloHandler Opening iframe for: ${url}`);
+          
     const IFRAME_ID = 'fdc3-communications-embedded-iframe';
 
     // remove an old one if it's there
@@ -86,7 +89,7 @@ export class HelloHandler {
       if (ifrm.contentWindow) {
         this.sendWCP1Hello(ifrm.contentWindow, '*');
       } else {
-        console.error('iframe does not have a contentWindow, despite firing its load event!');
+        Logger.error('iframe does not have a contentWindow, despite firing its load event!');
       }
     };
     document.body.appendChild(ifrm);
@@ -94,10 +97,14 @@ export class HelloHandler {
 
   /** Listen for WCP responses from 'parent' windows and frames and handle them */
   listenForHelloResponses(): Promise<ConnectionDetails> {
+    Logger.debug(`HelloHandler: listening for hello responses`);
+          
     return new Promise<ConnectionDetails>((resolve, _reject) => {
       // setup listener for message and retrieve JS URL from it
       this.helloResponseListener = (event: MessageEvent<WebConnectionProtocolMessage>) => {
         const data = event.data;
+        Logger.debug(`HelloHandler: received message: ${JSON.stringify(data)}`);
+          
         if (data?.meta?.connectionAttemptUuid == this.connectionAttemptUuid) {
           if (isWebConnectionProtocol2LoadURL(data)) {
             // in this case, we need to load the URL with the embedded Iframe
@@ -110,6 +117,8 @@ export class HelloHandler {
 
             //n.b event listener remains in place to receive messages from the iframe
           } else if (isWebConnectionProtocol3Handshake(data)) {
+            Logger.debug(`HelloHandler: successful handshake`);
+          
             resolve({
               connectionAttemptUuid: this.connectionAttemptUuid,
               handshake: data,
@@ -123,13 +132,13 @@ export class HelloHandler {
             //remove the event listener as we've received a messagePort to use
             this.cancel();
           } else {
-            console.debug(
-              `Ignoring message unexpected message in HelloHandler (because its not WCP2LoadUrl or WCP3Handshake).`,
+            Logger.debug(
+              `Ignoring unexpected message in HelloHandler (because its not WCP2LoadUrl or WCP3Handshake).`,
               data
             );
           }
         } else {
-          console.warn(
+          Logger.warn(
             `Ignoring message with invalid connectionAttemptUuid. Expected ${this.connectionAttemptUuid}, received: ${data?.meta?.connectionAttemptUuid}`,
             data
           );
