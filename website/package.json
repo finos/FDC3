@@ -6,7 +6,7 @@
     "start": "docusaurus start",
     "prebuild": "npm run parent-build && npm run copy-schemas && npm run copy-appd && node schema2Markdown.js && npm run copy-workbench && npm run copy-explained",
     "build": "docusaurus build",
-    "parent-build": "cd .. && npm run build",
+    "parent-build": "cd .. && npm install && npm run build",
     "copy-schemas": "del-cli static/schemas/next/*/ && cpy \"../packages/fdc3-schema/schemas/**\" static/schemas/next/ && cpy \"../packages/fdc3-context/schemas/context\" static/schemas/next/",
     "copy-appd": "cpy \"../packages/fdc3-standard/src/app-directory/specification/*.schema.json\" \"static/schemas/next/\"",
     "copy-workbench": "del-cli static/toolbox/fdc3-workbench && cpy \"../toolbox/fdc3-workbench/build/**\" static/toolbox/fdc3-workbench",
