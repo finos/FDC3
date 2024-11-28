@@ -1,0 +1,1 @@
+.item-container{display:flex;justify-content:space-around}[data-visible=false]{opacity:0}.returned:has(pre:empty){display:none}h1{text-align:center}#channel-iframe{border:none}#channel-iframe[data-expanded=true]{height:210px;width:150px}#channel-iframe[data-expanded=false]{height:36px;width:50px}

@@ -13,8 +13,8 @@ website/build/
 website/static/toolbox
 website/node_modules
 website/i18n/*
-website/package-lock.json
-website/.docusaurus/**
+website/.docusaurus/
+website/static/schemas/next/*
 test-results.xml
 
 
