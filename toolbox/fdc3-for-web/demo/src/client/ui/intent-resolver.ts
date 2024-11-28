@@ -9,6 +9,7 @@ type IframeHello = BrowserTypes.Fdc3UserInterfaceHello
 
 const DEFAULT_COLLAPSED_CSS = {
     position: "fixed",
+    display: "none",
     zIndex: "1000",
     right: "0",
     bottom: "0",
@@ -18,6 +19,7 @@ const DEFAULT_COLLAPSED_CSS = {
 
 const DEFAULT_EXPANDED_CSS = {
     position: "fixed",
+    display: "block",
     zIndex: "1000",
     left: "10%",
     top: "10%",
