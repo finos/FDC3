@@ -7,6 +7,7 @@ import { NullIntentResolver } from "../ui/NullIntentResolver";
 import { NullChannelSelector } from "../ui/NullChannelSelector";
 import { ChannelSelector } from "@kite9/fdc3-standard";
 import { Logger } from "../util/Logger";
+import { WebConnectionProtocol6Goodbye } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
 /**
  * Given a message port, constructs a desktop agent to communicate via that.
@@ -45,7 +46,7 @@ export async function createDesktopAgentAPI(cd: ConnectionDetails, appIdentifier
 
     await populateChannelSelector(cs, channelSelector);
 
-    handleDisconnectOnPageHide(da);
+    handleDisconnectOnPageHide(da, messaging);
 
     return da;
 }
@@ -56,18 +57,26 @@ async function populateChannelSelector(cs: ChannelSupport, channelSelector: Chan
     channelSelector.updateChannel(channel?.id ?? null, userChannels)
 }
 
-function handleDisconnectOnPageHide(da: DesktopAgent) {
-    globalThis.window.addEventListener("pagehide", (event) => {
+function handleDisconnectOnPageHide(da: DesktopAgent, messaging: MessagePortMessaging) {
+    globalThis.window.addEventListener("pagehide", async (event) => {
         Logger.log(`Received pagehide event with persisted ${event.persisted}`);
         
-        //the page is being destroyed, disconnect from the DA
-        if (!event.persisted) { 
-            //TODO: send WCP6Goodbye
-
-            //TODO: change this to more directly close the MessagePort
+        //If persisted == true then the page is stored and might come back if the user hits back
+        //  In that case don't disconnect and let heartbeat handle that instead
+        
+        //TODO: implement disconnect on any hide and reconnect if the page is shown again
+        //  Will have to happen inside the BasicDesktopAgent as the reference to the DA needs to remain the same
+        //  and any listeners need to be re-registered automatically etc.
+        if (!event.persisted) {
+            //the page is being destroyed, disconnect from the DA
+            
+            //Notify the Desktop Agent implementation to disconnect
             if ((da as any).disconnect) {
                 (da as any).disconnect();
             }
+
+            //disconnect the MessagePort - which should send WCP6Goodbye first
+            messaging.disconnect();
         }
     });
 }
