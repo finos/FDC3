@@ -2,7 +2,7 @@ import { AbstractMessaging, RegisterableListener } from "@kite9/fdc3-agent-proxy
 import { AppIdentifier, GetAgentParams, WebDesktopAgentType } from "@kite9/fdc3-standard"
 import { v4 as uuidv4 } from "uuid"
 import { BrowserTypes } from "@kite9/fdc3-schema";
-import { AppRequestMessage } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { AppRequestMessage, WebConnectionProtocol6Goodbye } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 type WebConnectionProtocol3Handshake = BrowserTypes.WebConnectionProtocol3Handshake
 
 /**
@@ -67,6 +67,13 @@ export class MessagePortMessaging extends AbstractMessaging {
     }
 
     async disconnect(): Promise<void> {
+        await this.post({
+            type: 'WCP6Goodbye',
+            meta: {
+                timestamp: new Date(),
+            }
+        } as WebConnectionProtocol6Goodbye);
+        
         this.cd.messagePort.close()
     }
 }

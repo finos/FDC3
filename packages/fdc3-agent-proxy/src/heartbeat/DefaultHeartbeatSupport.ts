@@ -22,13 +22,6 @@ export class DefaultHeartbeatSupport implements HeartbeatSupport {
 
     async disconnect(): Promise<void> {
         await this.heartbeatListener?.unsubscribe();
-        await this.messaging.post({
-            type: 'WCP6Goodbye',
-            meta: {
-                timestamp: new Date(),
-            }
-        } as WebConnectionProtocol6Goodbye);
         return this.messaging.disconnect();
     }
-
 }
