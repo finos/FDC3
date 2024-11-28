@@ -22,7 +22,7 @@
   ],
   "scripts": {
     "clean": "rimraf dist",
-    "build": "tsc --module es2022 && npx rollup -c rollup.config.mjs src/index.ts --file dist/index.cjs --format cjs"
+    "build": "tsc --module es2022 && npx rollup -c rollup.config.mjs"
   },
   "dependencies": {
     "@kite9/fdc3-context": "2.2.0-beta.29",
