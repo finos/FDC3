@@ -17,8 +17,8 @@
     "dist"
   ],
   "scripts": {
-    "clean": "rimraf dist && rimraf generated",
-    "mkdirs": "mkdirp generated/api && mkdirp generated/bridging",
+    "clean": "npx rimraf dist && npx rimraf generated",
+    "mkdirs": "npx mkdirp generated/api && npx mkdirp generated/bridging",
     "generate-type-predicates": "ts-node code-generation/generate-type-predicates.ts",
     "generate": "npm run mkdirs && npm run typegen-browser && npm run typegen-bridging && npm run generate-type-predicates && npm run lint",
     "generate-new": "npm run mkdirs && npm run typegen-browser && npm run typegen-bridging && npm run generate-type-predicates && npm run lint",
@@ -40,6 +40,7 @@
     "eslint-plugin-jsx-a11y": "^6.10.0",
     "globals": "^15.11.0",
     "message-await": "^1.1.0",
+    "mkdirp": "^3.0.1",
     "quicktype": "23.0.78",
     "rimraf": "^6.0.1",
     "ts-jest": "29.2.5",

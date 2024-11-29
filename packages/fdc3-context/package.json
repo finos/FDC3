@@ -18,7 +18,7 @@
   ],
   "scripts": {
     "clean": "rimraf dist && rimraf generated",
-    "mkdirs": "mkdirp generated/context",
+    "mkdirs": "npx mkdirp generated/context",
     "generate": "npm run mkdirs && npm run typegen && npm run lint",
     "build": "npm run generate && tsc --module es2022",
     "lint": "eslint generated/ --fix",
