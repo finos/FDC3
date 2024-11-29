@@ -1,4 +1,3 @@
-import { WebConnectionProtocol6Goodbye } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 import { HeartbeatListener } from "../listeners/HeartbeatListener";
 import { Messaging } from "../Messaging";
 import { HeartbeatSupport } from "./HeartbeatSupport";
