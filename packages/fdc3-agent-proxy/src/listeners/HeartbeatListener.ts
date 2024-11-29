@@ -4,16 +4,16 @@ import { RegisterableListener } from "./RegisterableListener";
 
 export class HeartbeatListener implements RegisterableListener {
 
-    readonly id: string
-    readonly messaging: Messaging
+    readonly id: string;
+    readonly messaging: Messaging;
 
     constructor(messaging: Messaging) {
-        this.id = "heartbeat-" + messaging.createUUID()
-        this.messaging = messaging
+        this.id = "heartbeat-" + messaging.createUUID();
+        this.messaging = messaging;
     }
 
     filter(m: any): boolean {
-        return m.type === "heartbeatEvent"
+        return m.type === "heartbeatEvent";
     }
 
     action(_m: any): void {
@@ -26,16 +26,16 @@ export class HeartbeatListener implements RegisterableListener {
             payload: {
                 heartbeatEventUuid: (_m as HeartbeatEvent).meta.eventUuid
             }
-        } as HeartbeatAcknowledgementRequest)
+        } as HeartbeatAcknowledgementRequest);
         //console.log("Heartbeat acknowledged")
     }
 
     async register(): Promise<void> {
-        this.messaging.register(this)
+        this.messaging.register(this);
     }
 
     async unsubscribe(): Promise<void> {
-        this.messaging.unregister(this.id)
+        this.messaging.unregister(this.id);
     }
 
 }
