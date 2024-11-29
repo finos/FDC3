@@ -35,7 +35,7 @@
 			"const": "getInfoResponse"
 		},
 		"GetInfoSuccessResponsePayload": {
-			"title": "GetInfo Response Payload",
+			"title": "GetInfo Success Response Payload",
 			"type": "object",
 			"properties": {
 				"implementationMetadata": {
