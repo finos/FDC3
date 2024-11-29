@@ -1,12 +1,9 @@
 import { AppIntent } from "@kite9/fdc3-standard";
 import { IntentResolver, IntentResolutionChoice } from '@kite9/fdc3-standard'
 import { AbstractUIComponent } from "./AbstractUIComponent";
-import { BrowserTypes } from "@kite9/fdc3-schema";
 import { Context } from "@kite9/fdc3-context";
-import { FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE, FDC3_USER_INTERFACE_RESOLVE_TYPE } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
-
-type Fdc3UserInterfaceResolveAction = BrowserTypes.Fdc3UserInterfaceResolveAction
-type Fdc3UserInterfaceResolve = BrowserTypes.Fdc3UserInterfaceResolve
+import { Fdc3UserInterfaceResolve, isFdc3UserInterfaceResolveAction } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
+import { Logger } from "../util/Logger";
 
 /**
  * Works with the desktop agent to provide a resolution to the intent choices.
@@ -26,13 +23,14 @@ export class DefaultDesktopAgentIntentResolver extends AbstractUIComponent imple
         this.port = port
 
         this.port.addEventListener("message", (e) => {
-            console.log("Got resolve action")
-            if (e.data.type == FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE) {
-                const choice = e.data as Fdc3UserInterfaceResolveAction
+            if (isFdc3UserInterfaceResolveAction(e.data)) {
+                Logger.debug("DefaultDesktopAgentIntentResolver: Received resolveAction message: ", e.data);
+            
+                const choice = e.data;
                 if ((choice.payload.action == 'click') && (this.pendingResolve)) {
                     this.pendingResolve({
-                        appId: choice.payload.appIdentifier!!,
-                        intent: choice.payload.intent!!
+                        appId: choice.payload.appIdentifier!,
+                        intent: choice.payload.intent!
                     })
                 } else if ((choice.payload.action == 'cancel') && (this.pendingResolve)) {
                     this.pendingResolve()
@@ -47,16 +45,14 @@ export class DefaultDesktopAgentIntentResolver extends AbstractUIComponent imple
         const out = new Promise<IntentResolutionChoice | void>((resolve, _reject) => {
             this.pendingResolve = resolve
         })
-
-
-        this.port?.postMessage({
-            type: FDC3_USER_INTERFACE_RESOLVE_TYPE,
+        const message: Fdc3UserInterfaceResolve = {
+            type: "Fdc3UserInterfaceResolve",
             payload: {
                 appIntents,
                 context
             }
-        } as Fdc3UserInterfaceResolve)
-
-        return out
+        };
+        this.port?.postMessage(message);
+        return out;
     }
 }
