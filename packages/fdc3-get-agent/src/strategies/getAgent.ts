@@ -198,7 +198,7 @@ export const getAgent: GetAgentType = (params?: GetAgentParams) => {
         return da;
     };
 
-    Logger.debug(`Got options: ${JSON.stringify(options)}`);
+    Logger.debug(`GetAgentParams: ${JSON.stringify(options)}`);
 
     if (!theAgentPromise) {
         theAgentPromise = initAgentPromise(options).then(handleSetWindowFdc3);
