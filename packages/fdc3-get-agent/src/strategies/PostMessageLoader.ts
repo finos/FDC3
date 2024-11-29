@@ -41,6 +41,8 @@ function _recursePossibleTargets(startWindow: Window, w: Window, found: Window[]
  */
 export class PostMessageLoader implements Loader {
 
+  name = "PostMessageLoader";
+
   constructor(previousUrl?: string) {
     this.previousUrl = previousUrl ?? null;
   }
@@ -64,11 +66,12 @@ export class PostMessageLoader implements Loader {
       this.rejectFn = reject;
 
       //setup a timeout so we can reject if it runs out 
+      const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
       this.timeout = setTimeout(() => {
-          Logger.debug(`PostMessageLoader.get(): timeout`);
+          Logger.debug(`PostMessageLoader.get(): timeout (${timeoutMs} ms) at ${new Date().toISOString()}`);
           this.cancel();
-          reject(new Error(AgentError.AgentNotFound));
-      }, options.timeoutMs ?? DEFAULT_TIMEOUT_MS);
+          reject(AgentError.AgentNotFound);
+      }, timeoutMs);
     
       this.helloHandler = new HelloHandler(options, this.connectionAttemptUuid);
 
@@ -114,10 +117,13 @@ export class PostMessageLoader implements Loader {
 
       try {
         const idDetails = await idValidationPromise;
+
+        //resolve
         const appIdentifier: AppIdentifier = {
           appId: idDetails.payload.appId,
           instanceId: idDetails.payload.instanceId
         };
+
         const desktopAgentSelection: DesktopAgentSelection = {
           agent: await createDesktopAgentAPI(connectionDetails, appIdentifier),
           details: {
@@ -131,20 +137,25 @@ export class PostMessageLoader implements Loader {
           },
         };
         
+        //clean up
+        this.cancel();
+
+        Logger.debug("PostMessageLoader.get(): Resolving with Desktop Agent selection...");
         resolve(desktopAgentSelection);
       } catch (e) {
         //id validation may have failed
+        Logger.error("PostMessageLoader.get(): Id validation failed!",e);
         reject(e);
       }
     });
   }
 
   cancel(): void {
-    Logger.debug("Cleaning up PostMessageLoader");
+    Logger.debug("PostMessageLoader: Cleaning up");
 
     //if we're being cancelled while still running, reject the promise
     if (this.rejectFn){
-      this.rejectFn(new Error(AgentError.AgentNotFound));
+      this.rejectFn(AgentError.AgentNotFound);
       this.rejectFn = null;
     }
 

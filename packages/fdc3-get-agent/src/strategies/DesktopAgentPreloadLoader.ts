@@ -9,6 +9,8 @@ import { Logger } from "../util/Logger";
  */
 export class DesktopAgentPreloadLoader implements Loader {
     
+    name = "DesktopAgentPreloadLoader";
+
     /** Variable used to end polling */
     done: boolean = false;
     /** Reference to the handler for the fdc3Ready event (used to remove it) */
@@ -69,10 +71,11 @@ export class DesktopAgentPreloadLoader implements Loader {
                 this.prepareSelection(globalThis.window.fdc3, resolve);
             } else {
                 //setup a timeout so that we can reject if don't find anything
+                const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
                 this.timeout = setTimeout(() => {
-                    Logger.debug(`DesktopAgentPreloadLoader.get(): timeout`);
-                    reject(new Error(AgentError.AgentNotFound));
-                }, options.timeoutMs ?? DEFAULT_TIMEOUT_MS);
+                    Logger.debug(`DesktopAgentPreloadLoader.get(): timeout (${timeoutMs} ms) at ${new Date().toISOString()}`);
+                    reject(AgentError.AgentNotFound);
+                }, timeoutMs);
                 
                 //listen for the fdc3Ready event
                 this.readyEventHandler = () => {
@@ -90,7 +93,7 @@ export class DesktopAgentPreloadLoader implements Loader {
     }
 
     cancel(): void {
-        Logger.debug("Cleaning up DesktopAgentPreloadLoader");
+        Logger.debug("DesktopAgentPreloadLoader: Cleaning up");
         this.done = true;
         if (this.rejectFn){
             this.rejectFn(new Error(AgentError.AgentNotFound));

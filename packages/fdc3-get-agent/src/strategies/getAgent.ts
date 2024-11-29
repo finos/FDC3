@@ -6,15 +6,12 @@ import { FailoverHandler } from './FailoverHandler';
 import { Loader } from './Loader';
 import { Logger } from '../util/Logger';
 
-export const FDC3_VERSION = "2.2"
-
 // TypeGuards used to examine results of Loaders
 const isRejected = (input: PromiseSettledResult<unknown>): input is PromiseRejectedResult => 
     input.status === 'rejected'
   
 const isFulfilled = <T>(input: PromiseSettledResult<T>): input is PromiseFulfilledResult<T> => 
     input.status === 'fulfilled'
-
 
 /**
  * For now, we only allow a single call to getAgent per application, so 
@@ -31,7 +28,7 @@ export function getAgentPromise(): Promise<DesktopAgent> | null {
 }
 
 function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
-    Logger.log("Initiating Desktop Agent discovery...");
+    Logger.log(`Initiating Desktop Agent discovery at ${new Date().toISOString()}`);
     let strategies: Loader[];
 
     //Retrieve persisted connection data limit to a previous strategy if one exists
@@ -66,7 +63,12 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
 
     const promises = strategies.map(s => s.get(options).then((selection) => {
         //cancel other strategies if we selected a DA
-        strategies.forEach(s => s.cancel());
+        Logger.log(`Strategy ${s.name} resolved - cleaning up other strategies`);
+        strategies.forEach(s2 => {
+            if(s2 !== s) {
+                s2.cancel();
+            }
+        });
         return selection;
     }));
 
@@ -75,7 +77,7 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
     .then(async results => {
         //review results
         const daResult = results.find(isFulfilled);
-        Logger.debug(`Discovery results: ${JSON.stringify(results)}`);
+        Logger.debug(`Discovery results: `, results);
 
         if (daResult) {
             
@@ -98,7 +100,7 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
 
             Logger.debug(`Discovery errors: ${JSON.stringify(errors)}`);
             const error = errors.find((aRejection) => {
-                aRejection.reason?.message !== AgentError.AgentNotFound;
+                aRejection.reason?.message ?? aRejection.reason !== AgentError.AgentNotFound;
             });
             if (error){
                 throw error;
@@ -134,7 +136,7 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
                 }
             } else {
                 //We didn't manage to find an agent.
-                Logger.error("Desktop agent not found. Error reported during discovery", error);
+                Logger.error("Desktop agent not found. No error reported during discovery.");
                 throw new Error(AgentError.AgentNotFound);
             }
         }
