@@ -34,6 +34,8 @@ export * from './ui/IntentResolver';
 export * from './ui/ChannelSelector';
 export * from './ui/Connectable'
 
+export const FDC3_VERSION = "2.2";
+
 declare global {
   interface Window {
     fdc3?: DesktopAgent;
