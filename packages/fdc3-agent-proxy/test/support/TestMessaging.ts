@@ -104,12 +104,7 @@ export class TestMessaging extends AbstractMessaging {
     readonly automaticResponses: AutomaticResponse[]
 
     constructor(channelState: { [key: string]: Context[] }) {
-        super({
-            timeoutMs: 0,
-            channelSelector: false,
-            intentResolver: false,
-            dontSetWindowFdc3: false
-        }, "test", "myActualUrl", 200)
+        super({ appId: "TestMessaging", instanceId: "TestMessaging"});
 
         this.channelState = channelState
         this.automaticResponses = [
@@ -136,6 +131,13 @@ export class TestMessaging extends AbstractMessaging {
         return uuidv4()
     }
 
+    getTimeoutMs(): number {
+        return 1000;
+    }
+
+    async disconnect(): Promise<void> {
+        console.log("TestMessaging: disconnect called");
+    }
 
     post(message: AppRequestMessage): Promise<void> {
         this.allPosts.push(message)
@@ -170,7 +172,7 @@ export class TestMessaging extends AbstractMessaging {
         return {
             "requestUuid": this.createUUID(),
             "timestamp": new Date(),
-            "source": this.getSource()
+            "source": this.getAppIdentifier()
         }
     }
 

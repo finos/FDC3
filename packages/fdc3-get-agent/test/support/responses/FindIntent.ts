@@ -1,10 +1,8 @@
 import { TestServerContext } from "../TestServerContext";
 import { InstanceID } from "@kite9/fdc3-web-impl";
 import { AutomaticResponse } from "./AutomaticResponses";
-import { BrowserTypes } from "@kite9/fdc3-schema";
+import { FindIntentRequest, FindIntentResponse } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
-type FindIntentRequest = BrowserTypes.FindIntentRequest
-type FindIntentResponse = BrowserTypes.FindIntentResponse
 
 export class FindIntent implements AutomaticResponse {
 
@@ -20,12 +18,12 @@ export class FindIntent implements AutomaticResponse {
     }
 
     private createFindIntentResponseMessage(m: FindIntentRequest): FindIntentResponse {
-        return {
+        const response: FindIntentResponse = {
             meta: m.meta as any,
             type: "findIntentResponse",
             payload: {
                 appIntent: {
-                    intent: m.payload.intent,
+                    intent: { name: m.payload.intent },
                     apps: [
                         {
                             appId: 'test-app-1',
@@ -38,6 +36,7 @@ export class FindIntent implements AutomaticResponse {
                     ]
                 }
             }
-        } as any
+        };
+        return response;
     }
 }

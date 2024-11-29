@@ -8,6 +8,7 @@ import { Handshake } from "./responses/Handshake"
 import { UserChannels } from "./responses/UserChannels"
 import { CurrentChannel } from "./responses/CurrentChannel"
 import { BrowserTypes } from "@kite9/fdc3-schema"
+import { GetInfo } from "./responses/GetInfo"
 
 type AppRequestMessage = BrowserTypes.AppRequestMessage
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL
@@ -26,13 +27,15 @@ export class MockFDC3Server implements FDC3Server {
     private useIframe: boolean
     private window: MockWindow
     private tsc: TestServerContext
+    private receivedGoodbye = false;
 
     readonly automaticResponses: AutomaticResponse[] = [
         new FindIntent(),
         new RaiseIntent(),
         new Handshake(),
         new UserChannels(),
-        new CurrentChannel()
+        new CurrentChannel(),
+        new GetInfo()
     ]
 
     constructor(window: MockWindow, useIframe: boolean, ctx: TestServerContext) {
@@ -54,6 +57,10 @@ export class MockFDC3Server implements FDC3Server {
         this.tsc.shutdown()
     }
 
+    hasReceivedGoodbye(): boolean {
+        return this.receivedGoodbye;
+    }
+
     init() {
         this.window.addEventListener(
             "message",
@@ -63,10 +70,10 @@ export class MockFDC3Server implements FDC3Server {
                 const source = event.source as Window
                 const origin = event.origin;
 
-                console.log("Received: " + JSON.stringify(event.data));
+                console.log("MockFDC3Server received: ", event.data);
                 if (data.type == "WCP1Hello") {
                     if (this.useIframe) {
-                        source.postMessage({
+                        const message: WebConnectionProtocol2LoadURL = {
                             type: "WCP2LoadUrl",
                             meta: {
                                 connectionAttemptUuid: data.meta.connectionAttemptUuid,
@@ -75,10 +82,11 @@ export class MockFDC3Server implements FDC3Server {
                             payload: {
                                 iframeUrl: EMBED_URL + "?connectionAttemptUuid=" + data.meta.connectionAttemptUuid
                             }
-                        } as WebConnectionProtocol2LoadURL, origin)
+                        };
+                        source.postMessage(message, origin);
                     } else {
                         const details = this.tsc.getMatchingInstance(data.payload.identityUrl)
-                        source.postMessage({
+                        const message: WebConnectionProtocol3Handshake = {
                             type: "WCP3Handshake",
                             meta: {
                                 connectionAttemptUuid: data.meta.connectionAttemptUuid,
@@ -89,8 +97,11 @@ export class MockFDC3Server implements FDC3Server {
                                 intentResolverUrl: INTENT_RESPOLVER_URL,
                                 channelSelectorUrl: CHANNEL_SELECTOR_URL,
                             }
-                        } as WebConnectionProtocol3Handshake, origin, [details!!.externalPort])
+                        };
+                        source.postMessage(message , origin, [details!.externalPort])
                     }
+                } else if (data.type == "WCP6Goodbye") {
+                    this.receivedGoodbye = true;
                 }
             });
     }

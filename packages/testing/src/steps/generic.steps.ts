@@ -78,8 +78,9 @@ export function setupGenericSteps() {
     });
 
     Then('{string} is an object with the following contents', function (this: PropsWorld, field: string, params: DataTable) {
-        const table = params.hashes()
-        expect(doesRowMatch(this, table[0], handleResolve(field, this))).toBeTruthy();
+        const table = params.hashes();
+        const object = handleResolve(field, this);
+        expect(doesRowMatch(this, table[0], object)).toBeTruthy();
     });
 
     Then('{string} is null', function (this: PropsWorld, field: string) {

@@ -1,7 +1,7 @@
 import { TestMessaging } from '../support/TestMessaging';
 import { Given, When } from '@cucumber/cucumber'
 import { CustomWorld } from '../world/index';
-import { BasicDesktopAgent, DefaultAppSupport, DefaultChannelSupport, DefaultIntentSupport, DefaultHandshakeSupport } from '../../src';
+import { BasicDesktopAgent, DefaultAppSupport, DefaultChannelSupport, DefaultIntentSupport, DefaultHeartbeatSupport } from '../../src';
 import { SimpleIntentResolver, setupGenericSteps } from '@kite9/testing';
 import { CHANNEL_STATE, SimpleChannelSelector } from '@kite9/testing/dist/src/agent';
 import { BrowserTypes } from '@kite9/fdc3-schema';
@@ -14,7 +14,7 @@ Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: s
     }
 
     const cs = new DefaultChannelSupport(this.messaging, new SimpleChannelSelector(this))
-    const hs = new DefaultHandshakeSupport(this.messaging)
+    const hs = new DefaultHeartbeatSupport(this.messaging)
     const is = new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this))
     const as = new DefaultAppSupport(this.messaging)
 
