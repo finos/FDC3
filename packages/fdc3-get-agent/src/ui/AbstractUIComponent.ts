@@ -1,14 +1,14 @@
-import { FDC3_USER_INTERFACE_HANDSHAKE_TYPE, FDC3_USER_INTERFACE_HELLO_TYPE, FDC3_USER_INTERFACE_RESTYLE_TYPE, Fdc3UserInterfaceHello, InitialCSS, UpdatedCSS } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
-import { Connectable } from "@kite9/fdc3-standard";
+import { Fdc3UserInterfaceHandshake, InitialCSS, isFdc3UserInterfaceHello, isFdc3UserInterfaceRestyle, UpdatedCSS } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
+import { Connectable, FDC3_VERSION } from "@kite9/fdc3-standard";
+import { Logger } from "../util/Logger";
 
-export interface CSSPositioning { [key: string]: string }
+export interface CSSPositioning { [key: string]: string };
 
 export const INITIAL_CONTAINER_CSS = {
     width: "0",
     height: "0",
     position: "fixed"
-}
-
+};
 
 export const ALLOWED_CSS_ELEMENTS = [
     "width",
@@ -23,32 +23,30 @@ export const ALLOWED_CSS_ELEMENTS = [
     "maxHeight",
     "maxWidth",
     "display"
-]
+];
 
 export abstract class AbstractUIComponent implements Connectable {
-
-    private container: HTMLDivElement | undefined = undefined
-    private iframe: HTMLIFrameElement | undefined = undefined
-    private url: string
-    private name: string
-    port: MessagePort | null = null
+    private container: HTMLDivElement | undefined = undefined;
+    private iframe: HTMLIFrameElement | undefined = undefined;
+    private url: string;
+    private name: string;
+    port: MessagePort | null = null;
 
     constructor(url: string, name: string) {
-        this.url = url
-        this.name = name
+        this.url = url;
+        this.name = name;
     }
 
     async connect() {
-        const portPromise = this.awaitHello()
-        this.openFrame()
-        this.port = await portPromise
-        await this.setupMessagePort(this.port)
-        await this.messagePortReady(this.port)
-
+        const portPromise = this.awaitHello();
+        this.openFrame();
+        this.port = await portPromise;
+        await this.setupMessagePort(this.port);
+        await this.messagePortReady(this.port);
     }
 
     async disconnect() {
-        this.port?.close()
+        this.port?.close();
     }
 
     /**
@@ -56,51 +54,64 @@ export abstract class AbstractUIComponent implements Connectable {
      */
     async setupMessagePort(port: MessagePort): Promise<void> {
         port.addEventListener("message", (e) => {
-            const data = e.data
-            if (data.type == FDC3_USER_INTERFACE_RESTYLE_TYPE) {
+            const data = e.data;
+
+            if (isFdc3UserInterfaceRestyle(data)) {
                 // console.log(`Restyling ${JSON.stringify(data.payload)}`)
-                const css = data.payload.updatedCSS
-                this.themeContainer(css)
+                const css = data.payload.updatedCSS;
+                this.themeContainer(css);
             }
-        })
+        });
     }
 
     async messagePortReady(port: MessagePort) {
         // tells the iframe it can start posting
-        port.postMessage({ type: FDC3_USER_INTERFACE_HANDSHAKE_TYPE, payload: {} })
+        const message: Fdc3UserInterfaceHandshake = { 
+            type: "Fdc3UserInterfaceHandshake", 
+            payload: {
+                fdc3Version: FDC3_VERSION
+            } 
+        };
+        port.postMessage(message);
     }
 
     private awaitHello(): Promise<MessagePort> {
         return new Promise((resolve, _reject) => {
             const ml = (e: MessageEvent) => {
-                // console.log("Received UI Message: " + JSON.stringify(e.data))
-                if ((e.source == this.iframe?.contentWindow) && (e.data.type == FDC3_USER_INTERFACE_HELLO_TYPE)) {
-                    const helloData = e.data as Fdc3UserInterfaceHello
-                    if (helloData.payload.initialCSS) {
-                        this.themeContainer(helloData.payload.initialCSS)
+                if (e.source == this.iframe?.contentWindow) {
+                    if (isFdc3UserInterfaceHello(e.data)){
+                        Logger.debug("AbstractUIComponent: Received Hello Message from UI iframe: ",e.data)
+                        const helloData = e.data;
+                        if (helloData.payload.initialCSS) {
+                            this.themeContainer(helloData.payload.initialCSS);
+                        }
+                        const port = e.ports[0];
+                        port.start();
+                        globalThis.window.removeEventListener("message", ml);
+                        resolve(port);
+                    } else {
+                        Logger.debug("AbstractUIComponent: ignored UI Message from UI iframe while awaiting hello: ",e.data)
                     }
-                    const port = e.ports[0]
-                    port.start()
-                    globalThis.window.removeEventListener("message", ml)
-                    resolve(port)
+                } else {
+                    Logger.debug("AbstractUIComponent: ignored Message that didn't come from expected UI frame", e.data);
                 }
             }
 
-            globalThis.window.addEventListener("message", ml)
+            globalThis.window.addEventListener("message", ml);
         });
 
     }
 
     private openFrame(): void {
-        this.container = globalThis.document.createElement("div")
-        this.iframe = globalThis.document.createElement("iframe")
+        this.container = globalThis.document.createElement("div");
+        this.iframe = globalThis.document.createElement("iframe");
 
-        this.themeContainer(INITIAL_CONTAINER_CSS)
-        this.themeFrame(this.iframe)
+        this.themeContainer(INITIAL_CONTAINER_CSS);
+        this.themeFrame(this.iframe);
 
-        this.iframe.setAttribute("src", this.url)
-        this.container.appendChild(this.iframe)
-        document.body.appendChild(this.container)
+        this.iframe.setAttribute("src", this.url);
+        this.container.appendChild(this.iframe);
+        document.body.appendChild(this.container);
     }
 
     private toKebabCase(str: String) {
@@ -110,22 +121,22 @@ export abstract class AbstractUIComponent implements Connectable {
     themeContainer(css: UpdatedCSS | InitialCSS) {
         if (css) {
             for (let i = 0; i < ALLOWED_CSS_ELEMENTS.length; i++) {
-                const k = ALLOWED_CSS_ELEMENTS[i]
-                const value: string | undefined = css[(k as string)]
+                const k = ALLOWED_CSS_ELEMENTS[i];
+                const value: string | undefined = css[(k as string)];
                 if (value != null) {
-                    this.container!.style.setProperty(this.toKebabCase(k), value)
+                    this.container!.style.setProperty(this.toKebabCase(k), value);
                 } else {
-                    this.container!.style.removeProperty(this.toKebabCase(k))
+                    this.container!.style.removeProperty(this.toKebabCase(k));
                 }
             }
         }
     }
 
     themeFrame(ifrm: HTMLIFrameElement) {
-        ifrm.setAttribute("name", this.name)
-        ifrm.style.width = "100%"
-        ifrm.style.height = "100%"
-        ifrm.style.border = "0"
+        ifrm.setAttribute("name", this.name);
+        ifrm.style.width = "100%";
+        ifrm.style.height = "100%";
+        ifrm.style.border = "0";
     }
 
 }
