@@ -1,11 +1,7 @@
 import { TestServerContext } from "../TestServerContext";
 import { InstanceID } from "@kite9/fdc3-web-impl";
 import { AutomaticResponse } from "./AutomaticResponses";
-import { BrowserTypes } from "@kite9/fdc3-schema";
-
-type RaiseIntentRequest = BrowserTypes.RaiseIntentRequest
-type RaiseIntentResponse = BrowserTypes.RaiseIntentResponse
-
+import { RaiseIntentRequest, RaiseIntentResponse } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
 export class RaiseIntent implements AutomaticResponse {
 
@@ -28,7 +24,7 @@ export class RaiseIntent implements AutomaticResponse {
             type: "raiseIntentResponse"
         }
 
-        return out
+        return out;
     }
 
     action(input: object, m: TestServerContext, from: InstanceID) {

@@ -1,11 +1,7 @@
 import { TestServerContext } from "../TestServerContext";
 import { InstanceID } from "@kite9/fdc3-web-impl";
 import { AutomaticResponse } from "./AutomaticResponses";
-import { BrowserTypes } from "@kite9/fdc3-schema";
-
-type WebConnectionProtocol4ValidateAppIdentity = BrowserTypes.WebConnectionProtocol4ValidateAppIdentity
-type WebConnectionProtocol5ValidateAppIdentityFailedResponse = BrowserTypes.WebConnectionProtocol5ValidateAppIdentityFailedResponse
-type WebConnectionProtocol5ValidateAppIdentitySuccessResponse = BrowserTypes.WebConnectionProtocol5ValidateAppIdentitySuccessResponse
+import { WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
 export const BAD_INSTANCE_ID = "BAD_INSTANCE"
 
@@ -26,7 +22,7 @@ export class Handshake implements AutomaticResponse {
         WebConnectionProtocol5ValidateAppIdentitySuccessResponse |
         WebConnectionProtocol5ValidateAppIdentityFailedResponse {
         if (i.payload.instanceUuid == BAD_INSTANCE_ID) {
-            return {
+            const msg: WebConnectionProtocol5ValidateAppIdentityFailedResponse = {
                 meta: {
                     connectionAttemptUuid: i.meta.connectionAttemptUuid,
                     timestamp: new Date(),
@@ -35,9 +31,10 @@ export class Handshake implements AutomaticResponse {
                 payload: {
                     message: "Invalid instance"
                 }
-            }
+            };
+            return msg;
         } else {
-            return {
+            const msg: WebConnectionProtocol5ValidateAppIdentitySuccessResponse = {
                 meta: {
                     connectionAttemptUuid: i.meta.connectionAttemptUuid,
                     timestamp: new Date(),
@@ -62,7 +59,8 @@ export class Handshake implements AutomaticResponse {
                     instanceId: 'cucumber-instance',
                     instanceUuid: 'some-instance-uuid',
                 }
-            }
+            };
+            return msg;
         }
     }
 }

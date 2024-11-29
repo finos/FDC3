@@ -12,6 +12,7 @@ export class MockIFrame extends MockWindow {
         super(tag, cw, name);
         this.parent = parent;
         this.contentWindow = this as any;
+        console.log(`MockIFrame created with tag ${tag}, name: ${name} and parent.name ${parent.name}`);
     }
 
     setAttribute(name: string, value: string): void {

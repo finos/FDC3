@@ -17,7 +17,7 @@ export class CurrentChannel implements AutomaticResponse {
     }
 
     private createResponse(i: GetCurrentChannelRequest, m: TestServerContext): GetCurrentChannelResponse {
-        return {
+        const response: GetCurrentChannelResponse = {
             meta: {
                 ...i.meta,
                 responseUuid: m.createUUID(),
@@ -26,6 +26,7 @@ export class CurrentChannel implements AutomaticResponse {
             payload: {
 
             }
-        }
+        };
+        return response;
     }
 }

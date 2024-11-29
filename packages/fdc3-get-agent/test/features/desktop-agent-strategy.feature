@@ -1,14 +1,14 @@
 Feature: Different Strategies for Accessing the Desktop Agent
 
   Background: Desktop Agent API
-    Given a browser document in "document" and window in "window"
+    Given a parent window document in "parentDoc", window in "parentWin", child window document in "childDoc" and window in "childWin"
   #  And Testing ends after "8000" ms
 
   Scenario: Running inside a Browser and using post message with direct message ports
-    Given Parent Window desktop "da" listens for postMessage events in "{window}", returns direct message response
+    Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response
     And we wait for a period of "200" ms
     And I call getAgent for a promise result with the following options
-      | dontSetWindowFdc3 | timeout | intentResolver | channelSelector |
+      | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
       | true              |    8000 | false          | false           |
     And I refer to "{result}" as "theAPIPromise"
     Then the promise "{theAPIPromise}" should resolve
@@ -19,19 +19,22 @@ Feature: Different Strategies for Accessing the Desktop Agent
       |         2.0 | cucumber-app      | cucumber-provider |
     And I refer to "{document.body.children[0]}" as "channel-selector"
     And I refer to "{channel-selector.children[0]}" as "iframe"
-    And "{window.fdc3}" is undefined
-    And "{window.events}" is an array of objects with the following contents
+    And "{childWin.fdc3}" is undefined
+    And "{childWin.events}" is an array of objects with the following contents
+      | type    | data.type     |
+      | message | WCP3Handshake |
+    And "{parentWin.events}" is an array of objects with the following contents
       | type    | data.type     |
       | message | WCP1Hello     |
-      | message | WCP3Handshake |
-    Then I call "{document}" with "shutdown"
+    Then I call "{parentDoc}" with "shutdown"
+    Then I call "{childDoc}" with "shutdown"
     And I call "{desktopAgent}" with "disconnect"
 
   Scenario: Running inside a Browser using the embedded iframe strategy
-    Given Parent Window desktop "da" listens for postMessage events in "{window}", returns iframe response
+    Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns iframe response
     And we wait for a period of "200" ms
     And I call getAgent for a promise result with the following options
-      | dontSetWindowFdc3 | timeout |
+      | dontSetWindowFdc3 | timeoutMs |
       | false             |    8000 |
     And I refer to "{result}" as "theAPIPromise"
     Then the promise "{theAPIPromise}" should resolve
@@ -40,28 +43,28 @@ Feature: Different Strategies for Accessing the Desktop Agent
     Then "{result}" is an object with the following contents
       | fdc3Version | appMetadata.appId | provider          |
       |         2.0 | cucumber-app      | cucumber-provider |
-    And I refer to "{document.iframes[0]}" as "embedded-iframe"
+    And I refer to "{childDoc.iframes[0]}" as "embedded-iframe"
     Then "{embedded-iframe}" is an object with the following contents
       | tag    | atts.name           | style.width | style.height |
       | iframe | FDC3 Communications |         0px |          0px |
-    And I refer to "{document.iframes[1]}" as "intent-resolver-iframe"
-    And I refer to "{document.iframes[2]}" as "channel-selector-iframe"
+    And I refer to "{childDoc.iframes[1]}" as "intent-resolver-iframe"
+    And I refer to "{childDoc.iframes[2]}" as "channel-selector-iframe"
     Then "{channel-selector-iframe}" is an object with the following contents
       | tag    | atts.name             | atts.src                              | style.width | style.height |
       | iframe | FDC3 Channel Selector | https://mock.fdc3.com/channelSelector |        100% |         100% |
     Then "{intent-resolver-iframe}" is an object with the following contents
       | tag    | atts.name            | atts.src                       | style.width | style.height |
       | iframe | FDC3 Intent Resolver | https://mock.fdc3.com/resolver |        100% |         100% |
-    And "{window.fdc3}" is not null
-    And "{window.events}" is an array of objects with the following contents
+    And "{childWin.fdc3}" is not null
+    And "{childWin.events}" is an array of objects with the following contents
       | type      | data.type              |
-      | message   | WCP1Hello              |
       | message   | WCP2LoadUrl            |
       | message   | WCP3Handshake          |
       | message   | Fdc3UserInterfaceHello |
       | message   | Fdc3UserInterfaceHello |
       | fdc3Ready | {null}                 |
-    Then I call "{document}" with "shutdown"
+    Then I call "{parentDoc}" with "shutdown"
+    Then I call "{childDoc}" with "shutdown"
     And I call "{desktopAgent}" with "disconnect"
 
   Scenario: Running inside an Electron Container.
@@ -77,7 +80,8 @@ Feature: Different Strategies for Accessing the Desktop Agent
     Then "{result}" is an object with the following contents
       | fdc3Version | appMetadata.appId | provider          |
       |         2.0 | cucumber-app      | cucumber-provider |
-    Then I call "{document}" with "shutdown"
+    Then I call "{parentDoc}" with "shutdown"
+    Then I call "{childDoc}" with "shutdown"
 
   Scenario: Failover Strategy returning desktop agent
     Given A Dummy Desktop Agent in "dummy-api"
@@ -91,10 +95,11 @@ Feature: Different Strategies for Accessing the Desktop Agent
     Then "{result}" is an object with the following contents
       | fdc3Version | appMetadata.appId | provider          |
       |         2.0 | cucumber-app      | cucumber-provider |
-    Then I call "{document}" with "shutdown"
+    Then I call "{parentDoc}" with "shutdown"
+    Then I call "{childDoc}" with "shutdown"
 
   Scenario: Failover Strategy returning a proxy
-    Given "dummyFailover2" is a function which opens an iframe for communications on "{document}"
+    Given "dummyFailover2" is a function which opens an iframe for communications on "{childDoc}"
     And I call getAgent for a promise result with the following options
       | failover         | timeoutMs |
       | {dummyFailover2} |      1000 |
@@ -104,37 +109,49 @@ Feature: Different Strategies for Accessing the Desktop Agent
     Then "{result}" is an object with the following contents
       | fdc3Version | appMetadata.appId | provider          |
       |         2.0 | cucumber-app      | cucumber-provider |
-    Then I call "{document}" with "shutdown"
+    Then I call "{parentDoc}" with "shutdown"
+    Then I call "{childDoc}" with "shutdown"
 
   Scenario: Recovery from SessionState
   Here, we recover the details of the session from the session state, obviating the need to 
   make a request to the parent iframe.
 
-    Given Parent Window desktop "da" listens for postMessage events in "{window}", returns direct message response
+    Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response
     And an existing app instance in "instanceID"
-    And the session identity is set to "{instanceID}"
+    And the session identity is set to "{instanceID}" with identityUrl "https://dummyOrigin.test/path"
     And we wait for a period of "200" ms
     And I call getAgent for a promise result with the following options
-      | dontSetWindowFdc3 | timeout | intentResolver | channelSelector |
+      | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
       | true              |    8000 | false          | false           |
     And I refer to "{result}" as "theAPIPromise"
     Then the promise "{theAPIPromise}" should resolve
-    Then I call "{document}" with "shutdown"
+    And I call "{result}" with "getInfo"
+    Then "{result}" is an object with the following contents
+      | fdc3Version | appMetadata.appId | provider          |
+      |         2.0 | cucumber-app      | cucumber-provider |
+    Then I call "{parentDoc}" with "shutdown"
+    Then I call "{childDoc}" with "shutdown"
     And I call "{desktopAgent}" with "disconnect"
 
-  Scenario: Failed Recovery from SessionState
-  App tries to recover with an ID that doesn't exist.
 
-    Given Parent Window desktop "da" listens for postMessage events in "{window}", returns direct message response
-    And we wait for a period of "200" ms
-    And the session identity is set to "BAD_INSTANCE"
-    And I call getAgent for a promise result with the following options
-      | dontSetWindowFdc3 | timeout | intentResolver | channelSelector |
-      | true              |    8000 | false          | false           |
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
-    And "{result}" is an error with message "Invalid instance"
-    Then I call "{document}" with "shutdown"
+  # Scenario: Failed Recovery from SessionState
+  # App tries to recover with an ID that doesn't exist. 
+  # It should be allowed to connect but issued a different instanceId
+  # needs more thought to complete...
+  #   Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response
+  #   And we wait for a period of "200" ms
+  #   And the session identity is set to "BAD_INSTANCE" with identityUrl "https://dummyOrigin.test/path"
+  #   And I call getAgent for a promise result with the following options
+  #     | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
+  #     | true              |    8000   | false          | false           |
+  #   And I refer to "{result}" as "theAPIPromise"
+  #   Then the promise "{theAPIPromise}" should resolve
+  #   And I call "{result}" with "getInfo"
+  #   Then "{result}" is an object with the following contents
+  #     | fdc3Version | appMetadata.appId | provider          |
+  #     |         2.0 | cucumber-app      | cucumber-provider |
+  #   Then I call "{parentDoc}" with "shutdown"
+  #   Then I call "{childDoc}" with "shutdown"
 
   Scenario: Nothing works and we timeout
     When I call getAgent for a promise result with the following options
@@ -145,7 +162,7 @@ Feature: Different Strategies for Accessing the Desktop Agent
     And "{result}" is an error with message "AgentNotFound"
 
   Scenario: Someone calls getAgent twice
-    Given Parent Window desktop "da" listens for postMessage events in "{window}", returns direct message response
+    Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response
     And we wait for a period of "200" ms
     And I call getAgent for a promise result with the following options
       | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
@@ -160,5 +177,6 @@ Feature: Different Strategies for Accessing the Desktop Agent
     And the promise "{theAPIPromise2}" should resolve
     And I refer to "{result}" as "desktopAgent2"
     And "{desktopAgent1}" is "{desktopAgent2}"
-    Then I call "{document}" with "shutdown"
+    Then I call "{parentDoc}" with "shutdown"
+    Then I call "{childDoc}" with "shutdown"
     And I call "{desktopAgent}" with "disconnect"

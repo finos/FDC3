@@ -1,10 +1,7 @@
 import { TestServerContext } from "../TestServerContext";
 import { InstanceID } from "@kite9/fdc3-web-impl";
 import { AutomaticResponse } from "./AutomaticResponses";
-import { BrowserTypes } from "@kite9/fdc3-schema";
-
-type GetUserChannelsRequest = BrowserTypes.GetUserChannelsRequest
-type GetUserChannelsResponse = BrowserTypes.GetUserChannelsResponse
+import { GetUserChannelsRequest, GetUserChannelsResponse } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
 export const USER_CHANNELS = [
     {
@@ -35,7 +32,7 @@ export class UserChannels implements AutomaticResponse {
     }
 
     private createResponse(i: GetUserChannelsRequest, m: TestServerContext): GetUserChannelsResponse {
-        return {
+        const response: GetUserChannelsResponse = {
             meta: {
                 ...i.meta,
                 responseUuid: m.createUUID(),
@@ -44,6 +41,7 @@ export class UserChannels implements AutomaticResponse {
             payload: {
                 userChannels: USER_CHANNELS
             }
-        }
+        };
+        return response
     }
 }
