@@ -28,6 +28,8 @@ export class HelloHandler {
 	/** If we're asked to load a URL into an iframe, it is stored here to be saved in Session Storage */
   agentUrl: string | null = null;
 
+
+
   /** Reference to event listener used for responses from Desktop Agents -
    *  Used to remove them when no longer needed.
    *  Initialized when
@@ -64,7 +66,7 @@ export class HelloHandler {
 	 * into an iframe instead of working with the parent window.
    */
   openFrame(url: string) {
-    Logger.debug(`HelloHandler Opening iframe for: ${url}`);
+    Logger.debug(`HelloHandler Opening iframe for: ${url} on window with name: ${window.name}`);
           
     const IFRAME_ID = 'fdc3-communications-embedded-iframe';
 
@@ -95,11 +97,15 @@ export class HelloHandler {
     document.body.appendChild(ifrm);
   }
 
-  /** Listen for WCP responses from 'parent' windows and frames and handle them */
+  /** Listen for WCP responses from 'parent' windows and frames and handle them.
+   * Resolves when a response is received.
+   * @returns A Promise resolving to a set of connectiondetails
+   */
   listenForHelloResponses(): Promise<ConnectionDetails> {
     Logger.debug(`HelloHandler: listening for hello responses`);
           
     return new Promise<ConnectionDetails>((resolve, _reject) => {
+
       // setup listener for message and retrieve JS URL from it
       this.helloResponseListener = (event: MessageEvent<WebConnectionProtocolMessage>) => {
         const data = event.data;
