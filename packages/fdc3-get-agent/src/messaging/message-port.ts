@@ -7,13 +7,13 @@ import { NullIntentResolver } from "../ui/NullIntentResolver";
 import { NullChannelSelector } from "../ui/NullChannelSelector";
 import { ChannelSelector } from "@kite9/fdc3-standard";
 import { Logger } from "../util/Logger";
-import { WebConnectionProtocol6Goodbye } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
 /**
  * Given a message port, constructs a desktop agent to communicate via that.
  */
 export async function createDesktopAgentAPI(cd: ConnectionDetails, appIdentifier: AppIdentifier): Promise<DesktopAgent> {
 
+    Logger.debug("message-port: Creating Desktop Agent...");
     cd.messagePort.start();
 
     function string(o: string | boolean): string | null {
@@ -37,17 +37,28 @@ export async function createDesktopAgentAPI(cd: ConnectionDetails, appIdentifier
         new DefaultDesktopAgentChannelSelector(string(cd.handshake.payload.channelSelectorUrl))
         : new NullChannelSelector();
 
+    Logger.debug("message-port: Setting up support components...");
+    
     const hs = new DefaultHeartbeatSupport(messaging);
     const cs = new DefaultChannelSupport(messaging, channelSelector);
     const is = new DefaultIntentSupport(messaging, intentResolver);
     const as = new DefaultAppSupport(messaging);
     const da = new BasicDesktopAgent(hs, cs, is, as, [hs, intentResolver, channelSelector]);
+    
+    Logger.debug("message-port: Connecting components ...");
+    
     await da.connect();
-
+    
+    Logger.debug("message-port: Populating channel selector...");
+    
     await populateChannelSelector(cs, channelSelector);
 
+    Logger.debug("message-port: Setting up disconnect handling...");
+    
     handleDisconnectOnPageHide(da, messaging);
 
+    Logger.debug("message-port: Returning...");
+    
     return da;
 }
 

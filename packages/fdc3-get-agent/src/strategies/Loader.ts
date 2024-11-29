@@ -11,6 +11,8 @@ export interface Loader {
   get(options: GetAgentParams): Promise<DesktopAgentSelection>;
 
   cancel(): void;
+
+  name: string;
 }
 
 /** Specific partial of DesktopAgentDetails defining the details that Loaders

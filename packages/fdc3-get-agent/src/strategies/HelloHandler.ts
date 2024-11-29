@@ -4,9 +4,8 @@ import {
   isWebConnectionProtocol2LoadURL,
   isWebConnectionProtocol3Handshake,
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
-import { GetAgentParams, WebDesktopAgentType } from '@kite9/fdc3-standard';
+import { FDC3_VERSION, GetAgentParams, WebDesktopAgentType } from '@kite9/fdc3-standard';
 import { ConnectionDetails } from '../messaging/MessagePortMessaging';
-import { FDC3_VERSION } from './getAgent';
 import { Logger } from '../util/Logger';
 
 export class HelloHandler {
@@ -56,6 +55,7 @@ export class HelloHandler {
       },
     };
 
+    Logger.debug(`HelloHandler: sending hello message: `, requestMessage);
     w.postMessage(requestMessage, { targetOrigin: origin });
   }
 
@@ -103,7 +103,7 @@ export class HelloHandler {
       // setup listener for message and retrieve JS URL from it
       this.helloResponseListener = (event: MessageEvent<WebConnectionProtocolMessage>) => {
         const data = event.data;
-        Logger.debug(`HelloHandler: received message: ${JSON.stringify(data)}`);
+        Logger.debug(`HelloHandler: received message: `, data);
           
         if (data?.meta?.connectionAttemptUuid == this.connectionAttemptUuid) {
           if (isWebConnectionProtocol2LoadURL(data)) {
