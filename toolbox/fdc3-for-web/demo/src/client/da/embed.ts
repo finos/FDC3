@@ -1,6 +1,7 @@
 import { io } from "socket.io-client"
 import { link, UI, UI_URLS } from "./util";
 import { APP_HELLO } from "../../message-types";
+import { isWebConnectionProtocol1Hello, WebConnectionProtocol3Handshake } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
 const appWindow = window.parent;
 
@@ -28,7 +29,7 @@ function getSource(): string {
     return source
 }
 
-function getDeskopAgentId(): string {
+function getDesktopAgentId(): string {
     const id = getQueryVariable("desktopAgentId")
     return id
 }
@@ -38,35 +39,43 @@ function getUIKey(): UI {
     return parseInt(ui) as UI
 }
 
+//set-up a listener for the WCP1Hello message 
+const helloHandler = (e) => {
+    const event = e as MessageEvent
+    const data = event.data;
+    // const source = event.source as Window
+    // const origin = event.origin;
 
-window.addEventListener("load", () => {
+    console.log("Received postMessage: " + JSON.stringify(event.data));
+    if (isWebConnectionProtocol1Hello(data)) {
+        const socket = io();
+        const channel = new MessageChannel();
+        const source = getSource();
+        const desktopAgentUUID = getDesktopAgentId();
 
-    const socket = io()
-    const channel = new MessageChannel()
-    const source = getSource()
-    const desktopAgentUUID = getDeskopAgentId()
+        socket.on("connect", () => {
+            link(socket, channel, source);
+            socket.emit(APP_HELLO, desktopAgentUUID, source);
+            const ui = UI_URLS[getUIKey()];
 
-    socket.on("connect", () => {
+            // send the other end of the channel to the app
+            const message: WebConnectionProtocol3Handshake = {
+                type: 'WCP3Handshake',
+                meta: {
+                    connectionAttemptUuid: data.meta.connectionAttemptUuid,
+                    timestamp: new Date()
+                },
+                payload: {
+                    fdc3Version: "2.2",
+                    channelSelectorUrl: data?.payload.channelSelector === false ? false : ui.channelSelectorUrl,
+                    intentResolverUrl: data?.payload.intentResolver === false ? false : ui.intentResolverUrl,
+                }
+            };
+            appWindow.postMessage(message, "*", [channel.port1])
+        });
 
-        link(socket, channel, source)
+        window.removeEventListener("message", helloHandler);
+    }
+};
 
-        socket.emit(APP_HELLO, desktopAgentUUID, source)
-
-        const ui = UI_URLS[getUIKey()]
-
-        // sned the other end of the channel to the app
-        appWindow.postMessage({
-            type: 'WCP3Handshake',
-            meta: {
-                connectionAttemptUuid: getConnectionAttemptUuid(),
-                timestamp: new Date()
-            },
-            payload: {
-                fdc3Version: "2.2",
-                ...ui
-            }
-        }, "*", [channel.port1])
-
-
-    })
-})
+window.addEventListener("message", helloHandler); 
