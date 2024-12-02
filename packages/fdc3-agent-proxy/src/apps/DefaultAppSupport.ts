@@ -82,7 +82,7 @@ export class DefaultAppSupport implements AppSupport {
             meta: this.messaging.createMeta()
         } 
 
-        const out = await this.messaging.exchange<GetInfoResponse>(request, "getInfoResponse", OpenError.AppTimeout);
+        const out = await this.messaging.exchange<GetInfoResponse>(request, "getInfoResponse", "timed out waiting for getInfo response!");
         if (out.payload.implementationMetadata) {
             return out.payload.implementationMetadata;
         } else {
@@ -99,7 +99,6 @@ export class DefaultAppSupport implements AppSupport {
             };
             return unknownImpl;
         }
-        
     }
 
 }

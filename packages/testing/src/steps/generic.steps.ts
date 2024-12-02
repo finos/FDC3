@@ -26,8 +26,10 @@ export function setupGenericSteps() {
             const fn = object[fnName];
             const result = await fn.call(object)
             this.props['result'] = result;
+            console.log("Result:", result);
         } catch (error) {
             this.props['result'] = error
+            console.log("Result was an error:", error);
         }
     })
 
