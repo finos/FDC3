@@ -17,7 +17,7 @@ export class MockWindow extends MockElement {
         super(tag);
         this.cw = cw;
         this.name = name;
-        console.log(`MockWindow created with name: ${this.name} / tag: ${this.tag}`);
+        if (cw.debugLogs) { console.debug(`MockWindow created with name: ${this.name} / tag: ${this.tag}`); } 
     }
 
     eventHandlers: EventHandler[] = [];
@@ -34,14 +34,14 @@ export class MockWindow extends MockElement {
 
     addEventListener(type: string, callback: (e: Event) => void): void {
         this.eventHandlers.push({ type, callback });
-        console.log(`MockWindow ${this.name} / ${this.tag}: added event handler: ${type}`);
+        if (this.cw.debugLogs) { console.log(`MockWindow ${this.name} / ${this.tag}: added event handler: ${type}`); }
     }
 
     removeEventListener(type: string, el: EventListener): void {
         const removeIndex = this.eventHandlers.findIndex(e => e.type === type && e.callback === el);
         if (removeIndex !== -1) {
             this.eventHandlers.splice(removeIndex, 1);
-            console.log(`MockWindow ${this.name} / ${this.tag}: removed event handler: ${type}`);
+            if (this.cw.debugLogs) { console.debug(`MockWindow ${this.name} / ${this.tag}: removed event handler: ${type}`); }
         }
     }
 
@@ -63,7 +63,7 @@ export class MockWindow extends MockElement {
             //TODO: set source for UI iframes, comms iframe, parent DA or child app depending on message type
             source: this.commsIframe ?? this.child ?? this.parent ?? this
         } as any;
-        console.log(`MockWindow ${this.name} / ${this.tag}: postMessage with source: ${event.source.name}`);
+        if (this.cw.debugLogs) { console.debug(`MockWindow ${this.name} / ${this.tag}: postMessage with source: ${event.source.name}`); }
         this.dispatchEvent(event);
     }
 

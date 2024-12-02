@@ -55,7 +55,6 @@ export class IdentityValidationHandler {
         actualUrl,
       },
     };
-    Logger.log(`IdentityValidationHandler: sending validation message`, requestMessage);
           
     const persistedDetails = retrieveDesktopAgentDetails(identityUrl);
 
@@ -72,7 +71,7 @@ export class IdentityValidationHandler {
     return new Promise<WebConnectionProtocol5ValidateAppIdentitySuccessResponse>((resolve, reject) => {
       //timeout for id validation only
       const timeout = setTimeout(() => {
-        Logger.log(`IdentityValidationHandler: timeout`);
+        Logger.warn(`IdentityValidationHandler: Identity validation timed out`);
     
         if (this.idValidationResponseListener) {
           //remove the event listener as we won't proceed further
@@ -87,7 +86,6 @@ export class IdentityValidationHandler {
       // setup listener for message and retrieve JS URL from it
       this.idValidationResponseListener = (event: MessageEvent<WebConnectionProtocolMessage>) => {
         const data = event.data;
-        Logger.debug(`IdentityValidationHandler: received message`, data);
     
         if (data?.meta?.connectionAttemptUuid == this.connectionAttemptUuid) {
           if (isWebConnectionProtocol5ValidateAppIdentitySuccessResponse(data)) {
@@ -120,7 +118,7 @@ export class IdentityValidationHandler {
           }
 
         } else {
-          Logger.debug(
+          Logger.warn(
             `IdentityValidationHandler: Ignoring message with invalid connectionAttemptUuid. Expected ${this.connectionAttemptUuid}, received: ${data?.meta?.connectionAttemptUuid}`,
             data
           );
