@@ -10,12 +10,12 @@ export class MockDocument {
     constructor(name: string, window: MockWindow) {
         this.name = name;
         this.window = window;
-        console.log(`MockDocument created with name: ${name} in window.name: ${this.window.name}`);
+        if (this.window.cw.debugLogs) { console.log(`MockDocument created with name: ${name} in window.name: ${this.window.name}`); }
     }
 
     createElement(tag: string): HTMLElement {
         if (tag == 'iframe') {
-            console.log(`MockDocument ${this.name} creating iframe in window.name ${this.window.name}`);
+            if (this.window.cw.debugLogs) { console.log(`MockDocument ${this.name} creating iframe in window.name ${this.window.name}`); }
             const mw = new MockIFrame("iframe", this.window.cw, this.window, "embedded-iframe");
             //make sure the parent doc is aware of the iframe for attributing postMessage
             //TODO: set a different variable for UI iframes

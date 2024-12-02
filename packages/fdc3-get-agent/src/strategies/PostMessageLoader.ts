@@ -140,7 +140,6 @@ export class PostMessageLoader implements Loader {
         //clean up
         this.cancel();
 
-        Logger.debug("PostMessageLoader.get(): Resolving with Desktop Agent selection...");
         resolve(desktopAgentSelection);
       } catch (e) {
         //id validation may have failed

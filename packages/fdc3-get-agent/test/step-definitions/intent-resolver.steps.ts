@@ -75,7 +75,7 @@ When(
 );
 
 Given('The intent resolver sends an intent selection message', async function (this: CustomWorld) {
-  const port = handleResolve('{document.iframes[0].messageChannels[0].port2}', this);
+  const port = handleResolve('{childDoc.iframes[0].messageChannels[0].port2}', this);
 
   port.postMessage({
     type: FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE,
@@ -90,7 +90,7 @@ Given('The intent resolver sends an intent selection message', async function (t
 });
 
 Given('The intent resolver cancels the intent selection message', async function (this: CustomWorld) {
-  const port = handleResolve('{document.iframes[0].messageChannels[0].port2}', this);
+  const port = handleResolve('{childDoc.iframes[0].messageChannels[0].port2}', this);
 
   port.postMessage({
     type: FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE,

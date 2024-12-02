@@ -88,7 +88,6 @@ export abstract class AbstractUIComponent implements Connectable {
       const ml = (e: MessageEvent) => {
         if (e.source == this.iframe?.contentWindow) {
           if (isFdc3UserInterfaceHello(e.data)) {
-            Logger.debug('AbstractUIComponent: Received Hello Message from UI iframe: ', e.data);
             const helloData = e.data;
             if (helloData.payload.initialCSS) {
               this.themeContainer(helloData.payload.initialCSS);

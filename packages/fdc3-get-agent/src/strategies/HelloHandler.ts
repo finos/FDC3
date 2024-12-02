@@ -57,7 +57,6 @@ export class HelloHandler {
       },
     };
 
-    Logger.debug(`HelloHandler: sending hello message: `, requestMessage);
     w.postMessage(requestMessage, { targetOrigin: origin });
   }
 
@@ -66,7 +65,6 @@ export class HelloHandler {
 	 * into an iframe instead of working with the parent window.
    */
   openFrame(url: string) {
-    Logger.debug(`HelloHandler Opening iframe for: ${url} on window with name: ${window.name}`);
           
     const IFRAME_ID = 'fdc3-communications-embedded-iframe';
 
@@ -102,14 +100,12 @@ export class HelloHandler {
    * @returns A Promise resolving to a set of connectiondetails
    */
   listenForHelloResponses(): Promise<ConnectionDetails> {
-    Logger.debug(`HelloHandler: listening for hello responses`);
           
     return new Promise<ConnectionDetails>((resolve, _reject) => {
 
       // setup listener for message and retrieve JS URL from it
       this.helloResponseListener = (event: MessageEvent<WebConnectionProtocolMessage>) => {
         const data = event.data;
-        Logger.debug(`HelloHandler: received message: `, data);
           
         if (data?.meta?.connectionAttemptUuid == this.connectionAttemptUuid) {
           if (isWebConnectionProtocol2LoadURL(data)) {

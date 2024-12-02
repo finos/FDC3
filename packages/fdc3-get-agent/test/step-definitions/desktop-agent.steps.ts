@@ -15,7 +15,6 @@ import { MockStorage } from '../support/MockStorage';
 import { DesktopAgent, ImplementationMetadata } from '@kite9/fdc3-standard';
 import { clearAgentPromise } from '../../src/strategies/getAgent';
 import expect from 'expect';
-//var wtf = require('wtfnode')
 
 interface MockPageTransitionEvent extends Event {
   persisted?: boolean;
@@ -161,24 +160,6 @@ Given(
     globalThis.sessionStorage = new MockStorage() as any;
   }
 );
-
-// Given('a browser document in {string} and window in {string}', async function (this: CustomWorld, d: string, w: string) {
-//     // creates the mock app window
-//     const mw = new MockWindow("mockWindow", this, "mocky")
-//     globalThis.window = mw as any
-//     this.props[w] = globalThis.window;
-
-//     // to keep it simple, mock app window parent is set to itself, to avoid excess routing
-//     mw.parent = mw;
-
-//     // mock document exists in the window
-//     globalThis.document = new MockDocument("mockDocument", mw) as any
-//     this.props[d] = globalThis.document as any;
-
-//     // browser storage
-//     globalThis.sessionStorage = new MockStorage() as any
-
-// })
 
 Given(
   'the session identity is set to {string} with identityUrl {string}',

@@ -27,7 +27,7 @@ Given('User Channels one, two and three in {string}', function (this: CustomWorl
 Given(
   'The channel selector sends a channel change message for channel {string}',
   async function (this: CustomWorld, channel: string) {
-    const port = handleResolve('{document.iframes[0].messageChannels[0].port2}', this);
+    const port = handleResolve('{childDoc.iframes[0].messageChannels[0].port2}', this);
     const msg: Fdc3UserInterfaceChannelSelected = {
       type: 'Fdc3UserInterfaceChannelSelected',
       payload: {

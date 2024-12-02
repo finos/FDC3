@@ -70,7 +70,7 @@ export class MockFDC3Server implements FDC3Server {
                 const source = event.source as Window
                 const origin = event.origin;
 
-                console.log("MockFDC3Server received: ", event.data);
+                if (this.tsc.cw.debugLogs) { console.log("MockFDC3Server received: ", event.data); }
                 if (data.type == "WCP1Hello") {
                     if (this.useIframe) {
                         const message: WebConnectionProtocol2LoadURL = {

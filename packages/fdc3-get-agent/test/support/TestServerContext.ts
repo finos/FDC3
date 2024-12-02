@@ -21,7 +21,7 @@ type MessageRecord = {
 export class TestServerContext implements ServerContext<ConnectionDetails> {
 
     public postedMessages: MessageRecord[] = []
-    private readonly cw: CustomWorld
+    public readonly cw: CustomWorld
     private instances: ConnectionDetails[] = []
     private nextInstanceId: number = 0
     private nextUUID: number = 0
@@ -82,7 +82,6 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
 
             this.instances.push(connectionDetails)
             internalPort.onmessage = (msg) => {
-                console.log(`Received message on internalPort ${appId}: ${JSON.stringify(msg.data)}`)
                 this.cw.mockFDC3Server?.receive(msg.data, connectionDetails.instanceId)
             }
 

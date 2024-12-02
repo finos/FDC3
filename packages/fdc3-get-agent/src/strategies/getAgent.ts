@@ -72,7 +72,7 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
         return selection;
     }));
 
-    Logger.debug("Waiting for discovery promises to settle...")
+    Logger.debug("Waiting for discovery promises to settle...");
     return Promise.allSettled(promises)
     .then(async results => {
         //review results
@@ -197,8 +197,6 @@ export const getAgent: GetAgentType = (params?: GetAgentParams) => {
         }
         return da;
     };
-
-    Logger.debug(`GetAgentParams: ${JSON.stringify(options)}`);
 
     if (!theAgentPromise) {
         theAgentPromise = initAgentPromise(options).then(handleSetWindowFdc3);
