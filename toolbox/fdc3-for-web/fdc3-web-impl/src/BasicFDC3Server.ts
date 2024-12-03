@@ -4,18 +4,17 @@ import { BroadcastHandler, ChannelState } from "./handlers/BroadcastHandler";
 import { IntentHandler } from "./handlers/IntentHandler";
 import { Directory } from "./directory/DirectoryInterface";
 import { OpenHandler } from "./handlers/OpenHandler";
-import { BrowserTypes } from "@kite9/fdc3-schema";
 import { HeartbeatHandler } from "./handlers/HeartbeatHandler";
-
-type AppRequestMessage = BrowserTypes.AppRequestMessage
-type WebConnectionProtocol4ValidateAppIdentity = BrowserTypes.WebConnectionProtocol4ValidateAppIdentity
+import { AppRequestMessage, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol6Goodbye } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
 export interface MessageHandler {
 
     /**
-     * Handles an AgentRequestMessage from the messaging source
+     * Handles an AgentRequestMessage from the messaging source. This function
+     * is called by BasicFDC3Server on every message received and should only
+     * process those it supports.
      */
-    accept(msg: any, sc: ServerContext<AppRegistration>, from: InstanceID): void
+    accept(msg: AppRequestMessage | WebConnectionProtocol4ValidateAppIdentity | WebConnectionProtocol6Goodbye, sc: ServerContext<AppRegistration>, from: InstanceID): void
 
     shutdown(): void
 }
@@ -33,7 +32,7 @@ export class BasicFDC3Server implements FDC3Server {
         this.sc = sc;
     }
 
-    receive(message: AppRequestMessage | WebConnectionProtocol4ValidateAppIdentity, from: InstanceID): void {
+    receive(message: AppRequestMessage, from: InstanceID): void {
         // this.sc.log(`MessageReceived: \n ${JSON.stringify(message, null, 2)}`)
         this.handlers.forEach(h => h.accept(message, this.sc, from))
     }

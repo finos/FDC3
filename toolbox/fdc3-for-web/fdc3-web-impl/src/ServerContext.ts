@@ -104,7 +104,7 @@ export interface ServerContext<X extends AppRegistration> {
     /**
      * This is called prior to returning intents to the client.  It is a
      * an opportunity for the server to either present an intent resolver 
-     * or otherwise mess with the availble intents, or do nothing.
+     * or otherwise mess with the available intents, or do nothing.
      */
     narrowIntents(raiser: AppIdentifier, IappIntents: AppIntent[], context: Context): Promise<AppIntent[]>
 }
