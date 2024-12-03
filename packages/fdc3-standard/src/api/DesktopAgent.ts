@@ -376,24 +376,24 @@ export interface DesktopAgent {
    */
   addContextListener(contextType: ContextType | null, handler: ContextHandler): Promise<Listener>;
 
-  /** 
-   * Register a handler for events from the Desktop Agent. Whenever the handler function 
+  /**
+   * Register a handler for events from the Desktop Agent. Whenever the handler function
    * is called it will be passed an event object with details related to the event.
-   * 
+   *
    * ```js
    * // any event type
    * const listener = await fdc3.addEventListener(null, event => { ... });
-   * 
+   *
    * // listener for a specific event type that logs its details
-   * const userChannelChangedListener = await fdc3.addEventListener("userChannelChanged", event => { 
+   * const userChannelChangedListener = await fdc3.addEventListener("userChannelChanged", event => {
    * console.log(`Received event ${event.type}\n\tDetails: ${event.details}`);
    * //do something else with the event
    * });
    * ```
-   * 
-   * @param {FDC3EventType|null} type If non-null, only events of the specified type will be received by the handler. 
-   * @param {EventHandler} handler A function that events received will be passed to. 
-   * 
+   *
+   * @param {FDC3EventType|null} type If non-null, only events of the specified type will be received by the handler.
+   * @param {EventHandler} handler A function that events received will be passed to.
+   *
    */
   addEventListener(type: FDC3EventTypes | null, handler: EventHandler): Promise<Listener>;
 
