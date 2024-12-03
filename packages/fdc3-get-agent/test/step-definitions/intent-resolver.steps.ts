@@ -4,7 +4,7 @@ import { handleResolve } from "@kite9/testing";
 import { DefaultDesktopAgentIntentResolver } from "../../src/ui/DefaultDesktopAgentIntentResolver";
 import { INTENT_RESOLVER_URL } from "../support/MockFDC3Server";
 import { Context } from "@kite9/fdc3-context";
-import { Fdc3UserInterfaceResolveAction } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
+import { BrowserTypes } from "@kite9/fdc3-schema";
 
 // TODO: Replace 'any' with useful typings
 const contextMap: Record<string, Context> = {
@@ -74,7 +74,7 @@ When('I call {string} with {string} with parameters {string} and {string} for a 
 
 Given('The intent resolver sends an intent selection message', async function (this: CustomWorld) {
     const port = handleResolve("{document.iframes[0].messageChannels[0].port2}", this)
-    const message: Fdc3UserInterfaceResolveAction = {
+    const message: BrowserTypes.Fdc3UserInterfaceResolveAction = {
         type: "Fdc3UserInterfaceResolveAction",
         payload: {
             action: 'click',
@@ -90,7 +90,7 @@ Given('The intent resolver sends an intent selection message', async function (t
 Given('The intent resolver cancels the intent selection message', async function (this: CustomWorld) {
     const port = handleResolve("{document.iframes[0].messageChannels[0].port2}", this)
 
-    const message: Fdc3UserInterfaceResolveAction = {
+    const message: BrowserTypes.Fdc3UserInterfaceResolveAction = {
         type: "Fdc3UserInterfaceResolveAction",
         payload: {
             action: 'cancel'
