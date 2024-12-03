@@ -63,7 +63,7 @@ export class PrivateChannelNullEventListener extends AbstractPrivateChannelEvent
           break;
         case "privateChannelOnDisconnectEvent":
           type = "disconnect";
-          details: null
+          details = null;
           break;
       }
       
