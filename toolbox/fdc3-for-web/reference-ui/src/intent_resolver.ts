@@ -174,7 +174,8 @@ window.addEventListener("load", () => {
             height: "100%",
             top: "0",
             left: "0",
-            position: "fixed"
+            position: "fixed",
+            display: "block",
           }
         }
       }
@@ -193,7 +194,8 @@ window.addEventListener("load", () => {
           payload: {
             updatedCSS: {
               width: "0",
-              height: "0"
+              height: "0",
+              display: "none"
             }
           }
         }
