@@ -14,7 +14,7 @@ type BroadcastEvent = BrowserTypes.BroadcastEvent;
 type PrivateChannelOnUnsubscribeEvent = BrowserTypes.PrivateChannelOnUnsubscribeEvent;
 type PrivateChannelOnDisconnectEvent = BrowserTypes.PrivateChannelOnDisconnectEvent;
 
-const contextMap: Record<string, any> = {
+const contextMap: Record<string, Context> = {
   'fdc3.instrument': {
     type: 'fdc3.instrument',
     name: 'Apple',
@@ -181,13 +181,13 @@ Given('{string} pipes context to {string}', function (this: CustomWorld, context
 When('messaging receives {string}', function (this: CustomWorld, field: string) {
   const message = handleResolve(field, this);
   this.log(`Sending: ${JSON.stringify(message)}`);
-  this.messaging!!.receive(message, this.log);
+  this.messaging!.receive(message, this.log);
 });
 
 Then('messaging will have posts', function (this: CustomWorld, dt: DataTable) {
   // just take the last few posts and match those
   const matching = dt.rows().length;
-  var toUse = this.messaging?.allPosts!;
+  let toUse = this.messaging!.allPosts!;
   if (toUse.length > matching) {
     toUse = toUse.slice(toUse.length - matching, toUse.length);
   }

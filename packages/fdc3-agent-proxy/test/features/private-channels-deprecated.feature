@@ -16,7 +16,7 @@ Feature: Basic Private Channels Support
     And I call "{theListener}" with "unsubscribe"
     Then messaging will have posts
       | type                                          | payload.listenerType | payload.privateChannelId | payload.listenerUUID | matches_type                                  |
-      | privateChannelAddEventListenerRequest         | onAddContextListener | {privateChannel.id}      | {null}               | privateChannelAddEventListenerRequest         |
+      | privateChannelAddEventListenerRequest         | addContextListener   | {privateChannel.id}      | {null}               | privateChannelAddEventListenerRequest         |
       | privateChannelUnsubscribeEventListenerRequest | {null}               | {null}                   | {theListener.id}     | privateChannelUnsubscribeEventListenerRequest |
 
   Scenario: Adding an "onAddContextListener" on a given Private Channel to receive a notification
@@ -37,7 +37,7 @@ Feature: Basic Private Channels Support
     And I call "{theListener}" with "unsubscribe"
     Then messaging will have posts
       | type                                          | payload.listenerType | payload.privateChannelId | payload.listenerUUID | matches_type                                  |
-      | privateChannelAddEventListenerRequest         | onUnsubscribe        | {privateChannel.id}      | {null}               | privateChannelAddEventListenerRequest         |
+      | privateChannelAddEventListenerRequest         | unsubscribe          | {privateChannel.id}      | {null}               | privateChannelAddEventListenerRequest         |
       | privateChannelUnsubscribeEventListenerRequest | {null}               | {null}                   | {theListener.id}     | privateChannelUnsubscribeEventListenerRequest |
 
   Scenario: Adding an "onUnsubscribe" on a given Private Channel to receive a notification
@@ -58,7 +58,7 @@ Feature: Basic Private Channels Support
     And I call "{theListener}" with "unsubscribe"
     Then messaging will have posts
       | type                                          | payload.listenerType | payload.privateChannelId | payload.listenerUUID | matches_type                                  |
-      | privateChannelAddEventListenerRequest         | onDisconnect         | {privateChannel.id}      | {null}               | privateChannelAddEventListenerRequest         |
+      | privateChannelAddEventListenerRequest         | disconnect           | {privateChannel.id}      | {null}               | privateChannelAddEventListenerRequest         |
       | privateChannelUnsubscribeEventListenerRequest | {null}               | {null}                   | {theListener.id}     | privateChannelUnsubscribeEventListenerRequest |
 
   Scenario: Adding an "onDisconnect" on a given Private Channel to receive a notification
