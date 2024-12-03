@@ -64,7 +64,11 @@ export class BroadcastHandler implements MessageHandler {
     }
 
     getCurrentChannel(from: AppIdentifier): ChannelState | null {
-        return this.currentChannel[from.instanceId!!]
+        // instanceId is optional
+        if (!from.instanceId) {
+            return null
+        }
+        return this.currentChannel[from.instanceId]
     }
 
     getChannelById(id: string | null): ChannelState | null {
@@ -339,13 +343,13 @@ export class BroadcastHandler implements MessageHandler {
         if ((channel == null) || (channel.type != ChannelType.private)) {
             errorResponse(sc, arg0, from, ChannelError.NoChannelFound, 'privateChannelAddEventListenerResponse')
         } else {
-            const el = {
+            const el: PrivateChannelEventListener = {
                 appId: from.appId!!,
                 instanceId: from.instanceId!!,
                 channelId: arg0.payload.privateChannelId,
                 eventType: arg0.payload.listenerType,
                 listenerUuid: sc.createUUID(),
-            } as PrivateChannelEventListener
+            }
             this.eventListeners.push(el)
             successResponse(sc, arg0, from, { listenerUUID: el.listenerUuid }, 'privateChannelAddEventListenerResponse')
         }

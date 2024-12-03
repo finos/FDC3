@@ -1,6 +1,6 @@
 import { CustomWorld } from "../world"
 import { MockWindow } from "./MockWindow"
-import { CHANNEL_SELECTOR_URL, EMBED_URL, INTENT_RESPOLVER_URL } from "./MockFDC3Server"
+import { CHANNEL_SELECTOR_URL, EMBED_URL, INTENT_RESOLVER_URL } from "./MockFDC3Server"
 import { BrowserTypes } from "@kite9/fdc3-schema"
 import { FDC3_USER_INTERFACE_HANDSHAKE_TYPE, FDC3_USER_INTERFACE_HELLO_TYPE, FDC3_USER_INTERFACE_RESTYLE_TYPE } from "@kite9/fdc3-schema/dist/generated/api/BrowserTypes"
 
@@ -24,7 +24,7 @@ export function handleEmbeddedIframeComms(value: string, parent: MockWindow, cw:
             },
             payload: {
                 fdc3Version: "2.2",
-                intentResolverUrl: INTENT_RESPOLVER_URL,
+                intentResolverUrl: INTENT_RESOLVER_URL,
                 channelSelectorUrl: CHANNEL_SELECTOR_URL,
             }
         } as WebConnectionProtocol3Handshake, EMBED_URL, [connection!!.externalPort])
@@ -87,7 +87,7 @@ export function handleIntentResolverComms(_value: string, parent: MockWindow, so
                     }
                 }
             } as Fdc3UserInterfaceHello,
-            origin: INTENT_RESPOLVER_URL,
+            origin: INTENT_RESOLVER_URL,
             source,
             ports: [connection.port1]
         } as any as Event)

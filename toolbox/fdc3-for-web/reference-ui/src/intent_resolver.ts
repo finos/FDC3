@@ -1,12 +1,6 @@
 import { Icon } from "@kite9/fdc3";
 import { AppIntent } from "@kite9/fdc3";
-import { BrowserTypes } from "@kite9/fdc3-schema";
-import { isFdc3UserInterfaceResolve } from "@kite9/fdc3-schema/dist/generated/api/BrowserTypes";
-
-type Fdc3UserInterfaceHello = BrowserTypes.Fdc3UserInterfaceHello;
-type Fdc3UserInterfaceRestyle = BrowserTypes.Fdc3UserInterfaceRestyle;
-type Fdc3UserInterfaceResolve = BrowserTypes.Fdc3UserInterfaceResolve;
-type Fdc3UserInterfaceResolveAction = BrowserTypes.Fdc3UserInterfaceResolveAction;
+import { Fdc3UserInterfaceHello, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, isFdc3UserInterfaceResolve } from "@kite9/fdc3-schema/dist/generated/api/BrowserTypes";
 
 
 const setup = (data: Fdc3UserInterfaceResolve["payload"], callback: (payload: Fdc3UserInterfaceResolveAction["payload"]) => void) => {
@@ -119,7 +113,7 @@ const fillList = (ai: AppIntent[], intent: string, callback: (payload: Fdc3UserI
   const openList = document.getElementById('open-list')!!
   openList.innerHTML = '';
 
-  openApps.forEach(({ appId, title, icons }) => {
+  openApps.forEach(({ appId, title, icons, instanceId }) => {
     const node = document.createElement('div');
     node.setAttribute('tabIndex', '0');
     node.setAttribute("data-appId", appId);
@@ -137,7 +131,8 @@ const fillList = (ai: AppIntent[], intent: string, callback: (payload: Fdc3UserI
         action: "click",
         intent,
         appIdentifier: {
-          appId
+          appId,
+          instanceId
         }
       })
     });
@@ -147,7 +142,8 @@ const fillList = (ai: AppIntent[], intent: string, callback: (payload: Fdc3UserI
         action: "hover",
         intent,
         appIdentifier: {
-          appId
+          appId,
+          instanceId
         }
       })
     });

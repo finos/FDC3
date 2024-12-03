@@ -1,12 +1,8 @@
 import { AppIdentifier, ImplementationMetadata, GetAgentParams } from "@kite9/fdc3-standard";
 import { Messaging } from "../Messaging";
 import { RegisterableListener } from "../listeners/RegisterableListener";
-import { BrowserTypes } from "@kite9/fdc3-schema";
-import { AddContextListenerRequestMeta } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
-
-
-type WebConnectionProtocol4ValidateAppIdentity = BrowserTypes.WebConnectionProtocol4ValidateAppIdentity
-type WebConnectionProtocol5ValidateAppIdentitySuccessResponse = BrowserTypes.WebConnectionProtocol5ValidateAppIdentitySuccessResponse
+import { AppRequestMessage, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentitySuccessResponse } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
+type RequestMetadata = AppRequestMessage["meta"];
 
 export abstract class AbstractMessaging implements Messaging {
 
@@ -23,7 +19,7 @@ export abstract class AbstractMessaging implements Messaging {
     abstract register(l: RegisterableListener): void
     abstract unregister(id: string): void
 
-    abstract createMeta(): AddContextListenerRequestMeta
+    abstract createMeta(): RequestMetadata
 
     constructor(options: GetAgentParams, connectionAttemptUuid: string, actualUrl: string, timeout: number = 10016) {
         this.options = options
@@ -33,48 +29,59 @@ export abstract class AbstractMessaging implements Messaging {
     }
 
     getSource(): AppIdentifier {
-        return this.appId!!
+        if(this.appId === null){
+            throw new Error("Unconnected. No source available.")
+        }
+        return this.appId
     }
 
     waitFor<X>(filter: (m: any) => boolean, timeoutErrorMessage?: string): Promise<X> {
         const id = this.createUUID()
         return new Promise<X>((resolve, reject) => {
-            var done = false;
-            const l: RegisterableListener = {
+            let done = false;
+            const listener: RegisterableListener = {
                 id,
                 filter: filter,
                 action: (m) => {
                     done = true
                     this.unregister(id)
                     resolve(m)
+                },
+                register: async () => {
+                    this.register(listener)
+                },
+                unsubscribe: async () => {
+                    this.unregister(id);
                 }
-            } as RegisterableListener
-
-
-            this.register(l);
-
-            if (timeoutErrorMessage) {
-                setTimeout(() => {
-                    this.unregister(id)
-                    if (!done) {
-                        console.error(`Rejecting after ${this.timeout}ms with ${timeoutErrorMessage}`)
-                        reject(new Error(timeoutErrorMessage))
-                    }
-                }, this.timeout);
             }
 
+            listener.register();
+
+            if (!timeoutErrorMessage) {
+                return;
+            }
+
+            setTimeout(() => {
+                this.unregister(id)
+                if (!done) {
+                    console.error(`Timed out after ${this.timeout}ms with ${timeoutErrorMessage}`)
+                    reject(new Error(timeoutErrorMessage))
+                }
+            }, this.timeout);
         })
     }
 
 
     async exchange<X>(message: any, expectedTypeName: string, timeoutErrorMessage?: string): Promise<X> {
         const errorMessage = timeoutErrorMessage ?? `Timeout waiting for ${expectedTypeName} with requestUuid ${message.meta.requestUuid}`
-        const prom = this.waitFor(m =>
+        const messageResponseWaiter = this.waitFor<X>(m =>
             (m.type == expectedTypeName)
             && (m.meta.requestUuid == message.meta.requestUuid), errorMessage)
         this.post(message)
-        const out: any = await prom
+        const out = await messageResponseWaiter
+        // @ts-expect-error: TODO: We should make a list of all of the possible messages that can be called through this, and make that list the generic. This will ensure better type safety.
         if (out?.payload?.error) {
+            // @ts-expect-error: TODO: We should make a list of all of the possible messages that can be called through this, and make that list the generic. This will ensure better type safety.
             throw new Error(out.payload.error)
         } else {
             return out
@@ -105,15 +112,18 @@ export abstract class AbstractMessaging implements Messaging {
         this.implementationMetadata = null;
     }
 
-    getImplementationMetadata(): Promise<ImplementationMetadata> {
-        return Promise.resolve(this.implementationMetadata!!)
+    async getImplementationMetadata(): Promise<ImplementationMetadata> {
+        if(this.implementationMetadata === null){
+            throw new Error("Unconnected. No metadata available.")
+        }
+        return this.implementationMetadata
     }
 
     private async exchangeValidationWithId<X>(message: any, connectionAttemptUuid: string): Promise<X> {
-        const prom = this.waitFor(m =>
+        const messageResponseWaiter = this.waitFor(m =>
             (m.meta.connectionAttemptUuid == connectionAttemptUuid))
         this.post(message)
-        const out: any = await prom
+        const out: any = await messageResponseWaiter
         if (out?.payload?.message) {
             throw new Error(out.payload.message)
         } else {
@@ -125,22 +135,18 @@ export abstract class AbstractMessaging implements Messaging {
      * Sends the validate message through the nmessage port
      */
     private createValidationMessage(): WebConnectionProtocol4ValidateAppIdentity {
-        var instanceUuid = this.retrieveInstanceUuid()
-
-        const requestMessage: WebConnectionProtocol4ValidateAppIdentity = {
+        return {
             type: 'WCP4ValidateAppIdentity',
             meta: {
                 connectionAttemptUuid: this.connectionAttemptUuid,
                 timestamp: new Date()
             },
             payload: {
-                identityUrl: this.options.identityUrl!!,
+                identityUrl: this.options.identityUrl ?? this.actualUrl,
                 actualUrl: this.actualUrl,
-                instanceUuid
+                instanceUuid: this.retrieveInstanceUuid()
             }
         }
-
-        return requestMessage
     }
 
     /**

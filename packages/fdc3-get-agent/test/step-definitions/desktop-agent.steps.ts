@@ -11,7 +11,6 @@ import { DesktopAgent, ImplementationMetadata } from '@kite9/fdc3-standard';
 import { DESKTOP_AGENT_SESSION_STORAGE_DETAILS_KEY } from '../../src/messaging/AbstractWebMessaging';
 import { clearAgentPromise, getAgentPromise } from '../../src/strategies/getAgent';
 import expect from 'expect';
-//var wtf = require('wtfnode')
 
 setupGenericSteps()
 Given('Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response', async function (this: CustomWorld, field: string, w: string) {
@@ -87,13 +86,8 @@ When('I call fdc3Ready for a promise result', function (this: CustomWorld) {
 })
 
 After(function (this: CustomWorld) {
-    console.log("Cleaning up")
+    // Clean up
     clearAgentPromise()
-    // setTimeout(() => {
-    //     //console.log((process as any)._getActiveHandles())
-    //     wtf.dump()
-    // }, 10000)
-
 })
 
 When('I call getAgent for a promise result with the following options', function (this: CustomWorld, dt: DataTable) {

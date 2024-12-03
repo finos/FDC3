@@ -1,5 +1,5 @@
-import { IframeChannelsPayload, Channel } from "@kite9/fdc3-common";
-import { Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceHello, Fdc3UserInterfaceRestyle, isFdc3UserInterfaceChannels, isFdc3UserInterfaceHandshake } from "@kite9/fdc3-schema/dist/generated/api/BrowserTypes";
+import { Channel, Fdc3UserInterfaceHello, Fdc3UserInterfaceRestyle, isFdc3UserInterfaceChannels, isFdc3UserInterfaceHandshake } from "@kite9/fdc3-schema/dist/generated/api/BrowserTypes";
+
 
 const fillChannels = (data: Channel[], selected: string | null, messageClickedChannel: (s: string | null) => void) => {
   const list = document.getElementById('list')!!;
@@ -52,17 +52,17 @@ window.addEventListener("load", () => {
       collapse();
     } else if (isFdc3UserInterfaceChannels(data)) {
       logo.removeEventListener("click", expand);
-      const { userChannels, selected } = data.payload as IframeChannelsPayload;
+      const { userChannels, selected } = data.payload;
       fillChannels(userChannels, selected, (channelStr) => {
-        const message: Fdc3UserInterfaceChannelSelected = {
-          type: "Fdc3UserInterfaceChannelSelected",
+        myPort.postMessage({
+          type: "fdc3UserInterfaceSelected",
           payload: {
             selected: channelStr || null
           }
-        };
-        myPort.postMessage(message);
+        });
         collapse();
       });
+
       const selectedChannel = userChannels.find((c) => c.id === selected);
       logo.style.fill = selectedChannel?.displayMetadata?.color ?? "white";
       console.log("Adding event listener")

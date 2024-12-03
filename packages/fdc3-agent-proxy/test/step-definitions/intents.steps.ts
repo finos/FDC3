@@ -68,7 +68,7 @@ Given("app {string} resolves intent {string} with context {string} and result ty
     this.props[instanceId] = app
 })
 
-Given("Raise Intent will return a context of {string}", function (this: CustomWorld, result: string) {
+Given("Raise Intent returns a context of {string}", function (this: CustomWorld, result: string) {
     this.messaging?.setIntentResult({
         context: handleResolve(result, this)
     })
@@ -81,18 +81,18 @@ Given("Raise Intent will throw a {string} error", function (this: CustomWorld, e
     })
 })
 
-Given("Raise Intent will return no result", function (this: CustomWorld) {
+Given("Raise Intent returns no result", function (this: CustomWorld) {
     this.messaging?.setIntentResult({})
 })
 
 
-Given("Raise Intent will timeout", function (this: CustomWorld) {
+Given("Raise Intent times out", function (this: CustomWorld) {
     this.messaging?.setIntentResult({
         timeout: true
     })
 })
 
-Given("Raise Intent will return an app channel", function (this: CustomWorld) {
+Given("Raise Intent returns an app channel", function (this: CustomWorld) {
     this.messaging?.setIntentResult({
         channel: {
             type: 'app',
@@ -105,7 +105,7 @@ Given("Raise Intent will return an app channel", function (this: CustomWorld) {
     })
 })
 
-Given('Raise Intent will return a user channel', function (this: CustomWorld) {
+Given('Raise Intent returns a user channel', function (this: CustomWorld) {
     this.messaging?.setIntentResult({
         channel: {
             type: 'user',
@@ -118,7 +118,7 @@ Given('Raise Intent will return a user channel', function (this: CustomWorld) {
     })
 })
 
-Given("Raise Intent will return a private channel", function (this: CustomWorld) {
+Given("Raise Intent returns a private channel", function (this: CustomWorld) {
     this.messaging?.setIntentResult({
         channel: {
             type: 'private',
