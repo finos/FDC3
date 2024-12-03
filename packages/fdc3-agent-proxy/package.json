@@ -19,7 +19,8 @@
   "scripts": {
     "build": "tsc --module es2022",
     "test": "tsc && nyc --reporter=lcov --reporter=text  --reporter json  cucumber-js",
-    "clean": "rimraf dist cucumber-report.html coverage .nyc_output node_modules test-results.xml"
+    "clean": "rimraf dist cucumber-report.html coverage .nyc_output node_modules test-results.xml",
+    "lint": "eslint src/"
   },
   "dependencies": {
     "@kite9/fdc3-standard": "2.2.0-beta.29"
