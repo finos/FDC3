@@ -29,9 +29,6 @@ export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent impl
                     this.callback(choice.payload.selected)
                 }
             }
-
-            const choice: BrowserTypes.Fdc3UserInterfaceChannelSelected = e.data
-            this.callback?.(choice.payload.selected)
         })
     }
 
