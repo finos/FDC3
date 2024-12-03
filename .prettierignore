@@ -9,3 +9,6 @@
 website
 dist
 src/app-directory/*/target
+node_modules
+coverage
+.nyc_output
