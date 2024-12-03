@@ -25,12 +25,13 @@ export class DefaultHandshakeSupport implements HandshakeSupport {
 
     async disconnect(): Promise<void> {
         await this.heartbeatListener?.unsubscribe()
-        await this.messaging.post({
+        const message: WebConnectionProtocol6Goodbye = {
             type: 'WCP6Goodbye',
             meta: {
                 timestamp: new Date(),
             }
-        } as WebConnectionProtocol6Goodbye)
+        }
+        await this.messaging.post(message)
         return this.messaging.disconnect()
     }
 

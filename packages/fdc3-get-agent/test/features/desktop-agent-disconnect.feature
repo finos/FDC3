@@ -2,7 +2,6 @@ Feature: Death of the Desktop Agent
 
   Background: Desktop Agent API
     Given a browser document in "document" and window in "window"
-  #  And Testing ends after "8000" ms
 
   Scenario: Loaded in the browser, but the user navigates away
     Given Parent Window desktop "da" listens for postMessage events in "{window}", returns direct message response
