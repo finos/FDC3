@@ -68,7 +68,7 @@ async function populateChannelSelector(cs: ChannelSupport, channelSelector: Chan
     channelSelector.updateChannel(channel?.id ?? null, userChannels)
 }
 
-function handleDisconnectOnPageHide(da: DesktopAgent, messaging: MessagePortMessaging) {
+function handleDisconnectOnPageHide(da: BasicDesktopAgent, messaging: MessagePortMessaging) {
     globalThis.window.addEventListener("pagehide", async (event) => {
         Logger.log(`Received pagehide event with persisted ${event.persisted}`);
         
@@ -82,9 +82,7 @@ function handleDisconnectOnPageHide(da: DesktopAgent, messaging: MessagePortMess
             //the page is being destroyed, disconnect from the DA
             
             //Notify the Desktop Agent implementation to disconnect
-            if ((da as any).disconnect) {
-                (da as any).disconnect();
-            }
+            da.disconnect();
 
             //disconnect the MessagePort - which should send WCP6Goodbye first
             messaging.disconnect();

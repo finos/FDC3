@@ -40,10 +40,10 @@ export interface Messaging /*extends Connectable*/ {
   ): Promise<X>;
 
   /**
-   *
-   * @param message Performs a request / response message pass
+   * Sends a request message and waits for a response. If the response contains a payload.error, it is thrown.
+   * @param message The request message to send.
    */
-  exchange<X extends AgentResponseMessage>(message: object, expectedTypeName: string, timeoutErrorMessage?: string): Promise<X>;
+  exchange<X extends AgentResponseMessage>(message: AppRequestMessage, expectedTypeName: string, timeoutErrorMessage?: string): Promise<X>;
 
   /**
    * App identification used to provide source information used in

@@ -1,10 +1,10 @@
 import { ContextHandler, Channel } from '@kite9/fdc3-standard';
 import { Messaging } from '../Messaging';
 import { AbstractListener } from './AbstractListener';
-import { FollowingContextListener } from './FollowingContextListener';
+import { UserChannelContextListener } from './UserChannelContextListener';
 import { AddContextListenerRequest, BroadcastEvent } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
-export class DefaultContextListener extends AbstractListener<ContextHandler, AddContextListenerRequest> implements FollowingContextListener {
+export class DefaultContextListener extends AbstractListener<ContextHandler, AddContextListenerRequest> implements UserChannelContextListener {
   private channelId: string | null;
   private readonly messageType: string;
   private readonly contextType: string | null;

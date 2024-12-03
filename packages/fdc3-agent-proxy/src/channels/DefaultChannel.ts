@@ -3,12 +3,8 @@ import { Context } from '@kite9/fdc3-context';
 
 import { Messaging } from '../Messaging';
 import { DefaultContextListener } from '../listeners/DefaultContextListener';
-import { BrowserTypes } from '@kite9/fdc3-schema';
+import { BroadcastRequest, BroadcastResponse, GetCurrentContextRequest, GetCurrentContextResponse } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
-type BroadcastRequest = BrowserTypes.BroadcastRequest;
-type BroadcastResponse = BrowserTypes.BroadcastResponse;
-type GetCurrentContextResponse = BrowserTypes.GetCurrentContextResponse;
-type GetCurrentContextRequest = BrowserTypes.GetCurrentContextRequest;
 
 export class DefaultChannel implements Channel {
   readonly messaging: Messaging;
@@ -55,20 +51,23 @@ export class DefaultChannel implements Channel {
     return response.payload.context ?? null;
   }
 
-  async addContextListener(contextType: any, handler?: ContextHandler): Promise<Listener> {
+  async addContextListener(contextTypeOrHandler: string | null | ContextHandler, handler?: ContextHandler): Promise<Listener> {
     let theContextType: string | null;
     let theHandler: ContextHandler;
 
-    if (contextType == null) {
+    if (contextTypeOrHandler == null && handler) {
       theContextType = null;
-      theHandler = handler as ContextHandler;
-    } else if (typeof contextType === 'string') {
-      theContextType = contextType;
-      theHandler = handler as ContextHandler;
-    } else {
+      theHandler = handler;
+    } else if (typeof contextTypeOrHandler === 'string' && handler) {
+      theContextType = contextTypeOrHandler;
+      theHandler = handler;
+    } else if (handler) {
       // deprecated one-arg version
       theContextType = null;
-      theHandler = contextType as ContextHandler;
+      theHandler = contextTypeOrHandler as ContextHandler;
+    } else {
+      //invalid call
+      throw new Error("Invalid arguments passed to addContextListener!");
     }
 
     return await this.addContextListenerInner(theContextType, theHandler);

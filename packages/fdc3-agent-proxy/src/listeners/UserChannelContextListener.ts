@@ -2,11 +2,11 @@ import { Channel, Listener } from '@kite9/fdc3-standard';
 import { RegisterableListener } from './RegisterableListener';
 
 /**
- * This is a spercial version of a ContextListener created when the user calls the 
- * fdc3.addContextListener method.   In this scenario, the listener will respond to broadcasts
+ * This is a special version of a ContextListener created when the user calls the 
+ * fdc3.addContextListener method. In this scenario, the listener will respond to broadcasts
  * on whatever is the current user channel.
  */
-export interface FollowingContextListener extends Listener, RegisterableListener {
+export interface UserChannelContextListener extends Listener, RegisterableListener {
 
     /** 
      * This method is called when the user channel changes.  The listener should then 
