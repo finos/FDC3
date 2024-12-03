@@ -25,7 +25,6 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
     }
 
     async narrowIntents(_raiser: AppIdentifier, appIntents: AppIntent[], _context: Context): Promise<AppIntent[]> {
-        console.log("Narrow intents - not doing anything")
         return appIntents
     }
 
@@ -33,7 +32,6 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
      * Sets the appId and instanceId for a given connection UUID
      */
     setInstanceDetails(uuid: InstanceID, meta: DemoRegistration): void {
-        console.log(`Setting ${uuid} to ${meta.appId}`)
         this.connections = this.connections.filter(ca => ca.instanceId !== uuid)
 
         this.connections.push({
@@ -61,7 +59,7 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
      * Post an outgoing message to a particular app
      */
     async post(message: object, to: InstanceID): Promise<void> {
-        console.log(`Responding with: ${JSON.stringify(message, null, 2)} to ${to}`)
+        console.debug(`Responding to app instance:`, to, message)
         this.socket.emit(FDC3_DA_EVENT, message, to)
     }
 
@@ -76,7 +74,8 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
 
     goodbye(id: string) {
         this.connections = this.connections.filter(i => i.instanceId !== id)
-        console.log(`Closed ${id} ${JSON.stringify(this.connections.map(i => i.instanceId))} apps open`)
+        console.debug(`Closed instance`, id)
+        console.debug(`Open apps:`, this.connections.map(i => i.instanceId));
     }
 
     openTab(url: string): Window {

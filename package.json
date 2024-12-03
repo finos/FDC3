@@ -53,6 +53,7 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
-    "istanbul-merge": "^2.0.0"
+    "istanbul-merge": "^2.0.0",
+    "nyc": "17.1.0"
   }
 }

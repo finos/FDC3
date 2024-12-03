@@ -1,11 +1,5 @@
+import { Fdc3UserInterfaceHello, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 import { AppIdentifier } from "@kite9/fdc3-standard";
-import { BrowserTypes } from "@kite9/fdc3-schema";
-import { FDC3_USER_INTERFACE_HANDSHAKE_TYPE, FDC3_USER_INTERFACE_HELLO_TYPE, FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE, FDC3_USER_INTERFACE_RESOLVE_TYPE, FDC3_USER_INTERFACE_RESTYLE_TYPE } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
-
-type IframeResolveAction = BrowserTypes.Fdc3UserInterfaceResolveAction
-type IframeResolvePayload = BrowserTypes.Fdc3UserInterfaceResolvePayload
-type IframeRestyle = BrowserTypes.Fdc3UserInterfaceRestyle
-type IframeHello = BrowserTypes.Fdc3UserInterfaceHello
 
 const DEFAULT_COLLAPSED_CSS = {
     position: "fixed",
@@ -34,43 +28,50 @@ window.addEventListener("load", () => {
 
     const list = document.getElementById("intent-list")!!
 
-    parent.postMessage({
-        type: FDC3_USER_INTERFACE_HELLO_TYPE,
+    // ISSUE: 1302
+    const helloMessage: Fdc3UserInterfaceHello = {
+        type: "Fdc3UserInterfaceHello",
         payload: {
             initialCSS: DEFAULT_COLLAPSED_CSS,
             implementationDetails: "Demo Intent Resolver v1.0"
         }
-    } as any as IframeHello, "*", [mc.port2]);
+    }
+    parent.postMessage(helloMessage, "*", [mc.port2]);
 
     function callback(intent: string | null, app: AppIdentifier | null) {
-        myPort.postMessage({ type: FDC3_USER_INTERFACE_RESTYLE_TYPE, payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
+        const restyleMessage: Fdc3UserInterfaceRestyle = { type: "Fdc3UserInterfaceRestyle", payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } }
+        myPort.postMessage(restyleMessage)
 
         if (intent && app) {
-            myPort.postMessage({
-                type: FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE,
+            const message: Fdc3UserInterfaceResolveAction = {
+                type: "Fdc3UserInterfaceResolveAction",
                 payload: {
                     action: "click",
                     appIdentifier: app,
                     intent: intent
                 }
-            } as IframeResolveAction)
+            }
+            myPort.postMessage(message)
         } else {
-            myPort.postMessage({
-                type: FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE,
+            const message: Fdc3UserInterfaceResolveAction = {
+                type: "Fdc3UserInterfaceResolveAction",
                 payload: {
                     action: "cancel"
                 }
-            } as IframeResolveAction)
+            }
+            myPort.postMessage(message)
         }
     }
 
     myPort.addEventListener("message", (e) => {
-        if (e.data.type == FDC3_USER_INTERFACE_HANDSHAKE_TYPE) {
-            myPort.postMessage({ type: FDC3_USER_INTERFACE_RESTYLE_TYPE, payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } } as IframeRestyle)
-        } else if (e.data.type == FDC3_USER_INTERFACE_RESOLVE_TYPE) {
-            myPort.postMessage({ type: FDC3_USER_INTERFACE_RESTYLE_TYPE, payload: { updatedCSS: DEFAULT_EXPANDED_CSS } } as IframeRestyle)
+        if (e.data.type == 'iframeHandshake') {
+            const message: Fdc3UserInterfaceRestyle = { type: "Fdc3UserInterfaceRestyle", payload: { updatedCSS: DEFAULT_COLLAPSED_CSS } }
+            myPort.postMessage(message)
+        } else if (e.data.type == 'iframeResolve') {
+            const message: Fdc3UserInterfaceRestyle = { type: "Fdc3UserInterfaceRestyle", payload: { updatedCSS: DEFAULT_EXPANDED_CSS } }
+            myPort.postMessage(message)
             Array.from(list.children).forEach(i => i.remove())
-            const details = e.data.payload as IframeResolvePayload
+            const details: Fdc3UserInterfaceResolve["payload"] = e.data.payload
             details.appIntents.forEach(intent => {
 
                 intent.apps.forEach(app => {
@@ -99,6 +100,5 @@ window.addEventListener("load", () => {
     document.getElementById("cancel")!!.addEventListener("click", () => {
         callback(null, null);
     })
-
 
 })

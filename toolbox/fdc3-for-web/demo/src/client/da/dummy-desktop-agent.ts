@@ -11,7 +11,7 @@ import { BrowserTypes } from "@kite9/fdc3-schema";
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL
 
 function createAppStartButton(app: DirectoryApp, sc: ServerContext<AppRegistration>): HTMLDivElement {
-    const div = document.createElement("div") as HTMLDivElement
+    const div: HTMLDivElement = document.createElement("div")
     div.classList.add("app")
     const h3 = document.createElement("h3")
     h3.textContent = app.title
@@ -26,7 +26,6 @@ function createAppStartButton(app: DirectoryApp, sc: ServerContext<AppRegistrati
     return div
 }
 
-
 enum Approach { IFRAME, PARENT_POST_MESSAGE }
 
 function getApproach(): Approach {
@@ -35,8 +34,6 @@ function getApproach(): Approach {
     var out: Approach = Approach[val as keyof typeof Approach]; //Works with --noImplicitAny
     return out;
 }
-
-
 
 function getUIKey(): UI {
     const cb = document.getElementById("ui") as HTMLInputElement;
@@ -56,8 +53,6 @@ window.addEventListener("load", () => {
 
         const directory = new FDC3_2_1_JSONDirectory()
         await directory.load("/static/da/appd.json")
-        //await directory.load("/static/da/local-conformance-2_0.v2.json")
-        //await directory.load("/static/da/training-appd.v2.json")
         const sc = new DemoServerContext(socket, directory)
 
         const channelDetails: ChannelState[] = [
@@ -68,7 +63,6 @@ window.addEventListener("load", () => {
         const fdc3Server = new DefaultFDC3Server(sc, directory, channelDetails, true, 20000, 10017)
 
         socket.on(FDC3_APP_EVENT, (msg, from) => {
-            console.log(`App Event ${JSON.stringify(msg, null, 2)} from ${from}`)
             fdc3Server.receive(msg, from)
         })
 
@@ -116,7 +110,7 @@ window.addEventListener("load", () => {
 
                         const ui = UI_URLS[getUIKey()]
 
-                        // sned the other end of the channel to the app
+                        // send the other end of the channel to the app
                         source.postMessage({
                             type: 'WCP3Handshake',
                             meta: {
@@ -130,7 +124,50 @@ window.addEventListener("load", () => {
                         }, origin, [channel.port1])
                     }
                 }
-            });
+
+                // If this is in an iframe...
+                if (getApproach() == Approach.IFRAME) {
+                    const instance = sc.getInstanceForWindow(source)
+                    const message: WebConnectionProtocol2LoadURL = {
+                        type: "WCP2LoadUrl",
+                        meta: {
+                            connectionAttemptUuid: data.meta.connectionAttemptUuid,
+                            timestamp: new Date()
+                        },
+                        payload: {
+                            iframeUrl: window.location.origin + `/static/da/embed.html?connectionAttemptUuid=${data.meta.connectionAttemptUuid}&desktopAgentId=${desktopAgentUUID}&instanceId=${instance?.instanceId}`
+                        }
+                    }
+                    source.postMessage(message, origin)
+                    return
+                } 
+
+                const instance = sc.getInstanceForWindow(source)
+
+                if(!instance){
+                    throw new Error("Unable to find registration for this window")
+                }
+
+                const channel = new MessageChannel()
+                link(socket, channel, instance.instanceId)
+
+                socket.emit(APP_HELLO, desktopAgentUUID, instance.instanceId)
+
+                // send the other end of the channel to the app
+                source.postMessage({
+                    type: 'WCP3Handshake',
+                    meta: {
+                        connectionAttemptUuid: data.meta.connectionAttemptUuid,
+                        timestamp: new Date()
+                    },
+                    payload: {
+                        fdc3Version: "2.2",
+                        intentResolverUrl: window.location.origin + "/static/da/intent-resolver.html",
+                        channelSelectorUrl: window.location.origin + "/static/da/channel-selector.html",
+                    }
+                }, origin, [channel.port1])
+            }
+        );
     })
 
 

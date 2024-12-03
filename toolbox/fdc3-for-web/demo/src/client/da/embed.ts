@@ -19,18 +19,15 @@ function getQueryVariable(variable: string): string {
 }
 
 function getConnectionAttemptUuid(): string {
-    const uuid = getQueryVariable("connectionAttemptUuid")
-    return uuid
+    return getQueryVariable("connectionAttemptUuid")
 }
 
 function getSource(): string {
-    const source = getQueryVariable("instanceId")
-    return source
+    return getQueryVariable("instanceId")
 }
 
-function getDeskopAgentId(): string {
-    const id = getQueryVariable("desktopAgentId")
-    return id
+function getDesktopAgentId(): string {
+    return getQueryVariable("desktopAgentId")
 }
 
 function getUIKey(): UI {
@@ -38,13 +35,12 @@ function getUIKey(): UI {
     return parseInt(ui) as UI
 }
 
-
 window.addEventListener("load", () => {
 
     const socket = io()
     const channel = new MessageChannel()
     const source = getSource()
-    const desktopAgentUUID = getDeskopAgentId()
+    const desktopAgentUUID = getDesktopAgentId()
 
     socket.on("connect", () => {
 
@@ -54,7 +50,7 @@ window.addEventListener("load", () => {
 
         const ui = UI_URLS[getUIKey()]
 
-        // sned the other end of the channel to the app
+        // send the other end of the channel to the app
         appWindow.postMessage({
             type: 'WCP3Handshake',
             meta: {

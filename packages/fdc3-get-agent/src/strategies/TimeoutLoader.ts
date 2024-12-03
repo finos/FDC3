@@ -26,9 +26,9 @@ export class TimeoutLoader implements Loader {
         this.done = true;
     }
 
-    get(params: GetAgentParams): Promise<DesktopAgent | void> {
+    get({timeoutMs = 0}: GetAgentParams): Promise<DesktopAgent | void> {
         return new Promise<DesktopAgent | void>((resolve, reject) => {
-            const endPollTime = Date.now() + params.timeoutMs!!
+            const endPollTime = Date.now() + timeoutMs
             this.poll(endPollTime, resolve, reject)
         });
     }
