@@ -39,13 +39,16 @@ export class MessagePortMessaging extends AbstractWebMessaging {
         return uuidv4();
     }
 
-    post(message: object): Promise<void> {
+    async post(message: object): Promise<void> {
         this.cd.messagePort.postMessage(message);
-        return Promise.resolve();
     }
 
-    register(l: RegisterableListener): void {
-        this.listeners.set(l.id!!, l)
+    register(listener: RegisterableListener): void {
+        if(!listener.id){
+            throw new Error("Provided listener must have an id")
+        }
+
+        this.listeners.set(listener.id, listener)
     }
 
     unregister(id: string): void {
@@ -60,12 +63,8 @@ export class MessagePortMessaging extends AbstractWebMessaging {
         }
     }
 
-    waitFor<X>(filter: (m: any) => boolean, timeoutErrorMessage?: string): Promise<X> {
-        // console.log("Waiting for", filter, timeoutErrorMessage)
-        return super.waitFor(filter, timeoutErrorMessage).then((v: any) => {
-            // console.log("Wait over ", v, timeoutErrorMessage)
-            return v;
-        })
+    async waitFor<X>(filter: (m: any) => boolean, timeoutErrorMessage?: string): Promise<X> {
+        return await super.waitFor(filter, timeoutErrorMessage);
     }
 
     async disconnect(): Promise<void> {

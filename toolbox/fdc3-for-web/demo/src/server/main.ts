@@ -33,10 +33,10 @@ io.on('connection', (socket: Socket) => {
 
   socket.on(DA_HELLO, function (id) {
     myId = id
-    const instance = instances.get(id) ?? {
+    const instance: ConnectedWorld = instances.get(id) ?? {
       server: socket,
       apps: new Map()
-    } as ConnectedWorld
+    }
 
     instance.server = socket
     instances.set(id, instance)

@@ -31,7 +31,6 @@ export class MockWindow extends MockElement {
 
     addEventListener(type: string, callback: (e: Event) => void): void {
         this.eventHandlers.push({ type, callback });
-        console.log("Added event handler " + this.tag);
     }
 
     removeEventListener(type: string, el: EventListener): void {

@@ -24,14 +24,10 @@ type LeaveCurrentChannelResponse = BrowserTypes.LeaveCurrentChannelResponse
 
 export class DefaultChannelSupport implements ChannelSupport {
 
-    readonly messaging: Messaging
-    readonly channelSelector: ChannelSelector
     protected userChannels: Channel[] | null = null
     private followingListeners: FollowingContextListener[] = []
 
-    constructor(messaging: Messaging, channelSelector: ChannelSelector) {
-        this.messaging = messaging;
-        this.channelSelector = channelSelector
+    constructor(private readonly messaging: Messaging, private readonly channelSelector: ChannelSelector) {
         this.channelSelector.setChannelChangeCallback((channelId: string | null) => {
             if (channelId == null) {
                 this.leaveUserChannel()
@@ -52,11 +48,12 @@ export class DefaultChannelSupport implements ChannelSupport {
     }
 
     async getUserChannel(): Promise<Channel | null> {
-        const response = await this.messaging.exchange<GetCurrentChannelResponse>({
+        const request: GetCurrentChannelRequest = {
             meta: this.messaging.createMeta(),
             type: 'getCurrentChannelRequest',
             payload: {}
-        } as GetCurrentChannelRequest, 'getCurrentChannelResponse')
+        };
+        const response = await this.messaging.exchange<GetCurrentChannelResponse>(request, 'getCurrentChannelResponse')
 
         if (response.payload?.channel?.id) {
             return new DefaultChannel(this.messaging, response.payload.channel.id, "user", response.payload.channel.displayMetadata)
@@ -67,11 +64,12 @@ export class DefaultChannelSupport implements ChannelSupport {
 
     async getUserChannels(): Promise<Channel[]> {
         if (!this.userChannels) {
-            const response = await this.messaging.exchange<GetUserChannelsResponse>({
+            const request: GetUserChannelsRequest = {
                 meta: this.messaging.createMeta(),
                 type: 'getUserChannelsRequest',
                 payload: {}
-            } as GetUserChannelsRequest, 'getUserChannelsResponse')
+            };
+            const response = await this.messaging.exchange<GetUserChannelsResponse>(request, 'getUserChannelsResponse')
 
             const channels: ChannelDetail[] = response.payload.userChannels ?? []
             this.userChannels = channels.map(c => new DefaultChannel(this.messaging, c.id, "user", c.displayMetadata));
@@ -80,51 +78,50 @@ export class DefaultChannelSupport implements ChannelSupport {
     }
 
     async getOrCreate(id: string): Promise<Channel> {
-        const response = await this.messaging.exchange<GetOrCreateChannelResponse>({
+        const request: GetOrCreateChannelRequest = {
             meta: this.messaging.createMeta(),
             type: 'getOrCreateChannelRequest',
             payload: {
                 channelId: id
             }
-        } as GetOrCreateChannelRequest,
-            'getOrCreateChannelResponse')
+        };
+        const response = await this.messaging.exchange<GetOrCreateChannelResponse>(request, 'getOrCreateChannelResponse')
 
-        const out = new DefaultChannel(this.messaging, id, "app", response.payload.channel?.displayMetadata!!)
-        return out
+        return new DefaultChannel(this.messaging, id, "app", response.payload.channel?.displayMetadata!!)
     }
 
     async createPrivateChannel(): Promise<PrivateChannel> {
-        const response = await this.messaging.exchange<CreatePrivateChannelResponse>({
+        const request: CreatePrivateChannelRequest = {
             meta: this.messaging.createMeta(),
             type: 'createPrivateChannelRequest',
             payload: {}
-        } as CreatePrivateChannelRequest,
-            'createPrivateChannelResponse')
+        };
+        const response = await this.messaging.exchange<CreatePrivateChannelResponse>(request, 'createPrivateChannelResponse')
 
         return new DefaultPrivateChannel(this.messaging, response.payload?.privateChannel?.id!!)
     }
 
     async leaveUserChannel(): Promise<void> {
-        await this.messaging.exchange<LeaveCurrentChannelResponse>({
+        const request: LeaveCurrentChannelRequest = {
             meta: this.messaging.createMeta(),
             type: 'leaveCurrentChannelRequest',
             payload: {}
-        } as LeaveCurrentChannelRequest,
-            'leaveCurrentChannelResponse')
+        };
+        await this.messaging.exchange<LeaveCurrentChannelResponse>(request, 'leaveCurrentChannelResponse')
 
         this.channelSelector.updateChannel(null, this.userChannels ?? [])
         this.followingListeners.forEach(l => l.changeChannel(null))
     }
 
     async joinUserChannel(id: string) {
-        await this.messaging.exchange<JoinUserChannelResponse>({
+        const request: JoinUserChannelRequest = {
             meta: this.messaging.createMeta(),
             type: 'joinUserChannelRequest',
             payload: {
                 channelId: id
             }
-        } as JoinUserChannelRequest,
-            'joinUserChannelResponse')
+        };
+        await this.messaging.exchange<JoinUserChannelResponse>(request, 'joinUserChannelResponse')
 
         this.channelSelector.updateChannel(id, this.userChannels ?? [])
 
@@ -143,7 +140,8 @@ export class DefaultChannelSupport implements ChannelSupport {
             }
         }
 
-        const currentChannelId = (await this.getUserChannel())?.id ?? null
+        const currentChannel = await this.getUserChannel();
+        const currentChannelId = currentChannel?.id ?? null
         const listener = new UnsubscribingDefaultContextListener(this.messaging, currentChannelId, type, handler)
         this.followingListeners.push(listener)
         await listener.register()
