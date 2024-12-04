@@ -20,7 +20,8 @@
     "clean": "rimraf dist cucumber-report.html coverage .nyc_output node_modules test-results.xml generated",
     "directory-openapi": "npx openapi-typescript ../../../packages/fdc3-standard/src/app-directory/specification/appd.schema.json --output generated/directory-schema.ts",
     "test": "npm run directory-openapi && tsc && nyc --reporter=lcov --reporter=text  --reporter json cucumber-js",
-    "build": "npm run directory-openapi && tsc --module es2022"
+    "build": "npm run directory-openapi && tsc --module es2022",
+    "lint": "eslint src/"
   },
   "dependencies": {
     "@kite9/fdc3-standard": "2.2.0-beta.29",
@@ -31,6 +32,7 @@
     "@cucumber/cucumber": "10.3.1",
     "@cucumber/html-formatter": "11.0.4",
     "@cucumber/pretty-formatter": "1.0.1",
+    "@eslint/js": "^9.16.0",
     "@kite9/fdc3-common": "2.2.0-beta.6",
     "@kite9/testing": "2.2.0-beta.29",
     "@types/expect": "24.3.0",
@@ -40,11 +42,12 @@
     "@typescript-eslint/eslint-plugin": "7.1.1",
     "@typescript-eslint/parser": "7.1.0",
     "cucumber-console-formatter": "1.0.0",
-    "eslint": "8.57.0",
-    "eslint-config-prettier": "9.1.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "3.3.1",
     "expect": "^29.7.0",
+    "globals": "^15.13.0",
     "is-ci": "2.0.0",
     "jsonpath-plus": "^10.1.0",
     "nyc": "15.1.0",
@@ -53,6 +56,7 @@
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3",
+    "typescript-eslint": "^8.17.0",
     "uuid": "^9.0.1"
   }
 }

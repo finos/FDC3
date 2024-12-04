@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-around;
 }
-[data-visible="false"]{
+[data-visible='false'] {
   opacity: 0;
 }
 .returned:has(pre:empty) {
@@ -15,13 +15,13 @@ h1 {
 #channel-iframe {
   border: none;
 
-  &[data-expanded="true"]{
-      height: 210px;
-      width: 150px;
+  &[data-expanded='true'] {
+    height: 210px;
+    width: 150px;
   }
 
-  &[data-expanded="false"]{
-      height: 36px;
-      width: 50px;
+  &[data-expanded='false'] {
+    height: 36px;
+    width: 50px;
   }
 }

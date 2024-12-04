@@ -1,8 +1,5 @@
-import { World } from "@cucumber/cucumber";
+import { World } from '@cucumber/cucumber';
 
 export class PropsWorld extends World {
-
-    props: Record<string, any> = {}
-
+  props: Record<string, any> = {};
 }
-

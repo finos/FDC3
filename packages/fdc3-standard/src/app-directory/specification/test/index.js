@@ -1,7 +1,7 @@
-import SwaggerParser from "@apidevtools/swagger-parser";
+import SwaggerParser from '@apidevtools/swagger-parser';
 import { Validator } from 'jsonschema';
-import exampleApplication1 from '../examples/application/myApplication.json' with { type: "json" };
-import exampleApplication2 from '../examples/application/fdc3-workbench.json' with { type: "json" };
+import exampleApplication1 from '../examples/application/myApplication.json' with { type: 'json' };
+import exampleApplication2 from '../examples/application/fdc3-workbench.json' with { type: 'json' };
 import { strict as assert } from 'assert';
 
 (async () => {

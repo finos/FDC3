@@ -1,14 +1,20 @@
-import { InterfaceDeclaration, KindToNodeMappings, MethodDeclaration, Project, SyntaxKind, TypeAliasDeclaration } from 'ts-morph';
-import print from "message-await"
+import {
+  InterfaceDeclaration,
+  KindToNodeMappings,
+  MethodDeclaration,
+  Project,
+  SyntaxKind,
+  TypeAliasDeclaration,
+} from 'ts-morph';
+import print from 'message-await';
 
 // open a new project with just BrowserTypes as the only source file
 const project = new Project();
 const sourceFile = project.addSourceFileAtPath('./generated/api/BrowserTypes.ts');
 
-
-const APP_REQUEST_MESSAGE = "AppRequestMessage"
-const AGENT_RESPONSE_MESSAGE = "AgentResponseMessage"
-const AGENT_EVENT_MESSAGE = "AgentEventMessage"
+const APP_REQUEST_MESSAGE = 'AppRequestMessage';
+const AGENT_RESPONSE_MESSAGE = 'AgentResponseMessage';
+const AGENT_EVENT_MESSAGE = 'AgentEventMessage';
 
 /**
  * We generate the union types and remove the existing interfaces first so that we are not left with a generated type predicate for the removed base interface
@@ -30,76 +36,74 @@ function writeMessageUnionTypes() {
   writeMessageUnion(AGENT_EVENT_MESSAGE, 'EventMessageType', typeAliases);
 }
 
-function writeMessageUnion(unionName: string, typeUnionName: string, typeAliases: TypeAliasDeclaration[]){
-  let awaitMessage = print(`Writing ${unionName} (finding types)`, {spinner: true});
+function writeMessageUnion(unionName: string, typeUnionName: string, typeAliases: TypeAliasDeclaration[]) {
+  let awaitMessage = print(`Writing ${unionName} (finding types)`, { spinner: true });
 
-    // get the types listed in the types union type
-    // i.e. look for: export type RequestMessageType = "addContextListenerRequest" | "whatever"
-    const requestMessageTypeUnion = findUnionType(typeAliases, typeUnionName);
-    if (requestMessageTypeUnion != null) {
-      //remove existing type alias
-      findExisting(unionName, SyntaxKind.TypeAliasDeclaration).forEach(node => node.remove());
+  // get the types listed in the types union type
+  // i.e. look for: export type RequestMessageType = "addContextListenerRequest" | "whatever"
+  const requestMessageTypeUnion = findUnionType(typeAliases, typeUnionName);
+  if (requestMessageTypeUnion != null) {
+    //remove existing type alias
+    findExisting(unionName, SyntaxKind.TypeAliasDeclaration).forEach(node => node.remove());
 
-      awaitMessage.updateMessage(`Writing ${unionName} (writing union)`, true);
+    awaitMessage.updateMessage(`Writing ${unionName} (writing union)`, true);
 
-        // Write a union type of all interfaces that have a type that extends RequestMessageType
-        // i.e. export type AppRequestMessage = AddContextListenerRequest | AddEventListenerRequest | AddIntentListenerRequest;
-        writeUnionType(unionName, requestMessageTypeUnion);
-    }
+    // Write a union type of all interfaces that have a type that extends RequestMessageType
+    // i.e. export type AppRequestMessage = AddContextListenerRequest | AddEventListenerRequest | AddIntentListenerRequest;
+    writeUnionType(unionName, requestMessageTypeUnion);
+  }
 
-    awaitMessage.complete(true, `Writing ${unionName}`);
+  awaitMessage.complete(true, `Writing ${unionName}`);
 }
 
 /**
  * Writes type predicates for all interfaces found that have a matching convert function
  */
-function writeTypePredicates(){
-  let awaitMessage = print(`Writing Type Predicates (finding convert functions)`, {spinner: true});
+function writeTypePredicates() {
+  let awaitMessage = print(`Writing Type Predicates (finding convert functions)`, { spinner: true });
 
-    // get a list of all conversion functions in the Convert class that return a string
-    const convert = sourceFile.getClass('Convert');
-    const convertFunctions = (convert?.getChildrenOfKind(SyntaxKind.MethodDeclaration) ?? []).filter(
-      func => func.getReturnType().getText() === 'string'
-    );
+  // get a list of all conversion functions in the Convert class that return a string
+  const convert = sourceFile.getClass('Convert');
+  const convertFunctions = (convert?.getChildrenOfKind(SyntaxKind.MethodDeclaration) ?? []).filter(
+    func => func.getReturnType().getText() === 'string'
+  );
 
-    awaitMessage.updateMessage(`Writing Type Predicates (finding message interfaces)`, true);
+  awaitMessage.updateMessage(`Writing Type Predicates (finding message interfaces)`, true);
 
-    //get a list of all interfaces in the file
-    let messageInterfaces = sourceFile.getChildrenOfKind(SyntaxKind.InterfaceDeclaration);
+  //get a list of all interfaces in the file
+  let messageInterfaces = sourceFile.getChildrenOfKind(SyntaxKind.InterfaceDeclaration);
 
-    // generate a list of Interfaces that have an associated conversion function
-    const matchedInterfaces = convertFunctions
-        .map(func => {
-            const valueParameter = func.getParameter('value');
+  // generate a list of Interfaces that have an associated conversion function
+  const matchedInterfaces = convertFunctions
+    .map(func => {
+      const valueParameter = func.getParameter('value');
 
-            const matchingInterface = messageInterfaces.find(interfaceNode => {
-                /// Find an interface who's name matches the type passed into the value parameter of the convert function
-                return valueParameter?.getType().getText(valueParameter) === interfaceNode.getName();
-            });
+      const matchingInterface = messageInterfaces.find(interfaceNode => {
+        /// Find an interface who's name matches the type passed into the value parameter of the convert function
+        return valueParameter?.getType().getText(valueParameter) === interfaceNode.getName();
+      });
 
-            if (matchingInterface != null) {
-                return { func, matchingInterface };
-            }
+      if (matchingInterface != null) {
+        return { func, matchingInterface };
+      }
 
-            return undefined; 
-        })
-        .filter(isDefined);
+      return undefined;
+    })
+    .filter(isDefined);
 
-    const allFunctionDeclarations = sourceFile.getChildrenOfKind(SyntaxKind.FunctionDeclaration);
+  const allFunctionDeclarations = sourceFile.getChildrenOfKind(SyntaxKind.FunctionDeclaration);
 
-    // write a type predicate for each matched interface
-    matchedInterfaces.forEach((matched, index) => {
+  // write a type predicate for each matched interface
+  matchedInterfaces.forEach((matched, index) => {
+    awaitMessage.updateMessage(`Writing Type Predicates (${index}/${matchedInterfaces.length})`, true);
 
-      awaitMessage.updateMessage(`Writing Type Predicates (${index}/${matchedInterfaces.length})`, true);
+    writeFastPredicate(matched.matchingInterface, allFunctionDeclarations);
+    writeValidPredicate(matched.matchingInterface, matched.func, allFunctionDeclarations);
+    writeTypeConstant(matched.matchingInterface);
+  });
 
-        writeFastPredicate(matched.matchingInterface, allFunctionDeclarations);
-        writeValidPredicate(matched.matchingInterface, matched.func, allFunctionDeclarations);
-        writeTypeConstant(matched.matchingInterface);
-    });
-
-    awaitMessage.complete(true, `Writing Type Predicates`);
+  awaitMessage.complete(true, `Writing Type Predicates`);
 }
-
 
 /**
  * Looks for a string union type in the form:
@@ -124,9 +128,9 @@ function findUnionType(typeAliases: TypeAliasDeclaration[], name: string): strin
 
 /**
  * Finds an existing declaration with the given type and name
- * @param name 
- * @param kind 
- * @returns 
+ * @param name
+ * @param kind
+ * @returns
  */
 function findExisting<T extends SyntaxKind>(name: string, kind: T, allDeclarationsOfType?: KindToNodeMappings[T][]) {
   allDeclarationsOfType = allDeclarationsOfType ?? sourceFile.getChildrenOfKind(kind);
@@ -140,10 +144,14 @@ function findExisting<T extends SyntaxKind>(name: string, kind: T, allDeclaratio
 
 /**
  * Writes a type predicate for the given interface using the Convert method declaration
- * @param matchingInterface 
- * @param func 
+ * @param matchingInterface
+ * @param func
  */
-function writeValidPredicate(matchingInterface: InterfaceDeclaration, func: MethodDeclaration, allFunctionDeclarations: KindToNodeMappings[SyntaxKind.FunctionDeclaration][]): void {
+function writeValidPredicate(
+  matchingInterface: InterfaceDeclaration,
+  func: MethodDeclaration,
+  allFunctionDeclarations: KindToNodeMappings[SyntaxKind.FunctionDeclaration][]
+): void {
   const predicateName = `isValid${matchingInterface.getName()}`;
 
   // remove existing instances
@@ -165,29 +173,32 @@ export function ${predicateName}(value: any): value is ${matchingInterface.getNa
 
 /**
  * Writes a type predicate for the given interface checking just the value of the type property
- * @param matchingInterface 
- * @param func 
+ * @param matchingInterface
+ * @param func
  */
-function writeFastPredicate(matchingInterface: InterfaceDeclaration, allFunctionDeclarations: KindToNodeMappings[SyntaxKind.FunctionDeclaration][]): void {
-    const predicateName = `is${matchingInterface.getName()}`;
-  
-    // remove existing instances
-    findExisting(predicateName, SyntaxKind.FunctionDeclaration, allFunctionDeclarations).forEach(node => node.remove());
-  
-    const typePropertyValue = extractTypePropertyValue(matchingInterface);
+function writeFastPredicate(
+  matchingInterface: InterfaceDeclaration,
+  allFunctionDeclarations: KindToNodeMappings[SyntaxKind.FunctionDeclaration][]
+): void {
+  const predicateName = `is${matchingInterface.getName()}`;
 
-    if(typePropertyValue == null){
-        return;
-    }
+  // remove existing instances
+  findExisting(predicateName, SyntaxKind.FunctionDeclaration, allFunctionDeclarations).forEach(node => node.remove());
 
-    sourceFile.addStatements(`
+  const typePropertyValue = extractTypePropertyValue(matchingInterface);
+
+  if (typePropertyValue == null) {
+    return;
+  }
+
+  sourceFile.addStatements(`
 /**
  * Returns true if the value has a type property with value '${typePropertyValue}'. This is a fast check that does not check the format of the message
  */ 
 export function ${predicateName}(value: any): value is ${matchingInterface.getName()} {
     return value != null && value.type === '${typePropertyValue}';
 }`);
-  }
+}
 
 function writeTypeConstant(matchingInterface: InterfaceDeclaration): void {
   const constantName = `${matchingInterface
@@ -238,25 +249,23 @@ function writeUnionType(unionName: string, typeValues: string[]): void {
  * interface ExampleMessage{
  *     type: "stringConstant";
  * }
- * @param parentInterface 
- * @returns 
+ * @param parentInterface
+ * @returns
  */
-function extractTypePropertyValue(parentInterface: InterfaceDeclaration): string | undefined{
-    const typeProperty = parentInterface.getChildrenOfKind(SyntaxKind.PropertySignature).filter(propertySignature => {
-        return (
-          propertySignature
-            .getChildrenOfKind(SyntaxKind.Identifier)
-            .find(identifier => identifier.getText() === 'type') != null
-        );
-      })[0];
+function extractTypePropertyValue(parentInterface: InterfaceDeclaration): string | undefined {
+  const typeProperty = parentInterface.getChildrenOfKind(SyntaxKind.PropertySignature).filter(propertySignature => {
+    return (
+      propertySignature.getChildrenOfKind(SyntaxKind.Identifier).find(identifier => identifier.getText() === 'type') !=
+      null
+    );
+  })[0];
 
-    return typeProperty?.getDescendantsOfKind(SyntaxKind.StringLiteral)
-        .map(literal => literal.getLiteralText())[0];
+  return typeProperty?.getDescendantsOfKind(SyntaxKind.StringLiteral).map(literal => literal.getLiteralText())[0];
 }
 
 /**
  * Type predicate to test that value is defined
  */
-function isDefined<T>(value: T | null | undefined): value is T{
-    return value != null;
+function isDefined<T>(value: T | null | undefined): value is T {
+  return value != null;
 }

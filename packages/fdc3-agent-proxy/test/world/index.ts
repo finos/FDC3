@@ -1,11 +1,9 @@
-import { setWorldConstructor } from "@cucumber/cucumber";
-import { TestMessaging } from "../support/TestMessaging";
-import { PropsWorld } from "@kite9/testing";
+import { setWorldConstructor } from '@cucumber/cucumber';
+import { TestMessaging } from '../support/TestMessaging';
+import { PropsWorld } from '@kite9/testing';
 
 export class CustomWorld extends PropsWorld {
-
-    messaging: TestMessaging | null = null
-
+  messaging: TestMessaging | null = null;
 }
 
-setWorldConstructor(CustomWorld)
+setWorldConstructor(CustomWorld);
