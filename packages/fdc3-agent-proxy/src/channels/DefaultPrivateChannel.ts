@@ -71,7 +71,7 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
 
   onDisconnect(handler: () => void): Listener {
     //Adapt handler type for differences between addEventListener and onDisconnectListener handler types
-    const adapterHandler: EventHandler = (_event: ApiEvent) => { 
+    const adapterHandler: EventHandler = () => { 
       handler();
     };
     const l = new PrivateChannelDisconnectEventListener(this.messaging, this.id, adapterHandler);

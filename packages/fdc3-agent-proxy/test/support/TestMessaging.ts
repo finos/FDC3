@@ -24,7 +24,8 @@ import {
   AgentResponseMessage,
   AppRequestMessage,
   WebConnectionProtocolMessage,
-  Channel
+  Channel,
+  WebConnectionProtocol6Goodbye
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { GetInfo } from './responses/GetInfo';
 
@@ -103,7 +104,7 @@ export function intentDetailMatches(
 }
 
 export class TestMessaging extends AbstractMessaging {
-  readonly allPosts: AppRequestMessage[] = [];
+  readonly allPosts: (AppRequestMessage | WebConnectionProtocol6Goodbye)[] = [];
   readonly listeners: Map<string, RegisterableListener> = new Map();
   readonly intentDetails: IntentDetail[] = [];
   readonly channelState: { [key: string]: Context[] };
@@ -112,7 +113,7 @@ export class TestMessaging extends AbstractMessaging {
   readonly automaticResponses: AutomaticResponse[];
 
   constructor(channelState: { [key: string]: Context[] }) {
-    super({ appId: 'TestMessaging', instanceId: 'TestMessaging' });
+    super({ appId: 'cucumber-app', instanceId: 'cucumber-instance' });
 
     this.channelState = channelState;
     this.automaticResponses = [
@@ -145,19 +146,28 @@ export class TestMessaging extends AbstractMessaging {
   }
 
   async disconnect(): Promise<void> {
-    console.log('TestMessaging: disconnect called');
+    //Theres no explicit disconnect call for the DA in FDC3, but the BasicDesktopAgent implementation includes one that is called to pagehide
+    const bye: WebConnectionProtocol6Goodbye = {
+        type: 'WCP6Goodbye',
+        meta: {
+            timestamp: new Date(),
+        }
+    };
+    await this.post(bye);
   }
 
-  post(message: AppRequestMessage): Promise<void> {
+  post(message: AppRequestMessage | WebConnectionProtocol6Goodbye): Promise<void> {
     this.allPosts.push(message);
 
-    for (let i = 0; i < this.automaticResponses.length; i++) {
-      const ar = this.automaticResponses[i];
-      if (ar.filter(message.type)) {
-        return ar.action(message, this);
-      }
+    if (message.type != "WCP6Goodbye") {
+        for (let i = 0; i < this.automaticResponses.length; i++) {
+            const ar = this.automaticResponses[i];
+            if (ar.filter(message.type)) {
+              return ar.action(message, this);
+            }
+        }
     }
-
+    
     return Promise.resolve();
   }
 

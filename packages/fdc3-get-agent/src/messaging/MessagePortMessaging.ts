@@ -67,12 +67,13 @@ export class MessagePortMessaging extends AbstractMessaging {
     }
 
     async disconnect(): Promise<void> {
-        await this.post({
+        const bye: WebConnectionProtocol6Goodbye = {
             type: 'WCP6Goodbye',
             meta: {
                 timestamp: new Date(),
             }
-        } as WebConnectionProtocol6Goodbye);
+        };
+        await this.post(bye);
         
         this.cd.messagePort.close()
     }
