@@ -4,8 +4,7 @@ import { Context } from '@kite9/fdc3-context';
 import { AppIdentifier, ChannelError, DisplayMetadata, PrivateChannelEventTypes } from '@kite9/fdc3-standard';
 import { successResponse, errorResponse, onlyUnique, FullAppIdentifier } from './support';
 import {
-    AddContextListenerRequest,
-    AgentEventMessage,
+  AddContextListenerRequest,
   AgentResponseMessage,
   AppRequestMessage,
   BroadcastRequest,
@@ -24,7 +23,6 @@ import {
   PrivateChannelOnUnsubscribeEvent,
   PrivateChannelUnsubscribeEventListenerRequest,
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
-
 
 type PrivateChannelEvents =
   | PrivateChannelOnAddContextListenerEvent
@@ -179,7 +177,11 @@ export class BroadcastHandler implements MessageHandler {
     }
   }
 
-  handleCreatePrivateChannelRequest(arg0: CreatePrivateChannelRequest, sc: ServerContext<any>, from: FullAppIdentifier) {
+  handleCreatePrivateChannelRequest(
+    arg0: CreatePrivateChannelRequest,
+    sc: ServerContext<any>,
+    from: FullAppIdentifier
+  ) {
     const id = sc.createUUID();
     this.state.push({
       id,
@@ -453,12 +455,16 @@ export class BroadcastHandler implements MessageHandler {
   invokePrivateChannelEventListeners(
     privateChannelId: string | null,
     eventType: PrivateChannelEventTypes,
-    messageType: PrivateChannelEvents['type'],
+    messageType:
+      | 'privateChannelOnAddContextListenerEvent'
+      | 'privateChannelOnUnsubscribeEvent'
+      | 'privateChannelOnDisconnectEvent',
     sc: ServerContext<any>,
     contextType?: string
   ) {
+    console.log('invokePrivateChannelEventListeners', arguments);
     if (privateChannelId) {
-      const msg = {
+      const msg: PrivateChannelEvents = {
         type: messageType,
         meta: {
           eventUuid: sc.createUUID(),
@@ -468,11 +474,15 @@ export class BroadcastHandler implements MessageHandler {
           privateChannelId,
           contextType: contextType,
         },
-      } as AgentEventMessage;
+      } as PrivateChannelEvents; //Typescript doesn't like comparing an object with a union property (messageType) with a union of object types
 
+      console.log('invokePrivateChannelEventListeners msg: ', msg);
       this.eventListeners
         .filter(e => e.channelId == privateChannelId && e.eventType == eventType)
-        .forEach(e => sc.post(msg, e.instanceId));
+        .forEach(e => {
+          console.log(`invokePrivateChannelEventListeners: posting to instance ${e.instanceId}`);
+          sc.post(msg, e.instanceId);
+        });
     }
   }
 }
