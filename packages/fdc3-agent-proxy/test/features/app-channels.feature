@@ -40,7 +40,7 @@ Feature: Channel Listeners Support
       | {null}            | {null}              | contextListenerUnsubscribeRequest |
 
   Scenario: I can create a listener which listens for any context type
-        In this version we are using the deprecated no-args approach
+        In this version we are using the deprecated 1-arg approach
 
     Given "resultHandler" pipes context to "contexts"
     When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"

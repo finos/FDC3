@@ -71,7 +71,8 @@ export function setupGenericSteps() {
     })
 
     Then('{string} is an array of objects with the following contents', function (this: PropsWorld, field: string, dt: DataTable) {
-        matchData(this, handleResolve(field, this), dt)
+        const arr = handleResolve(field, this);
+        matchData(this, arr, dt)
     });
 
     Then('{string} is an array of strings with the following values', function (this: PropsWorld, field: string, dt: DataTable) {

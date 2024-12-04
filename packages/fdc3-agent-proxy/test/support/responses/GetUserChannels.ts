@@ -1,10 +1,8 @@
+import { Channel, GetUserChannelsRequest, GetUserChannelsResponse } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import { BrowserTypes } from "@kite9/fdc3-schema";
 import { createResponseMeta } from "./support";
 
-type GetUserChannelsRequest = BrowserTypes.GetUserChannelsRequest
-type GetUserChannelsResponse = BrowserTypes.GetUserChannelsResponse
-type Channel = BrowserTypes.Channel
+
 
 export class GetUserChannels implements AutomaticResponse {
 
@@ -22,7 +20,7 @@ export class GetUserChannels implements AutomaticResponse {
     private createResponse(i: GetUserChannelsRequest, m: TestMessaging): GetUserChannelsResponse {
 
         const userChannels: Channel[] = Object.keys(m.channelState).map((c) => {
-            return {
+            const aChannel: Channel = {
                 id: c,
                 type: 'user',
                 displayMetadata: {
@@ -30,8 +28,9 @@ export class GetUserChannels implements AutomaticResponse {
                     color: "red",
                     glyph: "triangle",
                 }
-            } as any
-        })
+            };
+            return aChannel;
+        });
 
         return {
             meta: createResponseMeta(i.meta),

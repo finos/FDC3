@@ -21,6 +21,7 @@ type AgentResponseMessage = BrowserTypes.AgentResponseMessage
 
 import { createResponseMeta } from "./support";
 import { v4 as uuidv4 } from 'uuid'
+import { AppRequestMessage } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
 export class ChannelState implements AutomaticResponse {
 
@@ -43,8 +44,8 @@ export class ChannelState implements AutomaticResponse {
             || (t == 'getCurrentContextRequest')
     }
 
-    action(input: any, m: TestMessaging) {
-        var out: AgentResponseMessage | null = null
+    action(input: AppRequestMessage, m: TestMessaging) {
+        let out: AgentResponseMessage | null = null
         switch (input.type) {
             case 'joinUserChannelRequest':
                 out = this.createJoinResponse(input as JoinUserChannelRequest)
@@ -75,7 +76,7 @@ export class ChannelState implements AutomaticResponse {
         }
 
         if (out) {
-            setTimeout(() => { m.receive(out!!) }, 100)
+            setTimeout(() => { m.receive(out!) }, 100)
         }
         return Promise.resolve()
     }
@@ -117,7 +118,7 @@ export class ChannelState implements AutomaticResponse {
 
     private createGetContextResponse(input: GetCurrentContextRequest): GetCurrentContextResponse {
         const ch = input.payload.channelId
-        var last: Context | undefined = undefined
+        let last: Context | undefined;
         const contexts = this.contextHistory[ch] ?? []
         if (input.payload.contextType) {
             last = contexts.find((c) => c.type == input.payload.contextType)

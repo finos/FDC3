@@ -1,5 +1,6 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
 import { BrowserTypes } from "@kite9/fdc3-schema";
+import { createResponseMeta } from "./support";
 
 type GetAppMetadataRequest = BrowserTypes.GetAppMetadataRequest
 type GetAppMetadataResponse = BrowserTypes.GetAppMetadataResponse
@@ -20,7 +21,7 @@ export class GetAppMetadata implements AutomaticResponse {
 
     private createMetadataResponseMessage(m: GetAppMetadataRequest): GetAppMetadataResponse {
         return {
-            meta: m.meta as any,
+            meta: createResponseMeta(m.meta),
             type: "getAppMetadataResponse",
             payload: {
                 appMetadata: {

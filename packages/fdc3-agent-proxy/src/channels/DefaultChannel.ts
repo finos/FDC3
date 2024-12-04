@@ -61,7 +61,7 @@ export class DefaultChannel implements Channel {
     } else if (typeof contextTypeOrHandler === 'string' && handler) {
       theContextType = contextTypeOrHandler;
       theHandler = handler;
-    } else if (handler) {
+    } else if (contextTypeOrHandler) {
       // deprecated one-arg version
       theContextType = null;
       theHandler = contextTypeOrHandler as ContextHandler;

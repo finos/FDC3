@@ -1,9 +1,6 @@
+import { FindInstancesRequest, FindInstancesResponse } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import { BrowserTypes } from "@kite9/fdc3-schema";
-
-type FindInstancesRequest = BrowserTypes.FindInstancesRequest
-type FindInstancesResponse = BrowserTypes.FindInstancesResponse
-
+import { createResponseMeta } from "./support";
 
 export class FindInstances implements AutomaticResponse {
 
@@ -20,7 +17,7 @@ export class FindInstances implements AutomaticResponse {
 
     private createFindInstancesResponse(m: FindInstancesRequest): FindInstancesResponse {
         return {
-            meta: m.meta as any,
+            meta: createResponseMeta(m.meta),
             type: "findInstancesResponse",
             payload: {
                 appIdentifiers: [

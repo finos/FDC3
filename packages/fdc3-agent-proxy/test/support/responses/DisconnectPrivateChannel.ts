@@ -1,9 +1,6 @@
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import { BrowserTypes } from "@kite9/fdc3-schema";
 import { createResponseMeta } from "./support";
-
-type PrivateChannelDisconnectRequest = BrowserTypes.PrivateChannelDisconnectRequest
-type PrivateChannelDisconnectResponse = BrowserTypes.PrivateChannelDisconnectResponse
+import { PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 
 export class DisconnectPrivateChannel implements AutomaticResponse {
 
