@@ -1,16 +1,11 @@
+import { IntentResultRequest, IntentResultResponse } from "@kite9/fdc3-schema/generated/api/BrowserTypes";
 import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import { BrowserTypes } from "@kite9/fdc3-schema";
-
-type IntentResultRequest = BrowserTypes.IntentResultRequest
-type IntentResultResponse = BrowserTypes.IntentResultResponse
 
 export class IntentResult implements AutomaticResponse {
 
     filter(t: string) {
         return t == 'intentResultRequest'
     }
-
-
 
     createIntentResultResponseMessage(intentRequest: IntentResultRequest, m: TestMessaging): IntentResultResponse {
         const out: IntentResultResponse = {
@@ -30,7 +25,7 @@ export class IntentResult implements AutomaticResponse {
         const intentRequest = input as IntentResultRequest
         const payload = intentRequest.payload
 
-        m.setIntentResult(payload.intentResult as any)
+        m.setIntentResult(payload.intentResult)
 
         // next, send the result response
         const out2 = this.createIntentResultResponseMessage(intentRequest, m)
