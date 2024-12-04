@@ -72,12 +72,19 @@ export function setupGenericSteps() {
 
     Then('{string} is an array of objects with the following contents', function (this: PropsWorld, field: string, dt: DataTable) {
         const arr = handleResolve(field, this);
+        console.log(`values: `, arr);
         matchData(this, arr, dt)
     });
 
     Then('{string} is an array of strings with the following values', function (this: PropsWorld, field: string, dt: DataTable) {
-        const values = handleResolve(field, this).map((s: string) => { return { "value": s } })
-        matchData(this, values, dt)
+        const values = handleResolve(field, this)
+        const processedValues = values.map((s: string) => { return { "value": s } });
+        console.log(`values: `, values);
+        console.log(`processed values: `, processedValues);
+        console.log("dt raw", dt.raw());
+        console.log("dt rows", dt.rows());
+        
+        matchData(this, processedValues, dt)
     });
 
     Then('{string} is an object with the following contents', function (this: PropsWorld, field: string, params: DataTable) {

@@ -6,7 +6,7 @@ import {
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { Messaging } from '../Messaging';
 import { AbstractListener } from './AbstractListener';
-import { EventHandler, PrivateChannelAddContextListenerEvent, PrivateChannelDisconnectEvent, PrivateChannelEvent, PrivateChannelEventTypes, PrivateChannelUnsubscribeEvent } from '@kite9/fdc3-standard';
+import { ApiEvent, EventHandler, PrivateChannelAddContextListenerEvent, PrivateChannelDisconnectEvent, PrivateChannelEvent, PrivateChannelEventTypes, PrivateChannelUnsubscribeEvent } from '@kite9/fdc3-standard';
 
 type PrivateChannelEventMessages =
   | PrivateChannelOnAddContextListenerEvent
@@ -111,7 +111,7 @@ export class PrivateChannelAddContextEventListener extends AbstractPrivateChanne
   constructor(messaging: Messaging, channelId: string, handler: EventHandler) {
     const wrappedHandler = (msg: PrivateChannelEventMessages) => {
       if (msg.type === "privateChannelOnAddContextListenerEvent") {
-        const event: PrivateChannelAddContextListenerEvent = {
+        const event: ApiEvent = {
           type: "addContextListener",
           details: { contextType: msg.payload.contextType }
         };
@@ -129,7 +129,7 @@ export class PrivateChannelUnsubscribeEventListener extends AbstractPrivateChann
   constructor(messaging: Messaging, channelId: string, handler: EventHandler) {
     const wrappedHandler = (msg: PrivateChannelEventMessages) => {
       if (msg.type === "privateChannelOnUnsubscribeEvent") {
-        const event: PrivateChannelUnsubscribeEvent = {
+        const event: ApiEvent = {
           type: "unsubscribe",
           details: { contextType: msg.payload.contextType }
         };
