@@ -19,7 +19,7 @@ export class DesktopAgentPreloadLoader implements Loader {
     timeout: NodeJS.Timeout | null = null;
     
     /** Reference to the get fn's Promise's reject call - used when cancelling. */
-    rejectFn: ((reason?: any) => void) | null  = null;
+    rejectFn: ((reason?: string) => void) | null  = null;
 
     async poll(resolve: (value: DesktopAgentSelection) => void) {    
         if (globalThis.window.fdc3) {
@@ -96,7 +96,7 @@ export class DesktopAgentPreloadLoader implements Loader {
         Logger.debug("DesktopAgentPreloadLoader: Cleaning up");
         this.done = true;
         if (this.rejectFn){
-            this.rejectFn(new Error(AgentError.AgentNotFound));
+            this.rejectFn(AgentError.AgentNotFound);
             this.rejectFn = null;
         }
         if (this.timeout) {

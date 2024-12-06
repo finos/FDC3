@@ -1,6 +1,6 @@
 import { CustomWorld } from "../world";
 import { handleEmbeddedIframeComms, handleChannelSelectorComms, handleIntentResolverComms } from "./FrameTypes";
-import { EMBED_URL, CHANNEL_SELECTOR_URL, INTENT_RESPOLVER_URL } from "./MockFDC3Server";
+import { EMBED_URL, CHANNEL_SELECTOR_URL, INTENT_RESOLVER_URL } from "./MockFDC3Server";
 import { MockWindow } from "./MockWindow";
 
 export class MockIFrame extends MockWindow {
@@ -26,7 +26,7 @@ export class MockIFrame extends MockWindow {
             } else if (value.startsWith(CHANNEL_SELECTOR_URL)) {
                 this.name = "channel-selector";
                 this.messageChannels.push(handleChannelSelectorComms(value, parent, this.contentWindow, this.cw));
-            } else if (value.startsWith(INTENT_RESPOLVER_URL)) {
+            } else if (value.startsWith(INTENT_RESOLVER_URL)) {
                 this.name = "intent-resolver";
                 this.messageChannels.push(handleIntentResolverComms(value, parent, this.contentWindow, this.cw));
             }

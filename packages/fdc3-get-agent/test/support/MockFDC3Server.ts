@@ -20,7 +20,7 @@ export const EMBED_URL = "http://localhost:8080/static/da/embed.html"
 
 export const CHANNEL_SELECTOR_URL = "https://mock.fdc3.com/channelSelector"
 
-export const INTENT_RESPOLVER_URL = "https://mock.fdc3.com/resolver"
+export const INTENT_RESOLVER_URL = "https://mock.fdc3.com/resolver"
 
 export class MockFDC3Server implements FDC3Server {
 
@@ -86,19 +86,21 @@ export class MockFDC3Server implements FDC3Server {
                         source.postMessage(message, origin);
                     } else {
                         const details = this.tsc.getMatchingInstance(data.payload.identityUrl)
-                        const message: WebConnectionProtocol3Handshake = {
-                            type: "WCP3Handshake",
-                            meta: {
-                                connectionAttemptUuid: data.meta.connectionAttemptUuid,
-                                timestamp: new Date()
-                            },
-                            payload: {
-                                fdc3Version: "2.2",
-                                intentResolverUrl: INTENT_RESPOLVER_URL,
-                                channelSelectorUrl: CHANNEL_SELECTOR_URL,
-                            }
-                        };
-                        source.postMessage(message , origin, [details!.externalPort])
+                        if (details) {
+                            const message: WebConnectionProtocol3Handshake = {
+                                type: "WCP3Handshake",
+                                meta: {
+                                    connectionAttemptUuid: data.meta.connectionAttemptUuid,
+                                    timestamp: new Date()
+                                },
+                                payload: {
+                                    fdc3Version: "2.2",
+                                    intentResolverUrl: INTENT_RESOLVER_URL,
+                                    channelSelectorUrl: CHANNEL_SELECTOR_URL,
+                                }
+                            };
+                            source.postMessage(message , origin, [details.externalPort]);
+                        } //getMatchingInstance will log if it didn't find anything
                     }
                 } else if (data.type == "WCP6Goodbye") {
                     this.receivedGoodbye = true;
