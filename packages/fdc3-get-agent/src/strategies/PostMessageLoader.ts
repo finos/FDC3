@@ -57,11 +57,11 @@ export class PostMessageLoader implements Loader {
   timeout: NodeJS.Timeout | null = null;
 
   /** Reference to the get fn's Promise's reject call - used when cancelling. */
-  rejectFn: ((reason?: any) => void) | null  = null;
+  rejectFn: ((reason?: string) => void) | null  = null;
 
   get(options: GetAgentParams): Promise<DesktopAgentSelection> {
     Logger.debug(`PostMessageLoader.get(): Initiating search for Desktop Agent Proxy`);
-    return new Promise<DesktopAgentSelection>(async (resolve, reject) => {
+    return new Promise<DesktopAgentSelection>((resolve, reject) => {
       //save reject fn in case we get cancelled
       this.rejectFn = reject;
 
@@ -100,52 +100,53 @@ export class PostMessageLoader implements Loader {
       //  and an adaptor iframe setup to load it, resolves on
       //  WCP3Handshake response.
       // If no WCP3Handshake is ever received this will not resolve
-      const connectionDetails = await handshakePromise;
+      handshakePromise.then((connectionDetails) => {
+        //prevent us being cancelled
+        this.rejectFn = null;
 
-      //prevent us being cancelled
-      this.rejectFn = null;
+        //cancel the initial timeout as we got a handshake response
+        if (this.timeout) {
+          clearTimeout(this.timeout);
+        }
 
-      //cancel the initial timeout as we got a handshake response
-      if (this.timeout) {
-        clearTimeout(this.timeout);
-      }
+        //perform id validation
+        this.identityValidationHandler = new IdentityValidationHandler(connectionDetails.messagePort, options, this.connectionAttemptUuid)
+        const idValidationPromise = this.identityValidationHandler.listenForIDValidationResponses();
+        this.identityValidationHandler.sendIdValidationMessage();
 
-      //perform id validation
-      this.identityValidationHandler = new IdentityValidationHandler(connectionDetails.messagePort, options, this.connectionAttemptUuid)
-      const idValidationPromise = this.identityValidationHandler.listenForIDValidationResponses();
-      this.identityValidationHandler.sendIdValidationMessage();
+        idValidationPromise.then((idDetails) => {
 
-      try {
-        const idDetails = await idValidationPromise;
-
-        //resolve
-        const appIdentifier: AppIdentifier = {
-          appId: idDetails.payload.appId,
-          instanceId: idDetails.payload.instanceId
-        };
-
-        const desktopAgentSelection: DesktopAgentSelection = {
-          agent: await createDesktopAgentAPI(connectionDetails, appIdentifier),
-          details: {
-            agentType: connectionDetails.agentType,
-            agentUrl: connectionDetails.agentUrl ?? undefined,
-            identityUrl: connectionDetails.options.identityUrl ?? connectionDetails.actualUrl,
-            actualUrl: connectionDetails.actualUrl,
+          //resolve
+          const appIdentifier: AppIdentifier = {
             appId: idDetails.payload.appId,
-            instanceId: idDetails.payload.instanceId,
-            instanceUuid: idDetails.payload.instanceUuid
-          },
-        };
-        
-        //clean up
-        this.cancel();
+            instanceId: idDetails.payload.instanceId
+          };
 
-        resolve(desktopAgentSelection);
-      } catch (e) {
-        //id validation may have failed
-        Logger.error("PostMessageLoader.get(): Id validation failed!",e);
-        reject(e);
-      }
+          createDesktopAgentAPI(connectionDetails, appIdentifier).then((da) => {
+            const desktopAgentSelection: DesktopAgentSelection = {
+              agent: da,
+              details: {
+                agentType: connectionDetails.agentType,
+                agentUrl: connectionDetails.agentUrl ?? undefined,
+                identityUrl: connectionDetails.options.identityUrl ?? connectionDetails.actualUrl,
+                actualUrl: connectionDetails.actualUrl,
+                appId: idDetails.payload.appId,
+                instanceId: idDetails.payload.instanceId,
+                instanceUuid: idDetails.payload.instanceUuid
+              },
+            };
+            
+            //clean up
+            this.cancel();
+  
+            resolve(desktopAgentSelection);
+          });
+        }).catch((e) => {
+          //id validation may have failed
+          Logger.error("PostMessageLoader.get(): Id validation failed!",e);
+          reject(e);
+        });
+      });
     });
   }
 

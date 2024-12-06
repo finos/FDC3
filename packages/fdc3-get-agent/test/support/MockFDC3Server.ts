@@ -14,8 +14,6 @@ type AppRequestMessage = BrowserTypes.AppRequestMessage
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL
 type WebConnectionProtocol3Handshake = BrowserTypes.WebConnectionProtocol3Handshake
 
-export const dummyInstanceId = { appId: "Test App Id", instanceId: "1" }
-
 export const EMBED_URL = "http://localhost:8080/static/da/embed.html"
 
 export const CHANNEL_SELECTOR_URL = "https://mock.fdc3.com/channelSelector"
