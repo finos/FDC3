@@ -17,7 +17,7 @@ const isFulfilled = <T>(input: PromiseSettledResult<T>): input is PromiseFulfill
  * For now, we only allow a single call to getAgent per application, so 
  * we keep track of the promise we use here.  
  */
-var theAgentPromise: Promise<DesktopAgent> | null = null;
+let theAgentPromise: Promise<DesktopAgent> | null = null;
 
 export function clearAgentPromise() {
     theAgentPromise = null;
@@ -31,8 +31,13 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
     Logger.log(`Initiating Desktop Agent discovery at ${new Date().toISOString()}`);
     let strategies: Loader[];
 
+    //if options doesn't contain an identityURL, use the actualUrl
+    if (!options.identityUrl){
+        options.identityUrl = globalThis.window.location.href;
+    }
+
     //Retrieve persisted connection data limit to a previous strategy if one exists
-    const persistedData = retrieveDesktopAgentDetails(options.identityUrl ?? globalThis.window.location.href);
+    const persistedData = retrieveDesktopAgentDetails(options.identityUrl);
     if (persistedData) {
         switch (persistedData.agentType) {
             case WebDesktopAgentType.Preload:
@@ -98,13 +103,11 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
             //if we received any error other than AgentError.AgentNotFound, throw it
             const errors = results.filter(isRejected);
 
+            //n.b. the Loaders throw string error messages, rather than Error objects
             Logger.debug(`Discovery errors: ${JSON.stringify(errors)}`);
-            const error = errors.find((aRejection) => {
-                aRejection.reason?.message ?? aRejection.reason !== AgentError.AgentNotFound;
-            });
+            const error = errors.find((aRejection) => aRejection.reason !== AgentError.AgentNotFound);
             if (error){
-                throw error;
-
+                throw new Error(error.reason);
             } else if (options.failover != undefined) {
                 Logger.debug(`Calling failover fn...`);
                 //Proceed with the failover
@@ -131,6 +134,7 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
             
                     return selection.agent;
                 } catch (e) {
+                    //n.b. FailoverHandler throws Error Objects so we can return this directly
                     Logger.error("Desktop agent not found. Error reported during failover", e);
                     throw e;
                 }
@@ -181,8 +185,7 @@ export const getAgent: GetAgentType = (params?: GetAgentParams) => {
         dontSetWindowFdc3: true,
         channelSelector: true,
         intentResolver: true,
-        timeoutMs: DEFAULT_TIMEOUT_MS,
-        identityUrl: globalThis.window.location.href
+        timeoutMs: DEFAULT_TIMEOUT_MS
     };
 
     const options: GetAgentParams = {

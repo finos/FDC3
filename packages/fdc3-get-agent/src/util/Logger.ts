@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const GET_AGENT_LOG_PREFIX = "FDC3 getAgent: ";
 
 export class Logger {
