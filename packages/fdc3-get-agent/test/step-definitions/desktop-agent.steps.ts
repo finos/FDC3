@@ -10,11 +10,12 @@ import {
   GetAgentParams,
   WebDesktopAgentType,
 } from '@kite9/fdc3-standard';
-import { dummyInstanceId, EMBED_URL, MockFDC3Server } from '../support/MockFDC3Server';
+import { EMBED_URL, MockFDC3Server } from '../support/MockFDC3Server';
 import { MockStorage } from '../support/MockStorage';
 import { DesktopAgent, ImplementationMetadata } from '@kite9/fdc3-standard';
 import { clearAgentPromise } from '../../src/strategies/getAgent';
 import expect from 'expect';
+import { dummyInstanceDetails } from '../support/TestServerContext';
 
 interface MockPageTransitionEvent extends Event {
   persisted?: boolean;
@@ -25,9 +26,10 @@ Given(
   'Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response',
   async function (this: CustomWorld, field: string, w: string) {
     const mockWindow = handleResolve(w, this);
-    this.mockFDC3Server = new MockFDC3Server(mockWindow as any, false, this.mockContext);
+    this.mockFDC3Server = new MockFDC3Server(mockWindow, false, this.mockContext);
     this.props[field] = this.mockFDC3Server;
-    this.mockContext.open(dummyInstanceId.appId);
+    this.mockContext.open(dummyInstanceDetails[0].appId);
+    this.mockContext.open(dummyInstanceDetails[1].appId);
   }
 );
 
@@ -35,9 +37,10 @@ Given(
   'Parent Window desktop {string} listens for postMessage events in {string}, returns iframe response',
   async function (this: CustomWorld, field: string, w: string) {
     const mockWindow = handleResolve(w, this);
-    this.mockFDC3Server = new MockFDC3Server(mockWindow as any, true, this.mockContext);
+    this.mockFDC3Server = new MockFDC3Server(mockWindow, true, this.mockContext);
     this.props[field] = this.mockFDC3Server;
-    this.mockContext.open(dummyInstanceId.appId);
+    this.mockContext.open(dummyInstanceDetails[0].appId);
+    this.mockContext.open(dummyInstanceDetails[1].appId);
   }
 );
 
@@ -45,9 +48,9 @@ Given(
   '{string} is a function which opens an iframe for communications on {string}',
   function (this: CustomWorld, fn: string, doc: string) {
     this.props[fn] = () => {
-      this.mockContext.open(dummyInstanceId.appId);
+      this.mockContext.open(dummyInstanceDetails[0].appId);
       const document = handleResolve(doc, this) as MockDocument;
-      let ifrm = document.createElement('iframe');
+      const ifrm = document.createElement('iframe');
       this.mockFDC3Server = new MockFDC3Server(ifrm as any, false, this.mockContext);
       ifrm.setAttribute('src', EMBED_URL + '?connectionAttemptUuid=124');
       document.body.appendChild(ifrm);
@@ -57,22 +60,47 @@ Given(
 );
 
 Given('an existing app instance in {string}', async function (this: CustomWorld, field: string) {
-  const uuid = this.mockContext.open(dummyInstanceId.appId);
+  const uuid = this.mockContext.open(dummyInstanceDetails[0].appId);
   this.props[field] = uuid;
 });
 
 Given('A Dummy Desktop Agent in {string}', async function (this: CustomWorld, field: string) {
+  const notImplemented = () => { throw new Error('Function not implemented.'); };
   const da: DesktopAgent = {
     async getInfo(): Promise<ImplementationMetadata> {
       return {
         fdc3Version: '2.0',
+        optionalFeatures: {
+          "DesktopAgentBridging": false,
+          "OriginatingAppMetadata": false,
+          "UserChannelMembershipAPIs": false
+        },
         appMetadata: {
           appId: 'cucumber-app',
         },
         provider: 'cucumber-provider',
-      } as any;
+      };
     },
-  } as any;
+    open: notImplemented,
+    findIntent: notImplemented,
+    findIntentsByContext: notImplemented,
+    findInstances: notImplemented,
+    broadcast: notImplemented,
+    raiseIntent: notImplemented,
+    raiseIntentForContext: notImplemented,
+    addIntentListener: notImplemented,
+    addContextListener: notImplemented,
+    addEventListener: notImplemented,
+    getUserChannels: notImplemented,
+    joinUserChannel: notImplemented,
+    getOrCreateChannel: notImplemented,
+    createPrivateChannel: notImplemented,
+    getCurrentChannel: notImplemented,
+    leaveCurrentChannel: notImplemented,
+    getAppMetadata: notImplemented,
+    getSystemChannels: notImplemented,
+    joinChannel: notImplemented
+  };
 
   this.props[field] = da;
   this.props['result'] = null;
@@ -134,10 +162,10 @@ Given(
   async function (this: CustomWorld, pd: string, pw: string, cd: string, cw: string) {
     //create the parent window
     const mpw = new MockWindow('mockParentWindow', this, 'parentWin');
-    this.props[pw] = mpw as any;
+    this.props[pw] = mpw;
 
     // mock parent window document
-    this.props[pd] = new MockDocument('parentDoc', mpw) as any;
+    this.props[pd] = new MockDocument('parentDoc', mpw);
 
     // creates the mock app window
     const mcw = new MockWindow('mockWindow', this, 'mocky');
@@ -157,7 +185,7 @@ Given(
     mpw.child = mcw;
 
     // session storage (will be common between windows, which is ok as DA doesn't use this)
-    globalThis.sessionStorage = new MockStorage() as any;
+    globalThis.sessionStorage = new MockStorage();
   }
 );
 

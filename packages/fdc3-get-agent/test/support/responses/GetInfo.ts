@@ -24,7 +24,7 @@ export class GetInfo implements AutomaticResponse {
             type: "getInfoResponse",
             payload: {
                 implementationMetadata: {
-                    appMetadata: {appId: "cucumber-app", instanceId: "cucumber-instance"},
+                    appMetadata: i.meta.source!,//{appId: "cucumber-app", instanceId: "cucumber-instance"},
                     provider: "cucumber-provider",
                     providerVersion: "test",
                     fdc3Version: "2.0",

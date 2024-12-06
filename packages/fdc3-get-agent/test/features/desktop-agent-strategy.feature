@@ -4,7 +4,7 @@ Feature: Different Strategies for Accessing the Desktop Agent
     Given a parent window document in "parentDoc", window in "parentWin", child window document in "childDoc" and window in "childWin"
   #  And Testing ends after "8000" ms
 
-  Scenario: Running inside a Browser and using post message with direct message ports
+  Scenario: Running inside a Browser and using post message with direct message ports and no identityUrl
     Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response
     And we wait for a period of "200" ms
     And I call getAgent for a promise result with the following options
@@ -29,6 +29,39 @@ Feature: Different Strategies for Accessing the Desktop Agent
     Then I call "{parentDoc}" with "shutdown"
     Then I call "{childDoc}" with "shutdown"
     And I call "{desktopAgent}" with "disconnect"
+
+  Scenario: Connecting with a specified identityUrl
+    Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response
+    And we wait for a period of "200" ms
+    And I call getAgent for a promise result with the following options
+      | dontSetWindowFdc3 | identityUrl                              | timeoutMs | intentResolver | channelSelector |
+      | true              | https://dummyOrigin.test/alternativePath | 8000     | false     | false          |
+    And I refer to "{result}" as "theAPIPromise"
+    Then the promise "{theAPIPromise}" should resolve
+    And I refer to "{result}" as "desktopAgent"
+    And I call "{desktopAgent}" with "getInfo"
+    Then "{result}" is an object with the following contents
+      | fdc3Version | appMetadata.appId        | appMetadata.instanceId        | provider               |
+      |         2.0 | cucumber-alternative-app | cucumber-alternative-instance | cucumber-provider      |
+    And "{childWin.events}" is an array of objects with the following contents
+      | type    | data.type     |
+      | message | WCP3Handshake |
+    And "{parentWin.events}" is an array of objects with the following contents
+      | type    | data.type     |
+      | message | WCP1Hello     |
+    Then I call "{parentDoc}" with "shutdown"
+    Then I call "{childDoc}" with "shutdown"
+    And I call "{desktopAgent}" with "disconnect"
+
+  Scenario: Connecting with a unknown identityUrl fails
+    Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response
+    And we wait for a period of "200" ms
+    And I call getAgent for a promise result with the following options
+      | dontSetWindowFdc3 | identityUrl                     | timeoutMs | intentResolver | channelSelector |
+      | true              | "https://bad.identity.com/path" | 4000      | false          | false           |
+    And I refer to "{result}" as "theAPIPromise"
+    Then the promise "{theAPIPromise}" should resolve
+    And "{result}" is an error with message "AccessDenied"
 
   Scenario: Running inside a Browser using the embedded iframe strategy
     Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns iframe response
@@ -131,7 +164,6 @@ Feature: Different Strategies for Accessing the Desktop Agent
       |         2.0 | cucumber-app      | cucumber-provider |
     Then I call "{parentDoc}" with "shutdown"
     Then I call "{childDoc}" with "shutdown"
-    And I call "{desktopAgent}" with "disconnect"
 
 
   # Scenario: Failed Recovery from SessionState
@@ -179,4 +211,4 @@ Feature: Different Strategies for Accessing the Desktop Agent
     And "{desktopAgent1}" is "{desktopAgent2}"
     Then I call "{parentDoc}" with "shutdown"
     Then I call "{childDoc}" with "shutdown"
-    And I call "{desktopAgent}" with "disconnect"
+    And I call "{desktopAgent1}" with "disconnect"

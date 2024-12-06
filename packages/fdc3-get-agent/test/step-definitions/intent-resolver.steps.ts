@@ -2,10 +2,11 @@ import { Given, When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
 import { handleResolve } from '@kite9/testing';
 import { DefaultDesktopAgentIntentResolver } from '../../src/ui/DefaultDesktopAgentIntentResolver';
-import { INTENT_RESPOLVER_URL } from '../support/MockFDC3Server';
+import { INTENT_RESOLVER_URL } from '../support/MockFDC3Server';
 import { FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE } from '@kite9/fdc3-schema/dist/generated/api/BrowserTypes';
+import { Context } from '@kite9/fdc3-context';
 
-const contextMap: Record<string, any> = {
+const contextMap: Record<string, Context> = {
   'fdc3.instrument': {
     type: 'fdc3.instrument',
     name: 'Apple',
@@ -32,7 +33,7 @@ Given('{string} is a {string} context', function (this: CustomWorld, field: stri
 });
 
 Given('An Intent Resolver in {string}', async function (this: CustomWorld, field: string) {
-  const cs = new DefaultDesktopAgentIntentResolver(INTENT_RESPOLVER_URL);
+  const cs = new DefaultDesktopAgentIntentResolver(INTENT_RESOLVER_URL);
   this.props[field] = cs;
   await cs.connect();
 });
