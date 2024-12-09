@@ -1,13 +1,6 @@
-import {
-  DesktopAgentDetails,
-  DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX,
-} from '@kite9/fdc3-standard';
-import { v4 as uuidv4 } from 'uuid';
+import { DesktopAgentDetails, DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX } from '@kite9/fdc3-standard';
 import { Logger } from '../util/Logger';
-
-export function createUUID(): string {
-  return uuidv4();
-}
+import { createUUID } from '../util/Uuid';
 
 /**
  * Note that we also key by the window name as well, in case multiple iframes are using the same session storage.
@@ -25,15 +18,15 @@ export function sessionKey(): string {
 /** Used to persist data on the connection, which can later be used to ensure
  *  reconnection to the same Desktop Agent and to request the same instanceId.
  */
-export function storeDesktopAgentDetails(details: DesktopAgentDetails){
+export function storeDesktopAgentDetails(details: DesktopAgentDetails) {
   Logger.debug(`DesktopAgentDetails: Storing Desktop Agent details:`, details);
-	//check if there are existing details in storage to update
-	let detailsToStore = retrieveAllDesktopAgentDetails();
-	if (!detailsToStore) {
-	  detailsToStore = {};
-	}
-	detailsToStore[details.identityUrl] = details;
-	globalThis.sessionStorage.setItem(sessionKey(), JSON.stringify(detailsToStore));
+  //check if there are existing details in storage to update
+  let detailsToStore = retrieveAllDesktopAgentDetails();
+  if (!detailsToStore) {
+    detailsToStore = {};
+  }
+  detailsToStore[details.identityUrl] = details;
+  globalThis.sessionStorage.setItem(sessionKey(), JSON.stringify(detailsToStore));
 }
 
 /** Retrieves persisted data about previous connections. Used to ensure reconnection
@@ -44,9 +37,19 @@ export function retrieveAllDesktopAgentDetails(): Record<string, DesktopAgentDet
 
   if (detailsStr) {
     try {
-      return JSON.parse(detailsStr) as Record<string, DesktopAgentDetails>;
+      const theData: Record<string, DesktopAgentDetails> = JSON.parse(detailsStr) as Record<
+        string,
+        DesktopAgentDetails
+      >;
+      if (typeof theData !== 'object' || Array.isArray(theData)) {
+        throw new Error('Stored DesktopAgentDetails is not in the expected format!');
+      }
+      return theData;
     } catch (e) {
-      Logger.error(`DesktopAgentDetails: FDC3 connection data couldn't be parsed\nstorage key: ${sessionKey()}\nvalue: ${detailsStr}`);
+      Logger.error(
+        `DesktopAgentDetails: FDC3 connection data couldn't be parsed\nstorage key: ${sessionKey()}\nvalue: ${detailsStr}`,
+        e
+      );
       return null;
     }
   } else {
@@ -55,16 +58,28 @@ export function retrieveAllDesktopAgentDetails(): Record<string, DesktopAgentDet
 }
 
 /** Retrieves persisted data about previous connections for this specific app
-   *  (identified by the identityUrl). Used to ensure reconnection to the same
-   *  agent and to request the same instanceId.
-   */
+ *  (identified by the identityUrl). Used to ensure reconnection to the same
+ *  agent and to request the same instanceId.
+ */
 export function retrieveDesktopAgentDetails(identityUrl: string): DesktopAgentDetails | null {
-  
   const allDetails = retrieveAllDesktopAgentDetails();
-  Logger.log(`DesktopAgentDetails: retrieveDesktopAgentDetails:`, allDetails);  
-    if (allDetails) {
-      return allDetails[identityUrl];
+  Logger.log(`DesktopAgentDetails: retrieveDesktopAgentDetails:`, allDetails);
+  if (allDetails) {
+    const theData: DesktopAgentDetails = allDetails[identityUrl];
+
+    //check we got the minimum properties
+    if (
+      typeof theData.agentType === 'string' &&
+      typeof theData.appId === 'string' &&
+      typeof theData.instanceId === 'string'
+    ) {
+      return theData;
     } else {
+      //ignore it and post a warning
+      Logger.warn('DesktopAgentDetails: Stored details do not meet minimum requirements and will be ignored', theData);
       return null;
     }
+  } else {
+    return null;
   }
+}

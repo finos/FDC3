@@ -47,7 +47,7 @@ export abstract class AbstractMessaging implements Messaging {
         setTimeout(() => {
           this.unregister(id);
           if (!done) {
-            console.error(`waitFor rejecting after ${this.getTimeoutMs()}ms with ${timeoutErrorMessage}`);
+            console.error(`waitFor rejecting after ${this.getTimeoutMs()}ms at ${new Date().toISOString()} with ${timeoutErrorMessage}`);
             reject(new Error(timeoutErrorMessage));
           }
         }, this.getTimeoutMs());

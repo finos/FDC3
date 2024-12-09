@@ -1,22 +1,39 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import pc from 'picocolors';
+
 const GET_AGENT_LOG_PREFIX = "FDC3 getAgent: ";
 
 export class Logger {
-	constructor() {}
 
-	static debug(message?: any, ...optionalParams: any[]) {
-		console.debug(GET_AGENT_LOG_PREFIX + (message ?? ""), ...optionalParams);
+	static debug(...params: any[]) {
+		if (typeof params[0] === "string") {
+			console.debug(pc.black(pc.dim(`${GET_AGENT_LOG_PREFIX}${params[0]}`)), ...params.slice(1));
+		} else {
+			console.debug(pc.black(pc.dim(`${GET_AGENT_LOG_PREFIX}`)), ...params);
+		}
 	}
 	
-	static log(message?: any, ...optionalParams: any[]) {
-		console.log(GET_AGENT_LOG_PREFIX + (message ?? ""), ...optionalParams);
+	static log(...params: any[]) {
+		if (typeof params[0] === "string") {
+			console.log(pc.green(pc.dim(`${GET_AGENT_LOG_PREFIX}${params[0]}`)), ...params.slice(1));
+		} else {
+			console.log(pc.green(pc.dim(`${GET_AGENT_LOG_PREFIX}`)), ...params);
+		}
 	}
 	
-	static warn(message?: any, ...optionalParams: any[]) {
-		console.warn(GET_AGENT_LOG_PREFIX + (message ?? ""), ...optionalParams);
+	static warn(...params: any[]) {
+		if (typeof params[0] === "string") {
+			console.warn(pc.yellow(pc.dim(`${GET_AGENT_LOG_PREFIX}${params[0]}`)), ...params.slice(1));
+		} else {
+			console.warn(pc.yellow(pc.dim(`${GET_AGENT_LOG_PREFIX}`)), ...params);
+		}
 	}
 	
-	static error(message?: any, ...optionalParams: any[]) {
-		console.error(GET_AGENT_LOG_PREFIX + (message ?? ""), ...optionalParams);
+	static error(...params: any[]) {
+		if (typeof params[0] === "string") {
+			console.error(pc.red(pc.dim(`${GET_AGENT_LOG_PREFIX}${params[0]}`)), ...params.slice(1));
+		} else {
+			console.error(pc.red(pc.dim(`${GET_AGENT_LOG_PREFIX}`)), ...params);
+		}
 	}
 }

@@ -6,11 +6,13 @@ export class MockDocument {
     name: string;
     window: MockWindow;
     iframes: MockIFrame[] = [];
+    static allDocuments: MockDocument[] = [];
 
     constructor(name: string, window: MockWindow) {
         this.name = name;
         this.window = window;
         if (this.window.cw.debugLogs) { console.log(`MockDocument created with name: ${name} in window.name: ${this.window.name}`); }
+        MockDocument.allDocuments.push(this);
     }
 
     createElement(tag: string): HTMLElement {
@@ -22,14 +24,14 @@ export class MockDocument {
             this.window.commsIframe = mw;
       
             this.iframes.push(mw);
-            return mw as any;
+            return mw as unknown as HTMLElement;
         } else {
-            return new MockElement(tag) as any;
+            return new MockElement(tag) as unknown as HTMLElement;
         }
     }
 
-    getElementById(_id: string): HTMLElement | null {
-        return new MockElement("div") as any;
+    getElementById(/*_id: string*/): HTMLElement | null {
+        return new MockElement("div") as unknown as HTMLElement;
     }
 
     body = new MockElement("body");
@@ -37,5 +39,11 @@ export class MockDocument {
     shutdown() {
         this.window.shutdown();
         this.iframes.forEach(i => i.shutdown());
+    }
+
+    static shutdownAllDocuments() {
+        MockDocument.allDocuments.forEach((doc: MockDocument) => {
+            doc.shutdown();
+        })
     }
 }

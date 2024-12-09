@@ -10,7 +10,7 @@ export interface Loader {
    */
   get(options: GetAgentParams): Promise<DesktopAgentSelection>;
 
-  cancel(): void;
+  cancel(): Promise<void>;
 
   name: string;
 }

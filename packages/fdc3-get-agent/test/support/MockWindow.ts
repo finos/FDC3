@@ -21,7 +21,7 @@ export class MockWindow extends MockElement {
     }
 
     eventHandlers: EventHandler[] = [];
-    events: any[] = [];
+    events: {type: string, data: MessageEvent}[] = [];
 
     parent: MockWindow | null = null;
     child: MockWindow | null = null;
@@ -46,7 +46,7 @@ export class MockWindow extends MockElement {
     }
 
     dispatchEvent(event: Event): void {
-        this.events.push({ type: event.type, data: (event as any).data });
+        this.events.push({ type: event.type, data: (event as unknown as MessageEvent).data });
         this.eventHandlers.forEach((e) => {
             if (e.type === event.type) {
                 e.callback(event);
@@ -62,8 +62,8 @@ export class MockWindow extends MockElement {
             ports: transfer,
             //TODO: set source for UI iframes, comms iframe, parent DA or child app depending on message type
             source: this.commsIframe ?? this.child ?? this.parent ?? this
-        } as any;
-        if (this.cw.debugLogs) { console.debug(`MockWindow ${this.name} / ${this.tag}: postMessage with source: ${event.source.name}`); }
+        } as unknown as MessageEvent;
+        if (this.cw.debugLogs) { console.debug(`MockWindow ${this.name} / ${this.tag}: postMessage with source: ${(event.source as WindowProxy)?.name ?? "UNKNOWN"}`); }
         this.dispatchEvent(event);
     }
 

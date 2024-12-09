@@ -150,7 +150,7 @@ export class PostMessageLoader implements Loader {
     });
   }
 
-  cancel(): void {
+  async cancel(): Promise<void> {
     Logger.debug("PostMessageLoader: Cleaning up");
 
     //if we're being cancelled while still running, reject the promise
