@@ -12,7 +12,7 @@ import { Logger } from '../util/Logger';
 /** Timeout allowed for id validation to occur and for the DA to respond with details.
  * This is additional to the app's specified timeout for discovery - we have already
  * found an agent at that point we are just finishing setting up the connection. */
-const ID_VALIDATION_TIMEOUT = 3000;
+const ID_VALIDATION_TIMEOUT = 5000;
 
 export class IdentityValidationHandler {
   constructor(mp: MessagePort, options: GetAgentParams, connectionAttemptUuid: string) {
@@ -134,5 +134,6 @@ export class IdentityValidationHandler {
 		if (this.idValidationResponseListener) {
       this.messagePort.removeEventListener('message', this.idValidationResponseListener);
     }
+    //TODO: cancel any timeouts and reject any returned promises
 	}
 }

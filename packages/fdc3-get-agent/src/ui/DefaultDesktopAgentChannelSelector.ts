@@ -15,6 +15,7 @@ export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent impl
     private callback: ((channelId: string | null) => void) | null = null
 
     constructor(url: string | null) {
+        //TODO: check default UI URL is correct on release
         super(url ?? "https://fdc3.finos.org/webui/channel_selector.html", "FDC3 Channel Selector")
     }
 

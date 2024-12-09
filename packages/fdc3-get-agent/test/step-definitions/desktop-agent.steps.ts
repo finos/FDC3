@@ -8,7 +8,6 @@ import {
   DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX,
   DesktopAgentDetails,
   GetAgentParams,
-  WebDesktopAgentType,
 } from '@kite9/fdc3-standard';
 import { EMBED_URL, MockFDC3Server } from '../support/MockFDC3Server';
 import { MockStorage } from '../support/MockStorage';
@@ -34,6 +33,28 @@ Given(
 );
 
 Given(
+  'Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response, but times out identity validation',
+  async function (this: CustomWorld, field: string, w: string) {
+    const mockWindow = handleResolve(w, this);
+    this.mockFDC3Server = new MockFDC3Server(mockWindow, false, this.mockContext, true, true);
+    this.props[field] = this.mockFDC3Server;
+    this.mockContext.open(dummyInstanceDetails[0].appId);
+    this.mockContext.open(dummyInstanceDetails[1].appId);
+  }
+);
+
+Given(
+  'Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response and uses default UI URLs',
+  async function (this: CustomWorld, field: string, w: string) {
+    const mockWindow = handleResolve(w, this);
+    this.mockFDC3Server = new MockFDC3Server(mockWindow, false, this.mockContext, true);
+    this.props[field] = this.mockFDC3Server;
+    this.mockContext.open(dummyInstanceDetails[0].appId);
+    this.mockContext.open(dummyInstanceDetails[1].appId);
+  }
+);
+
+Given(
   'Parent Window desktop {string} listens for postMessage events in {string}, returns iframe response',
   async function (this: CustomWorld, field: string, w: string) {
     const mockWindow = handleResolve(w, this);
@@ -52,7 +73,7 @@ Given(
       const document = handleResolve(doc, this) as MockDocument;
       const ifrm = document.createElement('iframe');
       this.mockFDC3Server = new MockFDC3Server(ifrm as any, false, this.mockContext);
-      ifrm.setAttribute('src', EMBED_URL + '?connectionAttemptUuid=124');
+      ifrm.setAttribute('src', EMBED_URL);
       document.body.appendChild(ifrm);
       return ifrm;
     };
@@ -77,8 +98,9 @@ Given('A Dummy Desktop Agent in {string}', async function (this: CustomWorld, fi
         },
         appMetadata: {
           appId: 'cucumber-app',
+          instanceId: 'uuid-0'
         },
-        provider: 'cucumber-provider',
+        provider: 'preload-provider',
       };
     },
     open: notImplemented,
@@ -111,7 +133,15 @@ Given(
   async function (this: CustomWorld, field: string) {
     const object = handleResolve(field, this);
     window.fdc3 = object;
-    window.dispatchEvent(new Event('fdc3.ready'));
+  }
+);
+
+Given(
+  '`window.fdc3` is injected into the runtime with the value in {string} and fdc3Ready is fired',
+  async function (this: CustomWorld, field: string) {
+    const object = handleResolve(field, this);
+    window.fdc3 = object;
+    window.dispatchEvent(new Event('fdc3Ready'));
   }
 );
 
@@ -134,10 +164,7 @@ When('I call fdc3Ready for a promise result', function (this: CustomWorld) {
 After(function (this: CustomWorld) {
   console.log('Cleaning up');
   clearAgentPromise();
-  // setTimeout(() => {
-  //     //console.log((process as any)._getActiveHandles())
-  //     wtf.dump()
-  // }, 10000)
+  MockDocument.shutdownAllDocuments();
 });
 
 When('I call getAgent for a promise result with the following options', function (this: CustomWorld, dt: DataTable) {
@@ -190,21 +217,57 @@ Given(
 );
 
 Given(
-  'the session identity is set to {string} with identityUrl {string}',
-  async function (this: CustomWorld, uuid: string, identityUrl: string) {
+  'SessionStorage contains instanceUuid {string}, appId {string} with identityUrl {string} and agentType {string}',
+  async function (this: CustomWorld, uuid: string, appId: string, identityUrl: string, agentType: string) {
     const theUuid = handleResolve(uuid, this);
+    const theAppId = handleResolve(appId, this);
     const theIdentityUrl = handleResolve(identityUrl, this);
+    const theAgentType = handleResolve(agentType, this);
     const details: Record<string, DesktopAgentDetails> = {};
     details[theIdentityUrl] = {
-      agentType: WebDesktopAgentType.ProxyParent,
+      agentType: theAgentType,
       instanceUuid: theUuid,
-      appId: 'cucumber-app',
+      appId: theAppId,
       instanceId: 'uuid-0',
       identityUrl: theIdentityUrl,
       actualUrl: theIdentityUrl,
     };
 
     globalThis.sessionStorage.setItem(DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX + '-mocky', JSON.stringify(details));
+  }
+);
+
+Given(
+  'SessionStorage contains partial data with with identityUrl {string}, appId {string} and agentType {string}',
+  async function (this: CustomWorld, identityUrl: string, agentType: string, appId: string) {
+    const theIdentityUrl = handleResolve(identityUrl, this);
+    const theAgentType = handleResolve(agentType, this);
+    const theAppId = handleResolve(appId, this);
+    
+    const partialDetails: Record<string, Partial<DesktopAgentDetails>> = {};
+    partialDetails[theIdentityUrl] = {
+      agentType: theAgentType,
+      appId: theAppId,
+      identityUrl: identityUrl
+    };
+
+    globalThis.sessionStorage.setItem(DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX + '-mocky', JSON.stringify(partialDetails));
+  }
+);
+
+Given(
+  'SessionStorage contains corrupted data',
+  async function (this: CustomWorld) {
+    const corruptedData = ["All your base are belong to us"];
+
+    globalThis.sessionStorage.setItem(DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX + '-mocky', JSON.stringify(corruptedData));
+  }
+);
+
+Given(
+  'SessionStorage is clear',
+  async function () {
+    globalThis.sessionStorage.clear();
   }
 );
 

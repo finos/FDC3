@@ -52,7 +52,7 @@ export class HelloHandler {
         channelSelector: this.options.channelSelector,
         fdc3Version: FDC3_VERSION,
         resolver: this.options.intentResolver,
-        identityUrl: this.options.identityUrl!!,
+        identityUrl: this.options.identityUrl!,
         actualUrl: globalThis.window.location.href,
       },
     };
@@ -75,7 +75,7 @@ export class HelloHandler {
     }
 
     // create a new one
-    var ifrm = document.createElement('iframe');
+    const ifrm = document.createElement('iframe');
     ifrm.setAttribute('src', url);
     ifrm.setAttribute('id', IFRAME_ID);
     ifrm.setAttribute('name', 'FDC3 Communications');
@@ -85,7 +85,7 @@ export class HelloHandler {
     ifrm.style.position = 'fixed';
 
     //Wait for the iframe to load... then send it a hello message
-    ifrm.onload = _event => {
+    ifrm.onload = () => {
       if (ifrm.contentWindow) {
         this.sendWCP1Hello(ifrm.contentWindow, '*');
       } else {
@@ -101,7 +101,7 @@ export class HelloHandler {
    */
   listenForHelloResponses(): Promise<ConnectionDetails> {
           
-    return new Promise<ConnectionDetails>((resolve, _reject) => {
+    return new Promise<ConnectionDetails>((resolve, ) => {
 
       // setup listener for message and retrieve JS URL from it
       this.helloResponseListener = (event: MessageEvent<WebConnectionProtocolMessage>) => {
@@ -141,7 +141,7 @@ export class HelloHandler {
           }
         } else {
           Logger.warn(
-            `Ignoring message with invalid connectionAttemptUuid. Expected ${this.connectionAttemptUuid}, received: ${data?.meta?.connectionAttemptUuid}`,
+            `HelloHandler: Ignoring message with invalid connectionAttemptUuid. Expected ${this.connectionAttemptUuid}, received: ${data?.meta?.connectionAttemptUuid}`,
             data
           );
         }

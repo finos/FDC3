@@ -1,7 +1,7 @@
 import { Given, Then } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
 import { handleResolve } from '@kite9/testing';
-var wtf = require('wtfnode');
+const wtf = require('wtfnode');
 
 Given(
   '{string} receives a {string} message for the {string} and creates port {string}',
@@ -20,7 +20,7 @@ Given(
         origin: globalThis.window.location.origin,
         ports: [externalPort],
         source: channelSelectorIframe,
-      } as any);
+      } as unknown as Event);
     }
 
     internalPort.start();

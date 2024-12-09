@@ -11,31 +11,34 @@ export class DesktopAgentPreloadLoader implements Loader {
     
     name = "DesktopAgentPreloadLoader";
 
-    /** Variable used to end polling */
-    done: boolean = false;
     /** Reference to the handler for the fdc3Ready event (used to remove it) */
     readyEventHandler: (() => void) | null = null;
+    /** Variable used to end polling */
+    done: boolean = false;
     /** Overall timeout */
     timeout: NodeJS.Timeout | null = null;
+    /** Timeout used in polling */
+    pollingTimeout: NodeJS.Timeout | null = null;
     
     /** Reference to the get fn's Promise's reject call - used when cancelling. */
     rejectFn: ((reason?: string) => void) | null  = null;
 
     async poll(resolve: (value: DesktopAgentSelection) => void) {    
-        if (globalThis.window.fdc3) {
-            Logger.debug(`DesktopAgentPreloadLoader.get(): Discovered DA through polling...`);
-            this.prepareSelection(globalThis.window.fdc3, resolve);
-        } else {
-            if (!this.done) {
-                setTimeout(() => this.poll(resolve), 100);
+        if (!this.done) {
+            if (globalThis.window.fdc3) {
+                Logger.debug(`DesktopAgentPreloadLoader.get(): Discovered DA through polling...`);
+                this.prepareSelection(globalThis.window.fdc3, resolve);
+            } else {
+                this.pollingTimeout = setTimeout(() => this.poll(resolve), 100);
             }
         }
     }
 
     async prepareSelection(fdc3: DesktopAgent, resolve: (value: DesktopAgentSelection) => void) {
+        Logger.debug("DesktopAgentPreloadLoader: Preparing selection")
+        
         //note that we've found an agent and will be settling our get promise
         this.rejectFn = null;
-
         //stop polling and listening for fdc3Ready
         this.cancel();
 
@@ -53,10 +56,6 @@ export class DesktopAgentPreloadLoader implements Loader {
             }
         };
 
-        if (selection.details.instanceId === "unknown"){
-            Logger.warn("The DesktopAgent did not return an instanceId in the app's metadata", implMetadata);
-        }
-        
         resolve(selection);
     }
 
@@ -75,6 +74,7 @@ export class DesktopAgentPreloadLoader implements Loader {
                 this.timeout = setTimeout(() => {
                     Logger.debug(`DesktopAgentPreloadLoader.get(): timeout (${timeoutMs} ms) at ${new Date().toISOString()}`);
                     reject(AgentError.AgentNotFound);
+                    this.cancel();
                 }, timeoutMs);
                 
                 //listen for the fdc3Ready event
@@ -92,18 +92,21 @@ export class DesktopAgentPreloadLoader implements Loader {
         });
     }
 
-    cancel(): void {
+    async cancel(): Promise<void> {
         Logger.debug("DesktopAgentPreloadLoader: Cleaning up");
         this.done = true;
-        if (this.rejectFn){
-            this.rejectFn(AgentError.AgentNotFound);
-            this.rejectFn = null;
-        }
         if (this.timeout) {
             clearTimeout(this.timeout);
         }
+        if(this.pollingTimeout){
+            clearTimeout(this.pollingTimeout);
+        }
         if (this.readyEventHandler) {
             globalThis.window.removeEventListener('fdc3Ready', this.readyEventHandler);
+        }
+        if (this.rejectFn){
+            this.rejectFn(AgentError.AgentNotFound);
+            this.rejectFn = null;
         }
     }
 }

@@ -40,13 +40,13 @@ function getUIKey(): UI {
 }
 
 //set-up a listener for the WCP1Hello message 
-const helloHandler = (e) => {
-    const event = e as MessageEvent
+const helloHandler = (e: MessageEvent) => {
+    const event = e;
     const data = event.data;
     // const source = event.source as Window
     // const origin = event.origin;
 
-    console.log("Received postMessage: " + JSON.stringify(event.data));
+    console.debug("Received postMessage: " + JSON.stringify(event.data));
     if (isWebConnectionProtocol1Hello(data)) {
         const socket = io();
         const channel = new MessageChannel();

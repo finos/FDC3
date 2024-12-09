@@ -66,12 +66,18 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
         ];
     }
 
-    const promises = strategies.map(s => s.get(options).then((selection) => {
+    const promises = strategies.map(s => s.get(options).then(async (selection) => {
         //cancel other strategies if we selected a DA
         Logger.log(`Strategy ${s.name} resolved - cleaning up other strategies`);
-        strategies.forEach(s2 => {
+        for (let s2 = 0; s2 < strategies.length; s2++) {
+            if(strategies[s2] !== s) {
+                Logger.debug(`  cleaning up ${strategies[s2].name}`);
+                await strategies[s2].cancel();
+            }
+        }
+        strategies.forEach(async s2 => {
             if(s2 !== s) {
-                s2.cancel();
+                await s2.cancel();
             }
         });
         return selection;

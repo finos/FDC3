@@ -15,6 +15,7 @@ export class DefaultDesktopAgentIntentResolver extends AbstractUIComponent imple
     private pendingResolve: ((x: IntentResolutionChoice | void) => void) | null = null
 
     constructor(url: string | null) {
+        //TODO: check default UI URL is correct on release
         super(url ?? "https://fdc3.finos.org/webui/intent_resolver.html", "FDC3 Intent Resolver")
     }
 
@@ -42,7 +43,7 @@ export class DefaultDesktopAgentIntentResolver extends AbstractUIComponent imple
     }
 
     async chooseIntent(appIntents: AppIntent[], context: Context): Promise<IntentResolutionChoice | void> {
-        const out = new Promise<IntentResolutionChoice | void>((resolve, _reject) => {
+        const out = new Promise<IntentResolutionChoice | void>((resolve/*, _reject*/) => {
             this.pendingResolve = resolve
         })
         const message: Fdc3UserInterfaceResolve = {
