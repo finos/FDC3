@@ -91,7 +91,7 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
   return Promise.allSettled(promises).then(async results => {
     //review results
     const daResult = results.find(isFulfilled);
-    Logger.debug(`Discovery results: `, results);
+    Logger.debug(`Discovery results:  ${JSON.stringify(results, null, 2)}`);
 
     if (daResult) {
       const selection = daResult.value;
@@ -114,7 +114,6 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
       const errors = results.filter(isRejected);
 
       //n.b. the Loaders throw string error messages, rather than Error objects
-      Logger.debug(`Discovery errors: ${JSON.stringify(errors)}`);
       const error = errors.find(aRejection => aRejection.reason !== AgentError.AgentNotFound);
       if (error) {
         throw new Error(error.reason);

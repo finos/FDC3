@@ -59,7 +59,7 @@ export class HelloHandler {
       },
     };
 
-    Logger.debug(`HelloHandler: Sending hello msg:\n${JSON.stringify(requestMessage)}`);
+    Logger.debug(`HelloHandler: Sending hello msg:\n${JSON.stringify(requestMessage, null, 2)}`);
 
     w.postMessage(requestMessage, { targetOrigin: origin });
   }
