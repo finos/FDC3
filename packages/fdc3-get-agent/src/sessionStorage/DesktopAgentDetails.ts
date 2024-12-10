@@ -77,7 +77,7 @@ export function retrieveDesktopAgentDetails(identityUrl: string): DesktopAgentDe
     } else {
       //ignore it and post a warning
       Logger.warn(
-        `DesktopAgentDetails: Stored details do not meet minimum requirements and will be ignored:\n${JSON.stringify(theData)}`
+        `DesktopAgentDetails: Stored details do not meet minimum requirements and will be ignored:\n${JSON.stringify(theData, null, 2)}`
       );
       return null;
     }

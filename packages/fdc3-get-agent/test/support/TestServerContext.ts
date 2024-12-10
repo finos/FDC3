@@ -56,7 +56,9 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
         return { appId: inst.appId, url: inst.url };
       });
       console.error(
-        'No connection instance found for ' + url + ' - will return a mismatched instance, known instances: ',
+        'No connection instance found - will return a mismatched instance, url: ',
+        url,
+        '\nknown instances: ',
         knownInstances
       );
       return this.instances[0];

@@ -77,7 +77,7 @@ export abstract class AbstractUIComponent implements Connectable {
       const data = e.data;
 
       if (isFdc3UserInterfaceRestyle(data)) {
-        // console.log(`Restyling ${JSON.stringify(data.payload)}`)
+        Logger.debug(`Restyling ${JSON.stringify(data.payload, null, 2)}`);
         const css = data.payload.updatedCSS;
         this.themeContainer(css);
       }

@@ -20,10 +20,9 @@ export function handleEmbeddedIframeComms(_value: string, parent: MockWindow, so
 
     if (isWebConnectionProtocol1Hello(data)) {
       console.debug(
-        'Received hello message from' +
-          eventSource.name +
-          ' ' +
-          (eventSource == parent ? '(parent window): ' : 'NOT parent win): '),
+        'Received hello message from: ',
+        eventSource.name,
+        eventSource == parent ? '(parent window): ' : '(NOT parent win): ',
         event.data
       );
       const connection = cw.mockContext.getFirstInstance();
