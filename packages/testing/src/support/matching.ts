@@ -68,6 +68,8 @@ export function handleResolve(name: string, on: PropsWorld): any {
             return true
         } else if (stripped == 'false') {
             return false
+        } else if (stripped == 'undefined') {
+            return undefined
         } else {
             const out = JSONPath({ path: stripped, json: on.props })[0];
             return out

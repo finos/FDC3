@@ -1,11 +1,12 @@
 import { MockCSSStyleDeclaration } from "./MockCSSStyleDeclaration";
+import { MockIFrame } from "./MockIFrame";
 
 
 export class MockElement {
 
-    tag: string;
-    atts: { [name: string]: any; } = {};
-    children: HTMLElement[] = [];
+    public tag: string;
+    public atts: { [name: string]: any; } = {};
+    public children: HTMLElement[] = [];
 
     constructor(tag: string) {
         this.tag = tag;
@@ -23,6 +24,11 @@ export class MockElement {
 
     appendChild(child: HTMLElement) {
         this.children.push(child);
+        
+        //if its an iframe make it load here
+        if ((child as unknown as MockIFrame).load) {
+            (child as unknown as MockIFrame).load();
+        }
     }
 
     removeChild(child: HTMLElement) {

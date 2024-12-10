@@ -45,12 +45,24 @@ export abstract class AbstractUIComponent implements Connectable {
     this.name = name;
   }
 
-  async connect() {
+  /**
+   * Connect the UI component by creating the UI iframe, then wait on
+   * a Fdc3UserInterfaceHello message.
+   * 
+   * This function is NOT properly async as we don't want to block the 
+   * Desktop Agent connection on the UI frames as they may be blocked by 
+   * security policies. I.e. awaiting this will not block.
+   */
+  connect(): Promise<void> {
     const portPromise = this.awaitHello();
     this.openFrame();
-    this.port = await portPromise;
-    await this.setupMessagePort(this.port);
-    await this.messagePortReady(this.port);
+    portPromise.then((port) => {
+      this.port = port;
+      this.setupMessagePort(port).then(() => {
+        this.messagePortReady(port);
+      });
+    });
+    return Promise.resolve();
   }
 
   async disconnect() {
@@ -84,7 +96,7 @@ export abstract class AbstractUIComponent implements Connectable {
   }
 
   private awaitHello(): Promise<MessagePort> {
-    return new Promise((resolve, _reject) => {
+    return new Promise((resolve /*, _reject*/) => {
       const ml = (e: MessageEvent) => {
         if (e.source == this.iframe?.contentWindow) {
           if (isFdc3UserInterfaceHello(e.data)) {
@@ -100,7 +112,7 @@ export abstract class AbstractUIComponent implements Connectable {
             Logger.debug('AbstractUIComponent: ignored UI Message from UI iframe while awaiting hello: ', e.data);
           }
         } else {
-          Logger.debug("AbstractUIComponent: ignored Message that didn't come from expected UI frame", e.data);
+          Logger.debug("AbstractUIComponent: ignored Message that didn't come from expected UI frame\n", e.data, "\nexpected window name: ", this.iframe?.contentWindow?.name, "\ngot window name: ", (e.source as Window).name);
         }
       };
 
@@ -116,11 +128,13 @@ export abstract class AbstractUIComponent implements Connectable {
     this.themeFrame(this.iframe);
 
     this.iframe.setAttribute('src', this.url);
+    this.iframe.setAttribute('name', this.name);
+    
     this.container.appendChild(this.iframe);
     document.body.appendChild(this.container);
   }
 
-  private toKebabCase(str: String) {
+  private toKebabCase(str: string) {
     return str.replace(/[A-Z]/g, match => '-' + match.toLowerCase());
   }
 
@@ -139,7 +153,6 @@ export abstract class AbstractUIComponent implements Connectable {
   }
 
   themeFrame(ifrm: HTMLIFrameElement) {
-    ifrm.setAttribute('name', this.name);
     ifrm.style.width = '100%';
     ifrm.style.height = '100%';
     ifrm.style.border = '0';

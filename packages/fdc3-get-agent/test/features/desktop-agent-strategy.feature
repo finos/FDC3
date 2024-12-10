@@ -200,9 +200,9 @@ Scenario: Connecting but identity validation times out
   Here, we recover the details of the session from the session state, obviating the need to 
   make a request to the parent iframe.
 
-    Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response
+    Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns iframe response
     And an existing app instance in "instanceID"
-    And SessionStorage contains instanceUuid "{instanceID}", appId "cucumber-app" with identityUrl "https://dummyOrigin.test/path" and agentType "PROXY_PARENT"
+    And SessionStorage contains instanceUuid "some-instance-uuid", appId "cucumber-app" with identityUrl "https://dummyOrigin.test/path", agentType "PROXY_URL" and agentUrl "http://localhost:8080/static/da/embed.html"
     And we wait for a period of "200" ms
     And I call getAgent for a promise result with the following options
       | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
@@ -214,7 +214,51 @@ Scenario: Connecting but identity validation times out
     Then "{result}" is an object with the following contents
       | fdc3Version | appMetadata.appId | provider          |
       |         2.0 | cucumber-app      | cucumber-provider |
+    Then SessionStorage should contain instanceUuid "some-instance-uuid", appId "cucumber-app" with identityUrl "https://dummyOrigin.test/path", agentType "PROXY_URL" and agentUrl "http://localhost:8080/static/da/embed.html"
     And I call "{desktopAgent}" with "disconnect"
+
+Scenario: Go straight to (preload) failover as directed by SessionStorage
+  Here, we recover the details of the session from the session state, obviating the need to 
+  to do discovery and going straight to failover.
+
+    Given A Dummy Desktop Agent in "dummy-api"
+    And "dummyFailover" is a function which returns a promise of "{dummy-api}"
+    And SessionStorage contains instanceUuid "uuid-0", appId "cucumber-app" with identityUrl "https://dummyOrigin.test/path", agentType "FAILOVER" and agentUrl "{undefined}"
+    And I call getAgent for a promise result with the following options
+      | failover        | timeoutMs |
+      | {dummyFailover} |      1000 |
+    And I refer to "{result}" as "theAPIPromise"
+    Then the promise "{theAPIPromise}" should resolve
+    And I call "{result}" with "getInfo"
+    Then "{result}" is an object with the following contents
+      | fdc3Version | appMetadata.appId | provider          |
+      |         2.0 | cucumber-app      | preload-provider |
+    Then SessionStorage for identityUrl "https://dummyOrigin.test/path" should contain the following values
+      | appId        | agentType  | identityUrl                     |
+      | cucumber-app | FAILOVER   | https://dummyOrigin.test/path   |
+
+  Scenario: Go straight to (proxy) failover as directed by SessionStorage
+  Here, we recover the details of the session from the session state, obviating the need to 
+  to do discovery and going straight to failover.
+
+    Given "dummyFailover2" is a function which opens an iframe for communications on "{childDoc}"
+    And I call getAgent for a promise result with the following options
+      | failover         | timeoutMs |
+      | {dummyFailover2} |      1000 |
+    And SessionStorage contains instanceUuid "uuid-0", appId "cucumber-app" with identityUrl "https://dummyOrigin.test/path", agentType "FAILOVER" and agentUrl "{undefined}"
+    And I call getAgent for a promise result with the following options
+      | failover        | timeoutMs |
+      | {dummyFailover} |      1000 |
+    And I refer to "{result}" as "theAPIPromise"
+    Then the promise "{theAPIPromise}" should resolve
+    And I call "{result}" with "getInfo"
+    Then "{result}" is an object with the following contents
+      | fdc3Version | appMetadata.appId | provider          |
+      |         2.0 | cucumber-app      | cucumber-provider |
+    Then SessionStorage for identityUrl "https://dummyOrigin.test/path" should contain the following values
+      | appId        | agentType  | identityUrl                   |
+      | cucumber-app | FAILOVER   | https://dummyOrigin.test/path |
+
 
   Scenario: Handle corrupted data in SessionStorage
   Here we deal with data in SessionStorage that is not in the proper format.
@@ -254,6 +298,23 @@ Scenario: Connecting but identity validation times out
       |         2.0 | cucumber-app      | cucumber-provider |
     And I call "{desktopAgent}" with "disconnect"
 
+  Scenario: Latch to Desktop Agent Proxy parent via SessionStorage
+  Here, we recover the details of the session from session storage, and latch to the
+  same Desktop Agent type (preload) - the connection should succeed.
+
+    Given A Dummy Desktop Agent in "dummy-api"
+    And Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response
+    And SessionStorage contains instanceUuid "{instanceID}", appId "cucumber-app" with identityUrl "https://dummyOrigin.test/path" and agentType "PROXY_PARENT"
+    And `window.fdc3` is injected into the runtime with the value in "{dummy-api}"
+    And I call fdc3Ready for a promise result
+    And I refer to "{result}" as "theAPIPromise"
+    Then the promise "{theAPIPromise}" should resolve
+    And I refer to "{result}" as "desktopAgent"
+    And I call "{desktopAgent}" with "getInfo"
+    Then "{result}" is an object with the following contents
+      | fdc3Version | appMetadata.appId | provider          |
+      |         2.0 | cucumber-app      | cucumber-provider |
+
   Scenario: Latch to Desktop Agent Preload via SessionStorage
   Here, we recover the details of the session from session storage, and latch to the
   same Desktop Agent type (preload) - the connection should succeed.
@@ -283,26 +344,6 @@ Scenario: Latch to Desktop Agent Preload via SessionStorage which has gone away
     And I refer to "{result}" as "theAPIPromise"
     Then the promise "{theAPIPromise}" should resolve
     And "{result}" is an error with message "AgentNotFound"
-    
-
-  # Scenario: Failed Recovery from SessionState
-  # App tries to recover with an ID that doesn't exist. 
-  # It should be allowed to connect but issued a different instanceId
-  # needs more thought to complete...
-  #   Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response
-  #   And we wait for a period of "200" ms
-  #   And the session identity is set to "BAD_INSTANCE" with identityUrl "https://dummyOrigin.test/path"
-  #   And I call getAgent for a promise result with the following options
-  #     | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
-  #     | true              |    8000   | false          | false           |
-  #   And I refer to "{result}" as "theAPIPromise"
-  #   Then the promise "{theAPIPromise}" should resolve
-  #   And I call "{result}" with "getInfo"
-  #   Then "{result}" is an object with the following contents
-  #     | fdc3Version | appMetadata.appId | provider          |
-  #     |         2.0 | cucumber-app      | cucumber-provider |
-  #   Then I call "{parentDoc}" with "shutdown"
-  #   Then I call "{childDoc}" with "shutdown"
 
   Scenario: Nothing works and we timeout
     When I call getAgent for a promise result with the following options

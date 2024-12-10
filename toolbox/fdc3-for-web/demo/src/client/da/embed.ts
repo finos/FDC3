@@ -46,8 +46,8 @@ const helloHandler = (e: MessageEvent) => {
     // const source = event.source as Window
     // const origin = event.origin;
 
-    console.debug("Received postMessage: " + JSON.stringify(event.data));
     if (isWebConnectionProtocol1Hello(data)) {
+        console.debug("Received hello message: ", event.data);
         const socket = io();
         const channel = new MessageChannel();
         const source = getSource();
