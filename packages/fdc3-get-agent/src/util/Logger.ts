@@ -7,7 +7,8 @@ export class Logger {
   static debug(...params: any[]) {
     if (typeof params[0] === 'string') {
       const msg = GET_AGENT_LOG_PREFIX + params[0];
-      console.debug(pc.black(pc.dim(msg)), ...params.slice(1));
+      const furtherArgs = params.slice(1);
+      console.debug(pc.black(pc.dim(msg)), ...furtherArgs);
     } else {
       console.debug(pc.black(pc.dim(GET_AGENT_LOG_PREFIX)), ...params);
     }
@@ -16,7 +17,8 @@ export class Logger {
   static log(...params: any[]) {
     if (typeof params[0] === 'string') {
       const msg = GET_AGENT_LOG_PREFIX + params[0];
-      console.log(pc.green(pc.dim(msg)), ...params.slice(1));
+      const furtherArgs = params.slice(1);
+      console.log(pc.green(pc.dim(msg)), ...furtherArgs);
     } else {
       console.log(pc.green(pc.dim(GET_AGENT_LOG_PREFIX)), ...params);
     }
@@ -25,7 +27,8 @@ export class Logger {
   static warn(...params: any[]) {
     if (typeof params[0] === 'string') {
       const msg = GET_AGENT_LOG_PREFIX + params[0];
-      console.warn(pc.yellow(pc.dim(msg)), ...params.slice(1));
+      const furtherArgs = params.slice(1);
+      console.warn(pc.yellow(pc.dim(msg)), ...furtherArgs);
     } else {
       console.warn(pc.yellow(pc.dim(GET_AGENT_LOG_PREFIX)), ...params);
     }
@@ -34,7 +37,8 @@ export class Logger {
   static error(...params: any[]) {
     if (typeof params[0] === 'string') {
       const msg = GET_AGENT_LOG_PREFIX + params[0];
-      console.error(pc.red(pc.dim(msg)), ...params.slice(1));
+      const furtherArgs = params.slice(1);
+      console.error(pc.red(pc.dim(msg)), ...furtherArgs);
     } else {
       console.error(pc.red(pc.dim(GET_AGENT_LOG_PREFIX)), ...params);
     }

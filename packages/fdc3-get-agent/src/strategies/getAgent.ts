@@ -91,7 +91,15 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
   return Promise.allSettled(promises).then(async results => {
     //review results
     const daResult = results.find(isFulfilled);
-    Logger.debug(`Discovery results:  ${JSON.stringify(results, null, 2)}`);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const replacer = (key: string, value: any) => {
+      if (key == 'value') {
+        return '<DesktopAgent>';
+      } else {
+        return value;
+      }
+    };
+    Logger.debug(`Discovery results:  ${JSON.stringify(results, replacer, 2)}`);
 
     if (daResult) {
       const selection = daResult.value;
