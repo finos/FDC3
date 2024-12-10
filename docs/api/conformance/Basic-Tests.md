@@ -16,9 +16,9 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 
 | App | Step            | Description                                              |
 |-----|-----------------|----------------------------------------------------------|
-| A   | `getAgent`      | A calls `getAgent` and waits for the promise to resolve to a `DesktopAgent` instance. |
-| A   | `getInfo`       | A can call the `getInfo()` method on the `DesktopAgent` instance to get the `ImplementationMetadata` object. <br /> Check that fdc3Version is set to 2.2.  <br />Check that provider and providerVersion are populated. |
-| A   | `getUserChannels`| A can call the `getUserChannels()` method on the `DesktopAgent` instance to get the `Channel` objects representing the system channels.<br />Check **user** channels are returned.|
+| A   | `getAgent`      | App A calls `getAgent` and waits for the promise to resolve to a `DesktopAgent` instance. |
+| A   | `getInfo`       | App A can call the `getInfo()` method on the `DesktopAgent` instance to get the `ImplementationMetadata` object. <br /> Check that fdc3Version is set to 2.2.  <br />Check that provider and providerVersion are populated. |
+| A   | `getUserChannels`| App A can call the `getUserChannels()` method on the `DesktopAgent` instance to get the `Channel` objects representing the system channels.<br />Check **user** channels are returned.|
 
 - `GetAgentAPI`: ![2.2+](https://img.shields.io/badge/FDC3-2.2+-purple) Perform the above test.
 
