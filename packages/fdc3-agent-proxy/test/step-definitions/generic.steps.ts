@@ -10,7 +10,7 @@ import {
 } from '../../src';
 import { SimpleIntentResolver, setupGenericSteps } from '@kite9/testing';
 import { CHANNEL_STATE, SimpleChannelSelector } from '@kite9/testing/dist/src/agent';
-import { BrowserTypes } from '@kite9/fdc3-schema';
+import { HeartbeatEvent } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: string) {
   if (!this.messaging) {
@@ -36,7 +36,7 @@ When('messaging receives a heartbeat event', function (this: CustomWorld) {
     payload: {
       timestamp: new Date(),
     },
-  } as BrowserTypes.HeartbeatEvent);
+  } as HeartbeatEvent);
 });
 
 setupGenericSteps();

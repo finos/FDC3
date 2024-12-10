@@ -1,9 +1,6 @@
+import { GetAppMetadataRequest, GetAppMetadataResponse } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { AutomaticResponse, TestMessaging } from '../TestMessaging';
-import { BrowserTypes } from '@kite9/fdc3-schema';
 import { createResponseMeta } from './support';
-
-type GetAppMetadataRequest = BrowserTypes.GetAppMetadataRequest;
-type GetAppMetadataResponse = BrowserTypes.GetAppMetadataResponse;
 
 export class GetAppMetadata implements AutomaticResponse {
   filter(t: string) {

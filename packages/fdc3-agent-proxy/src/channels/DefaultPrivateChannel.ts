@@ -6,7 +6,6 @@ import {
   PrivateChannel,
   PrivateChannelEventTypes,
 } from '@kite9/fdc3-standard';
-import { BrowserTypes } from '@kite9/fdc3-schema';
 import { DefaultChannel } from './DefaultChannel';
 import { Messaging } from '../Messaging';
 import {
@@ -17,9 +16,10 @@ import {
 } from '../listeners/PrivateChannelEventListener';
 import { DefaultContextListener } from '../listeners/DefaultContextListener';
 import { RegisterableListener } from '../listeners/RegisterableListener';
-
-type PrivateChannelDisconnectRequest = BrowserTypes.PrivateChannelDisconnectRequest;
-type PrivateChannelDisconnectResponse = BrowserTypes.PrivateChannelDisconnectResponse;
+import {
+  PrivateChannelDisconnectRequest,
+  PrivateChannelDisconnectResponse,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 export class DefaultPrivateChannel extends DefaultChannel implements PrivateChannel {
   constructor(messaging: Messaging, id: string) {
@@ -80,16 +80,14 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
   }
 
   async disconnect(): Promise<void> {
-    await this.messaging.exchange<PrivateChannelDisconnectResponse>(
-      {
-        meta: this.messaging.createMeta(),
-        payload: {
-          channelId: this.id,
-        },
-        type: 'privateChannelDisconnectRequest',
-      } as PrivateChannelDisconnectRequest,
-      'privateChannelDisconnectResponse'
-    );
+    const msg: PrivateChannelDisconnectRequest = {
+      meta: this.messaging.createMeta(),
+      payload: {
+        channelId: this.id,
+      },
+      type: 'privateChannelDisconnectRequest',
+    };
+    await this.messaging.exchange<PrivateChannelDisconnectResponse>(msg, 'privateChannelDisconnectResponse');
   }
 
   async addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
