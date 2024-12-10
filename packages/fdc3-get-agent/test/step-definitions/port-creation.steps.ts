@@ -29,11 +29,11 @@ Given(
 );
 
 Given('{string} pipes messages to {string}', async function (this: CustomWorld, port: string, output: string) {
-  const out: any[] = [];
+  const out: {type: string, data: any}[] = [];
   this.props[output] = out;
 
   const internalPort = handleResolve(port, this);
-  internalPort.onmessage = (e: any) => {
+  internalPort.onmessage = (e: MessageEvent) => {
     out.push({ type: e.type, data: e.data });
   };
 });

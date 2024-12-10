@@ -9,7 +9,7 @@ export class CustomWorld extends PropsWorld {
 
     mockContext: TestServerContext = new TestServerContext(this)
 
-    debugLogs: boolean = false;
+    debugLogs: boolean = true;
 
 }
 

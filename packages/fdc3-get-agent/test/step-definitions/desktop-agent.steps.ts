@@ -1,6 +1,6 @@
-import { After, DataTable, Given, When } from '@cucumber/cucumber';
+import { After, DataTable, Given, Then, When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
-import { handleResolve, setupGenericSteps } from '@kite9/testing';
+import { doesRowMatch, handleResolve, setupGenericSteps } from '@kite9/testing';
 import { MockDocument } from '../support/MockDocument';
 import { MockWindow } from '../support/MockWindow';
 import { fdc3Ready, getAgent } from '../../src';
@@ -15,6 +15,7 @@ import { DesktopAgent, ImplementationMetadata } from '@kite9/fdc3-standard';
 import { clearAgentPromise } from '../../src/strategies/getAgent';
 import expect from 'expect';
 import { dummyInstanceDetails } from '../support/TestServerContext';
+import { MockIFrame } from '../support/MockIFrame';
 
 interface MockPageTransitionEvent extends Event {
   persisted?: boolean;
@@ -72,7 +73,8 @@ Given(
       this.mockContext.open(dummyInstanceDetails[0].appId);
       const document = handleResolve(doc, this) as MockDocument;
       const ifrm = document.createElement('iframe');
-      this.mockFDC3Server = new MockFDC3Server(ifrm as any, false, this.mockContext);
+      
+      this.mockFDC3Server = new MockFDC3Server(ifrm as unknown as MockIFrame, false, this.mockContext);
       ifrm.setAttribute('src', EMBED_URL);
       document.body.appendChild(ifrm);
       return ifrm;
@@ -238,6 +240,29 @@ Given(
 );
 
 Given(
+  'SessionStorage contains instanceUuid {string}, appId {string} with identityUrl {string}, agentType {string} and agentUrl {string}',
+  async function (this: CustomWorld, uuid: string, appId: string, identityUrl: string, agentType: string, agentUrl: string) {
+    const theUuid = handleResolve(uuid, this);
+    const theAppId = handleResolve(appId, this);
+    const theIdentityUrl = handleResolve(identityUrl, this);
+    const theAgentType = handleResolve(agentType, this);
+    const theAgentUrl = handleResolve(agentUrl, this);
+    const details: Record<string, DesktopAgentDetails> = {};
+    details[theIdentityUrl] = {
+      agentType: theAgentType,
+      instanceUuid: theUuid,
+      appId: theAppId,
+      instanceId: 'uuid-0',
+      identityUrl: theIdentityUrl,
+      actualUrl: theIdentityUrl,
+      agentUrl: theAgentUrl
+    };
+
+    globalThis.sessionStorage.setItem(DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX + '-mocky', JSON.stringify(details));
+  }
+);
+
+Given(
   'SessionStorage contains partial data with with identityUrl {string}, appId {string} and agentType {string}',
   async function (this: CustomWorld, identityUrl: string, agentType: string, appId: string) {
     const theIdentityUrl = handleResolve(identityUrl, this);
@@ -268,6 +293,39 @@ Given(
   'SessionStorage is clear',
   async function () {
     globalThis.sessionStorage.clear();
+  }
+);
+
+Then(
+  'SessionStorage should contain instanceUuid {string}, appId {string} with identityUrl {string}, agentType {string} and agentUrl {string}',
+  async function (this: CustomWorld, uuid: string, appId: string, identityUrl: string, agentType: string, agentUrl: string) {
+    const theUuid = handleResolve(uuid, this);
+    const theAppId = handleResolve(appId, this);
+    const theIdentityUrl = handleResolve(identityUrl, this);
+    const theAgentType = handleResolve(agentType, this);
+    const theAgentUrl = handleResolve(agentUrl, this);
+    
+    const value = globalThis.sessionStorage.getItem(DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX + '-mocky');
+    expect(value).toBeTruthy();
+    const theObject = JSON.parse(value!);
+    const details = theObject[theIdentityUrl];
+    expect(details).toBeTruthy();
+    expect(details.agentType).toEqual(theAgentType);
+    expect(details.agentUrl).toEqual(theAgentUrl);
+    expect(details.appId).toEqual(theAppId);
+    expect(details.instanceUuid).toEqual(theUuid);
+  }
+);
+
+Then('SessionStorage for identityUrl {string} should contain the following values', 
+  function (this: CustomWorld, identityUrl: string, dt: DataTable) {
+    const theIdentityUrl = handleResolve(identityUrl, this);
+    const value = globalThis.sessionStorage.getItem(DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX + '-mocky');
+    expect(value).toBeTruthy();
+    const theObject = JSON.parse(value!);
+    const details = theObject[theIdentityUrl];
+    const table = dt.hashes();
+    expect(doesRowMatch(this, table[0], details)).toBeTruthy();
   }
 );
 

@@ -57,6 +57,8 @@ export class HelloHandler {
       },
     };
 
+    Logger.debug("HelloHandler: Sending hello msg: ", requestMessage);
+
     w.postMessage(requestMessage, { targetOrigin: origin });
   }
 
@@ -74,8 +76,23 @@ export class HelloHandler {
       existing.remove();
     }
 
+    //note the iframe URL and desktop agent type have changed
+    this.agentType = WebDesktopAgentType.ProxyUrl;
+    this.agentUrl = url;
+
     // create a new one
     const ifrm = document.createElement('iframe');
+    
+    //Wait for the iframe to load... then send it a hello message
+    ifrm.addEventListener("load", () => {
+      if (ifrm.contentWindow) {
+        Logger.debug("Sending hello message to communication iframe");
+        this.sendWCP1Hello(ifrm.contentWindow, '*');
+      } else {
+        Logger.error('iframe does not have a contentWindow, despite firing its load event!');
+      }
+    });
+
     ifrm.setAttribute('src', url);
     ifrm.setAttribute('id', IFRAME_ID);
     ifrm.setAttribute('name', 'FDC3 Communications');
@@ -84,14 +101,6 @@ export class HelloHandler {
     ifrm.style.border = '0';
     ifrm.style.position = 'fixed';
 
-    //Wait for the iframe to load... then send it a hello message
-    ifrm.onload = () => {
-      if (ifrm.contentWindow) {
-        this.sendWCP1Hello(ifrm.contentWindow, '*');
-      } else {
-        Logger.error('iframe does not have a contentWindow, despite firing its load event!');
-      }
-    };
     document.body.appendChild(ifrm);
   }
 
@@ -112,10 +121,6 @@ export class HelloHandler {
             // in this case, we need to load the URL with the embedded Iframe
             const url = data.payload.iframeUrl;
             this.openFrame(url);
-
-            //note the iframe URL and desktop agent type have changed
-            this.agentType = WebDesktopAgentType.ProxyUrl;
-            this.agentUrl = url;
 
             //n.b event listener remains in place to receive messages from the iframe
           } else if (isWebConnectionProtocol3Handshake(data)) {
