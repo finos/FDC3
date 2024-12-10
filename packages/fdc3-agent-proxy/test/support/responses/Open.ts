@@ -1,9 +1,6 @@
+import { OpenRequest, OpenResponse } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { AutomaticResponse, TestMessaging } from '../TestMessaging';
-import { BrowserTypes } from '@kite9/fdc3-schema';
 import { createResponseMeta } from './support';
-
-type OpenRequest = BrowserTypes.OpenRequest;
-type OpenResponse = BrowserTypes.OpenResponse;
 
 export class Open implements AutomaticResponse {
   filter(t: string) {

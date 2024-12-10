@@ -2,17 +2,15 @@ import { DataTable, Given, Then, When } from '@cucumber/cucumber';
 import { Context } from '@kite9/fdc3-context';
 import { handleResolve, matchData } from '@kite9/testing';
 import { CustomWorld } from '../world/index';
-import { BrowserTypes } from '@kite9/fdc3-schema';
 import { CHANNEL_STATE } from '@kite9/testing';
 import { ApiEvent } from '@kite9/fdc3-standard';
 import {
+  BroadcastEvent,
   ChannelChangedEvent,
   PrivateChannelOnAddContextListenerEvent,
+  PrivateChannelOnDisconnectEvent,
+  PrivateChannelOnUnsubscribeEvent,
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
-
-type BroadcastEvent = BrowserTypes.BroadcastEvent;
-type PrivateChannelOnUnsubscribeEvent = BrowserTypes.PrivateChannelOnUnsubscribeEvent;
-type PrivateChannelOnDisconnectEvent = BrowserTypes.PrivateChannelOnDisconnectEvent;
 
 const contextMap: Record<string, Context> = {
   'fdc3.instrument': {

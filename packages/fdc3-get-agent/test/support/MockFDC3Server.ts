@@ -7,15 +7,14 @@ import { RaiseIntent } from './responses/RaiseIntent';
 import { Handshake } from './responses/Handshake';
 import { UserChannels } from './responses/UserChannels';
 import { CurrentChannel } from './responses/CurrentChannel';
-import { BrowserTypes } from '@kite9/fdc3-schema';
 import { GetInfo } from './responses/GetInfo';
-
-type AppRequestMessage = BrowserTypes.AppRequestMessage;
-type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL;
-type WebConnectionProtocol3Handshake = BrowserTypes.WebConnectionProtocol3Handshake;
+import {
+  AppRequestMessage,
+  WebConnectionProtocol2LoadURL,
+  WebConnectionProtocol3Handshake,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 export const EMBED_URL = 'http://localhost:8080/static/da/embed.html';
-
 export const CHANNEL_SELECTOR_URL = 'https://mock.fdc3.com/channelSelector';
 export const INTENT_RESOLVER_URL = 'https://mock.fdc3.com/resolver';
 

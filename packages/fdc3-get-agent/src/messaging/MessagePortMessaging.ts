@@ -1,9 +1,11 @@
 import { AbstractMessaging, RegisterableListener } from '@kite9/fdc3-agent-proxy';
 import { AppIdentifier, GetAgentParams, WebDesktopAgentType } from '@kite9/fdc3-standard';
 import { v4 as uuidv4 } from 'uuid';
-import { BrowserTypes } from '@kite9/fdc3-schema';
-import { AppRequestMessage, WebConnectionProtocol6Goodbye } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
-type WebConnectionProtocol3Handshake = BrowserTypes.WebConnectionProtocol3Handshake;
+import {
+  AppRequestMessage,
+  WebConnectionProtocol3Handshake,
+  WebConnectionProtocol6Goodbye,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 /**
  * Details needed to set up the Messaging instance and Desktop AgentDetails record
