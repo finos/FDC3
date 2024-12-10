@@ -11,8 +11,20 @@ const errorColor: ColorFn = value => pc.red(value);
 
 const prefixAndColorize = (params: any[], colorFn: ColorFn): string[] => {
   const prefixed = [GET_AGENT_LOG_PREFIX, ...params];
-  return prefixed.map(value => colorFn(typeof value === 'string' ? value : JSON.stringify(value, null, 2)));
+  return prefixed.map(value => {
+    if (typeof value === 'string') {
+      //just color strings
+      return colorFn(value);
+    } else if (value && value.stack && value.message) {
+      //probably an error
+      return colorFn(value.stack);
+    } else {
+      //something else... lets hope it stringifies
+      return colorFn(JSON.stringify(value, null, 2));
+    }
+  });
 };
+
 export class Logger {
   static debug(...params: any[]) {
     console.debug(...prefixAndColorize(params, debugColor));
