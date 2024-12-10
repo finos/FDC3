@@ -3,44 +3,30 @@ import pc from 'picocolors';
 
 const GET_AGENT_LOG_PREFIX = 'FDC3 getAgent: ';
 
+type ColorFn = (aString: string) => string;
+const debugColor: ColorFn = value => pc.black(pc.dim(value));
+const logColor: ColorFn = value => pc.green(pc.dim(value));
+const warnColor: ColorFn = value => pc.yellow(value);
+const errorColor: ColorFn = value => pc.red(value);
+
+const prefixAndColorize = (params: any[], colorFn: ColorFn): string[] => {
+  const prefixed = [GET_AGENT_LOG_PREFIX, ...params];
+  return prefixed.map(value => colorFn(typeof value === 'string' ? value : JSON.stringify(value, null, 2)));
+};
 export class Logger {
   static debug(...params: any[]) {
-    if (typeof params[0] === 'string') {
-      const msg = GET_AGENT_LOG_PREFIX + params[0];
-      const furtherArgs = params.slice(1);
-      console.debug(pc.black(pc.dim(msg)), ...furtherArgs);
-    } else {
-      console.debug(pc.black(pc.dim(GET_AGENT_LOG_PREFIX)), ...params);
-    }
+    console.debug(...prefixAndColorize(params, debugColor));
   }
 
   static log(...params: any[]) {
-    if (typeof params[0] === 'string') {
-      const msg = GET_AGENT_LOG_PREFIX + params[0];
-      const furtherArgs = params.slice(1);
-      console.log(pc.green(pc.dim(msg)), ...furtherArgs);
-    } else {
-      console.log(pc.green(pc.dim(GET_AGENT_LOG_PREFIX)), ...params);
-    }
+    console.log(...prefixAndColorize(params, logColor));
   }
 
   static warn(...params: any[]) {
-    if (typeof params[0] === 'string') {
-      const msg = GET_AGENT_LOG_PREFIX + params[0];
-      const furtherArgs = params.slice(1);
-      console.warn(pc.yellow(pc.dim(msg)), ...furtherArgs);
-    } else {
-      console.warn(pc.yellow(pc.dim(GET_AGENT_LOG_PREFIX)), ...params);
-    }
+    console.warn(...prefixAndColorize(params, warnColor));
   }
 
   static error(...params: any[]) {
-    if (typeof params[0] === 'string') {
-      const msg = GET_AGENT_LOG_PREFIX + params[0];
-      const furtherArgs = params.slice(1);
-      console.error(pc.red(pc.dim(msg)), ...furtherArgs);
-    } else {
-      console.error(pc.red(pc.dim(GET_AGENT_LOG_PREFIX)), ...params);
-    }
+    console.error(...prefixAndColorize(params, errorColor));
   }
 }
