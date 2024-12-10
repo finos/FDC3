@@ -26,8 +26,8 @@ export class FailoverHandler {
   /** Parameters passed to getAgent */
   options: GetAgentParams;
 
-  	/** UUID used to filter messages */
-	connectionAttemptUuid: string;  
+  /** UUID used to filter messages */
+  connectionAttemptUuid: string;
 
   /** Handler class for hello/handshake messages */
   helloHandler: HelloHandler;
@@ -63,12 +63,11 @@ export class FailoverHandler {
               identityUrl: globalThis.window.location.href,
               actualUrl: globalThis.window.location.href,
               appId: implMetadata.appMetadata.appId,
-              instanceId: implMetadata.appMetadata.instanceId ?? "unknown",
-              instanceUuid: implMetadata.appMetadata.instanceId ?? "unknown", // preload DAs don't issue these so repeat the instanceId
+              instanceId: implMetadata.appMetadata.instanceId ?? 'unknown',
+              instanceUuid: implMetadata.appMetadata.instanceId ?? 'unknown', // preload DAs don't issue these so repeat the instanceId
             },
           };
           return desktopAgentSelection;
-          
         } else if (isWindow(failoverResult)) {
           //if the result was a Window/WindowProxy
           //send a hello message
@@ -84,13 +83,17 @@ export class FailoverHandler {
       //if we received a WindowProxy from failover, and it sent us a handshake, try to validate its identity
       const connectionDetails = await handshakePromise;
       try {
-        this.identityValidationHandler = new IdentityValidationHandler(connectionDetails.messagePort, this.options, this.connectionAttemptUuid)
+        this.identityValidationHandler = new IdentityValidationHandler(
+          connectionDetails.messagePort,
+          this.options,
+          this.connectionAttemptUuid
+        );
         const idValidationPromise = this.identityValidationHandler.listenForIDValidationResponses();
-        this.identityValidationHandler.sendIdValidationMessage()
+        this.identityValidationHandler.sendIdValidationMessage();
         const idDetails = await idValidationPromise;
         const appIdentifier: AppIdentifier = {
           appId: idDetails.payload.appId,
-          instanceId: idDetails.payload.instanceId
+          instanceId: idDetails.payload.instanceId,
         };
         const desktopAgentSelection: DesktopAgentSelection = {
           agent: await createDesktopAgentAPI(connectionDetails, appIdentifier),
@@ -101,18 +104,17 @@ export class FailoverHandler {
             actualUrl: connectionDetails.actualUrl,
             appId: idDetails.payload.appId,
             instanceId: idDetails.payload.instanceId,
-            instanceUuid: idDetails.payload.instanceUuid
+            instanceUuid: idDetails.payload.instanceUuid,
           },
         };
 
         return desktopAgentSelection;
       } catch (e) {
         //identity validation may have failed
-        Logger.error("Error during identity validation of Failover", e);
+        Logger.error('Error during identity validation of Failover', e);
         throw e;
-      }   
-    }
-    finally {
+      }
+    } finally {
       //cleanup any remaining listeners
       this.cancel();
     }
@@ -121,9 +123,8 @@ export class FailoverHandler {
   /** Removes listeners so that events are no longer processed */
   cancel() {
     this.helloHandler.cancel();
-    if (this.identityValidationHandler){
+    if (this.identityValidationHandler) {
       this.identityValidationHandler.cancel();
     }
   }
-
 }

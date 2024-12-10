@@ -52,8 +52,13 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
   getMatchingInstance(url: string): ConnectionDetails | undefined {
     const details = this.instances.find(ca => ca.url === url);
     if (!details) {
-      const knownInstances = this.instances.map(inst => { return {appId: inst.appId, url: inst.url} });
-      console.error(`No connection instance found for ${url} - will return a mismatched instance, known instances: `, knownInstances);
+      const knownInstances = this.instances.map(inst => {
+        return { appId: inst.appId, url: inst.url };
+      });
+      console.error(
+        `No connection instance found for ${url} - will return a mismatched instance, known instances: `,
+        knownInstances
+      );
       return this.instances[0];
     }
     return details;

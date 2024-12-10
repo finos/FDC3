@@ -5,7 +5,6 @@
 
 import { DesktopAgent } from './api/DesktopAgent';
 
-
 //explicit overwrite of conflicting & equivalent export from ContextTypes
 export { AppIdentifier } from './api/AppIdentifier';
 export * from './api/AppIntent';
@@ -32,9 +31,9 @@ export * from './context/ContextType';
 export * from './intents/Intents';
 export * from './ui/IntentResolver';
 export * from './ui/ChannelSelector';
-export * from './ui/Connectable'
+export * from './ui/Connectable';
 
-export const FDC3_VERSION = "2.2";
+export const FDC3_VERSION = '2.2';
 
 declare global {
   interface Window {

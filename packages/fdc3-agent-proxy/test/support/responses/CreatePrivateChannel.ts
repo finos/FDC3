@@ -1,41 +1,42 @@
-import { AutomaticResponse, TestMessaging } from "../TestMessaging";
-import { BrowserTypes } from "@kite9/fdc3-schema";
-import { createResponseMeta } from "./support";
-import { v4 as uuidv4 } from 'uuid'
+import { AutomaticResponse, TestMessaging } from '../TestMessaging';
+import { BrowserTypes } from '@kite9/fdc3-schema';
+import { createResponseMeta } from './support';
+import { v4 as uuidv4 } from 'uuid';
 
-type CreatePrivateChannelRequest = BrowserTypes.CreatePrivateChannelRequest
-type CreatePrivateChannelResponse = BrowserTypes.CreatePrivateChannelResponse
+type CreatePrivateChannelRequest = BrowserTypes.CreatePrivateChannelRequest;
+type CreatePrivateChannelResponse = BrowserTypes.CreatePrivateChannelResponse;
 
 export class CreatePrivateChannel implements AutomaticResponse {
+  count: number = 0;
 
-    count: number = 0
+  filter(t: string) {
+    return t == 'createPrivateChannelRequest';
+  }
 
-    filter(t: string) {
-        return t == 'createPrivateChannelRequest'
-    }
+  action(input: object, m: TestMessaging) {
+    const out = this.createResponse(input as CreatePrivateChannelRequest);
 
-    action(input: object, m: TestMessaging) {
-        const out = this.createResponse(input as CreatePrivateChannelRequest)
+    setTimeout(() => {
+      m.receive(out);
+    }, 100);
+    return Promise.resolve();
+  }
 
-        setTimeout(() => { m.receive(out) }, 100)
-        return Promise.resolve()
-    }
-
-    private createResponse(i: CreatePrivateChannelRequest): CreatePrivateChannelResponse {
-        return {
-            meta: createResponseMeta(i.meta),
-            type: "createPrivateChannelResponse",
-            payload: {
-                privateChannel: {
-                    id: uuidv4(),
-                    type: 'private',
-                    displayMetadata: {
-                        name: 'Private Channel' + this.count++,
-                        color: 'blue',
-                        glyph: 'circle'
-                    }
-                }
-            }
-        }
-    }
+  private createResponse(i: CreatePrivateChannelRequest): CreatePrivateChannelResponse {
+    return {
+      meta: createResponseMeta(i.meta),
+      type: 'createPrivateChannelResponse',
+      payload: {
+        privateChannel: {
+          id: uuidv4(),
+          type: 'private',
+          displayMetadata: {
+            name: 'Private Channel' + this.count++,
+            color: 'blue',
+            glyph: 'circle',
+          },
+        },
+      },
+    };
+  }
 }

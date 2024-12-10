@@ -1,12 +1,8 @@
 import { AppIdentifier } from '@kite9/fdc3-standard';
 import { RegisterableListener } from './listeners/RegisterableListener';
-import {
-  AppRequestMessage,
-  AgentResponseMessage
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { AppRequestMessage, AgentResponseMessage } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 export interface Messaging /*extends Connectable*/ {
-
   /**
    * Creates UUIDs used in outgoing messages
    */
@@ -43,7 +39,11 @@ export interface Messaging /*extends Connectable*/ {
    * Sends a request message and waits for a response. If the response contains a payload.error, it is thrown.
    * @param message The request message to send.
    */
-  exchange<X extends AgentResponseMessage>(message: AppRequestMessage, expectedTypeName: string, timeoutErrorMessage?: string): Promise<X>;
+  exchange<X extends AgentResponseMessage>(
+    message: AppRequestMessage,
+    expectedTypeName: string,
+    timeoutErrorMessage?: string
+  ): Promise<X>;
 
   /**
    * App identification used to provide source information used in
@@ -52,5 +52,5 @@ export interface Messaging /*extends Connectable*/ {
   getAppIdentifier(): AppIdentifier;
 
   /** Disconnects the underlying message transport. */
-  disconnect(): Promise<void>
+  disconnect(): Promise<void>;
 }

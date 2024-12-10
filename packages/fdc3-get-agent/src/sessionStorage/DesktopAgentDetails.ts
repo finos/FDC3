@@ -46,9 +46,9 @@ export function retrieveAllDesktopAgentDetails(): Record<string, DesktopAgentDet
       }
       return theData;
     } catch (e) {
-      Logger.error(
-        `DesktopAgentDetails: FDC3 connection data couldn't be parsed\nstorage key: ${sessionKey()}\nvalue: ${detailsStr}`,
-        e
+      Logger.warn(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        `DesktopAgentDetails: FDC3 connection data couldn't be parsed\nstorage key: ${sessionKey()}\nvalue: ${detailsStr}\nmessage: ${(e as any).message ?? e}`
       );
       return null;
     }
@@ -63,7 +63,7 @@ export function retrieveAllDesktopAgentDetails(): Record<string, DesktopAgentDet
  */
 export function retrieveDesktopAgentDetails(identityUrl: string): DesktopAgentDetails | null {
   const allDetails = retrieveAllDesktopAgentDetails();
-  Logger.log(`DesktopAgentDetails: retrieveDesktopAgentDetails:`, allDetails);
+  Logger.debug(`DesktopAgentDetails: retrieveDesktopAgentDetails:`, allDetails);
   if (allDetails) {
     const theData: DesktopAgentDetails = allDetails[identityUrl];
 
@@ -76,7 +76,9 @@ export function retrieveDesktopAgentDetails(identityUrl: string): DesktopAgentDe
       return theData;
     } else {
       //ignore it and post a warning
-      Logger.warn('DesktopAgentDetails: Stored details do not meet minimum requirements and will be ignored', theData);
+      Logger.warn(
+        `DesktopAgentDetails: Stored details do not meet minimum requirements and will be ignored:\n${JSON.stringify(theData)}`
+      );
       return null;
     }
   } else {

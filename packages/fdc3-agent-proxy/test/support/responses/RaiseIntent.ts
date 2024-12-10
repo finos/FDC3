@@ -1,4 +1,8 @@
-import { RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import {
+  RaiseIntentRequest,
+  RaiseIntentResponse,
+  RaiseIntentResultResponse,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { AutomaticResponse, IntentDetail, intentDetailMatches, TestMessaging } from '../TestMessaging';
 import { AppMetadata, ResolveError } from '@kite9/fdc3-standard';
 import { createResponseMeta } from './support';
@@ -44,7 +48,7 @@ export class RaiseIntent implements AutomaticResponse {
 
       return out;
     } else {
-        throw new Error("TestMessaging did not return an IntentResult")
+      throw new Error('TestMessaging did not return an IntentResult');
     }
   }
 
@@ -85,12 +89,12 @@ export class RaiseIntent implements AutomaticResponse {
         payload: {
           appIntent: {
             apps: relevant.reduce<AppMetadata[]>((filtered, r) => {
-                if (r.app?.appId){
-                    filtered.push({
-                        appId: r.app.appId,
-                        instanceId: r.app.instanceId,
-                      });
-                }
+              if (r.app?.appId) {
+                filtered.push({
+                  appId: r.app.appId,
+                  instanceId: r.app.instanceId,
+                });
+              }
               return filtered;
             }, []),
             intent: {
@@ -101,7 +105,7 @@ export class RaiseIntent implements AutomaticResponse {
         },
       };
     } else {
-        throw new Error("createRaiseIntentResponseMessage did not produce a valid result!")
+      throw new Error('createRaiseIntentResponseMessage did not produce a valid result!');
     }
   }
 
@@ -123,7 +127,7 @@ export class RaiseIntent implements AutomaticResponse {
 
       return out;
     } else {
-        return;
+      return;
     }
   }
 

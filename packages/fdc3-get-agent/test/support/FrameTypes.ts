@@ -1,9 +1,7 @@
 import { CustomWorld } from '../world';
 import { MockWindow } from './MockWindow';
 import { CHANNEL_SELECTOR_URL, INTENT_RESOLVER_URL } from './MockFDC3Server';
-import {
-  isWebConnectionProtocol1Hello,
-} from '@kite9/fdc3-schema/dist/generated/api/BrowserTypes';
+import { isWebConnectionProtocol1Hello } from '@kite9/fdc3-schema/dist/generated/api/BrowserTypes';
 import {
   Fdc3UserInterfaceHello,
   Fdc3UserInterfaceRestyle,
@@ -81,7 +79,7 @@ export function handleChannelSelectorComms(
       if (isFdc3UserInterfaceHandshake(e)) {
         setTimeout(() => {
           const msg: Fdc3UserInterfaceRestyle = {
-            type: "Fdc3UserInterfaceRestyle",
+            type: 'Fdc3UserInterfaceRestyle',
             payload: {
               updatedCSS: {
                 width: '100px',
@@ -109,7 +107,7 @@ export function handleIntentResolverComms(
   const connection = new MessageChannel();
   try {
     const msg: Fdc3UserInterfaceHello = {
-      type: "Fdc3UserInterfaceHello",
+      type: 'Fdc3UserInterfaceHello',
       payload: {
         implementationDetails: 'mock intent resolver',
         initialCSS: {
@@ -128,16 +126,16 @@ export function handleIntentResolverComms(
     connection.port2.onmessage = e => {
       if (isFdc3UserInterfaceHandshake(e)) {
         setTimeout(() => {
-            const msg: Fdc3UserInterfaceRestyle = {
-              type: "Fdc3UserInterfaceRestyle",
-              payload: {
-                updatedCSS: {
-                  width: '100px',
-                },
+          const msg: Fdc3UserInterfaceRestyle = {
+            type: 'Fdc3UserInterfaceRestyle',
+            payload: {
+              updatedCSS: {
+                width: '100px',
               },
-            };
-            connection.port2.postMessage(msg);
-          }, 100);
+            },
+          };
+          connection.port2.postMessage(msg);
+        }, 100);
       }
 
       cw.props['lastIntentResolverMessage'] = e;

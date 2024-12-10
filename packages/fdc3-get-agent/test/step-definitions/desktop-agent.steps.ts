@@ -4,11 +4,7 @@ import { doesRowMatch, handleResolve, setupGenericSteps } from '@kite9/testing';
 import { MockDocument } from '../support/MockDocument';
 import { MockWindow } from '../support/MockWindow';
 import { fdc3Ready, getAgent } from '../../src';
-import {
-  DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX,
-  DesktopAgentDetails,
-  GetAgentParams,
-} from '@kite9/fdc3-standard';
+import { DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX, DesktopAgentDetails, GetAgentParams } from '@kite9/fdc3-standard';
 import { EMBED_URL, MockFDC3Server } from '../support/MockFDC3Server';
 import { MockStorage } from '../support/MockStorage';
 import { DesktopAgent, ImplementationMetadata } from '@kite9/fdc3-standard';
@@ -73,7 +69,7 @@ Given(
       this.mockContext.open(dummyInstanceDetails[0].appId);
       const document = handleResolve(doc, this) as MockDocument;
       const ifrm = document.createElement('iframe');
-      
+
       this.mockFDC3Server = new MockFDC3Server(ifrm as unknown as MockIFrame, false, this.mockContext);
       ifrm.setAttribute('src', EMBED_URL);
       document.body.appendChild(ifrm);
@@ -88,19 +84,21 @@ Given('an existing app instance in {string}', async function (this: CustomWorld,
 });
 
 Given('A Dummy Desktop Agent in {string}', async function (this: CustomWorld, field: string) {
-  const notImplemented = () => { throw new Error('Function not implemented.'); };
+  const notImplemented = () => {
+    throw new Error('Function not implemented.');
+  };
   const da: DesktopAgent = {
     async getInfo(): Promise<ImplementationMetadata> {
       return {
         fdc3Version: '2.0',
         optionalFeatures: {
-          "DesktopAgentBridging": false,
-          "OriginatingAppMetadata": false,
-          "UserChannelMembershipAPIs": false
+          DesktopAgentBridging: false,
+          OriginatingAppMetadata: false,
+          UserChannelMembershipAPIs: false,
         },
         appMetadata: {
           appId: 'cucumber-app',
-          instanceId: 'uuid-0'
+          instanceId: 'uuid-0',
         },
         provider: 'preload-provider',
       };
@@ -123,7 +121,7 @@ Given('A Dummy Desktop Agent in {string}', async function (this: CustomWorld, fi
     leaveCurrentChannel: notImplemented,
     getAppMetadata: notImplemented,
     getSystemChannels: notImplemented,
-    joinChannel: notImplemented
+    joinChannel: notImplemented,
   };
 
   this.props[field] = da;
@@ -241,7 +239,14 @@ Given(
 
 Given(
   'SessionStorage contains instanceUuid {string}, appId {string} with identityUrl {string}, agentType {string} and agentUrl {string}',
-  async function (this: CustomWorld, uuid: string, appId: string, identityUrl: string, agentType: string, agentUrl: string) {
+  async function (
+    this: CustomWorld,
+    uuid: string,
+    appId: string,
+    identityUrl: string,
+    agentType: string,
+    agentUrl: string
+  ) {
     const theUuid = handleResolve(uuid, this);
     const theAppId = handleResolve(appId, this);
     const theIdentityUrl = handleResolve(identityUrl, this);
@@ -255,7 +260,7 @@ Given(
       instanceId: 'uuid-0',
       identityUrl: theIdentityUrl,
       actualUrl: theIdentityUrl,
-      agentUrl: theAgentUrl
+      agentUrl: theAgentUrl,
     };
 
     globalThis.sessionStorage.setItem(DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX + '-mocky', JSON.stringify(details));
@@ -268,43 +273,47 @@ Given(
     const theIdentityUrl = handleResolve(identityUrl, this);
     const theAgentType = handleResolve(agentType, this);
     const theAppId = handleResolve(appId, this);
-    
+
     const partialDetails: Record<string, Partial<DesktopAgentDetails>> = {};
     partialDetails[theIdentityUrl] = {
       agentType: theAgentType,
       appId: theAppId,
-      identityUrl: identityUrl
+      identityUrl: identityUrl,
     };
 
-    globalThis.sessionStorage.setItem(DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX + '-mocky', JSON.stringify(partialDetails));
+    globalThis.sessionStorage.setItem(
+      DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX + '-mocky',
+      JSON.stringify(partialDetails)
+    );
   }
 );
 
-Given(
-  'SessionStorage contains corrupted data',
-  async function (this: CustomWorld) {
-    const corruptedData = ["All your base are belong to us"];
+Given('SessionStorage contains corrupted data', async function (this: CustomWorld) {
+  const corruptedData = ['All your base are belong to us'];
 
-    globalThis.sessionStorage.setItem(DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX + '-mocky', JSON.stringify(corruptedData));
-  }
-);
+  globalThis.sessionStorage.setItem(DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX + '-mocky', JSON.stringify(corruptedData));
+});
 
-Given(
-  'SessionStorage is clear',
-  async function () {
-    globalThis.sessionStorage.clear();
-  }
-);
+Given('SessionStorage is clear', async function () {
+  globalThis.sessionStorage.clear();
+});
 
 Then(
   'SessionStorage should contain instanceUuid {string}, appId {string} with identityUrl {string}, agentType {string} and agentUrl {string}',
-  async function (this: CustomWorld, uuid: string, appId: string, identityUrl: string, agentType: string, agentUrl: string) {
+  async function (
+    this: CustomWorld,
+    uuid: string,
+    appId: string,
+    identityUrl: string,
+    agentType: string,
+    agentUrl: string
+  ) {
     const theUuid = handleResolve(uuid, this);
     const theAppId = handleResolve(appId, this);
     const theIdentityUrl = handleResolve(identityUrl, this);
     const theAgentType = handleResolve(agentType, this);
     const theAgentUrl = handleResolve(agentUrl, this);
-    
+
     const value = globalThis.sessionStorage.getItem(DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX + '-mocky');
     expect(value).toBeTruthy();
     const theObject = JSON.parse(value!);
@@ -317,7 +326,8 @@ Then(
   }
 );
 
-Then('SessionStorage for identityUrl {string} should contain the following values', 
+Then(
+  'SessionStorage for identityUrl {string} should contain the following values',
   function (this: CustomWorld, identityUrl: string, dt: DataTable) {
     const theIdentityUrl = handleResolve(identityUrl, this);
     const value = globalThis.sessionStorage.getItem(DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX + '-mocky');

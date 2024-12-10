@@ -199,8 +199,4 @@ export class DefaultChannelSupport implements ChannelSupport {
     await listener.register();
     return listener;
   }
-
-  
 }
-
-

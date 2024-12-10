@@ -1,10 +1,13 @@
 import { ContextHandler, DisplayMetadata, Listener, Channel } from '@kite9/fdc3-standard';
 import { Context } from '@kite9/fdc3-context';
-
 import { Messaging } from '../Messaging';
 import { DefaultContextListener } from '../listeners/DefaultContextListener';
-import { BroadcastRequest, BroadcastResponse, GetCurrentContextRequest, GetCurrentContextResponse } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
-
+import {
+  BroadcastRequest,
+  BroadcastResponse,
+  GetCurrentContextRequest,
+  GetCurrentContextResponse,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 export class DefaultChannel implements Channel {
   readonly messaging: Messaging;
@@ -51,7 +54,10 @@ export class DefaultChannel implements Channel {
     return response.payload.context ?? null;
   }
 
-  async addContextListener(contextTypeOrHandler: string | null | ContextHandler, handler?: ContextHandler): Promise<Listener> {
+  async addContextListener(
+    contextTypeOrHandler: string | null | ContextHandler,
+    handler?: ContextHandler
+  ): Promise<Listener> {
     let theContextType: string | null;
     let theHandler: ContextHandler;
 
@@ -67,7 +73,7 @@ export class DefaultChannel implements Channel {
       theHandler = contextTypeOrHandler as ContextHandler;
     } else {
       //invalid call
-      throw new Error("Invalid arguments passed to addContextListener!");
+      throw new Error('Invalid arguments passed to addContextListener!');
     }
 
     return await this.addContextListenerInner(theContextType, theHandler);
