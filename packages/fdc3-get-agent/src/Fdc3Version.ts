@@ -1,1 +1,1 @@
-export const FDC3_VERSION = "2.2"
+export const FDC3_VERSION = '2.2';

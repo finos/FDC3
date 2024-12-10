@@ -12,6 +12,12 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+        fetch-depth: 1000
+
+    - name: Fetch base
+      run: git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1000
 
     - name: Set up Node.js
       uses: actions/setup-node@v3

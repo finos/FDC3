@@ -38,7 +38,8 @@
     "report": "nyc report --reporter json-summary --report-dir nyc-coverage-report --exclude-after-remap false --temp-dir coverage",
     "lint": "npm run lint --workspaces --if-present",
     "syncpack": "npm exec syncpack fix-mismatches --types 'local'",
-    "dev": "concurrently \"cd toolbox/fdc3-workbench && npm run dev\" \"cd toolbox/fdc3-for-web/reference-ui && npm run dev\" \"cd toolbox/fdc3-for-web/demo && npm run dev\""
+    "dev": "concurrently \"cd toolbox/fdc3-workbench && npm run dev\" \"cd toolbox/fdc3-for-web/reference-ui && npm run dev\" \"cd toolbox/fdc3-for-web/demo && npm run dev\"",
+    "prepare": "husky"
   },
   "prettier": {
     "semi": true,
@@ -53,7 +54,14 @@
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.1.7",
     "istanbul-merge": "^2.0.0",
-    "nyc": "17.1.0"
+    "lint-staged": "^15.2.10",
+    "nyc": "17.1.0",
+    "prettier": "3.4.1"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }
