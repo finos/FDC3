@@ -9,26 +9,28 @@ import { ConnectionDetails } from '../messaging/MessagePortMessaging';
 import { Logger } from '../util/Logger';
 
 export class HelloHandler {
-  constructor(options: GetAgentParams, connectionAttemptUuid: string, agentType: WebDesktopAgentType = WebDesktopAgentType.ProxyParent) {
+  constructor(
+    options: GetAgentParams,
+    connectionAttemptUuid: string,
+    agentType: WebDesktopAgentType = WebDesktopAgentType.ProxyParent
+  ) {
     this.options = options;
-		this.connectionAttemptUuid = connectionAttemptUuid;
-		this.agentType = agentType;
-		this.helloResponseListener = null;
+    this.connectionAttemptUuid = connectionAttemptUuid;
+    this.agentType = agentType;
+    this.helloResponseListener = null;
   }
 
-	/** Parameters passed to getAgent */
-	options: GetAgentParams;
+  /** Parameters passed to getAgent */
+  options: GetAgentParams;
 
-	/** UUID used to filter messages */
-	connectionAttemptUuid: string;
+  /** UUID used to filter messages */
+  connectionAttemptUuid: string;
 
-	/** The agentType to set, which may change if we're asked to load a URL into an iframe */
-	agentType: WebDesktopAgentType;
+  /** The agentType to set, which may change if we're asked to load a URL into an iframe */
+  agentType: WebDesktopAgentType;
 
-	/** If we're asked to load a URL into an iframe, it is stored here to be saved in Session Storage */
+  /** If we're asked to load a URL into an iframe, it is stored here to be saved in Session Storage */
   agentUrl: string | null = null;
-
-
 
   /** Reference to event listener used for responses from Desktop Agents -
    *  Used to remove them when no longer needed.
@@ -57,17 +59,16 @@ export class HelloHandler {
       },
     };
 
-    Logger.debug("HelloHandler: Sending hello msg: ", requestMessage);
+    Logger.debug(`HelloHandler: Sending hello msg:\n${JSON.stringify(requestMessage)}`);
 
     w.postMessage(requestMessage, { targetOrigin: origin });
   }
 
   /**
    * Handle a request from a desktop agent that the client loads an adaptor URL
-	 * into an iframe instead of working with the parent window.
+   * into an iframe instead of working with the parent window.
    */
   openFrame(url: string) {
-          
     const IFRAME_ID = 'fdc3-communications-embedded-iframe';
 
     // remove an old one if it's there
@@ -82,11 +83,11 @@ export class HelloHandler {
 
     // create a new one
     const ifrm = document.createElement('iframe');
-    
+
     //Wait for the iframe to load... then send it a hello message
-    ifrm.addEventListener("load", () => {
+    ifrm.addEventListener('load', () => {
       if (ifrm.contentWindow) {
-        Logger.debug("Sending hello message to communication iframe");
+        Logger.debug('Sending hello message to communication iframe');
         this.sendWCP1Hello(ifrm.contentWindow, '*');
       } else {
         Logger.error('iframe does not have a contentWindow, despite firing its load event!');
@@ -109,13 +110,11 @@ export class HelloHandler {
    * @returns A Promise resolving to a set of connectiondetails
    */
   listenForHelloResponses(): Promise<ConnectionDetails> {
-          
-    return new Promise<ConnectionDetails>((resolve, ) => {
-
+    return new Promise<ConnectionDetails>(resolve => {
       // setup listener for message and retrieve JS URL from it
       this.helloResponseListener = (event: MessageEvent<WebConnectionProtocolMessage>) => {
         const data = event.data;
-          
+
         if (data?.meta?.connectionAttemptUuid == this.connectionAttemptUuid) {
           if (isWebConnectionProtocol2LoadURL(data)) {
             // in this case, we need to load the URL with the embedded Iframe
@@ -125,7 +124,7 @@ export class HelloHandler {
             //n.b event listener remains in place to receive messages from the iframe
           } else if (isWebConnectionProtocol3Handshake(data)) {
             Logger.debug(`HelloHandler: successful handshake`);
-          
+
             resolve({
               connectionAttemptUuid: this.connectionAttemptUuid,
               handshake: data,

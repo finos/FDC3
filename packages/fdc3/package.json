@@ -17,8 +17,8 @@
     "dist"
   ],
   "scripts": {
-    "clean": "rimraf dist",
-    "build": "tsc --module es2022"
+    "clean": "npx rimraf dist",
+    "build": "npx tsc --module es2022"
   },
   "dependencies": {
     "@kite9/fdc3-standard": "2.2.0-beta.29",

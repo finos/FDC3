@@ -1,6 +1,10 @@
 import { MessageHandler } from '../BasicFDC3Server';
 import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext';
-import { AppRequestMessage, HeartbeatEvent, WebConnectionProtocol6Goodbye } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import {
+  AppRequestMessage,
+  HeartbeatEvent,
+  WebConnectionProtocol6Goodbye,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { FullAppIdentifier } from './support';
 
 type HeartbeatDetails = {

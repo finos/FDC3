@@ -55,7 +55,7 @@ export class IdentityValidationHandler {
         actualUrl,
       },
     };
-          
+
     const persistedDetails = retrieveDesktopAgentDetails(identityUrl);
 
     if (persistedDetails) {
@@ -72,7 +72,7 @@ export class IdentityValidationHandler {
       //timeout for id validation only
       const timeout = setTimeout(() => {
         Logger.warn(`IdentityValidationHandler: Identity validation timed out`);
-    
+
         if (this.idValidationResponseListener) {
           //remove the event listener as we won't proceed further
           this.messagePort.removeEventListener('message', this.idValidationResponseListener);
@@ -86,7 +86,7 @@ export class IdentityValidationHandler {
       // setup listener for message and retrieve JS URL from it
       this.idValidationResponseListener = (event: MessageEvent<WebConnectionProtocolMessage>) => {
         const data = event.data;
-    
+
         if (data?.meta?.connectionAttemptUuid == this.connectionAttemptUuid) {
           if (isWebConnectionProtocol5ValidateAppIdentitySuccessResponse(data)) {
             //passed validation
@@ -99,7 +99,6 @@ export class IdentityValidationHandler {
               `IdentityValidationHandler: Validated app identity, appId: ${data.payload.appId}, instanceId: ${data.payload.instanceId}`
             );
             resolve(data);
-
           } else if (isWebConnectionProtocol5ValidateAppIdentityFailedResponse(data)) {
             //failed validation...
             clearTimeout(timeout);
@@ -107,16 +106,16 @@ export class IdentityValidationHandler {
               //remove the event listener as we've received a messagePort to use
               this.messagePort.removeEventListener('message', this.idValidationResponseListener);
             }
-            Logger.error(`IdentityValidationHandler: App identity validation failed: ${data.payload.message ?? 'No reason given'}`);
+            Logger.error(
+              `IdentityValidationHandler: App identity validation failed: ${data.payload.message ?? 'No reason given'}`
+            );
             reject(AgentError.AccessDenied);
-
           } else {
             Logger.debug(
               `IdentityValidationHandler: Ignoring message unexpected message in PostMessageLoader (because its not a WCP5 message).`,
               data
             );
           }
-
         } else {
           Logger.warn(
             `IdentityValidationHandler: Ignoring message with invalid connectionAttemptUuid. Expected ${this.connectionAttemptUuid}, received: ${data?.meta?.connectionAttemptUuid}`,
@@ -130,10 +129,10 @@ export class IdentityValidationHandler {
     });
   }
 
-	cancel(): void {
-		if (this.idValidationResponseListener) {
+  cancel(): void {
+    if (this.idValidationResponseListener) {
       this.messagePort.removeEventListener('message', this.idValidationResponseListener);
     }
     //TODO: cancel any timeouts and reject any returned promises
-	}
+  }
 }

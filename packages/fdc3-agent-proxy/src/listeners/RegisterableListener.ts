@@ -1,4 +1,4 @@
-import { Listener } from "@kite9/fdc3-standard";
+import { Listener } from '@kite9/fdc3-standard';
 
 /**
  * Extends the basic concept of FDC3 listeners to include lifecycle methods.
@@ -6,16 +6,14 @@ import { Listener } from "@kite9/fdc3-standard";
  * initialized with the register() method before use.
  */
 export interface RegisterableListener extends Listener {
+  id: string | null;
 
-    id: string | null
+  filter(m: any): boolean;
 
-    filter(m: any): boolean
+  action(m: any): void;
 
-    action(m: any): void
-
-    /**
-     * Listeners need to be registered in order to set their IDs.
-     */
-    register(): Promise<void>
-
+  /**
+   * Listeners need to be registered in order to set their IDs.
+   */
+  register(): Promise<void>;
 }

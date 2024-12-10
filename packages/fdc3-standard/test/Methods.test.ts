@@ -97,7 +97,6 @@ describe('test ES6 module', () => {
       await expect(getUserChannels()).rejects.toEqual(UnavailableError);
     });
 
-
     test('addEventListener should reject', async () => {
       await expect(addEventListener(expect.any(String), expect.any(Object))).rejects.toEqual(UnavailableError);
     });
@@ -145,7 +144,7 @@ describe('test ES6 module', () => {
     });
 
     afterAll(() => {
-      window.fdc3 = (undefined as unknown) as DesktopAgent;
+      window.fdc3 = undefined as unknown as DesktopAgent;
     });
 
     test('open should delegate to window.fdc3.open', async () => {
@@ -217,7 +216,7 @@ describe('test ES6 module', () => {
 
     test('addIntentListener should delegate to window.fdc3.addIntentListener', async () => {
       const intent = 'ViewChart';
-      const handler: ContextHandler = _ => { };
+      const handler: ContextHandler = _ => {};
 
       await addIntentListener(intent, handler);
 
@@ -227,8 +226,8 @@ describe('test ES6 module', () => {
 
     test('addContextListener should delegate to window.fdc3.addContextListener', async () => {
       const type = 'fdc3.instrument';
-      const handler1: ContextHandler = _ => { };
-      const handler2: ContextHandler = _ => { };
+      const handler1: ContextHandler = _ => {};
+      const handler2: ContextHandler = _ => {};
 
       await addContextListener(type, handler1);
       await addContextListener(handler2);
@@ -322,8 +321,6 @@ describe('test ES6 module', () => {
       expect(window.fdc3.findInstances).toHaveBeenCalledWith(dummyApp);
     });
   });
-
-
 });
 
 describe('test version comparison functions', () => {

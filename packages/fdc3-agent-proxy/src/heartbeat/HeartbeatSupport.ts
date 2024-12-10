@@ -1,5 +1,3 @@
-import { Connectable } from "@kite9/fdc3-standard";
+import { Connectable } from '@kite9/fdc3-standard';
 
-export interface HeartbeatSupport extends Connectable {
-
-}
+export interface HeartbeatSupport extends Connectable {}

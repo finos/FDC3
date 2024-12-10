@@ -3,8 +3,24 @@ import { AppRegistration, InstanceID, ServerContext } from '../ServerContext';
 import { Directory, DirectoryIntent } from '../directory/DirectoryInterface';
 import { Context } from '@kite9/fdc3-context';
 import { AppIntent, ResolveError, AppIdentifier } from '@kite9/fdc3-standard';
-import { errorResponse, errorResponseId, FullAppIdentifier, isFullAppIdentifier, successResponse, successResponseId } from './support';
-import { IntentEvent, FindIntentsByContextRequest, FindIntentRequest, AddIntentListenerRequest, IntentListenerUnsubscribeRequest, RaiseIntentRequest, RaiseIntentForContextRequest, IntentResultRequest } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import {
+  errorResponse,
+  errorResponseId,
+  FullAppIdentifier,
+  isFullAppIdentifier,
+  successResponse,
+  successResponseId,
+} from './support';
+import {
+  IntentEvent,
+  FindIntentsByContextRequest,
+  FindIntentRequest,
+  AddIntentListenerRequest,
+  IntentListenerUnsubscribeRequest,
+  RaiseIntentRequest,
+  RaiseIntentForContextRequest,
+  IntentResultRequest,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 type ListenerRegistration = {
   appId: string;
@@ -196,7 +212,11 @@ export class IntentHandler implements MessageHandler {
     }
   }
 
-  onUnsubscribe(arg0: IntentListenerUnsubscribeRequest, sc: ServerContext<AppRegistration>, from: FullAppIdentifier): void {
+  onUnsubscribe(
+    arg0: IntentListenerUnsubscribeRequest,
+    sc: ServerContext<AppRegistration>,
+    from: FullAppIdentifier
+  ): void {
     const id = arg0.payload.listenerUUID;
     const fi = this.regs.findIndex(e => e.listenerUUID == id);
     if (fi > -1) {
@@ -207,7 +227,11 @@ export class IntentHandler implements MessageHandler {
     }
   }
 
-  onAddIntentListener(arg0: AddIntentListenerRequest, sc: ServerContext<AppRegistration>, from: FullAppIdentifier): void {
+  onAddIntentListener(
+    arg0: AddIntentListenerRequest,
+    sc: ServerContext<AppRegistration>,
+    from: FullAppIdentifier
+  ): void {
     const lr: ListenerRegistration = {
       appId: from.appId,
       instanceId: from.instanceId,
@@ -463,7 +487,7 @@ export class IntentHandler implements MessageHandler {
         return this.raiseIntentRequestToSpecificAppId([intentRequest], sc, target);
       } else {
         //invalid target
-        console.warn("Received an invalid target argument for raiseIntent", target, arg0);
+        console.warn('Received an invalid target argument for raiseIntent', target, arg0);
         return this.raiseIntentToAnyApp([intentRequest], sc);
       }
     } else {
@@ -508,14 +532,13 @@ export class IntentHandler implements MessageHandler {
         return this.raiseIntentRequestToSpecificAppId(possibleIntentRequests, sc, target);
       } else {
         //invalid target
-        console.warn("Received an invalid target argument for raiseIntentForContext", target, arg0);
+        console.warn('Received an invalid target argument for raiseIntentForContext', target, arg0);
         return this.raiseIntentToAnyApp(possibleIntentRequests, sc);
       }
     } else {
       //No target
       return this.raiseIntentToAnyApp(possibleIntentRequests, sc);
     }
-
   }
 
   async findIntentsByContextRequest(

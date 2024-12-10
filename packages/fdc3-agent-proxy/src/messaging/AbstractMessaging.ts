@@ -1,10 +1,7 @@
 import { AppIdentifier } from '@kite9/fdc3-standard';
 import { Messaging } from '../Messaging';
 import { RegisterableListener } from '../listeners/RegisterableListener';
-import {
-  AgentResponseMessage,
-  AppRequestMessage
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { AgentResponseMessage, AppRequestMessage } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 export abstract class AbstractMessaging implements Messaging {
   // private implementationMetadata: ImplementationMetadata;
@@ -47,7 +44,9 @@ export abstract class AbstractMessaging implements Messaging {
         setTimeout(() => {
           this.unregister(id);
           if (!done) {
-            console.error(`waitFor rejecting after ${this.getTimeoutMs()}ms at ${new Date().toISOString()} with ${timeoutErrorMessage}`);
+            console.error(
+              `waitFor rejecting after ${this.getTimeoutMs()}ms at ${new Date().toISOString()} with ${timeoutErrorMessage}`
+            );
             reject(new Error(timeoutErrorMessage));
           }
         }, this.getTimeoutMs());
@@ -55,10 +54,14 @@ export abstract class AbstractMessaging implements Messaging {
     });
   }
 
-  async exchange<X extends AgentResponseMessage>(message: AppRequestMessage, expectedTypeName: AgentResponseMessage["type"], timeoutErrorMessage?: string): Promise<X> {
+  async exchange<X extends AgentResponseMessage>(
+    message: AppRequestMessage,
+    expectedTypeName: AgentResponseMessage['type'],
+    timeoutErrorMessage?: string
+  ): Promise<X> {
     const errorMessage =
       timeoutErrorMessage ?? `Timeout waiting for ${expectedTypeName} with requestUuid ${message.meta.requestUuid}`;
-    const prom = this.waitFor<X>((m) => {
+    const prom = this.waitFor<X>(m => {
       return m.type == expectedTypeName && m.meta.requestUuid == message.meta.requestUuid;
     }, errorMessage);
     this.post(message);

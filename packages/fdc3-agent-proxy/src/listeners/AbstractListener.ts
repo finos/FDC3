@@ -101,10 +101,7 @@ export abstract class AbstractListener<X, Y extends SubscriptionRequest> impleme
       type: this.subscribeRequestType,
     } as Y;
 
-    const response = await this.messaging.exchange<SubscriptionResponse>(
-      subscribeMessage,
-      this.subscribeResponseType
-    );
+    const response = await this.messaging.exchange<SubscriptionResponse>(subscribeMessage, this.subscribeResponseType);
     this.id = response?.payload?.listenerUUID ?? null;
 
     if (!this.id) {

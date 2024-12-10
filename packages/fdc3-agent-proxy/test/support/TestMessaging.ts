@@ -25,7 +25,7 @@ import {
   AppRequestMessage,
   WebConnectionProtocolMessage,
   Channel,
-  WebConnectionProtocol6Goodbye
+  WebConnectionProtocol6Goodbye,
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { GetInfo } from './responses/GetInfo';
 
@@ -148,10 +148,10 @@ export class TestMessaging extends AbstractMessaging {
   async disconnect(): Promise<void> {
     //Theres no explicit disconnect call for the DA in FDC3, but the BasicDesktopAgent implementation includes one that is called to pagehide
     const bye: WebConnectionProtocol6Goodbye = {
-        type: 'WCP6Goodbye',
-        meta: {
-            timestamp: new Date(),
-        }
+      type: 'WCP6Goodbye',
+      meta: {
+        timestamp: new Date(),
+      },
     };
     await this.post(bye);
   }
@@ -159,15 +159,15 @@ export class TestMessaging extends AbstractMessaging {
   post(message: AppRequestMessage | WebConnectionProtocol6Goodbye): Promise<void> {
     this.allPosts.push(message);
 
-    if (message.type != "WCP6Goodbye") {
-        for (let i = 0; i < this.automaticResponses.length; i++) {
-            const ar = this.automaticResponses[i];
-            if (ar.filter(message.type)) {
-              return ar.action(message, this);
-            }
+    if (message.type != 'WCP6Goodbye') {
+      for (let i = 0; i < this.automaticResponses.length; i++) {
+        const ar = this.automaticResponses[i];
+        if (ar.filter(message.type)) {
+          return ar.action(message, this);
         }
+      }
     }
-    
+
     return Promise.resolve();
   }
 
@@ -240,11 +240,11 @@ export class TestMessaging extends AbstractMessaging {
     this.ir = o;
   }
 
-//   retrieveInstanceUuid(): string | undefined {
-//     return (globalThis as any).instanceUuid;
-//   }
+  //   retrieveInstanceUuid(): string | undefined {
+  //     return (globalThis as any).instanceUuid;
+  //   }
 
-//   storeInstanceUuid(validationResponse: WebConnectionProtocol5ValidateAppIdentitySuccessResponse): void {
-//     (globalThis as any).instanceUuid = validationResponse.payload.instanceUuid;
-//   }
+  //   storeInstanceUuid(validationResponse: WebConnectionProtocol5ValidateAppIdentitySuccessResponse): void {
+  //     (globalThis as any).instanceUuid = validationResponse.payload.instanceUuid;
+  //   }
 }

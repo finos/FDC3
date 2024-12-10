@@ -204,7 +204,7 @@ export class BroadcastHandler implements MessageHandler {
     const type = arg0.payload.contextType;
 
     if (channel) {
-      const context = type ? channel.context.find(c => c.type == type) ?? null : channel.context[0] ?? null;
+      const context = type ? (channel.context.find(c => c.type == type) ?? null) : (channel.context[0] ?? null);
       successResponse(sc, arg0, from, { context: context }, 'getCurrentContextResponse');
     } else {
       errorResponse(sc, arg0, from, ChannelError.NoChannelFound, 'getCurrentContextResponse');

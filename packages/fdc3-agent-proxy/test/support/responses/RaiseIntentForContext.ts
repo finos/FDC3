@@ -80,38 +80,38 @@ export class RaiseIntentForContext implements AutomaticResponse {
         },
       };
     } else if (relevant.length > 0) {
-        //get unique intent names
-        const relevantIntents = [
-            ...new Set<string>(
-                relevant.reduce<string[]>((filtered: string[], r) => {
-                    if (r.intent) {
-                        filtered.push(r.intent);
-                    }
-                    return filtered;
-                }, [])
-            ),
-        ];
-        const appIntents = relevantIntents.map<AppIntent>(i => {
-            return {
-              intent: { name: i, displayName: i },
-              apps: relevant.reduce<AppIdentifier[]>((filtered: AppIdentifier[], r) => { 
-                if (r.intent === i && r.app) {
-                    filtered.push(r.app);
-                }
-                return filtered;
-              }, [])
-            };
-          });
+      //get unique intent names
+      const relevantIntents = [
+        ...new Set<string>(
+          relevant.reduce<string[]>((filtered: string[], r) => {
+            if (r.intent) {
+              filtered.push(r.intent);
+            }
+            return filtered;
+          }, [])
+        ),
+      ];
+      const appIntents = relevantIntents.map<AppIntent>(i => {
+        return {
+          intent: { name: i, displayName: i },
+          apps: relevant.reduce<AppIdentifier[]>((filtered: AppIdentifier[], r) => {
+            if (r.intent === i && r.app) {
+              filtered.push(r.app);
+            }
+            return filtered;
+          }, []),
+        };
+      });
 
       return {
         meta: createResponseMeta(intentRequest.meta),
         type: 'raiseIntentForContextResponse',
         payload: {
-          appIntents: appIntents
+          appIntents: appIntents,
         },
       };
     } else {
-        throw new Error("createRaiseIntentForContextResponseMessage did not produce a valid result!")
+      throw new Error('createRaiseIntentForContextResponseMessage did not produce a valid result!');
     }
   }
 
@@ -136,7 +136,7 @@ export class RaiseIntentForContext implements AutomaticResponse {
 
       return out;
     } else {
-        throw new Error("")
+      throw new Error('');
     }
   }
 

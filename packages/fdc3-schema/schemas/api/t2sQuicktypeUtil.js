@@ -2,7 +2,7 @@
  * SPDX-License-Identifier: Apache-2.0
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
- 
+
 /** Utility for preparing arguments to quicktype, which workaround a specific
  * quicktype bug in command line argument handling (where a directory is used
  * as input the source language argument is ignored which causes our schemas
@@ -59,7 +59,7 @@ const quicktypeExec = ['.', 'node_modules', '.bin', 'quicktype'].join(path.sep);
 const command = `${quicktypeExec} -l schema -o ${outputPath} ${sources}`;
 console.log('command to run: ' + command);
 
-exec(command, function(error, stdout, stderr) {
+exec(command, function (error, stdout, stderr) {
   if (stdout) {
     console.log(stdout);
   }
