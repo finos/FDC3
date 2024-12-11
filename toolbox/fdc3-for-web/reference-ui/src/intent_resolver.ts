@@ -31,7 +31,7 @@ const setup = (
     intentSelect.appendChild(option);
   });
 
-  intentSelect.addEventListener('change', (e: any) =>
+  intentSelect.addEventListener('change', e =>
     fillList(
       data.appIntents.filter(ai => ai.intent.name == e?.target?.value),
       e?.target?.value,
