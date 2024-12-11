@@ -66,12 +66,12 @@ function getPlatform() {
   updateFDC3Version(`${fdc3Info.fdc3Version}`);
 }
 
-function updateProviderDetails(details){
+function updateProviderDetails(details) {
   const providerDetails = document.getElementById('providerDetails');
   providerDetails.innerText = details;
 }
 
-function updateFDC3Version(details){
+function updateFDC3Version(details) {
   const fdc3Details = document.getElementById('fdc3Details');
   fdc3Details.innerText = details;
 }
@@ -113,15 +113,17 @@ function setUpEventListeners() {
 
   document.getElementById('join-channel__btn').addEventListener('click', joinChannel);
 
-  document.getElementById('leave-channel__btn').addEventListener('click', () => { fdc3.leaveCurrentChannel(); });
+  document.getElementById('leave-channel__btn').addEventListener('click', () => {
+    fdc3.leaveCurrentChannel();
+  });
 
   document.getElementById('broadcast__btn').addEventListener('click', broadcastFDC3Context);
 
   document.getElementById('raise-intent__btn').addEventListener('click', raiseIntent);
 
   document.getElementById('get_context__btn').addEventListener('click', event => {
-      let contextType = document.getElementById('context-type').value;
-      getContext(contextType);
+    let contextType = document.getElementById('context-type').value;
+    getContext(contextType);
   });
 }
 
@@ -167,21 +169,18 @@ async function getContext(contextType) {
 
     // if context type is passed in then only listen on that specific context
     if (contextType) {
-      contextListener = fdc3.addContextListener(
-        contextType,
-        context => displayContext(JSON.stringify(context, null, 2))
+      contextListener = fdc3.addContextListener(contextType, context =>
+        displayContext(JSON.stringify(context, null, 2))
       );
     } else {
-      contextListener = fdc3.addContextListener(
-        context => displayContext(JSON.stringify(context, null, 2))
-      );
+      contextListener = fdc3.addContextListener(context => displayContext(JSON.stringify(context, null, 2)));
     }
   } catch (error) {
     console.error('Unable to add a context listener', error);
   }
 }
 
-function displayContext(text){
+function displayContext(text) {
   let contextResultBox = document.getElementById('context-result');
   contextResultBox.innerText = text;
 }

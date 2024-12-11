@@ -1,7 +1,7 @@
 {
-    "useTabs": true,
-    "arrowParens": "always",
-    "trailingComma": "es5",
-    "proseWrap": "always",
-    "printWidth": 120
+	"useTabs": true,
+	"arrowParens": "always",
+	"trailingComma": "es5",
+	"proseWrap": "always",
+	"printWidth": 120
 }

@@ -1,0 +1,15 @@
+default:
+  format: 
+    - html:cucumber-report.html
+    - "@cucumber/pretty-formatter"
+    - junit:test-results.xml
+  paths: 
+   - test/features/*.feature
+  require: 
+   - test/step-definitions/*.steps.ts 
+   - test/support/*.ts
+   - test/world/index.ts
+  requireModule:
+   - ts-node/register
+  tags: "not @failing"
+    
