@@ -1,4 +1,4 @@
-import { AppIdentifier, Channel } from '@kite9/fdc3-standard';
+import { AppIdentifier, ResolveError } from '@kite9/fdc3-standard';
 import { Context } from '@kite9/fdc3-context';
 import { v4 as uuidv4 } from 'uuid';
 import { AbstractMessaging } from '../../src/messaging/AbstractMessaging';
@@ -19,11 +19,15 @@ import { CreatePrivateChannel } from './responses/CreatePrivateChannel';
 import { DisconnectPrivateChannel } from './responses/DisconnectPrivateChannel';
 import { IntentResult } from './responses/IntentResult';
 import { RaiseIntentForContext } from './responses/RaiseIntentForContext';
-import { BrowserTypes } from '@kite9/fdc3-schema';
-
-type AppRequestMessage = BrowserTypes.AppRequestMessage;
-type WebConnectionProtocol5ValidateAppIdentitySuccessResponse =
-  BrowserTypes.WebConnectionProtocol5ValidateAppIdentitySuccessResponse;
+import {
+  AgentEventMessage,
+  AgentResponseMessage,
+  AppRequestMessage,
+  WebConnectionProtocolMessage,
+  Channel,
+  WebConnectionProtocol6Goodbye,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { GetInfo } from './responses/GetInfo';
 
 export interface IntentDetail {
   app?: AppIdentifier;
@@ -34,13 +38,13 @@ export interface IntentDetail {
 
 export interface AutomaticResponse {
   filter: (t: string) => boolean;
-  action: (input: object, m: TestMessaging) => Promise<void>;
+  action: (input: AppRequestMessage, m: TestMessaging) => Promise<void>;
 }
 
 export interface PossibleIntentResult {
   context?: Context;
-  channel?: any;
-  error?: string;
+  channel?: Channel;
+  error?: ResolveError;
   timeout?: boolean;
 }
 
@@ -100,7 +104,7 @@ export function intentDetailMatches(
 }
 
 export class TestMessaging extends AbstractMessaging {
-  readonly allPosts: AppRequestMessage[] = [];
+  readonly allPosts: (AppRequestMessage | WebConnectionProtocol6Goodbye)[] = [];
   readonly listeners: Map<string, RegisterableListener> = new Map();
   readonly intentDetails: IntentDetail[] = [];
   readonly channelState: { [key: string]: Context[] };
@@ -109,17 +113,7 @@ export class TestMessaging extends AbstractMessaging {
   readonly automaticResponses: AutomaticResponse[];
 
   constructor(channelState: { [key: string]: Context[] }) {
-    super(
-      {
-        timeoutMs: 0,
-        channelSelector: false,
-        intentResolver: false,
-        dontSetWindowFdc3: false,
-      },
-      'test',
-      'myActualUrl',
-      200
-    );
+    super({ appId: 'cucumber-app', instanceId: 'cucumber-instance' });
 
     this.channelState = channelState;
     this.automaticResponses = [
@@ -129,6 +123,7 @@ export class TestMessaging extends AbstractMessaging {
       new RaiseIntentForContext(),
       new IntentResult(),
       new GetAppMetadata(),
+      new GetInfo(),
       new FindInstances(),
       new Open(),
       new Handshake(),
@@ -146,13 +141,30 @@ export class TestMessaging extends AbstractMessaging {
     return uuidv4();
   }
 
-  post(message: AppRequestMessage): Promise<void> {
+  getTimeoutMs(): number {
+    return 1000;
+  }
+
+  async disconnect(): Promise<void> {
+    //Theres no explicit disconnect call for the DA in FDC3, but the BasicDesktopAgent implementation includes one that is called to pagehide
+    const bye: WebConnectionProtocol6Goodbye = {
+      type: 'WCP6Goodbye',
+      meta: {
+        timestamp: new Date(),
+      },
+    };
+    await this.post(bye);
+  }
+
+  post(message: AppRequestMessage | WebConnectionProtocol6Goodbye): Promise<void> {
     this.allPosts.push(message);
 
-    for (let i = 0; i < this.automaticResponses.length; i++) {
-      const ar = this.automaticResponses[i];
-      if (ar.filter(message.type)) {
-        return ar.action(message, this);
+    if (message.type != 'WCP6Goodbye') {
+      for (let i = 0; i < this.automaticResponses.length; i++) {
+        const ar = this.automaticResponses[i];
+        if (ar.filter(message.type)) {
+          return ar.action(message, this);
+        }
       }
     }
 
@@ -179,7 +191,7 @@ export class TestMessaging extends AbstractMessaging {
     return {
       requestUuid: this.createUUID(),
       timestamp: new Date(),
-      source: this.getSource(),
+      source: this.getAppIdentifier(),
     };
   }
 
@@ -203,13 +215,17 @@ export class TestMessaging extends AbstractMessaging {
     };
   }
 
-  receive(m: any, log?: (s: string) => void) {
+  receive(m: AgentResponseMessage | AgentEventMessage | WebConnectionProtocolMessage, log?: (s: string) => void) {
     this.listeners.forEach((v, k) => {
       if (v.filter(m)) {
-        log ? log('Processing in ' + k) : '';
+        if (log) {
+          log('Processing in ' + k);
+        }
         v.action(m);
       } else {
-        log ? log('Ignoring in ' + k) : '';
+        if (log) {
+          log('Ignoring in ' + k);
+        }
       }
     });
   }
@@ -224,11 +240,11 @@ export class TestMessaging extends AbstractMessaging {
     this.ir = o;
   }
 
-  retrieveInstanceUuid(): string | undefined {
-    return (globalThis as any).instanceUuid as string | undefined;
-  }
+  //   retrieveInstanceUuid(): string | undefined {
+  //     return (globalThis as any).instanceUuid;
+  //   }
 
-  storeInstanceUuid(validationResponse: WebConnectionProtocol5ValidateAppIdentitySuccessResponse): void {
-    (globalThis as any).instanceUuid = validationResponse.payload.instanceUuid;
-  }
+  //   storeInstanceUuid(validationResponse: WebConnectionProtocol5ValidateAppIdentitySuccessResponse): void {
+  //     (globalThis as any).instanceUuid = validationResponse.payload.instanceUuid;
+  //   }
 }

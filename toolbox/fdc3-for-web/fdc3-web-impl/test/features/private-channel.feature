@@ -6,6 +6,7 @@ Feature: Relaying Private Channel Broadcast messages
     And "App1/a1" is opened with connection id "a1"
     And "App2/a2" is opened with connection id "a2"
     And "App2/a1" creates a private channel
+    #TODO: have a2 retrieve the private channel by raising an intent - its currently using a1 reference to the channel
     And I refer to "uuid3" as "channel1Id"
 
   Scenario: Creating a new private channel
@@ -30,9 +31,10 @@ Feature: Relaying Private Channel Broadcast messages
       | broadcastResponse          | {null}                | {null}                        | {null}                   | App1     | a1            |
 
   Scenario: Event Listener created for addContextListener and unsubscribe
-    When "App2/a2" adds an "onAddContextListener" on "{channel1Id}"
-    And "App2/a2" adds an "onUnsubscribe" on "{channel1Id}"
+    When "App2/a2" adds an "addContextListener" event listener on "{channel1Id}"
+    And "App2/a2" adds an "unsubscribe" event listener on "{channel1Id}"
     And "App1/a1" adds a context listener on "{channel1Id}" with type "fdc3.instrument"
+    And we wait for a period of "10" ms
     Then messaging will have outgoing posts
       | msg.matches_type                        | to.appId | to.instanceId | msg.payload.privateChannelId | msg.payload.contextType | msg.payload.listenerUUID |
       | privateChannelAddEventListenerResponse  | App2     | a2            | {null}                       | {null}                  | uuid6                    |
@@ -46,9 +48,9 @@ Feature: Relaying Private Channel Broadcast messages
       | contextListenerUnsubscribeResponse | {null}                       | {null}                  | App1     | a1            |
 
   Scenario: Disconnecting from a channel sends unsubscribe and disconnect messages
-    When "App2/a2" adds an "onDisconnect" on "{channel1Id}"
+    When "App2/a2" adds an "disconnect" event listener on "{channel1Id}"
     And "App1/a1" adds a context listener on "{channel1Id}" with type "fdc3.instrument"
-    And "App2/a2" adds an "onUnsubscribe" on "{channel1Id}"
+    And "App2/a2" adds an "unsubscribe" event listener on "{channel1Id}"
     And "App1/a1" disconnects from private channel "{channel1Id}"
     Then messaging will have outgoing posts
       | msg.matches_type                 | msg.payload.privateChannelId | msg.payload.contextType | to.appId | to.instanceId |
@@ -57,7 +59,7 @@ Feature: Relaying Private Channel Broadcast messages
       | privateChannelDisconnectResponse | {null}                       | {null}                  | App1     | a1            |
 
   Scenario: addContextListener Event Listener add and removed, shouldn't fire when addContextListener called.
-    When "App2/a2" adds an "onAddContextListener" on "{channel1Id}"
+    When "App2/a2" adds an "addContextListener" event listener on "{channel1Id}"
     And "App2/a2" removes event listener "uuid6"
     And "App1/a1" adds a context listener on "{channel1Id}" with type "fdc3.instrument"
     Then messaging will have outgoing posts

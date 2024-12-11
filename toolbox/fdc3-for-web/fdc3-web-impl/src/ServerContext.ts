@@ -17,8 +17,8 @@ export type AppRegistration = {
 /**
  * This is a unique, long, unguessable string that identifies a particular instance of an app.
  * All messages arriving at the desktop agent will have this UUID attached to them.
- * It is important that this is unguessable as it is a "password" of sorts used to
- * identify the app between reconnections.
+ * It is important that this is unguessable as it is a shared secret used to identify the app
+ * when reconnecting after navigation or refresh.
  */
 export type InstanceID = string;
 
@@ -71,7 +71,7 @@ export interface ServerContext<X extends AppRegistration> {
   getConnectedApps(): Promise<AppRegistration[]>;
 
   /**
-   * Return the list of all apps that have ever been registed with the ServerContext.
+   * Return the list of all apps that have ever been registered with the ServerContext.
    */
   getAllApps(): Promise<AppRegistration[]>;
 
@@ -103,7 +103,7 @@ export interface ServerContext<X extends AppRegistration> {
   /**
    * This is called prior to returning intents to the client.  It is a
    * an opportunity for the server to either present an intent resolver
-   * or otherwise mess with the availble intents, or do nothing.
+   * or otherwise mess with the available intents, or do nothing.
    */
   narrowIntents(raiser: AppIdentifier, IappIntents: AppIntent[], context: Context): Promise<AppIntent[]>;
 }

@@ -1,17 +1,10 @@
-import { Connectable, AppIdentifier, ImplementationMetadata } from '@kite9/fdc3-standard';
+import { AppIdentifier } from '@kite9/fdc3-standard';
 import { RegisterableListener } from './listeners/RegisterableListener';
-import { AppRequestMessage } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { AppRequestMessage, AgentResponseMessage } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
-type RequestMetadata = AppRequestMessage['meta'];
-
-export interface Messaging extends Connectable {
+export interface Messaging /*extends Connectable*/ {
   /**
-   * Source for outgoing message
-   */
-  getSource(): AppIdentifier;
-
-  /**
-   * UUID for outgoing message
+   * Creates UUIDs used in outgoing messages
    */
   createUUID(): string;
 
@@ -26,26 +19,38 @@ export interface Messaging extends Connectable {
   register(l: RegisterableListener): void;
 
   /**
-   * Unregisters a listener with the id given above
+   * Unregister a listener with the given id
    * @param id
    */
   unregister(id: string): void;
 
-  createMeta(): RequestMetadata;
+  /** Create a metadata element to attach to outgoing messages. */
+  createMeta(): AppRequestMessage['meta'];
 
   /**
    * Waits for a specific matching message
    */
-  waitFor<X>(filter: (m: any) => boolean, timeoutErrorMessage?: string): Promise<X>;
+  waitFor<X extends AgentResponseMessage>(
+    filter: (m: AgentResponseMessage) => boolean,
+    timeoutErrorMessage?: string
+  ): Promise<X>;
 
   /**
-   *
-   * @param message Performs a request / response message pass
+   * Sends a request message and waits for a response. If the response contains a payload.error, it is thrown.
+   * @param message The request message to send.
    */
-  exchange<X>(message: object, expectedTypeName: string, timeoutErrorMessage?: string): Promise<X>;
+  exchange<X extends AgentResponseMessage>(
+    message: AppRequestMessage,
+    expectedTypeName: string,
+    timeoutErrorMessage?: string
+  ): Promise<X>;
 
   /**
-   * Implementation metadata retrieved through the validation process
+   * App identification used to provide source information used in
+   * message meta elements, IntentResolution etc..
    */
-  getImplementationMetadata(): Promise<ImplementationMetadata>;
+  getAppIdentifier(): AppIdentifier;
+
+  /** Disconnects the underlying message transport. */
+  disconnect(): Promise<void>;
 }

@@ -1,6 +1,5 @@
 import { ServerContext, InstanceID } from '@kite9/fdc3-web-impl';
 import { CustomWorld } from '../world';
-import { Context } from '@kite9/fdc3-context';
 import { OpenError, AppIdentifier, AppIntent } from '@kite9/fdc3-standard';
 import { AppRegistration, State } from '@kite9/fdc3-web-impl';
 
@@ -18,9 +17,14 @@ type MessageRecord = {
   msg: object;
 };
 
+export const dummyInstanceDetails = [
+  { appId: 'Test App Id', url: 'https://dummyOrigin.test/path' },
+  { appId: 'Test App Id 2', url: 'https://dummyOrigin.test/alternativePath' },
+];
+
 export class TestServerContext implements ServerContext<ConnectionDetails> {
   public postedMessages: MessageRecord[] = [];
-  private readonly cw: CustomWorld;
+  public readonly cw: CustomWorld;
   private instances: ConnectionDetails[] = [];
   private nextInstanceId: number = 0;
   private nextUUID: number = 0;
@@ -29,7 +33,7 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
     this.cw = cw;
   }
 
-  async narrowIntents(_raiser: AppIdentifier, appIntents: AppIntent[], _context: Context): Promise<AppIntent[]> {
+  async narrowIntents(_raiser: AppIdentifier, appIntents: AppIntent[] /*, _context: Context*/): Promise<AppIntent[]> {
     return appIntents;
   }
 
@@ -46,7 +50,20 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
   }
 
   getMatchingInstance(url: string): ConnectionDetails | undefined {
-    return this.instances.find(ca => ca.url === url);
+    const details = this.instances.find(ca => ca.url === url);
+    if (!details) {
+      const knownInstances = this.instances.map(inst => {
+        return { appId: inst.appId, url: inst.url };
+      });
+      console.error(
+        'No connection instance found - will return a mismatched instance, url: ',
+        url,
+        '\nknown instances: ',
+        knownInstances
+      );
+      return this.instances[0];
+    }
+    return details;
   }
 
   async shutdown(): Promise<void> {
@@ -54,38 +71,44 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
     await Promise.all(this.instances.map(i => i.externalPort.close()));
   }
 
+  /** Used to mock connections to the server from apps. Must be called before the app attempts to connect for that connection to succeed. */
   async open(appId: string): Promise<InstanceID> {
-    const ni = this.nextInstanceId++;
-    if (appId.includes('missing')) {
+    const url = dummyInstanceDetails.find(value => value.appId === appId)?.url;
+    if (!url) {
+      console.error('TestServerContext Tried to open an unknown appId');
       throw new Error(OpenError.AppNotFound);
     } else {
-      const mc = new MessageChannel();
-      const internalPort = mc.port1;
-      const externalPort = mc.port2;
+      const ni = this.nextInstanceId++;
+      if (appId.includes('missing')) {
+        throw new Error(OpenError.AppNotFound);
+      } else {
+        const mc = new MessageChannel();
+        const internalPort = mc.port1;
+        const externalPort = mc.port2;
 
-      (internalPort as any).name = 'internalPort-' + ni;
-      (externalPort as any).name = 'externalPort-' + ni;
+        //   internalPort.name = 'internalPort-' + ni;
+        //   externalPort.name = 'externalPort-' + ni;
 
-      internalPort.start();
+        internalPort.start();
 
-      const connectionDetails = {
-        appId,
-        instanceId: 'uuid-' + ni,
-        connected: false,
-        connectionId: 'uuid-' + ni,
-        externalPort,
-        internalPort,
-        url: 'https://dummyOrigin.test/path',
-        state: State.Pending,
-      };
+        const connectionDetails = {
+          appId,
+          instanceId: 'uuid-' + ni,
+          connected: false,
+          connectionId: 'uuid-' + ni,
+          externalPort,
+          internalPort,
+          url: url,
+          state: State.Pending,
+        };
 
-      this.instances.push(connectionDetails);
-      internalPort.onmessage = msg => {
-        console.debug(`Received message on internalPort`, appId, msg.data);
-        this.cw.mockFDC3Server?.receive(msg.data, connectionDetails.instanceId);
-      };
+        this.instances.push(connectionDetails);
+        internalPort.onmessage = msg => {
+          this.cw.mockFDC3Server?.receive(msg.data, connectionDetails.instanceId);
+        };
 
-      return connectionDetails.connectionId;
+        return connectionDetails.connectionId;
+      }
     }
   }
 

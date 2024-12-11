@@ -9,7 +9,6 @@ import {
   IntentResolver,
   IntentResolutionChoice,
 } from '@kite9/fdc3-standard';
-import { BrowserTypes } from '@kite9/fdc3-schema';
 import { IntentSupport } from './IntentSupport';
 import { Messaging } from '../Messaging';
 import { DefaultIntentResolution } from './DefaultIntentResolution';
@@ -17,16 +16,17 @@ import { DefaultIntentListener } from '../listeners/DefaultIntentListener';
 import { DefaultChannel } from '../channels/DefaultChannel';
 import { DefaultPrivateChannel } from '../channels/DefaultPrivateChannel';
 import { Context } from '@kite9/fdc3-context';
-
-type RaiseIntentForContextRequest = BrowserTypes.RaiseIntentForContextRequest;
-type RaiseIntentForContextResponse = BrowserTypes.RaiseIntentForContextResponse;
-type FindIntentResponse = BrowserTypes.FindIntentResponse;
-type FindIntentsByContextRequest = BrowserTypes.FindIntentsByContextRequest;
-type FindIntentsByContextResponse = BrowserTypes.FindIntentsByContextResponse;
-type RaiseIntentRequest = BrowserTypes.RaiseIntentRequest;
-type RaiseIntentResultResponse = BrowserTypes.RaiseIntentResultResponse;
-type RaiseIntentResponse = BrowserTypes.RaiseIntentResponse;
-type FindIntentRequest = BrowserTypes.FindIntentRequest;
+import {
+  FindIntentRequest,
+  FindIntentResponse,
+  FindIntentsByContextRequest,
+  FindIntentsByContextResponse,
+  RaiseIntentForContextRequest,
+  RaiseIntentForContextResponse,
+  RaiseIntentRequest,
+  RaiseIntentResponse,
+  RaiseIntentResultResponse,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 const convertIntentResult = async (
   { payload }: RaiseIntentResultResponse,
@@ -72,8 +72,8 @@ export class DefaultIntentSupport implements IntentSupport {
       meta: this.messaging.createMeta(),
     };
 
-    const result = (await this.messaging.exchange(messageOut, 'findIntentResponse')) as FindIntentResponse;
-    const appIntent = result.payload.appIntent!!;
+    const result = await this.messaging.exchange<FindIntentResponse>(messageOut, 'findIntentResponse');
+    const appIntent = result.payload.appIntent!;
     if (appIntent.apps.length == 0) {
       throw new Error(ResolveError.NoAppsFound);
     } else {
@@ -128,17 +128,17 @@ export class DefaultIntentSupport implements IntentSupport {
       meta: meta,
     };
 
-    var resultPromise = this.createResultPromise(messageOut);
-    var response: RaiseIntentResponse = await this.messaging.exchange(
+    const resultPromise = this.createResultPromise(messageOut);
+    const response = await this.messaging.exchange<RaiseIntentResponse>(
       messageOut,
       'raiseIntentResponse',
       ResolveError.IntentDeliveryFailed
     );
 
     if (response.payload.appIntent) {
-      // we need to invoke the resolver
+      // Needs further resolution, we need to invoke the resolver
       const result: IntentResolutionChoice | void = await this.intentResolver.chooseIntent(
-        [response.payload.appIntent as any],
+        [response.payload.appIntent],
         context
       );
       if (result) {
@@ -146,10 +146,13 @@ export class DefaultIntentSupport implements IntentSupport {
       } else {
         throw new Error(ResolveError.UserCancelled);
       }
-    } else {
-      // single intent
-      const details = response.payload.intentResolution!!;
+    } else if (response.payload.intentResolution) {
+      // Was resolved
+      const details = response.payload.intentResolution;
       return new DefaultIntentResolution(this.messaging, resultPromise, details.source, details.intent);
+    } else {
+      //should never get here as exchange will throw above
+      throw new Error(ResolveError.NoAppsFound);
     }
   }
 
@@ -164,15 +167,15 @@ export class DefaultIntentSupport implements IntentSupport {
     };
 
     const resultPromise = this.createResultPromise(messageOut);
-    const response: RaiseIntentForContextResponse = await this.messaging.exchange(
+    const response = await this.messaging.exchange<RaiseIntentForContextResponse>(
       messageOut,
       'raiseIntentForContextResponse',
       ResolveError.IntentDeliveryFailed
     );
     if (response.payload.appIntents) {
-      // we need to invoke the resolver
+      // Needs further resolution, we need to invoke the resolver
       const result: IntentResolutionChoice | void = await this.intentResolver.chooseIntent(
-        response.payload.appIntents as any[],
+        response.payload.appIntents,
         context
       );
       if (result) {
@@ -180,9 +183,13 @@ export class DefaultIntentSupport implements IntentSupport {
       } else {
         throw new Error(ResolveError.UserCancelled);
       }
-    } else {
-      const details = response.payload.intentResolution!;
+    } else if (response.payload.intentResolution) {
+      // Was resolved
+      const details = response.payload.intentResolution;
       return new DefaultIntentResolution(this.messaging, resultPromise, details.source, details.intent);
+    } else {
+      //should never get here as exchange will throw above
+      throw new Error(ResolveError.NoAppsFound);
     }
   }
 

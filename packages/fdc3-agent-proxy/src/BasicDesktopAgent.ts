@@ -13,36 +13,36 @@ import {
 import { ChannelSupport } from './channels/ChannelSupport';
 import { AppSupport } from './apps/AppSupport';
 import { IntentSupport } from './intents/IntentSupport';
-import { HandshakeSupport } from './handshake/HandshakeSupport';
 import { Connectable } from '@kite9/fdc3-standard';
 import { Context } from '@kite9/fdc3-context';
+import { HeartbeatSupport } from './heartbeat/HeartbeatSupport';
 
 /**
  * This splits out the functionality of the desktop agent into
  * app, channels and intents concerns.
  */
 export class BasicDesktopAgent implements DesktopAgent, Connectable {
-  readonly handshake: HandshakeSupport;
+  readonly heartbeat: HeartbeatSupport;
   readonly channels: ChannelSupport;
   readonly intents: IntentSupport;
   readonly apps: AppSupport;
   readonly connectables: Connectable[];
 
   constructor(
-    handshake: HandshakeSupport,
+    heartbeat: HeartbeatSupport,
     channels: ChannelSupport,
     intents: IntentSupport,
     apps: AppSupport,
     connectables: Connectable[]
   ) {
-    this.handshake = handshake;
+    this.heartbeat = heartbeat;
     this.intents = intents;
     this.channels = channels;
     this.apps = apps;
     this.connectables = connectables;
   }
 
-  async addEventListener(type: FDC3EventTypes | null, handler: EventHandler): Promise<Listener> {
+  addEventListener(type: FDC3EventTypes | null, handler: EventHandler): Promise<Listener> {
     switch (type) {
       case 'userChannelChanged':
         return this.channels.addChannelChangedEventHandler(handler);
@@ -51,8 +51,8 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
     }
   }
 
-  async getInfo(): Promise<ImplementationMetadata> {
-    return this.handshake.getImplementationMetadata();
+  getInfo(): Promise<ImplementationMetadata> {
+    return this.apps.getImplementationMetadata();
   }
 
   async broadcast(context: Context): Promise<void> {
@@ -64,7 +64,7 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
     }
   }
 
-  async addContextListener(context: ContextHandler | string | null, handler?: ContextHandler): Promise<Listener> {
+  addContextListener(context: ContextHandler | string | null, handler?: ContextHandler): Promise<Listener> {
     const theHandler: ContextHandler = handler ? handler : (context as ContextHandler);
     const theContextType: string | null = context && handler ? (context as string) : null;
     return this.channels.addContextListener(theHandler, theContextType);
@@ -110,7 +110,7 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
     return this.intents.findIntentsByContext(context);
   }
 
-  private ensureAppId(app?: any): AppIdentifier | undefined {
+  private ensureAppId(app?: string | AppIdentifier): AppIdentifier | undefined {
     if (typeof app === 'string') {
       return {
         appId: app,
@@ -122,7 +122,7 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
     }
   }
 
-  raiseIntent(intent: string, context: Context, app?: any) {
+  raiseIntent(intent: string, context: Context, app?: string | AppIdentifier) {
     return this.intents.raiseIntent(intent, context, this.ensureAppId(app));
   }
 
@@ -130,11 +130,11 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
     return this.intents.addIntentListener(intent, handler);
   }
 
-  raiseIntentForContext(context: Context, app?: any): Promise<IntentResolution> {
+  raiseIntentForContext(context: Context, app?: string | AppIdentifier): Promise<IntentResolution> {
     return this.intents.raiseIntentForContext(context, this.ensureAppId(app));
   }
 
-  open(app: any, context?: Context | undefined) {
+  open(app: string | AppIdentifier, context?: Context | undefined) {
     return this.apps.open(this.ensureAppId(app)!, context);
   }
 
