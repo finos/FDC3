@@ -131,10 +131,16 @@ const openChannelIframe = (e: MouseEvent) => {
   channel.port1.onmessage = ({ data }) => {
     switch (data.type) {
       // User clicked on one of the channels in the channel selector
-      // @ts-ignore: Explicit fall-through to Fdc3UserInterfaceHandshake
       case FDC3_USER_INTERFACE_CHANNEL_SELECTED_TYPE: {
         // STEP 4B: Receive user selection information from iframe
         selected = data.channel;
+        //Make sure UI receives message back about selection
+        channel.port1.postMessage({
+          type: FDC3_USER_INTERFACE_CHANNELS_TYPE,
+          channels: recommendedChannels,
+          selected,
+        });
+        break;
       }
 
       // Handshake completed. Send channel data to iframe

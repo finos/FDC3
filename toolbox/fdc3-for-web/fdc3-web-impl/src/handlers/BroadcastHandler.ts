@@ -2,7 +2,7 @@ import { MessageHandler } from '../BasicFDC3Server';
 import { InstanceID, ServerContext } from '../ServerContext';
 import { Context } from '@kite9/fdc3-context';
 import { AppIdentifier, ChannelError, DisplayMetadata, PrivateChannelEventTypes } from '@kite9/fdc3-standard';
-import { successResponse, errorResponse, onlyUnique, FullAppIdentifier } from './support';
+import { successResponse, errorResponse, FullAppIdentifier, onlyUnique } from './support';
 import {
   AddContextListenerRequest,
   AgentResponseMessage,
@@ -321,7 +321,7 @@ export class BroadcastHandler implements MessageHandler {
       .filter(r => r.channelId == arg0.payload.channelId)
       .filter(r => r.contextType == null || r.contextType == arg0.payload.context.type);
 
-    const matchingApps = matchingListeners
+    const matchingApps: FullAppIdentifier[] = matchingListeners
       .map(r => {
         return { appId: r.appId, instanceId: r.instanceId };
       })
