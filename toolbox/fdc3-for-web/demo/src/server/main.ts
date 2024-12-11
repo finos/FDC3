@@ -28,9 +28,9 @@ enum ConnectionType {
 const instances: Map<string, ConnectedWorld> = new Map();
 
 io.on('connection', (socket: Socket) => {
-  var myInstance: ConnectedWorld | undefined;
-  var myId: string | undefined;
-  var connectionType: ConnectionType | undefined;
+  let myInstance: ConnectedWorld | undefined;
+  let myId: string | undefined;
+  let connectionType: ConnectionType | undefined;
 
   socket.on(DA_HELLO, function (id) {
     myId = id;
@@ -76,7 +76,7 @@ io.on('connection', (socket: Socket) => {
     }
 
     if (myInstance != undefined) {
-      myInstance!!.server.emit(FDC3_APP_EVENT, data, from);
+      myInstance.server.emit(FDC3_APP_EVENT, data, from);
     }
   });
 
@@ -95,11 +95,11 @@ io.on('connection', (socket: Socket) => {
     if (myInstance) {
       if (connectionType == ConnectionType.DA) {
         console.log('DA disconnected: ' + myId);
-        instances.delete(myId!!);
+        instances.delete(myId!);
       } else {
-        myInstance.apps.delete(myId!!);
+        myInstance.apps.delete(myId!);
         console.log(`App Disconnected: ${myId} ( ${myInstance.apps.size} remaining )`);
-        myInstance.server.emit(APP_GOODBYE, myId!!);
+        myInstance.server.emit(APP_GOODBYE, myId!);
       }
     }
   });

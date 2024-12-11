@@ -1,11 +1,11 @@
 import { Position } from './channel-selector';
 
 export function dragElement(drag: HTMLElement, selector: HTMLElement, position: Position) {
-  var posXDrag = 0,
+  let posXDrag = 0,
     posYDrag = 0,
     posXStart = 0,
     posYStart = 0;
-  var top = 0,
+  let top = 0,
     left = 0,
     screenX = 0,
     screenY = 0;
@@ -25,7 +25,7 @@ export function dragElement(drag: HTMLElement, selector: HTMLElement, position: 
   }
 
   function dragMouseDown(e: MouseEvent) {
-    console.log('astarting');
+    console.log('starting');
     e.preventDefault();
     // get the mouse cursor position at startup:
     posXStart = e.clientX;
