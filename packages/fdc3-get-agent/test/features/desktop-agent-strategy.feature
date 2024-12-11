@@ -196,6 +196,32 @@ Scenario: Connecting but identity validation times out
       |         2.0 | cucumber-app      | cucumber-provider |
     And I call "{desktopAgent}" with "disconnect"
 
+  Scenario: Failover Strategy returning an invalid result
+    Given "invalidFailover" is a function which returns a promise of "some string"
+    And I call getAgent for a promise result with the following options
+      | failover        | timeoutMs |
+      | {invalidFailover} |      1000 |
+    And I refer to "{result}" as "theAPIPromise"
+    Then the promise "{theAPIPromise}" should resolve
+    And "{result}" is an error with message "InvalidFailover"
+
+  Scenario: Failover that is not a function
+    Given I call getAgent for a promise result with the following options
+      | failover        | timeoutMs |
+      | "some string" |      1000 |
+    And I refer to "{result}" as "theAPIPromise"
+    Then the promise "{theAPIPromise}" should resolve
+    And "{result}" is an error with message "InvalidFailover"
+
+  Scenario: Failover with identity validation timeout
+    Given "dummyFailover2" is a function which opens an iframe for communications on "{childDoc}" but times out identity validation
+    And I call getAgent for a promise result with the following options
+      | failover         | timeoutMs |
+      | {dummyFailover2} |      1000 |
+    And I refer to "{result}" as "theAPIPromise"
+    Then the promise "{theAPIPromise}" should resolve within 10 seconds
+    And "{result}" is an error with message "ErrorOnConnect"
+
   Scenario: Recover adaptor URL from SessionStorage
   Here, we recover the details of the session from the session state, obviating the need to 
   make a request to the parent iframe.
