@@ -39,7 +39,7 @@ type PrivateChannelEventListener = {
   appId: string;
   instanceId: string;
   channelId: string;
-  eventType: PrivateChannelEventListenerTypes;
+  eventType: PrivateChannelEventListenerTypes | null;
   listenerUuid: string;
 };
 
@@ -465,7 +465,10 @@ export class BroadcastHandler implements MessageHandler {
       } as AgentEventMessage;
 
       this.eventListeners
-        .filter(e => e.channelId == privateChannelId && e.eventType == eventType)
+        .filter(
+          listener =>
+            listener.channelId == privateChannelId && (listener.eventType == eventType || listener.eventType == null)
+        )
         .forEach(e => sc.post(msg, e.instanceId));
     }
   }
