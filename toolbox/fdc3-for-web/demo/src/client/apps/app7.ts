@@ -13,7 +13,11 @@ getAgent().then(async fdc3 => {
     },
   });
 
-  log!!.textContent = `Got resolution: ${JSON.stringify(reso)}`;
-  const result = await reso.getResult();
-  log!!.textContent += `Got result: ${JSON.stringify(result)}`;
+  if (log) {
+    log.textContent = `Got resolution: ${JSON.stringify(reso)}`;
+    const result = await reso.getResult();
+    log.textContent += `Got result: ${JSON.stringify(result)}`;
+  } else {
+    console.error("Unable to load resolution as the log element didn't exist!");
+  }
 });
