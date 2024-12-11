@@ -78,6 +78,22 @@ Given(
   }
 );
 
+Given(
+  '{string} is a function which opens an iframe for communications on {string} but times out identity validation',
+  function (this: CustomWorld, fn: string, doc: string) {
+    this.props[fn] = () => {
+      this.mockContext.open(dummyInstanceDetails[0].appId);
+      const document = handleResolve(doc, this) as MockDocument;
+      const ifrm = document.createElement('iframe');
+
+      this.mockFDC3Server = new MockFDC3Server(ifrm as unknown as MockIFrame, false, this.mockContext, true, true);
+      ifrm.setAttribute('src', EMBED_URL);
+      document.body.appendChild(ifrm);
+      return ifrm;
+    };
+  }
+);
+
 Given('an existing app instance in {string}', async function (this: CustomWorld, field: string) {
   const uuid = this.mockContext.open(dummyInstanceDetails[0].appId);
   this.props[field] = uuid;

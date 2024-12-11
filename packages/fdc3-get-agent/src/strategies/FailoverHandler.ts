@@ -73,11 +73,12 @@ export class FailoverHandler {
           //send a hello message
           this.helloHandler.sendWCP1Hello(failoverResult, '*');
         } else {
-          Logger.error('Failover function returned an invalid result', failoverResult);
-          throw new Error(AgentError.InvalidFailover);
+          Logger.error('Failover function returned an invalid result: ', failoverResult);
+          throw AgentError.InvalidFailover;
         }
       } else {
-        throw new Error(AgentError.InvalidFailover);
+        Logger.error('Failover was not a function, actual type: ', typeof this.options.failover);
+        throw AgentError.InvalidFailover;
       }
 
       //if we received a WindowProxy from failover, and it sent us a handshake, try to validate its identity

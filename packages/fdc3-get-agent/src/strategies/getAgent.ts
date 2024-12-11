@@ -27,6 +27,8 @@ const isFulfilled = <T>(input: PromiseSettledResult<T>): input is PromiseFulfill
  */
 let theAgentPromise: Promise<DesktopAgent> | null = null;
 
+const CLEAR_PROMISE_DELAY = 500;
+
 export function clearAgentPromise() {
   theAgentPromise = null;
 }
@@ -124,6 +126,8 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
       //n.b. the Loaders throw string error messages, rather than Error objects
       const error = errors.find(aRejection => aRejection.reason !== AgentError.AgentNotFound);
       if (error) {
+        //Clear the promise so a fresh call could be made later
+        setTimeout(() => clearAgentPromise(), CLEAR_PROMISE_DELAY);
         throw new Error(error.reason);
       } else if (options.failover != undefined) {
         Logger.debug(`Calling failover fn...`);
@@ -154,12 +158,14 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
           return selection.agent;
         } catch (e) {
           //n.b. FailoverHandler throws Error Objects so we can return this directly
-          Logger.error('Desktop agent not found. Error reported during failover', e);
-          throw e;
+          Logger.error('Desktop agent not found. Error reported during failover: ', e);
+          throw new Error(e as string);
         }
       } else {
         //We didn't manage to find an agent.
         Logger.error('Desktop agent not found. No error reported during discovery.');
+        //Clear the promise so a fresh call could be made later
+        setTimeout(() => clearAgentPromise(), CLEAR_PROMISE_DELAY);
         throw new Error(AgentError.AgentNotFound);
       }
     }
