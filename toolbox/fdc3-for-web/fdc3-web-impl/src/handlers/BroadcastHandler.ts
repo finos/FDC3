@@ -281,8 +281,8 @@ export class BroadcastHandler implements MessageHandler {
   }
 
   handleAddContextListenerRequest(arg0: AddContextListenerRequest, sc: ServerContext<any>, from: FullAppIdentifier) {
-    var channelId = null;
-    var channelType = ChannelType.user;
+    let channelId = null;
+    let channelType = ChannelType.user;
 
     if (arg0.payload?.channelId) {
       const channel = this.getChannelById(arg0.payload?.channelId);
@@ -395,7 +395,7 @@ export class BroadcastHandler implements MessageHandler {
 
   handleGetOrCreateRequest(arg0: GetOrCreateChannelRequest, sc: ServerContext<any>, from: FullAppIdentifier) {
     const id = arg0.payload.channelId;
-    var channel = this.getChannelById(id);
+    let channel = this.getChannelById(id);
     if (channel) {
       if (channel.type != ChannelType.app) {
         errorResponse(sc, arg0, from, ChannelError.AccessDenied, 'getOrCreateChannelResponse');
@@ -462,7 +462,6 @@ export class BroadcastHandler implements MessageHandler {
     sc: ServerContext<any>,
     contextType?: string
   ) {
-    console.log('invokePrivateChannelEventListeners', arguments);
     if (privateChannelId) {
       const msg: PrivateChannelEvents = {
         type: messageType,

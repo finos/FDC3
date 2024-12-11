@@ -51,7 +51,7 @@ export class HeartbeatHandler implements MessageHandler {
             this.sendHeartbeat(sc, app);
 
             // check when the last heartbeat happened
-            const lastHeartbeat = this.lastHeartbeats.get(app.instanceId!!);
+            const lastHeartbeat = this.lastHeartbeats.get(app.instanceId);
             const currentState = app.state;
 
             if (lastHeartbeat != undefined) {
@@ -61,23 +61,23 @@ export class HeartbeatHandler implements MessageHandler {
                 console.error(
                   `Heartbeat from ${app.instanceId} for ${timeSinceLastHeartbeat}ms. App is considered connected.`
                 );
-                sc.setAppState(app.instanceId!!, State.Connected);
+                sc.setAppState(app.instanceId, State.Connected);
               } else if (timeSinceLastHeartbeat > disconnectedAfter && currentState == State.Connected) {
                 console.error(
                   `No heartbeat from ${app.instanceId} for ${timeSinceLastHeartbeat}ms. App is considered not responding.`
                 );
-                sc.setAppState(app.instanceId!!, State.NotResponding);
+                sc.setAppState(app.instanceId, State.NotResponding);
               } else if (timeSinceLastHeartbeat > deadAfter && currentState == State.NotResponding) {
                 console.error(
                   `No heartbeat from ${app.instanceId} for ${timeSinceLastHeartbeat}ms. App is considered terminated.`
                 );
-                sc.setAppState(app.instanceId!!, State.Terminated);
+                sc.setAppState(app.instanceId, State.Terminated);
               } else {
                 // no action
               }
             } else {
               // start the clock
-              this.lastHeartbeats.set(app.instanceId!!, now);
+              this.lastHeartbeats.set(app.instanceId, now);
             }
           });
       });
@@ -113,7 +113,7 @@ export class HeartbeatHandler implements MessageHandler {
     if (msg.type == 'heartbeatAcknowledgementRequest') {
       const app = sc.getInstanceDetails(from);
       if (app) {
-        this.lastHeartbeats.set(app.instanceId!!, new Date().getTime());
+        this.lastHeartbeats.set(app.instanceId, new Date().getTime());
       }
     }
 

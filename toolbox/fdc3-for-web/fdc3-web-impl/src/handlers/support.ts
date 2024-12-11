@@ -17,7 +17,7 @@ export function successResponse(
   sc: ServerContext<AppRegistration>,
   request: AppRequestMessage,
   to: FullAppIdentifier,
-  payload: any,
+  payload: AgentResponseMessage['payload'],
   type: AgentResponseMessage['type']
 ) {
   return successResponseId(sc, request.meta.requestUuid, to, payload, type);
@@ -78,6 +78,6 @@ export function errorResponseId(
 /*
  * from: https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates#14438954
  */
-export function onlyUnique(value: any, index: any, self: any) {
+export function onlyUnique<X>(value: X, index: number, self: X[]) {
   return self.indexOf(value) === index;
 }

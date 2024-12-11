@@ -20,6 +20,8 @@ import {
   RaiseIntentRequest,
   RaiseIntentForContextRequest,
   IntentResultRequest,
+  AppRequestMessage,
+  AgentResponseMessage,
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 type ListenerRegistration = {
@@ -116,14 +118,14 @@ class PendingIntent {
     ) {
       this.complete = true;
       this.ih.pendingIntents.delete(this);
-      forwardRequest(this.r, { appId: arg0.appId, instanceId: arg0.instanceId! }, this.sc, this.ih);
+      forwardRequest(this.r, { appId: arg0.appId, instanceId: arg0.instanceId }, this.sc, this.ih);
     }
   }
 }
 
 export class IntentHandler implements MessageHandler {
   private readonly directory: Directory;
-  private readonly regs: ListenerRegistration[] = [];
+  private readonly registrations: ListenerRegistration[] = [];
   readonly pendingIntents: Set<PendingIntent> = new Set();
   readonly pendingResolutions: Map<string, FullAppIdentifier> = new Map();
   readonly timeoutMs: number;
@@ -145,7 +147,7 @@ export class IntentHandler implements MessageHandler {
     return out;
   }
 
-  async accept(msg: any, sc: ServerContext<AppRegistration>, uuid: InstanceID): Promise<void> {
+  async accept(msg: AppRequestMessage, sc: ServerContext<AppRegistration>, uuid: InstanceID): Promise<void> {
     const from = sc.getInstanceDetails(uuid);
 
     if (from == null) {
@@ -175,9 +177,9 @@ export class IntentHandler implements MessageHandler {
         case 'intentResultRequest':
           return this.intentResultRequest(msg as IntentResultRequest, sc, from);
       }
-    } catch (e: any) {
-      const responseType = msg.type.replace(new RegExp('Request$'), 'Response');
-      errorResponse(sc, msg, from, e.message ?? e, responseType);
+    } catch (e) {
+      const responseType = msg.type.replace(new RegExp('Request$'), 'Response') as AgentResponseMessage['type'];
+      errorResponse(sc, msg, from, (e as Error).message ?? e, responseType);
     }
   }
 
@@ -218,9 +220,9 @@ export class IntentHandler implements MessageHandler {
     from: FullAppIdentifier
   ): void {
     const id = arg0.payload.listenerUUID;
-    const fi = this.regs.findIndex(e => e.listenerUUID == id);
+    const fi = this.registrations.findIndex(e => e.listenerUUID == id);
     if (fi > -1) {
-      this.regs.splice(fi, 1);
+      this.registrations.splice(fi, 1);
       successResponse(sc, arg0, from, {}, 'intentListenerUnsubscribeResponse');
     } else {
       errorResponse(sc, arg0, from, 'Non-Existent Listener', 'intentListenerUnsubscribeResponse');
@@ -239,7 +241,7 @@ export class IntentHandler implements MessageHandler {
       listenerUUID: sc.createUUID(),
     };
 
-    this.regs.push(lr);
+    this.registrations.push(lr);
     successResponse(
       sc,
       arg0,
@@ -251,7 +253,7 @@ export class IntentHandler implements MessageHandler {
     );
 
     // see if this intent listener is the destination for any pending intents
-    for (let x of this.pendingIntents) {
+    for (const x of this.pendingIntents) {
       x.accept(lr);
       if (x.complete) {
         this.pendingIntents.delete(x);
@@ -260,7 +262,7 @@ export class IntentHandler implements MessageHandler {
   }
 
   hasListener(instanceId: string, intentName: string): boolean {
-    return this.regs.find(r => r.instanceId == instanceId && r.intentName == intentName) != null;
+    return this.registrations.find(r => r.instanceId == instanceId && r.intentName == intentName) != null;
   }
 
   async getRunningApps(appId: string, sc: ServerContext<AppRegistration>): Promise<FullAppIdentifier[]> {
@@ -275,7 +277,7 @@ export class IntentHandler implements MessageHandler {
     // app exists but needs starting
     const pi = new PendingIntent(arg0, sc, this, target);
     this.pendingIntents.add(pi);
-    sc.open(target?.appId!!).then(() => {
+    sc.open(target.appId).then(() => {
       return undefined;
     });
   }
@@ -638,12 +640,8 @@ export class IntentHandler implements MessageHandler {
     sc: ServerContext<AppRegistration>
   ): Promise<ListenerRegistration[]> {
     const activeApps = await sc.getConnectedApps();
-    const matching = this.regs.filter(r => r.intentName == intentName);
-
-    //console.log(`Matched listeners returned ${matching.length}`)
+    const matching = this.registrations.filter(r => r.intentName == intentName);
     const active = matching.filter(r => activeApps.find(a => a.instanceId == r.instanceId));
-    //console.log(`Active listeners returned ${active.length}`)
-
     return active;
   }
 }

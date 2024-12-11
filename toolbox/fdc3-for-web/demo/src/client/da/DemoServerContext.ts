@@ -2,7 +2,7 @@ import { AppRegistration, Directory, DirectoryApp, InstanceID, ServerContext, St
 import { Socket } from 'socket.io-client';
 import { v4 as uuid } from 'uuid';
 import { FDC3_DA_EVENT } from '../../message-types';
-import { AppIdentifier, AppIntent, Context, OpenError } from '@kite9/fdc3';
+import { AppIdentifier, AppIntent, OpenError } from '@kite9/fdc3';
 
 enum Opener {
   Tab,
@@ -15,6 +15,11 @@ type DemoRegistration = AppRegistration & {
   url: string;
 };
 
+//Typeguard used to check if application launch details have a URL
+function isWebAppLaunchDetails(details: object): details is { url: string } {
+  return (details as { url: string }).url !== undefined;
+}
+
 export class DemoServerContext implements ServerContext<DemoRegistration> {
   private readonly socket: Socket;
   private readonly directory: Directory;
@@ -25,7 +30,7 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
     this.directory = directory;
   }
 
-  async narrowIntents(_raiser: AppIdentifier, appIntents: AppIntent[], _context: Context): Promise<AppIntent[]> {
+  async narrowIntents(_raiser: AppIdentifier, appIntents: AppIntent[] /*, _context: Context*/): Promise<AppIntent[]> {
     return appIntents;
   }
 
@@ -48,7 +53,7 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
   getOpener(): Opener {
     const cb = document.getElementById('opener') as HTMLInputElement;
     const val = cb.value;
-    var out: Opener = Opener[val as keyof typeof Opener]; //Works with --noImplicitAny
+    const out: Opener = Opener[val as keyof typeof Opener]; //Works with --noImplicitAny
     return out;
   }
 
@@ -64,15 +69,6 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
     this.socket.emit(FDC3_DA_EVENT, message, to);
   }
 
-  openFrame(url: string): Window {
-    var ifrm = document.createElement('iframe');
-    ifrm.setAttribute('src', url);
-    ifrm.style.width = '640px';
-    ifrm.style.height = '480px';
-    document.body.appendChild(ifrm);
-    return ifrm.contentWindow!!;
-  }
-
   goodbye(id: string) {
     this.connections = this.connections.filter(i => i.instanceId !== id);
     console.debug(`Closed instance`, id);
@@ -82,20 +78,42 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
     );
   }
 
-  openTab(url: string): Window {
-    return window.open(url, '_blank')!!;
+  openFrame(url: string): Promise<Window | null> {
+    const iframe = document.createElement('iframe');
+    iframe.setAttribute('src', url);
+    iframe.style.width = '640px';
+    iframe.style.height = '480px';
+    document.body.appendChild(iframe);
+
+    //wait for load event, after which contentWindow should not be null
+    const loadPromise = new Promise<Window | null>(resolve => {
+      iframe.onload = () => resolve(iframe.contentWindow);
+    });
+    return loadPromise;
   }
 
-  openNested(url: string): Window {
-    var ifrm = document.createElement('iframe');
-    ifrm.setAttribute('src', 'nested.html?url=' + url);
-    ifrm.style.width = '640px';
-    ifrm.style.height = '480px';
-    document.body.appendChild(ifrm);
-    return ifrm.contentWindow!!;
+  openTab(url: string): Promise<Window | null> {
+    //n.b. There are cases where the window reference returned is null
+    // That can happen if the Cross-Origin-Opener-Policy opener policy is set (see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy)
+    // or a browser pop-up blocker gets in the way...
+    return Promise.resolve(window.open(url, '_blank'));
   }
 
-  openUrl(url: string): Window {
+  openNested(url: string): Promise<Window | null> {
+    const iframe = document.createElement('iframe');
+    iframe.setAttribute('src', 'nested.html?url=' + url);
+    iframe.style.width = '640px';
+    iframe.style.height = '480px';
+    document.body.appendChild(iframe);
+
+    //wait for load event, after which contentWindow should not be null
+    const loadPromise = new Promise<Window | null>(resolve => {
+      iframe.onload = () => resolve(iframe.contentWindow);
+    });
+    return loadPromise;
+  }
+
+  async openUrl(url: string): Promise<Window | null> {
     const opener = this.getOpener();
     switch (opener) {
       case Opener.Tab:
@@ -110,19 +128,34 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
   async open(appId: string): Promise<InstanceID> {
     const details: DirectoryApp[] = this.directory.retrieveAppsById(appId) as DirectoryApp[];
     if (details.length > 0) {
-      const url = (details[0].details as any)?.url ?? undefined;
-      const window = this.openUrl(url);
-      const instanceId: InstanceID = this.createUUID();
-      const metadata = {
-        appId,
-        instanceId,
-        window,
-        url,
-        state: State.Pending,
-      };
+      const launchDetails = details[0].details;
+      if (isWebAppLaunchDetails(launchDetails)) {
+        const url = launchDetails.url ?? undefined;
+        const window = await this.openUrl(url);
+        if (window) {
+          const instanceId: InstanceID = this.createUUID();
+          const metadata = {
+            appId,
+            instanceId,
+            window,
+            url,
+            state: State.Pending,
+          };
 
-      this.setInstanceDetails(instanceId, metadata);
-      return instanceId;
+          this.setInstanceDetails(instanceId, metadata);
+          return instanceId;
+        } else {
+          console.error(
+            'We did not receive a window reference after launching app: ',
+            details[0],
+            '\nn.b. this may occur if a popup blocker prevented launch or the Cross-Origin-Opener-Policy opener policy is set'
+          );
+          throw new Error(OpenError.ErrorOnLaunch);
+        }
+      } else {
+        console.error('Unable to launch app without a URL, app: ', details[0]);
+        throw new Error(OpenError.ErrorOnLaunch);
+      }
     }
 
     throw new Error(OpenError.AppNotFound);
