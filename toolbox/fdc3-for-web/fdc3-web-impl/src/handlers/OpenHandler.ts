@@ -120,12 +120,12 @@ export class OpenHandler implements MessageHandler {
       return this.handleValidate(msg as WebConnectionProtocol4ValidateAppIdentity, sc, uuid);
     } else if (isAddContextListenerRequest(msg)) {
       //handle context listener adds for pending applications (i.e. opened but awaiting context listener addition to deliver context)
-      //  additional handling is performed BroadcastHandler
+      //  additional handling is performed in BroadcastHandler
       return this.handleAddContextListener(msg as AddContextListenerRequest, sc, uuid);
     } else {
       const from = sc.getInstanceDetails(uuid);
-      try {
-        if (from) {
+      if (from) {
+        try {
           if (isOpenRequest(msg)) {
             return this.open(msg, sc, from);
           } else if (isFindInstancesRequest(msg)) {
@@ -135,13 +135,13 @@ export class OpenHandler implements MessageHandler {
           } else if (isGetInfoRequest(msg)) {
             return this.getInfo(msg, sc, from);
           }
-        } else {
-          console.warn('Received message from unknown source, ignoring', msg, uuid);
+        } catch (e) {
+          const responseType = msg.type.replace(new RegExp('Request$'), 'Response') as AgentResponseMessage['type'];
+          //TODO: create a typeguard for response message types and use it to replace the 'as' below
+          errorResponse(sc, msg, from, (e as Error).message ?? e, responseType);
         }
-      } catch (e: any) {
-        const responseType = msg.type.replace(new RegExp('Request$'), 'Response');
-        //TODO: create a typeguard for response message types and use it to replace the 'as' below
-        errorResponse(sc, msg, from!!, e.message ?? e, responseType as AgentResponseMessage['type']);
+      } else {
+        console.warn('Received message from unknown source, ignoring', msg, uuid);
       }
     }
   }
@@ -157,6 +157,7 @@ export class OpenHandler implements MessageHandler {
     const pendingOpen = this.pending.get(from);
 
     if (pendingOpen) {
+      //TODO: Find out why this is asserted non-null - context is only sent to the user channel listener
       const channelId = arg0.payload.channelId!!;
       const contextType = arg0.payload.contextType;
 
@@ -182,6 +183,7 @@ export class OpenHandler implements MessageHandler {
 
           pendingOpen.setDone();
           this.pending.delete(from);
+          //TODO: find a better/more certain way to get teh destination for this message
           sc.post(message, arg0.meta.source?.instanceId!!);
         }
       }
@@ -253,14 +255,13 @@ export class OpenHandler implements MessageHandler {
     try {
       const uuid = await sc.open(source.appId);
       this.pending.set(uuid, new PendingApp(sc, arg0, context, from, this.timeoutMs));
-    } catch (e: any) {
-      errorResponse(sc, arg0, from, e.message, 'openResponse');
+    } catch (e) {
+      errorResponse(sc, arg0, from, (e as Error).message ?? e, 'openResponse');
     }
   }
 
   async getInfo(arg0: GetInfoRequest, sc: ServerContext<AppRegistration>, from: FullAppIdentifier): Promise<void> {
-    const _this = this;
-    const implMetadata: ImplementationMetadata = _this.getImplementationMetadata(sc, {
+    const implMetadata: ImplementationMetadata = this.getImplementationMetadata(sc, {
       appId: from.appId,
       instanceId: from.instanceId,
     });
@@ -295,14 +296,12 @@ export class OpenHandler implements MessageHandler {
     sc: ServerContext<AppRegistration>,
     from: InstanceID
   ): Promise<void> {
-    const _this = this;
-
     const responseMeta = {
       connectionAttemptUuid: arg0.meta.connectionAttemptUuid,
       timestamp: new Date(),
     };
 
-    function returnError() {
+    const returnError = () => {
       sc.post(
         {
           meta: responseMeta,
@@ -313,10 +312,10 @@ export class OpenHandler implements MessageHandler {
         } as WebConnectionProtocol5ValidateAppIdentityFailedResponse,
         from
       );
-    }
+    };
 
-    function returnSuccess(appId: string, instanceId: string) {
-      const implMetadata: ImplementationMetadata = _this.getImplementationMetadata(sc, { appId, instanceId });
+    const returnSuccess = (appId: string, instanceId: string) => {
+      const implMetadata: ImplementationMetadata = this.getImplementationMetadata(sc, { appId, instanceId });
       const msg: WebConnectionProtocol5ValidateAppIdentitySuccessResponse = {
         meta: responseMeta,
         type: 'WCP5ValidateAppIdentityResponse',
@@ -328,7 +327,7 @@ export class OpenHandler implements MessageHandler {
         },
       };
       sc.post(msg, instanceId);
-    }
+    };
 
     if (arg0.payload.instanceUuid) {
       // existing app reconnecting
