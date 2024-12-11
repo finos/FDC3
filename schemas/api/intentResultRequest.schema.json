@@ -1,0 +1,54 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/intentResultRequest.schema.json",
+	"type": "object",
+	"title": "IntentResult Request",
+	"description": "A request to deliver a result for an intent (which may include a `void` result that just indicates that the handler has run, returning no result). The result is tied to the intentEvent it relates to by quoting the `eventUuid` of the intentEvent in its payload.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/IntentResultRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/IntentResultRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"IntentResultRequestType": {
+			"title": "IntentResult Request Message Type",
+			"const": "intentResultRequest"
+		},
+		"IntentResultRequestPayload": {
+			"title": "IntentResult Request Payload",
+			"type": "object",
+			"properties": {
+				"intentEventUuid": {
+					"title": "IntentEvent UUID",
+					"type": "string",
+					"description": "The eventUuid value of the intentEvent that the result being sent relates to."
+				},
+				"raiseIntentRequestUuid": {
+					"title": "raiseIntentRequest UUID",
+					"type": "string",
+					"description": "The requestUuid value of the raiseIntentRequest that the result being sent relates to."
+				},
+				"intentResult": {
+					"$ref": "api.schema.json#/definitions/IntentResult"
+				}
+			},
+			"required": [
+				"intentEventUuid", "raiseIntentRequestUuid", "intentResult"
+			],
+			"additionalProperties": false
+		}
+	}
+}

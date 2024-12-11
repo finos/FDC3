@@ -18,8 +18,7 @@
       "description": "A request to open an application",
       "properties": {
         "type": {
-          "title": "Open Request Message Type",
-          "const": "openRequest"
+          "$ref": "../api/openRequest.schema.json#/$defs/OpenRequestType"
         },
         "payload": {
           "title": "Open Request Payload",

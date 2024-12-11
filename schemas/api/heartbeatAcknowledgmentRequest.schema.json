@@ -1,0 +1,46 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/heartbeatAcknowledgementRequest.schema.json",
+	"type": "object",
+	"title": "HeartbeatAcknowledgement Request",
+	"description": "A request that serves as an acknowledgement of a heartbeat event from the Desktop Agent and indicates that an application window or frame is still alive.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/HeartbeatAcknowledgementRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/HeartbeatAcknowledgementRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"HeartbeatAcknowledgementRequestType": {
+			"title": "HeartbeatAcknowledgement Request Message Type",
+			"const": "heartbeatAcknowledgementRequest"
+		},
+		"HeartbeatAcknowledgementRequestPayload": {
+			"title": "heartbeatAcknowledgement Request Payload",
+			"type": "object",
+			"properties": {
+				"heartbeatEventUuid": {
+					"title": "Heartbeat Event Uuid",
+					"type": "string",
+					"description": "The eventUuid value of the HeartbeatEvent that the acknowledgement being sent relates to."
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"heartbeatEventUuid"
+			]
+		}
+	}
+}

@@ -1,0 +1,57 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/leaveCurrentChannelResponse.schema.json",
+	"type": "object",
+	"title": "LeaveCurrentChannel Response",
+	"description": "A response to a leaveCurrentChannel request.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/LeaveCurrentChannelResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/LeaveCurrentChannelSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/LeaveCurrentChannelErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"LeaveCurrentChannelResponseType": {
+			"title": "LeaveCurrentChannel Response Message Type",
+			"const": "leaveCurrentChannelResponse"
+		},
+		"LeaveCurrentChannelSuccessResponsePayload": {
+			"title": "LeaveCurrentChannel Response Payload",
+			"type": "object",
+			"properties": {},
+			"additionalProperties": false
+		},
+		"LeaveCurrentChannelErrorResponsePayload": {
+			"title": "LeaveCurrentChannel Error Response Payload",
+			"type": "object",
+			"properties": {
+				"error": {
+					"$ref": "api.schema.json#/definitions/ChannelError"
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}

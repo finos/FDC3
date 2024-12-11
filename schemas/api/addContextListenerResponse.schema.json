@@ -1,0 +1,64 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/addContextListenerResponse.schema.json",
+	"type": "object",
+	"title": "AddContextListener Response",
+	"description": "A response to a addContextListener request. Where the listener was added to the current user channel (channelId == null), and this app has already been added to a user channel, client code should make a subsequent request to get the current context of that channel for this listener and then call its handler with it.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/AddContextListenerResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/AddContextListenerSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/AddContextListenerErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"AddContextListenerResponseType": {
+			"title": "AddContextListener Response Message Type",
+			"const": "addContextListenerResponse"
+		},
+		"AddContextListenerSuccessResponsePayload": {
+			"title": "AddContextListener Response Payload",
+			"type": "object",
+			"properties": {
+				"listenerUUID": {
+					"$ref": "common.schema.json#/$defs/ListenerUuid"
+				}
+			},
+			"required": [
+				"listenerUUID"
+			],
+			"additionalProperties": false
+		},
+		"AddContextListenerErrorResponsePayload": {
+			"title": "AddContextListener Error Response Payload",
+			"type": "object",
+			"properties": {
+				"error": {
+					"$ref": "api.schema.json#/definitions/ChannelError"
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}

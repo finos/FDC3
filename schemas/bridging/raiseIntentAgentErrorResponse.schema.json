@@ -18,23 +18,10 @@
       "description": "A response to a request to raise an intent that contains an error.",
       "properties": {
         "type": {
-          "title": "RaiseIntent Response Message type",
-          "const": "raiseIntentResponse"
+          "$ref": "../api/raiseIntentResponse.schema.json#/$defs/RaiseIntentResponseType"
         },
         "payload": {
-          "title": "RaiseIntent Error Response Payload",
-          "type": "object",
-          "properties": {
-            "error": {
-              "title": "RaiseIntent Error Message",
-              "oneOf": [
-                { "$ref": "../api/api.schema.json#/definitions/ResolveError" },
-                { "$ref": "../api/api.schema.json#/definitions/BridgingError" }
-              ]
-            }
-          },
-          "required": ["error"],
-          "additionalProperties": false
+          "$ref": "../api/raiseIntentResponse.schema.json#/$defs/RaiseIntentErrorResponsePayload"
         },
         "meta": {
           "title": "RaiseIntent Response Metadata",

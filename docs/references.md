@@ -8,8 +8,12 @@ sidebar_label: References
 The following normative documents contain provisions, which, through reference in this text, constitute provisions of this Standard. For dated references, subsequent amendments to, or revisions of, any of these publications do not apply. However, parties to agreements based on this Standard are encouraged to investigate the possibility of applying the most recent editions of the normative documents indicated below. For undated references, the latest edition of the normative document referred to applies:
 
 - **Apache 2.0 open-source license**, <https://www.apache.org/licenses/LICENSE-2.0>.
-- **Community Specification license**, <https://github.com/CommunitySpecification/1.0>
+- **Community Specification license**, <https://github.com/CommunitySpecification/1.0>.
+- **HTML Living Standard**, <https://html.spec.whatwg.org/>.
+- **HTML Standard's Channel Messaging API**, <https://html.spec.whatwg.org/multipage/web-messaging>.
+- **HTML Standard's Web Storage API**, <https://html.spec.whatwg.org/multipage/webstorage.html#webstorage>.
 - **ISO 3166-1**, _Codes for the representation of names of countries and their subdivisions – Part 1: Country codes_, <https://www.iso.org/iso-3166-country-codes.html>.
+- **ISO 4217:2015**, _Codes for the representation of currencies_, <https://www.iso.org/iso-4217-currency-codes.html>.
 - **ISO 8601-1:2019**, _Date and time — Representations for information interchange — Part 1: Basic rules_, <https://www.iso.org/standard/70907.html>
 - **JSON Schema**, <https://json-schema.org/>.
 - **OpenAPI Standard v3.0**, <https://www.openapis.org/>.

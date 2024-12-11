@@ -25,7 +25,7 @@
       "description": "Error message payload containing an standardized error string.",
       "properties": {
         "error": {
-          "$ref": "common.schema.json#/$defs/ErrorMessages"
+          "$ref": "../api/common.schema.json#/$defs/ErrorMessages"
         }
       },
       "unevaluatedProperties": false,

@@ -51,7 +51,8 @@ module.exports={
   "plugins": [],
   "themeConfig": {
     "prism": {
-      "additionalLanguages": ["json","csharp"]
+      "additionalLanguages": ["typescript","javascript","json","csharp"],
+      "theme": require('prism-react-renderer/themes/vsDark')
     },
     "algolia": {
       "appId": "YW91L9TW76",
@@ -208,6 +209,27 @@ module.exports={
         "alt": "FINOS Logo",
         "width": 50,
         "href": "https://finos.org"
+      }
+    },
+    "mermaid": {
+      "options": {
+        "htmlLabels": true,
+        "markdownAutoWrap": true,
+        "wrap": true,
+          "wrappingWidth": 50,
+        "flowchart": {
+          "titleTopMargin": 30,
+          "subGraphTitleMargin":  {
+            "top": 30,
+            "bottom": 30
+          },
+          "nodeSpacing": 30,
+          "rankSpacing": 50,
+          "diagramPadding": 5,
+          "useMaxWidth": true,
+          "htmlLabels": true,
+          "wrappingWidth": 50
+        }
       }
     }
   }

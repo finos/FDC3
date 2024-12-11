@@ -81,10 +81,10 @@
           "type": "object",
           "properties": {
             "requestUuid": {
-              "$ref": "common.schema.json#/$defs/RequestUuid"
+              "$ref": "../api/common.schema.json#/$defs/RequestUuid"
             },
             "timestamp": {
-              "$ref": "common.schema.json#/$defs/Timestamp"
+              "$ref": "../api/common.schema.json#/$defs/Timestamp"
             }
           },
           "additionalProperties": false,
