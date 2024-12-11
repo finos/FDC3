@@ -1,0 +1,53 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/addEventListenerRequest.schema.json",
+	"type": "object",
+	"title": "AddEventListener Request",
+	"description": "A request to add an event listener for a specified event type to the Desktop Agent.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/AddEventListenerRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/AddEventListenerRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"AddEventListenerRequestType": {
+			"title": "AddEventListener Request Message Type",
+			"const": "addEventListenerRequest"
+		},
+		"AddEventListenerRequestPayload": {
+			"title": "AddEventListener Request Payload",
+			"type": "object",
+			"properties": {
+				"type": {
+					"title": "Event type",
+					"description": "The type of the event to be listened to or `null` to listen to all event types.",
+					"oneOf": [
+						{
+							"$ref": "api.schema.json#/definitions/FDC3EventType"
+						},
+						{
+							"type": "null"
+						}
+					]
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"type"
+			]
+		}
+	}
+}

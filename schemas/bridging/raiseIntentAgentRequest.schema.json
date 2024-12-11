@@ -18,8 +18,7 @@
       "description": "A request to raise an intent.",
       "properties": {
         "type": {
-          "title": "RaiseIntent Request Message type",
-          "const": "raiseIntentRequest"
+          "$ref": "../api/raiseIntentRequest.schema.json#/$defs/RaiseIntentRequestType"
         },
         "payload": {
           "title": "RaiseIntent Request Payload",

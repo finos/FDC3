@@ -35,6 +35,8 @@
 	max-width: 250px;
 	padding-left: 15px;
 	padding-right: 15px;
+	width: 100%;
+	height: 100%;
 }
 
 .cta {

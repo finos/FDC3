@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/WCP4ValidateAppIdentity.schema.json",
+  "title": "Web Connection Protocol 4 Validate App Identity",
+  "description": "Identity Validation request from an app attempting to connect to a Desktop Agent.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/WCP4ValidateAppIdentityBase"
+    },
+    {
+      "$ref": "WCPConnectionStep.schema.json"
+    }
+  ],
+  "$defs": {
+    "WCP4ValidateAppIdentityBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "WCP4ValidateAppIdentity Message Type",
+          "const": "WCP4ValidateAppIdentity"
+        },
+        "payload": {
+          "title": "WCP4ValidateAppIdentity Payload",
+          "type": "object",
+          "properties": {
+            "identityUrl": {
+              "title": "Identity URL",
+              "description": "URL to use for the identity of the application. Desktop Agents MUST validate that the origin of the message matches the URL, but MAY implement custom comparison logic.",
+              "type": "string",
+              "format": "uri"
+            },
+            "actualUrl": {
+              "title": "Actual URL",
+              "description": "The current URL of the page attempting to connect. This may differ from the identityUrl, but the origins MUST match.",
+              "type": "string",
+              "format": "uri"
+            },
+            "instanceId": {
+              "title": "instanceId",
+              "description": "If an application has previously connected to the Desktop Agent, it may specify its prior instance id and associated instance UUID to request the same same instance Id be assigned.",
+              "type": "string"
+            },
+            "instanceUuid": {
+              "title": "instanceUuid",
+              "description": "Instance UUID associated with the requested instanceId.",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "identityUrl", "actualUrl"
+          ]
+        },
+        "meta": {
+          "$ref": "WCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"
+        }
+      },
+      "required": [
+        "type",
+        "payload",
+        "meta"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

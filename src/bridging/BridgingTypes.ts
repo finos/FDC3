@@ -1,8 +1,7 @@
 // To parse this data:
 //
-//   import { Convert, AgentErrorResponseMessage, AgentRequestMessage, AgentResponseMessage, BridgeErrorResponseMessage, BridgeRequestMessage, BridgeResponseMessage, BroadcastAgentRequest, BroadcastBridgeRequest, ConnectionStepMessage, ConnectionStep2Hello, ConnectionStep3Handshake, ConnectionStep4AuthenticationFailed, ConnectionStep6ConnectedAgentsUpdate, FindInstancesAgentErrorResponse, FindInstancesAgentRequest, FindInstancesAgentResponse, FindInstancesBridgeErrorResponse, FindInstancesBridgeRequest, FindInstancesBridgeResponse, FindIntentAgentErrorResponse, FindIntentAgentRequest, FindIntentAgentResponse, FindIntentBridgeErrorResponse, FindIntentBridgeRequest, FindIntentBridgeResponse, FindIntentsByContextAgentErrorResponse, FindIntentsByContextAgentRequest, FindIntentsByContextAgentResponse, FindIntentsByContextBridgeErrorResponse, FindIntentsByContextBridgeRequest, FindIntentsByContextBridgeResponse, GetAppMetadataAgentErrorResponse, GetAppMetadataAgentRequest, GetAppMetadataAgentResponse, GetAppMetadataBridgeErrorResponse, GetAppMetadataBridgeRequest, GetAppMetadataBridgeResponse, OpenAgentErrorResponse, OpenAgentRequest, OpenAgentResponse, OpenBridgeErrorResponse, OpenBridgeRequest, OpenBridgeResponse, PrivateChannelBroadcastAgentRequest, PrivateChannelBroadcastBridgeRequest, PrivateChannelEventListenerAddedAgentRequest, PrivateChannelEventListenerAddedBridgeRequest, PrivateChannelEventListenerRemovedAgentRequest, PrivateChannelEventListenerRemovedBridgeRequest, PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerBridgeRequest, PrivateChannelOnDisconnectAgentRequest, PrivateChannelOnDisconnectBridgeRequest, PrivateChannelOnUnsubscribeAgentRequest, PrivateChannelOnUnsubscribeBridgeRequest, RaiseIntentAgentErrorResponse, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentBridgeErrorResponse, RaiseIntentBridgeRequest, RaiseIntentBridgeResponse, RaiseIntentResultAgentErrorResponse, RaiseIntentResultAgentResponse, RaiseIntentResultBridgeErrorResponse, RaiseIntentResultBridgeResponse, Context } from "./file";
+//   import { Convert, AgentErrorResponseMessage, AgentRequestMessage, AgentResponseMessage, BridgeErrorResponseMessage, BridgeRequestMessage, BridgeResponseMessage, BroadcastAgentRequest, BroadcastBridgeRequest, ConnectionStepMessage, ConnectionStep2Hello, ConnectionStep3Handshake, ConnectionStep4AuthenticationFailed, ConnectionStep6ConnectedAgentsUpdate, FindInstancesAgentErrorResponse, FindInstancesAgentRequest, FindInstancesAgentResponse, FindInstancesBridgeErrorResponse, FindInstancesBridgeRequest, FindInstancesBridgeResponse, FindIntentAgentErrorResponse, FindIntentAgentRequest, FindIntentAgentResponse, FindIntentBridgeErrorResponse, FindIntentBridgeRequest, FindIntentBridgeResponse, FindIntentsByContextAgentErrorResponse, FindIntentsByContextAgentRequest, FindIntentsByContextAgentResponse, FindIntentsByContextBridgeErrorResponse, FindIntentsByContextBridgeRequest, FindIntentsByContextBridgeResponse, GetAppMetadataAgentErrorResponse, GetAppMetadataAgentRequest, GetAppMetadataAgentResponse, GetAppMetadataBridgeErrorResponse, GetAppMetadataBridgeRequest, GetAppMetadataBridgeResponse, OpenAgentErrorResponse, OpenAgentRequest, OpenAgentResponse, OpenBridgeErrorResponse, OpenBridgeRequest, OpenBridgeResponse, PrivateChannelBroadcastAgentRequest, PrivateChannelBroadcastBridgeRequest, PrivateChannelEventListenerAddedAgentRequest, PrivateChannelEventListenerAddedBridgeRequest, PrivateChannelEventListenerRemovedAgentRequest, PrivateChannelEventListenerRemovedBridgeRequest, PrivateChannelOnAddContextListenerAgentRequest, PrivateChannelOnAddContextListenerBridgeRequest, PrivateChannelOnDisconnectAgentRequest, PrivateChannelOnDisconnectBridgeRequest, PrivateChannelOnUnsubscribeAgentRequest, PrivateChannelOnUnsubscribeBridgeRequest, RaiseIntentAgentErrorResponse, RaiseIntentAgentRequest, RaiseIntentAgentResponse, RaiseIntentBridgeErrorResponse, RaiseIntentBridgeRequest, RaiseIntentBridgeResponse, RaiseIntentResultAgentErrorResponse, RaiseIntentResultAgentResponse, RaiseIntentResultBridgeErrorResponse, RaiseIntentResultBridgeResponse } from "./file";
 //
-//   const fDC3DesktopAgentAPISchema = Convert.toFDC3DesktopAgentAPISchema(json);
 //   const agentErrorResponseMessage = Convert.toAgentErrorResponseMessage(json);
 //   const agentRequestMessage = Convert.toAgentRequestMessage(json);
 //   const agentResponseMessage = Convert.toAgentResponseMessage(json);
@@ -11,7 +10,7 @@
 //   const bridgeResponseMessage = Convert.toBridgeResponseMessage(json);
 //   const broadcastAgentRequest = Convert.toBroadcastAgentRequest(json);
 //   const broadcastBridgeRequest = Convert.toBroadcastBridgeRequest(json);
-//   const bridgingCommons = Convert.toBridgingCommons(json);
+//   const bridgeCommonDefinitions = Convert.toBridgeCommonDefinitions(json);
 //   const connectionStepMessage = Convert.toConnectionStepMessage(json);
 //   const connectionStep2Hello = Convert.toConnectionStep2Hello(json);
 //   const connectionStep3Handshake = Convert.toConnectionStep3Handshake(json);
@@ -69,7 +68,6 @@
 //   const raiseIntentResultAgentResponse = Convert.toRaiseIntentResultAgentResponse(json);
 //   const raiseIntentResultBridgeErrorResponse = Convert.toRaiseIntentResultBridgeErrorResponse(json);
 //   const raiseIntentResultBridgeResponse = Convert.toRaiseIntentResultBridgeResponse(json);
-//   const context = Convert.toContext(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
@@ -222,7 +220,7 @@ export interface BridgeParticipantIdentifier {
     desktopAgent: string;
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId?: string;
     /**
@@ -276,7 +274,7 @@ export interface BridgeParticipantIdentifier {
 export interface SourceIdentifier {
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId?: string;
     /**
@@ -521,7 +519,7 @@ export interface BroadcastAgentRequestMeta {
 export interface SourceObject {
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId: string;
     /**
@@ -545,16 +543,18 @@ export interface SourceObject {
  */
 export interface BroadcastAgentRequestPayload {
     /**
-     * The Id of the Channel that the broadcast was sent on
+     * The Id of the Channel that the broadcast was sent on.
      */
     channelId: string;
     /**
-     * The context object that was the payload of a broadcast message.
+     * The context object that is to be broadcast.
      */
-    context: ContextElement;
+    context: Context;
 }
 
 /**
+ * The context object that is to be broadcast.
+ *
  * The context object that was the payload of a broadcast message.
  *
  * The `fdc3.context` type defines the basic contract or "shape" for all data exchanged by
@@ -569,7 +569,7 @@ export interface BroadcastAgentRequestPayload {
  * data object of a particular type can be expected to have, but this can always be extended
  * with custom fields as appropriate.
  */
-export interface ContextElement {
+export interface Context {
     /**
      * Context data objects may include a set of equivalent key-value pairs that can be used to
      * help applications identify and look up the context type they receive in their own domain.
@@ -614,9 +614,10 @@ export interface ContextElement {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -702,7 +703,7 @@ export interface BroadcastBridgeRequestMeta {
 export interface MetaSource {
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId: string;
     /**
@@ -726,13 +727,13 @@ export interface MetaSource {
  */
 export interface BroadcastBridgeRequestPayload {
     /**
-     * The Id of the Channel that the broadcast was sent on
+     * The Id of the Channel that the broadcast was sent on.
      */
     channelId: string;
     /**
-     * The context object that was the payload of a broadcast message.
+     * The context object that is to be broadcast.
      */
-    context: ContextElement;
+    context: Context;
 }
 
 /**
@@ -855,7 +856,7 @@ export interface ConnectionStep3HandshakePayload {
      * channels), as a mapping of channel id to an array of Context objects, one per type found
      * in the channel, most recent first.
      */
-    channelsState: { [key: string]: ContextElement[] };
+    channelsState: { [key: string]: Context[] };
     /**
      * Desktop Agent ImplementationMetadata trying to connect to the bridge.
      */
@@ -1003,7 +1004,7 @@ export interface ConnectionStep6ConnectedAgentsUpdatePayload {
      * The updated state of channels that should be adopted by the agents. Should only be set
      * when an agent is connecting to the bridge.
      */
-    channelsState?: { [key: string]: ContextElement[] };
+    channelsState?: { [key: string]: Context[] };
     /**
      * Should be set when an agent disconnects from the bridge and provide the name that no
      * longer is assigned.
@@ -1058,7 +1059,7 @@ export interface FindInstancesAgentErrorResponse {
     /**
      * Error message payload containing an standardized error string.
      */
-    payload: FindInstancesAgentErrorResponsePayload;
+    payload: PayloadClass;
     /**
      * Identifies the type of the message and it is typically set to the FDC3 function name that
      * the message relates to, e.g. 'findIntent', with 'Response' appended.
@@ -1078,11 +1079,18 @@ export interface FindInstancesAgentErrorResponseMeta {
 /**
  * Error message payload containing an standardized error string.
  */
-export interface FindInstancesAgentErrorResponsePayload {
-    error: ErrorMessage;
+export interface PayloadClass {
+    error: FindInstancesErrors;
 }
 
 /**
+ * Unique identifier for a request or event message. Required in all message types.
+ *
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
+ *
+ * Should be set if the raiseIntent request returned an error.
+ *
  * Constants representing the errors that can be encountered when calling the `findIntent`,
  * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
  * DesktopAgent (`fdc3`).
@@ -1094,15 +1102,16 @@ export interface FindInstancesAgentErrorResponsePayload {
  * Constants representing the errors that can be encountered when calling the `open` method
  * on the DesktopAgent object (`fdc3`).
  */
-export type ErrorMessage = "DesktopAgentNotFound" | "IntentDeliveryFailed" | "MalformedContext" | "NoAppsFound" | "ResolverTimeout" | "ResolverUnavailable" | "TargetAppUnavailable" | "TargetInstanceUnavailable" | "UserCancelledResolution" | "AgentDisconnected" | "NotConnectedToBridge" | "ResponseToBridgeTimedOut" | "MalformedMessage";
+export type FindInstancesErrors = "DesktopAgentNotFound" | "IntentDeliveryFailed" | "MalformedContext" | "NoAppsFound" | "ResolverTimeout" | "ResolverUnavailable" | "TargetAppUnavailable" | "TargetInstanceUnavailable" | "UserCancelledResolution" | "AgentDisconnected" | "NotConnectedToBridge" | "ResponseToBridgeTimedOut" | "MalformedMessage";
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -1201,7 +1210,7 @@ export interface DestinationObject {
     desktopAgent: string;
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId?: string;
     /**
@@ -1239,7 +1248,7 @@ export interface FindInstancesAgentRequestPayload {
 export interface AppIdentifier {
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId: string;
     /**
@@ -1259,9 +1268,10 @@ export interface AppIdentifier {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -1270,7 +1280,7 @@ export interface AppIdentifier {
  * A response message from a Desktop Agent to the Bridge.
  */
 export interface FindInstancesAgentResponse {
-    meta: FindInstancesAgentResponseMeta;
+    meta: AgentResponseMetadata;
     /**
      * The message payload typically contains return values for FDC3 API functions.
      */
@@ -1283,15 +1293,10 @@ export interface FindInstancesAgentResponse {
 }
 
 /**
- * Metadata for a response messages sent by a Desktop Agent to the Bridge
- */
-export interface FindInstancesAgentResponseMeta {
-    requestUuid:  string;
-    responseUuid: string;
-    timestamp:    Date;
-}
-
-/**
+ * The message payload contains a flag indicating whether the API call was successful, plus
+ * any return values for the FDC3 API function called, or indicating that the request
+ * resulted in an error and including a standardized error message.
+ *
  * The message payload typically contains return values for FDC3 API functions.
  */
 export interface FindInstancesAgentResponsePayload {
@@ -1301,7 +1306,7 @@ export interface FindInstancesAgentResponsePayload {
 /**
  * Extends an `AppIdentifier`, describing an application or instance of an application, with
  * additional descriptive metadata that is usually provided by an FDC3 App Directory that
- * the desktop agent connects to.
+ * the Desktop Agent connects to.
  *
  * The additional information from an app directory can aid in rendering UI elements, such
  * as a launcher menu or resolver UI. This includes a title, description, tooltip and icon
@@ -1313,11 +1318,11 @@ export interface FindInstancesAgentResponsePayload {
 export interface AppMetadata {
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId: string;
     /**
-     * A longer, multi-paragraph description for the application that could include markup
+     * A longer, multi-paragraph description for the application that could include markup.
      */
     description?: string;
     /**
@@ -1326,7 +1331,7 @@ export interface AppMetadata {
      */
     desktopAgent?: string;
     /**
-     * A list of icon URLs for the application that can be used to render UI elements
+     * A list of icon URLs for the application that can be used to render UI elements.
      */
     icons?: Icon[];
     /**
@@ -1356,15 +1361,15 @@ export interface AppMetadata {
     resultType?: null | string;
     /**
      * Images representing the app in common usage scenarios that can be used to render UI
-     * elements
+     * elements.
      */
     screenshots?: Image[];
     /**
-     * A more user-friendly application title that can be used to render UI elements
+     * A more user-friendly application title that can be used to render UI elements.
      */
     title?: string;
     /**
-     * A tooltip for the application that can be used to render UI elements
+     * A tooltip for the application that can be used to render UI elements.
      */
     tooltip?: string;
     /**
@@ -1374,8 +1379,7 @@ export interface AppMetadata {
 }
 
 /**
- * SPDX-License-Identifier: Apache-2.0
- * Copyright FINOS FDC3 contributors - see NOTICE file
+ * Describes an Icon image that may be used to represent the application.
  */
 export interface Icon {
     /**
@@ -1383,7 +1387,7 @@ export interface Icon {
      */
     size?: string;
     /**
-     * The icon url
+     * The icon url.
      */
     src: string;
     /**
@@ -1393,8 +1397,8 @@ export interface Icon {
 }
 
 /**
- * SPDX-License-Identifier: Apache-2.0
- * Copyright FINOS FDC3 contributors - see NOTICE file
+ * Describes an image file, typically a screenshot, that often represents the application in
+ * a common usage scenario.
  */
 export interface Image {
     /**
@@ -1427,7 +1431,7 @@ export interface FindInstancesBridgeErrorResponse {
      * The error message payload contains details of an error return to the app or agent that
      * raised the original request.
      */
-    payload: FindInstancesBridgeErrorResponsePayload;
+    payload: MessagePayload;
     /**
      * Identifies the type of the message and it is typically set to the FDC3 function name that
      * the message relates to, e.g. 'findIntent', with 'Response' appended.
@@ -1450,8 +1454,8 @@ export interface FindInstancesBridgeErrorResponseMeta {
  * The error message payload contains details of an error return to the app or agent that
  * raised the original request.
  */
-export interface FindInstancesBridgeErrorResponsePayload {
-    error: ErrorMessage;
+export interface MessagePayload {
+    error: FindInstancesErrors;
 }
 
 /**
@@ -1549,7 +1553,7 @@ export interface FindInstancesBridgeRequestMeta {
 export interface MetaSourceObject {
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId?: string;
     /**
@@ -1582,7 +1586,7 @@ export interface FindInstancesBridgeRequestPayload {
  * request.
  */
 export interface FindInstancesBridgeResponse {
-    meta: FindInstancesBridgeResponseMeta;
+    meta: BridgeResponseMessageMeta;
     /**
      * The message payload typically contains return values for FDC3 API functions.
      */
@@ -1595,18 +1599,10 @@ export interface FindInstancesBridgeResponse {
 }
 
 /**
- * Metadata required in a response message collated and/or forwarded on by the Bridge
- */
-export interface FindInstancesBridgeResponseMeta {
-    errorDetails?: ResponseErrorDetail[];
-    errorSources?: DesktopAgentIdentifier[];
-    requestUuid:   string;
-    responseUuid:  string;
-    sources?:      DesktopAgentIdentifier[];
-    timestamp:     Date;
-}
-
-/**
+ * The message payload contains a flag indicating whether the API call was successful, plus
+ * any return values for the FDC3 API function called, or indicating that the request
+ * resulted in an error and including a standardized error message.
+ *
  * The message payload typically contains return values for FDC3 API functions.
  */
 export interface FindInstancesBridgeResponsePayload {
@@ -1645,16 +1641,17 @@ export interface FindIntentAgentErrorResponseMeta {
  * Error message payload containing an standardized error string.
  */
 export interface FindIntentAgentErrorResponsePayload {
-    error: ErrorMessage;
+    error: FindInstancesErrors;
 }
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -1698,7 +1695,7 @@ export interface FindIntentAgentRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentAgentRequestPayload {
-    context?:    ContextElement;
+    context?:    Context;
     intent:      string;
     resultType?: string;
 }
@@ -1707,9 +1704,10 @@ export interface FindIntentAgentRequestPayload {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -1747,7 +1745,7 @@ export interface FindIntentAgentResponsePayload {
 }
 
 /**
- * An interface that relates an intent to apps
+ * An interface that relates an intent to apps.
  */
 export interface AppIntent {
     /**
@@ -1763,7 +1761,7 @@ export interface AppIntent {
 /**
  * Details of the intent whose relationship to resolving applications is being described.
  *
- * Intent descriptor
+ * Metadata describing an Intent.
  */
 export interface IntentMetadata {
     /**
@@ -1771,7 +1769,7 @@ export interface IntentMetadata {
      */
     displayName?: string;
     /**
-     * The unique name of the intent that can be invoked by the raiseIntent call
+     * The unique name of the intent that can be invoked by the raiseIntent call.
      */
     name: string;
 }
@@ -1812,7 +1810,7 @@ export interface FindIntentBridgeErrorResponseMeta {
  * raised the original request.
  */
 export interface FindIntentBridgeErrorResponsePayload {
-    error: ErrorMessage;
+    error: FindInstancesErrors;
 }
 
 /**
@@ -1857,7 +1855,7 @@ export interface FindIntentBridgeRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentBridgeRequestPayload {
-    context?:    ContextElement;
+    context?:    Context;
     intent:      string;
     resultType?: string;
 }
@@ -1932,16 +1930,17 @@ export interface FindIntentsByContextAgentErrorResponseMeta {
  * Error message payload containing an standardized error string.
  */
 export interface FindIntentsByContextAgentErrorResponsePayload {
-    error: ErrorMessage;
+    error: FindInstancesErrors;
 }
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -1986,7 +1985,7 @@ export interface FindIntentsByContextAgentRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentsByContextAgentRequestPayload {
-    context:     ContextElement;
+    context:     Context;
     resultType?: string;
 }
 
@@ -1994,9 +1993,10 @@ export interface FindIntentsByContextAgentRequestPayload {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -2069,7 +2069,7 @@ export interface FindIntentsByContextBridgeErrorResponseMeta {
  * raised the original request.
  */
 export interface FindIntentsByContextBridgeErrorResponsePayload {
-    error: ErrorMessage;
+    error: FindInstancesErrors;
 }
 
 /**
@@ -2115,7 +2115,7 @@ export interface FindIntentsByContextBridgeRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentsByContextBridgeRequestPayload {
-    context:     ContextElement;
+    context:     Context;
     resultType?: string;
 }
 
@@ -2189,16 +2189,17 @@ export interface GetAppMetadataAgentErrorResponseMeta {
  * Error message payload containing an standardized error string.
  */
 export interface GetAppMetadataAgentErrorResponsePayload {
-    error: ErrorMessage;
+    error: FindInstancesErrors;
 }
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -2242,7 +2243,7 @@ export interface GetAppMetadataAgentRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface GetAppMetadataAgentRequestPayload {
-    app: AppDestinationIdentifier;
+    app: AppObject;
 }
 
 /**
@@ -2282,7 +2283,7 @@ export interface GetAppMetadataAgentRequestPayload {
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
  */
-export interface AppDestinationIdentifier {
+export interface AppObject {
     /**
      * Used in Desktop Agent Bridging to attribute or target a message to a
      * particular Desktop Agent.
@@ -2293,7 +2294,7 @@ export interface AppDestinationIdentifier {
     desktopAgent: string;
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId: string;
     /**
@@ -2308,9 +2309,10 @@ export interface AppDestinationIdentifier {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -2383,7 +2385,7 @@ export interface GetAppMetadataBridgeErrorResponseMeta {
  * raised the original request.
  */
 export interface GetAppMetadataBridgeErrorResponsePayload {
-    error: ErrorMessage;
+    error: FindInstancesErrors;
 }
 
 /**
@@ -2428,7 +2430,7 @@ export interface GetAppMetadataBridgeRequestMeta {
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface GetAppMetadataBridgeRequestPayload {
-    app: AppDestinationIdentifier;
+    app: AppObject;
 }
 
 /**
@@ -2501,7 +2503,7 @@ export interface OpenAgentErrorResponseMeta {
  * Error message payload containing an standardized error string.
  */
 export interface OpenAgentErrorResponsePayload {
-    error: OpenErrorMessage;
+    error: OpenErrorResponsePayload;
 }
 
 /**
@@ -2516,15 +2518,16 @@ export interface OpenAgentErrorResponsePayload {
  * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
  * DesktopAgent (`fdc3`).
  */
-export type OpenErrorMessage = "AppNotFound" | "AppTimeout" | "DesktopAgentNotFound" | "ErrorOnLaunch" | "MalformedContext" | "ResolverUnavailable" | "AgentDisconnected" | "NotConnectedToBridge" | "ResponseToBridgeTimedOut" | "MalformedMessage";
+export type OpenErrorResponsePayload = "AppNotFound" | "AppTimeout" | "DesktopAgentNotFound" | "ErrorOnLaunch" | "MalformedContext" | "ResolverUnavailable" | "AgentDisconnected" | "NotConnectedToBridge" | "ResponseToBridgeTimedOut" | "MalformedMessage";
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -2572,7 +2575,7 @@ export interface OpenAgentRequestPayload {
      * The application to open on the specified Desktop Agent
      */
     app:      AppToOpen;
-    context?: ContextElement;
+    context?: Context;
 }
 
 /**
@@ -2622,7 +2625,7 @@ export interface AppToOpen {
     desktopAgent: string;
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId: string;
     /**
@@ -2637,9 +2640,10 @@ export interface AppToOpen {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -2712,7 +2716,7 @@ export interface OpenBridgeErrorResponseMeta {
  * raised the original request.
  */
 export interface OpenBridgeErrorResponsePayload {
-    error: OpenErrorMessage;
+    error: OpenErrorResponsePayload;
 }
 
 /**
@@ -2761,7 +2765,7 @@ export interface OpenBridgeRequestPayload {
      * The application to open on the specified Desktop Agent
      */
     app:      AppToOpen;
-    context?: ContextElement;
+    context?: Context;
 }
 
 /**
@@ -2898,7 +2902,7 @@ export interface MetaDestination {
     desktopAgent: string;
     /**
      * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'
+     * instance. An example of an appId might be 'app@sub.root'.
      */
     appId: string;
     /**
@@ -2920,16 +2924,17 @@ export interface PrivateChannelBroadcastAgentRequestPayload {
     /**
      * The context object that was the payload of a broadcast message.
      */
-    context: ContextElement;
+    context: Context;
 }
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -2981,7 +2986,7 @@ export interface PrivateChannelBroadcastBridgeRequestPayload {
     /**
      * The context object that was the payload of a broadcast message.
      */
-    context: ContextElement;
+    context: Context;
 }
 
 /**
@@ -3033,7 +3038,7 @@ export interface PrivateChannelEventListenerAddedAgentRequestPayload {
 }
 
 /**
- * Event listener type names for Private Channel events
+ * Event listener type names for Private Channel events.
  */
 export type PrivateChannelEventListenerTypes = "onAddContextListener" | "onUnsubscribe" | "onDisconnect";
 
@@ -3041,9 +3046,10 @@ export type PrivateChannelEventListenerTypes = "onAddContextListener" | "onUnsub
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -3147,9 +3153,10 @@ export interface PrivateChannelEventListenerRemovedAgentRequestPayload {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -3256,9 +3263,10 @@ export interface PrivateChannelOnAddContextListenerAgentRequestPayload {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -3364,9 +3372,10 @@ export interface PrivateChannelOnDisconnectAgentRequestPayload {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -3473,9 +3482,10 @@ export interface PrivateChannelOnUnsubscribeAgentRequestPayload {
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -3560,19 +3570,25 @@ export interface RaiseIntentAgentErrorResponseMeta {
 }
 
 /**
+ * Used if a raiseIntent request resulted in an error.
+ *
  * Error message payload containing an standardized error string.
  */
 export interface RaiseIntentAgentErrorResponsePayload {
-    error: ErrorMessage;
+    /**
+     * Should be set if the raiseIntent request returned an error.
+     */
+    error: FindInstancesErrors;
 }
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -3617,17 +3633,77 @@ export interface RaiseIntentAgentRequestMeta {
  */
 export interface RaiseIntentAgentRequestPayload {
     app:     AppDestinationIdentifier;
-    context: ContextElement;
+    context: Context;
     intent:  string;
+}
+
+/**
+ * Field that represents a destination App on a remote Desktop Agent that a request is to be
+ * sent to.
+ *
+ * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
+ * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
+ * response message is returned by the Desktop Agent (or more specifically its resolver)
+ * rather than a specific app. Used as a substitute for `AppIdentifier` in cases where no
+ * app details are available or are appropriate.
+ *
+ * Array of DesktopAgentIdentifiers for responses that were not returned to the bridge
+ * before the timeout or because an error occurred. May be omitted if all sources responded
+ * without errors. MUST include the `desktopAgent` field when returned by the bridge.
+ *
+ * Array of DesktopAgentIdentifiers for the sources that generated responses to the request.
+ * Will contain a single value for individual responses and multiple values for responses
+ * that were collated by the bridge. May be omitted if all sources errored. MUST include the
+ * `desktopAgent` field when returned by the bridge.
+ *
+ * Field that represents a destination Desktop Agent that a request is to be sent to.
+ *
+ * Identifies an application, or instance of an application, and is used to target FDC3 API
+ * calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application
+ * instances.
+ *
+ * Will always include at least an `appId` field, which uniquely identifies a specific app.
+ *
+ * If the `instanceId` field is set then the `AppMetadata` object represents a specific
+ * instance of the application that may be addressed using that Id.
+ *
+ * Field that represents the source application that a request or response was received
+ * from.
+ *
+ * Identifier for the app instance that was selected (or started) to resolve the intent.
+ * `source.instanceId` MUST be set, indicating the specific app instance that
+ * received the intent.
+ */
+export interface AppDestinationIdentifier {
+    /**
+     * Used in Desktop Agent Bridging to attribute or target a message to a
+     * particular Desktop Agent.
+     *
+     * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
+     * identify the Desktop Agent to target.
+     */
+    desktopAgent: string;
+    /**
+     * The unique application identifier located within a specific application directory
+     * instance. An example of an appId might be 'app@sub.root'.
+     */
+    appId: string;
+    /**
+     * An optional instance identifier, indicating that this object represents a specific
+     * instance of the application described.
+     */
+    instanceId?: string;
+    [property: string]: any;
 }
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -3661,10 +3737,15 @@ export interface RaiseIntentAgentResponseMeta {
  * The message payload typically contains return values for FDC3 API functions.
  */
 export interface RaiseIntentAgentResponsePayload {
+    /**
+     * Used if the raiseIntent request was successfully resolved.
+     */
     intentResolution: IntentResolution;
 }
 
 /**
+ * Used if the raiseIntent request was successfully resolved.
+ *
  * IntentResolution provides a standard format for data returned upon resolving an intent.
  *
  * ```javascript
@@ -3736,11 +3817,16 @@ export interface RaiseIntentBridgeErrorResponseMeta {
 }
 
 /**
+ * Used if a raiseIntent request resulted in an error.
+ *
  * The error message payload contains details of an error return to the app or agent that
  * raised the original request.
  */
 export interface RaiseIntentBridgeErrorResponsePayload {
-    error: ErrorMessage;
+    /**
+     * Should be set if the raiseIntent request returned an error.
+     */
+    error: FindInstancesErrors;
 }
 
 /**
@@ -3786,7 +3872,7 @@ export interface RaiseIntentBridgeRequestMeta {
  */
 export interface RaiseIntentBridgeRequestPayload {
     app:     AppDestinationIdentifier;
-    context: ContextElement;
+    context: Context;
     intent:  string;
 }
 
@@ -3825,6 +3911,9 @@ export interface RaiseIntentBridgeResponseMeta {
  * The message payload typically contains return values for FDC3 API functions.
  */
 export interface RaiseIntentBridgeResponsePayload {
+    /**
+     * Used if the raiseIntent request was successfully resolved.
+     */
     intentResolution: IntentResolution;
 }
 
@@ -3882,9 +3971,10 @@ export type RaiseIntentResultErrorMessage = "IntentHandlerRejected" | "NoResultR
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  *
- * UUID for the request
+ * Unique identifier for a request or event message. Required in all message types.
  *
- * UUID for this specific response message.
+ * Unique identifier for a response to a specific message and must always be accompanied by
+ * a RequestUuid.
  */
 
 /**
@@ -3922,7 +4012,7 @@ export interface RaiseIntentResultAgentResponsePayload {
 }
 
 export interface IntentResult {
-    context?: ContextElement;
+    context?: Context;
     channel?: Channel;
 }
 
@@ -3976,11 +4066,11 @@ export interface DisplayMetadata {
      */
     color?: string;
     /**
-     * A URL of an image that can be used to display this channel
+     * A URL of an image that can be used to display this channel.
      */
     glyph?: string;
     /**
-     * A user-readable name for this channel, e.g: `"Red"`
+     * A user-readable name for this channel, e.g: `"Red"`.
      */
     name?: string;
 }
@@ -4069,71 +4159,9 @@ export interface RaiseIntentResultBridgeResponsePayload {
     intentResult: IntentResult;
 }
 
-/**
- * The `fdc3.context` type defines the basic contract or "shape" for all data exchanged by
- * FDC3 operations. As such, it is not really meant to be used on its own, but is imported
- * by more specific type definitions (standardized or custom) to provide the structure and
- * properties shared by all FDC3 context data types.
- *
- * The key element of FDC3 context types is their mandatory `type` property, which is used
- * to identify what type of data the object represents, and what shape it has.
- *
- * The FDC3 context type, and all derived types, define the minimum set of fields a context
- * data object of a particular type can be expected to have, but this can always be extended
- * with custom fields as appropriate.
- */
-export interface Context {
-    /**
-     * Context data objects may include a set of equivalent key-value pairs that can be used to
-     * help applications identify and look up the context type they receive in their own domain.
-     * The idea behind this design is that applications can provide as many equivalent
-     * identifiers to a target application as possible, e.g. an instrument may be represented by
-     * an ISIN, CUSIP or Bloomberg identifier.
-     *
-     * Identifiers do not make sense for all types of data, so the `id` property is therefore
-     * optional, but some derived types may choose to require at least one identifier.
-     * Identifier values SHOULD always be of type string.
-     */
-    id?: { [key: string]: any };
-    /**
-     * Context data objects may include a name property that can be used for more information,
-     * or display purposes. Some derived types may require the name object as mandatory,
-     * depending on use case.
-     */
-    name?: string;
-    /**
-     * The type property is the only _required_ part of the FDC3 context data schema. The FDC3
-     * [API](https://fdc3.finos.org/docs/api/spec) relies on the `type` property being present
-     * to route shared context data appropriately.
-     *
-     * FDC3 [Intents](https://fdc3.finos.org/docs/intents/spec) also register the context data
-     * types they support in an FDC3 [App
-     * Directory](https://fdc3.finos.org/docs/app-directory/overview), used for intent discovery
-     * and routing.
-     *
-     * Standardized FDC3 context types have well-known `type` properties prefixed with the
-     * `fdc3` namespace, e.g. `fdc3.instrument`. For non-standard types, e.g. those defined and
-     * used by a particular organization, the convention is to prefix them with an
-     * organization-specific namespace, e.g. `blackrock.fund`.
-     *
-     * See the [Context Data Specification](https://fdc3.finos.org/docs/context/spec) for more
-     * information about context data types.
-     */
-    type: string;
-    [property: string]: any;
-}
-
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 export class Convert {
-    public static toFDC3DesktopAgentAPISchema(json: string): any {
-        return cast(JSON.parse(json), "any");
-    }
-
-    public static fDC3DesktopAgentAPISchemaToJson(value: any): string {
-        return JSON.stringify(uncast(value, "any"), null, 2);
-    }
-
     public static toAgentErrorResponseMessage(json: string): AgentErrorResponseMessage {
         return cast(JSON.parse(json), r("AgentErrorResponseMessage"));
     }
@@ -4198,11 +4226,11 @@ export class Convert {
         return JSON.stringify(uncast(value, r("BroadcastBridgeRequest")), null, 2);
     }
 
-    public static toBridgingCommons(json: string): { [key: string]: any } {
+    public static toBridgeCommonDefinitions(json: string): { [key: string]: any } {
         return cast(JSON.parse(json), m("any"));
     }
 
-    public static bridgingCommonsToJson(value: { [key: string]: any }): string {
+    public static bridgeCommonDefinitionsToJson(value: { [key: string]: any }): string {
         return JSON.stringify(uncast(value, m("any")), null, 2);
     }
 
@@ -4661,14 +4689,6 @@ export class Convert {
     public static raiseIntentResultBridgeResponseToJson(value: RaiseIntentResultBridgeResponse): string {
         return JSON.stringify(uncast(value, r("RaiseIntentResultBridgeResponse")), null, 2);
     }
-
-    public static toContext(json: string): Context {
-        return cast(JSON.parse(json), r("Context"));
-    }
-
-    public static contextToJson(value: Context): string {
-        return JSON.stringify(uncast(value, r("Context")), null, 2);
-    }
 }
 
 function invalidValue(typ: any, val: any, key: any, parent: any = ''): never {
@@ -4922,9 +4942,9 @@ const typeMap: any = {
     ], "any"),
     "BroadcastAgentRequestPayload": o([
         { json: "channelId", js: "channelId", typ: "" },
-        { json: "context", js: "context", typ: r("ContextElement") },
+        { json: "context", js: "context", typ: r("Context") },
     ], false),
-    "ContextElement": o([
+    "Context": o([
         { json: "id", js: "id", typ: u(undefined, m("any")) },
         { json: "name", js: "name", typ: u(undefined, "") },
         { json: "type", js: "type", typ: "" },
@@ -4946,7 +4966,7 @@ const typeMap: any = {
     ], "any"),
     "BroadcastBridgeRequestPayload": o([
         { json: "channelId", js: "channelId", typ: "" },
-        { json: "context", js: "context", typ: r("ContextElement") },
+        { json: "context", js: "context", typ: r("Context") },
     ], false),
     "ConnectionStepMessage": o([
         { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
@@ -4983,7 +5003,7 @@ const typeMap: any = {
     ], false),
     "ConnectionStep3HandshakePayload": o([
         { json: "authToken", js: "authToken", typ: u(undefined, "") },
-        { json: "channelsState", js: "channelsState", typ: m(a(r("ContextElement"))) },
+        { json: "channelsState", js: "channelsState", typ: m(a(r("Context"))) },
         { json: "implementationMetadata", js: "implementationMetadata", typ: r("ConnectingAgentImplementationMetadata") },
         { json: "requestedName", js: "requestedName", typ: "" },
     ], false),
@@ -5024,7 +5044,7 @@ const typeMap: any = {
     "ConnectionStep6ConnectedAgentsUpdatePayload": o([
         { json: "addAgent", js: "addAgent", typ: u(undefined, "") },
         { json: "allAgents", js: "allAgents", typ: a(r("DesktopAgentImplementationMetadata")) },
-        { json: "channelsState", js: "channelsState", typ: u(undefined, m(a(r("ContextElement")))) },
+        { json: "channelsState", js: "channelsState", typ: u(undefined, m(a(r("Context")))) },
         { json: "removeAgent", js: "removeAgent", typ: u(undefined, "") },
     ], false),
     "DesktopAgentImplementationMetadata": o([
@@ -5036,7 +5056,7 @@ const typeMap: any = {
     ], false),
     "FindInstancesAgentErrorResponse": o([
         { json: "meta", js: "meta", typ: r("FindInstancesAgentErrorResponseMeta") },
-        { json: "payload", js: "payload", typ: r("FindInstancesAgentErrorResponsePayload") },
+        { json: "payload", js: "payload", typ: r("PayloadClass") },
         { json: "type", js: "type", typ: r("FindInstancesAgentErrorResponseType") },
     ], false),
     "FindInstancesAgentErrorResponseMeta": o([
@@ -5044,8 +5064,8 @@ const typeMap: any = {
         { json: "responseUuid", js: "responseUuid", typ: "" },
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
-    "FindInstancesAgentErrorResponsePayload": o([
-        { json: "error", js: "error", typ: r("ErrorMessage") },
+    "PayloadClass": o([
+        { json: "error", js: "error", typ: r("FindInstancesErrors") },
     ], false),
     "FindInstancesAgentRequest": o([
         { json: "meta", js: "meta", typ: r("FindInstancesAgentRequestMeta") },
@@ -5072,14 +5092,9 @@ const typeMap: any = {
         { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
     ], "any"),
     "FindInstancesAgentResponse": o([
-        { json: "meta", js: "meta", typ: r("FindInstancesAgentResponseMeta") },
+        { json: "meta", js: "meta", typ: r("AgentResponseMetadata") },
         { json: "payload", js: "payload", typ: r("FindInstancesAgentResponsePayload") },
         { json: "type", js: "type", typ: r("FindInstancesAgentErrorResponseType") },
-    ], false),
-    "FindInstancesAgentResponseMeta": o([
-        { json: "requestUuid", js: "requestUuid", typ: "" },
-        { json: "responseUuid", js: "responseUuid", typ: "" },
-        { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "FindInstancesAgentResponsePayload": o([
         { json: "appIdentifiers", js: "appIdentifiers", typ: a(r("AppMetadata")) },
@@ -5111,7 +5126,7 @@ const typeMap: any = {
     ], false),
     "FindInstancesBridgeErrorResponse": o([
         { json: "meta", js: "meta", typ: r("FindInstancesBridgeErrorResponseMeta") },
-        { json: "payload", js: "payload", typ: r("FindInstancesBridgeErrorResponsePayload") },
+        { json: "payload", js: "payload", typ: r("MessagePayload") },
         { json: "type", js: "type", typ: r("FindInstancesAgentErrorResponseType") },
     ], false),
     "FindInstancesBridgeErrorResponseMeta": o([
@@ -5121,8 +5136,8 @@ const typeMap: any = {
         { json: "responseUuid", js: "responseUuid", typ: "" },
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
-    "FindInstancesBridgeErrorResponsePayload": o([
-        { json: "error", js: "error", typ: r("ErrorMessage") },
+    "MessagePayload": o([
+        { json: "error", js: "error", typ: r("FindInstancesErrors") },
     ], false),
     "FindInstancesBridgeRequest": o([
         { json: "meta", js: "meta", typ: r("FindInstancesBridgeRequestMeta") },
@@ -5144,17 +5159,9 @@ const typeMap: any = {
         { json: "app", js: "app", typ: r("AppIdentifier") },
     ], false),
     "FindInstancesBridgeResponse": o([
-        { json: "meta", js: "meta", typ: r("FindInstancesBridgeResponseMeta") },
+        { json: "meta", js: "meta", typ: r("BridgeResponseMessageMeta") },
         { json: "payload", js: "payload", typ: r("FindInstancesBridgeResponsePayload") },
         { json: "type", js: "type", typ: r("FindInstancesAgentErrorResponseType") },
-    ], false),
-    "FindInstancesBridgeResponseMeta": o([
-        { json: "errorDetails", js: "errorDetails", typ: u(undefined, a(r("ResponseErrorDetail"))) },
-        { json: "errorSources", js: "errorSources", typ: u(undefined, a(r("DesktopAgentIdentifier"))) },
-        { json: "requestUuid", js: "requestUuid", typ: "" },
-        { json: "responseUuid", js: "responseUuid", typ: "" },
-        { json: "sources", js: "sources", typ: u(undefined, a(r("DesktopAgentIdentifier"))) },
-        { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "FindInstancesBridgeResponsePayload": o([
         { json: "appIdentifiers", js: "appIdentifiers", typ: a(r("AppMetadata")) },
@@ -5170,7 +5177,7 @@ const typeMap: any = {
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "FindIntentAgentErrorResponsePayload": o([
-        { json: "error", js: "error", typ: r("ErrorMessage") },
+        { json: "error", js: "error", typ: r("FindInstancesErrors") },
     ], false),
     "FindIntentAgentRequest": o([
         { json: "meta", js: "meta", typ: r("FindIntentAgentRequestMeta") },
@@ -5184,7 +5191,7 @@ const typeMap: any = {
         { json: "destination", js: "destination", typ: u(undefined, r("BridgeParticipantIdentifier")) },
     ], false),
     "FindIntentAgentRequestPayload": o([
-        { json: "context", js: "context", typ: u(undefined, r("ContextElement")) },
+        { json: "context", js: "context", typ: u(undefined, r("Context")) },
         { json: "intent", js: "intent", typ: "" },
         { json: "resultType", js: "resultType", typ: u(undefined, "") },
     ], false),
@@ -5222,7 +5229,7 @@ const typeMap: any = {
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "FindIntentBridgeErrorResponsePayload": o([
-        { json: "error", js: "error", typ: r("ErrorMessage") },
+        { json: "error", js: "error", typ: r("FindInstancesErrors") },
     ], false),
     "FindIntentBridgeRequest": o([
         { json: "meta", js: "meta", typ: r("FindIntentBridgeRequestMeta") },
@@ -5236,7 +5243,7 @@ const typeMap: any = {
         { json: "destination", js: "destination", typ: u(undefined, r("BridgeParticipantIdentifier")) },
     ], false),
     "FindIntentBridgeRequestPayload": o([
-        { json: "context", js: "context", typ: u(undefined, r("ContextElement")) },
+        { json: "context", js: "context", typ: u(undefined, r("Context")) },
         { json: "intent", js: "intent", typ: "" },
         { json: "resultType", js: "resultType", typ: u(undefined, "") },
     ], false),
@@ -5267,7 +5274,7 @@ const typeMap: any = {
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "FindIntentsByContextAgentErrorResponsePayload": o([
-        { json: "error", js: "error", typ: r("ErrorMessage") },
+        { json: "error", js: "error", typ: r("FindInstancesErrors") },
     ], false),
     "FindIntentsByContextAgentRequest": o([
         { json: "meta", js: "meta", typ: r("FindIntentsByContextAgentRequestMeta") },
@@ -5281,7 +5288,7 @@ const typeMap: any = {
         { json: "destination", js: "destination", typ: u(undefined, r("BridgeParticipantIdentifier")) },
     ], false),
     "FindIntentsByContextAgentRequestPayload": o([
-        { json: "context", js: "context", typ: r("ContextElement") },
+        { json: "context", js: "context", typ: r("Context") },
         { json: "resultType", js: "resultType", typ: u(undefined, "") },
     ], false),
     "FindIntentsByContextAgentResponse": o([
@@ -5310,7 +5317,7 @@ const typeMap: any = {
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "FindIntentsByContextBridgeErrorResponsePayload": o([
-        { json: "error", js: "error", typ: r("ErrorMessage") },
+        { json: "error", js: "error", typ: r("FindInstancesErrors") },
     ], false),
     "FindIntentsByContextBridgeRequest": o([
         { json: "meta", js: "meta", typ: r("FindIntentsByContextBridgeRequestMeta") },
@@ -5324,7 +5331,7 @@ const typeMap: any = {
         { json: "destination", js: "destination", typ: u(undefined, r("BridgeParticipantIdentifier")) },
     ], false),
     "FindIntentsByContextBridgeRequestPayload": o([
-        { json: "context", js: "context", typ: r("ContextElement") },
+        { json: "context", js: "context", typ: r("Context") },
         { json: "resultType", js: "resultType", typ: u(undefined, "") },
     ], false),
     "FindIntentsByContextBridgeResponse": o([
@@ -5354,7 +5361,7 @@ const typeMap: any = {
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "GetAppMetadataAgentErrorResponsePayload": o([
-        { json: "error", js: "error", typ: r("ErrorMessage") },
+        { json: "error", js: "error", typ: r("FindInstancesErrors") },
     ], false),
     "GetAppMetadataAgentRequest": o([
         { json: "meta", js: "meta", typ: r("GetAppMetadataAgentRequestMeta") },
@@ -5368,9 +5375,9 @@ const typeMap: any = {
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "GetAppMetadataAgentRequestPayload": o([
-        { json: "app", js: "app", typ: r("AppDestinationIdentifier") },
+        { json: "app", js: "app", typ: r("AppObject") },
     ], false),
-    "AppDestinationIdentifier": o([
+    "AppObject": o([
         { json: "desktopAgent", js: "desktopAgent", typ: "" },
         { json: "appId", js: "appId", typ: "" },
         { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
@@ -5401,7 +5408,7 @@ const typeMap: any = {
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "GetAppMetadataBridgeErrorResponsePayload": o([
-        { json: "error", js: "error", typ: r("ErrorMessage") },
+        { json: "error", js: "error", typ: r("FindInstancesErrors") },
     ], false),
     "GetAppMetadataBridgeRequest": o([
         { json: "meta", js: "meta", typ: r("GetAppMetadataBridgeRequestMeta") },
@@ -5415,7 +5422,7 @@ const typeMap: any = {
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "GetAppMetadataBridgeRequestPayload": o([
-        { json: "app", js: "app", typ: r("AppDestinationIdentifier") },
+        { json: "app", js: "app", typ: r("AppObject") },
     ], false),
     "GetAppMetadataBridgeResponse": o([
         { json: "meta", js: "meta", typ: r("GetAppMetadataBridgeResponseMeta") },
@@ -5444,7 +5451,7 @@ const typeMap: any = {
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "OpenAgentErrorResponsePayload": o([
-        { json: "error", js: "error", typ: r("OpenErrorMessage") },
+        { json: "error", js: "error", typ: r("OpenErrorResponsePayload") },
     ], false),
     "OpenAgentRequest": o([
         { json: "meta", js: "meta", typ: r("OpenAgentRequestMeta") },
@@ -5459,7 +5466,7 @@ const typeMap: any = {
     ], false),
     "OpenAgentRequestPayload": o([
         { json: "app", js: "app", typ: r("AppToOpen") },
-        { json: "context", js: "context", typ: u(undefined, r("ContextElement")) },
+        { json: "context", js: "context", typ: u(undefined, r("Context")) },
     ], false),
     "AppToOpen": o([
         { json: "desktopAgent", js: "desktopAgent", typ: "" },
@@ -5492,7 +5499,7 @@ const typeMap: any = {
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "OpenBridgeErrorResponsePayload": o([
-        { json: "error", js: "error", typ: r("OpenErrorMessage") },
+        { json: "error", js: "error", typ: r("OpenErrorResponsePayload") },
     ], false),
     "OpenBridgeRequest": o([
         { json: "meta", js: "meta", typ: r("OpenBridgeRequestMeta") },
@@ -5507,7 +5514,7 @@ const typeMap: any = {
     ], false),
     "OpenBridgeRequestPayload": o([
         { json: "app", js: "app", typ: r("AppToOpen") },
-        { json: "context", js: "context", typ: u(undefined, r("ContextElement")) },
+        { json: "context", js: "context", typ: u(undefined, r("Context")) },
     ], false),
     "OpenBridgeResponse": o([
         { json: "meta", js: "meta", typ: r("OpenBridgeResponseMeta") },
@@ -5543,7 +5550,7 @@ const typeMap: any = {
     ], "any"),
     "PrivateChannelBroadcastAgentRequestPayload": o([
         { json: "channelId", js: "channelId", typ: "" },
-        { json: "context", js: "context", typ: r("ContextElement") },
+        { json: "context", js: "context", typ: r("Context") },
     ], false),
     "PrivateChannelBroadcastBridgeRequest": o([
         { json: "meta", js: "meta", typ: r("PrivateChannelBroadcastBridgeRequestMeta") },
@@ -5558,7 +5565,7 @@ const typeMap: any = {
     ], false),
     "PrivateChannelBroadcastBridgeRequestPayload": o([
         { json: "channelId", js: "channelId", typ: "" },
-        { json: "context", js: "context", typ: r("ContextElement") },
+        { json: "context", js: "context", typ: r("Context") },
     ], false),
     "PrivateChannelEventListenerAddedAgentRequest": o([
         { json: "meta", js: "meta", typ: r("PrivateChannelEventListenerAddedAgentRequestMeta") },
@@ -5719,7 +5726,7 @@ const typeMap: any = {
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "RaiseIntentAgentErrorResponsePayload": o([
-        { json: "error", js: "error", typ: r("ErrorMessage") },
+        { json: "error", js: "error", typ: r("FindInstancesErrors") },
     ], false),
     "RaiseIntentAgentRequest": o([
         { json: "meta", js: "meta", typ: r("RaiseIntentAgentRequestMeta") },
@@ -5734,9 +5741,14 @@ const typeMap: any = {
     ], false),
     "RaiseIntentAgentRequestPayload": o([
         { json: "app", js: "app", typ: r("AppDestinationIdentifier") },
-        { json: "context", js: "context", typ: r("ContextElement") },
+        { json: "context", js: "context", typ: r("Context") },
         { json: "intent", js: "intent", typ: "" },
     ], false),
+    "AppDestinationIdentifier": o([
+        { json: "desktopAgent", js: "desktopAgent", typ: "" },
+        { json: "appId", js: "appId", typ: "" },
+        { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
+    ], "any"),
     "RaiseIntentAgentResponse": o([
         { json: "meta", js: "meta", typ: r("RaiseIntentAgentResponseMeta") },
         { json: "payload", js: "payload", typ: r("RaiseIntentAgentResponsePayload") },
@@ -5767,7 +5779,7 @@ const typeMap: any = {
         { json: "timestamp", js: "timestamp", typ: Date },
     ], false),
     "RaiseIntentBridgeErrorResponsePayload": o([
-        { json: "error", js: "error", typ: r("ErrorMessage") },
+        { json: "error", js: "error", typ: r("FindInstancesErrors") },
     ], false),
     "RaiseIntentBridgeRequest": o([
         { json: "meta", js: "meta", typ: r("RaiseIntentBridgeRequestMeta") },
@@ -5782,7 +5794,7 @@ const typeMap: any = {
     ], false),
     "RaiseIntentBridgeRequestPayload": o([
         { json: "app", js: "app", typ: r("AppDestinationIdentifier") },
-        { json: "context", js: "context", typ: r("ContextElement") },
+        { json: "context", js: "context", typ: r("Context") },
         { json: "intent", js: "intent", typ: "" },
     ], false),
     "RaiseIntentBridgeResponse": o([
@@ -5828,7 +5840,7 @@ const typeMap: any = {
         { json: "intentResult", js: "intentResult", typ: r("IntentResult") },
     ], false),
     "IntentResult": o([
-        { json: "context", js: "context", typ: u(undefined, r("ContextElement")) },
+        { json: "context", js: "context", typ: u(undefined, r("Context")) },
         { json: "channel", js: "channel", typ: u(undefined, r("Channel")) },
     ], false),
     "Channel": o([
@@ -5872,11 +5884,6 @@ const typeMap: any = {
     "RaiseIntentResultBridgeResponsePayload": o([
         { json: "intentResult", js: "intentResult", typ: r("IntentResult") },
     ], false),
-    "Context": o([
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
-        { json: "name", js: "name", typ: u(undefined, "") },
-        { json: "type", js: "type", typ: "" },
-    ], "any"),
     "ResponseErrorDetail": [
         "AccessDenied",
         "AgentDisconnected",
@@ -5945,7 +5952,7 @@ const typeMap: any = {
     "ConnectionStep6ConnectedAgentsUpdateType": [
         "connectedAgentsUpdate",
     ],
-    "ErrorMessage": [
+    "FindInstancesErrors": [
         "AgentDisconnected",
         "DesktopAgentNotFound",
         "IntentDeliveryFailed",
@@ -5984,7 +5991,7 @@ const typeMap: any = {
     "GetAppMetadataAgentRequestType": [
         "getAppMetadataRequest",
     ],
-    "OpenErrorMessage": [
+    "OpenErrorResponsePayload": [
         "AgentDisconnected",
         "AppNotFound",
         "AppTimeout",

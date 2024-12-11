@@ -1,0 +1,76 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/findIntentsByContextResponse.schema.json",
+	"type": "object",
+	"title": "FindIntentsByContext Response",
+	"description": "A response to a findIntentsByContext request.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/FindIntentsByContextResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/FindIntentsByContextSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/FindIntentsByContextErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"FindIntentsByContextResponseType": {
+			"title": "FindIntentsByContext Response Message Type",
+			"const": "findIntentsByContextResponse"
+		},
+		"FindIntentsByContextSuccessResponsePayload": {
+			"title": "FindIntentsByContext Response Payload",
+			"type": "object",
+			"properties": {
+				"appIntents": {
+					"type": "array",
+					"items": {
+						"$ref": "api.schema.json#/definitions/AppIntent"
+					},
+					"additionalProperties": false
+				}
+			},
+			"required": [
+				"appIntents"
+			],
+			"additionalProperties": false
+		},
+		"FindIntentsByContextErrorResponsePayload": {
+			"title": "FindIntentsByContext Error Response Payload",
+			"type": "object",
+			"properties": {
+				"error": {
+					"title": "FindIntentsByContext Error Message",
+					"oneOf": [
+						{
+							"$ref": "api.schema.json#/definitions/ResolveError"
+						},
+						{
+							"$ref": "api.schema.json#/definitions/BridgingError"
+						}
+					]
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}
