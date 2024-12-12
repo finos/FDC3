@@ -62,7 +62,7 @@ export class DefaultIntentSupport implements IntentSupport {
   }
 
   async findIntent(intent: string, context: Context, resultType: string | undefined): Promise<AppIntent> {
-    const messageOut: FindIntentRequest = {
+    const request: FindIntentRequest = {
       type: 'findIntentRequest',
       payload: {
         intent,
@@ -72,7 +72,7 @@ export class DefaultIntentSupport implements IntentSupport {
       meta: this.messaging.createMeta(),
     };
 
-    const result = await this.messaging.exchange<FindIntentResponse>(messageOut, 'findIntentResponse');
+    const result = await this.messaging.exchange<FindIntentResponse>(request, 'findIntentResponse');
     const appIntent = result.payload.appIntent!;
     if (appIntent.apps.length == 0) {
       throw new Error(ResolveError.NoAppsFound);
@@ -85,7 +85,7 @@ export class DefaultIntentSupport implements IntentSupport {
   }
 
   async findIntentsByContext(context: Context): Promise<AppIntent[]> {
-    const messageOut: FindIntentsByContextRequest = {
+    const request: FindIntentsByContextRequest = {
       type: 'findIntentsByContextRequest',
       payload: {
         context,
@@ -93,10 +93,7 @@ export class DefaultIntentSupport implements IntentSupport {
       meta: this.messaging.createMeta(),
     };
 
-    const result: FindIntentsByContextResponse = await this.messaging.exchange(
-      messageOut,
-      'findIntentsByContextResponse'
-    );
+    const result: FindIntentsByContextResponse = await this.messaging.exchange(request, 'findIntentsByContextResponse');
     const appIntents = result.payload.appIntents;
     if (!appIntents || appIntents.length == 0) {
       throw new Error(ResolveError.NoAppsFound);
@@ -105,11 +102,9 @@ export class DefaultIntentSupport implements IntentSupport {
     }
   }
 
-  private async createResultPromise(
-    messageOut: RaiseIntentRequest | RaiseIntentForContextRequest
-  ): Promise<IntentResult> {
+  private async createResultPromise(request: RaiseIntentRequest | RaiseIntentForContextRequest): Promise<IntentResult> {
     const rp = await this.messaging.waitFor<RaiseIntentResultResponse>(
-      m => m.type == 'raiseIntentResultResponse' && m.meta.requestUuid == messageOut.meta.requestUuid
+      m => m.type == 'raiseIntentResultResponse' && m.meta.requestUuid == request.meta.requestUuid
     );
 
     const ir = await convertIntentResult(rp, this.messaging);
@@ -118,7 +113,7 @@ export class DefaultIntentSupport implements IntentSupport {
 
   async raiseIntent(intent: string, context: Context, app: AppIdentifier): Promise<IntentResolution> {
     const meta = this.messaging.createMeta();
-    const messageOut: RaiseIntentRequest = {
+    const request: RaiseIntentRequest = {
       type: 'raiseIntentRequest',
       payload: {
         intent,
@@ -128,9 +123,9 @@ export class DefaultIntentSupport implements IntentSupport {
       meta: meta,
     };
 
-    const resultPromise = this.createResultPromise(messageOut);
+    const resultPromise = this.createResultPromise(request);
     const response = await this.messaging.exchange<RaiseIntentResponse>(
-      messageOut,
+      request,
       'raiseIntentResponse',
       ResolveError.IntentDeliveryFailed
     );
@@ -157,7 +152,7 @@ export class DefaultIntentSupport implements IntentSupport {
   }
 
   async raiseIntentForContext(context: Context, app?: AppIdentifier | undefined): Promise<IntentResolution> {
-    const messageOut: RaiseIntentForContextRequest = {
+    const request: RaiseIntentForContextRequest = {
       type: 'raiseIntentForContextRequest',
       payload: {
         context,
@@ -166,9 +161,9 @@ export class DefaultIntentSupport implements IntentSupport {
       meta: this.messaging.createMeta(),
     };
 
-    const resultPromise = this.createResultPromise(messageOut);
+    const resultPromise = this.createResultPromise(request);
     const response = await this.messaging.exchange<RaiseIntentForContextResponse>(
-      messageOut,
+      request,
       'raiseIntentForContextResponse',
       ResolveError.IntentDeliveryFailed
     );

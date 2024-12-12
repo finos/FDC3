@@ -178,11 +178,8 @@ Given('{string} pipes context to {string}', function (this: CustomWorld, context
 
 When('messaging receives {string}', function (this: CustomWorld, field: string) {
   const message = handleResolve(field, this);
-  //TODO: restore this
-  //this.log(`Sending: ${JSON.stringify(message)}`);
   console.log(`Sending: `, message);
-
-  this.messaging!.receive(message, console.log); //this.log);
+  this.messaging!.receive(message, console.log);
 });
 
 Then('messaging will have posts', function (this: CustomWorld, dt: DataTable) {

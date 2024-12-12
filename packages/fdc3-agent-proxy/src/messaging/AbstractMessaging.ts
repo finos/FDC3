@@ -36,7 +36,13 @@ export abstract class AbstractMessaging implements Messaging {
           this.unregister(id);
           resolve(m);
         },
-      } as RegisterableListener;
+        register: async () => {
+          this.register(l);
+        },
+        unsubscribe: async () => {
+          this.unregister(id);
+        },
+      };
 
       this.register(l);
 

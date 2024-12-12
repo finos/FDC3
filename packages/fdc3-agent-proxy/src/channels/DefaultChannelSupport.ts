@@ -85,14 +85,12 @@ export class DefaultChannelSupport implements ChannelSupport {
   }
 
   async getUserChannels(): Promise<Channel[]> {
-    const response = await this.messaging.exchange<GetUserChannelsResponse>(
-      {
-        meta: this.messaging.createMeta(),
-        type: 'getUserChannelsRequest',
-        payload: {},
-      } as GetUserChannelsRequest,
-      'getUserChannelsResponse'
-    );
+    const request: GetUserChannelsRequest = {
+      meta: this.messaging.createMeta(),
+      type: 'getUserChannelsRequest',
+      payload: {},
+    };
+    const response = await this.messaging.exchange<GetUserChannelsResponse>(request, 'getUserChannelsResponse');
     //handle successful responses - errors will already have been thrown by exchange above
     if (response.payload.userChannels) {
       const channels = response.payload.userChannels;
@@ -149,7 +147,9 @@ export class DefaultChannelSupport implements ChannelSupport {
     };
     await this.messaging.exchange<LeaveCurrentChannelResponse>(request, 'leaveCurrentChannelResponse');
     this.channelSelector.updateChannel(null, this.userChannels);
-    this.userChannelListeners.forEach(l => l.changeChannel(null));
+    for (const l of this.userChannelListeners) {
+      await l.changeChannel(null);
+    }
   }
 
   async joinUserChannel(id: string) {

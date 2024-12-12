@@ -46,30 +46,30 @@ export class ChannelState implements AutomaticResponse {
     let out: AgentResponseMessage | null = null;
     switch (input.type) {
       case 'joinUserChannelRequest':
-        out = this.createJoinResponse(input as JoinUserChannelRequest);
+        out = this.createJoinResponse(input);
         break;
       case 'leaveCurrentChannelRequest':
-        out = this.createLeaveResponse(input as LeaveCurrentChannelRequest);
+        out = this.createLeaveResponse(input);
         break;
 
       case 'getCurrentChannelRequest':
-        out = this.createGetChannelResponse(input as GetCurrentChannelRequest);
+        out = this.createGetChannelResponse(input);
         break;
 
       case 'addContextListenerRequest':
-        out = this.createAddListenerResponse(input as AddContextListenerRequest);
+        out = this.createAddListenerResponse(input);
         break;
 
       case 'contextListenerUnsubscribeRequest':
-        out = this.createUnsubscribeResponse(input as ContextListenerUnsubscribeRequest);
+        out = this.createUnsubscribeResponse(input);
         break;
 
       case 'getCurrentContextRequest':
-        out = this.createGetContextResponse(input as GetCurrentContextRequest);
+        out = this.createGetContextResponse(input);
         break;
 
       case 'broadcastRequest':
-        out = this.createBroadcastResponse(input as BroadcastRequest);
+        out = this.createBroadcastResponse(input);
         break;
     }
 
