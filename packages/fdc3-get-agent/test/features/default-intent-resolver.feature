@@ -15,8 +15,6 @@ Feature: Default Intent Resolver
     And "{result}" is an object with the following contents
       | intent   | appId.appId |
       | ViewNews | app1        |
-    And I call "{childDoc}" with "shutdown"
-    And I call "{parentDoc}" with "shutdown"
     And I call "{intent-resolver}" with "disconnect"
 
   Scenario: Intent Resolution Cancelled
@@ -26,6 +24,4 @@ Feature: Default Intent Resolver
     Given The intent resolver cancels the intent selection message
     Then the promise "{theIntentPromise}" should resolve
     And "{result}" is undefined
-    And I call "{childDoc}" with "shutdown"
-    And I call "{parentDoc}" with "shutdown"
     And I call "{intent-resolver}" with "disconnect"

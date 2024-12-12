@@ -9,8 +9,6 @@ Feature: Default Channel Selector
     Given The channel selector sends a channel change message for channel "one"
     And we wait for a period of "200" ms
     Then "{cb}" is "one"
-    And I call "{childDoc}" with "shutdown"
-    And I call "{parentDoc}" with "shutdown"
 
   Scenario: Updating channel information in the channel selector
     Given I call "{channel-selector}" with "updateChannel" with parameters "one" and "{channel-list}"
@@ -18,5 +16,3 @@ Feature: Default Channel Selector
     Then "{lastChannelSelectorMessage}" is an object with the following contents
       | type           | payload.selected | payload.userChannels[0].id | payload.userChannels[1].id | payload.userChannels[2].id |
       | Fdc3UserInterfaceChannels | one              | one                        | two                        | three                      |
-    And I call "{childDoc}" with "shutdown"
-    And I call "{parentDoc}" with "shutdown"

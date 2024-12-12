@@ -178,7 +178,7 @@ When('I call fdc3Ready for a promise result', function (this: CustomWorld) {
 });
 
 After(function (this: CustomWorld) {
-  console.log('Cleaning up');
+  console.log('    Cleaning up test infrastructure');
   clearAgentPromise();
   MockDocument.shutdownAllDocuments();
 });
