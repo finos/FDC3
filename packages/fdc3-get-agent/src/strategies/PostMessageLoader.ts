@@ -9,7 +9,7 @@ import { Logger } from '../util/Logger';
 /**
  * Recursive search for all possible parent frames (windows) that we may
  * target with the WCP.
- * @param w window object to search
+ * @param startWindow window object to search
  * @param found window objects found so far
  */
 function collectPossibleTargets(startWindow: Window, found: Window[]) {
@@ -23,11 +23,11 @@ function _recursePossibleTargets(startWindow: Window, w: Window, found: Window[]
       found.push(w);
     }
 
-    if (found.indexOf(w.opener) == -1 && w.opener != startWindow) {
+    if (w.opener) {
       _recursePossibleTargets(startWindow, w.opener, found);
     }
 
-    if (found.indexOf(w.parent) == -1 && w.parent != startWindow) {
+    if (w.parent != w) {
       _recursePossibleTargets(startWindow, w.parent, found);
     }
   }

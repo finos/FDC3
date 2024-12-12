@@ -1,4 +1,5 @@
 import {
+  AppRequestMessage,
   ContextListenerUnsubscribeRequest,
   ContextListenerUnsubscribeResponse,
   EventListenerUnsubscribeRequest,
@@ -11,16 +12,17 @@ import { AutomaticResponse, TestMessaging } from '../TestMessaging';
 import { createResponseMeta } from './support';
 import { EventListenerUnsubscribeResponse } from '@kite9/fdc3-schema/dist/generated/api/BrowserTypes';
 
-type requests =
+type Requests =
   | IntentListenerUnsubscribeRequest
   | PrivateChannelUnsubscribeEventListenerRequest
   | ContextListenerUnsubscribeRequest
   | EventListenerUnsubscribeRequest;
-type responses =
+type Responses =
   | IntentListenerUnsubscribeResponse
   | PrivateChannelUnsubscribeEventListenerResponse
   | ContextListenerUnsubscribeResponse
   | EventListenerUnsubscribeResponse;
+
 export class UnsubscribeListeners implements AutomaticResponse {
   filter(t: string) {
     return (
@@ -31,8 +33,8 @@ export class UnsubscribeListeners implements AutomaticResponse {
     );
   }
 
-  action(input: object, m: TestMessaging) {
-    const out = this.createResponse(input as requests);
+  action(input: AppRequestMessage, m: TestMessaging) {
+    const out = this.createResponse(input as Requests);
 
     setTimeout(() => {
       m.receive(out);
@@ -40,10 +42,10 @@ export class UnsubscribeListeners implements AutomaticResponse {
     return Promise.resolve();
   }
 
-  private createResponse(i: requests): responses {
+  private createResponse(i: Requests): Responses {
     return {
       meta: createResponseMeta(i.meta),
-      type: i.type.replace('Request', 'Response') as responses['type'],
+      type: i.type.replace('Request', 'Response') as Responses['type'],
       payload: {},
     };
   }

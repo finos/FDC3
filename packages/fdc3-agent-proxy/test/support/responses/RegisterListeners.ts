@@ -13,12 +13,12 @@ import { AutomaticResponse, TestMessaging } from '../TestMessaging';
 import { createResponseMeta } from './support';
 import { v4 as uuidv4 } from 'uuid';
 
-type requests =
+type Requests =
   | AddContextListenerRequest
   | AddIntentListenerRequest
   | AddEventListenerRequest
   | PrivateChannelAddEventListenerRequest;
-type responses =
+type Responses =
   | AddContextListenerResponse
   | AddIntentListenerResponse
   | AddEventListenerResponse
@@ -35,7 +35,7 @@ export class RegisterListeners implements AutomaticResponse {
   }
 
   action(input: AppRequestMessage, m: TestMessaging) {
-    const out = this.createResponse(input as requests);
+    const out = this.createResponse(input as Requests);
 
     setTimeout(() => {
       m.receive(out);
@@ -43,11 +43,11 @@ export class RegisterListeners implements AutomaticResponse {
     return Promise.resolve();
   }
 
-  private createResponse(i: requests): responses {
+  private createResponse(i: Requests): Responses {
     return {
       meta: createResponseMeta(i.meta),
       //TODO: use a typesafe method of creating response messages
-      type: i.type.replace('Request', 'Response') as responses['type'],
+      type: i.type.replace('Request', 'Response') as Responses['type'],
       payload: {
         listenerUUID: uuidv4(),
       },

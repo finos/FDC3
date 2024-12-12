@@ -45,7 +45,7 @@ export class DefaultAppSupport implements AppSupport {
     if (out.payload.appMetadata) {
       return out.payload.appMetadata;
     } else {
-      //should never happen as an error returned will be thrown
+      //defensive: unlikely to happen as an error returned should already have been thrown by exchange
       throw new Error(ResolveError.TargetAppUnavailable);
     }
   }
@@ -67,7 +67,7 @@ export class DefaultAppSupport implements AppSupport {
     if (out.payload.appIdentifier) {
       return out.payload.appIdentifier;
     } else {
-      //should never happen as an error returned will be thrown
+      //defensive: unlikely to happen as an error returned should already have been thrown by exchange
       throw new Error(OpenError.AppNotFound);
     }
   }

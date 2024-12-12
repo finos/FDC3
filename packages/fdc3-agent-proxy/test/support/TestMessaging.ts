@@ -239,12 +239,4 @@ export class TestMessaging extends AbstractMessaging {
   setIntentResult(o: PossibleIntentResult) {
     this.ir = o;
   }
-
-  //   retrieveInstanceUuid(): string | undefined {
-  //     return (globalThis as any).instanceUuid;
-  //   }
-
-  //   storeInstanceUuid(validationResponse: WebConnectionProtocol5ValidateAppIdentitySuccessResponse): void {
-  //     (globalThis as any).instanceUuid = validationResponse.payload.instanceUuid;
-  //   }
 }

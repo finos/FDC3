@@ -23,33 +23,28 @@ export class DefaultChannel implements Channel {
   }
 
   async broadcast(context: Context): Promise<void> {
-    const done = await this.messaging.exchange<BroadcastResponse>(
-      {
-        meta: this.messaging.createMeta(),
-        payload: {
-          channelId: this.id,
-          context,
-        },
-        type: 'broadcastRequest',
-      } as BroadcastRequest,
-      'broadcastResponse'
-    );
-    console.log('broadcast done', done);
+    const request: BroadcastRequest = {
+      meta: this.messaging.createMeta(),
+      payload: {
+        channelId: this.id,
+        context,
+      },
+      type: 'broadcastRequest',
+    };
+    await this.messaging.exchange<BroadcastResponse>(request, 'broadcastResponse');
   }
 
   async getCurrentContext(contextType?: string | undefined): Promise<Context | null> {
     // first, ensure channel state is up-to-date
-    const response = await this.messaging.exchange<GetCurrentContextResponse>(
-      {
-        meta: this.messaging.createMeta(),
-        payload: {
-          channelId: this.id,
-          contextType: contextType ?? null,
-        },
-        type: 'getCurrentContextRequest',
-      } as GetCurrentContextRequest,
-      'getCurrentContextResponse'
-    );
+    const request: GetCurrentContextRequest = {
+      meta: this.messaging.createMeta(),
+      payload: {
+        channelId: this.id,
+        contextType: contextType ?? null,
+      },
+      type: 'getCurrentContextRequest',
+    };
+    const response = await this.messaging.exchange<GetCurrentContextResponse>(request, 'getCurrentContextResponse');
 
     return response.payload.context ?? null;
   }
@@ -67,7 +62,7 @@ export class DefaultChannel implements Channel {
     } else if (typeof contextTypeOrHandler === 'string' && handler) {
       theContextType = contextTypeOrHandler;
       theHandler = handler;
-    } else if (contextTypeOrHandler) {
+    } else if (typeof contextTypeOrHandler === 'function') {
       // deprecated one-arg version
       theContextType = null;
       theHandler = contextTypeOrHandler as ContextHandler;

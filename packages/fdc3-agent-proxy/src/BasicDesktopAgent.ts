@@ -47,7 +47,8 @@ export class BasicDesktopAgent implements DesktopAgent, Connectable {
       case 'userChannelChanged':
         return this.channels.addChannelChangedEventHandler(handler);
       default:
-        throw new Error('UnknownEventType');
+        console.warn(`Tried to add a listener for an unknown event type: ${type}`);
+        return Promise.reject(new Error('UnknownEventType'));
     }
   }
 

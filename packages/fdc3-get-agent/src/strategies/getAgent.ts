@@ -218,7 +218,7 @@ export const getAgent: GetAgentType = (params?: GetAgentParams) => {
   };
 
   async function handleSetWindowFdc3(da: DesktopAgent) {
-    if (!options.dontSetWindowFdc3 && globalThis.window.fdc3 == null) {
+    if (!options.dontSetWindowFdc3 && !globalThis.window.fdc3) {
       globalThis.window.fdc3 = da;
       globalThis.window.dispatchEvent(new Event('fdc3Ready'));
     }
@@ -231,19 +231,3 @@ export const getAgent: GetAgentType = (params?: GetAgentParams) => {
 
   return theAgentPromise;
 };
-
-/**
- * Replaces the original fdc3Ready function from FDC3 2.0 with a new one that uses the
- * new getAgent function.
- *
- * @param waitForMs Amount of time to wait before failing the promise (20 seconds is the default).
- * @returns A DesktopAgent promise.
- */
-export function fdc3Ready(waitForMs = DEFAULT_TIMEOUT_MS): Promise<DesktopAgent> {
-  return getAgent({
-    timeoutMs: waitForMs,
-    dontSetWindowFdc3: false,
-    channelSelector: true,
-    intentResolver: true,
-  });
-}

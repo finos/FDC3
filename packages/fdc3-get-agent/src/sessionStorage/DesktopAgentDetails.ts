@@ -70,8 +70,11 @@ export function retrieveDesktopAgentDetails(identityUrl: string): DesktopAgentDe
     //check we got the minimum properties
     if (
       typeof theData.agentType === 'string' &&
+      theData.agentType && //TODO: check this is one of the enum values
       typeof theData.appId === 'string' &&
-      typeof theData.instanceId === 'string'
+      theData.appId &&
+      typeof theData.instanceId === 'string' &&
+      theData.instanceId
     ) {
       return theData;
     } else {
