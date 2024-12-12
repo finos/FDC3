@@ -17,5 +17,3 @@ Feature: Death of the Desktop Agent
     When "{childWin}" pagehide occurs with persisted = "{false}"
     And we wait for a period of "200" ms
     Then The Desktop Agent receives a WCP6Goodbye message
-    And I call "{childDoc}" with "shutdown"
-    And I call "{parentDoc}" with "shutdown"
