@@ -28,12 +28,16 @@ export abstract class AbstractMessaging implements Messaging {
     const id = this.createUUID();
     return new Promise<X>((resolve, reject) => {
       let done = false;
+      let timeout: NodeJS.Timeout | null = null;
       const l: RegisterableListener = {
         id,
         filter: filter,
         action: m => {
           done = true;
           this.unregister(id);
+          if (timeout) {
+            clearTimeout(timeout);
+          }
           resolve(m);
         },
         register: async () => {
@@ -47,7 +51,7 @@ export abstract class AbstractMessaging implements Messaging {
       this.register(l);
 
       if (timeoutErrorMessage) {
-        setTimeout(() => {
+        timeout = setTimeout(() => {
           this.unregister(id);
           if (!done) {
             console.error(
