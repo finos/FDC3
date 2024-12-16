@@ -146,7 +146,7 @@ export class TestMessaging extends AbstractMessaging {
   }
 
   async disconnect(): Promise<void> {
-    //Theres no explicit disconnect call for the DA in FDC3, but the BasicDesktopAgent implementation includes one that is called to pagehide
+    //Theres no explicit disconnect call for the DA in FDC3, but the DesktopAgentProxy implementation includes one that is called to pagehide
     const bye: WebConnectionProtocol6Goodbye = {
       type: 'WCP6Goodbye',
       meta: {

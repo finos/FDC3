@@ -1,6 +1,6 @@
 import { AppIdentifier, DesktopAgent } from '@kite9/fdc3-standard';
 import {
-  BasicDesktopAgent,
+  DesktopAgentProxy,
   DefaultChannelSupport,
   DefaultAppSupport,
   DefaultIntentSupport,
@@ -52,7 +52,7 @@ export async function createDesktopAgentAPI(
   const cs = new DefaultChannelSupport(messaging, channelSelector);
   const is = new DefaultIntentSupport(messaging, intentResolver);
   const as = new DefaultAppSupport(messaging);
-  const da = new BasicDesktopAgent(hs, cs, is, as, [hs, intentResolver, channelSelector]);
+  const da = new DesktopAgentProxy(hs, cs, is, as, [hs, intentResolver, channelSelector]);
 
   Logger.debug('message-port: Connecting components ...');
 
@@ -77,7 +77,7 @@ async function populateChannelSelector(cs: ChannelSupport, channelSelector: Chan
   channelSelector.updateChannel(channel?.id ?? null, userChannels);
 }
 
-function handleDisconnectOnPageHide(da: BasicDesktopAgent, messaging: MessagePortMessaging) {
+function handleDisconnectOnPageHide(da: DesktopAgentProxy, messaging: MessagePortMessaging) {
   globalThis.window.addEventListener('pagehide', async event => {
     Logger.log(`Received pagehide event with persisted ${event.persisted}`);
 
@@ -85,7 +85,7 @@ function handleDisconnectOnPageHide(da: BasicDesktopAgent, messaging: MessagePor
     //  In that case don't disconnect and let heartbeat handle that instead
 
     //TODO: implement disconnect on any hide and reconnect if the page is shown again
-    //  Will have to happen inside the BasicDesktopAgent as the reference to the DA needs to remain the same
+    //  Will have to happen inside the DesktopAgentProxy as the reference to the DA needs to remain the same
     //  and any listeners need to be re-registered automatically etc.
     if (!event.persisted) {
       //the page is being destroyed, disconnect from the DA

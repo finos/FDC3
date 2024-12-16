@@ -21,7 +21,7 @@ import { HeartbeatSupport } from './heartbeat/HeartbeatSupport';
  * This splits out the functionality of the desktop agent into
  * app, channels and intents concerns.
  */
-export class BasicDesktopAgent implements DesktopAgent, Connectable {
+export class DesktopAgentProxy implements DesktopAgent, Connectable {
   readonly heartbeat: HeartbeatSupport;
   readonly channels: ChannelSupport;
   readonly intents: IntentSupport;
