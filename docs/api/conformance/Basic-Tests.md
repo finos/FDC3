@@ -13,8 +13,8 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 - `BasicCL1`: A context listener can be created for a specific context type by calling `fdc3.addContextListener("fdc3.contact",<handler>)`.  A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
 - `BasicCL2`: An **unfiltered** context listener can be created by calling `fdc3.addContextListener(null,<handler>)`.  A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
 - `BasicIL1`: An intent listener can be created for a specific intent by calling `fdc3.addIntentListener(<intentName>,<handler>)`. A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
-- `BasicGI1`: An `ImplementationMetadata` object can be retrieved, to find out the version of FDC3 in in use along with details of rhe provider, by calling:
-  - `await fdc3.getInfo()`
+- `BasicGI1`: An `ImplementationMetadata` object can be retrieved, to find out the version of FDC3 that is in use along with details of the provider, by calling:
+  - `await fdc3.getInfo()`.w The FDC3 version should match the API version being tested for conformance.
 - `BasicAC1`: A named 'App' channel can be retrieved via the `fdc3.getOrCreateChannel(<name>)` function. The `Channel` object returned conforms to the defined interface.
 - `BasicUC1`: The list available user/system channels can be retrieved as an array of `Channel` Objects conforming to the defined interface.  The API call is:
   - `await fdc3.getUserChannels()`
