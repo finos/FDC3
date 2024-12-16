@@ -5,7 +5,7 @@ import json from '@rollup/plugin-json';
 
 export default [
   {
-    input: '../fdc3/src/index.ts',
+    input: 'src/index.ts',
 
     // Property inherited from TSDX. To understand what this is doing, see comments:
     // https://github.com/jaredpalmer/tsdx/blob/master/src/createRollupConfig.ts#L77
