@@ -21,7 +21,7 @@
     "dist"
   ],
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "npx rimraf dist",
     "build": "tsc --module es2022 && npx rollup -c rollup.config.mjs"
   },
   "dependencies": {

@@ -6,8 +6,8 @@ Feature: Intents Can Return Different Results
     And app "chipShop/c1" resolves intent "OrderFood"
     And "instrumentContext" is a "fdc3.instrument" context
 
-  Scenario: Raise Intent Will Timeout
-    Given Raise Intent will timeout
+  Scenario: Raise Intent times out
+    Given Raise Intent times out
     When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
     Then "{result}" is an error with message "IntentDeliveryFailed"
 
@@ -17,7 +17,7 @@ Feature: Intents Can Return Different Results
     Then "{result}" is an error with message "TargetAppUnavailable"
 
   Scenario: void is returned in the result
-    Given Raise Intent will return no result
+    Given Raise Intent returns no result
     When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
     And I call "{result}" with "getResult"
     Then "{result}" is undefined
@@ -35,7 +35,7 @@ Feature: Intents Can Return Different Results
       | OrderFood      | fdc3.instrument      | AAPL                      | chipShop          | c1                     | raiseIntentRequest |
 
   Scenario: Context Data is returned in the result
-    Given Raise Intent will return a context of "{instrumentContext}"
+    Given Raise Intent returns a context of "{instrumentContext}"
     When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
     And I call "{result}" with "getResult"
     Then "{result}" is an object with the following contents
@@ -46,7 +46,7 @@ Feature: Intents Can Return Different Results
       | OrderFood      | fdc3.instrument      | AAPL                      | raiseIntentRequest |
 
   Scenario: App Channel is returned in the result
-    Given Raise Intent will return an app channel
+    Given Raise Intent returns an app channel
     When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
     And I call "{result}" with "getResult"
     Then "{result}" is an object with the following contents
@@ -57,7 +57,7 @@ Feature: Intents Can Return Different Results
       | OrderFood      | fdc3.instrument      | AAPL                      | raiseIntentRequest |
 
   Scenario: User Channel is returned in the result
-    Given Raise Intent will return a user channel
+    Given Raise Intent returns a user channel
     When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
     And I call "{result}" with "getResult"
     Then "{result}" is an object with the following contents
@@ -68,7 +68,7 @@ Feature: Intents Can Return Different Results
       | OrderFood      | fdc3.instrument      | AAPL                      | raiseIntentRequest |
 
   Scenario: Private Channel is returned in the result
-    Given Raise Intent will return a private channel
+    Given Raise Intent returns a private channel
     When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
     And I call "{result}" with "getResult"
     Then "{result}" is an object with the following contents

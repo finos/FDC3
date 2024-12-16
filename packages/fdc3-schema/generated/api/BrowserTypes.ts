@@ -1,15 +1,7 @@
 // To parse this data:
 //
-//   import { Convert, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceChannels, Fdc3UserInterfaceDrag, Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, Fdc3UserInterfaceMessage, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse } from "./file";
+//   import { Convert, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, Fdc3UserInterfaceChannels, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceDrag, Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, Fdc3UserInterfaceMessage, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage } from "./file";
 //
-//   const webConnectionProtocol1Hello = Convert.toWebConnectionProtocol1Hello(json);
-//   const webConnectionProtocol2LoadURL = Convert.toWebConnectionProtocol2LoadURL(json);
-//   const webConnectionProtocol3Handshake = Convert.toWebConnectionProtocol3Handshake(json);
-//   const webConnectionProtocol4ValidateAppIdentity = Convert.toWebConnectionProtocol4ValidateAppIdentity(json);
-//   const webConnectionProtocol5ValidateAppIdentityFailedResponse = Convert.toWebConnectionProtocol5ValidateAppIdentityFailedResponse(json);
-//   const webConnectionProtocol5ValidateAppIdentitySuccessResponse = Convert.toWebConnectionProtocol5ValidateAppIdentitySuccessResponse(json);
-//   const webConnectionProtocol6Goodbye = Convert.toWebConnectionProtocol6Goodbye(json);
-//   const webConnectionProtocolMessage = Convert.toWebConnectionProtocolMessage(json);
 //   const addContextListenerRequest = Convert.toAddContextListenerRequest(json);
 //   const addContextListenerResponse = Convert.toAddContextListenerResponse(json);
 //   const addEventListenerRequest = Convert.toAddEventListenerRequest(json);
@@ -29,8 +21,8 @@
 //   const createPrivateChannelResponse = Convert.toCreatePrivateChannelResponse(json);
 //   const eventListenerUnsubscribeRequest = Convert.toEventListenerUnsubscribeRequest(json);
 //   const eventListenerUnsubscribeResponse = Convert.toEventListenerUnsubscribeResponse(json);
-//   const fdc3UserInterfaceChannelSelected = Convert.toFdc3UserInterfaceChannelSelected(json);
 //   const fdc3UserInterfaceChannels = Convert.toFdc3UserInterfaceChannels(json);
+//   const fdc3UserInterfaceChannelSelected = Convert.toFdc3UserInterfaceChannelSelected(json);
 //   const fdc3UserInterfaceDrag = Convert.toFdc3UserInterfaceDrag(json);
 //   const fdc3UserInterfaceHandshake = Convert.toFdc3UserInterfaceHandshake(json);
 //   const fdc3UserInterfaceHello = Convert.toFdc3UserInterfaceHello(json);
@@ -83,534 +75,17 @@
 //   const raiseIntentRequest = Convert.toRaiseIntentRequest(json);
 //   const raiseIntentResponse = Convert.toRaiseIntentResponse(json);
 //   const raiseIntentResultResponse = Convert.toRaiseIntentResultResponse(json);
+//   const webConnectionProtocol1Hello = Convert.toWebConnectionProtocol1Hello(json);
+//   const webConnectionProtocol2LoadURL = Convert.toWebConnectionProtocol2LoadURL(json);
+//   const webConnectionProtocol3Handshake = Convert.toWebConnectionProtocol3Handshake(json);
+//   const webConnectionProtocol4ValidateAppIdentity = Convert.toWebConnectionProtocol4ValidateAppIdentity(json);
+//   const webConnectionProtocol5ValidateAppIdentityFailedResponse = Convert.toWebConnectionProtocol5ValidateAppIdentityFailedResponse(json);
+//   const webConnectionProtocol5ValidateAppIdentitySuccessResponse = Convert.toWebConnectionProtocol5ValidateAppIdentitySuccessResponse(json);
+//   const webConnectionProtocol6Goodbye = Convert.toWebConnectionProtocol6Goodbye(json);
+//   const webConnectionProtocolMessage = Convert.toWebConnectionProtocolMessage(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
-
-/**
- * Hello message sent by an application to a parent window or frame when attempting to
- * establish connectivity to a Desktop Agent.
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol1Hello {
-    /**
-     * Metadata for a Web Connection Protocol message.
-     */
-    meta: WebConnectionProtocol1HelloMeta;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: WebConnectionProtocol1HelloPayload;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP1Hello";
-}
-
-/**
- * Metadata for a Web Connection Protocol message.
- */
-export interface WebConnectionProtocol1HelloMeta {
-    connectionAttemptUuid: string;
-    timestamp: Date;
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebConnectionProtocol1HelloPayload {
-    /**
-     * The current URL of the page attempting to connect. This may differ from the identityUrl,
-     * but the origins MUST match.
-     */
-    actualUrl: string;
-    /**
-     * A flag that may be used to indicate that a channel selector user interface is or is not
-     * required. Set to `false` if the app includes its own interface for selecting channels or
-     * does not work with user channels.
-     */
-    channelSelector?: boolean;
-    /**
-     * The version of FDC3 API that the app supports.
-     */
-    fdc3Version: string;
-    /**
-     * URL to use for the identity of the application. Desktop Agents MUST validate that the
-     * origin of the message matches the URL, but MAY implement custom comparison logic.
-     */
-    identityUrl: string;
-    /**
-     * A flag that may be used to indicate that an intent resolver is or is not required. Set to
-     * `false` if no intents, or only targeted intents, are raised.
-     */
-    intentResolver?: boolean;
-    [property: string]: any;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * Response from a Desktop Agent to an application requesting access to it indicating that
- * it should load a specified URL into a hidden iframe in order to establish connectivity to
- * a Desktop Agent.
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol2LoadURL {
-    /**
-     * Metadata for a Web Connection Protocol message.
-     */
-    meta: WebConnectionProtocol1HelloMeta;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: WebConnectionProtocol2LoadURLPayload;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP2LoadUrl";
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebConnectionProtocol2LoadURLPayload {
-    /**
-     * A URL which can be used to establish communication with the Desktop Agent, via loading
-     * the URL into an iframe and restarting the Web Connection protocol with the iframe as the
-     * target.
-     */
-    iframeUrl: string;
-    [property: string]: any;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * Handshake message sent by the Desktop Agent to the app (with a MessagePort appended) that
- * should be used for subsequent communication steps.
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol3Handshake {
-    /**
-     * Metadata for a Web Connection Protocol message.
-     */
-    meta: WebConnectionProtocol1HelloMeta;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: WebConnectionProtocol3HandshakePayload;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP3Handshake";
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebConnectionProtocol3HandshakePayload {
-    /**
-     * Indicates whether a channel selector user interface is required and the URL to use to do
-     * so. Set to `true` to use the default or `false` to disable the channel selector (as the
-     * Desktop Agent will handle it another way).
-     */
-    channelSelectorUrl: boolean | string;
-    /**
-     * The version of FDC3 API that the Desktop Agent will provide support for.
-     */
-    fdc3Version: string;
-    /**
-     * Indicates whether an intent resolver user interface is required and the URL to use to do
-     * so. Set to `true` to use the default or `false` to disable the intent resolver (as the
-     * Desktop Agent will handle it another way).
-     */
-    intentResolverUrl: boolean | string;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * Identity Validation request from an app attempting to connect to a Desktop Agent.
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol4ValidateAppIdentity {
-    /**
-     * Metadata for a Web Connection Protocol message.
-     */
-    meta: WebConnectionProtocol1HelloMeta;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: WebConnectionProtocol4ValidateAppIdentityPayload;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP4ValidateAppIdentity";
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebConnectionProtocol4ValidateAppIdentityPayload {
-    /**
-     * The current URL of the page attempting to connect. This may differ from the identityUrl,
-     * but the origins MUST match.
-     */
-    actualUrl: string;
-    /**
-     * URL to use for the identity of the application. Desktop Agents MUST validate that the
-     * origin of the message matches the URL, but MAY implement custom comparison logic.
-     */
-    identityUrl: string;
-    /**
-     * If an application has previously connected to the Desktop Agent, it may specify its prior
-     * instance id and associated instance UUID to request the same same instance Id be assigned.
-     */
-    instanceId?: string;
-    /**
-     * Instance UUID associated with the requested instanceId.
-     */
-    instanceUuid?: string;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * Message sent by the Desktop Agent to an app if their identity validation fails.
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol5ValidateAppIdentityFailedResponse {
-    /**
-     * Metadata for a Web Connection Protocol message.
-     */
-    meta: WebConnectionProtocol1HelloMeta;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP5ValidateAppIdentityFailedResponse";
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload {
-    message?: string;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * Message sent by the Desktop Agent to an app after successful identity validation.
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
-    /**
-     * Metadata for a Web Connection Protocol message.
-     */
-    meta: WebConnectionProtocol1HelloMeta;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload: WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP5ValidateAppIdentityResponse";
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload {
-    /**
-     * The appId that the app's identity was validated against.
-     */
-    appId: string;
-    /**
-     * Implementation metadata for the Desktop Agent, which includes an appMetadata element
-     * containing a copy of the app's own metadata.
-     */
-    implementationMetadata: ImplementationMetadata;
-    /**
-     * The instance Id granted to the application by the Desktop Agent.
-     */
-    instanceId: string;
-    /**
-     * Instance UUID associated with the instanceId granted, which may be used to retrieve the
-     * same instanceId if the app is reloaded or navigates.
-     */
-    instanceUuid: string;
-}
-
-/**
- * Implementation metadata for the Desktop Agent, which includes an appMetadata element
- * containing a copy of the app's own metadata.
- *
- * Includes Metadata for the current application.
- *
- * Metadata relating to the FDC3 Desktop Agent implementation and its provider.
- */
-export interface ImplementationMetadata {
-    /**
-     * The calling application instance's own metadata, according to the Desktop Agent (MUST
-     * include at least the `appId` and `instanceId`).
-     */
-    appMetadata: AppMetadata;
-    /**
-     * The version number of the FDC3 specification that the implementation provides.
-     * The string must be a numeric semver version, e.g. 1.2 or 1.2.1.
-     */
-    fdc3Version: string;
-    /**
-     * Metadata indicating whether the Desktop Agent implements optional features of
-     * the Desktop Agent API.
-     */
-    optionalFeatures: OptionalFeatures;
-    /**
-     * The name of the provider of the Desktop Agent implementation (e.g. Finsemble, Glue42,
-     * OpenFin etc.).
-     */
-    provider: string;
-    /**
-     * The version of the provider of the Desktop Agent implementation (e.g. 5.3.0).
-     */
-    providerVersion?: string;
-}
-
-/**
- * The calling application instance's own metadata, according to the Desktop Agent (MUST
- * include at least the `appId` and `instanceId`).
- *
- * Extends an `AppIdentifier`, describing an application or instance of an application, with
- * additional descriptive metadata that is usually provided by an FDC3 App Directory that
- * the Desktop Agent connects to.
- *
- * The additional information from an app directory can aid in rendering UI elements, such
- * as a launcher menu or resolver UI. This includes a title, description, tooltip and icon
- * and screenshot URLs.
- *
- * Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passed to the
- * `app` argument of `fdc3.open`, `fdc3.raiseIntent` etc.
- */
-export interface AppMetadata {
-    /**
-     * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'.
-     */
-    appId: string;
-    /**
-     * A longer, multi-paragraph description for the application that could include markup.
-     */
-    description?: string;
-    /**
-     * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
-     * identify the Desktop Agent to target.
-     */
-    desktopAgent?: string;
-    /**
-     * A list of icon URLs for the application that can be used to render UI elements.
-     */
-    icons?: Icon[];
-    /**
-     * An optional instance identifier, indicating that this object represents a specific
-     * instance of the application described.
-     */
-    instanceId?: string;
-    /**
-     * An optional set of, implementation specific, metadata fields that can be used to
-     * disambiguate instances, such as a window title or screen position. Must only be set if
-     * `instanceId` is set.
-     */
-    instanceMetadata?: { [key: string]: any };
-    /**
-     * The 'friendly' app name.
-     * This field was used with the `open` and `raiseIntent` calls in FDC3 <2.0, which now
-     * require an `AppIdentifier` wth `appId` set.
-     * Note that for display purposes the `title` field should be used, if set, in preference to
-     * this field.
-     */
-    name?: string;
-    /**
-     * The type of output returned for any intent specified during resolution. May express a
-     * particular context type (e.g. "fdc3.instrument"), channel (e.g. "channel") or a channel
-     * that will receive a specified type (e.g. "channel<fdc3.instrument>").
-     */
-    resultType?: null | string;
-    /**
-     * Images representing the app in common usage scenarios that can be used to render UI
-     * elements.
-     */
-    screenshots?: Image[];
-    /**
-     * A more user-friendly application title that can be used to render UI elements.
-     */
-    title?: string;
-    /**
-     * A tooltip for the application that can be used to render UI elements.
-     */
-    tooltip?: string;
-    /**
-     * The Version of the application.
-     */
-    version?: string;
-}
-
-/**
- * Describes an Icon image that may be used to represent the application.
- */
-export interface Icon {
-    /**
-     * The icon dimension, formatted as `<height>x<width>`.
-     */
-    size?: string;
-    /**
-     * The icon url.
-     */
-    src: string;
-    /**
-     * Icon media type. If not present the Desktop Agent may use the src file extension.
-     */
-    type?: string;
-}
-
-/**
- * Describes an image file, typically a screenshot, that often represents the application in
- * a common usage scenario.
- */
-export interface Image {
-    /**
-     * Caption for the image.
-     */
-    label?: string;
-    /**
-     * The image dimension, formatted as `<height>x<width>`.
-     */
-    size?: string;
-    /**
-     * The image url.
-     */
-    src: string;
-    /**
-     * Image media type. If not present the Desktop Agent may use the src file extension.
-     */
-    type?: string;
-}
-
-/**
- * Metadata indicating whether the Desktop Agent implements optional features of
- * the Desktop Agent API.
- */
-export interface OptionalFeatures {
-    /**
-     * Used to indicate whether the experimental Desktop Agent Bridging
-     * feature is implemented by the Desktop Agent.
-     */
-    DesktopAgentBridging: boolean;
-    /**
-     * Used to indicate whether the exposure of 'originating app metadata' for
-     * context and intent messages is supported by the Desktop Agent.
-     */
-    OriginatingAppMetadata: boolean;
-    /**
-     * Used to indicate whether the optional `fdc3.joinUserChannel`,
-     * `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
-     * the Desktop Agent.
-     */
-    UserChannelMembershipAPIs: boolean;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * Goodbye message to be sent to the Desktop Agent when disconnecting (e.g. when closing the
- * window or navigating). Desktop Agents should close the MessagePort after receiving this
- * message, but retain instance details in case the application reconnects (e.g. after a
- * navigation event).
- *
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocol6Goodbye {
-    /**
-     * Metadata for a Web Connection Protocol message.
-     */
-    meta: WebConnectionProtocol6GoodbyeMeta;
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: "WCP6Goodbye";
-}
-
-/**
- * Metadata for a Web Connection Protocol message.
- */
-export interface WebConnectionProtocol6GoodbyeMeta {
-    timestamp: Date;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-
-/**
- * A message used during the connection flow for an application to a Desktop Agent in a
- * browser window. Used for messages sent in either direction.
- */
-export interface WebConnectionProtocolMessage {
-    /**
-     * Metadata for a Web Connection Protocol message.
-     */
-    meta: ConnectionStepMetadata;
-    /**
-     * The message payload, containing data pertaining to this connection step.
-     */
-    payload?: { [key: string]: any };
-    /**
-     * Identifies the type of the connection step message.
-     */
-    type: ConnectionStepMessageType;
-}
-
-/**
- * Metadata for a Web Connection Protocol message.
- */
-export interface ConnectionStepMetadata {
-    timestamp: Date;
-    connectionAttemptUuid?: string;
-}
-
-/**
- * Identifies the type of the connection step message.
- */
-export type ConnectionStepMessageType = "WCP1Hello" | "WCP2LoadUrl" | "WCP3Handshake" | "WCP4ValidateAppIdentity" | "WCP5ValidateAppIdentityFailedResponse" | "WCP5ValidateAppIdentityResponse" | "WCP6Goodbye";
 
 /**
  * A request to add a context listener to a specified Channel OR to the current user
@@ -622,34 +97,34 @@ export type ConnectionStepMessageType = "WCP1Hello" | "WCP2LoadUrl" | "WCP3Hands
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface AddContextListenerRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: AddContextListenerRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "addContextListenerRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: AddContextListenerRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'addContextListenerRequest';
 }
 
 /**
  * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
  */
 export interface AddContextListenerRequestMeta {
-    requestUuid: string;
-    /**
-     * Field that represents the source application that a request or response was received
-     * from. Please note that this may be set by an app or Desktop Agent proxy for debugging
-     * purposes but a Desktop Agent should make its own determination of the source of a message
-     * to avoid spoofing.
-     */
-    source?: AppIdentifier;
-    timestamp: Date;
+  requestUuid: string;
+  /**
+   * Field that represents the source application that a request or response was received
+   * from. Please note that this may be set by an app or Desktop Agent proxy for debugging
+   * purposes but a Desktop Agent should make its own determination of the source of a message
+   * to avoid spoofing.
+   */
+  source?: AppIdentifier;
+  timestamp: Date;
 }
 
 /**
@@ -681,38 +156,38 @@ export interface AddContextListenerRequestMeta {
  * received the intent.
  */
 export interface AppIdentifier {
-    /**
-     * The unique application identifier located within a specific application directory
-     * instance. An example of an appId might be 'app@sub.root'.
-     */
-    appId: string;
-    /**
-     * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
-     * identify the Desktop Agent to target.
-     */
-    desktopAgent?: string;
-    /**
-     * An optional instance identifier, indicating that this object represents a specific
-     * instance of the application described.
-     */
-    instanceId?: string;
-    [property: string]: any;
+  /**
+   * The unique application identifier located within a specific application directory
+   * instance. An example of an appId might be 'app@sub.root'.
+   */
+  appId: string;
+  /**
+   * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
+   * identify the Desktop Agent to target.
+   */
+  desktopAgent?: string;
+  /**
+   * An optional instance identifier, indicating that this object represents a specific
+   * instance of the application described.
+   */
+  instanceId?: string;
+  [property: string]: any;
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface AddContextListenerRequestPayload {
-    /**
-     * The id of the channel to add the listener to or `null` indicating that it should listen
-     * to the current user channel (at the time of broadcast).
-     */
-    channelId: null | string;
-    /**
-     * The type of context to listen for OR `null` indicating that it should listen to all
-     * context types.
-     */
-    contextType: null | string;
+  /**
+   * The id of the channel to add the listener to or `null` indicating that it should listen
+   * to the current user channel (at the time of broadcast).
+   */
+  channelId: null | string;
+  /**
+   * The type of context to listen for OR `null` indicating that it should listen to all
+   * context types.
+   */
+  contextType: null | string;
 }
 
 /**
@@ -730,35 +205,35 @@ export interface AddContextListenerRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface AddContextListenerResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: AddContextListenerResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "addContextListenerResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: AddContextListenerResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'addContextListenerResponse';
 }
 
 /**
  * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
  */
 export interface AddContextListenerResponseMeta {
-    requestUuid: string;
-    responseUuid: string;
-    /**
-     * Field that represents the source application that the request being responded to was
-     * received from, for debugging purposes.
-     */
-    source?: AppIdentifier;
-    timestamp: Date;
+  requestUuid: string;
+  responseUuid: string;
+  /**
+   * Field that represents the source application that the request being responded to was
+   * received from, for debugging purposes.
+   */
+  source?: AppIdentifier;
+  timestamp: Date;
 }
 
 /**
@@ -767,8 +242,8 @@ export interface AddContextListenerResponseMeta {
  * unsuccessful.
  */
 export interface AddContextListenerResponsePayload {
-    error?: PurpleError;
-    listenerUUID?: string;
+  error?: PurpleError;
+  listenerUUID?: string;
 }
 
 /**
@@ -779,7 +254,7 @@ export interface AddContextListenerResponsePayload {
  * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
  * DesktopAgent (`fdc3`).
  */
-export type PurpleError = "AccessDenied" | "CreationFailed" | "MalformedContext" | "NoChannelFound";
+export type PurpleError = 'AccessDenied' | 'CreationFailed' | 'MalformedContext' | 'NoChannelFound';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -792,29 +267,29 @@ export type PurpleError = "AccessDenied" | "CreationFailed" | "MalformedContext"
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface AddEventListenerRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: AddEventListenerRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "addEventListenerRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: AddEventListenerRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'addEventListenerRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface AddEventListenerRequestPayload {
-    /**
-     * The type of the event to be listened to or `null` to listen to all event types.
-     */
-    type: "USER_CHANNEL_CHANGED" | null;
+  /**
+   * The type of the event to be listened to or `null` to listen to all event types.
+   */
+  type: 'USER_CHANNEL_CHANGED' | null;
 }
 
 /**
@@ -834,21 +309,21 @@ export interface AddEventListenerRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface AddEventListenerResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: AddEventListenerResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "addEventListenerResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: AddEventListenerResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'addEventListenerResponse';
 }
 
 /**
@@ -857,8 +332,8 @@ export interface AddEventListenerResponse {
  * unsuccessful.
  */
 export interface AddEventListenerResponsePayload {
-    error?: ResponsePayloadError;
-    listenerUUID?: string;
+  error?: ResponsePayloadError;
+  listenerUUID?: string;
 }
 
 /**
@@ -869,7 +344,28 @@ export interface AddEventListenerResponsePayload {
  * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
  * DesktopAgent (`fdc3`).
  */
-export type ResponsePayloadError = "AccessDenied" | "CreationFailed" | "MalformedContext" | "NoChannelFound" | "AppNotFound" | "AppTimeout" | "DesktopAgentNotFound" | "ErrorOnLaunch" | "ResolverUnavailable" | "IntentDeliveryFailed" | "NoAppsFound" | "ResolverTimeout" | "TargetAppUnavailable" | "TargetInstanceUnavailable" | "UserCancelledResolution" | "IntentHandlerRejected" | "NoResultReturned" | "AgentDisconnected" | "NotConnectedToBridge" | "ResponseToBridgeTimedOut" | "MalformedMessage";
+export type ResponsePayloadError =
+  | 'AccessDenied'
+  | 'CreationFailed'
+  | 'MalformedContext'
+  | 'NoChannelFound'
+  | 'AppNotFound'
+  | 'AppTimeout'
+  | 'DesktopAgentNotFound'
+  | 'ErrorOnLaunch'
+  | 'ResolverUnavailable'
+  | 'IntentDeliveryFailed'
+  | 'NoAppsFound'
+  | 'ResolverTimeout'
+  | 'TargetAppUnavailable'
+  | 'TargetInstanceUnavailable'
+  | 'UserCancelledResolution'
+  | 'IntentHandlerRejected'
+  | 'NoResultReturned'
+  | 'AgentDisconnected'
+  | 'NotConnectedToBridge'
+  | 'ResponseToBridgeTimedOut'
+  | 'MalformedMessage';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -882,29 +378,29 @@ export type ResponsePayloadError = "AccessDenied" | "CreationFailed" | "Malforme
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface AddIntentListenerRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: AddIntentListenerRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "addIntentListenerRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: AddIntentListenerRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'addIntentListenerRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface AddIntentListenerRequestPayload {
-    /**
-     * The name of the intent to listen for.
-     */
-    intent: string;
+  /**
+   * The name of the intent to listen for.
+   */
+  intent: string;
 }
 
 /**
@@ -919,21 +415,21 @@ export interface AddIntentListenerRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface AddIntentListenerResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: AddIntentListenerResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "addIntentListenerResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: AddIntentListenerResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'addIntentListenerResponse';
 }
 
 /**
@@ -942,9 +438,9 @@ export interface AddIntentListenerResponse {
  * unsuccessful.
  */
 export interface AddIntentListenerResponsePayload {
-    error?: FluffyError;
-    listenerUUID?: string;
-    [property: string]: any;
+  error?: FluffyError;
+  listenerUUID?: string;
+  [property: string]: any;
 }
 
 /**
@@ -955,34 +451,51 @@ export interface AddIntentListenerResponsePayload {
  * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
  * DesktopAgent (`fdc3`).
  */
-export type FluffyError = "MalformedContext" | "DesktopAgentNotFound" | "ResolverUnavailable" | "IntentDeliveryFailed" | "NoAppsFound" | "ResolverTimeout" | "TargetAppUnavailable" | "TargetInstanceUnavailable" | "UserCancelledResolution";
+export type FluffyError =
+  | 'MalformedContext'
+  | 'DesktopAgentNotFound'
+  | 'ResolverUnavailable'
+  | 'IntentDeliveryFailed'
+  | 'NoAppsFound'
+  | 'ResolverTimeout'
+  | 'TargetAppUnavailable'
+  | 'TargetInstanceUnavailable'
+  | 'UserCancelledResolution';
 
 /**
  * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
  */
 export interface AgentEventMessageMeta {
-    eventUuid: string;
-    timestamp: Date;
+  eventUuid: string;
+  timestamp: Date;
 }
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  */
-export type EventMessageType = "addEventListenerEvent" | "broadcastEvent" | "channelChangedEvent" | "heartbeatEvent" | "intentEvent" | "privateChannelOnAddContextListenerEvent" | "privateChannelOnDisconnectEvent" | "privateChannelOnUnsubscribeEvent";
+export type EventMessageType =
+  | 'addEventListenerEvent'
+  | 'broadcastEvent'
+  | 'channelChangedEvent'
+  | 'heartbeatEvent'
+  | 'intentEvent'
+  | 'privateChannelOnAddContextListenerEvent'
+  | 'privateChannelOnDisconnectEvent'
+  | 'privateChannelOnUnsubscribeEvent';
 
 /**
  * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
  */
 export interface AgentResponseMessageMeta {
-    requestUuid: string;
-    responseUuid: string;
-    /**
-     * Field that represents the source application that the request being responded to was
-     * received from, for debugging purposes.
-     */
-    source?: AppIdentifier;
-    timestamp: Date;
+  requestUuid: string;
+  responseUuid: string;
+  /**
+   * Field that represents the source application that the request being responded to was
+   * received from, for debugging purposes.
+   */
+  source?: AppIdentifier;
+  timestamp: Date;
 }
 
 /**
@@ -991,36 +504,90 @@ export interface AgentResponseMessageMeta {
  * unsuccessful.
  */
 export interface AgentResponseMessageResponsePayload {
-    error?: ResponsePayloadError;
-    [property: string]: any;
+  error?: ResponsePayloadError;
+  [property: string]: any;
 }
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  */
-export type ResponseMessageType = "addContextListenerResponse" | "addEventListenerResponse" | "addIntentListenerResponse" | "broadcastResponse" | "contextListenerUnsubscribeResponse" | "createPrivateChannelResponse" | "eventListenerUnsubscribeResponse" | "findInstancesResponse" | "findIntentResponse" | "findIntentsByContextResponse" | "getAppMetadataResponse" | "getCurrentChannelResponse" | "getCurrentContextResponse" | "getInfoResponse" | "getOrCreateChannelResponse" | "getUserChannelsResponse" | "intentListenerUnsubscribeResponse" | "intentResultResponse" | "joinUserChannelResponse" | "leaveCurrentChannelResponse" | "openResponse" | "privateChannelAddEventListenerResponse" | "privateChannelDisconnectResponse" | "privateChannelUnsubscribeEventListenerResponse" | "raiseIntentForContextResponse" | "raiseIntentResponse" | "raiseIntentResultResponse";
+export type ResponseMessageType =
+  | 'addContextListenerResponse'
+  | 'addEventListenerResponse'
+  | 'addIntentListenerResponse'
+  | 'broadcastResponse'
+  | 'contextListenerUnsubscribeResponse'
+  | 'createPrivateChannelResponse'
+  | 'eventListenerUnsubscribeResponse'
+  | 'findInstancesResponse'
+  | 'findIntentResponse'
+  | 'findIntentsByContextResponse'
+  | 'getAppMetadataResponse'
+  | 'getCurrentChannelResponse'
+  | 'getCurrentContextResponse'
+  | 'getInfoResponse'
+  | 'getOrCreateChannelResponse'
+  | 'getUserChannelsResponse'
+  | 'intentListenerUnsubscribeResponse'
+  | 'intentResultResponse'
+  | 'joinUserChannelResponse'
+  | 'leaveCurrentChannelResponse'
+  | 'openResponse'
+  | 'privateChannelAddEventListenerResponse'
+  | 'privateChannelDisconnectResponse'
+  | 'privateChannelUnsubscribeEventListenerResponse'
+  | 'raiseIntentForContextResponse'
+  | 'raiseIntentResponse'
+  | 'raiseIntentResultResponse';
 
 /**
  * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
  */
 export interface AppRequestMessageMeta {
-    requestUuid: string;
-    /**
-     * Field that represents the source application that a request or response was received
-     * from. Please note that this may be set by an app or Desktop Agent proxy for debugging
-     * purposes but a Desktop Agent should make its own determination of the source of a message
-     * to avoid spoofing.
-     */
-    source?: AppIdentifier;
-    timestamp: Date;
+  requestUuid: string;
+  /**
+   * Field that represents the source application that a request or response was received
+   * from. Please note that this may be set by an app or Desktop Agent proxy for debugging
+   * purposes but a Desktop Agent should make its own determination of the source of a message
+   * to avoid spoofing.
+   */
+  source?: AppIdentifier;
+  timestamp: Date;
 }
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  */
-export type RequestMessageType = "addContextListenerRequest" | "addEventListenerRequest" | "addIntentListenerRequest" | "broadcastRequest" | "contextListenerUnsubscribeRequest" | "createPrivateChannelRequest" | "eventListenerUnsubscribeRequest" | "findInstancesRequest" | "findIntentRequest" | "findIntentsByContextRequest" | "getAppMetadataRequest" | "getCurrentChannelRequest" | "getCurrentContextRequest" | "getInfoRequest" | "getOrCreateChannelRequest" | "getUserChannelsRequest" | "heartbeatAcknowledgementRequest" | "intentListenerUnsubscribeRequest" | "intentResultRequest" | "joinUserChannelRequest" | "leaveCurrentChannelRequest" | "openRequest" | "privateChannelAddEventListenerRequest" | "privateChannelDisconnectRequest" | "privateChannelUnsubscribeEventListenerRequest" | "raiseIntentForContextRequest" | "raiseIntentRequest";
+export type RequestMessageType =
+  | 'addContextListenerRequest'
+  | 'addEventListenerRequest'
+  | 'addIntentListenerRequest'
+  | 'broadcastRequest'
+  | 'contextListenerUnsubscribeRequest'
+  | 'createPrivateChannelRequest'
+  | 'eventListenerUnsubscribeRequest'
+  | 'findInstancesRequest'
+  | 'findIntentRequest'
+  | 'findIntentsByContextRequest'
+  | 'getAppMetadataRequest'
+  | 'getCurrentChannelRequest'
+  | 'getCurrentContextRequest'
+  | 'getInfoRequest'
+  | 'getOrCreateChannelRequest'
+  | 'getUserChannelsRequest'
+  | 'heartbeatAcknowledgementRequest'
+  | 'intentListenerUnsubscribeRequest'
+  | 'intentResultRequest'
+  | 'joinUserChannelRequest'
+  | 'leaveCurrentChannelRequest'
+  | 'openRequest'
+  | 'privateChannelAddEventListenerRequest'
+  | 'privateChannelDisconnectRequest'
+  | 'privateChannelUnsubscribeEventListenerRequest'
+  | 'raiseIntentForContextRequest'
+  | 'raiseIntentRequest';
 
 /**
  * An event message from the Desktop Agent to an app indicating that context has been
@@ -1030,46 +597,46 @@ export type RequestMessageType = "addContextListenerRequest" | "addEventListener
  * A message from a Desktop Agent to an FDC3-enabled app representing an event.
  */
 export interface BroadcastEvent {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
-     */
-    meta: BroadcastEventMeta;
-    /**
-     * The message payload contains details of the event that the app is being notified about.
-     */
-    payload: BroadcastEventPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "broadcastEvent";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
+   */
+  meta: BroadcastEventMeta;
+  /**
+   * The message payload contains details of the event that the app is being notified about.
+   */
+  payload: BroadcastEventPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'broadcastEvent';
 }
 
 /**
  * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
  */
 export interface BroadcastEventMeta {
-    eventUuid: string;
-    timestamp: Date;
+  eventUuid: string;
+  timestamp: Date;
 }
 
 /**
  * The message payload contains details of the event that the app is being notified about.
  */
 export interface BroadcastEventPayload {
-    /**
-     * The Id of the channel that the broadcast was sent on. May be `null` if the context is
-     * being broadcast due to a call `fdc3.open` that passed context.
-     */
-    channelId: null | string;
-    /**
-     * The context object that was broadcast.
-     */
-    context: Context;
-    /**
-     * Details of the application instance that broadcast the context.
-     */
-    originatingApp?: AppIdentifier;
+  /**
+   * The Id of the channel that the broadcast was sent on. May be `null` if the context is
+   * being broadcast due to a call `fdc3.open` that passed context.
+   */
+  channelId: null | string;
+  /**
+   * The context object that was broadcast.
+   */
+  context: Context;
+  /**
+   * Details of the application instance that broadcast the context.
+   */
+  originatingApp?: AppIdentifier;
 }
 
 /**
@@ -1096,44 +663,44 @@ export interface BroadcastEventPayload {
  * with custom fields as appropriate.
  */
 export interface Context {
-    /**
-     * Context data objects may include a set of equivalent key-value pairs that can be used to
-     * help applications identify and look up the context type they receive in their own domain.
-     * The idea behind this design is that applications can provide as many equivalent
-     * identifiers to a target application as possible, e.g. an instrument may be represented by
-     * an ISIN, CUSIP or Bloomberg identifier.
-     *
-     * Identifiers do not make sense for all types of data, so the `id` property is therefore
-     * optional, but some derived types may choose to require at least one identifier.
-     * Identifier values SHOULD always be of type string.
-     */
-    id?: { [key: string]: any };
-    /**
-     * Context data objects may include a name property that can be used for more information,
-     * or display purposes. Some derived types may require the name object as mandatory,
-     * depending on use case.
-     */
-    name?: string;
-    /**
-     * The type property is the only _required_ part of the FDC3 context data schema. The FDC3
-     * [API](https://fdc3.finos.org/docs/api/spec) relies on the `type` property being present
-     * to route shared context data appropriately.
-     *
-     * FDC3 [Intents](https://fdc3.finos.org/docs/intents/spec) also register the context data
-     * types they support in an FDC3 [App
-     * Directory](https://fdc3.finos.org/docs/app-directory/overview), used for intent discovery
-     * and routing.
-     *
-     * Standardized FDC3 context types have well-known `type` properties prefixed with the
-     * `fdc3` namespace, e.g. `fdc3.instrument`. For non-standard types, e.g. those defined and
-     * used by a particular organization, the convention is to prefix them with an
-     * organization-specific namespace, e.g. `blackrock.fund`.
-     *
-     * See the [Context Data Specification](https://fdc3.finos.org/docs/context/spec) for more
-     * information about context data types.
-     */
-    type: string;
-    [property: string]: any;
+  /**
+   * Context data objects may include a set of equivalent key-value pairs that can be used to
+   * help applications identify and look up the context type they receive in their own domain.
+   * The idea behind this design is that applications can provide as many equivalent
+   * identifiers to a target application as possible, e.g. an instrument may be represented by
+   * an ISIN, CUSIP or Bloomberg identifier.
+   *
+   * Identifiers do not make sense for all types of data, so the `id` property is therefore
+   * optional, but some derived types may choose to require at least one identifier.
+   * Identifier values SHOULD always be of type string.
+   */
+  id?: { [key: string]: any };
+  /**
+   * Context data objects may include a name property that can be used for more information,
+   * or display purposes. Some derived types may require the name object as mandatory,
+   * depending on use case.
+   */
+  name?: string;
+  /**
+   * The type property is the only _required_ part of the FDC3 context data schema. The FDC3
+   * [API](https://fdc3.finos.org/docs/api/spec) relies on the `type` property being present
+   * to route shared context data appropriately.
+   *
+   * FDC3 [Intents](https://fdc3.finos.org/docs/intents/spec) also register the context data
+   * types they support in an FDC3 [App
+   * Directory](https://fdc3.finos.org/docs/app-directory/overview), used for intent discovery
+   * and routing.
+   *
+   * Standardized FDC3 context types have well-known `type` properties prefixed with the
+   * `fdc3` namespace, e.g. `fdc3.instrument`. For non-standard types, e.g. those defined and
+   * used by a particular organization, the convention is to prefix them with an
+   * organization-specific namespace, e.g. `blackrock.fund`.
+   *
+   * See the [Context Data Specification](https://fdc3.finos.org/docs/context/spec) for more
+   * information about context data types.
+   */
+  type: string;
+  [property: string]: any;
 }
 
 /**
@@ -1147,33 +714,33 @@ export interface Context {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface BroadcastRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: BroadcastRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "broadcastRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: BroadcastRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'broadcastRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface BroadcastRequestPayload {
-    /**
-     * The Id of the Channel that the broadcast was sent on.
-     */
-    channelId: string;
-    /**
-     * The context object that is to be broadcast.
-     */
-    context: Context;
+  /**
+   * The Id of the Channel that the broadcast was sent on.
+   */
+  channelId: string;
+  /**
+   * The context object that is to be broadcast.
+   */
+  context: Context;
 }
 
 /**
@@ -1188,21 +755,21 @@ export interface BroadcastRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface BroadcastResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: BroadcastResponseResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "broadcastResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: BroadcastResponseResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'broadcastResponse';
 }
 
 /**
@@ -1211,8 +778,8 @@ export interface BroadcastResponse {
  * unsuccessful.
  */
 export interface BroadcastResponseResponsePayload {
-    error?: ResponsePayloadError;
-    [property: string]: any;
+  error?: ResponsePayloadError;
+  [property: string]: any;
 }
 
 /**
@@ -1227,30 +794,30 @@ export interface BroadcastResponseResponsePayload {
  * A message from a Desktop Agent to an FDC3-enabled app representing an event.
  */
 export interface ChannelChangedEvent {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
-     */
-    meta: BroadcastEventMeta;
-    /**
-     * The message payload contains details of the event that the app is being notified about.
-     */
-    payload: ChannelChangedEventPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "channelChangedEvent";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
+   */
+  meta: BroadcastEventMeta;
+  /**
+   * The message payload contains details of the event that the app is being notified about.
+   */
+  payload: ChannelChangedEventPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'channelChangedEvent';
 }
 
 /**
  * The message payload contains details of the event that the app is being notified about.
  */
 export interface ChannelChangedEventPayload {
-    /**
-     * The Id of the channel that the app was added to or `null` if it was removed from a
-     * channel.
-     */
-    newChannelId: null | string;
+  /**
+   * The Id of the channel that the app was added to or `null` if it was removed from a
+   * channel.
+   */
+  newChannelId: null | string;
 }
 
 /**
@@ -1264,26 +831,26 @@ export interface ChannelChangedEventPayload {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface ContextListenerUnsubscribeRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: ContextListenerUnsubscribeRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "contextListenerUnsubscribeRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: ContextListenerUnsubscribeRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'contextListenerUnsubscribeRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface ContextListenerUnsubscribeRequestPayload {
-    listenerUUID: string;
+  listenerUUID: string;
 }
 
 /**
@@ -1298,21 +865,21 @@ export interface ContextListenerUnsubscribeRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface ContextListenerUnsubscribeResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: BroadcastResponseResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "contextListenerUnsubscribeResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: BroadcastResponseResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'contextListenerUnsubscribeResponse';
 }
 
 /**
@@ -1327,26 +894,25 @@ export interface ContextListenerUnsubscribeResponse {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface CreatePrivateChannelRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: CreatePrivateChannelRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "createPrivateChannelRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: CreatePrivateChannelRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'createPrivateChannelRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
-export interface CreatePrivateChannelRequestPayload {
-}
+export interface CreatePrivateChannelRequestPayload {}
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -1360,21 +926,21 @@ export interface CreatePrivateChannelRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface CreatePrivateChannelResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: CreatePrivateChannelResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "createPrivateChannelResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: CreatePrivateChannelResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'createPrivateChannelResponse';
 }
 
 /**
@@ -1383,8 +949,8 @@ export interface CreatePrivateChannelResponse {
  * unsuccessful.
  */
 export interface CreatePrivateChannelResponsePayload {
-    error?: PurpleError;
-    privateChannel?: Channel;
+  error?: PurpleError;
+  privateChannel?: Channel;
 }
 
 /**
@@ -1402,21 +968,21 @@ export interface CreatePrivateChannelResponsePayload {
  * function.
  */
 export interface Channel {
-    /**
-     * Channels may be visualized and selectable by users. DisplayMetadata may be used to
-     * provide hints on how to see them.
-     * For App channels, displayMetadata would typically not be present.
-     */
-    displayMetadata?: DisplayMetadata;
-    /**
-     * Constant that uniquely identifies this channel.
-     */
-    id: string;
-    /**
-     * Uniquely defines each channel type.
-     * Can be "user", "app" or "private".
-     */
-    type: Type;
+  /**
+   * Channels may be visualized and selectable by users. DisplayMetadata may be used to
+   * provide hints on how to see them.
+   * For App channels, displayMetadata would typically not be present.
+   */
+  displayMetadata?: DisplayMetadata;
+  /**
+   * Constant that uniquely identifies this channel.
+   */
+  id: string;
+  /**
+   * Uniquely defines each channel type.
+   * Can be "user", "app" or "private".
+   */
+  type: Type;
 }
 
 /**
@@ -1431,26 +997,26 @@ export interface Channel {
  * this is their meaning.
  */
 export interface DisplayMetadata {
-    /**
-     * The color that should be associated within this channel when displaying this channel in a
-     * UI, e.g: `0xFF0000`.
-     */
-    color?: string;
-    /**
-     * A URL of an image that can be used to display this channel.
-     */
-    glyph?: string;
-    /**
-     * A user-readable name for this channel, e.g: `"Red"`.
-     */
-    name?: string;
+  /**
+   * The color that should be associated within this channel when displaying this channel in a
+   * UI, e.g: `0xFF0000`.
+   */
+  color?: string;
+  /**
+   * A URL of an image that can be used to display this channel.
+   */
+  glyph?: string;
+  /**
+   * A user-readable name for this channel, e.g: `"Red"`.
+   */
+  name?: string;
 }
 
 /**
  * Uniquely defines each channel type.
  * Can be "user", "app" or "private".
  */
-export type Type = "app" | "private" | "user";
+export type Type = 'app' | 'private' | 'user';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -1463,26 +1029,26 @@ export type Type = "app" | "private" | "user";
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface EventListenerUnsubscribeRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: EventListenerUnsubscribeRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "eventListenerUnsubscribeRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: EventListenerUnsubscribeRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'eventListenerUnsubscribeRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface EventListenerUnsubscribeRequestPayload {
-    listenerUUID: string;
+  listenerUUID: string;
 }
 
 /**
@@ -1497,60 +1063,26 @@ export interface EventListenerUnsubscribeRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface EventListenerUnsubscribeResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: BroadcastResponseResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "eventListenerUnsubscribeResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: BroadcastResponseResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'eventListenerUnsubscribeResponse';
 }
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
- */
-
-/**
- * Message from a channel selector UI to the DA proxy sent when the channel selection
- * changes.
- *
- * A message used to communicate with user interface frames injected by `getAgent()` for
- * displaying UI elements such as the intent resolver or channel selector. Used for messages
- * sent in either direction.
- */
-export interface Fdc3UserInterfaceChannelSelected {
-    /**
-     * The message payload.
-     */
-    payload: Fdc3UserInterfaceChannelSelectedPayload;
-    /**
-     * Identifies the type of the message to or from the user interface frame.
-     */
-    type: "Fdc3UserInterfaceChannelSelected";
-}
-
-/**
- * The message payload.
- */
-export interface Fdc3UserInterfaceChannelSelectedPayload {
-    /**
-     * The id of the channel that should be currently selected, or `null` if none should be
-     * selected.
-     */
-    selected: null | string;
-}
-
-/**
- * Identifies the type of the message to or from the user interface frame.
  */
 
 /**
@@ -1562,29 +1094,63 @@ export interface Fdc3UserInterfaceChannelSelectedPayload {
  * sent in either direction.
  */
 export interface Fdc3UserInterfaceChannels {
-    /**
-     * The message payload.
-     */
-    payload: Fdc3UserInterfaceChannelsPayload;
-    /**
-     * Identifies the type of the message to or from the user interface frame.
-     */
-    type: "Fdc3UserInterfaceChannels";
+  /**
+   * The message payload.
+   */
+  payload: Fdc3UserInterfaceChannelsPayload;
+  /**
+   * Identifies the type of the message to or from the user interface frame.
+   */
+  type: 'Fdc3UserInterfaceChannels';
 }
 
 /**
  * The message payload.
  */
 export interface Fdc3UserInterfaceChannelsPayload {
-    /**
-     * The id of the channel that should be currently selected, or `null` if none should be
-     * selected.
-     */
-    selected: null | string;
-    /**
-     * User Channel definitions.```````s
-     */
-    userChannels: Channel[];
+  /**
+   * The id of the channel that should be currently selected, or `null` if none should be
+   * selected.
+   */
+  selected: null | string;
+  /**
+   * User Channel definitions.```````s
+   */
+  userChannels: Channel[];
+}
+
+/**
+ * Identifies the type of the message to or from the user interface frame.
+ */
+
+/**
+ * Message from a channel selector UI to the DA proxy sent when the channel selection
+ * changes.
+ *
+ * A message used to communicate with user interface frames injected by `getAgent()` for
+ * displaying UI elements such as the intent resolver or channel selector. Used for messages
+ * sent in either direction.
+ */
+export interface Fdc3UserInterfaceChannelSelected {
+  /**
+   * The message payload.
+   */
+  payload: Fdc3UserInterfaceChannelSelectedPayload;
+  /**
+   * Identifies the type of the message to or from the user interface frame.
+   */
+  type: 'Fdc3UserInterfaceChannelSelected';
+}
+
+/**
+ * The message payload.
+ */
+export interface Fdc3UserInterfaceChannelSelectedPayload {
+  /**
+   * The id of the channel that should be currently selected, or `null` if none should be
+   * selected.
+   */
+  selected: null | string;
 }
 
 /**
@@ -1602,32 +1168,32 @@ export interface Fdc3UserInterfaceChannelsPayload {
  * sent in either direction.
  */
 export interface Fdc3UserInterfaceDrag {
-    /**
-     * The message payload.
-     */
-    payload: Fdc3UserInterfaceDragPayload;
-    /**
-     * Identifies the type of the message to or from the user interface frame.
-     */
-    type: "Fdc3UserInterfaceDrag";
+  /**
+   * The message payload.
+   */
+  payload: Fdc3UserInterfaceDragPayload;
+  /**
+   * Identifies the type of the message to or from the user interface frame.
+   */
+  type: 'Fdc3UserInterfaceDrag';
 }
 
 /**
  * The message payload.
  */
 export interface Fdc3UserInterfaceDragPayload {
-    /**
-     * The offset to move the frame by.
-     */
-    mouseOffsets: MouseOffsets;
+  /**
+   * The offset to move the frame by.
+   */
+  mouseOffsets: MouseOffsets;
 }
 
 /**
  * The offset to move the frame by.
  */
 export interface MouseOffsets {
-    x: number;
-    y: number;
+  x: number;
+  y: number;
 }
 
 /**
@@ -1644,24 +1210,24 @@ export interface MouseOffsets {
  * sent in either direction.
  */
 export interface Fdc3UserInterfaceHandshake {
-    /**
-     * The message payload.
-     */
-    payload: Fdc3UserInterfaceHandshakePayload;
-    /**
-     * Identifies the type of the message to or from the user interface frame.
-     */
-    type: "Fdc3UserInterfaceHandshake";
+  /**
+   * The message payload.
+   */
+  payload: Fdc3UserInterfaceHandshakePayload;
+  /**
+   * Identifies the type of the message to or from the user interface frame.
+   */
+  type: 'Fdc3UserInterfaceHandshake';
 }
 
 /**
  * The message payload.
  */
 export interface Fdc3UserInterfaceHandshakePayload {
-    /**
-     * The version of FDC3 API that the Desktop Agent will provide support for.
-     */
-    fdc3Version: string;
+  /**
+   * The version of FDC3 API that the Desktop Agent will provide support for.
+   */
+  fdc3Version: string;
 }
 
 /**
@@ -1678,29 +1244,29 @@ export interface Fdc3UserInterfaceHandshakePayload {
  * sent in either direction.
  */
 export interface Fdc3UserInterfaceHello {
-    /**
-     * The message payload.
-     */
-    payload: Fdc3UserInterfaceHelloPayload;
-    /**
-     * Identifies the type of the message to or from the user interface frame.
-     */
-    type: "Fdc3UserInterfaceHello";
+  /**
+   * The message payload.
+   */
+  payload: Fdc3UserInterfaceHelloPayload;
+  /**
+   * Identifies the type of the message to or from the user interface frame.
+   */
+  type: 'Fdc3UserInterfaceHello';
 }
 
 /**
  * The message payload.
  */
 export interface Fdc3UserInterfaceHelloPayload {
-    /**
-     * Details about the UI implementation, such as vendor and version, for logging purposes.
-     */
-    implementationDetails: string;
-    /**
-     * A constrained set of styling properties that should be set on the user interface before
-     * it is displayed. Note `position` cannot be specified and should always be set to `fixed`.
-     */
-    initialCSS: InitialCSS;
+  /**
+   * Details about the UI implementation, such as vendor and version, for logging purposes.
+   */
+  implementationDetails: string;
+  /**
+   * A constrained set of styling properties that should be set on the user interface before
+   * it is displayed. Note `position` cannot be specified and should always be set to `fixed`.
+   */
+  initialCSS: InitialCSS;
 }
 
 /**
@@ -1708,47 +1274,47 @@ export interface Fdc3UserInterfaceHelloPayload {
  * it is displayed. Note `position` cannot be specified and should always be set to `fixed`.
  */
 export interface InitialCSS {
-    /**
-     * The initial bottom property to apply to the iframe.
-     */
-    bottom?: string;
-    /**
-     * The initial height of the iframe.
-     */
-    height?: string;
-    /**
-     * The initial left property to apply to the iframe.
-     */
-    left?: string;
-    /**
-     * The maximum height to apply to the iframe.
-     */
-    maxHeight?: string;
-    /**
-     * The maximum with to apply to the iframe.
-     */
-    maxWidth?: string;
-    /**
-     * The initial right property to apply to the iframe.
-     */
-    right?: string;
-    /**
-     * The initial top property to apply to the iframe.
-     */
-    top?: string;
-    /**
-     * The transition property to apply to the iframe.
-     */
-    transition?: string;
-    /**
-     * The initial width of the iframe.
-     */
-    width?: string;
-    /**
-     * The initial zindex to apply to the iframe.
-     */
-    zIndex?: string;
-    [property: string]: any;
+  /**
+   * The initial bottom property to apply to the iframe.
+   */
+  bottom?: string;
+  /**
+   * The initial height of the iframe.
+   */
+  height?: string;
+  /**
+   * The initial left property to apply to the iframe.
+   */
+  left?: string;
+  /**
+   * The maximum height to apply to the iframe.
+   */
+  maxHeight?: string;
+  /**
+   * The maximum with to apply to the iframe.
+   */
+  maxWidth?: string;
+  /**
+   * The initial right property to apply to the iframe.
+   */
+  right?: string;
+  /**
+   * The initial top property to apply to the iframe.
+   */
+  top?: string;
+  /**
+   * The transition property to apply to the iframe.
+   */
+  transition?: string;
+  /**
+   * The initial width of the iframe.
+   */
+  width?: string;
+  /**
+   * The initial zindex to apply to the iframe.
+   */
+  zIndex?: string;
+  [property: string]: any;
 }
 
 /**
@@ -1761,20 +1327,28 @@ export interface InitialCSS {
  * sent in either direction.
  */
 export interface Fdc3UserInterfaceMessage {
-    /**
-     * The message payload.
-     */
-    payload?: { [key: string]: any };
-    /**
-     * Identifies the type of the message to or from the user interface frame.
-     */
-    type: Fdc3UserInterfaceMessageType;
+  /**
+   * The message payload.
+   */
+  payload?: { [key: string]: any };
+  /**
+   * Identifies the type of the message to or from the user interface frame.
+   */
+  type: Fdc3UserInterfaceMessageType;
 }
 
 /**
  * Identifies the type of the message to or from the user interface frame.
  */
-export type Fdc3UserInterfaceMessageType = "Fdc3UserInterfaceHello" | "Fdc3UserInterfaceHandshake" | "Fdc3UserInterfaceRestyle" | "Fdc3UserInterfaceDrag" | "Fdc3UserInterfaceResolve" | "Fdc3UserInterfaceResolveAction" | "Fdc3UserInterfaceChannels" | "Fdc3UserInterfaceChannelSelected";
+export type Fdc3UserInterfaceMessageType =
+  | 'Fdc3UserInterfaceHello'
+  | 'Fdc3UserInterfaceHandshake'
+  | 'Fdc3UserInterfaceRestyle'
+  | 'Fdc3UserInterfaceDrag'
+  | 'Fdc3UserInterfaceResolve'
+  | 'Fdc3UserInterfaceResolveAction'
+  | 'Fdc3UserInterfaceChannels'
+  | 'Fdc3UserInterfaceChannelSelected';
 
 /**
  * Setup message sent by the DA proxy code in getAgent() to an intent resolver UI with the
@@ -1785,25 +1359,25 @@ export type Fdc3UserInterfaceMessageType = "Fdc3UserInterfaceHello" | "Fdc3UserI
  * sent in either direction.
  */
 export interface Fdc3UserInterfaceResolve {
-    /**
-     * The message payload.
-     */
-    payload: Fdc3UserInterfaceResolvePayload;
-    /**
-     * Identifies the type of the message to or from the user interface frame.
-     */
-    type: "Fdc3UserInterfaceResolve";
+  /**
+   * The message payload.
+   */
+  payload: Fdc3UserInterfaceResolvePayload;
+  /**
+   * Identifies the type of the message to or from the user interface frame.
+   */
+  type: 'Fdc3UserInterfaceResolve';
 }
 
 /**
  * The message payload.
  */
 export interface Fdc3UserInterfaceResolvePayload {
-    /**
-     * An array of AppIntent objects defining the resolution options.
-     */
-    appIntents: AppIntent[];
-    context: Context;
+  /**
+   * An array of AppIntent objects defining the resolution options.
+   */
+  appIntents: AppIntent[];
+  context: Context;
 }
 
 /**
@@ -1813,14 +1387,133 @@ export interface Fdc3UserInterfaceResolvePayload {
  * resolver) before it can be handled.
  */
 export interface AppIntent {
-    /**
-     * Details of applications that can resolve the intent.
-     */
-    apps: AppMetadata[];
-    /**
-     * Details of the intent whose relationship to resolving applications is being described.
-     */
-    intent: IntentMetadata;
+  /**
+   * Details of applications that can resolve the intent.
+   */
+  apps: AppMetadata[];
+  /**
+   * Details of the intent whose relationship to resolving applications is being described.
+   */
+  intent: IntentMetadata;
+}
+
+/**
+ * Extends an `AppIdentifier`, describing an application or instance of an application, with
+ * additional descriptive metadata that is usually provided by an FDC3 App Directory that
+ * the Desktop Agent connects to.
+ *
+ * The additional information from an app directory can aid in rendering UI elements, such
+ * as a launcher menu or resolver UI. This includes a title, description, tooltip and icon
+ * and screenshot URLs.
+ *
+ * Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passed to the
+ * `app` argument of `fdc3.open`, `fdc3.raiseIntent` etc.
+ *
+ * The calling application instance's own metadata, according to the Desktop Agent (MUST
+ * include at least the `appId` and `instanceId`).
+ */
+export interface AppMetadata {
+  /**
+   * The unique application identifier located within a specific application directory
+   * instance. An example of an appId might be 'app@sub.root'.
+   */
+  appId: string;
+  /**
+   * A longer, multi-paragraph description for the application that could include markup.
+   */
+  description?: string;
+  /**
+   * The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to
+   * identify the Desktop Agent to target.
+   */
+  desktopAgent?: string;
+  /**
+   * A list of icon URLs for the application that can be used to render UI elements.
+   */
+  icons?: Icon[];
+  /**
+   * An optional instance identifier, indicating that this object represents a specific
+   * instance of the application described.
+   */
+  instanceId?: string;
+  /**
+   * An optional set of, implementation specific, metadata fields that can be used to
+   * disambiguate instances, such as a window title or screen position. Must only be set if
+   * `instanceId` is set.
+   */
+  instanceMetadata?: { [key: string]: any };
+  /**
+   * The 'friendly' app name.
+   * This field was used with the `open` and `raiseIntent` calls in FDC3 <2.0, which now
+   * require an `AppIdentifier` wth `appId` set.
+   * Note that for display purposes the `title` field should be used, if set, in preference to
+   * this field.
+   */
+  name?: string;
+  /**
+   * The type of output returned for any intent specified during resolution. May express a
+   * particular context type (e.g. "fdc3.instrument"), channel (e.g. "channel") or a channel
+   * that will receive a specified type (e.g. "channel<fdc3.instrument>").
+   */
+  resultType?: null | string;
+  /**
+   * Images representing the app in common usage scenarios that can be used to render UI
+   * elements.
+   */
+  screenshots?: Image[];
+  /**
+   * A more user-friendly application title that can be used to render UI elements.
+   */
+  title?: string;
+  /**
+   * A tooltip for the application that can be used to render UI elements.
+   */
+  tooltip?: string;
+  /**
+   * The Version of the application.
+   */
+  version?: string;
+}
+
+/**
+ * Describes an Icon image that may be used to represent the application.
+ */
+export interface Icon {
+  /**
+   * The icon dimension, formatted as `<height>x<width>`.
+   */
+  size?: string;
+  /**
+   * The icon url.
+   */
+  src: string;
+  /**
+   * Icon media type. If not present the Desktop Agent may use the src file extension.
+   */
+  type?: string;
+}
+
+/**
+ * Describes an image file, typically a screenshot, that often represents the application in
+ * a common usage scenario.
+ */
+export interface Image {
+  /**
+   * Caption for the image.
+   */
+  label?: string;
+  /**
+   * The image dimension, formatted as `<height>x<width>`.
+   */
+  size?: string;
+  /**
+   * The image url.
+   */
+  src: string;
+  /**
+   * Image media type. If not present the Desktop Agent may use the src file extension.
+   */
+  type?: string;
 }
 
 /**
@@ -1829,14 +1522,14 @@ export interface AppIntent {
  * Metadata describing an Intent.
  */
 export interface IntentMetadata {
-    /**
-     * Display name for the intent.
-     */
-    displayName?: string;
-    /**
-     * The unique name of the intent that can be invoked by the raiseIntent call.
-     */
-    name: string;
+  /**
+   * Display name for the intent.
+   */
+  displayName?: string;
+  /**
+   * The unique name of the intent that can be invoked by the raiseIntent call.
+   */
+  name: string;
 }
 
 /**
@@ -1852,32 +1545,32 @@ export interface IntentMetadata {
  * sent in either direction.
  */
 export interface Fdc3UserInterfaceResolveAction {
-    /**
-     * The message payload.
-     */
-    payload: Fdc3UserInterfaceResolveActionPayload;
-    /**
-     * Identifies the type of the message to or from the user interface frame.
-     */
-    type: "Fdc3UserInterfaceResolveAction";
+  /**
+   * The message payload.
+   */
+  payload: Fdc3UserInterfaceResolveActionPayload;
+  /**
+   * Identifies the type of the message to or from the user interface frame.
+   */
+  type: 'Fdc3UserInterfaceResolveAction';
 }
 
 /**
  * The message payload.
  */
 export interface Fdc3UserInterfaceResolveActionPayload {
-    action: Action;
-    /**
-     * The App resolution option chosen.
-     */
-    appIdentifier?: AppIdentifier;
-    /**
-     * The intent resolved.
-     */
-    intent?: string;
+  action: Action;
+  /**
+   * The App resolution option chosen.
+   */
+  appIdentifier?: AppIdentifier;
+  /**
+   * The intent resolved.
+   */
+  intent?: string;
 }
 
-export type Action = "hover" | "click" | "cancel";
+export type Action = 'hover' | 'click' | 'cancel';
 
 /**
  * Identifies the type of the message to or from the user interface frame.
@@ -1893,25 +1586,25 @@ export type Action = "hover" | "click" | "cancel";
  * sent in either direction.
  */
 export interface Fdc3UserInterfaceRestyle {
-    /**
-     * The message payload.
-     */
-    payload: Fdc3UserInterfaceRestylePayload;
-    /**
-     * Identifies the type of the message to or from the user interface frame.
-     */
-    type: "Fdc3UserInterfaceRestyle";
+  /**
+   * The message payload.
+   */
+  payload: Fdc3UserInterfaceRestylePayload;
+  /**
+   * Identifies the type of the message to or from the user interface frame.
+   */
+  type: 'Fdc3UserInterfaceRestyle';
 }
 
 /**
  * The message payload.
  */
 export interface Fdc3UserInterfaceRestylePayload {
-    /**
-     * A constrained set of styling properties that should be applied to the frame. Note
-     * `position` cannot be set, and should always be `fixed`.
-     */
-    updatedCSS: UpdatedCSS;
+  /**
+   * A constrained set of styling properties that should be applied to the frame. Note
+   * `position` cannot be set, and should always be `fixed`.
+   */
+  updatedCSS: UpdatedCSS;
 }
 
 /**
@@ -1919,47 +1612,47 @@ export interface Fdc3UserInterfaceRestylePayload {
  * `position` cannot be set, and should always be `fixed`.
  */
 export interface UpdatedCSS {
-    /**
-     * The initial bottom property to apply to the iframe.
-     */
-    bottom?: string;
-    /**
-     * The updated height of the iframe.
-     */
-    height?: string;
-    /**
-     * The initial left property to apply to the iframe.
-     */
-    left?: string;
-    /**
-     * The updated maximum height to apply to the iframe.
-     */
-    maxHeight?: string;
-    /**
-     * The updated maximum with to apply to the iframe.
-     */
-    maxWidth?: string;
-    /**
-     * The initial right property to apply to the iframe.
-     */
-    right?: string;
-    /**
-     * The initial top property to apply to the iframe.
-     */
-    top?: string;
-    /**
-     * The updated transition property to apply to the iframe.
-     */
-    transition?: string;
-    /**
-     * The updated width of the iframe.
-     */
-    width?: string;
-    /**
-     * The updated zIndex to apply to the iframe.
-     */
-    zIndex?: string;
-    [property: string]: any;
+  /**
+   * The initial bottom property to apply to the iframe.
+   */
+  bottom?: string;
+  /**
+   * The updated height of the iframe.
+   */
+  height?: string;
+  /**
+   * The initial left property to apply to the iframe.
+   */
+  left?: string;
+  /**
+   * The updated maximum height to apply to the iframe.
+   */
+  maxHeight?: string;
+  /**
+   * The updated maximum with to apply to the iframe.
+   */
+  maxWidth?: string;
+  /**
+   * The initial right property to apply to the iframe.
+   */
+  right?: string;
+  /**
+   * The initial top property to apply to the iframe.
+   */
+  top?: string;
+  /**
+   * The updated transition property to apply to the iframe.
+   */
+  transition?: string;
+  /**
+   * The updated width of the iframe.
+   */
+  width?: string;
+  /**
+   * The updated zIndex to apply to the iframe.
+   */
+  zIndex?: string;
+  [property: string]: any;
 }
 
 /**
@@ -1972,26 +1665,26 @@ export interface UpdatedCSS {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface FindInstancesRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: FindInstancesRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "findInstancesRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: FindInstancesRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'findInstancesRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindInstancesRequestPayload {
-    app: AppIdentifier;
+  app: AppIdentifier;
 }
 
 /**
@@ -2006,21 +1699,21 @@ export interface FindInstancesRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface FindInstancesResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: FindInstancesResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "findInstancesResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: FindInstancesResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'findInstancesResponse';
 }
 
 /**
@@ -2033,8 +1726,8 @@ export interface FindInstancesResponse {
  * resulted in an error and including a standardized error message.
  */
 export interface FindInstancesResponsePayload {
-    error?: FindInstancesErrors;
-    appIdentifiers?: AppMetadata[];
+  error?: FindInstancesErrors;
+  appIdentifiers?: AppMetadata[];
 }
 
 /**
@@ -2044,10 +1737,6 @@ export interface FindInstancesResponsePayload {
  * Constants representing the errors that can be encountered when calling the `findIntent`,
  * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
  * DesktopAgent (`fdc3`).
- *
- * Unique identifier for a for an attempt to connect to a Desktop Agent. A Unique UUID
- * should be used in the first (WCP1Hello) message and should be quoted in all subsequent
- * messages to link them to the same connection attempt.
  *
  * Unique identifier for a request or event message. Required in all message types.
  *
@@ -2060,9 +1749,26 @@ export interface FindInstancesResponsePayload {
  *
  * Unique identifier for an event message sent from a Desktop Agent to an app.
  *
+ * Unique identifier for a for an attempt to connect to a Desktop Agent. A Unique UUID
+ * should be used in the first (WCP1Hello) message and should be quoted in all subsequent
+ * messages to link them to the same connection attempt.
+ *
  * Should be set if the raiseIntent request returned an error.
  */
-export type FindInstancesErrors = "MalformedContext" | "DesktopAgentNotFound" | "ResolverUnavailable" | "IntentDeliveryFailed" | "NoAppsFound" | "ResolverTimeout" | "TargetAppUnavailable" | "TargetInstanceUnavailable" | "UserCancelledResolution" | "AgentDisconnected" | "NotConnectedToBridge" | "ResponseToBridgeTimedOut" | "MalformedMessage";
+export type FindInstancesErrors =
+  | 'MalformedContext'
+  | 'DesktopAgentNotFound'
+  | 'ResolverUnavailable'
+  | 'IntentDeliveryFailed'
+  | 'NoAppsFound'
+  | 'ResolverTimeout'
+  | 'TargetAppUnavailable'
+  | 'TargetInstanceUnavailable'
+  | 'UserCancelledResolution'
+  | 'AgentDisconnected'
+  | 'NotConnectedToBridge'
+  | 'ResponseToBridgeTimedOut'
+  | 'MalformedMessage';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -2075,28 +1781,28 @@ export type FindInstancesErrors = "MalformedContext" | "DesktopAgentNotFound" | 
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface FindIntentRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: FindIntentRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "findIntentRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: FindIntentRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'findIntentRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentRequestPayload {
-    context?: Context;
-    intent: string;
-    resultType?: string;
+  context?: Context;
+  intent: string;
+  resultType?: string;
 }
 
 /**
@@ -2111,21 +1817,21 @@ export interface FindIntentRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface FindIntentResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: FindIntentResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "findIntentResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: FindIntentResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'findIntentResponse';
 }
 
 /**
@@ -2134,8 +1840,8 @@ export interface FindIntentResponse {
  * unsuccessful.
  */
 export interface FindIntentResponsePayload {
-    error?: FindInstancesErrors;
-    appIntent?: AppIntent;
+  error?: FindInstancesErrors;
+  appIntent?: AppIntent;
 }
 
 /**
@@ -2150,27 +1856,27 @@ export interface FindIntentResponsePayload {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface FindIntentsByContextRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: FindIntentsByContextRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "findIntentsByContextRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: FindIntentsByContextRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'findIntentsByContextRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface FindIntentsByContextRequestPayload {
-    context: Context;
-    resultType?: string;
+  context: Context;
+  resultType?: string;
 }
 
 /**
@@ -2185,21 +1891,21 @@ export interface FindIntentsByContextRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface FindIntentsByContextResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: FindIntentsByContextResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "findIntentsByContextResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: FindIntentsByContextResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'findIntentsByContextResponse';
 }
 
 /**
@@ -2208,8 +1914,8 @@ export interface FindIntentsByContextResponse {
  * unsuccessful.
  */
 export interface FindIntentsByContextResponsePayload {
-    error?: FindInstancesErrors;
-    appIntents?: AppIntent[];
+  error?: FindInstancesErrors;
+  appIntents?: AppIntent[];
 }
 
 /**
@@ -2223,26 +1929,26 @@ export interface FindIntentsByContextResponsePayload {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface GetAppMetadataRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: GetAppMetadataRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "getAppMetadataRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: GetAppMetadataRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'getAppMetadataRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface GetAppMetadataRequestPayload {
-    app: AppIdentifier;
+  app: AppIdentifier;
 }
 
 /**
@@ -2257,21 +1963,21 @@ export interface GetAppMetadataRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface GetAppMetadataResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: GetAppMetadataResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "getAppMetadataResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: GetAppMetadataResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'getAppMetadataResponse';
 }
 
 /**
@@ -2280,8 +1986,8 @@ export interface GetAppMetadataResponse {
  * unsuccessful.
  */
 export interface GetAppMetadataResponsePayload {
-    error?: FindInstancesErrors;
-    appMetadata?: AppMetadata;
+  error?: FindInstancesErrors;
+  appMetadata?: AppMetadata;
 }
 
 /**
@@ -2296,26 +2002,25 @@ export interface GetAppMetadataResponsePayload {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface GetCurrentChannelRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: GetCurrentChannelRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "getCurrentChannelRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: GetCurrentChannelRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'getCurrentChannelRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
-export interface GetCurrentChannelRequestPayload {
-}
+export interface GetCurrentChannelRequestPayload {}
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -2329,21 +2034,21 @@ export interface GetCurrentChannelRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface GetCurrentChannelResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: GetCurrentChannelResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "getCurrentChannelResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: GetCurrentChannelResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'getCurrentChannelResponse';
 }
 
 /**
@@ -2352,8 +2057,8 @@ export interface GetCurrentChannelResponse {
  * unsuccessful.
  */
 export interface GetCurrentChannelResponsePayload {
-    error?: ResponsePayloadError;
-    channel?: Channel | null;
+  error?: ResponsePayloadError;
+  channel?: Channel | null;
 }
 
 /**
@@ -2369,34 +2074,34 @@ export interface GetCurrentChannelResponsePayload {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface GetCurrentContextRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: GetCurrentContextRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "getCurrentContextRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: GetCurrentContextRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'getCurrentContextRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface GetCurrentContextRequestPayload {
-    /**
-     * The id of the channel to return the current context of.
-     */
-    channelId: string;
-    /**
-     * The type of context to return for OR `null` indicating that the most recently broadcast
-     * context on the channel should be returned.
-     */
-    contextType: null | string;
+  /**
+   * The id of the channel to return the current context of.
+   */
+  channelId: string;
+  /**
+   * The type of context to return for OR `null` indicating that the most recently broadcast
+   * context on the channel should be returned.
+   */
+  contextType: null | string;
 }
 
 /**
@@ -2411,21 +2116,21 @@ export interface GetCurrentContextRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface GetCurrentContextResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: GetCurrentContextResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "getCurrentContextResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: GetCurrentContextResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'getCurrentContextResponse';
 }
 
 /**
@@ -2434,12 +2139,12 @@ export interface GetCurrentContextResponse {
  * unsuccessful.
  */
 export interface GetCurrentContextResponsePayload {
-    error?: PurpleError;
-    /**
-     * The most recently broadcast context object (of the specified type, if one was specified),
-     * or `null` if none was available in the channel.
-     */
-    context?: null | Context;
+  error?: PurpleError;
+  /**
+   * The most recently broadcast context object (of the specified type, if one was specified),
+   * or `null` if none was available in the channel.
+   */
+  context?: null | Context;
 }
 
 /**
@@ -2454,26 +2159,25 @@ export interface GetCurrentContextResponsePayload {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface GetInfoRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: GetInfoRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "getInfoRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: GetInfoRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'getInfoRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
-export interface GetInfoRequestPayload {
-}
+export interface GetInfoRequestPayload {}
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -2487,21 +2191,21 @@ export interface GetInfoRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface GetInfoResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: GetInfoResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "getInfoResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: GetInfoResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'getInfoResponse';
 }
 
 /**
@@ -2510,8 +2214,66 @@ export interface GetInfoResponse {
  * unsuccessful.
  */
 export interface GetInfoResponsePayload {
-    error?: ResponsePayloadError;
-    implementationMetadata?: ImplementationMetadata;
+  error?: ResponsePayloadError;
+  implementationMetadata?: ImplementationMetadata;
+}
+
+/**
+ * Implementation metadata for the Desktop Agent, which includes an appMetadata element
+ * containing a copy of the app's own metadata.
+ *
+ * Includes Metadata for the current application.
+ *
+ * Metadata relating to the FDC3 Desktop Agent implementation and its provider.
+ */
+export interface ImplementationMetadata {
+  /**
+   * The calling application instance's own metadata, according to the Desktop Agent (MUST
+   * include at least the `appId` and `instanceId`).
+   */
+  appMetadata: AppMetadata;
+  /**
+   * The version number of the FDC3 specification that the implementation provides.
+   * The string must be a numeric semver version, e.g. 1.2 or 1.2.1.
+   */
+  fdc3Version: string;
+  /**
+   * Metadata indicating whether the Desktop Agent implements optional features of
+   * the Desktop Agent API.
+   */
+  optionalFeatures: OptionalFeatures;
+  /**
+   * The name of the provider of the Desktop Agent implementation (e.g. Finsemble, Glue42,
+   * OpenFin etc.).
+   */
+  provider: string;
+  /**
+   * The version of the provider of the Desktop Agent implementation (e.g. 5.3.0).
+   */
+  providerVersion?: string;
+}
+
+/**
+ * Metadata indicating whether the Desktop Agent implements optional features of
+ * the Desktop Agent API.
+ */
+export interface OptionalFeatures {
+  /**
+   * Used to indicate whether the experimental Desktop Agent Bridging
+   * feature is implemented by the Desktop Agent.
+   */
+  DesktopAgentBridging: boolean;
+  /**
+   * Used to indicate whether the exposure of 'originating app metadata' for
+   * context and intent messages is supported by the Desktop Agent.
+   */
+  OriginatingAppMetadata: boolean;
+  /**
+   * Used to indicate whether the optional `fdc3.joinUserChannel`,
+   * `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
+   * the Desktop Agent.
+   */
+  UserChannelMembershipAPIs: boolean;
 }
 
 /**
@@ -2526,29 +2288,29 @@ export interface GetInfoResponsePayload {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface GetOrCreateChannelRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: GetOrCreateChannelRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "getOrCreateChannelRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: GetOrCreateChannelRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'getOrCreateChannelRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface GetOrCreateChannelRequestPayload {
-    /**
-     * The id of the channel to return
-     */
-    channelId: string;
+  /**
+   * The id of the channel to return
+   */
+  channelId: string;
 }
 
 /**
@@ -2563,21 +2325,21 @@ export interface GetOrCreateChannelRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface GetOrCreateChannelResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: GetOrCreateChannelResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "getOrCreateChannelResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: GetOrCreateChannelResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'getOrCreateChannelResponse';
 }
 
 /**
@@ -2586,8 +2348,8 @@ export interface GetOrCreateChannelResponse {
  * unsuccessful.
  */
 export interface GetOrCreateChannelResponsePayload {
-    error?: PurpleError;
-    channel?: Channel;
+  error?: PurpleError;
+  channel?: Channel;
 }
 
 /**
@@ -2601,26 +2363,25 @@ export interface GetOrCreateChannelResponsePayload {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface GetUserChannelsRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: GetUserChannelsRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "getUserChannelsRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: GetUserChannelsRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'getUserChannelsRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
-export interface GetUserChannelsRequestPayload {
-}
+export interface GetUserChannelsRequestPayload {}
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -2634,21 +2395,21 @@ export interface GetUserChannelsRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface GetUserChannelsResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: GetUserChannelsResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "getUserChannelsResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: GetUserChannelsResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'getUserChannelsResponse';
 }
 
 /**
@@ -2657,8 +2418,8 @@ export interface GetUserChannelsResponse {
  * unsuccessful.
  */
 export interface GetUserChannelsResponsePayload {
-    error?: PurpleError;
-    userChannels?: Channel[];
+  error?: PurpleError;
+  userChannels?: Channel[];
 }
 
 /**
@@ -2673,29 +2434,29 @@ export interface GetUserChannelsResponsePayload {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface HeartbeatAcknowledgementRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: HeartbeatAcknowledgementRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "heartbeatAcknowledgementRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: HeartbeatAcknowledgementRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'heartbeatAcknowledgementRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface HeartbeatAcknowledgementRequestPayload {
-    /**
-     * The eventUuid value of the HeartbeatEvent that the acknowledgement being sent relates to.
-     */
-    heartbeatEventUuid: string;
+  /**
+   * The eventUuid value of the HeartbeatEvent that the acknowledgement being sent relates to.
+   */
+  heartbeatEventUuid: string;
 }
 
 /**
@@ -2711,26 +2472,25 @@ export interface HeartbeatAcknowledgementRequestPayload {
  * A message from a Desktop Agent to an FDC3-enabled app representing an event.
  */
 export interface HeartbeatEvent {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
-     */
-    meta: BroadcastEventMeta;
-    /**
-     * The message payload contains details of the event that the app is being notified about.
-     */
-    payload: HeartbeatEventPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "heartbeatEvent";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
+   */
+  meta: BroadcastEventMeta;
+  /**
+   * The message payload contains details of the event that the app is being notified about.
+   */
+  payload: HeartbeatEventPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'heartbeatEvent';
 }
 
 /**
  * The message payload contains details of the event that the app is being notified about.
  */
-export interface HeartbeatEventPayload {
-}
+export interface HeartbeatEventPayload {}
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -2744,42 +2504,42 @@ export interface HeartbeatEventPayload {
  * A message from a Desktop Agent to an FDC3-enabled app representing an event.
  */
 export interface IntentEvent {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
-     */
-    meta: BroadcastEventMeta;
-    /**
-     * The message payload contains details of the event that the app is being notified about.
-     */
-    payload: IntentEventPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "intentEvent";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
+   */
+  meta: BroadcastEventMeta;
+  /**
+   * The message payload contains details of the event that the app is being notified about.
+   */
+  payload: IntentEventPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'intentEvent';
 }
 
 /**
  * The message payload contains details of the event that the app is being notified about.
  */
 export interface IntentEventPayload {
-    /**
-     * The context object passed with the raised intent.
-     */
-    context: Context;
-    /**
-     * The intent that was raised.
-     */
-    intent: string;
-    /**
-     * Details of the application instance that raised the intent.
-     */
-    originatingApp?: AppIdentifier;
-    /**
-     * The requestUuid value of the raiseIntentRequest that the intentEvent being sent relates
-     * to.
-     */
-    raiseIntentRequestUuid: string;
+  /**
+   * The context object passed with the raised intent.
+   */
+  context: Context;
+  /**
+   * The intent that was raised.
+   */
+  intent: string;
+  /**
+   * Details of the application instance that raised the intent.
+   */
+  originatingApp?: AppIdentifier;
+  /**
+   * The requestUuid value of the raiseIntentRequest that the intentEvent being sent relates
+   * to.
+   */
+  raiseIntentRequestUuid: string;
 }
 
 /**
@@ -2793,26 +2553,26 @@ export interface IntentEventPayload {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface IntentListenerUnsubscribeRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: IntentListenerUnsubscribeRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "intentListenerUnsubscribeRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: IntentListenerUnsubscribeRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'intentListenerUnsubscribeRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface IntentListenerUnsubscribeRequestPayload {
-    listenerUUID: string;
+  listenerUUID: string;
 }
 
 /**
@@ -2827,21 +2587,21 @@ export interface IntentListenerUnsubscribeRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface IntentListenerUnsubscribeResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: BroadcastResponseResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "intentListenerUnsubscribeResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: BroadcastResponseResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'intentListenerUnsubscribeResponse';
 }
 
 /**
@@ -2857,39 +2617,39 @@ export interface IntentListenerUnsubscribeResponse {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface IntentResultRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: IntentResultRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "intentResultRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: IntentResultRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'intentResultRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface IntentResultRequestPayload {
-    /**
-     * The eventUuid value of the intentEvent that the result being sent relates to.
-     */
-    intentEventUuid: string;
-    intentResult: IntentResult;
-    /**
-     * The requestUuid value of the raiseIntentRequest that the result being sent relates to.
-     */
-    raiseIntentRequestUuid: string;
+  /**
+   * The eventUuid value of the intentEvent that the result being sent relates to.
+   */
+  intentEventUuid: string;
+  intentResult: IntentResult;
+  /**
+   * The requestUuid value of the raiseIntentRequest that the result being sent relates to.
+   */
+  raiseIntentRequestUuid: string;
 }
 
 export interface IntentResult {
-    context?: Context;
-    channel?: Channel;
+  context?: Context;
+  channel?: Channel;
 }
 
 /**
@@ -2904,21 +2664,21 @@ export interface IntentResult {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface IntentResultResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: BroadcastResponseResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "intentResultResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: BroadcastResponseResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'intentResultResponse';
 }
 
 /**
@@ -2934,29 +2694,29 @@ export interface IntentResultResponse {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface JoinUserChannelRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: JoinUserChannelRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "joinUserChannelRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: JoinUserChannelRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'joinUserChannelRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface JoinUserChannelRequestPayload {
-    /**
-     * The id of the channel to join.
-     */
-    channelId: string;
+  /**
+   * The id of the channel to join.
+   */
+  channelId: string;
 }
 
 /**
@@ -2973,21 +2733,21 @@ export interface JoinUserChannelRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface JoinUserChannelResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: JoinUserChannelResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "joinUserChannelResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: JoinUserChannelResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'joinUserChannelResponse';
 }
 
 /**
@@ -2996,7 +2756,7 @@ export interface JoinUserChannelResponse {
  * unsuccessful.
  */
 export interface JoinUserChannelResponsePayload {
-    error?: PurpleError;
+  error?: PurpleError;
 }
 
 /**
@@ -3010,26 +2770,25 @@ export interface JoinUserChannelResponsePayload {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface LeaveCurrentChannelRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: LeaveCurrentChannelRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "leaveCurrentChannelRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: LeaveCurrentChannelRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'leaveCurrentChannelRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
-export interface LeaveCurrentChannelRequestPayload {
-}
+export interface LeaveCurrentChannelRequestPayload {}
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -3043,21 +2802,21 @@ export interface LeaveCurrentChannelRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface LeaveCurrentChannelResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: LeaveCurrentChannelResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "leaveCurrentChannelResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: LeaveCurrentChannelResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'leaveCurrentChannelResponse';
 }
 
 /**
@@ -3066,7 +2825,7 @@ export interface LeaveCurrentChannelResponse {
  * unsuccessful.
  */
 export interface LeaveCurrentChannelResponsePayload {
-    error?: PurpleError;
+  error?: PurpleError;
 }
 
 /**
@@ -3080,32 +2839,32 @@ export interface LeaveCurrentChannelResponsePayload {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface OpenRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: OpenRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "openRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: OpenRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'openRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface OpenRequestPayload {
-    app: AppIdentifier;
-    /**
-     * If a Context object is passed in, this object will be provided to the opened application
-     * via a contextListener. The Context argument is functionally equivalent to opening the
-     * target app with no context and broadcasting the context directly to it.
-     */
-    context?: Context;
+  app: AppIdentifier;
+  /**
+   * If a Context object is passed in, this object will be provided to the opened application
+   * via a contextListener. The Context argument is functionally equivalent to opening the
+   * target app with no context and broadcasting the context directly to it.
+   */
+  context?: Context;
 }
 
 /**
@@ -3120,21 +2879,21 @@ export interface OpenRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface OpenResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: OpenResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "openResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: OpenResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'openResponse';
 }
 
 /**
@@ -3143,8 +2902,8 @@ export interface OpenResponse {
  * unsuccessful.
  */
 export interface OpenResponsePayload {
-    error?: OpenErrorResponsePayload;
-    appIdentifier?: AppIdentifier;
+  error?: OpenErrorResponsePayload;
+  appIdentifier?: AppIdentifier;
 }
 
 /**
@@ -3155,7 +2914,17 @@ export interface OpenResponsePayload {
  * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
  * DesktopAgent (`fdc3`).
  */
-export type OpenErrorResponsePayload = "MalformedContext" | "AppNotFound" | "AppTimeout" | "DesktopAgentNotFound" | "ErrorOnLaunch" | "ResolverUnavailable" | "AgentDisconnected" | "NotConnectedToBridge" | "ResponseToBridgeTimedOut" | "MalformedMessage";
+export type OpenErrorResponsePayload =
+  | 'MalformedContext'
+  | 'AppNotFound'
+  | 'AppTimeout'
+  | 'DesktopAgentNotFound'
+  | 'ErrorOnLaunch'
+  | 'ResolverUnavailable'
+  | 'AgentDisconnected'
+  | 'NotConnectedToBridge'
+  | 'ResponseToBridgeTimedOut'
+  | 'MalformedMessage';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -3168,41 +2937,39 @@ export type OpenErrorResponsePayload = "MalformedContext" | "AppNotFound" | "App
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface PrivateChannelAddEventListenerRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: TPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "privateChannelAddEventListenerRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: TPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'privateChannelAddEventListenerRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface TPayload {
-    /**
-     * The type of PrivateChannel event that the listener should be applied to.
-     */
-    listenerType: PrivateChannelEventListenerTypes;
-    /**
-     * The Id of the PrivateChannel that the listener should be added to.
-     */
-    privateChannelId: string;
+  /**
+   * The type of PrivateChannel event that the listener should be applied to.
+   */
+  listenerType: PrivateChannelEventListenerTypes | null;
+  /**
+   * The Id of the PrivateChannel that the listener should be added to.
+   */
+  privateChannelId: string;
 }
 
 /**
- * The type of PrivateChannel event that the listener should be applied to.
- *
  * Event listener type names for Private Channel events.
  */
-export type PrivateChannelEventListenerTypes = "onAddContextListener" | "onUnsubscribe" | "onDisconnect";
+export type PrivateChannelEventListenerTypes = 'onAddContextListener' | 'onUnsubscribe' | 'onDisconnect';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -3216,21 +2983,21 @@ export type PrivateChannelEventListenerTypes = "onAddContextListener" | "onUnsub
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface PrivateChannelAddEventListenerResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: PrivateChannelAddEventListenerResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "privateChannelAddEventListenerResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: PrivateChannelAddEventListenerResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'privateChannelAddEventListenerResponse';
 }
 
 /**
@@ -3239,9 +3006,9 @@ export interface PrivateChannelAddEventListenerResponse {
  * unsuccessful.
  */
 export interface PrivateChannelAddEventListenerResponsePayload {
-    error?: PurpleError;
-    listenerUUID?: string;
-    [property: string]: any;
+  error?: PurpleError;
+  listenerUUID?: string;
+  [property: string]: any;
 }
 
 /**
@@ -3256,29 +3023,29 @@ export interface PrivateChannelAddEventListenerResponsePayload {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface PrivateChannelDisconnectRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: PrivateChannelDisconnectRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "privateChannelDisconnectRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: PrivateChannelDisconnectRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'privateChannelDisconnectRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelDisconnectRequestPayload {
-    /**
-     * The Id of the Channel that should be disconnected from
-     */
-    channelId: string;
+  /**
+   * The Id of the Channel that should be disconnected from
+   */
+  channelId: string;
 }
 
 /**
@@ -3293,21 +3060,21 @@ export interface PrivateChannelDisconnectRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface PrivateChannelDisconnectResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: PrivateChannelDisconnectResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "privateChannelDisconnectResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: PrivateChannelDisconnectResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'privateChannelDisconnectResponse';
 }
 
 /**
@@ -3316,7 +3083,7 @@ export interface PrivateChannelDisconnectResponse {
  * unsuccessful.
  */
 export interface PrivateChannelDisconnectResponsePayload {
-    error?: PurpleError;
+  error?: PurpleError;
 }
 
 /**
@@ -3331,34 +3098,34 @@ export interface PrivateChannelDisconnectResponsePayload {
  * A message from a Desktop Agent to an FDC3-enabled app representing an event.
  */
 export interface PrivateChannelOnAddContextListenerEvent {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
-     */
-    meta: BroadcastEventMeta;
-    /**
-     * The message payload contains details of the event that the app is being notified about.
-     */
-    payload: PrivateChannelOnAddContextListenerEventPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "privateChannelOnAddContextListenerEvent";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
+   */
+  meta: BroadcastEventMeta;
+  /**
+   * The message payload contains details of the event that the app is being notified about.
+   */
+  payload: PrivateChannelOnAddContextListenerEventPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'privateChannelOnAddContextListenerEvent';
 }
 
 /**
  * The message payload contains details of the event that the app is being notified about.
  */
 export interface PrivateChannelOnAddContextListenerEventPayload {
-    /**
-     * The type of the context listener added to the channel by another app, or null if it will
-     * listen to all types.
-     */
-    contextType: null | string;
-    /**
-     * The Id of the PrivateChannel that the listener was added to.
-     */
-    privateChannelId: string;
+  /**
+   * The type of the context listener added to the channel by another app, or null if it will
+   * listen to all types.
+   */
+  contextType: null | string;
+  /**
+   * The Id of the PrivateChannel that the listener was added to.
+   */
+  privateChannelId: string;
 }
 
 /**
@@ -3373,29 +3140,29 @@ export interface PrivateChannelOnAddContextListenerEventPayload {
  * A message from a Desktop Agent to an FDC3-enabled app representing an event.
  */
 export interface PrivateChannelOnDisconnectEvent {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
-     */
-    meta: BroadcastEventMeta;
-    /**
-     * The message payload contains details of the event that the app is being notified about.
-     */
-    payload: PrivateChannelOnDisconnectEventPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "privateChannelOnDisconnectEvent";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
+   */
+  meta: BroadcastEventMeta;
+  /**
+   * The message payload contains details of the event that the app is being notified about.
+   */
+  payload: PrivateChannelOnDisconnectEventPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'privateChannelOnDisconnectEvent';
 }
 
 /**
  * The message payload contains details of the event that the app is being notified about.
  */
 export interface PrivateChannelOnDisconnectEventPayload {
-    /**
-     * The Id of the PrivateChannel that the app has disconnected from.
-     */
-    privateChannelId: string;
+  /**
+   * The Id of the PrivateChannel that the app has disconnected from.
+   */
+  privateChannelId: string;
 }
 
 /**
@@ -3410,34 +3177,34 @@ export interface PrivateChannelOnDisconnectEventPayload {
  * A message from a Desktop Agent to an FDC3-enabled app representing an event.
  */
 export interface PrivateChannelOnUnsubscribeEvent {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
-     */
-    meta: BroadcastEventMeta;
-    /**
-     * The message payload contains details of the event that the app is being notified about.
-     */
-    payload: PrivateChannelOnUnsubscribeEventPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "privateChannelOnUnsubscribeEvent";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
+   */
+  meta: BroadcastEventMeta;
+  /**
+   * The message payload contains details of the event that the app is being notified about.
+   */
+  payload: PrivateChannelOnUnsubscribeEventPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'privateChannelOnUnsubscribeEvent';
 }
 
 /**
  * The message payload contains details of the event that the app is being notified about.
  */
 export interface PrivateChannelOnUnsubscribeEventPayload {
-    /**
-     * The type of the context listener unsubscribed from the channel by another app, or null if
-     * it was listening to all types.
-     */
-    contextType: null | string;
-    /**
-     * The Id of the PrivateChannel that the listener was unsubscribed from.
-     */
-    privateChannelId: string;
+  /**
+   * The type of the context listener unsubscribed from the channel by another app, or null if
+   * it was listening to all types.
+   */
+  contextType: null | string;
+  /**
+   * The Id of the PrivateChannel that the listener was unsubscribed from.
+   */
+  privateChannelId: string;
 }
 
 /**
@@ -3451,26 +3218,26 @@ export interface PrivateChannelOnUnsubscribeEventPayload {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface PrivateChannelUnsubscribeEventListenerRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: PrivateChannelUnsubscribeEventListenerRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "privateChannelUnsubscribeEventListenerRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: PrivateChannelUnsubscribeEventListenerRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'privateChannelUnsubscribeEventListenerRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface PrivateChannelUnsubscribeEventListenerRequestPayload {
-    listenerUUID: string;
+  listenerUUID: string;
 }
 
 /**
@@ -3485,21 +3252,21 @@ export interface PrivateChannelUnsubscribeEventListenerRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface PrivateChannelUnsubscribeEventListenerResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: BroadcastResponseResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "privateChannelUnsubscribeEventListenerResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: BroadcastResponseResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'privateChannelUnsubscribeEventListenerResponse';
 }
 
 /**
@@ -3513,27 +3280,27 @@ export interface PrivateChannelUnsubscribeEventListenerResponse {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface RaiseIntentForContextRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: RaiseIntentForContextRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "raiseIntentForContextRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: RaiseIntentForContextRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'raiseIntentForContextRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface RaiseIntentForContextRequestPayload {
-    app?: AppIdentifier;
-    context: Context;
+  app?: AppIdentifier;
+  context: Context;
 }
 
 /**
@@ -3548,25 +3315,25 @@ export interface RaiseIntentForContextRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface RaiseIntentForContextResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     *
-     * There are 3 possible responses to a raiseIntentForContext request, each of which sets a
-     * single property in the payload: Success (`intentResolution`), Needs further resolution
-     * (`appIntents`) or Error (`error`).
-     */
-    payload: RaiseIntentForContextResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "raiseIntentForContextResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   *
+   * There are 3 possible responses to a raiseIntentForContext request, each of which sets a
+   * single property in the payload: Success (`intentResolution`), Needs further resolution
+   * (`appIntents`) or Error (`error`).
+   */
+  payload: RaiseIntentForContextResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'raiseIntentForContextResponse';
 }
 
 /**
@@ -3584,19 +3351,19 @@ export interface RaiseIntentForContextResponse {
  * Used if a raiseIntent request resulted in an error.
  */
 export interface RaiseIntentForContextResponsePayload {
-    /**
-     * Should be set if the raiseIntent request returned an error.
-     */
-    error?: FindInstancesErrors;
-    /**
-     * Used if the raiseIntent request was successfully resolved.
-     */
-    intentResolution?: IntentResolution;
-    /**
-     * Used if a raiseIntentForContext request requires additional resolution (e.g. by showing
-     * an intent resolver) before it can be handled.
-     */
-    appIntents?: AppIntent[];
+  /**
+   * Should be set if the raiseIntent request returned an error.
+   */
+  error?: FindInstancesErrors;
+  /**
+   * Used if the raiseIntent request was successfully resolved.
+   */
+  intentResolution?: IntentResolution;
+  /**
+   * Used if a raiseIntentForContext request requires additional resolution (e.g. by showing
+   * an intent resolver) before it can be handled.
+   */
+  appIntents?: AppIntent[];
 }
 
 /**
@@ -3628,17 +3395,17 @@ export interface RaiseIntentForContextResponsePayload {
  * ```
  */
 export interface IntentResolution {
-    /**
-     * The intent that was raised. May be used to determine which intent the user
-     * chose in response to `fdc3.raiseIntentForContext()`.
-     */
-    intent: string;
-    /**
-     * Identifier for the app instance that was selected (or started) to resolve the intent.
-     * `source.instanceId` MUST be set, indicating the specific app instance that
-     * received the intent.
-     */
-    source: AppIdentifier;
+  /**
+   * The intent that was raised. May be used to determine which intent the user
+   * chose in response to `fdc3.raiseIntentForContext()`.
+   */
+  intent: string;
+  /**
+   * Identifier for the app instance that was selected (or started) to resolve the intent.
+   * `source.instanceId` MUST be set, indicating the specific app instance that
+   * received the intent.
+   */
+  source: AppIdentifier;
 }
 
 /**
@@ -3652,28 +3419,28 @@ export interface IntentResolution {
  * A request message from an FDC3-enabled app to a Desktop Agent.
  */
 export interface RaiseIntentRequest {
-    /**
-     * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
-     */
-    meta: AddContextListenerRequestMeta;
-    /**
-     * The message payload typically contains the arguments to FDC3 API functions.
-     */
-    payload: RaiseIntentRequestPayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Request' appended.
-     */
-    type: "raiseIntentRequest";
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: RaiseIntentRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'raiseIntentRequest';
 }
 
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
 export interface RaiseIntentRequestPayload {
-    app?: AppIdentifier;
-    context: Context;
-    intent: string;
+  app?: AppIdentifier;
+  context: Context;
+  intent: string;
 }
 
 /**
@@ -3688,25 +3455,25 @@ export interface RaiseIntentRequestPayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface RaiseIntentResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     *
-     * There are 3 possible responses to a raiseIntent request, each of which sets a single
-     * property in the payload: Success (`intentResolution`), Needs further resolution
-     * (`appIntent`) or Error (`error`).
-     */
-    payload: RaiseIntentResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "raiseIntentResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   *
+   * There are 3 possible responses to a raiseIntent request, each of which sets a single
+   * property in the payload: Success (`intentResolution`), Needs further resolution
+   * (`appIntent`) or Error (`error`).
+   */
+  payload: RaiseIntentResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'raiseIntentResponse';
 }
 
 /**
@@ -3724,19 +3491,19 @@ export interface RaiseIntentResponse {
  * Used if a raiseIntent request resulted in an error.
  */
 export interface RaiseIntentResponsePayload {
-    /**
-     * Should be set if the raiseIntent request returned an error.
-     */
-    error?: FindInstancesErrors;
-    /**
-     * Used if the raiseIntent request was successfully resolved.
-     */
-    intentResolution?: IntentResolution;
-    /**
-     * Used if a raiseIntent request requires additional resolution (e.g. by showing an intent
-     * resolver) before it can be handled.
-     */
-    appIntent?: AppIntent;
+  /**
+   * Should be set if the raiseIntent request returned an error.
+   */
+  error?: FindInstancesErrors;
+  /**
+   * Used if the raiseIntent request was successfully resolved.
+   */
+  intentResolution?: IntentResolution;
+  /**
+   * Used if a raiseIntent request requires additional resolution (e.g. by showing an intent
+   * resolver) before it can be handled.
+   */
+  appIntent?: AppIntent;
 }
 
 /**
@@ -3753,21 +3520,21 @@ export interface RaiseIntentResponsePayload {
  * payload contains an `error` property, the request was unsuccessful.
  */
 export interface RaiseIntentResultResponse {
-    /**
-     * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
-     */
-    meta: AddContextListenerResponseMeta;
-    /**
-     * A payload for a response to an API call that will contain any return values or an `error`
-     * property containing a standardized error message indicating that the request was
-     * unsuccessful.
-     */
-    payload: RaiseIntentResultResponsePayload;
-    /**
-     * Identifies the type of the message and it is typically set to the FDC3 function name that
-     * the message relates to, e.g. 'findIntent', with 'Response' appended.
-     */
-    type: "raiseIntentResultResponse";
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: RaiseIntentResultResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'raiseIntentResultResponse';
 }
 
 /**
@@ -3776,8 +3543,8 @@ export interface RaiseIntentResultResponse {
  * unsuccessful.
  */
 export interface RaiseIntentResultResponsePayload {
-    error?: ResponsePayloadError;
-    intentResult?: IntentResult;
+  error?: ResponsePayloadError;
+  intentResult?: IntentResult;
 }
 
 /**
@@ -3785,3640 +3552,4340 @@ export interface RaiseIntentResultResponsePayload {
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  */
 
+/**
+ * Hello message sent by an application to a parent window or frame when attempting to
+ * establish connectivity to a Desktop Agent.
+ *
+ * A message used during the connection flow for an application to a Desktop Agent in a
+ * browser window. Used for messages sent in either direction.
+ */
+export interface WebConnectionProtocol1Hello {
+  /**
+   * Metadata for a Web Connection Protocol message.
+   */
+  meta: WebConnectionProtocol1HelloMeta;
+  /**
+   * The message payload, containing data pertaining to this connection step.
+   */
+  payload: WebConnectionProtocol1HelloPayload;
+  /**
+   * Identifies the type of the connection step message.
+   */
+  type: 'WCP1Hello';
+}
+
+/**
+ * Metadata for a Web Connection Protocol message.
+ */
+export interface WebConnectionProtocol1HelloMeta {
+  connectionAttemptUuid: string;
+  timestamp: Date;
+}
+
+/**
+ * The message payload, containing data pertaining to this connection step.
+ */
+export interface WebConnectionProtocol1HelloPayload {
+  /**
+   * The current URL of the page attempting to connect. This may differ from the identityUrl,
+   * but the origins MUST match.
+   */
+  actualUrl: string;
+  /**
+   * A flag that may be used to indicate that a channel selector user interface is or is not
+   * required. Set to `false` if the app includes its own interface for selecting channels or
+   * does not work with user channels.
+   */
+  channelSelector?: boolean;
+  /**
+   * The version of FDC3 API that the app supports.
+   */
+  fdc3Version: string;
+  /**
+   * URL to use for the identity of the application. Desktop Agents MUST validate that the
+   * origin of the message matches the URL, but MAY implement custom comparison logic.
+   */
+  identityUrl: string;
+  /**
+   * A flag that may be used to indicate that an intent resolver is or is not required. Set to
+   * `false` if no intents, or only targeted intents, are raised.
+   */
+  intentResolver?: boolean;
+  [property: string]: any;
+}
+
+/**
+ * Identifies the type of the connection step message.
+ */
+
+/**
+ * Response from a Desktop Agent to an application requesting access to it indicating that
+ * it should load a specified URL into a hidden iframe in order to establish connectivity to
+ * a Desktop Agent.
+ *
+ * A message used during the connection flow for an application to a Desktop Agent in a
+ * browser window. Used for messages sent in either direction.
+ */
+export interface WebConnectionProtocol2LoadURL {
+  /**
+   * Metadata for a Web Connection Protocol message.
+   */
+  meta: WebConnectionProtocol1HelloMeta;
+  /**
+   * The message payload, containing data pertaining to this connection step.
+   */
+  payload: WebConnectionProtocol2LoadURLPayload;
+  /**
+   * Identifies the type of the connection step message.
+   */
+  type: 'WCP2LoadUrl';
+}
+
+/**
+ * The message payload, containing data pertaining to this connection step.
+ */
+export interface WebConnectionProtocol2LoadURLPayload {
+  /**
+   * A URL which can be used to establish communication with the Desktop Agent, via loading
+   * the URL into an iframe and restarting the Web Connection protocol with the iframe as the
+   * target.
+   */
+  iframeUrl: string;
+  [property: string]: any;
+}
+
+/**
+ * Identifies the type of the connection step message.
+ */
+
+/**
+ * Handshake message sent by the Desktop Agent to the app (with a MessagePort appended) that
+ * should be used for subsequent communication steps.
+ *
+ * A message used during the connection flow for an application to a Desktop Agent in a
+ * browser window. Used for messages sent in either direction.
+ */
+export interface WebConnectionProtocol3Handshake {
+  /**
+   * Metadata for a Web Connection Protocol message.
+   */
+  meta: WebConnectionProtocol1HelloMeta;
+  /**
+   * The message payload, containing data pertaining to this connection step.
+   */
+  payload: WebConnectionProtocol3HandshakePayload;
+  /**
+   * Identifies the type of the connection step message.
+   */
+  type: 'WCP3Handshake';
+}
+
+/**
+ * The message payload, containing data pertaining to this connection step.
+ */
+export interface WebConnectionProtocol3HandshakePayload {
+  /**
+   * Indicates whether a channel selector user interface is required and the URL to use to do
+   * so. Set to `true` to use the default or `false` to disable the channel selector (as the
+   * Desktop Agent will handle it another way).
+   */
+  channelSelectorUrl: boolean | string;
+  /**
+   * The version of FDC3 API that the Desktop Agent will provide support for.
+   */
+  fdc3Version: string;
+  /**
+   * Indicates whether an intent resolver user interface is required and the URL to use to do
+   * so. Set to `true` to use the default or `false` to disable the intent resolver (as the
+   * Desktop Agent will handle it another way).
+   */
+  intentResolverUrl: boolean | string;
+}
+
+/**
+ * Identifies the type of the connection step message.
+ */
+
+/**
+ * Identity Validation request from an app attempting to connect to a Desktop Agent.
+ *
+ * A message used during the connection flow for an application to a Desktop Agent in a
+ * browser window. Used for messages sent in either direction.
+ */
+export interface WebConnectionProtocol4ValidateAppIdentity {
+  /**
+   * Metadata for a Web Connection Protocol message.
+   */
+  meta: WebConnectionProtocol1HelloMeta;
+  /**
+   * The message payload, containing data pertaining to this connection step.
+   */
+  payload: WebConnectionProtocol4ValidateAppIdentityPayload;
+  /**
+   * Identifies the type of the connection step message.
+   */
+  type: 'WCP4ValidateAppIdentity';
+}
+
+/**
+ * The message payload, containing data pertaining to this connection step.
+ */
+export interface WebConnectionProtocol4ValidateAppIdentityPayload {
+  /**
+   * The current URL of the page attempting to connect. This may differ from the identityUrl,
+   * but the origins MUST match.
+   */
+  actualUrl: string;
+  /**
+   * URL to use for the identity of the application. Desktop Agents MUST validate that the
+   * origin of the message matches the URL, but MAY implement custom comparison logic.
+   */
+  identityUrl: string;
+  /**
+   * If an application has previously connected to the Desktop Agent, it may specify its prior
+   * instance id and associated instance UUID to request the same same instance Id be assigned.
+   */
+  instanceId?: string;
+  /**
+   * Instance UUID associated with the requested instanceId.
+   */
+  instanceUuid?: string;
+}
+
+/**
+ * Identifies the type of the connection step message.
+ */
+
+/**
+ * Message sent by the Desktop Agent to an app if their identity validation fails.
+ *
+ * A message used during the connection flow for an application to a Desktop Agent in a
+ * browser window. Used for messages sent in either direction.
+ */
+export interface WebConnectionProtocol5ValidateAppIdentityFailedResponse {
+  /**
+   * Metadata for a Web Connection Protocol message.
+   */
+  meta: WebConnectionProtocol1HelloMeta;
+  /**
+   * The message payload, containing data pertaining to this connection step.
+   */
+  payload: WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload;
+  /**
+   * Identifies the type of the connection step message.
+   */
+  type: 'WCP5ValidateAppIdentityFailedResponse';
+}
+
+/**
+ * The message payload, containing data pertaining to this connection step.
+ */
+export interface WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload {
+  message?: string;
+}
+
+/**
+ * Identifies the type of the connection step message.
+ */
+
+/**
+ * Message sent by the Desktop Agent to an app after successful identity validation.
+ *
+ * A message used during the connection flow for an application to a Desktop Agent in a
+ * browser window. Used for messages sent in either direction.
+ */
+export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
+  /**
+   * Metadata for a Web Connection Protocol message.
+   */
+  meta: WebConnectionProtocol1HelloMeta;
+  /**
+   * The message payload, containing data pertaining to this connection step.
+   */
+  payload: WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload;
+  /**
+   * Identifies the type of the connection step message.
+   */
+  type: 'WCP5ValidateAppIdentityResponse';
+}
+
+/**
+ * The message payload, containing data pertaining to this connection step.
+ */
+export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload {
+  /**
+   * The appId that the app's identity was validated against.
+   */
+  appId: string;
+  /**
+   * Implementation metadata for the Desktop Agent, which includes an appMetadata element
+   * containing a copy of the app's own metadata.
+   */
+  implementationMetadata: ImplementationMetadata;
+  /**
+   * The instance Id granted to the application by the Desktop Agent.
+   */
+  instanceId: string;
+  /**
+   * Instance UUID associated with the instanceId granted, which may be used to retrieve the
+   * same instanceId if the app is reloaded or navigates.
+   */
+  instanceUuid: string;
+}
+
+/**
+ * Identifies the type of the connection step message.
+ */
+
+/**
+ * Goodbye message to be sent to the Desktop Agent when disconnecting (e.g. when closing the
+ * window or navigating). Desktop Agents should close the MessagePort after receiving this
+ * message, but retain instance details in case the application reconnects (e.g. after a
+ * navigation event).
+ *
+ * A message used during the connection flow for an application to a Desktop Agent in a
+ * browser window. Used for messages sent in either direction.
+ */
+export interface WebConnectionProtocol6Goodbye {
+  /**
+   * Metadata for a Web Connection Protocol message.
+   */
+  meta: WebConnectionProtocol6GoodbyeMeta;
+  /**
+   * Identifies the type of the connection step message.
+   */
+  type: 'WCP6Goodbye';
+}
+
+/**
+ * Metadata for a Web Connection Protocol message.
+ */
+export interface WebConnectionProtocol6GoodbyeMeta {
+  timestamp: Date;
+}
+
+/**
+ * Identifies the type of the connection step message.
+ */
+
+/**
+ * A message used during the connection flow for an application to a Desktop Agent in a
+ * browser window. Used for messages sent in either direction.
+ */
+export interface WebConnectionProtocolMessage {
+  /**
+   * Metadata for a Web Connection Protocol message.
+   */
+  meta: ConnectionStepMetadata;
+  /**
+   * The message payload, containing data pertaining to this connection step.
+   */
+  payload?: { [key: string]: any };
+  /**
+   * Identifies the type of the connection step message.
+   */
+  type: ConnectionStepMessageType;
+}
+
+/**
+ * Metadata for a Web Connection Protocol message.
+ */
+export interface ConnectionStepMetadata {
+  timestamp: Date;
+  connectionAttemptUuid?: string;
+}
+
+/**
+ * Identifies the type of the connection step message.
+ */
+export type ConnectionStepMessageType =
+  | 'WCP1Hello'
+  | 'WCP2LoadUrl'
+  | 'WCP3Handshake'
+  | 'WCP4ValidateAppIdentity'
+  | 'WCP5ValidateAppIdentityFailedResponse'
+  | 'WCP5ValidateAppIdentityResponse'
+  | 'WCP6Goodbye';
+
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
 export class Convert {
-    public static toWebConnectionProtocol1Hello(json: string): WebConnectionProtocol1Hello {
-        return cast(JSON.parse(json), r("WebConnectionProtocol1Hello"));
-    }
-
-    public static webConnectionProtocol1HelloToJson(value: WebConnectionProtocol1Hello): string {
-        return JSON.stringify(uncast(value, r("WebConnectionProtocol1Hello")), null, 2);
-    }
-
-    public static toWebConnectionProtocol2LoadURL(json: string): WebConnectionProtocol2LoadURL {
-        return cast(JSON.parse(json), r("WebConnectionProtocol2LoadURL"));
-    }
-
-    public static webConnectionProtocol2LoadURLToJson(value: WebConnectionProtocol2LoadURL): string {
-        return JSON.stringify(uncast(value, r("WebConnectionProtocol2LoadURL")), null, 2);
-    }
-
-    public static toWebConnectionProtocol3Handshake(json: string): WebConnectionProtocol3Handshake {
-        return cast(JSON.parse(json), r("WebConnectionProtocol3Handshake"));
-    }
-
-    public static webConnectionProtocol3HandshakeToJson(value: WebConnectionProtocol3Handshake): string {
-        return JSON.stringify(uncast(value, r("WebConnectionProtocol3Handshake")), null, 2);
-    }
-
-    public static toWebConnectionProtocol4ValidateAppIdentity(json: string): WebConnectionProtocol4ValidateAppIdentity {
-        return cast(JSON.parse(json), r("WebConnectionProtocol4ValidateAppIdentity"));
-    }
-
-    public static webConnectionProtocol4ValidateAppIdentityToJson(value: WebConnectionProtocol4ValidateAppIdentity): string {
-        return JSON.stringify(uncast(value, r("WebConnectionProtocol4ValidateAppIdentity")), null, 2);
-    }
-
-    public static toWebConnectionProtocol5ValidateAppIdentityFailedResponse(json: string): WebConnectionProtocol5ValidateAppIdentityFailedResponse {
-        return cast(JSON.parse(json), r("WebConnectionProtocol5ValidateAppIdentityFailedResponse"));
-    }
-
-    public static webConnectionProtocol5ValidateAppIdentityFailedResponseToJson(value: WebConnectionProtocol5ValidateAppIdentityFailedResponse): string {
-        return JSON.stringify(uncast(value, r("WebConnectionProtocol5ValidateAppIdentityFailedResponse")), null, 2);
-    }
-
-    public static toWebConnectionProtocol5ValidateAppIdentitySuccessResponse(json: string): WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
-        return cast(JSON.parse(json), r("WebConnectionProtocol5ValidateAppIdentitySuccessResponse"));
-    }
-
-    public static webConnectionProtocol5ValidateAppIdentitySuccessResponseToJson(value: WebConnectionProtocol5ValidateAppIdentitySuccessResponse): string {
-        return JSON.stringify(uncast(value, r("WebConnectionProtocol5ValidateAppIdentitySuccessResponse")), null, 2);
-    }
-
-    public static toWebConnectionProtocol6Goodbye(json: string): WebConnectionProtocol6Goodbye {
-        return cast(JSON.parse(json), r("WebConnectionProtocol6Goodbye"));
-    }
-
-    public static webConnectionProtocol6GoodbyeToJson(value: WebConnectionProtocol6Goodbye): string {
-        return JSON.stringify(uncast(value, r("WebConnectionProtocol6Goodbye")), null, 2);
-    }
-
-    public static toWebConnectionProtocolMessage(json: string): WebConnectionProtocolMessage {
-        return cast(JSON.parse(json), r("WebConnectionProtocolMessage"));
-    }
-
-    public static webConnectionProtocolMessageToJson(value: WebConnectionProtocolMessage): string {
-        return JSON.stringify(uncast(value, r("WebConnectionProtocolMessage")), null, 2);
-    }
-
-    public static toAddContextListenerRequest(json: string): AddContextListenerRequest {
-        return cast(JSON.parse(json), r("AddContextListenerRequest"));
-    }
-
-    public static addContextListenerRequestToJson(value: AddContextListenerRequest): string {
-        return JSON.stringify(uncast(value, r("AddContextListenerRequest")), null, 2);
-    }
-
-    public static toAddContextListenerResponse(json: string): AddContextListenerResponse {
-        return cast(JSON.parse(json), r("AddContextListenerResponse"));
-    }
-
-    public static addContextListenerResponseToJson(value: AddContextListenerResponse): string {
-        return JSON.stringify(uncast(value, r("AddContextListenerResponse")), null, 2);
-    }
-
-    public static toAddEventListenerRequest(json: string): AddEventListenerRequest {
-        return cast(JSON.parse(json), r("AddEventListenerRequest"));
-    }
-
-    public static addEventListenerRequestToJson(value: AddEventListenerRequest): string {
-        return JSON.stringify(uncast(value, r("AddEventListenerRequest")), null, 2);
-    }
-
-    public static toAddEventListenerResponse(json: string): AddEventListenerResponse {
-        return cast(JSON.parse(json), r("AddEventListenerResponse"));
-    }
-
-    public static addEventListenerResponseToJson(value: AddEventListenerResponse): string {
-        return JSON.stringify(uncast(value, r("AddEventListenerResponse")), null, 2);
-    }
-
-    public static toAddIntentListenerRequest(json: string): AddIntentListenerRequest {
-        return cast(JSON.parse(json), r("AddIntentListenerRequest"));
-    }
-
-    public static addIntentListenerRequestToJson(value: AddIntentListenerRequest): string {
-        return JSON.stringify(uncast(value, r("AddIntentListenerRequest")), null, 2);
-    }
-
-    public static toAddIntentListenerResponse(json: string): AddIntentListenerResponse {
-        return cast(JSON.parse(json), r("AddIntentListenerResponse"));
-    }
-
-    public static addIntentListenerResponseToJson(value: AddIntentListenerResponse): string {
-        return JSON.stringify(uncast(value, r("AddIntentListenerResponse")), null, 2);
-    }
-
-    public static toAgentEventMessage(json: string): AgentEventMessage {
-        return cast(JSON.parse(json), r("AgentEventMessage"));
-    }
-
-    public static agentEventMessageToJson(value: AgentEventMessage): string {
-        return JSON.stringify(uncast(value, r("AgentEventMessage")), null, 2);
-    }
-
-    public static toAgentResponseMessage(json: string): AgentResponseMessage {
-        return cast(JSON.parse(json), r("AgentResponseMessage"));
-    }
-
-    public static agentResponseMessageToJson(value: AgentResponseMessage): string {
-        return JSON.stringify(uncast(value, r("AgentResponseMessage")), null, 2);
-    }
-
-    public static toAppRequestMessage(json: string): AppRequestMessage {
-        return cast(JSON.parse(json), r("AppRequestMessage"));
-    }
-
-    public static appRequestMessageToJson(value: AppRequestMessage): string {
-        return JSON.stringify(uncast(value, r("AppRequestMessage")), null, 2);
-    }
-
-    public static toBroadcastEvent(json: string): BroadcastEvent {
-        return cast(JSON.parse(json), r("BroadcastEvent"));
-    }
-
-    public static broadcastEventToJson(value: BroadcastEvent): string {
-        return JSON.stringify(uncast(value, r("BroadcastEvent")), null, 2);
-    }
-
-    public static toBroadcastRequest(json: string): BroadcastRequest {
-        return cast(JSON.parse(json), r("BroadcastRequest"));
-    }
-
-    public static broadcastRequestToJson(value: BroadcastRequest): string {
-        return JSON.stringify(uncast(value, r("BroadcastRequest")), null, 2);
-    }
-
-    public static toBroadcastResponse(json: string): BroadcastResponse {
-        return cast(JSON.parse(json), r("BroadcastResponse"));
-    }
-
-    public static broadcastResponseToJson(value: BroadcastResponse): string {
-        return JSON.stringify(uncast(value, r("BroadcastResponse")), null, 2);
-    }
-
-    public static toChannelChangedEvent(json: string): ChannelChangedEvent {
-        return cast(JSON.parse(json), r("ChannelChangedEvent"));
-    }
-
-    public static channelChangedEventToJson(value: ChannelChangedEvent): string {
-        return JSON.stringify(uncast(value, r("ChannelChangedEvent")), null, 2);
-    }
-
-    public static toContextListenerUnsubscribeRequest(json: string): ContextListenerUnsubscribeRequest {
-        return cast(JSON.parse(json), r("ContextListenerUnsubscribeRequest"));
-    }
-
-    public static contextListenerUnsubscribeRequestToJson(value: ContextListenerUnsubscribeRequest): string {
-        return JSON.stringify(uncast(value, r("ContextListenerUnsubscribeRequest")), null, 2);
-    }
-
-    public static toContextListenerUnsubscribeResponse(json: string): ContextListenerUnsubscribeResponse {
-        return cast(JSON.parse(json), r("ContextListenerUnsubscribeResponse"));
-    }
-
-    public static contextListenerUnsubscribeResponseToJson(value: ContextListenerUnsubscribeResponse): string {
-        return JSON.stringify(uncast(value, r("ContextListenerUnsubscribeResponse")), null, 2);
-    }
-
-    public static toCreatePrivateChannelRequest(json: string): CreatePrivateChannelRequest {
-        return cast(JSON.parse(json), r("CreatePrivateChannelRequest"));
-    }
-
-    public static createPrivateChannelRequestToJson(value: CreatePrivateChannelRequest): string {
-        return JSON.stringify(uncast(value, r("CreatePrivateChannelRequest")), null, 2);
-    }
-
-    public static toCreatePrivateChannelResponse(json: string): CreatePrivateChannelResponse {
-        return cast(JSON.parse(json), r("CreatePrivateChannelResponse"));
-    }
-
-    public static createPrivateChannelResponseToJson(value: CreatePrivateChannelResponse): string {
-        return JSON.stringify(uncast(value, r("CreatePrivateChannelResponse")), null, 2);
-    }
-
-    public static toEventListenerUnsubscribeRequest(json: string): EventListenerUnsubscribeRequest {
-        return cast(JSON.parse(json), r("EventListenerUnsubscribeRequest"));
-    }
-
-    public static eventListenerUnsubscribeRequestToJson(value: EventListenerUnsubscribeRequest): string {
-        return JSON.stringify(uncast(value, r("EventListenerUnsubscribeRequest")), null, 2);
-    }
-
-    public static toEventListenerUnsubscribeResponse(json: string): EventListenerUnsubscribeResponse {
-        return cast(JSON.parse(json), r("EventListenerUnsubscribeResponse"));
-    }
-
-    public static eventListenerUnsubscribeResponseToJson(value: EventListenerUnsubscribeResponse): string {
-        return JSON.stringify(uncast(value, r("EventListenerUnsubscribeResponse")), null, 2);
-    }
-
-    public static toFdc3UserInterfaceChannelSelected(json: string): Fdc3UserInterfaceChannelSelected {
-        return cast(JSON.parse(json), r("Fdc3UserInterfaceChannelSelected"));
-    }
-
-    public static fdc3UserInterfaceChannelSelectedToJson(value: Fdc3UserInterfaceChannelSelected): string {
-        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceChannelSelected")), null, 2);
-    }
-
-    public static toFdc3UserInterfaceChannels(json: string): Fdc3UserInterfaceChannels {
-        return cast(JSON.parse(json), r("Fdc3UserInterfaceChannels"));
-    }
-
-    public static fdc3UserInterfaceChannelsToJson(value: Fdc3UserInterfaceChannels): string {
-        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceChannels")), null, 2);
-    }
-
-    public static toFdc3UserInterfaceDrag(json: string): Fdc3UserInterfaceDrag {
-        return cast(JSON.parse(json), r("Fdc3UserInterfaceDrag"));
-    }
-
-    public static fdc3UserInterfaceDragToJson(value: Fdc3UserInterfaceDrag): string {
-        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceDrag")), null, 2);
-    }
-
-    public static toFdc3UserInterfaceHandshake(json: string): Fdc3UserInterfaceHandshake {
-        return cast(JSON.parse(json), r("Fdc3UserInterfaceHandshake"));
-    }
-
-    public static fdc3UserInterfaceHandshakeToJson(value: Fdc3UserInterfaceHandshake): string {
-        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceHandshake")), null, 2);
-    }
-
-    public static toFdc3UserInterfaceHello(json: string): Fdc3UserInterfaceHello {
-        return cast(JSON.parse(json), r("Fdc3UserInterfaceHello"));
-    }
-
-    public static fdc3UserInterfaceHelloToJson(value: Fdc3UserInterfaceHello): string {
-        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceHello")), null, 2);
-    }
-
-    public static toFdc3UserInterfaceMessage(json: string): Fdc3UserInterfaceMessage {
-        return cast(JSON.parse(json), r("Fdc3UserInterfaceMessage"));
-    }
-
-    public static fdc3UserInterfaceMessageToJson(value: Fdc3UserInterfaceMessage): string {
-        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceMessage")), null, 2);
-    }
-
-    public static toFdc3UserInterfaceResolve(json: string): Fdc3UserInterfaceResolve {
-        return cast(JSON.parse(json), r("Fdc3UserInterfaceResolve"));
-    }
-
-    public static fdc3UserInterfaceResolveToJson(value: Fdc3UserInterfaceResolve): string {
-        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceResolve")), null, 2);
-    }
-
-    public static toFdc3UserInterfaceResolveAction(json: string): Fdc3UserInterfaceResolveAction {
-        return cast(JSON.parse(json), r("Fdc3UserInterfaceResolveAction"));
-    }
-
-    public static fdc3UserInterfaceResolveActionToJson(value: Fdc3UserInterfaceResolveAction): string {
-        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceResolveAction")), null, 2);
-    }
-
-    public static toFdc3UserInterfaceRestyle(json: string): Fdc3UserInterfaceRestyle {
-        return cast(JSON.parse(json), r("Fdc3UserInterfaceRestyle"));
-    }
-
-    public static fdc3UserInterfaceRestyleToJson(value: Fdc3UserInterfaceRestyle): string {
-        return JSON.stringify(uncast(value, r("Fdc3UserInterfaceRestyle")), null, 2);
-    }
-
-    public static toFindInstancesRequest(json: string): FindInstancesRequest {
-        return cast(JSON.parse(json), r("FindInstancesRequest"));
-    }
-
-    public static findInstancesRequestToJson(value: FindInstancesRequest): string {
-        return JSON.stringify(uncast(value, r("FindInstancesRequest")), null, 2);
-    }
-
-    public static toFindInstancesResponse(json: string): FindInstancesResponse {
-        return cast(JSON.parse(json), r("FindInstancesResponse"));
-    }
-
-    public static findInstancesResponseToJson(value: FindInstancesResponse): string {
-        return JSON.stringify(uncast(value, r("FindInstancesResponse")), null, 2);
-    }
-
-    public static toFindIntentRequest(json: string): FindIntentRequest {
-        return cast(JSON.parse(json), r("FindIntentRequest"));
-    }
-
-    public static findIntentRequestToJson(value: FindIntentRequest): string {
-        return JSON.stringify(uncast(value, r("FindIntentRequest")), null, 2);
-    }
-
-    public static toFindIntentResponse(json: string): FindIntentResponse {
-        return cast(JSON.parse(json), r("FindIntentResponse"));
-    }
-
-    public static findIntentResponseToJson(value: FindIntentResponse): string {
-        return JSON.stringify(uncast(value, r("FindIntentResponse")), null, 2);
-    }
-
-    public static toFindIntentsByContextRequest(json: string): FindIntentsByContextRequest {
-        return cast(JSON.parse(json), r("FindIntentsByContextRequest"));
-    }
-
-    public static findIntentsByContextRequestToJson(value: FindIntentsByContextRequest): string {
-        return JSON.stringify(uncast(value, r("FindIntentsByContextRequest")), null, 2);
-    }
-
-    public static toFindIntentsByContextResponse(json: string): FindIntentsByContextResponse {
-        return cast(JSON.parse(json), r("FindIntentsByContextResponse"));
-    }
-
-    public static findIntentsByContextResponseToJson(value: FindIntentsByContextResponse): string {
-        return JSON.stringify(uncast(value, r("FindIntentsByContextResponse")), null, 2);
-    }
-
-    public static toGetAppMetadataRequest(json: string): GetAppMetadataRequest {
-        return cast(JSON.parse(json), r("GetAppMetadataRequest"));
-    }
-
-    public static getAppMetadataRequestToJson(value: GetAppMetadataRequest): string {
-        return JSON.stringify(uncast(value, r("GetAppMetadataRequest")), null, 2);
-    }
-
-    public static toGetAppMetadataResponse(json: string): GetAppMetadataResponse {
-        return cast(JSON.parse(json), r("GetAppMetadataResponse"));
-    }
-
-    public static getAppMetadataResponseToJson(value: GetAppMetadataResponse): string {
-        return JSON.stringify(uncast(value, r("GetAppMetadataResponse")), null, 2);
-    }
-
-    public static toGetCurrentChannelRequest(json: string): GetCurrentChannelRequest {
-        return cast(JSON.parse(json), r("GetCurrentChannelRequest"));
-    }
-
-    public static getCurrentChannelRequestToJson(value: GetCurrentChannelRequest): string {
-        return JSON.stringify(uncast(value, r("GetCurrentChannelRequest")), null, 2);
-    }
-
-    public static toGetCurrentChannelResponse(json: string): GetCurrentChannelResponse {
-        return cast(JSON.parse(json), r("GetCurrentChannelResponse"));
-    }
-
-    public static getCurrentChannelResponseToJson(value: GetCurrentChannelResponse): string {
-        return JSON.stringify(uncast(value, r("GetCurrentChannelResponse")), null, 2);
-    }
-
-    public static toGetCurrentContextRequest(json: string): GetCurrentContextRequest {
-        return cast(JSON.parse(json), r("GetCurrentContextRequest"));
-    }
-
-    public static getCurrentContextRequestToJson(value: GetCurrentContextRequest): string {
-        return JSON.stringify(uncast(value, r("GetCurrentContextRequest")), null, 2);
-    }
-
-    public static toGetCurrentContextResponse(json: string): GetCurrentContextResponse {
-        return cast(JSON.parse(json), r("GetCurrentContextResponse"));
-    }
-
-    public static getCurrentContextResponseToJson(value: GetCurrentContextResponse): string {
-        return JSON.stringify(uncast(value, r("GetCurrentContextResponse")), null, 2);
-    }
-
-    public static toGetInfoRequest(json: string): GetInfoRequest {
-        return cast(JSON.parse(json), r("GetInfoRequest"));
-    }
-
-    public static getInfoRequestToJson(value: GetInfoRequest): string {
-        return JSON.stringify(uncast(value, r("GetInfoRequest")), null, 2);
-    }
-
-    public static toGetInfoResponse(json: string): GetInfoResponse {
-        return cast(JSON.parse(json), r("GetInfoResponse"));
-    }
-
-    public static getInfoResponseToJson(value: GetInfoResponse): string {
-        return JSON.stringify(uncast(value, r("GetInfoResponse")), null, 2);
-    }
-
-    public static toGetOrCreateChannelRequest(json: string): GetOrCreateChannelRequest {
-        return cast(JSON.parse(json), r("GetOrCreateChannelRequest"));
-    }
-
-    public static getOrCreateChannelRequestToJson(value: GetOrCreateChannelRequest): string {
-        return JSON.stringify(uncast(value, r("GetOrCreateChannelRequest")), null, 2);
-    }
-
-    public static toGetOrCreateChannelResponse(json: string): GetOrCreateChannelResponse {
-        return cast(JSON.parse(json), r("GetOrCreateChannelResponse"));
-    }
-
-    public static getOrCreateChannelResponseToJson(value: GetOrCreateChannelResponse): string {
-        return JSON.stringify(uncast(value, r("GetOrCreateChannelResponse")), null, 2);
-    }
-
-    public static toGetUserChannelsRequest(json: string): GetUserChannelsRequest {
-        return cast(JSON.parse(json), r("GetUserChannelsRequest"));
-    }
-
-    public static getUserChannelsRequestToJson(value: GetUserChannelsRequest): string {
-        return JSON.stringify(uncast(value, r("GetUserChannelsRequest")), null, 2);
-    }
-
-    public static toGetUserChannelsResponse(json: string): GetUserChannelsResponse {
-        return cast(JSON.parse(json), r("GetUserChannelsResponse"));
-    }
-
-    public static getUserChannelsResponseToJson(value: GetUserChannelsResponse): string {
-        return JSON.stringify(uncast(value, r("GetUserChannelsResponse")), null, 2);
-    }
-
-    public static toHeartbeatAcknowledgementRequest(json: string): HeartbeatAcknowledgementRequest {
-        return cast(JSON.parse(json), r("HeartbeatAcknowledgementRequest"));
-    }
-
-    public static heartbeatAcknowledgementRequestToJson(value: HeartbeatAcknowledgementRequest): string {
-        return JSON.stringify(uncast(value, r("HeartbeatAcknowledgementRequest")), null, 2);
-    }
-
-    public static toHeartbeatEvent(json: string): HeartbeatEvent {
-        return cast(JSON.parse(json), r("HeartbeatEvent"));
-    }
-
-    public static heartbeatEventToJson(value: HeartbeatEvent): string {
-        return JSON.stringify(uncast(value, r("HeartbeatEvent")), null, 2);
-    }
-
-    public static toIntentEvent(json: string): IntentEvent {
-        return cast(JSON.parse(json), r("IntentEvent"));
-    }
-
-    public static intentEventToJson(value: IntentEvent): string {
-        return JSON.stringify(uncast(value, r("IntentEvent")), null, 2);
-    }
-
-    public static toIntentListenerUnsubscribeRequest(json: string): IntentListenerUnsubscribeRequest {
-        return cast(JSON.parse(json), r("IntentListenerUnsubscribeRequest"));
-    }
-
-    public static intentListenerUnsubscribeRequestToJson(value: IntentListenerUnsubscribeRequest): string {
-        return JSON.stringify(uncast(value, r("IntentListenerUnsubscribeRequest")), null, 2);
-    }
-
-    public static toIntentListenerUnsubscribeResponse(json: string): IntentListenerUnsubscribeResponse {
-        return cast(JSON.parse(json), r("IntentListenerUnsubscribeResponse"));
-    }
-
-    public static intentListenerUnsubscribeResponseToJson(value: IntentListenerUnsubscribeResponse): string {
-        return JSON.stringify(uncast(value, r("IntentListenerUnsubscribeResponse")), null, 2);
-    }
-
-    public static toIntentResultRequest(json: string): IntentResultRequest {
-        return cast(JSON.parse(json), r("IntentResultRequest"));
-    }
-
-    public static intentResultRequestToJson(value: IntentResultRequest): string {
-        return JSON.stringify(uncast(value, r("IntentResultRequest")), null, 2);
-    }
-
-    public static toIntentResultResponse(json: string): IntentResultResponse {
-        return cast(JSON.parse(json), r("IntentResultResponse"));
-    }
-
-    public static intentResultResponseToJson(value: IntentResultResponse): string {
-        return JSON.stringify(uncast(value, r("IntentResultResponse")), null, 2);
-    }
-
-    public static toJoinUserChannelRequest(json: string): JoinUserChannelRequest {
-        return cast(JSON.parse(json), r("JoinUserChannelRequest"));
-    }
-
-    public static joinUserChannelRequestToJson(value: JoinUserChannelRequest): string {
-        return JSON.stringify(uncast(value, r("JoinUserChannelRequest")), null, 2);
-    }
-
-    public static toJoinUserChannelResponse(json: string): JoinUserChannelResponse {
-        return cast(JSON.parse(json), r("JoinUserChannelResponse"));
-    }
-
-    public static joinUserChannelResponseToJson(value: JoinUserChannelResponse): string {
-        return JSON.stringify(uncast(value, r("JoinUserChannelResponse")), null, 2);
-    }
-
-    public static toLeaveCurrentChannelRequest(json: string): LeaveCurrentChannelRequest {
-        return cast(JSON.parse(json), r("LeaveCurrentChannelRequest"));
-    }
-
-    public static leaveCurrentChannelRequestToJson(value: LeaveCurrentChannelRequest): string {
-        return JSON.stringify(uncast(value, r("LeaveCurrentChannelRequest")), null, 2);
-    }
-
-    public static toLeaveCurrentChannelResponse(json: string): LeaveCurrentChannelResponse {
-        return cast(JSON.parse(json), r("LeaveCurrentChannelResponse"));
-    }
-
-    public static leaveCurrentChannelResponseToJson(value: LeaveCurrentChannelResponse): string {
-        return JSON.stringify(uncast(value, r("LeaveCurrentChannelResponse")), null, 2);
-    }
-
-    public static toOpenRequest(json: string): OpenRequest {
-        return cast(JSON.parse(json), r("OpenRequest"));
-    }
-
-    public static openRequestToJson(value: OpenRequest): string {
-        return JSON.stringify(uncast(value, r("OpenRequest")), null, 2);
-    }
-
-    public static toOpenResponse(json: string): OpenResponse {
-        return cast(JSON.parse(json), r("OpenResponse"));
-    }
-
-    public static openResponseToJson(value: OpenResponse): string {
-        return JSON.stringify(uncast(value, r("OpenResponse")), null, 2);
-    }
-
-    public static toPrivateChannelAddEventListenerRequest(json: string): PrivateChannelAddEventListenerRequest {
-        return cast(JSON.parse(json), r("PrivateChannelAddEventListenerRequest"));
-    }
-
-    public static privateChannelAddEventListenerRequestToJson(value: PrivateChannelAddEventListenerRequest): string {
-        return JSON.stringify(uncast(value, r("PrivateChannelAddEventListenerRequest")), null, 2);
-    }
-
-    public static toPrivateChannelAddEventListenerResponse(json: string): PrivateChannelAddEventListenerResponse {
-        return cast(JSON.parse(json), r("PrivateChannelAddEventListenerResponse"));
-    }
-
-    public static privateChannelAddEventListenerResponseToJson(value: PrivateChannelAddEventListenerResponse): string {
-        return JSON.stringify(uncast(value, r("PrivateChannelAddEventListenerResponse")), null, 2);
-    }
-
-    public static toPrivateChannelDisconnectRequest(json: string): PrivateChannelDisconnectRequest {
-        return cast(JSON.parse(json), r("PrivateChannelDisconnectRequest"));
-    }
-
-    public static privateChannelDisconnectRequestToJson(value: PrivateChannelDisconnectRequest): string {
-        return JSON.stringify(uncast(value, r("PrivateChannelDisconnectRequest")), null, 2);
-    }
-
-    public static toPrivateChannelDisconnectResponse(json: string): PrivateChannelDisconnectResponse {
-        return cast(JSON.parse(json), r("PrivateChannelDisconnectResponse"));
-    }
-
-    public static privateChannelDisconnectResponseToJson(value: PrivateChannelDisconnectResponse): string {
-        return JSON.stringify(uncast(value, r("PrivateChannelDisconnectResponse")), null, 2);
-    }
-
-    public static toPrivateChannelOnAddContextListenerEvent(json: string): PrivateChannelOnAddContextListenerEvent {
-        return cast(JSON.parse(json), r("PrivateChannelOnAddContextListenerEvent"));
-    }
-
-    public static privateChannelOnAddContextListenerEventToJson(value: PrivateChannelOnAddContextListenerEvent): string {
-        return JSON.stringify(uncast(value, r("PrivateChannelOnAddContextListenerEvent")), null, 2);
-    }
-
-    public static toPrivateChannelOnDisconnectEvent(json: string): PrivateChannelOnDisconnectEvent {
-        return cast(JSON.parse(json), r("PrivateChannelOnDisconnectEvent"));
-    }
-
-    public static privateChannelOnDisconnectEventToJson(value: PrivateChannelOnDisconnectEvent): string {
-        return JSON.stringify(uncast(value, r("PrivateChannelOnDisconnectEvent")), null, 2);
-    }
-
-    public static toPrivateChannelOnUnsubscribeEvent(json: string): PrivateChannelOnUnsubscribeEvent {
-        return cast(JSON.parse(json), r("PrivateChannelOnUnsubscribeEvent"));
-    }
-
-    public static privateChannelOnUnsubscribeEventToJson(value: PrivateChannelOnUnsubscribeEvent): string {
-        return JSON.stringify(uncast(value, r("PrivateChannelOnUnsubscribeEvent")), null, 2);
-    }
-
-    public static toPrivateChannelUnsubscribeEventListenerRequest(json: string): PrivateChannelUnsubscribeEventListenerRequest {
-        return cast(JSON.parse(json), r("PrivateChannelUnsubscribeEventListenerRequest"));
-    }
-
-    public static privateChannelUnsubscribeEventListenerRequestToJson(value: PrivateChannelUnsubscribeEventListenerRequest): string {
-        return JSON.stringify(uncast(value, r("PrivateChannelUnsubscribeEventListenerRequest")), null, 2);
-    }
-
-    public static toPrivateChannelUnsubscribeEventListenerResponse(json: string): PrivateChannelUnsubscribeEventListenerResponse {
-        return cast(JSON.parse(json), r("PrivateChannelUnsubscribeEventListenerResponse"));
-    }
-
-    public static privateChannelUnsubscribeEventListenerResponseToJson(value: PrivateChannelUnsubscribeEventListenerResponse): string {
-        return JSON.stringify(uncast(value, r("PrivateChannelUnsubscribeEventListenerResponse")), null, 2);
-    }
-
-    public static toRaiseIntentForContextRequest(json: string): RaiseIntentForContextRequest {
-        return cast(JSON.parse(json), r("RaiseIntentForContextRequest"));
-    }
-
-    public static raiseIntentForContextRequestToJson(value: RaiseIntentForContextRequest): string {
-        return JSON.stringify(uncast(value, r("RaiseIntentForContextRequest")), null, 2);
-    }
-
-    public static toRaiseIntentForContextResponse(json: string): RaiseIntentForContextResponse {
-        return cast(JSON.parse(json), r("RaiseIntentForContextResponse"));
-    }
-
-    public static raiseIntentForContextResponseToJson(value: RaiseIntentForContextResponse): string {
-        return JSON.stringify(uncast(value, r("RaiseIntentForContextResponse")), null, 2);
-    }
-
-    public static toRaiseIntentRequest(json: string): RaiseIntentRequest {
-        return cast(JSON.parse(json), r("RaiseIntentRequest"));
-    }
-
-    public static raiseIntentRequestToJson(value: RaiseIntentRequest): string {
-        return JSON.stringify(uncast(value, r("RaiseIntentRequest")), null, 2);
-    }
-
-    public static toRaiseIntentResponse(json: string): RaiseIntentResponse {
-        return cast(JSON.parse(json), r("RaiseIntentResponse"));
-    }
-
-    public static raiseIntentResponseToJson(value: RaiseIntentResponse): string {
-        return JSON.stringify(uncast(value, r("RaiseIntentResponse")), null, 2);
-    }
-
-    public static toRaiseIntentResultResponse(json: string): RaiseIntentResultResponse {
-        return cast(JSON.parse(json), r("RaiseIntentResultResponse"));
-    }
-
-    public static raiseIntentResultResponseToJson(value: RaiseIntentResultResponse): string {
-        return JSON.stringify(uncast(value, r("RaiseIntentResultResponse")), null, 2);
-    }
+  public static toAddContextListenerRequest(json: string): AddContextListenerRequest {
+    return cast(JSON.parse(json), r('AddContextListenerRequest'));
+  }
+
+  public static addContextListenerRequestToJson(value: AddContextListenerRequest): string {
+    return JSON.stringify(uncast(value, r('AddContextListenerRequest')), null, 2);
+  }
+
+  public static toAddContextListenerResponse(json: string): AddContextListenerResponse {
+    return cast(JSON.parse(json), r('AddContextListenerResponse'));
+  }
+
+  public static addContextListenerResponseToJson(value: AddContextListenerResponse): string {
+    return JSON.stringify(uncast(value, r('AddContextListenerResponse')), null, 2);
+  }
+
+  public static toAddEventListenerRequest(json: string): AddEventListenerRequest {
+    return cast(JSON.parse(json), r('AddEventListenerRequest'));
+  }
+
+  public static addEventListenerRequestToJson(value: AddEventListenerRequest): string {
+    return JSON.stringify(uncast(value, r('AddEventListenerRequest')), null, 2);
+  }
+
+  public static toAddEventListenerResponse(json: string): AddEventListenerResponse {
+    return cast(JSON.parse(json), r('AddEventListenerResponse'));
+  }
+
+  public static addEventListenerResponseToJson(value: AddEventListenerResponse): string {
+    return JSON.stringify(uncast(value, r('AddEventListenerResponse')), null, 2);
+  }
+
+  public static toAddIntentListenerRequest(json: string): AddIntentListenerRequest {
+    return cast(JSON.parse(json), r('AddIntentListenerRequest'));
+  }
+
+  public static addIntentListenerRequestToJson(value: AddIntentListenerRequest): string {
+    return JSON.stringify(uncast(value, r('AddIntentListenerRequest')), null, 2);
+  }
+
+  public static toAddIntentListenerResponse(json: string): AddIntentListenerResponse {
+    return cast(JSON.parse(json), r('AddIntentListenerResponse'));
+  }
+
+  public static addIntentListenerResponseToJson(value: AddIntentListenerResponse): string {
+    return JSON.stringify(uncast(value, r('AddIntentListenerResponse')), null, 2);
+  }
+
+  public static toAgentEventMessage(json: string): AgentEventMessage {
+    return cast(JSON.parse(json), r('AgentEventMessage'));
+  }
+
+  public static agentEventMessageToJson(value: AgentEventMessage): string {
+    return JSON.stringify(uncast(value, r('AgentEventMessage')), null, 2);
+  }
+
+  public static toAgentResponseMessage(json: string): AgentResponseMessage {
+    return cast(JSON.parse(json), r('AgentResponseMessage'));
+  }
+
+  public static agentResponseMessageToJson(value: AgentResponseMessage): string {
+    return JSON.stringify(uncast(value, r('AgentResponseMessage')), null, 2);
+  }
+
+  public static toAppRequestMessage(json: string): AppRequestMessage {
+    return cast(JSON.parse(json), r('AppRequestMessage'));
+  }
+
+  public static appRequestMessageToJson(value: AppRequestMessage): string {
+    return JSON.stringify(uncast(value, r('AppRequestMessage')), null, 2);
+  }
+
+  public static toBroadcastEvent(json: string): BroadcastEvent {
+    return cast(JSON.parse(json), r('BroadcastEvent'));
+  }
+
+  public static broadcastEventToJson(value: BroadcastEvent): string {
+    return JSON.stringify(uncast(value, r('BroadcastEvent')), null, 2);
+  }
+
+  public static toBroadcastRequest(json: string): BroadcastRequest {
+    return cast(JSON.parse(json), r('BroadcastRequest'));
+  }
+
+  public static broadcastRequestToJson(value: BroadcastRequest): string {
+    return JSON.stringify(uncast(value, r('BroadcastRequest')), null, 2);
+  }
+
+  public static toBroadcastResponse(json: string): BroadcastResponse {
+    return cast(JSON.parse(json), r('BroadcastResponse'));
+  }
+
+  public static broadcastResponseToJson(value: BroadcastResponse): string {
+    return JSON.stringify(uncast(value, r('BroadcastResponse')), null, 2);
+  }
+
+  public static toChannelChangedEvent(json: string): ChannelChangedEvent {
+    return cast(JSON.parse(json), r('ChannelChangedEvent'));
+  }
+
+  public static channelChangedEventToJson(value: ChannelChangedEvent): string {
+    return JSON.stringify(uncast(value, r('ChannelChangedEvent')), null, 2);
+  }
+
+  public static toContextListenerUnsubscribeRequest(json: string): ContextListenerUnsubscribeRequest {
+    return cast(JSON.parse(json), r('ContextListenerUnsubscribeRequest'));
+  }
+
+  public static contextListenerUnsubscribeRequestToJson(value: ContextListenerUnsubscribeRequest): string {
+    return JSON.stringify(uncast(value, r('ContextListenerUnsubscribeRequest')), null, 2);
+  }
+
+  public static toContextListenerUnsubscribeResponse(json: string): ContextListenerUnsubscribeResponse {
+    return cast(JSON.parse(json), r('ContextListenerUnsubscribeResponse'));
+  }
+
+  public static contextListenerUnsubscribeResponseToJson(value: ContextListenerUnsubscribeResponse): string {
+    return JSON.stringify(uncast(value, r('ContextListenerUnsubscribeResponse')), null, 2);
+  }
+
+  public static toCreatePrivateChannelRequest(json: string): CreatePrivateChannelRequest {
+    return cast(JSON.parse(json), r('CreatePrivateChannelRequest'));
+  }
+
+  public static createPrivateChannelRequestToJson(value: CreatePrivateChannelRequest): string {
+    return JSON.stringify(uncast(value, r('CreatePrivateChannelRequest')), null, 2);
+  }
+
+  public static toCreatePrivateChannelResponse(json: string): CreatePrivateChannelResponse {
+    return cast(JSON.parse(json), r('CreatePrivateChannelResponse'));
+  }
+
+  public static createPrivateChannelResponseToJson(value: CreatePrivateChannelResponse): string {
+    return JSON.stringify(uncast(value, r('CreatePrivateChannelResponse')), null, 2);
+  }
+
+  public static toEventListenerUnsubscribeRequest(json: string): EventListenerUnsubscribeRequest {
+    return cast(JSON.parse(json), r('EventListenerUnsubscribeRequest'));
+  }
+
+  public static eventListenerUnsubscribeRequestToJson(value: EventListenerUnsubscribeRequest): string {
+    return JSON.stringify(uncast(value, r('EventListenerUnsubscribeRequest')), null, 2);
+  }
+
+  public static toEventListenerUnsubscribeResponse(json: string): EventListenerUnsubscribeResponse {
+    return cast(JSON.parse(json), r('EventListenerUnsubscribeResponse'));
+  }
+
+  public static eventListenerUnsubscribeResponseToJson(value: EventListenerUnsubscribeResponse): string {
+    return JSON.stringify(uncast(value, r('EventListenerUnsubscribeResponse')), null, 2);
+  }
+
+  public static toFdc3UserInterfaceChannels(json: string): Fdc3UserInterfaceChannels {
+    return cast(JSON.parse(json), r('Fdc3UserInterfaceChannels'));
+  }
+
+  public static fdc3UserInterfaceChannelsToJson(value: Fdc3UserInterfaceChannels): string {
+    return JSON.stringify(uncast(value, r('Fdc3UserInterfaceChannels')), null, 2);
+  }
+
+  public static toFdc3UserInterfaceChannelSelected(json: string): Fdc3UserInterfaceChannelSelected {
+    return cast(JSON.parse(json), r('Fdc3UserInterfaceChannelSelected'));
+  }
+
+  public static fdc3UserInterfaceChannelSelectedToJson(value: Fdc3UserInterfaceChannelSelected): string {
+    return JSON.stringify(uncast(value, r('Fdc3UserInterfaceChannelSelected')), null, 2);
+  }
+
+  public static toFdc3UserInterfaceDrag(json: string): Fdc3UserInterfaceDrag {
+    return cast(JSON.parse(json), r('Fdc3UserInterfaceDrag'));
+  }
+
+  public static fdc3UserInterfaceDragToJson(value: Fdc3UserInterfaceDrag): string {
+    return JSON.stringify(uncast(value, r('Fdc3UserInterfaceDrag')), null, 2);
+  }
+
+  public static toFdc3UserInterfaceHandshake(json: string): Fdc3UserInterfaceHandshake {
+    return cast(JSON.parse(json), r('Fdc3UserInterfaceHandshake'));
+  }
+
+  public static fdc3UserInterfaceHandshakeToJson(value: Fdc3UserInterfaceHandshake): string {
+    return JSON.stringify(uncast(value, r('Fdc3UserInterfaceHandshake')), null, 2);
+  }
+
+  public static toFdc3UserInterfaceHello(json: string): Fdc3UserInterfaceHello {
+    return cast(JSON.parse(json), r('Fdc3UserInterfaceHello'));
+  }
+
+  public static fdc3UserInterfaceHelloToJson(value: Fdc3UserInterfaceHello): string {
+    return JSON.stringify(uncast(value, r('Fdc3UserInterfaceHello')), null, 2);
+  }
+
+  public static toFdc3UserInterfaceMessage(json: string): Fdc3UserInterfaceMessage {
+    return cast(JSON.parse(json), r('Fdc3UserInterfaceMessage'));
+  }
+
+  public static fdc3UserInterfaceMessageToJson(value: Fdc3UserInterfaceMessage): string {
+    return JSON.stringify(uncast(value, r('Fdc3UserInterfaceMessage')), null, 2);
+  }
+
+  public static toFdc3UserInterfaceResolve(json: string): Fdc3UserInterfaceResolve {
+    return cast(JSON.parse(json), r('Fdc3UserInterfaceResolve'));
+  }
+
+  public static fdc3UserInterfaceResolveToJson(value: Fdc3UserInterfaceResolve): string {
+    return JSON.stringify(uncast(value, r('Fdc3UserInterfaceResolve')), null, 2);
+  }
+
+  public static toFdc3UserInterfaceResolveAction(json: string): Fdc3UserInterfaceResolveAction {
+    return cast(JSON.parse(json), r('Fdc3UserInterfaceResolveAction'));
+  }
+
+  public static fdc3UserInterfaceResolveActionToJson(value: Fdc3UserInterfaceResolveAction): string {
+    return JSON.stringify(uncast(value, r('Fdc3UserInterfaceResolveAction')), null, 2);
+  }
+
+  public static toFdc3UserInterfaceRestyle(json: string): Fdc3UserInterfaceRestyle {
+    return cast(JSON.parse(json), r('Fdc3UserInterfaceRestyle'));
+  }
+
+  public static fdc3UserInterfaceRestyleToJson(value: Fdc3UserInterfaceRestyle): string {
+    return JSON.stringify(uncast(value, r('Fdc3UserInterfaceRestyle')), null, 2);
+  }
+
+  public static toFindInstancesRequest(json: string): FindInstancesRequest {
+    return cast(JSON.parse(json), r('FindInstancesRequest'));
+  }
+
+  public static findInstancesRequestToJson(value: FindInstancesRequest): string {
+    return JSON.stringify(uncast(value, r('FindInstancesRequest')), null, 2);
+  }
+
+  public static toFindInstancesResponse(json: string): FindInstancesResponse {
+    return cast(JSON.parse(json), r('FindInstancesResponse'));
+  }
+
+  public static findInstancesResponseToJson(value: FindInstancesResponse): string {
+    return JSON.stringify(uncast(value, r('FindInstancesResponse')), null, 2);
+  }
+
+  public static toFindIntentRequest(json: string): FindIntentRequest {
+    return cast(JSON.parse(json), r('FindIntentRequest'));
+  }
+
+  public static findIntentRequestToJson(value: FindIntentRequest): string {
+    return JSON.stringify(uncast(value, r('FindIntentRequest')), null, 2);
+  }
+
+  public static toFindIntentResponse(json: string): FindIntentResponse {
+    return cast(JSON.parse(json), r('FindIntentResponse'));
+  }
+
+  public static findIntentResponseToJson(value: FindIntentResponse): string {
+    return JSON.stringify(uncast(value, r('FindIntentResponse')), null, 2);
+  }
+
+  public static toFindIntentsByContextRequest(json: string): FindIntentsByContextRequest {
+    return cast(JSON.parse(json), r('FindIntentsByContextRequest'));
+  }
+
+  public static findIntentsByContextRequestToJson(value: FindIntentsByContextRequest): string {
+    return JSON.stringify(uncast(value, r('FindIntentsByContextRequest')), null, 2);
+  }
+
+  public static toFindIntentsByContextResponse(json: string): FindIntentsByContextResponse {
+    return cast(JSON.parse(json), r('FindIntentsByContextResponse'));
+  }
+
+  public static findIntentsByContextResponseToJson(value: FindIntentsByContextResponse): string {
+    return JSON.stringify(uncast(value, r('FindIntentsByContextResponse')), null, 2);
+  }
+
+  public static toGetAppMetadataRequest(json: string): GetAppMetadataRequest {
+    return cast(JSON.parse(json), r('GetAppMetadataRequest'));
+  }
+
+  public static getAppMetadataRequestToJson(value: GetAppMetadataRequest): string {
+    return JSON.stringify(uncast(value, r('GetAppMetadataRequest')), null, 2);
+  }
+
+  public static toGetAppMetadataResponse(json: string): GetAppMetadataResponse {
+    return cast(JSON.parse(json), r('GetAppMetadataResponse'));
+  }
+
+  public static getAppMetadataResponseToJson(value: GetAppMetadataResponse): string {
+    return JSON.stringify(uncast(value, r('GetAppMetadataResponse')), null, 2);
+  }
+
+  public static toGetCurrentChannelRequest(json: string): GetCurrentChannelRequest {
+    return cast(JSON.parse(json), r('GetCurrentChannelRequest'));
+  }
+
+  public static getCurrentChannelRequestToJson(value: GetCurrentChannelRequest): string {
+    return JSON.stringify(uncast(value, r('GetCurrentChannelRequest')), null, 2);
+  }
+
+  public static toGetCurrentChannelResponse(json: string): GetCurrentChannelResponse {
+    return cast(JSON.parse(json), r('GetCurrentChannelResponse'));
+  }
+
+  public static getCurrentChannelResponseToJson(value: GetCurrentChannelResponse): string {
+    return JSON.stringify(uncast(value, r('GetCurrentChannelResponse')), null, 2);
+  }
+
+  public static toGetCurrentContextRequest(json: string): GetCurrentContextRequest {
+    return cast(JSON.parse(json), r('GetCurrentContextRequest'));
+  }
+
+  public static getCurrentContextRequestToJson(value: GetCurrentContextRequest): string {
+    return JSON.stringify(uncast(value, r('GetCurrentContextRequest')), null, 2);
+  }
+
+  public static toGetCurrentContextResponse(json: string): GetCurrentContextResponse {
+    return cast(JSON.parse(json), r('GetCurrentContextResponse'));
+  }
+
+  public static getCurrentContextResponseToJson(value: GetCurrentContextResponse): string {
+    return JSON.stringify(uncast(value, r('GetCurrentContextResponse')), null, 2);
+  }
+
+  public static toGetInfoRequest(json: string): GetInfoRequest {
+    return cast(JSON.parse(json), r('GetInfoRequest'));
+  }
+
+  public static getInfoRequestToJson(value: GetInfoRequest): string {
+    return JSON.stringify(uncast(value, r('GetInfoRequest')), null, 2);
+  }
+
+  public static toGetInfoResponse(json: string): GetInfoResponse {
+    return cast(JSON.parse(json), r('GetInfoResponse'));
+  }
+
+  public static getInfoResponseToJson(value: GetInfoResponse): string {
+    return JSON.stringify(uncast(value, r('GetInfoResponse')), null, 2);
+  }
+
+  public static toGetOrCreateChannelRequest(json: string): GetOrCreateChannelRequest {
+    return cast(JSON.parse(json), r('GetOrCreateChannelRequest'));
+  }
+
+  public static getOrCreateChannelRequestToJson(value: GetOrCreateChannelRequest): string {
+    return JSON.stringify(uncast(value, r('GetOrCreateChannelRequest')), null, 2);
+  }
+
+  public static toGetOrCreateChannelResponse(json: string): GetOrCreateChannelResponse {
+    return cast(JSON.parse(json), r('GetOrCreateChannelResponse'));
+  }
+
+  public static getOrCreateChannelResponseToJson(value: GetOrCreateChannelResponse): string {
+    return JSON.stringify(uncast(value, r('GetOrCreateChannelResponse')), null, 2);
+  }
+
+  public static toGetUserChannelsRequest(json: string): GetUserChannelsRequest {
+    return cast(JSON.parse(json), r('GetUserChannelsRequest'));
+  }
+
+  public static getUserChannelsRequestToJson(value: GetUserChannelsRequest): string {
+    return JSON.stringify(uncast(value, r('GetUserChannelsRequest')), null, 2);
+  }
+
+  public static toGetUserChannelsResponse(json: string): GetUserChannelsResponse {
+    return cast(JSON.parse(json), r('GetUserChannelsResponse'));
+  }
+
+  public static getUserChannelsResponseToJson(value: GetUserChannelsResponse): string {
+    return JSON.stringify(uncast(value, r('GetUserChannelsResponse')), null, 2);
+  }
+
+  public static toHeartbeatAcknowledgementRequest(json: string): HeartbeatAcknowledgementRequest {
+    return cast(JSON.parse(json), r('HeartbeatAcknowledgementRequest'));
+  }
+
+  public static heartbeatAcknowledgementRequestToJson(value: HeartbeatAcknowledgementRequest): string {
+    return JSON.stringify(uncast(value, r('HeartbeatAcknowledgementRequest')), null, 2);
+  }
+
+  public static toHeartbeatEvent(json: string): HeartbeatEvent {
+    return cast(JSON.parse(json), r('HeartbeatEvent'));
+  }
+
+  public static heartbeatEventToJson(value: HeartbeatEvent): string {
+    return JSON.stringify(uncast(value, r('HeartbeatEvent')), null, 2);
+  }
+
+  public static toIntentEvent(json: string): IntentEvent {
+    return cast(JSON.parse(json), r('IntentEvent'));
+  }
+
+  public static intentEventToJson(value: IntentEvent): string {
+    return JSON.stringify(uncast(value, r('IntentEvent')), null, 2);
+  }
+
+  public static toIntentListenerUnsubscribeRequest(json: string): IntentListenerUnsubscribeRequest {
+    return cast(JSON.parse(json), r('IntentListenerUnsubscribeRequest'));
+  }
+
+  public static intentListenerUnsubscribeRequestToJson(value: IntentListenerUnsubscribeRequest): string {
+    return JSON.stringify(uncast(value, r('IntentListenerUnsubscribeRequest')), null, 2);
+  }
+
+  public static toIntentListenerUnsubscribeResponse(json: string): IntentListenerUnsubscribeResponse {
+    return cast(JSON.parse(json), r('IntentListenerUnsubscribeResponse'));
+  }
+
+  public static intentListenerUnsubscribeResponseToJson(value: IntentListenerUnsubscribeResponse): string {
+    return JSON.stringify(uncast(value, r('IntentListenerUnsubscribeResponse')), null, 2);
+  }
+
+  public static toIntentResultRequest(json: string): IntentResultRequest {
+    return cast(JSON.parse(json), r('IntentResultRequest'));
+  }
+
+  public static intentResultRequestToJson(value: IntentResultRequest): string {
+    return JSON.stringify(uncast(value, r('IntentResultRequest')), null, 2);
+  }
+
+  public static toIntentResultResponse(json: string): IntentResultResponse {
+    return cast(JSON.parse(json), r('IntentResultResponse'));
+  }
+
+  public static intentResultResponseToJson(value: IntentResultResponse): string {
+    return JSON.stringify(uncast(value, r('IntentResultResponse')), null, 2);
+  }
+
+  public static toJoinUserChannelRequest(json: string): JoinUserChannelRequest {
+    return cast(JSON.parse(json), r('JoinUserChannelRequest'));
+  }
+
+  public static joinUserChannelRequestToJson(value: JoinUserChannelRequest): string {
+    return JSON.stringify(uncast(value, r('JoinUserChannelRequest')), null, 2);
+  }
+
+  public static toJoinUserChannelResponse(json: string): JoinUserChannelResponse {
+    return cast(JSON.parse(json), r('JoinUserChannelResponse'));
+  }
+
+  public static joinUserChannelResponseToJson(value: JoinUserChannelResponse): string {
+    return JSON.stringify(uncast(value, r('JoinUserChannelResponse')), null, 2);
+  }
+
+  public static toLeaveCurrentChannelRequest(json: string): LeaveCurrentChannelRequest {
+    return cast(JSON.parse(json), r('LeaveCurrentChannelRequest'));
+  }
+
+  public static leaveCurrentChannelRequestToJson(value: LeaveCurrentChannelRequest): string {
+    return JSON.stringify(uncast(value, r('LeaveCurrentChannelRequest')), null, 2);
+  }
+
+  public static toLeaveCurrentChannelResponse(json: string): LeaveCurrentChannelResponse {
+    return cast(JSON.parse(json), r('LeaveCurrentChannelResponse'));
+  }
+
+  public static leaveCurrentChannelResponseToJson(value: LeaveCurrentChannelResponse): string {
+    return JSON.stringify(uncast(value, r('LeaveCurrentChannelResponse')), null, 2);
+  }
+
+  public static toOpenRequest(json: string): OpenRequest {
+    return cast(JSON.parse(json), r('OpenRequest'));
+  }
+
+  public static openRequestToJson(value: OpenRequest): string {
+    return JSON.stringify(uncast(value, r('OpenRequest')), null, 2);
+  }
+
+  public static toOpenResponse(json: string): OpenResponse {
+    return cast(JSON.parse(json), r('OpenResponse'));
+  }
+
+  public static openResponseToJson(value: OpenResponse): string {
+    return JSON.stringify(uncast(value, r('OpenResponse')), null, 2);
+  }
+
+  public static toPrivateChannelAddEventListenerRequest(json: string): PrivateChannelAddEventListenerRequest {
+    return cast(JSON.parse(json), r('PrivateChannelAddEventListenerRequest'));
+  }
+
+  public static privateChannelAddEventListenerRequestToJson(value: PrivateChannelAddEventListenerRequest): string {
+    return JSON.stringify(uncast(value, r('PrivateChannelAddEventListenerRequest')), null, 2);
+  }
+
+  public static toPrivateChannelAddEventListenerResponse(json: string): PrivateChannelAddEventListenerResponse {
+    return cast(JSON.parse(json), r('PrivateChannelAddEventListenerResponse'));
+  }
+
+  public static privateChannelAddEventListenerResponseToJson(value: PrivateChannelAddEventListenerResponse): string {
+    return JSON.stringify(uncast(value, r('PrivateChannelAddEventListenerResponse')), null, 2);
+  }
+
+  public static toPrivateChannelDisconnectRequest(json: string): PrivateChannelDisconnectRequest {
+    return cast(JSON.parse(json), r('PrivateChannelDisconnectRequest'));
+  }
+
+  public static privateChannelDisconnectRequestToJson(value: PrivateChannelDisconnectRequest): string {
+    return JSON.stringify(uncast(value, r('PrivateChannelDisconnectRequest')), null, 2);
+  }
+
+  public static toPrivateChannelDisconnectResponse(json: string): PrivateChannelDisconnectResponse {
+    return cast(JSON.parse(json), r('PrivateChannelDisconnectResponse'));
+  }
+
+  public static privateChannelDisconnectResponseToJson(value: PrivateChannelDisconnectResponse): string {
+    return JSON.stringify(uncast(value, r('PrivateChannelDisconnectResponse')), null, 2);
+  }
+
+  public static toPrivateChannelOnAddContextListenerEvent(json: string): PrivateChannelOnAddContextListenerEvent {
+    return cast(JSON.parse(json), r('PrivateChannelOnAddContextListenerEvent'));
+  }
+
+  public static privateChannelOnAddContextListenerEventToJson(value: PrivateChannelOnAddContextListenerEvent): string {
+    return JSON.stringify(uncast(value, r('PrivateChannelOnAddContextListenerEvent')), null, 2);
+  }
+
+  public static toPrivateChannelOnDisconnectEvent(json: string): PrivateChannelOnDisconnectEvent {
+    return cast(JSON.parse(json), r('PrivateChannelOnDisconnectEvent'));
+  }
+
+  public static privateChannelOnDisconnectEventToJson(value: PrivateChannelOnDisconnectEvent): string {
+    return JSON.stringify(uncast(value, r('PrivateChannelOnDisconnectEvent')), null, 2);
+  }
+
+  public static toPrivateChannelOnUnsubscribeEvent(json: string): PrivateChannelOnUnsubscribeEvent {
+    return cast(JSON.parse(json), r('PrivateChannelOnUnsubscribeEvent'));
+  }
+
+  public static privateChannelOnUnsubscribeEventToJson(value: PrivateChannelOnUnsubscribeEvent): string {
+    return JSON.stringify(uncast(value, r('PrivateChannelOnUnsubscribeEvent')), null, 2);
+  }
+
+  public static toPrivateChannelUnsubscribeEventListenerRequest(
+    json: string
+  ): PrivateChannelUnsubscribeEventListenerRequest {
+    return cast(JSON.parse(json), r('PrivateChannelUnsubscribeEventListenerRequest'));
+  }
+
+  public static privateChannelUnsubscribeEventListenerRequestToJson(
+    value: PrivateChannelUnsubscribeEventListenerRequest
+  ): string {
+    return JSON.stringify(uncast(value, r('PrivateChannelUnsubscribeEventListenerRequest')), null, 2);
+  }
+
+  public static toPrivateChannelUnsubscribeEventListenerResponse(
+    json: string
+  ): PrivateChannelUnsubscribeEventListenerResponse {
+    return cast(JSON.parse(json), r('PrivateChannelUnsubscribeEventListenerResponse'));
+  }
+
+  public static privateChannelUnsubscribeEventListenerResponseToJson(
+    value: PrivateChannelUnsubscribeEventListenerResponse
+  ): string {
+    return JSON.stringify(uncast(value, r('PrivateChannelUnsubscribeEventListenerResponse')), null, 2);
+  }
+
+  public static toRaiseIntentForContextRequest(json: string): RaiseIntentForContextRequest {
+    return cast(JSON.parse(json), r('RaiseIntentForContextRequest'));
+  }
+
+  public static raiseIntentForContextRequestToJson(value: RaiseIntentForContextRequest): string {
+    return JSON.stringify(uncast(value, r('RaiseIntentForContextRequest')), null, 2);
+  }
+
+  public static toRaiseIntentForContextResponse(json: string): RaiseIntentForContextResponse {
+    return cast(JSON.parse(json), r('RaiseIntentForContextResponse'));
+  }
+
+  public static raiseIntentForContextResponseToJson(value: RaiseIntentForContextResponse): string {
+    return JSON.stringify(uncast(value, r('RaiseIntentForContextResponse')), null, 2);
+  }
+
+  public static toRaiseIntentRequest(json: string): RaiseIntentRequest {
+    return cast(JSON.parse(json), r('RaiseIntentRequest'));
+  }
+
+  public static raiseIntentRequestToJson(value: RaiseIntentRequest): string {
+    return JSON.stringify(uncast(value, r('RaiseIntentRequest')), null, 2);
+  }
+
+  public static toRaiseIntentResponse(json: string): RaiseIntentResponse {
+    return cast(JSON.parse(json), r('RaiseIntentResponse'));
+  }
+
+  public static raiseIntentResponseToJson(value: RaiseIntentResponse): string {
+    return JSON.stringify(uncast(value, r('RaiseIntentResponse')), null, 2);
+  }
+
+  public static toRaiseIntentResultResponse(json: string): RaiseIntentResultResponse {
+    return cast(JSON.parse(json), r('RaiseIntentResultResponse'));
+  }
+
+  public static raiseIntentResultResponseToJson(value: RaiseIntentResultResponse): string {
+    return JSON.stringify(uncast(value, r('RaiseIntentResultResponse')), null, 2);
+  }
+
+  public static toWebConnectionProtocol1Hello(json: string): WebConnectionProtocol1Hello {
+    return cast(JSON.parse(json), r('WebConnectionProtocol1Hello'));
+  }
+
+  public static webConnectionProtocol1HelloToJson(value: WebConnectionProtocol1Hello): string {
+    return JSON.stringify(uncast(value, r('WebConnectionProtocol1Hello')), null, 2);
+  }
+
+  public static toWebConnectionProtocol2LoadURL(json: string): WebConnectionProtocol2LoadURL {
+    return cast(JSON.parse(json), r('WebConnectionProtocol2LoadURL'));
+  }
+
+  public static webConnectionProtocol2LoadURLToJson(value: WebConnectionProtocol2LoadURL): string {
+    return JSON.stringify(uncast(value, r('WebConnectionProtocol2LoadURL')), null, 2);
+  }
+
+  public static toWebConnectionProtocol3Handshake(json: string): WebConnectionProtocol3Handshake {
+    return cast(JSON.parse(json), r('WebConnectionProtocol3Handshake'));
+  }
+
+  public static webConnectionProtocol3HandshakeToJson(value: WebConnectionProtocol3Handshake): string {
+    return JSON.stringify(uncast(value, r('WebConnectionProtocol3Handshake')), null, 2);
+  }
+
+  public static toWebConnectionProtocol4ValidateAppIdentity(json: string): WebConnectionProtocol4ValidateAppIdentity {
+    return cast(JSON.parse(json), r('WebConnectionProtocol4ValidateAppIdentity'));
+  }
+
+  public static webConnectionProtocol4ValidateAppIdentityToJson(
+    value: WebConnectionProtocol4ValidateAppIdentity
+  ): string {
+    return JSON.stringify(uncast(value, r('WebConnectionProtocol4ValidateAppIdentity')), null, 2);
+  }
+
+  public static toWebConnectionProtocol5ValidateAppIdentityFailedResponse(
+    json: string
+  ): WebConnectionProtocol5ValidateAppIdentityFailedResponse {
+    return cast(JSON.parse(json), r('WebConnectionProtocol5ValidateAppIdentityFailedResponse'));
+  }
+
+  public static webConnectionProtocol5ValidateAppIdentityFailedResponseToJson(
+    value: WebConnectionProtocol5ValidateAppIdentityFailedResponse
+  ): string {
+    return JSON.stringify(uncast(value, r('WebConnectionProtocol5ValidateAppIdentityFailedResponse')), null, 2);
+  }
+
+  public static toWebConnectionProtocol5ValidateAppIdentitySuccessResponse(
+    json: string
+  ): WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
+    return cast(JSON.parse(json), r('WebConnectionProtocol5ValidateAppIdentitySuccessResponse'));
+  }
+
+  public static webConnectionProtocol5ValidateAppIdentitySuccessResponseToJson(
+    value: WebConnectionProtocol5ValidateAppIdentitySuccessResponse
+  ): string {
+    return JSON.stringify(uncast(value, r('WebConnectionProtocol5ValidateAppIdentitySuccessResponse')), null, 2);
+  }
+
+  public static toWebConnectionProtocol6Goodbye(json: string): WebConnectionProtocol6Goodbye {
+    return cast(JSON.parse(json), r('WebConnectionProtocol6Goodbye'));
+  }
+
+  public static webConnectionProtocol6GoodbyeToJson(value: WebConnectionProtocol6Goodbye): string {
+    return JSON.stringify(uncast(value, r('WebConnectionProtocol6Goodbye')), null, 2);
+  }
+
+  public static toWebConnectionProtocolMessage(json: string): WebConnectionProtocolMessage {
+    return cast(JSON.parse(json), r('WebConnectionProtocolMessage'));
+  }
+
+  public static webConnectionProtocolMessageToJson(value: WebConnectionProtocolMessage): string {
+    return JSON.stringify(uncast(value, r('WebConnectionProtocolMessage')), null, 2);
+  }
 }
 
 function invalidValue(typ: any, val: any, key: any, parent: any = ''): never {
-    const prettyTyp = prettyTypeName(typ);
-    const parentText = parent ? ` on ${parent}` : '';
-    const keyText = key ? ` for key "${key}"` : '';
-    throw Error(`Invalid value${keyText}${parentText}. Expected ${prettyTyp} but got ${JSON.stringify(val)}`);
+  const prettyTyp = prettyTypeName(typ);
+  const parentText = parent ? ` on ${parent}` : '';
+  const keyText = key ? ` for key "${key}"` : '';
+  throw Error(`Invalid value${keyText}${parentText}. Expected ${prettyTyp} but got ${JSON.stringify(val)}`);
 }
 
 function prettyTypeName(typ: any): string {
-    if (Array.isArray(typ)) {
-        if (typ.length === 2 && typ[0] === undefined) {
-            return `an optional ${prettyTypeName(typ[1])}`;
-        } else {
-            return `one of [${typ.map(a => { return prettyTypeName(a); }).join(", ")}]`;
-        }
-    } else if (typeof typ === "object" && typ.literal !== undefined) {
-        return typ.literal;
+  if (Array.isArray(typ)) {
+    if (typ.length === 2 && typ[0] === undefined) {
+      return `an optional ${prettyTypeName(typ[1])}`;
     } else {
-        return typeof typ;
+      return `one of [${typ
+        .map(a => {
+          return prettyTypeName(a);
+        })
+        .join(', ')}]`;
     }
+  } else if (typeof typ === 'object' && typ.literal !== undefined) {
+    return typ.literal;
+  } else {
+    return typeof typ;
+  }
 }
 
 function jsonToJSProps(typ: any): any {
-    if (typ.jsonToJS === undefined) {
-        const map: any = {};
-        typ.props.forEach((p: any) => map[p.json] = { key: p.js, typ: p.typ });
-        typ.jsonToJS = map;
-    }
-    return typ.jsonToJS;
+  if (typ.jsonToJS === undefined) {
+    const map: any = {};
+    typ.props.forEach((p: any) => (map[p.json] = { key: p.js, typ: p.typ }));
+    typ.jsonToJS = map;
+  }
+  return typ.jsonToJS;
 }
 
 function jsToJSONProps(typ: any): any {
-    if (typ.jsToJSON === undefined) {
-        const map: any = {};
-        typ.props.forEach((p: any) => map[p.js] = { key: p.json, typ: p.typ });
-        typ.jsToJSON = map;
-    }
-    return typ.jsToJSON;
+  if (typ.jsToJSON === undefined) {
+    const map: any = {};
+    typ.props.forEach((p: any) => (map[p.js] = { key: p.json, typ: p.typ }));
+    typ.jsToJSON = map;
+  }
+  return typ.jsToJSON;
 }
 
 function transform(val: any, typ: any, getProps: any, key: any = '', parent: any = ''): any {
-    function transformPrimitive(typ: string, val: any): any {
-        if (typeof typ === typeof val) return val;
-        return invalidValue(typ, val, key, parent);
-    }
+  function transformPrimitive(typ: string, val: any): any {
+    if (typeof typ === typeof val) return val;
+    return invalidValue(typ, val, key, parent);
+  }
 
-    function transformUnion(typs: any[], val: any): any {
-        // val must validate against one typ in typs
-        const l = typs.length;
-        for (let i = 0; i < l; i++) {
-            const typ = typs[i];
-            try {
-                return transform(val, typ, getProps);
-            } catch (_) { }
-        }
-        return invalidValue(typs, val, key, parent);
+  function transformUnion(typs: any[], val: any): any {
+    // val must validate against one typ in typs
+    const l = typs.length;
+    for (let i = 0; i < l; i++) {
+      const typ = typs[i];
+      try {
+        return transform(val, typ, getProps);
+      } catch (_) {}
     }
+    return invalidValue(typs, val, key, parent);
+  }
 
-    function transformEnum(cases: string[], val: any): any {
-        if (cases.indexOf(val) !== -1) return val;
-        return invalidValue(cases.map(a => { return l(a); }), val, key, parent);
-    }
+  function transformEnum(cases: string[], val: any): any {
+    if (cases.indexOf(val) !== -1) return val;
+    return invalidValue(
+      cases.map(a => {
+        return l(a);
+      }),
+      val,
+      key,
+      parent
+    );
+  }
 
-    function transformArray(typ: any, val: any): any {
-        // val must be an array with no invalid elements
-        if (!Array.isArray(val)) return invalidValue(l("array"), val, key, parent);
-        return val.map(el => transform(el, typ, getProps));
-    }
+  function transformArray(typ: any, val: any): any {
+    // val must be an array with no invalid elements
+    if (!Array.isArray(val)) return invalidValue(l('array'), val, key, parent);
+    return val.map(el => transform(el, typ, getProps));
+  }
 
-    function transformDate(val: any): any {
-        if (val === null) {
-            return null;
-        }
-        const d = new Date(val);
-        if (isNaN(d.valueOf())) {
-            return invalidValue(l("Date"), val, key, parent);
-        }
-        return d;
+  function transformDate(val: any): any {
+    if (val === null) {
+      return null;
     }
+    const d = new Date(val);
+    if (isNaN(d.valueOf())) {
+      return invalidValue(l('Date'), val, key, parent);
+    }
+    return d;
+  }
 
-    function transformObject(props: { [k: string]: any }, additional: any, val: any): any {
-        if (val === null || typeof val !== "object" || Array.isArray(val)) {
-            return invalidValue(l(ref || "object"), val, key, parent);
-        }
-        const result: any = {};
-        Object.getOwnPropertyNames(props).forEach(key => {
-            const prop = props[key];
-            const v = Object.prototype.hasOwnProperty.call(val, key) ? val[key] : undefined;
-            result[prop.key] = transform(v, prop.typ, getProps, key, ref);
-        });
-        Object.getOwnPropertyNames(val).forEach(key => {
-            if (!Object.prototype.hasOwnProperty.call(props, key)) {
-                result[key] = transform(val[key], additional, getProps, key, ref);
-            }
-        });
-        return result;
+  function transformObject(props: { [k: string]: any }, additional: any, val: any): any {
+    if (val === null || typeof val !== 'object' || Array.isArray(val)) {
+      return invalidValue(l(ref || 'object'), val, key, parent);
     }
+    const result: any = {};
+    Object.getOwnPropertyNames(props).forEach(key => {
+      const prop = props[key];
+      const v = Object.prototype.hasOwnProperty.call(val, key) ? val[key] : undefined;
+      result[prop.key] = transform(v, prop.typ, getProps, key, ref);
+    });
+    Object.getOwnPropertyNames(val).forEach(key => {
+      if (!Object.prototype.hasOwnProperty.call(props, key)) {
+        result[key] = transform(val[key], additional, getProps, key, ref);
+      }
+    });
+    return result;
+  }
 
-    if (typ === "any") return val;
-    if (typ === null) {
-        if (val === null) return val;
-        return invalidValue(typ, val, key, parent);
-    }
-    if (typ === false) return invalidValue(typ, val, key, parent);
-    let ref: any = undefined;
-    while (typeof typ === "object" && typ.ref !== undefined) {
-        ref = typ.ref;
-        typ = typeMap[typ.ref];
-    }
-    if (Array.isArray(typ)) return transformEnum(typ, val);
-    if (typeof typ === "object") {
-        return typ.hasOwnProperty("unionMembers") ? transformUnion(typ.unionMembers, val)
-            : typ.hasOwnProperty("arrayItems") ? transformArray(typ.arrayItems, val)
-                : typ.hasOwnProperty("props") ? transformObject(getProps(typ), typ.additional, val)
-                    : invalidValue(typ, val, key, parent);
-    }
-    // Numbers can be parsed by Date but shouldn't be.
-    if (typ === Date && typeof val !== "number") return transformDate(val);
-    return transformPrimitive(typ, val);
+  if (typ === 'any') return val;
+  if (typ === null) {
+    if (val === null) return val;
+    return invalidValue(typ, val, key, parent);
+  }
+  if (typ === false) return invalidValue(typ, val, key, parent);
+  let ref: any = undefined;
+  while (typeof typ === 'object' && typ.ref !== undefined) {
+    ref = typ.ref;
+    typ = typeMap[typ.ref];
+  }
+  if (Array.isArray(typ)) return transformEnum(typ, val);
+  if (typeof typ === 'object') {
+    return typ.hasOwnProperty('unionMembers')
+      ? transformUnion(typ.unionMembers, val)
+      : typ.hasOwnProperty('arrayItems')
+        ? transformArray(typ.arrayItems, val)
+        : typ.hasOwnProperty('props')
+          ? transformObject(getProps(typ), typ.additional, val)
+          : invalidValue(typ, val, key, parent);
+  }
+  // Numbers can be parsed by Date but shouldn't be.
+  if (typ === Date && typeof val !== 'number') return transformDate(val);
+  return transformPrimitive(typ, val);
 }
 
 function cast<T>(val: any, typ: any): T {
-    return transform(val, typ, jsonToJSProps);
+  return transform(val, typ, jsonToJSProps);
 }
 
 function uncast<T>(val: T, typ: any): any {
-    return transform(val, typ, jsToJSONProps);
+  return transform(val, typ, jsToJSONProps);
 }
 
 function l(typ: any) {
-    return { literal: typ };
+  return { literal: typ };
 }
 
 function a(typ: any) {
-    return { arrayItems: typ };
+  return { arrayItems: typ };
 }
 
 function u(...typs: any[]) {
-    return { unionMembers: typs };
+  return { unionMembers: typs };
 }
 
 function o(props: any[], additional: any) {
-    return { props, additional };
+  return { props, additional };
 }
 
 function m(additional: any) {
-    return { props: [], additional };
+  return { props: [], additional };
 }
 
 function r(name: string) {
-    return { ref: name };
+  return { ref: name };
 }
 
 const typeMap: any = {
-    "WebConnectionProtocol1Hello": o([
-        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
-        { json: "payload", js: "payload", typ: r("WebConnectionProtocol1HelloPayload") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol1HelloType") },
-    ], false),
-    "WebConnectionProtocol1HelloMeta": o([
-        { json: "connectionAttemptUuid", js: "connectionAttemptUuid", typ: "" },
-        { json: "timestamp", js: "timestamp", typ: Date },
-    ], false),
-    "WebConnectionProtocol1HelloPayload": o([
-        { json: "actualUrl", js: "actualUrl", typ: "" },
-        { json: "channelSelector", js: "channelSelector", typ: u(undefined, true) },
-        { json: "fdc3Version", js: "fdc3Version", typ: "" },
-        { json: "identityUrl", js: "identityUrl", typ: "" },
-        { json: "intentResolver", js: "intentResolver", typ: u(undefined, true) },
-    ], "any"),
-    "WebConnectionProtocol2LoadURL": o([
-        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
-        { json: "payload", js: "payload", typ: r("WebConnectionProtocol2LoadURLPayload") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol2LoadURLType") },
-    ], false),
-    "WebConnectionProtocol2LoadURLPayload": o([
-        { json: "iframeUrl", js: "iframeUrl", typ: "" },
-    ], "any"),
-    "WebConnectionProtocol3Handshake": o([
-        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
-        { json: "payload", js: "payload", typ: r("WebConnectionProtocol3HandshakePayload") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol3HandshakeType") },
-    ], false),
-    "WebConnectionProtocol3HandshakePayload": o([
-        { json: "channelSelectorUrl", js: "channelSelectorUrl", typ: u(true, "") },
-        { json: "fdc3Version", js: "fdc3Version", typ: "" },
-        { json: "intentResolverUrl", js: "intentResolverUrl", typ: u(true, "") },
-    ], false),
-    "WebConnectionProtocol4ValidateAppIdentity": o([
-        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
-        { json: "payload", js: "payload", typ: r("WebConnectionProtocol4ValidateAppIdentityPayload") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol4ValidateAppIdentityType") },
-    ], false),
-    "WebConnectionProtocol4ValidateAppIdentityPayload": o([
-        { json: "actualUrl", js: "actualUrl", typ: "" },
-        { json: "identityUrl", js: "identityUrl", typ: "" },
-        { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
-        { json: "instanceUuid", js: "instanceUuid", typ: u(undefined, "") },
-    ], false),
-    "WebConnectionProtocol5ValidateAppIdentityFailedResponse": o([
-        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
-        { json: "payload", js: "payload", typ: r("WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol5ValidateAppIdentityFailedResponseType") },
-    ], false),
-    "WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload": o([
-        { json: "message", js: "message", typ: u(undefined, "") },
-    ], false),
-    "WebConnectionProtocol5ValidateAppIdentitySuccessResponse": o([
-        { json: "meta", js: "meta", typ: r("WebConnectionProtocol1HelloMeta") },
-        { json: "payload", js: "payload", typ: r("WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol5ValidateAppIdentitySuccessResponseType") },
-    ], false),
-    "WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload": o([
-        { json: "appId", js: "appId", typ: "" },
-        { json: "implementationMetadata", js: "implementationMetadata", typ: r("ImplementationMetadata") },
-        { json: "instanceId", js: "instanceId", typ: "" },
-        { json: "instanceUuid", js: "instanceUuid", typ: "" },
-    ], false),
-    "ImplementationMetadata": o([
-        { json: "appMetadata", js: "appMetadata", typ: r("AppMetadata") },
-        { json: "fdc3Version", js: "fdc3Version", typ: "" },
-        { json: "optionalFeatures", js: "optionalFeatures", typ: r("OptionalFeatures") },
-        { json: "provider", js: "provider", typ: "" },
-        { json: "providerVersion", js: "providerVersion", typ: u(undefined, "") },
-    ], false),
-    "AppMetadata": o([
-        { json: "appId", js: "appId", typ: "" },
-        { json: "description", js: "description", typ: u(undefined, "") },
-        { json: "desktopAgent", js: "desktopAgent", typ: u(undefined, "") },
-        { json: "icons", js: "icons", typ: u(undefined, a(r("Icon"))) },
-        { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
-        { json: "instanceMetadata", js: "instanceMetadata", typ: u(undefined, m("any")) },
-        { json: "name", js: "name", typ: u(undefined, "") },
-        { json: "resultType", js: "resultType", typ: u(undefined, u(null, "")) },
-        { json: "screenshots", js: "screenshots", typ: u(undefined, a(r("Image"))) },
-        { json: "title", js: "title", typ: u(undefined, "") },
-        { json: "tooltip", js: "tooltip", typ: u(undefined, "") },
-        { json: "version", js: "version", typ: u(undefined, "") },
-    ], false),
-    "Icon": o([
-        { json: "size", js: "size", typ: u(undefined, "") },
-        { json: "src", js: "src", typ: "" },
-        { json: "type", js: "type", typ: u(undefined, "") },
-    ], false),
-    "Image": o([
-        { json: "label", js: "label", typ: u(undefined, "") },
-        { json: "size", js: "size", typ: u(undefined, "") },
-        { json: "src", js: "src", typ: "" },
-        { json: "type", js: "type", typ: u(undefined, "") },
-    ], false),
-    "OptionalFeatures": o([
-        { json: "DesktopAgentBridging", js: "DesktopAgentBridging", typ: true },
-        { json: "OriginatingAppMetadata", js: "OriginatingAppMetadata", typ: true },
-        { json: "UserChannelMembershipAPIs", js: "UserChannelMembershipAPIs", typ: true },
-    ], false),
-    "WebConnectionProtocol6Goodbye": o([
-        { json: "meta", js: "meta", typ: r("WebConnectionProtocol6GoodbyeMeta") },
-        { json: "type", js: "type", typ: r("WebConnectionProtocol6GoodbyeType") },
-    ], false),
-    "WebConnectionProtocol6GoodbyeMeta": o([
-        { json: "timestamp", js: "timestamp", typ: Date },
-    ], false),
-    "WebConnectionProtocolMessage": o([
-        { json: "meta", js: "meta", typ: r("ConnectionStepMetadata") },
-        { json: "payload", js: "payload", typ: u(undefined, m("any")) },
-        { json: "type", js: "type", typ: r("ConnectionStepMessageType") },
-    ], false),
-    "ConnectionStepMetadata": o([
-        { json: "timestamp", js: "timestamp", typ: Date },
-        { json: "connectionAttemptUuid", js: "connectionAttemptUuid", typ: u(undefined, "") },
-    ], false),
-    "AddContextListenerRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("AddContextListenerRequestPayload") },
-        { json: "type", js: "type", typ: r("AddContextListenerRequestType") },
-    ], false),
-    "AddContextListenerRequestMeta": o([
-        { json: "requestUuid", js: "requestUuid", typ: "" },
-        { json: "source", js: "source", typ: u(undefined, r("AppIdentifier")) },
-        { json: "timestamp", js: "timestamp", typ: Date },
-    ], false),
-    "AppIdentifier": o([
-        { json: "appId", js: "appId", typ: "" },
-        { json: "desktopAgent", js: "desktopAgent", typ: u(undefined, "") },
-        { json: "instanceId", js: "instanceId", typ: u(undefined, "") },
-    ], "any"),
-    "AddContextListenerRequestPayload": o([
-        { json: "channelId", js: "channelId", typ: u(null, "") },
-        { json: "contextType", js: "contextType", typ: u(null, "") },
-    ], false),
-    "AddContextListenerResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("AddContextListenerResponsePayload") },
-        { json: "type", js: "type", typ: r("AddContextListenerResponseType") },
-    ], false),
-    "AddContextListenerResponseMeta": o([
-        { json: "requestUuid", js: "requestUuid", typ: "" },
-        { json: "responseUuid", js: "responseUuid", typ: "" },
-        { json: "source", js: "source", typ: u(undefined, r("AppIdentifier")) },
-        { json: "timestamp", js: "timestamp", typ: Date },
-    ], false),
-    "AddContextListenerResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("PurpleError")) },
-        { json: "listenerUUID", js: "listenerUUID", typ: u(undefined, "") },
-    ], false),
-    "AddEventListenerRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("AddEventListenerRequestPayload") },
-        { json: "type", js: "type", typ: r("AddEventListenerRequestType") },
-    ], false),
-    "AddEventListenerRequestPayload": o([
-        { json: "type", js: "type", typ: u(r("FDC3EventType"), null) },
-    ], false),
-    "AddEventListenerResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("AddEventListenerResponsePayload") },
-        { json: "type", js: "type", typ: r("AddEventListenerResponseType") },
-    ], false),
-    "AddEventListenerResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("ResponsePayloadError")) },
-        { json: "listenerUUID", js: "listenerUUID", typ: u(undefined, "") },
-    ], false),
-    "AddIntentListenerRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("AddIntentListenerRequestPayload") },
-        { json: "type", js: "type", typ: r("AddIntentListenerRequestType") },
-    ], false),
-    "AddIntentListenerRequestPayload": o([
-        { json: "intent", js: "intent", typ: "" },
-    ], false),
-    "AddIntentListenerResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("AddIntentListenerResponsePayload") },
-        { json: "type", js: "type", typ: r("AddIntentListenerResponseType") },
-    ], false),
-    "AddIntentListenerResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("FluffyError")) },
-        { json: "listenerUUID", js: "listenerUUID", typ: u(undefined, "") },
-    ], "any"),
-    "AgentEventMessage": o([
-        { json: "meta", js: "meta", typ: r("AgentEventMessageMeta") },
-        { json: "payload", js: "payload", typ: m("any") },
-        { json: "type", js: "type", typ: r("EventMessageType") },
-    ], false),
-    "AgentEventMessageMeta": o([
-        { json: "eventUuid", js: "eventUuid", typ: "" },
-        { json: "timestamp", js: "timestamp", typ: Date },
-    ], false),
-    "AgentResponseMessage": o([
-        { json: "meta", js: "meta", typ: r("AgentResponseMessageMeta") },
-        { json: "payload", js: "payload", typ: r("AgentResponseMessageResponsePayload") },
-        { json: "type", js: "type", typ: r("ResponseMessageType") },
-    ], false),
-    "AgentResponseMessageMeta": o([
-        { json: "requestUuid", js: "requestUuid", typ: "" },
-        { json: "responseUuid", js: "responseUuid", typ: "" },
-        { json: "source", js: "source", typ: u(undefined, r("AppIdentifier")) },
-        { json: "timestamp", js: "timestamp", typ: Date },
-    ], false),
-    "AgentResponseMessageResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("ResponsePayloadError")) },
-    ], "any"),
-    "AppRequestMessage": o([
-        { json: "meta", js: "meta", typ: r("AppRequestMessageMeta") },
-        { json: "payload", js: "payload", typ: m("any") },
-        { json: "type", js: "type", typ: r("RequestMessageType") },
-    ], false),
-    "AppRequestMessageMeta": o([
-        { json: "requestUuid", js: "requestUuid", typ: "" },
-        { json: "source", js: "source", typ: u(undefined, r("AppIdentifier")) },
-        { json: "timestamp", js: "timestamp", typ: Date },
-    ], false),
-    "BroadcastEvent": o([
-        { json: "meta", js: "meta", typ: r("BroadcastEventMeta") },
-        { json: "payload", js: "payload", typ: r("BroadcastEventPayload") },
-        { json: "type", js: "type", typ: r("BroadcastEventType") },
-    ], false),
-    "BroadcastEventMeta": o([
-        { json: "eventUuid", js: "eventUuid", typ: "" },
-        { json: "timestamp", js: "timestamp", typ: Date },
-    ], false),
-    "BroadcastEventPayload": o([
-        { json: "channelId", js: "channelId", typ: u(null, "") },
-        { json: "context", js: "context", typ: r("Context") },
-        { json: "originatingApp", js: "originatingApp", typ: u(undefined, r("AppIdentifier")) },
-    ], false),
-    "Context": o([
-        { json: "id", js: "id", typ: u(undefined, m("any")) },
-        { json: "name", js: "name", typ: u(undefined, "") },
-        { json: "type", js: "type", typ: "" },
-    ], "any"),
-    "BroadcastRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("BroadcastRequestPayload") },
-        { json: "type", js: "type", typ: r("BroadcastRequestType") },
-    ], false),
-    "BroadcastRequestPayload": o([
-        { json: "channelId", js: "channelId", typ: "" },
-        { json: "context", js: "context", typ: r("Context") },
-    ], false),
-    "BroadcastResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("BroadcastResponseResponsePayload") },
-        { json: "type", js: "type", typ: r("BroadcastResponseType") },
-    ], false),
-    "BroadcastResponseResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("ResponsePayloadError")) },
-    ], "any"),
-    "ChannelChangedEvent": o([
-        { json: "meta", js: "meta", typ: r("BroadcastEventMeta") },
-        { json: "payload", js: "payload", typ: r("ChannelChangedEventPayload") },
-        { json: "type", js: "type", typ: r("ChannelChangedEventType") },
-    ], false),
-    "ChannelChangedEventPayload": o([
-        { json: "newChannelId", js: "newChannelId", typ: u(null, "") },
-    ], false),
-    "ContextListenerUnsubscribeRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("ContextListenerUnsubscribeRequestPayload") },
-        { json: "type", js: "type", typ: r("ContextListenerUnsubscribeRequestType") },
-    ], false),
-    "ContextListenerUnsubscribeRequestPayload": o([
-        { json: "listenerUUID", js: "listenerUUID", typ: "" },
-    ], false),
-    "ContextListenerUnsubscribeResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("BroadcastResponseResponsePayload") },
-        { json: "type", js: "type", typ: r("ContextListenerUnsubscribeResponseType") },
-    ], false),
-    "CreatePrivateChannelRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("CreatePrivateChannelRequestPayload") },
-        { json: "type", js: "type", typ: r("CreatePrivateChannelRequestType") },
-    ], false),
-    "CreatePrivateChannelRequestPayload": o([
-    ], false),
-    "CreatePrivateChannelResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("CreatePrivateChannelResponsePayload") },
-        { json: "type", js: "type", typ: r("CreatePrivateChannelResponseType") },
-    ], false),
-    "CreatePrivateChannelResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("PurpleError")) },
-        { json: "privateChannel", js: "privateChannel", typ: u(undefined, r("Channel")) },
-    ], false),
-    "Channel": o([
-        { json: "displayMetadata", js: "displayMetadata", typ: u(undefined, r("DisplayMetadata")) },
-        { json: "id", js: "id", typ: "" },
-        { json: "type", js: "type", typ: r("Type") },
-    ], false),
-    "DisplayMetadata": o([
-        { json: "color", js: "color", typ: u(undefined, "") },
-        { json: "glyph", js: "glyph", typ: u(undefined, "") },
-        { json: "name", js: "name", typ: u(undefined, "") },
-    ], false),
-    "EventListenerUnsubscribeRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("EventListenerUnsubscribeRequestPayload") },
-        { json: "type", js: "type", typ: r("EventListenerUnsubscribeRequestType") },
-    ], false),
-    "EventListenerUnsubscribeRequestPayload": o([
-        { json: "listenerUUID", js: "listenerUUID", typ: "" },
-    ], false),
-    "EventListenerUnsubscribeResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("BroadcastResponseResponsePayload") },
-        { json: "type", js: "type", typ: r("EventListenerUnsubscribeResponseType") },
-    ], false),
-    "Fdc3UserInterfaceChannelSelected": o([
-        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceChannelSelectedPayload") },
-        { json: "type", js: "type", typ: r("Fdc3UserInterfaceChannelSelectedType") },
-    ], false),
-    "Fdc3UserInterfaceChannelSelectedPayload": o([
-        { json: "selected", js: "selected", typ: u(null, "") },
-    ], false),
-    "Fdc3UserInterfaceChannels": o([
-        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceChannelsPayload") },
-        { json: "type", js: "type", typ: r("Fdc3UserInterfaceChannelsType") },
-    ], false),
-    "Fdc3UserInterfaceChannelsPayload": o([
-        { json: "selected", js: "selected", typ: u(null, "") },
-        { json: "userChannels", js: "userChannels", typ: a(r("Channel")) },
-    ], false),
-    "Fdc3UserInterfaceDrag": o([
-        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceDragPayload") },
-        { json: "type", js: "type", typ: r("Fdc3UserInterfaceDragType") },
-    ], false),
-    "Fdc3UserInterfaceDragPayload": o([
-        { json: "mouseOffsets", js: "mouseOffsets", typ: r("MouseOffsets") },
-    ], false),
-    "MouseOffsets": o([
-        { json: "x", js: "x", typ: 0 },
-        { json: "y", js: "y", typ: 0 },
-    ], false),
-    "Fdc3UserInterfaceHandshake": o([
-        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceHandshakePayload") },
-        { json: "type", js: "type", typ: r("Fdc3UserInterfaceHandshakeType") },
-    ], false),
-    "Fdc3UserInterfaceHandshakePayload": o([
-        { json: "fdc3Version", js: "fdc3Version", typ: "" },
-    ], false),
-    "Fdc3UserInterfaceHello": o([
-        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceHelloPayload") },
-        { json: "type", js: "type", typ: r("Fdc3UserInterfaceHelloType") },
-    ], false),
-    "Fdc3UserInterfaceHelloPayload": o([
-        { json: "implementationDetails", js: "implementationDetails", typ: "" },
-        { json: "initialCSS", js: "initialCSS", typ: r("InitialCSS") },
-    ], false),
-    "InitialCSS": o([
-        { json: "bottom", js: "bottom", typ: u(undefined, "") },
-        { json: "height", js: "height", typ: u(undefined, "") },
-        { json: "left", js: "left", typ: u(undefined, "") },
-        { json: "maxHeight", js: "maxHeight", typ: u(undefined, "") },
-        { json: "maxWidth", js: "maxWidth", typ: u(undefined, "") },
-        { json: "right", js: "right", typ: u(undefined, "") },
-        { json: "top", js: "top", typ: u(undefined, "") },
-        { json: "transition", js: "transition", typ: u(undefined, "") },
-        { json: "width", js: "width", typ: u(undefined, "") },
-        { json: "zIndex", js: "zIndex", typ: u(undefined, "") },
-    ], "any"),
-    "Fdc3UserInterfaceMessage": o([
-        { json: "payload", js: "payload", typ: u(undefined, m("any")) },
-        { json: "type", js: "type", typ: r("Fdc3UserInterfaceMessageType") },
-    ], false),
-    "Fdc3UserInterfaceResolve": o([
-        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceResolvePayload") },
-        { json: "type", js: "type", typ: r("Fdc3UserInterfaceResolveType") },
-    ], false),
-    "Fdc3UserInterfaceResolvePayload": o([
-        { json: "appIntents", js: "appIntents", typ: a(r("AppIntent")) },
-        { json: "context", js: "context", typ: r("Context") },
-    ], false),
-    "AppIntent": o([
-        { json: "apps", js: "apps", typ: a(r("AppMetadata")) },
-        { json: "intent", js: "intent", typ: r("IntentMetadata") },
-    ], false),
-    "IntentMetadata": o([
-        { json: "displayName", js: "displayName", typ: u(undefined, "") },
-        { json: "name", js: "name", typ: "" },
-    ], false),
-    "Fdc3UserInterfaceResolveAction": o([
-        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceResolveActionPayload") },
-        { json: "type", js: "type", typ: r("Fdc3UserInterfaceResolveActionType") },
-    ], false),
-    "Fdc3UserInterfaceResolveActionPayload": o([
-        { json: "action", js: "action", typ: r("Action") },
-        { json: "appIdentifier", js: "appIdentifier", typ: u(undefined, r("AppIdentifier")) },
-        { json: "intent", js: "intent", typ: u(undefined, "") },
-    ], false),
-    "Fdc3UserInterfaceRestyle": o([
-        { json: "payload", js: "payload", typ: r("Fdc3UserInterfaceRestylePayload") },
-        { json: "type", js: "type", typ: r("Fdc3UserInterfaceRestyleType") },
-    ], false),
-    "Fdc3UserInterfaceRestylePayload": o([
-        { json: "updatedCSS", js: "updatedCSS", typ: r("UpdatedCSS") },
-    ], false),
-    "UpdatedCSS": o([
-        { json: "bottom", js: "bottom", typ: u(undefined, "") },
-        { json: "height", js: "height", typ: u(undefined, "") },
-        { json: "left", js: "left", typ: u(undefined, "") },
-        { json: "maxHeight", js: "maxHeight", typ: u(undefined, "") },
-        { json: "maxWidth", js: "maxWidth", typ: u(undefined, "") },
-        { json: "right", js: "right", typ: u(undefined, "") },
-        { json: "top", js: "top", typ: u(undefined, "") },
-        { json: "transition", js: "transition", typ: u(undefined, "") },
-        { json: "width", js: "width", typ: u(undefined, "") },
-        { json: "zIndex", js: "zIndex", typ: u(undefined, "") },
-    ], "any"),
-    "FindInstancesRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("FindInstancesRequestPayload") },
-        { json: "type", js: "type", typ: r("FindInstancesRequestType") },
-    ], false),
-    "FindInstancesRequestPayload": o([
-        { json: "app", js: "app", typ: r("AppIdentifier") },
-    ], false),
-    "FindInstancesResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("FindInstancesResponsePayload") },
-        { json: "type", js: "type", typ: r("FindInstancesResponseType") },
-    ], false),
-    "FindInstancesResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("FindInstancesErrors")) },
-        { json: "appIdentifiers", js: "appIdentifiers", typ: u(undefined, a(r("AppMetadata"))) },
-    ], false),
-    "FindIntentRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("FindIntentRequestPayload") },
-        { json: "type", js: "type", typ: r("FindIntentRequestType") },
-    ], false),
-    "FindIntentRequestPayload": o([
-        { json: "context", js: "context", typ: u(undefined, r("Context")) },
-        { json: "intent", js: "intent", typ: "" },
-        { json: "resultType", js: "resultType", typ: u(undefined, "") },
-    ], false),
-    "FindIntentResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("FindIntentResponsePayload") },
-        { json: "type", js: "type", typ: r("FindIntentResponseType") },
-    ], false),
-    "FindIntentResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("FindInstancesErrors")) },
-        { json: "appIntent", js: "appIntent", typ: u(undefined, r("AppIntent")) },
-    ], false),
-    "FindIntentsByContextRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("FindIntentsByContextRequestPayload") },
-        { json: "type", js: "type", typ: r("FindIntentsByContextRequestType") },
-    ], false),
-    "FindIntentsByContextRequestPayload": o([
-        { json: "context", js: "context", typ: r("Context") },
-        { json: "resultType", js: "resultType", typ: u(undefined, "") },
-    ], false),
-    "FindIntentsByContextResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("FindIntentsByContextResponsePayload") },
-        { json: "type", js: "type", typ: r("FindIntentsByContextResponseType") },
-    ], false),
-    "FindIntentsByContextResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("FindInstancesErrors")) },
-        { json: "appIntents", js: "appIntents", typ: u(undefined, a(r("AppIntent"))) },
-    ], false),
-    "GetAppMetadataRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("GetAppMetadataRequestPayload") },
-        { json: "type", js: "type", typ: r("GetAppMetadataRequestType") },
-    ], false),
-    "GetAppMetadataRequestPayload": o([
-        { json: "app", js: "app", typ: r("AppIdentifier") },
-    ], false),
-    "GetAppMetadataResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("GetAppMetadataResponsePayload") },
-        { json: "type", js: "type", typ: r("GetAppMetadataResponseType") },
-    ], false),
-    "GetAppMetadataResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("FindInstancesErrors")) },
-        { json: "appMetadata", js: "appMetadata", typ: u(undefined, r("AppMetadata")) },
-    ], false),
-    "GetCurrentChannelRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("GetCurrentChannelRequestPayload") },
-        { json: "type", js: "type", typ: r("GetCurrentChannelRequestType") },
-    ], false),
-    "GetCurrentChannelRequestPayload": o([
-    ], false),
-    "GetCurrentChannelResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("GetCurrentChannelResponsePayload") },
-        { json: "type", js: "type", typ: r("GetCurrentChannelResponseType") },
-    ], false),
-    "GetCurrentChannelResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("ResponsePayloadError")) },
-        { json: "channel", js: "channel", typ: u(undefined, u(r("Channel"), null)) },
-    ], false),
-    "GetCurrentContextRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("GetCurrentContextRequestPayload") },
-        { json: "type", js: "type", typ: r("GetCurrentContextRequestType") },
-    ], false),
-    "GetCurrentContextRequestPayload": o([
-        { json: "channelId", js: "channelId", typ: "" },
-        { json: "contextType", js: "contextType", typ: u(null, "") },
-    ], false),
-    "GetCurrentContextResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("GetCurrentContextResponsePayload") },
-        { json: "type", js: "type", typ: r("GetCurrentContextResponseType") },
-    ], false),
-    "GetCurrentContextResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("PurpleError")) },
-        { json: "context", js: "context", typ: u(undefined, u(null, r("Context"))) },
-    ], false),
-    "GetInfoRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("GetInfoRequestPayload") },
-        { json: "type", js: "type", typ: r("GetInfoRequestType") },
-    ], false),
-    "GetInfoRequestPayload": o([
-    ], false),
-    "GetInfoResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("GetInfoResponsePayload") },
-        { json: "type", js: "type", typ: r("GetInfoResponseType") },
-    ], false),
-    "GetInfoResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("ResponsePayloadError")) },
-        { json: "implementationMetadata", js: "implementationMetadata", typ: u(undefined, r("ImplementationMetadata")) },
-    ], false),
-    "GetOrCreateChannelRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("GetOrCreateChannelRequestPayload") },
-        { json: "type", js: "type", typ: r("GetOrCreateChannelRequestType") },
-    ], false),
-    "GetOrCreateChannelRequestPayload": o([
-        { json: "channelId", js: "channelId", typ: "" },
-    ], false),
-    "GetOrCreateChannelResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("GetOrCreateChannelResponsePayload") },
-        { json: "type", js: "type", typ: r("GetOrCreateChannelResponseType") },
-    ], false),
-    "GetOrCreateChannelResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("PurpleError")) },
-        { json: "channel", js: "channel", typ: u(undefined, r("Channel")) },
-    ], false),
-    "GetUserChannelsRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("GetUserChannelsRequestPayload") },
-        { json: "type", js: "type", typ: r("GetUserChannelsRequestType") },
-    ], false),
-    "GetUserChannelsRequestPayload": o([
-    ], false),
-    "GetUserChannelsResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("GetUserChannelsResponsePayload") },
-        { json: "type", js: "type", typ: r("GetUserChannelsResponseType") },
-    ], false),
-    "GetUserChannelsResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("PurpleError")) },
-        { json: "userChannels", js: "userChannels", typ: u(undefined, a(r("Channel"))) },
-    ], false),
-    "HeartbeatAcknowledgementRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("HeartbeatAcknowledgementRequestPayload") },
-        { json: "type", js: "type", typ: r("HeartbeatAcknowledgementRequestType") },
-    ], false),
-    "HeartbeatAcknowledgementRequestPayload": o([
-        { json: "heartbeatEventUuid", js: "heartbeatEventUuid", typ: "" },
-    ], false),
-    "HeartbeatEvent": o([
-        { json: "meta", js: "meta", typ: r("BroadcastEventMeta") },
-        { json: "payload", js: "payload", typ: r("HeartbeatEventPayload") },
-        { json: "type", js: "type", typ: r("HeartbeatEventType") },
-    ], false),
-    "HeartbeatEventPayload": o([
-    ], false),
-    "IntentEvent": o([
-        { json: "meta", js: "meta", typ: r("BroadcastEventMeta") },
-        { json: "payload", js: "payload", typ: r("IntentEventPayload") },
-        { json: "type", js: "type", typ: r("IntentEventType") },
-    ], false),
-    "IntentEventPayload": o([
-        { json: "context", js: "context", typ: r("Context") },
-        { json: "intent", js: "intent", typ: "" },
-        { json: "originatingApp", js: "originatingApp", typ: u(undefined, r("AppIdentifier")) },
-        { json: "raiseIntentRequestUuid", js: "raiseIntentRequestUuid", typ: "" },
-    ], false),
-    "IntentListenerUnsubscribeRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("IntentListenerUnsubscribeRequestPayload") },
-        { json: "type", js: "type", typ: r("IntentListenerUnsubscribeRequestType") },
-    ], false),
-    "IntentListenerUnsubscribeRequestPayload": o([
-        { json: "listenerUUID", js: "listenerUUID", typ: "" },
-    ], false),
-    "IntentListenerUnsubscribeResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("BroadcastResponseResponsePayload") },
-        { json: "type", js: "type", typ: r("IntentListenerUnsubscribeResponseType") },
-    ], false),
-    "IntentResultRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("IntentResultRequestPayload") },
-        { json: "type", js: "type", typ: r("IntentResultRequestType") },
-    ], false),
-    "IntentResultRequestPayload": o([
-        { json: "intentEventUuid", js: "intentEventUuid", typ: "" },
-        { json: "intentResult", js: "intentResult", typ: r("IntentResult") },
-        { json: "raiseIntentRequestUuid", js: "raiseIntentRequestUuid", typ: "" },
-    ], false),
-    "IntentResult": o([
-        { json: "context", js: "context", typ: u(undefined, r("Context")) },
-        { json: "channel", js: "channel", typ: u(undefined, r("Channel")) },
-    ], false),
-    "IntentResultResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("BroadcastResponseResponsePayload") },
-        { json: "type", js: "type", typ: r("IntentResultResponseType") },
-    ], false),
-    "JoinUserChannelRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("JoinUserChannelRequestPayload") },
-        { json: "type", js: "type", typ: r("JoinUserChannelRequestType") },
-    ], false),
-    "JoinUserChannelRequestPayload": o([
-        { json: "channelId", js: "channelId", typ: "" },
-    ], false),
-    "JoinUserChannelResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("JoinUserChannelResponsePayload") },
-        { json: "type", js: "type", typ: r("JoinUserChannelResponseType") },
-    ], false),
-    "JoinUserChannelResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("PurpleError")) },
-    ], false),
-    "LeaveCurrentChannelRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("LeaveCurrentChannelRequestPayload") },
-        { json: "type", js: "type", typ: r("LeaveCurrentChannelRequestType") },
-    ], false),
-    "LeaveCurrentChannelRequestPayload": o([
-    ], false),
-    "LeaveCurrentChannelResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("LeaveCurrentChannelResponsePayload") },
-        { json: "type", js: "type", typ: r("LeaveCurrentChannelResponseType") },
-    ], false),
-    "LeaveCurrentChannelResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("PurpleError")) },
-    ], false),
-    "OpenRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("OpenRequestPayload") },
-        { json: "type", js: "type", typ: r("OpenRequestType") },
-    ], false),
-    "OpenRequestPayload": o([
-        { json: "app", js: "app", typ: r("AppIdentifier") },
-        { json: "context", js: "context", typ: u(undefined, r("Context")) },
-    ], false),
-    "OpenResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("OpenResponsePayload") },
-        { json: "type", js: "type", typ: r("OpenResponseType") },
-    ], false),
-    "OpenResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("OpenErrorResponsePayload")) },
-        { json: "appIdentifier", js: "appIdentifier", typ: u(undefined, r("AppIdentifier")) },
-    ], false),
-    "PrivateChannelAddEventListenerRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("TPayload") },
-        { json: "type", js: "type", typ: r("PrivateChannelAddEventListenerRequestType") },
-    ], false),
-    "TPayload": o([
-        { json: "listenerType", js: "listenerType", typ: r("PrivateChannelEventListenerTypes") },
-        { json: "privateChannelId", js: "privateChannelId", typ: "" },
-    ], false),
-    "PrivateChannelAddEventListenerResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("PrivateChannelAddEventListenerResponsePayload") },
-        { json: "type", js: "type", typ: r("PrivateChannelAddEventListenerResponseType") },
-    ], false),
-    "PrivateChannelAddEventListenerResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("PurpleError")) },
-        { json: "listenerUUID", js: "listenerUUID", typ: u(undefined, "") },
-    ], "any"),
-    "PrivateChannelDisconnectRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("PrivateChannelDisconnectRequestPayload") },
-        { json: "type", js: "type", typ: r("PrivateChannelDisconnectRequestType") },
-    ], false),
-    "PrivateChannelDisconnectRequestPayload": o([
-        { json: "channelId", js: "channelId", typ: "" },
-    ], false),
-    "PrivateChannelDisconnectResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("PrivateChannelDisconnectResponsePayload") },
-        { json: "type", js: "type", typ: r("PrivateChannelDisconnectResponseType") },
-    ], false),
-    "PrivateChannelDisconnectResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("PurpleError")) },
-    ], false),
-    "PrivateChannelOnAddContextListenerEvent": o([
-        { json: "meta", js: "meta", typ: r("BroadcastEventMeta") },
-        { json: "payload", js: "payload", typ: r("PrivateChannelOnAddContextListenerEventPayload") },
-        { json: "type", js: "type", typ: r("PrivateChannelOnAddContextListenerEventType") },
-    ], false),
-    "PrivateChannelOnAddContextListenerEventPayload": o([
-        { json: "contextType", js: "contextType", typ: u(null, "") },
-        { json: "privateChannelId", js: "privateChannelId", typ: "" },
-    ], false),
-    "PrivateChannelOnDisconnectEvent": o([
-        { json: "meta", js: "meta", typ: r("BroadcastEventMeta") },
-        { json: "payload", js: "payload", typ: r("PrivateChannelOnDisconnectEventPayload") },
-        { json: "type", js: "type", typ: r("PrivateChannelOnDisconnectEventType") },
-    ], false),
-    "PrivateChannelOnDisconnectEventPayload": o([
-        { json: "privateChannelId", js: "privateChannelId", typ: "" },
-    ], false),
-    "PrivateChannelOnUnsubscribeEvent": o([
-        { json: "meta", js: "meta", typ: r("BroadcastEventMeta") },
-        { json: "payload", js: "payload", typ: r("PrivateChannelOnUnsubscribeEventPayload") },
-        { json: "type", js: "type", typ: r("PrivateChannelOnUnsubscribeEventType") },
-    ], false),
-    "PrivateChannelOnUnsubscribeEventPayload": o([
-        { json: "contextType", js: "contextType", typ: u(null, "") },
-        { json: "privateChannelId", js: "privateChannelId", typ: "" },
-    ], false),
-    "PrivateChannelUnsubscribeEventListenerRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("PrivateChannelUnsubscribeEventListenerRequestPayload") },
-        { json: "type", js: "type", typ: r("PrivateChannelUnsubscribeEventListenerRequestType") },
-    ], false),
-    "PrivateChannelUnsubscribeEventListenerRequestPayload": o([
-        { json: "listenerUUID", js: "listenerUUID", typ: "" },
-    ], false),
-    "PrivateChannelUnsubscribeEventListenerResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("BroadcastResponseResponsePayload") },
-        { json: "type", js: "type", typ: r("PrivateChannelUnsubscribeEventListenerResponseType") },
-    ], false),
-    "RaiseIntentForContextRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("RaiseIntentForContextRequestPayload") },
-        { json: "type", js: "type", typ: r("RaiseIntentForContextRequestType") },
-    ], false),
-    "RaiseIntentForContextRequestPayload": o([
-        { json: "app", js: "app", typ: u(undefined, r("AppIdentifier")) },
-        { json: "context", js: "context", typ: r("Context") },
-    ], false),
-    "RaiseIntentForContextResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("RaiseIntentForContextResponsePayload") },
-        { json: "type", js: "type", typ: r("RaiseIntentForContextResponseType") },
-    ], false),
-    "RaiseIntentForContextResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("FindInstancesErrors")) },
-        { json: "intentResolution", js: "intentResolution", typ: u(undefined, r("IntentResolution")) },
-        { json: "appIntents", js: "appIntents", typ: u(undefined, a(r("AppIntent"))) },
-    ], false),
-    "IntentResolution": o([
-        { json: "intent", js: "intent", typ: "" },
-        { json: "source", js: "source", typ: r("AppIdentifier") },
-    ], false),
-    "RaiseIntentRequest": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerRequestMeta") },
-        { json: "payload", js: "payload", typ: r("RaiseIntentRequestPayload") },
-        { json: "type", js: "type", typ: r("RaiseIntentRequestType") },
-    ], false),
-    "RaiseIntentRequestPayload": o([
-        { json: "app", js: "app", typ: u(undefined, r("AppIdentifier")) },
-        { json: "context", js: "context", typ: r("Context") },
-        { json: "intent", js: "intent", typ: "" },
-    ], false),
-    "RaiseIntentResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("RaiseIntentResponsePayload") },
-        { json: "type", js: "type", typ: r("RaiseIntentResponseType") },
-    ], false),
-    "RaiseIntentResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("FindInstancesErrors")) },
-        { json: "intentResolution", js: "intentResolution", typ: u(undefined, r("IntentResolution")) },
-        { json: "appIntent", js: "appIntent", typ: u(undefined, r("AppIntent")) },
-    ], false),
-    "RaiseIntentResultResponse": o([
-        { json: "meta", js: "meta", typ: r("AddContextListenerResponseMeta") },
-        { json: "payload", js: "payload", typ: r("RaiseIntentResultResponsePayload") },
-        { json: "type", js: "type", typ: r("RaiseIntentResultResponseType") },
-    ], false),
-    "RaiseIntentResultResponsePayload": o([
-        { json: "error", js: "error", typ: u(undefined, r("ResponsePayloadError")) },
-        { json: "intentResult", js: "intentResult", typ: u(undefined, r("IntentResult")) },
-    ], false),
-    "WebConnectionProtocol1HelloType": [
-        "WCP1Hello",
-    ],
-    "WebConnectionProtocol2LoadURLType": [
-        "WCP2LoadUrl",
-    ],
-    "WebConnectionProtocol3HandshakeType": [
-        "WCP3Handshake",
-    ],
-    "WebConnectionProtocol4ValidateAppIdentityType": [
-        "WCP4ValidateAppIdentity",
-    ],
-    "WebConnectionProtocol5ValidateAppIdentityFailedResponseType": [
-        "WCP5ValidateAppIdentityFailedResponse",
-    ],
-    "WebConnectionProtocol5ValidateAppIdentitySuccessResponseType": [
-        "WCP5ValidateAppIdentityResponse",
-    ],
-    "WebConnectionProtocol6GoodbyeType": [
-        "WCP6Goodbye",
-    ],
-    "ConnectionStepMessageType": [
-        "WCP1Hello",
-        "WCP2LoadUrl",
-        "WCP3Handshake",
-        "WCP4ValidateAppIdentity",
-        "WCP5ValidateAppIdentityFailedResponse",
-        "WCP5ValidateAppIdentityResponse",
-        "WCP6Goodbye",
-    ],
-    "AddContextListenerRequestType": [
-        "addContextListenerRequest",
-    ],
-    "PurpleError": [
-        "AccessDenied",
-        "CreationFailed",
-        "MalformedContext",
-        "NoChannelFound",
-    ],
-    "AddContextListenerResponseType": [
-        "addContextListenerResponse",
-    ],
-    "FDC3EventType": [
-        "USER_CHANNEL_CHANGED",
-    ],
-    "AddEventListenerRequestType": [
-        "addEventListenerRequest",
-    ],
-    "ResponsePayloadError": [
-        "AccessDenied",
-        "AgentDisconnected",
-        "AppNotFound",
-        "AppTimeout",
-        "CreationFailed",
-        "DesktopAgentNotFound",
-        "ErrorOnLaunch",
-        "IntentDeliveryFailed",
-        "IntentHandlerRejected",
-        "MalformedContext",
-        "MalformedMessage",
-        "NoAppsFound",
-        "NoChannelFound",
-        "NoResultReturned",
-        "NotConnectedToBridge",
-        "ResolverTimeout",
-        "ResolverUnavailable",
-        "ResponseToBridgeTimedOut",
-        "TargetAppUnavailable",
-        "TargetInstanceUnavailable",
-        "UserCancelledResolution",
-    ],
-    "AddEventListenerResponseType": [
-        "addEventListenerResponse",
-    ],
-    "AddIntentListenerRequestType": [
-        "addIntentListenerRequest",
-    ],
-    "FluffyError": [
-        "DesktopAgentNotFound",
-        "IntentDeliveryFailed",
-        "MalformedContext",
-        "NoAppsFound",
-        "ResolverTimeout",
-        "ResolverUnavailable",
-        "TargetAppUnavailable",
-        "TargetInstanceUnavailable",
-        "UserCancelledResolution",
-    ],
-    "AddIntentListenerResponseType": [
-        "addIntentListenerResponse",
-    ],
-    "EventMessageType": [
-        "addEventListenerEvent",
-        "broadcastEvent",
-        "channelChangedEvent",
-        "heartbeatEvent",
-        "intentEvent",
-        "privateChannelOnAddContextListenerEvent",
-        "privateChannelOnDisconnectEvent",
-        "privateChannelOnUnsubscribeEvent",
-    ],
-    "ResponseMessageType": [
-        "addContextListenerResponse",
-        "addEventListenerResponse",
-        "addIntentListenerResponse",
-        "broadcastResponse",
-        "contextListenerUnsubscribeResponse",
-        "createPrivateChannelResponse",
-        "eventListenerUnsubscribeResponse",
-        "findInstancesResponse",
-        "findIntentResponse",
-        "findIntentsByContextResponse",
-        "getAppMetadataResponse",
-        "getCurrentChannelResponse",
-        "getCurrentContextResponse",
-        "getInfoResponse",
-        "getOrCreateChannelResponse",
-        "getUserChannelsResponse",
-        "intentListenerUnsubscribeResponse",
-        "intentResultResponse",
-        "joinUserChannelResponse",
-        "leaveCurrentChannelResponse",
-        "openResponse",
-        "privateChannelAddEventListenerResponse",
-        "privateChannelDisconnectResponse",
-        "privateChannelUnsubscribeEventListenerResponse",
-        "raiseIntentForContextResponse",
-        "raiseIntentResponse",
-        "raiseIntentResultResponse",
-    ],
-    "RequestMessageType": [
-        "addContextListenerRequest",
-        "addEventListenerRequest",
-        "addIntentListenerRequest",
-        "broadcastRequest",
-        "contextListenerUnsubscribeRequest",
-        "createPrivateChannelRequest",
-        "eventListenerUnsubscribeRequest",
-        "findInstancesRequest",
-        "findIntentRequest",
-        "findIntentsByContextRequest",
-        "getAppMetadataRequest",
-        "getCurrentChannelRequest",
-        "getCurrentContextRequest",
-        "getInfoRequest",
-        "getOrCreateChannelRequest",
-        "getUserChannelsRequest",
-        "heartbeatAcknowledgementRequest",
-        "intentListenerUnsubscribeRequest",
-        "intentResultRequest",
-        "joinUserChannelRequest",
-        "leaveCurrentChannelRequest",
-        "openRequest",
-        "privateChannelAddEventListenerRequest",
-        "privateChannelDisconnectRequest",
-        "privateChannelUnsubscribeEventListenerRequest",
-        "raiseIntentForContextRequest",
-        "raiseIntentRequest",
-    ],
-    "BroadcastEventType": [
-        "broadcastEvent",
-    ],
-    "BroadcastRequestType": [
-        "broadcastRequest",
-    ],
-    "BroadcastResponseType": [
-        "broadcastResponse",
-    ],
-    "ChannelChangedEventType": [
-        "channelChangedEvent",
-    ],
-    "ContextListenerUnsubscribeRequestType": [
-        "contextListenerUnsubscribeRequest",
-    ],
-    "ContextListenerUnsubscribeResponseType": [
-        "contextListenerUnsubscribeResponse",
-    ],
-    "CreatePrivateChannelRequestType": [
-        "createPrivateChannelRequest",
-    ],
-    "Type": [
-        "app",
-        "private",
-        "user",
-    ],
-    "CreatePrivateChannelResponseType": [
-        "createPrivateChannelResponse",
-    ],
-    "EventListenerUnsubscribeRequestType": [
-        "eventListenerUnsubscribeRequest",
-    ],
-    "EventListenerUnsubscribeResponseType": [
-        "eventListenerUnsubscribeResponse",
-    ],
-    "Fdc3UserInterfaceChannelSelectedType": [
-        "Fdc3UserInterfaceChannelSelected",
-    ],
-    "Fdc3UserInterfaceChannelsType": [
-        "Fdc3UserInterfaceChannels",
-    ],
-    "Fdc3UserInterfaceDragType": [
-        "Fdc3UserInterfaceDrag",
-    ],
-    "Fdc3UserInterfaceHandshakeType": [
-        "Fdc3UserInterfaceHandshake",
-    ],
-    "Fdc3UserInterfaceHelloType": [
-        "Fdc3UserInterfaceHello",
-    ],
-    "Fdc3UserInterfaceMessageType": [
-        "Fdc3UserInterfaceChannelSelected",
-        "Fdc3UserInterfaceChannels",
-        "Fdc3UserInterfaceDrag",
-        "Fdc3UserInterfaceHandshake",
-        "Fdc3UserInterfaceHello",
-        "Fdc3UserInterfaceResolve",
-        "Fdc3UserInterfaceResolveAction",
-        "Fdc3UserInterfaceRestyle",
-    ],
-    "Fdc3UserInterfaceResolveType": [
-        "Fdc3UserInterfaceResolve",
-    ],
-    "Action": [
-        "cancel",
-        "click",
-        "hover",
-    ],
-    "Fdc3UserInterfaceResolveActionType": [
-        "Fdc3UserInterfaceResolveAction",
-    ],
-    "Fdc3UserInterfaceRestyleType": [
-        "Fdc3UserInterfaceRestyle",
-    ],
-    "FindInstancesRequestType": [
-        "findInstancesRequest",
-    ],
-    "FindInstancesErrors": [
-        "AgentDisconnected",
-        "DesktopAgentNotFound",
-        "IntentDeliveryFailed",
-        "MalformedContext",
-        "MalformedMessage",
-        "NoAppsFound",
-        "NotConnectedToBridge",
-        "ResolverTimeout",
-        "ResolverUnavailable",
-        "ResponseToBridgeTimedOut",
-        "TargetAppUnavailable",
-        "TargetInstanceUnavailable",
-        "UserCancelledResolution",
-    ],
-    "FindInstancesResponseType": [
-        "findInstancesResponse",
-    ],
-    "FindIntentRequestType": [
-        "findIntentRequest",
-    ],
-    "FindIntentResponseType": [
-        "findIntentResponse",
-    ],
-    "FindIntentsByContextRequestType": [
-        "findIntentsByContextRequest",
-    ],
-    "FindIntentsByContextResponseType": [
-        "findIntentsByContextResponse",
-    ],
-    "GetAppMetadataRequestType": [
-        "getAppMetadataRequest",
-    ],
-    "GetAppMetadataResponseType": [
-        "getAppMetadataResponse",
-    ],
-    "GetCurrentChannelRequestType": [
-        "getCurrentChannelRequest",
-    ],
-    "GetCurrentChannelResponseType": [
-        "getCurrentChannelResponse",
-    ],
-    "GetCurrentContextRequestType": [
-        "getCurrentContextRequest",
-    ],
-    "GetCurrentContextResponseType": [
-        "getCurrentContextResponse",
-    ],
-    "GetInfoRequestType": [
-        "getInfoRequest",
-    ],
-    "GetInfoResponseType": [
-        "getInfoResponse",
-    ],
-    "GetOrCreateChannelRequestType": [
-        "getOrCreateChannelRequest",
-    ],
-    "GetOrCreateChannelResponseType": [
-        "getOrCreateChannelResponse",
-    ],
-    "GetUserChannelsRequestType": [
-        "getUserChannelsRequest",
-    ],
-    "GetUserChannelsResponseType": [
-        "getUserChannelsResponse",
-    ],
-    "HeartbeatAcknowledgementRequestType": [
-        "heartbeatAcknowledgementRequest",
-    ],
-    "HeartbeatEventType": [
-        "heartbeatEvent",
-    ],
-    "IntentEventType": [
-        "intentEvent",
-    ],
-    "IntentListenerUnsubscribeRequestType": [
-        "intentListenerUnsubscribeRequest",
-    ],
-    "IntentListenerUnsubscribeResponseType": [
-        "intentListenerUnsubscribeResponse",
-    ],
-    "IntentResultRequestType": [
-        "intentResultRequest",
-    ],
-    "IntentResultResponseType": [
-        "intentResultResponse",
-    ],
-    "JoinUserChannelRequestType": [
-        "joinUserChannelRequest",
-    ],
-    "JoinUserChannelResponseType": [
-        "joinUserChannelResponse",
-    ],
-    "LeaveCurrentChannelRequestType": [
-        "leaveCurrentChannelRequest",
-    ],
-    "LeaveCurrentChannelResponseType": [
-        "leaveCurrentChannelResponse",
-    ],
-    "OpenRequestType": [
-        "openRequest",
-    ],
-    "OpenErrorResponsePayload": [
-        "AgentDisconnected",
-        "AppNotFound",
-        "AppTimeout",
-        "DesktopAgentNotFound",
-        "ErrorOnLaunch",
-        "MalformedContext",
-        "MalformedMessage",
-        "NotConnectedToBridge",
-        "ResolverUnavailable",
-        "ResponseToBridgeTimedOut",
-    ],
-    "OpenResponseType": [
-        "openResponse",
-    ],
-    "PrivateChannelEventListenerTypes": [
-        "onAddContextListener",
-        "onDisconnect",
-        "onUnsubscribe",
-    ],
-    "PrivateChannelAddEventListenerRequestType": [
-        "privateChannelAddEventListenerRequest",
-    ],
-    "PrivateChannelAddEventListenerResponseType": [
-        "privateChannelAddEventListenerResponse",
-    ],
-    "PrivateChannelDisconnectRequestType": [
-        "privateChannelDisconnectRequest",
-    ],
-    "PrivateChannelDisconnectResponseType": [
-        "privateChannelDisconnectResponse",
-    ],
-    "PrivateChannelOnAddContextListenerEventType": [
-        "privateChannelOnAddContextListenerEvent",
-    ],
-    "PrivateChannelOnDisconnectEventType": [
-        "privateChannelOnDisconnectEvent",
-    ],
-    "PrivateChannelOnUnsubscribeEventType": [
-        "privateChannelOnUnsubscribeEvent",
-    ],
-    "PrivateChannelUnsubscribeEventListenerRequestType": [
-        "privateChannelUnsubscribeEventListenerRequest",
-    ],
-    "PrivateChannelUnsubscribeEventListenerResponseType": [
-        "privateChannelUnsubscribeEventListenerResponse",
-    ],
-    "RaiseIntentForContextRequestType": [
-        "raiseIntentForContextRequest",
-    ],
-    "RaiseIntentForContextResponseType": [
-        "raiseIntentForContextResponse",
-    ],
-    "RaiseIntentRequestType": [
-        "raiseIntentRequest",
-    ],
-    "RaiseIntentResponseType": [
-        "raiseIntentResponse",
-    ],
-    "RaiseIntentResultResponseType": [
-        "raiseIntentResultResponse",
-    ],
+  AddContextListenerRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('AddContextListenerRequestPayload') },
+      { json: 'type', js: 'type', typ: r('AddContextListenerRequestType') },
+    ],
+    false
+  ),
+  AddContextListenerRequestMeta: o(
+    [
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
+      { json: 'source', js: 'source', typ: u(undefined, r('AppIdentifier')) },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  AppIdentifier: o(
+    [
+      { json: 'appId', js: 'appId', typ: '' },
+      { json: 'desktopAgent', js: 'desktopAgent', typ: u(undefined, '') },
+      { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  AddContextListenerRequestPayload: o(
+    [
+      { json: 'channelId', js: 'channelId', typ: u(null, '') },
+      { json: 'contextType', js: 'contextType', typ: u(null, '') },
+    ],
+    false
+  ),
+  AddContextListenerResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('AddContextListenerResponsePayload') },
+      { json: 'type', js: 'type', typ: r('AddContextListenerResponseType') },
+    ],
+    false
+  ),
+  AddContextListenerResponseMeta: o(
+    [
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
+      { json: 'source', js: 'source', typ: u(undefined, r('AppIdentifier')) },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  AddContextListenerResponsePayload: o(
+    [
+      { json: 'error', js: 'error', typ: u(undefined, r('PurpleError')) },
+      { json: 'listenerUUID', js: 'listenerUUID', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  AddEventListenerRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('AddEventListenerRequestPayload') },
+      { json: 'type', js: 'type', typ: r('AddEventListenerRequestType') },
+    ],
+    false
+  ),
+  AddEventListenerRequestPayload: o([{ json: 'type', js: 'type', typ: u(r('FDC3EventType'), null) }], false),
+  AddEventListenerResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('AddEventListenerResponsePayload') },
+      { json: 'type', js: 'type', typ: r('AddEventListenerResponseType') },
+    ],
+    false
+  ),
+  AddEventListenerResponsePayload: o(
+    [
+      { json: 'error', js: 'error', typ: u(undefined, r('ResponsePayloadError')) },
+      { json: 'listenerUUID', js: 'listenerUUID', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  AddIntentListenerRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('AddIntentListenerRequestPayload') },
+      { json: 'type', js: 'type', typ: r('AddIntentListenerRequestType') },
+    ],
+    false
+  ),
+  AddIntentListenerRequestPayload: o([{ json: 'intent', js: 'intent', typ: '' }], false),
+  AddIntentListenerResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('AddIntentListenerResponsePayload') },
+      { json: 'type', js: 'type', typ: r('AddIntentListenerResponseType') },
+    ],
+    false
+  ),
+  AddIntentListenerResponsePayload: o(
+    [
+      { json: 'error', js: 'error', typ: u(undefined, r('FluffyError')) },
+      { json: 'listenerUUID', js: 'listenerUUID', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  AgentEventMessage: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AgentEventMessageMeta') },
+      { json: 'payload', js: 'payload', typ: m('any') },
+      { json: 'type', js: 'type', typ: r('EventMessageType') },
+    ],
+    false
+  ),
+  AgentEventMessageMeta: o(
+    [
+      { json: 'eventUuid', js: 'eventUuid', typ: '' },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  AgentResponseMessage: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AgentResponseMessageMeta') },
+      { json: 'payload', js: 'payload', typ: r('AgentResponseMessageResponsePayload') },
+      { json: 'type', js: 'type', typ: r('ResponseMessageType') },
+    ],
+    false
+  ),
+  AgentResponseMessageMeta: o(
+    [
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
+      { json: 'responseUuid', js: 'responseUuid', typ: '' },
+      { json: 'source', js: 'source', typ: u(undefined, r('AppIdentifier')) },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  AgentResponseMessageResponsePayload: o(
+    [{ json: 'error', js: 'error', typ: u(undefined, r('ResponsePayloadError')) }],
+    'any'
+  ),
+  AppRequestMessage: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AppRequestMessageMeta') },
+      { json: 'payload', js: 'payload', typ: m('any') },
+      { json: 'type', js: 'type', typ: r('RequestMessageType') },
+    ],
+    false
+  ),
+  AppRequestMessageMeta: o(
+    [
+      { json: 'requestUuid', js: 'requestUuid', typ: '' },
+      { json: 'source', js: 'source', typ: u(undefined, r('AppIdentifier')) },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  BroadcastEvent: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('BroadcastEventMeta') },
+      { json: 'payload', js: 'payload', typ: r('BroadcastEventPayload') },
+      { json: 'type', js: 'type', typ: r('BroadcastEventType') },
+    ],
+    false
+  ),
+  BroadcastEventMeta: o(
+    [
+      { json: 'eventUuid', js: 'eventUuid', typ: '' },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  BroadcastEventPayload: o(
+    [
+      { json: 'channelId', js: 'channelId', typ: u(null, '') },
+      { json: 'context', js: 'context', typ: r('Context') },
+      { json: 'originatingApp', js: 'originatingApp', typ: u(undefined, r('AppIdentifier')) },
+    ],
+    false
+  ),
+  Context: o(
+    [
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'type', js: 'type', typ: '' },
+    ],
+    'any'
+  ),
+  BroadcastRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('BroadcastRequestPayload') },
+      { json: 'type', js: 'type', typ: r('BroadcastRequestType') },
+    ],
+    false
+  ),
+  BroadcastRequestPayload: o(
+    [
+      { json: 'channelId', js: 'channelId', typ: '' },
+      { json: 'context', js: 'context', typ: r('Context') },
+    ],
+    false
+  ),
+  BroadcastResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('BroadcastResponseResponsePayload') },
+      { json: 'type', js: 'type', typ: r('BroadcastResponseType') },
+    ],
+    false
+  ),
+  BroadcastResponseResponsePayload: o(
+    [{ json: 'error', js: 'error', typ: u(undefined, r('ResponsePayloadError')) }],
+    'any'
+  ),
+  ChannelChangedEvent: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('BroadcastEventMeta') },
+      { json: 'payload', js: 'payload', typ: r('ChannelChangedEventPayload') },
+      { json: 'type', js: 'type', typ: r('ChannelChangedEventType') },
+    ],
+    false
+  ),
+  ChannelChangedEventPayload: o([{ json: 'newChannelId', js: 'newChannelId', typ: u(null, '') }], false),
+  ContextListenerUnsubscribeRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('ContextListenerUnsubscribeRequestPayload') },
+      { json: 'type', js: 'type', typ: r('ContextListenerUnsubscribeRequestType') },
+    ],
+    false
+  ),
+  ContextListenerUnsubscribeRequestPayload: o([{ json: 'listenerUUID', js: 'listenerUUID', typ: '' }], false),
+  ContextListenerUnsubscribeResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('BroadcastResponseResponsePayload') },
+      { json: 'type', js: 'type', typ: r('ContextListenerUnsubscribeResponseType') },
+    ],
+    false
+  ),
+  CreatePrivateChannelRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('CreatePrivateChannelRequestPayload') },
+      { json: 'type', js: 'type', typ: r('CreatePrivateChannelRequestType') },
+    ],
+    false
+  ),
+  CreatePrivateChannelRequestPayload: o([], false),
+  CreatePrivateChannelResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('CreatePrivateChannelResponsePayload') },
+      { json: 'type', js: 'type', typ: r('CreatePrivateChannelResponseType') },
+    ],
+    false
+  ),
+  CreatePrivateChannelResponsePayload: o(
+    [
+      { json: 'error', js: 'error', typ: u(undefined, r('PurpleError')) },
+      { json: 'privateChannel', js: 'privateChannel', typ: u(undefined, r('Channel')) },
+    ],
+    false
+  ),
+  Channel: o(
+    [
+      { json: 'displayMetadata', js: 'displayMetadata', typ: u(undefined, r('DisplayMetadata')) },
+      { json: 'id', js: 'id', typ: '' },
+      { json: 'type', js: 'type', typ: r('Type') },
+    ],
+    false
+  ),
+  DisplayMetadata: o(
+    [
+      { json: 'color', js: 'color', typ: u(undefined, '') },
+      { json: 'glyph', js: 'glyph', typ: u(undefined, '') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  EventListenerUnsubscribeRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('EventListenerUnsubscribeRequestPayload') },
+      { json: 'type', js: 'type', typ: r('EventListenerUnsubscribeRequestType') },
+    ],
+    false
+  ),
+  EventListenerUnsubscribeRequestPayload: o([{ json: 'listenerUUID', js: 'listenerUUID', typ: '' }], false),
+  EventListenerUnsubscribeResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('BroadcastResponseResponsePayload') },
+      { json: 'type', js: 'type', typ: r('EventListenerUnsubscribeResponseType') },
+    ],
+    false
+  ),
+  Fdc3UserInterfaceChannels: o(
+    [
+      { json: 'payload', js: 'payload', typ: r('Fdc3UserInterfaceChannelsPayload') },
+      { json: 'type', js: 'type', typ: r('Fdc3UserInterfaceChannelsType') },
+    ],
+    false
+  ),
+  Fdc3UserInterfaceChannelsPayload: o(
+    [
+      { json: 'selected', js: 'selected', typ: u(null, '') },
+      { json: 'userChannels', js: 'userChannels', typ: a(r('Channel')) },
+    ],
+    false
+  ),
+  Fdc3UserInterfaceChannelSelected: o(
+    [
+      { json: 'payload', js: 'payload', typ: r('Fdc3UserInterfaceChannelSelectedPayload') },
+      { json: 'type', js: 'type', typ: r('Fdc3UserInterfaceChannelSelectedType') },
+    ],
+    false
+  ),
+  Fdc3UserInterfaceChannelSelectedPayload: o([{ json: 'selected', js: 'selected', typ: u(null, '') }], false),
+  Fdc3UserInterfaceDrag: o(
+    [
+      { json: 'payload', js: 'payload', typ: r('Fdc3UserInterfaceDragPayload') },
+      { json: 'type', js: 'type', typ: r('Fdc3UserInterfaceDragType') },
+    ],
+    false
+  ),
+  Fdc3UserInterfaceDragPayload: o([{ json: 'mouseOffsets', js: 'mouseOffsets', typ: r('MouseOffsets') }], false),
+  MouseOffsets: o(
+    [
+      { json: 'x', js: 'x', typ: 0 },
+      { json: 'y', js: 'y', typ: 0 },
+    ],
+    false
+  ),
+  Fdc3UserInterfaceHandshake: o(
+    [
+      { json: 'payload', js: 'payload', typ: r('Fdc3UserInterfaceHandshakePayload') },
+      { json: 'type', js: 'type', typ: r('Fdc3UserInterfaceHandshakeType') },
+    ],
+    false
+  ),
+  Fdc3UserInterfaceHandshakePayload: o([{ json: 'fdc3Version', js: 'fdc3Version', typ: '' }], false),
+  Fdc3UserInterfaceHello: o(
+    [
+      { json: 'payload', js: 'payload', typ: r('Fdc3UserInterfaceHelloPayload') },
+      { json: 'type', js: 'type', typ: r('Fdc3UserInterfaceHelloType') },
+    ],
+    false
+  ),
+  Fdc3UserInterfaceHelloPayload: o(
+    [
+      { json: 'implementationDetails', js: 'implementationDetails', typ: '' },
+      { json: 'initialCSS', js: 'initialCSS', typ: r('InitialCSS') },
+    ],
+    false
+  ),
+  InitialCSS: o(
+    [
+      { json: 'bottom', js: 'bottom', typ: u(undefined, '') },
+      { json: 'height', js: 'height', typ: u(undefined, '') },
+      { json: 'left', js: 'left', typ: u(undefined, '') },
+      { json: 'maxHeight', js: 'maxHeight', typ: u(undefined, '') },
+      { json: 'maxWidth', js: 'maxWidth', typ: u(undefined, '') },
+      { json: 'right', js: 'right', typ: u(undefined, '') },
+      { json: 'top', js: 'top', typ: u(undefined, '') },
+      { json: 'transition', js: 'transition', typ: u(undefined, '') },
+      { json: 'width', js: 'width', typ: u(undefined, '') },
+      { json: 'zIndex', js: 'zIndex', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  Fdc3UserInterfaceMessage: o(
+    [
+      { json: 'payload', js: 'payload', typ: u(undefined, m('any')) },
+      { json: 'type', js: 'type', typ: r('Fdc3UserInterfaceMessageType') },
+    ],
+    false
+  ),
+  Fdc3UserInterfaceResolve: o(
+    [
+      { json: 'payload', js: 'payload', typ: r('Fdc3UserInterfaceResolvePayload') },
+      { json: 'type', js: 'type', typ: r('Fdc3UserInterfaceResolveType') },
+    ],
+    false
+  ),
+  Fdc3UserInterfaceResolvePayload: o(
+    [
+      { json: 'appIntents', js: 'appIntents', typ: a(r('AppIntent')) },
+      { json: 'context', js: 'context', typ: r('Context') },
+    ],
+    false
+  ),
+  AppIntent: o(
+    [
+      { json: 'apps', js: 'apps', typ: a(r('AppMetadata')) },
+      { json: 'intent', js: 'intent', typ: r('IntentMetadata') },
+    ],
+    false
+  ),
+  AppMetadata: o(
+    [
+      { json: 'appId', js: 'appId', typ: '' },
+      { json: 'description', js: 'description', typ: u(undefined, '') },
+      { json: 'desktopAgent', js: 'desktopAgent', typ: u(undefined, '') },
+      { json: 'icons', js: 'icons', typ: u(undefined, a(r('Icon'))) },
+      { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
+      { json: 'instanceMetadata', js: 'instanceMetadata', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'resultType', js: 'resultType', typ: u(undefined, u(null, '')) },
+      { json: 'screenshots', js: 'screenshots', typ: u(undefined, a(r('Image'))) },
+      { json: 'title', js: 'title', typ: u(undefined, '') },
+      { json: 'tooltip', js: 'tooltip', typ: u(undefined, '') },
+      { json: 'version', js: 'version', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  Icon: o(
+    [
+      { json: 'size', js: 'size', typ: u(undefined, '') },
+      { json: 'src', js: 'src', typ: '' },
+      { json: 'type', js: 'type', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  Image: o(
+    [
+      { json: 'label', js: 'label', typ: u(undefined, '') },
+      { json: 'size', js: 'size', typ: u(undefined, '') },
+      { json: 'src', js: 'src', typ: '' },
+      { json: 'type', js: 'type', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  IntentMetadata: o(
+    [
+      { json: 'displayName', js: 'displayName', typ: u(undefined, '') },
+      { json: 'name', js: 'name', typ: '' },
+    ],
+    false
+  ),
+  Fdc3UserInterfaceResolveAction: o(
+    [
+      { json: 'payload', js: 'payload', typ: r('Fdc3UserInterfaceResolveActionPayload') },
+      { json: 'type', js: 'type', typ: r('Fdc3UserInterfaceResolveActionType') },
+    ],
+    false
+  ),
+  Fdc3UserInterfaceResolveActionPayload: o(
+    [
+      { json: 'action', js: 'action', typ: r('Action') },
+      { json: 'appIdentifier', js: 'appIdentifier', typ: u(undefined, r('AppIdentifier')) },
+      { json: 'intent', js: 'intent', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  Fdc3UserInterfaceRestyle: o(
+    [
+      { json: 'payload', js: 'payload', typ: r('Fdc3UserInterfaceRestylePayload') },
+      { json: 'type', js: 'type', typ: r('Fdc3UserInterfaceRestyleType') },
+    ],
+    false
+  ),
+  Fdc3UserInterfaceRestylePayload: o([{ json: 'updatedCSS', js: 'updatedCSS', typ: r('UpdatedCSS') }], false),
+  UpdatedCSS: o(
+    [
+      { json: 'bottom', js: 'bottom', typ: u(undefined, '') },
+      { json: 'height', js: 'height', typ: u(undefined, '') },
+      { json: 'left', js: 'left', typ: u(undefined, '') },
+      { json: 'maxHeight', js: 'maxHeight', typ: u(undefined, '') },
+      { json: 'maxWidth', js: 'maxWidth', typ: u(undefined, '') },
+      { json: 'right', js: 'right', typ: u(undefined, '') },
+      { json: 'top', js: 'top', typ: u(undefined, '') },
+      { json: 'transition', js: 'transition', typ: u(undefined, '') },
+      { json: 'width', js: 'width', typ: u(undefined, '') },
+      { json: 'zIndex', js: 'zIndex', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  FindInstancesRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('FindInstancesRequestPayload') },
+      { json: 'type', js: 'type', typ: r('FindInstancesRequestType') },
+    ],
+    false
+  ),
+  FindInstancesRequestPayload: o([{ json: 'app', js: 'app', typ: r('AppIdentifier') }], false),
+  FindInstancesResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('FindInstancesResponsePayload') },
+      { json: 'type', js: 'type', typ: r('FindInstancesResponseType') },
+    ],
+    false
+  ),
+  FindInstancesResponsePayload: o(
+    [
+      { json: 'error', js: 'error', typ: u(undefined, r('FindInstancesErrors')) },
+      { json: 'appIdentifiers', js: 'appIdentifiers', typ: u(undefined, a(r('AppMetadata'))) },
+    ],
+    false
+  ),
+  FindIntentRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('FindIntentRequestPayload') },
+      { json: 'type', js: 'type', typ: r('FindIntentRequestType') },
+    ],
+    false
+  ),
+  FindIntentRequestPayload: o(
+    [
+      { json: 'context', js: 'context', typ: u(undefined, r('Context')) },
+      { json: 'intent', js: 'intent', typ: '' },
+      { json: 'resultType', js: 'resultType', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  FindIntentResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('FindIntentResponsePayload') },
+      { json: 'type', js: 'type', typ: r('FindIntentResponseType') },
+    ],
+    false
+  ),
+  FindIntentResponsePayload: o(
+    [
+      { json: 'error', js: 'error', typ: u(undefined, r('FindInstancesErrors')) },
+      { json: 'appIntent', js: 'appIntent', typ: u(undefined, r('AppIntent')) },
+    ],
+    false
+  ),
+  FindIntentsByContextRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('FindIntentsByContextRequestPayload') },
+      { json: 'type', js: 'type', typ: r('FindIntentsByContextRequestType') },
+    ],
+    false
+  ),
+  FindIntentsByContextRequestPayload: o(
+    [
+      { json: 'context', js: 'context', typ: r('Context') },
+      { json: 'resultType', js: 'resultType', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  FindIntentsByContextResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('FindIntentsByContextResponsePayload') },
+      { json: 'type', js: 'type', typ: r('FindIntentsByContextResponseType') },
+    ],
+    false
+  ),
+  FindIntentsByContextResponsePayload: o(
+    [
+      { json: 'error', js: 'error', typ: u(undefined, r('FindInstancesErrors')) },
+      { json: 'appIntents', js: 'appIntents', typ: u(undefined, a(r('AppIntent'))) },
+    ],
+    false
+  ),
+  GetAppMetadataRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('GetAppMetadataRequestPayload') },
+      { json: 'type', js: 'type', typ: r('GetAppMetadataRequestType') },
+    ],
+    false
+  ),
+  GetAppMetadataRequestPayload: o([{ json: 'app', js: 'app', typ: r('AppIdentifier') }], false),
+  GetAppMetadataResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('GetAppMetadataResponsePayload') },
+      { json: 'type', js: 'type', typ: r('GetAppMetadataResponseType') },
+    ],
+    false
+  ),
+  GetAppMetadataResponsePayload: o(
+    [
+      { json: 'error', js: 'error', typ: u(undefined, r('FindInstancesErrors')) },
+      { json: 'appMetadata', js: 'appMetadata', typ: u(undefined, r('AppMetadata')) },
+    ],
+    false
+  ),
+  GetCurrentChannelRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('GetCurrentChannelRequestPayload') },
+      { json: 'type', js: 'type', typ: r('GetCurrentChannelRequestType') },
+    ],
+    false
+  ),
+  GetCurrentChannelRequestPayload: o([], false),
+  GetCurrentChannelResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('GetCurrentChannelResponsePayload') },
+      { json: 'type', js: 'type', typ: r('GetCurrentChannelResponseType') },
+    ],
+    false
+  ),
+  GetCurrentChannelResponsePayload: o(
+    [
+      { json: 'error', js: 'error', typ: u(undefined, r('ResponsePayloadError')) },
+      { json: 'channel', js: 'channel', typ: u(undefined, u(r('Channel'), null)) },
+    ],
+    false
+  ),
+  GetCurrentContextRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('GetCurrentContextRequestPayload') },
+      { json: 'type', js: 'type', typ: r('GetCurrentContextRequestType') },
+    ],
+    false
+  ),
+  GetCurrentContextRequestPayload: o(
+    [
+      { json: 'channelId', js: 'channelId', typ: '' },
+      { json: 'contextType', js: 'contextType', typ: u(null, '') },
+    ],
+    false
+  ),
+  GetCurrentContextResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('GetCurrentContextResponsePayload') },
+      { json: 'type', js: 'type', typ: r('GetCurrentContextResponseType') },
+    ],
+    false
+  ),
+  GetCurrentContextResponsePayload: o(
+    [
+      { json: 'error', js: 'error', typ: u(undefined, r('PurpleError')) },
+      { json: 'context', js: 'context', typ: u(undefined, u(null, r('Context'))) },
+    ],
+    false
+  ),
+  GetInfoRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('GetInfoRequestPayload') },
+      { json: 'type', js: 'type', typ: r('GetInfoRequestType') },
+    ],
+    false
+  ),
+  GetInfoRequestPayload: o([], false),
+  GetInfoResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('GetInfoResponsePayload') },
+      { json: 'type', js: 'type', typ: r('GetInfoResponseType') },
+    ],
+    false
+  ),
+  GetInfoResponsePayload: o(
+    [
+      { json: 'error', js: 'error', typ: u(undefined, r('ResponsePayloadError')) },
+      { json: 'implementationMetadata', js: 'implementationMetadata', typ: u(undefined, r('ImplementationMetadata')) },
+    ],
+    false
+  ),
+  ImplementationMetadata: o(
+    [
+      { json: 'appMetadata', js: 'appMetadata', typ: r('AppMetadata') },
+      { json: 'fdc3Version', js: 'fdc3Version', typ: '' },
+      { json: 'optionalFeatures', js: 'optionalFeatures', typ: r('OptionalFeatures') },
+      { json: 'provider', js: 'provider', typ: '' },
+      { json: 'providerVersion', js: 'providerVersion', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  OptionalFeatures: o(
+    [
+      { json: 'DesktopAgentBridging', js: 'DesktopAgentBridging', typ: true },
+      { json: 'OriginatingAppMetadata', js: 'OriginatingAppMetadata', typ: true },
+      { json: 'UserChannelMembershipAPIs', js: 'UserChannelMembershipAPIs', typ: true },
+    ],
+    false
+  ),
+  GetOrCreateChannelRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('GetOrCreateChannelRequestPayload') },
+      { json: 'type', js: 'type', typ: r('GetOrCreateChannelRequestType') },
+    ],
+    false
+  ),
+  GetOrCreateChannelRequestPayload: o([{ json: 'channelId', js: 'channelId', typ: '' }], false),
+  GetOrCreateChannelResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('GetOrCreateChannelResponsePayload') },
+      { json: 'type', js: 'type', typ: r('GetOrCreateChannelResponseType') },
+    ],
+    false
+  ),
+  GetOrCreateChannelResponsePayload: o(
+    [
+      { json: 'error', js: 'error', typ: u(undefined, r('PurpleError')) },
+      { json: 'channel', js: 'channel', typ: u(undefined, r('Channel')) },
+    ],
+    false
+  ),
+  GetUserChannelsRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('GetUserChannelsRequestPayload') },
+      { json: 'type', js: 'type', typ: r('GetUserChannelsRequestType') },
+    ],
+    false
+  ),
+  GetUserChannelsRequestPayload: o([], false),
+  GetUserChannelsResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('GetUserChannelsResponsePayload') },
+      { json: 'type', js: 'type', typ: r('GetUserChannelsResponseType') },
+    ],
+    false
+  ),
+  GetUserChannelsResponsePayload: o(
+    [
+      { json: 'error', js: 'error', typ: u(undefined, r('PurpleError')) },
+      { json: 'userChannels', js: 'userChannels', typ: u(undefined, a(r('Channel'))) },
+    ],
+    false
+  ),
+  HeartbeatAcknowledgementRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('HeartbeatAcknowledgementRequestPayload') },
+      { json: 'type', js: 'type', typ: r('HeartbeatAcknowledgementRequestType') },
+    ],
+    false
+  ),
+  HeartbeatAcknowledgementRequestPayload: o([{ json: 'heartbeatEventUuid', js: 'heartbeatEventUuid', typ: '' }], false),
+  HeartbeatEvent: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('BroadcastEventMeta') },
+      { json: 'payload', js: 'payload', typ: r('HeartbeatEventPayload') },
+      { json: 'type', js: 'type', typ: r('HeartbeatEventType') },
+    ],
+    false
+  ),
+  HeartbeatEventPayload: o([], false),
+  IntentEvent: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('BroadcastEventMeta') },
+      { json: 'payload', js: 'payload', typ: r('IntentEventPayload') },
+      { json: 'type', js: 'type', typ: r('IntentEventType') },
+    ],
+    false
+  ),
+  IntentEventPayload: o(
+    [
+      { json: 'context', js: 'context', typ: r('Context') },
+      { json: 'intent', js: 'intent', typ: '' },
+      { json: 'originatingApp', js: 'originatingApp', typ: u(undefined, r('AppIdentifier')) },
+      { json: 'raiseIntentRequestUuid', js: 'raiseIntentRequestUuid', typ: '' },
+    ],
+    false
+  ),
+  IntentListenerUnsubscribeRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('IntentListenerUnsubscribeRequestPayload') },
+      { json: 'type', js: 'type', typ: r('IntentListenerUnsubscribeRequestType') },
+    ],
+    false
+  ),
+  IntentListenerUnsubscribeRequestPayload: o([{ json: 'listenerUUID', js: 'listenerUUID', typ: '' }], false),
+  IntentListenerUnsubscribeResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('BroadcastResponseResponsePayload') },
+      { json: 'type', js: 'type', typ: r('IntentListenerUnsubscribeResponseType') },
+    ],
+    false
+  ),
+  IntentResultRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('IntentResultRequestPayload') },
+      { json: 'type', js: 'type', typ: r('IntentResultRequestType') },
+    ],
+    false
+  ),
+  IntentResultRequestPayload: o(
+    [
+      { json: 'intentEventUuid', js: 'intentEventUuid', typ: '' },
+      { json: 'intentResult', js: 'intentResult', typ: r('IntentResult') },
+      { json: 'raiseIntentRequestUuid', js: 'raiseIntentRequestUuid', typ: '' },
+    ],
+    false
+  ),
+  IntentResult: o(
+    [
+      { json: 'context', js: 'context', typ: u(undefined, r('Context')) },
+      { json: 'channel', js: 'channel', typ: u(undefined, r('Channel')) },
+    ],
+    false
+  ),
+  IntentResultResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('BroadcastResponseResponsePayload') },
+      { json: 'type', js: 'type', typ: r('IntentResultResponseType') },
+    ],
+    false
+  ),
+  JoinUserChannelRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('JoinUserChannelRequestPayload') },
+      { json: 'type', js: 'type', typ: r('JoinUserChannelRequestType') },
+    ],
+    false
+  ),
+  JoinUserChannelRequestPayload: o([{ json: 'channelId', js: 'channelId', typ: '' }], false),
+  JoinUserChannelResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('JoinUserChannelResponsePayload') },
+      { json: 'type', js: 'type', typ: r('JoinUserChannelResponseType') },
+    ],
+    false
+  ),
+  JoinUserChannelResponsePayload: o([{ json: 'error', js: 'error', typ: u(undefined, r('PurpleError')) }], false),
+  LeaveCurrentChannelRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('LeaveCurrentChannelRequestPayload') },
+      { json: 'type', js: 'type', typ: r('LeaveCurrentChannelRequestType') },
+    ],
+    false
+  ),
+  LeaveCurrentChannelRequestPayload: o([], false),
+  LeaveCurrentChannelResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('LeaveCurrentChannelResponsePayload') },
+      { json: 'type', js: 'type', typ: r('LeaveCurrentChannelResponseType') },
+    ],
+    false
+  ),
+  LeaveCurrentChannelResponsePayload: o([{ json: 'error', js: 'error', typ: u(undefined, r('PurpleError')) }], false),
+  OpenRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('OpenRequestPayload') },
+      { json: 'type', js: 'type', typ: r('OpenRequestType') },
+    ],
+    false
+  ),
+  OpenRequestPayload: o(
+    [
+      { json: 'app', js: 'app', typ: r('AppIdentifier') },
+      { json: 'context', js: 'context', typ: u(undefined, r('Context')) },
+    ],
+    false
+  ),
+  OpenResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('OpenResponsePayload') },
+      { json: 'type', js: 'type', typ: r('OpenResponseType') },
+    ],
+    false
+  ),
+  OpenResponsePayload: o(
+    [
+      { json: 'error', js: 'error', typ: u(undefined, r('OpenErrorResponsePayload')) },
+      { json: 'appIdentifier', js: 'appIdentifier', typ: u(undefined, r('AppIdentifier')) },
+    ],
+    false
+  ),
+  PrivateChannelAddEventListenerRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('TPayload') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelAddEventListenerRequestType') },
+    ],
+    false
+  ),
+  TPayload: o(
+    [
+      { json: 'listenerType', js: 'listenerType', typ: u(r('PrivateChannelEventListenerTypes'), null) },
+      { json: 'privateChannelId', js: 'privateChannelId', typ: '' },
+    ],
+    false
+  ),
+  PrivateChannelAddEventListenerResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('PrivateChannelAddEventListenerResponsePayload') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelAddEventListenerResponseType') },
+    ],
+    false
+  ),
+  PrivateChannelAddEventListenerResponsePayload: o(
+    [
+      { json: 'error', js: 'error', typ: u(undefined, r('PurpleError')) },
+      { json: 'listenerUUID', js: 'listenerUUID', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  PrivateChannelDisconnectRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('PrivateChannelDisconnectRequestPayload') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelDisconnectRequestType') },
+    ],
+    false
+  ),
+  PrivateChannelDisconnectRequestPayload: o([{ json: 'channelId', js: 'channelId', typ: '' }], false),
+  PrivateChannelDisconnectResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('PrivateChannelDisconnectResponsePayload') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelDisconnectResponseType') },
+    ],
+    false
+  ),
+  PrivateChannelDisconnectResponsePayload: o(
+    [{ json: 'error', js: 'error', typ: u(undefined, r('PurpleError')) }],
+    false
+  ),
+  PrivateChannelOnAddContextListenerEvent: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('BroadcastEventMeta') },
+      { json: 'payload', js: 'payload', typ: r('PrivateChannelOnAddContextListenerEventPayload') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelOnAddContextListenerEventType') },
+    ],
+    false
+  ),
+  PrivateChannelOnAddContextListenerEventPayload: o(
+    [
+      { json: 'contextType', js: 'contextType', typ: u(null, '') },
+      { json: 'privateChannelId', js: 'privateChannelId', typ: '' },
+    ],
+    false
+  ),
+  PrivateChannelOnDisconnectEvent: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('BroadcastEventMeta') },
+      { json: 'payload', js: 'payload', typ: r('PrivateChannelOnDisconnectEventPayload') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelOnDisconnectEventType') },
+    ],
+    false
+  ),
+  PrivateChannelOnDisconnectEventPayload: o([{ json: 'privateChannelId', js: 'privateChannelId', typ: '' }], false),
+  PrivateChannelOnUnsubscribeEvent: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('BroadcastEventMeta') },
+      { json: 'payload', js: 'payload', typ: r('PrivateChannelOnUnsubscribeEventPayload') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelOnUnsubscribeEventType') },
+    ],
+    false
+  ),
+  PrivateChannelOnUnsubscribeEventPayload: o(
+    [
+      { json: 'contextType', js: 'contextType', typ: u(null, '') },
+      { json: 'privateChannelId', js: 'privateChannelId', typ: '' },
+    ],
+    false
+  ),
+  PrivateChannelUnsubscribeEventListenerRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('PrivateChannelUnsubscribeEventListenerRequestPayload') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelUnsubscribeEventListenerRequestType') },
+    ],
+    false
+  ),
+  PrivateChannelUnsubscribeEventListenerRequestPayload: o(
+    [{ json: 'listenerUUID', js: 'listenerUUID', typ: '' }],
+    false
+  ),
+  PrivateChannelUnsubscribeEventListenerResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('BroadcastResponseResponsePayload') },
+      { json: 'type', js: 'type', typ: r('PrivateChannelUnsubscribeEventListenerResponseType') },
+    ],
+    false
+  ),
+  RaiseIntentForContextRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('RaiseIntentForContextRequestPayload') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentForContextRequestType') },
+    ],
+    false
+  ),
+  RaiseIntentForContextRequestPayload: o(
+    [
+      { json: 'app', js: 'app', typ: u(undefined, r('AppIdentifier')) },
+      { json: 'context', js: 'context', typ: r('Context') },
+    ],
+    false
+  ),
+  RaiseIntentForContextResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('RaiseIntentForContextResponsePayload') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentForContextResponseType') },
+    ],
+    false
+  ),
+  RaiseIntentForContextResponsePayload: o(
+    [
+      { json: 'error', js: 'error', typ: u(undefined, r('FindInstancesErrors')) },
+      { json: 'intentResolution', js: 'intentResolution', typ: u(undefined, r('IntentResolution')) },
+      { json: 'appIntents', js: 'appIntents', typ: u(undefined, a(r('AppIntent'))) },
+    ],
+    false
+  ),
+  IntentResolution: o(
+    [
+      { json: 'intent', js: 'intent', typ: '' },
+      { json: 'source', js: 'source', typ: r('AppIdentifier') },
+    ],
+    false
+  ),
+  RaiseIntentRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('RaiseIntentRequestPayload') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentRequestType') },
+    ],
+    false
+  ),
+  RaiseIntentRequestPayload: o(
+    [
+      { json: 'app', js: 'app', typ: u(undefined, r('AppIdentifier')) },
+      { json: 'context', js: 'context', typ: r('Context') },
+      { json: 'intent', js: 'intent', typ: '' },
+    ],
+    false
+  ),
+  RaiseIntentResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('RaiseIntentResponsePayload') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentResponseType') },
+    ],
+    false
+  ),
+  RaiseIntentResponsePayload: o(
+    [
+      { json: 'error', js: 'error', typ: u(undefined, r('FindInstancesErrors')) },
+      { json: 'intentResolution', js: 'intentResolution', typ: u(undefined, r('IntentResolution')) },
+      { json: 'appIntent', js: 'appIntent', typ: u(undefined, r('AppIntent')) },
+    ],
+    false
+  ),
+  RaiseIntentResultResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('RaiseIntentResultResponsePayload') },
+      { json: 'type', js: 'type', typ: r('RaiseIntentResultResponseType') },
+    ],
+    false
+  ),
+  RaiseIntentResultResponsePayload: o(
+    [
+      { json: 'error', js: 'error', typ: u(undefined, r('ResponsePayloadError')) },
+      { json: 'intentResult', js: 'intentResult', typ: u(undefined, r('IntentResult')) },
+    ],
+    false
+  ),
+  WebConnectionProtocol1Hello: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('WebConnectionProtocol1HelloMeta') },
+      { json: 'payload', js: 'payload', typ: r('WebConnectionProtocol1HelloPayload') },
+      { json: 'type', js: 'type', typ: r('WebConnectionProtocol1HelloType') },
+    ],
+    false
+  ),
+  WebConnectionProtocol1HelloMeta: o(
+    [
+      { json: 'connectionAttemptUuid', js: 'connectionAttemptUuid', typ: '' },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  WebConnectionProtocol1HelloPayload: o(
+    [
+      { json: 'actualUrl', js: 'actualUrl', typ: '' },
+      { json: 'channelSelector', js: 'channelSelector', typ: u(undefined, true) },
+      { json: 'fdc3Version', js: 'fdc3Version', typ: '' },
+      { json: 'identityUrl', js: 'identityUrl', typ: '' },
+      { json: 'intentResolver', js: 'intentResolver', typ: u(undefined, true) },
+    ],
+    'any'
+  ),
+  WebConnectionProtocol2LoadURL: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('WebConnectionProtocol1HelloMeta') },
+      { json: 'payload', js: 'payload', typ: r('WebConnectionProtocol2LoadURLPayload') },
+      { json: 'type', js: 'type', typ: r('WebConnectionProtocol2LoadURLType') },
+    ],
+    false
+  ),
+  WebConnectionProtocol2LoadURLPayload: o([{ json: 'iframeUrl', js: 'iframeUrl', typ: '' }], 'any'),
+  WebConnectionProtocol3Handshake: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('WebConnectionProtocol1HelloMeta') },
+      { json: 'payload', js: 'payload', typ: r('WebConnectionProtocol3HandshakePayload') },
+      { json: 'type', js: 'type', typ: r('WebConnectionProtocol3HandshakeType') },
+    ],
+    false
+  ),
+  WebConnectionProtocol3HandshakePayload: o(
+    [
+      { json: 'channelSelectorUrl', js: 'channelSelectorUrl', typ: u(true, '') },
+      { json: 'fdc3Version', js: 'fdc3Version', typ: '' },
+      { json: 'intentResolverUrl', js: 'intentResolverUrl', typ: u(true, '') },
+    ],
+    false
+  ),
+  WebConnectionProtocol4ValidateAppIdentity: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('WebConnectionProtocol1HelloMeta') },
+      { json: 'payload', js: 'payload', typ: r('WebConnectionProtocol4ValidateAppIdentityPayload') },
+      { json: 'type', js: 'type', typ: r('WebConnectionProtocol4ValidateAppIdentityType') },
+    ],
+    false
+  ),
+  WebConnectionProtocol4ValidateAppIdentityPayload: o(
+    [
+      { json: 'actualUrl', js: 'actualUrl', typ: '' },
+      { json: 'identityUrl', js: 'identityUrl', typ: '' },
+      { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
+      { json: 'instanceUuid', js: 'instanceUuid', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  WebConnectionProtocol5ValidateAppIdentityFailedResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('WebConnectionProtocol1HelloMeta') },
+      { json: 'payload', js: 'payload', typ: r('WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload') },
+      { json: 'type', js: 'type', typ: r('WebConnectionProtocol5ValidateAppIdentityFailedResponseType') },
+    ],
+    false
+  ),
+  WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload: o(
+    [{ json: 'message', js: 'message', typ: u(undefined, '') }],
+    false
+  ),
+  WebConnectionProtocol5ValidateAppIdentitySuccessResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('WebConnectionProtocol1HelloMeta') },
+      { json: 'payload', js: 'payload', typ: r('WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload') },
+      { json: 'type', js: 'type', typ: r('WebConnectionProtocol5ValidateAppIdentitySuccessResponseType') },
+    ],
+    false
+  ),
+  WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload: o(
+    [
+      { json: 'appId', js: 'appId', typ: '' },
+      { json: 'implementationMetadata', js: 'implementationMetadata', typ: r('ImplementationMetadata') },
+      { json: 'instanceId', js: 'instanceId', typ: '' },
+      { json: 'instanceUuid', js: 'instanceUuid', typ: '' },
+    ],
+    false
+  ),
+  WebConnectionProtocol6Goodbye: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('WebConnectionProtocol6GoodbyeMeta') },
+      { json: 'type', js: 'type', typ: r('WebConnectionProtocol6GoodbyeType') },
+    ],
+    false
+  ),
+  WebConnectionProtocol6GoodbyeMeta: o([{ json: 'timestamp', js: 'timestamp', typ: Date }], false),
+  WebConnectionProtocolMessage: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('ConnectionStepMetadata') },
+      { json: 'payload', js: 'payload', typ: u(undefined, m('any')) },
+      { json: 'type', js: 'type', typ: r('ConnectionStepMessageType') },
+    ],
+    false
+  ),
+  ConnectionStepMetadata: o(
+    [
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+      { json: 'connectionAttemptUuid', js: 'connectionAttemptUuid', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  AddContextListenerRequestType: ['addContextListenerRequest'],
+  PurpleError: ['AccessDenied', 'CreationFailed', 'MalformedContext', 'NoChannelFound'],
+  AddContextListenerResponseType: ['addContextListenerResponse'],
+  FDC3EventType: ['USER_CHANNEL_CHANGED'],
+  AddEventListenerRequestType: ['addEventListenerRequest'],
+  ResponsePayloadError: [
+    'AccessDenied',
+    'AgentDisconnected',
+    'AppNotFound',
+    'AppTimeout',
+    'CreationFailed',
+    'DesktopAgentNotFound',
+    'ErrorOnLaunch',
+    'IntentDeliveryFailed',
+    'IntentHandlerRejected',
+    'MalformedContext',
+    'MalformedMessage',
+    'NoAppsFound',
+    'NoChannelFound',
+    'NoResultReturned',
+    'NotConnectedToBridge',
+    'ResolverTimeout',
+    'ResolverUnavailable',
+    'ResponseToBridgeTimedOut',
+    'TargetAppUnavailable',
+    'TargetInstanceUnavailable',
+    'UserCancelledResolution',
+  ],
+  AddEventListenerResponseType: ['addEventListenerResponse'],
+  AddIntentListenerRequestType: ['addIntentListenerRequest'],
+  FluffyError: [
+    'DesktopAgentNotFound',
+    'IntentDeliveryFailed',
+    'MalformedContext',
+    'NoAppsFound',
+    'ResolverTimeout',
+    'ResolverUnavailable',
+    'TargetAppUnavailable',
+    'TargetInstanceUnavailable',
+    'UserCancelledResolution',
+  ],
+  AddIntentListenerResponseType: ['addIntentListenerResponse'],
+  EventMessageType: [
+    'addEventListenerEvent',
+    'broadcastEvent',
+    'channelChangedEvent',
+    'heartbeatEvent',
+    'intentEvent',
+    'privateChannelOnAddContextListenerEvent',
+    'privateChannelOnDisconnectEvent',
+    'privateChannelOnUnsubscribeEvent',
+  ],
+  ResponseMessageType: [
+    'addContextListenerResponse',
+    'addEventListenerResponse',
+    'addIntentListenerResponse',
+    'broadcastResponse',
+    'contextListenerUnsubscribeResponse',
+    'createPrivateChannelResponse',
+    'eventListenerUnsubscribeResponse',
+    'findInstancesResponse',
+    'findIntentResponse',
+    'findIntentsByContextResponse',
+    'getAppMetadataResponse',
+    'getCurrentChannelResponse',
+    'getCurrentContextResponse',
+    'getInfoResponse',
+    'getOrCreateChannelResponse',
+    'getUserChannelsResponse',
+    'intentListenerUnsubscribeResponse',
+    'intentResultResponse',
+    'joinUserChannelResponse',
+    'leaveCurrentChannelResponse',
+    'openResponse',
+    'privateChannelAddEventListenerResponse',
+    'privateChannelDisconnectResponse',
+    'privateChannelUnsubscribeEventListenerResponse',
+    'raiseIntentForContextResponse',
+    'raiseIntentResponse',
+    'raiseIntentResultResponse',
+  ],
+  RequestMessageType: [
+    'addContextListenerRequest',
+    'addEventListenerRequest',
+    'addIntentListenerRequest',
+    'broadcastRequest',
+    'contextListenerUnsubscribeRequest',
+    'createPrivateChannelRequest',
+    'eventListenerUnsubscribeRequest',
+    'findInstancesRequest',
+    'findIntentRequest',
+    'findIntentsByContextRequest',
+    'getAppMetadataRequest',
+    'getCurrentChannelRequest',
+    'getCurrentContextRequest',
+    'getInfoRequest',
+    'getOrCreateChannelRequest',
+    'getUserChannelsRequest',
+    'heartbeatAcknowledgementRequest',
+    'intentListenerUnsubscribeRequest',
+    'intentResultRequest',
+    'joinUserChannelRequest',
+    'leaveCurrentChannelRequest',
+    'openRequest',
+    'privateChannelAddEventListenerRequest',
+    'privateChannelDisconnectRequest',
+    'privateChannelUnsubscribeEventListenerRequest',
+    'raiseIntentForContextRequest',
+    'raiseIntentRequest',
+  ],
+  BroadcastEventType: ['broadcastEvent'],
+  BroadcastRequestType: ['broadcastRequest'],
+  BroadcastResponseType: ['broadcastResponse'],
+  ChannelChangedEventType: ['channelChangedEvent'],
+  ContextListenerUnsubscribeRequestType: ['contextListenerUnsubscribeRequest'],
+  ContextListenerUnsubscribeResponseType: ['contextListenerUnsubscribeResponse'],
+  CreatePrivateChannelRequestType: ['createPrivateChannelRequest'],
+  Type: ['app', 'private', 'user'],
+  CreatePrivateChannelResponseType: ['createPrivateChannelResponse'],
+  EventListenerUnsubscribeRequestType: ['eventListenerUnsubscribeRequest'],
+  EventListenerUnsubscribeResponseType: ['eventListenerUnsubscribeResponse'],
+  Fdc3UserInterfaceChannelsType: ['Fdc3UserInterfaceChannels'],
+  Fdc3UserInterfaceChannelSelectedType: ['Fdc3UserInterfaceChannelSelected'],
+  Fdc3UserInterfaceDragType: ['Fdc3UserInterfaceDrag'],
+  Fdc3UserInterfaceHandshakeType: ['Fdc3UserInterfaceHandshake'],
+  Fdc3UserInterfaceHelloType: ['Fdc3UserInterfaceHello'],
+  Fdc3UserInterfaceMessageType: [
+    'Fdc3UserInterfaceChannelSelected',
+    'Fdc3UserInterfaceChannels',
+    'Fdc3UserInterfaceDrag',
+    'Fdc3UserInterfaceHandshake',
+    'Fdc3UserInterfaceHello',
+    'Fdc3UserInterfaceResolve',
+    'Fdc3UserInterfaceResolveAction',
+    'Fdc3UserInterfaceRestyle',
+  ],
+  Fdc3UserInterfaceResolveType: ['Fdc3UserInterfaceResolve'],
+  Action: ['cancel', 'click', 'hover'],
+  Fdc3UserInterfaceResolveActionType: ['Fdc3UserInterfaceResolveAction'],
+  Fdc3UserInterfaceRestyleType: ['Fdc3UserInterfaceRestyle'],
+  FindInstancesRequestType: ['findInstancesRequest'],
+  FindInstancesErrors: [
+    'AgentDisconnected',
+    'DesktopAgentNotFound',
+    'IntentDeliveryFailed',
+    'MalformedContext',
+    'MalformedMessage',
+    'NoAppsFound',
+    'NotConnectedToBridge',
+    'ResolverTimeout',
+    'ResolverUnavailable',
+    'ResponseToBridgeTimedOut',
+    'TargetAppUnavailable',
+    'TargetInstanceUnavailable',
+    'UserCancelledResolution',
+  ],
+  FindInstancesResponseType: ['findInstancesResponse'],
+  FindIntentRequestType: ['findIntentRequest'],
+  FindIntentResponseType: ['findIntentResponse'],
+  FindIntentsByContextRequestType: ['findIntentsByContextRequest'],
+  FindIntentsByContextResponseType: ['findIntentsByContextResponse'],
+  GetAppMetadataRequestType: ['getAppMetadataRequest'],
+  GetAppMetadataResponseType: ['getAppMetadataResponse'],
+  GetCurrentChannelRequestType: ['getCurrentChannelRequest'],
+  GetCurrentChannelResponseType: ['getCurrentChannelResponse'],
+  GetCurrentContextRequestType: ['getCurrentContextRequest'],
+  GetCurrentContextResponseType: ['getCurrentContextResponse'],
+  GetInfoRequestType: ['getInfoRequest'],
+  GetInfoResponseType: ['getInfoResponse'],
+  GetOrCreateChannelRequestType: ['getOrCreateChannelRequest'],
+  GetOrCreateChannelResponseType: ['getOrCreateChannelResponse'],
+  GetUserChannelsRequestType: ['getUserChannelsRequest'],
+  GetUserChannelsResponseType: ['getUserChannelsResponse'],
+  HeartbeatAcknowledgementRequestType: ['heartbeatAcknowledgementRequest'],
+  HeartbeatEventType: ['heartbeatEvent'],
+  IntentEventType: ['intentEvent'],
+  IntentListenerUnsubscribeRequestType: ['intentListenerUnsubscribeRequest'],
+  IntentListenerUnsubscribeResponseType: ['intentListenerUnsubscribeResponse'],
+  IntentResultRequestType: ['intentResultRequest'],
+  IntentResultResponseType: ['intentResultResponse'],
+  JoinUserChannelRequestType: ['joinUserChannelRequest'],
+  JoinUserChannelResponseType: ['joinUserChannelResponse'],
+  LeaveCurrentChannelRequestType: ['leaveCurrentChannelRequest'],
+  LeaveCurrentChannelResponseType: ['leaveCurrentChannelResponse'],
+  OpenRequestType: ['openRequest'],
+  OpenErrorResponsePayload: [
+    'AgentDisconnected',
+    'AppNotFound',
+    'AppTimeout',
+    'DesktopAgentNotFound',
+    'ErrorOnLaunch',
+    'MalformedContext',
+    'MalformedMessage',
+    'NotConnectedToBridge',
+    'ResolverUnavailable',
+    'ResponseToBridgeTimedOut',
+  ],
+  OpenResponseType: ['openResponse'],
+  PrivateChannelEventListenerTypes: ['onAddContextListener', 'onDisconnect', 'onUnsubscribe'],
+  PrivateChannelAddEventListenerRequestType: ['privateChannelAddEventListenerRequest'],
+  PrivateChannelAddEventListenerResponseType: ['privateChannelAddEventListenerResponse'],
+  PrivateChannelDisconnectRequestType: ['privateChannelDisconnectRequest'],
+  PrivateChannelDisconnectResponseType: ['privateChannelDisconnectResponse'],
+  PrivateChannelOnAddContextListenerEventType: ['privateChannelOnAddContextListenerEvent'],
+  PrivateChannelOnDisconnectEventType: ['privateChannelOnDisconnectEvent'],
+  PrivateChannelOnUnsubscribeEventType: ['privateChannelOnUnsubscribeEvent'],
+  PrivateChannelUnsubscribeEventListenerRequestType: ['privateChannelUnsubscribeEventListenerRequest'],
+  PrivateChannelUnsubscribeEventListenerResponseType: ['privateChannelUnsubscribeEventListenerResponse'],
+  RaiseIntentForContextRequestType: ['raiseIntentForContextRequest'],
+  RaiseIntentForContextResponseType: ['raiseIntentForContextResponse'],
+  RaiseIntentRequestType: ['raiseIntentRequest'],
+  RaiseIntentResponseType: ['raiseIntentResponse'],
+  RaiseIntentResultResponseType: ['raiseIntentResultResponse'],
+  WebConnectionProtocol1HelloType: ['WCP1Hello'],
+  WebConnectionProtocol2LoadURLType: ['WCP2LoadUrl'],
+  WebConnectionProtocol3HandshakeType: ['WCP3Handshake'],
+  WebConnectionProtocol4ValidateAppIdentityType: ['WCP4ValidateAppIdentity'],
+  WebConnectionProtocol5ValidateAppIdentityFailedResponseType: ['WCP5ValidateAppIdentityFailedResponse'],
+  WebConnectionProtocol5ValidateAppIdentitySuccessResponseType: ['WCP5ValidateAppIdentityResponse'],
+  WebConnectionProtocol6GoodbyeType: ['WCP6Goodbye'],
+  ConnectionStepMessageType: [
+    'WCP1Hello',
+    'WCP2LoadUrl',
+    'WCP3Handshake',
+    'WCP4ValidateAppIdentity',
+    'WCP5ValidateAppIdentityFailedResponse',
+    'WCP5ValidateAppIdentityResponse',
+    'WCP6Goodbye',
+  ],
 };
 
-export type AppRequestMessage = AddContextListenerRequest | AddEventListenerRequest | AddIntentListenerRequest | BroadcastRequest | ContextListenerUnsubscribeRequest | CreatePrivateChannelRequest | EventListenerUnsubscribeRequest | FindInstancesRequest | FindIntentRequest | FindIntentsByContextRequest | GetAppMetadataRequest | GetCurrentChannelRequest | GetCurrentContextRequest | GetInfoRequest | GetOrCreateChannelRequest | GetUserChannelsRequest | HeartbeatAcknowledgementRequest | IntentListenerUnsubscribeRequest | IntentResultRequest | JoinUserChannelRequest | LeaveCurrentChannelRequest | OpenRequest | PrivateChannelAddEventListenerRequest | PrivateChannelDisconnectRequest | PrivateChannelUnsubscribeEventListenerRequest | RaiseIntentForContextRequest | RaiseIntentRequest;
+export type AppRequestMessage =
+  | AddContextListenerRequest
+  | AddEventListenerRequest
+  | AddIntentListenerRequest
+  | BroadcastRequest
+  | ContextListenerUnsubscribeRequest
+  | CreatePrivateChannelRequest
+  | EventListenerUnsubscribeRequest
+  | FindInstancesRequest
+  | FindIntentRequest
+  | FindIntentsByContextRequest
+  | GetAppMetadataRequest
+  | GetCurrentChannelRequest
+  | GetCurrentContextRequest
+  | GetInfoRequest
+  | GetOrCreateChannelRequest
+  | GetUserChannelsRequest
+  | HeartbeatAcknowledgementRequest
+  | IntentListenerUnsubscribeRequest
+  | IntentResultRequest
+  | JoinUserChannelRequest
+  | LeaveCurrentChannelRequest
+  | OpenRequest
+  | PrivateChannelAddEventListenerRequest
+  | PrivateChannelDisconnectRequest
+  | PrivateChannelUnsubscribeEventListenerRequest
+  | RaiseIntentForContextRequest
+  | RaiseIntentRequest;
 
-export type AgentResponseMessage = AddContextListenerResponse | AddEventListenerResponse | AddIntentListenerResponse | BroadcastResponse | ContextListenerUnsubscribeResponse | CreatePrivateChannelResponse | EventListenerUnsubscribeResponse | FindInstancesResponse | FindIntentResponse | FindIntentsByContextResponse | GetAppMetadataResponse | GetCurrentChannelResponse | GetCurrentContextResponse | GetInfoResponse | GetOrCreateChannelResponse | GetUserChannelsResponse | IntentListenerUnsubscribeResponse | IntentResultResponse | JoinUserChannelResponse | LeaveCurrentChannelResponse | OpenResponse | PrivateChannelAddEventListenerResponse | PrivateChannelDisconnectResponse | PrivateChannelUnsubscribeEventListenerResponse | RaiseIntentForContextResponse | RaiseIntentResponse | RaiseIntentResultResponse;
+export type AgentResponseMessage =
+  | AddContextListenerResponse
+  | AddEventListenerResponse
+  | AddIntentListenerResponse
+  | BroadcastResponse
+  | ContextListenerUnsubscribeResponse
+  | CreatePrivateChannelResponse
+  | EventListenerUnsubscribeResponse
+  | FindInstancesResponse
+  | FindIntentResponse
+  | FindIntentsByContextResponse
+  | GetAppMetadataResponse
+  | GetCurrentChannelResponse
+  | GetCurrentContextResponse
+  | GetInfoResponse
+  | GetOrCreateChannelResponse
+  | GetUserChannelsResponse
+  | IntentListenerUnsubscribeResponse
+  | IntentResultResponse
+  | JoinUserChannelResponse
+  | LeaveCurrentChannelResponse
+  | OpenResponse
+  | PrivateChannelAddEventListenerResponse
+  | PrivateChannelDisconnectResponse
+  | PrivateChannelUnsubscribeEventListenerResponse
+  | RaiseIntentForContextResponse
+  | RaiseIntentResponse
+  | RaiseIntentResultResponse;
 
-export type AgentEventMessage = BroadcastEvent | ChannelChangedEvent | HeartbeatEvent | IntentEvent | PrivateChannelOnAddContextListenerEvent | PrivateChannelOnDisconnectEvent | PrivateChannelOnUnsubscribeEvent;
-
-/**
- * Returns true if the value has a type property with value 'WCP1Hello'. This is a fast check that does not check the format of the message
- */
-export function isWebConnectionProtocol1Hello(value: any): value is WebConnectionProtocol1Hello {
-    return value != null && value.type === 'WCP1Hello';
-}
-
-/**
- * Returns true if value is a valid WebConnectionProtocol1Hello. This checks the type against the json schema for the message and will be slower
- */
-export function isValidWebConnectionProtocol1Hello(value: any): value is WebConnectionProtocol1Hello {
-    try {
-        Convert.webConnectionProtocol1HelloToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
-}
-
-export const WEB_CONNECTION_PROTOCOL1_HELLO_TYPE = "WebConnectionProtocol1Hello";
-
-/**
- * Returns true if the value has a type property with value 'WCP2LoadUrl'. This is a fast check that does not check the format of the message
- */
-export function isWebConnectionProtocol2LoadURL(value: any): value is WebConnectionProtocol2LoadURL {
-    return value != null && value.type === 'WCP2LoadUrl';
-}
-
-/**
- * Returns true if value is a valid WebConnectionProtocol2LoadURL. This checks the type against the json schema for the message and will be slower
- */
-export function isValidWebConnectionProtocol2LoadURL(value: any): value is WebConnectionProtocol2LoadURL {
-    try {
-        Convert.webConnectionProtocol2LoadURLToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
-}
-
-export const WEB_CONNECTION_PROTOCOL2_LOAD_U_R_L_TYPE = "WebConnectionProtocol2LoadURL";
-
-/**
- * Returns true if the value has a type property with value 'WCP3Handshake'. This is a fast check that does not check the format of the message
- */
-export function isWebConnectionProtocol3Handshake(value: any): value is WebConnectionProtocol3Handshake {
-    return value != null && value.type === 'WCP3Handshake';
-}
-
-/**
- * Returns true if value is a valid WebConnectionProtocol3Handshake. This checks the type against the json schema for the message and will be slower
- */
-export function isValidWebConnectionProtocol3Handshake(value: any): value is WebConnectionProtocol3Handshake {
-    try {
-        Convert.webConnectionProtocol3HandshakeToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
-}
-
-export const WEB_CONNECTION_PROTOCOL3_HANDSHAKE_TYPE = "WebConnectionProtocol3Handshake";
-
-/**
- * Returns true if the value has a type property with value 'WCP4ValidateAppIdentity'. This is a fast check that does not check the format of the message
- */
-export function isWebConnectionProtocol4ValidateAppIdentity(value: any): value is WebConnectionProtocol4ValidateAppIdentity {
-    return value != null && value.type === 'WCP4ValidateAppIdentity';
-}
-
-/**
- * Returns true if value is a valid WebConnectionProtocol4ValidateAppIdentity. This checks the type against the json schema for the message and will be slower
- */
-export function isValidWebConnectionProtocol4ValidateAppIdentity(value: any): value is WebConnectionProtocol4ValidateAppIdentity {
-    try {
-        Convert.webConnectionProtocol4ValidateAppIdentityToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
-}
-
-export const WEB_CONNECTION_PROTOCOL4_VALIDATE_APP_IDENTITY_TYPE = "WebConnectionProtocol4ValidateAppIdentity";
-
-/**
- * Returns true if the value has a type property with value 'WCP5ValidateAppIdentityFailedResponse'. This is a fast check that does not check the format of the message
- */
-export function isWebConnectionProtocol5ValidateAppIdentityFailedResponse(value: any): value is WebConnectionProtocol5ValidateAppIdentityFailedResponse {
-    return value != null && value.type === 'WCP5ValidateAppIdentityFailedResponse';
-}
-
-/**
- * Returns true if value is a valid WebConnectionProtocol5ValidateAppIdentityFailedResponse. This checks the type against the json schema for the message and will be slower
- */
-export function isValidWebConnectionProtocol5ValidateAppIdentityFailedResponse(value: any): value is WebConnectionProtocol5ValidateAppIdentityFailedResponse {
-    try {
-        Convert.webConnectionProtocol5ValidateAppIdentityFailedResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
-}
-
-export const WEB_CONNECTION_PROTOCOL5_VALIDATE_APP_IDENTITY_FAILED_RESPONSE_TYPE = "WebConnectionProtocol5ValidateAppIdentityFailedResponse";
-
-/**
- * Returns true if the value has a type property with value 'WCP5ValidateAppIdentityResponse'. This is a fast check that does not check the format of the message
- */
-export function isWebConnectionProtocol5ValidateAppIdentitySuccessResponse(value: any): value is WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
-    return value != null && value.type === 'WCP5ValidateAppIdentityResponse';
-}
-
-/**
- * Returns true if value is a valid WebConnectionProtocol5ValidateAppIdentitySuccessResponse. This checks the type against the json schema for the message and will be slower
- */
-export function isValidWebConnectionProtocol5ValidateAppIdentitySuccessResponse(value: any): value is WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
-    try {
-        Convert.webConnectionProtocol5ValidateAppIdentitySuccessResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
-}
-
-export const WEB_CONNECTION_PROTOCOL5_VALIDATE_APP_IDENTITY_SUCCESS_RESPONSE_TYPE = "WebConnectionProtocol5ValidateAppIdentitySuccessResponse";
-
-/**
- * Returns true if the value has a type property with value 'WCP6Goodbye'. This is a fast check that does not check the format of the message
- */
-export function isWebConnectionProtocol6Goodbye(value: any): value is WebConnectionProtocol6Goodbye {
-    return value != null && value.type === 'WCP6Goodbye';
-}
-
-/**
- * Returns true if value is a valid WebConnectionProtocol6Goodbye. This checks the type against the json schema for the message and will be slower
- */
-export function isValidWebConnectionProtocol6Goodbye(value: any): value is WebConnectionProtocol6Goodbye {
-    try {
-        Convert.webConnectionProtocol6GoodbyeToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
-}
-
-export const WEB_CONNECTION_PROTOCOL6_GOODBYE_TYPE = "WebConnectionProtocol6Goodbye";
-
-/**
- * Returns true if value is a valid WebConnectionProtocolMessage. This checks the type against the json schema for the message and will be slower
- */
-export function isValidWebConnectionProtocolMessage(value: any): value is WebConnectionProtocolMessage {
-    try {
-        Convert.webConnectionProtocolMessageToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
-}
-
-export const WEB_CONNECTION_PROTOCOL_MESSAGE_TYPE = "WebConnectionProtocolMessage";
+export type AgentEventMessage =
+  | BroadcastEvent
+  | ChannelChangedEvent
+  | HeartbeatEvent
+  | IntentEvent
+  | PrivateChannelOnAddContextListenerEvent
+  | PrivateChannelOnDisconnectEvent
+  | PrivateChannelOnUnsubscribeEvent;
 
 /**
  * Returns true if the value has a type property with value 'addContextListenerRequest'. This is a fast check that does not check the format of the message
  */
 export function isAddContextListenerRequest(value: any): value is AddContextListenerRequest {
-    return value != null && value.type === 'addContextListenerRequest';
+  return value != null && value.type === 'addContextListenerRequest';
 }
 
 /**
  * Returns true if value is a valid AddContextListenerRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidAddContextListenerRequest(value: any): value is AddContextListenerRequest {
-    try {
-        Convert.addContextListenerRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.addContextListenerRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const ADD_CONTEXT_LISTENER_REQUEST_TYPE = "AddContextListenerRequest";
+export const ADD_CONTEXT_LISTENER_REQUEST_TYPE = 'AddContextListenerRequest';
 
 /**
  * Returns true if the value has a type property with value 'addContextListenerResponse'. This is a fast check that does not check the format of the message
  */
 export function isAddContextListenerResponse(value: any): value is AddContextListenerResponse {
-    return value != null && value.type === 'addContextListenerResponse';
+  return value != null && value.type === 'addContextListenerResponse';
 }
 
 /**
  * Returns true if value is a valid AddContextListenerResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidAddContextListenerResponse(value: any): value is AddContextListenerResponse {
-    try {
-        Convert.addContextListenerResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.addContextListenerResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const ADD_CONTEXT_LISTENER_RESPONSE_TYPE = "AddContextListenerResponse";
+export const ADD_CONTEXT_LISTENER_RESPONSE_TYPE = 'AddContextListenerResponse';
 
 /**
  * Returns true if the value has a type property with value 'addEventListenerRequest'. This is a fast check that does not check the format of the message
  */
 export function isAddEventListenerRequest(value: any): value is AddEventListenerRequest {
-    return value != null && value.type === 'addEventListenerRequest';
+  return value != null && value.type === 'addEventListenerRequest';
 }
 
 /**
  * Returns true if value is a valid AddEventListenerRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidAddEventListenerRequest(value: any): value is AddEventListenerRequest {
-    try {
-        Convert.addEventListenerRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.addEventListenerRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const ADD_EVENT_LISTENER_REQUEST_TYPE = "AddEventListenerRequest";
+export const ADD_EVENT_LISTENER_REQUEST_TYPE = 'AddEventListenerRequest';
 
 /**
  * Returns true if the value has a type property with value 'addEventListenerResponse'. This is a fast check that does not check the format of the message
  */
 export function isAddEventListenerResponse(value: any): value is AddEventListenerResponse {
-    return value != null && value.type === 'addEventListenerResponse';
+  return value != null && value.type === 'addEventListenerResponse';
 }
 
 /**
  * Returns true if value is a valid AddEventListenerResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidAddEventListenerResponse(value: any): value is AddEventListenerResponse {
-    try {
-        Convert.addEventListenerResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.addEventListenerResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const ADD_EVENT_LISTENER_RESPONSE_TYPE = "AddEventListenerResponse";
+export const ADD_EVENT_LISTENER_RESPONSE_TYPE = 'AddEventListenerResponse';
 
 /**
  * Returns true if the value has a type property with value 'addIntentListenerRequest'. This is a fast check that does not check the format of the message
  */
 export function isAddIntentListenerRequest(value: any): value is AddIntentListenerRequest {
-    return value != null && value.type === 'addIntentListenerRequest';
+  return value != null && value.type === 'addIntentListenerRequest';
 }
 
 /**
  * Returns true if value is a valid AddIntentListenerRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidAddIntentListenerRequest(value: any): value is AddIntentListenerRequest {
-    try {
-        Convert.addIntentListenerRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.addIntentListenerRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const ADD_INTENT_LISTENER_REQUEST_TYPE = "AddIntentListenerRequest";
+export const ADD_INTENT_LISTENER_REQUEST_TYPE = 'AddIntentListenerRequest';
 
 /**
  * Returns true if the value has a type property with value 'addIntentListenerResponse'. This is a fast check that does not check the format of the message
  */
 export function isAddIntentListenerResponse(value: any): value is AddIntentListenerResponse {
-    return value != null && value.type === 'addIntentListenerResponse';
+  return value != null && value.type === 'addIntentListenerResponse';
 }
 
 /**
  * Returns true if value is a valid AddIntentListenerResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidAddIntentListenerResponse(value: any): value is AddIntentListenerResponse {
-    try {
-        Convert.addIntentListenerResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.addIntentListenerResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const ADD_INTENT_LISTENER_RESPONSE_TYPE = "AddIntentListenerResponse";
+export const ADD_INTENT_LISTENER_RESPONSE_TYPE = 'AddIntentListenerResponse';
 
 /**
  * Returns true if the value has a type property with value 'broadcastEvent'. This is a fast check that does not check the format of the message
  */
 export function isBroadcastEvent(value: any): value is BroadcastEvent {
-    return value != null && value.type === 'broadcastEvent';
+  return value != null && value.type === 'broadcastEvent';
 }
 
 /**
  * Returns true if value is a valid BroadcastEvent. This checks the type against the json schema for the message and will be slower
  */
 export function isValidBroadcastEvent(value: any): value is BroadcastEvent {
-    try {
-        Convert.broadcastEventToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.broadcastEventToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const BROADCAST_EVENT_TYPE = "BroadcastEvent";
+export const BROADCAST_EVENT_TYPE = 'BroadcastEvent';
 
 /**
  * Returns true if the value has a type property with value 'broadcastRequest'. This is a fast check that does not check the format of the message
  */
 export function isBroadcastRequest(value: any): value is BroadcastRequest {
-    return value != null && value.type === 'broadcastRequest';
+  return value != null && value.type === 'broadcastRequest';
 }
 
 /**
  * Returns true if value is a valid BroadcastRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidBroadcastRequest(value: any): value is BroadcastRequest {
-    try {
-        Convert.broadcastRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.broadcastRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const BROADCAST_REQUEST_TYPE = "BroadcastRequest";
+export const BROADCAST_REQUEST_TYPE = 'BroadcastRequest';
 
 /**
  * Returns true if the value has a type property with value 'broadcastResponse'. This is a fast check that does not check the format of the message
  */
 export function isBroadcastResponse(value: any): value is BroadcastResponse {
-    return value != null && value.type === 'broadcastResponse';
+  return value != null && value.type === 'broadcastResponse';
 }
 
 /**
  * Returns true if value is a valid BroadcastResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidBroadcastResponse(value: any): value is BroadcastResponse {
-    try {
-        Convert.broadcastResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.broadcastResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const BROADCAST_RESPONSE_TYPE = "BroadcastResponse";
+export const BROADCAST_RESPONSE_TYPE = 'BroadcastResponse';
 
 /**
  * Returns true if the value has a type property with value 'channelChangedEvent'. This is a fast check that does not check the format of the message
  */
 export function isChannelChangedEvent(value: any): value is ChannelChangedEvent {
-    return value != null && value.type === 'channelChangedEvent';
+  return value != null && value.type === 'channelChangedEvent';
 }
 
 /**
  * Returns true if value is a valid ChannelChangedEvent. This checks the type against the json schema for the message and will be slower
  */
 export function isValidChannelChangedEvent(value: any): value is ChannelChangedEvent {
-    try {
-        Convert.channelChangedEventToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.channelChangedEventToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const CHANNEL_CHANGED_EVENT_TYPE = "ChannelChangedEvent";
+export const CHANNEL_CHANGED_EVENT_TYPE = 'ChannelChangedEvent';
 
 /**
  * Returns true if the value has a type property with value 'contextListenerUnsubscribeRequest'. This is a fast check that does not check the format of the message
  */
 export function isContextListenerUnsubscribeRequest(value: any): value is ContextListenerUnsubscribeRequest {
-    return value != null && value.type === 'contextListenerUnsubscribeRequest';
+  return value != null && value.type === 'contextListenerUnsubscribeRequest';
 }
 
 /**
  * Returns true if value is a valid ContextListenerUnsubscribeRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidContextListenerUnsubscribeRequest(value: any): value is ContextListenerUnsubscribeRequest {
-    try {
-        Convert.contextListenerUnsubscribeRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.contextListenerUnsubscribeRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const CONTEXT_LISTENER_UNSUBSCRIBE_REQUEST_TYPE = "ContextListenerUnsubscribeRequest";
+export const CONTEXT_LISTENER_UNSUBSCRIBE_REQUEST_TYPE = 'ContextListenerUnsubscribeRequest';
 
 /**
  * Returns true if the value has a type property with value 'contextListenerUnsubscribeResponse'. This is a fast check that does not check the format of the message
  */
 export function isContextListenerUnsubscribeResponse(value: any): value is ContextListenerUnsubscribeResponse {
-    return value != null && value.type === 'contextListenerUnsubscribeResponse';
+  return value != null && value.type === 'contextListenerUnsubscribeResponse';
 }
 
 /**
  * Returns true if value is a valid ContextListenerUnsubscribeResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidContextListenerUnsubscribeResponse(value: any): value is ContextListenerUnsubscribeResponse {
-    try {
-        Convert.contextListenerUnsubscribeResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.contextListenerUnsubscribeResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const CONTEXT_LISTENER_UNSUBSCRIBE_RESPONSE_TYPE = "ContextListenerUnsubscribeResponse";
+export const CONTEXT_LISTENER_UNSUBSCRIBE_RESPONSE_TYPE = 'ContextListenerUnsubscribeResponse';
 
 /**
  * Returns true if the value has a type property with value 'createPrivateChannelRequest'. This is a fast check that does not check the format of the message
  */
 export function isCreatePrivateChannelRequest(value: any): value is CreatePrivateChannelRequest {
-    return value != null && value.type === 'createPrivateChannelRequest';
+  return value != null && value.type === 'createPrivateChannelRequest';
 }
 
 /**
  * Returns true if value is a valid CreatePrivateChannelRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidCreatePrivateChannelRequest(value: any): value is CreatePrivateChannelRequest {
-    try {
-        Convert.createPrivateChannelRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.createPrivateChannelRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const CREATE_PRIVATE_CHANNEL_REQUEST_TYPE = "CreatePrivateChannelRequest";
+export const CREATE_PRIVATE_CHANNEL_REQUEST_TYPE = 'CreatePrivateChannelRequest';
 
 /**
  * Returns true if the value has a type property with value 'createPrivateChannelResponse'. This is a fast check that does not check the format of the message
  */
 export function isCreatePrivateChannelResponse(value: any): value is CreatePrivateChannelResponse {
-    return value != null && value.type === 'createPrivateChannelResponse';
+  return value != null && value.type === 'createPrivateChannelResponse';
 }
 
 /**
  * Returns true if value is a valid CreatePrivateChannelResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidCreatePrivateChannelResponse(value: any): value is CreatePrivateChannelResponse {
-    try {
-        Convert.createPrivateChannelResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.createPrivateChannelResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const CREATE_PRIVATE_CHANNEL_RESPONSE_TYPE = "CreatePrivateChannelResponse";
+export const CREATE_PRIVATE_CHANNEL_RESPONSE_TYPE = 'CreatePrivateChannelResponse';
 
 /**
  * Returns true if the value has a type property with value 'eventListenerUnsubscribeRequest'. This is a fast check that does not check the format of the message
  */
 export function isEventListenerUnsubscribeRequest(value: any): value is EventListenerUnsubscribeRequest {
-    return value != null && value.type === 'eventListenerUnsubscribeRequest';
+  return value != null && value.type === 'eventListenerUnsubscribeRequest';
 }
 
 /**
  * Returns true if value is a valid EventListenerUnsubscribeRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidEventListenerUnsubscribeRequest(value: any): value is EventListenerUnsubscribeRequest {
-    try {
-        Convert.eventListenerUnsubscribeRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.eventListenerUnsubscribeRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const EVENT_LISTENER_UNSUBSCRIBE_REQUEST_TYPE = "EventListenerUnsubscribeRequest";
+export const EVENT_LISTENER_UNSUBSCRIBE_REQUEST_TYPE = 'EventListenerUnsubscribeRequest';
 
 /**
  * Returns true if the value has a type property with value 'eventListenerUnsubscribeResponse'. This is a fast check that does not check the format of the message
  */
 export function isEventListenerUnsubscribeResponse(value: any): value is EventListenerUnsubscribeResponse {
-    return value != null && value.type === 'eventListenerUnsubscribeResponse';
+  return value != null && value.type === 'eventListenerUnsubscribeResponse';
 }
 
 /**
  * Returns true if value is a valid EventListenerUnsubscribeResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidEventListenerUnsubscribeResponse(value: any): value is EventListenerUnsubscribeResponse {
-    try {
-        Convert.eventListenerUnsubscribeResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.eventListenerUnsubscribeResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const EVENT_LISTENER_UNSUBSCRIBE_RESPONSE_TYPE = "EventListenerUnsubscribeResponse";
-
-/**
- * Returns true if the value has a type property with value 'Fdc3UserInterfaceChannelSelected'. This is a fast check that does not check the format of the message
- */
-export function isFdc3UserInterfaceChannelSelected(value: any): value is Fdc3UserInterfaceChannelSelected {
-    return value != null && value.type === 'Fdc3UserInterfaceChannelSelected';
-}
-
-/**
- * Returns true if value is a valid Fdc3UserInterfaceChannelSelected. This checks the type against the json schema for the message and will be slower
- */
-export function isValidFdc3UserInterfaceChannelSelected(value: any): value is Fdc3UserInterfaceChannelSelected {
-    try {
-        Convert.fdc3UserInterfaceChannelSelectedToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
-}
-
-export const FDC3_USER_INTERFACE_CHANNEL_SELECTED_TYPE = "Fdc3UserInterfaceChannelSelected";
+export const EVENT_LISTENER_UNSUBSCRIBE_RESPONSE_TYPE = 'EventListenerUnsubscribeResponse';
 
 /**
  * Returns true if the value has a type property with value 'Fdc3UserInterfaceChannels'. This is a fast check that does not check the format of the message
  */
 export function isFdc3UserInterfaceChannels(value: any): value is Fdc3UserInterfaceChannels {
-    return value != null && value.type === 'Fdc3UserInterfaceChannels';
+  return value != null && value.type === 'Fdc3UserInterfaceChannels';
 }
 
 /**
  * Returns true if value is a valid Fdc3UserInterfaceChannels. This checks the type against the json schema for the message and will be slower
  */
 export function isValidFdc3UserInterfaceChannels(value: any): value is Fdc3UserInterfaceChannels {
-    try {
-        Convert.fdc3UserInterfaceChannelsToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.fdc3UserInterfaceChannelsToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const FDC3_USER_INTERFACE_CHANNELS_TYPE = "Fdc3UserInterfaceChannels";
+export const FDC3_USER_INTERFACE_CHANNELS_TYPE = 'Fdc3UserInterfaceChannels';
+
+/**
+ * Returns true if the value has a type property with value 'Fdc3UserInterfaceChannelSelected'. This is a fast check that does not check the format of the message
+ */
+export function isFdc3UserInterfaceChannelSelected(value: any): value is Fdc3UserInterfaceChannelSelected {
+  return value != null && value.type === 'Fdc3UserInterfaceChannelSelected';
+}
+
+/**
+ * Returns true if value is a valid Fdc3UserInterfaceChannelSelected. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidFdc3UserInterfaceChannelSelected(value: any): value is Fdc3UserInterfaceChannelSelected {
+  try {
+    Convert.fdc3UserInterfaceChannelSelectedToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const FDC3_USER_INTERFACE_CHANNEL_SELECTED_TYPE = 'Fdc3UserInterfaceChannelSelected';
 
 /**
  * Returns true if the value has a type property with value 'Fdc3UserInterfaceDrag'. This is a fast check that does not check the format of the message
  */
 export function isFdc3UserInterfaceDrag(value: any): value is Fdc3UserInterfaceDrag {
-    return value != null && value.type === 'Fdc3UserInterfaceDrag';
+  return value != null && value.type === 'Fdc3UserInterfaceDrag';
 }
 
 /**
  * Returns true if value is a valid Fdc3UserInterfaceDrag. This checks the type against the json schema for the message and will be slower
  */
 export function isValidFdc3UserInterfaceDrag(value: any): value is Fdc3UserInterfaceDrag {
-    try {
-        Convert.fdc3UserInterfaceDragToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.fdc3UserInterfaceDragToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const FDC3_USER_INTERFACE_DRAG_TYPE = "Fdc3UserInterfaceDrag";
+export const FDC3_USER_INTERFACE_DRAG_TYPE = 'Fdc3UserInterfaceDrag';
 
 /**
  * Returns true if the value has a type property with value 'Fdc3UserInterfaceHandshake'. This is a fast check that does not check the format of the message
  */
 export function isFdc3UserInterfaceHandshake(value: any): value is Fdc3UserInterfaceHandshake {
-    return value != null && value.type === 'Fdc3UserInterfaceHandshake';
+  return value != null && value.type === 'Fdc3UserInterfaceHandshake';
 }
 
 /**
  * Returns true if value is a valid Fdc3UserInterfaceHandshake. This checks the type against the json schema for the message and will be slower
  */
 export function isValidFdc3UserInterfaceHandshake(value: any): value is Fdc3UserInterfaceHandshake {
-    try {
-        Convert.fdc3UserInterfaceHandshakeToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.fdc3UserInterfaceHandshakeToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const FDC3_USER_INTERFACE_HANDSHAKE_TYPE = "Fdc3UserInterfaceHandshake";
+export const FDC3_USER_INTERFACE_HANDSHAKE_TYPE = 'Fdc3UserInterfaceHandshake';
 
 /**
  * Returns true if the value has a type property with value 'Fdc3UserInterfaceHello'. This is a fast check that does not check the format of the message
  */
 export function isFdc3UserInterfaceHello(value: any): value is Fdc3UserInterfaceHello {
-    return value != null && value.type === 'Fdc3UserInterfaceHello';
+  return value != null && value.type === 'Fdc3UserInterfaceHello';
 }
 
 /**
  * Returns true if value is a valid Fdc3UserInterfaceHello. This checks the type against the json schema for the message and will be slower
  */
 export function isValidFdc3UserInterfaceHello(value: any): value is Fdc3UserInterfaceHello {
-    try {
-        Convert.fdc3UserInterfaceHelloToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.fdc3UserInterfaceHelloToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const FDC3_USER_INTERFACE_HELLO_TYPE = "Fdc3UserInterfaceHello";
+export const FDC3_USER_INTERFACE_HELLO_TYPE = 'Fdc3UserInterfaceHello';
 
 /**
  * Returns true if value is a valid Fdc3UserInterfaceMessage. This checks the type against the json schema for the message and will be slower
  */
 export function isValidFdc3UserInterfaceMessage(value: any): value is Fdc3UserInterfaceMessage {
-    try {
-        Convert.fdc3UserInterfaceMessageToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.fdc3UserInterfaceMessageToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const FDC3_USER_INTERFACE_MESSAGE_TYPE = "Fdc3UserInterfaceMessage";
+export const FDC3_USER_INTERFACE_MESSAGE_TYPE = 'Fdc3UserInterfaceMessage';
 
 /**
  * Returns true if the value has a type property with value 'Fdc3UserInterfaceResolve'. This is a fast check that does not check the format of the message
  */
 export function isFdc3UserInterfaceResolve(value: any): value is Fdc3UserInterfaceResolve {
-    return value != null && value.type === 'Fdc3UserInterfaceResolve';
+  return value != null && value.type === 'Fdc3UserInterfaceResolve';
 }
 
 /**
  * Returns true if value is a valid Fdc3UserInterfaceResolve. This checks the type against the json schema for the message and will be slower
  */
 export function isValidFdc3UserInterfaceResolve(value: any): value is Fdc3UserInterfaceResolve {
-    try {
-        Convert.fdc3UserInterfaceResolveToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.fdc3UserInterfaceResolveToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const FDC3_USER_INTERFACE_RESOLVE_TYPE = "Fdc3UserInterfaceResolve";
+export const FDC3_USER_INTERFACE_RESOLVE_TYPE = 'Fdc3UserInterfaceResolve';
 
 /**
  * Returns true if the value has a type property with value 'Fdc3UserInterfaceResolveAction'. This is a fast check that does not check the format of the message
  */
 export function isFdc3UserInterfaceResolveAction(value: any): value is Fdc3UserInterfaceResolveAction {
-    return value != null && value.type === 'Fdc3UserInterfaceResolveAction';
+  return value != null && value.type === 'Fdc3UserInterfaceResolveAction';
 }
 
 /**
  * Returns true if value is a valid Fdc3UserInterfaceResolveAction. This checks the type against the json schema for the message and will be slower
  */
 export function isValidFdc3UserInterfaceResolveAction(value: any): value is Fdc3UserInterfaceResolveAction {
-    try {
-        Convert.fdc3UserInterfaceResolveActionToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.fdc3UserInterfaceResolveActionToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE = "Fdc3UserInterfaceResolveAction";
+export const FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE = 'Fdc3UserInterfaceResolveAction';
 
 /**
  * Returns true if the value has a type property with value 'Fdc3UserInterfaceRestyle'. This is a fast check that does not check the format of the message
  */
 export function isFdc3UserInterfaceRestyle(value: any): value is Fdc3UserInterfaceRestyle {
-    return value != null && value.type === 'Fdc3UserInterfaceRestyle';
+  return value != null && value.type === 'Fdc3UserInterfaceRestyle';
 }
 
 /**
  * Returns true if value is a valid Fdc3UserInterfaceRestyle. This checks the type against the json schema for the message and will be slower
  */
 export function isValidFdc3UserInterfaceRestyle(value: any): value is Fdc3UserInterfaceRestyle {
-    try {
-        Convert.fdc3UserInterfaceRestyleToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.fdc3UserInterfaceRestyleToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const FDC3_USER_INTERFACE_RESTYLE_TYPE = "Fdc3UserInterfaceRestyle";
+export const FDC3_USER_INTERFACE_RESTYLE_TYPE = 'Fdc3UserInterfaceRestyle';
 
 /**
  * Returns true if the value has a type property with value 'findInstancesRequest'. This is a fast check that does not check the format of the message
  */
 export function isFindInstancesRequest(value: any): value is FindInstancesRequest {
-    return value != null && value.type === 'findInstancesRequest';
+  return value != null && value.type === 'findInstancesRequest';
 }
 
 /**
  * Returns true if value is a valid FindInstancesRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidFindInstancesRequest(value: any): value is FindInstancesRequest {
-    try {
-        Convert.findInstancesRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.findInstancesRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const FIND_INSTANCES_REQUEST_TYPE = "FindInstancesRequest";
+export const FIND_INSTANCES_REQUEST_TYPE = 'FindInstancesRequest';
 
 /**
  * Returns true if the value has a type property with value 'findInstancesResponse'. This is a fast check that does not check the format of the message
  */
 export function isFindInstancesResponse(value: any): value is FindInstancesResponse {
-    return value != null && value.type === 'findInstancesResponse';
+  return value != null && value.type === 'findInstancesResponse';
 }
 
 /**
  * Returns true if value is a valid FindInstancesResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidFindInstancesResponse(value: any): value is FindInstancesResponse {
-    try {
-        Convert.findInstancesResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.findInstancesResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const FIND_INSTANCES_RESPONSE_TYPE = "FindInstancesResponse";
+export const FIND_INSTANCES_RESPONSE_TYPE = 'FindInstancesResponse';
 
 /**
  * Returns true if the value has a type property with value 'findIntentRequest'. This is a fast check that does not check the format of the message
  */
 export function isFindIntentRequest(value: any): value is FindIntentRequest {
-    return value != null && value.type === 'findIntentRequest';
+  return value != null && value.type === 'findIntentRequest';
 }
 
 /**
  * Returns true if value is a valid FindIntentRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidFindIntentRequest(value: any): value is FindIntentRequest {
-    try {
-        Convert.findIntentRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.findIntentRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const FIND_INTENT_REQUEST_TYPE = "FindIntentRequest";
+export const FIND_INTENT_REQUEST_TYPE = 'FindIntentRequest';
 
 /**
  * Returns true if the value has a type property with value 'findIntentResponse'. This is a fast check that does not check the format of the message
  */
 export function isFindIntentResponse(value: any): value is FindIntentResponse {
-    return value != null && value.type === 'findIntentResponse';
+  return value != null && value.type === 'findIntentResponse';
 }
 
 /**
  * Returns true if value is a valid FindIntentResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidFindIntentResponse(value: any): value is FindIntentResponse {
-    try {
-        Convert.findIntentResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.findIntentResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const FIND_INTENT_RESPONSE_TYPE = "FindIntentResponse";
+export const FIND_INTENT_RESPONSE_TYPE = 'FindIntentResponse';
 
 /**
  * Returns true if the value has a type property with value 'findIntentsByContextRequest'. This is a fast check that does not check the format of the message
  */
 export function isFindIntentsByContextRequest(value: any): value is FindIntentsByContextRequest {
-    return value != null && value.type === 'findIntentsByContextRequest';
+  return value != null && value.type === 'findIntentsByContextRequest';
 }
 
 /**
  * Returns true if value is a valid FindIntentsByContextRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidFindIntentsByContextRequest(value: any): value is FindIntentsByContextRequest {
-    try {
-        Convert.findIntentsByContextRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.findIntentsByContextRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const FIND_INTENTS_BY_CONTEXT_REQUEST_TYPE = "FindIntentsByContextRequest";
+export const FIND_INTENTS_BY_CONTEXT_REQUEST_TYPE = 'FindIntentsByContextRequest';
 
 /**
  * Returns true if the value has a type property with value 'findIntentsByContextResponse'. This is a fast check that does not check the format of the message
  */
 export function isFindIntentsByContextResponse(value: any): value is FindIntentsByContextResponse {
-    return value != null && value.type === 'findIntentsByContextResponse';
+  return value != null && value.type === 'findIntentsByContextResponse';
 }
 
 /**
  * Returns true if value is a valid FindIntentsByContextResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidFindIntentsByContextResponse(value: any): value is FindIntentsByContextResponse {
-    try {
-        Convert.findIntentsByContextResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.findIntentsByContextResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const FIND_INTENTS_BY_CONTEXT_RESPONSE_TYPE = "FindIntentsByContextResponse";
+export const FIND_INTENTS_BY_CONTEXT_RESPONSE_TYPE = 'FindIntentsByContextResponse';
 
 /**
  * Returns true if the value has a type property with value 'getAppMetadataRequest'. This is a fast check that does not check the format of the message
  */
 export function isGetAppMetadataRequest(value: any): value is GetAppMetadataRequest {
-    return value != null && value.type === 'getAppMetadataRequest';
+  return value != null && value.type === 'getAppMetadataRequest';
 }
 
 /**
  * Returns true if value is a valid GetAppMetadataRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidGetAppMetadataRequest(value: any): value is GetAppMetadataRequest {
-    try {
-        Convert.getAppMetadataRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.getAppMetadataRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const GET_APP_METADATA_REQUEST_TYPE = "GetAppMetadataRequest";
+export const GET_APP_METADATA_REQUEST_TYPE = 'GetAppMetadataRequest';
 
 /**
  * Returns true if the value has a type property with value 'getAppMetadataResponse'. This is a fast check that does not check the format of the message
  */
 export function isGetAppMetadataResponse(value: any): value is GetAppMetadataResponse {
-    return value != null && value.type === 'getAppMetadataResponse';
+  return value != null && value.type === 'getAppMetadataResponse';
 }
 
 /**
  * Returns true if value is a valid GetAppMetadataResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidGetAppMetadataResponse(value: any): value is GetAppMetadataResponse {
-    try {
-        Convert.getAppMetadataResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.getAppMetadataResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const GET_APP_METADATA_RESPONSE_TYPE = "GetAppMetadataResponse";
+export const GET_APP_METADATA_RESPONSE_TYPE = 'GetAppMetadataResponse';
 
 /**
  * Returns true if the value has a type property with value 'getCurrentChannelRequest'. This is a fast check that does not check the format of the message
  */
 export function isGetCurrentChannelRequest(value: any): value is GetCurrentChannelRequest {
-    return value != null && value.type === 'getCurrentChannelRequest';
+  return value != null && value.type === 'getCurrentChannelRequest';
 }
 
 /**
  * Returns true if value is a valid GetCurrentChannelRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidGetCurrentChannelRequest(value: any): value is GetCurrentChannelRequest {
-    try {
-        Convert.getCurrentChannelRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.getCurrentChannelRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const GET_CURRENT_CHANNEL_REQUEST_TYPE = "GetCurrentChannelRequest";
+export const GET_CURRENT_CHANNEL_REQUEST_TYPE = 'GetCurrentChannelRequest';
 
 /**
  * Returns true if the value has a type property with value 'getCurrentChannelResponse'. This is a fast check that does not check the format of the message
  */
 export function isGetCurrentChannelResponse(value: any): value is GetCurrentChannelResponse {
-    return value != null && value.type === 'getCurrentChannelResponse';
+  return value != null && value.type === 'getCurrentChannelResponse';
 }
 
 /**
  * Returns true if value is a valid GetCurrentChannelResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidGetCurrentChannelResponse(value: any): value is GetCurrentChannelResponse {
-    try {
-        Convert.getCurrentChannelResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.getCurrentChannelResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const GET_CURRENT_CHANNEL_RESPONSE_TYPE = "GetCurrentChannelResponse";
+export const GET_CURRENT_CHANNEL_RESPONSE_TYPE = 'GetCurrentChannelResponse';
 
 /**
  * Returns true if the value has a type property with value 'getCurrentContextRequest'. This is a fast check that does not check the format of the message
  */
 export function isGetCurrentContextRequest(value: any): value is GetCurrentContextRequest {
-    return value != null && value.type === 'getCurrentContextRequest';
+  return value != null && value.type === 'getCurrentContextRequest';
 }
 
 /**
  * Returns true if value is a valid GetCurrentContextRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidGetCurrentContextRequest(value: any): value is GetCurrentContextRequest {
-    try {
-        Convert.getCurrentContextRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.getCurrentContextRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const GET_CURRENT_CONTEXT_REQUEST_TYPE = "GetCurrentContextRequest";
+export const GET_CURRENT_CONTEXT_REQUEST_TYPE = 'GetCurrentContextRequest';
 
 /**
  * Returns true if the value has a type property with value 'getCurrentContextResponse'. This is a fast check that does not check the format of the message
  */
 export function isGetCurrentContextResponse(value: any): value is GetCurrentContextResponse {
-    return value != null && value.type === 'getCurrentContextResponse';
+  return value != null && value.type === 'getCurrentContextResponse';
 }
 
 /**
  * Returns true if value is a valid GetCurrentContextResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidGetCurrentContextResponse(value: any): value is GetCurrentContextResponse {
-    try {
-        Convert.getCurrentContextResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.getCurrentContextResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const GET_CURRENT_CONTEXT_RESPONSE_TYPE = "GetCurrentContextResponse";
+export const GET_CURRENT_CONTEXT_RESPONSE_TYPE = 'GetCurrentContextResponse';
 
 /**
  * Returns true if the value has a type property with value 'getInfoRequest'. This is a fast check that does not check the format of the message
  */
 export function isGetInfoRequest(value: any): value is GetInfoRequest {
-    return value != null && value.type === 'getInfoRequest';
+  return value != null && value.type === 'getInfoRequest';
 }
 
 /**
  * Returns true if value is a valid GetInfoRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidGetInfoRequest(value: any): value is GetInfoRequest {
-    try {
-        Convert.getInfoRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.getInfoRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const GET_INFO_REQUEST_TYPE = "GetInfoRequest";
+export const GET_INFO_REQUEST_TYPE = 'GetInfoRequest';
 
 /**
  * Returns true if the value has a type property with value 'getInfoResponse'. This is a fast check that does not check the format of the message
  */
 export function isGetInfoResponse(value: any): value is GetInfoResponse {
-    return value != null && value.type === 'getInfoResponse';
+  return value != null && value.type === 'getInfoResponse';
 }
 
 /**
  * Returns true if value is a valid GetInfoResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidGetInfoResponse(value: any): value is GetInfoResponse {
-    try {
-        Convert.getInfoResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.getInfoResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const GET_INFO_RESPONSE_TYPE = "GetInfoResponse";
+export const GET_INFO_RESPONSE_TYPE = 'GetInfoResponse';
 
 /**
  * Returns true if the value has a type property with value 'getOrCreateChannelRequest'. This is a fast check that does not check the format of the message
  */
 export function isGetOrCreateChannelRequest(value: any): value is GetOrCreateChannelRequest {
-    return value != null && value.type === 'getOrCreateChannelRequest';
+  return value != null && value.type === 'getOrCreateChannelRequest';
 }
 
 /**
  * Returns true if value is a valid GetOrCreateChannelRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidGetOrCreateChannelRequest(value: any): value is GetOrCreateChannelRequest {
-    try {
-        Convert.getOrCreateChannelRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.getOrCreateChannelRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const GET_OR_CREATE_CHANNEL_REQUEST_TYPE = "GetOrCreateChannelRequest";
+export const GET_OR_CREATE_CHANNEL_REQUEST_TYPE = 'GetOrCreateChannelRequest';
 
 /**
  * Returns true if the value has a type property with value 'getOrCreateChannelResponse'. This is a fast check that does not check the format of the message
  */
 export function isGetOrCreateChannelResponse(value: any): value is GetOrCreateChannelResponse {
-    return value != null && value.type === 'getOrCreateChannelResponse';
+  return value != null && value.type === 'getOrCreateChannelResponse';
 }
 
 /**
  * Returns true if value is a valid GetOrCreateChannelResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidGetOrCreateChannelResponse(value: any): value is GetOrCreateChannelResponse {
-    try {
-        Convert.getOrCreateChannelResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.getOrCreateChannelResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const GET_OR_CREATE_CHANNEL_RESPONSE_TYPE = "GetOrCreateChannelResponse";
+export const GET_OR_CREATE_CHANNEL_RESPONSE_TYPE = 'GetOrCreateChannelResponse';
 
 /**
  * Returns true if the value has a type property with value 'getUserChannelsRequest'. This is a fast check that does not check the format of the message
  */
 export function isGetUserChannelsRequest(value: any): value is GetUserChannelsRequest {
-    return value != null && value.type === 'getUserChannelsRequest';
+  return value != null && value.type === 'getUserChannelsRequest';
 }
 
 /**
  * Returns true if value is a valid GetUserChannelsRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidGetUserChannelsRequest(value: any): value is GetUserChannelsRequest {
-    try {
-        Convert.getUserChannelsRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.getUserChannelsRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const GET_USER_CHANNELS_REQUEST_TYPE = "GetUserChannelsRequest";
+export const GET_USER_CHANNELS_REQUEST_TYPE = 'GetUserChannelsRequest';
 
 /**
  * Returns true if the value has a type property with value 'getUserChannelsResponse'. This is a fast check that does not check the format of the message
  */
 export function isGetUserChannelsResponse(value: any): value is GetUserChannelsResponse {
-    return value != null && value.type === 'getUserChannelsResponse';
+  return value != null && value.type === 'getUserChannelsResponse';
 }
 
 /**
  * Returns true if value is a valid GetUserChannelsResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidGetUserChannelsResponse(value: any): value is GetUserChannelsResponse {
-    try {
-        Convert.getUserChannelsResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.getUserChannelsResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const GET_USER_CHANNELS_RESPONSE_TYPE = "GetUserChannelsResponse";
+export const GET_USER_CHANNELS_RESPONSE_TYPE = 'GetUserChannelsResponse';
 
 /**
  * Returns true if the value has a type property with value 'heartbeatAcknowledgementRequest'. This is a fast check that does not check the format of the message
  */
 export function isHeartbeatAcknowledgementRequest(value: any): value is HeartbeatAcknowledgementRequest {
-    return value != null && value.type === 'heartbeatAcknowledgementRequest';
+  return value != null && value.type === 'heartbeatAcknowledgementRequest';
 }
 
 /**
  * Returns true if value is a valid HeartbeatAcknowledgementRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidHeartbeatAcknowledgementRequest(value: any): value is HeartbeatAcknowledgementRequest {
-    try {
-        Convert.heartbeatAcknowledgementRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.heartbeatAcknowledgementRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const HEARTBEAT_ACKNOWLEDGEMENT_REQUEST_TYPE = "HeartbeatAcknowledgementRequest";
+export const HEARTBEAT_ACKNOWLEDGEMENT_REQUEST_TYPE = 'HeartbeatAcknowledgementRequest';
 
 /**
  * Returns true if the value has a type property with value 'heartbeatEvent'. This is a fast check that does not check the format of the message
  */
 export function isHeartbeatEvent(value: any): value is HeartbeatEvent {
-    return value != null && value.type === 'heartbeatEvent';
+  return value != null && value.type === 'heartbeatEvent';
 }
 
 /**
  * Returns true if value is a valid HeartbeatEvent. This checks the type against the json schema for the message and will be slower
  */
 export function isValidHeartbeatEvent(value: any): value is HeartbeatEvent {
-    try {
-        Convert.heartbeatEventToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.heartbeatEventToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const HEARTBEAT_EVENT_TYPE = "HeartbeatEvent";
+export const HEARTBEAT_EVENT_TYPE = 'HeartbeatEvent';
 
 /**
  * Returns true if the value has a type property with value 'intentEvent'. This is a fast check that does not check the format of the message
  */
 export function isIntentEvent(value: any): value is IntentEvent {
-    return value != null && value.type === 'intentEvent';
+  return value != null && value.type === 'intentEvent';
 }
 
 /**
  * Returns true if value is a valid IntentEvent. This checks the type against the json schema for the message and will be slower
  */
 export function isValidIntentEvent(value: any): value is IntentEvent {
-    try {
-        Convert.intentEventToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.intentEventToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const INTENT_EVENT_TYPE = "IntentEvent";
+export const INTENT_EVENT_TYPE = 'IntentEvent';
 
 /**
  * Returns true if the value has a type property with value 'intentListenerUnsubscribeRequest'. This is a fast check that does not check the format of the message
  */
 export function isIntentListenerUnsubscribeRequest(value: any): value is IntentListenerUnsubscribeRequest {
-    return value != null && value.type === 'intentListenerUnsubscribeRequest';
+  return value != null && value.type === 'intentListenerUnsubscribeRequest';
 }
 
 /**
  * Returns true if value is a valid IntentListenerUnsubscribeRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidIntentListenerUnsubscribeRequest(value: any): value is IntentListenerUnsubscribeRequest {
-    try {
-        Convert.intentListenerUnsubscribeRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.intentListenerUnsubscribeRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const INTENT_LISTENER_UNSUBSCRIBE_REQUEST_TYPE = "IntentListenerUnsubscribeRequest";
+export const INTENT_LISTENER_UNSUBSCRIBE_REQUEST_TYPE = 'IntentListenerUnsubscribeRequest';
 
 /**
  * Returns true if the value has a type property with value 'intentListenerUnsubscribeResponse'. This is a fast check that does not check the format of the message
  */
 export function isIntentListenerUnsubscribeResponse(value: any): value is IntentListenerUnsubscribeResponse {
-    return value != null && value.type === 'intentListenerUnsubscribeResponse';
+  return value != null && value.type === 'intentListenerUnsubscribeResponse';
 }
 
 /**
  * Returns true if value is a valid IntentListenerUnsubscribeResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidIntentListenerUnsubscribeResponse(value: any): value is IntentListenerUnsubscribeResponse {
-    try {
-        Convert.intentListenerUnsubscribeResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.intentListenerUnsubscribeResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const INTENT_LISTENER_UNSUBSCRIBE_RESPONSE_TYPE = "IntentListenerUnsubscribeResponse";
+export const INTENT_LISTENER_UNSUBSCRIBE_RESPONSE_TYPE = 'IntentListenerUnsubscribeResponse';
 
 /**
  * Returns true if the value has a type property with value 'intentResultRequest'. This is a fast check that does not check the format of the message
  */
 export function isIntentResultRequest(value: any): value is IntentResultRequest {
-    return value != null && value.type === 'intentResultRequest';
+  return value != null && value.type === 'intentResultRequest';
 }
 
 /**
  * Returns true if value is a valid IntentResultRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidIntentResultRequest(value: any): value is IntentResultRequest {
-    try {
-        Convert.intentResultRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.intentResultRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const INTENT_RESULT_REQUEST_TYPE = "IntentResultRequest";
+export const INTENT_RESULT_REQUEST_TYPE = 'IntentResultRequest';
 
 /**
  * Returns true if the value has a type property with value 'intentResultResponse'. This is a fast check that does not check the format of the message
  */
 export function isIntentResultResponse(value: any): value is IntentResultResponse {
-    return value != null && value.type === 'intentResultResponse';
+  return value != null && value.type === 'intentResultResponse';
 }
 
 /**
  * Returns true if value is a valid IntentResultResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidIntentResultResponse(value: any): value is IntentResultResponse {
-    try {
-        Convert.intentResultResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.intentResultResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const INTENT_RESULT_RESPONSE_TYPE = "IntentResultResponse";
+export const INTENT_RESULT_RESPONSE_TYPE = 'IntentResultResponse';
 
 /**
  * Returns true if the value has a type property with value 'joinUserChannelRequest'. This is a fast check that does not check the format of the message
  */
 export function isJoinUserChannelRequest(value: any): value is JoinUserChannelRequest {
-    return value != null && value.type === 'joinUserChannelRequest';
+  return value != null && value.type === 'joinUserChannelRequest';
 }
 
 /**
  * Returns true if value is a valid JoinUserChannelRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidJoinUserChannelRequest(value: any): value is JoinUserChannelRequest {
-    try {
-        Convert.joinUserChannelRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.joinUserChannelRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const JOIN_USER_CHANNEL_REQUEST_TYPE = "JoinUserChannelRequest";
+export const JOIN_USER_CHANNEL_REQUEST_TYPE = 'JoinUserChannelRequest';
 
 /**
  * Returns true if the value has a type property with value 'joinUserChannelResponse'. This is a fast check that does not check the format of the message
  */
 export function isJoinUserChannelResponse(value: any): value is JoinUserChannelResponse {
-    return value != null && value.type === 'joinUserChannelResponse';
+  return value != null && value.type === 'joinUserChannelResponse';
 }
 
 /**
  * Returns true if value is a valid JoinUserChannelResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidJoinUserChannelResponse(value: any): value is JoinUserChannelResponse {
-    try {
-        Convert.joinUserChannelResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.joinUserChannelResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const JOIN_USER_CHANNEL_RESPONSE_TYPE = "JoinUserChannelResponse";
+export const JOIN_USER_CHANNEL_RESPONSE_TYPE = 'JoinUserChannelResponse';
 
 /**
  * Returns true if the value has a type property with value 'leaveCurrentChannelRequest'. This is a fast check that does not check the format of the message
  */
 export function isLeaveCurrentChannelRequest(value: any): value is LeaveCurrentChannelRequest {
-    return value != null && value.type === 'leaveCurrentChannelRequest';
+  return value != null && value.type === 'leaveCurrentChannelRequest';
 }
 
 /**
  * Returns true if value is a valid LeaveCurrentChannelRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidLeaveCurrentChannelRequest(value: any): value is LeaveCurrentChannelRequest {
-    try {
-        Convert.leaveCurrentChannelRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.leaveCurrentChannelRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const LEAVE_CURRENT_CHANNEL_REQUEST_TYPE = "LeaveCurrentChannelRequest";
+export const LEAVE_CURRENT_CHANNEL_REQUEST_TYPE = 'LeaveCurrentChannelRequest';
 
 /**
  * Returns true if the value has a type property with value 'leaveCurrentChannelResponse'. This is a fast check that does not check the format of the message
  */
 export function isLeaveCurrentChannelResponse(value: any): value is LeaveCurrentChannelResponse {
-    return value != null && value.type === 'leaveCurrentChannelResponse';
+  return value != null && value.type === 'leaveCurrentChannelResponse';
 }
 
 /**
  * Returns true if value is a valid LeaveCurrentChannelResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidLeaveCurrentChannelResponse(value: any): value is LeaveCurrentChannelResponse {
-    try {
-        Convert.leaveCurrentChannelResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.leaveCurrentChannelResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const LEAVE_CURRENT_CHANNEL_RESPONSE_TYPE = "LeaveCurrentChannelResponse";
+export const LEAVE_CURRENT_CHANNEL_RESPONSE_TYPE = 'LeaveCurrentChannelResponse';
 
 /**
  * Returns true if the value has a type property with value 'openRequest'. This is a fast check that does not check the format of the message
  */
 export function isOpenRequest(value: any): value is OpenRequest {
-    return value != null && value.type === 'openRequest';
+  return value != null && value.type === 'openRequest';
 }
 
 /**
  * Returns true if value is a valid OpenRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidOpenRequest(value: any): value is OpenRequest {
-    try {
-        Convert.openRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.openRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const OPEN_REQUEST_TYPE = "OpenRequest";
+export const OPEN_REQUEST_TYPE = 'OpenRequest';
 
 /**
  * Returns true if the value has a type property with value 'openResponse'. This is a fast check that does not check the format of the message
  */
 export function isOpenResponse(value: any): value is OpenResponse {
-    return value != null && value.type === 'openResponse';
+  return value != null && value.type === 'openResponse';
 }
 
 /**
  * Returns true if value is a valid OpenResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidOpenResponse(value: any): value is OpenResponse {
-    try {
-        Convert.openResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.openResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const OPEN_RESPONSE_TYPE = "OpenResponse";
+export const OPEN_RESPONSE_TYPE = 'OpenResponse';
 
 /**
  * Returns true if the value has a type property with value 'privateChannelAddEventListenerRequest'. This is a fast check that does not check the format of the message
  */
 export function isPrivateChannelAddEventListenerRequest(value: any): value is PrivateChannelAddEventListenerRequest {
-    return value != null && value.type === 'privateChannelAddEventListenerRequest';
+  return value != null && value.type === 'privateChannelAddEventListenerRequest';
 }
 
 /**
  * Returns true if value is a valid PrivateChannelAddEventListenerRequest. This checks the type against the json schema for the message and will be slower
  */
-export function isValidPrivateChannelAddEventListenerRequest(value: any): value is PrivateChannelAddEventListenerRequest {
-    try {
-        Convert.privateChannelAddEventListenerRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+export function isValidPrivateChannelAddEventListenerRequest(
+  value: any
+): value is PrivateChannelAddEventListenerRequest {
+  try {
+    Convert.privateChannelAddEventListenerRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const PRIVATE_CHANNEL_ADD_EVENT_LISTENER_REQUEST_TYPE = "PrivateChannelAddEventListenerRequest";
+export const PRIVATE_CHANNEL_ADD_EVENT_LISTENER_REQUEST_TYPE = 'PrivateChannelAddEventListenerRequest';
 
 /**
  * Returns true if the value has a type property with value 'privateChannelAddEventListenerResponse'. This is a fast check that does not check the format of the message
  */
 export function isPrivateChannelAddEventListenerResponse(value: any): value is PrivateChannelAddEventListenerResponse {
-    return value != null && value.type === 'privateChannelAddEventListenerResponse';
+  return value != null && value.type === 'privateChannelAddEventListenerResponse';
 }
 
 /**
  * Returns true if value is a valid PrivateChannelAddEventListenerResponse. This checks the type against the json schema for the message and will be slower
  */
-export function isValidPrivateChannelAddEventListenerResponse(value: any): value is PrivateChannelAddEventListenerResponse {
-    try {
-        Convert.privateChannelAddEventListenerResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+export function isValidPrivateChannelAddEventListenerResponse(
+  value: any
+): value is PrivateChannelAddEventListenerResponse {
+  try {
+    Convert.privateChannelAddEventListenerResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const PRIVATE_CHANNEL_ADD_EVENT_LISTENER_RESPONSE_TYPE = "PrivateChannelAddEventListenerResponse";
+export const PRIVATE_CHANNEL_ADD_EVENT_LISTENER_RESPONSE_TYPE = 'PrivateChannelAddEventListenerResponse';
 
 /**
  * Returns true if the value has a type property with value 'privateChannelDisconnectRequest'. This is a fast check that does not check the format of the message
  */
 export function isPrivateChannelDisconnectRequest(value: any): value is PrivateChannelDisconnectRequest {
-    return value != null && value.type === 'privateChannelDisconnectRequest';
+  return value != null && value.type === 'privateChannelDisconnectRequest';
 }
 
 /**
  * Returns true if value is a valid PrivateChannelDisconnectRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidPrivateChannelDisconnectRequest(value: any): value is PrivateChannelDisconnectRequest {
-    try {
-        Convert.privateChannelDisconnectRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.privateChannelDisconnectRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const PRIVATE_CHANNEL_DISCONNECT_REQUEST_TYPE = "PrivateChannelDisconnectRequest";
+export const PRIVATE_CHANNEL_DISCONNECT_REQUEST_TYPE = 'PrivateChannelDisconnectRequest';
 
 /**
  * Returns true if the value has a type property with value 'privateChannelDisconnectResponse'. This is a fast check that does not check the format of the message
  */
 export function isPrivateChannelDisconnectResponse(value: any): value is PrivateChannelDisconnectResponse {
-    return value != null && value.type === 'privateChannelDisconnectResponse';
+  return value != null && value.type === 'privateChannelDisconnectResponse';
 }
 
 /**
  * Returns true if value is a valid PrivateChannelDisconnectResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidPrivateChannelDisconnectResponse(value: any): value is PrivateChannelDisconnectResponse {
-    try {
-        Convert.privateChannelDisconnectResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.privateChannelDisconnectResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const PRIVATE_CHANNEL_DISCONNECT_RESPONSE_TYPE = "PrivateChannelDisconnectResponse";
+export const PRIVATE_CHANNEL_DISCONNECT_RESPONSE_TYPE = 'PrivateChannelDisconnectResponse';
 
 /**
  * Returns true if the value has a type property with value 'privateChannelOnAddContextListenerEvent'. This is a fast check that does not check the format of the message
  */
-export function isPrivateChannelOnAddContextListenerEvent(value: any): value is PrivateChannelOnAddContextListenerEvent {
-    return value != null && value.type === 'privateChannelOnAddContextListenerEvent';
+export function isPrivateChannelOnAddContextListenerEvent(
+  value: any
+): value is PrivateChannelOnAddContextListenerEvent {
+  return value != null && value.type === 'privateChannelOnAddContextListenerEvent';
 }
 
 /**
  * Returns true if value is a valid PrivateChannelOnAddContextListenerEvent. This checks the type against the json schema for the message and will be slower
  */
-export function isValidPrivateChannelOnAddContextListenerEvent(value: any): value is PrivateChannelOnAddContextListenerEvent {
-    try {
-        Convert.privateChannelOnAddContextListenerEventToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+export function isValidPrivateChannelOnAddContextListenerEvent(
+  value: any
+): value is PrivateChannelOnAddContextListenerEvent {
+  try {
+    Convert.privateChannelOnAddContextListenerEventToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const PRIVATE_CHANNEL_ON_ADD_CONTEXT_LISTENER_EVENT_TYPE = "PrivateChannelOnAddContextListenerEvent";
+export const PRIVATE_CHANNEL_ON_ADD_CONTEXT_LISTENER_EVENT_TYPE = 'PrivateChannelOnAddContextListenerEvent';
 
 /**
  * Returns true if the value has a type property with value 'privateChannelOnDisconnectEvent'. This is a fast check that does not check the format of the message
  */
 export function isPrivateChannelOnDisconnectEvent(value: any): value is PrivateChannelOnDisconnectEvent {
-    return value != null && value.type === 'privateChannelOnDisconnectEvent';
+  return value != null && value.type === 'privateChannelOnDisconnectEvent';
 }
 
 /**
  * Returns true if value is a valid PrivateChannelOnDisconnectEvent. This checks the type against the json schema for the message and will be slower
  */
 export function isValidPrivateChannelOnDisconnectEvent(value: any): value is PrivateChannelOnDisconnectEvent {
-    try {
-        Convert.privateChannelOnDisconnectEventToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.privateChannelOnDisconnectEventToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const PRIVATE_CHANNEL_ON_DISCONNECT_EVENT_TYPE = "PrivateChannelOnDisconnectEvent";
+export const PRIVATE_CHANNEL_ON_DISCONNECT_EVENT_TYPE = 'PrivateChannelOnDisconnectEvent';
 
 /**
  * Returns true if the value has a type property with value 'privateChannelOnUnsubscribeEvent'. This is a fast check that does not check the format of the message
  */
 export function isPrivateChannelOnUnsubscribeEvent(value: any): value is PrivateChannelOnUnsubscribeEvent {
-    return value != null && value.type === 'privateChannelOnUnsubscribeEvent';
+  return value != null && value.type === 'privateChannelOnUnsubscribeEvent';
 }
 
 /**
  * Returns true if value is a valid PrivateChannelOnUnsubscribeEvent. This checks the type against the json schema for the message and will be slower
  */
 export function isValidPrivateChannelOnUnsubscribeEvent(value: any): value is PrivateChannelOnUnsubscribeEvent {
-    try {
-        Convert.privateChannelOnUnsubscribeEventToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.privateChannelOnUnsubscribeEventToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const PRIVATE_CHANNEL_ON_UNSUBSCRIBE_EVENT_TYPE = "PrivateChannelOnUnsubscribeEvent";
+export const PRIVATE_CHANNEL_ON_UNSUBSCRIBE_EVENT_TYPE = 'PrivateChannelOnUnsubscribeEvent';
 
 /**
  * Returns true if the value has a type property with value 'privateChannelUnsubscribeEventListenerRequest'. This is a fast check that does not check the format of the message
  */
-export function isPrivateChannelUnsubscribeEventListenerRequest(value: any): value is PrivateChannelUnsubscribeEventListenerRequest {
-    return value != null && value.type === 'privateChannelUnsubscribeEventListenerRequest';
+export function isPrivateChannelUnsubscribeEventListenerRequest(
+  value: any
+): value is PrivateChannelUnsubscribeEventListenerRequest {
+  return value != null && value.type === 'privateChannelUnsubscribeEventListenerRequest';
 }
 
 /**
  * Returns true if value is a valid PrivateChannelUnsubscribeEventListenerRequest. This checks the type against the json schema for the message and will be slower
  */
-export function isValidPrivateChannelUnsubscribeEventListenerRequest(value: any): value is PrivateChannelUnsubscribeEventListenerRequest {
-    try {
-        Convert.privateChannelUnsubscribeEventListenerRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+export function isValidPrivateChannelUnsubscribeEventListenerRequest(
+  value: any
+): value is PrivateChannelUnsubscribeEventListenerRequest {
+  try {
+    Convert.privateChannelUnsubscribeEventListenerRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const PRIVATE_CHANNEL_UNSUBSCRIBE_EVENT_LISTENER_REQUEST_TYPE = "PrivateChannelUnsubscribeEventListenerRequest";
+export const PRIVATE_CHANNEL_UNSUBSCRIBE_EVENT_LISTENER_REQUEST_TYPE = 'PrivateChannelUnsubscribeEventListenerRequest';
 
 /**
  * Returns true if the value has a type property with value 'privateChannelUnsubscribeEventListenerResponse'. This is a fast check that does not check the format of the message
  */
-export function isPrivateChannelUnsubscribeEventListenerResponse(value: any): value is PrivateChannelUnsubscribeEventListenerResponse {
-    return value != null && value.type === 'privateChannelUnsubscribeEventListenerResponse';
+export function isPrivateChannelUnsubscribeEventListenerResponse(
+  value: any
+): value is PrivateChannelUnsubscribeEventListenerResponse {
+  return value != null && value.type === 'privateChannelUnsubscribeEventListenerResponse';
 }
 
 /**
  * Returns true if value is a valid PrivateChannelUnsubscribeEventListenerResponse. This checks the type against the json schema for the message and will be slower
  */
-export function isValidPrivateChannelUnsubscribeEventListenerResponse(value: any): value is PrivateChannelUnsubscribeEventListenerResponse {
-    try {
-        Convert.privateChannelUnsubscribeEventListenerResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+export function isValidPrivateChannelUnsubscribeEventListenerResponse(
+  value: any
+): value is PrivateChannelUnsubscribeEventListenerResponse {
+  try {
+    Convert.privateChannelUnsubscribeEventListenerResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const PRIVATE_CHANNEL_UNSUBSCRIBE_EVENT_LISTENER_RESPONSE_TYPE = "PrivateChannelUnsubscribeEventListenerResponse";
+export const PRIVATE_CHANNEL_UNSUBSCRIBE_EVENT_LISTENER_RESPONSE_TYPE =
+  'PrivateChannelUnsubscribeEventListenerResponse';
 
 /**
  * Returns true if the value has a type property with value 'raiseIntentForContextRequest'. This is a fast check that does not check the format of the message
  */
 export function isRaiseIntentForContextRequest(value: any): value is RaiseIntentForContextRequest {
-    return value != null && value.type === 'raiseIntentForContextRequest';
+  return value != null && value.type === 'raiseIntentForContextRequest';
 }
 
 /**
  * Returns true if value is a valid RaiseIntentForContextRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidRaiseIntentForContextRequest(value: any): value is RaiseIntentForContextRequest {
-    try {
-        Convert.raiseIntentForContextRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.raiseIntentForContextRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const RAISE_INTENT_FOR_CONTEXT_REQUEST_TYPE = "RaiseIntentForContextRequest";
+export const RAISE_INTENT_FOR_CONTEXT_REQUEST_TYPE = 'RaiseIntentForContextRequest';
 
 /**
  * Returns true if the value has a type property with value 'raiseIntentForContextResponse'. This is a fast check that does not check the format of the message
  */
 export function isRaiseIntentForContextResponse(value: any): value is RaiseIntentForContextResponse {
-    return value != null && value.type === 'raiseIntentForContextResponse';
+  return value != null && value.type === 'raiseIntentForContextResponse';
 }
 
 /**
  * Returns true if value is a valid RaiseIntentForContextResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidRaiseIntentForContextResponse(value: any): value is RaiseIntentForContextResponse {
-    try {
-        Convert.raiseIntentForContextResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.raiseIntentForContextResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const RAISE_INTENT_FOR_CONTEXT_RESPONSE_TYPE = "RaiseIntentForContextResponse";
+export const RAISE_INTENT_FOR_CONTEXT_RESPONSE_TYPE = 'RaiseIntentForContextResponse';
 
 /**
  * Returns true if the value has a type property with value 'raiseIntentRequest'. This is a fast check that does not check the format of the message
  */
 export function isRaiseIntentRequest(value: any): value is RaiseIntentRequest {
-    return value != null && value.type === 'raiseIntentRequest';
+  return value != null && value.type === 'raiseIntentRequest';
 }
 
 /**
  * Returns true if value is a valid RaiseIntentRequest. This checks the type against the json schema for the message and will be slower
  */
 export function isValidRaiseIntentRequest(value: any): value is RaiseIntentRequest {
-    try {
-        Convert.raiseIntentRequestToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.raiseIntentRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const RAISE_INTENT_REQUEST_TYPE = "RaiseIntentRequest";
+export const RAISE_INTENT_REQUEST_TYPE = 'RaiseIntentRequest';
 
 /**
  * Returns true if the value has a type property with value 'raiseIntentResponse'. This is a fast check that does not check the format of the message
  */
 export function isRaiseIntentResponse(value: any): value is RaiseIntentResponse {
-    return value != null && value.type === 'raiseIntentResponse';
+  return value != null && value.type === 'raiseIntentResponse';
 }
 
 /**
  * Returns true if value is a valid RaiseIntentResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidRaiseIntentResponse(value: any): value is RaiseIntentResponse {
-    try {
-        Convert.raiseIntentResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.raiseIntentResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const RAISE_INTENT_RESPONSE_TYPE = "RaiseIntentResponse";
+export const RAISE_INTENT_RESPONSE_TYPE = 'RaiseIntentResponse';
 
 /**
  * Returns true if the value has a type property with value 'raiseIntentResultResponse'. This is a fast check that does not check the format of the message
  */
 export function isRaiseIntentResultResponse(value: any): value is RaiseIntentResultResponse {
-    return value != null && value.type === 'raiseIntentResultResponse';
+  return value != null && value.type === 'raiseIntentResultResponse';
 }
 
 /**
  * Returns true if value is a valid RaiseIntentResultResponse. This checks the type against the json schema for the message and will be slower
  */
 export function isValidRaiseIntentResultResponse(value: any): value is RaiseIntentResultResponse {
-    try {
-        Convert.raiseIntentResultResponseToJson(value);
-        return true;
-    } catch (_e: any) {
-        return false;
-    }
+  try {
+    Convert.raiseIntentResultResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
 }
 
-export const RAISE_INTENT_RESULT_RESPONSE_TYPE = "RaiseIntentResultResponse";   
+export const RAISE_INTENT_RESULT_RESPONSE_TYPE = 'RaiseIntentResultResponse';
+
+/**
+ * Returns true if the value has a type property with value 'WCP1Hello'. This is a fast check that does not check the format of the message
+ */
+export function isWebConnectionProtocol1Hello(value: any): value is WebConnectionProtocol1Hello {
+  return value != null && value.type === 'WCP1Hello';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol1Hello. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol1Hello(value: any): value is WebConnectionProtocol1Hello {
+  try {
+    Convert.webConnectionProtocol1HelloToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const WEB_CONNECTION_PROTOCOL1_HELLO_TYPE = 'WebConnectionProtocol1Hello';
+
+/**
+ * Returns true if the value has a type property with value 'WCP2LoadUrl'. This is a fast check that does not check the format of the message
+ */
+export function isWebConnectionProtocol2LoadURL(value: any): value is WebConnectionProtocol2LoadURL {
+  return value != null && value.type === 'WCP2LoadUrl';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol2LoadURL. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol2LoadURL(value: any): value is WebConnectionProtocol2LoadURL {
+  try {
+    Convert.webConnectionProtocol2LoadURLToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const WEB_CONNECTION_PROTOCOL2_LOAD_U_R_L_TYPE = 'WebConnectionProtocol2LoadURL';
+
+/**
+ * Returns true if the value has a type property with value 'WCP3Handshake'. This is a fast check that does not check the format of the message
+ */
+export function isWebConnectionProtocol3Handshake(value: any): value is WebConnectionProtocol3Handshake {
+  return value != null && value.type === 'WCP3Handshake';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol3Handshake. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol3Handshake(value: any): value is WebConnectionProtocol3Handshake {
+  try {
+    Convert.webConnectionProtocol3HandshakeToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const WEB_CONNECTION_PROTOCOL3_HANDSHAKE_TYPE = 'WebConnectionProtocol3Handshake';
+
+/**
+ * Returns true if the value has a type property with value 'WCP4ValidateAppIdentity'. This is a fast check that does not check the format of the message
+ */
+export function isWebConnectionProtocol4ValidateAppIdentity(
+  value: any
+): value is WebConnectionProtocol4ValidateAppIdentity {
+  return value != null && value.type === 'WCP4ValidateAppIdentity';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol4ValidateAppIdentity. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol4ValidateAppIdentity(
+  value: any
+): value is WebConnectionProtocol4ValidateAppIdentity {
+  try {
+    Convert.webConnectionProtocol4ValidateAppIdentityToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const WEB_CONNECTION_PROTOCOL4_VALIDATE_APP_IDENTITY_TYPE = 'WebConnectionProtocol4ValidateAppIdentity';
+
+/**
+ * Returns true if the value has a type property with value 'WCP5ValidateAppIdentityFailedResponse'. This is a fast check that does not check the format of the message
+ */
+export function isWebConnectionProtocol5ValidateAppIdentityFailedResponse(
+  value: any
+): value is WebConnectionProtocol5ValidateAppIdentityFailedResponse {
+  return value != null && value.type === 'WCP5ValidateAppIdentityFailedResponse';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol5ValidateAppIdentityFailedResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol5ValidateAppIdentityFailedResponse(
+  value: any
+): value is WebConnectionProtocol5ValidateAppIdentityFailedResponse {
+  try {
+    Convert.webConnectionProtocol5ValidateAppIdentityFailedResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const WEB_CONNECTION_PROTOCOL5_VALIDATE_APP_IDENTITY_FAILED_RESPONSE_TYPE =
+  'WebConnectionProtocol5ValidateAppIdentityFailedResponse';
+
+/**
+ * Returns true if the value has a type property with value 'WCP5ValidateAppIdentityResponse'. This is a fast check that does not check the format of the message
+ */
+export function isWebConnectionProtocol5ValidateAppIdentitySuccessResponse(
+  value: any
+): value is WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
+  return value != null && value.type === 'WCP5ValidateAppIdentityResponse';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol5ValidateAppIdentitySuccessResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol5ValidateAppIdentitySuccessResponse(
+  value: any
+): value is WebConnectionProtocol5ValidateAppIdentitySuccessResponse {
+  try {
+    Convert.webConnectionProtocol5ValidateAppIdentitySuccessResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const WEB_CONNECTION_PROTOCOL5_VALIDATE_APP_IDENTITY_SUCCESS_RESPONSE_TYPE =
+  'WebConnectionProtocol5ValidateAppIdentitySuccessResponse';
+
+/**
+ * Returns true if the value has a type property with value 'WCP6Goodbye'. This is a fast check that does not check the format of the message
+ */
+export function isWebConnectionProtocol6Goodbye(value: any): value is WebConnectionProtocol6Goodbye {
+  return value != null && value.type === 'WCP6Goodbye';
+}
+
+/**
+ * Returns true if value is a valid WebConnectionProtocol6Goodbye. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocol6Goodbye(value: any): value is WebConnectionProtocol6Goodbye {
+  try {
+    Convert.webConnectionProtocol6GoodbyeToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const WEB_CONNECTION_PROTOCOL6_GOODBYE_TYPE = 'WebConnectionProtocol6Goodbye';
+
+/**
+ * Returns true if value is a valid WebConnectionProtocolMessage. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebConnectionProtocolMessage(value: any): value is WebConnectionProtocolMessage {
+  try {
+    Convert.webConnectionProtocolMessageToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const WEB_CONNECTION_PROTOCOL_MESSAGE_TYPE = 'WebConnectionProtocolMessage';
