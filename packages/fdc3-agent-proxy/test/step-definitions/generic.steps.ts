@@ -2,7 +2,7 @@ import { TestMessaging } from '../support/TestMessaging';
 import { Given, When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world/index';
 import {
-  BasicDesktopAgent,
+  DesktopAgentProxy,
   DefaultAppSupport,
   DefaultChannelSupport,
   DefaultIntentSupport,
@@ -22,7 +22,7 @@ Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: s
   const is = new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this));
   const as = new DefaultAppSupport(this.messaging);
 
-  const da = new BasicDesktopAgent(hs, cs, is, as, [hs]);
+  const da = new DesktopAgentProxy(hs, cs, is, as, [hs]);
   await da.connect();
 
   this.props[field] = da;
