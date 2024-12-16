@@ -1,3 +1,10 @@
+---
+id: Intents-Tests
+sidebar_label: Intents Tests
+title: Intents Tests
+hide_title: true
+---
+
 # Intents Tests
 
 ## Version 1.2 Intents Tests ![1.2](https://img.shields.io/badge/FDC3-1.2-green)
@@ -35,8 +42,8 @@ Also we assume a fourth app **D** that is going to discover the intents in the o
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
-| D   | 1. Raise          | `fdc3.raiseIntent(‘sharedTestingIntent1’, {testContextY})`<br>starts app B.                       |
-| B   | 2. Gather Context | `fdc.addIntentListener(‘sharedTestingIntent1’)`<br>Receives testContextY, matching that sent by D |
+| D   | 1. Raise          | `fdc3.raiseIntent(‘sharedTestingIntent1’, {testContextY})`<br />starts app B.                       |
+| B   | 2. Gather Context | `fdc.addIntentListener(‘sharedTestingIntent1’)`<br />Receives testContextY, matching that sent by D |
 
 -  `SingleResolve1`: Perform above test
 -  `TargetedResolve1`: Use `fdc3.raiseIntent(‘aTestingIntent’, {testContextX}, <A’s App Name>)` to start app A, otherwise, as above
@@ -117,8 +124,8 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 | App   | Step           | Details                                                                                           |
 |-------|----------------|---------------------------------------------------------------------------------------------------|
-| Test  | 1. Raise        | `fdc3.raiseIntent("aTestingIntent", testContextX)`<br>starts app A.                       |
-| A     | 2. Receive Intent & Context | After starting up, A runs `fdc3.addIntentListener("aTestingIntent1")` to register its listener.<br>It then receives `testContextX`, matching that sent by Test |
+| Test  | 1. Raise        | `fdc3.raiseIntent("aTestingIntent", testContextX)`<br />starts app A.                       |
+| A     | 2. Receive Intent & Context | After starting up, A runs `fdc3.addIntentListener("aTestingIntent1")` to register its listener.<br />It then receives `testContextX`, matching that sent by Test |
 | Test  | 3. IntentResolution          | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App A's `appId` and `instanceId` set.**                       |
 
 - `2.0-RaiseIntentSingleResolve`: Perform above test
@@ -163,8 +170,8 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1. Raise          | `fdc3.raiseIntent("aTestingIntent", testContextX)`<br>starts app A.                       |
-| A       | 2. Receive Intent & Context | After starting up, A runs `fdc3.addIntentListener("aTestingIntent")` to register its listener.<br>It then receives `testContextX`, matching that sent by Test |
+| Test   | 1. Raise          | `fdc3.raiseIntent("aTestingIntent", testContextX)`<br />starts app A.                       |
+| A       | 2. Receive Intent & Context | After starting up, A runs `fdc3.addIntentListener("aTestingIntent")` to register its listener.<br />It then receives `testContextX`, matching that sent by Test |
 | Test   | 3. IntentResolution          | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App A's `appId` and `instanceId` set.                     |
 | Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.                        |
 | A       | 5. return void          | A should return `void` after a short delay (e.g. 5 seconds).                        |
@@ -178,8 +185,8 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1. Raise          | `fdc3.raiseIntent("sharedTestingIntent1", testContextY)`<br>starts app **B**. |
-| B      | 2. Receive Intent & Context | After starting up, B runs `fdc3.addIntentListener("sharedTestingIntent1")` to register its listener.<br>It then receives `testContextY`, matching that sent by Test |
+| Test   | 1. Raise          | `fdc3.raiseIntent("sharedTestingIntent1", testContextY)`<br />starts app **B**. |
+| B      | 2. Receive Intent & Context | After starting up, B runs `fdc3.addIntentListener("sharedTestingIntent1")` to register its listener.<br />It then receives `testContextY`, matching that sent by Test |
 | Test   | 3. IntentResolution          | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App B's `appId` and `instanceId` set. |
 | Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly. |
 | B      | 5. return `testContextY`          | B should return a `testContextY` instance after a short delay (e.g. 5 seconds). |
@@ -193,8 +200,8 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 | App   | Step                          | Details                                                                                           |
 |-------|-----------------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1. Raise Intent          | Test raises an intent with `fdc3.raiseIntent("sharedTestingIntent2", testContextY, {appId: "<E's appId>"})`<br>starts app E. |
-| E       | 2. Receive Intent & Context     | After starting up, E runs `fdc3.addIntentListener("sharedTestingIntent2")` to register its listener.<br>It them receives `testContextY`, matching that sent by Test |
+| Test   | 1. Raise Intent          | Test raises an intent with `fdc3.raiseIntent("sharedTestingIntent2", testContextY, {appId: "<E's appId>"})`<br />starts app E. |
+| E       | 2. Receive Intent & Context     | After starting up, E runs `fdc3.addIntentListener("sharedTestingIntent2")` to register its listener.<br />It them receives `testContextY`, matching that sent by Test |
 | Test   | 3. IntentResolution   | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App E's `appId` and `instanceId` set.   |
 | Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.  |
 | E       | 5. return Channel | E should retrieve a Channel object via `fdc3.getOrCreateChannel("someChannelName")` and return it immediately. |
@@ -227,11 +234,11 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 | App  | Step                 | Details                                                                                                                                    |
 |-------|-----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1. Raise intent | Test raises an intent with `fdc3.raiseIntent(‘"kTestingIntent", testContextX, {appId: "<K's appId>"})`<br>starts app K. |
-| K       | 2. Receive Intent & Context     | After starting up, K runs `fdc3.addIntentListener("kTestingIntent")` to register its listener.<br>It them receives `testContextX`, matching that sent by Test |
+| Test   | 1. Raise intent | Test raises an intent with `fdc3.raiseIntent(‘"kTestingIntent", testContextX, {appId: "<K's appId>"})`<br />starts app K. |
+| K       | 2. Receive Intent & Context     | After starting up, K runs `fdc3.addIntentListener("kTestingIntent")` to register its listener.<br />It them receives `testContextX`, matching that sent by Test |
 | Test   | 3. IntentResolution   | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App K's `appId` and `instanceId` set.   |
 | Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.  |
-| K       | 5. Create PrivateChannel and setup event listeners | K should create a `PrivateChannel` object via `const privChan = await fdc3.createPrivateChannel()`,<br>it should then add listeners for the 3 events offered + a context listener via:<br>- `const listener1 = await privChan.onAddContextListener(handler1);`<br>- `const listener2 = await privChan.onUnsubscribe(handler2);`<br>- `const listener3 = await privChan.onDisconnect(handler3);`<br>- `const listener4 = await privChan.addContextListener("testContextX", handler4)`<br>it should then return the `PrivateChannel`. |
+| K       | 5. Create PrivateChannel and setup event listeners | K should create a `PrivateChannel` object via `const privChan = await fdc3.createPrivateChannel()`,<br />it should then add listeners for the 3 events offered + a context listener via:<br />- `const listener1 = await privChan.onAddContextListener(handler1);`<br />- `const listener2 = await privChan.onUnsubscribe(handler2);`<br />- `const listener3 = await privChan.onDisconnect(handler3);`<br />- `const listener4 = await privChan.addContextListener("testContextX", handler4)`<br />it should then return the `PrivateChannel`. |
 | Test   | 6. receive PrivateChannel  | The promise received by Test from `resolution.getResult()` should resolve to a `PrivateChannel` object. Confirm that the `type` of the Channel object is "private".
 | Test   | 7. addContextListener | Test should add a context listener to the PrivateChannel object via `const listener1 = privChan.addContextListener("testContextZ", handler)` |
 | K       | 8. Receive event & broadcast context | The `onAddContextListener` handler (`listener1`) added in step 5 should fire after Test adds its listener. Once it has, K should broadcast a short stream of `testContextZ` objects, with consecutive integer values in them (e.g. 1-5). |
