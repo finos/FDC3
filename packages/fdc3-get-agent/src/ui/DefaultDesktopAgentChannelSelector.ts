@@ -48,7 +48,7 @@ export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent impl
         }),
       },
     };
-    this.port!.postMessage(message);
+    this.port?.postMessage(message);
   }
 
   setChannelChangeCallback(callback: (channelId: string | null) => void): void {

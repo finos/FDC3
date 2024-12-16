@@ -45,7 +45,7 @@ export class DefaultDesktopAgentIntentResolver extends AbstractUIComponent imple
   }
 
   async chooseIntent(appIntents: AppIntent[], context: Context): Promise<IntentResolutionChoice | void> {
-    const out = new Promise<IntentResolutionChoice | void>((resolve /*, _reject*/) => {
+    const out = new Promise<IntentResolutionChoice | void>(resolve => {
       this.pendingResolve = resolve;
     });
     const message: Fdc3UserInterfaceResolve = {

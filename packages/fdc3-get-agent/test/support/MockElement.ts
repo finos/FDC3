@@ -3,7 +3,7 @@ import { MockIFrame } from './MockIFrame';
 
 export class MockElement {
   public tag: string;
-  public atts: { [name: string]: any } = {};
+  public atts: { [name: string]: unknown } = {};
   public children: HTMLElement[] = [];
 
   constructor(tag: string) {

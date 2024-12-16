@@ -69,13 +69,15 @@ export function handleChannelSelectorComms(
         },
       },
     };
-    parent.dispatchEvent({
+
+    const event: Event = {
       type: 'message',
       data: msg,
       origin: CHANNEL_SELECTOR_URL,
-      source,
+      source: source,
       ports: [connection.port1],
-    } as unknown as Event);
+    } as unknown as Event;
+    parent.dispatchEvent(event);
 
     connection.port2.onmessage = e => {
       if (isFdc3UserInterfaceHandshake(e)) {
@@ -117,13 +119,14 @@ export function handleIntentResolverComms(
         },
       },
     };
-    parent.dispatchEvent({
+    const event: Event = {
       type: 'message',
       data: msg,
       origin: INTENT_RESOLVER_URL,
       source,
       ports: [connection.port1],
-    } as unknown as Event);
+    } as unknown as Event;
+    parent.dispatchEvent(event);
 
     connection.port2.onmessage = e => {
       if (isFdc3UserInterfaceHandshake(e)) {

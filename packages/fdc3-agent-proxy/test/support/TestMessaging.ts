@@ -9,7 +9,6 @@ import { RaiseIntent } from './responses/RaiseIntent';
 import { GetAppMetadata } from './responses/GetAppMetadata';
 import { FindInstances } from './responses/FindInstances';
 import { Open } from './responses/Open';
-import { Handshake } from './responses/Handshake';
 import { GetOrCreateChannel } from './responses/GetOrCreateChannel';
 import { ChannelState } from './responses/ChannelState';
 import { GetUserChannels } from './responses/GetUserChannels';
@@ -23,7 +22,6 @@ import {
   AgentEventMessage,
   AgentResponseMessage,
   AppRequestMessage,
-  WebConnectionProtocolMessage,
   Channel,
   WebConnectionProtocol6Goodbye,
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
@@ -126,7 +124,6 @@ export class TestMessaging extends AbstractMessaging {
       new GetInfo(),
       new FindInstances(),
       new Open(),
-      new Handshake(),
       new GetOrCreateChannel(),
       new ChannelState(this.channelState),
       new GetUserChannels(),
@@ -215,7 +212,7 @@ export class TestMessaging extends AbstractMessaging {
     };
   }
 
-  receive(m: AgentResponseMessage | AgentEventMessage | WebConnectionProtocolMessage, log?: (s: string) => void) {
+  receive(m: AgentResponseMessage | AgentEventMessage, log?: (s: string) => void) {
     this.listeners.forEach((v, k) => {
       if (v.filter(m)) {
         if (log) {

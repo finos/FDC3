@@ -48,7 +48,7 @@ export class MessagePortMessaging extends AbstractMessaging {
     return uuidv4();
   }
 
-  post(message: object): Promise<void> {
+  async post(message: AppRequestMessage | WebConnectionProtocol6Goodbye): Promise<void> {
     this.cd.messagePort.postMessage(message);
     return Promise.resolve();
   }

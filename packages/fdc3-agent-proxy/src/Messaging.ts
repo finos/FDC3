@@ -1,6 +1,10 @@
 import { AppIdentifier } from '@kite9/fdc3-standard';
 import { RegisterableListener } from './listeners/RegisterableListener';
-import { AppRequestMessage, AgentResponseMessage } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import {
+  AppRequestMessage,
+  AgentResponseMessage,
+  WebConnectionProtocol6Goodbye,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 export interface Messaging /*extends Connectable*/ {
   /**
@@ -11,7 +15,7 @@ export interface Messaging /*extends Connectable*/ {
   /**
    * Post an outgoing message
    */
-  post(message: object): Promise<void>;
+  post(message: AppRequestMessage | WebConnectionProtocol6Goodbye): Promise<void>;
 
   /**
    * Registers a listener for incoming messages.
@@ -30,10 +34,7 @@ export interface Messaging /*extends Connectable*/ {
   /**
    * Waits for a specific matching message
    */
-  waitFor<X extends AgentResponseMessage>(
-    filter: (m: AgentResponseMessage) => boolean,
-    timeoutErrorMessage?: string
-  ): Promise<X>;
+  waitFor<X extends AgentResponseMessage>(filter: (m: X) => boolean, timeoutErrorMessage?: string): Promise<X>;
 
   /**
    * Sends a request message and waits for a response. If the response contains a payload.error, it is thrown.
