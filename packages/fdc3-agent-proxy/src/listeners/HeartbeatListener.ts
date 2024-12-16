@@ -20,7 +20,7 @@ export class HeartbeatListener implements RegisterableListener {
   }
 
   action(_m: AgentEventMessage): void {
-    this.messaging.post({
+    const request: HeartbeatAcknowledgementRequest = {
       type: 'heartbeatAcknowledgementRequest',
       meta: {
         requestUuid: this.messaging.createUUID(),
@@ -29,7 +29,8 @@ export class HeartbeatListener implements RegisterableListener {
       payload: {
         heartbeatEventUuid: (_m as HeartbeatEvent).meta.eventUuid,
       },
-    } as HeartbeatAcknowledgementRequest);
+    };
+    this.messaging.post(request);
   }
 
   async register(): Promise<void> {

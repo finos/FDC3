@@ -51,30 +51,30 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
   //implementations of the deprecated listener functions
   onAddContextListener(handler: (contextType?: string) => void): Listener {
     //Adapt handler type for differences between addEventListener and onAddContextListener handler types
-    const adapterHandler: EventHandler = (event: ApiEvent) => {
+    const adaptorHandler: EventHandler = (event: ApiEvent) => {
       handler(event.details.contextType ?? undefined);
     };
-    const l = new PrivateChannelAddContextEventListener(this.messaging, this.id, adapterHandler);
+    const l = new PrivateChannelAddContextEventListener(this.messaging, this.id, adaptorHandler);
     l.register();
     return l;
   }
 
   onUnsubscribe(handler: (contextType?: string) => void): Listener {
     //Adapt handler type for differences between addEventListener and onUnsubscribeListener handler types
-    const adapterHandler: EventHandler = (event: ApiEvent) => {
+    const adaptorHandler: EventHandler = (event: ApiEvent) => {
       handler(event.details.contextType ?? undefined);
     };
-    const l = new PrivateChannelUnsubscribeEventListener(this.messaging, this.id, adapterHandler);
+    const l = new PrivateChannelUnsubscribeEventListener(this.messaging, this.id, adaptorHandler);
     l.register();
     return l;
   }
 
   onDisconnect(handler: () => void): Listener {
     //Adapt handler type for differences between addEventListener and onDisconnectListener handler types
-    const adapterHandler: EventHandler = () => {
+    const adaptorHandler: EventHandler = () => {
       handler();
     };
-    const l = new PrivateChannelDisconnectEventListener(this.messaging, this.id, adapterHandler);
+    const l = new PrivateChannelDisconnectEventListener(this.messaging, this.id, adaptorHandler);
     l.register();
     return l;
   }

@@ -9,12 +9,9 @@ export abstract class AbstractMessaging implements Messaging {
 
   abstract createUUID(): string;
   abstract post(message: object): Promise<void>;
-
   abstract register(l: RegisterableListener): void;
   abstract unregister(id: string): void;
-
   abstract createMeta(): AppRequestMessage['meta'];
-
   abstract getTimeoutMs(): number;
 
   constructor(appIdentifier: AppIdentifier) {
