@@ -86,9 +86,6 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
         const internalPort = mc.port1;
         const externalPort = mc.port2;
 
-        //   internalPort.name = 'internalPort-' + ni;
-        //   externalPort.name = 'externalPort-' + ni;
-
         internalPort.start();
 
         const connectionDetails = {

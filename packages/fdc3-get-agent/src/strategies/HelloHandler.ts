@@ -72,10 +72,7 @@ export class HelloHandler {
     const IFRAME_ID = 'fdc3-communications-embedded-iframe';
 
     // remove an old one if it's there
-    const existing = document.getElementById(IFRAME_ID);
-    if (existing) {
-      existing.remove();
-    }
+    document.getElementById(IFRAME_ID)?.remove();
 
     //note the iframe URL and desktop agent type have changed
     this.agentType = WebDesktopAgentType.ProxyUrl;

@@ -1,3 +1,4 @@
+import { AgentEventMessage, AgentResponseMessage } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { Listener } from '@kite9/fdc3-standard';
 
 /**
@@ -7,8 +8,8 @@ import { Listener } from '@kite9/fdc3-standard';
  */
 export interface RegisterableListener extends Listener {
   id: string | null;
-  filter(m: any): boolean;
-  action(m: any): void;
+  filter(m: AgentEventMessage | AgentResponseMessage): boolean;
+  action(m: AgentEventMessage | AgentResponseMessage): void;
   /**
    * Listeners need to be registered in order to set their IDs.
    */

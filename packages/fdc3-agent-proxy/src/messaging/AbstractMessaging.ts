@@ -1,14 +1,17 @@
 import { AppIdentifier } from '@kite9/fdc3-standard';
 import { Messaging } from '../Messaging';
 import { RegisterableListener } from '../listeners/RegisterableListener';
-import { AgentResponseMessage, AppRequestMessage } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import {
+  AgentResponseMessage,
+  AppRequestMessage,
+  WebConnectionProtocol6Goodbye,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 export abstract class AbstractMessaging implements Messaging {
-  // private implementationMetadata: ImplementationMetadata;
   private appIdentifier: AppIdentifier;
 
   abstract createUUID(): string;
-  abstract post(message: object): Promise<void>;
+  abstract post(message: AppRequestMessage | WebConnectionProtocol6Goodbye): Promise<void>;
   abstract register(l: RegisterableListener): void;
   abstract unregister(id: string): void;
   abstract createMeta(): AppRequestMessage['meta'];
@@ -18,10 +21,7 @@ export abstract class AbstractMessaging implements Messaging {
     this.appIdentifier = appIdentifier;
   }
 
-  waitFor<X extends AgentResponseMessage>(
-    filter: (m: AgentResponseMessage) => boolean,
-    timeoutErrorMessage?: string
-  ): Promise<X> {
+  waitFor<X extends AgentResponseMessage>(filter: (m: X) => boolean, timeoutErrorMessage?: string): Promise<X> {
     const id = this.createUUID();
     return new Promise<X>((resolve, reject) => {
       let done = false;
@@ -35,7 +35,7 @@ export abstract class AbstractMessaging implements Messaging {
           if (timeout) {
             clearTimeout(timeout);
           }
-          resolve(m);
+          resolve(m as X);
         },
         register: async () => {
           this.register(l);

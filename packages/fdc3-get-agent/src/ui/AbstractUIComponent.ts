@@ -96,7 +96,7 @@ export abstract class AbstractUIComponent implements Connectable {
   }
 
   private awaitHello(): Promise<MessagePort> {
-    return new Promise((resolve /*, _reject*/) => {
+    return new Promise(resolve => {
       const ml = (e: MessageEvent) => {
         if (e.source == this.iframe?.contentWindow) {
           if (isFdc3UserInterfaceHello(e.data)) {
