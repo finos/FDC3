@@ -10,9 +10,9 @@ hide_title: true
 
 ## A Opens B  
 
-| App | Step            | Description                                              |
-|-----|-----------------|----------------------------------------------------------|
-| A   | 1. Opening App  | App A calls a function (see below) to open a second app, B |
+| App | Step              | Description                                              |
+|-----|-------------------|----------------------------------------------------------|
+| A   | 1. Opening App    | App A calls a function (see below) to open a second app, B |
 | A   | 2. Check Metadata | Ensure that the correct app was opened |
 
 - `AOpensB3`:  **A** uses an `AppMetadata` or `AppIdentifier` to open B, via:
@@ -21,9 +21,9 @@ hide_title: true
 
 ## A Fails To Open Another App
 
-| App | Step            | Description                                              |
-|-----|-----------------|----------------------------------------------------------|
-| A   | 1. Opening App  | App A calls a function (see below) to try and open a non-existent app |
+| App | Step                    | Description                                              |
+|-----|-------------------------|----------------------------------------------------------|
+| A   | 1. Opening App          | App A calls a function (see below) to try and open a non-existent app |
 | A   | 2. Check Error Response | `fdc3.open` returns a promise that rejects with an Error with the message "App Not Found" |
 
 - `AFailsToOpenB3`:  **A** uses an `AppMetadata` or `AppIdentifier` to open B, via:
@@ -31,8 +31,8 @@ hide_title: true
 
 ## A Opens B With Context
 
-| App | Step            | Description                                              |
-|-----|-----------------|----------------------------------------------------------|
+| App | Step               | Description                                              |
+|-----|--------------------|----------------------------------------------------------|
 | A   | 1. Opening App     |App A opens app B with an `fdc3.instrument` Context Object by calling a function (see below) |
 | B   | 2. Receive Context | Add an untyped context listener via: <br/>`fdc3.addContextListener(null,handler)` <br /> B receives an `fdc3.instrument` Context Object matching that passed to the `fdc3.open()` call made by A |
 

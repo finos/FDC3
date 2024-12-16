@@ -40,13 +40,13 @@ hide_title: true
 
 ## Broadcast With Multiple Listeners
 
-| App | Step               | Details                                                                                                     |
-|-----|--------------------|-------------------------------------------------------------------------------------------------------------|
+| App | Step                  | Details                                                                                                     |
+|-----|-----------------------|-------------------------------------------------------------------------------------------------------------|
 | A   | 1.addContextListeners | A sets up two Context Listeners.  One for `fdc3.instrument` and one for `fdc3.contact` by calling:  `addContextListener ("fdc3.instrument",handler)` <br/> `addContextListener("fdc3.contact",handler)` <br/>A promise resolving a `Listener` object is returned for each. <br />Check that this has an `unsubscribe` method for each.  |
-| A   | 2.joinUserChannel     |A joins the first available user channel using: <br/>`getUserChannels()` Check **user** channels are returned.<br/>Call `fdc3.joinChannel()` on the first non-global channel.|
-| B   | 3.joinUserChannel     |B joins the same channel as A, via the same process in 2. |
-| B   | 4.Broadcast          | `fdc3.broadcast(<fdc3.instrument>)` <br/> `fdc3.broadcast(<fdc3.contact>)` . |
-| A   | 5.Receive Context    | A's `fdc3.instrument` object matches the one broadcast by B, and arrives on the correct listener.<br />A's `fdc3.contact` object matches the one broadcast  by B, and arrives on the correct listener.   |
+| A   | 2.joinUserChannel     | A joins the first available user channel using: <br/>`getUserChannels()` Check **user** channels are returned.<br/>Call `fdc3.joinChannel()` on the first non-global channel.|
+| B   | 3.joinUserChannel     | B joins the same channel as A, via the same process in 2. |
+| B   | 4.Broadcast           | `fdc3.broadcast(<fdc3.instrument>)` <br/> `fdc3.broadcast(<fdc3.contact>)` . |
+| A   | 5.Receive Context     | A's `fdc3.instrument` object matches the one broadcast by B, and arrives on the correct listener.<br />A's `fdc3.contact` object matches the one broadcast  by B, and arrives on the correct listener. |
 
 - `UCFilteredUsage5`: Perform above test.
 - `UCFilteredUsage6`: Perform above test, except B will join a _different_ channel to A. Check that you _don't_ receive anything.

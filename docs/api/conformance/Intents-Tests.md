@@ -76,11 +76,11 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 ## Raise Intent (Ignoring any result)
 
-| App   | Step           | Details                                                                                           |
-|-------|----------------|---------------------------------------------------------------------------------------------------|
-| Test  | 1. Raise        | `fdc3.raiseIntent("aTestingIntent",testContextX)`<br />starts app A.                       |
+| App   | Step                        | Details                                                                                           |
+|-------|-----------------------------|---------------------------------------------------------------------------------------------------|
+| Test  | 1. Raise                    | `fdc3.raiseIntent("aTestingIntent",testContextX)`<br />starts app A.                       |
 | A     | 2. Receive Intent & Context | After starting up, A runs `fdc3.addIntentListener("aTestingIntent1")` to register its listener.<br />It then receives `testContextX`, matching that sent by Test |
-| Test  | 3. IntentResolution          | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App A's `appId` and `instanceId` set.**                       |
+| Test  | 3. IntentResolution         | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App A's `appId` and `instanceId` set.**                       |
 
 - `2.0-RaiseIntentSingleResolve`: Perform above test
 - `2.0-RaiseIntentTargetedAppResolve`: Repeat the above test, but:
@@ -122,14 +122,14 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 ## Raise Intent Result (void result)
 
-| App | Step           | Details                                                                                           |
-|-----|----------------|---------------------------------------------------------------------------------------------------|
+| App    | Step                        | Details                                                                                           |
+|--------|-----------------------------|---------------------------------------------------------------------------------------------------|
 | Test   | 1. Raise          | `fdc3.raiseIntent("aTestingIntent",testContextX)`<br />starts app A.                       |
-| A       | 2. Receive Intent & Context | After starting up, A runs `fdc3.addIntentListener("aTestingIntent")` to register its listener.<br />It then receives `testContextX`, matching that sent by Test |
-| Test   | 3. IntentResolution          | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App A's `appId` and `instanceId` set.                     |
-| Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.                        |
-| A       | 5. return void          | A should return `void` after a short delay (e.g. 5 seconds).                        |
-| Test   | 6. receive void result          | The promise received by Test from `resolution.getResult()` should resolve to void. Confirm that the promise could be retrieved before the handler function returned and that the result was received _after_ the result was returned by A, NOT before. I.e. confirm that `resolution.getResult()` does NOT block until the result is returned, but rather returns a promise that can be awaited.                      |
+| A      | 2. Receive Intent & Context | After starting up, A runs `fdc3.addIntentListener("aTestingIntent")` to register its listener.<br />It then receives `testContextX`, matching that sent by Test |
+| Test   | 3. IntentResolution         | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App A's `appId` and `instanceId` set.                     |
+| Test   | 4. await results            | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.                        |
+| A      | 5. return void              | A should return `void` after a short delay (e.g. 5 seconds).                        |
+| Test   | 6. receive void result      | The promise received by Test from `resolution.getResult()` should resolve to void. Confirm that the promise could be retrieved before the handler function returned and that the result was received _after_ the result was returned by A, NOT before. I.e. confirm that `resolution.getResult()` does NOT block until the result is returned, but rather returns a promise that can be awaited.                      |
 
 - `2.0-RaiseIntentVoidResult5secs`: Perform above test
 - `2.0-RaiseIntentVoidResult0secs`: Perform above test, but A should return its result immediately (no delay). Ignore test step 6 (as there is too little time between the IntentResolution and IntentHandler completing).
@@ -137,14 +137,14 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 ## Raise Intent Result (Context result)
 
-| App | Step           | Details                                                                                           |
-|-----|----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1. Raise          | `fdc3.raiseIntent("sharedTestingIntent1",testContextY)`<br />starts app **B**. |
+| App    | Step                        | Details                                                                                           |
+|--------|-----------------------------|---------------------------------------------------------------------------------------------------|
+| Test   | 1. Raise                    | `fdc3.raiseIntent("sharedTestingIntent1",testContextY)`<br />starts app **B**. |
 | B      | 2. Receive Intent & Context | After starting up, B runs `fdc3.addIntentListener("sharedTestingIntent1")` to register its listener.<br />It then receives `testContextY`, matching that sent by Test |
-| Test   | 3. IntentResolution          | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App B's `appId` and `instanceId` set. |
-| Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly. |
-| B      | 5. return `testContextY`          | B should return a `testContextY` instance after a short delay (e.g. 5 seconds). |
-| Test   | 6. receive context result          | The promise received by Test from `resolution.getResult()` should resolve to the `testContextY` instance. Confirm that the promise could be retrieved before the handler function returned and that the result was received _after_ the result was returned by B, NOT before. I.e. confirm that `resolution.getResult()` does NOT block until the result is returned, but rather returns a promise that can be awaited. |
+| Test   | 3. IntentResolution         | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App B's `appId` and `instanceId` set. |
+| Test   | 4. await results            | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly. |
+| B      | 5. return `testContextY`    | B should return a `testContextY` instance after a short delay (e.g. 5 seconds). |
+| Test   | 6. receive context result   | The promise received by Test from `resolution.getResult()` should resolve to the `testContextY` instance. Confirm that the promise could be retrieved before the handler function returned and that the result was received _after_ the result was returned by B, NOT before. I.e. confirm that `resolution.getResult()` does NOT block until the result is returned, but rather returns a promise that can be awaited. |
 
 - `2.0-RaiseIntentContextResult5secs`: Perform the above test.
 - `2.0-RaiseIntentContextResult0secs`: Perform the previous test but B should return its result immediately (no delay).
@@ -152,17 +152,17 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 ## Raise Intent Result (Channel results)
 
-| App   | Step                          | Details                                                                                           |
-|-------|-----------------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1. Raise Intent          | Test raises an intent with `fdc3.raiseIntent("sharedTestingIntent2",testContextY,{appId:"<E's-appId>"})`<br />starts app E. |
-| E       | 2. Receive Intent & Context     | After starting up, E runs `fdc3.addIntentListener("sharedTestingIntent2")` to register its listener.<br />It them receives `testContextY`, matching that sent by Test |
-| Test   | 3. IntentResolution   | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App E's `appId` and `instanceId` set.   |
-| Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.  |
-| E       | 5. return Channel | E should retrieve a Channel object via `fdc3.getOrCreateChannel("someChannelName")` and return it immediately. |
-| Test   | 6. receive Channel result | The promise received by Test from `resolution.getResult()` should resolve to a `Channel` object with the expected id. Confirm that the `type` of the Channel object is "app". |
-| Test   | 7. addContextListener | Add a context listener to the Channel object via `channelObj.addContextListener("testContextZ",handler)` |
-| E       | 8. broadcast context | After a short delay (of a few seconds) E should broadcast a `testContextZ` context object over the channel, including an `id` field with a unique identifier set (e.g. a uuid). |
-| Test  | 9. receive context | Test should receive the context broadcast by E and confirm that it contains the expected `id` value. |
+| App  | Step                        | Details                                                                                           |
+|------|-----------------------------|---------------------------------------------------------------------------------------------------|
+| Test | 1. Raise Intent             | Test raises an intent with `fdc3.raiseIntent("sharedTestingIntent2",testContextY,{appId:"<E's-appId>"})`<br />starts app E. |
+| E    | 2. Receive Intent & Context | After starting up, E runs `fdc3.addIntentListener("sharedTestingIntent2")` to register its listener.<br />It them receives `testContextY`, matching that sent by Test |
+| Test | 3. IntentResolution         | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App E's `appId` and `instanceId` set.   |
+| Test | 4. await results            | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.  |
+| E    | 5. return Channel           | E should retrieve a Channel object via `fdc3.getOrCreateChannel("someChannelName")` and return it immediately. |
+| Test | 6. receive Channel result   | The promise received by Test from `resolution.getResult()` should resolve to a `Channel` object with the expected id. Confirm that the `type` of the Channel object is "app". |
+| Test | 7. addContextListener       | Add a context listener to the Channel object via `channelObj.addContextListener("testContextZ",handler)` |
+| E    | 8. broadcast context        | After a short delay (of a few seconds) E should broadcast a `testContextZ` context object over the channel, including an `id` field with a unique identifier set (e.g. a uuid). |
+| Test | 9. receive context          | Test should receive the context broadcast by E and confirm that it contains the expected `id` value. |
 
 - `2.0-RaiseIntentChannelResult`: Perform the above test
 - `2.0-RaiseIntentPrivateChannelResult`: Perform the above test, but:
@@ -172,38 +172,38 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 ## PrivateChannels cannot be accessed as app channels
 
-| App  | Step                | Details                                                                                                                                    |
-|-------|----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1. Create a private channel | Test creates a PrivateChannel with `const privChan = await fdc3.createPrivateChannel()`. Confirm that the Channel has an `id`. |
-| Test   | 2. Confirm private channel `id` is unique | Test creates a second PrivateChannel with `const privChan = await fdc3.createPrivateChannel();`. Confirm that the Channel has an `id` and that it is distinct from the first channel created. |
-| Test   | 3. Retrieve as app channel | Attempt to retrieve the channels as App Channels with `const appChan = await fdc3.getOrCreateChannel(privChan.id)` this should fail with `ChannelError.AccessDenied`  |
-| Test   | 4. Raise Intent & await result | Start app J and pass it the id of the second PrivateChannel with `fdc3.raiseIntent("privateChannelIsPrivate", privateChannelDetails)`, where the context object contains the id of the channel to attempt to retrieve. An IntentResolution should be returned and App J should start. Wait for a result to be returned via `await resolution.getResult()`. |
-| J | 5. Receive Intent & Context | J should add an Intent Listener and receive the context with `fdc3.addIntentListener("privateChannelIsPrivate",handler)` |
-| J | 6. Retrieve as app channel | J should attempt to retrieve the channel as an App Channel by `id` with `const appChan = await fdc3.getOrCreateChannel("<idPassedInContext>")` this should fail with `ChannelError.AccessDenied`. Return a `privateChannelIsPrivateResult` back to Test to complete the test. |
-| Test   | 7. Receive result | Test receives the result back from J and confirms that the test was passed. |
+| App  | Step                                      | Details                                                                                           |
+|------|-------------------------------------------|---------------------------------------------------------------------------------------------------|
+| Test | 1. Create a private channel               | Test creates a PrivateChannel with `const privChan = await fdc3.createPrivateChannel()`. Confirm that the Channel has an `id`. |
+| Test | 2. Confirm private channel `id` is unique | Test creates a second PrivateChannel with `const privChan = await fdc3.createPrivateChannel();`. Confirm that the Channel has an `id` and that it is distinct from the first channel created. |
+| Test | 3. Retrieve as app channel                | Attempt to retrieve the channels as App Channels with `const appChan = await fdc3.getOrCreateChannel(privChan.id)` this should fail with `ChannelError.AccessDenied`  |
+| Test | 4. Raise Intent & await result            | Start app J and pass it the id of the second PrivateChannel with `fdc3.raiseIntent("privateChannelIsPrivate", privateChannelDetails)`, where the context object contains the id of the channel to attempt to retrieve. An IntentResolution should be returned and App J should start. Wait for a result to be returned via `await resolution.getResult()`. |
+| J    | 5. Receive Intent & Context               | J should add an Intent Listener and receive the context with `fdc3.addIntentListener("privateChannelIsPrivate",handler)` |
+| J    | 6. Retrieve as app channel                | J should attempt to retrieve the channel as an App Channel by `id` with `const appChan = await fdc3.getOrCreateChannel("<idPassedInContext>")` this should fail with `ChannelError.AccessDenied`. Return a `privateChannelIsPrivateResult` back to Test to complete the test. |
+| Test | 7. Receive result                         | Test receives the result back from J and confirms that the test was passed. |
 
 - `2.0-PrivateChannelsAreNotAppChannels`: Perform the above test
 
 ## PrivateChannel Lifecycle Events
 
-| App  | Step                 | Details                                                                                                                                    |
-|-------|-----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1. Raise intent | Test raises an intent with `fdc3.raiseIntent(‘"kTestingIntent",testContextX,{appId:"<K's appId>"})`<br />starts app K. |
-| K       | 2. Receive Intent & Context     | After starting up, K runs `fdc3.addIntentListener("kTestingIntent")` to register its listener.<br />It them receives `testContextX`, matching that sent by Test |
-| Test   | 3. IntentResolution   | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App K's `appId` and `instanceId` set.   |
-| Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.  |
-| K       | 5. Create PrivateChannel and setup event listeners | K should create a `PrivateChannel` object via `const privChan = await fdc3.createPrivateChannel()`,<br />it should then add listeners for the 3 events offered + a context listener via:<br />- `const listener1 = await privChan.onAddContextListener(handler1);`<br />- `const listener2 = await privChan.onUnsubscribe(handler2);`<br />- `const listener3 = await privChan.onDisconnect(handler3);`<br />- `const listener4 = await privChan.addContextListener("testContextX", handler4)`<br />it should then return the `PrivateChannel`. |
-| Test   | 6. receive PrivateChannel  | The promise received by Test from `resolution.getResult()` should resolve to a `PrivateChannel` object. Confirm that the `type` of the Channel object is "private". |
-| Test   | 7. addContextListener | Test should add a context listener to the PrivateChannel object via `const listener1 = privChan.addContextListener("testContextZ",handler)` |
-| K       | 8. Receive event & broadcast context | The `onAddContextListener` handler (`listener1`) added in step 5 should fire after Test adds its listener. Once it has, K should broadcast a short stream of `testContextZ` objects, with consecutive integer values in them (e.g. 1-5). |
-| Test   | 9. Unsubscribe listener | Test should confirm receipt of the expected context objects, in the expected order, broadcast by K. It should then remove its context listener with `listener1.unsubscribe().` |
-| K       | 10. Receive unsubscribe event | The event handler registered by K via `onUnsubscribe` should fire. If it does not and the test moves to a subsequent step, K should indicate this to the test runner (failing the test).|
-| Test   | 11. Broadcast context | Test should broadcast at least one `testContextX` object via the PrivateChannel (back to K). |
-| K       | 12. Receive context | K should confirm receipt of the expected context. If it does not and the test moves to a subsequent step K should indicate this to the test runner (failing the test).|
-| Test   | 13. re-run addContextListener  | Test should (again) add a context listener to the PrivateChannel object via `const listener2 = privChan.addContextListener("testContextZ",handler)` |
-| K       | 14. Receive event & broadcast context | The `onAddContextListener` handler added in step 5 should (again) fire after Test adds its listener. Once it has, K should again broadcast a short stream of `testContextZ` objects, with consecutive integer values in them (e.g. 6-10). |
-| Test   | 15. Disconnect | Test should (again) confirm receipt of the expected context objects, in the expected order, broadcast by K. It should then disconnect from the channel with [`privChan.disconnect().`](https://fdc3.finos.org/docs/api/ref/PrivateChannel#disconnect) |
-| K       | 16. Receive events & cleanup | The `onUnsubscribe` handler added in step 5 should (again) fire after Test calls `privChan.disconnect()`. Subsequently, the `onDisconnect` handler also added in step 5 should fire. Once it has, K can unsubscribe its listeners, indicate to the test runner that all steps were completed and close. |
+| App  | Step                                  | Details                                                                                                                                    |
+|------|---------------------------------------|---------------------------------------------------------------------------------------------------|
+| Test | 1. Raise intent                       | Test raises an intent with `fdc3.raiseIntent(‘"kTestingIntent",testContextX,{appId:"<K's appId>"})`<br />starts app K. |
+| K    | 2. Receive Intent & Context           | After starting up, K runs `fdc3.addIntentListener("kTestingIntent")` to register its listener.<br />It them receives `testContextX`, matching that sent by Test |
+| Test | 3. IntentResolution                   | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App K's `appId` and `instanceId` set.   |
+| Test | 4. await results                      | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.  |
+| K    | 5. Create PrivateChannel and setup event listeners | K should create a `PrivateChannel` object via `const privChan = await fdc3.createPrivateChannel()`,<br />it should then add listeners for the 3 events offered + a context listener via:<br />- `const listener1 = await privChan.onAddContextListener(handler1);`<br />- `const listener2 = await privChan.onUnsubscribe(handler2);`<br />- `const listener3 = await privChan.onDisconnect(handler3);`<br />- `const listener4 = await privChan.addContextListener("testContextX", handler4)`<br />it should then return the `PrivateChannel`. |
+| Test | 6. receive PrivateChannel             | The promise received by Test from `resolution.getResult()` should resolve to a `PrivateChannel` object. Confirm that the `type` of the Channel object is "private". |
+| Test | 7. addContextListener                 | Test should add a context listener to the PrivateChannel object via `const listener1 = privChan.addContextListener("testContextZ",handler)` |
+| K    | 8. Receive event & broadcast context  | The `onAddContextListener` handler (`listener1`) added in step 5 should fire after Test adds its listener. Once it has, K should broadcast a short stream of `testContextZ` objects, with consecutive integer values in them (e.g. 1-5). |
+| Test | 9. Unsubscribe listener               | Test should confirm receipt of the expected context objects, in the expected order, broadcast by K. It should then remove its context listener with `listener1.unsubscribe().` |
+| K    | 10. Receive unsubscribe event         | The event handler registered by K via `onUnsubscribe` should fire. If it does not and the test moves to a subsequent step, K should indicate this to the test runner (failing the test).|
+| Test | 11. Broadcast context                 | Test should broadcast at least one `testContextX` object via the PrivateChannel (back to K). |
+| K    | 12. Receive context                   | K should confirm receipt of the expected context. If it does not and the test moves to a subsequent step K should indicate this to the test runner (failing the test).|
+| Test | 13. re-run addContextListener         | Test should (again) add a context listener to the PrivateChannel object via `const listener2 = privChan.addContextListener("testContextZ",handler)` |
+| K    | 14. Receive event & broadcast context | The `onAddContextListener` handler added in step 5 should (again) fire after Test adds its listener. Once it has, K should again broadcast a short stream of `testContextZ` objects, with consecutive integer values in them (e.g. 6-10). |
+| Test | 15. Disconnect                        | Test should (again) confirm receipt of the expected context objects, in the expected order, broadcast by K. It should then disconnect from the channel with [`privChan.disconnect().`](https://fdc3.finos.org/docs/api/ref/PrivateChannel#disconnect) |
+| K    | 16. Receive events & cleanup          | The `onUnsubscribe` handler added in step 5 should (again) fire after Test calls `privChan.disconnect()`. Subsequently, the `onDisconnect` handler also added in step 5 should fire. Once it has, K can unsubscribe its listeners, indicate to the test runner that all steps were completed and close. |
 
 - `2.0-PrivateChannelsLifecycleEvents`: Perform the above test.
 
@@ -213,32 +213,32 @@ FDC3 Desktop Agent MUST provide a method of resolving ambiguous intents (i.e. th
 
 As the methods of resolving ambiguous intents are often user interactive, it is either difficult or impossible to implement an automated test for this. Hence, manual tests should be performed as a final step in a conformance test. These tests are based on the same applications defined for and used in other intent tests - however a separate manual test app should be provided to enable the test.
 
-| App | Step | Details |
-|---|---|---|
+| App  | Step                      | Details |
+|------|---------------------------|---------|
 | Test | 1. Raise Ambiguous Intent | `fdc3.raiseIntent("sharedTestingIntent2",testContextY)` |
-| User | 2. Chooser Interaction | A method of resolving the ambiguous request is provided (such as a User Interface allowing the user to choose an application or instance) for choosing one of `E`,`F`,`G`,`H` and `I`. |
+| User | 2. Chooser Interaction    | A method of resolving the ambiguous request is provided (such as a User Interface allowing the user to choose an application or instance) for choosing one of `E`,`F`,`G`,`H` and `I`. |
 
 - `2.0-ResolveAmbiguousIntentTarget`: Perform above steps to invoke intent resolution for an unspecified target with multiple options. Confirm that test is able to complete successfully.
 
-| App | Step | Details |
-|---|---|---|
+| App  | Step                      | Details |
+|------|---------------------------|---------|
 | Test | 1. Raise Ambiguous Intent | `fdc3.raiseIntentForContext(testContextY)` |
-| User | 2.  Chooser Interaction | A method of resolving the ambiguous request is provided (such as a User Interface allowing the user to choose an application or instance) for choosing one of `E`,`F`,`G`,`H` and `I`. |
+| User | 2.  Chooser Interaction   | A method of resolving the ambiguous request is provided (such as a User Interface allowing the user to choose an application or instance) for choosing one of `E`,`F`,`G`,`H` and `I`. |
 
 - `2.0-ResolveAmbiguousContextTarget`:  Perform above steps  to invoke intent resolution for an unspecified target with multiple options. Confirm that test is able to complete successfully.
 
-| App | Step | Details |
-|---|---|---|
+| App  | Step                      | Details |
+|------|---------------------------|---------|
 | Test | 1. Open 4 Apps | Use `fdc3.open()` to open 2 instances of App `E` and 2 instances of `F`. |
 | Test | 2. Raise Ambiguous Intent | `fdc3.raiseIntent("sharedTestingIntent2",testContextY)` |
-| User | 3. Chooser Interaction | A method of resolving the ambiguous request is provided (such as a User Interface allowing the user to choose an application or instance) for choosing one of `E (1)`,`F (1)`,`E (2)`,`F (2)` and options to open `G`, `H` and `I` |
+| User | 3. Chooser Interaction    | A method of resolving the ambiguous request is provided (such as a User Interface allowing the user to choose an application or instance) for choosing one of `E (1)`,`F (1)`,`E (2)`,`F (2)` and options to open `G`, `H` and `I` |
 
 - `2.0-ResolveAmbiguousIntentTargetMultiInstance`:  Perform above steps  to invoke intent resolution for an unspecified target with multiple options. Confirm that test is able to complete successfully.
 
-| App | Step | Details |
-|---|---|---|
-| Test | 1. Open 4 Apps | Use `fdc3.open()` to open 2 instances of App `E` and 2 instances of `F`. |
+| App  | Step                      | Details |
+|------|---------------------------|---------|
+| Test | 1. Open 4 Apps            | Use `fdc3.open()` to open 2 instances of App `E` and 2 instances of `F`. |
 | Test | 2. Raise Ambiguous Intent | `fdc3.raiseIntentForContext(testContextY)` |
-| User | 3.  Chooser Interaction | A method of resolving the ambiguous request is provided (such as a User Interface allowing the user to choose an application or instance) for choosing one of `E (1)`,`F (1)`,`E (2)`,`F (2)` and options to open `G`, `H` and `I` |
+| User | 3.  Chooser Interaction   | A method of resolving the ambiguous request is provided (such as a User Interface allowing the user to choose an application or instance) for choosing one of `E (1)`,`F (1)`,`E (2)`,`F (2)` and options to open `G`, `H` and `I` |
 
 - `2.0-ResolveAmbiguousContextTargetMultiInstance`: Perform above steps  to invoke intent resolution for an unspecified target with multiple options. Confirm that test is able to complete successfully.
