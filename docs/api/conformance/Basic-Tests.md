@@ -10,9 +10,9 @@ hide_title: true
 
 _These are some basic sanity tests implemented in the FDC3 Conformance Framework.  It is expected that Desktop Agent testers will run these first before commencing the much more thorough tests in section 2 onwards._
 
-- `BasicCL1`: You can create a context listener by calling `fdc3.addContextListener('fdc3.contact',<handler>)`.  A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
+- `BasicCL1`: You can create a context listener by calling `fdc3.addContextListener("fdc3.contact",<handler>)`.  A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
 - `BasicCL2`: You can create an **unfiltered** context listener by calling `fdc3.addContextListener(null,<handler>)`.  A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
-- `BasicIL1`: You can create an intent listener by calling `fdc3.addIntentListener(<intent name>,<handler>)`. A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
+- `BasicIL1`: You can create an intent listener by calling `fdc3.addIntentListener(<intentName>,<handler>)`. A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
 - `BasicGI1`: An application can retrieve an `ImplementationMetadata` object to find out the version of FDC3 it is using and the provider details by calling:
   - `await fdc3.getInfo()`
 - `BasicAC1`: An application can retrieve a named 'App' channel via the `fdc3.getOrCreateChannel(<name>)` function. The `Channel` object returned conforms to the defined interface.
