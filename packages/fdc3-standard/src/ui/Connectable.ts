@@ -1,6 +1,5 @@
 export interface Connectable {
+  connect(): Promise<void>;
 
-    connect(): Promise<void>
-
-    disconnect(): Promise<void>
+  disconnect(): Promise<void>;
 }
