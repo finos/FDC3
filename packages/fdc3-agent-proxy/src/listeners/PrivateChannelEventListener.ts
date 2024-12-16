@@ -1,4 +1,7 @@
 import {
+  isPrivateChannelOnAddContextListenerEvent,
+  isPrivateChannelOnDisconnectEvent,
+  isPrivateChannelOnUnsubscribeEvent,
   PrivateChannelAddEventListenerRequest,
   PrivateChannelOnAddContextListenerEvent,
   PrivateChannelOnDisconnectEvent,
@@ -105,7 +108,7 @@ export class PrivateChannelNullEventListener extends AbstractPrivateChannelEvent
 export class PrivateChannelDisconnectEventListener extends AbstractPrivateChannelEventListener {
   constructor(messaging: Messaging, channelId: string, handler: EventHandler) {
     const wrappedHandler = (msg: PrivateChannelEventMessages) => {
-      if (msg.type === 'privateChannelOnDisconnectEvent') {
+      if (isPrivateChannelOnDisconnectEvent(msg)) {
         const event: PrivateChannelDisconnectEvent = {
           type: 'disconnect',
           details: null,
@@ -123,7 +126,7 @@ export class PrivateChannelDisconnectEventListener extends AbstractPrivateChanne
 export class PrivateChannelAddContextEventListener extends AbstractPrivateChannelEventListener {
   constructor(messaging: Messaging, channelId: string, handler: EventHandler) {
     const wrappedHandler = (msg: PrivateChannelEventMessages) => {
-      if (msg.type === 'privateChannelOnAddContextListenerEvent') {
+      if (isPrivateChannelOnAddContextListenerEvent(msg)) {
         const event: ApiEvent = {
           type: 'addContextListener',
           details: { contextType: msg.payload.contextType },
@@ -140,7 +143,7 @@ export class PrivateChannelAddContextEventListener extends AbstractPrivateChanne
 export class PrivateChannelUnsubscribeEventListener extends AbstractPrivateChannelEventListener {
   constructor(messaging: Messaging, channelId: string, handler: EventHandler) {
     const wrappedHandler = (msg: PrivateChannelEventMessages) => {
-      if (msg.type === 'privateChannelOnUnsubscribeEvent') {
+      if (isPrivateChannelOnUnsubscribeEvent(msg)) {
         const event: ApiEvent = {
           type: 'unsubscribe',
           details: { contextType: msg.payload.contextType },

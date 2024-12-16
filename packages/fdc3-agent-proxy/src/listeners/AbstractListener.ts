@@ -96,9 +96,9 @@ export abstract class AbstractListener<X, Y extends SubscriptionRequest> impleme
 
   async register(): Promise<void> {
     const subscribeMessage: Y = {
-      meta: this.messaging.createMeta(),
-      payload: this.subscriptionPayload,
-      type: this.subscribeRequestType,
+      meta: this.messaging.createMeta() as Y['meta'],
+      payload: this.subscriptionPayload as Y['payload'],
+      type: this.subscribeRequestType as Y['type'],
     } as Y;
 
     const response = await this.messaging.exchange<SubscriptionResponse>(subscribeMessage, this.subscribeResponseType);

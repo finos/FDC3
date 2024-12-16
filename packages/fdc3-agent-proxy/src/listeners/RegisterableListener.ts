@@ -7,11 +7,8 @@ import { Listener } from '@kite9/fdc3-standard';
  */
 export interface RegisterableListener extends Listener {
   id: string | null;
-
   filter(m: any): boolean;
-
   action(m: any): void;
-
   /**
    * Listeners need to be registered in order to set their IDs.
    */
