@@ -1,3 +1,4 @@
+import { AgentEventMessage } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { Messaging } from '../Messaging';
 import { RegisterableListener } from './RegisterableListener';
 
@@ -21,9 +22,9 @@ export abstract class AbstractListener<X> implements RegisterableListener {
     this.handler = handler;
   }
 
-  abstract filter(m: any): boolean;
+  abstract filter(m: AgentEventMessage): boolean;
 
-  abstract action(m: any): void;
+  abstract action(m: AgentEventMessage): void;
 
   async listenerNotification(type: string): Promise<string | null> {
     const requestType = `${type}Request`;
