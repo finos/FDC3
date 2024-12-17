@@ -25,7 +25,7 @@ export function dragElement(drag: HTMLElement, selector: HTMLElement, position: 
   }
 
   function dragMouseDown(e: MouseEvent) {
-    console.log('starting');
+    console.debug('Channel Selector - DragMouseDown starting');
     e.preventDefault();
     // get the mouse cursor position at startup:
     posXStart = e.clientX;

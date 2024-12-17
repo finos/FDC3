@@ -40,8 +40,6 @@ export class HeartbeatHandler implements MessageHandler {
 
   constructor(pingInterval: number = 1000, disconnectedAfter: number = 5000, deadAfter: number = 20000) {
     this.timerFunction = setInterval(() => {
-      //console.log(`Contexts: ${this.contexts.length} Last Heartbeats: `, this.heartbeatTimes())
-
       this.contexts.forEach(async sc => {
         const apps = await sc.getAllApps();
         apps
@@ -126,16 +124,14 @@ export class HeartbeatHandler implements MessageHandler {
   }
 
   async sendHeartbeat(sc: ServerContext<AppRegistration>, app: FullAppIdentifier): Promise<void> {
-    sc.post(
-      {
-        type: 'heartbeatEvent',
-        meta: {
-          timestamp: new Date(),
-          eventUuid: sc.createUUID(),
-        },
-        payload: {},
-      } as HeartbeatEvent,
-      app.instanceId
-    );
+    const event: HeartbeatEvent = {
+      type: 'heartbeatEvent',
+      meta: {
+        timestamp: new Date(),
+        eventUuid: sc.createUUID(),
+      },
+      payload: {},
+    };
+    sc.post(event, app.instanceId);
   }
 }
