@@ -2,7 +2,7 @@ name: Node.js CI Tests and Coverage
 
 # Controls when the workflow will run on any branch
 on:
-  pull_request:
+  pull_request_target:
 
 # Allows Coverage to be written back as a PR comment
 permissions: 
