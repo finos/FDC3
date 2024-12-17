@@ -103,6 +103,13 @@ export function setupGenericSteps() {
   );
 
   Then(
+    '{string} is an array of objects with length {string}',
+    function (this: PropsWorld, field: string, field2: string) {
+      expect(handleResolve(field, this).length).toEqual(Number.parseInt(handleResolve(field2, this)));
+    }
+  );
+
+  Then(
     '{string} is an array of strings with the following values',
     function (this: PropsWorld, field: string, dt: DataTable) {
       const values = handleResolve(field, this).map((s: string) => {

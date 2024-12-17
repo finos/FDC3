@@ -9,6 +9,7 @@ Feature: Basic User Channels Support
     Given "instrumentContext" is a "fdc3.instrument" context
     Given "userChannelMessage1" is a channelChangedEvent message on channel "one"
     Given "userChannelMessage2" is a channelChangedEvent message on channel "two"
+    Given "userChannelMessage3" is a channelChangedEvent message on channel "three"
 
   Scenario: List User Channels
         There should be a selection of user channels to choose from
@@ -191,11 +192,14 @@ Feature: Basic User Channels Support
     When messaging receives "{userChannelMessage2}"
     Then "{channelId}" is "two"
 
-  Scenario: Adding A User Channel Event Listener
+  Scenario: Adding and removing A User Channel Changed Event Listener
     Given "typesHandler" pipes events to "types"
     When I call "{api}" with "addEventListener" with parameters "userChannelChanged" and "{typesHandler}"
+    And I refer to "{result}" as "theListener"
     And messaging receives "{userChannelMessage2}"
     And messaging receives "{userChannelMessage1}"
+    And I call "{theListener}" with "unsubscribe"
+    And messaging receives "{userChannelMessage3}"
     Then "{types}" is an array of objects with the following contents
       | newChannelId |
       | two          |

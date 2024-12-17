@@ -68,6 +68,18 @@ Feature: Basic Private Channels Support
       | contextType     |
       | fdc3.instrument |
 
+  Scenario: Adding an event handler for all events on a given Private Channel to receive a notification
+    Given "onAddContextListenerMessage" is a PrivateChannelOnAddContextListenerEvent message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
+    Given "onUnsubscribeListenerMessage" is a PrivateChannelOnUnsubscribeEvent message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
+    Given "onDisconnectListenerMessage" is a PrivateChannelOnDisconnectEvent message on channel "{privateChannel.id}"
+    And "typesHandler" pipes events to "types"
+    And I call "{privateChannel}" with "addEventListener" with parameters "{null}" and "{typesHandler}"
+    And we wait for a period of "100" ms
+    And messaging receives "{onAddContextListenerMessage}"
+    And messaging receives "{onUnsubscribeListenerMessage}"
+    And messaging receives "{onDisconnectListenerMessage}"
+    Then "{types}" is an array of objects with length "3"
+
   Scenario: Adding and then unsubscribing an "disconnect" listener will send a notification of each event to the agent
     Given "voidHandler" is a invocation counter into "count"
     When I call "{privateChannel}" with "addEventListener" with parameters "disconnect" and "{voidHandler}"

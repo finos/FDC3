@@ -28,6 +28,7 @@ import {
   JoinUserChannelResponse,
   JoinUserChannelRequest,
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { throwIfUndefined } from '../util';
 
 export class DefaultChannelSupport implements ChannelSupport {
   readonly messaging: Messaging;
@@ -91,14 +92,10 @@ export class DefaultChannelSupport implements ChannelSupport {
       payload: {},
     };
     const response = await this.messaging.exchange<GetUserChannelsResponse>(request, 'getUserChannelsResponse');
-    //handle successful responses - errors will already have been thrown by exchange above
-    if (response.payload.userChannels) {
-      const channels = response.payload.userChannels;
-      this.userChannels = channels.map(c => new DefaultChannel(this.messaging, c.id, 'user', c.displayMetadata));
-    } else {
-      console.error('Invalid response from Desktop Agent to getUserChannelsRequest!', response);
-      throw new Error(ChannelError.NoChannelFound);
-    }
+
+    //handle successful responses
+    const channels = response.payload.userChannels!;
+    this.userChannels = channels.map(c => new DefaultChannel(this.messaging, c.id, 'user', c.displayMetadata));
     return this.userChannels;
   }
 
@@ -111,14 +108,16 @@ export class DefaultChannelSupport implements ChannelSupport {
       },
     };
     const response = await this.messaging.exchange<GetOrCreateChannelResponse>(request, 'getOrCreateChannelResponse');
-    //handle successful responses - errors will already have been thrown by exchange above
-    if (response.payload.channel) {
-      const out = new DefaultChannel(this.messaging, id, 'app', response.payload.channel.displayMetadata);
-      return out;
-    } else {
-      console.error('Invalid response from Desktop Agent to getUserChannelsRequest!', response);
-      throw new Error(ChannelError.CreationFailed);
-    }
+
+    throwIfUndefined(
+      response.payload.channel,
+      'Invalid response from Desktop Agent to getOrCreate!',
+      response,
+      ChannelError.CreationFailed
+    );
+
+    const out = new DefaultChannel(this.messaging, id, 'app', response.payload.channel!.displayMetadata);
+    return out;
   }
 
   async createPrivateChannel(): Promise<PrivateChannel> {
@@ -131,12 +130,15 @@ export class DefaultChannelSupport implements ChannelSupport {
       request,
       'createPrivateChannelResponse'
     );
-    if (response.payload.privateChannel) {
-      return new DefaultPrivateChannel(this.messaging, response.payload.privateChannel.id);
-    } else {
-      console.error('Invalid response from Desktop Agent to getUserChannelsRequest!', response);
-      throw new Error(ChannelError.CreationFailed);
-    }
+
+    throwIfUndefined(
+      response.payload.privateChannel,
+      'Invalid response from Desktop Agent to createPrivateChannel!',
+      response,
+      ChannelError.CreationFailed
+    );
+
+    return new DefaultPrivateChannel(this.messaging, response.payload.privateChannel!.id);
   }
 
   async leaveUserChannel(): Promise<void> {
