@@ -183,8 +183,7 @@ export class OpenHandler implements MessageHandler {
 
           pendingOpen.setDone();
           this.pending.delete(from);
-          //TODO: find a better/more certain way to get teh destination for this message
-          sc.post(message, arg0.meta.source?.instanceId!!);
+          sc.post(message, from);
         }
       }
     }
@@ -302,16 +301,14 @@ export class OpenHandler implements MessageHandler {
     };
 
     const returnError = () => {
-      sc.post(
-        {
-          meta: responseMeta,
-          type: 'WCP5ValidateAppIdentityFailedResponse',
-          payload: {
-            message: 'App Instance not found',
-          },
-        } as WebConnectionProtocol5ValidateAppIdentityFailedResponse,
-        from
-      );
+      const msg: WebConnectionProtocol5ValidateAppIdentityFailedResponse = {
+        meta: responseMeta,
+        type: 'WCP5ValidateAppIdentityFailedResponse',
+        payload: {
+          message: 'App Instance not found',
+        },
+      };
+      sc.post(msg, from);
     };
 
     const returnSuccess = (appId: string, instanceId: string) => {
