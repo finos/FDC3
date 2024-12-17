@@ -101,9 +101,7 @@ export abstract class AbstractUIComponent implements Connectable {
         if (e.source == this.iframe?.contentWindow) {
           if (isFdc3UserInterfaceHello(e.data)) {
             const helloData = e.data;
-            if (helloData.payload.initialCSS) {
-              this.themeContainer(helloData.payload.initialCSS);
-            }
+            this.themeContainer(helloData.payload.initialCSS);
             const port = e.ports[0];
             port.start();
             globalThis.window.removeEventListener('message', ml);
@@ -146,15 +144,13 @@ export abstract class AbstractUIComponent implements Connectable {
   }
 
   themeContainer(css: UpdatedCSS | InitialCSS) {
-    if (css) {
-      for (let i = 0; i < ALLOWED_CSS_ELEMENTS.length; i++) {
-        const k = ALLOWED_CSS_ELEMENTS[i];
-        const value: string | undefined = css[k as string];
-        if (value != null) {
-          this.container!.style.setProperty(this.toKebabCase(k), value);
-        } else {
-          this.container!.style.removeProperty(this.toKebabCase(k));
-        }
+    for (let i = 0; i < ALLOWED_CSS_ELEMENTS.length; i++) {
+      const k = ALLOWED_CSS_ELEMENTS[i];
+      const value: string | undefined = css[k as string];
+      if (value != null) {
+        this.container!.style.setProperty(this.toKebabCase(k), value);
+      } else {
+        this.container!.style.removeProperty(this.toKebabCase(k));
       }
     }
   }

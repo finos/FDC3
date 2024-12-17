@@ -79,7 +79,7 @@ export abstract class AbstractListener<X, Y extends SubscriptionRequest> impleme
 
   async unsubscribe(): Promise<void> {
     if (this.id) {
-      this.messaging.unregister(this.id!);
+      this.messaging.unregister(this.id);
       const unsubscribeMessage: UnsubscribeRequest = {
         meta: this.messaging.createMeta(),
         payload: {

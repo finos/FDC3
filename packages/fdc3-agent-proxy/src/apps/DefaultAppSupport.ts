@@ -12,6 +12,7 @@ import {
   OpenRequest,
   OpenResponse,
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { throwIfUndefined } from '../util';
 export class DefaultAppSupport implements AppSupport {
   readonly messaging: Messaging;
 
@@ -41,13 +42,16 @@ export class DefaultAppSupport implements AppSupport {
       meta: this.messaging.createMeta(),
     };
 
-    const out = await this.messaging.exchange<GetAppMetadataResponse>(request, 'getAppMetadataResponse');
-    if (out.payload.appMetadata) {
-      return out.payload.appMetadata;
-    } else {
-      //defensive: unlikely to happen as an error returned should already have been thrown by exchange
-      throw new Error(ResolveError.TargetAppUnavailable);
-    }
+    const response = await this.messaging.exchange<GetAppMetadataResponse>(request, 'getAppMetadataResponse');
+
+    throwIfUndefined(
+      response.payload.appMetadata,
+      'Invalid response from Desktop Agent to getAppMetadata!',
+      response,
+      ResolveError.TargetAppUnavailable
+    );
+
+    return response.payload.appMetadata!;
   }
 
   async open(app: AppIdentifier, context?: Context | undefined): Promise<AppIdentifier> {
@@ -63,13 +67,16 @@ export class DefaultAppSupport implements AppSupport {
       meta: this.messaging.createMeta(),
     };
 
-    const out = await this.messaging.exchange<OpenResponse>(request, 'openResponse', OpenError.AppTimeout);
-    if (out.payload.appIdentifier) {
-      return out.payload.appIdentifier;
-    } else {
-      //defensive: unlikely to happen as an error returned should already have been thrown by exchange
-      throw new Error(OpenError.AppNotFound);
-    }
+    const response = await this.messaging.exchange<OpenResponse>(request, 'openResponse', OpenError.AppTimeout);
+
+    throwIfUndefined(
+      response.payload.appIdentifier,
+      'Invalid response from Desktop Agent to open!',
+      response,
+      OpenError.AppNotFound
+    );
+
+    return response.payload.appIdentifier!;
   }
 
   async getImplementationMetadata(): Promise<ImplementationMetadata> {
@@ -79,15 +86,17 @@ export class DefaultAppSupport implements AppSupport {
       meta: this.messaging.createMeta(),
     };
 
-    const out = await this.messaging.exchange<GetInfoResponse>(
+    const response = await this.messaging.exchange<GetInfoResponse>(
       request,
       'getInfoResponse',
       'timed out waiting for getInfo response!'
     );
-    if (out.payload.implementationMetadata) {
-      return out.payload.implementationMetadata;
+
+    if (response.payload.implementationMetadata) {
+      return response.payload.implementationMetadata;
     } else {
-      //should never happen as an error returned will be thrown
+      //This will only happen if the DA implementation returns an invalid message with a missing implementationMetadata property
+      console.error('Invalid response from Desktop Agent to open!', response);
       const unknownImpl: ImplementationMetadata = {
         fdc3Version: 'unknown',
         provider: 'unknown',

@@ -27,6 +27,7 @@ import {
   RaiseIntentResponse,
   RaiseIntentResultResponse,
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { throwIfUndefined } from '../util';
 
 const convertIntentResult = async (
   { payload }: RaiseIntentResultResponse,
@@ -130,6 +131,13 @@ export class DefaultIntentSupport implements IntentSupport {
       ResolveError.IntentDeliveryFailed
     );
 
+    throwIfUndefined(
+      response.payload.error ?? response.payload.appIntent ?? response.payload.intentResolution,
+      'Invalid response from Desktop Agent to raiseIntent!',
+      response,
+      ResolveError.NoAppsFound
+    );
+
     if (response.payload.appIntent) {
       // Needs further resolution, we need to invoke the resolver
       const result: IntentResolutionChoice | void = await this.intentResolver.chooseIntent(
@@ -146,8 +154,8 @@ export class DefaultIntentSupport implements IntentSupport {
       const details = response.payload.intentResolution;
       return new DefaultIntentResolution(this.messaging, resultPromise, details.source, details.intent);
     } else {
-      //should never get here as exchange will throw above
-      throw new Error(ResolveError.NoAppsFound);
+      //Should never get here as we will throw above
+      throw new Error(response.payload.error);
     }
   }
 
@@ -167,6 +175,14 @@ export class DefaultIntentSupport implements IntentSupport {
       'raiseIntentForContextResponse',
       ResolveError.IntentDeliveryFailed
     );
+
+    throwIfUndefined(
+      response.payload.error ?? response.payload.appIntents ?? response.payload.intentResolution,
+      'Invalid response from Desktop Agent to raiseIntentForContext!',
+      response,
+      ResolveError.NoAppsFound
+    );
+
     if (response.payload.appIntents) {
       // Needs further resolution, we need to invoke the resolver
       const result: IntentResolutionChoice | void = await this.intentResolver.chooseIntent(
@@ -183,8 +199,8 @@ export class DefaultIntentSupport implements IntentSupport {
       const details = response.payload.intentResolution;
       return new DefaultIntentResolution(this.messaging, resultPromise, details.source, details.intent);
     } else {
-      //should never get here as exchange will throw above
-      throw new Error(ResolveError.NoAppsFound);
+      //should never get here as we will throw above
+      throw new Error(response.payload.error);
     }
   }
 
