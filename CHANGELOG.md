@@ -49,6 +49,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added missing `resultType` argument to `findIntentByContext` agent request in the Bridging Schema. ([#1212](https://github.com/finos/FDC3/pull/1212)) 
 * Added missing id and name fields from the context base schema to respective context schemas (`Contact`, `ContactList`, `Country`, `InstrumentList`, `OrderList`, `Organization`, `Portfolio`, `Position`, `TradeList`). ([#1360](https://github.com/finos/FDC3/pull/1360))
 * Revised FDC3 charter to include well-known language from the FDC3 introduction, better describe FDC3's scope, focus on financial applications, update application types, etc. ([#1079](https://github.com/finos/FDC3/pull/1079))
+* Ensured that `PrivateChannelEvent` extends `ApiEvent` in both sourcecode and documentation. ([#1474](https://github.com/finos/FDC3/pull/1474))
 
 ## [npm v2.1.1] - 2024-06-28
 
