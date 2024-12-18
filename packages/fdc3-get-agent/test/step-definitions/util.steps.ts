@@ -3,6 +3,8 @@ import { CustomWorld } from '../world';
 import { Logger } from '../../src/util/Logger';
 import { createUUID } from '../../src/util/Uuid';
 
+const TEST_ERROR = 'Test error - This is expected on the console';
+
 Given('All log functions are used with a message', async function (this: CustomWorld) {
   Logger.debug('Debug msg');
   Logger.log('Log msg');
@@ -10,11 +12,11 @@ Given('All log functions are used with a message', async function (this: CustomW
   Logger.error('Error msg');
 });
 
-Given('All log functions are used without a message', async function (this: CustomWorld) {
-  Logger.debug(new Error('Test error'));
-  Logger.log(new Error('Test error'));
-  Logger.warn(new Error('Test error'));
-  Logger.error(new Error('Test error'));
+Given('All log functions are used with an error', async function (this: CustomWorld) {
+  Logger.debug(new Error(TEST_ERROR));
+  Logger.log(new Error(TEST_ERROR));
+  Logger.warn(new Error(TEST_ERROR));
+  Logger.error(new Error(TEST_ERROR));
 });
 
 Given('A uuid is generated', async function (this: CustomWorld) {
