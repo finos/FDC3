@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { HelloHandler } from './HelloHandler';
 import { IdentityValidationHandler } from './IdentityValidationHandler';
 import { Logger } from '../util/Logger';
+import { ConnectionDetails } from '../messaging/MessagePortMessaging';
 
 /** TypeGuard for a Desktop Agent */
 function isDesktopAgent(da: WindowProxy | DesktopAgent): da is DesktopAgent {
@@ -46,32 +47,13 @@ export class FailoverHandler {
       //set-up a event listeners in case the failover returns a Window that wants to message us
       const handshakePromise = this.helloHandler.listenForHelloResponses();
 
-      //Run the failover function
       if (typeof this.options.failover === 'function') {
         const failoverResult = await this.options.failover(this.options);
 
-        //if the result was a Desktop Agent
         if (isDesktopAgent(failoverResult)) {
-          this.cancel();
-
-          //retrieve appId and instanceId from the DA
-          const implMetadata = await failoverResult.getInfo();
-          const desktopAgentSelection: DesktopAgentSelection = {
-            agent: failoverResult,
-            details: {
-              agentType: WebDesktopAgentType.Failover,
-              identityUrl: globalThis.window.location.href,
-              actualUrl: globalThis.window.location.href,
-              appId: implMetadata.appMetadata.appId,
-              instanceId: implMetadata.appMetadata.instanceId ?? 'unknown',
-              instanceUuid: implMetadata.appMetadata.instanceId ?? 'unknown', // preload DAs don't issue these so repeat the instanceId
-            },
-          };
-          return desktopAgentSelection;
+          return await this.failoverResultIsDesktopAgent(failoverResult);
         } else if (isWindow(failoverResult)) {
-          //if the result was a Window/WindowProxy
-          //send a hello message
-          this.helloHandler.sendWCP1Hello(failoverResult, '*');
+          return await this.failoverResultIsProxyWindow(failoverResult, handshakePromise);
         } else {
           Logger.error('Failover function returned an invalid result: ', failoverResult);
           throw AgentError.InvalidFailover;
@@ -80,45 +62,68 @@ export class FailoverHandler {
         Logger.error('Failover was not a function, actual type: ', typeof this.options.failover);
         throw AgentError.InvalidFailover;
       }
-
-      //if we received a WindowProxy from failover, and it sent us a handshake, try to validate its identity
-      const connectionDetails = await handshakePromise;
-      try {
-        this.identityValidationHandler = new IdentityValidationHandler(
-          connectionDetails.messagePort,
-          this.options,
-          this.connectionAttemptUuid
-        );
-        const idValidationPromise = this.identityValidationHandler.listenForIDValidationResponses();
-        this.identityValidationHandler.sendIdValidationMessage();
-        const idDetails = await idValidationPromise;
-        const appIdentifier: AppIdentifier = {
-          appId: idDetails.payload.appId,
-          instanceId: idDetails.payload.instanceId,
-        };
-        const desktopAgentSelection: DesktopAgentSelection = {
-          agent: await createDesktopAgentAPI(connectionDetails, appIdentifier),
-          details: {
-            agentType: connectionDetails.agentType,
-            agentUrl: connectionDetails.agentUrl ?? undefined,
-            identityUrl: connectionDetails.options.identityUrl ?? connectionDetails.actualUrl,
-            actualUrl: connectionDetails.actualUrl,
-            appId: idDetails.payload.appId,
-            instanceId: idDetails.payload.instanceId,
-            instanceUuid: idDetails.payload.instanceUuid,
-          },
-        };
-
-        return desktopAgentSelection;
-      } catch (e) {
-        //identity validation may have failed
-        Logger.error('Error during identity validation of Failover', e);
-        throw e;
-      }
     } finally {
       //cleanup any remaining listeners
       this.cancel();
     }
+  }
+
+  private async failoverResultIsProxyWindow(failoverResult: Window, handshakePromise: Promise<ConnectionDetails>) {
+    this.helloHandler.sendWCP1Hello(failoverResult, '*');
+
+    //if we received a WindowProxy from failover, and it sent us a handshake, try to validate its identity
+    const connectionDetails = await handshakePromise;
+    try {
+      this.identityValidationHandler = new IdentityValidationHandler(
+        connectionDetails.messagePort,
+        this.options,
+        this.connectionAttemptUuid
+      );
+      const idValidationPromise = this.identityValidationHandler.listenForIDValidationResponses();
+      this.identityValidationHandler.sendIdValidationMessage();
+      const idDetails = await idValidationPromise;
+      const appIdentifier: AppIdentifier = {
+        appId: idDetails.payload.appId,
+        instanceId: idDetails.payload.instanceId,
+      };
+      const desktopAgentSelection: DesktopAgentSelection = {
+        agent: await createDesktopAgentAPI(connectionDetails, appIdentifier),
+        details: {
+          agentType: connectionDetails.agentType,
+          agentUrl: connectionDetails.agentUrl ?? undefined,
+          identityUrl: connectionDetails.options.identityUrl ?? connectionDetails.actualUrl,
+          actualUrl: connectionDetails.actualUrl,
+          appId: idDetails.payload.appId,
+          instanceId: idDetails.payload.instanceId,
+          instanceUuid: idDetails.payload.instanceUuid,
+        },
+      };
+
+      return desktopAgentSelection;
+    } catch (e) {
+      //identity validation may have failed
+      Logger.error('Error during identity validation of Failover', e);
+      throw e;
+    }
+  }
+
+  private async failoverResultIsDesktopAgent(failoverResult: DesktopAgent) {
+    this.cancel();
+
+    //retrieve appId and instanceId from the DA
+    const implMetadata = await failoverResult.getInfo();
+    const desktopAgentSelection: DesktopAgentSelection = {
+      agent: failoverResult,
+      details: {
+        agentType: WebDesktopAgentType.Failover,
+        identityUrl: globalThis.window.location.href,
+        actualUrl: globalThis.window.location.href,
+        appId: implMetadata.appMetadata.appId,
+        instanceId: implMetadata.appMetadata.instanceId ?? 'unknown',
+        instanceUuid: implMetadata.appMetadata.instanceId ?? 'unknown', // preload DAs don't issue these so repeat the instanceId
+      },
+    };
+    return desktopAgentSelection;
   }
 
   /** Removes listeners so that events are no longer processed */
