@@ -55,7 +55,7 @@ export type PrivateChannelEventTypes = 'addContextListener' | 'unsubscribe' | 'd
  * Type defining the format of event objects that may be received
  * via a PrivateChannel's `addEventListener` function.
  */
-export interface PrivateChannelEvent {
+export interface PrivateChannelEvent extends ApiEvent{
   readonly type: PrivateChannelEventTypes;
   readonly details: any;
 }
