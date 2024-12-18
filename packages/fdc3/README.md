@@ -1,6 +1,8 @@
 # FDC3
 
-This npm module is the main entry point for the Financial Desktop Connectivity and Collaboration Consortium (FDC3) javascript API.
+This npm module is the main entry point for the Financial Desktop Connectivity and Collaboration Consortium (FDC3) JavaScript API.
+
+Since version 2.2.0 this module only provides an ES6 module. Applications requiring a CommonJS module should either update to ES6 or switch to the [@finos/fdc3-commonjs module](https://npmjs.com/package/@finos/fdc3-commonjs) (provided for backwards compatibility).
 
 ## Installation
 
