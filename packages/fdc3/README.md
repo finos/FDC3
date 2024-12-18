@@ -28,9 +28,9 @@ const contact = {
   id: {
     email: 'jane@mail.com'
   }
-}
+};
 
-fdc3.raiseIntent('ViewProfile', contact)
+fdc3.raiseIntent('ViewProfile', contact);
 ```
 
 ## Documentation
