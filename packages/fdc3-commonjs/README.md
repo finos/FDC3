@@ -1,6 +1,7 @@
 # FDC3 CommonJS Module
 
 This is the CommonJS module version of the Financial Desktop Connectivity and Collaboration Consortium (FDC3) javascript API. 
+
 ## Warning
 
 CommonJS is no longer the recommended module system for JavaScript. We recommend using the FDC3 ES6 module at `@finos/fdc3` instead. The FDC3 CommonJS module is provided for compatibility with older projects that use CommonJS.
