@@ -1,0 +1,29 @@
+name: Test coverage for main branch
+
+on:
+  push:
+    branches:
+      - main
+      - fdc3-for-web-impl
+
+jobs:
+  test_and_upload_coverage:
+    runs-on: ubuntu-latest
+    name: Test and upload coverage
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.ref }}
+          fetch-depth: 1000
+
+      - name: Run tests
+        run: |
+          npm i
+          npm run test
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-coverage-output
+          path: coverage
