@@ -2,7 +2,6 @@ import { Channel, ContextHandler, EventHandler, Listener, PrivateChannel } from 
 
 export interface ChannelSupport {
   getUserChannel(): Promise<Channel | null>;
-  getUserChannel(): Promise<Channel | null>;
   getUserChannels(): Promise<Channel[]>;
   getOrCreate(id: string): Promise<Channel>;
   createPrivateChannel(): Promise<PrivateChannel>;
