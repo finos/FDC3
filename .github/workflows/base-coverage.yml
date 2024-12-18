@@ -21,9 +21,11 @@ jobs:
         run: |
           npm i
           npm run test
+          npm run merge
+          npm run report
 
       - name: Upload coverage artifact
         uses: actions/upload-artifact@v2
         with:
           name: test-coverage-output
-          path: coverage
+          path: nyc-coverage-report
