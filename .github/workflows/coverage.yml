@@ -4,6 +4,10 @@ name: Node.js CI Tests and Coverage
 on:
   pull_request:
 
+# Allows Coverage to be written back as a PR comment
+permissions: 
+  pull-requests: write
+
 # Define the jobs for this workflow
 jobs:
   test:
