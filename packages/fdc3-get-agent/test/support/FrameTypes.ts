@@ -80,7 +80,7 @@ export function handleChannelSelectorComms(
     parent.dispatchEvent(event);
 
     connection.port2.onmessage = e => {
-      if (isFdc3UserInterfaceHandshake(e)) {
+      if (isFdc3UserInterfaceHandshake(e.data)) {
         setTimeout(() => {
           const msg: Fdc3UserInterfaceRestyle = {
             type: 'Fdc3UserInterfaceRestyle',
@@ -129,7 +129,7 @@ export function handleIntentResolverComms(
     parent.dispatchEvent(event);
 
     connection.port2.onmessage = e => {
-      if (isFdc3UserInterfaceHandshake(e)) {
+      if (isFdc3UserInterfaceHandshake(e.data)) {
         setTimeout(() => {
           const msg: Fdc3UserInterfaceRestyle = {
             type: 'Fdc3UserInterfaceRestyle',

@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceHandshake.schema.json",
   "title": "Fdc3 UserInterface Handshake",
-  "description": "Handshake message sent back to a user interface from the DA proxy code (setup by `getAgent()`) over the `MessagePort` provide in the preceding iFrameHello message, confirming that it is listening to the `MessagePort` for further communication.",
+  "description": "Handshake message sent back to a user interface from the DA proxy code (setup by `getAgent()`) over the `MessagePort` provided in the preceding Fdc3UserInterfaceHello message, confirming that it is listening to the `MessagePort` for further communication.",
   "type": "object",
   "allOf": [
     {

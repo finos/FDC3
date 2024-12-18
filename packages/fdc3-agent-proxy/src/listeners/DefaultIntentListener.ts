@@ -31,32 +31,12 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIn
   }
 
   action(m: IntentEvent): void {
-    //this.handleIntentResponse(m);
-
     const done = this.handler(m.payload.context, {
       source: m.payload.originatingApp as AppIdentifier,
     });
 
     this.handleIntentResult(done, m);
   }
-
-  // private handleIntentResponse(m: IntentEvent) {
-  //   const out: RaiseIntentResponse = {
-  //     type: 'raiseIntentResponse',
-  //     meta: {
-  //       responseUuid: this.messaging.createUUID(),
-  //       requestUuid: m.meta.eventUuid,
-  //       timestamp: new Date(),
-  //     },
-  //     payload: {
-  //       intentResolution: {
-  //         intent: m.payload.intent,
-  //         source: this.messaging.getAppIdentifier(),
-  //       },
-  //     },
-  //   };
-  //   this.messaging.post(out);
-  // }
 
   private intentResultRequestMessage(ir: IntentResult, m: IntentEvent): IntentResultRequest {
     const out: IntentResultRequest = {
