@@ -40,11 +40,6 @@ jobs:
     - name: Create Report
       run: npm run report
 
-    - name: Report NYC coverage
-      uses: sidx1024/report-nyc-coverage-github-action@v1.2.7
-      with:
-        coverage_file: "nyc-coverage-report/coverage-summary.json"
-
     - name: Create test summary
       uses: test-summary/action@dist
       with:
@@ -56,3 +51,18 @@ jobs:
       uses: thollander/actions-comment-pull-request@v3
       with:
         file-path: test-summary.md
+
+    - name: Download previous coverage
+      uses: dawidd6/action-download-artifact@v7
+      with:
+        workflow: base-coverage.yml
+        name: 'test-coverage-output'
+        path: base-artifacts
+        search_artifacts: true
+
+    - name: Report Coverage
+      uses: sidx1024/report-nyc-coverage-github-action@v1.2.7
+      with:
+        coverage_file: "nyc-coverage-report/coverage-summary.json"
+        base_coverage_file: "base-artifacts/test-coverage-output/coverage-summary.json"
+
