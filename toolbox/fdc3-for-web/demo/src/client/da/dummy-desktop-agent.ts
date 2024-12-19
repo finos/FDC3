@@ -34,19 +34,19 @@ enum Approach {
 function getApproach(): Approach {
   const cb = document.getElementById('approach') as HTMLInputElement;
   const val = cb.value;
-  var out: Approach = Approach[val as keyof typeof Approach]; //Works with --noImplicitAny
+  const out: Approach = Approach[val as keyof typeof Approach]; //Works with --noImplicitAny
   return out;
 }
 
 function getUIKey(): UI {
   const cb = document.getElementById('ui') as HTMLInputElement;
   const val = cb.value;
-  var out: UI = UI[val as keyof typeof UI]; //Works with --noImplicitAny
+  const out: UI = UI[val as keyof typeof UI]; //Works with --noImplicitAny
   return out;
 }
 
 window.addEventListener('load', () => {
-  let desktopAgentUUID = uuid();
+  const desktopAgentUUID = uuid();
 
   const socket = io();
 
@@ -94,48 +94,49 @@ window.addEventListener('load', () => {
 
       console.log('Received: ' + JSON.stringify(event.data));
       if (data.type == 'WCP1Hello') {
-        if (getApproach() == Approach.IFRAME) {
-          const instance = sc.getInstanceForWindow(source);
-          source.postMessage(
-            {
-              type: 'WCP2LoadUrl',
-              meta: {
-                connectionAttemptUuid: data.meta.connectionAttemptUuid,
-                timestamp: new Date(),
+        const instance = sc.getInstanceForWindow(source);
+        if (instance) {
+          if (getApproach() == Approach.IFRAME) {
+            source.postMessage(
+              {
+                type: 'WCP2LoadUrl',
+                meta: {
+                  connectionAttemptUuid: data.meta.connectionAttemptUuid,
+                  timestamp: new Date(),
+                },
+                payload: {
+                  iframeUrl:
+                    window.location.origin +
+                    `/static/da/embed.html?connectionAttemptUuid=${data.meta.connectionAttemptUuid}&desktopAgentId=${desktopAgentUUID}&instanceId=${instance.instanceId}&UI=${getUIKey()}`,
+                },
+              } as WebConnectionProtocol2LoadURL,
+              origin
+            );
+          } else {
+            const channel = new MessageChannel();
+            link(socket, channel, instance.instanceId);
+            socket.emit(APP_HELLO, desktopAgentUUID, instance.instanceId);
+            const ui = UI_URLS[getUIKey()];
+
+            // send the other end of the channel to the app
+            source.postMessage(
+              {
+                type: 'WCP3Handshake',
+                meta: {
+                  connectionAttemptUuid: data.meta.connectionAttemptUuid,
+                  timestamp: new Date(),
+                },
+                payload: {
+                  fdc3Version: '2.2',
+                  ...ui,
+                },
               },
-              payload: {
-                iframeUrl:
-                  window.location.origin +
-                  `/static/da/embed.html?connectionAttemptUuid=${data.meta.connectionAttemptUuid}&desktopAgentId=${desktopAgentUUID}&instanceId=${instance?.instanceId}&UI=${getUIKey()}`,
-              },
-            } as WebConnectionProtocol2LoadURL,
-            origin
-          );
+              origin,
+              [channel.port1]
+            );
+          }
         } else {
-          const instance = sc.getInstanceForWindow(source)!!;
-          const channel = new MessageChannel();
-          link(socket, channel, instance.instanceId!!);
-
-          socket.emit(APP_HELLO, desktopAgentUUID, instance.instanceId);
-
-          const ui = UI_URLS[getUIKey()];
-
-          // send the other end of the channel to the app
-          source.postMessage(
-            {
-              type: 'WCP3Handshake',
-              meta: {
-                connectionAttemptUuid: data.meta.connectionAttemptUuid,
-                timestamp: new Date(),
-              },
-              payload: {
-                fdc3Version: '2.2',
-                ...ui,
-              },
-            },
-            origin,
-            [channel.port1]
-          );
+          console.error(`Couldn't locate an instance for Window.name: ${source.name}`);
         }
       }
 

@@ -2,9 +2,20 @@ import { MessageHandler } from '../BasicFDC3Server';
 import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext';
 import { Directory, DirectoryApp } from '../directory/DirectoryInterface';
 import { ContextElement } from '@kite9/fdc3-context';
-import { OpenError, ResolveError, AppIdentifier, AppMetadata } from '@kite9/fdc3-standard';
+import { OpenError, ResolveError, AppIdentifier, AppMetadata, ImplementationMetadata } from '@kite9/fdc3-standard';
 import { BrowserTypes } from '@kite9/fdc3-schema';
-import { errorResponse, successResponse } from './support';
+import { errorResponse, FullAppIdentifier, successResponse } from './support';
+import {
+  AgentResponseMessage,
+  AppRequestMessage,
+  GetInfoRequest,
+  isAddContextListenerRequest,
+  isFindInstancesRequest,
+  isGetAppMetadataRequest,
+  isGetInfoRequest,
+  isOpenRequest,
+  isWebConnectionProtocol4ValidateAppIdentity,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 type BroadcastEvent = BrowserTypes.BroadcastEvent;
 type AddContextListenerRequest = BrowserTypes.AddContextListenerRequest;
@@ -23,11 +34,14 @@ enum AppState {
   Done,
 }
 
+//TODO: Explain the naming of this file and clarify its purpose (what is it responsible for) - you can't intuit this from the name
+
+//TODO document this class, its purpose and why it is in this file
 class PendingApp {
   private readonly sc: ServerContext<AppRegistration>;
   private readonly msg: OpenRequest;
   readonly context: ContextElement | undefined;
-  readonly source: AppMetadata;
+  readonly source: FullAppIdentifier;
   state: AppState = AppState.Opening;
   private openedApp: AppIdentifier | undefined = undefined;
 
@@ -35,7 +49,7 @@ class PendingApp {
     sc: ServerContext<AppRegistration>,
     msg: OpenRequest,
     context: ContextElement | undefined,
-    source: AppIdentifier,
+    source: FullAppIdentifier,
     timeoutMs: number
   ) {
     this.context = context;
@@ -97,29 +111,38 @@ export class OpenHandler implements MessageHandler {
 
   shutdown(): void {}
 
-  async accept(msg: any, sc: ServerContext<AppRegistration>, uuid: InstanceID): Promise<void> {
-    switch (msg.type as string) {
-      case 'addContextListenerRequest':
-        return this.handleAddContextListener(msg as AddContextListenerRequest, sc, uuid);
-      case 'WCP4ValidateAppIdentity':
-        return this.handleValidate(msg as WebConnectionProtocol4ValidateAppIdentity, sc, uuid);
-    }
-
-    const from = sc.getInstanceDetails(uuid);
-    try {
+  async accept(
+    msg: AppRequestMessage | WebConnectionProtocol4ValidateAppIdentity,
+    sc: ServerContext<AppRegistration>,
+    uuid: InstanceID
+  ): Promise<void> {
+    if (isWebConnectionProtocol4ValidateAppIdentity(msg)) {
+      return this.handleValidate(msg as WebConnectionProtocol4ValidateAppIdentity, sc, uuid);
+    } else if (isAddContextListenerRequest(msg)) {
+      //handle context listener adds for pending applications (i.e. opened but awaiting context listener addition to deliver context)
+      //  additional handling is performed in BroadcastHandler
+      return this.handleAddContextListener(msg as AddContextListenerRequest, sc, uuid);
+    } else {
+      const from = sc.getInstanceDetails(uuid);
       if (from) {
-        switch (msg.type as string) {
-          case 'openRequest':
-            return this.open(msg as OpenRequest, sc, from);
-          case 'findInstancesRequest':
-            return this.findInstances(msg as FindInstancesRequest, sc, from);
-          case 'getAppMetadataRequest':
-            return this.getAppMetadata(msg as GetAppMetadataRequest, sc, from);
+        try {
+          if (isOpenRequest(msg)) {
+            return this.open(msg, sc, from);
+          } else if (isFindInstancesRequest(msg)) {
+            return this.findInstances(msg, sc, from);
+          } else if (isGetAppMetadataRequest(msg)) {
+            return this.getAppMetadata(msg, sc, from);
+          } else if (isGetInfoRequest(msg)) {
+            return this.getInfo(msg, sc, from);
+          }
+        } catch (e) {
+          const responseType = msg.type.replace(new RegExp('Request$'), 'Response') as AgentResponseMessage['type'];
+          //TODO: create a typeguard for response message types and use it to replace the 'as' below
+          errorResponse(sc, msg, from, (e as Error).message ?? e, responseType);
         }
+      } else {
+        console.warn('Received message from unknown source, ignoring', msg, uuid);
       }
-    } catch (e: any) {
-      const responseType = msg.type.replace(new RegExp('Request$'), 'Response');
-      errorResponse(sc, msg, from!!, e.message ?? e, responseType);
     }
   }
 
@@ -134,6 +157,7 @@ export class OpenHandler implements MessageHandler {
     const pendingOpen = this.pending.get(from);
 
     if (pendingOpen) {
+      //TODO: Find out why this is asserted non-null - context is only sent to the user channel listener
       const channelId = arg0.payload.channelId!!;
       const contextType = arg0.payload.contextType;
 
@@ -159,7 +183,7 @@ export class OpenHandler implements MessageHandler {
 
           pendingOpen.setDone();
           this.pending.delete(from);
-          sc.post(message, arg0.meta.source?.instanceId!!);
+          sc.post(message, from);
         }
       }
     }
@@ -179,7 +203,7 @@ export class OpenHandler implements MessageHandler {
     };
   }
 
-  getAppMetadata(arg0: GetAppMetadataRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier): void {
+  getAppMetadata(arg0: GetAppMetadataRequest, sc: ServerContext<AppRegistration>, from: FullAppIdentifier): void {
     const appID = arg0.payload.app;
     const details = this.directory.retrieveAppsById(appID.appId);
     if (details.length > 0) {
@@ -200,7 +224,7 @@ export class OpenHandler implements MessageHandler {
   async findInstances(
     arg0: FindInstancesRequest,
     sc: ServerContext<AppRegistration>,
-    from: AppIdentifier
+    from: FullAppIdentifier
   ): Promise<void> {
     const appId = arg0.payload.app.appId;
     const openApps = await sc.getConnectedApps();
@@ -223,16 +247,47 @@ export class OpenHandler implements MessageHandler {
     );
   }
 
-  async open(arg0: OpenRequest, sc: ServerContext<AppRegistration>, from: AppIdentifier): Promise<void> {
+  async open(arg0: OpenRequest, sc: ServerContext<AppRegistration>, from: FullAppIdentifier): Promise<void> {
     const source = arg0.payload.app;
     const context = arg0.payload.context;
 
     try {
       const uuid = await sc.open(source.appId);
       this.pending.set(uuid, new PendingApp(sc, arg0, context, from, this.timeoutMs));
-    } catch (e: any) {
-      errorResponse(sc, arg0, from, e.message, 'openResponse');
+    } catch (e) {
+      errorResponse(sc, arg0, from, (e as Error).message ?? e, 'openResponse');
     }
+  }
+
+  async getInfo(arg0: GetInfoRequest, sc: ServerContext<AppRegistration>, from: FullAppIdentifier): Promise<void> {
+    const implMetadata: ImplementationMetadata = this.getImplementationMetadata(sc, {
+      appId: from.appId,
+      instanceId: from.instanceId,
+    });
+    successResponse(
+      sc,
+      arg0,
+      from,
+      {
+        implementationMetadata: implMetadata,
+      },
+      'getInfoResponse'
+    );
+  }
+
+  getImplementationMetadata(sc: ServerContext<AppRegistration>, appIdentity: AppIdentifier) {
+    const appMetadata = this.filterPublicDetails(this.directory.retrieveAppsById(appIdentity.appId)[0], appIdentity);
+    return {
+      provider: sc.provider(),
+      providerVersion: sc.providerVersion(),
+      fdc3Version: sc.fdc3Version(),
+      optionalFeatures: {
+        DesktopAgentBridging: false,
+        OriginatingAppMetadata: true,
+        UserChannelMembershipAPIs: true,
+      },
+      appMetadata: appMetadata,
+    };
   }
 
   async handleValidate(
@@ -240,54 +295,36 @@ export class OpenHandler implements MessageHandler {
     sc: ServerContext<AppRegistration>,
     from: InstanceID
   ): Promise<void> {
-    const _this = this;
-
     const responseMeta = {
       connectionAttemptUuid: arg0.meta.connectionAttemptUuid,
       timestamp: new Date(),
     };
 
-    function returnError() {
-      const message: WebConnectionProtocol5ValidateAppIdentityFailedResponse = {
+    const returnError = () => {
+      const msg: WebConnectionProtocol5ValidateAppIdentityFailedResponse = {
         meta: responseMeta,
         type: 'WCP5ValidateAppIdentityFailedResponse',
         payload: {
           message: 'App Instance not found',
         },
       };
-      sc.post(message, from);
-    }
+      sc.post(msg, from);
+    };
 
-    function returnSuccess(appIdentity: AppIdentifier) {
-      if (!appIdentity.instanceId) {
-        throw new Error("App does not include an instanceId, can't ");
-      }
-      const aopMetadata = _this.filterPublicDetails(
-        _this.directory.retrieveAppsById(appIdentity.appId)[0],
-        appIdentity
-      );
-      const message: WebConnectionProtocol5ValidateAppIdentitySuccessResponse = {
+    const returnSuccess = (appId: string, instanceId: string) => {
+      const implMetadata: ImplementationMetadata = this.getImplementationMetadata(sc, { appId, instanceId });
+      const msg: WebConnectionProtocol5ValidateAppIdentitySuccessResponse = {
         meta: responseMeta,
         type: 'WCP5ValidateAppIdentityResponse',
         payload: {
-          appId: appIdentity.appId,
-          instanceId: appIdentity.instanceId,
+          appId: appId,
+          instanceId: instanceId,
           instanceUuid: from,
-          implementationMetadata: {
-            provider: sc.provider(),
-            providerVersion: sc.providerVersion(),
-            fdc3Version: sc.fdc3Version(),
-            optionalFeatures: {
-              DesktopAgentBridging: false,
-              OriginatingAppMetadata: true,
-              UserChannelMembershipAPIs: true,
-            },
-            appMetadata: aopMetadata,
-          },
+          implementationMetadata: implMetadata,
         },
       };
-      sc.post(message, appIdentity.instanceId!!);
-    }
+      sc.post(msg, instanceId);
+    };
 
     if (arg0.payload.instanceUuid) {
       // existing app reconnecting
@@ -298,7 +335,7 @@ export class OpenHandler implements MessageHandler {
         // identity
         sc.setInstanceDetails(from, appIdentity);
         sc.setAppState(from, State.Connected);
-        return returnSuccess(appIdentity);
+        return returnSuccess(appIdentity.appId, appIdentity.instanceId);
       }
     }
 
@@ -306,7 +343,7 @@ export class OpenHandler implements MessageHandler {
     const appIdentity = sc.getInstanceDetails(from);
     if (appIdentity) {
       sc.setAppState(appIdentity.instanceId, State.Connected);
-      returnSuccess(appIdentity);
+      returnSuccess(appIdentity.appId, appIdentity.instanceId);
 
       // make sure if the opener is listening for this app to open gets informed
       const pendingOpen = this.pending.get(from);

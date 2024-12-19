@@ -2,20 +2,27 @@ import { IntentHandler, IntentResult, AppIdentifier } from '@kite9/fdc3-standard
 import { Context } from '@kite9/fdc3-context';
 import { Messaging } from '../Messaging';
 import { AbstractListener } from './AbstractListener';
-import { BrowserTypes } from '@kite9/fdc3-schema';
+import {
+  AddIntentListenerRequest,
+  IntentEvent,
+  IntentResultRequest,
+  IntentResultResponse,
+  //RaiseIntentResponse,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
-type RaiseIntentResponse = BrowserTypes.RaiseIntentResponse;
-type IntentResultResponse = BrowserTypes.IntentResultResponse;
-type BridgeIntentResult = BrowserTypes.IntentResult;
-type IntentEvent = BrowserTypes.IntentEvent;
-type IntentResultRequest = BrowserTypes.IntentResultRequest;
-
-export class DefaultIntentListener extends AbstractListener<IntentHandler> {
+export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIntentListenerRequest> {
   readonly intent: string;
 
   constructor(messaging: Messaging, intent: string, action: IntentHandler) {
-    super(messaging, { intent }, action, 'addIntentListener', 'intentListenerUnsubscribe');
-
+    super(
+      messaging,
+      { intent },
+      action,
+      'addIntentListenerRequest',
+      'addIntentListenerResponse',
+      'intentListenerUnsubscribeRequest',
+      'intentListenerUnsubscribeResponse'
+    );
     this.intent = intent;
   }
 
@@ -24,31 +31,11 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler> {
   }
 
   action(m: IntentEvent): void {
-    this.handleIntentResponse(m);
-
     const done = this.handler(m.payload.context, {
       source: m.payload.originatingApp as AppIdentifier,
     });
 
     this.handleIntentResult(done, m);
-  }
-
-  private handleIntentResponse(m: IntentEvent) {
-    const out: RaiseIntentResponse = {
-      type: 'raiseIntentResponse',
-      meta: {
-        responseUuid: this.messaging.createUUID(),
-        requestUuid: m.meta.eventUuid,
-        timestamp: new Date(),
-      },
-      payload: {
-        intentResolution: {
-          intent: m.payload.intent,
-          source: this.messaging.getSource(),
-        },
-      },
-    };
-    this.messaging.post(out);
   }
 
   private intentResultRequestMessage(ir: IntentResult, m: IntentEvent): IntentResultRequest {
@@ -87,11 +74,10 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler> {
   }
 }
 
-function convertIntentResult(intentResult: IntentResult): BridgeIntentResult {
-  if (intentResult == null) {
-    return {
-      // empty result
-    };
+function convertIntentResult(intentResult: IntentResult): IntentResultRequest['payload']['intentResult'] {
+  if (!intentResult) {
+    //consider any falsy result to be void...
+    return {}; // void result
   }
   switch (intentResult.type) {
     case 'user':
