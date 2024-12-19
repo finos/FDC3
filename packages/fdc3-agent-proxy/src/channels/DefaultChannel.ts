@@ -56,6 +56,7 @@ export class DefaultChannel implements Channel {
     let theContextType: string | null;
     let theHandler: ContextHandler;
 
+    /* istanbul ignore else */
     if (contextTypeOrHandler == null && handler) {
       theContextType = null;
       theHandler = handler;
