@@ -56,7 +56,6 @@ function displayFDC3Support() {
 }
 
 function getPlatform() {
-  
   // TODO: add G42 and FDC3 Desktop Agent to vendors
   // NOTE: conceptually replaced with fdc3.getInfo
   if (window.FSBL) {
@@ -68,7 +67,7 @@ function getPlatform() {
   }
 }
 
-function updateProviderDetails(details){
+function updateProviderDetails(details) {
   const providerDetails = document.getElementById('providerDetails');
   providerDetails.innerText = details;
 }
@@ -109,7 +108,9 @@ function setUpEventListeners() {
 
   document.getElementById('join-channel__btn').addEventListener('click', joinChannel);
 
-  document.getElementById('leave-channel__btn').addEventListener('click', () => { fdc3.leaveCurrentChannel(); });
+  document.getElementById('leave-channel__btn').addEventListener('click', () => {
+    fdc3.leaveCurrentChannel();
+  });
 
   document.getElementById('broadcast__btn').addEventListener('click', broadcastFDC3Context);
 

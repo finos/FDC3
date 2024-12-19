@@ -107,8 +107,8 @@ const useStyles: any = makeStyles((theme: Theme) =>
 		tableContainer: {
 			maxHeight: 250,
 			"& > table": {
-				width: "calc(100% - 4px)"
-			}
+				width: "calc(100% - 4px)",
+			},
 		},
 	})
 );
