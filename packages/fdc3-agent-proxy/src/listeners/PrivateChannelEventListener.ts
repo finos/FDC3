@@ -133,7 +133,7 @@ export class PrivateChannelAddContextEventListener extends AbstractPrivateChanne
         };
         handler(event);
       } else {
-        console.error('PrivateChannelDisconnectEventListener was called for a different message type!', msg);
+        console.error('PrivateChannelAddContextEventListener was called for a different message type!', msg);
       }
     };
     super(messaging, channelId, ['privateChannelOnAddContextListenerEvent'], 'addContextListener', wrappedHandler);
@@ -150,7 +150,7 @@ export class PrivateChannelUnsubscribeEventListener extends AbstractPrivateChann
         };
         handler(event);
       } else {
-        console.error('PrivateChannelDisconnectEventListener was called for a different message type!', msg);
+        console.error('PrivateChannelUnsubscribeEventListener was called for a different message type!', msg);
       }
     };
     super(messaging, channelId, ['privateChannelOnUnsubscribeEvent'], 'unsubscribe', wrappedHandler);

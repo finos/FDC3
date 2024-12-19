@@ -14,7 +14,7 @@ export const throwIfUndefined = (
   absentError: ErrorMessages
 ): void => {
   if (property === undefined) {
-    console.error(absentMessage, message);
+    console.error(absentMessage, '\nDACP message that resulted in the undefined property: ', message);
     throw new Error(absentError);
   }
 };

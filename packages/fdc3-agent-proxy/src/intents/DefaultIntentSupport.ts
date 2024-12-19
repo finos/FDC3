@@ -154,8 +154,8 @@ export class DefaultIntentSupport implements IntentSupport {
       const details = response.payload.intentResolution;
       return new DefaultIntentResolution(this.messaging, resultPromise, details.source, details.intent);
     } else {
-      //Should never get here as we will throw above
-      throw new Error(response.payload.error);
+      //Should never get here as we will throw in exchange or throwIfUndefined above
+      throw new Error(response.payload.error ?? 'Unexpected error processing raiseIntent');
     }
   }
 
@@ -199,8 +199,8 @@ export class DefaultIntentSupport implements IntentSupport {
       const details = response.payload.intentResolution;
       return new DefaultIntentResolution(this.messaging, resultPromise, details.source, details.intent);
     } else {
-      //should never get here as we will throw above
-      throw new Error(response.payload.error);
+      //Should never get here as we will throw in exchange or throwIfUndefined above
+      throw new Error(response.payload.error ?? 'Unexpected error processing raiseIntentForContext');
     }
   }
 

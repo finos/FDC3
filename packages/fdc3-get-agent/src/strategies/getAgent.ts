@@ -33,10 +33,6 @@ export function clearAgentPromise() {
   theAgentPromise = null;
 }
 
-export function getAgentPromise(): Promise<DesktopAgent> | null {
-  return theAgentPromise;
-}
-
 function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
   Logger.log(`Initiating Desktop Agent discovery at ${new Date().toISOString()}`);
   let strategies: Loader[];
@@ -64,6 +60,7 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
         strategies = [];
         break;
       default:
+        Logger.warn('Unexpected agentType value in SessionStorage, ignoring. Stored data:', persistedData);
         strategies = [new DesktopAgentPreloadLoader(), new PostMessageLoader()];
     }
   } else {

@@ -371,6 +371,21 @@ Scenario: Latch to Desktop Agent Preload via SessionStorage which has gone away
     Then the promise "{theAPIPromise}" should resolve
     And "{result}" is an error with message "AgentNotFound"
 
+  Scenario: Ignore invalid agentType in SessionStorage
+  Here, we recover the details of the session from session storage, 
+  but it has an invalid agentType field - the connection should still succeed.
+    Given A Dummy Desktop Agent in "dummy-api"
+    And SessionStorage contains instanceUuid "{instanceID}", appId "cucumber-app" with identityUrl "https://dummyOrigin.test/path" and agentType "SPOON"
+    And `window.fdc3` is injected into the runtime with the value in "{dummy-api}"
+    And I call fdc3Ready for a promise result
+    And I refer to "{result}" as "theAPIPromise"
+    Then the promise "{theAPIPromise}" should resolve
+    And I refer to "{result}" as "desktopAgent"
+    And I call "{desktopAgent}" with "getInfo"
+    Then "{result}" is an object with the following contents
+      | fdc3Version | appMetadata.appId | provider          |
+      |         2.0 | cucumber-app      | preload-provider |
+
   Scenario: Nothing works and we timeout
     When I call getAgent for a promise result with the following options
       | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
