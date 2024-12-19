@@ -80,6 +80,7 @@ export abstract class AbstractListener<X, Y extends SubscriptionRequest> impleme
   abstract action(m: AgentEventMessage): void;
 
   async unsubscribe(): Promise<void> {
+    /* istanbul ignore else */
     if (this.id) {
       this.messaging.unregister(this.id);
       const unsubscribeMessage: UnsubscribeRequest = {
@@ -92,7 +93,8 @@ export abstract class AbstractListener<X, Y extends SubscriptionRequest> impleme
       await this.messaging.exchange<UnsubscribeResponse>(unsubscribeMessage, this.unsubscribeResponseType);
       return;
     } else {
-      console.error("This listener doesn't have an id and hence can't be removed!");
+      //should never happen as we throw on creating a listener without an ID
+      throw new Error("This listener doesn't have an id and hence can't be removed!");
     }
   }
 

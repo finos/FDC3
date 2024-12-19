@@ -74,6 +74,7 @@ export class DefaultChannelSupport implements ChannelSupport {
     );
 
     //handle successful responses - errors will already have been thrown by exchange above
+    /* istanbul ignore else */
     if (response.payload.channel) {
       return new DefaultChannel(
         this.messaging,

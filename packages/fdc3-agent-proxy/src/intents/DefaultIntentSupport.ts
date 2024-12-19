@@ -138,6 +138,7 @@ export class DefaultIntentSupport implements IntentSupport {
       ResolveError.NoAppsFound
     );
 
+    /* istanbul ignore else */
     if (response.payload.appIntent) {
       // Needs further resolution, we need to invoke the resolver
       const result: IntentResolutionChoice | void = await this.intentResolver.chooseIntent(
@@ -183,6 +184,7 @@ export class DefaultIntentSupport implements IntentSupport {
       ResolveError.NoAppsFound
     );
 
+    /* istanbul ignore else */
     if (response.payload.appIntents) {
       // Needs further resolution, we need to invoke the resolver
       const result: IntentResolutionChoice | void = await this.intentResolver.chooseIntent(

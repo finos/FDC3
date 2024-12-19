@@ -31,7 +31,7 @@ Given(
 );
 
 Given('{string} pipes messages to {string}', async function (this: CustomWorld, port: string, output: string) {
-  const out: { type: string; data: any }[] = [];
+  const out: { type: string; data: unknown }[] = [];
   this.props[output] = out;
 
   const internalPort = handleResolve(port, this);
