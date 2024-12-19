@@ -132,13 +132,12 @@ export class DefaultIntentSupport implements IntentSupport {
     );
 
     throwIfUndefined(
-      response.payload.error ?? response.payload.appIntent ?? response.payload.intentResolution,
-      'Invalid response from Desktop Agent to raiseIntent!',
+      response.payload.appIntent ?? response.payload.intentResolution,
+      'Invalid response from Desktop Agent to raiseIntent, either payload.appIntent or payload.intentResolution must be set!',
       response,
       ResolveError.NoAppsFound
     );
 
-    /* istanbul ignore else */
     if (response.payload.appIntent) {
       // Needs further resolution, we need to invoke the resolver
       const result: IntentResolutionChoice | void = await this.intentResolver.chooseIntent(
@@ -150,13 +149,10 @@ export class DefaultIntentSupport implements IntentSupport {
       } else {
         throw new Error(ResolveError.UserCancelled);
       }
-    } else if (response.payload.intentResolution) {
-      // Was resolved
-      const details = response.payload.intentResolution;
-      return new DefaultIntentResolution(this.messaging, resultPromise, details.source, details.intent);
     } else {
-      //Should never get here as we will throw in exchange or throwIfUndefined above
-      throw new Error(response.payload.error ?? 'Unexpected error processing raiseIntent');
+      // Was resolved
+      const details = response.payload.intentResolution!;
+      return new DefaultIntentResolution(this.messaging, resultPromise, details.source, details.intent);
     }
   }
 
@@ -179,12 +175,11 @@ export class DefaultIntentSupport implements IntentSupport {
 
     throwIfUndefined(
       response.payload.appIntents ?? response.payload.intentResolution,
-      'Invalid response from Desktop Agent to raiseIntentForContext!',
+      'Invalid response from Desktop Agent to raiseIntentForContext, either payload.appIntents or payload.intentResolution must be set!',
       response,
       ResolveError.NoAppsFound
     );
 
-    /* istanbul ignore else */
     if (response.payload.appIntents) {
       // Needs further resolution, we need to invoke the resolver
       const result: IntentResolutionChoice | void = await this.intentResolver.chooseIntent(
@@ -196,13 +191,10 @@ export class DefaultIntentSupport implements IntentSupport {
       } else {
         throw new Error(ResolveError.UserCancelled);
       }
-    } else if (response.payload.intentResolution) {
-      // Was resolved
-      const details = response.payload.intentResolution;
-      return new DefaultIntentResolution(this.messaging, resultPromise, details.source, details.intent);
     } else {
-      //Should never get here as we will throw in exchange or throwIfUndefined above
-      throw new Error(response.payload.error ?? 'Unexpected error processing raiseIntentForContext');
+      // Was resolved
+      const details = response.payload.intentResolution!;
+      return new DefaultIntentResolution(this.messaging, resultPromise, details.source, details.intent);
     }
   }
 
