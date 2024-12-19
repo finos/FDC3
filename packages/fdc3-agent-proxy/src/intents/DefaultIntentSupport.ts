@@ -177,7 +177,7 @@ export class DefaultIntentSupport implements IntentSupport {
     );
 
     throwIfUndefined(
-      response.payload.error ?? response.payload.appIntents ?? response.payload.intentResolution,
+      response.payload.appIntents ?? response.payload.intentResolution,
       'Invalid response from Desktop Agent to raiseIntentForContext!',
       response,
       ResolveError.NoAppsFound
