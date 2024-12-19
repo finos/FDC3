@@ -80,6 +80,31 @@ The Working Group uses pull requests to track changes. To submit a change to the
 
 To contribute a patch for a New Intent, see the [Submit New Intent](docs/guides/submit-new-intent) guide.
 
+**3.6. Test Policy**
+
+- The FDC3 project takes very seriously code quality, especially with respect to production-grade sub-modules.  This includes:
+
+|Module | Test Policy |
+|---|---|
+|`packages/fdc3-agent-proxy` | Contributions must improve or maintain coverage at the current levels |
+|`packages/fdc3-get-agent` |Contributions must improve or maintain coverage at the current levels 
+|`packages/fdc3-commonjs` | Code should not be added here |
+|`packages/fdc3-context` | Must contain only JSON Schemas |
+|`packages/fdc3-schema` | Must contain only JSON Schemas |
+|`packages/fdc3-context` | Must contain only JSON Schemas |
+|`packages/fdc3-standard` | Contributions must improve or maintain coverage at the current levels |
+|`toolbox/fdc3-for-web/fdc3-web-impl` | Contributions must improve or maintain coverage at the current levels |
+
+Please note that the FDC3 project uses the following test policy:
+
+  * All code must be tested (coverage is reported in the PR comments)
+  * All tests must pass. (checked automatically by the PR comments)
+  * All new code must be covered by tests.
+  * All tests must be meaningful.
+  * All tests must be kept up-to-date.
+  * All tests must be run locally before submitting a PR.
+  * Finally, the `toolbox/fdc3-for-web/demo` project is expected to pass the FDC3 conformance framework prior to new FDC3 releases (not currently automated).
+
 ## 4.	Pull Request Workflow.
 
 The next section contains more information on the workflow followed for Pull Requests.
