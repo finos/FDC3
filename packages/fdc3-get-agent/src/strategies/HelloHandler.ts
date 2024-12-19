@@ -79,32 +79,34 @@ export class HelloHandler {
     this.agentUrl = url;
 
     // create a new one
-    const ifrm = document.createElement('iframe');
+    const iframe = document.createElement('iframe');
 
     //Wait for the iframe to load... then send it a hello message
-    ifrm.addEventListener('load', () => {
-      if (ifrm.contentWindow) {
+    iframe.addEventListener('load', () => {
+      if (iframe.contentWindow) {
         Logger.debug('Sending hello message to communication iframe');
-        this.sendWCP1Hello(ifrm.contentWindow, '*');
+        this.sendWCP1Hello(iframe.contentWindow, '*');
       } else {
-        Logger.error('iframe does not have a contentWindow, despite firing its load event!');
+        throw new Error(
+          `An iframe (url: ${url}) added to support communication with a Desktop Agent does not have a contentWindow, despite firing its load event!`
+        );
       }
     });
 
-    ifrm.setAttribute('src', url);
-    ifrm.setAttribute('id', IFRAME_ID);
-    ifrm.setAttribute('name', 'FDC3 Communications');
-    ifrm.style.width = '0px';
-    ifrm.style.height = '0px';
-    ifrm.style.border = '0';
-    ifrm.style.position = 'fixed';
+    iframe.setAttribute('src', url);
+    iframe.setAttribute('id', IFRAME_ID);
+    iframe.setAttribute('name', 'FDC3 Communications');
+    iframe.style.width = '0px';
+    iframe.style.height = '0px';
+    iframe.style.border = '0';
+    iframe.style.position = 'fixed';
 
-    document.body.appendChild(ifrm);
+    document.body.appendChild(iframe);
   }
 
   /** Listen for WCP responses from 'parent' windows and frames and handle them.
    * Resolves when a response is received.
-   * @returns A Promise resolving to a set of connectiondetails
+   * @returns A Promise resolving to a set of ConnectionDetails
    */
   listenForHelloResponses(): Promise<ConnectionDetails> {
     return new Promise<ConnectionDetails>(resolve => {

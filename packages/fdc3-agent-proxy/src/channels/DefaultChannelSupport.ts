@@ -65,6 +65,14 @@ export class DefaultChannelSupport implements ChannelSupport {
       payload: {},
     };
     const response = await this.messaging.exchange<GetCurrentChannelResponse>(request, 'getCurrentChannelResponse');
+
+    throwIfUndefined(
+      response.payload.channel,
+      'Invalid response from Desktop Agent to getCurrentChannel (channel should be explicitly null if no channel is set)!',
+      response,
+      ChannelError.NoChannelFound
+    );
+
     //handle successful responses - errors will already have been thrown by exchange above
     if (response.payload.channel) {
       return new DefaultChannel(
@@ -77,10 +85,7 @@ export class DefaultChannelSupport implements ChannelSupport {
       //this is a valid response if no channel is set
       return null;
     } else {
-      console.warn(
-        'Invalid response from Desktop Agent to getCurrentChannel (channel should be explicitly null if no channel is set)!',
-        response.payload
-      );
+      //Should not reach here as we will throw in exchange or throwIfNotFound
       return null;
     }
   }
