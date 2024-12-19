@@ -1,8 +1,9 @@
+import {
+  FindIntentsByContextRequest,
+  FindIntentsByContextResponse,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from '../TestMessaging';
-import { BrowserTypes } from '@kite9/fdc3-schema';
-
-type FindIntentsByContextRequest = BrowserTypes.FindIntentsByContextRequest;
-type FindIntentsByContextResponse = BrowserTypes.FindIntentsByContextResponse;
+import { createResponseMeta } from './support';
 
 export class FindIntentByContext implements AutomaticResponse {
   filter(t: string) {
@@ -29,16 +30,26 @@ export class FindIntentByContext implements AutomaticResponse {
     m: FindIntentsByContextRequest,
     relevant: IntentDetail[]
   ): FindIntentsByContextResponse {
-    const relevantIntents = [...new Set<string>(relevant.map(r => r.intent!!))];
+    //get unique intent names
+    const relevantIntents = [
+      ...new Set<string>(
+        relevant.reduce<string[]>((filtered: string[], r) => {
+          if (r.intent) {
+            filtered.push(r.intent);
+          }
+          return filtered;
+        }, [])
+      ),
+    ];
 
     return {
-      meta: m.meta as any,
+      meta: createResponseMeta(m.meta),
       type: 'findIntentsByContextResponse',
       payload: {
         appIntents: relevantIntents.map(i => {
           return {
             intent: { name: i, displayName: i },
-            apps: relevant.filter(r => r.intent == i).map(r => r.app!!)!!,
+            apps: relevant.filter(r => r.intent === i && r.app).map(r => r.app!),
           };
         }),
       },

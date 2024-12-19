@@ -1,27 +1,21 @@
-import { BasicDesktopAgent } from './BasicDesktopAgent';
+import { DesktopAgentProxy } from './DesktopAgentProxy';
 import { Messaging } from './Messaging';
 import { AbstractMessaging } from './messaging/AbstractMessaging';
-
 import { DefaultChannel } from './channels/DefaultChannel';
 import { ChannelSupport } from './channels/ChannelSupport';
-
 import { DefaultIntentSupport } from './intents/DefaultIntentSupport';
 import { DefaultChannelSupport } from './channels/DefaultChannelSupport';
 import { IntentSupport } from './intents/IntentSupport';
 import { RegisterableListener } from './listeners/RegisterableListener';
-
 import { DefaultAppSupport } from './apps/DefaultAppSupport';
 import { AppSupport } from './apps/AppSupport';
-
-import { HandshakeSupport } from './handshake/HandshakeSupport';
-import { DefaultHandshakeSupport } from './handshake/DefaultHandshakeSupport';
-
+import { DefaultHeartbeatSupport } from './heartbeat/DefaultHeartbeatSupport';
 import { Connectable } from '@kite9/fdc3-standard';
 
 export {
   type Messaging,
   AbstractMessaging,
-  BasicDesktopAgent,
+  DesktopAgentProxy,
   DefaultChannel,
   type AppSupport,
   type IntentSupport,
@@ -29,8 +23,7 @@ export {
   DefaultAppSupport,
   DefaultChannelSupport,
   DefaultIntentSupport,
-  type HandshakeSupport,
-  DefaultHandshakeSupport,
+  DefaultHeartbeatSupport,
   RegisterableListener,
   Connectable,
 };

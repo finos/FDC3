@@ -1,12 +1,13 @@
 import { ContextHandler, Channel } from '@kite9/fdc3-standard';
 import { Messaging } from '../Messaging';
 import { AbstractListener } from './AbstractListener';
-import { BrowserTypes } from '@kite9/fdc3-schema';
-import { FollowingContextListener } from './FollowingContextListener';
+import { UserChannelContextListener } from './UserChannelContextListener';
+import { AddContextListenerRequest, BroadcastEvent } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
-type BroadcastEvent = BrowserTypes.BroadcastEvent;
-
-export class DefaultContextListener extends AbstractListener<ContextHandler> implements FollowingContextListener {
+export class DefaultContextListener
+  extends AbstractListener<ContextHandler, AddContextListenerRequest>
+  implements UserChannelContextListener
+{
   private channelId: string | null;
   private readonly messageType: string;
   private readonly contextType: string | null;
@@ -16,11 +17,17 @@ export class DefaultContextListener extends AbstractListener<ContextHandler> imp
     channelId: string | null,
     contextType: string | null,
     handler: ContextHandler,
-    messageType: string = 'broadcastEvent',
-    subscribeType: string = 'addContextListener',
-    unsubscribeType: string = 'contextListenerUnsubscribe'
+    messageType: string = 'broadcastEvent'
   ) {
-    super(messaging, { channelId, contextType }, handler, subscribeType, unsubscribeType);
+    super(
+      messaging,
+      { channelId, contextType },
+      handler,
+      'addContextListenerRequest',
+      'addContextListenerResponse',
+      'contextListenerUnsubscribeRequest',
+      'contextListenerUnsubscribeResponse'
+    );
     this.channelId = channelId;
     this.messageType = messageType;
     this.contextType = contextType;
@@ -47,7 +54,7 @@ export class DefaultContextListener extends AbstractListener<ContextHandler> imp
     );
   }
 
-  action(m: any): void {
+  action(m: BroadcastEvent): void {
     this.handler(m.payload.context);
   }
 }

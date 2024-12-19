@@ -1,8 +1,6 @@
-import { AutomaticResponse, IntentDetail, TestMessaging } from '../TestMessaging';
-import { BrowserTypes } from '@kite9/fdc3-schema';
-
-type OpenRequest = BrowserTypes.OpenRequest;
-type OpenResponse = BrowserTypes.OpenResponse;
+import { OpenRequest, OpenResponse } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { AutomaticResponse, TestMessaging } from '../TestMessaging';
+import { createResponseMeta } from './support';
 
 export class Open implements AutomaticResponse {
   filter(t: string) {
@@ -10,7 +8,7 @@ export class Open implements AutomaticResponse {
   }
 
   action(input: object, m: TestMessaging) {
-    const out = this.createOpenResponse(input as OpenRequest, m.intentDetails[0], m);
+    const out = this.createOpenResponse(input as OpenRequest, m);
 
     setTimeout(() => {
       m.receive(out);
@@ -18,23 +16,23 @@ export class Open implements AutomaticResponse {
     return Promise.resolve();
   }
 
-  private createOpenResponse(m: OpenRequest, id: IntentDetail, tm: TestMessaging): OpenResponse {
+  private createOpenResponse(m: OpenRequest, tm: TestMessaging): OpenResponse {
     const found = tm.intentDetails.find(id => id.app?.appId == m.payload.app.appId);
 
-    if (found) {
+    if (found && found.app) {
       return {
-        meta: m.meta as any,
+        meta: createResponseMeta(m.meta),
         type: 'openResponse',
         payload: {
           appIdentifier: {
-            appId: id.app?.appId!!,
+            appId: found.app.appId,
             instanceId: 'abc123',
           },
         },
       } as OpenResponse;
     } else {
       return {
-        meta: m.meta as any,
+        meta: createResponseMeta(m.meta),
         type: 'openResponse',
         payload: {
           error: 'AppNotFound',
