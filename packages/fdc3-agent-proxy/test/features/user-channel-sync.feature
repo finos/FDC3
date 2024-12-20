@@ -28,7 +28,7 @@ Feature: Updating User Channel State
       | {null}            | {null}              | {null}               | getCurrentChannelRequest |
       | one               | fdc3.instrument     | {null}               | getCurrentContextRequest |
 
-  Scenario: Changing User Channel Doesn't Receive Incoorrect Context on Listener
+  Scenario: Changing User Channel Doesn't Receive Incorrect Context on Listener
     Given "resultHandler" pipes context to "contexts"
     And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
     When I call "{api}" with "joinUserChannel" with parameter "two"

@@ -40,6 +40,7 @@ export class DefaultChannelSupport implements ChannelSupport {
     this.messaging = messaging;
     this.channelSelector = channelSelector;
     this.channelSelector.setChannelChangeCallback((channelId: string | null) => {
+      console.log('CHANNEL SELECTOR CALLBACK!');
       if (channelId == null) {
         this.leaveUserChannel();
       } else {
@@ -48,7 +49,7 @@ export class DefaultChannelSupport implements ChannelSupport {
     });
 
     this.addChannelChangedEventHandler(e => {
-      this.channelSelector.updateChannel(e.details.newChannelId, this.userChannels ?? []);
+      this.channelSelector.updateChannel(e.details.newChannelId, this.userChannels);
     });
   }
 
