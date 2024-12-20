@@ -48,7 +48,7 @@
           "$ref": "api.schema.json#/definitions/AppIdentifier"
         },
         "action": {
-          "anyOf": [
+          "oneOf": [
             {
               "type": "string",
               "const": "hover"

@@ -1,7 +1,10 @@
 import { Channel } from '@kite9/fdc3-standard';
 import { ChannelSelector } from '@kite9/fdc3-standard';
 import { AbstractUIComponent } from './AbstractUIComponent';
-import { BrowserTypes } from '@kite9/fdc3-schema';
+import {
+  Fdc3UserInterfaceChannels,
+  isFdc3UserInterfaceChannelSelected,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 /**
  * Works with the desktop agent to provide a simple channel selector.
@@ -13,6 +16,7 @@ export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent impl
   private callback: ((channelId: string | null) => void) | null = null;
 
   constructor(url: string | null) {
+    //TODO: check default UI URL is correct on release
     super(url ?? 'https://fdc3.finos.org/webui/channel_selector.html', 'FDC3 Channel Selector');
   }
 
@@ -21,7 +25,7 @@ export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent impl
     this.port = port;
 
     port.addEventListener('message', e => {
-      if (e.data.type == BrowserTypes.FDC3_USER_INTERFACE_CHANNEL_SELECTED_TYPE) {
+      if (isFdc3UserInterfaceChannelSelected(e.data)) {
         const choice = e.data;
         if (this.callback) {
           this.callback(choice.payload.selected);
@@ -31,20 +35,19 @@ export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent impl
   }
 
   updateChannel(channelId: string | null, availableChannels: Channel[]): void {
-    const message: BrowserTypes.Fdc3UserInterfaceChannels = {
+    const message: Fdc3UserInterfaceChannels = {
       type: 'Fdc3UserInterfaceChannels',
       payload: {
         selected: channelId,
         userChannels: availableChannels.map(ch => {
           return {
-            type: 'user',
             id: ch.id,
+            type: 'user',
             displayMetadata: ch.displayMetadata,
           };
         }),
       },
     };
-    // also send to the iframe
     this.port?.postMessage(message);
   }
 

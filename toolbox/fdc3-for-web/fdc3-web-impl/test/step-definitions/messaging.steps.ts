@@ -6,7 +6,7 @@ import { setupGenericSteps, matchData } from '@kite9/testing';
 Then('messaging will have outgoing posts', function (this: CustomWorld, dt: DataTable) {
   // just take the last few posts and match those
   const matching = dt.rows().length;
-  var toUse = this.sc?.postedMessages;
+  let toUse = this.sc?.postedMessages;
   if (toUse.length > matching) {
     toUse = toUse.slice(toUse.length - matching, toUse.length);
   }

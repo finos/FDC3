@@ -1,6 +1,9 @@
 import { Given, Then } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
 import { handleResolve } from '@kite9/testing';
+// used to debug tests not ending - only availabel as a commonJs module
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const wtf = require('wtfnode');
 
 Given(
   '{string} receives a {string} message for the {string} and creates port {string}',
@@ -11,8 +14,7 @@ Given(
     const externalPort = mc.port2;
 
     if (type == 'SelectorMessageInitialize') {
-      // TODO: Update typings
-      const eventDetails: any = {
+      globalThis.window.dispatchEvent({
         type: 'message',
         data: {
           type: 'SelectorMessageInitialize',
@@ -20,8 +22,7 @@ Given(
         origin: globalThis.window.location.origin,
         ports: [externalPort],
         source: channelSelectorIframe,
-      };
-      globalThis.window.dispatchEvent(eventDetails);
+      } as unknown as Event);
     }
 
     internalPort.start();
@@ -30,21 +31,31 @@ Given(
 );
 
 Given('{string} pipes messages to {string}', async function (this: CustomWorld, port: string, output: string) {
-  // TODO: Update typings
-  const out: any[] = [];
+  const out: { type: string; data: unknown }[] = [];
   this.props[output] = out;
 
   const internalPort = handleResolve(port, this);
-  internalPort.onmessage = (e: any) => {
+  internalPort.onmessage = (e: MessageEvent) => {
     out.push({ type: e.type, data: e.data });
   };
 });
 
+/**
+ * Avoid checking this in as a line in .features - just used for debugging
+ */
+Given('Testing ends after {string} ms', function (string) {
+  setTimeout(() => {
+    wtf.dump();
+
+    process.exit();
+  }, parseInt(string));
+});
+
 Then('{string} receives a {string} message', function (this: CustomWorld, port: string, type: string) {
-  const internalPort: MessagePort = handleResolve(port, this);
+  const internalPort = handleResolve(port, this);
 
   if (type == 'ResolverMessageChoice') {
-    internalPort.postMessage({
+    (internalPort as MessagePort).postMessage({
       type,
       payload: {
         intent: 'viewNews',

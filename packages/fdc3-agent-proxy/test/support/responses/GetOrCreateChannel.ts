@@ -1,11 +1,13 @@
 import { AutomaticResponse, TestMessaging } from '../TestMessaging';
 import { ChannelError } from '@kite9/fdc3-standard';
-import { BrowserTypes } from '@kite9/fdc3-schema';
 import { createResponseMeta } from './support';
+import {
+  AppRequestMessage,
+  GetOrCreateChannelRequest,
+  GetOrCreateChannelResponse,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 type ChannelType = { [channelId: string]: 'user' | 'app' | 'private' };
-type GetOrCreateChannelRequest = BrowserTypes.GetOrCreateChannelRequest;
-type GetOrCreateChannelResponse = BrowserTypes.GetOrCreateChannelResponse;
 
 export class GetOrCreateChannel implements AutomaticResponse {
   private type: ChannelType = {};
@@ -14,11 +16,11 @@ export class GetOrCreateChannel implements AutomaticResponse {
     return t == 'getOrCreateChannelRequest';
   }
 
-  action(input: object, m: TestMessaging) {
+  action(input: AppRequestMessage, m: TestMessaging) {
     const out = this.registerChannel(input as GetOrCreateChannelRequest);
 
     setTimeout(() => {
-      m.receive(out as any);
+      m.receive(out);
     }, 100);
     return Promise.resolve();
   }

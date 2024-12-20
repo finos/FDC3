@@ -2,19 +2,17 @@ import { DataTable, Given, Then, When } from '@cucumber/cucumber';
 import { Context } from '@kite9/fdc3-context';
 import { handleResolve, matchData } from '@kite9/testing';
 import { CustomWorld } from '../world/index';
-import { BrowserTypes } from '@kite9/fdc3-schema';
 import { CHANNEL_STATE } from '@kite9/testing';
 import { ApiEvent } from '@kite9/fdc3-standard';
 import {
+  BroadcastEvent,
   ChannelChangedEvent,
   PrivateChannelOnAddContextListenerEvent,
+  PrivateChannelOnDisconnectEvent,
+  PrivateChannelOnUnsubscribeEvent,
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
-type BroadcastEvent = BrowserTypes.BroadcastEvent;
-type PrivateChannelOnUnsubscribeEvent = BrowserTypes.PrivateChannelOnUnsubscribeEvent;
-type PrivateChannelOnDisconnectEvent = BrowserTypes.PrivateChannelOnDisconnectEvent;
-
-const contextMap: Record<string, any> = {
+const contextMap: Record<string, Context> = {
   'fdc3.instrument': {
     type: 'fdc3.instrument',
     name: 'Apple',
@@ -180,14 +178,14 @@ Given('{string} pipes context to {string}', function (this: CustomWorld, context
 
 When('messaging receives {string}', function (this: CustomWorld, field: string) {
   const message = handleResolve(field, this);
-  this.log(`Sending: ${JSON.stringify(message)}`);
-  this.messaging!!.receive(message, this.log);
+  console.log(`Sending: `, message);
+  this.messaging!.receive(message, console.log);
 });
 
 Then('messaging will have posts', function (this: CustomWorld, dt: DataTable) {
   // just take the last few posts and match those
   const matching = dt.rows().length;
-  var toUse = this.messaging?.allPosts!;
+  let toUse = this.messaging!.allPosts!;
   if (toUse.length > matching) {
     toUse = toUse.slice(toUse.length - matching, toUse.length);
   }

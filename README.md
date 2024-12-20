@@ -206,4 +206,6 @@ THIS STANDARD IS BEING OFFERED WITHOUT ANY WARRANTY WHATSOEVER, AND IN PARTICULA
 
 ## FDC3 Archive
 
-An archive of FDC3 documentation and meeting notes is available at <https://finosfoundation.atlassian.net/wiki/spaces/FDC3/overview>. The mailing list archive for [fdc3@finos.org](mailto:fdc3@finos.org) is available at <https://groups.google.com/a/finos.org/g/fdc>
+An archive of FDC3 documentation and meeting notes from the early days of FDC3 is available at <https://finosfoundation.atlassian.net/wiki/spaces/FDC3/overview>. Later meeting minutes cam be found in closed Github issues.
+
+The mailing list archive for [fdc3@finos.org](mailto:fdc3@finos.org) is available at <https://groups.google.com/a/finos.org/g/fdc3>

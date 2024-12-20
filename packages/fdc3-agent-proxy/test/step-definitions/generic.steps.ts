@@ -2,15 +2,15 @@ import { TestMessaging } from '../support/TestMessaging';
 import { Given, When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world/index';
 import {
-  BasicDesktopAgent,
+  DesktopAgentProxy,
   DefaultAppSupport,
   DefaultChannelSupport,
   DefaultIntentSupport,
-  DefaultHandshakeSupport,
+  DefaultHeartbeatSupport,
 } from '../../src';
 import { SimpleIntentResolver, setupGenericSteps } from '@kite9/testing';
 import { CHANNEL_STATE, SimpleChannelSelector } from '@kite9/testing/dist/src/agent';
-import { BrowserTypes } from '@kite9/fdc3-schema';
+import { HeartbeatEvent } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: string) {
   if (!this.messaging) {
@@ -18,11 +18,11 @@ Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: s
   }
 
   const cs = new DefaultChannelSupport(this.messaging, new SimpleChannelSelector(this));
-  const hs = new DefaultHandshakeSupport(this.messaging);
+  const hs = new DefaultHeartbeatSupport(this.messaging);
   const is = new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this));
   const as = new DefaultAppSupport(this.messaging);
 
-  const da = new BasicDesktopAgent(hs, cs, is, as, [hs]);
+  const da = new DesktopAgentProxy(hs, cs, is, as, [hs]);
   await da.connect();
 
   this.props[field] = da;
@@ -36,7 +36,7 @@ When('messaging receives a heartbeat event', function (this: CustomWorld) {
     payload: {
       timestamp: new Date(),
     },
-  } as BrowserTypes.HeartbeatEvent);
+  } as HeartbeatEvent);
 });
 
 setupGenericSteps();

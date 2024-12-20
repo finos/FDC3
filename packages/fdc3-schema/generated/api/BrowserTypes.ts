@@ -956,7 +956,7 @@ export interface AddIntentListenerResponse {
    * property containing a standardized error message indicating that the request was
    * unsuccessful.
    */
-  payload: AddIntentListenerResponsePayload;
+  payload: PayloadObject;
   /**
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Response' appended.
@@ -969,7 +969,7 @@ export interface AddIntentListenerResponse {
  * property containing a standardized error message indicating that the request was
  * unsuccessful.
  */
-export interface AddIntentListenerResponsePayload {
+export interface PayloadObject {
   error?: FluffyError;
   listenerUUID?: string;
   [property: string]: any;
@@ -3299,7 +3299,7 @@ export interface PrivateChannelAddEventListenerRequest {
   /**
    * The message payload typically contains the arguments to FDC3 API functions.
    */
-  payload: TPayload;
+  payload: PrivateChannelAddEventListenerRequestPayload;
   /**
    * Identifies the type of the message and it is typically set to the FDC3 function name that
    * the message relates to, e.g. 'findIntent', with 'Request' appended.
@@ -3310,11 +3310,12 @@ export interface PrivateChannelAddEventListenerRequest {
 /**
  * The message payload typically contains the arguments to FDC3 API functions.
  */
-export interface TPayload {
+export interface PrivateChannelAddEventListenerRequestPayload {
   /**
-   * The type of PrivateChannel event that the listener should be applied to.
+   * The type of PrivateChannel event that the listener should be applied to, or null for all
+   * event types.
    */
-  listenerType: PrivateChannelEventListenerTypes | null;
+  listenerType: PrivateChannelEventType | null;
   /**
    * The Id of the PrivateChannel that the listener should be added to.
    */
@@ -3322,9 +3323,9 @@ export interface TPayload {
 }
 
 /**
- * Event listener type names for Private Channel events.
+ * Type defining valid type strings for Private Channel events.
  */
-export type PrivateChannelEventListenerTypes = 'onAddContextListener' | 'onUnsubscribe' | 'onDisconnect';
+export type PrivateChannelEventType = 'addContextListener' | 'unsubscribe' | 'disconnect';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -3363,7 +3364,6 @@ export interface PrivateChannelAddEventListenerResponse {
 export interface PrivateChannelAddEventListenerResponsePayload {
   error?: PurpleError;
   listenerUUID?: string;
-  [property: string]: any;
 }
 
 /**
@@ -5006,12 +5006,12 @@ const typeMap: any = {
   AddIntentListenerResponse: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
-      { json: 'payload', js: 'payload', typ: r('AddIntentListenerResponsePayload') },
+      { json: 'payload', js: 'payload', typ: r('PayloadObject') },
       { json: 'type', js: 'type', typ: r('AddIntentListenerResponseType') },
     ],
     false
   ),
-  AddIntentListenerResponsePayload: o(
+  PayloadObject: o(
     [
       { json: 'error', js: 'error', typ: u(undefined, r('FluffyError')) },
       { json: 'listenerUUID', js: 'listenerUUID', typ: u(undefined, '') },
@@ -5745,14 +5745,14 @@ const typeMap: any = {
   PrivateChannelAddEventListenerRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
-      { json: 'payload', js: 'payload', typ: r('TPayload') },
+      { json: 'payload', js: 'payload', typ: r('PrivateChannelAddEventListenerRequestPayload') },
       { json: 'type', js: 'type', typ: r('PrivateChannelAddEventListenerRequestType') },
     ],
     false
   ),
-  TPayload: o(
+  PrivateChannelAddEventListenerRequestPayload: o(
     [
-      { json: 'listenerType', js: 'listenerType', typ: u(r('PrivateChannelEventListenerTypes'), null) },
+      { json: 'listenerType', js: 'listenerType', typ: u(r('PrivateChannelEventType'), null) },
       { json: 'privateChannelId', js: 'privateChannelId', typ: '' },
     ],
     false
@@ -5770,7 +5770,7 @@ const typeMap: any = {
       { json: 'error', js: 'error', typ: u(undefined, r('PurpleError')) },
       { json: 'listenerUUID', js: 'listenerUUID', typ: u(undefined, '') },
     ],
-    'any'
+    false
   ),
   PrivateChannelDisconnectRequest: o(
     [
@@ -6151,7 +6151,7 @@ const typeMap: any = {
     'ResponseToBridgeTimedOut',
   ],
   OpenResponseType: ['openResponse'],
-  PrivateChannelEventListenerTypes: ['onAddContextListener', 'onDisconnect', 'onUnsubscribe'],
+  PrivateChannelEventType: ['addContextListener', 'disconnect', 'unsubscribe'],
   PrivateChannelAddEventListenerRequestType: ['privateChannelAddEventListenerRequest'],
   PrivateChannelAddEventListenerResponseType: ['privateChannelAddEventListenerResponse'],
   PrivateChannelDisconnectRequestType: ['privateChannelDisconnectRequest'],
