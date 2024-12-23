@@ -23,7 +23,8 @@ export async function createDesktopAgentAPI(
   appIdentifier: AppIdentifier
 ): Promise<DesktopAgent> {
   Logger.debug('message-port: Creating Desktop Agent...');
-  cd.messagePort.start();
+
+  //Message port should have already been started for use in identity validation
 
   function string(o: string | boolean): string | null {
     if (o == true || o == false) {

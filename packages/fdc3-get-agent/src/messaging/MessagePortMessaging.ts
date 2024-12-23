@@ -35,13 +35,13 @@ export class MessagePortMessaging extends AbstractMessaging {
      * post-connection. */
     this.messageExchangeTimeout = MESSAGE_EXCHANGE_TIMEOUT;
 
-    this.cd.messagePort.onmessage = m => {
+    this.cd.messagePort.addEventListener('message', m => {
       this.listeners.forEach(v => {
         if (v.filter(m.data)) {
           v.action(m.data);
         }
       });
-    };
+    });
   }
 
   createUUID(): string {

@@ -114,6 +114,10 @@ export class PostMessageLoader implements Loader {
           this.connectionAttemptUuid
         );
         const idValidationPromise = this.identityValidationHandler.listenForIDValidationResponses();
+
+        //start the message port so that we can receive responses
+        connectionDetails.messagePort.start();
+
         this.identityValidationHandler.sendIdValidationMessage();
 
         idValidationPromise
