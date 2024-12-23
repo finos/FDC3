@@ -80,6 +80,10 @@ export class FailoverHandler {
         this.connectionAttemptUuid
       );
       const idValidationPromise = this.identityValidationHandler.listenForIDValidationResponses();
+
+      //start the message port so that we can receive responses
+      connectionDetails.messagePort.start();
+
       this.identityValidationHandler.sendIdValidationMessage();
       const idDetails = await idValidationPromise;
       const appIdentifier: AppIdentifier = {

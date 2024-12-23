@@ -69,20 +69,6 @@ export class IdentityValidationHandler {
   /** Listen for WCP responses over the message port to identity validation messages. */
   listenForIDValidationResponses(): Promise<WebConnectionProtocol5ValidateAppIdentitySuccessResponse> {
     return new Promise<WebConnectionProtocol5ValidateAppIdentitySuccessResponse>((resolve, reject) => {
-      //timeout for id validation only
-      const timeout = setTimeout(() => {
-        Logger.warn(`IdentityValidationHandler: Identity validation timed out`);
-
-        if (this.idValidationResponseListener) {
-          //remove the event listener as we won't proceed further
-          this.messagePort.removeEventListener('message', this.idValidationResponseListener);
-        }
-        Logger.error(
-          `The Desktop Agent didn't respond to ID validation within ${ID_VALIDATION_TIMEOUT / 1000} seconds`
-        );
-        reject(AgentError.ErrorOnConnect);
-      }, ID_VALIDATION_TIMEOUT);
-
       // setup listener for message and retrieve JS URL from it
       this.idValidationResponseListener = (event: MessageEvent<WebConnectionProtocolMessage>) => {
         const data = event.data;
@@ -126,6 +112,20 @@ export class IdentityValidationHandler {
 
       //listening on a message port
       this.messagePort.addEventListener('message', this.idValidationResponseListener);
+
+      //timeout for id validation only
+      const timeout = setTimeout(() => {
+        Logger.warn(`IdentityValidationHandler: Identity validation timed out`);
+
+        if (this.idValidationResponseListener) {
+          //remove the event listener as we won't proceed further
+          this.messagePort.removeEventListener('message', this.idValidationResponseListener);
+        }
+        Logger.error(
+          `The Desktop Agent didn't respond to ID validation within ${ID_VALIDATION_TIMEOUT / 1000} seconds`
+        );
+        reject(AgentError.ErrorOnConnect);
+      }, ID_VALIDATION_TIMEOUT);
     });
   }
 
