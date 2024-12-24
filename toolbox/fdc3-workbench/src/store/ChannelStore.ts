@@ -3,8 +3,8 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 import { makeObservable, observable, action, runInAction } from "mobx";
-import fdc3, { Channel } from "../utility/Fdc3Api";
 import systemLogStore from "./SystemLogStore";
+import { Channel, getAgent } from "@finos/fdc3";
 
 class ChannelStore {
 	userChannels: Channel[] = [];
@@ -25,8 +25,9 @@ class ChannelStore {
 	}
 
 	async getCurrentUserChannel() {
+		const agent = await getAgent();
 		try {
-			const userChannel = await fdc3.getCurrentChannel();
+			const userChannel = await agent.getCurrentChannel();
 			runInAction(() => {
 				systemLogStore.addLog({
 					name: "getCurrentChannel",
@@ -48,45 +49,35 @@ class ChannelStore {
 	}
 
 	async getUserChannels() {
+		const agent = await getAgent();
 		//defer retrieving channels until fdc3 API is ready
-		fdc3
-			.fdc3Ready(5000)
-			.then(async () => {
-				try {
-					const userChannels = await fdc3.getUserChannels();
-					const currentUserChannel = await fdc3.getCurrentChannel();
+		try {
+			const userChannels = await agent.getUserChannels();
+			const currentUserChannel = await agent.getCurrentChannel();
 
-					runInAction(() => {
-						systemLogStore.addLog({
-							name: "getChannels",
-							type: "success",
-						});
-						this.userChannels = userChannels;
-						this.currentUserChannel = currentUserChannel;
-					});
-				} catch (e) {
-					systemLogStore.addLog({
-						name: "getChannels",
-						type: "error",
-						variant: "code",
-						body: JSON.stringify(e, null, 4),
-					});
-				}
-			})
-			.catch((reason) => {
+			runInAction(() => {
 				systemLogStore.addLog({
-					name: "getFdc3",
-					type: "error",
-					variant: "text",
-					value: reason,
+					name: "getChannels",
+					type: "success",
 				});
+				this.userChannels = userChannels;
+				this.currentUserChannel = currentUserChannel;
 			});
+		} catch (e) {
+			systemLogStore.addLog({
+				name: "getChannels",
+				type: "error",
+				variant: "code",
+				body: JSON.stringify(e, null, 4),
+			});
+		}
 	}
 
 	async joinUserChannel(channelId: string) {
+		const agent = await getAgent();
 		try {
-			await fdc3.joinUserChannel(channelId);
-			const currentUserChannel = await fdc3.getCurrentChannel();
+			await agent.joinUserChannel(channelId);
+			const currentUserChannel = await agent.getCurrentChannel();
 			const isSuccess = currentUserChannel !== null;
 
 			runInAction(() => {
@@ -110,9 +101,10 @@ class ChannelStore {
 	}
 
 	async leaveUserChannel() {
+		const agent = await getAgent();
 		try {
 			//check that we're on a channel
-			let currentUserChannel = await fdc3.getCurrentChannel();
+			let currentUserChannel = await agent.getCurrentChannel();
 			if (!currentUserChannel) {
 				systemLogStore.addLog({
 					name: "leaveChannel",
@@ -121,8 +113,8 @@ class ChannelStore {
 					variant: "text",
 				});
 			} else {
-				await fdc3.leaveCurrentChannel();
-				currentUserChannel = await fdc3.getCurrentChannel();
+				await agent.leaveCurrentChannel();
+				currentUserChannel = await agent.getCurrentChannel();
 				const isSuccess = currentUserChannel === null;
 
 				runInAction(() => {

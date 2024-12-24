@@ -7,7 +7,8 @@ import React, { useEffect, useState } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Tooltip, Typography } from "@material-ui/core";
 import WarningIcon from "@material-ui/icons/Warning";
-import fdc3, { ImplementationMetadata } from "../utility/Fdc3Api";
+import { getAgent } from "@finos/fdc3";
+import { ImplementationMetadata } from "../utility/Fdc3Api";
 
 declare global {
 	interface Window {
@@ -87,7 +88,7 @@ export const Header = (props: { fdc3Available: boolean }) => {
 
 				//Then if chosenVersion == "2.0"  then implInfo = await implInfoPromise   else implInfo = implInfoPromise  (with handling for <1.2 where getInfo() doesn't exist at all.
 				try {
-					const implInfoPromise: Promise<ImplementationMetadata> | ImplementationMetadata = fdc3.getInfo();
+					const implInfoPromise = getAgent().then((agent) => agent.getInfo());
 					if (paramVersion == "1.2" && (implInfoPromise as unknown as ImplementationMetadata).fdc3Version) {
 						//should not expect a promise if we're really working with 1.2
 						implInfo = implInfoPromise as unknown as ImplementationMetadata;
