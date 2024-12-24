@@ -22,8 +22,8 @@ import { ContextCreate } from "./components/ContextCreate";
 import { Intents } from "./components/Intents";
 import { AppChannels } from "./components/AppChannels";
 import snackbarStore from "./store/SnackbarStore";
-import fdc3 from "./utility/Fdc3Api";
 import "./App.css";
+import { getAgent } from "@finos/fdc3";
 
 const mainTheme = createTheme({
 	palette: {
@@ -218,7 +218,7 @@ export const App = observer(() => {
 	useEffect(() => {
 		(async () => {
 			try {
-				await fdc3.fdc3Ready(5000);
+				await getAgent();
 				setFdc3Available(true);
 			} catch (e) {}
 		})();
@@ -280,10 +280,7 @@ export const App = observer(() => {
 						<Grid container direction="column" justifyContent="center" alignItems="center" spacing={2} item xs={12}>
 							<Paper className={classes.paper}>
 								<Typography variant="h4">FDC3 API not detected!</Typography>
-								<Typography variant="body1">
-									An FDC3 desktop agent implementation was not found at{" "}
-									<span className={classes.code}>window.fdc3</span>.
-								</Typography>
+								<Typography variant="body1">An FDC3 desktop agent implementation was not found.</Typography>
 								<Typography variant="body1">
 									For web applications to be FDC3-enabled, they need to run in the context of an agent that makes the
 									FDC3 API available to the application. This desktop agent is also responsible for launching and

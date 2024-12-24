@@ -3,8 +3,9 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import { Channel, ContextMetadata } from '..';
 import { Context } from '@finos/fdc3-context';
+import { Channel } from './Channel';
+import { ContextMetadata } from './ContextMetadata';
 
 /**
  * Describes a callback that handles a context event.
