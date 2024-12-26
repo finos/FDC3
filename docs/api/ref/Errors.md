@@ -37,6 +37,32 @@ enum AgentError {
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+var AgentError = struct {
+	// Returned if no Desktop Agent was found by any means available or 
+  // if the Agent previously connected to is not contactable on a  
+  // subsequent connection attempt.
+	AgentNotFound string
+	// Returned if validation of the app identity by the Desktop Agent 
+  // failed or the app is not being allowed to connect to the Desktop Agent for another reason.
+	AccessDenied string
+	// Returned if an error or exception occurs while trying to set  
+  // up communication with a Desktop Agent.
+	ErrorOnConnect string
+	// Returned if the failover function is not a function, or it did not
+  // resolve to one of the allowed types.
+	InvalidFailover string
+}{
+	AgentNotFound:    "AgentNotFound",
+	AccessDenied:     "AccessDenied",
+	ErrorOnConnect:   "ErrorOnConnect",
+	InvalidFailover:  "InvalidFailover",
+}
+```
+
+</TabItem>
 </Tabs>
 
 ## `ChannelError`
@@ -103,6 +129,33 @@ public static class ChannelError
     /// that has a `String` value.
     /// </summary>
     public static readonly string MalformedContext = nameof(MalformedContext);
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+var ChannelError = struct {
+	// Returned if the specified channel is not found when attempting to join a
+	// channel via the `joinUserChannel` function of the DesktopAgent.
+	NoChannelFound string
+	// SHOULD be returned when a request to join a user channel or to a retrieve
+	// a Channel object via the `JoinUserChannel` or `GetOrCreateChannel` methods
+	// of the DesktopAgent object is denied.
+	AccessDenied string
+	// SHOULD be returned when a channel cannot be created or retrieved via the
+	// `GetOrCreateChannel` method of the DesktopAgent.
+	CreationFailed string
+  // Returned if a call to the `broadcast` functions is made with an invalid
+  // context argument. Contexts should be Objects with at least a `type` field
+  // that has a `string` value.
+  MalformedContext string
+}{
+	NoChannelFound: "NoChannelFound",
+	AccessDenied:   "AccessDenied",
+	CreationFailed: "CreationFailed",
+  MalformedContext: "MalformedContext",
 }
 ```
 
@@ -189,6 +242,36 @@ public static class OpenError
     /// that has a `String` value.
     /// </summary>
     public static readonly string MalformedContext = nameof(MalformedContext);
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+var OpenError = struct {
+	// Returned if the specified application is not found.
+	AppNotFound string
+	// Returned if the specified application fails to launch correctly.
+	ErrorOnLaunch string
+	// Returned if the specified application launches but fails to add a context
+	// listener in order to receive the context passed to the `fdc3.open` call.
+	AppTimeout string
+	// Returned if the FDC3 desktop agent implementation is not currently able to handle the request.
+	ResolverUnavailable string
+  // Returned if a call to the `Open` function is made with an invalid
+  // context argument.Contexts should be Objects with at least a `Type` field
+  // that has a `string` value.
+  MalformedContext string
+  // Experimental: Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.
+  DesktopAgentNotFound string,
+}{
+	AppNotFound:         "AppNotFound",
+	ErrorOnLaunch:       "ErrorOnLaunch",
+	AppTimeout:          "AppTimeout",
+	ResolverUnavailable: "ResolverUnavailable",
+  MalformedContext:    "MalformedContext",
+  DesktopAgentNotFound: "DesktopAgentNotFound",
 }
 ```
 
@@ -317,6 +400,46 @@ public static class ResolveError
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+var ResolveError = struct {
+	// SHOULD be returned if no apps are available that can resolve the intent and context combination
+	NoAppsFound string
+	// Returned if the FDC3 desktop agent implementation is not currently able to handle the request
+	ResolverUnavailable string
+	// Returned if the user cancelled the resolution request,
+	// for example by closing or cancelling a resolver UI
+	UserCancelled string
+	// SHOULD be returned if a timeout cancels an intent resolution that required user interaction.
+	// Please use `ResolverUnavailable` instead for situations where a resolver UI or similar fails
+	ResolverTimeout string
+	// Returned if a specified target application is not available or
+	// a new instance of it cannot be opened.
+	TargetAppUnavailable string
+	// Returned if a specified target application instance is not available,
+	// for example because it has been closed
+	TargetInstanceUnavailable string
+	// Returned if the intent and context could not be delivered to the selected
+	// application or instance, for example because it has not added an intent handler within a timeout
+	IntentDeliveryFailed string
+  // Returned if a call to one of the `RaiseIntent` functions is made with an 
+  // invalid context argument. Contexts should be Objects with at least a `Type`
+  // field that has a `string` value.
+  MalformedContext string
+}{
+	NoAppsFound:               "NoAppsFound",
+	ResolverUnavailable:       "ResolverUnavailable",
+	UserCancelled:             "UserCancelledResolution",
+	ResolverTimeout:           "ResolverTimeout",
+	TargetAppUnavailable:      "TargetAppUnavailable",
+	TargetInstanceUnavailable: "TargetInstanceUnavailable",
+	IntentDeliveryFailed:      "IntentDeliveryFailed",
+  MalformedContext:          "MalformedContext",
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -368,6 +491,23 @@ public static class ResultError
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+var ResultError = struct {
+	// IntentHandlerRejected Returned if the `IntentHandler` function processing the raised intent
+	// throws an error or rejects the Promise it returned.
+	IntentHandlerRejected string
+	// NoResultReturned Returned if the `IntentHandler` exited without returning a Promise or that
+	// Promise was not resolved with a Context or Channel object.
+	NoResultReturned string
+}{
+	IntentHandlerRejected: "IntentHandlerRejected",
+	NoResultReturned:      "NoResultReturned",
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -415,7 +555,34 @@ Not implemented
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
 
+```go
+var BridgingError = struct {
+	// Experimental: Returned if a Desktop Agent did not return a response, via 
+  // Desktop Agent Bridging, within the allotted timeout.
+  ResponseTimedOut string
+  // Experimental: Returned if a Desktop Agent that has been targeted by a 
+  // particular request has been disconnected from the Bridge before a 
+  // response has been received from it.
+	AgentDisconnected string
+  // Experimental: Returned for FDC3 API calls that are specified with
+  // arguments indicating that a remote Desktop agent should be targeted
+  // (e.g. raiseIntent with an app on a remote DesktopAgent targeted), 
+  // when the local Desktop Agent is not connected to a bridge. 
+  NotConnectedToBridge string
+  // Experimental: Returned if a message to a Bridge deviates from the schema
+  // for that message sufficiently that it could not be processed.
+  MalformedMessage string
+}{
+	ResponseTimedOut: "ResponseTimedOut",
+	AgentDisconnected:      "AgentDisconnected",
+  NotConnectedToBridge: "NotConnectedToBridge",
+  MalformedMessage: "MalformedMessage",
+}
+```
+
+</TabItem>
 </Tabs>
 
 Contains constants representing the errors that can be encountered when queries are forwarded to a Desktop Agent Bridge, but one or more remote Desktop Agents connected to it disconnects, times-out or a malformed message is encountered while a particular request is in flight. These errors may be returned via the FDC3 API when a Desktop Agent is (or was) connected to a Desktop Agent Bridge.
