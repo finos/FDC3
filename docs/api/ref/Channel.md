@@ -61,6 +61,32 @@ interface IChannel: IIntentResult
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type IChannel interface {
+    Broadcast(context Context) <-chan Result[any]
+    GetCurrentContext(contextType string) <-chan Result[Context]
+    AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener]
+}
+
+type Channel struct {
+    Id              string        `json:"id"`
+	Type            ChannelType      `json:"type"`
+	DisplayMetadata *DisplayMetadata `json:"displayMetadata"`
+}
+
+type ChannelType string
+
+const (
+	App     ChannelType = "app"
+	Private ChannelType = "private"
+	User    ChannelType = "user"
+    System  ChannelType = "system"
+)
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -87,6 +113,13 @@ public readonly id: string;
 
 ```csharp
 string Id { get; }
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+Id string
 ```
 
 </TabItem>
@@ -118,6 +151,18 @@ public enum ChannelType
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type ChannelType string
+
+const (
+	App     ChannelType = "app"
+	System  ChannelType = "system"
+	Private ChannelType = "private"
+)
+```
+</TabItem>
 </Tabs>
 
 Can be _user_,  _app_ or _private_.
@@ -138,6 +183,12 @@ public readonly displayMetadata?: DisplayMetadata;
 IDisplayMetadata? DisplayMetadata { get; }
 ```
 
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+DisplayMetadata *DisplayMetadata
+```
 </TabItem>
 </Tabs>
 
@@ -163,6 +214,15 @@ public addContextListener(contextType: string | null, handler: ContextHandler): 
 
 ```csharp
 Task<IListener> AddContextListener<T>(string? contextType, ContextHandler<T> handler) where T : IContext;
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (ch *Channel) AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener]  { 
+  // Implmentation here
+}
 ```
 
 </TabItem>
@@ -214,6 +274,24 @@ listener.Unsubscribe();
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+listenerResult := <-channel.AddContextListener("", func(context Context, contextMetadata *ContextMetadata) {
+		if context.Type == "fdc3.contact" {
+			// handle the contact 
+		} else if context.Type == "fdc3.instrument" {
+			// handle the instrument 
+		} 
+	})
+
+// later 
+if listenerResult.Value != nil {
+	listenerResult.Value.Unsubscribe()
+}
+```
+
+</TabItem>
 </Tabs>
 
 Adding listeners for specific types of context that is broadcast on the channel:
@@ -253,6 +331,26 @@ instrumentListener.unsubscribe();
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+listenerResultContact := <-channel.AddContextListener("fdc3.contact", func(context Context, contextMetadata *ContextMetadata) {
+    // handle the contact
+})
+listenerResultInstrument := <-channel.AddContextListener("fdc3.instrument", func(context Context, contextMetadata *ContextMetadata) {
+    // handle the instrumnt
+})
+
+// later 
+if listenerResultContact.Value != nil {
+	listenerResultContact.Value.Unsubscribe()
+}
+if listenerResultInstrument.Value != nil {
+	listenerResultInstrument.Value.Unsubscribe()
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -276,6 +374,15 @@ public broadcast(context: Context): Promise<void>;
 
 ```csharp
 Task Broadcast(IContext context);
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (channel *Channel) Broadcast(context Context) <-chan Result[any]  { 
+  // Implmentation here
+}
 ```
 
 </TabItem>
@@ -328,6 +435,21 @@ catch (Exception ex)
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+result := <-myChannel.Broadcast(types.Context{
+			Type: "fdc3.instrument",
+			Id: map[string]string{
+				"ticker": "AAPL",
+		},
+})
+if result.Err != null {
+    // handle error 
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -350,6 +472,15 @@ public getCurrentContext(contextType?: string): Promise<Context|null>;
 
 ```csharp
 Task<IContext?> GetCurrentContext(string? contextType);
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (channel *Channel) GetCurrentContext(contextType string) <-chan Result[Context]  { 
+  // Implmentation here
+}
 ```
 
 </TabItem>
@@ -393,6 +524,16 @@ catch (Exception ex)
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+result := <-myChannel.GetCurrentContext("")
+if result.Err != null {
+    // handle error 
+}
+```
+
+</TabItem>
 </Tabs>
 
 Specifying a context type:
@@ -423,6 +564,16 @@ catch (Exception ex)
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+result := <-myChannel.GetCurrentContext("fdc3.contact")
+if result.Err != null {
+    // handle error 
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -447,6 +598,13 @@ public addContextListener(handler: ContextHandler): Promise<Listener>;
 
 </TabItem>
 <TabItem value="dotnet" label=".NET">
+
+```
+Not implemented
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
 
 ```
 Not implemented
