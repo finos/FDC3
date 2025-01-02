@@ -1,9 +1,9 @@
 import { BrowserTypes } from '@kite9/fdc3-schema';
 import { dragElement } from './drag';
-import { Fdc3UserInterfaceRestyle } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { Channel, Fdc3UserInterfaceRestyle } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 // TODO: Update typings
-let channels: any[] = [];
+let channels: Channel[] = [];
 let channelId: string | null = null;
 
 export const DEFAULT_COLLAPSED_CSS = {
@@ -38,11 +38,11 @@ const position: Position = {
 
 window.addEventListener('load', () => {
   const parent = window.parent;
-  const logo = document.getElementById('logo')!!;
-  const close = document.getElementById('close')!!;
-  const drag = document.getElementById('drag')!!;
-  const selector = document.getElementById('selector')!!;
-  const list = document.getElementById('channel-list')!!;
+  const logo = document.getElementById('logo')!;
+  const close = document.getElementById('close')!;
+  const drag = document.getElementById('drag')!;
+  const selector = document.getElementById('selector')!;
+  const list = document.getElementById('channel-list')!;
 
   const mc = new MessageChannel();
   const myPort = mc.port1;
@@ -113,9 +113,9 @@ window.addEventListener('load', () => {
     list.innerHTML = '';
     channels.forEach(channel => {
       const li = document.createElement('div');
-      li.style.backgroundColor = channel.displayMetadata.color;
+      li.style.backgroundColor = channel.displayMetadata!.color!;
       const description = document.createElement('em');
-      description.textContent = channel.displayMetadata.name = channel.id == channelId ? ' CURRENT CHANNEL ' : '';
+      description.textContent = channel.displayMetadata!.name = channel.id == channelId ? ' CURRENT CHANNEL ' : '';
       li.textContent = channel.id;
 
       li.appendChild(description);
