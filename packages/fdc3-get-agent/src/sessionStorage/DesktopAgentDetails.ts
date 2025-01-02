@@ -67,24 +67,26 @@ export function retrieveDesktopAgentDetails(identityUrl: string): DesktopAgentDe
   if (allDetails) {
     const theData: DesktopAgentDetails = allDetails[identityUrl];
 
-    //check we got the minimum properties
-    if (
-      typeof theData.agentType === 'string' &&
-      theData.agentType && //TODO: check this is one of the enum values
-      typeof theData.appId === 'string' &&
-      theData.appId &&
-      typeof theData.instanceId === 'string' &&
-      theData.instanceId
-    ) {
-      return theData;
-    } else {
-      //ignore it and post a warning
-      Logger.warn(
-        `DesktopAgentDetails: Stored details do not meet minimum requirements and will be ignored:\n${JSON.stringify(theData, null, 2)}`
-      );
-      return null;
+    if (theData) {
+      //check we got the minimum properties
+      if (
+        typeof theData.agentType === 'string' &&
+        theData.agentType && //TODO: check this is one of the enum values
+        typeof theData.appId === 'string' &&
+        theData.appId &&
+        typeof theData.instanceId === 'string' &&
+        theData.instanceId
+      ) {
+        return theData;
+      } else {
+        //ignore it and post a warning
+        Logger.warn(
+          `DesktopAgentDetails: Stored details do not meet minimum requirements and will be ignored:\n${JSON.stringify(theData, null, 2)}`
+        );
+        return null;
+      }
     }
-  } else {
-    return null;
   }
+
+  return null;
 }

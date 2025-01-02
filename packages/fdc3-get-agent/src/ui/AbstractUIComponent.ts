@@ -110,14 +110,7 @@ export abstract class AbstractUIComponent implements Connectable {
             Logger.debug('AbstractUIComponent: ignored UI Message from UI iframe while awaiting hello: ', e.data);
           }
         } else {
-          Logger.debug(
-            "AbstractUIComponent: ignored Message that didn't come from expected UI frame\n",
-            e.data,
-            '\nexpected window name: ',
-            this.iframe?.contentWindow?.name,
-            '\ngot window name: ',
-            (e.source as Window).name
-          );
+          Logger.debug("AbstractUIComponent: ignored Message that didn't come from expected UI frame\n", e.data);
         }
       };
 

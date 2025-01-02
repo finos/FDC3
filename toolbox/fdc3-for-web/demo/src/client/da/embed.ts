@@ -34,7 +34,15 @@ function getUIKey(): UI {
 const helloListener = (e: MessageEvent) => {
   const messageData = e.data;
   const eventSource = e.source;
-  const eventSourceName = (eventSource as Window)?.name ?? 'unknown';
+  let eventSourceName;
+  try {
+    eventSourceName = (eventSource as Window)?.name;
+  } catch (e) {
+    eventSourceName = '{a cross-origin window} ';
+  }
+  if (!eventSourceName) {
+    eventSourceName = '{no window name set} ';
+  }
 
   if (isWebConnectionProtocol1Hello(messageData)) {
     console.debug(

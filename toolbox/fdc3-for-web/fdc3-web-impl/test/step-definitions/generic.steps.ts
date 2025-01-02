@@ -5,6 +5,7 @@ import { DefaultFDC3Server } from '../../src/BasicFDC3Server';
 import { BasicDirectory } from '../../src/directory/BasicDirectory';
 import { ChannelType } from '../../src/handlers/BroadcastHandler';
 import { Context } from '@kite9/fdc3-context';
+import { AppIdentifier } from '@kite9/fdc3-standard';
 
 export const APP_FIELD = 'apps';
 
@@ -79,7 +80,7 @@ function defaultChannels() {
 }
 
 export function createMeta(cw: CustomWorld, appStr: string) {
-  let app;
+  let app: AppIdentifier;
   if (appStr.includes('/')) {
     const [appId, instanceId] = appStr.split('/');
     app = { appId, instanceId };
