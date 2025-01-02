@@ -134,7 +134,13 @@ window.addEventListener('load', () => {
             source.postMessage(message, origin, [channel.port1]);
           }
         } else {
-          console.error(`Couldn't locate an instance for Window.name: ${source.name}`);
+          let sourceName;
+          try {
+            sourceName = source.name;
+          } catch (e: unknown) {
+            sourceName = `{a cross-origin window: ${(e as Error).message ?? e}}`;
+          }
+          console.error(`Couldn't locate an instance for window: ${sourceName}`);
         }
       }
     });

@@ -87,7 +87,6 @@ window.addEventListener('load', () => {
   }
 
   myPort.addEventListener('message', e => {
-    console.log(e.data.type);
     if (e.data.type == BrowserTypes.FDC3_USER_INTERFACE_HANDSHAKE_TYPE) {
       // ok, port is ready, send the iframe position detials
       myPort.postMessage({
