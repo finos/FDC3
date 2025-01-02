@@ -532,11 +532,11 @@ _desktopAgent.Broadcast(instrument);
 
 ```go
 context := types.Context{
-		Type: "fdc3.instrument",
-		Id: map[string]string{
-			"ticker": "AAPL",
-			},
-	}
+    Type: "fdc3.instrument",
+    Id: map[string]string{
+      "ticker": "AAPL",
+    },
+  }
 desktopAgent.Broadcast(context)
 ```
 
