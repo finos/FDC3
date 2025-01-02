@@ -50,10 +50,6 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
     this.instances.push(appId);
   }
 
-  async disconnectApp(app: AppIdentifier): Promise<void> {
-    this.instances = this.instances.filter(ca => ca.instanceId !== app.instanceId);
-  }
-
   async open(appId: string): Promise<InstanceID> {
     const ni = this.nextInstanceId++;
     if (appId.includes('missing')) {
