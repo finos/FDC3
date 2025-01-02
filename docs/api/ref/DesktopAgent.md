@@ -122,7 +122,7 @@ type IDesktopAgent interface {
     AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener]
 
     // Intents
-	  FindIntent(intent string, context *Context, resultType *string) <-chan Result[AppIntent]
+    FindIntent(intent string, context *Context, resultType *string) <-chan Result[AppIntent]
     FindIntentsByContext(context Context, resultType *string) <-chan Result[[]AppIntent]
     RaiseIntent(intent string, context Context, appIdentifier *AppIdentifier) <-chan Result[IntentResolution]
     RaiseIntentForContext(context Context, appIdentifier *AppIdentifier) <-chan Result[IntentResolution]
@@ -172,7 +172,7 @@ Task<IListener> AddContextListener<T>(string? contextType, ContextHandler<T> han
 
 ```go
 func (desktopAgent *DesktopAgent) AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener] { 
-  // Implmentation here
+  // Implementation here
 }
 ```
 
@@ -1362,7 +1362,7 @@ Task<IChannel> GetOrCreateChannel(string channelId);
 
 ```go
 func (desktopAgent *DesktopAgent) GetOrCreateChannel(channelId string) <-chan Result[Channel] {
-  // Implmentation here
+  // Implementation here
 }
 
 ```
@@ -1448,7 +1448,7 @@ Task<IEnumerable<IChannel>> GetUserChannels();
 
 ```go
 func (desktopAgent *DesktopAgent) GetUserChannels() <-chan Result[[]Channel] {
-  // Implmentation here
+  // Implementation here
 }
 
 ```
@@ -1516,7 +1516,7 @@ Task JoinUserChannel(string channelId);
 
 ```go
 func (desktopAgent *DesktopAgent) JoinUserChannel(channelId string) <-chan Result[any] {
-  // Implmentation here
+  // Implementation here
 }
 
 ```
@@ -1602,7 +1602,7 @@ Task LeaveCurrentChannel();
 
 ```go
 func (desktopAgent *DesktopAgent) LeaveCurrentChannel() <-chan Result[any] {
-  // Implmentation here
+  // Implementation here
 }
 ```
 
@@ -1683,7 +1683,7 @@ Task<IAppIdentifier> Open(IAppIdentifier app, IContext? context = null);
 
 ```go
 func (desktopAgent *DesktopAgent) Open(appIdentifier AppIdentifier, context *Context) <-chan Result[AppIdentifier] {
-  // Implmentation here
+  // Implementation here
 }
 ```
 
@@ -1771,7 +1771,7 @@ Task<IIntentResolution> RaiseIntent(string intent, IContext context, IAppIdentif
 
 ```go
 func (desktopAgent *DesktopAgent) RaiseIntent(intent string, context Context, appIdentifier *AppIdentifier) <-chan Result[IntentResolution] {
-  // Implmentation here
+  // Implementation here
 }
 ```
 
@@ -1909,7 +1909,7 @@ Task<IIntentResolution> RaiseIntentForContext(IContext context, IAppIdentifier? 
 
 ```go
 func (desktopAgent *DesktopAgent) RaiseIntentForContext(context Context, appIdentifier *AppIdentifier) <-chan Result[IntentResolution] {
-  // Implmentation here
+  // Implementation here
 }
 ```
 
