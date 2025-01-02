@@ -7,7 +7,7 @@ import {
 } from '@kite9/fdc3-schema/dist/generated/api/BrowserTypes';
 
 const fillChannels = (data: Channel[], selected: string | null, messageClickedChannel: (s: string | null) => void) => {
-  const list = document.getElementById('list')!!;
+  const list = document.getElementById('list')!;
   list.innerHTML = '';
 
   data.forEach(({ id, displayMetadata }) => {

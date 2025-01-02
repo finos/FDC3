@@ -37,8 +37,8 @@ const helloListener = (e: MessageEvent) => {
   let eventSourceName;
   try {
     eventSourceName = (eventSource as Window)?.name;
-  } catch (e) {
-    eventSourceName = '{a cross-origin window} ';
+  } catch (e: unknown) {
+    eventSourceName = `{a cross-origin window: ${(e as Error).message ?? e}} `;
   }
   if (!eventSourceName) {
     eventSourceName = '{no window name set} ';
