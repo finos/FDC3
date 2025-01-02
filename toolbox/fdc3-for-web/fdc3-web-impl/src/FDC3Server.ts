@@ -8,4 +8,9 @@ export interface FDC3Server {
    * Receive an incoming message
    */
   receive(message: AppRequestMessage, from: InstanceID): void;
+
+  /**
+   * Cleanup state relating to an instance that has disconnected
+   */
+  cleanup(instanceId: InstanceID): void;
 }

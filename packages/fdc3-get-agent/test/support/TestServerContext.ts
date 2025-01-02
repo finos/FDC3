@@ -26,11 +26,16 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
   public postedMessages: MessageRecord[] = [];
   public readonly cw: CustomWorld;
   private instances: ConnectionDetails[] = [];
+
   private nextInstanceId: number = 0;
   private nextUUID: number = 0;
 
   constructor(cw: CustomWorld) {
     this.cw = cw;
+  }
+
+  goodbye(instanceId: string): void {
+    this.instances = this.instances.filter(instance => instance.instanceId !== instanceId);
   }
 
   async narrowIntents(_raiser: AppIdentifier, appIntents: AppIntent[] /*, _context: Context*/): Promise<AppIntent[]> {
@@ -39,6 +44,10 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
 
   getInstanceDetails(uuid: string) {
     return this.instances.find(ca => ca.instanceId === uuid);
+  }
+
+  getPastInstanceDetails(/*uuid: InstanceID*/): ConnectionDetails | undefined {
+    return;
   }
 
   setInstanceDetails(uuid: InstanceID, appId: ConnectionDetails) {

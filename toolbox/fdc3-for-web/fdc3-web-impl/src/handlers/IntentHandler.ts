@@ -125,7 +125,7 @@ class PendingIntent {
 
 export class IntentHandler implements MessageHandler {
   private readonly directory: Directory;
-  private readonly registrations: ListenerRegistration[] = [];
+  private registrations: ListenerRegistration[] = [];
   readonly pendingIntents: Set<PendingIntent> = new Set();
   readonly pendingResolutions: Map<string, FullAppIdentifier> = new Map();
   readonly timeoutMs: number;
@@ -133,6 +133,19 @@ export class IntentHandler implements MessageHandler {
   constructor(d: Directory, timeoutMs: number) {
     this.directory = d;
     this.timeoutMs = timeoutMs;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  cleanup(instanceId: InstanceID, _sc: ServerContext<AppRegistration>): void {
+    this.registrations = this.registrations.filter(reg => reg.instanceId != instanceId);
+    //don't clean up pendingIntents as some apps may load
+
+    //cleanup pendingResolutions
+    this.pendingResolutions.forEach((val, key) => {
+      if (val.instanceId === instanceId) {
+        this.pendingResolutions.delete(key);
+      }
+    });
   }
 
   shutdown(): void {}

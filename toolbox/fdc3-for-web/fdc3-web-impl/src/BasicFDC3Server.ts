@@ -23,6 +23,11 @@ export interface MessageHandler {
     from: InstanceID
   ): void;
 
+  /**
+   * Clean-up any state relating to a instance that has disconnected.
+   */
+  cleanup(instanceId: InstanceID, sc: ServerContext<AppRegistration>): void;
+
   shutdown(): void;
 }
 
@@ -36,6 +41,11 @@ export class BasicFDC3Server implements FDC3Server {
   constructor(handlers: MessageHandler[], sc: ServerContext<AppRegistration>) {
     this.handlers = handlers;
     this.sc = sc;
+  }
+
+  cleanup(instanceId: InstanceID): void {
+    this.handlers.forEach(handler => handler.cleanup(instanceId, this.sc));
+    this.sc.goodbye(instanceId);
   }
 
   receive(

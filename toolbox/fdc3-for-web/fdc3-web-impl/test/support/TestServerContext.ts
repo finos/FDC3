@@ -24,12 +24,22 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
     this.cw = cw;
   }
 
+  goodbye(instanceId: string): void {
+    this.instances = this.instances.filter(instance => instance.instanceId !== instanceId);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async narrowIntents(_raiser: AppIdentifier, appIntents: AppIntent[], _context: Context): Promise<AppIntent[]> {
     return appIntents;
   }
 
   getInstanceDetails(uuid: string) {
     return this.instances.find(ca => ca.instanceId === uuid);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  getPastInstanceDetails(_uuid: string) {
+    return undefined;
   }
 
   setInstanceDetails(uuid: InstanceID, appId: ConnectionDetails) {
@@ -102,8 +112,8 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
       const id = this.getInstanceDetails(to);
       const app = id
         ? {
-            appId: id!!.appId,
-            instanceId: id!!.instanceId,
+            appId: id!.appId,
+            instanceId: id!.instanceId,
           }
         : undefined;
       this.postedMessages.push({
@@ -122,11 +132,11 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
    * USED FOR TESTING
    */
   getInstanceUUID(appId: AppIdentifier): InstanceID {
-    this.setInstanceDetails(appId.instanceId!!, {
+    this.setInstanceDetails(appId.instanceId!, {
       appId: appId.appId,
-      instanceId: appId.instanceId!!,
+      instanceId: appId.instanceId!,
       state: State.Connected,
     });
-    return appId.instanceId!!;
+    return appId.instanceId!;
   }
 }

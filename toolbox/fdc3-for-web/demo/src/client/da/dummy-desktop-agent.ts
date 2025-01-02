@@ -7,6 +7,7 @@ import { AppRegistration, DefaultFDC3Server, DirectoryApp, ServerContext } from 
 import { ChannelState, ChannelType } from '@kite9/fdc3-web-impl/src/handlers/BroadcastHandler';
 import { link, UI, UI_URLS } from './util';
 import { BrowserTypes } from '@kite9/fdc3-schema';
+import { WebConnectionProtocol3Handshake } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL;
 
@@ -55,6 +56,7 @@ window.addEventListener('load', () => {
 
     const directory = new FDC3_2_1_JSONDirectory();
     await directory.load('/static/da/appd.json');
+    //await directory.load('/static/da/local-conformance-2_0.v2.json');
     const sc = new DemoServerContext(socket, directory);
 
     const channelDetails: ChannelState[] = [
@@ -74,7 +76,7 @@ window.addEventListener('load', () => {
     });
 
     socket.on(APP_GOODBYE, (id: string) => {
-      sc.goodbye(id);
+      fdc3Server.cleanup(id);
     });
 
     // let's create buttons for some apps
@@ -86,7 +88,7 @@ window.addEventListener('load', () => {
     // set up Desktop Agent Proxy interface here
     // disabling rule for checks on origin of messages - this could be improved by validating for origins we know we are working with
     // nosemgrep: javascript.browser.security.insufficient-postmessage-origin-validation.insufficient-postmessage-origin-validation
-    window.addEventListener('message', e => {
+    window.addEventListener('message', async e => {
       const event = e as MessageEvent;
       const data = event.data;
       const source = event.source as Window;
@@ -94,24 +96,23 @@ window.addEventListener('load', () => {
 
       console.log('Received: ' + JSON.stringify(event.data));
       if (data.type == 'WCP1Hello') {
-        const instance = sc.getInstanceForWindow(source);
+        const instance = await sc.getInstanceForWindow(source);
         if (instance) {
           if (getApproach() == Approach.IFRAME) {
-            source.postMessage(
-              {
-                type: 'WCP2LoadUrl',
-                meta: {
-                  connectionAttemptUuid: data.meta.connectionAttemptUuid,
-                  timestamp: new Date(),
-                },
-                payload: {
-                  iframeUrl:
-                    window.location.origin +
-                    `/static/da/embed.html?connectionAttemptUuid=${data.meta.connectionAttemptUuid}&desktopAgentId=${desktopAgentUUID}&instanceId=${instance.instanceId}&UI=${getUIKey()}`,
-                },
-              } as WebConnectionProtocol2LoadURL,
-              origin
-            );
+            const message: WebConnectionProtocol2LoadURL = {
+              type: 'WCP2LoadUrl',
+              meta: {
+                connectionAttemptUuid: data.meta.connectionAttemptUuid,
+                timestamp: new Date(),
+              },
+              payload: {
+                iframeUrl:
+                  window.location.origin +
+                  `/static/da/embed.html?&desktopAgentId=${desktopAgentUUID}&instanceId=${instance.instanceId}&UI=${getUIKey()}`,
+              },
+            };
+
+            source.postMessage(message, origin);
           } else {
             const channel = new MessageChannel();
             link(socket, channel, instance.instanceId);
@@ -119,74 +120,23 @@ window.addEventListener('load', () => {
             const ui = UI_URLS[getUIKey()];
 
             // send the other end of the channel to the app
-            source.postMessage(
-              {
-                type: 'WCP3Handshake',
-                meta: {
-                  connectionAttemptUuid: data.meta.connectionAttemptUuid,
-                  timestamp: new Date(),
-                },
-                payload: {
-                  fdc3Version: '2.2',
-                  ...ui,
-                },
+            const message: WebConnectionProtocol3Handshake = {
+              type: 'WCP3Handshake',
+              meta: {
+                connectionAttemptUuid: data.meta.connectionAttemptUuid,
+                timestamp: new Date(),
               },
-              origin,
-              [channel.port1]
-            );
+              payload: {
+                fdc3Version: '2.2',
+                ...ui,
+              },
+            };
+            source.postMessage(message, origin, [channel.port1]);
           }
         } else {
           console.error(`Couldn't locate an instance for Window.name: ${source.name}`);
         }
       }
-
-      // If this is in an iframe...
-      if (getApproach() == Approach.IFRAME) {
-        const instance = sc.getInstanceForWindow(source);
-        const message: WebConnectionProtocol2LoadURL = {
-          type: 'WCP2LoadUrl',
-          meta: {
-            connectionAttemptUuid: data.meta.connectionAttemptUuid,
-            timestamp: new Date(),
-          },
-          payload: {
-            iframeUrl:
-              window.location.origin +
-              `/static/da/embed.html?connectionAttemptUuid=${data.meta.connectionAttemptUuid}&desktopAgentId=${desktopAgentUUID}&instanceId=${instance?.instanceId}`,
-          },
-        };
-        source.postMessage(message, origin);
-        return;
-      }
-
-      const instance = sc.getInstanceForWindow(source);
-
-      if (!instance) {
-        throw new Error('Unable to find registration for this window');
-      }
-
-      const channel = new MessageChannel();
-      link(socket, channel, instance.instanceId);
-
-      socket.emit(APP_HELLO, desktopAgentUUID, instance.instanceId);
-
-      // send the other end of the channel to the app
-      source.postMessage(
-        {
-          type: 'WCP3Handshake',
-          meta: {
-            connectionAttemptUuid: data.meta.connectionAttemptUuid,
-            timestamp: new Date(),
-          },
-          payload: {
-            fdc3Version: '2.2',
-            intentResolverUrl: window.location.origin + '/static/da/intent-resolver.html',
-            channelSelectorUrl: window.location.origin + '/static/da/channel-selector.html',
-          },
-        },
-        origin,
-        [channel.port1]
-      );
     });
   });
 });

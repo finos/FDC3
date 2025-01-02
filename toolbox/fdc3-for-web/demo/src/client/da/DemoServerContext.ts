@@ -10,20 +10,41 @@ enum Opener {
   Nested,
 }
 
-type DemoRegistration = AppRegistration & {
+type DemoAppRegistration = AppRegistration & {
   window: Window;
   url: string;
 };
 
-//Typeguard used to check if application launch details have a URL
+type DemoLaunchRegistration = AppRegistration & {
+  windowPromise: Promise<Window | null>;
+  url: string;
+};
+
+type DemoRegistration = DemoAppRegistration | DemoLaunchRegistration;
+
+//Type guard used to check if application launch details have a URL
 function isWebAppLaunchDetails(details: object): details is { url: string } {
   return (details as { url: string }).url !== undefined;
+}
+
+//Type guard used to check if application has been launched or if we are still waiting on the window reference
+function isDemoLaunchRegistration(
+  details: DemoAppRegistration | DemoLaunchRegistration
+): details is DemoLaunchRegistration {
+  return !!(details as DemoLaunchRegistration).windowPromise;
+}
+
+//Type guard used to check if application has been launched or if we are still waiting on the window reference
+function isDemoAppRegistration(details: DemoAppRegistration | DemoLaunchRegistration): details is DemoAppRegistration {
+  return !!(details as DemoAppRegistration).window;
 }
 
 export class DemoServerContext implements ServerContext<DemoRegistration> {
   private readonly socket: Socket;
   private readonly directory: Directory;
-  private connections: DemoRegistration[] = [];
+  private connections: (DemoAppRegistration | DemoLaunchRegistration)[] = [];
+  private pastConnections: { registration: DemoAppRegistration; timestamp: number }[] = [];
+  private static PAST_CONNECTIONS_MAX_AGE_MS = 60 * 1000;
 
   constructor(socket: Socket, directory: Directory) {
     this.socket = socket;
@@ -34,20 +55,98 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
     return appIntents;
   }
 
-  /**
-   * Sets the appId and instanceId for a given connection UUID
-   */
-  setInstanceDetails(uuid: InstanceID, meta: DemoRegistration): void {
-    this.connections = this.connections.filter(ca => ca.instanceId !== uuid);
+  private prunePastConnections = () => {
+    const threshold = Date.now() - DemoServerContext.PAST_CONNECTIONS_MAX_AGE_MS;
+    this.pastConnections = this.pastConnections.filter(pc => pc.timestamp > threshold);
+  };
 
-    this.connections.push({
+  /**
+   * Sets the appId, url, state and either the window or a Promise<Window> for a given connection UUID.
+   */
+  setInstanceDetails(uuid: InstanceID, meta: DemoAppRegistration | DemoLaunchRegistration): void {
+    //remove any existing records with this uuid
+    this.connections = this.connections.filter(ca => ca.instanceId !== uuid);
+    this.pastConnections = this.pastConnections.filter(i => i.registration.instanceId != uuid);
+
+    const instanceDetails = {
       ...meta,
       instanceId: uuid,
-    });
+    };
+    this.connections.push(instanceDetails);
+
+    if (isDemoLaunchRegistration(meta)) {
+      //If the window wasn't fully realized yet, monitor the window promise so that it
+      //  sets window when resolved.
+      meta.windowPromise.then((window: Window | null) => {
+        if (window) {
+          const launchedMeta: DemoAppRegistration = {
+            window: window,
+            url: meta.url,
+            appId: meta.appId,
+            instanceId: meta.instanceId,
+            state: meta.state,
+          };
+          //will replace any existing record
+          this.setInstanceDetails(uuid, launchedMeta);
+        } else {
+          //delete this record as launch failed
+          this.connections = this.connections.filter(ca => ca.instanceId !== uuid);
+          console.error(
+            'We did not receive a window reference after launching app: ',
+            meta.url,
+            '\nn.b. this may occur if a popup blocker prevented launch or the Cross-Origin-Opener-Policy opener policy is set'
+          );
+        }
+      });
+    }
   }
 
-  getInstanceForWindow(window: Window): DemoRegistration | undefined {
-    return this.connections.find(i => i.window == window);
+  async getInstanceForWindow(window: Window): Promise<DemoAppRegistration | undefined> {
+    const registration = this.connections.filter(isDemoAppRegistration).find(i => i.window == window);
+    if (registration) {
+      return registration;
+    }
+
+    //check for as yet unrealized windows and then wait on those...
+    const launchingApps = this.connections.filter(isDemoLaunchRegistration);
+
+    if (launchingApps.length == 0) {
+      console.warn('Could not locate an app registration for a window and there are no window launches in progress!');
+      return;
+    } else {
+      //we need to wait on all currently launching windows as it could be any one of those
+      return new Promise<DemoAppRegistration | undefined>(resolve => {
+        const toMonitor = launchingApps.length;
+        let doneCount = 0;
+        launchingApps.forEach(launchingApp => {
+          launchingApp.windowPromise.then(realizedWindow => {
+            doneCount++;
+            if (realizedWindow == window) {
+              //note that this record will separately be converting itself into a DemoAppRegistration
+              resolve({
+                window: realizedWindow,
+                url: launchingApp.url,
+                appId: launchingApp.appId,
+                instanceId: launchingApp.instanceId,
+                state: launchingApp.state,
+              });
+            } else if (doneCount >= toMonitor) {
+              //we did not find it :-(
+              resolve(undefined);
+            }
+          });
+        });
+      });
+    }
+  }
+
+  getInstanceDetails(uuid: InstanceID): DemoRegistration | undefined {
+    return this.connections.find(i => i.instanceId == uuid);
+  }
+
+  getPastInstanceDetails(uuid: InstanceID): DemoAppRegistration | undefined {
+    this.prunePastConnections();
+    return this.pastConnections.find(i => i.registration.instanceId == uuid)?.registration;
   }
 
   getOpener(): Opener {
@@ -65,12 +164,18 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
    * Post an outgoing message to a particular app
    */
   async post(message: object, to: InstanceID): Promise<void> {
-    console.debug(`Responding to app instance:`, to, message);
     this.socket.emit(FDC3_DA_EVENT, message, to);
   }
 
   goodbye(id: string) {
+    const registration = this.connections.find(i => i.instanceId == id);
     this.connections = this.connections.filter(i => i.instanceId !== id);
+
+    //cache the connection details in case the app tries to reconnect
+    if (registration && isDemoAppRegistration(registration)) {
+      this.pastConnections.push({ registration, timestamp: Date.now() });
+    }
+
     console.debug(`Closed instance`, id);
     console.debug(
       `Open apps:`,
@@ -131,27 +236,22 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
       const launchDetails = details[0].details;
       if (isWebAppLaunchDetails(launchDetails)) {
         const url = launchDetails.url ?? undefined;
-        const window = await this.openUrl(url);
-        if (window) {
-          const instanceId: InstanceID = this.createUUID();
-          const metadata = {
-            appId,
-            instanceId,
-            window,
-            url,
-            state: State.Pending,
-          };
 
-          this.setInstanceDetails(instanceId, metadata);
-          return instanceId;
-        } else {
-          console.error(
-            'We did not receive a window reference after launching app: ',
-            details[0],
-            '\nn.b. this may occur if a popup blocker prevented launch or the Cross-Origin-Opener-Policy opener policy is set'
-          );
-          throw new Error(OpenError.ErrorOnLaunch);
-        }
+        //We do not await the window or frame opening here as that can cause a race condition
+        //  where the app loads and attempts to connect before we call `this.setInstanceDetails`.
+        //const window = await this.openUrl(url);
+        const windowPromise = this.openUrl(url);
+        const instanceId: InstanceID = this.createUUID();
+        const metadata: DemoLaunchRegistration = {
+          appId,
+          instanceId,
+          windowPromise,
+          url,
+          state: State.Pending,
+        };
+
+        this.setInstanceDetails(instanceId, metadata);
+        return instanceId;
       } else {
         console.error('Unable to launch app without a URL, app: ', details[0]);
         throw new Error(OpenError.ErrorOnLaunch);
@@ -185,10 +285,6 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
         state: x.state,
       };
     });
-  }
-
-  getInstanceDetails(uuid: InstanceID): DemoRegistration | undefined {
-    return this.connections.find(i => i.instanceId == uuid);
   }
 
   log(message: string): void {
