@@ -41,19 +41,19 @@ enum AgentError {
 
 ```go
 var AgentError = struct {
-	// Returned if no Desktop Agent was found by any means available or 
+  // Returned if no Desktop Agent was found by any means available or 
   // if the Agent previously connected to is not contactable on a  
   // subsequent connection attempt.
-	AgentNotFound string
-	// Returned if validation of the app identity by the Desktop Agent 
+  AgentNotFound string
+  // Returned if validation of the app identity by the Desktop Agent 
   // failed or the app is not being allowed to connect to the Desktop Agent for another reason.
-	AccessDenied string
-	// Returned if an error or exception occurs while trying to set  
+  AccessDenied string
+  // Returned if an error or exception occurs while trying to set  
   // up communication with a Desktop Agent.
-	ErrorOnConnect string
-	// Returned if the failover function is not a function, or it did not
+  ErrorOnConnect string
+  // Returned if the failover function is not a function, or it did not
   // resolve to one of the allowed types.
-	InvalidFailover string
+  InvalidFailover string
 }{
 	AgentNotFound:    "AgentNotFound",
 	AccessDenied:     "AccessDenied",

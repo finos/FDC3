@@ -123,6 +123,15 @@ For a .NET application to be FDC3-enabled, it needs to run in the context of a p
 
 FDC3 offers the [`Finos.Fdc3` NuGet package](https://www.nuget.org/packages/Finos.Fdc3) that can be used by .NET applications to target operations from the [API Specification](./spec) in a consistent way. Each FDC3-compliant desktop agent that the application runs in, can then provide an implementation of the FDC3 API operations.
 
+### GO
+
+#### Language specifics
+For the go language implementation, there were some specific new types or changes in the existing types, unlike the original Web implementation, because of the language specifics. Namely:
+- Needed to add type `Result` as described in [the Desktop Agent specs](../api/ref/DesktopAgent.md#desktopagent) to accomodate for error handling within golang channels. Channel is the closest equivalent to `Promise`. Result type has `Value` and `Err` fields, where `Value` type corresponds with the return type expected from this function, and `Err` would contain the golang `error` type error for handling.
+- Within [Context](../api/ref/Types.md/#context), we added a new `Details` field to accomodate for any additional fields, outside of `Name`, `Type` and `Id`, which would allow to create [additional contexts](../context/ref/). Any of the additional fields would have the value as the corresponding name of the field (ex. `market`). 
+- Even though in golang there is no strict requirement for explicit interface: if a type is implementing a specific method, then it is implementing that interface implicitly, however, we have added interfaces for all corresponding interfaces in other languages. However, in order to be able to use this, specific types need to be created with the implementation of that interface, even if they are empty structs, which we added alongside the interface (ex. [`DesktopAgent` is an empty struct, but it would implement methods of the IDesktopAgent interface](../api/ref/DesktopAgent.md#desktopagent)).
+- Any deprecated functions with the same name are omitted in golang, as it does not allow function/method overloading.
+
 ## Hybrid
 
 In a hybrid application, a standalone native application incorporates a web view, within which a web application runs. This may be considered a special case of the web platform where all platform-provider requirements for web applications must be satisfied, but it is the responsibility of the associated native application, rather than a platform provider, to ensure they are fulfilled. This may be achieved via either of the defined web interfaces, i.e. by injecting an implementation of the DesktopAgent API at `window.fdc3` or via the FDC3 Web Connection Protocol (`postMessage`).
