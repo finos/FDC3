@@ -82,6 +82,11 @@ export class HeartbeatHandler implements MessageHandler {
     }, pingInterval);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  cleanup(_instanceId: InstanceID, _sc: ServerContext<AppRegistration>): void {
+    //TODO: Consider whether to clean-up last heartbeat times
+  }
+
   heartbeatTimes(): HeartbeatDetails[] {
     const now = new Date().getTime();
     return Array.from(this.lastHeartbeats)

@@ -34,9 +34,6 @@ enum AppState {
   Done,
 }
 
-//TODO: Explain the naming of this file and clarify its purpose (what is it responsible for) - you can't intuit this from the name
-
-//TODO document this class, its purpose and why it is in this file
 class PendingApp {
   private readonly sc: ServerContext<AppRegistration>;
   private readonly msg: OpenRequest;
@@ -65,15 +62,15 @@ class PendingApp {
   }
 
   private onSuccess() {
-    this.sc.setAppState(this.openedApp?.instanceId!!, State.Connected);
+    this.sc.setAppState(this.openedApp!.instanceId!, State.Connected);
     successResponse(
       this.sc,
       this.msg,
       this.source,
       {
         appIdentifier: {
-          appId: this.openedApp!!.appId,
-          instanceId: this.openedApp!!.instanceId,
+          appId: this.openedApp!.appId,
+          instanceId: this.openedApp!.instanceId,
         },
       },
       'openResponse'
@@ -109,6 +106,10 @@ export class OpenHandler implements MessageHandler {
     this.timeoutMs = timeoutMs;
   }
 
+  cleanup(/*instanceId: InstanceID, sc: ServerContext<AppRegistration>*/): void {
+    //don't cleanup pending if the opening app closes as we should still deliver context
+  }
+
   shutdown(): void {}
 
   async accept(
@@ -137,7 +138,6 @@ export class OpenHandler implements MessageHandler {
           }
         } catch (e) {
           const responseType = msg.type.replace(new RegExp('Request$'), 'Response') as AgentResponseMessage['type'];
-          //TODO: create a typeguard for response message types and use it to replace the 'as' below
           errorResponse(sc, msg, from, (e as Error).message ?? e, responseType);
         }
       } else {
@@ -155,16 +155,11 @@ export class OpenHandler implements MessageHandler {
     from: InstanceID
   ): void {
     const pendingOpen = this.pending.get(from);
-
     if (pendingOpen) {
-      //TODO: Find out why this is asserted non-null - context is only sent to the user channel listener
-      const channelId = arg0.payload.channelId!!;
       const contextType = arg0.payload.contextType;
-
       if (pendingOpen.context && pendingOpen.state == AppState.DeliveringContext) {
         if (contextType == pendingOpen.context.type || contextType == undefined) {
           // ok, we can deliver to this listener
-
           const message: BroadcastEvent = {
             meta: {
               eventUuid: sc.createUUID(),
@@ -172,7 +167,7 @@ export class OpenHandler implements MessageHandler {
             },
             type: 'broadcastEvent',
             payload: {
-              channelId,
+              channelId: null,
               context: pendingOpen.context,
               originatingApp: {
                 appId: pendingOpen.source.appId,
@@ -248,11 +243,11 @@ export class OpenHandler implements MessageHandler {
   }
 
   async open(arg0: OpenRequest, sc: ServerContext<AppRegistration>, from: FullAppIdentifier): Promise<void> {
-    const source = arg0.payload.app;
+    const toOpen = arg0.payload.app;
     const context = arg0.payload.context;
 
     try {
-      const uuid = await sc.open(source.appId);
+      const uuid = await sc.open(toOpen.appId);
       this.pending.set(uuid, new PendingApp(sc, arg0, context, from, this.timeoutMs));
     } catch (e) {
       errorResponse(sc, arg0, from, (e as Error).message ?? e, 'openResponse');
@@ -328,24 +323,29 @@ export class OpenHandler implements MessageHandler {
 
     if (arg0.payload.instanceUuid) {
       // existing app reconnecting
-      const appIdentity = sc.getInstanceDetails(arg0.payload.instanceUuid);
+      console.log('App attempting to reconnect:', arg0.payload.instanceUuid);
+      const appIdentity = sc.getPastInstanceDetails(arg0.payload.instanceUuid);
 
       if (appIdentity) {
         // in this case, the app is reconnecting, so let's just re-assign the
         // identity
+        console.log(`Reassigned existing identity (appId: ${appIdentity.appId}): `, arg0.payload.instanceUuid);
         sc.setInstanceDetails(from, appIdentity);
         sc.setAppState(from, State.Connected);
         return returnSuccess(appIdentity.appId, appIdentity.instanceId);
+      } else {
+        //we didn't find the identity, assign a new one
+        console.log('Existing identity not found for, assigning a new one: ', arg0.payload.instanceUuid);
       }
     }
 
-    // we need to assign an identity to this app
+    // we need to assign an identity to this app - this should have been generated when it was launched
     const appIdentity = sc.getInstanceDetails(from);
     if (appIdentity) {
       sc.setAppState(appIdentity.instanceId, State.Connected);
       returnSuccess(appIdentity.appId, appIdentity.instanceId);
 
-      // make sure if the opener is listening for this app to open gets informed
+      // make sure, if the opener is listening for this app to open, then it gets informed
       const pendingOpen = this.pending.get(from);
       if (pendingOpen) {
         if (pendingOpen.state == AppState.Opening) {

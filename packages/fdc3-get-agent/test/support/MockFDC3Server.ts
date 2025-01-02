@@ -1,4 +1,4 @@
-import { FDC3Server } from '@kite9/fdc3-web-impl';
+import { FDC3Server, InstanceID } from '@kite9/fdc3-web-impl';
 import { TestServerContext } from './TestServerContext';
 import { MockWindow } from './MockWindow';
 import { AutomaticResponse } from './responses/AutomaticResponses';
@@ -50,6 +50,10 @@ export class MockFDC3Server implements FDC3Server {
       new GetInfo(),
     ];
     this.init();
+  }
+
+  cleanup(instanceId: InstanceID): void {
+    this.tsc.goodbye(instanceId);
   }
 
   receive(message: AppRequestMessage, from: string): void {

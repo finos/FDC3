@@ -48,15 +48,28 @@ export interface ServerContext<X extends AppRegistration> {
   open(appId: string): Promise<InstanceID>;
 
   /**
+   * Handle clean-up of state after an app instance disconnects.
+   */
+  goodbye(instanceId: string): void;
+
+  /**
    * Registers a particular instance id with a given app id
    */
   setInstanceDetails(uuid: InstanceID, details: X): void;
 
   /**
-   * Returns the UUID for a particular instance of an app.
-   * This is used in situations where an app is reconnecting to the same desktop agent.
+   * Returns the connection details for a particular instance of an app.
+   * Used in a variety of MessageHandler classes to retrieve details for
+   * an app and when validating an app's identity when connecting.
    */
   getInstanceDetails(uuid: InstanceID): X | undefined;
+
+  /**
+   * Returns the connection details for a particular instance of an app that
+   * was previously connected to the Desktop Agent. Used when validating an
+   * app's identity when reconnecting.
+   */
+  getPastInstanceDetails(uuid: InstanceID): X | undefined;
 
   /**
    * Registers an app as connected to the desktop agent.
