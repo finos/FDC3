@@ -6,7 +6,7 @@ import {
   WebConnectionProtocol6Goodbye,
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
-export interface Messaging /*extends Connectable*/ {
+export interface Messaging {
   /**
    * Creates UUIDs used in outgoing messages
    */

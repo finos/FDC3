@@ -75,7 +75,7 @@ async function forwardRequest(
     {
       intentResolution: {
         intent: arg0.intent,
-        source: to,
+        source: { appId: to.appId, instanceId: to.instanceId }, //make sure we're not carrying any excess fields from internal state
       },
     },
     arg0.type
@@ -503,7 +503,13 @@ export class IntentHandler implements MessageHandler {
       } else {
         //invalid target
         console.warn('Received an invalid target argument for raiseIntent', target, arg0);
-        return this.raiseIntentToAnyApp([intentRequest], sc);
+        return errorResponseId(
+          sc,
+          arg0.meta.requestUuid,
+          from,
+          ResolveError.TargetAppUnavailable,
+          'raiseIntentResponse'
+        );
       }
     } else {
       //No target
@@ -548,7 +554,13 @@ export class IntentHandler implements MessageHandler {
       } else {
         //invalid target
         console.warn('Received an invalid target argument for raiseIntentForContext', target, arg0);
-        return this.raiseIntentToAnyApp(possibleIntentRequests, sc);
+        return errorResponseId(
+          sc,
+          arg0.meta.requestUuid,
+          from,
+          ResolveError.TargetAppUnavailable,
+          'raiseIntentForContextResponse'
+        );
       }
     } else {
       //No target

@@ -38,7 +38,7 @@ Given('{string} sends a goodbye message', function (this: CustomWorld, appStr: s
 });
 
 Then('I test the liveness of {string}', async function (this: CustomWorld, appStr: string) {
-  const out = await this.sc.isAppConnected(createMeta(this, appStr).source.instanceId);
+  const out = await this.sc.isAppConnected(createMeta(this, appStr).source.instanceId ?? 'UNKNOWN');
   this.props['result'] = out;
 });
 

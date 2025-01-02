@@ -14,14 +14,15 @@ type WebConnectionProtocol4ValidateAppIdentity = BrowserTypes.WebConnectionProto
 When('{string} is opened with connection id {string}', function (this: CustomWorld, app: string, uuid: string) {
   const meta = createMeta(this, app);
   this.sc.setInstanceDetails(uuid, {
-    ...meta.source,
+    appId: meta.source.appId,
+    instanceId: meta.source.instanceId!,
     state: State.Connected,
   });
 });
 
 When('{string} is closed', function (this: CustomWorld, app: string) {
   const meta = createMeta(this, app);
-  this.sc.disconnectApp(meta.source);
+  this.server.cleanup(meta.source.instanceId!);
 });
 
 When('{string} sends validate', function (this: CustomWorld, uuid: string) {

@@ -4,10 +4,11 @@ import { TestServerContext } from '../support/TestServerContext';
 import { DefaultFDC3Server } from '../../src/BasicFDC3Server';
 import { BasicDirectory } from '../../src/directory/BasicDirectory';
 import { ChannelType } from '../../src/handlers/BroadcastHandler';
+import { Context } from '@kite9/fdc3-context';
 
 export const APP_FIELD = 'apps';
 
-export const contextMap: Record<string, any> = {
+export const contextMap: Record<string, Context> = {
   'fdc3.instrument': {
     type: 'fdc3.instrument',
     name: 'Apple',
@@ -78,8 +79,13 @@ function defaultChannels() {
 }
 
 export function createMeta(cw: CustomWorld, appStr: string) {
-  const [appId, instanceId] = appStr.split('/');
-  const app = { appId, instanceId };
+  let app;
+  if (appStr.includes('/')) {
+    const [appId, instanceId] = appStr.split('/');
+    app = { appId, instanceId };
+  } else {
+    app = { appId: appStr };
+  }
 
   return {
     requestUuid: cw.sc.createUUID(),

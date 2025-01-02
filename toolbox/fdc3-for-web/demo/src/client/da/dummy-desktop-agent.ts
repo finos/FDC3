@@ -55,8 +55,8 @@ window.addEventListener('load', () => {
     socket.emit(DA_HELLO, desktopAgentUUID);
 
     const directory = new FDC3_2_1_JSONDirectory();
-    await directory.load('/static/da/appd.json');
-    //await directory.load('/static/da/local-conformance-2_0.v2.json');
+    //await directory.load('/static/da/appd.json');
+    await directory.load('/static/da/local-conformance-2_0.v2.json');
     const sc = new DemoServerContext(socket, directory);
 
     const channelDetails: ChannelState[] = [
