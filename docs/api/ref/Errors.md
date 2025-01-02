@@ -147,15 +147,15 @@ var ChannelError = struct {
 	// SHOULD be returned when a channel cannot be created or retrieved via the
 	// `GetOrCreateChannel` method of the DesktopAgent.
 	CreationFailed string
-  // Returned if a call to the `broadcast` functions is made with an invalid
-  // context argument. Contexts should be Objects with at least a `type` field
-  // that has a `string` value.
-  MalformedContext string
+	// Returned if a call to the `broadcast` functions is made with an invalid
+	// context argument. Contexts should be Objects with at least a `type` field
+	// that has a `string` value.
+	MalformedContext string
 }{
 	NoChannelFound: "NoChannelFound",
 	AccessDenied:   "AccessDenied",
 	CreationFailed: "CreationFailed",
-  MalformedContext: "MalformedContext",
+	MalformedContext: "MalformedContext",
 }
 ```
 
@@ -259,19 +259,19 @@ var OpenError = struct {
 	AppTimeout string
 	// Returned if the FDC3 desktop agent implementation is not currently able to handle the request.
 	ResolverUnavailable string
-  // Returned if a call to the `Open` function is made with an invalid
-  // context argument.Contexts should be Objects with at least a `Type` field
-  // that has a `string` value.
-  MalformedContext string
-  // Experimental: Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.
-  DesktopAgentNotFound string,
+	// Returned if a call to the `Open` function is made with an invalid
+	// context argument.Contexts should be Objects with at least a `Type` field
+	// that has a `string` value.
+	MalformedContext string
+	// Experimental: Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.
+	DesktopAgentNotFound string,
 }{
 	AppNotFound:         "AppNotFound",
 	ErrorOnLaunch:       "ErrorOnLaunch",
 	AppTimeout:          "AppTimeout",
 	ResolverUnavailable: "ResolverUnavailable",
-  MalformedContext:    "MalformedContext",
-  DesktopAgentNotFound: "DesktopAgentNotFound",
+	MalformedContext:    "MalformedContext",
+	DesktopAgentNotFound: "DesktopAgentNotFound",
 }
 ```
 
@@ -423,10 +423,10 @@ var ResolveError = struct {
 	// Returned if the intent and context could not be delivered to the selected
 	// application or instance, for example because it has not added an intent handler within a timeout
 	IntentDeliveryFailed string
-  // Returned if a call to one of the `RaiseIntent` functions is made with an 
-  // invalid context argument. Contexts should be Objects with at least a `Type`
-  // field that has a `string` value.
-  MalformedContext string
+	// Returned if a call to one of the `RaiseIntent` functions is made with an 
+	// invalid context argument. Contexts should be Objects with at least a `Type`
+	// field that has a `string` value.
+	MalformedContext string
 }{
 	NoAppsFound:               "NoAppsFound",
 	ResolverUnavailable:       "ResolverUnavailable",
@@ -435,7 +435,7 @@ var ResolveError = struct {
 	TargetAppUnavailable:      "TargetAppUnavailable",
 	TargetInstanceUnavailable: "TargetInstanceUnavailable",
 	IntentDeliveryFailed:      "IntentDeliveryFailed",
-  MalformedContext:          "MalformedContext",
+	MalformedContext:          "MalformedContext",
 }
 ```
 
@@ -560,25 +560,25 @@ Not implemented
 ```go
 var BridgingError = struct {
 	// Experimental: Returned if a Desktop Agent did not return a response, via 
-  // Desktop Agent Bridging, within the allotted timeout.
-  ResponseTimedOut string
-  // Experimental: Returned if a Desktop Agent that has been targeted by a 
-  // particular request has been disconnected from the Bridge before a 
-  // response has been received from it.
+	// Desktop Agent Bridging, within the allotted timeout.
+	ResponseTimedOut string
+	// Experimental: Returned if a Desktop Agent that has been targeted by a 
+	// particular request has been disconnected from the Bridge before a 
+	// response has been received from it.
 	AgentDisconnected string
-  // Experimental: Returned for FDC3 API calls that are specified with
-  // arguments indicating that a remote Desktop agent should be targeted
-  // (e.g. raiseIntent with an app on a remote DesktopAgent targeted), 
-  // when the local Desktop Agent is not connected to a bridge. 
-  NotConnectedToBridge string
-  // Experimental: Returned if a message to a Bridge deviates from the schema
-  // for that message sufficiently that it could not be processed.
-  MalformedMessage string
+	// Experimental: Returned for FDC3 API calls that are specified with
+	// arguments indicating that a remote Desktop agent should be targeted
+	// (e.g. raiseIntent with an app on a remote DesktopAgent targeted), 
+	// when the local Desktop Agent is not connected to a bridge. 
+	NotConnectedToBridge string
+	// Experimental: Returned if a message to a Bridge deviates from the schema
+	// for that message sufficiently that it could not be processed.
+	MalformedMessage string
 }{
 	ResponseTimedOut: "ResponseTimedOut",
 	AgentDisconnected:      "AgentDisconnected",
-  NotConnectedToBridge: "NotConnectedToBridge",
-  MalformedMessage: "MalformedMessage",
+	NotConnectedToBridge: "NotConnectedToBridge",
+	MalformedMessage: "MalformedMessage",
 }
 ```
 
