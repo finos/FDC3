@@ -71,7 +71,7 @@ type IChannel interface {
 }
 
 type Channel struct {
-    Id              string        `json:"id"`
+	Id              string        `json:"id"`
 	Type            ChannelType      `json:"type"`
 	DisplayMetadata *DisplayMetadata `json:"displayMetadata"`
 }
@@ -82,7 +82,7 @@ const (
 	App     ChannelType = "app"
 	Private ChannelType = "private"
 	User    ChannelType = "user"
-    System  ChannelType = "system"
+	System  ChannelType = "system"
 )
 ```
 
@@ -221,7 +221,7 @@ Task<IListener> AddContextListener<T>(string? contextType, ContextHandler<T> han
 
 ```go
 func (ch *Channel) AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener]  { 
-  // Implmentation here
+  // Implementation here
 }
 ```
 
@@ -338,7 +338,7 @@ listenerResultContact := <-channel.AddContextListener("fdc3.contact", func(conte
     // handle the contact
 })
 listenerResultInstrument := <-channel.AddContextListener("fdc3.instrument", func(context Context, contextMetadata *ContextMetadata) {
-    // handle the instrumnt
+    // handle the instrument
 })
 
 // later 
@@ -381,7 +381,7 @@ Task Broadcast(IContext context);
 
 ```go
 func (channel *Channel) Broadcast(context Context) <-chan Result[any]  { 
-  // Implmentation here
+  // Implementation here
 }
 ```
 
@@ -479,7 +479,7 @@ Task<IContext?> GetCurrentContext(string? contextType);
 
 ```go
 func (channel *Channel) GetCurrentContext(contextType string) <-chan Result[Context]  { 
-  // Implmentation here
+  // Implementation here
 }
 ```
 
