@@ -49,10 +49,10 @@ interface IAppIntent
 ```go
 type AppIntent struct {
   // Details of the intent whose relationship to resolving applications is being described.
-	Intent IntentMetadata `json:"intent"`
+  Intent IntentMetadata `json:"intent"`
 
   // Details of applications that can resolve the intent.
-	Apps   []AppMetadata  `json:"apps"`
+  Apps   []AppMetadata  `json:"apps"`
 }
 ```
 
@@ -179,28 +179,28 @@ interface IAppMetadata : IAppIdentifier
 
 ```go
 type AppMetadata struct {
-	AppIdentifier
+  AppIdentifier
   // The unique app name that can be used with the open and raiseIntent calls.
-	Name             string                 `json:"name"`
+  Name             string                 `json:"name"`
   // The Version of the application.
-	Version          string                 `json:"version"`
+  Version          string                 `json:"version"`
   // A more user-friendly application title that can be used to render UI elements.
-	Title            string                 `json:"title"`
+  Title            string                 `json:"title"`
   // A tooltip for the application that can be used to render UI elements.
-	Tooltip          string                 `json:"tooltip"`
+  Tooltip          string                 `json:"tooltip"`
   // A longer, multi-paragraph description for the application that could include markup.
-	Description      string                 `json:"description"`
+  Description      string                 `json:"description"`
   // A list of icon URLs for the application that can be used to render UI elements.
-	Icons            []app_dir.Icon         `json:"icons"`
+  Icons            []app_dir.Icon         `json:"icons"`
   // A list of image URLs for the application that can be used to render UI elements.
-	Screenshots      []app_dir.Screenshot   `json:"screenshots"`
+  Screenshots      []app_dir.Screenshot   `json:"screenshots"`
   // The type of output returned for any intent specified during resolution. May express a particular context type,
   // channel, or channel with specified type
-	ResultType       string                 `json:"resultType"`
+  ResultType       string                 `json:"resultType"`
   // An optional set of, implementation specific, metadata fields that can be
   // used to disambiguate instances, such as a window title or screen position.
   // Must only be set if `instanceId` is set. 
-	InstanceMetadata map[string]interface{} `json:"instanceMetadata"`
+  InstanceMetadata map[string]interface{} `json:"instanceMetadata"`
 }
 ```
 
@@ -256,7 +256,7 @@ interface IContextMetadata
 ```go
 type ContextMetadata struct {
   // Identifier for the app instance that sent the context and/or intent.
-	Source AppIdentifier `json:"source"`
+  Source AppIdentifier `json:"source"`
 }
 ```
 
@@ -329,13 +329,13 @@ interface IDisplayMetadata
 ```go
 type DisplayMetadata struct {
   // A user-readable name for this channel, e.g: Red.
-	Name  string `json:"name"`
+  Name  string `json:"name"`
   // The color that should be associated within this channel when displaying
   // this channel in a UI, e.g: `#FF0000`. May be any color value supported by
   //  CSS, e.g. name, hex, rgba, etc..
-	Color string `json:"color"`
+  Color string `json:"color"`
   // A URL of an image that can be used to display this channel.
-	Glyph string `json:"glyph"`
+  Glyph string `json:"glyph"`
 }
 ```
 
@@ -438,17 +438,17 @@ IIcon? icon = appMetadata?.Icons.Where(icon => icon.Size == "48x48").First();
 
 ```go
 icons := []Icon{
-			{
-				Src: "https://app.foo.icon/app_icons/lowres.webp",
-				Size: "48x48",
-				Type: "image/webp",
-			},
-			{
-				Src: "https://app.foo.icon/app_icons/hd_hi.svg",
-				Size: "72x72",
-				Type: "image/svg+xml",
-			},
-		}
+      {
+        Src: "https://app.foo.icon/app_icons/lowres.webp",
+        Size: "48x48",
+        Type: "image/webp",
+      },
+      {
+        Src: "https://app.foo.icon/app_icons/hd_hi.svg",
+        Size: "72x72",
+        Type: "image/svg+xml",
+      },
+    }
 ```
 
 </TabItem>
@@ -513,13 +513,13 @@ interface IImage
 ```go
 type Image struct {
   // The icon url
-	Src string `json:"src"`
+  Src string `json:"src"`
 	// The icon dimensions, formatted as '{height}x{width}'
-	Size string `json:"size"`
+  Size string `json:"size"`
   // Icon media type.  If not present, the Desktop Agent may use the src file extension.
-	Type string `json:"type"`
+  Type string `json:"type"`
   // Caption for the image
-	Label string `json:"label"`
+  Label string `json:"label"`
 }
 ```
 
@@ -567,19 +567,19 @@ foreach (IImage image in appMetadata.Screenshots)
 
 ```go
 icons := []Image{
-			{
-				Src: "https://app.foo.icon/app_screenshots/dashboard.png",
-				Size: "800x600",
-				Type: "image/png",
+      {
+        Src: "https://app.foo.icon/app_screenshots/dashboard.png",
+        Size: "800x600",
+        Type: "image/png",
         Label: "Example app dashboard",
-			},
-			{
-				Src: "https://app.foo.icon/app_screenshots/notifications.png",
-				Size: "800x600",
-				Type: "image/png",
+      },
+      {
+        Src: "https://app.foo.icon/app_screenshots/notifications.png",
+        Size: "800x600",
+        Type: "image/png",
         Label: "Order notifications view",
-			},
-		}
+      },
+    }
 ```
 
 </TabItem>
@@ -696,22 +696,22 @@ class OptionalDesktopAgentFeatures
 type ImplementationMetadata struct {
   //  The version number of the FDC3 specification that the implementation provides.
   //  The string must be a numeric semver version, e.g. 1.2 or 1.2.1.
-	Fdc3Version      string `json:"fdc3Version"`
+  Fdc3Version      string `json:"fdc3Version"`
   // The name of the provider of the FDC3 Desktop Agent Implementation (e.g. Finsemble, Glue42, OpenFin etc.).
-	Provider         string `json:"provider"`
+  Provider         string `json:"provider"`
   // The version of the provider of the FDC3 Desktop Agent Implementation (e.g. 5.3.0).
-	ProviderVersion  string `json:"providerVersion"`
+  ProviderVersion  string `json:"providerVersion"`
   // Metadata indicating whether the Desktop Agent implements optional features of the Desktop Agent API.
-	OptionalFeatures struct {
+  OptionalFeatures struct {
     // Used to indicate whether the exposure of 'originating app metadata' for context and intent
     // messages is supported by the Desktop Agent.
-		OriginatingAppMetadata    bool `json:"OriginatingAppMetadata"`
+    OriginatingAppMetadata    bool `json:"OriginatingAppMetadata"`
     // Used to indicate whether the optional 'JoinUserChannel', 'GetCurrentChannel', and 'LeaveCurrentChannel'
     // are implemented by the Desktop Agent.
-		UserChannelMembershipAPIs bool `json:"UserChannelMembershipAPIs"`
+    UserChannelMembershipAPIs bool `json:"UserChannelMembershipAPIs"`
 	} `json:"optionalFeatures"`
   // The calling application instance's own metadata according to the Desktop Agent
-	AppMetadata AppMetadata `json:"appMetadata"`
+  AppMetadata AppMetadata `json:"appMetadata"`
 }
 ```
 
@@ -767,9 +767,10 @@ interface IIntentMetadata
 ```go
 type IntentMetadata struct {
   // The unique name of the intent that can be invoked by the raiseIntent call.
-	Name        string `json:"name"`
+  Name        string `json:"name"`
   
-	DisplayName string `json:"displayName"`
+  // A friendly display name for the intent that should be used to render UI elements.
+  DisplayName string `json:"displayName"`
 }
 
 ```
@@ -851,17 +852,17 @@ interface IIntentResolution
 ```go
 type IntentResolution struct {
   // The application that resolved the intent.
-	Source  AppIdentifier `json:"source"`
+  Source  AppIdentifier `json:"source"`
   // The intent that was raised.
-	Intent  string        `json:"intent"`
+  Intent  string        `json:"intent"`
   // The version number of the Intents schema being used.
-	Version string        `json:"version"`
+  Version string        `json:"version"`
 }
 
 type IntentResult any
 
 func (ir *IntentResolution) GetResult() <-chan Result[IntentResult] {
-	// implementation here
+  // implementation here
 }
 ```
 
@@ -950,7 +951,7 @@ if resolutionResult.Err != nil {
   // handle error 
 }
 if channel, ok := resolutionResult.Value.(Channel); ok {
-		log.Println("The result is a channel")
+    log.Println("The result is a channel")
 } else if context, ok := resolutionResult.Value.(Context); ok {
     log.Println("The result is a context")
 } else {

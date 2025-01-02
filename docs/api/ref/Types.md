@@ -60,9 +60,9 @@ interface IAppIdentifier
 ```go
 type AppIdentifier struct {
   // The unique application identifier located within a specific application directory instance. An example of an appId might be 'app@sub.root'.
-	AppId      string `json:"appId"`
+  AppId      string `json:"appId"`
   // An optional instance identifier, indicating that this object represents a specific instance of the application described.
-	InstanceId string `json:"instanceId"`
+  InstanceId string `json:"instanceId"`
 }
 ```
 
@@ -119,11 +119,11 @@ interface IDynamicContext
 
 ```go
 type Context struct {
-	Type    string                 `json:"type"`
-	Name    string                 `json:"name"`
-	Id      map[string]string      `json:"id"`
+  Type    string                 `json:"type"`
+  Name    string                 `json:"name"`
+  Id      map[string]string      `json:"id"`
   // This field is required only in golang, as golang structs cannot be extended with more fields later
-	Details map[string]interface{} `json:"details"`
+  Details map[string]interface{} `json:"details"`
 }
 ```
 
@@ -291,9 +291,9 @@ type IntentResult any
 
 type IntentResultType string
 const (
-	ChannelIntentResult        IntentResultType = "Channel"
-	ContextIntentResult        IntentResultType = "Context"
-	PrivateChannelIntentResult IntentResultType = "PrivateChannel"
+  ChannelIntentResult        IntentResultType = "Channel"
+  ContextIntentResult        IntentResultType = "Context"
+  PrivateChannelIntentResult IntentResultType = "PrivateChannel"
 )
 ```
 
@@ -341,7 +341,7 @@ interface IListener
 
 ```go
 type IListener interface {
-	Unsubscribe()
+  Unsubscribe()
 }
 type Listener struct {}
 ```
