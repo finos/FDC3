@@ -35,6 +35,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * FDC3 apps are now encouraged to instantiate their FDC3 interface (DesktopAgent) using the `getAgent()` function provided by the `@finos/fdc3` module. This will allow apps to interoperate in either traditional Preload DAs (i.e. Electron) as well as the new Browser-Resident DAs. ([#1191](https://github.com/finos/FDC3/pull/1191))
 * `ContextType` and `Intent` (`string`) types were created for use in DesktopAgent API signatures - they are unions of standardized values and `string`, enabling autocomplete/IntelliSense in IDEs when working with the FDC3 API. ([#1139](https://github.com/finos/FDC3/pull/1139))
 * SessionStorage use by `getAgent` was updated to scope the stored data by `window.name` and the app's `identityUrl`. ([#1442](https://github.com/finos/FDC3/pull/1442))
+* FDC3 Workbench updated to use `getAgent()` rather than `fdc3Ready()`
 
 ### Deprecated
 
@@ -49,6 +50,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Removed the `version` field from `IntentResolution` as there are no version fields for intents in the FDC3 API definitions and hence the field has no purpose. ([#1170](https://github.com/finos/FDC3/pull/1170))
 * Fixed error in the Client-side example from `PrivateChannel` and `addIntentListener` by correcting `id.symbol` to `id.ticker` to align with the `fdc3.instrument` context. ([#1314](https://github.com/finos/FDC3/pull/1314))
 * Added missing `resultType` argument to `findIntent` agent request in the Bridging Schema. ([#1154](https://github.com/finos/FDC3/pull/1154)) 
+
+
+
+
+
+
+
 * Added missing `resultType` argument to `findIntentByContext` agent request in the Bridging Schema. ([#1212](https://github.com/finos/FDC3/pull/1212)) 
 * Added missing id and name fields from the context base schema to respective context schemas (`Contact`, `ContactList`, `Country`, `InstrumentList`, `OrderList`, `Organization`, `Portfolio`, `Position`, `TradeList`). ([#1360](https://github.com/finos/FDC3/pull/1360))
 * Revised FDC3 charter to include well-known language from the FDC3 introduction, better describe FDC3's scope, focus on financial applications, update application types, etc. ([#1079](https://github.com/finos/FDC3/pull/1079))
