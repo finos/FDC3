@@ -93,7 +93,9 @@ This project (the FDC3 Standard repo) is now a monorepo containing the following
 | `toolbox/fdc3-explained`             | [Here](https://fdc3.finos.org/toolbox/fdc3-explained)  | [Readme Here](toolbox/fdc3-explained/README.md)                                                                                                                                                                        |                       |
 | `toolbox/fdc3-for-web/fdc3-web-impl` | `@finos/fdc3-web-impl` (npm)                           | Portable and reusable implementation of the FDC3 For-The-Web Desktop Agent-Side protocol,                                                                                                                              | Cucumber, NYC         |
 | `toolbox/fdc3-for-web/demo`          | -not released-                                         | A reference implementation of an FDC3-For-The-Web Desktop Agent, using the above implementation and conforming to FDC3 2.0 from the  [FDC3 Conformance Framework](https://github.com/finos/FDC3-conformance-framework) |                       |
-| `packages/fdc3`                      | `@finos/fdc3` (npm)                                    | A complete roll-up of the `fdc3-agent-proxy`, `fdc3-context`, `fdc3-schema` and `fdc3-get-agent` sub-modules.  This is intended to be the main entry point for typescript / javascript applications using FDC3         |                       |
+| `packages/fdc3`                      | `@finos/fdc3` (npm)                                    | Imports `fdc3-standard`, `fdc3-context`, `fdc3-schema` and `fdc3-get-agent` sub-modules.  This is intended to be the main entry point for typescript / javascript applications using FDC3         |                       |
+| `packages/fdc3-commonjs`                      | `@finos/fdc3-commonjs` (npm)                                    | A roll-up of the `fdc3` sub-module.  This is for **backwards compatibility where CommonJS is required**.  May not be provided in future versions of FDC3.         |                       |
+
 
 ### Building and Running The FDC3 Modules
 

@@ -1,0 +1,34 @@
+{
+  "name": "@kite9/fdc3-commonjs",
+  "version": "2.2.0-beta.29",
+  "author": "Fintech Open Source Foundation (FINOS)",
+  "homepage": "https://fdc3.finos.org",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finos/FDC3.git"
+  },
+  "publishConfig": {
+    "tag": "latest"
+  },
+  "exports": {
+    "require": "./dist/index.cjs"
+  },
+  "license": "Apache-2.0",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "npx rimraf dist",
+    "build": "npx rollup -c rollup.config.mjs"
+  },
+  "dependencies": {
+    "@kite9/fdc3": "2.2.0-beta.29"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^28.0.1",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^15.3.0",
+    "@rollup/plugin-typescript": "^12.1.1",
+    "rollup": "^4.27.4"
+  }
+}
