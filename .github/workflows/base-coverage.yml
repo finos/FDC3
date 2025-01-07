@@ -25,7 +25,7 @@ jobs:
           npm run report
 
       - name: Upload coverage artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: test-coverage-output
           path: nyc-coverage-report
