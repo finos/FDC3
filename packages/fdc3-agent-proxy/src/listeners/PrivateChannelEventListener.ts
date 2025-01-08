@@ -1,12 +1,3 @@
-import {
-  isPrivateChannelOnAddContextListenerEvent,
-  isPrivateChannelOnDisconnectEvent,
-  isPrivateChannelOnUnsubscribeEvent,
-  PrivateChannelAddEventListenerRequest,
-  PrivateChannelOnAddContextListenerEvent,
-  PrivateChannelOnDisconnectEvent,
-  PrivateChannelOnUnsubscribeEvent,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { Messaging } from '../Messaging';
 import { AbstractListener } from './AbstractListener';
 import {
@@ -18,6 +9,16 @@ import {
   PrivateChannelEventTypes,
   PrivateChannelUnsubscribeEvent,
 } from '@kite9/fdc3-standard';
+import { BrowserTypes } from '@kite9/fdc3-schema';
+const {
+  isPrivateChannelOnAddContextListenerEvent,
+  isPrivateChannelOnDisconnectEvent,
+  isPrivateChannelOnUnsubscribeEvent,
+} = BrowserTypes;
+type PrivateChannelAddEventListenerRequest = BrowserTypes.PrivateChannelAddEventListenerRequest;
+type PrivateChannelOnAddContextListenerEvent = BrowserTypes.PrivateChannelOnAddContextListenerEvent;
+type PrivateChannelOnDisconnectEvent = BrowserTypes.PrivateChannelOnDisconnectEvent;
+type PrivateChannelOnUnsubscribeEvent = BrowserTypes.PrivateChannelOnUnsubscribeEvent;
 
 type PrivateChannelEventMessages =
   | PrivateChannelOnAddContextListenerEvent

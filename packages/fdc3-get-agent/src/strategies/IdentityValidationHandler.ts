@@ -1,13 +1,16 @@
-import {
-  WebConnectionProtocol4ValidateAppIdentity,
-  WebConnectionProtocol5ValidateAppIdentitySuccessResponse,
-  WebConnectionProtocolMessage,
-  isWebConnectionProtocol5ValidateAppIdentitySuccessResponse,
-  isWebConnectionProtocol5ValidateAppIdentityFailedResponse,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { GetAgentParams, AgentError } from '@kite9/fdc3-standard';
 import { retrieveDesktopAgentDetails } from '../sessionStorage/DesktopAgentDetails';
 import { Logger } from '../util/Logger';
+
+import { BrowserTypes } from '@kite9/fdc3-schema';
+const {
+  isWebConnectionProtocol5ValidateAppIdentitySuccessResponse,
+  isWebConnectionProtocol5ValidateAppIdentityFailedResponse,
+} = BrowserTypes;
+type WebConnectionProtocol4ValidateAppIdentity = BrowserTypes.WebConnectionProtocol4ValidateAppIdentity;
+type WebConnectionProtocol5ValidateAppIdentitySuccessResponse =
+  BrowserTypes.WebConnectionProtocol5ValidateAppIdentitySuccessResponse;
+type WebConnectionProtocolMessage = BrowserTypes.WebConnectionProtocolMessage;
 
 /** Timeout allowed for id validation to occur and for the DA to respond with details.
  * This is additional to the app's specified timeout for discovery - we have already
