@@ -65,9 +65,28 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     }
   }
 
-  addContextListener(context: ContextHandler | string | null, handler?: ContextHandler): Promise<Listener> {
-    const theHandler: ContextHandler = handler ? handler : (context as ContextHandler);
-    const theContextType: string | null = context && handler ? (context as string) : null;
+  addContextListener(
+    contextTypeOrHandler: ContextHandler | string | null,
+    handler?: ContextHandler
+  ): Promise<Listener> {
+    let theContextType: string | null;
+    let theHandler: ContextHandler;
+
+    if (contextTypeOrHandler == null && typeof handler === 'function') {
+      theContextType = null;
+      theHandler = handler;
+    } else if (typeof contextTypeOrHandler === 'string' && typeof handler === 'function') {
+      theContextType = contextTypeOrHandler;
+      theHandler = handler;
+    } else if (typeof contextTypeOrHandler === 'function') {
+      // deprecated one-arg version
+      theContextType = null;
+      theHandler = contextTypeOrHandler as ContextHandler;
+    } else {
+      //invalid call
+      throw new Error('Invalid arguments passed to addContextListener!');
+    }
+
     return this.channels.addContextListener(theHandler, theContextType);
   }
 
