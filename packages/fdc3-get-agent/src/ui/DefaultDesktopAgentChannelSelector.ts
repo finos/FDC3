@@ -1,10 +1,9 @@
 import { Channel } from '@kite9/fdc3-standard';
 import { ChannelSelector } from '@kite9/fdc3-standard';
 import { AbstractUIComponent } from './AbstractUIComponent';
-import {
-  Fdc3UserInterfaceChannels,
-  isFdc3UserInterfaceChannelSelected,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { BrowserTypes } from '@kite9/fdc3-schema';
+const { isFdc3UserInterfaceChannelSelected } = BrowserTypes;
+type Fdc3UserInterfaceChannels = BrowserTypes.Fdc3UserInterfaceChannels;
 
 /**
  * Works with the desktop agent to provide a simple channel selector.

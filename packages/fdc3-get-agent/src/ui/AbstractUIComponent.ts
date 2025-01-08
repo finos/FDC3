@@ -1,12 +1,10 @@
-import {
-  Fdc3UserInterfaceHandshake,
-  InitialCSS,
-  isFdc3UserInterfaceHello,
-  isFdc3UserInterfaceRestyle,
-  UpdatedCSS,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { Connectable, FDC3_VERSION } from '@kite9/fdc3-standard';
 import { Logger } from '../util/Logger';
+import { BrowserTypes } from '@kite9/fdc3-schema';
+const { isFdc3UserInterfaceHello, isFdc3UserInterfaceRestyle } = BrowserTypes;
+type Fdc3UserInterfaceHandshake = BrowserTypes.Fdc3UserInterfaceHandshake;
+type InitialCSS = BrowserTypes.InitialCSS;
+type UpdatedCSS = BrowserTypes.UpdatedCSS;
 
 export interface CSSPositioning {
   [key: string]: string;

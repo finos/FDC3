@@ -2,11 +2,10 @@ import { AppIntent } from '@kite9/fdc3-standard';
 import { IntentResolver, IntentResolutionChoice } from '@kite9/fdc3-standard';
 import { AbstractUIComponent } from './AbstractUIComponent';
 import { Context } from '@kite9/fdc3-context';
-import {
-  Fdc3UserInterfaceResolve,
-  isFdc3UserInterfaceResolveAction,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { Logger } from '../util/Logger';
+import { BrowserTypes } from '@kite9/fdc3-schema';
+const { isFdc3UserInterfaceResolveAction } = BrowserTypes;
+type Fdc3UserInterfaceResolve = BrowserTypes.Fdc3UserInterfaceResolve;
 
 /**
  * Works with the desktop agent to provide a resolution to the intent choices.
