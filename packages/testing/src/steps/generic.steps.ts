@@ -161,6 +161,10 @@ export function setupGenericSteps() {
     expect(handleResolve(field, this)['message']).toBe(errorType);
   });
 
+  Then('{string} is an error', function (this: PropsWorld, field: string) {
+    expect(handleResolve(field, this)).toBeInstanceOf(Error);
+  });
+
   Given(
     '{string} is a invocation counter into {string}',
     function (this: PropsWorld, handlerName: string, field: string) {

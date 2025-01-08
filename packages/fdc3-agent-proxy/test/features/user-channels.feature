@@ -161,6 +161,13 @@ Feature: Basic User Channels Support
     When I call "{api}" with "joinUserChannel" with parameter "nonexistent"
     Then "{result}" is an error with message "NoChannelFound"
 
+  Scenario: Passing invalid arguments to a user channel's addContextListener fn throws an error
+    Given "resultHandler" pipes context to "contexts"
+    When I call "{api}" with "addContextListener" with parameters "{true}" and "{resultHandler}"
+    Then "{result}" is an error
+    And I call "{api}" with "addContextListener" with parameters "{null}" and "{true}"
+    Then "{result}" is an error
+
   Scenario: You can get the details of the last context type sent
     Given "resultHandler" pipes context to "contexts"
     When I call "{api}" with "joinUserChannel" with parameter "one"

@@ -40,7 +40,6 @@ Feature: Channel Listeners Support
 
   Scenario: I can create a listener which listens for any context type
         In this version we are using the deprecated 1-arg approach
-
     When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
     And I refer to "{result}" as "channel1"
     And I call "{channel1}" with "addContextListener" with parameter "{resultHandler}"
@@ -57,7 +56,6 @@ Feature: Channel Listeners Support
 
   Scenario: I can create a listener which listens for any context type
         In this version we are using the non-deprecated 2 args approach
-
     When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
     And I refer to "{result}" as "channel1"
     And I call "{channel1}" with "addContextListener" with parameters "{null}" and "{resultHandler}"
@@ -71,3 +69,11 @@ Feature: Channel Listeners Support
       | payload.channelId | payload.contextType | matches_type              |
       | channel-name      | {null}              | getOrCreateChannelRequest |
       | channel-name      | {null}              | addContextListenerRequest |
+
+  Scenario: Passing invalid arguments to an app channel's addContextListener fn throws an error
+    When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I call "{channel1}" with "addContextListener" with parameters "{true}" and "{resultHandler}"
+    Then "{result}" is an error
+    And I call "{channel1}" with "addContextListener" with parameters "{null}" and "{true}"
+    Then "{result}" is an error

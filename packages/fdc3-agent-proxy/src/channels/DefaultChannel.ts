@@ -56,11 +56,10 @@ export class DefaultChannel implements Channel {
     let theContextType: string | null;
     let theHandler: ContextHandler;
 
-    /* istanbul ignore else */
-    if (contextTypeOrHandler == null && handler) {
+    if (contextTypeOrHandler == null && typeof handler === 'function') {
       theContextType = null;
       theHandler = handler;
-    } else if (typeof contextTypeOrHandler === 'string' && handler) {
+    } else if (typeof contextTypeOrHandler === 'string' && typeof handler === 'function') {
       theContextType = contextTypeOrHandler;
       theHandler = handler;
     } else if (typeof contextTypeOrHandler === 'function') {

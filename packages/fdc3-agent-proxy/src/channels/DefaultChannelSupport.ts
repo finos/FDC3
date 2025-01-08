@@ -40,7 +40,7 @@ export class DefaultChannelSupport implements ChannelSupport {
     this.messaging = messaging;
     this.channelSelector = channelSelector;
     this.channelSelector.setChannelChangeCallback((channelId: string | null) => {
-      console.log('CHANNEL SELECTOR CALLBACK!');
+      console.debug('Channel selector reports channel changed: ' + channelId);
       if (channelId == null) {
         this.leaveUserChannel();
       } else {
