@@ -12,7 +12,7 @@ type GetCurrentContextRequest = BrowserTypes.GetCurrentContextRequest;
 
 When('{string} gets the list of user channels', function (this: CustomWorld, app: string) {
   const meta = createMeta(this, app);
-  const uuid = this.sc.getInstanceUUID(meta.source)!!;
+  const uuid = this.sc.getInstanceUUID(meta.source)!;
   const message = {
     meta,
     payload: {},
@@ -24,7 +24,7 @@ When('{string} gets the list of user channels', function (this: CustomWorld, app
 
 When('{string} gets the current user channel', function (this: CustomWorld, app: string) {
   const meta = createMeta(this, app);
-  const uuid = this.sc.getInstanceUUID(meta.source)!!;
+  const uuid = this.sc.getInstanceUUID(meta.source)!;
   const message = {
     meta,
     payload: {},
@@ -34,9 +34,9 @@ When('{string} gets the current user channel', function (this: CustomWorld, app:
   this.server.receive(message, uuid);
 });
 
-When('{string} leaves user channel {string}', function (this: CustomWorld, app: string, _channel: string) {
+When('{string} leaves the current user channel', function (this: CustomWorld, app: string) {
   const meta = createMeta(this, app);
-  const uuid = this.sc.getInstanceUUID(meta.source)!!;
+  const uuid = this.sc.getInstanceUUID(meta.source)!;
   const message = {
     meta,
     payload: {},
@@ -48,7 +48,7 @@ When('{string} leaves user channel {string}', function (this: CustomWorld, app: 
 
 When('{string} joins user channel {string}', function (this: CustomWorld, app: string, channel: string) {
   const meta = createMeta(this, app);
-  const uuid = this.sc.getInstanceUUID(meta.source)!!;
+  const uuid = this.sc.getInstanceUUID(meta.source)!;
   const message = {
     meta,
     payload: {
@@ -64,7 +64,7 @@ When(
   '{string} gets the latest context on {string} with type {string}',
   function (this: CustomWorld, app: string, channel: string, type: string) {
     const meta = createMeta(this, app);
-    const uuid = this.sc.getInstanceUUID(meta.source)!!;
+    const uuid = this.sc.getInstanceUUID(meta.source)!;
     const message = {
       meta,
       payload: {

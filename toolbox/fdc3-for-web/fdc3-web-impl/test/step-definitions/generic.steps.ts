@@ -45,6 +45,13 @@ export const contextMap: Record<string, Context> = {
       ISSN: '1234',
     },
   },
+  'fdc3.product': {
+    type: 'fdc3.product',
+    title: 'Current bun',
+    id: {
+      productId: 'cb1',
+    },
+  },
 };
 
 function defaultChannels() {

@@ -24,8 +24,8 @@ export interface Directory {
 
   retrieveIntents(
     contextType: string | undefined,
-    intentName: string | undefined,
-    resultType: string | undefined
+    intentName?: string | undefined,
+    resultType?: string
   ): DirectoryIntent[];
 
   retrieveAppsById(appId: string): DirectoryApp[];

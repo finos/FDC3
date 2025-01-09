@@ -75,7 +75,7 @@ Feature: Relaying Private Channel Broadcast messages
   Scenario: I should be able to leave a user channel, and not receive messages on it
     When "App/a1" joins user channel "one"
     And "App/a1" adds a context listener on "one" with type "{null}"
-    And "App/a1" leaves user channel "one"
+    And "App/a1" leaves the current user channel
     And "App2/a2" broadcasts "fdc3.instrument" on "one"
     Then messaging will have outgoing posts
       | msg.matches_type            |

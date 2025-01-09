@@ -69,13 +69,15 @@ export class BasicDirectory implements Directory {
 
   retrieveApps(
     contextType: string | undefined,
-    intentName: string | undefined,
-    resultType: string | undefined
+    intentName?: string | undefined,
+    resultType?: string | undefined
   ): DirectoryApp[] {
-    return this.retrieveAllApps().filter(
+    const result = this.retrieveAllApps().filter(
       a =>
         this.retrieveIntentsForApp(a).filter(i => this.intentMatches(i, contextType, intentName, resultType)).length > 0
     );
+
+    return result;
   }
 
   retrieveAppsById(appId: string): DirectoryApp[] {

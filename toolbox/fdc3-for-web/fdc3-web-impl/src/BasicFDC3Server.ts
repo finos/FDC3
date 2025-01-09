@@ -21,7 +21,7 @@ export interface MessageHandler {
     msg: AppRequestMessage | WebConnectionProtocol4ValidateAppIdentity | WebConnectionProtocol6Goodbye,
     sc: ServerContext<AppRegistration>,
     from: InstanceID
-  ): void;
+  ): Promise<void>;
 
   /**
    * Clean-up any state relating to a instance that has disconnected.
@@ -48,11 +48,12 @@ export class BasicFDC3Server implements FDC3Server {
     this.sc.setAppState(instanceId, State.Terminated);
   }
 
-  receive(
+  async receive(
     message: AppRequestMessage | WebConnectionProtocol4ValidateAppIdentity | WebConnectionProtocol6Goodbye,
     from: InstanceID
-  ): void {
-    this.handlers.forEach(h => h.accept(message, this.sc, from));
+  ): Promise<void> {
+    const promises = this.handlers.map(h => h.accept(message, this.sc, from));
+    await Promise.allSettled(promises);
   }
 
   shutdown(): void {

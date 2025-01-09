@@ -8,10 +8,25 @@ Feature: Find Intent API
       | streamBook  | fdc3.book    | channel<chapter> |
       | returnBook  | fdc3.book    | {empty}          |
       | streamAny   | fdc3.book    | channel          |
+    And "bakeryApp" is an app with the following intents
+      | Intent Name | Context Type | Result Type      |
+      | viewStock   | fdc3.product | {empty}          |
+    And "butcherApp" is an app with the following intents
+      | Intent Name | Context Type | Result Type      |
+      | viewStock   | fdc3.product | {empty}          |
+    And "chandlerApp" is an app with the following intents
+      | Intent Name | Context Type | Result Type      |
+      | viewStock   | fdc3.product | {empty}          |
     And A newly instantiated FDC3 Server
     And "App1/a1" is opened with connection id "a1"
     And "App1/b1" is opened with connection id "b1"
     And "App1/b1" registers an intent listener for "returnBook"
+    And "butcherApp/b2" is opened with connection id "b2"
+    And "butcherApp/b2" registers an intent listener for "viewStock"
+    #first app returned by directory must have an instance to cover all branches in findIntentsByContextRequest
+    And "bakeryApp/b3" is opened with connection id "b3"
+    And "bakeryApp/b3" registers an intent listener for "viewStock"
+    And we wait for a period of "100" ms
 
   Scenario: Unsuccessful Find Intents Request
     When "App1/a1" finds intents with intent "loanBook" and contextType "fdc3.instrument" and result type "{empty}"
@@ -31,11 +46,35 @@ Feature: Find Intent API
       | msg.matches_type   | msg.payload.appIntent.intent.name | msg.payload.appIntent.apps.length | msg.payload.appIntent.apps[0].appId | to.instanceId | msg.payload.appIntent.intent.displayName |
       | findIntentResponse | loanBook                          |                                 1 | libraryApp                          | a1            | loan book                                |
 
+  Scenario: Find Intents Requests should include both the app and running instances of it 
+    When "App1/a1" finds intents with intent "viewStock" and contextType "fdc3.product" and result type "{empty}"
+    Then messaging will have outgoing posts
+      | msg.matches_type   | msg.payload.appIntent.intent.name | msg.payload.appIntent.apps.length | to.instanceId |
+      | findIntentResponse | viewStock                         |                                 5 | a1            |
+    When "butcherApp/b2" is closed
+    And "App1/a1" finds intents with intent "viewStock" and contextType "fdc3.product" and result type "{empty}"
+    Then messaging will have outgoing posts
+      | msg.matches_type   | msg.payload.appIntent.intent.name | msg.payload.appIntent.apps.length | to.instanceId |
+      | findIntentResponse | viewStock                         |                                 4 | a1            |
+
   Scenario: Find Intents by Context Request
     When "App/a1" finds intents with contextType "fdc3.book"
     Then messaging will have outgoing posts
       | msg.matches_type             | msg.payload.appIntents[0].intent.name | msg.payload.appIntents.length | to.instanceId | msg.payload.appIntents[0].intent.displayName |
       | findIntentsByContextResponse | loanBook                              |                             4 | a1            | loan book                                    |
+
+  Scenario: Find Intents by Context Request with multiple results
+    When "App/a1" finds intents with contextType "fdc3.product"
+    Then messaging will have outgoing posts
+      | msg.matches_type             | msg.payload.appIntents[0].intent.name | msg.payload.appIntents.length | to.instanceId | msg.payload.appIntents[0].apps.length |
+      | findIntentsByContextResponse | viewStock                             |                             1 | a1            | 5                                     |
+
+  Scenario: Find Intents by Context Request with multiple results which should not include an instance that has closed
+    When "butcherApp/b2" is closed
+    When "App/a1" finds intents with contextType "fdc3.product"
+    Then messaging will have outgoing posts
+      | msg.matches_type             | msg.payload.appIntents[0].intent.name | msg.payload.appIntents.length | to.instanceId | msg.payload.appIntents[0].apps.length |
+      | findIntentsByContextResponse | viewStock                             |                             1 | a1            | 4                                     |
 
   Scenario: Successful Find Intents Request With Channel
     When "App1/a1" finds intents with intent "streamBook" and contextType "fdc3.book" and result type "channel"
@@ -69,7 +108,7 @@ Feature: Find Intent API
 
   Scenario: Disconnecting The Intent Listener
     When "App1/b1" unsubscribes an intent listener with id "uuid3"
-    When "App1/a1" finds intents with intent "returnBook" and contextType "fdc3.book" and result type "{empty}"
+    And "App1/a1" finds intents with intent "returnBook" and contextType "fdc3.book" and result type "{empty}"
     Then messaging will have outgoing posts
       | msg.matches_type                  | msg.payload.appIntent.intent.name | msg.payload.appIntent.apps.length | to.instanceId | msg.payload.appIntent.apps[0].appId |
       | intentListenerUnsubscribeResponse | {null}                            | {null}                            | b1            | {null}                              |
@@ -77,7 +116,7 @@ Feature: Find Intent API
 
   Scenario: Find Intent excludes results for a closed app with intent listener
     When "App1/b1" is closed
-    When "App1/a1" finds intents with intent "returnBook" and contextType "fdc3.book" and result type "{empty}"
+    And "App1/a1" finds intents with intent "returnBook" and contextType "fdc3.book" and result type "{empty}"
     Then messaging will have outgoing posts
       | msg.matches_type   | msg.payload.appIntent.intent.name | msg.payload.appIntent.apps.length | to.instanceId | msg.payload.appIntent.apps[0].appId |
       | findIntentResponse | returnBook                        |                                 1 | a1            | libraryApp                          |
