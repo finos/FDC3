@@ -21,10 +21,9 @@
     "build": "tsc --module es2022"
   },
   "dependencies": {
-    "@kite9/fdc3-context": "2.2.0-beta.29",
-    "@kite9/fdc3-get-agent": "2.2.0-beta.29",
-    "@kite9/fdc3-schema": "2.2.0-beta.29",
-    "@kite9/fdc3-standard": "2.2.0-beta.29"
-  },
-  "devDependencies": {}
+    "@kite9/fdc3-context": "2.2.0-beta.30",
+    "@kite9/fdc3-get-agent": "2.2.0-beta.30",
+    "@kite9/fdc3-schema": "2.2.0-beta.30",
+    "@kite9/fdc3-standard": "2.2.0-beta.30"
+  }
 }
