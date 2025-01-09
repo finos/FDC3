@@ -144,7 +144,7 @@ export class BroadcastHandler implements MessageHandler {
     }
   }
 
-  accept(msg: AppRequestMessage, sc: ServerContext<AppRegistration>, uuid: InstanceID) {
+  async accept(msg: AppRequestMessage, sc: ServerContext<AppRegistration>, uuid: InstanceID) {
     const from = sc.getInstanceDetails(uuid);
 
     if (from == null) {

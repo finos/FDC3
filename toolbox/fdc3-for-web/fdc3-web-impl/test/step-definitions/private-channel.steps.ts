@@ -11,7 +11,7 @@ type PrivateChannelDisconnectRequest = BrowserTypes.PrivateChannelDisconnectRequ
 
 When('{string} creates a private channel', function (this: CustomWorld, app: string) {
   const meta = createMeta(this, app);
-  const uuid = this.sc.getInstanceUUID(meta.source)!!;
+  const uuid = this.sc.getInstanceUUID(meta.source)!;
   const message = {
     meta,
     payload: {},
@@ -23,7 +23,7 @@ When('{string} creates a private channel', function (this: CustomWorld, app: str
 
 When('{string} removes event listener {string}', function (this: CustomWorld, app: string, listenerUUID: string) {
   const meta = createMeta(this, app);
-  const uuid = this.sc.getInstanceUUID(meta.source)!!;
+  const uuid = this.sc.getInstanceUUID(meta.source)!;
   const message = {
     meta,
     payload: {
@@ -57,7 +57,7 @@ When(
   '{string} disconnects from private channel {string}',
   function (this: CustomWorld, app: string, channelId: string) {
     const meta = createMeta(this, app);
-    const uuid = this.sc.getInstanceUUID(meta.source)!!;
+    const uuid = this.sc.getInstanceUUID(meta.source)!;
 
     const message = {
       meta,

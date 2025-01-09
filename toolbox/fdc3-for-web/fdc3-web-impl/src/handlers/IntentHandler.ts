@@ -171,23 +171,23 @@ export class IntentHandler implements MessageHandler {
       switch (msg.type as string) {
         // finding intents
         case 'findIntentsByContextRequest':
-          return this.findIntentsByContextRequest(msg as FindIntentsByContextRequest, sc, from);
+          return await this.findIntentsByContextRequest(msg as FindIntentsByContextRequest, sc, from);
         case 'findIntentRequest':
-          return this.findIntentRequest(msg as FindIntentRequest, sc, from);
+          return await this.findIntentRequest(msg as FindIntentRequest, sc, from);
 
         // listeners
         case 'addIntentListenerRequest':
-          return this.onAddIntentListener(msg as AddIntentListenerRequest, sc, from);
+          return await this.onAddIntentListener(msg as AddIntentListenerRequest, sc, from);
         case 'intentListenerUnsubscribeRequest':
-          return this.onUnsubscribe(msg as IntentListenerUnsubscribeRequest, sc, from);
+          return await this.onUnsubscribe(msg as IntentListenerUnsubscribeRequest, sc, from);
 
         // raising intents and returning results
         case 'raiseIntentRequest':
-          return this.raiseIntentRequest(msg as RaiseIntentRequest, sc, from);
+          return await this.raiseIntentRequest(msg as RaiseIntentRequest, sc, from);
         case 'raiseIntentForContextRequest':
-          return this.raiseIntentForContextRequest(msg as RaiseIntentForContextRequest, sc, from);
+          return await this.raiseIntentForContextRequest(msg as RaiseIntentForContextRequest, sc, from);
         case 'intentResultRequest':
-          return this.intentResultRequest(msg as IntentResultRequest, sc, from);
+          return await this.intentResultRequest(msg as IntentResultRequest, sc, from);
       }
     } catch (e) {
       const responseType = msg.type.replace(new RegExp('Request$'), 'Response') as AgentResponseMessage['type'];
@@ -570,19 +570,22 @@ export class IntentHandler implements MessageHandler {
     sc: ServerContext<AppRegistration>,
     from: FullAppIdentifier
   ): Promise<void> {
-    // TODO: Add result type
-    const { context } = r.payload;
+    const { context, resultType } = r.payload;
 
-    const apps1 = this.directory.retrieveIntents(context?.type, undefined, undefined);
+    const apps1 = this.directory.retrieveIntents(context?.type, undefined, resultType);
 
     // fold apps so same intents aren't duplicated
     const apps2: AppIntent[] = [];
-    apps1.forEach(a1 => {
+    //don't use foreach as the handling function is async and needs to process serially
+    for (let index = 0; index < apps1.length; index++) {
+      const a1 = apps1[index];
       const existing = apps2.find(a2 => a2.intent.name == a1.intentName);
+      const runningInstances = await this.retrieveRunningInstances(a1.appId, sc);
       if (existing) {
         existing.apps.push({ appId: a1.appId });
+        runningInstances.forEach(ri => existing.apps.push({ appId: a1.appId, instanceId: ri.instanceId }));
       } else {
-        apps2.push({
+        const appIntent: AppIntent = {
           intent: {
             name: a1.intentName,
             displayName: a1.displayName ?? a1.intentName,
@@ -592,9 +595,11 @@ export class IntentHandler implements MessageHandler {
               appId: a1.appId,
             },
           ],
-        });
+        };
+        runningInstances.forEach(ri => appIntent.apps.push({ appId: a1.appId, instanceId: ri.instanceId }));
+        apps2.push(appIntent);
       }
-    });
+    }
 
     successResponse(
       sc,
@@ -623,18 +628,14 @@ export class IntentHandler implements MessageHandler {
     }) as AppIdentifier[];
 
     // directory entries
-    const apps1 = this.directory
-      .retrieveApps(context?.type, intent, resultType)
-      .map(a => {
-        return {
-          appId: a.appId,
-        };
-      })
-      .filter(i => {
-        // remove any directory entries that are already started
-        const running = apps2.find(i2 => i2.appId == i.appId);
-        return !running;
-      }) as AppIdentifier[];
+    const apps1 = this.directory.retrieveApps(context?.type, intent, resultType).map(a => {
+      return {
+        appId: a.appId,
+      };
+    });
+
+    //combine the lists, no need to de-duplicate as we should return both a directory record with just appId + any instance with appId/instanceId
+    const finalApps = [...apps1, ...apps2];
 
     // just need this for the (deprecated) display name
     const allMatchingIntents = this.directory.retrieveIntents(context?.type, intent, resultType);
@@ -650,7 +651,7 @@ export class IntentHandler implements MessageHandler {
             name: intent,
             displayName,
           },
-          apps: [...apps1, ...apps2],
+          apps: finalApps,
         },
       },
       'findIntentResponse'
@@ -665,5 +666,11 @@ export class IntentHandler implements MessageHandler {
     const matching = this.registrations.filter(r => r.intentName == intentName);
     const active = matching.filter(r => activeApps.find(a => a.instanceId == r.instanceId));
     return active;
+  }
+
+  async retrieveRunningInstances(appId: string, sc: ServerContext<AppRegistration>) {
+    const activeApps = await sc.getConnectedApps();
+    const filteredApps = activeApps.filter(a => a.appId === appId);
+    return filteredApps;
   }
 }

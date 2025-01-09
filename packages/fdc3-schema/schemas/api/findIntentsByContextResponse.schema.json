@@ -42,8 +42,7 @@
 					"type": "array",
 					"items": {
 						"$ref": "api.schema.json#/definitions/AppIntent"
-					},
-					"additionalProperties": false
+					}
 				}
 			},
 			"required": [

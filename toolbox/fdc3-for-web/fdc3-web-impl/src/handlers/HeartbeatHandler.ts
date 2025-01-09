@@ -104,11 +104,11 @@ export class HeartbeatHandler implements MessageHandler {
     clearInterval(this.timerFunction);
   }
 
-  accept(
+  async accept(
     msg: AppRequestMessage | WebConnectionProtocol6Goodbye,
     sc: ServerContext<AppRegistration>,
     from: InstanceID
-  ): void {
+  ): Promise<void> {
     if (!this.contexts.includes(sc)) {
       this.contexts.push(sc);
     }
