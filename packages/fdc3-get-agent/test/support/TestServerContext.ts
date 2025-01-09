@@ -1,4 +1,4 @@
-import { ServerContext, InstanceID } from '@kite9/fdc3-web-impl';
+import { ServerContext, InstanceID, FDC3Server } from '@kite9/fdc3-web-impl';
 import { CustomWorld } from '../world';
 import { OpenError, AppIdentifier, AppIntent } from '@kite9/fdc3-standard';
 import { AppRegistration, State } from '@kite9/fdc3-web-impl';
@@ -26,6 +26,7 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
   public postedMessages: MessageRecord[] = [];
   public readonly cw: CustomWorld;
   private instances: ConnectionDetails[] = [];
+  private server: FDC3Server | null = null;
 
   private nextInstanceId: number = 0;
   private nextUUID: number = 0;
@@ -34,8 +35,8 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
     this.cw = cw;
   }
 
-  goodbye(instanceId: string): void {
-    this.instances = this.instances.filter(instance => instance.instanceId !== instanceId);
+  setFDC3Server(server: FDC3Server): void {
+    this.server = server;
   }
 
   async narrowIntents(_raiser: AppIdentifier, appIntents: AppIntent[] /*, _context: Context*/): Promise<AppIntent[]> {
@@ -44,10 +45,6 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
 
   getInstanceDetails(uuid: string) {
     return this.instances.find(ca => ca.instanceId === uuid);
-  }
-
-  getPastInstanceDetails(/*uuid: InstanceID*/): ConnectionDetails | undefined {
-    return;
   }
 
   setInstanceDetails(uuid: InstanceID, appId: ConnectionDetails) {
@@ -127,12 +124,17 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
     return found != null;
   }
 
-  async setAppState(app: InstanceID, state: State): Promise<void> {
+  async setAppState(app: InstanceID, newState: State): Promise<void> {
     const found = this.instances.find(a => a.instanceId == app);
     if (found) {
-      found.state = state;
+      const currentState = found.state;
+      if (currentState !== State.Terminated && newState === State.Terminated) {
+        this.server?.cleanup(app);
+      }
+      found.state = newState;
     }
   }
+
   async getAllApps(): Promise<AppRegistration[]> {
     return this.instances.map(x => {
       return {

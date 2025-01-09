@@ -1,4 +1,12 @@
-import { AppRegistration, Directory, DirectoryApp, InstanceID, ServerContext, State } from '@kite9/fdc3-web-impl';
+import {
+  AppRegistration,
+  Directory,
+  DirectoryApp,
+  FDC3Server,
+  InstanceID,
+  ServerContext,
+  State,
+} from '@kite9/fdc3-web-impl';
 import { Socket } from 'socket.io-client';
 import { v4 as uuid } from 'uuid';
 import { FDC3_DA_EVENT } from '../../message-types';
@@ -10,63 +18,62 @@ enum Opener {
   Nested,
 }
 
-type DemoAppRegistration = AppRegistration & {
+type RunningAppRegistration = AppRegistration & {
   window: Window;
   url: string;
 };
 
-type DemoLaunchRegistration = AppRegistration & {
+type LaunchingAppRegistration = AppRegistration & {
   windowPromise: Promise<Window | null>;
   url: string;
 };
 
-type DemoRegistration = DemoAppRegistration | DemoLaunchRegistration;
+type DemoAppRegistration = RunningAppRegistration | LaunchingAppRegistration;
 
 //Type guard used to check if application launch details have a URL
 function isWebAppLaunchDetails(details: object): details is { url: string } {
   return (details as { url: string }).url !== undefined;
 }
 
-//Type guard used to check if application has been launched or if we are still waiting on the window reference
-function isDemoLaunchRegistration(
-  details: DemoAppRegistration | DemoLaunchRegistration
-): details is DemoLaunchRegistration {
-  return !!(details as DemoLaunchRegistration).windowPromise;
+//Type guard used to check if application is still launching (we are waiting on the window reference)
+function isLaunchingAppRegistration(
+  details: RunningAppRegistration | LaunchingAppRegistration
+): details is LaunchingAppRegistration {
+  return !!(details as LaunchingAppRegistration).windowPromise;
 }
 
-//Type guard used to check if application has been launched or if we are still waiting on the window reference
-function isDemoAppRegistration(details: DemoAppRegistration | DemoLaunchRegistration): details is DemoAppRegistration {
-  return !!(details as DemoAppRegistration).window;
+//Type guard used to check if application has been launched (and we have received the window reference)
+function isRunningAppRegistration(
+  details: RunningAppRegistration | LaunchingAppRegistration
+): details is RunningAppRegistration {
+  return !!(details as RunningAppRegistration).window;
 }
 
-export class DemoServerContext implements ServerContext<DemoRegistration> {
+export class DemoServerContext implements ServerContext<DemoAppRegistration> {
   private readonly socket: Socket;
   private readonly directory: Directory;
-  private connections: (DemoAppRegistration | DemoLaunchRegistration)[] = [];
-  private pastConnections: { registration: DemoAppRegistration; timestamp: number }[] = [];
-  private static PAST_CONNECTIONS_MAX_AGE_MS = 60 * 1000;
+  private connections: (RunningAppRegistration | LaunchingAppRegistration)[] = [];
+  private server: FDC3Server | null = null;
 
   constructor(socket: Socket, directory: Directory) {
     this.socket = socket;
     this.directory = directory;
   }
 
+  setFDC3Server(server: FDC3Server): void {
+    this.server = server;
+  }
+
   async narrowIntents(_raiser: AppIdentifier, appIntents: AppIntent[] /*, _context: Context*/): Promise<AppIntent[]> {
     return appIntents;
   }
 
-  private prunePastConnections = () => {
-    const threshold = Date.now() - DemoServerContext.PAST_CONNECTIONS_MAX_AGE_MS;
-    this.pastConnections = this.pastConnections.filter(pc => pc.timestamp > threshold);
-  };
-
   /**
    * Sets the appId, url, state and either the window or a Promise<Window> for a given connection UUID.
    */
-  setInstanceDetails(uuid: InstanceID, meta: DemoAppRegistration | DemoLaunchRegistration): void {
+  setInstanceDetails(uuid: InstanceID, meta: RunningAppRegistration | LaunchingAppRegistration): void {
     //remove any existing records with this uuid
     this.connections = this.connections.filter(ca => ca.instanceId !== uuid);
-    this.pastConnections = this.pastConnections.filter(i => i.registration.instanceId != uuid);
 
     const instanceDetails = {
       ...meta,
@@ -74,12 +81,12 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
     };
     this.connections.push(instanceDetails);
 
-    if (isDemoLaunchRegistration(meta)) {
+    if (isLaunchingAppRegistration(meta)) {
       //If the window wasn't fully realized yet, monitor the window promise so that it
       //  sets window when resolved.
       meta.windowPromise.then((window: Window | null) => {
         if (window) {
-          const launchedMeta: DemoAppRegistration = {
+          const launchedMeta: RunningAppRegistration = {
             window: window,
             url: meta.url,
             appId: meta.appId,
@@ -101,28 +108,28 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
     }
   }
 
-  async getInstanceForWindow(window: Window): Promise<DemoAppRegistration | undefined> {
-    const registration = this.connections.filter(isDemoAppRegistration).find(i => i.window == window);
+  async getInstanceForWindow(window: Window): Promise<RunningAppRegistration | undefined> {
+    const registration = this.connections.filter(isRunningAppRegistration).find(i => i.window == window);
     if (registration) {
       return registration;
     }
 
     //check for as yet unrealized windows and then wait on those...
-    const launchingApps = this.connections.filter(isDemoLaunchRegistration);
+    const launchingApps = this.connections.filter(isLaunchingAppRegistration);
 
     if (launchingApps.length == 0) {
       console.warn('Could not locate an app registration for a window and there are no window launches in progress!');
       return;
     } else {
       //we need to wait on all currently launching windows as it could be any one of those
-      return new Promise<DemoAppRegistration | undefined>(resolve => {
+      return new Promise<RunningAppRegistration | undefined>(resolve => {
         const toMonitor = launchingApps.length;
         let doneCount = 0;
         launchingApps.forEach(launchingApp => {
           launchingApp.windowPromise.then(realizedWindow => {
             doneCount++;
             if (realizedWindow == window) {
-              //note that this record will separately be converting itself into a DemoAppRegistration
+              //note that this record will separately be converting itself into a RunningAppRegistration
               resolve({
                 window: realizedWindow,
                 url: launchingApp.url,
@@ -140,13 +147,8 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
     }
   }
 
-  getInstanceDetails(uuid: InstanceID): DemoRegistration | undefined {
+  getInstanceDetails(uuid: InstanceID): DemoAppRegistration | undefined {
     return this.connections.find(i => i.instanceId == uuid);
-  }
-
-  getPastInstanceDetails(uuid: InstanceID): DemoAppRegistration | undefined {
-    this.prunePastConnections();
-    return this.pastConnections.find(i => i.registration.instanceId == uuid)?.registration;
   }
 
   getOpener(): Opener {
@@ -165,22 +167,6 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
    */
   async post(message: object, to: InstanceID): Promise<void> {
     this.socket.emit(FDC3_DA_EVENT, message, to);
-  }
-
-  goodbye(id: string) {
-    const registration = this.connections.find(i => i.instanceId == id);
-    this.connections = this.connections.filter(i => i.instanceId !== id);
-
-    //cache the connection details in case the app tries to reconnect
-    if (registration && isDemoAppRegistration(registration)) {
-      this.pastConnections.push({ registration, timestamp: Date.now() });
-    }
-
-    console.debug(`Closed instance`, id);
-    console.debug(
-      `Open apps:`,
-      this.connections.map(i => i.instanceId)
-    );
   }
 
   openFrame(url: string): Promise<Window | null> {
@@ -242,7 +228,7 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
         //const window = await this.openUrl(url);
         const windowPromise = this.openUrl(url);
         const instanceId: InstanceID = this.createUUID();
-        const metadata: DemoLaunchRegistration = {
+        const metadata: LaunchingAppRegistration = {
           appId,
           instanceId,
           windowPromise,
@@ -270,10 +256,18 @@ export class DemoServerContext implements ServerContext<DemoRegistration> {
     return found != null;
   }
 
-  async setAppState(app: InstanceID, state: State): Promise<void> {
+  async setAppState(app: InstanceID, newState: State): Promise<void> {
     const found = this.connections.find(a => a.instanceId == app);
+
+    //if this is a new termination (which might be due to a heartbeat) then notify the server
+    //  if we were already terminated, don't bother as the server will notify us back and
+    //  create a loop
     if (found) {
-      found.state = state;
+      const currentState = found.state;
+      if (currentState !== State.Terminated && newState === State.Terminated) {
+        this.server?.cleanup(app);
+      }
+      found.state = newState;
     }
   }
 

@@ -1,5 +1,5 @@
 import { FDC3Server } from './FDC3Server';
-import { AppRegistration, InstanceID, ServerContext } from './ServerContext';
+import { AppRegistration, InstanceID, ServerContext, State } from './ServerContext';
 import { BroadcastHandler, ChannelState } from './handlers/BroadcastHandler';
 import { IntentHandler } from './handlers/IntentHandler';
 import { Directory } from './directory/DirectoryInterface';
@@ -45,7 +45,7 @@ export class BasicFDC3Server implements FDC3Server {
 
   cleanup(instanceId: InstanceID): void {
     this.handlers.forEach(handler => handler.cleanup(instanceId, this.sc));
-    this.sc.goodbye(instanceId);
+    this.sc.setAppState(instanceId, State.Terminated);
   }
 
   receive(

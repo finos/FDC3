@@ -135,8 +135,7 @@ export class IntentHandler implements MessageHandler {
     this.timeoutMs = timeoutMs;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  cleanup(instanceId: InstanceID, _sc: ServerContext<AppRegistration>): void {
+  cleanup(instanceId: InstanceID /*, _sc: ServerContext<AppRegistration> */): void {
     this.registrations = this.registrations.filter(reg => reg.instanceId != instanceId);
     //don't clean up pendingIntents as some apps may load
 
@@ -208,6 +207,7 @@ export class IntentHandler implements MessageHandler {
     const to = this.pendingResolutions.get(requestId);
     if (to) {
       // post the result to the app that raised the intent
+      //   if its still connected, otherwise do nothing
       successResponseId(
         sc,
         requestId,
@@ -218,13 +218,10 @@ export class IntentHandler implements MessageHandler {
         'raiseIntentResultResponse'
       );
 
-      // respond to the app that handled the intent
-      successResponse(sc, arg0, from, {}, 'intentResultResponse');
       this.pendingResolutions.delete(requestId);
-    } else {
-      // no-one waiting for this result
-      errorResponse(sc, arg0, from, 'No-one waiting for this result', 'intentResultResponse');
     }
+    // respond to the app that handled the intent
+    successResponse(sc, arg0, from, {}, 'intentResultResponse');
   }
 
   onUnsubscribe(

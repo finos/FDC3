@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import pc from 'picocolors';
+import * as pc from 'picocolors';
 
 const GET_AGENT_LOG_PREFIX = 'FDC3 getAgent: ';
 

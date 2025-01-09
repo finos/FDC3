@@ -1,4 +1,4 @@
-import { FDC3Server, InstanceID } from '@kite9/fdc3-web-impl';
+import { FDC3Server, InstanceID, State } from '@kite9/fdc3-web-impl';
 import { TestServerContext } from './TestServerContext';
 import { MockWindow } from './MockWindow';
 import { AutomaticResponse } from './responses/AutomaticResponses';
@@ -53,7 +53,8 @@ export class MockFDC3Server implements FDC3Server {
   }
 
   cleanup(instanceId: InstanceID): void {
-    this.tsc.goodbye(instanceId);
+    //message handler are faked with automated responses, so no need to clean up their state
+    this.tsc.setAppState(instanceId, State.Terminated);
   }
 
   receive(message: AppRequestMessage, from: string): void {

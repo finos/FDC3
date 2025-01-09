@@ -1,3 +1,4 @@
+import { FDC3Server } from '../../src/FDC3Server';
 import { ServerContext, InstanceID, State, AppRegistration } from '../../src/ServerContext';
 import { CustomWorld } from '../world';
 import { Context } from '@kite9/fdc3-context';
@@ -19,13 +20,14 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
   private instances: ConnectionDetails[] = [];
   private nextInstanceId: number = 0;
   private nextUUID: number = 0;
+  private server: FDC3Server | null = null;
 
   constructor(cw: CustomWorld) {
     this.cw = cw;
   }
 
-  goodbye(instanceId: string): void {
-    this.instances = this.instances.filter(instance => instance.instanceId !== instanceId);
+  setFDC3Server(server: FDC3Server): void {
+    this.server = server;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -35,11 +37,6 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
 
   getInstanceDetails(uuid: string) {
     return this.instances.find(ca => ca.instanceId === uuid);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  getPastInstanceDetails(_uuid: string) {
-    return undefined;
   }
 
   setInstanceDetails(uuid: InstanceID, appId: ConnectionDetails) {
@@ -61,10 +58,14 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
     }
   }
 
-  async setAppState(app: InstanceID, state: State): Promise<void> {
+  async setAppState(app: InstanceID, newState: State): Promise<void> {
     const found = this.instances.find(a => a.instanceId == app);
     if (found) {
-      found.state = state;
+      const currentState = found.state;
+      if (currentState !== State.Terminated && newState === State.Terminated) {
+        this.server?.cleanup(app);
+      }
+      found.state = newState;
     }
   }
 
