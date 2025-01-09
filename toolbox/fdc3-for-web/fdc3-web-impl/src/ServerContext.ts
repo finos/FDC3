@@ -1,5 +1,6 @@
 import { AppIdentifier, AppIntent } from '@kite9/fdc3-standard';
 import { Context } from '@kite9/fdc3-context';
+import { FDC3Server } from './FDC3Server';
 
 export enum State {
   Pending /* App has started, but not completed FDC3 Handshake */,
@@ -37,20 +38,17 @@ export interface ServerContext<X extends AppRegistration> {
   post(message: object, instanceId: InstanceID): Promise<void>;
 
   /**
-   * Post an outgoing message to a particular app
-   */
-  post(message: object, instanceId: InstanceID): Promise<void>;
-
-  /**
    * Opens a new instance of an application.
    * Promise completes once the application window is opened
    */
   open(appId: string): Promise<InstanceID>;
 
-  /**
-   * Handle clean-up of state after an app instance disconnects.
+  /** Set the FDC3Server instance associated with this context. This reference is
+   *  used to notify the server to cleanup state for apps that have been terminated.
+   *  The FDC3Server is passed a ServerContext when created and should call this fn
+   *  in its constructor.
    */
-  goodbye(instanceId: string): void;
+  setFDC3Server(server: FDC3Server): void;
 
   /**
    * Registers a particular instance id with a given app id
@@ -63,13 +61,6 @@ export interface ServerContext<X extends AppRegistration> {
    * an app and when validating an app's identity when connecting.
    */
   getInstanceDetails(uuid: InstanceID): X | undefined;
-
-  /**
-   * Returns the connection details for a particular instance of an app that
-   * was previously connected to the Desktop Agent. Used when validating an
-   * app's identity when reconnecting.
-   */
-  getPastInstanceDetails(uuid: InstanceID): X | undefined;
 
   /**
    * Registers an app as connected to the desktop agent.
