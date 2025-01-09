@@ -57,7 +57,7 @@ export class MockFDC3Server implements FDC3Server {
     this.tsc.setAppState(instanceId, State.Terminated);
   }
 
-  receive(message: AppRequestMessage, from: string): void {
+  async receive(message: AppRequestMessage, from: string): Promise<void> {
     this.automaticResponses.forEach(r => {
       if (r.filter(message.type)) {
         r.action(message, this.tsc, from);
