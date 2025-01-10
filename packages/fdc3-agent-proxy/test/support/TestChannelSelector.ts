@@ -7,7 +7,7 @@ export class TestChannelSelector implements ChannelSelector {
 
   constructor() {}
 
-  updateChannel(channelId: string | null, availableChannels: Channel[]): void {
+  async updateChannel(channelId: string | null, availableChannels: Channel[]): Promise<void> {
     this.channelId = channelId;
     this.channels = availableChannels;
   }
@@ -21,7 +21,7 @@ export class TestChannelSelector implements ChannelSelector {
   }
 
   async disconnect(): Promise<void> {
-    console.log('TestChannelSelector was diconnected');
+    console.log('TestChannelSelector was disconnected');
   }
 
   selectChannel(channelId: string | null): void {
