@@ -10,7 +10,7 @@ import {
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 export class DefaultChannel implements Channel {
-  readonly messaging: Messaging;
+  protected readonly messaging: Messaging;
   readonly id: string;
   readonly type: 'user' | 'app' | 'private';
   readonly displayMetadata?: DisplayMetadata | undefined;
