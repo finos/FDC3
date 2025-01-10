@@ -28,7 +28,6 @@
     "@kite9/fdc3-schema": "2.2.0-beta.30",
     "@kite9/fdc3-standard": "2.2.0-beta.30",
     "@types/uuid": "^10.0.0",
-    "picocolors": "^1.1.1",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
