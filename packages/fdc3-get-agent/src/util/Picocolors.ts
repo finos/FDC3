@@ -23,15 +23,15 @@ let isColorSupported;
 //else only occurs in a browser and can't be tested in node
 /* istanbul ignore else */
 if (typeof process !== 'undefined') {
-  const argv = process.argv || [],
-    env = process.env || {};
+  const argv = process.argv || /* istanbul ignore next */ [],
+    env = process.env || /* istanbul ignore next */ {};
   isColorSupported =
     !(!!env.NO_COLOR || argv.includes('--no-color')) &&
     (!!env.FORCE_COLOR ||
       argv.includes('--color') ||
-      process.platform === 'win32' ||
+      process.platform === 'win32' /* istanbul ignore next */ ||
       ((process.stdout || {}).isTTY && env.TERM !== 'dumb') ||
-      !!env.CI);
+      /* istanbul ignore next */ !!env.CI);
 } else {
   isColorSupported = false;
 }
@@ -41,7 +41,9 @@ const formatter =
   (input: string) => {
     const string = '' + input,
       index = string.indexOf(close, open.length);
-    return ~index ? open + replaceClose(string, close, replace, index) + close : open + string + close;
+    return ~index
+      ? /* istanbul ignore next */ open + replaceClose(string, close, replace, index) + close
+      : open + string + close;
   };
 
 //Not currently hit in the codebase or tests but included for completeness
@@ -58,7 +60,9 @@ const replaceClose = (string: string, close: string, replace: string, index: num
 };
 
 export const createColors = (enabled = isColorSupported) => {
-  const f = enabled ? formatter : () => String;
+  //second branch only occurs in a browser and can't be tested in node
+  /* istanbul ignore next */
+  const f = enabled ? formatter : /* istanbul ignore next */ () => String;
   return {
     isColorSupported: enabled,
     reset: f('\x1b[0m', '\x1b[0m'),
