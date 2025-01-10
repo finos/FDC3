@@ -125,12 +125,18 @@ FDC3 offers the [`Finos.Fdc3` NuGet package](https://www.nuget.org/packages/Fino
 
 ### GO
 
-#### Language specifics
-For the go language implementation, there were some specific new types or changes in the existing types, unlike the original Web implementation, because of the language specifics. Namely:
-- Needed to add type `Result` as described in [the Desktop Agent specs](../api/ref/DesktopAgent.md#desktopagent) to accommodate for error handling within golang channels. Channel is the closest equivalent to `Promise`. Result type has `Value` and `Err` fields, where `Value` type corresponds with the return type expected from this function, and `Err` would contain the golang `error` type error for handling.
-- Within [Context](../api/ref/Types.md/#context), we added a new `Details` field to accommodate for any additional fields, outside of `Name`, `Type` and `Id`, which would allow to create [additional contexts](../context/ref/). Any of the additional fields would have the value as the corresponding name of the field (ex. `market`). 
-- Even though in golang there is no strict requirement for explicit interface: if a type is implementing a specific method, then it is implementing that interface implicitly, however, we have added interfaces for all corresponding interfaces in other languages. However, in order to be able to use this, specific types need to be created with the implementation of that interface, even if they are empty structs, which we added alongside the interface (ex. [`DesktopAgent` is an empty struct, but it would implement methods of the IDesktopAgent interface](../api/ref/DesktopAgent.md#desktopagent)).
-- Any deprecated functions with the same name are omitted in golang, as it does not allow function/method overloading.
+
+For a Go application to be FDC3-enabled, it needs to run in the context of a platform provider that makes the FDC3 API available to Go applications. The Go language API binding varies from the JavaScript/TypeScript implementation in a number of ways due to the specifics of the Go language. Namely:
+- A `Result` type, as described in [the Desktop Agent specs](../api/ref/DesktopAgent.md#desktopagent), is returned by API calls to accommodate for error handling via golang Channels. Channel is the closest equivalent to `Promise`. Result type has `Value` and `Err` fields, where `Value` type corresponds with the return type expected from this function, and `Err` would contain the golang `error` type error for handling:
+    ```go
+    type Result[T any] struct {
+        Value *T
+        Err   error
+    }
+    ```
+- To represent [Context](../api/ref/Types.md/#context) types, a `Details` field is used to accommodate fields defined in specific context types beyond those defined in the Context interface itself (`Name`, `Type` and `Id`), which allows the additional fields of specific [context types](../context/ref/) to be represented. Any of the additional fields would have the value as the corresponding name of the field (ex. `market`). 
+- Golang has no strict requirement for a type to declare that it implements an interface: if a type implements a specific method, then it implements that interface implicitly. The Go language binding for FDC3 includes `interface`, `struct` and `func` types for all of the entities defined in the FDC3 API Part (i.e. `DesktopAgent`, `Channel`, `AppIdentifier`, `ContextHandler` etc.) . However, to be able to use the interfaces, specific types need to be created with the implementation of that interface, even if they are empty structs. Hence, types for these are defined alongside the interface (ex. [`DesktopAgent` is an empty struct, but it would implement methods of the IDesktopAgent interface](../api/ref/DesktopAgent.md#desktopagent)).
+- Deprecated functions with the same name as other functions are omitted in golang, as it does not allow function/method overloading. In the event that additional function/method overloads are added to FDC3 these should be handled in the Go binding with a different function name to the overloaded function.
 
 ## Hybrid
 
