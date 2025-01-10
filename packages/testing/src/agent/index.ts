@@ -50,7 +50,7 @@ export class SimpleChannelSelector implements ChannelSelector {
     this.cw = cw;
   }
 
-  updateChannel(channelId: string | null, availableChannels: Channel[]): void {
+  async updateChannel(channelId: string | null, availableChannels: Channel[]): Promise<void> {
     this.cw.props['channelId'] = channelId;
     this.cw.props['channels'] = availableChannels;
   }
