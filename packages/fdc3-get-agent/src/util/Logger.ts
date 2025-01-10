@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import * as pc from 'picocolors';
-
+import { createColors } from './Picocolors';
 const GET_AGENT_LOG_PREFIX = 'FDC3 getAgent: ';
+
+const pc = createColors();
 
 type ColorFn = (aString: string) => string;
 const debugColor: ColorFn = value => pc.black(pc.dim(value));
