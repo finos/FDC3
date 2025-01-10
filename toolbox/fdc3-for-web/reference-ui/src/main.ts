@@ -128,7 +128,7 @@ const openChannelIframe = (e: MouseEvent) => {
   const channel = new MessageChannel();
 
   // STEP 2B: Receive confirmation over port from iframe
-  channel.port1.onmessage = ({ data }) => {
+  channel.port1.addEventListener('message', ({ data }) => {
     switch (data.type) {
       // User clicked on one of the channels in the channel selector
       case FDC3_USER_INTERFACE_CHANNEL_SELECTED_TYPE: {
@@ -154,7 +154,8 @@ const openChannelIframe = (e: MouseEvent) => {
         break;
       }
     }
-  };
+  });
+  channel.port1.start();
 
   const { target } = e;
   if (target) (target as HTMLButtonElement).disabled = true;
@@ -166,12 +167,14 @@ const openChannelIframe = (e: MouseEvent) => {
   resizeButton.setAttribute('data-visible', 'true');
   resizeButton.addEventListener('click', () => {
     expanded = !expanded;
+    //TODO: update this to a Fdc3UserInterfaceRestyle message
     channel.port1.postMessage({ type: 'Fdc3UserInterfaceChannelResize', expanded });
     iframe.setAttribute('data-expanded', `${expanded}`);
     resizeButton.textContent = expanded ? 'Collapse' : 'Expand';
   });
 
   // STEP 1A: Send port to iframe
+  //TODO: align message with standard
   iframe.contentWindow?.postMessage({ type: 'Fdc3UserInterfaceHello' }, '*', [channel.port2]);
 };
 

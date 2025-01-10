@@ -8,9 +8,7 @@ const { isFdc3UserInterfaceResolveAction } = BrowserTypes;
 type Fdc3UserInterfaceResolve = BrowserTypes.Fdc3UserInterfaceResolve;
 
 /**
- * Works with the desktop agent to provide a resolution to the intent choices.
- * This is the default implementation, but can be overridden by app implementers calling
- * the getAgent() method
+ * Handles communication between an injected Intent Resolver UI and the getAgent implementation.
  */
 export class DefaultDesktopAgentIntentResolver extends AbstractUIComponent implements IntentResolver {
   private pendingResolve: ((x: IntentResolutionChoice | void) => void) | null = null;
@@ -21,7 +19,6 @@ export class DefaultDesktopAgentIntentResolver extends AbstractUIComponent imple
   }
 
   async setupMessagePort(port: MessagePort): Promise<void> {
-    await super.setupMessagePort(port);
     this.port = port;
 
     this.port.addEventListener('message', e => {
@@ -41,6 +38,9 @@ export class DefaultDesktopAgentIntentResolver extends AbstractUIComponent imple
         this.pendingResolve = null;
       }
     });
+
+    //This starts the port so do it last
+    await super.setupMessagePort(port);
   }
 
   async chooseIntent(appIntents: AppIntent[], context: Context): Promise<IntentResolutionChoice | void> {
@@ -55,6 +55,7 @@ export class DefaultDesktopAgentIntentResolver extends AbstractUIComponent imple
       },
     };
     this.port?.postMessage(message);
+    Logger.debug(`DefaultDesktopAgentIntentResolver: Requested resolution: `, message);
     return out;
   }
 }

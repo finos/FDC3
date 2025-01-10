@@ -181,8 +181,8 @@ window.addEventListener('load', () => {
 
   const mc = new MessageChannel();
   const myPort = mc.port1;
-  myPort.start();
-  myPort.onmessage = ({ data }) => {
+
+  myPort.addEventListener('message', ({ data }) => {
     console.debug('Received message: ', data);
     if (isFdc3UserInterfaceResolve(data)) {
       const restyleMessage: Fdc3UserInterfaceRestyle = {
@@ -222,7 +222,8 @@ window.addEventListener('load', () => {
         myPort.postMessage(restyleMessage);
       });
     }
-  };
+  });
+  myPort.start();
 
   const helloMessage: Fdc3UserInterfaceHello = {
     type: 'Fdc3UserInterfaceHello',

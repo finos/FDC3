@@ -31,16 +31,22 @@ export const ALLOWED_CSS_ELEMENTS = [
   'display',
 ];
 
+/** Abstract implementation of an injected UI, used as the base for communication
+ * with injected Channel Selector and Intent Resolver UIs.
+ */
 export abstract class AbstractUIComponent implements Connectable {
   private container: HTMLDivElement | undefined = undefined;
   private iframe: HTMLIFrameElement | undefined = undefined;
   private url: string;
   private name: string;
-  port: MessagePort | null = null;
+  protected port: MessagePort | null = null;
+  protected messagePortIsReady: Promise<void>;
+  private markMessagePortReady: (() => void) | null = null;
 
   constructor(url: string, name: string) {
     this.url = url;
     this.name = name;
+    this.messagePortIsReady = new Promise<void>(resolve => (this.markMessagePortReady = resolve));
   }
 
   /**
@@ -52,6 +58,7 @@ export abstract class AbstractUIComponent implements Connectable {
    * security policies. I.e. awaiting this will not block.
    */
   connect(): Promise<void> {
+    Logger.debug(`AbstractUIComponent (${this.name}): Awaiting hello from `, this.name, ', url: ', this.url);
     const portPromise = this.awaitHello();
     this.openFrame();
     portPromise.then(port => {
@@ -75,11 +82,12 @@ export abstract class AbstractUIComponent implements Connectable {
       const data = e.data;
 
       if (isFdc3UserInterfaceRestyle(data)) {
-        Logger.debug(`Restyling ${JSON.stringify(data.payload, null, 2)}`);
+        Logger.debug(`AbstractUIComponent (${this.name}): Restyling: `, data.payload);
         const css = data.payload.updatedCSS;
         this.themeContainer(css);
       }
     });
+    port.start();
   }
 
   async messagePortReady(port: MessagePort) {
@@ -90,26 +98,32 @@ export abstract class AbstractUIComponent implements Connectable {
         fdc3Version: FDC3_VERSION,
       },
     };
+    Logger.debug(`AbstractUIComponent (${this.name}): Sending handshake: `, message);
     port.postMessage(message);
+    this.markMessagePortReady!();
   }
 
   private awaitHello(): Promise<MessagePort> {
     return new Promise(resolve => {
       const ml = (e: MessageEvent) => {
+        //only respond to messages from this UI's iframe
         if (e.source == this.iframe?.contentWindow) {
           if (isFdc3UserInterfaceHello(e.data)) {
             const helloData = e.data;
             this.themeContainer(helloData.payload.initialCSS);
             const port = e.ports[0];
-            port.start();
             globalThis.window.removeEventListener('message', ml);
             resolve(port);
           } else {
-            Logger.debug('AbstractUIComponent: ignored UI Message from UI iframe while awaiting hello: ', e.data);
+            Logger.warn(
+              `AbstractUIComponent (${this.name}): ignored UI Message from UI iframe while awaiting hello: `,
+              e.data
+            );
           }
         } else {
+          //as there are two UIs, we expect some cross-over between their messages
           Logger.debug(
-            "AbstractUIComponent: ignored Message that didn't come from expected UI frame\nmessage: ",
+            `AbstractUIComponent (${this.name}): ignored Message that didn't come from expected UI frame: `,
             e.data,
             'my URL: ',
             this.url
@@ -140,6 +154,7 @@ export abstract class AbstractUIComponent implements Connectable {
   }
 
   themeContainer(css: UpdatedCSS | InitialCSS) {
+    Logger.debug(`AbstractUIComponent (${this.name}): Applying styles to container`, css);
     for (let i = 0; i < ALLOWED_CSS_ELEMENTS.length; i++) {
       const k = ALLOWED_CSS_ELEMENTS[i];
       const value: string | undefined = css[k as string];
@@ -152,6 +167,7 @@ export abstract class AbstractUIComponent implements Connectable {
   }
 
   themeFrame(ifrm: HTMLIFrameElement) {
+    Logger.debug(`AbstractUIComponent (${this.name}): Applying 100% size style to iframe`);
     ifrm.style.width = '100%';
     ifrm.style.height = '100%';
     ifrm.style.border = '0';

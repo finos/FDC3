@@ -1,5 +1,6 @@
 import {
   Channel,
+  Fdc3UserInterfaceChannelSelected,
   Fdc3UserInterfaceHello,
   Fdc3UserInterfaceRestyle,
   isFdc3UserInterfaceChannels,
@@ -49,8 +50,8 @@ window.addEventListener('load', () => {
 
   const mc = new MessageChannel();
   const myPort = mc.port1;
-  myPort.start();
-  myPort.onmessage = ({ data }) => {
+
+  myPort.addEventListener('message', ({ data }) => {
     console.debug('Received message: ', data);
 
     if (isFdc3UserInterfaceHandshake(data)) {
@@ -59,26 +60,29 @@ window.addEventListener('load', () => {
       logo.removeEventListener('click', expand);
       const { userChannels, selected } = data.payload;
       fillChannels(userChannels, selected, channelStr => {
-        myPort.postMessage({
-          type: 'fdc3UserInterfaceSelected',
+        const message: Fdc3UserInterfaceChannelSelected = {
+          type: 'Fdc3UserInterfaceChannelSelected',
           payload: {
             selected: channelStr || null,
           },
-        });
+        };
+        myPort.postMessage(message);
+        console.log('Channel Selected: ', message);
         collapse();
       });
 
       const selectedChannel = userChannels.find(c => c.id === selected);
       logo.style.fill = selectedChannel?.displayMetadata?.color ?? 'white';
-      console.log('Adding event listener');
+      console.log('Adding click event listener');
       logo.addEventListener('click', expand);
     }
-  };
+  });
+  myPort.start();
 
   const helloMessage: Fdc3UserInterfaceHello = {
     type: 'Fdc3UserInterfaceHello',
     payload: {
-      implementationDetails: '',
+      implementationDetails: 'FDC3 Reference Channel Selector UI',
       initialCSS: {
         width: `${8 * 4}px`,
         height: `${8 * 5}px`,
