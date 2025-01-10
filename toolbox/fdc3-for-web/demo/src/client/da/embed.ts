@@ -38,7 +38,7 @@ const helloListener = (e: MessageEvent) => {
   try {
     eventSourceName = (eventSource as Window)?.name;
   } catch (e: unknown) {
-    eventSourceName = `{a cross-origin window: ${(e as Error).message ?? e}} `;
+    eventSourceName = `{a cross-origin window} `;
   }
   if (!eventSourceName) {
     eventSourceName = '{no window name set} ';
@@ -46,7 +46,7 @@ const helloListener = (e: MessageEvent) => {
 
   if (isWebConnectionProtocol1Hello(messageData)) {
     console.debug(
-      'Received hello message from: ',
+      'Communication iframe adaptor received hello message from: ',
       eventSourceName,
       eventSource == appWindow ? '(parent window): ' : '(NOT parent win): ',
       messageData
