@@ -20,6 +20,8 @@ OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 */
 
 let isColorSupported;
+//else only occurs in a browser and can't be tested in node
+/* istanbul ignore else */
 if (typeof process !== 'undefined') {
   const argv = process.argv || [],
     env = process.env || {};
@@ -42,6 +44,8 @@ const formatter =
     return ~index ? open + replaceClose(string, close, replace, index) + close : open + string + close;
   };
 
+//Not currently hit in the codebase or tests but included for completeness
+/* istanbul ignore next */
 const replaceClose = (string: string, close: string, replace: string, index: number) => {
   let result = '',
     cursor = 0;
