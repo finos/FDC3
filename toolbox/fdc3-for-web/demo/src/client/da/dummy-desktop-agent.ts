@@ -68,7 +68,6 @@ window.addEventListener('load', () => {
           name: 'Channel 1',
           color: 'red',
           glyph: '1',
-          glyphColor: 'white',
         },
       },
       {
@@ -79,7 +78,6 @@ window.addEventListener('load', () => {
           name: 'Channel 2',
           color: 'orange',
           glyph: '2',
-          glyphColor: 'white',
         },
       },
       {
@@ -90,7 +88,6 @@ window.addEventListener('load', () => {
           name: 'Channel 3',
           color: 'yellow',
           glyph: '3',
-          glyphColor: 'black',
         },
       },
       {
@@ -101,7 +98,6 @@ window.addEventListener('load', () => {
           name: 'Channel 4',
           color: 'green',
           glyph: '4',
-          glyphColor: 'white',
         },
       },
       {
@@ -112,7 +108,6 @@ window.addEventListener('load', () => {
           name: 'Channel 5',
           color: 'cyan',
           glyph: '5',
-          glyphColor: 'black',
         },
       },
       {
@@ -123,7 +118,6 @@ window.addEventListener('load', () => {
           name: 'Channel 6',
           color: 'blue',
           glyph: '6',
-          glyphColor: 'white',
         },
       },
       {
@@ -134,7 +128,6 @@ window.addEventListener('load', () => {
           name: 'Channel 7',
           color: 'magenta',
           glyph: '7',
-          glyphColor: 'white',
         },
       },
       {
@@ -145,7 +138,6 @@ window.addEventListener('load', () => {
           name: 'Channel 8',
           color: 'purple',
           glyph: '8',
-          glyphColor: 'white',
         },
       },
     ];
