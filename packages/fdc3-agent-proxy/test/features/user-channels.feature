@@ -164,6 +164,8 @@ Feature: Basic User Channels Support
   Scenario: Passing invalid arguments to a user channel's addContextListener fn throws an error
     Given "resultHandler" pipes context to "contexts"
     When I call "{api}" with "addContextListener" with parameters "{true}" and "{resultHandler}"
+    # Specific error message not tested as its not currently standardized
+    # TODO: Fix when #1490 is resolved
     Then "{result}" is an error
     And I call "{api}" with "addContextListener" with parameters "{null}" and "{true}"
     Then "{result}" is an error

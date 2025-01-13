@@ -13,7 +13,7 @@ import {
 import { ChannelSupport } from './channels/ChannelSupport';
 import { AppSupport } from './apps/AppSupport';
 import { IntentSupport } from './intents/IntentSupport';
-import { Connectable } from '@kite9/fdc3-standard';
+import { Connectable, Channel } from '@kite9/fdc3-standard';
 import { Context } from '@kite9/fdc3-context';
 import { HeartbeatSupport } from './heartbeat/HeartbeatSupport';
 
@@ -84,6 +84,7 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
       theHandler = contextTypeOrHandler as ContextHandler;
     } else {
       //invalid call
+      // TODO: Replace with Standardized error when #1490 is resolved
       throw new Error('Invalid arguments passed to addContextListener!');
     }
 
@@ -118,7 +119,7 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     return this.channels.joinUserChannel(channelId);
   }
 
-  getCurrentChannel() {
+  getCurrentChannel(): Promise<Channel | null> {
     return this.channels.getUserChannel();
   }
 
