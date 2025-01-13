@@ -6,6 +6,7 @@ import {
   isFdc3UserInterfaceChannels,
   isFdc3UserInterfaceHandshake,
 } from '@kite9/fdc3-schema/dist/generated/api/BrowserTypes';
+import { selectHighestContrast } from './contrast';
 
 const fillChannels = (data: Channel[], selected: string | null, messageClickedChannel: (s: string | null) => void) => {
   const list = document.getElementById('list')!;
@@ -19,7 +20,8 @@ const fillChannels = (data: Channel[], selected: string | null, messageClickedCh
     span.classList.add('glyph');
 
     if (displayMetadata?.color) {
-      span.style.color = displayMetadata.color;
+      span.style.color = selectHighestContrast(displayMetadata.color, 'white', 'black');
+      span.style.backgroundColor = displayMetadata.color;
       span.style.borderColor = displayMetadata.color;
     }
     span.textContent = displayMetadata?.glyph ?? '';
@@ -42,6 +44,30 @@ const fillChannels = (data: Channel[], selected: string | null, messageClickedCh
       node.style.backgroundColor = '#bbb';
     }
   });
+
+  //add an element for leaving all channels
+  const node = document.createElement('div');
+  node.setAttribute('tabIndex', '0');
+
+  const span = document.createElement('span');
+  span.classList.add('glyph');
+  span.textContent = 'X';
+  node.appendChild(span);
+
+  const span2 = document.createElement('span');
+  span2.classList.add('name');
+  span2.textContent = 'none';
+  node.appendChild(span2);
+
+  list.appendChild(node);
+  node.addEventListener('click', () => {
+    messageClickedChannel(null);
+  });
+
+  if (selected === null) {
+    node.setAttribute('aria-selected', 'true');
+    node.style.backgroundColor = '#bbb';
+  }
 };
 
 window.addEventListener('load', () => {
@@ -84,10 +110,10 @@ window.addEventListener('load', () => {
     payload: {
       implementationDetails: 'FDC3 Reference Channel Selector UI',
       initialCSS: {
-        width: `${8 * 4}px`,
-        height: `${8 * 5}px`,
+        width: `${8 * 6}px`,
+        height: `${8 * 8}px`,
         right: '2px',
-        bottom: '2px',
+        bottom: '8px',
         zIndex: '1000',
         'z-index': '1000',
         position: 'fixed',
@@ -120,9 +146,9 @@ window.addEventListener('load', () => {
       type: 'Fdc3UserInterfaceRestyle',
       payload: {
         updatedCSS: {
-          width: `${8 * 4}px`,
-          height: `${8 * 5}px`,
-          right: '2px',
+          width: `${8 * 6}px`,
+          height: `${8 * 8}px`,
+          right: '8px',
           bottom: '2px',
           zIndex: '1000',
           'z-index': '1000',
