@@ -1,3 +1,4 @@
+import { selectHighestContrast } from './contrast';
 import { dragElement } from './drag';
 import {
   Channel,
@@ -129,12 +130,16 @@ window.addEventListener('load', () => {
 
   logo.addEventListener('click', () => {
     list.innerHTML = '';
+
+    //populate with channels
     channels.forEach(channel => {
       const li = document.createElement('div');
-      li.style.backgroundColor = channel.displayMetadata!.color!;
+      const bgColor = channel.displayMetadata?.color ?? 'white';
+      li.style.backgroundColor = bgColor;
+      li.style.color = selectHighestContrast(bgColor, 'white', 'black');
       const description = document.createElement('em');
-      description.textContent = channel.displayMetadata!.name = channel.id == channelId ? ' CURRENT CHANNEL ' : '';
-      li.textContent = channel.id;
+      description.textContent = channel.id == channelId ? '  SELECTED ' : '';
+      li.textContent = channel.displayMetadata?.name ?? channel.id;
 
       li.appendChild(description);
       list.appendChild(li);
@@ -148,9 +153,31 @@ window.addEventListener('load', () => {
           },
         };
         myPort.postMessage(message);
-        debug('Sending channel selection: ', message);
       };
     });
+
+    //add an element for deselecting the channel
+    const li = document.createElement('div');
+    li.style.backgroundColor = 'white';
+    li.style.color = 'black';
+    const description = document.createElement('em');
+    description.textContent = channelId == null ? '  SELECTED ' : '';
+    li.textContent = 'NONE';
+
+    li.appendChild(description);
+    list.appendChild(li);
+    li.onclick = () => {
+      changeSize(false);
+      channelId = null;
+      const message: Fdc3UserInterfaceChannelSelected = {
+        type: 'Fdc3UserInterfaceChannelSelected',
+        payload: {
+          selected: null,
+        },
+      };
+      myPort.postMessage(message);
+    };
+
     changeSize(true);
   });
 

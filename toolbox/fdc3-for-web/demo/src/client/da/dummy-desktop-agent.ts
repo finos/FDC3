@@ -60,13 +60,93 @@ window.addEventListener('load', () => {
     const sc = new DemoServerContext(socket, directory);
 
     const channelDetails: ChannelState[] = [
-      { id: 'one', type: ChannelType.user, context: [], displayMetadata: { name: 'THE RED CHANNEL', color: 'red' } },
-      { id: 'two', type: ChannelType.user, context: [], displayMetadata: { name: 'THE BLUE CHANNEL', color: 'blue' } },
       {
-        id: 'three',
+        id: 'fdc3.channel.1',
         type: ChannelType.user,
         context: [],
-        displayMetadata: { name: 'THE GREEN CHANNEL', color: 'green' },
+        displayMetadata: {
+          name: 'Channel 1',
+          color: 'red',
+          glyph: '1',
+          glyphColor: 'white',
+        },
+      },
+      {
+        id: 'fdc3.channel.2',
+        type: ChannelType.user,
+        context: [],
+        displayMetadata: {
+          name: 'Channel 2',
+          color: 'orange',
+          glyph: '2',
+          glyphColor: 'white',
+        },
+      },
+      {
+        id: 'fdc3.channel.3',
+        type: ChannelType.user,
+        context: [],
+        displayMetadata: {
+          name: 'Channel 3',
+          color: 'yellow',
+          glyph: '3',
+          glyphColor: 'black',
+        },
+      },
+      {
+        id: 'fdc3.channel.4',
+        type: ChannelType.user,
+        context: [],
+        displayMetadata: {
+          name: 'Channel 4',
+          color: 'green',
+          glyph: '4',
+          glyphColor: 'white',
+        },
+      },
+      {
+        id: 'fdc3.channel.5',
+        type: ChannelType.user,
+        context: [],
+        displayMetadata: {
+          name: 'Channel 5',
+          color: 'cyan',
+          glyph: '5',
+          glyphColor: 'black',
+        },
+      },
+      {
+        id: 'fdc3.channel.6',
+        type: ChannelType.user,
+        context: [],
+        displayMetadata: {
+          name: 'Channel 6',
+          color: 'blue',
+          glyph: '6',
+          glyphColor: 'white',
+        },
+      },
+      {
+        id: 'fdc3.channel.7',
+        type: ChannelType.user,
+        context: [],
+        displayMetadata: {
+          name: 'Channel 7',
+          color: 'magenta',
+          glyph: '7',
+          glyphColor: 'white',
+        },
+      },
+      {
+        id: 'fdc3.channel.8',
+        type: ChannelType.user,
+        context: [],
+        displayMetadata: {
+          name: 'Channel 8',
+          color: 'purple',
+          glyph: '8',
+          glyphColor: 'white',
+        },
       },
     ];
     const fdc3Server = new DefaultFDC3Server(sc, directory, channelDetails, true, 20000, 10017);

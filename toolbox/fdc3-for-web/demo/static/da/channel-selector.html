@@ -18,9 +18,18 @@
       }
 
       .selector {
-          width: 400px;
-          height: 300px;
-          position: fixed;
+        width: 300px;
+        height: 300px;
+        position: fixed;
+        z-index: 2;
+        background-color: #fff;
+        right: 10px;
+        bottom: 10px;
+        border-radius: .5rem;
+        border: 1px solid black;
+        font-family: Arial, Helvetica, sans-serif;
+        display: flex;
+        flex-direction: column;
       }
 
       .background {
@@ -30,26 +39,11 @@
         background-color: #22222222; 
       }
 
-      .selector {
-        z-index: 2;
-        background-color: #fff;
-        right: 10px;
-        bottom: 10px;
-      }
-
       .logo {
         z-index: 3;
         position: fixed;
         left: 0;
         top: 0;
-     }
-
-     .selector {
-      border-radius: .5rem;
-      border: 1px solid black;
-      font-family: Arial, Helvetica, sans-serif;
-      display: flex;
-      flex-direction: column;
      }
 
      .header {
