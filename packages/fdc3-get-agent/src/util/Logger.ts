@@ -1,14 +1,30 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createColors } from './Picocolors';
 const GET_AGENT_LOG_PREFIX = 'FDC3 getAgent: ';
 
-const pc = createColors();
+//check if color is supported in console;
+let noColor = true;
+//else only occurs in a browser and can't be tested in node
+/* istanbul ignore if */
+if (typeof process !== 'undefined') {
+  const argv = process.argv || /* istanbul ignore next */ [];
+  const env = process.env || /* istanbul ignore next */ {};
+  noColor =
+    (!!env.NO_COLOR || argv.includes('--no-color')) &&
+    !(
+      !!env.FORCE_COLOR ||
+      argv.includes('--color') ||
+      process.platform === 'win32' /* istanbul ignore next */ ||
+      ((process.stdout || {}).isTTY && env.TERM !== 'dumb') ||
+      /* istanbul ignore next */ !!env.CI
+    );
+}
 
 type ColorFn = (aString: string) => string;
-const debugColor: ColorFn = value => pc.black(pc.dim(value));
-const logColor: ColorFn = value => pc.green(pc.dim(value));
-const warnColor: ColorFn = value => pc.yellow(value);
-const errorColor: ColorFn = value => pc.red(value);
+
+const debugColor: ColorFn = value => (noColor ? value : '\x1b[30m\x1b[2m' + value + '\x1b[22m\x1b[39m');
+const logColor: ColorFn = value => (noColor ? value : '\x1b[32m\x1b[2m' + value + '\x1b[22m\x1b[39m');
+const warnColor: ColorFn = value => (noColor ? value : '\x1b[33m' + value + '\x1b[39m');
+const errorColor: ColorFn = value => (noColor ? value : '\x1b[31m' + value + '\x1b[39m');
 
 const prefixAndColorize = (params: any[], colorFn: ColorFn): string[] => {
   const prefixed = [GET_AGENT_LOG_PREFIX, ...params];
