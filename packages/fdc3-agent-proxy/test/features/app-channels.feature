@@ -73,6 +73,8 @@ Feature: Channel Listeners Support
   Scenario: Passing invalid arguments to an app channel's addContextListener fn throws an error
     When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
     And I refer to "{result}" as "channel1"
+    # Specific error message not tested as its not currently standardized
+    # TODO: Fix when #1490 is resolved
     And I call "{channel1}" with "addContextListener" with parameters "{true}" and "{resultHandler}"
     Then "{result}" is an error
     And I call "{channel1}" with "addContextListener" with parameters "{null}" and "{true}"

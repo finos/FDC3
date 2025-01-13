@@ -68,6 +68,7 @@ export class DefaultChannel implements Channel {
       theHandler = contextTypeOrHandler as ContextHandler;
     } else {
       //invalid call
+      // TODO: Replace with Standardized error when #1490 is resolved
       throw new Error('Invalid arguments passed to addContextListener!');
     }
 
