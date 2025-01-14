@@ -1,26 +1,25 @@
 import { AutomaticResponse, TestMessaging } from '../TestMessaging';
 import { Context } from '@kite9/fdc3-context';
-
-import { BrowserTypes } from '@kite9/fdc3-schema';
-
-type JoinUserChannelRequest = BrowserTypes.JoinUserChannelRequest;
-type JoinUserChannelResponse = BrowserTypes.JoinUserChannelResponse;
-type LeaveCurrentChannelResponse = BrowserTypes.LeaveCurrentChannelResponse;
-type LeaveCurrentChannelRequest = BrowserTypes.LeaveCurrentChannelRequest;
-type GetCurrentChannelRequest = BrowserTypes.GetCurrentChannelRequest;
-type GetCurrentChannelResponse = BrowserTypes.GetCurrentChannelResponse;
-type AddContextListenerRequest = BrowserTypes.AddContextListenerRequest;
-type AddContextListenerResponse = BrowserTypes.AddContextListenerResponse;
-type ContextListenerUnsubscribeRequest = BrowserTypes.ContextListenerUnsubscribeRequest;
-type ContextListenerUnsubscribeResponse = BrowserTypes.ContextListenerUnsubscribeResponse;
-type GetCurrentContextRequest = BrowserTypes.GetCurrentContextRequest;
-type GetCurrentContextResponse = BrowserTypes.GetCurrentContextResponse;
-type BroadcastRequest = BrowserTypes.BroadcastRequest;
-type BroadcastResponse = BrowserTypes.BroadcastResponse;
-type AgentResponseMessage = BrowserTypes.AgentResponseMessage;
-
 import { createResponseMeta } from './support';
 import { v4 as uuidv4 } from 'uuid';
+import {
+  AddContextListenerRequest,
+  AddContextListenerResponse,
+  AgentResponseMessage,
+  AppRequestMessage,
+  BroadcastRequest,
+  BroadcastResponse,
+  ContextListenerUnsubscribeRequest,
+  ContextListenerUnsubscribeResponse,
+  GetCurrentChannelRequest,
+  GetCurrentChannelResponse,
+  GetCurrentContextRequest,
+  GetCurrentContextResponse,
+  JoinUserChannelRequest,
+  JoinUserChannelResponse,
+  LeaveCurrentChannelRequest,
+  LeaveCurrentChannelResponse,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 export class ChannelState implements AutomaticResponse {
   private channelId: string | null = null;
@@ -43,40 +42,40 @@ export class ChannelState implements AutomaticResponse {
     );
   }
 
-  action(input: any, m: TestMessaging) {
-    var out: AgentResponseMessage | null = null;
+  action(input: AppRequestMessage, m: TestMessaging) {
+    let out: AgentResponseMessage | null = null;
     switch (input.type) {
       case 'joinUserChannelRequest':
-        out = this.createJoinResponse(input as JoinUserChannelRequest);
+        out = this.createJoinResponse(input);
         break;
       case 'leaveCurrentChannelRequest':
-        out = this.createLeaveResponse(input as LeaveCurrentChannelRequest);
+        out = this.createLeaveResponse(input);
         break;
 
       case 'getCurrentChannelRequest':
-        out = this.createGetChannelResponse(input as GetCurrentChannelRequest);
+        out = this.createGetChannelResponse(input);
         break;
 
       case 'addContextListenerRequest':
-        out = this.createAddListenerResponse(input as AddContextListenerRequest);
+        out = this.createAddListenerResponse(input);
         break;
 
       case 'contextListenerUnsubscribeRequest':
-        out = this.createUnsubscribeResponse(input as ContextListenerUnsubscribeRequest);
+        out = this.createUnsubscribeResponse(input);
         break;
 
       case 'getCurrentContextRequest':
-        out = this.createGetContextResponse(input as GetCurrentContextRequest);
+        out = this.createGetContextResponse(input);
         break;
 
       case 'broadcastRequest':
-        out = this.createBroadcastResponse(input as BroadcastRequest);
+        out = this.createBroadcastResponse(input);
         break;
     }
 
     if (out) {
       setTimeout(() => {
-        m.receive(out!!);
+        m.receive(out!);
       }, 100);
     }
     return Promise.resolve();
@@ -116,7 +115,7 @@ export class ChannelState implements AutomaticResponse {
 
   private createGetContextResponse(input: GetCurrentContextRequest): GetCurrentContextResponse {
     const ch = input.payload.channelId;
-    var last: Context | undefined = undefined;
+    let last: Context | undefined;
     const contexts = this.contextHistory[ch] ?? [];
     if (input.payload.contextType) {
       last = contexts.find(c => c.type == input.payload.contextType);

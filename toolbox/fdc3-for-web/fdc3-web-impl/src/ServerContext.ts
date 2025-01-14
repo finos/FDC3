@@ -1,5 +1,6 @@
 import { AppIdentifier, AppIntent } from '@kite9/fdc3-standard';
 import { Context } from '@kite9/fdc3-context';
+import { FDC3Server } from './FDC3Server';
 
 export enum State {
   Pending /* App has started, but not completed FDC3 Handshake */,
@@ -17,8 +18,8 @@ export type AppRegistration = {
 /**
  * This is a unique, long, unguessable string that identifies a particular instance of an app.
  * All messages arriving at the desktop agent will have this UUID attached to them.
- * It is important that this is unguessable as it is a "password" of sorts used to
- * identify the app between reconnections.
+ * It is important that this is unguessable as it is a shared secret used to identify the app
+ * when reconnecting after navigation or refresh.
  */
 export type InstanceID = string;
 
@@ -37,15 +38,17 @@ export interface ServerContext<X extends AppRegistration> {
   post(message: object, instanceId: InstanceID): Promise<void>;
 
   /**
-   * Post an outgoing message to a particular app
-   */
-  post(message: object, instanceId: InstanceID): Promise<void>;
-
-  /**
    * Opens a new instance of an application.
    * Promise completes once the application window is opened
    */
   open(appId: string): Promise<InstanceID>;
+
+  /** Set the FDC3Server instance associated with this context. This reference is
+   *  used to notify the server to cleanup state for apps that have been terminated.
+   *  The FDC3Server is passed a ServerContext when created and should call this fn
+   *  in its constructor.
+   */
+  setFDC3Server(server: FDC3Server): void;
 
   /**
    * Registers a particular instance id with a given app id
@@ -53,8 +56,9 @@ export interface ServerContext<X extends AppRegistration> {
   setInstanceDetails(uuid: InstanceID, details: X): void;
 
   /**
-   * Returns the UUID for a particular instance of an app.
-   * This is used in situations where an app is reconnecting to the same desktop agent.
+   * Returns the connection details for a particular instance of an app.
+   * Used in a variety of MessageHandler classes to retrieve details for
+   * an app and when validating an app's identity when connecting.
    */
   getInstanceDetails(uuid: InstanceID): X | undefined;
 
@@ -71,7 +75,7 @@ export interface ServerContext<X extends AppRegistration> {
   getConnectedApps(): Promise<AppRegistration[]>;
 
   /**
-   * Return the list of all apps that have ever been registed with the ServerContext.
+   * Return the list of all apps that have ever been registered with the ServerContext.
    */
   getAllApps(): Promise<AppRegistration[]>;
 
@@ -103,7 +107,7 @@ export interface ServerContext<X extends AppRegistration> {
   /**
    * This is called prior to returning intents to the client.  It is a
    * an opportunity for the server to either present an intent resolver
-   * or otherwise mess with the availble intents, or do nothing.
+   * or otherwise mess with the available intents, or do nothing.
    */
   narrowIntents(raiser: AppIdentifier, IappIntents: AppIntent[], context: Context): Promise<AppIntent[]>;
 }

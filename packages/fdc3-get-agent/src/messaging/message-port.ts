@@ -1,11 +1,11 @@
-import { DesktopAgent } from '@kite9/fdc3-standard';
+import { AppIdentifier, DesktopAgent } from '@kite9/fdc3-standard';
 import {
-  BasicDesktopAgent,
+  DesktopAgentProxy,
   DefaultChannelSupport,
   DefaultAppSupport,
   DefaultIntentSupport,
-  DefaultHandshakeSupport,
   ChannelSupport,
+  DefaultHeartbeatSupport,
 } from '@kite9/fdc3-agent-proxy';
 import { ConnectionDetails, MessagePortMessaging } from './MessagePortMessaging';
 import { DefaultDesktopAgentIntentResolver } from '../ui/DefaultDesktopAgentIntentResolver';
@@ -13,12 +13,18 @@ import { DefaultDesktopAgentChannelSelector } from '../ui/DefaultDesktopAgentCha
 import { NullIntentResolver } from '../ui/NullIntentResolver';
 import { NullChannelSelector } from '../ui/NullChannelSelector';
 import { ChannelSelector } from '@kite9/fdc3-standard';
+import { Logger } from '../util/Logger';
 
 /**
  * Given a message port, constructs a desktop agent to communicate via that.
  */
-export async function createDesktopAgentAPI(cd: ConnectionDetails): Promise<DesktopAgent> {
-  cd.messagePort.start();
+export async function createDesktopAgentAPI(
+  cd: ConnectionDetails,
+  appIdentifier: AppIdentifier
+): Promise<DesktopAgent> {
+  Logger.debug('message-port: Creating Desktop Agent...');
+
+  //Message port should have already been started for use in identity validation
 
   function string(o: string | boolean): string | null {
     if (o == true || o == false) {
@@ -28,7 +34,7 @@ export async function createDesktopAgentAPI(cd: ConnectionDetails): Promise<Desk
     }
   }
 
-  const messaging = new MessagePortMessaging(cd);
+  const messaging = new MessagePortMessaging(cd, appIdentifier);
 
   const useResolver = cd.handshake.payload.intentResolverUrl && cd.options.intentResolver;
   const useSelector = cd.handshake.payload.channelSelectorUrl && cd.options.channelSelector;
@@ -41,14 +47,27 @@ export async function createDesktopAgentAPI(cd: ConnectionDetails): Promise<Desk
     ? new DefaultDesktopAgentChannelSelector(string(cd.handshake.payload.channelSelectorUrl))
     : new NullChannelSelector();
 
+  Logger.debug('message-port: Setting up support components...');
+
+  const hs = new DefaultHeartbeatSupport(messaging);
   const cs = new DefaultChannelSupport(messaging, channelSelector);
-  const hs = new DefaultHandshakeSupport(messaging);
   const is = new DefaultIntentSupport(messaging, intentResolver);
   const as = new DefaultAppSupport(messaging);
-  const da = new BasicDesktopAgent(hs, cs, is, as, [hs, intentResolver, channelSelector]);
+  const da = new DesktopAgentProxy(hs, cs, is, as, [hs, intentResolver, channelSelector]);
+
+  Logger.debug('message-port: Connecting components ...');
+
   await da.connect();
 
+  Logger.debug('message-port: Populating channel selector...');
+
   await populateChannelSelector(cs, channelSelector);
+
+  Logger.debug('message-port: Setting up disconnect handling...');
+
+  handleDisconnectOnPageHide(da, messaging);
+
+  Logger.debug('message-port: Returning...');
 
   return da;
 }
@@ -57,4 +76,26 @@ async function populateChannelSelector(cs: ChannelSupport, channelSelector: Chan
   const channel = await cs.getUserChannel();
   const userChannels = await cs.getUserChannels();
   channelSelector.updateChannel(channel?.id ?? null, userChannels);
+}
+
+function handleDisconnectOnPageHide(da: DesktopAgentProxy, messaging: MessagePortMessaging) {
+  globalThis.window.addEventListener('pagehide', async event => {
+    Logger.log(`Received pagehide event with persisted ${event.persisted}`);
+
+    //If persisted == true then the page is stored and might come back if the user hits back
+    //  In that case don't disconnect and let heartbeat handle that instead
+
+    //TODO: implement disconnect on any hide and reconnect if the page is shown again
+    //  Will have to happen inside the DesktopAgentProxy as the reference to the DA needs to remain the same
+    //  and any listeners need to be re-registered automatically etc.
+    if (!event.persisted) {
+      //the page is being destroyed, disconnect from the DA
+
+      //Notify the Desktop Agent implementation to disconnect
+      da.disconnect();
+
+      //disconnect the MessagePort - which should send WCP6Goodbye first
+      messaging.disconnect();
+    }
+  });
 }

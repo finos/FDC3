@@ -23,6 +23,12 @@ Feature: Opening and Requesting App Details
       | msg.payload.error    | to.instanceId | msg.type               |
       | TargetAppUnavailable | a1            | getAppMetadataResponse |
 
+  Scenario: Looking up DesktopAgent metadata
+    When "libraryApp/a1" requests info on the DesktopAgent
+    Then messaging will have outgoing posts
+      | msg.payload.implementationMetadata.provider | to.instanceId | msg.matches_type       |
+      | cucumber-provider                           | a1            | getInfoResponse        |
+
   Scenario: Opening An App
     When "libraryApp/a1" opens app "storageApp"
     And "uuid-0" sends validate

@@ -8,8 +8,8 @@
       .glyph {
         font-size: 12px;
         padding: 2px 6px;
-        border-radius: 16px;
-        border-width: 1px;
+        border-radius: 50%;
+        border-width: 1.5px;
         border-style: solid;
         font-weight: bold;
       }
@@ -58,7 +58,13 @@
       }
 
       .logo path {
-        stroke: black;
+        stroke: white;
+        stroke-width: 10;
+        paint-order: fill;
+      }
+
+      #logo {
+        filter: drop-shadow(rgba(0, 0, 0, 0.4) 0px 0px 3px)
       }
     </style>
   </head>

@@ -529,6 +529,33 @@
             },
             "required":["type","details"],
             "additionalProperties": false
+        },
+        "PrivateChannelEventType": {
+            "title": "PrivateChannel Event Type",
+            "description": "Type defining valid type strings for Private Channel events.",
+            "type": "string",
+            "enum": [
+                "addContextListener",
+                "unsubscribe",
+                "disconnect"
+            ]
+        },
+        "PrivateChannelEvent": {
+            "description": "Type defining the format of event objects that may be received via a PrivateChannel's addEventListener function.",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/PrivateChannelEventType"
+                },
+                "details": {
+                    "title": "Event details",
+                    "description": "Additional details of the event, such as the `currentChannelId` for a CHANNEL_CHANGED event.",
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            },
+            "required":["type","details"],
+            "additionalProperties": false
         }
     }
 }

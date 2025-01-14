@@ -1,13 +1,14 @@
-import { AbstractWebMessaging } from './AbstractWebMessaging';
-import { RegisterableListener } from '@kite9/fdc3-agent-proxy';
-import { GetAgentParams } from '@kite9/fdc3-standard';
+import { AbstractMessaging, RegisterableListener } from '@kite9/fdc3-agent-proxy';
+import { AppIdentifier, GetAgentParams, WebDesktopAgentType } from '@kite9/fdc3-standard';
 import { v4 as uuidv4 } from 'uuid';
-import { BrowserTypes } from '@kite9/fdc3-schema';
-import { AddContextListenerRequestMeta } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
-type WebConnectionProtocol3Handshake = BrowserTypes.WebConnectionProtocol3Handshake;
+import {
+  AppRequestMessage,
+  WebConnectionProtocol3Handshake,
+  WebConnectionProtocol6Goodbye,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 /**
- * Details needed to set up the Messaging instance
+ * Details needed to set up the Messaging instance and Desktop AgentDetails record
  */
 export type ConnectionDetails = {
   connectionAttemptUuid: string;
@@ -15,59 +16,72 @@ export type ConnectionDetails = {
   messagePort: MessagePort;
   actualUrl: string;
   options: GetAgentParams;
+  agentType: WebDesktopAgentType;
+  agentUrl?: string;
 };
 
-export class MessagePortMessaging extends AbstractWebMessaging {
+const MESSAGE_EXCHANGE_TIMEOUT = 10016;
+export class MessagePortMessaging extends AbstractMessaging {
   private readonly cd: ConnectionDetails;
   private readonly listeners: Map<string, RegisterableListener> = new Map();
+  private messageExchangeTimeout: number;
 
-  constructor(cd: ConnectionDetails, deliveryTimeoutMs?: number) {
-    super(cd.options, cd.connectionAttemptUuid, cd.actualUrl, deliveryTimeoutMs);
+  constructor(cd: ConnectionDetails, appIdentifier: AppIdentifier) {
+    super(appIdentifier);
     this.cd = cd;
 
-    this.cd.messagePort.onmessage = m => {
-      this.listeners.forEach((v, _k) => {
+    /** We do not use the timeout specified as an argument to getAgent as
+     *  that is for connection messaging, rather than message exchanges
+     * post-connection. */
+    this.messageExchangeTimeout = MESSAGE_EXCHANGE_TIMEOUT;
+
+    this.cd.messagePort.addEventListener('message', m => {
+      this.listeners.forEach(v => {
         if (v.filter(m.data)) {
           v.action(m.data);
         }
       });
-    };
+    });
   }
 
   createUUID(): string {
     return uuidv4();
   }
 
-  async post(message: object): Promise<void> {
+  async post(message: AppRequestMessage | WebConnectionProtocol6Goodbye): Promise<void> {
     this.cd.messagePort.postMessage(message);
+    return Promise.resolve();
   }
 
-  register(listener: RegisterableListener): void {
-    if (!listener.id) {
-      throw new Error('Provided listener must have an id');
-    }
-
-    this.listeners.set(listener.id, listener);
+  register(l: RegisterableListener): void {
+    this.listeners.set(l.id!, l);
   }
 
   unregister(id: string): void {
     this.listeners.delete(id);
   }
 
-  createMeta(): AddContextListenerRequestMeta {
+  createMeta(): AppRequestMessage['meta'] {
     return {
       requestUuid: this.createUUID(),
       timestamp: new Date(),
-      source: this.getSource(),
+      source: super.getAppIdentifier(),
     };
   }
 
-  async waitFor<X>(filter: (m: any) => boolean, timeoutErrorMessage?: string): Promise<X> {
-    return await super.waitFor(filter, timeoutErrorMessage);
+  getTimeoutMs(): number {
+    return this.messageExchangeTimeout;
   }
 
   async disconnect(): Promise<void> {
-    await super.disconnect();
+    const bye: WebConnectionProtocol6Goodbye = {
+      type: 'WCP6Goodbye',
+      meta: {
+        timestamp: new Date(),
+      },
+    };
+    await this.post(bye);
+
     this.cd.messagePort.close();
   }
 }

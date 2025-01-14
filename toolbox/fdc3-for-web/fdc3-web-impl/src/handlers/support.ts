@@ -1,16 +1,24 @@
+import { AgentResponseMessage, AppRequestMessage } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { AppRegistration, ServerContext } from '../ServerContext';
-import { BrowserTypes } from '@kite9/fdc3-schema';
 import { AppIdentifier } from '@kite9/fdc3-standard';
 
-type AppRequestMessage = BrowserTypes.AppRequestMessage;
-type AgentResponseMessage = BrowserTypes.AgentResponseMessage;
+/** Interface representing a full specified app identifier (instanceId is optional in the API type). */
+export interface FullAppIdentifier {
+  readonly appId: string;
+  readonly instanceId: string;
+}
+
+export function isFullAppIdentifier(identifier: AppIdentifier | FullAppIdentifier): identifier is FullAppIdentifier {
+  const typedIdentifier = identifier as FullAppIdentifier;
+  return typedIdentifier.instanceId !== undefined && typedIdentifier.appId !== undefined;
+}
 
 export function successResponse(
   sc: ServerContext<AppRegistration>,
   request: AppRequestMessage,
-  to: AppIdentifier,
-  payload: any,
-  type: string
+  to: FullAppIdentifier,
+  payload: AgentResponseMessage['payload'],
+  type: AgentResponseMessage['type']
 ) {
   return successResponseId(sc, request.meta.requestUuid, to, payload, type);
 }
@@ -18,9 +26,9 @@ export function successResponse(
 export function errorResponse(
   sc: ServerContext<AppRegistration>,
   request: AppRequestMessage,
-  to: AppIdentifier,
+  to: FullAppIdentifier,
   error: string,
-  type: string
+  type: AgentResponseMessage['type']
 ) {
   return errorResponseId(sc, request.meta.requestUuid, to, error, type);
 }
@@ -28,30 +36,28 @@ export function errorResponse(
 export function successResponseId(
   sc: ServerContext<AppRegistration>,
   requestId: string,
-  to: AppIdentifier,
-  payload: any,
-  type: string
+  to: FullAppIdentifier,
+  payload: AgentResponseMessage['payload'],
+  type: AgentResponseMessage['type']
 ) {
-  sc.post(
-    {
-      meta: {
-        responseUuid: sc.createUUID(),
-        requestUuid: requestId,
-        timestamp: new Date(),
-      },
-      type,
-      payload,
-    } as AgentResponseMessage,
-    to.instanceId!!
-  );
+  const msg = {
+    meta: {
+      responseUuid: sc.createUUID(),
+      requestUuid: requestId,
+      timestamp: new Date(),
+    },
+    type,
+    payload,
+  };
+  sc.post(msg, to.instanceId!);
 }
 
 export function errorResponseId(
   sc: ServerContext<AppRegistration>,
   requestId: string,
-  to: AppIdentifier,
+  to: FullAppIdentifier,
   error: string,
-  type: string
+  type: AgentResponseMessage['type']
 ) {
   sc.post(
     {
@@ -65,13 +71,13 @@ export function errorResponseId(
         error,
       },
     } as AgentResponseMessage,
-    to.instanceId!!
+    to.instanceId!
   );
 }
 
 /*
  * from: https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates#14438954
  */
-export function onlyUnique(value: any, index: any, self: any) {
+export function onlyUnique<X>(value: X, index: number, self: X[]) {
   return self.indexOf(value) === index;
 }

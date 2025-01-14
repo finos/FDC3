@@ -7,6 +7,7 @@ import { AppRegistration, DefaultFDC3Server, DirectoryApp, ServerContext } from 
 import { ChannelState, ChannelType } from '@kite9/fdc3-web-impl/src/handlers/BroadcastHandler';
 import { link, UI, UI_URLS } from './util';
 import { BrowserTypes } from '@kite9/fdc3-schema';
+import { WebConnectionProtocol3Handshake } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL;
 
@@ -34,19 +35,19 @@ enum Approach {
 function getApproach(): Approach {
   const cb = document.getElementById('approach') as HTMLInputElement;
   const val = cb.value;
-  var out: Approach = Approach[val as keyof typeof Approach]; //Works with --noImplicitAny
+  const out: Approach = Approach[val as keyof typeof Approach]; //Works with --noImplicitAny
   return out;
 }
 
 function getUIKey(): UI {
   const cb = document.getElementById('ui') as HTMLInputElement;
   const val = cb.value;
-  var out: UI = UI[val as keyof typeof UI]; //Works with --noImplicitAny
+  const out: UI = UI[val as keyof typeof UI]; //Works with --noImplicitAny
   return out;
 }
 
 window.addEventListener('load', () => {
-  let desktopAgentUUID = uuid();
+  const desktopAgentUUID = uuid();
 
   const socket = io();
 
@@ -55,16 +56,89 @@ window.addEventListener('load', () => {
 
     const directory = new FDC3_2_1_JSONDirectory();
     await directory.load('/static/da/appd.json');
+    //await directory.load('/static/da/local-conformance-2_0.v2.json');
     const sc = new DemoServerContext(socket, directory);
 
     const channelDetails: ChannelState[] = [
-      { id: 'one', type: ChannelType.user, context: [], displayMetadata: { name: 'THE RED CHANNEL', color: 'red' } },
-      { id: 'two', type: ChannelType.user, context: [], displayMetadata: { name: 'THE BLUE CHANNEL', color: 'blue' } },
       {
-        id: 'three',
+        id: 'fdc3.channel.1',
         type: ChannelType.user,
         context: [],
-        displayMetadata: { name: 'THE GREEN CHANNEL', color: 'green' },
+        displayMetadata: {
+          name: 'Channel 1',
+          color: 'red',
+          glyph: '1',
+        },
+      },
+      {
+        id: 'fdc3.channel.2',
+        type: ChannelType.user,
+        context: [],
+        displayMetadata: {
+          name: 'Channel 2',
+          color: 'orange',
+          glyph: '2',
+        },
+      },
+      {
+        id: 'fdc3.channel.3',
+        type: ChannelType.user,
+        context: [],
+        displayMetadata: {
+          name: 'Channel 3',
+          color: 'yellow',
+          glyph: '3',
+        },
+      },
+      {
+        id: 'fdc3.channel.4',
+        type: ChannelType.user,
+        context: [],
+        displayMetadata: {
+          name: 'Channel 4',
+          color: 'green',
+          glyph: '4',
+        },
+      },
+      {
+        id: 'fdc3.channel.5',
+        type: ChannelType.user,
+        context: [],
+        displayMetadata: {
+          name: 'Channel 5',
+          color: 'cyan',
+          glyph: '5',
+        },
+      },
+      {
+        id: 'fdc3.channel.6',
+        type: ChannelType.user,
+        context: [],
+        displayMetadata: {
+          name: 'Channel 6',
+          color: 'blue',
+          glyph: '6',
+        },
+      },
+      {
+        id: 'fdc3.channel.7',
+        type: ChannelType.user,
+        context: [],
+        displayMetadata: {
+          name: 'Channel 7',
+          color: 'magenta',
+          glyph: '7',
+        },
+      },
+      {
+        id: 'fdc3.channel.8',
+        type: ChannelType.user,
+        context: [],
+        displayMetadata: {
+          name: 'Channel 8',
+          color: 'purple',
+          glyph: '8',
+        },
       },
     ];
     const fdc3Server = new DefaultFDC3Server(sc, directory, channelDetails, true, 20000, 10017);
@@ -74,7 +148,7 @@ window.addEventListener('load', () => {
     });
 
     socket.on(APP_GOODBYE, (id: string) => {
-      sc.goodbye(id);
+      fdc3Server.cleanup(id);
     });
 
     // let's create buttons for some apps
@@ -86,7 +160,7 @@ window.addEventListener('load', () => {
     // set up Desktop Agent Proxy interface here
     // disabling rule for checks on origin of messages - this could be improved by validating for origins we know we are working with
     // nosemgrep: javascript.browser.security.insufficient-postmessage-origin-validation.insufficient-postmessage-origin-validation
-    window.addEventListener('message', e => {
+    window.addEventListener('message', async e => {
       const event = e as MessageEvent;
       const data = event.data;
       const source = event.source as Window;
@@ -94,10 +168,10 @@ window.addEventListener('load', () => {
 
       console.log('Received: ' + JSON.stringify(event.data));
       if (data.type == 'WCP1Hello') {
-        if (getApproach() == Approach.IFRAME) {
-          const instance = sc.getInstanceForWindow(source);
-          source.postMessage(
-            {
+        const instance = await sc.getInstanceForWindow(source);
+        if (instance) {
+          if (getApproach() == Approach.IFRAME) {
+            const message: WebConnectionProtocol2LoadURL = {
               type: 'WCP2LoadUrl',
               meta: {
                 connectionAttemptUuid: data.meta.connectionAttemptUuid,
@@ -106,23 +180,19 @@ window.addEventListener('load', () => {
               payload: {
                 iframeUrl:
                   window.location.origin +
-                  `/static/da/embed.html?connectionAttemptUuid=${data.meta.connectionAttemptUuid}&desktopAgentId=${desktopAgentUUID}&instanceId=${instance?.instanceId}&UI=${getUIKey()}`,
+                  `/static/da/embed.html?&desktopAgentId=${desktopAgentUUID}&instanceId=${instance.instanceId}&UI=${getUIKey()}`,
               },
-            } as WebConnectionProtocol2LoadURL,
-            origin
-          );
-        } else {
-          const instance = sc.getInstanceForWindow(source)!!;
-          const channel = new MessageChannel();
-          link(socket, channel, instance.instanceId!!);
+            };
 
-          socket.emit(APP_HELLO, desktopAgentUUID, instance.instanceId);
+            source.postMessage(message, origin);
+          } else {
+            const channel = new MessageChannel();
+            link(socket, channel, instance.instanceId);
+            socket.emit(APP_HELLO, desktopAgentUUID, instance.instanceId);
+            const ui = UI_URLS[getUIKey()];
 
-          const ui = UI_URLS[getUIKey()];
-
-          // send the other end of the channel to the app
-          source.postMessage(
-            {
+            // send the other end of the channel to the app
+            const message: WebConnectionProtocol3Handshake = {
               type: 'WCP3Handshake',
               meta: {
                 connectionAttemptUuid: data.meta.connectionAttemptUuid,
@@ -132,60 +202,19 @@ window.addEventListener('load', () => {
                 fdc3Version: '2.2',
                 ...ui,
               },
-            },
-            origin,
-            [channel.port1]
-          );
+            };
+            source.postMessage(message, origin, [channel.port1]);
+          }
+        } else {
+          let sourceName;
+          try {
+            sourceName = source.name;
+          } catch (e: unknown) {
+            sourceName = `{a cross-origin window: ${(e as Error).message ?? e}}`;
+          }
+          console.error(`Couldn't locate an instance for window: ${sourceName}`);
         }
       }
-
-      // If this is in an iframe...
-      if (getApproach() == Approach.IFRAME) {
-        const instance = sc.getInstanceForWindow(source);
-        const message: WebConnectionProtocol2LoadURL = {
-          type: 'WCP2LoadUrl',
-          meta: {
-            connectionAttemptUuid: data.meta.connectionAttemptUuid,
-            timestamp: new Date(),
-          },
-          payload: {
-            iframeUrl:
-              window.location.origin +
-              `/static/da/embed.html?connectionAttemptUuid=${data.meta.connectionAttemptUuid}&desktopAgentId=${desktopAgentUUID}&instanceId=${instance?.instanceId}`,
-          },
-        };
-        source.postMessage(message, origin);
-        return;
-      }
-
-      const instance = sc.getInstanceForWindow(source);
-
-      if (!instance) {
-        throw new Error('Unable to find registration for this window');
-      }
-
-      const channel = new MessageChannel();
-      link(socket, channel, instance.instanceId);
-
-      socket.emit(APP_HELLO, desktopAgentUUID, instance.instanceId);
-
-      // send the other end of the channel to the app
-      source.postMessage(
-        {
-          type: 'WCP3Handshake',
-          meta: {
-            connectionAttemptUuid: data.meta.connectionAttemptUuid,
-            timestamp: new Date(),
-          },
-          payload: {
-            fdc3Version: '2.2',
-            intentResolverUrl: window.location.origin + '/static/da/intent-resolver.html',
-            channelSelectorUrl: window.location.origin + '/static/da/channel-selector.html',
-          },
-        },
-        origin,
-        [channel.port1]
-      );
     });
   });
 });

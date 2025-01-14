@@ -1,7 +1,11 @@
-import { AppIdentifier } from '@kite9/fdc3-standard';
 import { MessageHandler } from '../BasicFDC3Server';
 import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext';
-import { BrowserTypes } from '@kite9/fdc3-schema';
+import {
+  AppRequestMessage,
+  HeartbeatEvent,
+  WebConnectionProtocol6Goodbye,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { FullAppIdentifier } from './support';
 
 type HeartbeatDetails = {
   instanceId: string;
@@ -45,7 +49,7 @@ export class HeartbeatHandler implements MessageHandler {
             this.sendHeartbeat(sc, app);
 
             // check when the last heartbeat happened
-            const lastHeartbeat = this.lastHeartbeats.get(app.instanceId!!);
+            const lastHeartbeat = this.lastHeartbeats.get(app.instanceId);
             const currentState = app.state;
 
             if (lastHeartbeat != undefined) {
@@ -55,27 +59,32 @@ export class HeartbeatHandler implements MessageHandler {
                 console.error(
                   `Heartbeat from ${app.instanceId} for ${timeSinceLastHeartbeat}ms. App is considered connected.`
                 );
-                sc.setAppState(app.instanceId!!, State.Connected);
+                sc.setAppState(app.instanceId, State.Connected);
               } else if (timeSinceLastHeartbeat > disconnectedAfter && currentState == State.Connected) {
                 console.error(
                   `No heartbeat from ${app.instanceId} for ${timeSinceLastHeartbeat}ms. App is considered not responding.`
                 );
-                sc.setAppState(app.instanceId!!, State.NotResponding);
+                sc.setAppState(app.instanceId, State.NotResponding);
               } else if (timeSinceLastHeartbeat > deadAfter && currentState == State.NotResponding) {
                 console.error(
                   `No heartbeat from ${app.instanceId} for ${timeSinceLastHeartbeat}ms. App is considered terminated.`
                 );
-                sc.setAppState(app.instanceId!!, State.Terminated);
+                sc.setAppState(app.instanceId, State.Terminated);
               } else {
                 // no action
               }
             } else {
               // start the clock
-              this.lastHeartbeats.set(app.instanceId!!, now);
+              this.lastHeartbeats.set(app.instanceId, now);
             }
           });
       });
     }, pingInterval);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  cleanup(_instanceId: InstanceID, _sc: ServerContext<AppRegistration>): void {
+    //TODO: Consider whether to clean-up last heartbeat times
   }
 
   heartbeatTimes(): HeartbeatDetails[] {
@@ -95,7 +104,11 @@ export class HeartbeatHandler implements MessageHandler {
     clearInterval(this.timerFunction);
   }
 
-  accept(msg: any, sc: ServerContext<AppRegistration>, from: InstanceID): void {
+  async accept(
+    msg: AppRequestMessage | WebConnectionProtocol6Goodbye,
+    sc: ServerContext<AppRegistration>,
+    from: InstanceID
+  ): Promise<void> {
     if (!this.contexts.includes(sc)) {
       this.contexts.push(sc);
     }
@@ -103,11 +116,11 @@ export class HeartbeatHandler implements MessageHandler {
     if (msg.type == 'heartbeatAcknowledgementRequest') {
       const app = sc.getInstanceDetails(from);
       if (app) {
-        this.lastHeartbeats.set(app.instanceId!!, new Date().getTime());
+        this.lastHeartbeats.set(app.instanceId, new Date().getTime());
       }
     }
 
-    if (msg.type == 'WCP5Shutdown') {
+    if (msg.type == 'WCP6Goodbye') {
       const app = sc.getInstanceDetails(from);
       if (app) {
         sc.setAppState(from, State.Terminated);
@@ -115,8 +128,8 @@ export class HeartbeatHandler implements MessageHandler {
     }
   }
 
-  async sendHeartbeat(sc: ServerContext<AppRegistration>, app: AppIdentifier): Promise<void> {
-    const heartbeatEventMessage: BrowserTypes.HeartbeatEvent = {
+  async sendHeartbeat(sc: ServerContext<AppRegistration>, app: FullAppIdentifier): Promise<void> {
+    const event: HeartbeatEvent = {
       type: 'heartbeatEvent',
       meta: {
         timestamp: new Date(),
@@ -124,6 +137,6 @@ export class HeartbeatHandler implements MessageHandler {
       },
       payload: {},
     };
-    sc.post(heartbeatEventMessage, app.instanceId!!);
+    sc.post(event, app.instanceId);
   }
 }

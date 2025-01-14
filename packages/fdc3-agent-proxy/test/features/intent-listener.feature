@@ -23,7 +23,6 @@ Feature: Intent Listeners
     And messaging receives "{intentMessageOne}"
     Then messaging will have posts
       | type                | payload.intentResult.context.type | payload.intentResolution.intent |
-      | raiseIntentResponse | {empty}                           | BuyStock                        |
       | intentResultRequest | fdc3.returned-intent              | {empty}                         |
 
   Scenario: Intent Listeners Can Return Results (Channel)

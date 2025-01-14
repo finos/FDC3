@@ -1,10 +1,11 @@
+import {
+  RaiseIntentRequest,
+  RaiseIntentResponse,
+  RaiseIntentResultResponse,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { AutomaticResponse, IntentDetail, intentDetailMatches, TestMessaging } from '../TestMessaging';
-import { BrowserTypes } from '@kite9/fdc3-schema';
-import { ResolveError } from '@kite9/fdc3-standard';
-
-type RaiseIntentRequest = BrowserTypes.RaiseIntentRequest;
-type RaiseIntentResponse = BrowserTypes.RaiseIntentResponse;
-type RaiseIntentResultResponse = BrowserTypes.RaiseIntentResultResponse;
+import { AppMetadata, ResolveError } from '@kite9/fdc3-standard';
+import { createResponseMeta } from './support';
 
 export class RaiseIntent implements AutomaticResponse {
   filter(t: string) {
@@ -12,21 +13,22 @@ export class RaiseIntent implements AutomaticResponse {
   }
 
   createCannedRaiseIntentResponseMessage(intentRequest: RaiseIntentRequest, m: TestMessaging): RaiseIntentResponse {
-    const result = m.getIntentResult()!!;
-    if (result.error) {
+    const result = m.getIntentResult();
+
+    if (result && result.error) {
       const out: RaiseIntentResponse = {
         meta: {
           ...intentRequest.meta,
           responseUuid: m.createUUID(),
         },
         payload: {
-          error: result.error as any,
+          error: result.error,
         },
         type: 'raiseIntentResponse',
       };
 
       return out;
-    } else {
+    } else if (result) {
       const out: RaiseIntentResponse = {
         meta: {
           ...intentRequest.meta,
@@ -45,6 +47,8 @@ export class RaiseIntent implements AutomaticResponse {
       };
 
       return out;
+    } else {
+      throw new Error('TestMessaging did not return an IntentResult');
     }
   }
 
@@ -64,7 +68,7 @@ export class RaiseIntent implements AutomaticResponse {
           error: ResolveError.NoAppsFound,
         },
       };
-    } else if (relevant.length == 1) {
+    } else if (relevant.length == 1 && relevant[0].intent && relevant[0].app) {
       return {
         meta: {
           ...intentRequest.meta,
@@ -73,26 +77,26 @@ export class RaiseIntent implements AutomaticResponse {
         type: 'raiseIntentResponse',
         payload: {
           intentResolution: {
-            intent: relevant[0].intent!!,
-            source: relevant[0].app!!,
+            intent: relevant[0].intent,
+            source: relevant[0].app,
           },
         },
       };
-    } else {
+    } else if (relevant.length > 0) {
       return {
-        meta: {
-          ...intentRequest.meta,
-          responseUuid: m.createUUID(),
-        },
+        meta: createResponseMeta(intentRequest.meta),
         type: 'raiseIntentResponse',
         payload: {
           appIntent: {
-            apps: relevant.map(r => {
-              return {
-                appId: r?.app?.appId!!,
-                instanceId: r?.app?.instanceId,
-              };
-            }),
+            apps: relevant.reduce<AppMetadata[]>((filtered, r) => {
+              if (r.app?.appId) {
+                filtered.push({
+                  appId: r.app.appId,
+                  instanceId: r.app.instanceId,
+                });
+              }
+              return filtered;
+            }, []),
             intent: {
               displayName: intentRequest.payload.intent,
               name: intentRequest.payload.intent,
@@ -100,29 +104,30 @@ export class RaiseIntent implements AutomaticResponse {
           },
         },
       };
+    } else {
+      throw new Error('createRaiseIntentResponseMessage did not produce a valid result!');
     }
   }
 
-  createRaiseIntentResultResponseMesssage(
+  createRaiseIntentResultResponseMessage(
     intentRequest: RaiseIntentRequest,
     m: TestMessaging
   ): RaiseIntentResultResponse | undefined {
-    const result = m.getIntentResult()!!;
-    if (result.error) {
+    const result = m.getIntentResult();
+    if (result?.error) {
       return undefined;
-    } else {
+    } else if (result) {
       const out: RaiseIntentResultResponse = {
-        meta: {
-          ...intentRequest.meta,
-          responseUuid: m.createUUID(),
-        },
+        meta: createResponseMeta(intentRequest.meta),
         payload: {
-          intentResult: m.getIntentResult()!!,
+          intentResult: result,
         },
         type: 'raiseIntentResultResponse',
       };
 
       return out;
+    } else {
+      return;
     }
   }
 
@@ -154,7 +159,7 @@ export class RaiseIntent implements AutomaticResponse {
       }, 100);
 
       // next, send the result response
-      const out2 = this.createRaiseIntentResultResponseMesssage(intentRequest, m);
+      const out2 = this.createRaiseIntentResultResponseMessage(intentRequest, m);
       if (out2) {
         setTimeout(() => {
           m.receive(out2);

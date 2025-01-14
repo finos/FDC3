@@ -1,6 +1,7 @@
 import { ApiEvent, EventHandler } from '@kite9/fdc3-standard';
 import { Messaging } from '../Messaging';
 import { RegisterableListener } from './RegisterableListener';
+import { AgentEventMessage } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 export class EventListener implements RegisterableListener {
   readonly id: string;
@@ -15,11 +16,11 @@ export class EventListener implements RegisterableListener {
     this.handler = handler;
   }
 
-  filter(m: any): boolean {
+  filter(m: AgentEventMessage): boolean {
     return m.type === this.type;
   }
 
-  action(m: any): void {
+  action(m: AgentEventMessage): void {
     if (m.type === this.type) {
       this.handler({
         type: this.type,

@@ -13,7 +13,7 @@ getAgent().then(async fdc3 => {
     },
   });
 
-  log!!.textContent = `Got resolution: ${JSON.stringify(reso)}`;
+  log!.textContent = `Got resolution: ${JSON.stringify(reso)}`;
   const result = await reso.getResult();
-  log!!.textContent += `Got result: ${JSON.stringify(result)}`;
+  log!.textContent += `Got result: ${JSON.stringify(result)}`;
 });

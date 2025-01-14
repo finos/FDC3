@@ -1,10 +1,9 @@
 import { Given } from '@cucumber/cucumber';
 import { CustomWorld } from '../world/index';
 import { handleResolve } from '@kite9/testing';
-import { BrowserTypes } from '@kite9/fdc3-schema';
 import { Context } from '@kite9/fdc3-context';
-import { ContextMetadata } from '@kite9/fdc3-standard';
-type IntentEvent = BrowserTypes.IntentEvent;
+import { ContextMetadata, ResolveError } from '@kite9/fdc3-standard';
+import { IntentEvent } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 Given('app {string}', function (this: CustomWorld, appStr: string) {
   const [appId, instanceId] = appStr.split('/');
@@ -83,7 +82,7 @@ Given('Raise Intent returns a context of {string}', function (this: CustomWorld,
   });
 });
 
-Given('Raise Intent will throw a {string} error', function (this: CustomWorld, error: string) {
+Given('Raise Intent will throw a {string} error', function (this: CustomWorld, error: ResolveError) {
   this.messaging?.setIntentResult({
     error,
   });
@@ -144,7 +143,7 @@ Given(
     const msg: IntentEvent = {
       type: 'intentEvent',
       meta: {
-        eventUuid: this.messaging?.createUUID()!!,
+        eventUuid: this.messaging!.createUUID(),
         timestamp: new Date(),
       },
       payload: {
