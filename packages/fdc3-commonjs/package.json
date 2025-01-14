@@ -22,7 +22,7 @@
     "build": "npx rollup -c rollup.config.mjs"
   },
   "dependencies": {
-    "@finos/fdc3": "2.2.0-beta.30"
+    "@finos/fdc3": "2.2.0-alpha.1"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.1",
