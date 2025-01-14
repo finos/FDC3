@@ -86,14 +86,14 @@ To contribute a patch for a New Intent, see the [Submit New Intent](docs/guides/
 
 |Module | Test Policy |
 |---|---|
-|`packages/fdc3-agent-proxy` | Contributions must improve or maintain coverage at the current levels |
-|`packages/fdc3-get-agent` |Contributions must improve or maintain coverage at the current levels 
+|`packages/fdc3-agent-proxy` | Contributions must improve or maintain coverage at the current level |
+|`packages/fdc3-get-agent` |Contributions must improve or maintain coverage at the current level 
 |`packages/fdc3-commonjs` | Code should not be added here |
-|`packages/fdc3-context` | Must contain only JSON Schemas |
-|`packages/fdc3-schema` | Must contain only JSON Schemas |
-|`packages/fdc3-context` | Must contain only JSON Schemas |
-|`packages/fdc3-standard` | Contributions must improve or maintain coverage at the current levels |
-|`toolbox/fdc3-for-web/fdc3-web-impl` | Contributions must improve or maintain coverage at the current levels |
+|`packages/fdc3-context` | Must contain only JSON Schemas and source code generated from them |
+|`packages/fdc3-schema` | Must contain only JSON Schemas and source code generated from them |
+|`packages/fdc3-context` | Must contain only JSON Schemas and source code generated from them |
+|`packages/fdc3-standard` | Contributions must improve or maintain coverage at the current level |
+|`toolbox/fdc3-for-web/fdc3-web-impl` | Contributions must improve or maintain coverage at the current level |
 
 Please note that the FDC3 project uses the following test policy:
 
