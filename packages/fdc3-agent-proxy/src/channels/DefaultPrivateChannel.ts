@@ -5,7 +5,7 @@ import {
   Listener,
   PrivateChannel,
   PrivateChannelEventTypes,
-} from '@kite9/fdc3-standard';
+} from '@finos/fdc3-standard';
 import { DefaultChannel } from './DefaultChannel';
 import { Messaging } from '../Messaging';
 import {
@@ -19,7 +19,7 @@ import { RegisterableListener } from '../listeners/RegisterableListener';
 import {
   PrivateChannelDisconnectRequest,
   PrivateChannelDisconnectResponse,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 export class DefaultPrivateChannel extends DefaultChannel implements PrivateChannel {
   constructor(messaging: Messaging, id: string) {

@@ -1,7 +1,7 @@
-import { Channel } from '@kite9/fdc3-standard';
-import { ChannelSelector } from '@kite9/fdc3-standard';
+import { Channel } from '@finos/fdc3-standard';
+import { ChannelSelector } from '@finos/fdc3-standard';
 import { AbstractUIComponent } from './AbstractUIComponent';
-import { BrowserTypes } from '@kite9/fdc3-schema';
+import { BrowserTypes } from '@finos/fdc3-schema';
 import { Logger } from '../util/Logger';
 const { isFdc3UserInterfaceChannelSelected } = BrowserTypes;
 type Fdc3UserInterfaceChannels = BrowserTypes.Fdc3UserInterfaceChannels;

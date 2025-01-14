@@ -4,7 +4,7 @@ import {
   AppRequestMessage,
   HeartbeatEvent,
   WebConnectionProtocol6Goodbye,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { FullAppIdentifier } from './support';
 
 type HeartbeatDetails = {

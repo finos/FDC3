@@ -1,6 +1,6 @@
-import { AgentResponseMessage, AppRequestMessage } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { AgentResponseMessage, AppRequestMessage } from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { AppRegistration, ServerContext } from '../ServerContext';
-import { AppIdentifier } from '@kite9/fdc3-standard';
+import { AppIdentifier } from '@finos/fdc3-standard';
 
 /** Interface representing a full specified app identifier (instanceId is optional in the API type). */
 export interface FullAppIdentifier {

@@ -10,7 +10,7 @@ import { RegisterableListener } from './listeners/RegisterableListener';
 import { DefaultAppSupport } from './apps/DefaultAppSupport';
 import { AppSupport } from './apps/AppSupport';
 import { DefaultHeartbeatSupport } from './heartbeat/DefaultHeartbeatSupport';
-import { Connectable } from '@kite9/fdc3-standard';
+import { Connectable } from '@finos/fdc3-standard';
 
 export {
   type Messaging,

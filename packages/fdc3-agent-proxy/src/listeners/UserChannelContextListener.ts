@@ -1,4 +1,4 @@
-import { Channel, Listener } from '@kite9/fdc3-standard';
+import { Channel, Listener } from '@finos/fdc3-standard';
 import { RegisterableListener } from './RegisterableListener';
 
 /**

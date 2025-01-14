@@ -1,5 +1,5 @@
-import { AgentEventMessage, AgentResponseMessage } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
-import { Listener } from '@kite9/fdc3-standard';
+import { AgentEventMessage, AgentResponseMessage } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { Listener } from '@finos/fdc3-standard';
 
 /**
  * Extends the basic concept of FDC3 listeners to include lifecycle methods.

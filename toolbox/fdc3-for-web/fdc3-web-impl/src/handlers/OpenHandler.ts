@@ -1,9 +1,9 @@
 import { MessageHandler } from '../BasicFDC3Server';
 import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext';
 import { Directory, DirectoryApp } from '../directory/DirectoryInterface';
-import { ContextElement } from '@kite9/fdc3-context';
-import { OpenError, ResolveError, AppIdentifier, AppMetadata, ImplementationMetadata } from '@kite9/fdc3-standard';
-import { BrowserTypes } from '@kite9/fdc3-schema';
+import { ContextElement } from '@finos/fdc3-context';
+import { OpenError, ResolveError, AppIdentifier, AppMetadata, ImplementationMetadata } from '@finos/fdc3-standard';
+import { BrowserTypes } from '@finos/fdc3-schema';
 import { errorResponse, FullAppIdentifier, successResponse } from './support';
 import {
   AgentResponseMessage,
@@ -15,7 +15,7 @@ import {
   isGetInfoRequest,
   isOpenRequest,
   isWebConnectionProtocol4ValidateAppIdentity,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 type BroadcastEvent = BrowserTypes.BroadcastEvent;
 type AddContextListenerRequest = BrowserTypes.AddContextListenerRequest;
@@ -110,7 +110,7 @@ export class OpenHandler implements MessageHandler {
     //don't cleanup pending if the opening app closes as we should still deliver context
   }
 
-  shutdown(): void {}
+  shutdown(): void { }
 
   async accept(
     msg: AppRequestMessage | WebConnectionProtocol4ValidateAppIdentity,

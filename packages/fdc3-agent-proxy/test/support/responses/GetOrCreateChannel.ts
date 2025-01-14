@@ -1,11 +1,11 @@
 import { AutomaticResponse, TestMessaging } from '../TestMessaging';
-import { ChannelError } from '@kite9/fdc3-standard';
+import { ChannelError } from '@finos/fdc3-standard';
 import { createResponseMeta } from './support';
 import {
   AppRequestMessage,
   GetOrCreateChannelRequest,
   GetOrCreateChannelResponse,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 type ChannelType = { [channelId: string]: 'user' | 'app' | 'private' };
 

@@ -1,8 +1,8 @@
 import { When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
 import { createMeta } from './generic.steps';
-import { BrowserTypes } from '@kite9/fdc3-schema';
-import { handleResolve } from '@kite9/testing';
+import { BrowserTypes } from '@finos/fdc3-schema';
+import { handleResolve } from '@finos/testing';
 
 type GetUserChannelsRequest = BrowserTypes.GetUserChannelsRequest;
 type GetCurrentChannelRequest = BrowserTypes.GetCurrentChannelRequest;

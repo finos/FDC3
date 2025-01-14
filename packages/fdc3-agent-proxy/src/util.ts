@@ -1,5 +1,5 @@
-import { AgentEventMessage, AgentResponseMessage } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
-import { ChannelError, OpenError, ResolveError } from '@kite9/fdc3-standard';
+import { AgentEventMessage, AgentResponseMessage } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { ChannelError, OpenError, ResolveError } from '@finos/fdc3-standard';
 
 export type ErrorMessages = ChannelError | OpenError | ResolveError;
 

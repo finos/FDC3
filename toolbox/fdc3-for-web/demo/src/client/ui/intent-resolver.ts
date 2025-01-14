@@ -5,8 +5,8 @@ import {
   Fdc3UserInterfaceRestyle,
   isFdc3UserInterfaceHandshake,
   isFdc3UserInterfaceResolve,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
-import { AppIdentifier } from '@kite9/fdc3-standard';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { AppIdentifier } from '@finos/fdc3-standard';
 
 const DEFAULT_COLLAPSED_CSS = {
   position: 'fixed',

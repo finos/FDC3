@@ -1,5 +1,5 @@
-import { DesktopAgent, WebDesktopAgentType } from '@kite9/fdc3-standard';
-import { GetAgentParams } from '@kite9/fdc3-standard';
+import { DesktopAgent, WebDesktopAgentType } from '@finos/fdc3-standard';
+import { GetAgentParams } from '@finos/fdc3-standard';
 
 /**
  * Represents the common interface for a loading strategy

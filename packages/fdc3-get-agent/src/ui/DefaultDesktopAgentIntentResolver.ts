@@ -1,9 +1,9 @@
-import { AppIntent } from '@kite9/fdc3-standard';
-import { IntentResolver, IntentResolutionChoice } from '@kite9/fdc3-standard';
+import { AppIntent } from '@finos/fdc3-standard';
+import { IntentResolver, IntentResolutionChoice } from '@finos/fdc3-standard';
 import { AbstractUIComponent } from './AbstractUIComponent';
-import { Context } from '@kite9/fdc3-context';
+import { Context } from '@finos/fdc3-context';
 import { Logger } from '../util/Logger';
-import { BrowserTypes } from '@kite9/fdc3-schema';
+import { BrowserTypes } from '@finos/fdc3-schema';
 const { isFdc3UserInterfaceResolveAction } = BrowserTypes;
 type Fdc3UserInterfaceResolve = BrowserTypes.Fdc3UserInterfaceResolve;
 

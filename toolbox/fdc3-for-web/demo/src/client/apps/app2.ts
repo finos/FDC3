@@ -1,4 +1,4 @@
-import { getAgent } from '@kite9/fdc3-get-agent';
+import { getAgent } from '@finos/fdc3-get-agent';
 
 /**
  * This demonstrates using the API via a promise

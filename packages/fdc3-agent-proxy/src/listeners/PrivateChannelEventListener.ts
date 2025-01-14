@@ -8,8 +8,8 @@ import {
   PrivateChannelEvent,
   PrivateChannelEventTypes,
   PrivateChannelUnsubscribeEvent,
-} from '@kite9/fdc3-standard';
-import { BrowserTypes } from '@kite9/fdc3-schema';
+} from '@finos/fdc3-standard';
+import { BrowserTypes } from '@finos/fdc3-schema';
 const {
   isPrivateChannelOnAddContextListenerEvent,
   isPrivateChannelOnDisconnectEvent,

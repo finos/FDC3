@@ -1,12 +1,12 @@
-import { Icon } from '@kite9/fdc3';
-import { AppIntent } from '@kite9/fdc3';
+import { Icon } from '@finos/fdc3';
+import { AppIntent } from '@finos/fdc3';
 import {
   Fdc3UserInterfaceHello,
   Fdc3UserInterfaceResolve,
   Fdc3UserInterfaceResolveAction,
   Fdc3UserInterfaceRestyle,
   isFdc3UserInterfaceResolve,
-} from '@kite9/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 const setup = (
   data: Fdc3UserInterfaceResolve['payload'],

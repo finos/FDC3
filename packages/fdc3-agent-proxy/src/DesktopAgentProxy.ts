@@ -9,12 +9,12 @@ import {
   IntentHandler,
   IntentResolution,
   Listener,
-} from '@kite9/fdc3-standard';
+} from '@finos/fdc3-standard';
 import { ChannelSupport } from './channels/ChannelSupport';
 import { AppSupport } from './apps/AppSupport';
 import { IntentSupport } from './intents/IntentSupport';
-import { Connectable, Channel } from '@kite9/fdc3-standard';
-import { Context } from '@kite9/fdc3-context';
+import { Connectable, Channel } from '@finos/fdc3-standard';
+import { Context } from '@finos/fdc3-context';
 import { HeartbeatSupport } from './heartbeat/HeartbeatSupport';
 
 /**

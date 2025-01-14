@@ -8,14 +8,14 @@ import {
   IntentResult,
   IntentResolver,
   IntentResolutionChoice,
-} from '@kite9/fdc3-standard';
+} from '@finos/fdc3-standard';
 import { IntentSupport } from './IntentSupport';
 import { Messaging } from '../Messaging';
 import { DefaultIntentResolution } from './DefaultIntentResolution';
 import { DefaultIntentListener } from '../listeners/DefaultIntentListener';
 import { DefaultChannel } from '../channels/DefaultChannel';
 import { DefaultPrivateChannel } from '../channels/DefaultPrivateChannel';
-import { Context } from '@kite9/fdc3-context';
+import { Context } from '@finos/fdc3-context';
 import {
   FindIntentRequest,
   FindIntentResponse,
@@ -26,7 +26,7 @@ import {
   RaiseIntentRequest,
   RaiseIntentResponse,
   RaiseIntentResultResponse,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { throwIfUndefined } from '../util';
 
 const convertIntentResult = async (

@@ -2,8 +2,8 @@ import { DataTable, Given, When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
 import { DirectoryApp } from '../../src/directory/DirectoryInterface';
 import { APP_FIELD, contextMap, createMeta } from './generic.steps';
-import { handleResolve } from '@kite9/testing';
-import { BrowserTypes } from '@kite9/fdc3-schema';
+import { handleResolve } from '@finos/testing';
+import { BrowserTypes } from '@finos/fdc3-schema';
 
 type FindIntentRequest = BrowserTypes.FindIntentRequest;
 type FindIntentsByContextRequest = BrowserTypes.FindIntentsByContextRequest;

@@ -1,10 +1,10 @@
 import { When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
 import { createMeta } from './generic.steps';
-import {} from '@kite9/fdc3-standard';
-import { handleResolve } from '@kite9/testing';
+import { } from '@finos/fdc3-standard';
+import { handleResolve } from '@finos/testing';
 import { contextMap } from './generic.steps';
-import { BrowserTypes } from '@kite9/fdc3-schema';
+import { BrowserTypes } from '@finos/fdc3-schema';
 
 type AddContextListenerRequest = BrowserTypes.AddContextListenerRequest;
 type ContextListenerUnsubscribeRequest = BrowserTypes.ContextListenerUnsubscribeRequest;

@@ -1,4 +1,4 @@
-import { AppIdentifier, DesktopAgent } from '@kite9/fdc3-standard';
+import { AppIdentifier, DesktopAgent } from '@finos/fdc3-standard';
 import {
   DesktopAgentProxy,
   DefaultChannelSupport,
@@ -6,13 +6,13 @@ import {
   DefaultIntentSupport,
   ChannelSupport,
   DefaultHeartbeatSupport,
-} from '@kite9/fdc3-agent-proxy';
+} from '@finos/fdc3-agent-proxy';
 import { ConnectionDetails, MessagePortMessaging } from './MessagePortMessaging';
 import { DefaultDesktopAgentIntentResolver } from '../ui/DefaultDesktopAgentIntentResolver';
 import { DefaultDesktopAgentChannelSelector } from '../ui/DefaultDesktopAgentChannelSelector';
 import { NullIntentResolver } from '../ui/NullIntentResolver';
 import { NullChannelSelector } from '../ui/NullChannelSelector';
-import { ChannelSelector } from '@kite9/fdc3-standard';
+import { ChannelSelector } from '@finos/fdc3-standard';
 import { Logger } from '../util/Logger';
 
 /**

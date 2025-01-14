@@ -1,13 +1,13 @@
 import { CustomWorld } from '../world';
 import { MockWindow } from './MockWindow';
 import { CHANNEL_SELECTOR_URL, INTENT_RESOLVER_URL } from './MockFDC3Server';
-import { isWebConnectionProtocol1Hello } from '@kite9/fdc3-schema/dist/generated/api/BrowserTypes';
+import { isWebConnectionProtocol1Hello } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import {
   Fdc3UserInterfaceHello,
   Fdc3UserInterfaceRestyle,
   isFdc3UserInterfaceHandshake,
   WebConnectionProtocol3Handshake,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 /**
  * This handles the frame communications when we're using the embedded iframe approach

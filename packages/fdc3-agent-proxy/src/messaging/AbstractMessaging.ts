@@ -1,11 +1,11 @@
-import { AppIdentifier } from '@kite9/fdc3-standard';
+import { AppIdentifier } from '@finos/fdc3-standard';
 import { Messaging } from '../Messaging';
 import { RegisterableListener } from '../listeners/RegisterableListener';
 import {
   AgentResponseMessage,
   AppRequestMessage,
   WebConnectionProtocol6Goodbye,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 export abstract class AbstractMessaging implements Messaging {
   private appIdentifier: AppIdentifier;

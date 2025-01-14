@@ -1,10 +1,10 @@
 import { Given } from '@cucumber/cucumber';
-import { handleResolve } from '@kite9/testing';
+import { handleResolve } from '@finos/testing';
 import { DefaultDesktopAgentChannelSelector } from '../../src/ui/DefaultDesktopAgentChannelSelector';
 import { CHANNEL_SELECTOR_URL } from '../support/MockFDC3Server';
 import { USER_CHANNELS } from '../support/responses/UserChannels';
 import { CustomWorld } from '../world';
-import { Fdc3UserInterfaceChannelSelected } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { Fdc3UserInterfaceChannelSelected } from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 Given(
   'A Channel Selector in {string} with callback piping to {string}',

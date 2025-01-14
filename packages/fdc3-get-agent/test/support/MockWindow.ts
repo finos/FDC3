@@ -1,4 +1,4 @@
-import { DesktopAgent } from '@kite9/fdc3-standard';
+import { DesktopAgent } from '@finos/fdc3-standard';
 import { CustomWorld } from '../world';
 import { EventHandler } from './EventHandler';
 import { MockElement } from './MockElement';
@@ -9,7 +9,7 @@ import {
   Fdc3UserInterfaceMessage,
   isFdc3UserInterfaceHello,
   WebConnectionProtocolMessage,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 type STANDARD_MESSAGES =
   | AppRequestMessage

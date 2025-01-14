@@ -1,16 +1,16 @@
 import { DataTable, Given, Then, When } from '@cucumber/cucumber';
-import { Context } from '@kite9/fdc3-context';
-import { handleResolve, matchData } from '@kite9/testing';
+import { Context } from '@finos/fdc3-context';
+import { handleResolve, matchData } from '@finos/testing';
 import { CustomWorld } from '../world/index';
-import { CHANNEL_STATE } from '@kite9/testing';
-import { ApiEvent } from '@kite9/fdc3-standard';
+import { CHANNEL_STATE } from '@finos/testing';
+import { ApiEvent } from '@finos/fdc3-standard';
 import {
   BroadcastEvent,
   ChannelChangedEvent,
   PrivateChannelOnAddContextListenerEvent,
   PrivateChannelOnDisconnectEvent,
   PrivateChannelOnUnsubscribeEvent,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 const contextMap: Record<string, Context> = {
   'fdc3.instrument': {

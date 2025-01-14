@@ -1,5 +1,5 @@
-import { AppIdentifier, ResolveError } from '@kite9/fdc3-standard';
-import { Context } from '@kite9/fdc3-context';
+import { AppIdentifier, ResolveError } from '@finos/fdc3-standard';
+import { Context } from '@finos/fdc3-context';
 import { v4 as uuidv4 } from 'uuid';
 import { AbstractMessaging } from '../../src/messaging/AbstractMessaging';
 import { RegisterableListener } from '../../src/listeners/RegisterableListener';
@@ -24,7 +24,7 @@ import {
   AppRequestMessage,
   Channel,
   WebConnectionProtocol6Goodbye,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { GetInfo } from './responses/GetInfo';
 
 export interface IntentDetail {

@@ -1,4 +1,4 @@
-import { FDC3Server, InstanceID, State } from '@kite9/fdc3-web-impl';
+import { FDC3Server, InstanceID, State } from '@finos/fdc3-web-impl';
 import { TestServerContext } from './TestServerContext';
 import { MockWindow } from './MockWindow';
 import { AutomaticResponse } from './responses/AutomaticResponses';
@@ -12,7 +12,7 @@ import {
   AppRequestMessage,
   WebConnectionProtocol2LoadURL,
   WebConnectionProtocol3Handshake,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 export const EMBED_URL = 'http://localhost:8080/static/da/embed.html';
 export const CHANNEL_SELECTOR_URL = 'https://mock.fdc3.com/channelSelector';

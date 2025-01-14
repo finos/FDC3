@@ -4,8 +4,8 @@ import { TestServerContext } from '../support/TestServerContext';
 import { DefaultFDC3Server } from '../../src/BasicFDC3Server';
 import { BasicDirectory } from '../../src/directory/BasicDirectory';
 import { ChannelType } from '../../src/handlers/BroadcastHandler';
-import { Context } from '@kite9/fdc3-context';
-import { AppIdentifier } from '@kite9/fdc3-standard';
+import { Context } from '@finos/fdc3-context';
+import { AppIdentifier } from '@finos/fdc3-standard';
 
 export const APP_FIELD = 'apps';
 

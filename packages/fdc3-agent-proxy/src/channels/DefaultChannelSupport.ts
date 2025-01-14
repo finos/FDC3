@@ -6,7 +6,7 @@ import {
   ChannelSelector,
   EventHandler,
   ChannelError,
-} from '@kite9/fdc3-standard';
+} from '@finos/fdc3-standard';
 import { Messaging } from '../Messaging';
 import { ChannelSupport } from './ChannelSupport';
 import { DefaultPrivateChannel } from './DefaultPrivateChannel';
@@ -27,7 +27,7 @@ import {
   LeaveCurrentChannelRequest,
   JoinUserChannelResponse,
   JoinUserChannelRequest,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { throwIfUndefined } from '../util';
 
 export class DefaultChannelSupport implements ChannelSupport {

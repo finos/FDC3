@@ -2,9 +2,9 @@
  * SPDX-License-Identifier: Apache-2.0
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
-import * as fdc3_2 from "@kite9/fdc3";
+import * as fdc3_2 from "@finos/fdc3";
 import * as fdc3_1 from "fdc3-1.2";
-import { fdc3Ready } from "@kite9/fdc3";
+import { fdc3Ready } from "@finos/fdc3";
 
 const fdc3ReadyPromise = fdc3Ready();
 interface fdc3_1IntentResolution extends fdc3_1.IntentResolution {
@@ -109,9 +109,9 @@ class Fdc3Api {
 				context,
 				app
 					? {
-							appId: app?.appId ? app.appId : "",
-							instanceId: (app as fdc3_2.AppMetadata)?.instanceId,
-						}
+						appId: app?.appId ? app.appId : "",
+						instanceId: (app as fdc3_2.AppMetadata)?.instanceId,
+					}
 					: undefined
 			);
 		} else {

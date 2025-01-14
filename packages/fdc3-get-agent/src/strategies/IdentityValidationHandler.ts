@@ -1,8 +1,8 @@
-import { GetAgentParams, AgentError } from '@kite9/fdc3-standard';
+import { GetAgentParams, AgentError } from '@finos/fdc3-standard';
 import { retrieveDesktopAgentDetails } from '../sessionStorage/DesktopAgentDetails';
 import { Logger } from '../util/Logger';
 
-import { BrowserTypes } from '@kite9/fdc3-schema';
+import { BrowserTypes } from '@finos/fdc3-schema';
 const {
   isWebConnectionProtocol5ValidateAppIdentitySuccessResponse,
   isWebConnectionProtocol5ValidateAppIdentityFailedResponse,

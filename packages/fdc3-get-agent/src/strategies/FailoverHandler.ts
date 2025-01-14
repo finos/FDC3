@@ -1,4 +1,4 @@
-import { GetAgentParams, DesktopAgent, WebDesktopAgentType, AgentError, AppIdentifier } from '@kite9/fdc3-standard';
+import { GetAgentParams, DesktopAgent, WebDesktopAgentType, AgentError, AppIdentifier } from '@finos/fdc3-standard';
 import { createDesktopAgentAPI } from '../messaging/message-port';
 import { DesktopAgentSelection } from './Loader';
 import { v4 as uuidv4 } from 'uuid';

@@ -1,5 +1,5 @@
-import { AgentError, DEFAULT_TIMEOUT_MS, DesktopAgent, WebDesktopAgentType } from '@kite9/fdc3-standard';
-import { GetAgentParams } from '@kite9/fdc3-standard';
+import { AgentError, DEFAULT_TIMEOUT_MS, DesktopAgent, WebDesktopAgentType } from '@finos/fdc3-standard';
+import { GetAgentParams } from '@finos/fdc3-standard';
 import { DesktopAgentSelection, Loader } from './Loader';
 import { Logger } from '../util/Logger';
 

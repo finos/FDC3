@@ -1,4 +1,4 @@
-import { Context } from '@kite9/fdc3-context';
+import { Context } from '@finos/fdc3-context';
 import { AppIdentifier } from '../api/AppIdentifier';
 import { AppIntent } from '../api/AppIntent';
 import { Connectable } from './Connectable';

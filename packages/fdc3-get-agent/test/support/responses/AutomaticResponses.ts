@@ -1,4 +1,4 @@
-import { InstanceID } from '@kite9/fdc3-web-impl';
+import { InstanceID } from '@finos/fdc3-web-impl';
 import { TestServerContext } from '../TestServerContext';
 
 export interface AutomaticResponse {

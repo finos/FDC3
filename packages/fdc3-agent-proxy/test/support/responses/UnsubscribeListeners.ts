@@ -7,10 +7,10 @@ import {
   IntentListenerUnsubscribeResponse,
   PrivateChannelUnsubscribeEventListenerRequest,
   PrivateChannelUnsubscribeEventListenerResponse,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { AutomaticResponse, TestMessaging } from '../TestMessaging';
 import { createResponseMeta } from './support';
-import { EventListenerUnsubscribeResponse } from '@kite9/fdc3-schema/dist/generated/api/BrowserTypes';
+import { EventListenerUnsubscribeResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 type Requests =
   | IntentListenerUnsubscribeRequest

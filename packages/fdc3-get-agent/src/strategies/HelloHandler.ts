@@ -1,7 +1,7 @@
-import { FDC3_VERSION, GetAgentParams, WebDesktopAgentType } from '@kite9/fdc3-standard';
+import { FDC3_VERSION, GetAgentParams, WebDesktopAgentType } from '@finos/fdc3-standard';
 import { ConnectionDetails } from '../messaging/MessagePortMessaging';
 import { Logger } from '../util/Logger';
-import { BrowserTypes } from '@kite9/fdc3-schema';
+import { BrowserTypes } from '@finos/fdc3-schema';
 const { isWebConnectionProtocol2LoadURL, isWebConnectionProtocol3Handshake } = BrowserTypes;
 type WebConnectionProtocolMessage = BrowserTypes.WebConnectionProtocolMessage;
 type WebConnectionProtocol1Hello = BrowserTypes.WebConnectionProtocol1Hello;
