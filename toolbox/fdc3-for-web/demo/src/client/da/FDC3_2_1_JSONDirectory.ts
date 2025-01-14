@@ -1,5 +1,5 @@
-import { BasicDirectory } from '@kite9/fdc3-web-impl/src/directory/BasicDirectory';
-import { DirectoryApp } from '@kite9/fdc3-web-impl/src/directory/DirectoryInterface';
+import { BasicDirectory } from '@finos/fdc3-web-impl/src/directory/BasicDirectory';
+import { DirectoryApp } from '@finos/fdc3-web-impl/src/directory/DirectoryInterface';
 
 async function loadRemotely(u: string) {
   const response = await fetch(u);

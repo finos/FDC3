@@ -1,4 +1,4 @@
-import { Channel, ContextHandler, EventHandler, Listener, PrivateChannel } from '@kite9/fdc3-standard';
+import { Channel, ContextHandler, EventHandler, Listener, PrivateChannel } from '@finos/fdc3-standard';
 
 export interface ChannelSupport {
   getUserChannel(): Promise<Channel | null>;

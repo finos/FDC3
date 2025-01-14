@@ -1,7 +1,7 @@
 import { DataTable, Then } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
 import expect from 'expect';
-import { setupGenericSteps, matchData } from '@kite9/testing';
+import { setupGenericSteps, matchData } from '@finos/testing';
 
 Then('messaging will have outgoing posts', function (this: CustomWorld, dt: DataTable) {
   // just take the last few posts and match those

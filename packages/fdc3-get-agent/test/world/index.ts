@@ -1,5 +1,5 @@
 import { setWorldConstructor } from '@cucumber/cucumber';
-import { PropsWorld } from '@kite9/testing';
+import { PropsWorld } from '@finos/testing';
 import { MockFDC3Server } from '../support/MockFDC3Server';
 import { TestServerContext } from '../support/TestServerContext';
 

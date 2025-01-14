@@ -2,9 +2,9 @@ import {
   RaiseIntentRequest,
   RaiseIntentResponse,
   RaiseIntentResultResponse,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { AutomaticResponse, IntentDetail, intentDetailMatches, TestMessaging } from '../TestMessaging';
-import { AppMetadata, ResolveError } from '@kite9/fdc3-standard';
+import { AppMetadata, ResolveError } from '@finos/fdc3-standard';
 import { createResponseMeta } from './support';
 
 export class RaiseIntent implements AutomaticResponse {

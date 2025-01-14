@@ -1,6 +1,6 @@
-import { Connectable, FDC3_VERSION } from '@kite9/fdc3-standard';
+import { Connectable, FDC3_VERSION } from '@finos/fdc3-standard';
 import { Logger } from '../util/Logger';
-import { BrowserTypes } from '@kite9/fdc3-schema';
+import { BrowserTypes } from '@finos/fdc3-schema';
 const { isFdc3UserInterfaceHello, isFdc3UserInterfaceRestyle } = BrowserTypes;
 type Fdc3UserInterfaceHandshake = BrowserTypes.Fdc3UserInterfaceHandshake;
 type InitialCSS = BrowserTypes.InitialCSS;

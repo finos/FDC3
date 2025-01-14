@@ -1,4 +1,4 @@
-import { AgentError, AppIdentifier, DEFAULT_TIMEOUT_MS, GetAgentParams } from '@kite9/fdc3-standard';
+import { AgentError, AppIdentifier, DEFAULT_TIMEOUT_MS, GetAgentParams } from '@finos/fdc3-standard';
 import { createDesktopAgentAPI } from '../messaging/message-port';
 import { v4 as uuidv4 } from 'uuid';
 import { DesktopAgentSelection, Loader } from './Loader';

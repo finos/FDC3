@@ -1,10 +1,10 @@
-import { AppMetadata } from '@kite9/fdc3-standard';
+import { AppMetadata } from '@finos/fdc3-standard';
 import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from '../TestMessaging';
 import {
   AppRequestMessage,
   FindIntentRequest,
   FindIntentResponse,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { createResponseMeta } from './support';
 
 export class FindIntent implements AutomaticResponse {

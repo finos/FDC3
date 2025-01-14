@@ -6,7 +6,7 @@ import {
   DesktopAgentDetails,
   WebDesktopAgentType,
   DEFAULT_TIMEOUT_MS,
-} from '@kite9/fdc3-standard';
+} from '@finos/fdc3-standard';
 import { DesktopAgentPreloadLoader } from './DesktopAgentPreloadLoader';
 import { PostMessageLoader } from './PostMessageLoader';
 import { retrieveDesktopAgentDetails, storeDesktopAgentDetails } from '../sessionStorage/DesktopAgentDetails';

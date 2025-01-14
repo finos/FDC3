@@ -2,7 +2,7 @@ import {
   AgentEventMessage,
   HeartbeatAcknowledgementRequest,
   HeartbeatEvent,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { Messaging } from '../Messaging';
 import { RegisterableListener } from './RegisterableListener';
 

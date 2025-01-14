@@ -1,10 +1,10 @@
 import { Given, When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
-import { handleResolve } from '@kite9/testing';
+import { handleResolve } from '@finos/testing';
 import { DefaultDesktopAgentIntentResolver } from '../../src/ui/DefaultDesktopAgentIntentResolver';
 import { INTENT_RESOLVER_URL } from '../support/MockFDC3Server';
-import { FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE } from '@kite9/fdc3-schema/dist/generated/api/BrowserTypes';
-import { Context } from '@kite9/fdc3-context';
+import { FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+import { Context } from '@finos/fdc3-context';
 
 const contextMap: Record<string, Context> = {
   'fdc3.instrument': {

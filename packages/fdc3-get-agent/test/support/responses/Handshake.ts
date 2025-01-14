@@ -1,11 +1,11 @@
 import { TestServerContext } from '../TestServerContext';
-import { InstanceID } from '@kite9/fdc3-web-impl';
+import { InstanceID } from '@finos/fdc3-web-impl';
 import { AutomaticResponse } from './AutomaticResponses';
 import {
   WebConnectionProtocol4ValidateAppIdentity,
   WebConnectionProtocol5ValidateAppIdentityFailedResponse,
   WebConnectionProtocol5ValidateAppIdentitySuccessResponse,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 export const BAD_INSTANCE_ID = 'BAD_INSTANCE';
 export const EXPECTED_IDENTITY_URL = 'https://dummyOrigin.test/path';

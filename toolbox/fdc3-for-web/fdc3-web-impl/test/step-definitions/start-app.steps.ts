@@ -1,10 +1,10 @@
 import { DataTable, Then, When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
 import { contextMap, createMeta } from './generic.steps';
-import { matchData } from '@kite9/testing';
-import { BrowserTypes } from '@kite9/fdc3-schema';
+import { matchData } from '@finos/testing';
+import { BrowserTypes } from '@finos/fdc3-schema';
 import { State } from '../../src/ServerContext';
-import { GetInfoRequest } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { GetInfoRequest } from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 type OpenRequest = BrowserTypes.OpenRequest;
 type GetAppMetadataRequest = BrowserTypes.GetAppMetadataRequest;

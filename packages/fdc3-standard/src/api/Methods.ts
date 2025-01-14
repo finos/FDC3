@@ -23,7 +23,7 @@ import {
 } from '..';
 import { StandardContextsSet } from '../internal/contextConfiguration';
 import { StandardIntentsSet } from '../internal/intentConfiguration';
-import { Context } from '@kite9/fdc3-context';
+import { Context } from '@finos/fdc3-context';
 
 const UnavailableError = new Error('FDC3 DesktopAgent not available at `window.fdc3`.');
 

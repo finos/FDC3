@@ -6,11 +6,11 @@ import {
   InstanceID,
   ServerContext,
   State,
-} from '@kite9/fdc3-web-impl';
+} from '@finos/fdc3-web-impl';
 import { Socket } from 'socket.io-client';
 import { v4 as uuid } from 'uuid';
 import { FDC3_DA_EVENT } from '../../message-types';
-import { AppIdentifier, AppIntent, OpenError } from '@kite9/fdc3';
+import { AppIdentifier, AppIntent, OpenError } from '@finos/fdc3';
 
 enum Opener {
   Tab,

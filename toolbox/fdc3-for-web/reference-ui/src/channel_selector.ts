@@ -5,7 +5,7 @@ import {
   Fdc3UserInterfaceRestyle,
   isFdc3UserInterfaceChannels,
   isFdc3UserInterfaceHandshake,
-} from '@kite9/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { selectHighestContrast } from './contrast';
 
 const fillChannels = (data: Channel[], selected: string | null, messageClickedChannel: (s: string | null) => void) => {

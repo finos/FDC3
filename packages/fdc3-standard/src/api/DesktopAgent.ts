@@ -8,7 +8,7 @@ import { Channel } from './Channel';
 import { ContextHandler, IntentHandler } from './Types';
 import { IntentResolution } from './IntentResolution';
 import { Listener } from './Listener';
-import { Context } from '@kite9/fdc3-context';
+import { Context } from '@finos/fdc3-context';
 import { ImplementationMetadata } from './ImplementationMetadata';
 import { PrivateChannel } from './PrivateChannel';
 import { AppIdentifier } from './AppIdentifier';
@@ -513,7 +513,7 @@ export interface DesktopAgent {
    * of an application based on the version supported by the Desktop Agent and for logging purposes.
    *
    * ```js
-   * import {compareVersionNumbers, versionIsAtLeast} from '@kite9/fdc3';
+   * import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
    *
    * if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), "1.2")) {
    *   await fdc3.raiseIntentForContext(context);

@@ -1,5 +1,5 @@
-import { ContextHandler, DisplayMetadata, Listener, Channel } from '@kite9/fdc3-standard';
-import { Context } from '@kite9/fdc3-context';
+import { ContextHandler, DisplayMetadata, Listener, Channel } from '@finos/fdc3-standard';
+import { Context } from '@finos/fdc3-context';
 import { Messaging } from '../Messaging';
 import { DefaultContextListener } from '../listeners/DefaultContextListener';
 import {
@@ -7,7 +7,7 @@ import {
   BroadcastResponse,
   GetCurrentContextRequest,
   GetCurrentContextResponse,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 export class DefaultChannel implements Channel {
   protected readonly messaging: Messaging;

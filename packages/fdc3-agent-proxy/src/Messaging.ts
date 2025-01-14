@@ -1,10 +1,10 @@
-import { AppIdentifier } from '@kite9/fdc3-standard';
+import { AppIdentifier } from '@finos/fdc3-standard';
 import { RegisterableListener } from './listeners/RegisterableListener';
 import {
   AppRequestMessage,
   AgentResponseMessage,
   WebConnectionProtocol6Goodbye,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 export interface Messaging {
   /**

@@ -1,5 +1,5 @@
 {
-  "name": "@kite9/fdc3-agent-proxy",
+  "name": "@finos/fdc3-agent-proxy",
   "version": "2.2.0-beta.30",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
@@ -23,14 +23,14 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@kite9/fdc3-standard": "2.2.0-beta.30"
+    "@finos/fdc3-standard": "2.2.0-beta.30"
   },
   "devDependencies": {
     "@cucumber/cucumber": "10.3.1",
     "@cucumber/html-formatter": "11.0.4",
     "@cucumber/pretty-formatter": "1.0.1",
     "@eslint/js": "^9.16.0",
-    "@kite9/testing": "2.2.0-beta.30",
+    "@finos/testing": "2.2.0-beta.30",
     "@types/expect": "24.3.0",
     "@types/lodash": "4.14.167",
     "@types/node": "^20.16.11",

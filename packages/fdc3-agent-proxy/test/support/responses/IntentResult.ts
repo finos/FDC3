@@ -1,4 +1,4 @@
-import { IntentResultRequest, IntentResultResponse } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { IntentResultRequest, IntentResultResponse } from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { AutomaticResponse, TestMessaging } from '../TestMessaging';
 
 export class IntentResult implements AutomaticResponse {

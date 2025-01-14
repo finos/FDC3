@@ -1,4 +1,4 @@
-import { InstanceID } from '@kite9/fdc3-web-impl';
+import { InstanceID } from '@finos/fdc3-web-impl';
 import { Socket } from 'socket.io-client';
 import { FDC3_APP_EVENT, FDC3_DA_EVENT } from '../../message-types';
 

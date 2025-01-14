@@ -1,8 +1,8 @@
 import { When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
 import { throwIfUndefined } from '../../src/util';
-import { AgentResponseMessage } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
-import { OpenError } from '@kite9/fdc3-standard';
+import { AgentResponseMessage } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { OpenError } from '@finos/fdc3-standard';
 import expect from 'expect';
 
 When('I call throwIfUndefined it throws if a specified property is not defined', async function (this: CustomWorld) {

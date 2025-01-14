@@ -1,7 +1,7 @@
 import { MessageHandler } from '../BasicFDC3Server';
 import { AppRegistration, InstanceID, ServerContext } from '../ServerContext';
-import { Context } from '@kite9/fdc3-context';
-import { AppIdentifier, ChannelError, DisplayMetadata, PrivateChannelEventTypes } from '@kite9/fdc3-standard';
+import { Context } from '@finos/fdc3-context';
+import { AppIdentifier, ChannelError, DisplayMetadata, PrivateChannelEventTypes } from '@finos/fdc3-standard';
 import { successResponse, errorResponse, FullAppIdentifier, onlyUnique } from './support';
 import {
   AddContextListenerRequest,
@@ -22,7 +22,7 @@ import {
   PrivateChannelOnDisconnectEvent,
   PrivateChannelOnUnsubscribeEvent,
   PrivateChannelUnsubscribeEventListenerRequest,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 type PrivateChannelEvents =
   | PrivateChannelOnAddContextListenerEvent
@@ -69,7 +69,7 @@ export class BroadcastHandler implements MessageHandler {
     this.state = initialChannelState;
   }
 
-  shutdown(): void {}
+  shutdown(): void { }
 
   cleanup(instanceId: InstanceID, sc: ServerContext<AppRegistration>): void {
     const toUnsubscribe = this.contextListeners.filter(r => r.instanceId == instanceId);

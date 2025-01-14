@@ -1,5 +1,5 @@
-import { AppIdentifier, AppIntent } from '@kite9/fdc3-standard';
-import { Context } from '@kite9/fdc3-context';
+import { AppIdentifier, AppIntent } from '@finos/fdc3-standard';
+import { Context } from '@finos/fdc3-context';
 import { FDC3Server } from './FDC3Server';
 
 export enum State {

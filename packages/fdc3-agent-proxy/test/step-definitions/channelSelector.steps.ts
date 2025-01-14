@@ -1,7 +1,7 @@
 import { Given, When } from '@cucumber/cucumber';
-import { SimpleIntentResolver } from '@kite9/testing';
+import { SimpleIntentResolver } from '@finos/testing';
 import { CustomWorld } from '../world/index';
-import { CHANNEL_STATE } from '@kite9/testing';
+import { CHANNEL_STATE } from '@finos/testing';
 import {
   DefaultChannelSupport,
   DefaultHeartbeatSupport,

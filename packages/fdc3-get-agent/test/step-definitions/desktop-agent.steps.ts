@@ -1,13 +1,13 @@
 import { After, DataTable, Given, Then, When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
-import { doesRowMatch, handleResolve, setupGenericSteps } from '@kite9/testing';
+import { doesRowMatch, handleResolve, setupGenericSteps } from '@finos/testing';
 import { MockDocument } from '../support/MockDocument';
 import { MockWindow } from '../support/MockWindow';
 import { fdc3Ready, getAgent } from '../../src';
-import { DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX, DesktopAgentDetails, GetAgentParams } from '@kite9/fdc3-standard';
+import { DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX, DesktopAgentDetails, GetAgentParams } from '@finos/fdc3-standard';
 import { EMBED_URL, MockFDC3Server } from '../support/MockFDC3Server';
 import { MockStorage } from '../support/MockStorage';
-import { DesktopAgent, ImplementationMetadata } from '@kite9/fdc3-standard';
+import { DesktopAgent, ImplementationMetadata } from '@finos/fdc3-standard';
 import { clearAgentPromise } from '../../src/strategies/getAgent';
 import expect from 'expect';
 import { dummyInstanceDetails } from '../support/TestServerContext';

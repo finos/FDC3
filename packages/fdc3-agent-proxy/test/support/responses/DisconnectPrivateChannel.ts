@@ -3,7 +3,7 @@ import { createResponseMeta } from './support';
 import {
   PrivateChannelDisconnectRequest,
   PrivateChannelDisconnectResponse,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 export class DisconnectPrivateChannel implements AutomaticResponse {
   count: number = 0;

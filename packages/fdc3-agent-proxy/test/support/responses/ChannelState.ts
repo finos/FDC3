@@ -1,5 +1,5 @@
 import { AutomaticResponse, TestMessaging } from '../TestMessaging';
-import { Context } from '@kite9/fdc3-context';
+import { Context } from '@finos/fdc3-context';
 import { createResponseMeta } from './support';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -19,7 +19,7 @@ import {
   JoinUserChannelResponse,
   LeaveCurrentChannelRequest,
   LeaveCurrentChannelResponse,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 export class ChannelState implements AutomaticResponse {
   private channelId: string | null = null;
@@ -178,14 +178,14 @@ export class ChannelState implements AutomaticResponse {
       payload: {
         channel: this.channelId
           ? {
-              id: this.channelId,
-              type: 'user',
-              displayMetadata: {
-                name: 'The ' + this.channelId + ' channel',
-                color: 'red',
-                glyph: 'triangle',
-              },
-            }
+            id: this.channelId,
+            type: 'user',
+            displayMetadata: {
+              name: 'The ' + this.channelId + ' channel',
+              color: 'red',
+              glyph: 'triangle',
+            },
+          }
           : null,
       },
     } as GetCurrentChannelResponse;

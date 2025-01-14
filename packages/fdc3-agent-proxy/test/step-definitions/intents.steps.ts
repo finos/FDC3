@@ -1,9 +1,9 @@
 import { Given } from '@cucumber/cucumber';
 import { CustomWorld } from '../world/index';
-import { handleResolve } from '@kite9/testing';
-import { Context } from '@kite9/fdc3-context';
-import { ContextMetadata, ResolveError } from '@kite9/fdc3-standard';
-import { IntentEvent } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { handleResolve } from '@finos/testing';
+import { Context } from '@finos/fdc3-context';
+import { ContextMetadata, ResolveError } from '@finos/fdc3-standard';
+import { IntentEvent } from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 Given('app {string}', function (this: CustomWorld, appStr: string) {
   const [appId, instanceId] = appStr.split('/');

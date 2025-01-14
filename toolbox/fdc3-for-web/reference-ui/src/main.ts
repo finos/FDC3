@@ -2,7 +2,7 @@ import {
   FDC3_USER_INTERFACE_CHANNEL_SELECTED_TYPE,
   FDC3_USER_INTERFACE_CHANNELS_TYPE,
   FDC3_USER_INTERFACE_HANDSHAKE_TYPE,
-} from '@kite9/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import './style.css';
 
 // Channel data

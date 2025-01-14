@@ -1,5 +1,5 @@
-import { AppIdentifier, AppMetadata, ImplementationMetadata, OpenError, ResolveError } from '@kite9/fdc3-standard';
-import { Context } from '@kite9/fdc3-context';
+import { AppIdentifier, AppMetadata, ImplementationMetadata, OpenError, ResolveError } from '@finos/fdc3-standard';
+import { Context } from '@finos/fdc3-context';
 import { AppSupport } from './AppSupport';
 import { Messaging } from '../Messaging';
 import {
@@ -11,7 +11,7 @@ import {
   GetInfoResponse,
   OpenRequest,
   OpenResponse,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { throwIfUndefined } from '../util';
 export class DefaultAppSupport implements AppSupport {
   readonly messaging: Messaging;

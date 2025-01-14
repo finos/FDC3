@@ -1,11 +1,11 @@
-import { Channel, ChannelSelector } from '@kite9/fdc3-standard';
+import { Channel, ChannelSelector } from '@finos/fdc3-standard';
 
 export class TestChannelSelector implements ChannelSelector {
   private callback: ((channelId: string | null) => void) | null = null;
   channelId: string | null = null;
   channels: Channel[] = [];
 
-  constructor() {}
+  constructor() { }
 
   async updateChannel(channelId: string | null, availableChannels: Channel[]): Promise<void> {
     this.channelId = channelId;

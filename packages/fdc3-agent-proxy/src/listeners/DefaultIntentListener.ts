@@ -1,5 +1,5 @@
-import { IntentHandler, IntentResult, AppIdentifier } from '@kite9/fdc3-standard';
-import { Context } from '@kite9/fdc3-context';
+import { IntentHandler, IntentResult, AppIdentifier } from '@finos/fdc3-standard';
+import { Context } from '@finos/fdc3-context';
 import { Messaging } from '../Messaging';
 import { AbstractListener } from './AbstractListener';
 import {
@@ -8,7 +8,7 @@ import {
   IntentResultRequest,
   IntentResultResponse,
   //RaiseIntentResponse,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIntentListenerRequest> {
   readonly intent: string;

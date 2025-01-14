@@ -1,8 +1,8 @@
 import { MessageHandler } from '../BasicFDC3Server';
 import { AppRegistration, InstanceID, ServerContext } from '../ServerContext';
 import { Directory, DirectoryIntent } from '../directory/DirectoryInterface';
-import { Context } from '@kite9/fdc3-context';
-import { AppIntent, ResolveError, AppIdentifier } from '@kite9/fdc3-standard';
+import { Context } from '@finos/fdc3-context';
+import { AppIntent, ResolveError, AppIdentifier } from '@finos/fdc3-standard';
 import {
   errorResponse,
   errorResponseId,
@@ -22,7 +22,7 @@ import {
   IntentResultRequest,
   AppRequestMessage,
   AgentResponseMessage,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 type ListenerRegistration = {
   appId: string;
@@ -147,7 +147,7 @@ export class IntentHandler implements MessageHandler {
     });
   }
 
-  shutdown(): void {}
+  shutdown(): void { }
 
   async narrowIntents(
     raiser: AppIdentifier,

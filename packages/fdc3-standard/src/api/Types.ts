@@ -4,7 +4,7 @@
  */
 
 import { Channel, ContextMetadata } from '..';
-import { Context } from '@kite9/fdc3-context';
+import { Context } from '@finos/fdc3-context';
 
 /**
  * Describes a callback that handles a context event.

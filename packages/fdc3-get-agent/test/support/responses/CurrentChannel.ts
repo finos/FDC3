@@ -1,7 +1,7 @@
 import { TestServerContext } from '../TestServerContext';
-import { InstanceID } from '@kite9/fdc3-web-impl';
+import { InstanceID } from '@finos/fdc3-web-impl';
 import { AutomaticResponse } from './AutomaticResponses';
-import { GetCurrentChannelRequest, GetCurrentChannelResponse } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { GetCurrentChannelRequest, GetCurrentChannelResponse } from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 export class CurrentChannel implements AutomaticResponse {
   filter(t: string) {

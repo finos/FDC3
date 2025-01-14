@@ -9,7 +9,7 @@ import {
   AppRequestMessage,
   WebConnectionProtocol4ValidateAppIdentity,
   WebConnectionProtocol6Goodbye,
-} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 export interface MessageHandler {
   /**

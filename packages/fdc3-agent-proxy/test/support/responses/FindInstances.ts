@@ -1,4 +1,4 @@
-import { FindInstancesRequest, FindInstancesResponse } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import { FindInstancesRequest, FindInstancesResponse } from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { AutomaticResponse, TestMessaging } from '../TestMessaging';
 import { createResponseMeta } from './support';
 
