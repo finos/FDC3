@@ -97,7 +97,7 @@ To contribute a patch for a New Intent, see the [Submit New Intent](docs/guides/
 
 Please note that the FDC3 project uses the following test policy:
 
-  * All code must be tested (coverage is reported in the PR comments)
+  * Code should have tests (coverage is reported in the PR comments)
   * All tests must pass. (checked automatically by the PR comments)
   * All new code must be covered by tests.
   * All tests must be meaningful.
