@@ -1,8 +1,6 @@
+import { GetAppMetadataRequest, GetAppMetadataResponse } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { AutomaticResponse, TestMessaging } from '../TestMessaging';
-import { BrowserTypes } from '@kite9/fdc3-schema';
-
-type GetAppMetadataRequest = BrowserTypes.GetAppMetadataRequest;
-type GetAppMetadataResponse = BrowserTypes.GetAppMetadataResponse;
+import { createResponseMeta } from './support';
 
 export class GetAppMetadata implements AutomaticResponse {
   filter(t: string) {
@@ -20,7 +18,7 @@ export class GetAppMetadata implements AutomaticResponse {
 
   private createMetadataResponseMessage(m: GetAppMetadataRequest): GetAppMetadataResponse {
     return {
-      meta: m.meta as any,
+      meta: createResponseMeta(m.meta),
       type: 'getAppMetadataResponse',
       payload: {
         appMetadata: {

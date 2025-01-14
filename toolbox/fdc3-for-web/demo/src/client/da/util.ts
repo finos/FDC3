@@ -20,6 +20,7 @@ export const UI_URLS = {
 };
 
 export function link(socket: Socket, channel: MessageChannel, source: InstanceID) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   socket.on(FDC3_DA_EVENT, (data: any) => {
     channel.port2.postMessage(data);
   });

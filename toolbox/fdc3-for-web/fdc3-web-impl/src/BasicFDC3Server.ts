@@ -1,20 +1,32 @@
 import { FDC3Server } from './FDC3Server';
-import { AppRegistration, InstanceID, ServerContext } from './ServerContext';
+import { AppRegistration, InstanceID, ServerContext, State } from './ServerContext';
 import { BroadcastHandler, ChannelState } from './handlers/BroadcastHandler';
 import { IntentHandler } from './handlers/IntentHandler';
 import { Directory } from './directory/DirectoryInterface';
 import { OpenHandler } from './handlers/OpenHandler';
-import { BrowserTypes } from '@kite9/fdc3-schema';
 import { HeartbeatHandler } from './handlers/HeartbeatHandler';
-
-type AppRequestMessage = BrowserTypes.AppRequestMessage;
-type WebConnectionProtocol4ValidateAppIdentity = BrowserTypes.WebConnectionProtocol4ValidateAppIdentity;
+import {
+  AppRequestMessage,
+  WebConnectionProtocol4ValidateAppIdentity,
+  WebConnectionProtocol6Goodbye,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 export interface MessageHandler {
   /**
-   * Handles an AgentRequestMessage from the messaging source
+   * Handles an AgentRequestMessage from the messaging source. This function
+   * is called by BasicFDC3Server on every message received and should only
+   * process those it supports.
    */
-  accept(msg: any, sc: ServerContext<AppRegistration>, from: InstanceID): void;
+  accept(
+    msg: AppRequestMessage | WebConnectionProtocol4ValidateAppIdentity | WebConnectionProtocol6Goodbye,
+    sc: ServerContext<AppRegistration>,
+    from: InstanceID
+  ): Promise<void>;
+
+  /**
+   * Clean-up any state relating to a instance that has disconnected.
+   */
+  cleanup(instanceId: InstanceID, sc: ServerContext<AppRegistration>): void;
 
   shutdown(): void;
 }
@@ -31,8 +43,17 @@ export class BasicFDC3Server implements FDC3Server {
     this.sc = sc;
   }
 
-  receive(message: AppRequestMessage | WebConnectionProtocol4ValidateAppIdentity, from: InstanceID): void {
-    this.handlers.forEach(h => h.accept(message, this.sc, from));
+  cleanup(instanceId: InstanceID): void {
+    this.handlers.forEach(handler => handler.cleanup(instanceId, this.sc));
+    this.sc.setAppState(instanceId, State.Terminated);
+  }
+
+  async receive(
+    message: AppRequestMessage | WebConnectionProtocol4ValidateAppIdentity | WebConnectionProtocol6Goodbye,
+    from: InstanceID
+  ): Promise<void> {
+    const promises = this.handlers.map(h => h.accept(message, this.sc, from));
+    await Promise.allSettled(promises);
   }
 
   shutdown(): void {

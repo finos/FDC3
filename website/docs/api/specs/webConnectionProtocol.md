@@ -148,23 +148,34 @@ const discoverPreloadDA = async (timeoutMs: number): Promise<DesktopAgent> => {
 To discover a Desktop Agent Proxy interface, locate all candidates for a `parent` window or frame by first checking the values of `window.opener` and `window.parent`. If `window.opener !== null` or `window.parent !== window` then they are candidates for a parent window or frame. As iframes can be nested we can also search for candidates that are parents of a parent frame, e.g.:
 
 ```ts
-const discoverProxyCandidates = (): WindowProxy[] => {
-  const candidates: WindowProxy[] = [];
-  //parent window
-  if (!!window.opener) { candidates.push(window.opener); }
+/**
+ * Recursive search for all possible parent frames (windows) that we may
+ * target with the WCP.
+ * @param startWindow window object to search
+ * @param found window objects found so far
+ * @return An array of Window Objects representing 'parent' frames of the
+ * specified window.
+ */
+function discoverProxyCandidates(startWindow: Window, found: Window[]) {
+  _recursePossibleTargets(startWindow, startWindow, found);
+  Logger.debug(`Possible parent windows/frames found: ${found.length}`);
+  return found;
+}
 
-  //parent frames
-  let currentWin = window;
-  while (currentWin.parent !== currentWin) {
-    candidates.push(currentWin.parent);
-    currentWin = currentWin.parent;
-  }
+function _recursePossibleTargets(startWindow: Window, w: Window, found: Window[]) {
+  if (w) {
+    if (found.indexOf(w) == -1 && w != startWindow) {
+      found.push(w);
+    }
 
-  //parent window of top-level parent frame
-  if (window !== currentWin && !!currentWin.opener) { 
-    candidates.push(currentWin.opener); 
+    if (!!w.opener) {
+      _recursePossibleTargets(startWindow, w.opener, found);
+    }
+
+    if (w.parent != w) {
+      _recursePossibleTargets(startWindow, w.parent, found);
+    }
   }
-  return candidates;
 }
 ```
 

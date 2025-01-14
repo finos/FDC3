@@ -9,7 +9,7 @@ import fs from 'fs';
 import path from 'path';
 
 export function setupGenericSteps() {
-  When('the promise {string} should resolve', async function (this: PropsWorld, field: string) {
+  Then('the promise {string} should resolve', async function (this: PropsWorld, field: string) {
     try {
       const promise = handleResolve(field, this);
       const object = await promise;
@@ -18,6 +18,20 @@ export function setupGenericSteps() {
       this.props['result'] = error;
     }
   });
+
+  Then(
+    'the promise {string} should resolve within 10 seconds',
+    { timeout: 10 * 1000 },
+    async function (this: PropsWorld, field: string) {
+      try {
+        const promise = handleResolve(field, this);
+        const object = await promise;
+        this.props['result'] = object;
+      } catch (error) {
+        this.props['result'] = error;
+      }
+    }
+  );
 
   When('I call {string} with {string}', async function (this: PropsWorld, field: string, fnName: string) {
     try {
@@ -89,6 +103,13 @@ export function setupGenericSteps() {
   );
 
   Then(
+    '{string} is an array of objects with length {string}',
+    function (this: PropsWorld, field: string, field2: string) {
+      expect(handleResolve(field, this).length).toEqual(Number.parseInt(handleResolve(field2, this)));
+    }
+  );
+
+  Then(
     '{string} is an array of strings with the following values',
     function (this: PropsWorld, field: string, dt: DataTable) {
       const values = handleResolve(field, this).map((s: string) => {
@@ -138,6 +159,10 @@ export function setupGenericSteps() {
 
   Then('{string} is an error with message {string}', function (this: PropsWorld, field: string, errorType: string) {
     expect(handleResolve(field, this)['message']).toBe(errorType);
+  });
+
+  Then('{string} is an error', function (this: PropsWorld, field: string) {
+    expect(handleResolve(field, this)).toBeInstanceOf(Error);
   });
 
   Given(

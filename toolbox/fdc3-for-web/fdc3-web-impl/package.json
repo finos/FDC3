@@ -1,6 +1,6 @@
 {
   "name": "@kite9/fdc3-web-impl",
-  "version": "2.2.0-beta.29",
+  "version": "2.2.0-beta.30",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -24,7 +24,7 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@kite9/fdc3-standard": "2.2.0-beta.29",
+    "@kite9/fdc3-standard": "2.2.0-beta.30",
     "@types/uuid": "^10.0.0",
     "uuid": "^9.0.1"
   },
@@ -34,15 +34,15 @@
     "@cucumber/pretty-formatter": "1.0.1",
     "@eslint/js": "^9.16.0",
     "@kite9/fdc3-common": "2.2.0-beta.6",
-    "@kite9/testing": "2.2.0-beta.29",
+    "@kite9/testing": "2.2.0-beta.30",
     "@types/expect": "24.3.0",
     "@types/lodash": "4.14.167",
     "@types/node": "^20.16.11",
     "@types/uuid": "^10.0.0",
-    "@typescript-eslint/eslint-plugin": "7.1.1",
-    "@typescript-eslint/parser": "7.1.0",
+    "@typescript-eslint/eslint-plugin": "^8.18.2",
+    "@typescript-eslint/parser": "^8.18.2",
     "cucumber-console-formatter": "1.0.0",
-    "eslint": "^8.57.0",
+    "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "3.3.1",
@@ -50,9 +50,9 @@
     "globals": "^15.13.0",
     "is-ci": "2.0.0",
     "jsonpath-plus": "^10.1.0",
-    "nyc": "15.1.0",
+    "nyc": "17.1.0",
     "openapi-typescript": "^6.7.6",
-    "prettier": "3.2.5",
+    "prettier": "3.4.1",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3",

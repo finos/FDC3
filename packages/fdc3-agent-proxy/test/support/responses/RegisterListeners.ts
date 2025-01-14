@@ -1,19 +1,41 @@
+import {
+  AddContextListenerRequest,
+  AddContextListenerResponse,
+  AddEventListenerRequest,
+  AddEventListenerResponse,
+  AddIntentListenerRequest,
+  AddIntentListenerResponse,
+  AppRequestMessage,
+  PrivateChannelAddEventListenerRequest,
+  PrivateChannelAddEventListenerResponse,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { AutomaticResponse, TestMessaging } from '../TestMessaging';
 import { createResponseMeta } from './support';
 import { v4 as uuidv4 } from 'uuid';
+
+type Requests =
+  | AddContextListenerRequest
+  | AddIntentListenerRequest
+  | AddEventListenerRequest
+  | PrivateChannelAddEventListenerRequest;
+type Responses =
+  | AddContextListenerResponse
+  | AddIntentListenerResponse
+  | AddEventListenerResponse
+  | PrivateChannelAddEventListenerResponse;
 
 export class RegisterListeners implements AutomaticResponse {
   filter(t: string) {
     return (
       t == 'addContextListenerRequest' ||
       t == 'addIntentListenerRequest' ||
-      t == 'privateChannelAddContextListenerRequest' ||
+      t == 'addEventListenerRequest' ||
       t == 'privateChannelAddEventListenerRequest'
     );
   }
 
-  action(input: object, m: TestMessaging) {
-    const out = this.createResponse(input);
+  action(input: AppRequestMessage, m: TestMessaging) {
+    const out = this.createResponse(input as Requests);
 
     setTimeout(() => {
       m.receive(out);
@@ -21,10 +43,11 @@ export class RegisterListeners implements AutomaticResponse {
     return Promise.resolve();
   }
 
-  private createResponse(i: any): any {
+  private createResponse(i: Requests): Responses {
     return {
       meta: createResponseMeta(i.meta),
-      type: i.type.replace('Request', 'Response'),
+      //TODO: use a typesafe method of creating response messages
+      type: i.type.replace('Request', 'Response') as Responses['type'],
       payload: {
         listenerUUID: uuidv4(),
       },

@@ -3,6 +3,8 @@ import {
   Fdc3UserInterfaceResolve,
   Fdc3UserInterfaceResolveAction,
   Fdc3UserInterfaceRestyle,
+  isFdc3UserInterfaceHandshake,
+  isFdc3UserInterfaceResolve,
 } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { AppIdentifier } from '@kite9/fdc3-standard';
 
@@ -25,6 +27,12 @@ const DEFAULT_EXPANDED_CSS = {
   right: '10%',
   bottom: '10%',
 };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const debug = (...params: any[]) => {
+  console.debug('Demo Intent Resolver: ', ...params);
+};
+
 window.addEventListener('load', () => {
   const parent = window.parent;
 
@@ -32,7 +40,7 @@ window.addEventListener('load', () => {
   const myPort = mc.port1;
   myPort.start();
 
-  const list = document.getElementById('intent-list')!!;
+  const list = document.getElementById('intent-list')!;
 
   // ISSUE: 1302
   const helloMessage: Fdc3UserInterfaceHello = {
@@ -43,6 +51,7 @@ window.addEventListener('load', () => {
     },
   };
   parent.postMessage(helloMessage, '*', [mc.port2]);
+  debug('Sent hello message: ', helloMessage);
 
   function callback(intent: string | null, app: AppIdentifier | null) {
     const restyleMessage: Fdc3UserInterfaceRestyle = {
@@ -50,6 +59,7 @@ window.addEventListener('load', () => {
       payload: { updatedCSS: DEFAULT_COLLAPSED_CSS },
     };
     myPort.postMessage(restyleMessage);
+    debug('Setting collapsed styles: ', restyleMessage);
 
     if (intent && app) {
       const message: Fdc3UserInterfaceResolveAction = {
@@ -61,6 +71,7 @@ window.addEventListener('load', () => {
         },
       };
       myPort.postMessage(message);
+      debug('Sent resolution: ', message);
     } else {
       const message: Fdc3UserInterfaceResolveAction = {
         type: 'Fdc3UserInterfaceResolveAction',
@@ -69,22 +80,25 @@ window.addEventListener('load', () => {
         },
       };
       myPort.postMessage(message);
+      debug('Sent cancellation: ', message);
     }
   }
 
   myPort.addEventListener('message', e => {
-    if (e.data.type == 'iframeHandshake') {
+    if (isFdc3UserInterfaceHandshake(e.data)) {
       const message: Fdc3UserInterfaceRestyle = {
         type: 'Fdc3UserInterfaceRestyle',
         payload: { updatedCSS: DEFAULT_COLLAPSED_CSS },
       };
       myPort.postMessage(message);
-    } else if (e.data.type == 'iframeResolve') {
+      debug('Received handshake, sending initial restyle: ', message);
+    } else if (isFdc3UserInterfaceResolve(e.data)) {
       const message: Fdc3UserInterfaceRestyle = {
         type: 'Fdc3UserInterfaceRestyle',
         payload: { updatedCSS: DEFAULT_EXPANDED_CSS },
       };
       myPort.postMessage(message);
+      debug('Received request for resolution, setting expanded styles: ', message);
       Array.from(list.children).forEach(i => i.remove());
       const details: Fdc3UserInterfaceResolve['payload'] = e.data.payload;
       details.appIntents.forEach(intent => {
@@ -111,7 +125,7 @@ window.addEventListener('load', () => {
     }
   });
 
-  document.getElementById('cancel')!!.addEventListener('click', () => {
+  document.getElementById('cancel')!.addEventListener('click', () => {
     callback(null, null);
   });
 });

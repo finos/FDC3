@@ -3,10 +3,9 @@ import { CustomWorld } from '../world';
 import { handleResolve } from '@kite9/testing';
 import { DefaultDesktopAgentIntentResolver } from '../../src/ui/DefaultDesktopAgentIntentResolver';
 import { INTENT_RESOLVER_URL } from '../support/MockFDC3Server';
+import { FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE } from '@kite9/fdc3-schema/dist/generated/api/BrowserTypes';
 import { Context } from '@kite9/fdc3-context';
-import { BrowserTypes } from '@kite9/fdc3-schema';
 
-// TODO: Replace 'any' with useful typings
 const contextMap: Record<string, Context> = {
   'fdc3.instrument': {
     type: 'fdc3.instrument',
@@ -77,9 +76,10 @@ When(
 );
 
 Given('The intent resolver sends an intent selection message', async function (this: CustomWorld) {
-  const port = handleResolve('{document.iframes[0].messageChannels[0].port2}', this);
-  const message: BrowserTypes.Fdc3UserInterfaceResolveAction = {
-    type: 'Fdc3UserInterfaceResolveAction',
+  const port = handleResolve('{childDoc.iframes[0].messageChannels[0].port2}', this);
+
+  port.postMessage({
+    type: FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE,
     payload: {
       action: 'click',
       appIdentifier: {
@@ -87,18 +87,43 @@ Given('The intent resolver sends an intent selection message', async function (t
       },
       intent: 'ViewNews',
     },
-  };
-  port.postMessage(message);
+  });
 });
 
 Given('The intent resolver cancels the intent selection message', async function (this: CustomWorld) {
-  const port = handleResolve('{document.iframes[0].messageChannels[0].port2}', this);
+  const port = handleResolve('{childDoc.iframes[0].messageChannels[0].port2}', this);
 
-  const message: BrowserTypes.Fdc3UserInterfaceResolveAction = {
-    type: 'Fdc3UserInterfaceResolveAction',
+  port.postMessage({
+    type: FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE,
     payload: {
       action: 'cancel',
     },
-  };
-  port.postMessage(message);
+  });
 });
+
+// Given('{string} receives a {string} message for the intent resolver and pipes comms to {string}', async function (this: CustomWorld, frame: string, type: string, output: string) {
+//     const channelSelectorIframe = handleResolve(frame, this)
+//     const mc = new MessageChannel();
+//     const internalPort = mc.port1;
+//     const externalPort = mc.port2;
+
+//     if (type == "SelectorMessageInitialize") {
+//         globalThis.window.dispatchEvent({
+//             type: 'message',
+//             data: {
+//                 type: 'SelectorMessageInitialize'
+//             },
+//             origin: globalThis.window.location.origin,
+//             ports: [externalPort],
+//             source: channelSelectorIframe
+//         } as any)
+//     }
+
+//     const out: any[] = []
+//     this.props[output] = out
+
+//     internalPort.start()
+//     internalPort.onmessage = (e) => {
+//         out.push({ type: e.type, data: e.data })
+//     }
+// });

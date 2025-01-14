@@ -1,9 +1,8 @@
 import { TestServerContext } from '../TestServerContext';
 import { InstanceID } from '@kite9/fdc3-web-impl';
 import { AutomaticResponse } from './AutomaticResponses';
-import { BrowserTypes } from '@kite9/fdc3-schema';
-type GetCurrentChannelRequest = BrowserTypes.GetCurrentChannelRequest;
-type GetCurrentChannelResponse = BrowserTypes.GetCurrentChannelResponse;
+import { GetCurrentChannelRequest, GetCurrentChannelResponse } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+
 export class CurrentChannel implements AutomaticResponse {
   filter(t: string) {
     return t == 'getCurrentChannelRequest';
@@ -18,13 +17,16 @@ export class CurrentChannel implements AutomaticResponse {
   }
 
   private createResponse(i: GetCurrentChannelRequest, m: TestServerContext): GetCurrentChannelResponse {
-    return {
+    const response: GetCurrentChannelResponse = {
       meta: {
         ...i.meta,
         responseUuid: m.createUUID(),
       },
       type: 'getCurrentChannelResponse',
-      payload: {},
+      payload: {
+        channel: null,
+      },
     };
+    return response;
   }
 }

@@ -15,7 +15,7 @@ When(
   '{string} adds a context listener on {string} with type {string}',
   function (this: CustomWorld, app: string, channelId: string, contextType: string) {
     const meta = createMeta(this, app);
-    const uuid = this.sc.getInstanceUUID(meta.source)!!;
+    const uuid = this.sc.getInstanceUUID(meta.source)!;
     const message = {
       meta,
       payload: {
@@ -33,7 +33,7 @@ When(
   '{string} asks for the latest context on {string} with type {string}',
   function (this: CustomWorld, app: string, channelId: string, contextType: string) {
     const meta = createMeta(this, app);
-    const uuid = this.sc.getInstanceUUID(meta.source)!!;
+    const uuid = this.sc.getInstanceUUID(meta.source)!;
     const message = {
       meta,
       payload: {
@@ -49,7 +49,7 @@ When(
 
 When('{string} removes context listener with id {string}', function (this: CustomWorld, app: string, id: string) {
   const meta = createMeta(this, app);
-  const uuid = this.sc.getInstanceUUID(meta.source)!!;
+  const uuid = this.sc.getInstanceUUID(meta.source)!;
 
   const message = {
     meta,
@@ -66,7 +66,7 @@ When(
   '{string} broadcasts {string} on {string}',
   function (this: CustomWorld, app: string, contextType: string, channelId: string) {
     const meta = createMeta(this, app);
-    const uuid = this.sc.getInstanceUUID(meta.source)!!;
+    const uuid = this.sc.getInstanceUUID(meta.source)!;
 
     const message = {
       meta,

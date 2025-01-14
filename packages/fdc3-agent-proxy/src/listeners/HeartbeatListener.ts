@@ -1,4 +1,8 @@
-import { HeartbeatAcknowledgementRequest, HeartbeatEvent } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import {
+  AgentEventMessage,
+  HeartbeatAcknowledgementRequest,
+  HeartbeatEvent,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 import { Messaging } from '../Messaging';
 import { RegisterableListener } from './RegisterableListener';
 
@@ -11,12 +15,12 @@ export class HeartbeatListener implements RegisterableListener {
     this.messaging = messaging;
   }
 
-  filter(m: any): boolean {
+  filter(m: AgentEventMessage): boolean {
     return m.type === 'heartbeatEvent';
   }
 
-  action(_m: any): void {
-    this.messaging.post({
+  action(_m: AgentEventMessage): void {
+    const request: HeartbeatAcknowledgementRequest = {
       type: 'heartbeatAcknowledgementRequest',
       meta: {
         requestUuid: this.messaging.createUUID(),
@@ -25,7 +29,8 @@ export class HeartbeatListener implements RegisterableListener {
       payload: {
         heartbeatEventUuid: (_m as HeartbeatEvent).meta.eventUuid,
       },
-    } as HeartbeatAcknowledgementRequest);
+    };
+    this.messaging.post(request);
   }
 
   async register(): Promise<void> {

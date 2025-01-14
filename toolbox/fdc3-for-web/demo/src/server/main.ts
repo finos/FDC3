@@ -28,9 +28,9 @@ enum ConnectionType {
 const instances: Map<string, ConnectedWorld> = new Map();
 
 io.on('connection', (socket: Socket) => {
-  var myInstance: ConnectedWorld | undefined;
-  var myId: string | undefined;
-  var connectionType: ConnectionType | undefined;
+  let myInstance: ConnectedWorld | undefined;
+  let myId: string | undefined;
+  let connectionType: ConnectionType | undefined;
 
   socket.on(DA_HELLO, function (id) {
     myId = id;
@@ -44,7 +44,7 @@ io.on('connection', (socket: Socket) => {
     connectionType = ConnectionType.DA;
     console.log('instances ' + instances.size);
     myInstance = instance;
-    console.log('A da connected: ' + id);
+    console.log('Desktop Agent connected: ' + id);
   });
 
   socket.on(APP_HELLO, function (id: string, appId: string) {
@@ -63,7 +63,6 @@ io.on('connection', (socket: Socket) => {
 
   socket.on(FDC3_APP_EVENT, function (data, from): void {
     // message from app to da
-    console.log(`APP Sent ${JSON.stringify(data, null, 2)}`);
 
     if (myInstance == null && data.type == 'intentResolutionChoice') {
       // message from app's intent resolver
@@ -76,7 +75,7 @@ io.on('connection', (socket: Socket) => {
     }
 
     if (myInstance != undefined) {
-      myInstance!!.server.emit(FDC3_APP_EVENT, data, from);
+      myInstance.server.emit(FDC3_APP_EVENT, data, from);
     }
   });
 
@@ -84,7 +83,6 @@ io.on('connection', (socket: Socket) => {
     // send message to app
     const destSocket = myInstance?.apps.get(to);
     if (destSocket) {
-      console.log(`DA Sent ${JSON.stringify(data, null, 2)} to ${to}`);
       destSocket.emit(FDC3_DA_EVENT, data, to);
     } else {
       console.log('Failed to send message to app ' + to);
@@ -95,11 +93,11 @@ io.on('connection', (socket: Socket) => {
     if (myInstance) {
       if (connectionType == ConnectionType.DA) {
         console.log('DA disconnected: ' + myId);
-        instances.delete(myId!!);
+        instances.delete(myId!);
       } else {
-        myInstance.apps.delete(myId!!);
+        myInstance.apps.delete(myId!);
         console.log(`App Disconnected: ${myId} ( ${myInstance.apps.size} remaining )`);
-        myInstance.server.emit(APP_GOODBYE, myId!!);
+        myInstance.server.emit(APP_GOODBYE, myId!);
       }
     }
   });

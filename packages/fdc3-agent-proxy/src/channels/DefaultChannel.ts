@@ -1,17 +1,16 @@
 import { ContextHandler, DisplayMetadata, Listener, Channel } from '@kite9/fdc3-standard';
 import { Context } from '@kite9/fdc3-context';
-
 import { Messaging } from '../Messaging';
 import { DefaultContextListener } from '../listeners/DefaultContextListener';
-import { BrowserTypes } from '@kite9/fdc3-schema';
-
-type BroadcastRequest = BrowserTypes.BroadcastRequest;
-type BroadcastResponse = BrowserTypes.BroadcastResponse;
-type GetCurrentContextResponse = BrowserTypes.GetCurrentContextResponse;
-type GetCurrentContextRequest = BrowserTypes.GetCurrentContextRequest;
+import {
+  BroadcastRequest,
+  BroadcastResponse,
+  GetCurrentContextRequest,
+  GetCurrentContextResponse,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 export class DefaultChannel implements Channel {
-  readonly messaging: Messaging;
+  protected readonly messaging: Messaging;
   readonly id: string;
   readonly type: 'user' | 'app' | 'private';
   readonly displayMetadata?: DisplayMetadata | undefined;
@@ -36,6 +35,7 @@ export class DefaultChannel implements Channel {
   }
 
   async getCurrentContext(contextType?: string | undefined): Promise<Context | null> {
+    // first, ensure channel state is up-to-date
     const request: GetCurrentContextRequest = {
       meta: this.messaging.createMeta(),
       payload: {
@@ -44,27 +44,32 @@ export class DefaultChannel implements Channel {
       },
       type: 'getCurrentContextRequest',
     };
-
-    // first, ensure channel state is up-to-date
     const response = await this.messaging.exchange<GetCurrentContextResponse>(request, 'getCurrentContextResponse');
 
     return response.payload.context ?? null;
   }
 
-  async addContextListener(contextType: any, handler?: ContextHandler): Promise<Listener> {
+  async addContextListener(
+    contextTypeOrHandler: string | null | ContextHandler,
+    handler?: ContextHandler
+  ): Promise<Listener> {
     let theContextType: string | null;
     let theHandler: ContextHandler;
 
-    if (contextType == null) {
+    if (contextTypeOrHandler == null && typeof handler === 'function') {
       theContextType = null;
-      theHandler = handler as ContextHandler;
-    } else if (typeof contextType === 'string') {
-      theContextType = contextType;
-      theHandler = handler as ContextHandler;
-    } else {
+      theHandler = handler;
+    } else if (typeof contextTypeOrHandler === 'string' && typeof handler === 'function') {
+      theContextType = contextTypeOrHandler;
+      theHandler = handler;
+    } else if (typeof contextTypeOrHandler === 'function') {
       // deprecated one-arg version
       theContextType = null;
-      theHandler = contextType as ContextHandler;
+      theHandler = contextTypeOrHandler as ContextHandler;
+    } else {
+      //invalid call
+      // TODO: Replace with Standardized error when #1490 is resolved
+      throw new Error('Invalid arguments passed to addContextListener!');
     }
 
     return await this.addContextListenerInner(theContextType, theHandler);

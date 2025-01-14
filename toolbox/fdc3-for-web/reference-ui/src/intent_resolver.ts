@@ -31,13 +31,16 @@ const setup = (
     intentSelect.appendChild(option);
   });
 
-  intentSelect.addEventListener('change', (e: any) =>
-    fillList(
-      data.appIntents.filter(ai => ai.intent.name == e?.target?.value),
-      e?.target?.value,
-      callback
-    )
-  );
+  intentSelect.addEventListener('change', e => {
+    if (e.target) {
+      const option = e.target as HTMLOptionElement;
+      fillList(
+        data.appIntents.filter(ai => ai.intent.name == option.value),
+        option.value,
+        callback
+      );
+    }
+  });
 
   fillList(
     data.appIntents.filter(ai => ai.intent.name == intentSelect.value),
@@ -58,8 +61,8 @@ const setup = (
       });
 
       tab.setAttribute('aria-selected', 'true');
-      const listRef = tab.getAttribute('data-list-ref')!!;
-      document.getElementById(listRef)!!.setAttribute('data-visible', 'true');
+      const listRef = tab.getAttribute('data-list-ref')!;
+      document.getElementById(listRef)!.setAttribute('data-visible', 'true');
     });
   });
 
@@ -131,7 +134,7 @@ const fillList = (
   });
 
   // then, populate the "Open Apps" tab
-  const openList = document.getElementById('open-list')!!;
+  const openList = document.getElementById('open-list')!;
   openList.innerHTML = '';
 
   openApps.forEach(({ appId, title, icons, instanceId }) => {
@@ -178,8 +181,8 @@ window.addEventListener('load', () => {
 
   const mc = new MessageChannel();
   const myPort = mc.port1;
-  myPort.start();
-  myPort.onmessage = ({ data }) => {
+
+  myPort.addEventListener('message', ({ data }) => {
     console.debug('Received message: ', data);
     if (isFdc3UserInterfaceResolve(data)) {
       const restyleMessage: Fdc3UserInterfaceRestyle = {
@@ -219,7 +222,8 @@ window.addEventListener('load', () => {
         myPort.postMessage(restyleMessage);
       });
     }
-  };
+  });
+  myPort.start();
 
   const helloMessage: Fdc3UserInterfaceHello = {
     type: 'Fdc3UserInterfaceHello',

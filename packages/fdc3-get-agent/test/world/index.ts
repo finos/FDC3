@@ -7,6 +7,8 @@ export class CustomWorld extends PropsWorld {
   mockFDC3Server: MockFDC3Server | null = null;
 
   mockContext: TestServerContext = new TestServerContext(this);
+
+  debugLogs: boolean = false;
 }
 
 setWorldConstructor(CustomWorld);

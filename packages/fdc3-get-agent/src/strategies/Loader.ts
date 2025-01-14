@@ -1,4 +1,4 @@
-import { DesktopAgent } from '@kite9/fdc3-standard';
+import { DesktopAgent, WebDesktopAgentType } from '@kite9/fdc3-standard';
 import { GetAgentParams } from '@kite9/fdc3-standard';
 
 /**
@@ -6,9 +6,28 @@ import { GetAgentParams } from '@kite9/fdc3-standard';
  */
 export interface Loader {
   /**
-   * Promise will either resolve to a DesktopAgent or _resolve_ to an error (not reject)
+   * Promise will either resolve to a DesktopAgent or reject with an error
    */
-  get(options: GetAgentParams): Promise<DesktopAgent | void>;
+  get(options: GetAgentParams): Promise<DesktopAgentSelection>;
 
-  cancel(): void;
+  cancel(): Promise<void>;
+
+  name: string;
+}
+
+/** Specific partial of DesktopAgentDetails defining the details that Loaders
+ *  must return with a DesktopAgent to be put into SessionStorage at the end
+ *  of the process.
+ */
+export interface DesktopAgentSelection {
+  agent: DesktopAgent;
+  details: {
+    agentType: WebDesktopAgentType;
+    identityUrl: string;
+    actualUrl: string;
+    agentUrl?: string;
+    appId: string;
+    instanceId: string;
+    instanceUuid: string;
+  };
 }

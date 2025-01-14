@@ -4,7 +4,7 @@ import { DefaultDesktopAgentChannelSelector } from '../../src/ui/DefaultDesktopA
 import { CHANNEL_SELECTOR_URL } from '../support/MockFDC3Server';
 import { USER_CHANNELS } from '../support/responses/UserChannels';
 import { CustomWorld } from '../world';
-import { BrowserTypes } from '@kite9/fdc3-schema';
+import { Fdc3UserInterfaceChannelSelected } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
 Given(
   'A Channel Selector in {string} with callback piping to {string}',
@@ -27,13 +27,13 @@ Given('User Channels one, two and three in {string}', function (this: CustomWorl
 Given(
   'The channel selector sends a channel change message for channel {string}',
   async function (this: CustomWorld, channel: string) {
-    const port = handleResolve('{document.iframes[0].messageChannels[0].port2}', this);
-
-    port.postMessage({
-      type: BrowserTypes.FDC3_USER_INTERFACE_CHANNEL_SELECTED_TYPE,
+    const port = handleResolve('{childDoc.iframes[0].messageChannels[0].port2}', this);
+    const msg: Fdc3UserInterfaceChannelSelected = {
+      type: 'Fdc3UserInterfaceChannelSelected',
       payload: {
         selected: channel,
       },
-    });
+    };
+    port.postMessage(msg);
   }
 );

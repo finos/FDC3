@@ -1,3 +1,4 @@
+import { FDC3Server } from '../../src/FDC3Server';
 import { ServerContext, InstanceID, State, AppRegistration } from '../../src/ServerContext';
 import { CustomWorld } from '../world';
 import { Context } from '@kite9/fdc3-context';
@@ -19,11 +20,17 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
   private instances: ConnectionDetails[] = [];
   private nextInstanceId: number = 0;
   private nextUUID: number = 0;
+  private server: FDC3Server | null = null;
 
   constructor(cw: CustomWorld) {
     this.cw = cw;
   }
 
+  setFDC3Server(server: FDC3Server): void {
+    this.server = server;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async narrowIntents(_raiser: AppIdentifier, appIntents: AppIntent[], _context: Context): Promise<AppIntent[]> {
     return appIntents;
   }
@@ -40,10 +47,6 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
     this.instances.push(appId);
   }
 
-  async disconnectApp(app: AppIdentifier): Promise<void> {
-    this.instances = this.instances.filter(ca => ca.instanceId !== app.instanceId);
-  }
-
   async open(appId: string): Promise<InstanceID> {
     const ni = this.nextInstanceId++;
     if (appId.includes('missing')) {
@@ -55,10 +58,14 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
     }
   }
 
-  async setAppState(app: InstanceID, state: State): Promise<void> {
+  async setAppState(app: InstanceID, newState: State): Promise<void> {
     const found = this.instances.find(a => a.instanceId == app);
     if (found) {
-      found.state = state;
+      const currentState = found.state;
+      if (currentState !== State.Terminated && newState === State.Terminated) {
+        this.server?.cleanup(app);
+      }
+      found.state = newState;
     }
   }
 
@@ -102,8 +109,8 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
       const id = this.getInstanceDetails(to);
       const app = id
         ? {
-            appId: id!!.appId,
-            instanceId: id!!.instanceId,
+            appId: id!.appId,
+            instanceId: id!.instanceId,
           }
         : undefined;
       this.postedMessages.push({
@@ -122,11 +129,11 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
    * USED FOR TESTING
    */
   getInstanceUUID(appId: AppIdentifier): InstanceID {
-    this.setInstanceDetails(appId.instanceId!!, {
+    this.setInstanceDetails(appId.instanceId!, {
       appId: appId.appId,
-      instanceId: appId.instanceId!!,
+      instanceId: appId.instanceId!,
       state: State.Connected,
     });
-    return appId.instanceId!!;
+    return appId.instanceId!;
   }
 }

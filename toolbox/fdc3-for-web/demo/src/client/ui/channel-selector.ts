@@ -1,19 +1,26 @@
-import { BrowserTypes } from '@kite9/fdc3-schema';
+import { selectHighestContrast } from './contrast';
 import { dragElement } from './drag';
-import { Fdc3UserInterfaceRestyle } from '@kite9/fdc3-schema/generated/api/BrowserTypes';
+import {
+  Channel,
+  Fdc3UserInterfaceChannelSelected,
+  Fdc3UserInterfaceHello,
+  Fdc3UserInterfaceRestyle,
+  isFdc3UserInterfaceChannels,
+  isFdc3UserInterfaceHandshake,
+  UpdatedCSS,
+} from '@kite9/fdc3-schema/generated/api/BrowserTypes';
 
-// TODO: Update typings
-let channels: any[] = [];
+let channels: Channel[] = [];
 let channelId: string | null = null;
 
-export const DEFAULT_COLLAPSED_CSS = {
+export const DEFAULT_COLLAPSED_CSS: UpdatedCSS = {
   width: '50px',
   height: '50px',
   position: 'fixed',
   zIndex: '1000',
 };
 
-const DEFAULT_EXPANDED_CSS = {
+const DEFAULT_EXPANDED_CSS: UpdatedCSS = {
   left: '0',
   right: '0',
   top: '0',
@@ -36,20 +43,25 @@ const position: Position = {
   top: '',
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const debug = (...params: any[]) => {
+  console.debug('Demo Channel Selector: ', ...params);
+};
+
 window.addEventListener('load', () => {
   const parent = window.parent;
-  const logo = document.getElementById('logo')!!;
-  const close = document.getElementById('close')!!;
-  const drag = document.getElementById('drag')!!;
-  const selector = document.getElementById('selector')!!;
-  const list = document.getElementById('channel-list')!!;
+  const logo = document.getElementById('logo')!;
+  const close = document.getElementById('close')!;
+  const drag = document.getElementById('drag')!;
+  const selector = document.getElementById('selector')!;
+  const list = document.getElementById('channel-list')!;
 
   const mc = new MessageChannel();
   const myPort = mc.port1;
   myPort.start();
 
   // ISSUE: 1302
-  const helloMessage: BrowserTypes.Fdc3UserInterfaceHello = {
+  const helloMessage: Fdc3UserInterfaceHello = {
     type: 'Fdc3UserInterfaceHello',
     payload: {
       initialCSS: {
@@ -60,14 +72,18 @@ window.addEventListener('load', () => {
     },
   };
   parent.postMessage(helloMessage, '*', [mc.port2]);
+  debug('Sent hello message: ', helloMessage);
 
   function changeSize(expanded: boolean) {
     document.body.setAttribute('data-expanded', 'none');
     if (expanded) {
-      myPort.postMessage({
-        type: BrowserTypes.FDC3_USER_INTERFACE_RESTYLE_TYPE,
+      const message: Fdc3UserInterfaceRestyle = {
+        type: 'Fdc3UserInterfaceRestyle',
         payload: { updatedCSS: DEFAULT_EXPANDED_CSS },
-      } as Fdc3UserInterfaceRestyle);
+      };
+      myPort.postMessage(message);
+      debug('Setting expanded styles: ', message);
+      console.debug();
       selector.style.left = position.left;
       selector.style.top = position.top;
       selector.style.right = position.right;
@@ -76,10 +92,12 @@ window.addEventListener('load', () => {
         document.body.setAttribute('data-expanded', 'selector');
       }, 20);
     } else {
-      myPort.postMessage({
-        type: BrowserTypes.FDC3_USER_INTERFACE_RESTYLE_TYPE,
+      const message: Fdc3UserInterfaceRestyle = {
+        type: 'Fdc3UserInterfaceRestyle',
         payload: { updatedCSS: { ...DEFAULT_COLLAPSED_CSS, ...position } },
-      } as Fdc3UserInterfaceRestyle);
+      };
+      debug('Setting collapsed styles: ', message);
+      myPort.postMessage(message);
       setTimeout(() => {
         document.body.setAttribute('data-expanded', 'logo');
       }, 20);
@@ -87,18 +105,18 @@ window.addEventListener('load', () => {
   }
 
   myPort.addEventListener('message', e => {
-    console.log(e.data.type);
-    if (e.data.type == BrowserTypes.FDC3_USER_INTERFACE_HANDSHAKE_TYPE) {
-      // ok, port is ready, send the iframe position detials
-      myPort.postMessage({
-        type: BrowserTypes.FDC3_USER_INTERFACE_RESTYLE_TYPE,
+    if (isFdc3UserInterfaceHandshake(e.data)) {
+      // ok, port is ready, send the iframe position details
+      const message: Fdc3UserInterfaceRestyle = {
+        type: 'Fdc3UserInterfaceRestyle',
         payload: { updatedCSS: { ...DEFAULT_COLLAPSED_CSS, ...position } },
-      } as Fdc3UserInterfaceRestyle);
-    } else if (e.data.type == BrowserTypes.FDC3_USER_INTERFACE_CHANNELS_TYPE) {
-      const details = e.data as BrowserTypes.Fdc3UserInterfaceChannels;
-      console.log(JSON.stringify('CHANNEL DETAILS: ' + JSON.stringify(details)));
-      channels = details.payload.userChannels;
-      channelId = details.payload.selected;
+      };
+      myPort.postMessage(message);
+      debug('Received handshake, sending initial restyle: ', message);
+    } else if (isFdc3UserInterfaceChannels(e.data)) {
+      debug('Received channel details: ', e.data);
+      channels = e.data.payload.userChannels;
+      channelId = e.data.payload.selected;
 
       const selectedColor =
         (channelId ? channels.find(c => c.id == channelId)?.displayMetadata?.color : null) ?? 'white';
@@ -112,19 +130,23 @@ window.addEventListener('load', () => {
 
   logo.addEventListener('click', () => {
     list.innerHTML = '';
+
+    //populate with channels
     channels.forEach(channel => {
       const li = document.createElement('div');
-      li.style.backgroundColor = channel.displayMetadata.color;
+      const bgColor = channel.displayMetadata?.color ?? 'white';
+      li.style.backgroundColor = bgColor;
+      li.style.color = selectHighestContrast(bgColor, 'white', 'black');
       const description = document.createElement('em');
-      description.textContent = channel.displayMetadata.name = channel.id == channelId ? ' CURRENT CHANNEL ' : '';
-      li.textContent = channel.id;
+      description.textContent = channel.id == channelId ? '  SELECTED ' : '';
+      li.textContent = channel.displayMetadata?.name ?? channel.id;
 
       li.appendChild(description);
       list.appendChild(li);
       li.onclick = () => {
         changeSize(false);
         channelId = channel.id;
-        const message: BrowserTypes.Fdc3UserInterfaceChannelSelected = {
+        const message: Fdc3UserInterfaceChannelSelected = {
           type: 'Fdc3UserInterfaceChannelSelected',
           payload: {
             selected: channel.id,
@@ -133,6 +155,29 @@ window.addEventListener('load', () => {
         myPort.postMessage(message);
       };
     });
+
+    //add an element for deselecting the channel
+    const li = document.createElement('div');
+    li.style.backgroundColor = 'white';
+    li.style.color = 'black';
+    const description = document.createElement('em');
+    description.textContent = channelId == null ? '  SELECTED ' : '';
+    li.textContent = 'NONE';
+
+    li.appendChild(description);
+    list.appendChild(li);
+    li.onclick = () => {
+      changeSize(false);
+      channelId = null;
+      const message: Fdc3UserInterfaceChannelSelected = {
+        type: 'Fdc3UserInterfaceChannelSelected',
+        payload: {
+          selected: null,
+        },
+      };
+      myPort.postMessage(message);
+    };
+
     changeSize(true);
   });
 
