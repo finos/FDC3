@@ -99,7 +99,6 @@ Please note that the FDC3 project uses the following test policy:
 
   * Code should have tests (coverage is reported in the PR comments)
   * All tests must pass. (checked automatically by the PR comments)
-  * All new code must be covered by tests.
   * All tests must be meaningful.
   * All tests must be kept up-to-date.
   * All tests must be run locally before submitting a PR.
