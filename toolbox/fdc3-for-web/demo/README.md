@@ -59,8 +59,8 @@ FDC3 WCP supports the ability for Desktop Agents to specify UI for resolving int
 
 |Mode           | Default Web FDC3 UI | Demo UI |
 |---------------|---------------------|---------|
-|Collapsed      |![Default Collapsed](/images/channel-selector/default-collapsed.png)|![Demo Collapsed](/images/channel-selector/demo-collapsed.png)| 
-|Expanded       |![Default Expanded](/images/channel-selector/default-expanded.png)|![Demo Expanded](/images/channel-selector/demo-expanded.png)|
+|Collapsed      |![Default Collapsed](./images/channel-selector/default-collapsed.png)|![Demo Collapsed](./images/channel-selector/demo-collapsed.png)| 
+|Expanded       |![Default Expanded](./images/channel-selector/default-expanded.png)|![Demo Expanded](./images/channel-selector/demo-expanded.png)|
 
 **Note:** The Demo UI Channel Selector also supports **dragging** when in expanded mode.  You can reposition it on the screen by dragging on the six circles on the right of the title bar.
 
