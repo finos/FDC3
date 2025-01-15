@@ -6,6 +6,7 @@ import {
   AppRequestMessage,
   WebConnectionProtocol6Goodbye,
 } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { Logger } from '../util/Logger';
 
 export abstract class AbstractMessaging implements Messaging {
   private appIdentifier: AppIdentifier;
@@ -30,6 +31,7 @@ export abstract class AbstractMessaging implements Messaging {
         id,
         filter: filter,
         action: m => {
+          Logger.debug('Received from DesktopAgent: ', m);
           done = true;
           this.unregister(id);
           if (timeout) {
@@ -51,7 +53,7 @@ export abstract class AbstractMessaging implements Messaging {
         timeout = setTimeout(() => {
           this.unregister(id);
           if (!done) {
-            console.error(
+            Logger.error(
               `waitFor rejecting after ${this.getTimeoutMs()}ms at ${new Date().toISOString()} with ${timeoutErrorMessage}`
             );
             reject(new Error(timeoutErrorMessage));
@@ -71,6 +73,7 @@ export abstract class AbstractMessaging implements Messaging {
     const prom = this.waitFor<X>(m => {
       return m.type == expectedTypeName && m.meta.requestUuid == message.meta.requestUuid;
     }, errorMessage);
+    Logger.debug('Sending to DesktopAgent: ', message);
     this.post(message);
     const out: X = await prom;
     if (out?.payload?.error) {

@@ -19,7 +19,7 @@ import {
 } from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { Messaging } from '../Messaging';
 import { RegisterableListener } from './RegisterableListener';
-import { throwIfUndefined } from '../util';
+import { throwIfUndefined } from '../util/throwIfUndefined';
 import { ChannelError } from '@finos/fdc3-standard';
 
 type SubscriptionRequest =

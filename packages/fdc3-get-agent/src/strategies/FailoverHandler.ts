@@ -6,6 +6,7 @@ import { HelloHandler } from './HelloHandler';
 import { IdentityValidationHandler } from './IdentityValidationHandler';
 import { Logger } from '../util/Logger';
 import { ConnectionDetails } from '../messaging/MessagePortMessaging';
+import { DesktopAgentProxyLogSettings } from '@finos/fdc3-agent-proxy/src/DesktopAgentProxy';
 
 /** TypeGuard for a Desktop Agent */
 function isDesktopAgent(da: WindowProxy | DesktopAgent): da is DesktopAgent {
@@ -90,8 +91,15 @@ export class FailoverHandler {
         appId: idDetails.payload.appId,
         instanceId: idDetails.payload.instanceId,
       };
+
+      //prep log settings to pass on to the proxy
+      const logging: DesktopAgentProxyLogSettings = {
+        debug: this.options.logging?.proxyDebug ?? false,
+        heartbeat: this.options.logging?.heartbeat ?? false,
+      };
+
       const desktopAgentSelection: DesktopAgentSelection = {
-        agent: await createDesktopAgentAPI(connectionDetails, appIdentifier),
+        agent: await createDesktopAgentAPI(connectionDetails, appIdentifier, logging),
         details: {
           agentType: connectionDetails.agentType,
           agentUrl: connectionDetails.agentUrl ?? undefined,

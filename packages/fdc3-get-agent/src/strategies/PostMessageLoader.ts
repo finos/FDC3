@@ -5,6 +5,7 @@ import { DesktopAgentSelection, Loader } from './Loader';
 import { HelloHandler } from './HelloHandler';
 import { IdentityValidationHandler } from './IdentityValidationHandler';
 import { Logger } from '../util/Logger';
+import { DesktopAgentProxyLogSettings } from '@finos/fdc3-agent-proxy/src/DesktopAgentProxy';
 
 /**
  * Recursive search for all possible parent frames (windows) that we may
@@ -41,8 +42,15 @@ function _recursePossibleTargets(startWindow: Window, w: Window, found: Window[]
  */
 export class PostMessageLoader implements Loader {
   name = 'PostMessageLoader';
+  private logging: DesktopAgentProxyLogSettings;
 
-  constructor(previousUrl?: string) {
+  constructor(options: GetAgentParams, previousUrl?: string) {
+    //prep log settings to pass on to the proxy
+    this.logging = {
+      debug: options.logging?.proxyDebug ?? false,
+      heartbeat: options.logging?.heartbeat ?? false,
+    };
+
     this.previousUrl = previousUrl ?? null;
   }
 
@@ -128,7 +136,7 @@ export class PostMessageLoader implements Loader {
               instanceId: idDetails.payload.instanceId,
             };
 
-            createDesktopAgentAPI(connectionDetails, appIdentifier).then(da => {
+            createDesktopAgentAPI(connectionDetails, appIdentifier, this.logging).then(da => {
               const desktopAgentSelection: DesktopAgentSelection = {
                 agent: da,
                 details: {
