@@ -26,8 +26,8 @@ export abstract class AbstractFDC3Logger {
 
   /** This should be overridden by sub-classes to change the prefix applied
    * to log messages. */
-  static get prefix(): string {
-    /* istanbul ignore next */ return '';
+  /* istanbul ignore next */ static get prefix(): string {
+    return '';
   }
 
   public static enableDebugLogs(enable: boolean) {
