@@ -10,6 +10,7 @@ import {
   PrivateChannelUnsubscribeEvent,
 } from '@finos/fdc3-standard';
 import { BrowserTypes } from '@finos/fdc3-schema';
+import { Logger } from '../util/Logger';
 const {
   isPrivateChannelOnAddContextListenerEvent,
   isPrivateChannelOnDisconnectEvent,
@@ -116,7 +117,7 @@ export class PrivateChannelDisconnectEventListener extends AbstractPrivateChanne
         };
         handler(event);
       } else {
-        console.error('PrivateChannelDisconnectEventListener was called for a different message type!', msg);
+        Logger.error('PrivateChannelDisconnectEventListener was called for a different message type!', msg);
       }
     };
 
@@ -134,7 +135,7 @@ export class PrivateChannelAddContextEventListener extends AbstractPrivateChanne
         };
         handler(event);
       } else {
-        console.error('PrivateChannelAddContextEventListener was called for a different message type!', msg);
+        Logger.error('PrivateChannelAddContextEventListener was called for a different message type!', msg);
       }
     };
     super(messaging, channelId, ['privateChannelOnAddContextListenerEvent'], 'addContextListener', wrappedHandler);
@@ -151,7 +152,7 @@ export class PrivateChannelUnsubscribeEventListener extends AbstractPrivateChann
         };
         handler(event);
       } else {
-        console.error('PrivateChannelUnsubscribeEventListener was called for a different message type!', msg);
+        Logger.error('PrivateChannelUnsubscribeEventListener was called for a different message type!', msg);
       }
     };
     super(messaging, channelId, ['privateChannelOnUnsubscribeEvent'], 'unsubscribe', wrappedHandler);

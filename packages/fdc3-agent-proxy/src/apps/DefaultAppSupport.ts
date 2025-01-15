@@ -12,7 +12,8 @@ import {
   OpenRequest,
   OpenResponse,
 } from '@finos/fdc3-schema/generated/api/BrowserTypes';
-import { throwIfUndefined } from '../util';
+import { throwIfUndefined } from '../util/throwIfUndefined';
+import { Logger } from '../util/Logger';
 export class DefaultAppSupport implements AppSupport {
   readonly messaging: Messaging;
 
@@ -96,7 +97,7 @@ export class DefaultAppSupport implements AppSupport {
       return response.payload.implementationMetadata;
     } else {
       //This will only happen if the DA implementation returns an invalid message with a missing implementationMetadata property
-      console.error('Invalid response from Desktop Agent to open!', response);
+      Logger.error('Invalid response from Desktop Agent to open!', response);
       const unknownImpl: ImplementationMetadata = {
         fdc3Version: 'unknown',
         provider: 'unknown',

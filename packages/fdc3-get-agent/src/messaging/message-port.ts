@@ -20,7 +20,11 @@ import { Logger } from '../util/Logger';
  */
 export async function createDesktopAgentAPI(
   cd: ConnectionDetails,
-  appIdentifier: AppIdentifier
+  appIdentifier: AppIdentifier,
+  logging: {
+    heartbeat: boolean;
+    debug: boolean;
+  }
 ): Promise<DesktopAgent> {
   Logger.debug('message-port: Creating Desktop Agent...');
 
@@ -53,7 +57,7 @@ export async function createDesktopAgentAPI(
   const cs = new DefaultChannelSupport(messaging, channelSelector);
   const is = new DefaultIntentSupport(messaging, intentResolver);
   const as = new DefaultAppSupport(messaging);
-  const da = new DesktopAgentProxy(hs, cs, is, as, [hs, intentResolver, channelSelector]);
+  const da = new DesktopAgentProxy(hs, cs, is, as, [hs, intentResolver, channelSelector], logging);
 
   Logger.debug('message-port: Connecting components ...');
 

@@ -81,6 +81,10 @@ export type GetAgentType = (params?: GetAgentParams) => Promise<DesktopAgent>;
  * or an iframe's `contentWindow`) for a window or frame in which it has loaded
  * a Desktop Agent or suitable proxy to one that works with FDC3 Web Connection
  * and Desktop Agent Communication Protocols.
+ *
+ * @property {GetAgentLogSettings} logging Settings that determine what should
+ * will logged by the getAgent() implementation and DesktopAgentProxy to the
+ * JavaScript console.
  */
 export type GetAgentParams = {
   timeoutMs?: number;
@@ -89,6 +93,32 @@ export type GetAgentParams = {
   intentResolver?: boolean;
   dontSetWindowFdc3?: boolean;
   failover?: (args: GetAgentParams) => Promise<WindowProxy | DesktopAgent>;
+  logging?: GetAgentLogSettings;
+};
+
+/**
+ * @typedef {Object} GetAgentLogSettings Type representing parameters passed to the
+ * getAgent function that control what is logged to the JavaScript console by the
+ * getAgent() implementation and any DesktopAgentProxy implementations it creates.
+ *
+ * @property {boolean} connection Log-level messages relating to establishing a
+ * connection to the Desktop Agent (default true).
+ *
+ * @property {boolean} connectionDebug Debug-level messages relating to establishing
+ * a connection to the Desktop Agent (default false).
+ *
+ * @property {boolean} proxyDebug Debug-level messages that provide details of
+ * all messages sent to or received from the DesktopAgent (excluding heartbeat
+ * messages) by the DesktopAgentProxy (default false).
+ *
+ * @property {boolean} heartbeat Debug-level messages relating to heartbeat messages
+ * sent to or received from the DesktopAgent by the DesktopAgentProxy (default false).
+ */
+export type GetAgentLogSettings = {
+  connection: boolean;
+  connectionDebug: boolean;
+  proxyDebug: boolean;
+  heartbeat: boolean;
 };
 
 /** Type representing data on the Desktop Agent that an app
