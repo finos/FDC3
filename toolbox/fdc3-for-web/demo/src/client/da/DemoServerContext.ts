@@ -15,7 +15,6 @@ import { AppIdentifier, AppIntent, OpenError } from '@finos/fdc3';
 enum Opener {
   Tab,
   Frame,
-  Nested,
 }
 
 type RunningAppRegistration = AppRegistration & {
@@ -190,27 +189,11 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
     return Promise.resolve(window.open(url, '_blank'));
   }
 
-  openNested(url: string): Promise<Window | null> {
-    const iframe = document.createElement('iframe');
-    iframe.setAttribute('src', 'nested.html?url=' + url);
-    iframe.style.width = '640px';
-    iframe.style.height = '480px';
-    document.body.appendChild(iframe);
-
-    //wait for load event, after which contentWindow should not be null
-    const loadPromise = new Promise<Window | null>(resolve => {
-      iframe.onload = () => resolve(iframe.contentWindow);
-    });
-    return loadPromise;
-  }
-
   async openUrl(url: string): Promise<Window | null> {
     const opener = this.getOpener();
     switch (opener) {
       case Opener.Tab:
         return this.openTab(url);
-      case Opener.Nested:
-        return this.openNested(url);
       case Opener.Frame:
         return this.openFrame(url);
     }
