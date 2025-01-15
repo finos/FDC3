@@ -66,6 +66,7 @@ When(
 const TEST_ERROR = 'Test error - This is expected on the console';
 
 When('All log functions are used with a message', async function (this: CustomWorld) {
+  Logger.enableLogs(true);
   Logger.enableDebugLogs(true);
   Logger.enableHeartbeatLogs(true);
   Logger.debug('Debug msg');
@@ -76,6 +77,7 @@ When('All log functions are used with a message', async function (this: CustomWo
 });
 
 When('All log functions are used with an error', async function (this: CustomWorld) {
+  Logger.enableLogs(true);
   Logger.enableDebugLogs(true);
   Logger.enableHeartbeatLogs(true);
   Logger.debug('debug-level error: ', new Error(TEST_ERROR));
