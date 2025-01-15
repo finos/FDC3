@@ -10,11 +10,8 @@ export { AppIdentifier };
 import { getAgent, fdc3Ready } from '@finos/fdc3-get-agent';
 export { getAgent, fdc3Ready };
 
-/** Might not be needed */
 declare global {
   interface Window {
     fdc3?: DesktopAgent;
   }
 }
-
-// this is a test
