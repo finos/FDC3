@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/common.schema.json",
+  "title": "Common definitions",
+  "type": "object",
+  "description": "Common definitions that are referenced in the API and Bridging Wire Protocol schemas.",
+  "$defs": {
+    "ConnectionAttemptUuid": {
+      "title": "Connection Attempt UUID",
+      "type": "string",
+      "description": "Unique identifier for a for an attempt to connect to a Desktop Agent. A Unique UUID should be used in the first (WCP1Hello) message and should be quoted in all subsequent messages to link them to the same connection attempt."
+    },
+    "RequestUuid": {
+      "title": "Request UUID",
+      "type": "string",
+      "description": "Unique identifier for a request or event message. Required in all message types."
+    },
+    "ResponseUuid": {
+      "title": "Response UUID",
+      "type": "string",
+      "description": "Unique identifier for a response to a specific message and must always be accompanied by a RequestUuid."
+    },
+    "EventUuid": {
+      "title": "Event UUID",
+      "type": "string",
+      "description": "Unique identifier for an event message sent from a Desktop Agent to an app."
+    },
+    "ListenerUuid": {
+      "title": "Listener UUID",
+      "type": "string",
+      "description": "Unique identifier for a `listener` object returned by a Desktop Agent to an app in response to addContextListener, addIntentListener or one of the PrivateChannel event listeners and used to identify it in messages (e.g. when unsubscribing)."
+    },
+    "Timestamp": {
+      "title": "Timestamp",
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp at which the message was generated."
+    },
+    "ErrorMessages": {
+      "oneOf": [
+        {
+          "$ref": "api.schema.json#/definitions/ChannelError"
+        },
+        {
+          "$ref": "api.schema.json#/definitions/OpenError"
+        },
+        {
+          "$ref": "api.schema.json#/definitions/ResolveError"
+        },
+        {
+          "$ref": "api.schema.json#/definitions/ResultError"
+        },
+        {
+          "$ref": "api.schema.json#/definitions/BridgingError"
+        }
+      ]
+    }
+  }
+}

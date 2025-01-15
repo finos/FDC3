@@ -76,11 +76,46 @@ The specifications are informed by agreed [business use cases](https://fdc3.fino
 - All that is required is a "desktop agent" that supports the FDC3 standard, which is responsible for coordinating application interactions.
 - Get started using FDC3 on the web with TypeScript by reading the [supported platforms](https://fdc3.finos.org/docs/supported-platforms) page.
 
-### FDC3 npm module
+## FDC3 Project Structure
 
-The FDC3 npm package does NOT provide a Desktop Agent implementation. Rather, it can by used by web applications to target operations from the API Specification in a consistent way. Each FDC3-compliant desktop agent that the application runs in, can then provide an implementation of the FDC3 API operations.
+This project (the FDC3 Standard repo) is now a monorepo containing the following modules:
+
+| Directory                            | Release Coordinates                                    | Purpose                                                                                                                                                                                                                | Testing / Coverage    |
+|--------------------------------------|--------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------|
+| `packages/fdc3-schema`               | `@finos/fdc3-schema` (npm)                             | Contains the FDC3 For The Web and Desktop Agent Bridging protocol schemas.   Generates `BridgingTypes.ts` and `BrowserTypes.ts` versions of those schemas for consumption in typescript code.                          | n/a                   |
+| `packages/fdc3-context`              | `@finos/fdc3-context` (npm)                            | Contains the schemas for standard FDC3 context types.  Generates the `ContextTypes.ts` typescript version of the schema for consumption in typescript/javascript.                                                      | n/a                   |
+| `packages/fdc3-standard`             | `@finos/fdc3-standard` (npm)                           | Interface definitions for the FDC3 standard in typescript (e.g. the `DesktopAgent` interface) and the app directory schema.                                                                                            | Jest, embedded NYC    |
+| `packages/fdc3-agent-proxy`          | `@finos/fdc3-agent-proxy` (npm)                        | Contains a complete implementation of the FDC3 DACP.  Written in a platform-agnostic manner.                                                                                                                            | Cucumber, NYC         |
+| `packages/fdc3-get-agent`            | `@finos/fdc3-get-agent` (npm)                          | Implements the `getAgent` and `fdc3Ready()` functions as well as the FDC3 Web Connection protocol to allow FDC3 to work on the web or in an electron container.                                                     | Cucumber, NYC         |
+| `packages/testing`                   | -not released-                                         | Contains testing tools used by the cucumber tests used within other modules of this project.                                                                                                                           |                       |
+| `toolbox/fdc3-conformance`           | -not released-                                         | Contains definitions of the FDC3 conformance test suite, implemented by the [FDC3 Conformance Framework](https://github.com/finos/FDC3-conformance-framework)                                                          | Test Definitions Only |
+| `toolbox/fdc3-workbench`             | [here](https://fdc3.finos.org/toolbox/fdc3-workbench/) | Contains an FDC3-For-Web ready version of the [FDC3 Workbench](toolbox/fdc3-workbench/README.md).                                                                                                                      |                       |
+| `toolbox/fdc3-explained`             | [Here](https://fdc3.finos.org/toolbox/fdc3-explained)  | [Readme Here](toolbox/fdc3-explained/README.md)                                                                                                                                                                        |                       |
+| `toolbox/fdc3-for-web/fdc3-web-impl` | `@finos/fdc3-web-impl` (npm)                           | Portable and reusable implementation of the FDC3 For-The-Web Desktop Agent-Side protocol,                                                                                                                              | Cucumber, NYC         |
+| `toolbox/fdc3-for-web/demo`          | -not released-                                         | A reference implementation of an FDC3-For-The-Web Desktop Agent, using the above implementation and conforming to FDC3 2.0 from the  [FDC3 Conformance Framework](https://github.com/finos/FDC3-conformance-framework) |                       |
+| `packages/fdc3`                      | `@finos/fdc3` (npm)                                    | Imports `fdc3-standard`, `fdc3-context`, `fdc3-schema` and `fdc3-get-agent` sub-modules.  This is intended to be the main entry point for typescript / javascript applications using FDC3         |                       |
+| `packages/fdc3-commonjs`                      | `@finos/fdc3-commonjs` (npm)                                    | A roll-up of the `fdc3` sub-module.  This is for **backwards compatibility where CommonJS is required**.  May not be provided in future versions of FDC3.         |                       |
+
+
+### Building and Running The FDC3 Modules
+
+From the root package, you can run `npm run build` to build all the modules, or `npm run test` to run all the tests.  `npm run dev` will start the `demo` and `fdc3-workbench` modules.
 
 For installation and usage instructions, see: <https://fdc3.finos.org/docs/supported-platforms#usage>
+
+### Bumping Version Numbers (for maintainers)
+
+It's important that all of the versions of the submodules stay on the same version, and that the references between them are consistent to that version.  To change the version number (say before or after a release) run the following:
+
+```
+// first, update version number in package.json
+npm login
+npm version <new version from package.json> --workspaces // changes the version number in all submodule package.json files
+npm run syncpack                          // sycnhronizes version numbers
+npm up                                    // fixes node_module references
+npm run build                             // builds all the modules against the new version
+npm publish --access=public --workspaces  // this step performs a manual release of the npm modules (not needed with GitHub actions releases)
+```
 
 ## Getting Involved
 
@@ -171,4 +206,6 @@ THIS STANDARD IS BEING OFFERED WITHOUT ANY WARRANTY WHATSOEVER, AND IN PARTICULA
 
 ## FDC3 Archive
 
-An archive of FDC3 documentation and meeting notes is available at <https://finosfoundation.atlassian.net/wiki/spaces/FDC3/overview>. The mailing list archive for [fdc3@finos.org](mailto:fdc3@finos.org) is available at <https://groups.google.com/a/finos.org/g/fdc>
+An archive of FDC3 documentation and meeting notes from the early days of FDC3 is available at <https://finosfoundation.atlassian.net/wiki/spaces/FDC3/overview>. Later meeting minutes cam be found in closed Github issues.
+
+The mailing list archive for [fdc3@finos.org](mailto:fdc3@finos.org) is available at <https://groups.google.com/a/finos.org/g/fdc3>
