@@ -109,7 +109,7 @@ type GetAgentParams = {
     channelSelector?: boolean, 
     intentResolver?: boolean,
     dontSetWindowFdc3?: boolean,
-    failover?: (args: GetAgentParams) => Promise<WindowProxy | DesktopAgent>
+    failover?: (args: GetAgentParams) => Promise<WindowProxy | DesktopAgent>,
     logging?: GetAgentLogSettings;
 };
 
