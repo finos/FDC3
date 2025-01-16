@@ -3104,7 +3104,7 @@ export interface PrivateChannelEventListenerAddedAgentRequestPayload {
 /**
  * Event listener type names for Private Channel events.
  */
-export type PrivateChannelEventListenerTypes = 'onAddContextListener' | 'onUnsubscribe' | 'onDisconnect';
+export type PrivateChannelEventListenerTypes = 'addContextListener' | 'unsubscribe' | 'disconnect';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -6562,7 +6562,7 @@ const typeMap: any = {
   OpenAgentErrorResponseType: ['openResponse'],
   OpenAgentRequestType: ['openRequest'],
   PrivateChannelBroadcastAgentRequestType: ['PrivateChannel.broadcast'],
-  PrivateChannelEventListenerTypes: ['onAddContextListener', 'onDisconnect', 'onUnsubscribe'],
+  PrivateChannelEventListenerTypes: ['addContextListener', 'disconnect', 'unsubscribe'],
   PrivateChannelEventListenerAddedAgentRequestType: ['PrivateChannel.eventListenerAdded'],
   PrivateChannelEventListenerRemovedAgentRequestType: ['PrivateChannel.eventListenerRemoved'],
   PrivateChannelOnAddContextListenerAgentRequestType: ['PrivateChannel.onAddContextListener'],
