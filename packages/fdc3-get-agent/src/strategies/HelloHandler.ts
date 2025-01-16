@@ -2,6 +2,7 @@ import { FDC3_VERSION, GetAgentParams, WebDesktopAgentType } from '@finos/fdc3-s
 import { ConnectionDetails } from '../messaging/MessagePortMessaging';
 import { Logger } from '../util/Logger';
 import { BrowserTypes } from '@finos/fdc3-schema';
+import { DEFAULT_MESSAGE_EXCHANGE_TIMEOUT_MS, DEFAULT_APP_LAUNCH_TIMEOUT_MS } from './Timeouts';
 const { isWebConnectionProtocol2LoadURL, isWebConnectionProtocol3Handshake } = BrowserTypes;
 type WebConnectionProtocolMessage = BrowserTypes.WebConnectionProtocolMessage;
 type WebConnectionProtocol1Hello = BrowserTypes.WebConnectionProtocol1Hello;
@@ -121,8 +122,7 @@ export class HelloHandler {
             //n.b event listener remains in place to receive messages from the iframe
           } else if (isWebConnectionProtocol3Handshake(data)) {
             Logger.debug(`HelloHandler: successful handshake`);
-
-            resolve({
+            const connectionDetails: ConnectionDetails = {
               connectionAttemptUuid: this.connectionAttemptUuid,
               handshake: data,
               messagePort: event.ports[0],
@@ -130,7 +130,10 @@ export class HelloHandler {
               actualUrl: globalThis.window.location.href,
               agentType: this.agentType,
               agentUrl: this.agentUrl ?? undefined,
-            });
+              defaultTimeout: data.payload.defaultTimeout ?? DEFAULT_MESSAGE_EXCHANGE_TIMEOUT_MS,
+              appLaunchTimeout: data.payload.appLaunchTimeout ?? DEFAULT_APP_LAUNCH_TIMEOUT_MS,
+            };
+            resolve(connectionDetails);
 
             //remove the event listener as we've received a messagePort to use
             this.cancel();

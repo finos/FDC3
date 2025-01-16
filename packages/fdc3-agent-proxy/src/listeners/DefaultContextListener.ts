@@ -6,13 +6,15 @@ import { AddContextListenerRequest, BroadcastEvent } from '@finos/fdc3-schema/ge
 
 export class DefaultContextListener
   extends AbstractListener<ContextHandler, AddContextListenerRequest>
-  implements UserChannelContextListener {
+  implements UserChannelContextListener
+{
   private channelId: string | null;
   private readonly messageType: string;
   private readonly contextType: string | null;
 
   constructor(
     messaging: Messaging,
+    messageExchangeTimeout: number,
     channelId: string | null,
     contextType: string | null,
     handler: ContextHandler,
@@ -20,6 +22,7 @@ export class DefaultContextListener
   ) {
     super(
       messaging,
+      messageExchangeTimeout,
       { channelId, contextType },
       handler,
       'addContextListenerRequest',

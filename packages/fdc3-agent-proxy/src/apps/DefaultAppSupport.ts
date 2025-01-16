@@ -15,9 +15,13 @@ import {
 import { throwIfUndefined } from '../util';
 export class DefaultAppSupport implements AppSupport {
   readonly messaging: Messaging;
+  readonly messageExchangeTimeout: number;
+  readonly appLaunchTimeout: number;
 
-  constructor(messaging: Messaging) {
+  constructor(messaging: Messaging, messageExchangeTimeout: number, appLaunchTimeout: number) {
     this.messaging = messaging;
+    this.messageExchangeTimeout = messageExchangeTimeout;
+    this.appLaunchTimeout = appLaunchTimeout;
   }
 
   async findInstances(app: AppIdentifier): Promise<AppIdentifier[]> {
@@ -29,7 +33,11 @@ export class DefaultAppSupport implements AppSupport {
       meta: this.messaging.createMeta(),
     };
 
-    const out = await this.messaging.exchange<FindInstancesResponse>(request, 'findInstancesResponse');
+    const out = await this.messaging.exchange<FindInstancesResponse>(
+      request,
+      'findInstancesResponse',
+      this.messageExchangeTimeout
+    );
     return out.payload.appIdentifiers ?? [];
   }
 
@@ -42,7 +50,11 @@ export class DefaultAppSupport implements AppSupport {
       meta: this.messaging.createMeta(),
     };
 
-    const response = await this.messaging.exchange<GetAppMetadataResponse>(request, 'getAppMetadataResponse');
+    const response = await this.messaging.exchange<GetAppMetadataResponse>(
+      request,
+      'getAppMetadataResponse',
+      this.messageExchangeTimeout
+    );
 
     throwIfUndefined(
       response.payload.appMetadata,
@@ -67,7 +79,12 @@ export class DefaultAppSupport implements AppSupport {
       meta: this.messaging.createMeta(),
     };
 
-    const response = await this.messaging.exchange<OpenResponse>(request, 'openResponse', OpenError.AppTimeout);
+    const response = await this.messaging.exchange<OpenResponse>(
+      request,
+      'openResponse',
+      this.appLaunchTimeout,
+      OpenError.AppTimeout
+    );
 
     throwIfUndefined(
       response.payload.appIdentifier,
@@ -89,6 +106,7 @@ export class DefaultAppSupport implements AppSupport {
     const response = await this.messaging.exchange<GetInfoResponse>(
       request,
       'getInfoResponse',
+      this.messageExchangeTimeout,
       'timed out waiting for getInfo response!'
     );
 

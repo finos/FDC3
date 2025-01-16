@@ -33,12 +33,14 @@ import { throwIfUndefined } from '../util';
 export class DefaultChannelSupport implements ChannelSupport {
   readonly messaging: Messaging;
   readonly channelSelector: ChannelSelector;
+  readonly messageExchangeTimeout: number;
   protected userChannels: Channel[] = [];
   protected userChannelListeners: UserChannelContextListener[] = [];
 
-  constructor(messaging: Messaging, channelSelector: ChannelSelector) {
+  constructor(messaging: Messaging, channelSelector: ChannelSelector, messageExchangeTimeout: number) {
     this.messaging = messaging;
     this.channelSelector = channelSelector;
+    this.messageExchangeTimeout = messageExchangeTimeout;
     this.channelSelector.setChannelChangeCallback((channelId: string | null) => {
       console.debug('Channel selector reports channel changed: ' + channelId);
       if (channelId == null) {
@@ -65,7 +67,11 @@ export class DefaultChannelSupport implements ChannelSupport {
       type: 'getCurrentChannelRequest',
       payload: {},
     };
-    const response = await this.messaging.exchange<GetCurrentChannelResponse>(request, 'getCurrentChannelResponse');
+    const response = await this.messaging.exchange<GetCurrentChannelResponse>(
+      request,
+      'getCurrentChannelResponse',
+      this.messageExchangeTimeout
+    );
 
     throwIfUndefined(
       response.payload.channel,
@@ -79,6 +85,7 @@ export class DefaultChannelSupport implements ChannelSupport {
     if (response.payload.channel) {
       return new DefaultChannel(
         this.messaging,
+        this.messageExchangeTimeout,
         response.payload.channel.id,
         'user',
         response.payload.channel.displayMetadata
@@ -98,11 +105,17 @@ export class DefaultChannelSupport implements ChannelSupport {
       type: 'getUserChannelsRequest',
       payload: {},
     };
-    const response = await this.messaging.exchange<GetUserChannelsResponse>(request, 'getUserChannelsResponse');
+    const response = await this.messaging.exchange<GetUserChannelsResponse>(
+      request,
+      'getUserChannelsResponse',
+      this.messageExchangeTimeout
+    );
 
     //handle successful responses
     const channels = response.payload.userChannels!;
-    this.userChannels = channels.map(c => new DefaultChannel(this.messaging, c.id, 'user', c.displayMetadata));
+    this.userChannels = channels.map(
+      c => new DefaultChannel(this.messaging, this.messageExchangeTimeout, c.id, 'user', c.displayMetadata)
+    );
     return this.userChannels;
   }
 
@@ -114,7 +127,11 @@ export class DefaultChannelSupport implements ChannelSupport {
         channelId: id,
       },
     };
-    const response = await this.messaging.exchange<GetOrCreateChannelResponse>(request, 'getOrCreateChannelResponse');
+    const response = await this.messaging.exchange<GetOrCreateChannelResponse>(
+      request,
+      'getOrCreateChannelResponse',
+      this.messageExchangeTimeout
+    );
 
     throwIfUndefined(
       response.payload.channel,
@@ -123,7 +140,13 @@ export class DefaultChannelSupport implements ChannelSupport {
       ChannelError.CreationFailed
     );
 
-    const out = new DefaultChannel(this.messaging, id, 'app', response.payload.channel!.displayMetadata);
+    const out = new DefaultChannel(
+      this.messaging,
+      this.messageExchangeTimeout,
+      id,
+      'app',
+      response.payload.channel!.displayMetadata
+    );
     return out;
   }
 
@@ -135,7 +158,8 @@ export class DefaultChannelSupport implements ChannelSupport {
     };
     const response = await this.messaging.exchange<CreatePrivateChannelResponse>(
       request,
-      'createPrivateChannelResponse'
+      'createPrivateChannelResponse',
+      this.messageExchangeTimeout
     );
 
     throwIfUndefined(
@@ -145,7 +169,7 @@ export class DefaultChannelSupport implements ChannelSupport {
       ChannelError.CreationFailed
     );
 
-    return new DefaultPrivateChannel(this.messaging, response.payload.privateChannel!.id);
+    return new DefaultPrivateChannel(this.messaging, this.messageExchangeTimeout, response.payload.privateChannel!.id);
   }
 
   async leaveUserChannel(): Promise<void> {
@@ -154,7 +178,11 @@ export class DefaultChannelSupport implements ChannelSupport {
       type: 'leaveCurrentChannelRequest',
       payload: {},
     };
-    await this.messaging.exchange<LeaveCurrentChannelResponse>(request, 'leaveCurrentChannelResponse');
+    await this.messaging.exchange<LeaveCurrentChannelResponse>(
+      request,
+      'leaveCurrentChannelResponse',
+      this.messageExchangeTimeout
+    );
     this.channelSelector.updateChannel(null, this.userChannels);
     for (const l of this.userChannelListeners) {
       await l.changeChannel(null);
@@ -169,10 +197,14 @@ export class DefaultChannelSupport implements ChannelSupport {
         channelId: id,
       },
     };
-    await this.messaging.exchange<JoinUserChannelResponse>(request, 'joinUserChannelResponse');
+    await this.messaging.exchange<JoinUserChannelResponse>(
+      request,
+      'joinUserChannelResponse',
+      this.messageExchangeTimeout
+    );
     this.channelSelector.updateChannel(id, this.userChannels);
     for (const l of this.userChannelListeners) {
-      await l.changeChannel(new DefaultChannel(this.messaging, id, 'user'));
+      await l.changeChannel(new DefaultChannel(this.messaging, this.messageExchangeTimeout, id, 'user'));
     }
   }
 
@@ -187,12 +219,13 @@ export class DefaultChannelSupport implements ChannelSupport {
       constructor(
         container: DefaultChannelSupport,
         messaging: Messaging,
+        messageExchangeTimeout: number,
         channelId: string | null,
         contextType: string | null,
         handler: ContextHandler,
         messageType: string = 'broadcastEvent'
       ) {
-        super(messaging, channelId, contextType, handler, messageType);
+        super(messaging, messageExchangeTimeout, channelId, contextType, handler, messageType);
         this.container = container;
       }
 
@@ -203,7 +236,14 @@ export class DefaultChannelSupport implements ChannelSupport {
     }
 
     const currentChannelId = (await this.getUserChannel())?.id ?? null;
-    const listener = new UnsubscribingDefaultContextListener(this, this.messaging, currentChannelId, type, handler);
+    const listener = new UnsubscribingDefaultContextListener(
+      this,
+      this.messaging,
+      this.messageExchangeTimeout,
+      currentChannelId,
+      type,
+      handler
+    );
     this.userChannelListeners.push(listener);
     await listener.register();
     return listener;

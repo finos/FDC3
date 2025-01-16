@@ -13,9 +13,10 @@ import {
 export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIntentListenerRequest> {
   readonly intent: string;
 
-  constructor(messaging: Messaging, intent: string, action: IntentHandler) {
+  constructor(messaging: Messaging, intent: string, action: IntentHandler, messageExchangeTimeout: number) {
     super(
       messaging,
+      messageExchangeTimeout,
       { intent },
       action,
       'addIntentListenerRequest',
@@ -60,14 +61,16 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIn
       // send an empty intent result response
       return this.messaging.exchange<IntentResultResponse>(
         this.intentResultRequestMessage(undefined, m),
-        'intentResultResponse'
+        'intentResultResponse',
+        this.messageExchangeTimeout
       );
     } else {
       // respond after promise completes
       return done.then(ir => {
         return this.messaging.exchange<IntentResultResponse>(
           this.intentResultRequestMessage(ir, m),
-          'intentResultResponse'
+          'intentResultResponse',
+          this.messageExchangeTimeout
         );
       });
     }
