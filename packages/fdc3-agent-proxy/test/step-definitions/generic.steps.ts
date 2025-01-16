@@ -17,10 +17,11 @@ Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: s
     this.messaging = new TestMessaging(this.props[CHANNEL_STATE]);
   }
 
-  const cs = new DefaultChannelSupport(this.messaging, new SimpleChannelSelector(this), 10000);
+  //n.b. using short timeouts to avoid extending tests unnecessarily
+  const cs = new DefaultChannelSupport(this.messaging, new SimpleChannelSelector(this), 1500);
   const hs = new DefaultHeartbeatSupport(this.messaging);
-  const is = new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this), 10000, 100000);
-  const as = new DefaultAppSupport(this.messaging, 10000, 100000);
+  const is = new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this), 1500, 3000);
+  const as = new DefaultAppSupport(this.messaging, 1500, 3000);
 
   const da = new DesktopAgentProxy(hs, cs, is, as, [hs]);
   await da.connect();
