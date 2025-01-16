@@ -54,6 +54,18 @@
                   "type": "boolean"
                 }
               ]
+            },
+            "defaultTimeout": {
+              "title": "Default Timeout",
+              "description": "Indicates a custom timeout (in milliseconds) that should be used for the majority of API message exchanges instead of the default 10,000 millisecond timeout.",
+              "type": "number",
+              "minimum": 100
+            },
+            "appLaunchTimeout": {
+              "title": "App Launch Timeout",
+              "description": "Indicates a custom timeout (in milliseconds) that should be used for API message exchanges that may involve launching an application, instead of the default 100,000 millisecond timeout.",
+              "type": "number",
+              "minimum": 15000
             }
           },
           "additionalProperties": false,

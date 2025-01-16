@@ -227,7 +227,7 @@ Setup a timer for specified timeout, and then for each `candidate` found, attemp
 
         :::
 
-  5. At this stage, a [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) message should have been received from either a candidate parent or a hidden iframe created in step 4 above. This message MUST have a `MessagePort` appended to it, which is used for further communication with the Desktop Agent.
+  5. At this stage, a [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) message should have been received from either a candidate parent or a hidden iframe created in step 4 above. This message MUST have a `MessagePort` appended to it, which is used for further communication with the Desktop Agent. It MUST also contain URLs for any Intent Resolver or Channel Selector UIs to be injected into the page (or `false` to indicate that they are not in use) and MAY contain custom timeout settings to use for API message exchanges.
 
   Add a listener (`port.addEventListener("message", (event) => {})`) to receive messages from the selected `candidate`, before moving on to the next stage.
   6. If no candidates were found or no [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) has been received by the time that the timeout expires, then neither a Desktop Agent Preload or Desktop Agent Proxy interface has been discovered. If this occurs, the `getAgent()` implementation will run any `failover` function provided as a parameter to `getAgent()`, allowing the application to provide an alternative means of connecting to or starting up a Desktop Agent.

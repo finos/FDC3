@@ -15,13 +15,16 @@ export abstract class AbstractMessaging implements Messaging {
   abstract register(l: RegisterableListener): void;
   abstract unregister(id: string): void;
   abstract createMeta(): AppRequestMessage['meta'];
-  abstract getTimeoutMs(): number;
 
   constructor(appIdentifier: AppIdentifier) {
     this.appIdentifier = appIdentifier;
   }
 
-  waitFor<X extends AgentResponseMessage>(filter: (m: X) => boolean, timeoutErrorMessage?: string): Promise<X> {
+  waitFor<X extends AgentResponseMessage>(
+    filter: (m: X) => boolean,
+    timeoutMs?: number,
+    timeoutErrorMessage?: string
+  ): Promise<X> {
     const id = this.createUUID();
     return new Promise<X>((resolve, reject) => {
       let done = false;
@@ -47,16 +50,16 @@ export abstract class AbstractMessaging implements Messaging {
 
       this.register(l);
 
-      if (timeoutErrorMessage) {
+      if (timeoutMs) {
         timeout = setTimeout(() => {
           this.unregister(id);
           if (!done) {
             console.error(
-              `waitFor rejecting after ${this.getTimeoutMs()}ms at ${new Date().toISOString()} with ${timeoutErrorMessage}`
+              `waitFor rejecting after ${timeoutMs}ms at ${new Date().toISOString()}${timeoutErrorMessage ? ' with message: ' + timeoutErrorMessage : ''}`
             );
             reject(new Error(timeoutErrorMessage));
           }
-        }, this.getTimeoutMs());
+        }, timeoutMs);
       }
     });
   }
@@ -64,13 +67,18 @@ export abstract class AbstractMessaging implements Messaging {
   async exchange<X extends AgentResponseMessage>(
     message: AppRequestMessage,
     expectedTypeName: AgentResponseMessage['type'],
+    timeoutMs: number,
     timeoutErrorMessage?: string
   ): Promise<X> {
     const errorMessage =
       timeoutErrorMessage ?? `Timeout waiting for ${expectedTypeName} with requestUuid ${message.meta.requestUuid}`;
-    const prom = this.waitFor<X>(m => {
-      return m.type == expectedTypeName && m.meta.requestUuid == message.meta.requestUuid;
-    }, errorMessage);
+    const prom = this.waitFor<X>(
+      m => {
+        return m.type == expectedTypeName && m.meta.requestUuid == message.meta.requestUuid;
+      },
+      timeoutMs,
+      errorMessage
+    );
     this.post(message);
     const out: X = await prom;
     if (out?.payload?.error) {

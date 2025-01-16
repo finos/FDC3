@@ -18,22 +18,16 @@ export type ConnectionDetails = {
   options: GetAgentParams;
   agentType: WebDesktopAgentType;
   agentUrl?: string;
+  defaultTimeout: number;
+  appLaunchTimeout: number;
 };
-
-const MESSAGE_EXCHANGE_TIMEOUT = 10016;
 export class MessagePortMessaging extends AbstractMessaging {
   private readonly cd: ConnectionDetails;
   private readonly listeners: Map<string, RegisterableListener> = new Map();
-  private messageExchangeTimeout: number;
 
   constructor(cd: ConnectionDetails, appIdentifier: AppIdentifier) {
     super(appIdentifier);
     this.cd = cd;
-
-    /** We do not use the timeout specified as an argument to getAgent as
-     *  that is for connection messaging, rather than message exchanges
-     * post-connection. */
-    this.messageExchangeTimeout = MESSAGE_EXCHANGE_TIMEOUT;
 
     this.cd.messagePort.addEventListener('message', m => {
       this.listeners.forEach(v => {
@@ -67,10 +61,6 @@ export class MessagePortMessaging extends AbstractMessaging {
       timestamp: new Date(),
       source: super.getAppIdentifier(),
     };
-  }
-
-  getTimeoutMs(): number {
-    return this.messageExchangeTimeout;
   }
 
   async disconnect(): Promise<void> {

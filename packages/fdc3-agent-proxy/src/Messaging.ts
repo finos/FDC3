@@ -34,7 +34,11 @@ export interface Messaging {
   /**
    * Waits for a specific matching message
    */
-  waitFor<X extends AgentResponseMessage>(filter: (m: X) => boolean, timeoutErrorMessage?: string): Promise<X>;
+  waitFor<X extends AgentResponseMessage>(
+    filter: (m: X) => boolean,
+    timeoutMs?: number,
+    timeoutErrorMessage?: string
+  ): Promise<X>;
 
   /**
    * Sends a request message and waits for a response. If the response contains a payload.error, it is thrown.
@@ -43,6 +47,7 @@ export interface Messaging {
   exchange<X extends AgentResponseMessage>(
     message: AppRequestMessage,
     expectedTypeName: string,
+    timeoutMs: number,
     timeoutErrorMessage?: string
   ): Promise<X>;
 

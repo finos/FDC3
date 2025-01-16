@@ -49,6 +49,7 @@ type UnsubscribeResponse =
  */
 export abstract class AbstractListener<X, Y extends SubscriptionRequest> implements RegisterableListener {
   readonly messaging: Messaging;
+  readonly messageExchangeTimeout: number;
   private readonly subscribeRequestType: Y['type'];
   private readonly subscribeResponseType: SubscriptionResponse['type'];
   private readonly unsubscribeRequestType: UnsubscribeRequest['type'];
@@ -59,6 +60,7 @@ export abstract class AbstractListener<X, Y extends SubscriptionRequest> impleme
 
   constructor(
     messaging: Messaging,
+    messageExchangeTimeout: number,
     subscriptionPayload: Y['payload'],
     handler: X,
     subscribeRequestType: Y['type'],
@@ -67,6 +69,7 @@ export abstract class AbstractListener<X, Y extends SubscriptionRequest> impleme
     unsubscribeResponseType: UnsubscribeResponse['type']
   ) {
     this.messaging = messaging;
+    this.messageExchangeTimeout = messageExchangeTimeout;
     this.handler = handler;
     this.subscriptionPayload = subscriptionPayload;
     this.subscribeRequestType = subscribeRequestType;
@@ -90,7 +93,11 @@ export abstract class AbstractListener<X, Y extends SubscriptionRequest> impleme
         },
         type: this.unsubscribeRequestType,
       };
-      await this.messaging.exchange<UnsubscribeResponse>(unsubscribeMessage, this.unsubscribeResponseType);
+      await this.messaging.exchange<UnsubscribeResponse>(
+        unsubscribeMessage,
+        this.unsubscribeResponseType,
+        this.messageExchangeTimeout
+      );
       return;
     } else {
       //should never happen as we throw on creating a listener without an ID
@@ -105,7 +112,11 @@ export abstract class AbstractListener<X, Y extends SubscriptionRequest> impleme
       type: this.subscribeRequestType as Y['type'],
     } as Y;
 
-    const response = await this.messaging.exchange<SubscriptionResponse>(subscribeMessage, this.subscribeResponseType);
+    const response = await this.messaging.exchange<SubscriptionResponse>(
+      subscribeMessage,
+      this.subscribeResponseType,
+      this.messageExchangeTimeout
+    );
     this.id = response?.payload?.listenerUUID ?? null;
 
     //coalesce so that nullish values become undefined
