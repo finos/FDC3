@@ -60,6 +60,10 @@ export function indexOf(cw: PropsWorld, rows: Record<string, string>[], data: an
   return -1;
 }
 
+function isNumeric(n: string) {
+  return !isNaN(parseFloat(n)) && isFinite(n as unknown as number);
+}
+
 export function handleResolve(name: string, on: PropsWorld): any {
   if (name.startsWith('{') && name.endsWith('}')) {
     const stripped = name.substring(1, name.length - 1);
@@ -69,6 +73,8 @@ export function handleResolve(name: string, on: PropsWorld): any {
       return true;
     } else if (stripped == 'false') {
       return false;
+    } else if (isNumeric(stripped)) {
+      return Number.parseFloat(stripped);
     } else {
       const out = JSONPath({ path: stripped, json: on.props })[0];
       return out;

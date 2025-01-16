@@ -52,6 +52,39 @@ Given(
 );
 
 Given(
+  'Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response and times out message exchanges',
+  async function (this: CustomWorld, field: string, w: string) {
+    const mockWindow = handleResolve(w, this);
+    this.mockFDC3Server = new MockFDC3Server(mockWindow, false, this.mockContext, true, false, true);
+    this.props[field] = this.mockFDC3Server;
+    this.mockContext.open(dummyInstanceDetails[0].appId);
+    this.mockContext.open(dummyInstanceDetails[1].appId);
+  }
+);
+
+Given(
+  'Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response, times out message exchanges and uses message exchange timeout {string} ms and app launch timeout {string} ms',
+  async function (this: CustomWorld, field: string, w: string, t1: string, t2: string) {
+    const mockWindow = handleResolve(w, this);
+    const defaultTimeout: number = handleResolve(t1, this);
+    const appLaunchTimeout: number = handleResolve(t2, this);
+    this.mockFDC3Server = new MockFDC3Server(
+      mockWindow,
+      false,
+      this.mockContext,
+      true,
+      false,
+      true,
+      defaultTimeout,
+      appLaunchTimeout
+    );
+    this.props[field] = this.mockFDC3Server;
+    this.mockContext.open(dummyInstanceDetails[0].appId);
+    this.mockContext.open(dummyInstanceDetails[1].appId);
+  }
+);
+
+Given(
   'Parent Window desktop {string} listens for postMessage events in {string}, returns iframe response',
   async function (this: CustomWorld, field: string, w: string) {
     const mockWindow = handleResolve(w, this);
@@ -87,6 +120,56 @@ Given(
       const ifrm = document.createElement('iframe');
 
       this.mockFDC3Server = new MockFDC3Server(ifrm as unknown as MockIFrame, false, this.mockContext, true, true);
+      ifrm.setAttribute('src', EMBED_URL);
+      document.body.appendChild(ifrm);
+      return ifrm;
+    };
+  }
+);
+
+Given(
+  '{string} is a function which opens an iframe for communications on {string} and times out message exchanges',
+  function (this: CustomWorld, fn: string, doc: string) {
+    this.props[fn] = () => {
+      this.mockContext.open(dummyInstanceDetails[0].appId);
+      const document = handleResolve(doc, this) as MockDocument;
+      const ifrm = document.createElement('iframe');
+
+      this.mockFDC3Server = new MockFDC3Server(
+        ifrm as unknown as MockIFrame,
+        false,
+        this.mockContext,
+        false,
+        false,
+        true
+      );
+      ifrm.setAttribute('src', EMBED_URL);
+      document.body.appendChild(ifrm);
+      return ifrm;
+    };
+  }
+);
+
+Given(
+  '{string} is a function which opens an iframe for communications on {string}, times out message exchanges and uses message exchange timeout {string} ms and app launch timeout {string} ms',
+  function (this: CustomWorld, fn: string, doc: string, t1: string, t2: string) {
+    const defaultTimeout: number = handleResolve(t1, this);
+    const appLaunchTimeout: number = handleResolve(t2, this);
+    this.props[fn] = () => {
+      this.mockContext.open(dummyInstanceDetails[0].appId);
+      const document = handleResolve(doc, this) as MockDocument;
+      const ifrm = document.createElement('iframe');
+
+      this.mockFDC3Server = new MockFDC3Server(
+        ifrm as unknown as MockIFrame,
+        false,
+        this.mockContext,
+        false,
+        false,
+        true,
+        defaultTimeout,
+        appLaunchTimeout
+      );
       ifrm.setAttribute('src', EMBED_URL);
       document.body.appendChild(ifrm);
       return ifrm;
