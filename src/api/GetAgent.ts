@@ -44,7 +44,7 @@ export type GetAgentType = (params?: GetAgentParams) => Promise<DesktopAgent>;
  *
  * @property {number} timeoutMs Number of milliseconds to allow for an FDC3
  * implementation to be found before calling the failover function or
- * rejecting (default 750). Note that the timeout is cancelled as soon as a
+ * rejecting (default 1000). Note that the timeout is cancelled as soon as a
  * Desktop Agent is detected. There may be additional set-up steps to perform
  * which will happen outside the timeout.
  *
@@ -90,6 +90,14 @@ type GetAgentParams = {
   dontSetWindowFdc3?: boolean;
   failover?: (args: GetAgentParams) => Promise<WindowProxy | DesktopAgent>;
 };
+
+/** Type representing the format of data stored by `getAgent`
+ *  in Session Storage. The `identityUrl` of each app is used
+ *  as the key. */
+export type SessionStorageFormat = {
+  /** */
+  [key: string]: DesktopAgentDetails
+}
 
 /** Type representing data on the Desktop Agent that an app
  *  connected to that is persisted by the getAgent function
@@ -159,3 +167,7 @@ export enum WebDesktopAgentType {
    *  function that was passed by the application. */
   Failover = 'FAILOVER',
 }
+
+export const DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX = 'fdc3-desktop-agent-details';
+
+export const DEFAULT_TIMEOUT_MS = 1000;
