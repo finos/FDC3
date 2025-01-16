@@ -411,3 +411,4 @@ Scenario: Latch to Desktop Agent Preload via SessionStorage which has gone away
     And I refer to "{result}" as "desktopAgent2"
     And "{desktopAgent1}" is "{desktopAgent2}"
     And I call "{desktopAgent1}" with "disconnect"
+
