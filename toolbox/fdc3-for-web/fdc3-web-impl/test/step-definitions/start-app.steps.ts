@@ -4,7 +4,7 @@ import { contextMap, createMeta } from './generic.steps';
 import { matchData } from '@finos/testing';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { State } from '../../src/ServerContext';
-import { GetInfoRequest } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { GetInfoRequest } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 type OpenRequest = BrowserTypes.OpenRequest;
 type GetAppMetadataRequest = BrowserTypes.GetAppMetadataRequest;

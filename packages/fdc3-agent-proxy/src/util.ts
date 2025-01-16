@@ -1,4 +1,4 @@
-import { AgentEventMessage, AgentResponseMessage } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { AgentEventMessage, AgentResponseMessage } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { ChannelError, OpenError, ResolveError } from '@finos/fdc3-standard';
 
 export type ErrorMessages = ChannelError | OpenError | ResolveError;

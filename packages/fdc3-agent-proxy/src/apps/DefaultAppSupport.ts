@@ -11,7 +11,7 @@ import {
   GetInfoResponse,
   OpenRequest,
   OpenResponse,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { throwIfUndefined } from '../util';
 export class DefaultAppSupport implements AppSupport {
   readonly messaging: Messaging;

@@ -1,7 +1,7 @@
 import { When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
 import { throwIfUndefined } from '../../src/util';
-import { AgentResponseMessage } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { AgentResponseMessage } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { OpenError } from '@finos/fdc3-standard';
 import expect from 'expect';
 

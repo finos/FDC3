@@ -27,7 +27,7 @@ import {
   LeaveCurrentChannelRequest,
   JoinUserChannelResponse,
   JoinUserChannelRequest,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { throwIfUndefined } from '../util';
 
 export class DefaultChannelSupport implements ChannelSupport {

@@ -26,7 +26,7 @@ import {
   RaiseIntentRequest,
   RaiseIntentResponse,
   RaiseIntentResultResponse,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { throwIfUndefined } from '../util';
 
 const convertIntentResult = async (

@@ -1,7 +1,7 @@
 import { TestServerContext } from '../TestServerContext';
 import { InstanceID } from '@finos/fdc3-web-impl';
 import { AutomaticResponse } from './AutomaticResponses';
-import { FindIntentRequest, FindIntentResponse } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { FindIntentRequest, FindIntentResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 export class FindIntent implements AutomaticResponse {
   filter(t: string) {

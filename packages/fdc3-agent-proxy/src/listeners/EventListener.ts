@@ -1,7 +1,7 @@
 import { ApiEvent, EventHandler } from '@finos/fdc3-standard';
 import { Messaging } from '../Messaging';
 import { RegisterableListener } from './RegisterableListener';
-import { AgentEventMessage } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { AgentEventMessage } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 export class EventListener implements RegisterableListener {
   readonly id: string;

@@ -22,7 +22,7 @@ import {
   IntentResultRequest,
   AppRequestMessage,
   AgentResponseMessage,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 type ListenerRegistration = {
   appId: string;
@@ -147,7 +147,7 @@ export class IntentHandler implements MessageHandler {
     });
   }
 
-  shutdown(): void { }
+  shutdown(): void {}
 
   async narrowIntents(
     raiser: AppIdentifier,
