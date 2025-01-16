@@ -3,7 +3,7 @@ import { CustomWorld } from '../world';
 import {
   HeartbeatAcknowledgementRequest,
   WebConnectionProtocol6Goodbye,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { createMeta } from './generic.steps';
 import { HeartbeatHandler } from '../../src/handlers/HeartbeatHandler';
 

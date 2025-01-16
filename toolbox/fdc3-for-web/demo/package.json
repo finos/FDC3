@@ -1,7 +1,7 @@
 {
   "name": "@finos/demo",
   "private": true,
-  "version": "2.2.0-beta.30",
+  "version": "2.2.0-alpha.2",
   "scripts": {
     "dev": "nodemon -w src/server src/server/main.ts",
     "lint": "eslint src/"
@@ -21,7 +21,7 @@
     "vite": "^5.4.9"
   },
   "dependencies": {
-    "@finos/fdc3": "2.2.0-alpha.1",
+    "@finos/fdc3": "2.2.0-alpha.2",
     "@types/uuid": "^10.0.0",
     "@types/ws": "^8.5.12",
     "express": "^4.21.1",

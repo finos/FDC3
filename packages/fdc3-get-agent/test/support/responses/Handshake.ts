@@ -5,7 +5,7 @@ import {
   WebConnectionProtocol4ValidateAppIdentity,
   WebConnectionProtocol5ValidateAppIdentityFailedResponse,
   WebConnectionProtocol5ValidateAppIdentitySuccessResponse,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 export const BAD_INSTANCE_ID = 'BAD_INSTANCE';
 export const EXPECTED_IDENTITY_URL = 'https://dummyOrigin.test/path';

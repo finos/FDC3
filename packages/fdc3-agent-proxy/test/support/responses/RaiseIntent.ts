@@ -2,7 +2,7 @@ import {
   RaiseIntentRequest,
   RaiseIntentResponse,
   RaiseIntentResultResponse,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { AutomaticResponse, IntentDetail, intentDetailMatches, TestMessaging } from '../TestMessaging';
 import { AppMetadata, ResolveError } from '@finos/fdc3-standard';
 import { createResponseMeta } from './support';

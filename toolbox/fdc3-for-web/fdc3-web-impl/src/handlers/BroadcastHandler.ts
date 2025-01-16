@@ -22,7 +22,7 @@ import {
   PrivateChannelOnDisconnectEvent,
   PrivateChannelOnUnsubscribeEvent,
   PrivateChannelUnsubscribeEventListenerRequest,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 type PrivateChannelEvents =
   | PrivateChannelOnAddContextListenerEvent
@@ -69,7 +69,7 @@ export class BroadcastHandler implements MessageHandler {
     this.state = initialChannelState;
   }
 
-  shutdown(): void { }
+  shutdown(): void {}
 
   cleanup(instanceId: InstanceID, sc: ServerContext<AppRegistration>): void {
     const toUnsubscribe = this.contextListeners.filter(r => r.instanceId == instanceId);
