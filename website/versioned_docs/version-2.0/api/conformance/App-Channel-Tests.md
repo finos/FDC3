@@ -1,3 +1,10 @@
+---
+id: App-Channel-Tests
+sidebar_label: App Channel Tests
+title: App Channel Tests
+hide_title: true
+---
+
 # App Channel Tests  ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
 
 ## Basic Broadcast
