@@ -23,8 +23,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added utility functions `isStandardContextType(contextType: string)`, `isStandardIntent(intent: string)`,`getPossibleContextsForIntent(intent: StandardIntent)`. ([#1139](https://github.com/finos/FDC3/pull/1139))
 * Added support for event listening outside of intent or context listnener. Added new function `addEventListener`, type `EventHandler`,  enum `FDC3EventType` and interfaces `FDC3Event` and `FDC3ChannelChangedEvent`. ([#1207](https://github.com/finos/FDC3/pull/1207))
 * Added new `CreateOrUpdateProfile` intent. ([#1359](https://github.com/finos/FDC3/pull/1359))
+* Added conformance tests into the FDC3 API documentation in the current version and backported into 2.0 and 2.1. Removed outdated 1.2 conformance tests (which are preserved in the older 2.0 and 2.1 versions). ([#1417](https://github.com/finos/FDC3/pull/1417))
 * Added separate `fdc3-commonjs` module for compatibility with older projects that use CommonJS. ([#1452](https://github.com/finos/FDC3/pull/1452))
-* Added testing policy to [Contributing](CONTRIBUTING) page to address ([810](https://github.com/finos/FDC3/issues/810)) 
+* Added testing policy to [Contributing](CONTRIBUTING) page to address ([810](https://github.com/finos/FDC3/issues/810))
 
 ### Changed
 
