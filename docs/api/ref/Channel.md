@@ -66,7 +66,7 @@ interface IChannel: IIntentResult
 ```go
 type IChannel interface {
     Broadcast(context Context) <-chan Result[any]
-    GetCurrentContext(contextType string) <-chan Result[Context]
+    GetCurrentContext(contextType string) <-chan Result[IContext]
     AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener]
 }
 
@@ -277,12 +277,14 @@ listener.Unsubscribe();
 <TabItem value="golang" label="Go">
 
 ```go
-listenerResult := <-channel.AddContextListener("", func(context Context, contextMetadata *ContextMetadata) {
-		if context.Type == "fdc3.contact" {
-			// handle the contact 
-		} else if context.Type == "fdc3.instrument" {
-			// handle the instrument 
-		} 
+listenerResult := <-channel.AddContextListener("", func(contextInt IContext, contextMetadata *ContextMetadata) {
+        if context, ok := contextInt.(Context); ok {
+			if context.Type == "fdc3.contact" {
+				// handle the contact 
+			} else if context.Type == "fdc3.instrument" {
+				// handle the instrument 
+			}
+        } 
 	})
 
 // later 
@@ -334,10 +336,10 @@ instrumentListener.unsubscribe();
 <TabItem value="golang" label="Go">
 
 ```go
-listenerResultContact := <-channel.AddContextListener("fdc3.contact", func(context Context, contextMetadata *ContextMetadata) {
+listenerResultContact := <-channel.AddContextListener("fdc3.contact", func(context IContext, contextMetadata *ContextMetadata) {
     // handle the contact
 })
-listenerResultInstrument := <-channel.AddContextListener("fdc3.instrument", func(context Context, contextMetadata *ContextMetadata) {
+listenerResultInstrument := <-channel.AddContextListener("fdc3.instrument", func(context IContext, contextMetadata *ContextMetadata) {
     // handle the instrument
 })
 
@@ -380,7 +382,7 @@ Task Broadcast(IContext context);
 <TabItem value="golang" label="Go">
 
 ```go
-func (channel *Channel) Broadcast(context Context) <-chan Result[any]  { 
+func (channel *Channel) Broadcast(context IContext) <-chan Result[any]  { 
   // Implementation here
 }
 ```

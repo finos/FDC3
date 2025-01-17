@@ -113,19 +113,19 @@ type DesktopAgent struct {}
 
 type IDesktopAgent interface {
     // Apps
-    Open(appIdentifier AppIdentifier, context *Context) <-chan Result[AppIdentifier]
+    Open(appIdentifier AppIdentifier, context *IContext) <-chan Result[AppIdentifier]
     FindInstances(appIdentifier AppIdentifier) <-chan Result[[]AppIdentifier]
     GetAppMetadata(appIdentifier AppIdentifier) <-chan Result[AppIdentifier]
 
     // Context
-    Broadcast(context Context) <-chan Result[any]
+    Broadcast(context IContext) <-chan Result[any]
     AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener]
 
     // Intents
-    FindIntent(intent string, context *Context, resultType *string) <-chan Result[AppIntent]
-    FindIntentsByContext(context Context, resultType *string) <-chan Result[[]AppIntent]
-    RaiseIntent(intent string, context Context, appIdentifier *AppIdentifier) <-chan Result[IntentResolution]
-    RaiseIntentForContext(context Context, appIdentifier *AppIdentifier) <-chan Result[IntentResolution]
+    FindIntent(intent string, context *IContext, resultType *string) <-chan Result[AppIntent]
+    FindIntentsByContext(context IContext, resultType *string) <-chan Result[[]AppIntent]
+    RaiseIntent(intent string, context IContext, appIdentifier *AppIdentifier) <-chan Result[IntentResolution]
+    RaiseIntentForContext(context IContext, appIdentifier *AppIdentifier) <-chan Result[IntentResolution]
     AddIntentListener(intent string, handler IntentHandler) <-chan Result[Listener]
 
     // Channels
@@ -228,13 +228,13 @@ var contactListener = await _desktopAgent.AddContextListener<Contact>("fdc3.cont
 
 ```go
 // any context
-listenerResult := <-desktopAgent.AddContextListener("", func(context Context, contextMetadata *ContextMetadata) { ... })
+listenerResult := <-desktopAgent.AddContextListener("", func(context IContext, contextMetadata *ContextMetadata) { ... })
 
 // listener for a specific type
-listenerResult := <-desktopAgent.AddContextListener("fdc3.contact", func(context Context, contextMetadata *ContextMetadata) { ... })
+listenerResult := <-desktopAgent.AddContextListener("fdc3.contact", func(context IContext, contextMetadata *ContextMetadata) { ... })
 
 // listener that logs metadata for the message of a specific type
-listenerResult := <-desktopAgent.AddContextListener("fdc3.contact", func(context Context, contextMetadata *ContextMetadata) {
+listenerResult := <-desktopAgent.AddContextListener("fdc3.contact", func(context IContext, contextMetadata *ContextMetadata) {
   if contextMetadata != nil {
     log.Printf("Received context message\nContext: %v\nOriginating app: %v", context, contextMetadata.Source)
 } else {
@@ -336,7 +336,7 @@ Task<IListener> AddIntentListener<T>(string intent, IntentHandler<T> handler) wh
 
 ```go
 func (desktopAgent *DesktopAgent) AddIntentListener(intent string, handler IntentHandler) <-chan Result[Listener]  { 
-  // Implmentation here
+  // Implementation here
 }
 ```
 
@@ -427,12 +427,12 @@ var listener = await _desktopAgent.AddIntentListener<IContext>("StartChat", (con
 
 ```go
 //Handle a raised intent
-listenerResult := <-desktopAgent.AddIntentListener("StartChat", func(context Context, contextMetadata *ContextMetadata) { 
+listenerResult := <-desktopAgent.AddIntentListener("StartChat", func(context IContext, contextMetadata *ContextMetadata) { 
   // start chat has been requested by another application
 })
 
 //Handle a raised intent and log the originating app metadata
-listenerResult := <-desktopAgent.AddIntentListener("StartChat", func(context Context, contextMetadata *ContextMetadata) { 
+listenerResult := <-desktopAgent.AddIntentListener("StartChat", func(context IContext, contextMetadata *ContextMetadata) { 
   if contextMetadata != nil {
     log.Printf("Received intent StartChat\nContext: %v\nOriginating app: %v", context, contextMetadata.Source)
   } else {
@@ -441,7 +441,7 @@ listenerResult := <-desktopAgent.AddIntentListener("StartChat", func(context Con
 })
 
 // listener that logs metadata for the message of a specific type
-listenerResult := <-desktopAgent.AddIntentListener("fdc3.contact", func(context Context, contextMetadata *ContextMetadata) {
+listenerResult := <-desktopAgent.AddIntentListener("fdc3.contact", func(context IContext, contextMetadata *ContextMetadata) {
   if contextMetadata != nil {
     log.Printf("Received context message\nContext: %v\nOriginating app: %v", context, contextMetadata.Source)
 } else {
@@ -481,7 +481,7 @@ Task Broadcast(IContext context);
 <TabItem value="golang" label="Go">
 
 ```go
-func (desktopAgent *DesktopAgent) Broadcast(context Context) <-chan Result[any]  { 
+func (desktopAgent *DesktopAgent) Broadcast(context IContext) <-chan Result[any]  { 
   // Implmentation here
 }
 ```
@@ -568,7 +568,7 @@ Task<IPrivateChannel> CreatePrivateChannel();
 
 ```go
 func (desktopAgent *DesktopAgent) CreatePrivateChannel() <-chan Result[PrivateChannel] {
-  // Implmentation here
+  // Implementation here
 }
 ```
 
@@ -653,7 +653,7 @@ _desktopAgent.AddIntentListener<Instrument>("QuoteStream", async (context, metad
 <TabItem value="golang" label="Go">
 
 ```go
-desktopAgent.AddIntentListener("fdc3.contact", func(context Context, contextMetadata *ContextMetadata) {
+desktopAgent.AddIntentListener("fdc3.contact", func(context IContext, contextMetadata *ContextMetadata) {
   channelResult := <-desktopAgent.CreatePrivateChannel()
   symbol := context.Id["ticker"]
 
@@ -696,7 +696,7 @@ Task<IEnumerable<IAppIdentifier>> FindInstances(IAppIdentifier app);
 
 ```go
 func (desktopAgent *DesktopAgent) FindInstances(appIdentifier AppIdentifier) <-chan Result[[]AppIdentifier] {
-  // Implmentation here
+  // Implementation here
 }
 
 ```
@@ -771,7 +771,7 @@ Task<IAppIntent> FindIntent(string intent, IContext? context = null, string? res
 <TabItem value="golang" label="Go">
 
 ```go
-func (desktopAgent *DesktopAgent) FindIntent(intent string, context *Context, resultType *string) <-chan Result[AppIntent] {
+func (desktopAgent *DesktopAgent) FindIntent(intent string, context *IContext, resultType *string) <-chan Result[AppIntent] {
   // Implmentation here
 }
 
@@ -960,7 +960,7 @@ Task<IEnumerable<IAppIntent>> FindIntentsByContext(IContext context, string? res
 <TabItem value="golang" label="Go">
 
 ```go
-func (desktopAgent *DesktopAgent) FindIntentsByContext(context Context, resultType *string) <-chan Result[[]AppIntent] {
+func (desktopAgent *DesktopAgent) FindIntentsByContext(context IContext, resultType *string) <-chan Result[[]AppIntent] {
   // Implmentation here
 }
 
@@ -1124,7 +1124,7 @@ Task<IAppMetadata> GetAppMetadata(IAppIdentifier app);
 
 ```go
 func (desktopAgent *DesktopAgent) GetAppMetadata(appIdentifier AppIdentifier) <-chan Result[AppIdentifier] {
-  // Implmentation here
+  // Implementation here
 }
 
 ```
@@ -1191,7 +1191,7 @@ Task<IChannel?> GetCurrentChannel();
 
 ```go
 func (desktopAgent *DesktopAgent) GetCurrentChannel() <-chan Result[Channel] {
-  // Implmentation here
+  // Implementation here
 }
 
 ```
@@ -1256,7 +1256,7 @@ Task<IImplementationMetadata> GetInfo();
 
 ```go
 func (desktopAgent *DesktopAgent) GetInfo() <-chan Result[ImplementationMetadata] {
-  // Implmentation here
+  // Implementation here
 }
 
 ```
@@ -1413,7 +1413,7 @@ if myChannelResult.Err != nil {
     //app could not register the channel
 }
 myChannel := myChannelResult.Value
-<-myChannel.AddContextListener("", func(context Context, metadata *ContextMetadata) {
+<-myChannel.AddContextListener("", func(context IContext, metadata *ContextMetadata) {
     // do something with context
 })
 
@@ -1649,7 +1649,7 @@ redChannel.AddContextListener(null, channelListener);
 
 ```go
 //desktop-agent scope context listener
-listenerResult := <-desktopAgent.AddContextListener("", func(context Context, contextMetadata *ContextMetadata) { ... })
+listenerResult := <-desktopAgent.AddContextListener("", func(context IContext, contextMetadata *ContextMetadata) { ... })
 
 
 <-desktopAgent.LeaveCurrentChannel()
@@ -1682,7 +1682,7 @@ Task<IAppIdentifier> Open(IAppIdentifier app, IContext? context = null);
 <TabItem value="golang" label="Go">
 
 ```go
-func (desktopAgent *DesktopAgent) Open(appIdentifier AppIdentifier, context *Context) <-chan Result[AppIdentifier] {
+func (desktopAgent *DesktopAgent) Open(appIdentifier AppIdentifier, context *IContext) <-chan Result[AppIdentifier] {
   // Implementation here
 }
 ```
@@ -1770,7 +1770,7 @@ Task<IIntentResolution> RaiseIntent(string intent, IContext context, IAppIdentif
 <TabItem value="golang" label="Go">
 
 ```go
-func (desktopAgent *DesktopAgent) RaiseIntent(intent string, context Context, appIdentifier *AppIdentifier) <-chan Result[IntentResolution] {
+func (desktopAgent *DesktopAgent) RaiseIntent(intent string, context IContext, appIdentifier *AppIdentifier) <-chan Result[IntentResolution] {
   // Implementation here
 }
 ```
@@ -1908,7 +1908,7 @@ Task<IIntentResolution> RaiseIntentForContext(IContext context, IAppIdentifier? 
 <TabItem value="golang" label="Go">
 
 ```go
-func (desktopAgent *DesktopAgent) RaiseIntentForContext(context Context, appIdentifier *AppIdentifier) <-chan Result[IntentResolution] {
+func (desktopAgent *DesktopAgent) RaiseIntentForContext(context IContext, appIdentifier *AppIdentifier) <-chan Result[IntentResolution] {
   // Implementation here
 }
 ```
