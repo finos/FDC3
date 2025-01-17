@@ -5,7 +5,7 @@ import {
   Fdc3UserInterfaceRestyle,
   isFdc3UserInterfaceHandshake,
   isFdc3UserInterfaceResolve,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { AppIdentifier } from '@finos/fdc3-standard';
 
 const DEFAULT_COLLAPSED_CSS = {

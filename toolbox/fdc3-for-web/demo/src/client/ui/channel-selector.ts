@@ -8,7 +8,7 @@ import {
   isFdc3UserInterfaceChannels,
   isFdc3UserInterfaceHandshake,
   UpdatedCSS,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 let channels: Channel[] = [];
 let channelId: string | null = null;

@@ -24,7 +24,7 @@ import {
   AppRequestMessage,
   Channel,
   WebConnectionProtocol6Goodbye,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { GetInfo } from './responses/GetInfo';
 
 export interface IntentDetail {

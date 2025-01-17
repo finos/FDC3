@@ -5,7 +5,7 @@ import {
   AppRequestMessage,
   WebConnectionProtocol3Handshake,
   WebConnectionProtocol6Goodbye,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 /**
  * Details needed to set up the Messaging instance and Desktop AgentDetails record

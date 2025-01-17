@@ -2,7 +2,7 @@ import {
   AgentEventMessage,
   HeartbeatAcknowledgementRequest,
   HeartbeatEvent,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { Messaging } from '../Messaging';
 import { RegisterableListener } from './RegisterableListener';
 import { Logger } from '../util/Logger';

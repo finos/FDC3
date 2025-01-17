@@ -19,7 +19,7 @@ import {
   JoinUserChannelResponse,
   LeaveCurrentChannelRequest,
   LeaveCurrentChannelResponse,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 export class ChannelState implements AutomaticResponse {
   private channelId: string | null = null;
@@ -178,14 +178,14 @@ export class ChannelState implements AutomaticResponse {
       payload: {
         channel: this.channelId
           ? {
-            id: this.channelId,
-            type: 'user',
-            displayMetadata: {
-              name: 'The ' + this.channelId + ' channel',
-              color: 'red',
-              glyph: 'triangle',
-            },
-          }
+              id: this.channelId,
+              type: 'user',
+              displayMetadata: {
+                name: 'The ' + this.channelId + ' channel',
+                color: 'red',
+                glyph: 'triangle',
+              },
+            }
           : null,
       },
     } as GetCurrentChannelResponse;
