@@ -1,6 +1,6 @@
 import { AppIntent } from '@finos/fdc3-standard';
 import { IntentResolver, IntentResolutionChoice } from '@finos/fdc3-standard';
-import { AbstractUIComponent } from './AbstractUIComponent';
+import { AbstractUIComponent, DEFAULT_UI_ROOT_URL } from './AbstractUIComponent';
 import { Context } from '@finos/fdc3-context';
 import { Logger } from '../util/Logger';
 import { BrowserTypes } from '@finos/fdc3-schema';
@@ -15,7 +15,7 @@ export class DefaultDesktopAgentIntentResolver extends AbstractUIComponent imple
 
   constructor(url: string | null) {
     //TODO: check default UI URL is correct on release
-    super(url ?? 'https://fdc3.finos.org/webui/intent_resolver.html', 'FDC3 Intent Resolver');
+    super(url ?? DEFAULT_UI_ROOT_URL + 'intent_resolver.html', 'FDC3 Intent Resolver');
   }
 
   async setupMessagePort(port: MessagePort): Promise<void> {
