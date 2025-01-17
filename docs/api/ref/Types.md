@@ -122,8 +122,10 @@ type Context struct {
   Type    string                 `json:"type"`
   Name    string                 `json:"name"`
   Id      map[string]string      `json:"id"`
-  // This field is required only in golang, as golang structs cannot be extended with more fields later
-  Details map[string]interface{} `json:"details"`
+}
+
+type IContext interface {
+  // TODO: include at least one method in here 
 }
 ```
 
