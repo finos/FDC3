@@ -209,7 +209,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 ## Resolving Ambiguous Intents
 
-FDC3 Desktop Agent MUST provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to raiseIntentForContext that return multiple options). This is often accomplished by providing a user interface allowing the user to select the desired target application or intent and application.
+An FDC3 Desktop Agent MUST provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to raiseIntentForContext that return multiple options). This is often accomplished by providing a user interface allowing the user to select the desired target application or intent and application.
 
 As the methods of resolving ambiguous intents are often user interactive, it is either difficult or impossible to implement an automated test for this. Hence, manual tests should be performed as a final step in a conformance test. These tests are based on the same applications defined for and used in other intent tests - however a separate manual test app should be provided to enable the test.
 
