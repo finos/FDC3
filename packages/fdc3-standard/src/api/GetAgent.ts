@@ -91,6 +91,14 @@ export type GetAgentParams = {
   failover?: (args: GetAgentParams) => Promise<WindowProxy | DesktopAgent>;
 };
 
+/** Type representing the format of data stored by `getAgent`
+ *  in Session Storage. The `identityUrl` of each app is used
+ *  as the key. */
+export type SessionStorageFormat = {
+  /** */
+  [key: string]: DesktopAgentDetails;
+};
+
 /** Type representing data on the Desktop Agent that an app
  *  connected to that is persisted by the getAgent function
  *  to be used when re-connecting (after a navigation or

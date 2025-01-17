@@ -33,6 +33,19 @@
               "api/specs/webConnectionProtocol",
               "api/specs/desktopAgentCommunicationProtocol"
             ]
+          },
+          {
+            "type": "category",
+            "label": "Conformance Tests",
+            "items": [
+              "api/conformance/Conformance-Overview",
+              "api/conformance/Basic-Tests",
+              "api/conformance/App-Channel-Tests",
+              "api/conformance/User-Channel-Tests",
+              "api/conformance/Open-Tests",
+              "api/conformance/Intents-Tests",
+              "api/conformance/Metadata-Tests"
+            ]
           }
         ]
       },
