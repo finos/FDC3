@@ -60,9 +60,9 @@
       "description": "Event listener type names for Private Channel events.",
       "type": "string",
       "enum": [
-        "onAddContextListener",
-        "onUnsubscribe",
-        "onDisconnect"
+        "addContextListener",
+        "unsubscribe",
+        "disconnect"
       ]
     }
   }
