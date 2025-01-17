@@ -70,6 +70,30 @@ FDC3 adopts the following experimental features policy:
 5. Experimental features are exempted from the normal versioning and deprecation policies that govern changes to FDC3. I.e. breaking changes may be made to experimental features between versions of the Standard without a major version release.
 6. The experimental designation may be removed from a feature in a minor version release (as this will be considered an additive change).
 
+## Conformance testing
+
+The FDC3 Standards include a set of [definitions for conformance tests](api/conformance/Conformance-Overview) that may be used to determine if a Desktop Agent API implementation conforms to a particular Standard version, to help disambiguate complex parts of the FDC3 Standard and to enable test-driven development of a Desktop Agent implementation.
+
+The current set of tests focus on the Desktop Agent API and the interface to it. Tests are not yet defined for the App Directory API or Bridging API Parts of the FDC3 Standard, hence, conformance to those parts of the Standard must be determined manually.
+
+:::warning
+
+Additions to the conformance tests for functionality introduced in FDC3 2.2 are still to be defined.
+
+Further, as FDC3 2.1 does not introduce changes to the Desktop Agent API, the conformance test set for FDC3 2.0 remains current at this time. Please see the [FDC3 2.1 Changelog entry](https://github.com/finos/FDC3/blob/main/CHANGELOG.md#fdc3-standard-21---2023-09-13) for more details.
+
+:::
+
+The FDC3 Conformance tests are implemented for JavaScript/TypeScript web applications by the [FDC3 Conformance Framework](https://github.com/finos/FDC3-conformance-framework). Desktop Agent implementors working with web interfaces (Desktop Agent Preload or Desktop Agent Proxy) can clone the conformance framework and run the tests locally to determine if their agent is compliant with the Standard.
+
+Once a Desktop Agent has passed the conformance tests locally, its authors can [apply for a formal certification of compliance with the Standard from FINOS](https://github.com/finos/FDC3-conformance-framework/blob/main/instructions.md). Please note the [Terms and Conditions](https://github.com/finos/FDC3-conformance-framework/blob/main/terms-conditions/FDC3-Certified-Terms.md) of the Conformance Program.
+
+import badge_12 from '/img/community/certified-1.2.png';
+import badge_20 from '/img/community/certified-2.0.png';
+
+<img src={badge_12} alt="Certified conformant with FDC3 1.2 badge" style={{width: 200}} />
+<img src={badge_20} alt="Certified conformant with FDC3 2.0 badge" style={{width: 200}} />
+
 ## Intellectual Property Claims
 
 Recipients of this document are requested to submit, with their comments, notification of
