@@ -5,6 +5,7 @@ import { FDC3_APP_EVENT, FDC3_DA_EVENT } from '../../message-types';
 export enum UI {
   DEFAULT,
   DEMO,
+  LOCAL,
 }
 
 export const UI_URLS = {
@@ -13,8 +14,13 @@ export const UI_URLS = {
     channelSelectorUrl: window.location.origin + '/static/da/channel-selector.html',
   },
   [UI.DEFAULT]: {
-    intentResolverUrl: DEFAULT_UI_ROOT_URL + 'intent_resolver.html',
-    channelSelectorUrl: DEFAULT_UI_ROOT_URL + 'channel_selector.html',
+    /* REPLACE THIS URL WITH fdc3.finos.org BEFORE RELEASE */
+    intentResolverUrl: 'https://deploy-preview-1309--fdc3.netlify.app/toolbox/fdc3-reference-ui/intent_resolver.html',
+    channelSelectorUrl: 'https://deploy-preview-1309--fdc3.netlify.app/toolbox/fdc3-reference-ui/channel_selector.html',
+  },
+  [UI.LOCAL]: {
+    intentResolverUrl: 'http://localhost:4002/intent_resolver.html',
+    channelSelectorUrl: 'http://localhost:4002/channel_selector.html',
   },
 };
 
