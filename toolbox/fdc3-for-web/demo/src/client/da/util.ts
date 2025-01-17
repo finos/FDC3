@@ -13,9 +13,8 @@ export const UI_URLS = {
     channelSelectorUrl: window.location.origin + '/static/da/channel-selector.html',
   },
   [UI.DEFAULT]: {
-    // TODO: REPLACE WITH FDC3.FINOS.ORG URLS AFTER GO-LIVE
-    intentResolverUrl: 'http://localhost:4002/intent_resolver.html',
-    channelSelectorUrl: 'http://localhost:4002/channel_selector.html',
+    intentResolverUrl: DEFAULT_UI_ROOT_URL + 'intent_resolver.html',
+    channelSelectorUrl: DEFAULT_UI_ROOT_URL + 'channel_selector.html',
   },
 };
 
