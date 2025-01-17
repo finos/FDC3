@@ -4,7 +4,7 @@ import {
   AppRequestMessage,
   FindIntentRequest,
   FindIntentResponse,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { createResponseMeta } from './support';
 
 export class FindIntent implements AutomaticResponse {

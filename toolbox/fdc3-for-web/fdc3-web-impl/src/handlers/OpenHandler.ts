@@ -15,7 +15,7 @@ import {
   isGetInfoRequest,
   isOpenRequest,
   isWebConnectionProtocol4ValidateAppIdentity,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 type BroadcastEvent = BrowserTypes.BroadcastEvent;
 type AddContextListenerRequest = BrowserTypes.AddContextListenerRequest;
@@ -110,7 +110,7 @@ export class OpenHandler implements MessageHandler {
     //don't cleanup pending if the opening app closes as we should still deliver context
   }
 
-  shutdown(): void { }
+  shutdown(): void {}
 
   async accept(
     msg: AppRequestMessage | WebConnectionProtocol4ValidateAppIdentity,

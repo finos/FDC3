@@ -10,7 +10,7 @@ import {
 } from '../../src';
 import { SimpleIntentResolver, setupGenericSteps } from '@finos/testing';
 import { CHANNEL_STATE, SimpleChannelSelector } from '@finos/testing/dist/src/agent';
-import { HeartbeatEvent } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { HeartbeatEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: string) {
   if (!this.messaging) {

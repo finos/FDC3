@@ -4,7 +4,7 @@ import {
   AppRequestMessage,
   AgentResponseMessage,
   WebConnectionProtocol6Goodbye,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 export interface Messaging {
   /**

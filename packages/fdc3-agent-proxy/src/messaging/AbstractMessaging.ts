@@ -5,7 +5,7 @@ import {
   AgentResponseMessage,
   AppRequestMessage,
   WebConnectionProtocol6Goodbye,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { Logger } from '../util/Logger';
 
 export abstract class AbstractMessaging implements Messaging {

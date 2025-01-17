@@ -7,7 +7,7 @@ import { AppRegistration, DefaultFDC3Server, DirectoryApp, ServerContext } from 
 import { ChannelState, ChannelType } from '@finos/fdc3-web-impl/src/handlers/BroadcastHandler';
 import { link, UI, UI_URLS } from './util';
 import { BrowserTypes } from '@finos/fdc3-schema';
-import { WebConnectionProtocol3Handshake } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { WebConnectionProtocol3Handshake } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL;
 

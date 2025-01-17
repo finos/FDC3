@@ -19,7 +19,7 @@ import { RegisterableListener } from '../listeners/RegisterableListener';
 import {
   PrivateChannelDisconnectRequest,
   PrivateChannelDisconnectResponse,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 export class DefaultPrivateChannel extends DefaultChannel implements PrivateChannel {
   constructor(messaging: Messaging, id: string) {

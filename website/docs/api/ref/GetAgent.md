@@ -61,7 +61,7 @@ A small number of arguments are accepted that can affect the behavior of `getAge
  * 
  * @property {number} timeoutMs Number of milliseconds to allow for an FDC3
  * implementation to be found before calling the failover function or
- * rejecting (default 750). Note that the timeout is cancelled as soon as a
+ * rejecting (default 1000). Note that the timeout is cancelled as soon as a
  * Desktop Agent is detected. There may be additional set-up steps to perform
  * which will happen outside the timeout.
  * 
@@ -189,17 +189,34 @@ Failover functions MUST be asynchronous and MUST resolve to one of the following
 
 ## Persisted Connection Data
 
-The `getAgent()` function uses [`SessionStorage`](https://html.spec.whatwg.org/multipage/webstorage.html) ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)) to persist information on an instance of an app under the key `"FDC3-Desktop-Agent-Details"` and how it connected to a Desktop Agent in order to ensure a consistent connection type and `instanceId` when reconnecting after navigation or refresh events. 
+The `getAgent()` function uses [`SessionStorage`](https://html.spec.whatwg.org/multipage/webstorage.html) ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)) to persist information on an instance of an app and how it connected to a Desktop Agent in order to ensure a consistent connection type and `instanceId` when reconnecting after navigation or refresh events.
 
-:::info
-
-Applications are not expected to interact with this information directly, rather it is set and used by the `getAgent()` implementation.
-
+:::warning
+Apps do not need to and SHOULD NOT interact with data persisted in SessionStorage by `getAgent` directly, rather it is set and used by the `getAgent()` implementation.
 :::
 
-The details persisted conform to the following type:
+SessionStorage is used as for persistence as it is scoped to a single browser window and the current origin, ensuring apps in different windows or on different origins access different storage. However, as multiple iframes from the same-domain embedded within a window can share a SessionStorage instance, and multiple applications can be hosted on the same origin and be navigated to and from within a window, additional scoping is applied.
+
+To differentiate storage for multiple iframes the name of the browsing context (`window.name`) is used to generate the key used in SessionStorage by concatenating the string `"FDC3-Desktop-Agent-Details-"` with `window.name`. The `window.name` remains stable during same-origin navigation and is persisted by the browser in its [session history](https://html.spec.whatwg.org/multipage/nav-history-apis.html#nav-traversal-apis) and is appropriate for scoping to a particular browsing context (window or iframe). Desktop Agents should assign a unique name to each window and iframe when they are created to facilitate such scoping. If no name is assigned, then the `getAgent` will assign a UUID as a unique name for that browsing context.
+
+The data persisted is structured as an object conforming to the `SessionStorageFormat` type below, with the `identityUrl` of the app used as the key (if no `identityUrl` is provided the `actualUrl` is used instead), with the value conforming to the `DesktopAgentDetails` type. Hence, the data might be retrieved as follows:
 
 ```ts
+const sessionData: SessionStorageFormat = sessionStorage.get("FDC3-Desktop-Agent-Details-myWindowName");
+const agentDetails: DesktopAgentDetails = sessionData["myApIdentityUrl"];
+```
+
+### Type Definitions
+
+```ts
+/** Type representing the format of data stored by `getAgent`
+ *  in Session Storage. The `identityUrl` of each app is used
+ *  as the key. */
+type SessionStorageFormat = {
+    /** */
+    [key: string]: DesktopAgentDetails
+}
+
 /** Type representing data on the Desktop Agent that an app 
  *  connected to that is persisted by the getAgent function 
  *  to be used when re-connecting (after a navigation or  
@@ -268,4 +285,8 @@ enum WebDesktopAgentType {
      * function that was passed by the application. */ 
     Failover = "FAILOVER" 
 }
+
+const DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX = 'fdc3-desktop-agent-details';
+
+const DEFAULT_TIMEOUT_MS = 1000;
 ```

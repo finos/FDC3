@@ -1,4 +1,4 @@
-import { AgentEventMessage, AgentResponseMessage } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { AgentEventMessage, AgentResponseMessage } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { Listener } from '@finos/fdc3-standard';
 
 /**
