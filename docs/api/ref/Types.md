@@ -171,7 +171,7 @@ delegate void ContextHandler<T>(T context, IContextMetadata? metadata = null) wh
 <TabItem value="golang" label="Go">
 
 ```go
-type ContextHandler func(Context, *ContextMetadata)
+type ContextHandler func(IContext, *ContextMetadata)
 ```
 
 </TabItem>
@@ -249,7 +249,7 @@ delegate Task<IIntentResult> IntentHandler<T>(T context, IContextMetadata? metad
 <TabItem value="golang" label="Go">
 
 ```go
-type IntentHandler func(Context, *ContextMetadata) <-chan IntentResult
+type IntentHandler func(IContext, *ContextMetadata) <-chan IntentResult
 ```
 
 </TabItem>
