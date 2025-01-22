@@ -44,7 +44,7 @@
     "prettier": "^2.3.1",
     "pretty-quick": "^3.1.0",
     "terser": "^5.16.1",
-    "vite": "^4.5.3",
+    "vite": "^4.5.9",
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
     "@fontsource/roboto": "^4.4.5",
     "@fontsource/source-code-pro": "^4.5.0",
