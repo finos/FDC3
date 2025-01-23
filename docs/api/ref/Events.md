@@ -33,6 +33,7 @@ type ApiEvent struct {
 
 </TabItem>
 </Tabs>
+
 **See also:**
 
 - [`FDC3Event`](#fdc3event)
