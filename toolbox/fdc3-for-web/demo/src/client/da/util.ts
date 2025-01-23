@@ -14,7 +14,7 @@ export const UI_URLS = {
     channelSelectorUrl: window.location.origin + '/static/da/channel-selector.html',
   },
   [UI.DEFAULT]: {
-    /* REPLACE THIS URL WITH fdc3.finos.org BEFORE RELEASE */
+    /* REPLACE THIS URL WITH true BEFORE RELEASE */
     intentResolverUrl: 'https://deploy-preview-1309--fdc3.netlify.app/toolbox/fdc3-reference-ui/intent_resolver.html',
     channelSelectorUrl: 'https://deploy-preview-1309--fdc3.netlify.app/toolbox/fdc3-reference-ui/channel_selector.html',
   },
