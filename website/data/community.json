@@ -416,15 +416,6 @@
     "type": "solution-provider"
   },
   {
-    "title": "Pictet AM smart Desktop",
-    "publisher": "Pictet Asset Management",
-    "image": "/img/users/pictet.png",
-    "infoLink": "https://am.pictet",
-    "description": "Pictet AM smart Desktop - linking our internal PMS (proprietary), our OMS (Charles River IMS) and various in-house react.js applications implementing FDC3 to share context and intents to provide a streamlined experience for Traders and Fund managers.",
-    "badges": [],
-    "type": "adopter"
-  },
-  {
     "title": "Connectifi",
     "publisher": "Connectifi Co.",
     "image": "/img/users/connectifi.png",
