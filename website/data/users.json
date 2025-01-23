@@ -140,13 +140,6 @@
         "isMember": true
     },
     {
-        "caption": "Pictet",
-        "image": "/img/users/pictet.png",
-        "infoLink": "https://www.pictet.com/",
-        "pinned": true,
-        "isMember": true
-    },
-    {
         "caption": "UBS",
         "image": "/img/users/ubs.png",
         "infoLink": "https://www.ubs.com/",
