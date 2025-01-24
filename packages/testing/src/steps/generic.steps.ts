@@ -56,18 +56,15 @@ export function setupGenericSteps() {
   });
 
   When(
-    'I call {string} with {string} and allow 12 seconds',
-    { timeout: 12 * 1000 },
-    async function (this: PropsWorld, field: string, fnName: string) {
+    'I call {string} with {string} with parameter {string}',
+    async function (this: PropsWorld, field: string, fnName: string, param: string) {
       try {
         const object = handleResolve(field, this);
         const fn = object[fnName];
-        const result = await fn.call(object);
+        const result = await fn.call(object, handleResolve(param, this));
         this.props['result'] = result;
-        this.log('Received non-error result: ' + JSON.stringify(result));
       } catch (error) {
         this.props['result'] = error;
-        this.log('Received error with message: ' + ((error as Error).message ?? error));
       }
     }
   );
