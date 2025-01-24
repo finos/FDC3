@@ -7,7 +7,7 @@ import {
   BroadcastResponse,
   GetCurrentContextRequest,
   GetCurrentContextResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 export class DefaultChannel implements Channel {
   protected readonly messaging: Messaging;

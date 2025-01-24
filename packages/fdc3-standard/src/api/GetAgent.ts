@@ -82,8 +82,8 @@ export type GetAgentType = (params?: GetAgentParams) => Promise<DesktopAgent>;
  * a Desktop Agent or suitable proxy to one that works with FDC3 Web Connection
  * and Desktop Agent Communication Protocols.
  *
- * @property {GetAgentLogSettings} logging Settings that determine what should
  * will logged by the getAgent() implementation and DesktopAgentProxy to the
+ * @property {GetAgentLogSettings} logging Settings that determine what should
  * JavaScript console.
  */
 export type GetAgentParams = {

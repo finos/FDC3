@@ -19,6 +19,14 @@ interface MockPageTransitionEvent extends Event {
 
 setupGenericSteps();
 
+//Change logging settings here when debugging test failures
+const loggingSettings: GetAgentParams['logging'] = {
+  connection: true,
+  connectionDebug: false,
+  proxyDebug: false,
+  heartbeat: false,
+};
+
 Given(
   'Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response',
   async function (this: CustomWorld, field: string, w: string) {
@@ -248,12 +256,7 @@ Given(
 When('I call getAgent for a promise result', function (this: CustomWorld) {
   try {
     const params: GetAgentParams = {
-      logging: {
-        connection: true,
-        connectionDebug: true,
-        proxyDebug: true,
-        heartbeat: false,
-      },
+      logging: loggingSettings,
     };
     this.props['result'] = getAgent(params);
   } catch (error) {
@@ -287,12 +290,7 @@ When('I call getAgent for a promise result with the following options', function
       })
     );
     //add logging settings to help with debug
-    toArgs.logging = {
-      connection: true,
-      connectionDebug: true,
-      proxyDebug: true,
-      heartbeat: false,
-    };
+    toArgs.logging = loggingSettings;
     this.props['result'] = getAgent(toArgs);
   } catch (error) {
     this.props['result'] = error;

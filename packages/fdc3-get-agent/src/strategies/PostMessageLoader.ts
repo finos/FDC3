@@ -183,7 +183,6 @@ export class PostMessageLoader implements Loader {
       this.helloHandler.cancel();
     }
 
-    //TODO Decide if we should NOT do this - there may be a race on timeout cancellations
     if (this.identityValidationHandler) {
       this.identityValidationHandler.cancel();
     }
