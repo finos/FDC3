@@ -121,7 +121,7 @@ export class HelloHandler {
 
             //n.b event listener remains in place to receive messages from the iframe
           } else if (isWebConnectionProtocol3Handshake(data)) {
-            Logger.debug(`HelloHandler: successful handshake`);
+            Logger.debug(`HelloHandler: successful handshake:`, data);
             const connectionDetails: ConnectionDetails = {
               connectionAttemptUuid: this.connectionAttemptUuid,
               handshake: data,
