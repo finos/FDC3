@@ -2,9 +2,10 @@ import {
   AgentEventMessage,
   HeartbeatAcknowledgementRequest,
   HeartbeatEvent,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { Messaging } from '../Messaging';
 import { RegisterableListener } from './RegisterableListener';
+import { Logger } from '../util/Logger';
 
 export class HeartbeatListener implements RegisterableListener {
   readonly id: string;
@@ -20,6 +21,7 @@ export class HeartbeatListener implements RegisterableListener {
   }
 
   action(_m: AgentEventMessage): void {
+    Logger.heartbeatLog('Responding to heartbeat request', _m);
     const request: HeartbeatAcknowledgementRequest = {
       type: 'heartbeatAcknowledgementRequest',
       meta: {

@@ -1,4 +1,4 @@
-import { GetAppMetadataRequest, GetAppMetadataResponse } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { GetAppMetadataRequest, GetAppMetadataResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { AutomaticResponse, TestMessaging } from '../TestMessaging';
 import { createResponseMeta } from './support';
 

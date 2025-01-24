@@ -2,7 +2,7 @@ import {
   Channel,
   GetUserChannelsRequest,
   GetUserChannelsResponse,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { AutomaticResponse, TestMessaging } from '../TestMessaging';
 import { createResponseMeta } from './support';
 

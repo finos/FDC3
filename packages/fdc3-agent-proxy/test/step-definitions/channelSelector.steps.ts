@@ -27,7 +27,7 @@ Given(
     const is = new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this), 10000, 100000);
     const as = new DefaultAppSupport(this.messaging, 10000, 100000);
 
-    const da = new DesktopAgentProxy(hs, cs, is, as, [hs]);
+    const da = new DesktopAgentProxy(hs, cs, is, as, [hs], { debug: true, heartbeat: false });
     await da.connect();
 
     this.props[daField] = da;

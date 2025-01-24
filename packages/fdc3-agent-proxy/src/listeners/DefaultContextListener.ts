@@ -2,7 +2,7 @@ import { ContextHandler, Channel } from '@finos/fdc3-standard';
 import { Messaging } from '../Messaging';
 import { AbstractListener } from './AbstractListener';
 import { UserChannelContextListener } from './UserChannelContextListener';
-import { AddContextListenerRequest, BroadcastEvent } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { AddContextListenerRequest, BroadcastEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 export class DefaultContextListener
   extends AbstractListener<ContextHandler, AddContextListenerRequest>

@@ -51,20 +51,20 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
         break;
       case WebDesktopAgentType.ProxyUrl:
         //agentUrl will only be used by PostMessageLoader if not falsey
-        strategies = [new PostMessageLoader(persistedData.agentUrl)];
+        strategies = [new PostMessageLoader(options, persistedData.agentUrl)];
         break;
       case WebDesktopAgentType.ProxyParent:
-        strategies = [new PostMessageLoader()];
+        strategies = [new PostMessageLoader(options)];
         break;
       case WebDesktopAgentType.Failover:
         strategies = [];
         break;
       default:
         Logger.warn('Unexpected agentType value in SessionStorage, ignoring. Stored data:', persistedData);
-        strategies = [new DesktopAgentPreloadLoader(), new PostMessageLoader()];
+        strategies = [new DesktopAgentPreloadLoader(), new PostMessageLoader(options)];
     }
   } else {
-    strategies = [new DesktopAgentPreloadLoader(), new PostMessageLoader()];
+    strategies = [new DesktopAgentPreloadLoader(), new PostMessageLoader(options)];
   }
 
   const promises = strategies.map(s =>
