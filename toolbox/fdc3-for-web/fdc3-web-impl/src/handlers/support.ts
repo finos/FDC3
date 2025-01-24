@@ -1,4 +1,4 @@
-import { AgentResponseMessage, AppRequestMessage } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { AgentResponseMessage, AppRequestMessage } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { AppRegistration, ServerContext } from '../ServerContext';
 import { AppIdentifier } from '@finos/fdc3-standard';
 

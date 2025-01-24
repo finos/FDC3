@@ -27,8 +27,9 @@ import {
   LeaveCurrentChannelRequest,
   JoinUserChannelResponse,
   JoinUserChannelRequest,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
-import { throwIfUndefined } from '../util';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+import { throwIfUndefined } from '../util/throwIfUndefined';
+import { Logger } from '../util/Logger';
 
 export class DefaultChannelSupport implements ChannelSupport {
   readonly messaging: Messaging;
@@ -42,7 +43,7 @@ export class DefaultChannelSupport implements ChannelSupport {
     this.channelSelector = channelSelector;
     this.messageExchangeTimeout = messageExchangeTimeout;
     this.channelSelector.setChannelChangeCallback((channelId: string | null) => {
-      console.debug('Channel selector reports channel changed: ' + channelId);
+      Logger.debug('Channel selector reports channel changed: ', channelId);
       if (channelId == null) {
         this.leaveUserChannel();
       } else {
@@ -51,6 +52,7 @@ export class DefaultChannelSupport implements ChannelSupport {
     });
 
     this.addChannelChangedEventHandler(e => {
+      Logger.debug('Desktop Agent reports channel changed: ', e.details.newChannelId);
       this.channelSelector.updateChannel(e.details.newChannelId, this.userChannels);
     });
   }
@@ -209,7 +211,6 @@ export class DefaultChannelSupport implements ChannelSupport {
   }
 
   async addContextListener(handler: ContextHandler, type: string | null): Promise<Listener> {
-    //TODO: Figure out a better solution than inlining this class.
     /** Utility class used to wrap the DefaultContextListener and ensure it gets removed
      *  when its unsubscribe function is called.
      */

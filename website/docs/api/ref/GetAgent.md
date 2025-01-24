@@ -98,14 +98,44 @@ A small number of arguments are accepted that can affect the behavior of `getAge
  * or an iframe's `contentWindow`) for a window or frame in which it has loaded
  * a Desktop Agent or suitable proxy to one that works with FDC3 Web Connection
  * and Desktop Agent Communication Protocols.
- */ 
+ * 
+ * @property {GetAgentLogSettings} logging Settings that determine what should
+ * will logged by the getAgent() implementation and DesktopAgentProxy to the 
+ * JavaScript console.
+ */
 type GetAgentParams = { 
     timeoutMs?: number, 
     identityUrl?: string, 
     channelSelector?: boolean, 
     intentResolver?: boolean,
     dontSetWindowFdc3?: boolean,
-    failover?: (args: GetAgentParams) => Promise<WindowProxy | DesktopAgent> 
+    failover?: (args: GetAgentParams) => Promise<WindowProxy | DesktopAgent>,
+    logging?: GetAgentLogSettings;
+};
+
+/**
+ * @typedef {Object} GetAgentLogSettings Type representing parameters passed to the
+ * getAgent function that control what is logged to the JavaScript console by the
+ * getAgent() implementation and any DesktopAgentProxy implementations it creates.
+ *
+ * @property {boolean} connection Log-level messages relating to establishing a 
+ * connection to the Desktop Agent (default true).
+ * 
+ * @property {boolean} connectionDebug Debug-level messages relating to establishing 
+ * a connection to the Desktop Agent (default false).
+ * 
+ * @property {boolean} proxyDebug Debug-level messages that provide details of
+ * all messages sent to or received from the DesktopAgent (excluding heartbeat
+ * messages) by the DesktopAgentProxy (default false).
+ * 
+ * @property {boolean} heartbeat Debug-level messages relating to heartbeat messages
+ * sent to or received from the DesktopAgent by the DesktopAgentProxy (default false).
+ */
+export type GetAgentLogSettings = {
+  connection: boolean,
+  connectionDebug: boolean,
+  proxyDebug: boolean,
+  heartbeat: boolean
 };
 ```
 
@@ -159,7 +189,7 @@ Failover functions MUST be asynchronous and MUST resolve to one of the following
 
 ## Persisted Connection Data
 
-The `getAgent()` function uses [`SessionStorage`](https://html.spec.whatwg.org/multipage/webstorage.html) ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)) to persist information on an instance of an app and how it connected to a Desktop Agent in order to ensure a consistent connection type and `instanceId` when reconnecting after navigation or refresh events. 
+The `getAgent()` function uses [`SessionStorage`](https://html.spec.whatwg.org/multipage/webstorage.html) ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)) to persist information on an instance of an app and how it connected to a Desktop Agent in order to ensure a consistent connection type and `instanceId` when reconnecting after navigation or refresh events.
 
 :::warning
 Apps do not need to and SHOULD NOT interact with data persisted in SessionStorage by `getAgent` directly, rather it is set and used by the `getAgent()` implementation.

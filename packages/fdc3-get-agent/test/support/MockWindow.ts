@@ -9,7 +9,7 @@ import {
   Fdc3UserInterfaceMessage,
   isFdc3UserInterfaceHello,
   WebConnectionProtocolMessage,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 type STANDARD_MESSAGES =
   | AppRequestMessage

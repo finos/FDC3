@@ -2,6 +2,7 @@ import { FDC3Server, InstanceID, State } from '@finos/fdc3-web-impl';
 import { TestServerContext } from './TestServerContext';
 import { MockWindow } from './MockWindow';
 import { AutomaticResponse } from './responses/AutomaticResponses';
+import { Broadcast } from './responses/Broadcast';
 import { FindIntent } from './responses/FindIntent';
 import { RaiseIntent } from './responses/RaiseIntent';
 import { Handshake } from './responses/Handshake';
@@ -13,7 +14,6 @@ import {
   WebConnectionProtocol2LoadURL,
   WebConnectionProtocol3Handshake,
 } from '@finos/fdc3-schema/generated/api/BrowserTypes';
-import { Broadcast } from './responses/Broadcast';
 
 export const EMBED_URL = 'http://localhost:8080/static/da/embed.html';
 export const CHANNEL_SELECTOR_URL = 'https://mock.fdc3.com/channelSelector';

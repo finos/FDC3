@@ -1,5 +1,6 @@
-import { AgentEventMessage, AgentResponseMessage } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { AgentEventMessage, AgentResponseMessage } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { ChannelError, OpenError, ResolveError } from '@finos/fdc3-standard';
+import { Logger } from './Logger';
 
 export type ErrorMessages = ChannelError | OpenError | ResolveError;
 
@@ -14,7 +15,7 @@ export const throwIfUndefined = (
   absentError: ErrorMessages
 ): void => {
   if (property === undefined) {
-    console.error(absentMessage, '\nDACP message that resulted in the undefined property: ', message);
+    Logger.error(absentMessage, '\nDACP message that resulted in the undefined property: ', message);
     throw new Error(absentError);
   }
 };

@@ -7,7 +7,7 @@ import {
   Fdc3UserInterfaceRestyle,
   isFdc3UserInterfaceHandshake,
   WebConnectionProtocol3Handshake,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 /**
  * This handles the frame communications when we're using the embedded iframe approach

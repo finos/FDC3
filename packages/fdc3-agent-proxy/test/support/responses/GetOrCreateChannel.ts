@@ -5,7 +5,7 @@ import {
   AppRequestMessage,
   GetOrCreateChannelRequest,
   GetOrCreateChannelResponse,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 type ChannelType = { [channelId: string]: 'user' | 'app' | 'private' };
 

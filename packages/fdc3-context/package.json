@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3-context",
-  "version": "2.2.0-alpha.1",
+  "version": "2.2.0-alpha.3",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -21,7 +21,7 @@
     "mkdirs": "npx mkdirp generated/context",
     "generate": "npm run mkdirs && npm run typegen && npm run lint",
     "build": "npm run generate && tsc --module es2022",
-    "lint": "eslint generated/ --fix",
+    "lint": "eslint generated/ --fix && npx prettier generated/ --write",
     "test": "npm run generate && tsc",
     "typegen": "cd schemas && node ../s2tQuicktypeUtil.js context ../generated/context/ContextTypes.ts"
   },

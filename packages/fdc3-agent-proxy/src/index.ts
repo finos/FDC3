@@ -11,6 +11,7 @@ import { DefaultAppSupport } from './apps/DefaultAppSupport';
 import { AppSupport } from './apps/AppSupport';
 import { DefaultHeartbeatSupport } from './heartbeat/DefaultHeartbeatSupport';
 import { Connectable } from '@finos/fdc3-standard';
+import { AbstractFDC3Logger } from './util/AbstractFDC3Logger';
 
 export {
   type Messaging,
@@ -26,4 +27,5 @@ export {
   DefaultHeartbeatSupport,
   RegisterableListener,
   Connectable,
+  AbstractFDC3Logger,
 };

@@ -3,7 +3,7 @@ import { CustomWorld } from '../world/index';
 import { handleResolve } from '@finos/testing';
 import { Context } from '@finos/fdc3-context';
 import { ContextMetadata, ResolveError } from '@finos/fdc3-standard';
-import { IntentEvent } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { IntentEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 Given('app {string}', function (this: CustomWorld, appStr: string) {
   const [appId, instanceId] = appStr.split('/');
