@@ -34,6 +34,9 @@ export function clearAgentPromise() {
 }
 
 function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
+  Logger.enableLogs(options.logging?.connection ?? true);
+  Logger.enableDebugLogs(options.logging?.connectionDebug ?? false);
+
   Logger.log(`Initiating Desktop Agent discovery at ${new Date().toISOString()}`);
   let strategies: Loader[];
 
