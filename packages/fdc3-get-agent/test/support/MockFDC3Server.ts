@@ -59,7 +59,6 @@ export class MockFDC3Server implements FDC3Server {
         new Handshake(this.timeOutIdValidation),
         new CurrentChannel(),
         new UserChannels(),
-        new Broadcast(),
       ];
     } else {
       this.automaticResponses = [
@@ -134,6 +133,8 @@ export class MockFDC3Server implements FDC3Server {
                 fdc3Version: '2.2',
                 intentResolverUrl: this.useDefaultUIUrls ? true : INTENT_RESOLVER_URL,
                 channelSelectorUrl: this.useDefaultUIUrls ? true : CHANNEL_SELECTOR_URL,
+                defaultTimeout: 1000,
+                appLaunchTimeout: 15000,
               },
             };
             if (this.messageExchangeTimeout) {

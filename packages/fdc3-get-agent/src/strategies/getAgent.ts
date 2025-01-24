@@ -34,6 +34,9 @@ export function clearAgentPromise() {
 }
 
 function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
+  Logger.enableLogs(options.logging?.connection ?? true);
+  Logger.enableDebugLogs(options.logging?.connectionDebug ?? false);
+
   Logger.log(`Initiating Desktop Agent discovery at ${new Date().toISOString()}`);
   let strategies: Loader[];
 
@@ -207,6 +210,12 @@ export const getAgent: GetAgentType = (params?: GetAgentParams) => {
     channelSelector: true,
     intentResolver: true,
     timeoutMs: DEFAULT_TIMEOUT_MS,
+    logging: {
+      connection: true,
+      connectionDebug: false,
+      proxyDebug: false,
+      heartbeat: false,
+    },
   };
 
   const options: GetAgentParams = {

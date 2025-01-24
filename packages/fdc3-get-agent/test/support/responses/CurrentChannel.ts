@@ -27,7 +27,10 @@ export class CurrentChannel implements AutomaticResponse {
       },
       type: 'getCurrentChannelResponse',
       payload: {
-        channel: null,
+        channel: {
+          id: 'one',
+          type: 'user',
+        },
       },
     };
     return response;
