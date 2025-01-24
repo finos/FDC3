@@ -1,4 +1,4 @@
-import { AppIdentifier } from '@finos/fdc3-standard';
+import { AgentError, AppIdentifier } from '@finos/fdc3-standard';
 import { Messaging } from '../Messaging';
 import { RegisterableListener } from '../listeners/RegisterableListener';
 import {
@@ -67,25 +67,31 @@ export abstract class AbstractMessaging implements Messaging {
   async exchange<X extends AgentResponseMessage>(
     message: AppRequestMessage,
     expectedTypeName: AgentResponseMessage['type'],
-    timeoutMs: number,
-    timeoutErrorMessage?: string
+    timeoutMs: number
   ): Promise<X> {
-    const errorMessage =
-      timeoutErrorMessage ?? `Timeout waiting for ${expectedTypeName} with requestUuid ${message.meta.requestUuid}`;
     const prom = this.waitFor<X>(
       m => {
         return m.type == expectedTypeName && m.meta.requestUuid == message.meta.requestUuid;
       },
       timeoutMs,
-      errorMessage
+      AgentError.ApiTimeout
     );
     this.post(message);
+    // try {
     const out: X = await prom;
+
     if (out?.payload?.error) {
       throw new Error(out.payload.error);
     } else {
       return out;
     }
+    // } catch (error) {
+    //   if ((error as Error).message == AgentError.ApiTimeout) {
+    //     //TODO: update to use Logger when merged
+    //     console.error(`Timed-out while waiting for ${expectedTypeName} with requestUuid ${message.meta.requestUuid}`);
+    //   }
+    //   throw error;
+    // }
   }
 
   getAppIdentifier(): AppIdentifier {

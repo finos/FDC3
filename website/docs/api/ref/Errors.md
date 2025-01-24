@@ -33,6 +33,11 @@ enum AgentError {
     /** Returned if the failover function is not a function, or it did not
      * resolve to one of the allowed types.*/ 
     InvalidFailover = "InvalidFailover",
+
+    /** Returned if an API call rejects after a timeout. Used where an API call
+     * is not aligned to another error enumeration.
+     */
+    ApiTimeout = 'ApiTimeout'
 } 
 ```
 
@@ -69,6 +74,10 @@ enum ChannelError {
    *  that has a `string` value.
    */
   MalformedContext = "MalformedContext",
+
+  /** Returned if a timeout occurs before any Channel related API call is resolved.
+   */
+  ApiTimeout = 'ApiTimeout'
 }
 ```
 
@@ -103,6 +112,7 @@ public static class ChannelError
     /// that has a `String` value.
     /// </summary>
     public static readonly string MalformedContext = nameof(MalformedContext);
+
 }
 ```
 
@@ -149,9 +159,15 @@ enum OpenError {
    */
   MalformedContext = "MalformedContext",
 
-    /** @experimental Returned if the specified Desktop Agent is not found, via a connected 
-   *  Desktop Agent Bridge. */
+  /** @experimental Returned if the specified Desktop Agent is not found, via a connected 
+   *  Desktop Agent Bridge. 
+   * */
   DesktopAgentNotFound = "DesktopAgentNotFound",
+
+  /** Returned if a timeout occurs before a call to open is resolved for any
+   *  reason other than the not adding its context listener in time.  
+   */
+  ApiTimeout = 'ApiTimeout'
 }
 ```
 
@@ -251,9 +267,17 @@ export enum ResolveError {
    */
   MalformedContext = "MalformedContext",
 
-    /** @experimental Returned if the specified Desktop Agent is not found, via a connected 
-   *  Desktop Agent Bridge. */
+  /** @experimental Returned if the specified Desktop Agent is not found, via a
+   *  connected Desktop Agent Bridge.
+   */
   DesktopAgentNotFound = "DesktopAgentNotFound",
+
+  /** Returned if a timeout occurs before the API call is resolved for any reason other 
+   *  than the resolver timing out (use ResolverTimeout) or an app launched by a 
+   *  raiseIntent function doesn't add its intent listener in time (use 
+   *  IntentDeliveryFailed).
+   */
+  ApiTimeout = 'ApiTimeout'
 }
 ```
 
@@ -344,6 +368,10 @@ enum ResultError {
    *  throws an error or rejects the Promise it returned. 
    */
   IntentHandlerRejected = "IntentHandlerRejected",
+
+  /** Returned if a timeout occurs before the getResult() API call is resolved.
+   */
+  ApiTimeout = 'ApiTimeout'
 }
 ```
 

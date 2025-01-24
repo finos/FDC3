@@ -13,6 +13,7 @@ import {
   WebConnectionProtocol2LoadURL,
   WebConnectionProtocol3Handshake,
 } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { Broadcast } from './responses/Broadcast';
 
 export const EMBED_URL = 'http://localhost:8080/static/da/embed.html';
 export const CHANNEL_SELECTOR_URL = 'https://mock.fdc3.com/channelSelector';
@@ -53,7 +54,13 @@ export class MockFDC3Server implements FDC3Server {
     }
 
     if (timeoutMessageExchanges) {
-      this.automaticResponses = [new GetInfo(), new Handshake(this.timeOutIdValidation), new CurrentChannel()];
+      this.automaticResponses = [
+        new GetInfo(),
+        new Handshake(this.timeOutIdValidation),
+        new CurrentChannel(),
+        new UserChannels(),
+        new Broadcast(),
+      ];
     } else {
       this.automaticResponses = [
         new GetInfo(),
@@ -62,6 +69,7 @@ export class MockFDC3Server implements FDC3Server {
         new FindIntent(),
         new RaiseIntent(),
         new UserChannels(),
+        new Broadcast(),
       ];
     }
 

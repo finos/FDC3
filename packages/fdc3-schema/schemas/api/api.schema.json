@@ -308,7 +308,8 @@
                 "DesktopAgentNotFound",
                 "ErrorOnLaunch",
                 "MalformedContext",
-                "ResolverUnavailable"
+                "ResolverUnavailable",
+                "ApiTimeout"
             ],
             "type": "string"
         },
@@ -324,7 +325,8 @@
                 "ResolverUnavailable",
                 "TargetAppUnavailable",
                 "TargetInstanceUnavailable",
-                "UserCancelledResolution"
+                "UserCancelledResolution",
+                "ApiTimeout"
             ],
             "type": "string"
         },
@@ -332,7 +334,8 @@
             "title": "ResultError",
             "enum": [
                 "IntentHandlerRejected",
-                "NoResultReturned"
+                "NoResultReturned",
+                "ApiTimeout"
             ],
             "type": "string"
         },
@@ -342,7 +345,8 @@
                 "AccessDenied",
                 "CreationFailed",
                 "MalformedContext",
-                "NoChannelFound"
+                "NoChannelFound",
+                "ApiTimeout"
             ],
             "type": "string"
         },

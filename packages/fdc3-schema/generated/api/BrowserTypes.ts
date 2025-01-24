@@ -254,7 +254,7 @@ export interface AddContextListenerResponsePayload {
  * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
  * DesktopAgent (`fdc3`).
  */
-export type PurpleError = 'AccessDenied' | 'CreationFailed' | 'MalformedContext' | 'NoChannelFound';
+export type PurpleError = 'AccessDenied' | 'CreationFailed' | 'MalformedContext' | 'NoChannelFound' | 'ApiTimeout';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -349,6 +349,7 @@ export type ResponsePayloadError =
   | 'CreationFailed'
   | 'MalformedContext'
   | 'NoChannelFound'
+  | 'ApiTimeout'
   | 'AppNotFound'
   | 'AppTimeout'
   | 'DesktopAgentNotFound'
@@ -453,6 +454,7 @@ export interface PayloadObject {
  */
 export type FluffyError =
   | 'MalformedContext'
+  | 'ApiTimeout'
   | 'DesktopAgentNotFound'
   | 'ResolverUnavailable'
   | 'IntentDeliveryFailed'
@@ -1757,6 +1759,7 @@ export interface FindInstancesResponsePayload {
  */
 export type FindInstancesErrors =
   | 'MalformedContext'
+  | 'ApiTimeout'
   | 'DesktopAgentNotFound'
   | 'ResolverUnavailable'
   | 'IntentDeliveryFailed'
@@ -2916,6 +2919,7 @@ export interface OpenResponsePayload {
  */
 export type OpenErrorResponsePayload =
   | 'MalformedContext'
+  | 'ApiTimeout'
   | 'AppNotFound'
   | 'AppTimeout'
   | 'DesktopAgentNotFound'
@@ -5951,11 +5955,12 @@ const typeMap: any = {
     false
   ),
   AddContextListenerRequestType: ['addContextListenerRequest'],
-  PurpleError: ['AccessDenied', 'CreationFailed', 'MalformedContext', 'NoChannelFound'],
+  PurpleError: ['ApiTimeout', 'AccessDenied', 'CreationFailed', 'MalformedContext', 'NoChannelFound'],
   AddContextListenerResponseType: ['addContextListenerResponse'],
   FDC3EventType: ['USER_CHANNEL_CHANGED'],
   AddEventListenerRequestType: ['addEventListenerRequest'],
   ResponsePayloadError: [
+    'ApiTimeout',
     'AccessDenied',
     'AgentDisconnected',
     'AppNotFound',
@@ -5981,6 +5986,7 @@ const typeMap: any = {
   AddEventListenerResponseType: ['addEventListenerResponse'],
   AddIntentListenerRequestType: ['addIntentListenerRequest'],
   FluffyError: [
+    'ApiTimeout',
     'DesktopAgentNotFound',
     'IntentDeliveryFailed',
     'MalformedContext',
@@ -6092,6 +6098,7 @@ const typeMap: any = {
   Fdc3UserInterfaceRestyleType: ['Fdc3UserInterfaceRestyle'],
   FindInstancesRequestType: ['findInstancesRequest'],
   FindInstancesErrors: [
+    'ApiTimeout',
     'AgentDisconnected',
     'DesktopAgentNotFound',
     'IntentDeliveryFailed',
@@ -6136,6 +6143,7 @@ const typeMap: any = {
   LeaveCurrentChannelResponseType: ['leaveCurrentChannelResponse'],
   OpenRequestType: ['openRequest'],
   OpenErrorResponsePayload: [
+    'ApiTimeout',
     'AgentDisconnected',
     'AppNotFound',
     'AppTimeout',

@@ -47,8 +47,7 @@ export interface Messaging {
   exchange<X extends AgentResponseMessage>(
     message: AppRequestMessage,
     expectedTypeName: string,
-    timeoutMs: number,
-    timeoutErrorMessage?: string
+    timeoutMs: number
   ): Promise<X>;
 
   /**
