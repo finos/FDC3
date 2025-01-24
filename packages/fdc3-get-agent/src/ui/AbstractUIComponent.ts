@@ -31,6 +31,8 @@ export const ALLOWED_CSS_ELEMENTS = [
   'display',
 ];
 
+export const DEFAULT_UI_ROOT_URL = 'https://fdc3.finos.org/toolbox/fdc3-reference-ui/';
+
 /** Abstract implementation of an injected UI, used as the base for communication
  * with injected Channel Selector and Intent Resolver UIs.
  */

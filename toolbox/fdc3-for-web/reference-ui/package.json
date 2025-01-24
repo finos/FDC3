@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build --base=/toolbox/fdc3-reference-ui/",
     "clean": "npx rimraf dist",
     "preview": "vite preview",
     "lint": "eslint src/"

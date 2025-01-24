@@ -1,6 +1,6 @@
 import { Channel } from '@finos/fdc3-standard';
 import { ChannelSelector } from '@finos/fdc3-standard';
-import { AbstractUIComponent } from './AbstractUIComponent';
+import { AbstractUIComponent, DEFAULT_UI_ROOT_URL } from './AbstractUIComponent';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { Logger } from '../util/Logger';
 const { isFdc3UserInterfaceChannelSelected } = BrowserTypes;
@@ -14,7 +14,7 @@ export class DefaultDesktopAgentChannelSelector extends AbstractUIComponent impl
 
   constructor(url: string | null) {
     //TODO: check default UI URL is correct on release
-    super(url ?? 'https://fdc3.finos.org/webui/channel_selector.html', 'FDC3 Channel Selector');
+    super(url ?? DEFAULT_UI_ROOT_URL + 'channel_selector.html', 'FDC3 Channel Selector');
   }
 
   async setupMessagePort(port: MessagePort): Promise<void> {

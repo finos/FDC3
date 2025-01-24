@@ -656,7 +656,7 @@
 		},
 		"LaunchDetails": {
 		  "description": "The type specific launch details of the application. These details are intended to be vendor-agnostic and MAY be duplicated or overridden by details provided in the hostManifests object for a specific host.",
-		  "anyOf": [
+		  "oneOf": [
 			{
 			  "$ref": "#/components/schemas/WebAppDetails"
 			},
@@ -675,6 +675,7 @@
 		  ]
 		},
 		"WebAppDetails": {
+		  "type": "object",
 		  "description": "Properties used to launch apps with `type: web`.",
 		  "required": [
 			"url"
@@ -689,6 +690,7 @@
 		  "additionalProperties": false
 		},
 		"NativeAppDetails": {
+		  "type": "object",
 		  "description": "Properties used to launch apps with `type: native` that are already installed on the device.",
 		  "required": [
 			"path"
@@ -706,6 +708,7 @@
 		  "additionalProperties": false
 		},
 		"CitrixAppDetails": {
+	      "type": "object",
 		  "description": "Properties used to launch apps virtualized apps with `type: citrix`.",
 		  "required": [
 			"alias"
@@ -723,6 +726,7 @@
 		  "additionalProperties": false
 		},
 		"OnlineNativeAppDetails": {
+		  "type": "object",
 		  "description": "Properties used to launch a native apps with `type: onlineNative` that have an online launcher, e.g. online ClickOnce app deployments.",
 		  "required": [
 			"url"
@@ -737,7 +741,9 @@
 		  "additionalProperties": false
 		},
 		"OtherAppDetails": {
+		  "type": "object",
 		  "description": "Apps with `type: other` are defined by a hostManifest and do not require other details.",
+		  "properties": {},
 		  "additionalProperties": false
 		},
 		"HostManifests": {
