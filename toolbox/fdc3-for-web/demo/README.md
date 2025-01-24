@@ -53,7 +53,7 @@ FDC3 WCP supports both communication from the App to the Desktop Agent via direc
 
 ![Choosing The UI](./images/tab3.png)
 
-FDC3 WCP supports the ability for Desktop Agents to specify UI for resolving intents or selecting channels, and FDC3 also provides a default implementation which Desktop Agent implementers can use if they want.  `demo` allows the user to choose between `demo`'s own Channel Selector and Intent Resolver or the Default Web FDC3 ones.  This is done with the right-most drop-down on the launch page.  
+FDC3 WCP supports the ability for Desktop Agents to specify UI for resolving intents or selecting channels, and FDC3 also provides a default implementation which Desktop Agent implementers can use if they want.  `demo` allows the user to choose between `demo`'s own Channel Selector and Intent Resolver or the Default Web FDC3 ones (running either on localhost or on the fdc3.finos.org website).  This is done with the right-most drop-down on the launch page.  
 
 #### Channel Selectors
 

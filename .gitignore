@@ -15,6 +15,7 @@ website/node_modules
 website/i18n/*
 website/.docusaurus/
 website/static/schemas/next/*
+website/static/ui
 test-results.xml
 
 

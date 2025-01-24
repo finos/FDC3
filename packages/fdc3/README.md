@@ -35,7 +35,7 @@ fdc3.raiseIntent('ViewProfile', contact);
 
 ## Documentation
 
-For detailed documentation and API reference, please visit the [official FDC3 documentation](https://fdc3.finos.org/docs/api/overview).
+For detailed documentation and API reference, please visit the [official FDC3 documentation](https://fdc3.finos.org/docs/api/spec).
 
 ## Contributing
 
