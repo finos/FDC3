@@ -81,21 +81,20 @@ export abstract class AbstractMessaging implements Messaging {
 
     Logger.debug('Sending to DesktopAgent: ', message);
     this.post(message);
-    // try {
-    const out: X = await prom;
+    try {
+      const out: X = await prom;
 
-    if (out?.payload?.error) {
-      throw new Error(out.payload.error);
-    } else {
-      return out;
+      if (out?.payload?.error) {
+        throw new Error(out.payload.error);
+      } else {
+        return out;
+      }
+    } catch (error) {
+      if ((error as Error).message == AgentError.ApiTimeout) {
+        Logger.error(`Timed-out while waiting for ${expectedTypeName} with requestUuid ${message.meta.requestUuid}`);
+      }
+      throw error;
     }
-    // } catch (error) {
-    //   if ((error as Error).message == AgentError.ApiTimeout) {
-    //     //TODO: update to use Logger when merged
-    //     console.error(`Timed-out while waiting for ${expectedTypeName} with requestUuid ${message.meta.requestUuid}`);
-    //   }
-    //   throw error;
-    // }
   }
 
   getAppIdentifier(): AppIdentifier {

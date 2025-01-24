@@ -134,7 +134,7 @@ export class MockFDC3Server implements FDC3Server {
                 intentResolverUrl: this.useDefaultUIUrls ? true : INTENT_RESOLVER_URL,
                 channelSelectorUrl: this.useDefaultUIUrls ? true : CHANNEL_SELECTOR_URL,
                 defaultTimeout: 1000,
-                appLaunchTimeout: 15000,
+                appLaunchTimeout: 2000,
               },
             };
             if (this.messageExchangeTimeout) {
