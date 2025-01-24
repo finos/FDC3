@@ -14,7 +14,7 @@ Feature: Message exchange timeouts
     Then the promise "{theAPIPromise}" should resolve
     And I refer to "{result}" as "desktopAgent"
     And I call broadcast with an fdc3.instrument context on "{desktopAgent}" and allow 12 seconds
-    Then "{result}" is an error with message "spoon"
+    Then "{result}" is an error with message "ApiTimeout"
     And I call "{desktopAgent}" with "disconnect"
 
   # Scenario: Desktop Agent times out app launch when running inside a Browser with custom timeout
@@ -41,7 +41,7 @@ Feature: Message exchange timeouts
     Then the promise "{theAPIPromise}" should resolve
     And I refer to "{result}" as "desktopAgent"
     And I call broadcast with an fdc3.instrument context on "{desktopAgent}" and allow 12 seconds
-    Then "{result}" is an error with message "spoon"
+    Then "{result}" is an error with message "ApiTimeout"
     And I call "{desktopAgent}" with "disconnect"
 
   # Scenario: Desktop Agent times out app launch when running in browser and connected via failover with custom timeout

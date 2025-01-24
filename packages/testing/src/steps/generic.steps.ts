@@ -76,6 +76,7 @@ export function setupGenericSteps() {
     'I call broadcast with an fdc3.instrument context on {string} and allow 12 seconds',
     { timeout: 12 * 1000 },
     async function (this: PropsWorld, field: string) {
+      //Note that broadcast is a noop unless you are currently joined to a channel
       try {
         const object = handleResolve(field, this);
         const fn = object['broadcast'];

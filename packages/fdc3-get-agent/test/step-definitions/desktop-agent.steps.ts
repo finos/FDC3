@@ -247,7 +247,15 @@ Given(
 
 When('I call getAgent for a promise result', function (this: CustomWorld) {
   try {
-    this.props['result'] = getAgent();
+    const params: GetAgentParams = {
+      logging: {
+        connection: true,
+        connectionDebug: true,
+        proxyDebug: true,
+        heartbeat: false,
+      },
+    };
+    this.props['result'] = getAgent(params);
   } catch (error) {
     this.props['result'] = error;
   }
@@ -270,7 +278,7 @@ After(function (this: CustomWorld) {
 When('I call getAgent for a promise result with the following options', function (this: CustomWorld, dt: DataTable) {
   try {
     const first = dt.hashes()[0];
-    const toArgs = Object.fromEntries(
+    const toArgs: GetAgentParams = Object.fromEntries(
       Object.entries(first).map(([k, v]) => {
         const val = handleResolve(v, this);
         const val2 = isNaN(val) ? val : Number(val);
@@ -278,7 +286,14 @@ When('I call getAgent for a promise result with the following options', function
         return [k, val3];
       })
     );
-    this.props['result'] = getAgent(toArgs as GetAgentParams);
+    //add logging settings to help with debug
+    toArgs.logging = {
+      connection: true,
+      connectionDebug: true,
+      proxyDebug: true,
+      heartbeat: false,
+    };
+    this.props['result'] = getAgent(toArgs);
   } catch (error) {
     this.props['result'] = error;
   }
