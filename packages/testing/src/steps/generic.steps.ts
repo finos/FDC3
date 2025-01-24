@@ -33,6 +33,17 @@ export function setupGenericSteps() {
     }
   );
 
+  When('I call {string} with parameter {string}', async function (this: PropsWorld, field: string, fnName: string) {
+    try {
+      const object = handleResolve(field, this);
+      const fn = object[fnName];
+      const result = await fn.call(object);
+      this.props['result'] = result;
+    } catch (error) {
+      this.props['result'] = error;
+    }
+  });
+
   When('I call {string} with {string}', async function (this: PropsWorld, field: string, fnName: string) {
     try {
       const object = handleResolve(field, this);
@@ -53,8 +64,27 @@ export function setupGenericSteps() {
         const fn = object[fnName];
         const result = await fn.call(object);
         this.props['result'] = result;
+        this.log('Received non-error result: ' + JSON.stringify(result));
       } catch (error) {
         this.props['result'] = error;
+        this.log('Received error with message: ' + ((error as Error).message ?? error));
+      }
+    }
+  );
+
+  When(
+    'I call broadcast with an fdc3.instrument context on {string} and allow 12 seconds',
+    { timeout: 12 * 1000 },
+    async function (this: PropsWorld, field: string) {
+      try {
+        const object = handleResolve(field, this);
+        const fn = object['broadcast'];
+        const result = await fn.call(object);
+        this.props['result'] = result;
+        this.log('Received non-error result: ' + JSON.stringify(result));
+      } catch (error) {
+        this.props['result'] = error;
+        this.log('Received error with message: ' + ((error as Error).message ?? error));
       }
     }
   );

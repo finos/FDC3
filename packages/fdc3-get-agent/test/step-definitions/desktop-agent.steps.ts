@@ -18,6 +18,7 @@ interface MockPageTransitionEvent extends Event {
 }
 
 setupGenericSteps();
+
 Given(
   'Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response',
   async function (this: CustomWorld, field: string, w: string) {

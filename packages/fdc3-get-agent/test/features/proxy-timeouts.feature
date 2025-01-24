@@ -13,7 +13,7 @@ Feature: Message exchange timeouts
     And I refer to "{result}" as "theAPIPromise"
     Then the promise "{theAPIPromise}" should resolve
     And I refer to "{result}" as "desktopAgent"
-    And I call "{desktopAgent}" with "getInfo" and allow 12 seconds
+    And I call broadcast with an fdc3.instrument context on "{desktopAgent}" and allow 12 seconds
     Then "{result}" is an error with message "spoon"
     And I call "{desktopAgent}" with "disconnect"
 
@@ -40,7 +40,7 @@ Feature: Message exchange timeouts
     And I refer to "{result}" as "theAPIPromise"
     Then the promise "{theAPIPromise}" should resolve
     And I refer to "{result}" as "desktopAgent"
-    And I call "{desktopAgent}" with "getInfo" and allow 12 seconds
+    And I call broadcast with an fdc3.instrument context on "{desktopAgent}" and allow 12 seconds
     Then "{result}" is an error with message "spoon"
     And I call "{desktopAgent}" with "disconnect"
 

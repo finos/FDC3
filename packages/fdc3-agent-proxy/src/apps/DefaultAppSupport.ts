@@ -79,12 +79,7 @@ export class DefaultAppSupport implements AppSupport {
       meta: this.messaging.createMeta(),
     };
 
-    const response = await this.messaging.exchange<OpenResponse>(
-      request,
-      'openResponse',
-      this.appLaunchTimeout,
-      OpenError.AppTimeout
-    );
+    const response = await this.messaging.exchange<OpenResponse>(request, 'openResponse', this.appLaunchTimeout);
 
     throwIfUndefined(
       response.payload.appIdentifier,
@@ -106,8 +101,7 @@ export class DefaultAppSupport implements AppSupport {
     const response = await this.messaging.exchange<GetInfoResponse>(
       request,
       'getInfoResponse',
-      this.messageExchangeTimeout,
-      'timed out waiting for getInfo response!'
+      this.messageExchangeTimeout
     );
 
     if (response.payload.implementationMetadata) {

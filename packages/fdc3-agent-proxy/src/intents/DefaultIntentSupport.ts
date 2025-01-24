@@ -146,8 +146,7 @@ export class DefaultIntentSupport implements IntentSupport {
     const response = await this.messaging.exchange<RaiseIntentResponse>(
       request,
       'raiseIntentResponse',
-      this.appLaunchTimeout,
-      ResolveError.IntentDeliveryFailed
+      this.appLaunchTimeout
     );
 
     throwIfUndefined(
@@ -189,8 +188,7 @@ export class DefaultIntentSupport implements IntentSupport {
     const response = await this.messaging.exchange<RaiseIntentForContextResponse>(
       request,
       'raiseIntentForContextResponse',
-      this.appLaunchTimeout,
-      ResolveError.IntentDeliveryFailed
+      this.appLaunchTimeout
     );
 
     throwIfUndefined(

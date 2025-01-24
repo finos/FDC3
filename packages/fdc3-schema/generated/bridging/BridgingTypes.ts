@@ -123,6 +123,7 @@ export type ResponseErrorDetail =
   | 'CreationFailed'
   | 'MalformedContext'
   | 'NoChannelFound'
+  | 'ApiTimeout'
   | 'AppNotFound'
   | 'AppTimeout'
   | 'DesktopAgentNotFound'
@@ -1153,6 +1154,7 @@ export type FindInstancesErrors =
   | 'TargetAppUnavailable'
   | 'TargetInstanceUnavailable'
   | 'UserCancelledResolution'
+  | 'ApiTimeout'
   | 'AgentDisconnected'
   | 'NotConnectedToBridge'
   | 'ResponseToBridgeTimedOut'
@@ -2579,6 +2581,7 @@ export type OpenErrorResponsePayload =
   | 'ErrorOnLaunch'
   | 'MalformedContext'
   | 'ResolverUnavailable'
+  | 'ApiTimeout'
   | 'AgentDisconnected'
   | 'NotConnectedToBridge'
   | 'ResponseToBridgeTimedOut'
@@ -3104,7 +3107,7 @@ export interface PrivateChannelEventListenerAddedAgentRequestPayload {
 /**
  * Event listener type names for Private Channel events.
  */
-export type PrivateChannelEventListenerTypes = 'onAddContextListener' | 'onUnsubscribe' | 'onDisconnect';
+export type PrivateChannelEventListenerTypes = 'addContextListener' | 'unsubscribe' | 'disconnect';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -4032,6 +4035,7 @@ export interface RaiseIntentResultAgentErrorResponsePayload {
 export type RaiseIntentResultErrorMessage =
   | 'IntentHandlerRejected'
   | 'NoResultReturned'
+  | 'ApiTimeout'
   | 'AgentDisconnected'
   | 'NotConnectedToBridge'
   | 'ResponseToBridgeTimedOut'
@@ -6472,6 +6476,7 @@ const typeMap: any = {
     false
   ),
   ResponseErrorDetail: [
+    'ApiTimeout',
     'AccessDenied',
     'AgentDisconnected',
     'AppNotFound',
@@ -6525,6 +6530,7 @@ const typeMap: any = {
   ConnectionStep4AuthenticationFailedType: ['authenticationFailed'],
   ConnectionStep6ConnectedAgentsUpdateType: ['connectedAgentsUpdate'],
   FindInstancesErrors: [
+    'ApiTimeout',
     'AgentDisconnected',
     'DesktopAgentNotFound',
     'IntentDeliveryFailed',
@@ -6548,6 +6554,7 @@ const typeMap: any = {
   GetAppMetadataAgentErrorResponseType: ['getAppMetadataResponse'],
   GetAppMetadataAgentRequestType: ['getAppMetadataRequest'],
   OpenErrorResponsePayload: [
+    'ApiTimeout',
     'AgentDisconnected',
     'AppNotFound',
     'AppTimeout',
@@ -6562,7 +6569,7 @@ const typeMap: any = {
   OpenAgentErrorResponseType: ['openResponse'],
   OpenAgentRequestType: ['openRequest'],
   PrivateChannelBroadcastAgentRequestType: ['PrivateChannel.broadcast'],
-  PrivateChannelEventListenerTypes: ['onAddContextListener', 'onDisconnect', 'onUnsubscribe'],
+  PrivateChannelEventListenerTypes: ['addContextListener', 'disconnect', 'unsubscribe'],
   PrivateChannelEventListenerAddedAgentRequestType: ['PrivateChannel.eventListenerAdded'],
   PrivateChannelEventListenerRemovedAgentRequestType: ['PrivateChannel.eventListenerRemoved'],
   PrivateChannelOnAddContextListenerAgentRequestType: ['PrivateChannel.onAddContextListener'],
@@ -6571,6 +6578,7 @@ const typeMap: any = {
   RaiseIntentAgentErrorResponseType: ['raiseIntentResponse'],
   RaiseIntentAgentRequestType: ['raiseIntentRequest'],
   RaiseIntentResultErrorMessage: [
+    'ApiTimeout',
     'AgentDisconnected',
     'IntentHandlerRejected',
     'MalformedMessage',

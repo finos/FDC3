@@ -2,6 +2,7 @@ import { TestServerContext } from '../TestServerContext';
 import { InstanceID } from '@finos/fdc3-web-impl';
 import { AutomaticResponse } from './AutomaticResponses';
 import { FindIntentRequest, FindIntentResponse } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { createUUID } from '../../../src/util/Uuid';
 
 export class FindIntent implements AutomaticResponse {
   filter(t: string) {
@@ -19,7 +20,11 @@ export class FindIntent implements AutomaticResponse {
 
   private createFindIntentResponseMessage(m: FindIntentRequest): FindIntentResponse {
     const response: FindIntentResponse = {
-      meta: m.meta as any,
+      meta: {
+        requestUuid: m.meta.requestUuid,
+        responseUuid: createUUID(),
+        timestamp: new Date(),
+      },
       type: 'findIntentResponse',
       payload: {
         appIntent: {
