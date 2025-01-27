@@ -18,7 +18,7 @@ export type ConnectionDetails = {
   options: GetAgentParams;
   agentType: WebDesktopAgentType;
   agentUrl?: string;
-  defaultTimeout: number;
+  messageExchangeTimeout: number;
   appLaunchTimeout: number;
 };
 export class MessagePortMessaging extends AbstractMessaging {

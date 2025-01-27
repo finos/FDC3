@@ -55,8 +55,8 @@
                 }
               ]
             },
-            "defaultTimeout": {
-              "title": "Default Timeout",
+            "messageExchangeTimeout": {
+              "title": "Message Exchange Timeout",
               "description": "Indicates a custom timeout (in milliseconds) that should be used for the majority of API message exchanges instead of the default 10,000 millisecond timeout.",
               "type": "number",
               "minimum": 100
