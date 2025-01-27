@@ -54,9 +54,9 @@ export async function createDesktopAgentAPI(
   Logger.debug('message-port: Setting up support components...');
 
   const hs = new DefaultHeartbeatSupport(messaging);
-  const cs = new DefaultChannelSupport(messaging, channelSelector, cd.defaultTimeout);
-  const is = new DefaultIntentSupport(messaging, intentResolver, cd.defaultTimeout, cd.appLaunchTimeout);
-  const as = new DefaultAppSupport(messaging, cd.defaultTimeout, cd.appLaunchTimeout);
+  const cs = new DefaultChannelSupport(messaging, channelSelector, cd.messageExchangeTimeout);
+  const is = new DefaultIntentSupport(messaging, intentResolver, cd.messageExchangeTimeout, cd.appLaunchTimeout);
+  const as = new DefaultAppSupport(messaging, cd.messageExchangeTimeout, cd.appLaunchTimeout);
   const da = new DesktopAgentProxy(hs, cs, is, as, [hs, intentResolver, channelSelector], logging);
 
   Logger.debug('message-port: Connecting components ...');

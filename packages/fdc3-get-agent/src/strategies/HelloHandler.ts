@@ -130,7 +130,7 @@ export class HelloHandler {
               actualUrl: globalThis.window.location.href,
               agentType: this.agentType,
               agentUrl: this.agentUrl ?? undefined,
-              defaultTimeout: data.payload.defaultTimeout ?? DEFAULT_MESSAGE_EXCHANGE_TIMEOUT_MS,
+              messageExchangeTimeout: data.payload.messageExchangeTimeout ?? DEFAULT_MESSAGE_EXCHANGE_TIMEOUT_MS,
               appLaunchTimeout: data.payload.appLaunchTimeout ?? DEFAULT_APP_LAUNCH_TIMEOUT_MS,
             };
             resolve(connectionDetails);

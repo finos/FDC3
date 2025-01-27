@@ -3701,11 +3701,6 @@ export interface WebConnectionProtocol3HandshakePayload {
    */
   channelSelectorUrl: boolean | string;
   /**
-   * Indicates a custom timeout (in milliseconds) that should be used for the majority of API
-   * message exchanges instead of the default 10,000 millisecond timeout.
-   */
-  defaultTimeout?: number;
-  /**
    * The version of FDC3 API that the Desktop Agent will provide support for.
    */
   fdc3Version: string;
@@ -3715,6 +3710,11 @@ export interface WebConnectionProtocol3HandshakePayload {
    * Desktop Agent will handle it another way).
    */
   intentResolverUrl: boolean | string;
+  /**
+   * Indicates a custom timeout (in milliseconds) that should be used for the majority of API
+   * message exchanges instead of the default 10,000 millisecond timeout.
+   */
+  messageExchangeTimeout?: number;
 }
 
 /**
@@ -5879,9 +5879,9 @@ const typeMap: any = {
     [
       { json: 'appLaunchTimeout', js: 'appLaunchTimeout', typ: u(undefined, 3.14) },
       { json: 'channelSelectorUrl', js: 'channelSelectorUrl', typ: u(true, '') },
-      { json: 'defaultTimeout', js: 'defaultTimeout', typ: u(undefined, 3.14) },
       { json: 'fdc3Version', js: 'fdc3Version', typ: '' },
       { json: 'intentResolverUrl', js: 'intentResolverUrl', typ: u(true, '') },
+      { json: 'messageExchangeTimeout', js: 'messageExchangeTimeout', typ: u(undefined, 3.14) },
     ],
     false
   ),
