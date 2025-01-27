@@ -1,7 +1,7 @@
 import { Given, Then } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
 import { handleResolve } from '@finos/testing';
-// used to debug tests not ending - only availabel as a commonJs module
+// used to debug tests not ending - only available as a commonJs module
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 const wtf = require('wtfnode');
 
