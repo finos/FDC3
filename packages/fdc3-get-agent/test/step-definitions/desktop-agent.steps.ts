@@ -75,7 +75,7 @@ Given(
   'Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response, times out message exchanges and uses message exchange timeout {string} ms and app launch timeout {string} ms',
   async function (this: CustomWorld, field: string, w: string, t1: string, t2: string) {
     const mockWindow = handleResolve(w, this);
-    const defaultTimeout: number = handleResolve(t1, this);
+    const messageExchangeTimeout: number = handleResolve(t1, this);
     const appLaunchTimeout: number = handleResolve(t2, this);
     this.mockFDC3Server = new MockFDC3Server(
       mockWindow,
@@ -84,7 +84,7 @@ Given(
       true,
       false,
       true,
-      defaultTimeout,
+      messageExchangeTimeout,
       appLaunchTimeout
     );
     this.props[field] = this.mockFDC3Server;
@@ -162,7 +162,7 @@ Given(
 Given(
   '{string} is a function which opens an iframe for communications on {string}, times out message exchanges and uses message exchange timeout {string} ms and app launch timeout {string} ms',
   function (this: CustomWorld, fn: string, doc: string, t1: string, t2: string) {
-    const defaultTimeout: number = handleResolve(t1, this);
+    const messageExchangeTimeout: number = handleResolve(t1, this);
     const appLaunchTimeout: number = handleResolve(t2, this);
     this.props[fn] = () => {
       this.mockContext.open(dummyInstanceDetails[0].appId);
@@ -176,7 +176,7 @@ Given(
         false,
         false,
         true,
-        defaultTimeout,
+        messageExchangeTimeout,
         appLaunchTimeout
       );
       ifrm.setAttribute('src', EMBED_URL);
