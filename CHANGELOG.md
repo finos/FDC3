@@ -50,13 +50,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Removed the `version` field from `IntentResolution` as there are no version fields for intents in the FDC3 API definitions and hence the field has no purpose. ([#1170](https://github.com/finos/FDC3/pull/1170))
 * Fixed error in the Client-side example from `PrivateChannel` and `addIntentListener` by correcting `id.symbol` to `id.ticker` to align with the `fdc3.instrument` context. ([#1314](https://github.com/finos/FDC3/pull/1314))
 * Added missing `resultType` argument to `findIntent` agent request in the Bridging Schema. ([#1154](https://github.com/finos/FDC3/pull/1154)) 
-
-
-
-
-
-
-
 * Added missing `resultType` argument to `findIntentByContext` agent request in the Bridging Schema. ([#1212](https://github.com/finos/FDC3/pull/1212)) 
 * Added missing id and name fields from the context base schema to respective context schemas (`Contact`, `ContactList`, `Country`, `InstrumentList`, `OrderList`, `Organization`, `Portfolio`, `Position`, `TradeList`). ([#1360](https://github.com/finos/FDC3/pull/1360))
 * Revised FDC3 charter to include well-known language from the FDC3 introduction, better describe FDC3's scope, focus on financial applications, update application types, etc. ([#1079](https://github.com/finos/FDC3/pull/1079))
