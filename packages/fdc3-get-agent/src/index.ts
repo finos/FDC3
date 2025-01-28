@@ -1,9 +1,21 @@
 import { DesktopAgent } from '@finos/fdc3-standard';
 import { getAgent } from './strategies/getAgent';
+import { AnstractUIComponent } from './ui/AbstractUIComponent';
+import { DefaultDesktopAgentChannelSelector } from './ui/DefaultDesktopAgentChannelSelector';
+import { DefaultDesktopAgentIntentResolver } from './ui/DefaultDesktopAgentIntentResolver';
+import { NullChannelSelector } from './ui/NullChannelSelector';
+import { NullIntentResolver } from './ui/NullIntentResolver';
 
 const DEFAULT_WAIT_FOR_MS = 20000;
 
-export { getAgent };
+export {
+  getAgent,
+  AbstractUIComponent,
+  DefaultDesktopAgentChannelSelector,
+  DefaultDesktopAgentIntentResolver,
+  NullChannelSelector,
+  NullIntentResolver,
+};
 
 /**
  * Replaces the original fdc3Ready function from FDC3 2.0 with a new one that uses the new getAgent function.
