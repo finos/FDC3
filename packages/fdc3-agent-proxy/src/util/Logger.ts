@@ -12,7 +12,7 @@ export class Logger extends AbstractFDC3Logger {
     return 'FDC3 DesktopAgentProxy: ';
   }
 
-  static override get defaultLogLevel(): LogLevel {
-    return LogLevel.WARN;
-  }
+  //set default log level - will not be picked up in test scope so ignored
+  /* istanbul ignore next */
+  logLevel: LogLevel = LogLevel.WARN;
 }

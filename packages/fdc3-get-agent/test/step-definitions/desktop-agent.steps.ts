@@ -7,6 +7,7 @@ import { fdc3Ready, getAgent } from '../../src';
 import {
   DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX,
   DesktopAgentDetails,
+  GetAgentLogLevels,
   GetAgentParams,
   LogLevel,
 } from '@finos/fdc3-standard';
@@ -25,7 +26,7 @@ interface MockPageTransitionEvent extends Event {
 setupGenericSteps();
 
 //Change logging settings here when debugging test failures
-const loggingSettings: GetAgentParams['logLevels'] = {
+export const loggingSettings: GetAgentLogLevels = {
   connection: LogLevel.INFO,
   proxy: LogLevel.INFO,
 };
