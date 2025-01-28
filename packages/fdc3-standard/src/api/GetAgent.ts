@@ -119,11 +119,11 @@ export type GetAgentLogLevels = {
  * Type representing the different log-levels that can be set.
  */
 export enum LogLevel {
+  NONE = 0,
   ERROR = 1,
   WARN = 2,
   INFO = 3,
   DEBUG = 4,
-  NONE = 5,
 }
 
 /** Type representing the format of data stored by `getAgent`

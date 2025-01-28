@@ -141,11 +141,11 @@ type GetAgentLogLevels = {
  * Type representing the different log-levels that can be set.
  */
 enum LogLevel {
+  NONE = 0,
   ERROR = 1,
   WARN = 2,
   INFO = 3,
   DEBUG = 4,
-  NONE = 5
 }
 ```
 
