@@ -21,7 +21,7 @@ export class HeartbeatListener implements RegisterableListener {
   }
 
   action(_m: AgentEventMessage): void {
-    Logger.heartbeatLog('Responding to heartbeat request', _m);
+    Logger.debug('Responding to heartbeat request', _m);
     const request: HeartbeatAcknowledgementRequest = {
       type: 'heartbeatAcknowledgementRequest',
       meta: {

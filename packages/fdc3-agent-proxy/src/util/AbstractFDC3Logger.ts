@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { LogLevel } from '@finos/fdc3-standard';
+
 //check if color is supported in (node) console;
 let noColor = true;
 //else only occurs in a browser and can't be tested in node
@@ -21,21 +23,27 @@ if (typeof process !== 'undefined') {
 type ColorFn = (aString: string) => string;
 
 export abstract class AbstractFDC3Logger {
-  private static enableDebug: boolean = false;
-  private static enableLog: boolean = true;
-
-  /** This should be overridden by sub-classes to change the prefix applied
+  /** This should be overridden by sub-classes to set the prefix applied
    * to log messages. */
   /* istanbul ignore next */ static get prefix(): string {
     return '';
   }
 
-  public static enableDebugLogs(enable: boolean) {
-    this.enableDebug = enable;
+  /** This should be overridden by sub-classes to set the default log level.*/
+  /* istanbul ignore next */ static get defaultLogLevel(): LogLevel {
+    return LogLevel.INFO;
   }
 
-  public static enableLogs(enable: boolean) {
-    this.enableLog = enable;
+  private static logLevel: LogLevel = this.defaultLogLevel;
+
+  public static setLogLevel(level: LogLevel) {
+    if (level in LogLevel) {
+      this.logLevel = level;
+    } else {
+      this.error(
+        `Ignoring unrecognized LogLevel '${level}'! Current log level: '${this.logLevel} (${LogLevel[this.logLevel]})'`
+      );
+    }
   }
 
   protected static debugColor(value: string): string {
@@ -52,23 +60,27 @@ export abstract class AbstractFDC3Logger {
   }
 
   public static debug(...params: any[]) {
-    if (this.enableDebug) {
+    if (this.logLevel >= LogLevel.DEBUG) {
       console.debug(...this.prefixAndColorize(this.prefix, params, this.debugColor));
     }
   }
 
   public static log(...params: any[]) {
-    if (this.enableLog) {
+    if (this.logLevel >= LogLevel.INFO) {
       console.log(...this.prefixAndColorize(this.prefix, params, this.logColor));
     }
   }
 
   public static warn(...params: any[]) {
-    console.warn(...this.prefixAndColorize(this.prefix, params, this.warnColor));
+    if (this.logLevel >= LogLevel.WARN) {
+      console.warn(...this.prefixAndColorize(this.prefix, params, this.warnColor));
+    }
   }
 
   public static error(...params: any[]) {
-    console.error(...this.prefixAndColorize(this.prefix, params, this.errorColor));
+    if (this.logLevel >= LogLevel.ERROR) {
+      console.error(...this.prefixAndColorize(this.prefix, params, this.errorColor));
+    }
   }
 
   protected static prefixAndColorize = (prefix: string, params: any[], colorFn: ColorFn): string[] => {

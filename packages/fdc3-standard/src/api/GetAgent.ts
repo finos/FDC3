@@ -82,8 +82,8 @@ export type GetAgentType = (params?: GetAgentParams) => Promise<DesktopAgent>;
  * a Desktop Agent or suitable proxy to one that works with FDC3 Web Connection
  * and Desktop Agent Communication Protocols.
  *
+ * @property {GetAgentLogLevels} logLevels Settings that determine what should
  * will logged by the getAgent() implementation and DesktopAgentProxy to the
- * @property {GetAgentLogSettings} logging Settings that determine what should
  * JavaScript console.
  */
 export type GetAgentParams = {
@@ -93,33 +93,38 @@ export type GetAgentParams = {
   intentResolver?: boolean;
   dontSetWindowFdc3?: boolean;
   failover?: (args: GetAgentParams) => Promise<WindowProxy | DesktopAgent>;
-  logging?: GetAgentLogSettings;
+  logLevels?: GetAgentLogLevels;
 };
 
 /**
- * @typedef {Object} GetAgentLogSettings Type representing parameters passed to the
- * getAgent function that control what is logged to the JavaScript console by the
- * getAgent() implementation and any DesktopAgentProxy implementations it creates.
+ * @typedef {Object} GetAgentLogLevels Type representing log-level parameters \
+ * passed to the getAgent function that control what is logged to the JavaScript
+ * console by the getAgent() implementation and any DesktopAgentProxy it creates.
  *
- * @property {boolean} connection Log-level messages relating to establishing a
- * connection to the Desktop Agent (default true).
+ * @property {boolean} connection Log-level for messages relating to establishing
+ * a connection to the Desktop Agent (default INFO).
  *
- * @property {boolean} connectionDebug Debug-level messages relating to establishing
- * a connection to the Desktop Agent (default false).
+ * @property {boolean} proxy Log-level for messages from a DesktopAgentProxy
+ * created by getAgent. These include log of messages sent or received from the
+ * DesktopAgent at the INFO level and heartbeat messages at the DEBUG level
+ * (default WARN).
  *
- * @property {boolean} proxyDebug Debug-level messages that provide details of
- * all messages sent to or received from the DesktopAgent (excluding heartbeat
- * messages) by the DesktopAgentProxy (default false).
- *
- * @property {boolean} heartbeat Debug-level messages relating to heartbeat messages
- * sent to or received from the DesktopAgent by the DesktopAgentProxy (default false).
  */
-export type GetAgentLogSettings = {
-  connection: boolean;
-  connectionDebug: boolean;
-  proxyDebug: boolean;
-  heartbeat: boolean;
+export type GetAgentLogLevels = {
+  connection: LogLevel;
+  proxy: LogLevel;
 };
+
+/**
+ * Type representing the different log-levels that can be set.
+ */
+export enum LogLevel {
+  ERROR = 1,
+  WARN = 2,
+  INFO = 3,
+  DEBUG = 4,
+  NONE = 5,
+}
 
 /** Type representing the format of data stored by `getAgent`
  *  in Session Storage. The `identityUrl` of each app is used
@@ -199,5 +204,3 @@ export enum WebDesktopAgentType {
 }
 
 export const DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX = 'fdc3-desktop-agent-details';
-
-export const DEFAULT_TIMEOUT_MS = 1000;

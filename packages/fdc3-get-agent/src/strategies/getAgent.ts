@@ -5,7 +5,6 @@ import {
   AgentError,
   DesktopAgentDetails,
   WebDesktopAgentType,
-  DEFAULT_TIMEOUT_MS,
 } from '@finos/fdc3-standard';
 import { DesktopAgentPreloadLoader } from './DesktopAgentPreloadLoader';
 import { PostMessageLoader } from './PostMessageLoader';
@@ -13,6 +12,7 @@ import { retrieveDesktopAgentDetails, storeDesktopAgentDetails } from '../sessio
 import { FailoverHandler } from './FailoverHandler';
 import { Loader } from './Loader';
 import { Logger } from '../util/Logger';
+import { DEFAULT_GETAGENT_TIMEOUT_MS } from './Timeouts';
 
 // TypeGuards used to examine results of Loaders
 const isRejected = (input: PromiseSettledResult<unknown>): input is PromiseRejectedResult =>
@@ -34,8 +34,9 @@ export function clearAgentPromise() {
 }
 
 function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
-  Logger.enableLogs(options.logging?.connection ?? true);
-  Logger.enableDebugLogs(options.logging?.connectionDebug ?? false);
+  if (options?.logLevels?.connection) {
+    Logger.setLogLevel(options.logLevels.connection);
+  }
 
   Logger.log(`Initiating Desktop Agent discovery at ${new Date().toISOString()}`);
   let strategies: Loader[];
@@ -209,13 +210,8 @@ export const getAgent: GetAgentType = (params?: GetAgentParams) => {
     dontSetWindowFdc3: true,
     channelSelector: true,
     intentResolver: true,
-    timeoutMs: DEFAULT_TIMEOUT_MS,
-    logging: {
-      connection: true,
-      connectionDebug: false,
-      proxyDebug: false,
-      heartbeat: false,
-    },
+    timeoutMs: DEFAULT_GETAGENT_TIMEOUT_MS,
+    //default log levels are set in the relevant logging utils
   };
 
   const options: GetAgentParams = {

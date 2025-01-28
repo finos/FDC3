@@ -1,4 +1,4 @@
-import { AppIdentifier, DesktopAgent } from '@finos/fdc3-standard';
+import { AppIdentifier, DesktopAgent, LogLevel } from '@finos/fdc3-standard';
 import {
   DesktopAgentProxy,
   DefaultChannelSupport,
@@ -21,10 +21,7 @@ import { Logger } from '../util/Logger';
 export async function createDesktopAgentAPI(
   cd: ConnectionDetails,
   appIdentifier: AppIdentifier,
-  logging: {
-    heartbeat: boolean;
-    debug: boolean;
-  }
+  logLevel: LogLevel | null
 ): Promise<DesktopAgent> {
   Logger.debug('message-port: Creating Desktop Agent...');
 
@@ -57,7 +54,7 @@ export async function createDesktopAgentAPI(
   const cs = new DefaultChannelSupport(messaging, channelSelector, cd.messageExchangeTimeout);
   const is = new DefaultIntentSupport(messaging, intentResolver, cd.messageExchangeTimeout, cd.appLaunchTimeout);
   const as = new DefaultAppSupport(messaging, cd.messageExchangeTimeout, cd.appLaunchTimeout);
-  const da = new DesktopAgentProxy(hs, cs, is, as, [hs, intentResolver, channelSelector], logging);
+  const da = new DesktopAgentProxy(hs, cs, is, as, [hs, intentResolver, channelSelector], logLevel);
 
   Logger.debug('message-port: Connecting components ...');
 

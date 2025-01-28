@@ -46,6 +46,7 @@ jobs:
         paths: "**/test-results.xml"
         show: "fail, skip"
         output: test-summary.md
+      if: always()
 
     - name: PR comment with file
       uses: thollander/actions-comment-pull-request@v3

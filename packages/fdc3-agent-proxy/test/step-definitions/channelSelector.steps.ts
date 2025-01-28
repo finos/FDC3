@@ -11,6 +11,10 @@ import {
 } from '../../src';
 import { TestChannelSelector } from '../support/TestChannelSelector';
 import { TestMessaging } from '../support/TestMessaging';
+import { LogLevel } from '@finos/fdc3-standard';
+
+//Update this to enable debug output when debugging test failures
+const logLevel = LogLevel.WARN;
 
 Given(
   'A Channel Selector in {string} and a Desktop Agent in {string}',
@@ -27,7 +31,7 @@ Given(
     const is = new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this), 10000, 100000);
     const as = new DefaultAppSupport(this.messaging, 10000, 100000);
 
-    const da = new DesktopAgentProxy(hs, cs, is, as, [hs], { debug: true, heartbeat: false });
+    const da = new DesktopAgentProxy(hs, cs, is, as, [hs], logLevel);
     await da.connect();
 
     this.props[daField] = da;

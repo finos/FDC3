@@ -1,4 +1,11 @@
-import { GetAgentParams, DesktopAgent, WebDesktopAgentType, AgentError, AppIdentifier } from '@finos/fdc3-standard';
+import {
+  GetAgentParams,
+  DesktopAgent,
+  WebDesktopAgentType,
+  AgentError,
+  AppIdentifier,
+  LogLevel,
+} from '@finos/fdc3-standard';
 import { createDesktopAgentAPI } from '../messaging/message-port';
 import { DesktopAgentSelection } from './Loader';
 import { v4 as uuidv4 } from 'uuid';
@@ -6,7 +13,6 @@ import { HelloHandler } from './HelloHandler';
 import { IdentityValidationHandler } from './IdentityValidationHandler';
 import { Logger } from '../util/Logger';
 import { ConnectionDetails } from '../messaging/MessagePortMessaging';
-import { DesktopAgentProxyLogSettings } from '@finos/fdc3-agent-proxy/src/DesktopAgentProxy';
 
 /** TypeGuard for a Desktop Agent */
 function isDesktopAgent(da: WindowProxy | DesktopAgent): da is DesktopAgent {
@@ -93,13 +99,10 @@ export class FailoverHandler {
       };
 
       //prep log settings to pass on to the proxy
-      const logging: DesktopAgentProxyLogSettings = {
-        debug: this.options.logging?.proxyDebug ?? false,
-        heartbeat: this.options.logging?.heartbeat ?? false,
-      };
+      const logLevel: LogLevel | null = this.options?.logLevels?.proxy ?? null;
 
       const desktopAgentSelection: DesktopAgentSelection = {
-        agent: await createDesktopAgentAPI(connectionDetails, appIdentifier, logging),
+        agent: await createDesktopAgentAPI(connectionDetails, appIdentifier, logLevel),
         details: {
           agentType: connectionDetails.agentType,
           agentUrl: connectionDetails.agentUrl ?? undefined,
