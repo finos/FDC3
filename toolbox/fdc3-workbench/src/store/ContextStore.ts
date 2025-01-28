@@ -3,11 +3,12 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 import { makeObservable, observable, runInAction, action, toJS } from "mobx";
-import fdc3, { ContextType, Fdc3Listener } from "../utility/Fdc3Api";
+import { ContextType, Fdc3Listener } from "../utility/Fdc3Api";
 import { nanoid } from "nanoid";
 import { contexts } from "../fixtures/contexts";
 import systemLogStore from "./SystemLogStore";
 import { v4 as uuidv4 } from "uuid";
+import { getAgent } from "@finos/fdc3";
 
 export type ContextItem = {
 	id: string;
@@ -90,6 +91,8 @@ class ContextStore {
 	}
 
 	async broadcast(context: ContextType) {
+		const agent = await getAgent();
+
 		if (!context) {
 			systemLogStore.addLog({
 				name: "broadcast",
@@ -100,7 +103,7 @@ class ContextStore {
 			return;
 		} else {
 			//check that we're on a channel
-			let currentChannel = await fdc3.getCurrentChannel();
+			let currentChannel = await agent.getCurrentChannel();
 			if (!currentChannel) {
 				systemLogStore.addLog({
 					name: "broadcast",
@@ -110,7 +113,7 @@ class ContextStore {
 				});
 			} else {
 				try {
-					await fdc3.broadcast(toJS(context));
+					await agent.broadcast(toJS(context));
 					systemLogStore.addLog({
 						name: "broadcast",
 						type: "success",
@@ -134,8 +137,10 @@ class ContextStore {
 			if (typeof contextType === "string") {
 				const listenerId = nanoid();
 
+				const agent = await getAgent();
+
 				// TODO: remove window after fixing https://github.com/finos/FDC3/issues/435
-				const contextListener = await fdc3.addContextListener(
+				const contextListener = await agent.addContextListener(
 					contextType.toLowerCase() === "all" ? null : contextType,
 					(context: ContextType, metaData?: any) => {
 						const currentListener = this.contextListeners.find(({ id }) => id === listenerId);

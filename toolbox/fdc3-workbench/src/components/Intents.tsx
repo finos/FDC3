@@ -4,7 +4,14 @@
  */
 
 import React, { ChangeEvent, ReactElement, useEffect, useState } from "react";
-import fdc3, { AppMetadata, ContextType, IntentResolution, IntentTargetOption } from "../utility/Fdc3Api";
+import {
+	AppMetadata,
+	ContextType,
+	getTargetOptions,
+	getTargetOptionsForContext,
+	IntentResolution,
+	IntentTargetOption,
+} from "../utility/Fdc3Api";
 import { toJS } from "mobx";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import {
@@ -41,6 +48,7 @@ import { FormControlLabel } from "@material-ui/core";
 import { RadioGroup } from "@material-ui/core";
 import { Alert, ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
+import { getAgent } from "@finos/fdc3";
 
 // interface copied from lib @material-ui/lab/Autocomplete
 interface FilterOptionsState<T> {
@@ -312,7 +320,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 			} else if (!raiseIntentContext) {
 				setRaiseIntentError("Select a context first");
 			} else {
-				const intentTargetOptions: IntentTargetOption[] = await fdc3.getTargetOptions(
+				const intentTargetOptions: IntentTargetOption[] = await getTargetOptions(
 					intentValue.value,
 					toJS(raiseIntentContext)
 				);
@@ -382,7 +390,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 				if (!raiseIntentWithContextContext) {
 					//no settable error at the moment... setRaiseIntentError("enter context name");
 				} else {
-					const contextTargetOptions = await fdc3.getTargetOptionsForContext(toJS(raiseIntentWithContextContext));
+					const contextTargetOptions = await getTargetOptionsForContext(toJS(raiseIntentWithContextContext));
 
 					if (Object.keys(contextTargetOptions).length > 0) {
 						menuItems.push(
@@ -520,7 +528,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 					return;
 				}
 				setRaiseIntentError(false);
-				let appIntents = await fdc3.findIntentsByContext(toJS(raiseIntentContext));
+				let appIntents = await getAgent().then((agent) => agent.findIntentsByContext(toJS(raiseIntentContext)));
 
 				setUseTargets(false);
 				clearTargets();
