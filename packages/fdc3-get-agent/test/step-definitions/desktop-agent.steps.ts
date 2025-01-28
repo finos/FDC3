@@ -4,7 +4,12 @@ import { doesRowMatch, handleResolve, setupGenericSteps } from '@finos/testing';
 import { MockDocument } from '../support/MockDocument';
 import { MockWindow } from '../support/MockWindow';
 import { fdc3Ready, getAgent } from '../../src';
-import { DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX, DesktopAgentDetails, GetAgentParams } from '@finos/fdc3-standard';
+import {
+  DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX,
+  DesktopAgentDetails,
+  GetAgentParams,
+  LogLevel,
+} from '@finos/fdc3-standard';
 import { EMBED_URL, MockFDC3Server } from '../support/MockFDC3Server';
 import { MockStorage } from '../support/MockStorage';
 import { DesktopAgent, ImplementationMetadata } from '@finos/fdc3-standard';
@@ -20,11 +25,9 @@ interface MockPageTransitionEvent extends Event {
 setupGenericSteps();
 
 //Change logging settings here when debugging test failures
-const loggingSettings: GetAgentParams['logging'] = {
-  connection: true,
-  connectionDebug: false,
-  proxyDebug: false,
-  heartbeat: false,
+const loggingSettings: GetAgentParams['logLevels'] = {
+  connection: LogLevel.INFO,
+  proxy: LogLevel.INFO,
 };
 
 Given(
@@ -256,7 +259,7 @@ Given(
 When('I call getAgent for a promise result', function (this: CustomWorld) {
   try {
     const params: GetAgentParams = {
-      logging: loggingSettings,
+      logLevels: loggingSettings,
     };
     this.props['result'] = getAgent(params);
   } catch (error) {
@@ -290,7 +293,7 @@ When('I call getAgent for a promise result with the following options', function
       })
     );
     //add logging settings to help with debug
-    toArgs.logging = loggingSettings;
+    toArgs.logLevels = loggingSettings;
     this.props['result'] = getAgent(toArgs);
   } catch (error) {
     this.props['result'] = error;

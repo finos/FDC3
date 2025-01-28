@@ -89,6 +89,22 @@ As the DACP is used to communicate with a different browsing context, timeouts a
 
 Desktop Agents may specify custom values for both the default message exchange timeout and the timeout used for exchanges that may involve the launch of an application. Custom values are passed to the Desktop Agent proxy by setting the optional `payload.messageExchangeTimeout` and `payload.appLaunchTimeout` fields in the `WCP3Handshake` Response sent by the Desktop Agent to an application connecting to it. `payload.messageExchangeTimeout` must be set to a value greater than or equal to 100 ms, and `payload.appLaunchTimeout`  must be set to a value greater than or equal to 15,000 ms.
 
+```ts
+/** Default timeout used by a DesktopAgentProxy for all message exchanges
+ * with a DesktopAgent, except those that involve the launch of an application.
+ * May be overridden by a DesktopAgent by passing a value in the
+ * payload.messageExchangeTimeout of a WCP3Handshake message.
+ */
+export const DEFAULT_MESSAGE_EXCHANGE_TIMEOUT_MS = 10000;
+
+/** Default timeout used by a DesktopAgentProxy for message exchanges with a
+ * DesktopAgent that involve launching applications. May be overridden by a 
+ * DesktopAgent by passing a value in the payload.appLaunchTimeout of a 
+ * WCP3Handshake message.
+ * */
+export const DEFAULT_APP_LAUNCH_TIMEOUT_MS = 100000;
+```
+
 ## Message Definitions Supporting FDC3 API calls
 
 This section provides details of the messages defined in the DACP, grouped according to the FDC3 API functions that they support, and defined by JSON Schema files. Many of these message definitions make use of JSON versions of [metadata](../ref/Metadata) and other [types](../ref/Types) defined by the Desktop Agent API, the JSON versions of which can be found in [api.schema.json](https://fdc3.finos.org/schemas/next/api/api.schema.json), while a number of DACP specific object definitions that are reused through the messages can be found in [common.schema.json](https://fdc3.finos.org/schemas/next/api/common.schema.json).

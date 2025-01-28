@@ -9,6 +9,7 @@ import {
   IntentHandler,
   IntentResolution,
   Listener,
+  LogLevel,
 } from '@finos/fdc3-standard';
 import { ChannelSupport } from './channels/ChannelSupport';
 import { AppSupport } from './apps/AppSupport';
@@ -40,15 +41,17 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     intents: IntentSupport,
     apps: AppSupport,
     connectables: Connectable[],
-    logging: DesktopAgentProxyLogSettings
+    logLevel: LogLevel | null
   ) {
     this.heartbeat = heartbeat;
     this.intents = intents;
     this.channels = channels;
     this.apps = apps;
     this.connectables = connectables;
-    Logger.enableHeartbeatLogs(logging.heartbeat);
-    Logger.enableDebugLogs(logging.debug);
+    //Default log level is set in the Logger utility
+    if (logLevel) {
+      Logger.setLogLevel(logLevel);
+    }
   }
 
   addEventListener(type: FDC3EventTypes | null, handler: EventHandler): Promise<Listener> {

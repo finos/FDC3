@@ -1,19 +1,18 @@
+import { LogLevel } from '@finos/fdc3-standard';
 import { AbstractFDC3Logger } from './AbstractFDC3Logger';
 
+/**
+ * Logging utility used by the DesktopAgentProxy, which defaults to
+ * only printing WARN and ERROR level messages. The INFO level is used
+ * to message exchanges with Desktop Agents. The DEBUG level is used
+ * to log heartbeat messages from the DesktopAgent.
+ */
 export class Logger extends AbstractFDC3Logger {
   static override get prefix(): string {
     return 'FDC3 DesktopAgentProxy: ';
   }
 
-  private static enableHeartbeatLog: boolean = true;
-
-  public static enableHeartbeatLogs(enable: boolean) {
-    this.enableHeartbeatLog = enable;
-  }
-
-  public static heartbeatLog(...params: any[]) {
-    if (this.enableHeartbeatLog) {
-      console.debug(...this.prefixAndColorize(this.prefix, params, this.debugColor));
-    }
+  static override get defaultLogLevel(): LogLevel {
+    return LogLevel.WARN;
   }
 }
