@@ -19,11 +19,6 @@ import { Context } from '@finos/fdc3-context';
 import { HeartbeatSupport } from './heartbeat/HeartbeatSupport';
 import { Logger } from './util/Logger';
 
-export type DesktopAgentProxyLogSettings = {
-  heartbeat: boolean;
-  debug: boolean;
-};
-
 /**
  * This splits out the functionality of the desktop agent into
  * app, channels and intents concerns.

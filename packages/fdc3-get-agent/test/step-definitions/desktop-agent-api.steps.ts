@@ -30,7 +30,7 @@ When(
 
 When(
   'I call open with appId {string} on {string} and allow 3 seconds',
-  { timeout: 4 * 1000 },
+  { timeout: 3 * 1000 },
   // for testing app launch timeouts the Mock server sets a 2 second timeout
   // if that is ignored it defaults to 100 seconds so test should timeout and catch that
   async function (this: CustomWorld, appId: string, field: string) {
