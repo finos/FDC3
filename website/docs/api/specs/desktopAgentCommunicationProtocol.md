@@ -87,7 +87,7 @@ As a Desktop Agent is expected to act as a router for messages sent through the 
 
 As the DACP is used to communicate with a different browsing context, timeouts are applied to message exchanges allowing them to fail and for the Desktop Agent Proxy to return an error to the caller. A default timeout of 10 seconds is applied to all message exchanges, with the exception of those that may involve the launch of an application (`open()`, `raiseIntent()` and `raiseIntentForContext()`). Implementations of the FDC3 Desktop Agent API are required to allow a minimum timeout of 15 seconds for an application to launch and add any necessary context or intent listeners (see [Desktop Agent API Compliance](../spec#desktop-agent-api-standard-compliance) for further details). However, no upper bound for the timeout is currently specified. Message exchanges that involve the launch of an application use a default timeout of 100 seconds.
 
-Desktop Agents may specify custom values for both the default message exchange timeout and the timeout used for exchanges that may involve the launch of an application. Custom values are passed to the Desktop Agent proxy by setting the optional `payload.messageExchangeTimeout` and `payload.appLaunchTimeout` fields in the `WCP3Handshake` Response sent by the Desktop Agent to an application connecting to it. `payload.messageExchangeTimeout` must be set to a value greater than or equal to 100 ms, and `payload.appLaunchTimeout`  must be set to a value greater than or equal to 15,000 ms.
+Desktop Agents may specify custom values for both the default message exchange timeout and the timeout used for exchanges that may involve the launch of an application. Custom values are passed to the Desktop Agent proxy by setting the optional `payload.messageExchangeTimeout` and `payload.appLaunchTimeout` fields in the `WCP3Handshake` Response sent by the Desktop Agent to an application connecting to it. `payload.messageExchangeTimeout` MUST be set to a value greater than or equal to 100 ms, and `payload.appLaunchTimeout`  MUST be set to a value greater than or equal to 15,000 ms.
 
 ```ts
 /** Default timeout used by a DesktopAgentProxy for all message exchanges
@@ -104,6 +104,12 @@ export const DEFAULT_MESSAGE_EXCHANGE_TIMEOUT_MS = 10000;
  * */
 export const DEFAULT_APP_LAUNCH_TIMEOUT_MS = 100000;
 ```
+
+:::info
+
+The message exchange timeouts are used to detect a lack of response from the Desktop Agent, which will be reported via the `ApiTimeout` error message. However, there are also defined error messages for apps failing to add an expected context listener (`OpenError.AppTimeout`) or intent listener (`ResolveError.IntentDeliveryFailed`) after launch. To return these errors, the Desktop Agent should set a longer timeout via the `payload.appLaunchTimeout` field in its `WCP3Handshake` message than it uses internally to detect such failures. Doing so will ensure that timeouts can be separately attributed to the App or to the Desktop Agent.
+
+:::
 
 ## Message Definitions Supporting FDC3 API calls
 
