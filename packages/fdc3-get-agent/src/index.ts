@@ -1,6 +1,6 @@
 import { DesktopAgent } from '@finos/fdc3-standard';
 import { getAgent } from './strategies/getAgent';
-import { AnstractUIComponent } from './ui/AbstractUIComponent';
+import { AbstractUIComponent } from './ui/AbstractUIComponent';
 import { DefaultDesktopAgentChannelSelector } from './ui/DefaultDesktopAgentChannelSelector';
 import { DefaultDesktopAgentIntentResolver } from './ui/DefaultDesktopAgentIntentResolver';
 import { NullChannelSelector } from './ui/NullChannelSelector';
