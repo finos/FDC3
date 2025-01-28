@@ -29,17 +29,14 @@ export abstract class AbstractFDC3Logger {
     return '';
   }
 
-  /** This should be overridden by sub-classes to set the default log level.*/
-  /* istanbul ignore next */ static get defaultLogLevel(): LogLevel {
-    return LogLevel.INFO;
-  }
-
-  private static logLevel: LogLevel = this.defaultLogLevel;
+  //sub-classes should override this default log level
+  private static logLevel: LogLevel = LogLevel.DEBUG;
 
   public static setLogLevel(level: LogLevel) {
     if (level in LogLevel) {
       this.logLevel = level;
     } else {
+      /* istanbul ignore next */
       this.error(
         `Ignoring unrecognized LogLevel '${level}'! Current log level: '${this.logLevel} (${LogLevel[this.logLevel]})'`
       );

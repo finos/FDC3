@@ -5,10 +5,14 @@ import { CHANNEL_SELECTOR_URL } from '../support/MockFDC3Server';
 import { USER_CHANNELS } from '../support/responses/UserChannels';
 import { CustomWorld } from '../world';
 import { Fdc3UserInterfaceChannelSelected } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+import { Logger } from '../../src/util/Logger';
+import { loggingSettings } from './desktop-agent.steps';
 
 Given(
   'A Channel Selector in {string} with callback piping to {string}',
   async function (this: CustomWorld, field: string, cb: string) {
+    Logger.setLogLevel(loggingSettings.connection);
+
     const cs = new DefaultDesktopAgentChannelSelector(CHANNEL_SELECTOR_URL);
 
     cs.setChannelChangeCallback((channelId: string | null) => {
