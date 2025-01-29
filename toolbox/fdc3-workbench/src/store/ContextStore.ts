@@ -48,7 +48,7 @@ class ContextStore {
 				}
 			}
 		} catch (err) {
-			console.log("Failed to parse context list from localstorage");
+			console.error("Failed to parse context list from localstorage", err);
 		}
 		if (usingDefaultContexts) {
 			this.updateLocalStorage(JSON.stringify(contexts));

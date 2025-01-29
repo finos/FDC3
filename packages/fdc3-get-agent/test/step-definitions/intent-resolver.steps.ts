@@ -5,6 +5,10 @@ import { DefaultDesktopAgentIntentResolver } from '../../src/ui/DefaultDesktopAg
 import { INTENT_RESOLVER_URL } from '../support/MockFDC3Server';
 import { FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { Context } from '@finos/fdc3-context';
+import { loggingSettings } from './desktop-agent.steps';
+import { Logger } from '@finos/fdc3-agent-proxy/src/util/Logger';
+
+Logger.setLogLevel(loggingSettings.connection);
 
 const contextMap: Record<string, Context> = {
   'fdc3.instrument': {

@@ -42,6 +42,7 @@ class ChannelStore {
 				systemLogStore.addLog({
 					name: "getCurrentChannel",
 					type: "error",
+					body: (e as Error).message ?? (e as string),
 					variant: "text",
 				});
 			});
