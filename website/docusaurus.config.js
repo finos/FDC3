@@ -52,7 +52,7 @@ module.exports={
   "themeConfig": {
     "prism": {
       "additionalLanguages": ["typescript","javascript","json","csharp"],
-      "theme": require('prism-react-renderer/themes/vsDark')
+      "theme": require('prism-react-renderer').themes.vsDark
     },
     "algolia": {
       "appId": "YW91L9TW76",
