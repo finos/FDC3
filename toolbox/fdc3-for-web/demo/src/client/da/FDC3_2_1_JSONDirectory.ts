@@ -13,6 +13,7 @@ async function load(url: string): Promise<DirectoryApp[]> {
     return await loadRemotely(window.location.origin + url).then(convertToDirectoryList);
   }
 }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const convertToDirectoryList = (data: any) => {
   return data.applications as DirectoryApp[];
 };

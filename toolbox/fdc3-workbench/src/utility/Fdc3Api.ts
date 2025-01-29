@@ -82,7 +82,7 @@ export async function getTargetOptions(intent: string, context: ContextType): Pr
 			let foundApp = groupedApps.find((app) => app.appId === currentApp.appId);
 			if (!foundApp) {
 				//separate out the instanceId if present
-				// eslint-disable-next-line @typescript-eslint/no-unused-vars
+				// eslint-disable-next-line no-unused-vars
 				const { instanceId: _, ...metadata } = currentApp;
 				const option: IntentTargetOption = {
 					appId: currentApp.appId,
@@ -140,7 +140,7 @@ export async function getTargetOptionsForContext(context: ContextType): Promise<
 				let foundApp = groupedApps.find((app) => app.appId === currentApp.appId);
 				if (!foundApp) {
 					//separate out the instanceId if present
-					// eslint-disable-next-line @typescript-eslint/no-unused-vars
+					// eslint-disable-next-line no-unused-vars
 					const { instanceId: _, ...metadata } = currentApp;
 					const option: IntentTargetOption = {
 						appId: currentApp.appId,

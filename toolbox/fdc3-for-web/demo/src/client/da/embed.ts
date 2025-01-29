@@ -37,6 +37,7 @@ const helloListener = (e: MessageEvent) => {
   let eventSourceName;
   try {
     eventSourceName = (eventSource as Window)?.name;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (e: unknown) {
     eventSourceName = `{a cross-origin window} `;
   }
