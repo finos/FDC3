@@ -5,7 +5,6 @@ import {
   AgentError,
   DesktopAgentDetails,
   WebDesktopAgentType,
-  DEFAULT_TIMEOUT_MS,
 } from '@finos/fdc3-standard';
 import { DesktopAgentPreloadLoader } from './DesktopAgentPreloadLoader';
 import { PostMessageLoader } from './PostMessageLoader';
@@ -13,6 +12,7 @@ import { retrieveDesktopAgentDetails, storeDesktopAgentDetails } from '../sessio
 import { FailoverHandler } from './FailoverHandler';
 import { Loader } from './Loader';
 import { Logger } from '../util/Logger';
+import { DEFAULT_GETAGENT_TIMEOUT_MS } from './Timeouts';
 
 // TypeGuards used to examine results of Loaders
 const isRejected = (input: PromiseSettledResult<unknown>): input is PromiseRejectedResult =>
@@ -34,6 +34,10 @@ export function clearAgentPromise() {
 }
 
 function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
+  if (options?.logLevels?.connection) {
+    Logger.setLogLevel(options.logLevels.connection);
+  }
+
   Logger.log(`Initiating Desktop Agent discovery at ${new Date().toISOString()}`);
   let strategies: Loader[];
 
@@ -51,20 +55,20 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
         break;
       case WebDesktopAgentType.ProxyUrl:
         //agentUrl will only be used by PostMessageLoader if not falsey
-        strategies = [new PostMessageLoader(persistedData.agentUrl)];
+        strategies = [new PostMessageLoader(options, persistedData.agentUrl)];
         break;
       case WebDesktopAgentType.ProxyParent:
-        strategies = [new PostMessageLoader()];
+        strategies = [new PostMessageLoader(options)];
         break;
       case WebDesktopAgentType.Failover:
         strategies = [];
         break;
       default:
         Logger.warn('Unexpected agentType value in SessionStorage, ignoring. Stored data:', persistedData);
-        strategies = [new DesktopAgentPreloadLoader(), new PostMessageLoader()];
+        strategies = [new DesktopAgentPreloadLoader(), new PostMessageLoader(options)];
     }
   } else {
-    strategies = [new DesktopAgentPreloadLoader(), new PostMessageLoader()];
+    strategies = [new DesktopAgentPreloadLoader(), new PostMessageLoader(options)];
   }
 
   const promises = strategies.map(s =>
@@ -206,7 +210,8 @@ export const getAgent: GetAgentType = (params?: GetAgentParams) => {
     dontSetWindowFdc3: true,
     channelSelector: true,
     intentResolver: true,
-    timeoutMs: DEFAULT_TIMEOUT_MS,
+    timeoutMs: DEFAULT_GETAGENT_TIMEOUT_MS,
+    //default log levels are set in the relevant logging utils
   };
 
   const options: GetAgentParams = {

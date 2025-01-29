@@ -1,7 +1,8 @@
-import { AgentError, DEFAULT_TIMEOUT_MS, DesktopAgent, WebDesktopAgentType } from '@finos/fdc3-standard';
+import { AgentError, DesktopAgent, WebDesktopAgentType } from '@finos/fdc3-standard';
 import { GetAgentParams } from '@finos/fdc3-standard';
 import { DesktopAgentSelection, Loader } from './Loader';
 import { Logger } from '../util/Logger';
+import { DEFAULT_GETAGENT_TIMEOUT_MS } from './Timeouts';
 
 /**
  * This approach will resolve the loader promise if the fdc3Ready event occurs.
@@ -69,7 +70,7 @@ export class DesktopAgentPreloadLoader implements Loader {
         this.prepareSelection(globalThis.window.fdc3, resolve);
       } else {
         //setup a timeout so that we can reject if don't find anything
-        const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+        const timeoutMs = options.timeoutMs ?? DEFAULT_GETAGENT_TIMEOUT_MS;
         this.timeout = setTimeout(() => {
           Logger.debug(`DesktopAgentPreloadLoader.get(): timeout (${timeoutMs} ms) at ${new Date().toISOString()}`);
           reject(AgentError.AgentNotFound);

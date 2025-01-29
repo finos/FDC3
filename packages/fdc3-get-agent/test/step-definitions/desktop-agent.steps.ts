@@ -4,7 +4,13 @@ import { doesRowMatch, handleResolve, setupGenericSteps } from '@finos/testing';
 import { MockDocument } from '../support/MockDocument';
 import { MockWindow } from '../support/MockWindow';
 import { fdc3Ready, getAgent } from '../../src';
-import { DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX, DesktopAgentDetails, GetAgentParams } from '@finos/fdc3-standard';
+import {
+  DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX,
+  DesktopAgentDetails,
+  GetAgentLogLevels,
+  GetAgentParams,
+  LogLevel,
+} from '@finos/fdc3-standard';
 import { EMBED_URL, MockFDC3Server } from '../support/MockFDC3Server';
 import { MockStorage } from '../support/MockStorage';
 import { DesktopAgent, ImplementationMetadata } from '@finos/fdc3-standard';
@@ -18,6 +24,13 @@ interface MockPageTransitionEvent extends Event {
 }
 
 setupGenericSteps();
+
+//Change logging settings here when debugging test failures
+export const loggingSettings: GetAgentLogLevels = {
+  connection: LogLevel.INFO,
+  proxy: LogLevel.INFO,
+};
+
 Given(
   'Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response',
   async function (this: CustomWorld, field: string, w: string) {
@@ -45,6 +58,39 @@ Given(
   async function (this: CustomWorld, field: string, w: string) {
     const mockWindow = handleResolve(w, this);
     this.mockFDC3Server = new MockFDC3Server(mockWindow, false, this.mockContext, true);
+    this.props[field] = this.mockFDC3Server;
+    this.mockContext.open(dummyInstanceDetails[0].appId);
+    this.mockContext.open(dummyInstanceDetails[1].appId);
+  }
+);
+
+Given(
+  'Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response and times out message exchanges',
+  async function (this: CustomWorld, field: string, w: string) {
+    const mockWindow = handleResolve(w, this);
+    this.mockFDC3Server = new MockFDC3Server(mockWindow, false, this.mockContext, true, false, true);
+    this.props[field] = this.mockFDC3Server;
+    this.mockContext.open(dummyInstanceDetails[0].appId);
+    this.mockContext.open(dummyInstanceDetails[1].appId);
+  }
+);
+
+Given(
+  'Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response, times out message exchanges and uses message exchange timeout {string} ms and app launch timeout {string} ms',
+  async function (this: CustomWorld, field: string, w: string, t1: string, t2: string) {
+    const mockWindow = handleResolve(w, this);
+    const messageExchangeTimeout: number = handleResolve(t1, this);
+    const appLaunchTimeout: number = handleResolve(t2, this);
+    this.mockFDC3Server = new MockFDC3Server(
+      mockWindow,
+      false,
+      this.mockContext,
+      true,
+      false,
+      true,
+      messageExchangeTimeout,
+      appLaunchTimeout
+    );
     this.props[field] = this.mockFDC3Server;
     this.mockContext.open(dummyInstanceDetails[0].appId);
     this.mockContext.open(dummyInstanceDetails[1].appId);
@@ -87,6 +133,56 @@ Given(
       const ifrm = document.createElement('iframe');
 
       this.mockFDC3Server = new MockFDC3Server(ifrm as unknown as MockIFrame, false, this.mockContext, true, true);
+      ifrm.setAttribute('src', EMBED_URL);
+      document.body.appendChild(ifrm);
+      return ifrm;
+    };
+  }
+);
+
+Given(
+  '{string} is a function which opens an iframe for communications on {string} and times out message exchanges',
+  function (this: CustomWorld, fn: string, doc: string) {
+    this.props[fn] = () => {
+      this.mockContext.open(dummyInstanceDetails[0].appId);
+      const document = handleResolve(doc, this) as MockDocument;
+      const ifrm = document.createElement('iframe');
+
+      this.mockFDC3Server = new MockFDC3Server(
+        ifrm as unknown as MockIFrame,
+        false,
+        this.mockContext,
+        false,
+        false,
+        true
+      );
+      ifrm.setAttribute('src', EMBED_URL);
+      document.body.appendChild(ifrm);
+      return ifrm;
+    };
+  }
+);
+
+Given(
+  '{string} is a function which opens an iframe for communications on {string}, times out message exchanges and uses message exchange timeout {string} ms and app launch timeout {string} ms',
+  function (this: CustomWorld, fn: string, doc: string, t1: string, t2: string) {
+    const messageExchangeTimeout: number = handleResolve(t1, this);
+    const appLaunchTimeout: number = handleResolve(t2, this);
+    this.props[fn] = () => {
+      this.mockContext.open(dummyInstanceDetails[0].appId);
+      const document = handleResolve(doc, this) as MockDocument;
+      const ifrm = document.createElement('iframe');
+
+      this.mockFDC3Server = new MockFDC3Server(
+        ifrm as unknown as MockIFrame,
+        false,
+        this.mockContext,
+        false,
+        false,
+        true,
+        messageExchangeTimeout,
+        appLaunchTimeout
+      );
       ifrm.setAttribute('src', EMBED_URL);
       document.body.appendChild(ifrm);
       return ifrm;
@@ -163,7 +259,10 @@ Given(
 
 When('I call getAgent for a promise result', function (this: CustomWorld) {
   try {
-    this.props['result'] = getAgent();
+    const params: GetAgentParams = {
+      logLevels: loggingSettings,
+    };
+    this.props['result'] = getAgent(params);
   } catch (error) {
     this.props['result'] = error;
   }
@@ -186,7 +285,7 @@ After(function (this: CustomWorld) {
 When('I call getAgent for a promise result with the following options', function (this: CustomWorld, dt: DataTable) {
   try {
     const first = dt.hashes()[0];
-    const toArgs = Object.fromEntries(
+    const toArgs: GetAgentParams = Object.fromEntries(
       Object.entries(first).map(([k, v]) => {
         const val = handleResolve(v, this);
         const val2 = isNaN(val) ? val : Number(val);
@@ -194,7 +293,9 @@ When('I call getAgent for a promise result with the following options', function
         return [k, val3];
       })
     );
-    this.props['result'] = getAgent(toArgs as GetAgentParams);
+    //add logging settings to help with debug
+    toArgs.logLevels = loggingSettings;
+    this.props['result'] = getAgent(toArgs);
   } catch (error) {
     this.props['result'] = error;
   }

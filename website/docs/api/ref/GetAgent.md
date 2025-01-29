@@ -98,15 +98,55 @@ A small number of arguments are accepted that can affect the behavior of `getAge
  * or an iframe's `contentWindow`) for a window or frame in which it has loaded
  * a Desktop Agent or suitable proxy to one that works with FDC3 Web Connection
  * and Desktop Agent Communication Protocols.
- */ 
+ * 
+ * @property {GetAgentLogLevels} logLevels Settings that determine what should
+ * will logged by the getAgent() implementation and DesktopAgentProxy to the 
+ * JavaScript console.
+ */
 type GetAgentParams = { 
     timeoutMs?: number, 
     identityUrl?: string, 
     channelSelector?: boolean, 
     intentResolver?: boolean,
     dontSetWindowFdc3?: boolean,
-    failover?: (args: GetAgentParams) => Promise<WindowProxy | DesktopAgent> 
+    failover?: (args: GetAgentParams) => Promise<WindowProxy | DesktopAgent>,
+    logLevels?: GetAgentLogLevels;
 };
+
+/** 
+ * The default timeout used by getAgent when discovering Desktop Agents.
+ */
+const DEFAULT_GETAGENT_TIMEOUT_MS = 1000;
+
+/**
+ * @typedef {Object} GetAgentLogLevels Type representing log-level parameters \
+ * passed to the getAgent function that control what is logged to the JavaScript
+ * console by the getAgent() implementation and any DesktopAgentProxy it creates.
+ *
+ * @property {boolean} connection Log-level for messages relating to establishing
+ * a connection to the Desktop Agent (default INFO).
+ * 
+ * @property {boolean} proxy Log-level for messages from a DesktopAgentProxy
+ * created by getAgent. These include log of messages sent or received from the 
+ * DesktopAgent at the INFO level and heartbeat messages at the DEBUG level 
+ * (default WARN).
+ * 
+ */
+type GetAgentLogLevels = {
+  connection: LogLevel,
+  proxy: LogLevel
+};
+
+/**
+ * Type representing the different log-levels that can be set.
+ */
+enum LogLevel {
+  NONE = 0,
+  ERROR = 1,
+  WARN = 2,
+  INFO = 3,
+  DEBUG = 4,
+}
 ```
 
 :::note
@@ -159,7 +199,7 @@ Failover functions MUST be asynchronous and MUST resolve to one of the following
 
 ## Persisted Connection Data
 
-The `getAgent()` function uses [`SessionStorage`](https://html.spec.whatwg.org/multipage/webstorage.html) ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)) to persist information on an instance of an app and how it connected to a Desktop Agent in order to ensure a consistent connection type and `instanceId` when reconnecting after navigation or refresh events. 
+The `getAgent()` function uses [`SessionStorage`](https://html.spec.whatwg.org/multipage/webstorage.html) ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/sessionStorage)) to persist information on an instance of an app and how it connected to a Desktop Agent in order to ensure a consistent connection type and `instanceId` when reconnecting after navigation or refresh events.
 
 :::warning
 Apps do not need to and SHOULD NOT interact with data persisted in SessionStorage by `getAgent` directly, rather it is set and used by the `getAgent()` implementation.
@@ -257,6 +297,4 @@ enum WebDesktopAgentType {
 }
 
 const DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX = 'fdc3-desktop-agent-details';
-
-const DEFAULT_TIMEOUT_MS = 1000;
 ```

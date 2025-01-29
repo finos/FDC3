@@ -10,6 +10,7 @@ import {
   PrivateChannelUnsubscribeEvent,
 } from '@finos/fdc3-standard';
 import { BrowserTypes } from '@finos/fdc3-schema';
+import { Logger } from '../util/Logger';
 const {
   isPrivateChannelOnAddContextListenerEvent,
   isPrivateChannelOnDisconnectEvent,
@@ -35,6 +36,7 @@ abstract class AbstractPrivateChannelEventListener extends AbstractListener<
 
   constructor(
     messaging: Messaging,
+    messageExchangeTimeout: number,
     privateChannelId: string,
     eventMessageTypes: PrivateChannelEventMessageTypes[],
     eventType: PrivateChannelEventTypes | null,
@@ -42,6 +44,7 @@ abstract class AbstractPrivateChannelEventListener extends AbstractListener<
   ) {
     super(
       messaging,
+      messageExchangeTimeout,
       { privateChannelId, listenerType: eventType },
       handler,
       'privateChannelAddEventListenerRequest',
@@ -63,7 +66,7 @@ abstract class AbstractPrivateChannelEventListener extends AbstractListener<
 }
 
 export class PrivateChannelNullEventListener extends AbstractPrivateChannelEventListener {
-  constructor(messaging: Messaging, channelId: string, handler: EventHandler) {
+  constructor(messaging: Messaging, messageExchangeTimeout: number, channelId: string, handler: EventHandler) {
     const wrappedHandler = (msg: PrivateChannelEventMessages) => {
       let type: PrivateChannelEventTypes;
       let details:
@@ -94,6 +97,7 @@ export class PrivateChannelNullEventListener extends AbstractPrivateChannelEvent
 
     super(
       messaging,
+      messageExchangeTimeout,
       channelId,
       [
         'privateChannelOnAddContextListenerEvent',
@@ -107,7 +111,7 @@ export class PrivateChannelNullEventListener extends AbstractPrivateChannelEvent
 }
 
 export class PrivateChannelDisconnectEventListener extends AbstractPrivateChannelEventListener {
-  constructor(messaging: Messaging, channelId: string, handler: EventHandler) {
+  constructor(messaging: Messaging, messageExchangeTimeout: number, channelId: string, handler: EventHandler) {
     const wrappedHandler = (msg: PrivateChannelEventMessages) => {
       if (isPrivateChannelOnDisconnectEvent(msg)) {
         const event: PrivateChannelDisconnectEvent = {
@@ -116,16 +120,23 @@ export class PrivateChannelDisconnectEventListener extends AbstractPrivateChanne
         };
         handler(event);
       } else {
-        console.error('PrivateChannelDisconnectEventListener was called for a different message type!', msg);
+        Logger.error('PrivateChannelDisconnectEventListener was called for a different message type!', msg);
       }
     };
 
-    super(messaging, channelId, ['privateChannelOnDisconnectEvent'], 'disconnect', wrappedHandler);
+    super(
+      messaging,
+      messageExchangeTimeout,
+      channelId,
+      ['privateChannelOnDisconnectEvent'],
+      'disconnect',
+      wrappedHandler
+    );
   }
 }
 
 export class PrivateChannelAddContextEventListener extends AbstractPrivateChannelEventListener {
-  constructor(messaging: Messaging, channelId: string, handler: EventHandler) {
+  constructor(messaging: Messaging, messageExchangeTimeout: number, channelId: string, handler: EventHandler) {
     const wrappedHandler = (msg: PrivateChannelEventMessages) => {
       if (isPrivateChannelOnAddContextListenerEvent(msg)) {
         const event: ApiEvent = {
@@ -134,15 +145,22 @@ export class PrivateChannelAddContextEventListener extends AbstractPrivateChanne
         };
         handler(event);
       } else {
-        console.error('PrivateChannelAddContextEventListener was called for a different message type!', msg);
+        Logger.error('PrivateChannelAddContextEventListener was called for a different message type!', msg);
       }
     };
-    super(messaging, channelId, ['privateChannelOnAddContextListenerEvent'], 'addContextListener', wrappedHandler);
+    super(
+      messaging,
+      messageExchangeTimeout,
+      channelId,
+      ['privateChannelOnAddContextListenerEvent'],
+      'addContextListener',
+      wrappedHandler
+    );
   }
 }
 
 export class PrivateChannelUnsubscribeEventListener extends AbstractPrivateChannelEventListener {
-  constructor(messaging: Messaging, channelId: string, handler: EventHandler) {
+  constructor(messaging: Messaging, messageExchangeTimeout: number, channelId: string, handler: EventHandler) {
     const wrappedHandler = (msg: PrivateChannelEventMessages) => {
       if (isPrivateChannelOnUnsubscribeEvent(msg)) {
         const event: ApiEvent = {
@@ -151,9 +169,16 @@ export class PrivateChannelUnsubscribeEventListener extends AbstractPrivateChann
         };
         handler(event);
       } else {
-        console.error('PrivateChannelUnsubscribeEventListener was called for a different message type!', msg);
+        Logger.error('PrivateChannelUnsubscribeEventListener was called for a different message type!', msg);
       }
     };
-    super(messaging, channelId, ['privateChannelOnUnsubscribeEvent'], 'unsubscribe', wrappedHandler);
+    super(
+      messaging,
+      messageExchangeTimeout,
+      channelId,
+      ['privateChannelOnUnsubscribeEvent'],
+      'unsubscribe',
+      wrappedHandler
+    );
   }
 }

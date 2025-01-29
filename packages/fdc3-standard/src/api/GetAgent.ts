@@ -81,6 +81,10 @@ export type GetAgentType = (params?: GetAgentParams) => Promise<DesktopAgent>;
  * or an iframe's `contentWindow`) for a window or frame in which it has loaded
  * a Desktop Agent or suitable proxy to one that works with FDC3 Web Connection
  * and Desktop Agent Communication Protocols.
+ *
+ * @property {GetAgentLogLevels} logLevels Settings that determine what should
+ * will logged by the getAgent() implementation and DesktopAgentProxy to the
+ * JavaScript console.
  */
 export type GetAgentParams = {
   timeoutMs?: number;
@@ -89,7 +93,38 @@ export type GetAgentParams = {
   intentResolver?: boolean;
   dontSetWindowFdc3?: boolean;
   failover?: (args: GetAgentParams) => Promise<WindowProxy | DesktopAgent>;
+  logLevels?: GetAgentLogLevels;
 };
+
+/**
+ * @typedef {Object} GetAgentLogLevels Type representing log-level parameters \
+ * passed to the getAgent function that control what is logged to the JavaScript
+ * console by the getAgent() implementation and any DesktopAgentProxy it creates.
+ *
+ * @property {boolean} connection Log-level for messages relating to establishing
+ * a connection to the Desktop Agent (default INFO).
+ *
+ * @property {boolean} proxy Log-level for messages from a DesktopAgentProxy
+ * created by getAgent. These include log of messages sent or received from the
+ * DesktopAgent at the INFO level and heartbeat messages at the DEBUG level
+ * (default WARN).
+ *
+ */
+export type GetAgentLogLevels = {
+  connection: LogLevel;
+  proxy: LogLevel;
+};
+
+/**
+ * Type representing the different log-levels that can be set.
+ */
+export enum LogLevel {
+  NONE = 0,
+  ERROR = 1,
+  WARN = 2,
+  INFO = 3,
+  DEBUG = 4,
+}
 
 /** Type representing the format of data stored by `getAgent`
  *  in Session Storage. The `identityUrl` of each app is used
@@ -169,5 +204,3 @@ export enum WebDesktopAgentType {
 }
 
 export const DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX = 'fdc3-desktop-agent-details';
-
-export const DEFAULT_TIMEOUT_MS = 1000;
