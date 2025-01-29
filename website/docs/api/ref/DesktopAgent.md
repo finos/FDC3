@@ -189,7 +189,7 @@ addEventListener(type: FDC3EventTypes  | null, handler: EventHandler): Promise<L
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
-```
+```csharp
 Not implemented
 ```
 
@@ -215,10 +215,11 @@ const userChannelChangedListener = await fdc3.addEventListener("userChannelChang
   //do something else with the event
 });
 ```
+
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
-```
+```csharp
 Not implemented
 ```
 
@@ -1469,14 +1470,14 @@ addContextListener(handler: ContextHandler): Promise<Listener>;
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
-```
+```csharp
 Not implemented
 ```
 
 </TabItem>
 </Tabs>
 
-Adds a listener for incoming context broadcasts from the Desktop Agent. Provided for backwards compatibility with versions FDC3 standard <2.0.
+Adds a listener for incoming context broadcasts from the Desktop Agent. Provided for backwards compatibility with versions FDC3 standard &lt;2.0.
 
 **See also:**
 
@@ -1494,7 +1495,7 @@ getSystemChannels() : Promise<Array<Channel>>;
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
-```
+```csharp
 Not implemented
 ```
 
@@ -1518,7 +1519,7 @@ joinChannel(channelId: string) : Promise<void>;
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
-```
+```csharp
 Not implemented
 ```
 
@@ -1543,7 +1544,7 @@ open(name: string, context?: Context): Promise<AppIdentifier>;
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
-```
+```csharp
 Not implemented
 ```
 
@@ -1568,7 +1569,7 @@ raiseIntent(intent: string, context: Context, name: string): Promise<IntentResol
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
-```
+```csharp
 Not implemented
 ```
 
@@ -1593,7 +1594,7 @@ raiseIntentForContext(context: Context, name: string): Promise<IntentResolution>
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
-```
+```csharp
 Not implemented
 ```
 
