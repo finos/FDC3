@@ -245,7 +245,7 @@ An FDC3 Standard compliant application that supports the use of context data **M
 An FDC3 Standard compliant application that supports the use of context data **SHOULD**:
 
 - Prefer FDC3-defined standard context types over proprietary contexts, where a suitable FDC3-defined standard context type is available.
-- Ensure that any proprietary context data types defined follow any the recommended [namespacing](#namespacing) and [field type conventions](#field-type-conventions) in the specification.
+- Ensure that any proprietary context data types defined follow any the recommended [namespacing](#namespacing) and [field type conventions](spec#other-field-type-conventions) in the specification.
 - Where an app is intended to receive context from [`fdc3.open`](../api/ref/DesktopAgent#open) calls, use the [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener) API call to set up appropriate handlers within 15 seconds of the application launch (the minimum timeout Desktop Agents are required to provide) in order to be widely compatible with Desktop Agent implementations.
 
 An FDC3 Standard compliant application that supports the use of context data **MAY**:

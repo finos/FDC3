@@ -57,7 +57,7 @@ fdc3.broadcast(country)
 Intents
 
 - [ViewNews](../../intents/ref/ViewNews)
-- [ViewAnalysis](../../intents/ref/viewAnalysis)
+- [ViewAnalysis](../../intents/ref/ViewAnalysis)
 
 FINOS Financial Objects
 

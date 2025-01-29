@@ -1,10 +1,10 @@
 ---
-id: browserDesktopAgents
+id: browserResidentDesktopAgents
 sidebar_label: Browser Desktop Agents
 title: Browser-Resident Desktop Agents (next)
 ---
 
-:::info _[@experimental](../fdc3-compliance#experimental-features)_
+:::info _[@experimental](../../fdc3-compliance#experimental-features)_
 
 Browser Resident Desktop Agents (DAs) are an experimental feature added to FDC3 in 2.2. Limited aspects of their design may change in future versions and they are exempted from the FDC3 Standard's normal versioning and deprecation policies in order to facilitate any necessary change.
 
@@ -256,7 +256,7 @@ User interface iframes are initially injected into the application window with C
 
 and are always displayed with `position: "fixed"` so that they are not part of the document flow.
 
-Implementations of the UIs may then indicate a limited set of CSS to apply to their frame in the initial `Fdc3UserInterfaceHello` message (when the width and height will be removed if not explicitly set in that message), and later adjust that via `Fdc3UserInterfaceRestyle`. See the [Controlling injected User Interfaces section](./desktopAgentCommunicationProtocol#controlling-injected-user-interfaces-section) in the DACP specification for more details.
+Implementations of the UIs may then indicate a limited set of CSS to apply to their frame in the initial `Fdc3UserInterfaceHello` message (when the width and height will be removed if not explicitly set in that message), and later adjust that via `Fdc3UserInterfaceRestyle`. See the [Controlling injected User Interfaces section](./desktopAgentCommunicationProtocol#controlling-injected-user-interfaces) in the DACP specification for more details.
 
 Communication between the `DesktopAgentProxy` and the iframes it injects is achieved via a similar mechanism to that used for communication between an app and the Desktop Agent: a `MessageChannel` is established between the app and iframe, via a `postMessage` sent from the iframe (`Fdc3UserInterfaceHello`) and responded to by the `DesktopAgentProxy` in the app's window (`Fdc3UserInterfaceHandshake`), with a `MessagePort` from a `MessageChannel` appended.
 

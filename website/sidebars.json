@@ -29,7 +29,7 @@
             "label": "Desktop Agent Specs",
             "items": [
               "api/specs/preloadDesktopAgents",
-              "api/specs/browserDesktopAgents",
+              "api/specs/browserResidentDesktopAgents",
               "api/specs/webConnectionProtocol",
               "api/specs/desktopAgentCommunicationProtocol"
             ]

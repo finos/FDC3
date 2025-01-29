@@ -129,7 +129,7 @@ As the name implies, a static configuration for an appD service location is defi
 
 ### Fully-qualified appID namespace syntax host resolution
 
-An app directory URI can be constructed using a [fully qualified application ID](spec#applicationidentifiers) (email address syntax) by using fqdn part of the ID as the host location and the name part as the application name. Given an application id `app1` with a fully qualified identifier of `app1@appd.foo.com` an application directory host location can be derived by simply extracting the fqdn "appd.foo.com" from the email syntax. The extracted fqdn "app.foo.com" MUST resolve to the actual host location where the application directory is running.
+An app directory URI can be constructed using a [fully qualified application ID](overview#application-identifiers) (email address syntax) by using fqdn part of the ID as the host location and the name part as the application name. Given an application id `app1` with a fully qualified identifier of `app1@appd.foo.com` an application directory host location can be derived by simply extracting the fqdn "appd.foo.com" from the email syntax. The extracted fqdn "app.foo.com" MUST resolve to the actual host location where the application directory is running.
 
 A launcher can then easily construct a URI by:
 
