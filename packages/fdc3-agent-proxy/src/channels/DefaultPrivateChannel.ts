@@ -22,24 +22,24 @@ import {
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 export class DefaultPrivateChannel extends DefaultChannel implements PrivateChannel {
-  constructor(messaging: Messaging, id: string) {
-    super(messaging, id, 'private');
+  constructor(messaging: Messaging, messageExchangeTimeout: number, id: string) {
+    super(messaging, messageExchangeTimeout, id, 'private');
   }
 
   async addEventListener(type: PrivateChannelEventTypes | null, handler: EventHandler): Promise<Listener> {
     let a: RegisterableListener;
     switch (type) {
       case 'addContextListener':
-        a = new PrivateChannelAddContextEventListener(this.messaging, this.id, handler);
+        a = new PrivateChannelAddContextEventListener(this.messaging, this.messageExchangeTimeout, this.id, handler);
         break;
       case 'unsubscribe':
-        a = new PrivateChannelUnsubscribeEventListener(this.messaging, this.id, handler);
+        a = new PrivateChannelUnsubscribeEventListener(this.messaging, this.messageExchangeTimeout, this.id, handler);
         break;
       case 'disconnect':
-        a = new PrivateChannelDisconnectEventListener(this.messaging, this.id, handler);
+        a = new PrivateChannelDisconnectEventListener(this.messaging, this.messageExchangeTimeout, this.id, handler);
         break;
       case null:
-        a = new PrivateChannelNullEventListener(this.messaging, this.id, handler);
+        a = new PrivateChannelNullEventListener(this.messaging, this.messageExchangeTimeout, this.id, handler);
         break;
       default:
         throw new Error('Unsupported event type: ' + type);
@@ -54,7 +54,12 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
     const adaptorHandler: EventHandler = (event: ApiEvent) => {
       handler(event.details.contextType ?? undefined);
     };
-    const l = new PrivateChannelAddContextEventListener(this.messaging, this.id, adaptorHandler);
+    const l = new PrivateChannelAddContextEventListener(
+      this.messaging,
+      this.messageExchangeTimeout,
+      this.id,
+      adaptorHandler
+    );
     l.register();
     return l;
   }
@@ -64,7 +69,12 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
     const adaptorHandler: EventHandler = (event: ApiEvent) => {
       handler(event.details.contextType ?? undefined);
     };
-    const l = new PrivateChannelUnsubscribeEventListener(this.messaging, this.id, adaptorHandler);
+    const l = new PrivateChannelUnsubscribeEventListener(
+      this.messaging,
+      this.messageExchangeTimeout,
+      this.id,
+      adaptorHandler
+    );
     l.register();
     return l;
   }
@@ -74,7 +84,12 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
     const adaptorHandler: EventHandler = () => {
       handler();
     };
-    const l = new PrivateChannelDisconnectEventListener(this.messaging, this.id, adaptorHandler);
+    const l = new PrivateChannelDisconnectEventListener(
+      this.messaging,
+      this.messageExchangeTimeout,
+      this.id,
+      adaptorHandler
+    );
     l.register();
     return l;
   }
@@ -87,11 +102,21 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
       },
       type: 'privateChannelDisconnectRequest',
     };
-    await this.messaging.exchange<PrivateChannelDisconnectResponse>(msg, 'privateChannelDisconnectResponse');
+    await this.messaging.exchange<PrivateChannelDisconnectResponse>(
+      msg,
+      'privateChannelDisconnectResponse',
+      this.messageExchangeTimeout
+    );
   }
 
   async addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
-    const listener = new DefaultContextListener(this.messaging, this.id, contextType, theHandler);
+    const listener = new DefaultContextListener(
+      this.messaging,
+      this.messageExchangeTimeout,
+      this.id,
+      contextType,
+      theHandler
+    );
     await listener.register();
     return listener;
   }

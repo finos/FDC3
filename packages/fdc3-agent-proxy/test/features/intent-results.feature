@@ -9,7 +9,7 @@ Feature: Intents Can Return Different Results
   Scenario: Raise Intent times out
     Given Raise Intent times out
     When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
-    Then "{result}" is an error with message "IntentDeliveryFailed"
+    Then "{result}" is an error with message "ApiTimeout"
 
   Scenario: Raise Intent Fails With An Error
     Given Raise Intent will throw a "TargetAppUnavailable" error

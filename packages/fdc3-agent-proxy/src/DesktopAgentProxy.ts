@@ -9,6 +9,7 @@ import {
   IntentHandler,
   IntentResolution,
   Listener,
+  LogLevel,
 } from '@finos/fdc3-standard';
 import { ChannelSupport } from './channels/ChannelSupport';
 import { AppSupport } from './apps/AppSupport';
@@ -16,6 +17,7 @@ import { IntentSupport } from './intents/IntentSupport';
 import { Connectable, Channel } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { HeartbeatSupport } from './heartbeat/HeartbeatSupport';
+import { Logger } from './util/Logger';
 
 /**
  * This splits out the functionality of the desktop agent into
@@ -33,13 +35,18 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     channels: ChannelSupport,
     intents: IntentSupport,
     apps: AppSupport,
-    connectables: Connectable[]
+    connectables: Connectable[],
+    logLevel: LogLevel | null
   ) {
     this.heartbeat = heartbeat;
     this.intents = intents;
     this.channels = channels;
     this.apps = apps;
     this.connectables = connectables;
+    //Default log level is set in the Logger utility
+    if (logLevel) {
+      Logger.setLogLevel(logLevel);
+    }
   }
 
   addEventListener(type: FDC3EventTypes | null, handler: EventHandler): Promise<Listener> {
@@ -47,7 +54,7 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
       case 'userChannelChanged':
         return this.channels.addChannelChangedEventHandler(handler);
       default:
-        console.warn(`Tried to add a listener for an unknown event type: ${type}`);
+        Logger.warn(`Tried to add a listener for an unknown event type: ${type}`);
         return Promise.reject(new Error('UnknownEventType'));
     }
   }

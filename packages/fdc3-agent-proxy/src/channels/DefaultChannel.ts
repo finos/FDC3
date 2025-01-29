@@ -7,16 +7,24 @@ import {
   BroadcastResponse,
   GetCurrentContextRequest,
   GetCurrentContextResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 export class DefaultChannel implements Channel {
   protected readonly messaging: Messaging;
+  protected readonly messageExchangeTimeout;
   readonly id: string;
   readonly type: 'user' | 'app' | 'private';
   readonly displayMetadata?: DisplayMetadata | undefined;
 
-  constructor(messaging: Messaging, id: string, type: 'user' | 'app' | 'private', displayMetadata?: DisplayMetadata) {
+  constructor(
+    messaging: Messaging,
+    messageExchangeTimeout: number,
+    id: string,
+    type: 'user' | 'app' | 'private',
+    displayMetadata?: DisplayMetadata
+  ) {
     this.messaging = messaging;
+    this.messageExchangeTimeout = messageExchangeTimeout;
     this.id = id;
     this.type = type;
     this.displayMetadata = displayMetadata;
@@ -31,7 +39,7 @@ export class DefaultChannel implements Channel {
       },
       type: 'broadcastRequest',
     };
-    await this.messaging.exchange<BroadcastResponse>(request, 'broadcastResponse');
+    await this.messaging.exchange<BroadcastResponse>(request, 'broadcastResponse', this.messageExchangeTimeout);
   }
 
   async getCurrentContext(contextType?: string | undefined): Promise<Context | null> {
@@ -44,7 +52,11 @@ export class DefaultChannel implements Channel {
       },
       type: 'getCurrentContextRequest',
     };
-    const response = await this.messaging.exchange<GetCurrentContextResponse>(request, 'getCurrentContextResponse');
+    const response = await this.messaging.exchange<GetCurrentContextResponse>(
+      request,
+      'getCurrentContextResponse',
+      this.messageExchangeTimeout
+    );
 
     return response.payload.context ?? null;
   }
@@ -76,7 +88,13 @@ export class DefaultChannel implements Channel {
   }
 
   async addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
-    const listener = new DefaultContextListener(this.messaging, this.id, contextType, theHandler);
+    const listener = new DefaultContextListener(
+      this.messaging,
+      this.messageExchangeTimeout,
+      this.id,
+      contextType,
+      theHandler
+    );
     await listener.register();
     return listener;
   }

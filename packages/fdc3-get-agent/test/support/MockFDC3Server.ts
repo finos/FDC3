@@ -2,6 +2,7 @@ import { FDC3Server, InstanceID, State } from '@finos/fdc3-web-impl';
 import { TestServerContext } from './TestServerContext';
 import { MockWindow } from './MockWindow';
 import { AutomaticResponse } from './responses/AutomaticResponses';
+import { Broadcast } from './responses/Broadcast';
 import { FindIntent } from './responses/FindIntent';
 import { RaiseIntent } from './responses/RaiseIntent';
 import { Handshake } from './responses/Handshake';
@@ -12,7 +13,7 @@ import {
   AppRequestMessage,
   WebConnectionProtocol2LoadURL,
   WebConnectionProtocol3Handshake,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 export const EMBED_URL = 'http://localhost:8080/static/da/embed.html';
 export const CHANNEL_SELECTOR_URL = 'https://mock.fdc3.com/channelSelector';
@@ -25,6 +26,8 @@ export class MockFDC3Server implements FDC3Server {
   private window: MockWindow;
   private tsc: TestServerContext;
   private receivedGoodbye = false;
+  private messageExchangeTimeout: number | null = null;
+  private appLaunchTimeout: number | null = null;
 
   readonly automaticResponses: AutomaticResponse[];
 
@@ -33,22 +36,42 @@ export class MockFDC3Server implements FDC3Server {
     useIframe: boolean,
     ctx: TestServerContext,
     useDefaultUIUrls: boolean = false,
-    timeOutIdValidation: boolean = false
+    timeOutIdValidation: boolean = false,
+    timeoutMessageExchanges: boolean = false,
+    messageExchangeTimeout?: number,
+    appLaunchTimeout?: number
   ) {
     this.useIframe = useIframe;
     this.useDefaultUIUrls = useDefaultUIUrls;
     this.timeOutIdValidation = timeOutIdValidation;
     this.window = window;
     this.tsc = ctx;
+    if (messageExchangeTimeout) {
+      this.messageExchangeTimeout = messageExchangeTimeout;
+    }
+    if (appLaunchTimeout) {
+      this.appLaunchTimeout = appLaunchTimeout;
+    }
 
-    this.automaticResponses = [
-      new FindIntent(),
-      new RaiseIntent(),
-      new Handshake(this.timeOutIdValidation),
-      new UserChannels(),
-      new CurrentChannel(),
-      new GetInfo(),
-    ];
+    if (timeoutMessageExchanges) {
+      this.automaticResponses = [
+        new GetInfo(),
+        new Handshake(this.timeOutIdValidation),
+        new CurrentChannel(),
+        new UserChannels(),
+      ];
+    } else {
+      this.automaticResponses = [
+        new GetInfo(),
+        new Handshake(this.timeOutIdValidation),
+        new CurrentChannel(),
+        new FindIntent(),
+        new RaiseIntent(),
+        new UserChannels(),
+        new Broadcast(),
+      ];
+    }
+
     this.init();
   }
 
@@ -58,6 +81,7 @@ export class MockFDC3Server implements FDC3Server {
   }
 
   async receive(message: AppRequestMessage, from: string): Promise<void> {
+    //If timeoutMessageExchanges was set then we will not respond to some messages here
     this.automaticResponses.forEach(r => {
       if (r.filter(message.type)) {
         r.action(message, this.tsc, from);
@@ -109,8 +133,16 @@ export class MockFDC3Server implements FDC3Server {
                 fdc3Version: '2.2',
                 intentResolverUrl: this.useDefaultUIUrls ? true : INTENT_RESOLVER_URL,
                 channelSelectorUrl: this.useDefaultUIUrls ? true : CHANNEL_SELECTOR_URL,
+                messageExchangeTimeout: 1000,
+                appLaunchTimeout: 2000,
               },
             };
+            if (this.messageExchangeTimeout) {
+              message.payload.messageExchangeTimeout = this.messageExchangeTimeout;
+            }
+            if (this.appLaunchTimeout) {
+              message.payload.appLaunchTimeout = this.appLaunchTimeout;
+            }
             source.postMessage(message, origin, [details.externalPort]);
           } //getMatchingInstance will log if it didn't find anything
         }

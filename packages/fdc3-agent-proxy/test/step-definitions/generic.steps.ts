@@ -11,18 +11,23 @@ import {
 import { SimpleIntentResolver, setupGenericSteps } from '@finos/testing';
 import { CHANNEL_STATE, SimpleChannelSelector } from '@finos/testing/dist/src/agent';
 import { HeartbeatEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+import { LogLevel } from '@finos/fdc3-standard';
+
+//Update this to enable debug output when debugging test failures
+const logLevel = LogLevel.WARN;
 
 Given('A Desktop Agent in {string}', async function (this: CustomWorld, field: string) {
   if (!this.messaging) {
     this.messaging = new TestMessaging(this.props[CHANNEL_STATE]);
   }
 
-  const cs = new DefaultChannelSupport(this.messaging, new SimpleChannelSelector(this));
+  //n.b. using short timeouts to avoid extending tests unnecessarily
+  const cs = new DefaultChannelSupport(this.messaging, new SimpleChannelSelector(this), 1500);
   const hs = new DefaultHeartbeatSupport(this.messaging);
-  const is = new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this));
-  const as = new DefaultAppSupport(this.messaging);
+  const is = new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this), 1500, 3000);
+  const as = new DefaultAppSupport(this.messaging, 1500, 3000);
 
-  const da = new DesktopAgentProxy(hs, cs, is, as, [hs]);
+  const da = new DesktopAgentProxy(hs, cs, is, as, [hs], logLevel);
   await da.connect();
 
   this.props[field] = da;

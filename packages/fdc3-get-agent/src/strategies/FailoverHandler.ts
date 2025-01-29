@@ -1,4 +1,11 @@
-import { GetAgentParams, DesktopAgent, WebDesktopAgentType, AgentError, AppIdentifier } from '@finos/fdc3-standard';
+import {
+  GetAgentParams,
+  DesktopAgent,
+  WebDesktopAgentType,
+  AgentError,
+  AppIdentifier,
+  LogLevel,
+} from '@finos/fdc3-standard';
 import { createDesktopAgentAPI } from '../messaging/message-port';
 import { DesktopAgentSelection } from './Loader';
 import { v4 as uuidv4 } from 'uuid';
@@ -90,8 +97,12 @@ export class FailoverHandler {
         appId: idDetails.payload.appId,
         instanceId: idDetails.payload.instanceId,
       };
+
+      //prep log settings to pass on to the proxy
+      const logLevel: LogLevel | null = this.options?.logLevels?.proxy ?? null;
+
       const desktopAgentSelection: DesktopAgentSelection = {
-        agent: await createDesktopAgentAPI(connectionDetails, appIdentifier),
+        agent: await createDesktopAgentAPI(connectionDetails, appIdentifier, logLevel),
         details: {
           agentType: connectionDetails.agentType,
           agentUrl: connectionDetails.agentUrl ?? undefined,

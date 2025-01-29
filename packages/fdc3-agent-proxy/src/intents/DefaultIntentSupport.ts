@@ -27,23 +27,24 @@ import {
   RaiseIntentResponse,
   RaiseIntentResultResponse,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
-import { throwIfUndefined } from '../util';
+import { throwIfUndefined } from '../util/throwIfUndefined';
 
 const convertIntentResult = async (
   { payload }: RaiseIntentResultResponse,
-  messaging: Messaging
+  messaging: Messaging,
+  messageExchangeTimeout: number
 ): Promise<IntentResult> => {
   const result = payload.intentResult;
   if (result?.channel) {
     const { channel } = result;
     switch (channel.type) {
       case 'private': {
-        return new DefaultPrivateChannel(messaging, channel.id);
+        return new DefaultPrivateChannel(messaging, messageExchangeTimeout, channel.id);
       }
       case 'app':
       case 'user':
       default: {
-        return new DefaultChannel(messaging, channel.id, channel.type, channel.displayMetadata);
+        return new DefaultChannel(messaging, messageExchangeTimeout, channel.id, channel.type, channel.displayMetadata);
       }
     }
   } else if (result?.context) {
@@ -56,10 +57,19 @@ const convertIntentResult = async (
 export class DefaultIntentSupport implements IntentSupport {
   readonly messaging: Messaging;
   readonly intentResolver: IntentResolver;
+  readonly messageExchangeTimeout: number;
+  readonly appLaunchTimeout: number;
 
-  constructor(messaging: Messaging, intentResolver: IntentResolver) {
+  constructor(
+    messaging: Messaging,
+    intentResolver: IntentResolver,
+    messageExchangeTimeout: number,
+    appLaunchTimeout: number
+  ) {
     this.messaging = messaging;
     this.intentResolver = intentResolver;
+    this.messageExchangeTimeout = messageExchangeTimeout;
+    this.appLaunchTimeout = appLaunchTimeout;
   }
 
   async findIntent(intent: string, context: Context, resultType: string | undefined): Promise<AppIntent> {
@@ -73,7 +83,11 @@ export class DefaultIntentSupport implements IntentSupport {
       meta: this.messaging.createMeta(),
     };
 
-    const result = await this.messaging.exchange<FindIntentResponse>(request, 'findIntentResponse');
+    const result = await this.messaging.exchange<FindIntentResponse>(
+      request,
+      'findIntentResponse',
+      this.messageExchangeTimeout
+    );
     const appIntent = result.payload.appIntent!;
     if (appIntent.apps.length == 0) {
       throw new Error(ResolveError.NoAppsFound);
@@ -94,7 +108,11 @@ export class DefaultIntentSupport implements IntentSupport {
       meta: this.messaging.createMeta(),
     };
 
-    const result: FindIntentsByContextResponse = await this.messaging.exchange(request, 'findIntentsByContextResponse');
+    const result: FindIntentsByContextResponse = await this.messaging.exchange(
+      request,
+      'findIntentsByContextResponse',
+      this.messageExchangeTimeout
+    );
     const appIntents = result.payload.appIntents;
     if (!appIntents || appIntents.length == 0) {
       throw new Error(ResolveError.NoAppsFound);
@@ -108,7 +126,7 @@ export class DefaultIntentSupport implements IntentSupport {
       m => m.type == 'raiseIntentResultResponse' && m.meta.requestUuid == request.meta.requestUuid
     );
 
-    const ir = await convertIntentResult(rp, this.messaging);
+    const ir = await convertIntentResult(rp, this.messaging, this.messageExchangeTimeout);
     return ir;
   }
 
@@ -128,7 +146,7 @@ export class DefaultIntentSupport implements IntentSupport {
     const response = await this.messaging.exchange<RaiseIntentResponse>(
       request,
       'raiseIntentResponse',
-      ResolveError.IntentDeliveryFailed
+      this.appLaunchTimeout
     );
 
     throwIfUndefined(
@@ -170,7 +188,7 @@ export class DefaultIntentSupport implements IntentSupport {
     const response = await this.messaging.exchange<RaiseIntentForContextResponse>(
       request,
       'raiseIntentForContextResponse',
-      ResolveError.IntentDeliveryFailed
+      this.appLaunchTimeout
     );
 
     throwIfUndefined(
@@ -199,7 +217,7 @@ export class DefaultIntentSupport implements IntentSupport {
   }
 
   async addIntentListener(intent: string, handler: IntentHandler): Promise<Listener> {
-    const out = new DefaultIntentListener(this.messaging, intent, handler);
+    const out = new DefaultIntentListener(this.messaging, intent, handler, this.messageExchangeTimeout);
     await out.register();
     return out;
   }

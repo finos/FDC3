@@ -14,6 +14,7 @@ export class DefaultContextListener
 
   constructor(
     messaging: Messaging,
+    messageExchangeTimeout: number,
     channelId: string | null,
     contextType: string | null,
     handler: ContextHandler,
@@ -21,6 +22,7 @@ export class DefaultContextListener
   ) {
     super(
       messaging,
+      messageExchangeTimeout,
       { channelId, contextType },
       handler,
       'addContextListenerRequest',

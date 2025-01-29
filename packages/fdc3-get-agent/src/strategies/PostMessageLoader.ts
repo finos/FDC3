@@ -1,10 +1,11 @@
-import { AgentError, AppIdentifier, DEFAULT_TIMEOUT_MS, GetAgentParams } from '@finos/fdc3-standard';
+import { AgentError, AppIdentifier, GetAgentParams, LogLevel } from '@finos/fdc3-standard';
 import { createDesktopAgentAPI } from '../messaging/message-port';
 import { v4 as uuidv4 } from 'uuid';
 import { DesktopAgentSelection, Loader } from './Loader';
 import { HelloHandler } from './HelloHandler';
 import { IdentityValidationHandler } from './IdentityValidationHandler';
 import { Logger } from '../util/Logger';
+import { DEFAULT_GETAGENT_TIMEOUT_MS } from './Timeouts';
 
 /**
  * Recursive search for all possible parent frames (windows) that we may
@@ -41,8 +42,12 @@ function _recursePossibleTargets(startWindow: Window, w: Window, found: Window[]
  */
 export class PostMessageLoader implements Loader {
   name = 'PostMessageLoader';
+  private proxyLogLevel: LogLevel | null;
 
-  constructor(previousUrl?: string) {
+  constructor(options: GetAgentParams, previousUrl?: string) {
+    //prep log settings to pass on to the proxy
+    this.proxyLogLevel = options.logLevels?.proxy ?? null;
+
     this.previousUrl = previousUrl ?? null;
   }
 
@@ -65,7 +70,7 @@ export class PostMessageLoader implements Loader {
       this.rejectFn = reject;
 
       //setup a timeout so we can reject if it runs out
-      const timeoutMs = options.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+      const timeoutMs = options.timeoutMs ?? DEFAULT_GETAGENT_TIMEOUT_MS;
       this.timeout = setTimeout(() => {
         Logger.debug(`PostMessageLoader.get(): timeout (${timeoutMs} ms) at ${new Date().toISOString()}`);
         this.cancel();
@@ -128,7 +133,7 @@ export class PostMessageLoader implements Loader {
               instanceId: idDetails.payload.instanceId,
             };
 
-            createDesktopAgentAPI(connectionDetails, appIdentifier).then(da => {
+            createDesktopAgentAPI(connectionDetails, appIdentifier, this.proxyLogLevel).then(da => {
               const desktopAgentSelection: DesktopAgentSelection = {
                 agent: da,
                 details: {
@@ -175,7 +180,6 @@ export class PostMessageLoader implements Loader {
       this.helloHandler.cancel();
     }
 
-    //TODO Decide if we should NOT do this - there may be a race on timeout cancellations
     if (this.identityValidationHandler) {
       this.identityValidationHandler.cancel();
     }

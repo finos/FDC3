@@ -12,12 +12,18 @@ import {
   OpenRequest,
   OpenResponse,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
-import { throwIfUndefined } from '../util';
+import { throwIfUndefined } from '../util/throwIfUndefined';
+import { Logger } from '../util/Logger';
+
 export class DefaultAppSupport implements AppSupport {
   readonly messaging: Messaging;
+  readonly messageExchangeTimeout: number;
+  readonly appLaunchTimeout: number;
 
-  constructor(messaging: Messaging) {
+  constructor(messaging: Messaging, messageExchangeTimeout: number, appLaunchTimeout: number) {
     this.messaging = messaging;
+    this.messageExchangeTimeout = messageExchangeTimeout;
+    this.appLaunchTimeout = appLaunchTimeout;
   }
 
   async findInstances(app: AppIdentifier): Promise<AppIdentifier[]> {
@@ -29,7 +35,11 @@ export class DefaultAppSupport implements AppSupport {
       meta: this.messaging.createMeta(),
     };
 
-    const out = await this.messaging.exchange<FindInstancesResponse>(request, 'findInstancesResponse');
+    const out = await this.messaging.exchange<FindInstancesResponse>(
+      request,
+      'findInstancesResponse',
+      this.messageExchangeTimeout
+    );
     return out.payload.appIdentifiers ?? [];
   }
 
@@ -42,7 +52,11 @@ export class DefaultAppSupport implements AppSupport {
       meta: this.messaging.createMeta(),
     };
 
-    const response = await this.messaging.exchange<GetAppMetadataResponse>(request, 'getAppMetadataResponse');
+    const response = await this.messaging.exchange<GetAppMetadataResponse>(
+      request,
+      'getAppMetadataResponse',
+      this.messageExchangeTimeout
+    );
 
     throwIfUndefined(
       response.payload.appMetadata,
@@ -67,7 +81,7 @@ export class DefaultAppSupport implements AppSupport {
       meta: this.messaging.createMeta(),
     };
 
-    const response = await this.messaging.exchange<OpenResponse>(request, 'openResponse', OpenError.AppTimeout);
+    const response = await this.messaging.exchange<OpenResponse>(request, 'openResponse', this.appLaunchTimeout);
 
     throwIfUndefined(
       response.payload.appIdentifier,
@@ -89,14 +103,14 @@ export class DefaultAppSupport implements AppSupport {
     const response = await this.messaging.exchange<GetInfoResponse>(
       request,
       'getInfoResponse',
-      'timed out waiting for getInfo response!'
+      this.messageExchangeTimeout
     );
 
     if (response.payload.implementationMetadata) {
       return response.payload.implementationMetadata;
     } else {
       //This will only happen if the DA implementation returns an invalid message with a missing implementationMetadata property
-      console.error('Invalid response from Desktop Agent to open!', response);
+      Logger.error('Invalid response from Desktop Agent to open!', response);
       const unknownImpl: ImplementationMetadata = {
         fdc3Version: 'unknown',
         provider: 'unknown',

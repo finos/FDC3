@@ -1,4 +1,4 @@
-import { AppIdentifier } from '@finos/fdc3-standard';
+import { AgentError, AppIdentifier } from '@finos/fdc3-standard';
 import { Messaging } from '../Messaging';
 import { RegisterableListener } from '../listeners/RegisterableListener';
 import {
@@ -6,6 +6,7 @@ import {
   AppRequestMessage,
   WebConnectionProtocol6Goodbye,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+import { Logger } from '../util/Logger';
 
 export abstract class AbstractMessaging implements Messaging {
   private appIdentifier: AppIdentifier;
@@ -15,13 +16,16 @@ export abstract class AbstractMessaging implements Messaging {
   abstract register(l: RegisterableListener): void;
   abstract unregister(id: string): void;
   abstract createMeta(): AppRequestMessage['meta'];
-  abstract getTimeoutMs(): number;
 
   constructor(appIdentifier: AppIdentifier) {
     this.appIdentifier = appIdentifier;
   }
 
-  waitFor<X extends AgentResponseMessage>(filter: (m: X) => boolean, timeoutErrorMessage?: string): Promise<X> {
+  waitFor<X extends AgentResponseMessage>(
+    filter: (m: X) => boolean,
+    timeoutMs?: number,
+    timeoutErrorMessage?: string
+  ): Promise<X> {
     const id = this.createUUID();
     return new Promise<X>((resolve, reject) => {
       let done = false;
@@ -30,6 +34,7 @@ export abstract class AbstractMessaging implements Messaging {
         id,
         filter: filter,
         action: m => {
+          Logger.debug('Received from DesktopAgent: ', m);
           done = true;
           this.unregister(id);
           if (timeout) {
@@ -47,16 +52,16 @@ export abstract class AbstractMessaging implements Messaging {
 
       this.register(l);
 
-      if (timeoutErrorMessage) {
+      if (timeoutMs) {
         timeout = setTimeout(() => {
           this.unregister(id);
           if (!done) {
-            console.error(
-              `waitFor rejecting after ${this.getTimeoutMs()}ms at ${new Date().toISOString()} with ${timeoutErrorMessage}`
+            Logger.error(
+              `waitFor rejecting after ${timeoutMs}ms at ${new Date().toISOString()} with ${timeoutErrorMessage}`
             );
             reject(new Error(timeoutErrorMessage));
           }
-        }, this.getTimeoutMs());
+        }, timeoutMs);
       }
     });
   }
@@ -64,19 +69,31 @@ export abstract class AbstractMessaging implements Messaging {
   async exchange<X extends AgentResponseMessage>(
     message: AppRequestMessage,
     expectedTypeName: AgentResponseMessage['type'],
-    timeoutErrorMessage?: string
+    timeoutMs: number
   ): Promise<X> {
-    const errorMessage =
-      timeoutErrorMessage ?? `Timeout waiting for ${expectedTypeName} with requestUuid ${message.meta.requestUuid}`;
-    const prom = this.waitFor<X>(m => {
-      return m.type == expectedTypeName && m.meta.requestUuid == message.meta.requestUuid;
-    }, errorMessage);
+    const prom = this.waitFor<X>(
+      m => {
+        return m.type == expectedTypeName && m.meta.requestUuid == message.meta.requestUuid;
+      },
+      timeoutMs,
+      AgentError.ApiTimeout
+    );
+
+    Logger.debug('Sending to DesktopAgent: ', message);
     this.post(message);
-    const out: X = await prom;
-    if (out?.payload?.error) {
-      throw new Error(out.payload.error);
-    } else {
-      return out;
+    try {
+      const out: X = await prom;
+
+      if (out?.payload?.error) {
+        throw new Error(out.payload.error);
+      } else {
+        return out;
+      }
+    } catch (error) {
+      if ((error as Error).message == AgentError.ApiTimeout) {
+        Logger.error(`Timed-out while waiting for ${expectedTypeName} with requestUuid ${message.meta.requestUuid}`);
+      }
+      throw error;
     }
   }
 
