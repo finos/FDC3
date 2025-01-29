@@ -14,7 +14,7 @@ This type currently only defines a required `id` field, which should provide a r
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/next/context/trade.schema.json> ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/trade.schema.json))
+[https://fdc3.finos.org/schemas/next/context/trade.schema.json](https://fdc3.finos.org/schemas/next/context/trade.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/trade.schema.json))
 
 ## Type
 
