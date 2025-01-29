@@ -17,7 +17,7 @@ Accepts an optional `app` parameter in order to specify a specific app.
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/next/context/action.schema.json> ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/action.schema.json))
+[https://fdc3.finos.org/schemas/next/context/action.schema.json](https://fdc3.finos.org/schemas/next/context/action.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/action.schema.json))
 
 ## Type
 
@@ -141,3 +141,4 @@ An optional target application identifier that should perform the action. The `a
   }
 }
 ```
+

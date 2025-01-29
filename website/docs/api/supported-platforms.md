@@ -80,7 +80,7 @@ Hence, FDC3 apps SHOULD obtain access to a `DesktopAgent` object (`fdc3`) by imp
 
 :::info
 
-In prior versions of FDC3 (<= 2.1) Apps were required to use the 'Desktop Agent Preload' interface, i.e. they relied on the existence of the `window.fdc3` object, which meant that apps running in a standard web browser had to import libraries specific to the Desktop Agent implementation in use. From FDC3 2.2 onwards the 'Desktop Agent Proxy' interface is available, which allows apps in a standard web browser to connect to any Desktop Agent that implements that interface.
+In prior versions of FDC3 (&lt;= 2.1) Apps were required to use the 'Desktop Agent Preload' interface, i.e. they relied on the existence of the `window.fdc3` object, which meant that apps running in a standard web browser had to import libraries specific to the Desktop Agent implementation in use. From FDC3 2.2 onwards the 'Desktop Agent Proxy' interface is available, which allows apps in a standard web browser to connect to any Desktop Agent that implements that interface.
 
 Hence, from FDC3 2.2 onwards apps SHOULD call `getAgent()` to retrieve a `DesktopAgent` API interface.
 
