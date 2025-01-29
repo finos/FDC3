@@ -13,9 +13,16 @@ website/build/
 website/static/toolbox
 website/node_modules
 website/i18n/*
-website/package-lock.json
-website/.docusaurus/**
+website/.docusaurus/
+website/static/schemas/next/*
+website/static/ui
+test-results.xml
+
 
 .idea/
 *.iml
 website/.yarn
+.nyc_output
+toolbox/fdc3-for-web/fdc3-web-impl/generated/
+cucumber-report.html
+nyc-coverage-report/

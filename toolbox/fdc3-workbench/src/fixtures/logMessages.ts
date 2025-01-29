@@ -4,11 +4,7 @@
  */
 import { logMessagesName, logMessagesType } from "../store/SystemLogStore";
 
-type LogMessages = {
-	[name in logMessagesName]: {
-		[type in logMessagesType]?: string;
-	};
-};
+type LogMessages = Record<logMessagesName, Partial<Record<logMessagesType, string>>>;
 
 export const getLogMessage = (name: logMessagesName, type: logMessagesType, value: string = ""): string => {
 	const logMessages: LogMessages = {

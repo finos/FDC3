@@ -3,9 +3,10 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 import { makeObservable, observable, action, runInAction, toJS } from "mobx";
-import fdc3, { ContextType, Channel, Fdc3Listener } from "../utility/Fdc3Api";
+import { ContextType, Fdc3Listener } from "../utility/Fdc3Api";
 import systemLogStore from "./SystemLogStore";
 import { nanoid } from "nanoid";
+import { Channel, getAgent } from "@finos/fdc3";
 
 interface ListenerOptionType {
 	title: string;
@@ -41,7 +42,7 @@ class AppChannelStore {
 
 	async getOrCreateChannel(channelId: string) {
 		try {
-			const currentAppChannelObj = await fdc3.getOrCreateChannel(channelId);
+			const currentAppChannelObj = await getAgent().then((agent) => agent.getOrCreateChannel(channelId));
 			if (currentAppChannelObj) {
 				const record = {
 					id: channelId,
@@ -130,8 +131,9 @@ class AppChannelStore {
 
 	async leaveChannel() {
 		try {
+			const agent = await getAgent();
 			//check that we're on a channel
-			let currentChannel = await fdc3.getCurrentChannel();
+			let currentChannel = await agent.getCurrentChannel();
 			if (!currentChannel) {
 				systemLogStore.addLog({
 					name: "leaveChannel",
@@ -140,8 +142,8 @@ class AppChannelStore {
 					variant: "text",
 				});
 			} else {
-				await fdc3.leaveCurrentChannel();
-				currentChannel = await fdc3.getCurrentChannel();
+				await agent.leaveCurrentChannel();
+				currentChannel = await agent.getCurrentChannel();
 				const isSuccess = currentChannel === null;
 
 				runInAction(() => {

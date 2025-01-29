@@ -1,0 +1,69 @@
+name: Node.js CI Tests and Coverage
+
+# Controls when the workflow will run on any branch
+on:
+  pull_request:
+
+# Allows Coverage to be written back as a PR comment
+permissions: 
+  pull-requests: write
+
+# Define the jobs for this workflow
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+        fetch-depth: 1000
+
+    - name: Fetch base
+      run: git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1000
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 20.x
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Run tests
+      run: npm run test
+
+    - name: Merge Results
+      run: npm run merge
+
+    - name: Create Report
+      run: npm run report
+
+    - name: Create test summary
+      uses: test-summary/action@dist
+      with:
+        paths: "**/test-results.xml"
+        show: "fail, skip"
+        output: test-summary.md
+      if: always()
+
+    - name: PR comment with file
+      uses: thollander/actions-comment-pull-request@v3
+      with:
+        file-path: test-summary.md
+
+    - name: Download previous coverage
+      uses: dawidd6/action-download-artifact@v7
+      with:
+        workflow: base-coverage.yml
+        name: 'test-coverage-output'
+        path: base-artifacts
+        search_artifacts: true
+
+    - name: Report Coverage
+      uses: sidx1024/report-nyc-coverage-github-action@v1.2.7
+      with:
+        coverage_file: "nyc-coverage-report/coverage-summary.json"
+        base_coverage_file: "base-artifacts/coverage-summary.json"
+

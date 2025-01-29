@@ -13,11 +13,11 @@ _Created and contributed to [FDC3](http://fdc3.finos.org) by [Finsemble, Inc.](h
 
 2. Install dependencies
 
-`cd toolbox/fdc3-workbench & yarn install`
+`cd toolbox/fdc3-workbench & npm run install`
 
 3. Start the development server
 
-`yarn start`
+`npm run dev`
 
 4. Add the URL http://localhost:3000 to your FDC3-enabled container or desktop agent and ensure it has access to the `window.fdc3` object.
 

@@ -3,10 +3,10 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
 
 .body {
-  font-family: "Noto Sans JP", sans-serif;
+  font-family: 'Noto Sans JP', sans-serif;
   margin: 0;
   padding: 0;
   background-color: #284b63;
@@ -36,7 +36,9 @@ button {
 }
 button:active {
   outline: transparent;
-  box-shadow: inset #3c3c3c70 2px 3px 3px 0px, #03a9f433 1px 2px 0px 0px;
+  box-shadow:
+    inset #3c3c3c70 2px 3px 3px 0px,
+    #03a9f433 1px 2px 0px 0px;
   transform: translateY(2px);
   transition: ease-out 0.1s;
 }
@@ -45,7 +47,8 @@ button:focus {
 }
 input {
   background: #e8f7ff;
-  box-shadow: inset -2px -2px 2px 0px rgb(255 255 255 / 12%),
+  box-shadow:
+    inset -2px -2px 2px 0px rgb(255 255 255 / 12%),
     inset 2px 3px 6px 2px rgb(0 0 0 / 19%);
   border-radius: 6px;
   border: 2px solid transparent;
@@ -58,7 +61,8 @@ input:focus {
 }
 textarea {
   background: #e8f7ff;
-  box-shadow: inset -3px -5px 5px 1px rgb(255 255 255 / 12%),
+  box-shadow:
+    inset -3px -5px 5px 1px rgb(255 255 255 / 12%),
     inset 2px 3px 6px 2px rgb(0 0 0 / 19%);
   border-radius: 6px;
   border: 2px solid transparent;

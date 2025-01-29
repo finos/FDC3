@@ -1,0 +1,29 @@
+{
+  "name": "@finos/fdc3",
+  "version": "2.2.0-alpha.3",
+  "author": "Fintech Open Source Foundation (FINOS)",
+  "homepage": "https://fdc3.finos.org",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finos/FDC3.git"
+  },
+  "publishConfig": {
+    "tag": "latest"
+  },
+  "license": "Apache-2.0",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "clean": "npx rimraf dist",
+    "build": "tsc --module es2022"
+  },
+  "dependencies": {
+    "@finos/fdc3-context": "2.2.0-alpha.3",
+    "@finos/fdc3-get-agent": "2.2.0-alpha.3",
+    "@finos/fdc3-schema": "2.2.0-alpha.3",
+    "@finos/fdc3-standard": "2.2.0-alpha.3"
+  }
+}
