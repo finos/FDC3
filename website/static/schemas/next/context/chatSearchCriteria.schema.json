@@ -28,7 +28,6 @@
   ],
   "$defs": {
     "SearchCriteria": {
-      "type": "object",
       "title": "Search Criteria",
       "description": "An individual criteria against which to match chat messages, based on an FDC3 context or free-text string.",
       "oneOf": [

@@ -91,7 +91,7 @@ knowledge of the AppD instance location.
 
 ### Authentication and Entitlements
 
-The AppD API specification defines the optional use of an access token to identify the requesting user/launcher and implement authorizations which may affect appD API responses. For example, different subsets of the full list of applications may be returned for different users depending on their role in an organization.  
+The AppD API specification defines the optional use of an access token to identify the requesting user/launcher and implement authorizations which may affect appD API responses. For example, different subsets of the full list of applications may be returned for different users depending on their role in an organization.
 
 The specification does not define or make mandatory any authorizations or roles that a provider or enterprise can define.
 
@@ -116,7 +116,7 @@ However, in order to do so, you must first discover the location of an app direc
 Three methods for discovering app directory services are defined in this Standard:
 
   1. **Static configuration:** Statically defined URI records for use within client applications (typically a Desktop Agent implementation) directly.
-  2. **Fully-qualified appID namespace syntax host resolution:** Discovery of the appD location using a fully qualified application ID (appId) domain name.  
+  2. **Fully-qualified appID namespace syntax host resolution:** Discovery of the appD location using a fully qualified application ID (appId) domain name.
   3. **DNS lookup by domain name:** Discovery of the appD location using a domain name to lookup DNS SRV records identifying the host server location and TCP port. ([RFC2782](https://tools.ietf.org/html/rfc2782))
 
 App directory service host discovery implementations SHOULD support each of these methods and MUST support at least static configuration.
@@ -138,7 +138,7 @@ A launcher can then easily construct a URI by:
 3. URI port is default `https/443`, but can be overridden by the launcher
 4. URI url is by default `/api/appd/(version)/apps` . Calls that are made without version MUST automatically default to latest, i.e. `/api/appd/apps/app1` should return the same result as `/api/appd/v2/apps/app1".
 
-The resulting URI to retrieve application data for `app1` would be <https://appd.foo.com/api/appd/v2/apps/app1@appd.foo.com>  
+The resulting URI to retrieve application data for `app1` would be [https://appd.foo.com/api/appd/v2/apps/app1@appd.foo.com](https://appd.foo.com/api/appd/v2/apps/app1@appd.foo.com)
 
 ### DNS/SRV Records
 

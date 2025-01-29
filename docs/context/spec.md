@@ -97,7 +97,7 @@ or in JSON Schema as:
 
 :::note
 
-This is a simplified version of the schema for illustrative purposes, the fully documented Context schema, which is composed with other FDC3 Standard context schemas, can be found at: <https://fdc3.finos.org/schemas/next/context/context.schema.json>.
+This is a simplified version of the schema for illustrative purposes, the fully documented Context schema, which is composed with other FDC3 Standard context schemas, can be found at: [https://fdc3.finos.org/schemas/next/context/context.schema.json](https://fdc3.finos.org/schemas/next/context/context.schema.json).
 
 :::
 
@@ -360,8 +360,8 @@ e.g. as a JSON payload:
 {
     "type" : "fdc3.instrument",
     "name" : "Apple",
-    "id" : 
-    {  
+    "id" :
+    {
         "ticker" : "aapl",
         "ISIN" : "US0378331005",
         "CUSIP" : "037833100"
