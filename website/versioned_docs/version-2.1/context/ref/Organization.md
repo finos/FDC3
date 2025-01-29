@@ -55,7 +55,7 @@ Other Types
 Intents
 
 - [ViewNews](../../intents/ref/ViewNews)
-- [ViewAnalysis](../../intents/ref/viewAnalysis)
+- [ViewAnalysis](../../intents/ref/ViewAnalysis)
 - [ViewProfile](../../intents/ref/ViewProfile)
 - [ViewResearch](../../intents/ref/ViewResearch)
 - [ViewInteractions](../../intents/ref/ViewInteractions)

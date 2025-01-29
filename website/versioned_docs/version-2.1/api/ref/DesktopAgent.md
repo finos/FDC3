@@ -689,7 +689,7 @@ try {
 
 - [Raising Intents](../spec#raising-intents)
 - [`Context`](Types#context)
-- [`AppIdentifier`](Types#AppIdentifier)
+- [`AppIdentifier`](Types#appidentifier)
 - [`IntentResult`](Types#intentresult)
 - [`IntentResolution`](Metadata#intentresolution)
 - [`ResolveError`](Errors#resolveerror)
