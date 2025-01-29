@@ -186,7 +186,7 @@ function generateObjectMD(schema, objectName, schemaFolderName, filePath) {
         ? workingPath.replace("static/schemas/next/", `https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/`)
         : workingPath.replace("static/schemas/next/", `https://github.com/finos/FDC3/tree/main/packages/fdc3-schema/schemas/`);
 
-    markdownContent += `## Schema\n\n<${url}> ([github](${githubUrl}))\n\n`;
+        markdownContent += `## Schema\n\n[${url}](${url}) ([github](${githubUrl}))\n\n`;
 
     if (hasAllOf(schema.allOf) || hasProperties(schema)) {
         // Extract properties, required fields, and $ref from the first allOf object

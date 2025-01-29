@@ -14,7 +14,7 @@ A person contact that can be engaged with through email, calling, messaging, CMS
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/contact.schema.json>
+[https://fdc3.finos.org/schemas/2.1/context/contact.schema.json](https://fdc3.finos.org/schemas/2.1/context/contact.schema.json)
 
 ## Details
 
