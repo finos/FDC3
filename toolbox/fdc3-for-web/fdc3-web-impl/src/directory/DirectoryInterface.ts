@@ -1,4 +1,4 @@
-import { components } from '../directory-schema';
+import { components } from '../../generated/directory-schema';
 
 type schemas = components['schemas'];
 
