@@ -1442,7 +1442,7 @@ export interface AppMetadata {
 }
 
 /**
- * Describes an Icon images that may be used to represent the application.
+ * Describes an Icon image that may be used to represent the application.
  */
 export interface Icon {
     /**
@@ -2107,7 +2107,7 @@ export interface GetCurrentContextResponsePayload {
  */
 
 /**
- * Request to retrieve information about the FDC3 Desktop Agent implementation  and the
+ * Request to retrieve information about the FDC3 Desktop Agent implementation and the
  * metadata of the calling application according to the Desktop Agent.
  *
  * A request message from an FDC3-enabled app to a Desktop Agent.
@@ -2907,7 +2907,7 @@ export interface TPayload {
     /**
      * The type of PrivateChannel event that the listener should be applied to.
      */
-    listenerType: PrivateChannelEventListenerTypes;
+    listenerType: PrivateChannelEventListenerTypes | null;
     /**
      * The Id of the PrivateChannel that the listener should be added to.
      */
@@ -2915,11 +2915,9 @@ export interface TPayload {
 }
 
 /**
- * The type of PrivateChannel event that the listener should be applied to.
- *
  * Event listener type names for Private Channel events.
  */
-export type PrivateChannelEventListenerTypes = "onAddContextListener" | "onUnsubscribe" | "onDisconnect";
+export type PrivateChannelEventListenerTypes = "addContextListener" | "unsubscribe" | "disconnect";
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -5257,7 +5255,7 @@ const typeMap: any = {
         { json: "type", js: "type", typ: r("PrivateChannelAddEventListenerRequestType") },
     ], false),
     "TPayload": o([
-        { json: "listenerType", js: "listenerType", typ: r("PrivateChannelEventListenerTypes") },
+        { json: "listenerType", js: "listenerType", typ: u(r("PrivateChannelEventListenerTypes"), null) },
         { json: "privateChannelId", js: "privateChannelId", typ: "" },
     ], false),
     "PrivateChannelAddEventListenerResponse": o([
@@ -5780,9 +5778,9 @@ const typeMap: any = {
         "openResponse",
     ],
     "PrivateChannelEventListenerTypes": [
-        "onAddContextListener",
-        "onDisconnect",
-        "onUnsubscribe",
+        "addContextListener",
+        "disconnect",
+        "unsubscribe",
     ],
     "PrivateChannelAddEventListenerRequestType": [
         "privateChannelAddEventListenerRequest",

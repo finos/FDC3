@@ -1,11 +1,17 @@
+---
+id: Metadata-Tests
+sidebar_label: Metadata Tests
+title: Metadata Tests
+hide_title: true
+---
 
-# Metadata & Instance Test Cases 
+# Metadata & Instance Test Cases
 
 You will need to pre-populate the AppDirectory with the following items:
 
 | App | Required Metadata                        |
 |-----|------------------------------------------|
-| A   | Generic AppD Record which contains at least the following fields:<br>- `name`<br>- `version`<br>- `title`<br>- `tooltip`<br>- `description`<br>- `icons` (`Array<Icon>`)<br>- `screenshots` (`Array<Image>`)<br>- `interop.intents.listensFor` (`aTestingIntent` with at least context type `testContextX`)  |
+| A   | Generic AppD Record which contains at least the following fields:<br />- `name`<br />- `version`<br />- `title`<br />- `tooltip`<br />- `description`<br />- `icons` (`Array<Icon>`)<br />- `screenshots` (`Array<Image>`)<br />- `interop.intents.listensFor` (`aTestingIntent` with at least context type `testContextX`)  |
 
 ## Retrieve `AppMetadata` ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
 
@@ -21,7 +27,7 @@ You will need to pre-populate the AppDirectory with the following items:
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
 | Test   | 1.Open1    | Open a first instance of App A using <br/> `const appIdentifier1 = await fdc3.open({appId: "<A's appId>"})` <br/>and confirm that its `AppIdentifier` contains an `instanceId`.  |
-| Test   | 2.Open2    |Open a second instance of App A using <br>`const appIdentifier2 = await fdc3.open({appId: "<A's appId>"})` <br/>and confirm that its `AppIdentifier` contains an `instanceId` and that its value differs from that returned for the first instance. |
+| Test   | 2.Open2    |Open a second instance of App A using <br />`const appIdentifier2 = await fdc3.open({appId: "<A's appId>"})` <br/>and confirm that its `AppIdentifier` contains an `instanceId` and that its value differs from that returned for the first instance. |
 | Test   | 3.getAppMetadata1    | Retrieve metadata for the first instance of the app with<br/> `const metadata1 = fdc3.getAppMetadata(appIdentifier1)` |
 | Test   | 4.Confirm1 | Compare the `AppMetadata` object to the expected definition for the fields provided above during setup and ensure that the metadata matches.  |
 | Test   | 5.getAppMetadata2    | Retrieve metadata for the second instance of the app with <br/>`const metadata2 = fdc3.getAppMetadata(appIdentifier2)`  |
@@ -34,7 +40,7 @@ You will need to pre-populate the AppDirectory with the following items:
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
 | Test   | 1.Open1    | Open the first instance of App A using <br/> `const appIdentifier1 = await fdc3.open({appId: "<A's appId>"})` <br/>and confirm that its `AppIdentifier` contains an `instanceId`.  |
-| Test   | 2.Open2    |Open a second instance of App A using <br>`const appIdentifier2 = await fdc3.open({appId: "<A's appId>"})` <br/>and confirm that its `AppIdentifier` contains an `instanceId` and that its value differs from that returned for the first instance. |
+| Test   | 2.Open2    |Open a second instance of App A using <br />`const appIdentifier2 = await fdc3.open({appId: "<A's appId>"})` <br/>and confirm that its `AppIdentifier` contains an `instanceId` and that its value differs from that returned for the first instance. |
 | Test   | 3.FindInstances    | Retrieve details of open instances of app A with <br/> `let instances = await fdc3.findInstances({appId: "<A's appId>"})` <br/> confirm that both `appIdentifier1` and `appIdentifier2` are both present in the array.  |
 | Test   | 4.RaiseIntent   | Use `appIdentifier1` to raise an intent and target that instance, with<br/> `const resolution = fdc3.raiseIntent("aTestingIntent", {"type": "testContextX"}, appIdentifier1)` |
 | Test   | 5.Confirm1 | Check that `resolution.source` matches `appIdentifier1` |
@@ -47,7 +53,7 @@ You will need to pre-populate the AppDirectory with the following items:
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
 | Test   | 1.getInfo    |Retrieve the `ImplementationMetadata` for the DesktopAgent with <br/> - ![1.2](https://img.shields.io/badge/FDC3-1.2-green) `let implMetadata = fdc3.getInfo()`  <br/> - ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `fdc3.getInfo().then((implMetadata) => { subsequent steps }`   <br />**Note that the use of `then` is deliberate and intended to confirm that a promise returned (as this function switched from synchronous to asynchronous in 2.0)**|
-| Test   | 2.CheckVersion  | Check that the `fdc3Version` variable is present and at or greater than:  <br /> -  ![1.2](https://img.shields.io/badge/FDC3-1.2-green) 1.2 <br /> - ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) 2.0  <br />(which you can do with the [`versionIsAtLeast` function from FDC3's Methods.ts](https://github.com/finos/FDC3/blob/add64f8302c6dcdc8437cf0e245101e927b69ec2/src/api/Methods.ts#L207):<br>`const isFDC3v2 = versionIsAtLeast(implMetadata, "2.0")`  |
+| Test   | 2.CheckVersion  | Check that the `fdc3Version` variable is present and at or greater than:  <br /> -  ![1.2](https://img.shields.io/badge/FDC3-1.2-green) 1.2 <br /> - ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) 2.0  <br />(which you can do with the [`versionIsAtLeast` function from FDC3's Methods.ts](https://github.com/finos/FDC3/blob/add64f8302c6dcdc8437cf0e245101e927b69ec2/src/api/Methods.ts#L207):<br />`const isFDC3v2 = versionIsAtLeast(implMetadata, "2.0")`  |
 | Test   | 3.CheckProvider  | Check that the `provider` variable is present and not an empty string  |
 | Test   | 4.CheckFeatures  | ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) Check that the `optionalFeatures`, `optionalFeatures.OriginatingAppMetadata` and `optionalFeatures.UserChannelMembershipAPIs` variables are all present and that the latter two provide boolean values  |
 

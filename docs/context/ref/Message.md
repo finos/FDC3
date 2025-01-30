@@ -55,10 +55,10 @@ A map of string mime-type to string content
 <details>
   <summary><code>Additional Properties</code></summary>
 
-**Any of:**
+**One of:**
 
 - **type**: [Action](Action)
-- **type**: `object`
+- **type**: [File Attachment](FileAttachment)
 
 </details>
 
