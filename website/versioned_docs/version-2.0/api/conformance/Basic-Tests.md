@@ -1,3 +1,10 @@
+---
+id: Basic-Tests
+sidebar_label: Basic Tests
+title: Basic Tests
+hide_title: true
+---
+
 # Basic Tests ![1.2](https://img.shields.io/badge/FDC3-1.2-green) ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
 
 _These are some basic sanity tests implemented in the FDC3 Conformance Framework.  It is expected that Desktop Agent testers will run these first before commencing the much more thorough tests in section 2 onwards._
@@ -26,4 +33,3 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 - `BasicRI2`: The application should be able to raise an intent for some item of context by invoking:
   - `fdc3.raiseIntentForContext(<context>)`
   - A promise should be returned.
-

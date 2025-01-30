@@ -1,7 +1,15 @@
-[   {
+[
+    {
         "caption": "Adaptive Financial Consulting",
         "image": "/img/users/adaptive.png",
         "infoLink": "https://weareadaptive.com/",
+        "pinned": true,
+        "isMember": true
+    },
+    {
+        "caption": "BlackRock",
+        "image": "/img/users/blackrock.png",
+        "infoLink": "https://www.blackrock.com",
         "pinned": true,
         "isMember": true
     },
@@ -74,7 +82,7 @@
         "infoLink": "https://www.jpmorgan.com/",
         "pinned": true,
         "isMember": true
-    },    
+    },
     {
         "caption": "OpenFin",
         "image": "/img/users/Openfin.png",
@@ -128,13 +136,6 @@
         "caption": "Symphony",
         "image": "/img/users/Symphony.png",
         "infoLink": "https://www.symphony.com/",
-        "pinned": true,
-        "isMember": true
-    },
-    {
-        "caption": "Pictet",
-        "image": "/img/users/pictet.png",
-        "infoLink": "https://www.pictet.com/",
         "pinned": true,
         "isMember": true
     },
@@ -193,5 +194,5 @@
         "infoLink": "https://www.morganstanley.com/",
         "pinned": true,
         "isMember": true
-    }    
+    }
 ]
