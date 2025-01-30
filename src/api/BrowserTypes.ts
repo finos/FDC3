@@ -2917,7 +2917,7 @@ export interface TPayload {
 /**
  * Event listener type names for Private Channel events.
  */
-export type PrivateChannelEventListenerTypes = "onAddContextListener" | "onUnsubscribe" | "onDisconnect";
+export type PrivateChannelEventListenerTypes = "addContextListener" | "unsubscribe" | "disconnect";
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -5778,9 +5778,9 @@ const typeMap: any = {
         "openResponse",
     ],
     "PrivateChannelEventListenerTypes": [
-        "onAddContextListener",
-        "onDisconnect",
-        "onUnsubscribe",
+        "addContextListener",
+        "disconnect",
+        "unsubscribe",
     ],
     "PrivateChannelAddEventListenerRequestType": [
         "privateChannelAddEventListenerRequest",

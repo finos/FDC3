@@ -33,6 +33,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * The supported platforms page in the FDC3 documentation was moved into the API section as the information it provides all relates to FDC3 Desktop Agent API implementations. ([#1108](https://github.com/finos/FDC3/pull/1108))
 * FDC3 apps are now encouraged to instantiate their FDC3 interface (DesktopAgent) using the `getAgent()` function provided by the `@finos/fdc3` module. This will allow apps to interoperate in either traditional Preload DAs (i.e. Electron) as well as the new Browser-Resident DAs. ([#1191](https://github.com/finos/FDC3/pull/1191))
 * `ContextType` and `Intent` (`string`) types were created for use in DesktopAgent API signatures - they are unions of standardized values and `string`, enabling autocomplete/IntelliSense in IDEs when working with the FDC3 API. ([#1139](https://github.com/finos/FDC3/pull/1139))
+* SessionStorage use by `getAgent` was updated to scope the stored data by `window.name` and the app's `identityUrl`. ([#1442](https://github.com/finos/FDC3/pull/1442))
 
 ### Deprecated
 
@@ -50,6 +51,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added missing `resultType` argument to `findIntentByContext` agent request in the Bridging Schema. ([#1212](https://github.com/finos/FDC3/pull/1212)) 
 * Added missing id and name fields from the context base schema to respective context schemas (`Contact`, `ContactList`, `Country`, `InstrumentList`, `OrderList`, `Organization`, `Portfolio`, `Position`, `TradeList`). ([#1360](https://github.com/finos/FDC3/pull/1360))
 * Revised FDC3 charter to include well-known language from the FDC3 introduction, better describe FDC3's scope, focus on financial applications, update application types, etc. ([#1079](https://github.com/finos/FDC3/pull/1079))
+* Ensured that `PrivateChannelEvent` extends `ApiEvent` in both sourcecode and documentation. ([#1474](https://github.com/finos/FDC3/pull/1474))
 
 ## [npm v2.1.1] - 2024-06-28
 

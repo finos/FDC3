@@ -416,15 +416,6 @@
     "type": "solution-provider"
   },
   {
-    "title": "Pictet AM smart Desktop",
-    "publisher": "Pictet Asset Management",
-    "image": "/img/users/pictet.png",
-    "infoLink": "https://am.pictet",
-    "description": "Pictet AM smart Desktop - linking our internal PMS (proprietary), our OMS (Charles River IMS) and various in-house react.js applications implementing FDC3 to share context and intents to provide a streamlined experience for Traders and Fund managers.",
-    "badges": [],
-    "type": "adopter"
-  },
-  {
     "title": "Connectifi",
     "publisher": "Connectifi Co.",
     "image": "/img/users/connectifi.png",
@@ -563,6 +554,26 @@
       }
     ],
     "description": "ComposeUI is a .NET based general UI Container and Unified UI and App host which enables the hosting of Web and desktop content. It supports desktop and web applications in order to provide an evergreen alternative to Electron by the use of WebView2."
+  },
+  {
+    "title": "Aladdin",
+    "publisher": "BlackRock",
+    "image": "/img/users/aladdin.png",
+    "infoLink": "https://www.blackrock.com/aladdin",
+    "type": "platform-provider",
+    "badges": [],
+    "conformance": [
+      {
+        "src": "/img/community/certified-2.0.png",
+        "items": [
+          {
+            "text": "BlackRock's Aladdin (currently unpublished) Certified Conformant With FDC3 2.0 Specification on 30th September 2024",
+            "link": "https://www.finos.org/press/fdc3-2.0-blackrock-morgan-stanley-lead-charge"
+          }
+        ]
+      }
+    ],
+    "description": "Aladdin® is a tech platform that unifies the investment management process through a common data language. With a view of your whole portfolio—across public & private markets—it enables scale, provides insights, and supports business transformation."
   },
   {
     "title": "Morgan Stanley",
