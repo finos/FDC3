@@ -46,6 +46,15 @@ An optional human-readable summary of the order.
 </details>
 
 <details>
+  <summary><code>notes</code></summary>
+
+**type**: `string`
+
+A description or set of notes.
+
+</details>
+
+<details>
   <summary><code>details</code></summary>
 
 **type**: `object`
@@ -69,6 +78,7 @@ Optional additional details about the order, which may include a product element
 {
   "type": "fdc3.order",
   "name": "...",
+  "notes": "Some notes attached to this order",
   "id": {
     "myOMS": "12345"
   },

@@ -48,6 +48,15 @@ A human-readable summary of the product.
 </details>
 
 <details>
+  <summary><code>notes</code></summary>
+
+**type**: `string`
+
+A description or set of notes.
+
+</details>
+
+<details>
   <summary><code>instrument</code></summary>
 
 **type**: [Instrument](Instrument)
@@ -64,6 +73,7 @@ A financial instrument that relates to the definition of this product
   "id": {
     "productId": "ABC123"
   },
+  "notes": "Some notes attached to this product",
   "instrument": {
     "type": "fdc3.instrument",
     "id": {
