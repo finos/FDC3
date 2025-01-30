@@ -16,9 +16,10 @@ The API specification allows this to be any object, but typically this is suppos
 
 This means that it must at least have a `type` property that indicates what type of data it represents, e.g. `'fdc3.contact'`.
 
-The `type` property of context objects is important for certain FDC3 operations, like [`Channel.getCurrentContext`](Channel#getCurrentContext) and [`DesktopAgent.addContextListener`](DesktopAgent#addContextListener), which allows you to filter contexts by their type.
+The `type` property of context objects is important for certain FDC3 operations, like [`Channel.getCurrentContext`](Channel#getcurrentcontext) and [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener), which allows you to filter contexts by their type.
 
 #### See also
+
 * [`ContextHandler`](ContextHandler)
 * [`DesktopAgent.open`](DesktopAgent#open)
 * [`DesktopAgent.broadcast`](DesktopAgent#broadcast)
@@ -28,5 +29,5 @@ The `type` property of context objects is important for certain FDC3 operations,
 * [`DesktopAgent.findIntentsByContext`](DesktopAgent#findintentsbycontext)
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 * [`Channel.broadcast`](Channel#broadcast)
-* [`Channel.getCurrentContext`](Channel#getCurrentContext)
-* [`Channel.addContextListener`](Channel#addContextListener)
+* [`Channel.getCurrentContext`](Channel#getcurrentcontext)
+* [`Channel.addContextListener`](Channel#addcontextlistener)

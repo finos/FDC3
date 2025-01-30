@@ -38,13 +38,23 @@ jobs:
       with:
         filters: |
           builtFiles:
-            - '.eslint*'
-            - 'src/**'
-            - 'schemas/**'
+            - 'packages/*/eslint*'
+            - 'packages/*/tsconfig.json'
+            - 'packages/*/src/**'
+            - 'packages/*/schemas/**'
+            - 'packages/*/package-lock.json'
+            - 'packages/*/package.json'
+            - 'packages/*/rollup.config.js'
+            - 'packages/*/s2tQuicktypeUtil.js'
+            - 'packages/fdc3-schema/code-generation/generate-type-predicates.ts'
+            - 'toolbox/fdc3-workbench/src/**'
+            - 'toolbox/fdc3-workbench/package.json'
+            - 'toolbox/fdc3-workbench/package-lock.json'
+            - 'toolbox/fdc3-workbench/eslint.config.mjs'
+            - 'toolbox/fdc3-workbench/tsconfig.json'
+            - 'eslint*'
             - 'package-lock.json'
             - 'package.json'
-            - 'rollup.config.js'
-            - 's2tQuicktypeUtil.js'
             - 'tsconfig.json'
             - '.github/workflows/package.yml'
             
@@ -78,7 +88,7 @@ jobs:
 
       - name: Test
         if: ${{ needs.changes.outputs.builtFiles == 'true' }}
-        run:  npm run test --ci --coverage --maxWorkers=2
+        run:  npm run test
 
       - name: Build
         if: ${{ needs.changes.outputs.builtFiles == 'true' }}

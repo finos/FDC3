@@ -97,7 +97,7 @@ or in JSON Schema as:
 
 :::note
 
-This is a simplified version of the schema for illustrative purposes, the fully documented Context schema, which is composed with other FDC3 Standard context schemas, can be found at: <https://fdc3.finos.org/schemas/next/context/context.schema.json>.
+This is a simplified version of the schema for illustrative purposes, the fully documented Context schema, which is composed with other FDC3 Standard context schemas, can be found at: [https://fdc3.finos.org/schemas/next/context/context.schema.json](https://fdc3.finos.org/schemas/next/context/context.schema.json).
 
 :::
 
@@ -245,7 +245,7 @@ An FDC3 Standard compliant application that supports the use of context data **M
 An FDC3 Standard compliant application that supports the use of context data **SHOULD**:
 
 - Prefer FDC3-defined standard context types over proprietary contexts, where a suitable FDC3-defined standard context type is available.
-- Ensure that any proprietary context data types defined follow any the recommended [namespacing](#namespacing) and [field type conventions](#field-type-conventions) in the specification.
+- Ensure that any proprietary context data types defined follow any the recommended [namespacing](#namespacing) and [field type conventions](spec#other-field-type-conventions) in the specification.
 - Where an app is intended to receive context from [`fdc3.open`](../api/ref/DesktopAgent#open) calls, use the [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener) API call to set up appropriate handlers within 15 seconds of the application launch (the minimum timeout Desktop Agents are required to provide) in order to be widely compatible with Desktop Agent implementations.
 
 An FDC3 Standard compliant application that supports the use of context data **MAY**:
@@ -360,8 +360,8 @@ e.g. as a JSON payload:
 {
     "type" : "fdc3.instrument",
     "name" : "Apple",
-    "id" : 
-    {  
+    "id" :
+    {
         "ticker" : "aapl",
         "ISIN" : "US0378331005",
         "CUSIP" : "037833100"

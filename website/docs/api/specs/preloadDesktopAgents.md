@@ -15,7 +15,7 @@ A Preload Desktop Agent is an FDC3 Desktop Agent (DA) supporting web application
 
 ## Injecting the global FDC3 object
 
-Since FDC3 is typically available to the whole web application, Desktop Agents are expected to make the [`DesktopAgent`](../api/ref/DesktopAgent) interface available at a global level. Hence, a Preload Desktop Agent MUST provide the FDC3 API via a global accessible as `window.fdc3`. Implementors MAY additionally make the API available through modules, imports, or other means.
+Since FDC3 is typically available to the whole web application, Desktop Agents are expected to make the [`DesktopAgent`](../ref/DesktopAgent) interface available at a global level. Hence, a Preload Desktop Agent MUST provide the FDC3 API via a global accessible as `window.fdc3`. Implementors MAY additionally make the API available through modules, imports, or other means.
 
 The global `window.fdc3` MUST only be available after the API is ready to use. Implementors MUST provide a global `fdc3Ready` event that is fired when the API is ready for use.
 
