@@ -17,40 +17,40 @@ You will need to pre-populate the AppDirectory with the following items:
 
 | App | Required Metadata                                                                                                                                    |
 |-----|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| A   | A’s AppD Record contains: `aTestingIntent` (with context type `testContextX`, `testContextZ`) and `sharedTestingIntent1` (with context type `testContextX`)    |
-| B   | B’s AppD Record contains `bTestingIntent` (with context type `testContextY`) and `sharedTestingIntent1` (with context types `testContextX` and `testContextY`) |
-| C   | C’s AppD Record contains `cTestingIntent` (with context type `testContextX`)                                                                             |
+| A   | A"s AppD Record contains: `aTestingIntent` (with context type `testContextX`, `testContextZ`) and `sharedTestingIntent1` (with context type `testContextX`)    |
+| B   | B"s AppD Record contains `bTestingIntent` (with context type `testContextY`) and `sharedTestingIntent1` (with context types `testContextX` and `testContextY`) |
+| C   | C"s AppD Record contains `cTestingIntent` (with context type `testContextX`)                                                                             |
 
 Also we assume a fourth app **D** that is going to discover the intents in the other 3.
 
 ### Find Intent From AppD
 
--  `IntentAppD`: Calls `fdc3.findIntent(‘aTestingIntent’)`.  Receives promise containing an appIntent with metadata containing `aTestingIntent` and only **A** app metadata.
--  `WrongIntentAppD`: Calls `fdc3.findIntent(‘nonExistentIntent’)`. Rejects with no apps found error https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
--  `IntentAppDRightContext`: Calls `fdc3.findIntent(‘aTestingIntent’, ‘testContextX’)`.  Receives promise containing an appIntent with metadata containing `aTestingIntent` and only **A** app metadata.
--  `IntentAppDWrongContext`: Calls `fdc3.findIntent(‘aTestingIntent’, ‘testContextY’)`.  Rejects with no apps found error https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
--  `IntentAppDMultiple1`: Calls `fdc3.findIntent(‘sharedTestingIntent1’)`.  Receives promise containing an appIntent with metadata containing `sharedTestingIntent` and only **A** and **B** app metadata.
--  `IntentAppDMultiple2`: Calls `fdc3.findIntent(‘sharedTestingIntent1’, 'testContextX')`.  Receives promise containing an appIntent with metadata containing `sharedTestingIntent` and only **A** and **B** app metadata.
--  `IntentAppDMultiple3`: Calls `fdc3.findIntent(‘sharedTestingIntent1’, 'testContextY')`.  Receives promise containing an appIntent with metadata containing `sharedTestingIntent` and only **B** app metadata.
+-  `IntentAppD`: Calls `fdc3.findIntent("aTestingIntent")`.  Receives promise containing an appIntent with metadata containing `aTestingIntent` and only **A** app metadata.
+-  `WrongIntentAppD`: Calls `fdc3.findIntent("nonExistentIntent")`. Rejects with no apps found error https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
+-  `IntentAppDRightContext`: Calls `fdc3.findIntent("aTestingIntent", "testContextX")`.  Receives promise containing an appIntent with metadata containing `aTestingIntent` and only **A** app metadata.
+-  `IntentAppDWrongContext`: Calls `fdc3.findIntent("aTestingIntent", "testContextY")`.  Rejects with no apps found error https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
+-  `IntentAppDMultiple1`: Calls `fdc3.findIntent("sharedTestingIntent1")`.  Receives promise containing an appIntent with metadata containing `sharedTestingIntent` and only **A** and **B** app metadata.
+-  `IntentAppDMultiple2`: Calls `fdc3.findIntent("sharedTestingIntent1", 'testContextX')`.  Receives promise containing an appIntent with metadata containing `sharedTestingIntent` and only **A** and **B** app metadata.
+-  `IntentAppDMultiple3`: Calls `fdc3.findIntent("sharedTestingIntent1", 'testContextY')`.  Receives promise containing an appIntent with metadata containing `sharedTestingIntent` and only **B** app metadata.
 
 ### Find Intents By Context
 
--  `SingleContext`: Call `fdc3.findIntentsByContext(‘testContextX’)`.  Should return `aTestingIntent` (app **A**), `sharedTestingIntent1` (**A**, **B**) and `cTestingIntent` (**C**) AND nothing else.
+-  `SingleContext`: Call `fdc3.findIntentsByContext("testContextX")`.  Should return `aTestingIntent` (app **A**), `sharedTestingIntent1` (**A**, **B**) and `cTestingIntent` (**C**) AND nothing else.
 -  `NoContext`: Call `fdc3.findIntentsByContext()`. Throws error of `NoAppsFound`
 
 ### Raise Intent
 
 | App | Step           | Details                                                                                           |
 |-----|----------------|---------------------------------------------------------------------------------------------------|
-| D   | 1. Raise          | `fdc3.raiseIntent(‘sharedTestingIntent1’, {testContextY})`<br />starts app B.                       |
-| B   | 2. Gather Context | `fdc.addIntentListener(‘sharedTestingIntent1’)`<br />Receives testContextY, matching that sent by D |
+| D   | 1. Raise          | `fdc3.raiseIntent("sharedTestingIntent1", {testContextY})`<br />starts app B.                       |
+| B   | 2. Gather Context | `fdc.addIntentListener("sharedTestingIntent1")`<br />Receives testContextY, matching that sent by D |
 
 -  `SingleResolve1`: Perform above test
--  `TargetedResolve1`: Use `fdc3.raiseIntent(‘aTestingIntent’, {testContextX}, <A’s App Name>)` to start app A, otherwise, as above
--  `TargetedResolve2`: Use `fdc3.raiseIntent(‘aTestingIntent’, {testContextX}, {name: "<A's App Name>"})` to start app A, otherwise, as above
--  `TargetedResolve3`: Use `fdc3.raiseIntent(‘aTestingIntent’, {testContextX}, {name: “<app B Name>”, appId: “<app B ID>”})` to start app B, otherwise, as above
--  `FailedResolve1-3` As with `TargetedResolve1-3`, but use `fdc3.raiseIntent(‘aTestingIntent’, {testContextY}, <A’s App Name>)` and variations.  You will receive `NoAppsFound` Error
--  `FailedResolve4` As above, but use `fdc3.raiseIntent(‘aTestingIntent’, {testContextX}, <C’s App Name>)`.  You will receive `NoAppsFound` Error
+-  `TargetedResolve1`: Use `fdc3.raiseIntent("aTestingIntent", {testContextX}, <A"s App Name>)` to start app A, otherwise, as above
+-  `TargetedResolve2`: Use `fdc3.raiseIntent("aTestingIntent", {testContextX}, {name: "<A's App Name>"})` to start app A, otherwise, as above
+-  `TargetedResolve3`: Use `fdc3.raiseIntent("aTestingIntent", {testContextX}, {name: "<app B Name>", appId: "<app B ID>"})` to start app B, otherwise, as above
+-  `FailedResolve1-3` As with `TargetedResolve1-3`, but use `fdc3.raiseIntent("aTestingIntent", {testContextY}, <A"s App Name>)` and variations.  You will receive `NoAppsFound` Error
+-  `FailedResolve4` As above, but use `fdc3.raiseIntent("aTestingIntent", {testContextX}, <C"s App Name>)`.  You will receive `NoAppsFound` Error
 
 ## Current Intents Tests ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
 
@@ -81,7 +81,7 @@ You will need to pre-populate the AppDirectory with the following items (some of
 | F   | Find Intent & Raise Intent with PrivateChannel result | `sharedTestingIntent2(testContextY) => channel<testContextZ>` *                                 | addIntentListener() for given intents                                       |
 | G   | Find Intent tests (never started)                     | `sharedTestingIntent2(testContextY)`                                                            | addIntentListener() for given intents                                       |
 | H   | Raise Intent (bad config/behavior)                    | `sharedTestingIntent2(testContextY) => testContextZ`                                            | - no action                                                                   |
-| I   | Raise Intent (bad config/behavior)                    | `sharedTestingIntent2(testContextY) => testContextZ`                                           | addIntentListener(‘MadeUpIntent’, handler)                          |
+| I   | Raise Intent (bad config/behavior)                    | `sharedTestingIntent2(testContextY) => testContextZ`                                           | addIntentListener("MadeUpIntent", handler)                          |
 | J   | PrivateChannels are private                           | `privateChannelIsPrivate(privateChannelDetails) => privateChannelIsPrivateResult`                   | Tries to retrieve privateChannel sent in the privateChannelDetails context, fails |
 | K   | PrivateChannel lifecycle events                       | `kTestingIntent(testContextX) => channel<testContextZ>`                                         | addIntentListener() for given intents                                       |
 
@@ -130,7 +130,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 - `2.0-RaiseIntentSingleResolve`: Perform above test
 - `2.0-RaiseIntentTargetedAppResolve`: Repeat the above test, but:
-  - In the first step use `fdc3.raiseIntent("sharedTestingIntent1", testContextX, {"appID": "<B’s appId>"})` to start app B,
+  - In the first step use `fdc3.raiseIntent("sharedTestingIntent1", testContextX, {"appID": "<B"s appId>"})` to start app B,
   - Otherwise, as above.
 - `2.0-RaiseIntentTargetedInstanceResolveOpen`: Repeat the above test, but:
   - Before the first step, use `let appIdentifier = await fdc3.open({appId: "<A's appId>"})` to start A and retrieve its `AppIdentifier` with instance details.
@@ -234,7 +234,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 | App  | Step                 | Details                                                                                                                                    |
 |-------|-----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1. Raise intent | Test raises an intent with `fdc3.raiseIntent(‘"kTestingIntent", testContextX, {appId: "<K's appId>"})`<br />starts app K. |
+| Test   | 1. Raise intent | Test raises an intent with `fdc3.raiseIntent(""kTestingIntent", testContextX, {appId: "<K's appId>"})`<br />starts app K. |
 | K       | 2. Receive Intent & Context     | After starting up, K runs `fdc3.addIntentListener("kTestingIntent")` to register its listener.<br />It them receives `testContextX`, matching that sent by Test |
 | Test   | 3. IntentResolution   | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App K's `appId` and `instanceId` set.   |
 | Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.  |
