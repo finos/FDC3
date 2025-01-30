@@ -35,7 +35,7 @@ You will need to pre-populate the AppDirectory with the following items (some of
 | F   | Find Intent & Raise Intent with PrivateChannel result | `sharedTestingIntent2(testContextY) => channel<testContextZ>` *                                 | `addIntentListener()` for given intents                                       |
 | G   | Find Intent tests (never started)                     | `sharedTestingIntent2(testContextY)`                                                            | `addIntentListener()` for given intents                                       |
 | H   | Raise Intent (bad config/behavior)                    | `sharedTestingIntent2(testContextY) => testContextZ`                                            | - no action                                                                   |
-| I   | Raise Intent (bad config/behavior)                    | `sharedTestingIntent2(testContextY) => testContextZ`                                           | `addIntentListener(‘MadeUpIntent’, handler)`                          |
+| I   | Raise Intent (bad config/behavior)                    | `sharedTestingIntent2(testContextY) => testContextZ`                                           | `addIntentListener("MadeUpIntent", handler)`                          |
 | J   | PrivateChannels are private                           | `privateChannelIsPrivate(privateChannelDetails) => privateChannelIsPrivateResult`                   | Tries to retrieve privateChannel sent in the privateChannelDetails context, fails |
 | K   | PrivateChannel lifecycle events                       | `kTestingIntent(testContextX) => channel<testContextZ>`                                         | `addIntentListener()` for given intents                                       |
 
@@ -190,7 +190,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 | App  | Step                                       | Details                                                                                                                                    |
 |------|--------------------------------------------|---------------------------------------------------------------------------------------------------|
-| Test | 1. Raise intent                            | Test raises an intent with `fdc3.raiseIntent(‘"kTestingIntent", testContextX, {appId: "<K's appId>"})`<br />starts app K. |
+| Test | 1. Raise intent                            | Test raises an intent with `fdc3.raiseIntent("kTestingIntent", testContextX, {appId: "<K's appId>"})`<br />starts app K. |
 | K    | 2. Receive Intent & Context                | After starting up, K runs `fdc3.addIntentListener("kTestingIntent")` to register its listener.<br />It them receives `testContextX`, matching that sent by Test |
 | Test | 3. IntentResolution                        | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App K's `appId` and `instanceId` set.   |
 | Test | 4. await results                           | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.  |
