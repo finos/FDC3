@@ -33,6 +33,139 @@
                     "$ref": "instrument.schema.json",
                     "title": "Product Instrument",
                     "description": "A financial instrument that relates to the definition of this product"
+                },
+                "details" : {
+                    "type": "object",
+                    "title": "Product Details",
+                    "description": "Details that further define this product.",
+                    "properties": {
+                        "description": {
+                            "type": "string",
+                            "title": "Product Description",
+                            "description": "A description of the product as a string mi the style often used by traders to describe products within a chat messaging system",
+                            "examples": ["SPY CF W+ 20DEC24 580/590/600 1x2x1 r572.99 d13% (PHLX)"]
+                        },
+                        "orderType": {
+                            "type": "string",
+                            "enum": ["market", "limit", "limit-sell", "buy-stop", "stop-loss", "stop", "day", "gtc", "iceberg", "once-cancels-the-other", "immediate-or-cancel", "all-or-none", "fill-or-kill"],
+                            "title": "Order Type",
+                            "description": "The type of order"
+                        },
+                        "structureType": {
+                            "type": "string",
+                            "title": "Structure Type",
+                            "description": "A description of the the structure or strategy of the product",
+                            "examples": ["Call Fly Wing+"]
+                        },
+                        "exchange": {
+                            "type": "string",
+                            "title": "Exchange",
+                            "description": "The exchange or marketplace where the product is offered",
+                            "examples": ["PHLX"]
+                        },
+                        "size": {
+                            "type": "object",
+                            "title": "Product Size",
+                            "description": "Logic used to determine the size, size limits and increments to use when trading the product.",
+                            "properties": {
+                                "min": {
+                                    "type": "number",
+                                    "title": "Minimum",
+                                    "description": "The minimum size"
+                                },
+                                "max": {
+                                    "type": "number",
+                                    "title": "Maximum",
+                                    "description": "The maximum size"
+                                },
+                                "increment": {
+                                    "type": "number",
+                                    "title": "Increment",
+                                    "description": "The amount to increment the size by"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "title": "Size Type",
+                                    "description": "The"
+                                }
+                            },
+                            "required": [],
+                            "additionalProperties": false
+                        },
+                        "price": {
+                            "type": "object",
+                            "title": "Product Price",
+                            "description": "Logic used to determine the size, size limits and increments to use when trading the product.",
+                            "properties": {
+                                "tick": {
+                                    "type": "number",
+                                    "title": "Tick",
+                                    "description": "" 
+                                },
+                                "type": {
+                                    "type": "number",
+                                    "title": "Price Type",
+                                    "description": "" 
+                                }
+                            },
+                            "required": [],
+                            "additionalProperties": false
+                        },
+                        "legs": {
+                            "type": "array",
+                            "title": "Legs",
+                            "description": "Description of the parts of a multi-part transaction.",
+                            "items": {
+                                "type": "object",
+                                "title": "Leg",
+                                "description": "A part of a multi-part transaction.",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "title": "",
+                                        "description": "Unique identifier for this order leg within the multi-leg order"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": ["Call", "Put"],
+                                        "title": "Option Type",
+                                        "description": "Indicates whether this Leg relates to a purchase or sale option."
+                                    },
+                                    "expirationDate": {
+                                        "type": "string",
+                                        "format:": "date",
+                                        "title": "Expiration Date",
+                                        "description": "For options, the date at which the contract expires."
+                                    },
+                                    "maturityDate": {
+                                        "type": "string",
+                                        "format:": "date",
+                                        "title": "Maturity Date",
+                                        "description": "The date on which the the issuer repays the holders."
+                                    },
+                                    "strikePrice": {
+                                        "type": "number",
+                                        "title": "Strike Price",
+                                        "description": "The  price at which the underlying asset is bought or sold"
+                                    },
+                                    "ratioQty": {
+                                        "type": "number",
+                                        "title": "Ratio Quantity",
+                                        "description": "A 'per unit' quantity for the leg as a ratio of the order size."
+                                    },
+                                    "side": {
+                                        "type": "string",
+                                        "enum": ["Buy", "Sell"],
+                                        "title": "Side",
+                                        "description": "Indicates whether the asset is being bought or sold."
+                                    }
+                                },
+                                "required": ["type","strikePrice", "side"]
+                            }
+                        }
+                    },
+                    "required": [],
+                    "additionalProperties": true
                 }
             },
             "required": [
@@ -55,6 +188,43 @@
                 "id": {
                     "ticker": "MSFT"
                 }
+            },
+            "details": {
+                "description": "SPY CF W+ 20DEC24 580/590/600 1x2x1 r572.99 d13% (PHLX)",
+                "structureType": "Call Fly Wing+",
+                "exchange": "PHLX",
+                "size": {
+                    "min": 1000,
+                    "increment": 100,
+                    "type": "Lots"
+                },
+                "price": {
+                    "tick": 0.1,
+                    "type": "Price"
+                },
+                "legs": [
+                    {
+                        "type": "Call",
+                        "maturityDate": "2024-12-20",
+                        "strikePrice": 580,
+                        "ratioQty": 1,
+                        "side": "Buy"
+                    },
+                    {
+                        "type": "Call",
+                        "maturityDate": "2024-12-20",
+                        "strikePrice": 590,
+                        "ratioQty": -2,
+                        "side": "Sell"
+                    },
+                    {
+                        "type": "Call",
+                        "maturityDate": "2024-12-20",
+                        "strikePrice": 600,
+                        "ratioQty": 1,
+                        "side": "Buy"
+                    }
+                ]
             }
         }
     ]

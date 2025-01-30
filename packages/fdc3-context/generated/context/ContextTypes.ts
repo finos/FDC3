@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, FileAttachment, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, Portfolio, Position, Product, TimeRange, Trade, TradeList, TransactionResult, Valuation } from "./file";
+//   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, FileAttachment, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, Portfolio, Position, Product, Rfq, TimeRange, Trade, TradeList, TransactionResult, Valuation } from "./file";
 //
 //   const action = Convert.toAction(json);
 //   const chart = Convert.toChart(json);
@@ -26,6 +26,7 @@
 //   const portfolio = Convert.toPortfolio(json);
 //   const position = Convert.toPosition(json);
 //   const product = Convert.toProduct(json);
+//   const rfq = Convert.toRfq(json);
 //   const timeRange = Convert.toTimeRange(json);
 //   const trade = Convert.toTrade(json);
 //   const tradeList = Convert.toTradeList(json);
@@ -1605,6 +1606,8 @@ export interface PurpleOrderDetails {
 }
 
 /**
+ * Details of the order to be quoted for
+ *
  * A product that is the subject of the trade.
  *
  * @experimental context type representing a tradable product. To be used with OMS and EMS
@@ -1618,6 +1621,10 @@ export interface PurpleOrderDetails {
  * of the contract with custom identifiers if so desired.
  */
 export interface ProductObject {
+  /**
+   * Details that further define this product.
+   */
+  details?: PurpleProductDetails;
   /**
    * One or more identifiers that refer to the product. Specific key names for systems are
    * expected to be standardized in future.
@@ -1637,6 +1644,139 @@ export interface ProductObject {
   notes?: string;
   type: 'fdc3.product';
   [property: string]: any;
+}
+
+/**
+ * Details that further define this product.
+ */
+export interface PurpleProductDetails {
+  /**
+   * A description of the product as a string mi the style often used by traders to describe
+   * products within a chat messaging system
+   */
+  description?: string;
+  /**
+   * The exchange or marketplace where the product is offered
+   */
+  exchange?: string;
+  /**
+   * Description of the parts of a multi-part transaction.
+   */
+  legs?: PurpleLeg[];
+  /**
+   * The type of order
+   */
+  orderType?: OrderTypeEnum;
+  /**
+   * Logic used to determine the size, size limits and increments to use when trading the
+   * product.
+   */
+  price?: PurpleProductPrice;
+  /**
+   * Logic used to determine the size, size limits and increments to use when trading the
+   * product.
+   */
+  size?: PurpleProductSize;
+  /**
+   * A description of the the structure or strategy of the product
+   */
+  structureType?: string;
+  [property: string]: any;
+}
+
+/**
+ * A part of a multi-part transaction.
+ */
+export interface PurpleLeg {
+  /**
+   * For options, the date at which the contract expires.
+   */
+  expirationDate?: string;
+  /**
+   * Unique identifier for this order leg within the multi-leg order
+   */
+  id?: string;
+  /**
+   * The date on which the the issuer repays the holders.
+   */
+  maturityDate?: string;
+  /**
+   * A 'per unit' quantity for the leg as a ratio of the order size.
+   */
+  ratioQty?: number;
+  /**
+   * Indicates whether the asset is being bought or sold.
+   */
+  side: Side;
+  /**
+   * The  price at which the underlying asset is bought or sold
+   */
+  strikePrice: number;
+  /**
+   * Indicates whether this Leg relates to a purchase or sale option.
+   */
+  type: OptionType;
+  [property: string]: any;
+}
+
+/**
+ * Indicates whether the asset is being bought or sold.
+ */
+export type Side = 'Buy' | 'Sell';
+
+/**
+ * Indicates whether this Leg relates to a purchase or sale option.
+ */
+export type OptionType = 'Call' | 'Put';
+
+/**
+ * The type of order
+ */
+export type OrderTypeEnum =
+  | 'market'
+  | 'limit'
+  | 'limit-sell'
+  | 'buy-stop'
+  | 'stop-loss'
+  | 'stop'
+  | 'day'
+  | 'gtc'
+  | 'iceberg'
+  | 'once-cancels-the-other'
+  | 'immediate-or-cancel'
+  | 'all-or-none'
+  | 'fill-or-kill';
+
+/**
+ * Logic used to determine the size, size limits and increments to use when trading the
+ * product.
+ */
+export interface PurpleProductPrice {
+  tick?: number;
+  type?: number;
+}
+
+/**
+ * Logic used to determine the size, size limits and increments to use when trading the
+ * product.
+ */
+export interface PurpleProductSize {
+  /**
+   * The amount to increment the size by
+   */
+  increment?: number;
+  /**
+   * The maximum size
+   */
+  max?: number;
+  /**
+   * The minimum size
+   */
+  min?: number;
+  /**
+   * The
+   */
+  type?: string;
 }
 
 /**
@@ -1904,6 +2044,10 @@ export interface Position {
  */
 export interface Product {
   /**
+   * Details that further define this product.
+   */
+  details?: FluffyProductDetails;
+  /**
    * One or more identifiers that refer to the product. Specific key names for systems are
    * expected to be standardized in future.
    */
@@ -1923,6 +2067,144 @@ export interface Product {
   type: 'fdc3.product';
   [property: string]: any;
 }
+
+/**
+ * Details that further define this product.
+ */
+export interface FluffyProductDetails {
+  /**
+   * A description of the product as a string mi the style often used by traders to describe
+   * products within a chat messaging system
+   */
+  description?: string;
+  /**
+   * The exchange or marketplace where the product is offered
+   */
+  exchange?: string;
+  /**
+   * Description of the parts of a multi-part transaction.
+   */
+  legs?: FluffyLeg[];
+  /**
+   * The type of order
+   */
+  orderType?: OrderTypeEnum;
+  /**
+   * Logic used to determine the size, size limits and increments to use when trading the
+   * product.
+   */
+  price?: FluffyProductPrice;
+  /**
+   * Logic used to determine the size, size limits and increments to use when trading the
+   * product.
+   */
+  size?: FluffyProductSize;
+  /**
+   * A description of the the structure or strategy of the product
+   */
+  structureType?: string;
+  [property: string]: any;
+}
+
+/**
+ * A part of a multi-part transaction.
+ */
+export interface FluffyLeg {
+  /**
+   * For options, the date at which the contract expires.
+   */
+  expirationDate?: string;
+  /**
+   * Unique identifier for this order leg within the multi-leg order
+   */
+  id?: string;
+  /**
+   * The date on which the the issuer repays the holders.
+   */
+  maturityDate?: string;
+  /**
+   * A 'per unit' quantity for the leg as a ratio of the order size.
+   */
+  ratioQty?: number;
+  /**
+   * Indicates whether the asset is being bought or sold.
+   */
+  side: Side;
+  /**
+   * The  price at which the underlying asset is bought or sold
+   */
+  strikePrice: number;
+  /**
+   * Indicates whether this Leg relates to a purchase or sale option.
+   */
+  type: OptionType;
+  [property: string]: any;
+}
+
+/**
+ * Logic used to determine the size, size limits and increments to use when trading the
+ * product.
+ */
+export interface FluffyProductPrice {
+  tick?: number;
+  type?: number;
+}
+
+/**
+ * Logic used to determine the size, size limits and increments to use when trading the
+ * product.
+ */
+export interface FluffyProductSize {
+  /**
+   * The amount to increment the size by
+   */
+  increment?: number;
+  /**
+   * The maximum size
+   */
+  max?: number;
+  /**
+   * The minimum size
+   */
+  min?: number;
+  /**
+   * The
+   */
+  type?: string;
+}
+
+/**
+ * @experimental context type representing a Request For Quote (RFQ).
+ */
+export interface Rfq {
+  broker?: string;
+  /**
+   * One or more identifiers that refer to the RFQ in an OMS or related system. Specific key
+   * names for systems are expected to be standardized in future.
+   */
+  id: { [key: string]: string };
+  /**
+   * An optional human-readable summary of the RFQ.
+   */
+  name?: string;
+  /**
+   * A description or set of notes.
+   */
+  notes?: string;
+  /**
+   * Details of the order to be quoted for
+   */
+  product: ProductObject;
+  type: 'fdc3.rfq';
+  [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
 
 /**
  * A context representing a period of time. Any user interfaces that represent or visualize
@@ -2353,6 +2635,14 @@ export class Convert {
 
   public static productToJson(value: Product): string {
     return JSON.stringify(uncast(value, r('Product')), null, 2);
+  }
+
+  public static toRfq(json: string): Rfq {
+    return cast(JSON.parse(json), r('Rfq'));
+  }
+
+  public static rfqToJson(value: Rfq): string {
+    return JSON.stringify(uncast(value, r('Rfq')), null, 2);
   }
 
   public static toTimeRange(json: string): TimeRange {
@@ -2998,6 +3288,7 @@ const typeMap: any = {
   PurpleOrderDetails: o([{ json: 'product', js: 'product', typ: u(undefined, r('ProductObject')) }], 'any'),
   ProductObject: o(
     [
+      { json: 'details', js: 'details', typ: u(undefined, r('PurpleProductDetails')) },
       { json: 'id', js: 'id', typ: m('') },
       { json: 'instrument', js: 'instrument', typ: u(undefined, r('InstrumentElement')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
@@ -3005,6 +3296,46 @@ const typeMap: any = {
       { json: 'type', js: 'type', typ: r('ProductType') },
     ],
     'any'
+  ),
+  PurpleProductDetails: o(
+    [
+      { json: 'description', js: 'description', typ: u(undefined, '') },
+      { json: 'exchange', js: 'exchange', typ: u(undefined, '') },
+      { json: 'legs', js: 'legs', typ: u(undefined, a(r('PurpleLeg'))) },
+      { json: 'orderType', js: 'orderType', typ: u(undefined, r('OrderTypeEnum')) },
+      { json: 'price', js: 'price', typ: u(undefined, r('PurpleProductPrice')) },
+      { json: 'size', js: 'size', typ: u(undefined, r('PurpleProductSize')) },
+      { json: 'structureType', js: 'structureType', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  PurpleLeg: o(
+    [
+      { json: 'expirationDate', js: 'expirationDate', typ: u(undefined, '') },
+      { json: 'id', js: 'id', typ: u(undefined, '') },
+      { json: 'maturityDate', js: 'maturityDate', typ: u(undefined, '') },
+      { json: 'ratioQty', js: 'ratioQty', typ: u(undefined, 3.14) },
+      { json: 'side', js: 'side', typ: r('Side') },
+      { json: 'strikePrice', js: 'strikePrice', typ: 3.14 },
+      { json: 'type', js: 'type', typ: r('OptionType') },
+    ],
+    'any'
+  ),
+  PurpleProductPrice: o(
+    [
+      { json: 'tick', js: 'tick', typ: u(undefined, 3.14) },
+      { json: 'type', js: 'type', typ: u(undefined, 3.14) },
+    ],
+    false
+  ),
+  PurpleProductSize: o(
+    [
+      { json: 'increment', js: 'increment', typ: u(undefined, 3.14) },
+      { json: 'max', js: 'max', typ: u(undefined, 3.14) },
+      { json: 'min', js: 'min', typ: u(undefined, 3.14) },
+      { json: 'type', js: 'type', typ: u(undefined, '') },
+    ],
+    false
   ),
   OrderList: o(
     [
@@ -3073,11 +3404,63 @@ const typeMap: any = {
   ),
   Product: o(
     [
+      { json: 'details', js: 'details', typ: u(undefined, r('FluffyProductDetails')) },
       { json: 'id', js: 'id', typ: m('') },
       { json: 'instrument', js: 'instrument', typ: u(undefined, r('InstrumentElement')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'notes', js: 'notes', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('ProductType') },
+    ],
+    'any'
+  ),
+  FluffyProductDetails: o(
+    [
+      { json: 'description', js: 'description', typ: u(undefined, '') },
+      { json: 'exchange', js: 'exchange', typ: u(undefined, '') },
+      { json: 'legs', js: 'legs', typ: u(undefined, a(r('FluffyLeg'))) },
+      { json: 'orderType', js: 'orderType', typ: u(undefined, r('OrderTypeEnum')) },
+      { json: 'price', js: 'price', typ: u(undefined, r('FluffyProductPrice')) },
+      { json: 'size', js: 'size', typ: u(undefined, r('FluffyProductSize')) },
+      { json: 'structureType', js: 'structureType', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  FluffyLeg: o(
+    [
+      { json: 'expirationDate', js: 'expirationDate', typ: u(undefined, '') },
+      { json: 'id', js: 'id', typ: u(undefined, '') },
+      { json: 'maturityDate', js: 'maturityDate', typ: u(undefined, '') },
+      { json: 'ratioQty', js: 'ratioQty', typ: u(undefined, 3.14) },
+      { json: 'side', js: 'side', typ: r('Side') },
+      { json: 'strikePrice', js: 'strikePrice', typ: 3.14 },
+      { json: 'type', js: 'type', typ: r('OptionType') },
+    ],
+    'any'
+  ),
+  FluffyProductPrice: o(
+    [
+      { json: 'tick', js: 'tick', typ: u(undefined, 3.14) },
+      { json: 'type', js: 'type', typ: u(undefined, 3.14) },
+    ],
+    false
+  ),
+  FluffyProductSize: o(
+    [
+      { json: 'increment', js: 'increment', typ: u(undefined, 3.14) },
+      { json: 'max', js: 'max', typ: u(undefined, 3.14) },
+      { json: 'min', js: 'min', typ: u(undefined, 3.14) },
+      { json: 'type', js: 'type', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  Rfq: o(
+    [
+      { json: 'broker', js: 'broker', typ: u(undefined, '') },
+      { json: 'id', js: 'id', typ: m('') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'notes', js: 'notes', typ: u(undefined, '') },
+      { json: 'product', js: 'product', typ: r('ProductObject') },
+      { json: 'type', js: 'type', typ: r('RFQType') },
     ],
     'any'
   ),
@@ -3167,12 +3550,30 @@ const typeMap: any = {
   InstrumentListType: ['fdc3.instrumentList'],
   InteractionType: ['fdc3.interaction'],
   NothingType: ['fdc3.nothing'],
+  Side: ['Buy', 'Sell'],
+  OptionType: ['Call', 'Put'],
+  OrderTypeEnum: [
+    'all-or-none',
+    'buy-stop',
+    'day',
+    'fill-or-kill',
+    'gtc',
+    'iceberg',
+    'immediate-or-cancel',
+    'limit',
+    'limit-sell',
+    'market',
+    'once-cancels-the-other',
+    'stop',
+    'stop-loss',
+  ],
   ProductType: ['fdc3.product'],
   OrderType: ['fdc3.order'],
   OrderListType: ['fdc3.orderList'],
   StickyInteractionType: ['fdc3.organization'],
   PositionType: ['fdc3.position'],
   PortfolioType: ['fdc3.portfolio'],
+  RFQType: ['fdc3.rfq'],
   TradeType: ['fdc3.trade'],
   TradeListType: ['fdc3.tradeList'],
   TransactionStatus: ['Created', 'Deleted', 'Failed', 'Updated'],
