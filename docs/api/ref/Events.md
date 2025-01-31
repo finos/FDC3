@@ -24,12 +24,8 @@ interface ApiEvent {
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
-```csharp
-interface IApiEvent
-{
-  string Type { get; }
-  string Details { get; }
-}
+```
+Not implemented
 ```
 
 </TabItem>
@@ -52,7 +48,7 @@ type EventHandler = (event: ApiEvent) => void;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-delegate void EventHandler<T>(T event) where T : IApiEvent;
+public delegate void Fdc3EventHandler(IFdc3Event fdc3Event);
 ```
 
 </TabItem>
@@ -80,9 +76,9 @@ type FDC3EventTypes = "userChannelChanged";
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-enum FDC3EventType 
+public static class Fdc3EventType
 {
-  UserChannelChanged
+    public const string UserChannelChanged = "UserChannelChanged";
 }
 ```
 
@@ -110,10 +106,22 @@ interface FDC3Event extends ApiEvent{
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-interface IFDC3Event<T> : IApiEvent
+public interface IFdc3Event
 {
-  FDC3EventType Type { get; }
-  T Details { get; }
+    public string Type { get; }
+    public object? Details { get; }
+}
+
+public class Fdc3Event : IFdc3Event
+{
+    public string Type { get; }
+    public object? Details { get; }
+
+    public Fdc3Event(string type, object? details = null)
+    {
+        this.Type = type ?? throw new ArgumentNullException(nameof(type));
+        this.Details = details;
+    }
 }
 ```
 
@@ -146,15 +154,26 @@ interface FDC3ChannelChangedEvent extends FDC3Event {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-class Details 
+public interface IFdc3ChannelChangedEventDetails
 {
-  string? CurrentChannelId { get; }
+    string? CurrentChannelId { get; }
+}
+public class Fdc3ChannelChangedEventDetails : IFdc3ChannelChangedEventDetails
+{
+    public string? CurrentChannelId { get; }
+
+    public Fdc3ChannelChangedEventDetails(string? channelId)
+    {
+        this.CurrentChannelId = channelId;
+    }
 }
 
-interface IFDC3ChannelChangedEvent : IFDC3Event
+public class Fdc3ChannelChangedEvent : Fdc3Event
 {
-  FDC3EventType Type { get; }
-  Details Details { get; } // TODO 
+    public Fdc3ChannelChangedEvent(string? channelId)
+        : base(Fdc3EventType.UserChannelChanged, new Fdc3ChannelChangedEventDetails(channelId))
+    {
+    }
 }
 ```
 
@@ -178,11 +197,11 @@ type PrivateChannelEventTypes = "addContextListener" | "unsubscribe" | "disconne
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-enum PrivateChannelEventType
+public static class Fdc3PrivateChannelEventType
 {
-  AddContextListener, 
-  Unsubscribe,
-  Disconnect
+    public const string AddContextListener = "AddContextListener";
+    public const string Unsubscribe = "Unsubscribe";
+    public const string Disconnect = "Disconnect";
 }
 ```
 
@@ -210,10 +229,18 @@ interface PrivateChannelEvent extends ApiEvent {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-interface IPrivateChannelEvent<T> : IApiEvent
+public interface IFdc3PrivateChannelEventDetails
 {
-  PrivateChannelEventType Type { get; }
-  T Details { get; }
+    string? ContextType { get; }
+}
+public class Fdc3PrivateChannelEventDetails : IFdc3PrivateChannelEventDetails
+{
+    public string? ContextType { get; }
+
+    public Fdc3PrivateChannelEventDetails(string? contextType)
+    {
+        this.ContextType = contextType;
+    }
 }
 ```
 
@@ -245,15 +272,12 @@ interface PrivateChannelAddContextListenerEvent extends PrivateChannelEvent {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-class Details 
+public class Fdc3PrivateChannelAddContextListenerEvent : Fdc3Event
 {
-  string? ContextType { get; }
-}
-
-interface IPrivateChannelAddContextListenerEvent : IPrivateChannelEvent
-{
-  PrivateChannelEventType Type { get; }
-  Details Details { get; }
+    public Fdc3PrivateChannelAddContextListenerEvent(string? contextType)
+        : base(Fdc3PrivateChannelEventType.AddContextListener, new Fdc3PrivateChannelEventDetails(contextType))
+  {
+  }
 }
 ```
 
@@ -281,15 +305,12 @@ interface PrivateChannelUnsubscribeEvent extends PrivateChannelEvent {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-class Details 
+public class Fdc3PrivateChannelUnsubscribeListenerEvent : Fdc3Event
 {
-  string? ContextType { get; }
-}
-
-interface IPrivateChannelUnsubscribeEvent : IPrivateChannelEvent
-{
-  PrivateChannelEventType Type { get; }
-  Details Details { get; } 
+    public Fdc3PrivateChannelUnsubscribeListenerEvent(string? contextType)
+            : base(Fdc3PrivateChannelEventType.Unsubscribe, new Fdc3PrivateChannelEventDetails(contextType))
+    {
+    }
 }
 ```
 
@@ -315,8 +336,12 @@ export interface PrivateChannelDisconnectEvent extends PrivateChannelEvent {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-public interface IPrivateChannelDisconnectEvent : IPrivateChannelEvent {
-  PrivateChannelEventType Type { get; }
+public class Fdc3PrivateChanneDisconnectEvent : Fdc3Event
+{
+    public Fdc3PrivateChanneDisconnectEvent()
+        : base(Fdc3PrivateChannelEventType.Disconnect)
+    {
+    }
 }
 ```
 
