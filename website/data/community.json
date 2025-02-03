@@ -201,14 +201,14 @@
     "description": "<p>interop.io was formed in June 2023 through the merger of Finsemble and Glue42 to create the global powerhouse driving application interoperability in capital markets and beyond. Leveraging FDC3 and workflow automation, interop.io allows clients to create Straight Through Workflows™ and benefit from unparalleled levels of business agility, a more productive workforce and better operational control.</p><p>The firm employs over 170 people including 110 full time R&D and implementation engineers located in New York, Charlottesville, London, and Sofia. For more information, visit <a href='https://interop.io' alt='interop.io website'>interop.io</a>.</p>"
   },
   {
-    "title": "OpenFin",
-    "publisher": "OpenFin Inc.",
-    "image": "/img/users/Openfin.png",
-    "infoLink": "https://openfin.co/",
+    "title": "Here&#8482;",
+    "publisher": "Here Enterprise Inc.",
+    "image": "/img/users/OpenFin_Here_Browser.png",
+    "infoLink": "https://here.io/",
     "docsLink": "https://developers.openfin.co/of-docs",
     "type": "platform-provider",
     "badges": [],
-    "description": "<p>OpenFin founded the FDC3 standard in 2017 in collaboration with major banks and asset managers. Deployed at more than 2400 financial firms, OpenFin OS, allows applications from multiple providers to co-exist and interoperate on the desktop.</p><p>OpenFin OS consists of a secure, Chromium-based runtime called Container and a visual interface called <a href='https://www.openfin.co/workspace/' alt='OpenFin Workspace'>Workspace</a>. Workspace gets you running in no time, with themeable UI components for complex windowing, advanced search, actionable notifications and application discovery.</p><p>You can also build your own solutions using the <a href='https://www.openfin.co/container/' alt='OpenFin Container'>OpenFin Container</a>, native language <a href='https://www.openfin.co/container/adapters/' alt='OpenFin Native Adapters'>adapters</a> and APIs while remaining compatible with everything else built on OpenFin.</p>",
+    "description": "<p>Here&#8482; (formerly OpenFin) founded the FDC3 standard in 2017 in collaboration with major banks and asset managers. Deployed at more than 2400 financial firms, OpenFin OS, allows applications from multiple providers to co-exist and interoperate on the desktop.</p><p>OpenFin OS consists of a secure, Chromium-based runtime called Container and a visual interface called <a href='https://www.openfin.co/workspace/' alt='OpenFin Workspace'>Workspace</a>. Workspace gets you running in no time, with themeable UI components for complex windowing, advanced search, actionable notifications and application discovery.</p><p>You can also build your own solutions using the <a href='https://www.openfin.co/container/' alt='OpenFin Container'>OpenFin Container</a>, native language <a href='https://www.openfin.co/container/adapters/' alt='OpenFin Native Adapters'>adapters</a> and APIs while remaining compatible with everything else built on OpenFin.</p>",
     "conformance": [
       {
         "src": "/img/community/certified-1.2.png",
