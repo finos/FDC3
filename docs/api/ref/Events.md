@@ -78,7 +78,7 @@ type FDC3EventTypes = "userChannelChanged";
 ```csharp
 public static class Fdc3EventType
 {
-    public const string UserChannelChanged = "UserChannelChanged";
+    public const string UserChannelChanged = "userChannelChanged";
 }
 ```
 
@@ -199,9 +199,9 @@ type PrivateChannelEventTypes = "addContextListener" | "unsubscribe" | "disconne
 ```csharp
 public static class Fdc3PrivateChannelEventType
 {
-    public const string AddContextListener = "AddContextListener";
-    public const string Unsubscribe = "Unsubscribe";
-    public const string Disconnect = "Disconnect";
+    public const string AddContextListener = "addContextListener";
+    public const string Unsubscribe = "unsubscribe";
+    public const string Disconnect = "disconnect";
 }
 ```
 
