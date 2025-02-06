@@ -234,7 +234,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 | App  | Step                 | Details                                                                                                                                    |
 |-------|-----------------|---------------------------------------------------------------------------------------------------|
-| Test   | 1. Raise intent | Test raises an intent with `fdc3.raiseIntent(""kTestingIntent", testContextX, {appId: "<K's appId>"})`<br />starts app K. |
+| Test   | 1. Raise intent | Test raises an intent with `fdc3.raiseIntent("kTestingIntent", testContextX, {appId: "<K's appId>"})`<br />starts app K. |
 | K       | 2. Receive Intent & Context     | After starting up, K runs `fdc3.addIntentListener("kTestingIntent")` to register its listener.<br />It them receives `testContextX`, matching that sent by Test |
 | Test   | 3. IntentResolution   | The `raiseIntent` call returns an `IntentResolution` Object with an `AppIdentifier` as the `source field` with App K's `appId` and `instanceId` set.   |
 | Test   | 4. await results          | Test should `await resolution.getResult()` on the `IntentResolution` object returned in the previous step. A promise should be returned quickly.  |
