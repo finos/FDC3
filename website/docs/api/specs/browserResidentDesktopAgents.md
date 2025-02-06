@@ -10,11 +10,11 @@ Browser Resident Desktop Agents (DAs) are an experimental feature added to FDC3 
 
 :::
 
-This document specifies the required behavior for Browser-Resident Desktop Agents (DA). Such agents allow FDC3 applications running directly in a browser to participate in FDC3 interop by way of a `getAgent()` function that is provided by the [`@finos/fdc3` NPM module](https://www.npmjs.com/package/@finos/fdc3) and a standardized communication protocol. This approach is in contrast to "Preload DAs" which run on technology that allows the FDC3 interface to be injected (such as Electron, WebView2 or a browser-extension based implementation).
+This document specifies the required behavior for Browser-Resident Desktop Agents (DA). Such agents allow FDC3 applications running directly in a browser to participate in FDC3 interop by way of a `getAgent()` function that is provided by the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3) and a standardized communication protocol. This approach is in contrast to "Preload DAs" which run on technology that allows the FDC3 interface to be injected (such as Electron, WebView2 or a browser-extension based implementation).
 
 This specification only applies to apps running in a browser and therefore assumes use of JavaScript/TypeScript and HTML APIs. Implementations in other languages such as .NET are not covered.
 
-Along with this specification, a new general connection strategy has been established for FDC3 compliant web-applications: FDC3 compliant apps SHOULD make use of `getAgent()` function provided by the [`@finos/fdc3` NPM module](https://www.npmjs.com/package/@finos/fdc3) to retrieve their FDC3 interface (an instance of an implementation of the [`DesktopAgent`](../ref/DesktopAgent) interface). Apps that follow these guidelines will be able to interop through either Browser-Resident DAs or [Preload DAs](./preloadDesktopAgents) without the inclusion of code or libraries specific to a particular Desktop Agent vendor or implementation. We refer to this concept as Write Once Run Anywhere (WORA).
+Along with this specification, a new general connection strategy has been established for FDC3 compliant web-applications: FDC3 compliant apps SHOULD make use of `getAgent()` function provided by the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3) to retrieve their FDC3 interface (an instance of an implementation of the [`DesktopAgent`](../ref/DesktopAgent) interface). Apps that follow these guidelines will be able to interop through either Browser-Resident DAs or [Preload DAs](./preloadDesktopAgents) without the inclusion of code or libraries specific to a particular Desktop Agent vendor or implementation. We refer to this concept as Write Once Run Anywhere (WORA).
 
 :::info
 
@@ -24,7 +24,7 @@ Prior to FDC3 2.2, only [Preload Desktop Agents](./preloadDesktopAgents) were su
 
 :::note
 
-This document covers the requirements for _implementors of Browser-Resident Desktop Agents_. The `getAgent()` function that applications use to gain access to an FDC3 interface is provided by the [`@finos/fdc3` NPM module](https://www.npmjs.com/package/@finos/fdc3). Many behavioral details of `getAgent()` are purposefully omitted from this document in order to reduce the required scope of understanding. Please refer to the [getAgent() specification in the FDC3 Web Connection Protocol](webConnectionProtocol.md) for information on how the client side operates or [supported platforms](../supported-platforms) for details of how to access the Desktop Agent API in an application.
+This document covers the requirements for _implementors of Browser-Resident Desktop Agents_. The `getAgent()` function that applications use to gain access to an FDC3 interface is provided by the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3). Many behavioral details of `getAgent()` are purposefully omitted from this document in order to reduce the required scope of understanding. Please refer to the [getAgent() specification in the FDC3 Web Connection Protocol](webConnectionProtocol.md) for information on how the client side operates or [supported platforms](../supported-platforms) for details of how to access the Desktop Agent API in an application.
 
 :::
 
