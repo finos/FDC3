@@ -130,7 +130,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 - `2.0-RaiseIntentSingleResolve`: Perform above test
 - `2.0-RaiseIntentTargetedAppResolve`: Repeat the above test, but:
-  - In the first step use `fdc3.raiseIntent("sharedTestingIntent1", testContextX, {"appID": "<B"s appId>"})` to start app B,
+  - In the first step use `fdc3.raiseIntent("sharedTestingIntent1", testContextX, {"appID": "<B's appId>"})` to start app B,
   - Otherwise, as above.
 - `2.0-RaiseIntentTargetedInstanceResolveOpen`: Repeat the above test, but:
   - Before the first step, use `let appIdentifier = await fdc3.open({appId: "<A's appId>"})` to start A and retrieve its `AppIdentifier` with instance details.
