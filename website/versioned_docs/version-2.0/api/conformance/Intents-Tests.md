@@ -46,11 +46,11 @@ Also we assume a fourth app **D** that is going to discover the intents in the o
 | B   | 2. Gather Context | `fdc.addIntentListener("sharedTestingIntent1")`<br />Receives testContextY, matching that sent by D |
 
 -  `SingleResolve1`: Perform above test
--  `TargetedResolve1`: Use `fdc3.raiseIntent("aTestingIntent", {testContextX}, <A"s App Name>)` to start app A, otherwise, as above
+-  `TargetedResolve1`: Use `fdc3.raiseIntent("aTestingIntent", {testContextX}, <A's App Name>)` to start app A, otherwise, as above
 -  `TargetedResolve2`: Use `fdc3.raiseIntent("aTestingIntent", {testContextX}, {name: "<A's App Name>"})` to start app A, otherwise, as above
--  `TargetedResolve3`: Use `fdc3.raiseIntent("aTestingIntent", {testContextX}, {name: "<app B Name>", appId: "<app B ID>"})` to start app B, otherwise, as above
--  `FailedResolve1-3` As with `TargetedResolve1-3`, but use `fdc3.raiseIntent("aTestingIntent", {testContextY}, <A"s App Name>)` and variations.  You will receive `NoAppsFound` Error
--  `FailedResolve4` As above, but use `fdc3.raiseIntent("aTestingIntent", {testContextX}, <C"s App Name>)`.  You will receive `NoAppsFound` Error
+-  `TargetedResolve3`: Use `fdc3.raiseIntent("aTestingIntent", {testContextX}, {name: "<B's App Name>", appId: "<B's App ID>"})` to start app B, otherwise, as above
+-  `FailedResolve1-3` As with `TargetedResolve1-3`, but use `fdc3.raiseIntent("aTestingIntent", {testContextY}, <A's App Name>)` and variations.  You will receive `NoAppsFound` Error
+-  `FailedResolve4` As above, but use `fdc3.raiseIntent("aTestingIntent", {testContextX}, <C's App Name>)`.  You will receive `NoAppsFound` Error
 
 ## Current Intents Tests ![2.0](https://img.shields.io/badge/FDC3-2.0-blue)
 
