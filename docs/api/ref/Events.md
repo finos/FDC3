@@ -25,7 +25,7 @@ interface ApiEvent {
 <TabItem value="dotnet" label=".NET">
 
 ```
-Not implemented
+Not implemented, as ApiEvent and Fdc3Event definitions are the same, given .NET can not restrict on a string enum. Use IFdc3Event instead
 ```
 
 </TabItem>
