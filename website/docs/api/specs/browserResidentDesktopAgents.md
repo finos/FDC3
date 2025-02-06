@@ -4,7 +4,7 @@ sidebar_label: Browser Desktop Agents
 title: Browser-Resident Desktop Agents (next)
 ---
 
-:::info _[@experimental](../fdc3-compliance#experimental-features)_
+:::info _[@experimental](../../fdc3-compliance#experimental-features)_
 
 Browser Resident Desktop Agents (DAs) are an experimental feature added to FDC3 in 2.2. Limited aspects of their design may change in future versions and they are exempted from the FDC3 Standard's normal versioning and deprecation policies in order to facilitate any necessary change.
 

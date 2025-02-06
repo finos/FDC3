@@ -4,7 +4,7 @@ sidebar_label: Desktop Agent Communication Protocol
 title: Desktop Agent Communication Protocol (next)
 ---
 
-:::info _[@experimental](../fdc3-compliance#experimental-features)_
+:::info _[@experimental](../../fdc3-compliance#experimental-features)_
 
 FDC3's Desktop Agent Communication Protocol (DACP) is an experimental feature added to FDC3 in 2.2. Limited aspects of its design may change in future versions and it is exempted from the FDC3 Standard's normal versioning and deprecation polices in order to facilitate any necessary change.
 
