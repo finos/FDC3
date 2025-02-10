@@ -1,0 +1,44 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/privateChannelUnsubscribeEventListenerRequest.schema.json",
+	"type": "object",
+	"title": "PrivateChannelUnsubscribeEventListener Request",
+	"description": "A request to unsubscribe a context listener.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/PrivateChannelUnsubscribeEventListenerRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/PrivateChannelUnsubscribeEventListenerRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"PrivateChannelUnsubscribeEventListenerRequestType": {
+			"title": "PrivateChannelUnsubscribeEventListener Request Message Type",
+			"const": "privateChannelUnsubscribeEventListenerRequest"
+		},
+		"PrivateChannelUnsubscribeEventListenerRequestPayload": {
+			"title": "PrivateChannelUnsubscribeEventListener Request Payload",
+			"type": "object",
+			"properties": {
+				"listenerUUID": {
+					"$ref": "common.schema.json#/$defs/ListenerUuid"
+				}
+			},
+			"required": [
+				"listenerUUID"
+			],
+			"additionalProperties": false
+		}
+	}
+}

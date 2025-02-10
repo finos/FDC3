@@ -29,13 +29,13 @@
     "cpy-cli": "4.2.0",
     "cross-env": "^7.0.3",
     "del-cli": "5.0.0",
+    "fs-extra": "^11.2.0",
+    "js-yaml": "^4.1.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "replace-in-files-cli": "2.0.0",
     "replace-json-property": "1.8.0",
-    "rimraf": "5.0.0",
-    "fs-extra": "^11.2.0",
-    "js-yaml": "^4.1.0"
+    "rimraf": "5.0.0"
   },
   "resolutions": {
     "got": "^11.8.5",
@@ -47,7 +47,7 @@
     "trim": "1.0.1"
   },
   "dependencies": {
-    "trim": "1.0.1",
-    "axios": "0.28.1"
+    "axios": "0.28.1",
+    "trim": "1.0.1"
   }
 }

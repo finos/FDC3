@@ -18,19 +18,10 @@
       "description": "A request for details of instances of a particular app",
       "properties":{
         "type": {
-          "title": "FindInstances Request Message Type",
-          "const": "findInstancesRequest"
+          "$ref": "../api/findInstancesRequest.schema.json#/$defs/FindInstancesRequestType"
         },
         "payload": {
-          "type": "object",
-          "title": "FindInstances Request Payload",
-          "properties": {
-            "app": {
-              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
-            }
-          },
-          "required": ["app"],
-          "additionalProperties": false
+          "$ref": "../api/findInstancesRequest.schema.json#/$defs/FindInstancesRequestPayload"
         },
         "meta": {
           "title": "FindInstances request metadata",

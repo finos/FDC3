@@ -18,19 +18,22 @@
       "description": "A request for metadata about an app",
       "properties": {
         "type": {
-          "title": "GetAppMetadata Request Message Type",
-          "const": "getAppMetadataRequest"
+          "$ref": "../api/getAppMetadataRequest.schema.json#/$defs/GetAppMetadataRequestType"
         },
         "payload": {
-          "title": "GetAppMetadata Request Payload",
           "type": "object",
-          "properties": {
-            "app": {
-              "$ref": "common.schema.json#/$defs/AppDestination"
-            }
-          },
-          "required": ["app"],
-          "additionalProperties": false
+          "allOf": [{
+            "properties": {
+              "app": {
+                "$ref": "common.schema.json#/$defs/AppDestination"
+              }
+            },
+            "required": [
+              "app"
+            ]
+          },{
+            "$ref": "../api/getAppMetadataRequest.schema.json#/$defs/GetAppMetadataRequestPayload"
+          }]
         },
         "meta": {
           "title" : "GetAppMetadata Request Metadata",

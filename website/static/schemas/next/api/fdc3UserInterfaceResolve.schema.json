@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceResolve.schema.json",
+  "title": "Fdc3 UserInterface Resolve",
+  "description": "Setup message sent by the DA proxy code in getAgent() to an intent resolver UI with the resolver data to setup the UI.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/Fdc3UserInterfaceResolveBase"
+    },
+    {
+      "$ref": "fdc3UserInterfaceMessage.schema.json"
+    }
+  ],
+  "$defs": {
+    "Fdc3UserInterfaceResolveBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Fdc3 UserInterface Resolve Message Type",
+          "const": "Fdc3UserInterfaceResolve"
+        },
+        "payload": {
+          "title": "Fdc3 UserInterface Resolve Payload",
+          "type": "object",
+          "properties": {
+            "context": {
+              "$ref": "../context/context.schema.json",
+              "title": "Context"
+            },
+            "appIntents": {
+              "title": "Resolution options",
+              "type": "array",
+              "description": "An array of AppIntent objects defining the resolution options.",
+              "items": {
+                "$ref": "api.schema.json#/definitions/AppIntent"
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false,
+          "required": ["context", "appIntents"]
+        }
+      },
+      "required": [
+        "type",
+        "payload"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
+

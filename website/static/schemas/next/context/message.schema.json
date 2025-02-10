@@ -33,43 +33,12 @@
           "title": "Message entities",
           "description": "A map of string IDs to entities that should be attached to the message, such as an action to perform, a file attachment, or other FDC3 context object.",
           "additionalProperties": {
-            "anyOf": [
+            "oneOf": [
               {
                 "$ref": "action.schema.json#"
               },
               {
-                "type": "object",
-                "title": "File attachment",
-                "description": "A File attachment encoded in the form of a data URI",
-                "properties": {
-                  "type": {
-                    "const": "fdc3.entity.fileAttachment"
-                  },
-                  "data": {
-                    "type": "object",
-                    "properties": {
-                      "name": {
-                        "type": "string",
-                        "title": "File name",
-                        "description": "The name of the attached file"
-                      },
-                      "dataUri": {
-                        "type": "string",
-                        "format": "uri",
-                        "title": "",
-                        "description": "A data URI encoding the content of the file to be attached"
-                      }
-                    },
-                    "required": [
-                      "name",
-                      "dataUri"
-                    ]
-                  }
-                },
-                "required": [
-                  "type",
-                  "data"
-                ]
+                "$ref": "fileAttachment.schema.json#"
               }
             ]
           }
