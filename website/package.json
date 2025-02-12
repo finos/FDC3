@@ -24,9 +24,9 @@
     "docusaurus": "docusaurus"
   },
   "devDependencies": {
-    "@docusaurus/core": "~2.4.1",
-    "@docusaurus/preset-classic": "~2.4.1",
-    "@docusaurus/theme-mermaid": "~2.4.1",
+    "@docusaurus/core": "~3.7.0",
+    "@docusaurus/preset-classic": "~3.7.0",
+    "@docusaurus/theme-mermaid": "~3.7.0",
     "clsx": "^1.2.1",
     "cpy-cli": "4.2.0",
     "cross-env": "^7.0.3",
