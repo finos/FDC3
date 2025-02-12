@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		rightAlign: {
 			flexDirection: "row",
 			justifyContent: "flex-end",
-		}
+		},
 	})
 );
 
@@ -158,7 +158,7 @@ export const ContextLinking = observer(() => {
 			<Grid item xs={12}>
 				<Typography variant="h5">Add context listener</Typography>
 			</Grid>
-		
+
 			<Grid
 				container
 				direction="row"
@@ -197,7 +197,6 @@ export const ContextLinking = observer(() => {
 							<Button variant="contained" color="primary" onClick={handleAddContextListener}>
 								Add listener
 							</Button>
-
 						</Grid>
 						<Grid item className={classes.controls}>
 							<Tooltip title="Copy code example" aria-label="Copy code example">
@@ -212,14 +211,17 @@ export const ContextLinking = observer(() => {
 							</Tooltip>
 						</Grid>
 						<Grid item className={classes.controls}>
-							<Link onClick={openApiDocsLink} target="FDC3APIDocs" href="https://fdc3.finos.org/docs/api/ref/Channel#addcontextlistener">
+							<Link
+								onClick={openApiDocsLink}
+								target="FDC3APIDocs"
+								href="https://fdc3.finos.org/docs/api/ref/Channel#addcontextlistener"
+							>
 								<InfoOutlinedIcon />
 							</Link>
 						</Grid>
 					</Grid>
 				</Grid>
 			</Grid>
-			
 		</div>
 	);
 });

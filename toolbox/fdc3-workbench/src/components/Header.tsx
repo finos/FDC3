@@ -7,7 +7,8 @@ import React, { useEffect, useState } from "react";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Tooltip, Typography } from "@material-ui/core";
 import WarningIcon from "@material-ui/icons/Warning";
-import fdc3, { ImplementationMetadata } from "../utility/Fdc3Api";
+import { getAgent } from "@finos/fdc3";
+import { ImplementationMetadata } from "../utility/Fdc3Api";
 
 declare global {
 	interface Window {
@@ -74,7 +75,7 @@ export const Header = (props: { fdc3Available: boolean }) => {
 	const classes = useStyles();
 	const [appInfo, setAppInfo] = useState<any>();
 	const params = new URLSearchParams(window.location.search);
-	const paramVersion = params.get("fdc3Version")?.replace(/\/$/, '') || '';
+	const paramVersion = params.get("fdc3Version")?.replace(/\/$/, "") || "";
 	const [chosenVersion, setChosenVersion] = useState<string>("2.0");
 	let warningText = `Your FDC3 version (${appInfo?.fdc3Version}) doesn't match the version of the FDC3 Workbench you are using (${chosenVersion})`;
 	const supportedVersion = ["2.0", "1.2"];
@@ -84,18 +85,17 @@ export const Header = (props: { fdc3Available: boolean }) => {
 			//getInfo is not available in FDC3 < v1.2, handle any errors thrown when trying to use it
 			const updateInfo = async () => {
 				let implInfo: ImplementationMetadata | null = null;
-				
+
 				//Then if chosenVersion == "2.0"  then implInfo = await implInfoPromise   else implInfo = implInfoPromise  (with handling for <1.2 where getInfo() doesn't exist at all.
 				try {
-					
-					const implInfoPromise: Promise<ImplementationMetadata> | ImplementationMetadata = fdc3.getInfo();
-					if (paramVersion == "1.2" && (implInfoPromise as unknown as ImplementationMetadata).fdc3Version){
+					const implInfoPromise = getAgent().then((agent) => agent.getInfo());
+					if (paramVersion == "1.2" && (implInfoPromise as unknown as ImplementationMetadata).fdc3Version) {
 						//should not expect a promise if we're really working with 1.2
-						implInfo = (implInfoPromise as unknown as ImplementationMetadata);
+						implInfo = implInfoPromise as unknown as ImplementationMetadata;
 					} else {
 						implInfo = await implInfoPromise;
 					}
-					
+
 					let displayInfo = {
 						fdc3Version: "not specified",
 						provider: "not specified",
@@ -107,20 +107,19 @@ export const Header = (props: { fdc3Available: boolean }) => {
 					};
 
 					let mergedAppMetaData = Object.assign({}, displayInfo.appMetadata, implInfo.appMetadata);
-					displayInfo = Object.assign(displayInfo, implInfo, {appMetadata: mergedAppMetaData});
+					displayInfo = Object.assign(displayInfo, implInfo, { appMetadata: mergedAppMetaData });
 
-					setAppInfo(displayInfo);		
+					setAppInfo(displayInfo);
 				} catch (e) {
 					console.error("Failed to retrieve FDC3 implementation info", e);
 				}
 
-				
 				if (paramVersion) {
 					setChosenVersion(paramVersion);
-				} else if(implInfo?.fdc3Version && implInfo.fdc3Version == "2.1") {
+				} else if (implInfo?.fdc3Version && implInfo.fdc3Version == "2.1") {
 					//API version 2.1 is backwards compatible with 2.0
 					setChosenVersion("2.0");
-				}else if(implInfo?.fdc3Version && supportedVersion.includes(implInfo.fdc3Version)) {
+				} else if (implInfo?.fdc3Version && supportedVersion.includes(implInfo.fdc3Version)) {
 					setChosenVersion(implInfo.fdc3Version);
 				} else {
 					setChosenVersion("2.0");
@@ -143,12 +142,14 @@ export const Header = (props: { fdc3Available: boolean }) => {
 							<img src="./fdc3-logo.png" className={classes.headerCube} />
 						</Typography>
 						<Typography color="inherit">
-							version:&nbsp;  
+							version:&nbsp;
 							{supportedVersion.map((ver, index) => (
 								<span key={index}>
 									{ver === chosenVersion ? (
 										//version 2.0 serves for both 2.0 and 2.1
-										<span><b>{ver == "2.0" ? "2.0+" : ver}</b></span>
+										<span>
+											<b>{ver == "2.0" ? "2.0+" : ver}</b>
+										</span>
 									) : (
 										<a className={`${classes.link}`} href={`?fdc3Version=${ver}`}>
 											{ver == "2.0" ? "2.0+" : ver}
@@ -166,7 +167,8 @@ export const Header = (props: { fdc3Available: boolean }) => {
 								<tr>
 									<th scope="row">FDC3 Version</th>
 									{appInfo?.fdc3Version ? (
-										((chosenVersion === appInfo.fdc3Version) || (chosenVersion === "2.0" && appInfo.fdc3Version === "2.1")) ? (
+										chosenVersion === appInfo.fdc3Version ||
+										(chosenVersion === "2.0" && appInfo.fdc3Version === "2.1") ? (
 											<td>{appInfo.fdc3Version}</td>
 										) : (
 											<td className={classes.warningText}>
@@ -189,13 +191,15 @@ export const Header = (props: { fdc3Available: boolean }) => {
 									<td>{appInfo?.providerVersion ? appInfo.providerVersion : "unknown"}</td>
 								</tr>
 								{chosenVersion != "1.2" ? (
-								<tr>
-									<th scope="row">My AppId</th>
-									<td className={classes.appid}>
-										{appInfo?.appMetadata?.appId ? appInfo.appMetadata.appId : "unknown"}
-									</td>
-								</tr>
-								) : ""}
+									<tr>
+										<th scope="row">My AppId</th>
+										<td className={classes.appid}>
+											{appInfo?.appMetadata?.appId ? appInfo.appMetadata.appId : "unknown"}
+										</td>
+									</tr>
+								) : (
+									""
+								)}
 							</tbody>
 						</table>
 					</div>
