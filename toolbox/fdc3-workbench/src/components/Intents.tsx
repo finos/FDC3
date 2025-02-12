@@ -4,7 +4,14 @@
  */
 
 import React, { ChangeEvent, ReactElement, useEffect, useState } from "react";
-import fdc3, { AppMetadata, ContextType, IntentResolution, IntentTargetOption } from "../utility/Fdc3Api";
+import {
+	AppMetadata,
+	ContextType,
+	getTargetOptions,
+	getTargetOptionsForContext,
+	IntentResolution,
+	IntentTargetOption,
+} from "../utility/Fdc3Api";
 import { toJS } from "mobx";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import {
@@ -21,7 +28,7 @@ import {
 	TextField,
 	Switch,
 	Link,
-	ListSubheader
+	ListSubheader,
 } from "@material-ui/core";
 import { observer } from "mobx-react";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
@@ -41,6 +48,7 @@ import { FormControlLabel } from "@material-ui/core";
 import { RadioGroup } from "@material-ui/core";
 import { Alert, ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
+import { getAgent } from "@finos/fdc3";
 
 // interface copied from lib @material-ui/lab/Autocomplete
 interface FilterOptionsState<T> {
@@ -233,9 +241,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 				const targetObj = JSON.parse(contextTargetApp);
 				let target = targetObj as AppMetadata;
 
-				setIntentForContextResolution(
-					await intentStore.raiseIntentForContext(raiseIntentWithContextContext, target)
-				);
+				setIntentForContextResolution(await intentStore.raiseIntentForContext(raiseIntentWithContextContext, target));
 				return;
 			} catch (e) {
 				console.error("Error passing raiseIntentForContext target option value!", contextTargetApp, e);
@@ -257,7 +263,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 		setTargetOptionsforContext([]);
 	};
 
-	const handleTargetChange = (event: React.ChangeEvent<{value: unknown}>) => {
+	const handleTargetChange = (event: React.ChangeEvent<{ value: unknown }>) => {
 		if (event.target.value === "None") {
 			setTargetApp("None");
 		} else {
@@ -271,7 +277,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 		} else {
 			setContextTargetApp(event.target.value as string);
 		}
-};
+	};
 
 	const handleChangeListener =
 		(setValue: ListenerSetValue, setError: ListenerSetError) => (event: React.ChangeEvent<{}>, newValue: any) => {
@@ -314,16 +320,19 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 			} else if (!raiseIntentContext) {
 				setRaiseIntentError("Select a context first");
 			} else {
-				const intentTargetOptions: IntentTargetOption[] = await fdc3.getTargetOptions(intentValue.value, toJS(raiseIntentContext))
+				const intentTargetOptions: IntentTargetOption[] = await getTargetOptions(
+					intentValue.value,
+					toJS(raiseIntentContext)
+				);
 
-				if(intentTargetOptions.length === 0) {
+				if (intentTargetOptions.length === 0) {
 					setUseTargets(false);
 					clearTargets();
 					return;
 				}
 
 				const menuItems: ReactElement[] = [];
-	
+
 				//check if there are any target options
 				if (intentTargetOptions.length === 0) {
 					menuItems.push(
@@ -342,7 +351,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 					menuItems.push(<ListSubheader key={`subheading-app-targets`}>Target apps</ListSubheader>);
 					intentTargetOptions.forEach((option) => {
 						const targetLabel: string = option.metadata.title ?? option.appId;
-						if(option.launchNew) {
+						if (option.launchNew) {
 							menuItems.push(
 								<MenuItem className="app" key={option.appId} value={JSON.stringify(option.metadata)}>
 									{targetLabel}
@@ -350,18 +359,18 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 							);
 						}
 					});
-					
+
 					//check if there are any target options
-					if (intentTargetOptions.find((value) => value?.instances.length > 0)){
+					if (intentTargetOptions.find((value) => value?.instances.length > 0)) {
 						//add app instance targets
 						menuItems.push(<ListSubheader key={`subheading-app-instance-targets`}>Target app instances</ListSubheader>);
 						intentTargetOptions.forEach((option) => {
 							const targetLabel: string = option.metadata.title ?? option.appId;
 							option?.instances.forEach((instance) => {
 								menuItems.push(
-								<MenuItem className="instance" key={instance.instanceId} value={JSON.stringify(instance)}>
-									{`${targetLabel} (${instance.instanceId})`}
-								</MenuItem>
+									<MenuItem className="instance" key={instance.instanceId} value={JSON.stringify(instance)}>
+										{`${targetLabel} (${instance.instanceId})`}
+									</MenuItem>
 								);
 							});
 						});
@@ -370,8 +379,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 
 				setTargetOptions(menuItems);
 			}
-			
-		}
+		};
 		fetchAppsAndInstances();
 	};
 
@@ -382,10 +390,9 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 				if (!raiseIntentWithContextContext) {
 					//no settable error at the moment... setRaiseIntentError("enter context name");
 				} else {
-					const contextTargetOptions = await fdc3.getTargetOptionsForContext(toJS(raiseIntentWithContextContext));
+					const contextTargetOptions = await getTargetOptionsForContext(toJS(raiseIntentWithContextContext));
 
 					if (Object.keys(contextTargetOptions).length > 0) {
-
 						menuItems.push(
 							<MenuItem key="none" value="None">
 								None
@@ -396,7 +403,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 						menuItems.push(<ListSubheader key={`subheading-app-targets`}>Target apps</ListSubheader>);
 						contextTargetOptions.forEach((option) => {
 							const targetLabel: string = option.metadata.title ?? option.appId;
-							if(option.launchNew) {
+							if (option.launchNew) {
 								menuItems.push(
 									<MenuItem className="app" key={option.appId} value={JSON.stringify(option.metadata)}>
 										{targetLabel}
@@ -407,24 +414,24 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 
 						//check if there are any target options
 						//check if there are any target options
-					if (contextTargetOptions.find((value) => value.instances.length > 0)){
+						if (contextTargetOptions.find((value) => value.instances.length > 0)) {
 							//add app instance targets
-							menuItems.push(<ListSubheader key={`subheading-app-instance-targets`}>Target app instances</ListSubheader>);
+							menuItems.push(
+								<ListSubheader key={`subheading-app-instance-targets`}>Target app instances</ListSubheader>
+							);
 							contextTargetOptions.forEach((option) => {
 								const targetLabel: string = option.metadata.title ?? option.appId;
 								option?.instances.forEach((instance) => {
 									menuItems.push(
-									<MenuItem className="instance" key={instance.instanceId} value={JSON.stringify(instance)}>
-										{`${targetLabel} (${instance.instanceId})`}
-									</MenuItem>
+										<MenuItem className="instance" key={instance.instanceId} value={JSON.stringify(instance)}>
+											{`${targetLabel} (${instance.instanceId})`}
+										</MenuItem>
 									);
 								});
 							});
 						}
-						
 					}
 				}
-
 			} catch (e) {
 				console.log(e);
 			}
@@ -439,7 +446,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 			setTargetOptionsforContext(menuItems);
 		};
 		fetchIntents();
-	}
+	};
 
 	const handleAddIntentListener = () => {
 		if (!intentListener) {
@@ -521,13 +528,12 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 					return;
 				}
 				setRaiseIntentError(false);
-				let appIntents = await fdc3.findIntentsByContext(toJS(raiseIntentContext));
+				let appIntents = await getAgent().then((agent) => agent.findIntentsByContext(toJS(raiseIntentContext)));
 
 				setUseTargets(false);
 				clearTargets();
 
 				if (appIntents.length > 0) {
-					
 					setIntentsForContext(
 						appIntents.map(({ intent }: { intent: any }) => {
 							return {
@@ -558,8 +564,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 		if (!raiseIntentWithContextContext) {
 			setUseContextTargets(false);
 			return;
-		}		
-
+		}
 	}, [raiseIntentWithContextContext]);
 
 	useEffect(() => {
@@ -676,7 +681,11 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 								</IconButton>
 							</Tooltip>
 
-							<Link onClick={openApiDocsLink} target="FDC3APIDocs" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#raiseintent">
+							<Link
+								onClick={openApiDocsLink}
+								target="FDC3APIDocs"
+								href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#raiseintent"
+							>
 								<InfoOutlinedIcon />
 							</Link>
 						</Grid>
@@ -711,7 +720,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 											<Switch checked={useContextTargets} color="primary" onChange={handleContextTargetToggle} />
 										}
 										label="Select Target"
-										disabled={!raiseIntentWithContextContext }
+										disabled={!raiseIntentWithContextContext}
 									/>
 								</FormGroup>
 
@@ -773,7 +782,11 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 								</IconButton>
 							</Tooltip>
 
-							<Link onClick={openApiDocsLink} target="FDC3APIDocs" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#raiseintentforcontext">
+							<Link
+								onClick={openApiDocsLink}
+								target="FDC3APIDocs"
+								href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#raiseintentforcontext"
+							>
 								<InfoOutlinedIcon />
 							</Link>
 						</Grid>
@@ -858,7 +871,11 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 								</IconButton>
 							</Tooltip>
 
-							<Link onClick={openApiDocsLink} target="FDC3APIDocs" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#addintentlistener">
+							<Link
+								onClick={openApiDocsLink}
+								target="FDC3APIDocs"
+								href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#addintentlistener"
+							>
 								<InfoOutlinedIcon />
 							</Link>
 						</Grid>
@@ -980,9 +997,12 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
 						</Grid>
 					)}
 					<Grid item xs={12}>
-						<Alert severity="info">Desktop Agents often require apps that listen for intents to include the intent in their appD record. Refer to your Desktop Agent's documentation if the workbench doesn't appear in the intent resolver.</Alert>
+						<Alert severity="info">
+							Desktop Agents often require apps that listen for intents to include the intent in their appD record.
+							Refer to your Desktop Agent&apos;s documentation if the workbench doesn&apos;t appear in the intent
+							resolver.
+						</Alert>
 					</Grid>
-					
 				</Grid>
 			</form>
 		</div>

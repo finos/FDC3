@@ -3,9 +3,10 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 import { makeObservable, observable, action, runInAction, toJS } from "mobx";
-import fdc3, { ContextType, Fdc3Listener, PrivateChannel } from "../utility/Fdc3Api";
+import { ContextType, Fdc3Listener, PrivateChannel } from "../utility/Fdc3Api";
 import systemLogStore from "./SystemLogStore";
 import { nanoid } from "nanoid";
+import { getAgent } from "@finos/fdc3";
 
 // interface ListenerOptionType {
 // 	title: string;
@@ -36,7 +37,7 @@ class PrivateChannelStore {
 
 	async createPrivateChannel() {
 		try {
-			const currentPrivateChannel: any = await fdc3.createPrivateChannel();
+			const currentPrivateChannel: any = await getAgent().then((agent) => agent.createPrivateChannel());
 			const isSuccess = currentPrivateChannel !== null;
 			if (isSuccess) {
 				this.privateChannelsList.push(currentPrivateChannel);

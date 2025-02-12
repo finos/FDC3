@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme: Theme) =>
 		rightAlign: {
 			flexDirection: "row",
 			justifyContent: "flex-end",
-		}
+		},
 	})
 );
 
@@ -159,14 +159,17 @@ export const Channels = observer(({ handleTabChange }: { handleTabChange: any })
 							</Tooltip>
 						</Grid>
 						<Grid item className={classes.controls}>
-							<Link onClick={openApiDocsLink} target="FDC3APIDocs" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#getcurrentchannel">
+							<Link
+								onClick={openApiDocsLink}
+								target="FDC3APIDocs"
+								href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#getcurrentchannel"
+							>
 								<InfoOutlinedIcon />
 							</Link>
 						</Grid>
 					</Grid>
 				</Grid>
 			</Grid>
-			
 
 			<div className={classes.border}></div>
 
@@ -237,7 +240,11 @@ export const Channels = observer(({ handleTabChange }: { handleTabChange: any })
 							</Tooltip>
 						</Grid>
 						<Grid item className={classes.controls}>
-							<Link onClick={openApiDocsLink} target="FDC3APIDocs" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#joinuserchannel">
+							<Link
+								onClick={openApiDocsLink}
+								target="FDC3APIDocs"
+								href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#joinuserchannel"
+							>
 								<InfoOutlinedIcon />
 							</Link>
 						</Grid>
@@ -280,13 +287,17 @@ export const Channels = observer(({ handleTabChange }: { handleTabChange: any })
 							</Tooltip>
 						</Grid>
 						<Grid item className={classes.controls}>
-							<Link onClick={openApiDocsLink} target="FDC3APIDocs" href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#broadcast">
+							<Link
+								onClick={openApiDocsLink}
+								target="FDC3APIDocs"
+								href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#broadcast"
+							>
 								<InfoOutlinedIcon />
 							</Link>
 						</Grid>
 					</Grid>
 				</Grid>
-				
+
 				<div className={classes.border}></div>
 
 				<ContextLinking />
