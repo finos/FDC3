@@ -1,0 +1,147 @@
+{
+    "applications": [
+        {
+            "appId": "app1",
+            "name": "App One",
+            "title": "Broadcaster",
+            "description": "App will connect to the desktop agent and broadcast on the red channel when you hit the button",
+            "type": "web",
+            "details": {
+                "url": "http://localhost:4000/static/app1/index.html"
+            },
+            "hostManifests": {},
+            "version": "1.0.0",
+            "publisher": "FINOS",
+            "icons": []
+        },
+        {
+            "appId": "app2",
+            "name": "App Two",
+            "title": "Receiver",
+            "description": "App will connect to the desktop agent on startup and listen to messages on the red channel",
+            "type": "web",
+            "details": {
+                "url": "http://localhost:4000/static/app2/index.html"
+            },
+            "hostManifests": {},
+            "version": "1.0.0",
+            "publisher": "FINOS",
+            "icons": []
+        },
+        {
+            "appId": "app3",
+            "name": "App Three",
+            "title": "Receiver & Broadcaster",
+            "description": "App creates two APIs to the desktop agent, broadcasts in one and listens in the other.",
+            "type": "web",
+            "details": {
+                "url": "http://localhost:4000/static/app3/index.html"
+            },
+            "hostManifests": {},
+            "version": "1.0.0",
+            "publisher": "FINOS",
+            "icons": []
+        },
+        {
+            "appId": "workbench",
+            "name": "FDC3 Workbench",
+            "title": "FDC3 Workbench",
+            "description": "Part of the WebFDC3 Demo - Port of the FDC3 Workbench.  Must be started separately on localhost:4001",
+            "type": "web",
+            "details": {
+                "url": "http://localhost:4001/toolbox/fdc3-workbench/"
+            },
+            "hostManifests": {},
+            "version": "1.0.0",
+            "publisher": "FINOS",
+            "icons": []
+        },
+        {
+            "appId": "app4",
+            "name": "App Four",
+            "title": "View News Intent Listener",
+            "description": "Listens for the ViewNews intent only",
+            "type": "web",
+            "details": {
+                "url": "http://localhost:4000/static/app4/index.html"
+            },
+            "hostManifests": {},
+            "version": "1.0.0",
+            "publisher": "FINOS",
+            "icons": [],
+            "interop": {
+                "intents": {
+                    "listensFor": {
+                        "ViewNews": {
+                            "displayName": "View News",
+                            "contexts": [
+                                "fdc3.instrument"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "appId": "app5",
+            "name": "App Five",
+            "title": "View News + View Quote Intent Listener",
+            "description": "Listens for the ViewNews intent only",
+            "type": "web",
+            "details": {
+                "url": "http://localhost:4000/static/app5/index.html"
+            },
+            "hostManifests": {},
+            "version": "1.0.0",
+            "publisher": "FINOS",
+            "icons": [],
+            "interop": {
+                "intents": {
+                    "listensFor": {
+                        "ViewNews": {
+                            "displayName": "View News",
+                            "contexts": [
+                                "fdc3.instrument"
+                            ]
+                        },
+                        "ViewQuote": {
+                            "displayName": "View Quote",
+                            "contexts": [
+                                "fdc3.instrument"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "appId": "app6",
+            "name": "App Six",
+            "title": "Intent Result",
+            "description": "App asks for the result of a ViewQuote intent",
+            "type": "web",
+            "details": {
+                "url": "http://localhost:4000/static/app6/index.html"
+            },
+            "hostManifests": {},
+            "version": "1.0.0",
+            "publisher": "FINOS",
+            "icons": []
+        },
+        {
+            "appId": "app7",
+            "name": "App Seven",
+            "title": "Intent Result 2",
+            "description": "App asks for the result of a ViewNews intent",
+            "type": "web",
+            "details": {
+                "url": "http://localhost:4000/static/app7/index.html"
+            },
+            "hostManifests": {},
+            "version": "1.0.0",
+            "publisher": "FINOS",
+            "icons": []
+        }
+    ],
+    "message": "OK"
+}
