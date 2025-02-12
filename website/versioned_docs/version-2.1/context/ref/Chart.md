@@ -21,17 +21,17 @@ In addition to handling requests to plot charts, a charting application may use 
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/chart.schema.json>
+[https://fdc3.finos.org/schemas/2.1/context/chart.schema.json](https://fdc3.finos.org/schemas/2.1/context/chart.schema.json)
 
 ## Details
 
 | Property         | Type            | Required | Example Value        |
 |------------------|-----------------|----------|----------------------|
 | `type`           | string          | Yes      | `'fdc3.chart'`     |
-| `instruments`    | Instrument[]  | Yes      | <pre>[<br/>&emsp;&emsp;{<br/>&emsp;&emsp;&emsp;&emsp;"type": "fdc3.instrument",<br/>&emsp;&emsp;&emsp;&emsp;"id": {<br/>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"ticker": "AAPL"<br/>&emsp;&emsp;&emsp;&emsp;}<br/>&emsp;&emsp;},<br/>&emsp;&emsp;{<br/>&emsp;&emsp;&emsp;&emsp;"type": "fdc3.instrument",<br/>&emsp;&emsp;&emsp;&emsp;"id": {<br/>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"ticker": "MSFT"<br/>&emsp;&emsp;&emsp;&emsp;}<br/>&emsp;&emsp;}<br/>]</pre> |
-| `range` | TimeRange  | No       | <pre>{<br/>&emsp;&emsp;"type": "fdc3.timeRange",<br/>&emsp;&emsp;"startTime": "2022-03-30T15:44:44+00:00",<br/>&emsp;&emsp;"endTime": "2022-04-30T23:59:59+00:00"<br/>}</pre>            |
+| `instruments`    | Instrument[]  | Yes      | <pre>[<br/>&emsp;&emsp;\{<br/>&emsp;&emsp;&emsp;&emsp;"type": "fdc3.instrument",<br/>&emsp;&emsp;&emsp;&emsp;"id": \{<br/>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"ticker": "AAPL"<br/>&emsp;&emsp;&emsp;&emsp;\}<br/>&emsp;&emsp;\},<br/>&emsp;&emsp;\{<br/>&emsp;&emsp;&emsp;&emsp;"type": "fdc3.instrument",<br/>&emsp;&emsp;&emsp;&emsp;"id": \{<br/>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;"ticker": "MSFT"<br/>&emsp;&emsp;&emsp;&emsp;\}<br/>&emsp;&emsp;\}<br/>]</pre> |
+| `range` | TimeRange  | No       | <pre>\{<br/>&emsp;&emsp;"type": "fdc3.timeRange",<br/>&emsp;&emsp;"startTime": "2022-03-30T15:44:44+00:00",<br/>&emsp;&emsp;"endTime": "2022-04-30T23:59:59+00:00"<br/>\}</pre>            |
 | `style`    | string  | No       | one of: `'line'`, `'bar'`, `'stacked-bar'`, `'mountain'`, `'candle'`, `'pie'`, `'scatter'`, `'histogram'`, `'heatmap'`, `'custom'`      |
-| `otherConfig`* | array  | No |  `[ {/* additional config context objects */} ]`  |
+| `otherConfig`* | array  | No |  `[ \{/* additional config context objects */\} ]`  |
 
 ::: info
 

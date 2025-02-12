@@ -17,9 +17,10 @@ In the real world the AppD would support many use cases as defined in the
 The following provides some common use cases and benefits.
 
 ## Embedded Launcher
+
 A desktop application has the ability to launch (or initialize) an application
 by retrieving all necessary data via a REST call(s) to an AppD service
-and metadata location. As described in the [AppD Discovery](../appd-discovery)
+and metadata location. As described in the [AppD Discovery](discovery)
 section, this call requires an application identifier (app1@host.appd.com),
 which can be used to both locate the AppD service and key to retrieve the
 specific application data. The resulting application data will describe the

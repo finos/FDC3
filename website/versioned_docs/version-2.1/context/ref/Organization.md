@@ -19,7 +19,7 @@ is for at least one specified identifier to be provided.
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/organization.schema.json>
+[https://fdc3.finos.org/schemas/2.1/context/organization.schema.json](https://fdc3.finos.org/schemas/2.1/context/organization.schema.json)
 
 ## Details
 
@@ -55,7 +55,7 @@ Other Types
 Intents
 
 - [ViewNews](../../intents/ref/ViewNews)
-- [ViewAnalysis](../../intents/ref/viewAnalysis)
+- [ViewAnalysis](../../intents/ref/ViewAnalysis)
 - [ViewProfile](../../intents/ref/ViewProfile)
 - [ViewResearch](../../intents/ref/ViewResearch)
 - [ViewInteractions](../../intents/ref/ViewInteractions)
