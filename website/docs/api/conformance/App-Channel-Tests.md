@@ -55,7 +55,7 @@ hide_title: true
 | B   | 2. Retrieve `Channel`       | Retrieve a `Channel` object representing the same 'App' channel A did (`test-channel`)|
 | B   | 3. Broadcast                | B broadcasts both the instrument context and a contact context, using: <br /> `testChannel.broadcast(<fdc3.instrument>)` <br /> `testChannel.broadcast(<fdc3.contact>)` |
 | A   | 4. Add Context Listener     | A adds a context listener to the channel _after_ B has completed all its broadcasts, via: <br />`await testChannel.addContextListener("fdc3.instrument", handler)` <br /> Ensure that A does NOT receive any context via these listeners (past context is only retrieved via a `getCurrentContext()` call on App channels). |
-| A   | 5. Retrieve Current Context | A is able to retrieve the most recent context of each context type from the `Channel`  via: <br />`const instrument = await testChannel.getCurrentContext('fdc3.instrument')`<br />`const contact = await testChannel.getCurrentContext('fdc3.contact')`<br />Ensure that both contexts retrieved by A are identical to those sent by B|
+| A   | 5. Retrieve Current Context | A is able to retrieve the most recent context of each context type from the `Channel`  via: <br />`const instrument = await testChannel.getCurrentContext("fdc3.instrument")`<br />`const contact = await testChannel.getCurrentContext("fdc3.contact")`<br />Ensure that both contexts retrieved by A are identical to those sent by B|
 
 - `ACContextHistoryTyped`: Perform above test.
 - `ACContextHistoryMultiple`: **B** Broadcasts multiple history items of both types.  Ensure that only the last version of each type is received by **A**.
