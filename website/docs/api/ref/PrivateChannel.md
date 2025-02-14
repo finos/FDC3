@@ -40,6 +40,10 @@ interface  PrivateChannel extends Channel {
 ```csharp
 interface IPrivateChannel : IChannel, IIntentResult
 {
+    //functions
+    Task<IListener> AddEventListener(string? eventType, Fdc3EventHandler handler);
+
+    //deprecated functions
     IListener OnAddContextListener(Action<string?> handler);
     IListener OnUnsubscribe(Action<string?> handler);
     IListener OnDisconnect(Action handler);
@@ -233,7 +237,7 @@ addEventListener(type: PrivateChannelEventTypes  | null, handler: EventHandler):
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-Not implemented
+Task<IListener> AddEventListener(string? eventType, Fdc3EventHandler handler);
 ```
 
 </TabItem>
@@ -257,7 +261,10 @@ const listener: Listener = await myPrivateChannel.addEventListener(null,
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-Not implemented
+IChannel myPrivateChannel;
+var listener = await myPrivateChannel.AddEventListener(null, (event) => {
+    System.Diagnostics.Debug.WriteLine($"Received event ${event.Type}\n\tDetails: ${event.Details}");
+});
 ```
 
 </TabItem>
