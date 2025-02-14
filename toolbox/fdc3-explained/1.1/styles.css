@@ -6,9 +6,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap');
 
 body {
-  font-family: "Noto Sans JP",sans-serif;
-  margin:0;
-  padding:0;
+  font-family: 'Noto Sans JP', sans-serif;
+  margin: 0;
+  padding: 0;
   background-color: white;
 }
 
@@ -19,13 +19,13 @@ body {
   place-content: center;
 }
 table {
-  border:0;
+  border: 0;
 }
-tr{
-  border:0;
+tr {
+  border: 0;
 }
-td{
-  border:0;
+td {
+  border: 0;
 }
 textarea {
   width: 400px;

@@ -3,7 +3,6 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-
 // enable application when FDC3 is available
 document.addEventListener('DOMContentLoaded', () => {
   fdc3Init(enablePage);
@@ -11,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // check if FDC3 is available
 function fdc3Init(callback) {
-  let fdc3Tries = 10
+  let fdc3Tries = 10;
 
   const onFDC3Ready = () => {
     if (window.fdc3) {
@@ -22,14 +21,14 @@ function fdc3Init(callback) {
         window.setTimeout(onFDC3Ready, 100);
       }
     }
-  }
+  };
 
   onFDC3Ready();
 }
 
-const providerDetails = document.getElementById("providerDetails")
-const broadcastButton = document.getElementById("broadcastButton")
-const broadcastText = document.getElementById("broadcastText")
+const providerDetails = document.getElementById('providerDetails');
+const broadcastButton = document.getElementById('broadcastButton');
+const broadcastText = document.getElementById('broadcastText');
 
 function enablePage() {
   console.log('FDC3 is available');
@@ -47,7 +46,7 @@ function enablePage() {
   broadcastText.disabled = false;
 }
 
-function updateProviderDetails(details){
+function updateProviderDetails(details) {
   providerDetails.innerText = details;
 }
 
