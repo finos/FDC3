@@ -2,7 +2,11 @@
   "name": "fdc3-workbench",
   "version": "2.2.0-alpha.3",
   "private": true,
-  "homepage": ".",
+  "homepage": "https://fdc3.finos.org",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finos/FDC3.git"
+  },
   "license": "Apache-2.0",
   "scripts": {
     "dev": "vite",

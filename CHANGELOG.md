@@ -15,7 +15,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added reference materials and supported platforms information for FDC3 in .NET via the [finos/fdc3-dotnet](https://github.com/finos/fdc3-dotnet) project. ([#1108](https://github.com/finos/FDC3/pull/1108))
 * Specifications for getAgent() and Browser-Resident Desktop Agents. ([#1191](https://github.com/finos/FDC3/pull/1191))
 * Specification for Preload Desktop Agents. This content was previously in the supported platforms section. It had been revised and amended to include recommended behavior related to the new validateAppIdentity() function. ([#1191](https://github.com/finos/FDC3/pull/1191))
-* Added optional validateAppIdentity() function to DesktopAgent interface. ([#1191](https://github.com/finos/FDC3/pull/1191))
 * Typescript definitions for getAgent() and related types. ([#1191](https://github.com/finos/FDC3/pull/1191))
 * Typescript definitions for Desktop Agent Communication Protocol (DACP). These constitute the internal "wire protocol" that the "@finos/fdc3" library uses to communicate with Browser-Resident DAs. ([#1191](https://github.com/finos/FDC3/pull/1191))
 * Typescript definitions for Web Connection Protocol (WCP). These constitute the messages used to establish connectivity between "@finos/fdc3" and a Browser-Resident DA. ([#1191](https://github.com/finos/FDC3/pull/1191))

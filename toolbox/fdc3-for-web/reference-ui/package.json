@@ -2,6 +2,7 @@
   "name": "fdc3-for-web-reference-ui",
   "private": true,
   "version": "2.2.0-alpha.3",
+  "license": "Apache-2.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
