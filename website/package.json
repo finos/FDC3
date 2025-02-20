@@ -16,7 +16,7 @@
     "version": "cross-env-shell VERSION=2.2 npm run version-run",
     "version-run": "cross-env-shell \"echo Creating version: \\$VERSION... && npm run prebuild && npm run docusaurus docs:version $VERSION && npm run version:docs-schema && npm run version:docs-replace && npm run version:schemas && npm run version:schemas-replace && npm run version:appd-replace\"",
     "version:docs-schema": "cross-env-shell replace-in-files --string=/schemas/next --replacement=/schemas/$VERSION versioned_docs/version-$VERSION/**/*.md",
-    "version:docs-replace": "cross-env-shell replace-in-files --string='\\(next\\)' --replacement='\\($VERSION\\)' versioned_docs/version-$VERSION/*/*.md",
+    "version:docs-replace": "cross-env-shell replace-in-files --string='\\(next\\)' --replacement='\\($VERSION\\)' versioned_docs/version-$VERSION/**/*.md",
     "version:schemas": "cross-env-shell cpy static/schemas/next/** static/schemas/$VERSION",
     "version:schemas-replace": "cross-env-shell replace-in-files --string=/schemas/next --replacement=/schemas/$VERSION static/schemas/$VERSION/**/*.schema.json",
     "version:appd-replace": "cross-env-shell replace-in-files --string=\"\"next\"\" --replacement=\"\"$VERSION\"\" static/schemas/$VERSION/appd.schema.json",
