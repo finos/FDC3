@@ -1,5 +1,15 @@
 # FDC3 website readme
 
+The FDC3 website is not an integrated part of the FDC3 mono-repo (i.e. its not in `workspaces` element of the main repo's package.json) as it is build separately by netlify. Hence, to build and run the website locally run:
+
+```bash
+cd website
+npm install
+npm run build
+```
+
+Please note that this will *also* build the mono-repo projects via the `prebuild` and `parent-build` scripts as the modules are needed to build UIs (fdc3-workbench and fdc3-reference-ui) hosted within the site.
+
 ## Releasing new versions of the Standard
 
 To create a new version of the website, a number of NPM scripts need to be run that will create the version and update certain content within it (as automatically as possible). There are then a number of additional manual steps to run.
@@ -8,6 +18,7 @@ To create a new version of the website, a number of NPM scripts need to be run t
 
     ```bash
     cd website
+    npm install
     npm run build
     ```
 
@@ -46,12 +57,12 @@ To create a new version of the website, a number of NPM scripts need to be run t
     - Set the `version` filed to the new standard version - but consider appending a beta label, e.g.: `"version": "2.1.0-beta.1",`
     - The new NPM module will be built and submitted to NPM via a Github action automatically when this PR is merged.
 
-7. Test you changes locally by running the site:
+7. Test your changes locally by running the site:
 
     ```bash
-        cd website
-        npm run build
-        npm run start
+    cd website
+    npm run build
+    npm run start
     ```
 
 8. Create a PR and send out details for other maintainers to review and test.

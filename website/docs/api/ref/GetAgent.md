@@ -151,7 +151,7 @@ enum LogLevel {
 
 :::note
 
-As web applications can navigate to or be navigated by users to different URLs and become different applications, validation of an app's identity is necessary. The web application's current URL is passed to web browser-based Desktop Agents to allow them to establish the app's identity - usually connecting it with an App Directory record already known to the Desktop Agent. For more details on identity validation see the identity validation section of the  [Web Connection Protocol (WCP)](specs/webConnectionProtocol).
+As web applications can navigate to or be navigated by users to different URLs and become different applications, validation of an app's identity is necessary. The web application's current URL is passed to web browser-based Desktop Agents to allow them to establish the app's identity - usually connecting it with an App Directory record already known to the Desktop Agent. For more details on identity validation see the identity validation section of the  [Web Connection Protocol (WCP)](../specs/webConnectionProtocol).
 
 :::
 
