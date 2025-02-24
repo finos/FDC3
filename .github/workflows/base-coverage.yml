@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - fdc3-for-web-impl
 
 jobs:
   test_and_upload_coverage:

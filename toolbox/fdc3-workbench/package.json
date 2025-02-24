@@ -13,8 +13,8 @@
     "start": "vite",
     "preview": "vite preview",
     "build": "tsc && vite build",
-    "lint": "eslint --cache --quiet **/*.{ts,tsx,js,jsx} && prettier --check **/*.{ts,tsx,js,jsx,json,yml,css,html,md}",
-    "lint:fix": "eslint --cache --quiet --fix **/*.{ts,tsx,js,jsx} && prettier --write **/*.{ts,tsx,js,jsx} && prettier --write **/*.{json,yml,css,html,md}"
+    "lint": "eslint --cache --quiet src/**/*.{ts,tsx} && prettier --check **/*.{ts,tsx,json,css,html,md}",
+    "lint:fix": "eslint --cache --quiet --fix src/**/*.{ts,tsx} && prettier --write **/*.{ts,tsx} && prettier --write **/*.{json,css,html,md}"
   },
   "eslintConfig": {
     "extends": [
