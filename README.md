@@ -103,19 +103,42 @@ From the root package, you can run `npm run build` to build all the modules, or 
 
 For installation and usage instructions, see: <https://fdc3.finos.org/docs/supported-platforms#usage>
 
-### Bumping Version Numbers (for maintainers)
+### Releasing FDC3 (for maintainers)
 
-It's important that all of the versions of the submodules stay on the same version, and that the references between them are consistent to that version.  To change the version number (say before or after a release) run the following:
+This is a 4-step process:
 
-```
-// first, update version number in package.json
-npm login
-npm version <new version from package.json> --workspaces // changes the version number in all submodule package.json files
-npm run syncpack                          // sycnhronizes version numbers
-npm up                                    // fixes node_module references
-npm run build                             // builds all the modules against the new version
-npm publish --access=public --workspaces  // this step performs a manual release of the npm modules (not needed with GitHub actions releases)
-```
+1.  **Create a release branch**
+
+  Do this locally.  Ensure the branch is named `release/v2.0` (or whatever the next version is).
+  
+  ```bash
+  git checkout -b release/v2.0
+  ```
+  
+2.  **Update the version numbers in the package.json files**
+
+  It's important that all of the versions of the submodules stay on the same version, and that the references between them are consistent to that version.  To change the version number (say before or after a release) run the following:
+
+  ```bash
+  // first, update version number in package.json
+  npm login
+  npm version <new version from package.json> --workspaces // changes the version number in all submodule package.json files
+  npm run syncpack                          // sycnhronizes version numbers
+  npm up                                    // fixes node_module references
+  npm run build                             // builds all the modules against the new version
+  ```
+
+3.  Push the branch to publish the packages to npm
+
+  ```bash
+  git push origin release/v2.0
+  ```
+  
+  This should trigger a GitHub action that will publish the packages to npm.
+
+4.  Create a PR for merging the release branch.
+
+  Once the packages are published, create a PR to merge the release branch into the main branch.  You will need FDC3 maintainers to review and approve the PR.
 
 ## Getting Involved
 
