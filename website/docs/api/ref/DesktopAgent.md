@@ -90,6 +90,9 @@ interface IDesktopAgent
     Task<IPrivateChannel> CreatePrivateChannel();
     Task<IEnumerable<IChannel>> GetUserChannels();
 
+    // non-context events
+    Task<IListener> AddEventListener(string? eventType, Fdc3EventHandler handler);
+
     // OPTIONAL channel management functions
     Task JoinUserChannel(string channelId);
     Task<IChannel?> GetCurrentChannel();
@@ -190,7 +193,7 @@ addEventListener(type: FDC3EventTypes  | null, handler: EventHandler): Promise<L
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-Not implemented
+Task<IListener> AddEventListener(string? eventType, Fdc3EventHandler handler);
 ```
 
 </TabItem>
@@ -210,7 +213,7 @@ Whenever the handler function is called it will be passed an event object with d
 const listener = await fdc3.addEventListener(null, event => { ... });
 
 // listener for a specific event type that logs its details
-const userChannelChangedListener = await fdc3.addEventListener("userChannelChanged ", event => {
+const userChannelChangedListener = await fdc3.addEventListener("userChannelChanged", event => { 
   console.log(`Received event ${event.type}\n\tDetails: ${event.details}`);
   //do something else with the event
 });
@@ -220,7 +223,11 @@ const userChannelChangedListener = await fdc3.addEventListener("userChannelChang
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-Not implemented
+var listener = await _desktopAgent.AddEventListener(null, (event) => { ... });
+
+var userChannelChangedListener = await _desktopAgent.AddEventListener("userChannelChanged", (event) => {
+  System.Diagnostics.Debug.Write($"Received event ${event.Type}\n\tDetails: ${event.Details}");
+});
 ```
 
 </TabItem>
