@@ -128,7 +128,7 @@ This is a 4-step process:
   npm run build                             // builds all the modules against the new version
   ```
 
-3.  Push the branch to publish the packages to npm
+3.  **Push the branch to publish the packages to npm**
 
   ```bash
   git push origin release/v2.0
@@ -136,7 +136,7 @@ This is a 4-step process:
   
   This should trigger a GitHub action that will publish the packages to npm.
 
-4.  Create a PR for merging the release branch.
+4.  **Create a PR for merging the release branch.**
 
   Once the packages are published, create a PR to merge the release branch into the main branch.  You will need FDC3 maintainers to review and approve the PR.
 
