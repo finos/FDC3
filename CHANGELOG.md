@@ -27,7 +27,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added testing policy to [Contributing](CONTRIBUTING) page to address ([810](https://github.com/finos/FDC3/issues/810))
 * Added the ability to control logging to the JS console from getAgent() and the DesktopAgentProxy via arguments to getAgent(). ([#1495](https://github.com/finos/FDC3/pull/1495))
 * Added the ability for a browser-based DesktopAgent to control the timeouts used in the DesktopAgentProxy when making calls to it, via properties in WCP3Handshake message. ([#1497](https://github.com/finos/FDC3/pull/1497))
-
+* Setup package publishing for mono-repo packages
+* Standardized prettier config for fdc3-workbench with other packages)
+* 2.2.0-beta.1 pre-release
 
 ### Changed
 
