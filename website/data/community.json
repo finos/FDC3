@@ -583,5 +583,32 @@
     "description": "Morgan Stanley believes that open standards like FDC3 are essential for unlocking new scenarios and efficiencies in user experience on the desktop for both our employees and our clients.",
     "badges": [],
     "type": "adopter"
+  },
+  {
+    "title": "FDC3 Developer Training Workshop - Rob Moffat, FINOS",
+    "publisher": "FINOS",
+    "image": "/img/training/fdc3-developer-training-workshop.png",
+    "infoLink": "https://youtu.be/9uUKTk2e-Xs?si=ndejBtoHsKIXBAYy",
+    "type": "tools-and-training",
+    "badges": [],
+    "description": "The FDC3 Developer Training Workshop led by Rob Moffat from FINOS aims to teach participants how to build FDC3-enabled applications and understand the framework for defining Contexts and Intents to enable seamless interoperability between desktop applications in the financial services industry."
+  },
+  {
+    "title": "How to Add FDC3 to Your Apps - Julianna Langston, interop.io",
+    "publisher": "FINOS",
+    "image": "/img/training/how-to-add-fdc3-to-your-apps.png",
+    "infoLink": "https://youtu.be/D6WST19pYUs?si=BtGSG7mkEdXBVEGL",
+    "type": "tools-and-training",
+    "badges": [],
+    "description": "This video training provides a practical guide on how to add the FDC3 (Financial Desktop Connectivity and Collaboration) open standard to your applications to enable interoperability between financial desktop applications."
+  },
+  {
+    "title": "FDC3 2.2 & FDC3 on the Web! - Kristopher West, interop.io & Rob Moffat, FINOS",
+    "publisher": "FINOS",
+    "image": "/img/training/fdc3-2.2.png",
+    "infoLink": "https://youtu.be/Z98eSdIt2b0?si=e54cMAY_PvBFTv-c",
+    "type": "tools-and-training",
+    "badges": [],
+    "description": "This training video discusses FDC3 2.2, which tightens several aspects of the FDC3 standard and brings long-awaited improvements, as presented by Kristopher West from interop.io and Rob Moffat from FINOS."
   }
 ]
