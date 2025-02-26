@@ -103,7 +103,7 @@ From the root package, you can run `npm run build` to build all the modules, or 
 
 For installation and usage instructions, see: <https://fdc3.finos.org/docs/supported-platforms#usage>
 
-### Releasing FDC3 (for maintainers)
+### Releasing FDC3 to NPM (for maintainers)
 
 This is a 4-step process:
 
@@ -147,7 +147,9 @@ This is a 4-step process:
   ```
   npm dist-tag add @finos/fdc3@2.1.1 latest
   ```
+### Releasing the FDC3 Website (for maintainers)
 
+Please see instructions in the [website README](./website/README.md).
 
 ## Getting Involved
 
