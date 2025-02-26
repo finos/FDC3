@@ -1,0 +1,112 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/context/rfq.schema.json",
+	"type": "object",
+	"title": "RFQ",
+	"description": "@experimental context type representing a Request For Quote (RFQ).",
+	"allOf": [
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"const": "fdc3.rfq"
+				},
+				"id": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					},
+					"title": "RFQ Identifiers",
+					"description": "One or more identifiers that refer to the RFQ in an OMS or related system. Specific key names for systems are expected to be standardized in future."
+				},
+				"name": {
+					"type": "string",
+					"title": "Name",
+					"description": "An optional human-readable summary of the RFQ."
+				},
+				"notes": {
+					"type": "string",
+					"title": "Notes",
+					"description": "A description or set of notes."
+				},
+				"broker": {
+					"type": "string",
+					"title": "Broker",
+					"description": ""
+				},
+				"product": {
+					"$ref": "product.schema.json",
+					"title": "Product Description",
+					"description": "Details of the order to be quoted for"
+				}
+			},
+			"required": [
+				"type",
+				"id",
+				"product"
+			],
+			"additionalProperties": true
+		},
+		{
+			"$ref": "context.schema.json#/definitions/BaseContext"
+		}
+	],
+	"examples": [
+		{
+			"type": "fdc3.rfq",
+			"id": {
+				"rfqId": "RFQ12345"
+			},
+			"broker": "Broker ABC",
+			"product": {
+				"type": "fdc3.product",
+				"id": {
+					"productId": "SPY-CALLFLYWING+-20241220"
+				},
+				"instrument": {
+					"type": "fdc3.instrument",
+					"id": {
+						"ticker": "SPY"
+					}
+				},
+				"details": {
+					"description": "SPY CF W+ 20DEC24 580/590/600 1x2x1 r572.99 d13% (PHLX)",
+					"structureType": "Call Fly Wing+",
+					"exchange": "PHLX",
+					"size": {
+						"min": 1000,
+						"increment": 100,
+						"type": "Lots"
+					},
+					"price": {
+						"tick": 0.1,
+						"type": "Price"
+					},
+					"legs": [
+						{
+							"type": "Call",
+							"maturityDate": "2024-12-20",
+							"strikePrice": 580,
+							"ratioQty": 1,
+							"side": "Buy"
+						},
+						{
+							"type": "Call",
+							"maturityDate": "2024-12-20",
+							"strikePrice": 590,
+							"ratioQty": -2,
+							"side": "Sell"
+						},
+						{
+							"type": "Call",
+							"maturityDate": "2024-12-20",
+							"strikePrice": 600,
+							"ratioQty": 1,
+							"side": "Buy"
+						}
+					]
+				}
+			}
+		}
+	]
+}

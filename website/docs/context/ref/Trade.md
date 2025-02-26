@@ -48,6 +48,15 @@ A human-readable summary of the trade.
 </details>
 
 <details>
+  <summary><code>notes</code></summary>
+
+**type**: `string`
+
+A description or set of notes.
+
+</details>
+
+<details>
   <summary><code>product</code> <strong>(required)</strong></summary>
 
 **type**: [Product](Product)
@@ -62,6 +71,7 @@ A product that is the subject of the trade.
 {
   "type": "fdc3.trade",
   "name": "...",
+  "notes": "Some notes attached to this trade",
   "id": {
     "myEMS": "12345"
   },
