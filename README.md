@@ -138,7 +138,7 @@ This is a 4-step process:
 
 4.  **Create a PR for merging the release branch.**
 
-  Once the packages are published, create a PR to merge the release branch into the main branch.  You will need FDC3 maintainers to review and approve the PR.
+  Once the packages are published, create a PR to merge the release branch into the main branch.  You will need other FDC3 maintainers to review and approve the PR.
 
 5.  **Set The NPM Version If Releasing A Beta**
 
