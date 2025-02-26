@@ -34,20 +34,12 @@
     "del-cli": "5.0.0",
     "fs-extra": "^11.2.0",
     "js-yaml": "^4.1.0",
+    "prism-react-renderer": "^2.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "replace-in-files-cli": "2.0.0",
     "replace-json-property": "1.8.0",
     "rimraf": "5.0.0"
-  },
-  "resolutions": {
-    "got": "^11.8.5",
-    "trim": "1.0.1",
-    "axios": "0.28.1"
-  },
-  "overrides": {
-    "got": "^11.8.5",
-    "trim": "1.0.1"
   },
   "dependencies": {
     "axios": "0.28.1",
