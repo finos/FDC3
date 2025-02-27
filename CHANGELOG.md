@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [npm v2.2.0-beta.1] - 2024-02-25
+
+* Prerelease of NPM 2.2.0 module
+
 ## [Unreleased]
 
 ### Added
@@ -29,6 +33,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added the ability to control logging to the JS console from getAgent() and the DesktopAgentProxy via arguments to getAgent(). ([#1495](https://github.com/finos/FDC3/pull/1495))
 * Added the ability for a browser-based DesktopAgent to control the timeouts used in the DesktopAgentProxy when making calls to it, via properties in WCP3Handshake message. ([#1497](https://github.com/finos/FDC3/pull/1497))
 * Added .NET docs for Events to API reference. ([#1441](https://github.com/finos/FDC3/pull/1441))
+* Setup package publishing for mono-repo packages. ([#1520](https://github.com/finos/FDC3/pull/1520))
 
 ### Changed
 
@@ -58,6 +63,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added missing id and name fields from the context base schema to respective context schemas (`Contact`, `ContactList`, `Country`, `InstrumentList`, `OrderList`, `Organization`, `Portfolio`, `Position`, `TradeList`). ([#1360](https://github.com/finos/FDC3/pull/1360))
 * Revised FDC3 charter to include well-known language from the FDC3 introduction, better describe FDC3's scope, focus on financial applications, update application types, etc. ([#1079](https://github.com/finos/FDC3/pull/1079))
 * Ensured that `PrivateChannelEvent` extends `ApiEvent` in both sourcecode and documentation. ([#1474](https://github.com/finos/FDC3/pull/1474))
+* Standardized prettier config for fdc3-workbench with other packages. ([#1520](https://github.com/finos/FDC3/pull/1520))
 
 ## [npm v2.1.1] - 2024-06-28
 
