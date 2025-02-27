@@ -17,26 +17,27 @@ You will need to pre-populate the AppDirectory with the following items:
 
 | App | Required Metadata                                                                                                                                    |
 |-----|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| A   | A"s AppD Record contains: `aTestingIntent` (with context type `testContextX`, `testContextZ`) and `sharedTestingIntent1` (with context type `testContextX`)    |
-| B   | B"s AppD Record contains `bTestingIntent` (with context type `testContextY`) and `sharedTestingIntent1` (with context types `testContextX` and `testContextY`) |
-| C   | C"s AppD Record contains `cTestingIntent` (with context type `testContextX`)                                                                             |
+| A   | A's AppD Record contains: `aTestingIntent` (with context type `testContextX`, `testContextZ`) and `sharedTestingIntent1` (with context type `testContextX`)    |
+| B   | B's AppD Record contains `bTestingIntent` (with context type `testContextY`) and `sharedTestingIntent1` (with context types `testContextX` and `testContextY`) |
+| C   | C's AppD Record contains `cTestingIntent` (with context type `testContextX`)                                                                             |
 
 Also we assume a fourth app **D** that is going to discover the intents in the other 3.
 
 ### Find Intent From AppD
 
--  `IntentAppD`: Calls `fdc3.findIntent("aTestingIntent")`.  Receives promise containing an appIntent with metadata containing `aTestingIntent` and only **A** app metadata.
--  `WrongIntentAppD`: Calls `fdc3.findIntent("nonExistentIntent")`. Rejects with no apps found error https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
--  `IntentAppDRightContext`: Calls `fdc3.findIntent("aTestingIntent", "testContextX")`.  Receives promise containing an appIntent with metadata containing `aTestingIntent` and only **A** app metadata.
--  `IntentAppDWrongContext`: Calls `fdc3.findIntent("aTestingIntent", "testContextY")`.  Rejects with no apps found error https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
--  `IntentAppDMultiple1`: Calls `fdc3.findIntent("sharedTestingIntent1")`.  Receives promise containing an appIntent with metadata containing `sharedTestingIntent` and only **A** and **B** app metadata.
--  `IntentAppDMultiple2`: Calls `fdc3.findIntent("sharedTestingIntent1", 'testContextX')`.  Receives promise containing an appIntent with metadata containing `sharedTestingIntent` and only **A** and **B** app metadata.
--  `IntentAppDMultiple3`: Calls `fdc3.findIntent("sharedTestingIntent1", 'testContextY')`.  Receives promise containing an appIntent with metadata containing `sharedTestingIntent` and only **B** app metadata.
+- `IntentAppD`: Calls `fdc3.findIntent("aTestingIntent")`.  Receives promise containing an appIntent with metadata containing `aTestingIntent` and only **A** app metadata.
+- `WrongIntentAppD`: Calls `fdc3.findIntent("nonExistentIntent")`. Rejects with [`ResolveError.NoAppsFound`](https://fdc3.finos.org/docs/api/ref/Errors#resolveerror)
+- `IntentAppDRightContext`: Calls `fdc3.findIntent("aTestingIntent", "testContextX")`.  Receives promise containing an appIntent with metadata containing `aTestingIntent` and only **A** app metadata.
+- `IntentAppDWrongContext`: Calls `fdc3.findIntent("aTestingIntent", "testContextY")`.  Rejects with [`ResolveError.NoAppsFound`](https://fdc3.finos.org/docs/api/ref/Errors#resolveerror)
+- `IntentAppDMultiple1`: Calls `fdc3.findIntent("sharedTestingIntent1")`.  Receives promise containing an appIntent with metadata containing `sharedTestingIntent` and only **A** and **B** app metadata.
+- `IntentAppDMultiple2`: Calls `fdc3.findIntent("sharedTestingIntent1", "testContextX")`.  Receives promise containing an appIntent with metadata containing `sharedTestingIntent` and only **A** and **B** app metadata.
+- `IntentAppDMultiple3`: Calls `fdc3.findIntent("sharedTestingIntent1", "testContextY")`.  Receives promise containing an appIntent with metadata containing `sharedTestingIntent` and only **B** app metadata.
 
 ### Find Intents By Context
 
--  `SingleContext`: Call `fdc3.findIntentsByContext("testContextX")`.  Should return `aTestingIntent` (app **A**), `sharedTestingIntent1` (**A**, **B**) and `cTestingIntent` (**C**) AND nothing else.
--  `NoContext`: Call `fdc3.findIntentsByContext()`. Throws error of `NoAppsFound`
+- `SingleContext`: Call `fdc3.findIntentsByContext("testContextX")`.  Should return `aTestingIntent` (app **A**), `sharedTestingIntent1` (**A**, **B**) and `cTestingIntent` (**C**) AND nothing else.
+- `NoContext`: Call `fdc3.findIntentsByContext()`. Rejects with [`ResolveError.NoAppsFound`](https://fdc3.finos.org/docs/api/ref/Errors#resolveerror)
+
 
 ### Raise Intent
 
@@ -95,9 +96,9 @@ Finally, please note that this is a larger set of apps than were required for 1.
 ### Find Intent basic usage
 
 - `2.0-FindIntentAppD`: Calls `fdc3.findIntent("aTestingIntent")`.  Receives promise containing an appIntent with metadata containing `aTestingIntent` and only **A** `AppMetadata`.
-- `2.0-FindNonExistentIntentAppD`: Calls `fdc3.findIntent("nonExistentIntent")`. Rejects with an Error whose `message` is `ResolveError.NoAppsFound` https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
+- `2.0-FindNonExistentIntentAppD`: Calls `fdc3.findIntent("nonExistentIntent")`. Rejects with an Error whose `message` is [`ResolveError.NoAppsFound`](https://fdc3.finos.org/docs/api/ref/Errors#resolveerror)
 - `2.0-FindIntentAppDRightContext`: Calls `fdc3.findIntent("aTestingIntent", "testContextX")`.  Receives promise containing an `AppIntent` with metadata containing `aTestingIntent` and only metadata for app **A**.
-- `2.0-FindIntentAppDWrongContext`: Calls `fdc3.findIntent("aTestingIntent", "testContextY")`.  Rejects with an Error whose `message` is `ResolveError.NoAppsFound` https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
+- `2.0-FindIntentAppDWrongContext`: Calls `fdc3.findIntent("aTestingIntent", "testContextY")`.  Rejects with an Error whose `message` is [`ResolveError.NoAppsFound`](https://fdc3.finos.org/docs/api/ref/Errors#resolveerror)
 - `2.0-FindIntentAppDMultiple1`: Calls `fdc3.findIntent("sharedTestingIntent2")`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent2` and metadata for apps  **D**, **E**, **F**, **G**, **H**  and **I** only.
 - `2.0-FindIntentAppDMultiple2`: Calls `fdc3.findIntent("sharedTestingIntent2", "testContextY")`.  Receives promise containing an `AppIntent` with metadata containing `sharedTestingIntent2` and `AppMetadata` for apps  **E**, **F**, **G**, **H**  and **I** only.
 
@@ -110,7 +111,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
   - `sharedTestingIntent2` (**D**)
   - `kTestingIntent` (**K**),
   - AND nothing else.
-- `2.0FindIntentByContextWrongIntentAppD`: Calls `fdc3.findIntentsByContext(nonExistentContext)`. Rejects with an Error whose `message` is `ResolveError.NoAppsFound` https://fdc3.finos.org/docs/api/ref/Errors#resolveerror
+- `2.0FindIntentByContextWrongIntentAppD`: Calls `fdc3.findIntentsByContext(nonExistentContext)`. Rejects with an Error whose `message` is [`ResolveError.NoAppsFound`](https://fdc3.finos.org/docs/api/ref/Errors#resolveerror)
 
 ### Find Intents By Result Type
 
@@ -134,12 +135,12 @@ Finally, please note that this is a larger set of apps than were required for 1.
   - Otherwise, as above.
 - `2.0-RaiseIntentTargetedInstanceResolveOpen`: Repeat the above test, but:
   - Before the first step, use `let appIdentifier = await fdc3.open({appId: "<A's appId>"})` to start A and retrieve its `AppIdentifier` with instance details.
-  - Then in the first step, use `fdc3.raiseIntent("aTestingIntent", testContextX, appIdentifier)` to target the running instance of app A. 
+  - Then in the first step, use `fdc3.raiseIntent("aTestingIntent", testContextX, appIdentifier)` to target the running instance of app A.
   - Confirm that the intent is delivered to the correct instance and that another instance is NOT started. Otherwise, as above.
 - `2.0-RaiseIntentTargetedInstanceResolveFindInstances`: Repeat the above test, but:
   - Before the first step, use `let appIdentifier = await fdc3.open({appId: "<A's appId>"})` to start A.
   - Then use `const instances = await fdc3.findInstances({appId: "<A's appId>"})` to retrieve a list of instances of app A. Confirm that only one is present and retrieve its `AppIdentifier`, confirming that it contains an `instanceId` field that matches that returned by the `fdc3.open` call.
-  - Then in the first step, use `fdc3.raiseIntent("aTestingIntent", testContextX, appIdentifier)` to target the running instance of app A. 
+  - Then in the first step, use `fdc3.raiseIntent("aTestingIntent", testContextX, appIdentifier)` to target the running instance of app A.
   - Confirm that the intent is delivered to the correct instance and that another instance is NOT started. Otherwise, as above.
 - `2.0-RaiseIntentFailedResolve`: Perform above test, but:
   - Use `fdc3.raiseIntent("aTestingIntent", testContextY)`.  Note that no app supports this intent and context combination.**
@@ -154,16 +155,16 @@ Finally, please note that this is a larger set of apps than were required for 1.
   - Use `fdc3.raiseIntent("sharedTestingIntent2", testContextY, {appId: "<H's appId>"})`.
   - You should receive a JavaScript Error with the message `ResolveError.IntentDeliveryFailed` (as this app is configured for the intent and context pair, but does not add any intent listeners).
   - **Note:  Test will need an extended timeout to allow for this to be returned in time by the desktop agent, which will have a vendor-defined timeout.**
-- `2.0-RaiseIntentFailTargetedAppResolve4`: Perform above test, but: 
+- `2.0-RaiseIntentFailTargetedAppResolve4`: Perform above test, but:
   - `fdc3.raiseIntent("sharedTestingIntent2", testContextY, {appId: "<I's appId>"})`
   - You should receive a JavaScript Error with the message `ResolveError.IntentDeliveryFailed` (as this app is configured for the intent and context pair, but adds intent listeners of the wrong type.
   - **Note:  Test will need an extended timeout to allow for this to be returned in time by the desktop agent, which will have a vendor-defined timeout.**
 - `2.0-RaiseIntentFailTargetedAppInstanceResolve1`: Perform above test, but:
   - First spawn an instance of App **A** and collect its `AppIdentifier` with `const appIdentifier = await fdc3.open({appId: "<A's appId>"})`.
-  - Then use `fdc3.raiseIntent("aTestingIntent", testContextY, appIdentifier)` to target that instance.  
+  - Then use `fdc3.raiseIntent("aTestingIntent", testContextY, appIdentifier)` to target that instance.
   - You should receive a JavaScript Error with the message `ResolveError.NoAppsFound` (since A doesn't support this context type).
 - `2.0-RaiseIntentFailTargetedAppInstanceResolve2`: Perform above test, but:
-  - Use `fdc3.raiseIntent("aTestingIntent", testContextX, {appId: "<A's appId>", instanceId "NonExistentInstanceId"})`.  
+  - Use `fdc3.raiseIntent("aTestingIntent", testContextX, {appId: "<A's appId>", instanceId "NonExistentInstanceId"})`.
   - You should receive a JavaScript Error with the message `ResolveError.TargetInstanceUnavailable`.
 
 ### Raise Intent Result (void result)
@@ -225,7 +226,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 | Test   | 3. Retrieve as app channel | Attempt to retrieve the channels as App Channels with `const appChan = await fdc3.getOrCreateChannel(privChan.id)` this should fail with `ChannelError.AccessDenied`  |
 | Test   | 4. Raise Intent & await result | Start app J and pass it the id of the second PrivateChannel with `fdc3.raiseIntent("privateChannelIsPrivate", privateChannelDetails)`, where the context object contains the id of the channel to attempt to retrieve. An IntentResolution should be returned and App J should start. Wait for a result to be returned via `await resolution.getResult()`.
 | J | 5. Receive Intent & Context | J should add an Intent Listener and receive the context with `fdc3.addIntentListener("privateChannelIsPrivate", handler)` |
-| J | 6. Retrieve as app channel | J should attempt to retrieve the channel as an App Channel by `id` with `const appChan = await fdc3.getOrCreateChannel("<idPassedInContext>")` this should fail with `ChannelError.AccessDenied`. Return a `privateChannelisPrivateResult` back to Test to complete the test. |
+| J | 6. Retrieve as app channel | J should attempt to retrieve the channel as an App Channel by `id` with `const appChan = await fdc3.getOrCreateChannel("<idPassedInContext>")` this should fail with `ChannelError.AccessDenied`. Return a `privateChannelIsPrivateResult` back to Test to complete the test. |
 | Test   | 7. Receive result | Test receives the result back from J and confirms that the test was passed. |
 
 - `2.0-PrivateChannelsAreNotAppChannels`: Perform the above test
@@ -249,13 +250,13 @@ Finally, please note that this is a larger set of apps than were required for 1.
 | Test   | 13. re-run addContextListener  | Test should (again) add a context listener to the PrivateChannel object via `const listener2 = privChan.addContextListener("testContextZ", handler)` |
 | K       | 14. Receive event & broadcast context | The `onAddContextListener` handler added in step 5 should (again) fire after Test adds its listener. Once it has, K should again broadcast a short stream of `testContextZ` objects, with consecutive integer values in them (e.g. 6-10). |
 | Test   | 15. Disconnect | Test should (again) confirm receipt of the expected context objects, in the expected order, broadcast by K. It should then disconnect from the channel with [`privChan.disconnect().`](https://fdc3.finos.org/docs/api/ref/PrivateChannel#disconnect) |
-| K       | 16. Receive events & cleanup | The `onUnsubscribe` handler added in step 5 should (again) fire after Test calls `privChan.disconnect()`. Subsequently, the `onDisconect` handler also added in step 5 should fire. Once it has, K can unsubscribe its listeners, indicate to the test runner that all steps were completed and close. |
+| K       | 16. Receive events & cleanup | The `onUnsubscribe` handler added in step 5 should (again) fire after Test calls `privChan.disconnect()`. Subsequently, the `onDisconnect` handler also added in step 5 should fire. Once it has, K can unsubscribe its listeners, indicate to the test runner that all steps were completed and close. |
 
 - `2.0-PrivateChannelsLifecycleEvents`: Perform the above test.
 
 ### Resolving Ambiguous Intents
 
-FDC3 Desktop Agent MUST provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to raiseIntentForContext that return multiple options). This is often accomplished by providing a user interface allowing the user to select the desired target application or intent and application. 
+FDC3 Desktop Agent MUST provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to raiseIntentForContext that return multiple options). This is often accomplished by providing a user interface allowing the user to select the desired target application or intent and application.
 
 As the methods of resolving ambiguous intents are often user interactive, it is either difficult or impossible to implement an automated test for this. Hence, manual tests should be performed as a final step in a conformance test. These tests are based on the same applications defined for and used in other intent tests - however a separate manual test app should be provided to enable the test.
 
@@ -277,7 +278,7 @@ As the methods of resolving ambiguous intents are often user interactive, it is 
 |---|---|---|
 | Test | 1. Open 4 Apps | Use `fdc3.open()` to open 2 instances of App `E` and 2 instances of `F`. |
 | Test | 2. Raise Ambiguous Intent | `fdc3.raiseIntent("sharedTestingIntent2", testContextY)` |
-| User | 3. Chooser Interaction | Chooser Interaction | A method of resolving the ambiguous request is provided (such as a User Interface allowing the user to choose an application or instance) for choosing one of `E (1)`,`F (1)`,`E (2)`,`F (2)` and options to open `G`, `H` and `I` |
+| User | 3. Chooser Interaction | A method of resolving the ambiguous request is provided (such as a User Interface allowing the user to choose an application or instance) for choosing one of `E (1)`,`F (1)`,`E (2)`,`F (2)` and options to open `G`, `H` and `I` |
 
 - `2.0-ResolveAmbiguousIntentTargetMultiInstance`:  Perform above steps  to invoke intent resolution for an unspecified target with multiple options. Confirm that test is able to complete successfully.
 
@@ -285,6 +286,6 @@ As the methods of resolving ambiguous intents are often user interactive, it is 
 |---|---|---|
 | Test | 1. Open 4 Apps | Use `fdc3.open()` to open 2 instances of App `E` and 2 instances of `F`. |
 | Test | 2. Raise Ambiguous Intent | `fdc3.raiseIntentForContext(testContextY)` |
-| User | 3.  Chooser Interaction | Chooser Interaction | A method of resolving the ambiguous request is provided (such as a User Interface allowing the user to choose an application or instance) for choosing one of `E (1)`,`F (1)`,`E (2)`,`F (2)` and options to open `G`, `H` and `I` |
+| User | 3.  Chooser Interaction | A method of resolving the ambiguous request is provided (such as a User Interface allowing the user to choose an application or instance) for choosing one of `E (1)`,`F (1)`,`E (2)`,`F (2)` and options to open `G`, `H` and `I` |
 
 - `2.0-ResolveAmbiguousContextTargetMultiInstance`: Perform above steps  to invoke intent resolution for an unspecified target with multiple options. Confirm that test is able to complete successfully.

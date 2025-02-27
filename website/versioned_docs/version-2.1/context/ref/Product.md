@@ -18,7 +18,7 @@ Notes:
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/product.schema.json>
+[https://fdc3.finos.org/schemas/2.1/context/product.schema.json](https://fdc3.finos.org/schemas/2.1/context/product.schema.json)
 
 ## Details
 

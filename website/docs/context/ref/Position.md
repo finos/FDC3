@@ -16,7 +16,7 @@ The position schema does not explicitly include identifiers in the `id` section,
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/next/context/position.schema.json> ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/position.schema.json))
+[https://fdc3.finos.org/schemas/next/context/position.schema.json](https://fdc3.finos.org/schemas/next/context/position.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/position.schema.json))
 
 ## Type
 

@@ -17,12 +17,13 @@ interface AppMetadata {
 }
 ```
 
-App metadata is provided by the FDC3 App Directory that the desktop agent connects to. 
+App metadata is provided by the FDC3 App Directory that the desktop agent connects to.
 
-It always includes at least a `name` property, which can be used with [`open`](DesktopAgent#open) and [`raiseIntent`](DesktopAgent#raiseIntent).
+It always includes at least a `name` property, which can be used with [`open`](DesktopAgent#open) and [`raiseIntent`](DesktopAgent#raiseintent).
 
 Optionally, extra information from the app directory can be returned, to aid in rendering UI elements, e.g. a context menu.
 This includes a title, description, tooltip and icon and image URLs.
 
 #### See also
+
 * [`AppIntent.apps`](AppIntent)

@@ -9,7 +9,7 @@ FDC3 API operations may sometimes result in an error that is returned to the cal
 
 ## `AgentError`
 
-Contains constants representing the errors that can be encountered when calling the [`getAgent`](getAgent) function to establish connectivity to a Desktop Agent. Primarily used with web applications, but may also be used in other language implementations.
+Contains constants representing the errors that can be encountered when calling the [`getAgent`](GetAgent) function to establish connectivity to a Desktop Agent. Primarily used with web applications, but may also be used in other language implementations.
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
@@ -438,7 +438,7 @@ enum BridgingError {
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
-```
+```csharp
 Not implemented
 ```
 
@@ -450,4 +450,4 @@ Contains constants representing the errors that can be encountered when queries 
 
 **See also:**
 
-- [Agent Bridging - Workflows broken by disconnects](../../agent-bridging/spec##workflows-broken-by-disconnects)
+- [Agent Bridging - Workflows broken by disconnects](../../agent-bridging/spec#workflows-broken-by-disconnects)
