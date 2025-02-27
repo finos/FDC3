@@ -145,6 +145,6 @@ jobs:
 
     - name: Publish
       if: steps.check-version.outputs.exists == '0' 
-      run:  npm publish --provenance --access public
+      run:  npm publish --provenance --access public --workspaces
       env:
         NODE_AUTH_TOKEN: ${{ secrets[matrix.token-name] }}
