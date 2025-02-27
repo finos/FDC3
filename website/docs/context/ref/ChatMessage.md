@@ -10,7 +10,7 @@ A context representing a chat message. Typically used to send the message or to 
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/next/context/chatMessage.schema.json> ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/chatMessage.schema.json))
+[https://fdc3.finos.org/schemas/next/context/chatMessage.schema.json](https://fdc3.finos.org/schemas/next/context/chatMessage.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/chatMessage.schema.json))
 
 ## Type
 

@@ -22,7 +22,7 @@ is for at least one standardized identifier to be provided
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/country.schema.json>
+[https://fdc3.finos.org/schemas/2.1/context/country.schema.json](https://fdc3.finos.org/schemas/2.1/context/country.schema.json)
 
 
 ## Details
@@ -57,7 +57,7 @@ fdc3.broadcast(country)
 Intents
 
 - [ViewNews](../../intents/ref/ViewNews)
-- [ViewAnalysis](../../intents/ref/viewAnalysis)
+- [ViewAnalysis](../../intents/ref/ViewAnalysis)
 
 FINOS Financial Objects
 
