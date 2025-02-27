@@ -140,7 +140,7 @@ This is a 4-step process:
 
   Once the packages are published, create a PR to merge the release branch into the main branch.  You will need other FDC3 maintainers to review and approve the PR.
 
-5.  **Set The NPM Version If Releasing A Beta**
+5.  **Reset the `latest` NPM Version Tag If Releasing A Prerelease**
 
   If you're releasing beta/alpha code, be sure to replace the latest version in NPM like so:
 
