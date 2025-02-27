@@ -10,7 +10,11 @@ FDC3 API operations make use of several type declarations.
 ## `AppIdentifier`
 
 Identifies an application, or instance of an application, and is used to target FDC3 API calls at specific applications.
-Will always include at least an `appId` property, which can be used with `fdc3.open`, `fdc3.raiseIntent` etc..
+
+An `AppIdentifier` will always include at least an `appId` property, which can be used with `fdc3.open`, `fdc3.raiseIntent` etc.. An `appId` is intended to reference a specific record from an [App Directory](../../app-directory/overview), which it uniquely identifies within that App Directory. 
+
+The `appId` may unqualified or fully-qualified as described in the [API overview](../spec#fully-qualified-appids) and [App Directory](../../app-directory/overview#application-identifiers) Parts of the Standard and may be resolved and used interchangeably as described in the [API overview](../spec#fully-qualified-appids). 
+
 If the `instanceId` field is set then the `AppIdentifier` object represents a specific instance of the application that may be addressed using that Id.
 
 <Tabs groupId="lang">
