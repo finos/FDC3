@@ -147,6 +147,9 @@ This is a 4-step process:
   ```
   npm dist-tag add @finos/fdc3@2.1.1 latest
   ```
+
+  You will need support from help@finos.org for this step.
+
 ### Releasing the FDC3 Website (for maintainers)
 
 Please see instructions in the [website README](./website/README.md).
