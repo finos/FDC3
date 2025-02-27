@@ -172,7 +172,7 @@ Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passe
 
 **See also:**
 
-- [`AppIdentifier`](Types#AppIdentifier)
+- [`AppIdentifier`](Types#appidentifier)
 - [`AppIntent.apps`](#appintent)
 - [`Icon`](#icon)
 - [`Image`](#image)

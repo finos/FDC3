@@ -59,7 +59,7 @@ interface IPrivateChannel : IChannel, IIntentResult
 - [`Channel`](Channel)
 - [`Listener`](Types#listener)
 - [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
-- [`DesktopAgent.createPrivateChannel`](DesktopAgent#createPrivateChannel)
+- [`DesktopAgent.createPrivateChannel`](DesktopAgent#createprivatechannel)
 - [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 
 ## Examples

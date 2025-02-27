@@ -1,5 +1,5 @@
 ---
-id: browserDesktopAgents
+id: browserResidentDesktopAgents
 sidebar_label: Browser Desktop Agents
 title: Browser-Resident Desktop Agents (next)
 ---
@@ -236,7 +236,7 @@ Channel Selector and Intent Resolver user-interfaces are normally provided by De
 
 The `getAgent()` implementation can facilitate the injection and management of iframes in an application window. An app may provide the optional `channelSelector` and `intentResolver` parameters to the `getAgent()` to indicate whether or not they need these interfaces. For example, the apps may not raise intents. Some apps may also resolve intents internally by leveraging the Desktop Agent's `findIntent` or `findIntentsForContext` API functions. In these situations, the apps won't need a DA-provided interface. Once an app calls `getAgent()`, the parameters that the app provides are forwarded onto the Desktop Agent in the `WCP1Hello` connection message.
 
-Desktop Agents MAY implement their own user interfaces for channel selection and intent resolution. The URL for each interface may be returned in the `channelSelectorUrl` and `intentResolverUrl` properties of the payload of the `WCP3Handshake` message sent by the DA during the connection sequence. Alternatively, if the Desktop Agent is able to provide these user interfaces by other means (for example DAs that render applications in iframes within a window they control may use other iframes to render these UIs) or if they app indicated that it did not need them then `channelSelectorUrl` and `intentResolverUrl` MAY be set to `false`. Finally, `channelSelectorUrl` and `intentResolverUrl` MAY be set to `true` to indicate that `getAgent()` should use the default reference implementations of these UIs provided via the <https://fdc3.finsos.org> website.
+Desktop Agents MAY implement their own user interfaces for channel selection and intent resolution. The URL for each interface may be returned in the `channelSelectorUrl` and `intentResolverUrl` properties of the payload of the `WCP3Handshake` message sent by the DA during the connection sequence. Alternatively, if the Desktop Agent is able to provide these user interfaces by other means (for example DAs that render applications in iframes within a window they control may use other iframes to render these UIs) or if they app indicated that it did not need them then `channelSelectorUrl` and `intentResolverUrl` MAY be set to `false`. Finally, `channelSelectorUrl` and `intentResolverUrl` MAY be set to `true` to indicate that `getAgent()` should use the default reference implementations of these UIs provided via the [https://fdc3.finos.org](https://fdc3.finos.org) website.
 
 :::warning
 
@@ -256,7 +256,7 @@ User interface iframes are initially injected into the application window with C
 
 and are always displayed with `position: "fixed"` so that they are not part of the document flow.
 
-Implementations of the UIs may then indicate a limited set of CSS to apply to their frame in the initial `Fdc3UserInterfaceHello` message (when the width and height will be removed if not explicitly set in that message), and later adjust that via `Fdc3UserInterfaceRestyle`. See the [Controlling injected User Interfaces section](./desktopAgentCommunicationProtocol#controlling-injected-user-interfaces-section) in the DACP specification for more details.
+Implementations of the UIs may then indicate a limited set of CSS to apply to their frame in the initial `Fdc3UserInterfaceHello` message (when the width and height will be removed if not explicitly set in that message), and later adjust that via `Fdc3UserInterfaceRestyle`. See the [Controlling injected User Interfaces section](./desktopAgentCommunicationProtocol#controlling-injected-user-interfaces) in the DACP specification for more details.
 
 Communication between the `DesktopAgentProxy` and the iframes it injects is achieved via a similar mechanism to that used for communication between an app and the Desktop Agent: a `MessageChannel` is established between the app and iframe, via a `postMessage` sent from the iframe (`Fdc3UserInterfaceHello`) and responded to by the `DesktopAgentProxy` in the app's window (`Fdc3UserInterfaceHandshake`), with a `MessagePort` from a `MessageChannel` appended.
 

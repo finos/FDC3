@@ -65,5 +65,5 @@ Console log might display:
 
 - [ViewProfile](../../intents/ref/ViewProfile)
 - [Contact](../../context/ref/Contact)
-- [Organization](../../context/ref/Organisation)
+- [Organization](../../context/ref/Organization)
 - [TransactionResult](../../context/ref/TransactionResult)
