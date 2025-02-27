@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `Message`
 
-A chat message to be sent through an instant messaging application. Can contain one or several text bodies (organised by mime-type, plaintext or markdown), 
+A chat message to be sent through an instant messaging application. Can contain one or several text bodies (organised by mime-type, plaintext or markdown),
 as well as attached entities (either arbitrary file attachments or FDC3 actions to be embedded in the message). To be put inside a ChatInitSettings object.
 
 ## Type
@@ -15,14 +15,14 @@ as well as attached entities (either arbitrary file attachments or FDC3 actions 
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/message.schema.json>
+[https://fdc3.finos.org/schemas/2.1/context/message.schema.json](https://fdc3.finos.org/schemas/2.1/context/message.schema.json)
 
 ## Details
 
 | Property          | Type                                      | Required | Example Value           |
 |-------------------|-------------------------------------------|----------|-------------------------|
 | `type`            | string                                    | Yes      | `'fdc3.message'`        |
-| `text`            | map of string mime-type to string content | No       | { text/plain: 'Hello' } |
+| `text`            | map of string mime-type to string content | No       | \{ text/plain: 'Hello' \} |
 | `entities`        | map of json entity to string id           | No       | See Below               |
 
 ## Example

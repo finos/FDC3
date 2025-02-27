@@ -72,7 +72,7 @@ There are two standardized types of interface to a DA that a web application may
 - **Desktop Agent Preload**: Used where the Desktop Agent is able to inject the the `DesktopAgent` API at `window.fdc3` allowing an app to access it directly, for example in an Electron app or where a browser Browser Extension is in use.
 - **Desktop Agent Proxy**: Used when running in a standard web browser (without a browser extension or similar customization). The Desktop Agent will often be running in a different window or frame to the application and MUST be communicated with via cross-document messaging with `postMessage` and `MessagePorts` (see the [HTML5 Living Standard](https://html.spec.whatwg.org/multipage/web-messaging.html) for more details). A 'proxy' class implementing the Desktop Agent API is used to abstract the details of cross-document messaging, allowing the application to work with the FDC3 API directly.
 
-The FDC3 Standard defines a [Web Connection Protocol (WCP)](specs/webConnectionProtocol) that allows apps to work with either interface, by detecting which is applicable, and [Desktop Agent Communication Protocol (DACP)](../specs/desktopAgentCommunicationProtocol) that standardizes the messaging protocol used for cross-document messaging over `postMessage` and `MessagePorts` in a web browser.
+The FDC3 Standard defines a [Web Connection Protocol (WCP)](specs/webConnectionProtocol) that allows apps to work with either interface, by detecting which is applicable, and [Desktop Agent Communication Protocol (DACP)](specs/desktopAgentCommunicationProtocol) that standardizes the messaging protocol used for cross-document messaging over `postMessage` and `MessagePorts` in a web browser.
 
 The FDC3 NPM module implements the `getAgent()` function defined by WCP and can return an injected Desktop Agent, a Desktop Agent Proxy, or other Desktop Agent implementation enabled by a non-standard interface.
 
@@ -80,7 +80,7 @@ Hence, FDC3 apps SHOULD obtain access to a `DesktopAgent` object (`fdc3`) by imp
 
 :::info
 
-In prior versions of FDC3 (<= 2.1) Apps were required to use the 'Desktop Agent Preload' interface, i.e. they relied on the existence of the `window.fdc3` object, which meant that apps running in a standard web browser had to import libraries specific to the Desktop Agent implementation in use. From FDC3 2.2 onwards the 'Desktop Agent Proxy' interface is available, which allows apps in a standard web browser to connect to any Desktop Agent that implements that interface.
+In prior versions of FDC3 (&lt;= 2.1) Apps were required to use the 'Desktop Agent Preload' interface, i.e. they relied on the existence of the `window.fdc3` object, which meant that apps running in a standard web browser had to import libraries specific to the Desktop Agent implementation in use. From FDC3 2.2 onwards the 'Desktop Agent Proxy' interface is available, which allows apps in a standard web browser to connect to any Desktop Agent that implements that interface.
 
 Hence, from FDC3 2.2 onwards apps SHOULD call `getAgent()` to retrieve a `DesktopAgent` API interface.
 
@@ -108,7 +108,7 @@ await sendData(desktopAgent);
 
 ## Native
 
-The FDC3 Standard currently only defines language specific API bindings for JavaScript/TypeScript and .NET, but is intended to be implemented in other languages (which can make use of the [Desktop Agent Communication Protocol (DACP)](../specs/desktopAgentCommunicationProtocol) as a wire protocol, but need to define a suitable connection protocol, which includes a defined communication channel to do so).  
+The FDC3 Standard currently only defines language specific API bindings for JavaScript/TypeScript and .NET, but is intended to be implemented in other languages (which can make use of the [Desktop Agent Communication Protocol (DACP)](specs/desktopAgentCommunicationProtocol) as a wire protocol, but need to define a suitable connection protocol, which includes a defined communication channel to do so).  
 
 Hence, for a native application to be FDC3-enabled, it needs to either:
 

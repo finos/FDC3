@@ -282,7 +282,7 @@ Request and response used to implement the [`getUserChannels()`](../ref/DesktopA
 
 #### `joinUserChannel()`
 
-Request and response used to implement the [`joinUserChannel()`](../ref/DesktopAgent#joinchannel) API call:
+Request and response used to implement the [`joinUserChannel()`](../ref/DesktopAgent#joinuserchannel) API call:
 
 - [`joinUserChannelRequest`](https://fdc3.finos.org/schemas/next/api/joinUserChannelRequest.schema.json)
 - [`joinUserChannelResponse`](https://fdc3.finos.org/schemas/next/api/joinUserChannelResponse.schema.json)
@@ -463,7 +463,7 @@ Additional procedures are defined in the [Browser Resident Desktop Agents specif
 
 :::
 
-### Controlling injected User Interfaces
+### Controlling Injected User Interfaces
 
 Desktop Agent implementations, such as those based on the [Browser Resident Desktop Agents specification](./browserResidentDesktopAgents) and [Web Connection Protocol](./webConnectionProtocol), may either provide their own user interfaces (or other appropriate mechanisms) for the selection of User Channels or Intent Resolution, or they may work with implementations injected into the application (for example, as described in the [Web Connection Protocol](./webConnectionProtocol#providing-channel-selector-and-intent-resolver-uis) and implemented in [`getAgent()`](../ref/GetAgent)).
 
