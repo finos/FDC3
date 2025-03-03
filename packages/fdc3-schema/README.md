@@ -51,3 +51,8 @@ Finally, please note that the latest version of Quicktype (at the time of writin
   - A utility is provided in this repository (_../../quicktypeUtil.js_) to work around this bug by listing directories and constructing a call to quicktype where each file is provided as an individual source.
 - Setting the `--nice-property-names` TypeScript output option will crash the generator and can't be used.
 - The --debug setting must be the first argument passed or it will be ignored.
+
+Further details:
+ - https://github.com/finos/FDC3
+ - [FDC3 Specification](https://fdc3.finos.org/)
+ - Main FDC3 module: https://www.npmjs.com/package/@finos/fdc3

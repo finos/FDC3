@@ -143,6 +143,10 @@ jobs:
       if: steps.check-version.outputs.exists == '0' 
       uses: bahmutov/npm-install@2509f13e8485d88340a789a3f7ca11aaac47c9fc #v1.8.36
 
+    - name: Build
+      if: steps.check-version.outputs.exists == '0' 
+      run:  npm run build
+
     - name: Publish
       if: steps.check-version.outputs.exists == '0' 
       run:  npm publish --provenance --access public --workspaces
