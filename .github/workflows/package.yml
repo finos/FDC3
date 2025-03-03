@@ -22,6 +22,7 @@ on:
       - '.github/workflows/docusaurus.yml'
 permissions:
   contents: read
+  packages: write
 jobs:
 # JOB to run change detection
   changes:
