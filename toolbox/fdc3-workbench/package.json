@@ -13,7 +13,7 @@
     "start": "vite",
     "preview": "vite preview",
     "build": "tsc && vite build",
-    "lint": " prettier --check src/**/*.{tsx,css}",
+    "lint": " eslint src/",
     "lint:fix": "eslint --fix src/**/*.{ts,tsx} && prettier --write src/**/*.{ts,tsx}"
   },
   "eslintConfig": {
