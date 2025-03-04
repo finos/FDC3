@@ -111,10 +111,10 @@ jobs:
     strategy:
       matrix:
        include:
-         - name: NPM
+         - name: 1-NPM
            registry: https://registry.npmjs.org
            token-name: NPM_TOKEN
-         - name: GitHub
+         - name: 2-GitHub
            registry: https://npm.pkg.github.com
            token-name: GH_JS_REPO_TOKEN
     steps:
