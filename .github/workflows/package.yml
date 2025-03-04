@@ -116,7 +116,7 @@ jobs:
            token-name: NPM_TOKEN
          - name: GitHub
            registry: https://npm.pkg.github.com
-           token-name: GITHUB_TOKEN
+           token-name: GH_JS_REPO_TOKEN
     steps:
     - name: Checkout repo
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
