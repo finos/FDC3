@@ -144,8 +144,11 @@ jobs:
     - name: Manually Configure npm Authentication
       if: steps.check-version.outputs.exists == '0' 
       run: |
-        echo "//${{ matrix.registry }}/:_authToken=${{ secrets[matrix.token-name] }}" > ~/.npmrc
-        cat ~/.npmrc  # Debug: Print the config to confirm
+        REGISTRY="${{ matrix.registry }}"
+        CLEAN_REGISTRY=${REGISTRY#https://}  # Strip https:// prefix
+        echo "//${CLEAN_REGISTRY}/:_authToken=${{ secrets[matrix.token-name] }}" > ~/.npmrc
+        echo "Generated .npmrc:"
+        cat ~/.npmrc  # Debug output
  
     - name: Publishing As
       if: steps.check-version.outputs.exists == '0' 
