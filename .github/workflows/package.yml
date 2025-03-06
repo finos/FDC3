@@ -141,6 +141,10 @@ jobs:
     - name: Report not yet published status
       if: steps.check-version.outputs.exists == '0' 
       run: 'echo "package version does not exist in the registry, publishing..."'
+    
+    - name: Publishing As
+      if: steps.check-version.outputs.exists == '0' 
+      run: 'npm whoami --registry ${{ matrix.registry }}'
       
     - name: Install dependencies
       if: steps.check-version.outputs.exists == '0' 
