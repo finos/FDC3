@@ -141,6 +141,12 @@ jobs:
       if: steps.check-version.outputs.exists == '0' 
       run: 'echo "package version does not exist in the registry, publishing..."'
     
+    - name: Manually Configure npm Authentication
+      if: steps.check-version.outputs.exists == '0' 
+      run: |
+        echo "//${{ matrix.registry }}/:_authToken=${{ secrets[matrix.token-name] }}" > ~/.npmrc
+        cat ~/.npmrc  # Debug: Print the config to confirm
+ 
     - name: Publishing As
       if: steps.check-version.outputs.exists == '0' 
       run: 'npm whoami --registry ${{ matrix.registry }}'
