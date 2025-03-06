@@ -1,6 +1,6 @@
 # FDC3 Standard Module
 
-Interface definitions for the FDC3 standard in typescript (e.g. the `DesktopAgent` interface) and the app directory schema.  
+Interface definitions for the FDC3 standard in TypeScript (e.g. the `DesktopAgent` interface) and the app directory schema.  
 
 Further details:
  - https://github.com/finos/FDC3
