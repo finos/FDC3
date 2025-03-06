@@ -126,6 +126,9 @@ jobs:
       with:
         node-version: 20
         registry-url: ${{ matrix.registry }}
+        always-auth: true
+        scope: '@finos'
+        token: ${{ secrets[matrix.token-name] }}
 
     - name: Check package version
       id: check-version
