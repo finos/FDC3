@@ -1,55 +1,231 @@
 {
-	"$schema": "http://json-schema.org/draft-07/schema#",
-	"$id": "https://fdc3.finos.org/schemas/next/context/product.schema.json",
-	"type": "object",
-	"title": "Product",
-	"description": "@experimental context type representing a tradable product. To be used with OMS and EMS systems.\n\nThis type is currently only loosely defined as an extensible context object, with an optional instrument field.\n\nThe Product schema does not explicitly include identifiers in the id section, as there is not a common standard for such identifiers. Applications can, however, populate this part of the contract with custom identifiers if so desired.",
-	"allOf": [
-		{
-			"type": "object",
-			"properties": {
-				"type": {
-					"const": "fdc3.product"
-				},
-				"id": {
-					"type": "object",
-					"additionalProperties": {
-						"type": "string"
-					},
-					"title": "Product Identifiers",
-					"description": "One or more identifiers that refer to the product. Specific key names for systems are expected to be standardized in future."
-				},
-				"name": {
-					"type": "string",
-					"title": "Product Name",
-					"description": "A human-readable summary of the product."
-				},
-				"instrument": {
-					"$ref": "instrument.schema.json",
-					"title": "Product Instrument",
-					"description": "A financial instrument that relates to the definition of this product"
-				}
-			},
-			"required": [
-				"type",
-				"id"
-			],
-			"additionalProperties": true
-		},
-		{ "$ref": "context.schema.json#/definitions/BaseContext" }
-	],
-	"examples": [
-		{
-			"type": "fdc3.product",
-			"id": {
-				"productId": "ABC123"
-			},
-			"instrument": {
-				"type": "fdc3.instrument",
-				"id": {
-					"ticker": "MSFT"
-				}
-			}
-		}
-	]
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fdc3.finos.org/schemas/next/context/product.schema.json",
+    "type": "object",
+    "title": "Product",
+    "description": "@experimental context type representing a tradable product. To be used with OMS and EMS systems.\n\nThis type is currently only loosely defined as an extensible context object, with an optional instrument field.\n\nThe Product schema does not explicitly include identifiers in the id section, as there is not a common standard for such identifiers. Applications can, however, populate this part of the contract with custom identifiers if so desired.",
+    "allOf": [
+        {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "const": "fdc3.product"
+                },
+                "id": {
+                    "type": "object",
+                    "additionalProperties": {
+                        "type": "string"
+                    },
+                    "title": "Product Identifiers",
+                    "description": "One or more identifiers that refer to the product. Specific key names for systems are expected to be standardized in future."
+                },
+                "name": {
+                    "type": "string",
+                    "title": "Product Name",
+                    "description": "A human-readable summary of the product."
+                },
+                "notes": {
+                    "type": "string",
+                    "title": "Notes",
+                    "description": "A description or set of notes."
+                },
+                "instrument": {
+                    "$ref": "instrument.schema.json",
+                    "title": "Product Instrument",
+                    "description": "A financial instrument that relates to the definition of this product"
+                },
+                "details" : {
+                    "type": "object",
+                    "title": "Product Details",
+                    "description": "Details that further define this product.",
+                    "properties": {
+                        "description": {
+                            "type": "string",
+                            "title": "Product Description",
+                            "description": "A description of the product as a string mi the style often used by traders to describe products within a chat messaging system",
+                            "examples": ["SPY CF W+ 20DEC24 580/590/600 1x2x1 r572.99 d13% (PHLX)"]
+                        },
+                        "orderType": {
+                            "type": "string",
+                            "enum": ["market", "limit", "limit-sell", "buy-stop", "stop-loss", "stop", "day", "gtc", "iceberg", "once-cancels-the-other", "immediate-or-cancel", "all-or-none", "fill-or-kill"],
+                            "title": "Order Type",
+                            "description": "The type of order"
+                        },
+                        "structureType": {
+                            "type": "string",
+                            "title": "Structure Type",
+                            "description": "A description of the the structure or strategy of the product",
+                            "examples": ["Call Fly Wing+"]
+                        },
+                        "exchange": {
+                            "type": "string",
+                            "title": "Exchange",
+                            "description": "The exchange or marketplace where the product is offered",
+                            "examples": ["PHLX"]
+                        },
+                        "size": {
+                            "type": "object",
+                            "title": "Product Size",
+                            "description": "Logic used to determine the size, size limits and increments to use when trading the product.",
+                            "properties": {
+                                "min": {
+                                    "type": "number",
+                                    "title": "Minimum",
+                                    "description": "The minimum size"
+                                },
+                                "max": {
+                                    "type": "number",
+                                    "title": "Maximum",
+                                    "description": "The maximum size"
+                                },
+                                "increment": {
+                                    "type": "number",
+                                    "title": "Increment",
+                                    "description": "The amount to increment the size by"
+                                },
+                                "type": {
+                                    "type": "string",
+                                    "title": "Size Type",
+                                    "description": "The"
+                                }
+                            },
+                            "required": [],
+                            "additionalProperties": false
+                        },
+                        "price": {
+                            "type": "object",
+                            "title": "Product Price",
+                            "description": "Logic used to determine the size, size limits and increments to use when trading the product.",
+                            "properties": {
+                                "tick": {
+                                    "type": "number",
+                                    "title": "Tick",
+                                    "description": "" 
+                                },
+                                "type": {
+                                    "type": "number",
+                                    "title": "Price Type",
+                                    "description": "" 
+                                }
+                            },
+                            "required": [],
+                            "additionalProperties": false
+                        },
+                        "legs": {
+                            "type": "array",
+                            "title": "Legs",
+                            "description": "Description of the parts of a multi-part transaction.",
+                            "items": {
+                                "type": "object",
+                                "title": "Leg",
+                                "description": "A part of a multi-part transaction.",
+                                "properties": {
+                                    "id": {
+                                        "type": "string",
+                                        "title": "",
+                                        "description": "Unique identifier for this order leg within the multi-leg order"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "enum": ["Call", "Put"],
+                                        "title": "Option Type",
+                                        "description": "Indicates whether this Leg relates to a purchase or sale option."
+                                    },
+                                    "expirationDate": {
+                                        "type": "string",
+                                        "format:": "date",
+                                        "title": "Expiration Date",
+                                        "description": "For options, the date at which the contract expires."
+                                    },
+                                    "maturityDate": {
+                                        "type": "string",
+                                        "format:": "date",
+                                        "title": "Maturity Date",
+                                        "description": "The date on which the the issuer repays the holders."
+                                    },
+                                    "strikePrice": {
+                                        "type": "number",
+                                        "title": "Strike Price",
+                                        "description": "The  price at which the underlying asset is bought or sold"
+                                    },
+                                    "ratioQty": {
+                                        "type": "number",
+                                        "title": "Ratio Quantity",
+                                        "description": "A 'per unit' quantity for the leg as a ratio of the order size."
+                                    },
+                                    "side": {
+                                        "type": "string",
+                                        "enum": ["Buy", "Sell"],
+                                        "title": "Side",
+                                        "description": "Indicates whether the asset is being bought or sold."
+                                    }
+                                },
+                                "required": ["type","strikePrice", "side"]
+                            }
+                        }
+                    },
+                    "required": [],
+                    "additionalProperties": true
+                }
+            },
+            "required": [
+                "type",
+                "id"
+            ],
+            "additionalProperties": true
+        },
+        { "$ref": "context.schema.json#/definitions/BaseContext" }
+    ],
+    "examples": [
+        {
+            "type": "fdc3.product",
+            "id": {
+                "productId": "ABC123"
+            },
+            "notes": "Some notes attached to this product",
+            "instrument": {
+                "type": "fdc3.instrument",
+                "id": {
+                    "ticker": "MSFT"
+                }
+            },
+            "details": {
+                "description": "SPY CF W+ 20DEC24 580/590/600 1x2x1 r572.99 d13% (PHLX)",
+                "structureType": "Call Fly Wing+",
+                "exchange": "PHLX",
+                "size": {
+                    "min": 1000,
+                    "increment": 100,
+                    "type": "Lots"
+                },
+                "price": {
+                    "tick": 0.1,
+                    "type": "Price"
+                },
+                "legs": [
+                    {
+                        "type": "Call",
+                        "maturityDate": "2024-12-20",
+                        "strikePrice": 580,
+                        "ratioQty": 1,
+                        "side": "Buy"
+                    },
+                    {
+                        "type": "Call",
+                        "maturityDate": "2024-12-20",
+                        "strikePrice": 590,
+                        "ratioQty": -2,
+                        "side": "Sell"
+                    },
+                    {
+                        "type": "Call",
+                        "maturityDate": "2024-12-20",
+                        "strikePrice": 600,
+                        "ratioQty": 1,
+                        "side": "Buy"
+                    }
+                ]
+            }
+        }
+    ]
 }

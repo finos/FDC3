@@ -24,6 +24,11 @@
           "title": "Name",
           "description": "An optional human-readable summary of the order."
         },
+        "notes": {
+          "type": "string",
+          "title": "Notes",
+          "description": "A description or set of notes."
+        },
         "details": {
           "type": "object",
           "title": "Order Details",
@@ -48,6 +53,7 @@
     {
       "type": "fdc3.order",
       "name": "...",
+      "notes": "Some notes attached to this order",
       "id": {
         "myOMS": "12345"
       },

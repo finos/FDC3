@@ -111,6 +111,7 @@
           "context/ref/Portfolio",
           "context/ref/Position",
           "context/ref/Product",
+          "context/ref/RFQ",
           "context/ref/TimeRange",
           "context/ref/Trade",
           "context/ref/TradeList",
