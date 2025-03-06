@@ -130,7 +130,6 @@ jobs:
         token: ${{ secrets[matrix.token-name] }}
     
     - name: Manually Configure npm Authentication
-      if: steps.check-version.outputs.exists == '0' 
       run: |
         REGISTRY="${{ matrix.registry }}"
         CLEAN_REGISTRY=${REGISTRY#https://}  # Strip https:// prefix
