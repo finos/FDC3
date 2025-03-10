@@ -1,7 +1,7 @@
 {
   "name": "fdc3-for-web-reference-ui",
   "private": true,
-  "version": "2.2.0-beta.2",
+  "version": "2.2.0-beta.3",
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
@@ -23,6 +23,6 @@
     "vite": "^5.4.9"
   },
   "dependencies": {
-    "@finos/fdc3": "2.2.0-beta.2"
+    "@finos/fdc3": "2.2.0-beta.3"
   }
 }
