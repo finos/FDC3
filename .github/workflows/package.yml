@@ -137,9 +137,7 @@ jobs:
         echo "Generated .npmrc:"
         cat ~/.npmrc  # Debug output
         NODE_AUTH_TOKEN=${{ secrets[matrix.token-name] }}
- 
-    - name: Publishing As
-      run: 'npm whoami --registry ${{ matrix.registry }}'
+        npm whoami --registry ${{ matrix.registry }}
 
     - name: Check package version
       id: check-version
@@ -155,7 +153,7 @@ jobs:
       
     - name: Install dependencies
       if: steps.check-version.outputs.exists == '0' 
-      uses: bahmutov/npm-install@2509f13e8485d88340a789a3f7ca11aaac47c9fc #v1.8.36
+      uses: npm install
 
     - name: Build
       if: steps.check-version.outputs.exists == '0' 
