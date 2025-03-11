@@ -18,7 +18,7 @@ To use the FDC3 module in your project, import it as follows:
 ```javascript
 import { getAgent } from '@finos/fdc3-get-agent';
 // getAgent() returns the FDC3 Desktop Agent
-const fdc3 = getAgent();
+const fdc3 = await getAgent();
 
 // Example usage
 const contact = {
