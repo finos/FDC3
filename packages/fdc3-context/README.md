@@ -50,3 +50,9 @@ Finally, please note that the latest version of quicktype (at the time of writin
 - Using a directory or .schema.json files as a source will cause the input type argument `-s schema` to be ignored, causing the files to be interpreted as JSON rather than JSON Schema.
   - A utility is provided in this repository (_../../quicktypeUtil.js_) to work around this bug by listing directories and constructing a call to quicktype where each file is provided as an individual source.
 - Setting the `--nice-property-names` TypeScript output option will crash the generator and can't be used.
+
+
+Further details:
+ - https://github.com/finos/FDC3
+ - [FDC3 Specification](https://fdc3.finos.org/)
+ - Main FDC3 module: https://www.npmjs.com/package/@finos/fdc3

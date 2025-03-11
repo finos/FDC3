@@ -31,7 +31,7 @@
               "description": "The id of the PrivateChannel that the event listener was added to."
             },
             "listenerType": {
-              "$ref": "../api/common.schema.json#/$defs/PrivateChannelEventListenerTypes"
+              "$ref": "../api/api.schema.json#/definitions/PrivateChannelEventType"
             }
           },
           "additionalProperties": false,
