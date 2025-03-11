@@ -135,15 +135,16 @@ jobs:
         always-auth: true
         token: ${{ secrets[matrix.token-name] }}
     
-    - name: Manually Configure npm Authentication
-      run: |
-        REGISTRY="${{ matrix.registry }}"
-        CLEAN_REGISTRY=${REGISTRY#https://}  # Strip https:// prefix
-        echo "//${CLEAN_REGISTRY}/:_authToken=${{ secrets[matrix.token-name] }}" > ~/.npmrc
-        echo "Generated .npmrc:"
-        cat ~/.npmrc  # Debug output
-        NODE_AUTH_TOKEN=${{ secrets[matrix.token-name] }}
-        npm whoami --registry ${{ matrix.registry }}
+    # This shouldn't be needed, 
+    # - name: Manually Configure npm Authentication
+    #   run: |
+    #     REGISTRY="${{ matrix.registry }}"
+    #     CLEAN_REGISTRY=${REGISTRY#https://}  # Strip https:// prefix
+    #     echo "//${CLEAN_REGISTRY}/:_authToken=${{ secrets[matrix.token-name] }}" > ~/.npmrc
+    #     echo "Generated .npmrc:"
+    #     cat ~/.npmrc  # Debug output
+    #     NODE_AUTH_TOKEN=${{ secrets[matrix.token-name] }}
+    #     npm whoami --registry ${{ matrix.registry }}
 
     - name: Check package version
       id: check-version
