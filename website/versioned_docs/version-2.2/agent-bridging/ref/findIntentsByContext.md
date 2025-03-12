@@ -45,8 +45,8 @@ sequenceDiagram
 
 ### Request message schemas
 
-- [https://fdc3.finos.org/schemas/2.2/bridging/findIntentsByContextAgentRequest.schema.json](/schemas/2.2/bridging/findIntentsByContextAgentRequest.schema.json)
-- [https://fdc3.finos.org/schemas/2.2/bridging/findIntentsByContextBridgeRequest.schema.json](/schemas/2.2/bridging/findIntentsByContextBridgeRequest.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/findIntentsByContextAgentRequest.schema.json](pathname:///schemas/2.2/bridging/findIntentsByContextAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/findIntentsByContextBridgeRequest.schema.json](pathname:///schemas/2.2/bridging/findIntentsByContextBridgeRequest.schema.json)
 
 ### Example
 
@@ -98,10 +98,10 @@ The DAB fills in the `source.desktopAgent` field and forwards the request to the
 
 ### Response message schemas
 
-- [https://fdc3.finos.org/schemas/2.2/bridging/findIntentsByContextAgentResponse.schema.json](/schemas/2.2/bridging/findIntentsByContextAgentResponse.schema.json)
-- [https://fdc3.finos.org/schemas/2.2/bridging/findIntentsByContextAgentErrorResponse.schema.json](/schemas/2.2/bridging/findIntentsByContextAgentErrorResponse.schema.json)
-- [https://fdc3.finos.org/schemas/2.2/bridging/findIntentsByContextBridgeResponse.schema.json](/schemas/2.2/bridging/findIntentsByContextBridgeResponse.schema.json)
-- [https://fdc3.finos.org/schemas/2.2/bridging/findIntentsByContextBridgeErrorResponse.schema.json](/schemas/2.2/bridging/findIntentsByContextBridgeErrorResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/findIntentsByContextAgentResponse.schema.json](pathname:///schemas/2.2/bridging/findIntentsByContextAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/findIntentsByContextAgentErrorResponse.schema.json](pathname:///schemas/2.2/bridging/findIntentsByContextAgentErrorResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/findIntentsByContextBridgeResponse.schema.json](pathname:///schemas/2.2/bridging/findIntentsByContextBridgeResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/findIntentsByContextBridgeErrorResponse.schema.json](pathname:///schemas/2.2/bridging/findIntentsByContextBridgeErrorResponse.schema.json)
 
 ### Example
 

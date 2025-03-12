@@ -14,7 +14,7 @@ The Product schema does not explicitly include identifiers in the id section, as
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/2.2/context/product.schema.json](https://fdc3.finos.org/schemas/2.2/context/product.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/product.schema.json))
+[https://fdc3.finos.org/schemas/2.2/context/product.schema.json](pathname:///schemas/2.2/context/product.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/product.schema.json))
 
 ## Type
 

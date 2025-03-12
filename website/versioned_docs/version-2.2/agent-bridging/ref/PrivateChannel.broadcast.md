@@ -36,8 +36,8 @@ sequenceDiagram
 
 ### Request message schemas
 
-- [https://fdc3.finos.org/schemas/2.2/bridging/privateChannelBroadcastAgentRequest.schema.json](/schemas/2.2/bridging/privateChannelBroadcastAgentRequest.schema.json)
-- [https://fdc3.finos.org/schemas/2.2/bridging/privateChannelBroadcastBridgeRequest.schema.json](/schemas/2.2/bridging/privateChannelBroadcastBridgeRequest.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/privateChannelBroadcastAgentRequest.schema.json](pathname:///schemas/2.2/bridging/privateChannelBroadcastAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/privateChannelBroadcastBridgeRequest.schema.json](pathname:///schemas/2.2/bridging/privateChannelBroadcastBridgeRequest.schema.json)
 
 ### Example
 

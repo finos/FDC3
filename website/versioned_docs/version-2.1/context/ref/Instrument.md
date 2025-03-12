@@ -30,7 +30,7 @@ a property that makes it clear what value represents. Doing so will make interpr
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/2.1/context/instrument.schema.json](https://fdc3.finos.org/schemas/2.1/context/instrument.schema.json)
+[https://fdc3.finos.org/schemas/2.1/context/instrument.schema.json](pathname:///schemas/2.1/context/instrument.schema.json)
 
 ## Details
 

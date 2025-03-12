@@ -62,6 +62,8 @@ To create a new version of the website, a number of NPM scripts need to be run t
     npm run start
     ```
 
+    Check the output of build for broken links in markdown files and correct them. Please note that links to files in the /website/static dir should be prefixed with "pathname://" to exempt them from SPA routing (they will be treated like external links and opened in a new window)
+
 8. Create a PR and send out details for other maintainers to review and test.
 
 9. Merge the PR - website and NPM module will be deployed automatically.

@@ -10,7 +10,7 @@ A context type that represents a simple search criterion, based on a list of oth
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/2.2/context/chatSearchCriteria.schema.json](https://fdc3.finos.org/schemas/2.2/context/chatSearchCriteria.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/chatSearchCriteria.schema.json))
+[https://fdc3.finos.org/schemas/2.2/context/chatSearchCriteria.schema.json](pathname:///schemas/2.2/context/chatSearchCriteria.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/chatSearchCriteria.schema.json))
 
 ## Type
 

@@ -12,7 +12,7 @@ The OrderList schema does not explicitly include identifiers in the id section, 
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/2.2/context/orderList.schema.json](https://fdc3.finos.org/schemas/2.2/context/orderList.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/orderList.schema.json))
+[https://fdc3.finos.org/schemas/2.2/context/orderList.schema.json](pathname:///schemas/2.2/context/orderList.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/orderList.schema.json))
 
 ## Type
 

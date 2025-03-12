@@ -51,7 +51,7 @@ import { BrowserTypes } from "@finos/fdc3";
 
 :::
 
-WCP messages are derived from a base schema, [`WCPConnectionStep`](https://fdc3.finos.org/schemas/next/api/.schema.json), which defines a common structure for the messages:
+WCP messages are derived from a base schema, [`WCPConnectionStep`](pathname:///schemas/next/api/.schema.json), which defines a common structure for the messages:
 
 ```json
 {
@@ -72,13 +72,13 @@ A value for `meta.connectionAttemptUuid` should be generated as a version 4 UUID
 
 Messages defined as part of the Web Connection Protocol, which will be referenced later in this document, these are:
 
-- [`WCP1Hello`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json)
-- [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json)
-- [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json)
-- [`WCP4ValidateAppIdentity`](https://fdc3.finos.org/schemas/next/api/WCP4ValidateAppIdentity.schema.json)
-- [`WCP5ValidateAppIdentityFailedResponse`](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityFailedResponse.schema.json)
-- [`WCP5ValidateAppIdentityResponse`](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityResponse.schema.json)
-- [`WCP6Goodbye`](https://fdc3.finos.org/schemas/next/api/WCP6Goodbye.schema.json)
+- [`WCP1Hello`](pathname:///schemas/next/api/WCP1Hello.schema.json)
+- [`WCP2LoadUrl`](pathname:///schemas/next/api/WCP2LoadUrl.schema.json)
+- [`WCP3Handshake`](pathname:///schemas/next/api/WCP3Handshake.schema.json)
+- [`WCP4ValidateAppIdentity`](pathname:///schemas/next/api/WCP4ValidateAppIdentity.schema.json)
+- [`WCP5ValidateAppIdentityFailedResponse`](pathname:///schemas/next/api/WCP5ValidateAppIdentityFailedResponse.schema.json)
+- [`WCP5ValidateAppIdentityResponse`](pathname:///schemas/next/api/WCP5ValidateAppIdentityResponse.schema.json)
+- [`WCP6Goodbye`](pathname:///schemas/next/api/WCP6Goodbye.schema.json)
 
 ## Establishing Connectivity Using the Web Connection Protocol (WCP)
 
@@ -182,7 +182,7 @@ function _recursePossibleTargets(startWindow: Window, w: Window, found: Window[]
 Setup a timer for specified timeout, and then for each `candidate` found, attempt to establish communication with it as follows:
 
   1. Add a listener (`candidate.addEventListener("message", (event) => {})`) to receive response messages from the `candidate`.
-  2. Send a [`WCP1Hello`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json) message to it via `postMessage`.
+  2. Send a [`WCP1Hello`](pathname:///schemas/next/api/WCP1Hello.schema.json) message to it via `postMessage`.
 
   ```ts
   const hello = {
@@ -203,8 +203,8 @@ Setup a timer for specified timeout, and then for each `candidate` found, attemp
   ```
 
   Note that the `targetOrigin` is set to `*` as the origin of the Desktop Agent is not known at this point.
-  3. Accept the first correct response received from a candidate. Correct responses MUST correspond to either the [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) or [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) message schemas and MUST quote the same `meta.connectionAttemptUuid` value provided in the original `WCP1Hello` message. Stop the timeout when a correct response is received. If no response is received from any candidate, the `getAgent()` implementation MAY retry sending the `WCP1Hello` message periodically until the timeout is reached.
-  4. If a [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) was received in the previous step, skip this step and move on to step 5. However, If a [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) was received in the previous step:
+  3. Accept the first correct response received from a candidate. Correct responses MUST correspond to either the [`WCP2LoadUrl`](pathname:///schemas/next/api/WCP2LoadUrl.schema.json) or [`WCP3Handshake`](pathname:///schemas/next/api/WCP3Handshake.schema.json) message schemas and MUST quote the same `meta.connectionAttemptUuid` value provided in the original `WCP1Hello` message. Stop the timeout when a correct response is received. If no response is received from any candidate, the `getAgent()` implementation MAY retry sending the `WCP1Hello` message periodically until the timeout is reached.
+  4. If a [`WCP3Handshake`](pathname:///schemas/next/api/WCP3Handshake.schema.json) was received in the previous step, skip this step and move on to step 5. However, If a [`WCP2LoadUrl`](pathname:///schemas/next/api/WCP2LoadUrl.schema.json) was received in the previous step:
       - Create a hidden iframe within the page, set its URL to the URL provided by the `payload.iframeUrl` field of the message and add a handler to run when the iframe has loaded:
           ```ts
           const loadIframe = (url: string, loadedHandler: () => void): WindowProxy => {
@@ -227,10 +227,10 @@ Setup a timer for specified timeout, and then for each `candidate` found, attemp
 
         :::
 
-  5. At this stage, a [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) message should have been received from either a candidate parent or a hidden iframe created in step 4 above. This message MUST have a `MessagePort` appended to it, which is used for further communication with the Desktop Agent. It MUST also contain URLs for any Intent Resolver or Channel Selector UIs to be injected into the page (or `false` to indicate that they are not in use) and MAY contain custom timeout settings to use for API message exchanges.
+  5. At this stage, a [`WCP3Handshake`](pathname:///schemas/next/api/WCP3Handshake.schema.json) message should have been received from either a candidate parent or a hidden iframe created in step 4 above. This message MUST have a `MessagePort` appended to it, which is used for further communication with the Desktop Agent. It MUST also contain URLs for any Intent Resolver or Channel Selector UIs to be injected into the page (or `false` to indicate that they are not in use) and MAY contain custom timeout settings to use for API message exchanges.
 
   Add a listener (`port.addEventListener("message", (event) => {})`) to receive messages from the selected `candidate`, before moving on to the next stage.
-  6. If no candidates were found or no [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json) has been received by the time that the timeout expires, then neither a Desktop Agent Preload or Desktop Agent Proxy interface has been discovered. If this occurs, the `getAgent()` implementation will run any `failover` function provided as a parameter to `getAgent()`, allowing the application to provide an alternative means of connecting to or starting up a Desktop Agent.
+  6. If no candidates were found or no [`WCP3Handshake`](pathname:///schemas/next/api/WCP3Handshake.schema.json) has been received by the time that the timeout expires, then neither a Desktop Agent Preload or Desktop Agent Proxy interface has been discovered. If this occurs, the `getAgent()` implementation will run any `failover` function provided as a parameter to `getAgent()`, allowing the application to provide an alternative means of connecting to or starting up a Desktop Agent.
   
   An async failover function may resolve to either a `DesktopAgent` implementation or the application may create either an iframe or open a new window, load an appropriate URL for a Desktop Agent implementation and resolve to its `WindowProxy` reference (e.g. `iframe.contentWindow` or the result of a call to `window.open(...)`).
   
@@ -252,17 +252,17 @@ In the current FDC3 version, no identity validation procedures are provided for 
 
 #### 2.1 Determine App Identity
 
-In Desktop Agent Proxy interfaces, identity is ascertained via the [`WCP4ValidateAppIdentity`](/schemas/next/api/WCP4ValidateAppIdentity.schema.json) message, which should be the first message sent on the `MessagePort` received by the `getAgent()` implementation after receiving it via [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json). Any other messages sent via the `MessagePort` prior to successful validation of a [`WCP4ValidateAppIdentity`](/schemas/next/api/WCP4ValidateAppIdentity.schema.json) message should be ignored.
+In Desktop Agent Proxy interfaces, identity is ascertained via the [`WCP4ValidateAppIdentity`](pathname:///schemas/next/api/WCP4ValidateAppIdentity.schema.json) message, which should be the first message sent on the `MessagePort` received by the `getAgent()` implementation after receiving it via [`WCP3Handshake`](pathname:///schemas/next/api/WCP3Handshake.schema.json). Any other messages sent via the `MessagePort` prior to successful validation of a [`WCP4ValidateAppIdentity`](pathname:///schemas/next/api/WCP4ValidateAppIdentity.schema.json) message should be ignored.
 
-An app identity is determined and an `appId` assigned by matching the application to an AppD record already known to the Desktop Agent, based on the `identityUrl` provided in the [`WCP4ValidateAppIdentity`](/schemas/next/api/WCP4ValidateAppIdentity.schema.json) message. An additional `actualUrl` field MUST also be provided to indicate whether the app overrode its `identityUrl` and to allow for logging. The origin (protocol, domain and port) of the `identityUrl`, `actualUrl` and the `MessageEvent.origin` field of the original `WCP1Hello` message that started the connection flow MUST all match. See the [Browser-Resident Desktop Agent Specification](./browserResidentDesktopAgents#validating-app-identity) for details of how to match an `identityUrl` to the `details.url` field of an AppD record.
+An app identity is determined and an `appId` assigned by matching the application to an AppD record already known to the Desktop Agent, based on the `identityUrl` provided in the [`WCP4ValidateAppIdentity`](pathname:///schemas/next/api/WCP4ValidateAppIdentity.schema.json) message. An additional `actualUrl` field MUST also be provided to indicate whether the app overrode its `identityUrl` and to allow for logging. The origin (protocol, domain and port) of the `identityUrl`, `actualUrl` and the `MessageEvent.origin` field of the original `WCP1Hello` message that started the connection flow MUST all match. See the [Browser-Resident Desktop Agent Specification](./browserResidentDesktopAgents#validating-app-identity) for details of how to match an `identityUrl` to the `details.url` field of an AppD record.
 
-If the app identity is not recognized, the Desktop Agent MUST respond with a [`WCP5ValidateAppIdentityFailedResponse`](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityFailedResponse.schema.json) message and stop handling further messages on the `MessagePort`. On receiving this message, the `getAgent()` implementation should reject with an Error object with the `AccessDenied` message from the [`AgentError`](../ref/Errors#agenterror) enumeration.
+If the app identity is not recognized, the Desktop Agent MUST respond with a [`WCP5ValidateAppIdentityFailedResponse`](pathname:///schemas/next/api/WCP5ValidateAppIdentityFailedResponse.schema.json) message and stop handling further messages on the `MessagePort`. On receiving this message, the `getAgent()` implementation should reject with an Error object with the `AccessDenied` message from the [`AgentError`](../ref/Errors#agenterror) enumeration.
 
 If the app identity is recognized the Desktop Agent will assign the appropriate appId and move on to determining the instance identity.
 
 #### 2.2 Determine Instance Identity
 
-If this instance of the application has connected to a Desktop Agent before and is reconnecting (due to a navigation or refresh event) then the optional `instanceId` and `instanceUuid` should be set in the [`WCP4ValidateAppIdentity`](/schemas/next/api/WCP4ValidateAppIdentity.schema.json) message. The Desktop Agent MUST use these values to determine if it recognizes the app instance identity and that it was previously applied to application with the same `appId`.
+If this instance of the application has connected to a Desktop Agent before and is reconnecting (due to a navigation or refresh event) then the optional `instanceId` and `instanceUuid` should be set in the [`WCP4ValidateAppIdentity`](pathname:///schemas/next/api/WCP4ValidateAppIdentity.schema.json) message. The Desktop Agent MUST use these values to determine if it recognizes the app instance identity and that it was previously applied to application with the same `appId`.
 
 An `instanceUuid` is used to validate instance identity because `instanceId` of an application is available to other apps through the FDC3 API and might be used to 'spoof' an identity. On the other hand, `instanceUuid` is only issued through the WCP to the specific app instance and is used as a shared secret to enable identity validation. However, as `SessionStorage` data may be cloned when new windows on the same origin are opened via `window.open()`, Desktop Agents MUST also compare the `WindowProxy` object (via the `==` operator) that the original `WCP1Hello` messages were received on to determine if they represent the same window.
 
@@ -270,7 +270,7 @@ See the [Browser-Resident Desktop Agent Specification](./browserResidentDesktopA
 
 If no existing instance identity (`instanceId` and `instanceUuid`) is provided, or instance identity validation fails (as the `instanceUuid` is not known, or either the `appId` or `WindowProxy` objects don't match the previous connection), then the Desktop Agent MUST assign new `instanceId` and `instanceUuid` values.
 
-The Desktop Agent MUST then respond with a [`WCP5ValidateAppIdentityResponse`](https://fdc3.finos.org/schemas/next/api/WCP5ValidateAppIdentityResponse.schema.json) message containing the assigned `appId`, `instanceId` and `instanceUuid` values and the [`ImplementationMetadata`](../ref/Metadata#implementationmetadata) object for the Desktop Agent. This message indicates that the Desktop Agent will accept the application and we can begin processing [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol) messages relating to FDC3 API calls over the `MessagePort`.
+The Desktop Agent MUST then respond with a [`WCP5ValidateAppIdentityResponse`](pathname:///schemas/next/api/WCP5ValidateAppIdentityResponse.schema.json) message containing the assigned `appId`, `instanceId` and `instanceUuid` values and the [`ImplementationMetadata`](../ref/Metadata#implementationmetadata) object for the Desktop Agent. This message indicates that the Desktop Agent will accept the application and we can begin processing [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol) messages relating to FDC3 API calls over the `MessagePort`.
 
 ### Step 3: Persist DesktopAgentDetails to SessionStorage
 
@@ -278,9 +278,9 @@ Once a connection is established, and the app and instance identity determined, 
 
 - The `identityUrl` and `actualUrl` passed to `getAgent()`.
 - The `appId`, `instanceId`, and `instanceUuid` assigned by the DA.
-- An `agentUrl` field with the URL provided in any [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) message that was received
+- An `agentUrl` field with the URL provided in any [`WCP2LoadUrl`](pathname:///schemas/next/api/WCP2LoadUrl.schema.json) message that was received
   - Used to skip sub-steps 1-3 in the discovery process described in Step 1.2.
-  - If no [`WCP2LoadUrl`](https://fdc3.finos.org/schemas/next/api/WCP2LoadUrl.schema.json) message was received, omit this field.
+  - If no [`WCP2LoadUrl`](pathname:///schemas/next/api/WCP2LoadUrl.schema.json) message was received, omit this field.
 - An `agentType` field which indicates what type of connection to the DA was established
   - Used to limit the discovery process in Step 1.2 above to only allow agents of the same type.
   - the `getAgent()` implementation should determine what value to set, from the `WebDesktopAgentType` enumeration for this field based on what happened during the discovery process.
@@ -303,7 +303,7 @@ Where a `DesktopAgent` or 'Desktop Agent Proxy' implementation was successfully 
 
 Desktop Agent Preload interfaces, as used in container-based Desktop Agent implementations, are usually able to track the lifecycle and current URL of windows that host web apps in their scope. Hence, there is currently no requirement nor means for an app to indicate that it is closing, rather it is the responsibility of the Desktop Agent to update its internal state when an app closes or changes identity.
 
-However, Browser Resident Desktop Agents working with a Desktop Agent Proxy interface may have more trouble tracking child windows and frames. Hence, a specific WCP message ([`WCP6Goodbye`](https://fdc3.finos.org/schemas/next/api/WCP6Goodbye.schema.json)) is provided for the `getAgent()` implementation to indicate that an app is disconnecting from the Desktop Agent and will not communicate further unless and until it reconnects via the WCP. The `getAgent()` implementation MUST listen for the `pagehide` event from the HTML Standard's [Page Life Cycle API](https://html.spec.whatwg.org/multipage/document-lifecycle.html#document-lifecycle) ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/pagehide_event), [Chrome for Developers](https://developer.chrome.com/docs/web-platform/page-lifecycle-api#developer-recommendations-for-each-state)) and send [`WCP6Goodbye`](https://fdc3.finos.org/schemas/next/api/WCP6Goodbye.schema.json) if it receives an event where the `persisted` property is `false`.
+However, Browser Resident Desktop Agents working with a Desktop Agent Proxy interface may have more trouble tracking child windows and frames. Hence, a specific WCP message ([`WCP6Goodbye`](pathname:///schemas/next/api/WCP6Goodbye.schema.json)) is provided for the `getAgent()` implementation to indicate that an app is disconnecting from the Desktop Agent and will not communicate further unless and until it reconnects via the WCP. The `getAgent()` implementation MUST listen for the `pagehide` event from the HTML Standard's [Page Life Cycle API](https://html.spec.whatwg.org/multipage/document-lifecycle.html#document-lifecycle) ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Window/pagehide_event), [Chrome for Developers](https://developer.chrome.com/docs/web-platform/page-lifecycle-api#developer-recommendations-for-each-state)) and send [`WCP6Goodbye`](pathname:///schemas/next/api/WCP6Goodbye.schema.json) if it receives an event where the `persisted` property is `false`.
 
 As it is possible for a page to close without firing this event in some circumstances (e.g. where a browser render thread crashes), other procedures for detecting disconnection may also be used, these are described in the [Browser Resident Desktop Agents specification](./browserResidentDesktopAgents#disconnects) and [Desktop Agent Communication Protocol](./desktopAgentCommunicationProtocol#checking-apps-are-alive).
 
@@ -389,7 +389,7 @@ flowchart LR
 
 The WCP allows applications to indicate to the `getAgent()` implementation whether they need the UIs (they may not need one or the other based on their usage of the FDC3 API, or because they implement UIs themselves) and for Desktop Agents to provide custom implementations of them, or defer to reference implementations provided by the FDC3 Standard. This is achieved via the following messages:
 
-- [`WCP1Hello`](https://fdc3.finos.org/schemas/next/api/WCP1Hello.schema.json): Sent by an application and incorporating boolean `payload.intentResolver` and `payload.channelSelector` fields, which are set to `false` if either UI is not needed (defaults to `true`).
-- [`WCP3Handshake`](https://fdc3.finos.org/schemas/next/api/WCP3Handshake.schema.json): Response sent by the Desktop Agent and incorporating `payload.intentResolverUrl` and `payload.channelSelectorUrl` fields, which should be set to the URL for each UI implementation that should be loaded into an iframe to provide the UI (defaults to URLs for reference UI implementations provided by the FDC3 project), or set to `false` to indicate that the respective UI is not needed. Setting these fields to `true` will cause the `getAgent()` implementation to use its default URLs representing a reference implementation of each UI.
+- [`WCP1Hello`](pathname:///schemas/next/api/WCP1Hello.schema.json): Sent by an application and incorporating boolean `payload.intentResolver` and `payload.channelSelector` fields, which are set to `false` if either UI is not needed (defaults to `true`).
+- [`WCP3Handshake`](pathname:///schemas/next/api/WCP3Handshake.schema.json): Response sent by the Desktop Agent and incorporating `payload.intentResolverUrl` and `payload.channelSelectorUrl` fields, which should be set to the URL for each UI implementation that should be loaded into an iframe to provide the UI (defaults to URLs for reference UI implementations provided by the FDC3 project), or set to `false` to indicate that the respective UI is not needed. Setting these fields to `true` will cause the `getAgent()` implementation to use its default URLs representing a reference implementation of each UI.
 
 When UI iframes are created, the user interfaces may use the `Fdc3UserInterface` messages incorporated into the [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol#controlling-injected-user-interfaces) to communicate with the `getAgent()` implementation and through it the Desktop Agent.
