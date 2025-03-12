@@ -48,8 +48,8 @@ sequenceDiagram
 
 ### Request message schemas
 
-- [https://fdc3.finos.org/schemas/2.2/bridging/findInstancesAgentRequest.schema.json](/schemas/2.2/bridging/findInstancesAgentRequest.schema.json)
-- [https://fdc3.finos.org/schemas/2.2/bridging/findInstancesBridgeRequest.schema.json](/schemas/2.2/bridging/findInstancesBridgeRequest.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/findInstancesAgentRequest.schema.json](pathname:///schemas/2.2/bridging/findInstancesAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/findInstancesBridgeRequest.schema.json](pathname:///schemas/2.2/bridging/findInstancesBridgeRequest.schema.json)
 
 ### Example
 
@@ -132,10 +132,10 @@ The Desktop Agent Bridge should only forward the request to the requested Deskto
 
 ### Response message schemas
 
-- [https://fdc3.finos.org/schemas/2.2/bridging/findInstancesAgentResponse.schema.json](/schemas/2.2/bridging/findInstancesAgentResponse.schema.json)
-- [https://fdc3.finos.org/schemas/2.2/bridging/findInstancesAgentErrorResponse.schema.json](/schemas/2.2/bridging/findInstancesAgentErrorResponse.schema.json)
-- [https://fdc3.finos.org/schemas/2.2/bridging/findInstancesBridgeResponse.schema.json](/schemas/2.2/bridging/findInstancesBridgeResponse.schema.json)
-- [https://fdc3.finos.org/schemas/2.2/bridging/findInstancesBridgeErrorResponse.schema.json](/schemas/2.2/bridging/findInstancesBridgeErrorResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/findInstancesAgentResponse.schema.json](pathname:///schemas/2.2/bridging/findInstancesAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/findInstancesAgentErrorResponse.schema.json](pathname:///schemas/2.2/bridging/findInstancesAgentErrorResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/findInstancesBridgeResponse.schema.json](pathname:///schemas/2.2/bridging/findInstancesBridgeResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/findInstancesBridgeErrorResponse.schema.json](pathname:///schemas/2.2/bridging/findInstancesBridgeErrorResponse.schema.json)
 
 ### Example
 

@@ -10,7 +10,7 @@ A File attachment encoded in the form of a data URI. Can be added to a Message.
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/2.2/context/fileAttachment.schema.json](https://fdc3.finos.org/schemas/2.2/context/fileAttachment.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/fileAttachment.schema.json))
+[https://fdc3.finos.org/schemas/2.2/context/fileAttachment.schema.json](pathname:///schemas/2.2/context/fileAttachment.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/fileAttachment.schema.json))
 
 ## Type
 

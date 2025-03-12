@@ -10,7 +10,7 @@ A financial instrument from any asset class.
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/2.2/context/instrument.schema.json](https://fdc3.finos.org/schemas/2.2/context/instrument.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/instrument.schema.json))
+[https://fdc3.finos.org/schemas/2.2/context/instrument.schema.json](pathname:///schemas/2.2/context/instrument.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/instrument.schema.json))
 
 ## Type
 

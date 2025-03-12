@@ -10,7 +10,7 @@ Reference to the chat room which could be used to send a message to the room
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/2.2/context/chatRoom.schema.json](https://fdc3.finos.org/schemas/2.2/context/chatRoom.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/chatRoom.schema.json))
+[https://fdc3.finos.org/schemas/2.2/context/chatRoom.schema.json](pathname:///schemas/2.2/context/chatRoom.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/chatRoom.schema.json))
 
 ## Type
 

@@ -10,7 +10,7 @@ A context type representing the price and value of a holding.
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/2.2/context/valuation.schema.json](https://fdc3.finos.org/schemas/2.2/context/valuation.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/valuation.schema.json))
+[https://fdc3.finos.org/schemas/2.2/context/valuation.schema.json](pathname:///schemas/2.2/context/valuation.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/valuation.schema.json))
 
 ## Type
 

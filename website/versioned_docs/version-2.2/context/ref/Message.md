@@ -10,7 +10,7 @@ A chat message to be sent through an instant messaging application. Can contain 
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/2.2/context/message.schema.json](https://fdc3.finos.org/schemas/2.2/context/message.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/message.schema.json))
+[https://fdc3.finos.org/schemas/2.2/context/message.schema.json](pathname:///schemas/2.2/context/message.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/message.schema.json))
 
 ## Type
 

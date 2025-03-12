@@ -44,8 +44,8 @@ sequenceDiagram
 
 ### Request message schemas
 
-- [https://fdc3.finos.org/schemas/2.2/bridging/getAppMetadataAgentRequest.schema.json](/schemas/2.2/bridging/getAppMetadataAgentRequest.schema.json)
-- [https://fdc3.finos.org/schemas/2.2/bridging/getAppMetadataBridgeRequest.schema.json](/schemas/2.2/bridging/getAppMetadataBridgeRequest.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/getAppMetadataAgentRequest.schema.json](pathname:///schemas/2.2/bridging/getAppMetadataAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/getAppMetadataBridgeRequest.schema.json](pathname:///schemas/2.2/bridging/getAppMetadataBridgeRequest.schema.json)
 
 ### Example
 
@@ -98,10 +98,10 @@ which is repeated on to the target agent as:
 
 ### Response message schemas
 
-- [https://fdc3.finos.org/schemas/2.2/bridging/getAppMetadataAgentResponse.schema.json](/schemas/2.2/bridging/getAppMetadataAgentResponse.schema.json)
-- [https://fdc3.finos.org/schemas/2.2/bridging/getAppMetadataAgentErrorResponse.schema.json](/schemas/2.2/bridging/getAppMetadataAgentErrorResponse.schema.json)
-- [https://fdc3.finos.org/schemas/2.2/bridging/getAppMetadataBridgeResponse.schema.json](/schemas/2.2/bridging/getAppMetadataBridgeResponse.schema.json)
-- [https://fdc3.finos.org/schemas/2.2/bridging/getAppMetadataBridgeErrorResponse.schema.json](/schemas/2.2/bridging/getAppMetadataBridgeErrorResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/getAppMetadataAgentResponse.schema.json](pathname:///schemas/2.2/bridging/getAppMetadataAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/getAppMetadataAgentErrorResponse.schema.json](pathname:///schemas/2.2/bridging/getAppMetadataAgentErrorResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/getAppMetadataBridgeResponse.schema.json](pathname:///schemas/2.2/bridging/getAppMetadataBridgeResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.2/bridging/getAppMetadataBridgeErrorResponse.schema.json](pathname:///schemas/2.2/bridging/getAppMetadataBridgeErrorResponse.schema.json)
 
 ### Example
 

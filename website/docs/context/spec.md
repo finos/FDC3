@@ -97,7 +97,7 @@ or in JSON Schema as:
 
 :::note
 
-This is a simplified version of the schema for illustrative purposes, the fully documented Context schema, which is composed with other FDC3 Standard context schemas, can be found at: [https://fdc3.finos.org/schemas/next/context/context.schema.json](https://fdc3.finos.org/schemas/next/context/context.schema.json).
+This is a simplified version of the schema for illustrative purposes, the fully documented Context schema, which is composed with other FDC3 Standard context schemas, can be found at: [https://fdc3.finos.org/schemas/next/context/context.schema.json](pathname:///schemas/next/context/context.schema.json).
 
 :::
 
@@ -256,36 +256,36 @@ For more details on FDC3 Standards compliance (including the versioning, depreca
 
 The following are standard FDC3 context types:
 
-- [`fdc3.action`](ref/Action) ([schema](/schemas/next/context/action.schema.json))
-- [`fdc3.chart`](ref/Chart) ([schema](/schemas/next/context/chart.schema.json))
-- [`fdc3.chat.initSettings`](ref/ChatInitSettings) ([schema](/schemas/next/context/chatInitSettings.schema.json))
-- [`fdc3.chat.message`](ref/ChatMessage) ([schema](/schemas/next/context/chatMessage.schema.json))
-- [`fdc3.chat.room`](ref/ChatRoom) ([schema](/schemas/next/context/chatRoom.schema.json))
-- [`fdc3.chat.searchCriteria`](ref/ChatSearchCriteria) ([schema](/schemas/next/context/chatSearchCriteria.schema.json))
-- [`fdc3.contact`](ref/Contact) ([schema](/schemas/next/context/contact.schema.json))
-- [`fdc3.contactList`](ref/ContactList) ([schema](/schemas/next/context/contactList.schema.json))
-- [`fdc3.country`](ref/Country) ([schema](/schemas/next/context/country.schema.json))
-- [`fdc3.currency`](ref/Currency) ([schema](/schemas/next/context/currency.schema.json))
-- [`fdc3.email`](ref/Email) ([schema](/schemas/next/context/email.schema.json))
-- [`fdc3.instrument`](ref/Instrument) ([schema](/schemas/next/context/instrument.schema.json))
-- [`fdc3.instrumentList`](ref/InstrumentList) ([schema](/schemas/next/context/instrumentList.schema.json))
-- [`fdc3.interaction`](ref/Interaction) ([schema](/schemas/next/context/interaction.schema.json))
-- [`fdc3.message`](ref/Message) ([schema](/schemas/next/context/message.schema.json))
-- [`fdc3.organization`](ref/Organization) ([schema](/schemas/next/context/organization.schema.json))
-- [`fdc3.portfolio`](ref/Portfolio) ([schema](/schemas/next/context/portfolio.schema.json))
-- [`fdc3.position`](ref/Position) ([schema](/schemas/next/context/position.schema.json))
-- [`fdc3.nothing`](ref/Nothing) ([schema](/schemas/next/context/nothing.schema.json))
-- [`fdc3.timeRange`](ref/TimeRange) ([schema](/schemas/next/context/timeRange.schema.json))
-- [`fdc3.transactionResult`](ref/TransactionResult) ([schema](/schemas/next/context/transactionresult.schema.json))
-- [`fdc3.valuation`](ref/Valuation) ([schema](/schemas/next/context/valuation.schema.json))
+- [`fdc3.action`](ref/Action) ([schema](pathname:///schemas/next/context/action.schema.json))
+- [`fdc3.chart`](ref/Chart) ([schema](pathname:///schemas/next/context/chart.schema.json))
+- [`fdc3.chat.initSettings`](ref/ChatInitSettings) ([schema](pathname:///schemas/next/context/chatInitSettings.schema.json))
+- [`fdc3.chat.message`](ref/ChatMessage) ([schema](pathname:///schemas/next/context/chatMessage.schema.json))
+- [`fdc3.chat.room`](ref/ChatRoom) ([schema](pathname:///schemas/next/context/chatRoom.schema.json))
+- [`fdc3.chat.searchCriteria`](ref/ChatSearchCriteria) ([schema](pathname:///schemas/next/context/chatSearchCriteria.schema.json))
+- [`fdc3.contact`](ref/Contact) ([schema](pathname:///schemas/next/context/contact.schema.json))
+- [`fdc3.contactList`](ref/ContactList) ([schema](pathname:///schemas/next/context/contactList.schema.json))
+- [`fdc3.country`](ref/Country) ([schema](pathname:///schemas/next/context/country.schema.json))
+- [`fdc3.currency`](ref/Currency) ([schema](pathname:///schemas/next/context/currency.schema.json))
+- [`fdc3.email`](ref/Email) ([schema](pathname:///schemas/next/context/email.schema.json))
+- [`fdc3.instrument`](ref/Instrument) ([schema](pathname:///schemas/next/context/instrument.schema.json))
+- [`fdc3.instrumentList`](ref/InstrumentList) ([schema](pathname:///schemas/next/context/instrumentList.schema.json))
+- [`fdc3.interaction`](ref/Interaction) ([schema](pathname:///schemas/next/context/interaction.schema.json))
+- [`fdc3.message`](ref/Message) ([schema](pathname:///schemas/next/context/message.schema.json))
+- [`fdc3.organization`](ref/Organization) ([schema](pathname:///schemas/next/context/organization.schema.json))
+- [`fdc3.portfolio`](ref/Portfolio) ([schema](pathname:///schemas/next/context/portfolio.schema.json))
+- [`fdc3.position`](ref/Position) ([schema](pathname:///schemas/next/context/position.schema.json))
+- [`fdc3.nothing`](ref/Nothing) ([schema](pathname:///schemas/next/context/nothing.schema.json))
+- [`fdc3.timeRange`](ref/TimeRange) ([schema](pathname:///schemas/next/context/timeRange.schema.json))
+- [`fdc3.transactionResult`](ref/TransactionResult) ([schema](pathname:///schemas/next/context/transactionresult.schema.json))
+- [`fdc3.valuation`](ref/Valuation) ([schema](pathname:///schemas/next/context/valuation.schema.json))
 
 The following are [`@experimental`](/docs/fdc3-compliance#experimental-features) types, which are in the process of being defined:
 
-- [`fdc3.order`](ref/Order) ([schema](/schemas/next/context/order.schema.json))
-- [`fdc3.orderList`](ref/OrderList) ([schema](/schemas/next/context/orderList.schema.json))
-- [`fdc3.product`](ref/Product) ([schema](/schemas/next/context/product.schema.json))
-- [`fdc3.trade`](ref/Trade) ([schema](/schemas/next/context/trade.schema.json))
-- [`fdc3.tradeList`](ref/TradeList) ([schema](/schemas/next/context/tradeList.schema.json))
+- [`fdc3.order`](ref/Order) ([schema](pathname:///schemas/next/context/order.schema.json))
+- [`fdc3.orderList`](ref/OrderList) ([schema](pathname:///schemas/next/context/orderList.schema.json))
+- [`fdc3.product`](ref/Product) ([schema](pathname:///schemas/next/context/product.schema.json))
+- [`fdc3.trade`](ref/Trade) ([schema](pathname:///schemas/next/context/trade.schema.json))
+- [`fdc3.tradeList`](ref/TradeList) ([schema](pathname:///schemas/next/context/tradeList.schema.json))
 
 ### Examples
 
