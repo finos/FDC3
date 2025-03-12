@@ -1,0 +1,62 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/2.2/api/raiseIntentForContextResponse.schema.json",
+	"type": "object",
+	"title": "RaiseIntentForContext Response",
+	"description": "A response to a raiseIntentForContext request.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/RaiseIntentForContextResponseType"
+				},
+				"payload": {
+					"title": "RaiseIntentForContext Response Payload",
+					"description": "There are 3 possible responses to a raiseIntentForContext request, each of which sets a single property in the payload: Success (`intentResolution`), Needs further resolution (`appIntents`) or Error (`error`).",
+					"oneOf": [
+						{
+							"$ref": "raiseIntentResponse.schema.json#/$defs/RaiseIntentSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/RaiseIntentForContextNeedsResolutionResponsePayload"
+						},
+						{
+							"$ref": "raiseIntentResponse.schema.json#/$defs/RaiseIntentErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"RaiseIntentForContextResponseType": {
+			"title": "RaiseIntentForContext Response Message Type",
+			"const": "raiseIntentForContextResponse"
+		},
+		"RaiseIntentForContextNeedsResolutionResponsePayload": {
+			"title": "RaiseIntentForContext NeedsResolution Response Payload",
+			"description": "Response to a raiseIntentForContext request that needs additional resolution (i.e. show an intent resolver UI).",
+			"type": "object",
+			"properties": {
+				"appIntents": {
+					"title": "AppIntents",
+					"description": "Used if a raiseIntentForContext request requires additional resolution (e.g. by showing an intent resolver) before it can be handled.",
+					"type": "array",
+					"items": {
+						"$ref": "api.schema.json#/definitions/AppIntent"
+					}
+				}
+			},
+			"required": [
+				"appIntents"
+			],
+			"additionalProperties": false
+		}
+	}
+}

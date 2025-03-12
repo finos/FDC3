@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/bridging/findIntentsByContextBridgeRequest.schema.json",
+  "title": "FindIntentsByContext Bridge Request",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "findIntentsByContextAgentRequest.schema.json#/$defs/FindIntentsByContextRequestBase"
+    },
+    {
+      "$ref": "bridgeRequest.schema.json"
+    }
+  ]
+}

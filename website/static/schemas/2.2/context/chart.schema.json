@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/context/chart.schema.json",
+  "type": "object",
+  "title": "Chart",
+  "description": "A context type representing details of a Chart, which may be used to request plotting of a particular chart or to otherwise share details of its composition, such as:\n\n- A list of instruments for comparison\n- The time period to plot the chart over\n- The style of chart (line, bar, mountain, candle etc.)\n- Other settings such as indicators to calculate, or data representing drawings and annotations.\n\nIn addition to handling requests to plot charts, a charting application may use this type to output a representation of what it is currently displaying so that it can be recorded by another application.",
+  "allOf": [{
+      "type": "object",
+      "properties": {
+        "type": { "const": "fdc3.chart" },
+        "instruments": {
+          "title": "Instruments to plot",
+          "description": "An array of instrument contexts whose data should be plotted.",
+          "type": "array",
+          "items": {
+            "$ref": "instrument.schema.json#"
+          }
+        },
+        "range": {
+          "title": "Time Range",
+          "description": "The time range that should be plotted",
+          "$ref": "timeRange.schema.json#"
+        },
+        "style": {
+          "title": "Chart style",
+          "description": "The type of chart that should be plotted",
+          "type": "string",
+          "enum": [	"line", "bar", "stacked-bar", "mountain", "candle", "pie", "scatter", "histogram", "heatmap", "custom"]
+        },
+        "otherConfig": {
+          "title": "Other configuration",
+          "description": "It is common for charts to support other configuration, such as indicators, annotations etc., which do not have standardized formats, but may be included in the `otherConfig` array as context objects.",
+          "type": "array",
+          "items": {
+            "$ref": "context.schema.json#"
+          }
+        }
+      },
+      "required": ["instruments"]
+    },
+    { "$ref": "context.schema.json#/definitions/BaseContext" }
+  ],
+  "examples": [
+    {
+      "type": "fdc3.chart",
+      "instruments": [
+          {
+              "type": "fdc3.instrument",
+              "id": {
+                  "ticker": "AAPL"
+              }
+          },
+          {
+              "type": "fdc3.instrument",
+              "id": {
+                  "ticker": "GOOG"
+              }
+          }
+      ],
+      "range": {
+          "type": "fdc3.timeRange",
+          "startTime": "2020-09-01T08:00:00.000Z",
+          "endTime": "2020-10-31T08:00:00.000Z"
+      },
+      "style": "line",
+      "otherConfig": [
+          {
+              "type": "somevendor.someproduct.indicator",
+              "name": "stddev",
+              "parameters": {
+                  "period": 10,
+                  "matype": "exponential"
+              }
+          },
+          {
+              "type": "someothervendor.someotherproduct.formula",
+              "formula": "standard-deviation",
+              "fields": {
+                  "lookback": 10,
+                  "type": "ema"
+              }
+          }
+      ]
+    }
+  ]
+}
