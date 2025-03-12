@@ -3101,13 +3101,13 @@ export interface PrivateChannelEventListenerAddedAgentRequestPayload {
    * The id of the PrivateChannel that the event listener was added to.
    */
   channelId: string;
-  listenerType: PrivateChannelEventListenerTypes;
+  listenerType: PrivateChannelEventType;
 }
 
 /**
- * Event listener type names for Private Channel events.
+ * Type defining valid type strings for Private Channel events.
  */
-export type PrivateChannelEventListenerTypes = 'addContextListener' | 'unsubscribe' | 'disconnect';
+export type PrivateChannelEventType = 'addContextListener' | 'unsubscribe' | 'disconnect';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -3165,7 +3165,7 @@ export interface PrivateChannelEventListenerAddedBridgeRequestPayload {
    * The id of the PrivateChannel that the event listener was added to.
    */
   channelId: string;
-  listenerType: PrivateChannelEventListenerTypes;
+  listenerType: PrivateChannelEventType;
 }
 
 /**
@@ -3213,7 +3213,7 @@ export interface PrivateChannelEventListenerRemovedAgentRequestPayload {
    * The id of the PrivateChannel that the event listener was removed from.
    */
   channelId: string;
-  listenerType: PrivateChannelEventListenerTypes;
+  listenerType: PrivateChannelEventType;
 }
 
 /**
@@ -3272,7 +3272,7 @@ export interface PrivateChannelEventListenerRemovedBridgeRequestPayload {
    * The id of the PrivateChannel that the event listener was removed from.
    */
   channelId: string;
-  listenerType: PrivateChannelEventListenerTypes;
+  listenerType: PrivateChannelEventType;
 }
 
 /**
@@ -6015,7 +6015,7 @@ const typeMap: any = {
   PrivateChannelEventListenerAddedAgentRequestPayload: o(
     [
       { json: 'channelId', js: 'channelId', typ: '' },
-      { json: 'listenerType', js: 'listenerType', typ: r('PrivateChannelEventListenerTypes') },
+      { json: 'listenerType', js: 'listenerType', typ: r('PrivateChannelEventType') },
     ],
     false
   ),
@@ -6039,7 +6039,7 @@ const typeMap: any = {
   PrivateChannelEventListenerAddedBridgeRequestPayload: o(
     [
       { json: 'channelId', js: 'channelId', typ: '' },
-      { json: 'listenerType', js: 'listenerType', typ: r('PrivateChannelEventListenerTypes') },
+      { json: 'listenerType', js: 'listenerType', typ: r('PrivateChannelEventType') },
     ],
     false
   ),
@@ -6063,7 +6063,7 @@ const typeMap: any = {
   PrivateChannelEventListenerRemovedAgentRequestPayload: o(
     [
       { json: 'channelId', js: 'channelId', typ: '' },
-      { json: 'listenerType', js: 'listenerType', typ: r('PrivateChannelEventListenerTypes') },
+      { json: 'listenerType', js: 'listenerType', typ: r('PrivateChannelEventType') },
     ],
     false
   ),
@@ -6087,7 +6087,7 @@ const typeMap: any = {
   PrivateChannelEventListenerRemovedBridgeRequestPayload: o(
     [
       { json: 'channelId', js: 'channelId', typ: '' },
-      { json: 'listenerType', js: 'listenerType', typ: r('PrivateChannelEventListenerTypes') },
+      { json: 'listenerType', js: 'listenerType', typ: r('PrivateChannelEventType') },
     ],
     false
   ),
@@ -6569,7 +6569,7 @@ const typeMap: any = {
   OpenAgentErrorResponseType: ['openResponse'],
   OpenAgentRequestType: ['openRequest'],
   PrivateChannelBroadcastAgentRequestType: ['PrivateChannel.broadcast'],
-  PrivateChannelEventListenerTypes: ['addContextListener', 'disconnect', 'unsubscribe'],
+  PrivateChannelEventType: ['addContextListener', 'disconnect', 'unsubscribe'],
   PrivateChannelEventListenerAddedAgentRequestType: ['PrivateChannel.eventListenerAdded'],
   PrivateChannelEventListenerRemovedAgentRequestType: ['PrivateChannel.eventListenerRemoved'],
   PrivateChannelOnAddContextListenerAgentRequestType: ['PrivateChannel.onAddContextListener'],

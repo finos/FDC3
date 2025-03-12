@@ -44,8 +44,8 @@ sequenceDiagram
 
 ### Request message schemas
 
-- [https://fdc3.finos.org/schemas/next/bridging/getAppMetadataAgentRequest.schema.json](/schemas/next/bridging/getAppMetadataAgentRequest.schema.json)
-- [https://fdc3.finos.org/schemas/next/bridging/getAppMetadataBridgeRequest.schema.json](/schemas/next/bridging/getAppMetadataBridgeRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/getAppMetadataAgentRequest.schema.json](pathname:///schemas/next/bridging/getAppMetadataAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/getAppMetadataBridgeRequest.schema.json](pathname:///schemas/next/bridging/getAppMetadataBridgeRequest.schema.json)
 
 ### Example
 
@@ -98,10 +98,10 @@ which is repeated on to the target agent as:
 
 ### Response message schemas
 
-- [https://fdc3.finos.org/schemas/next/bridging/getAppMetadataAgentResponse.schema.json](/schemas/next/bridging/getAppMetadataAgentResponse.schema.json)
-- [https://fdc3.finos.org/schemas/next/bridging/getAppMetadataAgentErrorResponse.schema.json](/schemas/next/bridging/getAppMetadataAgentErrorResponse.schema.json)
-- [https://fdc3.finos.org/schemas/next/bridging/getAppMetadataBridgeResponse.schema.json](/schemas/next/bridging/getAppMetadataBridgeResponse.schema.json)
-- [https://fdc3.finos.org/schemas/next/bridging/getAppMetadataBridgeErrorResponse.schema.json](/schemas/next/bridging/getAppMetadataBridgeErrorResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/getAppMetadataAgentResponse.schema.json](pathname:///schemas/next/bridging/getAppMetadataAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/getAppMetadataAgentErrorResponse.schema.json](pathname:///schemas/next/bridging/getAppMetadataAgentErrorResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/getAppMetadataBridgeResponse.schema.json](pathname:///schemas/next/bridging/getAppMetadataBridgeResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/getAppMetadataBridgeErrorResponse.schema.json](pathname:///schemas/next/bridging/getAppMetadataBridgeErrorResponse.schema.json)
 
 ### Example
 

@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/api/fdc3UserInterfaceChannelSelected.schema.json",
+  "title": "Fdc3 UserInterface Channel Selected",
+  "description": "Message from a channel selector UI to the DA proxy sent when the channel selection changes.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/Fdc3UserInterfaceChannelSelectedBase"
+    },
+    {
+      "$ref": "fdc3UserInterfaceMessage.schema.json"
+    }
+  ],
+  "$defs": {
+    "Fdc3UserInterfaceChannelSelectedBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Fdc3 UserInterface ChannelSelected Message Type",
+          "const": "Fdc3UserInterfaceChannelSelected"
+        },
+        "payload": {
+          "title": "Fdc3 UserInterface ChannelSelected Payload",
+          "type": "object",
+          "properties": {
+            "selected": {
+              "title": "Selected Channel",
+              "description": "The id of the channel that should be currently selected, or `null` if none should be selected.",
+              "oneOf": [
+                {"type": "string"}, {"type": "null"}
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": ["selected"]
+        }
+      },
+      "required": [
+        "type",
+        "payload"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
+

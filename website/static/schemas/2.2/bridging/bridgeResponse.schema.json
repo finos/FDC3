@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/bridging/bridgeResponse.schema.json",
+  "title": "Bridge Response Message",
+  "type": "object",
+  "description": "A response message from the Bridge back to the original Desktop Agent that raised the request.",
+  "properties": {
+    "type": {
+      "title": "Response Message Type",
+      "type": "string",
+      "description": "Identifies the type of the message and it is typically set to the FDC3 function name that the message relates to, e.g. 'findIntent', with 'Response' appended."
+    },
+    "payload": {
+      "title": "Response Message Payload",
+      "type": "object",
+      "description": "The message payload typically contains return values for FDC3 API functions."
+    },
+    "meta": {
+      "$ref": "#/$defs/BridgeResponseMeta"
+    }
+  },
+  "required": ["type", "payload", "meta"],
+  "additionalProperties": false,
+  "$defs": {
+    "BridgeResponseMeta": {
+      "title": "Bridge Response Metadata",
+      "description": "Metadata required in a response message collated and/or forwarded on by the Bridge",
+      "type": "object",
+      "properties": {
+        "requestUuid": {
+          "$ref": "../api/common.schema.json#/$defs/RequestUuid"
+        },
+        "responseUuid": {
+          "$ref": "../api/common.schema.json#/$defs/ResponseUuid"
+        },
+        "timestamp": {
+          "$ref": "../api/common.schema.json#/$defs/Timestamp"
+        },
+        "sources": {
+          "$ref": "common.schema.json#/$defs/BridgeResponseSources"
+        },
+        "errorSources": {
+         "$ref": "common.schema.json#/$defs/BridgeResponseErrorSources"
+        },
+        "errorDetails": {
+          "$ref": "common.schema.json#/$defs/BridgeResponseErrorDetails"
+        }
+      },
+      "required": ["requestUuid", "responseUuid", "timestamp"],
+      "additionalProperties": false
+    }
+  }
+}

@@ -12,7 +12,7 @@ The instrument list schema does not explicitly include identifiers in the `id` s
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/next/context/instrumentList.schema.json](https://fdc3.finos.org/schemas/next/context/instrumentList.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/instrumentList.schema.json))
+[https://fdc3.finos.org/schemas/next/context/instrumentList.schema.json](pathname:///schemas/next/context/instrumentList.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/instrumentList.schema.json))
 
 ## Type
 

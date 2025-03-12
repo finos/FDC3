@@ -41,8 +41,8 @@ sequenceDiagram
 
 ### Schema
 
-- [https://fdc3.finos.org/schemas/next/bridging/privateChannelOnUnsubscribeAgentRequest.schema.json](/schemas/next/bridging/privateChannelOnUnsubscribeAgentRequest.schema.json)
-- [https://fdc3.finos.org/schemas/next/bridging/privateChannelOnUnsubscribeBridgeRequest.schema.json](/schemas/next/bridging/privateChannelOnUnsubscribeBridgeRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/privateChannelOnUnsubscribeAgentRequest.schema.json](pathname:///schemas/next/bridging/privateChannelOnUnsubscribeAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/privateChannelOnUnsubscribeBridgeRequest.schema.json](pathname:///schemas/next/bridging/privateChannelOnUnsubscribeBridgeRequest.schema.json)
 
 ### Example
 

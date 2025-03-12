@@ -1,0 +1,124 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/bridging/common.schema.json",
+  "title": "Bridge Common definitions",
+  "type": "object",
+  "description": "Common definitions that are referenced only in the Bridging wire protocol schemas",
+  "$defs": {
+    "RequestSource": {
+      "title": "Source identifier",
+      "description": "Field that represents the source application that a request or response was received from, or the source Desktop Agent if it issued the request or response itself.",
+      "oneOf": [
+        {
+          "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+        },
+        {
+          "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+        }
+      ]
+    },
+    "AppRequestSource": {
+      "title": "App Source identifier",
+      "description": "Field that represents the source application that a request or response was received from.",
+      "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+    },
+    "AgentDestination": {
+      "title": "Agent Destination identifier",
+      "description": "Field that represents a destination Desktop Agent that a request is to be sent to.",
+      "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+    },
+    "AppDestination": {
+      "title": "App Destination identifier",
+      "description": "Field that represents a destination App on a remote Desktop Agent that a request is to be sent to.",
+      "allOf": [
+        {
+          "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+        },
+        {
+          "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+        }
+      ]
+    },
+    "BridgeParticipantIdentifier": {
+      "title": "Bridge Participant Identifier",
+      "description": "Represents identifiers that MUST include the Desktop Agent name and MAY identify a specific app or instance.",
+      "oneOf": [
+        {
+          "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+        },
+        {
+          "allOf": [
+            {
+              "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+            },
+            {
+              "$ref": "../api/api.schema.json#/definitions/AppIdentifier"
+            }
+          ]
+        }
+      ]
+    },
+    "BridgeResponseSources": {
+      "title": "Desktop Agents that responded",
+      "type": "array",
+      "items": [
+        {
+          "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+        }
+      ],
+      "description": "Array of DesktopAgentIdentifiers for the sources that generated responses to the request. Will contain a single value for individual responses and multiple values for responses that were collated by the bridge. May be omitted if all sources errored. MUST include the `desktopAgent` field when returned by the bridge."
+    },
+    "BridgeResponseErrorSources": {
+      "title": "Desktop Agents that errored",
+      "type": "array",
+      "items": [
+        {
+          "$ref": "../api/api.schema.json#/definitions/DesktopAgentIdentifier"
+        }
+      ],
+      "description": "Array of DesktopAgentIdentifiers for responses that were not returned to the bridge before the timeout or because an error occurred. May be omitted if all sources responded without errors. MUST include the `desktopAgent` field when returned by the bridge."
+    },
+    "BridgeResponseErrorDetails": {
+      "title": "Response Error Details",
+      "type": "array",
+      "items": {
+        "$ref": "../api/common.schema.json#/$defs/ErrorMessages"
+      },
+      "description": "Array of error message strings for responses that were not returned to the bridge before the timeout or because an error occurred. Should be the same length as the `errorSources` array and ordered the same. May be omitted if all sources responded without errors."
+    },
+    "DesktopAgentImplementationMetadata": {
+      "description": "Includes the name assigned to the Desktop Agent by the Bridge.",
+      "title": "DesktopAgentImplementationMetadata",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "../api/api.schema.json#/definitions/BaseImplementationMetadata"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "desktopAgent": {
+              "description": "Used in Desktop Agent Bridging to attribute or target a message to a particular Desktop Agent.",
+              "type": "string",
+              "title": "desktopAgent"
+            }
+          }
+        }
+      ],
+      "properties": {
+        "fdc3Version": true,
+        "provider": true,
+        "providerVersion": true,
+        "optionalFeatures": true,
+        "desktopAgent": true
+      },
+      "required": [
+        "fdc3Version",
+        "optionalFeatures",
+        "provider",
+        "desktopAgent"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -38,8 +38,8 @@ sequenceDiagram
 
 ### Request message schemas
 
-- [https://fdc3.finos.org/schemas/next/bridging/privateChannelOnAddContextListenerAgentRequest.schema.json](/schemas/next/bridging/privateChannelOnAddContextListenerAgentRequest.schema.json)
-- [https://fdc3.finos.org/schemas/next/bridging/privateChannelOnAddContextListenerBridgeRequest.schema.json](/schemas/next/bridging/privateChannelOnAddContextListenerBridgeRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/privateChannelOnAddContextListenerAgentRequest.schema.json](pathname:///schemas/next/bridging/privateChannelOnAddContextListenerAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/privateChannelOnAddContextListenerBridgeRequest.schema.json](pathname:///schemas/next/bridging/privateChannelOnAddContextListenerBridgeRequest.schema.json)
 
 ### Example
 

@@ -1,0 +1,72 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/2.2/api/openResponse.schema.json",
+	"type": "object",
+	"title": "Open Response",
+	"description": "A response to a open request.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/OpenResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/OpenSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/OpenErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"OpenResponseType": {
+			"title": "Open Response Message Type",
+			"const": "openResponse"
+		},
+		"OpenSuccessResponsePayload": {
+			"title": "Open Response Payload",
+			"type": "object",
+			"properties": {
+				"appIdentifier": {
+					"$ref": "api.schema.json#/definitions/AppIdentifier"
+				}
+			},
+			"required": [
+				"appIdentifier"
+			],
+			"additionalProperties": false
+		},
+		"OpenErrorResponsePayload": {
+			"title": "Open Error Response Payload",
+			"type": "object",
+			"properties": {
+				"error": {
+					"title": "Open Error Response Payload",
+					"oneOf": [
+						{
+							"$ref": "api.schema.json#/definitions/OpenError"
+						},
+						{
+							"$ref": "api.schema.json#/definitions/BridgingError"
+						}
+					]
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}
