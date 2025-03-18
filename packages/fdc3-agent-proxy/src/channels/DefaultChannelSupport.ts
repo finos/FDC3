@@ -6,6 +6,7 @@ import {
   ChannelSelector,
   EventHandler,
   ChannelError,
+  ApiEvent,
 } from '@finos/fdc3-standard';
 import { Messaging } from '../Messaging';
 import { ChannelSupport } from './ChannelSupport';
@@ -27,6 +28,7 @@ import {
   LeaveCurrentChannelRequest,
   JoinUserChannelResponse,
   JoinUserChannelRequest,
+  ChannelChangedEventPayload,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { throwIfUndefined } from '../util/throwIfUndefined';
 import { Logger } from '../util/Logger';
@@ -51,10 +53,28 @@ export class DefaultChannelSupport implements ChannelSupport {
       }
     });
 
-    this.addChannelChangedEventHandler(e => {
-      Logger.debug('Desktop Agent reports channel changed: ', e.details.newChannelId);
-      this.channelSelector.updateChannel(e.details.newChannelId, this.userChannels);
+    this.addChannelChangedEventHandler((e: ApiEvent) => {
+      const cce = e.details as ChannelChangedEventPayload;
+      Logger.debug('Desktop Agent reports channel changed: ', cce.newChannelId);
+      const newChannel = this.updateUserChannels(cce);
+      this.userChannelListeners.forEach(l => l.changeChannel(newChannel));
+      this.channelSelector.updateChannel(newChannel?.id ?? null, this.userChannels);
     });
+  }
+
+  updateUserChannels(cce: ChannelChangedEventPayload): Channel | null {
+    if (cce.userChannels) {
+      this.userChannels = cce.userChannels.map(c => {
+        const existing = this.userChannels.find(uc => uc.id === c.id);
+        if (existing) {
+          return existing;
+        } else {
+          return new DefaultChannel(this.messaging, this.messageExchangeTimeout, c.id, 'user', c.displayMetadata);
+        }
+      });
+    }
+
+    return this.userChannels.find(c => c.id === cce.newChannelId) ?? null;
   }
 
   async addChannelChangedEventHandler(handler: EventHandler): Promise<Listener> {

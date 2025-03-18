@@ -10,6 +10,7 @@ import {
   PrivateChannelOnAddContextListenerEvent,
   PrivateChannelOnDisconnectEvent,
   PrivateChannelOnUnsubscribeEvent,
+  Channel,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 const contextMap: Record<string, Context> = {
@@ -93,16 +94,24 @@ Given(
 Given(
   '{string} is a channelChangedEvent message on channel {string}',
   function (this: CustomWorld, field: string, channel: string) {
-    const message = {
+    const userChannels: Channel[] = Object.keys(this.props[CHANNEL_STATE]).map(k => {
+      return {
+        type: 'user',
+        id: k,
+      };
+    });
+
+    const message: ChannelChangedEvent = {
       meta: {
         eventUuid: this.messaging!.createUUID(),
         timestamp: new Date(),
       },
       payload: {
         newChannelId: handleResolve(channel, this),
+        userChannels,
       },
       type: 'channelChangedEvent',
-    } as ChannelChangedEvent;
+    };
 
     this.props[field] = message;
   }
