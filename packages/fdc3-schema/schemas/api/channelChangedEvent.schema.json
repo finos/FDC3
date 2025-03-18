@@ -42,6 +42,14 @@
 							"type": "null"
 						}
 					]
+				},
+				"userChannels": {
+					"title": "User Channels",
+					"description": "User Channel definitions",
+					"type": "array",
+					"items": {
+						"$ref": "api.schema.json#/definitions/Channel"
+					}
 				}
 			},
 			"additionalProperties": false,

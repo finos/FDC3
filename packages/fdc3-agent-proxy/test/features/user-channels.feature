@@ -10,6 +10,7 @@ Feature: Basic User Channels Support
     Given "userChannelMessage1" is a channelChangedEvent message on channel "one"
     Given "userChannelMessage2" is a channelChangedEvent message on channel "two"
     Given "userChannelMessage3" is a channelChangedEvent message on channel "three"
+    Given "userChannelMessageBroken" is a channelChangedEvent message on channel "nonexistent"
 
   Scenario: List User Channels
         There should be a selection of user channels to choose from
@@ -197,9 +198,21 @@ Feature: Basic User Channels Support
     And I call "{theChannel}" with "getCurrentContext" with parameter "fdc3.email"
     Then "{result}" is null
 
-  Scenario: User Channel Updated By Desktop Agent
+  Scenario: User Channel Updated By Desktop Agent Changes User Channel Context Listeners
+    Given "resultHandler" pipes context to "contexts"
+    When I call "{api}" with "joinUserChannel" with parameter "one"
+    And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    And I refer to "{result}" as "theListener"
     When messaging receives "{userChannelMessage2}"
     Then "{channelId}" is "two"
+    And messaging receives "{instrumentMessageOne}"
+    Then "{contexts}" is an array of objects with the following contents
+      | id.ticker | type | name |
+
+  Scenario: User Channel Updated By Desktop Agent To A Non-Existent User Channel Sets The Channel To Null
+    When I call "{api}" with "joinUserChannel" with parameter "one"
+    When messaging receives "{userChannelMessageBroken}"
+    Then "{channelId}" is "{null}"
 
   Scenario: Adding and removing A User Channel Changed Event Listener
     Given "typesHandler" pipes events to "types"
