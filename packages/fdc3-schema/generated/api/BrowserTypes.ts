@@ -1363,76 +1363,7 @@ export interface ChannelChangedEventPayload {
    * channel.
    */
   newChannelId: null | string;
-  /**
-   * User Channel definitions
-   */
-  userChannels?: Channel[];
 }
-
-/**
- * Represents a context channel that applications can use to send and receive
- * context data.
- *
- * Please note that There are differences in behavior when you interact with a
- * User channel via the `DesktopAgent` interface and the `Channel` interface.
- * Specifically, when 'joining' a User channel or adding a context listener
- * when already joined to a channel via the `DesktopAgent` interface, existing
- * context (matching the type of the context listener) on the channel is
- * received by the context listener immediately. Whereas, when a context
- * listener is added via the Channel interface, context is not received
- * automatically, but may be retrieved manually via the `getCurrentContext()`
- * function.
- */
-export interface Channel {
-  /**
-   * Channels may be visualized and selectable by users. DisplayMetadata may be used to
-   * provide hints on how to see them.
-   * For App channels, displayMetadata would typically not be present.
-   */
-  displayMetadata?: DisplayMetadata;
-  /**
-   * Constant that uniquely identifies this channel.
-   */
-  id: string;
-  /**
-   * Uniquely defines each channel type.
-   * Can be "user", "app" or "private".
-   */
-  type: Type;
-}
-
-/**
- * Channels may be visualized and selectable by users. DisplayMetadata may be used to
- * provide hints on how to see them.
- * For App channels, displayMetadata would typically not be present.
- *
- * A system channel will be global enough to have a presence across many apps. This gives us
- * some hints
- * to render them in a standard way. It is assumed it may have other properties too, but if
- * it has these,
- * this is their meaning.
- */
-export interface DisplayMetadata {
-  /**
-   * The color that should be associated within this channel when displaying this channel in a
-   * UI, e.g: `0xFF0000`.
-   */
-  color?: string;
-  /**
-   * A URL of an image that can be used to display this channel.
-   */
-  glyph?: string;
-  /**
-   * A user-readable name for this channel, e.g: `"Red"`.
-   */
-  name?: string;
-}
-
-/**
- * Uniquely defines each channel type.
- * Can be "user", "app" or "private".
- */
-export type Type = 'app' | 'private' | 'user';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -1566,6 +1497,71 @@ export interface CreatePrivateChannelResponsePayload {
   error?: PurpleError;
   privateChannel?: Channel;
 }
+
+/**
+ * Represents a context channel that applications can use to send and receive
+ * context data.
+ *
+ * Please note that There are differences in behavior when you interact with a
+ * User channel via the `DesktopAgent` interface and the `Channel` interface.
+ * Specifically, when 'joining' a User channel or adding a context listener
+ * when already joined to a channel via the `DesktopAgent` interface, existing
+ * context (matching the type of the context listener) on the channel is
+ * received by the context listener immediately. Whereas, when a context
+ * listener is added via the Channel interface, context is not received
+ * automatically, but may be retrieved manually via the `getCurrentContext()`
+ * function.
+ */
+export interface Channel {
+  /**
+   * Channels may be visualized and selectable by users. DisplayMetadata may be used to
+   * provide hints on how to see them.
+   * For App channels, displayMetadata would typically not be present.
+   */
+  displayMetadata?: DisplayMetadata;
+  /**
+   * Constant that uniquely identifies this channel.
+   */
+  id: string;
+  /**
+   * Uniquely defines each channel type.
+   * Can be "user", "app" or "private".
+   */
+  type: Type;
+}
+
+/**
+ * Channels may be visualized and selectable by users. DisplayMetadata may be used to
+ * provide hints on how to see them.
+ * For App channels, displayMetadata would typically not be present.
+ *
+ * A system channel will be global enough to have a presence across many apps. This gives us
+ * some hints
+ * to render them in a standard way. It is assumed it may have other properties too, but if
+ * it has these,
+ * this is their meaning.
+ */
+export interface DisplayMetadata {
+  /**
+   * The color that should be associated within this channel when displaying this channel in a
+   * UI, e.g: `0xFF0000`.
+   */
+  color?: string;
+  /**
+   * A URL of an image that can be used to display this channel.
+   */
+  glyph?: string;
+  /**
+   * A user-readable name for this channel, e.g: `"Red"`.
+   */
+  name?: string;
+}
+
+/**
+ * Uniquely defines each channel type.
+ * Can be "user", "app" or "private".
+ */
+export type Type = 'app' | 'private' | 'user';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -5157,29 +5153,7 @@ const typeMap: any = {
     ],
     false
   ),
-  ChannelChangedEventPayload: o(
-    [
-      { json: 'newChannelId', js: 'newChannelId', typ: u(null, '') },
-      { json: 'userChannels', js: 'userChannels', typ: u(undefined, a(r('Channel'))) },
-    ],
-    false
-  ),
-  Channel: o(
-    [
-      { json: 'displayMetadata', js: 'displayMetadata', typ: u(undefined, r('DisplayMetadata')) },
-      { json: 'id', js: 'id', typ: '' },
-      { json: 'type', js: 'type', typ: r('Type') },
-    ],
-    false
-  ),
-  DisplayMetadata: o(
-    [
-      { json: 'color', js: 'color', typ: u(undefined, '') },
-      { json: 'glyph', js: 'glyph', typ: u(undefined, '') },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    false
-  ),
+  ChannelChangedEventPayload: o([{ json: 'newChannelId', js: 'newChannelId', typ: u(null, '') }], false),
   ContextListenerUnsubscribeRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
@@ -5218,6 +5192,22 @@ const typeMap: any = {
     [
       { json: 'error', js: 'error', typ: u(undefined, r('PurpleError')) },
       { json: 'privateChannel', js: 'privateChannel', typ: u(undefined, r('Channel')) },
+    ],
+    false
+  ),
+  Channel: o(
+    [
+      { json: 'displayMetadata', js: 'displayMetadata', typ: u(undefined, r('DisplayMetadata')) },
+      { json: 'id', js: 'id', typ: '' },
+      { json: 'type', js: 'type', typ: r('Type') },
+    ],
+    false
+  ),
+  DisplayMetadata: o(
+    [
+      { json: 'color', js: 'color', typ: u(undefined, '') },
+      { json: 'glyph', js: 'glyph', typ: u(undefined, '') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     false
   ),
@@ -6095,11 +6085,11 @@ const typeMap: any = {
   BroadcastEventType: ['broadcastEvent'],
   BroadcastRequestType: ['broadcastRequest'],
   BroadcastResponseType: ['broadcastResponse'],
-  Type: ['app', 'private', 'user'],
   ChannelChangedEventType: ['channelChangedEvent'],
   ContextListenerUnsubscribeRequestType: ['contextListenerUnsubscribeRequest'],
   ContextListenerUnsubscribeResponseType: ['contextListenerUnsubscribeResponse'],
   CreatePrivateChannelRequestType: ['createPrivateChannelRequest'],
+  Type: ['app', 'private', 'user'],
   CreatePrivateChannelResponseType: ['createPrivateChannelResponse'],
   EventListenerUnsubscribeRequestType: ['eventListenerUnsubscribeRequest'],
   EventListenerUnsubscribeResponseType: ['eventListenerUnsubscribeResponse'],
