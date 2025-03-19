@@ -204,6 +204,8 @@ Feature: Basic User Channels Support
     And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
     And I refer to "{result}" as "theListener"
     When messaging receives "{userChannelMessage2}"
+    # Channel changed event handling is async
+    And we wait for a period of "100" ms
     Then "{channelId}" is "two"
     And messaging receives "{instrumentMessageOne}"
     Then "{contexts}" is an array of objects with the following contents
@@ -212,6 +214,8 @@ Feature: Basic User Channels Support
   Scenario: User Channel Updated By Desktop Agent To A Non-Existent User Channel Sets The Channel To Null
     When I call "{api}" with "joinUserChannel" with parameter "one"
     When messaging receives "{userChannelMessageBroken}"
+    # Channel changed event handling is async and this case involves an extra round trip to the DA
+    And we wait for a period of "500" ms
     Then "{channelId}" is "{null}"
 
   Scenario: Adding and removing A User Channel Changed Event Listener

@@ -28,7 +28,7 @@ import {
   LeaveCurrentChannelRequest,
   JoinUserChannelResponse,
   JoinUserChannelRequest,
-  ChannelChangedEventPayload,
+  ChannelChangedEvent,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { throwIfUndefined } from '../util/throwIfUndefined';
 import { Logger } from '../util/Logger';
@@ -53,28 +53,32 @@ export class DefaultChannelSupport implements ChannelSupport {
       }
     });
 
-    this.addChannelChangedEventHandler((e: ApiEvent) => {
-      const cce = e.details as ChannelChangedEventPayload;
+    this.addChannelChangedEventHandler(async (e: ApiEvent) => {
+      const cce: ChannelChangedEvent['payload'] = e.details;
       Logger.debug('Desktop Agent reports channel changed: ', cce.newChannelId);
-      const newChannel = this.updateUserChannels(cce);
-      this.userChannelListeners.forEach(l => l.changeChannel(newChannel));
-      this.channelSelector.updateChannel(newChannel?.id ?? null, this.userChannels);
-    });
-  }
 
-  updateUserChannels(cce: ChannelChangedEventPayload): Channel | null {
-    if (cce.userChannels) {
-      this.userChannels = cce.userChannels.map(c => {
-        const existing = this.userChannels.find(uc => uc.id === c.id);
-        if (existing) {
-          return existing;
-        } else {
-          return new DefaultChannel(this.messaging, this.messageExchangeTimeout, c.id, 'user', c.displayMetadata);
+      let theChannel: Channel | null = null;
+
+      // if theres a newChannelId, retrieve details of the channel
+      if (cce.newChannelId) {
+        theChannel = this.userChannels.find(uc => uc.id == cce.newChannelId) ?? null;
+        if (!theChannel) {
+          //Channel not found - query user channels in case they have changed for some reason
+          Logger.debug('Unknown user channel, querying Desktop Agent for updated user channels: ', cce.newChannelId);
+          await this.getUserChannels();
+          theChannel = this.userChannels.find(uc => uc.id == cce.newChannelId) ?? null;
+          if (!theChannel) {
+            Logger.warn(
+              'Received user channel update with unknown user channel (user channel listeners will not work): ',
+              cce.newChannelId
+            );
+          }
         }
-      });
-    }
+      }
 
-    return this.userChannels.find(c => c.id === cce.newChannelId) ?? null;
+      this.userChannelListeners.forEach(l => l.changeChannel(theChannel));
+      this.channelSelector.updateChannel(theChannel?.id ?? null, this.userChannels);
+    });
   }
 
   async addChannelChangedEventHandler(handler: EventHandler): Promise<Listener> {
