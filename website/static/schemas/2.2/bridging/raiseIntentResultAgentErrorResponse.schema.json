@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/bridging/raiseIntentResultAgentErrorResponse.schema.json",
+  "title": "RaiseIntent Result Agent Error Response",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/RaiseIntentResultErrorResponseBase"
+    },
+    {
+      "$ref": "agentErrorResponse.schema.json"
+    }
+  ],
+  "$defs": {
+    "RaiseIntentResultErrorResponseBase": {
+      "title": "RaiseIntent Result Error Response",
+      "type": "object",
+      "description": "A secondary response to a request to raise an intent used to deliver the intent result, which contains an error",
+      "properties": {
+        "type": {
+          "title": "RaiseIntent Result Response Message type",
+          "const": "raiseIntentResultResponse"
+        },
+        "payload": {
+          "title": "RaiseIntent Result Error Response Payload",
+          "type": "object",
+          "properties": {
+            "error": {
+              "title": "RaiseIntent Result Error Message",
+              "oneOf": [
+                { "$ref": "../api/api.schema.json#/definitions/ResultError" },
+                { "$ref": "../api/api.schema.json#/definitions/BridgingError" }
+              ]
+            }
+          },
+          "required": ["error"],
+          "additionalProperties": false
+        },
+        "meta": {
+          "title": "RaiseIntent Result Response Metadata",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

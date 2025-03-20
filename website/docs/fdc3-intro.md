@@ -1,6 +1,6 @@
 ---
 id: fdc3-intro
-title: Welcome to FDC3 2.2 (pre-draft)
+title: Welcome to FDC3 2.3 (pre-draft)
 sidebar_label: Introduction
 ---
 

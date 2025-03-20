@@ -1,0 +1,407 @@
+{
+    "asyncapi": "2.6.0",
+    "info": {
+        "title": "Desktop Agent Bridge",
+        "version": "1.0.0",
+        "description": "API for an FDC3 Desktop Agent to communicate with an FDC3 Desktop Agent Bridge and through it, other Desktop Agents.",
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0"
+        }
+    },
+    "servers": {
+        "local": {
+            "url": "ws://localhost:4475",
+            "description": "Desktop agent bridge server exposing websocket connection",
+            "protocol": "ws"
+        }
+    },
+    "defaultContentType": "application/json",
+    "channels": {
+        "/": {
+            "publish": {
+                "message": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/components/messages/handshake"
+                        },
+                        {
+                            "$ref": "#/components/messages/broadcastRequest-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/findInstancesRequest-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/findInstancesResponse-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/findInstancesErrorResponse-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/findIntentRequest-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/findIntentResponse-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/findIntentErrorResponse-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/findIntentsByContextRequest-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/findIntentsByContextResponse-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/findIntentsByContextErrorResponse-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/getAppMetadataRequest-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/getAppMetadataResponse-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/getAppMetadataErrorResponse-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/openRequest-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/openResponse-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/openErrorResponse-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/raiseIntentRequest-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/raiseIntentResponse-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/raiseIntentErrorResponse-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/privateChannelBroadcast-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/privateChannelEventListenerAdded-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/privateChannelEventListenerRemoved-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/privateChannelOnAddContextListener-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/privateChannelOnDisconnect-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/privateChannelOnUnsubscribe-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/privateChannelOnDisconnect-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/raiseIntentResultResponse-Agent"
+                        },
+                        {
+                            "$ref": "#/components/messages/raiseIntentResultErrorResponse-Agent"
+                        }
+                    ]
+                },
+                "description": "Messages sent by A Desktop Agent to a Bridge",
+                "operationId": "Send"
+            },
+            "subscribe": {
+                "message": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/components/messages/hello"
+                        },
+                        {
+                            "$ref": "#/components/messages/authenticationFailed"
+                        },
+                        {
+                            "$ref": "#/components/messages/connectedAgentsUpdate"
+                        },
+                        {
+                            "$ref": "#/components/messages/findInstancesResponse-Bridge"
+                        },
+                        {
+                            "$ref": "#/components/messages/findInstancesErrorResponse-Bridge"
+                        },
+                        {
+                            "$ref": "#/components/messages/findIntentResponse-Bridge"
+                        },
+                        {
+                            "$ref": "#/components/messages/findIntentErrorResponse-Bridge"
+                        },
+                        {
+                            "$ref": "#/components/messages/findIntentsByContextResponse-Bridge"
+                        },
+                        {
+                            "$ref": "#/components/messages/findIntentsByContextErrorResponse-Bridge"
+                        },
+                        {
+                            "$ref": "#/components/messages/getAppMetadataResponse-Bridge"
+                        },
+                        {
+                            "$ref": "#/components/messages/getAppMetadataErrorResponse-Bridge"
+                        },
+                        {
+                            "$ref": "#/components/messages/openResponse-Bridge"
+                        },
+                        {
+                            "$ref": "#/components/messages/openErrorResponse-Bridge"
+                        },
+                        {
+                            "$ref": "#/components/messages/raiseIntentResponse-Bridge"
+                        },
+                        {
+                            "$ref": "#/components/messages/raiseIntentErrorResponse-Bridge"
+                        },
+                        {
+                            "$ref": "#/components/messages/raiseIntentResultResponse-Bridge"
+                        },
+                        {
+                            "$ref": "#/components/messages/raiseIntentResultErrorResponse-Bridge"
+                        }
+                    ]
+                },
+                "description": "Messages sent by a Bridge to a Desktop Agent",
+                "operationId": "Receive"
+            }
+        }
+    },
+    "components": {
+        "messages": {
+            "broadcastRequest-Agent": {
+                "payload": {
+                    "$ref": "../bridging/broadcastAgentRequest.schema.json#"
+                }
+            },
+            "hello": {
+                "payload": {
+                    "$ref": "../bridging/connectionStep2Hello.schema.json#"
+                }
+            },
+            "handshake": {
+                "payload": {
+                    "$ref": "../bridging/connectionStep3Handshake.schema.json#"
+                }
+            },
+            "authenticationFailed": {
+                "payload": {
+                    "$ref": "../bridging/connectionStep4AuthenticationFailed.schema.json#"
+                }
+            },
+            "connectedAgentsUpdate": {
+                "payload": {
+                    "$ref": "../bridging/connectionStep6ConnectedAgentsUpdate.schema.json#"
+                }
+            },
+            "findInstancesRequest-Agent": {
+                "payload": {
+                    "$ref": "../bridging/findInstancesAgentRequest.schema.json#"
+                }
+            },
+            "findInstancesResponse-Agent": {
+                "payload": {
+                    "$ref": "../bridging/findInstancesAgentResponse.schema.json#"
+                }
+            },
+            "findInstancesErrorResponse-Agent": {
+                "payload": {
+                    "$ref": "../bridging/findInstancesAgentErrorResponse.schema.json#"
+                }
+            },
+            "findInstancesResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/findInstancesBridgeResponse.schema.json#"
+                }
+            },
+            "findInstancesErrorResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/findInstancesBridgeErrorResponse.schema.json#"
+                }
+            },
+            "findIntentRequest-Agent": {
+                "payload": {
+                    "$ref": "../bridging/findIntentAgentRequest.schema.json#"
+                }
+            },
+            "findIntentResponse-Agent": {
+                "payload": {
+                    "$ref": "../bridging/findIntentAgentResponse.schema.json#"
+                }
+            },
+            "findIntentErrorResponse-Agent": {
+                "payload": {
+                    "$ref": "../bridging/findIntentAgentErrorResponse.schema.json#"
+                }
+            },
+            "findIntentResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/findIntentBridgeResponse.schema.json#"
+                }
+            },
+            "findIntentErrorResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/findIntentBridgeErrorResponse.schema.json#"
+                }
+            },
+            "findIntentsByContextRequest-Agent": {
+                "payload": {
+                    "$ref": "../bridging/findIntentsByContextAgentRequest.schema.json#"
+                }
+            },
+            "findIntentsByContextResponse-Agent": {
+                "payload": {
+                    "$ref": "../bridging/findIntentsByContextAgentResponse.schema.json#"
+                }
+            },
+            "findIntentsByContextErrorResponse-Agent": {
+                "payload": {
+                    "$ref": "../bridging/findIntentsByContextAgentErrorResponse.schema.json#"
+                }
+            },
+            "findIntentsByContextResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/findIntentsByContextBridgeResponse.schema.json#"
+                }
+            },
+            "findIntentsByContextErrorResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/findIntentsByContextBridgeErrorResponse.schema.json#"
+                }
+            },
+            "getAppMetadataRequest-Agent": {
+                "payload": {
+                    "$ref": "../bridging/getAppMetadataAgentRequest.schema.json#"
+                }
+            },
+            "getAppMetadataResponse-Agent": {
+                "payload": {
+                    "$ref": "../bridging/getAppMetadataAgentResponse.schema.json#"
+                }
+            },
+            "getAppMetadataErrorResponse-Agent": {
+                "payload": {
+                    "$ref": "../bridging/getAppMetadataAgentErrorResponse.schema.json#"
+                }
+            },
+            "getAppMetadataResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/getAppMetadataBridgeResponse.schema.json#"
+                }
+            },
+            "getAppMetadataErrorResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/getAppMetadataBridgeErrorResponse.schema.json#"
+                }
+            },
+            "openRequest-Agent": {
+                "payload": {
+                    "$ref": "../bridging/openAgentRequest.schema.json#"
+                }
+            },
+            "openResponse-Agent": {
+                "payload": {
+                    "$ref": "../bridging/openAgentResponse.schema.json#"
+                }
+            },
+            "openErrorResponse-Agent": {
+                "payload": {
+                    "$ref": "../bridging/openAgentErrorResponse.schema.json#"
+                }
+            },
+            "openResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/openBridgeResponse.schema.json#"
+                }
+            },
+            "openErrorResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/openBridgeErrorResponse.schema.json#"
+                }
+            },
+            "privateChannelBroadcast-Agent": {
+                "payload": {
+                    "$ref": "../bridging/privateChannelBroadcastAgentRequest.schema.json#"
+                }
+            },
+            "privateChannelEventListenerAdded-Agent": {
+                "payload": {
+                    "$ref": "../bridging/privateChannelEventListenerAddedAgentRequest.schema.json#"
+                }
+            },
+            "privateChannelEventListenerRemoved-Agent": {
+                "payload": {
+                    "$ref": "../bridging/privateChannelEventListenerRemovedAgentRequest.schema.json#"
+                }
+            },
+            "privateChannelOnAddContextListener-Agent": {
+                "payload": {
+                    "$ref": "../bridging/privateChannelOnAddContextListenerAgentRequest.schema.json#"
+                }
+            },
+            "privateChannelOnDisconnect-Agent": {
+                "payload": {
+                    "$ref": "../bridging/privateChannelOnDisconnectAgentRequest.schema.json#"
+                }
+            },
+            "privateChannelOnUnsubscribe-Agent": {
+                "payload": {
+                    "$ref": "../bridging/privateChannelOnUnsubscribeAgentRequest.schema.json#"
+                }
+            },
+            "raiseIntentRequest-Agent": {
+                "payload": {
+                    "$ref": "../bridging/raiseIntentAgentRequest.schema.json#"
+                }
+            },
+            "raiseIntentResponse-Agent": {
+                "payload": {
+                    "$ref": "../bridging/raiseIntentAgentResponse.schema.json#"
+                }
+            },
+            "raiseIntentErrorResponse-Agent": {
+                "payload": {
+                    "$ref": "../bridging/raiseIntentAgentErrorResponse.schema.json#"
+                }
+            },
+            "raiseIntentResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/raiseIntentBridgeResponse.schema.json#"
+                }
+            },
+            "raiseIntentErrorResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/raiseIntentBridgeErrorResponse.schema.json#"
+                }
+            },
+            "raiseIntentResultResponse-Agent": {
+                "payload": {
+                    "$ref": "../bridging/raiseIntentResultAgentResponse.schema.json#"
+                }
+            },
+            "raiseIntentResultErrorResponse-Agent": {
+                "payload": {
+                    "$ref": "../bridging/raiseIntentResultAgentErrorResponse.schema.json#"
+                }
+            },
+            "raiseIntentResultResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/raiseIntentResultBridgeResponse.schema.json#"
+                }
+            },
+            "raiseIntentResultErrorResponse-Bridge": {
+                "payload": {
+                    "$ref": "../bridging/raiseIntentResultBridgeErrorResponse.schema.json#"
+                }
+            }
+        }
+    }
+}
