@@ -111,21 +111,40 @@ jobs:
     strategy:
       matrix:
        include:
-         - name: NPM
+         - name: 1-NPM
            registry: https://registry.npmjs.org
            token-name: NPM_TOKEN
-         - name: GitHub
+         - name: 2-GitHub
            registry: https://npm.pkg.github.com
-           token-name: GITHUB_TOKEN
+           token-name: GH_JS_REPO_TOKEN
     steps:
     - name: Checkout repo
       uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build
+      run:  npm run build
 
     - name: Configure Node
       uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
       with:
         node-version: 20
         registry-url: ${{ matrix.registry }}
+        always-auth: true
+        token: ${{ secrets[matrix.token-name] }}
+    
+    # This shouldn't be needed, 
+    # - name: Manually Configure npm Authentication
+    #   run: |
+    #     REGISTRY="${{ matrix.registry }}"
+    #     CLEAN_REGISTRY=${REGISTRY#https://}  # Strip https:// prefix
+    #     echo "//${CLEAN_REGISTRY}/:_authToken=${{ secrets[matrix.token-name] }}" > ~/.npmrc
+    #     echo "Generated .npmrc:"
+    #     cat ~/.npmrc  # Debug output
+    #     NODE_AUTH_TOKEN=${{ secrets[matrix.token-name] }}
+    #     npm whoami --registry ${{ matrix.registry }}
 
     - name: Check package version
       id: check-version
@@ -133,16 +152,12 @@ jobs:
         
     - name: Report already published status
       if: steps.check-version.outputs.exists == '1' 
-      run: 'echo "package version already exists in the NPM registry"'
+      run: 'echo "package version already exists in the *NPM* registry, skipping publishing"'
       
     - name: Report not yet published status
       if: steps.check-version.outputs.exists == '0' 
-      run: 'echo "package version does not exist in the NPM registry, publishing..."'
+      run: 'echo "package version does not exist in the *NPM* registry, publishing..."'
       
-    - name: Install dependencies
-      if: steps.check-version.outputs.exists == '0' 
-      uses: bahmutov/npm-install@2509f13e8485d88340a789a3f7ca11aaac47c9fc #v1.8.36
-
     - name: Publish
       if: steps.check-version.outputs.exists == '0' 
       run:  npm publish --provenance --access public --workspaces

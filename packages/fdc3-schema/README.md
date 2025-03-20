@@ -1,12 +1,40 @@
-# Bridging Message types generation README
+# FDC3 Bridging and FDC3 for Web Message Schemas
+
+This package holds both the schema files and TypeScript types generated from them used that define JSON message formats used in the FDC3 Desktop Agent Bridging Protocol and both the Web Connection Protocol (WCP) and Desktop Agent COmmunication Protocol (DACP) that allow FDC3 to be used in a Web Browser.
+
+The Schema files distributed in this package are also deployed to the Web at the locations given in their `$id` fields and can be found in the relevant sections of the FDC3 documentation ([Bridging](https://fdc3.finos.org/docs/next/agent-bridging/spec), [Web Connection protocol](https://fdc3.finos.org/docs/next/api/specs/webConnectionProtocol), [Desktop Agent Communication Protocol](https://fdc3.finos.org/docs/next/api/specs/desktopAgentCommunicationProtocol)).
+
+TypeScript types are generated from each schema and can be imported from the package as a set:
+
+```ts
+import { BrowserTypes, BridgingTypes } from '@finos/fdc3-schema';
+```
+
+or individually:
+
+```ts
+import {
+  GetUserChannelsRequest,
+  JoinUserChannelRequest,
+  LeaveCurrentChannelRequest
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+```
+
+Further details:
+
+ - https://github.com/finos/FDC3
+ - [FDC3 Specification](https://fdc3.finos.org/)
+ - Main FDC3 module: https://www.npmjs.com/package/@finos/fdc3
+
+## Message types generation notes
 
 This folder contains Typescript interfaces, in BridgingTypes.ts generated from the context JSONSchema (https://json-schema.org/) files via quicktype (https://quicktype.io/). Source files may also be generated for us in other languages supported by Quicktype.
 
-Please note that these definitions are provided to help developers working in TypeScript to produce valid bridging messages objects - but should not be considered the 'source of truth' for message definitions (instead look to the schemas and documentation).
+Please note that these definitions are provided to help developers working in TypeScript to produce valid bridging or FDC3 for Web messages objects - but should not be considered the 'source of truth' for message definitions (instead look to the schemas and documentation).
 
 It is not always possible to perfectly replicate a type/interface defined in JSONSchema via TypeScript. Hence, if there is any disagreement between the definitions, the JSON Schema should be assumed to be correct, rather than the TypeScript. For example, JSON Schema may define optional fields on an object + a restriction on the type of additional properties (via `"additionalProperties": { "type": "string"}`), which will result in an index signature `[property: string]: string;` in generated TypeScript. That signature is incompatible with optional properties (including string properties) as they have type `string | undefined`. A similar problem may occur in JSON Schema if the schema is used to create a subtype via composition as `additionalProperties` is not aware of the subschema's definitions. Both issues can be worked around by using `unevaluatedProperties` in the schema, which will defer to the declared type of the optional property in the subschema, but is also currently ignored by Quicktype - resulting in a type that will compile but doesn't restrict the type of optional property values as defined in the schema.
 
-Further, Quicktype doesn't always perfectly replicate polymorphic fields specified with `oneOf` in JSON Schema as it will usually merge the different objects into a single type (where fields not in one of the constituent schemas become optional) rather than creating a union type. In such situations, the type produced is usable (has all the necessary fields) but may allow the construction of invalid instances which are missing required properties or include properties from the multiple schemas combined, which are not possible/valid according to JSON Schema.
+Further, Quicktype doesn't always perfectly replicate polymorphic fields specified with `oneOf` or `allOf` in JSON Schema as it will usually merge the different objects into a single type (where fields not in one of the constituent schemas become optional) rather than creating a union type. In such situations, the type produced is usable (has all the necessary fields) but may allow the construction of invalid instances which are missing required properties or include properties from the multiple schemas combined, which are not possible/valid according to JSON Schema.
 
 Hence, the Types provided here can be used to provide valid message objects and to read/write their JSON encodings, but may not detect or prevent a limited set of invalid objects that would be identified by JSON Schema.
 
