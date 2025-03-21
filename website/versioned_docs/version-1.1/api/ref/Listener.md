@@ -12,7 +12,7 @@ interface Listener {
 }
 ```
 
-A Listener object is returned when an application subscribes to intents or context broadcasts via the [`addIntentListener`](#addintentlistener) or [`addContextListener`](#addcontextlistener) methods on the [DesktopAgent](DesktopAgent) object.
+A Listener object is returned when an application subscribes to intents or context broadcasts via the [`addIntentListener`](DesktopAgent#addintentlistener) or [`addContextListener`](DesktopAgent#addcontextlistener) methods on the [DesktopAgent](DesktopAgent) object.
 
 ## Methods
 
@@ -22,9 +22,10 @@ A Listener object is returned when an application subscribes to intents or conte
 unsubscribe(): void;
 ```
 
-Allows an application to unsubscribe from listening to intents or context broadcasts. 
+Allows an application to unsubscribe from listening to intents or context broadcasts.
 
 #### See also
+
 * [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
 * [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
 * [`Channel.addContextListener`](Channel#addcontextlistener)

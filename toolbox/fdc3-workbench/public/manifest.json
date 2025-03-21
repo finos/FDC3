@@ -1,25 +1,25 @@
 {
-	"short_name": "FDC3 Workbench",
-	"name": "FDC3 Workbench",
-	"icons": [
-		{
-			"src": "favicon.ico",
-			"sizes": "64x64 32x32 24x24 16x16",
-			"type": "image/x-icon"
-		},
-		{
-			"src": "fdc3-icon-256.png",
-			"type": "image/png",
-			"sizes": "256x256"
-		},
-		{
-			"src": "fdc3-icon-192.png",
-			"type": "image/png",
-			"sizes": "192x192"
-		}
-	],
-	"start_url": ".",
-	"display": "standalone",
-	"theme_color": "#000000",
-	"background_color": "#ffffff"
+  "short_name": "FDC3 Workbench",
+  "name": "FDC3 Workbench",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "fdc3-icon-256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "fdc3-icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
 }

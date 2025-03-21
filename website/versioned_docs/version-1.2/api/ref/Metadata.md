@@ -13,10 +13,12 @@ interface AppIntent {
   apps: Array<AppMetadata>;
 }
 ```
+
 An interface that represents the binding of an intent to apps, returned as part of intent disocvery.
 For each intent, it reference the applications that support that intent.
 
 #### See also
+
 * [`AppMetadata`](#appmetadata)
 * [`IntentMetadata`](#intentmetadata)
 * [`DesktopAgent.findIntent`](DesktopAgent#findintent)
@@ -39,7 +41,7 @@ interface AppMetadata {
 
 App metadata is provided by the FDC3 App Directory that the desktop agent connects to.
 
-It always includes at least a `name` property, which can be used with [`open`](DesktopAgent#open) and [`raiseIntent`](DesktopAgent#raiseIntent).
+It always includes at least a `name` property, which can be used with [`open`](DesktopAgent#open) and [`raiseIntent`](DesktopAgent#raiseintent).
 
 Optionally, extra information from the app directory can be returned, to aid in rendering UI elements, e.g. a context menu.
 This includes a title, description, tooltip and icon and image URLs.
@@ -47,6 +49,7 @@ This includes a title, description, tooltip and icon and image URLs.
 In situations where a desktop agent connects to multiple app directories or multiple versions of the same app exists in a single app directory, it may be neccessary to specify appId and version to target applications that share the same name.
 
 #### See also
+
 * [`AppIntent.apps`](#appintent)
 
 ## `DisplayMetadata`
@@ -105,6 +108,7 @@ public interface ImplementationMetadata {
 Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification and the name of the provider of the implementation.
 
 #### See also
+
 * [`DesktopAgent.getInfo`](DesktopAgent#getinfo)
 
 ## `IntentMetadata`
@@ -118,8 +122,8 @@ interface IntentMetadata {
 
 The Interface used to describe an Intent within the platform.
 
-
 #### See also
+
 * [`AppIntent.intent`](#appintent)
 
 ## `IntentResolution`
@@ -138,12 +142,14 @@ interface IntentResolution {
 IntentResolution provides a standard format for data returned upon resolving an intent.
 
 #### Example
+
 ```js
 // resolve a "Chain" type intent
 const intentResolution = await fdc3.raiseIntent("intentName", context);
 ```
 
 #### See also
+
 * [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 * [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
 * [`TargetApp`](Types#targetapp)

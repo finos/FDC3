@@ -1,0 +1,30 @@
+{
+  "name": "app-directory-specification-test",
+  "version": "1.0.0",
+  "author": "Fintech Open Source Foundation (FINOS)",
+  "homepage": "https://fdc3.finos.org",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/finos/FDC3.git"
+  },
+  "publishConfig": {
+    "tag": "latest"
+  },
+  "type": "module",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "test": "node index.js"
+  },
+  "dependencies": {
+    "@apidevtools/swagger-parser": "^10.0.3",
+    "jsonschema": "^1.4.0"
+  }
+}
