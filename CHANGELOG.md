@@ -47,6 +47,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - resolves ([#832](https://github.com/finos/FDC3/issues/832))
   - resolves ([#1487](https://github.com/finos/FDC3/issues/1487))
   - resolves ([#1488](https://github.com/finos/FDC3/issues/1488))
+  * Added clarification regarding expected behavior upon repeated calls to `addContextListener` on same or overlapping types (allowed) and `addIntentListener` on same intent (rejected; new error type added). ([#1394](https://github.com/finos/FDC3/pull/1394))  
 
 ### Changed
 
