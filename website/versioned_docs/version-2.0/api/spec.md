@@ -226,11 +226,11 @@ An optional [`IntentResult`](ref/Types#intentresult) may also be returned as out
 
 For example, an application handling a `CreateOrder` intent might return a context representing the order and including an ID, allowing the application that raised the intent to make further calls using that ID.
 
-An optional result type is also supported when programmatically resolving an intent via [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentByContext`](ref/DesktopAgent#findintentbycontext).
+An optional result type is also supported when programmatically resolving an intent via [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentsByContext`](ref/DesktopAgent#findintentsbycontext).
 
 ### Resolvers
 
-Successful delivery of an intent depends first upon the Desktop Agent's ability to "resolve the intent" (i.e. map the intent to a specific App instance). Where the target application is ambiguous (because there is more than one application that could resolve the intent and context) Desktop Agents may resolve intents by any suitable methodology. A common method is to display a UI that allows the user to pick the desired App from a list of those that will accept the intent and context. Alternatively, the app issuing the intent may proactively handle resolution by calling [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentByContext`](ref/DesktopAgent#findintentbycontext) and then raise the intent with a specific target application, e.g.:
+Successful delivery of an intent depends first upon the Desktop Agent's ability to "resolve the intent" (i.e. map the intent to a specific App instance). Where the target application is ambiguous (because there is more than one application that could resolve the intent and context) Desktop Agents may resolve intents by any suitable methodology. A common method is to display a UI that allows the user to pick the desired App from a list of those that will accept the intent and context. Alternatively, the app issuing the intent may proactively handle resolution by calling [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentByContext`](ref/DesktopAgent#findintentsbycontext) and then raise the intent with a specific target application, e.g.:
 
 ```js
 // Find apps to resolve an intent to start a chat with a given contact
@@ -408,7 +408,7 @@ When an app joins a User channel, or adds a context listener when already joined
 
 It is possible that a call to join a User channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.
 
-Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app. To support programmatic management of joined channels and the implementation of channel selector UIs other than those provided outside of the app, Desktop Agent implementations MAY provide [`fdc3.joinChannel()`](ref/DesktopAgent#joinchannel), [`fdc3.getCurrentChannel()`](ref/DesktopAgent#getcurrentchannel) and [`fdc3.leaveCurrentChannel()`](ref/DesktopAgent#leavecurrentchannel) functions and if they do, MUST do so as defined in the [Desktop Agent API reference](ref/DesktopAgent).
+Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app. To support programmatic management of joined channels and the implementation of channel selector UIs other than those provided outside of the app, Desktop Agent implementations MAY provide [`fdc3.joinUserChannel()`](ref/DesktopAgent#joinuserchannel), [`fdc3.getCurrentChannel()`](ref/DesktopAgent#getcurrentchannel) and [`fdc3.leaveCurrentChannel()`](ref/DesktopAgent#leavecurrentchannel) functions and if they do, MUST do so as defined in the [Desktop Agent API reference](ref/DesktopAgent).
 
 There SHOULD always be a clear UX indicator of what channel an app is joined to.
 

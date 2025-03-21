@@ -1,0 +1,67 @@
+<html lang="en">
+
+<head>
+    <title>Desktop Agent</title>
+    <meta charset="UTF-8" />
+    <script type="module" src="/src/client/da/dummy-desktop-agent.ts"></script>
+    <style>
+#app-list {
+    margin-top: 16px;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, 170px);
+    grid-template-rows: masonry;
+}
+
+.app {
+    width: 150px;
+    height: 200px;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 8px;
+    position: relative;
+
+    h3 {
+        margin: 8px 0;
+    }
+
+    p {
+        font-style: italic;
+    }
+
+    button {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+    }
+}
+    </style>
+</head>
+
+<body>
+    <p>Demo Desktop Agent</p>
+
+    <select name="opener" id="opener">
+        <option value="Tab" default>New Tab</option>
+        <option value="Frame">Frame</option>
+    </select>
+
+    <select name="approach" id="approach">
+        <option value="IFRAME">Create Iframe</option>
+        <option value="PARENT_POST_MESSAGE" default>Parent Post-Message</option>
+    </select>
+
+    <select name="ui" id="ui">
+        <option value="DEMO" default>Demo's Own Implementation</option>
+        <option value="DEFAULT">Default Web FDC3 (Running on fdc3.finos.org)</option>
+        <option value="LOCAL">Default Web FDC3 (Running on Localhost)</option>
+    </select>
+
+    <div id="app-list" />
+
+    </div>
+
+
+</body>
+
+</html>

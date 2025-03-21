@@ -180,10 +180,13 @@ function generateObjectMD(schema, objectName, schemaFolderName, filePath) {
     }
 
     //if working on windows you may have the wrong slashes...
-     const workingPath = filePath.replaceAll("\\","/");
+    const workingPath = filePath.replaceAll("\\","/");
     const url = schema.$id;
-    const githubUrl = workingPath.replace("../schemas/", `https://github.com/finos/FDC3/tree/main/schemas/`);
-    markdownContent += `## Schema\n\n<${url}> ([github](${githubUrl}))\n\n`;
+    const githubUrl = workingPath.includes('context') 
+        ? workingPath.replace("static/schemas/next/", `https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/`)
+        : workingPath.replace("static/schemas/next/", `https://github.com/finos/FDC3/tree/main/packages/fdc3-schema/schemas/`);
+
+        markdownContent += `## Schema\n\n[${url}](${url}) ([github](${githubUrl}))\n\n`;
 
     if (hasAllOf(schema.allOf) || hasProperties(schema)) {
         // Extract properties, required fields, and $ref from the first allOf object
@@ -231,7 +234,7 @@ function generateObjectMD(schema, objectName, schemaFolderName, filePath) {
         // outputDocName must not contain any spaces
         const outputDocName = `${title.replace(/\s+/g, '')}`;
         const outputDocsPath = `${schemaFolderName}/ref/${outputDocName}`;
-        const outputFilePath = `../docs/${schemaFolderName}/ref/${outputDocName}.md`;
+        const outputFilePath = `./docs/${schemaFolderName}/ref/${outputDocName}.md`;
 
         fse.outputFileSync(outputFilePath, `---\n${yaml.dump(frontMatter)}\n---\n\n${markdownContent}`);
 
@@ -350,11 +353,15 @@ function retrieveTitleFromSchemaData(schemaData, pathInSchema) {
 }
 
 function parseSchemaFolder(schemaFolderName) {
+    const schemaFolder = `./static/schemas/next/${schemaFolderName}`;
+    
+    console.debug("Parsing schema folder: ", schemaFolder);
+
     // Read all files in the schema folder
-    const schemaFiles = fse.readdirSync("../schemas/"+schemaFolderName)
-    .filter(file => file.endsWith('.json'))
-    // nosemgrep
-    .map(file => path.join("../schemas/"+schemaFolderName, file));
+    const schemaFiles = fse.readdirSync(schemaFolder)
+        .filter(file => file.endsWith('.json'))
+        // nosemgrep
+        .map(file => path.join(schemaFolder, file));
 
     // Process each schema file
     let sidebarItems = [];

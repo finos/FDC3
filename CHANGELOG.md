@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [npm v2.2.0-beta.1] - 2024-02-25
+
+* Prerelease of NPM 2.2.0 module
+
 ## [Unreleased]
 
 ### Added
@@ -15,7 +19,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added reference materials and supported platforms information for FDC3 in .NET via the [finos/fdc3-dotnet](https://github.com/finos/fdc3-dotnet) project. ([#1108](https://github.com/finos/FDC3/pull/1108))
 * Specifications for getAgent() and Browser-Resident Desktop Agents. ([#1191](https://github.com/finos/FDC3/pull/1191))
 * Specification for Preload Desktop Agents. This content was previously in the supported platforms section. It had been revised and amended to include recommended behavior related to the new validateAppIdentity() function. ([#1191](https://github.com/finos/FDC3/pull/1191))
-* Added optional validateAppIdentity() function to DesktopAgent interface. ([#1191](https://github.com/finos/FDC3/pull/1191))
 * Typescript definitions for getAgent() and related types. ([#1191](https://github.com/finos/FDC3/pull/1191))
 * Typescript definitions for Desktop Agent Communication Protocol (DACP). These constitute the internal "wire protocol" that the "@finos/fdc3" library uses to communicate with Browser-Resident DAs. ([#1191](https://github.com/finos/FDC3/pull/1191))
 * Typescript definitions for Web Connection Protocol (WCP). These constitute the messages used to establish connectivity between "@finos/fdc3" and a Browser-Resident DA. ([#1191](https://github.com/finos/FDC3/pull/1191))
@@ -23,7 +26,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added utility functions `isStandardContextType(contextType: string)`, `isStandardIntent(intent: string)`,`getPossibleContextsForIntent(intent: StandardIntent)`. ([#1139](https://github.com/finos/FDC3/pull/1139))
 * Added support for event listening outside of intent or context listnener. Added new function `addEventListener`, type `EventHandler`,  enum `FDC3EventType` and interfaces `FDC3Event` and `FDC3ChannelChangedEvent`. ([#1207](https://github.com/finos/FDC3/pull/1207))
 * Added new `CreateOrUpdateProfile` intent. ([#1359](https://github.com/finos/FDC3/pull/1359))
-* Added `clearContext` function to the `Channel` API, to be able to clear specific or all context types from the channel. ([#1379](https://github.com/finos/FDC3/pull/1379))
+* Added conformance tests into the FDC3 API documentation in the current version and back-ported into 2.0 and 2.1. Removed outdated 1.2 conformance tests (which are preserved in the older 2.0 and 2.1 versions). ([#1417](https://github.com/finos/FDC3/pull/1417)).
+* Added conformance tests to documentation for features introduced in FDC3 2.2 (`fdc3.addEventListener`, `PrivateChannel.addEventListener` and `getAgent`). ([#1425](https://github.com/finos/FDC3/pull/1425))
+* Added separate `fdc3-commonjs` module for compatibility with older projects that use CommonJS. ([#1452](https://github.com/finos/FDC3/pull/1452))
+* Added testing policy to [Contributing](CONTRIBUTING) page to address ([810](https://github.com/finos/FDC3/issues/810))
+* Added the ability to control logging to the JS console from getAgent() and the DesktopAgentProxy via arguments to getAgent(). ([#1495](https://github.com/finos/FDC3/pull/1495))
+* Added the ability for a browser-based DesktopAgent to control the timeouts used in the DesktopAgentProxy when making calls to it, via properties in WCP3Handshake message. ([#1497](https://github.com/finos/FDC3/pull/1497))
+* Added .NET docs for Events to API reference. ([#1441](https://github.com/finos/FDC3/pull/1441))
+* Setup package publishing for mono-repo packages. ([#1520](https://github.com/finos/FDC3/pull/1520))
+* Implementation PR for FDC3 for the Web ([#896](https://github.com/finos/FDC3/pull/896))
+  - resolves ([#1209](https://github.com/finos/FDC3/issues/1209))
+  - resolves ([#1297](https://github.com/finos/FDC3/issues/1297)) 
+  - resolves ([#1429](https://github.com/finos/FDC3/issues/1429)) 
+  - resolves ([#1430](https://github.com/finos/FDC3/issues/1430))
+  - resolves ([#1431](https://github.com/finos/FDC3/issues/1431))
+  - resolves ([#1432](https://github.com/finos/FDC3/issues/1432)) 
+  - resolves ([#1433](https://github.com/finos/FDC3/issues/1433))
+  - resolves ([#1468](https://github.com/finos/FDC3/issues/1468))
+  - resolves ([#810](https://github.com/finos/FDC3/issues/810))
+  - resolves ([#832](https://github.com/finos/FDC3/issues/832))
+  - resolves ([#1487](https://github.com/finos/FDC3/issues/1487))
+  - resolves ([#1488](https://github.com/finos/FDC3/issues/1488))
+  * Added `clearContext` function to the `Channel` API, to be able to clear specific or all context types from the channel. ([#1379](https://github.com/finos/FDC3/pull/1379))
 
 ### Changed
 
@@ -33,6 +57,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * The supported platforms page in the FDC3 documentation was moved into the API section as the information it provides all relates to FDC3 Desktop Agent API implementations. ([#1108](https://github.com/finos/FDC3/pull/1108))
 * FDC3 apps are now encouraged to instantiate their FDC3 interface (DesktopAgent) using the `getAgent()` function provided by the `@finos/fdc3` module. This will allow apps to interoperate in either traditional Preload DAs (i.e. Electron) as well as the new Browser-Resident DAs. ([#1191](https://github.com/finos/FDC3/pull/1191))
 * `ContextType` and `Intent` (`string`) types were created for use in DesktopAgent API signatures - they are unions of standardized values and `string`, enabling autocomplete/IntelliSense in IDEs when working with the FDC3 API. ([#1139](https://github.com/finos/FDC3/pull/1139))
+* SessionStorage use by `getAgent` was updated to scope the stored data by `window.name` and the app's `identityUrl`. ([#1442](https://github.com/finos/FDC3/pull/1442))
+* FDC3 Workbench updated to use `getAgent()` rather than `fdc3Ready()`
 
 ### Deprecated
 
@@ -50,6 +76,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added missing `resultType` argument to `findIntentByContext` agent request in the Bridging Schema. ([#1212](https://github.com/finos/FDC3/pull/1212)) 
 * Added missing id and name fields from the context base schema to respective context schemas (`Contact`, `ContactList`, `Country`, `InstrumentList`, `OrderList`, `Organization`, `Portfolio`, `Position`, `TradeList`). ([#1360](https://github.com/finos/FDC3/pull/1360))
 * Revised FDC3 charter to include well-known language from the FDC3 introduction, better describe FDC3's scope, focus on financial applications, update application types, etc. ([#1079](https://github.com/finos/FDC3/pull/1079))
+* Ensured that `PrivateChannelEvent` extends `ApiEvent` in both sourcecode and documentation. ([#1474](https://github.com/finos/FDC3/pull/1474))
+* Standardized prettier config for fdc3-workbench with other packages. ([#1520](https://github.com/finos/FDC3/pull/1520))
 
 ## [npm v2.1.1] - 2024-06-28
 
@@ -105,7 +133,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Further clarified the difference between the behavior of User channels and other channel types on joinUserChannel/addContextListener. ([#971](https://github.com/finos/FDC3/pull/971))
 * Clarified description of the behavior of `IntentResolution.getResult()` when the intent handler returned void (which is not an error). ([#1004](https://github.com/finos/FDC3/pull/1004))
 * An error was fixed in the appD schema where launch details sub-schemas were combined with `oneOf`, rather than `anyOf`. This causes validation errors for web or online native apps as their details elements overlap on a `url` field. ([#1034](https://github.com/finos/FDC3/pull/1034))
-* The appD `icon` and `screenshot` sub-schemas were updated to require the `src` value is set and restrict additional values, ensuring that common mistakes (such as using a `url` rather than `src` field are caught by the schemas when used to validate. ([#1037](https://github.com/finos/FDC3/pull/1037))
+* The appD `icon` and `screenshot` sub-schemas were updated to require the `src` value is set and restrict additional values, ensuring that common mistakes (such as using a `url` rather than `src` field are caught by the schemas when used to validate). ([#1037](https://github.com/finos/FDC3/pull/1037))
 * Linting, spell checking other corrections were applied to markdown syntax throughout the FDC3 documentation ([#1032](https://github.com/finos/FDC3/pull/1032))
 * Corrected bad example URLs in the App Directory overview/discovery page in the current and past versions as they did not agree with the paths provided in the API specification and OpenAPI schema.  ([#1060](https://github.com/finos/FDC3/pull/1060))
 

@@ -1,0 +1,27 @@
+{
+  "extends": "../../tsconfig.root.json",
+  "compilerOptions": {
+    "rootDirs": [
+      "src"
+    ],
+    "outDir": "dist",
+  },
+  "include": [
+    "src",
+  ],
+  "exclude": [],
+  "references": [
+    {
+      "path": "../fdc3-schema"
+    },
+    {
+      "path": "../fdc3-context"
+    },
+    {
+      "path": "../fdc3-get-agent"
+    },
+    {
+      "path": "../fdc3-standard"
+    }
+  ]
+}
