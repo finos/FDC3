@@ -37,17 +37,18 @@ A Desktop Agent can be connected to one or more App Directories and will use dir
 
 ## Methods
 
-
 ### `addContextListener`
 
 ```ts
 addContextListener(handler: ContextHandler): Listener;
 addContextListener(contextType: string, handler: ContextHandler): Listener;
 ```
+
 Adds a listener for incoming context broadcast from the Desktop Agent. If the consumer is only interested in
 a context of a particular type, they can use the relevant overload that allows the type to be specified.
 
 #### Examples
+
 ```js
 // any context
 const listener = fdc3.addContextListener(context => { ... });
@@ -60,13 +61,12 @@ const contactListener = fdc3.addContextListener('fdc3.contact', contact => { ...
 * [`Listener`](Listener)
 * [`Context`](Context)
 
-
-
 ### `addIntentListener`
 
 ```ts
 addIntentListener(intent: string, handler: ContextHandler): Listener;
 ```
+
  Adds a listener for incoming Intents from the Agent.
 
 #### Examples
@@ -78,10 +78,9 @@ const listener = fdc3.addIntentListener('StartChat', context => {
 ```
 
 #### See also
+
 * [`Listener`](Listener)
 * [`Context`](Context)
-
-
 
 ### `broadcast`
 
@@ -92,6 +91,7 @@ broadcast(context: Context): void;
 Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever `Channel` the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
 
 #### Example
+
 ```js
 const instrument = {
     type: 'fdc3.instrument',
@@ -102,9 +102,10 @@ const instrument = {
 
 fdc3.broadcast(instrument);
 ```
-#### See also
-* [addContextListener](#addcontextlistener)
 
+#### See also
+
+* [addContextListener](#addcontextlistener)
 
 ### `findIntent`
 
@@ -114,13 +115,14 @@ findIntent(intent: string, context?: Context): Promise<AppIntent>;
 
 Find out more information about a particular intent by passing its name, and optionally its context.
 
-_findIntent_ is effectively granting programmatic access to the Desktop Agent's resolver. 
+_findIntent_ is effectively granting programmatic access to the Desktop Agent's resolver.
 It returns a promise resolving to the intent, its metadata and metadata about the apps that are registered to handle it.
 This can be used to raise the intent against a specific app.
- 
+
  If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
 
 #### Examples
+
 ```js
 // I know 'StartChat' exists as a concept, and want to know more about it ...
 const appIntent = await fdc3.findIntent("StartChat");
@@ -135,6 +137,7 @@ await fdc3.raiseIntent(appIntent.intent.name, context, appIntent.apps[0].name);
 ```
 
 #### See also
+
 * [`ResolveError`](ResolveError)
 
 ### `findIntentsByContext`
@@ -146,38 +149,38 @@ findIntentsByContext(context: Context): Promise<Array<AppIntent>>;
 Find all the available intents for a particular context.
 _findIntentsByContext_ is effectively granting programmatic access to the Desktop Agent's resolver. 
 A promise resolving to all the intents, their metadata and metadata about the apps that registered as handlers is returned, based on the context types the intents have registered.
- 
- If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
- 
- #### Example
- ```js
- // I have a context object, and I want to know what I can do with it, hence, I look for intents...
- const appIntents = await fdc3.findIntentsByContext(context);
- 
- // returns, for example:
- // [{
- //     intent: { name: "StartCall", displayName: "Call" },
- //     apps: [{ name: "Skype" }]
- // },
- // {
- //     intent: { name: "StartChat", displayName: "Chat" },
- //     apps: [{ name: "Skype" }, { name: "Symphony" }, { name: "Slack" }]
- // }];
- 
- // select a particular intent to raise
- const startChat = appIntents[1];
- 
- // target a particular app
- const selectedApp = startChat.apps[0];
- 
- // raise the intent, passing the given context, targeting the app
- await fdc3.raiseIntent(startChat.intent.name, context, selectedApp.name);
- ```
+
+If the resolution fails, the promise will return an `Error` with a string from the [`ResolveError`](ResolveError) enumeration.
+
+#### Example
+
+```js
+// I have a context object, and I want to know what I can do with it, hence, I look for intents...
+const appIntents = await fdc3.findIntentsByContext(context);
+
+// returns, for example:
+// [{
+//     intent: { name: "StartCall", displayName: "Call" },
+//     apps: [{ name: "Skype" }]
+// },
+// {
+//     intent: { name: "StartChat", displayName: "Chat" },
+//     apps: [{ name: "Skype" }, { name: "Symphony" }, { name: "Slack" }]
+// }];
+
+// select a particular intent to raise
+const startChat = appIntents[1];
+
+// target a particular app
+const selectedApp = startChat.apps[0];
+
+// raise the intent, passing the given context, targeting the app
+await fdc3.raiseIntent(startChat.intent.name, context, selectedApp.name);
+```
 
 #### See also
-   * [`ResolveError`](ResolveError)
 
-
+* [`ResolveError`](ResolveError)
 
 ### `getCurrentChannel`
 
@@ -187,7 +190,6 @@ getCurrentChannel() : Promise<Channel>;
 
 Returns the `Channel` object for the current channel membership.  Returns `null` if the app is not joined to a channel. 
 
-
 #### Examples
 
 ```js
@@ -196,9 +198,8 @@ let current = await fdc3.getCurrentChannel();
 ```
 
 #### See also
+
 * [`Channel`](Channel)
-
-
 
 ### `getOrCreateChannel`
 
@@ -223,12 +224,15 @@ catch (err){
 ```
 
 #### See also
+
 *  [`Channel`](Channel)
 
 ### `getSystemChannels`
+
 ```ts
 getSystemChannels() : Promise<Array<Channel>>;
 ```
+
 Retrieves a list of the System channels available for the app to join.  This should include the 'global' channel.
 
 #### Example
@@ -239,8 +243,8 @@ const redChannel = systemChannels.find(c => c.id === 'red');
 ```
 
 #### See also
-* [`Channel`](Channel)
 
+* [`Channel`](Channel)
 
 ### `joinChannel`
 
@@ -266,10 +270,10 @@ const channels = await fdc3.getSystemChannels();
 fdc3.joinChannel(selectedChannel.id);
 
 ```
+
 #### See also
-* [`getSystemChannels`](#getSystemChannels)
 
-
+* [`getSystemChannels`](#getsystemchannels)
 
 ### `leaveCurrentChannel`
 
@@ -277,8 +281,7 @@ fdc3.joinChannel(selectedChannel.id);
 leaveCurrentChannel() : Promise<void>;
 ```
 
-Removes the app from any channel membership.  Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be in a no-op when the app is not on a channel. 
-
+Removes the app from any channel membership.  Context broadcast and listening through the top-level `fdc3.broadcast` and `fdc3.addContextListener` will be in a no-op when the app is not on a channel.
 
 #### Examples
 
@@ -287,14 +290,12 @@ Removes the app from any channel membership.  Context broadcast and listening th
 const fdc3Listener = fdc3.addContextListener(context => {});
 
 await fdc3.leaveCurrentChannel();
-//the fdc3Listener will now cease recieving context
+//the fdc3Listener will now cease receiving context
 
 //listening on a specific channel though, will continue to work
 redChannel.addContextListener(channelListener);
 
 ```
-
-
 
 ### `open`
 
@@ -309,7 +310,8 @@ The Context argument is functionally equivalent to opening the target app with n
 If opening errors, it returns an `Error` with a string from the [`OpenError`](OpenError) enumeration.
 
 #### Example
- ```js
+
+```js
 // no context
 await fdc3.open('myApp');
 
@@ -318,16 +320,16 @@ await fdc3.open('myApp', context);
 ```
 
 #### See also
+
 * [`Context`](Context)
 * [`OpenError`](OpenError)
-
-
 
 ### `raiseIntent`
 
 ```ts
 raiseIntent(intent: string, context: Context, target?: string): Promise<IntentResolution>;
 ```
+
 Raises an intent to the desktop agent to resolve.
 
 #### Example
@@ -340,7 +342,5 @@ await fdc3.raiseIntent("StartChat", newContext, intentResolution.source);
 ```
 
 #### See also
+
 * [`IntentResolution`](IntentResolution)
-
-
-

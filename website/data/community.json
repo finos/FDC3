@@ -201,14 +201,14 @@
     "description": "<p>interop.io was formed in June 2023 through the merger of Finsemble and Glue42 to create the global powerhouse driving application interoperability in capital markets and beyond. Leveraging FDC3 and workflow automation, interop.io allows clients to create Straight Through Workflows™ and benefit from unparalleled levels of business agility, a more productive workforce and better operational control.</p><p>The firm employs over 170 people including 110 full time R&D and implementation engineers located in New York, Charlottesville, London, and Sofia. For more information, visit <a href='https://interop.io' alt='interop.io website'>interop.io</a>.</p>"
   },
   {
-    "title": "OpenFin",
-    "publisher": "OpenFin Inc.",
-    "image": "/img/users/Openfin.png",
-    "infoLink": "https://openfin.co/",
+    "title": "Here",
+    "publisher": "Here Enterprise Inc.",
+    "image": "/img/users/OpenFin_Here_Browser_250x120.png",
+    "infoLink": "https://here.io/",
     "docsLink": "https://developers.openfin.co/of-docs",
     "type": "platform-provider",
     "badges": [],
-    "description": "<p>OpenFin founded the FDC3 standard in 2017 in collaboration with major banks and asset managers. Deployed at more than 2400 financial firms, OpenFin OS, allows applications from multiple providers to co-exist and interoperate on the desktop.</p><p>OpenFin OS consists of a secure, Chromium-based runtime called Container and a visual interface called <a href='https://www.openfin.co/workspace/' alt='OpenFin Workspace'>Workspace</a>. Workspace gets you running in no time, with themeable UI components for complex windowing, advanced search, actionable notifications and application discovery.</p><p>You can also build your own solutions using the <a href='https://www.openfin.co/container/' alt='OpenFin Container'>OpenFin Container</a>, native language <a href='https://www.openfin.co/container/adapters/' alt='OpenFin Native Adapters'>adapters</a> and APIs while remaining compatible with everything else built on OpenFin.</p>",
+    "description": "<p>Here&#8482; (formerly OpenFin) founded the FDC3 standard in 2017 in collaboration with major banks and asset managers. Deployed at more than 2400 financial firms, OpenFin OS, allows applications from multiple providers to co-exist and interoperate on the desktop.</p><p>OpenFin OS consists of a secure, Chromium-based runtime called Container and a visual interface called <a href='https://www.openfin.co/workspace/' alt='OpenFin Workspace'>Workspace</a>. Workspace gets you running in no time, with themeable UI components for complex windowing, advanced search, actionable notifications and application discovery.</p><p>You can also build your own solutions using the <a href='https://www.openfin.co/container/' alt='OpenFin Container'>OpenFin Container</a>, native language <a href='https://www.openfin.co/container/adapters/' alt='OpenFin Native Adapters'>adapters</a> and APIs while remaining compatible with everything else built on OpenFin.</p>",
     "conformance": [
       {
         "src": "/img/community/certified-1.2.png",
@@ -416,15 +416,6 @@
     "type": "solution-provider"
   },
   {
-    "title": "Pictet AM smart Desktop",
-    "publisher": "Pictet Asset Management",
-    "image": "/img/users/pictet.png",
-    "infoLink": "https://am.pictet",
-    "description": "Pictet AM smart Desktop - linking our internal PMS (proprietary), our OMS (Charles River IMS) and various in-house react.js applications implementing FDC3 to share context and intents to provide a streamlined experience for Traders and Fund managers.",
-    "badges": [],
-    "type": "adopter"
-  },
-  {
     "title": "Connectifi",
     "publisher": "Connectifi Co.",
     "image": "/img/users/connectifi.png",
@@ -592,5 +583,32 @@
     "description": "Morgan Stanley believes that open standards like FDC3 are essential for unlocking new scenarios and efficiencies in user experience on the desktop for both our employees and our clients.",
     "badges": [],
     "type": "adopter"
+  },
+  {
+    "title": "FDC3 Developer Training Workshop - Rob Moffat, FINOS",
+    "publisher": "FINOS",
+    "image": "/img/training/fdc3-developer-training-workshop.png",
+    "infoLink": "https://youtu.be/9uUKTk2e-Xs?si=ndejBtoHsKIXBAYy",
+    "type": "tools-and-training",
+    "badges": [],
+    "description": "The FDC3 Developer Training Workshop led by Rob Moffat from FINOS aims to teach participants how to build FDC3-enabled applications and understand the framework for defining Contexts and Intents to enable seamless interoperability between desktop applications in the financial services industry."
+  },
+  {
+    "title": "How to Add FDC3 to Your Apps - Julianna Langston, interop.io",
+    "publisher": "FINOS",
+    "image": "/img/training/how-to-add-fdc3-to-your-apps.png",
+    "infoLink": "https://youtu.be/D6WST19pYUs?si=BtGSG7mkEdXBVEGL",
+    "type": "tools-and-training",
+    "badges": [],
+    "description": "This video training provides a practical guide on how to add the FDC3 (Financial Desktop Connectivity and Collaboration) open standard to your applications to enable interoperability between financial desktop applications."
+  },
+  {
+    "title": "FDC3 2.2 & FDC3 on the Web! - Kristopher West, interop.io & Rob Moffat, FINOS",
+    "publisher": "FINOS",
+    "image": "/img/training/fdc3-2.2.png",
+    "infoLink": "https://youtu.be/Z98eSdIt2b0?si=e54cMAY_PvBFTv-c",
+    "type": "tools-and-training",
+    "badges": [],
+    "description": "This training video discusses FDC3 2.2, which tightens several aspects of the FDC3 standard and brings long-awaited improvements, as presented by Kristopher West from interop.io and Rob Moffat from FINOS."
   }
 ]
