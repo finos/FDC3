@@ -1,4 +1,4 @@
-module.exports={
+module.exports = {
   "title": "FDC3",
   "tagline": "Open standards for the financial desktop",
   "url": "https://fdc3.finos.org",
@@ -28,11 +28,8 @@ module.exports={
         "docs": {
           "showLastUpdateAuthor": true,
           "showLastUpdateTime": true,
-          "path": "../docs",
+          "path": "./docs",
           "sidebarPath": "./sidebars.json",
-        },
-        "blog": {
-          "path": "blog"
         },
         "theme": {
           "customCss": "./src/css/customTheme.css"
@@ -51,20 +48,20 @@ module.exports={
   "plugins": [],
   "themeConfig": {
     "prism": {
-      "additionalLanguages": ["typescript","javascript","json","csharp"],
-      "theme": require('prism-react-renderer/themes/vsDark')
+      "additionalLanguages": ["typescript", "javascript", "json", "csharp"],
+      "theme": require('prism-react-renderer').themes.vsDark
     },
     "algolia": {
       "appId": "YW91L9TW76",
       "apiKey": "ab431bb4107069ef51780d8947cd8e0a",
       "indexName": "fdc3-finos",
       "contextualSearch": true,
-			"searchParameters": {}
+      "searchParameters": {}
     },
     "navbar": {
       "title": "FDC3",
       "logo": {
-		"src": "img/fdc3-icon-light-2019.svg",
+        "src": "img/fdc3-icon-light-2019.svg",
         "srcDark": "img/fdc3-icon-2019.svg"
       },
       "items": [
@@ -99,37 +96,10 @@ module.exports={
           "position": "left"
         },
         {
-          "label": "Version",
-          "to": "/versions",
-          "position": "right",
-          "items": [
-            {
-              "label": "2.1",
-              "to": "/docs/fdc3-intro",
-              "activeBaseRegex": "docs/(?!1.0|1.1|1.2|2.0|next)"
-            },
-            {
-              "label": "2.0",
-              "to": "/docs/2.0/fdc3-intro",
-            },
-            {
-              "label": "1.2",
-              "to": "/docs/1.2/fdc3-intro"
-            },
-            {
-              "label": "1.1",
-              "to": "/docs/1.1/fdc3-intro"
-            },
-            {
-              "label": "1.0",
-              "to": "/docs/1.0/fdc3-intro"
-            },
-            {
-              "label": "Main/Unreleased",
-              "to": "/docs/next/fdc3-intro",
-              "activeBaseRegex": "docs/next/(?!support|team|resources)"
-            }
-          ]
+          type: 'docsVersionDropdown',
+          position: 'right',
+          dropdownItemsAfter: [{ to: '/versions', label: 'All versions' }],
+          dropdownActiveClassDisabled: true,
         }
       ]
     },
@@ -216,10 +186,10 @@ module.exports={
         "htmlLabels": true,
         "markdownAutoWrap": true,
         "wrap": true,
-          "wrappingWidth": 50,
+        "wrappingWidth": 50,
         "flowchart": {
           "titleTopMargin": 30,
-          "subGraphTitleMargin":  {
+          "subGraphTitleMargin": {
             "top": 30,
             "bottom": 30
           },

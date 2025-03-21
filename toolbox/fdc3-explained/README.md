@@ -1,4 +1,4 @@
-# <a href='http://fdc3.finos.org/toolbox/fdc3-explained'><img src='logo.png' alt='FDC3 Explained Logo'></a>
+# <a href='http://fdc3.finos.org/toolbox/fdc3-explained'><img src='logo.png' alt='FDC3 Explained Logo' /></a>
 
 FDC3 Explained was originally created by Johan Sandersson, an original maintainer of FDC3, and contributed to the project. It shows how easy it is to create very simple HTML and JavaScript that can use the FDC3 APIs to facilitate interoperability.
 

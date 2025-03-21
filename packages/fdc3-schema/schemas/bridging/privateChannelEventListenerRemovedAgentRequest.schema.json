@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/bridging/privateChannelEventListenerRemovedAgentRequest.schema.json",
+  "title": "PrivateChannelEventListenerRemoved Agent Request",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/PrivateChannelEventListenerRemovedRequestBase"
+    },
+    {
+      "$ref": "agentRequest.schema.json"
+    }
+  ],
+  "$defs": {
+    "PrivateChannelEventListenerRemovedRequestBase": {
+      "title": "PrivateChannelEventListenerRemoved Request",
+      "type": "object",
+      "description": "A request to forward on an EventListenerRemoved event, relating to a PrivateChannel",
+      "properties": {
+        "type": {
+          "title": "Private Channel EventListenerRemoved Message type",
+          "const": "PrivateChannel.eventListenerRemoved"
+        },
+        "payload": {
+          "title": "PrivateChannelEventListenerRemoved Request Payload",
+          "type": "object",
+          "properties": {
+            "channelId": {
+              "type": "string",
+              "title": "Channel Id",
+              "description": "The id of the PrivateChannel that the event listener was removed from."
+            },
+            "listenerType": {
+              "$ref": "../api/api.schema.json#/definitions/PrivateChannelEventType"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["channelId", "listenerType"]
+        },
+        "meta": {
+          "title": "PrivateChannelEventListenerRemoved Request Metadata",
+          "type": "object",
+          "properties": {
+            "requestUuid": true,
+            "timestamp": true,
+            "source": {
+              "$ref": "common.schema.json#/$defs/AppRequestSource"
+            },
+            "destination": {
+              "$ref": "common.schema.json#/$defs/AppDestination"
+            }
+          },
+          "unevaluatedProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
