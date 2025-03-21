@@ -22,7 +22,7 @@ this part of the contract with custom identifiers if so desired.
 
 ## Schema
 
-<https://fdc3.finos.org/schemas/2.1/context/instrumentList.schema.json>
+[https://fdc3.finos.org/schemas/2.1/context/instrumentList.schema.json](https://fdc3.finos.org/schemas/2.1/context/instrumentList.schema.json)
 
 ## Details
 

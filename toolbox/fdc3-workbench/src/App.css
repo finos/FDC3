@@ -4,34 +4,34 @@
  */
 
 html {
-	font-size: 15px;
-	height: 100%;
+  font-size: 15px;
+  height: 100%;
 }
 
 body {
-	background-color: #f7f7f7;
-	font-size: 14px;
-	font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-	height: 100%;
+  background-color: #f7f7f7;
+  font-size: 14px;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  height: 100%;
 }
 
 #root {
-	height: 100%;
+  height: 100%;
 }
 
 #providerInfo {
-	border-collapse: collapse;
+  border-collapse: collapse;
 }
 
 #providerInfo th {
-	border-right: 1px solid white;
-	padding: 5px;
-	text-align: right;
-	text-transform: uppercase;
-	margin: 0px;
-	font-weight: normal;
+  border-right: 1px solid white;
+  padding: 5px;
+  text-align: right;
+  text-transform: uppercase;
+  margin: 0px;
+  font-weight: normal;
 }
 
 #providerInfo td {
-	padding-left: 5px;
+  padding-left: 5px;
 }
