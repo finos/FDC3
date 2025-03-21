@@ -2,7 +2,10 @@ website/**
 
 # Just used for build so ignoring
 s2tQuicktypeUtil.js
-schemas/api/t2sQuicktypeUtil.js
+t2sQuicktypeUtil.js
 
 # API schema set for localhost gets picked up by semgrep rule
-schemas/bridgingAsyncAPI/bridgingAsyncAPI.json 
+schemas/bridgingAsyncAPI/bridgingAsyncAPI.json
+
+# demo apps get picked up for not having integrity headers
+toolbox/fdc3-for-web/demo/src/client/apps/**
