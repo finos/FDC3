@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/api/fdc3UserInterfaceMessage.schema.json",
+  "title": "Fdc3 UserInterface Message",
+  "type": "object",
+  "description": "A message used to communicate with user interface frames injected by `getAgent()` for displaying UI elements such as the intent resolver or channel selector. Used for messages sent in either direction.",
+  "properties": {
+    "type": {
+      "title": "Fdc3 UserInterface Message type",
+      "type": "string",
+      "enum": [
+        "Fdc3UserInterfaceHello",
+        "Fdc3UserInterfaceHandshake",
+        "Fdc3UserInterfaceRestyle",
+        "Fdc3UserInterfaceDrag",
+        "Fdc3UserInterfaceResolve",
+        "Fdc3UserInterfaceResolveAction",
+        "Fdc3UserInterfaceChannels",
+        "Fdc3UserInterfaceChannelSelected"
+      ],
+      "description": "Identifies the type of the message to or from the user interface frame."
+    },
+    "payload": {
+      "title": "Message payload",
+      "type": "object",
+      "description": "The message payload.",
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "type"
+  ],
+  "additionalProperties": false
+}

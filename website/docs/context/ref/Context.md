@@ -24,7 +24,7 @@ can be expected to have, but this can always be extended with custom fields as a
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/next/context/context.schema.json](https://fdc3.finos.org/schemas/next/context/context.schema.json)
+[https://fdc3.finos.org/schemas/next/context/context.schema.json](pathname:///schemas/next/context/context.schema.json)
 
 ## Details
 

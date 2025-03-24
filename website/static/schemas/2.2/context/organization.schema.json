@@ -1,0 +1,59 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/context/organization.schema.json",
+  "type": "object",
+  "title": "Organization",
+  "description": "An entity that can be used when referencing private companies and other organizations where a specific instrument is not available or desired e.g. CRM and News workflows.\n\nIt is valid to include extra properties and metadata as part of the organization payload, but the minimum requirement is for at least one specified identifier to be provided.",
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "fdc3.organization"
+        },
+        "id": {
+          "type": "object",
+          "title": "Organization Identifiers",
+          "description": "Identifiers for the organization, at least one must be provided.",
+          "minProperties": 1,
+          "properties": {
+            "LEI": {
+              "type": "string",
+              "title": "Legal Entity Identifier",
+              "description": "The Legal Entity Identifier (LEI) is a 20-character, alpha-numeric code based on the ISO 17442 standard developed by the International Organization for Standardization (ISO). It connects to key reference information that enables clear and unique identification of legal entities participating in financial transactions."
+            },
+            "PERMID": {
+              "type": "string",
+              "title": "Organization",
+              "description": "Refinitiv Permanent Identifiers, or PermID for the organization"
+            },
+            "FDS_ID": {
+              "type": "string",
+              "title": "Organization",
+              "description": "FactSet Permanent Identifier representing the organization"
+            }
+          }
+        },
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "description": "An optional human-readable name of the organization"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    { "$ref": "context.schema.json#/definitions/BaseContext" }
+  ],
+  "examples": [
+    {
+      "type": "fdc3.organization",
+      "name": "Cargill, Incorporated",
+      "id": {
+        "LEI": "QXZYQNMR4JZ5RIRN4T31",
+        "FDS_ID": "00161G-E"
+      }
+    }
+  ]
+}

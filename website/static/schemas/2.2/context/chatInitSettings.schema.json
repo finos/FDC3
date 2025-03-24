@@ -1,0 +1,115 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/context/chatInitSettings.schema.json",
+  "type": "object",
+  "title": "ChatInitSettings",
+  "description": "A collection of settings to start a new chat conversation",
+  "allOf": [{
+      "type": "object",
+      "properties": {
+        "type": { "const": "fdc3.chat.initSettings" },
+        "chatName": {
+          "title": "Chat name",
+          "description": "Name to apply to the chat created",
+          "type": "string"
+        },
+        "members": {
+          "title": "Chat members",
+          "description": "Contacts to add to the chat",
+          "$ref": "contactList.schema.json#"
+        },
+        "message": {
+          "title": "Initial chat message",
+          "description": "An initial message to post in the chat when created.",
+          "oneOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "message.schema.json#"
+            }
+          ]
+        },
+        "options": {
+          "title": "Chat options",
+          "description": "Option settings that affect the creation of the chat",
+          "type": "object",
+          "properties": {
+            "groupRecipients": {
+              "title": "Group recipients option",
+              "description": "if false a separate chat will be created for each member",
+              "type": "boolean"
+            },
+            "isPublic": {
+              "title": "Public chat option",
+              "description": "if true the room will be visible to everyone in the chat application",
+              "type": "boolean"
+            },
+            "allowHistoryBrowsing":  {
+              "title": "Allow history browsing option",
+              "description": "if true members will be allowed to browse past messages",
+              "type": "boolean"
+            },
+            "allowMessageCopy":  {
+              "title": "Allow message copy option",
+              "description": "if true members will be allowed to copy/paste messages",
+              "type": "boolean"
+            },
+            "allowAddUser":  {
+              "title": "All adding users option",
+              "description": "if true members will be allowed to add other members to the chat",
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    { "$ref": "context.schema.json#/definitions/BaseContext" }
+  ],
+  "examples": [
+    {
+      "type": "fdc3.chat.initSettings",
+      "chatName": "Chat ABCD",
+      "members": {
+        "type": "fdc3.contactList",
+        "contacts": [
+          {
+            "type": "fdc3.contact",
+            "name": "Jane Doe",
+            "id": {
+              "email": "jane@mail.com"
+            }
+          },
+          {
+            "type": "fdc3.contact",
+            "name": "John Doe",
+            "id": {
+              "email": "john@mail.com"
+            }
+          }
+        ]
+      },
+      "options": {
+        "groupRecipients": true,
+        "isPublic": false,
+        "allowHistoryBrowsing": true,
+        "allowMessageCopy": true
+      },
+      "message": {
+        "type": "fdc3.message",
+        "text": {
+          "text/plain": "Hey all, can we discuss the issue together? I attached a screenshot"
+        },
+        "entities": {
+          "0": {
+            "type": "fdc3.fileAttachment",
+            "data": {
+              "name": "myImage.png",
+              "dataUri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII"
+            }
+          }
+        }
+      }
+    }
+  ]
+}

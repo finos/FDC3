@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/bridging/agentResponse.schema.json",
+  "title": "Agent Response Message",
+  "type": "object",
+  "description": "A response message from a Desktop Agent to the Bridge.",
+  "properties": {
+    "type": {
+      "title": "Response Message Type",
+      "type": "string",
+      "enum": [
+        "findInstancesResponse",
+        "findIntentResponse",
+        "findIntentsByContextResponse",
+        "getAppMetadataResponse",
+        "openResponse",
+        "raiseIntentResponse",
+        "raiseIntentResultResponse"
+      ],
+      "description": "Identifies the type of the message and it is typically set to the FDC3 function name that the message relates to, e.g. 'findIntent', with 'Response' appended."
+    },
+    "payload": {
+      "title": "Response Message Payload",
+      "type": "object",
+      "description": "The message payload typically contains return values for FDC3 API functions."
+    },
+    "meta": {
+      "$ref": "#/$defs/AgentResponseMeta"
+    }
+  },
+  "additionalProperties": false,
+  "required": ["type", "payload", "meta"],
+  "$defs": {
+    "AgentResponseMeta": {
+      "title": "Agent Response Metadata",
+      "description": "Metadata for a response messages sent by a Desktop Agent to the Bridge",
+      "type": "object",
+      "properties": {
+        "requestUuid": {
+          "$ref": "../api/common.schema.json#/$defs/RequestUuid"
+        },
+        "responseUuid": {
+          "$ref": "../api/common.schema.json#/$defs/ResponseUuid"
+        },
+        "timestamp": {
+          "$ref": "../api/common.schema.json#/$defs/Timestamp"
+        }
+      },
+      "required": ["requestUuid", "responseUuid", "timestamp"],
+      "additionalProperties": false
+    }
+  }
+}

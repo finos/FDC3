@@ -1,0 +1,63 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/2.2/api/addIntentListenerResponse.schema.json",
+	"type": "object",
+	"title": "AddIntentListener Response",
+	"description": "A response to a addIntentListener request.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/AddIntentListenerResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/AddIntentListenerSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/AddIntentListenerErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"AddIntentListenerResponseType": {
+			"title": "AddIntentListener Response Message Type",
+			"const": "addIntentListenerResponse"
+		},
+		"AddIntentListenerSuccessResponsePayload": {
+			"title": "AddIntentListener Response Payload",
+			"type": "object",
+			"properties": {
+				"listenerUUID": {
+					"$ref": "common.schema.json#/$defs/ListenerUuid"
+				}
+			},
+			"required": [
+				"listenerUUID"
+			]
+		},
+		"AddIntentListenerErrorResponsePayload": {
+			"title": "AddIntentListener Response Error Payload",
+			"type": "object",
+			"properties": {
+				"error": {
+					"$ref": "api.schema.json#/definitions/ResolveError"
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}

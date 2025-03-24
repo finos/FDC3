@@ -1,0 +1,565 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fdc3.finos.org/schemas/2.2/api/api.schema.json",
+    "title": "FDC3 Desktop Agent API Schemas",
+    "definitions": {
+        "AppIdentifier": {
+            "description": "Identifies an application, or instance of an application, and is used to target FDC3 API calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application instances.\n\nWill always include at least an `appId` field, which uniquely identifies a specific app.\n\nIf the `instanceId` field is set then the `AppMetadata` object represents a specific instance of the application that may be addressed using that Id.",
+            "title": "AppIdentifier",
+            "type": "object",
+            "properties": {
+                "appId": {
+                    "description": "The unique application identifier located within a specific application directory instance. An example of an appId might be 'app@sub.root'.",
+                    "type": "string",
+                    "title": "appId"
+                },
+                "instanceId": {
+                    "description": "An optional instance identifier, indicating that this object represents a specific instance of the application described.",
+                    "type": "string",
+                    "title": "instanceId"
+                },
+                "desktopAgent": {
+                    "description": "The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to identify the Desktop Agent to target.",
+                    "type": "string",
+                    "title": "desktopAgent"
+                }
+            },
+            "unevaluatedProperties": false,
+            "required": [
+                "appId"
+            ]
+        },
+        "Icon": {
+            "description": "Describes an Icon image that may be used to represent the application.",
+            "title": "Icon",
+            "type": "object",
+            "properties": {
+                "src": {
+                    "description": "The icon url.",
+                    "type": "string",
+                    "title": "src"
+                },
+                "size": {
+                    "description": "The icon dimension, formatted as `<height>x<width>`.",
+                    "type": "string",
+                    "title": "size"
+                },
+                "type": {
+                    "description": "Icon media type. If not present the Desktop Agent may use the src file extension.",
+                    "type": "string",
+                    "title": "type"
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "src"
+            ]
+        },
+        "Image": {
+            "description": "Describes an image file, typically a screenshot, that often represents the application in a common usage scenario.",
+            "title": "Image",
+            "type": "object",
+            "properties": {
+                "src": {
+                    "description": "The image url.",
+                    "type": "string",
+                    "title": "src"
+                },
+                "size": {
+                    "description": "The image dimension, formatted as `<height>x<width>`.",
+                    "type": "string",
+                    "title": "size"
+                },
+                "type": {
+                    "description": "Image media type. If not present the Desktop Agent may use the src file extension.",
+                    "type": "string",
+                    "title": "type"
+                },
+                "label": {
+                    "description": "Caption for the image.",
+                    "type": "string",
+                    "title": "label"
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "src"
+            ]
+        },
+        "AppMetadata": {
+            "description": "Extends an `AppIdentifier`, describing an application or instance of an application, with additional descriptive metadata that is usually provided by an FDC3 App Directory that the Desktop Agent connects to.\n\nThe additional information from an app directory can aid in rendering UI elements, such as a launcher menu or resolver UI. This includes a title, description, tooltip and icon and screenshot URLs.\n\nNote that as `AppMetadata` instances are also `AppIdentifiers` they may be passed to the `app` argument of `fdc3.open`, `fdc3.raiseIntent` etc.",
+            "title": "AppMetadata",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The 'friendly' app name. \nThis field was used with the `open` and `raiseIntent` calls in FDC3 <2.0, which now require an `AppIdentifier` wth `appId` set. \nNote that for display purposes the `title` field should be used, if set, in preference to this field.",
+                    "type": "string",
+                    "title": "name"
+                },
+                "version": {
+                    "description": "The Version of the application.",
+                    "type": "string",
+                    "title": "version"
+                },
+                "instanceMetadata": {
+                    "description": "An optional set of, implementation specific, metadata fields that can be used to disambiguate instances, such as a window title or screen position. Must only be set if `instanceId` is set.",
+                    "type": "object",
+                    "additionalProperties": true,
+                    "title": "instanceMetadata"
+                },
+                "title": {
+                    "description": "A more user-friendly application title that can be used to render UI elements.",
+                    "type": "string",
+                    "title": "title"
+                },
+                "tooltip": {
+                    "description": "A tooltip for the application that can be used to render UI elements.",
+                    "type": "string",
+                    "title": "tooltip"
+                },
+                "description": {
+                    "description": "A longer, multi-paragraph description for the application that could include markup.",
+                    "type": "string",
+                    "title": "description"
+                },
+                "icons": {
+                    "description": "A list of icon URLs for the application that can be used to render UI elements.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Icon"
+                    },
+                    "title": "icons"
+                },
+                "screenshots": {
+                    "description": "Images representing the app in common usage scenarios that can be used to render UI elements.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Image"
+                    },
+                    "title": "screenshots"
+                },
+                "resultType": {
+                    "description": "The type of output returned for any intent specified during resolution. May express a particular context type (e.g. \"fdc3.instrument\"), channel (e.g. \"channel\") or a channel that will receive a specified type (e.g. \"channel<fdc3.instrument>\").",
+                    "type": [
+                        "null",
+                        "string"
+                    ],
+                    "title": "resultType"
+                },
+                "appId": {
+                    "description": "The unique application identifier located within a specific application directory instance. An example of an appId might be 'app@sub.root'.",
+                    "type": "string",
+                    "title": "appId"
+                },
+                "instanceId": {
+                    "description": "An optional instance identifier, indicating that this object represents a specific instance of the application described.",
+                    "type": "string",
+                    "title": "instanceId"
+                },
+                "desktopAgent": {
+                    "description": "The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to identify the Desktop Agent to target.",
+                    "type": "string",
+                    "title": "desktopAgent"
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "appId"
+            ]
+        },
+        "IntentMetadata": {
+            "description": "Metadata describing an Intent.",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "The unique name of the intent that can be invoked by the raiseIntent call.",
+                    "type": "string",
+                    "title": "name"
+                },
+                "displayName": {
+                    "description": "Display name for the intent.",
+                    "type": "string",
+                    "title": "displayName"
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "name"
+            ]
+        },
+        "AppIntent": {
+            "description": "An interface that relates an intent to apps.",
+            "title": "AppIntent",
+            "type": "object",
+            "properties": {
+                "intent": {
+                    "$ref": "#/definitions/IntentMetadata",
+                    "description": "Details of the intent whose relationship to resolving applications is being described.",
+                    "title": "intent"
+                },
+                "apps": {
+                    "description": "Details of applications that can resolve the intent.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/AppMetadata"
+                    },
+                    "title": "apps"
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "apps",
+                "intent"
+            ]
+        },
+        "DisplayMetadata": {
+            "description": "A system channel will be global enough to have a presence across many apps. This gives us some hints\nto render them in a standard way. It is assumed it may have other properties too, but if it has these,\nthis is their meaning.",
+            "title": "DisplayMetadata",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "A user-readable name for this channel, e.g: `\"Red\"`.",
+                    "type": "string",
+                    "title": "name"
+                },
+                "color": {
+                    "description": "The color that should be associated within this channel when displaying this channel in a UI, e.g: `0xFF0000`.",
+                    "type": "string",
+                    "title": "color"
+                },
+                "glyph": {
+                    "description": "A URL of an image that can be used to display this channel.",
+                    "type": "string",
+                    "title": "glyph"
+                }
+            },
+            "additionalProperties": false
+        },
+        "Channel": {
+            "description": "Represents a context channel that applications can use to send and receive\ncontext data.\n\nPlease note that There are differences in behavior when you interact with a\nUser channel via the `DesktopAgent` interface and the `Channel` interface.\nSpecifically, when 'joining' a User channel or adding a context listener\nwhen already joined to a channel via the `DesktopAgent` interface, existing\ncontext (matching the type of the context listener) on the channel is\nreceived by the context listener immediately. Whereas, when a context\nlistener is added via the Channel interface, context is not received\nautomatically, but may be retrieved manually via the `getCurrentContext()`\nfunction.",
+            "title": "Channel",
+            "type": "object",
+            "properties": {
+                "id": {
+                    "description": "Constant that uniquely identifies this channel.",
+                    "type": "string",
+                    "title": "id"
+                },
+                "type": {
+                    "description": "Uniquely defines each channel type.\nCan be \"user\", \"app\" or \"private\".",
+                    "enum": [
+                        "app",
+                        "private",
+                        "user"
+                    ],
+                    "type": "string",
+                    "title": "type"
+                },
+                "displayMetadata": {
+                    "description": "Channels may be visualized and selectable by users. DisplayMetadata may be used to provide hints on how to see them.\nFor App channels, displayMetadata would typically not be present.",
+                    "$ref": "#/definitions/DisplayMetadata",
+                    "title": "displayMetadata"
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "id",
+                "type"
+            ]
+        },
+        "ContextMetadata": {
+            "description": "Metadata relating to a context or intent and context received through the\n`addContextListener` and `addIntentListener` functions.",
+            "title": "ContextMetadata",
+            "type": "object",
+            "properties": {
+                "source": {
+                    "$ref": "#/definitions/AppIdentifier",
+                    "description": "Identifier for the app instance that sent the context and/or intent.",
+                    "title": "source"
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "source"
+            ]
+        },
+        "DesktopAgentIdentifier": {
+            "description": "Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios\nwhere a request needs to be directed to a Desktop Agent rather than a specific app, or a\nresponse message is returned by the Desktop Agent (or more specifically its resolver)\nrather than a specific app. Used as a substitute for `AppIdentifier` in cases where no\napp details are available or are appropriate.",
+            "title": "DesktopAgentIdentifier",
+            "type": "object",
+            "properties": {
+                "desktopAgent": {
+                    "description": "Used in Desktop Agent Bridging to attribute or target a message to a\nparticular Desktop Agent.",
+                    "type": "string",
+                    "title": "desktopAgent"
+                }
+            },
+            "unevaluatedProperties": false,
+            "required": [
+                "desktopAgent"
+            ]
+        },
+        "OpenError": {
+            "description": "Constants representing the errors that can be encountered when calling the `open` method on the DesktopAgent object (`fdc3`).",
+            "title": "OpenError",
+            "enum": [
+                "AppNotFound",
+                "AppTimeout",
+                "DesktopAgentNotFound",
+                "ErrorOnLaunch",
+                "MalformedContext",
+                "ResolverUnavailable",
+                "ApiTimeout"
+            ],
+            "type": "string"
+        },
+        "ResolveError": {
+            "description": "Constants representing the errors that can be encountered when calling the `findIntent`, `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).",
+            "title": "ResolveError",
+            "enum": [
+                "DesktopAgentNotFound",
+                "IntentDeliveryFailed",
+                "MalformedContext",
+                "NoAppsFound",
+                "ResolverTimeout",
+                "ResolverUnavailable",
+                "TargetAppUnavailable",
+                "TargetInstanceUnavailable",
+                "UserCancelledResolution",
+                "ApiTimeout"
+            ],
+            "type": "string"
+        },
+        "ResultError": {
+            "title": "ResultError",
+            "enum": [
+                "IntentHandlerRejected",
+                "NoResultReturned",
+                "ApiTimeout"
+            ],
+            "type": "string"
+        },
+        "ChannelError": {
+            "title": "ChannelError",
+            "enum": [
+                "AccessDenied",
+                "CreationFailed",
+                "MalformedContext",
+                "NoChannelFound",
+                "ApiTimeout"
+            ],
+            "type": "string"
+        },
+        "BridgingError": {
+            "title": "BridgingError",
+            "enum": [
+                "AgentDisconnected",
+                "NotConnectedToBridge",
+                "ResponseToBridgeTimedOut",
+                "MalformedMessage"
+            ],
+            "type": "string"
+        },
+        "BaseImplementationMetadata": {
+            "description": "Metadata relating to the FDC3 Desktop Agent implementation and its provider.",
+            "title": "BaseImplementationMetadata",
+            "type": "object",
+            "properties": {
+                "fdc3Version": {
+                    "description": "The version number of the FDC3 specification that the implementation provides.\nThe string must be a numeric semver version, e.g. 1.2 or 1.2.1.",
+                    "type": "string",
+                    "title": "fdc3Version"
+                },
+                "provider": {
+                    "description": "The name of the provider of the Desktop Agent implementation (e.g. Finsemble, Glue42, OpenFin etc.).",
+                    "type": "string",
+                    "title": "provider"
+                },
+                "providerVersion": {
+                    "description": "The version of the provider of the Desktop Agent implementation (e.g. 5.3.0).",
+                    "type": "string",
+                    "title": "providerVersion"
+                },
+                "optionalFeatures": {
+                    "description": "Metadata indicating whether the Desktop Agent implements optional features of\nthe Desktop Agent API.",
+                    "type": "object",
+                    "properties": {
+                        "OriginatingAppMetadata": {
+                            "description": "Used to indicate whether the exposure of 'originating app metadata' for\ncontext and intent messages is supported by the Desktop Agent.",
+                            "type": "boolean",
+                            "title": "OriginatingAppMetadata"
+                        },
+                        "UserChannelMembershipAPIs": {
+                            "description": "Used to indicate whether the optional `fdc3.joinUserChannel`,\n`fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by\nthe Desktop Agent.",
+                            "type": "boolean",
+                            "title": "UserChannelMembershipAPIs"
+                        },
+                        "DesktopAgentBridging": {
+                            "description": "Used to indicate whether the experimental Desktop Agent Bridging\nfeature is implemented by the Desktop Agent.",
+                            "type": "boolean",
+                            "title": "DesktopAgentBridging"
+                        }
+                    },
+                    "additionalProperties": false,
+                    "required": [
+                        "DesktopAgentBridging",
+                        "OriginatingAppMetadata",
+                        "UserChannelMembershipAPIs"
+                    ],
+                    "title": "optionalFeatures"
+                }
+            },
+            "required": [
+                "fdc3Version",
+                "optionalFeatures",
+                "provider"
+            ]
+        },
+        "ImplementationMetadata": {
+            "description": "Includes Metadata for the current application.",
+            "title": "ImplementationMetadata",
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/BaseImplementationMetadata"
+                },
+                {
+                    "type": "object",
+                    "properties": {
+                        "appMetadata": {
+                            "$ref": "#/definitions/AppMetadata",
+                            "description": "The calling application instance's own metadata, according to the Desktop Agent (MUST include at least the `appId` and `instanceId`).",
+                            "title": "appMetadata"
+                        }
+                    }
+                }
+            ],
+            "properties": {
+                "fdc3Version": true,
+                "provider": true,
+                "providerVersion": true,
+                "optionalFeatures": true,
+                "appMetadata": true
+            },
+            "required": [
+                "fdc3Version",
+                "optionalFeatures",
+                "provider",
+                "appMetadata"
+            ],
+            "additionalProperties": false
+        },
+        "IntentResolution": {
+            "description": "IntentResolution provides a standard format for data returned upon resolving an intent.\n\n```javascript\n//resolve a \"Chain\" type intent\nlet resolution = await agent.raiseIntent(\"intentName\", context);\n\n//resolve a \"Client-Service\" type intent with a data response or a Channel\nlet resolution = await agent.raiseIntent(\"intentName\", context);\ntry {\n\t   const result = await resolution.getResult();\n    if (result && result.broadcast) {\n        console.log(`${resolution.source} returned a channel with id ${result.id}`);\n    } else if (result){\n        console.log(`${resolution.source} returned data: ${JSON.stringify(result)}`);\n    } else {\n        console.error(`${resolution.source} didn't return data`\n    }\n} catch(error) {\n    console.error(`${resolution.source} returned an error: ${error}`);\n}\n\n// Use metadata about the resolving app instance to target a further intent\nawait agent.raiseIntent(\"intentName\", context, resolution.source);\n```",
+            "title": "IntentResolution",
+            "type": "object",
+            "properties": {
+                "source": {
+                    "$ref": "#/definitions/AppIdentifier",
+                    "description": "Identifier for the app instance that was selected (or started) to resolve the intent.\n`source.instanceId` MUST be set, indicating the specific app instance that\nreceived the intent.",
+                    "title": "source"
+                },
+                "intent": {
+                    "description": "The intent that was raised. May be used to determine which intent the user\nchose in response to `fdc3.raiseIntentForContext()`.",
+                    "type": "string",
+                    "title": "intent"
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "intent",
+                "source"
+            ]
+        },
+        "IntentResult": {
+            "title": "IntentResult",
+            "anyOf": [
+                {
+                    "type": "object",
+                    "title": "IntentResult Context",
+                    "properties": {
+                        "context": {
+                            "$ref": "../context/context.schema.json"
+                        }
+                    },
+                    "required": [
+                        "context"
+                    ],
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "title": "IntentResult Channel",
+                    "properties": {
+                        "channel": {
+                            "$ref": "#/definitions/Channel"
+                        }
+                    },
+                    "required": [
+                        "channel"
+                    ],
+                    "additionalProperties": false
+                },
+                {
+                    "type": "object",
+                    "title": "IntentResult Void",
+                    "properties": {},
+                    "additionalProperties": false
+                }
+            ]
+        },
+        "FDC3EventType": {
+            "title": "FDC3 Event Type",
+            "description": "The type of a (non-context and non-intent) event that may be received via the FDC3 API's addEventListener function.",
+            "type": "string",
+            "enum": [
+                "USER_CHANNEL_CHANGED"
+            ]
+        },
+        "FDC3Event": {
+            "title": "FDC3 Event",
+            "description": "An event object received via the FDC3 API's addEventListener function. Will always include both type and details, which describe type of the event and any additional details respectively.",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/FDC3EventType"
+                },
+                "details": {
+                    "title": "Event details",
+                    "description": "Additional details of the event, such as the `currentChannelId` for a CHANNEL_CHANGED event.",
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            },
+            "required":["type","details"],
+            "additionalProperties": false
+        },
+        "PrivateChannelEventType": {
+            "title": "PrivateChannel Event Type",
+            "description": "Type defining valid type strings for Private Channel events.",
+            "type": "string",
+            "enum": [
+                "addContextListener",
+                "unsubscribe",
+                "disconnect"
+            ]
+        },
+        "PrivateChannelEvent": {
+            "description": "Type defining the format of event objects that may be received via a PrivateChannel's addEventListener function.",
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/definitions/PrivateChannelEventType"
+                },
+                "details": {
+                    "title": "Event details",
+                    "description": "Additional details of the event, such as the `currentChannelId` for a CHANNEL_CHANGED event.",
+                    "type": "object",
+                    "additionalProperties": true
+                }
+            },
+            "required":["type","details"],
+            "additionalProperties": false
+        }
+    }
+}

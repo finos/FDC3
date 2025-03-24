@@ -1,0 +1,42 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/2.2/api/findInstancesRequest.schema.json",
+	"type": "object",
+	"title": "FindInstances Request",
+	"description": "A request for details of instances of a particular app.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/FindInstancesRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/FindInstancesRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"FindInstancesRequestType": {
+			"title": "FindInstances Request Message Type",
+			"const": "findInstancesRequest"
+		},
+		"FindInstancesRequestPayload": {
+			"type": "object",
+			"title": "FindInstances Request Payload",
+			"properties": {
+				"app": {
+					"$ref": "api.schema.json#/definitions/AppIdentifier"
+				}
+			},
+			"required": ["app"],
+			"additionalProperties": false
+		}
+	}
+}

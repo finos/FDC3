@@ -1,0 +1,49 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/2.2/api/openRequest.schema.json",
+	"type": "object",
+	"title": "Open Request",
+	"description": "A request to open an application.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/OpenRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/OpenRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"OpenRequestType": {
+			"title": "Open Request Message Type",
+			"const": "openRequest"
+		},
+		"OpenRequestPayload": {
+			"title": "Open Request Payload",
+			"type": "object",
+			"properties": {
+				"app": {
+					"$ref": "api.schema.json#/definitions/AppIdentifier"
+				},
+				"context": {
+					"$ref": "../context/context.schema.json",
+					"title": "Context",
+					"description": "If a Context object is passed in, this object will be provided to the opened application via a contextListener. The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it."
+				}
+			},
+			"required": [
+				"app"
+			],
+			"additionalProperties": false
+		}
+	}
+}

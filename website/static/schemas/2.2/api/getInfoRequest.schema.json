@@ -1,0 +1,37 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/2.2/api/getInfoRequest.schema.json",
+	"type": "object",
+	"title": "GetInfo Request",
+	"description": "Request to retrieve information about the FDC3 Desktop Agent implementation and the metadata of the calling application according to the Desktop Agent.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/GetInfoRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/GetInfoRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"GetInfoRequestType": {
+			"title": "GetInfo Request Message Type",
+			"const": "getInfoRequest"
+		},
+		"GetInfoRequestPayload": {
+			"title": "GetInfo Request Payload",
+			"type": "object",
+			"properties": {},
+			"additionalProperties": false
+		}
+	}
+}

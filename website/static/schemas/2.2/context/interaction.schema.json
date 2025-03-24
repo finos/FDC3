@@ -1,0 +1,127 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/context/interaction.schema.json",
+  "type": "object",
+  "title": "Interaction",
+  "description": "An `Interaction` is a significant direct exchange of ideas or information between a number of participants, e.g. a Sell Side party and one or more Buy Side parties. An `Interaction` might be a call, a meeting (physical or virtual), an IM or the preparation of some specialist data, such as financial data for a given company or sector.",
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "fdc3.interaction"
+        },
+        "id": {
+          "type": "object",
+          "title": "Interaction Id",
+          "description": "Can be used by a target application to pass an identifier back to the originating application after an interaction record has been created, updated or deleted. An interaction ID does not need to be populated by the originating application, however the target application could store it for future reference and SHOULD return it in a `TransactionResult`.",
+          "properties": {
+            "URI": {
+              "type": "string",
+              "title": "Interaction URI",
+              "description": "Can be used by a target application to pass a record's link back to the originating application. This offers the originating application a way to open the record for a user to view."
+            },
+            "SALESFORCE": {
+              "type": "string",
+              "title": "Salesforce ID",
+              "description": "Interactions ID in Salesforce"
+            },
+            "SINGLETRACK": {
+              "type": "string",
+              "title": "SingleTrack ID",
+              "description": "Interaction ID in SingleTrack"
+            }
+          }
+        },
+        "participants": {
+          "title": "Interaction Participants",
+          "description": "A list of contacts involved in the interaction",
+          "$ref": "contactList.schema.json#"
+        },
+        "timeRange": {
+          "title": "Interaction Time range",
+          "description": "The time range over which the interaction occurred",
+          "$ref": "timeRange.schema.json#"
+        },
+        "interactionType": {
+          "title": "Interaction Type",
+          "description": "`interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or `'Meeting'` although other string values are permitted.",
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": [
+                "Instant Message",
+                "Email",
+                "Call",
+                "Meeting"
+              ]
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "description": {
+          "title": "Interaction Description",
+          "description": "A human-readable description of the interaction",
+          "type": "string"
+        },
+        "initiator": {
+          "title": "Interaction Initiator",
+          "description": "The contact that initiated the interaction",
+          "$ref": "contact.schema.json#"
+        },
+        "origin": {
+          "title": "Interaction Origin",
+          "description": "Used to represent the application or service that the interaction was created from to aid in tracing the source of an interaction.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "participants",
+        "timeRange",
+        "interactionType",
+        "description"
+      ]
+    },
+    { "$ref": "context.schema.json#/definitions/BaseContext" }
+  ],
+  "examples": [
+    {
+      "type": "fdc3.interaction",
+      "participants": {
+        "type": "fdc3.contactList",
+        "contacts": [
+          {
+            "type": "fdc3.contact",
+            "name": "Jane Doe",
+            "id": {
+              "email": "jane.doe@mail.com"
+            }
+          },
+          {
+            "type": "fdc3.contact",
+            "name": "John Doe",
+            "id": {
+              "email": "john.doe@mail.com"
+            }
+          }
+        ]
+      },
+      "interactionType": "Instant Message",
+      "timeRange": {
+        "type": "fdc3.timeRange",
+        "startTime": "2022-02-10T15:12:00Z"
+      },
+      "description": "Laboris libero dapibus fames elit adipisicing eu, fermentum, dignissimos laboriosam, erat, risus qui deserunt. Praesentium! Reiciendis. Hic harum nostrud, harum potenti amet? Mauris. Pretium aliquid animi, eget eiusmod integer proident. Architecto ipsum blandit ducimus, possimus illum sunt illum necessitatibus ab litora sed, nonummy integer minus corrupti ducimus iste senectus accumsan, fugiat nostrud? Pede vero dictumst excepturi, iure earum consequuntur voluptatum",
+      "initiator": {
+        "type": "fdc3.contact",
+        "name": "Jane Doe",
+        "id": {
+          "email": "jane.doe@mail.com"
+        }
+      },
+      "origin": "Outlook"
+    }
+  ]
+}
