@@ -47,7 +47,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - resolves ([#832](https://github.com/finos/FDC3/issues/832))
   - resolves ([#1487](https://github.com/finos/FDC3/issues/1487))
   - resolves ([#1488](https://github.com/finos/FDC3/issues/1488))
-* Fixed Intent Resolution to new apps issue ([#1556](https://github.com/finos/FDC3/pull/1556))
+* Adjusted reference Desktop Agent implementation for FDC3 for Web to open a new app instance when raiseIntent is called with an appId but no instanceId ([#1556](https://github.com/finos/FDC3/pull/1556))
 
 ### Changed
 
