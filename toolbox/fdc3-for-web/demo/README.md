@@ -9,7 +9,6 @@ From the root of the repository, run:
 ```bash
 
 npm install
-npm run build
 npm run dev
 
 ```
@@ -28,8 +27,7 @@ And the web page will load in Chrome looking like this:
 
 The demo Desktop Agent provides the following features:
 
-
-### 1. Browser-Based Desktop Agent 
+### 1. Browser-Based Desktop Agent
 
 ![Console](./images/console.png)
 
