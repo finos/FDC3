@@ -53,7 +53,9 @@ class ChannelStore {
     const agent = await getAgent();
     //defer retrieving channels until fdc3 API is ready
     try {
-      const userChannels = await agent.getUserChannels();
+      //backwards compatibility for FDC3 < 2.0
+      const getUserChannels = agent.getUserChannels ?? agent.getSystemChannels;
+      const userChannels = await getUserChannels();
       const currentUserChannel = await agent.getCurrentChannel();
 
       runInAction(() => {
@@ -77,7 +79,9 @@ class ChannelStore {
   async joinUserChannel(channelId: string) {
     const agent = await getAgent();
     try {
-      await agent.joinUserChannel(channelId);
+      //backwards compatability for 1.2
+      const joinUserChannel = agent.joinUserChannel ?? agent.joinChannel;
+      await joinUserChannel(channelId);
       const currentUserChannel = await agent.getCurrentChannel();
       const isSuccess = currentUserChannel !== null;
 
