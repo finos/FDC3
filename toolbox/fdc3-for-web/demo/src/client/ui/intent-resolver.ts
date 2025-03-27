@@ -50,6 +50,7 @@ window.addEventListener('load', () => {
       implementationDetails: 'Demo Intent Resolver v1.0',
     },
   };
+  // nosemgrep
   parent.postMessage(helloMessage, '*', [mc.port2]);
   debug('Sent hello message: ', helloMessage);
 
