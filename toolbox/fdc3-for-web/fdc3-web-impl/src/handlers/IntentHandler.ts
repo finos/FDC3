@@ -275,10 +275,6 @@ export class IntentHandler implements MessageHandler {
     return this.registrations.find(r => r.instanceId == instanceId && r.intentName == intentName) != null;
   }
 
-  async getRunningApps(appId: string, sc: ServerContext<AppRegistration>): Promise<FullAppIdentifier[]> {
-    return (await sc.getConnectedApps()).filter(a => a.appId == appId);
-  }
-
   async startWithPendingIntent(
     arg0: IntentRequest,
     sc: ServerContext<AppRegistration>,
@@ -349,18 +345,14 @@ export class IntentHandler implements MessageHandler {
     sc: ServerContext<AppRegistration>,
     target: AppIdentifier
   ): Promise<void> {
-    // dealing with a specific app, which may or may not be open
-    const runningApps = await this.getRunningApps(target.appId, sc);
-
-    const appIntents = this.createAppIntents(arg0, [...runningApps, { appId: target.appId }]);
+    // in this version of the method, we always open an app as no
+    // specific instance is specified
+    const appIntents = this.createAppIntents(arg0, [{ appId: target.appId }]);
 
     const narrowedAppIntents = await this.narrowIntents(arg0[0].from, appIntents, arg0[0].context, sc);
 
     if (narrowedAppIntents.length == 1) {
-      if (narrowedAppIntents[0].apps.length == 2 && narrowedAppIntents[0].apps[0].instanceId) {
-        // single running instance
-        return this.raiseIntentRequestToSpecificInstance(arg0, sc, runningApps[0]);
-      } else if (narrowedAppIntents[0].apps.length == 1) {
+      if (narrowedAppIntents[0].apps.length == 1) {
         // no running instance, single app
         const appRecords = this.directory.retrieveAppsById(target.appId);
         if (appRecords.length >= 1) {
@@ -369,43 +361,11 @@ export class IntentHandler implements MessageHandler {
             intent: narrowedAppIntents[0].intent.name,
           };
           return this.startWithPendingIntent(ir, sc, target);
-        } else {
-          // app doesn't exist
-          return errorResponseId(
-            sc,
-            arg0[0].requestUuid,
-            arg0[0].from,
-            ResolveError.TargetAppUnavailable,
-            arg0[0].type
-          );
         }
       }
     }
-
-    // need to use the resolver to choose a running app instance
-
-    if (arg0[0].type == 'raiseIntentResponse') {
-      return successResponseId(
-        sc,
-        arg0[0].requestUuid,
-        arg0[0].from,
-        {
-          appIntent: narrowedAppIntents[0],
-        },
-        arg0[0].type
-      );
-    } else {
-      // raise intent for context
-      return successResponseId(
-        sc,
-        arg0[0].requestUuid,
-        arg0[0].from,
-        {
-          appIntents: narrowedAppIntents,
-        },
-        arg0[0].type
-      );
-    }
+    // app doesn't exist
+    return errorResponseId(sc, arg0[0].requestUuid, arg0[0].from, ResolveError.TargetAppUnavailable, arg0[0].type);
   }
 
   oneAppOnly(appIntent: AppIntent): boolean {
