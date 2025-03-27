@@ -1,0 +1,13 @@
+{
+  "name": "fdc3-conformance",
+  "private": true,
+  "version": "2.2.0-beta.3",
+  "license": "Apache-2.0",
+  "scripts": {
+    "test:browser": "vitest"
+  },
+  "devDependencies": {
+    "@vitest/browser": "^3.0.9",
+    "@finos/testing": "2.2.0-beta.3"
+  }
+}
