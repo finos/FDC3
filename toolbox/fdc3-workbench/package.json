@@ -1,6 +1,6 @@
 {
   "name": "fdc3-workbench",
-  "version": "2.2.0-beta.1",
+  "version": "2.2.0-beta.3",
   "private": true,
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -13,8 +13,8 @@
     "start": "vite",
     "preview": "vite preview",
     "build": "tsc && vite build",
-    "lint": "eslint **/*.{ts,tsx} && prettier --check **/*.{ts,tsx,js,jsx,json,yml,css,html,md}",
-    "lint:fix": "eslint --fix **/*.{ts,tsx} && prettier --write **/*.{ts,tsx,js,jsx} && prettier --write **/*.{json,yml,css,html,md}"
+    "lint": " eslint src/",
+    "lint:fix": "eslint --fix src/**/*.{ts,tsx} && prettier --write src/**/*.{ts,tsx}"
   },
   "eslintConfig": {
     "extends": [
@@ -38,7 +38,7 @@
     "@eslint/compat": "^1.2.5",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.19.0",
-    "@finos/fdc3": "2.2.0-beta.1",
+    "@finos/fdc3": "2.2.0-beta.3",
     "@fontsource/roboto": "5.1.0",
     "@fontsource/source-code-pro": "5.1.0",
     "@material-ui/core": "4.12.4",
@@ -70,14 +70,5 @@
     "uuid": "^9.0.1",
     "vite": "^5.4.9",
     "web-vitals": "^1.1.2"
-  },
-  "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
-      "eslint --cache --quiet --fix",
-      "prettier --write --prose-wrap never"
-    ],
-    "*.{json,yml,css,html,md}": "prettier --write --prose-wrap never",
-    "*.js": "eslint --cache --fix",
-    "*.{js,css,md}": "prettier --write"
   }
 }
