@@ -34,6 +34,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added the ability for a browser-based DesktopAgent to control the timeouts used in the DesktopAgentProxy when making calls to it, via properties in WCP3Handshake message. ([#1497](https://github.com/finos/FDC3/pull/1497))
 * Added .NET docs for Events to API reference. ([#1441](https://github.com/finos/FDC3/pull/1441))
 * Setup package publishing for mono-repo packages. ([#1520](https://github.com/finos/FDC3/pull/1520))
+* Fixed Intent Resolution to new apps issue ([#1556](https://github.com/finos/FDC3/pull/1556))
 
 ### Changed
 
