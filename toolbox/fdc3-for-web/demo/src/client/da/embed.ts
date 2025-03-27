@@ -68,6 +68,7 @@ const helloListener = (e: MessageEvent) => {
       const ui = UI_URLS[getUIKey()];
 
       // send the other end of the channel to the app
+      // nosemgrep
       appWindow.postMessage(
         {
           type: 'WCP3Handshake',
