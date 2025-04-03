@@ -93,7 +93,7 @@ Given(
 Given(
   '{string} is a channelChangedEvent message on channel {string}',
   function (this: CustomWorld, field: string, channel: string) {
-    const message = {
+    const message: ChannelChangedEvent = {
       meta: {
         eventUuid: this.messaging!.createUUID(),
         timestamp: new Date(),
@@ -102,7 +102,7 @@ Given(
         newChannelId: handleResolve(channel, this),
       },
       type: 'channelChangedEvent',
-    } as ChannelChangedEvent;
+    };
 
     this.props[field] = message;
   }
