@@ -6,6 +6,7 @@ import {
   ChannelSelector,
   EventHandler,
   ChannelError,
+  ApiEvent,
 } from '@finos/fdc3-standard';
 import { Messaging } from '../Messaging';
 import { ChannelSupport } from './ChannelSupport';
@@ -27,6 +28,7 @@ import {
   LeaveCurrentChannelRequest,
   JoinUserChannelResponse,
   JoinUserChannelRequest,
+  ChannelChangedEvent,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { throwIfUndefined } from '../util/throwIfUndefined';
 import { Logger } from '../util/Logger';
@@ -51,9 +53,31 @@ export class DefaultChannelSupport implements ChannelSupport {
       }
     });
 
-    this.addChannelChangedEventHandler(e => {
-      Logger.debug('Desktop Agent reports channel changed: ', e.details.newChannelId);
-      this.channelSelector.updateChannel(e.details.newChannelId, this.userChannels);
+    this.addChannelChangedEventHandler(async (e: ApiEvent) => {
+      const cce: ChannelChangedEvent['payload'] = e.details;
+      Logger.debug('Desktop Agent reports channel changed: ', cce.newChannelId);
+
+      let theChannel: Channel | null = null;
+
+      // if theres a newChannelId, retrieve details of the channel
+      if (cce.newChannelId) {
+        theChannel = this.userChannels.find(uc => uc.id == cce.newChannelId) ?? null;
+        if (!theChannel) {
+          //Channel not found - query user channels in case they have changed for some reason
+          Logger.debug('Unknown user channel, querying Desktop Agent for updated user channels: ', cce.newChannelId);
+          await this.getUserChannels();
+          theChannel = this.userChannels.find(uc => uc.id == cce.newChannelId) ?? null;
+          if (!theChannel) {
+            Logger.warn(
+              'Received user channel update with unknown user channel (user channel listeners will not work): ',
+              cce.newChannelId
+            );
+          }
+        }
+      }
+
+      this.userChannelListeners.forEach(l => l.changeChannel(theChannel));
+      this.channelSelector.updateChannel(theChannel?.id ?? null, this.userChannels);
     });
   }
 
