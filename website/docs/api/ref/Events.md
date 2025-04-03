@@ -11,7 +11,6 @@ In addition to intent and context events, the FDC3 API and PrivateChannel API ma
 
 Type defining a basic event object that may be emitted by an FDC3 API interface such as DesktopAgent or PrivateChannel. There are more specific event types defined for each interface.
 
-
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
@@ -26,6 +25,19 @@ interface ApiEvent {
 
 ```
 Not implemented, as ApiEvent and Fdc3Event definitions are the same, given .NET can not restrict on a string enum. Use IFdc3Event instead
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type ApiEvent struct {
+  Type string 
+  Details any
+}
 ```
 
 </TabItem>
@@ -49,6 +61,16 @@ type EventHandler = (event: ApiEvent) => void;
 
 ```csharp
 public delegate void Fdc3EventHandler(IFdc3Event fdc3Event);
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type EventHandler func(ApiEvent)
 ```
 
 </TabItem>
@@ -80,6 +102,20 @@ public static class Fdc3EventType
 {
     public const string UserChannelChanged = "userChannelChanged";
 }
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type FDC3EventTypes string
+
+const (
+	UserChannelChanged     FDC3EventTypes = "userChannelChanged"
+)
 ```
 
 </TabItem>
@@ -122,6 +158,19 @@ public class Fdc3Event : IFdc3Event
         this.Type = type ?? throw new ArgumentNullException(nameof(type));
         this.Details = details;
     }
+}
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type FDC3Event struct {
+  ApiEvent
+  Type FDC3EventTypes
 }
 ```
 
@@ -181,6 +230,23 @@ public class Fdc3ChannelChangedEvent : Fdc3Event
 </Tabs>
 
 
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type FDC3ChannelChangedEvent struct {
+  FDC3Event
+  Details FDC3ChannelChangedEventDetails
+}
+
+type FDC3ChannelChangedEventDetails struct {
+  currentChannelId *string
+}
+```
+
+</TabItem>
+</Tabs>
+
 Type representing the format of `userChannelChanged`  events.
 
 The identity of the channel joined is provided as `details.currentChannelId`, which will be `null` if the app is no longer joined to any channel.
@@ -203,6 +269,21 @@ public static class Fdc3PrivateChannelEventType
     public const string Unsubscribe = "unsubscribe";
     public const string Disconnect = "disconnect";
 }
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type PrivateChannelEventTypes string 
+const (
+  AddContextListenerPrivateChannelEventType PrivateChannelEventTypes = "addContextListener"
+  UnsubscribePrivateChannelEventType PrivateChannelEventTypes = "unsubscribe"
+  DisconnectPrivateChannelEventType PrivateChannelEventTypes = "disconnect"
+)
 ```
 
 </TabItem>
@@ -248,6 +329,19 @@ public class Fdc3PrivateChannelEventDetails : IFdc3PrivateChannelEventDetails
 </Tabs>
 
 
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type PrivateChannelEvent struct {
+  ApiEvent
+  Type PrivateChannelEventTypes
+}
+```
+
+</TabItem>
+</Tabs>
+
 Type defining the format of event objects that may be received via a PrivateChannel's `addEventListener` function.
 
 **See also:**
@@ -278,6 +372,23 @@ public class Fdc3PrivateChannelAddContextListenerEvent : Fdc3Event
         : base(Fdc3PrivateChannelEventType.AddContextListener, new Fdc3PrivateChannelEventDetails(contextType))
   {
   }
+}
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type PrivateChannelAddContextListenerEvent struct {
+  PrivateChannelEvent
+  Details PrivateChannelAddContextListenerEventDetails
+}
+
+type PrivateChannelAddContextListenerEventDetails struct {
+  contextType *string
 }
 ```
 
@@ -317,6 +428,23 @@ public class Fdc3PrivateChannelUnsubscribeListenerEvent : Fdc3Event
 </TabItem>
 </Tabs>
 
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type PrivateChannelUnsubscribeEvent struct {
+  PrivateChannelEvent
+  Details PrivateChannelUnsubscribeEventDetails
+}
+
+type PrivateChannelUnsubscribeEventDetails struct {
+  contextType *string
+}
+```
+
+</TabItem>
+</Tabs>
+
 Type defining the format of events representing a context listener removed from the channel (`Listener.unsubscribe()`). Desktop Agents MUST call this when `disconnect()` is called by the other party, for each listener that they had added.
 
 The context type of the  listener removed is provided as `details.contextType`, which will be `null` if all event types were being listened to.
@@ -342,6 +470,18 @@ public class Fdc3PrivateChanneDisconnectEvent : Fdc3Event
         : base(Fdc3PrivateChannelEventType.Disconnect)
     {
     }
+}
+```
+
+</TabItem>
+</Tabs>
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type PrivateChannelDisconnectEvent struct {
+  PrivateChannelEvent
 }
 ```
 
