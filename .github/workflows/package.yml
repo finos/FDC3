@@ -152,11 +152,11 @@ jobs:
         
     - name: Report already published status
       if: steps.check-version.outputs.exists == '1' 
-      run: 'echo "package version already exists in the registry"'
+      run: 'echo "package version already exists in the *NPM* registry, skipping publishing"'
       
     - name: Report not yet published status
       if: steps.check-version.outputs.exists == '0' 
-      run: 'echo "package version does not exist in the registry, publishing..."'
+      run: 'echo "package version does not exist in the *NPM* registry, publishing..."'
       
     - name: Publish
       if: steps.check-version.outputs.exists == '0' 
