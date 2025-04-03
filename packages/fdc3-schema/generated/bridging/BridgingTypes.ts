@@ -124,6 +124,7 @@ export type ResponseErrorDetail =
   | 'MalformedContext'
   | 'NoChannelFound'
   | 'ApiTimeout'
+  | 'InvalidArguments'
   | 'AppNotFound'
   | 'AppTimeout'
   | 'DesktopAgentNotFound'
@@ -1155,11 +1156,11 @@ export type FindInstancesErrors =
   | 'TargetInstanceUnavailable'
   | 'UserCancelledResolution'
   | 'ApiTimeout'
+  | 'InvalidArguments'
   | 'AgentDisconnected'
   | 'NotConnectedToBridge'
   | 'ResponseToBridgeTimedOut'
-  | 'MalformedMessage'
-  | 'InvalidArguments';
+  | 'MalformedMessage';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -2583,6 +2584,7 @@ export type OpenErrorResponsePayload =
   | 'MalformedContext'
   | 'ResolverUnavailable'
   | 'ApiTimeout'
+  | 'InvalidArguments'
   | 'AgentDisconnected'
   | 'NotConnectedToBridge'
   | 'ResponseToBridgeTimedOut'
@@ -6487,6 +6489,7 @@ const typeMap: any = {
     'ErrorOnLaunch',
     'IntentDeliveryFailed',
     'IntentHandlerRejected',
+    'InvalidArguments',
     'MalformedContext',
     'MalformedMessage',
     'NoAppsFound',
@@ -6535,6 +6538,7 @@ const typeMap: any = {
     'AgentDisconnected',
     'DesktopAgentNotFound',
     'IntentDeliveryFailed',
+    'InvalidArguments',
     'MalformedContext',
     'MalformedMessage',
     'NoAppsFound',
@@ -6561,6 +6565,7 @@ const typeMap: any = {
     'AppTimeout',
     'DesktopAgentNotFound',
     'ErrorOnLaunch',
+    'InvalidArguments',
     'MalformedContext',
     'MalformedMessage',
     'NotConnectedToBridge',

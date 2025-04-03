@@ -797,7 +797,13 @@ export interface AddContextListenerResponsePayload {
  * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
  * DesktopAgent (`fdc3`).
  */
-export type PurpleError = 'AccessDenied' | 'CreationFailed' | 'MalformedContext' | 'NoChannelFound' | 'ApiTimeout';
+export type PurpleError =
+  | 'AccessDenied'
+  | 'CreationFailed'
+  | 'MalformedContext'
+  | 'NoChannelFound'
+  | 'ApiTimeout'
+  | 'InvalidArguments';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -893,6 +899,7 @@ export type ResponsePayloadError =
   | 'MalformedContext'
   | 'NoChannelFound'
   | 'ApiTimeout'
+  | 'InvalidArguments'
   | 'AppNotFound'
   | 'AppTimeout'
   | 'DesktopAgentNotFound'
@@ -998,6 +1005,7 @@ export interface PayloadObject {
 export type FluffyError =
   | 'MalformedContext'
   | 'ApiTimeout'
+  | 'InvalidArguments'
   | 'DesktopAgentNotFound'
   | 'ResolverUnavailable'
   | 'IntentDeliveryFailed'
@@ -2184,6 +2192,7 @@ export interface FindInstancesResponsePayload {
 export type FindInstancesErrors =
   | 'MalformedContext'
   | 'ApiTimeout'
+  | 'InvalidArguments'
   | 'DesktopAgentNotFound'
   | 'ResolverUnavailable'
   | 'IntentDeliveryFailed'
@@ -2195,8 +2204,7 @@ export type FindInstancesErrors =
   | 'AgentDisconnected'
   | 'NotConnectedToBridge'
   | 'ResponseToBridgeTimedOut'
-  | 'MalformedMessage'
-  | 'InvalidArguments';
+  | 'MalformedMessage';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -3287,6 +3295,7 @@ export interface OpenResponsePayload {
 export type OpenErrorResponsePayload =
   | 'MalformedContext'
   | 'ApiTimeout'
+  | 'InvalidArguments'
   | 'AppNotFound'
   | 'AppTimeout'
   | 'DesktopAgentNotFound'
@@ -5972,7 +5981,14 @@ const typeMap: any = {
     'WCP6Goodbye',
   ],
   AddContextListenerRequestType: ['addContextListenerRequest'],
-  PurpleError: ['ApiTimeout', 'AccessDenied', 'CreationFailed', 'MalformedContext', 'NoChannelFound'],
+  PurpleError: [
+    'ApiTimeout',
+    'AccessDenied',
+    'CreationFailed',
+    'InvalidArguments',
+    'MalformedContext',
+    'NoChannelFound',
+  ],
   AddContextListenerResponseType: ['addContextListenerResponse'],
   FDC3EventType: ['USER_CHANNEL_CHANGED'],
   AddEventListenerRequestType: ['addEventListenerRequest'],
@@ -5987,6 +6003,7 @@ const typeMap: any = {
     'ErrorOnLaunch',
     'IntentDeliveryFailed',
     'IntentHandlerRejected',
+    'InvalidArguments',
     'MalformedContext',
     'MalformedMessage',
     'NoAppsFound',
@@ -6006,6 +6023,7 @@ const typeMap: any = {
     'ApiTimeout',
     'DesktopAgentNotFound',
     'IntentDeliveryFailed',
+    'InvalidArguments',
     'MalformedContext',
     'NoAppsFound',
     'ResolverTimeout',
@@ -6119,6 +6137,7 @@ const typeMap: any = {
     'AgentDisconnected',
     'DesktopAgentNotFound',
     'IntentDeliveryFailed',
+    'InvalidArguments',
     'MalformedContext',
     'MalformedMessage',
     'NoAppsFound',
@@ -6166,6 +6185,7 @@ const typeMap: any = {
     'AppTimeout',
     'DesktopAgentNotFound',
     'ErrorOnLaunch',
+    'InvalidArguments',
     'MalformedContext',
     'MalformedMessage',
     'NotConnectedToBridge',
