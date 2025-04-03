@@ -2195,7 +2195,8 @@ export type FindInstancesErrors =
   | 'AgentDisconnected'
   | 'NotConnectedToBridge'
   | 'ResponseToBridgeTimedOut'
-  | 'MalformedMessage';
+  | 'MalformedMessage'
+  | 'InvalidArguments';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
