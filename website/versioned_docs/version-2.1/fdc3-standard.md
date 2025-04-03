@@ -6,8 +6,8 @@ sidebar_label: Abstract
 
 **Status:** Superseded  
 _**adopted:** 31st August 2023_  
-_**released:** 14th September 2023_
-_**superseded:** TBC_  
+_**released:** 14th September 2023_  
+_**superseded:** 1st April 2025_  
 
 ## Abstract
 

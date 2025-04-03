@@ -5,7 +5,7 @@ sidebar_label: Abstract
 ---
 
 **Status:** Current  
-_**adopted:** TBC_  
+_**adopted:** 1st April 2025_  
 _**released:** TBC_
 
 ## Abstract
