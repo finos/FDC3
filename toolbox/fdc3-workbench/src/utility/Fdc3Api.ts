@@ -67,8 +67,14 @@ export type IntentTargetOption = {
 
 export type ContextTargetOption = { intent: string; targetOptions: IntentTargetOption[] };
 
+export function getWorkbenchAgent(): Promise<fdc3_2.DesktopAgent> {
+  return fdc3_2.getAgent({
+    dontSetWindowFdc3: false,
+  });
+}
+
 export async function getTargetOptions(intent: string, context: ContextType): Promise<IntentTargetOption[]> {
-  const agent = await fdc3_2.getAgent();
+  const agent = await getWorkbenchAgent();
 
   let appIntent = await agent.findIntent(intent, context);
   if (!appIntent?.apps) {
@@ -124,7 +130,7 @@ export async function getTargetOptions(intent: string, context: ContextType): Pr
 }
 
 export async function getTargetOptionsForContext(context: ContextType): Promise<IntentTargetOption[]> {
-  const agent = await fdc3_2.getAgent();
+  const agent = await getWorkbenchAgent();
 
   let appIntents = await agent.findIntentsByContext(context);
   if (appIntents.length === 0) {
