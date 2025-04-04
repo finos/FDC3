@@ -4,7 +4,8 @@
  */
 import { makeObservable, observable, action, runInAction } from 'mobx';
 import systemLogStore from './SystemLogStore';
-import { Channel, getAgent } from '@finos/fdc3';
+import { Channel } from '@finos/fdc3';
+import { getWorkbenchAgent } from '../utility/Fdc3Api';
 
 class ChannelStore {
   userChannels: Channel[] = [];
@@ -25,7 +26,7 @@ class ChannelStore {
   }
 
   async getCurrentUserChannel() {
-    const agent = await getAgent();
+    const agent = await getWorkbenchAgent();
     try {
       const userChannel = await agent.getCurrentChannel();
       runInAction(() => {
@@ -50,10 +51,12 @@ class ChannelStore {
   }
 
   async getUserChannels() {
-    const agent = await getAgent();
+    const agent = await getWorkbenchAgent();
     //defer retrieving channels until fdc3 API is ready
     try {
-      const userChannels = await agent.getUserChannels();
+      //backwards compatibility for FDC3 < 2.0
+      const getChannels = agent.getUserChannels ?? agent.getSystemChannels;
+      const userChannels = await getChannels();
       const currentUserChannel = await agent.getCurrentChannel();
 
       runInAction(() => {
@@ -65,6 +68,7 @@ class ChannelStore {
         this.currentUserChannel = currentUserChannel;
       });
     } catch (e) {
+      console.error('Failed to retrieve user channels: ', e);
       systemLogStore.addLog({
         name: 'getChannels',
         type: 'error',
@@ -75,9 +79,11 @@ class ChannelStore {
   }
 
   async joinUserChannel(channelId: string) {
-    const agent = await getAgent();
+    const agent = await getWorkbenchAgent();
     try {
-      await agent.joinUserChannel(channelId);
+      //backwards compatability for 1.2
+      const joinUserChannel = agent.joinUserChannel ?? agent.joinChannel;
+      await joinUserChannel(channelId);
       const currentUserChannel = await agent.getCurrentChannel();
       const isSuccess = currentUserChannel !== null;
 
@@ -102,7 +108,7 @@ class ChannelStore {
   }
 
   async leaveUserChannel() {
-    const agent = await getAgent();
+    const agent = await getWorkbenchAgent();
     try {
       //check that we're on a channel
       let currentUserChannel = await agent.getCurrentChannel();
