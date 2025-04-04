@@ -1,13 +1,35 @@
 {
-  "name": "fdc3-conformance",
   "private": true,
-  "version": "2.2.0-beta.3",
-  "license": "Apache-2.0",
   "scripts": {
-    "test:browser": "vitest"
+    "copy": "shx mkdir -p ./dist && shx cp -R static/* ./dist",
+    "compile": "webpack build",
+    "serve": "npx http-server ./dist -p 3001 -c-1",
+    "start": "npm run copy && npm run compile && npm run serve",
+    "build-static": "npm run compile && npm run copy"
+  },
+  "dependencies": {
+    "@finos/fdc3": "2.2.0-beta.4",
+    "buffer": "^6.0.3",
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0",
+    "process": "^0.11.10",
+    "source-map-support": "^0.5.21",
+    "stream-browserify": "^3.0.0",
+    "util": "^0.12.4",
+    "window": "^1.0.0"
   },
   "devDependencies": {
-    "@vitest/browser": "^3.0.9",
-    "@finos/testing": "2.2.0-beta.3"
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^9.1.0",
+    "css-loader": "^6.7.2",
+    "http-server": "^14.1.1",
+    "prettier": "^2.5.1",
+    "replace-in-file": "^6.3.5",
+    "shx": "^0.3.4",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.2.7",
+    "typescript": "^4.6.2",
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2"
   }
 }
