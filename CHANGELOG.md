@@ -41,18 +41,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added .NET docs for Events to API reference. ([#1441](https://github.com/finos/FDC3/pull/1441))
 * Setup package publishing for mono-repo packages. ([#1520](https://github.com/finos/FDC3/pull/1520))
 * Implementation PR for FDC3 for the Web ([#896](https://github.com/finos/FDC3/pull/896))
-  * resolves ([#810](https://github.com/finos/FDC3/issues/810))
-  * resolves ([#832](https://github.com/finos/FDC3/issues/832))
-  * resolves ([#1209](https://github.com/finos/FDC3/issues/1209))
-  * resolves ([#1297](https://github.com/finos/FDC3/issues/1297))
-  * resolves ([#1429](https://github.com/finos/FDC3/issues/1429))
-  * resolves ([#1430](https://github.com/finos/FDC3/issues/1430))
-  * resolves ([#1431](https://github.com/finos/FDC3/issues/1431))
-  * resolves ([#1432](https://github.com/finos/FDC3/issues/1432))
-  * resolves ([#1433](https://github.com/finos/FDC3/issues/1433))
-  * resolves ([#1468](https://github.com/finos/FDC3/issues/1468))
-  * resolves ([#1487](https://github.com/finos/FDC3/issues/1487))
-  * resolves ([#1488](https://github.com/finos/FDC3/issues/1488))
+* Adjusted reference Desktop Agent implementation for FDC3 for Web to open a new app instance when raiseIntent is called with an appId but no instanceId ([#1556](https://github.com/finos/FDC3/pull/1556))
 
 ### Changed
 
@@ -84,6 +73,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Ensured that `PrivateChannelEvent` extends `ApiEvent` in both sourcecode and documentation. ([#1474](https://github.com/finos/FDC3/pull/1474))
 * Standardized prettier config for fdc3-workbench with other packages. ([#1520](https://github.com/finos/FDC3/pull/1520))
 * Ensured that user channel changes made by the DA without a call to joinUserChannel (i.e. those driven by an external channel selector) are applied by the Desktop Agent Proxy. ([#1541](https://github.com/finos/FDC3/pull/1541))
+* Ensured that the FDC3 Workbench and apps like it that are migrated to getAgent will still work with FDC3 1.2 Preload-based DAs by not requiring appMetadata properties to be present in getInfo() responses. ([#1550](https://github.com/finos/FDC3/pull/1550))
+* Bound all DesktopAgentProxy functions to enable destructuring. ([#1550](https://github.com/finos/FDC3/pull/1550))
+* Fixed polyfill of node.js JS modules in fdc3-workbench. ([#1550](https://github.com/finos/FDC3/pull/1550))
 
 ## [npm v2.1.1] - 2024-06-28
 

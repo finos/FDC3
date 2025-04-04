@@ -9,6 +9,7 @@ import {
   ContextType,
   getTargetOptions,
   getTargetOptionsForContext,
+  getWorkbenchAgent,
   IntentResolution,
   IntentTargetOption,
 } from '../utility/Fdc3Api';
@@ -48,7 +49,6 @@ import { FormControlLabel } from '@material-ui/core';
 import { RadioGroup } from '@material-ui/core';
 import { Alert, ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
-import { getAgent } from '@finos/fdc3';
 
 // interface copied from lib @material-ui/lab/Autocomplete
 interface FilterOptionsState<T> {
@@ -528,7 +528,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
           return;
         }
         setRaiseIntentError(false);
-        let appIntents = await getAgent().then(agent => agent.findIntentsByContext(toJS(raiseIntentContext)));
+        let appIntents = await getWorkbenchAgent().then(agent => agent.findIntentsByContext(toJS(raiseIntentContext)));
 
         setUseTargets(false);
         clearTargets();

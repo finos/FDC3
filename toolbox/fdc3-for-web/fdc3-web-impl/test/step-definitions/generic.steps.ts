@@ -45,6 +45,14 @@ export const contextMap: Record<string, Context> = {
       ISSN: '1234',
     },
   },
+  'fdc3.periodical': {
+    type: 'fdc3.periodical',
+    title: 'The American Poetry Review',
+    price: 13.99,
+    id: {
+      ISSN: '45643',
+    },
+  },
   'fdc3.product': {
     type: 'fdc3.product',
     title: 'Current bun',
