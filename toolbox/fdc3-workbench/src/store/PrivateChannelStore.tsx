@@ -6,8 +6,7 @@ import { makeObservable, observable, action, runInAction, toJS } from 'mobx';
 import { ContextType, Fdc3Listener, PrivateChannel } from '../utility/Fdc3Api';
 import systemLogStore from './SystemLogStore';
 import { nanoid } from 'nanoid';
-import { getAgent } from '@finos/fdc3';
-
+import { getWorkbenchAgent } from '../utility/Fdc3Api';
 // interface ListenerOptionType {
 // 	title: string;
 // 	value: string;
@@ -37,7 +36,7 @@ class PrivateChannelStore {
 
   async createPrivateChannel() {
     try {
-      const currentPrivateChannel: any = await getAgent().then(agent => agent.createPrivateChannel());
+      const currentPrivateChannel: any = await getWorkbenchAgent().then(agent => agent.createPrivateChannel());
       const isSuccess = currentPrivateChannel !== null;
       if (isSuccess) {
         this.privateChannelsList.push(currentPrivateChannel);
