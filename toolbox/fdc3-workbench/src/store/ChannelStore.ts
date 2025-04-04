@@ -4,7 +4,8 @@
  */
 import { makeObservable, observable, action, runInAction } from 'mobx';
 import systemLogStore from './SystemLogStore';
-import { Channel, getAgent } from '@finos/fdc3';
+import { Channel } from '@finos/fdc3';
+import { getWorkbenchAgent } from '../utility/Fdc3Api';
 
 class ChannelStore {
   userChannels: Channel[] = [];
@@ -25,7 +26,7 @@ class ChannelStore {
   }
 
   async getCurrentUserChannel() {
-    const agent = await getAgent();
+    const agent = await getWorkbenchAgent();
     try {
       const userChannel = await agent.getCurrentChannel();
       runInAction(() => {
@@ -50,7 +51,7 @@ class ChannelStore {
   }
 
   async getUserChannels() {
-    const agent = await getAgent();
+    const agent = await getWorkbenchAgent();
     //defer retrieving channels until fdc3 API is ready
     try {
       //backwards compatibility for FDC3 < 2.0
@@ -78,7 +79,7 @@ class ChannelStore {
   }
 
   async joinUserChannel(channelId: string) {
-    const agent = await getAgent();
+    const agent = await getWorkbenchAgent();
     try {
       //backwards compatability for 1.2
       const joinUserChannel = agent.joinUserChannel ?? agent.joinChannel;
@@ -107,7 +108,7 @@ class ChannelStore {
   }
 
   async leaveUserChannel() {
-    const agent = await getAgent();
+    const agent = await getWorkbenchAgent();
     try {
       //check that we're on a channel
       let currentUserChannel = await agent.getCurrentChannel();

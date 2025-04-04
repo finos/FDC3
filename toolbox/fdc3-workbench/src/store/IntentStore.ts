@@ -3,13 +3,20 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 import { makeObservable, observable, action, runInAction, toJS } from 'mobx';
-import { ContextType, IntentResolution, Fdc3Listener, AppMetadata, PrivateChannel } from '../utility/Fdc3Api';
+import {
+  ContextType,
+  IntentResolution,
+  Fdc3Listener,
+  AppMetadata,
+  PrivateChannel,
+  getWorkbenchAgent,
+} from '../utility/Fdc3Api';
 import { nanoid } from 'nanoid';
 import { intentTypes } from '../fixtures/intentTypes';
 import systemLogStore from './SystemLogStore';
 import appChannelStore from './AppChannelStore';
 import privateChannelStore from './PrivateChannelStore';
-import { Channel, getAgent, IntentResult } from '@finos/fdc3';
+import { Channel, IntentResult } from '@finos/fdc3';
 
 type IntentItem = { title: string; value: string };
 
@@ -40,7 +47,7 @@ class IntentStore {
     try {
       const listenerId = nanoid();
 
-      const agent = await getAgent();
+      const agent = await getWorkbenchAgent();
 
       const intentListener = await agent.addIntentListener(
         intent,
@@ -146,7 +153,7 @@ class IntentStore {
   }
 
   async raiseIntent(intent: string, context: ContextType, app?: AppMetadata) {
-    const agent = await getAgent();
+    const agent = await getWorkbenchAgent();
 
     if (!context) {
       systemLogStore.addLog({
@@ -187,7 +194,7 @@ class IntentStore {
   }
 
   async raiseIntentForContext(context: ContextType, app?: AppMetadata) {
-    const agent = await getAgent();
+    const agent = await getWorkbenchAgent();
 
     if (!context) {
       systemLogStore.addLog({
