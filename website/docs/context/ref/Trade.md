@@ -56,12 +56,22 @@ A product that is the subject of the trade.
 
 </details>
 
+<details>
+  <summary><code>notes</code></summary>
+
+**type**: `string`
+
+Additional notes or comments about the trade.
+
+</details>
+
 ## Example
 
 ```json
 {
   "type": "fdc3.trade",
   "name": "...",
+  "notes": "...",
   "id": {
     "myEMS": "12345"
   },

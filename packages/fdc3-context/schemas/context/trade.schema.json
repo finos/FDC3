@@ -28,6 +28,11 @@
 					"$ref": "product.schema.json",
 					"title": "Traded product",
 					"description": "A product that is the subject of the trade."
+				},
+				"notes": {
+					"type": "string",
+					"title": "Trade Notes",
+					"description": "Additional notes or comments about the trade."
 				}
 			},
 			"required": [
@@ -41,6 +46,7 @@
 		{
 			"type": "fdc3.trade",
 			"name": "...",
+			"notes": "...",
 			"id": {
 				"myEMS": "12345"
 			},
