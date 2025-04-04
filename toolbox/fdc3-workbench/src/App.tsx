@@ -23,7 +23,7 @@ import { Intents } from './components/Intents';
 import { AppChannels } from './components/AppChannels';
 import snackbarStore from './store/SnackbarStore';
 import './App.css';
-import { getAgent } from '@finos/fdc3';
+import { getWorkbenchAgent } from './utility/Fdc3Api';
 
 const mainTheme = createTheme({
   palette: {
@@ -218,7 +218,7 @@ export const App = observer(() => {
   useEffect(() => {
     (async () => {
       try {
-        await getAgent();
+        await getWorkbenchAgent();
         setFdc3Available(true);
       } catch (e) {}
     })();
