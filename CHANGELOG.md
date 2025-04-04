@@ -79,6 +79,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Standardized prettier config for fdc3-workbench with other packages. ([#1520](https://github.com/finos/FDC3/pull/1520))
 * Ensured that user channel changes made by the DA without a call to joinUserChannel (i.e. those driven by an external channel selector) are applied by the Desktop Agent Proxy. ([#1541](https://github.com/finos/FDC3/pull/1541))
 * Ensured that the FDC3 Workbench and apps like it that are migrated to getAgent will still work with FDC3 1.2 Preload-based DAs by not requiring appMetadata properties to be present in getInfo() responses. ([#1550](https://github.com/finos/FDC3/pull/1550))
+* Bound all DesktopAgentProxy functions to enable destructuring. ([#1550](https://github.com/finos/FDC3/pull/1550))
+* Fixed polyfill of node.js JS modules in fdc3-workbench. ([#1550](https://github.com/finos/FDC3/pull/1550))
 
 ## [npm v2.1.1] - 2024-06-28
 
