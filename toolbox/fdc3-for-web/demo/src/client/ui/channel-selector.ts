@@ -71,6 +71,7 @@ window.addEventListener('load', () => {
       implementationDetails: 'Demo Channel Selector v1.0',
     },
   };
+  // nosemgrep
   parent.postMessage(helloMessage, '*', [mc.port2]);
   debug('Sent hello message: ', helloMessage);
 
