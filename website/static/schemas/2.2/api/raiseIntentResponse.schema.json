@@ -1,0 +1,97 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/2.2/api/raiseIntentResponse.schema.json",
+	"type": "object",
+	"title": "RaiseIntent Response",
+	"description": "A response to a raiseIntent request.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/RaiseIntentResponseType"
+				},
+				"payload": {
+					"title": "RaiseIntent Response Payload",
+					"description": "There are 3 possible responses to a raiseIntent request, each of which sets a single property in the payload: Success (`intentResolution`), Needs further resolution (`appIntent`) or Error (`error`).",
+					"oneOf": [
+						{
+							"$ref": "#/$defs/RaiseIntentSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/RaiseIntentNeedsResolutionResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/RaiseIntentErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"RaiseIntentResponseType": {
+			"title": "RaiseIntent Response Message Type",
+			"const": "raiseIntentResponse"
+		},
+		"RaiseIntentSuccessResponsePayload": {
+			"title": "RaiseIntent Success Response Payload",
+			"type": "object",
+			"properties": {
+				"intentResolution": {
+					"title": "Intent Resolution",
+					"description": "Used if the raiseIntent request was successfully resolved.",
+					"$ref": "api.schema.json#/definitions/IntentResolution"
+				}
+			},
+			"required": [
+				"intentResolution"
+			],
+			"additionalProperties": false
+		},
+		"RaiseIntentNeedsResolutionResponsePayload": {
+			"title": "RaiseIntent NeedsResolution Response Payload",
+			"description": "Response to a raiseIntent request that needs additional resolution (i.e. show an intent resolver UI).",
+			"type": "object",
+			"properties": {
+				"appIntent": {
+					"title": "AppIntent",
+					"description": "Used if a raiseIntent request requires additional resolution (e.g. by showing an intent resolver) before it can be handled.",
+					"$ref": "api.schema.json#/definitions/AppIntent"
+				}
+			},
+			"required": [
+				"appIntent"
+			],
+			"additionalProperties": false
+		},
+		"RaiseIntentErrorResponsePayload": {
+			"title": "RaiseIntent Error Response Payload",
+			"description": "Used if a raiseIntent request resulted in an error.",
+			"type": "object",
+			"properties": {
+				"error": {
+					"title": "RaiseIntent Error",
+					"description": "Should be set if the raiseIntent request returned an error.",
+					"oneOf": [
+						{
+							"$ref": "api.schema.json#/definitions/ResolveError"
+						},
+						{
+							"$ref": "api.schema.json#/definitions/BridgingError"
+						}
+					]
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}

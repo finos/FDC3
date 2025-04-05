@@ -1,0 +1,53 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/2.2/api/channelChangedEvent.schema.json",
+	"type": "object",
+	"title": "channelChanged Event",
+	"description": "An event message from the Desktop Agent to an app indicating that its current user channel has changed.",
+	"allOf": [
+		{
+			"$ref": "agentEvent.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/ChannelChangedEventType"
+				},
+				"payload": {
+					"$ref": "#/$defs/ChannelChangedEventPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"ChannelChangedEventType": {
+			"title": "ChannelChanged Event Message Type",
+			"const": "channelChangedEvent"
+		},
+		"ChannelChangedEventPayload": {
+			"title": "channelChanged Event Payload",
+			"type": "object",
+			"properties": {
+				"newChannelId": {
+					"title": "New Channel Id",
+					"description": "The Id of the channel that the app was added to or `null` if it was removed from a channel.",
+					"oneOf": [
+						{
+							"type": "string"
+						},
+						{
+							"type": "null"
+						}
+					]
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"newChannelId"
+			]
+		}
+	}
+}

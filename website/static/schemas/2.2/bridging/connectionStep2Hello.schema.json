@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/bridging/connectionStep2Hello.schema.json",
+  "title": "ConnectionStep2Hello",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/ConnectionStep2HelloBase"
+    },
+    {
+      "$ref": "connectionStep.schema.json"
+    }
+  ],
+  "$defs": {
+    "ConnectionStep2HelloBase": {
+      "type":"object",
+      "title": "ConnectionStep2Hello",
+      "description": "Hello message sent by the Bridge to anyone connecting to the Bridge (enables identification as a bridge and confirmation of whether authentication is required)",
+      "properties": {
+        "type": {
+          "title": "Connection Step 2 Message Type",
+          "const": "hello"
+        },
+        "payload": {
+          "title": "Connection Step 2 Payload",
+          "type": "object",
+          "properties": {
+            "desktopAgentBridgeVersion": {
+              "title": "Desktop Agent Bridge Version Number",
+              "description": "The version of the Bridge",
+              "type": "string"
+            },
+            "supportedFDC3Versions": {
+              "title": "Supported FDC3 Versions",
+              "type": "array",
+              "description": "The FDC3 versions supported by the Bridge",
+              "items": {
+                "type": "string"
+              }
+            },
+            "authRequired": {
+              "title": "Authentication Required",
+              "type": "boolean",
+              "description": "A flag indicating whether the Desktop Agent Bridge requires authentication or not."
+            },
+            "authToken": {
+              "title": "Authentication Token",
+              "type": "string",
+              "description": "An optional Desktop Agent Bridge JWT authentication token if the Desktop Agent want to authenticate a bridge."
+            }
+          },
+          "additionalProperties": false,
+          "required": ["desktopAgentBridgeVersion", "supportedFDC3Versions", "authRequired"]
+        },
+        "meta": {
+          "title": "Connection Step 2 Metadata",
+          "type": "object",
+          "properties": {
+            "timestamp": {
+              "$ref": "../api/common.schema.json#/$defs/Timestamp"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["timestamp"]
+        }
+      },
+      "required": ["type", "payload", "meta"],
+      "additionalProperties": false
+    }
+  }
+}

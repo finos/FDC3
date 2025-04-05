@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/bridging/privateChannelOnAddContextListenerBridgeRequest.schema.json",
+  "title": "PrivateChannelOnAddContextListener Bridge Request",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "privateChannelOnAddContextListenerAgentRequest.schema.json#/$defs/PrivateChannelOnAddContextListenerRequestBase"
+    },
+    {
+      "$ref": "bridgeRequest.schema.json"
+    }
+  ]
+}

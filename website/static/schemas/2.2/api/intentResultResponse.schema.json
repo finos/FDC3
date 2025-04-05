@@ -1,0 +1,29 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/2.2/api/intentResultResponse.schema.json",
+	"type": "object",
+	"title": "IntentResult Response",
+	"description": "A response to a request to deliver an intent result.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/IntentResultResponseType"
+				},
+				"payload": true,
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"IntentResultResponseType": {
+			"title": "IntentResult Response Message Type",
+			"const": "intentResultResponse"
+		}
+	}
+}

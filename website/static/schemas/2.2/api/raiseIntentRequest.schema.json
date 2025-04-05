@@ -1,0 +1,50 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/2.2/api/raiseIntentRequest.schema.json",
+	"type": "object",
+	"title": "RaiseIntent Request",
+	"description": "A request to raise an intent for a context.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/RaiseIntentRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/RaiseIntentRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"RaiseIntentRequestType": {
+			"title": "RaiseIntent Request Message Type",
+			"const": "raiseIntentRequest"
+		},
+		"RaiseIntentRequestPayload": {
+			"title": "RaiseIntent Request Payload",
+			"type": "object",
+			"properties": {
+				"intent": {
+					"type": "string"
+				},
+				"context": {
+					"$ref": "../context/context.schema.json"
+				},
+				"app": {
+					"$ref": "api.schema.json#/definitions/AppIdentifier"
+				}
+			},
+			"required": [
+				"intent", "context"
+			],
+			"additionalProperties": false
+		}
+	}
+}
