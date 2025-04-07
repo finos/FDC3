@@ -106,7 +106,7 @@ For installation and usage instructions, see: <https://fdc3.finos.org/docs/suppo
 
 ### Releasing FDC3 to NPM (for maintainers)
 
-This is a 4-step process:
+This is a 5-step process:
 
 1.  **Create a release branch**
 
