@@ -11,7 +11,7 @@ import {
   IntentApp,
   RaiseIntentControl2_0,
 } from '../support/intent-support-2.0';
-import { AppIdentifier, IntentResolution } from 'fdc3_2_0';
+import { AppIdentifier, IntentResolution } from '@finos/fdc3';
 
 const findInstancesDocs = '\r\nDocumentation: ' + APIDocumentation2_0.findInstances + '\r\nCause: ';
 

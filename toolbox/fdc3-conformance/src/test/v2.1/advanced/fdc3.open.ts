@@ -3,7 +3,7 @@ import { getCommonOpenTests } from '../../common/fdc3.open';
 import { openApp, OpenCommonConfig } from '../../common/control/open-control';
 import { APIDocumentation2_1 } from '../apiDocuments-2.1';
 import { OpenControl2_1 } from '../support/open-support-2.1';
-import { DesktopAgent } from 'fdc3_2_0';
+import { DesktopAgent } from '@finos/fdc3';
 import { assert, expect } from 'chai';
 import { ControlContextType } from '../../v2.0/support/intent-support-2.0';
 

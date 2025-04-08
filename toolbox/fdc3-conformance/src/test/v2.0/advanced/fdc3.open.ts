@@ -3,7 +3,7 @@ import { getCommonOpenTests } from '../../common/fdc3.open';
 import { openApp, OpenCommonConfig } from '../../common/control/open-control';
 import { APIDocumentation2_0 } from '../apiDocuments-2.0';
 import { OpenControl2_0 } from '../support/open-support-2.0';
-import { DesktopAgent } from 'fdc3_2_0';
+import { DesktopAgent } from '@finos/fdc3';
 import { assert, expect } from 'chai';
 
 const openDocs = '\r\nDocumentation: ' + APIDocumentation2_0 + '\r\nCause:';

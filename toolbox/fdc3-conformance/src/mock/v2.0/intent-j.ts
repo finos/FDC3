@@ -1,5 +1,5 @@
 import { closeWindowOnCompletion, onFdc3Ready, sendContextToTests, validateContext } from './mock-functions';
-import { ChannelError, DesktopAgent } from 'fdc3_2_0';
+import { ChannelError, DesktopAgent } from '@finos/fdc3';
 import { ContextType, ControlContextType, Intent } from '../../test/v2.0/support/intent-support-2.0';
 
 declare let fdc3: DesktopAgent;

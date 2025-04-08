@@ -1,12 +1,7 @@
 import { assert, expect } from 'chai';
 import { wait } from '../../utils';
 import constants from '../../constants';
-import {
-  APP_CHANNEL_AND_BROADCAST,
-  APP_CHANNEL_AND_BROADCAST_TWICE,
-  ChannelControl,
-  JOIN_AND_BROADCAST_TWICE,
-} from './control/channel-control';
+import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, ChannelControl } from './control/channel-control';
 
 export function createAppChannelTests(
   cc: ChannelControl<any, any, any>,
@@ -17,7 +12,7 @@ export function createAppChannelTests(
     beforeEach(cc.leaveChannel);
 
     afterEach(async function afterEach() {
-      await cc.closeMockApp(this.currentTest.title);
+      await cc.closeMockApp(this.currentTest!.title);
     });
 
     const acTestId =

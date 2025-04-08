@@ -1,4 +1,4 @@
-import { ChannelError, PrivateChannel, Listener } from 'fdc3_2_0';
+import { ChannelError, PrivateChannel, Listener } from '@finos/fdc3';
 import { assert, expect } from 'chai';
 import {
   RaiseIntentControl2_0,

@@ -1,4 +1,4 @@
-import { Listener, ResolveError, DesktopAgent } from 'fdc3_2_0';
+import { Listener, ResolveError, DesktopAgent } from '@finos/fdc3';
 
 import { BasicControl2_0 } from './basic-support-2.0';
 import { ChannelControl2_0 } from '../support/channels-support-2.0';

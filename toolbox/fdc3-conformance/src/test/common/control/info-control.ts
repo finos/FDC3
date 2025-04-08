@@ -1,4 +1,4 @@
-export interface InfoControl<X> {
+export interface InfoControl {
   //test control
   getInfo();
   getUserChannels();
