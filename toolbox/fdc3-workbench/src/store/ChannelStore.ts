@@ -86,9 +86,13 @@ class ChannelStore {
   async joinUserChannel(channelId: string) {
     const agent = await getWorkbenchAgent();
     try {
-      //backwards compatability for 1.2
-      const joinUserChannel = agent.joinUserChannel ?? agent.joinChannel;
-      await joinUserChannel(channelId);
+      //backwards compatibility for 1.2
+      if (agent.joinUserChannel) {
+        await agent.joinUserChannel(channelId);
+      } else {
+        await agent.joinChannel(channelId);
+      }
+
       const currentUserChannel = await agent.getCurrentChannel();
       const isSuccess = currentUserChannel !== null;
 
