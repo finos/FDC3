@@ -1,5 +1,5 @@
 import { closeWindowOnCompletion, onFdc3Ready, sendContextToTests } from './mock-functions';
-import { DesktopAgent } from 'fdc3_2_0';
+import { DesktopAgent } from '@finos/fdc3';
 import { AppControlContext } from '../../context-types';
 import { ControlContextType, Intent } from '../../test/v2.0/support/intent-support-2.0';
 

@@ -1,4 +1,4 @@
-import { Listener } from 'fdc3_2_0';
+import { Listener } from '@finos/fdc3';
 import { closeMockAppWindow } from '../fdc3-2_0-utils';
 import {
   RaiseIntentControl2_0,

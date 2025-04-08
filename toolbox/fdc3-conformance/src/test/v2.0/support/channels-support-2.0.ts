@@ -1,5 +1,5 @@
 import { assert, expect } from 'chai';
-import { Channel, Context, Listener, DesktopAgent } from 'fdc3_2_0';
+import { Channel, Context, Listener, DesktopAgent } from '@finos/fdc3';
 import constants from '../../../constants';
 import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from '../../common/control/channel-control';
 import { AppControlContext } from '../../../context-types';

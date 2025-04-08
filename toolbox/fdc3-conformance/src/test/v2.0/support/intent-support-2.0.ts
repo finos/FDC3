@@ -9,7 +9,7 @@ import {
   Context,
   DesktopAgent,
   getOrCreateChannel,
-} from 'fdc3_2_0';
+} from '@finos/fdc3';
 import { APIDocumentation2_0 } from '../apiDocuments-2.0';
 import constants from '../../../constants';
 import { sleep, wrapPromise } from '../../../utils';

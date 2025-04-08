@@ -58,7 +58,7 @@ export let basicIL1 = (fdc3: any, documentation: string, listener: any) => {
   });
 };
 
-export let basicGI1 = (control: InfoControl<any>, documentation: string) => {
+export let basicGI1 = (control: InfoControl, documentation: string) => {
   console.log('coming here in');
   it('(BasicGI1) Returns ImplementationMetadata object', async () => {
     try {

@@ -4,8 +4,10 @@
     "copy": "shx mkdir -p ./dist && shx cp -R static/* ./dist",
     "compile": "webpack build",
     "serve": "npx http-server ./dist -p 3001 -c-1",
-    "start": "npm run copy && npm run compile && npm run serve",
-    "build-static": "npm run compile && npm run copy"
+    "dev": "npm run copy && npm run compile && npm run serve",
+    "build-static": "npm run compile && npm run copy",
+    "lint": "eslint --fix src/",
+    "clean": "rimraf dist"
   },
   "dependencies": {
     "@finos/fdc3": "2.2.0-beta.4",

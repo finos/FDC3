@@ -1,4 +1,4 @@
-import { Channel, DesktopAgent } from 'fdc3_2_0';
+import { Channel, DesktopAgent } from '@finos/fdc3';
 import constants from '../../../constants';
 import { AppControlContext } from '../../../context-types';
 import { channelType } from '../../constants';
@@ -20,8 +20,13 @@ export class ChannelService2_0 implements IChannelService<Channel> {
     return await fdc3.getOrCreateChannel(channelId);
   }
 
-  async broadcastContextItem(contextType: string, channel: Channel, historyItems: number, testId: string) {
-    let broadcastService = this.getBroadcastService(channel.type);
+  async broadcastContextItem(
+    contextType: string,
+    channel: Channel,
+    historyItems: number,
+    testId: string
+  ): Promise<void> {
+    const broadcastService = this.getBroadcastService(channel.type);
     await broadcastService.broadcast(contextType, historyItems, channel, testId);
   }
 

@@ -1,4 +1,4 @@
-import { ResolveError, DesktopAgent } from 'fdc3_2_0';
+import { ResolveError, DesktopAgent } from '@finos/fdc3';
 
 import { closeMockAppWindow } from '../fdc3-2_0-utils';
 import { assert, expect } from 'chai';

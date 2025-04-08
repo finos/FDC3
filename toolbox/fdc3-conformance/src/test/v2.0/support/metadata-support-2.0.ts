@@ -8,7 +8,7 @@ import {
   ContextMetadata,
   DesktopAgent,
   ImplementationMetadata,
-} from 'fdc3_2_0';
+} from '@finos/fdc3';
 import { prototype } from 'mocha';
 import constants from '../../../constants';
 import { APIDocumentation2_0 } from '../apiDocuments-2.0';

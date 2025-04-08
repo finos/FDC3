@@ -1,5 +1,5 @@
 import { assert, expect } from 'chai';
-import { Channel, Context, DesktopAgent, Listener, OpenError } from 'fdc3_2_0';
+import { Channel, Context, DesktopAgent, Listener, OpenError } from '@finos/fdc3';
 import { InfoControl } from '../../common/control/info-control';
 
 declare let fdc3: DesktopAgent;

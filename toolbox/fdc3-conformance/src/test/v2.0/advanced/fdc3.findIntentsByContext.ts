@@ -1,7 +1,7 @@
-import { AppIntent, ResolveError } from 'fdc3_2_0';
+import { AppIntent, ResolveError } from '@finos/fdc3';
 import { assert, expect } from 'chai';
 import { APIDocumentation2_0 } from '../apiDocuments-2.0';
-import { DesktopAgent } from 'fdc3_2_0/dist/api/DesktopAgent';
+import { DesktopAgent } from '@finos/fdc3/dist/api/DesktopAgent';
 import { ContextType, IntentApp, Intent } from '../support/intent-support-2.0';
 
 declare let fdc3: DesktopAgent;
