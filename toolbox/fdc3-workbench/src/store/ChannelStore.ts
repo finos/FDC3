@@ -55,8 +55,13 @@ class ChannelStore {
     //defer retrieving channels until fdc3 API is ready
     try {
       //backwards compatibility for FDC3 < 2.0
-      const getChannels = agent.getUserChannels ?? agent.getSystemChannels;
-      const userChannels = await getChannels();
+      //  don't destructure DA implementations in case their context is not bound
+      let userChannels: Channel[];
+      if (agent.getUserChannels) {
+        userChannels = await agent.getUserChannels();
+      } else {
+        userChannels = await agent.getSystemChannels();
+      }
       const currentUserChannel = await agent.getCurrentChannel();
 
       runInAction(() => {
