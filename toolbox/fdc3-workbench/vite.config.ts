@@ -14,6 +14,7 @@ export default defineConfig({
     outDir: 'build',
   },
   define: {
+    'process.env.NODE_DEBUG': 'false',
     'process.env': 'import.meta.env',
     'global.process': 'globalThis.process',
   },
