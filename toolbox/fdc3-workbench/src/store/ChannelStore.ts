@@ -55,8 +55,13 @@ class ChannelStore {
     //defer retrieving channels until fdc3 API is ready
     try {
       //backwards compatibility for FDC3 < 2.0
-      const getChannels = agent.getUserChannels ?? agent.getSystemChannels;
-      const userChannels = await getChannels();
+      //  don't destructure DA implementations in case their context is not bound
+      let userChannels: Channel[];
+      if (agent.getUserChannels) {
+        userChannels = await agent.getUserChannels();
+      } else {
+        userChannels = await agent.getSystemChannels();
+      }
       const currentUserChannel = await agent.getCurrentChannel();
 
       runInAction(() => {
@@ -81,9 +86,13 @@ class ChannelStore {
   async joinUserChannel(channelId: string) {
     const agent = await getWorkbenchAgent();
     try {
-      //backwards compatability for 1.2
-      const joinUserChannel = agent.joinUserChannel ?? agent.joinChannel;
-      await joinUserChannel(channelId);
+      //backwards compatibility for 1.2
+      if (agent.joinUserChannel) {
+        await agent.joinUserChannel(channelId);
+      } else {
+        await agent.joinChannel(channelId);
+      }
+
       const currentUserChannel = await agent.getCurrentChannel();
       const isSuccess = currentUserChannel !== null;
 
