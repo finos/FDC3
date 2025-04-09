@@ -59,8 +59,8 @@ sequenceDiagram
 
 ### Request message schemas
 
-- [https://fdc3.finos.org/schemas/2.1/bridging/openAgentRequest.schema.json](/schemas/2.1/bridging/openAgentRequest.schema.json)
-- [https://fdc3.finos.org/schemas/2.1/bridging/openBridgeRequest.schema.json](/schemas/2.1/bridging/openBridgeRequest.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/openAgentRequest.schema.json](pathname:///schemas/2.1/bridging/openAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/openBridgeRequest.schema.json](pathname:///schemas/2.1/bridging/openBridgeRequest.schema.json)
 
 ### Example
 
@@ -117,10 +117,10 @@ which is repeated on to the target agent as:
 
 ### Response message schemas
 
-- [https://fdc3.finos.org/schemas/2.1/bridging/openAgentResponse.schema.json](/schemas/2.1/bridging/openAgentResponse.schema.json)
-- [https://fdc3.finos.org/schemas/2.1/bridging/openAgentErrorResponse.schema.json](/schemas/2.1/bridging/openAgentErrorResponse.schema.json)
-- [https://fdc3.finos.org/schemas/2.1/bridging/openBridgeResponse.schema.json](/schemas/2.1/bridging/openBridgeResponse.schema.json)
-- [https://fdc3.finos.org/schemas/2.1/bridging/openBridgeErrorResponse.schema.json](/schemas/2.1/bridging/openBridgeErrorResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/openAgentResponse.schema.json](pathname:///schemas/2.1/bridging/openAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/openAgentErrorResponse.schema.json](pathname:///schemas/2.1/bridging/openAgentErrorResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/openBridgeResponse.schema.json](pathname:///schemas/2.1/bridging/openBridgeResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/openBridgeErrorResponse.schema.json](pathname:///schemas/2.1/bridging/openBridgeErrorResponse.schema.json)
 
 ### Example
 

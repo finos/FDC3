@@ -1,0 +1,52 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/2.2/api/broadcastRequest.schema.json",
+	"type": "object",
+	"title": "Broadcast Request",
+	"description": "A request to broadcast context on a channel.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/BroadcastRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/BroadcastRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"BroadcastRequestType": {
+			"title": "Broadcast Request Message Type",
+			"const": "broadcastRequest"
+		},
+		"BroadcastRequestPayload": {
+			"title": "broadcast Request Payload",
+			"type": "object",
+			"properties": {
+				"channelId": {
+					"type": "string",
+					"title": "Channel Id",
+					"description": "The Id of the Channel that the broadcast was sent on."
+				},
+				"context": {
+					"$ref": "../context/context.schema.json",
+					"title": "Context",
+					"description": "The context object that is to be broadcast."
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"channelId",
+				"context"
+			]
+		}
+	}
+}

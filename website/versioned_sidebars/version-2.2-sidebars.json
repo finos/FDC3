@@ -1,0 +1,159 @@
+{
+  "docs": {
+    "Getting Started": [
+      "fdc3-intro",
+      "why-fdc3",
+      "fdc3-charter"
+    ],
+    "FDC3 Standard": [
+      "fdc3-standard",
+      "fdc3-compliance",
+      "fdc3-glossary",
+      "references",
+      {
+        "type": "category",
+        "label": "API Part",
+        "items": [
+          "api/spec",
+          "api/supported-platforms",
+          "api/ref/GetAgent",
+          "api/ref/DesktopAgent",
+          "api/ref/Channel",
+          "api/ref/PrivateChannel",
+          "api/ref/Types",
+          "api/ref/Metadata",
+          "api/ref/Errors",
+          "api/ref/Events",
+          {
+            "type": "category",
+            "label": "Desktop Agent Specs",
+            "items": [
+              "api/specs/preloadDesktopAgents",
+              "api/specs/browserResidentDesktopAgents",
+              "api/specs/webConnectionProtocol",
+              "api/specs/desktopAgentCommunicationProtocol"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Conformance Tests",
+            "items": [
+              "api/conformance/Conformance-Overview",
+              "api/conformance/Basic-Tests",
+              "api/conformance/App-Channel-Tests",
+              "api/conformance/User-Channel-Tests",
+              "api/conformance/Open-Tests",
+              "api/conformance/Intents-Tests",
+              "api/conformance/Metadata-Tests"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "category",
+        "label": "App Directory Part",
+        "items": [
+          "app-directory/overview",
+          "app-directory/spec"
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Intents Part",
+        "items": [
+          "intents/spec",
+          "intents/ref/CreateInteraction",
+          "intents/ref/CreateOrUpdateProfile",
+          "intents/ref/SendChatMessage",
+          "intents/ref/StartCall",
+          "intents/ref/StartChat",
+          "intents/ref/StartEmail",
+          "intents/ref/ViewAnalysis",
+          "intents/ref/ViewChart",
+          "intents/ref/ViewChat",
+          "intents/ref/ViewContact",
+          "intents/ref/ViewHoldings",
+          "intents/ref/ViewInstrument",
+          "intents/ref/ViewInteractions",
+          "intents/ref/ViewMessages",
+          "intents/ref/ViewNews",
+          "intents/ref/ViewOrders",
+          "intents/ref/ViewProfile",
+          "intents/ref/ViewQuote",
+          "intents/ref/ViewResearch"
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Context Data Part",
+        "items": [
+          "context/spec",
+          "context/ref/Action",
+          "context/ref/Chart",
+          "context/ref/ChatInitSettings",
+          "context/ref/ChatMessage",
+          "context/ref/ChatRoom",
+          "context/ref/ChatSearchCriteria",
+          "context/ref/Contact",
+          "context/ref/ContactList",
+          "context/ref/Country",
+          "context/ref/Currency",
+          "context/ref/Email",
+          "context/ref/FileAttachment",
+          "context/ref/Instrument",
+          "context/ref/InstrumentList",
+          "context/ref/Interaction",
+          "context/ref/Message",
+          "context/ref/Nothing",
+          "context/ref/Order",
+          "context/ref/OrderList",
+          "context/ref/Organization",
+          "context/ref/Portfolio",
+          "context/ref/Position",
+          "context/ref/Product",
+          "context/ref/TimeRange",
+          "context/ref/Trade",
+          "context/ref/TradeList",
+          "context/ref/TransactionResult",
+          "context/ref/Valuation"
+        ]
+      },
+      {
+        "type": "category",
+        "label": "Agent Bridging Part",
+        "items": [
+          "agent-bridging/spec",
+          "agent-bridging/ref/broadcast",
+          "agent-bridging/ref/findInstances",
+          "agent-bridging/ref/findIntent",
+          "agent-bridging/ref/findIntentsByContext",
+          "agent-bridging/ref/getAppMetadata",
+          "agent-bridging/ref/open",
+          "agent-bridging/ref/PrivateChannel.broadcast",
+          "agent-bridging/ref/PrivateChannel.eventListenerAdded",
+          "agent-bridging/ref/PrivateChannel.eventListenerRemoved",
+          "agent-bridging/ref/PrivateChannel.onAddContextListener",
+          "agent-bridging/ref/PrivateChannel.onDisconnect",
+          "agent-bridging/ref/PrivateChannel.onUnsubscribe",
+          "agent-bridging/ref/raiseIntent"
+        ]
+      }
+    ]
+  },
+  "use-cases": {
+    "Use Cases": [
+      "use-cases/overview",
+      "use-cases/uc-1",
+      "use-cases/uc-2",
+      "use-cases/uc-3",
+      "use-cases/uc-4",
+      "use-cases/uc-5",
+      "use-cases/uc-6",
+      "use-cases/uc-7",
+      "use-cases/uc-8",
+      "use-cases/uc-9",
+      "use-cases/uc-10",
+      "use-cases/uc-11"
+    ]
+  }
+}

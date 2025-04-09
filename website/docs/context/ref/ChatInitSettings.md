@@ -10,7 +10,7 @@ A collection of settings to start a new chat conversation
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/next/context/chatInitSettings.schema.json](https://fdc3.finos.org/schemas/next/context/chatInitSettings.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/chatInitSettings.schema.json))
+[https://fdc3.finos.org/schemas/next/context/chatInitSettings.schema.json](pathname:///schemas/next/context/chatInitSettings.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/chatInitSettings.schema.json))
 
 ## Type
 

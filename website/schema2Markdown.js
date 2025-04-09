@@ -182,11 +182,12 @@ function generateObjectMD(schema, objectName, schemaFolderName, filePath) {
     //if working on windows you may have the wrong slashes...
     const workingPath = filePath.replaceAll("\\","/");
     const url = schema.$id;
+    const docusaurusUrl = url.replace("https://fdc3.finos.org", "pathname://");
     const githubUrl = workingPath.includes('context') 
         ? workingPath.replace("static/schemas/next/", `https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/`)
         : workingPath.replace("static/schemas/next/", `https://github.com/finos/FDC3/tree/main/packages/fdc3-schema/schemas/`);
 
-        markdownContent += `## Schema\n\n[${url}](${url}) ([github](${githubUrl}))\n\n`;
+        markdownContent += `## Schema\n\n[${url}](${docusaurusUrl}) ([github](${githubUrl}))\n\n`;
 
     if (hasAllOf(schema.allOf) || hasProperties(schema)) {
         // Extract properties, required fields, and $ref from the first allOf object

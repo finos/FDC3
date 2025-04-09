@@ -43,8 +43,8 @@ sequenceDiagram
 
 ### Request message schemas
 
-- [https://fdc3.finos.org/schemas/next/bridging/privateChannelEventListenerRemovedAgentRequest.schema.json](/schemas/next/bridging/privateChannelEventListenerRemovedAgentRequest.schema.json)
-- [https://fdc3.finos.org/schemas/next/bridging/privateChannelEventListenerRemovedBridgeRequest.schema.json](/schemas/next/bridging/privateChannelEventListenerRemovedBridgeRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/privateChannelEventListenerRemovedAgentRequest.schema.json](pathname:///schemas/next/bridging/privateChannelEventListenerRemovedAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/privateChannelEventListenerRemovedBridgeRequest.schema.json](pathname:///schemas/next/bridging/privateChannelEventListenerRemovedBridgeRequest.schema.json)
 
 ### Example
 

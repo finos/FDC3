@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/context/email.schema.json",
+  "type": "object",
+  "title": "Email",
+  "description": "A collection of information to be used to initiate an email with a Contact or ContactList.",
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "fdc3.email"
+        },
+        "recipients": {
+          "title": "Email Recipients",
+          "description": "One or more recipients for the email.",
+          "oneOf": [
+            {
+              "$ref": "contact.schema.json#"
+            },
+            {
+              "$ref": "contactList.schema.json#"
+            }
+          ]
+        },
+        "subject": {
+          "title": "Email Subject",
+          "description": "Subject line for the email.",
+          "type": "string"
+        },
+        "textBody": {
+          "title": "Email Body",
+          "description": "Body content for the email.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "recipients"
+      ]
+    },
+    { "$ref": "context.schema.json#/definitions/BaseContext" }
+  ],
+  "examples": [
+    {
+      "type": "fdc3.email",
+      "recipients": {
+        "type": "fdc3.contact",
+        "name": "Jane Doe",
+        "id": {
+          "email": "jane.doe@example.com"
+        }
+      },
+      "subject": "The information you requested",
+      "textBody": "Blah, blah, blah ..."
+    }
+  ]
+}
