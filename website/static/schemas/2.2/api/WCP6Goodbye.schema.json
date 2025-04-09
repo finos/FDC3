@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/api/WCP6Goodbye.schema.json",
+  "title": "Web Connection Protocol 6 Goodbye",
+  "description": "Goodbye message to be sent to the Desktop Agent when disconnecting (e.g. when closing the window or navigating). Desktop Agents should close the MessagePort after receiving this message, but retain instance details in case the application reconnects (e.g. after a navigation event).",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/WCP6GoodbyeBase"
+    },
+    {
+      "$ref": "WCPConnectionStep.schema.json"
+    }
+  ],
+  "$defs": {
+    "WCP6GoodbyeBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "WCP6Goodbye Message Type",
+          "const": "WCP6Goodbye"
+        },
+        "meta": {
+          "$ref": "WCPConnectionStep.schema.json#/$defs/DisconnectStepMeta"
+        }
+      },
+      "required": [ "type", "meta"],
+      "additionalProperties": false
+    }
+  }
+}
