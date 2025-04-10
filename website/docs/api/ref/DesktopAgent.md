@@ -107,13 +107,15 @@ interface IDesktopAgent
 <TabItem value="golang" label="Go">
 
 ```go
+@experimental
 type Result[T any] struct {
 	Value *T
 	Err   error
 }
-
+@experimental
 type DesktopAgent struct {}
 
+@experimental
 type IDesktopAgent interface {
     // Apps
     Open(appIdentifier AppIdentifier, context *IContext) <-chan Result[AppIdentifier]
