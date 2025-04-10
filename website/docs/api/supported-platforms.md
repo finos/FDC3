@@ -125,6 +125,7 @@ FDC3 offers the [`Finos.Fdc3` NuGet package](https://www.nuget.org/packages/Fino
 
 ### GO
 
+[`@experimental`](../../fdc3-compliance#experimental-features) Introduced in FDC3 2.3 and may be refined by further changes outside the normal FDC3 versioning policy.
 
 For a Go application to be FDC3-enabled, it needs to run in the context of a platform provider that makes the FDC3 API available to Go applications. The Go language API binding varies from the JavaScript/TypeScript implementation in a number of ways due to the specifics of the Go language. Namely:
 - A `Result` type, as described in [the Desktop Agent specs](../api/ref/DesktopAgent.md#desktopagent), is returned by API calls to accommodate for error handling via golang Channels. Channel is the closest equivalent to `Promise`. Result type has `Value` and `Err` fields, where `Value` type corresponds with the return type expected from this function, and `Err` would contain the golang `error` type error for handling:
