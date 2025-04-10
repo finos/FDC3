@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Added Notes field to `fdc3.trade` ([#1375](https://github.com/finos/FDC3/pull/1563))
+
 ### Changed
 
 ### Deprecated
