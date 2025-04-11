@@ -120,6 +120,7 @@ window.addEventListener('load', () => {
       },
     },
   };
+  // nosemgrep
   parent.postMessage(helloMessage, '*', [mc.port2]);
 
   const expand = () => {

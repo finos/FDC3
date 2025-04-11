@@ -50,8 +50,8 @@ sequenceDiagram
 
 ### Request message schemas
 
-- [https://fdc3.finos.org/schemas/2.1/bridging/broadcastAgentRequest.schema.json](/schemas/2.1/bridging/broadcastAgentRequest.schema.json)
-- [https://fdc3.finos.org/schemas/2.1/bridging/broadcastBridgeRequest.schema.json](/schemas/2.1/bridging/broadcastBridgeRequest.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/broadcastAgentRequest.schema.json](pathname:///schemas/2.1/bridging/broadcastAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/broadcastBridgeRequest.schema.json](pathname:///schemas/2.1/bridging/broadcastBridgeRequest.schema.json)
 
 ### Example
 

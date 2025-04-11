@@ -3,6 +3,7 @@ module.exports = {
   "tagline": "Open standards for the financial desktop",
   "url": "https://fdc3.finos.org",
   "baseUrl": "/",
+  "staticDirectories": ["static"],
   "organizationName": "finos",
   "projectName": "FDC3",
   "scripts": [
@@ -173,7 +174,7 @@ module.exports = {
           ]
         }
       ],
-      "copyright": "<span class=\"footer-strap\">Proud member of the Fintech Open Source Foundation</span><br/><br/><span class=\"footer-copyright\">Copyright © 2023 FDC3 - FINOS</span>",
+      "copyright": "<span class=\"footer-strap\">Proud member of the Fintech Open Source Foundation</span><br/><br/><span class=\"footer-copyright\">Copyright © 2019-2025 FDC3 - FINOS</span>",
       "logo": {
         "src": "img/finos_wordmark.svg",
         "alt": "FINOS Logo",

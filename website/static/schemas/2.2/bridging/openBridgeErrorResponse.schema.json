@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/bridging/openBridgeErrorResponse.schema.json",
+  "title": "Open Bridge Error Response",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "openAgentErrorResponse.schema.json#/$defs/OpenErrorResponseBase"
+    },
+    {
+      "$ref": "bridgeErrorResponse.schema.json"
+    }
+  ]
+}

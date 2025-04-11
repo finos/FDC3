@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/api/fdc3UserInterfaceHello.schema.json",
+  "title": "Fdc3 UserInterface Hello",
+  "description": "Hello message sent by a UI to the Desktop Agent proxy setup by `getAgent()` to indicate it is ready to communicate, containing initial CSS to set on the iframe, and including an appended `MessagePort` to be used for further communication.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/Fdc3UserInterfaceHelloBase"
+    },
+    {
+      "$ref": "fdc3UserInterfaceMessage.schema.json"
+    }
+  ],
+  "$defs": {
+    "Fdc3UserInterfaceHelloBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "Fdc3 UserInterface Hello Message Type",
+          "const": "Fdc3UserInterfaceHello"
+        },
+        "payload": {
+          "title": "Fdc3 UserInterface Hello Payload",
+          "type": "object",
+          "properties": {
+            "implementationDetails": {
+              "title": "Implementation Details",
+              "type": "string",
+              "description": "Details about the UI implementation, such as vendor and version, for logging purposes."
+            },
+            "initialCSS": {
+              "title": "Initial CSS",
+              "type": "object",
+              "description": "A constrained set of styling properties that should be set on the user interface before it is displayed. Note `position` cannot be specified and should always be set to `fixed`.",
+              "properties": {
+                "height": {"type": "string", "title": "height", "description": "The initial height of the iframe."},
+                "width": {"type": "string", "title": "width", "description": "The initial width of the iframe."},
+                "zIndex": {"type": "string", "title": "zIndex", "description": "The initial zindex to apply to the iframe."},
+                "left": {"type": "string", "title": "left", "description": "The initial left property to apply to the iframe."},
+                "top": {"type": "string", "title": "top", "description": "The initial top property to apply to the iframe."},
+                "bottom": {"type": "string", "title": "bottom", "description": "The initial bottom property to apply to the iframe."},
+                "right": {"type": "string", "title": "right", "description": "The initial right property to apply to the iframe."},
+                "transition": {"type": "string", "title": "transition", "description": "The transition property to apply to the iframe."},
+                "maxHeight": {"type": "string", "title": "maxHeight", "description": "The maximum height to apply to the iframe."},
+                "maxWidth": {"type": "string", "title": "maxWidth", "description": "The maximum with to apply to the iframe."}
+              },
+              "required": []
+            }
+          },
+          "additionalProperties": false,
+          "required": ["implementationDetails","initialCSS"]
+        }
+      },
+      "required": [
+        "type",
+        "payload"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

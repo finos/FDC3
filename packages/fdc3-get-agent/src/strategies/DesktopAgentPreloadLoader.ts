@@ -50,9 +50,9 @@ export class DesktopAgentPreloadLoader implements Loader {
         agentType: WebDesktopAgentType.Preload,
         identityUrl: globalThis.window.location.href,
         actualUrl: globalThis.window.location.href,
-        appId: implMetadata.appMetadata.appId,
-        instanceId: implMetadata.appMetadata.instanceId ?? 'unknown',
-        instanceUuid: implMetadata.appMetadata.instanceId ?? 'unknown', // preload DAs don't issue these so repeat the instanceId
+        appId: implMetadata?.appMetadata?.appId ?? 'unknown',
+        instanceId: implMetadata?.appMetadata?.instanceId ?? 'unknown',
+        instanceUuid: implMetadata?.appMetadata?.instanceId ?? 'unknown', // preload DAs don't issue these so repeat the instanceId
       },
     };
 

@@ -14,7 +14,7 @@ A context representing a chat message. Typically used to send the message or to 
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/2.1/context/chatMessage.schema.json](https://fdc3.finos.org/schemas/2.1/context/chatMessage.schema.json)
+[https://fdc3.finos.org/schemas/2.1/context/chatMessage.schema.json](pathname:///schemas/2.1/context/chatMessage.schema.json)
 
 ## Details
 
@@ -22,7 +22,7 @@ A context representing a chat message. Typically used to send the message or to 
 |-------------|---------|----------|-------------------|
 | `type`      | string  | Yes      | `'fdc3.chat.message'`  |
 | `chatRoom`      | ChatRoom  | Yes       | `{ type: 'fdc3.chat.room', providerName: 'Symphony', id:{ streamId: 'j75xqXy25NBOdacUI3FNBH'} }`      |
-| `message`  | [Message](https://fdc3.finos.org/schemas/2.1/message.schema.json)  | Yes       | `'A message to send'` |
+| `message`  | [Message](pathname:///schemas/2.1/message.schema.json)  | Yes       | `'A message to send'` |
 
 ## Example
 

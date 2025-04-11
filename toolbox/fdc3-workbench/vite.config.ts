@@ -5,6 +5,7 @@
 import legacy from '@vitejs/plugin-legacy';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
+import { nodePolyfills } from 'vite-plugin-node-polyfills';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -13,6 +14,7 @@ export default defineConfig({
     outDir: 'build',
   },
   define: {
+    'process.env.NODE_DEBUG': 'false',
     'process.env': 'import.meta.env',
     'global.process': 'globalThis.process',
   },
@@ -21,6 +23,7 @@ export default defineConfig({
     legacy({
       targets: ['defaults', 'not IE 11'],
     }),
+    nodePolyfills(),
   ],
   server: { port: 4001 },
 });
