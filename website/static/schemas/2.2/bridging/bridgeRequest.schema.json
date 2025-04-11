@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/bridging/bridgeRequest.schema.json",
+  "title": "Bridge Request Message",
+  "type": "object",
+  "description": "A request message forwarded from the Bridge onto a Desktop Agent connected to it.",
+  "properties": {
+    "type": {
+      "title": "Message type",
+      "type": "string",
+      "description": "Identifies the type of the message and it is typically set to the FDC3 function name that the message relates to, e.g. 'findIntent', with 'Request' appended."
+    },
+    "payload": {
+      "title": "Message payload",
+      "type": "object",
+      "description": "The message payload typically contains the arguments to FDC3 API functions."
+    },
+    "meta": {
+      "$ref": "#/$defs/BridgeRequestMeta"
+    }
+  },
+  "required": ["type", "payload", "meta"],
+  "additionalProperties": false,
+  "$defs": {
+    "BridgeRequestMeta": {
+      "title": "Bridge Request Metadata",
+      "description": "Metadata required in a request message forwarded on by the Bridge",
+      "type": "object",
+      "properties": {
+        "requestUuid": {
+          "$ref": "../api/common.schema.json#/$defs/RequestUuid"
+        },
+        "timestamp": {
+          "$ref": "../api/common.schema.json#/$defs/Timestamp"
+        },
+        "source": {
+          "title": "Bridge Source identifier",
+          "description": "Field that represents the source application that the request was received from, or the source Desktop Agent if it issued the request itself. The Desktop Agent identifier MUST be set by the bridge.",
+          "$ref": "common.schema.json#/$defs/BridgeParticipantIdentifier"
+        },
+        "destination": {
+          "title": "Destination identifier",
+          "description": "Optional field that represents the destination that the request should be routed to. Must be set by the Desktop Agent for API calls that include a target app parameter and must include the name of the Desktop Agent hosting the target application.",
+          "$ref": "common.schema.json#/$defs/BridgeParticipantIdentifier"
+        }
+      },
+      "required": ["requestUuid", "timestamp", "source"],
+      "additionalProperties": false
+    }
+  }
+}

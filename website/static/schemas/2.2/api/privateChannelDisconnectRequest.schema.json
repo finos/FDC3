@@ -1,0 +1,44 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/2.2/api/privateChannelDisconnectRequest.schema.json",
+	"type": "object",
+	"title": "PrivateChannelDisconnect Request",
+	"description": "Request that indicates that a participant will no longer interact with a specified `PrivateChannel`.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/PrivateChannelDisconnectRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/PrivateChannelDisconnectRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"PrivateChannelDisconnectRequestType": {
+			"title": "PrivateChannelDisconnect Request Message Type",
+			"const": "privateChannelDisconnectRequest"
+		},
+		"PrivateChannelDisconnectRequestPayload": {
+			"title": "PrivateChannelDisconnect Request Payload",
+			"type": "object",
+			"properties": {
+				"channelId": {
+					"type": "string",
+					"title": "Channel Id",
+					"description": "The Id of the Channel that should be disconnected from"
+				}
+			},
+			"required": ["channelId"],
+			"additionalProperties": false
+		}
+	}
+}

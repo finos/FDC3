@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/context/order.schema.json",
+  "type": "object",
+  "title": "Order",
+  "description": "@experimental context type representing an order. To be used with OMS and EMS systems.\n\nThis type currently only defines a required `id` field, which should provide a reference to the order in one or more systems, an optional human readable `name` field to be used to summarize the order and an optional `details` field that may be used to provide additional detail about the order, including a context representing a `product`, which may be extended with arbitrary properties. The `details.product` field is currently typed as a unspecified Context type, but both `details` and `details.product` are expected to be standardized in future.",
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "fdc3.order"
+        },
+        "id": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Order Identifiers",
+          "description": "One or more identifiers that refer to the order in an OMS, EMS or related system. Specific key names for systems are expected to be standardized in future."
+        },
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "description": "An optional human-readable summary of the order."
+        },
+        "details": {
+          "type": "object",
+          "title": "Order Details",
+          "description": "Optional additional details about the order, which may include a product element that is an, as yet undefined but extensible, Context",
+          "properties": {
+            "product": {
+              "$ref": "product.schema.json"
+            }
+          },
+          "additionalProperties": true
+        }
+      },
+      "required": [
+        "type",
+        "id"
+      ],
+      "additionalProperties": true
+    },
+    { "$ref": "context.schema.json#/definitions/BaseContext" }
+  ],
+  "examples": [
+    {
+      "type": "fdc3.order",
+      "name": "...",
+      "id": {
+        "myOMS": "12345"
+      },
+      "details": {
+        "product": {
+          "type": "fdc3.product",
+          "id": {
+            "productId": "ABC123"
+          },
+          "instrument": {
+            "type": "fdc3.instrument",
+            "id": {
+              "ticker": "MSFT"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "fdc3.order",
+      "id": {
+        "myOMS": "ABC123"
+      }
+    }
+  ]
+}

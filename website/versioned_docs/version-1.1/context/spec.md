@@ -83,34 +83,34 @@ The following are standard FDC3 context types.
 - __fdc3.contact__
     - A person contact that can be engaged with through email, calling, messaging, CMS, etc.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/contact)
-    - [schema](/schemas/1.1/contact.schema.json)
+    - [schema](pathname:///schemas/1.1/contact.schema.json)
 - __fd3.contactList__
     - A collection of contacts.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/contactlist)
-    - [schema](/schemas/1.1/contactList.schema.json)
+    - [schema](pathname:///schemas/1.1/contactList.schema.json)
 - __fdc3.country__
     - A standard country entity.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/country)
-    - [schema](/schemas/1.1/country.schema.json)
+    - [schema](pathname:///schemas/1.1/country.schema.json)
 - __fdc3.instrument__
     - A financial instrument from any asset class.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/instrument)
-    - [schema](/schemas/1.1/instrument.schema.json)
+    - [schema](pathname:///schemas/1.1/instrument.schema.json)
 - __fdc3.instrumentList__
     - A collection of instruments.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/instrumentList)
-    - [schema](/schemas/1.1/instrumentList.schema.json)
+    - [schema](pathname:///schemas/1.1/instrumentList.schema.json)
 - __fdd3.organization__
     - A standard organization entity.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/organization)
-    - [schema](/schemas/1.1/organization.schema.json)
+    - [schema](pathname:///schemas/1.1/organization.schema.json)
 - __fdc3.portfolio__
     - A collection of positions.
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/portfolio)
-    - [schema](/schemas/1.1/portfolio.schema.json)
+    - [schema](pathname:///schemas/1.1/portfolio.schema.json)
 - __fdc3.position__
     - [Financial Objects Specification](https://fo.finos.org/docs/objects/position)
-    - [schema](/schemas/1.1/position.schema.json)
+    - [schema](pathname:///schemas/1.1/position.schema.json)
 
 __Note:__ The below examples show how the base context data interface can be used to define specific context data objects. It is not the purpose of the specification at this stage to define standard representations for objects. It establishes the framework in which such definitions could be created.
 

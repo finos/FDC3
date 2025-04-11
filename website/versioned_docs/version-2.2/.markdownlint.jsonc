@@ -1,0 +1,20 @@
+{
+	//Disabled as we often use manual H1 heading for reference pages, 
+	// where the markdown metadata is picked up as the top level heading
+	"single-h1": false,
+	//Many lines in md files are longer than 80 chars
+	"line-length": false,
+	//We have repeated headings, like 'Properties' or 'Fields' in reference docs.
+	"no-duplicate-header": {
+		"siblings_only": true
+	},
+	"no-inline-html": {
+		"allowed_elements": [
+			"Tabs",
+			"TabItem"
+		]
+	},
+	"ul-style": {
+		"style": "dash"
+	}
+}
