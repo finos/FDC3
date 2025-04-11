@@ -22,4 +22,5 @@ export interface IntentUtilityContext extends CommonContext {
   delayBeforeReturn?: number;
   onUnsubscribedTriggered?: boolean;
   number?: number;
+  instanceId?: string;
 }

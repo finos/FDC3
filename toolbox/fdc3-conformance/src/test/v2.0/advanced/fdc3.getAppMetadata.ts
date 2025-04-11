@@ -1,7 +1,8 @@
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import { APIDocumentation2_0 } from '../apiDocuments-2.0';
 import { MetadataFdc3Api, MetadataValidator } from '../support/metadata-support-2.0';
 import { closeMockAppWindow } from '../fdc3-2_0-utils';
+import { handleFail } from '../../../utils';
 
 const getMetadataDocs = '\r\nDocumentation: ' + APIDocumentation2_0.appMetadata + '\r\nCause: ';
 const validator = new MetadataValidator();
@@ -17,7 +18,7 @@ export default () =>
       try {
         await api.getAppMetadata();
       } catch (ex) {
-        assert.fail(getMetadataDocs + (ex.message ?? ex));
+        handleFail(getMetadataDocs, ex);
       }
     });
 
@@ -27,7 +28,7 @@ export default () =>
         const metadata = await api.getAppMetadata();
         validator.validateAppMetadata(metadata);
       } catch (ex) {
-        assert.fail(getMetadataDocs + (ex.message ?? ex));
+        handleFail(getMetadataDocs, ex);
       }
     });
 
@@ -49,7 +50,10 @@ export default () =>
         const metadata1 = await api.getAppMetadata(appIdentifier1);
         validator.validateAppMetadata(metadata1);
 
-        validateMatchingInstanceIds(metadata1.instanceId, appIdentifier1.instanceId);
+        validateMatchingInstanceIds(
+          metadata1.instanceId ?? 'unknown-md1-id',
+          appIdentifier1.instanceId ?? 'unknown-app1-id'
+        );
 
         const metadata2 = await api.getAppMetadata(appIdentifier2);
 
@@ -57,9 +61,13 @@ export default () =>
           metadata2,
           `The AppIdentifier object should contain an instanceId property.${getMetadataDocs}`
         ).to.have.property('instanceId');
-        validateMatchingInstanceIds(metadata2.instanceId, appIdentifier2.instanceId);
+
+        validateMatchingInstanceIds(
+          metadata2.instanceId ?? 'unknown-md2-id',
+          appIdentifier2.instanceId ?? 'unknown-app2-id'
+        );
       } catch (ex) {
-        assert.fail(getMetadataDocs + (ex.message ?? ex));
+        handleFail(getMetadataDocs, ex);
       }
     });
   });

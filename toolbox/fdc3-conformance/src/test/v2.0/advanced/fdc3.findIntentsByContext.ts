@@ -3,6 +3,7 @@ import { assert, expect } from 'chai';
 import { APIDocumentation2_0 } from '../apiDocuments-2.0';
 import { DesktopAgent } from '@finos/fdc3';
 import { ContextType, IntentApp, Intent } from '../support/intent-support-2.0';
+import { handleFail } from '../../../utils';
 
 declare let fdc3: DesktopAgent;
 const findIntentsByContextDocs = '\r\nDocumentation: ' + APIDocumentation2_0.findIntentsByContext;
@@ -31,7 +32,7 @@ export default () =>
         validateIntents(intents, Intent.sharedTestingIntent2, 1, [IntentApp.IntentAppD]);
         validateIntents(intents, Intent.kTestingIntent, 1, [IntentApp.IntentAppK]);
       } catch (ex) {
-        assert.fail(ex.message ?? ex + findIntentsByContextDocs);
+        handleFail(findIntentsByContextDocs, ex);
       }
     });
 
@@ -54,8 +55,11 @@ function validateIntents(
   expectedAppCount: number,
   expectedAppIds: string[]
 ) {
-  const filteredIntents = intents.find(appIntent => appIntent.intent.name === intentFilter);
-  expect(filteredIntents.apps).to.have.length(expectedAppCount);
-  const sharedAppNames = filteredIntents.apps.map(app => app.appId);
-  expect(sharedAppNames).to.have.all.members(expectedAppIds);
+  const firstIntent = intents.find(appIntent => appIntent.intent.name === intentFilter);
+  expect(firstIntent).to.not.be.undefined;
+  if (firstIntent !== undefined) {
+    expect(firstIntent.apps).to.have.length(expectedAppCount);
+    const sharedAppNames = firstIntent.apps.map(app => app.appId);
+    expect(sharedAppNames).to.have.all.members(expectedAppIds);
+  }
 }

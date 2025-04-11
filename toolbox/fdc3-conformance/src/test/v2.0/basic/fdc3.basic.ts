@@ -5,11 +5,7 @@ import { ContextType, Intent } from '../support/intent-support-2.0';
 import { closeMockAppWindow } from '../fdc3-2_0-utils';
 
 import { assert, expect } from 'chai';
-
-function handleFail(documentation: string, ex: any) {
-  const message = ex instanceof Error ? ex.message : String(ex);
-  assert.fail(documentation + message);
-}
+import { handleFail } from '../../../utils';
 
 let basicCL1 = (fdc3: DesktopAgent, documentation: string) => {
   it('(BasicCL1) Method is callable', async () => {
