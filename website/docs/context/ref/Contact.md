@@ -10,7 +10,7 @@ A person contact that can be engaged with through email, calling, messaging, CMS
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/next/context/contact.schema.json](https://fdc3.finos.org/schemas/next/context/contact.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/contact.schema.json))
+[https://fdc3.finos.org/schemas/next/context/contact.schema.json](pathname:///schemas/next/context/contact.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/contact.schema.json))
 
 ## Type
 

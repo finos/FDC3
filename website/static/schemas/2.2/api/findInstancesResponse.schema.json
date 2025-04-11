@@ -1,0 +1,77 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/2.2/api/findInstancesResponse.schema.json",
+	"type": "object",
+	"title": "FindInstances Response",
+	"description": "A response to a findInstances request.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/FindInstancesResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/FindInstancesSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/FindInstancesErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"FindInstancesResponseType": {
+			"title": "FindInstances Response Message Type",
+			"const": "findInstancesResponse"
+		},
+		"FindInstancesSuccessResponsePayload": {
+			"title": "FindInstances Response Message Payload",
+			"type": "object",
+			"description": "The message payload contains a flag indicating whether the API call was successful, plus any return values for the FDC3 API function called, or indicating that the request resulted in an error and including a standardized error message.",
+			"properties": {
+				"appIdentifiers": {
+					"type": "array",
+					"items": {
+						"$ref": "api.schema.json#/definitions/AppMetadata"
+					}
+				}
+			},
+			"required": [
+				"appIdentifiers"
+			],
+			"additionalProperties": false
+		},
+		"FindInstancesErrorResponsePayload": {
+			"title": "FindInstances Error Response Message Payload",
+			"type": "object",
+			"properties": {
+				"error": {
+					"title": "findInstances Errors",
+					"type": "string",
+					"oneOf": [
+						{
+							"$ref": "api.schema.json#/definitions/ResolveError"
+						},
+						{
+							"$ref": "api.schema.json#/definitions/BridgingError"
+						}
+					]
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}

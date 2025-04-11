@@ -1,0 +1,44 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/2.2/api/getOrCreateChannelRequest.schema.json",
+	"type": "object",
+	"title": "GetOrCreateChannel Request",
+	"description": "Request to return a Channel with an auto-generated identity that is intended for private communication between applications.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/GetOrCreateChannelRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/GetOrCreateChannelRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"GetOrCreateChannelRequestType": {
+			"title": "GetOrCreateChannel Request Message Type",
+			"const": "getOrCreateChannelRequest"
+		},
+		"GetOrCreateChannelRequestPayload": {
+			"title": "GetOrCreateChannel Request Payload",
+			"type": "object",
+			"properties": {
+				"channelId": {
+					"title": "Channel Id",
+					"description": "The id of the channel to return",
+					"type": "string"
+				}
+			},
+			"additionalProperties": false,
+			"required": ["channelId"]
+		}
+	}
+}

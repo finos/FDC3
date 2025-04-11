@@ -1,0 +1,64 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/2.2/api/createPrivateChannelResponse.schema.json",
+	"type": "object",
+	"title": "CreatePrivateChannel Response",
+	"description": "A response to a createPrivateChannel request.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/CreatePrivateChannelResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/CreatePrivateChannelSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/CreatePrivateChannelErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"CreatePrivateChannelResponseType": {
+			"title": "CreatePrivateChannel Response Message Type",
+			"const": "createPrivateChannelResponse"
+		},
+		"CreatePrivateChannelSuccessResponsePayload": {
+			"title": "CreatePrivateChannel Response Payload",
+			"type": "object",
+			"properties": {
+				"privateChannel": {
+					"$ref": "api.schema.json#/definitions/Channel"
+				}
+			},
+			"required": [
+				"privateChannel"
+			],
+			"additionalProperties": false
+		},
+		"CreatePrivateChannelErrorResponsePayload": {
+			"title": "CreatePrivateChannel Error Response Payload",
+			"type": "object",
+			"properties": {
+				"error": {
+					"$ref": "api.schema.json#/definitions/ChannelError"
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}

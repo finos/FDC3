@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/bridging/agentRequest.schema.json",
+  "title": "Agent Request Message",
+  "type": "object",
+  "description": "A request message from a Desktop Agent to the Bridge.",
+  "properties": {
+    "type": {
+      "title": "Request Message type",
+      "type": "string",
+      "enum": [
+        "broadcastRequest",
+        "findInstancesRequest",
+        "findIntentRequest",
+        "findIntentsByContextRequest",
+        "getAppMetadataRequest",
+        "openRequest",
+        "PrivateChannel.broadcast",
+        "PrivateChannel.eventListenerAdded",
+        "PrivateChannel.eventListenerRemoved",
+        "PrivateChannel.onAddContextListener",
+        "PrivateChannel.onDisconnect",
+        "PrivateChannel.onUnsubscribe",
+        "raiseIntentRequest"
+      ],
+      "description": "Identifies the type of the message and it is typically set to the FDC3 function name that the message relates to, e.g. 'findIntent', with 'Request' appended."
+    },
+    "payload": {
+      "title": "Message payload",
+      "type": "object",
+      "description": "The message payload typically contains the arguments to FDC3 API functions."
+    },
+    "meta": {
+      "$ref": "#/$defs/AgentRequestMeta"
+    }
+  },
+  "required": ["type", "payload", "meta"],
+  "additionalProperties": false,
+  "$defs": {
+    "AgentRequestMeta": {
+      "title": "Agent Request Metadata",
+      "description": "Metadata for a request message sent by Desktop Agents to the Bridge.",
+      "type": "object",
+      "properties": {
+        "requestUuid": {
+          "$ref": "../api/common.schema.json#/$defs/RequestUuid"
+        },
+        "timestamp": {
+          "$ref": "../api/common.schema.json#/$defs/Timestamp"
+        },
+        "source": {
+          "title": "Source identifier",
+          "description": "Field that represents the source application that the request was received from, or the source Desktop Agent if it issued the request itself.",
+          "$ref": "common.schema.json#/$defs/RequestSource"
+        },
+        "destination": {
+          "title": "Destination identifier",
+          "description": "Optional field that represents the destination that the request should be routed to. Must be set by the Desktop Agent for API calls that include a target app parameter and must include the name of the Desktop Agent hosting the target application.",
+          "$ref": "common.schema.json#/$defs/BridgeParticipantIdentifier"
+        }
+      },
+      "required": ["requestUuid", "timestamp"],
+      "additionalProperties": false
+    }
+  }
+}

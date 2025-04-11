@@ -1,0 +1,70 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/api/appRequest.schema.json",
+  "title": "App Request Message",
+  "type": "object",
+  "description": "A request message from an FDC3-enabled app to a Desktop Agent.",
+  "properties": {
+    "type": {
+      "title": "Request Message type",
+      "type": "string",
+      "enum": [
+        "addContextListenerRequest",
+        "addEventListenerRequest",
+        "addIntentListenerRequest",
+        "broadcastRequest",
+        "contextListenerUnsubscribeRequest",
+        "createPrivateChannelRequest",
+        "eventListenerUnsubscribeRequest",
+        "findInstancesRequest",
+        "findIntentRequest",
+        "findIntentsByContextRequest",
+        "getAppMetadataRequest",
+        "getCurrentChannelRequest",
+        "getCurrentContextRequest",
+        "getInfoRequest",
+        "getOrCreateChannelRequest",
+        "getUserChannelsRequest",
+        "heartbeatAcknowledgementRequest",
+        "intentListenerUnsubscribeRequest",
+        "intentResultRequest",
+        "joinUserChannelRequest",
+        "leaveCurrentChannelRequest",
+        "openRequest",
+        "privateChannelAddEventListenerRequest",
+        "privateChannelDisconnectRequest",
+        "privateChannelUnsubscribeEventListenerRequest",
+        "raiseIntentForContextRequest",
+        "raiseIntentRequest"
+      ],
+      "description": "Identifies the type of the message and it is typically set to the FDC3 function name that the message relates to, e.g. 'findIntent', with 'Request' appended."
+    },
+    "payload": {
+      "title": "Request payload",
+      "type": "object",
+      "description": "The message payload typically contains the arguments to FDC3 API functions."
+    },
+    "meta": {
+      "title": "Request Metadata",
+      "description": "Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.",
+      "type": "object",
+      "properties": {
+        "requestUuid": {
+          "$ref": "common.schema.json#/$defs/RequestUuid"
+        },
+        "timestamp": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        },
+        "source": {
+          "title": "Source AppIdentifier",
+          "description": "Field that represents the source application that a request or response was received from. Please note that this may be set by an app or Desktop Agent proxy for debugging purposes but a Desktop Agent should make its own determination of the source of a message to avoid spoofing.",
+          "$ref": "api.schema.json#/definitions/AppIdentifier"
+        }
+      },
+      "required": ["requestUuid", "timestamp"],
+      "additionalProperties": false
+    }
+  },
+  "required": ["type", "payload", "meta"],
+  "additionalProperties": false
+}

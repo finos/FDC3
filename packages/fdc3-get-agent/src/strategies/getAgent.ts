@@ -207,7 +207,7 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
  */
 export const getAgent: GetAgentType = (params?: GetAgentParams) => {
   const DEFAULT_OPTIONS: GetAgentParams = {
-    dontSetWindowFdc3: true,
+    dontSetWindowFdc3: false,
     channelSelector: true,
     intentResolver: true,
     timeoutMs: DEFAULT_GETAGENT_TIMEOUT_MS,
