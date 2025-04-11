@@ -2,16 +2,18 @@ import { assert, expect } from 'chai';
 import { Channel, Context, Listener, DesktopAgent } from '@finos/fdc3';
 import constants from '../../../constants';
 import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from '../../common/control/channel-control';
-import { AppControlContext } from '../../../context-types';
 import { closeMockAppWindow, waitForContext } from '../fdc3-2_0-utils';
 
-declare let fdc3: DesktopAgent;
-
-export class ChannelControl2_0 implements ChannelControl<Channel, Context, Listener> {
+export class ChannelControl2_0 implements ChannelControl {
   private readonly testAppChannelName = 'test-channel';
+  private readonly fdc3: DesktopAgent;
+
+  constructor(fdc3: DesktopAgent) {
+    this.fdc3 = fdc3;
+  }
 
   getNonGlobalUserChannels = async () => {
-    const channels = await fdc3.getUserChannels();
+    const channels = await this.fdc3.getUserChannels();
     if (channels.find(channel => channel.id.indexOf('global') >= 0)) {
       assert.fail('Global channel recieved ');
     }
@@ -28,26 +30,25 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
   };
 
   leaveChannel = async () => {
-    return await fdc3.leaveCurrentChannel();
+    return await this.fdc3.leaveCurrentChannel();
   };
 
   joinChannel = async (channel: Channel) => {
-    return fdc3.joinUserChannel(channel.id);
+    return this.fdc3.joinUserChannel(channel.id);
   };
 
-  createRandomTestChannel = async (name: string = 'test-channel') => {
+  createRandomTestChannel = async () => {
     const channelName = `${this.testAppChannelName}.${this.getRandomId()}`;
-    return await fdc3.getOrCreateChannel(channelName);
+    return await this.fdc3.getOrCreateChannel(channelName);
   };
 
-  getCurrentChannel = async (): Promise<Channel> => {
-    return await fdc3.getCurrentChannel();
+  getCurrentChannel = async (): Promise<Channel | null> => {
+    return await this.fdc3.getCurrentChannel();
   };
 
   unsubscribeListeners = async (listeners: Listener[]) => {
     listeners.map(listener => {
       listener.unsubscribe();
-      listener = undefined;
     });
   };
 
@@ -55,16 +56,16 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
     const { listenerPromise } = await waitForContext(
       'executionComplete',
       testId,
-      await fdc3.getOrCreateChannel(constants.ControlChannel)
+      await this.fdc3.getOrCreateChannel(constants.ControlChannel)
     );
     return listenerPromise;
   };
 
   openChannelApp = async (
     testId: string,
-    channelId: string | undefined,
+    channelId: string,
     commands: string[],
-    historyItems: number = undefined,
+    historyItems?: number,
     notify: boolean = true,
     contextId?: string
   ) => {
@@ -81,7 +82,7 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
     }
 
     //Open ChannelsApp then execute commands in order
-    await fdc3.open({ appId: 'ChannelsAppId' }, buildChannelsAppContext(commands, channelsAppConfig));
+    await this.fdc3.open({ appId: 'ChannelsAppId' }, buildChannelsAppContext(commands, channelsAppConfig));
   };
 
   async closeMockApp(testId: string) {
@@ -104,7 +105,7 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
         onComplete(context);
       });
     } else {
-      listener = await fdc3.addContextListener(expectedContextType, context => {
+      listener = await this.fdc3.addContextListener(expectedContextType, context => {
         if (expectedContextType != null) {
           expect(context.type).to.be.equals(expectedContextType, errorMessage);
         }
@@ -125,15 +126,17 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
   ): Promise<void> => {
     //Retrieve current context from channel
     const context =
-      requestedContextType === undefined
+      requestedContextType === null
         ? await channel.getCurrentContext()
         : await channel.getCurrentContext(requestedContextType);
     expect(context, 'await channel.getCurrentContext() returned null').to.not.be.null;
-    expect(context.type, 'retrieved context was not of the expected type').to.be.equals(
+    expect(context?.type, 'retrieved context was not of the expected type').to.be.equals(
       expectedContextType,
       errorMessage
     );
-    onComplete(context);
+    if (context) {
+      onComplete(context);
+    }
   };
 
   getRandomId(): string {
@@ -143,21 +146,10 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
   }
 }
 
-function validateListenerObject(listenerObject) {
+function validateListenerObject(listenerObject: any) {
   assert.isTrue(typeof listenerObject === 'object', 'No listener object found');
   expect(typeof listenerObject.unsubscribe).to.be.equals('function', 'Listener does not contain an unsubscribe method');
 }
-
-const broadcastAppChannelCloseWindow = async (testId: string) => {
-  const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-  /* tslint:disable-next-line */
-  const closeContext: AppControlContext = {
-    type: 'closeWindow',
-    testId: testId,
-  };
-  await appControlChannel.broadcast(closeContext);
-  return appControlChannel;
-};
 
 function buildChannelsAppContext(mockAppCommands: string[], config: ChannelsAppConfig): ChannelsAppContext {
   return {

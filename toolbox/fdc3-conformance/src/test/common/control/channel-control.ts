@@ -1,20 +1,22 @@
+import { Context, Channel, Listener } from '@finos/fdc3';
+
 /**
- * This interface contains everything you need to do to control channels/context listeners in either 1.2 or 2.0 FDC3
+ * This interface wraps channel functionality in FDC3 2.0
  */
-export interface ChannelControl<X, Y, Z> {
+export interface ChannelControl {
   // channels
-  getNonGlobalUserChannels(): Promise<X[]>;
+  getNonGlobalUserChannels(): Promise<Channel[]>;
   leaveChannel(): Promise<void>;
-  getNonGlobalUserChannel(): Promise<X>;
-  joinChannel(channel: X): Promise<void>;
-  createRandomTestChannel(): Promise<X>;
-  getCurrentChannel(): Promise<X>;
+  getNonGlobalUserChannel(): Promise<Channel>;
+  joinChannel(channel: Channel): Promise<void>;
+  createRandomTestChannel(): Promise<Channel>;
+  getCurrentChannel(): Promise<Channel | null>;
 
   // test control
-  unsubscribeListeners(listeners: Z[]): void;
+  unsubscribeListeners(listeners: Listener[]): void;
   openChannelApp(
     testId: string,
-    channelId: string | undefined,
+    channelId: string,
     commands: string[],
     historyItems?: number,
     notify?: boolean,
@@ -23,36 +25,29 @@ export interface ChannelControl<X, Y, Z> {
   closeMockApp(testId: string): Promise<void>;
 
   // listening
-  initCompleteListener(testId: string): Promise<Y>;
+  initCompleteListener(testId: string): Promise<Context>;
+
   setupAndValidateListener(
-    channel: X | null,
+    channel: Channel | null,
     listenContextType: string | null,
     expectedContextType: string | null,
     errorMessage: string,
-    onComplete: (ctx: Y) => void
-  ): Z | Promise<Z>;
+    onComplete: (ctx: Context) => void
+  ): Promise<Listener>;
+
   setupContextChecker(
-    channel: X,
-    requestedContextType: string,
+    channel: Channel,
+    requestedContextType: string | null,
     expectedContextType: string,
     errorMessage: string,
-    onComplete: (ctx: Y) => void
+    onComplete: (ctx: Context) => void
   ): Promise<void>;
 
   // helpers
   getRandomId(): string;
 }
 
-/** same in 1.2 and 2.0 */
-export interface CommonContext {
-  id?: {
-    [key: string]: string;
-  };
-  name?: string;
-  type: string;
-}
-
-export type ChannelsAppContext = CommonContext & {
+export type ChannelsAppContext = Context & {
   commands: string[];
   config: {
     testId: string;

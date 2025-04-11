@@ -1,20 +1,18 @@
 import { assert, expect } from 'chai';
-import { failOnTimeout, wait, wrapPromise } from '../../utils';
+import { wait } from '../../utils';
 import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from './control/channel-control';
 import { ChannelControl } from './control/channel-control';
 import constants from '../../constants';
+import { Context } from '@finos/fdc3';
 
-export function createUserChannelTests(
-  cc: ChannelControl<any, any, any>,
-  documentation: string,
-  prefix: string
-): Mocha.Suite {
+export function createUserChannelTests(cc: ChannelControl, documentation: string, prefix: string): Mocha.Suite {
   const channelName = prefix === '' ? 'System channels' : 'User channels';
   return describe(channelName, () => {
     beforeEach(cc.leaveChannel);
 
     afterEach(async function afterEach() {
-      if (this.currentTest.title !== UCFilteredUsageJoin) await cc.closeMockApp(this.currentTest.title);
+      if (this.currentTest?.title !== UCFilteredUsageJoin)
+        await cc.closeMockApp(this.currentTest?.title ?? 'Some-Test-Title');
     });
 
     const scTestId1 =
@@ -261,7 +259,7 @@ export function createUserChannelTests(
       await cc.joinChannel(userChannel);
       let receivedContext = false;
       let listener = await cc.setupAndValidateListener(
-        undefined,
+        null,
         'fdc3.instrument',
         'fdc3.instrument',
         errorMessage,
@@ -311,7 +309,7 @@ export function createUserChannelTests(
         `fdc3.instrument.${contextId}`,
         `fdc3.instrument.${contextId}`,
         errorMessage,
-        context => {
+        (context: Context) => {
           contextTypes.push(context.type);
           checkIfBothContextsReceived();
         }
@@ -322,7 +320,7 @@ export function createUserChannelTests(
         `fdc3.contact.${contextId}`,
         `fdc3.contact.${contextId}`,
         errorMessage,
-        context => {
+        (context: Context) => {
           contextTypes.push(context.type);
           checkIfBothContextsReceived();
         }
@@ -465,7 +463,7 @@ export function createUserChannelTests(
         `fdc3.instrument.${contextId}`,
         `fdc3.instrument.${contextId}`,
         errorMessage,
-        context => {
+        () => {
           assert.fail('fdc3.instrument context received');
         }
       );
@@ -475,7 +473,7 @@ export function createUserChannelTests(
         `fdc3.contact.${contextId}`,
         `fdc3.contact.${contextId}`,
         errorMessage,
-        context => {
+        () => {
           assert.fail('fdc3.contact context received');
         }
       );
@@ -497,24 +495,12 @@ export function createUserChannelTests(
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A unsubscribes the listener\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId9);
-      let listener = await cc.setupAndValidateListener(
-        null,
-        'fdc3.instrument',
-        'unexpected-context',
-        errorMessage,
-        () => {
-          /* noop */
-        }
-      );
-      let listener2 = await cc.setupAndValidateListener(
-        null,
-        'fdc3.contact',
-        'unexpected-context',
-        errorMessage,
-        () => {
-          /* noop */
-        }
-      );
+      await cc.setupAndValidateListener(null, 'fdc3.instrument', 'unexpected-context', errorMessage, () => {
+        /* noop */
+      });
+      await cc.setupAndValidateListener(null, 'fdc3.contact', 'unexpected-context', errorMessage, () => {
+        /* noop */
+      });
       const channel = await cc.getNonGlobalUserChannel();
       await cc.openChannelApp(scTestId9, channel.id, JOIN_AND_BROADCAST);
       await resolveExecutionCompleteListener;
@@ -531,7 +517,7 @@ export function createUserChannelTests(
       }
       await cc.joinChannel(channels[2]);
       const currentChannel = await cc.getCurrentChannel();
-      expect(channels[2].id, errorMessage).to.be.equal(currentChannel.id);
+      expect(channels[2].id, errorMessage).to.be.equal(currentChannel?.id);
     });
   });
 }
