@@ -10,8 +10,11 @@ export function failAfterTimeout(timeoutMs: number = constants.WaitTime): Promis
 }
 
 export async function wait(timeoutMs?: number): Promise<void> {
-  const { promise, timeout } = sleep(timeoutMs);
-  return promise;
+  return new Promise<void>(resolve => {
+    setTimeout(() => {
+      resolve();
+    }, timeoutMs);
+  });
 }
 
 export function wrapPromise(): {
@@ -19,13 +22,19 @@ export function wrapPromise(): {
   resolve: () => void;
   reject: (reason?: any) => void;
 } {
-  let wrapperResolve;
-  let wrapperReject;
+  let wrapperResolve: (() => void) | undefined;
+  let wrapperReject: ((reason?: any) => void) | undefined;
+
   const promise = new Promise<void>((resolve, reject) => {
     wrapperResolve = resolve;
     wrapperReject = reject;
   });
-  return { promise, resolve: wrapperResolve, reject: wrapperReject };
+
+  return {
+    promise,
+    resolve: wrapperResolve!,
+    reject: wrapperReject!,
+  };
 }
 
 export function failOnTimeout(errorMessage) {
@@ -33,4 +42,9 @@ export function failOnTimeout(errorMessage) {
     assert.fail(errorMessage);
   }, constants.WaitTime);
   return timeout;
+}
+
+export function handleFail(documentation: string, ex: any) {
+  const message = ex instanceof Error ? ex.message : String(ex);
+  assert.fail(documentation + message);
 }

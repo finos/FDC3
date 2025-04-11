@@ -1,6 +1,6 @@
 import { assert, expect } from 'chai';
 import { APIDocumentation2_0 } from '../../v2.0/apiDocuments-2.0';
-import { failOnTimeout, wrapPromise } from '../../../utils';
+import { failOnTimeout, handleFail, wrapPromise } from '../../../utils';
 import { closeMockAppWindow } from '../fdc3-2_0-utils';
 import { IntentUtilityContext } from '../../../context-types';
 import { MetadataFdc3Api } from '../support/metadata-support-2.0';
@@ -11,7 +11,7 @@ import {
   IntentApp,
   RaiseIntentControl2_0,
 } from '../support/intent-support-2.0';
-import { AppIdentifier, IntentResolution } from '@finos/fdc3';
+import { AppIdentifier, IntentResolution, Listener } from '@finos/fdc3';
 
 const findInstancesDocs = '\r\nDocumentation: ' + APIDocumentation2_0.findInstances + '\r\nCause: ';
 
@@ -26,7 +26,8 @@ export default () =>
     const findInstances = '(2.0-FindInstances) valid appID when opening multiple instances of the same app';
     it(findInstances, async () => {
       const api = new MetadataFdc3Api();
-      let listener;
+      let listener: Listener | undefined;
+
       try {
         const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA); // open IntentAppA
         const appIdentifier2 = await control.openIntentApp(IntentApp.IntentAppA); // open second instance of IntentAppA
@@ -63,9 +64,11 @@ export default () =>
         validateResolutionSource(resolution, appIdentifier);
         await wrapper.promise; // wait for context from IntentAppA
       } catch (ex) {
-        assert.fail(findInstancesDocs + (ex.message ?? ex));
+        handleFail(findInstancesDocs, ex);
       } finally {
-        control.unsubscribeListener(listener);
+        if (listener) {
+          control.unsubscribeListener(listener);
+        }
       }
     });
   });
