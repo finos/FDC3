@@ -81,7 +81,7 @@ export class ChannelService2_0 implements IChannelService<Channel> {
 
   //system channel broadcast service
   private systemChannelBroadcastService: IBroadcastService<Channel> = {
-    broadcast: async (contextType: string, historyItems: number, ignored, testId: string) => {
+    broadcast: async (contextType: string, historyItems: number, _ignored: Channel, testId: string) => {
       for (let i = 0; i < historyItems; i++) {
         let context: AppControlContext = {
           type: contextType,

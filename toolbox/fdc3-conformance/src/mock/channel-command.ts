@@ -1,4 +1,4 @@
-import { ChannelsAppConfig } from '../test/common/control/channel-control';
+import { ChannelsAppConfig } from '../test/support/channel-control';
 import { commands } from './constants';
 import { IChannelService } from './interfaces';
 

@@ -1,11 +1,11 @@
 import { assert, expect } from 'chai';
 import { AppIdentifier, Context, DesktopAgent, Listener, OpenError } from '@finos/fdc3';
-import constants from '../../../constants';
-import { ContextSender } from '../../../mock/v2.0/general';
-import { failAfterTimeout } from '../../../utils';
-import { AppControlContext } from '../../../context-types';
-import { OpenControl } from '../../common/control/open-control';
-import { APIDocumentation2_0 } from '../apiDocuments-2.0';
+import constants from '../../constants';
+import { ContextSender } from '../../mock/v2.0/general';
+import { failAfterTimeout } from '../../utils';
+import { AppControlContext } from '../../context-types';
+import { OpenControl } from '../support/open-control';
+import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
 import { closeMockAppWindow } from '../fdc3-2_0-utils';
 import { ControlContextType } from './intent-support-2.0';
 

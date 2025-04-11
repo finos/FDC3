@@ -1,4 +1,4 @@
-import { assert, expect } from 'chai';
+import { expect } from 'chai';
 import {
   IntentResolution,
   AppIdentifier,
@@ -9,9 +9,8 @@ import {
   DesktopAgent,
   ImplementationMetadata,
 } from '@finos/fdc3';
-import { prototype } from 'mocha';
-import constants from '../../../constants';
-import { APIDocumentation2_0 } from '../apiDocuments-2.0';
+import constants from '../../constants';
+import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
 
 const getMetadataDocs = '\r\nDocumentation: ' + APIDocumentation2_0.appMetadata + '\r\nCause: ';
 const getInfoDocs = '\r\nDocumentation: ' + APIDocumentation2_0.getInfo + '\r\nCause';
@@ -122,15 +121,6 @@ export class MetadataFdc3Api {
     return await fdc3.getInfo();
   }
 }
-
-const isArrayOfObjects = (array): boolean => {
-  return (
-    array.length > 0 &&
-    array.every(value => {
-      return typeof value === 'object';
-    })
-  );
-};
 
 export interface MetadataContext extends Context {
   implMetadata?: ImplementationMetadata;

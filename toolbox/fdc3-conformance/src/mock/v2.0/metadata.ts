@@ -1,6 +1,6 @@
 import { closeWindowOnCompletion, sendContextToTests } from './mock-functions';
 import { getAgent } from '@finos/fdc3';
-import { ControlContextType } from '../../test/v2.0/support/intent-support-2.0';
+import { ControlContextType } from '../../test/support/intent-support-2.0';
 
 getAgent().then(async fdc3 => {
   await closeWindowOnCompletion(fdc3);

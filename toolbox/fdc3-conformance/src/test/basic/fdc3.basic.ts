@@ -1,11 +1,11 @@
 import { DesktopAgent } from '@finos/fdc3';
 
-import { APIDocumentation2_0 } from '../apiDocuments-2.0';
+import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
 import { ContextType, Intent } from '../support/intent-support-2.0';
 import { closeMockAppWindow } from '../fdc3-2_0-utils';
 
 import { assert, expect } from 'chai';
-import { handleFail } from '../../../utils';
+import { handleFail } from '../../utils';
 
 let basicCL1 = (fdc3: DesktopAgent, documentation: string) => {
   it('(BasicCL1) Method is callable', async () => {

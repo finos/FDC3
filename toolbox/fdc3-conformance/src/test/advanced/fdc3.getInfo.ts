@@ -1,9 +1,9 @@
 import { expect } from 'chai';
-import { handleFail } from '../../../utils';
+import { handleFail } from '../../utils';
 import { closeMockAppWindow } from '../fdc3-2_0-utils';
 import { Listener } from '@finos/fdc3';
 import { MetadataValidator, MetadataContext, MetadataFdc3Api } from '../support/metadata-support-2.0';
-import { APIDocumentation2_0 } from '../apiDocuments-2.0';
+import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
 import { ControlContextType } from '../support/intent-support-2.0';
 
 const getInfoDocs = '\r\nDocumentation: ' + APIDocumentation2_0.getInfo + '\r\nCause';

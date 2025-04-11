@@ -1,7 +1,7 @@
-import { Channel, Context, DesktopAgent, Listener } from '@finos/fdc3';
-import { AppControlContext, AppControlContextListener } from '../../context-types';
-import constants from '../../constants';
-import { wait } from '../../utils';
+import { Channel, Context, DesktopAgent } from '@finos/fdc3';
+import { AppControlContext, AppControlContextListener } from '../context-types';
+import constants from '../constants';
+import { wait } from '../utils';
 
 declare let fdc3: DesktopAgent;
 
@@ -13,7 +13,7 @@ export async function closeMockAppWindow(testId: string, count: number = 1) {
   await wait(constants.WindowCloseWaitTime); // wait for window to close
 }
 
-const broadcastCloseWindow = async currentTest => {
+const broadcastCloseWindow = async (currentTest: string) => {
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   appControlChannel.broadcast({
     type: 'closeWindow',
@@ -27,8 +27,8 @@ export const waitForContext = async (
   channel: Channel,
   count = 1
 ): Promise<AppControlContextListener> => {
-  let promiseResolve;
-  let promiseReject;
+  let promiseResolve: (c: Context) => void;
+  let promiseReject: (x: unknown) => void;
 
   const listenerPromise = new Promise<Context>((resolve, reject) => {
     promiseResolve = resolve;
@@ -55,7 +55,7 @@ export const waitForContext = async (
         console.log(`Wrong test id expected:  ${testId} got: ${ctx['testId']}`);
       }
     })
-    .then(cl => {
+    .then(() => {
       return {
         listenerPromise,
       };

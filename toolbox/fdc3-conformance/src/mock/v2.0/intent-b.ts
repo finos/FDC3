@@ -3,7 +3,7 @@ import { getAgent } from '@finos/fdc3';
 import { sendContextToTests } from '../v2.0/mock-functions';
 import { wait } from '../../utils';
 import { AppControlContext, IntentUtilityContext } from '../../context-types';
-import { ControlContextType, Intent } from '../../test/v2.0/support/intent-support-2.0';
+import { ControlContextType, Intent } from '../../test/support/intent-support-2.0';
 
 getAgent().then(async fdc3 => {
   await closeWindowOnCompletion(fdc3);

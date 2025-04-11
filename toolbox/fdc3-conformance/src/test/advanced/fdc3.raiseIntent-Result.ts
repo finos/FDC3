@@ -8,17 +8,16 @@ import {
   Intent,
   ControlContextType,
 } from '../support/intent-support-2.0';
-import { wait } from '../../../utils';
-import constants from '../../../constants';
+import constants from '../../constants';
 
 const control = new RaiseIntentControl2_0();
 
 export default () =>
   describe('fdc3.raiseIntent (Result)', () => {
-    let errorListener: Listener = undefined;
+    let errorListener: Listener | undefined = undefined;
 
     afterEach(async function afterEach() {
-      await closeMockAppWindow(this.currentTest.title);
+      await closeMockAppWindow(this.currentTest?.title ?? 'Unknown test');
 
       if (errorListener) {
         errorListener.unsubscribe();

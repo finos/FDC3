@@ -10,18 +10,16 @@ import {
   DesktopAgent,
   getOrCreateChannel,
 } from '@finos/fdc3';
-import { APIDocumentation2_0 } from '../apiDocuments-2.0';
-import constants from '../../../constants';
-import { sleep, wrapPromise } from '../../../utils';
-import { AppControlContext, AppControlContextListener, IntentUtilityContext } from '../../../context-types';
-import { waitForContext } from '../fdc3-2_0-utils';
+import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
+import constants from '../../constants';
+import { handleFail, wait, wrapPromise } from '../../utils';
+import { AppControlContext, IntentUtilityContext } from '../../context-types';
 
 declare let fdc3: DesktopAgent;
 const raiseIntentDocs = '\r\nDocumentation: ' + APIDocumentation2_0.raiseIntent + '\r\nCause';
 
 export class RaiseIntentControl2_0 {
   async receiveContext(contextType: string, waitTime?: number, count: number = 1): Promise<AppControlContext> {
-    let timeout: number;
     const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
     return new Promise<Context>(async (resolve, reject) => {
       const listener = await appControlChannel.addContextListener(contextType, (context: AppControlContext) => {
@@ -29,15 +27,12 @@ export class RaiseIntentControl2_0 {
         console.log(`Received ${contextType} waiting for ${count} more`);
         if (count == 0) {
           resolve(context);
-          clearTimeout(timeout);
           listener.unsubscribe();
         }
       });
 
       //if no context received reject promise
-      const { promise: sleepPromise, timeout: theTimeout } = sleep(waitTime ?? constants.WaitTime);
-      timeout = theTimeout;
-      await sleepPromise;
+      await wait(waitTime ?? constants.WaitTime);
       if (count > 0) {
         reject(
           new Error(
@@ -48,11 +43,11 @@ export class RaiseIntentControl2_0 {
     });
   }
 
-  async openIntentApp(appId): Promise<AppIdentifier> {
+  async openIntentApp(appId: string): Promise<AppIdentifier> {
     try {
       return await fdc3.open({ appId: appId });
     } catch (ex) {
-      assert.fail(`Error while attempting to open the mock app: ${ex.message ?? ex}`);
+      handleFail('Error while attempting to open the mock app', ex);
     }
   }
 
@@ -91,7 +86,7 @@ export class RaiseIntentControl2_0 {
         return await fdc3.raiseIntent(intent, context);
       }
     } catch (ex) {
-      assert.fail(`${ex.message ?? ex}`);
+      throw handleFail('Intent Support', ex);
     }
   }
 
@@ -99,7 +94,7 @@ export class RaiseIntentControl2_0 {
     try {
       return await fdc3.findInstances({ appId: appId });
     } catch (ex) {
-      assert.fail(`Error while attempting to find instances: ${ex.message ?? ex}`);
+      handleFail(`Error while attempting to find instances`, ex);
     }
   }
 
@@ -128,7 +123,11 @@ export class RaiseIntentControl2_0 {
     await privateChannel.broadcast({ type: contextType });
   }
 
-  validateIntentResult(intentResult, expectedIntentResultType: IntentResultType, expectedContextType?: string) {
+  validateIntentResult(
+    intentResult: IntentResult,
+    expectedIntentResultType: IntentResultType,
+    expectedContextType?: string
+  ) {
     switch (expectedIntentResultType) {
       case IntentResultType.Context: {
         if (expectedContextType) {
@@ -137,11 +136,12 @@ export class RaiseIntentControl2_0 {
             `The promise received by Test from resolution.getResult() should resolve to a ${expectedContextType} instance`
           ).to.have.property('type');
           expect(
-            intentResult.type,
-            `The promise received by Test from resolution.getResult() should resolve to a ${expectedContextType} instance. Instead resolved to ${intentResult.type}`
+            intentResult?.type,
+            `The promise received by Test from resolution.getResult() should resolve to a ${expectedContextType} instance. Instead resolved to ${intentResult?.type}`
           ).to.be.equal(expectedContextType);
           break;
         }
+        break;
       }
       case IntentResultType.Void: {
         expect(intentResult, 'The promise received by Test from resolution.getResult() should resolve to void').to.be
@@ -151,8 +151,8 @@ export class RaiseIntentControl2_0 {
       case IntentResultType.Channel: {
         expect(intentResult).to.have.property('id');
         expect(intentResult).to.have.property('type');
-        expect(intentResult.type).to.be.equal('app');
-        expect(intentResult.id).to.be.equal('test-channel');
+        expect(intentResult?.type).to.be.equal('app');
+        expect(intentResult?.id).to.be.equal('test-channel');
         break;
       }
       case IntentResultType.PrivateChannel: {
@@ -162,7 +162,7 @@ export class RaiseIntentControl2_0 {
         expect(intentResult).to.have.property('disconnect');
         expect(intentResult).to.have.property('id');
         expect(intentResult).to.have.property('type');
-        expect(intentResult.type).to.be.equal('private');
+        expect(intentResult?.type).to.be.equal('private');
       }
     }
   }

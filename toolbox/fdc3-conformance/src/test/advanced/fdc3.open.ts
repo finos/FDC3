@@ -1,6 +1,6 @@
-import constants from '../../../constants';
-import { openApp, OpenCommonConfig } from '../../common/control/open-control';
-import { APIDocumentation2_0 } from '../apiDocuments-2.0';
+import constants from '../../constants';
+import { openApp, OpenCommonConfig } from '../support/open-control';
+import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
 import { OpenControl2_0 } from '../support/open-support-2.0';
 import { getAgent } from '@finos/fdc3';
 import { assert, expect } from 'chai';
@@ -105,5 +105,13 @@ export default () =>
       expect(instanceIdentifier).to.have.property('instanceId');
       await result;
       await control.closeMockApp(AOpensB4);
+    });
+
+    const AOpensBMalformedContext = `(AOpensBMalformedContext) App B listeners receive nothing when passing a malformed context`;
+    it(AOpensBMalformedContext, async () => {
+      const receiver = control.contextReceiver(ControlContextType.CONTEXT_RECEIVED);
+      await control.openMockApp(control.createTargetAppIdentifier(openApp.f.name));
+      await receiver;
+      await control.closeMockApp(AOpensBMalformedContext);
     });
   });

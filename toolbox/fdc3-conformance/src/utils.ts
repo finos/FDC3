@@ -37,14 +37,7 @@ export function wrapPromise(): {
   };
 }
 
-export function failOnTimeout(errorMessage) {
-  let timeout = window.setTimeout(() => {
-    assert.fail(errorMessage);
-  }, constants.WaitTime);
-  return timeout;
-}
-
-export function handleFail(documentation: string, ex: any) {
+export function handleFail(documentation: string, ex: any): never {
   const message = ex instanceof Error ? ex.message : String(ex);
   assert.fail(documentation + message);
 }
