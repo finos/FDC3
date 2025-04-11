@@ -32,7 +32,7 @@ export default () =>
       "(2.0-RaiseIntentSingleResolve) Should start app intent-a when raising intent 'aTestingIntent1' with context 'testContextX'";
     it(RaiseIntentSingleResolve, async () => {
       errorListener = await control.listenForError();
-      const result = control.receiveContext(ControlContextType.aTestingIntentListenerTriggered);
+      const result = control.receiveContext(ControlContextType.A_TESTING_INTENT_LISTENER_TRIGGERED);
       const intentResolution = await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextX);
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       await result;
@@ -42,7 +42,7 @@ export default () =>
       "(2.0-RaiseIntentTargetedAppResolve) Should start app intent-b when raising intent 'sharedTestingIntent1' with context 'testContextX'";
     it(RaiseIntentTargetedAppResolve, async () => {
       errorListener = await control.listenForError();
-      const result = control.receiveContext(ControlContextType.sharedTestingIntent1ListenerTriggered);
+      const result = control.receiveContext(ControlContextType.SHARED_TESTING_INTENT1_LISTENER_TRIGGERED);
       const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent1, ContextType.testContextX, {
         appId: IntentApp.IntentAppB,
       });
@@ -56,7 +56,7 @@ export default () =>
       // add app control listeners
       errorListener = await control.listenForError();
       const confirmAppOpened = control.receiveContext('intent-app-a-opened');
-      const result = control.receiveContext(ControlContextType.aTestingIntentListenerTriggered);
+      const result = control.receiveContext(ControlContextType.A_TESTING_INTENT_LISTENER_TRIGGERED);
 
       const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
       await confirmAppOpened;
@@ -78,9 +78,9 @@ export default () =>
       // add app control listeners
       errorListener = await control.listenForError();
       const confirmAppOpened = control.receiveContext('intent-app-a-opened');
-      const result = control.receiveContext(ControlContextType.aTestingIntentListenerTriggered);
+      const result = control.receiveContext(ControlContextType.A_TESTING_INTENT_LISTENER_TRIGGERED);
 
-      const appOpen = control.receiveContext(ControlContextType.intentAppAOpened, 2000, 1);
+      const appOpen = control.receiveContext(ControlContextType.INTENT_APP_A_OPENED, 2000, 1);
       const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
 
       await appOpen;
@@ -134,7 +134,7 @@ export default () =>
       '(2.0-PrivateChannelsLifecycleEvents) PrivateChannel lifecycle events are triggered when expected';
     it(PrivateChannelsLifecycleEvents, async () => {
       errorListener = await control.listenForError();
-      const onUnsubscribeReceiver = control.receiveContext(ControlContextType.onUnsubscribeTriggered);
+      const onUnsubscribeReceiver = control.receiveContext(ControlContextType.ON_UNSUBSCRIBE_TRIGGERED);
       const intentResolution = await control.raiseIntent(Intent.kTestingIntent, ContextType.testContextX, {
         appId: IntentApp.IntentAppK,
       });
@@ -148,8 +148,8 @@ export default () =>
       const textContextXReceiver = control.receiveContext(ContextType.testContextX);
       control.privateChannelBroadcast(<PrivateChannel>result, ContextType.testContextX);
       await textContextXReceiver;
-      const onUnsubscribeReceiver2 = control.receiveContext(ControlContextType.onUnsubscribeTriggered);
-      const onDisconnectReceiver = control.receiveContext(ControlContextType.onDisconnectTriggered);
+      const onUnsubscribeReceiver2 = control.receiveContext(ControlContextType.ON_UNSUBSCRIBE_TRIGGERED);
+      const onDisconnectReceiver = control.receiveContext(ControlContextType.ON_DISCONNECT_TRIGGERED);
       let listener2 = await control.receiveContextStreamFromMockApp(<PrivateChannel>result, 6, 10);
       control.disconnectPrivateChannel(<PrivateChannel>result);
 

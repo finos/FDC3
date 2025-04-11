@@ -1,9 +1,8 @@
-import { closeWindowOnCompletion, onFdc3Ready } from './mock-functions';
-import { DesktopAgent } from '@finos/fdc3';
-declare let fdc3: DesktopAgent;
+import { closeWindowOnCompletion } from './mock-functions';
+import { getAgent } from '@finos/fdc3';
 
-onFdc3Ready().then(async () => {
-  await closeWindowOnCompletion();
+getAgent().then(async fdc3 => {
+  await closeWindowOnCompletion(fdc3);
   fdc3.addIntentListener('MadeUpIntent', async context => {
     return context;
   });

@@ -1,25 +1,23 @@
-import { closeWindowOnCompletion, onFdc3Ready, sendContextToTests, validateContext } from './mock-functions';
-import { DesktopAgent } from '@finos/fdc3';
+import { closeWindowOnCompletion, sendContextToTests, validateContext } from './mock-functions';
+import { getAgent } from '@finos/fdc3';
 import { wait } from '../../utils';
 import { IntentUtilityContext } from '../../context-types';
-import constants from '../../constants';
 import { ContextType, ControlContextType, Intent } from '../../test/v2.0/support/intent-support-2.0';
-declare let fdc3: DesktopAgent;
 
 //used in '2.0-PrivateChannelsLifecycleEvents'
-onFdc3Ready().then(async () => {
-  await closeWindowOnCompletion();
+getAgent().then(async fdc3 => {
+  await closeWindowOnCompletion(fdc3);
 
   fdc3.addIntentListener(Intent.kTestingIntent, async context => {
-    validateContext(context.type, ContextType.testContextX);
+    validateContext(fdc3, context.type, ContextType.testContextX);
     const privChan = await fdc3.createPrivateChannel();
 
     await privChan.addContextListener(ContextType.testContextX, async () => {
-      await sendContextToTests({ type: ContextType.testContextX }); //let test know addContextListener was triggered
+      await sendContextToTests(fdc3, { type: ContextType.testContextX }); //let test know addContextListener was triggered
     });
 
     let contextStreamNumber = 1;
-    privChan.onAddContextListener(async contextType => {
+    privChan.onAddContextListener(async () => {
       await wait(100); //wait for listener in test to initialise
 
       //stream multiple contexts to test in short succession
@@ -37,14 +35,14 @@ onFdc3Ready().then(async () => {
       }
     });
 
-    await privChan.onUnsubscribe(async contextType => {
+    await privChan.onUnsubscribe(async () => {
       //let test know onUnsubscribe was triggered
-      await sendContextToTests({ type: ControlContextType.onUnsubscribeTriggered });
+      await sendContextToTests(fdc3, { type: ControlContextType.ON_UNSUBSCRIBE_TRIGGERED });
     });
 
     await privChan.onDisconnect(async () => {
       //let test know onUnsubscribe was triggered
-      await sendContextToTests({ type: ControlContextType.onDisconnectTriggered });
+      await sendContextToTests(fdc3, { type: ControlContextType.ON_DISCONNECT_TRIGGERED });
     });
 
     return privChan;

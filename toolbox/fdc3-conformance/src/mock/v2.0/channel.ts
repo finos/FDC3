@@ -1,19 +1,15 @@
 import { ChannelService2_0 } from './support/channel-support-2.0';
-import { onFdc3Ready } from './mock-functions';
-import { DesktopAgent } from '@finos/fdc3';
+import { Context, getAgent } from '@finos/fdc3';
 import { Fdc3CommandExecutor } from '../channel-command';
-import { ChannelsAppContext } from '../../test/common/control/channel-control';
 
-declare let fdc3: DesktopAgent;
-
-onFdc3Ready().then(() => {
+getAgent().then(fdc3 => {
   let firedOnce = false;
-  //await commands from App A, then execute commands
-  fdc3.addContextListener('channelsAppContext', (context: ChannelsAppContext) => {
-    if (firedOnce === false) {
+
+  fdc3.addContextListener('channelsAppContext', (context: Context) => {
+    if (firedOnce === false && context.type == 'channelsAppContext') {
       firedOnce = true;
       const commandExecutor = new Fdc3CommandExecutor();
-      commandExecutor.executeCommands(context.commands, context.config, new ChannelService2_0());
+      commandExecutor.executeCommands(context.commands, context.config, new ChannelService2_0(fdc3));
     }
   });
 });

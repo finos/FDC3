@@ -269,16 +269,16 @@ export enum ContextType {
 }
 
 export enum ControlContextType {
-  contextReceived = 'context-received',
-  error = 'error',
-  aTestingIntentListenerTriggered = 'aTestingIntent-listener-triggered',
-  intentAppAOpened = 'intent-app-a-opened',
-  sharedTestingIntent1ListenerTriggered = 'sharedTestingIntent1-listener-triggered',
-  sharedTestingIntent2ResultSent = 'sharedTestingIntent2-result-sent',
-  onUnsubscribeTriggered = 'onUnsubscribeTriggered',
-  onDisconnectTriggered = 'onDisconnectTriggered',
-  ContextListenerTriggered = 'context-listener-triggered',
-  IntentListenerTriggered = 'intent-listener-triggered',
+  CONTEXT_RECEIVED = 'context-received',
+  ERROR = 'error',
+  A_TESTING_INTENT_LISTENER_TRIGGERED = 'aTestingIntent-listener-triggered',
+  INTENT_APP_A_OPENED = 'intent-app-a-opened',
+  SHARED_TESTING_INTENT1_LISTENER_TRIGGERED = 'sharedTestingIntent1-listener-triggered',
+  SHARED_TESTING_INTENT_2_RESULT_SENT = 'sharedTestingIntent2-result-sent',
+  ON_UNSUBSCRIBE_TRIGGERED = 'onUnsubscribeTriggered',
+  ON_DISCONNECT_TRIGGERED = 'onDisconnectTriggered',
+  CONTEXT_LISTENER_TRIGGERED = 'context-listener-triggered',
+  INTENT_LISTENER_TRIGGERED = 'intent-listener-triggered',
 }
 
 export enum Intent {

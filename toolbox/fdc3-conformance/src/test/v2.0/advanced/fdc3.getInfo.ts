@@ -48,7 +48,7 @@ export default () =>
       const wrapper = wrapPromise();
 
       listener = await appControlChannel.addContextListener(
-        ControlContextType.ContextListenerTriggered,
+        ControlContextType.CONTEXT_LISTENER_TRIGGERED,
         async (context: MetadataContext) => {
           implMetadata = context.implMetadata;
           wrapper.resolve();

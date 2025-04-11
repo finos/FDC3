@@ -41,14 +41,14 @@ export default () =>
         validateInstances(instances, appIdentifier, appIdentifier2);
 
         const timeout = failOnTimeout(
-          `'${ControlContextType.aTestingIntentListenerTriggered}' context not received from mock app`
+          `'${ControlContextType.A_TESTING_INTENT_LISTENER_TRIGGERED}' context not received from mock app`
         ); // fail if expected context not received
         const wrapper = wrapPromise();
         const appControlChannel = await api.retrieveAppControlChannel();
 
         //ensure appIdentifier received the raised intent
         listener = await appControlChannel.addContextListener(
-          ControlContextType.aTestingIntentListenerTriggered,
+          ControlContextType.A_TESTING_INTENT_LISTENER_TRIGGERED,
           (context: IntentUtilityContext) => {
             expect(
               context['instanceId'],

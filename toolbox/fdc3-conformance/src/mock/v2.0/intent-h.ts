@@ -1,5 +1,6 @@
-import { closeWindowOnCompletion, onFdc3Ready } from './mock-functions';
+import { getAgent } from '@finos/fdc3';
+import { closeWindowOnCompletion } from './mock-functions';
 
-onFdc3Ready().then(async () => {
-  await closeWindowOnCompletion();
+getAgent().then(async fdc3 => {
+  await closeWindowOnCompletion(fdc3);
 });
