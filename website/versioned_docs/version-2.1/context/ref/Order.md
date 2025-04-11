@@ -16,7 +16,7 @@ This type currently only defines a required `id` field, which should provide a r
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/2.1/context/order.schema.json](https://fdc3.finos.org/schemas/2.1/context/order.schema.json)
+[https://fdc3.finos.org/schemas/2.1/context/order.schema.json](pathname:///schemas/2.1/context/order.schema.json)
 
 ## Details
 
