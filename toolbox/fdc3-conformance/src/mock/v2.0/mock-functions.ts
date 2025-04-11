@@ -1,19 +1,8 @@
-import { DesktopAgent, fdc3Ready } from '@finos/fdc3';
+import { DesktopAgent } from '@finos/fdc3';
 import constants from '../../constants';
 import { AppControlContext } from '../../context-types';
 
-declare let fdc3: DesktopAgent;
-
-export const onFdc3Ready = () =>
-  new Promise(resolve => {
-    if (window.fdc3) {
-      resolve(undefined);
-    } else {
-      fdc3Ready().then(() => resolve(undefined));
-    }
-  });
-
-export const closeWindowOnCompletion = async () => {
+export const closeWindowOnCompletion = async (fdc3: DesktopAgent) => {
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   await appControlChannel.addContextListener('closeWindow', async (context: AppControlContext) => {
     //notify app A that window was closed
@@ -29,14 +18,14 @@ export const closeWindowOnCompletion = async () => {
   });
 };
 
-export const sendContextToTests = async (context: AppControlContext) => {
+export const sendContextToTests = async (fdc3: DesktopAgent, context: AppControlContext) => {
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   await appControlChannel.broadcast(context);
 };
 
-export const validateContext = (receivedContextType: string, expectedContextType: string): void => {
+export const validateContext = (fdc3: DesktopAgent, receivedContextType: string, expectedContextType: string): void => {
   if (expectedContextType !== receivedContextType) {
-    sendContextToTests({
+    sendContextToTests(fdc3, {
       type: 'error',
       errorMessage: `Incorrect context received for intent 'aTestingIntent. Expected ${expectedContextType}, got ${receivedContextType}`,
     });

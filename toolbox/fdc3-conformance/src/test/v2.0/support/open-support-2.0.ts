@@ -57,7 +57,7 @@ export class OpenControl2_0 implements OpenControl<Context> {
   }
   addListenerAndFailIfReceived = async () => {
     const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-    await appControlChannel.addContextListener(ControlContextType.contextReceived, (context: AppControlContext) => {
+    await appControlChannel.addContextListener(ControlContextType.CONTEXT_RECEIVED, (context: AppControlContext) => {
       assert.fail(context.errorMessage);
     });
   };

@@ -2,10 +2,9 @@
   "private": true,
   "scripts": {
     "copy": "shx mkdir -p ./dist && shx cp -R static/* ./dist",
-    "compile": "webpack build",
+    "build": "webpack build && npm run copy",
     "serve": "npx http-server ./dist -p 3001 -c-1",
-    "dev": "npm run copy && npm run compile && npm run serve",
-    "build-static": "npm run compile && npm run copy",
+    "dev": "npm run build && npm run serve",
     "lint": "eslint --fix src/",
     "clean": "rimraf dist"
   },

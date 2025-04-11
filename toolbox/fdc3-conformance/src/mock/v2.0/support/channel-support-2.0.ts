@@ -4,20 +4,26 @@ import { AppControlContext } from '../../../context-types';
 import { channelType } from '../../constants';
 import { IBroadcastService, IChannelService } from '../../interfaces';
 
-declare let fdc3: DesktopAgent;
-
 export class ChannelService2_0 implements IChannelService<Channel> {
+  constructor(fdc3: DesktopAgent) {
+    this.fdc3 = fdc3;
+  }
+
+  private fdc3: DesktopAgent;
+
   async joinRetrievedUserChannel(channelId: string): Promise<Channel> {
-    const userChannels = await fdc3.getUserChannels();
+    const userChannels = await this.fdc3.getUserChannels();
     const joinedChannel = userChannels.find(c => c.id === channelId);
     if (joinedChannel) {
-      await fdc3.joinUserChannel(channelId);
+      await this.fdc3.joinUserChannel(channelId);
       return joinedChannel;
+    } else {
+      throw new Error(`Channel with ID ${channelId} not found in user channels.`);
     }
   }
 
   async retrieveTestAppChannel(channelId: string): Promise<Channel> {
-    return await fdc3.getOrCreateChannel(channelId);
+    return await this.fdc3.getOrCreateChannel(channelId);
   }
 
   async broadcastContextItem(
@@ -32,7 +38,7 @@ export class ChannelService2_0 implements IChannelService<Channel> {
 
   async closeWindowOnCompletion(testId: string): Promise<void> {
     console.log(Date.now() + ` Setting up closeWindow listener`);
-    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
+    const appControlChannel = await this.fdc3.getOrCreateChannel(constants.ControlChannel);
     await appControlChannel.addContextListener('closeWindow', async () => {
       console.log(Date.now() + ` Received closeWindow message`);
       await appControlChannel.broadcast({ type: 'windowClosed', testId: testId } as AppControlContext);
@@ -44,7 +50,7 @@ export class ChannelService2_0 implements IChannelService<Channel> {
   }
 
   async notifyTestOnCompletion(testId: string): Promise<void> {
-    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
+    const appControlChannel = await this.fdc3.getOrCreateChannel(constants.ControlChannel);
     await this.broadcastContextItem('executionComplete', appControlChannel, 1, testId);
   }
 
@@ -82,7 +88,7 @@ export class ChannelService2_0 implements IChannelService<Channel> {
           name: `History-item-${i + 1}`,
           testId,
         };
-        await fdc3.broadcast(context);
+        await this.fdc3.broadcast(context);
       }
     },
   };

@@ -31,7 +31,7 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
     let context: any, targetApp: any;
     context = { type: 'fdc3.instrument', name: 'context' };
     targetApp = control.createTargetApp(openApp.b.name, openApp.b.id);
-    const receiver = control.contextReceiver(ControlContextType.contextReceived);
+    const receiver = control.contextReceiver(ControlContextType.CONTEXT_RECEIVED);
     await control.openMockApp(targetApp, context);
     await control.validateReceivedContext(await receiver, 'fdc3.instrument');
     await control.closeMockApp(AOpensBWithContext3);
@@ -42,7 +42,7 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
     let context: any, targetApp: any;
     context = { type: 'fdc3.instrument', name: 'context' };
     targetApp = control.createTargetApp(openApp.b.name, openApp.b.id);
-    const receiver = control.contextReceiver(ControlContextType.contextReceived);
+    const receiver = control.contextReceiver(ControlContextType.CONTEXT_RECEIVED);
     await control.openMockApp(targetApp, context);
     await control.validateReceivedContext(await receiver, 'fdc3.instrument');
     await control.closeMockApp(AOpensBWithSpecificContext);
@@ -53,7 +53,7 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
     let context: any, targetApp: any;
     context = { type: 'fdc3.instrument', name: 'context' };
     targetApp = control.createTargetApp(openApp.b.name, openApp.b.id);
-    const receiver = control.contextReceiver(ControlContextType.contextReceived);
+    const receiver = control.contextReceiver(ControlContextType.CONTEXT_RECEIVED);
     await control.openMockApp(targetApp, context);
     await receiver;
     await control.validateReceivedContext(await receiver, 'fdc3.instrument');
