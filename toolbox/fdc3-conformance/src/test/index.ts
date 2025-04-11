@@ -6,7 +6,7 @@ require('mocha/mocha.css');
 require('source-map-support/browser-source-map-support.js');
 
 mocha.setup('bdd');
-const version = document.getElementById('version');
+const version = document.getElementById('version')!;
 
 // populate drop-down
 getPackNames().forEach(pn => {
@@ -54,8 +54,8 @@ function returnToTestSelection() {
 }
 
 function toggleVersionSelector() {
-  const versionSelector = document.getElementById('version-selector');
-  const manualSelector = document.getElementById('manualTests-selector');
+  const versionSelector = document.getElementById('version-selector')!;
+  const manualSelector = document.getElementById('manualTests-selector')!;
   if (versionSelector.style.display === 'none') {
     versionSelector.style.display = 'block';
     manualSelector.style.display = 'block';
@@ -66,7 +66,7 @@ function toggleVersionSelector() {
 }
 
 function toggleBackButton() {
-  const backButton = document.getElementById('back-button');
+  const backButton = document.getElementById('back-button')!;
   if (window.getComputedStyle(backButton).display === 'none') {
     backButton.style.display = 'block';
   } else {
@@ -74,6 +74,6 @@ function toggleBackButton() {
   }
 }
 
-document.getElementById('runButton').addEventListener('click', executeTests);
-document.getElementById('back-button').addEventListener('click', returnToTestSelection);
-document.getElementById('manualTestsRunButton').addEventListener('click', executeManualTests);
+document.getElementById('runButton')!.addEventListener('click', executeTests);
+document.getElementById('back-button')!.addEventListener('click', returnToTestSelection);
+document.getElementById('manualTestsRunButton')!.addEventListener('click', executeManualTests);

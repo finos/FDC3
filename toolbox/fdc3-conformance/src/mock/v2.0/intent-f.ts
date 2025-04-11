@@ -1,6 +1,6 @@
 import { closeWindowOnCompletion, sendContextToTests, validateContext } from './mock-functions';
 import { getAgent } from '@finos/fdc3';
-import { ContextType, ControlContextType, Intent } from '../../test/v2.0/support/intent-support-2.0';
+import { ContextType, ControlContextType, Intent } from '../../test/support/intent-support-2.0';
 import constants from '../../constants';
 
 getAgent().then(async fdc3 => {

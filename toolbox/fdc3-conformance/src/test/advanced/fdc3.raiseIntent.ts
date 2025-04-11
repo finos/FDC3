@@ -17,10 +17,10 @@ const control = new RaiseIntentControl2_0();
  */
 export default () =>
   describe('fdc3.raiseIntent', () => {
-    let errorListener: Listener = undefined;
+    let errorListener: Listener | undefined = undefined;
 
     afterEach(async function afterEach() {
-      await closeMockAppWindow(this.currentTest.title);
+      await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test');
 
       if (errorListener) {
         errorListener.unsubscribe();
@@ -111,10 +111,12 @@ export default () =>
         await control.createAppChannel(privChan.id);
         assert.fail('No error was not thrown when calling fdc3.getOrCreateChannel(privateChannel.id)');
       } catch (ex) {
+        const message = ex instanceof Error ? ex.message : String(ex);
+
         expect(ex).to.have.property(
           'message',
           ChannelError.AccessDenied,
-          `Incorrect error received when calling fdc3.getOrCreateChannel(privateChannel.id). Expected AccessDenied, got ${ex.message}`
+          `Incorrect error received when calling fdc3.getOrCreateChannel(privateChannel.id). Expected AccessDenied, got ${message}`
         );
       }
 

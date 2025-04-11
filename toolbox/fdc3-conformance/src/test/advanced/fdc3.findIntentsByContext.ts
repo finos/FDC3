@@ -1,9 +1,9 @@
 import { AppIntent, ResolveError } from '@finos/fdc3';
 import { assert, expect } from 'chai';
-import { APIDocumentation2_0 } from '../apiDocuments-2.0';
+import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
 import { DesktopAgent } from '@finos/fdc3';
 import { ContextType, IntentApp, Intent } from '../support/intent-support-2.0';
-import { handleFail } from '../../../utils';
+import { handleFail } from '../../utils';
 
 declare let fdc3: DesktopAgent;
 const findIntentsByContextDocs = '\r\nDocumentation: ' + APIDocumentation2_0.findIntentsByContext;

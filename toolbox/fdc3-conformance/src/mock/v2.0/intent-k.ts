@@ -2,7 +2,7 @@ import { closeWindowOnCompletion, sendContextToTests, validateContext } from './
 import { getAgent } from '@finos/fdc3';
 import { wait } from '../../utils';
 import { IntentUtilityContext } from '../../context-types';
-import { ContextType, ControlContextType, Intent } from '../../test/v2.0/support/intent-support-2.0';
+import { ContextType, ControlContextType, Intent } from '../../test/support/intent-support-2.0';
 
 //used in '2.0-PrivateChannelsLifecycleEvents'
 getAgent().then(async fdc3 => {

@@ -1,7 +1,7 @@
 import { assert, expect } from 'chai';
 import { wait } from '../../utils';
-import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from './control/channel-control';
-import { ChannelControl } from './control/channel-control';
+import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from '../support/channel-control';
+import { ChannelControl } from '../support/channel-control';
 import constants from '../../constants';
 import { Context } from '@finos/fdc3';
 

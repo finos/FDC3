@@ -1,5 +1,5 @@
 import mocha from 'mocha';
-import constants from '../../constants';
+import constants from '../constants';
 import channels_2_0 from './advanced/channels';
 import fdc3FindIntent_2_0 from './advanced/fdc3.findIntent';
 import fdc3FindIntentsByContext_2_0 from './advanced/fdc3.findIntentsByContext';

@@ -1,9 +1,9 @@
 import { ResolveError } from '@finos/fdc3';
 import { assert, expect } from 'chai';
-import { APIDocumentation2_0 } from '../apiDocuments-2.0';
+import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
 import { ContextType, IntentApp, Intent, RaiseIntentControl2_0 } from '../support/intent-support-2.0';
-import constants from '../../../constants';
-import { sleep, wait } from '../../../utils';
+import constants from '../../constants';
+import { wait } from '../../utils';
 import { closeMockAppWindow } from '../fdc3-2_0-utils';
 
 const control = new RaiseIntentControl2_0();

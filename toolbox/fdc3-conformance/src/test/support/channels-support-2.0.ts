@@ -1,7 +1,7 @@
 import { assert, expect } from 'chai';
 import { Channel, Context, Listener, DesktopAgent } from '@finos/fdc3';
-import constants from '../../../constants';
-import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from '../../common/control/channel-control';
+import constants from '../../constants';
+import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from '../support/channel-control';
 import { closeMockAppWindow, waitForContext } from '../fdc3-2_0-utils';
 
 export class ChannelControl2_0 implements ChannelControl {
