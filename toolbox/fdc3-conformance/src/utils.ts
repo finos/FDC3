@@ -1,14 +1,12 @@
 import { assert } from 'chai';
 import constants from './constants';
 
-export function sleep(timeoutMs: number = constants.WaitTime) {
-  let timeout;
-  const promise = new Promise<void>(resolve => {
-    timeout = window.setTimeout(() => {
-      resolve();
+export function failAfterTimeout(timeoutMs: number = constants.WaitTime): Promise<void> {
+  return new Promise<void>((_, reject) => {
+    setTimeout(() => {
+      reject(new Error(`Test timed out after ${timeoutMs} ms`));
     }, timeoutMs);
   });
-  return { promise, timeout };
 }
 
 export async function wait(timeoutMs?: number): Promise<void> {

@@ -3,11 +3,7 @@ import { wait } from '../../utils';
 import constants from '../../constants';
 import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, ChannelControl } from './control/channel-control';
 
-export function createAppChannelTests(
-  cc: ChannelControl<any, any, any>,
-  documentation: string,
-  prefix: string
-): Mocha.Suite {
+export function createAppChannelTests(cc: ChannelControl, documentation: string, prefix: string): Mocha.Suite {
   return describe('App channels', () => {
     beforeEach(cc.leaveChannel);
 
@@ -202,7 +198,6 @@ export function createAppChannelTests(
 
       let testChannel = await cc.createRandomTestChannel();
       let receivedContext = false;
-      let secondReceivedContext = 0;
       const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId9);
       const differentAppChannel = await cc.createRandomTestChannel();
       let listener = await cc.setupAndValidateListener(
