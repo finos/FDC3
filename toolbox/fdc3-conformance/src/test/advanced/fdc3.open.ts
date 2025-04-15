@@ -15,11 +15,11 @@ const config: OpenCommonConfig = {
   targetMultiple: 'AppIdentifier',
 };
 
-export default () =>
-  describe('fdc3.open', async () => {
-    const fdc3 = await getAgent();
-    const control = new OpenControl2_0(fdc3);
+export default async () => {
+  const fdc3 = await getAgent();
+  const control = new OpenControl2_0(fdc3);
 
+  return describe('fdc3.open', () => {
     const AOpensB3 = `(${config.prefix}AOpensB3) Can open app B from app A with no context and ${config.targetMultiple} as config.target`;
     it(AOpensB3, async () => {
       let targetApp: any;
@@ -115,3 +115,4 @@ export default () =>
       await control.closeMockApp(AOpensBMalformedContext);
     });
   });
+};

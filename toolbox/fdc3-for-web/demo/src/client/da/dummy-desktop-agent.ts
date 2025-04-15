@@ -56,7 +56,7 @@ window.addEventListener('load', () => {
 
     const directory = new FDC3_2_1_JSONDirectory();
     await directory.load('/static/da/appd.json');
-    //await directory.load('/static/da/local-conformance-2_0.v2.json');
+    await directory.load('/static/da/local-conformance.v2.json');
     const sc = new DemoServerContext(socket, directory);
 
     const channelDetails: ChannelState[] = [
@@ -154,7 +154,11 @@ window.addEventListener('load', () => {
     // let's create buttons for some apps
     const appList = document.getElementById('app-list') as HTMLOListElement;
     directory.retrieveAllApps().forEach(app => {
-      appList.appendChild(createAppStartButton(app, sc));
+      const mani = app?.hostManifests?.demo as any;
+      const show = mani?.visible ?? true;
+      if (show) {
+        appList.appendChild(createAppStartButton(app, sc));
+      }
     });
 
     // set up Desktop Agent Proxy interface here

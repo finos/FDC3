@@ -75,6 +75,9 @@
 					"searchable": false,
 					"forceNewWindow": true
 				},
+				"demo": {
+					"visible": false
+				},
 				"Finsemble": {
 					"foreign": {
 						"components": {
@@ -114,6 +117,9 @@
 					"inject-api": "2.0",
 					"searchable": false,
 					"forceNewWindow": true
+				},
+				"demo": {
+					"visible": false
 				},
 				"Finsemble": {
 					"window": {
@@ -177,6 +183,9 @@
 					"searchable": false,
 					"forceNewWindow": true
 				},
+				"demo": {
+					"visible": false
+				},
 				"Finsemble": {
 					"window": {
 						"top": "center",
@@ -234,6 +243,9 @@
 					"searchable": false,
 					"forceNewWindow": true
 				},
+				"demo": {
+					"visible": false
+				},
 				"Finsemble": {
 					"window": {
 						"top": "center",
@@ -289,6 +301,9 @@
 					"inject-api": "2.0",
 					"searchable": false,
 					"forceNewWindow": true
+				},
+				"demo": {
+					"visible": false
 				},
 				"Finsemble": {
 					"window": {
@@ -346,6 +361,9 @@
 					"searchable": false,
 					"forceNewWindow": true
 				},
+				"demo": {
+					"visible": false
+				},
 				"Finsemble": {
 					"window": {
 						"top": "center",
@@ -401,6 +419,9 @@
 					"inject-api": "2.0",
 					"searchable": false,
 					"forceNewWindow": true
+				},
+				"demo": {
+					"visible": false
 				},
 				"Finsemble": {
 					"window": {
@@ -458,6 +479,9 @@
 					"searchable": false,
 					"forceNewWindow": true
 				},
+				"demo": {
+					"visible": false
+				},
 				"Finsemble": {
 					"window": {
 						"top": "center",
@@ -512,6 +536,9 @@
 					"inject-api": "2.0",
 					"searchable": false,
 					"forceNewWindow": true
+				},
+				"demo": {
+					"visible": false
 				},
 				"Finsemble": {
 					"window": {
@@ -569,6 +596,9 @@
 					"searchable": false,
 					"forceNewWindow": true
 				},
+				"demo": {
+					"visible": false
+				},
 				"Finsemble": {
 					"window": {
 						"top": "center",
@@ -625,6 +655,9 @@
 					"searchable": false,
 					"forceNewWindow": true
 				},
+				"demo": {
+					"visible": false
+				},
 				"Finsemble": {
 					"window": {
 						"top": "center",
@@ -680,6 +713,9 @@
 					"inject-api": "2.0",
 					"searchable": false,
 					"forceNewWindow": true
+				},
+				"demo": {
+					"visible": false
 				},
 				"Finsemble": {
 					"window": {
@@ -780,6 +816,9 @@
 					"searchable": false,
 					"forceNewWindow": true
 				},
+				"demo": {
+					"visible": false
+				},
 				"Finsemble": {
 					"window": {
 						"top": "center",
@@ -820,6 +859,9 @@
 					"inject-api": "2.0",
 					"searchable": false,
 					"forceNewWindow": true
+				},
+				"demo": {
+					"visible": false
 				},
 				"Finsemble": {
 					"window": {
@@ -866,6 +908,9 @@
 					"inject-api": "2.0",
 					"searchable": false,
 					"forceNewWindow": true
+				},
+				"demo": {
+					"visible": false
 				},
 				"Finsemble": {
 					"window": {
