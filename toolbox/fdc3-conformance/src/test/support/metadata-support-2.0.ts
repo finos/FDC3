@@ -69,13 +69,14 @@ export class MetadataValidator {
     ).to.be.equal('boolean');
   }
 
-  validateAppIdentifier(appIdentifier: AppIdentifier) {
-    expect(appIdentifier, `AppIdentifier did not have property appId${getInfoDocs}`).to.have.property('appId');
-    expect(typeof appIdentifier.appId).to.be.equal('string');
-    expect(appIdentifier, `AppIdentifier did not have property instanceId${getInfoDocs}`).to.have.property(
+  validateAppIdentifier(appIdentifier: AppIdentifier | undefined) {
+    expect(appIdentifier, `AppIdentifier is undefined${getInfoDocs} `).to.not.be.equal(undefined);
+    expect(appIdentifier, `AppIdentifier did not have property appId${getInfoDocs} `).to.have.property('appId');
+    expect(typeof appIdentifier!.appId).to.be.equal('string');
+    expect(appIdentifier, `AppIdentifier did not have property instanceId${getInfoDocs} `).to.have.property(
       'instanceId'
     );
-    expect(typeof appIdentifier.instanceId).to.be.equal('string');
+    expect(typeof appIdentifier!.instanceId).to.be.equal('string');
   }
 }
 

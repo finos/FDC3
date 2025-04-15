@@ -86,7 +86,7 @@ export class RaiseIntentControl2_0 {
         return await fdc3.raiseIntent(intent, context);
       }
     } catch (ex) {
-      throw handleFail('Intent Support', ex);
+      throw handleFail('', ex);
     }
   }
 
