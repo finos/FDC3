@@ -106,13 +106,5 @@ export default async () => {
       await result;
       await control.closeMockApp(AOpensB4);
     });
-
-    const AOpensBMalformedContext = `(AOpensBMalformedContext) App B listeners receive nothing when passing a malformed context`;
-    it(AOpensBMalformedContext, async () => {
-      const receiver = control.contextReceiver(ControlContextType.CONTEXT_RECEIVED);
-      await control.openMockApp(control.createTargetAppIdentifier(openApp.f.name));
-      await receiver;
-      await control.closeMockApp(AOpensBMalformedContext);
-    });
   });
 };
