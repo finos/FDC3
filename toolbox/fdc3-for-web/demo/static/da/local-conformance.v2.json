@@ -9,9 +9,11 @@
 			"details": {
 				"url": "http://localhost:3001/v2.0/app/index.html"
 			},
-			"screenshots": [{
-				"src": "https://directory.fdc3.finos.org/assets/app/Conformance1.png"
-			}],
+			"screenshots": [
+				{
+					"src": "https://directory.fdc3.finos.org/assets/app/Conformance1.png"
+				}
+			],
 			"hostManifests": {
 				"sail": {
 					"inject-api": "2.0"
@@ -41,14 +43,18 @@
 			},
 			"version": "1.0.0",
 			"publisher": "FINOS",
-			"icons": [{
-				"src": "http://localhost:3001/finos-icon-256.png"
-			}],
+			"icons": [
+				{
+					"src": "http://localhost:3001/finos-icon-256.png"
+				}
+			],
 			"interop": {
 				"intents": {
 					"listensFor": {
 						"ConformanceListener": {
-							"contexts": ["fdc3.nothing"]
+							"contexts": [
+								"fdc3.nothing"
+							]
 						}
 					}
 				}
@@ -69,6 +75,9 @@
 					"searchable": false,
 					"forceNewWindow": true
 				},
+				"demo": {
+					"visible": false
+				},
 				"Finsemble": {
 					"foreign": {
 						"components": {
@@ -88,9 +97,11 @@
 			},
 			"version": "1.0.0",
 			"publisher": "FINOS",
-			"icons": [{
-				"src": "http://localhost:3001/finos-icon-256.png"
-			}]
+			"icons": [
+				{
+					"src": "http://localhost:3001/finos-icon-256.png"
+				}
+			]
 		},
 		{
 			"appId": "IntentAppAId",
@@ -106,6 +117,9 @@
 					"inject-api": "2.0",
 					"searchable": false,
 					"forceNewWindow": true
+				},
+				"demo": {
+					"visible": false
 				},
 				"Finsemble": {
 					"window": {
@@ -129,19 +143,26 @@
 			},
 			"version": "1.0.0",
 			"publisher": "FINOS",
-			"icons": [{
-				"src": "http://localhost:3001/finos-icon-256.png"
-			}],
+			"icons": [
+				{
+					"src": "http://localhost:3001/finos-icon-256.png"
+				}
+			],
 			"interop": {
 				"intents": {
 					"listensFor": {
 						"aTestingIntent": {
 							"displayName": "A Testing Intent",
-							"contexts": ["testContextX", "testContextZ"]
+							"contexts": [
+								"testContextX",
+								"testContextZ"
+							]
 						},
 						"sharedTestingIntent1": {
 							"displayName": "Shared Testing Intent 1",
-							"contexts": ["testContextX"]
+							"contexts": [
+								"testContextX"
+							]
 						}
 					}
 				}
@@ -162,6 +183,9 @@
 					"searchable": false,
 					"forceNewWindow": true
 				},
+				"demo": {
+					"visible": false
+				},
 				"Finsemble": {
 					"window": {
 						"top": "center",
@@ -184,15 +208,20 @@
 			},
 			"version": "1.0.0",
 			"publisher": "FINOS",
-			"icons": [{
-				"src": "http://localhost:3001/finos-icon-256.png"
-			}],
+			"icons": [
+				{
+					"src": "http://localhost:3001/finos-icon-256.png"
+				}
+			],
 			"interop": {
 				"intents": {
 					"listensFor": {
 						"sharedTestingIntent1": {
 							"displayName": "Shared Testing Intent 1",
-							"contexts": ["testContextX", "testContextY"],
+							"contexts": [
+								"testContextX",
+								"testContextY"
+							],
 							"resultType": "testContextY"
 						}
 					}
@@ -214,6 +243,9 @@
 					"searchable": false,
 					"forceNewWindow": true
 				},
+				"demo": {
+					"visible": false
+				},
 				"Finsemble": {
 					"window": {
 						"top": "center",
@@ -236,15 +268,19 @@
 			},
 			"version": "1.0.0",
 			"publisher": "FINOS",
-			"icons": [{
-				"src": "http://localhost:3001/finos-icon-256.png"
-			}],
+			"icons": [
+				{
+					"src": "http://localhost:3001/finos-icon-256.png"
+				}
+			],
 			"interop": {
 				"intents": {
 					"listensFor": {
 						"cTestingIntent": {
 							"displayName": "C Testing Intent",
-							"contexts": ["testContextX"],
+							"contexts": [
+								"testContextX"
+							],
 							"resultType": "testContextZ"
 						}
 					}
@@ -266,6 +302,9 @@
 					"searchable": false,
 					"forceNewWindow": true
 				},
+				"demo": {
+					"visible": false
+				},
 				"Finsemble": {
 					"window": {
 						"top": "center",
@@ -288,15 +327,19 @@
 			},
 			"version": "1.0.0",
 			"publisher": "FINOS",
-			"icons": [{
-				"src": "http://localhost:3001/finos-icon-256.png"
-			}],
+			"icons": [
+				{
+					"src": "http://localhost:3001/finos-icon-256.png"
+				}
+			],
 			"interop": {
 				"intents": {
 					"listensFor": {
 						"sharedTestingIntent2": {
 							"displayName": "Shared Testing Intent 2",
-							"contexts": ["testContextX"],
+							"contexts": [
+								"testContextX"
+							],
 							"resultType": "testContextZ"
 						}
 					}
@@ -318,6 +361,9 @@
 					"searchable": false,
 					"forceNewWindow": true
 				},
+				"demo": {
+					"visible": false
+				},
 				"Finsemble": {
 					"window": {
 						"top": "center",
@@ -340,15 +386,19 @@
 			},
 			"version": "1.0.0",
 			"publisher": "FINOS",
-			"icons": [{
-				"src": "http://localhost:3001/finos-icon-256.png"
-			}],
+			"icons": [
+				{
+					"src": "http://localhost:3001/finos-icon-256.png"
+				}
+			],
 			"interop": {
 				"intents": {
 					"listensFor": {
 						"sharedTestingIntent2": {
 							"displayName": "Shared Testing Intent 2",
-							"contexts": ["testContextY"],
+							"contexts": [
+								"testContextY"
+							],
 							"resultType": "channel"
 						}
 					}
@@ -370,6 +420,9 @@
 					"searchable": false,
 					"forceNewWindow": true
 				},
+				"demo": {
+					"visible": false
+				},
 				"Finsemble": {
 					"window": {
 						"top": "center",
@@ -392,15 +445,19 @@
 			},
 			"version": "1.0.0",
 			"publisher": "FINOS",
-			"icons": [{
-				"src": "http://localhost:3001/finos-icon-256.png"
-			}],
+			"icons": [
+				{
+					"src": "http://localhost:3001/finos-icon-256.png"
+				}
+			],
 			"interop": {
 				"intents": {
 					"listensFor": {
 						"sharedTestingIntent2": {
 							"displayName": "Shared Testing Intent 2",
-							"contexts": ["testContextY"],
+							"contexts": [
+								"testContextY"
+							],
 							"resultType": "channel<testContextZ>"
 						}
 					}
@@ -422,56 +479,8 @@
 					"searchable": false,
 					"forceNewWindow": true
 				},
-				"Finsemble": {
-					"window": {
-						"top": "center",
-						"right": 0,
-						"width": 600,
-						"height": 400
-					},
-					"foreign": {
-						"components": {
-							"App Launcher": {
-								"launchableByUser": false
-							},
-							"Window Manager": {
-								"FSBLHeader": true,
-								"titlebarType": "injected"
-							}
-						}
-					}
-				}
-			},
-			"version": "1.0.0",
-			"publisher": "FINOS",
-			"icons": [{
-				"src": "http://localhost:3001/finos-icon-256.png"
-			}],
-			"interop": {
-				"intents": {
-					"listensFor": {
-						"sharedTestingIntent2": {
-							"displayName": "Shared Testing Intent 2",
-							"contexts": ["testContextY"]
-						}
-					}
-				}
-			}
-		},
-		{
-			"appId": "IntentAppHId",
-			"name": "IntentAppH",
-			"title": "Intent App H",
-			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
-			"type": "web",
-			"details": {
-				"url": "http://localhost:3001/v2.0/intent-h"
-			},
-			"hostManifests": {
-				"sail": {
-					"inject-api": "2.0",
-					"searchable": false,
-					"forceNewWindow": true
+				"demo": {
+					"visible": false
 				},
 				"Finsemble": {
 					"window": {
@@ -495,15 +504,77 @@
 			},
 			"version": "1.0.0",
 			"publisher": "FINOS",
-			"icons": [{
-				"src": "http://localhost:3001/finos-icon-256.png"
-			}],
+			"icons": [
+				{
+					"src": "http://localhost:3001/finos-icon-256.png"
+				}
+			],
 			"interop": {
 				"intents": {
 					"listensFor": {
 						"sharedTestingIntent2": {
 							"displayName": "Shared Testing Intent 2",
-							"contexts": ["testContextY"],
+							"contexts": [
+								"testContextY"
+							]
+						}
+					}
+				}
+			}
+		},
+		{
+			"appId": "IntentAppHId",
+			"name": "IntentAppH",
+			"title": "Intent App H",
+			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
+			"type": "web",
+			"details": {
+				"url": "http://localhost:3001/v2.0/intent-h"
+			},
+			"hostManifests": {
+				"sail": {
+					"inject-api": "2.0",
+					"searchable": false,
+					"forceNewWindow": true
+				},
+				"demo": {
+					"visible": false
+				},
+				"Finsemble": {
+					"window": {
+						"top": "center",
+						"right": 0,
+						"width": 600,
+						"height": 400
+					},
+					"foreign": {
+						"components": {
+							"App Launcher": {
+								"launchableByUser": false
+							},
+							"Window Manager": {
+								"FSBLHeader": true,
+								"titlebarType": "injected"
+							}
+						}
+					}
+				}
+			},
+			"version": "1.0.0",
+			"publisher": "FINOS",
+			"icons": [
+				{
+					"src": "http://localhost:3001/finos-icon-256.png"
+				}
+			],
+			"interop": {
+				"intents": {
+					"listensFor": {
+						"sharedTestingIntent2": {
+							"displayName": "Shared Testing Intent 2",
+							"contexts": [
+								"testContextY"
+							],
 							"resultType": "testContextZ"
 						}
 					}
@@ -525,6 +596,9 @@
 					"searchable": false,
 					"forceNewWindow": true
 				},
+				"demo": {
+					"visible": false
+				},
 				"Finsemble": {
 					"window": {
 						"top": "center",
@@ -547,15 +621,19 @@
 			},
 			"version": "1.0.0",
 			"publisher": "FINOS",
-			"icons": [{
-				"src": "http://localhost:3001/finos-icon-256.png"
-			}],
+			"icons": [
+				{
+					"src": "http://localhost:3001/finos-icon-256.png"
+				}
+			],
 			"interop": {
 				"intents": {
 					"listensFor": {
 						"sharedTestingIntent2": {
 							"displayName": "Shared Testing Intent 2",
-							"contexts": ["testContextY"],
+							"contexts": [
+								"testContextY"
+							],
 							"resultType": "testContextZ"
 						}
 					}
@@ -577,6 +655,9 @@
 					"searchable": false,
 					"forceNewWindow": true
 				},
+				"demo": {
+					"visible": false
+				},
 				"Finsemble": {
 					"window": {
 						"top": "center",
@@ -599,15 +680,19 @@
 			},
 			"version": "1.0.0",
 			"publisher": "FINOS",
-			"icons": [{
-				"src": "http://localhost:3001/finos-icon-256.png"
-			}],
+			"icons": [
+				{
+					"src": "http://localhost:3001/finos-icon-256.png"
+				}
+			],
 			"interop": {
 				"intents": {
 					"listensFor": {
 						"privateChannelIsPrivate": {
 							"displayName": "J Testing Intent",
-							"contexts": ["privateChannelDetails"],
+							"contexts": [
+								"privateChannelDetails"
+							],
 							"resultType": "privateChannelIsPrivateResult"
 						}
 					}
@@ -629,6 +714,9 @@
 					"searchable": false,
 					"forceNewWindow": true
 				},
+				"demo": {
+					"visible": false
+				},
 				"Finsemble": {
 					"window": {
 						"top": "center",
@@ -651,15 +739,19 @@
 			},
 			"version": "1.0.0",
 			"publisher": "FINOS",
-			"icons": [{
-				"src": "http://localhost:3001/finos-icon-256.png"
-			}],
+			"icons": [
+				{
+					"src": "http://localhost:3001/finos-icon-256.png"
+				}
+			],
 			"interop": {
 				"intents": {
 					"listensFor": {
 						"kTestingIntent": {
 							"displayName": "K Testing Intent",
-							"contexts": ["testContextX"],
+							"contexts": [
+								"testContextX"
+							],
 							"resultType": "channel<testContextZ>"
 						}
 					}
@@ -681,46 +773,8 @@
 					"searchable": false,
 					"forceNewWindow": true
 				},
-				"Finsemble": {
-					"window": {
-						"top": "center",
-						"right": 0,
-						"width": 600,
-						"height": 400
-					},
-					"foreign": {
-						"components": {
-							"App Launcher": {
-								"launchableByUser": false
-							},
-							"Window Manager": {
-								"FSBLHeader": true,
-								"titlebarType": "injected"
-							}
-						}
-					}
-				}
-			},
-			"version": "1.0.0",
-			"publisher": "FINOS",
-			"icons": [{
-				"src": "http://localhost:3001/finos-icon-256.png"
-			}]
-		},
-		{
-			"appId": "OpenAppBId",
-			"name": "OpenAppB",
-			"title": "Open App B",
-			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
-			"type": "web",
-			"details": {
-				"url": "http://localhost:3001/v2.0/open-b"
-			},
-			"hostManifests": {
-				"sail": {
-					"inject-api": "2.0",
-					"searchable": false,
-					"forceNewWindow": true
+				"demo": {
+					"visible": false
 				},
 				"Finsemble": {
 					"window": {
@@ -744,9 +798,57 @@
 			},
 			"version": "1.0.0",
 			"publisher": "FINOS",
-			"icons": [{
-				"src": "http://localhost:3001/finos-icon-256.png"
-			}]
+			"icons": [
+				{
+					"src": "http://localhost:3001/finos-icon-256.png"
+				}
+			]
+		},
+		{
+			"appId": "OpenAppBId",
+			"name": "OpenAppB",
+			"title": "Open App B",
+			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
+			"type": "web",
+			"details": {
+				"url": "http://localhost:3001/v2.0/open-b"
+			},
+			"hostManifests": {
+				"sail": {
+					"inject-api": "2.0",
+					"searchable": false,
+					"forceNewWindow": true
+				},
+				"demo": {
+					"visible": false
+				},
+				"Finsemble": {
+					"window": {
+						"top": "center",
+						"right": 0,
+						"width": 600,
+						"height": 400
+					},
+					"foreign": {
+						"components": {
+							"App Launcher": {
+								"launchableByUser": false
+							},
+							"Window Manager": {
+								"FSBLHeader": true,
+								"titlebarType": "injected"
+							}
+						}
+					}
+				}
+			},
+			"version": "1.0.0",
+			"publisher": "FINOS",
+			"icons": [
+				{
+					"src": "http://localhost:3001/finos-icon-256.png"
+				}
+			]
 		},
 		{
 			"appId": "MockAppId",
@@ -760,6 +862,9 @@
 					"inject-api": "2.0",
 					"searchable": false,
 					"forceNewWindow": true
+				},
+				"demo": {
+					"visible": false
 				},
 				"Finsemble": {
 					"window": {
@@ -787,9 +892,11 @@
 			"version": "1.0.0",
 			"publisher": "FINOS",
 			"type": "web",
-			"icons": [{
-				"src": "http://localhost:3001/finos-icon-256.png"
-			}]
+			"icons": [
+				{
+					"src": "http://localhost:3001/finos-icon-256.png"
+				}
+			]
 		},
 		{
 			"appId": "MetadataAppId",
@@ -804,6 +911,9 @@
 					"inject-api": "2.0",
 					"searchable": false,
 					"forceNewWindow": true
+				},
+				"demo": {
+					"visible": false
 				},
 				"Finsemble": {
 					"window": {
@@ -825,8 +935,7 @@
 					},
 					"interop": {
 						"intents": {
-							"listensFor": {
-							}
+							"listensFor": {}
 						}
 					}
 				}
@@ -835,12 +944,16 @@
 			"tooltip": "placeholder",
 			"publisher": "FINOS",
 			"type": "web",
-			"icons": [{
-				"src": "http://localhost:3001/finos-icon-256.png"
-			}],
-			"screenshots": [{
-				"src": "http://localhost:3001/finos-icon-256.png"
-			}]
+			"icons": [
+				{
+					"src": "http://localhost:3001/finos-icon-256.png"
+				}
+			],
+			"screenshots": [
+				{
+					"src": "http://localhost:3001/finos-icon-256.png"
+				}
+			]
 		}
 	],
 	"message": "OK"
