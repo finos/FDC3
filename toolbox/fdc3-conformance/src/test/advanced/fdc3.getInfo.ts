@@ -14,15 +14,6 @@ export default () =>
   describe('fdc3.getInfo', () => {
     let listener: Listener | undefined;
 
-    after(async function after() {
-      await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test');
-
-      if (listener) {
-        listener.unsubscribe();
-        listener = undefined;
-      }
-    });
-
     it('Method is callable', async () => {
       try {
         await api.getInfo();
@@ -43,42 +34,51 @@ export default () =>
     it('(2.0-GetInfo2) Returns a valid ImplementationMetadata object', async function () {
       this.timeout(10000);
 
-      let implMetadata: ImplementationMetadata | undefined;
-      const appControlChannel = await api.retrieveAppControlChannel();
+      try {
+        let implMetadata: ImplementationMetadata | undefined;
+        const appControlChannel = await api.retrieveAppControlChannel();
 
-      const wrapper = wrapPromise();
+        const wrapper = wrapPromise();
 
-      listener = await appControlChannel.addContextListener(
-        ControlContextType.CONTEXT_LISTENER_TRIGGERED,
-        async (context: MetadataContext) => {
-          implMetadata = context.implMetadata;
-          wrapper.resolve();
+        listener = await appControlChannel.addContextListener(
+          ControlContextType.CONTEXT_LISTENER_TRIGGERED,
+          async (context: MetadataContext) => {
+            implMetadata = context.implMetadata;
+            wrapper.resolve();
+          }
+        );
+
+        const appIdentifier = await api.openMetadataApp('metadataAppContext');
+        validator.validateAppIdentifier(appIdentifier);
+
+        await wrapper.promise; // wait for listener above to receive context
+
+        // validate ImplementationMetadata
+        expect(implMetadata, `ImplementationMetadata did not have property appMetadata${getInfoDocs}`).to.have.property(
+          'appMetadata'
+        );
+        validator.validateAppIdentifier(implMetadata?.appMetadata);
+
+        // make sure appId and instanceId from the imlMetadata and appIdentifier objects match
+        expect(
+          implMetadata!.appMetadata.appId,
+          `ImplementationMetadata.appMetadata.appId did not match the ApplicationIdentifier.appId retrieved from the opened app`
+        ).to.be.equal(appIdentifier.appId);
+        expect(
+          implMetadata!.appMetadata.instanceId,
+          `ImplementationMetadata.appMetadata.instanceId did not match the ApplicationIdentifier.instanceId retrieved from the opened app`
+        ).to.be.equal(appIdentifier.instanceId);
+
+        // validate AppMetadata
+        const metadata = await api.getAppMetadata();
+        validator.validateAppMetadata(metadata);
+      } finally {
+        await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test');
+
+        if (listener) {
+          listener.unsubscribe();
+          listener = undefined;
         }
-      );
-
-      const appIdentifier = await api.openMetadataApp('metadataAppContext');
-      validator.validateAppIdentifier(appIdentifier);
-
-      await wrapper.promise; // wait for listener above to receive context
-
-      // validate ImplementationMetadata
-      expect(implMetadata, `ImplementationMetadata did not have property appMetadata${getInfoDocs}`).to.have.property(
-        'appMetadata'
-      );
-      validator.validateAppIdentifier(implMetadata?.appMetadata);
-
-      // make sure appId and instanceId from the imlMetadata and appIdentifier objects match
-      expect(
-        implMetadata!.appMetadata.appId,
-        `ImplementationMetadata.appMetadata.appId did not match the ApplicationIdentifier.appId retrieved from the opened app`
-      ).to.be.equal(appIdentifier.appId);
-      expect(
-        implMetadata!.appMetadata.instanceId,
-        `ImplementationMetadata.appMetadata.instanceId did not match the ApplicationIdentifier.instanceId retrieved from the opened app`
-      ).to.be.equal(appIdentifier.instanceId);
-
-      // validate AppMetadata
-      const metadata = await api.getAppMetadata();
-      validator.validateAppMetadata(metadata);
+      }
     });
   });
