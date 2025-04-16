@@ -1,0 +1,44 @@
+html {
+  font-size: 15px;
+  height: 100%;
+}
+
+body {
+  background-color: #f7f7f7;
+  font-size: 14px;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  height: 100%;
+}
+
+body {
+  height: 100%;
+}
+
+.center {
+  margin: auto;
+  width: 50%;
+}
+
+#back-button {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  display: none;
+  cursor: pointer;
+  border-radius: 100%;
+  background: transparent;
+  border: none !important;
+}
+
+.manualTests {
+  width: 250px;
+}
+
+.manualTestsInfo {
+  padding-left: 100;
+  padding-right: 50;
+}
+
+.bold {
+  font-weight: bold;
+}
