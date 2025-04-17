@@ -121,6 +121,8 @@ An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 - Provide details of whether they implement optional features of the Desktop Agent API in the `optionalFeatures` property of the [`ImplementationMetadata`](ref/Metadata#implementationmetadata) object returned by the [`fdc3.getInfo()`](ref/DesktopAgent#getinfo) function.
 - Allow, by default, at least a 15 second timeout for an application, launched via [`fdc3.open`](../api/ref/DesktopAgent#open), [`fdc3.raiseIntent`](../api/ref/DesktopAgent#raiseintent) or [`fdc3.raiseIntentForContext`](../api/ref/DesktopAgent#raiseintentforcontext) to add any context listener (via [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener)) or intent listener (via [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener)) necessary to deliver context or intent and context to it on launch. This timeout only applies to listeners needed to receive context on launch; further intent and context listeners not required on launch MAY be added later.
 
+<!-- TODO: add any new requirements for subAgents or disconnection functions -->
+
 An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
 
 - Support connection to one or more App Directories meeting the [FDC3 App Directory Standard](../app-directory/overview).
@@ -131,6 +133,8 @@ An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
 - Make metadata about each context message or intent and context message received (including the app that originated the message) available to the receiving application.
 - Prevent external apps from listening or publishing on a [`PrivateChannel`](ref/PrivateChannel) that they did not request or provide.
 - Enforce compliance with the expected behavior of intents (where Intents specify a contract that is enforceable by schema, for example, return object types) and return an error if the interface is not met.
+
+<!-- TODO: add any new recommendations for subAgents or disconnection functions -->
 
 An FDC3 Standard compliant Desktop Agent implementation **MAY**:
 
@@ -233,6 +237,12 @@ From version 2.0 of the FDC3 Standard, Desktop Agent functions that reference or
 Additional metadata for an application can be retrieved via the [`fdc3.getAppMetadata(appIdentifier)`](ref/DesktopAgent#getappmetadata) function, which returns an [`AppMetadata`](ref/Metadata#appmetadata) object. The additional metadata may include a title, description, icons, etc., which may be used for display purposes.
 
 Identifiers for instances of an application may be retrieved via the [`fdc3.findInstances(appIdentifier)`](ref/DesktopAgent#findinstances) function.
+
+### Start sub-applications with their own identity
+
+<!-- TODO: Describe the use-case for sub-agents without being overly focused on a particular platform (could make sense in web apps and monolithic apps built in other languages.
+Ensure routing of channel messages and intent resolution are covered.
+-->
 
 ## Raising Intents
 
@@ -843,3 +853,7 @@ To facilitate context linking in such situations it is recommended that applicat
 ### Originating App Metadata
 
 Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation to registered context handlers on all types of channel. As this metadata is optional, apps making use of it MUST handle cases where it is not provided.
+
+## Sub-applications
+
+<!-- Add content describing how sub applications are created with their own identity -->

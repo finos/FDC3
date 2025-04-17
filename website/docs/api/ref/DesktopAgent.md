@@ -25,6 +25,8 @@ interface DesktopAgent {
   open(app: AppIdentifier, context?: Context): Promise<AppIdentifier>;
   findInstances(app: AppIdentifier): Promise<Array<AppIdentifier>>;
   getAppMetadata(app: AppIdentifier): Promise<AppMetadata>;
+  // TODO: add getSubAgent
+  // TODO: add a close or disconnect function (for subAgents or maybe all agents?)
 
   // context
   broadcast(context: Context): Promise<void>;
@@ -411,6 +413,10 @@ _desktopAgent.Broadcast(instrument);
 **See also:**
 
 - [addContextListener](#addcontextlistener)
+
+### `close`
+
+ <!-- TODO: add close or disconnect content -->
 
 ### `createPrivateChannel`
 
@@ -1104,6 +1110,10 @@ var redChannel = userChannels.First(c => c.Id == "red");
 **See also:**
 
 - [`Channel`](Channel)
+
+### `getSubAgent`
+
+ <!-- TODO: add getSubAgent content -->
 
 ### `joinUserChannel`
 

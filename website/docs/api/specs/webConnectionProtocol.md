@@ -393,3 +393,7 @@ The WCP allows applications to indicate to the `getAgent()` implementation wheth
 - [`WCP3Handshake`](pathname:///schemas/next/api/WCP3Handshake.schema.json): Response sent by the Desktop Agent and incorporating `payload.intentResolverUrl` and `payload.channelSelectorUrl` fields, which should be set to the URL for each UI implementation that should be loaded into an iframe to provide the UI (defaults to URLs for reference UI implementations provided by the FDC3 project), or set to `false` to indicate that the respective UI is not needed. Setting these fields to `true` will cause the `getAgent()` implementation to use its default URLs representing a reference implementation of each UI.
 
 When UI iframes are created, the user interfaces may use the `Fdc3UserInterface` messages incorporated into the [Desktop Agent Communication Protocol (DACP)](./desktopAgentCommunicationProtocol#controlling-injected-user-interfaces) to communicate with the `getAgent()` implementation and through it the Desktop Agent.
+
+### Requesting a sub-agent
+
+<!-- Add content on WCP message (re)use in requesting and connecting a subagent -->

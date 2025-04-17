@@ -547,6 +547,9 @@ export interface DesktopAgent {
    */
   getAppMetadata(app: AppIdentifier): Promise<AppMetadata>;
 
+  // TODO: add getSubAgent definition
+  // TODO: add close or disconnect definition
+
   //---------------------------------------------------------------------------------------------
   // Deprecated function signatures
   //---------------------------------------------------------------------------------------------
