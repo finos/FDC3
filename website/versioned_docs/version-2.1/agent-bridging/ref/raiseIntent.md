@@ -74,8 +74,8 @@ sequenceDiagram
 
 ### Request message schemas
 
-- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentAgentRequest.schema.json](/schemas/2.1/bridging/raiseIntentAgentRequest.schema.json)
-- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentBridgeRequest.schema.json](/schemas/2.1/bridging/raiseIntentBridgeRequest.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentAgentRequest.schema.json](pathname:///schemas/2.1/bridging/raiseIntentAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentBridgeRequest.schema.json](pathname:///schemas/2.1/bridging/raiseIntentBridgeRequest.schema.json)
 
 ### Example
 
@@ -144,14 +144,14 @@ The bridge fills in the `source.desktopAgent` field and forwards the request to 
 
 ### Response message schemas
 
-- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentAgentResponse.schema.json](/schemas/2.1/bridging/raiseIntentAgentResponse.schema.json)
-- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentAgentErrorResponse.schema.json](/schemas/2.1/bridging/raiseIntentAgentErrorResponse.schema.json)
-- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentResultAgentResponse.schema.json](/schemas/2.1/bridging/raiseIntentResultAgentResponse.schema.json)
-- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentResultAgentErrorResponse.schema.json](/schemas/2.1/bridging/raiseIntentResultAgentErrorResponse.schema.json)
-- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentBridgeResponse.schema.json](/schemas/2.1/bridging/raiseIntentBridgeResponse.schema.json)
-- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentBridgeErrorResponse.schema.json](/schemas/2.1/bridging/raiseIntentBridgeErrorResponse.schema.json)
-- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentResultBridgeResponse.schema.json](/schemas/2.1/bridging/raiseIntentResultBridgeResponse.schema.json)
-- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentResultBridgeErrorResponse.schema.json](/schemas/2.1/bridging/raiseIntentResultBridgeErrorResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentAgentResponse.schema.json](pathname:///schemas/2.1/bridging/raiseIntentAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentAgentErrorResponse.schema.json](pathname:///schemas/2.1/bridging/raiseIntentAgentErrorResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentResultAgentResponse.schema.json](pathname:///schemas/2.1/bridging/raiseIntentResultAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentResultAgentErrorResponse.schema.json](pathname:///schemas/2.1/bridging/raiseIntentResultAgentErrorResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentBridgeResponse.schema.json](pathname:///schemas/2.1/bridging/raiseIntentBridgeResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentBridgeErrorResponse.schema.json](pathname:///schemas/2.1/bridging/raiseIntentBridgeErrorResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentResultBridgeResponse.schema.json](pathname:///schemas/2.1/bridging/raiseIntentResultBridgeResponse.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/raiseIntentResultBridgeErrorResponse.schema.json](pathname:///schemas/2.1/bridging/raiseIntentResultBridgeErrorResponse.schema.json)
 
 ### Example
 

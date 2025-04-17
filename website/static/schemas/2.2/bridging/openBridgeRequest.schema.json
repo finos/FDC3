@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/bridging/openBridgeRequest.schema.json",
+  "title": "Open Bridge Request",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "openAgentRequest.schema.json#/$defs/OpenRequestBase"
+    },
+    {
+      "$ref": "bridgeRequest.schema.json"
+    }
+  ]
+}

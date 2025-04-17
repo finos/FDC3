@@ -14,7 +14,7 @@ This type currently only defines a required `id` field, which should provide a r
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/next/context/trade.schema.json](https://fdc3.finos.org/schemas/next/context/trade.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/trade.schema.json))
+[https://fdc3.finos.org/schemas/next/context/trade.schema.json](pathname:///schemas/next/context/trade.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/trade.schema.json))
 
 ## Type
 
@@ -56,12 +56,22 @@ A product that is the subject of the trade.
 
 </details>
 
+<details>
+  <summary><code>notes</code></summary>
+
+**type**: `string`
+
+Additional notes or comments about the trade.
+
+</details>
+
 ## Example
 
 ```json
 {
   "type": "fdc3.trade",
   "name": "...",
+  "notes": "...",
   "id": {
     "myEMS": "12345"
   },

@@ -12,7 +12,7 @@ The contact list schema does not explicitly include identifiers in the `id` sect
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/next/context/contactList.schema.json](https://fdc3.finos.org/schemas/next/context/contactList.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/contactList.schema.json))
+[https://fdc3.finos.org/schemas/next/context/contactList.schema.json](pathname:///schemas/next/context/contactList.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/contactList.schema.json))
 
 ## Type
 
