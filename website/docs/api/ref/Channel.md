@@ -36,6 +36,7 @@ interface Channel {
   broadcast(context: Context): Promise<void>;
   getCurrentContext(contextType?: string): Promise<Context|null>;
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
+  clearContext(contextType?: string): Promise<void>;
   
   //deprecated functions
   /**
@@ -57,6 +58,7 @@ interface IChannel: IIntentResult
     Task Broadcast(IContext context);
     Task<IContext?> GetCurrentContext(string? contextType);
     Task<IListener> AddContextListener<T>(string? contextType, ContextHandler<T> handler) where T : IContext;
+    Task ClearContext(string? contextType);
 }
 ```
 
@@ -430,6 +432,99 @@ catch (Exception ex)
 - [`ChannelError`](Errors#channelerror)
 - [`broadcast`](#broadcast)
 - [`addContextListener`](#addcontextlistener)
+
+### `clearContext`
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+public clearContext(contextType?: string): Promise<void>;
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+Task ClearContext(string? contextType);
+```
+
+</TabItem>
+</Tabs>
+
+Used to clear the specified context type if provided, otherwise, clear all context types present in the channel. The Desktop Agent MUST update its internal representation of the context in the channel and ensure that subsequent calls to [`getCurrentContext`](#getcurrentcontext) and any new joiners to that channel (through [`joinUserChannel`](DesktopAgent#joinUserChannel) or [`addContextListener`](DesktopAgent#addContextListener)) will not receive anything for either specified context type or the most recent context until new context has been broadcast to the channel. 
+Desktop Agents MUST also immediately broadcast the  [`fdc3.nothing`](../../context/ref/Nothing.md/#nothing) type, which applications may listen to to be notified of the cleared context. If a `contextType` parameter was provided, then the `contextType` field will be set to that type, otherwise, it is omitted. 
+
+
+**Examples:**
+
+Without specifying a context type:
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+try {
+    const context = await channel.clearContext();
+} catch (err: ChannelError) {
+    // handle error
+}
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+try
+{
+    var context = await channel.ClearContext();
+}
+catch (Exception ex)
+{
+    // handle error
+}
+```
+
+</TabItem>
+</Tabs>
+
+Specifying a context type:
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+try {
+    const contact = await channel.clearContext('fdc3.contact');
+} catch (err: ChannelError) {
+    // handler error
+}
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+try
+{
+    var context = await channel.ClearContext("fdc3.contact");
+}
+catch (Exception ex)
+{
+    // handle error
+}
+```
+
+</TabItem>
+</Tabs>
+
+
+**See also:**
+
+- [`getCurrentContext`](#getcurrentcontext)
+- [`addContextListener`](DesktopAgent#addContextListener)
+- [`joinUserChannel`](DesktopAgent#joinUserChannel)
+- [`fdc3.nothing`](../../context/ref/Nothing.md/#nothing)
 
 ## Deprecated Functions
 
