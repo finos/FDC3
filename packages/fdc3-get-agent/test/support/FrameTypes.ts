@@ -40,6 +40,7 @@ export function handleEmbeddedIframeComms(_value: string, parent: MockWindow, so
           intentResolverUrl: INTENT_RESOLVER_URL,
         },
       };
+      // nosemgrep
       eventSource.postMessage(message, '*', [connection!.externalPort]);
 
       window.removeEventListener('message', helloHandler);

@@ -41,8 +41,8 @@ sequenceDiagram
 
 ### Request message schemas
 
-- [https://fdc3.finos.org/schemas/next/bridging/findIntentAgentRequest.schema.json](/schemas/next/bridging/findIntentAgentRequest.schema.json)
-- [https://fdc3.finos.org/schemas/next/bridging/findIntentBridgeRequest.schema.json](/schemas/next/bridging/findIntentBridgeRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentAgentRequest.schema.json](pathname:///schemas/next/bridging/findIntentAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentBridgeRequest.schema.json](pathname:///schemas/next/bridging/findIntentBridgeRequest.schema.json)
 
 ### Example
 
@@ -96,10 +96,10 @@ Note that the `source.desktopAgent` field has been populated with the id of the 
 
 ### Response message schemas
 
-- [https://fdc3.finos.org/schemas/next/bridging/findIntentAgentResponse.schema.json](/schemas/next/bridging/findIntentAgentResponse.schema.json)
-- [https://fdc3.finos.org/schemas/next/bridging/findIntentAgentErrorResponse.schema.json](/schemas/next/bridging/findIntentAgentErrorResponse.schema.json)
-- [https://fdc3.finos.org/schemas/next/bridging/findIntentBridgeResponse.schema.json](/schemas/next/bridging/findIntentBridgeResponse.schema.json)
-- [https://fdc3.finos.org/schemas/next/bridging/findIntentBridgeErrorResponse.schema.json](/schemas/next/bridging/findIntentBridgeErrorResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentAgentResponse.schema.json](pathname:///schemas/next/bridging/findIntentAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentAgentErrorResponse.schema.json](pathname:///schemas/next/bridging/findIntentAgentErrorResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentBridgeResponse.schema.json](pathname:///schemas/next/bridging/findIntentBridgeResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentBridgeErrorResponse.schema.json](pathname:///schemas/next/bridging/findIntentBridgeErrorResponse.schema.json)
 
 ### Example
 

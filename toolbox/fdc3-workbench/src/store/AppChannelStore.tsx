@@ -3,10 +3,10 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 import { makeObservable, observable, action, runInAction, toJS } from 'mobx';
-import { ContextType, Fdc3Listener } from '../utility/Fdc3Api';
+import { ContextType, Fdc3Listener, getWorkbenchAgent } from '../utility/Fdc3Api';
 import systemLogStore from './SystemLogStore';
 import { nanoid } from 'nanoid';
-import { Channel, getAgent } from '@finos/fdc3';
+import { Channel } from '@finos/fdc3';
 
 interface ListenerOptionType {
   title: string;
@@ -42,7 +42,7 @@ class AppChannelStore {
 
   async getOrCreateChannel(channelId: string) {
     try {
-      const currentAppChannelObj = await getAgent().then(agent => agent.getOrCreateChannel(channelId));
+      const currentAppChannelObj = await getWorkbenchAgent().then(agent => agent.getOrCreateChannel(channelId));
       if (currentAppChannelObj) {
         const record = {
           id: channelId,
@@ -131,7 +131,7 @@ class AppChannelStore {
 
   async leaveChannel() {
     try {
-      const agent = await getAgent();
+      const agent = await getWorkbenchAgent();
       //check that we're on a channel
       let currentChannel = await agent.getCurrentChannel();
       if (!currentChannel) {

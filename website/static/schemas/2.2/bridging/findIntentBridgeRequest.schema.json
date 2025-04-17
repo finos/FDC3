@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/bridging/findIntentBridgeRequest.schema.json",
+  "title": "FindIntent Bridge Request",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "findIntentAgentRequest.schema.json#/$defs/FindIntentRequestBase"
+    },
+    {
+      "$ref": "bridgeRequest.schema.json"
+    }
+  ]
+}

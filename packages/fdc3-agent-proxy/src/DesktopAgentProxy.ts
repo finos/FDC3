@@ -47,6 +47,31 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     if (logLevel) {
       Logger.setLogLevel(logLevel);
     }
+
+    //bind all functions to allow destructuring
+    this.addEventListener = this.addEventListener.bind(this);
+    this.getInfo = this.getInfo.bind(this);
+    this.broadcast = this.broadcast.bind(this);
+    this.addContextListener = this.addContextListener.bind(this);
+    this.getUserChannels = this.getUserChannels.bind(this);
+    this.getSystemChannels = this.getSystemChannels.bind(this);
+    this.getOrCreateChannel = this.getOrCreateChannel.bind(this);
+    this.createPrivateChannel = this.createPrivateChannel.bind(this);
+    this.leaveCurrentChannel = this.leaveCurrentChannel.bind(this);
+    this.joinUserChannel = this.joinUserChannel.bind(this);
+    this.joinChannel = this.joinChannel.bind(this);
+    this.getCurrentChannel = this.getCurrentChannel.bind(this);
+    this.joinChannel = this.joinChannel.bind(this);
+    this.findIntent = this.findIntent.bind(this);
+    this.findIntentsByContext = this.findIntentsByContext.bind(this);
+    this.raiseIntent = this.raiseIntent.bind(this);
+    this.addIntentListener = this.addIntentListener.bind(this);
+    this.raiseIntentForContext = this.raiseIntentForContext.bind(this);
+    this.open = this.open.bind(this);
+    this.findInstances = this.findInstances.bind(this);
+    this.getAppMetadata = this.getAppMetadata.bind(this);
+    this.disconnect = this.disconnect.bind(this);
+    this.connect = this.connect.bind(this);
   }
 
   addEventListener(type: FDC3EventTypes | null, handler: EventHandler): Promise<Listener> {
