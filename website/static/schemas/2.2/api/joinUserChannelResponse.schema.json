@@ -1,0 +1,59 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/2.2/api/joinUserChannelResponse.schema.json",
+	"type": "object",
+	"title": "JoinUserChannel Response",
+	"description": "A response to a joinUserChannel request. On receipt of this response, client code should make subsequent requests to get the current context of that channel for all registered context listeners and then call their handlers with it.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/JoinUserChannelResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/JoinUserChannelSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/JoinUserChannelErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"JoinUserChannelResponseType": {
+			"title": "JoinUserChannel Response Message Type",
+			"const": "joinUserChannelResponse"
+		},
+		"JoinUserChannelSuccessResponsePayload": {
+			"title": "JoinUserChannel Response Payload",
+			"type": "object",
+			"properties": {
+				
+			},
+			"additionalProperties": false
+		},
+		"JoinUserChannelErrorResponsePayload": {
+			"title": "JoinUserChannel Error Response Payload",
+			"type": "object",
+			"properties": {
+				"error": {
+					"$ref": "api.schema.json#/definitions/ChannelError"
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}

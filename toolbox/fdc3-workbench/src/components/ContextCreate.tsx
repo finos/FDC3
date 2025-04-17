@@ -129,7 +129,7 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
   const [context, setContext] = useState<ContextItem | null>({
     id: contextName || 'empty',
     template: emptyJson,
-    schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context.schema.json'),
+    schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context/context.schema.json'),
   });
   const [contextError, setContextError] = useState<string | false>(false);
   const [open, setOpen] = useState(false);
@@ -326,7 +326,7 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
       const newContext: ContextItem = {
         id: 'empty',
         template: emptyJson,
-        schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context.schema.json'),
+        schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context/context.schema.json'),
       };
       setContext(newContext);
       setContextValue(emptyJson);
@@ -436,7 +436,9 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
               json={context?.template}
               onChange={handleContextChange}
               onJsonError={handleJsonError}
-              schemaUrl={new URL(context?.schemaUrl || 'https://fdc3.finos.org/schemas/next/context.schema.json')}
+              schemaUrl={
+                new URL(context?.schemaUrl || 'https://fdc3.finos.org/schemas/next/context/context.schema.json')
+              }
               error={contextError}
             />
           </Grid>

@@ -4,11 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [npm v2.2.0-beta.1] - 2024-02-25
-
-* Prerelease of NPM 2.2.0 module
-
 ## [Unreleased]
+
+### Added
+
+* Added clarification regarding expected behavior upon repeated calls to `addContextListener` on same or overlapping types (allowed) and `addIntentListener` on same intent (rejected; new error type added). ([#1394](https://github.com/finos/FDC3/pull/1394))
+
+### Changed
+
+### Deprecated
+
+### Fixed
+
+## [FDC3 Standard 2.2](https://github.com/finos/FDC3/compare/v2.1..v2.2) - 2025-03-12
 
 ### Added
 
@@ -47,7 +55,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - resolves ([#832](https://github.com/finos/FDC3/issues/832))
   - resolves ([#1487](https://github.com/finos/FDC3/issues/1487))
   - resolves ([#1488](https://github.com/finos/FDC3/issues/1488))
-  * Added clarification regarding expected behavior upon repeated calls to `addContextListener` on same or overlapping types (allowed) and `addIntentListener` on same intent (rejected; new error type added). ([#1394](https://github.com/finos/FDC3/pull/1394))  
+* Adjusted reference Desktop Agent implementation for FDC3 for Web to open a new app instance when raiseIntent is called with an appId but no instanceId ([#1556](https://github.com/finos/FDC3/pull/1556))
 
 ### Changed
 
@@ -72,12 +80,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added missing `desktopAgent` field to ImplementationMetadata objects returned for all agents connect to a DesktopAgent bridge in Connection Step 6 connectAgentsUpdate messages and refined the schema used to collect this info in step 3 handshake. ([#1177](https://github.com/finos/FDC3/pull/1177))
 * Removed the `version` field from `IntentResolution` as there are no version fields for intents in the FDC3 API definitions and hence the field has no purpose. ([#1170](https://github.com/finos/FDC3/pull/1170))
 * Fixed error in the Client-side example from `PrivateChannel` and `addIntentListener` by correcting `id.symbol` to `id.ticker` to align with the `fdc3.instrument` context. ([#1314](https://github.com/finos/FDC3/pull/1314))
-* Added missing `resultType` argument to `findIntent` agent request in the Bridging Schema. ([#1154](https://github.com/finos/FDC3/pull/1154)) 
+* Added missing `resultType` argument to `findIntent` agent request in the Bridging Schema. ([#1154](https://github.com/finos/FDC3/pull/1154))
 * Added missing `resultType` argument to `findIntentByContext` agent request in the Bridging Schema. ([#1212](https://github.com/finos/FDC3/pull/1212)) 
 * Added missing id and name fields from the context base schema to respective context schemas (`Contact`, `ContactList`, `Country`, `InstrumentList`, `OrderList`, `Organization`, `Portfolio`, `Position`, `TradeList`). ([#1360](https://github.com/finos/FDC3/pull/1360))
 * Revised FDC3 charter to include well-known language from the FDC3 introduction, better describe FDC3's scope, focus on financial applications, update application types, etc. ([#1079](https://github.com/finos/FDC3/pull/1079))
 * Ensured that `PrivateChannelEvent` extends `ApiEvent` in both sourcecode and documentation. ([#1474](https://github.com/finos/FDC3/pull/1474))
 * Standardized prettier config for fdc3-workbench with other packages. ([#1520](https://github.com/finos/FDC3/pull/1520))
+* Ensured that user channel changes made by the DA without a call to joinUserChannel (i.e. those driven by an external channel selector) are applied by the Desktop Agent Proxy. ([#1541](https://github.com/finos/FDC3/pull/1541))
+* Ensured that the FDC3 Workbench and apps like it that are migrated to getAgent will still work with FDC3 1.2 Preload-based DAs by not requiring appMetadata properties to be present in getInfo() responses. ([#1550](https://github.com/finos/FDC3/pull/1550))
+* Bound all DesktopAgentProxy functions to enable destructuring. ([#1550](https://github.com/finos/FDC3/pull/1550))
+* Fixed polyfill of node.js JS modules in fdc3-workbench. ([#1550](https://github.com/finos/FDC3/pull/1550))
 
 ## [npm v2.1.1] - 2024-06-28
 

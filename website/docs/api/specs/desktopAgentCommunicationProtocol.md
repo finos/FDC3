@@ -28,18 +28,18 @@ import { BrowserTypes } from "@finos/fdc3";
 
 The protocol is composed of several different classes of message, each governed by a message schema:
 
-1. **App Request Messages** ([`AppRequest` schema](https://fdc3.finos.org/schemas/next/api/appRequest.schema.json)):
+1. **App Request Messages** ([`AppRequest` schema](pathname:///schemas/next/api/appRequest.schema.json)):
     - Messages sent by an application representing an API call, such as [`DesktopAgent.broadcast`](../ref/DesktopAgent#broadcast), [`Channel.addContextListener`](../ref/Channel#addcontextlistener), or [`Listener.unsubscribe`](../ref/Types#listener).
     - Message names all end in 'Request'.
     - Each instance of a request message sent is uniquely identified by a `meta.requestUuid` field.
 
-2. **Agent Response Messages** ([`AgentResponse` schema](https://fdc3.finos.org/schemas/next/api/agentResponse.schema.json)):
+2. **Agent Response Messages** ([`AgentResponse` schema](pathname:///schemas/next/api/agentResponse.schema.json)):
     - Response messages sent from the DA to the application, each relating to a corresponding _App Request Message_.
     - Message names all end in 'Response'.
     - Each instance of an Agent Response Message is uniquely identified by a `meta.responseUuid` field.
     - Each instance of an Agent Response Message quotes the `meta.requestUuid` value of the message it is responding to.
 
-3. **Agent Event Messages** ([`AgentEvent` schema](https://fdc3.finos.org/schemas/next/api/agentEvent.schema.json)):
+3. **Agent Event Messages** ([`AgentEvent` schema](pathname:///schemas/next/api/agentEvent.schema.json)):
     - Messages sent from the DA to the application that are due to actions in other applications, such as an inbound context resulting from another app's broadcast.
     - Message names all end in 'Event'.
     - Each instance of an Agent Response Message is uniquely identified by a `meta.eventUuid` field.
@@ -113,7 +113,7 @@ The message exchange timeouts are used to detect a lack of response from the Des
 
 ## Message Definitions Supporting FDC3 API calls
 
-This section provides details of the messages defined in the DACP, grouped according to the FDC3 API functions that they support, and defined by JSON Schema files. Many of these message definitions make use of JSON versions of [metadata](../ref/Metadata) and other [types](../ref/Types) defined by the Desktop Agent API, the JSON versions of which can be found in [api.schema.json](https://fdc3.finos.org/schemas/next/api/api.schema.json), while a number of DACP specific object definitions that are reused through the messages can be found in [common.schema.json](https://fdc3.finos.org/schemas/next/api/common.schema.json).
+This section provides details of the messages defined in the DACP, grouped according to the FDC3 API functions that they support, and defined by JSON Schema files. Many of these message definitions make use of JSON versions of [metadata](../ref/Metadata) and other [types](../ref/Types) defined by the Desktop Agent API, the JSON versions of which can be found in [api.schema.json](pathname:///schemas/next/api/api.schema.json), while a number of DACP specific object definitions that are reused through the messages can be found in [common.schema.json](pathname:///schemas/next/api/common.schema.json).
 
 ### `DesktopAgent`
 
@@ -121,56 +121,56 @@ This section provides details of the messages defined in the DACP, grouped accor
 
 Request and response used to implement the [`DesktopAgent.addContextListener()`](../ref/DesktopAgent#addcontextlistener) and [`Channel.addContextListener()`](../ref/Channel#addcontextlistener) API calls:
 
-- [`addContextListenerRequest`](https://fdc3.finos.org/schemas/next/api/addContextListenerRequest.schema.json)
-- [`addContextListenerResponse`](https://fdc3.finos.org/schemas/next/api/addContextListenerResponse.schema.json)
+- [`addContextListenerRequest`](pathname:///schemas/next/api/addContextListenerRequest.schema.json)
+- [`addContextListenerResponse`](pathname:///schemas/next/api/addContextListenerResponse.schema.json)
 
 Event message used to deliver context objects that have been broadcast to listeners:
 
-- [`broadcastEvent`](https://fdc3.finos.org/schemas/next/api/broadcastEvent.schema.json)
+- [`broadcastEvent`](pathname:///schemas/next/api/broadcastEvent.schema.json)
 
 Request and response for removing the context listener ([`Listener.unsubscribe()`](../ref/Types#listener)):
 
-- [`contextListenerUnsubscribeRequest`](https://fdc3.finos.org/schemas/next/api/contextListenerUnsubscribeRequest.schema.json)
-- [`contextListenerUnsubscribeResponse`](https://fdc3.finos.org/schemas/next/api/contextListenerUnsubscribeResponse.schema.json)
+- [`contextListenerUnsubscribeRequest`](pathname:///schemas/next/api/contextListenerUnsubscribeRequest.schema.json)
+- [`contextListenerUnsubscribeResponse`](pathname:///schemas/next/api/contextListenerUnsubscribeResponse.schema.json)
 
 #### `addEventListener()`
 
 Request and response used to implement the [`addEventListener()`](../ref/DesktopAgent#addeventlistener) API call:
 
-- [`addEventListenerRequest`](https://fdc3.finos.org/schemas/next/api/addEventListenerRequest.schema.json)
-- [`addEventListenerResponse`](https://fdc3.finos.org/schemas/next/api/addEventListenerResponse.schema.json)
+- [`addEventListenerRequest`](pathname:///schemas/next/api/addEventListenerRequest.schema.json)
+- [`addEventListenerResponse`](pathname:///schemas/next/api/addEventListenerResponse.schema.json)
 
 Event messages used to deliver events that have occurred:
 
-- [`channelChangedEvent`](https://fdc3.finos.org/schemas/next/api/channelChangedEvent.schema.json)
+- [`channelChangedEvent`](pathname:///schemas/next/api/channelChangedEvent.schema.json)
 
 Request and response for removing the event listener ([`Listener.unsubscribe()`](../ref/Types#listener)):
 
-- [`eventListenerUnsubscribeRequest`](https://fdc3.finos.org/schemas/next/api/eventListenerUnsubscribeRequest.schema.json)
-- [`eventListenerUnsubscribeResponse`](https://fdc3.finos.org/schemas/next/api/eventListenerUnsubscribeResponse.schema.json)
+- [`eventListenerUnsubscribeRequest`](pathname:///schemas/next/api/eventListenerUnsubscribeRequest.schema.json)
+- [`eventListenerUnsubscribeResponse`](pathname:///schemas/next/api/eventListenerUnsubscribeResponse.schema.json)
 
 #### `addIntentListener()`
 
 Request and response used to implement the [`addIntentListener()`](../ref/DesktopAgent#addintentlistener) API call:
 
-- [`addIntentListenerRequest`](https://fdc3.finos.org/schemas/next/api/addIntentListenerRequest.schema.json)
-- [`addIntentListenerResponse`](https://fdc3.finos.org/schemas/next/api/addIntentListenerResponse.schema.json)
+- [`addIntentListenerRequest`](pathname:///schemas/next/api/addIntentListenerRequest.schema.json)
+- [`addIntentListenerResponse`](pathname:///schemas/next/api/addIntentListenerResponse.schema.json)
 
 Event message used to a raised intent and context object from another app to the listener:
 
-- [`intentEvent`](https://fdc3.finos.org/schemas/next/api/intentEvent.schema.json)
+- [`intentEvent`](pathname:///schemas/next/api/intentEvent.schema.json)
 
 An additional request and response used to deliver an [`IntentResult`](../ref/Types#intentresult) from the intent handler to the Desktop Agent, so that it can convey it back to the raising application:
 
-- [`intentResultRequest`](https://fdc3.finos.org/schemas/next/api/intentResultRequest.schema.json)
-- [`intentResultResponse`](https://fdc3.finos.org/schemas/next/api/intentResultResponse.schema.json)
+- [`intentResultRequest`](pathname:///schemas/next/api/intentResultRequest.schema.json)
+- [`intentResultResponse`](pathname:///schemas/next/api/intentResultResponse.schema.json)
 
 Please note this exchange (and the `IntentResolution.getResult()` API call) support `void` results from a raised intent and hence this message exchange should occur for all raised intents, including those that do not return a result. In such cases, the void intent result allows resolution of the `IntentResolution.getResult()` API call and indicates that the intent handler has finished running.
 
 Request and response for removing the intent listener ([`Listener.unsubscribe()`](../ref/Types#listener)):
 
-- [`intentListenerUnsubscribeRequest`](https://fdc3.finos.org/schemas/next/api/intentListenerUnsubscribeRequest.schema.json)
-- [`intentListenerUnsubscribeResponse`](https://fdc3.finos.org/schemas/next/api/intentListenerUnsubscribeResponse.schema.json)
+- [`intentListenerUnsubscribeRequest`](pathname:///schemas/next/api/intentListenerUnsubscribeRequest.schema.json)
+- [`intentListenerUnsubscribeResponse`](pathname:///schemas/next/api/intentListenerUnsubscribeResponse.schema.json)
 
 A typical exchange of messages between an app raising an intent, a Desktop agent and an app resolving an intent is:
 
@@ -212,8 +212,8 @@ See [`raiseIntent`](#raiseintent) below for further examples of message exchange
 
 Request and response used to implement the [`DesktopAgent.broadcast()`](../ref/DesktopAgent#broadcast) and [`Channel.broadcast()`](../ref/Channel#broadcast) API calls:
 
-- [`broadcastRequest`](https://fdc3.finos.org/schemas/next/api/broadcastRequest.schema.json)
-- [`broadcastResponse`](https://fdc3.finos.org/schemas/next/api/broadcastResponse.schema.json)
+- [`broadcastRequest`](pathname:///schemas/next/api/broadcastRequest.schema.json)
+- [`broadcastResponse`](pathname:///schemas/next/api/broadcastResponse.schema.json)
 
 See [`addContextListener()`](#addcontextlistener) above for the `broadcastEvent` used to deliver the broadcast to other apps.
 
@@ -221,85 +221,85 @@ See [`addContextListener()`](#addcontextlistener) above for the `broadcastEvent`
 
 Request and response used to implement the [`createPrivateChannel()`](../ref/DesktopAgent#createprivatechannel) API call:
 
-- [`createPrivateChannelRequest`](https://fdc3.finos.org/schemas/next/api/createPrivateChannelRequest.schema.json)
-- [`createPrivateChannelResponse`](https://fdc3.finos.org/schemas/next/api/createPrivateChannelResponse.schema.json)
+- [`createPrivateChannelRequest`](pathname:///schemas/next/api/createPrivateChannelRequest.schema.json)
+- [`createPrivateChannelResponse`](pathname:///schemas/next/api/createPrivateChannelResponse.schema.json)
 
 #### `findInstances()`
 
 Request and response used to implement the [`findInstances()`](../ref/DesktopAgent#findinstances) API call:
 
-- [`findInstancesRequest`](https://fdc3.finos.org/schemas/next/api/findInstancesRequest.schema.json)
-- [`findInstancesResponse`](https://fdc3.finos.org/schemas/next/api/findInstancesResponse.schema.json)
+- [`findInstancesRequest`](pathname:///schemas/next/api/findInstancesRequest.schema.json)
+- [`findInstancesResponse`](pathname:///schemas/next/api/findInstancesResponse.schema.json)
 
 #### `findIntent()`
 
 Request and response used to implement the [`findIntent()`](../ref/DesktopAgent#findintent) API call:
 
-- [`findIntentRequest`](https://fdc3.finos.org/schemas/next/api/findIntentRequest.schema.json)
-- [`findIntentResponse`](https://fdc3.finos.org/schemas/next/api/findIntentResponse.schema.json)
+- [`findIntentRequest`](pathname:///schemas/next/api/findIntentRequest.schema.json)
+- [`findIntentResponse`](pathname:///schemas/next/api/findIntentResponse.schema.json)
 
 #### `findIntentsByContext()`
 
 Request and response used to implement the [`findIntentsByContext()`](../ref/DesktopAgent#findintentsbycontext) API call:
 
-- [`findIntentsByContextRequest`](https://fdc3.finos.org/schemas/next/api/findIntentsByContextRequest.schema.json)
-- [`findIntentsByContextResponse`](https://fdc3.finos.org/schemas/next/api/findIntentsByContextResponse.schema.json)
+- [`findIntentsByContextRequest`](pathname:///schemas/next/api/findIntentsByContextRequest.schema.json)
+- [`findIntentsByContextResponse`](pathname:///schemas/next/api/findIntentsByContextResponse.schema.json)
 
 #### `getAppMetadata()`
 
 Request and response used to implement the [`getAppMetadata()`](../ref/DesktopAgent#getappmetadata) API call:
 
-- [`getAppMetadataRequest`](https://fdc3.finos.org/schemas/next/api/getAppMetadataRequest.schema.json)
-- [`getAppMetadataResponse`](https://fdc3.finos.org/schemas/next/api/getAppMetadataResponse.schema.json)
+- [`getAppMetadataRequest`](pathname:///schemas/next/api/getAppMetadataRequest.schema.json)
+- [`getAppMetadataResponse`](pathname:///schemas/next/api/getAppMetadataResponse.schema.json)
 
 #### `getCurrentChannel()`
 
 Request and response used to implement the [`getCurrentChannel()`](../ref/DesktopAgent#getcurrentchannel) API call:
 
-- [`getCurrentChannelRequest`](https://fdc3.finos.org/schemas/next/api/getCurrentChannelRequest.schema.json)
-- [`getCurrentChannelResponse`](https://fdc3.finos.org/schemas/next/api/getCurrentChannelResponse.schema.json)
+- [`getCurrentChannelRequest`](pathname:///schemas/next/api/getCurrentChannelRequest.schema.json)
+- [`getCurrentChannelResponse`](pathname:///schemas/next/api/getCurrentChannelResponse.schema.json)
 
 #### `getInfo()`
 
 Request and response used to implement the [`getInfo()`](../ref/DesktopAgent#getinfo) API call:
 
-- [`getInfoRequest`](https://fdc3.finos.org/schemas/next/api/getInfoRequest.schema.json)
-- [`getInfoResponse`](https://fdc3.finos.org/schemas/next/api/getInfoResponse.schema.json)
+- [`getInfoRequest`](pathname:///schemas/next/api/getInfoRequest.schema.json)
+- [`getInfoResponse`](pathname:///schemas/next/api/getInfoResponse.schema.json)
 
 #### `getOrCreateChannel()`
 
 Request and response used to implement the [`getOrCreateChannel()`](../ref/DesktopAgent#getorcreatechannel) API call:
 
-- [`getOrCreateChannelRequest`](https://fdc3.finos.org/schemas/next/api/getOrCreateChannelRequest.schema.json)
-- [`getOrCreateChannelResponse`](https://fdc3.finos.org/schemas/next/api/getOrCreateChannelResponse.schema.json)
+- [`getOrCreateChannelRequest`](pathname:///schemas/next/api/getOrCreateChannelRequest.schema.json)
+- [`getOrCreateChannelResponse`](pathname:///schemas/next/api/getOrCreateChannelResponse.schema.json)
 
 #### `getUserChannels()`
 
 Request and response used to implement the [`getUserChannels()`](../ref/DesktopAgent#getuserchannels) API call:
 
-- [`getUserChannelsRequest`](https://fdc3.finos.org/schemas/next/api/getUserChannelsRequest.schema.json)
-- [`getUserChannelsResponse`](https://fdc3.finos.org/schemas/next/api/getUserChannelsResponse.schema.json)
+- [`getUserChannelsRequest`](pathname:///schemas/next/api/getUserChannelsRequest.schema.json)
+- [`getUserChannelsResponse`](pathname:///schemas/next/api/getUserChannelsResponse.schema.json)
 
 #### `joinUserChannel()`
 
 Request and response used to implement the [`joinUserChannel()`](../ref/DesktopAgent#joinuserchannel) API call:
 
-- [`joinUserChannelRequest`](https://fdc3.finos.org/schemas/next/api/joinUserChannelRequest.schema.json)
-- [`joinUserChannelResponse`](https://fdc3.finos.org/schemas/next/api/joinUserChannelResponse.schema.json)
+- [`joinUserChannelRequest`](pathname:///schemas/next/api/joinUserChannelRequest.schema.json)
+- [`joinUserChannelResponse`](pathname:///schemas/next/api/joinUserChannelResponse.schema.json)
 
 #### `leaveCurrentChannel()`
 
 Request and response used to implement the [`leaveCurrentChannel()`](../ref/DesktopAgent#leavecurrentchannel) API call:
 
-- [`leaveCurrentChannelRequest`](https://fdc3.finos.org/schemas/next/api/leaveCurrentChannelRequest.schema.json)
-- [`leaveCurrentChannelResponse`](https://fdc3.finos.org/schemas/next/api/leaveCurrentChannelResponse.schema.json)
+- [`leaveCurrentChannelRequest`](pathname:///schemas/next/api/leaveCurrentChannelRequest.schema.json)
+- [`leaveCurrentChannelResponse`](pathname:///schemas/next/api/leaveCurrentChannelResponse.schema.json)
 
 #### `open()`
 
 Request and response used to implement the [`open()`](../ref/DesktopAgent#open) API call:
 
-- [`openRequest`](https://fdc3.finos.org/schemas/next/api/openRequest.schema.json)
-- [`openResponse`](https://fdc3.finos.org/schemas/next/api/openResponse.schema.json)
+- [`openRequest`](pathname:///schemas/next/api/openRequest.schema.json)
+- [`openResponse`](pathname:///schemas/next/api/openResponse.schema.json)
 
 Where a context object is passed (e.g. `fdc3.open(app, context)`) the `broadcastEvent` message described above in [`addContextListener`](#addcontextlistener) should be used to deliver it after the context listener has been added:
 
@@ -328,12 +328,12 @@ Desktop Agents MUST allow at least 15 seconds for an app to add a context listen
 
 Request and response used to implement the [`raiseIntent()`](../ref/DesktopAgent#raiseintent) API call:
 
-- [`raiseIntentRequest`](https://fdc3.finos.org/schemas/next/api/raiseIntentRequest.schema.json)
-- [`raiseIntentResponse`](https://fdc3.finos.org/schemas/next/api/raiseIntentResponse.schema.json)
+- [`raiseIntentRequest`](pathname:///schemas/next/api/raiseIntentRequest.schema.json)
+- [`raiseIntentResponse`](pathname:///schemas/next/api/raiseIntentResponse.schema.json)
 
 An additional response message is provided for the delivery of an `IntentResult` from the resolving application to the raising application (which is collected via the [`IntentResolution.getResult()`](../ref/Metadata#intentresolution) API call), which should quote the `requestUuid` from the original `raiseIntentRequest`:
 
-- [`raiseIntentResultResponse`](https://fdc3.finos.org/schemas/next/api/raiseIntentResultResponse.schema.json)
+- [`raiseIntentResultResponse`](pathname:///schemas/next/api/raiseIntentResultResponse.schema.json)
 
 There is no request message to indicate a call to the `resolution.getResult()` function of `IntentResolution`. Hence, Desktop Agents MUST send this additional response message to indicate the status of the intent handling function and to deliver its result (or void if none was returned).
 
@@ -392,8 +392,8 @@ sequenceDiagram
 
 Request and response used to implement the [`raiseIntentForContext()`](../ref/DesktopAgent#raiseintentforcontext) API call:
 
-- [`raiseIntentForContextRequest`](https://fdc3.finos.org/schemas/next/api/raiseIntentForContextRequest.schema.json)
-- [`raiseIntentForContextResponse`](https://fdc3.finos.org/schemas/next/api/raiseIntentForContextResponse.schema.json)
+- [`raiseIntentForContextRequest`](pathname:///schemas/next/api/raiseIntentForContextRequest.schema.json)
+- [`raiseIntentForContextResponse`](pathname:///schemas/next/api/raiseIntentForContextResponse.schema.json)
 
 Message exchanges for handling `raiseIntentForContext()` are the same as for `raiseIntent`, except for the substitution of `raiseIntentForContextRequest` for `raiseIntentRequest` and `raiseIntentForContextResponse` for `raiseIntentResponse`. Hence, please see [`raiseIntent`](#raiseintent) and [`addIntentListener`](#addintentlistener) for further details.
 
@@ -410,8 +410,8 @@ The following additional function is unique to the `Channel` interface:
 
 Request and response used to implement the [`Channel.getCurrentContext()`](../ref/Channel#getcurrentcontext) API call:
 
-- [`getCurrentContextRequest`](https://fdc3.finos.org/schemas/next/api/getCurrentContextRequest.schema.json)
-- [`getCurrentContextResponse`](https://fdc3.finos.org/schemas/next/api/getCurrentContextResponse.schema.json)
+- [`getCurrentContextRequest`](pathname:///schemas/next/api/getCurrentContextRequest.schema.json)
+- [`getCurrentContextResponse`](pathname:///schemas/next/api/getCurrentContextResponse.schema.json)
 
 ### `PrivateChannel`
 
@@ -421,14 +421,14 @@ The [`PrivateChannel`](../ref/PrivateChannel) interface extends [`Channel`](../r
 
 Request and response used to implement the [`PrivateChannel.addEventListener`](../ref/PrivateChannel#addeventlistener) API call:
 
-- [`privateChanneladdEventListenerRequest`](https://fdc3.finos.org/schemas/next/api/privateChanneladdEventListenerRequest.schema.json)
-- [`privateChanneladdEventListenerResponse`](https://fdc3.finos.org/schemas/next/api/privateChanneladdEventListenerResponse.schema.json)
+- [`privateChanneladdEventListenerRequest`](pathname:///schemas/next/api/privateChanneladdEventListenerRequest.schema.json)
+- [`privateChanneladdEventListenerResponse`](pathname:///schemas/next/api/privateChanneladdEventListenerResponse.schema.json)
 
 Event messages used to deliver events that have occurred:
 
-- [`privateChannelOnAddContextListenerEvent`](https://fdc3.finos.org/schemas/next/api/privateChannelOnAddContextListenerEvent.schema.json)
-- [`privateChannelOnDisconnectEvent`](https://fdc3.finos.org/schemas/next/api/privateChannelOnDisconnectEvent.schema.json)
-- [`privateChannelOnUnsubscribeEvent`](https://fdc3.finos.org/schemas/next/api/privateChannelOnUnsubscribeEvent.schema.json)
+- [`privateChannelOnAddContextListenerEvent`](pathname:///schemas/next/api/privateChannelOnAddContextListenerEvent.schema.json)
+- [`privateChannelOnDisconnectEvent`](pathname:///schemas/next/api/privateChannelOnDisconnectEvent.schema.json)
+- [`privateChannelOnUnsubscribeEvent`](pathname:///schemas/next/api/privateChannelOnUnsubscribeEvent.schema.json)
 
 :::tip
 
@@ -438,22 +438,22 @@ The above messages may also be used to implement the deprecated [`onAddContextLi
 
 Message exchange for removing the event listener [`Listener.unsubscribe`](../ref/Types#listener):
 
-- [`privateChannelUnsubscribeEventListenerRequest`](https://fdc3.finos.org/schemas/next/api/privateChannelUnsubscribeEventListenerRequest.schema.json)
-- [`privateChannelUnsubscribeEventListenerResponse`](https://fdc3.finos.org/schemas/next/api/privateChannelUnsubscribeEventListenerResponse.schema.json)
+- [`privateChannelUnsubscribeEventListenerRequest`](pathname:///schemas/next/api/privateChannelUnsubscribeEventListenerRequest.schema.json)
+- [`privateChannelUnsubscribeEventListenerResponse`](pathname:///schemas/next/api/privateChannelUnsubscribeEventListenerResponse.schema.json)
 
 #### `disconnect()`
 
 Request and response used to implement the [`PrivateChannel.disconnect()`](../ref/PrivateChannel#disconnect) API call:
 
-- [`privateChannelDisconnectRequest`](https://fdc3.finos.org/schemas/next/api/privateChannelDisconnectRequest.schema.json)
-- [`privateChannelDisconnectResponse`](https://fdc3.finos.org/schemas/next/api/privateChannelDisconnectResponse.schema.json)
+- [`privateChannelDisconnectRequest`](pathname:///schemas/next/api/privateChannelDisconnectRequest.schema.json)
+- [`privateChannelDisconnectResponse`](pathname:///schemas/next/api/privateChannelDisconnectResponse.schema.json)
 
 ### Checking apps are alive
 
 Depending on the connection over which the Desktop Agent and app are connected, it may be necessary for the Desktop Agent to check whether the application is still alive. This can be done, either periodically or on demand (for example to validate options that will be provided in an [`AppIntent`](../ref/Metadata#appintent) as part of a `findIntentResponse` or `raiseIntentResponse` and displayed in an intent resolver interface), using the following message exchange:
 
-- [`heartbeatEvent`](https://fdc3.finos.org/schemas/next/api/heartbeatEvent.schema.json)
-- [`heartbeatAcknowledgment`](https://fdc3.finos.org/schemas/next/api/heartbeatAcknowledgment.schema.json)
+- [`heartbeatEvent`](pathname:///schemas/next/api/heartbeatEvent.schema.json)
+- [`heartbeatAcknowledgment`](pathname:///schemas/next/api/heartbeatAcknowledgment.schema.json)
 
 As a Desktop Agent initiated exchange, it is initiated with an `AgentEvent` message and completed via an `AppRequest` message as an acknowledgement.
 
@@ -467,19 +467,19 @@ Additional procedures are defined in the [Browser Resident Desktop Agents specif
 
 Desktop Agent implementations, such as those based on the [Browser Resident Desktop Agents specification](./browserResidentDesktopAgents) and [Web Connection Protocol](./webConnectionProtocol), may either provide their own user interfaces (or other appropriate mechanisms) for the selection of User Channels or Intent Resolution, or they may work with implementations injected into the application (for example, as described in the [Web Connection Protocol](./webConnectionProtocol#providing-channel-selector-and-intent-resolver-uis) and implemented in [`getAgent()`](../ref/GetAgent)).
 
-Where injected user interfaces are used, standardized messaging is needed to communicate with those interfaces. This is provided in the DACP via the following 'iframe' messages, which are governed by the [`Fdc3UserInterfaceMessage`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterface.schema.json) schema. The following messages are provided:
+Where injected user interfaces are used, standardized messaging is needed to communicate with those interfaces. This is provided in the DACP via the following 'iframe' messages, which are governed by the [`Fdc3UserInterfaceMessage`](pathname:///schemas/next/api/fdc3UserInterface.schema.json) schema. The following messages are provided:
 
-- [`Fdc3UserInterfaceHello`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceHello.schema.json): Sent by the iframe to its `window.parent` frame to initiate communication and to provide initial CSS to apply to the frame. This message should have a `MessagePort` appended over which further communication will be conducted.
-- [`Fdc3UserInterfaceHandshake`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceHandshake.schema.json):  Response to the `Fdc3UserInterfaceHello` message sent by the application frame, which should be sent over the `MessagePort`. Includes details of the FDC3 version that the application is using.
-- [`Fdc3UserInterfaceDrag`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceDrag.schema.json): Message sent by the iframe to indicate that it is being dragged to a new position and including offsets to indicate direction and distance.
-- [`Fdc3UserInterfaceRestyle`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceRestyle.schema.json): Message sent by the iframe to indicate that its frame should have updated CSS applied to it, for example to support a channel selector interface that can be 'popped open' or an intent resolver that wishes to resize itself to show additional content.
+- [`Fdc3UserInterfaceHello`](pathname:///schemas/next/api/fdc3UserInterfaceHello.schema.json): Sent by the iframe to its `window.parent` frame to initiate communication and to provide initial CSS to apply to the frame. This message should have a `MessagePort` appended over which further communication will be conducted.
+- [`Fdc3UserInterfaceHandshake`](pathname:///schemas/next/api/fdc3UserInterfaceHandshake.schema.json):  Response to the `Fdc3UserInterfaceHello` message sent by the application frame, which should be sent over the `MessagePort`. Includes details of the FDC3 version that the application is using.
+- [`Fdc3UserInterfaceDrag`](pathname:///schemas/next/api/fdc3UserInterfaceDrag.schema.json): Message sent by the iframe to indicate that it is being dragged to a new position and including offsets to indicate direction and distance.
+- [`Fdc3UserInterfaceRestyle`](pathname:///schemas/next/api/fdc3UserInterfaceRestyle.schema.json): Message sent by the iframe to indicate that its frame should have updated CSS applied to it, for example to support a channel selector interface that can be 'popped open' or an intent resolver that wishes to resize itself to show additional content.
 
 Messages are also provided that are specific to each user interface type provided by a Desktop Agent. The following messages are specific to Channel Selector user interfaces:
 
-- [`Fdc3UserInterfaceChannels`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceChannels.schema.json): Sent by the parent frame to initialize a Channel Selector user interface by providing metadata for the Desktop Agent's user channels and details of any channel that is already selected. This message will typically be sent by a `getAgent()` implementation immediately after the `fdc3UserInterfaceHandshake` and before making the injected iframe visible.
-- [`Fdc3UserInterfaceChannelSelected`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceChannelSelected.schema.json): Sent by the Channel Selector to indicate that a channel has been selected or deselected.
+- [`Fdc3UserInterfaceChannels`](pathname:///schemas/next/api/fdc3UserInterfaceChannels.schema.json): Sent by the parent frame to initialize a Channel Selector user interface by providing metadata for the Desktop Agent's user channels and details of any channel that is already selected. This message will typically be sent by a `getAgent()` implementation immediately after the `fdc3UserInterfaceHandshake` and before making the injected iframe visible.
+- [`Fdc3UserInterfaceChannelSelected`](pathname:///schemas/next/api/fdc3UserInterfaceChannelSelected.schema.json): Sent by the Channel Selector to indicate that a channel has been selected or deselected.
 
 Messages specific to Intent Resolver user interfaces:
 
-- [`Fdc3UserInterfaceResolve`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceResolve.schema.json): Sent by the parent frame to initialize an Intent Resolver user interface to resolve a raised intent, before making the iframe visible. The message includes the context object sent with the intent and an array of one or more [`AppIntent`](../ref/Metadata#appintent) objects representing the resolution options for the intent ([`raiseIntent`](../ref/DesktopAgent#raiseintent)) or context ([`raiseIntentForContext`](../ref/DesktopAgent#raiseintentforcontext)) that was raised.
-- [`Fdc3UserInterfaceResolveAction`](https://fdc3.finos.org/schemas/next/api/fdc3UserInterfaceResolveAction.schema.json): Sent by the Intent Resolver to indicate actions taken by the user in the interface, including hovering over an option, clicking a cancel button, or selecting a resolution option. The Intent Resolver should be hidden by the `getAgent()` implementation after a resolution option is selected to ensure that it does not interfere with user's ongoing interaction with the app's user interface.
+- [`Fdc3UserInterfaceResolve`](pathname:///schemas/next/api/fdc3UserInterfaceResolve.schema.json): Sent by the parent frame to initialize an Intent Resolver user interface to resolve a raised intent, before making the iframe visible. The message includes the context object sent with the intent and an array of one or more [`AppIntent`](../ref/Metadata#appintent) objects representing the resolution options for the intent ([`raiseIntent`](../ref/DesktopAgent#raiseintent)) or context ([`raiseIntentForContext`](../ref/DesktopAgent#raiseintentforcontext)) that was raised.
+- [`Fdc3UserInterfaceResolveAction`](pathname:///schemas/next/api/fdc3UserInterfaceResolveAction.schema.json): Sent by the Intent Resolver to indicate actions taken by the user in the interface, including hovering over an option, clicking a cancel button, or selecting a resolution option. The Intent Resolver should be hidden by the `getAgent()` implementation after a resolution option is selected to ensure that it does not interfere with user's ongoing interaction with the app's user interface.

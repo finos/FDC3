@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/bridging/findIntentsByContextBridgeResponse.schema.json",
+  "title": "FindIntentsByContext Bridge Response",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "findIntentsByContextAgentResponse.schema.json#/$defs/FindIntentsByContextResponseBase"
+    },
+    {
+      "$ref": "bridgeResponse.schema.json"
+    }
+  ]
+}

@@ -38,8 +38,8 @@ sequenceDiagram
 
 ### Schema
 
-- [https://fdc3.finos.org/schemas/2.1/bridging/privateChannelOnDisconnectAgentRequest.schema.json](/schemas/2.1/bridging/privateChannelOnDisconnectAgentRequest.schema.json)
-- [https://fdc3.finos.org/schemas/2.1/bridging/privateChannelOnDisconnectBridgeRequest.schema.json](/schemas/2.1/bridging/privateChannelOnDisconnectBridgeRequest.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/privateChannelOnDisconnectAgentRequest.schema.json](pathname:///schemas/2.1/bridging/privateChannelOnDisconnectAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/2.1/bridging/privateChannelOnDisconnectBridgeRequest.schema.json](pathname:///schemas/2.1/bridging/privateChannelOnDisconnectBridgeRequest.schema.json)
 
 ### Example
 

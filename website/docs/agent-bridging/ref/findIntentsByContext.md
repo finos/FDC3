@@ -45,8 +45,8 @@ sequenceDiagram
 
 ### Request message schemas
 
-- [https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextAgentRequest.schema.json](/schemas/next/bridging/findIntentsByContextAgentRequest.schema.json)
-- [https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextBridgeRequest.schema.json](/schemas/next/bridging/findIntentsByContextBridgeRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextAgentRequest.schema.json](pathname:///schemas/next/bridging/findIntentsByContextAgentRequest.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextBridgeRequest.schema.json](pathname:///schemas/next/bridging/findIntentsByContextBridgeRequest.schema.json)
 
 ### Example
 
@@ -98,10 +98,10 @@ The DAB fills in the `source.desktopAgent` field and forwards the request to the
 
 ### Response message schemas
 
-- [https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextAgentResponse.schema.json](/schemas/next/bridging/findIntentsByContextAgentResponse.schema.json)
-- [https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextAgentErrorResponse.schema.json](/schemas/next/bridging/findIntentsByContextAgentErrorResponse.schema.json)
-- [https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextBridgeResponse.schema.json](/schemas/next/bridging/findIntentsByContextBridgeResponse.schema.json)
-- [https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextBridgeErrorResponse.schema.json](/schemas/next/bridging/findIntentsByContextBridgeErrorResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextAgentResponse.schema.json](pathname:///schemas/next/bridging/findIntentsByContextAgentResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextAgentErrorResponse.schema.json](pathname:///schemas/next/bridging/findIntentsByContextAgentErrorResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextBridgeResponse.schema.json](pathname:///schemas/next/bridging/findIntentsByContextBridgeResponse.schema.json)
+- [https://fdc3.finos.org/schemas/next/bridging/findIntentsByContextBridgeErrorResponse.schema.json](pathname:///schemas/next/bridging/findIntentsByContextBridgeErrorResponse.schema.json)
 
 ### Example
 
