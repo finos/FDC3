@@ -1,0 +1,59 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/2.2/api/privateChannelOnUnsubscribeEvent.schema.json",
+	"type": "object",
+	"title": "PrivateChannelOnUnsubscribe Event",
+	"description": "An event message from the Desktop Agent to an app indicating that another app has unsubscribed a context listener from a specific PrivateChannel.",
+	"allOf": [
+		{
+			"$ref": "agentEvent.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/PrivateChannelOnUnsubscribeEventType"
+				},
+				"payload": {
+					"$ref": "#/$defs/PrivateChannelOnUnsubscribeEventPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"PrivateChannelOnUnsubscribeEventType": {
+			"title": "PrivateChannelOnUnsubscribe Event Message Type",
+			"const": "privateChannelOnUnsubscribeEvent"
+		},
+		"PrivateChannelOnUnsubscribeEventPayload": {
+			"title": "privateChannelOnUnsubscribe Event Payload",
+			"type": "object",
+			"properties": {
+				"privateChannelId": {
+					"type": "string",
+					"title": "Private Channel Id",
+					"description": "The Id of the PrivateChannel that the listener was unsubscribed from."
+				},
+				"contextType": {
+					"title": "Context type",
+					"description": "The type of the context listener unsubscribed from the channel by another app, or null if it was listening to all types.",
+					"oneOf": [
+						{
+							"type": "string"
+						},
+						{
+							"type": "null"
+						}
+					]
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"privateChannelId",
+				"contextType"
+			]
+		}
+	}
+}

@@ -1,0 +1,105 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/bridging/connectionStep3Handshake.schema.json",
+  "title": "ConnectionStep3Handshake",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/ConnectionStep3HandshakeBase"
+    },
+    {
+      "$ref": "connectionStep.schema.json"
+    }
+  ],
+  "$defs": {
+    "ConnectionStep3HandshakeBase": {
+      "type": "object",
+      "title": "ConnectionStep3Handshake",
+      "description": "Handshake message sent by the Desktop Agent to the Bridge (including requested name, channel state and authentication data)",
+      "properties": {
+        "type": {
+          "title": "Connection Step 3 Message Type",
+          "const": "handshake"
+        },
+        "payload": {
+          "title": "Connection Step 3 Payload",
+          "type": "object",
+          "properties": {
+            "implementationMetadata": {
+              "title": "Connecting Agent ImplementationMetadata",
+              "description": "Desktop Agent ImplementationMetadata trying to connect to the bridge.",
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "../api/api.schema.json#/definitions/BaseImplementationMetadata"
+                }
+              ],
+              "properties": {
+                "fdc3Version": true,
+                "provider": true,
+                "providerVersion": true,
+                "optionalFeatures": true
+              },
+              "required": [
+                "fdc3Version",
+                "optionalFeatures",
+                "provider"
+              ],
+              "additionalProperties": false
+            },
+            "requestedName": {
+              "title": "Requested name",
+              "description": "The requested Desktop Agent name",
+              "type": "string"
+            },
+            "channelsState": {
+              "title": "Channel State",
+              "type": "object",
+              "description": "The current state of the Desktop Agent's App and User channels (exclude any Private channels), as a mapping of channel id to an array of Context objects, one per type found in the channel, most recent first.",
+              "additionalProperties": {
+                "title": "Channel ",
+                "type": "array",
+                "items": {
+                  "$ref": "../context/context.schema.json"
+                }
+              }
+            },
+            "authToken": {
+              "title": "Authentication Token",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "implementationMetadata",
+            "requestedName",
+            "channelsState"
+          ]
+        },
+        "meta": {
+          "title": "Connection Step 3 Metadata",
+          "type": "object",
+          "properties": {
+            "requestUuid": {
+              "$ref": "../api/common.schema.json#/$defs/RequestUuid"
+            },
+            "timestamp": {
+              "$ref": "../api/common.schema.json#/$defs/Timestamp"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "requestUuid",
+            "timestamp"
+          ]
+        }
+      },
+      "required": [
+        "type",
+        "payload",
+        "meta"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

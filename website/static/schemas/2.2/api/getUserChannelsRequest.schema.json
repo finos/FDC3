@@ -1,0 +1,37 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/2.2/api/getUserChannelsRequest.schema.json",
+	"type": "object",
+	"title": "GetUserChannels Request",
+	"description": "Request to retrieve a list of the User Channels available for the app to join.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/GetUserChannelsRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/GetUserChannelsRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"GetUserChannelsRequestType": {
+			"title": "GetUserChannels Request Message Type",
+			"const": "getUserChannelsRequest"
+		},
+		"GetUserChannelsRequestPayload": {
+			"title": "GetUserChannels Request Payload",
+			"type": "object",
+			"properties": {},
+			"additionalProperties": false
+		}
+	}
+}

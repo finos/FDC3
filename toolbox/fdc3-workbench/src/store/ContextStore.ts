@@ -3,12 +3,11 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 import { makeObservable, observable, runInAction, action, toJS } from 'mobx';
-import { ContextType, Fdc3Listener } from '../utility/Fdc3Api';
+import { ContextType, Fdc3Listener, getWorkbenchAgent } from '../utility/Fdc3Api';
 import { nanoid } from 'nanoid';
 import { contexts } from '../fixtures/contexts';
 import systemLogStore from './SystemLogStore';
 import { v4 as uuidv4 } from 'uuid';
-import { getAgent } from '@finos/fdc3';
 
 export type ContextItem = {
   id: string;
@@ -91,7 +90,7 @@ class ContextStore {
   }
 
   async broadcast(context: ContextType) {
-    const agent = await getAgent();
+    const agent = await getWorkbenchAgent();
 
     if (!context) {
       systemLogStore.addLog({
@@ -137,7 +136,7 @@ class ContextStore {
       if (typeof contextType === 'string') {
         const listenerId = nanoid();
 
-        const agent = await getAgent();
+        const agent = await getWorkbenchAgent();
 
         // TODO: remove window after fixing https://github.com/finos/FDC3/issues/435
         const contextListener = await agent.addContextListener(

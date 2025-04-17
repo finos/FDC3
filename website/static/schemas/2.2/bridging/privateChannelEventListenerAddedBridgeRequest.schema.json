@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/bridging/privateChannelEventListenerAddedBridgeRequest.schema.json",
+  "title": "PrivateChannelEventListenerAdded Bridge Request",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "privateChannelEventListenerAddedAgentRequest.schema.json#/$defs/PrivateChannelEventListenerAddedRequestBase"
+    },
+    {
+      "$ref": "bridgeRequest.schema.json"
+    }
+  ]
+}

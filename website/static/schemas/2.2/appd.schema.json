@@ -1,0 +1,1537 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+	  "title": "FDC3 Application Directory",
+	  "version": "next",
+	  "description": "Application Directory specification providing both interface definition and objects necessary to construct an application directory service.",
+	  "x-logo": {
+		"url": "/img/fdc3-logo-2019-color.png",
+		"altText": "FDC3 logo"
+	  }
+	},
+	"security": [
+	  {
+		"bearerAuth": []
+	  }
+	],
+	"paths": {
+	  "/v2/apps/{appId}": {
+		"get": {
+		  "summary": "Retrieve an application definition",
+		  "parameters": [
+			{
+			  "name": "appId",
+			  "in": "path",
+			  "required": true,
+			  "schema": {
+				"type": "string"
+			  }
+			}
+		  ],
+		  "responses": {
+			"200": {
+			  "description": "OK",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"$ref": "#/components/schemas/Application"
+				  },
+				  "examples": {
+					"MyAppDefinition": {
+					  "$ref": "#/components/examples/MyAppDefinition"
+					},
+					"FDC3WorkbenchAppDefinition": {
+					  "$ref": "#/components/examples/FDC3WorkbenchAppDefinition"
+					}
+				  }
+				}
+			  }
+			},
+			"400": {
+			  "description": "Bad request",
+			  "content": {
+				"*/*": {
+				  "schema": {
+					"$ref": "#/components/schemas/ErrorDTO"
+				  },
+				  "examples": {
+					"Error400Example": {
+					  "$ref": "#/components/examples/Error400Example"
+					}
+				  }
+				}
+			  }
+			},
+			"403": {
+			  "description": "Forbidden",
+			  "content": {
+				"*/*": {
+				  "schema": {
+					"$ref": "#/components/schemas/ErrorDTO"
+				  },
+				  "examples": {
+					"Error403Example": {
+					  "$ref": "#/components/examples/Error403Example"
+					}
+				  }
+				}
+			  }
+			},
+			"500": {
+			  "description": "Server error",
+			  "content": {
+				"*/*": {
+				  "schema": {
+					"$ref": "#/components/schemas/ErrorDTO"
+				  },
+				  "examples": {
+					"Error500Example": {
+					  "$ref": "#/components/examples/Error500Example"
+					}
+				  }
+				}
+			  }
+			}
+		  },
+		  "tags": [
+			"Application"
+		  ]
+		}
+	  },
+	  "/v2/apps": {
+		"get": {
+		  "summary": "Retrieve all application definitions",
+		  "responses": {
+			"200": {
+			  "description": "OK",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"$ref": "#/components/schemas/AllApplicationsResponse"
+				  },
+				  "examples": {
+					"AllAppsResponse": {
+					  "$ref": "#/components/examples/AllAppsResponse"
+					}
+				  }
+				}
+			  }
+			},
+			"400": {
+			  "description": "Bad request",
+			  "content": {
+				"*/*": {
+				  "schema": {
+					"$ref": "#/components/schemas/ErrorDTO"
+				  },
+				  "examples": {
+					"Error400Example": {
+					  "$ref": "#/components/examples/Error400Example"
+					}
+				  }
+				}
+			  }
+			},
+			"403": {
+			  "description": "Forbidden",
+			  "content": {
+				"*/*": {
+				  "schema": {
+					"$ref": "#/components/schemas/ErrorDTO"
+				  },
+				  "examples": {
+					"Error403Example": {
+					  "$ref": "#/components/examples/Error403Example"
+					}
+				  }
+				}
+			  }
+			},
+			"500": {
+			  "description": "Server error",
+			  "content": {
+				"*/*": {
+				  "schema": {
+					"$ref": "#/components/schemas/ErrorDTO"
+				  },
+				  "examples": {
+					"Error500Example": {
+					  "$ref": "#/components/examples/Error500Example"
+					}
+				  }
+				}
+			  }
+			}
+		  },
+		  "tags": [
+			"Application"
+		  ]
+		}
+	  },
+	  "/v1/apps/{appId}": {
+		"get": {
+		  "deprecated": true,
+		  "summary": "Retrieve an application definition",
+		  "parameters": [
+			{
+			  "name": "appId",
+			  "in": "path",
+			  "required": true,
+			  "schema": {
+				"type": "string"
+			  }
+			}
+		  ],
+		  "responses": {
+			"200": {
+			  "description": "OK",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"$ref": "#/components/schemas/ApplicationV1"
+				  }
+				}
+			  }
+			},
+			"400": {
+			  "description": "Bad request.",
+			  "content": {
+				"*/*": {
+				  "schema": {
+					"$ref": "#/components/schemas/ErrorDTO"
+				  }
+				}
+			  }
+			},
+			"403": {
+			  "description": "Forbidden: Certificate authentication is not allowed for the requested user.",
+			  "content": {
+				"*/*": {
+				  "schema": {
+					"$ref": "#/components/schemas/ErrorDTO"
+				  }
+				}
+			  }
+			},
+			"500": {
+			  "description": "Server error, see response body for further details.",
+			  "content": {
+				"*/*": {
+				  "schema": {
+					"$ref": "#/components/schemas/ErrorDTO"
+				  }
+				}
+			  }
+			}
+		  },
+		  "tags": [
+			"Application"
+		  ]
+		}
+	  },
+	  "/v1/apps": {
+		"post": {
+		  "deprecated": true,
+		  "summary": "Create a new application definition",
+		  "responses": {
+			"200": {
+			  "description": "OK",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"$ref": "#/components/schemas/ApplicationSearchResponseV1"
+				  }
+				}
+			  }
+			},
+			"400": {
+			  "description": "Bad request.",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"$ref": "#/components/schemas/ErrorDTO"
+				  }
+				}
+			  }
+			},
+			"403": {
+			  "description": "Forbidden: Certificate authentication is not allowed for the requested user.",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"$ref": "#/components/schemas/ErrorDTO"
+				  }
+				}
+			  }
+			},
+			"500": {
+			  "description": "Server error, see response body for further details.",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"$ref": "#/components/schemas/ErrorDTO"
+				  }
+				}
+			  }
+			}
+		  },
+		  "tags": [
+			"Application"
+		  ],
+		  "requestBody": {
+			"content": {
+			  "application/json": {
+				"schema": {
+				  "$ref": "#/components/schemas/ApplicationV1"
+				}
+			  }
+			},
+			"required": true
+		  }
+		}
+	  },
+	  "/v1/apps/search": {
+		"get": {
+		  "deprecated": true,
+		  "summary": "Retrieve a list of applications based on parameters provided.  Depending on implementation, parameter values should self describe search format and type (e.g. Regex)",
+		  "parameters": [
+			{
+			  "in": "query",
+			  "name": "appId",
+			  "schema": {
+				"type": "string"
+			  },
+			  "required": false,
+			  "description": "The unique application identifier located within a specific application directory instance."
+			},
+			{
+			  "in": "query",
+			  "name": "name",
+			  "schema": {
+				"type": "string"
+			  },
+			  "required": false,
+			  "description": "The name of the application. The name should be unique within an FDC3 App Directory instance. The exception to the uniqueness constraint is that an App Directory can hold definitions for multiple versions of the same app. The same appName could occur in other directories. We are not currently specifying app name conventions in the document."
+			},
+			{
+			  "in": "query",
+			  "name": "version",
+			  "schema": {
+				"type": "string"
+			  },
+			  "required": false,
+			  "description": "Version of the application. This allows multiple app versions to be defined using the same app name. This can be a triplet but can also include things like 1.2.5 (BETA)"
+			},
+			{
+			  "in": "query",
+			  "name": "title",
+			  "schema": {
+				"type": "string"
+			  },
+			  "required": false,
+			  "description": "Optional title for the application, if missing use appName, typically used in a launcher UI."
+			},
+			{
+			  "in": "query",
+			  "name": "tooltip",
+			  "schema": {
+				"type": "string"
+			  },
+			  "required": false,
+			  "description": "Optional tooltip description e.g. for a launcher"
+			},
+			{
+			  "in": "query",
+			  "name": "description",
+			  "schema": {
+				"type": "string"
+			  },
+			  "required": false,
+			  "description": "Description of the application. This will typically be a 1-2 paragraph style blurb about the application. Allow mark up language"
+			},
+			{
+			  "in": "query",
+			  "name": "intent_name",
+			  "schema": {
+				"type": "string"
+			  },
+			  "required": false,
+			  "description": "name of intent"
+			},
+			{
+			  "in": "query",
+			  "name": "intent_displayName",
+			  "schema": {
+				"type": "string"
+			  },
+			  "required": false,
+			  "description": "displayName of intent"
+			},
+			{
+			  "in": "query",
+			  "name": "intent_context",
+			  "schema": {
+				"type": "string"
+			  },
+			  "required": false,
+			  "description": "search contexts list"
+			}
+		  ],
+		  "responses": {
+			"200": {
+			  "description": "OK",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"$ref": "#/components/schemas/ApplicationSearchResponseV1"
+				  }
+				}
+			  }
+			},
+			"400": {
+			  "description": "Bad request.",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"$ref": "#/components/schemas/ErrorDTO"
+				  }
+				}
+			  }
+			},
+			"403": {
+			  "description": "Forbidden: Certificate authentication is not allowed for the requested user.",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"$ref": "#/components/schemas/ErrorDTO"
+				  }
+				}
+			  }
+			},
+			"500": {
+			  "description": "Server error, see response body for further details.",
+			  "content": {
+				"application/json": {
+				  "schema": {
+					"$ref": "#/components/schemas/ErrorDTO"
+				  }
+				}
+			  }
+			}
+		  },
+		  "tags": [
+			"Application"
+		  ]
+		}
+	  }
+	},
+	"servers": [
+	  {
+		"url": "/appd"
+	  }
+	],
+	"components": {
+	  "securitySchemes": {
+		"bearerAuth": {
+		  "type": "http",
+		  "scheme": "bearer",
+		  "bearerFormat": "JWT"
+		}
+	  },
+	  "schemas": {
+		"ErrorDTO": {
+		  "type": "object",
+		  "properties": {
+			"code": {
+			  "type": "integer",
+			  "format": "int32"
+			},
+			"message": {
+			  "type": "string"
+			}
+		  }
+		},
+		"BaseApplication": {
+		  "properties": {
+			"appId": {
+			  "type": "string",
+			  "description": "The unique application identifier located within a specific application directory instance."
+			},
+			"title": {
+			  "type": "string",
+			  "description": "Title for the application, typically used in a launcher UI."
+			},
+			"type": {
+			  "$ref": "#/components/schemas/Type"
+			},
+			"details": {
+			  "$ref": "#/components/schemas/LaunchDetails"
+			},
+			"name": {
+			  "type": "string",
+			  "description": "Deprecated in favour of using `appId` to identify apps and `title` for their display names. The name of the application. The name should be unique within an FDC3 App Directory instance. The exception to the uniqueness constraint is that an App Directory can hold definitions for multiple versions of the same app. The same appName could occur in other directories. We are not currently specifying app name conventions in the document.",
+			  "deprecated": true
+			},
+			"version": {
+			  "type": "string",
+			  "description": "Version of the application. This allows multiple app versions to be defined using the same app name. This can be a triplet but can also include things like 1.2.5 (BETA)"
+			},
+			"tooltip": {
+			  "type": "string",
+			  "description": "Optional tooltip description e.g. for a launcher"
+			},
+			"lang": {
+			  "type": "string",
+			  "pattern": "^[a-z]{2}(-[a-zA-Z0-9]{2,8}){0,1}$",
+			  "description": "A language tag that specifies the primary language of both the application and its AppD entry, as defined by IETF RFC 5646."
+			},
+			"description": {
+			  "type": "string",
+			  "description": "Description of the application. This will typically be a 1-2 paragraph style blurb about the application. "
+			},
+			"categories": {
+			  "description": "An array of string categories that describe the application. These are meant as a hint to catalogs or stores listing FDC3-enabled apps and it is expected that these will make a best effort to find appropriate categories (or category) under which to list the app. AppD record authors are encouraged to use lower-case and, where possible, to select categories from the following list:\n\n- allocations\n- analytics\n- charts\n- chat\n- communication\n- compliance\n- crm\n- developer tools\n- events\n- execution management\n- file sharing\n- market data\n- news\n- networking\n- office apps\n- order management\n- other\n- portfolio management\n- presentation\n- pricing\n- productivity\n- research\n- risk\n- screen sharing\n- security\n- spreadsheet\n- trade cost analysis\n- trading system\n- training\n- travel\n- video\n- visualization\n- weather\n",
+			  "type": "array",
+			  "items": {
+				"type": "string"
+			  }
+			},
+			"icons": {
+			  "type": "array",
+			  "description": "Holds Icons used for the application, a Launcher may be able to use multiple Icon sizes or there may be a 'button' Icon",
+			  "items": {
+				"$ref": "#/components/schemas/Icon"
+			  }
+			},
+			"screenshots": {
+			  "type": "array",
+			  "description": "Array of images to show the user when they are looking at app description. Each image can have an optional description/tooltip",
+			  "items": {
+				"$ref": "#/components/schemas/Screenshot"
+			  }
+			},
+			"contactEmail": {
+			  "type": "string",
+			  "format": "email",
+			  "description": "Optional e-mail to receive queries about the application"
+			},
+			"supportEmail": {
+			  "type": "string",
+			  "format": "email",
+			  "description": "Optional e-mail to receive support requests for the application"
+			},
+			"moreInfo": {
+			  "type": "string",
+			  "format": "uri",
+			  "description": "Optional URL that provides more information about the application"
+			},
+			"publisher": {
+			  "type": "string",
+			  "description": "The name of the company that owns the application. The publisher has control over their namespace/app/signature."
+			},
+			"customConfig": {
+			  "deprecated": true,
+			  "type": "array",
+			  "description": "An optional set of name value pairs that can be used to deliver custom data from an App Directory to a launcher. Deprecated due to a lack of a standard means of retrieval via the Desktop Agent API. To be replaced in a future version with an `applicationConfig` element and standard API to retrieve it. See issue  [#1006](https://github.com/finos/FDC3/issues/1006) for details.",
+			  "items": {
+				"$ref": "#/components/schemas/NameValuePair"
+			  }
+			},
+			"hostManifests": {
+			  "$ref": "#/components/schemas/HostManifests"
+			},
+			"interop": {
+			  "$ref": "#/components/schemas/Interop"
+			}
+		  }
+		},
+		"Application": {
+		  "description": "Defines an application retrieved from an FDC3 App Directory, which can then be launched. Launching typically means running for a user on a desktop. The details around 'launching' including who or what might do it, and how the launch action is initiated are discussed elsewhere in the FDC3 App Directory spec.",
+		  "required": [
+			"appId",
+			"title",
+			"type",
+			"details"
+		  ],
+		  "allOf": [
+			{
+			  "$ref": "#/components/schemas/BaseApplication"
+			},
+			{
+			  "type": "object",
+			  "properties": {
+				"localizedVersions": {
+				  "$ref": "#/components/schemas/LocalizedVersions"
+				}
+			  }
+			}
+		  ]
+		},
+		"AllApplicationsResponse": {
+		  "properties": {
+			"applications": {
+			  "type": "array",
+			  "description": "List of applications",
+			  "items": {
+				"$ref": "#/components/schemas/Application"
+			  }
+			},
+			"message": {
+			  "type": "string",
+			  "description": "Response message providing status of query"
+			}
+		  }
+		},
+		"NameValuePair": {
+		  "description": "Simple name value pair",
+		  "properties": {
+			"name": {
+			  "type": "string",
+			  "description": "name"
+			},
+			"value": {
+			  "type": "string",
+			  "description": "value"
+			}
+		  }
+		},
+		"Icon": {
+		  "description": "Icon holder",
+		  "properties": {
+			"src": {
+			  "type": "string",
+			  "format": "uri",
+			  "description": "Icon URL"
+			},
+			"size": {
+			  "type": "string",
+			  "description": "Icon dimension formatted as `<height>x<width>`"
+			},
+			"type": {
+			  "type": "string",
+			  "description": "Image media type. If not present the Desktop Agent may use the src file extension"
+			}
+		  },
+		  "required": [
+		    "src"
+		  ],
+		  "additionalProperties": false
+		},
+		"Screenshot": {
+		  "description": "Images representing the app in common usage scenarios",
+		  "properties": {
+			"src": {
+			  "type": "string",
+			  "format": "uri",
+			  "description": "App Image URL"
+			},
+			"size": {
+			  "type": "string",
+			  "description": "Image dimension formatted as `<height>x<width>`"
+			},
+			"type": {
+			  "type": "string",
+			  "description": "Image media type. If not present the Desktop Agent may use the src file extension."
+			},
+			"label": {
+			  "type": "string",
+			  "description": "Optional caption for the image"
+			}
+		  },
+		  "required": [
+			"src"
+		  ],
+		  "additionalProperties": false
+		},
+		"Type": {
+		  "type": "string",
+		  "description": "The technology type that is used to launch and run the application. Each application type implies a particular set of launch `details`.\nThe supported types include:\n\n- `web`: Web applications launched via a URL\n- `native`: Native applications pre-installed on a device and launch via a filesystem path\n- `citrix`: Apps virtualized via Citrix\n- `onlineNative`: Native apps that have an online launcher, e.g. online ClickOnce app deployments.\n- `other`: Used to represent apps that do not conform to or cannot be launched via the other types, and are likely to be defined solely by a hostManifest.\n\nFDC3 Desktop Agents MUST support at least the `web` application type and MAY support any or all of the other types.",
+		  "enum": [
+			"web",
+			"native",
+			"citrix",
+			"onlineNative",
+			"other"
+		  ]
+		},
+		"LaunchDetails": {
+		  "description": "The type specific launch details of the application. These details are intended to be vendor-agnostic and MAY be duplicated or overridden by details provided in the hostManifests object for a specific host.",
+		  "oneOf": [
+			{
+			  "$ref": "#/components/schemas/WebAppDetails"
+			},
+			{
+			  "$ref": "#/components/schemas/NativeAppDetails"
+			},
+			{
+			  "$ref": "#/components/schemas/CitrixAppDetails"
+			},
+			{
+			  "$ref": "#/components/schemas/OnlineNativeAppDetails"
+			},
+			{
+			  "$ref": "#/components/schemas/OtherAppDetails"
+			}
+		  ]
+		},
+		"WebAppDetails": {
+		  "type": "object",
+		  "description": "Properties used to launch apps with `type: web`.",
+		  "required": [
+			"url"
+		  ],
+		  "properties": {
+			"url": {
+			  "type": "string",
+			  "format": "uri",
+			  "description": "Application start URL."
+			}
+		  },
+		  "additionalProperties": false
+		},
+		"NativeAppDetails": {
+		  "type": "object",
+		  "description": "Properties used to launch apps with `type: native` that are already installed on the device.",
+		  "required": [
+			"path"
+		  ],
+		  "properties": {
+			"path": {
+			  "type": "string",
+			  "description": "The path on disk from which the application is launched."
+			},
+			"arguments": {
+			  "type": "string",
+			  "description": "Arguments that must be passed on the command line to launch the app in the expected configuration."
+			}
+		  },
+		  "additionalProperties": false
+		},
+		"CitrixAppDetails": {
+	      "type": "object",
+		  "description": "Properties used to launch apps virtualized apps with `type: citrix`.",
+		  "required": [
+			"alias"
+		  ],
+		  "properties": {
+			"alias": {
+			  "type": "string",
+			  "description": "The Citrix alias / name of the virtual app (passed to the Citrix SelfService qlaunch parameter)."
+			},
+			"arguments": {
+			  "type": "string",
+			  "description": "Arguments that must be passed on the command line to launch the app in the expected configuration."
+			}
+		  },
+		  "additionalProperties": false
+		},
+		"OnlineNativeAppDetails": {
+		  "type": "object",
+		  "description": "Properties used to launch a native apps with `type: onlineNative` that have an online launcher, e.g. online ClickOnce app deployments.",
+		  "required": [
+			"url"
+		  ],
+		  "properties": {
+			"url": {
+			  "type": "string",
+			  "format": "uri",
+			  "description": "Application URL."
+			}
+		  },
+		  "additionalProperties": false
+		},
+		"OtherAppDetails": {
+		  "type": "object",
+		  "description": "Apps with `type: other` are defined by a hostManifest and do not require other details.",
+		  "properties": {},
+		  "additionalProperties": false
+		},
+		"HostManifests": {
+		  "type": "object",
+		  "description": "A mapping from host name to a host-specific application manifest object or URI from which that manifest can be retrieved. The manifest should provide details required to launch and use the application within the specified host. The manifest _MAY_ duplicate or  override information provided in the `details` field.",
+		  "additionalProperties": {
+			"x-additionalPropertiesName": "Host name",
+			"oneOf": [
+			  {
+				"type": "string",
+				"format": "uri"
+			  },
+			  {
+				"$ref": "#/components/schemas/HostManifest"
+			  }
+			]
+		  }
+		},
+		"HostManifest": {
+		  "type": "object",
+		  "description": "Object containing all host specific properties."
+		},
+		"LocalizedVersions": {
+		  "type": "object",
+		  "description": "Provides localized alternatives to any field of the AppD record, which may also refer to an alternative version of the application that is also localized (e.g. by providing an alternative URL).  The keys to this object should be language tags as defined by IETF RFC 5646, e.g. en, en-GB or fr-FR.\n",
+		  "additionalProperties": {
+			"x-additionalPropertiesName": "Language tag",
+			"$ref": "#/components/schemas/BaseApplication"
+		  }
+		},
+		"Intent": {
+		  "description": "Definition of an intent that an app listens for",
+		  "required": [
+			"contexts"
+		  ],
+		  "properties": {
+			"displayName": {
+			  "type": "string",
+			  "description": "Optional display name for the intent. Deprecated in favour of the intent name, which is common amongst all apps that support it, where the display name may vary as it is defined in the app's AppD record.",
+			  "deprecated": true
+			},
+			"contexts": {
+			  "type": "array",
+			  "items": {
+				"type": "string"
+			  },
+			  "description": "A comma separated list of the types of contexts the intent offered by the application can process, where the first part of the context type is the namespace e.g.\"fdc3.contact, org.symphony.contact\""
+			},
+			"resultType": {
+			  "type": "string",
+			  "description": "An optional type for output returned by the application, if any, when resolving this intent. May indicate a context type by type name (e.g. \"fdc3.instrument\"), a channel (e.g. \"channel\") or a combination that indicates a channel that returns a particular context type (e.g. \"channel<fdc3.instrument>\")."
+			},
+			"customConfig": {
+			  "deprecated": true,
+			  "type": "object",
+			  "description": "Custom configuration for the intent that may be required for a particular desktop agent. Deprecated due to a lack of defined use cases."
+			}
+		  }
+		},
+		"Interop": {
+		  "type": "object",
+		  "description": "Metadata that describes how the application uses FDC3 APIs. This metadata serves multiple purposes:\n\n- It supports intent resolution by a desktop agent, by declaring what intents an app listens for.\n- It may be used, for example in an app catalog UI, to find apps that 'interoperate with' other apps. \n- It provides a standard location to document how the app interacts with user channels, app channels, and intents, for use by other app developers and desktop assemblers.",
+		  "properties": {
+			"intents": {
+			  "type": "object",
+			  "description": "Describes the app's interactions with intents.",
+			  "properties": {
+				"listensFor": {
+				  "type": "object",
+				  "description": "A mapping of Intents names that an app listens for via `fdc3.addIntentListener()` to their configuration. \n\nUsed to support intent resolution by desktop agents. Replaces the `intents` element used in appD records prior to FDC3 2.0.",
+				  "additionalProperties": {
+					"x-additionalPropertiesName": "Intent name",
+					"$ref": "#/components/schemas/Intent"
+				  }
+				},
+				"raises": {
+				  "type": "object",
+				  "description": "A mapping of Intent names that an app raises (via `fdc3.raiseIntent`) to an array of context type names that it may be raised with.\n\nUse the intent name \"any\" to represent use of the `fdc3.raiseIntentForContext` and `fdc3.findIntentForContext` functions, which allow the user to select from intents available for a specified context type.\n\nThis metadata is not currently used by the desktop agent, but is provided to help find apps that will interoperate with this app and to document API interactions for use by other app developers.",
+				  "additionalProperties": {
+					"x-additionalPropertiesName": "Intent name",
+					"type": "array",
+					"description": "Context type names that the intent may be raised with.",
+					"items": {
+					  "type": "string"
+					}
+				  }
+				}
+			  }
+			},
+			"userChannels": {
+			  "type": "object",
+			  "description": "Describes the application's use of context types on User Channels.\n\nThis metadata is not currently used by the desktop agent, but is provided to help find apps that will interoperate with this app and to document API interactions for use by other app developers.",
+			  "properties": {
+				"broadcasts": {
+				  "type": "array",
+				  "description": "Context type names that are broadcast by the application.",
+				  "items": {
+					"type": "string"
+				  }
+				},
+				"listensFor": {
+				  "type": "array",
+				  "description": "Context type names that the application listens for.",
+				  "items": {
+					"type": "string"
+				  }
+				}
+			  }
+			},
+			"appChannels": {
+			  "type": "array",
+			  "description": "Describes the application's use of App Channels.\n\nThis metadata is not currently used by the desktop agent, but is provided to help find apps that will interoperate with this app and to document API interactions for use by other app developers.",
+			  "items": {
+				"type": "object",
+				"required": [
+				  "id"
+				],
+				"properties": {
+				  "id": {
+					"type": "string",
+					"description": "The id of the App Channel. N.b. in FDC3 2.0 this field was incorrectly called `name`."
+				  },
+				  "description": {
+					"type": "string",
+					"description": "A description of how the channel is used."
+				  },
+				  "broadcasts": {
+					"type": "array",
+					"description": "Context type names that are broadcast by the application on the channel.",
+					"items": {
+					  "type": "string"
+					}
+				  },
+				  "listensFor": {
+					"type": "array",
+					"description": "Context type names that the application listens for on the channel.",
+					"items": {
+					  "type": "string"
+					}
+				  }
+				}
+			  }
+			}
+		  }
+		},
+		"AppImageV1": {
+		  "description": "App Image holder",
+		  "properties": {
+			"url": {
+			  "type": "string",
+			  "format": "uri",
+			  "description": "App Image URL"
+			}
+		  }
+		},
+		"IconV1": {
+		  "description": "(Deprecated v1 API version) Icon holder",
+		  "properties": {
+			"icon": {
+			  "type": "string",
+			  "format": "uri",
+			  "description": "Icon URL"
+			}
+		  }
+		},
+		"IntentV1": {
+		  "description": "(Deprecated v1 API version) An intent definition as defined by spec https://github.com/FDC3/Intents/blob/main/src/Intent.yaml",
+		  "required": [
+			"name"
+		  ],
+		  "properties": {
+			"name": {
+			  "type": "string",
+			  "description": "The name of the intent to 'launch'. In this case the name of an Intent supported by an application."
+			},
+			"displayName": {
+			  "type": "string",
+			  "description": "An optional display name for the intent that may be used in UI instead of the name."
+			},
+			"contexts": {
+			  "type": "array",
+			  "items": {
+				"type": "string"
+			  },
+			  "description": "A comma separated list of the types of contexts the intent offered by the application can process, where the first part of the context type is the namespace e.g.\"fdc3.contact, org.symphony.contact\""
+			},
+			"customConfig": {
+			  "deprecated": true,
+			  "type": "object",
+			  "description": "Custom configuration for the intent that may be required for a particular desktop agent. Deprecated due to a lack of defined use cases."
+			}
+		  }
+		},
+		"ApplicationV1": {
+		  "description": "(Deprecated v1 API version) Defines an application retrieved from an FDC3 App Directory, which can then be launched. Launching typically means running for a user on a desktop. The details around 'launching' including who or what might do it, and how the launch action is initiated are discussed elsewhere in the FDC3 App Directory spec.",
+		  "required": [
+			"appId",
+			"name",
+			"manifest",
+			"manifestType"
+		  ],
+		  "properties": {
+			"appId": {
+			  "type": "string",
+			  "description": "The unique application identifier located within a specific application directory instance."
+			},
+			"name": {
+			  "type": "string",
+			  "description": "The name of the application. The name should be unique within an FDC3 App Directory instance. The exception to the uniqueness constraint is that an App Directory can hold definitions for multiple versions of the same app. The same appName could occur in other directories. We are not currently specifying app name conventions in the document."
+			},
+			"manifest": {
+			  "type": "string",
+			  "description": "URI or full JSON of the application manifest providing all details related to launch and use requirements as described by the vendor. The format of this manifest is vendor specific, but can be identified by the manifestType attribute."
+			},
+			"manifestType": {
+			  "type": "string",
+			  "description": "The manifest type which relates to the format and structure of the manifest content. The definition is based on the vendor specific format and definition outside of this specification."
+			},
+			"version": {
+			  "type": "string",
+			  "description": "Version of the application. This allows multiple app versions to be defined using the same app name. This can be a triplet but can also include things like 1.2.5 (BETA)"
+			},
+			"title": {
+			  "type": "string",
+			  "description": "Optional title for the application, if missing use appName, typically used in a launcher UI."
+			},
+			"tooltip": {
+			  "type": "string",
+			  "description": "Optional tooltip description e.g. for a launcher"
+			},
+			"description": {
+			  "type": "string",
+			  "description": "Description of the application. This will typically be a 1-2 paragraph style blurb about the application. Allow mark up language"
+			},
+			"images": {
+			  "type": "array",
+			  "description": "Array of images to show the user when they are looking at app description. Each image can have an optional description/tooltip",
+			  "items": {
+				"$ref": "#/components/schemas/AppImageV1"
+			  }
+			},
+			"contactEmail": {
+			  "type": "string",
+			  "format": "email",
+			  "description": "Optional e-mail to receive queries about the application"
+			},
+			"supportEmail": {
+			  "type": "string",
+			  "format": "email",
+			  "description": "Optional e-mail to receive support requests for the application"
+			},
+			"publisher": {
+			  "type": "string",
+			  "description": "The name of the company that owns the application. The publisher has control over their namespace/app/signature."
+			},
+			"icons": {
+			  "type": "array",
+			  "description": "Holds Icons used for the application, a Launcher may be able to use multiple Icon sizes or there may be a 'button' Icon",
+			  "items": {
+				"$ref": "#/components/schemas/IconV1"
+			  }
+			},
+			"customConfig": {
+			  "deprecated": true,
+			  "type": "array",
+			  "description": "An optional set of name value pairs that can be used to deliver custom data from an App Directory to a launcher.",
+			  "items": {
+				"$ref": "#/components/schemas/NameValuePair"
+			  }
+			},
+			"intents": {
+			  "type": "array",
+			  "description": "The list of intents implemented by the application as defined by https://github.com/FDC3/Intents/blob/main/src/Intent.yaml",
+			  "items": {
+				"$ref": "#/components/schemas/IntentV1"
+			  }
+			}
+		  }
+		},
+		"ApplicationSearchResponseV1": {
+		  "properties": {
+			"applications": {
+			  "type": "array",
+			  "description": "List of applications",
+			  "items": {
+				"$ref": "#/components/schemas/ApplicationV1"
+			  }
+			},
+			"message": {
+			  "type": "string",
+			  "description": "Response message providing status of query"
+			}
+		  }
+		}
+	  },
+	  "examples": {
+		"FDC3WorkbenchAppDefinition": {
+		  "value": {
+			"appId": "fdc3-workbench",
+			"title": "FDC3 Workbench",
+			"description": "Development and test tool for FDC3 desktop agents and apps",
+			"categories": [
+			  "developer tools",
+			  "training"
+			],
+			"version": "1.0.0",
+			"tooltip": "FDC3 Workbench",
+			"lang": "en-US",
+			"icons": [
+			  {
+				"src": "https://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png"
+			  }
+			],
+			"screenshots": [
+			  {
+				"src": "https://fdc3.finos.org/docs/assets/fdc3-logo.png",
+				"label": "FDC3 logo"
+			  }
+			],
+			"contactEmail": "fdc3@finos.org",
+			"supportEmail": "fdc3-maintainers@finos.org",
+			"moreInfo": "https://fdc3.finos.org",
+			"publisher": "FDC3",
+			"type": "web",
+			"details": {
+			  "url": "https://fdc3.finos.org/toolbox/fdc3-workbench/"
+			},
+			"hostManifests": {
+			  "Glue42": {
+				"type": "window",
+				"icon": "https://fdc3.finos.org/docs/assets/fdc3-logo.png",
+				"details": {
+				  "height": 640,
+				  "width": 560,
+				  "left": 120,
+				  "top": 120,
+				  "mode": "tab",
+				  "allowChannels": true,
+				  "loader": {
+					"enabled": true,
+					"hideOnLoad": true
+				  }
+				},
+				"customProperties": {
+				  "folder": "FDC3 Toolbox"
+				}
+			  },
+			  "Finsemble": {
+				"window": {
+				  "left": 120,
+				  "top": 120,
+				  "width": 800,
+				  "height": 750,
+				  "options": {
+					"minWidth": 75
+				  }
+				},
+				"foreign": {
+				  "components": {
+					"App Launcher": {
+					  "launchableByUser": true
+					},
+					"Toolbar": {
+					  "iconURL": "http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png"
+					},
+					"Window Manager": {
+					  "FSBLHeader": true,
+					  "persistWindowState": true
+					}
+				  }
+				},
+				"interop": {
+				  "autoConnect": true
+				}
+			  },
+			  "Web App Manifest": "https://example.com/fdc3-workbench.json"
+			},
+			"localizedVersions": {
+			  "fr-FR": {
+				"title": "FDC3 Table de travail",
+				"description": "Outil de développement et de test pour les desktop agents et applications FDC3"
+			  }
+			}
+		  },
+		  "summary": "A sample app definition for the FDC3 Workbench"
+		},
+		"MyAppDefinition": {
+		  "value": {
+			"appId": "my-application",
+			"title": "My Application",
+			"description": "An example application that uses FDC3 and fully describes itself in an AppD record.",
+			"categories": [
+			  "market data",
+			  "research",
+			  "news"
+			],
+			"version": "1.0.0",
+			"tooltip": "My example application definition",
+			"lang": "en-US",
+			"icons": [
+			  {
+				"src": "http://example.domain.com/assets/my-app-icon.png",
+				"size": "256x256",
+				"type": "image/png"
+			  }
+			],
+			"screenshots": [
+			  {
+				"src": "http://example.domain.com/assets/my-app-screenshot-1.png",
+				"label": "The first screenshot of my example app",
+				"type": "image/png",
+				"size": "800x600"
+			  },
+			  {
+				"src": "http://example.domain.com/assets/my-app-screenshot-2.png",
+				"label": "The second screenshot of my example app",
+				"type": "image/png",
+				"size": "800x600"
+			  }
+			],
+			"contactEmail": "fdc3@finos.org",
+			"supportEmail": "fdc3-maintainers@finos.org",
+			"moreInfo": "http://example.domain.com/",
+			"publisher": "Example App, Inc.",
+			"type": "web",
+			"details": {
+			  "url": "http://example.domain.com/app.html"
+			},
+			"hostManifests": {
+			  "Finsemble": {
+				"window": {
+				  "left": 120,
+				  "top": 120,
+				  "width": 600,
+				  "height": 800,
+				  "options": {
+					"minWidth": 75
+				  }
+				},
+				"foreign": {
+				  "components": {
+					"App Launcher": {
+					  "launchableByUser": true
+					},
+					"Window Manager": {
+					  "FSBLHeader": true,
+					  "persistWindowState": true
+					}
+				  }
+				},
+				"interop": {
+				  "autoConnect": true
+				}
+			  },
+			  "Glue42": {
+				"type": "window",
+				"details": {
+				  "height": 800,
+				  "width": 600,
+				  "left": 120,
+				  "top": 120,
+				  "mode": "tab",
+				  "allowChannels": true,
+				  "loader": {
+					"enabled": true,
+					"hideOnLoad": true
+				  }
+				},
+				"customProperties": {
+				  "folder": "FDC3 Toolbox"
+				}
+			  },
+			  "Web App Manifest": "http://example.domain.com/my-app.json"
+			},
+			"interop": {
+			  "intents": {
+				"listensFor": {
+				  "ViewChart": {
+					"contexts": [
+					  "fdc3.instrument"
+					]
+				  },
+				  "myApp.GetPrice": {
+					"contexts": [
+					  "fdc3.instrument"
+					],
+					"resultType": "myApp.quote"
+				  }
+				},
+				"raises": {
+				  "ViewOrders": [
+					"fdc3.instrument",
+					"fdc3.organization"
+				  ],
+				  "StartEmail": [
+					"fdc3.email"
+				  ]
+				}
+			  },
+			  "userChannels": {
+				"broadcasts": [
+				  "fdc3.instrument",
+				  "fdc3.organization"
+				],
+				"listensFor": [
+				  "fdc3.instrument",
+				  "fdc3.organization"
+				]
+			  },
+			  "appChannels": [
+				{
+				  "id": "myApp.quotes,",
+				  "description": "Used to share a stream of quotes for currently displayed instrument and may be used to change the currently displayed symbol,",
+				  "broadcasts": [
+					"myApp.quote"
+				  ],
+				  "listensFor": [
+					"fdc3.instrument"
+				  ]
+				}
+			  ]
+			},
+			"localizedVersions": {
+			  "fr-FR": {
+				"title": "Mon application,",
+				"description": "Un exemple d'application qui utilise FDC3 et se décrit entièrement dans un enregistrement AppD."
+			  }
+			}
+		  },
+		  "summary": "A sample app definition that describes the app's use of interop."
+		},
+		"AllAppsResponse": {
+		  "value": {
+			"applications": [
+			  {
+				"appId": "my-application",
+				"title": "My Application",
+				"description": "An example application that uses FDC3 and fully describes itself in an AppD record.",
+				"categories": [
+				  "market data",
+				  "research",
+				  "news"
+				],
+				"version": "1.0.0",
+				"tooltip": "My example application definition",
+				"lang": "en-US",
+				"icons": [
+				  {
+					"src": "http://example.domain.com/assets/my-app-icon.png",
+					"size": "256x256",
+					"type": "image/png"
+				  }
+				],
+				"screenshots": [
+				  {
+					"src": "http://example.domain.com/assets/my-app-screenshot-1.png",
+					"label": "The first screenshot of my example app",
+					"type": "image/png",
+					"size": "800x600"
+				  },
+				  {
+					"src": "http://example.domain.com/assets/my-app-screenshot-2.png",
+					"label": "The second screenshot of my example app",
+					"type": "image/png",
+					"size": "800x600"
+				  }
+				],
+				"contactEmail": "fdc3@finos.org",
+				"supportEmail": "fdc3-maintainers@finos.org",
+				"moreInfo": "http://example.domain.com/",
+				"publisher": "Example App, Inc.",
+				"type": "web",
+				"details": {
+				  "url": "http://example.domain.com/app.html"
+				},
+				"hostManifests": {
+				  "Finsemble": {
+					"window": {
+					  "left": 120,
+					  "top": 120,
+					  "width": 600,
+					  "height": 800,
+					  "options": {
+						"minWidth": 75
+					  }
+					},
+					"foreign": {
+					  "components": {
+						"App Launcher": {
+						  "launchableByUser": true
+						},
+						"Window Manager": {
+						  "FSBLHeader": true,
+						  "persistWindowState": true
+						}
+					  }
+					},
+					"interop": {
+					  "autoConnect": true
+					}
+				  },
+				  "Glue42": {
+					"type": "window",
+					"details": {
+					  "height": 800,
+					  "width": 600,
+					  "left": 120,
+					  "top": 120,
+					  "mode": "tab",
+					  "allowChannels": true,
+					  "loader": {
+						"enabled": true,
+						"hideOnLoad": true
+					  }
+					},
+					"customProperties": {
+					  "folder": "FDC3 Toolbox"
+					}
+				  },
+				  "Web App Manifest": "http://example.domain.com/my-app.json"
+				},
+				"interop": {
+				  "intents": {
+					"listensFor": {
+					  "ViewChart": {
+						"contexts": [
+						  "fdc3.instrument"
+						]
+					  },
+					  "myApp.GetPrice": {
+						"contexts": [
+						  "fdc3.instrument"
+						],
+						"resultType": "myApp.quote"
+					  }
+					},
+					"raises": {
+					  "ViewOrders": [
+						"fdc3.instrument",
+						"fdc3.organization"
+					  ],
+					  "StartEmail": [
+						"fdc3.email"
+					  ]
+					}
+				  },
+				  "userChannels": {
+					"broadcasts": [
+					  "fdc3.instrument",
+					  "fdc3.organization"
+					],
+					"listensFor": [
+					  "fdc3.instrument",
+					  "fdc3.organization"
+					]
+				  },
+				  "appChannels": [
+					{
+					  "id": "myApp.quotes,",
+					  "description": "Used to share a stream of quotes for currently displayed instrument and may be used to change the currently displayed symbol,",
+					  "broadcasts": [
+						"myApp.quote"
+					  ],
+					  "listensFor": [
+						"fdc3.instrument"
+					  ]
+					}
+				  ]
+				},
+				"localizedVersions": {
+				  "fr-FR": {
+					"title": "Mon application,",
+					"description": "Un exemple d'application qui utilise FDC3 et se décrit entièrement dans un enregistrement AppD."
+				  }
+				}
+			  },
+			  {
+				"appId": "fdc3-workbench",
+				"title": "FDC3 Workbench",
+				"description": "Development and test tool for FDC3 desktop agents and apps",
+				"categories": [
+				  "developer tools",
+				  "training"
+				],
+				"version": "1.0.0",
+				"tooltip": "FDC3 Workbench",
+				"lang": "en-US",
+				"icons": [
+				  {
+					"src": "https://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png"
+				  }
+				],
+				"screenshots": [
+				  {
+					"src": "https://fdc3.finos.org/docs/assets/fdc3-logo.png,",
+					"label": "FDC3 logo"
+				  }
+				],
+				"contactEmail": "fdc3@finos.org",
+				"supportEmail": "fdc3-maintainers@finos.org",
+				"publisher": "FDC3,",
+				"type": "web",
+				"details": {
+				  "url": "https://fdc3.finos.org/toolbox/fdc3-workbench/"
+				},
+				"hostManifests": {
+				  "Glue42": {
+					"type": "window",
+					"icon": "https://fdc3.finos.org/docs/assets/fdc3-logo.png",
+					"details": {
+					  "height": 640,
+					  "width": 560,
+					  "left": 120,
+					  "top": 120,
+					  "mode": "tab",
+					  "allowChannels": true,
+					  "loader": {
+						"enabled": true,
+						"hideOnLoad": true
+					  }
+					},
+					"customProperties": {
+					  "folder": "FDC3 Toolbox"
+					}
+				  },
+				  "Finsemble": {
+					"window": {
+					  "left": 120,
+					  "top": 120,
+					  "width": 800,
+					  "height": 750,
+					  "options": {
+						"minWidth": 75
+					  }
+					},
+					"foreign": {
+					  "components": {
+						"App Launcher": {
+						  "launchableByUser": true
+						},
+						"Toolbar": {
+						  "iconURL": "http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png"
+						},
+						"Window Manager": {
+						  "FSBLHeader": true,
+						  "persistWindowState": true
+						}
+					  }
+					},
+					"interop": {
+					  "autoConnect": true
+					}
+				  },
+				  "Web App Manifest": "https://example.com/fdc3-workbench.json"
+				},
+				"localizedVersions": {
+				  "fr-FR": {
+					"title": "FDC3 Table de travail",
+					"description": "Outil de développement et de test pour les desktop agents et applications FDC3"
+				  }
+				}
+			  }
+			],
+			"message": "OK"
+		  },
+		  "summary": "A sample 'all applications' listing response"
+		},
+		"Error400Example": {
+		  "value": {
+			"code": 400,
+			"message": "There was an error in your request."
+		  },
+		  "summary": "A sample Bad Request error."
+		},
+		"Error403Example": {
+		  "value": {
+			"code": 403,
+			"message": "Certificate authentication failed for the requested user."
+		  },
+		  "summary": "A sample Forbidden error."
+		},
+		"Error500Example": {
+		  "value": {
+			"code": 500,
+			"message": "An internal server error occurred. See the response body for further details."
+		  },
+		  "summary": "A sample Server error."
+		}
+	  }
+	}
+  }

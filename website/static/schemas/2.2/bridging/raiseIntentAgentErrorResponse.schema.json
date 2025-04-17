@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/bridging/raiseIntentAgentErrorResponse.schema.json",
+  "title": "RaiseIntent Agent Error Response",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/RaiseIntentErrorResponseBase"
+    },
+    {
+      "$ref": "agentErrorResponse.schema.json"
+    }
+  ],
+  "$defs": {
+    "RaiseIntentErrorResponseBase": {
+      "title": "RaiseIntent Error Response",
+      "type": "object",
+      "description": "A response to a request to raise an intent that contains an error.",
+      "properties": {
+        "type": {
+          "$ref": "../api/raiseIntentResponse.schema.json#/$defs/RaiseIntentResponseType"
+        },
+        "payload": {
+          "$ref": "../api/raiseIntentResponse.schema.json#/$defs/RaiseIntentErrorResponsePayload"
+        },
+        "meta": {
+          "title": "RaiseIntent Response Metadata",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
