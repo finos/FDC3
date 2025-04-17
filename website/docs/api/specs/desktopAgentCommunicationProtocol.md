@@ -280,6 +280,10 @@ Request and response used to implement the [`getUserChannels()`](../ref/DesktopA
 - [`getUserChannelsRequest`](pathname:///schemas/next/api/getUserChannelsRequest.schema.json)
 - [`getUserChannelsResponse`](pathname:///schemas/next/api/getUserChannelsResponse.schema.json)
 
+#### `getSubAgent()`
+
+<!-- Add details of any DACP messages used by getSubAgent -->
+
 #### `joinUserChannel()`
 
 Request and response used to implement the [`joinUserChannel()`](../ref/DesktopAgent#joinuserchannel) API call:
@@ -462,6 +466,10 @@ As a Desktop Agent initiated exchange, it is initiated with an `AgentEvent` mess
 Additional procedures are defined in the [Browser Resident Desktop Agents specification](./browserResidentDesktopAgents#disconnects) and [Web Connection Protocol](./webConnectionProtocol#step-5-disconnection) for the detection of app disconnection or closure. Implementations will often need to make use of multiple procedures to catch all forms of disconnection in a web browser.
 
 :::
+
+### Requesting a sub-agent
+
+<!-- Discuss DACP role in requesting a subagent and attachment of of another port to the message, before switching to WCP. Other languages will need to handle that handover somehow -->
 
 ### Controlling Injected User Interfaces
 

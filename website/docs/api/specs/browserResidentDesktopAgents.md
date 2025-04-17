@@ -263,3 +263,7 @@ Communication between the `DesktopAgentProxy` and the iframes it injects is achi
 A further set of messages are provided for working with the injected user interfaces over their `MessageChannel` as part of the DACP, these are: `Fdc3UserInterfaceRestyle`, `Fdc3UserInterfaceDrag`, `Fdc3UserInterfaceChannels`, `Fdc3UserInterfaceChannelSelected`, `Fdc3UserInterfaceResolve` and `Fdc3UserInterfaceResolveAction`.
 
 See the [Desktop Agent Communication Protocol](./desktopAgentCommunicationProtocol) (DACP) for more details.
+
+## Requesting a sub-agent for an embedded application
+
+<!-- Add content on how sub agent requests are handled through the WCP and DACP - include a diagram of the process -->
