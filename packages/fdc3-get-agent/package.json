@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3-get-agent",
-  "version": "2.2.0-alpha.3",
+  "version": "2.2.0",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -23,24 +23,24 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@finos/fdc3-agent-proxy": "2.2.0-alpha.3",
-    "@finos/fdc3-context": "2.2.0-alpha.3",
-    "@finos/fdc3-schema": "2.2.0-alpha.3",
-    "@finos/fdc3-standard": "2.2.0-alpha.3",
+    "@finos/fdc3-agent-proxy": "2.2.0",
+    "@finos/fdc3-context": "2.2.0",
+    "@finos/fdc3-schema": "2.2.0",
+    "@finos/fdc3-standard": "2.2.0",
     "@types/uuid": "^10.0.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@cucumber/cucumber": "10.3.1",
-    "@eslint/js": "^9.16.0",
-    "@finos/fdc3-web-impl": "2.2.0-alpha.3",
-    "@finos/testing": "2.2.0-alpha.3",
+    "@eslint/js": "^9.19.0",
+    "@finos/fdc3-web-impl": "2.2.0",
+    "@finos/testing": "2.2.0",
     "@types/node": "^20.16.11",
     "@types/wtfnode": "^0.7.3",
     "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
     "expect": "^29.7.0",
-    "globals": "^15.13.0",
+    "globals": "^15.14.0",
     "jsonpath-plus": "^10.1.0",
     "nyc": "17.1.0",
     "rimraf": "^6.0.1",

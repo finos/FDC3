@@ -1,0 +1,65 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/2.2/api/addContextListenerRequest.schema.json",
+	"type": "object",
+	"title": "AddContextListener Request",
+	"description": "A request to add a context listener to a specified Channel OR to the current user channel. Where the listener is added to the current user channel (channelId == null), and this app has already been added to a user channel, client code should make a subsequent request to get the current context of that channel for this listener and then call its handler with it.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/AddContextListenerRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/AddContextListenerRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"AddContextListenerRequestType": {
+			"title": "AddContextListener Request Message Type",
+			"const": "addContextListenerRequest"
+		},
+		"AddContextListenerRequestPayload": {
+			"title": "AddContextListener Request Payload",
+			"type": "object",
+			"properties": {
+				"channelId": {
+					"title": "Channel Id",
+					"description": "The id of the channel to add the listener to or `null` indicating that it should listen to the current user channel (at the time of broadcast).",
+					"oneOf": [
+						{
+							"type": "string"
+						},
+						{
+							"type": "null"
+						}
+					]
+				},
+				"contextType": {
+					"title": "Context type",
+					"description": "The type of context to listen for OR `null` indicating that it should listen to all context types.",
+					"oneOf": [
+						{
+							"type": "string"
+						},
+						{
+							"type": "null"
+						}
+					]
+				}
+			},
+			"additionalProperties": false,
+			"required": [
+				"channelId", "contextType"
+			]
+		}
+	}
+}

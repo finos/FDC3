@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3-schema",
-  "version": "2.2.0-alpha.3",
+  "version": "2.2.0",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -28,8 +28,8 @@
     "typegen-bridging": "cd schemas && node ../s2tQuicktypeUtil.js api/api.schema.json api/common.schema.json api/broadcastRequest.schema.json api/findInstancesRequest.schema.json api/findInstancesResponse.schema.json api/findIntentRequest.schema.json api/findIntentResponse.schema.json api/findIntentsByContextRequest.schema.json api/findIntentsByContextResponse.schema.json api/getAppMetadataRequest.schema.json api/getAppMetadataResponse.schema.json api/openRequest.schema.json api/openResponse.schema.json api/raiseIntentRequest.schema.json api/raiseIntentResponse.schema.json api/raiseIntentResultResponse.schema.json ../../fdc3-context/schemas/context/context.schema.json bridging ../generated/bridging/BridgingTypes.ts"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.1.0",
-    "@eslint/js": "^9.16.0",
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.19.0",
     "@types/jest": "29.5.13",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
     "@typescript-eslint/parser": "^8.18.2",
@@ -37,7 +37,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jest": "28.8.3",
     "eslint-plugin-jsx-a11y": "^6.10.0",
-    "globals": "^15.13.0",
+    "globals": "^15.14.0",
     "message-await": "^1.1.0",
     "mkdirp": "^3.0.1",
     "quicktype": "23.0.78",
