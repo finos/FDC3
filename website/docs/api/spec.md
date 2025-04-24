@@ -236,7 +236,7 @@ Additional metadata for an application can be retrieved via the [`fdc3.getAppMet
 
 Identifiers for instances of an application may be retrieved via the [`fdc3.findInstances(appIdentifier)`](ref/DesktopAgent#findinstances) function.
 
-#### Fully-Qualified AppIds
+#### Fully-Qualified AppIds
 
 As an `appId` used in an [`AppIdentifier`](ref/Types#appidentifier) might be replicated in other App Directories, it may be made globally unique (fully-qualified) by appending the domain name of the app directory that it references, [as described in the App Directory Part of the Standard](../app-directory/overview#application-identifiers). Fully-qualified `appId` values may be used to resolve the location of the app directory record that defines them using the [host resolution procedure](../app-directory/overview#fully-qualified-appid-namespace-syntax-host-resolution) defined in the App Directory Part of the Standard. For example, an `appId` such as `"myApplication"` defined in an App Directory record at `https://appd.example.com/api/appd/v2/apps/myApplication` may be fully qualified as `"myApplication@appd.example.com"`. Desktop Agents MAY be configured with details of applications via either unqualified or fully-qualified appIds.
 
