@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3-context",
-  "version": "2.2.0-alpha.3",
+  "version": "2.2.0",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -26,8 +26,8 @@
     "typegen": "cd schemas && node ../s2tQuicktypeUtil.js context ../generated/context/ContextTypes.ts"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.1.0",
-    "@eslint/js": "^9.16.0",
+    "@eslint/eslintrc": "^3.2.0",
+    "@eslint/js": "^9.19.0",
     "@types/jest": "29.5.13",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
     "@typescript-eslint/parser": "^8.18.2",
@@ -35,7 +35,7 @@
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jest": "28.8.3",
     "eslint-plugin-jsx-a11y": "^6.10.0",
-    "globals": "^15.13.0",
+    "globals": "^15.14.0",
     "mkdirp": "^3.0.1",
     "quicktype": "23.0.78",
     "rimraf": "^6.0.1",

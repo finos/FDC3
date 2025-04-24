@@ -5,7 +5,8 @@
 [![Latest Standard](https://img.shields.io/badge/release-2.0-blue)](https://github.com/finos/fdc3/releases/v2.0)
 [![npm](https://img.shields.io/npm/v/@finos/fdc3)](https://www.npmjs.com/package/@finos/fdc3)
 [![FINOS - Released](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@main/images/badge-released.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Released)
-[![GitHub](https://img.shields.io/github/license/finos/fdc3)](https://opensource.org/licenses/Apache-2.0)
+[![License Code](https://img.shields.io/badge/code_license-Apache_2.0-blue)](https://opensource.org/licenses/Apache-2.0)
+[![License Standard](https://img.shields.io/badge/standard_license-CSL_1.0-blue)](https://github.com/finos/FDC3?tab=License-1-ov-file#readme)
 [![Stack Overflow](https://img.shields.io/badge/stackoverflow-fdc3-orange.svg)](https://stackoverflow.com/questions/tagged/fdc3)
 [![npm-build](https://github.com/finos/FDC3/workflows/npm-build/badge.svg)](https://github.com/finos/FDC3/actions?query=workflow%3Anpm-build)
 [![Slack](https://img.shields.io/badge/slack-@finos/fdc3-green.svg?logo=slack)](https://finos-lf.slack.com/messages/fdc3/)
@@ -103,19 +104,56 @@ From the root package, you can run `npm run build` to build all the modules, or 
 
 For installation and usage instructions, see: <https://fdc3.finos.org/docs/supported-platforms#usage>
 
-### Bumping Version Numbers (for maintainers)
+### Releasing FDC3 to NPM (for maintainers)
 
-It's important that all of the versions of the submodules stay on the same version, and that the references between them are consistent to that version.  To change the version number (say before or after a release) run the following:
+This is a 4-step process:
 
-```
-// first, update version number in package.json
-npm login
-npm version <new version from package.json> --workspaces // changes the version number in all submodule package.json files
-npm run syncpack                          // sycnhronizes version numbers
-npm up                                    // fixes node_module references
-npm run build                             // builds all the modules against the new version
-npm publish --access=public --workspaces  // this step performs a manual release of the npm modules (not needed with GitHub actions releases)
-```
+1.  **Create a release branch**
+
+  Do this locally.  Ensure the branch is named `release/v2.0` (or whatever the next version is).
+  
+  ```bash
+  git checkout -b release/v2.0
+  ```
+  
+2.  **Update the version numbers in the package.json files**
+
+  It's important that all of the versions of the submodules stay on the same version, and that the references between them are consistent to that version.  To change the version number (say before or after a release) run the following:
+
+  ```bash
+  // first, update version number in package.json
+  npm login
+  npm version <new version from package.json> --workspaces // changes the version number in all submodule package.json files
+  npm run syncpack                          // sycnhronizes version numbers
+  npm up                                    // fixes node_module references
+  npm run build                             // builds all the modules against the new version
+  ```
+
+3.  **Push the branch to publish the packages to npm**
+
+  ```bash
+  git push origin release/v2.0
+  ```
+  
+  This should trigger a GitHub action that will publish the packages to npm.
+
+4.  **Create a PR for merging the release branch.**
+
+  Once the packages are published, create a PR to merge the release branch into the main branch.  You will need other FDC3 maintainers to review and approve the PR.
+
+5.  **Reset the `latest` NPM Version Tag If Releasing A Prerelease**
+
+  If you're releasing beta/alpha code, be sure to replace the latest version in NPM like so:
+
+  ```
+  npm dist-tag add @finos/fdc3@2.1.1 latest
+  ```
+
+  You will need support from help@finos.org for this step.
+
+### Releasing the FDC3 Website (for maintainers)
+
+Please see instructions in the [website README](./website/README.md).
 
 ## Getting Involved
 

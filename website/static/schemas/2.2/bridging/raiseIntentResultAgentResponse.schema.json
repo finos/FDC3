@@ -1,0 +1,34 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/bridging/raiseIntentResultAgentResponse.schema.json",
+  "title": "RaiseIntent Result Agent Response",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/RaiseIntentResultResponseBase"
+    },
+    {
+      "$ref": "agentResponse.schema.json"
+    }
+  ],
+  "$defs": {
+    "RaiseIntentResultResponseBase": {
+      "title": "RaiseIntent Result Response",
+      "type": "object",
+      "description": "A secondary response to a request to raise an intent used to deliver the intent result",
+      "properties": {
+        "type": {
+          "$ref": "../api/raiseIntentResultResponse.schema.json#/$defs/RaiseIntentResultResponseType"
+        },
+        "payload": {
+          "$ref": "../api/raiseIntentResultResponse.schema.json#/$defs/RaiseIntentResultSuccessResponsePayload"
+        },
+        "meta": {
+          "title": "RaiseIntent Result Response Metadata",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

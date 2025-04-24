@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/2.2/context/country.schema.json",
+  "type": "object",
+  "title": "Country",
+  "description": "A country entity.\n\nNotes:\n\n- It is valid to include extra properties and metadata as part of the country payload, but the minimum requirement is for at least one standardized identifier to be provided\n\n  - `COUNTRY_ISOALPHA2` SHOULD be preferred.\n\n- Try to only use country identifiers as intended and specified in the [ISO standard](https://en.wikipedia.org/wiki/ISO_3166-1). E.g. the `COUNTRY_ISOALPHA2` property must be a recognized value and not a proprietary two-letter code. If the identifier you want to share is not a standardized and recognized one, rather define a property that makes it clear what value it is. This makes it easier for target applications.",
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "fdc3.country"
+        },
+        "id": {
+          "type": "object",
+          "properties": {
+            "COUNTRY_ISOALPHA2": {
+              "type": "string",
+              "title": "COUNTRY_ISOALPHA2",
+              "description": "Two-letter ISO country code"
+            },
+            "COUNTRY_ISOALPHA3": {
+              "type": "string",
+              "title": "COUNTRY_ISOALPHA3",
+              "description": "Three-letter ISO country code"
+            },
+            "ISOALPHA2": {
+              "type": "string",
+              "title": "ISOALPHA2",
+              "description": "Two-letter ISO country code. Deprecated in FDC3 2.0 in favour of the version prefixed with `COUNTRY_`.",
+              "deprecated": true
+            },
+            "ISOALPHA3": {
+              "type": "string",
+              "title": "ISOALPHA3",
+              "description": "Three-letter ISO country code. Deprecated in FDC3 2.0 in favour of the version prefixed with `COUNTRY_`.",
+              "deprecated": true
+            }
+          }
+        },
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "description": "An optional human-readable name for the country"
+        }
+      },
+      "required": [
+        "id"
+      ]
+    },
+    { "$ref": "context.schema.json#/definitions/BaseContext" }
+  ],
+  "examples": [
+    {
+      "type": "fdc3.country",
+      "name": "Sweden",
+      "id": {
+        "COUNTRY_ISOALPHA2": "SE"
+      }
+    }
+  ]
+}

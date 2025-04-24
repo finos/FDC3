@@ -1,6 +1,6 @@
 ---
 id: fdc3-standard
-title: FDC3 2.2 (pre-draft)
+title: FDC3 2.3 (pre-draft)
 sidebar_label: Abstract
 ---
 
@@ -24,7 +24,7 @@ The standard currently consists of five complementary parts:
 
 ## Versioning
 
-This Standard defines FDC3 Version 2.1. The differences between this version and earlier ones can be found in the [Changelog](https://github.com/finos/FDC3/blob/main/CHANGELOG.md).
+This Standard defines FDC3 Version (next). The differences between this version and earlier ones can be found in the [Changelog](https://github.com/finos/FDC3/blob/main/CHANGELOG.md).
 
 For more details on FDC3's versioning, deprecation and experimental features policies see the [Compliance page](./fdc3-compliance#versioning).
 

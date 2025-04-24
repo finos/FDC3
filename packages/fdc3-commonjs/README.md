@@ -53,5 +53,6 @@ This project is licensed under the [Apache 2.0 License](LICENSE).
 For any questions or support, please reach out to the FDC3 community on our [Slack channel](https://finos-lf.slack.com/archives/CJ8Q8H4Q1) or [mailing list](mailto:fdc3@finos.org).
 
 ## Further Details
-
-Further details are avilable in the main [FDC3 Project README](https://github.com/finos/FDC3)
+ - https://github.com/finos/FDC3
+ - [FDC3 Specification](https://fdc3.finos.org/)
+ - Main FDC3 module: https://www.npmjs.com/package/@finos/fdc3
