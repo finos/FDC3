@@ -1,6 +1,5 @@
 import { MessageHandler } from '../BasicFDC3Server';
 import { AppRegistration, InstanceID, ServerContext } from '../ServerContext';
-import { Context } from '@finos/fdc3-context';
 import { AppIdentifier, ChannelError, DisplayMetadata, PrivateChannelEventTypes } from '@finos/fdc3-standard';
 import { successResponse, errorResponse, FullAppIdentifier, onlyUnique } from './support';
 import {
@@ -8,6 +7,7 @@ import {
   AgentResponseMessage,
   AppRequestMessage,
   BroadcastRequest,
+  ChannelChangedEvent,
   ContextListenerUnsubscribeRequest,
   CreatePrivateChannelRequest,
   GetCurrentChannelRequest,
@@ -23,6 +23,7 @@ import {
   PrivateChannelOnUnsubscribeEvent,
   PrivateChannelUnsubscribeEventListenerRequest,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+import { Context } from '@finos/fdc3-context';
 
 type PrivateChannelEvents =
   | PrivateChannelOnAddContextListenerEvent
@@ -69,7 +70,7 @@ export class BroadcastHandler implements MessageHandler {
     this.state = initialChannelState;
   }
 
-  shutdown(): void {}
+  shutdown(): void { }
 
   cleanup(instanceId: InstanceID, sc: ServerContext<AppRegistration>): void {
     const toUnsubscribe = this.contextListeners.filter(r => r.instanceId == instanceId);
@@ -106,6 +107,21 @@ export class BroadcastHandler implements MessageHandler {
     return this.currentChannel[from.instanceId];
   }
 
+  fireChannelChangedEvent(channelId: string | null, sc: ServerContext<AppRegistration>, instanceId: string) {
+    const event: ChannelChangedEvent = {
+      meta: {
+        eventUuid: sc.createUUID(),
+        timestamp: new Date(),
+      },
+      type: 'channelChangedEvent',
+      payload: {
+        newChannelId: channelId,
+      },
+    };
+
+    sc.post(event, instanceId);
+  }
+
   getChannelById(id: string | null): ChannelState | null {
     if (id == null) {
       return null;
@@ -113,6 +129,20 @@ export class BroadcastHandler implements MessageHandler {
     return this.state.find(c => c.id == id) ?? null;
   }
 
+  fireUserChannelChangedEvent(channelId: string | null, sc: ServerContext<AppRegistration>, instanceId: string) {
+    const event: ChannelChangedEvent = {
+      meta: {
+        eventUuid: sc.createUUID(),
+        timestamp: new Date(),
+      },
+      type: 'channelChangedEvent',
+      payload: {
+        newChannelId: channelId,
+      },
+    };
+
+    sc.post(event, instanceId);
+  }
   convertChannelTypeToString(type: ChannelType): string {
     switch (type) {
       case ChannelType.app:
@@ -427,6 +457,7 @@ export class BroadcastHandler implements MessageHandler {
     const instanceId = from.instanceId ?? 'no-instance-id';
     this.currentChannel[instanceId] = newChannel;
     this.moveUserChannelListeners(from, newChannel.id);
+    this.fireChannelChangedEvent(newChannel?.id, sc, instanceId);
     successResponse(sc, arg0, from, {}, 'joinUserChannelResponse');
   }
 
@@ -441,6 +472,8 @@ export class BroadcastHandler implements MessageHandler {
       delete this.currentChannel[instanceId];
       this.moveUserChannelListeners(from, null);
     }
+
+    this.fireChannelChangedEvent(null, sc, instanceId);
     successResponse(sc, arg0, from, {}, 'leaveCurrentChannelResponse');
   }
 

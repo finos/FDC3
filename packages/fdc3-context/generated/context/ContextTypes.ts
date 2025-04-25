@@ -1981,6 +1981,10 @@ export interface Trade {
    */
   name?: string;
   /**
+   * Additional notes or comments about the trade.
+   */
+  notes?: string;
+  /**
    * A product that is the subject of the trade.
    */
   product: ProductObject;
@@ -2044,6 +2048,10 @@ export interface TradeElement {
    * A human-readable summary of the trade.
    */
   name?: string;
+  /**
+   * Additional notes or comments about the trade.
+   */
+  notes?: string;
   /**
    * A product that is the subject of the trade.
    */
@@ -3067,6 +3075,7 @@ const typeMap: any = {
     [
       { json: 'id', js: 'id', typ: m('') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'notes', js: 'notes', typ: u(undefined, '') },
       { json: 'product', js: 'product', typ: r('ProductObject') },
       { json: 'type', js: 'type', typ: r('TradeType') },
     ],
@@ -3085,6 +3094,7 @@ const typeMap: any = {
     [
       { json: 'id', js: 'id', typ: m('') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'notes', js: 'notes', typ: u(undefined, '') },
       { json: 'product', js: 'product', typ: r('ProductObject') },
       { json: 'type', js: 'type', typ: r('TradeType') },
     ],
