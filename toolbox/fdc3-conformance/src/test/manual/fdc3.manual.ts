@@ -1,8 +1,9 @@
-import { ApiEvent, DesktopAgent, getAgent } from '@finos/fdc3';
+import { DesktopAgent, FDC3ChannelChangedEvent, getAgent } from '@finos/fdc3';
 import { closeMockAppWindow } from '../fdc3-2_0-utils';
 import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
 import { ContextType, IntentApp, Intent, RaiseIntentControl2_0 } from '../support/intent-support-2.0';
 import { handleFail, wait } from '../../utils';
+import { expect } from 'chai';
 
 const control = new RaiseIntentControl2_0();
 const raiseIntentDocs = '\r\nDocumentation: ' + APIDocumentation2_0.raiseIntent + '\r\nCause';
@@ -104,18 +105,21 @@ export let fdc3ResolveAmbiguousContextTargetMultiInstance_2_0 = () =>
 export let fdc3ChannelChangedEvent_2_2 = () =>
   describe('2.2-ChannelChangedEvent', () => {
     it('(2.2-ChannelChangedEvent) Should receive an event when the user changes channel.  This is a manual test, please change the channel a few times in your browser to get this to pass.', async () => {
-      const changeEvents: ApiEvent[] = [];
+      const channels: (string | null)[] = [];
       try {
         const agent = await getAgent();
         agent.addEventListener("userChannelChanged", (event) => {
-          console.log("User channel changed", event);
-          changeEvents.push(event);
+          const changedEvent: FDC3ChannelChangedEvent = event as FDC3ChannelChangedEvent;
+          const currentChannel = changedEvent.details.currentChannelId;
+          console.log("User channel changed", event, currentChannel);
+          channels.push(currentChannel);
         });
 
         await wait(8000);
-        expect(changeEvents.length).toBeGreaterThan(0);
+        const uniqueChannels = new Set(channels)
+        expect(uniqueChannels.size).to.be.greaterThan(0);
       } catch (ex) {
-        handleFail(`Didn't get any channel change events: ${JSON.stringify(changeEvents)}`, ex);
+        handleFail(`Didn't get any channel change events: ${JSON.stringify(channels)}`, ex);
       }
     });
   });

@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -30,7 +30,7 @@
     "toolbox/fdc3-for-web/reference-ui",
     "toolbox/fdc3-for-web/demo",
     "toolbox/fdc3-workbench",
-    "toolbox/fdc3-conformnance"
+    "toolbox/fdc3-conformance"
   ],
   "scripts": {
     "clean": "npm run clean --workspaces --if-present",
