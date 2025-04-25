@@ -5,7 +5,6 @@
     "build": "webpack build && npm run copy",
     "serve": "npx http-server ./dist -p 3001 -c-1",
     "dev": "npm run build && npm run serve",
-    "lint": "eslint --fix src/",
     "clean": "rimraf dist"
   },
   "dependencies": {
