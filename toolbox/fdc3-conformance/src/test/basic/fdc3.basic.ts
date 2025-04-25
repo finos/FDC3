@@ -1,4 +1,4 @@
-import { DesktopAgent } from '@finos/fdc3';
+import { DesktopAgent, getAgent } from '@finos/fdc3';
 
 import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
 import { ContextType, Intent } from '../support/intent-support-2.0';
@@ -6,6 +6,17 @@ import { closeMockAppWindow } from '../fdc3-2_0-utils';
 
 import { assert, expect } from 'chai';
 import { handleFail } from '../../utils';
+
+const getAgent2_2 = (fdc3: DesktopAgent, documentation: string) => {
+  it('(GetAgentAPI) Method is callable', async () => {
+    const agent = await getAgent()
+    const info = await agent.getInfo();
+    assert.isTrue(info.fdc3Version.startsWith('2.'), documentation);
+    const userChannels = await agent.getUserChannels();
+    assert.isTrue(userChannels.length > 0, documentation);
+  });
+};
+
 
 let basicCL1 = (fdc3: DesktopAgent, documentation: string) => {
   it('(BasicCL1) Method is callable', async () => {
@@ -31,7 +42,7 @@ let basicCL1 = (fdc3: DesktopAgent, documentation: string) => {
 let basicCL2 = (fdc3: DesktopAgent, documentation: string) => {
   it('(BasicCL2) Returns listener object', async () => {
     try {
-      const listener = await fdc3.addContextListener(null, () => {});
+      const listener = await fdc3.addContextListener(null, () => { });
       assert.isTrue(listener && typeof listener === 'object', documentation);
       expect(typeof listener.unsubscribe, documentation).to.be.equals('function');
       if (listener !== undefined) {
@@ -164,7 +175,9 @@ const documentation_AC = '\r\nDocumentation: ' + APIDocumentation2_0.getOrCreate
 const documentation_UC = '\r\nDocumentation: ' + APIDocumentation2_0.getUserChannels + '\r\nCause';
 const documentation_JC = '\r\nDocumentation: ' + APIDocumentation2_0.getCurrentChannel + '\r\nCause';
 const documentation_RI = '\r\nDocumentation: ' + APIDocumentation2_0.raiseIntentForContext + '\r\nCause';
+const documentation_GA = '\r\nDocumentation: ' + APIDocumentation2_0.getAgent + '\r\nCause';
 
+export let fdc3BasicGetAgent_2_2 = () => describe('fdc3.basicGetAgent_2.2', () => getAgent2_2(fdc3, documentation_GA));
 export let fdc3BasicCL1_2_0 = () => describe('fdc3.basicCL1_2.0', () => basicCL1(fdc3, documentation_CL));
 export let fdc3BasicCL2_2_0 = () => describe('fdc3.basicCL2_2.0', () => basicCL2(fdc3, documentation_CL));
 export let fdc3BasicIL1_2_0 = () => describe('fdc3.basicIL1_2.0', () => basicIL1(fdc3, documentation_IL));
