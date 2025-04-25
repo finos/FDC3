@@ -1,4 +1,4 @@
-import { DesktopAgent, getAgent } from '@finos/fdc3';
+import { DesktopAgent } from '@finos/fdc3';
 
 import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
 import { ContextType, Intent } from '../support/intent-support-2.0';
@@ -9,10 +9,9 @@ import { handleFail } from '../../utils';
 
 const getAgent2_2 = (fdc3: DesktopAgent, documentation: string) => {
   it('(GetAgentAPI) Method is callable', async () => {
-    const agent = await getAgent()
-    const info = await agent.getInfo();
+    const info = await fdc3.getInfo();
     assert.isTrue(info.fdc3Version.startsWith('2.'), documentation);
-    const userChannels = await agent.getUserChannels();
+    const userChannels = await fdc3.getUserChannels();
     assert.isTrue(userChannels.length > 0, documentation);
   });
 };
