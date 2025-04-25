@@ -27,6 +27,7 @@ import {
   fdc3ResolveAmbiguousContextTarget_2_0,
   fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0,
   fdc3ResolveAmbiguousContextTargetMultiInstance_2_0,
+  fdc3ChannelChangedEvent_2_2,
 } from './manual/fdc3.manual';
 
 type testSet = { [key: string]: (() => void)[] };
@@ -62,6 +63,7 @@ const ambiguousTests_2_0: testSet = {
   'fdc3.ResolveAmbiguousContextTarget 2.0': [fdc3ResolveAmbiguousContextTarget_2_0],
   'fdc3.ResolveAmbiguousIntentTargetMultiInstance 2.0': [fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0],
   'fdc3.ResolveAmbiguousContextTargetMultiInstance 2.0': [fdc3ResolveAmbiguousContextTargetMultiInstance_2_0],
+  'fdc3.ChannelChangedEvent 2.2': [fdc3ChannelChangedEvent_2_2],
 };
 
 function stripSuites(ts: testSet[]): (() => void)[] {
