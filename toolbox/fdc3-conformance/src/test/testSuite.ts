@@ -11,6 +11,7 @@ import fdc3RaiseIntent_2_0 from './advanced/fdc3.raiseIntent';
 import fdc3RaiseIntent_2_0_Result from './advanced/fdc3.raiseIntent-Result';
 import fdc3RaiseIntent_2_0_NoAppsFound from './advanced/fdc3.raiseIntent-NoAppsFound';
 import {
+  fdc3BasicGetAgent_2_2,
   fdc3BasicCL1_2_0,
   fdc3BasicCL2_2_0,
   fdc3BasicIL1_2_0,
@@ -31,6 +32,7 @@ import {
 type testSet = { [key: string]: (() => void)[] };
 
 const basicSuite_2_0: testSet = {
+  'fdc3.basicGetAgent 2.2': [fdc3BasicGetAgent_2_2],
   'fdc3.basicCL1 2.0': [fdc3BasicCL1_2_0],
   'fdc3.basicCL2 2.0': [fdc3BasicCL2_2_0],
   'fdc3.basicIL1 2.0': [fdc3BasicIL1_2_0],
