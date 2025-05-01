@@ -1,7 +1,7 @@
 ---
 id: spec
 sidebar_label: Overview
-title: API Overview test (next)
+title: API Overview (next)
 ---
 
 import Tabs from '@theme/Tabs';
