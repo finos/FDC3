@@ -61,7 +61,7 @@ export class DefaultChannelSupport implements ChannelSupport {
       let theChannel: Channel | null = null;
 
       // if theres a newChannelId, retrieve details of the channel
-      if (currentChannelId) {
+      if (currentChannelId != null) {
         theChannel = this.userChannels.find(uc => uc.id == currentChannelId) ?? null;
         if (!theChannel) {
           //Channel not found - query user channels in case they have changed for some reason
