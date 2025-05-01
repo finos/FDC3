@@ -17,12 +17,12 @@ getAgent().then(async fdc3 => {
     });
 
     let contextStreamNumber = 1;
-    privChan.onAddContextListener(async () => {
+    privChan.addEventListener('addContextListener', async () => {
       await wait(100); //wait for listener in test to initialise
 
       //stream multiple contexts to test in short succession
       for (let i = 0; i < 5; i++) {
-        let intentKContext: IntentUtilityContext = {
+        const intentKContext: IntentUtilityContext = {
           type: ContextType.testContextZ,
           number: contextStreamNumber,
         };
@@ -35,12 +35,12 @@ getAgent().then(async fdc3 => {
       }
     });
 
-    await privChan.onUnsubscribe(async () => {
+    await privChan.addEventListener('unsubscribe', async () => {
       //let test know onUnsubscribe was triggered
       await sendContextToTests(fdc3, { type: ControlContextType.ON_UNSUBSCRIBE_TRIGGERED });
     });
 
-    await privChan.onDisconnect(async () => {
+    await privChan.addEventListener('disconnect', async () => {
       //let test know onUnsubscribe was triggered
       await sendContextToTests(fdc3, { type: ControlContextType.ON_DISCONNECT_TRIGGERED });
     });
