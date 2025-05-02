@@ -53,6 +53,9 @@ export enum OpenError {
 
   /** Returned if a timeout occurs before a call to open is resolved for any reason other than the not adding its context listener in time.*/
   ApiTimeout = 'ApiTimeout',
+
+  /** Returned when incorrect arguments are passed to API calls.*/
+  InvalidArguments = 'InvalidArguments',
 }
 
 /** Constants representing the errors that can be encountered when calling the `findIntent`, `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the DesktopAgent (`fdc3`). */
@@ -89,6 +92,9 @@ export enum ResolveError {
 
   /** Returned if a timeout occurs before the API call is resolved for any reason other than the resolver timing out (use ResolverTimeout) or an app launched by a raiseIntent function doesn't add its intent listener in time (use IntentDeliveryFailed).*/
   ApiTimeout = 'ApiTimeout',
+
+  /** Returned when incorrect arguments are passed to API calls.*/
+  InvalidArguments = 'InvalidArguments',
 }
 
 export enum ResultError {
@@ -117,6 +123,9 @@ export enum ChannelError {
 
   /** Returned if a timeout occurs before any Channel related API call is resolved.*/
   ApiTimeout = 'ApiTimeout',
+
+  /** Returned when incorrect arguments are passed to API calls.*/
+  InvalidArguments = 'InvalidArguments',
 }
 
 export enum BridgingError {

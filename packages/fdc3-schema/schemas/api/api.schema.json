@@ -309,7 +309,8 @@
                 "ErrorOnLaunch",
                 "MalformedContext",
                 "ResolverUnavailable",
-                "ApiTimeout"
+                "ApiTimeout",
+                "InvalidArguments"
             ],
             "type": "string"
         },
@@ -326,8 +327,9 @@
                 "TargetAppUnavailable",
                 "TargetInstanceUnavailable",
                 "UserCancelledResolution",
-                "IntentListenerConflict",
-                "ApiTimeout"
+                "ApiTimeout",
+                "InvalidArguments",
+                "IntentListenerConflict"
             ],
             "type": "string"
         },
@@ -347,7 +349,8 @@
                 "CreationFailed",
                 "MalformedContext",
                 "NoChannelFound",
-                "ApiTimeout"
+                "ApiTimeout",
+                "InvalidArguments"
             ],
             "type": "string"
         },

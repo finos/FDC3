@@ -77,7 +77,11 @@ enum ChannelError {
 
   /** Returned if a timeout occurs before any Channel related API call is resolved.
    */
-  ApiTimeout = 'ApiTimeout'
+  ApiTimeout = 'ApiTimeout',
+
+  /** Returned if invalid arugments are passed to the API call.
+   */
+  InvalidArguments = 'InvalidArguments'
 }
 ```
 
@@ -113,6 +117,10 @@ public static class ChannelError
     /// </summary>
     public static readonly string MalformedContext = nameof(MalformedContext);
 
+    /// <summary>
+    /// Returned if invalid arguments are passed to the api call.
+    /// </summary>
+    public static readonly string InvalidArguments = nameof(InvalidArguments);
 }
 ```
 
@@ -167,7 +175,11 @@ enum OpenError {
   /** Returned if a timeout occurs before a call to open is resolved for any
    *  reason other than the not adding its context listener in time.  
    */
-  ApiTimeout = 'ApiTimeout'
+  ApiTimeout = 'ApiTimeout',
+
+  /** Returned if invalid arugments are passed to the API call.
+   */
+  InvalidArguments = 'InvalidArguments'
 }
 ```
 
@@ -205,6 +217,11 @@ public static class OpenError
     /// that has a `String` value.
     /// </summary>
     public static readonly string MalformedContext = nameof(MalformedContext);
+
+    /// <summary>
+    /// Returned if invalid arguments are passed to the api call.
+    /// </summary>
+    public static readonly string InvalidArguments = nameof(InvalidArguments);
 }
 ```
 
@@ -277,7 +294,11 @@ export enum ResolveError {
    *  raiseIntent function doesn't add its intent listener in time (use 
    *  IntentDeliveryFailed).
    */
-  ApiTimeout = 'ApiTimeout'
+  ApiTimeout = 'ApiTimeout',
+
+  /** Returned if invalid arugments are passed to the API call.
+   */
+  InvalidArguments = 'InvalidArguments'
 }
 ```
 
@@ -337,6 +358,11 @@ public static class ResolveError
     /// field that has a `String` value.
     /// </summary>
     public static readonly string MalformedContext = nameof(MalformedContext);
+
+    /// <summary>
+    /// Returned if invalid arguments are passed to the api call.
+    /// </summary>
+    public static readonly string InvalidArguments = nameof(InvalidArguments);
 }
 ```
 
