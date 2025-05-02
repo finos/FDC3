@@ -60,3 +60,18 @@ hide_title: true
 - `ACContextHistoryTyped`: Perform above test.
 - `ACContextHistoryMultiple`: **B** Broadcasts multiple history items of both types.  Ensure that only the last version of each type is received by **A**.
 - `ACContextHistoryLast`: In step 5. **A** retrieves the _untyped_ current context of the channel via `const currentContext = await testChannel.getCurrentContext()`. Ensure that A receives only the very last broadcast context item _of any type_.
+
+
+## Multiple listeners On The Same Or Overlapping Context types  
+
+| App | Step               | Details                                                                    |
+|-----|--------------------|----------------------------------------------------------------------------|
+| A   | 1.Retrieve `Channel`    |Retrieve a `Channel` object representing an 'App' channel called `test-channel` using: <br/>`const testChannel = await fdc3.getOrCreateChannel("test-channel")` |
+| A   | 2.Add Context Listener |Add an _untyped_ context listener to the channel, using: <br/> ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `await testChannel.addContextListener(null, handler1)` <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `testChannel.addContextListener(null, handler1)` |
+| A   | 3.Add Context Listener |Add a _typed_ context listener for `fdc3.instrument` with a different handler, using: <br/> ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `await testChannel.addContextListener("fdc3.instrument", handler2)` <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `testChannel.addContextListener("fdc3.instrument", handler2)`|
+| B   | 4.Retrieve `Channel`     | Retrieve a `Channel` object representing the same 'App' channel A did (`test-channel`)|
+| B   | 5.Broadcast          | Broadcast an `fdc3.instrument` Context to the channel with: <br/>`testChannel.broadcast(<fdc3.instrument context>)`|
+| A   | 6.Receive Context    | The handlers added in step 2 and 3 will receive the instrument context. Ensure that the instrument received by A is identical to that sent by B.  |
+
+- ACMultipleOverlappingListeners1: Perform above test
+- ACMultipleOverlappingListeners2: Perform above test, but instead of _untyped_ context listener, in step 2, use `fdc3.instrument` (handler should remain different)
