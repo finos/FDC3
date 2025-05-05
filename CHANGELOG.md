@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+- Ported FDC3 Conformance Project as-is into the FDC3 Monorepo, just including minimal fixes for typescript compilation. ([#1576](https://github.com/finos/FDC3/pull/1576))
+
 ### Changed
 
 ### Deprecated
