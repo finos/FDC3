@@ -26,3 +26,7 @@ However, implementors SHOULD also ensure that the global is made available as so
 Prior to FDC3 2.2, apps were advised to check for the existence of the FDC3 API at `window.fdc3` and then add a listener for the `fdc3Ready` event if it was not found. This has since been superseded by the recommendation to use `getAgent()`, which handles those steps internally, alongside supporting FDC3 in web browsers ( via the [Browser Resident Desktop Agent spec](./browserResidentDesktopAgents)).
 
 :::
+
+## Requesting a sub-agent for an embedded application
+
+<!-- Add content on how sub agent requests should be handled by preload DAs -->
