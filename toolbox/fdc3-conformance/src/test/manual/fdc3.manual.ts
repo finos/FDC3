@@ -1,21 +1,20 @@
-import { DesktopAgent, FDC3ChannelChangedEvent, getAgent } from '@finos/fdc3';
+import { FDC3ChannelChangedEvent, getAgent } from '@finos/fdc3';
 import { closeMockAppWindow } from '../fdc3-2_0-utils';
 import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
 import { ContextType, IntentApp, Intent, RaiseIntentControl2_0 } from '../support/intent-support-2.0';
 import { handleFail, wait } from '../../utils';
 import { expect } from 'chai';
 
-const control = new RaiseIntentControl2_0();
 const raiseIntentDocs = '\r\nDocumentation: ' + APIDocumentation2_0.raiseIntent + '\r\nCause';
-
-declare let fdc3: DesktopAgent;
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md
  */
 
-export let fdc3ResolveAmbiguousIntentTarget_2_0 = () =>
-  describe('2.0-ResolveAmbiguousIntentTarget', () => {
+export const fdc3ResolveAmbiguousIntentTarget_2_0 = () =>
+  describe('2.0-ResolveAmbiguousIntentTarget', async () => {
+    const fdc3 = await getAgent();
+
     after(async function after() {
       await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test');
     });
@@ -33,8 +32,10 @@ export let fdc3ResolveAmbiguousIntentTarget_2_0 = () =>
     });
   });
 
-export let fdc3ResolveAmbiguousContextTarget_2_0 = () =>
-  describe('2.0-ResolveAmbiguousContextTarget', () => {
+export const fdc3ResolveAmbiguousContextTarget_2_0 = () =>
+  describe('2.0-ResolveAmbiguousContextTarget', async () => {
+    const fdc3 = await getAgent();
+
     after(async function after() {
       await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test');
     });
@@ -52,8 +53,11 @@ export let fdc3ResolveAmbiguousContextTarget_2_0 = () =>
     });
   });
 
-export let fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0 = () =>
-  describe('2.0-ResolveAmbiguousIntentTargetMultiInstance', () => {
+export const fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0 = () =>
+  describe('2.0-ResolveAmbiguousIntentTargetMultiInstance', async () => {
+    const fdc3 = await getAgent();
+    const control = new RaiseIntentControl2_0(fdc3);
+
     after(async function after() {
       await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test');
     });
@@ -77,8 +81,11 @@ export let fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0 = () =>
     });
   });
 
-export let fdc3ResolveAmbiguousContextTargetMultiInstance_2_0 = () =>
-  describe('2.0-ResolveAmbiguousContextTargetMultiInstance', () => {
+export const fdc3ResolveAmbiguousContextTargetMultiInstance_2_0 = () =>
+  describe('2.0-ResolveAmbiguousContextTargetMultiInstance', async () => {
+    const fdc3 = await getAgent();
+    const control = new RaiseIntentControl2_0(fdc3);
+
     after(async function after() {
       await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test');
     });
@@ -102,21 +109,21 @@ export let fdc3ResolveAmbiguousContextTargetMultiInstance_2_0 = () =>
     });
   });
 
-export let fdc3ChannelChangedEvent_2_2 = () =>
+export const fdc3ChannelChangedEvent_2_2 = () =>
   describe('2.2-ChannelChangedEvent', () => {
     it('(2.2-ChannelChangedEvent) Should receive an event when the user changes channel.  This is a manual test, please change the channel a few times in your browser to get this to pass.', async () => {
       const channels: (string | null)[] = [];
       try {
         const agent = await getAgent();
-        agent.addEventListener("userChannelChanged", (event) => {
+        agent.addEventListener('userChannelChanged', event => {
           const changedEvent: FDC3ChannelChangedEvent = event as FDC3ChannelChangedEvent;
           const currentChannel = changedEvent.details.currentChannelId;
-          console.log("User channel changed", event, currentChannel);
+          console.log('User channel changed', event, currentChannel);
           channels.push(currentChannel);
         });
 
         await wait(8000);
-        const uniqueChannels = new Set(channels)
+        const uniqueChannels = new Set(channels);
         expect(uniqueChannels.size).to.be.greaterThan(0);
       } catch (ex) {
         handleFail(`Didn't get any channel change events: ${JSON.stringify(channels)}`, ex);

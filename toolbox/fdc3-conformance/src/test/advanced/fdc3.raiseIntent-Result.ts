@@ -1,4 +1,4 @@
-import { Listener } from '@finos/fdc3';
+import { DesktopAgent, getAgent, Listener } from '@finos/fdc3';
 import { closeMockAppWindow } from '../fdc3-2_0-utils';
 import {
   RaiseIntentControl2_0,
@@ -10,11 +10,16 @@ import {
 } from '../support/intent-support-2.0';
 import constants from '../../constants';
 
-const control = new RaiseIntentControl2_0();
-
 export default () =>
   describe('fdc3.raiseIntent (Result)', () => {
     let errorListener: Listener | undefined = undefined;
+    let control: RaiseIntentControl2_0;
+    let fdc3: DesktopAgent;
+
+    beforeEach(async () => {
+      fdc3 = await getAgent();
+      control = new RaiseIntentControl2_0(fdc3);
+    });
 
     afterEach(async function afterEach() {
       await closeMockAppWindow(this.currentTest?.title ?? 'Unknown test');
@@ -46,7 +51,7 @@ export default () =>
         5000
       );
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
-      let intentResultPromise = control.getIntentResult(intentResolution);
+      const intentResultPromise = control.getIntentResult(intentResolution);
       await receiver;
 
       if (intentResultPromise) {
@@ -96,7 +101,7 @@ export default () =>
         appId: IntentApp.IntentAppE,
       });
       control.validateIntentResolution(IntentApp.IntentAppE, intentResolution);
-      let intentResultPromise = control.getIntentResult(intentResolution);
+      const intentResultPromise = control.getIntentResult(intentResolution);
       await receiver;
 
       if (intentResultPromise) {
@@ -109,12 +114,15 @@ export default () =>
       '(2.0-RaiseIntentPrivateChannelResult) IntentResult resolves to a private Channel object';
     it(RaiseIntentPrivateChannelResult, async () => {
       errorListener = await control.listenForError();
-      let receiver = control.receiveContext(ControlContextType.SHARED_TESTING_INTENT_2_RESULT_SENT, constants.WaitTime);
+      const receiver = control.receiveContext(
+        ControlContextType.SHARED_TESTING_INTENT_2_RESULT_SENT,
+        constants.WaitTime
+      );
       const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent2, ContextType.testContextY, {
         appId: IntentApp.IntentAppF,
       });
       control.validateIntentResolution(IntentApp.IntentAppF, intentResolution);
-      let intentResultPromise = control.getIntentResult(intentResolution);
+      const intentResultPromise = control.getIntentResult(intentResolution);
       await receiver;
 
       if (intentResultPromise) {
@@ -135,7 +143,7 @@ export default () =>
         61000
       );
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
-      let intentResultPromise = control.getIntentResult(intentResolution);
+      const intentResultPromise = control.getIntentResult(intentResolution);
       await receiver;
 
       if (intentResultPromise) {
@@ -156,7 +164,7 @@ export default () =>
         61000
       );
       control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
-      let intentResultPromise = control.getIntentResult(intentResolution);
+      const intentResultPromise = control.getIntentResult(intentResolution);
       await receiver;
 
       if (intentResultPromise) {

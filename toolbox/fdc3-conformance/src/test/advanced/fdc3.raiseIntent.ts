@@ -1,4 +1,4 @@
-import { ChannelError, PrivateChannel, Listener } from '@finos/fdc3';
+import { ChannelError, PrivateChannel, Listener, getAgent, DesktopAgent } from '@finos/fdc3';
 import { assert, expect } from 'chai';
 import {
   RaiseIntentControl2_0,
@@ -10,14 +10,19 @@ import {
 } from '../support/intent-support-2.0';
 import { closeMockAppWindow } from '../fdc3-2_0-utils';
 
-const control = new RaiseIntentControl2_0();
-
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md
  */
 export default () =>
   describe('fdc3.raiseIntent', () => {
     let errorListener: Listener | undefined = undefined;
+    let control: RaiseIntentControl2_0;
+    let fdc3: DesktopAgent;
+
+    beforeEach(async () => {
+      fdc3 = await getAgent();
+      control = new RaiseIntentControl2_0(fdc3);
+    });
 
     afterEach(async function afterEach() {
       await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test');
@@ -128,7 +133,7 @@ export default () =>
         { key: privChan2.id }
       );
       control.validateIntentResolution(IntentApp.IntentAppJ, intentResolution);
-      let result = await control.getIntentResult(intentResolution);
+      const result = await control.getIntentResult(intentResolution);
       control.validateIntentResult(result, IntentResultType.Context, ContextType.privateChannelDetails);
     });
 
@@ -141,9 +146,9 @@ export default () =>
         appId: IntentApp.IntentAppK,
       });
       control.validateIntentResolution(IntentApp.IntentAppK, intentResolution);
-      let result = await control.getIntentResult(intentResolution);
+      const result = await control.getIntentResult(intentResolution);
       control.validateIntentResult(result, IntentResultType.PrivateChannel);
-      let listener = await control.receiveContextStreamFromMockApp(<PrivateChannel>result, 1, 5);
+      const listener = await control.receiveContextStreamFromMockApp(<PrivateChannel>result, 1, 5);
       control.unsubscribeListener(listener);
 
       await onUnsubscribeReceiver; //should receive context from privChannel.onUnsubscribe in mock app
@@ -152,7 +157,7 @@ export default () =>
       await textContextXReceiver;
       const onUnsubscribeReceiver2 = control.receiveContext(ControlContextType.ON_UNSUBSCRIBE_TRIGGERED);
       const onDisconnectReceiver = control.receiveContext(ControlContextType.ON_DISCONNECT_TRIGGERED);
-      let listener2 = await control.receiveContextStreamFromMockApp(<PrivateChannel>result, 6, 10);
+      const listener2 = await control.receiveContextStreamFromMockApp(<PrivateChannel>result, 6, 10);
       control.disconnectPrivateChannel(<PrivateChannel>result);
 
       //confirm that onUnsubscribe and onDisconnect were triggered in intent-k

@@ -3,7 +3,7 @@ import { commands } from './constants';
 import { IChannelService } from './interfaces';
 
 export class Fdc3CommandExecutor {
-  async executeCommands(orderedCommands: string[], config: ChannelsAppConfig, channelService: IChannelService<any>) {
+  async executeCommands(orderedCommands: string[], config: ChannelsAppConfig, channelService: IChannelService) {
     let channel;
 
     //close ChannelsApp when test is complete
@@ -24,12 +24,12 @@ export class Fdc3CommandExecutor {
         }
         case commands.broadcastInstrumentContext: {
           const contextType = config.contextId ? `fdc3.instrument.${config.contextId}` : 'fdc3.instrument';
-          await channelService.broadcastContextItem(contextType, channel, config.historyItems ?? 1, config.testId);
+          await channelService.broadcastContextItem(contextType, channel!, config.historyItems ?? 1, config.testId);
           break;
         }
         case commands.broadcastContactContext: {
           const contextType = config.contextId ? `fdc3.contact.${config.contextId}` : 'fdc3.contact';
-          await channelService.broadcastContextItem(contextType, channel, config.historyItems ?? 1, config.testId);
+          await channelService.broadcastContextItem(contextType, channel!, config.historyItems ?? 1, config.testId);
           break;
         }
       }
