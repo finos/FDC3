@@ -21,7 +21,7 @@ export function createAppChannelTests(cc: ChannelControl, documentation: string,
       const testChannel = await cc.createRandomTestChannel();
       const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId);
       let receivedContext = false;
-      let listener1 = await cc.setupAndValidateListener(testChannel, null, 'fdc3.instrument', errorMessage, () => {
+      const listener1 = await cc.setupAndValidateListener(testChannel, null, 'fdc3.instrument', errorMessage, () => {
         receivedContext = true;
       });
       await cc.openChannelApp(acTestId, testChannel.id, APP_CHANNEL_AND_BROADCAST);
@@ -72,7 +72,7 @@ export function createAppChannelTests(cc: ChannelControl, documentation: string,
       const testChannel = await cc.createRandomTestChannel();
       const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId4);
       let receivedContext = false;
-      let listener1 = await cc.setupAndValidateListener(
+      const listener1 = await cc.setupAndValidateListener(
         testChannel,
         'fdc3.instrument',
         'fdc3.instrument',
@@ -106,7 +106,7 @@ export function createAppChannelTests(cc: ChannelControl, documentation: string,
       const testChannel = await cc.createRandomTestChannel();
       const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId6);
 
-      let listener = await cc.setupAndValidateListener(
+      const listener = await cc.setupAndValidateListener(
         testChannel,
         'fdc3.instrument',
         'unexpected-context',
@@ -129,7 +129,7 @@ export function createAppChannelTests(cc: ChannelControl, documentation: string,
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves a different app channel\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
 
       const testChannel = await cc.createRandomTestChannel();
-      let listener = await cc.setupAndValidateListener(
+      const listener = await cc.setupAndValidateListener(
         testChannel,
         'fdc3.instrument',
         'unexpected-context',
@@ -151,12 +151,12 @@ export function createAppChannelTests(cc: ChannelControl, documentation: string,
     it(acTestId8, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A switches to a different app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves the first channel that A retrieved\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
 
-      let testChannel = await cc.createRandomTestChannel();
+      const testChannel = await cc.createRandomTestChannel();
       let receivedContext = false;
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId8);
       const differentAppChannel = await cc.createRandomTestChannel();
-      let listener = await cc.setupAndValidateListener(
+      const listener = await cc.setupAndValidateListener(
         testChannel,
         'fdc3.instrument',
         'fdc3.instrument',
@@ -165,7 +165,7 @@ export function createAppChannelTests(cc: ChannelControl, documentation: string,
           receivedContext = true;
         }
       );
-      let listener2 = await cc.setupAndValidateListener(
+      const listener2 = await cc.setupAndValidateListener(
         differentAppChannel,
         'fdc3.instrument',
         'unexpected-context',
@@ -196,11 +196,11 @@ export function createAppChannelTests(cc: ChannelControl, documentation: string,
     it(acTestId9, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A switches to a different app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves the first channel that A retrieved\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
 
-      let testChannel = await cc.createRandomTestChannel();
+      const testChannel = await cc.createRandomTestChannel();
       let receivedContext = false;
       const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId9);
       const differentAppChannel = await cc.createRandomTestChannel();
-      let listener = await cc.setupAndValidateListener(
+      const listener = await cc.setupAndValidateListener(
         testChannel,
         'fdc3.instrument',
         'fdc3.instrument',
@@ -209,7 +209,7 @@ export function createAppChannelTests(cc: ChannelControl, documentation: string,
           receivedContext = true;
         }
       );
-      let listener2 = await cc.setupAndValidateListener(
+      const listener2 = await cc.setupAndValidateListener(
         differentAppChannel,
         'fdc3.instrument',
         'unexpected-context',

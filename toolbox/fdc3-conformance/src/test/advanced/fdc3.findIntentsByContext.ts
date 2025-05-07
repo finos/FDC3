@@ -56,7 +56,7 @@ function validateIntents(
   expectedAppIds: string[]
 ) {
   const firstIntent = intents.find(appIntent => appIntent.intent.name === intentFilter);
-  expect(firstIntent).to.not.be.undefined;
+  assert.isDefined(firstIntent);
   if (firstIntent !== undefined) {
     expect(firstIntent.apps).to.have.length(expectedAppCount);
     const sharedAppNames = firstIntent.apps.map(app => app.appId);

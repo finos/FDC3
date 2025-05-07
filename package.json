@@ -55,6 +55,7 @@
     "syncpack": "^12.4.0"
   },
   "devDependencies": {
+    "@types/mocha": "^10.0.10",
     "concurrently": "^8.2.2",
     "eslint-config-prettier": "^9.1.0",
     "husky": "^9.1.7",
