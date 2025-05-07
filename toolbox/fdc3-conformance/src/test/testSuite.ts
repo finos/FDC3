@@ -106,6 +106,7 @@ export function getPackMembers(packName: string): string[] {
  * in HTML page
  */
 export const executeTestsInBrowser = (pack: string) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (mocha as any).timeout(constants.TestTimeout);
   const suite = allTests[pack];
   suite.forEach(s => s());
@@ -118,6 +119,7 @@ export const executeTestsInBrowser = (pack: string) => {
  */
 export const executeManualTestsInBrowser = (pack: string) => {
   console.log('Pack', pack);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (mocha as any).timeout(constants.TestTimeout);
   const suite = allManualTests[pack];
   console.log('************ found suite******', suite);

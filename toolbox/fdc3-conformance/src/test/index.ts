@@ -2,7 +2,9 @@ export * from './testSuite';
 import { fdc3Ready } from '@finos/fdc3';
 import { getPackMembers, getPackNames, executeTestsInBrowser, executeManualTestsInBrowser } from './testSuite';
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('mocha/mocha.css');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('source-map-support/browser-source-map-support.js');
 
 mocha.setup('bdd');
@@ -26,7 +28,7 @@ function executeTests() {
   toggleVersionSelector();
   toggleBackButton();
   const fdc3Versions = document.getElementById('version') as HTMLSelectElement;
-  var selectedVersion = fdc3Versions.options[fdc3Versions.selectedIndex].innerHTML;
+  const selectedVersion = fdc3Versions.options[fdc3Versions.selectedIndex].innerHTML;
   const action = () => executeTestsInBrowser(selectedVersion);
   if (window.fdc3) {
     action();
@@ -39,7 +41,7 @@ function executeManualTests() {
   toggleVersionSelector();
   toggleBackButton();
   const manualTests = document.getElementById('manualTests') as HTMLSelectElement;
-  var selectedManualTest = manualTests.options[manualTests.selectedIndex].innerHTML;
+  const selectedManualTest = manualTests.options[manualTests.selectedIndex].innerHTML;
   console.log('******** Selected manual test is', selectedManualTest);
   const action = () => executeManualTestsInBrowser(selectedManualTest);
   if (window.fdc3) {
