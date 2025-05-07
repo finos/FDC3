@@ -154,6 +154,7 @@ window.addEventListener('load', () => {
     // let's create buttons for some apps
     const appList = document.getElementById('app-list') as HTMLOListElement;
     directory.retrieveAllApps().forEach(app => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mani = app?.hostManifests?.demo as any;
       const show = mani?.visible ?? true;
       if (show) {
