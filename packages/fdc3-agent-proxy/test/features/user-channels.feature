@@ -227,9 +227,9 @@ Feature: Basic User Channels Support
     And I call "{theListener}" with "unsubscribe"
     And messaging receives "{userChannelMessage3}"
     Then "{types}" is an array of objects with the following contents
-      | newChannelId |
-      | two          |
-      | one          |
+      | currentChannelId |
+      | two              |
+      | one              |
 
   Scenario: Adding An Unknown Event Listener
     Given "typesHandler" pipes events to "types"
