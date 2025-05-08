@@ -7,6 +7,7 @@ import { Context } from '@finos/fdc3-context';
 import { ContextHandler } from './Types';
 import { DisplayMetadata } from './DisplayMetadata';
 import { Listener } from './Listener';
+import { EventHandler } from './Events';
 
 /**
  * Represents a context channel that applications can use to send and receive
@@ -81,6 +82,29 @@ export interface Channel {
    * If no `contextType` is provided, all contexts will be cleared and the `contextType` of the `fdc3.nothing` context will be omitted.
    */
   clearContext(contextType?: string): Promise<void>;
+  
+  /**
+   * Register a handler for events from the Channel. Whenever the handler function
+   * is called it will be passed an event object with details related to the event.
+   *
+   * ```js
+   * // any event type
+   * const listener = await myChannel.addEventListener(null, event => {
+   *   console.log(`Received event ${event.type}\n\tDetails: ${event.details}`);
+   * });
+   *
+   * // listener for a specific event type
+   * const contextClearedListener = await myChannel.addEventListener(
+   *    "contextCleared",
+   *    event => { ... }
+   * );
+   * ```
+   *
+   * @param {string | null} type If non-null, only events of the specified type will be received by the handler.
+   * @param {EventHandler} handler A function that events received will be passed to.
+   *
+   */
+  addEventListener(type: string | null, handler: EventHandler): Promise<Listener>;  
 
   /**
    * @deprecated use `addContextListener(null, handler)` instead of `addContextListener(handler)`.
