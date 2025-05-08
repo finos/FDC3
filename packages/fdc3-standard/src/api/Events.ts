@@ -47,6 +47,16 @@ export interface FDC3ChannelChangedEvent extends FDC3Event {
 }
 
 /**
+ * Type defining the format of event `contextCleared` objects
+ */
+export interface FDC3ContextClearedEvent extends FDC3Event {
+  readonly type: 'contextCleared';
+  readonly details: {
+    type: string | null;
+  };
+}
+
+/**
  * Type defining valid type strings for Private Channel events.
  */
 export type PrivateChannelEventTypes = 'addContextListener' | 'unsubscribe' | 'disconnect';

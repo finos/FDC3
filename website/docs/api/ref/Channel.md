@@ -37,6 +37,7 @@ interface Channel {
   getCurrentContext(contextType?: string): Promise<Context|null>;
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
   clearContext(contextType?: string): Promise<void>;
+  addEventListener(type: string  | null, handler: EventHandler): Promise<Listener>;
   
   //deprecated functions
   /**
@@ -59,6 +60,7 @@ interface IChannel: IIntentResult
     Task<IContext?> GetCurrentContext(string? contextType);
     Task<IListener> AddContextListener<T>(string? contextType, ContextHandler<T> handler) where T : IContext;
     Task ClearContext(string? contextType);
+    Task<IListener> AddEventListener(string? eventType, Fdc3EventHandler handler);
 }
 ```
 
@@ -264,6 +266,58 @@ instrumentListener.unsubscribe();
 - [`broadcast`](#broadcast)
 - [`getCurrentContext`](#getcurrentcontext)
 
+### `addEventListener`
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+addEventListener(type: string  | null, handler: EventHandler): Promise<Listener>;
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+Task<IListener> AddEventListener(string? eventType, Fdc3EventHandler handler);
+```
+
+</TabItem>
+</Tabs>
+
+Register a handler for events from the Channel. Whenever the handler function is called it will be passed an event object with details related to the event.
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+// any event type
+const listener: Listener = await myChannel.addEventListener(null, 
+    (event: ApiEvent) => {
+        console.log(`Received event ${event.type}\n\tDetails: ${event.details}`);
+    }
+);
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+IChannel myChannel;
+var listener = await myChannel.AddEventListener(null, (event) => {
+    System.Diagnostics.Debug.WriteLine($"Received event ${event.Type}\n\tDetails: ${event.Details}");
+});
+```
+
+</TabItem>
+</Tabs>
+
+**See also:**
+
+- [Events](./Events)
+- [EventHandler](./Events#eventhandler)
+- [ApiEvent](./Events#ApiEvent)
+
 ### `broadcast`
 
 <Tabs groupId="lang">
@@ -453,7 +507,7 @@ Task ClearContext(string? contextType);
 </Tabs>
 
 Used to clear the specified context type if provided, otherwise, clear all context types present in the channel. The Desktop Agent MUST update its internal representation of the context in the channel and ensure that subsequent calls to [`getCurrentContext`](#getcurrentcontext) and any new joiners to that channel (through [`joinUserChannel`](DesktopAgent#joinUserChannel) or [`addContextListener`](DesktopAgent#addContextListener)) will not receive anything for either specified context type or the most recent context until new context has been broadcast to the channel. 
-Desktop Agents MUST also immediately broadcast the  [`fdc3.nothing`](../../context/ref/Nothing.md/#nothing) type, which applications may listen to to be notified of the cleared context. If a `contextType` parameter was provided, then the `contextType` field will be set to that type, otherwise, it is omitted. 
+Desktop Agents MUST also immediately notified the apps that are listening to `contextCleared` event for this channel. If a `contextType` parameter was provided, then the `contextType` field will be set to that type, otherwise, it is omitted. 
 
 
 **Examples:**

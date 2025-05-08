@@ -840,8 +840,8 @@ The [Context specification](../context/spec#assumptions) recommends that complex
 
 To facilitate context linking in such situations it is recommended that applications `broadcast` each context type that other apps (listening on a User Channel or App Channel) may wish to process, starting with the simpler types, followed by the complex type. Doing so allows applications to filter the context types they receive by adding listeners for specific context types - but requires that the application broadcasting context make multiple broadcast calls in quick succession when sharing its context.
 
-### Context clearning on channels
-Channel interface provides the ability to [`clearContext`](ref/Channel.md#clearcontext) on the channel, either for the specific context type, if provided, or for all contexts on that channel. Applications may listen for the `fdc3.nothing` type, or all context types, to be notified when the context is cleared. If a specific type was cleared, the `contextType` field of the [`fdc3.nothing`](../context/ref/Nothing) context type will be set with that type. Once cleared, any apps that join the channel, add new context listeners or call [`getCurrentContext`](ref/Channel.md#getcurrentcontext) will not return anything to the caller (other than the `fdc3.nothing` type indicating that context was cleared) until new context is broadcast to the channel. 
+### Context clearing on channels
+Channel interface provides the ability to [`clearContext`](ref/Channel.md#clearcontext) on the channel, either for the specific context type, if provided, or for all contexts on that channel. Applications may listen to the `contextCleared` event on the channel. If a specific type was cleared, the `contextType` field of the event will be set with that type. Once cleared, any apps that join the channel, add new context listeners or call [`getCurrentContext`](ref/Channel.md#getcurrentcontext) will not return anything to the caller (other than the `fdc3.nothing` type indicating that context was cleared) until new context is broadcast to the channel. 
 
 ### Originating App Metadata
 
