@@ -55,27 +55,18 @@ interface IPrivateChannel : IChannel, IIntentResult
 <TabItem value="golang" label="Go">
 
 ```go
+@experimental
 type PrivateChannel struct {
     Channel
 }
 
+@experimental
 func (privateChannel *PrivateChannel) AddEventListener(eventType *PrivateChannelEventTypes, handler EventHandler) <-Result[Listener] {
     // Implementation here
 }
+
+@experimental
 func (privateChannel *PrivateChannel) Disconnect() <-Result[any]  {
-    // Implementation here
-}
-
-// Deprecated
-func (ch *PrivateChannel) OnAddContextListener(handler func(contextType *ContextType)) Result[Listener] {
-    // Implementation here
-}
-
-func (ch *PrivateChannel) OnUnsubscribe(handler func(contextType *ContextType)) Result[Listener] {
-    // Implementation here
-}
-
-func (ch *PrivateChannel) OnDisconnect(handler func()) Result[Listener] {
     // Implementation here
 }
 ```

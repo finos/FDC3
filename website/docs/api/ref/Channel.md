@@ -64,20 +64,24 @@ interface IChannel: IIntentResult
 <TabItem value="golang" label="Go">
 
 ```go
+@experimental
 type IChannel interface {
     Broadcast(context Context) <-chan Result[any]
     GetCurrentContext(contextType string) <-chan Result[IContext]
     AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener]
 }
 
+@experimental
 type Channel struct {
 	Id              string        `json:"id"`
 	Type            ChannelType      `json:"type"`
 	DisplayMetadata *DisplayMetadata `json:"displayMetadata"`
 }
 
+@experimental
 type ChannelType string
 
+@experimental
 const (
 	App     ChannelType = "app"
 	Private ChannelType = "private"
