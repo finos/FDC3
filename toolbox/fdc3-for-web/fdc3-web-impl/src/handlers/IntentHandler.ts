@@ -28,6 +28,7 @@ type ListenerRegistration = {
   appId: string;
   instanceId: string;
   intentName: string;
+  contextTypes?: string[];
   listenerUUID: string;
 };
 
@@ -114,6 +115,7 @@ class PendingIntent {
     if (
       arg0.appId == this.appId.appId &&
       arg0.intentName == this.r.intent &&
+      (arg0.contextTypes == undefined || arg0.contextTypes.includes(this.r.context.type)) &&
       (arg0.instanceId == this.appId.instanceId || this.appId.instanceId == undefined)
     ) {
       this.complete = true;
@@ -248,6 +250,7 @@ export class IntentHandler implements MessageHandler {
       appId: from.appId,
       instanceId: from.instanceId,
       intentName: arg0.payload.intent,
+      contextTypes: arg0.payload.contextTypes,
       listenerUUID: sc.createUUID(),
     };
 
