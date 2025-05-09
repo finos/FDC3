@@ -217,7 +217,23 @@ export class DefaultIntentSupport implements IntentSupport {
   }
 
   async addIntentListener(intent: string, handler: IntentHandler): Promise<Listener> {
-    const out = new DefaultIntentListener(this.messaging, intent, handler, this.messageExchangeTimeout);
+    const out = new DefaultIntentListener(this.messaging, intent, null, handler, this.messageExchangeTimeout);
+    await out.register();
+    return out;
+  }
+
+  async addIntentListenerWithContext(
+    intent: string,
+    contextType: string | string[],
+    handler: IntentHandler
+  ): Promise<Listener> {
+    const out = new DefaultIntentListener(
+      this.messaging,
+      intent,
+      Array.isArray(contextType) ? contextType : [contextType],
+      handler,
+      this.messageExchangeTimeout
+    );
     await out.register();
     return out;
   }
