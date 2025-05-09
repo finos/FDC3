@@ -13,7 +13,7 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIn
   constructor(
     messaging: Messaging,
     private readonly intent: string,
-    private readonly context: string[] | null,
+    private readonly contexts: string[] | null,
     action: IntentHandler,
     messageExchangeTimeout: number
   ) {
