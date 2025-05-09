@@ -352,6 +352,66 @@ export interface DesktopAgent {
   addIntentListener(intent: Intent, handler: IntentHandler): Promise<Listener>;
 
   /**
+   * Adds a listener for incoming intents raised by other applications, via calls to `fdc3.raiseIntent` or `fdc3.raiseIntentForContext.  If the application is intended to be launched to resolve raised intents, it SHOULD add its intent listeners as quickly as possible after launch or an error MAY be returned to the caller and the intent and context may not be delivered. The exact timeout used is set by the Desktop Agent implementation, but MUST be at least 15 seconds.
+   *
+   * The handler function may return void or a promise that should resolve to an `IntentResult`, which is either a `Context` object, representing any data that should be returned to the app that raised the intent, a `Channel` Object, a `PrivateChannel` over which data responses will be sent, or `void`. The `IntentResult` will be returned to app that raised the intent via the `IntentResolution` and retrieved from it using the `getResult()` function.
+   *
+   * The Desktop Agent MUST reject the promise returned by the `getResult()` function of `IntentResolution` if: (1) the intent handling function's returned promise rejects, (2) the intent handling function doesn't return a promise, or (3) the returned promise resolves to an invalid type.
+   *
+   * The `PrivateChannel` type is provided to support synchronization of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via raising an intent.
+   *
+   * Optional metadata about the raised intent, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
+   *
+   * ```javascript
+   * //Handle a raised intent
+   * const listener = fdc3.addIntentListenerWithContext('StartChat', 'fdc3.contact', context => {
+   *     // start chat has been requested by another application
+   *     return;
+   * });
+   *
+   * //Handle a raised intent and log the originating app metadata
+   * const listener = fdc3.addIntentListenerWithContext('StartChat', ['fdc3.contact', 'fdc3.contactList'], (contact, metadata) => {
+   *   console.log(`Received intent StartChat\nContext: ${contact}\nOriginating app: ${metadata?.source}`);
+   *   return;
+   * });
+   *
+   * //Handle a raised intent and return Context data via a promise
+   * fdc3.addIntentListenerWithContext('CreateOrder', 'fdc3.instrument', (context) => {
+   *     return new Promise<Context>((resolve) => {
+   *         // go create the order
+   *         resolve({type: "fdc3.order", id: { "orderId": 1234}});
+   *	   });
+   * });
+   *
+   * //Handle a raised intent and return a Private Channel over which response will be sent
+   * fdc3.addIntentListenerWithContext('QuoteStream', 'fdc3.instrument', async (context) => {
+   *   const channel: PrivateChannel = await fdc3.createPrivateChannel();
+   *   const symbol = context.id.symbol;
+   *
+   *   // Called when the remote side adds a context listener
+   *   const addContextListener = channel.onAddContextListener((contextType) => {
+   *     // broadcast price quotes as they come in from our quote feed
+   *     feed.onQuote(symbol, (price) => {
+   *       channel.broadcast({ type: "price", price});
+   *     });
+   *   });
+   *
+   *   // Stop the feed if the remote side closes
+   *   const disconnectListener = channel.onDisconnect(() => {
+   *     feed.stop(symbol);
+   *   });
+   *
+   *   return channel;
+   * });
+   * ```
+   */
+  addIntentListenerWithContext(
+    intent: Intent,
+    contextType: string | string[],
+    handler: IntentHandler
+  ): Promise<Listener>;
+
+  /**
    * Adds a listener for incoming context broadcasts from the Desktop Agent (via a User channel or `fdc3.open`API call. If the consumer is only interested in a context of a particular type, they can they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
    *
    * Context broadcasts are primarily received from apps that are joined to the same User Channel as the listening application, hence, if the application is not currently joined to a User Channel no broadcasts will be received from channels. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.

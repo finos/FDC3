@@ -223,6 +223,7 @@ Given('A Dummy Desktop Agent in {string}', async function (this: CustomWorld, fi
     raiseIntent: notImplemented,
     raiseIntentForContext: notImplemented,
     addIntentListener: notImplemented,
+    addIntentListenerWithContext: notImplemented,
     addContextListener: notImplemented,
     addEventListener: notImplemented,
     getUserChannels: notImplemented,

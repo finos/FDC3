@@ -7,13 +7,16 @@ import {
   IntentEvent,
   IntentResultRequest,
   IntentResultResponse,
-  //RaiseIntentResponse,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIntentListenerRequest> {
-  readonly intent: string;
-
-  constructor(messaging: Messaging, intent: string, action: IntentHandler, messageExchangeTimeout: number) {
+  constructor(
+    messaging: Messaging,
+    private readonly intent: string,
+    private readonly context: string[] | null,
+    action: IntentHandler,
+    messageExchangeTimeout: number
+  ) {
     super(
       messaging,
       messageExchangeTimeout,
@@ -24,11 +27,14 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIn
       'intentListenerUnsubscribeRequest',
       'intentListenerUnsubscribeResponse'
     );
-    this.intent = intent;
   }
 
   filter(m: IntentEvent): boolean {
-    return m.type == 'intentEvent' && m.payload.intent == this.intent;
+    return (
+      m.type == 'intentEvent' &&
+      m.payload.intent == this.intent &&
+      (this.context == null || this.context.includes(m.payload.context.type))
+    );
   }
 
   action(m: IntentEvent): void {
