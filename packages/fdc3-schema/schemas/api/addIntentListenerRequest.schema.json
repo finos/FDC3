@@ -1,46 +1,54 @@
 {
-	"$schema": "http://json-schema.org/draft-07/schema#",
-	"$id": "https://fdc3.finos.org/schemas/next/api/addIntentListenerRequest.schema.json",
-	"type": "object",
-	"title": "AddIntentListener Request",
-	"description": "A request to add an Intent listener for a specified intent type.",
-	"allOf": [
-		{
-			"$ref": "appRequest.schema.json"
-		},
-		{
-			"type": "object",
-			"properties": {
-				"type": {
-					"$ref": "#/$defs/AddIntentListenerRequestType"
-				},
-				"payload": {
-					"$ref": "#/$defs/AddIntentListenerRequestPayload"
-				},
-				"meta": true
-			},
-			"additionalProperties": false
-		}
-	],
-	"$defs": {
-		"AddIntentListenerRequestType": {
-			"title": "AddIntentListener Request Message Type",
-			"const": "addIntentListenerRequest"
-		},
-		"AddIntentListenerRequestPayload": {
-			"title": "AddIntentListener Request Payload",
-			"type": "object",
-			"properties": {
-				"intent": {
-					"title": "Intent name",
-					"description": "The name of the intent to listen for.",
-					"type": "string"
-				}
-			},
-			"additionalProperties": false,
-			"required": [
-				"intent"
-			]
-		}
-	}
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fdc3.finos.org/schemas/next/api/addIntentListenerRequest.schema.json",
+    "type": "object",
+    "title": "AddIntentListener Request",
+    "description": "A request to add an Intent listener for a specified intent type.",
+    "allOf": [
+        {
+            "$ref": "appRequest.schema.json"
+        },
+        {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "$ref": "#/$defs/AddIntentListenerRequestType"
+                },
+                "payload": {
+                    "$ref": "#/$defs/AddIntentListenerRequestPayload"
+                },
+                "meta": true
+            },
+            "additionalProperties": false
+        }
+    ],
+    "$defs": {
+        "AddIntentListenerRequestType": {
+            "title": "AddIntentListener Request Message Type",
+            "const": "addIntentListenerRequest"
+        },
+        "AddIntentListenerRequestPayload": {
+            "title": "AddIntentListener Request Payload",
+            "type": "object",
+            "properties": {
+                "intent": {
+                    "title": "Intent name",
+                    "description": "The name of the intent to listen for.",
+                    "type": "string"
+                },
+                "contextTypes": {
+                    "title": "Context types",
+                    "description": "The types of context to listen for.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "intent"
+            ]
+        }
+    }
 }
