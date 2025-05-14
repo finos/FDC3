@@ -28,9 +28,6 @@ Not implemented, as ApiEvent and Fdc3Event definitions are the same, given .NET 
 ```
 
 </TabItem>
-</Tabs>
-
-</TabItem>
 <TabItem value="golang" label="Go">
 
 ```go
@@ -62,9 +59,6 @@ type EventHandler = (event: ApiEvent) => void;
 ```csharp
 public delegate void Fdc3EventHandler(IFdc3Event fdc3Event);
 ```
-
-</TabItem>
-</Tabs>
 
 </TabItem>
 <TabItem value="golang" label="Go">
@@ -103,9 +97,6 @@ public static class Fdc3EventType
     public const string UserChannelChanged = "userChannelChanged";
 }
 ```
-
-</TabItem>
-</Tabs>
 
 </TabItem>
 <TabItem value="golang" label="Go">
@@ -160,9 +151,6 @@ public class Fdc3Event : IFdc3Event
     }
 }
 ```
-
-</TabItem>
-</Tabs>
 
 </TabItem>
 <TabItem value="golang" label="Go">
@@ -227,10 +215,6 @@ public class Fdc3ChannelChangedEvent : Fdc3Event
 ```
 
 </TabItem>
-</Tabs>
-
-
-</TabItem>
 <TabItem value="golang" label="Go">
 
 ```go
@@ -270,9 +254,6 @@ public static class Fdc3PrivateChannelEventType
     public const string Disconnect = "disconnect";
 }
 ```
-
-</TabItem>
-</Tabs>
 
 </TabItem>
 <TabItem value="golang" label="Go">
@@ -326,10 +307,6 @@ public class Fdc3PrivateChannelEventDetails : IFdc3PrivateChannelEventDetails
 ```
 
 </TabItem>
-</Tabs>
-
-
-</TabItem>
 <TabItem value="golang" label="Go">
 
 ```go
@@ -374,9 +351,6 @@ public class Fdc3PrivateChannelAddContextListenerEvent : Fdc3Event
   }
 }
 ```
-
-</TabItem>
-</Tabs>
 
 </TabItem>
 <TabItem value="golang" label="Go">
@@ -426,9 +400,6 @@ public class Fdc3PrivateChannelUnsubscribeListenerEvent : Fdc3Event
 ```
 
 </TabItem>
-</Tabs>
-
-</TabItem>
 <TabItem value="golang" label="Go">
 
 ```go
@@ -472,9 +443,6 @@ public class Fdc3PrivateChanneDisconnectEvent : Fdc3Event
     }
 }
 ```
-
-</TabItem>
-</Tabs>
 
 </TabItem>
 <TabItem value="golang" label="Go">
