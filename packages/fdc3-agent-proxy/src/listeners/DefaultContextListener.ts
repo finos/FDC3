@@ -1,8 +1,9 @@
-import { AppIdentifier, ContextHandler } from '@finos/fdc3-standard';
+import { ContextHandler, DesktopAgentProvidableContextMetadata } from '@finos/fdc3-standard';
 import { Messaging } from '../Messaging.js';
 import { AbstractListener } from './AbstractListener.js';
 import { AddContextListenerRequest, BroadcastEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { RegisterableListener } from './RegisterableListener.js';
+
 
 export class DefaultContextListener
   extends AbstractListener<ContextHandler, AddContextListenerRequest>
@@ -44,8 +45,12 @@ export class DefaultContextListener
   }
 
   action(m: BroadcastEvent): void {
-    this.handler(m.payload.context, {
-      source: m.payload.originatingApp as AppIdentifier,
-    });
+    const metadata: DesktopAgentProvidableContextMetadata = {
+      source: m.payload.originatingApp,
+      timestamp: m.meta.timestamp,
+      traceId: m.metadata?.traceId,
+      signature: m.metadata?.signature,
+    };
+    this.handler(m.payload.context, metadata);
   }
 }
