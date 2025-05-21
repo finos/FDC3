@@ -1,4 +1,4 @@
-import { ContextHandler, Channel } from '@finos/fdc3-standard';
+import { ContextHandler, Channel, DesktopAgentProvidableContextMetadata } from '@finos/fdc3-standard';
 import { Messaging } from '../Messaging';
 import { AbstractListener } from './AbstractListener';
 import { UserChannelContextListener } from './UserChannelContextListener';
@@ -57,6 +57,12 @@ export class DefaultContextListener
   }
 
   action(m: BroadcastEvent): void {
-    this.handler(m.payload.context);
+    const metadata: DesktopAgentProvidableContextMetadata = {
+      source: m.payload.originatingApp,
+      timestamp: m.meta.timestamp,
+      traceId: m.metadata?.traceId,
+      signature: m.metadata?.signature,
+    };
+    this.handler(m.payload.context, metadata);
   }
 }

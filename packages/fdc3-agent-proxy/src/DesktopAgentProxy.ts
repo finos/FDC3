@@ -1,6 +1,7 @@
 import {
   AppIdentifier,
   AppMetadata,
+  AppProvidableContextMetadata,
   ContextHandler,
   DesktopAgent,
   EventHandler,
@@ -88,10 +89,10 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     return this.apps.getImplementationMetadata();
   }
 
-  async broadcast(context: Context): Promise<void> {
+  async broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void> {
     const channel = await this.channels.getUserChannel();
     if (channel) {
-      return channel.broadcast(context);
+      return channel.broadcast(context, metadata);
     } else {
       return Promise.resolve();
     }
@@ -175,20 +176,24 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     }
   }
 
-  raiseIntent(intent: string, context: Context, app?: string | AppIdentifier) {
-    return this.intents.raiseIntent(intent, context, this.ensureAppId(app));
+  raiseIntent(intent: string, context: Context, app?: string | AppIdentifier, metadata?: AppProvidableContextMetadata) {
+    return this.intents.raiseIntent(intent, context, this.ensureAppId(app), metadata);
   }
 
   addIntentListener(intent: string, handler: IntentHandler) {
     return this.intents.addIntentListener(intent, handler);
   }
 
-  raiseIntentForContext(context: Context, app?: string | AppIdentifier): Promise<IntentResolution> {
-    return this.intents.raiseIntentForContext(context, this.ensureAppId(app));
+  raiseIntentForContext(
+    context: Context,
+    app?: string | AppIdentifier,
+    metadata?: AppProvidableContextMetadata
+  ): Promise<IntentResolution> {
+    return this.intents.raiseIntentForContext(context, this.ensureAppId(app), metadata);
   }
 
-  open(app: string | AppIdentifier, context?: Context | undefined) {
-    return this.apps.open(this.ensureAppId(app)!, context);
+  open(app: string | AppIdentifier, context?: Context, metadata?: AppProvidableContextMetadata) {
+    return this.apps.open(this.ensureAppId(app)!, context, metadata);
   }
 
   findInstances(app: AppIdentifier) {
