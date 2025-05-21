@@ -8,7 +8,7 @@ import { ContextHandler, ContextWithMetadata } from './Types.js';
 import { DisplayMetadata } from './DisplayMetadata.js';
 import { Listener } from './Listener.js';
 import { EventHandler } from './Events.js';
-import type { AppProvidableContextMetadata } from './ContextMetadata.js';
+import { AppProvidableContextMetadata } from './ContextMetadata.js';
 
 /**
  * Represents a context channel that applications can use to send and receive

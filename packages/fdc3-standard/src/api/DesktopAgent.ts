@@ -16,7 +16,7 @@ import { AppMetadata } from './AppMetadata.js';
 import { Intent } from '../intents/Intents.js';
 import { ContextType } from '../context/ContextType.js';
 import { EventHandler, FDC3EventTypes } from './Events.js';
-import type { AppProvidableContextMetadata } from './ContextMetadata.js';
+import { AppProvidableContextMetadata } from './ContextMetadata.js';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -56,7 +56,7 @@ export interface DesktopAgent {
    * let instanceIdentifier = await fdc3.open(appIdentifier, context, { traceId: 'abc123' });
    * ```
    */
-  open(app: AppIdentifier, context?: Context | null, metadata?: AppProvidableContextMetadata): Promise<AppIdentifier>;
+  open(app: AppIdentifier, context?: Context, metadata?: AppProvidableContextMetadata): Promise<AppIdentifier>;
 
   /**
    * Find out more information about a particular intent by passing its name, and optionally its context and/or a desired result context type.
@@ -290,7 +290,7 @@ export interface DesktopAgent {
   raiseIntent(
     intent: Intent,
     context: Context,
-    app?: AppIdentifier | null,
+    app?: AppIdentifier,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution>;
 
@@ -321,7 +321,7 @@ export interface DesktopAgent {
    */
   raiseIntentForContext(
     context: Context,
-    app?: AppIdentifier | null,
+    app?: AppIdentifier,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution>;
 

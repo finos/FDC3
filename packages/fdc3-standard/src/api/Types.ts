@@ -5,19 +5,7 @@
 
 import { Context } from '@finos/fdc3-context';
 import { Channel } from './Channel.js';
-import { PrivateChannel } from './PrivateChannel.js';
-import type { ContextMetadata } from './ContextMetadata.js';
-
-/**
- * Represents a context object paired with its associated metadata.
- * Returned by `Channel.getCurrentContextWithMetadata()` to allow
- * retrieval of both the current context and the metadata that was
- * provided when it was broadcast.
- */
-export type ContextWithMetadata = {
-  context: Context;
-  metadata: ContextMetadata;
-};
+import { DesktopAgentProvidableContextMetadata } from './ContextMetadata.js';
 
 /**
  * Describes a callback that handles a context event.
@@ -31,7 +19,7 @@ export type ContextWithMetadata = {
  * metadata (such as a traceId, signature or custom metadata), which the
  * Desktop Agent MUST pass on to the handler.
  */
-export type ContextHandler = (context: Context, metadata: ContextMetadata) => void;
+export type ContextHandler = (context: Context, metadata?: DesktopAgentProvidableContextMetadata) => void;
 /**
  * Intents can return results that are either context data objects
  * or a reference to a Channel. Used as the return type of
@@ -61,5 +49,5 @@ export type IntentResult = Context | Channel | void;
  */
 export type IntentHandler = (
   context: Context,
-  metadata: ContextMetadata
-) => Promise<Context | ContextWithMetadata | Channel | PrivateChannel | void> | void;
+  metadata?: DesktopAgentProvidableContextMetadata
+) => Promise<IntentResult> | void;

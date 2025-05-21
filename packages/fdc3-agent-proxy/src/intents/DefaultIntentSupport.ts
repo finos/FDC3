@@ -159,7 +159,7 @@ export class DefaultIntentSupport implements IntentSupport {
   async raiseIntent(
     intent: string,
     context: Context,
-    app?: AppIdentifier | null,
+    app: AppIdentifier,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution> {
     const meta = this.messaging.createMeta();
@@ -168,12 +168,11 @@ export class DefaultIntentSupport implements IntentSupport {
       payload: {
         intent,
         context,
-        app: app || undefined,
-        metadata: {
-          traceId: metadata?.traceId ?? v4(),
-          ...(metadata?.signature !== undefined && { signature: metadata.signature }),
-          ...(metadata?.custom !== undefined && { custom: metadata.custom }),
-        },
+        app,
+      },
+      metadata: {
+        signature: metadata?.signature,
+        traceId: metadata?.traceId ?? v4(),
       },
       meta,
     };
@@ -197,8 +196,8 @@ export class DefaultIntentSupport implements IntentSupport {
         [response.payload.appIntent],
         context
       );
-      if (choice) {
-        return this.raiseIntent(intent, context, choice.appId, metadata);
+      if (result) {
+        return this.raiseIntent(intent, context, result.appId, metadata);
       } else {
         throw new Error(ResolveError.UserCancelled);
       }
@@ -221,7 +220,7 @@ export class DefaultIntentSupport implements IntentSupport {
 
   async raiseIntentForContext(
     context: Context,
-    app?: AppIdentifier | null,
+    app?: AppIdentifier,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution> {
     const meta = this.messaging.createMeta();
@@ -229,12 +228,11 @@ export class DefaultIntentSupport implements IntentSupport {
       type: 'raiseIntentForContextRequest',
       payload: {
         context,
-        app: app || undefined,
-        metadata: {
-          traceId: metadata?.traceId ?? v4(),
-          ...(metadata?.signature !== undefined && { signature: metadata.signature }),
-          ...(metadata?.custom !== undefined && { custom: metadata.custom }),
-        },
+        app,
+      },
+      metadata: {
+        signature: metadata?.signature,
+        traceId: metadata?.traceId ?? v4(),
       },
       meta,
     };
