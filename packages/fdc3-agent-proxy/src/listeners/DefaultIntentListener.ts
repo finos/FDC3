@@ -66,7 +66,7 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIn
         intentEventUuid: m.meta.eventUuid,
         raiseIntentRequestUuid: m.payload.raiseIntentRequestUuid,
         ...(appMetadata !== undefined && { metadata: appMetadata }),
-      },
+      }
     };
 
     return out;

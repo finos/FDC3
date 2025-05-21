@@ -4,6 +4,7 @@ import { AbstractListener } from './AbstractListener.js';
 import { AddContextListenerRequest, BroadcastEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { RegisterableListener } from './RegisterableListener.js';
 
+
 export class DefaultContextListener
   extends AbstractListener<ContextHandler, AddContextListenerRequest>
   implements RegisterableListener

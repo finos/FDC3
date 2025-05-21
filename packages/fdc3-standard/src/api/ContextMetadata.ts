@@ -43,3 +43,15 @@ export interface ContextMetadata extends AppProvidableContextMetadata {
   /** The identifier of the app instance that originated the context or intent. */
   source: AppIdentifier;
 }
+
+export interface AppProvidableContextMetadata {
+  signature?: string;
+  traceId?: string;
+}
+
+export interface DesktopAgentProvidableContextMetadata {
+  timestamp?: Date;
+  source?: AppIdentifier;
+  traceId?: string;
+  signature?: string;
+}
