@@ -16,6 +16,7 @@ import { AppMetadata } from './AppMetadata';
 import { Intent } from '../intents/Intents';
 import { ContextType } from '../context/ContextType';
 import { EventHandler, FDC3EventTypes } from './Events';
+import { AppProvidableContextMetadata } from './ContextMetadata';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -50,7 +51,7 @@ export interface DesktopAgent {
    * let instanceIdentifier = await fdc3.open(appIdentifier, context);
    * ```
    */
-  open(app: AppIdentifier, context?: Context): Promise<AppIdentifier>;
+  open(app: AppIdentifier, context?: Context, metadata?: AppProvidableContextMetadata): Promise<AppIdentifier>;
 
   /**
    * Find out more information about a particular intent by passing its name, and optionally its context and/or a desired result context type.
@@ -225,7 +226,7 @@ export interface DesktopAgent {
    * fdc3.broadcast(context);
    * ```
    */
-  broadcast(context: Context): Promise<void>;
+  broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void>;
 
   /**
    * Raises a specific intent for resolution against apps registered with the Desktop Agent.
@@ -271,7 +272,12 @@ export interface DesktopAgent {
    * }
    * ```
    */
-  raiseIntent(intent: Intent, context: Context, app?: AppIdentifier): Promise<IntentResolution>;
+  raiseIntent(
+    intent: Intent,
+    context: Context,
+    app?: AppIdentifier,
+    metadata?: AppProvidableContextMetadata
+  ): Promise<IntentResolution>;
 
   /**
    * Finds and raises an intent against apps registered with the desktop agent based on the type of the specified context data example.
@@ -293,7 +299,11 @@ export interface DesktopAgent {
    * await fdc3.raiseIntentForContext(context, targetAppIdentifier);
    * ```
    */
-  raiseIntentForContext(context: Context, app?: AppIdentifier): Promise<IntentResolution>;
+  raiseIntentForContext(
+    context: Context,
+    app?: AppIdentifier,
+    metadata?: AppProvidableContextMetadata
+  ): Promise<IntentResolution>;
 
   /**
    * Adds a listener for incoming intents raised by other applications, via calls to `fdc3.raiseIntent` or `fdc3.raiseIntentForContext.  If the application is intended to be launched to resolve raised intents, it SHOULD add its intent listeners as quickly as possible after launch or an error MAY be returned to the caller and the intent and context may not be delivered. The exact timeout used is set by the Desktop Agent implementation, but MUST be at least 15 seconds.

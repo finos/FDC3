@@ -7,6 +7,7 @@ import { Context } from '@finos/fdc3-context';
 import { ContextHandler } from './Types';
 import { DisplayMetadata } from './DisplayMetadata';
 import { Listener } from './Listener';
+import { AppProvidableContextMetadata } from './ContextMetadata';
 
 /**
  * Represents a context channel that applications can use to send and receive
@@ -51,7 +52,7 @@ export interface Channel {
    *
    * If an application attempts to broadcast an invalid context argument the Promise returned by this function should reject with the `ChannelError.MalformedContext` error.
    */
-  broadcast(context: Context): Promise<void>;
+  broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void>;
 
   /**
    * When a `contextType`_` is provided, the most recent context matching the type will be returned, or `null` if no matching context is found.

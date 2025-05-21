@@ -18,3 +18,15 @@ export interface ContextMetadata {
    */
   readonly source: AppIdentifier;
 }
+
+export interface AppProvidableContextMetadata {
+  signature?: string;
+  traceId?: string;
+}
+
+export interface DesktopAgentProvidableContextMetadata {
+  timestamp?: Date;
+  source?: AppIdentifier;
+  traceId?: string;
+  signature?: string;
+}

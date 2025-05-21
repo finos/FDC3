@@ -8,6 +8,7 @@ import {
   IntentResult,
   IntentResolver,
   IntentResolutionChoice,
+  AppProvidableContextMetadata,
 } from '@finos/fdc3-standard';
 import { IntentSupport } from './IntentSupport';
 import { Messaging } from '../Messaging';
@@ -28,6 +29,7 @@ import {
   RaiseIntentResultResponse,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { throwIfUndefined } from '../util/throwIfUndefined';
+import { v4 } from 'uuid';
 
 const convertIntentResult = async (
   { payload }: RaiseIntentResultResponse,
@@ -130,16 +132,25 @@ export class DefaultIntentSupport implements IntentSupport {
     return ir;
   }
 
-  async raiseIntent(intent: string, context: Context, app: AppIdentifier): Promise<IntentResolution> {
+  async raiseIntent(
+    intent: string,
+    context: Context,
+    app: AppIdentifier,
+    metadata?: AppProvidableContextMetadata
+  ): Promise<IntentResolution> {
     const meta = this.messaging.createMeta();
     const request: RaiseIntentRequest = {
       type: 'raiseIntentRequest',
       payload: {
         intent,
         context,
-        app: app,
+        app,
       },
-      meta: meta,
+      metadata: {
+        signature: metadata?.signature,
+        traceId: metadata?.traceId ?? v4(),
+      },
+      meta,
     };
 
     const resultPromise = this.createResultPromise(request);
@@ -163,7 +174,7 @@ export class DefaultIntentSupport implements IntentSupport {
         context
       );
       if (result) {
-        return this.raiseIntent(intent, context, result.appId);
+        return this.raiseIntent(intent, context, result.appId, metadata);
       } else {
         throw new Error(ResolveError.UserCancelled);
       }
@@ -174,14 +185,23 @@ export class DefaultIntentSupport implements IntentSupport {
     }
   }
 
-  async raiseIntentForContext(context: Context, app?: AppIdentifier | undefined): Promise<IntentResolution> {
+  async raiseIntentForContext(
+    context: Context,
+    app?: AppIdentifier,
+    metadata?: AppProvidableContextMetadata
+  ): Promise<IntentResolution> {
+    const meta = this.messaging.createMeta();
     const request: RaiseIntentForContextRequest = {
       type: 'raiseIntentForContextRequest',
       payload: {
         context,
-        app: app,
+        app,
       },
-      meta: this.messaging.createMeta(),
+      metadata: {
+        signature: metadata?.signature,
+        traceId: metadata?.traceId ?? v4(),
+      },
+      meta,
     };
 
     const resultPromise = this.createResultPromise(request);
