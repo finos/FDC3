@@ -14,6 +14,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+## [npm v2.2.1] - 2025-05-23
+
+### Fixed
+
+* Revert schema of `fdc3.timeRange` context type back to use anyOf in place of oneOf for the `startTime` and `endTime` property combinations.  This will allow existence of one of either, or both, and pass schema validation.  When defined with oneOf, validation would fail due to multiple entries being valid and it could not identify which to apply. ([#1592](https://github.com/finos/FDC3/issues/1592))
+
+
 ## [FDC3 Standard 2.2](https://github.com/finos/FDC3/compare/v2.1..v2.2) - 2025-03-12
 
 ### Added
