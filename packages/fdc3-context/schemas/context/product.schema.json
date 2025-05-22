@@ -28,6 +28,11 @@
 					"$ref": "instrument.schema.json",
 					"title": "Product Instrument",
 					"description": "A financial instrument that relates to the definition of this product"
+				},
+				"notes": {
+					"type": "string",
+					"title": "Product Notes",
+					"description": "Additional notes or comments about the product."
 				}
 			},
 			"required": [
@@ -41,6 +46,7 @@
 	"examples": [
 		{
 			"type": "fdc3.product",
+			"notes": "...",
 			"id": {
 				"productId": "ABC123"
 			},
