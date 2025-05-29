@@ -9,6 +9,8 @@ import path from 'path';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
 
+const sanitizeFilename = (filename: string) => filename.replace(/^(\.\.(\/|\\|$))+/, '');
+
 describe('FDC3 Context Schema Example Validation', () => {
   const schemasDir = path.join(__dirname, '../schemas/context');
   const schemaFiles = fs.readdirSync(schemasDir).filter(f => f.endsWith('.schema.json'));
@@ -52,7 +54,7 @@ describe('FDC3 Context Schema Example Validation', () => {
   if (fs.existsSync(apiSchemasDir)) {
     const apiSchemaFiles = fs.readdirSync(apiSchemasDir).filter(f => f.endsWith('.schema.json'));
     apiSchemas = apiSchemaFiles.map(schemaFile => {
-      const schemaPath = path.join(apiSchemasDir, schemaFile);
+      const schemaPath = path.join(apiSchemasDir, sanitizeFilename(schemaFile));
       const schema = JSON.parse(fs.readFileSync(schemaPath, 'utf-8'));
       if (schema.$id) {
         refMap[schemaFile] = schema.$id;
@@ -63,7 +65,7 @@ describe('FDC3 Context Schema Example Validation', () => {
 
   // Load and map all context schemas
   const schemas = schemaFiles.map(schemaFile => {
-    const schemaPath = path.join(schemasDir, schemaFile);
+    const schemaPath = path.join(schemasDir, sanitizeFilename(schemaFile));
     const schema = JSON.parse(fs.readFileSync(schemaPath, 'utf-8'));
     if (schema.$id) {
       refMap[schemaFile] = schema.$id;
