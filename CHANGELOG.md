@@ -7,7 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
-
+* Add a notes field to trade type ([#1563](https://github.com/finos/FDC3/pull/1563))
+* Add a notes filed to order and product types ([#1597](https://github.com/finos/FDC3/pull/1597))
 ### Changed
 
 ### Deprecated
