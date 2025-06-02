@@ -55,6 +55,18 @@ interface IAppIdentifier
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type AppIdentifier struct {
+  // The unique application identifier located within a specific application directory instance. An example of an appId might be 'app@sub.root'.
+  AppId      string `json:"appId"`
+  // An optional instance identifier, indicating that this object represents a specific instance of the application described.
+  InstanceId string `json:"instanceId"`
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -103,6 +115,21 @@ interface IDynamicContext
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type Context struct {
+  Type    string                 `json:"type"`
+  Name    string                 `json:"name"`
+  Id      map[string]string      `json:"id"`
+}
+
+type IContext interface {
+  // TODO: include at least one method in here 
+}
+```
+
+</TabItem>
 </Tabs>
 
 The base interface that all contexts should extend: a context data object adhering to the [FDC3 Context Data specification](../../context/spec).
@@ -138,6 +165,13 @@ type ContextHandler = (context: Context, metadata?: ContextMetadata) => void;
 
 ```csharp
 delegate void ContextHandler<T>(T context, IContextMetadata? metadata = null) where T : IContext;
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type ContextHandler func(IContext, *ContextMetadata)
 ```
 
 </TabItem>
@@ -178,7 +212,15 @@ Not implemented
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
 
+```go
+type DesktopAgentIdentifier struct {
+  DesktopAgent string
+}
+```
+
+</TabItem>
 </Tabs>
 
 (Experimental) Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios where a request needs to be directed to a Desktop Agent rather than a specific app, or a response message is returned by the Desktop Agent (or more specifically its resolver) rather than a specific app. Used as a substitute for `AppIdentifier` in cases where no app details are available or are appropriate.
@@ -201,6 +243,13 @@ type IntentHandler = (context: Context, metadata?: ContextMetadata) => Promise<I
 
 ```csharp
 delegate Task<IIntentResult> IntentHandler<T>(T context, IContextMetadata? metadata = null) where T : IContext;
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type IntentHandler func(IContext, *ContextMetadata) <-chan IntentResult
 ```
 
 </TabItem>
@@ -234,6 +283,20 @@ type IntentResult = Context | Channel | void;
 
 ```csharp
 interface IIntentResult { /* Marker interface implemented by IContext and Channel */ }
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type IntentResult any
+
+type IntentResultType string
+const (
+  ChannelIntentResult        IntentResultType = "Channel"
+  ContextIntentResult        IntentResultType = "Context"
+  PrivateChannelIntentResult IntentResultType = "PrivateChannel"
+)
 ```
 
 </TabItem>
@@ -276,6 +339,16 @@ interface IListener
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type IListener interface {
+  Unsubscribe()
+}
+type Listener struct {}
+```
+
+</TabItem>
 </Tabs>
 
 ### `unsubscribe`
@@ -292,6 +365,15 @@ unsubscribe(): Promise<void>;
 
 ```csharp
 void Unsubscribe();
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (l *Listener) Unsubscribe() {
+  // Implementation here
+}
 ```
 
 </TabItem>
