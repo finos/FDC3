@@ -1,6 +1,6 @@
 {
   "name": "fdc3-conformance",
-  "version": "2.2.1",
+  "version": "2.2.1-beta.1",
   "homepage": "https://fdc3.finos.org",
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@finos/fdc3": "2.2.1",
+    "@finos/fdc3": "2.2.1-beta.1",
     "buffer": "^6.0.3",
     "chai": "^4.3.6",
     "mocha": "^10.0.0",
@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "@types/chai": "^4.3.0",
-    "@types/mocha": "^9.1.0",
+    "@types/mocha": "^10.0.10",
     "css-loader": "^6.7.2",
     "http-server": "^14.1.1",
     "prettier": "3.4.1",
