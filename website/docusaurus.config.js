@@ -49,7 +49,7 @@ module.exports = {
   "plugins": [],
   "themeConfig": {
     "prism": {
-      "additionalLanguages": ["typescript", "javascript", "json", "csharp"],
+      "additionalLanguages": ["typescript", "javascript", "json", "csharp", "go"],
       "theme": require('prism-react-renderer').themes.vsDark
     },
     "algolia": {
