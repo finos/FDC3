@@ -124,6 +124,7 @@ export type ResponseErrorDetail =
   | 'MalformedContext'
   | 'NoChannelFound'
   | 'ApiTimeout'
+  | 'InvalidArguments'
   | 'AppNotFound'
   | 'AppTimeout'
   | 'DesktopAgentNotFound'
@@ -1155,6 +1156,7 @@ export type FindInstancesErrors =
   | 'TargetInstanceUnavailable'
   | 'UserCancelledResolution'
   | 'ApiTimeout'
+  | 'InvalidArguments'
   | 'AgentDisconnected'
   | 'NotConnectedToBridge'
   | 'ResponseToBridgeTimedOut'
@@ -2582,6 +2584,7 @@ export type OpenErrorResponsePayload =
   | 'MalformedContext'
   | 'ResolverUnavailable'
   | 'ApiTimeout'
+  | 'InvalidArguments'
   | 'AgentDisconnected'
   | 'NotConnectedToBridge'
   | 'ResponseToBridgeTimedOut'
@@ -6486,6 +6489,7 @@ const typeMap: any = {
     'ErrorOnLaunch',
     'IntentDeliveryFailed',
     'IntentHandlerRejected',
+    'InvalidArguments',
     'MalformedContext',
     'MalformedMessage',
     'NoAppsFound',
@@ -6534,6 +6538,7 @@ const typeMap: any = {
     'AgentDisconnected',
     'DesktopAgentNotFound',
     'IntentDeliveryFailed',
+    'InvalidArguments',
     'MalformedContext',
     'MalformedMessage',
     'NoAppsFound',
@@ -6560,6 +6565,7 @@ const typeMap: any = {
     'AppTimeout',
     'DesktopAgentNotFound',
     'ErrorOnLaunch',
+    'InvalidArguments',
     'MalformedContext',
     'MalformedMessage',
     'NotConnectedToBridge',
