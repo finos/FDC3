@@ -70,7 +70,7 @@ export class BroadcastHandler implements MessageHandler {
     this.state = initialChannelState;
   }
 
-  shutdown(): void { }
+  shutdown(): void {}
 
   cleanup(instanceId: InstanceID, sc: ServerContext<AppRegistration>): void {
     const toUnsubscribe = this.contextListeners.filter(r => r.instanceId == instanceId);
@@ -484,21 +484,28 @@ export class BroadcastHandler implements MessageHandler {
   ) {
     const id = arg0.payload.channelId;
     let channel = this.getChannelById(id);
-    if (channel) {
-      if (channel.type != ChannelType.app) {
-        errorResponse(sc, arg0, from, ChannelError.AccessDenied, 'getOrCreateChannelResponse');
-        return;
-      }
+
+    if (!channel) {
+      channel = {
+        id: id,
+        type: ChannelType.app,
+        context: [],
+        displayMetadata: {},
+      };
+      this.state.push(channel);
     }
 
-    channel = {
-      id: id,
-      type: ChannelType.app,
-      context: [],
-      displayMetadata: {},
-    };
-    this.state.push(channel);
-    successResponse(sc, arg0, from, { channel: { id: channel.id, type: channel.type } }, 'getOrCreateChannelResponse');
+    if (channel.type != ChannelType.app) {
+      errorResponse(sc, arg0, from, ChannelError.AccessDenied, 'getOrCreateChannelResponse');
+    } else {
+      successResponse(
+        sc,
+        arg0,
+        from,
+        { channel: { id: channel.id, type: channel.type } },
+        'getOrCreateChannelResponse'
+      );
+    }
   }
 
   handleGetUserChannelsRequest(

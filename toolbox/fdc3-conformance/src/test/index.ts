@@ -1,5 +1,5 @@
 export * from './testSuite';
-import { fdc3Ready } from '@finos/fdc3';
+import { getAgent } from '@finos/fdc3';
 import { getPackMembers, getPackNames, executeTestsInBrowser, executeManualTestsInBrowser } from './testSuite';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -33,7 +33,7 @@ function executeTests() {
   if (window.fdc3) {
     action();
   } else {
-    fdc3Ready().then(() => action());
+    getAgent().then(() => action());
   }
 }
 
@@ -47,7 +47,7 @@ function executeManualTests() {
   if (window.fdc3) {
     action();
   } else {
-    fdc3Ready().then(() => action());
+    getAgent().then(() => action());
   }
 }
 
@@ -79,3 +79,5 @@ function toggleBackButton() {
 document.getElementById('runButton')!.addEventListener('click', executeTests);
 document.getElementById('back-button')!.addEventListener('click', returnToTestSelection);
 document.getElementById('manualTestsRunButton')!.addEventListener('click', executeManualTests);
+
+getAgent(); // ensure the agent is ready before running tests
