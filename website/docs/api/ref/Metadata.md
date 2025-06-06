@@ -44,6 +44,19 @@ interface IAppIntent
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type AppIntent struct {
+  // Details of the intent whose relationship to resolving applications is being described.
+  Intent IntentMetadata `json:"intent"`
+
+  // Details of applications that can resolve the intent.
+  Apps   []AppMetadata  `json:"apps"`
+}
+```
+
+</TabItem>
 </Tabs>
 
 An interface that represents the binding of an intent to apps, returned as part of intent discovery.
@@ -162,6 +175,36 @@ interface IAppMetadata : IAppIdentifier
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type AppMetadata struct {
+  AppIdentifier
+  // The unique app name that can be used with the open and raiseIntent calls.
+  Name             string                 `json:"name"`
+  // The Version of the application.
+  Version          string                 `json:"version"`
+  // A more user-friendly application title that can be used to render UI elements.
+  Title            string                 `json:"title"`
+  // A tooltip for the application that can be used to render UI elements.
+  Tooltip          string                 `json:"tooltip"`
+  // A longer, multi-paragraph description for the application that could include markup.
+  Description      string                 `json:"description"`
+  // A list of icon URLs for the application that can be used to render UI elements.
+  Icons            []app_dir.Icon         `json:"icons"`
+  // A list of image URLs for the application that can be used to render UI elements.
+  Screenshots      []app_dir.Screenshot   `json:"screenshots"`
+  // The type of output returned for any intent specified during resolution. May express a particular context type,
+  // channel, or channel with specified type
+  ResultType       string                 `json:"resultType"`
+  // An optional set of, implementation specific, metadata fields that can be
+  // used to disambiguate instances, such as a window title or screen position.
+  // Must only be set if `instanceId` is set. 
+  InstanceMetadata map[string]interface{} `json:"instanceMetadata"`
+}
+```
+
+</TabItem>
 </Tabs>
 
 Extends an AppIdentifier, describing an application or instance of an application, with additional descriptive metadata that is usually provided by an FDC3 App Directory that the desktop agent connects to.
@@ -204,6 +247,16 @@ interface IContextMetadata
     /// Identifier for the app instance that sent the context and/or intent.
     /// </summary>
     IAppIdentifier? Source { get; }
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type ContextMetadata struct {
+  // Identifier for the app instance that sent the context and/or intent.
+  Source AppIdentifier `json:"source"`
 }
 ```
 
@@ -271,6 +324,22 @@ interface IDisplayMetadata
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type DisplayMetadata struct {
+  // A user-readable name for this channel, e.g: Red.
+  Name  string `json:"name"`
+  // The color that should be associated within this channel when displaying
+  // this channel in a UI, e.g: `#FF0000`. May be any color value supported by
+  //  CSS, e.g. name, hex, rgba, etc..
+  Color string `json:"color"`
+  // A URL of an image that can be used to display this channel.
+  Glyph string `json:"glyph"`
+}
+```
+
+</TabItem>
 </Tabs>
 
 A desktop agent (typically for _system_ channels) may want to provide additional information about how a channel can be represented in a UI. A common use case is for color linking.
@@ -317,6 +386,20 @@ interface IIcon
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type Icon struct {
+  // The icon url
+  Src string  `json:"src"`
+  // The icon dimensions, formatted as '{height}x{width}'
+  Size string  `json:"size"`
+  // Icon media type. If not present, the Desktop Agent may use the src file extension.
+  Type string  `json:"type"`
+}
+```
+
+</TabItem>
 </Tabs>
 
 Metadata relating to a single icon image at a remote URL, used to represent an application in a user interface.
@@ -348,6 +431,24 @@ AppMetadata includes an icons property allowing multiple icon types to be specif
 
 ```csharp
 IIcon? icon = appMetadata?.Icons.Where(icon => icon.Size == "48x48").First();
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+icons := []Icon{
+      {
+        Src: "https://app.foo.icon/app_icons/lowres.webp",
+        Size: "48x48",
+        Type: "image/webp",
+      },
+      {
+        Src: "https://app.foo.icon/app_icons/hd_hi.svg",
+        Size: "72x72",
+        Type: "image/svg+xml",
+      },
+    }
 ```
 
 </TabItem>
@@ -407,6 +508,22 @@ interface IImage
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type Image struct {
+  // The icon url
+  Src string `json:"src"`
+	// The icon dimensions, formatted as '{height}x{width}'
+  Size string `json:"size"`
+  // Icon media type.  If not present, the Desktop Agent may use the src file extension.
+  Type string `json:"type"`
+  // Caption for the image
+  Label string `json:"label"`
+}
+```
+
+</TabItem>
 </Tabs>
 
 Metadata relating to a single image at a remote URL, used to represent screenshot images.
@@ -443,6 +560,26 @@ foreach (IImage image in appMetadata.Screenshots)
 {
     System.Diagnostics.Debug.WriteLine(image.Src);
 }
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+icons := []Image{
+      {
+        Src: "https://app.foo.icon/app_screenshots/dashboard.png",
+        Size: "800x600",
+        Type: "image/png",
+        Label: "Example app dashboard",
+      },
+      {
+        Src: "https://app.foo.icon/app_screenshots/notifications.png",
+        Size: "800x600",
+        Type: "image/png",
+        Label: "Order notifications view",
+      },
+    }
 ```
 
 </TabItem>
@@ -553,6 +690,32 @@ class OptionalDesktopAgentFeatures
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type ImplementationMetadata struct {
+  //  The version number of the FDC3 specification that the implementation provides.
+  //  The string must be a numeric semver version, e.g. 1.2 or 1.2.1.
+  Fdc3Version      string `json:"fdc3Version"`
+  // The name of the provider of the FDC3 Desktop Agent Implementation (e.g. Finsemble, Glue42, OpenFin etc.).
+  Provider         string `json:"provider"`
+  // The version of the provider of the FDC3 Desktop Agent Implementation (e.g. 5.3.0).
+  ProviderVersion  string `json:"providerVersion"`
+  // Metadata indicating whether the Desktop Agent implements optional features of the Desktop Agent API.
+  OptionalFeatures struct {
+    // Used to indicate whether the exposure of 'originating app metadata' for context and intent
+    // messages is supported by the Desktop Agent.
+    OriginatingAppMetadata    bool `json:"OriginatingAppMetadata"`
+    // Used to indicate whether the optional 'JoinUserChannel', 'GetCurrentChannel', and 'LeaveCurrentChannel'
+    // are implemented by the Desktop Agent.
+    UserChannelMembershipAPIs bool `json:"UserChannelMembershipAPIs"`
+	} `json:"optionalFeatures"`
+  // The calling application instance's own metadata according to the Desktop Agent
+  AppMetadata AppMetadata `json:"appMetadata"`
+}
+```
+
+</TabItem>
 </Tabs>
 
 Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification, the name of the provider of the implementation, its own version number and the metadata of the calling application according to the desktop agent.
@@ -596,6 +759,20 @@ interface IIntentMetadata
     /// </summary>
     string DisplayName { get; }
 }
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type IntentMetadata struct {
+  // The unique name of the intent that can be invoked by the raiseIntent call.
+  Name        string `json:"name"`
+  
+  // A friendly display name for the intent that should be used to render UI elements.
+  DisplayName string `json:"displayName"`
+}
+
 ```
 
 </TabItem>
@@ -666,6 +843,26 @@ interface IIntentResolution
     string? Version { get; }
 
     Task<IIntentResult> GetResult();
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type IntentResolution struct {
+  // The application that resolved the intent.
+  Source  AppIdentifier `json:"source"`
+  // The intent that was raised.
+  Intent  string        `json:"intent"`
+  // The version number of the Intents schema being used.
+  Version string        `json:"version"`
+}
+
+type IntentResult any
+
+func (ir *IntentResolution) GetResult() <-chan Result[IntentResult] {
+  // implementation here
 }
 ```
 
@@ -742,6 +939,23 @@ try
 catch (Exception ex)
 {
     // Handle exception
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+resolutionResult := <-desktopAgent.RaiseIntent("QuoteStream", context, nil)
+if resolutionResult.Err != nil {
+  // handle error 
+}
+if channel, ok := resolutionResult.Value.(Channel); ok {
+    log.Println("The result is a channel")
+} else if context, ok := resolutionResult.Value.(Context); ok {
+    log.Println("The result is a context")
+} else {
+  log.Error("The result is of incorrect data type!")
 }
 ```
 
