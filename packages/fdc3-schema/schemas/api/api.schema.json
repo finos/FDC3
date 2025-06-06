@@ -283,6 +283,45 @@
                 "source"
             ]
         },
+        "AppProvidableContextMetadata": {
+            "description": "Metadata that can be provided by an app.",
+            "title": "AppProvidableContextMetadata",
+            "type": "object",
+            "properties": {
+                "signature": {
+                    "type": "string"
+                },
+                "traceId": {
+                    "type": "string"
+                },
+                "hostParams": {
+                    "type": "object"
+                }
+            },
+            "additionalProperties": false
+        },
+        "DesktopAgentProvidableContextMetadata": {
+            "description": "Metadata that can be provided by an app.",
+            "title": "DesktopAgentProvidableContextMetadata",
+            "type": "object",
+            "properties": {
+                "signature": {
+                    "type": "string"
+                },
+                "traceId": {
+                    "type": "string"
+                },
+                "timestamp": {
+                    "type": "number"
+                },
+                "source": {
+                    "$ref": "#/definitions/AppIdentifier",
+                    "description": "Identifier for the source app instance",
+                    "title": "source"
+                }
+            },
+            "additionalProperties": false
+        },
         "DesktopAgentIdentifier": {
             "description": "Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios\nwhere a request needs to be directed to a Desktop Agent rather than a specific app, or a\nresponse message is returned by the Desktop Agent (or more specifically its resolver)\nrather than a specific app. Used as a substitute for `AppIdentifier` in cases where no\napp details are available or are appropriate.",
             "title": "DesktopAgentIdentifier",
