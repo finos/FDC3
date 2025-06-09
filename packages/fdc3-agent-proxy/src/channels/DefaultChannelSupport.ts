@@ -8,6 +8,7 @@ import {
   ChannelError,
   ApiEvent,
   FDC3ChannelChangedEvent,
+  FDC3EventTypes,
 } from '@finos/fdc3-standard';
 import { Messaging } from '../Messaging';
 import { ChannelSupport } from './ChannelSupport';
@@ -31,7 +32,7 @@ import {
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { throwIfUndefined } from '../util/throwIfUndefined';
 import { Logger } from '../util/Logger';
-import { ChannelChangeEventListener } from '../listeners/ChannelChangeEventListener';
+import { DesktopAgentEventListener } from '../listeners/DesktopAgentEventListener';
 
 export class DefaultChannelSupport implements ChannelSupport {
   readonly messaging: Messaging;
@@ -53,7 +54,7 @@ export class DefaultChannelSupport implements ChannelSupport {
       }
     });
 
-    this.addChannelChangedEventHandler(async (e: ApiEvent) => {
+    this.addEventListener(async (e: ApiEvent) => {
       const cce = e as FDC3ChannelChangedEvent;
       const currentChannelId = cce.details.currentChannelId;
       Logger.debug('Desktop Agent reports channel changed: ', currentChannelId);
@@ -79,11 +80,11 @@ export class DefaultChannelSupport implements ChannelSupport {
 
       this.userChannelListeners.forEach(l => l.changeChannel(theChannel));
       this.channelSelector.updateChannel(theChannel?.id ?? null, this.userChannels);
-    });
+    }, 'userChannelChanged');
   }
 
-  async addChannelChangedEventHandler(handler: EventHandler): Promise<Listener> {
-    const listener = new ChannelChangeEventListener(this.messaging, handler);
+  async addEventListener(handler: EventHandler, type: FDC3EventTypes | null): Promise<Listener> {
+    const listener = new DesktopAgentEventListener(this.messaging, this.messageExchangeTimeout, type, handler);
     await listener.register();
     return listener;
   }
