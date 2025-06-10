@@ -86,6 +86,7 @@ export class DefaultChannelSupport implements ChannelSupport {
   async addEventListener(handler: EventHandler, type: FDC3EventTypes | null): Promise<Listener> {
     const listener = new DesktopAgentEventListener(this.messaging, this.messageExchangeTimeout, type, handler);
     await listener.register();
+    console.log('Registered Desktop Agent event listener for type: ', type, listener.id);
     return listener;
   }
 
