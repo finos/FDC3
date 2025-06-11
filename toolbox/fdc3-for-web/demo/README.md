@@ -95,3 +95,5 @@ As shown in the screenshot above, there are 7 demo applications provided by Demo
 - **Intent Result**: On launch, raises a `ViewQuote` intent with an `fdc3.instrument` context.  This is useful for testing out intent resolution without having to bother with the FDC3 Workbench.
 
 - **Intent Result 2**: On launch, raises a `ViewNews` intent with an `fdc3.instrument` context.    Tip: Try changing the intent resolver in the UI to the default one and see what happens.
+
+- **FDC3 Conformance 2.0**: This app is used to run the FDC3 2.0 conformance tests.  
