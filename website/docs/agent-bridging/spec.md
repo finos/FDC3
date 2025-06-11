@@ -942,6 +942,18 @@ In the event that a Desktop Agent repeatedly times out, the bridge SHOULD discon
 
 In the event that the bridge repeatedly times out, connected Desktop Agents MAY disconnect from the bridge and attempt to reconnect by returning to Step 1 of the connection protocol.
 
+### Fully-Qualified AppIds
+
+The FDC3 Standard allows appIds to be fully-qualified with the domain of the app directory that their details were loaded from, see the [API specification](../api/spec#fully-qualified-appids) for details of how the resolution of unqualified and fully-qualified appIds should be handled in the API. 
+
+There are only two types of API calls where `appId` resolution matters to the Bridging specification:
+
+- `fdc3.open`: For `open` to apply to a remote agent across the bridge, the agent has to be specified in the `AppIdentifier` (via the `DesktopAgent` field that is only used for bridging).
+  - If an `appId` provided as an argument to `open` cannot be matched as provided, then the receiving agent should apply the same resolution logic defined in the API standard in order to match unqualified and fully-qualified appIds. If a match is not found then the agent should respond with the `AppNotFound` from the `OpenError` enumeration.
+- `fdc3.raiseIntent`/`fdc3.raiseIntentForContext`: For `raiseIntent` calls to apply to a remote agent across the bridge, the agent has to be specified in the `AppIdentifier` (via the `DesktopAgent` field that is only used for bridging).
+  - If an `appId` provided as an argument cannot be matched as provided, then the receiving agent should apply the same resolution logic defined in the API standard in order to match unqualified and fully-qualified appIds. If a match is not found then the agent should respond with the `TargettedAppUnavailable` from the `ResolveError` enumeration.
+  - If no `appId` was specified, the `findIntent`/`findIntentForContext` exchanges are used to retrieve options from other agents. The Desktop Agent that raised the intent should select an option (involving the user via an intent resolver if it needs to) and then re-raise the intent with the selected option as the target. As it will be specifying exactly the `appId` (and `instanceId` if applicable) that was provided by the host agent, no resolution should be needed.
+
 ### Individual message exchanges
 
 Individual message exchanges are defined for each of the Desktop Agent methods that require bridging in the reference section of this Part.
