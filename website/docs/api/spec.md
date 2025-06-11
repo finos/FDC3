@@ -148,7 +148,7 @@ An FDC3 Standard compliant Desktop Agent implementation **MAY**:
   - [`open`](ref/DesktopAgent#open-deprecated) (deprecated version that addresses apps via `name` field)
   - [`raiseIntent`](ref/DesktopAgent#raiseintent-deprecated) (deprecated version that addresses apps via `name` field)
   - [`raiseIntentForContext`](ref/DesktopAgent#raiseintentforcontext-deprecated) (deprecated version that addresses apps via `name` field)
-- Make use of an resolver user interface or other suitable procedure to resolve an ambiguous unqualified `appId` value received as part of an `AppIdentifier` passed as a paremeter to an API function. 
+- Make use of a resolver user interface or other suitable procedure to resolve an ambiguous unqualified `appId` value received as part of an `AppIdentifier` passed as a paremeter to an API function. 
 
 For more details on FDC3 Standards compliance (including the versioning, deprecation and experimental features policies) please see the [FDC3 Compliance page](../fdc3-compliance).
 
