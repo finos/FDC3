@@ -147,7 +147,7 @@ export class IntentHandler implements MessageHandler {
     });
   }
 
-  shutdown(): void {}
+  shutdown(): void { }
 
   async narrowIntents(
     raiser: AppIdentifier,
@@ -288,18 +288,6 @@ export class IntentHandler implements MessageHandler {
     });
   }
 
-  createAppIntents(ir: IntentRequest[], target: AppIdentifier[]): AppIntent[] {
-    return ir.map(r => {
-      return {
-        intent: {
-          name: r.intent,
-          displayName: r.intent,
-        },
-        apps: target,
-      };
-    });
-  }
-
   async raiseIntentRequestToSpecificInstance(
     arg0: IntentRequest[],
     sc: ServerContext<AppRegistration>,
@@ -345,11 +333,43 @@ export class IntentHandler implements MessageHandler {
     sc: ServerContext<AppRegistration>,
     target: AppIdentifier
   ): Promise<void> {
-    // in this version of the method, we always open an app as no
-    // specific instance is specified
-    const appIntents = this.createAppIntents(arg0, [{ appId: target.appId }]);
 
-    const narrowedAppIntents = await this.narrowIntents(arg0[0].from, appIntents, arg0[0].context, sc);
+    const appRecords = this.directory.retrieveAppsById(target.appId);
+    if (appRecords.length == 0) {
+      return errorResponseId(sc, arg0[0].requestUuid, arg0[0].from, ResolveError.TargetAppUnavailable, arg0[0].type);
+    }
+
+    const convertDirectoryIntentsToAppIntents = (intents: DirectoryIntent[], appId: string): AppIntent[] => {
+      // group by intent name
+      const intentNames = new Set(intents.map(i => i.intentName));
+      return Array.from(intentNames).map(intentName => {
+        const intentsWithName = intents.filter(i => i.intentName === intentName);
+        return {
+          intent: { name: intentName, displayName: intentName },
+          apps: intentsWithName.filter(i => i.appId === appId).map(i => ({ appId: i.appId })),
+        };
+      });
+    };
+
+    const intentsAllHaveApps = (appIntents: AppIntent[]): boolean => {
+      return appIntents.every(ai => ai.apps.length > 0);
+    }
+
+    // in this version of the method, we always open an app as no
+    // specific instance is specified.  But only if the app supports the intent.
+    const context: Context = arg0[0].context;
+    const matchingIntents: DirectoryIntent[] = this.directory.retrieveIntents(context.type, arg0[0].intent, undefined);
+    const appIntents = convertDirectoryIntentsToAppIntents(matchingIntents, target.appId);
+
+    if (appIntents.length == 0) {
+      return errorResponseId(sc, arg0[0].requestUuid, arg0[0].from, ResolveError.NoAppsFound, arg0[0].type);
+    }
+
+    if (!intentsAllHaveApps(appIntents)) {
+      return errorResponseId(sc, arg0[0].requestUuid, arg0[0].from, ResolveError.IntentDeliveryFailed, arg0[0].type);
+    }
+
+    const narrowedAppIntents = await this.narrowIntents(arg0[0].from, appIntents, context, sc);
 
     if (narrowedAppIntents.length == 1) {
       if (narrowedAppIntents[0].apps.length == 1) {
@@ -365,7 +385,7 @@ export class IntentHandler implements MessageHandler {
       }
     }
     // app doesn't exist
-    return errorResponseId(sc, arg0[0].requestUuid, arg0[0].from, ResolveError.TargetAppUnavailable, arg0[0].type);
+    return errorResponseId(sc, arg0[0].requestUuid, arg0[0].from, ResolveError.NoAppsFound, arg0[0].type);
   }
 
   oneAppOnly(appIntent: AppIntent): boolean {
