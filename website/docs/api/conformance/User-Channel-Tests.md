@@ -70,3 +70,17 @@ As the method of setting the user channel is user interactive, it is either diff
 | User                | 3. Set User Channel                        | The user should set the current user channel of the app and change it a few times. Details of each change should be displayed by the test app. |
 
 - `2.2-ChannelChangedEvent`: ![2.2+](https://img.shields.io/badge/FDC3-2.2+-purple) Perform the above test.
+
+
+## Broadcast With Multiple Listeners On The Same or Overlapping Types
+
+| App | Step               | Details                                                                                                     |
+|-----|--------------------|-------------------------------------------------------------------------------------------------------------|
+| A   | 1. addContextListeners | A sets up two Context Listeners.  One _untyped_ and one for `fdc3.contact` by calling:  `addContextListener(null, handler1)` <br/> `addContextListener("fdc3.contact", handler2)` <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) A `Listener` object is returned for each.  <br />![2.0](https://img.shields.io/badge/FDC3-2.0-blue) A promise resolving a `Listener` object is returned for each. <br />Check that this has an `unsubscribe` method for each.  |
+| A   | 2. joinUserChannel     |A joins the first available user channel using: <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `getSystemChannels()` Check channels are returned. <br/>![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `getUserChannels()` Check **user** channels are returned.<br/>Call `fdc3.joinChannel()` on the first non-global channel.|
+| B   | 3. joinUserChannel     |B joins the same channel as A, via the same process in 2. |
+| B   | 4. Broadcast          |`fdc3.broadcast(<contact context>)` . |
+| A   | 5. Receive Context    | A's `fdc3.contact` object matches the one broadcast  by B, both handlers from step 1 are triggered, and broadcast arrives on the correct listener.   |
+
+- UCMultipleOverlappingListeners1: Perform above test
+- UCMultipleOverlappingListeners2: Perform above test, but instead of _untyped_ context listener, in step 2, use `fdc3.instrument` (handler should remain different)
