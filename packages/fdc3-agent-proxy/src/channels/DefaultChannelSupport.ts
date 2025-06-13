@@ -15,7 +15,6 @@ import { ChannelSupport } from './ChannelSupport';
 import { DefaultPrivateChannel } from './DefaultPrivateChannel';
 import { DefaultChannel } from './DefaultChannel';
 import { DefaultContextListener } from '../listeners/DefaultContextListener';
-import { UserChannelContextListener } from '../listeners/UserChannelContextListener';
 import {
   GetCurrentChannelResponse,
   GetCurrentChannelRequest,
@@ -29,17 +28,20 @@ import {
   LeaveCurrentChannelRequest,
   JoinUserChannelResponse,
   JoinUserChannelRequest,
+  BroadcastEvent,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { throwIfUndefined } from '../util/throwIfUndefined';
 import { Logger } from '../util/Logger';
 import { DesktopAgentEventListener } from '../listeners/DesktopAgentEventListener';
+import { RegisterableListener } from '../listeners/RegisterableListener';
 
 export class DefaultChannelSupport implements ChannelSupport {
   readonly messaging: Messaging;
   readonly channelSelector: ChannelSelector;
   readonly messageExchangeTimeout: number;
   protected userChannels: Channel[] = [];
-  protected userChannelListeners: UserChannelContextListener[] = [];
+  protected userChannelListeners: RegisterableListener[] = [];
+  private currentChannelId: string | null = null;
 
   constructor(messaging: Messaging, channelSelector: ChannelSelector, messageExchangeTimeout: number) {
     this.messaging = messaging;
@@ -56,29 +58,29 @@ export class DefaultChannelSupport implements ChannelSupport {
 
     this.addEventListener(async (e: ApiEvent) => {
       const cce = e as FDC3ChannelChangedEvent;
-      const currentChannelId = cce.details.currentChannelId;
-      Logger.debug('Desktop Agent reports channel changed: ', currentChannelId);
+      const newChannelId = cce.details.currentChannelId;
+      Logger.debug('Desktop Agent reports channel changed: ', newChannelId);
 
       let theChannel: Channel | null = null;
 
       // if theres a newChannelId, retrieve details of the channel
-      if (currentChannelId != null) {
-        theChannel = this.userChannels.find(uc => uc.id == currentChannelId) ?? null;
+      if (newChannelId != null) {
+        theChannel = this.userChannels.find(uc => uc.id == newChannelId) ?? null;
         if (!theChannel) {
           //Channel not found - query user channels in case they have changed for some reason
-          Logger.debug('Unknown user channel, querying Desktop Agent for updated user channels: ', currentChannelId);
+          Logger.debug('Unknown user channel, querying Desktop Agent for updated user channels: ', newChannelId);
           await this.getUserChannels();
-          theChannel = this.userChannels.find(uc => uc.id == currentChannelId) ?? null;
+          theChannel = this.userChannels.find(uc => uc.id == newChannelId) ?? null;
           if (!theChannel) {
             Logger.warn(
               'Received user channel update with unknown user channel (user channel listeners will not work): ',
-              currentChannelId
+              newChannelId
             );
           }
         }
       }
 
-      this.userChannelListeners.forEach(l => l.changeChannel(theChannel));
+      this.currentChannelId = newChannelId;
       this.channelSelector.updateChannel(theChannel?.id ?? null, this.userChannels);
     }, 'userChannelChanged');
   }
@@ -212,10 +214,8 @@ export class DefaultChannelSupport implements ChannelSupport {
       'leaveCurrentChannelResponse',
       this.messageExchangeTimeout
     );
+    this.currentChannelId = null;
     this.channelSelector.updateChannel(null, this.userChannels);
-    for (const l of this.userChannelListeners) {
-      await l.changeChannel(null);
-    }
   }
 
   async joinUserChannel(id: string) {
@@ -231,29 +231,29 @@ export class DefaultChannelSupport implements ChannelSupport {
       'joinUserChannelResponse',
       this.messageExchangeTimeout
     );
+    this.currentChannelId = id;
     this.channelSelector.updateChannel(id, this.userChannels);
-    for (const l of this.userChannelListeners) {
-      await l.changeChannel(new DefaultChannel(this.messaging, this.messageExchangeTimeout, id, 'user'));
-    }
   }
 
   async addContextListener(handler: ContextHandler, type: string | null): Promise<Listener> {
-    /** Utility class used to wrap the DefaultContextListener and ensure it gets removed
-     *  when its unsubscribe function is called.
+    const _self = this;
+
+    /**
+     *  Utility class used to wrap the DefaultContextListener to match the internal channel id
+     *  and ensure it gets removed when its unsubscribe function is called.
      */
-    class UnsubscribingDefaultContextListener extends DefaultContextListener {
+    class UserChannelContextListener extends DefaultContextListener {
       container: DefaultChannelSupport;
 
       constructor(
         container: DefaultChannelSupport,
         messaging: Messaging,
         messageExchangeTimeout: number,
-        channelId: string | null,
         contextType: string | null,
         handler: ContextHandler,
         messageType: string = 'broadcastEvent'
       ) {
-        super(messaging, messageExchangeTimeout, channelId, contextType, handler, messageType);
+        super(messaging, messageExchangeTimeout, null, contextType, handler, messageType);
         this.container = container;
       }
 
@@ -261,17 +261,18 @@ export class DefaultChannelSupport implements ChannelSupport {
         super.unsubscribe();
         this.container.userChannelListeners = this.container.userChannelListeners.filter(l => l != this);
       }
+
+      filter(m: BroadcastEvent): boolean {
+        return (
+          m.type == this.messageType &&
+          m.payload.channelId == _self.currentChannelId &&
+          _self.currentChannelId != null &&
+          (m.payload.context?.type == this.contextType || this.contextType == null)
+        );
+      }
     }
 
-    const currentChannelId = (await this.getUserChannel())?.id ?? null;
-    const listener = new UnsubscribingDefaultContextListener(
-      this,
-      this.messaging,
-      this.messageExchangeTimeout,
-      currentChannelId,
-      type,
-      handler
-    );
+    const listener = new UserChannelContextListener(this, this.messaging, this.messageExchangeTimeout, type, handler);
     this.userChannelListeners.push(listener);
     await listener.register();
     return listener;
