@@ -306,7 +306,7 @@ export interface DesktopAgent {
    *
    * Optional metadata about the raised intent, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
    * 
-   * Adding multiple intent listeners on the same type MUST be rejected with the `ResolveError.IntentListenerConflict`, unless the previous listener was removed first though `listener.unsubscribe`
+   * Adding multiple intent listeners on the same type MUST be rejected with the `ResolveError.IntentListenerConflict`, unless the previous listener was removed first though `listener.unsubscribe()`
    *
    * ```javascript
    * //Handle a raised intent
@@ -362,7 +362,7 @@ export interface DesktopAgent {
    *
    * Optional metadata about the context message, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
    * 
-   * Adding multiple context listeners on the same or overlapping types (i.e. named type and null type) MUST be allowed, and MUST trigger all contextHandlers when a relevant context type is broadcast on the current user channel. Please note, that this behavior differes from `fdc3.addIntentListener`API call; refer to the relevant documentation for more detials. 
+   * Adding multiple context listeners on the same or overlapping types (i.e. named type and null type) MUST be allowed, and MUST trigger all contextHandlers when a relevant context type is broadcast on the current user channel. Please note, that this behavior differes from `fdc3.addIntentListener` API call; refer to the relevant documentation for more detials. 
    *
    * ```javascript
    * // any context
