@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Add a notes field to Trade type ([#1563](https://github.com/finos/FDC3/pull/1563))
 * Add a notes field to Order and Product types ([#1597](https://github.com/finos/FDC3/pull/1597))
 * Added Go language binding. ([#1483](https://github.com/finos/FDC3/pull/1483))
+* Added dynamic intent listener support to the reference Desktop Agent implementation ([#1613](https://github.com/finos/FDC3/pull/1613))
 
 ### Changed
 
@@ -49,6 +50,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Setup package publishing for mono-repo packages. ([#1520](https://github.com/finos/FDC3/pull/1520))
 * Implementation PR for FDC3 for the Web ([#896](https://github.com/finos/FDC3/pull/896))
 * Adjusted reference Desktop Agent implementation for FDC3 for Web to open a new app instance when raiseIntent is called with an appId but no instanceId ([#1556](https://github.com/finos/FDC3/pull/1556))
+* Added `addIntentListenerWithContext` to `DesktopAgent` and implemented in `DesktopAgentProxy`. Added handling of optional `contextTypes` to reference implementation
 
 ### Changed
 
