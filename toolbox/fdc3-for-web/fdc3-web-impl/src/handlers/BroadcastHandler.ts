@@ -143,20 +143,6 @@ export class BroadcastHandler implements MessageHandler {
     return this.state.find(c => c.id == id) ?? null;
   }
 
-  fireUserChannelChangedEvent(channelId: string | null, sc: ServerContext<AppRegistration>, instanceId: string) {
-    const event: ChannelChangedEvent = {
-      meta: {
-        eventUuid: sc.createUUID(),
-        timestamp: new Date(),
-      },
-      type: 'channelChangedEvent',
-      payload: {
-        newChannelId: channelId,
-      },
-    };
-
-    sc.post(event, instanceId);
-  }
   convertChannelTypeToString(type: ChannelType): string {
     switch (type) {
       case ChannelType.app:
@@ -166,10 +152,6 @@ export class BroadcastHandler implements MessageHandler {
       case ChannelType.private:
         return 'private';
     }
-  }
-
-  getListeners(appId: AppIdentifier) {
-    return this.contextListeners.filter(r => r.instanceId == appId.instanceId);
   }
 
   updateChannelState(channelId: string, context: Context) {
