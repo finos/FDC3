@@ -291,11 +291,18 @@ export class DefaultChannelSupport implements ChannelSupport {
         }
       }
 
+      onAMatchingChannel(m: BroadcastEvent): boolean {
+        return this.container.currentChannel != null && m.payload.channelId == this.container.currentChannel.id;
+      }
+
+      openBroadcastEvent(m: BroadcastEvent): boolean {
+        return m.payload.channelId == null;
+      }
+
       filter(m: BroadcastEvent): boolean {
         return (
           m.type == this.messageType &&
-          this.container.currentChannel != null &&
-          m.payload.channelId == this.container.currentChannel.id &&
+          (this.onAMatchingChannel(m) || this.openBroadcastEvent(m)) &&
           (m.payload.context?.type == this.contextType || this.contextType == null)
         );
       }
