@@ -1,6 +1,6 @@
 import { MessageHandler } from '../BasicFDC3Server';
 import { AppRegistration, InstanceID, ServerContext } from '../ServerContext';
-import { AppIdentifier, ChannelError, DisplayMetadata, PrivateChannelEventTypes } from '@finos/fdc3-standard';
+import { ChannelError, DisplayMetadata, PrivateChannelEventTypes } from '@finos/fdc3-standard';
 import { successResponse, errorResponse, FullAppIdentifier, onlyUnique } from './support';
 import {
   AddContextListenerRequest,
