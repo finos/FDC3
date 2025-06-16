@@ -6,6 +6,7 @@ Feature: Basic User Channels Support
     Given A Desktop Agent in "api"
     Given "instrumentMessageOne" is a BroadcastEvent message on channel "one" with context "fdc3.instrument"
     Given "countryMessageOne" is a BroadcastEvent message on channel "one" with context "fdc3.country"
+    Given "openMessage" is a BroadcastEvent message on channel "{null}" with context "fdc3.instrument"
     Given "instrumentContext" is a "fdc3.instrument" context
     Given "userChannelMessage1" is a channelChangedEvent message on channel "one"
     Given "userChannelMessage2" is a channelChangedEvent message on channel "two"
@@ -269,3 +270,14 @@ Feature: Basic User Channels Support
     Given "typesHandler" pipes events to "types"
     When I call "{api}" with "addEventListener" with parameters "unknownEventType" and "{typesHandler}"
     Then "{result}" is an error with message "UnknownEventType"
+
+  Scenario: BroadcastEvent on app Opening
+    Given "resultHandler" pipes context to "contexts"
+    And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    And messaging receives "{openMessage}"
+    Then "{contexts}" is an array of objects with the following contents
+      | id.ticker | type            | name  |
+      | AAPL      | fdc3.instrument | Apple |
+    And messaging will have posts
+      | payload.channelId | payload.contextType | matches_type              |
+      | {null}            | fdc3.instrument     | addContextListenerRequest |

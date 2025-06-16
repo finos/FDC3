@@ -188,6 +188,8 @@ export class BroadcastHandler implements MessageHandler {
       return;
     }
 
+    console.log(`BroadcastHandler: accept called with msg: ${JSON.stringify(msg)}`);
+
     try {
       switch (msg.type as string | null) {
         // app channels registration

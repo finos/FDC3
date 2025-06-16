@@ -87,6 +87,7 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     if (channel) {
       return channel.broadcast(context);
     } else {
+      console.warn('No user channel available to broadcast context');
       return Promise.resolve();
     }
   }
