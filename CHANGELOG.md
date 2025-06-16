@@ -8,14 +8,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 * Added Go language binding. ([#1483](https://github.com/finos/FDC3/pull/1483))
-
-- Ported FDC3 Conformance Project as-is into the FDC3 Monorepo, just including minimal fixes for typescript compilation. ([#1576](https://github.com/finos/FDC3/pull/1576)).    
-- Added Conformance tests for FDC3 2.2 ([#1586](https://github.com/finos/FDC3/pull/1586)), including fixes for: 
-  - Workaround for [1585](https://github.com/finos/FDC3/issues/1585) Erroneous Property / Structure for Channel Events 
-  - Fix for [1605](https://github.com/finos/FDC3/issues/1605) Adding A Channel Change Event Listener Doesn't Send addEventListenerRequest
-  - Fix for [1161](https://github.com/finos/FDC3/issues/1161) When adding a listener on the current channel, the payload.channelId should be null
+* Ported FDC3 Conformance Project into the FDC3 Monorepo ([#1576](https://github.com/finos/FDC3/pull/1576)).    
 
 ### Changed
+
+* Added Conformance tests for FDC3 2.2 ([#1586](https://github.com/finos/FDC3/pull/1586))
+* Fix for channel change listeners not sending addEventListenerRequests ([#1606](https://github.com/finos/FDC3/pull/1606))
+* When adding a listener on the current channel, the payload.channelId should be null ([#1611](https://github.com/finos/FDC3/pull/1611))
 
 ### Deprecated
 
