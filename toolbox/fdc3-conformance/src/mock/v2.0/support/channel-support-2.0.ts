@@ -13,12 +13,9 @@ export class ChannelService2_0 implements IChannelService {
 
   async joinRetrievedUserChannel(channelId: string): Promise<Channel> {
     const userChannels = await this.fdc3.getUserChannels();
-    console.log(Date.now() + ` User channels: ${userChannels.map(c => c.id).join(', ')}`);
     const joinedChannel = userChannels.find(c => c.id === channelId);
-    console.log(Date.now() + ` Joining channel: ${channelId}`);
     if (joinedChannel) {
       await this.fdc3.joinUserChannel(channelId);
-      console.log(Date.now() + ` Joined channel: ${channelId}`);
       return joinedChannel;
     } else {
       throw new Error(`Channel with ID ${channelId} not found in user channels.`);
