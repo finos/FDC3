@@ -428,17 +428,15 @@ export class BroadcastHandler implements MessageHandler {
   }
 
   handleBroadcastRequest(arg0: BroadcastRequest, sc: ServerContext<AppRegistration>, from: FullAppIdentifier) {
-    const _handler = this;
-
-    function matchesExactChannel(r: ContextListenerRegistration) {
+    const matchesExactChannel = (r: ContextListenerRegistration) => {
       return r.channelId == arg0.payload.channelId;
-    }
+    };
 
-    function matchesUserChannel(r: ContextListenerRegistration) {
-      const uc = _handler.currentChannel[r.instanceId];
+    const matchesUserChannel = (r: ContextListenerRegistration) => {
+      const uc = this.currentChannel[r.instanceId];
       const ucId = uc ? uc.id : null;
       return r.channelId == null && ucId == arg0.payload.channelId;
-    }
+    };
 
     const matchingListeners = this.contextListeners
       .filter(r => matchesExactChannel(r) || matchesUserChannel(r))
