@@ -101,7 +101,6 @@ export interface AddContextListenerRequest {
    * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
    */
   meta: AddContextListenerRequestMeta;
-  metadata?: AppProvidableContextMetadata;
   /**
    * The message payload typically contains the arguments to FDC3 API functions.
    */
@@ -175,15 +174,6 @@ export interface AppIdentifier {
    */
   instanceId?: string;
   [property: string]: any;
-}
-
-/**
- * Metadata that can be provided by an app.
- */
-export interface AppProvidableContextMetadata {
-  hostParams?: { [key: string]: any };
-  signature?: string;
-  traceId?: string;
 }
 
 /**
@@ -289,7 +279,6 @@ export interface AddEventListenerRequest {
    * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
    */
   meta: AddContextListenerRequestMeta;
-  metadata?: AppProvidableContextMetadata;
   /**
    * The message payload typically contains the arguments to FDC3 API functions.
    */
@@ -403,7 +392,6 @@ export interface AddIntentListenerRequest {
    * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
    */
   meta: AddContextListenerRequestMeta;
-  metadata?: AppProvidableContextMetadata;
   /**
    * The message payload typically contains the arguments to FDC3 API functions.
    */
@@ -764,7 +752,6 @@ export interface BroadcastRequest {
    * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
    */
   meta: AddContextListenerRequestMeta;
-  metadata?: AppProvidableContextMetadata;
   /**
    * The message payload typically contains the arguments to FDC3 API functions.
    */
@@ -2671,7 +2658,6 @@ export interface IntentResultRequest {
    * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
    */
   meta: AddContextListenerRequestMeta;
-  metadata?: AppProvidableContextMetadata;
   /**
    * The message payload typically contains the arguments to FDC3 API functions.
    */
@@ -2894,7 +2880,6 @@ export interface OpenRequest {
    * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
    */
   meta: AddContextListenerRequestMeta;
-  metadata?: AppProvidableContextMetadata;
   /**
    * The message payload typically contains the arguments to FDC3 API functions.
    */
@@ -3338,7 +3323,6 @@ export interface RaiseIntentForContextRequest {
    * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
    */
   meta: AddContextListenerRequestMeta;
-  metadata?: AppProvidableContextMetadata;
   /**
    * The message payload typically contains the arguments to FDC3 API functions.
    */
@@ -3478,7 +3462,6 @@ export interface RaiseIntentRequest {
    * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
    */
   meta: AddContextListenerRequestMeta;
-  metadata?: AppProvidableContextMetadata;
   /**
    * The message payload typically contains the arguments to FDC3 API functions.
    */
@@ -3498,6 +3481,15 @@ export interface RaiseIntentRequestPayload {
   context: Context;
   intent: string;
   metadata?: AppProvidableContextMetadata;
+}
+
+/**
+ * Metadata that can be provided by an app.
+ */
+export interface AppProvidableContextMetadata {
+  hostParams?: { [key: string]: any };
+  signature?: string;
+  traceId?: string;
 }
 
 /**
@@ -4815,7 +4807,6 @@ const typeMap: any = {
   AddContextListenerRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
-      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: r('AddContextListenerRequestPayload') },
       { json: 'type', js: 'type', typ: r('AddContextListenerRequestType') },
     ],
@@ -4836,14 +4827,6 @@ const typeMap: any = {
       { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
     ],
     'any'
-  ),
-  AppProvidableContextMetadata: o(
-    [
-      { json: 'hostParams', js: 'hostParams', typ: u(undefined, m('any')) },
-      { json: 'signature', js: 'signature', typ: u(undefined, '') },
-      { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
-    ],
-    false
   ),
   AddContextListenerRequestPayload: o(
     [
@@ -4879,7 +4862,6 @@ const typeMap: any = {
   AddEventListenerRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
-      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: r('AddEventListenerRequestPayload') },
       { json: 'type', js: 'type', typ: r('AddEventListenerRequestType') },
     ],
@@ -4904,7 +4886,6 @@ const typeMap: any = {
   AddIntentListenerRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
-      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: r('AddIntentListenerRequestPayload') },
       { json: 'type', js: 'type', typ: r('AddIntentListenerRequestType') },
     ],
@@ -4975,7 +4956,6 @@ const typeMap: any = {
   AppRequestMessage: o(
     [
       { json: 'meta', js: 'meta', typ: r('AppRequestMessageMeta') },
-      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: m('any') },
       { json: 'type', js: 'type', typ: r('RequestMessageType') },
     ],
@@ -5031,7 +5011,6 @@ const typeMap: any = {
   BroadcastRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
-      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: r('BroadcastRequestPayload') },
       { json: 'type', js: 'type', typ: r('BroadcastRequestType') },
     ],
@@ -5629,7 +5608,6 @@ const typeMap: any = {
   IntentResultRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
-      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: r('IntentResultRequestPayload') },
       { json: 'type', js: 'type', typ: r('IntentResultRequestType') },
     ],
@@ -5697,7 +5675,6 @@ const typeMap: any = {
   OpenRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
-      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: r('OpenRequestPayload') },
       { json: 'type', js: 'type', typ: r('OpenRequestType') },
     ],
@@ -5838,7 +5815,6 @@ const typeMap: any = {
   RaiseIntentForContextRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
-      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentForContextRequestPayload') },
       { json: 'type', js: 'type', typ: r('RaiseIntentForContextRequestType') },
     ],
@@ -5877,7 +5853,6 @@ const typeMap: any = {
   RaiseIntentRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
-      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentRequestPayload') },
       { json: 'type', js: 'type', typ: r('RaiseIntentRequestType') },
     ],
@@ -5889,6 +5864,14 @@ const typeMap: any = {
       { json: 'context', js: 'context', typ: r('Context') },
       { json: 'intent', js: 'intent', typ: '' },
       { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
+    ],
+    false
+  ),
+  AppProvidableContextMetadata: o(
+    [
+      { json: 'hostParams', js: 'hostParams', typ: u(undefined, m('any')) },
+      { json: 'signature', js: 'signature', typ: u(undefined, '') },
+      { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
     ],
     false
   ),
