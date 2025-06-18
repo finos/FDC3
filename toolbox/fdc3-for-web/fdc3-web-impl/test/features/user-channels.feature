@@ -35,7 +35,7 @@ Feature: Relaying Private Channel Broadcast messages
 
   Scenario: Adding a Typed Listener on a given User Channel
     When "App/a1" joins user channel "one"
-    And "App/a1" adds a context listener on "one" with type "fdc3.instrument"
+    And "App/a1" adds a user-channel context listener with type "fdc3.instrument"
     And "App2/a2" broadcasts "fdc3.instrument" on "one"
     Then messaging will have outgoing posts
       | msg.payload.channelId | msg.payload.context.type | msg.matches_type  | to.instanceId |
@@ -44,7 +44,7 @@ Feature: Relaying Private Channel Broadcast messages
 
   Scenario: Adding an Un-Typed Listener on a given User Channel
     When "App/a1" joins user channel "one"
-    And "App/a1" adds a context listener on "one" with type "{null}"
+    And "App/a1" adds a user-channel context listener with type "{null}"
     And "App2/a2" broadcasts "fdc3.instrument" on "one"
     Then messaging will have outgoing posts
       | msg.payload.channelId | msg.payload.context.type | msg.matches_type  | to.instanceId |
@@ -53,7 +53,7 @@ Feature: Relaying Private Channel Broadcast messages
 
   Scenario: If you haven't joined a channel, your listener receives nothing
     When "App/a1" joins user channel "one"
-    And "App/a1" adds a context listener on "one" with type "{null}"
+    And "App/a1" adds a user-channel context listener with type "{null}"
     And "App2/a2" broadcasts "fdc3.instrument" on "two"
     Then messaging will have outgoing posts
       | msg.matches_type           | to.instanceId |
@@ -64,7 +64,7 @@ Feature: Relaying Private Channel Broadcast messages
 
   Scenario: After unsubscribing, my listener shouldn't receive any more messages
     When "App/a1" joins user channel "one"
-    And "App/a1" adds a context listener on "one" with type "{null}"
+    And "App/a1" adds a user-channel context listener with type "{null}"
     And "App/a1" removes context listener with id "uuid5"
     And "App2/a2" broadcasts "fdc3.instrument" on "one"
     Then messaging will have outgoing posts
@@ -78,7 +78,7 @@ Feature: Relaying Private Channel Broadcast messages
 
   Scenario: I should be able to leave a user channel, and not receive messages on it
     When "App/a1" joins user channel "one"
-    And "App/a1" adds a context listener on "one" with type "{null}"
+    And "App/a1" adds a user-channel context listener with type "{null}"
     And "App/a1" leaves the current user channel
     And "App2/a2" broadcasts "fdc3.instrument" on "one"
     Then messaging will have outgoing posts
@@ -120,7 +120,7 @@ Feature: Relaying Private Channel Broadcast messages
 
   Scenario: Changing channel changes the listener channels too
     When "App/a1" joins user channel "one"
-    And "App/a1" adds a context listener on "one" with type "{null}"
+    And "App/a1" adds a user-channel context listener with type "{null}"
     And "App/a1" joins user channel "two"
     And "App2/a2" broadcasts "fdc3.instrument" on "two"
     And "App2/a2" broadcasts "fdc3.country" on "one"
