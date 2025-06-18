@@ -435,8 +435,6 @@ export class BroadcastHandler implements MessageHandler {
       })
       .filter(onlyUniqueAppIds);
 
-    console.warn('MATCHING APPS', matchingApps);
-
     matchingApps.forEach(app => {
       sc.post(
         {
