@@ -4176,6 +4176,15 @@ export interface RaiseIntentRequestPayload {
 }
 
 /**
+ * Metadata that can be provided by an app.
+ */
+export interface AppProvidableContextMetadata {
+  hostParams?: { [key: string]: any };
+  signature?: string;
+  traceId?: string;
+}
+
+/**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  */
@@ -6794,6 +6803,14 @@ const typeMap: any = {
       { json: 'context', js: 'context', typ: r('Context') },
       { json: 'intent', js: 'intent', typ: '' },
       { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
+    ],
+    false
+  ),
+  AppProvidableContextMetadata: o(
+    [
+      { json: 'hostParams', js: 'hostParams', typ: u(undefined, m('any')) },
+      { json: 'signature', js: 'signature', typ: u(undefined, '') },
+      { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
     ],
     false
   ),
