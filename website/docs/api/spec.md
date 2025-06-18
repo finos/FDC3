@@ -867,7 +867,7 @@ Registered listeners SHOULD receive the following properties:
 
 ### Trace information
 
-The Desktop Agent SHOULD provide a `traceId` to intent handlers. If the originating app provides `traceId` infomration, the Desktop Agent SHOULD use provide the `traceId` from the app. If the originating app does not provide `traceId` information, the Desktop Agent SHOULD generate a uuid., 
+The Desktop Agent SHOULD provide a `traceId` to intent handlers. If the originating app provides `traceId` information, the Desktop Agent SHOULD use provide the `traceId` from the app. If the originating app does not provide `traceId` information, the Desktop Agent SHOULD generate a uuid., 
 
 If an app receives a context (from a broadcast or raised intent), and then performs an action *as a result of*, the app MAY forward the `traceId`. The Desktop Agent MAY collect the use of trace information and timestamp information for observability features.
 
