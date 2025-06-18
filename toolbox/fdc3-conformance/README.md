@@ -32,7 +32,7 @@ There are multiple versions of the FDC3 standard.  A Desktop Agent could host ap
 
 There are two main parts to conformance:
   
-  - Running the tests _locally_, then
+  - Running the tests _locally_
   - Joining the Conformance Program
 
 ### Running The Conformance Tests
