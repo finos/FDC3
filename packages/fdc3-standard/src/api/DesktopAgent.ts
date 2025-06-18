@@ -16,7 +16,7 @@ import { AppMetadata } from './AppMetadata.js';
 import { Intent } from '../intents/Intents.js';
 import { ContextType } from '../context/ContextType.js';
 import { EventHandler, FDC3EventTypes } from './Events.js';
-import { AppProvidableContextMetadata } from './ContextMetadata.js';
+import type { AppProvidableContextMetadata } from './ContextMetadata.js';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
