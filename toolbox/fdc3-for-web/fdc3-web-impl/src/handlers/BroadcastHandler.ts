@@ -1,7 +1,7 @@
 import { MessageHandler } from '../BasicFDC3Server';
 import { AppRegistration, InstanceID, ServerContext } from '../ServerContext';
-import { ChannelError, DisplayMetadata, PrivateChannelEventTypes } from '@finos/fdc3-standard';
-import { successResponse, errorResponse, FullAppIdentifier, onlyUnique } from './support';
+import { AppIdentifier, ChannelError, DisplayMetadata, PrivateChannelEventTypes } from '@finos/fdc3-standard';
+import { successResponse, errorResponse, FullAppIdentifier } from './support';
 import {
   AddContextListenerRequest,
   AddEventListenerRequest,
@@ -67,6 +67,11 @@ export type ChannelState = {
   context: Context[];
   displayMetadata: DisplayMetadata;
 };
+
+function onlyUniqueAppIds(value: AppIdentifier, index: number, self: AppIdentifier[]) {
+  const fi = self.findIndex(v => v.instanceId === value.instanceId);
+  return fi === index;
+}
 
 export class BroadcastHandler implements MessageHandler {
   private contextListeners: ContextListenerRegistration[] = [];
@@ -428,7 +433,9 @@ export class BroadcastHandler implements MessageHandler {
       .map(r => {
         return { appId: r.appId, instanceId: r.instanceId };
       })
-      .filter(onlyUnique);
+      .filter(onlyUniqueAppIds);
+
+    console.warn('MATCHING APPS', matchingApps);
 
     matchingApps.forEach(app => {
       sc.post(
@@ -612,6 +619,7 @@ export class BroadcastHandler implements MessageHandler {
           listener =>
             listener.channelId == privateChannelId && (listener.eventType == eventType || listener.eventType == null)
         )
+        .filter(onlyUniqueAppIds)
         .forEach(e => {
           console.log(`invokePrivateChannelEventListeners: posting to instance ${e.instanceId}`);
           sc.post(msg, e.instanceId);
