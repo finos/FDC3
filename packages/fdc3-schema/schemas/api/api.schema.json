@@ -328,9 +328,6 @@
                 },
                 "traceId": {
                     "type": "string"
-                },
-                "hostParams": {
-                    "type": "object"
                 }
             },
             "additionalProperties": false
