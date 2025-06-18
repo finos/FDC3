@@ -7,7 +7,7 @@ import { Context } from '@finos/fdc3-context';
 import { ContextHandler } from './Types';
 import { DisplayMetadata } from './DisplayMetadata';
 import { Listener } from './Listener';
-import { AppProvidableContextMetadata } from './ContextMetadata';
+import type { AppProvidableContextMetadata } from './ContextMetadata';
 
 /**
  * Represents a context channel that applications can use to send and receive
