@@ -13,6 +13,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 * Added details of and procedures for resolving fully-qualified appIds and unqualified appIds in the API and Bridging Parts of the Standard. ([#1523](https://github.com/finos/FDC3/pull/1523))
 
+* Added clarification regarding expected behavior upon repeated calls to `addContextListener` on same or overlapping types (allowed) and `addIntentListener` on same intent (rejected; new error type added). ([#1394](https://github.com/finos/FDC3/pull/1394))
+
 ### Changed
 
 ### Deprecated
@@ -50,6 +52,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added .NET docs for Events to API reference. ([#1441](https://github.com/finos/FDC3/pull/1441))
 * Setup package publishing for mono-repo packages. ([#1520](https://github.com/finos/FDC3/pull/1520))
 * Implementation PR for FDC3 for the Web ([#896](https://github.com/finos/FDC3/pull/896))
+  - resolves ([#1209](https://github.com/finos/FDC3/issues/1209))
+  - resolves ([#1297](https://github.com/finos/FDC3/issues/1297)) 
+  - resolves ([#1429](https://github.com/finos/FDC3/issues/1429)) 
+  - resolves ([#1430](https://github.com/finos/FDC3/issues/1430))
+  - resolves ([#1431](https://github.com/finos/FDC3/issues/1431))
+  - resolves ([#1432](https://github.com/finos/FDC3/issues/1432)) 
+  - resolves ([#1433](https://github.com/finos/FDC3/issues/1433))
+  - resolves ([#1468](https://github.com/finos/FDC3/issues/1468))
+  - resolves ([#810](https://github.com/finos/FDC3/issues/810))
+  - resolves ([#832](https://github.com/finos/FDC3/issues/832))
+  - resolves ([#1487](https://github.com/finos/FDC3/issues/1487))
+  - resolves ([#1488](https://github.com/finos/FDC3/issues/1488))
 * Adjusted reference Desktop Agent implementation for FDC3 for Web to open a new app instance when raiseIntent is called with an appId but no instanceId ([#1556](https://github.com/finos/FDC3/pull/1556))
 
 ### Changed
