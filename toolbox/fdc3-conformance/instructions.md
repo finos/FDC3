@@ -21,7 +21,7 @@ Maintainers of the FDC3 Conformance Framework will aim to replicate your test re
 
 ## 4.  Fees
 
-Currently, in order to grow the standard adoption, certification is provided free of charge until 1st October 2023.  From then, fees for certification will be:
+Fees for certification are:
 
 |FINOS Membership Level        |Fee per Unit*     |
 |------------------------------|------------------|
