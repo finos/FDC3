@@ -1,0 +1,56 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/clearContextRequest.schema.json",
+	"type": "object",
+	"title": "Clear Context Request",
+	"description": "A request to clear context on a channel.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/ClearContextRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/ClearContextRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"ClearContextRequestType": {
+			"title": "Clear Context Request Message Type",
+			"const": "clearContextRequest"
+		},
+		"ClearContextRequestPayload": {
+			"title": "Clear Context Request Payload",
+			"type": "object",
+			"properties": {
+				"channelId": {
+					"title": "Channel Id",
+					"description": "The id of the channel to clear the context on.",
+					"type": "string"
+				},
+				"contextType": {
+					"title": "Context type",
+					"description": "The type of context to clear for OR `null` indicating that all context types on the channel should be cleared.",
+					"oneOf": [
+						{
+							"type": "string"
+						},
+						{
+							"type": "null"
+						}
+					]
+				}
+			},
+			"required": ["channelId", "contextType"],
+			"additionalProperties": false
+		}
+	}
+}

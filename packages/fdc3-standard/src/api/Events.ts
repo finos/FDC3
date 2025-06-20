@@ -52,7 +52,7 @@ export interface FDC3ChannelChangedEvent extends FDC3Event {
 export interface FDC3ContextClearedEvent extends FDC3Event {
   readonly type: 'contextCleared';
   readonly details: {
-    type: string | null;
+    contextType: string | null;
   };
 }
 

@@ -10,10 +10,6 @@
       "properties": {
         "type": {
           "const": "fdc3.nothing"
-        },
-        "contextType": {
-          "type": "Context Type",
-          "description": "A referenced context type name. Used to indicate that a specific context type was cleared, if omitted, all contexts were cleared"
         }
       }
     },
@@ -21,8 +17,7 @@
   ],
   "examples": [
     {
-      "type": "fdc3.nothing",
-      "contextType": "fdc3.timeRange"
+      "type": "fdc3.nothing"
     }
   ]
 }
