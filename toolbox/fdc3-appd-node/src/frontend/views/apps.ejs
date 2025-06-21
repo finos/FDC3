@@ -1,0 +1,373 @@
+<body>
+  <div class="main-content">
+    <div class="container-fluid mt--7">
+      <div class="row mt-5">
+        <div class="col-xl-12 mb-5 mb-xl-0 mt-7">
+          <div class="card shadow">
+            <div class="card-header border-0">
+              <div class="row align-items-center">
+                <div class="col">
+                  <div class="d-flex align-items-center">
+                    <h3 class="mb-0 mr-3">User Management</h3>
+                    <button onclick="toggleView()" class="btn btn-sm btn-primary">
+                      <i class="fas fa-exchange-alt mr-1"></i>Switch to Apps
+                    </button>
+                  </div>
+                </div>
+                <div class="col text-right">
+                  <span class="mr-3" id="userInfo">Welcome, <strong id="loggedInUser">Loading...</strong></span>
+                  <button onclick="logout()" class="btn btn-sm btn-danger mr-2">
+                    <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <div id="alertContainer"></div>
+              <div class="table-responsive">
+                <table class="table align-items-center table-flush">
+                  <thead class="thead-light">
+                    <tr>
+                      <th scope="col">User ID</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Role</th>
+                      <th scope="col">Age</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="userTableBody">
+                    <!-- Users will be dynamically inserted here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add this script section at the bottom of your body tag -->
+  <script>
+    // Add this function near the top of your script section
+    function checkAuthorization() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login';
+            return false;
+        }
+        return true;
+    }
+
+    // Move fetchUsers to global scope
+    async function fetchUsers() {
+      try {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          console.error('No token found');
+          window.location.href = '/login';
+          return;
+        }
+
+        const response = await fetch('/v1/users', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (response.status === 401) {
+          localStorage.removeItem('token');
+          sessionStorage.removeItem('token');
+          document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+          window.location.href = '/login';
+          return;
+        }
+
+        const data = await response.json();
+        if (response.ok) {
+          renderUsers(data.users);
+        } else {
+          console.error('Failed to fetch users:', data.error);
+        }
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    }
+
+    // Replace the existing renderUsers function with this updated version
+    async function fetchUserData() {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return null;
+
+            // First get the user data from the token
+            const tokenData = JSON.parse(atob(token.split('.')[1]));
+            const userId = tokenData.id; // JWT token contains user ID
+
+            // Then fetch the full user data using the ID
+            const response = await fetch(`/v1/users/id/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                if (response.status === 401) {
+                    localStorage.removeItem('token');
+                    window.location.href = '/login';
+                }
+                return null;
+            }
+
+            const userData = await response.json();
+            document.getElementById('loggedInUser').textContent = userData.name;
+            return userData;
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            return null;
+        }
+    }
+
+    // Update the renderUsers function to remove the user name fetching logic
+    function renderUsers(users) {
+        const tbody = document.getElementById('userTableBody');
+        if (!tbody) return;
+
+        tbody.innerHTML = users.map(user => {
+            // Determine button properties based on status
+            let buttonProps = {
+                text: 'No Action',
+                class: 'btn-secondary',
+                action: '',
+                show: false,
+                showId: false
+            };
+
+            switch (user.status) {
+                case 'inactive':
+                    buttonProps = {
+                        text: 'Approve',
+                        class: 'btn-success',
+                        action: `approveUser('${user._id}')`,
+                        show: true,
+                        showId: false
+                    };
+                    break;
+                case 'active':
+                    buttonProps = {
+                        text: 'Reject',
+                        class: 'btn-danger',
+                        action: `rejectUser('${user._id}')`,
+                        show: true,
+                        showId: true
+                    };
+                    break;
+            }
+
+            return `
+                    <tr>
+                        
+                        <td>${user.email}</td>
+                        <td>${user.name}</td>
+                        <td>${user.role}</td>
+                        <td>${user.age}</td>
+                        <td>
+                            <span class="badge badge-${user.status === 'active' ? 'success' :
+                user.status === 'pending' ? 'warning' :
+                  'danger'
+              }">
+                                ${user.status}
+                            </span>
+                        </td>
+                        <td>
+                            ${buttonProps.show ?
+                `<div class="d-flex align-items-center">
+                                <button class="btn btn-sm ${buttonProps.class}" 
+                                        onclick="${buttonProps.action}">
+                                    ${buttonProps.text}
+                                </button>
+                                ${buttonProps.showId ? 
+                                    `<div class="d-flex align-items-center ml-2">
+                                        <small class="text-muted">${user._id}</small>
+                                        <button class="btn btn-sm btn-link ml-1" 
+                                                onclick="copyToClipboard('${user._id}')"
+                                                title="Copy ID">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>` 
+                                    : ''
+                                }
+                            </div>`
+                : ''
+              }
+                        </td>
+                    </tr>
+                `;
+        }).join('');
+    }
+
+    // Keep existing global functions
+    async function approveUser(userId) {
+      try {
+        const token = localStorage.getItem('token');
+        const user = await getUserById(userId);
+
+        const response = await fetch('/v1/users-approve', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            email: user.email,
+            approval: 'accepted'
+          })
+        });
+
+        if (response.ok) {
+          showSuccess('User approved successfully');
+          fetchUsers(); // This will refresh the list and show the ID for the now-active user
+        } else {
+          const data = await response.json();
+          showError(data.error || 'Failed to approve user');
+        }
+      } catch (error) {
+        console.error('Error approving user:', error);
+        showError('Failed to approve user');
+      }
+    }
+
+    async function rejectUser(userId) {
+      try {
+        const token = localStorage.getItem('token');
+        const user = await getUserById(userId);
+
+        const response = await fetch('/v1/users-approve', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            email: user.email,
+            approval: 'rejected'
+          })
+        });
+
+        if (response.ok) {
+          showSuccess('User rejected successfully');
+          fetchUsers(); // Refresh the user list
+        } else {
+          const data = await response.json();
+          showError(data.error || 'Failed to reject user');
+        }
+      } catch (error) {
+        console.error('Error rejecting user:', error);
+        showError('Failed to reject user');
+      }
+    }
+
+    async function getUserById(userId) {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`/v1/users/id/${userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch user details');
+      }
+
+      return await response.json();
+    }
+
+    function showError(message) {
+      const alertContainer = document.getElementById('alertContainer');
+      if (alertContainer) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'alert alert-danger';
+        errorDiv.role = 'alert';
+        errorDiv.textContent = message;
+
+        alertContainer.innerHTML = ''; // Clear previous alerts
+        alertContainer.appendChild(errorDiv);
+
+        setTimeout(() => errorDiv.remove(), 5000);
+      }
+    }
+
+    function showSuccess(message) {
+      const alertContainer = document.getElementById('alertContainer');
+      if (alertContainer) {
+        const successDiv = document.createElement('div');
+        successDiv.className = 'alert alert-success';
+        successDiv.role = 'alert';
+        successDiv.textContent = message;
+
+        alertContainer.innerHTML = ''; // Clear previous alerts
+        alertContainer.appendChild(successDiv);
+
+        setTimeout(() => successDiv.remove(), 5000);
+      }
+    }
+
+    // Add these functions to your existing script
+    function logout() {
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+
+    function getLoggedInUser() {
+      const token = localStorage.getItem('token');
+      if (!token) return null;
+
+      // Decode JWT token
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload;
+    }
+
+    // Update the DOMContentLoaded event listener
+    document.addEventListener('DOMContentLoaded', async function () {
+        if (!checkAuthorization()) return;
+        
+        const userData = await fetchUserData();
+        if (userData) {
+            // Start fetching users list
+            fetchUsers();
+        } else {
+            window.location.href = '/login';
+        }
+    });
+
+    // Add this function to handle copying to clipboard
+    async function copyToClipboard(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        showSuccess('ID copied to clipboard!');
+      } catch (err) {
+        showError('Failed to copy ID');
+        console.error('Failed to copy:', err);
+      }
+    }
+
+    // Update the toggleView function to use the authorization check
+    function toggleView() {
+        if (!checkAuthorization()) return;
+        const currentPath = window.location.pathname;
+        
+        if (currentPath === '/apps') {
+            window.location.href = '/search';
+        } else {
+            window.location.href = '/apps';
+        }
+    }
+  </script>
+</body>

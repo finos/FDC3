@@ -1,0 +1,65 @@
+.text-wrap {
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+.gap-1 {
+    gap: 0.25rem;
+}
+
+.intent-item {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+.intent-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.badge-info {
+    background-color: #11cdef;
+    color: white;
+}
+
+.badge-light {
+    background-color: #f6f9fc;
+    color: #525f7f;
+    border: 1px solid #e9ecef;
+}
+
+.intent-count {
+    border-bottom: 2px solid #eee;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.badge-primary {
+    background-color: #5e72e4;
+    color: white;
+}
+
+.btn-icon {
+    padding: 0.25rem 0.5rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-icon:hover {
+    transform: scale(1.1);
+}
+
+.btn-icon:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.text-primary {
+    color: #5e72e4;
+}
+
+.text-info {
+    color: #11cdef;
+} 

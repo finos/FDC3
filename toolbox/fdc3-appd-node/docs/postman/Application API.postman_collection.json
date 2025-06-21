@@ -1,0 +1,239 @@
+{
+	"info": {
+		"_postman_id": "153b4aa7-6dd7-49dd-bffe-7ca2872a96bd",
+		"name": "Application API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37890029"
+	},
+	"item": [
+		{
+			"name": "Create Application",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"appId\": \"fdc3-workbench\",\n  \"title\": \"FDC3 Workbench\",\n  \"description\": \"A development tool for testing FDC3 applications\",\n  \"version\": \"1.0.0\",\n  \"categories\": [\"DEVELOPMENT\", \"TOOLS\"],\n  \"icons\": [\n    {\n      \"src\": \"https://example.com/icon.png\",\n      \"size\": \"32x32\"\n    }\n  ],\n  \"screenshots\": [\n    {\n      \"src\": \"https://example.com/screenshot1.png\",\n      \"label\": \"Main Dashboard\"\n    }\n  ],\n  \"contactEmail\": \"contact@example.com\",\n  \"supportEmail\": \"support@example.com\",\n  \"moreInfo\": \"https://example.com/docs\",\n  \"publisher\": \"Example Corp\",\n  \"details\": {\n    \"url\": \"https://example.com/app\"\n  },\n  \"intents\": [\n    {\n      \"name\": \"ViewChart\",\n      \"displayName\": \"View Chart\",\n      \"contexts\": [\"fdc3.instrument\"]\n    }\n  ],\n  \"status\": \"inactive\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v2/apps",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v2",
+						"apps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Applications",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/v2/apps",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v2",
+						"apps"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Application by ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/v2/apps/{{appId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v2",
+						"apps",
+						"{{appId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Application",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Updated FDC3 Workbench\",\n  \"description\": \"Updated development tool for FDC3\",\n  \"version\": \"1.0.1\",\n  \"categories\": [\"DEVELOPMENT\", \"TOOLS\", \"TESTING\"]\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v2/apps/{{appId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v2",
+						"apps",
+						"{{appId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Application",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/v2/apps/{{appId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v2",
+						"apps",
+						"{{appId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Applications",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"appId\": \"workbench\",\n  \"title\": \"FDC3\",\n  \"description\": \"development\",\n  \"categories\": [\"DEVELOPMENT\", \"TOOLS\"],\n  \"version\": \"1.0\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/v2/apps/search",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"v2",
+						"apps",
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Approve Application",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"appId\": \"{{appId}}\",\n  \"approval\": \"accepted\"\n}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/applications/approve",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"applications",
+						"approve"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/api"
+		},
+		{
+			"key": "token",
+			"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MzY2ZmM1OGE1NjM3NWQwNGYyYWExNSIsImlhdCI6MTczMTY3NDM1OSwiYXVkIjoieW91ci1hcHAtdXNlcnMiLCJleHAiOjE3MzE2NzUyNTksImlzcyI6InlvdXItYXBwIn0.XFkpXB3hx-XQX1KcK9ewC7vBvv9Om11mZRNUqraw0pEMTOcHOLonxfrYWzgoeGC1KPQM1llYGugFNJjNFi-kDSdb6ZRnOb7LuWnuNyeXqdWgV82ga3keFxx6aHXaQx87k7W6Nif_nCIBCqLdOrdnVGyq58lcVPAji_jC4zEiS-USup6yr4UBBFF2o4NkaY_H39mj-b4r2V3W8fvHzBNaP_0F-JDfT0mxtReKMtjRYygsvgcdoCgAjL3rK9J2nugwo0S7iRYaYYSI_pf8azmemRSnm2arGRf5jDJBhvSrK7IzVEWbscI1J52PiIKsjZgKZVqBxnJisoYFmJzKyYntjw"
+		}
+	]
+}

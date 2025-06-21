@@ -1,0 +1,218 @@
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="text-center mb-4">
+                <button class="btn btn-link" onclick="toggleForms('subscribe')">Subscribe</button>
+                |
+                <button class="btn btn-link" onclick="toggleForms('login')">Login</button>
+            </div>
+
+            <!-- Subscription Form -->
+            <div class="card mb-4" id="subscribeCard">
+                <div class="card-header">Subscription</div>
+                <div class="card-body">
+                    <form id="subscribeForm">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control" id="subName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" id="subEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control" id="subPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Login Form -->
+            <div class="card" id="loginCard" style="display: none;">
+                <div class="card-header">Login</div>
+                <div class="card-body">
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" class="form-control" id="loginEmail" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Toggle function to switch between forms
+function toggleForms(formType) {
+    const subscribeCard = document.getElementById('subscribeCard');
+    const loginCard = document.getElementById('loginCard');
+    
+    if (formType === 'subscribe') {
+        subscribeCard.style.display = 'block';
+        loginCard.style.display = 'none';
+    } else {
+        subscribeCard.style.display = 'none';
+        loginCard.style.display = 'block';
+    }
+}
+
+// Subscribe (Sign Up) Form Handler
+document.getElementById('subscribeForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    try {
+        const submitBtn = document.querySelector('#subscribeForm button');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Subscribing...';
+        
+        const response = await fetch('/v1/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: document.getElementById('subName').value,
+                email: document.getElementById('subEmail').value,
+                password: document.getElementById('subPassword').value,
+                role: 'admin'
+            })
+        });
+
+        const data = await response.json();
+        console.log('Subscribe response:', data);
+        
+        if (response.ok && data.token) {
+            
+            alert('Successfully subscribed! Please reach out to Admin to activate your account.');
+
+            // Verify token storage
+            const storedToken = localStorage.getItem('token');
+            console.log('Token stored in localStorage:', storedToken);
+            
+            // Store email temporarily
+            const userEmail = document.getElementById('subEmail').value;
+            
+            // Clear the subscription form
+            document.getElementById('subscribeForm').reset();
+            
+            // Switch to login form and pre-fill email
+            toggleForms('login');
+            document.getElementById('loginEmail').value = userEmail;
+        } else if (response.status === 409) {
+            alert('User already exists. Please login instead.');
+            toggleForms('login');
+        } else {
+            alert(data.error || 'Subscription failed');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to subscribe. Please try again.');
+    } finally {
+        const submitBtn = document.querySelector('#subscribeForm button');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe';
+    }
+});
+
+// Login Form Handler
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    try {
+        const submitBtn = document.querySelector('#loginForm button');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Logging in...';
+        
+        const response = await fetch('/v1/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: document.getElementById('loginEmail').value,
+                password: document.getElementById('loginPassword').value
+            })
+        });
+
+        const data = await response.json();
+        console.log('Login response:', data);
+        
+        if (response.ok && data.token) {
+            // Store token in multiple places for persistence
+            localStorage.setItem('token', data.token);
+            // sessionStorage.setItem('token', data.token);
+            // document.cookie = `token=${data.token}; path=/; max-age=86400`; // 24 hours
+
+            // Verify token storage
+            const storedToken = localStorage.getItem('token');
+            console.log('Token stored in localStorage:', storedToken);
+            
+            if (storedToken) {
+                await new Promise(resolve => setTimeout(resolve, 500));
+                window.location.href = '/search';
+            } else {
+                throw new Error('Failed to store token');
+            }
+        } else {
+            alert(data.error || 'Login failed');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to login. Please try again.');
+    } finally {
+        const submitBtn = document.querySelector('#loginForm button');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Login';
+    }
+});
+
+// Check if token exists on page load
+document.addEventListener('DOMContentLoaded', () => {
+    // Try to get token from multiple sources
+    const localToken = localStorage.getItem('token');
+    const sessionToken = sessionStorage.getItem('token');
+    const cookieToken = document.cookie.split(';').find(c => c.trim().startsWith('token='));
+    
+    console.log('Existing tokens:', {
+        localStorage: localToken,
+        sessionStorage: sessionToken,
+        cookie: cookieToken
+    });
+
+    // Use the first available token
+    const token = localToken || sessionToken || (cookieToken && cookieToken.split('=')[1]);
+    
+    if (token) {
+        // Restore token to all storage methods
+        localStorage.setItem('token', token);
+        sessionStorage.setItem('token', token);
+        document.cookie = `token=${token}; path=/; max-age=86400`;
+    }
+    
+    toggleForms('subscribe');
+});
+</script>
+
+<style>
+.btn-link {
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.btn-link:hover {
+    text-decoration: underline;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+</style> 
