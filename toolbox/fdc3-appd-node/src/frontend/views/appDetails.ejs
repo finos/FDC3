@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Details</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/css/appDetails.css">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="card shadow">
+            <div class="card-header">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="mb-0">Application Details</h3>
+                    </div>
+                    <div class="col text-right">
+                        <button onclick="goBack()" class="btn btn-sm btn-secondary">Back to Search</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body" id="appDetailsContainer">
+                <!-- Content will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isEditMode = false;
+        let currentAppData = null;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!checkAuthorization()) return;
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const appId = urlParams.get('appId');
+            const mode = urlParams.get('mode');
+            
+            if (mode === 'new') {
+                currentAppData = {
+                    appId: '',
+                    title: '',
+                    description: '',
+                    version: '1.0.0',
+                    publisher: '',
+                    contactEmail: '',
+                    supportEmail: '',
+                    moreInfo: '',
+                    categories: [],
+                    intents: [],
+                    icons: [
+                        { src: '', size: '32x32' },
+                        { src: '', size: '64x64' }
+                    ],
+                    screenshots: [
+                        { src: '', label: '' }
+                    ]
+                };
+                isEditMode = true;
+                renderAppDetails(currentAppData);
+            } else if (appId) {
+                loadAppDetails(appId).then(() => {
+                    if (mode === 'edit') {
+                        enableEditMode();
+                    }
+                });
+            } else {
+                showError('No application ID provided');
+            }
+        });
+
+        async function loadAppDetails(appId) {
+            try {
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    window.location.href = '/login';
+                    return;
+                }
+
+                // Show loading state
+                const container = document.getElementById('appDetailsContainer');
+                container.innerHTML = `
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        <p class="mt-2">Loading application details...</p>
+                    </div>
+                `;
+
+                const response = await fetch(`/api/v2/apps/${appId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    if (!data) {
+                        showError('Application not found');
+                        return;
+                    }
+                    currentAppData = data;
+                    renderAppDetails(data);
+                } else {
+                    // Handle different error status codes
+                    switch (response.status) {
+                        case 401:
+                            localStorage.removeItem('token');
+                            window.location.href = '/login';
+                            break;
+                        case 403:
+                            showError('You do not have permission to view this application');
+                            break;
+                        case 404:
+                            showError('Application not found');
+                            break;
+                        default:
+                            const errorData = await response.json();
+                            showError(errorData.error || 'Failed to load application details');
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError('An error occurred while loading application details');
+            }
+        }
+
+        function renderAppDetails(app) {
+            const container = document.getElementById('appDetailsContainer');
+            const readOnlyAttr = isEditMode ? '' : 'readonly';
+            const isNewApp = !app.appId;
+            
+            container.innerHTML = `
+                <form id="appDetailsForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label">App ID</label>
+                                <input type="text" name="appId" class="form-control" 
+                                       value="${app.appId || ''}" 
+                                       ${isNewApp ? '' : 'readonly'} 
+                                       required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-control-label">Title</label>
+                                <input type="text" name="title" class="form-control" value="${app.title || ''}" ${readOnlyAttr}>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-control-label">Version</label>
+                                <input type="text" name="version" class="form-control" value="${app.version || ''}" ${readOnlyAttr}>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-control-label">Publisher</label>
+                                <input type="text" name="publisher" class="form-control" value="${app.publisher || ''}" ${readOnlyAttr}>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="form-control-label">Contact Email</label>
+                                <input type="email" name="contactEmail" class="form-control" value="${app.contactEmail || ''}" ${readOnlyAttr}>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-control-label">Support Email</label>
+                                <input type="email" name="supportEmail" class="form-control" value="${app.supportEmail || ''}" ${readOnlyAttr}>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-control-label">Created At</label>
+                                <input type="text" class="form-control" value="${app.createdAt ? new Date(app.createdAt).toLocaleString() : new Date().toLocaleString()}" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-control-label">Updated At</label>
+                                <input type="text" class="form-control" value="${app.updatedAt ? new Date(app.updatedAt).toLocaleString() : new Date().toLocaleString()}" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-control-label">Description</label>
+                        <textarea name="description" class="form-control" rows="3" ${readOnlyAttr}>${app.description || ''}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-control-label">Categories</label>
+                        ${isEditMode ? `
+                            <input type="text" name="categories" class="form-control" 
+                                   value="${(app.categories || []).join(', ')}" 
+                                   placeholder="Enter categories separated by commas">
+                        ` : `
+                            <div class="categories-container">
+                                ${(app.categories || []).map(category => 
+                                    `<span class="badge badge-primary mr-1">${category}</span>`
+                                ).join('')}
+                            </div>
+                        `}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-control-label">Intents</label>
+                        ${isEditMode ? `
+                            <div class="intents-container">
+                                ${(app.intents || []).map((intent, index) => `
+                                    <div class="intent-item mb-3">
+                                        <div class="form-group">
+                                            <label>Intent Name</label>
+                                            <input type="text" name="intents[${index}].name" 
+                                                   class="form-control" value="${intent.name || ''}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Contexts (comma-separated)</label>
+                                            <input type="text" name="intents[${index}].contexts" 
+                                                   class="form-control" 
+                                                   value="${(intent.contexts || []).join(', ')}" required>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                                <button type="button" class="btn btn-sm btn-success" onclick="addNewIntent()">
+                                    <i class="fas fa-plus mr-1"></i>Add Intent
+                                </button>
+                            </div>
+                        ` : `
+                            <div class="intents-container">
+                                ${(app.intents || []).map(intent => `
+                                    <div class="intent-item">
+                                        <strong>${intent.name}</strong>
+                                        <div class="contexts mt-2">
+                                            ${(intent.contexts || []).map(ctx => 
+                                                `<span class="badge badge-info mr-1">${ctx}</span>`
+                                            ).join('')}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `}
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-control-label">More Info URL</label>
+                        <input type="url" name="moreInfo" class="form-control" 
+                               value="${app.moreInfo || ''}" ${readOnlyAttr}>
+                    </div>
+
+                    ${isEditMode ? `
+                        <div class="form-group mt-4">
+                            <button type="button" class="btn btn-primary" 
+                                    onclick="${isNewApp ? 'handleSaveNew()' : 'handleSave()'}">
+                                <i class="fas fa-save mr-1"></i>Save
+                            </button>
+                            <button type="button" class="btn btn-secondary" onclick="cancelEdit()">
+                                <i class="fas fa-times mr-1"></i>Cancel
+                            </button>
+                        </div>
+                    ` : `
+                        <div class="form-group mt-4">
+                            <button type="button" class="btn btn-primary" onclick="enableEditMode()">
+                                <i class="fas fa-edit mr-1"></i>Edit
+                            </button>
+                        </div>
+                    `}
+                </form>
+            `;
+        }
+
+        function showError(message) {
+            const container = document.getElementById('appDetailsContainer');
+            container.innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">Error</h4>
+                    <p class="mb-0">${message}</p>
+                </div>
+                <div class="text-center mt-3">
+                    <button onclick="goBack()" class="btn btn-primary">
+                        <i class="fas fa-arrow-left mr-2"></i>Back to Search
+                    </button>
+                    <button onclick="loadAppDetails('${new URLSearchParams(window.location.search).get('appId')}')" class="btn btn-secondary ml-2">
+                        <i class="fas fa-sync-alt mr-2"></i>Retry
+                    </button>
+                </div>
+            `;
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        function checkAuthorization() {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                window.location.href = '/login';
+                return false;
+            }
+            return true;
+        }
+
+        function enableEditMode() {
+            isEditMode = true;
+            renderAppDetails(currentAppData);
+        }
+
+        function cancelEdit() {
+            isEditMode = false;
+            renderAppDetails(currentAppData);
+        }
+
+        async function handleSave() {
+            try {
+                const form = document.getElementById('appDetailsForm');
+                const formData = new FormData(form);
+                const appId = new URLSearchParams(window.location.search).get('appId');
+
+                // Collect intents with contexts
+                const intents = [];
+                const intentElements = form.querySelectorAll('.intent-item');
+                intentElements.forEach((element, index) => {
+                    const intentData = {
+                        name: formData.get(`intents[${index}].name`),
+                        contexts: formData.get(`intents[${index}].contexts`)
+                            .split(',')
+                            .map(ctx => ctx.trim())
+                            .filter(ctx => ctx)
+                    };
+                    intents.push(intentData);
+                });
+
+                // Collect icons
+                const icons = [];
+                const iconElements = form.querySelectorAll('.icon-item');
+                iconElements.forEach((element, index) => {
+                    const icon = {
+                        src: formData.get(`icons[${index}].src`),
+                        size: formData.get(`icons[${index}].size`),
+                        _id: currentAppData.icons[index]?._id
+                    };
+                    if (icon.src) icons.push(icon);
+                });
+
+                // Collect screenshots
+                const screenshots = [];
+                const screenshotElements = form.querySelectorAll('.screenshot-item');
+                screenshotElements.forEach((element, index) => {
+                    const screenshot = {
+                        src: formData.get(`screenshots[${index}].src`),
+                        label: formData.get(`screenshots[${index}].label`),
+                        _id: currentAppData.screenshots[index]?._id
+                    };
+                    if (screenshot.src) screenshots.push(screenshot);
+                });
+
+                const updatedData = {
+                    title: formData.get('title'),
+                    description: formData.get('description'),
+                    version: formData.get('version'),
+                    publisher: formData.get('publisher'),
+                    contactEmail: formData.get('contactEmail'),
+                    supportEmail: formData.get('supportEmail'),
+                    moreInfo: formData.get('moreInfo'),
+                    categories: formData.get('categories')
+                        .split(',')
+                        .map(cat => cat.trim().toUpperCase())
+                        .filter(cat => cat),
+                    intents,
+                    icons,
+                    screenshots
+                };
+
+                const token = localStorage.getItem('token');
+                const response = await fetch(`/api/v2/apps/${appId}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updatedData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    currentAppData = result.application;
+                    isEditMode = false;
+                    renderAppDetails(currentAppData);
+                    showSuccess('Application updated successfully');
+                } else {
+                    const error = await response.json();
+                    showError(error.error || 'Failed to update application');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError('An error occurred while saving changes');
+            }
+        }
+
+        function showSuccess(message) {
+            const container = document.getElementById('appDetailsContainer');
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-success alert-dismissible fade show';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="close" data-dismiss="alert">
+                    <span>&times;</span>
+                </button>
+            `;
+            container.insertBefore(alertDiv, container.firstChild);
+            setTimeout(() => alertDiv.remove(), 3000);
+        }
+
+        function addNewIntent() {
+            const intents = currentAppData.intents || [];
+            intents.push({ name: '', description: '', parameters: [] });
+            currentAppData.intents = intents;
+            renderAppDetails(currentAppData);
+        }
+
+        function removeIntent(index) {
+            const intents = currentAppData.intents || [];
+            intents.splice(index, 1);
+            currentAppData.intents = intents;
+            renderAppDetails(currentAppData);
+        }
+
+        function addParameter(intentIndex) {
+            const intents = currentAppData.intents || [];
+            if (intents[intentIndex]) {
+                intents[intentIndex].parameters = intents[intentIndex].parameters || [];
+                intents[intentIndex].parameters.push('');
+                currentAppData.intents = intents;
+                renderAppDetails(currentAppData);
+            }
+        }
+
+        function removeParameter(intentIndex, paramIndex) {
+            const intents = currentAppData.intents || [];
+            if (intents[intentIndex] && intents[intentIndex].parameters) {
+                intents[intentIndex].parameters.splice(paramIndex, 1);
+                currentAppData.intents = intents;
+                renderAppDetails(currentAppData);
+            }
+        }
+
+        async function handleSaveNew() {
+            try {
+                const form = document.getElementById('appDetailsForm');
+                const formData = new FormData(form);
+                
+                // Validate required fields
+                const appId = formData.get('appId');
+                if (!appId) {
+                    showError('App ID is required');
+                    return;
+                }
+
+                // Collect intents with contexts
+                const intents = [];
+                const intentElements = form.querySelectorAll('.intent-item');
+                intentElements.forEach((element, index) => {
+                    const intentData = {
+                        name: formData.get(`intents[${index}].name`),
+                        contexts: formData.get(`intents[${index}].contexts`)?.split(',')
+                            .map(ctx => ctx.trim())
+                            .filter(ctx => ctx) || []
+                    };
+                    if (intentData.name) {
+                        intents.push(intentData);
+                    }
+                });
+
+                const newAppData = {
+                    appId: appId,
+                    title: formData.get('title') || '',
+                    description: formData.get('description') || '',
+                    version: formData.get('version') || '1.0.0',
+                    publisher: formData.get('publisher') || '',
+                    contactEmail: formData.get('contactEmail') || '',
+                    supportEmail: formData.get('supportEmail') || '',
+                    moreInfo: formData.get('moreInfo') || '',  // Ensure it's a string
+                    categories: formData.get('categories')?.split(',')
+                        .map(cat => cat.trim().toUpperCase())
+                        .filter(cat => cat) || [],
+                    intents: intents,
+                    icons: [
+                        {
+                            src: formData.get('icons[0].src') || '',
+                            size: '32x32'
+                        },
+                        {
+                            src: formData.get('icons[1].src') || '',
+                            size: '64x64'
+                        }
+                    ].filter(icon => icon.src),  // Only include icons with src
+                    screenshots: [
+                        {
+                            src: formData.get('screenshots[0].src') || '',
+                            label: formData.get('screenshots[0].label') || ''
+                        }
+                    ].filter(screenshot => screenshot.src)  // Only include screenshots with src
+                };
+
+                const token = localStorage.getItem('token');
+                const response = await fetch('/api/v2/apps', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(newAppData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    window.location.href = `/appDetails?appId=${result.appId}`;
+                } else {
+                    const error = await response.json();
+                    showError(error.error || 'Failed to create application');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showError('An error occurred while creating the application');
+            }
+        }
+    </script>
+</body>
+</html> 
