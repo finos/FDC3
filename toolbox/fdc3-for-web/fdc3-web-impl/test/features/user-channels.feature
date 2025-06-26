@@ -29,6 +29,7 @@ Feature: Relaying Private Channel Broadcast messages
     And "App1/a1" gets the current user channel
     Then messaging will have outgoing posts
       | msg.payload.channel.id | to.instanceId | msg.matches_type          |
+      | {null}                 | a1            | channelChangedEvent       |
       | {null}                 | a1            | joinUserChannelResponse   |
       | one                    | a1            | getCurrentChannelResponse |
 
@@ -56,6 +57,7 @@ Feature: Relaying Private Channel Broadcast messages
     And "App2/a2" broadcasts "fdc3.instrument" on "two"
     Then messaging will have outgoing posts
       | msg.matches_type           | to.instanceId |
+      | channelChangedEvent        | a1            |
       | joinUserChannelResponse    | a1            |
       | addContextListenerResponse | a1            |
       | broadcastResponse          | a2            |
@@ -67,9 +69,11 @@ Feature: Relaying Private Channel Broadcast messages
     And "App2/a2" broadcasts "fdc3.instrument" on "one"
     Then messaging will have outgoing posts
       | msg.matches_type                   | msg.payload.listenerUUID |
+      | channelChangedEvent                | {null}                   |
       | joinUserChannelResponse            | {null}                   |
-      | addContextListenerResponse         | uuid5                    |
+      | addContextListenerResponse         | uuid6                    |
       | contextListenerUnsubscribeResponse | {null}                   |
+      | broadcastEvent                     | {null}                   |
       | broadcastResponse                  | {null}                   |
 
   Scenario: I should be able to leave a user channel, and not receive messages on it
@@ -79,8 +83,10 @@ Feature: Relaying Private Channel Broadcast messages
     And "App2/a2" broadcasts "fdc3.instrument" on "one"
     Then messaging will have outgoing posts
       | msg.matches_type            |
+      | channelChangedEvent         |
       | joinUserChannelResponse     |
       | addContextListenerResponse  |
+      | channelChangedEvent         |
       | leaveCurrentChannelResponse |
       | broadcastResponse           |
 
