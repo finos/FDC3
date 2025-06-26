@@ -22,11 +22,11 @@ A Licensee may consent to accepting the current Community Specification License 
 
 ---------------------------------------------------------------------------------
 
-Licensee’s name:
+Licensee’s name: Albert Herd
 
-Authorized individual and system identifier:
+Authorized individual and system identifier: albertherd
 
-Specification version:
+Specification version: 2.1 or later
 
 ---------------------------------------------------------------------------------
 
