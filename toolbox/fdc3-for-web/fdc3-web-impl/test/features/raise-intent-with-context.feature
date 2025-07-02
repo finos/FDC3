@@ -72,8 +72,37 @@ Scenario: Raising An Intent With Context To An Invalid Instance
       | msg.type                      | msg.payload.appIntents[0].intent.name | msg.payload.appIntents[1].intent.name | to.instanceId | to.appId |
       | raiseIntentForContextResponse | returnBook                            | borrowBook                            | a1            | App1     |
     Then messaging will have outgoing posts
-      | msg.payload.appIntents[0].apps[0].appId | msg.payload.appIntent.apps[0].instanceId |
-      | libraryApp                              | {null}                                   |
+      | msg.payload.appIntents[0].apps[0].appId | msg.payload.appIntents[0].apps[0].instanceId |
+      | listenerApp                             | b1                                           |
+    Then messaging will have outgoing posts
+      | msg.payload.appIntents[0].apps[1].appId | msg.payload.appIntents[0].apps[1].instanceId |
+      | libraryApp                              | {null}                                       |
+    Then messaging will have outgoing posts
+      | msg.payload.appIntents[1].apps[0].appId | msg.payload.appIntents[1].apps[0].instanceId |
+      | listenerApp                             | b1                                           |
+    Then messaging will have outgoing posts
+      | msg.payload.appIntents[1].apps[1].appId | msg.payload.appIntents[1].apps[1].instanceId |
+      | libraryApp                              | {null}                                       |
+    Then messaging will have outgoing posts
+      | msg.payload.appIntents[1].apps[2].appId | msg.payload.appIntents[1].apps[2].instanceId |
+      | listenerApp                             | {null}                                       |
+
+
+Scenario: Dynamic registrations are displayed in the app resolver
+    When "App2/a2" registers an intent listener for "returnBook" with contextType "fdc3.book"
+    When "App1/a1" raises an intent with contextType "fdc3.book"
+    Then messaging will have outgoing posts
+      | msg.type                      | msg.payload.appIntents[0].intent.name | msg.payload.appIntents[1].intent.name | to.instanceId | to.appId |
+      | raiseIntentForContextResponse | returnBook                            | borrowBook                            | a1            | App1     |
+    Then messaging will have outgoing posts
+      | msg.payload.appIntents[0].apps[0].appId | msg.payload.appIntents[0].apps[0].instanceId |
+      | listenerApp                             | b1                                           |
+    Then messaging will have outgoing posts
+      | msg.payload.appIntents[0].apps[1].appId | msg.payload.appIntents[0].apps[1].instanceId |
+      | App2                                    | a2                                           |
+    Then messaging will have outgoing posts
+      | msg.payload.appIntents[0].apps[2].appId | msg.payload.appIntents[0].apps[2].instanceId |
+      | libraryApp                              | {null}                                       |
     Then messaging will have outgoing posts
       | msg.payload.appIntents[1].apps[0].appId | msg.payload.appIntents[1].apps[0].instanceId |
       | listenerApp                             | b1                                           |
