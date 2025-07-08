@@ -25,10 +25,11 @@ This uses a context object to request and return the encryption key
     And "keyRequest" is a "fdc3.security.symmetricKey.request" context
     And I call "{a}" with "setChannelEncryption" with parameter "true"
     And I call "{a}" with "broadcast" with parameter "{keyRequest}"
-    Then "{a.delegate.messages}" is an array of objects with the following contents
-      | type    | id      | encrypting |
-      | private | priv123 | true       |
-    And "{b.delegate.messages}" is an array of objects with the following contents
+    And we wait for a period of "1000" ms
+    Then "{a.delegate.delegate.tracking}" is an array of objects with the following contents
+      | type      | args[0].type                       | args[0].__encrypted.algorithm.name |
+      | broadcast | fdc3.security.symmetricKey.request | AES-GCM                            |
+    And "{b.delegate.delegate.tracking}" is an array of objects with the following contents
       | type    | id      | encrypting |
       | private | priv123 | true       |
 

@@ -81,6 +81,6 @@ Given(
     this.props[channel1Name] = channel1;
     this.props[channel2Name] = channel2;
 
-    theMock.connectChannels((channel1 as any).delegate, (channel2 as any).delegate);
+    theMock.connectChannels((channel1 as any).delegate.delegate, (channel2 as any).delegate.delegate);
   }
 );

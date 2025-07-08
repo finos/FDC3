@@ -1,5 +1,5 @@
 import { Given } from '@cucumber/cucumber';
-import { handleResolve, matchData, setupGenericSteps } from '@finos/testing';
+import { handleResolve, setupGenericSteps } from '@finos/testing';
 import { CustomWorld } from '../world/index';
 import { dummyCheck, dummySign, dummyUnwrapKey, dummyWrapKey } from '../support/crypto/DummyCrypto';
 import { DesktopAgentSpy } from '../support/DesktopAgentSpy';
