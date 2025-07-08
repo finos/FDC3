@@ -1,6 +1,6 @@
 import { Check, Sign, MessageSignature, MessageAuthenticity } from '../../../src/signing/SigningSupport';
-import { UnwrapKey, WrapKey } from '../../encryption/EncryptionSupport';
-import { SymmetricKeyResponseContext } from '../../encryption/SymmetricKeyContext';
+import { UnwrapKey, WrapKey } from '../../../src/encryption/EncryptionSupport';
+import { SymmetricKeyResponseContext } from '../../../src/encryption/SymmetricKeyContext';
 
 export const dummySign: Sign = async (msg: string, date: Date) => {
   console.log('SIGNING: ' + msg);
