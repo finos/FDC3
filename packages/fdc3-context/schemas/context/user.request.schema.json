@@ -1,0 +1,29 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fdc3.finos.org/schemas/next/context/userRequest.schema.json",
+    "type": "object",
+    "title": "User Request",
+    "description": "A request for the current user’s identity.",
+    "allOf": [
+        {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "const": "fdc3.user.request"
+                }
+            },
+            "required": [
+                "type"
+            ],
+            "additionalProperties": true
+        },
+        {
+            "$ref": "context.schema.json#/definitions/BaseContext"
+        }
+    ],
+    "examples": [
+        {
+            "type": "fdc3.user.request"
+        }
+    ]
+}

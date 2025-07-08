@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, FileAttachment, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, Portfolio, Position, Product, SymmetricKeyRequest, SymmetricKeyResponse, TimeRange, Trade, TradeList, TransactionResult, User, Valuation } from "./file";
+//   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, FileAttachment, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, Portfolio, Position, Product, SymmetricKeyRequest, SymmetricKeyResponse, TimeRange, Trade, TradeList, TransactionResult, UserRequest, User, Valuation } from "./file";
 //
 //   const action = Convert.toAction(json);
 //   const chart = Convert.toChart(json);
@@ -32,6 +32,7 @@
 //   const trade = Convert.toTrade(json);
 //   const tradeList = Convert.toTradeList(json);
 //   const transactionResult = Convert.toTransactionResult(json);
+//   const userRequest = Convert.toUserRequest(json);
 //   const user = Convert.toUser(json);
 //   const valuation = Convert.toValuation(json);
 //
@@ -2202,6 +2203,23 @@ export type TransactionStatus = 'Created' | 'Deleted' | 'Updated' | 'Failed';
  */
 
 /**
+ * A request for the current user’s identity.
+ */
+export interface UserRequest {
+  type: 'fdc3.user.request';
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+
+/**
  * A user identity, extending contact with authentication metadata.
  */
 export interface User {
@@ -2503,6 +2521,14 @@ export class Convert {
 
   public static transactionResultToJson(value: TransactionResult): string {
     return JSON.stringify(uncast(value, r('TransactionResult')), null, 2);
+  }
+
+  public static toUserRequest(json: string): UserRequest {
+    return cast(JSON.parse(json), r('UserRequest'));
+  }
+
+  public static userRequestToJson(value: UserRequest): string {
+    return JSON.stringify(uncast(value, r('UserRequest')), null, 2);
   }
 
   public static toUser(json: string): User {
@@ -3285,6 +3311,14 @@ const typeMap: any = {
     ],
     'any'
   ),
+  UserRequest: o(
+    [
+      { json: 'type', js: 'type', typ: r('UserRequestType') },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
   User: o(
     [
       { json: 'jwt', js: 'jwt', typ: '' },
@@ -3344,6 +3378,7 @@ const typeMap: any = {
   TradeListType: ['fdc3.tradeList'],
   TransactionStatus: ['Created', 'Deleted', 'Failed', 'Updated'],
   TransactionResultType: ['fdc3.transactionResult'],
+  UserRequestType: ['fdc3.user.request'],
   UserType: ['fdc3.user'],
   ValuationType: ['fdc3.valuation'],
 };

@@ -63,6 +63,7 @@
         "items": [
           "intents/spec",
           "intents/ref/CreateInteraction",
+          "intents/ref/CreateIdentityToken",
           "intents/ref/CreateOrUpdateProfile",
           "intents/ref/SendChatMessage",
           "intents/ref/StartCall",
@@ -117,6 +118,7 @@
           "context/ref/Trade",
           "context/ref/TradeList",
           "context/ref/TransactionResult",
+          "context/ref/UserRequest",
           "context/ref/User",
           "context/ref/Valuation"
         ]
