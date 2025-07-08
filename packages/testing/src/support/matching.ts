@@ -34,7 +34,11 @@ export function doesRowMatch(cw: PropsWorld, t: Record<string, string>, data: an
       const found = JSONPath({ path: field, json: data })[0];
       const resolved = handleResolve(actual, cw);
 
-      if (found != resolved) {
+      if (found == true && resolved == 'true') {
+        // this is ok
+      } else if (found == false && resolved == 'false') {
+        // this is ok
+      } else if (found != resolved) {
         try {
           cw.log(
             `Comparing Validation failed: ${JSON.stringify(data, null, 2)} \n Match failed on ${field} '${found}' vs '${resolved}'`

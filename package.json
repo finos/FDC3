@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -23,6 +23,7 @@
     "packages/fdc3-standard",
     "packages/testing",
     "packages/fdc3-agent-proxy",
+    "packages/fdc3-security",
     "toolbox/fdc3-for-web/fdc3-web-impl",
     "packages/fdc3-get-agent",
     "packages/fdc3",
