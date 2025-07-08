@@ -30,7 +30,7 @@ function addCall(
   arg1?: object | undefined,
   arg2?: object | undefined
 ) {
-  const args = [];
+  const args: any[] = [];
   if (arg0) {
     args.push(arg0);
   }

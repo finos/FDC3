@@ -1,5 +1,5 @@
-import { Given, When } from '@cucumber/cucumber';
-import { handleResolve, setupGenericSteps } from '@finos/testing';
+import { Given } from '@cucumber/cucumber';
+import { handleResolve, matchData, setupGenericSteps } from '@finos/testing';
 import { CustomWorld } from '../world/index';
 import { dummyCheck, dummySign, dummyUnwrapKey, dummyWrapKey } from '../support/crypto/DummyCrypto';
 import { DesktopAgentSpy } from '../support/DesktopAgentSpy';
@@ -7,6 +7,8 @@ import { ClientSideImplementation, Resolver } from '../../src/ClientSideImplemen
 import { UnopinionatedDesktopAgent } from '../../src/delegates/UnopinionatedDesktopAgent';
 
 export const CHANNEL_STATE = 'CHANNEL_STATE';
+
+setupGenericSteps();
 
 Given(
   'A Signing Desktop Agent in {string} wrapping {string} with Dummy Signing Middleware',
@@ -55,23 +57,3 @@ Given('A Mock Desktop Agent in {string}', async function (this: CustomWorld, fie
   this.props[field] = da;
   this.props['result'] = null;
 });
-
-Given(
-  '{string} is a invocation counter into {string}',
-  function (this: CustomWorld, handlerName: string, field: string) {
-    this.props[handlerName] = () => {
-      var amount: number = this.props[field];
-      amount++;
-      this.props[field] = amount;
-    };
-    this.props[field] = 0;
-  }
-);
-
-When('we wait for the context to be sent', function (this: CustomWorld) {
-  return new Promise<void>((resolve, _reject) => {
-    setTimeout(() => resolve(), 200);
-  });
-});
-
-setupGenericSteps();
