@@ -1,4 +1,4 @@
-import { getAgent } from '@finos/fdc3-get-agent';
+import { getAgent } from '@finos/fdc3';
 
 /**
  * This demonstrates using the API via a promise

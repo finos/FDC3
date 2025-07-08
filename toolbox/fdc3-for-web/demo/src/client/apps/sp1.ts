@@ -1,5 +1,6 @@
-import { Context, ContextMetadata, fdc3Ready } from '@finos/fdc3';
 import {
+  Context,
+  ContextMetadata,
   SecuredDesktopAgent,
   Resolver,
   SIGNING_ALGORITHM_DETAILS,
@@ -7,6 +8,7 @@ import {
   ClientSideImplementation,
   SYMMETRIC_KEY_REQUEST_CONTEXT,
   ContextMetadataWithAuthenticity,
+  getAgent,
 } from '@finos/fdc3';
 
 let signingPrivateKey: CryptoKey | null = null;
@@ -21,7 +23,7 @@ async function setupKeys(j: JsonWebKey[]): Promise<void> {
   unwrappingPrivateKey = await crypto.subtle.importKey('jwk', j[1], WRAPPING_ALGORITHM_KEY_PARAMS, true, ['unwrapKey']);
 }
 
-fdc3Ready().then(() => {
+getAgent().then(fdc3 => {
   fetch('/sp1-private-key')
     .then(r => r.json())
     .then(j => setupKeys(j))
@@ -29,7 +31,7 @@ fdc3Ready().then(() => {
       const csi = new ClientSideImplementation();
 
       return new SecuredDesktopAgent(
-        window.fdc3,
+        fdc3,
         csi.initSigner(signingPrivateKey as CryptoKey, '/sp1-public-key'),
         csi.initUnwrapKey(unwrappingPrivateKey as CryptoKey, '/sp1-public-key'),
         resolver
@@ -38,7 +40,7 @@ fdc3Ready().then(() => {
     .then(async efdc3 => {
       console.log('in promise');
 
-      efdc3.addIntentListener('SecretComms', async (context: Context, metadata: ContextMetadata) => {
+      efdc3.addIntentListener('SecretComms', async (context: Context, metadata: ContextMetadata | undefined) => {
         const log = document.getElementById('log');
         const msg1 = document.createElement('pre');
         msg1.textContent = `Received: ${JSON.stringify(context)} and meta ${JSON.stringify(metadata)}`;
@@ -55,7 +57,7 @@ fdc3Ready().then(() => {
 
           var broadcastCount = 0;
 
-          pc.addContextListener('demo.counter', (ctx: Context, meta: ContextMetadata) => {
+          pc.addContextListener('demo.counter', (ctx: Context, meta: ContextMetadata | undefined) => {
             const msg2 = document.createElement('pre');
             msg2.textContent = `I've sent ${JSON.stringify(ctx)} with meta ${JSON.stringify(meta)}`;
             log?.appendChild(msg2);

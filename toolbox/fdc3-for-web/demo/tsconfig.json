@@ -23,13 +23,10 @@
   ],
   "references": [
     {
-      "path": "../../../packages/fdc3-standard"
+      "path": "../../../packages/fdc3"
     },
     {
-      "path": "../../../packages/fdc3-get-agent"
+      "path": "../fdc3-web-impl",
     },
-    {
-      "path": "../fdc3-web-impl"
-    }
   ]
 }

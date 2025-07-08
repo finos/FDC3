@@ -1,11 +1,13 @@
-import { IntentResolution, PrivateChannel, fdc3Ready } from '@finos/fdc3';
 import {
+  IntentResolution,
+  PrivateChannel,
   SecuredDesktopAgent,
   Resolver,
   SIGNING_ALGORITHM_DETAILS,
   ClientSideImplementation,
   WRAPPING_ALGORITHM_KEY_PARAMS,
-} from '../../src/index';
+  getAgent,
+} from '@finos/fdc3';
 
 let signingPrivateKey: CryptoKey | null = null;
 let unwrappingPrivateKey: CryptoKey | null = null;
@@ -17,7 +19,7 @@ async function setupKeys(j: JsonWebKey[]): Promise<void> {
   unwrappingPrivateKey = await crypto.subtle.importKey('jwk', j[1], WRAPPING_ALGORITHM_KEY_PARAMS, true, ['unwrapKey']);
 }
 
-fdc3Ready().then(() => {
+getAgent().then(() => {
   console.log('FDC3 is ready');
 });
 
