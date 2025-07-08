@@ -1,4 +1,4 @@
-import { AppIdentifier, Intent, IntentResolution, IntentResult } from '@finos/fdc3';
+import { AppIdentifier, Intent, IntentResolution, IntentResult } from '@finos/fdc3-standard';
 import { AbstractDesktopAgentDelegate } from './AbstractDesktopAgentDelegate';
 
 export class IntentResolutionDelegate implements IntentResolution {

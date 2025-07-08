@@ -3,7 +3,6 @@ import {
   AppIntent,
   AppMetadata,
   Channel,
-  Context,
   DesktopAgent,
   EventHandler,
   ImplementationMetadata,
@@ -12,7 +11,8 @@ import {
   IntentResult,
   Listener,
   PrivateChannel,
-} from '@finos/fdc3';
+} from '@finos/fdc3-standard';
+import { Context } from '@finos/fdc3-context';
 import { IntentResolutionDelegate } from './IntentResolutionDelegate';
 
 /**

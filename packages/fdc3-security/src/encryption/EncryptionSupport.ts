@@ -1,4 +1,6 @@
-import { ContextMetadata, Context, PrivateChannel } from '@finos/fdc3';
+import { ContextMetadata, PrivateChannel } from '@finos/fdc3-standard';
+import { Context } from '@finos/fdc3-context';
+
 import { SymmetricKeyResponseContext } from './SymmetricKeyContext';
 import { base64ToArrayBuffer } from '../ClientSideImplementation';
 

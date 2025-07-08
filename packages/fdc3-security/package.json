@@ -16,7 +16,6 @@
   "files": [
     "dist"
   ],
-  "main": "src/index.ts",
   "scripts": {
     "build": "tsc --module es2022",
     "test": "tsc && nyc --reporter=lcov --reporter=text  --reporter json  cucumber-js",

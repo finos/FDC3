@@ -1,4 +1,5 @@
-import { Channel, Context, DisplayMetadata, EventHandler, Listener, PrivateChannel } from '@finos/fdc3';
+import { Channel, DisplayMetadata, EventHandler, Listener, PrivateChannel } from '@finos/fdc3-standard';
+import { Context } from '@finos/fdc3-context';
 
 /**
  * Wraps a standard FDC3 Channel or PrivateChannel.

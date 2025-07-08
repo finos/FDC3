@@ -1,4 +1,5 @@
-import { Channel, Context, ContextHandler, Listener, PrivateChannel } from '@finos/fdc3';
+import { Channel, ContextHandler, Listener, PrivateChannel } from '@finos/fdc3-standard';
+import { Context } from '@finos/fdc3-context';
 import { ChannelDelegate } from '../delegates/ChannelDelegate';
 import { Check, Sign, signedContext, signingContextHandler } from './SigningSupport';
 

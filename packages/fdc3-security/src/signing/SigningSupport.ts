@@ -1,4 +1,6 @@
-import { Channel, Context, ContextHandler, ContextMetadata, IntentHandler, IntentResult } from '@finos/fdc3';
+import { Channel, ContextHandler, ContextMetadata, IntentHandler, IntentResult } from '@finos/fdc3-standard';
+import { Context } from '@finos/fdc3-context';
+
 import { SecuredDesktopAgent } from '../SecuredDesktopAgent';
 import { canonicalize } from 'json-canonicalize';
 
