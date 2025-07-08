@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, FileAttachment, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, Portfolio, Position, Product, TimeRange, Trade, TradeList, TransactionResult, Valuation } from "./file";
+//   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, FileAttachment, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, Portfolio, Position, Product, SymmetricKeyRequest, SymmetricKeyResponse, TimeRange, Trade, TradeList, TransactionResult, User, Valuation } from "./file";
 //
 //   const action = Convert.toAction(json);
 //   const chart = Convert.toChart(json);
@@ -26,10 +26,13 @@
 //   const portfolio = Convert.toPortfolio(json);
 //   const position = Convert.toPosition(json);
 //   const product = Convert.toProduct(json);
+//   const symmetricKeyRequest = Convert.toSymmetricKeyRequest(json);
+//   const symmetricKeyResponse = Convert.toSymmetricKeyResponse(json);
 //   const timeRange = Convert.toTimeRange(json);
 //   const trade = Convert.toTrade(json);
 //   const tradeList = Convert.toTradeList(json);
 //   const transactionResult = Convert.toTransactionResult(json);
+//   const user = Convert.toUser(json);
 //   const valuation = Convert.toValuation(json);
 //
 // These functions will throw an error if the JSON doesn't
@@ -1925,6 +1928,84 @@ export interface Product {
 }
 
 /**
+ * A request to obtain a symmetric encryption key.
+ */
+export interface SymmetricKeyRequest {
+  type: 'fdc3.security.symmetricKey.request';
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+
+/**
+ * A response containing a wrapped symmetric key and metadata.
+ */
+export interface SymmetricKeyResponse {
+  /**
+   * The encryption algorithm parameters used for key wrapping.
+   */
+  algorithm: Algorithm;
+  id: SymmetricKeyResponseID;
+  type: 'fdc3.security.symmetricKey.response';
+  /**
+   * The symmetric key, encrypted using the recipient's public key.
+   */
+  wrappedKey: string;
+  name?: string;
+  [property: string]: any;
+}
+
+/**
+ * The encryption algorithm parameters used for key wrapping.
+ */
+export interface Algorithm {
+  /**
+   * The name of the hash algorithm used with RSA-OAEP.
+   */
+  hash: Hash;
+  /**
+   * Length of the RSA key modulus in bits.
+   */
+  modulusLength: number;
+  /**
+   * The algorithm name.
+   */
+  name: 'RSA-OAEP';
+  /**
+   * The public exponent used for key generation.
+   */
+  publicExponent: number[];
+  [property: string]: any;
+}
+
+/**
+ * The name of the hash algorithm used with RSA-OAEP.
+ */
+export type Hash = 'SHA-256' | 'SHA-384' | 'SHA-512';
+
+export interface SymmetricKeyResponseID {
+  /**
+   * URL pointing to the public key used to wrap the symmetric key.
+   */
+  publicKeyUrl: string;
+  [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+
+/**
  * A context representing a period of time. Any user interfaces that represent or visualize
  * events or activity over time can be filtered or focused on a particular time period,
  * e.g.:
@@ -2112,6 +2193,27 @@ export interface TransactionResult {
  * The status of the transaction being reported.
  */
 export type TransactionStatus = 'Created' | 'Deleted' | 'Updated' | 'Failed';
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+
+/**
+ * A user identity, extending contact with authentication metadata.
+ */
+export interface User {
+  /**
+   * A JSON Web Token asserting user identity or permissions.
+   */
+  jwt: string;
+  type: 'fdc3.user';
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
+}
 
 /**
  * Free text to be used for a keyword search
@@ -2355,6 +2457,22 @@ export class Convert {
     return JSON.stringify(uncast(value, r('Product')), null, 2);
   }
 
+  public static toSymmetricKeyRequest(json: string): SymmetricKeyRequest {
+    return cast(JSON.parse(json), r('SymmetricKeyRequest'));
+  }
+
+  public static symmetricKeyRequestToJson(value: SymmetricKeyRequest): string {
+    return JSON.stringify(uncast(value, r('SymmetricKeyRequest')), null, 2);
+  }
+
+  public static toSymmetricKeyResponse(json: string): SymmetricKeyResponse {
+    return cast(JSON.parse(json), r('SymmetricKeyResponse'));
+  }
+
+  public static symmetricKeyResponseToJson(value: SymmetricKeyResponse): string {
+    return JSON.stringify(uncast(value, r('SymmetricKeyResponse')), null, 2);
+  }
+
   public static toTimeRange(json: string): TimeRange {
     return cast(JSON.parse(json), r('TimeRange'));
   }
@@ -2385,6 +2503,14 @@ export class Convert {
 
   public static transactionResultToJson(value: TransactionResult): string {
     return JSON.stringify(uncast(value, r('TransactionResult')), null, 2);
+  }
+
+  public static toUser(json: string): User {
+    return cast(JSON.parse(json), r('User'));
+  }
+
+  public static userToJson(value: User): string {
+    return JSON.stringify(uncast(value, r('User')), null, 2);
   }
 
   public static toValuation(json: string): Valuation {
@@ -3081,6 +3207,34 @@ const typeMap: any = {
     ],
     'any'
   ),
+  SymmetricKeyRequest: o(
+    [
+      { json: 'type', js: 'type', typ: r('SymmetricKeyRequestType') },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  SymmetricKeyResponse: o(
+    [
+      { json: 'algorithm', js: 'algorithm', typ: r('Algorithm') },
+      { json: 'id', js: 'id', typ: r('SymmetricKeyResponseID') },
+      { json: 'type', js: 'type', typ: r('SymmetricKeyResponseType') },
+      { json: 'wrappedKey', js: 'wrappedKey', typ: '' },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  Algorithm: o(
+    [
+      { json: 'hash', js: 'hash', typ: r('Hash') },
+      { json: 'modulusLength', js: 'modulusLength', typ: 0 },
+      { json: 'name', js: 'name', typ: r('Name') },
+      { json: 'publicExponent', js: 'publicExponent', typ: a(0) },
+    ],
+    'any'
+  ),
+  SymmetricKeyResponseID: o([{ json: 'publicKeyUrl', js: 'publicKeyUrl', typ: '' }], 'any'),
   TimeRange: o(
     [
       { json: 'endTime', js: 'endTime', typ: u(undefined, Date) },
@@ -3131,6 +3285,15 @@ const typeMap: any = {
     ],
     'any'
   ),
+  User: o(
+    [
+      { json: 'jwt', js: 'jwt', typ: '' },
+      { json: 'type', js: 'type', typ: r('UserType') },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
   Valuation: o(
     [
       { json: 'CURRENCY_ISOCODE', js: 'CURRENCY_ISOCODE', typ: '' },
@@ -3173,9 +3336,14 @@ const typeMap: any = {
   StickyInteractionType: ['fdc3.organization'],
   PositionType: ['fdc3.position'],
   PortfolioType: ['fdc3.portfolio'],
+  SymmetricKeyRequestType: ['fdc3.security.symmetricKey.request'],
+  Hash: ['SHA-256', 'SHA-384', 'SHA-512'],
+  Name: ['RSA-OAEP'],
+  SymmetricKeyResponseType: ['fdc3.security.symmetricKey.response'],
   TradeType: ['fdc3.trade'],
   TradeListType: ['fdc3.tradeList'],
   TransactionStatus: ['Created', 'Deleted', 'Failed', 'Updated'],
   TransactionResultType: ['fdc3.transactionResult'],
+  UserType: ['fdc3.user'],
   ValuationType: ['fdc3.valuation'],
 };
