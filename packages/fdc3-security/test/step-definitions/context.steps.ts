@@ -1,9 +1,10 @@
 import { Given } from '@cucumber/cucumber';
 import { CustomWorld } from '../world/index';
-import { Context, ContextMetadata } from '@finos/fdc3';
+import { Context } from '@finos/fdc3-context';
+import { ContextMetadata } from '@finos/fdc3-standard';
 import { SIGNATURE_KEY, signedContext } from '../../src/signing/SigningSupport';
 import { ClientSideImplementation } from '../../src/ClientSideImplementation';
-import { handleResolve } from '../support/matching';
+import { handleResolve } from '@finos/testing';
 
 const contextMap: Record<string, any> = {
   'fdc3.instrument': {

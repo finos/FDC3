@@ -1,10 +1,10 @@
 import { Given } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
-import { handleResolve } from '../support/matching';
+import { handleResolve } from '@finos/testing';
 import { ClientSideImplementation } from '../../src/ClientSideImplementation';
 import { createSymmetricKey } from '../../src/encryption/EncryptionSupport';
-import { ContextMetadata, IntentHandler, IntentResult } from '@finos/fdc3';
-import { Context } from 'vm';
+import { ContextMetadata, IntentHandler, IntentResult } from '@finos/fdc3-standard';
+import { Context } from '@finos/fdc3-context';
 import { DesktopAgentSpy } from '../support/DesktopAgentSpy';
 import { SecuredDesktopAgent } from '../../src/SecuredDesktopAgent';
 
