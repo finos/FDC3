@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+* Removes sourcemaps from npm package output ([#1589](https://github.com/finos/FDC3/issues/1589))
 * Add a notes field to Trade type ([#1563](https://github.com/finos/FDC3/pull/1563))
 * Add a notes field to Order and Product types ([#1597](https://github.com/finos/FDC3/pull/1597))
 * Added Go language binding. ([#1483](https://github.com/finos/FDC3/pull/1483))
