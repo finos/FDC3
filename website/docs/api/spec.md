@@ -115,6 +115,7 @@ An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 - Provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to `raiseIntentForContext` that return multiple options), such as a resolver UI.
   - Intent resolution MUST take into account any specified input or return context types
   - Requests for resolution to apps returning a channel MUST include any apps that are registered as returning a channel with a specific type.
+- Attempt to [resolve both fully-qualified and unqualified `appId` values](#fully-qualified-appids) received in `AppIdentifier` Objects as parameters to API functions against known fully-qualified or unqualified `appId` values, with results returned indicating the `appId` that was matched against the parameter value.
 - Return (JavaScript or platform appropriate) Error Objects with messages from the [`ChannelError`](ref/Errors#channelerror), [`OpenError`](ref/Errors#openerror), [`ResolveError`](ref/Errors#resolveerror) and [`ResultError`](ref/Errors#resulterror) enumerations as appropriate.
 - Provide an ID for each [`PrivateChannel`](ref/PrivateChannel) created via [`createPrivateChannel`](ref/DesktopAgent#createprivatechannel) and prevent them from being retrieved via [`getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) by ID.
 - Only require app directories that they connect to to have implemented only the minimum requirements specified in the [App Directory API Part](../app-directory/spec) of this Standard.
@@ -147,6 +148,7 @@ An FDC3 Standard compliant Desktop Agent implementation **MAY**:
   - [`open`](ref/DesktopAgent#open-deprecated) (deprecated version that addresses apps via `name` field)
   - [`raiseIntent`](ref/DesktopAgent#raiseintent-deprecated) (deprecated version that addresses apps via `name` field)
   - [`raiseIntentForContext`](ref/DesktopAgent#raiseintentforcontext-deprecated) (deprecated version that addresses apps via `name` field)
+- Make use of a resolver user interface or other suitable procedure to resolve an ambiguous unqualified `appId` value received as part of an `AppIdentifier` passed as a paremeter to an API function. 
 
 For more details on FDC3 Standards compliance (including the versioning, deprecation and experimental features policies) please see the [FDC3 Compliance page](../fdc3-compliance).
 
@@ -233,6 +235,16 @@ From version 2.0 of the FDC3 Standard, Desktop Agent functions that reference or
 Additional metadata for an application can be retrieved via the [`fdc3.getAppMetadata(appIdentifier)`](ref/DesktopAgent#getappmetadata) function, which returns an [`AppMetadata`](ref/Metadata#appmetadata) object. The additional metadata may include a title, description, icons, etc., which may be used for display purposes.
 
 Identifiers for instances of an application may be retrieved via the [`fdc3.findInstances(appIdentifier)`](ref/DesktopAgent#findinstances) function.
+
+#### Fully-Qualified AppIds
+
+As an `appId` used in an [`AppIdentifier`](ref/Types#appidentifier) might be replicated in other App Directories, it may be made globally unique (fully-qualified) by appending the domain name of the app directory that it references, [as described in the App Directory Part of the Standard](../app-directory/overview#application-identifiers). Fully-qualified `appId` values may be used to resolve the location of the app directory record that defines them using the [host resolution procedure](../app-directory/overview#fully-qualified-appid-namespace-syntax-host-resolution) defined in the App Directory Part of the Standard. For example, an `appId` such as `"myApplication"` defined in an App Directory record at `https://appd.example.com/api/appd/v2/apps/myApplication` may be fully qualified as `"myApplication@appd.example.com"`. Desktop Agents MAY be configured with details of applications via either unqualified or fully-qualified appIds.
+
+Wherever an `appId` is used to refer to a specific application as part of an [`AppIdentifier`](ref/Types#appidentifier), either the unqualified or fully-qualified version of the `appId` MAY be used interchangeably. Desktop Agents receiving an [`AppIdentifier`](ref/Types#appidentifier) as input to an API call such as [`open`](./ref/DesktopAgent#open), [`raiseIntent`](./ref/DesktopAgent#raiseintent), [`raiseIntentForContext`](./ref/DesktopAgent#raiseintentforcontext), [`getAppMetadata`](./ref/DesktopAgent#getappmetadata) or [`findInstances`](./ref/DesktopAgent#findinstances) MUST attempt to resolve the `appId` provided against the list of `appId` values that it is aware of by first matching the `appId` as provided. I.e. if a fully qualified id such as `myapp@appd.example.com` was provided attempt to match the whole string to known fully-qualified `appId` values, or if an unqualified `appId` was provided attempt to match it to known unqualified `appId` values.
+
+If no exact match is found then a fully-qualified `appId` provided should be split on `@` character and an attempt made to match the unqualified portion to known unqualified `appIds`, ignoring any known fully-qualified `appId` values that were already matched against. Alternatively, if an unqualified `appId` was provided then the known fully-qualified `appId` values should be split on the `@` character and the unqualified appId matched against their unqualified part.
+
+The matching of an unqualified `appId` value against a set of fully-qualified appIds may result in multiple matches. In such cases, Desktop Agents SHOULD attempt additional resolution via any suitable procedure. For API calls such as [`raiseIntent`](./ref/DesktopAgent#raiseintent) or [`raiseIntentForContext`](./ref/DesktopAgent#raiseintentforcontext) Desktop Agents SHOULD use the same approach as they do for resolving ambiguous intents, for example by displaying an Intent Resolver UI and allowing the user to select the desired application. Alternatively, Desktop Agents MAY apply an alternative procedure such as selecting the first matching `appId` or, in the case of `findInstances`, by returning results for all matching fully-qualified `appId` values. Each of the API calls accepting an [`AppIdentifier`](ref/Types#appidentifier) as input, returns details of the `appId` in its results (i.e. [`AppIdentifier`](ref/Types#appidentifier), [`AppMetadata`](ref/Metadata#appmetadata), [IntentResolution](ref/Metadata#intentresolution)), where the fully-qualified appId matched MUST be used.
 
 ## Raising Intents
 
