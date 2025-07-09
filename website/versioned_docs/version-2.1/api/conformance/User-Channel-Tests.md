@@ -55,3 +55,4 @@ _NB:  User Channels were called System Channels in FDC3 1.2.  The new terminolog
  - `UCFilteredUsageUnsubscribe`: Perform above test, except that after joining, **A** then `unsubscribe()`s from the channel using the `listener.unsubscribe` function. Check that **A** does NOT receive anything. 
  - `UCFilteredUsageLeave`: Perform above test, except that immediately after joining, **A** _leaves the channel_, and so receives nothing.
  - `UCFilteredUsageNoJoin`: Perform the above test, but skip step 2 so that **A** does NOT join a channel. Confirm that the _current channel_ for **A** is NOT set before continuing with the rest of the test.  **A** should receive nothing.
+
