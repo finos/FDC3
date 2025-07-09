@@ -1,5 +1,5 @@
 import { MessageHandler } from '../BasicFDC3Server';
-import { AppRegistration, InstanceID, ServerContext } from '../ServerContext';
+import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext';
 import { Directory, DirectoryIntent } from '../directory/DirectoryInterface';
 import { Context } from '@finos/fdc3-context';
 import { AppIntent, ResolveError, AppIdentifier } from '@finos/fdc3-standard';
@@ -28,6 +28,7 @@ type ListenerRegistration = {
   appId: string;
   instanceId: string;
   intentName: string;
+  contextTypes?: string[];
   listenerUUID: string;
 };
 
@@ -114,6 +115,7 @@ class PendingIntent {
     if (
       arg0.appId == this.appId.appId &&
       arg0.intentName == this.r.intent &&
+      (arg0.contextTypes == undefined || arg0.contextTypes.includes(this.r.context.type)) &&
       (arg0.instanceId == this.appId.instanceId || this.appId.instanceId == undefined)
     ) {
       this.complete = true;
@@ -248,6 +250,7 @@ export class IntentHandler implements MessageHandler {
       appId: from.appId,
       instanceId: from.instanceId,
       intentName: arg0.payload.intent,
+      contextTypes: arg0.payload.contextTypes,
       listenerUUID: sc.createUUID(),
     };
 
@@ -377,11 +380,27 @@ export class IntentHandler implements MessageHandler {
   async raiseIntentToAnyApp(arg0: IntentRequest[], sc: ServerContext<AppRegistration>): Promise<void> {
     const connectedApps = await sc.getConnectedApps();
     const matchingIntents = arg0.flatMap(i => this.directory.retrieveIntents(i.context.type, i.intent, undefined));
-    const uniqueIntentNames = matchingIntents.map(i => i.intentName).filter((v, i, a) => a.indexOf(v) === i);
+    const matchingRegistrations = arg0.flatMap(i =>
+      this.registrations.filter(
+        r => r.intentName == i.intent && (r.contextTypes == null || r.contextTypes.includes(i.context.type))
+      )
+    ); // Get a list of intent listeners that match the intent and context type
+    const uniqueIntentNames = [
+      ...matchingIntents.map(i => i.intentName),
+      ...matchingRegistrations.map(r => r.intentName),
+    ].filter((v, i, a) => a.indexOf(v) === i);
 
     const appIntents: AppIntent[] = uniqueIntentNames.map(i => {
       const directoryAppsWithIntent = matchingIntents.filter(mi => mi.intentName == i).map(mi => mi.appId);
-      const runningApps = connectedApps.filter(ca => directoryAppsWithIntent.includes(ca.appId));
+      const runningDirectoryApps = connectedApps.filter(ca => directoryAppsWithIntent.includes(ca.appId));
+      const appRegistrations = matchingRegistrations
+        .filter(registration => registration.intentName === i) // filter registrations for the current intent
+        .map(listener => ({ appId: listener.appId, instanceId: listener.instanceId, state: State.Connected }))
+        .filter(appRegistration =>
+          runningDirectoryApps.every(runningApp => runningApp.instanceId !== appRegistration.instanceId)
+        ); // filter out apps that are already included from the directory listing
+
+      const runningApps: AppRegistration[] = [...runningDirectoryApps, ...appRegistrations];
 
       return {
         intent: {
