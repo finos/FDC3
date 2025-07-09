@@ -1,0 +1,13 @@
+# Environment variables
+# Remove below comment later on. Currently commented to allow for seamless development
+# .env
+.env.local
+.env.*
+!.env.example
+
+# Other common ignores
+node_modules/
+dist/
+coverage/
+
+package-lock.json
