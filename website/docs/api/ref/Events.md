@@ -270,7 +270,7 @@ public class Fdc3ContextClearedEventDetails : IFdc3ContextClearedEventDetails
 public class Fdc3ContextClearedEvent : Fdc3Event
 {
     public Fdc3ContextClearedEvent(string? contextType)
-        : base(Fdc3EventType.ContextCleared, new Fdc3ContextClearedEvent(contextType))
+        : base(Fdc3EventType.ContextCleared, new Fdc3ContextClearedEventDetails(contextType))
     {
     }
 }
