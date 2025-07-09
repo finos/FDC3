@@ -7,7 +7,7 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true,
-    "sourceMap": true,
+    "sourceMap": false,
     /* output setting */
     "lib": [
       "es2021",
@@ -26,6 +26,6 @@
     /* From Coverage Work */
     "skipLibCheck": true,
     /* From Distribution Work */
-    "declarationMap": true
+    "declarationMap": false
   }
 }
