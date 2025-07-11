@@ -383,15 +383,15 @@ export class IntentHandler implements MessageHandler {
       ...matchingRegistrations.map(r => r.intentName),
     ].filter((v, i, a) => a.indexOf(v) === i);
 
+    const allIntents = this.directory.retrieveAllIntents();
+
     const appIntents: AppIntent[] = uniqueIntentNames.map(i => {
       const directoryAppsWithIntent = matchingIntents.filter(mi => mi.intentName == i).map(mi => mi.appId);
       const runningDirectoryApps = connectedApps.filter(ca => directoryAppsWithIntent.includes(ca.appId));
       const appRegistrations = matchingRegistrations
         .filter(registration => registration.intentName === i) // filter registrations for the current intent
         .map(listener => ({ appId: listener.appId, instanceId: listener.instanceId, state: State.Connected }))
-        .filter(appRegistration =>
-          runningDirectoryApps.every(runningApp => runningApp.instanceId !== appRegistration.instanceId)
-        ); // filter out apps that are already included from the directory listing
+        .filter(appRegistration => allIntents.every(intent => intent.appId !== appRegistration.appId)); // filter out apps that have intents registered in the directory
 
       const runningApps: AppRegistration[] = [...runningDirectoryApps, ...appRegistrations];
 
