@@ -21,6 +21,7 @@ By signing below and submitting this form to The Linux Foundation (by [DocuSign]
 This document sets forth the terms and conditions that apply to the Conformance Program and use of the Certified FDC3 Marks.
 
 In this document, these terms have the following meanings:
+
 *  "**Certified FDC3 Marks**" means the mark "Certified FDC3", "FDC3 Certified", "FDC3 1.2 Certified", "FDC3 2.0 Certified", "FDC3 1.2 Certified Desktop Agent" , "FDC3 2.0 Certified Desktop Agent" and variations and different version numbers thereof;
 *  "**FDC3 Word Mark**" means the trademark "FDC3";
 *  "**Participant FDC3 Combination**" means a combination that includes both the Participant’s mark(s) and the FDC3 Word Mark as elements (for example, "XYZ FDC3" or "XYZ FDC3 Desktop Agent");
@@ -31,6 +32,7 @@ In this document, these terms have the following meanings:
 #### Related Documents
 
 Together with these terms and conditions, the following documents are part of the Conformance Program, each as updated from time to time:
+
 *  "**Certification Guide**": the conformance testing instructions and requirements for the Conformance Program, available at <https://github.com/FINOS/FDC3/blob/main/toolbox/fdc3-conformance/instructions.md>;
 *  "**Branding Guide**": the Certified FDC3 Brand Guidelines, available at <https://github.com/FINOS/FDC3/blob/main/toolbox/fdc3-conformance/terms-conditions/branding.md>;
 *  "**LF Trademark Usage Guidelines**": The Linux Foundation Trademark Usage Guidelines, available at <https://www.linuxfoundation.org/trademark-usage>; and
@@ -182,13 +184,13 @@ Select one:
 
 Name, brief description and URLs for more information:
 
-\___________________________________________________________________________
+\_____________________________________________________
 
-\___________________________________________________________________________
+\_____________________________________________________
 
-\___________________________________________________________________________
+\_____________________________________________________
 
-\___________________________________________________________________________
+\_____________________________________________________
 
 
 #### Participant FDC3 Combinations
@@ -197,13 +199,13 @@ List all Participant FDC3 Combinations to be used with the Qualifying Offerings,
 
 (for example, "XYZ FDC3" or "XYZ FDC3 Platform")
 
-\___________________________________________________________________________
+\_____________________________________________________
 
-\___________________________________________________________________________
+\_____________________________________________________
 
-\___________________________________________________________________________
+\_____________________________________________________
 
-\___________________________________________________________________________
+\_____________________________________________________
 
 
 #### Conformance Details
