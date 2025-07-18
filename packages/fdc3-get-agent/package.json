@@ -37,7 +37,7 @@
     "@finos/testing": "2.2.0",
     "@types/node": "^20.16.11",
     "@types/wtfnode": "^0.7.3",
-    "eslint": "^9.16.0",
+    "eslint": "^9.31.0",
     "eslint-config-prettier": "^9.1.0",
     "expect": "^29.7.0",
     "globals": "^15.14.0",
