@@ -35,7 +35,7 @@ hide_title: true
 | App | Step               | Details                                                         |
 |-----|--------------------|-----------------------------------------------------------------|
 | A   | 1.Retrieve `Channel` |Retrieve a `Channel` object representing an 'App' channel called `test-channel` using: <br/>`const testChannel = await fdc3.getOrCreateChannel("test-channel")` |
-| A   | 2.Add Context Listener |Add an _typed_ context listener for `fdc3.instrument`, using: <br/> ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `await testChannel.addContextListener("fdc3.instrument", handler)` <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `testChannel.addContextListener("fdc3.instrument", handler)`
+| A   | 2.Add Context Listener |Add a _typed_ context listener for `fdc3.instrument`, using: <br/> ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `await testChannel.addContextListener("fdc3.instrument", handler)` <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `testChannel.addContextListener("fdc3.instrument", handler)`
 | B   | 3.Retrieve `Channel`   |Retrieve a `Channel` object representing the same 'App' channel A did (`test-channel`)|
 | B   | 4.Broadcast          | B broadcasts both an `fdc3.instrument` context and an `fdc3.contact` context, using: <br /> `testChannel.broadcast(<fdc3.instrument context>)` <br /> `testChannel.broadcast(<fdc3.contact context>)`|
 | A   | 5.Receive Context    | An fdc3.instrument context is received by the handler added in step 2.<br />Ensure that the fdc3.instrument received by A is identical to that sent by B<br />Ensure that the fdc3.contact context is NOT received.                                                                   |
