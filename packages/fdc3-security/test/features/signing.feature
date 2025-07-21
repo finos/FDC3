@@ -5,6 +5,7 @@ Feature: Signing Contexts
     Given A Signing Desktop Agent in "api" wrapping "{mock}" with Dummy Signing Middleware
     Given "instrumentContext" is a "fdc3.instrument" context
     Given "instrumentContextIH" is a "fdc3.instrument" context
+    And "trueFunction" is a function which returns "{true}"
 
   Scenario: App Channel Broadcasts context data will include a signature
 We are using "Dummy Crypto" here, which basically just adds a digest containing the length.
@@ -37,7 +38,7 @@ In reality, we wouldn't use this, but it makes the test a lot simpler to underst
   Scenario: Encrypted Private Channel Broadasts context data will include a signature
     When I call "{api}" with "createPrivateChannel"
     And I refer to "{result}" as "privateChannel"
-    And I call "{privateChannel}" with "setChannelEncryption" with parameter "true"
+    And I call "{privateChannel}" with "setChannelEncryption" with parameter "{trueFunction}"
     And I call "{privateChannel}" with "broadcast" with parameter "{instrumentContext}"
     Then "{privateChannel.delegate.delegate.tracking}" is an array of objects with the following contents
       | method    | args[0].type    | args[0].__signature                       | args[0].__encrypted.length |

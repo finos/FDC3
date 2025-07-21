@@ -71,3 +71,9 @@ Given(
     this.props[name] = ch;
   }
 );
+
+Given('{string} is a function which returns {string}', function (this: CustomWorld, fnName: string, value: string) {
+  this.props[fnName] = () => {
+    return handleResolve(value, this);
+  };
+});

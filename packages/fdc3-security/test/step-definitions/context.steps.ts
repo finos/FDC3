@@ -43,26 +43,6 @@ Given(
   }
 );
 
-// Given(
-//   '{string} is a {string} context signed with {string} and {string} for intent {string}',
-//   async function (
-//     this: CustomWorld,
-//     field: string,
-//     type: string,
-//     privateSigningKey: string,
-//     publicKeyUrl: string,
-//     intent: string
-//   ) {
-//     const privateKey = handleResolve(privateSigningKey, this);
-//     const sign = new ClientSideImplementation().initSigner(privateKey, publicKeyUrl);
-
-//     const copy = JSON.parse(JSON.stringify(contextMap[type]));
-//     const signedCopy = await signedContext(sign, copy, intent, null);
-
-//     this.props[field] = signedCopy;
-//   }
-// );
-
 Given(
   '{string} pipes context to {string} and metadata to {string}',
   function (this: CustomWorld, contextHandlerName: string, field: string, field2: string) {

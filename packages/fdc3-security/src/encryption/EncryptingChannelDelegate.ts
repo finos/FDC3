@@ -23,7 +23,7 @@ export type ContextMetadataWithEncryptionStatus = ContextMetadata & {
  */
 export class EncryptingChannelDelegate extends ChannelDelegate implements EncryptingPrivateChannel {
   private symmetricKey: JsonWebKey | null = null;
-  private encrypting: boolean = false;
+  private typeFilter: null | ((type: string) => boolean) = null;
   private keyCreator: boolean = false;
   private readonly fdc3Security: FDC3Security;
 
@@ -52,13 +52,13 @@ export class EncryptingChannelDelegate extends ChannelDelegate implements Encryp
     });
   }
 
-  isEncrypting(): boolean {
-    return this.symmetricKey != null;
+  isEncrypting(type: string): boolean {
+    return this.typeFilter != null && this.typeFilter(type);
   }
 
-  async setChannelEncryption(state: boolean): Promise<void> {
-    this.encrypting = state;
-    if (state && !this.symmetricKey) {
+  async setChannelEncryption(filter: null | ((type: string) => boolean)): Promise<void> {
+    this.typeFilter = filter;
+    if (!this.symmetricKey && this.typeFilter != null) {
       this.symmetricKey = await this.fdc3Security.createSymmetricKey();
       this.keyCreator = true;
     }
@@ -81,8 +81,8 @@ export class EncryptingChannelDelegate extends ChannelDelegate implements Encryp
   }
 
   async encryptIfAvailable(context: Context): Promise<Context> {
-    if (this.symmetricKey && this.encrypting) {
-      const jwe = await this.fdc3Security.encrypt(context, this.symmetricKey);
+    if (this.isEncrypting(context.type)) {
+      const jwe = await this.fdc3Security.encrypt(context, this.symmetricKey!!);
       const out = {
         type: context.type,
         __encrypted: jwe,
