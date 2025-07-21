@@ -1,38 +1,15 @@
-import {
-  Sign,
-  Check,
-  MessageSignature,
-  MessageAuthenticity,
-  SIGNING_ALGORITHM_DETAILS,
-  ContextMetadataWithAuthenticity,
-} from './signing/SigningSupport';
-import { Resolver, ClientSideImplementation } from './ClientSideImplementation';
-import { SecuredDesktopAgent } from './SecuredDesktopAgent';
-import { UnopinionatedDesktopAgent } from './delegates/UnopinionatedDesktopAgent';
-import {
-  Encrypt,
-  Decrypt,
-  EncryptedContext,
-  EncryptedContent,
-  WRAPPING_ALGORITHM_KEY_PARAMS,
-} from './encryption/EncryptionSupport';
-import { SYMMETRIC_KEY_REQUEST_CONTEXT } from './encryption/SymmetricKeyContext';
-
+import { signedContext, signingContextHandler, signingIntentHandler } from './signing/SigningSupport';
+import { EncryptingPrivateChannel } from './encryption/EncryptingPrivateChannel';
+import { SecuredDesktopAgentDelegate } from './delegates/SecuredDesktopAgentDelegate';
+import { MessageAuthenticity, FDC3Security, JSONWebEncryption, JSONWebSignature } from './FDC3Security';
 export {
-  type Check,
-  type Sign,
-  type EncryptedContent,
-  type EncryptedContext,
-  type Decrypt,
-  type Encrypt,
+  type EncryptingPrivateChannel,
   type MessageAuthenticity,
-  type MessageSignature,
-  type Resolver,
-  type ContextMetadataWithAuthenticity,
-  ClientSideImplementation,
-  SecuredDesktopAgent,
-  UnopinionatedDesktopAgent,
-  SIGNING_ALGORITHM_DETAILS,
-  WRAPPING_ALGORITHM_KEY_PARAMS,
-  SYMMETRIC_KEY_REQUEST_CONTEXT,
+  type JSONWebEncryption,
+  type JSONWebSignature,
+  type FDC3Security,
+  SecuredDesktopAgentDelegate,
+  signedContext,
+  signingContextHandler,
+  signingIntentHandler,
 };

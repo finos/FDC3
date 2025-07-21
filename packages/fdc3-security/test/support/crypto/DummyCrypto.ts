@@ -1,46 +1,81 @@
-import { Check, Sign, MessageSignature, MessageAuthenticity } from '../../../src/signing/SigningSupport';
-import { UnwrapKey, WrapKey } from '../../../src/encryption/EncryptionSupport';
-import { SymmetricKeyResponseContext } from '../../../src/encryption/SymmetricKeyContext';
+import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
+import { FDC3Security, JSONWebEncryption, JSONWebSignature, MessageAuthenticity } from '../../../src/FDC3Security';
+import { canonicalize } from 'json-canonicalize';
 
-export const dummySign: Sign = async (msg: string, date: Date) => {
-  console.log('SIGNING: ' + msg);
-  const out = {
-    digest: 'length: ' + msg.length,
-    publicKeyUrl: 'https://dummy.com/pubKey',
-    algorithm: 'LENGTH-CHECK',
-    date: date.toISOString(),
-  } as MessageSignature;
-  return out;
-};
+export class DummyCrypto implements FDC3Security {
+  async encrypt(ctx: Context, symmetricKey: JsonWebKey): Promise<JSONWebEncryption> {
+    const text = canonicalize(ctx);
+    const key = canonicalize(symmetricKey);
+    const rot1 = btoa(text);
+    const rot2 = btoa(key);
+    return rot1 + '.' + rot2;
+  }
 
-export const dummyCheck: Check = async (p: MessageSignature, msg: string) => {
-  console.log('CHECKING: ' + msg);
-  const out = {
-    valid: p.digest == 'length: ' + msg.length,
-    verified: true,
-    publicKeyUrl: p.publicKeyUrl,
-  } as MessageAuthenticity;
+  async decrypt(encrypted: JSONWebEncryption, symmetricKey: JsonWebKey): Promise<Context> {
+    const parts = encrypted.split('.');
+    const text = atob(parts[0]);
+    const key = atob(parts[1]);
+    const expectedKey = canonicalize(symmetricKey);
+    if (key == expectedKey) {
+      return JSON.parse(text);
+    } else {
+      throw new Error(`Keys don't match: ${expectedKey} ${key}`);
+    }
+  }
 
-  return out;
-};
+  createMessage(ctx: Context, intent: string | null, channelId: string | null): string {
+    return canonicalize({
+      context: ctx,
+      intent: intent,
+      channelId: channelId,
+    });
+  }
 
-export const dummyWrapKey: WrapKey = async (toWrap: CryptoKey, publicKeyUrl: string) => {
-  return {
-    type: 'fdc3.security.symmetricKey.response',
-    id: {
-      publicKeyUrl,
-    },
-    algorithm: 'DUMMY WRAPPING',
-    wrappedKey: '[[[' + toWrap + ']]]',
-  } as SymmetricKeyResponseContext;
-};
+  async sign(ctx: Context, intent: string | null, channelId: string | null): Promise<JSONWebSignature> {
+    const msg = this.createMessage(ctx, intent, channelId);
 
-export const dummyUnwrapKey: UnwrapKey = async (_key: SymmetricKeyResponseContext) => {
-  // return a Crypto key here.
-  return {
-    algorithm: 'DUMMY CRYPTO',
-    extractable: false,
-    type: 'gkak',
-    usages: ['encrypt', 'decrypt'],
-  } as unknown as CryptoKey;
-};
+    console.log('SIGNING: ' + msg);
+    const out = `length-check:${msg.length}:https://dummy.com/pubKey`;
+    return out;
+  }
+
+  async check(
+    sig: JSONWebSignature,
+    ctx: Context,
+    intent: string | null,
+    channelId: string | null
+  ): Promise<MessageAuthenticity> {
+    const msg = this.createMessage(ctx, intent, channelId);
+    const splitSig = sig.split(':');
+    const length = splitSig[1];
+    splitSig.splice(0, 2);
+    const url = splitSig.join(':');
+
+    console.log('CHECKING: ' + msg);
+    const out = {
+      valid: length == `${msg.length}`,
+      verified: true,
+      publicKeyUrl: url,
+    } as MessageAuthenticity;
+
+    return out;
+  }
+
+  async createSymmetricKey(): Promise<JsonWebKey> {
+    return {
+      alg: 'dummy',
+      k: '123',
+    };
+  }
+
+  async wrapKey(symmetricKey: JsonWebKey, _publicKeyUrl: string): Promise<SymmetricKeyResponse> {
+    return {
+      type: 'fdc3.security.symmetricKey.response',
+      wrappedKey: JSON.stringify(symmetricKey),
+    } as SymmetricKeyResponse;
+  }
+
+  async unwrapKey(ctx: SymmetricKeyResponse): Promise<JsonWebKey> {
+    return JSON.parse(ctx.wrappedKey);
+  }
+}

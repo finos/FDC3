@@ -2,6 +2,9 @@ import { Given } from '@cucumber/cucumber';
 import { CustomWorld } from '../world/index';
 import { Context } from '@finos/fdc3-context';
 import { ContextMetadata } from '@finos/fdc3-standard';
+import { SIGNATURE_KEY, signedContext } from '../../src/signing/SigningSupport';
+import { ClientSideImplementation } from '../../src/ClientSideImplementation';
+import { handleResolve } from '@finos/testing';
 
 const contextMap: Record<string, any> = {
   'fdc3.instrument': {
@@ -35,33 +38,38 @@ Given('{string} is a {string} context', function (this: CustomWorld, field: stri
 Given(
   '{string} is a {string} context with dummy signature field length {int}',
   function (this: CustomWorld, field: string, type: string, length: number) {
-    const sigField = `length-check:${length}:https://dummy.com/pubKey`;
+    const sigField = {
+      digest: 'length: ' + length,
+      publicKeyUrl: 'https://dummy.com/pubKey',
+      algorithm: 'LENGTH-CHECK',
+      date: JSON.stringify(new Date()),
+    };
 
     const copy = JSON.parse(JSON.stringify(contextMap[type]));
-    copy['__signature'] = sigField;
+    copy[SIGNATURE_KEY] = sigField;
     this.props[field] = copy;
   }
 );
 
-// Given(
-//   '{string} is a {string} context signed with {string} and {string} for intent {string}',
-//   async function (
-//     this: CustomWorld,
-//     field: string,
-//     type: string,
-//     privateSigningKey: string,
-//     publicKeyUrl: string,
-//     intent: string
-//   ) {
-//     const privateKey = handleResolve(privateSigningKey, this);
-//     const sign = new ClientSideImplementation().initSigner(privateKey, publicKeyUrl);
+Given(
+  '{string} is a {string} context signed with {string} and {string} for intent {string}',
+  async function (
+    this: CustomWorld,
+    field: string,
+    type: string,
+    privateSigningKey: string,
+    publicKeyUrl: string,
+    intent: string
+  ) {
+    const privateKey = handleResolve(privateSigningKey, this);
+    const sign = new ClientSideImplementation().initSigner(privateKey, publicKeyUrl);
 
-//     const copy = JSON.parse(JSON.stringify(contextMap[type]));
-//     const signedCopy = await signedContext(sign, copy, intent, null);
+    const copy = JSON.parse(JSON.stringify(contextMap[type]));
+    const signedCopy = await signedContext(sign, copy, intent, undefined);
 
-//     this.props[field] = signedCopy;
-//   }
-// );
+    this.props[field] = signedCopy;
+  }
+);
 
 Given(
   '{string} pipes context to {string} and metadata to {string}',

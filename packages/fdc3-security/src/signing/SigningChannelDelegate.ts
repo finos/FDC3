@@ -1,23 +1,27 @@
 import { Channel, ContextHandler, Listener, PrivateChannel } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { ChannelDelegate } from '../delegates/ChannelDelegate';
-import { Check, Sign, signedContext, signingContextHandler } from './SigningSupport';
+import { FDC3Security } from '../FDC3Security';
+import { signingContextHandler } from './SigningSupport';
 
 /**
- * Adds signing / checking support to any channel being wrapped
+ * Adds signing / checking support to any channel being wrapped.
  */
 export class SigningChannelDelegate extends ChannelDelegate {
-  private readonly sign: Sign;
-  private readonly check: Check;
+  private readonly fdc3Security: FDC3Security;
 
-  constructor(d: Channel | PrivateChannel, sign: Sign, check: Check) {
+  constructor(d: Channel | PrivateChannel, fdc3Security: FDC3Security) {
     super(d);
-    this.sign = sign;
-    this.check = check;
+    this.fdc3Security = fdc3Security;
   }
 
-  wrapContext(ctx: Context): Promise<Context> {
-    return signedContext(this.sign, ctx, undefined, this.id);
+  async wrapContext(ctx: Context): Promise<Context> {
+    const jws = await this.fdc3Security.sign(ctx, null, this.id);
+    const out = {
+      ...ctx,
+      __signature: jws,
+    };
+    return out;
   }
 
   addContextListener(context: any, handler?: any): Promise<Listener> {
@@ -25,7 +29,7 @@ export class SigningChannelDelegate extends ChannelDelegate {
     const theContextType: string | null = context && handler ? (context as string) : null;
     return super.addContextListener(
       theContextType,
-      signingContextHandler(this.check, theHandler, () => Promise.resolve(this.delegate))
+      signingContextHandler(this.fdc3Security, theHandler, () => Promise.resolve(this.delegate))
     );
   }
 }

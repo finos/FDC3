@@ -1,0 +1,20 @@
+import { PrivateChannel } from '@finos/fdc3-standard';
+
+export interface EncryptingPrivateChannel extends PrivateChannel {
+  /**
+   * Returns true if this channel is set to encrypt with setChannelEncryption(true)
+   */
+  isEncrypting(): boolean;
+
+  /**
+   * Call this method after creation to ensure that further communications on
+   * the channel are encrypted.
+   */
+  setChannelEncryption(state: boolean): Promise<void>;
+
+  /**
+   * Broadcasts the channel's symmetric key, wrapped in the provided public key of
+   * a receiving app.
+   */
+  broadcastKey(publicKeyUrl: string): Promise<void>;
+}

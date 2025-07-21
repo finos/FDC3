@@ -80,8 +80,14 @@ export function handleResolve(name: string, on: PropsWorld): any {
     } else if (isNumeric(stripped)) {
       return Number.parseFloat(stripped);
     } else {
-      const out = JSONPath({ path: stripped, json: on.props })[0];
-      return out;
+      const instances = JSONPath({ path: stripped, json: on.props });
+      if (instances.length > 0) {
+        const out = instances[0];
+        return out;
+      } else {
+        // just return the original
+        return name;
+      }
     }
   } else {
     return name;

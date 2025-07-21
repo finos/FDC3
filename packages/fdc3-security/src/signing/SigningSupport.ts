@@ -1,169 +1,126 @@
 import { Channel, ContextHandler, ContextMetadata, IntentHandler, IntentResult } from '@finos/fdc3-standard';
+import { FDC3Security, JSONWebSignature, MessageAuthenticity } from '../FDC3Security';
 import { Context } from '@finos/fdc3-context';
-
-import { SecuredDesktopAgent } from '../SecuredDesktopAgent';
-import { canonicalize } from 'json-canonicalize';
-
-export type Sign = (msg: string, date: Date) => Promise<MessageSignature>;
-export type Check = (p: MessageSignature, msg: string) => Promise<MessageAuthenticity>;
-
-/**
- * This is the field that is added to the context object to contain the signature
- */
-export const SIGNATURE_KEY = '__signature';
-export const AUTHENTICITY_KEY = 'authenticity';
-
-export const SIGNING_ALGORITHM_DETAILS = {
-  name: 'ECDSA',
-  hash: 'SHA-512',
-  namedCurve: 'P-521',
-} as EcdsaParams;
-
-export const SIGNING_ALGORITHM_KEY_PARAMS: EcKeyGenParams = {
-  ...SIGNING_ALGORITHM_DETAILS,
-  namedCurve: 'P-521',
-};
-
-export type MessageSignature = {
-  digest: string;
-  publicKeyUrl: string;
-  algorithm: any;
-  date: string;
-};
-
-export type MessageAuthenticity =
-  | {
-      verified: true;
-      valid: boolean;
-      publicKeyUrl: string;
-    }
-  | {
-      verified: false;
-      error: any;
-    };
 
 export type ContextMetadataWithAuthenticity = ContextMetadata & {
   authenticity?: MessageAuthenticity;
+  __signature?: JSONWebSignature;
 };
 
-export async function contentToSign(
-  context: Context,
-  timestamp: Date | string,
-  intent?: string,
-  channelId?: string
-): Promise<string> {
-  return canonicalize({
-    context,
-    intent,
-    timestamp,
-    channelId,
-  });
-}
-
 export async function signedContext(
-  sign: Sign,
+  fdc3Security: FDC3Security,
   context: Context,
-  intent?: string,
-  channelId?: string
+  intent: string | null,
+  channelId: string | null
 ): Promise<Context> {
-  delete context[SIGNATURE_KEY];
-  const ts = new Date();
-  return sign(await contentToSign(context, ts, intent, channelId), ts).then(sig => {
-    context[SIGNATURE_KEY] = sig;
-    return context;
+  let unsignedContext = { ...context };
+  delete unsignedContext['__signature'];
+
+  return fdc3Security.sign(unsignedContext, intent, channelId).then(sig => {
+    let out = { ...unsignedContext };
+    out['__signature'] = sig;
+    return out;
   });
 }
 
-export function signingContextHandler(
-  check: Check,
-  handler: ContextHandler,
-  channelProvider: () => Promise<Channel | null>
-): ContextHandler {
-  const out = (c: Context, m: ContextMetadataWithAuthenticity | undefined) => {
-    if (c[SIGNATURE_KEY]) {
-      // context is signed, so check it.
-      const signature = c[SIGNATURE_KEY] as MessageSignature;
-      delete c[SIGNATURE_KEY];
+type X = ContextHandler | IntentHandler;
 
-      return channelProvider()
-        .then(channel => contentToSign(c, signature.date, undefined, channel?.id))
-        .then(messageToCheck => check(signature, messageToCheck))
-        .then(r => {
-          const m2: ContextMetadataWithAuthenticity = m == undefined ? ({} as ContextMetadataWithAuthenticity) : m;
-          m2[AUTHENTICITY_KEY] = r;
-          return handler(c, m2);
-        })
-        .catch(e => {
-          console.log("Couldn't check signature");
-          const m2: ContextMetadataWithAuthenticity = m == undefined ? ({} as ContextMetadataWithAuthenticity) : m;
-          m2[AUTHENTICITY_KEY] = {
-            verified: false,
-            error: e,
-          };
-          return handler(c, m2);
-        });
-    } else {
-      if (m) {
-        delete m[AUTHENTICITY_KEY];
-      }
-      return handler(c, m);
+export async function checkSignature(
+  fdc3Security: FDC3Security,
+  m: ContextMetadataWithAuthenticity | undefined,
+  c: Context,
+  intent: string | null,
+  channelId: string | null
+): Promise<{ context: Context; meta: ContextMetadataWithAuthenticity | undefined }> {
+  let signature: JSONWebSignature | null = null;
+  let unsignedContext: Context | undefined = { ...c };
+  delete unsignedContext['__signature'];
+
+  if (m != null && m['__signature']) {
+    signature = m['__signature'];
+  } else if (c['__signature']) {
+    // context is signed, so check it.
+    signature = c['__signature'] as JSONWebSignature;
+  }
+
+  if (signature) {
+    try {
+      const res = await fdc3Security.check(signature, unsignedContext, intent, channelId);
+      const m2: ContextMetadataWithAuthenticity = m == undefined ? ({} as ContextMetadataWithAuthenticity) : m;
+      m2['authenticity'] = res;
+      return {
+        context: unsignedContext,
+        meta: m2,
+      };
+    } catch (e) {
+      console.log("Couldn't check signature");
+      const m2: ContextMetadataWithAuthenticity = m == undefined ? ({} as ContextMetadataWithAuthenticity) : m;
+      m2['authenticity'] = {
+        verified: false,
+        error: e,
+      };
+      return {
+        context: unsignedContext,
+        meta: m2,
+      };
     }
-  };
-
-  return out as ContextHandler;
-}
-
-async function wrapIntentResult(ir: IntentResult, da: SecuredDesktopAgent, intentName: string): Promise<IntentResult> {
-  if (ir == undefined) {
-    return;
-  } else if (ir.type == 'app' || ir.type == 'user' || ir.type == 'private') {
-    // it's a channel, just return as-is
-    return ir;
   } else {
-    // it's a context
-    return signedContext(da.sign, ir as Context, intentName, undefined);
+    if (m) {
+      const m2 = { ...m };
+      delete m2['authenticity'];
+      return {
+        context: unsignedContext,
+        meta: m2,
+      };
+    } else {
+      return {
+        context: unsignedContext,
+        meta: undefined,
+      };
+    }
   }
 }
 
+export function signingContextHandler(
+  fdc3Security: FDC3Security,
+  handler: ContextHandler,
+  channelProvider: () => Promise<Channel | null>
+): X {
+  const out = async (c: Context, m: ContextMetadataWithAuthenticity | undefined) => {
+    const res = await checkSignature(fdc3Security, m, c, null, (await channelProvider())?.id ?? null);
+    handler(res.context, res.meta);
+  };
+
+  return out as X;
+}
+
 export function signingIntentHandler(
-  da: SecuredDesktopAgent,
+  fdc3Security: FDC3Security,
   handler: IntentHandler,
   intentName: string
 ): IntentHandler {
-  const out = (c: Context, m: ContextMetadataWithAuthenticity | undefined) => {
-    async function checkSignature(): Promise<{ context: Context; meta: ContextMetadataWithAuthenticity | undefined }> {
-      const signature = c[SIGNATURE_KEY] as MessageSignature;
-      if (signature) {
-        delete c[SIGNATURE_KEY];
-        const toSign = await contentToSign(c, signature.date, intentName);
-        const auth = await da.check(signature, toSign);
-        return {
-          context: c,
-          meta: {
-            ...(m as any),
-            authenticity: auth,
-          },
-        };
+  const out = async (c: Context, m: ContextMetadataWithAuthenticity | undefined) => {
+    async function wrapIntentResult(ir: IntentResult): Promise<IntentResult> {
+      if (ir == undefined) {
+        return;
+      } else if (ir.type == 'app' || ir.type == 'user' || ir.type == 'private') {
+        // it's a channel, just return as-is
+        return ir;
       } else {
-        return {
-          context: c,
-          meta: {
-            ...(m as any),
-            authenticity: {
-              verified: false,
-            },
-          },
-        };
+        // it's a context
+        return signedContext(fdc3Security, ir as Context, intentName, null);
       }
     }
 
     async function applyHandler(context: Context, meta: ContextMetadata | undefined): Promise<IntentResult> {
       const result = await handler(context, meta);
-      const wrapped = await wrapIntentResult(result, da, intentName);
+      const wrapped = await wrapIntentResult(result);
       return wrapped;
     }
 
-    return checkSignature().then(({ context, meta }) => applyHandler(context, meta));
+    const res = await checkSignature(fdc3Security, m, c, intentName, null);
+    const res2 = applyHandler(res.context, res.meta);
+    return res2;
   };
 
   return out;

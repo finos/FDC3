@@ -1,30 +1,18 @@
-import { ContextHandler, Listener, PrivateChannel } from '@finos/fdc3-standard';
-import { Context } from '@finos/fdc3-context';
-import {
-  CANT_DECRYPT,
-  ContextMetadataWithEncryptionStatus,
-  DECRYPTED,
-  ENCRYPTION_KEY,
-  ENCRYPTION_STATUS,
-  EncryptedContent,
-  EncryptingPrivateChannel,
-  NOT_ENCRYPTED,
-  UnwrapKey,
-  WrapKey,
-  createSymmetricKey,
-  decrypt,
-  encrypt,
-} from './EncryptionSupport';
+import { ContextHandler, ContextMetadata, Listener, PrivateChannel } from '@finos/fdc3-standard';
+import { Context, SymmetricKeyResponse, SymmetricKeyRequest } from '@finos/fdc3-context';
 import { ChannelDelegate } from '../delegates/ChannelDelegate';
-import {
-  SYMMETRIC_KEY_RESPONSE_CONTEXT,
-  SYMMETRIC_KEY_REQUEST_CONTEXT,
-  SymmetricKeyResponseContext,
-  SymmetricKeyRequestContext,
-} from './SymmetricKeyContext';
+import { FDC3Security, JSONWebEncryption } from '../FDC3Security';
+import { EncryptingPrivateChannel } from './EncryptingPrivateChannel';
 
 /**
- * Adds encryptiion support for private channels.  A wrapped, symmetric key is sent via the private channel,
+ * TODO: this should be moved into Julianna's code.
+ */
+export type ContextMetadataWithEncryptionStatus = ContextMetadata & {
+  encryption?: 'cant_decrypt' | 'not_encrypted' | 'decrypted';
+};
+
+/**
+ * Adds encryption support for private channels.  A wrapped, symmetric key is sent via the private channel,
  * and the unwrapKey method is used to unwrap it, allowing further decoding of messages.
  *
  * Some considerations:
@@ -32,26 +20,25 @@ import {
  * 1.  A symmetric key is only created once for the channel, and is not changeable after that
  * 2.  Whomever calls setChannelEncryption(true) creates the symmetric key and is the keyCreator.
  * 3.  Users of the channel will request an encryption key if they can't decrypt messages.
- * 4.  We need a flow-chart for this.
  */
 export class EncryptingChannelDelegate extends ChannelDelegate implements EncryptingPrivateChannel {
-  private symmetricKey: CryptoKey | null = null;
+  private symmetricKey: JsonWebKey | null = null;
   private encrypting: boolean = false;
-  private wrapKey: WrapKey;
   private keyCreator: boolean = false;
+  private readonly fdc3Security: FDC3Security;
 
   requestListener: Listener | null = null;
   responseListener: Listener | null = null;
 
-  constructor(d: PrivateChannel, unwrapKey: UnwrapKey, wrapKey: WrapKey) {
+  constructor(d: PrivateChannel, fdc3Security: FDC3Security) {
     super(d);
-    this.wrapKey = wrapKey;
+    this.fdc3Security = fdc3Security;
 
     // listen for a symmetric key being sent
     this.addContextListener(
-      SYMMETRIC_KEY_RESPONSE_CONTEXT,
-      async (context: SymmetricKeyResponseContext, _meta: any) => {
-        const newKey = await unwrapKey(context);
+      'fdc3.security.symmetricKey.response',
+      async (context: SymmetricKeyResponse, _meta: any) => {
+        const newKey = await fdc3Security.unwrapKey(context);
         if (newKey) {
           if (this.symmetricKey == null) {
             this.symmetricKey = newKey;
@@ -72,16 +59,15 @@ export class EncryptingChannelDelegate extends ChannelDelegate implements Encryp
   async setChannelEncryption(state: boolean): Promise<void> {
     this.encrypting = state;
     if (state && !this.symmetricKey) {
-      this.symmetricKey = await createSymmetricKey();
+      this.symmetricKey = await this.fdc3Security.createSymmetricKey();
       this.keyCreator = true;
     }
   }
 
   async broadcastKey(publicKeyUrl: string): Promise<void> {
     if (this.symmetricKey) {
-      const ctx = await this.wrapKey(this.symmetricKey, publicKeyUrl);
-      await super.broadcast(ctx);
-      return;
+      const ctx = await this.fdc3Security.wrapKey(this.symmetricKey, publicKeyUrl);
+      return this.delegate.broadcast(ctx);
     } else {
       throw new Error('Channel not set to encrypting');
     }
@@ -89,22 +75,27 @@ export class EncryptingChannelDelegate extends ChannelDelegate implements Encryp
 
   async requestEncryptionKey(): Promise<void> {
     const request = {
-      type: SYMMETRIC_KEY_REQUEST_CONTEXT,
-    } as SymmetricKeyRequestContext;
+      type: 'fdc3.security.symmetricKey.request',
+    } as SymmetricKeyRequest;
     return this.broadcast(request);
   }
 
   async encryptIfAvailable(context: Context): Promise<Context> {
-    return this.symmetricKey && this.encrypting ? await encrypt(context, this.symmetricKey) : context;
+    if (this.symmetricKey && this.encrypting) {
+      const jwe = await this.fdc3Security.encrypt(context, this.symmetricKey);
+      const out = {
+        type: context.type,
+        __encrypted: jwe,
+      };
+      return out;
+    } else {
+      return context;
+    }
   }
 
-  async broadcast(context: Context): Promise<void> {
-    // make sure encryption happens before signing
-    console.log('starting encryption');
-    const context2 = await super.wrapContext(context);
-    const encContext = await this.encryptIfAvailable(context2);
-    await super.broadcast(encContext);
-    console.log('Encryption done');
+  async wrapContext(ctx: Context): Promise<Context> {
+    const encryptedContext = await this.encryptIfAvailable(ctx);
+    return encryptedContext;
   }
 
   addContextListener(context: any, handler?: any): Promise<Listener> {
@@ -121,22 +112,22 @@ export class EncryptingChannelDelegate extends ChannelDelegate implements Encryp
 
       console.log('Decrypting context handler called');
 
-      delete newMeta[ENCRYPTION_STATUS];
+      delete newMeta['encryption'];
 
-      const encrypted = context[ENCRYPTION_KEY] as EncryptedContent;
+      const encrypted = context['__encrypted'] as JSONWebEncryption;
 
       if (encrypted) {
         if (this.symmetricKey) {
-          context = await decrypt(encrypted, this.symmetricKey);
-          newMeta[ENCRYPTION_STATUS] = DECRYPTED;
+          context = await this.fdc3Security.decrypt(encrypted, this.symmetricKey);
+          newMeta['encryption'] = 'decrypted';
         } else {
-          newMeta[ENCRYPTION_STATUS] = CANT_DECRYPT;
+          newMeta['encryption'] = 'cant_decrypt';
           if (!this.keyCreator) {
             this.requestEncryptionKey();
           }
         }
       } else {
-        newMeta[ENCRYPTION_STATUS] = NOT_ENCRYPTED;
+        newMeta['encryption'] = 'not_encrypted';
       }
 
       return ch(context, newMeta);

@@ -1,6 +1,4 @@
 import { DesktopAgent } from '@finos/fdc3-standard';
-import { Sign } from './signing/SigningSupport';
-import { UnwrapKey } from './encryption/EncryptionSupport';
 import { UnopinionatedDesktopAgent } from './delegates/UnopinionatedDesktopAgent';
 import { ClientSideImplementation, Resolver } from './ClientSideImplementation';
 

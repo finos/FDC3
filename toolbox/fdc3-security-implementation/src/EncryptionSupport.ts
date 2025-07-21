@@ -33,10 +33,6 @@ export type EncryptedContext = {
   __encrypted: EncryptedContent;
 };
 
-export type ContextMetadataWithEncryptionStatus = ContextMetadata & {
-  encryption?: 'cant_decrypt' | 'not_encrypted' | 'decrypted';
-};
-
 export async function createSymmetricKey() {
   const k = (await crypto.subtle.generateKey(SYMMETRIC_KEY_PARAMS, true, ['encrypt', 'decrypt'])) as CryptoKey;
   return k;
@@ -88,25 +84,6 @@ export const decrypt: Decrypt = async (e: EncryptedContent, key: CryptoKey) => {
   const decrypted = new TextDecoder().decode(buffer);
   return JSON.parse(decrypted);
 };
-
-export interface EncryptingPrivateChannel extends PrivateChannel {
-  /**
-   * Returns true if this channel is set to encrypt with setChannelEncryption(true)
-   */
-  isEncrypting(): boolean;
-
-  /**
-   * Call this method after creation to ensure that further communications on
-   * the channel are encrypted.
-   */
-  setChannelEncryption(state: boolean): Promise<void>;
-
-  /**
-   * Broadcasts the channel's symmetric key, wrapped in the provided public key of
-   * a receiving app.
-   */
-  broadcastKey(publicKeyUrl: string): Promise<void>;
-}
 
 export const WRAPPING_ALGORITHM = 'RSA-OAEP';
 
