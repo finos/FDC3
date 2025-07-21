@@ -50,6 +50,12 @@ In reality, we wouldn't use this, but it makes the test a lot simpler to underst
       | method      | args[0]    | args[1].type    | args[1].id.ticker | args[1].__signature                       |
       | raiseIntent | robsIntent | fdc3.instrument | AAPL              | length-check:115:https://dummy.com/pubKey |
 
+  Scenario: Raise Intent For Context context data will include a signature
+    When I call "{api}" with "raiseIntentForContext" with parameter "{instrumentContext}"
+    Then "{api.delegate.tracking}" is an array of objects with the following contents
+      | method                | args[0].type    | args[0].id.ticker | args[0].__signature                       |
+      | raiseIntentForContext | fdc3.instrument | AAPL              | length-check:107:https://dummy.com/pubKey |
+
   Scenario: Intent Handler returning a context object has the response signed
     Given "resultHandler" echoes the context back to the raiser
     And I call "{api}" with "addIntentListener" with parameters "viewNews" and "{resultHandler}"

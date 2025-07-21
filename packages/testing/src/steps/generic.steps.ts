@@ -127,24 +127,6 @@ export function setupGenericSteps() {
     }
   );
 
-  When(
-    'I call {string} with {string} with parameters {string} and {string} and {string}',
-    async function (this: PropsWorld, field: string, fnName: string, param1: string, param2: string, param3: string) {
-      try {
-        const fn = this.props[field][fnName];
-        const result = await fn.call(
-          this.props[field],
-          handleResolve(param1, this),
-          handleResolve(param2, this),
-          handleResolve(param3, this)
-        );
-        this.props['result'] = result;
-      } catch (error) {
-        this.props['result'] = error;
-      }
-    }
-  );
-
   When('I refer to {string} as {string}', async function (this: PropsWorld, from: string, to: string) {
     this.props[to] = handleResolve(from, this);
   });

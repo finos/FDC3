@@ -137,7 +137,7 @@ export class DesktopAgentSpy implements DesktopAgent {
   }
 
   async findIntent(intent: string, context?: Context | undefined, resultType?: string | undefined): Promise<AppIntent> {
-    this.call('findIntent', context, resultType);
+    this.call('findIntent', intent, context, resultType);
     return {
       intent: {
         name: intent,
@@ -220,22 +220,27 @@ export class DesktopAgentSpy implements DesktopAgent {
   }
 
   async leaveCurrentChannel(): Promise<void> {
+    this.call('leaveCurrentChannel');
     this.uc = undefined;
   }
 
   getInfo(): Promise<ImplementationMetadata> {
+    this.call('getInfo');
     throw new Error('Method not implemented.');
   }
 
-  getAppMetadata(_app: AppIdentifier): Promise<AppMetadata> {
+  getAppMetadata(app: AppIdentifier): Promise<AppMetadata> {
+    this.call('getAppMetadata', app);
     throw new Error('Method not implemented.');
   }
 
   getSystemChannels(): Promise<Channel[]> {
+    this.call('getSystemChannels');
     return this.getUserChannels();
   }
 
   async joinChannel(id: string): Promise<void> {
+    this.call('joinChannel', id);
     return this.joinUserChannel(id);
   }
 

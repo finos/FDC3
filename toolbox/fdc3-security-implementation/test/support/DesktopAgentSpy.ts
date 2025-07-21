@@ -199,10 +199,12 @@ export class DesktopAgentSpy implements DesktopAgent {
   }
 
   async getUserChannels(): Promise<Channel[]> {
+    this.call('getUserChannels');
     return MOCK_CHANNELS;
   }
 
   async joinUserChannel(id: string): Promise<void> {
+    this.call('joinUserChannel', id);
     this.uc = MOCK_CHANNELS.find(c => c.id == id);
   }
 
@@ -220,22 +222,27 @@ export class DesktopAgentSpy implements DesktopAgent {
   }
 
   async leaveCurrentChannel(): Promise<void> {
+    this.call('leaveCurrentChannel');
     this.uc = undefined;
   }
 
   getInfo(): Promise<ImplementationMetadata> {
+    this.call('getInfo');
     throw new Error('Method not implemented.');
   }
 
-  getAppMetadata(_app: AppIdentifier): Promise<AppMetadata> {
+  getAppMetadata(app: AppIdentifier): Promise<AppMetadata> {
+    this.call('getAppMetadata', app);
     throw new Error('Method not implemented.');
   }
 
   getSystemChannels(): Promise<Channel[]> {
+    this.call('getSystemChannels');
     return this.getUserChannels();
   }
 
   async joinChannel(id: string): Promise<void> {
+    this.call('joinChannel', id);
     return this.joinUserChannel(id);
   }
 
