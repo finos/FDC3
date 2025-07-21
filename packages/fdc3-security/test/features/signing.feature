@@ -52,9 +52,15 @@ In reality, we wouldn't use this, but it makes the test a lot simpler to underst
 
   Scenario: Raise Intent For Context context data will include a signature
     When I call "{api}" with "raiseIntentForContext" with parameter "{instrumentContext}"
+    And I refer to "{result}" as "intentResolution"
+    And I call "{intentResolution}" with "getResult"
+    And I refer to "{result}" as "intentResult"
     Then "{api.delegate.tracking}" is an array of objects with the following contents
       | method                | args[0].type    | args[0].id.ticker | args[0].__signature                       |
       | raiseIntentForContext | fdc3.instrument | AAPL              | length-check:107:https://dummy.com/pubKey |
+    And "{intentResult}" is an object with the following contents
+      | type       | text           |
+      | dummy.news | Some news item |
 
   Scenario: Intent Handler returning a context object has the response signed
     Given "resultHandler" echoes the context back to the raiser

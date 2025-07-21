@@ -12,7 +12,7 @@ export type MessageAuthenticity =
     }
   | {
       verified: false;
-      error: any;
+      error?: string;
     };
 
 /**

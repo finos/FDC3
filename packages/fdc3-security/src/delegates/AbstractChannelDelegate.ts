@@ -4,7 +4,7 @@ import { Context } from '@finos/fdc3-context';
 /**
  * Wraps a standard FDC3 Channel or PrivateChannel.
  */
-export class ChannelDelegate implements PrivateChannel {
+export abstract class AbstractChannelDelegate implements PrivateChannel {
   readonly delegate: PrivateChannel;
   id: string;
   type: 'user' | 'app' | 'private';
@@ -17,9 +17,7 @@ export class ChannelDelegate implements PrivateChannel {
     this.displayMetadata = c.displayMetadata;
   }
 
-  async wrapContext(ctx: Context): Promise<Context> {
-    return ctx;
-  }
+  abstract wrapContext(ctx: Context): Promise<Context>;
 
   onAddContextListener(handler: (contextType?: string | undefined) => void): Listener {
     return this.delegate.onAddContextListener(handler);

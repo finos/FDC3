@@ -44,40 +44,23 @@ export async function checkSignature(
   }
 
   if (signature) {
-    try {
-      const res = await fdc3Security.check(signature, unsignedContext, intent, channelId);
-      const m2: ContextMetadataWithAuthenticity = m == undefined ? ({} as ContextMetadataWithAuthenticity) : m;
-      m2['authenticity'] = res;
-      return {
-        context: unsignedContext,
-        meta: m2,
-      };
-    } catch (e) {
-      console.log("Couldn't check signature");
-      const m2: ContextMetadataWithAuthenticity = m == undefined ? ({} as ContextMetadataWithAuthenticity) : m;
-      m2['authenticity'] = {
-        verified: false,
-        error: e,
-      };
-      return {
-        context: unsignedContext,
-        meta: m2,
-      };
-    }
+    const res = await fdc3Security.check(signature, unsignedContext, intent, channelId);
+    const m2: ContextMetadataWithAuthenticity = m == undefined ? ({} as ContextMetadataWithAuthenticity) : m;
+    m2['authenticity'] = res;
+    return {
+      context: unsignedContext,
+      meta: m2,
+    };
   } else {
-    if (m) {
-      const m2 = { ...m };
-      delete m2['authenticity'];
-      return {
-        context: unsignedContext,
-        meta: m2,
-      };
-    } else {
-      return {
-        context: unsignedContext,
-        meta: undefined,
-      };
-    }
+    const m2 = m ? { ...m } : ({} as ContextMetadataWithAuthenticity);
+    delete m2['authenticity'];
+    m2.authenticity = {
+      verified: false,
+    };
+    return {
+      context: unsignedContext,
+      meta: m2,
+    };
   }
 }
 

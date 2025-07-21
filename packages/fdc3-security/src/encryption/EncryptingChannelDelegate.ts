@@ -1,8 +1,8 @@
 import { ContextHandler, ContextMetadata, Listener, PrivateChannel } from '@finos/fdc3-standard';
 import { Context, SymmetricKeyResponse, SymmetricKeyRequest } from '@finos/fdc3-context';
-import { ChannelDelegate } from '../delegates/ChannelDelegate';
 import { FDC3Security, JSONWebEncryption } from '../FDC3Security';
 import { EncryptingPrivateChannel } from './EncryptingPrivateChannel';
+import { AbstractChannelDelegate } from '../delegates/AbstractChannelDelegate';
 
 /**
  * TODO: this should be moved into Julianna's code.
@@ -21,7 +21,7 @@ export type ContextMetadataWithEncryptionStatus = ContextMetadata & {
  * 2.  Whomever calls setChannelEncryption(true) creates the symmetric key and is the keyCreator.
  * 3.  Users of the channel will request an encryption key if they can't decrypt messages.
  */
-export class EncryptingChannelDelegate extends ChannelDelegate implements EncryptingPrivateChannel {
+export class EncryptingChannelDelegate extends AbstractChannelDelegate implements EncryptingPrivateChannel {
   private symmetricKey: JsonWebKey | null = null;
   private typeFilter: null | ((type: string) => boolean) = null;
   private keyCreator: boolean = false;

@@ -11,7 +11,6 @@ import {
   ImplementationMetadata,
   IntentHandler,
   IntentResolution,
-  IntentResult,
   Listener,
   PrivateChannel,
 } from '@finos/fdc3-standard';
@@ -63,26 +62,31 @@ export class MockChannel implements PrivateChannel {
     this.displayMetadata = displayMetadata;
   }
 
-  onAddContextListener(_handler: (contextType?: string | undefined) => void): Listener {
+  onAddContextListener(handler: (contextType?: string | undefined) => void): Listener {
+    this.call('onAddContextListener', handler);
     throw new Error('Method not implemented.');
   }
 
-  onUnsubscribe(_handler: (contextType?: string | undefined) => void): Listener {
+  onUnsubscribe(handler: (contextType?: string | undefined) => void): Listener {
+    this.call('onUnsubscribe', handler);
     throw new Error('Method not implemented.');
   }
 
-  onDisconnect(_handler: () => void): Listener {
+  onDisconnect(handler: () => void): Listener {
+    this.call('onDisconnect', handler);
     throw new Error('Method not implemented.');
   }
 
   addEventListener(
-    _type: 'disconnect' | 'unsubscribe' | 'addContextListener',
-    _listener: EventHandler
+    type: 'disconnect' | 'unsubscribe' | 'addContextListener',
+    listener: EventHandler
   ): Promise<Listener> {
+    this.call('addEventListener', type, listener);
     throw new Error('Method not implemented.');
   }
 
   disconnect(): Promise<void> {
+    this.call('disconnect');
     throw new Error('Method not implemented.');
   }
 
@@ -168,7 +172,11 @@ export class DesktopAgentSpy implements DesktopAgent {
       },
       intent,
       getResult: async () => {
-        return {} as IntentResult;
+        return {
+          type: 'dummy.news',
+          text: 'Some news item',
+          __signature: 'length-check:113:https://dummy.com/pubKey',
+        } as Context;
       },
     } as IntentResolution;
   }
@@ -181,7 +189,11 @@ export class DesktopAgentSpy implements DesktopAgent {
       },
       intent: 'showNews',
       getResult: async () => {
-        return {} as IntentResult;
+        return {
+          type: 'dummy.news',
+          text: 'Some news item',
+          __signature: 'length-check:113:https://dummy.com/pubKey',
+        } as Context;
       },
     } as IntentResolution;
   }
@@ -216,6 +228,7 @@ export class DesktopAgentSpy implements DesktopAgent {
   }
 
   async getCurrentChannel(): Promise<Channel | null> {
+    this.call('getCurrentChannel');
     return this.uc ? this.uc : null;
   }
 

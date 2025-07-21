@@ -7,6 +7,8 @@ Feature: Checking Signatures
     Given "instrumentContextUC" is a "fdc3.instrument" context with dummy signature field length 108
     Given "instrumentContextPC" is a "fdc3.instrument" context with dummy signature field length 112
     Given "instrumentContextIH" is a "fdc3.instrument" context with dummy signature field length 113
+    Given "instrumentContextBadSignature" is a "fdc3.instrument" context with broken signature field
+    Given "instrumentContextNoSignature" is a "fdc3.instrument" context
 
   Scenario: Intent Handler receives a checked signature back in the metadata
     Given "resultHandler" pipes context to "contexts" and metadata to "metas"
@@ -71,3 +73,42 @@ Feature: Checking Signatures
     And "{metas}" is an array of objects with the following contents
       | authenticity.verified | authenticity.valid | authenticity.publicKeyUrl |
       | true                  | false              | https://dummy.com/pubKey  |
+
+  Scenario: Bad Signature that can't be checked
+    Given "resultHandler" pipes context to "contexts" and metadata to "metas"
+    When I call "{api}" with "getUserChannels"
+    And I refer to "{result[0]}" as "firstUserChannel"
+    And I call "{api}" with "joinUserChannel" with parameter "{firstUserChannel.id}"
+    And I call "{api}" with "addContextListener" with parameters "{null}" and "{resultHandler}"
+    And I call "{api.delegate.handlers.any}" with parameter "{instrumentContextBadSignature}"
+    Then "{contexts}" is an array of objects with the following contents
+      | type            | name  |
+      | fdc3.instrument | Apple |
+    And "{metas}" is an array of objects with the following contents
+      | authenticity.verified | authenticity.valid | authenticity.publicKeyUrl |
+      | true                  | false              |                           |
+
+  Scenario: Signature missing
+    Given "resultHandler" pipes context to "contexts" and metadata to "metas"
+    When I call "{api}" with "getUserChannels"
+    And I refer to "{result[0]}" as "firstUserChannel"
+    And I call "{api}" with "joinUserChannel" with parameter "{firstUserChannel.id}"
+    And I call "{api}" with "addContextListener" with parameters "{null}" and "{resultHandler}"
+    And I call "{api.delegate.handlers.any}" with parameter "{instrumentContextNoSignature}"
+    Then "{contexts}" is an array of objects with the following contents
+      | type            | name  |
+      | fdc3.instrument | Apple |
+    And "{metas}" is an array of objects with the following contents
+      | authenticity.verified |
+      | false                 |
+
+  Scenario: Raise Intent receives back a signed intent result
+TODO: This is incomplete as we don't yet have a way to return metadata from an intent result.
+
+    Given I call "{api}" with "raiseIntent" with parameters "viewNews" and "{instrumentContextIH}"
+    And I refer to "{result}" as "intentResolution"
+    And I call "{intentResolution}" with "getResult"
+    And I refer to "{result}" as "intentResult"
+    Then "{result}" is an object with the following contents
+      | type       | text           |
+      | dummy.news | Some news item |

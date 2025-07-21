@@ -41,7 +41,7 @@ export class SecuredDesktopAgentDelegate extends AbstractDesktopAgentDelegate {
       const encryptingChannel = new EncryptingChannelDelegate(signingChannel, this.fdc3Security);
       return encryptingChannel;
     } else {
-      throw new Error('Unknown Channel Type');
+      /* istanbul ignore next */ throw new Error('Unknown Channel Type');
     }
   }
 

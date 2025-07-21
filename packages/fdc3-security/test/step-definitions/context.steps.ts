@@ -44,6 +44,15 @@ Given(
 );
 
 Given(
+  '{string} is a {string} context with broken signature field',
+  function (this: CustomWorld, field: string, type: string) {
+    const copy = JSON.parse(JSON.stringify(contextMap[type]));
+    copy['__signature'] = 'broken-signature';
+    this.props[field] = copy;
+  }
+);
+
+Given(
   '{string} pipes context to {string} and metadata to {string}',
   function (this: CustomWorld, contextHandlerName: string, field: string, field2: string) {
     this.props[field] = [];

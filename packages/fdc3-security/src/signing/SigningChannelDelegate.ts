@@ -1,13 +1,13 @@
 import { Channel, ContextHandler, Listener, PrivateChannel } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
-import { ChannelDelegate } from '../delegates/ChannelDelegate';
 import { FDC3Security } from '../FDC3Security';
 import { signingContextHandler } from './SigningSupport';
+import { AbstractChannelDelegate } from '../delegates/AbstractChannelDelegate';
 
 /**
  * Adds signing / checking support to any channel being wrapped.
  */
-export class SigningChannelDelegate extends ChannelDelegate {
+export class SigningChannelDelegate extends AbstractChannelDelegate {
   private readonly fdc3Security: FDC3Security;
 
   constructor(d: Channel | PrivateChannel, fdc3Security: FDC3Security) {
