@@ -62,7 +62,7 @@ Given(
     const ch: ContextHandler = async (_c: Context, m: ContextMetadata | undefined) => {
       const channel: EncryptingPrivateChannel = handleResolve(channelName, this);
       const auth = (m as ContextMetadataWithAuthenticity)?.authenticity;
-      if (auth?.verified == true) {
+      if (auth?.signed == true) {
         const publicKey = (m as any).authenticity.publicKeyUrl;
         channel.broadcastKey(publicKey);
       }

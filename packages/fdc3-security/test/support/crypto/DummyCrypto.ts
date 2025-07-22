@@ -1,5 +1,10 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
-import { FDC3Security, JSONWebEncryption, JSONWebSignature, MessageAuthenticity } from '../../../src/FDC3Security';
+import {
+  FDC3Security,
+  JSONWebEncryption,
+  JSONWebSignature,
+  SignedMessageAuthenticity,
+} from '../../../src/FDC3Security';
 import { canonicalize } from 'json-canonicalize';
 
 export class DummyCrypto implements FDC3Security {
@@ -44,7 +49,7 @@ export class DummyCrypto implements FDC3Security {
     ctx: Context,
     intent: string | null,
     channelId: string | null
-  ): Promise<MessageAuthenticity> {
+  ): Promise<SignedMessageAuthenticity> {
     const msg = this.createMessage(ctx, intent, channelId);
     const splitSig = sig.split(':');
     const length = splitSig[1];
@@ -52,11 +57,12 @@ export class DummyCrypto implements FDC3Security {
     const url = splitSig.join(':');
 
     console.log('CHECKING: ' + msg);
-    const out = {
+    const out: SignedMessageAuthenticity = {
       valid: length == `${msg.length}`,
-      verified: true,
+      signed: true,
+      trusted: true,
       publicKeyUrl: url,
-    } as MessageAuthenticity;
+    };
 
     return out;
   }

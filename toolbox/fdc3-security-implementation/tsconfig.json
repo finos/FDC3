@@ -6,6 +6,8 @@
       "test"
     ],
     "outDir": "dist",
+    "module": "ESNext",
+    "moduleResolution": "node",
   },
   "include": [
     "src"
@@ -16,13 +18,10 @@
   ],
   "references": [
     {
-      "path": "../fdc3-security"
+      "path": "../../packages/fdc3-security"
     },
     {
-      "path": "../fdc3-context"
-    },
-    {
-      "path": "../testing"
+      "path": "../../packages/fdc3-context"
     }
   ]
 }

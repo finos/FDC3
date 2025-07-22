@@ -55,7 +55,7 @@ export async function checkSignature(
     const m2 = m ? { ...m } : ({} as ContextMetadataWithAuthenticity);
     delete m2['authenticity'];
     m2.authenticity = {
-      verified: false,
+      signed: false,
     };
     return {
       context: unsignedContext,
