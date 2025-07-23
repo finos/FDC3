@@ -4,11 +4,12 @@ import canonicalize from 'canonicalize';
 import * as jose from 'jose';
 
 export type JSONWebKeyWithId = JsonWebKey & {
-  kid: string; // Key ID, optional
+  kid: string; // Key ID
+  alg: string; // Algorithm used for the key
 };
 
 export type JWKSResolver = {
-  (protectedHeader?: jose.JWSHeaderParameters, token?: jose.FlattenedJWSInput): Promise<jose.CryptoKey>;
+  (protectedHeader?: jose.JWSHeaderParameters, token?: jose.FlattenedJWSInput): Promise<CryptoKey>;
   /** @ignore */
   coolingDown: boolean;
   /** @ignore */
@@ -148,7 +149,7 @@ export class LocalFDC3Security implements FDC3Security {
         signed: true,
         valid: result.payload != null,
         trusted: this.allowListFunction(jku),
-        publicKeyUrl: this.jwksUrl,
+        publicKeyUrl: jku,
       };
     } catch (error) {
       return {
@@ -175,7 +176,7 @@ export class LocalFDC3Security implements FDC3Security {
       wrappedKey: wrapped,
       id: {
         pki: publicKeyUrl,
-        kid: this.wrappingPublicKey.kid,
+        kid: 'bongo',
       },
     };
   }
@@ -187,7 +188,7 @@ export class LocalFDC3Security implements FDC3Security {
     return decodedKey;
   }
 
-  async getPublicKeys(): Promise<JsonWebKey[]> {
+  getPublicKeys(): JSONWebKeyWithId[] {
     return [this.signingPublicKey, this.wrappingPublicKey];
   }
 }
@@ -204,6 +205,7 @@ export async function createSigningKeyPair(id: string): Promise<{ priv: JsonWebK
   const privateKey = await jose.exportJWK(keyPair.privateKey);
   const publicKey = await jose.exportJWK(keyPair.publicKey);
   publicKey.kid = id;
+  publicKey.alg = 'RS256';
   return { priv: privateKey, pub: publicKey };
 }
 
@@ -215,6 +217,7 @@ export async function createWrappingKeyPair(id: string): Promise<{ priv: JsonWeb
   const privateKey = await jose.exportJWK(keyPair.privateKey);
   const publicKey = await jose.exportJWK(keyPair.publicKey);
   publicKey.kid = id;
+  publicKey.alg = 'RSA-OAEP-256';
   return { priv: privateKey, pub: publicKey };
 }
 

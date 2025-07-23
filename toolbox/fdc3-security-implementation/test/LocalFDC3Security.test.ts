@@ -23,7 +23,7 @@ const createJWKSResolver = (keys: JSONWebKeyWithId[]): JWKSResolver => {
     );
 
     if (key) {
-      const cryptoKey = await jose.importJWK(key, 'RSA-OAEP-256');
+      const cryptoKey = await jose.importJWK(key, protectedHeader?.alg);
       if (cryptoKey instanceof CryptoKey) {
         return cryptoKey;
       }
@@ -38,26 +38,23 @@ const createJWKSResolver = (keys: JSONWebKeyWithId[]): JWKSResolver => {
   resolver.fresh = true;
   resolver.reloading = false;
   resolver.reload = async () => {};
-  resolver.jwks = () => ({ keys: [k] });
+  resolver.jwks = () => ({ keys: keys });
 
   return resolver;
 };
 
-let sender: LocalFDC3Security | undefined;
-let receiver: LocalFDC3Security | undefined;
+let sender: LocalFDC3Security;
+let receiver: LocalFDC3Security;
 
 const senderPublicKeyResolver = (_url: string): JWKSResolver => {
-  return createJWKSResolver(receiver!.getPublicKeys());
+  return createJWKSResolver(receiver.getPublicKeys());
 };
 
 const receiverPublicKeyResolver = (_url: string): JWKSResolver => {
-  return createJWKSResolver(sender!.getPublicKeys());
+  return createJWKSResolver(sender.getPublicKeys());
 };
 
 describe('ClientSideFDC3Security', () => {
-  let sender: LocalFDC3Security;
-  let receiver: LocalFDC3Security;
-
   const mockContext: Context = {
     type: 'fdc3.instrument',
     id: { ticker: 'AAPL' },
@@ -66,22 +63,12 @@ describe('ClientSideFDC3Security', () => {
 
   beforeAll(async () => {
     // Use the factory functions to create instances
-    sender = await createLocalFDC3Security(
-      senderPublicKeyUrl,
-      senderPublicKeyResolver,
-      senderAllowListFunction,
-      300,
-      'sender-signing-key-id',
-      'sender-wrapping-key-id'
-    );
+    sender = await createLocalFDC3Security(senderPublicKeyUrl, senderPublicKeyResolver, senderAllowListFunction);
 
     receiver = await createLocalFDC3Security(
       receiverPublicKeyUrl,
       receiverPublicKeyResolver,
-      receiverAllowListFunction,
-      300,
-      'receiver-signing-key-id',
-      'receiver-wrapping-key-id'
+      receiverAllowListFunction
     );
   });
 

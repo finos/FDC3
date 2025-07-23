@@ -27,3 +27,4 @@ toolbox/fdc3-for-web/fdc3-web-impl/generated/
 cucumber-report.html
 nyc-coverage-report/
 .history/
+junit.xml
