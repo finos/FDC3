@@ -155,6 +155,26 @@ describe('ClientSideFDC3Security', () => {
         expect(expiredResult.error).toContain('Signature is too old');
       }
     });
+
+    it('should reject signatures with header missing required fields', async () => {
+      const intent = 'test-intent';
+      const channelId = 'test-channel';
+
+      // Create a header with just iat field (missing kid, alg, etc.)
+      const headerWithJustIat = { iat: Math.floor(Date.now() / 1000) };
+      const headerBase64 = btoa(JSON.stringify(headerWithJustIat));
+
+      // Create a malformed signature with header missing required fields
+      const malformedSignature = `${headerBase64}.dummy.payload`;
+
+      const result = await receiver.check(malformedSignature, mockContext, intent, channelId);
+
+      expect(result.signed).toBe(false);
+      expect('error' in result).toBe(true);
+      if (!result.signed && 'error' in result) {
+        expect(result.error).toContain('Signature does not contain a public key URL / Key ID / Issued At timestamp');
+      }
+    });
   });
 
   describe('constructor validation', () => {
