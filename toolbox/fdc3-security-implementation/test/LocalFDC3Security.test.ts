@@ -68,7 +68,8 @@ describe('ClientSideFDC3Security', () => {
     receiver = await createLocalFDC3Security(
       receiverPublicKeyUrl,
       receiverPublicKeyResolver,
-      receiverAllowListFunction
+      receiverAllowListFunction,
+      1 // 1-second validity time limit
     );
   });
 
@@ -118,6 +119,81 @@ describe('ClientSideFDC3Security', () => {
 
       // Verify the unwrapped key matches the original
       expect(unwrappedKey).toEqual(symmetricJWK);
+    });
+
+    it('should handle malformed signatures gracefully', async () => {
+      const intent = 'test-intent';
+      const channelId = 'test-channel';
+
+      // Test with an invalid JWS format (not three parts separated by dots)
+      const malformedSignature = 'invalid.jws.format';
+      const result = await receiver.check(malformedSignature, mockContext, intent, channelId);
+
+      expect(result.signed).toBe(false);
+      // When signed is false, error may be present but other properties should not exist
+      expect('error' in result).toBe(true);
+      expect('valid' in result).toBe(false);
+      expect('trusted' in result).toBe(false);
+      expect('publicKeyUrl' in result).toBe(false);
+    });
+
+    it('should reject signatures that are too old', async () => {
+      const intent = 'test-intent';
+      const channelId = 'test-channel';
+
+      // Create a signature
+      const signature = await sender.sign(mockContext, intent, channelId);
+
+      // Wait for the signature to expire (1.5 seconds)
+      await new Promise(resolve => setTimeout(resolve, 1500));
+
+      // Verify it's rejected as too old
+      const expiredResult = await receiver.check(signature, mockContext, intent, channelId);
+      expect(expiredResult.signed).toBe(false);
+      expect('error' in expiredResult).toBe(true);
+      if (!expiredResult.signed && 'error' in expiredResult) {
+        expect(expiredResult.error).toContain('Signature is too old');
+      }
+    });
+  });
+
+  describe('constructor validation', () => {
+    it('should throw error when signing public key has no kid', () => {
+      const signingPrivateKey = { kty: 'RSA', n: 'test', e: 'AQAB' };
+      const signingPublicKey = { kty: 'RSA', n: 'test', e: 'AQAB' }; // Missing kid
+      const wrappingPrivateKey = { kty: 'RSA', n: 'test', e: 'AQAB' };
+      const wrappingPublicKey = { kty: 'RSA', n: 'test', e: 'AQAB', kid: 'wrapping-key-id', alg: 'RSA-OAEP-256' };
+
+      expect(() => {
+        new LocalFDC3Security(
+          signingPrivateKey,
+          signingPublicKey,
+          wrappingPrivateKey,
+          wrappingPublicKey,
+          'https://example.com/keys',
+          () => createJWKSResolver([]),
+          () => true
+        );
+      }).toThrow("Signing public key must have a 'kid' (Key ID) property");
+    });
+
+    it('should throw error when wrapping public key has no kid', () => {
+      const signingPrivateKey = { kty: 'RSA', n: 'test', e: 'AQAB' };
+      const signingPublicKey = { kty: 'RSA', n: 'test', e: 'AQAB', kid: 'signing-key-id', alg: 'RS256' };
+      const wrappingPrivateKey = { kty: 'RSA', n: 'test', e: 'AQAB' };
+      const wrappingPublicKey = { kty: 'RSA', n: 'test', e: 'AQAB' }; // Missing kid
+
+      expect(() => {
+        new LocalFDC3Security(
+          signingPrivateKey,
+          signingPublicKey,
+          wrappingPrivateKey,
+          wrappingPublicKey,
+          'https://example.com/keys',
+          () => createJWKSResolver([]),
+          () => true
+        );
+      }).toThrow("Wrapping public key must have a 'kid' (Key ID) property");
     });
   });
 });
