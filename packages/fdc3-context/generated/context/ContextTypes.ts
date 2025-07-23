@@ -1949,10 +1949,6 @@ export interface SymmetricKeyRequest {
  * A response containing a wrapped symmetric key and metadata.
  */
 export interface SymmetricKeyResponse {
-  /**
-   * The encryption algorithm parameters used for key wrapping.
-   */
-  algorithm: Algorithm;
   id: SymmetricKeyResponseID;
   type: 'fdc3.security.symmetricKey.response';
   /**
@@ -1963,39 +1959,15 @@ export interface SymmetricKeyResponse {
   [property: string]: any;
 }
 
-/**
- * The encryption algorithm parameters used for key wrapping.
- */
-export interface Algorithm {
-  /**
-   * The name of the hash algorithm used with RSA-OAEP.
-   */
-  hash: Hash;
-  /**
-   * Length of the RSA key modulus in bits.
-   */
-  modulusLength: number;
-  /**
-   * The algorithm name.
-   */
-  name: 'RSA-OAEP';
-  /**
-   * The public exponent used for key generation.
-   */
-  publicExponent: number[];
-  [property: string]: any;
-}
-
-/**
- * The name of the hash algorithm used with RSA-OAEP.
- */
-export type Hash = 'SHA-256' | 'SHA-384' | 'SHA-512';
-
 export interface SymmetricKeyResponseID {
   /**
-   * URL pointing to the public key used to wrap the symmetric key.
+   * Key ID used to identify the symmetric key.
    */
-  publicKeyUrl: string;
+  kid: string;
+  /**
+   * Public Key Infrastructure reference or identifier.
+   */
+  pki: string;
   [property: string]: any;
 }
 
@@ -3243,7 +3215,6 @@ const typeMap: any = {
   ),
   SymmetricKeyResponse: o(
     [
-      { json: 'algorithm', js: 'algorithm', typ: r('Algorithm') },
       { json: 'id', js: 'id', typ: r('SymmetricKeyResponseID') },
       { json: 'type', js: 'type', typ: r('SymmetricKeyResponseType') },
       { json: 'wrappedKey', js: 'wrappedKey', typ: '' },
@@ -3251,16 +3222,13 @@ const typeMap: any = {
     ],
     'any'
   ),
-  Algorithm: o(
+  SymmetricKeyResponseID: o(
     [
-      { json: 'hash', js: 'hash', typ: r('Hash') },
-      { json: 'modulusLength', js: 'modulusLength', typ: 0 },
-      { json: 'name', js: 'name', typ: r('Name') },
-      { json: 'publicExponent', js: 'publicExponent', typ: a(0) },
+      { json: 'kid', js: 'kid', typ: '' },
+      { json: 'pki', js: 'pki', typ: '' },
     ],
     'any'
   ),
-  SymmetricKeyResponseID: o([{ json: 'publicKeyUrl', js: 'publicKeyUrl', typ: '' }], 'any'),
   TimeRange: o(
     [
       { json: 'endTime', js: 'endTime', typ: u(undefined, Date) },
@@ -3371,8 +3339,6 @@ const typeMap: any = {
   PositionType: ['fdc3.position'],
   PortfolioType: ['fdc3.portfolio'],
   SymmetricKeyRequestType: ['fdc3.security.symmetricKey.request'],
-  Hash: ['SHA-256', 'SHA-384', 'SHA-512'],
-  Name: ['RSA-OAEP'],
   SymmetricKeyResponseType: ['fdc3.security.symmetricKey.response'],
   TradeType: ['fdc3.trade'],
   TradeListType: ['fdc3.tradeList'],

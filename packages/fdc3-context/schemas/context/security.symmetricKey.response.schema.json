@@ -14,14 +14,18 @@
                 "id": {
                     "type": "object",
                     "properties": {
-                        "publicKeyUrl": {
+                        "kid": {
                             "type": "string",
-                            "format": "uri",
-                            "description": "URL pointing to the public key used to wrap the symmetric key."
+                            "description": "Key ID used to identify the symmetric key."
+                        },
+                        "pki": {
+                            "type": "string",
+                            "description": "Public Key Infrastructure reference or identifier."
                         }
                     },
                     "required": [
-                        "publicKeyUrl"
+                        "kid",
+                        "pki"
                     ]
                 },
                 "wrappedKey": {
@@ -30,70 +34,12 @@
                     "examples": [
                         "u4jvA7...=="
                     ]
-                },
-                "algorithm": {
-                    "type": "object",
-                    "description": "The encryption algorithm parameters used for key wrapping.",
-                    "properties": {
-                        "name": {
-                            "type": "string",
-                            "const": "RSA-OAEP",
-                            "description": "The algorithm name.",
-                            "examples": [
-                                "RSA-OAEP"
-                            ]
-                        },
-                        "modulusLength": {
-                            "type": "integer",
-                            "description": "Length of the RSA key modulus in bits.",
-                            "examples": [
-                                4096
-                            ]
-                        },
-                        "publicExponent": {
-                            "type": "array",
-                            "description": "The public exponent used for key generation.",
-                            "items": {
-                                "type": "integer",
-                                "minimum": 0,
-                                "maximum": 255
-                            },
-                            "minItems": 3,
-                            "maxItems": 3,
-                            "examples": [
-                                [
-                                    1,
-                                    0,
-                                    1
-                                ]
-                            ]
-                        },
-                        "hash": {
-                            "type": "string",
-                            "description": "The name of the hash algorithm used with RSA-OAEP.",
-                            "enum": [
-                                "SHA-256",
-                                "SHA-384",
-                                "SHA-512"
-                            ],
-                            "examples": [
-                                "SHA-256"
-                            ]
-                        }
-                    },
-                    "required": [
-                        "name",
-                        "modulusLength",
-                        "publicExponent",
-                        "hash"
-                    ]
                 }
             },
             "required": [
                 "type",
                 "id",
-                "wrappedKey",
-                "algorithm"
+                "wrappedKey"
             ]
         },
         {
@@ -104,19 +50,10 @@
         {
             "type": "fdc3.security.symmetricKey.response",
             "id": {
-                "publicKeyUrl": "https://example.com/keys/public.pem"
+                "kid": "key-id-123",
+                "pki": "https://examples.com/myJWKSendpoint"
             },
-            "wrappedKey": "u4jvA7Gx8LdH...==",
-            "algorithm": {
-                "name": "RSA-OAEP",
-                "modulusLength": 4096,
-                "publicExponent": [
-                    1,
-                    0,
-                    1
-                ],
-                "hash": "SHA-256"
-            }
+            "wrappedKey": "u4jvA7Gx8LdH...=="
         }
     ]
 }

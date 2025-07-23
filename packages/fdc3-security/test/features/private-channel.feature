@@ -50,9 +50,9 @@ Subsequent broadcasts from a are decrypted.
       | fdc3.instrument | {null} |                125 |
       | fdc3.instrument | Apple  | {null}             |
     And "{metas}" is an array of objects with the following contents
-      | authenticity.verified | authenticity.valid | authenticity.publicKeyUrl | encryption   |
-      | true                  | true               | https://dummy.com/pubKey  | cant_decrypt |
-      | true                  | true               | https://dummy.com/pubKey  | decrypted    |
+      | authenticity.signed | authenticity.valid | authenticity.publicKeyUrl | encryption   |
+      | true                | true               | https://dummy.com/pubKey  | cant_decrypt |
+      | true                | true               | https://dummy.com/pubKey  | decrypted    |
 
   Scenario: An intent result is received containing a private channel.
 In this case, the response also contains a wrapped symmetric encryption key, so we need to unwrap it and instantiate it.

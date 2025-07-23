@@ -74,11 +74,15 @@ export class DummyCrypto implements FDC3Security {
     };
   }
 
-  async wrapKey(symmetricKey: JsonWebKey, _publicKeyUrl: string): Promise<SymmetricKeyResponse> {
+  async wrapKey(symmetricKey: JsonWebKey, publicKeyUrl: string): Promise<SymmetricKeyResponse> {
     return {
       type: 'fdc3.security.symmetricKey.response',
       wrappedKey: JSON.stringify(symmetricKey),
-    } as SymmetricKeyResponse;
+      id: {
+        kid: 'dummy-key-id',
+        pki: publicKeyUrl,
+      },
+    };
   }
 
   async unwrapKey(ctx: SymmetricKeyResponse): Promise<JsonWebKey> {

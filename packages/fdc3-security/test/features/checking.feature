@@ -45,8 +45,8 @@ Feature: Checking Signatures
       | type            | name  |
       | fdc3.instrument | Apple |
     And "{metas}" is an array of objects with the following contents
-      | authenticity.verified | authenticity.valid | authenticity.publicKeyUrl |
-      | true                  | true               | https://dummy.com/pubKey  |
+      | authenticity.signed | authenticity.valid | authenticity.publicKeyUrl |
+      | true                | true               | https://dummy.com/pubKey  |
 
   Scenario: Private Channel Context Handler receives a checked signature back in the metadata
     Given "resultHandler" pipes context to "contexts" and metadata to "metas"
@@ -58,8 +58,8 @@ Feature: Checking Signatures
       | type            | name  |
       | fdc3.instrument | Apple |
     And "{metas}" is an array of objects with the following contents
-      | authenticity.verified | authenticity.valid | authenticity.publicKeyUrl |
-      | true                  | true               | https://dummy.com/pubKey  |
+      | authenticity.signed | authenticity.valid | authenticity.publicKeyUrl |
+      | true                | true               | https://dummy.com/pubKey  |
 
   Scenario: Private Channel Context Handler receives a bad signature back in the metadata
     Given "resultHandler" pipes context to "contexts" and metadata to "metas"
@@ -71,8 +71,8 @@ Feature: Checking Signatures
       | type            | name  |
       | fdc3.instrument | Apple |
     And "{metas}" is an array of objects with the following contents
-      | authenticity.verified | authenticity.valid | authenticity.publicKeyUrl |
-      | true                  | false              | https://dummy.com/pubKey  |
+      | authenticity.signed | authenticity.valid | authenticity.publicKeyUrl | authenticity.trusted |
+      | true                | false              | https://dummy.com/pubKey  | true                 |
 
   Scenario: Bad Signature that can't be checked
     Given "resultHandler" pipes context to "contexts" and metadata to "metas"
@@ -85,8 +85,8 @@ Feature: Checking Signatures
       | type            | name  |
       | fdc3.instrument | Apple |
     And "{metas}" is an array of objects with the following contents
-      | authenticity.verified | authenticity.valid | authenticity.publicKeyUrl |
-      | true                  | false              |                           |
+      | authenticity.signed | authenticity.valid | authenticity.publicKeyUrl | authenticity.trusted |
+      | true                | false              |                           |                      |
 
   Scenario: Signature missing
     Given "resultHandler" pipes context to "contexts" and metadata to "metas"
@@ -99,8 +99,8 @@ Feature: Checking Signatures
       | type            | name  |
       | fdc3.instrument | Apple |
     And "{metas}" is an array of objects with the following contents
-      | authenticity.verified |
-      | false                 |
+      | authenticity.signed |
+      | false               |
 
   Scenario: Raise Intent receives back a signed intent result
 TODO: This is incomplete as we don't yet have a way to return metadata from an intent result.
