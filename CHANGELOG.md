@@ -11,13 +11,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Add a notes field to Trade type ([#1563](https://github.com/finos/FDC3/pull/1563))
 * Add a notes field to Order and Product types ([#1597](https://github.com/finos/FDC3/pull/1597))
 * Added Go language binding. ([#1483](https://github.com/finos/FDC3/pull/1483))
-
 * Added details of and procedures for resolving fully-qualified appIds and unqualified appIds in the API and Bridging Parts of the Standard. ([#1523](https://github.com/finos/FDC3/pull/1523))
-
 * Ported FDC3 Conformance Project as-is into the FDC3 Monorepo, just including minimal fixes for typescript compilation. ([#1576](https://github.com/finos/FDC3/pull/1576))
-
 * Added Conformance tests for FDC3 2.2 ([#1586](https://github.com/finos/FDC3/pull/1586))
-
 * Adding A Channel Change Event Listener Doesn't Send addEventListenerRequest - Conformance 2.2 ([#1606](https://github.com/finos/FDC3/pull/1606))
 
 ### Changed
