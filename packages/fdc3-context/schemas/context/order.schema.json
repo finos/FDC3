@@ -34,7 +34,12 @@
             }
           },
           "additionalProperties": true
-        }
+        },
+        "notes": {
+					"type": "string",
+					"title": "Order Notes",
+					"description": "Additional notes or comments about the order."
+				}
       },
       "required": [
         "type",
@@ -48,6 +53,7 @@
     {
       "type": "fdc3.order",
       "name": "...",
+      "notes": "...",
       "id": {
         "myOMS": "12345"
       },
