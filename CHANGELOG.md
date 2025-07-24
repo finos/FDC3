@@ -7,18 +7,28 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+* Removes sourcemaps from npm package output ([#1589](https://github.com/finos/FDC3/issues/1589))
+* Add a notes field to Trade type ([#1563](https://github.com/finos/FDC3/pull/1563))
+* Add a notes field to Order and Product types ([#1597](https://github.com/finos/FDC3/pull/1597))
 * Added Go language binding. ([#1483](https://github.com/finos/FDC3/pull/1483))
 
-- Ported FDC3 Conformance Project as-is into the FDC3 Monorepo, just including minimal fixes for typescript compilation. ([#1576](https://github.com/finos/FDC3/pull/1576)).    
-- Added Conformance tests for FDC3 2.2 ([#1586](https://github.com/finos/FDC3/pull/1586)), including fixes for: 
-  - Workaround for [1585](https://github.com/finos/FDC3/issues/1585)  
-  - Fix for [1605](https://github.com/finos/FDC3/issues/1605)
+* Added details of and procedures for resolving fully-qualified appIds and unqualified appIds in the API and Bridging Parts of the Standard. ([#1523](https://github.com/finos/FDC3/pull/1523))
+
+* Ported FDC3 Conformance Project as-is into the FDC3 Monorepo, just including minimal fixes for typescript compilation. ([#1576](https://github.com/finos/FDC3/pull/1576))
+
+* Added Conformance tests for FDC3 2.2 ([#1586](https://github.com/finos/FDC3/pull/1586))
+
+* Adding A Channel Change Event Listener Doesn't Send addEventListenerRequest - Conformance 2.2 ([#1606](https://github.com/finos/FDC3/pull/1606))
 
 ### Changed
 
 ### Deprecated
 
 ### Fixed
+* Add unit tests to the fdc3-context package for validating context examples are valid schema.
+* Revert schema of `fdc3.timeRange` context type back to use anyOf in place of oneOf for the `startTime` and `endTime` property combinations.  This will allow existence of one of either, or both, and pass schema validation.  When defined with oneOf, validation would fail due to multiple entries being valid and it could not identify which to apply. ([#1592](https://github.com/finos/FDC3/issues/1592))
+* Revert schema of `fdc3.interaction` context type back to use anyOf in place of oneOf for the `interactionType` property.  Since it could be a string enum or a string, validation could not differentiate. ([#1598](https://github.com/finos/FDC3/issues/1598))
+* Fix `fdc3.timeRange` context example to use correctly formatted dateTime. ([#1599](https://github.com/finos/FDC3/issues/1599))
 
 ## [FDC3 Standard 2.2](https://github.com/finos/FDC3/compare/v2.1..v2.2) - 2025-03-12
 

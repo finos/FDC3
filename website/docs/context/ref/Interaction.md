@@ -77,7 +77,7 @@ The time range over which the interaction occurred
 <details>
   <summary><code>interactionType</code> <strong>(required)</strong></summary>
 
-**One of:**
+**Any of:**
 
 - **type**: `string` with values:
 - `Instant Message`,
