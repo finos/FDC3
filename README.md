@@ -132,6 +132,8 @@ This is a 4-step process:
 3.  **Push the branch to publish the packages to npm**
 
   ```bash
+  git add .
+  git commit -m "Updated to version vx.x" 
   git push origin release/v2.0
   ```
   
