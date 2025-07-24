@@ -206,6 +206,7 @@ export async function createSigningKeyPair(id: string): Promise<{ priv: JsonWebK
   const publicKey = await jose.exportJWK(keyPair.publicKey);
   publicKey.kid = id;
   publicKey.alg = 'RS256';
+  publicKey.use = 'sig';
   return { priv: privateKey, pub: publicKey };
 }
 
@@ -218,6 +219,7 @@ export async function createWrappingKeyPair(id: string): Promise<{ priv: JsonWeb
   const publicKey = await jose.exportJWK(keyPair.publicKey);
   publicKey.kid = id;
   publicKey.alg = 'RSA-OAEP-256';
+  publicKey.use = 'enc';
   return { priv: privateKey, pub: publicKey };
 }
 
