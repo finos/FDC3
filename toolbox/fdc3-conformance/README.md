@@ -32,7 +32,7 @@ There are multiple versions of the FDC3 standard.  A Desktop Agent could host ap
 
 There are two main parts to conformance:
   
-  - Running the tests _locally_, then
+  - Running the tests _locally_
   - Joining the Conformance Program
 
 ### Running The Conformance Tests
@@ -41,7 +41,7 @@ You can either run the hosted conformance tests listed in the FINOS App Director
 
 #### Running From fdc3.finos.org
 
-You can run the FDC3 conformance tests straight from the FDC3 website.  f you have a Desktop Agent supporting the [AppD v2 standard](https://fdc3.finos.org/docs/app-directory/spec), you can run the tests from the following URL:
+You can run the FDC3 conformance tests straight from the FDC3 website.  If you have a Desktop Agent supporting the [AppD v2 standard](https://fdc3.finos.org/docs/app-directory/spec), you can run the tests from the following URL:
 
  - [https://fdc3.finos.org/toolbox/fdc3-conformance/directory.v2.json](https://fdc3.finos.org/toolbox/fdc3-conformance/directory.v2.jso)
 

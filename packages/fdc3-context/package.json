@@ -22,7 +22,7 @@
     "generate": "npm run mkdirs && npm run typegen && npm run lint",
     "build": "npm run generate && tsc --module es2022",
     "lint": "eslint generated/ --fix && npx prettier generated/ --write",
-    "test": "npm run generate && tsc",
+    "test": "npm run generate && tsc && jest",
     "typegen": "cd schemas && node ../s2tQuicktypeUtil.js context ../generated/context/ContextTypes.ts"
   },
   "devDependencies": {
@@ -31,6 +31,8 @@
     "@types/jest": "29.5.13",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
     "@typescript-eslint/parser": "^8.18.2",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
     "eslint": "^9.16.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jest": "28.8.3",
