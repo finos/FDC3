@@ -10,10 +10,11 @@
     "include": [
         "src/**/*.ts",
         "generated/**/*",
-        "schemas/**/*.json"
+        "schemas/**/*.json",
     ],
     "exclude": [
-        "dist/**"
+        "dist/**",
+        "test/**"
     ],
     "references": []
 }

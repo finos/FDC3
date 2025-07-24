@@ -56,11 +56,21 @@ A financial instrument that relates to the definition of this product
 
 </details>
 
+<details>
+  <summary><code>notes</code></summary>
+
+**type**: `string`
+
+Additional notes or comments about the product.
+
+</details>
+
 ## Example
 
 ```json
 {
   "type": "fdc3.product",
+  "notes": "...",
   "id": {
     "productId": "ABC123"
   },

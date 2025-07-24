@@ -1587,6 +1587,10 @@ export interface Order {
    * An optional human-readable summary of the order.
    */
   name?: string;
+  /**
+   * Additional notes or comments about the order.
+   */
+  notes?: string;
   type: 'fdc3.order';
   [property: string]: any;
 }
@@ -1627,6 +1631,10 @@ export interface ProductObject {
    * A human-readable summary of the product.
    */
   name?: string;
+  /**
+   * Additional notes or comments about the product.
+   */
+  notes?: string;
   type: 'fdc3.product';
   [property: string]: any;
 }
@@ -1697,6 +1705,10 @@ export interface OrderElement {
    * An optional human-readable summary of the order.
    */
   name?: string;
+  /**
+   * Additional notes or comments about the order.
+   */
+  notes?: string;
   type: 'fdc3.order';
   [property: string]: any;
 }
@@ -1904,6 +1916,10 @@ export interface Product {
    * A human-readable summary of the product.
    */
   name?: string;
+  /**
+   * Additional notes or comments about the product.
+   */
+  notes?: string;
   type: 'fdc3.product';
   [property: string]: any;
 }
@@ -2974,6 +2990,7 @@ const typeMap: any = {
       { json: 'details', js: 'details', typ: u(undefined, r('PurpleOrderDetails')) },
       { json: 'id', js: 'id', typ: m('') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'notes', js: 'notes', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('OrderType') },
     ],
     'any'
@@ -2984,6 +3001,7 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: m('') },
       { json: 'instrument', js: 'instrument', typ: u(undefined, r('InstrumentElement')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'notes', js: 'notes', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('ProductType') },
     ],
     'any'
@@ -3002,6 +3020,7 @@ const typeMap: any = {
       { json: 'details', js: 'details', typ: u(undefined, r('FluffyOrderDetails')) },
       { json: 'id', js: 'id', typ: m('') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'notes', js: 'notes', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('OrderType') },
     ],
     'any'
@@ -3057,6 +3076,7 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: m('') },
       { json: 'instrument', js: 'instrument', typ: u(undefined, r('InstrumentElement')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'notes', js: 'notes', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('ProductType') },
     ],
     'any'
