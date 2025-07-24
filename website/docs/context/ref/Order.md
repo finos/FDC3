@@ -63,12 +63,22 @@ Optional additional details about the order, which may include a product element
 
 </details>
 
+<details>
+  <summary><code>notes</code></summary>
+
+**type**: `string`
+
+Additional notes or comments about the order.
+
+</details>
+
 ## Examples
 
 ```json
 {
   "type": "fdc3.order",
   "name": "...",
+  "notes": "...",
   "id": {
     "myOMS": "12345"
   },

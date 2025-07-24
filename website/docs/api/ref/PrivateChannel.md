@@ -52,6 +52,26 @@ interface IPrivateChannel : IChannel, IIntentResult
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+@experimental
+type PrivateChannel struct {
+    Channel
+}
+
+@experimental
+func (privateChannel *PrivateChannel) AddEventListener(eventType *PrivateChannelEventTypes, handler EventHandler) <-Result[Listener] {
+    // Implementation here
+}
+
+@experimental
+func (privateChannel *PrivateChannel) Disconnect() <-Result[any]  {
+    // Implementation here
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -142,6 +162,43 @@ _desktopAgent.AddIntentListener<Instrument>("QuoteStream", async (context, metad
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+<-desktopAgent.AddIntentListener("QuoteStream", func(context types.Context, metadata *ContextMetadata) <-chan IntentResult {
+        channelResult := <-desktopAgent.CreatePrivateChannel()
+        if channelResult.Err != nil {
+            // handle error 
+        }
+        var symbol string 
+        var exists bool
+        if symbol, exists = context.Id["ticker"]; !exists {
+            // handle not having ticker
+        }
+         // This gets called when the remote side adds a context listener
+        addContextlistenerResult := channelResult.Value.OnAddContextListener(func(contextType *string) {
+            feed.OnQuote(symbol, func(price string) {
+                channelResult.Value.Broadcast(Context{Type:price})
+            })
+        })
+
+        // This gets called when the remote side calls Listener.unsubscribe()
+        unsubscribeListenerResult := channelResult.Value.OnUnsubscribe(func(contextType *string) {
+            feed.Stop(symbol)
+        })
+
+        // This gets called if the remote side closes
+        unsubscribeListenerResult := channelResult.Value.OnDisconnect(func() {
+            feed.Stop(symbol)
+        })
+        result := make(chan types.IntentResult)
+        result <- channelResult.Value
+        return result
+    }
+)
+```
+
+</TabItem>
 </Tabs>
 
 ### 'Client-side' example
@@ -220,6 +277,32 @@ catch (Exception ex)
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+resolutionResult := <-desktopAgent.RaiseIntent("QuoteStream", Context{Type:"fdc3.instrument", Id: map[string]string{"ticker": "AAPL"}})
+if resolutionResult.Err != nil {
+    // handle error
+}
+
+result := resolutionResult.Value.GetResult()
+if channel, ok := result.Value.(Channel); ok {
+    listenerResult := <-channel.AddContextListener("price", func(quote, metadata) => {
+        log.Printf("%v", quote)
+    })
+    if channel.Type == Private {
+        if privateChannel, ok := interface{}(channel).(PrivateChannel); ok {
+            privateChannel.OnDisconnect(() {
+                log.Println("Quote feed went down")
+            })
+        }
+    } else {
+         log.Printf("%s did not return a channel", resolutionResult.Value.Source)
+    }
+}
+```
+
+</TabItem>
 </Tabs>
 
 ## Functions
@@ -238,6 +321,15 @@ addEventListener(type: PrivateChannelEventTypes  | null, handler: EventHandler):
 
 ```csharp
 Task<IListener> AddEventListener(string? eventType, Fdc3EventHandler handler);
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (privateChannel *PrivateChannel) AddEventListener(eventType *PrivateChannelEventTypes, handler EventHandler) <-Result[Listener] {
+    // Implementation here
+}
 ```
 
 </TabItem>
@@ -265,6 +357,15 @@ IChannel myPrivateChannel;
 var listener = await myPrivateChannel.AddEventListener(null, (event) => {
     System.Diagnostics.Debug.WriteLine($"Received event ${event.Type}\n\tDetails: ${event.Details}");
 });
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+listenerResult := AddEventListener(nil, func(event PrivateChannelEvent) {
+    fmt.Printf("Received event %v\n\tDetails: %v", event.Type, event.Details)
+})
 ```
 
 </TabItem>
@@ -296,6 +397,15 @@ void Disconnect();
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (privateChannel *PrivateChannel) Disconnect() <-Result[any] {
+    // Implementation here
+}
+```
+
+</TabItem>
 </Tabs>
   
 May be called to indicate that a participant will no longer interact with this channel.
@@ -316,6 +426,15 @@ onAddContextListener(handler: (contextType?: string) => void): Listener;
 
 ```csharp
 IListener OnAddContextListener(Action<string?> handler);
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (privateChannel *PrivateChannel) OnAddContextListener(handler func(contextType *ContextType)) Result[Listener] {
+    // Implementation here
+}
 ```
 
 </TabItem>
@@ -342,6 +461,15 @@ IListener OnUnsubscribe(Action<string?> handler);
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (privateChannel *PrivateChannel) OnUnsubscribe(handler func(contextType *ContextType)) Result[Listener] {
+    // Implementation here
+}
+```
+
+</TabItem>
 </Tabs>
 
 Deprecated in favour of the async `addEventListener("unsubscribe", handler)` function.
@@ -362,6 +490,15 @@ onDisconnect(handler: () => void): Listener;
 
 ```csharp
 IListener OnDisconnect(Action handler);
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (privateChannel *PrivateChannel) OnDisconnect(handler func()) Result[Listener] {
+    // Implementation here
+}
 ```
 
 </TabItem>
