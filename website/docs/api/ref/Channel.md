@@ -735,7 +735,7 @@ catch (Exception ex)
 - [`getCurrentContext`](#getcurrentcontext)
 - [`addContextListener`](DesktopAgent#addContextListener)
 - [`joinUserChannel`](DesktopAgent#joinUserChannel)
-- [`fdc3.nothing`](../../context/ref/Nothing.md/#nothing)
+- [`addEventListener`](#addeventlistener)
 
 ## Deprecated Functions
 
