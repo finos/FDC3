@@ -73,7 +73,7 @@ hide_title: true
 | A   | 5. Receive Context      | An fdc3.instrument context is received by the handler added in step 2.<br />Ensure that the fdc3.instrument received by A is identical to that sent by B<br />Ensure that the fdc3.contact context is NOT received.                                                                   |
 | A   | 6. Add Event Listener    | Add an event listener for `contextCleared` event, using: <br />`await testChannel.addEventListener("contextCleared",handler)`  |
 | B   | 7. Clear Context            | B clears context using `testChannel.clearContext()`|
-| A   | 7. Received Event            | A receives event added in step 6 |
+| A   | 8. Received Event            | A receives event added in step 6 |
 
 - `ACClearContext1`: Perform above test.
 - `ACClearContext2`: Perform above test, but add specific type of the context type to the `testChannel.clearContext()`.
