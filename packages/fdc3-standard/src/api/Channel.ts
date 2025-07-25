@@ -75,14 +75,14 @@ export interface Channel {
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
 
   /**
-   * Clears context from the channel, and broadcasts an `fdc3.nothing` context to notify existing listeners that the context was cleared. Listeners added to the channel and calls to [`getCurrentContext`](#getcurrentcontext) will not receive any existing context until new context is broadcast to the channel. 
-   * 
-   * If a `contextType` is provided, only contexts of that type will be cleared and the `contextType` of the `fdc3.nothing` context will be set to that type name. 
-   * 
-   * If no `contextType` is provided, all contexts will be cleared and the `contextType` of the `fdc3.nothing` context will be omitted.
+   * Clears context from the channel, and triggers the event listener on the `contextCleared` event to notify existing listeners that the context was cleared. Listeners added to the channel and calls to [`getCurrentContext`](#getcurrentcontext) will not receive any existing context until new context is broadcast to the channel.
+   *
+   * If a `contextType` is provided, only contexts of that type will be cleared.
+   *
+   * If no `contextType` is provided, all contexts will be cleared.
    */
   clearContext(contextType?: string): Promise<void>;
-  
+
   /**
    * Register a handler for events from the Channel. Whenever the handler function
    * is called it will be passed an event object with details related to the event.
@@ -104,7 +104,7 @@ export interface Channel {
    * @param {EventHandler} handler A function that events received will be passed to.
    *
    */
-  addEventListener(type: string | null, handler: EventHandler): Promise<Listener>;  
+  addEventListener(type: string | null, handler: EventHandler): Promise<Listener>;
 
   /**
    * @deprecated use `addContextListener(null, handler)` instead of `addContextListener(handler)`.
