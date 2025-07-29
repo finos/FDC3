@@ -60,3 +60,20 @@ hide_title: true
 - `ACContextHistoryTyped`: Perform above test.
 - `ACContextHistoryMultiple`: **B** Broadcasts multiple history items of both types.  Ensure that only the last version of each type is received by **A**.
 - `ACContextHistoryLast`: In step 5. **A** retrieves the _untyped_ current context of the channel via `const currentContext = await testChannel.getCurrentContext()`. Ensure that A receives only the very last broadcast context item _of any type_.
+
+
+## Clearing Context
+
+| App | Step                    | Details                                                         |
+|-----|-------------------------|-----------------------------------------------------------------|
+| A   | 1. Retrieve `Channel`   | Retrieve a `Channel` object representing an 'App' channel called `test-channel` using: <br />`const testChannel = await fdc3.getOrCreateChannel("test-channel")` |
+| A   | 2. Add Context Listener | Add an _typed_ context listener for `fdc3.instrument`, using: <br />`await testChannel.addContextListener("fdc3.instrument",handler)`|
+| B   | 3. Retrieve `Channel`   | Retrieve a `Channel` object representing the same 'App' channel A did (`test-channel`)|
+| B   | 4. Broadcast            | B broadcasts both an `fdc3.instrument` context and an `fdc3.contact` context, using: <br /> `testChannel.broadcast(<fdc3.instrument>)` <br /> `testChannel.broadcast(<fdc3.contact>)`|
+| A   | 5. Receive Context      | An fdc3.instrument context is received by the handler added in step 2.<br />Ensure that the fdc3.instrument received by A is identical to that sent by B<br />Ensure that the fdc3.contact context is NOT received.                                                                   |
+| A   | 6. Add Event Listener    | Add an event listener for `contextCleared` event, using: <br />`await testChannel.addEventListener("contextCleared",handler)`  |
+| B   | 7. Clear Context            | B clears context using `testChannel.clearContext()`|
+| A   | 8. Received Event            | A receives event added in step 6 |
+
+- `ACClearContext1`: Perform above test.
+- `ACClearContext2`: Perform above test, but add specific type of the context type to the `testChannel.clearContext()`.
