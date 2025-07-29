@@ -1,0 +1,49 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/contextClearedEvent.schema.json",
+  "type": "object",
+  "title": "contextCleared Event",
+  "description": "An event message from the Desktop Agent to an app indicating that context has been cleared on a channel.",
+  "allOf": [
+    {
+      "$ref": "agentEvent.schema.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/ContextClearedEventType"
+        },
+        "payload": {
+          "$ref": "#/$defs/ContextClearedEventPayload"
+        },
+        "meta": true
+      },
+      "additionalProperties": false
+    }
+  ],
+  "$defs": {
+    "ContextClearedEventType": {
+      "title": "ContextCleared Event Message Type",
+      "const": "contextClearedEvent"
+    },
+    "ContextClearedEventPayload": {
+      "title": "contextCleared Event Payload",
+      "type": "object",
+      "properties": {
+        "channelId": {
+          "title": "Channel Id",
+          "description": "The Id of the channel that was cleared.",
+          "type": ["string", "null"]
+        },
+        "contextType": {
+          "title": "Context Type",
+          "description": "The type of context that was cleared, or null if all types were cleared.",
+          "type": ["string", "null"]
+        }
+      },
+      "required": ["channelId", "contextType"],
+      "additionalProperties": false
+    }
+}
+}

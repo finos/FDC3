@@ -35,7 +35,8 @@
         "privateChannelUnsubscribeEventListenerResponse",
         "raiseIntentForContextResponse",
         "raiseIntentResponse",
-        "raiseIntentResultResponse"
+        "raiseIntentResultResponse",
+        "clearContextResponse"
       ],
       "description": "Identifies the type of the message and it is typically set to the FDC3 function name that the message relates to, e.g. 'findIntent', with 'Response' appended."
     },
