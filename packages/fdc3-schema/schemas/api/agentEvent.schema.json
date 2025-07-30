@@ -26,6 +26,9 @@
       "description": "The message payload contains details of the event that the app is being notified about.",
       "additionalProperties": true
     },
+    "metadata": {
+					"$ref": "api.schema.json#/definitions/DesktopAgentProvidableContextMetadata"
+    },
     "meta": {
       "title": "Event Metadata",
       "description": "Metadata for messages sent by a Desktop Agent to an app notifying it of an event.",
