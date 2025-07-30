@@ -486,7 +486,6 @@ export interface AgentEventMessageMeta {
  * Metadata that can be provided by an app.
  */
 export interface DesktopAgentProvidableContextMetadata {
-  signature?: string;
   /**
    * Identifier for the source app instance
    */
@@ -650,7 +649,6 @@ export interface BroadcastEventMeta {
  * Metadata that can be provided by an app.
  */
 export interface ProvidableContextMetadata {
-  signature?: string;
   traceId?: string;
 }
 
@@ -3487,8 +3485,6 @@ export interface RaiseIntentRequestPayload {
  * Metadata that can be provided by an app.
  */
 export interface AppProvidableContextMetadata {
-  hostParams?: { [key: string]: any };
-  signature?: string;
   traceId?: string;
 }
 
@@ -4925,7 +4921,6 @@ const typeMap: any = {
   ),
   DesktopAgentProvidableContextMetadata: o(
     [
-      { json: 'signature', js: 'signature', typ: u(undefined, '') },
       { json: 'source', js: 'source', typ: u(undefined, r('AppIdentifier')) },
       { json: 'timestamp', js: 'timestamp', typ: u(undefined, 3.14) },
       { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
@@ -4985,13 +4980,7 @@ const typeMap: any = {
     ],
     false
   ),
-  ProvidableContextMetadata: o(
-    [
-      { json: 'signature', js: 'signature', typ: u(undefined, '') },
-      { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
-    ],
-    false
-  ),
+  ProvidableContextMetadata: o([{ json: 'traceId', js: 'traceId', typ: u(undefined, '') }], false),
   BroadcastEventPayload: o(
     [
       { json: 'channelId', js: 'channelId', typ: u(null, '') },
@@ -5867,14 +5856,7 @@ const typeMap: any = {
     ],
     false
   ),
-  AppProvidableContextMetadata: o(
-    [
-      { json: 'hostParams', js: 'hostParams', typ: u(undefined, m('any')) },
-      { json: 'signature', js: 'signature', typ: u(undefined, '') },
-      { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
-    ],
-    false
-  ),
+  AppProvidableContextMetadata: o([{ json: 'traceId', js: 'traceId', typ: u(undefined, '') }], false),
   RaiseIntentResponse: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
