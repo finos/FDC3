@@ -323,9 +323,6 @@
             "title": "AppProvidableContextMetadata",
             "type": "object",
             "properties": {
-                "signature": {
-                    "type": "string"
-                },
                 "traceId": {
                     "type": "string"
                 }
@@ -337,9 +334,6 @@
             "title": "DesktopAgentProvidableContextMetadata",
             "type": "object",
             "properties": {
-                "signature": {
-                    "type": "string"
-                },
                 "traceId": {
                     "type": "string"
                 },
