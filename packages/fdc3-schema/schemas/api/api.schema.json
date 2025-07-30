@@ -267,51 +267,67 @@
                 "type"
             ]
         },
-        "ContextMetadata": {
+        "ContextMetadataFields": {
             "description": "Metadata relating to a context or intent and context received through the\n`addContextListener` and `addIntentListener` functions.",
-            "title": "ContextMetadata",
+            "title": "ContextMetadataFields",
             "type": "object",
             "properties": {
                 "source": {
                     "$ref": "#/definitions/AppIdentifier",
                     "description": "Identifier for the app instance that sent the context and/or intent.",
                     "title": "source"
+                },
+                "traceId": {
+                    "type": "string",
+                    "title": "traceId",
+                    "description": "A unique identifier for the context or intent that can be used to trace the context or intent through the system."
+                },
+                "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "title": "timestamp",
+                    "description": "The timestamp when the context or intent was created, encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator."
+                },
+                "custom": {
+                    "type": "object",
+                    "additionalProperties": true,
+                    "title": "custom",
+                    "description": "Custom metadata that can be used to provide additional information about the context or intent."
                 }
             },
-            "additionalProperties": false,
+            "additionalProperties": false
+        },
+        "ContextMetadata": {
+            "description": "Metadata relating to a context or intent and context received through the\n`addContextListener` and `addIntentListener` functions.",
+            "title": "ContextMetadata",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ContextMetadataFields"
+                }
+            ],
+            "properties": {
+                "source": true,
+                "traceId": true,
+                "timestamp": true,
+                "custom": true
+            },
             "required": [
-                "source"
+                "source",
+                "timestamp"
             ]
         },
         "AppProvidableContextMetadata": {
             "description": "Metadata that can be provided by an app.",
             "title": "AppProvidableContextMetadata",
-            "type": "object",
-            "properties": {
-                "traceId": {
-                    "type": "string"
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ContextMetadataFields"
                 }
-            },
-            "additionalProperties": false
-        },
-        "DesktopAgentProvidableContextMetadata": {
-            "description": "Metadata that can be provided by an app.",
-            "title": "DesktopAgentProvidableContextMetadata",
-            "type": "object",
+            ],
             "properties": {
-                "traceId": {
-                    "type": "string"
-                },
-                "timestamp": {
-                    "type": "number"
-                },
-                "source": {
-                    "$ref": "#/definitions/AppIdentifier",
-                    "description": "Identifier for the source app instance",
-                    "title": "source"
-                }
-            },
-            "additionalProperties": false
+                "traceId": true,
+                "custom": true
+            }
         },
         "DesktopAgentIdentifier": {
             "description": "Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios\nwhere a request needs to be directed to a Desktop Agent rather than a specific app, or a\nresponse message is returned by the Desktop Agent (or more specifically its resolver)\nrather than a specific app. Used as a substitute for `AppIdentifier` in cases where no\napp details are available or are appropriate.",

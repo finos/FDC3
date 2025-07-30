@@ -6254,7 +6254,6 @@ const typeMap: any = {
     'WCP6Goodbye',
   ],
 };
-
 export type AppRequestMessage =
   | AddContextListenerRequest
   | AddEventListenerRequest
