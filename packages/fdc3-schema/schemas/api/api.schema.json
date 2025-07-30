@@ -267,7 +267,9 @@
                 "type"
             ]
         },
-        "ContextMetadata": {
+        "ContextMetadataFields": {
+            "description": "Metadata relating to a context or intent and context received through the\n`addContextListener` and `addIntentListener` functions.",
+            "title": "ContextMetadataFields",
             "type": "object",
             "description": "Metadata relating to a broadcastEvent or intentEvent, which may include metadata provided by the Desktop Agent or the App that initiated the broadcast, raise intent or open request.",
             "title": "Context Metadata",
@@ -288,65 +290,46 @@
                     "title": "timestamp",
                     "description": "The timestamp when the context or intent was created, encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator."
                 },
-                "signature": {
-                    "type": "string",
-                    "title": "signature",
-                    "description": "A cryptographic signature that can be used to verify the authenticity and integrity of the context or intent message."
-                },
                 "custom": {
                     "type": "object",
                     "additionalProperties": true,
                     "title": "custom",
-                    "description": "Custom metadata that can be used to provide additional information about the context or intent. This allows for individuals to use metadata fields that have yet to be standardized."
+                    "description": "Custom metadata that can be used to provide additional information about the context or intent."
                 }
+            },
+            "additionalProperties": false
+        },
+        "ContextMetadata": {
+            "description": "Metadata relating to a context or intent and context received through the\n`addContextListener` and `addIntentListener` functions.",
+            "title": "ContextMetadata",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ContextMetadataFields"
+                }
+            ],
+            "properties": {
+                "source": true,
+                "traceId": true,
+                "timestamp": true,
+                "custom": true
             },
             "required": [
                 "source",
-                "timestamp",
-                "traceId"
-            ],
-            "additionalProperties": false
-        },
-        "AppProvidableContextMetadata": {
-            "type": "object",
-            "description": "Metadata that can be provided by an app as part of a broadcast, raise intent or open API call.",
-            "title": "App Providable Context Metadata",
-            "properties": {
-                "traceId": {"$ref": "#/definitions/ContextMetadata/properties/traceId"},
-                "signature": {"$ref": "#/definitions/ContextMetadata/properties/signature"},
-                "custom": {"$ref": "#/definitions/ContextMetadata/properties/custom"}
-            },
-            "additionalProperties": false
+                "timestamp"
+            ]
         },
         "AppProvidableContextMetadata": {
             "description": "Metadata that can be provided by an app.",
             "title": "AppProvidableContextMetadata",
-            "type": "object",
-            "properties": {
-                "traceId": {
-                    "type": "string"
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ContextMetadataFields"
                 }
-            },
-            "additionalProperties": false
-        },
-        "DesktopAgentProvidableContextMetadata": {
-            "description": "Metadata that can be provided by an app.",
-            "title": "DesktopAgentProvidableContextMetadata",
-            "type": "object",
+            ],
             "properties": {
-                "traceId": {
-                    "type": "string"
-                },
-                "timestamp": {
-                    "type": "number"
-                },
-                "source": {
-                    "$ref": "#/definitions/AppIdentifier",
-                    "description": "Identifier for the source app instance",
-                    "title": "source"
-                }
-            },
-            "additionalProperties": false
+                "traceId": true,
+                "custom": true
+            }
         },
         "DesktopAgentIdentifier": {
             "description": "Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios\nwhere a request needs to be directed to a Desktop Agent rather than a specific app, or a\nresponse message is returned by the Desktop Agent (or more specifically its resolver)\nrather than a specific app. Used as a substitute for `AppIdentifier` in cases where no\napp details are available or are appropriate.",
