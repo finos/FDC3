@@ -37,7 +37,6 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIn
       source: m.payload.originatingApp as AppIdentifier,
       timestamp: m.meta.timestamp,
       traceId: m.metadata?.traceId ?? v4(),
-      signature: m.metadata?.signature,
     });
 
     this.handleIntentResult(done, m);

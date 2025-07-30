@@ -61,7 +61,6 @@ export class DefaultContextListener
       source: m.payload.originatingApp,
       timestamp: m.meta.timestamp,
       traceId: m.metadata?.traceId,
-      signature: m.metadata?.signature,
     };
     this.handler(m.payload.context, metadata);
   }
