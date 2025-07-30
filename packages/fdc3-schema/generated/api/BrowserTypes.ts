@@ -6426,7 +6426,6 @@ const typeMap: any = {
   RaiseIntentResponseType: ['raiseIntentResponse'],
   RaiseIntentResultResponseType: ['raiseIntentResultResponse'],
 };
-
 export type AppRequestMessage =
   | AddContextListenerRequest
   | AddEventListenerRequest
