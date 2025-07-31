@@ -1,5 +1,7 @@
 # FDC3 Security
 
+TODO: Update this!!!
+
 This is a minimal proof-of-concept for FDC3 Security, as proposed by the FDC3 Identity and Security Working Group.
 
 This project currently provides a Javascript implementation of FDC3 Security as a "decorator" for the FDC3 DesktopAgent API, which provides the following functionality:

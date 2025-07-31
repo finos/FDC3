@@ -2,17 +2,29 @@ import { BasicDirectory } from '@finos/fdc3-web-impl/src/directory/BasicDirector
 import { DirectoryApp } from '@finos/fdc3-web-impl/src/directory/DirectoryInterface';
 
 async function loadRemotely(u: string) {
-  const response = await fetch(u);
-  return await response.json();
-}
-
-async function load(url: string): Promise<DirectoryApp[]> {
-  if (url.startsWith('http')) {
-    return await loadRemotely(url).then(convertToDirectoryList);
-  } else {
-    return await loadRemotely(window.location.origin + url).then(convertToDirectoryList);
+  try {
+    const response = await fetch(u);
+    return await response.json();
+  } catch (error) {
+    console.error(`Error loading ${u}: ${error}`);
+    return [];
   }
 }
+
+async function load(urls: string[]): Promise<DirectoryApp[]> {
+  const promises = Promise.all(
+    urls.map(async url => {
+      if (url.startsWith('http')) {
+        return loadRemotely(url).then(convertToDirectoryList);
+      } else {
+        return loadRemotely(window.location.origin + url).then(convertToDirectoryList);
+      }
+    })
+  );
+
+  return (await promises).flat();
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const convertToDirectoryList = (data: any) => {
   return data.applications as DirectoryApp[];
@@ -23,7 +35,7 @@ export class FDC3_2_1_JSONDirectory extends BasicDirectory {
     super([]);
   }
 
-  async load(url: string) {
-    this.allApps = await load(url);
+  async load(urls: string[]) {
+    this.allApps = await load(urls);
   }
 }

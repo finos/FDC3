@@ -1,0 +1,67 @@
+{
+    "applications": [
+        {
+            "appId": "sp1",
+            "name": "Security POC 1",
+            "title": "Security POC 1: Send On Private Channel",
+            "description": "Waits for SecretComms intent, then broadcasts on a private channel",
+            "type": "web",
+            "details": {
+                "url": "http://localhost:4003/static/app1/index.html"
+            },
+            "hostManifests": {},
+            "version": "1.0.0",
+            "publisher": "FINOS",
+            "icons": [],
+            "interop": {
+                "intents": {
+                    "listensFor": {
+                        "SecretComms": {
+                            "displayName": "Secret Comms Example",
+                            "contexts": [
+                                "fdc3.instrument"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "appId": "sp2",
+            "name": "Security POC 2",
+            "title": "Security POC 2: Raise the SecretComms intent",
+            "description": "Raises SecretComms then listens on the returned private channel",
+            "type": "web",
+            "details": {
+                "url": "http://localhost:4003/static/app2/index.html"
+            },
+            "hostManifests": {},
+            "version": "1.0.0",
+            "publisher": "FINOS",
+            "icons": []
+        },
+        {
+            "appId": "idp",
+            "name": "IDP Example",
+            "title": "IDP",
+            "description": "Identity Provider, used by the security POC apps to get a JWT",
+            "type": "web",
+            "details": {
+                "url": "http://localhost:4003/static/idp-app/index.html"
+            },
+            "interop": {
+                "intents": {
+                    "listensFor": {
+                        "GetUser": {
+                            "displayName": "Retrieve the User JWT",
+                            "contexts": [
+                                "fdc3.UserRequest"
+                            ]
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "message": "OK"
+}
