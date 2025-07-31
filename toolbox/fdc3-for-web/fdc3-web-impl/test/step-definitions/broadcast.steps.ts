@@ -1,8 +1,8 @@
 import { When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
 import { createMeta } from './generic.steps';
-import { } from '@finos/fdc3-standard';
-import { handleResolve } from '@finos/testing';
+import {} from '@finos/fdc3-standard';
+import { handleResolve } from '@finos/fdc3-testing';
 import { contextMap } from './generic.steps';
 import { BrowserTypes } from '@finos/fdc3-schema';
 

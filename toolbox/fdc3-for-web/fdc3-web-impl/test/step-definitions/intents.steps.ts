@@ -2,7 +2,7 @@ import { DataTable, Given, When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
 import { DirectoryApp } from '../../src/directory/DirectoryInterface';
 import { APP_FIELD, contextMap, createMeta } from './generic.steps';
-import { handleResolve } from '@finos/testing';
+import { handleResolve } from '@finos/fdc3-testing';
 import { BrowserTypes } from '@finos/fdc3-schema';
 
 type FindIntentRequest = BrowserTypes.FindIntentRequest;

@@ -1,5 +1,5 @@
 import { Given } from '@cucumber/cucumber';
-import { handleResolve, setupGenericSteps } from '@finos/testing';
+import { handleResolve, setupGenericSteps } from '@finos/fdc3-testing';
 import { CustomWorld } from '../world/index';
 import { DummyCrypto } from '../support/crypto/DummyCrypto';
 import { DesktopAgentSpy } from '../support/DesktopAgentSpy';

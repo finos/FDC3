@@ -1,6 +1,6 @@
 import { Given } from '@cucumber/cucumber';
 import { CustomWorld } from '../world/index';
-import { handleResolve } from '@finos/testing';
+import { handleResolve } from '@finos/fdc3-testing';
 import { Context } from '@finos/fdc3-context';
 import { ContextMetadata, ResolveError } from '@finos/fdc3-standard';
 import { IntentEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';

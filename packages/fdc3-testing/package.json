@@ -1,5 +1,5 @@
 {
-  "name": "@finos/testing",
+  "name": "@finos/fdc3-testing",
   "version": "2.3.0",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
@@ -11,14 +11,18 @@
     "tag": "latest"
   },
   "license": "Apache-2.0",
-  "private": true,
   "files": [
     "dist"
   ],
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
-    "build": "tsc --module es2022",
+    "build": "tsc --module es2022 && npm run copy-features",
+    "copy-features": "npm run copy-security-features && npm run copy-get-agent-features && npm run copy-agent-proxy-features && npm run copy-web-impl-features",
+    "copy-security-features": "mkdir -p dist/features/security && cp -r ../fdc3-security/test/features/* dist/features/security/",
+    "copy-get-agent-features": "mkdir -p dist/features/get-agent && cp -r ../fdc3-get-agent/test/features/* dist/features/get-agent/",
+    "copy-agent-proxy-features": "mkdir -p dist/features/agent-proxy && cp -r ../fdc3-agent-proxy/test/features/* dist/features/agent-proxy/",
+    "copy-web-impl-features": "mkdir -p dist/features/web-impl && cp -r ../../toolbox/fdc3-for-web/fdc3-web-impl/test/features/* dist/features/web-impl/",
     "clean": "rimraf dist",
     "test": "tsc"
   },

@@ -1,7 +1,7 @@
 import { DataTable, Then, When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
 import { contextMap, createMeta } from './generic.steps';
-import { matchData } from '@finos/testing';
+import { matchData } from '@finos/fdc3-testing';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { State } from '../../src/ServerContext';
 import { GetInfoRequest } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';

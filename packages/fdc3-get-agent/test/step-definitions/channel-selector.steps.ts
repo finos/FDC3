@@ -1,5 +1,5 @@
 import { Given } from '@cucumber/cucumber';
-import { handleResolve } from '@finos/testing';
+import { handleResolve } from '@finos/fdc3-testing';
 import { DefaultDesktopAgentChannelSelector } from '../../src/ui/DefaultDesktopAgentChannelSelector';
 import { CHANNEL_SELECTOR_URL } from '../support/MockFDC3Server';
 import { USER_CHANNELS } from '../support/responses/UserChannels';

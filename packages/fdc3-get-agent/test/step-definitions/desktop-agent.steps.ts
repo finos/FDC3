@@ -1,6 +1,6 @@
 import { After, DataTable, Given, Then, When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
-import { doesRowMatch, handleResolve, setupGenericSteps } from '@finos/testing';
+import { doesRowMatch, handleResolve, setupGenericSteps } from '@finos/fdc3-testing';
 import { MockDocument } from '../support/MockDocument';
 import { MockWindow } from '../support/MockWindow';
 import { fdc3Ready, getAgent } from '../../src';

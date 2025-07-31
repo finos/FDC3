@@ -34,7 +34,7 @@
     "@cucumber/cucumber": "10.3.1",
     "@eslint/js": "^9.19.0",
     "@finos/fdc3-web-impl": "2.3.0",
-    "@finos/testing": "2.3.0",
+    "@finos/fdc3-testing": "2.3.0",
     "@types/node": "^20.16.11",
     "@types/wtfnode": "^0.7.3",
     "eslint": "^9.16.0",

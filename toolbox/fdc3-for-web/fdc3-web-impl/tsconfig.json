@@ -21,7 +21,7 @@
             "path": "../../../packages/fdc3-standard"
         },
         {
-            "path": "../../../packages/testing"
+            "path": "../../../packages/fdc3-testing"
         },
         {
             "path": "../../../packages/fdc3-schema"

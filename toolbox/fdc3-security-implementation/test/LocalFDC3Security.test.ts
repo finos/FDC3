@@ -1,4 +1,4 @@
-import { LocalFDC3Security, JSONWebKeyWithId, JWKSResolver, createLocalFDC3Security } from '../src/LocalFDC3Security';
+import { LocalFDC3Security, JSONWebKeyWithId, JWKSResolver, createLocalFDC3Security } from '../src/JoseFDC3Security';
 import { Context } from '@finos/fdc3-context';
 import * as jose from 'jose';
 
