@@ -1,9 +1,9 @@
 <html lang="en">
   <head>
-    <title>SP1: Private Broadcaster</title>
+    <title>SP2: Private Listener</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script type="module" src="../../src/client/apps/sp1.ts"></script>
+    <script type="module" src="../../src/idp-app/client/idp-app.ts"></script>
     <style>
       * {
         margin: 0;
@@ -76,6 +76,45 @@
         background: #f8d7da;
         color: #721c24;
         border: 1px solid #f5c6cb;
+      }
+
+      .action-bar {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        backdrop-filter: blur(10px);
+        text-align: center;
+      }
+
+      .action-btn {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 25px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      }
+
+      .action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+      }
+
+      .action-btn:active {
+        transform: translateY(0);
+      }
+
+      .action-btn:disabled {
+        background: #6c757d;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
       }
 
       .log-container {
@@ -234,6 +273,40 @@
         word-break: break-all;
       }
 
+      .encryption-badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        margin-left: 8px;
+      }
+
+      .encryption-encrypted {
+        background: #fff3cd;
+        color: #856404;
+      }
+
+      .encryption-decrypted {
+        background: #d4edda;
+        color: #155724;
+      }
+
+      .encryption-cant-decrypt {
+        background: #f8d7da;
+        color: #721c24;
+      }
+
+      .encryption-not-encrypted {
+        background: #e2e3e5;
+        color: #383d41;
+      }
+
+      .encryption-unknown {
+        background: #f8f9fa;
+        color: #6c757d;
+      }
+
       @keyframes slideIn {
         from {
           opacity: 0;
@@ -275,7 +348,7 @@
     <div class="container">
       <div class="header">
         <h1>🔐 FDC3 Security Demo</h1>
-        <p>SP1: Private Channel Broadcaster</p>
+        <p>SP2: Private Channel Listener</p>
       </div>
 
       <div class="status-bar">
@@ -283,6 +356,12 @@
           <span class="status-dot">●</span>
           Connecting...
         </div>
+      </div>
+
+      <div class="action-bar">
+        <button class="action-btn" id="raise">
+          🔗 Get Private Channel
+        </button>
       </div>
 
       <div class="log-container">
