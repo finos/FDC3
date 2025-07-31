@@ -6,7 +6,7 @@ const PORT = 4004;
 
 // Middleware
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../../../static')));
+app.use(express.static(path.join(__dirname, '../client/static')));
 
 // Basic health check endpoint
 app.get('/health', (req, res) => {
@@ -26,6 +26,7 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`App2 server running on http://localhost:${PORT}`);
   console.log(`Health check: http://localhost:${PORT}/health`);
+  console.log(`Serving static files from: ${path.join(__dirname, '../client/static')}`);
 });
 
 export default app;
