@@ -2,7 +2,6 @@ import express from 'express';
 import ViteExpress from 'vite-express';
 import { Server, Socket } from 'socket.io';
 import { APP_GOODBYE, APP_HELLO, DA_HELLO, FDC3_APP_EVENT, FDC3_DA_EVENT } from '../message-types';
-import { setupSecurityDemoEndpoints } from './security-demo';
 
 const app = express();
 
@@ -103,5 +102,3 @@ io.on('connection', (socket: Socket) => {
     }
   });
 });
-
-setupSecurityDemoEndpoints(app);
