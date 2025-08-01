@@ -5,7 +5,7 @@ import { createJoseFDC3Security, provisionJWKS } from '../../../src/JoseFDC3Secu
 
 const PORT = 4003;
 const app = express();
-const jwksUrl = `http://localhost:${PORT}/api/jwks`;
+const jwksUrl = `http://localhost:${PORT}/.well-known/jwks.json`;
 
 // Middleware to parse JSON
 app.use(express.json());
@@ -34,9 +34,12 @@ async function initializeFDC3Security() {
   }
 }
 
-// JWKS endpoint to expose public keys
-app.get('/api/jwks', (req, res) => {
+// .well-known/jwks.json endpoint (standard JWKS endpoint)
+app.get('/.well-known/jwks.json', (req, res) => {
+  console.log('.well-known/jwks.json endpoint called');
+
   if (!fdc3Security) {
+    console.log('FDC3 Security not initialized for .well-known/jwks.json request');
     return res.status(503).json({ error: 'FDC3 Security not initialized' });
   }
 
@@ -46,11 +49,49 @@ app.get('/api/jwks', (req, res) => {
       keys: publicKeys,
     };
 
+    console.log('.well-known/jwks.json generated successfully');
     res.setHeader('Content-Type', 'application/json');
     res.json(jwks);
   } catch (error) {
-    console.error('Error generating JWKS:', error);
+    console.error('Error generating .well-known/jwks.json:', error);
     res.status(500).json({ error: 'Failed to generate JWKS' });
+  }
+});
+
+// Sign GetUser intent request endpoint
+app.post('/api/sign_get_user_request', async (req, res) => {
+  console.log('Sign GetUser request endpoint called');
+  console.log('Request body:', req.body);
+
+  if (!fdc3Security) {
+    console.log('FDC3 Security not initialized for signing request');
+    return res.status(503).json({ error: 'FDC3 Security not initialized' });
+  }
+
+  try {
+    const { context } = req.body;
+
+    if (!context) {
+      console.log('Context is missing from request');
+      return res.status(400).json({ error: 'Context is required' });
+    }
+
+    console.log('Signing GetUser intent request with context:', context);
+
+    // Sign the GetUser intent request
+    const signature = await fdc3Security.sign(context, 'GetUser', null);
+
+    console.log('Request signed successfully');
+    console.log('Signature length:', signature.length);
+
+    res.json({
+      signature,
+      intent: 'GetUser',
+      context,
+    });
+  } catch (error) {
+    console.error('Error signing GetUser request:', error);
+    res.status(500).json({ error: 'Failed to sign request' });
   }
 });
 
@@ -58,9 +99,13 @@ app.get('/api/jwks', (req, res) => {
 initializeFDC3Security().then(() => {
   // Start server with ViteExpress
   const httpServer = ViteExpress.listen(app, PORT, () => {
-    console.log(`App1 server running on http://localhost:${PORT}`);
-    console.log(`Serving static files from: ${path.join(__dirname, '../client/static')}`);
-    console.log(`JWKS available at: http://localhost:${PORT}/api/jwks`);
+    console.log('==========================================');
+    console.log(`🚀 App1 server running on http://localhost:${PORT}`);
+    console.log(`📁 Serving static files from: ${path.join(__dirname, '../client/static')}`);
+    console.log('📋 Available endpoints:');
+    console.log('   GET  /.well-known/jwks.json - Standard JWKS endpoint');
+    console.log('   POST /api/sign_get_user_request - Sign GetUser intent requests');
+    console.log('==========================================');
   });
 });
 

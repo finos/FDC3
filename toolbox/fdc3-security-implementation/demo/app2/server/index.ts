@@ -5,6 +5,7 @@ import { createJoseFDC3Security, provisionJWKS } from '../../../src/JoseFDC3Secu
 
 const PORT = 4004;
 const app = express();
+const jwksUrl = `http://localhost:${PORT}/.well-known/jwks.json`;
 
 // Middleware to parse JSON
 app.use(express.json());
@@ -13,7 +14,6 @@ let fdc3Security: any = null;
 
 async function initializeFDC3Security() {
   try {
-    const jwksUrl = `http://localhost:${PORT}/api/jwks`;
     const allowListFunction = (url: string) => {
       // For demo purposes, allow localhost URLs
       return url.includes('localhost') || url.includes('127.0.0.1');
@@ -60,7 +60,7 @@ initializeFDC3Security().then(() => {
   const httpServer = ViteExpress.listen(app, PORT, () => {
     console.log(`App2 server running on http://localhost:${PORT}`);
     console.log(`Serving static files from: ${path.join(__dirname, '../client/static')}`);
-    console.log(`JWKS available at: http://localhost:${PORT}/api/jwks`);
+    console.log(`🔑 JWKS available at: ${jwksUrl}`);
   });
 });
 

@@ -38,9 +38,45 @@ async function raiseGetUserIntent(fdc3: DesktopAgent) {
       timestamp: new Date().toISOString(),
     });
 
-    const result = await fdc3.raiseIntent('GetUser', {
+    // First, get the context to be signed
+    const context = {
       type: 'fdc3.user.request',
+    };
+
+    // Call backend to sign the request
+    createLogEntry('info', '🔑 Requesting signature from backend...', {
+      endpoint: '/api/sign_get_user_request',
+      timestamp: new Date().toISOString(),
     });
+
+    const signedRequest = await fetch('/api/sign_get_user_request', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ context }),
+    });
+
+    if (!signedRequest.ok) {
+      throw new Error(`Failed to sign request: ${signedRequest.statusText}`);
+    }
+
+    const { signature, intent, context: signedContext } = await signedRequest.json();
+
+    createLogEntry('success', '✅ Request signed successfully', {
+      signature: signature.substring(0, 50) + '...',
+      intent,
+      timestamp: new Date().toISOString(),
+    });
+
+    // Create the signed context with the signature embedded
+    const contextWithSignature = {
+      ...signedContext,
+      __signature: signature,
+    };
+
+    // Now raise the intent with the signed context
+    const result = await fdc3.raiseIntent('GetUser', contextWithSignature);
 
     createLogEntry('success', '✅ GetUser Intent raised successfully', {
       intent: 'GetUser',

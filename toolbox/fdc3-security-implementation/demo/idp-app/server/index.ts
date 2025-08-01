@@ -14,7 +14,7 @@ declare module 'express-session' {
 
 const PORT = 4005;
 const app = express();
-const jwksUrl = `http://localhost:${PORT}/api/jwks`;
+const jwksUrl = `http://localhost:${PORT}/.well-known/jwks.json`;
 
 // Session configuration
 app.use(
@@ -148,7 +148,7 @@ app.get('/api/auth/status', (req, res) => {
 });
 
 // GetUser intent endpoint - handles GetUser intent requests
-app.post('/api/getuser', (req, res) => {
+app.post('/api/getuser', async (req, res) => {
   console.log('GetUser intent endpoint called');
   console.log('Request body:', req.body);
   console.log('Session:', req.session);
@@ -160,6 +160,75 @@ app.post('/api/getuser', (req, res) => {
       error: 'User not authenticated',
     });
     return;
+  }
+
+  // Validate signature if present
+  const { context, metadata } = req.body;
+
+  if (context && context.__signature) {
+    console.log('Validating signature for GetUser intent request');
+
+    if (!fdc3Security) {
+      console.log('FDC3 Security not initialized for signature validation');
+      res.status(503).json({
+        success: false,
+        error: 'FDC3 Security not initialized',
+      });
+      return;
+    }
+
+    try {
+      // Extract the signature and create unsigned context
+      const signature = context.__signature;
+      const unsignedContext = { ...context };
+      delete unsignedContext.__signature;
+
+      console.log('Validating signature:', signature.substring(0, 50) + '...');
+      console.log('Unsigned context:', unsignedContext);
+
+      // Validate the signature
+      const authenticity = await fdc3Security.check(signature, unsignedContext, 'GetUser', null);
+
+      console.log('Signature validation result:', authenticity);
+
+      if (!authenticity.signed) {
+        console.log('Request was not signed');
+        res.status(400).json({
+          success: false,
+          error: 'Request must be signed',
+        });
+        return;
+      }
+
+      if (!authenticity.valid) {
+        console.log('Signature validation failed:', authenticity.error);
+        res.status(400).json({
+          success: false,
+          error: `Signature validation failed: ${authenticity.error}`,
+        });
+        return;
+      }
+
+      if (!authenticity.trusted) {
+        console.log('Signature not from trusted source:', authenticity.publicKeyUrl);
+        res.status(400).json({
+          success: false,
+          error: `Signature not from trusted source: ${authenticity.publicKeyUrl}`,
+        });
+        return;
+      }
+
+      console.log('✅ Signature validated successfully from:', authenticity.publicKeyUrl);
+    } catch (error) {
+      console.error('Error validating signature:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to validate signature',
+      });
+      return;
+    }
+  } else {
+    console.log('No signature found in request - proceeding without signature validation');
   }
 
   // Create fdc3.user context object
@@ -188,7 +257,7 @@ initializeFDC3Security().then(() => {
     console.log('==========================================');
     console.log(`🚀 IDP App server running on http://localhost:${PORT}`);
     console.log(`📁 Serving static files from: ${path.join(__dirname, '..')}`);
-    console.log(`🔑 JWKS available at: http://localhost:${PORT}/api/jwks`);
+    console.log(`🔑 JWKS available at: ${jwksUrl}`);
     console.log('📋 Available endpoints:');
     console.log('   GET  /api/jwks - JWKS endpoint');
     console.log('   POST /api/login - Login user');
