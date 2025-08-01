@@ -43,4 +43,6 @@ export interface FDC3Security {
   wrapKey(symmetricKey: JsonWebKey, publicKeyUrl: string): Promise<SymmetricKeyResponse>;
 
   unwrapKey(ctx: SymmetricKeyResponse): Promise<JsonWebKey>;
+
+  getPublicKeys(): JsonWebKey[];
 }

@@ -26,7 +26,7 @@ export type JWKSResolver = {
  * Implements the FDC3Security interface either in node or the browser.
  * Using the jose library for JSON Web Signatures and Encryption.
  */
-export class LocalFDC3Security implements FDC3Security {
+export class JoseFDC3Security implements FDC3Security {
   readonly signingPrivateKey: JsonWebKey;
   readonly signingPublicKey: JSONWebKeyWithId;
   readonly wrappingPrivateKey: JsonWebKey;
@@ -235,14 +235,14 @@ export async function createWrappingKeyPair(id: string): Promise<{ priv: JsonWeb
  * @param wrappingKeyId - Optional custom ID for the wrapping key (default: auto-generated)
  * @returns Promise<ClientSideImplementation> - A fully configured instance
  */
-export async function createLocalFDC3Security(
+export async function createJoseFDC3Security(
   jwksUrl: string,
   publicKeyResolver: (url: string) => JWKSResolver,
   allowListFunction: (url: string) => boolean,
   validityTimeLimit: number = 5 * 60,
   signingKeyId?: string,
   wrappingKeyId?: string
-): Promise<LocalFDC3Security> {
+): Promise<JoseFDC3Security> {
   // Generate unique IDs if not provided
   const finalSigningKeyId = signingKeyId || `signing-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   const finalWrappingKeyId = wrappingKeyId || `wrapping-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
@@ -252,7 +252,7 @@ export async function createLocalFDC3Security(
   const wrappingKeys = await createWrappingKeyPair(finalWrappingKeyId);
 
   // Create and return the instance
-  return new LocalFDC3Security(
+  return new JoseFDC3Security(
     signingKeys.priv,
     signingKeys.pub,
     wrappingKeys.priv,

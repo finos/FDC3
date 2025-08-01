@@ -22,6 +22,9 @@
     },
     {
       "path": "../../packages/fdc3-context"
+    },
+    {
+      "path": "../../packages/fdc3"
     }
   ]
 }

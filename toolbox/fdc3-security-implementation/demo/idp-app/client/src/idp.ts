@@ -128,23 +128,36 @@ function setupFDC3Listeners(agent: DesktopAgent): void {
   agent.addIntentListener('GetUser', async (context: Context, metadata: ContextMetadata | undefined) => {
     createLogEntry('info', 'GetUser Intent Received', JSON.stringify(context, null, 2));
 
-    // Handle the GetUser intent by returning the current user information
-    if (isAuthenticated && currentUser) {
-      const userContext = {
-        type: 'fdc3.user',
-        id: { userId: currentUser.id },
-        name: currentUser.name,
-        metadata: {
-          source: 'idp-app',
-          timestamp: new Date().toISOString(),
+    try {
+      // Call the backend endpoint to get user information
+      const response = await fetch('/api/getuser', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      };
+        body: JSON.stringify({
+          context: context,
+          metadata: metadata,
+        }),
+      });
 
-      createLogEntry('success', 'GetUser Intent Handled', `Returning user context for: ${currentUser.name}`);
-      return userContext;
-    } else {
-      createLogEntry('warning', 'GetUser Intent Failed', 'User not authenticated');
-      throw new Error('User not authenticated');
+      const data = await response.json();
+
+      if (data.success && data.context) {
+        createLogEntry(
+          'success',
+          'GetUser Intent Handled',
+          `Returning user context from backend for: ${data.context.name}`
+        );
+        return data.context;
+      } else {
+        createLogEntry('error', 'GetUser Intent Failed', data.error || 'Backend returned error');
+        throw new Error(data.error || 'Failed to get user from backend');
+      }
+    } catch (error) {
+      console.error('GetUser intent error:', error);
+      createLogEntry('error', 'GetUser Intent Error', (error as Error).message);
+      throw error;
     }
   });
 }

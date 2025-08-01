@@ -2,6 +2,7 @@ import express from 'express';
 import ViteExpress from 'vite-express';
 import path from 'path';
 import session from 'express-session';
+import { createJoseFDC3Security, provisionJWKS } from '../../../src/JoseFDC3Security';
 
 // Extend session interface
 declare module 'express-session' {
@@ -13,12 +14,7 @@ declare module 'express-session' {
 
 const PORT = 4005;
 const app = express();
-
-// Logging middleware
-app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path} - ${req.ip}`);
-  next();
-});
+const jwksUrl = `http://localhost:${PORT}/api/jwks`;
 
 // Session configuration
 app.use(
@@ -39,6 +35,51 @@ console.log('Session middleware configured');
 // Middleware to parse JSON
 app.use(express.json());
 console.log('JSON parsing middleware configured');
+
+// Create JOSEFDC3Security instance
+let fdc3Security: any = null;
+
+async function initializeFDC3Security() {
+  try {
+    const allowListFunction = (url: string) => {
+      // For demo purposes, allow localhost URLs
+      return url.includes('localhost') || url.includes('127.0.0.1');
+    };
+
+    fdc3Security = await createJoseFDC3Security(
+      jwksUrl,
+      provisionJWKS,
+      allowListFunction,
+      5 * 60, // 5 minutes validity
+      'idp-signing-key',
+      'idp-wrapping-key'
+    );
+
+    console.log('✅ JOSEFDC3Security initialized for IDP App');
+  } catch (error) {
+    console.error('❌ Failed to initialize JOSEFDC3Security:', error);
+  }
+}
+
+// JWKS endpoint to expose public keys
+app.get('/api/jwks', (req, res) => {
+  if (!fdc3Security) {
+    return res.status(503).json({ error: 'FDC3 Security not initialized' });
+  }
+
+  try {
+    const publicKeys = fdc3Security.getPublicKeys();
+    const jwks = {
+      keys: publicKeys,
+    };
+
+    res.setHeader('Content-Type', 'application/json');
+    res.json(jwks);
+  } catch (error) {
+    console.error('Error generating JWKS:', error);
+    res.status(500).json({ error: 'Failed to generate JWKS' });
+  }
+});
 
 // Login endpoint
 app.post('/api/login', (req, res) => {
@@ -106,16 +147,56 @@ app.get('/api/auth/status', (req, res) => {
   }
 });
 
-// Start server with ViteExpress
-const httpServer = ViteExpress.listen(app, PORT, () => {
-  console.log('==========================================');
-  console.log(`🚀 IDP App server running on http://localhost:${PORT}`);
-  console.log(`📁 Serving static files from: ${path.join(__dirname, '..')}`);
-  console.log('📋 Available endpoints:');
-  console.log('   POST /api/login - Login user');
-  console.log('   POST /api/logout - Logout user');
-  console.log('   GET  /api/auth/status - Check auth status');
-  console.log('==========================================');
+// GetUser intent endpoint - handles GetUser intent requests
+app.post('/api/getuser', (req, res) => {
+  console.log('GetUser intent endpoint called');
+  console.log('Request body:', req.body);
+  console.log('Session:', req.session);
+
+  if (!req.session.isAuthenticated) {
+    console.log('User not authenticated for GetUser intent');
+    res.status(401).json({
+      success: false,
+      error: 'User not authenticated',
+    });
+    return;
+  }
+
+  // Create fdc3.user context object
+  const userContext = {
+    type: 'fdc3.user',
+    id: { userId: req.session.userId },
+    name: 'Demo User',
+    metadata: {
+      source: 'idp-app',
+      timestamp: new Date().toISOString(),
+      sessionId: req.sessionID,
+    },
+  };
+
+  console.log('Returning user context:', userContext);
+  res.json({
+    success: true,
+    context: userContext,
+  });
+});
+
+// Initialize FDC3 Security before starting server
+initializeFDC3Security().then(() => {
+  // Start server with ViteExpress
+  const httpServer = ViteExpress.listen(app, PORT, () => {
+    console.log('==========================================');
+    console.log(`🚀 IDP App server running on http://localhost:${PORT}`);
+    console.log(`📁 Serving static files from: ${path.join(__dirname, '..')}`);
+    console.log(`🔑 JWKS available at: http://localhost:${PORT}/api/jwks`);
+    console.log('📋 Available endpoints:');
+    console.log('   GET  /api/jwks - JWKS endpoint');
+    console.log('   POST /api/login - Login user');
+    console.log('   POST /api/logout - Logout user');
+    console.log('   GET  /api/auth/status - Check auth status');
+    console.log('   POST /api/getuser - Handle GetUser intent');
+    console.log('==========================================');
+  });
 });
 
 export default app;
