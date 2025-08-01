@@ -24,9 +24,6 @@
   "references": [
     {
       "path": "../../../packages/fdc3"
-    },
-    {
-      "path": "../fdc3-web-impl",
-    },
+    }
   ]
 }

@@ -23,7 +23,7 @@
     "lint": "eslint src/",
     "start:server": "tsc && node dist/src/example-server.js",
     "test:client": "tsc && node dist/src/test-client.js",
-    "dev": "concurrently \"npm run start:app1\"",
+    "dev": "concurrently \"npm run start:app1\" \"npm run start:app2\" \"npm run start:idp-app\"",
     "start:app1": "cd demo/app1 && nodemon -x tsx -w server server/index.ts",
     "start:app2": "cd demo/app2 && nodemon -x tsx -w server server/index.ts",
     "start:idp-app": "cd demo/idp-app && nodemon -x tsx -w server server/index.ts"
