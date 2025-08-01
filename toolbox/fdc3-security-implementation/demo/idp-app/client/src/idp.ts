@@ -1,5 +1,6 @@
 // IDP App Client Implementation
-import * as FDC3 from '@finos/fdc3';
+import { DesktopAgent, getAgent, Context, ContextMetadata } from '@finos/fdc3';
+import { createLogEntry, updateStatus, clearLog } from '../../../app1/common/src/logging';
 
 // Authentication state
 let isAuthenticated = false;
@@ -10,7 +11,6 @@ let loginBtn: HTMLButtonElement | null = null;
 let logoutBtn: HTMLButtonElement | null = null;
 let userInfo: HTMLDivElement | null = null;
 let userName: HTMLSpanElement | null = null;
-let statusEl: HTMLDivElement | null = null;
 
 // Check authentication status on page load
 async function checkAuthStatus(): Promise<void> {
@@ -22,16 +22,16 @@ async function checkAuthStatus(): Promise<void> {
       isAuthenticated = true;
       currentUser = data.user;
       showAuthenticatedState();
-      addLogEntry('info', 'User authenticated', `Logged in as: ${currentUser?.name} (${currentUser?.id})`);
+      createLogEntry('info', 'User authenticated', `Logged in as: ${currentUser?.name} (${currentUser?.id})`);
     } else {
       isAuthenticated = false;
       currentUser = null;
       showUnauthenticatedState();
-      addLogEntry('info', 'User not authenticated', 'Please log in to continue');
+      createLogEntry('info', 'User not authenticated', 'Please log in to continue');
     }
   } catch (error) {
     console.error('Error checking auth status:', error);
-    addLogEntry('error', 'Authentication check failed', (error as Error).message);
+    createLogEntry('error', 'Authentication check failed', (error as Error).message);
   }
 }
 
@@ -51,13 +51,13 @@ async function login(): Promise<void> {
       isAuthenticated = true;
       currentUser = data.user;
       showAuthenticatedState();
-      addLogEntry('success', 'Login successful', `Welcome, ${currentUser?.name}!`);
+      createLogEntry('success', 'Login successful', `Welcome, ${currentUser?.name}!`);
     } else {
-      addLogEntry('error', 'Login failed', 'Failed to authenticate user');
+      createLogEntry('error', 'Login failed', 'Failed to authenticate user');
     }
   } catch (error) {
     console.error('Login error:', error);
-    addLogEntry('error', 'Login error', (error as Error).message);
+    createLogEntry('error', 'Login error', (error as Error).message);
   }
 }
 
@@ -77,13 +77,13 @@ async function logout(): Promise<void> {
       isAuthenticated = false;
       currentUser = null;
       showUnauthenticatedState();
-      addLogEntry('info', 'Logout successful', 'You have been logged out');
+      createLogEntry('info', 'Logout successful', 'You have been logged out');
     } else {
-      addLogEntry('error', 'Logout failed', 'Failed to log out');
+      createLogEntry('error', 'Logout failed', 'Failed to log out');
     }
   } catch (error) {
     console.error('Logout error:', error);
-    addLogEntry('error', 'Logout error', (error as Error).message);
+    createLogEntry('error', 'Logout error', (error as Error).message);
   }
 }
 
@@ -102,62 +102,31 @@ function showUnauthenticatedState(): void {
   if (userInfo) userInfo.style.display = 'none';
 }
 
-// Add log entry
-function addLogEntry(type: string, message: string, details: string = ''): void {
-  const log = document.getElementById('log');
-  if (!log) return;
-
-  const timestamp = new Date().toLocaleTimeString();
-  const logEntry = document.createElement('div');
-  logEntry.className = `log-entry ${type}`;
-  logEntry.innerHTML = `
-    <div class="log-timestamp">${timestamp}</div>
-    <div class="log-message">${message}</div>
-    ${details ? `<div class="log-details">${details}</div>` : ''}
-  `;
-  log.appendChild(logEntry);
-  log.scrollTop = log.scrollHeight;
-}
-
-// Update status
-function updateStatus(status: string, message: string): void {
-  if (!statusEl) return;
-  statusEl.className = `status-indicator status-${status}`;
-  statusEl.innerHTML = `<span class="status-dot">●</span>${message}`;
-}
-
-// Clear log
-function clearLog(): void {
-  const log = document.getElementById('log');
-  if (!log) return;
-  log.innerHTML = `<div class="log-entry info"><div class="log-timestamp">${new Date().toLocaleTimeString()}</div><div class="log-message">Log cleared</div></div>`;
-}
-
 // FDC3 Integration
 async function initializeFDC3(): Promise<void> {
   try {
     updateStatus('connecting', 'Connecting to FDC3...');
 
     // Get the Desktop Agent
-    const agent = await FDC3.getAgent();
+    const agent = await getAgent();
 
     updateStatus('connected', 'Connected to FDC3');
-    addLogEntry('success', 'FDC3 Connected', 'Successfully connected to FDC3 Desktop Agent');
+    createLogEntry('success', 'FDC3 Connected', 'Successfully connected to FDC3 Desktop Agent');
 
     // Set up event listeners for FDC3 events
     setupFDC3Listeners(agent);
   } catch (error) {
     console.error('FDC3 connection error:', error);
     updateStatus('error', 'FDC3 Connection Failed');
-    addLogEntry('error', 'FDC3 Connection Failed', (error as Error).message);
+    createLogEntry('error', 'FDC3 Connection Failed', (error as Error).message);
   }
 }
 
 // Setup FDC3 event listeners
-function setupFDC3Listeners(agent: any): void {
+function setupFDC3Listeners(agent: DesktopAgent): void {
   // Listen for GetUser intent events
-  agent.addIntentListener('GetUser', (intent: any) => {
-    addLogEntry('info', 'GetUser Intent Received', JSON.stringify(intent, null, 2));
+  agent.addIntentListener('GetUser', async (context: Context, metadata: ContextMetadata | undefined) => {
+    createLogEntry('info', 'GetUser Intent Received', JSON.stringify(context, null, 2));
 
     // Handle the GetUser intent by returning the current user information
     if (isAuthenticated && currentUser) {
@@ -171,10 +140,10 @@ function setupFDC3Listeners(agent: any): void {
         },
       };
 
-      addLogEntry('success', 'GetUser Intent Handled', `Returning user context for: ${currentUser.name}`);
+      createLogEntry('success', 'GetUser Intent Handled', `Returning user context for: ${currentUser.name}`);
       return userContext;
     } else {
-      addLogEntry('warning', 'GetUser Intent Failed', 'User not authenticated');
+      createLogEntry('warning', 'GetUser Intent Failed', 'User not authenticated');
       throw new Error('User not authenticated');
     }
   });
@@ -186,7 +155,6 @@ function initializeDOMElements(): void {
   logoutBtn = document.getElementById('logout-btn') as HTMLButtonElement;
   userInfo = document.getElementById('user-info') as HTMLDivElement;
   userName = document.getElementById('user-name') as HTMLSpanElement;
-  statusEl = document.getElementById('status') as HTMLDivElement;
 }
 
 // Initialize the application
@@ -204,7 +172,7 @@ async function initialize(): Promise<void> {
   if (loginBtn) loginBtn.addEventListener('click', login);
   if (logoutBtn) logoutBtn.addEventListener('click', logout);
 
-  addLogEntry('info', 'IDP App Initialized', 'Application ready');
+  createLogEntry('info', 'IDP App Initialized', 'Application ready');
 }
 
 // Make functions available globally for HTML event handlers

@@ -1,17 +1,17 @@
 <html lang="en">
   <head>
-    <title>SP1: Private Broadcaster</title>
+    <title>App1: FDC3 Demo</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script type="module" src="/client/src/sp2.ts"></script>
+    <script type="module" src="/client/src/app1.ts"></script>
     <link rel="stylesheet" href="/common/styles.css">
   </head>
 
   <body>
     <div class="container">
       <div class="header">
-        <h1>🔐 FDC3 Security Demo</h1>
-        <p>SP1: Private Channel Broadcaster</p>
+        <h1>🔐 App1: FDC3 Intent Demo</h1>
+        <h2>FDC3 Security Demo</h2>
       </div>
 
       <div class="status-bar">
@@ -19,6 +19,15 @@
           <span class="status-dot">●</span>
           Connecting...
         </div>
+      </div>
+
+      <div class="action-bar">
+        <button class="action-btn" id="login-btn">
+          🔐 Login (GetUser Intent)
+        </button>
+        <button class="action-btn" id="prices-btn">
+          📊 Get Prices (demo.GetPrices Intent)
+        </button>
       </div>
 
       <div class="log-container">
