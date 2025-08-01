@@ -57,7 +57,7 @@ window.addEventListener('load', () => {
     const directory = new FDC3_2_1_JSONDirectory();
     await directory.load([
       '/static/da/appd.json',
-      'http://localhost:4003/static/security-demo-appd.json',
+      'http://localhost:4003/security-demo-appd.json',
       //'/static/da/local-conformance-2_0.v2.json'  // replace with real, remote URL when this is merged.
     ]);
 

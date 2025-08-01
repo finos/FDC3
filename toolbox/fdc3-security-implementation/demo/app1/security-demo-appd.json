@@ -7,7 +7,7 @@
             "description": "Waits for SecretComms intent, then broadcasts on a private channel",
             "type": "web",
             "details": {
-                "url": "http://localhost:4003/static/app1/index.html"
+                "url": "http://localhost:4003"
             },
             "hostManifests": {},
             "version": "1.0.0",
@@ -33,7 +33,7 @@
             "description": "Raises SecretComms then listens on the returned private channel",
             "type": "web",
             "details": {
-                "url": "http://localhost:4003/static/app2/index.html"
+                "url": "http://localhost:4004l"
             },
             "hostManifests": {},
             "version": "1.0.0",
@@ -47,7 +47,7 @@
             "description": "Identity Provider, used by the security POC apps to get a JWT",
             "type": "web",
             "details": {
-                "url": "http://localhost:4003/static/idp-app/index.html"
+                "url": "http://localhost:4005"
             },
             "interop": {
                 "intents": {

@@ -1,9 +1,9 @@
 <html lang="en">
   <head>
-    <title>SP2: Private Listener</title>
+    <title>IDP: Identity Provider</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script type="module" src="../../src/idp-app/client/idp-app.ts"></script>
+    <script type="module" src="/client/src/idp.ts"></script>
     <style>
       * {
         margin: 0;
@@ -348,7 +348,7 @@
     <div class="container">
       <div class="header">
         <h1>🔐 FDC3 Security Demo</h1>
-        <p>SP2: Private Channel Listener</p>
+        <p>IDP: Identity Provider</p>
       </div>
 
       <div class="status-bar">
@@ -359,9 +359,17 @@
       </div>
 
       <div class="action-bar">
-        <button class="action-btn" id="raise">
-          🔗 Get Private Channel
-        </button>
+        <div id="auth-section">
+          <button class="action-btn" id="login-btn" style="display: none;">
+            🔐 Log In
+          </button>
+          <button class="action-btn" id="logout-btn" style="display: none;">
+            🚪 Log Out
+          </button>
+        </div>
+        <div id="user-info" style="display: none; margin-top: 15px;">
+          <p style="color: white; font-weight: 600;">Logged in as: <span id="user-name">demo-user</span></p>
+        </div>
       </div>
 
       <div class="log-container">
@@ -375,17 +383,5 @@
       </div>
     </div>
 
-    <script>
-      function clearLog() {
-        const log = document.getElementById('log');
-        log.innerHTML = '<div class="log-entry info"><div class="log-timestamp">' + new Date().toLocaleTimeString() + '</div><div class="log-message">Log cleared</div></div>';
-      }
-
-      function updateStatus(status, message) {
-        const statusEl = document.getElementById('status');
-        statusEl.className = 'status-indicator status-' + status;
-        statusEl.innerHTML = '<span class="status-dot">●</span>' + message;
-      }
-    </script>
   </body>
 </html>
