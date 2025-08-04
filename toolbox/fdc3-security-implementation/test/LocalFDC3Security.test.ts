@@ -2,15 +2,20 @@ import { JoseFDC3Security, JSONWebKeyWithId, JWKSResolver, createJoseFDC3Securit
 import { Context } from '@finos/fdc3-context';
 import * as jose from 'jose';
 
-const senderPublicKeyUrl = 'https://example.com/keys/sender';
-const receiverPublicKeyUrl = 'https://example.com/keys/receiver';
+const senderBaseUrl = 'https://sender.example.com';
+const receiverBaseUrl = 'https://receiver.example.com';
+const senderJWKSUrl = senderBaseUrl + '/.well-known/jwks.json';
 
 const senderAllowListFunction = (url: string): boolean => {
-  return url === receiverPublicKeyUrl;
+  const result = url.startsWith(receiverBaseUrl);
+  console.log('senderAllowListFunction result: ', url, result);
+  return result;
 };
 
 const receiverAllowListFunction = (url: string): boolean => {
-  return url === senderPublicKeyUrl;
+  const result = url.startsWith(senderBaseUrl);
+  console.log('receiverAllowListFunction result: ', url, result);
+  return result;
 };
 
 const createJWKSResolver = (keys: JSONWebKeyWithId[]): JWKSResolver => {
@@ -25,6 +30,7 @@ const createJWKSResolver = (keys: JSONWebKeyWithId[]): JWKSResolver => {
     if (key) {
       const cryptoKey = await jose.importJWK(key, protectedHeader?.alg);
       if (cryptoKey instanceof CryptoKey) {
+        console.log('found cryptoKey: ' + cryptoKey);
         return cryptoKey;
       }
       throw new Error('Failed to import JWK as CryptoKey');
@@ -63,10 +69,10 @@ describe('ClientSideFDC3Security', () => {
 
   beforeAll(async () => {
     // Use the factory functions to create instances
-    sender = await createJoseFDC3Security(senderPublicKeyUrl, senderPublicKeyResolver, senderAllowListFunction);
+    sender = await createJoseFDC3Security(senderBaseUrl, senderPublicKeyResolver, senderAllowListFunction);
 
     receiver = await createJoseFDC3Security(
-      receiverPublicKeyUrl,
+      receiverBaseUrl,
       receiverPublicKeyResolver,
       receiverAllowListFunction,
       1 // 1-second validity time limit
@@ -77,6 +83,46 @@ describe('ClientSideFDC3Security', () => {
     it('should create instance with valid parameters', () => {
       expect(sender).toBeInstanceOf(JoseFDC3Security);
       expect(receiver).toBeInstanceOf(JoseFDC3Security);
+    });
+
+    it('should throw error when signing public key has no kid', () => {
+      const signingPrivateKey = { kty: 'RSA', n: 'test', e: 'AQAB' };
+      const signingPublicKey = { kty: 'RSA', n: 'test', e: 'AQAB' }; // Missing kid
+      const wrappingPrivateKey = { kty: 'RSA', n: 'test', e: 'AQAB' };
+      const wrappingPublicKey = { kty: 'RSA', n: 'test', e: 'AQAB', kid: 'wrapping-key-id', alg: 'RSA-OAEP-256' };
+
+      expect(() => {
+        new JoseFDC3Security(
+          signingPrivateKey,
+          signingPublicKey,
+          wrappingPrivateKey,
+          wrappingPublicKey,
+          'https://example.com',
+          'https://example.com/.well-known/jwks.json',
+          () => createJWKSResolver([]),
+          () => true
+        );
+      }).toThrow("Signing public key must have a 'kid' (Key ID) property");
+    });
+
+    it('should throw error when wrapping public key has no kid', () => {
+      const signingPrivateKey = { kty: 'RSA', n: 'test', e: 'AQAB' };
+      const signingPublicKey = { kty: 'RSA', n: 'test', e: 'AQAB', kid: 'signing-key-id', alg: 'RS256' };
+      const wrappingPrivateKey = { kty: 'RSA', n: 'test', e: 'AQAB' };
+      const wrappingPublicKey = { kty: 'RSA', n: 'test', e: 'AQAB' }; // Missing kid
+
+      expect(() => {
+        new JoseFDC3Security(
+          signingPrivateKey,
+          signingPublicKey,
+          wrappingPrivateKey,
+          wrappingPublicKey,
+          'https://example.com',
+          'https://example.com/.well-known/jwks.json',
+          () => createJWKSResolver([]),
+          () => true
+        );
+      }).toThrow("Wrapping public key must have a 'kid' (Key ID) property");
     });
   });
 
@@ -89,7 +135,7 @@ describe('ClientSideFDC3Security', () => {
       if (result.signed) {
         expect(result.valid).toBe(true);
         expect(result.trusted).toBe(true);
-        expect(result.publicKeyUrl).toBe(senderPublicKeyUrl);
+        expect(result.publicKeyUrl).toBe(senderJWKSUrl);
       } else {
         throw new Error('Expected a signed result');
       }
@@ -107,11 +153,11 @@ describe('ClientSideFDC3Security', () => {
       const symmetricJWK = await sender.createSymmetricKey();
 
       // Sender wraps the symmetric key for the receiver
-      const wrappedKeyResponse = await sender.wrapKey(symmetricJWK, receiverPublicKeyUrl);
+      const wrappedKeyResponse = await sender.wrapKey(symmetricJWK, receiverBaseUrl);
 
       // Verify the wrapped key response structure
       expect(wrappedKeyResponse.type).toBe('fdc3.security.symmetricKey.response');
-      expect(wrappedKeyResponse.id.pki).toBe(receiverPublicKeyUrl);
+      expect(wrappedKeyResponse.id.pki).toBe(receiverBaseUrl);
       expect(wrappedKeyResponse.wrappedKey).toBeDefined();
 
       // Receiver unwraps the symmetric key
@@ -144,8 +190,8 @@ describe('ClientSideFDC3Security', () => {
       // Create a signature
       const signature = await sender.sign(mockContext, intent, channelId);
 
-      // Wait for the signature to expire (1.5 seconds)
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Wait for the signature to expire (3 seconds)
+      await new Promise(resolve => setTimeout(resolve, 3000));
 
       // Verify it's rejected as too old
       const expiredResult = await receiver.check(signature, mockContext, intent, channelId);
@@ -175,45 +221,21 @@ describe('ClientSideFDC3Security', () => {
         expect(result.error).toContain('Signature does not contain a public key URL / Key ID / Issued At timestamp');
       }
     });
-  });
 
-  describe('constructor validation', () => {
-    it('should throw error when signing public key has no kid', () => {
-      const signingPrivateKey = { kty: 'RSA', n: 'test', e: 'AQAB' };
-      const signingPublicKey = { kty: 'RSA', n: 'test', e: 'AQAB' }; // Missing kid
-      const wrappingPrivateKey = { kty: 'RSA', n: 'test', e: 'AQAB' };
-      const wrappingPublicKey = { kty: 'RSA', n: 'test', e: 'AQAB', kid: 'wrapping-key-id', alg: 'RSA-OAEP-256' };
+    it('should create and verify a JWT token', async () => {
+      const token = await sender.createJWTToken(receiverBaseUrl, 'test-subject');
+      expect(token).toBeDefined();
 
-      expect(() => {
-        new JoseFDC3Security(
-          signingPrivateKey,
-          signingPublicKey,
-          wrappingPrivateKey,
-          wrappingPublicKey,
-          'https://example.com/keys',
-          () => createJWKSResolver([]),
-          () => true
-        );
-      }).toThrow("Signing public key must have a 'kid' (Key ID) property");
-    });
+      console.log('TOKEN: ' + token);
 
-    it('should throw error when wrapping public key has no kid', () => {
-      const signingPrivateKey = { kty: 'RSA', n: 'test', e: 'AQAB' };
-      const signingPublicKey = { kty: 'RSA', n: 'test', e: 'AQAB', kid: 'signing-key-id', alg: 'RS256' };
-      const wrappingPrivateKey = { kty: 'RSA', n: 'test', e: 'AQAB' };
-      const wrappingPublicKey = { kty: 'RSA', n: 'test', e: 'AQAB' }; // Missing kid
-
-      expect(() => {
-        new JoseFDC3Security(
-          signingPrivateKey,
-          signingPublicKey,
-          wrappingPrivateKey,
-          wrappingPublicKey,
-          'https://example.com/keys',
-          () => createJWKSResolver([]),
-          () => true
-        );
-      }).toThrow("Wrapping public key must have a 'kid' (Key ID) property");
+      const payload = await receiver.verifyJWTToken(token);
+      expect(payload).toBeDefined();
+      expect(payload.iss).toBe(senderBaseUrl);
+      expect(payload.aud).toBe(receiverBaseUrl);
+      expect(payload.sub).toBe('test-subject');
+      expect(payload.exp).toBeDefined();
+      expect(payload.iat).toBeDefined();
+      expect(payload.jti).toBeDefined();
     });
   });
 });

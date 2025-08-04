@@ -1,5 +1,5 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
-import { FDC3Security, JSONWebEncryption, JSONWebSignature, MessageAuthenticity } from '@finos/fdc3-security';
+import { FDC3Security, JSONWebEncryption, JSONWebSignature, MessageAuthenticity, FDC3JWTPayload } from './FDC3Security';
 import canonicalize from 'canonicalize';
 import * as jose from 'jose';
 
@@ -31,6 +31,7 @@ export class JoseFDC3Security implements FDC3Security {
   readonly signingPublicKey: JSONWebKeyWithId;
   readonly wrappingPrivateKey: JsonWebKey;
   readonly wrappingPublicKey: JSONWebKeyWithId;
+  readonly issUrl: string;
   readonly jwksUrl: string;
   readonly allowListFunction: (url: string) => boolean;
   readonly validityTimeLimit: number; // in seconds
@@ -41,6 +42,7 @@ export class JoseFDC3Security implements FDC3Security {
     signingPublicKey: JsonWebKey,
     wrappingPrivateKey: JsonWebKey,
     wrappingPublicKey: JsonWebKey,
+    issUrl: string,
     jwksUrl: string,
     publicKeyResolver: (url: string) => JWKSResolver,
     allowListFunction: (url: string) => boolean,
@@ -49,6 +51,7 @@ export class JoseFDC3Security implements FDC3Security {
     this.signingPrivateKey = signingPrivateKey;
     this.wrappingPrivateKey = wrappingPrivateKey;
     this.jwksUrl = jwksUrl;
+    this.issUrl = issUrl;
     this.allowListFunction = allowListFunction;
     this.validityTimeLimit = validityTimeLimit;
     this.publicKeyResolver = publicKeyResolver;
@@ -191,6 +194,65 @@ export class JoseFDC3Security implements FDC3Security {
   getPublicKeys(): JSONWebKeyWithId[] {
     return [this.signingPublicKey, this.wrappingPublicKey];
   }
+
+  async createJWTToken(aud: string, sub: string): Promise<string> {
+    if (!this.allowListFunction(aud)) {
+      throw new Error(`Audience is not trusted: ${aud}`);
+    }
+
+    const now = Math.floor(Date.now() / 1000); // Current time in seconds
+    const payload: FDC3JWTPayload = {
+      iss: this.issUrl,
+      aud: aud,
+      sub: sub,
+      exp: now + this.validityTimeLimit,
+      iat: now,
+      jti: crypto.randomUUID(),
+    };
+    const token = await new jose.SignJWT(payload)
+      .setProtectedHeader({ alg: 'EdDSA', jku: this.jwksUrl, kid: this.signingPublicKey.kid })
+      .sign(this.signingPrivateKey);
+    return token;
+  }
+
+  async verifyJWTToken(token: string): Promise<FDC3JWTPayload> {
+    const { jku, kid } = this.getParametersFromHeader(token);
+
+    if (!jku || !kid) {
+      throw new Error(`JWT does not contain jku / kid ${JSON.stringify({ jku, kid })}`);
+    }
+
+    // check the issuer
+    if (!this.allowListFunction(jku)) {
+      throw new Error(`JWT issuer is not trusted: ${jku}`);
+    }
+
+    const jwksEndpoint = this.publicKeyResolver(jku);
+
+    const { payload } = await jose.jwtVerify(token, jwksEndpoint);
+
+    // Validate required fields exist
+    if (!payload.iss) {
+      throw new Error('JWT payload missing required field: iss');
+    }
+    if (!payload.aud) {
+      throw new Error('JWT payload missing required field: aud');
+    }
+    if (!payload.sub) {
+      throw new Error('JWT payload missing required field: sub');
+    }
+    if (!payload.exp) {
+      throw new Error('JWT payload missing required field: exp');
+    }
+    if (!payload.iat) {
+      throw new Error('JWT payload missing required field: iat');
+    }
+    if (!payload.jti) {
+      throw new Error('JWT payload missing required field: jti');
+    }
+
+    return payload as FDC3JWTPayload;
+  }
 }
 
 export function provisionJWKS(jku: string): JWKSResolver {
@@ -236,7 +298,7 @@ export async function createWrappingKeyPair(id: string): Promise<{ priv: JsonWeb
  * @returns Promise<ClientSideImplementation> - A fully configured instance
  */
 export async function createJoseFDC3Security(
-  jwksUrl: string,
+  baseUrl: string,
   publicKeyResolver: (url: string) => JWKSResolver,
   allowListFunction: (url: string) => boolean,
   validityTimeLimit: number = 5 * 60,
@@ -257,7 +319,8 @@ export async function createJoseFDC3Security(
     signingKeys.pub,
     wrappingKeys.priv,
     wrappingKeys.pub,
-    jwksUrl,
+    baseUrl,
+    baseUrl + '/.well-known/jwks.json',
     publicKeyResolver,
     allowListFunction,
     validityTimeLimit

@@ -16,6 +16,18 @@ export type UnsignedMessageAuthenticity = {
   error?: string; // if signed is false, this may contain an error message
 };
 
+/**
+ * Standard JWT fields, made required for FDC3 JWT tokens
+ */
+export interface FDC3JWTPayload extends Record<string, unknown> {
+  iss: string; // Issuer
+  sub: string; // Subject
+  aud: string; // Audience
+  jti: string; // JWT ID
+  iat: number; // Issued At
+  exp: number; // Expiration
+}
+
 export type MessageAuthenticity = SignedMessageAuthenticity | UnsignedMessageAuthenticity;
 
 /**
@@ -46,5 +58,13 @@ export interface FDC3Security {
 
   getPublicKeys(): JsonWebKey[];
 
-  createJWTToken;
+  /**
+   * Create a JWT token with the given audience and subject.
+   */
+  createJWTToken(aud: string, sub: string): Promise<string>;
+
+  /**
+   * Verify a JWT token and return the payload.  If the token is not valid, an error is thrown.
+   */
+  verifyJWTToken(token: string): Promise<FDC3JWTPayload>;
 }
