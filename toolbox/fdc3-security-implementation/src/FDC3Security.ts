@@ -45,4 +45,6 @@ export interface FDC3Security {
   unwrapKey(ctx: SymmetricKeyResponse): Promise<JsonWebKey>;
 
   getPublicKeys(): JsonWebKey[];
+
+  createJWTToken;
 }

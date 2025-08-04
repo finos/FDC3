@@ -1,4 +1,4 @@
-import { LocalFDC3Security, JSONWebKeyWithId, JWKSResolver, createLocalFDC3Security } from '../src/JoseFDC3Security';
+import { JoseFDC3Security, JSONWebKeyWithId, JWKSResolver, createJoseFDC3Security } from '../src/JoseFDC3Security';
 import { Context } from '@finos/fdc3-context';
 import * as jose from 'jose';
 
@@ -43,8 +43,8 @@ const createJWKSResolver = (keys: JSONWebKeyWithId[]): JWKSResolver => {
   return resolver;
 };
 
-let sender: LocalFDC3Security;
-let receiver: LocalFDC3Security;
+let sender: JoseFDC3Security;
+let receiver: JoseFDC3Security;
 
 const senderPublicKeyResolver = (_url: string): JWKSResolver => {
   return createJWKSResolver(receiver.getPublicKeys());
@@ -63,9 +63,9 @@ describe('ClientSideFDC3Security', () => {
 
   beforeAll(async () => {
     // Use the factory functions to create instances
-    sender = await createLocalFDC3Security(senderPublicKeyUrl, senderPublicKeyResolver, senderAllowListFunction);
+    sender = await createJoseFDC3Security(senderPublicKeyUrl, senderPublicKeyResolver, senderAllowListFunction);
 
-    receiver = await createLocalFDC3Security(
+    receiver = await createJoseFDC3Security(
       receiverPublicKeyUrl,
       receiverPublicKeyResolver,
       receiverAllowListFunction,
@@ -75,8 +75,8 @@ describe('ClientSideFDC3Security', () => {
 
   describe('constructor', () => {
     it('should create instance with valid parameters', () => {
-      expect(sender).toBeInstanceOf(LocalFDC3Security);
-      expect(receiver).toBeInstanceOf(LocalFDC3Security);
+      expect(sender).toBeInstanceOf(JoseFDC3Security);
+      expect(receiver).toBeInstanceOf(JoseFDC3Security);
     });
   });
 
@@ -185,7 +185,7 @@ describe('ClientSideFDC3Security', () => {
       const wrappingPublicKey = { kty: 'RSA', n: 'test', e: 'AQAB', kid: 'wrapping-key-id', alg: 'RSA-OAEP-256' };
 
       expect(() => {
-        new LocalFDC3Security(
+        new JoseFDC3Security(
           signingPrivateKey,
           signingPublicKey,
           wrappingPrivateKey,
@@ -204,7 +204,7 @@ describe('ClientSideFDC3Security', () => {
       const wrappingPublicKey = { kty: 'RSA', n: 'test', e: 'AQAB' }; // Missing kid
 
       expect(() => {
-        new LocalFDC3Security(
+        new JoseFDC3Security(
           signingPrivateKey,
           signingPublicKey,
           wrappingPrivateKey,

@@ -103,7 +103,7 @@ export class JoseFDC3Security implements FDC3Security {
     const data = this.canonicalize(ctx, intent, channelId);
     const now = Math.floor(Date.now() / 1000); // Current time in seconds
     const jws = await new jose.CompactSign(data)
-      .setProtectedHeader({ alg: 'RS256', jku: this.jwksUrl, iat: now, kid: this.signingPublicKey.kid })
+      .setProtectedHeader({ alg: 'EdDSA', jku: this.jwksUrl, iat: now, kid: this.signingPublicKey.kid })
       .sign(this.signingPrivateKey);
     const parts = jws.split('.');
     console.log('SIGNED  : ' + jws);
@@ -198,14 +198,14 @@ export function provisionJWKS(jku: string): JWKSResolver {
 }
 
 export async function createSigningKeyPair(id: string): Promise<{ priv: JsonWebKey; pub: JsonWebKey }> {
-  const keyPair = await jose.generateKeyPair('RS256', {
+  const keyPair = await jose.generateKeyPair('EdDSA', {
     extractable: true,
-    modulusLength: 2048,
+    crv: 'Ed25519',
   });
   const privateKey = await jose.exportJWK(keyPair.privateKey);
   const publicKey = await jose.exportJWK(keyPair.publicKey);
   publicKey.kid = id;
-  publicKey.alg = 'RS256';
+  publicKey.alg = 'EdDSA';
   publicKey.use = 'sig';
   return { priv: privateKey, pub: publicKey };
 }
