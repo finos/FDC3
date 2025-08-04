@@ -2,25 +2,27 @@ import express from 'express';
 import ViteExpress from 'vite-express';
 import path from 'path';
 import { createJoseFDC3Security, provisionJWKS } from '../../../src/JoseFDC3Security';
+import { FDC3Security } from '../../../src/FDC3Security';
 
 const PORT = 4003;
 const app = express();
-const jwksUrl = `http://localhost:${PORT}/.well-known/jwks.json`;
+const appUrl = `http://localhost:${PORT}`;
 
 // Middleware to parse JSON
 app.use(express.json());
 
-let fdc3Security: any = null;
+let fdc3Security: FDC3Security | null = null;
 
 async function initializeFDC3Security() {
   try {
     const allowListFunction = (url: string) => {
       // For demo purposes, allow localhost URLs
+      console.log('allowListFunction called with url:', url);
       return url.includes('localhost') || url.includes('127.0.0.1');
     };
 
     fdc3Security = await createJoseFDC3Security(
-      jwksUrl,
+      appUrl,
       provisionJWKS,
       allowListFunction,
       5 * 60, // 5 minutes validity
@@ -95,16 +97,58 @@ app.post('/api/sign_get_user_request', async (req, res) => {
   }
 });
 
+// Validate JWT token endpoint
+app.post('/api/validate_jwt', async (req, res) => {
+  console.log('Validate JWT endpoint called');
+  console.log('Request body:', req.body);
+
+  if (!fdc3Security) {
+    console.log('FDC3 Security not initialized for JWT validation');
+    return res.status(503).json({ error: 'FDC3 Security not initialized' });
+  }
+
+  try {
+    const { jwtToken } = req.body;
+
+    if (!jwtToken) {
+      console.log('JWT token is missing from request');
+      return res.status(400).json({ error: 'JWT token is required' });
+    }
+
+    console.log('Validating JWT token...');
+
+    // Validate the JWT token and extract payload
+    const jwtPayload = await fdc3Security.verifyJWTToken(jwtToken);
+
+    console.log('JWT token validated successfully');
+    console.log('JWT payload:', jwtPayload);
+
+    res.json({
+      valid: true,
+      payload: jwtPayload,
+      message: 'JWT token is valid',
+    });
+  } catch (error) {
+    console.error('Error validating JWT token:', error);
+    res.status(400).json({
+      valid: false,
+      error: 'Invalid JWT token',
+      details: error instanceof Error ? error.message : String(error),
+    });
+  }
+});
+
 // Initialize FDC3 Security before starting server
 initializeFDC3Security().then(() => {
   // Start server with ViteExpress
   const httpServer = ViteExpress.listen(app, PORT, () => {
     console.log('==========================================');
-    console.log(`🚀 App1 server running on http://localhost:${PORT}`);
+    console.log(`🚀 App1 server running on ${appUrl}`);
     console.log(`📁 Serving static files from: ${path.join(__dirname, '../client/static')}`);
     console.log('📋 Available endpoints:');
     console.log('   GET  /.well-known/jwks.json - Standard JWKS endpoint');
     console.log('   POST /api/sign_get_user_request - Sign GetUser intent requests');
+    console.log('   POST /api/validate_jwt - Validate JWT tokens');
     console.log('==========================================');
   });
 });

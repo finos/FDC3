@@ -2,7 +2,9 @@ import express from 'express';
 import ViteExpress from 'vite-express';
 import path from 'path';
 import session from 'express-session';
+import { FDC3Security } from '../../../src/FDC3Security';
 import { createJoseFDC3Security, provisionJWKS } from '../../../src/JoseFDC3Security';
+import { User } from '@finos/fdc3-context';
 
 // Extend session interface
 declare module 'express-session' {
@@ -14,7 +16,7 @@ declare module 'express-session' {
 
 const PORT = 4005;
 const app = express();
-const jwksUrl = `http://localhost:${PORT}/.well-known/jwks.json`;
+const appUrl = `http://localhost:${PORT}`;
 
 // Session configuration
 app.use(
@@ -36,18 +38,26 @@ console.log('Session middleware configured');
 app.use(express.json());
 console.log('JSON parsing middleware configured');
 
-// Create JOSEFDC3Security instance
-let fdc3Security: any = null;
+// Create Jose FDC3Security instance
+let fdc3Security: FDC3Security | null = null;
 
 async function initializeFDC3Security() {
   try {
-    const allowListFunction = (url: string) => {
+    const allowListFunction = (jku: string, iss?: string) => {
+      if (iss) {
+        if (!jku.startsWith(iss)) {
+          return false;
+        }
+      }
+
       // For demo purposes, allow localhost URLs
-      return url.includes('localhost') || url.includes('127.0.0.1');
+      // in production, this should be a more restrictive
+      // allow list and only allow https URLs
+      return jku.startsWith('http://localhost') || jku.startsWith('http://127.0.0.1');
     };
 
     fdc3Security = await createJoseFDC3Security(
-      jwksUrl,
+      appUrl,
       provisionJWKS,
       allowListFunction,
       5 * 60, // 5 minutes validity
@@ -61,9 +71,12 @@ async function initializeFDC3Security() {
   }
 }
 
-// JWKS endpoint to expose public keys
-app.get('/api/jwks', (req, res) => {
+// .well-known/jwks.json endpoint (standard JWKS endpoint)
+app.get('/.well-known/jwks.json', (req, res) => {
+  console.log('.well-known/jwks.json endpoint called');
+
   if (!fdc3Security) {
+    console.log('FDC3 Security not initialized for .well-known/jwks.json request');
     return res.status(503).json({ error: 'FDC3 Security not initialized' });
   }
 
@@ -73,10 +86,11 @@ app.get('/api/jwks', (req, res) => {
       keys: publicKeys,
     };
 
+    console.log('.well-known/jwks.json generated successfully');
     res.setHeader('Content-Type', 'application/json');
     res.json(jwks);
   } catch (error) {
-    console.error('Error generating JWKS:', error);
+    console.error('Error generating .well-known/jwks.json:', error);
     res.status(500).json({ error: 'Failed to generate JWKS' });
   }
 });
@@ -149,35 +163,38 @@ app.get('/api/auth/status', (req, res) => {
 
 // GetUser intent endpoint - handles GetUser intent requests
 app.post('/api/getuser', async (req, res) => {
-  console.log('GetUser intent endpoint called');
-  console.log('Request body:', req.body);
-  console.log('Session:', req.session);
+  try {
+    console.log('GetUser intent endpoint called');
+    console.log('Request body:', req.body);
+    console.log('Session:', req.session);
+    let userId: string | undefined;
 
-  if (!req.session.isAuthenticated) {
-    console.log('User not authenticated for GetUser intent');
-    res.status(401).json({
-      success: false,
-      error: 'User not authenticated',
-    });
-    return;
-  }
-
-  // Validate signature if present
-  const { context, metadata } = req.body;
-
-  if (context && context.__signature) {
-    console.log('Validating signature for GetUser intent request');
-
-    if (!fdc3Security) {
-      console.log('FDC3 Security not initialized for signature validation');
-      res.status(503).json({
+    if (!req.session.isAuthenticated) {
+      console.log('User not authenticated for GetUser intent');
+      res.status(401).json({
         success: false,
-        error: 'FDC3 Security not initialized',
+        error: 'User not authenticated',
       });
       return;
+    } else {
+      userId = req.session.userId;
     }
 
-    try {
+    // Validate signature if present
+    const { context, metadata } = req.body;
+
+    if (context && context.__signature && userId) {
+      console.log('Validating signature for GetUser intent request');
+
+      if (!fdc3Security) {
+        console.log('FDC3 Security not initialized for signature validation');
+        res.status(503).json({
+          success: false,
+          error: 'FDC3 Security not initialized',
+        });
+        return;
+      }
+
       // Extract the signature and create unsigned context
       const signature = context.__signature;
       const unsignedContext = { ...context };
@@ -201,10 +218,10 @@ app.post('/api/getuser', async (req, res) => {
       }
 
       if (!authenticity.valid) {
-        console.log('Signature validation failed:', authenticity.error);
+        console.log('Signature validation failed:', authenticity);
         res.status(400).json({
           success: false,
-          error: `Signature validation failed: ${authenticity.error}`,
+          error: `Signature validation failed: ${authenticity}`,
         });
         return;
       }
@@ -219,35 +236,35 @@ app.post('/api/getuser', async (req, res) => {
       }
 
       console.log('✅ Signature validated successfully from:', authenticity.publicKeyUrl);
-    } catch (error) {
-      console.error('Error validating signature:', error);
-      res.status(500).json({
+
+      // Create fdc3.user context object
+      const userContext: User = {
+        type: 'fdc3.user',
+        id: { userId: req.session.userId },
+        name: 'Demo User',
+        jwt: await fdc3Security.createJWTToken(authenticity.publicKeyUrl, userId!),
+      };
+
+      console.log('Returning user context:', userContext);
+      res.json({
+        success: true,
+        context: userContext,
+      });
+    } else {
+      res.status(400).json({
         success: false,
-        error: 'Failed to validate signature',
+        error: 'Request must be signed',
       });
       return;
     }
-  } else {
-    console.log('No signature found in request - proceeding without signature validation');
+  } catch (error) {
+    console.error('Error in get_user intent', error);
+    res.status(500).json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+    });
+    return;
   }
-
-  // Create fdc3.user context object
-  const userContext = {
-    type: 'fdc3.user',
-    id: { userId: req.session.userId },
-    name: 'Demo User',
-    metadata: {
-      source: 'idp-app',
-      timestamp: new Date().toISOString(),
-      sessionId: req.sessionID,
-    },
-  };
-
-  console.log('Returning user context:', userContext);
-  res.json({
-    success: true,
-    context: userContext,
-  });
 });
 
 // Initialize FDC3 Security before starting server
@@ -255,11 +272,10 @@ initializeFDC3Security().then(() => {
   // Start server with ViteExpress
   const httpServer = ViteExpress.listen(app, PORT, () => {
     console.log('==========================================');
-    console.log(`🚀 IDP App server running on http://localhost:${PORT}`);
+    console.log(`🚀 IDP App server running on ${appUrl}`);
     console.log(`📁 Serving static files from: ${path.join(__dirname, '..')}`);
-    console.log(`🔑 JWKS available at: ${jwksUrl}`);
     console.log('📋 Available endpoints:');
-    console.log('   GET  /api/jwks - JWKS endpoint');
+    console.log('   GET  /.well-known/jwks.json - JWKS endpoint');
     console.log('   POST /api/login - Login user');
     console.log('   POST /api/logout - Logout user');
     console.log('   GET  /api/auth/status - Check auth status');

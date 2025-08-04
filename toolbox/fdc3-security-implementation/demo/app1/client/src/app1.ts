@@ -1,4 +1,4 @@
-import { DesktopAgent, getAgent } from '@finos/fdc3';
+import { DesktopAgent, getAgent, User } from '@finos/fdc3';
 import { createLogEntry, updateStatus } from '../../common/src/logging';
 
 // Initialize FDC3 connection
@@ -77,12 +77,57 @@ async function raiseGetUserIntent(fdc3: DesktopAgent) {
 
     // Now raise the intent with the signed context
     const result = await fdc3.raiseIntent('GetUser', contextWithSignature);
+    const userDetails = (await result.getResult()) as User;
 
     createLogEntry('success', '✅ GetUser Intent raised successfully', {
       intent: 'GetUser',
-      result: result,
+      result: userDetails,
       timestamp: new Date().toISOString(),
     });
+
+    // If we received a JWT token from the IDP app, validate it with our backend
+    if (userDetails && typeof userDetails === 'object' && 'jwt' in userDetails) {
+      const jwtToken = userDetails.jwt;
+      createLogEntry('info', '🔐 Validating JWT token with backend...', {
+        tokenLength: jwtToken.length,
+        timestamp: new Date().toISOString(),
+      });
+
+      try {
+        const validationResponse = await fetch('/api/validate_jwt', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ jwtToken }),
+        });
+
+        if (!validationResponse.ok) {
+          throw new Error(`JWT validation failed: ${validationResponse.statusText}`);
+        }
+
+        const validationResult = await validationResponse.json();
+
+        if (validationResult.valid) {
+          createLogEntry('success', '✅ JWT token validated successfully', {
+            payload: validationResult.payload,
+            message: validationResult.message,
+            timestamp: new Date().toISOString(),
+          });
+        } else {
+          createLogEntry('error', '❌ JWT token validation failed', {
+            error: validationResult.error,
+            details: validationResult.details,
+            timestamp: new Date().toISOString(),
+          });
+        }
+      } catch (error) {
+        createLogEntry('error', '❌ Failed to validate JWT token', {
+          error: error instanceof Error ? error.message : String(error),
+          timestamp: new Date().toISOString(),
+        });
+      }
+    }
 
     return result;
   } catch (error) {

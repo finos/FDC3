@@ -33,7 +33,7 @@ export class JoseFDC3Security implements FDC3Security {
   readonly wrappingPublicKey: JSONWebKeyWithId;
   readonly issUrl: string;
   readonly jwksUrl: string;
-  readonly allowListFunction: (url: string) => boolean;
+  readonly allowListFunction: (jku: string, iss?: string) => boolean;
   readonly validityTimeLimit: number; // in seconds
   readonly publicKeyResolver: (url: string) => JWKSResolver;
 
@@ -249,6 +249,10 @@ export class JoseFDC3Security implements FDC3Security {
     }
     if (!payload.jti) {
       throw new Error('JWT payload missing required field: jti');
+    }
+
+    if (!this.allowListFunction(jku, payload.iss)) {
+      throw new Error(`JWT issuer is not trusted: ${payload.iss}`);
     }
 
     return payload as FDC3JWTPayload;
