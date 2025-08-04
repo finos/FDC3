@@ -2178,6 +2178,7 @@ export type TransactionStatus = 'Created' | 'Deleted' | 'Updated' | 'Failed';
  * A request for the current user’s identity.
  */
 export interface UserRequest {
+  aud: string;
   type: 'fdc3.user.request';
   id?: { [key: string]: any };
   name?: string;
@@ -3281,6 +3282,7 @@ const typeMap: any = {
   ),
   UserRequest: o(
     [
+      { json: 'aud', js: 'aud', typ: '' },
       { json: 'type', js: 'type', typ: r('UserRequestType') },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },

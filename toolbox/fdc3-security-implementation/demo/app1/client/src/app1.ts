@@ -41,6 +41,7 @@ async function raiseGetUserIntent(fdc3: DesktopAgent) {
     // First, get the context to be signed
     const context = {
       type: 'fdc3.user.request',
+      aud: 'http://localhost:4003',
     };
 
     // Call backend to sign the request

@@ -183,7 +183,7 @@ app.post('/api/getuser', async (req, res) => {
     // Validate signature if present
     const { context, metadata } = req.body;
 
-    if (context && context.__signature && userId) {
+    if (context && context.__signature && userId && context.type === 'fdc3.user.request') {
       console.log('Validating signature for GetUser intent request');
 
       if (!fdc3Security) {
@@ -235,6 +235,15 @@ app.post('/api/getuser', async (req, res) => {
         return;
       }
 
+      if (!authenticity.publicKeyUrl.startsWith(context.aud)) {
+        console.log('Signature public key URL does not match audience:', authenticity.publicKeyUrl, context.aud);
+        res.status(400).json({
+          success: false,
+          error: `Signature public key URL does not match audience: ${authenticity.publicKeyUrl}`,
+        });
+        return;
+      }
+
       console.log('✅ Signature validated successfully from:', authenticity.publicKeyUrl);
 
       // Create fdc3.user context object
@@ -242,7 +251,7 @@ app.post('/api/getuser', async (req, res) => {
         type: 'fdc3.user',
         id: { userId: req.session.userId },
         name: 'Demo User',
-        jwt: await fdc3Security.createJWTToken(authenticity.publicKeyUrl, userId!),
+        jwt: await fdc3Security.createJWTToken(context.aud, userId!),
       };
 
       console.log('Returning user context:', userContext);

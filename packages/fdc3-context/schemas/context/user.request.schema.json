@@ -10,10 +10,14 @@
             "properties": {
                 "type": {
                     "const": "fdc3.user.request"
+                },
+                "aud": {
+                    "type": "string"
                 }
             },
             "required": [
-                "type"
+                "type",
+                "aud"
             ],
             "additionalProperties": true
         },
@@ -23,7 +27,8 @@
     ],
     "examples": [
         {
-            "type": "fdc3.user.request"
+            "type": "fdc3.user.request",
+            "aud": "https://my-app-url.com"
         }
     ]
 }
