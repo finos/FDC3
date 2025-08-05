@@ -21,7 +21,7 @@
             "description": "Creates a private channel to broadcast encrypted prices",
             "type": "web",
             "details": {
-                "url": "http://localhost:4004l"
+                "url": "http://localhost:4004"
             },
             "hostManifests": {},
             "version": "1.0.0",

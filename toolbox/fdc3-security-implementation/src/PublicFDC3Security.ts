@@ -1,4 +1,4 @@
-import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
+import { Context } from '@finos/fdc3-context';
 
 export type JSONWebSignature = string; // compact form, with detached payload
 
@@ -31,18 +31,12 @@ export interface FDC3JWTPayload extends Record<string, unknown> {
 export type MessageAuthenticity = SignedMessageAuthenticity | UnsignedMessageAuthenticity;
 
 /**
- * This interface provides all of the features needed for your apps to implement
- * signing / encryption functionality.  This is written
- * as an interface to give applications a choice of implementation,
- * but JoseFDC3Security is provided as the default.
+ * This interface provides features that could be included on the client-side
+ * for checking tokens.   This is written
+ * as an interface to give applications a choice of implementation
+ * (e.g. it could call server-side apis).
  */
-export interface FDC3Security {
-  encrypt(ctx: Context, symmetricKey: JsonWebKey): Promise<JSONWebEncryption>;
-
-  decrypt(encrypted: JSONWebEncryption, symmetricKey: JsonWebKey): Promise<Context>;
-
-  sign(ctx: Context, intent: string | null, channelId: string | null): Promise<JSONWebSignature>;
-
+export interface PublicFDC3Security {
   check(
     sig: JSONWebSignature,
     ctx: Context,
@@ -50,18 +44,7 @@ export interface FDC3Security {
     channelId: string | null
   ): Promise<MessageAuthenticity>;
 
-  createSymmetricKey(): Promise<JsonWebKey>;
-
-  wrapKey(symmetricKey: JsonWebKey, publicKeyUrl: string): Promise<SymmetricKeyResponse>;
-
-  unwrapKey(ctx: SymmetricKeyResponse): Promise<JsonWebKey>;
-
   getPublicKeys(): JsonWebKey[];
-
-  /**
-   * Create a JWT token with the given audience and subject.
-   */
-  createJWTToken(aud: string, sub: string): Promise<string>;
 
   /**
    * Verify a JWT token and return the payload.  If the token is not valid, an error is thrown.
