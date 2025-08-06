@@ -1,6 +1,6 @@
 import express from 'express';
 import session from 'express-session';
-import { initializeServer } from '../../app1/common/src/server';
+import { initializeServer, setupSessionHandlingEndpoints } from '../../app1/common/src/server';
 import { User } from '@finos/fdc3-context';
 
 // Extend session interface
@@ -14,25 +14,10 @@ declare module 'express-session' {
 const PORT = 4005;
 
 initializeServer(PORT).then(({ fdc3Security, app }) => {
-  // Session configuration
-  app.use(
-    session({
-      secret: 'fdc3-idp-secret-key',
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        secure: false, // Set to true in production with HTTPS
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000, // 24 hours
-      },
-    })
-  );
+  // Use shared session handling endpoints
+  setupSessionHandlingEndpoints(app);
 
-  console.log('Session middleware configured');
-
-  // Middleware to parse JSON
-  app.use(express.json());
-  console.log('JSON parsing middleware configured');
+  console.log('Session middleware configured using shared setup');
 
   // Login endpoint
   app.post('/api/login', (req, res) => {
@@ -56,48 +41,6 @@ initializeServer(PORT).then(({ fdc3Security, app }) => {
 
     console.log('Sending login response:', response);
     res.json(response);
-  });
-
-  // Logout endpoint
-  app.post('/api/logout', (req, res) => {
-    console.log('Logout endpoint called');
-    console.log('Session before logout:', req.session);
-
-    req.session.destroy(err => {
-      if (err) {
-        console.error('Logout error:', err);
-        res.status(500).json({ success: false, error: 'Failed to logout' });
-      } else {
-        console.log('Logout successful');
-        res.json({ success: true });
-      }
-    });
-  });
-
-  // Check authentication status
-  app.get('/api/auth/status', (req, res) => {
-    console.log('Auth status endpoint called');
-    console.log('Session:', req.session);
-    console.log('Session ID:', req.sessionID);
-
-    if (req.session.isAuthenticated) {
-      const response = {
-        isAuthenticated: true,
-        user: {
-          id: req.session.userId,
-          name: 'Demo User',
-        },
-      };
-      console.log('User is authenticated, sending response:', response);
-      res.json(response);
-    } else {
-      const response = {
-        isAuthenticated: false,
-        user: null,
-      };
-      console.log('User is not authenticated, sending response:', response);
-      res.json(response);
-    }
   });
 
   // GetUser intent endpoint - handles GetUser intent requests

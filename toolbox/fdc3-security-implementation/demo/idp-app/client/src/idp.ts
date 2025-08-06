@@ -1,6 +1,7 @@
 // IDP App Client Implementation
 import { DesktopAgent, getAgent, Context, ContextMetadata } from '@finos/fdc3';
 import { createLogEntry, updateStatus, clearLog } from '../../../app1/common/src/logging';
+import { checkSessionStatus, setupSessionStatusButton, logout } from '../../../app1/common/src/session';
 
 // Authentication state
 let isAuthenticated = false;
@@ -11,29 +12,6 @@ let loginBtn: HTMLButtonElement | null = null;
 let logoutBtn: HTMLButtonElement | null = null;
 let userInfo: HTMLDivElement | null = null;
 let userName: HTMLSpanElement | null = null;
-
-// Check authentication status on page load
-async function checkAuthStatus(): Promise<void> {
-  try {
-    const response = await fetch('/api/auth/status');
-    const data = await response.json();
-
-    if (data.isAuthenticated) {
-      isAuthenticated = true;
-      currentUser = data.user;
-      showAuthenticatedState();
-      createLogEntry('info', 'User authenticated', `Logged in as: ${currentUser?.name} (${currentUser?.id})`);
-    } else {
-      isAuthenticated = false;
-      currentUser = null;
-      showUnauthenticatedState();
-      createLogEntry('info', 'User not authenticated', 'Please log in to continue');
-    }
-  } catch (error) {
-    console.error('Error checking auth status:', error);
-    createLogEntry('error', 'Authentication check failed', (error as Error).message);
-  }
-}
 
 // Login function
 async function login(): Promise<void> {
@@ -52,38 +30,15 @@ async function login(): Promise<void> {
       currentUser = data.user;
       showAuthenticatedState();
       createLogEntry('success', 'Login successful', `Welcome, ${currentUser?.name}!`);
+
+      // Check session status after login to update UI
+      await checkSessionStatus();
     } else {
       createLogEntry('error', 'Login failed', 'Failed to authenticate user');
     }
   } catch (error) {
     console.error('Login error:', error);
     createLogEntry('error', 'Login error', (error as Error).message);
-  }
-}
-
-// Logout function
-async function logout(): Promise<void> {
-  try {
-    const response = await fetch('/api/logout', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      isAuthenticated = false;
-      currentUser = null;
-      showUnauthenticatedState();
-      createLogEntry('info', 'Logout successful', 'You have been logged out');
-    } else {
-      createLogEntry('error', 'Logout failed', 'Failed to log out');
-    }
-  } catch (error) {
-    console.error('Logout error:', error);
-    createLogEntry('error', 'Logout error', (error as Error).message);
   }
 }
 
@@ -178,12 +133,42 @@ async function initialize(): Promise<void> {
   // Initialize FDC3
   await initializeFDC3();
 
-  // Check authentication status
-  await checkAuthStatus();
+  // Check session status using the shared function
+  try {
+    const sessionStatus = await checkSessionStatus();
+    // Update local state based on session status
+    if (sessionStatus.isAuthenticated) {
+      isAuthenticated = true;
+      currentUser = sessionStatus.user;
+      showAuthenticatedState();
+    } else {
+      isAuthenticated = false;
+      currentUser = null;
+      showUnauthenticatedState();
+    }
+  } catch (error) {
+    console.error('Failed to check session status:', error);
+    // Default to unauthenticated state if session check fails
+    showUnauthenticatedState();
+  }
 
   // Set up event listeners
   if (loginBtn) loginBtn.addEventListener('click', login);
-  if (logoutBtn) logoutBtn.addEventListener('click', logout);
+  if (logoutBtn)
+    logoutBtn.addEventListener('click', async () => {
+      try {
+        await logout();
+        // Update local state after logout
+        isAuthenticated = false;
+        currentUser = null;
+        showUnauthenticatedState();
+      } catch (error) {
+        console.error('Logout failed:', error);
+      }
+    });
+
+  // Setup session status button using shared module
+  setupSessionStatusButton();
 
   createLogEntry('info', 'IDP App Initialized', 'Application ready');
 }

@@ -1,5 +1,6 @@
 import { DesktopAgent, getAgent, User } from '@finos/fdc3';
 import { createLogEntry, updateStatus } from '../../common/src/logging';
+import { checkSessionStatus, setupSessionStatusButton, logout } from '../../common/src/session';
 
 // Initialize FDC3 connection
 async function initializeFDC3() {
@@ -171,89 +172,10 @@ async function raiseGetPricesIntent(fdc3: any) {
   }
 }
 
-// Function to check session status
-async function checkSessionStatus() {
-  try {
-    createLogEntry('info', '🔍 Checking session status...', {
-      timestamp: new Date().toISOString(),
-    });
-
-    const response = await fetch('/api/session/status');
-
-    if (!response.ok) {
-      throw new Error(`Failed to check session status: ${response.statusText}`);
-    }
-
-    const sessionStatus = await response.json();
-
-    createLogEntry(
-      'info',
-      `📋 Session status: ${sessionStatus.isAuthenticated ? 'Authenticated' : 'Not authenticated'}`,
-      {
-        isAuthenticated: sessionStatus.isAuthenticated,
-        hasJWT: sessionStatus.hasJWT,
-        user: sessionStatus.user,
-        timestamp: new Date().toISOString(),
-      }
-    );
-
-    return sessionStatus;
-  } catch (error) {
-    createLogEntry('error', '❌ Failed to check session status', {
-      error: error instanceof Error ? error.message : String(error),
-      timestamp: new Date().toISOString(),
-    });
-    throw error;
-  }
-}
-
-// Function to logout
-async function logout() {
-  try {
-    createLogEntry('info', '🚪 Logging out...', {
-      timestamp: new Date().toISOString(),
-    });
-
-    const response = await fetch('/api/logout', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to logout: ${response.statusText}`);
-    }
-
-    const logoutResult = await response.json();
-
-    if (logoutResult.success) {
-      createLogEntry('success', '✅ Logged out successfully', {
-        message: logoutResult.message,
-        timestamp: new Date().toISOString(),
-      });
-    } else {
-      createLogEntry('error', '❌ Logout failed', {
-        error: logoutResult.error,
-        timestamp: new Date().toISOString(),
-      });
-    }
-
-    return logoutResult;
-  } catch (error) {
-    createLogEntry('error', '❌ Failed to logout', {
-      error: error instanceof Error ? error.message : String(error),
-      timestamp: new Date().toISOString(),
-    });
-    throw error;
-  }
-}
-
 // Set up button event listeners
 function setupButtonListeners(fdc3: any) {
   const loginBtn = document.getElementById('login-btn') as HTMLButtonElement;
   const pricesBtn = document.getElementById('prices-btn') as HTMLButtonElement;
-  const sessionStatusBtn = document.getElementById('session-status-btn') as HTMLButtonElement;
   const logoutBtn = document.getElementById('logout-btn') as HTMLButtonElement;
 
   if (loginBtn) {
@@ -286,20 +208,8 @@ function setupButtonListeners(fdc3: any) {
     });
   }
 
-  if (sessionStatusBtn) {
-    sessionStatusBtn.addEventListener('click', async () => {
-      try {
-        sessionStatusBtn.disabled = true;
-        sessionStatusBtn.textContent = '🔄 Checking...';
-        await checkSessionStatus();
-      } catch (error) {
-        console.error('Session status check failed:', error);
-      } finally {
-        sessionStatusBtn.disabled = false;
-        sessionStatusBtn.textContent = '🔍 Check Session Status';
-      }
-    });
-  }
+  // Setup session status button using shared module
+  setupSessionStatusButton();
 
   if (logoutBtn) {
     logoutBtn.addEventListener('click', async () => {
