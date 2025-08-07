@@ -28,6 +28,11 @@ export class DefaultChannel implements Channel {
     this.id = id;
     this.type = type;
     this.displayMetadata = displayMetadata;
+
+    //bind all functions to allow destructuring
+    this.broadcast = this.broadcast.bind(this);
+    this.getCurrentContext = this.getCurrentContext.bind(this);
+    this.addContextListener = this.addContextListener.bind(this);
   }
 
   async broadcast(context: Context): Promise<void> {
