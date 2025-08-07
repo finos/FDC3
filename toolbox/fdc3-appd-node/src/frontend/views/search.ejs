@@ -1,0 +1,285 @@
+<body>
+  <div class="main-content">
+    <div class="container-fluid mt--7">
+      <div class="row mt-5">
+        <div class="col-xl-12 mb-5 mb-xl-0 mt-7">
+          <div class="card shadow">
+            <!-- Header with Search Box -->
+            <div class="card-header border-0">
+              <div class="row align-items-center">
+                <div class="col">
+                  <div class="d-flex align-items-center">
+                    <h3 class="mb-0 mr-3">Search Apps</h3>
+                    <button onclick="toggleView()" class="btn btn-sm btn-primary mr-2">
+                      <i class="fas fa-exchange-alt mr-1"></i>Switch to Users
+                    </button>
+                    <button onclick="createNewApp()" class="btn btn-sm btn-success">
+                      <i class="fas fa-plus mr-1"></i>New App
+                    </button>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <input type="text" 
+                         id="searchInput" 
+                         class="form-control" 
+                         placeholder="Search apps..."
+                         onkeyup="handleSearch()">
+                </div>
+                <div class="col text-right">
+                  <span class="mr-3" id="userInfo">Welcome, <strong id="loggedInUser">Loading...</strong></span>
+                  <button onclick="logout()" class="btn btn-sm btn-danger mr-2">
+                    <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Search Results -->
+            <div class="card-body">
+              <div id="alertContainer"></div>
+              <div class="table-responsive">
+                <table class="table align-items-center table-flush">
+                  <thead class="thead-light">
+                    <tr>
+                      <th scope="col">App ID</th>
+                      <th scope="col">Title</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Intent</th>
+                      <th scope="col">Categories</th>
+                      <th scope="col">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="searchResults">
+                    <!-- Results will be dynamically inserted here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let searchTimeout;
+
+    function checkAuthorization() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = '/login';
+            return false;
+        }
+        return true;
+    }
+
+    async function handleSearch() {
+        if (!checkAuthorization()) return;
+        
+        clearTimeout(searchTimeout);
+        
+        searchTimeout = setTimeout(async () => {
+            const searchTerm = document.getElementById('searchInput').value;
+            
+            try {
+                const token = localStorage.getItem('token');
+                let url = '/api/v2/apps';
+                
+                if (searchTerm.length > 0) {
+                    url = '/api/v1/apps/search';
+                    const searchQuery = {
+                        appId: searchTerm,
+                        title: searchTerm,
+                        description: searchTerm,
+                        categories: [searchTerm]
+                    };
+
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(searchQuery)
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.warnings) {
+                            console.log('Search warnings:', data.warnings);
+                        }
+                        renderResults(data.applications);
+                    } else {
+                        const errorData = await response.json();
+                        showError(errorData.error || 'Failed to fetch search results');
+                    }
+                } else {
+                    // If no search term, get all apps
+                    const response = await fetch(url, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        renderResults(data.applications);
+                    } else {
+                        const errorData = await response.json();
+                        showError(errorData.error || 'Failed to fetch applications');
+                    }
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                if (error.message === 'Unauthorized') {
+                    window.location.href = '/login';
+                } else {
+                    showError('An error occurred while fetching data');
+                }
+            }
+        }, 200); // 200ms delay
+    }
+
+    function renderResults(apps) {
+      const tbody = document.getElementById('searchResults');
+      if (!apps || !tbody) return;
+
+      tbody.innerHTML = apps.map(app => `
+        <tr>
+          <td>${app.appId || 'N/A'}</td>
+          <td>${app.title || 'N/A'}</td>
+          <td>
+            <div class="text-wrap" style="max-width: 300px;">
+              ${app.description || 'No description available'}
+            </div>
+          </td>
+          <td>
+            ${app.intents && Array.isArray(app.intents) ? app.intents.length : '0'}
+          </td>
+          <td>
+            <div class="d-flex flex-wrap gap-1">
+              ${(app.categories || []).map(category => 
+                `<span class="badge badge-primary mr-1">${category}</span>`
+              ).join('')}
+            </div>
+          </td>
+          <td>
+            <div class="d-flex">
+              <button class="btn btn-icon btn-sm mr-2" onclick="viewApp('${app.appId}')" title="View">
+                <i class="fas fa-eye text-primary"></i>
+              </button>
+              <button class="btn btn-icon btn-sm" onclick="editApp('${app.appId}')" title="Edit">
+                <i class="fas fa-pencil-alt text-info"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+
+      if (apps.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="text-center">No results found</td>
+          </tr>
+        `;
+      }
+    }
+
+    function showError(message) {
+      const alertContainer = document.getElementById('alertContainer');
+      if (alertContainer) {
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'alert alert-danger';
+        errorDiv.role = 'alert';
+        errorDiv.textContent = message;
+
+        alertContainer.innerHTML = '';
+        alertContainer.appendChild(errorDiv);
+
+        setTimeout(() => errorDiv.remove(), 5000);
+      }
+    }
+
+    // Initialize user info on page load
+    document.addEventListener('DOMContentLoaded', async function() {
+        if (!checkAuthorization()) return;
+        
+        const userData = await fetchUserData();
+        if (userData) {
+            document.getElementById('loggedInUser').textContent = userData.name;
+            handleSearch(); // This will load all apps since searchTerm will be empty
+        } else {
+            window.location.href = '/login';
+        }
+    });
+
+    function logout() {
+      localStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+
+    function viewApp(appId) {
+        if (!checkAuthorization()) return;
+        window.location.href = `/appDetails?appId=${appId}`;
+    }
+
+    function editApp(appId) {
+        if (!checkAuthorization()) return;
+        window.location.href = `/appDetails?appId=${appId}&mode=edit`;
+    }
+
+    function toggleView() {
+        if (!checkAuthorization()) return;
+        const currentPath = window.location.pathname;
+        
+        if (currentPath === '/search') {
+            window.location.href = '/apps';
+        } else {
+            window.location.href = '/search';
+        }
+    }
+
+    // Update the fetchUserData function to use the correct endpoint
+    async function fetchUserData() {
+        try {
+            const token = localStorage.getItem('token');
+            if (!token) return null;
+
+            // First get the user data from the token
+            const tokenData = JSON.parse(atob(token.split('.')[1]));
+            const userId = tokenData.id; // JWT token contains user ID
+
+            // Then fetch the full user data using the ID
+            const response = await fetch(`/v1/users/id/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                if (response.status === 401) {
+                    localStorage.removeItem('token');
+                    window.location.href = '/login';
+                }
+                return null;
+            }
+
+            const userData = await response.json();
+            document.getElementById('loggedInUser').textContent = userData.name;
+            return userData;
+        } catch (error) {
+            console.error('Error fetching user data:', error);
+            return null;
+        }
+    }
+
+    function createNewApp() {
+        if (!checkAuthorization()) return;
+        window.location.href = '/appDetails?mode=new';
+    }
+  </script>
+</body> 
