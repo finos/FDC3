@@ -24,6 +24,11 @@ import {
 export class DefaultPrivateChannel extends DefaultChannel implements PrivateChannel {
   constructor(messaging: Messaging, messageExchangeTimeout: number, id: string) {
     super(messaging, messageExchangeTimeout, id, 'private');
+
+    //bind all functions to allow destructuring
+    this.addContextListener = this.addContextListener.bind(this);
+    this.addEventListener = this.addEventListener.bind(this);
+    this.disconnect = this.disconnect.bind(this);
   }
 
   async addEventListener(type: PrivateChannelEventTypes | null, handler: EventHandler): Promise<Listener> {
