@@ -25,6 +25,12 @@
     },
     {
       "path": "../../packages/fdc3"
+    },
+    {
+      "path": "../../packages/fdc3-schema"
+    },
+    {
+      "path": "../../packages/fdc3-agent-proxy"
     }
   ]
 }

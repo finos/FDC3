@@ -5,10 +5,12 @@ import {
   MessageAuthenticity,
   SignedMessageAuthenticity,
   UnsignedMessageAuthenticity,
-  FDC3Security,
+  PublicFDC3Security,
   JSONWebEncryption,
   JSONWebSignature,
-} from './FDC3Security';
+  FDC3JWTPayload,
+} from './PublicFDC3Security';
+import { PrivateFDC3Security } from './PrivateFDC3Security';
 export {
   type EncryptingPrivateChannel,
   type MessageAuthenticity,
@@ -16,7 +18,9 @@ export {
   type UnsignedMessageAuthenticity,
   type JSONWebEncryption,
   type JSONWebSignature,
-  type FDC3Security,
+  type PublicFDC3Security,
+  type PrivateFDC3Security,
+  type FDC3JWTPayload,
   SecuredDesktopAgentDelegate,
   signedContext,
   signingContextHandler,

@@ -1,13 +1,14 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
 import {
-  FDC3Security,
+  FDC3JWTPayload,
   JSONWebEncryption,
   JSONWebSignature,
   SignedMessageAuthenticity,
-} from '../../../src/FDC3Security';
+} from '../../../src/PublicFDC3Security';
+import { PrivateFDC3Security } from '../../../src/PrivateFDC3Security';
 import { canonicalize } from 'json-canonicalize';
 
-export class DummyCrypto implements FDC3Security {
+export class DummyCrypto implements PrivateFDC3Security {
   async encrypt(ctx: Context, symmetricKey: JsonWebKey): Promise<JSONWebEncryption> {
     const text = canonicalize(ctx);
     const key = canonicalize(symmetricKey);
@@ -87,5 +88,30 @@ export class DummyCrypto implements FDC3Security {
 
   async unwrapKey(ctx: SymmetricKeyResponse): Promise<JsonWebKey> {
     return JSON.parse(ctx.wrappedKey);
+  }
+
+  async createJWTToken(aud: string, sub: string): Promise<string> {
+    return `dummy-jwt-token-${aud}-${sub}`;
+  }
+
+  getPublicKeys(): JsonWebKey[] {
+    return [
+      {
+        alg: 'dummy',
+        k: '123',
+      },
+    ];
+  }
+
+  async verifyJWTToken(token: string): Promise<FDC3JWTPayload> {
+    const parts = token.split('-');
+    return {
+      aud: parts[4],
+      sub: parts[5],
+      iss: 'dummy-iss',
+      iat: 0,
+      exp: 0,
+      jti: 'dummy-jti',
+    };
   }
 }

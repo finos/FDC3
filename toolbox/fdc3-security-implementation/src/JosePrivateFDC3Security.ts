@@ -1,8 +1,7 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
-import { JSONWebEncryption, JSONWebSignature, FDC3JWTPayload } from './PublicFDC3Security';
+import { JSONWebEncryption, JSONWebSignature, FDC3JWTPayload, PrivateFDC3Security } from '@finos/fdc3-security';
 import * as jose from 'jose';
 import { JosePublicFDC3Security, JWKSResolver } from './JosePublicFDC3Security';
-import { PrivateFDC3Security } from './PrivateFDC3Security';
 
 /**
  * Implements the FDC3Security interface either in node or the browser.

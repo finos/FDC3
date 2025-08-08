@@ -13,8 +13,8 @@ import { AbstractDesktopAgentDelegate } from '../delegates/AbstractDesktopAgentD
 import { SigningChannelDelegate } from '../signing/SigningChannelDelegate';
 import { EncryptingPrivateChannel } from '../encryption/EncryptingPrivateChannel';
 import { EncryptingChannelDelegate } from '../encryption/EncryptingChannelDelegate';
-import { FDC3Security } from '../FDC3Security';
 import { signedContext, signingIntentHandler, signingContextHandler } from '../signing/SigningSupport';
+import { PrivateFDC3Security } from '../PrivateFDC3Security';
 
 /**
  * This implementation adds signing functionality to any broadcast context
@@ -23,7 +23,7 @@ import { signedContext, signingIntentHandler, signingContextHandler } from '../s
 export class SecuredDesktopAgentDelegate extends AbstractDesktopAgentDelegate {
   private readonly fdc3Security;
 
-  constructor(d: DesktopAgent, fdc3Security: FDC3Security) {
+  constructor(d: DesktopAgent, fdc3Security: PrivateFDC3Security) {
     super(d);
     this.fdc3Security = fdc3Security;
   }

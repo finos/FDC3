@@ -1,5 +1,6 @@
 import { Channel, ContextHandler, ContextMetadata, IntentHandler, IntentResult } from '@finos/fdc3-standard';
-import { FDC3Security, JSONWebSignature, MessageAuthenticity } from '../FDC3Security';
+import { JSONWebSignature, MessageAuthenticity } from '../PublicFDC3Security';
+import { PrivateFDC3Security } from '../PrivateFDC3Security';
 import { Context } from '@finos/fdc3-context';
 
 export type ContextMetadataWithAuthenticity = ContextMetadata & {
@@ -8,7 +9,7 @@ export type ContextMetadataWithAuthenticity = ContextMetadata & {
 };
 
 export async function signedContext(
-  fdc3Security: FDC3Security,
+  fdc3Security: PrivateFDC3Security,
   context: Context,
   intent: string | null,
   channelId: string | null
@@ -26,7 +27,7 @@ export async function signedContext(
 type X = ContextHandler | IntentHandler;
 
 export async function checkSignature(
-  fdc3Security: FDC3Security,
+  fdc3Security: PrivateFDC3Security,
   m: ContextMetadataWithAuthenticity | undefined,
   c: Context,
   intent: string | null,
@@ -65,7 +66,7 @@ export async function checkSignature(
 }
 
 export function signingContextHandler(
-  fdc3Security: FDC3Security,
+  fdc3Security: PrivateFDC3Security,
   handler: ContextHandler,
   channelProvider: () => Promise<Channel | null>
 ): X {
@@ -78,7 +79,7 @@ export function signingContextHandler(
 }
 
 export function signingIntentHandler(
-  fdc3Security: FDC3Security,
+  fdc3Security: PrivateFDC3Security,
   handler: IntentHandler,
   intentName: string
 ): IntentHandler {

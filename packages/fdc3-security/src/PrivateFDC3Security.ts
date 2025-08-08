@@ -1,4 +1,4 @@
-import { Context } from '@finos/fdc3-context';
+import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
 import { JSONWebEncryption, JSONWebSignature, PublicFDC3Security } from './PublicFDC3Security';
 
 /**
@@ -15,7 +15,11 @@ export interface PrivateFDC3Security extends PublicFDC3Security {
 
   sign(ctx: Context, intent: string | null, channelId: string | null): Promise<JSONWebSignature>;
 
-  getPublicKeys(): JsonWebKey[];
+  createSymmetricKey(): Promise<JsonWebKey>;
+
+  wrapKey(symmetricKey: JsonWebKey, publicKeyUrl: string): Promise<SymmetricKeyResponse>;
+
+  unwrapKey(ctx: SymmetricKeyResponse): Promise<JsonWebKey>;
 
   /**
    * Create a JWT token with the given audience and subject.

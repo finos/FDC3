@@ -57,6 +57,8 @@
     "@finos/fdc3": "2.3.0",
     "@finos/fdc3-context": "2.3.0",
     "@finos/fdc3-security": "2.3.0",
+    "@finos/fdc3-schema": "2.3.0",
+    "@finos/fdc3-agent-proxy": "2.3.0",
     "@types/uuid": "^10.0.0",
     "@types/ws": "^8.5.12",
     "canonicalize": "^2.1.0",

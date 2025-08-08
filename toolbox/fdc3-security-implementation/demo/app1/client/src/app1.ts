@@ -1,6 +1,8 @@
 import { DesktopAgent, getAgent, User } from '@finos/fdc3';
 import { createLogEntry, updateStatus } from '../../common/src/logging';
 import { checkSessionStatus, setupSessionStatusButton, logout } from '../../common/src/session';
+import { connectRemoteDesktopAgent } from '../../../../src/helpers/ClientSideHandlers';
+import { Socket } from 'socket.io-client';
 
 // Initialize FDC3 connection
 async function initializeFDC3() {
@@ -32,116 +34,22 @@ async function initializeFDC3() {
 }
 
 // Function to raise GetUser intent
-async function raiseGetUserIntent(fdc3: DesktopAgent) {
+async function raiseGetUserIntent(socket: Socket) {
   try {
     createLogEntry('info', '🔐 Raising GetUser Intent...', {
       intent: 'GetUser',
       timestamp: new Date().toISOString(),
     });
 
-    // First, get the context to be signed
-    const context = {
-      type: 'fdc3.user.request',
-      aud: 'http://localhost:4003',
-    };
+    const response = await socket.emitWithAck('get_user');
 
-    // Call backend to sign the request
-    createLogEntry('info', '🔑 Requesting signature from backend...', {
-      endpoint: '/api/sign_get_user_request',
-      timestamp: new Date().toISOString(),
-    });
-
-    const signedRequest = await fetch('/api/sign_get_user_request', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ context }),
-    });
-
-    if (!signedRequest.ok) {
-      throw new Error(`Failed to sign request: ${signedRequest.statusText}`);
-    }
-
-    const { signature, intent, context: signedContext } = await signedRequest.json();
-
-    createLogEntry('success', '✅ Request signed successfully', {
-      signature: signature.substring(0, 50) + '...',
-      intent,
-      timestamp: new Date().toISOString(),
-    });
-
-    // Create the signed context with the signature embedded
-    const contextWithSignature = {
-      ...signedContext,
-      __signature: signature,
-    };
-
-    // Now raise the intent with the signed context
-    const result = await fdc3.raiseIntent('GetUser', contextWithSignature);
-    const userDetails = (await result.getResult()) as User;
-
-    createLogEntry('success', '✅ GetUser Intent raised successfully', {
-      intent: 'GetUser',
-      result: userDetails,
-      timestamp: new Date().toISOString(),
-    });
-
-    // If we received a JWT token from the IDP app, store it in the session
-    if (userDetails && typeof userDetails === 'object' && 'jwt' in userDetails) {
-      const jwtToken = userDetails.jwt;
-      createLogEntry('info', '🔐 Storing JWT token in session...', {
-        tokenLength: jwtToken.length,
-        timestamp: new Date().toISOString(),
-      });
-
-      try {
-        const storeResponse = await fetch('/api/store_jwt', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            jwtToken,
-            userDetails: userDetails,
-          }),
-        });
-
-        if (!storeResponse.ok) {
-          throw new Error(`Failed to store JWT in session: ${storeResponse.statusText}`);
-        }
-
-        const storeResult = await storeResponse.json();
-
-        if (storeResult.success) {
-          createLogEntry('success', '✅ JWT token stored in session successfully', {
-            user: storeResult.user,
-            message: storeResult.message,
-            timestamp: new Date().toISOString(),
-          });
-        } else {
-          createLogEntry('error', '❌ Failed to store JWT token in session', {
-            error: storeResult.error,
-            details: storeResult.details,
-            timestamp: new Date().toISOString(),
-          });
-        }
-      } catch (error) {
-        createLogEntry('error', '❌ Failed to store JWT token in session', {
-          error: error instanceof Error ? error.message : String(error),
-          timestamp: new Date().toISOString(),
-        });
-      }
-    }
-
-    return result;
+    createLogEntry('success', '✅ GetUser endpoint called successfully', response);
   } catch (error) {
-    createLogEntry('error', '❌ Failed to raise GetUser Intent', {
+    createLogEntry('error', '❌ Failed to call GetUser endpoint', {
       intent: 'GetUser',
       error: error instanceof Error ? error.message : String(error),
       timestamp: new Date().toISOString(),
     });
-    throw error;
   }
 }
 
@@ -173,7 +81,7 @@ async function raiseGetPricesIntent(fdc3: any) {
 }
 
 // Set up button event listeners
-function setupButtonListeners(fdc3: any) {
+function setupButtonListeners(socket: Socket) {
   const loginBtn = document.getElementById('login-btn') as HTMLButtonElement;
   const pricesBtn = document.getElementById('prices-btn') as HTMLButtonElement;
   const logoutBtn = document.getElementById('logout-btn') as HTMLButtonElement;
@@ -183,7 +91,7 @@ function setupButtonListeners(fdc3: any) {
       try {
         loginBtn.disabled = true;
         loginBtn.textContent = '🔄 Processing...';
-        await raiseGetUserIntent(fdc3);
+        await raiseGetUserIntent(socket);
       } catch (error) {
         console.error('Login intent failed:', error);
       } finally {
@@ -193,45 +101,28 @@ function setupButtonListeners(fdc3: any) {
     });
   }
 
-  if (pricesBtn) {
-    pricesBtn.addEventListener('click', async () => {
-      try {
-        pricesBtn.disabled = true;
-        pricesBtn.textContent = '🔄 Processing...';
-        await raiseGetPricesIntent(fdc3);
-      } catch (error) {
-        console.error('GetPrices intent failed:', error);
-      } finally {
-        pricesBtn.disabled = false;
-        pricesBtn.textContent = '📊 Get Prices (demo.GetPrices Intent)';
-      }
-    });
-  }
+  // if (pricesBtn) {
+  //   pricesBtn.addEventListener('click', async () => {
+  //     try {
+  //       pricesBtn.disabled = true;
+  //       pricesBtn.textContent = '🔄 Processing...';
+  //       await raiseGetPricesIntent(fdc3);
+  //     } catch (error) {
+  //       console.error('GetPrices intent failed:', error);
+  //     } finally {
+  //       pricesBtn.disabled = false;
+  //       pricesBtn.textContent = '📊 Get Prices (demo.GetPrices Intent)';
+  //     }
+  //   });
+  // }
 
   // Setup session status button using shared module
   setupSessionStatusButton();
-
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', async () => {
-      try {
-        logoutBtn.disabled = true;
-        logoutBtn.textContent = '🔄 Logging out...';
-        await logout();
-      } catch (error) {
-        console.error('Logout failed:', error);
-      } finally {
-        logoutBtn.disabled = false;
-        logoutBtn.textContent = '🚪 Logout';
-      }
-    });
-  }
 }
 
 // Main initialization
 initializeFDC3()
   .then(async fdc3 => {
-    setupButtonListeners(fdc3);
-
     // Check initial session status
     try {
       await checkSessionStatus();
@@ -243,6 +134,10 @@ initializeFDC3()
       status: 'Ready',
       buttons: ['Login', 'Get Prices', 'Check Session Status', 'Logout'],
       timestamp: new Date().toISOString(),
+    });
+
+    connectRemoteDesktopAgent(fdc3).then(socket => {
+      setupButtonListeners(socket);
     });
   })
   .catch(error => {

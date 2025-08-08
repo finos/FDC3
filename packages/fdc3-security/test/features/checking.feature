@@ -18,8 +18,8 @@ Feature: Checking Signatures
       | type            | name  |
       | fdc3.instrument | Apple |
     And "{metas}" is an array of objects with the following contents
-      | authenticity.verified | authenticity.valid | authenticity.publicKeyUrl |
-      | true                  | true               | https://dummy.com/pubKey  |
+      | authenticity.trusted | authenticity.valid | authenticity.signed | authenticity.publicKeyUrl |
+      | true                 | true               | true                | https://dummy.com/pubKey  |
 
   Scenario: App Channel Context Handler receives a checked signature back in the metadata
     Given "resultHandler" pipes context to "contexts" and metadata to "metas"
@@ -31,8 +31,8 @@ Feature: Checking Signatures
       | type            | name  |
       | fdc3.instrument | Apple |
     And "{metas}" is an array of objects with the following contents
-      | authenticity.verified | authenticity.valid | authenticity.publicKeyUrl |
-      | true                  | true               | https://dummy.com/pubKey  |
+      | authenticity.trusted | authenticity.valid | authenticity.signed | authenticity.publicKeyUrl |
+      | true                 | true               | true                | https://dummy.com/pubKey  |
 
   Scenario: User Channel Context Handler receives a checked signature back in the metadata
     Given "resultHandler" pipes context to "contexts" and metadata to "metas"
@@ -45,8 +45,8 @@ Feature: Checking Signatures
       | type            | name  |
       | fdc3.instrument | Apple |
     And "{metas}" is an array of objects with the following contents
-      | authenticity.signed | authenticity.valid | authenticity.publicKeyUrl |
-      | true                | true               | https://dummy.com/pubKey  |
+      | authenticity.trusted | authenticity.valid | authenticity.signed | authenticity.publicKeyUrl |
+      | true                 | true               | true                | https://dummy.com/pubKey  |
 
   Scenario: Private Channel Context Handler receives a checked signature back in the metadata
     Given "resultHandler" pipes context to "contexts" and metadata to "metas"
@@ -58,8 +58,8 @@ Feature: Checking Signatures
       | type            | name  |
       | fdc3.instrument | Apple |
     And "{metas}" is an array of objects with the following contents
-      | authenticity.signed | authenticity.valid | authenticity.publicKeyUrl |
-      | true                | true               | https://dummy.com/pubKey  |
+      | authenticity.trusted | authenticity.valid | authenticity.signed | authenticity.publicKeyUrl |
+      | true                 | true               | true                | https://dummy.com/pubKey  |
 
   Scenario: Private Channel Context Handler receives a bad signature back in the metadata
     Given "resultHandler" pipes context to "contexts" and metadata to "metas"
@@ -71,8 +71,8 @@ Feature: Checking Signatures
       | type            | name  |
       | fdc3.instrument | Apple |
     And "{metas}" is an array of objects with the following contents
-      | authenticity.signed | authenticity.valid | authenticity.publicKeyUrl | authenticity.trusted |
-      | true                | false              | https://dummy.com/pubKey  | true                 |
+      | authenticity.trusted | authenticity.valid | authenticity.signed | authenticity.publicKeyUrl |
+      | true                 | false              | true                | https://dummy.com/pubKey  |
 
   Scenario: Bad Signature that can't be checked
     Given "resultHandler" pipes context to "contexts" and metadata to "metas"
@@ -85,8 +85,8 @@ Feature: Checking Signatures
       | type            | name  |
       | fdc3.instrument | Apple |
     And "{metas}" is an array of objects with the following contents
-      | authenticity.signed | authenticity.valid | authenticity.publicKeyUrl | authenticity.trusted |
-      | true                | false              |                           |                      |
+      | authenticity.trusted | authenticity.valid | authenticity.signed | authenticity.publicKeyUrl |
+      | true                 | false              | true                | https://dummy.com/pubKey  |
 
   Scenario: Signature missing
     Given "resultHandler" pipes context to "contexts" and metadata to "metas"

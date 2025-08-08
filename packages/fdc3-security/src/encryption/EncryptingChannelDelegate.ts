@@ -1,6 +1,7 @@
 import { ContextHandler, ContextMetadata, Listener, PrivateChannel } from '@finos/fdc3-standard';
 import { Context, SymmetricKeyResponse, SymmetricKeyRequest } from '@finos/fdc3-context';
-import { FDC3Security, JSONWebEncryption } from '../FDC3Security';
+import { JSONWebEncryption } from '../PublicFDC3Security';
+import { PrivateFDC3Security } from '../PrivateFDC3Security';
 import { EncryptingPrivateChannel } from './EncryptingPrivateChannel';
 import { AbstractChannelDelegate } from '../delegates/AbstractChannelDelegate';
 
@@ -25,12 +26,12 @@ export class EncryptingChannelDelegate extends AbstractChannelDelegate implement
   private symmetricKey: JsonWebKey | null = null;
   private typeFilter: null | ((type: string) => boolean) = null;
   private keyCreator: boolean = false;
-  private readonly fdc3Security: FDC3Security;
+  private readonly fdc3Security: PrivateFDC3Security;
 
   requestListener: Listener | null = null;
   responseListener: Listener | null = null;
 
-  constructor(d: PrivateChannel, fdc3Security: FDC3Security) {
+  constructor(d: PrivateChannel, fdc3Security: PrivateFDC3Security) {
     super(d);
     this.fdc3Security = fdc3Security;
 

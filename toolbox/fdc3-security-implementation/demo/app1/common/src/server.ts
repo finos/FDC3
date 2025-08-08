@@ -1,9 +1,11 @@
 import { createJosePrivateFDC3Security } from '../../../../src/JosePrivateFDC3Security';
 import { provisionJWKS } from '../../../../src/JosePublicFDC3Security';
-import { PrivateFDC3Security } from '../../../../src/PrivateFDC3Security';
-import express, { Express } from 'express';
+import { PrivateFDC3Security } from '@finos/fdc3-security';
+import express, { Express, RequestHandler } from 'express';
 import ViteExpress from 'vite-express';
 import session from 'express-session';
+import { DesktopAgent } from '@finos/fdc3';
+import { Server } from 'http';
 
 // Extend session interface to include JWT token
 declare module 'express-session' {
@@ -12,10 +14,13 @@ declare module 'express-session' {
     isAuthenticated: boolean;
     jwtToken?: string;
     userDetails?: any;
+    desktopAgent: DesktopAgent;
   }
 }
 
-export async function initializeServer(port: number): Promise<{ fdc3Security: PrivateFDC3Security; app: Express }> {
+export async function initializeServer(
+  port: number
+): Promise<{ fdc3Security: PrivateFDC3Security; app: Express; server: Server }> {
   const appUrl = `http://localhost:${port}`;
   const app = express();
 
@@ -43,7 +48,7 @@ export async function initializeServer(port: number): Promise<{ fdc3Security: Pr
 
   setupJWKSEndpoint(app, fdc3Security);
 
-  ViteExpress.listen(app, port, () => {
+  const server = ViteExpress.listen(app, port, () => {
     console.log('==========================================');
     console.log(`🚀 App running on ${appUrl}`);
     console.log('📋 Available endpoints:');
@@ -51,7 +56,7 @@ export async function initializeServer(port: number): Promise<{ fdc3Security: Pr
     console.log('==========================================');
   });
 
-  return { fdc3Security, app };
+  return { fdc3Security, app, server };
 }
 
 function setupJWKSEndpoint(app: Express, fdc3Security: PrivateFDC3Security) {
@@ -80,19 +85,22 @@ function setupJWKSEndpoint(app: Express, fdc3Security: PrivateFDC3Security) {
   });
 }
 
-export function setupSessionHandlingEndpoints(app: Express) {
-  app.use(
-    session({
-      secret: 'fdc3-app1-secret-key',
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        secure: false, // Set to true in production with HTTPS
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000, // 24 hours
-      },
-    })
-  );
+export function setupSessionHandlingEndpoints(app: Express): RequestHandler {
+  // Create a shared session store that can be used by both HTTP and WebSocket connections
+  const sessionMiddleware = session({
+    secret: 'fdc3-app1-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // Set to true in production with HTTPS
+      httpOnly: true,
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      sameSite: 'lax', // Ensure cookies are sent with cross-site requests
+    },
+    name: 'fdc3-app1-session', // Explicit session name to ensure consistency
+  });
+
+  app.use(sessionMiddleware);
 
   app.use(express.json());
 
@@ -137,4 +145,6 @@ export function setupSessionHandlingEndpoints(app: Express) {
       res.json(response);
     }
   });
+
+  return sessionMiddleware;
 }
