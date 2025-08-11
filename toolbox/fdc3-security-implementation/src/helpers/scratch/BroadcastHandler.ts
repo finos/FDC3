@@ -1,4 +1,4 @@
-import { ChannelError, PrivateChannelEventTypes } from '@finos/fdc3-standard';
+import { ChannelError, DesktopAgent, PrivateChannelEventTypes } from '@finos/fdc3-standard';
 import {
   AddContextListenerRequest,
   AgentResponseMessage,
@@ -24,9 +24,10 @@ import {
   ServerContext,
 } from './ServerContext';
 import { FullAppIdentifier } from './MessageHandler';
+import { EventListener } from '@finos/fdc3-agent-proxy/src/listeners/EventListener';
 
 export class BroadcastHandler extends AbstractHandler {
-  constructor(da: ServerContext) {
+  constructor(da: DesktopAgent) {
     super(da);
   }
 
@@ -110,6 +111,8 @@ export class BroadcastHandler extends AbstractHandler {
 
   async handlePrivateChannelUnsubscribeEventListenerRequest(arg0: PrivateChannelUnsubscribeEventListenerRequest) {
     try {
+      const el: EventListener;
+      el.unsubscribe();
       const el = this.da.getPrivateChannelEventListeners();
       const i = el.findIndex(r => r.listenerUuid == arg0.payload.listenerUUID);
       if (i > -1) {

@@ -1,12 +1,12 @@
 import { AgentResponseMessage, AppRequestMessage } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { IncomingMessage, MessageHandler } from './MessageHandler';
 import { v4 as uuidv4 } from 'uuid';
-import { ServerContext } from './ServerContext';
+import { DesktopAgent } from '@finos/fdc3';
 
 export abstract class AbstractHandler implements MessageHandler {
-  protected da: ServerContext;
+  protected da: DesktopAgent;
 
-  constructor(da: ServerContext) {
+  constructor(da: DesktopAgent) {
     this.da = da;
   }
 

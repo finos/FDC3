@@ -5,55 +5,64 @@ import { Context } from '@finos/fdc3-context';
 import { Socket } from 'socket.io-client';
 import { WEB_MESSAGE } from '../MessageTypes';
 
-export class ClientSideServerContext extends AbstractDesktopAgentDelegate implements ServerContext {
-  private socket: Socket;
+/**
+ * Essentially implements a server context which acts as a go-between for the
+ * DesktopAgent and whatever is sending it messages.
+ */
 
-  constructor(desktopAgent: DesktopAgent, socket: Socket) {
-    super(desktopAgent);
+export class ClientSideServerContext implements ServerContext {
+  private socket: Socket;
+  private da: DesktopAgent;
+  private contextListeners: ContextListenerRegistration[] = [];
+
+  constructor(socket: Socket) {
     this.socket = socket;
   }
 
-  wrapChannel(channel: Channel): Channel {
-    return channel;
+  async getChannelById(id: string | null): Promise<Channel | null> {
+    if (id != null) {
+      return this.da.getOrCreateChannel(id);
+    } else {
+      return null;
+    }
   }
 
-  wrapIntentResult(result: IntentResult): IntentResult {
-    return result;
-  }
-
-  getChannelById(id: string | null): Channel | null {
+  async updateChannelContext(channelId: string, context: Context): Promise<void> {
     throw new Error('Method not implemented.');
   }
 
-  updateChannelContext(channelId: string, context: Context): void {
+  async getPrivateChannelEventListeners(): Promise<PrivateChannelEventListener[]> {
     throw new Error('Method not implemented.');
   }
 
-  getPrivateChannelEventListeners(): PrivateChannelEventListener[] {
+  async registerPrivateChannelEventListener(listener: PrivateChannelEventListener): Promise<void> {
     throw new Error('Method not implemented.');
   }
 
-  registerPrivateChannelEventListener(listener: PrivateChannelEventListener): void {
+  async unregisterPrivateChannelEventListener(id: string): Promise<void> {
     throw new Error('Method not implemented.');
   }
 
-  unregisterPrivateChannelEventListener(id: string): void {
+  async getContextListeners(): Promise<ContextListenerRegistration[]> {
     throw new Error('Method not implemented.');
   }
 
-  getContextListeners(): ContextListenerRegistration[] {
-    throw new Error('Method not implemented.');
+  async registerContextListener(listener: ContextListenerRegistration): Promise<void> {
+    this.contextListeners.push(listener);
+    this.addContextListener(listener.contextType, () => {
+      this.socket.emit(WEB_MESSAGE, {
+        type: CONTEXT_EVENT,
+        contextType: listener.contextType,
+        context: listener.context,
+      });
+    });
   }
 
-  registerContextListener(listener: ContextListenerRegistration): void {
-    throw new Error('Method not implemented.');
+  async unregisterContextListener(id: string): Promise<void> {
+    this.contextListeners = this.contextListeners.filter(l => l.listenerUuid !== id);
   }
 
-  unregisterContextListener(id: string): void {
-    throw new Error('Method not implemented.');
-  }
-
-  post(msg: any, instanceId?: string): void {
+  async post(msg: any, instanceId?: string): Promise<void> {
     if (!instanceId) {
       this.socket.emit(WEB_MESSAGE, msg);
     }
