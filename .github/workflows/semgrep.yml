@@ -13,7 +13,7 @@ permissions:
 jobs:
   semgrep:
     name: run-semgrep
-    runs-on: ubuntu-latest
+    runs-on: lnx-build
     container:
       image: returntocorp/semgrep
     steps:

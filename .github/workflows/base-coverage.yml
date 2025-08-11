@@ -7,7 +7,7 @@ on:
 
 jobs:
   test_and_upload_coverage:
-    runs-on: ubuntu-latest
+    runs-on: lnx-build
     name: Test and upload coverage
     steps:
       - name: Checkout

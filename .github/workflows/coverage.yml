@@ -11,7 +11,7 @@ permissions:
 # Define the jobs for this workflow
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: lnx-build
 
     steps:
     - name: Checkout repository

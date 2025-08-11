@@ -25,7 +25,7 @@ permissions:
 jobs:
 # JOB to run change detection
   changes:
-    runs-on: ubuntu-latest
+    runs-on: lnx-build
     permissions:
       pull-requests: read
     # Set job outputs to values from the filter step
@@ -65,7 +65,7 @@ jobs:
     strategy:
       matrix:
         node: [20]
-        os: [ubuntu-latest, windows-latest]
+        os: [lnx-build, windows-latest]
 
     steps:
       - name: Checkout repo
@@ -103,7 +103,7 @@ jobs:
     if: ${{ github.event_name == 'push' && needs.changes.outputs.builtFiles == 'true'}}
     needs: [changes,package-build]
     name: Publish package to ${{ matrix.name }}
-    runs-on: ubuntu-latest
+    runs-on: lnx-build
     permissions:
       contents: read
       id-token: write
