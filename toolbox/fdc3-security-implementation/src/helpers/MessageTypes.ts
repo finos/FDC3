@@ -19,8 +19,6 @@ export type RemoteContextHandlerMessage = {
 export const REMOTE_INTENT_HANDLER = 'remote-intent-handler';
 export type RemoteIntentHandlerMessage = {
   intent: string;
-  context: Context;
-  metadata: ContextMetadata | undefined;
 };
 
 export const EXCHANGE_DATA = 'exchange-data';

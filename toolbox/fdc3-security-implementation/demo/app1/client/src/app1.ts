@@ -15,14 +15,14 @@ async function raiseGetUserIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Handle
 
     const bareContext: UserRequest = {
       type: 'fdc3.user.request',
-      aud: 'https://localhost:4003',
+      aud: 'http://localhost:4003',
     };
 
     const signedContext = (await remoteHandlers.signRequest(bareContext, 'GetUser', null)) as UserRequest;
     const resolution = await fdc3.raiseIntent('GetUser', signedContext);
 
     const result1 = (await resolution.getResult()) as Context;
-    const result2 = remoteHandlers.exchangeData(result1);
+    const result2 = await remoteHandlers.exchangeData(result1);
 
     if (result2) {
       createLogEntry('success', '✅ GetUser intent raised successfully', {

@@ -1,5 +1,5 @@
 import { createJosePrivateFDC3Security } from '../../../../src/JosePrivateFDC3Security';
-import { provisionJWKS } from '../../../../src/JosePublicFDC3Security';
+import { AllowListFunction, provisionJWKS } from '../../../../src/JosePublicFDC3Security';
 import { PrivateFDC3Security } from '@finos/fdc3-security';
 import express, { Express, RequestHandler } from 'express';
 import ViteExpress from 'vite-express';
@@ -11,7 +11,7 @@ export async function initializeServer(
   const appUrl = `http://localhost:${port}`;
   const app = express();
 
-  const allowListFunction = (jku: string, iss?: string) => {
+  const allowListFunction: AllowListFunction = (jku: string, iss?: string) => {
     if (iss) {
       if (!jku.startsWith(iss)) {
         return false;

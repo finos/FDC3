@@ -32,6 +32,7 @@ export class IDPBusinessLogic implements FDC3Handlers {
       const ih: IntentHandler = async (ctx: Context, metadata: ContextMetadata | undefined) => {
         // first, check the signature
         const sig = ctx.__signature;
+        delete ctx.__signature;
         const ma = await this.fdc3Security.check(sig, ctx, intent, null);
         if (ma.signed && ma.trusted && ma.valid) {
           const userId = this.user?.id?.userId;

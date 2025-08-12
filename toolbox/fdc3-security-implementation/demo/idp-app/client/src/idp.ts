@@ -35,6 +35,17 @@ async function setupLoginButton(handlers: FDC3Handlers): Promise<void> {
   });
 }
 
+async function setupLoginIntentHandler(fdc3: DesktopAgent, handlers: FDC3Handlers): Promise<void> {
+  const intentHandler = await handlers.remoteIntentHandler('GetUser');
+
+  fdc3.addIntentListener('GetUser', async (context: Context, metadata: ContextMetadata | undefined) => {
+    createLogEntry('info', 'GetUser intent received', context);
+    const ss = await intentHandler(context, metadata);
+    createLogEntry('success', 'GetUser intent result', ss);
+    return ss;
+  });
+}
+
 // Initialize the application
 async function initialize(): Promise<void> {
   // Initialize FDC3
@@ -45,6 +56,7 @@ async function initialize(): Promise<void> {
     setupLogoutButton(remoteHandlers);
     setupLoginButton(remoteHandlers);
     showAuthenticatedState(null);
+    setupLoginIntentHandler(fdc3, remoteHandlers);
 
     createLogEntry('info', 'IDP App Initialized', 'Application ready');
   });

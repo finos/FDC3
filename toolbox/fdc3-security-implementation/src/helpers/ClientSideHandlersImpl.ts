@@ -8,6 +8,7 @@ import {
   RemoteIntentHandlerMessage,
   EXCHANGE_DATA,
   SIGN_REQUEST,
+  SignRequestMessage,
 } from './MessageTypes';
 import { FDC3Handlers } from './FDC3Handlers';
 
@@ -24,7 +25,13 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
   }
 
   async signRequest(ctx: Context, intent: string | null, channelId: string | null): Promise<Context> {
-    return await this.socket.emitWithAck(SIGN_REQUEST, ctx, intent, channelId);
+    const msg: SignRequestMessage = {
+      ctx,
+      intent,
+      channelId,
+    };
+
+    return await this.socket.emitWithAck(SIGN_REQUEST, msg);
   }
 
   async remoteContextHandler(
@@ -50,20 +57,19 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
   }
 
   async remoteIntentHandler(intent: string): Promise<IntentHandler> {
+    const msg: RemoteIntentHandlerMessage = {
+      intent,
+    };
+
+    const id = await this.socket.emitWithAck(REMOTE_INTENT_HANDLER, msg);
+
     return async (context: Context, metadata?: ContextMetadata | undefined) => {
-      const msg: RemoteIntentHandlerMessage = {
-        intent,
+      const value = await this.socket.emitWithAck(id, {
         context,
         metadata,
-      };
+      });
 
-      const { success, error } = await this.socket.emitWithAck(REMOTE_INTENT_HANDLER, msg);
-      if (error) {
-        throw new Error(error);
-      } else {
-        return success as IntentResult;
-      }
-      // todo - handle channels
+      return value;
     };
   }
 

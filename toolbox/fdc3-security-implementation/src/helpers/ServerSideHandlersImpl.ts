@@ -12,6 +12,7 @@ import {
   SIGN_REQUEST,
   SignRequestMessage,
 } from './MessageTypes';
+import { v4 as uuidv4 } from 'uuid';
 
 export type DisconnectCallback = (socket: Socket) => void;
 
@@ -47,9 +48,16 @@ export function setupWebsocketServer(
 
     socket.on(
       REMOTE_INTENT_HANDLER,
-      async function (props: RemoteIntentHandlerMessage, callback: (success: any, err?: string) => void) {
-        const result = await handlers.remoteIntentHandler(props.intent);
-        callback(result);
+      async function (props: RemoteIntentHandlerMessage, callback1: (success: any, err?: string) => void) {
+        const ih = await handlers.remoteIntentHandler(props.intent);
+        const id = uuidv4();
+        socket.on(id, async (data: any, callback2: (success: any, err?: string) => void) => {
+          const result = await ih(data.context, data.metadata);
+          callback2(result);
+        });
+
+        // todo - add disconnect listener
+        callback1(id);
       }
     );
 

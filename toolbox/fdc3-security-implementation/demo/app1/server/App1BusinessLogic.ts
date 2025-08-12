@@ -1,6 +1,4 @@
 import { ContextHandler, ContextMetadata, IntentHandler, IntentResult } from '@finos/fdc3';
-import { FDC3Handlers } from '../../../src/helpers/FDC3Handlers';
-
 import { Context, User } from '@finos/fdc3-context';
 import { PrivateFDC3Security } from '@finos/fdc3-security';
 import { AbstractSessionHandlingBusinessLogic } from '../common/src/AbstractSessionHandlingBusinessLogic';
@@ -23,7 +21,7 @@ export class App1BusinessLogic extends AbstractSessionHandlingBusinessLogic {
         __signature: signature,
       };
     } else {
-      throw new Error('Invalid intent');
+      throw new Error('Invalid intent' + intent);
     }
   }
 

@@ -22,13 +22,15 @@ export type JWKSResolver = {
   jwks: () => jose.JSONWebKeySet | undefined;
 };
 
+export type AllowListFunction = (jku: string, iss?: string) => boolean;
+
 /**
  * Implements the FDC3Security interface either in node or the browser.
  * Using the jose library for JSON Web Signatures and Encryption.
  * @param signingPublicKey - The signing public key
  * @param wrappingPublicKey - The wrapping public key
  * @param publicKeyResolver - Function to resolve public keys from URLs
- * @param allowListFunction - TODO.
+ * @param allowListFunction - Function to check if a URL is trusted.
  * @param validityTimeLimit - Optional validity time limit in seconds (default: 5 minutes)
  */
 export class JosePublicFDC3Security implements PublicFDC3Security {
@@ -36,13 +38,13 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
   readonly wrappingPublicKey: JSONWebKeyWithId;
   readonly validityTimeLimit: number; // in seconds
   readonly publicKeyResolver: (url: string) => JWKSResolver;
-  readonly allowListFunction: (jku: string, iss?: string) => boolean;
+  readonly allowListFunction: AllowListFunction;
 
   constructor(
     signingPublicKey: JsonWebKey,
     wrappingPublicKey: JsonWebKey,
     publicKeyResolver: (url: string) => JWKSResolver,
-    allowListFunction: (url: string) => boolean,
+    allowListFunction: AllowListFunction,
     validityTimeLimit: number = 5 * 60
   ) {
     this.allowListFunction = allowListFunction;

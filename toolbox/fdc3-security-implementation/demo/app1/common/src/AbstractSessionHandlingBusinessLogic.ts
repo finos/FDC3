@@ -18,12 +18,17 @@ export abstract class AbstractSessionHandlingBusinessLogic implements FDC3Handle
   abstract remoteIntentHandler(intent: string): Promise<IntentHandler>;
 
   async exchangeData(ctx: Context): Promise<Context | void> {
-    if (ctx.type === 'fdc3.user.request') {
-      this.user = ctx as User;
-    } else if (ctx.type == 'fdc3.user') {
-      this.user = ctx as User;
-    } else if (ctx.type == 'fdc3.user.logout') {
-      this.user = null;
+    if (ctx) {
+      if (ctx.type === 'fdc3.user.request') {
+        if (this.user) {
+          return this.user;
+        }
+      } else if (ctx.type == 'fdc3.user') {
+        this.user = ctx as User;
+        return this.user;
+      } else if (ctx.type == 'fdc3.user.logout') {
+        this.user = null;
+      }
     }
   }
 }

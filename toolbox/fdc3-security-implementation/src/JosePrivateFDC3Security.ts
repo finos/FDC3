@@ -1,7 +1,7 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
 import { JSONWebEncryption, JSONWebSignature, FDC3JWTPayload, PrivateFDC3Security } from '@finos/fdc3-security';
 import * as jose from 'jose';
-import { JosePublicFDC3Security, JWKSResolver } from './JosePublicFDC3Security';
+import { AllowListFunction, JosePublicFDC3Security, JWKSResolver } from './JosePublicFDC3Security';
 
 /**
  * Implements the FDC3Security interface either in node or the browser.
@@ -21,7 +21,7 @@ export class JosePrivateFDC3Security extends JosePublicFDC3Security implements P
     issUrl: string,
     jwksUrl: string,
     publicKeyResolver: (url: string) => JWKSResolver,
-    allowListFunction: (url: string) => boolean,
+    allowListFunction: AllowListFunction,
     validityTimeLimit: number = 5 * 60
   ) {
     super(signingPublicKey, wrappingPublicKey, publicKeyResolver, allowListFunction, validityTimeLimit);
@@ -147,7 +147,7 @@ export async function createWrappingKeyPair(id: string): Promise<{ priv: JsonWeb
 export async function createJosePrivateFDC3Security(
   baseUrl: string,
   publicKeyResolver: (url: string) => JWKSResolver,
-  allowListFunction: (url: string) => boolean,
+  allowListFunction: AllowListFunction,
   validityTimeLimit: number = 5 * 60,
   signingKeyId?: string,
   wrappingKeyId?: string
