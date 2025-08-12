@@ -3,20 +3,7 @@ import { provisionJWKS } from '../../../../src/JosePublicFDC3Security';
 import { PrivateFDC3Security } from '@finos/fdc3-security';
 import express, { Express, RequestHandler } from 'express';
 import ViteExpress from 'vite-express';
-import session from 'express-session';
-import { DesktopAgent } from '@finos/fdc3';
 import { Server } from 'http';
-
-// Extend session interface to include JWT token
-declare module 'express-session' {
-  interface SessionData {
-    userId: string;
-    isAuthenticated: boolean;
-    jwtToken?: string;
-    userDetails?: any;
-    desktopAgent: DesktopAgent;
-  }
-}
 
 export async function initializeServer(
   port: number
@@ -83,68 +70,4 @@ function setupJWKSEndpoint(app: Express, fdc3Security: PrivateFDC3Security) {
       res.status(500).json({ error: 'Failed to generate JWKS' });
     }
   });
-}
-
-export function setupSessionHandlingEndpoints(app: Express): RequestHandler {
-  // Create a shared session store that can be used by both HTTP and WebSocket connections
-  const sessionMiddleware = session({
-    secret: 'fdc3-app1-secret-key',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      secure: false, // Set to true in production with HTTPS
-      httpOnly: true,
-      maxAge: 24 * 60 * 60 * 1000, // 24 hours
-      sameSite: 'lax', // Ensure cookies are sent with cross-site requests
-    },
-    name: 'fdc3-app1-session', // Explicit session name to ensure consistency
-  });
-
-  app.use(sessionMiddleware);
-
-  app.use(express.json());
-
-  // Logout endpoint
-  app.post('/api/logout', (req, res) => {
-    console.log('Logout endpoint called');
-    console.log('Session before logout:', req.session);
-
-    req.session.destroy(err => {
-      if (err) {
-        console.error('Logout error:', err);
-        res.status(500).json({ success: false, error: 'Failed to logout' });
-      } else {
-        console.log('Logout successful');
-        res.json({ success: true });
-      }
-    });
-  });
-
-  // Check authentication status
-  app.get('/api/status', (req, res) => {
-    console.log('Auth status endpoint called');
-    console.log('Session:', req.session);
-    console.log('Session ID:', req.sessionID);
-
-    if (req.session.isAuthenticated) {
-      const response = {
-        isAuthenticated: true,
-        user: {
-          id: req.session.userId,
-          name: 'Demo User',
-        },
-      };
-      console.log('User is authenticated, sending response:', response);
-      res.json(response);
-    } else {
-      const response = {
-        isAuthenticated: false,
-        user: null,
-      };
-      console.log('User is not authenticated, sending response:', response);
-      res.json(response);
-    }
-  });
-
-  return sessionMiddleware;
 }

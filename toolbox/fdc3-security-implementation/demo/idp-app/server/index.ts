@@ -1,160 +1,24 @@
-import express from 'express';
-import session from 'express-session';
-import { initializeServer, setupSessionHandlingEndpoints } from '../../app1/common/src/server';
-import { User } from '@finos/fdc3-context';
+import { initializeServer } from '../../app1/common/src/server';
+import { setupWebsocketServer } from '../../../src/helpers/ServerSideHandlersImpl';
+import { IDPBusinessLogic } from './IDPBusinessLogic';
 
 // Extend session interface
 declare module 'express-session' {
   interface SessionData {
     userId: string;
+    jwt: string;
     isAuthenticated: boolean;
   }
 }
 
 const PORT = 4005;
 
-initializeServer(PORT).then(({ fdc3Security, app }) => {
-  // Use shared session handling endpoints
-  setupSessionHandlingEndpoints(app);
-
-  console.log('Session middleware configured using shared setup');
-
-  // Login endpoint
-  app.post('/api/login', (req, res) => {
-    console.log('Login endpoint called');
-    console.log('Request body:', req.body);
-    console.log('Session before login:', req.session);
-
-    // For demo purposes, always authenticate as 'demo-user'
-    req.session.userId = 'demo-user';
-    req.session.isAuthenticated = true;
-
-    console.log('Session after login:', req.session);
-
-    const response = {
-      success: true,
-      user: {
-        id: 'demo-user',
-        name: 'Demo User',
-      },
-    };
-
-    console.log('Sending login response:', response);
-    res.json(response);
-  });
-
-  // GetUser intent endpoint - handles GetUser intent requests
-  app.post('/api/getuser', async (req, res) => {
-    try {
-      console.log('GetUser intent endpoint called');
-      console.log('Request body:', req.body);
-      console.log('Session:', req.session);
-      let userId: string | undefined;
-
-      if (!req.session.isAuthenticated) {
-        console.log('User not authenticated for GetUser intent');
-        res.status(401).json({
-          success: false,
-          error: 'User not authenticated',
-        });
-        return;
-      } else {
-        userId = req.session.userId;
-      }
-
-      // Validate signature if present
-      const { context, metadata } = req.body;
-
-      if (context && context.__signature && userId && context.type === 'fdc3.user.request') {
-        console.log('Validating signature for GetUser intent request');
-
-        if (!fdc3Security) {
-          console.log('FDC3 Security not initialized for signature validation');
-          res.status(503).json({
-            success: false,
-            error: 'FDC3 Security not initialized',
-          });
-          return;
-        }
-
-        // Extract the signature and create unsigned context
-        const signature = context.__signature;
-        const unsignedContext = { ...context };
-        delete unsignedContext.__signature;
-
-        console.log('Validating signature:', signature.substring(0, 50) + '...');
-        console.log('Unsigned context:', unsignedContext);
-
-        // Validate the signature
-        const authenticity = await fdc3Security.check(signature, unsignedContext, 'GetUser', null);
-
-        console.log('Signature validation result:', authenticity);
-
-        if (!authenticity.signed) {
-          console.log('Request was not signed');
-          res.status(400).json({
-            success: false,
-            error: 'Request must be signed',
-          });
-          return;
-        }
-
-        if (!authenticity.valid) {
-          console.log('Signature validation failed:', authenticity);
-          res.status(400).json({
-            success: false,
-            error: `Signature validation failed: ${authenticity}`,
-          });
-          return;
-        }
-
-        if (!authenticity.trusted) {
-          console.log('Signature not from trusted source:', authenticity.publicKeyUrl);
-          res.status(400).json({
-            success: false,
-            error: `Signature not from trusted source: ${authenticity.publicKeyUrl}`,
-          });
-          return;
-        }
-
-        if (!authenticity.publicKeyUrl.startsWith(context.aud)) {
-          console.log('Signature public key URL does not match audience:', authenticity.publicKeyUrl, context.aud);
-          res.status(400).json({
-            success: false,
-            error: `Signature public key URL does not match audience: ${authenticity.publicKeyUrl}`,
-          });
-          return;
-        }
-
-        console.log('✅ Signature validated successfully from:', authenticity.publicKeyUrl);
-
-        // Create fdc3.user context object
-        const userContext: User = {
-          type: 'fdc3.user',
-          id: { userId: req.session.userId },
-          name: 'Demo User',
-          jwt: await fdc3Security.createJWTToken(context.aud, userId!),
-        };
-
-        console.log('Returning user context:', userContext);
-        res.json({
-          success: true,
-          context: userContext,
-        });
-      } else {
-        res.status(400).json({
-          success: false,
-          error: 'Request must be signed',
-        });
-        return;
-      }
-    } catch (error) {
-      console.error('Error in get_user intent', error);
-      res.status(500).json({
-        success: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
-      });
-      return;
-    }
-  });
+initializeServer(PORT).then(({ fdc3Security, app, server }) => {
+  setupWebsocketServer(
+    server,
+    _s => {
+      console.log('Websocket server disconnected');
+    },
+    new IDPBusinessLogic(fdc3Security)
+  );
 });

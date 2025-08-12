@@ -1,71 +1,90 @@
-import { DesktopAgent, getAgent, User } from '@finos/fdc3';
-import { createLogEntry, updateStatus } from '../../common/src/logging';
-import { checkSessionStatus, setupSessionStatusButton, logout } from '../../common/src/session';
-import { connectRemoteDesktopAgent } from '../../../../src/helpers/ClientSideHandlers';
-import { Socket } from 'socket.io-client';
+import { DesktopAgent, PrivateChannel } from '@finos/fdc3';
+import { createLogEntry } from '../../common/src/logging';
+import { checkSessionStatus, setupSessionStatusButton } from '../../common/src/AbstractSessionHandlingBusinessLogic';
+import { FDC3Handlers } from '../../../../src/helpers/FDC3Handlers';
+import { connectRemoteHandlers } from '../../../../src/helpers/ClientSideHandlersImpl';
+import { Context, Instrument, User, UserRequest } from '@finos/fdc3-context';
+import { GET_PRICES_PURPOSE as PRICE_STREAM_PURPOSE } from '../../server/App1BusinessLogic';
+import { initializeFDC3 } from '../../common/src/fdc3';
+import { setupLogoutButton } from '../../common/src/AbstractSessionHandlingBusinessLogic';
 
-// Initialize FDC3 connection
-async function initializeFDC3() {
+async function raiseGetUserIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Handlers, loginBtn: HTMLButtonElement) {
   try {
-    updateStatus('connecting', 'Connecting to FDC3 Agent...');
-    createLogEntry('info', '🚀 Connecting to FDC3 Agent...', {
-      status: 'Initializing',
-      timestamp: new Date().toISOString(),
-    });
+    loginBtn.disabled = true;
+    loginBtn.textContent = '🔄 Processing...';
 
-    const fdc3 = await getAgent();
+    const bareContext: UserRequest = {
+      type: 'fdc3.user.request',
+      aud: 'https://localhost:4003',
+    };
 
-    updateStatus('connected', 'Connected to FDC3 Agent');
-    createLogEntry('success', '✅ Connected to FDC3 Agent successfully', {
-      agent: 'FDC3 Agent',
-      timestamp: new Date().toISOString(),
-      capabilities: 'Available',
-    });
+    const signedContext = (await remoteHandlers.signRequest(bareContext, 'GetUser', null)) as UserRequest;
+    const resolution = await fdc3.raiseIntent('GetUser', signedContext);
 
-    return fdc3;
+    const result1 = (await resolution.getResult()) as Context;
+    const result2 = remoteHandlers.exchangeData(result1);
+
+    if (result2) {
+      createLogEntry('success', '✅ GetUser intent raised successfully', {
+        result: result2,
+        timestamp: new Date().toISOString(),
+      });
+    }
   } catch (error) {
-    updateStatus('error', 'FDC3 Connection Failed');
-    createLogEntry('error', '❌ Failed to connect to FDC3 Agent', {
+    createLogEntry('error', '❌ Failed to raise GetUser intent', {
       error: error instanceof Error ? error.message : String(error),
       timestamp: new Date().toISOString(),
     });
-    throw error;
-  }
-}
-
-// Function to raise GetUser intent
-async function raiseGetUserIntent(socket: Socket) {
-  try {
-    createLogEntry('info', '🔐 Raising GetUser Intent...', {
-      intent: 'GetUser',
-      timestamp: new Date().toISOString(),
-    });
-
-    const response = await socket.emitWithAck('get_user');
-
-    createLogEntry('success', '✅ GetUser endpoint called successfully', response);
-  } catch (error) {
-    createLogEntry('error', '❌ Failed to call GetUser endpoint', {
-      intent: 'GetUser',
-      error: error instanceof Error ? error.message : String(error),
-      timestamp: new Date().toISOString(),
-    });
+  } finally {
+    loginBtn.disabled = false;
+    loginBtn.textContent = '🔐 Login (GetUser Intent)';
   }
 }
 
 // Function to raise demo.GetPrices intent
-async function raiseGetPricesIntent(fdc3: any) {
+async function raiseGetPricesIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Handlers, pricesBtn: HTMLButtonElement) {
   try {
+    pricesBtn.disabled = true;
+    pricesBtn.textContent = '🔄 Processing...';
+
     createLogEntry('info', '📊 Raising demo.GetPrices Intent...', {
       intent: 'demo.GetPrices',
       timestamp: new Date().toISOString(),
     });
 
-    const result = await fdc3.raiseIntent('demo.GetPrices');
+    const bareInstrument: Instrument = {
+      type: 'fdc3.instrument',
+      id: {
+        ticker: 'AAPL',
+      },
+      name: 'Apple Inc.',
+    };
+
+    const signedInstrument = await remoteHandlers.signRequest(bareInstrument, 'demo.GetPrices', null);
+    const resolution = await fdc3.raiseIntent('demo.GetPrices', signedInstrument);
+
+    const result = await resolution.getResult();
 
     createLogEntry('success', '✅ demo.GetPrices Intent raised successfully', {
       intent: 'demo.GetPrices',
       result: result,
+      timestamp: new Date().toISOString(),
+    });
+
+    if (result?.type == 'private') {
+      // ok, it's a private channel, this was expected
+      const pc: PrivateChannel = result as PrivateChannel;
+      const handler = await remoteHandlers.remoteContextHandler(PRICE_STREAM_PURPOSE, pc.id, (ctx, metadata) => {
+        createLogEntry('success', '✅ Context listener called', {
+          context: ctx,
+          metadata: metadata,
+          timestamp: new Date().toISOString(),
+        });
+      });
+      pc.addContextListener('fdc3.valuation', handler);
+    }
+
+    createLogEntry('info', '🔍 Waiting for context listener to be called...', {
       timestamp: new Date().toISOString(),
     });
 
@@ -77,69 +96,50 @@ async function raiseGetPricesIntent(fdc3: any) {
       timestamp: new Date().toISOString(),
     });
     throw error;
+  } finally {
+    pricesBtn.disabled = false;
+    pricesBtn.textContent = '📊 Get Prices (demo.GetPrices Intent)';
   }
 }
 
 // Set up button event listeners
-function setupButtonListeners(socket: Socket) {
+function setupButtonListeners(fdc3: DesktopAgent, remoteHandlers: FDC3Handlers) {
   const loginBtn = document.getElementById('login-btn') as HTMLButtonElement;
   const pricesBtn = document.getElementById('prices-btn') as HTMLButtonElement;
-  const logoutBtn = document.getElementById('logout-btn') as HTMLButtonElement;
 
   if (loginBtn) {
     loginBtn.addEventListener('click', async () => {
-      try {
-        loginBtn.disabled = true;
-        loginBtn.textContent = '🔄 Processing...';
-        await raiseGetUserIntent(socket);
-      } catch (error) {
-        console.error('Login intent failed:', error);
-      } finally {
-        loginBtn.disabled = false;
-        loginBtn.textContent = '🔐 Login (GetUser Intent)';
-      }
+      await raiseGetUserIntent(fdc3, remoteHandlers, loginBtn);
     });
   }
 
-  // if (pricesBtn) {
-  //   pricesBtn.addEventListener('click', async () => {
-  //     try {
-  //       pricesBtn.disabled = true;
-  //       pricesBtn.textContent = '🔄 Processing...';
-  //       await raiseGetPricesIntent(fdc3);
-  //     } catch (error) {
-  //       console.error('GetPrices intent failed:', error);
-  //     } finally {
-  //       pricesBtn.disabled = false;
-  //       pricesBtn.textContent = '📊 Get Prices (demo.GetPrices Intent)';
-  //     }
-  //   });
-  // }
+  if (pricesBtn) {
+    pricesBtn.addEventListener('click', async () => {
+      await raiseGetPricesIntent(fdc3, remoteHandlers, pricesBtn);
+    });
+  }
 
   // Setup session status button using shared module
-  setupSessionStatusButton();
+  setupSessionStatusButton(remoteHandlers);
 }
 
 // Main initialization
 initializeFDC3()
   .then(async fdc3 => {
-    // Check initial session status
-    try {
-      await checkSessionStatus();
-    } catch (error) {
-      console.error('Failed to check initial session status:', error);
-    }
-
     createLogEntry('info', '🎯 App1 ready - buttons are now active', {
       status: 'Ready',
       buttons: ['Login', 'Get Prices', 'Check Session Status', 'Logout'],
       timestamp: new Date().toISOString(),
     });
 
-    connectRemoteDesktopAgent(fdc3).then(socket => {
-      setupButtonListeners(socket);
+    connectRemoteHandlers('http://localhost:4003').then(remoteHandlers => {
+      setupButtonListeners(fdc3, remoteHandlers);
+      setupSessionStatusButton(remoteHandlers);
+      setupLogoutButton(remoteHandlers);
+      checkSessionStatus(remoteHandlers);
     });
   })
+
   .catch(error => {
     console.error('Failed to initialize app1:', error);
   });

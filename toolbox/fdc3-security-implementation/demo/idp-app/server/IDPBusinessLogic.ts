@@ -1,0 +1,85 @@
+import { JSONWebSignature, PrivateFDC3Security } from '@finos/fdc3-security';
+import { FDC3Handlers } from '../../../src/helpers/FDC3Handlers';
+import { ContextMetadata, ContextHandler, IntentHandler, IntentResult } from '@finos/fdc3';
+import { Context, User, UserRequest } from '@finos/fdc3-context';
+import { AbstractSessionHandlingBusinessLogic } from '../../app1/common/src/AbstractSessionHandlingBusinessLogic';
+
+/**
+ * Has to handle the GetUser intent.
+ */
+export class IDPBusinessLogic implements FDC3Handlers {
+  private fdc3Security: PrivateFDC3Security;
+  private user: User | null = null;
+
+  constructor(fdc3Security: PrivateFDC3Security) {
+    this.fdc3Security = fdc3Security;
+  }
+
+  async signRequest(ctx: Context, intent: string | null, channelId: string | null): Promise<Context> {
+    throw new Error('Not used');
+  }
+
+  remoteContextHandler(
+    purpose: string,
+    channelId: string | null,
+    callback: (ctx: Context, metadata: ContextMetadata) => void
+  ): Promise<ContextHandler> {
+    throw new Error('Not used');
+  }
+
+  async remoteIntentHandler(intent: string): Promise<IntentHandler> {
+    if (intent == 'GetUser') {
+      const ih: IntentHandler = async (ctx: Context, metadata: ContextMetadata | undefined) => {
+        // first, check the signature
+        const sig = ctx.__signature;
+        const ma = await this.fdc3Security.check(sig, ctx, intent, null);
+        if (ma.signed && ma.trusted && ma.valid) {
+          const userId = this.user?.id?.userId;
+          if (this.user) {
+            // user is logged in.
+            // create a JWT token for the user
+            const request = ctx as UserRequest;
+
+            // Create fdc3.user context object
+            const userContext: User = {
+              type: 'fdc3.user',
+              id: { userId },
+              name: this.user?.name,
+              jwt: await this.fdc3Security.createJWTToken(request.aud, userId),
+            };
+
+            return userContext;
+          }
+        }
+      };
+
+      return ih;
+    } else {
+      throw new Error('Invalid intent');
+    }
+  }
+
+  async receivedIntentResult(intent: string, result: IntentResult): Promise<object> {
+    throw new Error('Method not implemented.');
+  }
+
+  async exchangeData(ctx: Context): Promise<Context | void> {
+    if (ctx.type === 'fdc3.user.request') {
+      if (!this.user) {
+        this.user = {
+          type: 'fdc3.user',
+          id: {
+            userId: 'demo-user',
+          },
+          name: 'demo-user',
+          email: 'demo-user@example.com',
+          jwt: await this.fdc3Security.createJWTToken('http://localhost:4005', 'demo-user'),
+        };
+      }
+
+      return this.user;
+    } else if (ctx.type === 'fdc3.user.logout') {
+      this.user = null;
+    }
+  }
+}

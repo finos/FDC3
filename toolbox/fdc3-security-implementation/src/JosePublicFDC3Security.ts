@@ -1,7 +1,7 @@
 import { Context } from '@finos/fdc3-context';
 import canonicalize from 'canonicalize';
 import * as jose from 'jose';
-import { FDC3JWTPayload, JSONWebSignature, MessageAuthenticity, PublicFDC3Security } from './PublicFDC3Security';
+import { FDC3JWTPayload, JSONWebSignature, MessageAuthenticity, PublicFDC3Security } from '@finos/fdc3-security';
 
 export type JSONWebKeyWithId = JsonWebKey & {
   kid: string; // Key ID
