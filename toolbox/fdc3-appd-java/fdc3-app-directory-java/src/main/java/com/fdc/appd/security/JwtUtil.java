@@ -5,7 +5,12 @@ import io.jsonwebtoken.security.Keys;
 import java.security.Key;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class JwtUtil {
+
+    private static final Logger log = LoggerFactory.getLogger(JwtUtil.class);
 
     private static final String SECRET_KEY = "mIU3RoraRfc8TF3ScboaF8lcQF0nb5gb"; // Use a secure key in production!
 
@@ -23,7 +28,7 @@ public class JwtUtil {
 
             return Optional.of(claims);
         } catch (Exception e) {
-            System.out.println(e);
+            log.error("Invalid Tokenb", e);
             throw new RuntimeException("Invalid token");
         }
     }

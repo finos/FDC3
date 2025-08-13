@@ -2,6 +2,9 @@ package com.fdc.appd.security;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,7 @@ import java.util.Objects;
 @Service
 public class UserManagementServiceImpl implements UserManagementService {
 
+    private static final Logger log = LoggerFactory.getLogger(UserManagementServiceImpl.class);
 
     HashMap<String , String > userDb ;
     @Override
@@ -30,7 +34,7 @@ public class UserManagementServiceImpl implements UserManagementService {
         try {
             userDb= objectMapper.readValue(resource.getInputStream(), new TypeReference<HashMap<String,String>>() {});
         } catch (IOException e) {
-            System.out.println("Error in loading Users DB");
+            log.error("Error in loading the database", e);
         }
     }
 }
