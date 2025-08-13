@@ -32,6 +32,7 @@
   },
   "devDependencies": {
     "@cucumber/cucumber": "10.3.1",
+    "@cucumber/messages": "^28.1.0",
     "@eslint/js": "^9.19.0",
     "@finos/fdc3-web-impl": "2.2.0",
     "@finos/testing": "2.2.0",
