@@ -19,7 +19,7 @@ public class ApplicationReaderFactory {
     private String readerType;
 
     /**
-     * Factory Method for creatign the Application Details reader .
+     * Factory Method for creating the Application Details reader .
      * @return
      */
     public V2ApplicationReader createApplicationReader(){
