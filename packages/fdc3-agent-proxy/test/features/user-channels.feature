@@ -6,6 +6,7 @@ Feature: Basic User Channels Support
     Given A Desktop Agent in "api"
     Given "instrumentMessageOne" is a BroadcastEvent message on channel "one" with context "fdc3.instrument"
     Given "countryMessageOne" is a BroadcastEvent message on channel "one" with context "fdc3.country"
+    Given "openMessage" is a BroadcastEvent message on channel "{null}" with context "fdc3.instrument"
     Given "instrumentContext" is a "fdc3.instrument" context
     Given "userChannelMessage1" is a channelChangedEvent message on channel "one"
     Given "userChannelMessage2" is a channelChangedEvent message on channel "two"
@@ -58,6 +59,7 @@ Feature: Basic User Channels Support
     And messaging will have posts
       | payload.channelId | matches_type             |
       | one               | joinUserChannelRequest   |
+      | {null}            | getUserChannelsRequest   |
       | {null}            | getCurrentChannelRequest |
 
   Scenario: Changing Channel via Deprecated API
@@ -71,6 +73,7 @@ Feature: Basic User Channels Support
     And messaging will have posts
       | payload.channelId | matches_type             |
       | one               | joinUserChannelRequest   |
+      | {null}            | getUserChannelsRequest   |
       | {null}            | getCurrentChannelRequest |
 
   Scenario: Adding a Typed Listener on a given User Channel
@@ -84,8 +87,9 @@ Feature: Basic User Channels Support
     And messaging will have posts
       | payload.channelId | payload.contextType | matches_type              |
       | one               | {null}              | joinUserChannelRequest    |
-      | {null}            | {null}              | getCurrentChannelRequest  |
-      | one               | fdc3.instrument     | addContextListenerRequest |
+      | {null}            | {null}              | getUserChannelsRequest    |
+      | {null}            | fdc3.instrument     | addContextListenerRequest |
+      | one               | fdc3.instrument     | getCurrentContextRequest  |
 
   Scenario: Adding an Un-Typed Listener on a given User Channel
     Given "resultHandler" pipes context to "contexts"
@@ -98,8 +102,9 @@ Feature: Basic User Channels Support
     And messaging will have posts
       | payload.channelId | payload.contextType | matches_type              |
       | one               | {null}              | joinUserChannelRequest    |
-      | {null}            | {null}              | getCurrentChannelRequest  |
-      | one               | {null}              | addContextListenerRequest |
+      | {null}            | {null}              | getUserChannelsRequest    |
+      | {null}            | {null}              | addContextListenerRequest |
+      | one               | {null}              | getCurrentContextRequest  |
 
   Scenario: Adding an Un-Typed Listener on a given User Channel (deprecated API)
     Given "resultHandler" pipes context to "contexts"
@@ -112,8 +117,9 @@ Feature: Basic User Channels Support
     And messaging will have posts
       | payload.channelId | payload.contextType | matches_type              |
       | one               | {null}              | joinUserChannelRequest    |
-      | {null}            | {null}              | getCurrentChannelRequest  |
-      | one               | {null}              | addContextListenerRequest |
+      | {null}            | {null}              | getUserChannelsRequest    |
+      | {null}            | {null}              | addContextListenerRequest |
+      | one               | {null}              | getCurrentContextRequest  |
 
   Scenario: If you haven't joined a channel, your listener receives nothing
     Given "resultHandler" pipes context to "contexts"
@@ -122,7 +128,6 @@ Feature: Basic User Channels Support
     Then "{contexts}" is empty
     And messaging will have posts
       | payload.channelId | payload.contextType | matches_type              |
-      | {null}            | {null}              | getCurrentChannelRequest  |
       | {null}            | fdc3.instrument     | addContextListenerRequest |
 
   Scenario: After unsubscribing, my listener shouldn't receive any more messages
@@ -139,8 +144,9 @@ Feature: Basic User Channels Support
     And messaging will have posts
       | payload.channelId | payload.contextType | payload.listenerUUID | matches_type                      |
       | one               | {null}              | {null}               | joinUserChannelRequest            |
-      | {null}            | {null}              | {null}               | getCurrentChannelRequest          |
-      | one               | fdc3.instrument     | {null}               | addContextListenerRequest         |
+      | {null}            | {null}              | {null}               | getUserChannelsRequest            |
+      | {null}            | fdc3.instrument     | {null}               | addContextListenerRequest         |
+      | one               | fdc3.instrument     | {null}               | getCurrentContextRequest          |
       | {null}            | {null}              | {theListener.id}     | contextListenerUnsubscribeRequest |
 
   Scenario: I should be able to leave a user channel, and not receive messages on it
@@ -151,8 +157,9 @@ Feature: Basic User Channels Support
     Then messaging will have posts
       | payload.channelId | payload.contextType | payload.listenerUUID | matches_type               |
       | one               | {null}              | {null}               | joinUserChannelRequest     |
-      | {null}            | {null}              | {null}               | getCurrentChannelRequest   |
-      | one               | fdc3.instrument     | {null}               | addContextListenerRequest  |
+      | {null}            | {null}              | {null}               | getUserChannelsRequest     |
+      | {null}            | fdc3.instrument     | {null}               | addContextListenerRequest  |
+      | one               | fdc3.instrument     | {null}               | getCurrentContextRequest   |
       | {null}            | {null}              | {null}               | leaveCurrentChannelRequest |
     And messaging receives "{instrumentMessageOne}"
     Then "{contexts}" is an array of objects with the following contents
@@ -184,6 +191,7 @@ Feature: Basic User Channels Support
     And messaging will have posts
       | payload.channelId | payload.context.type | payload.context.id.ticker | matches_type             |
       | one               | {null}               | {null}                    | joinUserChannelRequest   |
+      | {null}            | {null}               | {null}                    | getUserChannelsRequest   |
       | {null}            | {null}               | {null}                    | getCurrentChannelRequest |
       | {null}            | {null}               | {null}                    | getCurrentChannelRequest |
       | one               | fdc3.instrument      | AAPL                      | broadcastRequest         |
@@ -262,3 +270,14 @@ Feature: Basic User Channels Support
     Given "typesHandler" pipes events to "types"
     When I call "{api}" with "addEventListener" with parameters "unknownEventType" and "{typesHandler}"
     Then "{result}" is an error with message "UnknownEventType"
+
+  Scenario: BroadcastEvent on app Opening
+    Given "resultHandler" pipes context to "contexts"
+    And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    And messaging receives "{openMessage}"
+    Then "{contexts}" is an array of objects with the following contents
+      | id.ticker | type            | name  |
+      | AAPL      | fdc3.instrument | Apple |
+    And messaging will have posts
+      | payload.channelId | payload.contextType | matches_type              |
+      | {null}            | fdc3.instrument     | addContextListenerRequest |
