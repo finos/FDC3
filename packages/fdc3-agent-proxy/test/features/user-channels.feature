@@ -226,10 +226,37 @@ Feature: Basic User Channels Support
     And messaging receives "{userChannelMessage1}"
     And I call "{theListener}" with "unsubscribe"
     And messaging receives "{userChannelMessage3}"
+    Then messaging will have posts
+      | payload.type         | type                            | matches_type                    |
+      | USER_CHANNEL_CHANGED | addEventListenerRequest         | addEventListenerRequest         |
+      | USER_CHANNEL_CHANGED | addEventListenerRequest         | addEventListenerRequest         |
+      | {null}               | getUserChannelsRequest          | getUserChannelsRequest          |
+      | {null}               | getUserChannelsRequest          | getUserChannelsRequest          |
+      | {null}               | eventListenerUnsubscribeRequest | eventListenerUnsubscribeRequest |
+    And "{types}" is an array of objects with the following contents
+      | currentChannelId |
+      | two              |
+      | one              |
+
+  Scenario: Adding and removing A "null" (i.e. wildcard) Event Listener
+    Given "typesHandler" pipes events to "types"
+    When I call "{api}" with "addEventListener" with parameters "{null}" and "{typesHandler}"
+    And I refer to "{result}" as "theListener"
+    And messaging receives "{userChannelMessage2}"
+    And messaging receives "{userChannelMessage1}"
+    And I call "{theListener}" with "unsubscribe"
+    And messaging receives "{userChannelMessage3}"
     Then "{types}" is an array of objects with the following contents
       | currentChannelId |
       | two              |
       | one              |
+    And messaging will have posts
+      | payload.type         | type                            | matches_type                    |
+      | USER_CHANNEL_CHANGED | addEventListenerRequest         | addEventListenerRequest         |
+      | {null}               | addEventListenerRequest         | addEventListenerRequest         |
+      | {null}               | getUserChannelsRequest          | getUserChannelsRequest          |
+      | {null}               | getUserChannelsRequest          | getUserChannelsRequest          |
+      | {null}               | eventListenerUnsubscribeRequest | eventListenerUnsubscribeRequest |
 
   Scenario: Adding An Unknown Event Listener
     Given "typesHandler" pipes events to "types"
