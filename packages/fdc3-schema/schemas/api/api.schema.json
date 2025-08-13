@@ -315,7 +315,7 @@
             "type": "string"
         },
         "ResolveError": {
-            "description": "Constants representing the errors that can be encountered when calling the `findIntent`, `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).",
+            "description": "Constants representing the errors that can be encountered when calling the `addIntentListener`, `findIntent`, `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).",
             "title": "ResolveError",
             "enum": [
                 "DesktopAgentNotFound",
@@ -328,7 +328,8 @@
                 "TargetInstanceUnavailable",
                 "UserCancelledResolution",
                 "ApiTimeout",
-                "InvalidArguments"
+                "InvalidArguments",
+                "IntentListenerConflict"
             ],
             "type": "string"
         },

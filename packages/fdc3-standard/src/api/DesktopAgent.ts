@@ -306,6 +306,8 @@ export interface DesktopAgent {
    *
    * Optional metadata about the raised intent, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
    *
+   * Adding multiple intent listeners on the same type MUST be rejected with the `ResolveError.IntentListenerConflict`, unless the previous listener was removed first though `listener.unsubscribe()`
+   *
    * ```javascript
    * //Handle a raised intent
    * const listener = fdc3.addIntentListener('StartChat', context => {
@@ -359,6 +361,8 @@ export interface DesktopAgent {
    * Context may also be received via this listener if the application was launched via a call to  `fdc3.open`, where context was passed as an argument. In order to receive this, applications SHOULD add their context listener as quickly as possible after launch, or an error MAY be returned to the caller and the context may not be delivered. The exact timeout used is set by the Desktop Agent implementation, but MUST be at least 15 seconds.
    *
    * Optional metadata about the context message, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
+   *
+   * Adding multiple context listeners on the same or overlapping types (i.e. named type and null type) MUST be allowed, and MUST trigger all contextHandlers when a relevant context type is broadcast on the current user channel. Please note, that this behavior differs from `fdc3.addIntentListener` API call; refer to the relevant documentation for more detials.
    *
    * ```javascript
    * // any context
