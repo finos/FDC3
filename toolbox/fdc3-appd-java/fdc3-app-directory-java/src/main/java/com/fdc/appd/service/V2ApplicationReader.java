@@ -13,7 +13,7 @@ public interface V2ApplicationReader {
     /**
      *
      * @param appId
-     * @return com.fdc.appd.model.Applciation
+     * @return com.fdc.appd.model.Application
      * @throws IOException
      */
     public Application getApplication(String appId) throws IOException;
