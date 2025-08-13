@@ -1,4 +1,4 @@
-import { ContextHandler, ContextMetadata, IntentHandler } from '@finos/fdc3';
+import { Channel, ContextHandler, ContextMetadata, IntentHandler } from '@finos/fdc3';
 import { Context } from '@finos/fdc3-context';
 
 export type ContextOrErrorMetadata = ContextMetadata | { error: string } | undefined;
@@ -8,15 +8,19 @@ export type ContextOrErrorMetadata = ContextMetadata | { error: string } | undef
  * secure / sensitive processing on the server-side.
  */
 export interface FDC3Handlers {
-  signRequest(ctx: Context, intent: string | null, channelId: string | null): Promise<Context>;
+    signRequest(ctx: Context, intent: string | null, channelId: string | null): Promise<Context>;
 
-  remoteContextHandler(
-    purpose: string,
-    channelId: string | null,
-    callback: (ctx: Context | null, metadata: ContextOrErrorMetadata) => void
-  ): Promise<ContextHandler>;
+    /**
+     * Call this when you want to create a new remote channel.
+     */
+    createRemoteChannel(purpose: string): Promise<Channel>;
 
-  remoteIntentHandler(intent: string): Promise<IntentHandler>;
+    /**
+     * This is called at the other end of the connection when a new remote channel is created 
+     */
+    handleRemoteChannel(purpose: string, channel: Channel): Promise<void>;
 
-  exchangeData(ctx: Context): Promise<Context | void>;
+    remoteIntentHandler(intent: string): Promise<IntentHandler>;
+
+    exchangeData(ctx: Context): Promise<Context | void>;
 }
