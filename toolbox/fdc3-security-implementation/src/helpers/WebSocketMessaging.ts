@@ -3,7 +3,7 @@ import { Socket } from 'socket.io';
 import { SERVER_MESSAGE } from './MessageTypes';
 import { AppIdentifier } from '@finos/fdc3-standard';
 import { v4 as uuidv4 } from 'uuid';
-import { AppRequestMessage } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { AgentResponseMessage, AppRequestMessage } from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 /**
  * Bare-bones implementation of Messaging that uses a WebSocket to send messages to the server.
@@ -43,6 +43,20 @@ export class WebSocketMessaging extends AbstractMessaging {
 
   async post(message: any): Promise<void> {
     console.log('posting message', message);
-    this.socket.emit(SERVER_MESSAGE, message);
+    const response = await this.socket.emitWithAck(SERVER_MESSAGE, message);
+    this.listeners.forEach(v => {
+      if (v.filter(response)) {
+        v.action(response);
+      }
+    });
+  }
+
+  async waitFor<X extends AgentResponseMessage>(
+    _filter: (m: X) => boolean,
+    _timeoutMs?: number,
+    _timeoutErrorMessage?: string
+  ): Promise<X> {
+    // do nothing
+    return Promise.resolve({} as X);
   }
 }
