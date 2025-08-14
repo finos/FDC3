@@ -1932,7 +1932,7 @@ export interface Product {
  * A request to obtain a symmetric encryption key.
  */
 export interface SymmetricKeyRequest {
-  type: '';
+  type: 'fdc3.security.symmetricKey.request';
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -2577,7 +2577,7 @@ function transform(val: any, typ: any, getProps: any, key: any = '', parent: any
       const typ = typs[i];
       try {
         return transform(val, typ, getProps);
-      } catch (_) { }
+      } catch (_) {}
     }
     return invalidValue(typs, val, key, parent);
   }

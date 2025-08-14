@@ -1,8 +1,7 @@
 import { JSONWebSignature, PrivateFDC3Security } from '@finos/fdc3-security';
 import { FDC3Handlers } from '../../../src/helpers/FDC3Handlers';
-import { ContextMetadata, ContextHandler, IntentHandler, IntentResult } from '@finos/fdc3';
+import { ContextMetadata, ContextHandler, IntentHandler, IntentResult, Channel } from '@finos/fdc3';
 import { Context, User, UserRequest } from '@finos/fdc3-context';
-import { AbstractSessionHandlingBusinessLogic } from '../../app1/common/src/AbstractSessionHandlingBusinessLogic';
 
 /**
  * Has to handle the GetUser intent.
@@ -19,11 +18,7 @@ export class IDPBusinessLogic implements FDC3Handlers {
     throw new Error('Not used');
   }
 
-  remoteContextHandler(
-    purpose: string,
-    channelId: string | null,
-    callback: (ctx: Context, metadata: ContextMetadata) => void
-  ): Promise<ContextHandler> {
+  async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
     throw new Error('Not used');
   }
 

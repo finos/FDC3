@@ -2,18 +2,12 @@
 import { Context, User } from '@finos/fdc3-context';
 import { createLogEntry } from './logging';
 import { ContextOrErrorMetadata, FDC3Handlers } from '../../../../src/helpers/FDC3Handlers';
-import { ContextHandler, DesktopAgent, IntentHandler } from '@finos/fdc3';
+import { Channel, ContextHandler, DesktopAgent, IntentHandler } from '@finos/fdc3';
 
 export abstract class AbstractSessionHandlingBusinessLogic implements FDC3Handlers {
   protected user: User | null = null;
 
   abstract signRequest(ctx: Context, intent: string | null, channelId: string | null): Promise<Context>;
-
-  abstract remoteContextHandler(
-    purpose: string,
-    channelId: string | null,
-    callback: (ctx: Context | null, metadata: ContextOrErrorMetadata) => void
-  ): Promise<ContextHandler>;
 
   abstract remoteIntentHandler(intent: string): Promise<IntentHandler>;
 
@@ -31,6 +25,9 @@ export abstract class AbstractSessionHandlingBusinessLogic implements FDC3Handle
       }
     }
   }
+
+  abstract createRemoteChannel(purpose: string): Promise<Channel>;
+  abstract handleRemoteChannel(purpose: string, channel: Channel): Promise<void>;
 }
 
 // Function to check session status

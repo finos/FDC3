@@ -8,19 +8,14 @@ export type ContextOrErrorMetadata = ContextMetadata | { error: string } | undef
  * secure / sensitive processing on the server-side.
  */
 export interface FDC3Handlers {
-    signRequest(ctx: Context, intent: string | null, channelId: string | null): Promise<Context>;
+  signRequest(ctx: Context, intent: string | null, channelId: string | null): Promise<Context>;
 
-    /**
-     * Call this when you want to create a new remote channel.
-     */
-    createRemoteChannel(purpose: string): Promise<Channel>;
+  /**
+   * This is called at the other end of the connection when a new remote channel is created
+   */
+  handleRemoteChannel(purpose: string, channel: Channel): Promise<void>;
 
-    /**
-     * This is called at the other end of the connection when a new remote channel is created 
-     */
-    handleRemoteChannel(purpose: string, channel: Channel): Promise<void>;
+  remoteIntentHandler(intent: string): Promise<IntentHandler>;
 
-    remoteIntentHandler(intent: string): Promise<IntentHandler>;
-
-    exchangeData(ctx: Context): Promise<Context | void>;
+  exchangeData(ctx: Context): Promise<Context | void>;
 }

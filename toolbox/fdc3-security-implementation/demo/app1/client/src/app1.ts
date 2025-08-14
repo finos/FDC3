@@ -3,8 +3,7 @@ import { createLogEntry } from '../../common/src/logging';
 import { checkSessionStatus, setupSessionStatusButton } from '../../common/src/AbstractSessionHandlingBusinessLogic';
 import { FDC3Handlers } from '../../../../src/helpers/FDC3Handlers';
 import { connectRemoteHandlers } from '../../../../src/helpers/ClientSideHandlersImpl';
-import { Context, Instrument, User, UserRequest } from '@finos/fdc3-context';
-import { GET_PRICES_PURPOSE as PRICE_STREAM_PURPOSE } from '../../server/App1BusinessLogic';
+import { Context, Instrument, UserRequest } from '@finos/fdc3-context';
 import { initializeFDC3 } from '../../common/src/fdc3';
 import { setupLogoutButton } from '../../common/src/AbstractSessionHandlingBusinessLogic';
 
@@ -74,14 +73,19 @@ async function raiseGetPricesIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Hand
     if (result?.type == 'private') {
       // ok, it's a private channel, this was expected
       const pc: PrivateChannel = result as PrivateChannel;
-      const handler = await remoteHandlers.remoteContextHandler(PRICE_STREAM_PURPOSE, pc.id, (ctx, metadata) => {
+      pc.addContextListener('fdc3.valuation', async (ctx, metadata) => {
         createLogEntry('success', '✅ Context listener called', {
           context: ctx,
           metadata: metadata,
           timestamp: new Date().toISOString(),
         });
       });
-      pc.addContextListener('fdc3.valuation', handler);
+    } else {
+      createLogEntry('error', '❌ Did not receive private channel', {
+        intent: 'demo.GetPrices',
+        error: result,
+        timestamp: new Date().toISOString(),
+      });
     }
 
     createLogEntry('info', '🔍 Waiting for context listener to be called...', {
@@ -132,7 +136,7 @@ initializeFDC3()
       timestamp: new Date().toISOString(),
     });
 
-    connectRemoteHandlers('http://localhost:4003').then(remoteHandlers => {
+    connectRemoteHandlers('http://localhost:4003', fdc3).then(remoteHandlers => {
       setupButtonListeners(fdc3, remoteHandlers);
       setupSessionStatusButton(remoteHandlers);
       setupLogoutButton(remoteHandlers);
