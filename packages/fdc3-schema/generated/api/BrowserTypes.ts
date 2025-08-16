@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceChannels, Fdc3UserInterfaceDrag, Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, Fdc3UserInterfaceMessage, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse } from "./file";
+//   import { Convert, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ClearContextRequest, ClearContextResponse, ContextClearedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceChannels, Fdc3UserInterfaceDrag, Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, Fdc3UserInterfaceMessage, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse } from "./file";
 //
 //   const webConnectionProtocol1Hello = Convert.toWebConnectionProtocol1Hello(json);
 //   const webConnectionProtocol2LoadURL = Convert.toWebConnectionProtocol2LoadURL(json);
@@ -23,6 +23,9 @@
 //   const broadcastRequest = Convert.toBroadcastRequest(json);
 //   const broadcastResponse = Convert.toBroadcastResponse(json);
 //   const channelChangedEvent = Convert.toChannelChangedEvent(json);
+//   const clearContextRequest = Convert.toClearContextRequest(json);
+//   const clearContextResponse = Convert.toClearContextResponse(json);
+//   const contextClearedEvent = Convert.toContextClearedEvent(json);
 //   const contextListenerUnsubscribeRequest = Convert.toContextListenerUnsubscribeRequest(json);
 //   const contextListenerUnsubscribeResponse = Convert.toContextListenerUnsubscribeResponse(json);
 //   const createPrivateChannelRequest = Convert.toCreatePrivateChannelRequest(json);
@@ -793,9 +796,9 @@ export interface AddContextListenerResponsePayload {
  * Constants representing the errors that can be encountered when calling the `open` method
  * on the DesktopAgent object (`fdc3`).
  *
- * Constants representing the errors that can be encountered when calling the `findIntent`,
- * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
- * DesktopAgent (`fdc3`).
+ * Constants representing the errors that can be encountered when calling the
+ * `addIntentListener`, `findIntent`, `findIntentsByContext`, `raiseIntent` or
+ * `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).
  */
 export type PurpleError =
   | 'AccessDenied'
@@ -889,9 +892,9 @@ export interface AddEventListenerResponsePayload {
  * Constants representing the errors that can be encountered when calling the `open` method
  * on the DesktopAgent object (`fdc3`).
  *
- * Constants representing the errors that can be encountered when calling the `findIntent`,
- * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
- * DesktopAgent (`fdc3`).
+ * Constants representing the errors that can be encountered when calling the
+ * `addIntentListener`, `findIntent`, `findIntentsByContext`, `raiseIntent` or
+ * `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).
  */
 export type ResponsePayloadError =
   | 'AccessDenied'
@@ -911,6 +914,7 @@ export type ResponsePayloadError =
   | 'TargetAppUnavailable'
   | 'TargetInstanceUnavailable'
   | 'UserCancelledResolution'
+  | 'IntentListenerConflict'
   | 'IntentHandlerRejected'
   | 'NoResultReturned'
   | 'AgentDisconnected'
@@ -998,9 +1002,9 @@ export interface PayloadObject {
  * Constants representing the errors that can be encountered when calling the `open` method
  * on the DesktopAgent object (`fdc3`).
  *
- * Constants representing the errors that can be encountered when calling the `findIntent`,
- * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
- * DesktopAgent (`fdc3`).
+ * Constants representing the errors that can be encountered when calling the
+ * `addIntentListener`, `findIntent`, `findIntentsByContext`, `raiseIntent` or
+ * `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).
  */
 export type FluffyError =
   | 'MalformedContext'
@@ -1013,7 +1017,8 @@ export type FluffyError =
   | 'ResolverTimeout'
   | 'TargetAppUnavailable'
   | 'TargetInstanceUnavailable'
-  | 'UserCancelledResolution';
+  | 'UserCancelledResolution'
+  | 'IntentListenerConflict';
 
 /**
  * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
@@ -1035,7 +1040,8 @@ export type EventMessageType =
   | 'intentEvent'
   | 'privateChannelOnAddContextListenerEvent'
   | 'privateChannelOnDisconnectEvent'
-  | 'privateChannelOnUnsubscribeEvent';
+  | 'privateChannelOnUnsubscribeEvent'
+  | 'contextClearedEvent';
 
 /**
  * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
@@ -1092,7 +1098,8 @@ export type ResponseMessageType =
   | 'privateChannelUnsubscribeEventListenerResponse'
   | 'raiseIntentForContextResponse'
   | 'raiseIntentResponse'
-  | 'raiseIntentResultResponse';
+  | 'raiseIntentResultResponse'
+  | 'clearContextResponse';
 
 /**
  * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
@@ -1140,7 +1147,8 @@ export type RequestMessageType =
   | 'privateChannelDisconnectRequest'
   | 'privateChannelUnsubscribeEventListenerRequest'
   | 'raiseIntentForContextRequest'
-  | 'raiseIntentRequest';
+  | 'raiseIntentRequest'
+  | 'clearContextRequest';
 
 /**
  * An event message from the Desktop Agent to an app indicating that context has been
@@ -1371,6 +1379,117 @@ export interface ChannelChangedEventPayload {
    * channel.
    */
   newChannelId: null | string;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ */
+
+/**
+ * A request to clear context on a channel.
+ *
+ * A request message from an FDC3-enabled app to a Desktop Agent.
+ */
+export interface ClearContextRequest {
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: ClearContextRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'clearContextRequest';
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface ClearContextRequestPayload {
+  /**
+   * The id of the channel to clear the context on.
+   */
+  channelId: string;
+  /**
+   * The type of context to clear for OR `null` indicating that all context types on the
+   * channel should be cleared.
+   */
+  contextType: null | string;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ */
+
+/**
+ * A response to a request to clear context on a channel.
+ *
+ * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
+ * payload contains an `error` property, the request was unsuccessful.
+ */
+export interface ClearContextResponse {
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: BroadcastResponseResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'clearContextResponse';
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ */
+
+/**
+ * An event message from the Desktop Agent to an app indicating that context has been
+ * cleared on a channel.
+ *
+ * A message from a Desktop Agent to an FDC3-enabled app representing an event.
+ */
+export interface ContextClearedEvent {
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
+   */
+  meta: BroadcastEventMeta;
+  /**
+   * The message payload contains details of the event that the app is being notified about.
+   */
+  payload: ContextClearedEventPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'contextClearedEvent';
+}
+
+/**
+ * The message payload contains details of the event that the app is being notified about.
+ */
+export interface ContextClearedEventPayload {
+  /**
+   * The Id of the channel that was cleared.
+   */
+  channelId: null | string;
+  /**
+   * The type of context that was cleared, or null if all types were cleared.
+   */
+  contextType: null | string;
 }
 
 /**
@@ -2168,9 +2287,9 @@ export interface FindInstancesResponsePayload {
  * Constants representing the errors that can be encountered when calling the `open` method
  * on the DesktopAgent object (`fdc3`).
  *
- * Constants representing the errors that can be encountered when calling the `findIntent`,
- * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
- * DesktopAgent (`fdc3`).
+ * Constants representing the errors that can be encountered when calling the
+ * `addIntentListener`, `findIntent`, `findIntentsByContext`, `raiseIntent` or
+ * `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).
  *
  * Unique identifier for a for an attempt to connect to a Desktop Agent. A Unique UUID
  * should be used in the first (WCP1Hello) message and should be quoted in all subsequent
@@ -2201,6 +2320,7 @@ export type FindInstancesErrors =
   | 'TargetAppUnavailable'
   | 'TargetInstanceUnavailable'
   | 'UserCancelledResolution'
+  | 'IntentListenerConflict'
   | 'AgentDisconnected'
   | 'NotConnectedToBridge'
   | 'ResponseToBridgeTimedOut'
@@ -3288,9 +3408,9 @@ export interface OpenResponsePayload {
  * Constants representing the errors that can be encountered when calling the `open` method
  * on the DesktopAgent object (`fdc3`).
  *
- * Constants representing the errors that can be encountered when calling the `findIntent`,
- * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
- * DesktopAgent (`fdc3`).
+ * Constants representing the errors that can be encountered when calling the
+ * `addIntentListener`, `findIntent`, `findIntentsByContext`, `raiseIntent` or
+ * `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).
  */
 export type OpenErrorResponsePayload =
   | 'MalformedContext'
@@ -4111,6 +4231,30 @@ export class Convert {
 
   public static channelChangedEventToJson(value: ChannelChangedEvent): string {
     return JSON.stringify(uncast(value, r('ChannelChangedEvent')), null, 2);
+  }
+
+  public static toClearContextRequest(json: string): ClearContextRequest {
+    return cast(JSON.parse(json), r('ClearContextRequest'));
+  }
+
+  public static clearContextRequestToJson(value: ClearContextRequest): string {
+    return JSON.stringify(uncast(value, r('ClearContextRequest')), null, 2);
+  }
+
+  public static toClearContextResponse(json: string): ClearContextResponse {
+    return cast(JSON.parse(json), r('ClearContextResponse'));
+  }
+
+  public static clearContextResponseToJson(value: ClearContextResponse): string {
+    return JSON.stringify(uncast(value, r('ClearContextResponse')), null, 2);
+  }
+
+  public static toContextClearedEvent(json: string): ContextClearedEvent {
+    return cast(JSON.parse(json), r('ContextClearedEvent'));
+  }
+
+  public static contextClearedEventToJson(value: ContextClearedEvent): string {
+    return JSON.stringify(uncast(value, r('ContextClearedEvent')), null, 2);
   }
 
   public static toContextListenerUnsubscribeRequest(json: string): ContextListenerUnsubscribeRequest {
@@ -5164,6 +5308,44 @@ const typeMap: any = {
     false
   ),
   ChannelChangedEventPayload: o([{ json: 'newChannelId', js: 'newChannelId', typ: u(null, '') }], false),
+  ClearContextRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('ClearContextRequestPayload') },
+      { json: 'type', js: 'type', typ: r('ClearContextRequestType') },
+    ],
+    false
+  ),
+  ClearContextRequestPayload: o(
+    [
+      { json: 'channelId', js: 'channelId', typ: '' },
+      { json: 'contextType', js: 'contextType', typ: u(null, '') },
+    ],
+    false
+  ),
+  ClearContextResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('BroadcastResponseResponsePayload') },
+      { json: 'type', js: 'type', typ: r('ClearContextResponseType') },
+    ],
+    false
+  ),
+  ContextClearedEvent: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('BroadcastEventMeta') },
+      { json: 'payload', js: 'payload', typ: r('ContextClearedEventPayload') },
+      { json: 'type', js: 'type', typ: r('ContextClearedEventType') },
+    ],
+    false
+  ),
+  ContextClearedEventPayload: o(
+    [
+      { json: 'channelId', js: 'channelId', typ: u(null, '') },
+      { json: 'contextType', js: 'contextType', typ: u(null, '') },
+    ],
+    false
+  ),
   ContextListenerUnsubscribeRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
@@ -6003,6 +6185,7 @@ const typeMap: any = {
     'ErrorOnLaunch',
     'IntentDeliveryFailed',
     'IntentHandlerRejected',
+    'IntentListenerConflict',
     'InvalidArguments',
     'MalformedContext',
     'MalformedMessage',
@@ -6023,6 +6206,7 @@ const typeMap: any = {
     'ApiTimeout',
     'DesktopAgentNotFound',
     'IntentDeliveryFailed',
+    'IntentListenerConflict',
     'InvalidArguments',
     'MalformedContext',
     'NoAppsFound',
@@ -6037,6 +6221,7 @@ const typeMap: any = {
     'addEventListenerEvent',
     'broadcastEvent',
     'channelChangedEvent',
+    'contextClearedEvent',
     'heartbeatEvent',
     'intentEvent',
     'privateChannelOnAddContextListenerEvent',
@@ -6048,6 +6233,7 @@ const typeMap: any = {
     'addEventListenerResponse',
     'addIntentListenerResponse',
     'broadcastResponse',
+    'clearContextResponse',
     'contextListenerUnsubscribeResponse',
     'createPrivateChannelResponse',
     'eventListenerUnsubscribeResponse',
@@ -6077,6 +6263,7 @@ const typeMap: any = {
     'addEventListenerRequest',
     'addIntentListenerRequest',
     'broadcastRequest',
+    'clearContextRequest',
     'contextListenerUnsubscribeRequest',
     'createPrivateChannelRequest',
     'eventListenerUnsubscribeRequest',
@@ -6105,6 +6292,9 @@ const typeMap: any = {
   BroadcastRequestType: ['broadcastRequest'],
   BroadcastResponseType: ['broadcastResponse'],
   ChannelChangedEventType: ['channelChangedEvent'],
+  ClearContextRequestType: ['clearContextRequest'],
+  ClearContextResponseType: ['clearContextResponse'],
+  ContextClearedEventType: ['contextClearedEvent'],
   ContextListenerUnsubscribeRequestType: ['contextListenerUnsubscribeRequest'],
   ContextListenerUnsubscribeResponseType: ['contextListenerUnsubscribeResponse'],
   CreatePrivateChannelRequestType: ['createPrivateChannelRequest'],
@@ -6137,6 +6327,7 @@ const typeMap: any = {
     'AgentDisconnected',
     'DesktopAgentNotFound',
     'IntentDeliveryFailed',
+    'IntentListenerConflict',
     'InvalidArguments',
     'MalformedContext',
     'MalformedMessage',
@@ -6215,6 +6406,7 @@ export type AppRequestMessage =
   | AddEventListenerRequest
   | AddIntentListenerRequest
   | BroadcastRequest
+  | ClearContextRequest
   | ContextListenerUnsubscribeRequest
   | CreatePrivateChannelRequest
   | EventListenerUnsubscribeRequest
@@ -6244,6 +6436,7 @@ export type AgentResponseMessage =
   | AddEventListenerResponse
   | AddIntentListenerResponse
   | BroadcastResponse
+  | ClearContextResponse
   | ContextListenerUnsubscribeResponse
   | CreatePrivateChannelResponse
   | EventListenerUnsubscribeResponse
@@ -6271,6 +6464,7 @@ export type AgentResponseMessage =
 export type AgentEventMessage =
   | BroadcastEvent
   | ChannelChangedEvent
+  | ContextClearedEvent
   | HeartbeatEvent
   | IntentEvent
   | PrivateChannelOnAddContextListenerEvent
@@ -6661,6 +6855,69 @@ export function isValidChannelChangedEvent(value: any): value is ChannelChangedE
 }
 
 export const CHANNEL_CHANGED_EVENT_TYPE = 'ChannelChangedEvent';
+
+/**
+ * Returns true if the value has a type property with value 'clearContextRequest'. This is a fast check that does not check the format of the message
+ */
+export function isClearContextRequest(value: any): value is ClearContextRequest {
+  return value != null && value.type === 'clearContextRequest';
+}
+
+/**
+ * Returns true if value is a valid ClearContextRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidClearContextRequest(value: any): value is ClearContextRequest {
+  try {
+    Convert.clearContextRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const CLEAR_CONTEXT_REQUEST_TYPE = 'ClearContextRequest';
+
+/**
+ * Returns true if the value has a type property with value 'clearContextResponse'. This is a fast check that does not check the format of the message
+ */
+export function isClearContextResponse(value: any): value is ClearContextResponse {
+  return value != null && value.type === 'clearContextResponse';
+}
+
+/**
+ * Returns true if value is a valid ClearContextResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidClearContextResponse(value: any): value is ClearContextResponse {
+  try {
+    Convert.clearContextResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const CLEAR_CONTEXT_RESPONSE_TYPE = 'ClearContextResponse';
+
+/**
+ * Returns true if the value has a type property with value 'contextClearedEvent'. This is a fast check that does not check the format of the message
+ */
+export function isContextClearedEvent(value: any): value is ContextClearedEvent {
+  return value != null && value.type === 'contextClearedEvent';
+}
+
+/**
+ * Returns true if value is a valid ContextClearedEvent. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidContextClearedEvent(value: any): value is ContextClearedEvent {
+  try {
+    Convert.contextClearedEventToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const CONTEXT_CLEARED_EVENT_TYPE = 'ContextClearedEvent';
 
 /**
  * Returns true if the value has a type property with value 'contextListenerUnsubscribeRequest'. This is a fast check that does not check the format of the message
