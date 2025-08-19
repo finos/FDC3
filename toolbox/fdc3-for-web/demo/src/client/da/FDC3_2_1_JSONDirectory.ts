@@ -40,9 +40,11 @@ export class FDC3_2_1_JSONDirectory extends BasicDirectory {
     const apps = await load(urls);
 
     apps.forEach((app: DirectoryApp) => {
-      const existing = aa.find(a => a.appId == app.appId);
-      if (!existing) {
-        aa.push(app);
+      if (app) {
+        const existing = aa.find(a => a.appId == app.appId);
+        if (!existing) {
+          aa.push(app);
+        }
       }
     });
   }

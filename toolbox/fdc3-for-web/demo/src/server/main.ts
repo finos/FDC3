@@ -9,9 +9,12 @@ app.get('/iframe', (_, res) => {
   res.send('Hello Vite + TypeScript!');
 });
 
-const httpServer = ViteExpress.listen(app, 4000, () =>
-  console.log('Server is listening on port 4000. Head to http://localhost:4000/static/da/index.html')
-);
+const httpServer = ViteExpress.listen(app, 4000, () => {
+  console.log('===============================================');
+  console.log('FDC3 Demo Desktop Agent is listening on port 4000. ');
+  console.log('📱 Open your browser and navigate to: http://localhost:4000/static/da/index.html');
+  console.log('===============================================');
+});
 
 const io = new Server(httpServer);
 

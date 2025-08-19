@@ -793,9 +793,9 @@ export interface AddContextListenerResponsePayload {
  * Constants representing the errors that can be encountered when calling the `open` method
  * on the DesktopAgent object (`fdc3`).
  *
- * Constants representing the errors that can be encountered when calling the `findIntent`,
- * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
- * DesktopAgent (`fdc3`).
+ * Constants representing the errors that can be encountered when calling the
+ * `addIntentListener`, `findIntent`, `findIntentsByContext`, `raiseIntent` or
+ * `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).
  */
 export type PurpleError =
   | 'AccessDenied'
@@ -889,9 +889,9 @@ export interface AddEventListenerResponsePayload {
  * Constants representing the errors that can be encountered when calling the `open` method
  * on the DesktopAgent object (`fdc3`).
  *
- * Constants representing the errors that can be encountered when calling the `findIntent`,
- * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
- * DesktopAgent (`fdc3`).
+ * Constants representing the errors that can be encountered when calling the
+ * `addIntentListener`, `findIntent`, `findIntentsByContext`, `raiseIntent` or
+ * `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).
  */
 export type ResponsePayloadError =
   | 'AccessDenied'
@@ -911,6 +911,7 @@ export type ResponsePayloadError =
   | 'TargetAppUnavailable'
   | 'TargetInstanceUnavailable'
   | 'UserCancelledResolution'
+  | 'IntentListenerConflict'
   | 'IntentHandlerRejected'
   | 'NoResultReturned'
   | 'AgentDisconnected'
@@ -998,9 +999,9 @@ export interface PayloadObject {
  * Constants representing the errors that can be encountered when calling the `open` method
  * on the DesktopAgent object (`fdc3`).
  *
- * Constants representing the errors that can be encountered when calling the `findIntent`,
- * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
- * DesktopAgent (`fdc3`).
+ * Constants representing the errors that can be encountered when calling the
+ * `addIntentListener`, `findIntent`, `findIntentsByContext`, `raiseIntent` or
+ * `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).
  */
 export type FluffyError =
   | 'MalformedContext'
@@ -1013,7 +1014,8 @@ export type FluffyError =
   | 'ResolverTimeout'
   | 'TargetAppUnavailable'
   | 'TargetInstanceUnavailable'
-  | 'UserCancelledResolution';
+  | 'UserCancelledResolution'
+  | 'IntentListenerConflict';
 
 /**
  * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
@@ -2168,9 +2170,9 @@ export interface FindInstancesResponsePayload {
  * Constants representing the errors that can be encountered when calling the `open` method
  * on the DesktopAgent object (`fdc3`).
  *
- * Constants representing the errors that can be encountered when calling the `findIntent`,
- * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
- * DesktopAgent (`fdc3`).
+ * Constants representing the errors that can be encountered when calling the
+ * `addIntentListener`, `findIntent`, `findIntentsByContext`, `raiseIntent` or
+ * `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).
  *
  * Unique identifier for a for an attempt to connect to a Desktop Agent. A Unique UUID
  * should be used in the first (WCP1Hello) message and should be quoted in all subsequent
@@ -2201,6 +2203,7 @@ export type FindInstancesErrors =
   | 'TargetAppUnavailable'
   | 'TargetInstanceUnavailable'
   | 'UserCancelledResolution'
+  | 'IntentListenerConflict'
   | 'AgentDisconnected'
   | 'NotConnectedToBridge'
   | 'ResponseToBridgeTimedOut'
@@ -3288,9 +3291,9 @@ export interface OpenResponsePayload {
  * Constants representing the errors that can be encountered when calling the `open` method
  * on the DesktopAgent object (`fdc3`).
  *
- * Constants representing the errors that can be encountered when calling the `findIntent`,
- * `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the
- * DesktopAgent (`fdc3`).
+ * Constants representing the errors that can be encountered when calling the
+ * `addIntentListener`, `findIntent`, `findIntentsByContext`, `raiseIntent` or
+ * `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).
  */
 export type OpenErrorResponsePayload =
   | 'MalformedContext'
@@ -6003,6 +6006,7 @@ const typeMap: any = {
     'ErrorOnLaunch',
     'IntentDeliveryFailed',
     'IntentHandlerRejected',
+    'IntentListenerConflict',
     'InvalidArguments',
     'MalformedContext',
     'MalformedMessage',
@@ -6023,6 +6027,7 @@ const typeMap: any = {
     'ApiTimeout',
     'DesktopAgentNotFound',
     'IntentDeliveryFailed',
+    'IntentListenerConflict',
     'InvalidArguments',
     'MalformedContext',
     'NoAppsFound',
@@ -6137,6 +6142,7 @@ const typeMap: any = {
     'AgentDisconnected',
     'DesktopAgentNotFound',
     'IntentDeliveryFailed',
+    'IntentListenerConflict',
     'InvalidArguments',
     'MalformedContext',
     'MalformedMessage',
