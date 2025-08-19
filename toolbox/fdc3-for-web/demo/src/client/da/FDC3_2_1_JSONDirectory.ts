@@ -26,7 +26,7 @@ async function load(urls: string[]): Promise<DirectoryApp[]> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const convertToDirectoryList = (data: any) => {
+const convertToDirectoryList = (data: any): DirectoryApp[] => {
   return data.applications as DirectoryApp[];
 };
 
@@ -36,6 +36,14 @@ export class FDC3_2_1_JSONDirectory extends BasicDirectory {
   }
 
   async load(urls: string[]) {
-    this.allApps = await load(urls);
+    const aa = this.allApps;
+    const apps = await load(urls);
+
+    apps.forEach((app: DirectoryApp) => {
+      const existing = aa.find(a => a.appId == app.appId);
+      if (!existing) {
+        aa.push(app);
+      }
+    });
   }
 }

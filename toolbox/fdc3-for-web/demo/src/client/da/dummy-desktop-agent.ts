@@ -58,7 +58,8 @@ window.addEventListener('load', () => {
     await directory.load([
       '/static/da/appd.json',
       'http://localhost:4003/security-demo-appd.json',
-      //'/static/da/local-conformance-2_0.v2.json'  // replace with real, remote URL when this is merged.
+      '/static/da/local-conformance-2_0.v2.json',
+      // 'https://fdc3.finos.org/toolbox/fdc3-conformance/directories/website-conformance.v2.json'
     ]);
 
     const sc = new DemoServerContext(socket, directory);
@@ -158,7 +159,12 @@ window.addEventListener('load', () => {
     // let's create buttons for some apps
     const appList = document.getElementById('app-list') as HTMLOListElement;
     directory.retrieveAllApps().forEach(app => {
-      appList.appendChild(createAppStartButton(app, sc));
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const mani = app?.hostManifests?.demo as any;
+      const show = mani?.visible ?? true;
+      if (show) {
+        appList.appendChild(createAppStartButton(app, sc));
+      }
     });
 
     // set up Desktop Agent Proxy interface here
