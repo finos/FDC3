@@ -1,4 +1,4 @@
-import { signedContext, signingContextHandler, signingIntentHandler } from './signing/SigningSupport';
+import { signedContext, signingContextHandler, signingIntentHandler, checkSignature } from './signing/SigningSupport';
 import { EncryptingPrivateChannel } from './encryption/EncryptingPrivateChannel';
 import { SecuredDesktopAgentDelegate } from './delegates/SecuredDesktopAgentDelegate';
 import {
@@ -11,6 +11,12 @@ import {
   FDC3JWTPayload,
 } from './PublicFDC3Security';
 import { PrivateFDC3Security } from './PrivateFDC3Security';
+import { EncryptingChannelDelegate } from './encryption/EncryptingChannelDelegate';
+import { SigningChannelDelegate } from './signing/SigningChannelDelegate';
+import {
+  createSymmetricKeyRequestContextListener,
+  createSymmetricKeyResponseContextListener,
+} from './encryption/SymmetricKeyContextListener';
 export {
   type EncryptingPrivateChannel,
   type MessageAuthenticity,
@@ -22,7 +28,12 @@ export {
   type PrivateFDC3Security,
   type FDC3JWTPayload,
   SecuredDesktopAgentDelegate,
+  EncryptingChannelDelegate,
+  SigningChannelDelegate,
+  checkSignature,
   signedContext,
   signingContextHandler,
   signingIntentHandler,
+  createSymmetricKeyRequestContextListener,
+  createSymmetricKeyResponseContextListener,
 };

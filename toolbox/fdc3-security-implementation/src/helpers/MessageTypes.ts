@@ -25,4 +25,5 @@ export type ExchangeDataMessage = {
 };
 
 export const CLIENT_MESSAGE = 'client-message';
+
 export const SERVER_MESSAGE = 'server-message';

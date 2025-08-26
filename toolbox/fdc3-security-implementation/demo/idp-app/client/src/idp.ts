@@ -51,7 +51,7 @@ async function initialize(): Promise<void> {
   // Initialize FDC3
   const fdc3 = await initializeFDC3();
 
-  connectRemoteHandlers('http://localhost:4005', fdc3).then(remoteHandlers => {
+  connectRemoteHandlers('http://localhost:4005', fdc3, async () => {}).then(remoteHandlers => {
     setupSessionStatusButton(remoteHandlers);
     setupLogoutButton(remoteHandlers);
     setupLoginButton(remoteHandlers);

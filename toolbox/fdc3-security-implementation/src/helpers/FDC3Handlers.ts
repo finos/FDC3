@@ -1,4 +1,4 @@
-import { Channel, ContextHandler, ContextMetadata, IntentHandler } from '@finos/fdc3';
+import { Channel, ContextMetadata, IntentHandler } from '@finos/fdc3';
 import { Context } from '@finos/fdc3-context';
 
 export type ContextOrErrorMetadata = ContextMetadata | { error: string } | undefined;

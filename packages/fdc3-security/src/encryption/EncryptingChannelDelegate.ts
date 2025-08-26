@@ -1,9 +1,10 @@
 import { ContextHandler, ContextMetadata, Listener, PrivateChannel } from '@finos/fdc3-standard';
-import { Context, SymmetricKeyResponse, SymmetricKeyRequest } from '@finos/fdc3-context';
+import { Context, SymmetricKeyRequest } from '@finos/fdc3-context';
 import { JSONWebEncryption } from '../PublicFDC3Security';
 import { PrivateFDC3Security } from '../PrivateFDC3Security';
 import { EncryptingPrivateChannel } from './EncryptingPrivateChannel';
 import { AbstractChannelDelegate } from '../delegates/AbstractChannelDelegate';
+import { signedContext } from '../signing/SigningSupport';
 
 /**
  * TODO: this should be moved into Julianna's code.
@@ -25,7 +26,6 @@ export type ContextMetadataWithEncryptionStatus = ContextMetadata & {
 export class EncryptingChannelDelegate extends AbstractChannelDelegate implements EncryptingPrivateChannel {
   private symmetricKey: JsonWebKey | null = null;
   private typeFilter: null | ((type: string) => boolean) = null;
-  private keyCreator: boolean = false;
   private readonly fdc3Security: PrivateFDC3Security;
 
   requestListener: Listener | null = null;
@@ -34,23 +34,6 @@ export class EncryptingChannelDelegate extends AbstractChannelDelegate implement
   constructor(d: PrivateChannel, fdc3Security: PrivateFDC3Security) {
     super(d);
     this.fdc3Security = fdc3Security;
-
-    // listen for a symmetric key being sent
-    this.addContextListener(
-      'fdc3.security.symmetricKey.response',
-      async (context: SymmetricKeyResponse, _meta: any) => {
-        const newKey = await fdc3Security.unwrapKey(context);
-        if (newKey) {
-          if (this.symmetricKey == null) {
-            this.symmetricKey = newKey;
-          } else {
-            // this is an error - key can't be changed after being created
-          }
-        }
-      }
-    ).then(l => {
-      this.responseListener = l;
-    });
   }
 
   isEncrypting(type: string): boolean {
@@ -59,26 +42,34 @@ export class EncryptingChannelDelegate extends AbstractChannelDelegate implement
 
   async setChannelEncryption(filter: null | ((type: string) => boolean)): Promise<void> {
     this.typeFilter = filter;
-    if (!this.symmetricKey && this.typeFilter != null) {
-      this.symmetricKey = await this.fdc3Security.createSymmetricKey();
-      this.keyCreator = true;
-    }
   }
 
   async broadcastKey(publicKeyUrl: string): Promise<void> {
     if (this.symmetricKey) {
       const ctx = await this.fdc3Security.wrapKey(this.symmetricKey, publicKeyUrl);
-      return this.delegate.broadcast(ctx);
+      const signedCtx = await signedContext(this.fdc3Security, ctx, null, this.id);
+      return this.delegate.broadcast(signedCtx);
     } else {
       throw new Error('Channel not set to encrypting');
     }
+  }
+
+  async setSymmetricKey(key: JsonWebKey): Promise<void> {
+    console.log('setting symmetric key', key);
+    this.symmetricKey = key;
+  }
+
+  async getSymmetricKey(): Promise<JsonWebKey | null> {
+    console.log('getting symmetric key', this.symmetricKey);
+    return this.symmetricKey;
   }
 
   async requestEncryptionKey(): Promise<void> {
     const request = {
       type: 'fdc3.security.symmetricKey.request',
     } as SymmetricKeyRequest;
-    return this.broadcast(request);
+    const signedRequest = await signedContext(this.fdc3Security, request, null, this.id);
+    return this.broadcast(signedRequest);
   }
 
   async encryptIfAvailable(context: Context): Promise<Context> {
@@ -123,9 +114,7 @@ export class EncryptingChannelDelegate extends AbstractChannelDelegate implement
           newMeta['encryption'] = 'decrypted';
         } else {
           newMeta['encryption'] = 'cant_decrypt';
-          if (!this.keyCreator) {
-            this.requestEncryptionKey();
-          }
+          this.requestEncryptionKey();
         }
       } else {
         newMeta['encryption'] = 'not_encrypted';

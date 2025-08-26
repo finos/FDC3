@@ -6,6 +6,7 @@ import { connectRemoteHandlers } from '../../../../src/helpers/ClientSideHandler
 import { Context, Instrument, UserRequest } from '@finos/fdc3-context';
 import { initializeFDC3 } from '../../common/src/fdc3';
 import { setupLogoutButton } from '../../common/src/AbstractSessionHandlingBusinessLogic';
+import { ExchangeDataMessage } from '../../../../src/helpers/MessageTypes';
 
 async function raiseGetUserIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Handlers, loginBtn: HTMLButtonElement) {
   try {
@@ -73,8 +74,10 @@ async function raiseGetPricesIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Hand
     if (result?.type == 'private') {
       // ok, it's a private channel, this was expected
       const pc: PrivateChannel = result as PrivateChannel;
+      remoteHandlers.handleRemoteChannel('demo.GetPrices', pc);
+
       pc.addContextListener('fdc3.valuation', async (ctx, metadata) => {
-        createLogEntry('success', '✅ Context listener called', {
+        createLogEntry('info', '✅ Context listener called', {
           context: ctx,
           metadata: metadata,
           timestamp: new Date().toISOString(),
@@ -127,6 +130,13 @@ function setupButtonListeners(fdc3: DesktopAgent, remoteHandlers: FDC3Handlers) 
   setupSessionStatusButton(remoteHandlers);
 }
 
+function handleReturnedMessage(msg: ExchangeDataMessage) {
+  createLogEntry('success', '✅ Got A Price', {
+    context: msg.ctx,
+    timestamp: new Date().toISOString(),
+  });
+}
+
 // Main initialization
 initializeFDC3()
   .then(async fdc3 => {
@@ -136,12 +146,14 @@ initializeFDC3()
       timestamp: new Date().toISOString(),
     });
 
-    connectRemoteHandlers('http://localhost:4003', fdc3).then(remoteHandlers => {
-      setupButtonListeners(fdc3, remoteHandlers);
-      setupSessionStatusButton(remoteHandlers);
-      setupLogoutButton(remoteHandlers);
-      checkSessionStatus(remoteHandlers);
-    });
+    connectRemoteHandlers('http://localhost:4003', fdc3, async msg => handleReturnedMessage(msg)).then(
+      remoteHandlers => {
+        setupButtonListeners(fdc3, remoteHandlers);
+        setupSessionStatusButton(remoteHandlers);
+        setupLogoutButton(remoteHandlers);
+        checkSessionStatus(remoteHandlers);
+      }
+    );
   })
 
   .catch(error => {

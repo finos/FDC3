@@ -26,7 +26,7 @@ export type DisconnectCallback = (socket: Socket) => void;
 export function setupWebsocketServer(
   httpServer: HttpServer,
   disconnectCallback: DisconnectCallback,
-  handlers: FDC3Handlers
+  createHandlers: (socket: Socket) => FDC3Handlers
 ) {
   const io = new Server(httpServer);
 
@@ -34,6 +34,8 @@ export function setupWebsocketServer(
     const messaging = new WebSocketMessaging(socket, {
       appId: 'demo-security-implementation',
     });
+
+    const handlers = createHandlers(socket);
 
     socket.on(SIGN_REQUEST, async (data: SignRequestMessage, callback: (ctx: Context) => void) => {
       const ctx = await handlers.signRequest(data.ctx, data.intent, data.channelId);

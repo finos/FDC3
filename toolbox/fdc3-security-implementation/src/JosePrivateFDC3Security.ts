@@ -51,7 +51,6 @@ export class JosePrivateFDC3Security extends JosePublicFDC3Security implements P
       .setProtectedHeader({ alg: 'EdDSA', jku: this.jwksUrl, iat: now, kid: this.signingPublicKey.kid })
       .sign(this.signingPrivateKey);
     const parts = jws.split('.');
-    console.log('SIGNED  : ' + jws);
     const detachedJWS = `${parts[0]}..${parts[2]}`;
     return detachedJWS;
   }
@@ -64,7 +63,16 @@ export class JosePrivateFDC3Security extends JosePublicFDC3Security implements P
     const protectedHeader = { alg: 'RSA-OAEP-256', enc: 'A256GCM' };
     const JWKS = this.publicKeyResolver(publicKeyUrl);
     const data = this.canonicalizeKey(symmetricKey);
-    const key = await JWKS(protectedHeader);
+
+    // not sure why I need to load all the keys here, but it doesn't allow me to match on the
+    // algorithm above for public encryption.
+    await JWKS.reload();
+    const allKeys = JWKS.jwks()?.keys ?? [];
+    const key = allKeys.find(k => k.alg == protectedHeader.alg);
+
+    if (key == undefined) {
+      throw new Error(`No key found for algorithm ${protectedHeader.alg}`);
+    }
 
     const wrapped = await new jose.CompactEncrypt(data).setProtectedHeader(protectedHeader).encrypt(key);
 

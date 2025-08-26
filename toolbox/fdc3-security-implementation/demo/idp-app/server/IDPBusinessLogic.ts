@@ -1,4 +1,4 @@
-import { JSONWebSignature, PrivateFDC3Security } from '@finos/fdc3-security';
+import { checkSignature, JSONWebSignature, PrivateFDC3Security } from '@finos/fdc3-security';
 import { FDC3Handlers } from '../../../src/helpers/FDC3Handlers';
 import { ContextMetadata, ContextHandler, IntentHandler, IntentResult, Channel } from '@finos/fdc3';
 import { Context, User, UserRequest } from '@finos/fdc3-context';
@@ -25,11 +25,9 @@ export class IDPBusinessLogic implements FDC3Handlers {
   async remoteIntentHandler(intent: string): Promise<IntentHandler> {
     if (intent == 'GetUser') {
       const ih: IntentHandler = async (ctx: Context, metadata: ContextMetadata | undefined) => {
-        // first, check the signature
-        const sig = ctx.__signature;
-        delete ctx.__signature;
-        const ma = await this.fdc3Security.check(sig, ctx, intent, null);
-        if (ma.signed && ma.trusted && ma.valid) {
+        const { context, meta } = await checkSignature(this.fdc3Security, metadata, ctx, intent, null);
+        const ma = meta?.authenticity;
+        if (ma?.signed && ma.trusted && ma.valid) {
           const userId = this.user?.id?.userId;
           if (this.user) {
             // user is logged in.

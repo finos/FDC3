@@ -18,7 +18,7 @@ In reality, we wouldn't use this, but it makes the test a lot simpler to underst
       | method    | args[0].type    | args[0].id.ticker | args[0].__signature                       |
       | broadcast | fdc3.instrument | AAPL              | length-check:113:https://dummy.com/pubKey |
 
-  Scenario: User Channel Broadasts context data will include a signature
+  Scenario: User Channel Broadcasts context data will include a signature
     When I call "{api}" with "getUserChannels"
     And I refer to "{result[0]}" as "firstUserChannel"
     And I call "{api}" with "joinUserChannel" with parameter "{firstUserChannel.id}"
@@ -27,7 +27,7 @@ In reality, we wouldn't use this, but it makes the test a lot simpler to underst
       | method    | args[0].type    | args[0].id.ticker | args[0].__signature                       |
       | broadcast | fdc3.instrument | AAPL              | length-check:107:https://dummy.com/pubKey |
 
-  Scenario: Private Channel Broadasts context data will include a signature
+  Scenario: Private Channel Broadcasts context data will include a signature
     When I call "{api}" with "createPrivateChannel"
     And I refer to "{result}" as "privateChannel"
     And I call "{privateChannel}" with "broadcast" with parameter "{instrumentContext}"
@@ -35,7 +35,7 @@ In reality, we wouldn't use this, but it makes the test a lot simpler to underst
       | method    | args[0].type    | args[0].id.ticker | args[0].__signature                       |
       | broadcast | fdc3.instrument | AAPL              | length-check:112:https://dummy.com/pubKey |
 
-  Scenario: Encrypted Private Channel Broadasts context data will include a signature
+  Scenario: Encrypted Private Channel Broadcasts context data will include a signature
     When I call "{api}" with "createPrivateChannel"
     And I refer to "{result}" as "privateChannel"
     And I call "{privateChannel}" with "setChannelEncryption" with parameter "{trueFunction}"

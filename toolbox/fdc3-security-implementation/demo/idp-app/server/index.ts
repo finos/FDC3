@@ -19,6 +19,6 @@ initializeServer(PORT).then(({ fdc3Security, app, server }) => {
     _s => {
       console.log('Websocket server disconnected');
     },
-    new IDPBusinessLogic(fdc3Security)
+    _socket => new IDPBusinessLogic(fdc3Security)
   );
 });

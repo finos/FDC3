@@ -107,6 +107,8 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
       const parts = jws.split('.');
       const reconstitutedJws = `${parts[0]}.${data2}.${parts[2]}`;
 
+      console.log('reconstitutedJws', reconstitutedJws);
+
       const result = await jose.compactVerify(reconstitutedJws, jwksEndpoint, {});
 
       if (iat && now - iat > this.validityTimeLimit) {

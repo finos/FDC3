@@ -17,4 +17,12 @@ export interface EncryptingPrivateChannel extends PrivateChannel {
    * a receiving app.
    */
   broadcastKey(publicKeyUrl: string): Promise<void>;
+
+  getSymmetricKey(): Promise<JsonWebKey | null>;
+
+  /**
+   * Sets the symmetric key used by this channel for encrypting or decrypting
+   * messages.
+   */
+  setSymmetricKey(key: JsonWebKey): Promise<void>;
 }

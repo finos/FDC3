@@ -1,7 +1,15 @@
-import { Channel, ContextMetadata, IntentHandler, PrivateFDC3Security } from '@finos/fdc3';
+import {
+  Channel,
+  ContextMetadata,
+  EncryptingChannelDelegate,
+  IntentHandler,
+  PrivateChannel,
+  PrivateFDC3Security,
+  SigningChannelDelegate,
+} from '@finos/fdc3';
 import { Context } from '@finos/fdc3-context';
 import { FDC3Handlers } from '../../../src/helpers/FDC3Handlers';
-
+import { createSymmetricKeyRequestContextListener } from '../../../src/helpers/SymmetricKeyContextListener';
 /**
  * NB:  App2 doesn't have a session.   It checks each request in turn for signatures and user details.
  */
@@ -11,17 +19,25 @@ export class App2BusinessLogic implements FDC3Handlers {
   async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
     if (purpose == 'demo.GetPrices') {
       // this is a channel created for get prices.
+      const encryptedChannel = new EncryptingChannelDelegate(channel as PrivateChannel, this.fdc3Security);
+
+      // make sure we encrypt all valuations on the channel
+      await encryptedChannel.setChannelEncryption(type => type == 'fdc3.valuation');
+
+      // listens for requests for the channel's symmetric key from valuation recipients
+      await createSymmetricKeyRequestContextListener(this.fdc3Security, encryptedChannel);
 
       for (let i = 0; i < 10; i++) {
-        setTimeout(
-          async () =>
-            channel.broadcast({
-              type: 'fdc3.valuation',
-              price: 100 + i,
-            }),
-          i * 1000
-        );
+        setTimeout(async () => {
+          const out = await encryptedChannel.broadcast({
+            type: 'fdc3.valuation',
+            price: 100 + i,
+          });
+          console.log('broadcast complete');
+        }, i * 1000);
       }
+
+      setTimeout(async () => encryptedChannel.disconnect(), 10000);
     }
   }
 
@@ -51,7 +67,7 @@ export class App2BusinessLogic implements FDC3Handlers {
 
         return {
           type: 'fdc3.error',
-          error: `Unauthorized: ${ctx}`,
+          error: `Unauthorized: ${JSON.stringify(ctx)}`,
         };
       };
 

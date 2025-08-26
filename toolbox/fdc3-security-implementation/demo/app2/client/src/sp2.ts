@@ -23,7 +23,7 @@ initializeFDC3()
       timestamp: new Date().toISOString(),
     });
 
-    connectRemoteHandlers('http://localhost:4004', fdc3).then(remoteHandlers => {
+    connectRemoteHandlers('http://localhost:4004', fdc3, async () => {}).then(remoteHandlers => {
       setupIntentListener(fdc3, remoteHandlers);
     });
   })

@@ -1,8 +1,8 @@
 // Shared session status utility for FDC3 demo apps
 import { Context, User } from '@finos/fdc3-context';
 import { createLogEntry } from './logging';
-import { ContextOrErrorMetadata, FDC3Handlers } from '../../../../src/helpers/FDC3Handlers';
-import { Channel, ContextHandler, DesktopAgent, IntentHandler } from '@finos/fdc3';
+import { FDC3Handlers } from '../../../../src/helpers/FDC3Handlers';
+import { Channel, IntentHandler } from '@finos/fdc3';
 
 export abstract class AbstractSessionHandlingBusinessLogic implements FDC3Handlers {
   protected user: User | null = null;
@@ -26,7 +26,6 @@ export abstract class AbstractSessionHandlingBusinessLogic implements FDC3Handle
     }
   }
 
-  abstract createRemoteChannel(purpose: string): Promise<Channel>;
   abstract handleRemoteChannel(purpose: string, channel: Channel): Promise<void>;
 }
 
