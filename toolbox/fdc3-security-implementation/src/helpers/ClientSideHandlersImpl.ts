@@ -161,6 +161,7 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
   }
 
   private async handleAddContextListener(acl: AddContextListenerRequest): Promise<AddContextListenerResponse> {
+    console.log('handleAddContextListener', acl);
     const channel = this.channels.get(acl.payload.channelId!); // always has a channelId
     const type = acl.payload.contextType;
     const id = uuidv4();
@@ -178,13 +179,13 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
             },
           };
 
-          console.log('Received context, sending to server', ctx);
+          console.log('Received context, sending to server', ctx, id);
 
           await this.socket.emitWithAck(CLIENT_MESSAGE, msg);
         }
       );
 
-      console.log('context listener added', id);
+      console.log('context listener added', id, this.contextListeners);
 
       this.contextListeners.set(id, cl);
       return {

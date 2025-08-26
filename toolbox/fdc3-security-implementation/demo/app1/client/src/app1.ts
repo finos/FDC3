@@ -75,14 +75,6 @@ async function raiseGetPricesIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Hand
       // ok, it's a private channel, this was expected
       const pc: PrivateChannel = result as PrivateChannel;
       remoteHandlers.handleRemoteChannel('demo.GetPrices', pc);
-
-      pc.addContextListener('fdc3.valuation', async (ctx, metadata) => {
-        createLogEntry('info', '✅ Context listener called', {
-          context: ctx,
-          metadata: metadata,
-          timestamp: new Date().toISOString(),
-        });
-      });
     } else {
       createLogEntry('error', '❌ Did not receive private channel', {
         intent: 'demo.GetPrices',

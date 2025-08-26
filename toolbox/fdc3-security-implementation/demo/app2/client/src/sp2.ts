@@ -3,6 +3,7 @@ import { createLogEntry, updateStatus } from '../../../app1/common/src/logging';
 import { initializeFDC3 } from '../../../app1/common/src/fdc3';
 import { connectRemoteHandlers } from '../../../../src/helpers/ClientSideHandlersImpl';
 import { FDC3Handlers } from '../../../../src/helpers/FDC3Handlers';
+import { ExchangeDataMessage } from '../../../../src/helpers/MessageTypes';
 
 async function setupIntentListener(fdc3: DesktopAgent, remoteHandlers: FDC3Handlers) {
   const intentHandler = await remoteHandlers.remoteIntentHandler('demo.GetPrices');
@@ -15,6 +16,13 @@ async function setupIntentListener(fdc3: DesktopAgent, remoteHandlers: FDC3Handl
   });
 }
 
+function logReturnedMessage(msg: ExchangeDataMessage) {
+  console.log('logReturnedMessage', msg);
+  createLogEntry('success', '✅ Published A Price', {
+    context: msg.ctx,
+  });
+}
+
 // Main initialization
 initializeFDC3()
   .then(async fdc3 => {
@@ -23,7 +31,7 @@ initializeFDC3()
       timestamp: new Date().toISOString(),
     });
 
-    connectRemoteHandlers('http://localhost:4004', fdc3, async () => {}).then(remoteHandlers => {
+    connectRemoteHandlers('http://localhost:4004', fdc3, async msg => logReturnedMessage(msg)).then(remoteHandlers => {
       setupIntentListener(fdc3, remoteHandlers);
     });
   })

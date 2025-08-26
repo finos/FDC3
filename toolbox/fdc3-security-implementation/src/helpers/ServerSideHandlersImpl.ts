@@ -65,8 +65,6 @@ export function setupWebsocketServer(
           const result = await ih(data.context, data.metadata);
           callback2(result);
         });
-
-        // todo - add disconnect listener
         callback1(id);
       }
     );

@@ -40,6 +40,7 @@ export class App1BusinessLogic extends AbstractSessionHandlingBusinessLogic {
   }
 
   async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
+    console.log('handleRemoteChannel', purpose, channel);
     if (purpose == 'demo.GetPrices') {
       // this is a channel created for get prices.
       const encryptedChannel = new EncryptingChannelDelegate(channel as PrivateChannel, this.fdc3Security);

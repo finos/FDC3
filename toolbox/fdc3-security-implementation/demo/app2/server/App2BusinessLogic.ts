@@ -7,14 +7,22 @@ import {
   PrivateFDC3Security,
   SigningChannelDelegate,
 } from '@finos/fdc3';
-import { Context } from '@finos/fdc3-context';
+import { Context, Valuation } from '@finos/fdc3-context';
 import { FDC3Handlers } from '../../../src/helpers/FDC3Handlers';
 import { createSymmetricKeyRequestContextListener } from '../../../src/helpers/SymmetricKeyContextListener';
+import { ExchangeDataMessage } from '../../../src/helpers/MessageTypes';
 /**
  * NB:  App2 doesn't have a session.   It checks each request in turn for signatures and user details.
  */
 export class App2BusinessLogic implements FDC3Handlers {
-  constructor(private readonly fdc3Security: PrivateFDC3Security) {}
+  callback: (ctx: ExchangeDataMessage) => void;
+
+  constructor(
+    private readonly fdc3Security: PrivateFDC3Security,
+    callback: (ctx: ExchangeDataMessage) => void
+  ) {
+    this.callback = callback;
+  }
 
   async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
     if (purpose == 'demo.GetPrices') {
@@ -27,13 +35,18 @@ export class App2BusinessLogic implements FDC3Handlers {
       // listens for requests for the channel's symmetric key from valuation recipients
       await createSymmetricKeyRequestContextListener(this.fdc3Security, encryptedChannel);
 
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 5; i++) {
         setTimeout(async () => {
-          const out = await encryptedChannel.broadcast({
+          const ctx: Valuation = {
             type: 'fdc3.valuation',
+            currency: 'Dollars',
+            CURRENCY_ISOCODE: 'USD',
             price: 100 + i,
-          });
-          console.log('broadcast complete');
+            value: 100 + i,
+          };
+          await encryptedChannel.broadcast(ctx);
+          console.log('broadcast complete ' + i);
+          this.callback({ ctx });
         }, i * 1000);
       }
 

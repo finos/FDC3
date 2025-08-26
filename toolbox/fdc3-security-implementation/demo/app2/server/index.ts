@@ -1,3 +1,4 @@
+import { EXCHANGE_DATA } from '../../../src/helpers/MessageTypes';
 import { setupWebsocketServer } from '../../../src/helpers/ServerSideHandlersImpl';
 import { initializeServer } from '../../app1/common/src/server';
 import { App2BusinessLogic } from './App2BusinessLogic';
@@ -10,6 +11,10 @@ initializeServer(PORT).then(({ fdc3Security, app, server }) => {
     socket => {
       console.log('Disconnected', socket);
     },
-    _socket => new App2BusinessLogic(fdc3Security)
+    socket =>
+      new App2BusinessLogic(fdc3Security, msg => {
+        console.log('Sending back a message', msg);
+        socket.emit(EXCHANGE_DATA, msg);
+      })
   );
 });
