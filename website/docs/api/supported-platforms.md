@@ -106,6 +106,10 @@ const desktopAgent: DesktopAgent = await getAgent();
 await sendData(desktopAgent);
 ```
 
+:::caution
+For JavaScript implementations of the FDC3 API, all public methods on objects such as `DesktopAgent`, `Channel`, `PrivateChannel`, `IntentResolution`, etc **MUST be explicitly bound to their instance** using `.bind(this)` in their constructor. This ensures proper behavior when methods are destructured, which is a common practice in modern JavaScript code.
+:::
+
 ## Native
 
 The FDC3 Standard currently only defines language specific API bindings for JavaScript/TypeScript and .NET, but is intended to be implemented in other languages (which can make use of the [Desktop Agent Communication Protocol (DACP)](specs/desktopAgentCommunicationProtocol) as a wire protocol, but need to define a suitable connection protocol, which includes a defined communication channel to do so).  
