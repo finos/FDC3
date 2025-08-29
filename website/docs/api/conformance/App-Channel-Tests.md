@@ -60,3 +60,27 @@ hide_title: true
 - `ACContextHistoryTyped`: Perform above test.
 - `ACContextHistoryMultiple`: **B** Broadcasts multiple history items of both types.  Ensure that only the last version of each type is received by **A**.
 - `ACContextHistoryLast`: In step 5. **A** retrieves the _untyped_ current context of the channel via `const currentContext = await testChannel.getCurrentContext()`. Ensure that A receives only the very last broadcast context item _of any type_.
+
+## Basic Broadcast - Destructured
+
+| App | Step                    | Details                                                                    |
+|-----|-------------------------|----------------------------------------------------------------------------|
+| A   | 1. Retrieve `Channel`   | Retrieve a `Channel` object representing an 'App' channel called `test-channel` using: <br />`const testChannel = await fdc3.getOrCreateChannel("test-channel")` |
+| A   | 2. Destructure Methods  | Destructure channel methods using: <br />`const { addContextListener, broadcast } = testChannel` |
+| A   | 3. Add Context Listener | Add an _untyped_ context listener to the channel, using destructured method: <br />`await addContextListener(null,handler)` |
+| B   | 4. Retrieve `Channel`   | Retrieve a `Channel` object representing the same 'App' channel A did (`test-channel`)|
+| B   | 5. Destructure & Broadcast | Destructure broadcast method and broadcast context: <br />`const { broadcast } = testChannel`<br />`broadcast(<fdc3.instrument>)`|
+| A   | 6. Receive Context      | The handler added in step 3 will receive the instrument context. Ensure that the instrument received by A is identical to that sent by B.  |
+
+- `ACBasicUsage1-Destructured` Perform above test to verify destructured methods work correctly.
+
+## Current Context - Destructured
+
+| App | Step                        | Details                                                                    |
+|-----|-----------------------------|----------------------------------------------------------------------------|
+| B   | 1. Retrieve `Channel`       |Retrieve a `Channel` object representing an 'App' channel called `test-channel` using: <br />`const testChannel = await fdc3.getOrCreateChannel("test-channel")` |
+| B   | 2. Destructure & Broadcast  | Destructure broadcast method and broadcast context: <br />`const { broadcast } = testChannel`<br />`broadcast(<fdc3.instrument>)`|
+| A   | 3. Retrieve `Channel`       |Retrieve a `Channel` object representing the same 'App' channel B did (`test-channel`)|
+| A   | 4. Destructured & Get Context | Destructure getCurrentContext and retrieve context: <br />`const { getCurrentContext } = testChannel`<br />`await getCurrentContext()` <br />Ensure that the instrument received by A is identical to that sent by B    |
+
+- `ACBasicUsage2-Destructured` Perform above test to verify destructured getCurrentContext works correctly.
