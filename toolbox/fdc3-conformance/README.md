@@ -36,13 +36,13 @@ There are two main parts to conformance:
 
 ### Running The Conformance Tests
 
-You can either run the hosted conformance tests listed in the FINOS App Directory, or run them on your local machine (useful if you are making changes).  Instructions for doing either of those things are here:
+You can either run the hosted conformance tests on the FDC3 Website, or run them on your local machine (useful if you are making changes).  Instructions for doing either of those things are here:
 
 #### Running From fdc3.finos.org
 
 You can run the FDC3 conformance tests straight from the FDC3 website.  If you have a Desktop Agent supporting the [AppD v2 standard](https://fdc3.finos.org/docs/app-directory/spec), you can run the tests from the following URL:
 
- - [https://fdc3.finos.org/toolbox/fdc3-conformance/directory.v2.json](https://fdc3.finos.org/toolbox/fdc3-conformance/directory.v2.jso)
+ - [https://fdc3.finos.org/toolbox/fdc3-conformance/directories/website-conformance.v2.json](https://fdc3.finos.org/toolbox/fdc3-conformance/directories/website-conformance.v2.json)
 
 #### Local Installation
 
@@ -71,7 +71,7 @@ npm run dev
 4.  **Set Up Your Desktop Agent**
 
 You will need to set up your desktop agent so that it has an _App Directory containing all the conformance apps_.   
-This step is vendor-dependent, but examples of `AppD` records can be found in the `directory` folder.
+This step is vendor-dependent, but examples of `AppD` records can be found in `/toolbox/fdc3-for-web/demo/static/da/local-conformance.v2.json`.
 
 ### Running The Tests
 
