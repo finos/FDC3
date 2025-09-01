@@ -11,7 +11,7 @@
 			},
 			"screenshots": [
 				{
-					"src": "https://directory.fdc3.finos.org/assets/app/Conformance1.png"
+					"src": "http://fdc3.finos.org/toolbox/fdc3-conformance/screenshots/Conformance1.png"
 				}
 			],
 			"hostManifests": {
