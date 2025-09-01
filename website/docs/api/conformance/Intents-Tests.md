@@ -244,3 +244,23 @@ As the methods of resolving ambiguous intents are often user interactive, it is 
 | User | 3.  Chooser Interaction   | A method of resolving the ambiguous request is provided (such as a User Interface allowing the user to choose an application or instance) for choosing one of `E (1)`,`F (1)`,`E (2)`,`F (2)` and options to open `G`, `H` and `I` |
 
 - `2.0-ResolveAmbiguousContextTargetMultiInstance`: Perform above steps  to invoke intent resolution for an unspecified target with multiple options. Confirm that test is able to complete successfully.
+
+
+## Avoiding Adding Multiple Intent Listeners 
+
+| App  | Step                      | Details |
+|------|---------------------------|---------|
+| Test | 1. Add Intent Listener            | App performs `fdc3.addIntentListener("aTestingIntent1")`. |
+| Test | 2. Perform Step 1 again | App performs `fdc3.addIntentListener("aTestingIntent1")` again. |
+
+
+- `2.3-MultipleAddingOfTheSameIntentListenerCausesIntentListenerConflict`: Perform above steps to which should cause `IntentListenerConflict` error.
+
+| App  | Step                      | Details |
+|------|---------------------------|---------|
+| Test | 1. Add Intent Listener            | App performs `fdc3.addIntentListener("aTestingIntent1")` and saves listener. |
+| Test | 2. Unsubscribe from the intent | App performs `listener.unsubscribe()`. |
+| Test | 2. Perform Step 1 again | App performs `fdc3.addIntentListener("aTestingIntent1")` again. |
+
+
+- `2.3-MultipleAddingOfTheSameIntentListenerAfterUnsubscribe`: Perform above steps to which should successfully add the listener again.

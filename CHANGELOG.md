@@ -7,13 +7,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
-* Removes sourcemaps from npm package output ([#1589](https://github.com/finos/FDC3/issues/1589))
 * Add a notes field to Trade type ([#1563](https://github.com/finos/FDC3/pull/1563))
 * Add a notes field to Order and Product types ([#1597](https://github.com/finos/FDC3/pull/1597))
 * Added Go language binding. ([#1483](https://github.com/finos/FDC3/pull/1483))
 * Added details of and procedures for resolving fully-qualified appIds and unqualified appIds in the API and Bridging Parts of the Standard. ([#1523](https://github.com/finos/FDC3/pull/1523))
+* Added clarification regarding expected behavior upon repeated calls to `addContextListener` on same or overlapping types (allowed) and `addIntentListener` on same intent (rejected; new error type added). ([#1394](https://github.com/finos/FDC3/pull/1394))
 * Ported FDC3 Conformance Project as-is into the FDC3 Monorepo, just including minimal fixes for typescript compilation. ([#1576](https://github.com/finos/FDC3/pull/1576))
-* Added Conformance tests for FDC3 2.2 ([#1586](https://github.com/finos/FDC3/pull/1586))
 
 ### Changed
 
@@ -30,6 +29,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Fix `fdc3.timeRange` context example to use correctly formatted dateTime. ([#1599](https://github.com/finos/FDC3/issues/1599))
 * Fix for channel change listeners not sending addEventListenerRequests ([#1606](https://github.com/finos/FDC3/pull/1606))
 * Fix to ensure that Adding A Channel Change Event Listener Doesn't Send addEventListenerRequest - Conformance 2.2 ([#1606](https://github.com/finos/FDC3/pull/1606))
+* Removes broken sourcemaps from npm package output ([#1589](https://github.com/finos/FDC3/issues/1589))
 
 ## [FDC3 Standard 2.2](https://github.com/finos/FDC3/compare/v2.1..v2.2) - 2025-03-12
 
@@ -58,6 +58,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added .NET docs for Events to API reference. ([#1441](https://github.com/finos/FDC3/pull/1441))
 * Setup package publishing for mono-repo packages. ([#1520](https://github.com/finos/FDC3/pull/1520))
 * Implementation PR for FDC3 for the Web ([#896](https://github.com/finos/FDC3/pull/896))
+  - resolves ([#1209](https://github.com/finos/FDC3/issues/1209))
+  - resolves ([#1297](https://github.com/finos/FDC3/issues/1297)) 
+  - resolves ([#1429](https://github.com/finos/FDC3/issues/1429)) 
+  - resolves ([#1430](https://github.com/finos/FDC3/issues/1430))
+  - resolves ([#1431](https://github.com/finos/FDC3/issues/1431))
+  - resolves ([#1432](https://github.com/finos/FDC3/issues/1432)) 
+  - resolves ([#1433](https://github.com/finos/FDC3/issues/1433))
+  - resolves ([#1468](https://github.com/finos/FDC3/issues/1468))
+  - resolves ([#810](https://github.com/finos/FDC3/issues/810))
+  - resolves ([#832](https://github.com/finos/FDC3/issues/832))
+  - resolves ([#1487](https://github.com/finos/FDC3/issues/1487))
+  - resolves ([#1488](https://github.com/finos/FDC3/issues/1488))
 * Adjusted reference Desktop Agent implementation for FDC3 for Web to open a new app instance when raiseIntent is called with an appId but no instanceId ([#1556](https://github.com/finos/FDC3/pull/1556))
 
 ### Changed
