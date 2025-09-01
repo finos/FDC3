@@ -1,7 +1,7 @@
 {
   "name": "fdc3-for-web-reference-ui",
   "private": true,
-  "version": "2.2.0",
+  "version": "2.2.1-beta.4",
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
@@ -15,7 +15,7 @@
     "@eslint/js": "^9.19.0",
     "@types/color": "^4.2.0",
     "color": "^4.2.3",
-    "eslint": "^9.16.0",
+    "eslint": "^9.32.0",
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.14.0",
     "typescript": "^5.6.3",
@@ -23,6 +23,6 @@
     "vite": "^6.2.7"
   },
   "dependencies": {
-    "@finos/fdc3": "2.2.0"
+    "@finos/fdc3": "2.2.1-beta.4"
   }
 }

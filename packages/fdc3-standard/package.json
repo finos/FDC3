@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3-standard",
-  "version": "2.2.0",
+  "version": "2.2.1-beta.4",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -34,8 +34,8 @@
     "outputName": "test-results.xml"
   },
   "dependencies": {
-    "@finos/fdc3-context": "2.2.0",
-    "@finos/fdc3-schema": "2.2.0"
+    "@finos/fdc3-context": "2.2.1-beta.4",
+    "@finos/fdc3-schema": "2.2.1-beta.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -43,7 +43,7 @@
     "@types/jest": "29.5.13",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
     "@typescript-eslint/parser": "^8.18.2",
-    "eslint": "^9.16.0",
+    "eslint": "^9.32.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jest": "28.8.3",
     "eslint-plugin-jsx-a11y": "^6.10.0",
