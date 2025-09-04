@@ -1,0 +1,109 @@
+title: FDC3 Security Interop Demo
+
+_: **1. Login**
+
+IDP Front End -> IDP Back End: `fdc3.user`
+
+note: User logs in via OAuth.  IDP back end retains credentials in session.
+
+
+
+App1 Front End -> IDP Front End: *raises intent*: **GetUser**
+
+note: 
+    {
+      type: "fdc3.user.request"
+      aud: https://app1
+      jki: https://app1/.well-known/jwks.json
+    }
+
+IDP Front End -> IDP Back End: handle intent request
+
+IDP Back End -> IDP Back End: authn, authz
+
+IDP Back End -> IDP Front End: *returns signed `fdc3.user` context*
+
+
+IDP Front End -> App1 Front End: *intent resolution*
+
+note:     {
+      type: "fdc3.user"
+      __signature: <by idp>
+      __encrypted: xxx
+    }
+
+The IDP returns an FDC3 context object of type `fdc3.user`.  This contains a JWT token scoped to App1.  However, it returns this encrypted with App1's public key to avoid divulging PII over the FDC3 bus.
+
+App1 Front End -> App1 Back End: *passes the encrypted* `fdc3.user`
+
+App1 Back End -> App1 Back End: decrypts, validates, authz
+
+
+
+_: **2. Negotiating A Channel**
+
+App1 Front End -> App1 Back End: *signing request* to ask for prices
+
+
+App1 Back End -> App1 Back End: authn, authz
+
+App1 Back End -> App1 Front End: *returns signed context*
+
+App1 Front End -> App2 Front End: *raises intent* **demo.GetPrices**
+
+note: 
+    {
+       type: "fdc3.instrument"
+       ...
+       __signature: <by app1>
+       __jwt: xxx
+    }
+    
+App2 Front End -> App2 Back End: *relays request*
+
+App2 Back End -> App2 Back End: authn, authz.  Creates symmetric key for channel
+
+App2 Back End -> App2 Back End: wraps symmetric key in App1 public key
+
+App2 Back End -> App2 Front End: *approves*, returns wrapped key 
+
+App2 Front End -> App1 Front End: *returns* **private channel**
+
+App2 Front End -> App1 Front End: sends wrapped key
+
+note:
+    {
+       type: "fdc3.security.symmetricKey
+            .response"
+       wrappedKey: xxx
+    }
+    
+App1 Front End -> App1 Back End: sends key for decryption with App1 private key
+
+App1 Back End -> App1 Back End: authn, authz.  Store key for channel.
+
+_: **3. Exchanging Secure Data**
+
+
+App2 Back End -> App2 Front End: encrypts **fdc3.valuation** for publication.
+
+App2 Front End -> App1 Front End: *publishes context*
+
+note: 
+    {
+       type: "fdc3.valuation"
+       __encrypted: xxx
+       __signature: <by app2>
+    }
+
+App1 Front End -> App1 Back End: asks for decryption
+
+App1 Back End -> App1 Front End: checks signature, decrypts and returns 
+
+note: 
+    {
+       type: "fdc3.valuation"
+       price: 24.4
+    }
+
+
