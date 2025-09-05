@@ -74,7 +74,7 @@ export class EncryptingChannelDelegate extends AbstractChannelDelegate implement
 
   async encryptIfAvailable(context: Context): Promise<Context> {
     if (this.isEncrypting(context.type)) {
-      const jwe = await this.fdc3Security.encrypt(context, this.symmetricKey!!);
+      const jwe = await this.fdc3Security.encryptSymmetric(context, this.symmetricKey!!);
       const out = {
         type: context.type,
         __encrypted: jwe,
@@ -110,7 +110,7 @@ export class EncryptingChannelDelegate extends AbstractChannelDelegate implement
 
       if (encrypted) {
         if (this.symmetricKey) {
-          context = await this.fdc3Security.decrypt(encrypted, this.symmetricKey);
+          context = await this.fdc3Security.decryptSymmetric(encrypted, this.symmetricKey);
           newMeta['encryption'] = 'decrypted';
         } else {
           newMeta['encryption'] = 'cant_decrypt';

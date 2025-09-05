@@ -44,7 +44,7 @@ const createJWKSResolver = (keys: JSONWebKeyWithId[]): JWKSResolver => {
   resolver.coolingDown = false;
   resolver.fresh = true;
   resolver.reloading = false;
-  resolver.reload = async () => {};
+  resolver.reload = async () => { };
   resolver.jwks = () => ({ keys: keys });
 
   return resolver;
@@ -142,10 +142,16 @@ describe('ClientSideFDC3Security', () => {
       }
     });
 
-    it('should encrypt and then decrypt a context using two instances', async () => {
+    it('should encrypt and then decrypt a context using a symmetric key', async () => {
       const symmetricJWK = await sender.createSymmetricKey();
-      const encrypted = await sender.encrypt(mockContext, symmetricJWK);
-      const decrypted = await receiver.decrypt(encrypted, symmetricJWK);
+      const encrypted = await sender.encryptSymmetric(mockContext, symmetricJWK);
+      const decrypted = await receiver.decryptSymmetric(encrypted, symmetricJWK);
+      expect(decrypted).toEqual(mockContext);
+    });
+
+    it('should encrypt and then decrypt a context using a public/private key pair between two instances', async () => {
+      const encrypted = await sender.encryptPublicKey(mockContext, receiverBaseUrl);
+      const decrypted = await receiver.decryptPrivateKey(encrypted);
       expect(decrypted).toEqual(mockContext);
     });
 

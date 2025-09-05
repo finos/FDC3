@@ -1,12 +1,5 @@
 import { Context } from '@finos/fdc3-context';
 
-export const SIGN_REQUEST = 'sign-request';
-export type SignRequestMessage = {
-  ctx: Context;
-  intent: string | null;
-  channelId: string | null;
-};
-
 export const HANDLE_REMOTE_CHANNEL = 'handle-remote-channel';
 export type HandleRemoteChannelMessage = {
   purpose: string;
@@ -21,6 +14,7 @@ export type RemoteIntentHandlerMessage = {
 
 export const EXCHANGE_DATA = 'exchange-data';
 export type ExchangeDataMessage = {
+  purpose: string;
   ctx: Context;
 };
 

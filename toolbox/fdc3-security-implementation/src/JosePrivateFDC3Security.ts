@@ -1,7 +1,13 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
 import { JSONWebEncryption, JSONWebSignature, FDC3JWTPayload, PrivateFDC3Security } from '@finos/fdc3-security';
 import * as jose from 'jose';
-import { AllowListFunction, JosePublicFDC3Security, JWKSResolver } from './JosePublicFDC3Security';
+import { AllowListFunction, JosePublicFDC3Security, JSONWebKeyWithId, JWKSResolver } from './JosePublicFDC3Security';
+
+type ProtectedHeader = {
+  alg: string;
+  enc: string;
+};
+
 
 /**
  * Implements the FDC3Security interface either in node or the browser.
@@ -31,15 +37,45 @@ export class JosePrivateFDC3Security extends JosePublicFDC3Security implements P
     this.issUrl = issUrl;
   }
 
-  async encrypt(ctx: Context, symmetricKey: JsonWebKey): Promise<JSONWebEncryption> {
+  async encryptSymmetric(ctx: Context, symmetricKey: JsonWebKey): Promise<JSONWebEncryption> {
     const encrypted = await new jose.CompactEncrypt(new TextEncoder().encode(JSON.stringify(ctx)))
       .setProtectedHeader({ alg: 'dir', enc: 'A256GCM' })
       .encrypt(symmetricKey);
     return encrypted;
   }
 
-  async decrypt(encrypted: JSONWebEncryption, symmetricKey: JsonWebKey): Promise<Context> {
+  async decryptSymmetric(encrypted: JSONWebEncryption, symmetricKey: JsonWebKey): Promise<Context> {
     const decrypted = await jose.compactDecrypt(encrypted, symmetricKey);
+    const plaintext = decrypted.plaintext;
+    return JSON.parse(new TextDecoder().decode(plaintext));
+  }
+
+  private async getPublicKey(publicKeyUrl: string, protectedHeader: ProtectedHeader): Promise<JSONWebKeyWithId> {
+    const JWKS = this.publicKeyResolver(publicKeyUrl);
+    await JWKS.reload();
+
+    const allKeys = JWKS.jwks()?.keys ?? [];
+    const key = allKeys.find(k => k.alg == protectedHeader.alg);
+
+    if (key == undefined) {
+      throw new Error(`No key found for algorithm ${protectedHeader.alg}`);
+    }
+
+    return key as JSONWebKeyWithId;
+  }
+
+
+  async encryptPublicKey(ctx: Context, publicKeyUrl: string): Promise<JSONWebEncryption> {
+    const protectedHeader = { alg: 'RSA-OAEP-256', enc: 'A256GCM' };
+    const key = await this.getPublicKey(publicKeyUrl, protectedHeader);
+    const encrypted = await new jose.CompactEncrypt(new TextEncoder().encode(JSON.stringify(ctx)))
+      .setProtectedHeader(protectedHeader)
+      .encrypt(key);
+    return encrypted;
+  }
+
+  async decryptPrivateKey(encrypted: JSONWebEncryption): Promise<Context> {
+    const decrypted = await jose.compactDecrypt(encrypted, this.wrappingPrivateKey);
     const plaintext = decrypted.plaintext;
     return JSON.parse(new TextDecoder().decode(plaintext));
   }
@@ -61,19 +97,8 @@ export class JosePrivateFDC3Security extends JosePublicFDC3Security implements P
 
   async wrapKey(symmetricKey: JsonWebKey, publicKeyUrl: string): Promise<SymmetricKeyResponse> {
     const protectedHeader = { alg: 'RSA-OAEP-256', enc: 'A256GCM' };
-    const JWKS = this.publicKeyResolver(publicKeyUrl);
     const data = this.canonicalizeKey(symmetricKey);
-
-    // not sure why I need to load all the keys here, but it doesn't allow me to match on the
-    // algorithm above for public encryption.
-    await JWKS.reload();
-    const allKeys = JWKS.jwks()?.keys ?? [];
-    const key = allKeys.find(k => k.alg == protectedHeader.alg);
-
-    if (key == undefined) {
-      throw new Error(`No key found for algorithm ${protectedHeader.alg}`);
-    }
-
+    const key = await this.getPublicKey(publicKeyUrl, protectedHeader);
     const wrapped = await new jose.CompactEncrypt(data).setProtectedHeader(protectedHeader).encrypt(key);
 
     return {
@@ -81,7 +106,7 @@ export class JosePrivateFDC3Security extends JosePublicFDC3Security implements P
       wrappedKey: wrapped,
       id: {
         pki: publicKeyUrl,
-        kid: 'bongo',
+        kid: key.kid ?? 'not specified',
       },
     };
   }

@@ -16,9 +16,11 @@ async function setupLoginButton(handlers: FDC3Handlers): Promise<void> {
   loginBtn.addEventListener('click', async () => {
     try {
       // Listen for GetUser intent events
-      const result = await handlers.exchangeData({
-        type: 'fdc3.user.request',
-      });
+      const result = await handlers.exchangeData(
+        'user-request',
+        {
+          type: 'fdc3.user.request',
+        });
 
       if (result?.type === 'fdc3.user') {
         showAuthenticatedState(result as User);
@@ -51,7 +53,7 @@ async function initialize(): Promise<void> {
   // Initialize FDC3
   const fdc3 = await initializeFDC3();
 
-  connectRemoteHandlers('http://localhost:4005', fdc3, async () => {}).then(remoteHandlers => {
+  connectRemoteHandlers('http://localhost:4005', fdc3, async () => { }).then(remoteHandlers => {
     setupSessionStatusButton(remoteHandlers);
     setupLogoutButton(remoteHandlers);
     setupLoginButton(remoteHandlers);

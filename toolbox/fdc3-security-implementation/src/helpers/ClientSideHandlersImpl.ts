@@ -5,8 +5,6 @@ import {
   REMOTE_INTENT_HANDLER,
   RemoteIntentHandlerMessage,
   EXCHANGE_DATA,
-  SIGN_REQUEST,
-  SignRequestMessage,
   HANDLE_REMOTE_CHANNEL,
   CLIENT_MESSAGE,
   SERVER_MESSAGE,
@@ -85,16 +83,6 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
     }
   }
 
-  async signRequest(ctx: Context, intent: string | null, channelId: string | null): Promise<Context> {
-    const msg: SignRequestMessage = {
-      ctx,
-      intent,
-      channelId,
-    };
-
-    return await this.socket.emitWithAck(SIGN_REQUEST, msg);
-  }
-
   createMetadata() {
     return {
       requestUuid: uuidv4(),
@@ -137,8 +125,9 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
     };
   }
 
-  async exchangeData(ctx: Context): Promise<Context | void> {
+  async exchangeData(purpose: string, ctx: Context): Promise<Context | void> {
     return await this.socket.emitWithAck(EXCHANGE_DATA, {
+      purpose,
       ctx,
     });
   }

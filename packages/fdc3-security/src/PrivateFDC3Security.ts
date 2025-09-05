@@ -9,9 +9,12 @@ import { JSONWebEncryption, JSONWebSignature, PublicFDC3Security } from './Publi
  * Ideally, it should not be run on the web/client-side because this in an untrusted environment.
  */
 export interface PrivateFDC3Security extends PublicFDC3Security {
-  encrypt(ctx: Context, symmetricKey: JsonWebKey): Promise<JSONWebEncryption>;
 
-  decrypt(encrypted: JSONWebEncryption, symmetricKey: JsonWebKey): Promise<Context>;
+  encryptSymmetric(ctx: Context, symmetricKey: JsonWebKey): Promise<JSONWebEncryption>;
+  decryptSymmetric(encrypted: JSONWebEncryption, symmetricKey: JsonWebKey): Promise<Context>;
+
+  encryptPublicKey(ctx: Context, publicKeyUrl: string): Promise<JSONWebEncryption>;
+  decryptPrivateKey(encrypted: JSONWebEncryption): Promise<Context>;
 
   sign(ctx: Context, intent: string | null, channelId: string | null): Promise<JSONWebSignature>;
 

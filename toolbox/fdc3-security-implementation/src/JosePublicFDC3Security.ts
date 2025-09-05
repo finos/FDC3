@@ -4,7 +4,7 @@ import * as jose from 'jose';
 import { FDC3JWTPayload, JSONWebSignature, MessageAuthenticity, PublicFDC3Security } from '@finos/fdc3-security';
 
 export type JSONWebKeyWithId = JsonWebKey & {
-  kid: string; // Key ID
+  kid?: string; // Key ID
   alg: string; // Algorithm used for the key
 };
 

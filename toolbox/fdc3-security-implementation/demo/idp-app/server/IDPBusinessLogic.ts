@@ -14,10 +14,6 @@ export class IDPBusinessLogic implements FDC3Handlers {
     this.fdc3Security = fdc3Security;
   }
 
-  async signRequest(ctx: Context, intent: string | null, channelId: string | null): Promise<Context> {
-    throw new Error('Not used');
-  }
-
   async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
     throw new Error('Not used');
   }
@@ -42,6 +38,8 @@ export class IDPBusinessLogic implements FDC3Handlers {
               jwt: await this.fdc3Security.createJWTToken(request.aud, userId),
             };
 
+            val enc = await this.fdc3Security.encrypt(userContext, request.pki);
+
             return userContext;
           }
         }
@@ -57,8 +55,8 @@ export class IDPBusinessLogic implements FDC3Handlers {
     throw new Error('Method not implemented.');
   }
 
-  async exchangeData(ctx: Context): Promise<Context | void> {
-    if (ctx.type === 'fdc3.user.request') {
+  async exchangeData(purpose: string, ctx: Context): Promise<Context | void> {
+    if ((ctx.type === 'fdc3.user.request') && (purpose === 'user-request')) {
       if (!this.user) {
         this.user = {
           type: 'fdc3.user',

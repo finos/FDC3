@@ -16,11 +16,11 @@
                     "properties": {
                         "kid": {
                             "type": "string",
-                            "description": "Key ID used to identify the symmetric key."
+                            "description": "Key ID used to identify the public key used to wrap the symmetric key."
                         },
                         "pki": {
                             "type": "string",
-                            "description": "Public Key Infrastructure reference or identifier."
+                            "description": "Public Key Infrastructure JSON Web Key Set URL used to wrap the symmetric key."
                         }
                     },
                     "required": [

@@ -1,5 +1,4 @@
 import { Server, Socket } from 'socket.io';
-import { Context } from '@finos/fdc3-context';
 import { Server as HttpServer } from 'http';
 import { FDC3Handlers } from './FDC3Handlers';
 import {
@@ -7,8 +6,6 @@ import {
   RemoteIntentHandlerMessage,
   EXCHANGE_DATA,
   ExchangeDataMessage,
-  SIGN_REQUEST,
-  SignRequestMessage,
   HANDLE_REMOTE_CHANNEL,
   HandleRemoteChannelMessage,
 } from './MessageTypes';
@@ -36,11 +33,6 @@ export function setupWebsocketServer(
     });
 
     const handlers = createHandlers(socket);
-
-    socket.on(SIGN_REQUEST, async (data: SignRequestMessage, callback: (ctx: Context) => void) => {
-      const ctx = await handlers.signRequest(data.ctx, data.intent, data.channelId);
-      callback(ctx);
-    });
 
     socket.on(
       HANDLE_REMOTE_CHANNEL,
@@ -72,7 +64,7 @@ export function setupWebsocketServer(
     socket.on(
       EXCHANGE_DATA,
       async function (props: ExchangeDataMessage, callback: (success: any, err?: string) => void) {
-        const obj = await handlers.exchangeData(props.ctx);
+        const obj = await handlers.exchangeData(props.purpose, props.ctx);
         callback(obj);
       }
     );
