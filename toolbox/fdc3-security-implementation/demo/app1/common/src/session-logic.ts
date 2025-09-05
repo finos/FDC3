@@ -1,33 +1,7 @@
 // Shared session status utility for FDC3 demo apps
-import { Context, User } from '@finos/fdc3-context';
+import { User } from '@finos/fdc3-context';
 import { createLogEntry } from './logging';
 import { FDC3Handlers } from '../../../../src/helpers/FDC3Handlers';
-import { Channel, IntentHandler } from '@finos/fdc3';
-
-export abstract class AbstractSessionHandlingBusinessLogic implements FDC3Handlers {
-  protected user: User | null = null;
-
-  abstract signRequest(ctx: Context, intent: string | null, channelId: string | null): Promise<Context>;
-
-  abstract remoteIntentHandler(intent: string): Promise<IntentHandler>;
-
-  async exchangeData(ctx: Context): Promise<Context | void> {
-    if (ctx) {
-      if (ctx.type === 'fdc3.user.request') {
-        if (this.user) {
-          return this.user;
-        }
-      } else if (ctx.type == 'fdc3.user') {
-        this.user = ctx as User;
-        return this.user;
-      } else if (ctx.type == 'fdc3.user.logout') {
-        this.user = null;
-      }
-    }
-  }
-
-  abstract handleRemoteChannel(purpose: string, channel: Channel): Promise<void>;
-}
 
 // Function to check session status
 export async function checkSessionStatus(handlers: FDC3Handlers): Promise<any> {
@@ -37,7 +11,7 @@ export async function checkSessionStatus(handlers: FDC3Handlers): Promise<any> {
     });
 
     // Try both possible endpoints
-    const result = await handlers.exchangeData({
+    const result = await handlers.exchangeData('user-request', {
       type: 'fdc3.user.request',
     });
 
@@ -60,8 +34,8 @@ export async function logout(handlers: FDC3Handlers): Promise<any> {
       timestamp: new Date().toISOString(),
     });
 
-    const response = await handlers.exchangeData({
-      type: 'fdc3.user.logout',
+    const response = await handlers.exchangeData('user-logout', {
+      type: 'fdc3.nothing',
     });
 
     createLogEntry('success', '✅ Logged out successfully', {

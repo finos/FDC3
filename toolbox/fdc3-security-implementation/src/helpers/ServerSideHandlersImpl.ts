@@ -64,7 +64,7 @@ export function setupWebsocketServer(
     socket.on(
       EXCHANGE_DATA,
       async function (props: ExchangeDataMessage, callback: (success: any, err?: string) => void) {
-        const obj = await handlers.exchangeData(props.purpose, props.ctx);
+        const obj = await handlers.exchangeData(props.purpose, props.ctx, props.intent, props.channelId);
         callback(obj);
       }
     );

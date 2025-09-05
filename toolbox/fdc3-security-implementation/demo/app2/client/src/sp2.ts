@@ -1,5 +1,5 @@
-import { DesktopAgent, getAgent, Context, ContextMetadata } from '@finos/fdc3';
-import { createLogEntry, updateStatus } from '../../../app1/common/src/logging';
+import { DesktopAgent, Context, ContextMetadata } from '@finos/fdc3';
+import { createLogEntry } from '../../../app1/common/src/logging';
 import { initializeFDC3 } from '../../../app1/common/src/fdc3';
 import { connectRemoteHandlers } from '../../../../src/helpers/ClientSideHandlersImpl';
 import { FDC3Handlers } from '../../../../src/helpers/FDC3Handlers';

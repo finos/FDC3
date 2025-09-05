@@ -8,7 +8,6 @@ export type ContextOrErrorMetadata = ContextMetadata | { error: string } | undef
  * secure / sensitive processing on the server-side.
  */
 export interface FDC3Handlers {
-
   /**
    * Call this on the client side to export a channel to the server-side.
    */
@@ -24,5 +23,5 @@ export interface FDC3Handlers {
   /**
    * This function allows server-side and client-side to exchange data with one another.
    */
-  exchangeData(purpose: string, ctx: Context): Promise<Context | void>;
+  exchangeData(purpose: string, ctx: Context, intent?: string, channelId?: string): Promise<Context | void>;
 }

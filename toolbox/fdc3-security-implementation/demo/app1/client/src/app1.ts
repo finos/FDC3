@@ -1,11 +1,10 @@
 import { DesktopAgent, PrivateChannel } from '@finos/fdc3';
 import { createLogEntry } from '../../common/src/logging';
-import { checkSessionStatus, setupSessionStatusButton } from '../../common/src/AbstractSessionHandlingBusinessLogic';
+import { checkSessionStatus, setupSessionStatusButton, setupLogoutButton } from '../../common/src/session-logic';
 import { FDC3Handlers } from '../../../../src/helpers/FDC3Handlers';
 import { connectRemoteHandlers } from '../../../../src/helpers/ClientSideHandlersImpl';
 import { Context, Instrument, UserRequest } from '@finos/fdc3-context';
 import { initializeFDC3 } from '../../common/src/fdc3';
-import { setupLogoutButton } from '../../common/src/AbstractSessionHandlingBusinessLogic';
 import { ExchangeDataMessage } from '../../../../src/helpers/MessageTypes';
 
 async function raiseGetUserIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Handlers, loginBtn: HTMLButtonElement) {
@@ -13,19 +12,30 @@ async function raiseGetUserIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Handle
     loginBtn.disabled = true;
     loginBtn.textContent = '🔄 Processing...';
 
-    const bareContext: UserRequest = {
+    const userRequest: UserRequest = {
       type: 'fdc3.user.request',
       aud: 'http://localhost:4003',
+      jku: 'http://localhost:4003/.well-known/jwks.json',
     };
 
-    const signedContext = (await remoteHandlers.signRequest(bareContext, 'GetUser', null)) as UserRequest;
-    const resolution = await fdc3.raiseIntent('GetUser', signedContext);
+    createLogEntry('info', '✅ Raising GetUser intent', {
+      result: userRequest,
+      timestamp: new Date().toISOString(),
+    });
+
+    const resolution = await fdc3.raiseIntent('GetUser', userRequest);
 
     const result1 = (await resolution.getResult()) as Context;
-    const result2 = await remoteHandlers.exchangeData(result1);
+
+    createLogEntry('info', '✅ GetUser intent resolved successfully', {
+      result: result1,
+      timestamp: new Date().toISOString(),
+    });
+
+    const result2 = await remoteHandlers.exchangeData('user-request', result1);
 
     if (result2) {
-      createLogEntry('success', '✅ GetUser intent raised successfully', {
+      createLogEntry('success', '✅ User Decoded', {
         result: result2,
         timestamp: new Date().toISOString(),
       });
@@ -52,7 +62,7 @@ async function raiseGetPricesIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Hand
       timestamp: new Date().toISOString(),
     });
 
-    const bareInstrument: Instrument = {
+    const instrument: Instrument = {
       type: 'fdc3.instrument',
       id: {
         ticker: 'AAPL',
@@ -60,7 +70,11 @@ async function raiseGetPricesIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Hand
       name: 'Apple Inc.',
     };
 
-    const signedInstrument = await remoteHandlers.signRequest(bareInstrument, 'demo.GetPrices', null);
+    const signedInstrument = (await remoteHandlers.exchangeData(
+      'request-prices',
+      instrument,
+      'demo.GetPrices'
+    )) as Context;
     const resolution = await fdc3.raiseIntent('demo.GetPrices', signedInstrument);
 
     const result = await resolution.getResult();
@@ -123,10 +137,17 @@ function setupButtonListeners(fdc3: DesktopAgent, remoteHandlers: FDC3Handlers) 
 }
 
 function handleReturnedMessage(msg: ExchangeDataMessage) {
-  createLogEntry('success', '✅ Got A Price', {
-    context: msg.ctx,
-    timestamp: new Date().toISOString(),
-  });
+  if (msg.ctx.__encrypted) {
+    createLogEntry('error', '❌ Got An Encrypted Price - Will Request Channel Key', {
+      context: msg.ctx,
+      timestamp: new Date().toISOString(),
+    });
+  } else {
+    createLogEntry('success', '✅ Got A Price', {
+      context: msg.ctx,
+      timestamp: new Date().toISOString(),
+    });
+  }
 }
 
 // Main initialization

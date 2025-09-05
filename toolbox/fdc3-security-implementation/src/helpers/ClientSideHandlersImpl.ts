@@ -113,7 +113,7 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
         metadata,
       });
 
-      if (value.type === 'private') {
+      if (value?.type === 'private') {
         // in this case, handle a private channel.
         const channel = await this.desktopAgent.createPrivateChannel();
         await this.handleRemoteChannel(intent, channel);
@@ -125,10 +125,12 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
     };
   }
 
-  async exchangeData(purpose: string, ctx: Context): Promise<Context | void> {
+  async exchangeData(purpose: string, ctx: Context, intent?: string, channelId?: string): Promise<Context | void> {
     return await this.socket.emitWithAck(EXCHANGE_DATA, {
       purpose,
       ctx,
+      intent,
+      channelId,
     });
   }
 

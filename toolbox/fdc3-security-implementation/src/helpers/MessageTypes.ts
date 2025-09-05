@@ -16,6 +16,8 @@ export const EXCHANGE_DATA = 'exchange-data';
 export type ExchangeDataMessage = {
   purpose: string;
   ctx: Context;
+  intent?: string;
+  channelId?: string;
 };
 
 export const CLIENT_MESSAGE = 'client-message';

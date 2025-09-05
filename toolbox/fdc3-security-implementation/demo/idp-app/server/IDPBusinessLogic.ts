@@ -2,6 +2,8 @@ import { checkSignature, JSONWebSignature, PrivateFDC3Security } from '@finos/fd
 import { FDC3Handlers } from '../../../src/helpers/FDC3Handlers';
 import { ContextMetadata, ContextHandler, IntentHandler, IntentResult, Channel } from '@finos/fdc3';
 import { Context, User, UserRequest } from '@finos/fdc3-context';
+import { JosePrivateFDC3Security } from '../../../src/JosePrivateFDC3Security';
+import e from 'express';
 
 /**
  * Has to handle the GetUser intent.
@@ -18,59 +20,67 @@ export class IDPBusinessLogic implements FDC3Handlers {
     throw new Error('Not used');
   }
 
+  /**
+   * For simplicity here, I am using the same trust function for determining whether
+   * we're happy to give out JWTs as I do for checking contexts/signatures etc.
+   */
+  private isTrusted(aud: string, jku: string): boolean {
+    const allowListFunction = (this.fdc3Security as JosePrivateFDC3Security).allowListFunction;
+    return allowListFunction(jku, aud);
+  }
+
   async remoteIntentHandler(intent: string): Promise<IntentHandler> {
     if (intent == 'GetUser') {
       const ih: IntentHandler = async (ctx: Context, metadata: ContextMetadata | undefined) => {
-        const { context, meta } = await checkSignature(this.fdc3Security, metadata, ctx, intent, null);
-        const ma = meta?.authenticity;
-        if (ma?.signed && ma.trusted && ma.valid) {
-          const userId = this.user?.id?.userId;
-          if (this.user) {
-            // user is logged in.
-            // create a JWT token for the user
-            const request = ctx as UserRequest;
+        if (ctx.type === 'fdc3.user.request') {
+          const request = ctx as UserRequest;
+          const aud = request.aud;
+          const jku = request.jku;
 
-            // Create fdc3.user context object
-            const userContext: User = {
-              type: 'fdc3.user',
-              id: { userId },
-              name: this.user?.name,
-              jwt: await this.fdc3Security.createJWTToken(request.aud, userId),
+          if (this.isTrusted(aud, jku) && this.user) {
+            const audScopedUserToken = {
+              ...this.user,
+              jwt: await this.fdc3Security.createJWTToken(aud, 'demo-user@example.com'),
             };
 
-            val enc = await this.fdc3Security.encrypt(userContext, request.pki);
+            const encryptedUserContext = {
+              type: 'fdc3.user',
+              __encrypted: await this.fdc3Security.encryptPublicKey(audScopedUserToken, jku),
+            };
 
-            return userContext;
+            const signature = await this.fdc3Security.sign(encryptedUserContext, intent, null);
+
+            return {
+              ...encryptedUserContext,
+              __signature: signature,
+            };
           }
         }
+
+        throw new Error('Unauthorized: ' + JSON.stringify(ctx));
       };
 
       return ih;
     } else {
-      throw new Error('Invalid intent');
+      throw new Error('Invalid intent: ' + intent);
     }
   }
 
-  async receivedIntentResult(intent: string, result: IntentResult): Promise<object> {
-    throw new Error('Method not implemented.');
-  }
-
   async exchangeData(purpose: string, ctx: Context): Promise<Context | void> {
-    if ((ctx.type === 'fdc3.user.request') && (purpose === 'user-request')) {
+    if (ctx.type === 'fdc3.user.request' && purpose === 'user-request') {
       if (!this.user) {
         this.user = {
           type: 'fdc3.user',
           id: {
-            userId: 'demo-user',
+            email: 'demo-user@example.com',
           },
-          name: 'demo-user',
-          email: 'demo-user@example.com',
-          jwt: await this.fdc3Security.createJWTToken('http://localhost:4005', 'demo-user'),
+          name: 'Mr Demo User',
+          jwt: await this.fdc3Security.createJWTToken('http://localhost:4005', 'demo-user@example.com'),
         };
       }
 
       return this.user;
-    } else if (ctx.type === 'fdc3.user.logout') {
+    } else if (purpose === 'user-logout') {
       this.user = null;
     }
   }

@@ -46,7 +46,7 @@ export class App2BusinessLogic implements FDC3Handlers {
           };
           await encryptedChannel.broadcast(ctx);
           console.log('broadcast complete ' + i);
-          this.callback({ ctx });
+          this.callback({ ctx, purpose: 'valuation' });
         }, i * 1000);
       }
 
@@ -67,7 +67,7 @@ export class App2BusinessLogic implements FDC3Handlers {
           if (userJwt) {
             const user = await this.fdc3Security.verifyJWTToken(userJwt);
 
-            if (user.sub == 'demo-user' && user.aud == 'http://localhost:4003') {
+            if (user.sub == 'demo-user@example.com' && user.aud == 'http://localhost:4003') {
               // ok, we trust this user / app combination.
               // return a price.
 
@@ -90,11 +90,7 @@ export class App2BusinessLogic implements FDC3Handlers {
     }
   }
 
-  async exchangeData(ctx: Context): Promise<Context | void> {
+  async exchangeData(purpose: string, ctx: Context): Promise<Context | void> {
     throw new Error('Method not implemented.');
-  }
-
-  async signRequest(ctx: Context, intent: string | null, channelId: string | null): Promise<Context> {
-    throw new Error("App2 Doesn't Sign Things");
   }
 }

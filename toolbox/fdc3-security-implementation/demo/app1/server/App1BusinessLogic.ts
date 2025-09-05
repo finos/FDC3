@@ -1,37 +1,51 @@
 import { Channel, IntentHandler, PrivateChannel } from '@finos/fdc3';
-import { Context } from '@finos/fdc3-context';
+import { Context, User } from '@finos/fdc3-context';
 import {
   EncryptingChannelDelegate,
+  MessageAuthenticity,
   PrivateFDC3Security,
   signedContext,
-  SigningChannelDelegate,
 } from '@finos/fdc3-security';
-import { AbstractSessionHandlingBusinessLogic } from '../common/src/AbstractSessionHandlingBusinessLogic';
-import { ContextMetadataWithAuthenticity } from '@finos/fdc3-security/dist/src/signing/SigningSupport';
+import { checkSignature, ContextMetadataWithAuthenticity } from '@finos/fdc3-security/dist/src/signing/SigningSupport';
 import { createSymmetricKeyResponseContextListener } from '../../../src/helpers/SymmetricKeyContextListener';
 import { ExchangeDataMessage } from '../../../src/helpers/MessageTypes';
 
 export const GET_PRICES_PURPOSE = 'price-stream';
 
-export class App1BusinessLogic extends AbstractSessionHandlingBusinessLogic {
+export class App1BusinessLogic {
   private fdc3Security: PrivateFDC3Security;
   private callback: (ctx: ExchangeDataMessage) => void;
+  private user: User | null = null;
 
   constructor(fdc3Security: PrivateFDC3Security, callback: (ctx: ExchangeDataMessage) => void) {
-    super();
     this.fdc3Security = fdc3Security;
     this.callback = callback;
   }
 
-  async signRequest(ctx: Context, intent: string | null, channelId: string | null): Promise<Context> {
-    if (intent == 'GetUser' || intent == 'demo.GetPrices') {
-      if (intent == 'demo.GetPrices') {
+  async exchangeData(purpose: string, ctx: Context, intent?: string, channelId?: string): Promise<Context | void> {
+    if (purpose === 'user-request') {
+      if (this.user) {
+        return this.user;
+      }
+
+      const { context, meta } = await checkSignature(this.fdc3Security, undefined, ctx, 'GetUser', null);
+      const ma = meta?.authenticity as MessageAuthenticity;
+      if (ma.signed && ma.trusted && ma.valid) {
+        // ok we can use the returned token
+        const decryptedUser = await this.fdc3Security.decryptPrivateKey(context.__encrypted);
+        if (decryptedUser.type === 'fdc3.user') {
+          this.user = decryptedUser as User;
+          return this.user;
+        }
+      }
+    } else if (purpose === 'user-logout') {
+      this.user = null;
+    } else if (purpose === 'request-prices' && intent === 'demo.GetPrices') {
+      if (this.user) {
         ctx.__jwt = this.user?.jwt;
       }
 
-      return await signedContext(this.fdc3Security, ctx, intent, channelId);
-    } else {
-      throw new Error('Invalid intent' + intent);
+      return await signedContext(this.fdc3Security, ctx, intent, null);
     }
   }
 
@@ -50,7 +64,7 @@ export class App1BusinessLogic extends AbstractSessionHandlingBusinessLogic {
 
       encryptedChannel.addContextListener('fdc3.valuation', async (ctx, metadata: ContextMetadataWithAuthenticity) => {
         console.log('context listener called', ctx, metadata);
-        this.callback({ ctx });
+        this.callback({ ctx, purpose: 'valuation' });
       });
     }
   }
