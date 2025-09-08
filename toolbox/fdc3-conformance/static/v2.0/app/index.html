@@ -1,0 +1,54 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>FDC3 Conformance Tests</title>
+  <link rel="stylesheet" href="../lib/index.css" />
+</head>
+
+<body>
+  <button title="return to selection" type="button" id="back-button">
+    <svg xmlns="http://www.w3.org/2000/svg" 
+    xmlns:xlink="http://www.w3.org/1999/xlink" 
+    version="1.1" 
+    id="mdi-arrow-left-circle-outline" 
+    viewBox="0 0 24 24" 
+    width="30" 
+    height="30"
+    fill="currentColor">
+    <path d="M18,11V13H10L13.5,16.5L12.08,17.92L6.16,12L12.08,6.08L13.5,7.5L10,11H18M2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12M4,12A8,8 0 0,0 12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12Z"/></svg>
+</button>
+  <div id="mocha"></div>
+  <div class="center" id="version-selector">
+    <label for="version" style="margin-right: 23;">Test suite:</label>
+    <select id="version" style="width: 250px;"></select>
+    <input id="runButton" value="Run" type="button" />
+  </div>
+  <div id="manualTests-selector">
+  <div class="center" >
+    <label for="manualTests">Manual Tests:</label>
+    <select id="manualTests" class="manualTests">
+      <option value="test1">fdc3.ResolveAmbiguousIntentTarget 2.0</option>
+      <option value="test2">fdc3.ResolveAmbiguousContextTarget 2.0</option>
+      <option value="test3">fdc3.ResolveAmbiguousIntentTargetMultiInstance 2.0</option>
+      <option value="test4">fdc3.ResolveAmbiguousContextTargetMultiInstance 2.0</option>
+    </select>
+    <input id="manualTestsRunButton" value="Run" type="button" />
+  </div>
+  <p class="manualTestsInfo"><span class="bold">Manual Tests:</span>  Each of these tests will invoke the intent resolver of the Desktop Agent.  In order for the test to pass you will need to manually choose an application to resolve the intent.</p>
+  <p class="manualTestsInfo">FDC3 Desktop Agent MUST provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to raiseIntentForContext that return multiple options).
+
+    This is often accomplished by providing a user interface allowing the user to select the desired target application or intent and application.
+    
+    i.e. It should not fail to raise the intent or resolve it to multiple applications.</p>
+</div>
+  <p id="context"></p>
+  <script src="../../lib/fdc3-compliance-v2.0.js"></script>
+  <script>
+    // no idea why but this doesn't seem to work when added in the above script.
+    sourceMapSupport.install();
+  </script>
+  <!-- optional 2.0 app scripts -->
+</body>
+
+</html>

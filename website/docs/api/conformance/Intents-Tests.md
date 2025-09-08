@@ -281,3 +281,22 @@ As the methods of resolving ambiguous intents are often user interactive, it is 
 | Test | 6. Use Destructured Methods | Use destructured methods to add listener and verify broadcast works |
 
 - `2.0-RaiseIntentChannelResult-Destructured`: Perform above test to verify destructured channel methods work correctly.
+
+## Avoiding Adding Multiple Intent Listeners 
+
+| App  | Step                      | Details |
+|------|---------------------------|---------|
+| Test | 1. Add Intent Listener            | App performs `fdc3.addIntentListener("aTestingIntent1")`. |
+| Test | 2. Perform Step 1 again | App performs `fdc3.addIntentListener("aTestingIntent1")` again. |
+
+
+- `2.3-MultipleAddingOfTheSameIntentListenerCausesIntentListenerConflict`: Perform above steps to which should cause `IntentListenerConflict` error.
+
+| App  | Step                      | Details |
+|------|---------------------------|---------|
+| Test | 1. Add Intent Listener            | App performs `fdc3.addIntentListener("aTestingIntent1")` and saves listener. |
+| Test | 2. Unsubscribe from the intent | App performs `listener.unsubscribe()`. |
+| Test | 2. Perform Step 1 again | App performs `fdc3.addIntentListener("aTestingIntent1")` again. |
+
+
+- `2.3-MultipleAddingOfTheSameIntentListenerAfterUnsubscribe`: Perform above steps to which should successfully add the listener again.
