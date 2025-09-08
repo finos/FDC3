@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
-* Enhanced method binding for FDC3 API objects to support destructuring. All public methods of `Channel`, `PrivateChannel`, and `IntentResolution` objects are now properly bound to their instances using `.bind(this)` in constructors, ensuring correct behavior when methods are destructured in JavaScript applications.
+* Enhanced method binding for FDC3 API objects to support destructuring. All public methods of `Channel`, `PrivateChannel`, and `IntentResolution` objects are now properly bound to their instances using `.bind(this)` in their constructors. ([#1645](https://github.com/finos/FDC3/issues/1645))
 
 ### Added
 * Removes sourcemaps from npm package output ([#1589](https://github.com/finos/FDC3/issues/1589))

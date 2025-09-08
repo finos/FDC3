@@ -285,3 +285,18 @@ Feature: Basic User Channels Support
     Then "{result}" is an object with the following contents
       | id.ticker | type            | name  |
       | AAPL      | fdc3.instrument | Apple |
+      
+  Scenario: Destructured user channel addContextListener works correctly
+    Given "resultHandler" pipes context to "contexts"
+    When I destructure method "addContextListener" from "{api}"
+    And I call "{api}" with "joinUserChannel" with parameter "one"
+    And I call destructured "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    And messaging receives "{instrumentMessageOne}"
+    Then "{contexts}" is an array of objects with the following contents
+      | id.ticker | type            | name  |
+      | AAPL      | fdc3.instrument | Apple |
+    And messaging will have posts
+      | payload.channelId | payload.contextType | matches_type              |
+      | one               | {null}              | joinUserChannelRequest    |
+      | {null}            | {null}              | getCurrentChannelRequest  |
+      | one               | fdc3.instrument     | addContextListenerRequest |
