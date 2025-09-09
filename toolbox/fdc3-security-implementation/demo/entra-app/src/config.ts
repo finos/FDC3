@@ -15,8 +15,8 @@ export interface EntraConfig {
  */
 export function getEntraConfig(): EntraConfig {
   return {
-    clientId: process.env.ENTRA_CLIENT_ID || 'YOUR_CLIENT_ID',
-    authority: process.env.ENTRA_AUTHORITY || 'https://login.microsoftonline.com/YOUR_TENANT_ID',
-    redirectUri: process.env.ENTRA_REDIRECT_URI || 'http://localhost:4006',
+    clientId: '62855256-b4f2-406f-9878-be85128aa4f7',
+    authority: 'https://login.microsoftonline.com/445c1fc6-7e1e-46dd-8835-9075a151049a',
+    redirectUri: 'http://localhost:4006',
   };
 }

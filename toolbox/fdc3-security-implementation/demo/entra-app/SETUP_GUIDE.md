@@ -62,21 +62,18 @@ This guide will help you set up the FDC3 Microsoft Entra integration using your 
 ## Step 4: Configure Your FDC3 App
 
 1. **Update Environment Variables**
-   Create a `.env` file in the entra-app directory:
-   ```bash
-   ENTRA_CLIENT_ID=your-application-client-id-here
-   ENTRA_AUTHORITY=https://login.microsoftonline.com/your-tenant-id-here
-   ENTRA_REDIRECT_URI=http://localhost:4006
-   ```
 
-2. **Or Update Code Directly**
-   In `client/src/entra.ts`, replace:
-   ```typescript
-   clientId: process.env.ENTRA_CLIENT_ID || 'YOUR_CLIENT_ID',
-   authority: process.env.ENTRA_AUTHORITY || 'https://login.microsoftonline.com/YOUR_TENANT_ID',
-   ```
+```
+export function getEntraConfig(): EntraConfig {
+    return {
+        clientId: "62855256-b4f2-406f-9878-be85128aa4f7",
+        authority: 'https://login.microsoftonline.com/445c1fc6-7e1e-46dd-8835-9075a151049a',
+        redirectUri: 'http://localhost:4006'
+    };
+}
+```
 
-## Step 5: Test Users
+## Step 5: Create Test Users
 
 ### Option A: Use Your Admin Account
 - You can test with your own Microsoft account (the one you used to create the tenant)
@@ -90,64 +87,4 @@ This guide will help you set up the FDC3 Microsoft Entra integration using your 
 - Modify the app registration to support "Personal Microsoft accounts only"
 - This allows any Microsoft account to sign in
 
-## Step 6: Run the Demo
 
-1. **Install Dependencies**
-   ```bash
-   cd /Users/rob/Documents/finos/fdc3-general/FDC3/toolbox/fdc3-security-implementation
-   npm install
-   ```
-
-2. **Start the Entra App**
-   ```bash
-   npm run start:entra-app
-   ```
-
-3. **Open Browser**
-   - Navigate to `http://localhost:4006`
-   - Click "Log In with Microsoft"
-   - Sign in with your Microsoft account
-
-## Troubleshooting
-
-### Common Issues
-
-1. **"AADSTS50011: The reply URL specified in the request does not match"**
-   - Solution: Make sure the redirect URI in Azure matches exactly: `http://localhost:4006`
-
-2. **"AADSTS65001: The user or administrator has not consented"**
-   - Solution: Grant admin consent for the User.Read permission
-
-3. **"AADSTS70011: The provided value for the 'scope' parameter is not valid"**
-   - Solution: Make sure you're requesting the correct scopes: `['User.Read']`
-
-### Debug Tips
-
-1. **Check Browser Console**
-   - Look for authentication errors
-   - Check network requests to Microsoft
-
-2. **Verify Configuration**
-   - Double-check client ID and tenant ID
-   - Ensure redirect URI matches exactly
-
-3. **Test with Different Accounts**
-   - Try with your admin account first
-   - Then test with other users in your tenant
-
-## What You'll See
-
-When working correctly, you should see:
-- Microsoft login popup when clicking "Log In with Microsoft"
-- Successful authentication with your Microsoft account
-- User information displayed in the FDC3 app
-- Real JWT tokens being used for FDC3 security operations
-
-## Limitations with Free Tier
-
-- **User Limit**: Up to 50,000 users in your tenant
-- **App Registrations**: Up to 10 app registrations
-- **No Multi-tenant**: Limited to your organization only
-- **Basic Security**: No advanced security features
-
-But for the FDC3 demo, this is more than sufficient!
