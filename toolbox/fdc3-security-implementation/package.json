@@ -23,10 +23,11 @@
     "lint": "eslint src/",
     "start:server": "tsc && node dist/src/example-server.js",
     "test:client": "tsc && node dist/src/test-client.js",
-    "dev": "concurrently \"npm run start:app1\" \"npm run start:app2\" \"npm run start:idp-app\"",
+    "dev": "concurrently \"npm run start:app1\" \"npm run start:app2\" \"npm run start:idp-app\" \"npm run start:entra-app\"",
     "start:app1": "cd demo/app1 && nodemon -x tsx -w server server/index.ts",
     "start:app2": "cd demo/app2 && nodemon -x tsx -w server server/index.ts",
-    "start:idp-app": "cd demo/idp-app && nodemon -x tsx -w server server/index.ts"
+    "start:idp-app": "cd demo/idp-app && nodemon -x tsx -w server server/index.ts",
+    "start:entra-app": "cd demo/entra-app && nodemon -x tsx -w server server/index.ts"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
@@ -54,16 +55,18 @@
     "vite": "^6.2.7"
   },
   "dependencies": {
+    "@azure/msal-browser": "^3.30.0",
     "@finos/fdc3": "2.3.0",
-    "@finos/fdc3-context": "2.3.0",
-    "@finos/fdc3-security": "2.3.0",
-    "@finos/fdc3-schema": "2.3.0",
     "@finos/fdc3-agent-proxy": "2.3.0",
+    "@finos/fdc3-context": "2.3.0",
+    "@finos/fdc3-schema": "2.3.0",
+    "@finos/fdc3-security": "2.3.0",
     "@types/uuid": "^10.0.0",
     "@types/ws": "^8.5.12",
     "canonicalize": "^2.1.0",
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5",
     "express": "^4.21.1",
     "express-session": "^1.18.2",
     "jose": "6.0.6",
