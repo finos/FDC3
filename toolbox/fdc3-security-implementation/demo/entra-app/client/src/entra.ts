@@ -47,37 +47,12 @@ async function setupLoginButton(handlers: FDC3Handlers): Promise<void> {
       const authResult: AuthenticationResult = await msalInstance.loginPopup(loginRequest);
       createLogEntry('success', 'Microsoft Entra login successful', authResult.account);
 
-      // Send authentication result to server
-      try {
-        await fetch('/api/auth/entra', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            account: authResult.account,
-            idToken: authResult.idToken,
-          }),
-        });
-        createLogEntry('info', 'Authentication data sent to server', '');
-      } catch (error) {
-        createLogEntry('warning', 'Failed to send auth data to server', (error as Error).message);
-      }
-
-      // Create FDC3 User object from Microsoft account
+      // Pass the token back to the server-side for validation
       const fdc3User: User = {
         type: 'fdc3.user',
-        id: {
-          email: authResult.account?.username || '',
-        },
-        name: authResult.account?.name || authResult.account?.username || '',
         jwt: authResult.idToken, // Use the ID token as JWT
       };
-
-      // Listen for GetUser intent events
-      const result = await handlers.exchangeData('user-request', {
-        type: 'fdc3.user.request',
-      });
+      const result = await handlers.exchangeData('user-data', fdc3User);
 
       if (result?.type === 'fdc3.user') {
         showAuthenticatedState(result as User);
@@ -128,12 +103,6 @@ async function setupLoginIntentHandler(fdc3: DesktopAgent, handlers: FDC3Handler
 
   fdc3.addIntentListener('GetUser', async (context: Context, metadata: ContextMetadata | undefined) => {
     createLogEntry('info', 'GetUser intent received', context);
-
-    // Check if user is authenticated with Microsoft Entra
-    const account = msalInstance.getActiveAccount();
-    if (!account) {
-      throw new Error('User not authenticated with Microsoft Entra');
-    }
 
     const ss = await intentHandler(context, metadata);
     createLogEntry('success', 'GetUser intent result', ss);
