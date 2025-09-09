@@ -63,6 +63,29 @@
                     }
                 }
             }
+        },
+        {
+            "appId": "entra",
+            "name": "Entra Example",
+            "title": "Entra",
+            "description": "Entra, used by the security POC apps to get a JWT",
+            "type": "web",
+            "details": {
+                "url": "http://localhost:4006"
+            },
+            "interop": {
+                "intents": {
+                    "listensFor": {
+                        "GetUser": {
+                            "displayName": "Retrieve the User JWT",
+                            "contexts": [
+                                "fdc3.user.request"
+                            ],
+                            "resultType": "fdc3.user"
+                        }
+                    }
+                }
+            }
         }
     ],
     "message": "OK"

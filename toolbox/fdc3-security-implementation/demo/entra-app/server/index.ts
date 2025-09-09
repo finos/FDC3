@@ -1,7 +1,7 @@
 import { initializeServer } from '../../app1/common/src/server';
 import { setupWebsocketServer } from '../../../src/helpers/ServerSideHandlersImpl';
 import { EntraBusinessLogic } from './EntraBusinessLogic';
-import { getEntraConfig } from '../src/entra-config';
+import { getEntraConfig } from '../src/config';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
 

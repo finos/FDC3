@@ -1,12 +1,11 @@
-// Microsoft Entra App Client Implementation
-import { DesktopAgent, getAgent, Context, ContextMetadata, User } from '@finos/fdc3';
+import { DesktopAgent, Context, ContextMetadata, User } from '@finos/fdc3';
 import { createLogEntry, updateStatus, clearLog } from '../../../app1/common/src/logging';
 import { initializeFDC3 } from '../../../app1/common/src/fdc3';
 import { FDC3Handlers } from '../../../../src/helpers/FDC3Handlers';
 import { connectRemoteHandlers } from '../../../../src/helpers/ClientSideHandlersImpl';
 import { setupSessionStatusButton, showAuthenticatedState } from '../../../app1/common/src/session-logic';
-import { PublicClientApplication, Configuration, AccountInfo, AuthenticationResult } from '@azure/msal-browser';
-import { getEntraConfig, validateEntraConfig, EntraConfig } from '../src/config';
+import { PublicClientApplication, Configuration, AuthenticationResult } from '@azure/msal-browser';
+import { getEntraConfig } from '../../src/config';
 
 // MSAL instance will be created after configuration is loaded
 let msalInstance: PublicClientApplication;
@@ -14,11 +13,6 @@ let msalInstance: PublicClientApplication;
 // Function to load configuration and create MSAL config
 async function loadConfiguration(): Promise<Configuration> {
   const config = await getEntraConfig();
-
-  // Validate configuration
-  if (!validateEntraConfig(config)) {
-    createLogEntry('warning', 'Using default configuration', 'Please configure your Azure AD credentials');
-  }
 
   // Create MSAL configuration
   const msalConfig: Configuration = {
