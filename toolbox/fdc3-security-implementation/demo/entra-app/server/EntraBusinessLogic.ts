@@ -46,7 +46,7 @@ export class EntraBusinessLogic implements FDC3Handlers {
             // Create aud-scoped user token for the requesting application
             const audScopedUserToken = {
               ...this.user,
-              jwt: await this.fdc3Security.createJWTToken(aud, this.user?.preferred_username || ''),
+              jwt: await this.fdc3Security.createJWTToken(aud, (this.user.id?.email as string) || ''),
             };
 
             const encryptedUserContext = {
@@ -79,7 +79,14 @@ export class EntraBusinessLogic implements FDC3Handlers {
       if (error) {
         console.error('Invalid Microsoft Entra ID token:', error);
       } else if (valid) {
-        this.user = ctx as User;
+        this.user = {
+          type: 'fdc3.user',
+          jwt: jwt,
+          id: {
+            email: (claims?.email as string) || (claims?.preferred_username as string) || '',
+          },
+          name: (claims?.name as string) || (claims?.given_name as string) || '',
+        };
         return this.user;
       } else {
         console.error('Invalid Microsoft Entra ID token');
