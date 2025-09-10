@@ -86,7 +86,7 @@ Used when attaching listeners to events.
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-type FDC3EventTypes = "userChannelChanged";
+type FDC3EventTypes = "userChannelChanged" | "contextCleared";
 ```
 </TabItem>
 <TabItem value="dotnet" label=".NET">
@@ -95,6 +95,7 @@ type FDC3EventTypes = "userChannelChanged";
 public static class Fdc3EventType
 {
     public const string UserChannelChanged = "userChannelChanged";
+    public const string ContextCleared = "contextCleared";
 }
 ```
 
@@ -234,6 +235,55 @@ type FDC3ChannelChangedEventDetails struct {
 Type representing the format of `userChannelChanged`  events.
 
 The identity of the channel joined is provided as `details.currentChannelId`, which will be `null` if the app is no longer joined to any channel.
+
+### `FDC3ContextClearedEvent`
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+export interface FDC3ContextClearedEvent extends FDC3Event {
+  readonly type: 'contextCleared';
+  readonly details: {
+    type: string | null;
+  };
+}
+```
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+public interface IFdc3ContextClearedEventDetails
+{
+    string? ContextType { get; }
+}
+public class Fdc3ContextClearedEventDetails : IFdc3ContextClearedEventDetails
+{
+    public string? ContextType { get; }
+
+    public Fdc3ContextClearedEventDetails(string? contextType)
+    {
+        this.ContextType = contextType;
+    }
+}
+
+public class Fdc3ContextClearedEvent : Fdc3Event
+{
+    public Fdc3ContextClearedEvent(string? contextType)
+        : base(Fdc3EventType.ContextCleared, new Fdc3ContextClearedEventDetails(contextType))
+    {
+    }
+}
+```
+
+</TabItem>
+</Tabs>
+
+
+Type representing the format of `contextCleared`  events.
+
+The specific type of context is defined in the contextType field, which can be empty if we are clearing all the contexts on the channel.
+
 
 ## `PrivateChannelEventTypes`
 
