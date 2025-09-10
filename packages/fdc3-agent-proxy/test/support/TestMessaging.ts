@@ -26,6 +26,7 @@ import {
   WebConnectionProtocol6Goodbye,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { GetInfo } from './responses/GetInfo';
+import { AddEventListener } from './responses/AddEventListener';
 
 export interface IntentDetail {
   app?: AppIdentifier;
@@ -131,6 +132,7 @@ export class TestMessaging extends AbstractMessaging {
       new UnsubscribeListeners(),
       new CreatePrivateChannel(),
       new DisconnectPrivateChannel(),
+      new AddEventListener(),
     ];
   }
 

@@ -1,7 +1,7 @@
 import { When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
 import { createMeta } from './generic.steps';
-import { } from '@finos/fdc3-standard';
+import {} from '@finos/fdc3-standard';
 import { handleResolve } from '@finos/testing';
 import { contextMap } from './generic.steps';
 import { BrowserTypes } from '@finos/fdc3-schema';
@@ -20,6 +20,24 @@ When(
       meta,
       payload: {
         channelId: handleResolve(channelId, this),
+        contextType: handleResolve(contextType, this),
+      },
+      type: 'addContextListenerRequest',
+    } as AddContextListenerRequest;
+
+    this.server.receive(message, uuid);
+  }
+);
+
+When(
+  '{string} adds a user-channel context listener with type {string}',
+  function (this: CustomWorld, app: string, contextType: string) {
+    const meta = createMeta(this, app);
+    const uuid = this.sc.getInstanceUUID(meta.source)!;
+    const message = {
+      meta,
+      payload: {
+        channelId: null, // null indicates it's added at the DesktopAgent level and listens on the current user-channel
         contextType: handleResolve(contextType, this),
       },
       type: 'addContextListenerRequest',

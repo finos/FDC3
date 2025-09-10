@@ -18,6 +18,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+* Added Conformance tests for FDC3 2.2 ([#1586](https://github.com/finos/FDC3/pull/1586))
+* Fix for channel change listeners not sending addEventListenerRequests ([#1606](https://github.com/finos/FDC3/pull/1606))
+* When adding a listener on the current channel, the payload.channelId should be null ([#1611](https://github.com/finos/FDC3/pull/1611))
+
 ### Deprecated
 
 ### Fixed
@@ -25,6 +29,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Revert schema of `fdc3.timeRange` context type back to use anyOf in place of oneOf for the `startTime` and `endTime` property combinations.  This will allow existence of one of either, or both, and pass schema validation.  When defined with oneOf, validation would fail due to multiple entries being valid and it could not identify which to apply. ([#1592](https://github.com/finos/FDC3/issues/1592))
 * Revert schema of `fdc3.interaction` context type back to use anyOf in place of oneOf for the `interactionType` property.  Since it could be a string enum or a string, validation could not differentiate. ([#1598](https://github.com/finos/FDC3/issues/1598))
 * Fix `fdc3.timeRange` context example to use correctly formatted dateTime. ([#1599](https://github.com/finos/FDC3/issues/1599))
+* Fix for channel change listeners not sending addEventListenerRequests ([#1606](https://github.com/finos/FDC3/pull/1606))
+* Fix to ensure that Adding A Channel Change Event Listener Doesn't Send addEventListenerRequest - Conformance 2.2 ([#1606](https://github.com/finos/FDC3/pull/1606))
 * Removes broken sourcemaps from npm package output ([#1589](https://github.com/finos/FDC3/issues/1589))
 
 ## [FDC3 Standard 2.2](https://github.com/finos/FDC3/compare/v2.1..v2.2) - 2025-03-12
