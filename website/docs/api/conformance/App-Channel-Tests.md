@@ -85,16 +85,34 @@ hide_title: true
 
 - `ACBasicUsage2-Destructured` Perform above test to verify destructured getCurrentContext works correctly.
 
+## Clearing Context
+
+| App | Step                    | Details                                                         |
+|-----|-------------------------|-----------------------------------------------------------------|
+| A   | 1. Retrieve `Channel`   | Retrieve a `Channel` object representing an 'App' channel called `test-channel` using: <br />`const testChannel = await fdc3.getOrCreateChannel("test-channel")` |
+| A   | 2. Add Context Listener | Add a _typed_ context listener for `fdc3.instrument`, using: <br />`await testChannel.addContextListener("fdc3.instrument",handler)`|
+| B   | 3. Retrieve `Channel`   | Retrieve a `Channel` object representing the same 'App' channel A did (`test-channel`)|
+| B   | 4. Broadcast            | B broadcasts both an `fdc3.instrument` context and an `fdc3.contact` context, using: <br /> `testChannel.broadcast(<fdc3.instrument>)` <br /> `testChannel.broadcast(<fdc3.contact>)`|
+| A   | 5. Receive Context      | An fdc3.instrument context is received by the handler added in step 2.<br />Ensure that the fdc3.instrument received by A is identical to that sent by B<br />Ensure that the fdc3.contact context is NOT received.                                                                   |
+| A   | 6. Add Event Listener   | Add an event listener for `contextCleared` event, using: <br />`await testChannel.addEventListener("contextCleared",handler)`  |
+| B   | 7. Clear Context        | B clears context using `testChannel.clearContext()`|
+| A   | 8. Received Event       | A receives event added in step 6 |
+
+- `ACClearContext1`: Perform above test.
+- `ACClearContext2`: Perform above test, but add specific type of the context type to the `testChannel.clearContext()`.
+
+
 ## Multiple listeners On The Same Or Overlapping Context types  
 
-| App | Step               | Details                                                                    |
-|-----|--------------------|----------------------------------------------------------------------------|
-| A   | 1. Retrieve `Channel`    |Retrieve a `Channel` object representing an 'App' channel called `test-channel` using: <br/>`const testChannel = await fdc3.getOrCreateChannel("test-channel")` |
-| A   | 2. Add Context Listener |Add an _untyped_ context listener to the channel, using: <br/> ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `await testChannel.addContextListener(null, handler1)` <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `testChannel.addContextListener(null, handler1)` |
-| A   | 3. Add Context Listener |Add a _typed_ context listener for `fdc3.instrument` with a different handler, using: <br/> ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `await testChannel.addContextListener("fdc3.instrument", handler2)` <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `testChannel.addContextListener("fdc3.instrument", handler2)`|
-| B   | 4. Retrieve `Channel`     | Retrieve a `Channel` object representing the same 'App' channel A did (`test-channel`)|
-| B   | 5. Broadcast          | Broadcast an `fdc3.instrument` Context to the channel with: <br/>`testChannel.broadcast(<fdc3.instrument context>)`|
-| A   | 6. Receive Context    | The handlers added in step 2 and 3 will receive the instrument context. Ensure that the instrument received by A is identical to that sent by B.  |
+| App | Step                    | Details                                                                    |
+|-----|-------------------------|----------------------------------------------------------------------------|
+| A   | 1. Retrieve `Channel`   | Retrieve a `Channel` object representing an 'App' channel called `test-channel` using: <br/>`const testChannel = await fdc3.getOrCreateChannel("test-channel")` |
+| A   | 2. Add Context Listener | Add an _untyped_ context listener to the channel, using: <br/> ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `await testChannel.addContextListener(null, handler1)` <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `testChannel.addContextListener(null, handler1)` |
+| A   | 3. Add Context Listener | Add a _typed_ context listener for `fdc3.instrument` with a different handler, using: <br/> ![2.0](https://img.shields.io/badge/FDC3-2.0-blue) `await testChannel.addContextListener("fdc3.instrument", handler2)` <br/>![1.2](https://img.shields.io/badge/FDC3-1.2-green) `testChannel.addContextListener("fdc3.instrument", handler2)`|
+| B   | 4. Retrieve `Channel`   | Retrieve a `Channel` object representing the same 'App' channel A did (`test-channel`)|
+| B   | 5. Broadcast            | Broadcast an `fdc3.instrument` Context to the channel with: <br/>`testChannel.broadcast(<fdc3.instrument context>)`|
+| A   | 6. Receive Context      | The handlers added in step 2 and 3 will receive the instrument context. Ensure that the instrument received by A is identical to that sent by B.  |
 
 - ACMultipleOverlappingListeners1: Perform above test
 - ACMultipleOverlappingListeners2: Perform above test, but instead of _untyped_ context listener, in step 2, use `fdc3.instrument` (handler should remain different)
+
