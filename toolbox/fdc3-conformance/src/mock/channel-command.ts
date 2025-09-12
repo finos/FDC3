@@ -1,10 +1,11 @@
+import { Channel } from '@finos/fdc3';
 import { ChannelsAppConfig } from '../test/support/channel-control';
 import { commands } from './constants';
 import { IChannelService } from './interfaces';
 
 export class Fdc3CommandExecutor {
   async executeCommands(orderedCommands: string[], config: ChannelsAppConfig, channelService: IChannelService) {
-    let channel;
+    let channel: Channel | undefined;
 
     //close ChannelsApp when test is complete
     await channelService.closeWindowOnCompletion(config.testId);
