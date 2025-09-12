@@ -209,3 +209,80 @@ Given('User Channels one, two and three', function (this: CustomWorld) {
     three: [],
   };
 });
+
+When(
+  'I destructure methods {string}, {string} from {string}',
+  function (this: CustomWorld, method1: string, method2: string, objectField: string) {
+    const object = handleResolve(objectField, this);
+    this.props[`destructured_${method1}`] = object[method1];
+    this.props[`destructured_${method2}`] = object[method2];
+  }
+);
+
+When(
+  'I destructure method {string} from {string}',
+  function (this: CustomWorld, methodName: string, objectField: string) {
+    const object = handleResolve(objectField, this);
+    const destructuredMethod = object[methodName];
+    this.props[`destructured_${methodName}`] = destructuredMethod;
+  }
+);
+
+When('I call destructured {string}', async function (this: CustomWorld, methodName: string) {
+  const destructuredMethod = this.props[`destructured_${methodName}`];
+  try {
+    const result = await destructuredMethod();
+    this.props['result'] = result;
+  } catch (error) {
+    this.props['error'] = error;
+    this.props['result'] = null;
+  }
+});
+
+When(
+  'I call destructured {string} with parameter {string}',
+  async function (this: CustomWorld, methodName: string, param: string) {
+    const destructuredMethod = this.props[`destructured_${methodName}`];
+    const resolvedParam = handleResolve(param, this);
+    try {
+      const result = await destructuredMethod(resolvedParam);
+      this.props['result'] = result;
+    } catch (error) {
+      this.props['error'] = error;
+      this.props['result'] = null;
+    }
+  }
+);
+
+When(
+  'I call destructured {string} with parameters {string} and {string}',
+  async function (this: CustomWorld, methodName: string, param1: string, param2: string) {
+    const destructuredMethod = this.props[`destructured_${methodName}`];
+    const resolvedParam1 = handleResolve(param1, this);
+    const resolvedParam2 = handleResolve(param2, this);
+    try {
+      const result = await destructuredMethod(resolvedParam1, resolvedParam2);
+      this.props['result'] = result;
+    } catch (error) {
+      this.props['error'] = error;
+      this.props['result'] = null;
+    }
+  }
+);
+
+When(
+  'I call destructured {string} with parameters {string} and {string} and {string}',
+  async function (this: CustomWorld, methodName: string, param1: string, param2: string, param3: string) {
+    const destructuredMethod = this.props[`destructured_${methodName}`];
+    const resolvedParam1 = handleResolve(param1, this);
+    const resolvedParam2 = handleResolve(param2, this);
+    const resolvedParam3 = handleResolve(param3, this);
+    try {
+      const result = await destructuredMethod(resolvedParam1, resolvedParam2, resolvedParam3);
+      this.props['result'] = result;
+    } catch (error) {
+      this.props['error'] = error;
+      this.props['result'] = null;
+    }
+  }
+);

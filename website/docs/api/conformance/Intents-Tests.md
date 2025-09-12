@@ -245,6 +245,42 @@ As the methods of resolving ambiguous intents are often user interactive, it is 
 
 - `2.0-ResolveAmbiguousContextTargetMultiInstance`: Perform above steps  to invoke intent resolution for an unspecified target with multiple options. Confirm that test is able to complete successfully.
 
+## Destructured Raise Intent (Ignoring any result)
+
+| App   | Step                        | Details                                                                                           |
+|-------|-----------------------------|---------------------------------------------------------------------------------------------------|
+| Test  | 1. Destructure raiseIntent  | Destructure raiseIntent from DesktopAgent: <br />`const { raiseIntent } = fdc3`                 |
+| Test  | 2. Raise Intent             | Use destructured method: <br />`raiseIntent("aTestingIntent",testContextX)`<br />starts app A.  |
+| A     | 3. Receive Intent & Context | After starting up, A runs `fdc3.addIntentListener("aTestingIntent")` to register its listener.<br />It then receives `testContextX`, matching that sent by Test |
+| Test  | 4. IntentResolution         | The destructured `raiseIntent` call returns an `IntentResolution` Object with App A's details   |
+
+- `2.0-RaiseIntentSingleResolve-Destructured`: Perform above test to verify destructured raiseIntent works correctly.
+
+## Destructured Raise Intent Result (Context result)
+
+| App    | Step                        | Details                                                                                           |
+|--------|-----------------------------|---------------------------------------------------------------------------------------------------|
+| Test   | 1. Raise Intent             | `fdc3.raiseIntent("sharedTestingIntent1",testContextY)`<br />starts app **B**. |
+| B      | 2. Receive Intent & Context | B receives context and prepares to return `testContextY` |
+| Test   | 3. Destructure getResult    | Destructure getResult from IntentResolution: <br />`const { getResult } = resolution` |
+| Test   | 4. Await Destructured Result | Use destructured method: <br />`await getResult()` |
+| B      | 5. Return Context           | B returns a `testContextY` instance |
+| Test   | 6. Receive Result           | Confirm destructured getResult returns the expected context |
+
+- `2.0-RaiseIntentContextResult5secs-Destructured`: Perform above test to verify destructured getResult works correctly.
+
+## Destructured Raise Intent Result (Channel results)
+
+| App  | Step                        | Details                                                                                           |
+|------|-----------------------------|---------------------------------------------------------------------------------------------------|
+| Test | 1. Raise Intent             | `fdc3.raiseIntent("sharedTestingIntent2",testContextY,{appId:"<E's-appId>"})`<br />starts app E. |
+| E    | 2. Return Channel           | E returns a Channel object |
+| Test | 3. Destructure getResult    | `const { getResult } = resolution` |
+| Test | 4. Get Channel              | `const channel = await getResult()` |
+| Test | 5. Destructure Channel Methods | `const { addContextListener, broadcast } = channel` |
+| Test | 6. Use Destructured Methods | Use destructured methods to add listener and verify broadcast works |
+
+- `2.0-RaiseIntentChannelResult-Destructured`: Perform above test to verify destructured channel methods work correctly.
 
 ## Avoiding Adding Multiple Intent Listeners 
 

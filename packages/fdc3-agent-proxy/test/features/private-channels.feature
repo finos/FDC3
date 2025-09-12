@@ -112,3 +112,28 @@ Feature: Basic Private Channels Support
       | payload.channelId   | matches_type                    |
       | {null}              | createPrivateChannelRequest     |
       | {privateChannel.id} | privateChannelDisconnectRequest |
+
+  Scenario: Destructured createPrivateChannel works correctly
+    When I destructure method "createPrivateChannel" from "{api}"
+    And I call destructured "createPrivateChannel"
+    And I refer to "{result}" as "destructuredPrivateChannel"
+    Then messaging will have posts
+      | payload.channelId | matches_type                |
+      | {null}            | createPrivateChannelRequest |
+
+  Scenario: Destructured private channel methods work correctly
+    Given "resultHandler" pipes context to "contexts"
+    And I destructure methods "addContextListener", "broadcast" from "{privateChannel}"
+    And I call destructured "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    And I call destructured "broadcast" with parameter "{instrumentContext}"
+    And messaging receives "{instrumentMessageOne}"
+    Then "{contexts}" is an array of objects with the following contents
+      | id.ticker | type            | name  |
+      | AAPL      | fdc3.instrument | Apple |
+
+  Scenario: Destructured disconnect works correctly
+    When I destructure method "disconnect" from "{privateChannel}"
+    And I call destructured "disconnect"
+    Then messaging will have posts
+      | payload.channelId   | matches_type                    |
+      | {privateChannel.id} | privateChannelDisconnectRequest |
