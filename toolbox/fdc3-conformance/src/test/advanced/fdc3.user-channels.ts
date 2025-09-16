@@ -374,7 +374,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
 
       await cc.joinChannel(channels[0]);
       await cc.openChannelApp(scTestId6, channels[1].id, JOIN_AND_BROADCAST_TWICE);
-      await wait(); // give listeners time to receive context
+      await wait(constants.ShortWait); // give listeners time to receive context
       cc.unsubscribeListeners([listener, listener2]);
     });
 
@@ -446,7 +446,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
       await cc.joinChannel(channels[0]);
       await cc.joinChannel(channels[1]);
       await cc.openChannelApp(scTestId8, channels[0].id, JOIN_AND_BROADCAST, undefined, true, contextId);
-      await wait(); // give listeners time to receive context
+      await wait(constants.ShortWait); // give listeners time to receive context
       cc.unsubscribeListeners([listener, listener2]);
     });
 
@@ -483,7 +483,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
       await cc.leaveChannel();
       await cc.openChannelApp(UCFilteredUsageLeave, channel.id, JOIN_AND_BROADCAST_TWICE, undefined, true, contextId);
       await resolveExecutionCompleteListener;
-      await wait(); // give listeners time to receive context
+      await wait(constants.ShortWait); // give listeners time to receive context
       cc.unsubscribeListeners([listener, listener2]);
     });
 
@@ -504,7 +504,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
       const channel = await cc.getNonGlobalUserChannel();
       await cc.openChannelApp(scTestId9, channel.id, JOIN_AND_BROADCAST);
       await resolveExecutionCompleteListener;
-      await wait();
+      await wait(constants.ShortWait);
     });
 
     const UCFilteredUsageJoin =
