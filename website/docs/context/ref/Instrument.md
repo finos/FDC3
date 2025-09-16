@@ -171,6 +171,45 @@ The `market` map can be used to further specify the instrument and help achieve 
 
 </details>
 
+<details>
+  <summary><code>classification</code></summary>
+
+**Any of:**
+
+- **type**: `string` with values:
+- `commodity`,
+- `commodityIndex`,
+- `corporateDebt`,
+- `creditDefaultSwapIndex`,
+- `deal`,
+- `debt`,
+- `debtIndex`,
+- `etf`,
+- `fixedIncome`,
+- `future`,
+- `governmentBenchmarkDebt`,
+- `loan`,
+- `mortgageBackedSecurity`,
+- `municipalDebt`,
+- `mutualFund`,
+- `mutualFundIndex`,
+- `option`,
+- `otherDebt`,
+- `ownershipPrivateCompany`,
+- `pevcFirm`,
+- `pevcFund`,
+- `privateCompany`,
+- `publicCompany`,
+- `publicCompanyIndex`,
+- `sovereignDebt`,
+- `structuredProduct`,
+- `unknown`
+- **type**: `string`
+
+[@experimental](/docs/fdc3-compliance#experimental-features) classification of the instrument by type or category. SHOULD be one of the standardized values, although other string values are permitted.
+
+</details>
+
 ## Example
 
 ```json
@@ -184,7 +223,8 @@ The `market` map can be used to further specify the instrument and help achieve 
   },
   "market": {
     "MIC": "XNAS"
-  }
+  },
+  "classification": "publicCompany"
 }
 ```
 

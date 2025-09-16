@@ -196,6 +196,9 @@ export interface ContextElement {
 /**
  * Free text to be used for a keyword search
  *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
+ *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -247,6 +250,11 @@ export interface Chart {
  * A financial instrument from any asset class.
  */
 export interface InstrumentElement {
+  /**
+   * @experimental classification of the instrument by type or category. SHOULD be one of the
+   * standardized values, although other string values are permitted.
+   */
+  classification?: string;
   /**
    * Any combination of instrument identifiers can be used together to resolve ambiguity, or
    * for a better match. Not all applications will use the same instrument identifiers, which
@@ -360,6 +368,9 @@ export interface OrganizationMarket {
 /**
  * Free text to be used for a keyword search
  *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
+ *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -420,6 +431,9 @@ export interface TimeRangeObject {
 /**
  * Free text to be used for a keyword search
  *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
+ *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -441,6 +455,9 @@ export type ChartStyle =
 
 /**
  * Free text to be used for a keyword search
+ *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -537,12 +554,18 @@ export interface PurpleContactIdentifiers {
 /**
  * Free text to be used for a keyword search
  *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
+ *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
 
 /**
  * Free text to be used for a keyword search
+ *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -644,6 +667,9 @@ export interface EntityData {
 /**
  * Free text to be used for a keyword search
  *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
+ *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -666,6 +692,9 @@ export interface PurpleMessageText {
 
 /**
  * Free text to be used for a keyword search
+ *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -700,6 +729,9 @@ export interface ChatOptions {
 
 /**
  * Free text to be used for a keyword search
+ *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -746,12 +778,18 @@ export interface ChatRoomObject {
 /**
  * Free text to be used for a keyword search
  *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
+ *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
 
 /**
  * Free text to be used for a keyword search
+ *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -822,6 +860,11 @@ export interface ChatSearchCriteria {
  */
 export interface OrganizationObject {
   /**
+   * @experimental classification of the instrument by type or category. SHOULD be one of the
+   * standardized values, although other string values are permitted.
+   */
+  classification?: string;
+  /**
    * Any combination of instrument identifiers can be used together to resolve ambiguity, or
    * for a better match. Not all applications will use the same instrument identifiers, which
    * is why FDC3 allows for multiple to be specified. In general, the more identifiers an
@@ -855,7 +898,7 @@ export interface OrganizationObject {
    * An optional human-readable name for the contact
    */
   name?: string;
-  type: TentacledInteractionType;
+  type: TentacledInstrumentClassification;
   [property: string]: any;
 }
 
@@ -938,13 +981,19 @@ export interface Identifiers {
 /**
  * Free text to be used for a keyword search
  *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
+ *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
-export type TentacledInteractionType = 'fdc3.instrument' | 'fdc3.organization' | 'fdc3.contact';
+export type TentacledInstrumentClassification = 'fdc3.instrument' | 'fdc3.organization' | 'fdc3.contact';
 
 /**
  * Free text to be used for a keyword search
+ *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -1112,6 +1161,9 @@ export interface CountryID {
 /**
  * Free text to be used for a keyword search
  *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
+ *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -1140,6 +1192,9 @@ export interface CurrencyID {
 
 /**
  * Free text to be used for a keyword search
+ *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -1227,6 +1282,9 @@ export interface ContactTIdentifiers {
 /**
  * Free text to be used for a keyword search
  *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
+ *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -1234,6 +1292,9 @@ export type EmailRecipientsType = 'fdc3.contact' | 'fdc3.contactList';
 
 /**
  * Free text to be used for a keyword search
+ *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -1265,6 +1326,9 @@ export interface FileAttachmentData {
 /**
  * Free text to be used for a keyword search
  *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
+ *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -1273,6 +1337,11 @@ export interface FileAttachmentData {
  * A financial instrument from any asset class.
  */
 export interface Instrument {
+  /**
+   * @experimental classification of the instrument by type or category. SHOULD be one of the
+   * standardized values, although other string values are permitted.
+   */
+  classification?: string;
   /**
    * Any combination of instrument identifiers can be used together to resolve ambiguity, or
    * for a better match. Not all applications will use the same instrument identifiers, which
@@ -1414,6 +1483,9 @@ export interface InstrumentList {
 /**
  * Free text to be used for a keyword search
  *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
+ *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -1492,6 +1564,9 @@ export interface InteractionID {
 /**
  * Free text to be used for a keyword search
  *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
+ *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -1556,6 +1631,9 @@ export interface Nothing {
 
 /**
  * Free text to be used for a keyword search
+ *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -1642,12 +1720,18 @@ export interface ProductObject {
 /**
  * Free text to be used for a keyword search
  *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
+ *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
 
 /**
  * Free text to be used for a keyword search
+ *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -1725,6 +1809,9 @@ export interface FluffyOrderDetails {
 /**
  * Free text to be used for a keyword search
  *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
+ *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -1773,6 +1860,9 @@ export interface OrganizationIdentifiers {
 
 /**
  * Free text to be used for a keyword search
+ *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -1847,12 +1937,18 @@ export interface PositionElement {
 /**
  * Free text to be used for a keyword search
  *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
+ *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
 
 /**
  * Free text to be used for a keyword search
+ *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -2011,6 +2107,9 @@ export interface Trade {
 /**
  * Free text to be used for a keyword search
  *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
+ *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -2079,6 +2178,9 @@ export interface TradeElement {
 /**
  * Free text to be used for a keyword search
  *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
+ *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -2115,6 +2217,9 @@ export type TransactionStatus = 'Created' | 'Deleted' | 'Updated' | 'Failed';
 
 /**
  * Free text to be used for a keyword search
+ *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -2155,6 +2260,9 @@ export interface Valuation {
 
 /**
  * Free text to be used for a keyword search
+ *
+ * @experimental classification of the instrument by type or category. SHOULD be one of the
+ * standardized values, although other string values are permitted.
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -2607,10 +2715,11 @@ const typeMap: any = {
   ),
   InstrumentElement: o(
     [
+      { json: 'classification', js: 'classification', typ: u(undefined, '') },
       { json: 'id', js: 'id', typ: r('PurpleInstrumentIdentifiers') },
       { json: 'market', js: 'market', typ: u(undefined, r('OrganizationMarket')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('PurpleInteractionType') },
+      { json: 'type', js: 'type', typ: r('PurpleInstrumentClassification') },
     ],
     'any'
   ),
@@ -2672,7 +2781,7 @@ const typeMap: any = {
     [
       { json: 'id', js: 'id', typ: r('PurpleContactIdentifiers') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('FluffyInteractionType') },
+      { json: 'type', js: 'type', typ: r('FluffyInstrumentClassification') },
     ],
     'any'
   ),
@@ -2773,10 +2882,11 @@ const typeMap: any = {
   ),
   OrganizationObject: o(
     [
+      { json: 'classification', js: 'classification', typ: u(undefined, '') },
       { json: 'id', js: 'id', typ: r('Identifiers') },
       { json: 'market', js: 'market', typ: u(undefined, r('OrganizationMarket')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('TentacledInteractionType') },
+      { json: 'type', js: 'type', typ: r('TentacledInstrumentClassification') },
     ],
     'any'
   ),
@@ -2800,7 +2910,7 @@ const typeMap: any = {
     [
       { json: 'id', js: 'id', typ: r('FluffyContactIdentifiers') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('FluffyInteractionType') },
+      { json: 'type', js: 'type', typ: r('FluffyInstrumentClassification') },
     ],
     'any'
   ),
@@ -2899,10 +3009,11 @@ const typeMap: any = {
   ),
   Instrument: o(
     [
+      { json: 'classification', js: 'classification', typ: u(undefined, '') },
       { json: 'id', js: 'id', typ: r('FluffyInstrumentIdentifiers') },
       { json: 'market', js: 'market', typ: u(undefined, r('PurpleMarket')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('PurpleInteractionType') },
+      { json: 'type', js: 'type', typ: r('PurpleInstrumentClassification') },
     ],
     'any'
   ),
@@ -3030,7 +3141,7 @@ const typeMap: any = {
     [
       { json: 'id', js: 'id', typ: r('OrganizationIdentifiers') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('StickyInteractionType') },
+      { json: 'type', js: 'type', typ: r('StickyInstrumentClassification') },
     ],
     'any'
   ),
@@ -3146,18 +3257,18 @@ const typeMap: any = {
   ),
   ActionType: ['broadcast', 'raiseIntent'],
   ActionTypeEnum: ['fdc3.action'],
-  PurpleInteractionType: ['fdc3.instrument'],
+  PurpleInstrumentClassification: ['fdc3.instrument'],
   TimeRangeType: ['fdc3.timeRange'],
   ChartStyle: ['bar', 'candle', 'custom', 'heatmap', 'histogram', 'line', 'mountain', 'pie', 'scatter', 'stacked-bar'],
   ChartType: ['fdc3.chart'],
-  FluffyInteractionType: ['fdc3.contact'],
+  FluffyInstrumentClassification: ['fdc3.contact'],
   ContactListType: ['fdc3.contactList'],
   EntityType: ['fdc3.action', 'fdc3.fileAttachment'],
   MessageType: ['fdc3.message'],
   ChatInitSettingsType: ['fdc3.chat.initSettings'],
   ChatRoomType: ['fdc3.chat.room'],
   ChatMessageType: ['fdc3.chat.message'],
-  TentacledInteractionType: ['fdc3.contact', 'fdc3.instrument', 'fdc3.organization'],
+  TentacledInstrumentClassification: ['fdc3.contact', 'fdc3.instrument', 'fdc3.organization'],
   ChatSearchCriteriaType: ['fdc3.chat.searchCriteria'],
   CountryType: ['fdc3.country'],
   CurrencyType: ['fdc3.currency'],
@@ -3170,7 +3281,7 @@ const typeMap: any = {
   ProductType: ['fdc3.product'],
   OrderType: ['fdc3.order'],
   OrderListType: ['fdc3.orderList'],
-  StickyInteractionType: ['fdc3.organization'],
+  StickyInstrumentClassification: ['fdc3.organization'],
   PositionType: ['fdc3.position'],
   PortfolioType: ['fdc3.portfolio'],
   TradeType: ['fdc3.trade'],
