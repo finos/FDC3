@@ -140,7 +140,7 @@ export function createAppChannelTests(cc: ChannelControl, documentation: string,
       );
       const differentTestChannel = await cc.createRandomTestChannel();
       await cc.openChannelApp(acTestId7, differentTestChannel.id, APP_CHANNEL_AND_BROADCAST_TWICE);
-      await wait(); // give listener time to receive context
+      await wait(constants.ShortWait); // give listener time to receive context
       cc.unsubscribeListeners([listener]);
     });
 
