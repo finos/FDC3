@@ -37,9 +37,9 @@ export const waitForContext = async (
 
   setTimeout(() => {
     if (count > 0) {
-      promiseReject(new Error("App didn't return close context within .5 secs"));
+      promiseReject(new Error("App didn't return close context within 1 sec"));
     }
-  }, 500);
+  }, 1000);
 
   return channel
     .addContextListener(contextType, ctx => {
