@@ -194,16 +194,6 @@ export interface ContextElement {
 }
 
 /**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
-
-/**
  * A context type representing details of a Chart, which may be used to request plotting of
  * a particular chart or to otherwise share details of its composition, such as:
  *
@@ -366,16 +356,6 @@ export interface OrganizationMarket {
 }
 
 /**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
-
-/**
  * The time range that should be plotted
  *
  * The time range over which the interaction occurred
@@ -429,16 +409,6 @@ export interface TimeRangeObject {
 }
 
 /**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
-
-/**
  * The type of chart that should be plotted
  */
 export type ChartStyle =
@@ -452,16 +422,6 @@ export type ChartStyle =
   | 'histogram'
   | 'heatmap'
   | 'custom';
-
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
 
 /**
  * A collection of settings to start a new chat conversation
@@ -550,26 +510,6 @@ export interface PurpleContactIdentifiers {
   FDS_ID?: string;
   [property: string]: any;
 }
-
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
-
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
 
 /**
  * A chat message to be sent through an instant messaging application. Can contain one or
@@ -664,15 +604,6 @@ export interface EntityData {
   [property: string]: any;
 }
 
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
 export type EntityType = 'fdc3.action' | 'fdc3.fileAttachment';
 
 /**
@@ -689,16 +620,6 @@ export interface PurpleMessageText {
   'text/plain'?: string;
   [property: string]: any;
 }
-
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
 
 /**
  * Option settings that affect the creation of the chat
@@ -726,16 +647,6 @@ export interface ChatOptions {
   isPublic?: boolean;
   [property: string]: any;
 }
-
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
 
 /**
  * A context representing a chat message. Typically used to send the message or to
@@ -774,26 +685,6 @@ export interface ChatRoomObject {
   url?: string;
   [property: string]: any;
 }
-
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
-
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
 
 /**
  * Reference to the chat room which could be used to send a message to the room
@@ -898,7 +789,7 @@ export interface OrganizationObject {
    * An optional human-readable name for the contact
    */
   name?: string;
-  type: TentacledInstrumentClassification;
+  type: TentacledAppID;
   [property: string]: any;
 }
 
@@ -978,26 +869,7 @@ export interface Identifiers {
   [property: string]: any;
 }
 
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
-export type TentacledInstrumentClassification = 'fdc3.instrument' | 'fdc3.organization' | 'fdc3.contact';
-
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
+export type TentacledAppID = 'fdc3.instrument' | 'fdc3.organization' | 'fdc3.contact';
 
 /**
  * A person contact that can be engaged with through email, calling, messaging, CMS, etc.
@@ -1159,16 +1031,6 @@ export interface CountryID {
 }
 
 /**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
-
-/**
  * A context representing an individual Currency.
  */
 export interface Currency {
@@ -1189,16 +1051,6 @@ export interface CurrencyID {
   CURRENCY_ISOCODE?: string;
   [property: string]: any;
 }
-
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
 
 /**
  * A collection of information to be used to initiate an email with a Contact or ContactList.
@@ -1279,26 +1131,7 @@ export interface ContactTIdentifiers {
   [property: string]: any;
 }
 
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
 export type EmailRecipientsType = 'fdc3.contact' | 'fdc3.contactList';
-
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
 
 /**
  * A File attachment encoded in the form of a data URI. Can be added to a Message.
@@ -1322,16 +1155,6 @@ export interface FileAttachmentData {
   name: string;
   [property: string]: any;
 }
-
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
 
 /**
  * A financial instrument from any asset class.
@@ -1481,16 +1304,6 @@ export interface InstrumentList {
 }
 
 /**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
-
-/**
  * An `Interaction` is a significant direct exchange of ideas or information between a
  * number of participants, e.g. a Sell Side party and one or more Buy Side parties. An
  * `Interaction` might be a call, a meeting (physical or virtual), an IM or the preparation
@@ -1562,16 +1375,6 @@ export interface InteractionID {
 }
 
 /**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
-
-/**
  * A chat message to be sent through an instant messaging application. Can contain one or
  * several text bodies (organized by mime-type, plaintext or markdown), as well as attached
  * entities (either arbitrary file attachments or FDC3 actions to be embedded in the
@@ -1628,16 +1431,6 @@ export interface Nothing {
   name?: string;
   [property: string]: any;
 }
-
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
 
 /**
  * @experimental context type representing an order. To be used with OMS and EMS systems.
@@ -1718,26 +1511,6 @@ export interface ProductObject {
 }
 
 /**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
-
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
-
-/**
  * @experimental A list of orders. Use this type for use cases that require not just a
  * single order, but multiple.
  *
@@ -1807,16 +1580,6 @@ export interface FluffyOrderDetails {
 }
 
 /**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
-
-/**
  * An entity that can be used when referencing private companies and other organizations
  * where a specific instrument is not available or desired e.g. CRM and News workflows.
  *
@@ -1857,16 +1620,6 @@ export interface OrganizationIdentifiers {
   PERMID?: string;
   [property: string]: any;
 }
-
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
 
 /**
  * A financial portfolio made up of multiple positions (holdings) in several instruments.
@@ -1933,26 +1686,6 @@ export interface PositionElement {
   type: 'fdc3.position';
   [property: string]: any;
 }
-
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
-
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
 
 /**
  * A financial position made up of an instrument and a holding in that instrument. This type
@@ -2105,16 +1838,6 @@ export interface Trade {
 }
 
 /**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
-
-/**
  * @experimental A list of trades. Use this type for use cases that require not just a
  * single trade, but multiple.
  *
@@ -2176,16 +1899,6 @@ export interface TradeElement {
 }
 
 /**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
-
-/**
  * A context type representing the result of a transaction initiated via FDC3, which SHOULD
  * be returned as an `IntentResult` by intents that create, retrieve, update or delete
  * content or records in another application. Its purpose is to provide a status and message
@@ -2214,16 +1927,6 @@ export interface TransactionResult {
  * The status of the transaction being reported.
  */
 export type TransactionStatus = 'Created' | 'Deleted' | 'Updated' | 'Failed';
-
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
 
 /**
  * A context type representing the price and value of a holding.
@@ -2257,16 +1960,6 @@ export interface Valuation {
   name?: string;
   [property: string]: any;
 }
-
-/**
- * Free text to be used for a keyword search
- *
- * @experimental classification of the instrument by type or category. SHOULD be one of the
- * standardized values, although other string values are permitted.
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
 
 // Converts JSON strings to/from your types
 // and asserts the results of JSON.parse at runtime
@@ -2719,7 +2412,7 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: r('PurpleInstrumentIdentifiers') },
       { json: 'market', js: 'market', typ: u(undefined, r('OrganizationMarket')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('PurpleInstrumentClassification') },
+      { json: 'type', js: 'type', typ: r('PurpleAppID') },
     ],
     'any'
   ),
@@ -2781,7 +2474,7 @@ const typeMap: any = {
     [
       { json: 'id', js: 'id', typ: r('PurpleContactIdentifiers') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('FluffyInstrumentClassification') },
+      { json: 'type', js: 'type', typ: r('FluffyAppID') },
     ],
     'any'
   ),
@@ -2886,7 +2579,7 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: r('Identifiers') },
       { json: 'market', js: 'market', typ: u(undefined, r('OrganizationMarket')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('TentacledInstrumentClassification') },
+      { json: 'type', js: 'type', typ: r('TentacledAppID') },
     ],
     'any'
   ),
@@ -2910,7 +2603,7 @@ const typeMap: any = {
     [
       { json: 'id', js: 'id', typ: r('FluffyContactIdentifiers') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('FluffyInstrumentClassification') },
+      { json: 'type', js: 'type', typ: r('FluffyAppID') },
     ],
     'any'
   ),
@@ -3013,7 +2706,7 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: r('FluffyInstrumentIdentifiers') },
       { json: 'market', js: 'market', typ: u(undefined, r('PurpleMarket')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('PurpleInstrumentClassification') },
+      { json: 'type', js: 'type', typ: r('PurpleAppID') },
     ],
     'any'
   ),
@@ -3141,7 +2834,7 @@ const typeMap: any = {
     [
       { json: 'id', js: 'id', typ: r('OrganizationIdentifiers') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('StickyInstrumentClassification') },
+      { json: 'type', js: 'type', typ: r('StickyAppID') },
     ],
     'any'
   ),
@@ -3257,18 +2950,18 @@ const typeMap: any = {
   ),
   ActionType: ['broadcast', 'raiseIntent'],
   ActionTypeEnum: ['fdc3.action'],
-  PurpleInstrumentClassification: ['fdc3.instrument'],
+  PurpleAppID: ['fdc3.instrument'],
   TimeRangeType: ['fdc3.timeRange'],
   ChartStyle: ['bar', 'candle', 'custom', 'heatmap', 'histogram', 'line', 'mountain', 'pie', 'scatter', 'stacked-bar'],
   ChartType: ['fdc3.chart'],
-  FluffyInstrumentClassification: ['fdc3.contact'],
+  FluffyAppID: ['fdc3.contact'],
   ContactListType: ['fdc3.contactList'],
   EntityType: ['fdc3.action', 'fdc3.fileAttachment'],
   MessageType: ['fdc3.message'],
   ChatInitSettingsType: ['fdc3.chat.initSettings'],
   ChatRoomType: ['fdc3.chat.room'],
   ChatMessageType: ['fdc3.chat.message'],
-  TentacledInstrumentClassification: ['fdc3.contact', 'fdc3.instrument', 'fdc3.organization'],
+  TentacledAppID: ['fdc3.contact', 'fdc3.instrument', 'fdc3.organization'],
   ChatSearchCriteriaType: ['fdc3.chat.searchCriteria'],
   CountryType: ['fdc3.country'],
   CurrencyType: ['fdc3.currency'],
@@ -3281,7 +2974,7 @@ const typeMap: any = {
   ProductType: ['fdc3.product'],
   OrderType: ['fdc3.order'],
   OrderListType: ['fdc3.orderList'],
-  StickyInstrumentClassification: ['fdc3.organization'],
+  StickyAppID: ['fdc3.organization'],
   PositionType: ['fdc3.position'],
   PortfolioType: ['fdc3.portfolio'],
   TradeType: ['fdc3.trade'],
