@@ -41,9 +41,7 @@
           "$ref": "contact.schema.json#"
         },
         {
-          "type": "string",
-          "title": "Free text",
-          "description": "Free text to be used for a keyword search"
+          "type": "string"
         }
       ]
     }
