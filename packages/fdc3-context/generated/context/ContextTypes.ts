@@ -242,7 +242,13 @@ export interface Chart {
 export interface InstrumentElement {
   /**
    * @experimental classification of the instrument by type or category. SHOULD be one of the
-   * standardized values, although other string values are permitted.
+   * following values, although other string values are permitted: '`commodity`',
+   * '`commodityIndex`', '`corporateDebt`', '`creditDefaultSwapIndex`', '`deal`', '`debt`',
+   * '`debtIndex`', '`etf`', '`fixedIncome`', '`future`', '`governmentBenchmarkDebt`',
+   * '`loan`', '`mortgageBackedSecurity`', '`municipalDebt`', '`mutualFund`',
+   * '`mutualFundIndex`', '`option`', '`otherDebt`', '`ownershipPrivateCompany`',
+   * '`pevcFirm`', '`pevcFund`', '`privateCompany`', '`publicCompany`',
+   * '`publicCompanyIndex`', '`sovereignDebt`', '`structuredProduct`', '`unknown`'
    */
   classification?: string;
   /**
@@ -752,7 +758,13 @@ export interface ChatSearchCriteria {
 export interface OrganizationObject {
   /**
    * @experimental classification of the instrument by type or category. SHOULD be one of the
-   * standardized values, although other string values are permitted.
+   * following values, although other string values are permitted: '`commodity`',
+   * '`commodityIndex`', '`corporateDebt`', '`creditDefaultSwapIndex`', '`deal`', '`debt`',
+   * '`debtIndex`', '`etf`', '`fixedIncome`', '`future`', '`governmentBenchmarkDebt`',
+   * '`loan`', '`mortgageBackedSecurity`', '`municipalDebt`', '`mutualFund`',
+   * '`mutualFundIndex`', '`option`', '`otherDebt`', '`ownershipPrivateCompany`',
+   * '`pevcFirm`', '`pevcFund`', '`privateCompany`', '`publicCompany`',
+   * '`publicCompanyIndex`', '`sovereignDebt`', '`structuredProduct`', '`unknown`'
    */
   classification?: string;
   /**
@@ -1162,7 +1174,13 @@ export interface FileAttachmentData {
 export interface Instrument {
   /**
    * @experimental classification of the instrument by type or category. SHOULD be one of the
-   * standardized values, although other string values are permitted.
+   * following values, although other string values are permitted: '`commodity`',
+   * '`commodityIndex`', '`corporateDebt`', '`creditDefaultSwapIndex`', '`deal`', '`debt`',
+   * '`debtIndex`', '`etf`', '`fixedIncome`', '`future`', '`governmentBenchmarkDebt`',
+   * '`loan`', '`mortgageBackedSecurity`', '`municipalDebt`', '`mutualFund`',
+   * '`mutualFundIndex`', '`option`', '`otherDebt`', '`ownershipPrivateCompany`',
+   * '`pevcFirm`', '`pevcFund`', '`privateCompany`', '`publicCompany`',
+   * '`publicCompanyIndex`', '`sovereignDebt`', '`structuredProduct`', '`unknown`'
    */
   classification?: string;
   /**
