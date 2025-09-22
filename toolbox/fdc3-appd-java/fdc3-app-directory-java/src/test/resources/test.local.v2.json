@@ -1,0 +1,220 @@
+{
+  "applications": [
+    {
+      "appId": "ChannelsAppId",
+      "name": "ChannelsApp",
+      "title": "Channels App",
+      "description": "Part of the FDC3 1.2 Conformance Tests",
+      "type": "web",
+      "details": {
+        "url": "https://finos.github.io/FDC3-conformance-framework/mock/channels/"
+      },
+      "hostManifests": {
+        "sail": {
+          "injectApi": "1.2",
+          "searchable": false
+        },
+        "finsemble": {
+          "window": {
+            "url": "https://finos.github.io/FDC3-conformance-framework/mock/Channels/",
+            "affinity": "workspaceComponents",
+            "options": {
+              "resizable": true,
+              "autoShow": false,
+              "alwaysOnTop": false,
+              "addToWorkspace": true
+            },
+            "top": "center",
+            "left": "center",
+            "width": 800,
+            "height": 600
+          },
+          "component": {
+            "displayName": "FDC3 Conformance Framework Channels App"
+          },
+          "foreign": {
+            "services": {
+              "windowService": {
+                "allowSnapping": true,
+                "allowGrouping": true,
+                "allowTabbing": true,
+                "allowAutoArrange": true,
+                "allowMinimize": true
+              }
+            },
+            "components": {
+              "App Launcher": {
+                "launchableByUser": true
+              },
+              "Window Manager": {
+                "alwaysOnTopIcon": false,
+                "FSBLHeader": {
+                  "hideMaximize": false
+                },
+                "persistWindowState": true,
+                "title": "FDC3 Conformance Framework Intent App B"
+              }
+            }
+          }
+        }
+      },
+      "version": "1.0.0",
+      "publisher": "Scott Logic",
+      "icons": [
+        {
+          "src": "https://www.scottlogic.com/sites/default/files/scott-logic-favicon.jpg"
+        }
+      ]
+    },
+    {
+      "appId": "Conformance1",
+      "name": "Conformance1",
+      "title": "FDC3 1.2 Conformance Framework",
+      "description": "Testing Conformance",
+      "type": "web",
+      "details": {
+        "url": "https://finos.github.io/FDC3-conformance-framework/app/"
+      },
+      "screenshots": [
+        {
+          "src": "https://directory.fdc3.finos.org/assets/app/Conformance1.png"
+        }
+      ],
+      "hostManifests": {
+        "sail": {
+          "injectApi": "1.2"
+        },
+        "finsemble": {
+          "window": {
+            "url": "https://finos.github.io/FDC3-conformance-framework/app/",
+            "affinity": "workspaceComponents",
+            "options": {
+              "resizable": true,
+              "autoShow": true,
+              "alwaysOnTop": false,
+              "addToWorkspace": true
+            },
+            "top": "center",
+            "left": "center",
+            "width": 800,
+            "height": 600
+          },
+          "component": {
+            "displayName": "FDC3 Conformance Framework"
+          },
+          "foreign": {
+            "services": {
+              "windowService": {
+                "allowSnapping": true,
+                "allowGrouping": true,
+                "allowTabbing": true,
+                "allowAutoArrange": true,
+                "allowMinimize": true
+              }
+            },
+            "components": {
+              "App Launcher": {
+                "launchableByUser": true
+              },
+              "Window Manager": {
+                "alwaysOnTopIcon": false,
+                "FSBLHeader": {
+                  "hideMaximize": false
+                },
+                "persistWindowState": true,
+                "title": "FDC3 Conformance Framework"
+              }
+            }
+          }
+        }
+      },
+      "version": "1.0.0",
+      "publisher": "Scott Logic",
+      "icons": [
+        {
+          "src": "https://www.scottlogic.com/sites/default/files/scott-logic-favicon.jpg"
+        }
+      ]
+    },
+    {
+      "appId": "tradingviewBlotter",
+      "name": "tradingviewBlotter",
+      "title": "TradingView Blotter",
+      "description": "A demo app for FDC3 using widgets from TradingView.",
+      "icons": [
+        {
+          "src": "https://apps.connectifi-interop.com/tradingviewBlotter/icon.png"
+        }
+      ],
+      "screenshots": [
+        {
+          "src": "https://apps.connectifi-interop.com/tradingviewBlotter/screenshot.png"
+        }
+      ],
+      "type": "web",
+      "details": {
+        "url": "https://apps.connectifi-interop.com/sail/tradingviewBlotter.html"
+      },
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "ViewQuote": {
+              "displayName": "View Quote",
+              "contexts": [
+                "fdc3.instrument"
+              ]
+            }
+          },
+          "ViewInstrument": {
+            "displayName": "View Instrument",
+            "contexts": [
+              "fdc3.instrument"
+            ]
+          }
+        }
+      },
+      "hostManifests": {
+        "sail": {
+          "injectApi": "2.0"
+        }
+      }
+    },
+    {
+      "appId": "tickerPrevClose",
+      "name": "tickerPrevClose",
+      "title": "Ticker Previous Close",
+      "description": "A snapshot of the pricing data for the ticker - going by previous market close, using data from Polygon.",
+      "icons": [
+        {
+          "src": "https://apps.connectifi-interop.com/tickerPrevClose/icon.png"
+        }
+      ],
+      "screenshots": [
+        {
+          "src": "https://apps.connectifi-interop.com/tickerPrevClose/screenshot.png"
+        }
+      ],
+      "type": "web",
+      "details": {
+        "url": "https://apps.connectifi-interop.com/sail/tickerPrevClose.html"
+      },
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "ViewQuote": {
+              "displayName": "View Quote",
+              "contexts": [
+                "fdc3.instrument"
+              ]
+            }
+          }
+        }
+      },
+      "hostManifests": {
+        "sail": {
+          "injectApi": "2.0"
+        }
+      }
+    }
+  ]
+}

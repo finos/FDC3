@@ -42,7 +42,7 @@ public class V2ApiDelegateImpl implements V2ApiDelegate{
         V2ApplicationReader applicationReader = readerFactory.createApplicationReader();
         try {
             return ResponseEntity.ok(applicationReader.getApplication(appId));
-        } catch (IOException e) {
+        } catch (IOException|RuntimeException e) {
             throw new RuntimeException(e);
         }
     }
