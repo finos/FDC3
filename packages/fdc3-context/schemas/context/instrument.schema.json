@@ -99,7 +99,7 @@
         },
         "classification": {
           "title": "Instrument Classification",
-          "description": "@experimental classification of the instrument by type or category. SHOULD be one of the standardized values, although other string values are permitted.",
+          "description": "@experimental classification of the instrument by type or category. SHOULD be one of the following values, although other string values are permitted: '`commodity`', '`commodityIndex`', '`corporateDebt`', '`creditDefaultSwapIndex`', '`deal`', '`debt`', '`debtIndex`', '`etf`', '`fixedIncome`', '`future`', '`governmentBenchmarkDebt`', '`loan`', '`mortgageBackedSecurity`', '`municipalDebt`', '`mutualFund`', '`mutualFundIndex`', '`option`', '`otherDebt`', '`ownershipPrivateCompany`', '`pevcFirm`', '`pevcFund`', '`privateCompany`', '`publicCompany`', '`publicCompanyIndex`', '`sovereignDebt`', '`structuredProduct`', '`unknown`'",
           "type": "string"
         }
       },
