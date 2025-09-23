@@ -19,7 +19,7 @@ For example:
 
 ### Workflow Description
 
-<!--- clearly and concisely describe the target workflow for the prosed enhancement --->
+<!--- clearly and concisely describe the target workflow for the proposed enhancement --->
 
 ### Workflow Examples
 
