@@ -4,29 +4,34 @@ about: Propose new contexts and intents to help implement a particular use-case!
 title: ''
 labels: enhancement, Context Data & Intents
 assignees: ''
-
 ---
 
 ## Enhancement Request
 
-### Use Case:
-...please specify at least one use case that the proposed additions would support
+### Use Case
 
-For example: 
-> User may want to view current positions for a list of securities 
+<!--- 
+Please specify at least one use case that the proposed additions would support
 
+For example:
+> User may want to view current positions for a list of securities
+--->
 
 ### Intents
 
 #### \<intent name goes here\>
+
+<!---
 Brief description of purpose
 Include indication of input and output context types (if any)
-
+--->
 
 ### Contexts
 
 #### \<context name goes here\>
-Brief description of purpose
+
+<!--- Brief description of purpose
+--->
 
 ##### Details
 
@@ -38,6 +43,8 @@ Brief description of purpose
 | `id.BBG`    | string  | No       | `'MSFT:US'`         |
 
 ##### Example
+
+<!---
 ```js
 const instrument = {
     type: 'fdc3.instrument',
@@ -47,6 +54,9 @@ const instrument = {
     }
 }
 ```
+--->
 
 ### Additional Information
-... please add any other information that can provide additional detail for this enhancement request
+<!---
+Please add any other information that can provide additional detail for this enhancement request
+--->
