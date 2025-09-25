@@ -3,9 +3,9 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import { AppIdentifier } from './AppIdentifier';
-import { Icon } from './Icon';
-import { Image } from './Image';
+import { AppIdentifier } from './AppIdentifier.js';
+import { Icon } from './Icon.js';
+import { Image } from './Image.js';
 
 /**
  * Extends an `AppIdentifier`, describing an application or instance of an application, with additional descriptive metadata that is usually provided by an FDC3 App Directory that the desktop agent connects to.

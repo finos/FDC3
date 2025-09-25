@@ -4,8 +4,8 @@
  */
 import { makeObservable, observable, action } from 'mobx';
 import { nanoid } from 'nanoid';
-import { getLogMessage } from '../fixtures/logMessages';
-import snackbarStore from './SnackbarStore';
+import { getLogMessage } from '../fixtures/logMessages.js';
+import snackbarStore from './SnackbarStore.js';
 
 export type logMessagesName =
   | 'getFdc3'

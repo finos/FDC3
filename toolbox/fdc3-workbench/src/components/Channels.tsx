@@ -20,14 +20,14 @@ import {
 } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
-import channelStore from '../store/ChannelStore';
-import { codeExamples } from '../fixtures/codeExamples';
-import { copyToClipboard } from './common/CopyToClipboard';
-import { openApiDocsLink } from '../fixtures/openApiDocs';
-import { ContextLinking } from './ContextLinking';
-import contextStore from '../store/ContextStore';
-import { ContextTemplates } from './ContextTemplates';
-import { ContextType } from '../utility/Fdc3Api';
+import channelStore from '../store/ChannelStore.js';
+import { codeExamples } from '../fixtures/codeExamples.js';
+import { copyToClipboard } from './common/CopyToClipboard.js';
+import { openApiDocsLink } from '../fixtures/openApiDocs.js';
+import { ContextLinking } from './ContextLinking.js';
+import contextStore from '../store/ContextStore.js';
+import { ContextTemplates } from './ContextTemplates.js';
+import { ContextType } from '../utility/Fdc3Api.js';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
 const useStyles = makeStyles((theme: Theme) =>

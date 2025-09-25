@@ -1,10 +1,10 @@
 import { DataTable, Then, When } from '@cucumber/cucumber';
-import { CustomWorld } from '../world';
-import { contextMap, createMeta } from './generic.steps';
+import { CustomWorld } from '../world/index.js';
+import { contextMap, createMeta } from './generic.steps.js';
 import { matchData } from '@finos/testing';
 import { BrowserTypes } from '@finos/fdc3-schema';
-import { State } from '../../src/ServerContext';
-import { GetInfoRequest } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+import { State } from '../../src/ServerContext.js';
+import { GetInfoRequest } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 type OpenRequest = BrowserTypes.OpenRequest;
 type GetAppMetadataRequest = BrowserTypes.GetAppMetadataRequest;

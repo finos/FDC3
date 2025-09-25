@@ -21,13 +21,13 @@ import {
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
-import contextStore, { ContextItem } from '../store/ContextStore';
-import systemLogStore from '../store/SystemLogStore';
-import { JsonInput } from './common/JsonInput';
-import { DialogModal } from './common/DialogModal';
-import { TemplateTextField } from './common/TemplateTextField';
-import { copyToClipboard } from './common/CopyToClipboard';
-import { ContextType } from '../utility/Fdc3Api';
+import contextStore, { ContextItem } from '../store/ContextStore.js';
+import systemLogStore from '../store/SystemLogStore.js';
+import { JsonInput } from './common/JsonInput.js';
+import { DialogModal } from './common/DialogModal.js';
+import { TemplateTextField } from './common/TemplateTextField.js';
+import { copyToClipboard } from './common/CopyToClipboard.js';
+import { ContextType } from '../utility/Fdc3Api.js';
 
 interface OptionType {
   title: string;

@@ -1,6 +1,6 @@
 import { When } from '@cucumber/cucumber';
-import { CustomWorld } from '../world';
-import { createMeta } from './generic.steps';
+import { CustomWorld } from '../world/index.js';
+import { createMeta } from './generic.steps.js';
 import { handleResolve } from '@finos/testing';
 import { BrowserTypes } from '@finos/fdc3-schema';
 type GetOrCreateChannelRequest = BrowserTypes.GetOrCreateChannelRequest;

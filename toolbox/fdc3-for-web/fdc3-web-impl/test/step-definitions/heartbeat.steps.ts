@@ -1,11 +1,11 @@
 import { Given, Then } from '@cucumber/cucumber';
-import { CustomWorld } from '../world';
+import { CustomWorld } from '../world/index.js';
 import {
   HeartbeatAcknowledgementRequest,
   WebConnectionProtocol6Goodbye,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
-import { createMeta } from './generic.steps';
-import { HeartbeatHandler } from '../../src/handlers/HeartbeatHandler';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { createMeta } from './generic.steps.js';
+import { HeartbeatHandler } from '../../src/handlers/HeartbeatHandler.js';
 
 Given(
   '{string} sends a heartbeat response to eventUuid {string}',

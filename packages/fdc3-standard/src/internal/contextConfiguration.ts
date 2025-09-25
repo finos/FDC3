@@ -1,5 +1,5 @@
-import { StandardContextType } from '../context/ContextType';
-import { exhaustiveStringTuple } from './typeHelpers';
+import { StandardContextType } from '../context/ContextType.js';
+import { exhaustiveStringTuple } from './typeHelpers.js';
 
 const STANDARD_CONTEXT_TYPES = exhaustiveStringTuple<StandardContextType>()(
   'fdc3.action',

@@ -1,5 +1,5 @@
 import { JSONPath } from 'jsonpath-plus';
-import { PropsWorld } from '../world';
+import { PropsWorld } from '../world/index.js';
 import expect from 'expect';
 import { DataTable } from '@cucumber/cucumber';
 import Ajv from 'ajv/dist/2019';

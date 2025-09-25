@@ -1,16 +1,16 @@
-import { TestMessaging } from '../support/TestMessaging';
+import { TestMessaging } from '../support/TestMessaging.js';
 import { Given, When } from '@cucumber/cucumber';
-import { CustomWorld } from '../world/index';
+import { CustomWorld } from '../world/index.js';
 import {
   DesktopAgentProxy,
   DefaultAppSupport,
   DefaultChannelSupport,
   DefaultIntentSupport,
   DefaultHeartbeatSupport,
-} from '../../src';
+} from '../../src/index.js';
 import { SimpleIntentResolver, setupGenericSteps } from '@finos/testing';
 import { CHANNEL_STATE, SimpleChannelSelector } from '@finos/testing/dist/src/agent';
-import { HeartbeatEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+import { HeartbeatEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { LogLevel } from '@finos/fdc3-standard';
 
 //Update this to enable debug output when debugging test failures

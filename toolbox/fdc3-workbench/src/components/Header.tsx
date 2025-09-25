@@ -7,7 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { AppBar, Toolbar, Tooltip, Typography } from '@material-ui/core';
 import WarningIcon from '@material-ui/icons/Warning';
-import { getWorkbenchAgent, ImplementationMetadata } from '../utility/Fdc3Api';
+import { getWorkbenchAgent, ImplementationMetadata } from '../utility/Fdc3Api.js';
 
 declare global {
   interface Window {

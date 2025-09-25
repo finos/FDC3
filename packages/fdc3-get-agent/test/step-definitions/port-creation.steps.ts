@@ -1,10 +1,10 @@
 import { Given, Then } from '@cucumber/cucumber';
-import { CustomWorld } from '../world';
+import { CustomWorld } from '../world/index.js';
 import { handleResolve } from '@finos/testing';
+import wtf from 'wtfnode';
+
 // used to debug tests not ending - only available as a commonJs module
 // eslint-disable-next-line @typescript-eslint/no-require-imports
-const wtf = require('wtfnode');
-
 Given(
   '{string} receives a {string} message for the {string} and creates port {string}',
   async function (this: CustomWorld, frame: string, type: string, _item: string, port: string) {

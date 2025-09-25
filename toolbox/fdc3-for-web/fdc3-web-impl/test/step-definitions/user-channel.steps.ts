@@ -1,6 +1,6 @@
 import { When } from '@cucumber/cucumber';
-import { CustomWorld } from '../world';
-import { createMeta } from './generic.steps';
+import { CustomWorld } from '../world/index.js';
+import { createMeta } from './generic.steps.js';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { handleResolve } from '@finos/testing';
 

@@ -3,8 +3,8 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import { AppMetadata } from './AppMetadata';
-import { IntentMetadata } from './IntentMetadata';
+import { AppMetadata } from './AppMetadata.js';
+import { IntentMetadata } from './IntentMetadata.js';
 
 /**
  * An interface that relates an intent to apps

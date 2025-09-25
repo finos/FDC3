@@ -1,6 +1,6 @@
-import { FindInstancesRequest, FindInstancesResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
-import { AutomaticResponse, TestMessaging } from '../TestMessaging';
-import { createResponseMeta } from './support';
+import { FindInstancesRequest, FindInstancesResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { AutomaticResponse, TestMessaging } from '../TestMessaging.js';
+import { createResponseMeta } from './support.js';
 
 export class FindInstances implements AutomaticResponse {
   filter(t: string) {

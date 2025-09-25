@@ -1,7 +1,7 @@
 import { Context } from '@finos/fdc3-context';
-import { AppIdentifier } from '../api/AppIdentifier';
-import { AppIntent } from '../api/AppIntent';
-import { Connectable } from './Connectable';
+import { AppIdentifier } from '../api/AppIdentifier.js';
+import { AppIntent } from '../api/AppIntent.js';
+import { Connectable } from './Connectable.js';
 
 export type IntentResolutionChoice = {
   intent: string;

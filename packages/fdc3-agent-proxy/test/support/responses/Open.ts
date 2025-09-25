@@ -1,6 +1,6 @@
-import { OpenRequest, OpenResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
-import { AutomaticResponse, TestMessaging } from '../TestMessaging';
-import { createResponseMeta } from './support';
+import { OpenRequest, OpenResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { AutomaticResponse, TestMessaging } from '../TestMessaging.js';
+import { createResponseMeta } from './support.js';
 
 export class Open implements AutomaticResponse {
   filter(t: string) {

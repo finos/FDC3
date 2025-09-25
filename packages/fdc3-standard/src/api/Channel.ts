@@ -4,10 +4,10 @@
  */
 
 import { Context } from '@finos/fdc3-context';
-import { ContextHandler } from './Types';
-import { DisplayMetadata } from './DisplayMetadata';
-import { Listener } from './Listener';
-import { EventHandler } from './Events';
+import { ContextHandler } from './Types.js';
+import { DisplayMetadata } from './DisplayMetadata.js';
+import { Listener } from './Listener.js';
+import { EventHandler } from './Events.js';
 
 /**
  * Represents a context channel that applications can use to send and receive
@@ -71,7 +71,7 @@ export interface Channel {
    * If, when this function is called, the channel already contains context that would be passed to the listener it is NOT called or passed this context automatically (this behavior differs from that of the [`fdc3.addContextListener`](DesktopAgent#addcontextlistener) function). Apps wishing to access to the current context of the channel should instead call the `getCurrentContext(contextType)` function.
    *
    * Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
-   * 
+   *
    * Adding multiple context listeners on the same or overlapping types (i.e. named type and null type) MUST be allowed, and MUST trigger all context handlers when a relevant context type is broadcast on the current channel.
    *
    */

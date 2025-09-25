@@ -1,5 +1,5 @@
 import { DataTable, Then } from '@cucumber/cucumber';
-import { CustomWorld } from '../world';
+import { CustomWorld } from '../world/index.js';
 import expect from 'expect';
 import { setupGenericSteps, matchData } from '@finos/testing';
 
