@@ -1,1 +1,1 @@
-export * from '../generated/context/ContextTypes';
+export * from '../generated/context/ContextTypes.js';

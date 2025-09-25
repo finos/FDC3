@@ -12,7 +12,7 @@ import {
   getWorkbenchAgent,
   IntentResolution,
   IntentTargetOption,
-} from '../utility/Fdc3Api';
+} from '../utility/Fdc3Api.js';
 import { toJS } from 'mobx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
@@ -35,13 +35,13 @@ import { observer } from 'mobx-react';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
-import { ContextTemplates } from '../components/ContextTemplates';
-import intentStore from '../store/IntentStore';
-import { codeExamples } from '../fixtures/codeExamples';
-import { openApiDocsLink } from '../fixtures/openApiDocs';
-import { TemplateTextField } from './common/TemplateTextField';
-import { copyToClipboard } from './common/CopyToClipboard';
-import { IntentResolutionField } from './IntentResolutionField';
+import { ContextTemplates } from '../components/ContextTemplates.js';
+import intentStore from '../store/IntentStore.js';
+import { codeExamples } from '../fixtures/codeExamples.js';
+import { openApiDocsLink } from '../fixtures/openApiDocs.js';
+import { TemplateTextField } from './common/TemplateTextField.js';
+import { copyToClipboard } from './common/CopyToClipboard.js';
+import { IntentResolutionField } from './IntentResolutionField.js';
 
 import { Checkbox } from '@material-ui/core';
 import { FormGroup } from '@material-ui/core';

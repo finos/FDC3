@@ -3,10 +3,10 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 import { makeObservable, observable, action, runInAction, toJS } from 'mobx';
-import { ContextType, Fdc3Listener, PrivateChannel } from '../utility/Fdc3Api';
-import systemLogStore from './SystemLogStore';
+import { ContextType, Fdc3Listener, PrivateChannel } from '../utility/Fdc3Api.js';
+import systemLogStore from './SystemLogStore.js';
 import { nanoid } from 'nanoid';
-import { getWorkbenchAgent } from '../utility/Fdc3Api';
+import { getWorkbenchAgent } from '../utility/Fdc3Api.js';
 // interface ListenerOptionType {
 // 	title: string;
 // 	value: string;

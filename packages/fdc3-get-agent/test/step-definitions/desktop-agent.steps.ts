@@ -1,9 +1,9 @@
 import { After, DataTable, Given, Then, When } from '@cucumber/cucumber';
-import { CustomWorld } from '../world';
+import { CustomWorld } from '../world/index.js';
 import { doesRowMatch, handleResolve, setupGenericSteps } from '@finos/testing';
-import { MockDocument } from '../support/MockDocument';
-import { MockWindow } from '../support/MockWindow';
-import { fdc3Ready, getAgent } from '../../src';
+import { MockDocument } from '../support/MockDocument.js';
+import { MockWindow } from '../support/MockWindow.js';
+import { fdc3Ready, getAgent } from '../../src/index.js';
 import {
   DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX,
   DesktopAgentDetails,
@@ -11,13 +11,13 @@ import {
   GetAgentParams,
   LogLevel,
 } from '@finos/fdc3-standard';
-import { EMBED_URL, MockFDC3Server } from '../support/MockFDC3Server';
-import { MockStorage } from '../support/MockStorage';
+import { EMBED_URL, MockFDC3Server } from '../support/MockFDC3Server.js';
+import { MockStorage } from '../support/MockStorage.js';
 import { DesktopAgent, ImplementationMetadata } from '@finos/fdc3-standard';
-import { clearAgentPromise } from '../../src/strategies/getAgent';
+import { clearAgentPromise } from '../../src/strategies/getAgent.js';
 import expect from 'expect';
-import { dummyInstanceDetails } from '../support/TestServerContext';
-import { MockIFrame } from '../support/MockIFrame';
+import { dummyInstanceDetails } from '../support/TestServerContext.js';
+import { MockIFrame } from '../support/MockIFrame.js';
 
 interface MockPageTransitionEvent extends Event {
   persisted?: boolean;

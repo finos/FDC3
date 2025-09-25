@@ -1,9 +1,9 @@
 import { When } from '@cucumber/cucumber';
-import { CustomWorld } from '../world';
-import { createMeta } from './generic.steps';
+import { CustomWorld } from '../world/index.js';
+import { createMeta } from './generic.steps.js';
 import {} from '@finos/fdc3-standard';
 import { handleResolve } from '@finos/testing';
-import { contextMap } from './generic.steps';
+import { contextMap } from './generic.steps.js';
 import { BrowserTypes } from '@finos/fdc3-schema';
 
 type AddContextListenerRequest = BrowserTypes.AddContextListenerRequest;

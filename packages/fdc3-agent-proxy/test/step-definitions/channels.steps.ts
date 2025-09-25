@@ -1,7 +1,7 @@
 import { DataTable, Given, Then, When } from '@cucumber/cucumber';
 import { Context } from '@finos/fdc3-context';
 import { handleResolve, matchData } from '@finos/testing';
-import { CustomWorld } from '../world/index';
+import { CustomWorld } from '../world/index.js';
 import { CHANNEL_STATE } from '@finos/testing';
 import { ApiEvent } from '@finos/fdc3-standard';
 import {
@@ -10,7 +10,7 @@ import {
   PrivateChannelOnAddContextListenerEvent,
   PrivateChannelOnDisconnectEvent,
   PrivateChannelOnUnsubscribeEvent,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 const contextMap: Record<string, Context> = {
   'fdc3.instrument': {

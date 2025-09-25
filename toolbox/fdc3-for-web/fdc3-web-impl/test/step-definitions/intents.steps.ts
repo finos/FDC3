@@ -1,7 +1,7 @@
 import { DataTable, Given, When } from '@cucumber/cucumber';
-import { CustomWorld } from '../world';
-import { DirectoryApp } from '../../src/directory/DirectoryInterface';
-import { APP_FIELD, contextMap, createMeta } from './generic.steps';
+import { CustomWorld } from '../world/index.js';
+import { DirectoryApp } from '../../src/directory/DirectoryInterface.js';
+import { APP_FIELD, contextMap, createMeta } from './generic.steps.js';
 import { handleResolve } from '@finos/testing';
 import { BrowserTypes } from '@finos/fdc3-schema';
 

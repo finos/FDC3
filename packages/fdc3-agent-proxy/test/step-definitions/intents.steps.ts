@@ -1,9 +1,9 @@
 import { Given } from '@cucumber/cucumber';
-import { CustomWorld } from '../world/index';
+import { CustomWorld } from '../world/index.js';
 import { handleResolve } from '@finos/testing';
 import { Context } from '@finos/fdc3-context';
 import { ContextMetadata, ResolveError } from '@finos/fdc3-standard';
-import { IntentEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+import { IntentEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 Given('app {string}', function (this: CustomWorld, appStr: string) {
   const [appId, instanceId] = appStr.split('/');

@@ -1,13 +1,13 @@
 import { io } from 'socket.io-client';
 import { v4 as uuid } from 'uuid';
-import { APP_GOODBYE, DA_HELLO, FDC3_APP_EVENT } from '../../message-types';
-import { DemoServerContext } from './DemoServerContext';
-import { FDC3_2_1_JSONDirectory } from './FDC3_2_1_JSONDirectory';
+import { APP_GOODBYE, DA_HELLO, FDC3_APP_EVENT } from '../../message-types.js';
+import { DemoServerContext } from './DemoServerContext.js';
+import { FDC3_2_1_JSONDirectory } from './FDC3_2_1_JSONDirectory.js';
 import { AppRegistration, DefaultFDC3Server, DirectoryApp, ServerContext } from '@finos/fdc3-web-impl';
-import { ChannelState, ChannelType } from '@finos/fdc3-web-impl/src/handlers/BroadcastHandler';
-import { UI, UI_URLS } from './util';
+import { ChannelState, ChannelType } from '@finos/fdc3-web-impl/src/handlers/BroadcastHandler.js';
+import { UI, UI_URLS } from './util.js';
 import { BrowserTypes } from '@finos/fdc3-schema';
-import { WebConnectionProtocol3Handshake } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+import { WebConnectionProtocol3Handshake } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL;
 
