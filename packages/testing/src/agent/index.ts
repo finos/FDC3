@@ -1,7 +1,7 @@
 import { AppIntent, Channel, IntentResult } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { IntentResolver, IntentResolutionChoice, ChannelSelector } from '@finos/fdc3-standard';
-import { PropsWorld } from '../world';
+import { PropsWorld } from '../world/index.js';
 
 /**
  * This super-simple intent resolver just resolves to the first
@@ -14,9 +14,9 @@ export class SimpleIntentResolver implements IntentResolver {
     this.cw = cw;
   }
 
-  async connect(): Promise<void> { }
+  async connect(): Promise<void> {}
 
-  async disconnect(): Promise<void> { }
+  async disconnect(): Promise<void> {}
 
   async intentChosen(ir: IntentResult): Promise<IntentResult> {
     this.cw.props['intent-result'] = ir;
@@ -55,9 +55,9 @@ export class SimpleChannelSelector implements ChannelSelector {
     this.cw.props['channels'] = availableChannels;
   }
 
-  setChannelChangeCallback(_callback: (channelId: string | null) => void): void { }
+  setChannelChangeCallback(_callback: (channelId: string | null) => void): void {}
 
-  async connect(): Promise<void> { }
+  async connect(): Promise<void> {}
 
-  async disconnect(): Promise<void> { }
+  async disconnect(): Promise<void> {}
 }

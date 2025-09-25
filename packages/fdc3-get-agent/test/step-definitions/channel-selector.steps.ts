@@ -1,12 +1,12 @@
 import { Given } from '@cucumber/cucumber';
 import { handleResolve } from '@finos/testing';
-import { DefaultDesktopAgentChannelSelector } from '../../src/ui/DefaultDesktopAgentChannelSelector';
-import { CHANNEL_SELECTOR_URL } from '../support/MockFDC3Server';
-import { USER_CHANNELS } from '../support/responses/UserChannels';
-import { CustomWorld } from '../world';
-import { Fdc3UserInterfaceChannelSelected } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
-import { Logger } from '../../src/util/Logger';
-import { loggingSettings } from './desktop-agent.steps';
+import { DefaultDesktopAgentChannelSelector } from '../../src/ui/DefaultDesktopAgentChannelSelector.js';
+import { CHANNEL_SELECTOR_URL } from '../support/MockFDC3Server.js';
+import { USER_CHANNELS } from '../support/responses/UserChannels.js';
+import { CustomWorld } from '../world/index.js';
+import { Fdc3UserInterfaceChannelSelected } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { Logger } from '../../src/util/Logger.js';
+import { loggingSettings } from './desktop-agent.steps.js';
 
 Given(
   'A Channel Selector in {string} with callback piping to {string}',

@@ -1,8 +1,8 @@
-import { TestServerContext } from '../TestServerContext';
+import { TestServerContext } from '../TestServerContext.js';
 import { InstanceID } from '@finos/fdc3-web-impl';
-import { AutomaticResponse } from './AutomaticResponses';
+import { AutomaticResponse } from './AutomaticResponses.js';
 import { FindIntentRequest, FindIntentResponse } from '@finos/fdc3-schema/generated/api/BrowserTypes';
-import { createUUID } from '../../../src/util/Uuid';
+import { createUUID } from '../../../src/util/Uuid.js';
 
 export class FindIntent implements AutomaticResponse {
   filter(t: string) {

@@ -3,7 +3,7 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import { AppMetadata } from './AppMetadata';
+import { AppMetadata } from './AppMetadata.js';
 
 /**
  * Metadata relating to the FDC3 Desktop Agent implementation and its provider.

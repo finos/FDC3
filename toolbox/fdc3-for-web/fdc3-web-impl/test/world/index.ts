@@ -1,7 +1,7 @@
 import { World, setWorldConstructor } from '@cucumber/cucumber';
-import { TestServerContext } from '../support/TestServerContext';
-import { DefaultFDC3Server } from '../../src/BasicFDC3Server';
-import { BasicDirectory } from '../../src/directory/BasicDirectory';
+import { TestServerContext } from '../support/TestServerContext.js';
+import { DefaultFDC3Server } from '../../src/BasicFDC3Server.js';
+import { BasicDirectory } from '../../src/directory/BasicDirectory.js';
 
 export class CustomWorld extends World {
   sc = new TestServerContext(this);

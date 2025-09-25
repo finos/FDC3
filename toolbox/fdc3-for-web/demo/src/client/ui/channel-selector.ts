@@ -1,5 +1,5 @@
-import { selectHighestContrast } from './contrast';
-import { dragElement } from './drag';
+import { selectHighestContrast } from './contrast.js';
+import { dragElement } from './drag.js';
 import {
   Channel,
   Fdc3UserInterfaceChannelSelected,
@@ -8,7 +8,7 @@ import {
   isFdc3UserInterfaceChannels,
   isFdc3UserInterfaceHandshake,
   UpdatedCSS,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 let channels: Channel[] = [];
 let channelId: string | null = null;

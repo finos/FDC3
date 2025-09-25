@@ -2,10 +2,10 @@ import {
   AgentEventMessage,
   HeartbeatAcknowledgementRequest,
   HeartbeatEvent,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
-import { Messaging } from '../Messaging';
-import { RegisterableListener } from './RegisterableListener';
-import { Logger } from '../util/Logger';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { Messaging } from '../Messaging.js';
+import { RegisterableListener } from './RegisterableListener.js';
+import { Logger } from '../util/Logger.js';
 
 export class HeartbeatListener implements RegisterableListener {
   readonly id: string;

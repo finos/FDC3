@@ -4,8 +4,8 @@
  */
 
 import { Context } from '@finos/fdc3-context';
-import { Channel } from './Channel';
-import { ContextMetadata } from './ContextMetadata';
+import { Channel } from './Channel.js';
+import { ContextMetadata } from './ContextMetadata.js';
 
 /**
  * Describes a callback that handles a context event.

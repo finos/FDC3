@@ -27,7 +27,7 @@ import {
   findInstances,
   isStandardContextType,
   isStandardIntent,
-} from '../src';
+} from '../src/index.js';
 
 const UnavailableError = new Error('FDC3 DesktopAgent not available at `window.fdc3`.');
 const TimeoutError = new Error('Timed out waiting for `fdc3Ready` event.');

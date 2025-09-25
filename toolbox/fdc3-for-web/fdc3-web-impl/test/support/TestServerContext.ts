@@ -1,6 +1,6 @@
-import { FDC3Server } from '../../src/FDC3Server';
-import { ServerContext, InstanceID, State, AppRegistration } from '../../src/ServerContext';
-import { CustomWorld } from '../world';
+import { FDC3Server } from '../../src/FDC3Server.js';
+import { ServerContext, InstanceID, State, AppRegistration } from '../../src/ServerContext.js';
+import { CustomWorld } from '../world/index.js';
 import { Context } from '@finos/fdc3-context';
 import { OpenError, AppIdentifier, AppIntent } from '@finos/fdc3-standard';
 
@@ -109,9 +109,9 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
       const id = this.getInstanceDetails(to);
       const app = id
         ? {
-          appId: id!.appId,
-          instanceId: id!.instanceId,
-        }
+            appId: id!.appId,
+            instanceId: id!.instanceId,
+          }
         : undefined;
       this.postedMessages.push({
         msg,

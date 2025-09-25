@@ -1,6 +1,6 @@
 import { Given, When } from '@cucumber/cucumber';
 import { SimpleIntentResolver } from '@finos/testing';
-import { CustomWorld } from '../world/index';
+import { CustomWorld } from '../world/index.js';
 import { CHANNEL_STATE } from '@finos/testing';
 import {
   DefaultChannelSupport,
@@ -8,9 +8,9 @@ import {
   DefaultIntentSupport,
   DefaultAppSupport,
   DesktopAgentProxy,
-} from '../../src';
-import { TestChannelSelector } from '../support/TestChannelSelector';
-import { TestMessaging } from '../support/TestMessaging';
+} from '../../src/index.js';
+import { TestChannelSelector } from '../support/TestChannelSelector.js';
+import { TestMessaging } from '../support/TestMessaging.js';
 import { LogLevel } from '@finos/fdc3-standard';
 
 //Update this to enable debug output when debugging test failures

@@ -3,8 +3,8 @@ import Ajv2019 from 'ajv/dist/2019';
 import * as draft7MetaSchema from 'ajv/dist/refs/json-schema-draft-07.json';
 import addFormats from 'ajv-formats';
 import { expect } from 'expect';
-import { doesRowMatch, handleResolve, matchData } from '../support/matching';
-import { PropsWorld } from '../world';
+import { doesRowMatch, handleResolve, matchData } from '../support/matching.js';
+import { PropsWorld } from '../world/index.js';
 import fs from 'fs';
 import path from 'path';
 

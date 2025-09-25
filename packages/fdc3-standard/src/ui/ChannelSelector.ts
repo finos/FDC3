@@ -1,5 +1,5 @@
-import { Channel } from '../api/Channel';
-import { Connectable } from '../ui/Connectable';
+import { Channel } from '../api/Channel.js';
+import { Connectable } from '../ui/Connectable.js';
 
 /**
  * Interface used by the desktop agent proxy to handle the channel selection process.

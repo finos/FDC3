@@ -1,6 +1,6 @@
-import { HeartbeatListener } from '../listeners/HeartbeatListener';
-import { Messaging } from '../Messaging';
-import { HeartbeatSupport } from './HeartbeatSupport';
+import { HeartbeatListener } from '../listeners/HeartbeatListener.js';
+import { Messaging } from '../Messaging.js';
+import { HeartbeatSupport } from './HeartbeatSupport.js';
 
 /**
  * Handles disconnection and heartbeats for the proxy.
