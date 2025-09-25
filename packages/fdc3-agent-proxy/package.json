@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3-agent-proxy",
-  "version": "2.2.2-beta.1",
+  "version": "2.2.0",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -17,13 +17,13 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc --module es2022",
+    "build": "tsc",
     "test": "tsc && nyc --reporter=lcov --reporter=text  --reporter json  cucumber-js",
     "clean": "rimraf dist cucumber-report.html coverage .nyc_output node_modules test-results.xml",
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@finos/fdc3-standard": "2.2.2-beta.1"
+    "@finos/fdc3-standard": "2.2.0"
   },
   "devDependencies": {
     "@cucumber/cucumber": "10.3.1",
@@ -31,7 +31,7 @@
     "@cucumber/messages": "^28.1.0",
     "@cucumber/pretty-formatter": "1.0.1",
     "@eslint/js": "^9.19.0",
-    "@finos/testing": "2.2.2-beta.1",
+    "@finos/testing": "2.2.0",
     "@types/expect": "24.3.0",
     "@types/lodash": "4.14.167",
     "@types/node": "^20.16.11",
@@ -55,5 +55,6 @@
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.17.0",
     "uuid": "^9.0.1"
-  }
+  },
+  "type": "module"
 }

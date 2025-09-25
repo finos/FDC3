@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3-context",
-  "version": "2.2.2-beta.1",
+  "version": "2.2.0",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -20,10 +20,10 @@
     "clean": "rimraf dist && rimraf generated",
     "mkdirs": "npx mkdirp generated/context",
     "generate": "npm run mkdirs && npm run typegen && npm run lint",
-    "build": "npm run generate && tsc --module es2022",
+    "build": "npm run generate && tsc",
     "lint": "eslint generated/ --fix && npx prettier generated/ --write",
     "test": "npm run generate && tsc && jest",
-    "typegen": "cd schemas && node ../s2tQuicktypeUtil.js context ../generated/context/ContextTypes.ts"
+    "typegen": "cd schemas && node ../s2tQuicktypeUtil.cjs context ../generated/context/ContextTypes.ts"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -44,5 +44,6 @@
     "ts-jest": "29.2.5",
     "tslib": "^2.7.0",
     "typescript": "^5.6.3"
-  }
+  },
+  "type": "module"
 }
