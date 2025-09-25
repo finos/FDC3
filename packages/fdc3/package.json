@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3",
-  "version": "2.2.2-beta.1",
+  "version": "2.2.0",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -18,12 +18,13 @@
   ],
   "scripts": {
     "clean": "npx rimraf dist",
-    "build": "tsc --module es2022"
+    "build": "tsc"
   },
   "dependencies": {
-    "@finos/fdc3-context": "2.2.2-beta.1",
-    "@finos/fdc3-get-agent": "2.2.2-beta.1",
-    "@finos/fdc3-schema": "2.2.2-beta.1",
-    "@finos/fdc3-standard": "2.2.2-beta.1"
-  }
+    "@finos/fdc3-context": "2.2.0",
+    "@finos/fdc3-get-agent": "2.2.0",
+    "@finos/fdc3-schema": "2.2.0",
+    "@finos/fdc3-standard": "2.2.0"
+  },
+  "type": "module"
 }
