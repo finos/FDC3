@@ -1,13 +1,23 @@
 import { MessageHandler } from '../BasicFDC3Server';
 import { AppRegistration, InstanceID, ServerContext } from '../ServerContext';
 import { Context } from '@finos/fdc3-context';
-import { AppIdentifier, ChannelError, DisplayMetadata, PrivateChannelEventTypes } from '@finos/fdc3-standard';
+import {
+  AppIdentifier,
+  ChannelError,
+  DisplayMetadata,
+  FDC3EventTypes,
+  PrivateChannelEventTypes,
+} from '@finos/fdc3-standard';
 import { successResponse, errorResponse, FullAppIdentifier, onlyUnique } from './support';
 import {
   AddContextListenerRequest,
+  AddEventListenerRequest,
   AgentResponseMessage,
   AppRequestMessage,
   BroadcastRequest,
+  ChannelChangedEvent,
+  ClearContextRequest,
+  ContextClearedEvent,
   ContextListenerUnsubscribeRequest,
   CreatePrivateChannelRequest,
   GetCurrentChannelRequest,
@@ -29,6 +39,8 @@ type PrivateChannelEvents =
   | PrivateChannelOnUnsubscribeEvent
   | PrivateChannelOnDisconnectEvent;
 
+type FDC3Events = ChannelChangedEvent | ContextClearedEvent;
+
 type ContextListenerRegistration = {
   appId: string;
   instanceId: string;
@@ -46,6 +58,13 @@ type PrivateChannelEventListener = {
   listenerUuid: string;
 };
 
+type fdc3EventListener = {
+  appId: string;
+  instanceId: string;
+  eventType: FDC3EventTypes | null;
+  listenerUuid: string;
+};
+
 export enum ChannelType {
   'user',
   'app',
@@ -55,13 +74,14 @@ export enum ChannelType {
 export type ChannelState = {
   id: string;
   type: ChannelType;
-  context: Context[];
+  context: (Context | null)[];
   displayMetadata: DisplayMetadata;
 };
 
 export class BroadcastHandler implements MessageHandler {
   private contextListeners: ContextListenerRegistration[] = [];
-  private eventListeners: PrivateChannelEventListener[] = [];
+  private privateChannelEventListeners: PrivateChannelEventListener[] = [];
+  private fdc3EventListeners: fdc3EventListener[] = [];
   private readonly state: ChannelState[] = [];
   private readonly currentChannel: { [instanceId: string]: ChannelState } = {};
 
@@ -99,7 +119,10 @@ export class BroadcastHandler implements MessageHandler {
 
     //clean up state entries
     this.contextListeners = this.contextListeners.filter(listener => listener.instanceId !== instanceId);
-    this.eventListeners = this.eventListeners.filter(listener => listener.instanceId !== instanceId);
+    this.privateChannelEventListeners = this.privateChannelEventListeners.filter(
+      listener => listener.instanceId !== instanceId
+    );
+    this.fdc3EventListeners = this.fdc3EventListeners.filter(listener => listener.instanceId !== instanceId);
   }
 
   getCurrentChannel(from: FullAppIdentifier): ChannelState | null {
@@ -128,19 +151,38 @@ export class BroadcastHandler implements MessageHandler {
     return this.contextListeners.filter(r => r.instanceId == appId.instanceId);
   }
 
-  moveUserChannelListeners(app: AppIdentifier, channelId: string | null) {
+  moveUserChannelListenersAndNotify(app: AppIdentifier, channelId: string | null, sc: ServerContext<AppRegistration>) {
     this.getListeners(app)
       .filter(l => l.userChannelListener)
       .forEach(l => {
         l.channelId = channelId;
       });
+
+    this.invokeFDC3EventListeners('userChannelChanged', sc, channelId);
   }
 
   updateChannelState(channelId: string, context: Context) {
     const cs = this.getChannelById(channelId);
     if (cs) {
-      cs.context = cs.context.filter(c => c.type != context.type);
+      // null is used to mark the fact that a context was cleared - remove it if present
+      // and remove any existing context of the type we've received
+      cs.context = cs.context.filter(c => c !== null && c.type != context.type);
       cs.context.unshift(context);
+    }
+  }
+
+  clearChannelState(channelId: string, contextType: string | null) {
+    const cs = this.getChannelById(channelId);
+    if (cs) {
+      if (contextType !== null) {
+        //clear only that type (and any nulls from previous clears)
+        cs.context = cs.context.filter(c => c !== null && c.type != contextType);
+        //ensure that new joiners will NOT receive current context after the clear
+        cs.context.unshift(null);
+      } else {
+        //clear all types
+        cs.context = [];
+      }
     }
   }
 
@@ -153,7 +195,7 @@ export class BroadcastHandler implements MessageHandler {
     }
 
     try {
-      switch (msg.type as string | null) {
+      switch (msg.type) {
         // app channels registration
         case 'getOrCreateChannelRequest':
           return this.handleGetOrCreateRequest(msg as GetOrCreateChannelRequest, sc, from);
@@ -188,9 +230,10 @@ export class BroadcastHandler implements MessageHandler {
         case 'privateChannelAddEventListenerRequest':
           return this.handlePrivateChannelAddEventListenerRequest(
             msg as PrivateChannelAddEventListenerRequest,
-            from,
-            sc
+            sc,
+            from
           );
+
         case 'privateChannelUnsubscribeEventListenerRequest':
           return this.handlePrivateChannelUnsubscribeEventListenerRequest(
             msg as PrivateChannelUnsubscribeEventListenerRequest,
@@ -201,6 +244,12 @@ export class BroadcastHandler implements MessageHandler {
         // handling state synchronization of channels
         case 'getCurrentContextRequest':
           return this.handleGetCurrentContextRequest(msg as GetCurrentContextRequest, sc, from);
+
+        case 'addEventListenerRequest':
+          return this.handleAddEventListenerRequest(msg as AddEventListenerRequest, sc, from);
+
+        case 'clearContextRequest':
+          return this.handleClearContextRequest(msg as ClearContextRequest, sc, from);
       }
     } catch (e) {
       const responseType = msg.type.replace(new RegExp('Request$'), 'Response');
@@ -239,7 +288,16 @@ export class BroadcastHandler implements MessageHandler {
     const type = arg0.payload.contextType;
 
     if (channel) {
-      const context = type ? (channel.context.find(c => c.type == type) ?? null) : (channel.context[0] ?? null);
+      let context: Context | null;
+
+      // if context was cleared or none has ever been received,  return null
+      if (channel.context.length === 0 || channel.context[0] === null) {
+        context = null;
+      } else if (type) {
+        context = channel.context.find(c => c.type == type) ?? null;
+      } else {
+        context = channel.context[0] ?? null;
+      }
       successResponse(sc, arg0, from, { context: context }, 'getCurrentContextResponse');
     } else {
       errorResponse(sc, arg0, from, ChannelError.NoChannelFound, 'getCurrentContextResponse');
@@ -251,9 +309,9 @@ export class BroadcastHandler implements MessageHandler {
     sc: ServerContext<AppRegistration>,
     from: FullAppIdentifier
   ) {
-    const i = this.eventListeners.findIndex(r => r.listenerUuid == arg0.payload.listenerUUID);
+    const i = this.privateChannelEventListeners.findIndex(r => r.listenerUuid == arg0.payload.listenerUUID);
     if (i > -1) {
-      this.eventListeners.splice(i, 1);
+      this.privateChannelEventListeners.splice(i, 1);
       successResponse(sc, arg0, from, {}, 'privateChannelUnsubscribeEventListenerResponse');
     } else {
       errorResponse(sc, arg0, from, 'ListenerNotFound', 'privateChannelUnsubscribeEventListenerResponse');
@@ -426,7 +484,7 @@ export class BroadcastHandler implements MessageHandler {
     // join it.
     const instanceId = from.instanceId ?? 'no-instance-id';
     this.currentChannel[instanceId] = newChannel;
-    this.moveUserChannelListeners(from, newChannel.id);
+    this.moveUserChannelListenersAndNotify(from, newChannel.id, sc);
     successResponse(sc, arg0, from, {}, 'joinUserChannelResponse');
   }
 
@@ -439,7 +497,7 @@ export class BroadcastHandler implements MessageHandler {
     const currentChannel = this.currentChannel[instanceId];
     if (currentChannel) {
       delete this.currentChannel[instanceId];
-      this.moveUserChannelListeners(from, null);
+      this.moveUserChannelListenersAndNotify(from, null, sc);
     }
     successResponse(sc, arg0, from, {}, 'leaveCurrentChannelResponse');
   }
@@ -491,8 +549,8 @@ export class BroadcastHandler implements MessageHandler {
 
   handlePrivateChannelAddEventListenerRequest(
     arg0: PrivateChannelAddEventListenerRequest,
-    from: FullAppIdentifier,
-    sc: ServerContext<AppRegistration>
+    sc: ServerContext<AppRegistration>,
+    from: FullAppIdentifier
   ) {
     const channel = this.getChannelById(arg0.payload.privateChannelId);
 
@@ -506,7 +564,7 @@ export class BroadcastHandler implements MessageHandler {
         eventType: arg0.payload.listenerType,
         listenerUuid: sc.createUUID(),
       } as PrivateChannelEventListener;
-      this.eventListeners.push(el);
+      this.privateChannelEventListeners.push(el);
       successResponse(sc, arg0, from, { listenerUUID: el.listenerUuid }, 'privateChannelAddEventListenerResponse');
     }
   }
@@ -535,7 +593,7 @@ export class BroadcastHandler implements MessageHandler {
       } as PrivateChannelEvents; //Typescript doesn't like comparing an object with a union property (messageType) with a union of object types
 
       console.log('invokePrivateChannelEventListeners msg: ', msg);
-      this.eventListeners
+      this.privateChannelEventListeners
         .filter(
           listener =>
             listener.channelId == privateChannelId && (listener.eventType == eventType || listener.eventType == null)
@@ -545,5 +603,85 @@ export class BroadcastHandler implements MessageHandler {
           sc.post(msg, e.instanceId);
         });
     }
+  }
+
+  handleAddEventListenerRequest(
+    arg0: AddEventListenerRequest,
+    sc: ServerContext<AppRegistration>,
+    from: FullAppIdentifier
+  ) {
+    const el = {
+      appId: from.appId,
+      instanceId: from.instanceId,
+      eventType: arg0.payload.type,
+      listenerUuid: sc.createUUID(),
+    } as fdc3EventListener;
+    this.fdc3EventListeners.push(el);
+    successResponse(sc, arg0, from, { listenerUUID: el.listenerUuid }, 'addEventListenerResponse');
+  }
+
+  invokeFDC3EventListeners(
+    eventType: FDC3EventTypes,
+    sc: ServerContext<AppRegistration>,
+    channelId: string | null,
+    contextType?: string | null
+  ) {
+    let msg: FDC3Events;
+    if (eventType == 'userChannelChanged') {
+      msg = {
+        type: 'channelChangedEvent',
+        meta: {
+          eventUuid: sc.createUUID(),
+          timestamp: new Date(),
+        },
+        payload: {
+          currentChannelId: channelId,
+        },
+      };
+    } else if (eventType == 'contextCleared') {
+      if (contextType === undefined) {
+        console.warn(
+          'invokeFDC3EventListeners received an invalid call where contextType was undefined while eventType was contextCleared'
+        );
+        contextType = null;
+      }
+      msg = {
+        type: 'contextClearedEvent',
+        meta: {
+          eventUuid: sc.createUUID(),
+          timestamp: new Date(),
+        },
+        payload: {
+          channelId: channelId,
+          contextType: contextType,
+        },
+      };
+    } else {
+      console.warn(
+        'invokeFDC3EventListeners received an invalid call with an unknown and unsupported event type: ' + eventType
+      );
+      return;
+    }
+
+    console.log('invokeFDC3EventListeners msg: ', msg);
+    this.fdc3EventListeners
+      .filter(listener => listener.eventType == eventType || listener.eventType == null)
+      .forEach(e => {
+        console.log(`invokeFDC3EventListeners: posting to instance ${e.instanceId}`);
+        sc.post(msg, e.instanceId);
+      });
+  }
+
+  handleClearContextRequest(arg0: ClearContextRequest, sc: ServerContext<AppRegistration>, from: FullAppIdentifier) {
+    const channelId = arg0.payload.channelId;
+    const contextType = arg0.payload.contextType;
+
+    // clear the context on the channel for new joiners
+    this.clearChannelState(channelId, contextType);
+
+    // let any event subscribers know about the clear
+    this.invokeFDC3EventListeners('contextCleared', sc, channelId, contextType);
+
+    successResponse(sc, arg0, from, {}, 'clearContextResponse');
   }
 }

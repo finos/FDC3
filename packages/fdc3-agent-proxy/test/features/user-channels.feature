@@ -227,7 +227,7 @@ Feature: Basic User Channels Support
     And I call "{theListener}" with "unsubscribe"
     And messaging receives "{userChannelMessage3}"
     Then "{types}" is an array of objects with the following contents
-      | newChannelId |
+      | currentChannelId |
       | two          |
       | one          |
 

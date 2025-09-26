@@ -33,6 +33,21 @@ import {
 import { throwIfUndefined } from '../util/throwIfUndefined';
 import { Logger } from '../util/Logger';
 
+/** Utility function used to provide backwards compatibility with 2.2. In later
+ * versions we've switched to `currentChannelId` to align with the API types. */
+const getCurrentChannelIdFromEvent = (event: ChannelChangedEvent['payload']) => {
+  if (event.currentChannelId !== undefined) {
+    return event.currentChannelId;
+  } else if (event.newChannelId !== undefined) {
+    return event.newChannelId;
+  } else {
+    Logger.warn(
+      `Received an invalid ChannelChangedEvent payload (no currentChannelId or newChannelId set):\n${JSON.stringify(event, null, 2)}`
+    );
+    return null;
+  }
+};
+
 export class DefaultChannelSupport implements ChannelSupport {
   readonly messaging: Messaging;
   readonly channelSelector: ChannelSelector;
@@ -55,22 +70,23 @@ export class DefaultChannelSupport implements ChannelSupport {
 
     this.addChannelChangedEventHandler(async (e: ApiEvent) => {
       const cce: ChannelChangedEvent['payload'] = e.details;
-      Logger.debug('Desktop Agent reports channel changed: ', cce.newChannelId);
+      const newChannel = getCurrentChannelIdFromEvent(cce);
+      Logger.debug('Desktop Agent reports channel changed: ', newChannel);
 
       let theChannel: Channel | null = null;
 
-      // if theres a newChannelId, retrieve details of the channel
-      if (cce.newChannelId) {
-        theChannel = this.userChannels.find(uc => uc.id == cce.newChannelId) ?? null;
+      // if there's a new channel Id, retrieve details of the channel
+      if (newChannel) {
+        theChannel = this.userChannels.find(uc => uc.id == newChannel) ?? null;
         if (!theChannel) {
           //Channel not found - query user channels in case they have changed for some reason
-          Logger.debug('Unknown user channel, querying Desktop Agent for updated user channels: ', cce.newChannelId);
+          Logger.debug('Unknown user channel, querying Desktop Agent for updated user channels: ', newChannel);
           await this.getUserChannels();
-          theChannel = this.userChannels.find(uc => uc.id == cce.newChannelId) ?? null;
+          theChannel = this.userChannels.find(uc => uc.id == newChannel) ?? null;
           if (!theChannel) {
             Logger.warn(
               'Received user channel update with unknown user channel (user channel listeners will not work): ',
-              cce.newChannelId
+              newChannel
             );
           }
         }

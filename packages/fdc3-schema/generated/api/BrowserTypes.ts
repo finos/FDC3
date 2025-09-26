@@ -1378,7 +1378,12 @@ export interface ChannelChangedEventPayload {
    * The Id of the channel that the app was added to or `null` if it was removed from a
    * channel.
    */
-  newChannelId: null | string;
+  currentChannelId?: null | string;
+  /**
+   * The Id of the channel that the app was added to or `null` if it was removed from a
+   * channel. Deprecated in favour of currentChannelId, to align with the FDC3 API definitions
+   */
+  newChannelId?: null | string;
 }
 
 /**
@@ -5307,7 +5312,13 @@ const typeMap: any = {
     ],
     false
   ),
-  ChannelChangedEventPayload: o([{ json: 'newChannelId', js: 'newChannelId', typ: u(null, '') }], false),
+  ChannelChangedEventPayload: o(
+    [
+      { json: 'currentChannelId', js: 'currentChannelId', typ: u(undefined, u(null, '')) },
+      { json: 'newChannelId', js: 'newChannelId', typ: u(undefined, u(null, '')) },
+    ],
+    false
+  ),
   ClearContextRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },

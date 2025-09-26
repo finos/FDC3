@@ -99,7 +99,7 @@ Given(
         timestamp: new Date(),
       },
       payload: {
-        newChannelId: handleResolve(channel, this),
+        currentChannelId: handleResolve(channel, this),
       },
       type: 'channelChangedEvent',
     };

@@ -29,25 +29,51 @@
 		},
 		"ChannelChangedEventPayload": {
 			"title": "channelChanged Event Payload",
-			"type": "object",
-			"properties": {
-				"newChannelId": {
-					"title": "New Channel Id",
-					"description": "The Id of the channel that the app was added to or `null` if it was removed from a channel.",
-					"oneOf": [
-						{
-							"type": "string"
-						},
-						{
-							"type": "null"
+			"oneOf": [
+				{
+					"type": "object",
+					"properties": {
+						"currentChannelId": {
+							"title": "Current Channel Id",
+							"description": "The Id of the channel that the app was added to or `null` if it was removed from a channel.",
+							"oneOf": [
+								{
+									"type": "string"
+								},
+								{
+									"type": "null"
+								}
+							]
 						}
+					},
+					"additionalProperties": false,
+					"required": [
+						"currentChannelId"
+					]
+				},
+				{
+					"type": "object",
+					"properties": {
+						"newChannelId": {
+							"title": "New Channel Id",
+							"description": "The Id of the channel that the app was added to or `null` if it was removed from a channel. Deprecated in favour of currentChannelId, to align with the FDC3 API definitions",
+							"deprecated": "Use the currentChannelId property instead",
+							"oneOf": [
+								{
+									"type": "string"
+								},
+								{
+									"type": "null"
+								}
+							]
+						}
+					},
+					"additionalProperties": false,
+					"required": [
+						"newChannelId"
 					]
 				}
-			},
-			"additionalProperties": false,
-			"required": [
-				"newChannelId"
-			]
+			]	
 		}
 	}
 }
