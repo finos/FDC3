@@ -74,7 +74,7 @@ export enum ChannelType {
 export type ChannelState = {
   id: string;
   type: ChannelType;
-  context: (Context | null)[];
+  context: Context[];
   displayMetadata: DisplayMetadata;
 };
 
@@ -161,24 +161,38 @@ export class BroadcastHandler implements MessageHandler {
     this.invokeFDC3EventListeners('userChannelChanged', sc, channelId);
   }
 
+  /**
+   * Updates the channel state (used to return the 'current' or most recent
+   * context on the channel) to include context that has been broadcast onto
+   * a channel, replacing any existing context of that type.
+   *
+   * @param channelId The id of the channel to update.
+   * @param context The context to include in the channel's state.
+   */
   updateChannelState(channelId: string, context: Context) {
     const cs = this.getChannelById(channelId);
     if (cs) {
       // null is used to mark the fact that a context was cleared - remove it if present
       // and remove any existing context of the type we've received
-      cs.context = cs.context.filter(c => c !== null && c.type != context.type);
+      cs.context = cs.context.filter(c => c.type != context.type);
       cs.context.unshift(context);
     }
   }
 
+  /**
+   * Updates the channel state (used to return the 'current' or most recent
+   * context on the channel) to remove or clear context (of a specific type
+   * or all types).
+   * @param channelId The id of the channel to update.
+   * @param context The context type to remove from the channel's state, or
+   * null to remove all types.
+   */
   clearChannelState(channelId: string, contextType: string | null) {
     const cs = this.getChannelById(channelId);
     if (cs) {
       if (contextType !== null) {
         //clear only that type (and any nulls from previous clears)
-        cs.context = cs.context.filter(c => c !== null && c.type != contextType);
-        //ensure that new joiners will NOT receive current context after the clear
-        cs.context.unshift(null);
+        cs.context = cs.context.filter(c => c.type != contextType);
       } else {
         //clear all types
         cs.context = [];
@@ -291,9 +305,7 @@ export class BroadcastHandler implements MessageHandler {
       let context: Context | null;
 
       // if context was cleared or none has ever been received,  return null
-      if (channel.context.length === 0 || channel.context[0] === null) {
-        context = null;
-      } else if (type) {
+      if (type) {
         context = channel.context.find(c => c.type == type) ?? null;
       } else {
         context = channel.context[0] ?? null;
