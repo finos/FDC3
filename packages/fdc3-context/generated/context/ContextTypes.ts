@@ -200,8 +200,6 @@ export interface ContextElement {
 /**
  * Free text to be used for a keyword search
  *
- * Additional user identifiers (e.g., employee ID, username, etc.)
- *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -366,8 +364,6 @@ export interface OrganizationMarket {
 /**
  * Free text to be used for a keyword search
  *
- * Additional user identifiers (e.g., employee ID, username, etc.)
- *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -428,8 +424,6 @@ export interface TimeRangeObject {
 /**
  * Free text to be used for a keyword search
  *
- * Additional user identifiers (e.g., employee ID, username, etc.)
- *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -451,8 +445,6 @@ export type ChartStyle =
 
 /**
  * Free text to be used for a keyword search
- *
- * Additional user identifiers (e.g., employee ID, username, etc.)
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -549,16 +541,12 @@ export interface PurpleContactIdentifiers {
 /**
  * Free text to be used for a keyword search
  *
- * Additional user identifiers (e.g., employee ID, username, etc.)
- *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
 
 /**
  * Free text to be used for a keyword search
- *
- * Additional user identifiers (e.g., employee ID, username, etc.)
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -660,8 +648,6 @@ export interface EntityData {
 /**
  * Free text to be used for a keyword search
  *
- * Additional user identifiers (e.g., employee ID, username, etc.)
- *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -684,8 +670,6 @@ export interface PurpleMessageText {
 
 /**
  * Free text to be used for a keyword search
- *
- * Additional user identifiers (e.g., employee ID, username, etc.)
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -720,8 +704,6 @@ export interface ChatOptions {
 
 /**
  * Free text to be used for a keyword search
- *
- * Additional user identifiers (e.g., employee ID, username, etc.)
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -768,16 +750,12 @@ export interface ChatRoomObject {
 /**
  * Free text to be used for a keyword search
  *
- * Additional user identifiers (e.g., employee ID, username, etc.)
- *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
 
 /**
  * Free text to be used for a keyword search
- *
- * Additional user identifiers (e.g., employee ID, username, etc.)
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -964,8 +942,6 @@ export interface Identifiers {
 /**
  * Free text to be used for a keyword search
  *
- * Additional user identifiers (e.g., employee ID, username, etc.)
- *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -973,8 +949,6 @@ export type TentacledInteractionType = 'fdc3.instrument' | 'fdc3.organization' |
 
 /**
  * Free text to be used for a keyword search
- *
- * Additional user identifiers (e.g., employee ID, username, etc.)
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -1142,8 +1116,6 @@ export interface CountryID {
 /**
  * Free text to be used for a keyword search
  *
- * Additional user identifiers (e.g., employee ID, username, etc.)
- *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -1172,8 +1144,6 @@ export interface CurrencyID {
 
 /**
  * Free text to be used for a keyword search
- *
- * Additional user identifiers (e.g., employee ID, username, etc.)
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -1261,8 +1231,6 @@ export interface ContactTIdentifiers {
 /**
  * Free text to be used for a keyword search
  *
- * Additional user identifiers (e.g., employee ID, username, etc.)
- *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -1270,8 +1238,6 @@ export type EmailRecipientsType = 'fdc3.contact' | 'fdc3.contactList';
 
 /**
  * Free text to be used for a keyword search
- *
- * Additional user identifiers (e.g., employee ID, username, etc.)
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -1302,8 +1268,6 @@ export interface FileAttachmentData {
 
 /**
  * Free text to be used for a keyword search
- *
- * Additional user identifiers (e.g., employee ID, username, etc.)
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -1454,8 +1418,6 @@ export interface InstrumentList {
 /**
  * Free text to be used for a keyword search
  *
- * Additional user identifiers (e.g., employee ID, username, etc.)
- *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -1534,8 +1496,6 @@ export interface InteractionID {
 /**
  * Free text to be used for a keyword search
  *
- * Additional user identifiers (e.g., employee ID, username, etc.)
- *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -1600,8 +1560,6 @@ export interface Nothing {
 
 /**
  * Free text to be used for a keyword search
- *
- * Additional user identifiers (e.g., employee ID, username, etc.)
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -1688,16 +1646,12 @@ export interface ProductObject {
 /**
  * Free text to be used for a keyword search
  *
- * Additional user identifiers (e.g., employee ID, username, etc.)
- *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
 
 /**
  * Free text to be used for a keyword search
- *
- * Additional user identifiers (e.g., employee ID, username, etc.)
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -1775,8 +1729,6 @@ export interface FluffyOrderDetails {
 /**
  * Free text to be used for a keyword search
  *
- * Additional user identifiers (e.g., employee ID, username, etc.)
- *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -1825,8 +1777,6 @@ export interface OrganizationIdentifiers {
 
 /**
  * Free text to be used for a keyword search
- *
- * Additional user identifiers (e.g., employee ID, username, etc.)
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -1901,16 +1851,12 @@ export interface PositionElement {
 /**
  * Free text to be used for a keyword search
  *
- * Additional user identifiers (e.g., employee ID, username, etc.)
- *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
 
 /**
  * Free text to be used for a keyword search
- *
- * Additional user identifiers (e.g., employee ID, username, etc.)
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -1995,8 +1941,6 @@ export interface SymmetricKeyRequest {
 /**
  * Free text to be used for a keyword search
  *
- * Additional user identifiers (e.g., employee ID, username, etc.)
- *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -2029,8 +1973,6 @@ export interface SymmetricKeyResponseID {
 
 /**
  * Free text to be used for a keyword search
- *
- * Additional user identifiers (e.g., employee ID, username, etc.)
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -2123,8 +2065,6 @@ export interface Trade {
 /**
  * Free text to be used for a keyword search
  *
- * Additional user identifiers (e.g., employee ID, username, etc.)
- *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -2193,8 +2133,6 @@ export interface TradeElement {
 /**
  * Free text to be used for a keyword search
  *
- * Additional user identifiers (e.g., employee ID, username, etc.)
- *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -2232,8 +2170,6 @@ export type TransactionStatus = 'Created' | 'Deleted' | 'Updated' | 'Failed';
 /**
  * Free text to be used for a keyword search
  *
- * Additional user identifiers (e.g., employee ID, username, etc.)
- *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
  */
@@ -2265,8 +2201,6 @@ export interface UserRequest {
 
 /**
  * Free text to be used for a keyword search
- *
- * Additional user identifiers (e.g., employee ID, username, etc.)
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -2307,13 +2241,11 @@ export interface UserID {
    * 'sub' field in the JWT token.
    */
   email?: string;
-  [property: string]: string;
+  [property: string]: any;
 }
 
 /**
  * Free text to be used for a keyword search
- *
- * Additional user identifiers (e.g., employee ID, username, etc.)
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -2354,8 +2286,6 @@ export interface Valuation {
 
 /**
  * Free text to be used for a keyword search
- *
- * Additional user identifiers (e.g., employee ID, username, etc.)
  *
  * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
  * `'Meeting'` although other string values are permitted.
@@ -3407,7 +3337,7 @@ const typeMap: any = {
     ],
     'any'
   ),
-  UserID: o([{ json: 'email', js: 'email', typ: u(undefined, '') }], ''),
+  UserID: o([{ json: 'email', js: 'email', typ: u(undefined, '') }], 'any'),
   Valuation: o(
     [
       { json: 'CURRENCY_ISOCODE', js: 'CURRENCY_ISOCODE', typ: '' },

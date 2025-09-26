@@ -25,10 +25,7 @@
                             "description": "The user's email address as a unique identifier. If provided, this email must match the 'sub' field in the JWT token."
                         }
                     },
-                    "additionalProperties": {
-                        "type": "string",
-                        "description": "Additional user identifiers (e.g., employee ID, username, etc.)"
-                    }
+                    "additionalProperties": true
                 },
                 "jwt": {
                     "type": "string",
