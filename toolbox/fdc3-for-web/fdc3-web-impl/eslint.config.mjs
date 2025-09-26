@@ -6,7 +6,12 @@ import eslintConfigPrettier from 'eslint-config-prettier';
 /** @type {import('eslint').Linter.Config[]} */
 export default [
   { files: ['**/*.{js,mjs,cjs,ts}'] },
-  { languageOptions: { globals: globals.browser } },
+  {
+    languageOptions: {
+      globals: globals.browser,
+      parserOptions: { tsconfigRootDir: __dirname, project: './tsconfig.json' },
+    },
+  },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   eslintConfigPrettier,
