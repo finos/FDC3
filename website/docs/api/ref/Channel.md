@@ -665,9 +665,9 @@ Task ClearContext(string? contextType);
 </TabItem>
 </Tabs>
 
-Used to clear the specified context type if provided, otherwise, clear all context types present in the channel. The Desktop Agent MUST update its internal representation of the context in the channel and ensure that subsequent calls to [`getCurrentContext`](#getcurrentcontext) and any new joiners to that channel (through [`joinUserChannel`](DesktopAgent#joinUserChannel) or [`addContextListener`](DesktopAgent#addContextListener)) will not receive anything for either the specified context type or the most recent context until new context has been broadcast to the channel. 
-Desktop Agents MUST also immediately notify the apps that are listening to `contextCleared` event for this channel. If a `contextType` parameter was provided, then the `contextType` field will be set to that type, otherwise, it is omitted. 
+Used to clear the specified context type if provided, otherwise, clear all context types present in the channel. When a context type is cleared the Desktop Agent MUST update its internal representation of the context in the channel and ensure that subsequent calls to [`getCurrentContext`](#getcurrentcontext) and any new joiners to that channel (through [`joinUserChannel`](DesktopAgent#joinUserChannel) or [`addContextListener`](DesktopAgent#addContextListener)) will not receive context of the cleared type (or any type) if all context was cleared, until new context has been broadcast onto the channel.
 
+Desktop Agents MUST also immediately notify the apps that are listening to `contextCleared` event for this channel. If a `contextType` parameter was provided, then the `details.type` field of the event will be set to that type name or null (to indicate that all context was cleared).
 
 **Examples:**
 
