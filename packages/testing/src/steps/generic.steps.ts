@@ -4,6 +4,13 @@ import { PropsWorldLike } from '../world/PropsWorldLike.js';
 import * as impl from './generic.impl.js';
 
 export function setupGenericSteps(schemaBasePath: string): void {
+  Given(
+    '{string} is an array of contexts including {string} and {string}',
+    (world: PropsWorldLike, field: string, valueOne: string, valueTwo: string) => {
+      world.props[field] = [valueOne, valueTwo];
+    }
+  );
+
   Then('the promise {string} should resolve', async (world: PropsWorldLike, field: string) => {
     await impl.promiseShouldResolve(world, field);
   });
