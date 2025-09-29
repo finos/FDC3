@@ -106,6 +106,34 @@ const listener = fdc3.addIntentListener('StartChat', context => {
 	return channel;
 });`,
 
+  intentListenerWithContext: `const listener = fdc3.addIntentListener('StartChat', context => {
+  // start chat has been requested by another application
+});`,
+
+  intentListenerWithContextContextResult: `const instrument = {
+    type: 'fdc3.instrument',
+    id: {
+        ticker: 'AAPL'
+    }
+};
+
+const listener = fdc3.addIntentListener('StartChat', context => {
+    // start chat has been requested by another application
+    return instrument;
+});`,
+
+  intentListenerWithContextAppChannel: `const listener = fdc3.addIntentListener('StartChat', context => {
+    // start chat has been requested by another application
+	const channel = await appChannelStore.getOrCreateChannel(channelName);
+	return channel;
+});`,
+
+  intentListenerWithContextPrivateChannel: `const listener = fdc3.addIntentListener('StartChat', context => {
+	// start chat has been requested by another application
+	const channel = await fdc3.createPrivateChannel();
+	return channel;
+});`,
+
   raiseIntentForContext: (context: string) =>
     `let context = ${
       context !== 'null' ? context : '{type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}'
