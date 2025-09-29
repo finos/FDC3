@@ -180,28 +180,39 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
   const [intentValue, setIntentValue] = useState<ListenerOptionType | null>(null);
   const [raiseIntentError, setRaiseIntentError] = useState<string | false>(false);
   const [intentListener, setIntentListener] = useState<ListenerOptionType | null>(null);
+  const [intentListenerWithContext, setIntentListenerWithContext] = useState<ListenerOptionType | null>(null);
   const [intentsForContext, setIntentsForContext] = useState<ListenerOptionType[] | null>(null);
   const [targetApp, setTargetApp] = useState<string>('None');
   const [contextTargetApp, setContextTargetApp] = useState<string>('None');
   const [raiseIntentContext, setRaiseIntentContext] = useState<ContextType | null>(null);
   const [raiseIntentWithContextContext, setRaiseIntentWithContextContext] = useState<ContextType | null>(null);
   const [intentError, setIntentError] = useState<string | false>(false);
+  const [intentWithContextError, setIntentWithContextError] = useState<string | false>(false);
   const [intentResolution, setIntentResolution] = useState<IntentResolution | undefined | null>(null);
   const [intentForContextResolution, setIntentForContextResolution] = useState<IntentResolution | undefined | null>(
     null
   );
   const intentListenersOptions: ListenerOptionType[] = intentStore.intentsList;
   const [contextFields, setContextFields] = useState<any[]>([]);
+  const [contextFieldsWithContext, setContextFieldsWithContext] = useState<any[]>([]);
   const [resultTypeContext, setResultTypeContext] = useState<ContextType | null>(null);
+  const [resultTypeListenerWithContextContext, setResultTypeListenerWithContextContext] = useState<ContextType | null>(
+    null
+  );
   const [resultOverChannelContextList, setResultOverChannelContextList] = useState<any>({});
   const [resultOverChannelContextDelays, setResultOverChannelContextDelays] = useState<any>({});
   const [sendIntentResult, setSendIntentResult] = useState<boolean | undefined>(false);
+  const [sendIntentWithIntentResult, setSendIntentWithIntentResult] = useState<boolean | undefined>(false);
   const [resultType, setResultType] = useState<string | null>(null);
+  const [listenerWithContextResultType, setListenerWithContextResultType] = useState<string | null>(null);
   const [useTargets, setUseTargets] = useState<boolean>(false);
   const [useContextTargets, setUseContextTargets] = useState<boolean>(false);
   const [channelType, setChannelType] = useState<string | null>('app-channel');
+  const [channelTypeWithContext, setChannelTypeWithContext] = useState<string | null>('app-channel');
   const [sendResultOverChannel, setSendResultOverChannel] = useState<boolean | undefined>(false);
+  const [sendResultOverChannelWithContext, setSendResultOverChannelWithContext] = useState<boolean | undefined>(false);
   const [currentAppChannelId, setCurrentAppChannelId] = useState<string>('');
+  const [currentAppChannelIdWithContext, setCurrentAppChannelIdWithContext] = useState<string>('');
   const [targetOptions, setTargetOptions] = useState<ReactElement[]>([]);
   const [targetOptionsforContext, setTargetOptionsforContext] = useState<ReactElement[]>([]);
 
@@ -466,8 +477,30 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
     setSendIntentResult(false);
   };
 
+  const handleAddIntentListenerWithContext = () => {
+    if (!intentListener) {
+      setIntentError('Enter intent');
+      return;
+    } else {
+      intentStore.addIntentListener(
+        intentListener.value,
+        sendIntentResult && resultType === 'context-result' ? toJS(resultTypeListenerWithContextContext) : null,
+        sendIntentResult && resultType === 'channel-result' ? currentAppChannelId : undefined,
+        sendIntentResult && resultType === 'channel-result' ? channelType === 'private-channel' : undefined,
+        sendIntentResult && resultType === 'channel-result' ? resultOverChannelContextList : undefined,
+        sendIntentResult && resultType === 'channel-result' ? resultOverChannelContextDelays : undefined
+      );
+      setIntentListener(null);
+    }
+    setSendIntentResult(false);
+  };
+
   const handleChannelTypeChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
     setChannelType(nextView);
+  };
+
+  const handleChannelTypeWithContextChange = (event: React.MouseEvent<HTMLElement>, nextView: string) => {
+    setChannelTypeWithContext(nextView);
   };
 
   const handleTargetToggle = (event: ChangeEvent<HTMLInputElement>, checked: boolean) => {
@@ -514,6 +547,29 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
           <ContextTemplates
             handleTabChange={handleTabChange}
             contextStateSetter={(context: any) => setChannelContextList(context, contextFields.length)}
+          />
+        </Grid>
+      </Grid>,
+    ]);
+  };
+
+  const handleAddContextWithContextField = () => {
+    setContextFieldsWithContext(current => [
+      ...current,
+      <Grid container direction="row" key={contextFieldsWithContext.length}>
+        <Grid item className={classes.indentLeft}>
+          <TextField
+            variant="outlined"
+            label="Delay (ms)"
+            type="number"
+            size="small"
+            onChange={e => setChannelContextDelay(e.target.value, contextFieldsWithContext.length)}
+          />
+        </Grid>
+        <Grid item className={`${classes.indentLeft} ${classes.field}`}>
+          <ContextTemplates
+            handleTabChange={handleTabChange}
+            contextStateSetter={(context: any) => setChannelContextList(context, contextFieldsWithContext.length)}
           />
         </Grid>
       </Grid>,
@@ -977,6 +1033,205 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
                               aria-label="Add context result (delays will trigger sequentially)"
                               color="primary"
                               onClick={handleAddContextField}
+                            >
+                              <AddCircleOutlineIcon />
+                            </IconButton>
+                          </Tooltip>
+
+                          <Link
+                            target="FDC3APIDocs"
+                            href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#addintentlistener"
+                          >
+                            <InfoOutlinedIcon />
+                          </Link>
+                        </Grid>
+                      </>
+                    )}
+                  </Grid>
+                )}
+              </RadioGroup>
+            </Grid>
+          )}
+
+          <Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
+            <Grid item xs={12}>
+              <Typography className={classes.bottomMargin} variant="h5">
+                Add intent listener with context
+              </Typography>
+            </Grid>
+            <Grid item className={`${classes.field} ${classes.removeSidePadding}`}>
+              <Autocomplete
+                id="intent-listener-with-context"
+                size="small"
+                selectOnFocus
+                blurOnSelect
+                clearOnBlur
+                handleHomeEndKeys
+                value={intentListenerWithContext}
+                onChange={handleChangeListener(setIntentListenerWithContext, setIntentWithContextError)}
+                filterOptions={filterOptions}
+                options={intentListenersOptions}
+                getOptionLabel={getOptionLabel}
+                renderOption={option => option.title}
+                renderInput={params => (
+                  <TemplateTextField
+                    label="INTENT LISTENER"
+                    placeholder="Enter Intent Type"
+                    variant="outlined"
+                    {...params}
+                    error={!!intentWithContextError}
+                    helperText={intentWithContextError}
+                  />
+                )}
+              />
+            </Grid>
+
+            <Grid item className={classes.controls}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleAddIntentListenerWithContext}
+                disabled={intentListenerWithContext === null}
+              >
+                Add listener
+              </Button>
+
+              <Tooltip title="Copy code example" aria-label="Copy code example">
+                <IconButton
+                  size="small"
+                  aria-label="Copy code example"
+                  color="primary"
+                  onClick={() => {
+                    let exampleToUse = codeExamples.intentListenerWithContext;
+                    if (listenerWithContextResultType === 'context-result') {
+                      exampleToUse = codeExamples.intentListenerWithContextContextResult;
+                    } else if (listenerWithContextResultType === 'channel-result') {
+                      if (channelType === 'app-channel') {
+                        exampleToUse = codeExamples.intentListenerWithContextAppChannel;
+                      } else {
+                        exampleToUse = codeExamples.intentListenerWithContextPrivateChannel;
+                      }
+                    }
+                    copyToClipboard(exampleToUse, 'addIntentListener')();
+                  }}
+                >
+                  <FileCopyIcon />
+                </IconButton>
+              </Tooltip>
+
+              <Link
+                onClick={openApiDocsLink}
+                target="FDC3APIDocs"
+                href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#addintentlistenerWithContext"
+              >
+                <InfoOutlinedIcon />
+              </Link>
+            </Grid>
+          </Grid>
+          {window.fdc3Version === '2.0' && (
+            <Grid item xs={12}>
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      className={classes.input}
+                      color="default"
+                      checked={sendIntentWithIntentResult}
+                      onChange={e => setSendIntentWithIntentResult(e.target.checked)}
+                    />
+                  }
+                  label="Send intent result"
+                />
+              </FormGroup>
+            </Grid>
+          )}
+          {sendIntentWithIntentResult && (
+            <Grid item xs={12} className={classes.indentLeft}>
+              <RadioGroup
+                name="intent-result-type"
+                value={listenerWithContextResultType}
+                onChange={e => setListenerWithContextResultType(e.target.value)}
+              >
+                <FormControlLabel
+                  value="context-result"
+                  control={<Radio className={classes.input} />}
+                  label="Context result"
+                />
+                {listenerWithContextResultType === 'context-result' && (
+                  <Grid item className={classes.indentLeft}>
+                    <ContextTemplates
+                      handleTabChange={handleTabChange}
+                      contextStateSetter={setResultTypeListenerWithContextContext}
+                    />
+                  </Grid>
+                )}
+                <FormControlLabel
+                  value="channel-result"
+                  control={<Radio className={classes.input} />}
+                  label="Channel result"
+                />
+                {listenerWithContextResultType === 'channel-result' && (
+                  <Grid item className={classes.indentLeft}>
+                    <ToggleButtonGroup
+                      value={channelTypeWithContext}
+                      exclusive
+                      onChange={handleChannelTypeWithContextChange}
+                      aria-label="result channel type"
+                    >
+                      <ToggleButton className={classes.toggle} value="app-channel" aria-label="left aligned">
+                        App channel
+                      </ToggleButton>
+                      <ToggleButton className={classes.toggle} value="private-channel" aria-label="left aligned">
+                        Private channel
+                      </ToggleButton>
+                    </ToggleButtonGroup>
+
+                    {channelType === 'app-channel' && (
+                      <Grid item className={classes.field}>
+                        <TextField
+                          fullWidth
+                          variant="outlined"
+                          label="Channel Name"
+                          type="text"
+                          size="small"
+                          onChange={(e: any) => setCurrentAppChannelIdWithContext(e.target.value)}
+                          value={currentAppChannelIdWithContext}
+                        />
+                      </Grid>
+                    )}
+                    <FormGroup>
+                      {channelType === 'private-channel' && (
+                        <Typography variant="caption" className={classes.caption}>
+                          Context streaming will start AFTER a context listener is added to the channel
+                        </Typography>
+                      )}
+                      <FormControlLabel
+                        control={
+                          <Checkbox
+                            className={classes.input}
+                            color="default"
+                            checked={sendResultOverChannelWithContext}
+                            onChange={e => setSendResultOverChannelWithContext(e.target.checked)}
+                          />
+                        }
+                        label="Send context result over channel"
+                      />
+                    </FormGroup>
+                    {sendResultOverChannelWithContext && (
+                      <>
+                        {contextFieldsWithContext.map((field, index) => (
+                          <React.Fragment key={index}>{field}</React.Fragment>
+                        ))}
+                        <Grid item className={`${classes.indentLeft} ${classes.controls}`}>
+                          <Tooltip
+                            title="Add context result (delays will trigger sequentially)"
+                            aria-label="Add context result (delays will trigger sequentially)"
+                          >
+                            <IconButton
+                              size="small"
+                              aria-label="Add context result (delays will trigger sequentially)"
+                              color="primary"
+                              onClick={handleAddContextWithContextField}
                             >
                               <AddCircleOutlineIcon />
                             </IconButton>
