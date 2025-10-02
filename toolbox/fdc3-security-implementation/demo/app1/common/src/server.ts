@@ -1,15 +1,23 @@
+import { PrivateFDC3Security } from '@finos/fdc3-security';
+import express, { Express, NextFunction, Request, Response } from 'express';
+import { Server } from 'http';
+import ViteExpress from 'vite-express';
 import { createJosePrivateFDC3Security } from '../../../../src/JosePrivateFDC3Security';
 import { AllowListFunction, provisionJWKS } from '../../../../src/JosePublicFDC3Security';
-import { PrivateFDC3Security } from '@finos/fdc3-security';
-import express, { Express, RequestHandler } from 'express';
-import ViteExpress from 'vite-express';
-import { Server } from 'http';
 
 export async function initializeServer(
   port: number
 ): Promise<{ fdc3Security: PrivateFDC3Security; app: Express; server: Server }> {
   const appUrl = `http://localhost:${port}`;
   const app = express();
+
+  // For demo purposes, allow cross-origin domain calls
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    next();
+  });
 
   const allowListFunction: AllowListFunction = (jku: string, iss?: string) => {
     if (iss) {
