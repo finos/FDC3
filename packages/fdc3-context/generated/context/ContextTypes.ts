@@ -241,16 +241,10 @@ export interface Chart {
  */
 export interface InstrumentElement {
   /**
-   * @experimental classification of the instrument by type or category. SHOULD be one of the
-   * following values, although other string values are permitted: '`commodity`',
-   * '`commodityIndex`', '`corporateDebt`', '`creditDefaultSwapIndex`', '`deal`', '`debt`',
-   * '`debtIndex`', '`etf`', '`fixedIncome`', '`future`', '`governmentBenchmarkDebt`',
-   * '`loan`', '`mortgageBackedSecurity`', '`municipalDebt`', '`mutualFund`',
-   * '`mutualFundIndex`', '`option`', '`otherDebt`', '`ownershipPrivateCompany`',
-   * '`pevcFirm`', '`pevcFund`', '`privateCompany`', '`publicCompany`',
-   * '`publicCompanyIndex`', '`sovereignDebt`', '`structuredProduct`', '`unknown`'
+   * @experimental The `classification` map can be used to specify the categorization of the
+   * instrument and help achieve interoperability between disparate data sources.
    */
-  classification?: string;
+  classification?: OrganizationClassification;
   /**
    * Any combination of instrument identifiers can be used together to resolve ambiguity, or
    * for a better match. Not all applications will use the same instrument identifiers, which
@@ -278,6 +272,29 @@ export interface InstrumentElement {
    */
   name?: string;
   type: 'fdc3.instrument';
+  [property: string]: any;
+}
+
+/**
+ * @experimental The `classification` map can be used to specify the categorization of the
+ * instrument and help achieve interoperability between disparate data sources.
+ */
+export interface OrganizationClassification {
+  /**
+   * classification of the instrument by type or category. SHOULD be one of the following
+   * values, although other string values are permitted: '`commodity`', '`commodityIndex`',
+   * '`corporateDebt`', '`creditDefaultSwapIndex`', '`deal`', '`debt`', '`debtIndex`',
+   * '`etf`', '`fixedIncome`', '`future`', '`governmentBenchmarkDebt`', '`loan`',
+   * '`mortgageBackedSecurity`', '`municipalDebt`', '`mutualFund`', '`mutualFundIndex`',
+   * '`option`', '`otherDebt`', '`ownershipPrivateCompany`', '`pevcFirm`', '`pevcFund`',
+   * '`privateCompany`', '`publicCompany`', '`publicCompanyIndex`', '`sovereignDebt`',
+   * '`structuredProduct`', '`unknown`'
+   */
+  fdc3?: string;
+  /**
+   * FactSet classification for the instrument.
+   */
+  FDS_TYPE?: string;
   [property: string]: any;
 }
 
@@ -757,16 +774,10 @@ export interface ChatSearchCriteria {
  */
 export interface OrganizationObject {
   /**
-   * @experimental classification of the instrument by type or category. SHOULD be one of the
-   * following values, although other string values are permitted: '`commodity`',
-   * '`commodityIndex`', '`corporateDebt`', '`creditDefaultSwapIndex`', '`deal`', '`debt`',
-   * '`debtIndex`', '`etf`', '`fixedIncome`', '`future`', '`governmentBenchmarkDebt`',
-   * '`loan`', '`mortgageBackedSecurity`', '`municipalDebt`', '`mutualFund`',
-   * '`mutualFundIndex`', '`option`', '`otherDebt`', '`ownershipPrivateCompany`',
-   * '`pevcFirm`', '`pevcFund`', '`privateCompany`', '`publicCompany`',
-   * '`publicCompanyIndex`', '`sovereignDebt`', '`structuredProduct`', '`unknown`'
+   * @experimental The `classification` map can be used to specify the categorization of the
+   * instrument and help achieve interoperability between disparate data sources.
    */
-  classification?: string;
+  classification?: OrganizationClassification;
   /**
    * Any combination of instrument identifiers can be used together to resolve ambiguity, or
    * for a better match. Not all applications will use the same instrument identifiers, which
@@ -1173,16 +1184,10 @@ export interface FileAttachmentData {
  */
 export interface Instrument {
   /**
-   * @experimental classification of the instrument by type or category. SHOULD be one of the
-   * following values, although other string values are permitted: '`commodity`',
-   * '`commodityIndex`', '`corporateDebt`', '`creditDefaultSwapIndex`', '`deal`', '`debt`',
-   * '`debtIndex`', '`etf`', '`fixedIncome`', '`future`', '`governmentBenchmarkDebt`',
-   * '`loan`', '`mortgageBackedSecurity`', '`municipalDebt`', '`mutualFund`',
-   * '`mutualFundIndex`', '`option`', '`otherDebt`', '`ownershipPrivateCompany`',
-   * '`pevcFirm`', '`pevcFund`', '`privateCompany`', '`publicCompany`',
-   * '`publicCompanyIndex`', '`sovereignDebt`', '`structuredProduct`', '`unknown`'
+   * @experimental The `classification` map can be used to specify the categorization of the
+   * instrument and help achieve interoperability between disparate data sources.
    */
-  classification?: string;
+  classification?: PurpleInstrumentClassification;
   /**
    * Any combination of instrument identifiers can be used together to resolve ambiguity, or
    * for a better match. Not all applications will use the same instrument identifiers, which
@@ -1210,6 +1215,29 @@ export interface Instrument {
    */
   name?: string;
   type: 'fdc3.instrument';
+  [property: string]: any;
+}
+
+/**
+ * @experimental The `classification` map can be used to specify the categorization of the
+ * instrument and help achieve interoperability between disparate data sources.
+ */
+export interface PurpleInstrumentClassification {
+  /**
+   * classification of the instrument by type or category. SHOULD be one of the following
+   * values, although other string values are permitted: '`commodity`', '`commodityIndex`',
+   * '`corporateDebt`', '`creditDefaultSwapIndex`', '`deal`', '`debt`', '`debtIndex`',
+   * '`etf`', '`fixedIncome`', '`future`', '`governmentBenchmarkDebt`', '`loan`',
+   * '`mortgageBackedSecurity`', '`municipalDebt`', '`mutualFund`', '`mutualFundIndex`',
+   * '`option`', '`otherDebt`', '`ownershipPrivateCompany`', '`pevcFirm`', '`pevcFund`',
+   * '`privateCompany`', '`publicCompany`', '`publicCompanyIndex`', '`sovereignDebt`',
+   * '`structuredProduct`', '`unknown`'
+   */
+  fdc3?: string;
+  /**
+   * FactSet classification for the instrument.
+   */
+  FDS_TYPE?: string;
   [property: string]: any;
 }
 
@@ -2426,11 +2454,18 @@ const typeMap: any = {
   ),
   InstrumentElement: o(
     [
-      { json: 'classification', js: 'classification', typ: u(undefined, '') },
+      { json: 'classification', js: 'classification', typ: u(undefined, r('OrganizationClassification')) },
       { json: 'id', js: 'id', typ: r('PurpleInstrumentIdentifiers') },
       { json: 'market', js: 'market', typ: u(undefined, r('OrganizationMarket')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('PurpleAppID') },
+    ],
+    'any'
+  ),
+  OrganizationClassification: o(
+    [
+      { json: 'fdc3', js: 'fdc3', typ: u(undefined, '') },
+      { json: 'FDS_TYPE', js: 'FDS_TYPE', typ: u(undefined, '') },
     ],
     'any'
   ),
@@ -2593,7 +2628,7 @@ const typeMap: any = {
   ),
   OrganizationObject: o(
     [
-      { json: 'classification', js: 'classification', typ: u(undefined, '') },
+      { json: 'classification', js: 'classification', typ: u(undefined, r('OrganizationClassification')) },
       { json: 'id', js: 'id', typ: r('Identifiers') },
       { json: 'market', js: 'market', typ: u(undefined, r('OrganizationMarket')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
@@ -2720,11 +2755,18 @@ const typeMap: any = {
   ),
   Instrument: o(
     [
-      { json: 'classification', js: 'classification', typ: u(undefined, '') },
+      { json: 'classification', js: 'classification', typ: u(undefined, r('PurpleInstrumentClassification')) },
       { json: 'id', js: 'id', typ: r('FluffyInstrumentIdentifiers') },
       { json: 'market', js: 'market', typ: u(undefined, r('PurpleMarket')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('PurpleAppID') },
+    ],
+    'any'
+  ),
+  PurpleInstrumentClassification: o(
+    [
+      { json: 'fdc3', js: 'fdc3', typ: u(undefined, '') },
+      { json: 'FDS_TYPE', js: 'FDS_TYPE', typ: u(undefined, '') },
     ],
     'any'
   ),
