@@ -24,9 +24,8 @@ export async function initializeServer(
       return false;
     }
 
-    // For demo purposes, allow localhost URLs
+    // For demo purposes, allow localhost as well as any https url
     // in production, this should be a more restrictive
-    // allow list and only allow https URLs
     return ['https://', 'http://localhost', 'http://127.0.0.1'].some(allowed => jku.startsWith(allowed));
   };
 
