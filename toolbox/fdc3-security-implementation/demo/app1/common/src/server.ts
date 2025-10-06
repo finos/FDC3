@@ -20,16 +20,14 @@ export async function initializeServer(
   });
 
   const allowListFunction: AllowListFunction = (jku: string, iss?: string) => {
-    if (iss) {
-      if (!jku.startsWith(iss)) {
-        return false;
-      }
+    if (iss && !jku.startsWith(iss)) {
+      return false;
     }
 
     // For demo purposes, allow localhost URLs
     // in production, this should be a more restrictive
     // allow list and only allow https URLs
-    return jku.startsWith('http://localhost') || jku.startsWith('http://127.0.0.1');
+    return ['https://', 'http://localhost', 'http://127.0.0.1'].some(allowed => jku.startsWith(allowed));
   };
 
   const fdc3Security = await createJosePrivateFDC3Security(
