@@ -281,6 +281,10 @@ export interface InstrumentElement {
  */
 export interface OrganizationClassification {
   /**
+   * FactSet classification for the instrument.
+   */
+  FDS_TYPE?: string;
+  /**
    * classification of the instrument by type or category. SHOULD be one of the following
    * values, although other string values are permitted: '`commodity`', '`commodityIndex`',
    * '`corporateDebt`', '`creditDefaultSwapIndex`', '`deal`', '`debt`', '`debtIndex`',
@@ -290,11 +294,7 @@ export interface OrganizationClassification {
    * '`privateCompany`', '`publicCompany`', '`publicCompanyIndex`', '`sovereignDebt`',
    * '`structuredProduct`', '`unknown`'
    */
-  fdc3?: string;
-  /**
-   * FactSet classification for the instrument.
-   */
-  FDS_TYPE?: string;
+  name?: string;
   [property: string]: any;
 }
 
@@ -1224,6 +1224,10 @@ export interface Instrument {
  */
 export interface PurpleInstrumentClassification {
   /**
+   * FactSet classification for the instrument.
+   */
+  FDS_TYPE?: string;
+  /**
    * classification of the instrument by type or category. SHOULD be one of the following
    * values, although other string values are permitted: '`commodity`', '`commodityIndex`',
    * '`corporateDebt`', '`creditDefaultSwapIndex`', '`deal`', '`debt`', '`debtIndex`',
@@ -1233,11 +1237,7 @@ export interface PurpleInstrumentClassification {
    * '`privateCompany`', '`publicCompany`', '`publicCompanyIndex`', '`sovereignDebt`',
    * '`structuredProduct`', '`unknown`'
    */
-  fdc3?: string;
-  /**
-   * FactSet classification for the instrument.
-   */
-  FDS_TYPE?: string;
+  name?: string;
   [property: string]: any;
 }
 
@@ -2464,8 +2464,8 @@ const typeMap: any = {
   ),
   OrganizationClassification: o(
     [
-      { json: 'fdc3', js: 'fdc3', typ: u(undefined, '') },
       { json: 'FDS_TYPE', js: 'FDS_TYPE', typ: u(undefined, '') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
@@ -2765,8 +2765,8 @@ const typeMap: any = {
   ),
   PurpleInstrumentClassification: o(
     [
-      { json: 'fdc3', js: 'fdc3', typ: u(undefined, '') },
       { json: 'FDS_TYPE', js: 'FDS_TYPE', typ: u(undefined, '') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
