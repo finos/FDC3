@@ -171,6 +171,35 @@ The `market` map can be used to further specify the instrument and help achieve 
 
 </details>
 
+<details>
+  <summary><code>classification</code></summary>
+
+**type**: `object`
+
+**Subproperties:**
+
+<details>
+  <summary><code>name</code></summary>
+
+**type**: `string`
+
+classification of the instrument by type or category. SHOULD be one of the following values, although other string values are permitted: '`commodity`', '`commodityIndex`', '`corporateDebt`', '`creditDefaultSwapIndex`', '`deal`', '`debt`', '`debtIndex`', '`etf`', '`fixedIncome`', '`future`', '`governmentBenchmarkDebt`', '`loan`', '`mortgageBackedSecurity`', '`municipalDebt`', '`mutualFund`', '`mutualFundIndex`', '`option`', '`otherDebt`', '`ownershipPrivateCompany`', '`pevcFirm`', '`pevcFund`', '`privateCompany`', '`publicCompany`', '`publicCompanyIndex`', '`sovereignDebt`', '`structuredProduct`', '`unknown`'
+
+</details>
+
+<details>
+  <summary><code>FDS_TYPE</code></summary>
+
+**type**: `string`
+
+FactSet classification for the instrument.
+
+</details>
+
+[@experimental](/docs/fdc3-compliance#experimental-features) The `classification` map can be used to specify the categorization of the instrument and help achieve interoperability between disparate data sources.
+
+</details>
+
 ## Example
 
 ```json
@@ -184,6 +213,9 @@ The `market` map can be used to further specify the instrument and help achieve 
   },
   "market": {
     "MIC": "XNAS"
+  },
+  "classification": {
+    "name": "publicCompany"
   }
 }
 ```
