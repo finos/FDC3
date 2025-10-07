@@ -179,7 +179,7 @@ The `market` map can be used to further specify the instrument and help achieve 
 **Subproperties:**
 
 <details>
-  <summary><code>fdc3</code></summary>
+  <summary><code>name</code></summary>
 
 **type**: `string`
 
@@ -215,7 +215,7 @@ FactSet classification for the instrument.
     "MIC": "XNAS"
   },
   "classification": {
-    "fdc3": "publicCompany"
+    "name": "publicCompany"
   }
 }
 ```
