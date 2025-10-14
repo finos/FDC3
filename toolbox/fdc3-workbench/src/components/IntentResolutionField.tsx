@@ -7,9 +7,9 @@ import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { TextField } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { ChannelField } from './ChannelField';
-import appChannelStore from '../store/AppChannelStore';
-import privateChannelStore from '../store/PrivateChannelStore';
+import { ChannelField } from './ChannelField.js';
+import appChannelStore from '../store/AppChannelStore.js';
+import privateChannelStore from '../store/PrivateChannelStore.js';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

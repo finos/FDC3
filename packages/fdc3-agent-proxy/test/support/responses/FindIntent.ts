@@ -1,11 +1,11 @@
 import { AppMetadata } from '@finos/fdc3-standard';
-import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from '../TestMessaging';
+import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from '../TestMessaging.js';
 import {
   AppRequestMessage,
   FindIntentRequest,
   FindIntentResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
-import { createResponseMeta } from './support';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { createResponseMeta } from './support.js';
 
 export class FindIntent implements AutomaticResponse {
   filter(t: string) {

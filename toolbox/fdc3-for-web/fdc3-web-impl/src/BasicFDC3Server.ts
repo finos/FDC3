@@ -1,15 +1,15 @@
-import { FDC3Server } from './FDC3Server';
-import { AppRegistration, InstanceID, ServerContext, State } from './ServerContext';
-import { BroadcastHandler, ChannelState } from './handlers/BroadcastHandler';
-import { IntentHandler } from './handlers/IntentHandler';
-import { Directory } from './directory/DirectoryInterface';
-import { OpenHandler } from './handlers/OpenHandler';
-import { HeartbeatHandler } from './handlers/HeartbeatHandler';
+import { FDC3Server } from './FDC3Server.js';
+import { AppRegistration, InstanceID, ServerContext, State } from './ServerContext.js';
+import { BroadcastHandler, ChannelState } from './handlers/BroadcastHandler.js';
+import { IntentHandler } from './handlers/IntentHandler.js';
+import { Directory } from './directory/DirectoryInterface.js';
+import { OpenHandler } from './handlers/OpenHandler.js';
+import { HeartbeatHandler } from './handlers/HeartbeatHandler.js';
 import {
   AppRequestMessage,
   WebConnectionProtocol4ValidateAppIdentity,
   WebConnectionProtocol6Goodbye,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 export interface MessageHandler {
   /**

@@ -3,19 +3,19 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import { AppIntent } from './AppIntent';
-import { Channel } from './Channel';
-import { ContextHandler, IntentHandler } from './Types';
-import { IntentResolution } from './IntentResolution';
-import { Listener } from './Listener';
+import { AppIntent } from './AppIntent.js';
+import { Channel } from './Channel.js';
+import { ContextHandler, IntentHandler } from './Types.js';
+import { IntentResolution } from './IntentResolution.js';
+import { Listener } from './Listener.js';
 import { Context } from '@finos/fdc3-context';
-import { ImplementationMetadata } from './ImplementationMetadata';
-import { PrivateChannel } from './PrivateChannel';
-import { AppIdentifier } from './AppIdentifier';
-import { AppMetadata } from './AppMetadata';
-import { Intent } from '../intents/Intents';
-import { ContextType } from '../context/ContextType';
-import { EventHandler, FDC3EventTypes } from './Events';
+import { ImplementationMetadata } from './ImplementationMetadata.js';
+import { PrivateChannel } from './PrivateChannel.js';
+import { AppIdentifier } from './AppIdentifier.js';
+import { AppMetadata } from './AppMetadata.js';
+import { Intent } from '../intents/Intents.js';
+import { ContextType } from '../context/ContextType.js';
+import { EventHandler, FDC3EventTypes } from './Events.js';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a

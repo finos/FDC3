@@ -1,10 +1,10 @@
 import { When } from '@cucumber/cucumber';
-import { CustomWorld } from '../world';
-import { throwIfUndefined } from '../../src/util/throwIfUndefined';
-import { AgentResponseMessage } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+import { CustomWorld } from '../world/index.js';
+import { throwIfUndefined } from '../../src/util/throwIfUndefined.js';
+import { AgentResponseMessage } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { LogLevel, OpenError } from '@finos/fdc3-standard';
 import expect from 'expect';
-import { Logger } from '../../src/util/Logger';
+import { Logger } from '../../src/util/Logger.js';
 
 When('I call throwIfUndefined it throws if a specified property is not defined', async function (this: CustomWorld) {
   let thrown: Error | null = null;

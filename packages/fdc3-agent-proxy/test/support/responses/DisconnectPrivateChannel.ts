@@ -1,9 +1,9 @@
-import { AutomaticResponse, TestMessaging } from '../TestMessaging';
-import { createResponseMeta } from './support';
+import { AutomaticResponse, TestMessaging } from '../TestMessaging.js';
+import { createResponseMeta } from './support.js';
 import {
   PrivateChannelDisconnectRequest,
   PrivateChannelDisconnectResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 export class DisconnectPrivateChannel implements AutomaticResponse {
   count: number = 0;

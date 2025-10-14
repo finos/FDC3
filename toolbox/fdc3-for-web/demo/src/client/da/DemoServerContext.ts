@@ -9,7 +9,7 @@ import {
 } from '@finos/fdc3-web-impl';
 import { Socket } from 'socket.io-client';
 import { v4 as uuid } from 'uuid';
-import { FDC3_DA_EVENT } from '../../message-types';
+import { FDC3_DA_EVENT } from '../../message-types.js';
 import { AppIdentifier, AppIntent, OpenError } from '@finos/fdc3';
 
 enum Opener {

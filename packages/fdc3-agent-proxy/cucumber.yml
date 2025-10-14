@@ -5,7 +5,7 @@ default:
     - junit:test-results.xml
   paths: 
    - test/features/*.feature
-  require: 
+  import: 
    - test/step-definitions/*.steps.ts 
    - test/support/*.ts
    - test/world/index.ts

@@ -8,13 +8,13 @@ import {
   ChannelError,
   ApiEvent,
 } from '@finos/fdc3-standard';
-import { Messaging } from '../Messaging';
-import { ChannelSupport } from './ChannelSupport';
-import { DefaultPrivateChannel } from './DefaultPrivateChannel';
-import { DefaultChannel } from './DefaultChannel';
-import { DefaultContextListener } from '../listeners/DefaultContextListener';
-import { UserChannelContextListener } from '../listeners/UserChannelContextListener';
-import { EventListener } from '../listeners/EventListener';
+import { Messaging } from '../Messaging.js';
+import { ChannelSupport } from './ChannelSupport.js';
+import { DefaultPrivateChannel } from './DefaultPrivateChannel.js';
+import { DefaultChannel } from './DefaultChannel.js';
+import { DefaultContextListener } from '../listeners/DefaultContextListener.js';
+import { UserChannelContextListener } from '../listeners/UserChannelContextListener.js';
+import { EventListener } from '../listeners/EventListener.js';
 import {
   GetCurrentChannelResponse,
   GetCurrentChannelRequest,
@@ -29,9 +29,9 @@ import {
   JoinUserChannelResponse,
   JoinUserChannelRequest,
   ChannelChangedEvent,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
-import { throwIfUndefined } from '../util/throwIfUndefined';
-import { Logger } from '../util/Logger';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { throwIfUndefined } from '../util/throwIfUndefined.js';
+import { Logger } from '../util/Logger.js';
 
 export class DefaultChannelSupport implements ChannelSupport {
   readonly messaging: Messaging;

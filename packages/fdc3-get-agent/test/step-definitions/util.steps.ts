@@ -1,7 +1,7 @@
 import { When } from '@cucumber/cucumber';
-import { CustomWorld } from '../world';
-import { Logger } from '../../src/util/Logger';
-import { createUUID } from '../../src/util/Uuid';
+import { CustomWorld } from '../world/index.js';
+import { Logger } from '../../src/util/Logger.js';
+import { createUUID } from '../../src/util/Uuid.js';
 
 const TEST_ERROR = 'Test error - This is expected on the console';
 
