@@ -4,7 +4,7 @@
     "version": "2.2.0",
     "license": "Apache-2.0",
     "scripts": {
-        "dev": "nodemon -w src/server src/server/main.ts",
+        "dev": "tsx src/server/main.ts",
         "lint": "eslint src/"
     },
     "devDependencies": {
