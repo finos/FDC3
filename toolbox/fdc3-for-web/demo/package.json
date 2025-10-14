@@ -1,10 +1,10 @@
 {
   "name": "@finos/demo",
   "private": true,
-  "version": "2.2.2-beta.1",
+  "version": "2.2.0",
   "license": "Apache-2.0",
   "scripts": {
-    "dev": "nodemon -w src/server src/server/main.ts",
+    "dev": "tsx src/server/main.ts",
     "lint": "eslint src/"
   },
   "devDependencies": {
@@ -22,7 +22,7 @@
     "vite": "^6.4.1"
   },
   "dependencies": {
-    "@finos/fdc3": "2.2.2-beta.1",
+    "@finos/fdc3": "2.2.0",
     "@types/uuid": "^10.0.0",
     "@types/ws": "^8.5.12",
     "express": "^4.21.1",
