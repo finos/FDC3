@@ -52,7 +52,7 @@ export class HelloHandler {
       payload: {
         channelSelector: this.options.channelSelector,
         fdc3Version: FDC3_VERSION,
-        resolver: this.options.intentResolver,
+        intentResolver: this.options.intentResolver,
         identityUrl: this.options.identityUrl!,
         actualUrl: globalThis.window.location.href,
       },

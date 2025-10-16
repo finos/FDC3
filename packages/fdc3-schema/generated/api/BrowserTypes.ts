@@ -149,7 +149,6 @@ export interface WebConnectionProtocol1HelloPayload {
    * `false` if no intents, or only targeted intents, are raised.
    */
   intentResolver?: boolean;
-  [property: string]: any;
 }
 
 /**
@@ -189,7 +188,6 @@ export interface WebConnectionProtocol2LoadURLPayload {
    * target.
    */
   iframeUrl: string;
-  [property: string]: any;
 }
 
 /**
@@ -4936,7 +4934,7 @@ const typeMap: any = {
       { json: 'identityUrl', js: 'identityUrl', typ: '' },
       { json: 'intentResolver', js: 'intentResolver', typ: u(undefined, true) },
     ],
-    'any'
+    false
   ),
   WebConnectionProtocol2LoadURL: o(
     [
@@ -4946,7 +4944,7 @@ const typeMap: any = {
     ],
     false
   ),
-  WebConnectionProtocol2LoadURLPayload: o([{ json: 'iframeUrl', js: 'iframeUrl', typ: '' }], 'any'),
+  WebConnectionProtocol2LoadURLPayload: o([{ json: 'iframeUrl', js: 'iframeUrl', typ: '' }], false),
   WebConnectionProtocol3Handshake: o(
     [
       { json: 'meta', js: 'meta', typ: r('WebConnectionProtocol1HelloMeta') },
