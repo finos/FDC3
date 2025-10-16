@@ -1,0 +1,28 @@
+{
+    "applications": [
+        {
+            "appId": "Symphony",
+            "name": "Symphony",
+            "title": "Symphony",
+            "description": "Symphony, used by the security POC apps to get a JWT",
+            "type": "web",
+            "details": {
+                "url": "https://develop2.symphony.com/apps/client2/innovate?spApps=symphony-fdc3:innovate"
+            },
+            "interop": {
+                "intents": {
+                    "listensFor": {
+                        "GetUser": {
+                            "displayName": "Retrieve the User JWT",
+                            "contexts": [
+                                "fdc3.user.request"
+                            ],
+                            "resultType": "fdc3.user"
+                        }
+                    }
+                }
+            }
+        }
+    ],
+    "message": "OK"
+}
