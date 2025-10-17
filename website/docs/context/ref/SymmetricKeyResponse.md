@@ -26,11 +26,20 @@ A response containing a wrapped symmetric key and metadata.
 **Subproperties:**
 
 <details>
-  <summary><code>publicKeyUrl</code> <strong>(required)</strong></summary>
+  <summary><code>kid</code> <strong>(required)</strong></summary>
 
 **type**: `string`
 
-URL pointing to the public key used to wrap the symmetric key.
+Key ID used to identify the public key used to wrap the symmetric key.
+
+</details>
+
+<details>
+  <summary><code>pki</code> <strong>(required)</strong></summary>
+
+**type**: `string`
+
+Public Key Infrastructure JSON Web Key Set URL used to wrap the symmetric key.
 
 </details>
 
@@ -52,114 +61,16 @@ The symmetric key, encrypted using the recipient's public key.
 
 </details>
 
-<details>
-  <summary><code>algorithm</code> <strong>(required)</strong></summary>
-
-**type**: `object`
-
-**Subproperties:**
-
-<details>
-  <summary><code>name</code> <strong>(required)</strong></summary>
-
-**type**: `string`
-
-The algorithm name.
-
-
-**Example**: 
-
-```js
-"RSA-OAEP"
-```
-
-</details>
-
-<details>
-  <summary><code>modulusLength</code> <strong>(required)</strong></summary>
-
-**type**: `integer`
-
-Length of the RSA key modulus in bits.
-
-
-**Example**: 
-
-```js
-4096
-```
-
-</details>
-
-<details>
-  <summary><code>publicExponent</code> <strong>(required)</strong></summary>
-
-**type**: `array`
-
-<details>
-  <summary><code>Items</code></summary>
-
-**type**: `integer`
-
-</details>
-
-The public exponent used for key generation.
-
-
-**Example**: 
-
-```js
-[
-  1,
-  0,
-  1
-]
-```
-
-</details>
-
-<details>
-  <summary><code>hash</code> <strong>(required)</strong></summary>
-
-**type**: `string` with values:
-- `SHA-256`,
-- `SHA-384`,
-- `SHA-512`
-
-The name of the hash algorithm used with RSA-OAEP.
-
-
-**Example**: 
-
-```js
-"SHA-256"
-```
-
-</details>
-
-The encryption algorithm parameters used for key wrapping.
-
-</details>
-
 ## Example
 
 ```json
 {
   "type": "fdc3.security.symmetricKey.response",
   "id": {
-    "publicKeyUrl": "https://example.com/keys/public.pem"
+    "kid": "key-id-123",
+    "pki": "https://examples.com/myJWKSendpoint"
   },
-  "wrappedKey": "u4jvA7Gx8LdH...==",
-  "algorithm": {
-    "name": "RSA-OAEP",
-    "modulusLength": 4096,
-    "publicExponent": [
-      1,
-      0,
-      1
-    ],
-    "hash": "SHA-256"
-  }
+  "wrappedKey": "u4jvA7Gx8LdH...=="
 }
 ```
 
