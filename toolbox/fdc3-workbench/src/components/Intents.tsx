@@ -463,6 +463,7 @@ export const Intents = observer(
       } else {
         intentStore.addIntentListener(
           intentListener.value,
+          undefined,
           sendIntentResult && resultType === 'context-result' ? toJS(resultTypeContext) : null,
           sendIntentResult && resultType === 'channel-result' ? currentAppChannelId : undefined,
           sendIntentResult && resultType === 'channel-result' ? channelType === 'private-channel' : undefined,
