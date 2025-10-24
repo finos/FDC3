@@ -184,6 +184,10 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
   const [targetApp, setTargetApp] = useState<string>('None');
   const [contextTargetApp, setContextTargetApp] = useState<string>('None');
   const [raiseIntentContext, setRaiseIntentContext] = useState<ContextType | null>(null);
+  const [addIntentListenerWithContextContext, setAddIntentListenerWithContextContext] = useState<ContextType | null>(
+    null
+  );
+
   const [raiseIntentWithContextContext, setRaiseIntentWithContextContext] = useState<ContextType | null>(null);
   const [intentError, setIntentError] = useState<string | false>(false);
   const [intentResolution, setIntentResolution] = useState<IntentResolution | undefined | null>(null);
@@ -204,6 +208,8 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
   const [currentAppChannelId, setCurrentAppChannelId] = useState<string>('');
   const [targetOptions, setTargetOptions] = useState<ReactElement[]>([]);
   const [targetOptionsforContext, setTargetOptionsforContext] = useState<ReactElement[]>([]);
+
+  const [addListenerWithContext, setAddListenerWithContext] = useState<boolean | undefined>(false);
 
   const handleRaiseIntent = async () => {
     setIntentResolution(null);
@@ -455,6 +461,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
     } else {
       intentStore.addIntentListener(
         intentListener.value,
+        undefined,
         sendIntentResult && resultType === 'context-result' ? toJS(resultTypeContext) : null,
         sendIntentResult && resultType === 'channel-result' ? currentAppChannelId : undefined,
         sendIntentResult && resultType === 'channel-result' ? channelType === 'private-channel' : undefined,
@@ -462,6 +469,28 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
         sendIntentResult && resultType === 'channel-result' ? resultOverChannelContextDelays : undefined
       );
       setIntentListener(null);
+    }
+    setSendIntentResult(false);
+  };
+
+  const handleAddIntentListenerWithContext = () => {
+    if (!intentListener) {
+      setIntentError('Enter intent');
+      return;
+    } else if (!addIntentListenerWithContextContext) {
+      setIntentError('Enter Context');
+    } else {
+      intentStore.addIntentListener(
+        intentListener.value,
+        addIntentListenerWithContextContext,
+        sendIntentResult && resultType === 'context-result' ? toJS(resultTypeContext) : null,
+        sendIntentResult && resultType === 'channel-result' ? currentAppChannelId : undefined,
+        sendIntentResult && resultType === 'channel-result' ? channelType === 'private-channel' : undefined,
+        sendIntentResult && resultType === 'channel-result' ? resultOverChannelContextList : undefined,
+        sendIntentResult && resultType === 'channel-result' ? resultOverChannelContextDelays : undefined
+      );
+      setIntentListener(null);
+      setAddIntentListenerWithContextContext(null);
     }
     setSendIntentResult(false);
   };
@@ -880,6 +909,66 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
               </Link>
             </Grid>
           </Grid>
+
+          <Grid item xs={12}>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    className={classes.input}
+                    color="default"
+                    checked={addListenerWithContext}
+                    onChange={e => setAddListenerWithContext(e.target.checked)}
+                  />
+                }
+                label="Add intent listener with context"
+              />
+            </FormGroup>
+          </Grid>
+
+          {addListenerWithContext && (
+            <Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
+              <Grid item className={`${classes.field} ${classes.removeSidePadding}`}>
+                <ContextTemplates
+                  handleTabChange={handleTabChange}
+                  contextStateSetter={setAddIntentListenerWithContextContext}
+                />
+              </Grid>
+              <Grid item className={classes.controls}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={handleAddIntentListenerWithContext}
+                  disabled={intentListener === null || addIntentListenerWithContextContext === null}
+                >
+                  Add listener
+                </Button>
+
+                <Tooltip title="Copy code example" aria-label="Copy code example">
+                  <IconButton
+                    size="small"
+                    aria-label="Copy code example"
+                    color="primary"
+                    onClick={() => {
+                      let exampleToUse = codeExamples.intentListenerWithContext;
+                      copyToClipboard(exampleToUse, 'addIntentListenerWithContext')();
+                    }}
+                  >
+                    <FileCopyIcon />
+                  </IconButton>
+                </Tooltip>
+
+                <Link
+                  onClick={openApiDocsLink}
+                  target="FDC3APIDocs"
+                  href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#addintentlistenerWithContext"
+                >
+                  <InfoOutlinedIcon />
+                </Link>
+              </Grid>
+            </Grid>
+          )}
+
           {window.fdc3Version === '2.0' && (
             <Grid item xs={12}>
               <FormGroup>
@@ -897,6 +986,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
               </FormGroup>
             </Grid>
           )}
+
           {sendIntentResult && (
             <Grid item xs={12} className={classes.indentLeft}>
               <RadioGroup name="intent-result-type" value={resultType} onChange={e => setResultType(e.target.value)}>
