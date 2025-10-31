@@ -5,11 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
+* Enhanced method binding for FDC3 API objects to support destructuring. All public methods of `Channel`, `PrivateChannel`, and `IntentResolution` objects are now properly bound to their instances using `.bind(this)` in their constructors. ([#1645](https://github.com/finos/FDC3/issues/1645))
 
 ### Added
 * Add a notes field to Trade type ([#1563](https://github.com/finos/FDC3/pull/1563))
 * Add a notes field to Order and Product types ([#1597](https://github.com/finos/FDC3/pull/1597))
 * Added Go language binding. ([#1483](https://github.com/finos/FDC3/pull/1483))
+* Added dynamic intent listener support to the reference Desktop Agent implementation ([#1613](https://github.com/finos/FDC3/pull/1613))
 * Added details of and procedures for resolving fully-qualified appIds and unqualified appIds in the API and Bridging Parts of the Standard. ([#1523](https://github.com/finos/FDC3/pull/1523))
 * Added clarification regarding expected behavior upon repeated calls to `addContextListener` on same or overlapping types (allowed) and `addIntentListener` on same intent (rejected; new error type added). ([#1394](https://github.com/finos/FDC3/pull/1394))
 * Ported FDC3 Conformance Project as-is into the FDC3 Monorepo, just including minimal fixes for typescript compilation. ([#1576](https://github.com/finos/FDC3/pull/1576))
@@ -25,6 +27,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Deprecated
 
 ### Fixed
+
+* Corrected the property set in WCP1Hello by getAgent that indicates whether an intent resolver is needed. ([#1684](https://github.com/finos/FDC3/issues/1684))
 * Add unit tests to the fdc3-context package for validating context examples are valid schema.
 * Revert schema of `fdc3.timeRange` context type back to use anyOf in place of oneOf for the `startTime` and `endTime` property combinations.  This will allow existence of one of either, or both, and pass schema validation.  When defined with oneOf, validation would fail due to multiple entries being valid and it could not identify which to apply. ([#1592](https://github.com/finos/FDC3/issues/1592))
 * Revert schema of `fdc3.interaction` context type back to use anyOf in place of oneOf for the `interactionType` property.  Since it could be a string enum or a string, validation could not differentiate. ([#1598](https://github.com/finos/FDC3/issues/1598))

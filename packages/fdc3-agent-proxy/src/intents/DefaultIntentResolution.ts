@@ -12,6 +12,9 @@ export class DefaultIntentResolution implements IntentResolution {
     this.result = result;
     this.source = source;
     this.intent = intent;
+
+    //bind all functions to allow destructuring
+    this.getResult = this.getResult.bind(this);
   }
 
   getResult(): Promise<IntentResult> {
