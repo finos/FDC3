@@ -30,7 +30,8 @@ export class EntraBusinessLogic implements FDC3Handlers {
    */
   private isTrusted(aud: string, jku: string): boolean {
     const allowListFunction = (this.fdc3Security as JosePrivateFDC3Security).allowListFunction;
-    return allowListFunction(jku, aud);
+    const out = allowListFunction(jku, aud);
+    return out;
   }
 
   async remoteIntentHandler(intent: string): Promise<IntentHandler> {
@@ -62,8 +63,6 @@ export class EntraBusinessLogic implements FDC3Handlers {
             };
           }
         }
-
-        throw new Error('Unauthorized: ' + JSON.stringify(ctx));
       };
 
       return ih;
