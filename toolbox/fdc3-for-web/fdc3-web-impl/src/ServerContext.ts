@@ -1,4 +1,4 @@
-import { AppIdentifier, AppIntent } from '@finos/fdc3-standard';
+import { AppIdentifier, AppIntent, DisplayMetadata, PrivateChannelEventTypes } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { FDC3Server } from './FDC3Server';
 
@@ -13,6 +13,42 @@ export type AppRegistration = {
   state: State;
   appId: string;
   instanceId: InstanceID;
+};
+
+export type ContextListenerRegistration = {
+  appId: string;
+  instanceId: string;
+  listenerUuid: string;
+  channelId: string | null;
+  contextType: string | null;
+};
+
+export type PrivateChannelEventListener = {
+  appId: string;
+  instanceId: string;
+  channelId: string;
+  eventType: PrivateChannelEventTypes | null;
+  listenerUuid: string;
+};
+
+export type DesktopAgentEventListener = {
+  appId: string;
+  instanceId: string;
+  eventType: string | null;
+  listenerUuid: string;
+};
+
+export enum ChannelType {
+  'user',
+  'app',
+  'private',
+}
+
+export type ChannelState = {
+  id: string;
+  type: ChannelType;
+  context: Context[];
+  displayMetadata: DisplayMetadata;
 };
 
 /**
@@ -110,4 +146,99 @@ export interface ServerContext<X extends AppRegistration> {
    * or otherwise mess with the available intents, or do nothing.
    */
   narrowIntents(raiser: AppIdentifier, IappIntents: AppIntent[], context: Context): Promise<AppIntent[]>;
+
+  // Channel state management
+  /**
+   * Get all channel states (user, app, and private channels)
+   */
+  getChannelStates(): ChannelState[];
+
+  /**
+   * Add a new channel state
+   */
+  addChannelState(channel: ChannelState): void;
+
+  /**
+   * Get a channel by its ID
+   */
+  getChannelById(channelId: string | null): ChannelState | null;
+
+  /**
+   * Update the context for a specific channel
+   */
+  updateChannelContext(channelId: string, context: Context): void;
+
+  // Current channel tracking
+  /**
+   * Get the current channel for an instance
+   */
+  getCurrentChannel(instanceId: InstanceID): ChannelState | null;
+
+  /**
+   * Set the current channel for an instance
+   */
+  setCurrentChannel(instanceId: InstanceID, channel: ChannelState | null): void;
+
+  // Context listener management
+  /**
+   * Get all context listeners
+   */
+  getContextListeners(): ContextListenerRegistration[];
+
+  /**
+   * Add a context listener
+   */
+  addContextListener(listener: ContextListenerRegistration): void;
+
+  /**
+   * Remove a context listener by UUID
+   */
+  removeContextListener(listenerUuid: string, instanceId: InstanceID): boolean;
+
+  /**
+   * Remove all context listeners for an instance
+   */
+  removeContextListenersByInstance(instanceId: InstanceID): ContextListenerRegistration[];
+
+  // Private channel event listener management
+  /**
+   * Get all private channel event listeners
+   */
+  getPrivateChannelEventListeners(): PrivateChannelEventListener[];
+
+  /**
+   * Add a private channel event listener
+   */
+  addPrivateChannelEventListener(listener: PrivateChannelEventListener): void;
+
+  /**
+   * Remove a private channel event listener by UUID
+   */
+  removePrivateChannelEventListener(listenerUuid: string): boolean;
+
+  /**
+   * Remove all private channel event listeners for an instance
+   */
+  removePrivateChannelEventListenersByInstance(instanceId: InstanceID): PrivateChannelEventListener[];
+
+  // Desktop agent event listener management
+  /**
+   * Get all desktop agent event listeners
+   */
+  getDesktopAgentEventListeners(): DesktopAgentEventListener[];
+
+  /**
+   * Add a desktop agent event listener
+   */
+  addDesktopAgentEventListener(listener: DesktopAgentEventListener): void;
+
+  /**
+   * Remove a desktop agent event listener by UUID
+   */
+  removeDesktopAgentEventListener(listenerUuid: string): boolean;
+
+  /**
+   * Remove all desktop agent event listeners for an instance
+   */
+  removeDesktopAgentEventListenersByInstance(instanceId: InstanceID): DesktopAgentEventListener[];
 }

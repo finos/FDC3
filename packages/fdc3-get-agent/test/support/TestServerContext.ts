@@ -1,7 +1,16 @@
-import { ServerContext, InstanceID, FDC3Server } from '@finos/fdc3-web-impl';
+import {
+  ServerContext,
+  InstanceID,
+  FDC3Server,
+  ChannelState,
+  ContextListenerRegistration,
+  PrivateChannelEventListener,
+  DesktopAgentEventListener,
+} from '@finos/fdc3-web-impl';
 import { CustomWorld } from '../world';
 import { OpenError, AppIdentifier, AppIntent } from '@finos/fdc3-standard';
 import { AppRegistration, State } from '@finos/fdc3-web-impl';
+import { Context } from '@finos/fdc3-context';
 
 type ConnectionDetails = AppRegistration & {
   msg?: object;
@@ -30,6 +39,13 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
 
   private nextInstanceId: number = 0;
   private nextUUID: number = 0;
+
+  // State previously managed by BroadcastHandler
+  private contextListeners: ContextListenerRegistration[] = [];
+  private privateChannelEventListeners: PrivateChannelEventListener[] = [];
+  private desktopAgentEventListeners: DesktopAgentEventListener[] = [];
+  private channelStates: ChannelState[] = [];
+  private currentChannels: { [instanceId: string]: ChannelState } = {};
 
   constructor(cw: CustomWorld) {
     this.cw = cw;
@@ -183,5 +199,118 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
 
   log(message: string): void {
     this.cw.log(message);
+  }
+
+  // Channel state management methods
+  getChannelStates(): ChannelState[] {
+    return this.channelStates;
+  }
+
+  addChannelState(channel: ChannelState): void {
+    this.channelStates.push(channel);
+  }
+
+  getChannelById(channelId: string | null): ChannelState | null {
+    if (channelId == null) {
+      return null;
+    }
+    return this.channelStates.find(c => c.id == channelId) ?? null;
+  }
+
+  updateChannelContext(channelId: string, context: Context): void {
+    const cs = this.getChannelById(channelId);
+    if (cs) {
+      cs.context = cs.context.filter(c => c.type != context.type);
+      cs.context.unshift(context);
+    }
+  }
+
+  // Current channel tracking methods
+  getCurrentChannel(instanceId: InstanceID): ChannelState | null {
+    return this.currentChannels[instanceId] ?? null;
+  }
+
+  setCurrentChannel(instanceId: InstanceID, channel: ChannelState | null): void {
+    if (channel === null) {
+      delete this.currentChannels[instanceId];
+    } else {
+      this.currentChannels[instanceId] = channel;
+    }
+  }
+
+  // Context listener management methods
+  getContextListeners(): ContextListenerRegistration[] {
+    return this.contextListeners;
+  }
+
+  addContextListener(listener: ContextListenerRegistration): void {
+    this.contextListeners.push(listener);
+  }
+
+  removeContextListener(listenerUuid: string, instanceId: InstanceID): boolean {
+    const i = this.contextListeners.findIndex(r => r.listenerUuid == listenerUuid && r.instanceId == instanceId);
+    if (i > -1) {
+      this.contextListeners.splice(i, 1);
+      return true;
+    }
+    return false;
+  }
+
+  removeContextListenersByInstance(instanceId: InstanceID): ContextListenerRegistration[] {
+    const removed = this.contextListeners.filter(r => r.instanceId == instanceId);
+    this.contextListeners = this.contextListeners.filter(listener => listener.instanceId !== instanceId);
+    return removed;
+  }
+
+  // Private channel event listener management methods
+  getPrivateChannelEventListeners(): PrivateChannelEventListener[] {
+    return this.privateChannelEventListeners;
+  }
+
+  addPrivateChannelEventListener(listener: PrivateChannelEventListener): void {
+    this.privateChannelEventListeners.push(listener);
+  }
+
+  removePrivateChannelEventListener(listenerUuid: string): boolean {
+    const i = this.privateChannelEventListeners.findIndex(r => r.listenerUuid == listenerUuid);
+    if (i > -1) {
+      this.privateChannelEventListeners.splice(i, 1);
+      return true;
+    }
+    return false;
+  }
+
+  removePrivateChannelEventListenersByInstance(instanceId: InstanceID): PrivateChannelEventListener[] {
+    const removed = this.privateChannelEventListeners.filter(listener => listener.instanceId == instanceId);
+    this.privateChannelEventListeners = this.privateChannelEventListeners.filter(
+      listener => listener.instanceId !== instanceId
+    );
+    return removed;
+  }
+
+  // Desktop agent event listener management methods
+  getDesktopAgentEventListeners(): DesktopAgentEventListener[] {
+    return this.desktopAgentEventListeners;
+  }
+
+  addDesktopAgentEventListener(listener: DesktopAgentEventListener): void {
+    this.desktopAgentEventListeners.push(listener);
+  }
+
+  removeDesktopAgentEventListener(listenerUuid: string): boolean {
+    const i = this.desktopAgentEventListeners.findIndex(r => r.listenerUuid == listenerUuid);
+    if (i > -1) {
+      this.desktopAgentEventListeners.splice(i, 1);
+      return true;
+    }
+    return false;
+  }
+
+  removeDesktopAgentEventListenersByInstance(instanceId: InstanceID): DesktopAgentEventListener[] {
+    const removed = this.desktopAgentEventListeners.filter(listener => listener.instanceId == instanceId);
+    this.desktopAgentEventListeners = this.desktopAgentEventListeners.filter(
+      listener => listener.instanceId !== instanceId
+    );
+    return removed;
   }
 }

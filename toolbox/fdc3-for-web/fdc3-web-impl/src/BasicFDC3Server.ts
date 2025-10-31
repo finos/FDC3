@@ -1,6 +1,6 @@
 import { FDC3Server } from './FDC3Server';
-import { AppRegistration, InstanceID, ServerContext, State } from './ServerContext';
-import { BroadcastHandler, ChannelState } from './handlers/BroadcastHandler';
+import { AppRegistration, ChannelState, InstanceID, ServerContext, State } from './ServerContext';
+import { BroadcastHandler } from './handlers/BroadcastHandler';
 import { IntentHandler } from './handlers/IntentHandler';
 import { Directory } from './directory/DirectoryInterface';
 import { OpenHandler } from './handlers/OpenHandler';
@@ -71,7 +71,7 @@ export class DefaultFDC3Server extends BasicFDC3Server {
     openHandlerTimeoutMs: number = 10000
   ) {
     const handlers: MessageHandler[] = [
-      new BroadcastHandler(userChannels),
+      new BroadcastHandler(userChannels, sc),
       new IntentHandler(directory, intentTimeoutMs),
       new OpenHandler(directory, openHandlerTimeoutMs),
     ];

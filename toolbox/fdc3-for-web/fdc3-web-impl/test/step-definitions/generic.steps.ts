@@ -3,7 +3,7 @@ import { CustomWorld } from '../world';
 import { TestServerContext } from '../support/TestServerContext';
 import { DefaultFDC3Server } from '../../src/BasicFDC3Server';
 import { BasicDirectory } from '../../src/directory/BasicDirectory';
-import { ChannelType } from '../../src/handlers/BroadcastHandler';
+import { ChannelType } from '../../src/ServerContext';
 import { Context } from '@finos/fdc3-context';
 import { AppIdentifier } from '@finos/fdc3-standard';
 
