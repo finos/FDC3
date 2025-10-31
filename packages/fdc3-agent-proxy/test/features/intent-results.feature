@@ -77,3 +77,52 @@ Feature: Intents Can Return Different Results
     And messaging will have posts
       | payload.intent | payload.context.type | payload.context.id.ticker | matches_type       |
       | OrderFood      | fdc3.instrument      | AAPL                      | raiseIntentRequest |
+
+  Scenario: Destructured getResult returns context data
+    Given Raise Intent returns a context of "{instrumentContext}"
+    When I destructure method "raiseIntent" from "{api}"
+    And I call destructured "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    And I destructure method "getResult" from "{result}"
+    And I call destructured "getResult"
+    Then "{result}" is an object with the following contents
+      | type            | name  |
+      | fdc3.instrument | Apple |
+    And messaging will have posts
+      | payload.intent | payload.context.type | payload.context.id.ticker | matches_type       |
+      | OrderFood      | fdc3.instrument      | AAPL                      | raiseIntentRequest |
+
+  Scenario: Destructured raiseIntent with app parameter
+    When I destructure method "raiseIntent" from "{api}"
+    And I call destructured "raiseIntent" with parameters "OrderFood" and "{instrumentContext}" and "{c1}"
+    Then "{result}" is an object with the following contents
+      | source.appId | source.instanceId | intent    |
+      | chipShop     | c1                | OrderFood |
+    And messaging will have posts
+      | payload.intent | payload.context.type | payload.context.id.ticker | payload.app.appId | payload.app.instanceId | matches_type       |
+      | OrderFood      | fdc3.instrument      | AAPL                      | chipShop          | c1                     | raiseIntentRequest |
+
+  Scenario: Destructured getResult returns app channel
+    Given Raise Intent returns an app channel
+    When I destructure method "raiseIntent" from "{api}"
+    And I call destructured "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    And I destructure method "getResult" from "{result}"
+    And I call destructured "getResult"
+    Then "{result}" is an object with the following contents
+      | type | id             |
+      | app  | result-channel |
+    And messaging will have posts
+      | payload.intent | payload.context.type | payload.context.id.ticker | matches_type       |
+      | OrderFood      | fdc3.instrument      | AAPL                      | raiseIntentRequest |
+
+  Scenario: Destructured getResult returns private channel
+    Given Raise Intent returns a private channel
+    When I destructure method "raiseIntent" from "{api}"
+    And I call destructured "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    And I destructure method "getResult" from "{result}"
+    And I call destructured "getResult"
+    Then "{result}" is an object with the following contents
+      | type    | id             |
+      | private | result-channel |
+    And messaging will have posts
+      | payload.intent | payload.context.type | payload.context.id.ticker | matches_type       |
+      | OrderFood      | fdc3.instrument      | AAPL                      | raiseIntentRequest |

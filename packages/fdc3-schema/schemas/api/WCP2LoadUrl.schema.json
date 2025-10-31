@@ -33,7 +33,8 @@
           },
           "required": [
             "iframeUrl"
-          ]
+          ],
+          "additionalProperties": false
         },
         "meta": {
           "$ref": "WCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"

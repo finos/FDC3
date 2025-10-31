@@ -121,6 +121,26 @@ Feature: Raising Intents
       | msg.payload.appIntent.apps[2].appId | msg.payload.appIntent.apps[2].instanceId |
       | listenerApp                         | {null}                                   |
 
+
+  Scenario: Dynamic registrations are displayed in the app resolver
+    When "App2/a2" registers an intent listener for "borrowBook" with contextType "fdc3.book"
+    When "App1/a1" raises an intent for "borrowBook" with contextType "fdc3.book"
+    Then messaging will have outgoing posts
+      | msg.type            | msg.payload.appIntent.intent.name | msg.payload.appIntent.intent.displayName | to.instanceId | to.appId |
+      | raiseIntentResponse | borrowBook                        | borrowBook                               | a1            | App1     |
+    Then messaging will have outgoing posts
+      | msg.payload.appIntent.apps[0].appId | msg.payload.appIntent.apps[0].instanceId |
+      | listenerApp                         | b1                                       |
+    Then messaging will have outgoing posts
+      | msg.payload.appIntent.apps[1].appId | msg.payload.appIntent.apps[1].instanceId |
+      | App2                                | a2                                       |
+    Then messaging will have outgoing posts
+      | msg.payload.appIntent.apps[2].appId | msg.payload.appIntent.apps[2].instanceId |
+      | libraryApp                          | {null}                                   |
+    Then messaging will have outgoing posts
+      | msg.payload.appIntent.apps[3].appId | msg.payload.appIntent.apps[3].instanceId |
+      | listenerApp                         | {null}                                   |
+
   Scenario: Raising An Invalid Intent to the server (no instance)
     When "App1/a1" raises an intent for "borrowBook" with contextType "fdc3.book" on app "listenerApp/z1"
     Then messaging will have outgoing posts

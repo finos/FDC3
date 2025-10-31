@@ -43,3 +43,23 @@ hide_title: true
 - `AOpensBWithWrongContext`: Perform `AOpensBWithSpecificContext` but **B** should add a context listener for the wrong context type (e.g. `fdc3.dummyType`) instead of the expected type in step 2.
   - Confirm that NO context is received.
   - The promise returned to **A** by `fdc3.open` rejects with an Error with message `AppTimeout`
+
+## A Opens B - Destructured
+
+| App | Step                    | Details                                                                    |
+|-----|-------------------------|----------------------------------------------------------------------------|
+| A   | 1. Destructure open     | Destructure open method from DesktopAgent: <br />`const { open } = fdc3` |
+| A   | 2. Opening App          | Use destructured method to open app B: <br />`const result = await open({appId:"<app-B-ID>"})` |
+| A   | 3. Check Metadata       | Ensure that the correct app was opened and `result` contains expected `AppIdentifier` |
+
+- `AOpensB3-Destructured`: Perform above test to verify destructured `open` works correctly.
+
+## A Opens B With Context - Destructured
+
+| App | Step                    | Details                                                                    |
+|-----|-------------------------|----------------------------------------------------------------------------|
+| A   | 1. Destructure open     | Destructure open method from DesktopAgent: <br />`const { open } = fdc3` |
+| A   | 2. Opening App          | Use destructured method to open app B with context: <br />`const result = await open({appId:"<app-B-ID>"}, <fdc3.instrument context>)` |
+| A   | 3. Check Metadata       | Ensure that the correct app was opened and context was passed |
+
+- `AOpensB4-Destructured`: Perform above test to verify destructured `open` with context works correctly.

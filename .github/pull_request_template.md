@@ -15,6 +15,13 @@
 
 ## Review Checklist
 
+<!--- 
+If you've changed docs or schemas make sure you run code and documentation tasks before raising your PR.
+To do so, run: 
+    - Code generation and build: `npm run build`
+    - Docs generation and preview `cd website; npm run start`
+Once run, any modified files can be committed and added to your PR for review.
+--->
 <!--- Checklist to be completed by reviewers, and pre-checked by the authors of a PR -->
 
 - [ ] **Issue**: If a change was made to the FDC3 Standard, was an issue linked above?
