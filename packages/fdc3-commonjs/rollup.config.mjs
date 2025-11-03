@@ -29,7 +29,8 @@ export default [
         include: /\/regenerator-runtime\//,
       }),
       json(),
-      typescript(),
+      json(),
+      typescript({ declaration: true, declarationDir: 'dist' }),
     ],
   },
 ];
