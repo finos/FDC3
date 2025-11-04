@@ -147,6 +147,13 @@ export class TestServerContext extends AbstractFDC3ServerInstance {
     });
     return appId.instanceId!;
   }
+
+  /**
+   * USED FOR TESTING
+   */
+  async shutdown(): Promise<void> {
+    this.handlers.forEach(h => h.shutdown());
+  }
 }
 
 export class TestFDC3ServerFactory extends AbstractFDC3ServerFactory {

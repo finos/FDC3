@@ -142,7 +142,7 @@ export class IntentHandler implements MessageHandler {
 
     try {
       switch (msg.type as string) {
-        // finding intents
+        // finding intents=
         case 'findIntentsByContextRequest':
           return await this.findIntentsByContextRequest(msg as FindIntentsByContextRequest, sc, from);
         case 'findIntentRequest':

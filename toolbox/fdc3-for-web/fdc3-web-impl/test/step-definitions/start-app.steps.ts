@@ -22,7 +22,7 @@ When('{string} is opened with connection id {string}', function (this: CustomWor
 
 When('{string} is closed', function (this: CustomWorld, app: string) {
   const meta = createMeta(this, app);
-  this.sc.cleanupApp(meta.source.instanceId!);
+  this.sc.setAppState(meta.source.instanceId!, State.Terminated);
 });
 
 When('{string} sends validate', function (this: CustomWorld, uuid: string) {
