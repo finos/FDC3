@@ -511,12 +511,27 @@ export class BroadcastHandler implements MessageHandler {
   async handleEvent(e: FDC3ServerInstanceEvent, sc: FDC3ServerInstance): Promise<void> {
     if (e.type === 'privateChannelDisconnect') {
       const event = e as PrivateChannelDisconnectServerInstanceEvent;
-      return this.invokePrivateChannelEventListeners(
-        event.channelId,
-        'disconnect',
-        'privateChannelOnDisconnectEvent',
-        sc
-      );
+
+      const privateChannelsToDisconnect = new Set<string>();
+
+      sc.getContextListeners()
+        .filter(l => l.channelId == event.channelId)
+        .forEach(l => {
+          this.invokePrivateChannelEventListeners(
+            l.channelId,
+            'unsubscribe',
+            'privateChannelOnUnsubscribeEvent',
+            sc,
+            l.contextType ?? undefined
+          );
+          if (l.channelId) {
+            privateChannelsToDisconnect.add(l.channelId);
+          }
+        });
+
+      privateChannelsToDisconnect.forEach(chan => {
+        this.invokePrivateChannelEventListeners(chan, 'disconnect', 'privateChannelOnDisconnectEvent', sc);
+      });
     } else if (e.type === 'channelChanged') {
       const event = e as ChannelChangedServerInstanceEvent;
       return this.fireChannelChangedEvent(event.channelId, sc, event.instanceId);
