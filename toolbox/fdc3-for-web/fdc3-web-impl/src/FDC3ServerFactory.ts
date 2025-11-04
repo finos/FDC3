@@ -13,6 +13,11 @@ export interface FDC3ServerFactory {
    * work together communicating via the FDC3 API.
    */
   createInstance(): Promise<FDC3ServerInstance>;
+
+  /**
+   * Shuts down all the FDC3ServerInstances created by this factory.
+   */
+  shutdownEverything(): Promise<void>;
 }
 
 /**
@@ -41,4 +46,9 @@ export abstract class AbstractFDC3ServerFactory {
   }
 
   abstract createInstance(): Promise<FDC3ServerInstance>;
+
+  shutdownEverything(): Promise<void> {
+    this.handlers.forEach(handler => handler.shutdown());
+    return Promise.resolve();
+  }
 }

@@ -36,10 +36,6 @@ export class OpenHandler implements MessageHandler {
     this.timeoutMs = timeoutMs;
   }
 
-  cleanup(/*instanceId: InstanceID, sc: FDC3ServerInstance*/): void {
-    //don't cleanup pending if the opening app closes as we should still deliver context
-  }
-
   shutdown(): void {}
 
   async accept(

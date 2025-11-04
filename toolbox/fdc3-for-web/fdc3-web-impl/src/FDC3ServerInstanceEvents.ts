@@ -35,3 +35,14 @@ export class ChannelChangedServerInstanceEvent implements FDC3ServerInstanceEven
     this.type = 'channelChanged';
   }
 }
+
+/**
+ * Used when the FDC3ServerInstance is shutting down
+ */
+export class ShutdownServerInstanceEvent implements FDC3ServerInstanceEvent {
+  public type: string;
+
+  constructor() {
+    this.type = 'shutdown';
+  }
+}

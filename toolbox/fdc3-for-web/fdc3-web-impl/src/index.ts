@@ -21,6 +21,7 @@ import {
   FDC3ServerInstanceEvent,
   ChannelChangedServerInstanceEvent,
   PrivateChannelDisconnectServerInstanceEvent,
+  ShutdownServerInstanceEvent,
 } from './FDC3ServerInstanceEvents';
 import { AbstractFDC3ServerFactory, FDC3ServerFactory } from './FDC3ServerFactory';
 
@@ -53,4 +54,5 @@ export {
   type FDC3ServerInstanceEvent,
   PrivateChannelDisconnectServerInstanceEvent,
   ChannelChangedServerInstanceEvent,
+  ShutdownServerInstanceEvent,
 };

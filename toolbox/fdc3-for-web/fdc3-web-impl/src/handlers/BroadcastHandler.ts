@@ -52,37 +52,6 @@ function onlyUniqueAppIds(value: AppIdentifier, index: number, self: AppIdentifi
 export class BroadcastHandler implements MessageHandler {
   shutdown(): void {}
 
-  cleanup(instanceId: InstanceID, sc: FDC3ServerInstance): void {
-    const toUnsubscribe = sc.removeContextListenersByInstance(instanceId);
-
-    //handle privateChannel disconnects
-    const privateChannelsToUnsubscribe = toUnsubscribe.filter(
-      u => sc.getChannelById(u.channelId)?.type == ChannelType.private
-    );
-
-    const privateChannelsToDisconnect = new Set<string>();
-    privateChannelsToUnsubscribe.forEach(u => {
-      this.invokePrivateChannelEventListeners(
-        u.channelId,
-        'unsubscribe',
-        'privateChannelOnUnsubscribeEvent',
-        sc,
-        u.contextType ?? undefined
-      );
-      if (u.channelId) {
-        privateChannelsToDisconnect.add(u.channelId);
-      }
-    });
-
-    privateChannelsToDisconnect.forEach(chan => {
-      this.invokePrivateChannelEventListeners(chan, 'disconnect', 'privateChannelOnDisconnectEvent', sc);
-    });
-
-    //clean up state entries
-    sc.removePrivateChannelEventListenersByInstance(instanceId);
-    sc.removeDesktopAgentEventListenersByInstance(instanceId);
-  }
-
   getCurrentChannel(from: FullAppIdentifier, sc: FDC3ServerInstance): ChannelState | null {
     return sc.getCurrentChannel(from.instanceId);
   }

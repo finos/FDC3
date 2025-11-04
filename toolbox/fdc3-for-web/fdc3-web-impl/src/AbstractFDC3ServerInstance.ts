@@ -1,6 +1,7 @@
 import { State, AppRegistration, InstanceID } from './AppRegistration';
 import {
   ChannelState,
+  ChannelType,
   ContextListenerRegistration,
   PrivateChannelEventListener,
   DesktopAgentEventListener,
@@ -13,6 +14,7 @@ import { MessageHandler } from './handlers/MessageHandler';
 import { AppRequestMessage } from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { Directory } from './directory/DirectoryInterface';
 import { PendingApp } from './PendingApp';
+import { PrivateChannelDisconnectServerInstanceEvent, ShutdownServerInstanceEvent } from './FDC3ServerInstanceEvents';
 
 /**
  * Abstract base class for ServerContext implementations.
@@ -232,11 +234,36 @@ export abstract class AbstractFDC3ServerInstance implements FDC3ServerInstance {
   }
 
   async cleanupApp(instanceId: InstanceID): Promise<void> {
-    // todo - move cleanups from handlers to here
+    // Get context listeners for this instance before removing them
+    const contextListenersToRemove = this.contextListeners.filter(l => l.instanceId === instanceId);
+
+    // Find private channels that need disconnect events
+    const privateChannelsToDisconnect = new Set<string>();
+    contextListenersToRemove
+      .filter(u => this.getChannelById(u.channelId)?.type === ChannelType.private)
+      .forEach(u => {
+        if (u.channelId) {
+          privateChannelsToDisconnect.add(u.channelId);
+        }
+      });
+
+    // Fire disconnect events for private channels
+    privateChannelsToDisconnect.forEach(channelId => {
+      const disconnectEvent = new PrivateChannelDisconnectServerInstanceEvent(instanceId, channelId);
+      this.handlers.forEach(handler => handler.handleEvent(disconnectEvent, this));
+    });
+
+    // Clean up state entries
+    this.removeContextListenersByInstance(instanceId);
+    this.removePrivateChannelEventListenersByInstance(instanceId);
+    this.removeDesktopAgentEventListenersByInstance(instanceId);
+    this.removeIntentListenersByInstance(instanceId);
+    this.removePendingResolutionsByInstance(instanceId);
+    // Note: Don't remove pending apps as they may still be opening
   }
 
   async shutdown(): Promise<void> {
-    const shutdownEvent = new FDC3ServerShutdownEvent();
+    const shutdownEvent = new ShutdownServerInstanceEvent();
     this.handlers.forEach(handler => handler.handleEvent(shutdownEvent, this));
   }
 }

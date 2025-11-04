@@ -120,14 +120,6 @@ export class IntentHandler implements MessageHandler {
     this.timeoutMs = timeoutMs;
   }
 
-  cleanup(instanceId: InstanceID, sc: FDC3ServerInstance): void {
-    sc.removeIntentListenersByInstance(instanceId);
-    //don't clean up pendingIntents as some apps may load
-
-    //cleanup pendingResolutions
-    sc.removePendingResolutionsByInstance(instanceId);
-  }
-
   shutdown(): void {}
 
   async narrowIntents(
