@@ -7,6 +7,7 @@ import {
   DirectoryApp,
   FDC3Server,
   InstanceID,
+  IntentListenerRegistration,
   PrivateChannelEventListener,
   ServerContext,
   State,
@@ -65,6 +66,10 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
   private desktopAgentEventListeners: DesktopAgentEventListener[] = [];
   private channelStates: ChannelState[] = [];
   private currentChannels: { [instanceId: string]: ChannelState } = {};
+
+  // State previously managed by IntentHandler
+  private intentListeners: IntentListenerRegistration[] = [];
+  private pendingResolutions: Map<string, AppIdentifier> = new Map();
 
   constructor(socket: Socket, directory: Directory) {
     this.socket = socket;
@@ -403,5 +408,50 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
       listener => listener.instanceId !== instanceId
     );
     return removed;
+  }
+
+  // Intent listener management methods
+  getIntentListeners(): IntentListenerRegistration[] {
+    return this.intentListeners;
+  }
+
+  addIntentListener(listener: IntentListenerRegistration): void {
+    this.intentListeners.push(listener);
+  }
+
+  removeIntentListener(listenerUUID: string): boolean {
+    const i = this.intentListeners.findIndex(r => r.listenerUUID == listenerUUID);
+    if (i > -1) {
+      this.intentListeners.splice(i, 1);
+      return true;
+    }
+    return false;
+  }
+
+  removeIntentListenersByInstance(instanceId: InstanceID): IntentListenerRegistration[] {
+    const removed = this.intentListeners.filter(r => r.instanceId == instanceId);
+    this.intentListeners = this.intentListeners.filter(listener => listener.instanceId !== instanceId);
+    return removed;
+  }
+
+  // Pending intent resolution management methods
+  getPendingResolution(requestUuid: string): AppIdentifier | undefined {
+    return this.pendingResolutions.get(requestUuid);
+  }
+
+  addPendingResolution(requestUuid: string, appIdentifier: AppIdentifier): void {
+    this.pendingResolutions.set(requestUuid, appIdentifier);
+  }
+
+  removePendingResolution(requestUuid: string): boolean {
+    return this.pendingResolutions.delete(requestUuid);
+  }
+
+  removePendingResolutionsByInstance(instanceId: InstanceID): void {
+    this.pendingResolutions.forEach((val, key) => {
+      if (val.instanceId === instanceId) {
+        this.pendingResolutions.delete(key);
+      }
+    });
   }
 }

@@ -1,5 +1,5 @@
 import { MessageHandler } from '../BasicFDC3Server';
-import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext';
+import { AppRegistration, InstanceID, IntentListenerRegistration, ServerContext, State } from '../ServerContext';
 import { Directory, DirectoryIntent } from '../directory/DirectoryInterface';
 import { Context } from '@finos/fdc3-context';
 import { AppIntent, ResolveError, AppIdentifier } from '@finos/fdc3-standard';
@@ -24,13 +24,6 @@ import {
   AgentResponseMessage,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
-type ListenerRegistration = {
-  appId: string;
-  instanceId: string;
-  intentName: string;
-  listenerUUID: string;
-};
-
 type IntentRequest = {
   intent: string;
   context: Context;
@@ -45,8 +38,7 @@ type IntentRequest = {
 async function forwardRequest(
   arg0: IntentRequest,
   to: FullAppIdentifier,
-  sc: ServerContext<AppRegistration>,
-  ih: IntentHandler
+  sc: ServerContext<AppRegistration>
 ): Promise<void> {
   const out: IntentEvent = {
     type: 'intentEvent',
@@ -66,7 +58,7 @@ async function forwardRequest(
   };
 
   // register the resolution destination
-  ih.pendingResolutions.set(arg0.requestUuid, arg0.from);
+  sc.addPendingResolution(arg0.requestUuid, arg0.from);
   await sc.post(out, to.instanceId);
   successResponseId(
     sc,
@@ -110,7 +102,7 @@ class PendingIntent {
     }, ih.timeoutMs);
   }
 
-  async accept(arg0: ListenerRegistration): Promise<void> {
+  async accept(arg0: IntentListenerRegistration): Promise<void> {
     if (
       arg0.appId == this.appId.appId &&
       arg0.intentName == this.r.intent &&
@@ -118,16 +110,14 @@ class PendingIntent {
     ) {
       this.complete = true;
       this.ih.pendingIntents.delete(this);
-      forwardRequest(this.r, { appId: arg0.appId, instanceId: arg0.instanceId }, this.sc, this.ih);
+      forwardRequest(this.r, { appId: arg0.appId, instanceId: arg0.instanceId }, this.sc);
     }
   }
 }
 
 export class IntentHandler implements MessageHandler {
   private readonly directory: Directory;
-  private registrations: ListenerRegistration[] = [];
   readonly pendingIntents: Set<PendingIntent> = new Set();
-  readonly pendingResolutions: Map<string, FullAppIdentifier> = new Map();
   readonly timeoutMs: number;
 
   constructor(d: Directory, timeoutMs: number) {
@@ -135,16 +125,12 @@ export class IntentHandler implements MessageHandler {
     this.timeoutMs = timeoutMs;
   }
 
-  cleanup(instanceId: InstanceID /*, _sc: ServerContext<AppRegistration> */): void {
-    this.registrations = this.registrations.filter(reg => reg.instanceId != instanceId);
+  cleanup(instanceId: InstanceID, sc: ServerContext<AppRegistration>): void {
+    sc.removeIntentListenersByInstance(instanceId);
     //don't clean up pendingIntents as some apps may load
 
     //cleanup pendingResolutions
-    this.pendingResolutions.forEach((val, key) => {
-      if (val.instanceId === instanceId) {
-        this.pendingResolutions.delete(key);
-      }
-    });
+    sc.removePendingResolutionsByInstance(instanceId);
   }
 
   shutdown(): void {}
@@ -204,21 +190,21 @@ export class IntentHandler implements MessageHandler {
     from: FullAppIdentifier
   ): void | PromiseLike<void> {
     const requestId = arg0.payload.raiseIntentRequestUuid;
-    const to = this.pendingResolutions.get(requestId);
-    if (to) {
+    const to = sc.getPendingResolution(requestId);
+    if (to && to.instanceId) {
       // post the result to the app that raised the intent
       //   if its still connected, otherwise do nothing
       successResponseId(
         sc,
         requestId,
-        to,
+        to as FullAppIdentifier,
         {
           intentResult: arg0.payload.intentResult,
         },
         'raiseIntentResultResponse'
       );
 
-      this.pendingResolutions.delete(requestId);
+      sc.removePendingResolution(requestId);
     }
     // respond to the app that handled the intent
     successResponse(sc, arg0, from, {}, 'intentResultResponse');
@@ -230,9 +216,8 @@ export class IntentHandler implements MessageHandler {
     from: FullAppIdentifier
   ): void {
     const id = arg0.payload.listenerUUID;
-    const fi = this.registrations.findIndex(e => e.listenerUUID == id);
-    if (fi > -1) {
-      this.registrations.splice(fi, 1);
+    const removed = sc.removeIntentListener(id);
+    if (removed) {
       successResponse(sc, arg0, from, {}, 'intentListenerUnsubscribeResponse');
     } else {
       errorResponse(sc, arg0, from, 'Non-Existent Listener', 'intentListenerUnsubscribeResponse');
@@ -244,14 +229,14 @@ export class IntentHandler implements MessageHandler {
     sc: ServerContext<AppRegistration>,
     from: FullAppIdentifier
   ): void {
-    const lr: ListenerRegistration = {
+    const lr: IntentListenerRegistration = {
       appId: from.appId,
       instanceId: from.instanceId,
       intentName: arg0.payload.intent,
       listenerUUID: sc.createUUID(),
     };
 
-    this.registrations.push(lr);
+    sc.addIntentListener(lr);
     successResponse(
       sc,
       arg0,
@@ -271,8 +256,8 @@ export class IntentHandler implements MessageHandler {
     }
   }
 
-  hasListener(instanceId: string, intentName: string): boolean {
-    return this.registrations.find(r => r.instanceId == instanceId && r.intentName == intentName) != null;
+  hasListener(instanceId: string, intentName: string, sc: ServerContext<AppRegistration>): boolean {
+    return sc.getIntentListeners().find(r => r.instanceId == instanceId && r.intentName == intentName) != null;
   }
 
   async startWithPendingIntent(
@@ -304,13 +289,13 @@ export class IntentHandler implements MessageHandler {
       );
     }
 
-    const requestsWithListeners = arg0.filter(r => this.hasListener(target.instanceId, r.intent));
+    const requestsWithListeners = arg0.filter(r => this.hasListener(target.instanceId, r.intent, sc));
 
     if (requestsWithListeners.length == 0) {
       this.createPendingIntentIfAllowed(arg0[0], sc, target);
     } else {
       // ok, deliver to the current running app.
-      return forwardRequest(requestsWithListeners[0], target, sc, this);
+      return forwardRequest(requestsWithListeners[0], target, sc);
     }
   }
 
@@ -396,7 +381,7 @@ export class IntentHandler implements MessageHandler {
   async raiseIntentToAnyApp(arg0: IntentRequest[], sc: ServerContext<AppRegistration>): Promise<void> {
     const connectedApps = await sc.getConnectedApps();
     const matchingIntents = arg0.flatMap(i => this.directory.retrieveIntents(i.context.type, i.intent, undefined));
-    const matchingRegistrations = arg0.flatMap(i => this.registrations.filter(r => r.intentName == i.intent));
+    const matchingRegistrations = arg0.flatMap(i => sc.getIntentListeners().filter(r => r.intentName == i.intent));
     const uniqueIntentNames = [
       ...matchingIntents.map(i => i.intentName),
       ...matchingRegistrations.map(r => r.intentName),
@@ -445,7 +430,7 @@ export class IntentHandler implements MessageHandler {
         };
         if (instanceCount == 1 && isFullAppIdentifier(theAppIntent.apps[0])) {
           // app is running
-          return forwardRequest(ir, theAppIntent.apps[0], sc, this);
+          return forwardRequest(ir, theAppIntent.apps[0], sc);
         } else if (instanceCount == 0) {
           return this.startWithPendingIntent(ir, sc, theAppIntent.apps[0]);
         }
@@ -652,9 +637,9 @@ export class IntentHandler implements MessageHandler {
   async retrieveListeners(
     intentName: string | undefined,
     sc: ServerContext<AppRegistration>
-  ): Promise<ListenerRegistration[]> {
+  ): Promise<IntentListenerRegistration[]> {
     const activeApps = await sc.getConnectedApps();
-    const matching = this.registrations.filter(r => r.intentName == intentName);
+    const matching = sc.getIntentListeners().filter(r => r.intentName == intentName);
     const active = matching.filter(r => activeApps.find(a => a.instanceId == r.instanceId));
     return active;
   }

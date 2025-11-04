@@ -8,6 +8,7 @@ import {
   ContextListenerRegistration,
   PrivateChannelEventListener,
   DesktopAgentEventListener,
+  IntentListenerRegistration,
 } from './ServerContext';
 import { BasicFDC3Server, DefaultFDC3Server } from './BasicFDC3Server';
 import { FDC3Server } from './FDC3Server';
@@ -27,6 +28,7 @@ export {
   type ContextListenerRegistration,
   type PrivateChannelEventListener,
   type DesktopAgentEventListener,
+  type IntentListenerRegistration,
   BasicFDC3Server,
   DefaultFDC3Server,
   type FDC3Server,

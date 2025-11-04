@@ -51,6 +51,13 @@ export type ChannelState = {
   displayMetadata: DisplayMetadata;
 };
 
+export type IntentListenerRegistration = {
+  appId: string;
+  instanceId: string;
+  intentName: string;
+  listenerUUID: string;
+};
+
 /**
  * This is a unique, long, unguessable string that identifies a particular instance of an app.
  * All messages arriving at the desktop agent will have this UUID attached to them.
@@ -60,7 +67,8 @@ export type ChannelState = {
 export type InstanceID = string;
 
 /**
- * Handles messaging to apps and opening apps
+ * Handles messaging to apps and opening apps for ONE FDC3 environment.
+ * Stores all state for MessageHandlers to use.
  */
 export interface ServerContext<X extends AppRegistration> {
   /**
@@ -241,4 +249,46 @@ export interface ServerContext<X extends AppRegistration> {
    * Remove all desktop agent event listeners for an instance
    */
   removeDesktopAgentEventListenersByInstance(instanceId: InstanceID): DesktopAgentEventListener[];
+
+  // Intent listener management
+  /**
+   * Get all intent listeners
+   */
+  getIntentListeners(): IntentListenerRegistration[];
+
+  /**
+   * Add an intent listener
+   */
+  addIntentListener(listener: IntentListenerRegistration): void;
+
+  /**
+   * Remove an intent listener by UUID
+   */
+  removeIntentListener(listenerUUID: string): boolean;
+
+  /**
+   * Remove all intent listeners for an instance
+   */
+  removeIntentListenersByInstance(instanceId: InstanceID): IntentListenerRegistration[];
+
+  // Pending intent resolution management
+  /**
+   * Get a pending resolution for a request UUID
+   */
+  getPendingResolution(requestUuid: string): AppIdentifier | undefined;
+
+  /**
+   * Add a pending resolution
+   */
+  addPendingResolution(requestUuid: string, appIdentifier: AppIdentifier): void;
+
+  /**
+   * Remove a pending resolution
+   */
+  removePendingResolution(requestUuid: string): boolean;
+
+  /**
+   * Remove all pending resolutions for an instance
+   */
+  removePendingResolutionsByInstance(instanceId: InstanceID): void;
 }
