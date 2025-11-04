@@ -5,14 +5,14 @@ import {
 } from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { createUUID } from '../../../src/util/Uuid';
 import { InstanceID } from '@finos/fdc3-web-impl';
-import { TestServerContext } from '../TestServerContext';
+import { MockFDC3Server } from '../MockFDC3Server';
 
 export class UnsubscribeEventListener implements AutomaticResponse {
   filter(t: string) {
     return t == 'eventListenerUnsubscribeRequest';
   }
 
-  action(input: object, m: TestServerContext, from: InstanceID) {
+  action(input: object, m: MockFDC3Server, from: InstanceID) {
     const request = input as EventListenerUnsubscribeRequest;
     const response = this.createResponse(request);
     setTimeout(() => {

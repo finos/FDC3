@@ -1,4 +1,4 @@
-import { TestServerContext } from '../TestServerContext';
+import { MockFDC3Server } from '../MockFDC3Server';
 import { InstanceID } from '@finos/fdc3-web-impl';
 import { AutomaticResponse } from './AutomaticResponses';
 import { RaiseIntentRequest, RaiseIntentResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
@@ -8,7 +8,7 @@ export class RaiseIntent implements AutomaticResponse {
     return t == 'raiseIntentRequest';
   }
 
-  createRaiseIntentAgentResponseMessage(intentRequest: RaiseIntentRequest, m: TestServerContext): RaiseIntentResponse {
+  createRaiseIntentAgentResponseMessage(intentRequest: RaiseIntentRequest, m: MockFDC3Server): RaiseIntentResponse {
     const out: RaiseIntentResponse = {
       meta: {
         ...intentRequest.meta,
@@ -26,7 +26,7 @@ export class RaiseIntent implements AutomaticResponse {
     return out;
   }
 
-  action(input: object, m: TestServerContext, from: InstanceID) {
+  action(input: object, m: MockFDC3Server, from: InstanceID) {
     const intentRequest = input as RaiseIntentRequest;
     // this sends out the intent resolution
     const out1 = this.createRaiseIntentAgentResponseMessage(intentRequest, m);

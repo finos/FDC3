@@ -25,7 +25,7 @@ export function handleEmbeddedIframeComms(_value: string, parent: MockWindow, so
         eventSource == parent ? '(parent window): ' : '(NOT parent win): ',
         event.data
       );
-      const connection = cw.mockContext.getFirstInstance();
+      const connection = cw.mockFDC3Server?.getFirstInstance();
 
       // send the other end of the channel to the app
       const message: WebConnectionProtocol3Handshake = {
