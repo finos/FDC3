@@ -9,7 +9,10 @@ import {
   PrivateChannelEventListener,
   DesktopAgentEventListener,
   IntentListenerRegistration,
+  PendingApp,
+  AppState,
 } from './ServerContext';
+import { AbstractServerContext } from './AbstractServerContext';
 import { BasicFDC3Server, DefaultFDC3Server } from './BasicFDC3Server';
 import { FDC3Server } from './FDC3Server';
 import { Directory, DirectoryApp, DirectoryIntent, WebAppDetails } from './directory/DirectoryInterface';
@@ -21,6 +24,7 @@ import { OpenHandler } from './handlers/OpenHandler';
 export {
   type InstanceID,
   type ServerContext,
+  AbstractServerContext,
   State,
   type AppRegistration,
   type ChannelState,
@@ -39,5 +43,7 @@ export {
   BroadcastHandler,
   IntentHandler,
   OpenHandler,
+  PendingApp,
+  AppState,
   type WebAppDetails,
 };

@@ -1,6 +1,7 @@
-import { AppIdentifier, AppIntent, DisplayMetadata, PrivateChannelEventTypes } from '@finos/fdc3-standard';
-import { Context } from '@finos/fdc3-context';
+import { AppIdentifier, AppIntent, DisplayMetadata, PrivateChannelEventTypes, OpenError } from '@finos/fdc3-standard';
+import { Context, ContextElement } from '@finos/fdc3-context';
 import { FDC3Server } from './FDC3Server';
+import { BrowserTypes } from '@finos/fdc3-schema';
 
 export enum State {
   Pending /* App has started, but not completed FDC3 Handshake */,
@@ -57,6 +58,94 @@ export type IntentListenerRegistration = {
   intentName: string;
   listenerUUID: string;
 };
+
+export enum AppState {
+  Opening,
+  DeliveringContext,
+  Done,
+}
+
+type OpenRequest = BrowserTypes.OpenRequest;
+
+export class PendingApp {
+  private readonly sc: ServerContext<AppRegistration>;
+  private readonly msg: OpenRequest;
+  readonly context: ContextElement | undefined;
+  readonly source: AppIdentifier & { instanceId: string };
+  state: AppState = AppState.Opening;
+  private openedApp: AppIdentifier | undefined = undefined;
+
+  constructor(
+    sc: ServerContext<AppRegistration>,
+    msg: OpenRequest,
+    context: ContextElement | undefined,
+    source: AppIdentifier & { instanceId: string },
+    timeoutMs: number
+  ) {
+    this.context = context;
+    this.source = source;
+    this.sc = sc;
+    this.msg = msg;
+
+    setTimeout(() => {
+      if (this.state != AppState.Done) {
+        this.onError();
+      }
+    }, timeoutMs);
+  }
+
+  private onSuccess() {
+    this.sc.setAppState(this.openedApp!.instanceId!, State.Connected);
+    this.sc.post(
+      {
+        type: 'openResponse',
+        meta: {
+          requestUuid: this.msg.meta.requestUuid,
+          responseUuid: this.sc.createUUID(),
+          timestamp: new Date(),
+        },
+        payload: {
+          appIdentifier: {
+            appId: this.openedApp!.appId,
+            instanceId: this.openedApp!.instanceId,
+          },
+        },
+      },
+      this.source.instanceId
+    );
+  }
+
+  private onError() {
+    this.sc.post(
+      {
+        type: 'openResponse',
+        meta: {
+          requestUuid: this.msg.meta.requestUuid,
+          responseUuid: this.sc.createUUID(),
+          timestamp: new Date(),
+        },
+        payload: {
+          error: OpenError.AppTimeout,
+        },
+      },
+      this.source.instanceId
+    );
+  }
+
+  setOpened(openedApp: AppIdentifier) {
+    this.openedApp = openedApp;
+    if (this.context) {
+      this.state = AppState.DeliveringContext;
+    } else {
+      this.setDone();
+    }
+  }
+
+  setDone() {
+    this.state = AppState.Done;
+    this.onSuccess();
+  }
+}
 
 /**
  * This is a unique, long, unguessable string that identifies a particular instance of an app.
@@ -291,4 +380,25 @@ export interface ServerContext<X extends AppRegistration> {
    * Remove all pending resolutions for an instance
    */
   removePendingResolutionsByInstance(instanceId: InstanceID): void;
+
+  // Pending app management (for OpenHandler)
+  /**
+   * Get a pending app by instance ID
+   */
+  getPendingApp(instanceId: InstanceID): PendingApp | undefined;
+
+  /**
+   * Set a pending app for an instance ID
+   */
+  setPendingApp(instanceId: InstanceID, pendingApp: PendingApp): void;
+
+  /**
+   * Remove a pending app by instance ID
+   */
+  removePendingApp(instanceId: InstanceID): boolean;
+
+  /**
+   * Get all pending apps
+   */
+  getPendingApps(): Map<InstanceID, PendingApp>;
 }

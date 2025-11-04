@@ -1,8 +1,7 @@
 import { MessageHandler } from '../BasicFDC3Server';
-import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext';
+import { AppRegistration, InstanceID, ServerContext, State, PendingApp, AppState } from '../ServerContext';
 import { Directory, DirectoryApp } from '../directory/DirectoryInterface';
-import { ContextElement } from '@finos/fdc3-context';
-import { OpenError, ResolveError, AppIdentifier, AppMetadata, ImplementationMetadata } from '@finos/fdc3-standard';
+import { ResolveError, AppIdentifier, AppMetadata, ImplementationMetadata } from '@finos/fdc3-standard';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { errorResponse, FullAppIdentifier, successResponse } from './support';
 import {
@@ -28,77 +27,8 @@ type WebConnectionProtocol5ValidateAppIdentityFailedResponse =
 type WebConnectionProtocol5ValidateAppIdentitySuccessResponse =
   BrowserTypes.WebConnectionProtocol5ValidateAppIdentitySuccessResponse;
 
-enum AppState {
-  Opening,
-  DeliveringContext,
-  Done,
-}
-
-class PendingApp {
-  private readonly sc: ServerContext<AppRegistration>;
-  private readonly msg: OpenRequest;
-  readonly context: ContextElement | undefined;
-  readonly source: FullAppIdentifier;
-  state: AppState = AppState.Opening;
-  private openedApp: AppIdentifier | undefined = undefined;
-
-  constructor(
-    sc: ServerContext<AppRegistration>,
-    msg: OpenRequest,
-    context: ContextElement | undefined,
-    source: FullAppIdentifier,
-    timeoutMs: number
-  ) {
-    this.context = context;
-    this.source = source;
-    this.sc = sc;
-    this.msg = msg;
-
-    setTimeout(() => {
-      if (this.state != AppState.Done) {
-        this.onError();
-      }
-    }, timeoutMs);
-  }
-
-  private onSuccess() {
-    this.sc.setAppState(this.openedApp!.instanceId!, State.Connected);
-    successResponse(
-      this.sc,
-      this.msg,
-      this.source,
-      {
-        appIdentifier: {
-          appId: this.openedApp!.appId,
-          instanceId: this.openedApp!.instanceId,
-        },
-      },
-      'openResponse'
-    );
-  }
-
-  private onError() {
-    errorResponse(this.sc, this.msg, this.source, OpenError.AppTimeout, 'openResponse');
-  }
-
-  setOpened(openedApp: AppIdentifier) {
-    this.openedApp = openedApp;
-    if (this.context) {
-      this.state = AppState.DeliveringContext;
-    } else {
-      this.setDone();
-    }
-  }
-
-  setDone() {
-    this.state = AppState.Done;
-    this.onSuccess();
-  }
-}
-
 export class OpenHandler implements MessageHandler {
   private readonly directory: Directory;
-  readonly pending: Map<InstanceID, PendingApp> = new Map();
   readonly timeoutMs: number;
 
   constructor(d: Directory, timeoutMs: number) {
@@ -154,7 +84,7 @@ export class OpenHandler implements MessageHandler {
     sc: ServerContext<AppRegistration>,
     from: InstanceID
   ): void {
-    const pendingOpen = this.pending.get(from);
+    const pendingOpen = sc.getPendingApp(from) as PendingApp | undefined;
     if (pendingOpen) {
       const contextType = arg0.payload.contextType;
       if (pendingOpen.context && pendingOpen.state == AppState.DeliveringContext) {
@@ -177,7 +107,7 @@ export class OpenHandler implements MessageHandler {
           };
 
           pendingOpen.setDone();
-          this.pending.delete(from);
+          sc.removePendingApp(from);
           sc.post(message, from);
         }
       }
@@ -248,7 +178,7 @@ export class OpenHandler implements MessageHandler {
 
     try {
       const uuid = await sc.open(toOpen.appId);
-      this.pending.set(uuid, new PendingApp(sc, arg0, context, from, this.timeoutMs));
+      sc.setPendingApp(uuid, new PendingApp(sc, arg0, context, from, this.timeoutMs));
     } catch (e) {
       errorResponse(sc, arg0, from, (e as Error).message ?? e, 'openResponse');
     }
@@ -350,7 +280,7 @@ export class OpenHandler implements MessageHandler {
       returnSuccess(appIdentity.appId, appIdentity.instanceId);
 
       // make sure, if the opener is listening for this app to open, then it gets informed
-      const pendingOpen = this.pending.get(from);
+      const pendingOpen = sc.getPendingApp(from) as PendingApp | undefined;
       if (pendingOpen) {
         if (pendingOpen.state == AppState.Opening) {
           pendingOpen.setOpened(appIdentity);
