@@ -17,7 +17,7 @@ import { WebConnectionProtocol3Handshake } from '@finos/fdc3-schema/dist/generat
 
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL;
 
-function createAppStartButton(app: DirectoryApp, sc: ServerContext<AppRegistration>): HTMLDivElement {
+function createAppStartButton(app: DirectoryApp, sc: FDC3ServerInstance): HTMLDivElement {
   const div: HTMLDivElement = document.createElement('div');
   div.classList.add('app');
   const h3 = document.createElement('h3');

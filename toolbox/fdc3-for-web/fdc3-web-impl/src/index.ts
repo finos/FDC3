@@ -1,30 +1,32 @@
+import { InstanceID, State, AppRegistration } from './AppRegistration';
 import {
-  ServerContext,
-  InstanceID,
-  State,
-  AppRegistration,
   ChannelState,
   ChannelType,
   ContextListenerRegistration,
   PrivateChannelEventListener,
   DesktopAgentEventListener,
   IntentListenerRegistration,
-  PendingApp,
-  AppState,
-} from './ServerContext';
-import { AbstractServerContext } from './AbstractServerContext';
-import { BasicFDC3Server, DefaultFDC3Server } from './BasicFDC3Server';
-import { FDC3Server } from './FDC3Server';
+  FDC3ServerInstance,
+} from './FDC3ServerInstance';
+import { PendingApp, AppState } from './PendingApp';
 import { Directory, DirectoryApp, DirectoryIntent, WebAppDetails } from './directory/DirectoryInterface';
 import { BasicDirectory } from './directory/BasicDirectory';
 import { BroadcastHandler } from './handlers/BroadcastHandler';
 import { IntentHandler } from './handlers/IntentHandler';
 import { OpenHandler } from './handlers/OpenHandler';
+import { HeartbeatHandler } from './handlers/HeartbeatHandler';
+import { MessageHandler } from './handlers/MessageHandler';
+import { AbstractFDC3ServerInstance } from './AbstractFDC3ServerInstance';
+import {
+  FDC3ServerInstanceEvent,
+  ChannelChangedServerInstanceEvent,
+  PrivateChannelDisconnectServerInstanceEvent,
+} from './FDC3ServerInstanceEvents';
+import { AbstractFDC3ServerFactory, FDC3ServerFactory } from './FDC3ServerFactory';
 
 export {
   type InstanceID,
-  type ServerContext,
-  AbstractServerContext,
+  type FDC3ServerInstance,
   State,
   type AppRegistration,
   type ChannelState,
@@ -33,9 +35,9 @@ export {
   type PrivateChannelEventListener,
   type DesktopAgentEventListener,
   type IntentListenerRegistration,
-  BasicFDC3Server,
-  DefaultFDC3Server,
-  type FDC3Server,
+  type FDC3ServerFactory,
+  AbstractFDC3ServerFactory,
+  AbstractFDC3ServerInstance,
   type Directory,
   BasicDirectory,
   type DirectoryApp,
@@ -43,7 +45,12 @@ export {
   BroadcastHandler,
   IntentHandler,
   OpenHandler,
+  HeartbeatHandler,
+  type MessageHandler,
   PendingApp,
   AppState,
   type WebAppDetails,
+  type FDC3ServerInstanceEvent,
+  PrivateChannelDisconnectServerInstanceEvent,
+  ChannelChangedServerInstanceEvent,
 };

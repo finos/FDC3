@@ -1,11 +1,12 @@
-import { MessageHandler } from '../BasicFDC3Server';
-import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext';
+import { MessageHandler } from './MessageHandler';
+import { InstanceID, State } from '../AppRegistration';
 import {
   AppRequestMessage,
   HeartbeatEvent,
   WebConnectionProtocol6Goodbye,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { FullAppIdentifier } from './support';
+import { FDC3ServerInstance } from '../FDC3ServerInstance';
 
 type HeartbeatDetails = {
   instanceId: string;
@@ -34,7 +35,7 @@ function convertToText(s?: State): string {
  * Handles heartbeat pings and responses
  */
 export class HeartbeatHandler implements MessageHandler {
-  private readonly contexts: ServerContext<AppRegistration>[] = [];
+  private readonly contexts: FDC3ServerInstance[] = [];
   private readonly lastHeartbeats: Map<InstanceID, number> = new Map();
   private readonly timerFunction: NodeJS.Timeout;
 
@@ -82,11 +83,6 @@ export class HeartbeatHandler implements MessageHandler {
     }, pingInterval);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  cleanup(_instanceId: InstanceID, _sc: ServerContext<AppRegistration>): void {
-    //TODO: Consider whether to clean-up last heartbeat times
-  }
-
   heartbeatTimes(): HeartbeatDetails[] {
     const now = new Date().getTime();
     return Array.from(this.lastHeartbeats)
@@ -106,7 +102,7 @@ export class HeartbeatHandler implements MessageHandler {
 
   async accept(
     msg: AppRequestMessage | WebConnectionProtocol6Goodbye,
-    sc: ServerContext<AppRegistration>,
+    sc: FDC3ServerInstance,
     from: InstanceID
   ): Promise<void> {
     if (!this.contexts.includes(sc)) {
@@ -128,7 +124,7 @@ export class HeartbeatHandler implements MessageHandler {
     }
   }
 
-  async sendHeartbeat(sc: ServerContext<AppRegistration>, app: FullAppIdentifier): Promise<void> {
+  async sendHeartbeat(sc: FDC3ServerInstance, app: FullAppIdentifier): Promise<void> {
     const event: HeartbeatEvent = {
       type: 'heartbeatEvent',
       meta: {
@@ -139,4 +135,6 @@ export class HeartbeatHandler implements MessageHandler {
     };
     sc.post(event, app.instanceId);
   }
+
+  async handleEvent(): Promise<void> {}
 }

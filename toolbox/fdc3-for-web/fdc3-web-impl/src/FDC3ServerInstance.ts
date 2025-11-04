@@ -1,20 +1,9 @@
-import { AppIdentifier, AppIntent, DisplayMetadata, PrivateChannelEventTypes, OpenError } from '@finos/fdc3-standard';
-import { Context, ContextElement } from '@finos/fdc3-context';
-import { FDC3Server } from './FDC3Server';
-import { BrowserTypes } from '@finos/fdc3-schema';
-
-export enum State {
-  Pending /* App has started, but not completed FDC3 Handshake */,
-  Connected /* App has completed FDC3 handshake */,
-  NotResponding /* App has not responded to a heartbeat */,
-  Terminated /* App has sent a termination message */,
-}
-
-export type AppRegistration = {
-  state: State;
-  appId: string;
-  instanceId: InstanceID;
-};
+import { AppIdentifier, AppIntent, DisplayMetadata, PrivateChannelEventTypes } from '@finos/fdc3-standard';
+import { Context } from '@finos/fdc3-context';
+import { AppRequestMessage } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { AppRegistration, InstanceID, State } from './AppRegistration';
+import { PendingApp } from './PendingApp';
+import { Directory } from './directory/DirectoryInterface';
 
 export type ContextListenerRegistration = {
   appId: string;
@@ -59,107 +48,16 @@ export type IntentListenerRegistration = {
   listenerUUID: string;
 };
 
-export enum AppState {
-  Opening,
-  DeliveringContext,
-  Done,
-}
-
-type OpenRequest = BrowserTypes.OpenRequest;
-
-export class PendingApp {
-  private readonly sc: ServerContext<AppRegistration>;
-  private readonly msg: OpenRequest;
-  readonly context: ContextElement | undefined;
-  readonly source: AppIdentifier & { instanceId: string };
-  state: AppState = AppState.Opening;
-  private openedApp: AppIdentifier | undefined = undefined;
-
-  constructor(
-    sc: ServerContext<AppRegistration>,
-    msg: OpenRequest,
-    context: ContextElement | undefined,
-    source: AppIdentifier & { instanceId: string },
-    timeoutMs: number
-  ) {
-    this.context = context;
-    this.source = source;
-    this.sc = sc;
-    this.msg = msg;
-
-    setTimeout(() => {
-      if (this.state != AppState.Done) {
-        this.onError();
-      }
-    }, timeoutMs);
-  }
-
-  private onSuccess() {
-    this.sc.setAppState(this.openedApp!.instanceId!, State.Connected);
-    this.sc.post(
-      {
-        type: 'openResponse',
-        meta: {
-          requestUuid: this.msg.meta.requestUuid,
-          responseUuid: this.sc.createUUID(),
-          timestamp: new Date(),
-        },
-        payload: {
-          appIdentifier: {
-            appId: this.openedApp!.appId,
-            instanceId: this.openedApp!.instanceId,
-          },
-        },
-      },
-      this.source.instanceId
-    );
-  }
-
-  private onError() {
-    this.sc.post(
-      {
-        type: 'openResponse',
-        meta: {
-          requestUuid: this.msg.meta.requestUuid,
-          responseUuid: this.sc.createUUID(),
-          timestamp: new Date(),
-        },
-        payload: {
-          error: OpenError.AppTimeout,
-        },
-      },
-      this.source.instanceId
-    );
-  }
-
-  setOpened(openedApp: AppIdentifier) {
-    this.openedApp = openedApp;
-    if (this.context) {
-      this.state = AppState.DeliveringContext;
-    } else {
-      this.setDone();
-    }
-  }
-
-  setDone() {
-    this.state = AppState.Done;
-    this.onSuccess();
-  }
-}
-
-/**
- * This is a unique, long, unguessable string that identifies a particular instance of an app.
- * All messages arriving at the desktop agent will have this UUID attached to them.
- * It is important that this is unguessable as it is a shared secret used to identify the app
- * when reconnecting after navigation or refresh.
- */
-export type InstanceID = string;
-
 /**
  * Handles messaging to apps and opening apps for ONE FDC3 environment.
  * Stores all state for MessageHandlers to use.
  */
-export interface ServerContext<X extends AppRegistration> {
+export interface FDC3ServerInstance {
+  /**
+   * Returns the directory used by this FDC3ServerInstance.
+   */
+  getDirectory(): Directory;
+
   /**
    * UUID for outgoing message
    */
@@ -176,24 +74,17 @@ export interface ServerContext<X extends AppRegistration> {
    */
   open(appId: string): Promise<InstanceID>;
 
-  /** Set the FDC3Server instance associated with this context. This reference is
-   *  used to notify the server to cleanup state for apps that have been terminated.
-   *  The FDC3Server is passed a ServerContext when created and should call this fn
-   *  in its constructor.
-   */
-  setFDC3Server(server: FDC3Server): void;
-
   /**
    * Registers a particular instance id with a given app id
    */
-  setInstanceDetails(uuid: InstanceID, details: X): void;
+  setInstanceDetails(uuid: InstanceID, details: AppRegistration): void;
 
   /**
    * Returns the connection details for a particular instance of an app.
    * Used in a variety of MessageHandler classes to retrieve details for
    * an app and when validating an app's identity when connecting.
    */
-  getInstanceDetails(uuid: InstanceID): X | undefined;
+  getInstanceDetails(uuid: InstanceID): AppRegistration | undefined;
 
   /**
    * Registers an app as connected to the desktop agent.
@@ -242,7 +133,7 @@ export interface ServerContext<X extends AppRegistration> {
    * an opportunity for the server to either present an intent resolver
    * or otherwise mess with the available intents, or do nothing.
    */
-  narrowIntents(raiser: AppIdentifier, IappIntents: AppIntent[], context: Context): Promise<AppIntent[]>;
+  narrowIntents(raiser: AppIdentifier, appIntents: AppIntent[], context: Context): Promise<AppIntent[]>;
 
   // Channel state management
   /**
@@ -401,4 +292,19 @@ export interface ServerContext<X extends AppRegistration> {
    * Get all pending apps
    */
   getPendingApps(): Map<InstanceID, PendingApp>;
+
+  /**
+   * Receive an incoming message
+   */
+  receive(message: AppRequestMessage, from: InstanceID): Promise<void>;
+
+  /**
+   * Cleanup state relating to an app instance that has disconnected
+   */
+  cleanupApp(instanceId: InstanceID): void;
+
+  /**
+   * Shutdown the server context
+   */
+  shutdown(): void;
 }

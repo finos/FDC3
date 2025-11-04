@@ -1,22 +1,30 @@
+import { State, AppRegistration, InstanceID } from './AppRegistration';
 import {
-  ServerContext,
-  AppRegistration,
-  InstanceID,
   ChannelState,
   ContextListenerRegistration,
   PrivateChannelEventListener,
   DesktopAgentEventListener,
   IntentListenerRegistration,
-  PendingApp,
-} from './ServerContext';
-import { AppIdentifier } from '@finos/fdc3-standard';
+  FDC3ServerInstance,
+} from './FDC3ServerInstance';
+import { AppIdentifier, AppIntent } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
+import { MessageHandler } from './handlers/MessageHandler';
+import { AppRequestMessage } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { Directory } from './directory/DirectoryInterface';
+import { PendingApp } from './PendingApp';
 
 /**
  * Abstract base class for ServerContext implementations.
  * Contains all common state management logic for channels, listeners, and pending operations.
  */
-export abstract class AbstractServerContext<X extends AppRegistration> implements ServerContext<X> {
+export abstract class AbstractFDC3ServerInstance implements FDC3ServerInstance {
+  protected readonly handlers: MessageHandler[];
+
+  constructor(handlers: MessageHandler[]) {
+    this.handlers = handlers;
+  }
+
   // State management fields
   protected contextListeners: ContextListenerRegistration[] = [];
   protected privateChannelEventListeners: PrivateChannelEventListener[] = [];
@@ -30,19 +38,19 @@ export abstract class AbstractServerContext<X extends AppRegistration> implement
   // Abstract methods that must be implemented by subclasses
   abstract createUUID(): string;
   abstract post(message: object, to: InstanceID): Promise<void>;
-  abstract getInstanceDetails(uuid: InstanceID): X | undefined;
-  abstract setInstanceDetails(uuid: InstanceID, meta: X): void;
-  abstract setFDC3Server(server: any): void;
+  abstract getInstanceDetails(uuid: InstanceID): AppRegistration | undefined;
+  abstract setInstanceDetails(uuid: InstanceID, meta: AppRegistration): void;
   abstract open(appId: string): Promise<InstanceID>;
   abstract getConnectedApps(): Promise<AppRegistration[]>;
   abstract isAppConnected(app: InstanceID): Promise<boolean>;
-  abstract setAppState(app: InstanceID, newState: any): Promise<void>;
+  abstract setAppState(app: InstanceID, newState: State): Promise<void>;
   abstract getAllApps(): Promise<AppRegistration[]>;
   abstract log(message: string): void;
   abstract provider(): string;
   abstract providerVersion(): string;
   abstract fdc3Version(): string;
-  abstract narrowIntents(raiser: AppIdentifier, appIntents: any[], context: Context): Promise<any[]>;
+  abstract narrowIntents(raiser: AppIdentifier, appIntents: AppIntent[], context: Context): Promise<AppIntent[]>;
+  abstract getDirectory(): Directory;
 
   // Channel state management methods
   getChannelStates(): ChannelState[] {
@@ -217,5 +225,18 @@ export abstract class AbstractServerContext<X extends AppRegistration> implement
 
   getPendingApps(): Map<InstanceID, PendingApp> {
     return this.pendingApps;
+  }
+
+  async receive(message: AppRequestMessage, from: InstanceID): Promise<void> {
+    this.handlers.forEach(handler => handler.accept(message, this, from));
+  }
+
+  async cleanupApp(instanceId: InstanceID): Promise<void> {
+    // todo - move cleanups from handlers to here
+  }
+
+  async shutdown(): Promise<void> {
+    const shutdownEvent = new FDC3ServerShutdownEvent();
+    this.handlers.forEach(handler => handler.handleEvent(shutdownEvent, this));
   }
 }

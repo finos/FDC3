@@ -1,6 +1,6 @@
 import { AgentResponseMessage, AppRequestMessage } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
-import { AppRegistration, ServerContext } from '../ServerContext';
 import { AppIdentifier } from '@finos/fdc3-standard';
+import { FDC3ServerInstance } from '../FDC3ServerInstance';
 
 /** Interface representing a full specified app identifier (instanceId is optional in the API type). */
 export interface FullAppIdentifier {
@@ -14,7 +14,7 @@ export function isFullAppIdentifier(identifier: AppIdentifier | FullAppIdentifie
 }
 
 export function successResponse(
-  sc: ServerContext<AppRegistration>,
+  sc: FDC3ServerInstance,
   request: AppRequestMessage,
   to: FullAppIdentifier,
   payload: AgentResponseMessage['payload'],
@@ -24,7 +24,7 @@ export function successResponse(
 }
 
 export function errorResponse(
-  sc: ServerContext<AppRegistration>,
+  sc: FDC3ServerInstance,
   request: AppRequestMessage,
   to: FullAppIdentifier,
   error: string,
@@ -34,7 +34,7 @@ export function errorResponse(
 }
 
 export function successResponseId(
-  sc: ServerContext<AppRegistration>,
+  sc: FDC3ServerInstance,
   requestId: string,
   to: FullAppIdentifier,
   payload: AgentResponseMessage['payload'],
@@ -53,7 +53,7 @@ export function successResponseId(
 }
 
 export function errorResponseId(
-  sc: ServerContext<AppRegistration>,
+  sc: FDC3ServerInstance,
   requestId: string,
   to: FullAppIdentifier,
   error: string,
