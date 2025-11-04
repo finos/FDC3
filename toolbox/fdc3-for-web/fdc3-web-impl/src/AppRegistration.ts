@@ -1,3 +1,9 @@
+import {
+  AppRequestMessage,
+  WebConnectionProtocol4ValidateAppIdentity,
+  WebConnectionProtocol6Goodbye,
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+
 /**
  * This is a unique, long, unguessable string that identifies a particular instance of an app.
  * All messages arriving at the desktop agent will have this UUID attached to them.
@@ -22,3 +28,8 @@ export type AppRegistration = {
   appId: string;
   instanceId: InstanceID;
 };
+
+export type ReceivableMessage =
+  | AppRequestMessage
+  | WebConnectionProtocol4ValidateAppIdentity
+  | WebConnectionProtocol6Goodbye;

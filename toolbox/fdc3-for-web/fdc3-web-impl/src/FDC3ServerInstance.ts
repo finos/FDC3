@@ -1,7 +1,6 @@
 import { AppIdentifier, AppIntent, DisplayMetadata, PrivateChannelEventTypes } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
-import { AppRequestMessage } from '@finos/fdc3-schema/generated/api/BrowserTypes';
-import { AppRegistration, InstanceID, State } from './AppRegistration';
+import { AppRegistration, InstanceID, State, ReceivableMessage } from './AppRegistration';
 import { PendingApp } from './PendingApp';
 import { Directory } from './directory/DirectoryInterface';
 
@@ -296,7 +295,7 @@ export interface FDC3ServerInstance {
   /**
    * Receive an incoming message
    */
-  receive(message: AppRequestMessage, from: InstanceID): Promise<void>;
+  receive(message: ReceivableMessage, from: InstanceID): Promise<void>;
 
   /**
    * Cleanup state relating to an app instance that has disconnected

@@ -11,10 +11,10 @@ import {
 import { AppIdentifier, AppIntent } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { MessageHandler } from './handlers/MessageHandler';
-import { AppRequestMessage } from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { Directory } from './directory/DirectoryInterface';
 import { PendingApp } from './PendingApp';
 import { PrivateChannelDisconnectServerInstanceEvent, ShutdownServerInstanceEvent } from './FDC3ServerInstanceEvents';
+import { ReceivableMessage } from './AppRegistration';
 
 /**
  * Abstract base class for ServerContext implementations.
@@ -23,15 +23,16 @@ import { PrivateChannelDisconnectServerInstanceEvent, ShutdownServerInstanceEven
 export abstract class AbstractFDC3ServerInstance implements FDC3ServerInstance {
   protected readonly handlers: MessageHandler[];
 
-  constructor(handlers: MessageHandler[]) {
+  constructor(handlers: MessageHandler[], channels: ChannelState[]) {
     this.handlers = handlers;
+    this.channelStates = channels;
   }
 
   // State management fields
   protected contextListeners: ContextListenerRegistration[] = [];
   protected privateChannelEventListeners: PrivateChannelEventListener[] = [];
   protected desktopAgentEventListeners: DesktopAgentEventListener[] = [];
-  protected channelStates: ChannelState[] = [];
+  protected channelStates: ChannelState[];
   protected currentChannels: { [instanceId: string]: ChannelState } = {};
   protected intentListeners: IntentListenerRegistration[] = [];
   protected pendingResolutions: Map<string, AppIdentifier> = new Map();
@@ -229,7 +230,7 @@ export abstract class AbstractFDC3ServerInstance implements FDC3ServerInstance {
     return this.pendingApps;
   }
 
-  async receive(message: AppRequestMessage, from: InstanceID): Promise<void> {
+  async receive(message: ReceivableMessage, from: InstanceID): Promise<void> {
     this.handlers.forEach(handler => handler.accept(message, this, from));
   }
 

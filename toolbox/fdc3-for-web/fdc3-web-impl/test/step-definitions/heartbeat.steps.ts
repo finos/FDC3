@@ -21,7 +21,7 @@ Given(
       type: 'heartbeatAcknowledgementRequest',
     } as HeartbeatAcknowledgementRequest;
 
-    this.server.receive(message, uuid);
+    this.sc.receive(message, uuid);
   }
 );
 
@@ -34,7 +34,7 @@ Given('{string} sends a goodbye message', function (this: CustomWorld, appStr: s
     type: 'WCP6Goodbye',
   };
 
-  this.server.receive(message, uuid);
+  this.sc.receive(message, uuid);
 });
 
 Then('I test the liveness of {string}', async function (this: CustomWorld, appStr: string) {
@@ -43,7 +43,7 @@ Then('I test the liveness of {string}', async function (this: CustomWorld, appSt
 });
 
 Then('I get the heartbeat times', async function (this: CustomWorld) {
-  const hbh = this.server.handlers[3];
+  const hbh = this.sc.handlers[3];
   const out = (hbh as HeartbeatHandler).heartbeatTimes();
   this.props['result'] = out;
 });

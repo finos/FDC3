@@ -3,7 +3,7 @@ import { CustomWorld } from '../world';
 import { contextMap, createMeta } from './generic.steps';
 import { matchData } from '@finos/testing';
 import { BrowserTypes } from '@finos/fdc3-schema';
-import { State } from '../../src/ServerContext';
+import { State } from '../../src/AppRegistration';
 import { GetInfoRequest } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
 type OpenRequest = BrowserTypes.OpenRequest;
@@ -22,7 +22,7 @@ When('{string} is opened with connection id {string}', function (this: CustomWor
 
 When('{string} is closed', function (this: CustomWorld, app: string) {
   const meta = createMeta(this, app);
-  this.server.cleanup(meta.source.instanceId!);
+  this.sc.cleanupApp(meta.source.instanceId!);
 });
 
 When('{string} sends validate', function (this: CustomWorld, uuid: string) {
@@ -40,7 +40,7 @@ When('{string} sends validate', function (this: CustomWorld, uuid: string) {
       },
     };
     this.sc.setAppState(identity.instanceId, State.Connected);
-    this.server.receive(message, uuid);
+    this.sc.receive(message, uuid);
   } else {
     throw new Error(`Did not find app identity ${uuid}`);
   }
@@ -60,7 +60,7 @@ When('{string} revalidates', function (this: CustomWorld, uuid: string) {
     },
   };
 
-  this.server.receive(message, uuid);
+  this.sc.receive(message, uuid);
 });
 
 Then('running apps will be', async function (this: CustomWorld, dataTable: DataTable) {
@@ -81,7 +81,7 @@ When('{string} opens app {string}', function (this: CustomWorld, appStr: string,
       },
     },
   };
-  this.server.receive(message, uuid);
+  this.sc.receive(message, uuid);
 });
 
 When(
@@ -100,7 +100,7 @@ When(
         context: contextMap[context],
       },
     };
-    this.server.receive(message, uuid);
+    this.sc.receive(message, uuid);
   }
 );
 
@@ -117,7 +117,7 @@ When('{string} requests metadata for {string}', function (this: CustomWorld, app
       },
     },
   };
-  this.server.receive(message, uuid);
+  this.sc.receive(message, uuid);
 });
 
 When('{string} requests info on the DesktopAgent', function (this: CustomWorld, appStr: string) {
@@ -128,7 +128,7 @@ When('{string} requests info on the DesktopAgent', function (this: CustomWorld, 
     meta: from,
     payload: {},
   };
-  this.server.receive(message, uuid);
+  this.sc.receive(message, uuid);
 });
 
 When('{string} findsInstances of {string}', function (this: CustomWorld, appStr: string, open: string) {
@@ -143,7 +143,7 @@ When('{string} findsInstances of {string}', function (this: CustomWorld, appStr:
       },
     },
   };
-  this.server.receive(message, uuid);
+  this.sc.receive(message, uuid);
 });
 
 When('we wait for the listener timeout', function (this: CustomWorld) {

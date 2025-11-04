@@ -1,11 +1,10 @@
 import { Given, When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
-import { TestServerContext } from '../support/TestServerContext';
-import { DefaultFDC3Server } from '../../src/BasicFDC3Server';
+import { createTestServerContext } from '../support/TestServerContext';
 import { BasicDirectory } from '../../src/directory/BasicDirectory';
-import { ChannelType } from '../../src/ServerContext';
 import { Context } from '@finos/fdc3-context';
 import { AppIdentifier } from '@finos/fdc3-standard';
+import { ChannelState, ChannelType } from '../../src/FDC3ServerInstance';
 
 export const APP_FIELD = 'apps';
 
@@ -62,7 +61,7 @@ export const contextMap: Record<string, Context> = {
   },
 };
 
-function defaultChannels() {
+function defaultChannels(): ChannelState[] {
   return [
     {
       id: 'one',
@@ -112,19 +111,15 @@ export function createMeta(cw: CustomWorld, appStr: string) {
 
 Given('A newly instantiated FDC3 Server', function (this: CustomWorld) {
   const apps = this.props[APP_FIELD] ?? [];
-  const d = new BasicDirectory(apps);
-  this.sc = new TestServerContext(this);
-  this.server = new DefaultFDC3Server(this.sc, d, defaultChannels(), false, 2000, 2000);
+  this.sc = createTestServerContext(this, defaultChannels(), new BasicDirectory(apps), false);
 });
 
 Given('A newly instantiated FDC3 Server with heartbeat checking', function (this: CustomWorld) {
   const apps = this.props[APP_FIELD] ?? [];
-  const d = new BasicDirectory(apps);
 
-  this.sc = new TestServerContext(this);
-  this.server = new DefaultFDC3Server(this.sc, d, defaultChannels(), true, 2000, 2000);
+  this.sc = createTestServerContext(this, defaultChannels(), new BasicDirectory(apps), true);
 });
 
 When('I shutdown the server', function (this: CustomWorld) {
-  this.server.shutdown();
+  this.sc.shutdown();
 });

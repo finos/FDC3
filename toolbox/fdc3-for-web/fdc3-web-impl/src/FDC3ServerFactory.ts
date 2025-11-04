@@ -1,5 +1,5 @@
 import { MessageHandler } from './handlers/MessageHandler';
-import { FDC3ServerInstance } from './FDC3ServerInstance';
+import { ChannelState, FDC3ServerInstance } from './FDC3ServerInstance';
 import { HeartbeatHandler } from './handlers/HeartbeatHandler';
 import { BroadcastHandler } from './handlers/BroadcastHandler';
 import { IntentHandler } from './handlers/IntentHandler';
@@ -12,7 +12,7 @@ export interface FDC3ServerFactory {
    * This instance will create a single "app world", where all apps within it
    * work together communicating via the FDC3 API.
    */
-  createInstance(): Promise<FDC3ServerInstance>;
+  createInstance(): FDC3ServerInstance;
 
   /**
    * Shuts down all the FDC3ServerInstances created by this factory.
@@ -30,6 +30,7 @@ export abstract class AbstractFDC3ServerFactory {
 
   constructor(
     protected readonly directory: Directory,
+    protected readonly channels: ChannelState[],
     heartbeats: boolean,
     intentTimeoutMs: number = 20000,
     openHandlerTimeoutMs: number = 10000
@@ -45,7 +46,7 @@ export abstract class AbstractFDC3ServerFactory {
     }
   }
 
-  abstract createInstance(): Promise<FDC3ServerInstance>;
+  abstract createInstance(): FDC3ServerInstance;
 
   shutdownEverything(): Promise<void> {
     this.handlers.forEach(handler => handler.shutdown());
