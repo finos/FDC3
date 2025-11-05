@@ -30,7 +30,7 @@ export class ChannelChangedServerInstanceEvent implements FDC3ServerInstanceEven
 
   constructor(
     public instanceId: InstanceID,
-    public channelId: string
+    public channelId: string | null
   ) {
     this.type = 'channelChanged';
   }

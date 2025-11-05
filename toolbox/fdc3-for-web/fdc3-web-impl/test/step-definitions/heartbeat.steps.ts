@@ -47,3 +47,8 @@ Then('I get the heartbeat times', async function (this: CustomWorld) {
   const out = (hbh as HeartbeatHandler).heartbeatTimes();
   this.props['result'] = out;
 });
+
+Then('I stop the heartbeat handler', function (this: CustomWorld) {
+  const hbh = this.sc.handlers[3];
+  (hbh as HeartbeatHandler).shutdown();
+});

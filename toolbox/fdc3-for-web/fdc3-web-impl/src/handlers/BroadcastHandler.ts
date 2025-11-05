@@ -393,15 +393,12 @@ export class BroadcastHandler implements MessageHandler {
     // join it.
     const instanceId = from.instanceId ?? 'no-instance-id';
     sc.setCurrentChannel(instanceId, newChannel);
-    this.fireChannelChangedEvent(newChannel?.id, sc, instanceId);
     successResponse(sc, arg0, from, {}, 'joinUserChannelResponse');
   }
 
   handleLeaveCurrentChannelRequest(arg0: LeaveCurrentChannelRequest, sc: FDC3ServerInstance, from: FullAppIdentifier) {
     const instanceId = from.instanceId ?? 'no-instance-id';
     sc.setCurrentChannel(instanceId, null);
-
-    this.fireChannelChangedEvent(null, sc, instanceId);
     successResponse(sc, arg0, from, {}, 'leaveCurrentChannelResponse');
   }
 

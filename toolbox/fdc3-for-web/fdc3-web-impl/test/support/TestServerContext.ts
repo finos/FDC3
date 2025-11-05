@@ -27,6 +27,7 @@ export class TestServerContext extends AbstractFDC3ServerInstance {
   public handlers: MessageHandler[];
 
   constructor(
+    private readonly factory: TestFDC3ServerFactory,
     cw: CustomWorld,
     handlers: MessageHandler[],
     channels: ChannelState[],
@@ -152,7 +153,8 @@ export class TestServerContext extends AbstractFDC3ServerInstance {
    * USED FOR TESTING
    */
   async shutdown(): Promise<void> {
-    this.handlers.forEach(h => h.shutdown());
+    super.shutdown();
+    this.factory.shutdownHandlers();
   }
 }
 
@@ -167,7 +169,7 @@ export class TestFDC3ServerFactory extends AbstractFDC3ServerFactory {
   }
 
   createInstance(): TestServerContext {
-    return new TestServerContext(this.cw, this.handlers, this.channels, this.directory);
+    return new TestServerContext(this, this.cw, this.handlers, this.channels, this.directory);
   }
 }
 

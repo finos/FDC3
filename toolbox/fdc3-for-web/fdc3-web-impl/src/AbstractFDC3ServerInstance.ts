@@ -7,13 +7,19 @@ import {
   DesktopAgentEventListener,
   IntentListenerRegistration,
   FDC3ServerInstance,
+  HeartbeatActivityEvent,
 } from './FDC3ServerInstance';
 import { AppIdentifier, AppIntent } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { MessageHandler } from './handlers/MessageHandler';
 import { Directory } from './directory/DirectoryInterface';
 import { PendingApp } from './PendingApp';
-import { PrivateChannelDisconnectServerInstanceEvent, ShutdownServerInstanceEvent } from './FDC3ServerInstanceEvents';
+import {
+  ChannelChangedServerInstanceEvent,
+  FDC3ServerInstanceEvent,
+  PrivateChannelDisconnectServerInstanceEvent,
+  ShutdownServerInstanceEvent,
+} from './FDC3ServerInstanceEvents';
 import { ReceivableMessage } from './AppRegistration';
 
 /**
@@ -55,6 +61,24 @@ export abstract class AbstractFDC3ServerInstance implements FDC3ServerInstance {
   abstract narrowIntents(raiser: AppIdentifier, appIntents: AppIntent[], context: Context): Promise<AppIntent[]>;
   abstract getDirectory(): Directory;
 
+  // Heartbeat activity handling
+  async heartbeatActivity(instanceId: InstanceID, event: HeartbeatActivityEvent): Promise<void> {
+    switch (event) {
+      case HeartbeatActivityEvent.ConnectedResponding:
+        console.error(`Heartbeat from ${instanceId}. App is considered connected.`);
+        await this.setAppState(instanceId, State.Connected);
+        break;
+      case HeartbeatActivityEvent.NotRespondingAfterDisconnectTime:
+        console.error(`No heartbeat from ${instanceId}. App is considered not responding.`);
+        await this.setAppState(instanceId, State.NotResponding);
+        break;
+      case HeartbeatActivityEvent.NotRespondingAfterDeadTime:
+        console.error(`No heartbeat from ${instanceId}. App is considered terminated.`);
+        await this.setAppState(instanceId, State.Terminated);
+        break;
+    }
+  }
+
   // Channel state management methods
   getChannelStates(): ChannelState[] {
     return this.channelStates;
@@ -90,6 +114,12 @@ export abstract class AbstractFDC3ServerInstance implements FDC3ServerInstance {
     } else {
       this.currentChannels[instanceId] = channel;
     }
+    const event = new ChannelChangedServerInstanceEvent(instanceId, channel?.id ?? null);
+    this.notifyEventHandlers(event);
+  }
+
+  notifyEventHandlers(event: FDC3ServerInstanceEvent): void {
+    this.handlers.forEach(handler => handler.handleEvent(event, this));
   }
 
   // Context listener management methods
@@ -101,16 +131,14 @@ export abstract class AbstractFDC3ServerInstance implements FDC3ServerInstance {
     this.contextListeners.push(listener);
   }
 
-  removeContextListener(listenerUuid: string, instanceId: InstanceID): boolean {
+  removeContextListener(listenerUuid: string, instanceId: InstanceID) {
     const i = this.contextListeners.findIndex(r => r.listenerUuid == listenerUuid && r.instanceId == instanceId);
     if (i > -1) {
       this.contextListeners.splice(i, 1);
-      return true;
     }
-    return false;
   }
 
-  removeContextListenersByInstance(instanceId: InstanceID): ContextListenerRegistration[] {
+  removeContextListenersByInstance(instanceId: InstanceID) {
     const removed = this.contextListeners.filter(r => r.instanceId == instanceId);
     this.contextListeners = this.contextListeners.filter(listener => listener.instanceId !== instanceId);
     return removed;
@@ -140,11 +168,6 @@ export abstract class AbstractFDC3ServerInstance implements FDC3ServerInstance {
       listener => listener.instanceId !== instanceId
     );
     return removed;
-  }
-
-  // Desktop agent event listener management methods
-  getDesktopAgentEventListeners(): DesktopAgentEventListener[] {
-    return this.desktopAgentEventListeners;
   }
 
   addDesktopAgentEventListener(listener: DesktopAgentEventListener): void {
@@ -226,10 +249,6 @@ export abstract class AbstractFDC3ServerInstance implements FDC3ServerInstance {
     return this.pendingApps.delete(instanceId);
   }
 
-  getPendingApps(): Map<InstanceID, PendingApp> {
-    return this.pendingApps;
-  }
-
   async receive(message: ReceivableMessage, from: InstanceID): Promise<void> {
     this.handlers.forEach(handler => handler.accept(message, this, from));
   }
@@ -251,7 +270,7 @@ export abstract class AbstractFDC3ServerInstance implements FDC3ServerInstance {
     // Fire disconnect events for private channels
     privateChannelsToDisconnect.forEach(channelId => {
       const disconnectEvent = new PrivateChannelDisconnectServerInstanceEvent(instanceId, channelId);
-      this.handlers.forEach(handler => handler.handleEvent(disconnectEvent, this));
+      this.notifyEventHandlers(disconnectEvent);
     });
 
     // Clean up state entries
@@ -265,6 +284,6 @@ export abstract class AbstractFDC3ServerInstance implements FDC3ServerInstance {
 
   async shutdown(): Promise<void> {
     const shutdownEvent = new ShutdownServerInstanceEvent();
-    this.handlers.forEach(handler => handler.handleEvent(shutdownEvent, this));
+    this.notifyEventHandlers(shutdownEvent);
   }
 }

@@ -4,6 +4,12 @@ import { AppRegistration, InstanceID, State, ReceivableMessage } from './AppRegi
 import { PendingApp } from './PendingApp';
 import { Directory } from './directory/DirectoryInterface';
 
+export enum HeartbeatActivityEvent {
+  ConnectedResponding = 'ConnectedResponding',
+  NotRespondingAfterDisconnectTime = 'NotRespondingAfterDisconnectTime',
+  NotRespondingAfterDeadTime = 'NotRespondingAfterDeadTime',
+}
+
 export type ContextListenerRegistration = {
   appId: string;
   instanceId: string;
@@ -89,6 +95,12 @@ export interface FDC3ServerInstance {
    * Registers an app as connected to the desktop agent.
    */
   setAppState(app: InstanceID, state: State): Promise<void>;
+
+  /**
+   * Handle heartbeat activity from the HeartbeatHandler.
+   * The server instance can decide how to respond to different heartbeat events.
+   */
+  heartbeatActivity(instanceId: InstanceID, event: HeartbeatActivityEvent): Promise<void>;
 
   /**
    * Returns the list of apps open and connected to FDC3 at the current time.
@@ -180,12 +192,12 @@ export interface FDC3ServerInstance {
   /**
    * Remove a context listener by UUID
    */
-  removeContextListener(listenerUuid: string, instanceId: InstanceID): boolean;
+  removeContextListener(listenerUuid: string, instanceId: InstanceID): void;
 
   /**
    * Remove all context listeners for an instance
    */
-  removeContextListenersByInstance(instanceId: InstanceID): ContextListenerRegistration[];
+  removeContextListenersByInstance(instanceId: InstanceID): void;
 
   // Private channel event listener management
   /**
@@ -206,14 +218,9 @@ export interface FDC3ServerInstance {
   /**
    * Remove all private channel event listeners for an instance
    */
-  removePrivateChannelEventListenersByInstance(instanceId: InstanceID): PrivateChannelEventListener[];
+  removePrivateChannelEventListenersByInstance(instanceId: InstanceID): void;
 
   // Desktop agent event listener management
-  /**
-   * Get all desktop agent event listeners
-   */
-  getDesktopAgentEventListeners(): DesktopAgentEventListener[];
-
   /**
    * Add a desktop agent event listener
    */
@@ -227,7 +234,7 @@ export interface FDC3ServerInstance {
   /**
    * Remove all desktop agent event listeners for an instance
    */
-  removeDesktopAgentEventListenersByInstance(instanceId: InstanceID): DesktopAgentEventListener[];
+  removeDesktopAgentEventListenersByInstance(instanceId: InstanceID): void;
 
   // Intent listener management
   /**
@@ -248,7 +255,7 @@ export interface FDC3ServerInstance {
   /**
    * Remove all intent listeners for an instance
    */
-  removeIntentListenersByInstance(instanceId: InstanceID): IntentListenerRegistration[];
+  removeIntentListenersByInstance(instanceId: InstanceID): void;
 
   // Pending intent resolution management
   /**
@@ -264,7 +271,7 @@ export interface FDC3ServerInstance {
   /**
    * Remove a pending resolution
    */
-  removePendingResolution(requestUuid: string): boolean;
+  removePendingResolution(requestUuid: string): void;
 
   /**
    * Remove all pending resolutions for an instance
@@ -285,12 +292,7 @@ export interface FDC3ServerInstance {
   /**
    * Remove a pending app by instance ID
    */
-  removePendingApp(instanceId: InstanceID): boolean;
-
-  /**
-   * Get all pending apps
-   */
-  getPendingApps(): Map<InstanceID, PendingApp>;
+  removePendingApp(instanceId: InstanceID): void;
 
   /**
    * Receive an incoming message

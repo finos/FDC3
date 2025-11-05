@@ -48,7 +48,7 @@ export abstract class AbstractFDC3ServerFactory {
 
   abstract createInstance(): FDC3ServerInstance;
 
-  shutdownEverything(): Promise<void> {
+  shutdownHandlers(): Promise<void> {
     this.handlers.forEach(handler => handler.shutdown());
     return Promise.resolve();
   }
