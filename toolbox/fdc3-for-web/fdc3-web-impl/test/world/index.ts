@@ -1,5 +1,5 @@
 import { World, setWorldConstructor } from '@cucumber/cucumber';
-import { TestFDC3ServerFactory } from '../support/TestServerContext';
+import { TestFDC3ServerFactory } from '../support/TestFDC3ServerInstance';
 import { BasicDirectory } from '../../src/directory/BasicDirectory';
 
 export class CustomWorld extends World {

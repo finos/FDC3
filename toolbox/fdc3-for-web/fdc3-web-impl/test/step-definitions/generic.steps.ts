@@ -1,6 +1,6 @@
 import { Given, When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
-import { createTestServerContext } from '../support/TestServerContext';
+import { createTestFDC3ServerInstance } from '../support/TestFDC3ServerInstance';
 import { BasicDirectory } from '../../src/directory/BasicDirectory';
 import { Context } from '@finos/fdc3-context';
 import { AppIdentifier } from '@finos/fdc3-standard';
@@ -111,13 +111,13 @@ export function createMeta(cw: CustomWorld, appStr: string) {
 
 Given('A newly instantiated FDC3 Server', function (this: CustomWorld) {
   const apps = this.props[APP_FIELD] ?? [];
-  this.sc = createTestServerContext(this, defaultChannels(), new BasicDirectory(apps), false);
+  this.sc = createTestFDC3ServerInstance(this, defaultChannels(), new BasicDirectory(apps), false);
 });
 
 Given('A newly instantiated FDC3 Server with heartbeat checking', function (this: CustomWorld) {
   const apps = this.props[APP_FIELD] ?? [];
 
-  this.sc = createTestServerContext(this, defaultChannels(), new BasicDirectory(apps), true);
+  this.sc = createTestFDC3ServerInstance(this, defaultChannels(), new BasicDirectory(apps), true);
 });
 
 When('I shutdown the server', function (this: CustomWorld) {
