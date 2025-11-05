@@ -14,7 +14,6 @@ import { Socket } from 'socket.io-client';
 import { v4 as uuid } from 'uuid';
 import { FDC3_DA_EVENT } from '../../message-types';
 import { AppIdentifier, AppIntent, OpenError } from '@finos/fdc3';
-import { Context } from '@finos/fdc3-context';
 
 enum Opener {
   Tab,
