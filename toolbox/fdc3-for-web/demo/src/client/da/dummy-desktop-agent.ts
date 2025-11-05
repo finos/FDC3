@@ -1,16 +1,9 @@
 import { io } from 'socket.io-client';
 import { v4 as uuid } from 'uuid';
 import { APP_GOODBYE, APP_HELLO, DA_HELLO, FDC3_APP_EVENT } from '../../message-types';
-import { DemoServerContext } from './DemoServerContext';
+import { DemoFDC3ServerFactory, DemoFDC3ServerInstance } from './DemoServerContext';
 import { FDC3_2_1_JSONDirectory } from './FDC3_2_1_JSONDirectory';
-import {
-  AppRegistration,
-  ChannelState,
-  ChannelType,
-  DefaultFDC3Server,
-  DirectoryApp,
-  ServerContext,
-} from '@finos/fdc3-web-impl';
+import { ChannelState, ChannelType, DirectoryApp, State, type FDC3ServerInstance } from '@finos/fdc3-web-impl';
 import { link, UI, UI_URLS } from './util';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { WebConnectionProtocol3Handshake } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
@@ -63,7 +56,6 @@ window.addEventListener('load', () => {
     const directory = new FDC3_2_1_JSONDirectory();
     await directory.load('/static/da/appd.json');
     await directory.load('/static/da/local-conformance.v2.json');
-    const sc = new DemoServerContext(socket, directory);
 
     const channelDetails: ChannelState[] = [
       {
@@ -147,14 +139,17 @@ window.addEventListener('load', () => {
         },
       },
     ];
-    const fdc3Server = new DefaultFDC3Server(sc, directory, channelDetails, true, 20000, 10017);
+
+    // Create the factory and server instance
+    const factory = new DemoFDC3ServerFactory(socket, directory, channelDetails, true, 20000, 10000);
+    const fdc3ServerInstance = factory.createInstance() as DemoFDC3ServerInstance;
 
     socket.on(FDC3_APP_EVENT, (msg, from) => {
-      fdc3Server.receive(msg, from);
+      fdc3ServerInstance.receive(msg, from);
     });
 
     socket.on(APP_GOODBYE, (id: string) => {
-      fdc3Server.cleanup(id);
+      fdc3ServerInstance.setAppState(id, State.Terminated);
     });
 
     // let's create buttons for some apps
@@ -164,7 +159,7 @@ window.addEventListener('load', () => {
       const mani = app?.hostManifests?.demo as any;
       const show = mani?.visible ?? true;
       if (show) {
-        appList.appendChild(createAppStartButton(app, sc));
+        appList.appendChild(createAppStartButton(app, fdc3ServerInstance));
       }
     });
 
@@ -179,7 +174,7 @@ window.addEventListener('load', () => {
 
       console.log('Received: ' + JSON.stringify(event.data));
       if (data.type == 'WCP1Hello') {
-        const instance = await sc.getInstanceForWindow(source);
+        const instance = await fdc3ServerInstance.getInstanceForWindow(source);
         if (instance) {
           if (getApproach() == Approach.IFRAME) {
             const message: WebConnectionProtocol2LoadURL = {

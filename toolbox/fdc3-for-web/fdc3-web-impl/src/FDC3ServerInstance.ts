@@ -298,7 +298,8 @@ export interface FDC3ServerInstance {
   receive(message: ReceivableMessage, from: InstanceID): Promise<void>;
 
   /**
-   * Cleanup state relating to an app instance that has disconnected
+   * Cleanup state relating to an app instance that has disconnected.
+   * This is called automatically when the app instance is set to State.Terminated.
    */
   cleanupApp(instanceId: InstanceID): void;
 
