@@ -18,7 +18,7 @@ type MessageRecord = {
   msg: object;
 };
 
-export class TestServerContext extends AbstractFDC3ServerInstance {
+export class TestFDC3ServerInstance extends AbstractFDC3ServerInstance {
   public postedMessages: MessageRecord[] = [];
   private readonly cw: CustomWorld;
   private instances: ConnectionDetails[] = [];
@@ -168,16 +168,16 @@ export class TestFDC3ServerFactory extends AbstractFDC3ServerFactory {
     super(directory, channels, heartbeats, 2000, 2000);
   }
 
-  createInstance(): TestServerContext {
-    return new TestServerContext(this, this.cw, this.handlers, this.channels, this.directory);
+  createInstance(): TestFDC3ServerInstance {
+    return new TestFDC3ServerInstance(this, this.cw, this.handlers, this.channels, this.directory);
   }
 }
 
-export function createTestServerContext(
+export function createTestFDC3ServerInstance(
   cw: CustomWorld,
   channels: ChannelState[],
   directory: Directory,
   heartbeats: boolean
-): TestServerContext {
+): TestFDC3ServerInstance {
   return new TestFDC3ServerFactory(cw, channels, directory, heartbeats).createInstance();
 }

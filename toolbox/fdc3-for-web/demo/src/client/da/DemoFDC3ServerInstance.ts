@@ -71,7 +71,7 @@ export class DemoFDC3ServerInstance extends AbstractFDC3ServerInstance {
     return this.directory;
   }
 
-  async narrowIntents(_raiser: AppIdentifier, appIntents: AppIntent[], _context: Context): Promise<AppIntent[]> {
+  async narrowIntents(_raiser: AppIdentifier, appIntents: AppIntent[] /*, _context: Context*/): Promise<AppIntent[]> {
     return appIntents;
   }
 

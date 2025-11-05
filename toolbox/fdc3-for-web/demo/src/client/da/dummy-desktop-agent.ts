@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 import { v4 as uuid } from 'uuid';
 import { APP_GOODBYE, APP_HELLO, DA_HELLO, FDC3_APP_EVENT } from '../../message-types';
-import { DemoFDC3ServerFactory, DemoFDC3ServerInstance } from './DemoServerContext';
+import { DemoFDC3ServerFactory, DemoFDC3ServerInstance } from './DemoFDC3ServerInstance';
 import { FDC3_2_1_JSONDirectory } from './FDC3_2_1_JSONDirectory';
 import { ChannelState, ChannelType, DirectoryApp, State, type FDC3ServerInstance } from '@finos/fdc3-web-impl';
 import { link, UI, UI_URLS } from './util';
