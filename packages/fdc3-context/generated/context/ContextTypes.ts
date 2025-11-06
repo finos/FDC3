@@ -283,7 +283,7 @@ export interface OrganizationClassification {
   /**
    * FactSet classification for the instrument.
    */
-  FDS_TYPE?: string;
+  FDS_TYPE?: FactSetType;
   /**
    * classification of the instrument by type or category. SHOULD be one of the following
    * values, although other string values are permitted: '`commodity`', '`commodityIndex`',
@@ -297,6 +297,38 @@ export interface OrganizationClassification {
   name?: string;
   [property: string]: any;
 }
+
+/**
+ * FactSet classification for the instrument.
+ */
+export type FactSetType =
+  | 'commodity'
+  | 'commodityIndex'
+  | 'corporateDebt'
+  | 'creditDefaultSwapIndex'
+  | 'deal'
+  | 'debt'
+  | 'debtIndex'
+  | 'etf'
+  | 'fixedIncome'
+  | 'future'
+  | 'governmentBenchmarkDebt'
+  | 'loan'
+  | 'mortgageBackedSecurity'
+  | 'municipalDebt'
+  | 'mutualFund'
+  | 'mutualFundIndex'
+  | 'option'
+  | 'otherDebt'
+  | 'ownershipPrivateCompany'
+  | 'pevcFirm'
+  | 'pevcFund'
+  | 'privateCompany'
+  | 'publicCompany'
+  | 'publicCompanyIndex'
+  | 'sovereignDebt'
+  | 'structuredProduct'
+  | 'unknown';
 
 /**
  * Any combination of instrument identifiers can be used together to resolve ambiguity, or
@@ -1226,7 +1258,7 @@ export interface PurpleInstrumentClassification {
   /**
    * FactSet classification for the instrument.
    */
-  FDS_TYPE?: string;
+  FDS_TYPE?: FactSetType;
   /**
    * classification of the instrument by type or category. SHOULD be one of the following
    * values, although other string values are permitted: '`commodity`', '`commodityIndex`',
@@ -2464,7 +2496,7 @@ const typeMap: any = {
   ),
   OrganizationClassification: o(
     [
-      { json: 'FDS_TYPE', js: 'FDS_TYPE', typ: u(undefined, '') },
+      { json: 'FDS_TYPE', js: 'FDS_TYPE', typ: u(undefined, r('FactSetType')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
@@ -2765,7 +2797,7 @@ const typeMap: any = {
   ),
   PurpleInstrumentClassification: o(
     [
-      { json: 'FDS_TYPE', js: 'FDS_TYPE', typ: u(undefined, '') },
+      { json: 'FDS_TYPE', js: 'FDS_TYPE', typ: u(undefined, r('FactSetType')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
@@ -3010,6 +3042,35 @@ const typeMap: any = {
   ),
   ActionType: ['broadcast', 'raiseIntent'],
   ActionTypeEnum: ['fdc3.action'],
+  FactSetType: [
+    'commodity',
+    'commodityIndex',
+    'corporateDebt',
+    'creditDefaultSwapIndex',
+    'deal',
+    'debt',
+    'debtIndex',
+    'etf',
+    'fixedIncome',
+    'future',
+    'governmentBenchmarkDebt',
+    'loan',
+    'mortgageBackedSecurity',
+    'municipalDebt',
+    'mutualFund',
+    'mutualFundIndex',
+    'option',
+    'otherDebt',
+    'ownershipPrivateCompany',
+    'pevcFirm',
+    'pevcFund',
+    'privateCompany',
+    'publicCompany',
+    'publicCompanyIndex',
+    'sovereignDebt',
+    'structuredProduct',
+    'unknown',
+  ],
   PurpleAppID: ['fdc3.instrument'],
   TimeRangeType: ['fdc3.timeRange'],
   ChartStyle: ['bar', 'candle', 'custom', 'heatmap', 'histogram', 'line', 'mountain', 'pie', 'scatter', 'stacked-bar'],
