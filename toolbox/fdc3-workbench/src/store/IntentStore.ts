@@ -16,7 +16,7 @@ import { intentTypes } from '../fixtures/intentTypes';
 import systemLogStore from './SystemLogStore';
 import appChannelStore from './AppChannelStore';
 import privateChannelStore from './PrivateChannelStore';
-import { Channel, IntentResult } from '@finos/fdc3';
+import { Channel, IntentHandler, IntentResult, Listener } from '@finos/fdc3';
 
 type IntentItem = { title: string; value: string };
 
@@ -38,6 +38,7 @@ class IntentStore {
 
   async addIntentListener(
     intent: string,
+    context?: ContextType,
     resultContext?: ContextType | null,
     channelName?: string | null,
     isPrivate?: boolean,
@@ -49,60 +50,65 @@ class IntentStore {
 
       const agent = await getWorkbenchAgent();
 
-      const intentListener = await agent.addIntentListener(
-        intent,
-        async (context: ContextType, metaData?: any): Promise<IntentResult> => {
-          const currentListener = this.intentListeners.find(({ id }) => id === listenerId);
-          let channel: Channel | undefined;
+      const handler: IntentHandler = async (context: ContextType, metaData?: any): Promise<IntentResult> => {
+        const currentListener = this.intentListeners.find(({ id }) => id === listenerId);
+        let channel: Channel | undefined;
 
-          //app channel
-          if (channelName && !isPrivate) {
-            channel = await appChannelStore.getOrCreateChannel(channelName);
-          }
-
-          //private channel
-          if (isPrivate && !channelName) {
-            channel = await privateChannelStore.createPrivateChannel();
-            privateChannelStore.addChannelListener(<PrivateChannel>channel, 'all');
-
-            privateChannelStore.onDisconnect(<PrivateChannel>channel);
-            privateChannelStore.onUnsubscribe(<PrivateChannel>channel);
-            privateChannelStore.onAddContextListener(<PrivateChannel>channel, channelContexts, channelContextDelay);
-          }
-
-          if (!isPrivate && channel) {
-            if (Object.keys(channelContexts).length !== 0) {
-              Object.keys(channelContexts).forEach(key => {
-                let broadcast = setTimeout(async () => {
-                  appChannelStore.broadcast(<Channel>channel, channelContexts[key]);
-                  clearTimeout(broadcast);
-                }, channelContextDelay[key]);
-              });
-            } else {
-              await channel.broadcast(context);
-            }
-          }
-
-          runInAction(() => {
-            if (currentListener) {
-              currentListener.lastReceivedContext = context;
-              currentListener.metaData = metaData;
-            }
-          });
-
-          systemLogStore.addLog({
-            name: 'receivedIntentListener',
-            type: 'info',
-            value: intent,
-            variant: 'code',
-            body: JSON.stringify(context, null, 4),
-          });
-
-          const result: IntentResult = channel || (resultContext ?? undefined);
-
-          return result;
+        //app channel
+        if (channelName && !isPrivate) {
+          channel = await appChannelStore.getOrCreateChannel(channelName);
         }
-      );
+
+        //private channel
+        if (isPrivate && !channelName) {
+          channel = await privateChannelStore.createPrivateChannel();
+          privateChannelStore.addChannelListener(<PrivateChannel>channel, 'all');
+
+          privateChannelStore.onDisconnect(<PrivateChannel>channel);
+          privateChannelStore.onUnsubscribe(<PrivateChannel>channel);
+          privateChannelStore.onAddContextListener(<PrivateChannel>channel, channelContexts, channelContextDelay);
+        }
+
+        if (!isPrivate && channel) {
+          if (Object.keys(channelContexts).length !== 0) {
+            Object.keys(channelContexts).forEach(key => {
+              let broadcast = setTimeout(async () => {
+                appChannelStore.broadcast(<Channel>channel, channelContexts[key]);
+                clearTimeout(broadcast);
+              }, channelContextDelay[key]);
+            });
+          } else {
+            await channel.broadcast(context);
+          }
+        }
+
+        runInAction(() => {
+          if (currentListener) {
+            currentListener.lastReceivedContext = context;
+            currentListener.metaData = metaData;
+          }
+        });
+
+        systemLogStore.addLog({
+          name: 'receivedIntentListener',
+          type: 'info',
+          value: intent,
+          variant: 'code',
+          body: JSON.stringify(context, null, 4),
+        });
+
+        const result: IntentResult = channel || (resultContext ?? undefined);
+
+        return result;
+      };
+
+      let intentListener: Listener;
+
+      if (context == null) {
+        intentListener = await agent.addIntentListener(intent, handler);
+      } else {
+        intentListener = await agent.addIntentListenerWithContext(intent, context.type, handler);
+      }
 
       runInAction(() => {
         systemLogStore.addLog({
