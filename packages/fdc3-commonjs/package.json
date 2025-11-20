@@ -25,14 +25,11 @@
         "clean": "npx rimraf dist .rollup.cache",
         "build": "npx rollup -c rollup.config.mjs"
     },
-    "dependencies": {
-        "@finos/fdc3": "2.2.0"
-    },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^28.0.1",
         "@rollup/plugin-json": "^6.1.0",
         "@rollup/plugin-node-resolve": "^15.3.0",
-        "@rollup/plugin-typescript": "^12.1.1",
-        "rollup": "^4.27.4"
+        "rollup": "^4.27.4",
+        "rollup-plugin-dts": "^6.2.3"
     }
 }
