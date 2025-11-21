@@ -292,7 +292,7 @@
                     "type": "object",
                     "additionalProperties": true,
                     "title": "custom",
-                    "description": "Custom metadata that can be used to provide additional information about the context or intent."
+                    "description": "Custom metadata that can be used to provide additional information about the context or intent. This allows for individuals to use metadata fields that have yet to be standardized."
                 }
             },
             "additionalProperties": false
