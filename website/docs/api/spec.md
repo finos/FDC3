@@ -865,6 +865,10 @@ Registered listeners SHOULD receive the following properties:
 * timestamp
 * source
 
+Registered listeners MAY receive the following properties:
+* custom
+<!-- * signature -->
+
 ### Trace information
 
 The Desktop Agent SHOULD provide a `traceId` to intent handlers. If the originating app provides `traceId` information, the Desktop Agent SHOULD use provide the `traceId` from the app. If the originating app does not provide `traceId` information, the Desktop Agent SHOULD generate a uuid., 

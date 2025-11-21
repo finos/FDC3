@@ -190,7 +190,7 @@ Context broadcasts are primarily received from apps that are joined to the same 
 
 Context may also be received via this listener if the application was launched via a call to  [`fdc3.open`](#open), where context was passed as an argument. In order to receive this, applications SHOULD add their context listener as quickly as possible after launch, or an error MAY be returned to the caller and the context may not be delivered. The exact timeout used is set by the Desktop Agent implementation, but MUST be at least 15 seconds.
 
-Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the Desktop Agent implementation.
+Optional metadata about each context message received, including the app that originated the message, MUST be provided by the Desktop Agent implementation.
 
 **Examples:**
 
@@ -365,7 +365,7 @@ The Desktop Agent MUST reject the promise returned by the `getResult()` function
 
 The [`PrivateChannel`](PrivateChannel) type is provided to support synchronization of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via raising an intent.
 
-Optional metadata about each intent & context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
+Optional metadata about each intent & context message received, including the app that originated the message, MUST be provided by the Desktop Agent implementation.
 
 **Examples:**
 
