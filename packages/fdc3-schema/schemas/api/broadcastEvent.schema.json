@@ -18,7 +18,7 @@
 					"$ref": "#/$defs/BroadcastEventPayload"
 				},
 				"metadata": {
-					"$ref": "api.schema.json#/definitions/AppProvidableContextMetadata"
+					"$ref": "api.schema.json#/definitions/DesktopAgentProvidableContextMetadata"
 				},
 				"meta": true
 			},
