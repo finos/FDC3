@@ -7,7 +7,8 @@ import React, { useEffect, useRef, useState } from "react";
 import JSONEditor, { JSONEditorOptions, ParseError, SchemaValidationError } from "jsoneditor";
 import "jsoneditor/dist/jsoneditor.css";
 import $RefParser from "@apidevtools/json-schema-ref-parser";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { Theme } from "@mui/material/styles";
+import { Box } from "@mui/material";
 
 interface JsonInputProps {
 	json?: object | null;
@@ -19,43 +20,40 @@ interface JsonInputProps {
 	error?: string | false;
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		root: {
-			position: "relative",
-			flexGrow: 1,
-			padding: theme.spacing(1),
-			border: `1px solid #0086bf`,
-			borderRadius: theme.shape.borderRadius,
-			"& .jsoneditor": {
-				border: "none",
-			},
-			"& .ace-jsoneditor .ace_gutter": {
-				backgroundColor: "transparent",
-			},
-			"& .ace-jsoneditor .ace_gutter-active-line": {
-				backgroundColor: theme.palette.grey["200"],
-			},
-			"& .ace-jsoneditor .ace_marker-layer .ace_active-line": {
-				backgroundColor: theme.palette.grey["200"],
-			},
+const classes = {
+	root: (theme: Theme) => ({
+		position: "relative",
+		flexGrow: 1,
+		padding: theme.spacing(1),
+		border: `1px solid #0086bf`,
+		borderRadius: theme.shape.borderRadius,
+		"& .jsoneditor": {
+			border: "none",
 		},
-		jsonInput: {
-			height: "270px",
+		"& .ace-jsoneditor .ace_gutter": {
+			backgroundColor: "transparent",
 		},
-		errorText: {
-			bottom: "-8px",
-			padding: theme.spacing(0, 0.5),
-			fontSize: "0.75rem",
-			position: "absolute",
-			backgroundColor: "#fff",
-			color: theme.palette.error.main,
+		"& .ace-jsoneditor .ace_gutter-active-line": {
+			backgroundColor: theme.palette.grey["200"],
 		},
-	})
-);
+		"& .ace-jsoneditor .ace_marker-layer .ace_active-line": {
+			backgroundColor: theme.palette.grey["200"],
+		},
+	}),
+	jsonInput: {
+		height: "270px",
+	},
+	errorText: (theme: Theme) => ({
+		bottom: "-8px",
+		padding: theme.spacing(0, 0.5),
+		fontSize: "0.75rem",
+		position: "absolute",
+		backgroundColor: "#fff",
+		color: theme.palette.error.main,
+	}),
+} as const;
 
 export const JsonInput: React.FC<JsonInputProps> = (props: JsonInputProps) => {
-	const classes = useStyles();
 	const [jsoneditor, setJsoneditor] = useState<JSONEditor>();
 	const container = useRef<HTMLDivElement>(null);
 	const initialSettings: JSONEditorOptions = {
@@ -157,9 +155,9 @@ export const JsonInput: React.FC<JsonInputProps> = (props: JsonInputProps) => {
 	}, [props.json, jsoneditor]);
 
 	return (
-		<div className={classes.root} tabIndex={0}>
-			<div className={classes.jsonInput} ref={container} />
-			{!!props.error && <div className={classes.errorText}>{props.error}</div>}
-		</div>
+		<Box sx={classes.root} tabIndex={0}>
+			<Box sx={classes.jsonInput} ref={container} />
+			{!!props.error && <Box sx={classes.errorText}>{props.error}</Box>}
+		</Box>
 	);
 };

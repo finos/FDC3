@@ -4,56 +4,51 @@
  */
 
 import React from "react";
-import { ListItem, TextField, Typography } from "@material-ui/core";
+import { ListItem, TextField, Typography } from "@mui/material";
 import { LogItem } from "../../store/SystemLogStore";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { SxProps, Theme } from "@mui/material/styles";
 
 interface SystemLogItemProps {
 	logItem: LogItem;
 }
 
-const useStyles = (props: SystemLogItemProps) =>
-	makeStyles((theme: Theme) =>
-		createStyles({
-			root: {
-				flexDirection: "column",
-				justifyContent: "flex-start",
-				alignItems: "flex-start",
-				padding: theme.spacing(3, 0),
-				"&:first-child": {
-					borderTop: "1px solid rgba(0, 0, 0, 0.12)",
-				},
-			},
-			message: {
-				color: theme.palette[props.logItem.type].dark,
-			},
-			textField: {
-				width: "100%",
-			},
-			input: {
-				fontSize: "14px",
-				color: theme.palette.text.primary,
-			},
-			"& .Mui-disabled": {
-				borderColor: theme.palette.text.primary,
-			},
-		})
-	);
+const classes = {
+	root: {
+		flexDirection: "column",
+		justifyContent: "flex-start",
+		alignItems: "flex-start",
+		py: 3,
+		px: 0,
+		"&:first-of-type": {
+			borderTop: "1px solid rgba(0, 0, 0, 0.12)",
+		},
+	},
+	textField: {
+		width: "100%",
+	},
+	input: (theme: Theme) => ({
+		fontSize: "14px",
+		color: theme.palette.text.primary,
+	}),
+} as const;
+
+const getMessageSx = (logItem: LogItem): SxProps<Theme> => ({
+	color: (theme) => theme.palette[logItem.type].dark,
+});
 
 export const SystemLogItem: React.FC<SystemLogItemProps> = (props: SystemLogItemProps) => {
 	const { logItem } = props;
-	const classes = useStyles(props)();
 
 	return (
-		<ListItem className={classes.root} divider>
-			<Typography className={classes.message} variant="body1">
+		<ListItem sx={classes.root} divider>
+			<Typography sx={getMessageSx(logItem)} variant="body1">
 				{logItem.message}
 			</Typography>
 
 			{logItem.variant === "code" && (
 				<TextField
 					disabled
-					className={classes.textField}
+					sx={classes.textField}
 					id={logItem.id}
 					contentEditable={false}
 					fullWidth
@@ -62,9 +57,7 @@ export const SystemLogItem: React.FC<SystemLogItemProps> = (props: SystemLogItem
 					size="small"
 					value={logItem.body}
 					InputProps={{
-						classes: {
-							input: classes.input,
-						},
+						sx: classes.input,
 					}}
 				/>
 			)}

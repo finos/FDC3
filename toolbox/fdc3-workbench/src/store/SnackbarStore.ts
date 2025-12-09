@@ -3,12 +3,12 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 import { makeObservable, observable, action } from 'mobx';
-import { Color } from '@material-ui/lab/Alert';
+import { AlertColor } from '@mui/material/Alert';
 import { nanoid } from 'nanoid';
 
 interface SnackbarData {
   message: string;
-  type: Color;
+  type: AlertColor;
 }
 
 interface SnackbarItem extends SnackbarData {
