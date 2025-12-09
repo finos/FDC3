@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import { Button, DialogTitle, DialogActions, Dialog } from "@material-ui/core";
+import { Button, DialogTitle, DialogActions, Dialog } from "@mui/material";
 
 interface DialogModalProps {
 	open: boolean;

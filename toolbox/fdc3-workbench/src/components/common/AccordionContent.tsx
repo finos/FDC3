@@ -4,11 +4,10 @@
  */
 
 import React from "react";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { Accordion, AccordionDetails, AccordionSummary, Typography } from "@material-ui/core";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { Tooltip } from "@material-ui/core";
-import InfoIcon from "@material-ui/icons/Info";
+import { Theme } from "@mui/material/styles";
+import { Accordion, AccordionDetails, AccordionSummary, Typography, Tooltip } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import InfoIcon from "@mui/icons-material/Info";
 
 export interface AccordionContentProps {
 	title: string;
@@ -16,78 +15,74 @@ export interface AccordionContentProps {
 	icon?: string;
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		accordion: {
+const classes = {
+	accordion: (theme: Theme) => ({
+		margin: theme.spacing(1, 0, 0, 0),
+		boxShadow: "none",
+		"&::before": {
+			display: "none",
+		},
+		"&.Mui-expanded": {
 			margin: theme.spacing(1, 0, 0, 0),
-			boxShadow: "none",
-			"&::before": {
-				display: "none",
-			},
-			"&.Mui-expanded": {
-				margin: theme.spacing(1, 0, 0, 0),
-			},
 		},
-		accordionSummary: {
-			border: "none",
-			padding: 0,
+	}),
+	accordionSummary: {
+		border: "none",
+		padding: 0,
+		minHeight: "initial",
+		"&.Mui-expanded": {
 			minHeight: "initial",
+		},
+		"& .MuiAccordionSummary-content": {
+			margin: "0 12px 0 0",
 			"&.Mui-expanded": {
-				minHeight: "initial",
-			},
-			"& .MuiAccordionSummary-content": {
 				margin: "0 12px 0 0",
-				"&.Mui-expanded": {
-					margin: "0 12px 0 0",
-				},
-			},
-			"& .MuiAccordionSummary-expandIcon": {
-				padding: "6px",
 			},
 		},
-		accordionDetails: {
-			paddingTop: 0,
-			paddingLeft: 0,
-			flexDirection: "column",
+		"& .MuiAccordionSummary-expandIcon": {
+			padding: "6px",
 		},
-		accordionTitle: {
-			color: "#0086bf",
-			fontSize: "16px",
-		},
-		expand_icon: {
-			color: "#0086bf",
-		},
-		icon: {
-			marginBottom: "-1px !important",
-			fontSize: "15px",
-			marginLeft: "5px",
-		},
-	})
-);
+	},
+	accordionDetails: {
+		paddingTop: 0,
+		paddingLeft: 0,
+		flexDirection: "column",
+	},
+	accordionTitle: {
+		color: "#0086bf",
+		fontSize: "16px",
+	},
+	expand_icon: {
+		color: "#0086bf",
+	},
+	icon: {
+		marginBottom: "-1px !important",
+		fontSize: "15px",
+		marginLeft: "5px",
+	},
+} as const;
 
 export const AccordionContent: React.FC<AccordionContentProps> = ({ icon, title, children }: AccordionContentProps) => {
-	const classes = useStyles();
-
 	return (
-		<Accordion className={classes.accordion} defaultExpanded>
+		<Accordion sx={classes.accordion} defaultExpanded>
 			<AccordionSummary
-				className={classes.accordionSummary}
-				expandIcon={<ExpandMoreIcon className={classes.expand_icon} />}
+				sx={classes.accordionSummary}
+				expandIcon={<ExpandMoreIcon sx={classes.expand_icon} />}
 				aria-label="Expand"
 				aria-controls="additional-actions1-content"
 				id="additional-actions1-header"
 			>
-				<Typography variant="h5" className={classes.accordionTitle}>
+				<Typography variant="h5" sx={classes.accordionTitle}>
 					{title}
 					{icon && (
 						<Tooltip title={icon} aria-label={icon}>
-							<InfoIcon className={classes.icon} />
+							<InfoIcon sx={classes.icon} />
 						</Tooltip>
 					)}
 				</Typography>
 			</AccordionSummary>
 
-			<AccordionDetails className={classes.accordionDetails}>{children}</AccordionDetails>
+			<AccordionDetails sx={classes.accordionDetails}>{children}</AccordionDetails>
 		</Accordion>
 	);
 };

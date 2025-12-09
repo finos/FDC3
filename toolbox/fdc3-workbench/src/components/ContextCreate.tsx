@@ -5,7 +5,6 @@
 
 import React, { useEffect, useState, useRef, FormEvent } from 'react';
 import { observer } from 'mobx-react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Button,
   Grid,
@@ -17,10 +16,11 @@ import {
   TableRow,
   TableCell,
   TableContainer,
-} from '@material-ui/core';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
-import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+  Box,
+} from '@mui/material';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import FileCopyOutlinedIcon from '@mui/icons-material/FileCopyOutlined';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import contextStore, { ContextItem } from '../store/ContextStore';
 import systemLogStore from '../store/SystemLogStore';
 import { JsonInput } from './common/JsonInput';
@@ -34,84 +34,86 @@ interface OptionType {
   value: string;
 }
 
-const useStyles: any = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
+const classes = {
+  root: {
+    flexGrow: 1,
+  },
+  form: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    mt: 1,
+    '& > *': {
+      m: 1,
     },
-    form: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      alignItems: 'center',
-      marginTop: theme.spacing(1),
-      '& > *': {
-        margin: theme.spacing(1),
-      },
-      '& > *:first-child': {
-        marginLeft: 0,
-        paddingLeft: 0,
-      },
-      '& > * > *:first-child': {
-        marginLeft: 0,
-        paddingLeft: 0,
-      },
-      '& .MuiGrid-grid-xs-12': {
-        paddingLeft: 0,
-      },
+    '& > *:first-of-type': {
+      marginLeft: 0,
+      paddingLeft: 0,
     },
-    controls: {
-      '& .MuiIconButton-sizeSmall': {
-        padding: '6px',
-        marginLeft: theme.spacing(1),
-      },
+    '& > * > *:first-of-type': {
+      marginLeft: 0,
+      paddingLeft: 0,
     },
-    exampleSelect: {
-      flexGrow: 1,
-      // marginRight: theme.spacing(1),
-      minWidth: '190px',
+    '& .MuiGrid-grid-xs-12': {
+      paddingLeft: 0,
     },
-    textField: {
-      width: '100%',
+  },
+  controls: {
+    '& .MuiIconButton-sizeSmall': {
+      padding: '6px',
+      ml: 1,
     },
-    multilineField: {
-      width: '100%',
+  },
+  exampleSelect: {
+    flexGrow: 1,
+    minWidth: '190px',
+  },
+  textField: {
+    width: '100%',
+  },
+  multilineField: {
+    width: '100%',
+  },
+  button: {
+    marginLeft: 'auto',
+  },
+  rightAlign: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  border: {
+    height: '1px',
+    width: '100%',
+    backgroundColor: '#acb2c0',
+    marginTop: '24px',
+    marginBottom: '16px',
+  },
+  delete: {
+    height: '15px',
+    transform: 'scale(1.7)',
+  },
+  copy: {
+    height: '20px',
+  },
+  link: {
+    cursor: 'pointer',
+    color: 'black',
+  },
+  margins: {
+    margin: '0 5px',
+  },
+  tableContainer: {
+    maxHeight: 250,
+    '& > table': {
+      width: 'calc(100% - 4px)',
     },
-    button: {
-      marginLeft: 'auto',
-    },
-    rightAlign: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-    },
-    border: {
-      height: '1px',
-      width: '100%',
-      backgroundColor: '#acb2c0',
-      marginTop: '24px',
-      marginBottom: '16px',
-    },
-    delete: {
-      height: '15px',
-      transform: 'scale(1.7)',
-    },
-    copy: {
-      height: '20px',
-    },
-    link: {
-      cursor: 'pointer',
-      color: 'black',
-    },
-    margins: {
-      margin: '0 5px',
-    },
-    tableContainer: {
-      maxHeight: 250,
-      '& > table': {
-        width: 'calc(100% - 4px)',
-      },
-    },
-  })
-);
+  },
+  field: {
+    flexGrow: 1,
+    mr: 1,
+    minWidth: '190px',
+  },
+};
 
 const emptyJson: ContextType = {
   type: '',
@@ -119,7 +121,6 @@ const emptyJson: ContextType = {
 };
 
 export const ContextCreate = observer(({ contextName }: { contextName: string }) => {
-  const classes = useStyles();
   const [exampleName, setExampleName] = useState<OptionType | null>({
     title: contextName,
     value: contextName,
@@ -334,14 +335,14 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
   }, [context]);
 
   return (
-    <div className={classes.root}>
+    <Box sx={classes.root}>
       <DialogModal open={open} onClose={handleClose} onAgree={handleDeleteExample} selectedValue={deleteContext} />
       <Grid container spacing={1}>
         <Grid item xs={12}>
           <Typography variant="h5">Context examples:</Typography>
         </Grid>
         <Grid item xs={12}>
-          <TableContainer className={classes.tableContainer}>
+          <TableContainer sx={classes.tableContainer}>
             <Table>
               <TableBody>
                 {contextStore.contextsList.map(({ id, template }, index) => (
@@ -375,7 +376,7 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
                           color="primary"
                           onClick={() => handleDuplicateExample({ title: id, value: id })}
                         >
-                          <FileCopyOutlinedIcon className={classes.copy} />
+                          <FileCopyOutlinedIcon sx={classes.copy} />
                         </IconButton>
                       </Tooltip>
                     </TableCell>
@@ -387,7 +388,7 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
                           color="primary"
                           onClick={() => handleClickOpen(id, template?.name)}
                         >
-                          <DeleteOutlinedIcon className={classes.delete} />
+                          <DeleteOutlinedIcon sx={classes.delete} />
                         </IconButton>
                       </Tooltip>
                     </TableCell>
@@ -398,32 +399,32 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
           </TableContainer>
         </Grid>
       </Grid>
-      <form className={classes.form} noValidate autoComplete="off">
+      <Box component="form" sx={classes.form} noValidate autoComplete="off">
         <Grid container direction="row" spacing={1}>
-          <Grid item className={classes.controls}>
-            <Button className={classes.button} variant="contained" color="primary" onClick={handleCreateExample}>
+          <Grid item sx={classes.controls}>
+            <Button sx={classes.button} variant="contained" color="primary" onClick={handleCreateExample}>
               Create new example
             </Button>
           </Grid>
-          <Grid item className={classes.controls}>
-            <Button className={classes.button} variant="contained" color="primary" onClick={handleResetExample}>
+          <Grid item sx={classes.controls}>
+            <Button sx={classes.button} variant="contained" color="primary" onClick={handleResetExample}>
               Reset examples
             </Button>
           </Grid>
         </Grid>
-      </form>
+      </Box>
 
-      <form className={classes.form} noValidate autoComplete="off" onSubmit={e => handleSaveExample(e)}>
-        <Grid container direction="row" spacing={1} className={classes.rightAlign}>
-          <Grid item xs={12} className={`${classes.controls} ${classes.exampleSelect}`}>
-            <Grid item xs={6} className={classes.field}>
-              <Grid item xs={12} className={classes.textField}>
+      <Box component="form" sx={classes.form} noValidate autoComplete="off" onSubmit={e => handleSaveExample(e)}>
+        <Grid container direction="row" spacing={1} sx={classes.rightAlign}>
+          <Grid item xs={12} sx={{ ...classes.controls, ...classes.exampleSelect }}>
+            <Grid item xs={6} sx={classes.field}>
+              <Grid item xs={12} sx={classes.textField}>
                 <Typography variant="h5">Edit example:</Typography>
               </Grid>
               <TemplateTextField
                 label="Example name"
                 variant="outlined"
-                className={classes.textField}
+                sx={classes.textField}
                 placeholder="Choose Context Example"
                 value={exampleName?.value || ''}
                 onChange={e => handleChangeExampleName({ title: e.target.value, value: e.target.value })}
@@ -431,7 +432,7 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
             </Grid>
           </Grid>
 
-          <Grid item xs={12} className={classes.controls}>
+          <Grid item xs={12} sx={classes.controls}>
             <JsonInput
               json={context?.template}
               onChange={handleContextChange}
@@ -456,7 +457,7 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
             </Tooltip>
 
             <Button
-              className={classes.button}
+              sx={classes.button}
               variant="contained"
               color="primary"
               onClick={handleSaveExample}
@@ -466,7 +467,7 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
             </Button>
           </Grid>
         </Grid>
-      </form>
-    </div>
+      </Box>
+    </Box>
   );
 });

@@ -3,23 +3,22 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { HTMLAttributes, useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { runInAction } from 'mobx';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import appChannelStore from '../store/AppChannelStore';
 import privateChannelStore from '../store/PrivateChannelStore';
-import { Button, IconButton, Tooltip, Typography, Grid, Link } from '@material-ui/core';
+import { Button, IconButton, Tooltip, Typography, Grid, Link, Autocomplete } from '@mui/material';
+import { createFilterOptions } from '@mui/material/Autocomplete';
 import { ContextTemplates } from './ContextTemplates';
 import { ContextType, Fdc3Listener } from '../utility/Fdc3Api';
 import { copyToClipboard } from './common/CopyToClipboard';
 import { codeExamples } from '../fixtures/codeExamples';
 import { openApiDocsLink } from '../fixtures/openApiDocs';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
-import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 import contextStore from '../store/ContextStore';
 import { TemplateTextField } from './common/TemplateTextField';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 interface ListenerOptionType {
   title: string;
@@ -34,94 +33,56 @@ interface FilterOptionsState<T> {
 
 const listenerFilter = createFilterOptions<ListenerOptionType>();
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
+const styles = {
+  topMargin: {
+    mt: 2,
+  },
+  secondMargin: {
+    mt: 1,
+  },
+  controls: {
+    '& > *:first-child': {
+      marginLeft: 0,
     },
-    title: {
+    '& > *': {
+      mr: 1,
+    },
+    '& > *:last-child': {
+      marginRight: 0,
+    },
+    '& .MuiIconButton-sizeSmall': {
+      padding: '6px 0px 6px 0px',
+    },
+    '& > a': {
       display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
+      padding: '6px 0px 6px 0px',
     },
-    form: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      alignItems: 'center',
-      marginTop: theme.spacing(1),
-      '& > *': {
-        margin: theme.spacing(1),
-        marginLeft: '0px',
-      },
+  },
+  spread: {
+    flexDirection: 'row',
+    '& > *:first-child': {
+      paddingLeft: '0px',
     },
-    contextType: {
-      flexGrow: 1,
-      minWidth: '190px',
-    },
-    topMargin: {
-      marginTop: theme.spacing(2),
-    },
-    secondMargin: {
-      marginTop: theme.spacing(1),
-    },
-    controls: {
-      '& > *:first-child': {
-        marginLeft: 0,
-      },
-      '& > *': {
-        marginRight: theme.spacing(1),
-      },
-      '& > *:last-child': {
-        marginRight: 0,
-      },
-      '& .MuiIconButton-sizeSmall': {
-        padding: '6px 0px 6px 0px',
-      },
-      '& > a': {
-        display: 'flex',
-        padding: '6px 0px 6px 0px',
-      },
-    },
-    rightAlign: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-    },
-    spread: {
-      flexDirection: 'row',
-      '& > *:first-child': {
-        paddingLeft: '0px',
-      },
-    },
-    textField: {
-      width: '100%',
-      '& input': {
-        height: '29px',
-        padding: '6px',
-      },
-    },
-    h4: {
-      fontSize: '22px',
-    },
-    h6: {
-      fontSize: '14px',
-    },
-    field: {
-      flexGrow: 1,
-      marginRight: theme.spacing(1),
-      minWidth: '190px',
-    },
-    border: {
-      height: '1px',
-      width: '100%',
-      backgroundColor: '#acb2c0',
-      marginTop: '24px',
-      marginBottom: '16px',
-    },
-    rightPadding: {
-      paddingRight: theme.spacing(0.5),
-    },
-  })
-);
+  },
+  h6: {
+    fontSize: '14px',
+  },
+  field: {
+    flexGrow: 1,
+    mr: 1,
+    minWidth: '190px',
+  },
+  border: {
+    height: '1px',
+    width: '100%',
+    backgroundColor: '#acb2c0',
+    marginTop: '24px',
+    marginBottom: '16px',
+  },
+  rightPadding: {
+    pr: 0.5,
+  },
+};
 
 export const ChannelField = observer(
   ({
@@ -135,7 +96,6 @@ export const ChannelField = observer(
     isPrivateChannel?: boolean;
     channelName?: string;
   }) => {
-    const classes = useStyles();
     const [contextItem, setContextItem] = useState<ContextType | null>(null);
     const [currentChannelList, setCurrentChannelList] = useState<any>(channelsList);
 
@@ -158,7 +118,8 @@ export const ChannelField = observer(
       new Map(contextListenersOptionsAll.reverse().map(item => [item['type'], item])).values()
     ).reverse();
 
-    const getOptionLabel = (option: ListenerOptionType) => option.type ?? option.title ?? option;
+    const getOptionLabel = (option: ListenerOptionType | string) =>
+      typeof option === 'string' ? option : option.type ?? option.title ?? '';
 
     const handleAddContextListener = (channelId: string) => {
       let foundChannel = currentChannelList.find((currentChannel: any) => currentChannel.id === channelId);
@@ -256,17 +217,17 @@ export const ChannelField = observer(
     }, [channelsList]);
 
     return (
-      <div className={classes.topMargin}>
+      <div style={{ marginTop: 16 }}>
         {currentChannelList.length > 0 &&
           currentChannelList.map((channel: any) => {
             const element = (
-              <Grid container key={channel.id} className={classes.spread}>
-                <Grid item className={classes.field}>
+              <Grid container key={channel.id} sx={styles.spread}>
+                <Grid item sx={styles.field}>
                   <Typography variant="h5">Channel: {channel.id}</Typography>
                 </Grid>
-                <Grid container className={classes.topMargin}>
+                <Grid container sx={styles.topMargin}>
                   <Grid item xs={12}>
-                    <Typography variant="h6" className={classes.h6}>
+                    <Typography variant="h6" sx={styles.h6}>
                       Broadcast
                     </Typography>
                   </Grid>
@@ -278,7 +239,7 @@ export const ChannelField = observer(
                       channel={channel.id}
                     />
                   </Grid>
-                  <Grid item container className={classes.controls} sm={5} justifyContent="flex-end">
+                  <Grid item container sx={styles.controls} sm={5} justifyContent="flex-end">
                     <Button
                       disabled={!channel.context}
                       variant="contained"
@@ -307,13 +268,13 @@ export const ChannelField = observer(
                     </Link>
                   </Grid>
                 </Grid>
-                <Grid container className={classes.secondMargin}>
+                <Grid container sx={styles.secondMargin}>
                   <Grid item xs={12}>
-                    <Typography variant="h6" className={classes.h6}>
+                    <Typography variant="h6" sx={styles.h6}>
                       Add context listener
                     </Typography>
                   </Grid>
-                  <Grid item sm={7} className={classes.rightPadding}>
+                  <Grid item sm={7} sx={styles.rightPadding}>
                     <Autocomplete
                       size="small"
                       selectOnFocus
@@ -325,9 +286,13 @@ export const ChannelField = observer(
                       filterOptions={filterOptions}
                       options={contextListenersOptions}
                       getOptionLabel={getOptionLabel}
-                      getOptionSelected={(option, value) => option.type === value.type}
+                      isOptionEqualToValue={(option: ListenerOptionType, value: ListenerOptionType) =>
+                        option.type === value.type
+                      }
                       freeSolo={true}
-                      renderOption={option => option.type}
+                      renderOption={(props: HTMLAttributes<HTMLLIElement>, option: ListenerOptionType) => (
+                        <li {...props}>{option.type}</li>
+                      )}
                       renderInput={params => (
                         <TemplateTextField
                           label="CONTEXT TYPE"
@@ -347,7 +312,7 @@ export const ChannelField = observer(
                     />
                   </Grid>
 
-                  <Grid item container className={classes.controls} sm={5} justifyContent="flex-end">
+                  <Grid item container sx={styles.controls} sm={5} justifyContent="flex-end">
                     <Button variant="contained" color="primary" onClick={() => handleAddContextListener(channel.id)}>
                       Add listener
                     </Button>
@@ -371,15 +336,10 @@ export const ChannelField = observer(
                     </Link>
                   </Grid>
                 </Grid>
-                <Button
-                  variant="contained"
-                  color="secondary"
-                  onClick={() => handleRemoveOrDisconnect(channel)}
-                  className={classes.secondMargin}
-                >
+                <Button variant="contained" color="secondary" onClick={() => handleRemoveOrDisconnect(channel)} sx={styles.secondMargin}>
                   {isPrivateChannel ? 'Disconnect' : 'Discard Channel'}
                 </Button>
-                <div className={classes.border}></div>
+                <div style={styles.border}></div>
               </Grid>
             );
 
