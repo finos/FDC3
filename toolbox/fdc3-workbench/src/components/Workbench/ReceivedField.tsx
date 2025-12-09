@@ -5,23 +5,19 @@
 
 import React from "react";
 import { observer } from "mobx-react";
-import { TextField } from "@material-ui/core";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { TextField } from "@mui/material";
 
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		textField: {
-			marginTop: theme.spacing(2),
-			width: "100%",
-		},
-		input: {
-			fontSize: "14px",
-		},
-	})
-);
+const classes = {
+	textField: {
+		mt: 2,
+		width: "100%",
+	},
+	input: {
+		fontSize: "14px",
+	},
+} as const;
 
 export const ReceivedField = observer(({ metaData }: { metaData: any }) => {
-	const classes = useStyles();
 	const formattedData = !metaData?.source
 		? "METADATA NOT PROVIDED"
 		: `appId: ${metaData.source.appId}\ninstanceId: ${metaData.source.instanceId}`;
@@ -30,7 +26,7 @@ export const ReceivedField = observer(({ metaData }: { metaData: any }) => {
 		<TextField
 			disabled
 			label={"RECEIVED FROM"}
-			className={classes.textField}
+			sx={classes.textField}
 			InputLabelProps={{
 				shrink: true,
 			}}
@@ -41,9 +37,7 @@ export const ReceivedField = observer(({ metaData }: { metaData: any }) => {
 			size="small"
 			value={formattedData}
 			InputProps={{
-				classes: {
-					input: classes.input,
-				},
+				sx: classes.input,
 			}}
 		/>
 	);

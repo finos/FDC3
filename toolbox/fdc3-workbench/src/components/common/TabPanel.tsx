@@ -4,7 +4,8 @@
  */
 
 import React from "react";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { Theme } from "@mui/material/styles";
+import { Box } from "@mui/material";
 
 interface TabPanelProps {
 	children?: React.ReactNode;
@@ -12,17 +13,13 @@ interface TabPanelProps {
 	value: any;
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		tabPanel: {
-			padding: theme.spacing(2),
-		},
-	})
-);
+const classes = {
+	tabPanel: (theme: Theme) => ({
+		padding: theme.spacing(2),
+	}),
+} as const;
 
 export const TabPanel: React.FC<TabPanelProps> = (props: TabPanelProps) => {
-	const classes = useStyles();
-
 	const { children, value, index, ...other } = props;
 
 	return (
@@ -33,7 +30,7 @@ export const TabPanel: React.FC<TabPanelProps> = (props: TabPanelProps) => {
 			aria-labelledby={`scrollable-auto-tab-${index}`}
 			{...other}
 		>
-			{value === index && <div className={classes.tabPanel}>{children}</div>}
+			{value === index && <Box sx={classes.tabPanel}>{children}</Box>}
 		</div>
 	);
 };

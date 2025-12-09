@@ -5,10 +5,9 @@
 
 import React, { useState } from "react";
 import { observer } from "mobx-react";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
-import { Tooltip } from "@material-ui/core";
-import InfoIcon from "@material-ui/icons/Info";
-import { Tabs, Tab } from "@material-ui/core";
+import { GlobalStyles, Tooltip } from "@mui/material";
+import InfoIcon from "@mui/icons-material/Info";
+import { Tabs, Tab } from "@mui/material";
 import { TabPanel } from "../common/TabPanel";
 import { ContextListeners } from "./ContextListeners";
 import { IntentListeners } from "./IntentListeners";
@@ -16,43 +15,42 @@ import { AppChannelListeners } from "./AppChannelListeners";
 import { SystemLog } from "./SystemLog";
 import { PrivateChannelListeners } from "./PrivateChannelListeners";
 
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		"@global": {
-			".MuiTab-wrapper": {
-				flexDirection: "row !important",
-			},
+const classes = {
+	root: {
+		flexGrow: 1,
+	},
+	paper: (theme: any) => ({
+		mt: 2,
+		p: 2,
+		"&:first-of-type": {
+			mt: 0,
 		},
-		root: {
-			flexGrow: 1,
-		},
-		paper: {
-			marginTop: theme.spacing(2),
-			padding: theme.spacing(2),
-			"&:first-child": {
-				marginTop: 0,
-			},
-		},
-		systemLog: {
-			maxHeight: "1000px",
-			overflowY: "scroll",
-		},
-		indicator: {
-			backgroundColor: "#00bbe1",
-		},
-		tabs: {
-			borderBottomColor: "#acb2c0",
-			borderBottomStyle: "solid",
-			borderBottomWidth: "1px",
-			minHeight: "28px",
-		},
-		icon: {
-			marginBottom: "3px !important",
-			fontSize: "15px",
-			marginRight: "3px",
-		},
-	})
-);
+	}),
+	systemLog: {
+		maxHeight: "1000px",
+		overflowY: "scroll",
+	},
+	indicator: {
+		backgroundColor: "#00bbe1",
+	},
+	tabs: {
+		borderBottomColor: "#acb2c0",
+		borderBottomStyle: "solid",
+		borderBottomWidth: "1px",
+		minHeight: "28px",
+	},
+	icon: {
+		mb: "3px",
+		fontSize: "15px",
+		mr: "3px",
+	},
+} as const;
+
+const globalStyles = {
+	".MuiTab-wrapper": {
+		flexDirection: "row !important",
+	},
+};
 
 const a11yProps = (index: any) => {
 	return {
@@ -62,7 +60,6 @@ const a11yProps = (index: any) => {
 };
 
 export const Workbench = observer(() => {
-	const classes = useStyles();
 	const [tabValue, setTabValue] = useState<number>(0);
 
 	const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -71,16 +68,17 @@ export const Workbench = observer(() => {
 
 	return (
 		<div>
+			<GlobalStyles styles={globalStyles} />
 			<Tabs
 				value={tabValue}
 				onChange={handleTabChange}
 				indicatorColor="primary"
 				variant="scrollable"
 				scrollButtons="auto"
-				classes={{
-					indicator: classes.indicator,
+				sx={{
+					"& .MuiTabs-indicator": classes.indicator,
+					...classes.tabs,
 				}}
-				className={classes.tabs}
 			>
 				<Tab
 					label="Listeners"
@@ -91,7 +89,7 @@ export const Workbench = observer(() => {
 							title="Context received will be displayed here, but you will not receive your own messages back"
 							aria-label="Context received will be displayed here, but you will not receive your own messages back"
 						>
-							<InfoIcon className={classes.icon} />
+							<InfoIcon sx={classes.icon} />
 						</Tooltip>
 					}
 				/>
@@ -105,7 +103,7 @@ export const Workbench = observer(() => {
 				<PrivateChannelListeners />
 			</TabPanel>
 
-			<div className={classes.systemLog}>
+			<div style={{ maxHeight: "1000px", overflowY: "scroll" }}>
 				<TabPanel value={tabValue} index={1}>
 					<SystemLog />
 				</TabPanel>

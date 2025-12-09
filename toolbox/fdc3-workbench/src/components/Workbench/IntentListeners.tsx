@@ -7,28 +7,21 @@ import React from "react";
 import { observer } from "mobx-react";
 import intentStore from "../../store/IntentStore";
 import { AccordionList, AccordionListItem } from "../common/AccordionList";
-import { TextField } from "@material-ui/core";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { TextField } from "@mui/material";
 import { ReceivedField } from "./ReceivedField";
 
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		textField: {
-			marginTop: theme.spacing(2),
-			width: "100%",
-		},
-		input: {
-			fontSize: "14px",
-			color: "rgba(0, 0, 0, 0.6)",
-		},
-		"& .Mui-disabled": {
-			borderColor: theme.palette.text.primary,
-		},
-	})
-);
+const classes = {
+	textField: {
+		mt: 2,
+		width: "100%",
+	},
+	input: {
+		fontSize: "14px",
+		color: "rgba(0, 0, 0, 0.6)",
+	},
+} as const;
 
 export const IntentListeners = observer(() => {
-	const classes = useStyles();
 	const intentListeners: AccordionListItem[] = intentStore.intentListeners.map(
 		({ id, type, lastReceivedContext, metaData }) => {
 			const receivedContextListenerValue = lastReceivedContext ? JSON.stringify(lastReceivedContext, undefined, 4) : "";
@@ -38,7 +31,7 @@ export const IntentListeners = observer(() => {
 					<TextField
 						disabled
 						label={"LAST RECEIVED CONTEXT"}
-						className={classes.textField}
+						sx={classes.textField}
 						InputLabelProps={{
 							shrink: true,
 						}}
@@ -49,9 +42,7 @@ export const IntentListeners = observer(() => {
 						size="small"
 						value={receivedContextListenerValue}
 						InputProps={{
-							classes: {
-								input: classes.input,
-							},
+							sx: classes.input,
 						}}
 					/>
 					{window.fdc3Version === "2.0" && <ReceivedField metaData={metaData} />}

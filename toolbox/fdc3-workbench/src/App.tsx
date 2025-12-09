@@ -4,13 +4,9 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { Grid, Paper, Tabs, Tab, Typography, Link } from '@material-ui/core';
+import { Theme, ThemeProvider, createTheme, styled } from '@mui/material/styles';
+import { Grid, Paper, Tabs, Tab, Typography, Link, Snackbar, Alert, SnackbarCloseReason } from '@mui/material';
 import { observer } from 'mobx-react';
-import { ThemeProvider } from '@material-ui/styles';
-import { createTheme } from '@material-ui/core/styles';
-import Snackbar from '@material-ui/core/Snackbar';
-import Alert from '@material-ui/lab/Alert';
 import 'normalize.css';
 import '@fontsource/roboto';
 import '@fontsource/source-code-pro';
@@ -40,18 +36,20 @@ const mainTheme = createTheme({
       contrastText: '#fff',
     },
   },
-  props: {
+  components: {
     MuiLink: {
-      underline: 'hover',
+      defaultProps: {
+        underline: 'hover',
+      },
     },
     MuiTableCell: {
-      padding: 'normal',
-    },
-  },
-  overrides: {
-    MuiTableCell: {
-      root: {
-        padding: '1px',
+      defaultProps: {
+        padding: 'normal',
+      },
+      styleOverrides: {
+        root: {
+          padding: '1px',
+        },
       },
     },
   },
@@ -79,100 +77,58 @@ mainTheme.typography.body1 = {
   marginBlockEnd: '10px',
 };
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    '@global': {
-      '.MuiFormHelperText-contained.Mui-error': {
-        position: 'absolute',
-        marginLeft: '9px',
-        bottom: '-11px',
-        padding: '0 4px',
-        backgroundColor: theme.palette.common.white,
-      },
-      '.MuiButton-contained': {
-        boxShadow: 'none',
-      },
-      '.MuiGrid-item:has(> .MuiButton-root)': {
-        display: 'flex',
-        alignItems: 'end',
-      },
-      '.MuiInputBase-root.Mui-disabled': {
-        color: 'rgba(0, 0, 0, 0.6)',
-        cursor: 'default',
-      },
-      '.MuiInputBase-root': {
-        marginBlockEnd: '0px',
-      },
-      '.MuiListSubheader-root': {
-        lineHeight: '24px',
-        marginBlockStart: '10px',
-      },
-      '.MuiMenuItem-root': {
-        fontSize: '0.9rem',
-        marginBlockEnd: '5px',
-        marginBlockStart: '5px',
-      },
+const classes = {
+  root: {
+    flexGrow: 1,
+  },
+  header: {
+    mb: 2,
+  },
+  body: {
+    height: '100%',
+  },
+  paper: {
+    mt: 2,
+    p: 2,
+    height: '100%',
+    '&:first-of-type': {
+      mt: 0,
     },
-    root: {
-      flexGrow: 1,
-    },
-    header: {
-      marginBottom: theme.spacing(2),
-    },
-    body: {
-      height: '100%',
-    },
-    paper: {
-      marginTop: theme.spacing(2),
-      padding: theme.spacing(2),
-      height: '100%',
-      '&:first-child': {
-        marginTop: 0,
-      },
-    },
-    tabs: {
-      borderBottomColor: '#acb2c0',
-      borderBottomStyle: 'solid',
-      borderBottomWidth: '1px',
-      minHeight: '28px',
-      "& [aria-selected='true']": {
-        backgroundColor: 'rgba(0, 134, 191, 0.21)',
-      },
-    },
-    tabIndicator: {
+  },
+  tabs: {
+    borderBottomColor: '#acb2c0',
+    borderBottomStyle: 'solid',
+    borderBottomWidth: '1px',
+    minHeight: '28px',
+    "& [aria-selected='true']": {
       backgroundColor: 'rgba(0, 134, 191, 0.21)',
     },
-    indicator: {
-      backgroundColor: '#00bbe1',
+  },
+  indicator: {
+    backgroundColor: '#00bbe1',
+  },
+  footer: {
+    fontSize: '10px',
+    fontStyle: 'italic',
+    color: '#5b606f',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    m: 2,
+    '& *:first-of-type': {
+      paddingTop: '27px',
     },
-    footer: {
-      fontSize: '10px',
-      fontStyle: 'italic',
+  },
+  link: {
+    color: '#5b606f',
+    fontWeight: 'bold',
+    '&:hover': {
       color: '#5b606f',
-      flexDirection: 'row',
-      justifyContent: 'center',
-      margin: theme.spacing(2),
-      '& *:first-child': {
-        paddingTop: '27px',
-      },
     },
-    link: {
-      color: '#5b606f',
-      fontWeight: 'bold',
-      '&:hover': {
-        color: '#5b606f',
-      },
-    },
-    code: {
-      fontFamily: 'courier, courier new, serif',
-    },
-    workbench: {
-      [theme.breakpoints.down('sm')]: {
-        marginTop: '30px',
-      },
-    },
-  })
-);
+  },
+  workbench: {
+    mt: { xs: '30px', md: 0 },
+  },
+} as const;
 
 const openAPIDocs = (event: React.MouseEvent<HTMLElement>) => {
   event.preventDefault();
@@ -193,7 +149,6 @@ const openSupportedPlatformsDocs = (event: React.MouseEvent<HTMLElement>) => {
 };
 
 export const App = observer(() => {
-  const classes = useStyles();
   const [fdc3Available, setFdc3Available] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
@@ -204,13 +159,12 @@ export const App = observer(() => {
     setTabIndex(newIndex);
   };
 
-  const handleClose = (event?: React.SyntheticEvent, reason?: string) => {
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: SnackbarCloseReason) => {
     if (reason === 'clickaway') {
       return;
     }
 
     setOpenSnackbar(false);
-    // Need to show close animation
     setTimeout(() => snackbarStore.clearSnackbarData(), 500);
   };
 
@@ -230,23 +184,23 @@ export const App = observer(() => {
 
   return (
     <ThemeProvider theme={mainTheme}>
-      <Grid className={classes.root} container>
-        <Grid className={classes.header} container item xs={12}>
+      <Grid sx={classes.root} container>
+        <Grid sx={classes.header} container item xs={12}>
           <Header fdc3Available={fdc3Available} />
         </Grid>
         {fdc3Available ? (
-          <Grid className={classes.body} container spacing={2} item xs={12} style={{ marginLeft: '0px' }}>
+          <Grid sx={classes.body} container spacing={2} item xs={12} style={{ marginLeft: '0px' }}>
             <Grid item xs={12} md={8} style={{ flex: 1 }}>
-              <Paper className={classes.paper}>
+              <Paper sx={classes.paper}>
                 <Tabs
                   value={tabIndex}
                   indicatorColor="primary"
                   onChange={handleTabChange}
                   variant="scrollable"
                   scrollButtons="auto"
-                  className={classes.tabs}
-                  classes={{
-                    indicator: classes.indicator,
+                  sx={{
+                    ...classes.tabs,
+                    '& .MuiTabs-indicator': classes.indicator,
                   }}
                 >
                   <Tab label="Contexts" />
@@ -269,16 +223,16 @@ export const App = observer(() => {
               </Paper>
             </Grid>
 
-            <Grid item xs={12} md={4} className={classes.workbench}>
-              <Paper className={classes.paper}>
+            <Grid item xs={12} md={4} sx={classes.workbench}>
+              <Paper sx={classes.paper}>
                 <Workbench />
               </Paper>
             </Grid>
           </Grid>
         ) : (
-          <Grid className={classes.body} container spacing={2} item xs={12} style={{ marginLeft: '0px' }}>
+          <Grid sx={classes.body} container spacing={2} item xs={12} style={{ marginLeft: '0px' }}>
             <Grid container direction="column" justifyContent="center" alignItems="center" spacing={2} item xs={12}>
-              <Paper className={classes.paper}>
+              <Paper sx={classes.paper}>
                 <Typography variant="h4">FDC3 API not detected!</Typography>
                 <Typography variant="body1">An FDC3 desktop agent implementation was not found.</Typography>
                 <Typography variant="body1">
@@ -290,7 +244,7 @@ export const App = observer(() => {
                 <Typography variant="body1">
                   See the FDC3 standard documentation for details on{' '}
                   <Link
-                    className={classes.link}
+                    sx={classes.link}
                     href="https://fdc3.finos.org/docs/supported-platforms"
                     onClick={openSupportedPlatformsDocs}
                   >
@@ -298,7 +252,7 @@ export const App = observer(() => {
                   </Link>{' '}
                   and{' '}
                   <Link
-                    className={classes.link}
+                    sx={classes.link}
                     href="https://fdc3.finos.org/docs/api/spec#api-access"
                     onClick={openSpecAccessDocs}
                   >
@@ -311,14 +265,14 @@ export const App = observer(() => {
           </Grid>
         )}
 
-        <Grid container item xs={12} className={classes.footer}>
+        <Grid container item xs={12} sx={classes.footer}>
           <Typography variant="body1">
             Learn more about the{' '}
-            <Link className={classes.link} href="https://fdc3.finos.org/docs/api/overview" onClick={openAPIDocs}>
+            <Link sx={classes.link} href="https://fdc3.finos.org/docs/api/overview" onClick={openAPIDocs}>
               FDC3 Standard and APIs
             </Link>{' '}
             | Proud member of the{' '}
-            <Link className={classes.link} href="https://www.finos.org/">
+            <Link sx={classes.link} href="https://www.finos.org/">
               Fintech Open Source Foundation
             </Link>{' '}
             | Copyright © 2021-2023 Finsemble, inc. &amp; Contributors to the FDC3 standards project
@@ -327,7 +281,7 @@ export const App = observer(() => {
       </Grid>
 
       <Snackbar key={snackbarStore.snackbarData?.id} open={openSnackbar} autoHideDuration={4000} onClose={handleClose}>
-        <Alert elevation={6} variant="filled" onClose={handleClose} severity={snackbarStore.snackbarData?.type}>
+        <Alert elevation={6} variant="filled" onClose={() => handleClose()} severity={snackbarStore.snackbarData?.type}>
           {snackbarStore.snackbarData?.message}
         </Alert>
       </Snackbar>

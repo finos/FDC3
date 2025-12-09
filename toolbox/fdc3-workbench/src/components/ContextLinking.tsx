@@ -3,18 +3,17 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, HTMLAttributes, useState } from 'react';
 import { observer } from 'mobx-react';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import { Typography, Grid, Button, IconButton, Tooltip, Link } from '@material-ui/core';
+import { Typography, Grid, Button, IconButton, Tooltip, Link, Autocomplete } from '@mui/material';
+import { createFilterOptions } from '@mui/material/Autocomplete';
 import { codeExamples } from '../fixtures/codeExamples';
 import { openApiDocsLink } from '../fixtures/openApiDocs';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
-import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 import contextStore from '../store/ContextStore';
 import { TemplateTextField } from './common/TemplateTextField';
 import { copyToClipboard } from './common/CopyToClipboard';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 // interface copied from lib @material-ui/lab/Autocomplete
 interface FilterOptionsState<T> {
@@ -32,52 +31,37 @@ type ListenerSetValue = (value: ListenerOptionType | null) => void;
 
 type ListenerSetError = (error: string | false) => void;
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
+const styles = {
+  root: {
+    flexGrow: 1,
+  },
+  controls: {
+    '& .MuiIconButton-sizeSmall': {
+      padding: '6px 0px 6px 0px',
     },
-    form: {
+    '& > a': {
       display: 'flex',
-      flexWrap: 'wrap',
-      marginTop: theme.spacing(1),
-      '& > *': {
-        marginRight: 0,
-      },
+      padding: '6px 0px 6px 0px',
     },
-    controls: {
-      '& .MuiIconButton-sizeSmall': {
-        padding: '6px 0px 6px 0px',
-      },
-      '& > a': {
-        display: 'flex',
-        padding: '6px 0px 6px 0px',
-      },
-    },
-    spread: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-    },
-    contextListenerName: {
-      flexGrow: 1,
-      marginRight: theme.spacing(1),
-      minWidth: '190px',
-    },
-    bottomAlignChildren: {
-      display: 'flex',
-      alignItems: 'end',
-    },
-    rightAlign: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-    },
-  })
-);
+  },
+  contextListenerName: {
+    flexGrow: 1,
+    mr: 1,
+    minWidth: '190px',
+  },
+  bottomAlignChildren: {
+    display: 'flex',
+    alignItems: 'end',
+  },
+  rightAlign: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+};
 
 const listenerFilter = createFilterOptions<ListenerOptionType>();
 
 export const ContextLinking = observer(() => {
-  const classes = useStyles();
   const [contextListener, setContextListener] = useState<ListenerOptionType | null>(null);
   const [contextError, setContextError] = useState<string | false>(false);
   const contextListenersOptionsAll: ListenerOptionType[] = contextStore.contextsList.map(({ id, template }) => {
@@ -154,7 +138,7 @@ export const ContextLinking = observer(() => {
   };
 
   return (
-    <div className={classes.root}>
+    <div style={styles.root}>
       <Grid item xs={12}>
         <Typography variant="h5">Add context listener</Typography>
       </Grid>
@@ -163,9 +147,9 @@ export const ContextLinking = observer(() => {
         container
         direction="row"
         justifyContent="space-between"
-        className={`${classes.controls} ${classes.rightAlign}`}
+        sx={{ ...styles.controls, ...styles.rightAlign }}
       >
-        <Grid item className={classes.contextListenerName}>
+        <Grid item sx={styles.contextListenerName}>
           <Autocomplete
             id="context-listener"
             size="small"
@@ -178,7 +162,9 @@ export const ContextLinking = observer(() => {
             filterOptions={filterOptions}
             options={contextListenersOptions}
             getOptionLabel={getOptionLabel}
-            renderOption={option => option.type}
+            renderOption={(props: HTMLAttributes<HTMLLIElement>, option: ListenerOptionType) => (
+              <li {...props}>{option.type}</li>
+            )}
             renderInput={params => (
               <TemplateTextField
                 label="CONTEXT TYPE"
@@ -191,14 +177,14 @@ export const ContextLinking = observer(() => {
             )}
           />
         </Grid>
-        <Grid item className={classes.bottomAlignChildren}>
+        <Grid item sx={styles.bottomAlignChildren}>
           <Grid container direction="row" justifyContent="flex-end" spacing={1}>
-            <Grid item className={classes.controls}>
+            <Grid item sx={styles.controls}>
               <Button variant="contained" color="primary" onClick={handleAddContextListener}>
                 Add listener
               </Button>
             </Grid>
-            <Grid item className={classes.controls}>
+            <Grid item sx={styles.controls}>
               <Tooltip title="Copy code example" aria-label="Copy code example">
                 <IconButton
                   size="small"
@@ -210,7 +196,7 @@ export const ContextLinking = observer(() => {
                 </IconButton>
               </Tooltip>
             </Grid>
-            <Grid item className={classes.controls}>
+            <Grid item sx={styles.controls}>
               <Link
                 onClick={openApiDocsLink}
                 target="FDC3APIDocs"
