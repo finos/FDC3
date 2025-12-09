@@ -5,30 +5,23 @@
 
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
-import { TextField } from '@material-ui/core';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { TextField, Box } from '@mui/material';
 import { ChannelField } from './ChannelField';
 import appChannelStore from '../store/AppChannelStore';
 import privateChannelStore from '../store/PrivateChannelStore';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    textField: {
-      marginTop: theme.spacing(2),
-      width: '100%',
-    },
-    input: {
-      fontSize: '14px',
-      color: 'rgba(0, 0, 0, 0.6)',
-    },
-    '& .Mui-disabled': {
-      borderColor: theme.palette.text.primary,
-    },
-  })
-);
+const classes = {
+  textField: {
+    mt: 2,
+    width: '100%',
+  },
+  input: {
+    fontSize: '14px',
+    color: 'rgba(0, 0, 0, 0.6)',
+  },
+};
 
 export const IntentResolutionField = observer(({ data, handleTabChange }: { data: any; handleTabChange: any }) => {
-  const classes = useStyles();
   const [resolutionResult, setResolutionResult] = useState<any>('pending...');
   const [isChannel, setIsChannel] = useState(false);
   const [privateChannel, setPrivateChannel] = useState(false);
@@ -42,11 +35,9 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
       if (data.getResult) {
         const result = await data.getResult();
 
-        //detect whether the result is Context or a Channel
         if (!!result?.broadcast) {
           setResolutionResult('');
 
-          //App Channel
           if (result.type === 'app') {
             await appChannelStore.getOrCreateChannel(result.id);
             setChannelName(result.id);
@@ -54,7 +45,6 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
             setChannelsList(appChannelStore.appChannelsList);
           }
 
-          // Private Channel
           if (result.type === 'private') {
             setIsChannel(true);
             setPrivateChannel(true);
@@ -65,7 +55,6 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
         } else if (result) {
           setResolutionResult(JSON.stringify(result, null, 2));
         } else {
-          //void result returned
           setResolutionResult('<void>');
         }
       }
@@ -81,7 +70,7 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
   }, []);
 
   return (
-    <div>
+    <Box>
       <TextField
         disabled
         label={'Resolved By'}
@@ -95,9 +84,7 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
         size="small"
         value={results}
         InputProps={{
-          classes: {
-            input: classes.input,
-          },
+          sx: classes.input,
         }}
       />
       {resolutionResult && (
@@ -113,10 +100,9 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
           variant="outlined"
           size="small"
           value={resolutionResult}
+          sx={classes.textField}
           InputProps={{
-            classes: {
-              input: classes.input,
-            },
+            sx: classes.input,
           }}
         />
       )}
@@ -128,6 +114,6 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
           channelName={channelName}
         />
       )}
-    </div>
+    </Box>
   );
 });
