@@ -1,11 +1,13 @@
-import { MessageHandler } from '../BasicFDC3Server';
-import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext';
+import { MessageHandler } from './MessageHandler';
+import { InstanceID, State } from '../AppRegistration';
 import {
   AppRequestMessage,
   HeartbeatEvent,
   WebConnectionProtocol6Goodbye,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { FullAppIdentifier } from './support';
+import { FDC3ServerInstance, HeartbeatActivityEvent } from '../FDC3ServerInstance';
+import { FDC3ServerInstanceEvent } from '../FDC3ServerInstanceEvents';
 
 type HeartbeatDetails = {
   instanceId: string;
@@ -34,13 +36,13 @@ function convertToText(s?: State): string {
  * Handles heartbeat pings and responses
  */
 export class HeartbeatHandler implements MessageHandler {
-  private readonly contexts: ServerContext<AppRegistration>[] = [];
+  private readonly fdc3Instances: FDC3ServerInstance[] = [];
   private readonly lastHeartbeats: Map<InstanceID, number> = new Map();
   private readonly timerFunction: NodeJS.Timeout;
 
   constructor(pingInterval: number = 1000, disconnectedAfter: number = 5000, deadAfter: number = 20000) {
     this.timerFunction = setInterval(() => {
-      this.contexts.forEach(async sc => {
+      this.fdc3Instances.forEach(async sc => {
         const apps = await sc.getAllApps();
         apps
           .filter(app => app.state == State.Connected || app.state == State.NotResponding)
@@ -56,35 +58,22 @@ export class HeartbeatHandler implements MessageHandler {
               const timeSinceLastHeartbeat = now - lastHeartbeat;
 
               if (timeSinceLastHeartbeat < disconnectedAfter && currentState != State.Connected) {
-                console.error(
-                  `Heartbeat from ${app.instanceId} for ${timeSinceLastHeartbeat}ms. App is considered connected.`
-                );
-                sc.setAppState(app.instanceId, State.Connected);
+                sc.heartbeatActivity(app.instanceId, HeartbeatActivityEvent.ConnectedResponding);
               } else if (timeSinceLastHeartbeat > disconnectedAfter && currentState == State.Connected) {
-                console.error(
-                  `No heartbeat from ${app.instanceId} for ${timeSinceLastHeartbeat}ms. App is considered not responding.`
-                );
-                sc.setAppState(app.instanceId, State.NotResponding);
+                sc.heartbeatActivity(app.instanceId, HeartbeatActivityEvent.NotRespondingAfterDisconnectTime);
               } else if (timeSinceLastHeartbeat > deadAfter && currentState == State.NotResponding) {
-                console.error(
-                  `No heartbeat from ${app.instanceId} for ${timeSinceLastHeartbeat}ms. App is considered terminated.`
-                );
-                sc.setAppState(app.instanceId, State.Terminated);
+                sc.heartbeatActivity(app.instanceId, HeartbeatActivityEvent.NotRespondingAfterDeadTime);
               } else {
                 // no action
               }
             } else {
               // start the clock
               this.lastHeartbeats.set(app.instanceId, now);
+              sc.heartbeatActivity(app.instanceId, HeartbeatActivityEvent.ConnectedResponding);
             }
           });
       });
     }, pingInterval);
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  cleanup(_instanceId: InstanceID, _sc: ServerContext<AppRegistration>): void {
-    //TODO: Consider whether to clean-up last heartbeat times
   }
 
   heartbeatTimes(): HeartbeatDetails[] {
@@ -94,7 +83,9 @@ export class HeartbeatHandler implements MessageHandler {
         return {
           instanceId: e[0],
           time: now - e[1],
-          state: convertToText(this.contexts.map(sc => sc.getInstanceDetails(e[0])).reduce((a, b) => a || b)?.state),
+          state: convertToText(
+            this.fdc3Instances.map(sc => sc.getInstanceDetails(e[0])).reduce((a, b) => a || b, undefined)?.state
+          ),
         } as HeartbeatDetails;
       })
       .filter(e => e.state != 'Terminated');
@@ -106,11 +97,11 @@ export class HeartbeatHandler implements MessageHandler {
 
   async accept(
     msg: AppRequestMessage | WebConnectionProtocol6Goodbye,
-    sc: ServerContext<AppRegistration>,
+    sc: FDC3ServerInstance,
     from: InstanceID
   ): Promise<void> {
-    if (!this.contexts.includes(sc)) {
-      this.contexts.push(sc);
+    if (!this.fdc3Instances.includes(sc)) {
+      this.fdc3Instances.push(sc);
     }
 
     if (msg.type == 'heartbeatAcknowledgementRequest') {
@@ -128,7 +119,7 @@ export class HeartbeatHandler implements MessageHandler {
     }
   }
 
-  async sendHeartbeat(sc: ServerContext<AppRegistration>, app: FullAppIdentifier): Promise<void> {
+  async sendHeartbeat(sc: FDC3ServerInstance, app: FullAppIdentifier): Promise<void> {
     const event: HeartbeatEvent = {
       type: 'heartbeatEvent',
       meta: {
@@ -138,5 +129,13 @@ export class HeartbeatHandler implements MessageHandler {
       payload: {},
     };
     sc.post(event, app.instanceId);
+  }
+
+  async handleEvent(e: FDC3ServerInstanceEvent, i: FDC3ServerInstance): Promise<void> {
+    if (e.type === 'shutdown') {
+      if (this.fdc3Instances.includes(i)) {
+        this.fdc3Instances.splice(this.fdc3Instances.indexOf(i), 1);
+      }
+    }
   }
 }

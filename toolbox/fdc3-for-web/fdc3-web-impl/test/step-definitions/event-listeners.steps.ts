@@ -21,7 +21,7 @@ When('{string} adds an event listener for {string}', function (this: CustomWorld
     type: 'addEventListenerRequest',
   } as AddEventListenerRequest;
 
-  this.server.receive(message, uuid);
+  this.sc.receive(message, uuid);
 });
 
 When('{string} removes event listener with id {string}', function (this: CustomWorld, app: string, id: string) {
@@ -36,5 +36,5 @@ When('{string} removes event listener with id {string}', function (this: CustomW
     type: 'eventListenerUnsubscribeRequest',
   } as EventListenerUnsubscribeRequest;
 
-  this.server.receive(message, uuid);
+  this.sc.receive(message, uuid);
 });

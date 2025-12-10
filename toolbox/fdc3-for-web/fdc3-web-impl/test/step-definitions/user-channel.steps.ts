@@ -19,7 +19,7 @@ When('{string} gets the list of user channels', function (this: CustomWorld, app
     type: 'getUserChannelsRequest',
   } as GetUserChannelsRequest;
 
-  this.server.receive(message, uuid);
+  this.sc.receive(message, uuid);
 });
 
 When('{string} gets the current user channel', function (this: CustomWorld, app: string) {
@@ -31,7 +31,7 @@ When('{string} gets the current user channel', function (this: CustomWorld, app:
     type: 'getCurrentChannelRequest',
   } as GetCurrentChannelRequest;
 
-  this.server.receive(message, uuid);
+  this.sc.receive(message, uuid);
 });
 
 When('{string} leaves the current user channel', function (this: CustomWorld, app: string) {
@@ -43,7 +43,7 @@ When('{string} leaves the current user channel', function (this: CustomWorld, ap
     type: 'leaveCurrentChannelRequest',
   } as LeaveCurrentChannelRequest;
 
-  this.server.receive(message, uuid);
+  this.sc.receive(message, uuid);
 });
 
 When('{string} joins user channel {string}', function (this: CustomWorld, app: string, channel: string) {
@@ -57,7 +57,7 @@ When('{string} joins user channel {string}', function (this: CustomWorld, app: s
     type: 'joinUserChannelRequest',
   } as JoinUserChannelRequest;
 
-  this.server.receive(message, uuid);
+  this.sc.receive(message, uuid);
 });
 
 When(
@@ -74,6 +74,6 @@ When(
       type: 'getCurrentContextRequest',
     } as GetCurrentContextRequest;
 
-    this.server.receive(message, uuid);
+    this.sc.receive(message, uuid);
   }
 );

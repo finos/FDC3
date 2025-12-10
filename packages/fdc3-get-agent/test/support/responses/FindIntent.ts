@@ -1,4 +1,4 @@
-import { TestServerContext } from '../TestServerContext';
+import { MockFDC3Server } from '../MockFDC3Server';
 import { InstanceID } from '@finos/fdc3-web-impl';
 import { AutomaticResponse } from './AutomaticResponses';
 import { FindIntentRequest, FindIntentResponse } from '@finos/fdc3-schema/generated/api/BrowserTypes';
@@ -9,7 +9,7 @@ export class FindIntent implements AutomaticResponse {
     return t == 'findIntentRequest';
   }
 
-  action(input: object, m: TestServerContext, from: InstanceID) {
+  action(input: object, m: MockFDC3Server, from: InstanceID) {
     const intentRequest = input as FindIntentRequest;
     const request = this.createFindIntentResponseMessage(intentRequest);
     setTimeout(() => {

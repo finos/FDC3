@@ -18,6 +18,6 @@ When(
       type: 'getOrCreateChannelRequest',
     } as GetOrCreateChannelRequest;
 
-    this.server.receive(message, uuid);
+    this.sc.receive(message, uuid);
   }
 );

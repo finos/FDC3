@@ -25,7 +25,7 @@ When(
       type: 'addContextListenerRequest',
     } as AddContextListenerRequest;
 
-    this.server.receive(message, uuid);
+    this.sc.receive(message, uuid);
   }
 );
 
@@ -43,7 +43,7 @@ When(
       type: 'addContextListenerRequest',
     } as AddContextListenerRequest;
 
-    this.server.receive(message, uuid);
+    this.sc.receive(message, uuid);
   }
 );
 
@@ -61,7 +61,7 @@ When(
       type: 'getCurrentContextRequest',
     } as GetCurrentContextRequest;
 
-    this.server.receive(message, uuid);
+    this.sc.receive(message, uuid);
   }
 );
 
@@ -77,7 +77,7 @@ When('{string} removes context listener with id {string}', function (this: Custo
     type: 'contextListenerUnsubscribeRequest',
   } as ContextListenerUnsubscribeRequest;
 
-  this.server.receive(message, uuid);
+  this.sc.receive(message, uuid);
 });
 
 When(
@@ -95,6 +95,6 @@ When(
       type: 'broadcastRequest',
     } as BroadcastRequest;
 
-    this.server.receive(message, uuid);
+    this.sc.receive(message, uuid);
   }
 );

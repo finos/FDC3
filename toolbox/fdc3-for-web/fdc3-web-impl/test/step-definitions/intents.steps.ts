@@ -80,7 +80,7 @@ When(
       type: 'findIntentRequest',
     } as FindIntentRequest;
 
-    await this.server.receive(message, uuid);
+    await this.sc.receive(message, uuid);
   }
 );
 
@@ -97,7 +97,7 @@ When(
       type: 'findIntentsByContextRequest',
     } as FindIntentsByContextRequest;
 
-    await this.server.receive(message, uuid);
+    await this.sc.receive(message, uuid);
   }
 );
 
@@ -114,7 +114,7 @@ Given(
         intent: handleResolve(intent, this),
       },
     } as AddIntentListenerRequest;
-    await this.server.receive(message, uuid);
+    await this.sc.receive(message, uuid);
   }
 );
 
@@ -131,7 +131,7 @@ Given(
         contextType: handleResolve(contextType, this),
       },
     } as AddIntentListenerRequest;
-    await this.server.receive(message, uuid);
+    await this.sc.receive(message, uuid);
   }
 );
 
@@ -147,7 +147,7 @@ Given(
         listenerUUID: handleResolve(id, this),
       },
     } as IntentListenerUnsubscribeRequest;
-    await this.server.receive(message, uuid);
+    await this.sc.receive(message, uuid);
   }
 );
 
@@ -236,7 +236,7 @@ When(
     const meta = createMeta(this, appStr);
     const uuid = this.sc.getInstanceUUID(meta.source)!;
     const message = raiseWithContext(this, contextType, null, meta);
-    await this.server.receive(message, uuid);
+    await this.sc.receive(message, uuid);
   }
 );
 
@@ -246,7 +246,7 @@ When(
     const meta = createMeta(this, appStr);
     const uuid = this.sc.getInstanceUUID(meta.source)!;
     const message = raiseWithContext(this, contextType, dest, meta);
-    await this.server.receive(message, uuid);
+    await this.sc.receive(message, uuid);
   }
 );
 
@@ -256,7 +256,7 @@ When(
     const meta = createMeta(this, appStr);
     const uuid = this.sc.getInstanceUUID(meta.source)!;
     const message = raise(this, intentName, contextType, null, meta);
-    await this.server.receive(message, uuid);
+    await this.sc.receive(message, uuid);
   }
 );
 
@@ -266,7 +266,7 @@ When(
     const meta = createMeta(this, appStr);
     const uuid = this.sc.getInstanceUUID(meta.source)!;
     const message = raise(this, intentName, contextType, dest, meta);
-    await this.server.receive(message, uuid);
+    await this.sc.receive(message, uuid);
   }
 );
 
@@ -276,7 +276,7 @@ When(
     const meta = createMeta(this, appStr);
     const uuid = this.sc.getInstanceUUID(meta.source)!;
     const message = raiseWithInvalidTarget(this, intentName, contextType, meta);
-    await this.server.receive(message, uuid);
+    await this.sc.receive(message, uuid);
   }
 );
 
@@ -286,7 +286,7 @@ When(
     const meta = createMeta(this, appStr);
     const uuid = this.sc.getInstanceUUID(meta.source)!;
     const message = raiseWithContextAnInvalidTarget(contextType, meta);
-    await this.server.receive(message, uuid);
+    await this.sc.receive(message, uuid);
   }
 );
 
@@ -306,7 +306,7 @@ When(
     };
     const uuid = this.sc.getInstanceUUID(meta.source)!;
     const message = raise(this, intentName, contextType, dest, meta);
-    await this.server.receive(message, uuid);
+    await this.sc.receive(message, uuid);
   }
 );
 
@@ -334,7 +334,7 @@ When(
         raiseIntentRequestUuid: raiseIntentUuid,
       },
     };
-    await this.server.receive(message, uuid1);
+    await this.sc.receive(message, uuid1);
   }
 );
 
@@ -354,7 +354,7 @@ When(
         raiseIntentRequestUuid: raiseIntentUuid,
       },
     };
-    await this.server.receive(message, uuid);
+    await this.sc.receive(message, uuid);
   }
 );
 
@@ -380,6 +380,6 @@ When(
         raiseIntentRequestUuid: raiseIntentUuid,
       },
     };
-    await this.server.receive(message, uuid);
+    await this.sc.receive(message, uuid);
   }
 );

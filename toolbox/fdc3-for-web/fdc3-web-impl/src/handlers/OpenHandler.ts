@@ -1,8 +1,8 @@
-import { MessageHandler } from '../BasicFDC3Server';
-import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext';
-import { Directory, DirectoryApp } from '../directory/DirectoryInterface';
-import { ContextElement } from '@finos/fdc3-context';
-import { OpenError, ResolveError, AppIdentifier, AppMetadata, ImplementationMetadata } from '@finos/fdc3-standard';
+import { MessageHandler } from './MessageHandler';
+import { FDC3ServerInstance } from '../FDC3ServerInstance';
+import { InstanceID, State } from '../AppRegistration';
+import { DirectoryApp } from '../directory/DirectoryInterface';
+import { ResolveError, AppIdentifier, AppMetadata, ImplementationMetadata } from '@finos/fdc3-standard';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { errorResponse, FullAppIdentifier, successResponse } from './support';
 import {
@@ -16,6 +16,7 @@ import {
   isOpenRequest,
   isWebConnectionProtocol4ValidateAppIdentity,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+import { AppState, PendingApp } from '../PendingApp';
 
 type BroadcastEvent = BrowserTypes.BroadcastEvent;
 type AddContextListenerRequest = BrowserTypes.AddContextListenerRequest;
@@ -28,93 +29,18 @@ type WebConnectionProtocol5ValidateAppIdentityFailedResponse =
 type WebConnectionProtocol5ValidateAppIdentitySuccessResponse =
   BrowserTypes.WebConnectionProtocol5ValidateAppIdentitySuccessResponse;
 
-enum AppState {
-  Opening,
-  DeliveringContext,
-  Done,
-}
-
-class PendingApp {
-  private readonly sc: ServerContext<AppRegistration>;
-  private readonly msg: OpenRequest;
-  readonly context: ContextElement | undefined;
-  readonly source: FullAppIdentifier;
-  state: AppState = AppState.Opening;
-  private openedApp: AppIdentifier | undefined = undefined;
-
-  constructor(
-    sc: ServerContext<AppRegistration>,
-    msg: OpenRequest,
-    context: ContextElement | undefined,
-    source: FullAppIdentifier,
-    timeoutMs: number
-  ) {
-    this.context = context;
-    this.source = source;
-    this.sc = sc;
-    this.msg = msg;
-
-    setTimeout(() => {
-      if (this.state != AppState.Done) {
-        this.onError();
-      }
-    }, timeoutMs);
-  }
-
-  private onSuccess() {
-    this.sc.setAppState(this.openedApp!.instanceId!, State.Connected);
-    successResponse(
-      this.sc,
-      this.msg,
-      this.source,
-      {
-        appIdentifier: {
-          appId: this.openedApp!.appId,
-          instanceId: this.openedApp!.instanceId,
-        },
-      },
-      'openResponse'
-    );
-  }
-
-  private onError() {
-    errorResponse(this.sc, this.msg, this.source, OpenError.AppTimeout, 'openResponse');
-  }
-
-  setOpened(openedApp: AppIdentifier) {
-    this.openedApp = openedApp;
-    if (this.context) {
-      this.state = AppState.DeliveringContext;
-    } else {
-      this.setDone();
-    }
-  }
-
-  setDone() {
-    this.state = AppState.Done;
-    this.onSuccess();
-  }
-}
-
 export class OpenHandler implements MessageHandler {
-  private readonly directory: Directory;
-  readonly pending: Map<InstanceID, PendingApp> = new Map();
   readonly timeoutMs: number;
 
-  constructor(d: Directory, timeoutMs: number) {
-    this.directory = d;
+  constructor(timeoutMs: number) {
     this.timeoutMs = timeoutMs;
-  }
-
-  cleanup(/*instanceId: InstanceID, sc: ServerContext<AppRegistration>*/): void {
-    //don't cleanup pending if the opening app closes as we should still deliver context
   }
 
   shutdown(): void {}
 
   async accept(
     msg: AppRequestMessage | WebConnectionProtocol4ValidateAppIdentity,
-    sc: ServerContext<AppRegistration>,
+    sc: FDC3ServerInstance,
     uuid: InstanceID
   ): Promise<void> {
     if (isWebConnectionProtocol4ValidateAppIdentity(msg)) {
@@ -149,12 +75,8 @@ export class OpenHandler implements MessageHandler {
   /**
    * This deals with sending pending context to listeners of newly-opened apps.
    */
-  handleAddContextListener(
-    arg0: AddContextListenerRequest,
-    sc: ServerContext<AppRegistration>,
-    from: InstanceID
-  ): void {
-    const pendingOpen = this.pending.get(from);
+  handleAddContextListener(arg0: AddContextListenerRequest, sc: FDC3ServerInstance, from: InstanceID): void {
+    const pendingOpen = sc.getPendingApp(from) as PendingApp | undefined;
     if (pendingOpen) {
       const contextType = arg0.payload.contextType;
       if (pendingOpen.context && pendingOpen.state == AppState.DeliveringContext) {
@@ -177,7 +99,7 @@ export class OpenHandler implements MessageHandler {
           };
 
           pendingOpen.setDone();
-          this.pending.delete(from);
+          sc.removePendingApp(from);
           sc.post(message, from);
         }
       }
@@ -198,9 +120,9 @@ export class OpenHandler implements MessageHandler {
     };
   }
 
-  getAppMetadata(arg0: GetAppMetadataRequest, sc: ServerContext<AppRegistration>, from: FullAppIdentifier): void {
+  getAppMetadata(arg0: GetAppMetadataRequest, sc: FDC3ServerInstance, from: FullAppIdentifier): void {
     const appID = arg0.payload.app;
-    const details = this.directory.retrieveAppsById(appID.appId);
+    const details = sc.getDirectory().retrieveAppsById(appID.appId);
     if (details.length > 0) {
       successResponse(
         sc,
@@ -216,11 +138,7 @@ export class OpenHandler implements MessageHandler {
     }
   }
 
-  async findInstances(
-    arg0: FindInstancesRequest,
-    sc: ServerContext<AppRegistration>,
-    from: FullAppIdentifier
-  ): Promise<void> {
+  async findInstances(arg0: FindInstancesRequest, sc: FDC3ServerInstance, from: FullAppIdentifier): Promise<void> {
     const appId = arg0.payload.app.appId;
     const openApps = await sc.getConnectedApps();
     const matching = openApps
@@ -242,19 +160,19 @@ export class OpenHandler implements MessageHandler {
     );
   }
 
-  async open(arg0: OpenRequest, sc: ServerContext<AppRegistration>, from: FullAppIdentifier): Promise<void> {
+  async open(arg0: OpenRequest, sc: FDC3ServerInstance, from: FullAppIdentifier): Promise<void> {
     const toOpen = arg0.payload.app;
     const context = arg0.payload.context;
 
     try {
       const uuid = await sc.open(toOpen.appId);
-      this.pending.set(uuid, new PendingApp(sc, arg0, context, from, this.timeoutMs));
+      sc.setPendingApp(uuid, new PendingApp(sc, arg0, context, from, this.timeoutMs));
     } catch (e) {
       errorResponse(sc, arg0, from, (e as Error).message ?? e, 'openResponse');
     }
   }
 
-  async getInfo(arg0: GetInfoRequest, sc: ServerContext<AppRegistration>, from: FullAppIdentifier): Promise<void> {
+  async getInfo(arg0: GetInfoRequest, sc: FDC3ServerInstance, from: FullAppIdentifier): Promise<void> {
     const implMetadata: ImplementationMetadata = this.getImplementationMetadata(sc, {
       appId: from.appId,
       instanceId: from.instanceId,
@@ -270,8 +188,8 @@ export class OpenHandler implements MessageHandler {
     );
   }
 
-  getImplementationMetadata(sc: ServerContext<AppRegistration>, appIdentity: AppIdentifier) {
-    const appMetadata = this.filterPublicDetails(this.directory.retrieveAppsById(appIdentity.appId)[0], appIdentity);
+  getImplementationMetadata(sc: FDC3ServerInstance, appIdentity: AppIdentifier) {
+    const appMetadata = this.filterPublicDetails(sc.getDirectory().retrieveAppsById(appIdentity.appId)[0], appIdentity);
     return {
       provider: sc.provider(),
       providerVersion: sc.providerVersion(),
@@ -287,7 +205,7 @@ export class OpenHandler implements MessageHandler {
 
   async handleValidate(
     arg0: WebConnectionProtocol4ValidateAppIdentity,
-    sc: ServerContext<AppRegistration>,
+    sc: FDC3ServerInstance,
     from: InstanceID
   ): Promise<void> {
     const responseMeta = {
@@ -350,7 +268,7 @@ export class OpenHandler implements MessageHandler {
       returnSuccess(appIdentity.appId, appIdentity.instanceId);
 
       // make sure, if the opener is listening for this app to open, then it gets informed
-      const pendingOpen = this.pending.get(from);
+      const pendingOpen = sc.getPendingApp(from) as PendingApp | undefined;
       if (pendingOpen) {
         if (pendingOpen.state == AppState.Opening) {
           pendingOpen.setOpened(appIdentity);
@@ -359,5 +277,9 @@ export class OpenHandler implements MessageHandler {
     } else {
       returnError();
     }
+  }
+
+  async handleEvent(): Promise<void> {
+    // no-op
   }
 }

@@ -37,9 +37,9 @@ export const waitForContext = async (
 
   setTimeout(() => {
     if (count > 0) {
-      promiseReject(new Error("App didn't return close context within 1 sec"));
+      promiseReject(new Error(`App didn't return close context within ${constants.WindowCloseWaitTime}ms`));
     }
-  }, 1000);
+  }, constants.WindowCloseWaitTime);
 
   return channel
     .addContextListener(contextType, ctx => {

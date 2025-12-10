@@ -18,7 +18,7 @@ When('{string} creates a private channel', function (this: CustomWorld, app: str
     type: 'createPrivateChannelRequest',
   } as CreatePrivateChannelRequest;
 
-  this.server.receive(message, uuid);
+  this.sc.receive(message, uuid);
 });
 
 When('{string} removes event listener {string}', function (this: CustomWorld, app: string, listenerUUID: string) {
@@ -32,7 +32,7 @@ When('{string} removes event listener {string}', function (this: CustomWorld, ap
     type: 'privateChannelUnsubscribeEventListenerRequest',
   } as PrivateChannelUnsubscribeEventListenerRequest;
 
-  this.server.receive(message, uuid);
+  this.sc.receive(message, uuid);
 });
 
 When(
@@ -49,7 +49,7 @@ When(
       type: 'privateChannelAddEventListenerRequest',
     } as PrivateChannelAddEventListenerRequest;
 
-    this.server.receive(message, uuid);
+    this.sc.receive(message, uuid);
   }
 );
 
@@ -67,6 +67,6 @@ When(
       type: 'privateChannelDisconnectRequest',
     } as PrivateChannelDisconnectRequest;
 
-    this.server.receive(message, uuid);
+    this.sc.receive(message, uuid);
   }
 );

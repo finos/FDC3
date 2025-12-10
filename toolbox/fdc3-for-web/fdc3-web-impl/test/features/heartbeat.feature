@@ -31,11 +31,12 @@ Feature: Heartbeat Messages Between Apps and Server
       | heartbeatEvent   | a1            | libraryApp |
       | heartbeatEvent   | a1            | libraryApp |
       | heartbeatEvent   | a1            | libraryApp |
-    And I shutdown the server
+    And I stop the heartbeat handler
     And I get the heartbeat times
     Then "{result}" is an array of objects with the following contents
       | instanceId | state     |
       | a1         | Connected |
+    And I shutdown the server
 
   Scenario: App Doesn't Respond to heartbeats
   Apps are considered dead if they don't respond to a heartbeat request within 2 seconds
@@ -51,9 +52,10 @@ Feature: Heartbeat Messages Between Apps and Server
       | heartbeatEvent   | a1            | libraryApp |
       | heartbeatEvent   | a1            | libraryApp |
       | heartbeatEvent   | a1            | libraryApp |
-    And I shutdown the server
+    And I stop the heartbeat handler
     And I get the heartbeat times
     Then "{result}" is empty
+    And I shutdown the server
 
   Scenario: App says Goodbye
     When "libraryApp/a1" is opened with connection id "a1"

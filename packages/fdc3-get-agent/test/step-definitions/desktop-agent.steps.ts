@@ -16,7 +16,7 @@ import { MockStorage } from '../support/MockStorage';
 import { DesktopAgent, ImplementationMetadata } from '@finos/fdc3-standard';
 import { clearAgentPromise } from '../../src/strategies/getAgent';
 import expect from 'expect';
-import { dummyInstanceDetails } from '../support/TestServerContext';
+import { dummyInstanceDetails } from '../support/MockFDC3Server';
 import { MockIFrame } from '../support/MockIFrame';
 
 interface MockPageTransitionEvent extends Event {
@@ -35,10 +35,10 @@ Given(
   'Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response',
   async function (this: CustomWorld, field: string, w: string) {
     const mockWindow = handleResolve(w, this);
-    this.mockFDC3Server = new MockFDC3Server(mockWindow, false, this.mockContext);
+    this.mockFDC3Server = new MockFDC3Server(mockWindow, false, this);
     this.props[field] = this.mockFDC3Server;
-    this.mockContext.open(dummyInstanceDetails[0].appId);
-    this.mockContext.open(dummyInstanceDetails[1].appId);
+    this.mockFDC3Server.open(dummyInstanceDetails[0].appId);
+    this.mockFDC3Server.open(dummyInstanceDetails[1].appId);
   }
 );
 
@@ -46,10 +46,10 @@ Given(
   'Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response, but times out identity validation',
   async function (this: CustomWorld, field: string, w: string) {
     const mockWindow = handleResolve(w, this);
-    this.mockFDC3Server = new MockFDC3Server(mockWindow, false, this.mockContext, true, true);
+    this.mockFDC3Server = new MockFDC3Server(mockWindow, false, this, [], [], undefined, true, true);
     this.props[field] = this.mockFDC3Server;
-    this.mockContext.open(dummyInstanceDetails[0].appId);
-    this.mockContext.open(dummyInstanceDetails[1].appId);
+    this.mockFDC3Server.open(dummyInstanceDetails[0].appId);
+    this.mockFDC3Server.open(dummyInstanceDetails[1].appId);
   }
 );
 
@@ -57,10 +57,10 @@ Given(
   'Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response and uses default UI URLs',
   async function (this: CustomWorld, field: string, w: string) {
     const mockWindow = handleResolve(w, this);
-    this.mockFDC3Server = new MockFDC3Server(mockWindow, false, this.mockContext, true);
+    this.mockFDC3Server = new MockFDC3Server(mockWindow, false, this, [], [], undefined, true);
     this.props[field] = this.mockFDC3Server;
-    this.mockContext.open(dummyInstanceDetails[0].appId);
-    this.mockContext.open(dummyInstanceDetails[1].appId);
+    this.mockFDC3Server.open(dummyInstanceDetails[0].appId);
+    this.mockFDC3Server.open(dummyInstanceDetails[1].appId);
   }
 );
 
@@ -68,10 +68,10 @@ Given(
   'Parent Window desktop {string} listens for postMessage events in {string}, returns direct message response and times out message exchanges',
   async function (this: CustomWorld, field: string, w: string) {
     const mockWindow = handleResolve(w, this);
-    this.mockFDC3Server = new MockFDC3Server(mockWindow, false, this.mockContext, true, false, true);
+    this.mockFDC3Server = new MockFDC3Server(mockWindow, false, this, [], [], undefined, true, false, true);
     this.props[field] = this.mockFDC3Server;
-    this.mockContext.open(dummyInstanceDetails[0].appId);
-    this.mockContext.open(dummyInstanceDetails[1].appId);
+    this.mockFDC3Server.open(dummyInstanceDetails[0].appId);
+    this.mockFDC3Server.open(dummyInstanceDetails[1].appId);
   }
 );
 
@@ -84,7 +84,10 @@ Given(
     this.mockFDC3Server = new MockFDC3Server(
       mockWindow,
       false,
-      this.mockContext,
+      this,
+      [],
+      [],
+      undefined,
       true,
       false,
       true,
@@ -92,8 +95,8 @@ Given(
       appLaunchTimeout
     );
     this.props[field] = this.mockFDC3Server;
-    this.mockContext.open(dummyInstanceDetails[0].appId);
-    this.mockContext.open(dummyInstanceDetails[1].appId);
+    this.mockFDC3Server.open(dummyInstanceDetails[0].appId);
+    this.mockFDC3Server.open(dummyInstanceDetails[1].appId);
   }
 );
 
@@ -101,10 +104,10 @@ Given(
   'Parent Window desktop {string} listens for postMessage events in {string}, returns iframe response',
   async function (this: CustomWorld, field: string, w: string) {
     const mockWindow = handleResolve(w, this);
-    this.mockFDC3Server = new MockFDC3Server(mockWindow, true, this.mockContext);
+    this.mockFDC3Server = new MockFDC3Server(mockWindow, true, this);
     this.props[field] = this.mockFDC3Server;
-    this.mockContext.open(dummyInstanceDetails[0].appId);
-    this.mockContext.open(dummyInstanceDetails[1].appId);
+    this.mockFDC3Server.open(dummyInstanceDetails[0].appId);
+    this.mockFDC3Server.open(dummyInstanceDetails[1].appId);
   }
 );
 
@@ -112,11 +115,11 @@ Given(
   '{string} is a function which opens an iframe for communications on {string}',
   function (this: CustomWorld, fn: string, doc: string) {
     this.props[fn] = () => {
-      this.mockContext.open(dummyInstanceDetails[0].appId);
       const document = handleResolve(doc, this) as MockDocument;
       const ifrm = document.createElement('iframe');
 
-      this.mockFDC3Server = new MockFDC3Server(ifrm as unknown as MockIFrame, false, this.mockContext);
+      this.mockFDC3Server = new MockFDC3Server(ifrm as unknown as MockIFrame, false, this);
+      this.mockFDC3Server.open(dummyInstanceDetails[0].appId);
       ifrm.setAttribute('src', EMBED_URL);
       document.body.appendChild(ifrm);
       return ifrm;
@@ -128,11 +131,20 @@ Given(
   '{string} is a function which opens an iframe for communications on {string} but times out identity validation',
   function (this: CustomWorld, fn: string, doc: string) {
     this.props[fn] = () => {
-      this.mockContext.open(dummyInstanceDetails[0].appId);
       const document = handleResolve(doc, this) as MockDocument;
       const ifrm = document.createElement('iframe');
 
-      this.mockFDC3Server = new MockFDC3Server(ifrm as unknown as MockIFrame, false, this.mockContext, true, true);
+      this.mockFDC3Server = new MockFDC3Server(
+        ifrm as unknown as MockIFrame,
+        false,
+        this,
+        [],
+        [],
+        undefined,
+        true,
+        true
+      );
+      this.mockFDC3Server.open(dummyInstanceDetails[0].appId);
       ifrm.setAttribute('src', EMBED_URL);
       document.body.appendChild(ifrm);
       return ifrm;
@@ -144,18 +156,21 @@ Given(
   '{string} is a function which opens an iframe for communications on {string} and times out message exchanges',
   function (this: CustomWorld, fn: string, doc: string) {
     this.props[fn] = () => {
-      this.mockContext.open(dummyInstanceDetails[0].appId);
       const document = handleResolve(doc, this) as MockDocument;
       const ifrm = document.createElement('iframe');
 
       this.mockFDC3Server = new MockFDC3Server(
         ifrm as unknown as MockIFrame,
         false,
-        this.mockContext,
+        this,
+        [],
+        [],
+        undefined,
         false,
         false,
         true
       );
+      this.mockFDC3Server.open(dummyInstanceDetails[0].appId);
       ifrm.setAttribute('src', EMBED_URL);
       document.body.appendChild(ifrm);
       return ifrm;
@@ -169,20 +184,23 @@ Given(
     const messageExchangeTimeout: number = handleResolve(t1, this);
     const appLaunchTimeout: number = handleResolve(t2, this);
     this.props[fn] = () => {
-      this.mockContext.open(dummyInstanceDetails[0].appId);
       const document = handleResolve(doc, this) as MockDocument;
       const ifrm = document.createElement('iframe');
 
       this.mockFDC3Server = new MockFDC3Server(
         ifrm as unknown as MockIFrame,
         false,
-        this.mockContext,
+        this,
+        [],
+        [],
+        undefined,
         false,
         false,
         true,
         messageExchangeTimeout,
         appLaunchTimeout
       );
+      this.mockFDC3Server.open(dummyInstanceDetails[0].appId);
       ifrm.setAttribute('src', EMBED_URL);
       document.body.appendChild(ifrm);
       return ifrm;
@@ -191,7 +209,7 @@ Given(
 );
 
 Given('an existing app instance in {string}', async function (this: CustomWorld, field: string) {
-  const uuid = this.mockContext.open(dummyInstanceDetails[0].appId);
+  const uuid = await this.mockFDC3Server!.open(dummyInstanceDetails[0].appId);
   this.props[field] = uuid;
 });
 

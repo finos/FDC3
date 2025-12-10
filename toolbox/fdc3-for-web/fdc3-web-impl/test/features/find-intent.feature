@@ -9,14 +9,14 @@ Feature: Find Intent API
       | returnBook  | fdc3.book    | {empty}          |
       | streamAny   | fdc3.book    | channel          |
     And "bakeryApp" is an app with the following intents
-      | Intent Name | Context Type | Result Type      |
-      | viewStock   | fdc3.product | {empty}          |
+      | Intent Name | Context Type | Result Type |
+      | viewStock   | fdc3.product | {empty}     |
     And "butcherApp" is an app with the following intents
-      | Intent Name | Context Type | Result Type      |
-      | viewStock   | fdc3.product | {empty}          |
+      | Intent Name | Context Type | Result Type |
+      | viewStock   | fdc3.product | {empty}     |
     And "chandlerApp" is an app with the following intents
-      | Intent Name | Context Type | Result Type      |
-      | viewStock   | fdc3.product | {empty}          |
+      | Intent Name | Context Type | Result Type |
+      | viewStock   | fdc3.product | {empty}     |
     And A newly instantiated FDC3 Server
     And "App1/a1" is opened with connection id "a1"
     And "App1/b1" is opened with connection id "b1"
@@ -46,7 +46,7 @@ Feature: Find Intent API
       | msg.matches_type   | msg.payload.appIntent.intent.name | msg.payload.appIntent.apps.length | msg.payload.appIntent.apps[0].appId | to.instanceId | msg.payload.appIntent.intent.displayName |
       | findIntentResponse | loanBook                          |                                 1 | libraryApp                          | a1            | loan book                                |
 
-  Scenario: Find Intents Requests should include both the app and running instances of it 
+  Scenario: Find Intents Requests should include both the app and running instances of it
     When "App1/a1" finds intents with intent "viewStock" and contextType "fdc3.product" and result type "{empty}"
     Then messaging will have outgoing posts
       | msg.matches_type   | msg.payload.appIntent.intent.name | msg.payload.appIntent.apps.length | to.instanceId |
@@ -67,14 +67,14 @@ Feature: Find Intent API
     When "App/a1" finds intents with contextType "fdc3.product"
     Then messaging will have outgoing posts
       | msg.matches_type             | msg.payload.appIntents[0].intent.name | msg.payload.appIntents.length | to.instanceId | msg.payload.appIntents[0].apps.length |
-      | findIntentsByContextResponse | viewStock                             |                             1 | a1            | 5                                     |
+      | findIntentsByContextResponse | viewStock                             |                             1 | a1            |                                     5 |
 
   Scenario: Find Intents by Context Request with multiple results which should not include an instance that has closed
     When "butcherApp/b2" is closed
     When "App/a1" finds intents with contextType "fdc3.product"
     Then messaging will have outgoing posts
       | msg.matches_type             | msg.payload.appIntents[0].intent.name | msg.payload.appIntents.length | to.instanceId | msg.payload.appIntents[0].apps.length |
-      | findIntentsByContextResponse | viewStock                             |                             1 | a1            | 4                                     |
+      | findIntentsByContextResponse | viewStock                             |                             1 | a1            |                                     4 |
 
   Scenario: Successful Find Intents Request With Channel
     When "App1/a1" finds intents with intent "streamBook" and contextType "fdc3.book" and result type "channel"

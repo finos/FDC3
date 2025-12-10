@@ -1,8 +1,12 @@
-import { FDC3Server } from '../../src/FDC3Server';
-import { ServerContext, InstanceID, State, AppRegistration } from '../../src/ServerContext';
+import { InstanceID, State, AppRegistration } from '../../src/AppRegistration';
+import { AbstractFDC3ServerInstance } from '../../src/AbstractFDC3ServerInstance';
+import { Directory } from '../../src/directory/DirectoryInterface';
 import { CustomWorld } from '../world';
 import { Context } from '@finos/fdc3-context';
 import { OpenError, AppIdentifier, AppIntent } from '@finos/fdc3-standard';
+import { MessageHandler } from '../../src/handlers/MessageHandler';
+import { ChannelState } from '../../src/FDC3ServerInstance';
+import { AbstractFDC3ServerFactory } from '../../src/FDC3ServerFactory';
 
 type ConnectionDetails = AppRegistration & {
   msg?: object;
@@ -14,20 +18,28 @@ type MessageRecord = {
   msg: object;
 };
 
-export class TestServerContext implements ServerContext<ConnectionDetails> {
+export class TestFDC3ServerInstance extends AbstractFDC3ServerInstance {
   public postedMessages: MessageRecord[] = [];
   private readonly cw: CustomWorld;
   private instances: ConnectionDetails[] = [];
   private nextInstanceId: number = 0;
   private nextUUID: number = 0;
-  private server: FDC3Server | null = null;
+  public handlers: MessageHandler[];
 
-  constructor(cw: CustomWorld) {
+  constructor(
+    private readonly factory: TestFDC3ServerFactory,
+    cw: CustomWorld,
+    handlers: MessageHandler[],
+    channels: ChannelState[],
+    private readonly directory: Directory
+  ) {
+    super(handlers, channels);
     this.cw = cw;
+    this.handlers = handlers;
   }
 
-  setFDC3Server(server: FDC3Server): void {
-    this.server = server;
+  getDirectory(): Directory {
+    return this.directory;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -63,7 +75,7 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
     if (found) {
       const currentState = found.state;
       if (currentState !== State.Terminated && newState === State.Terminated) {
-        this.server?.cleanup(app);
+        await this.cleanupApp(app);
       }
       found.state = newState;
     }
@@ -109,9 +121,9 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
       const id = this.getInstanceDetails(to);
       const app = id
         ? {
-          appId: id!.appId,
-          instanceId: id!.instanceId,
-        }
+            appId: id!.appId,
+            instanceId: id!.instanceId,
+          }
         : undefined;
       this.postedMessages.push({
         msg,
@@ -136,4 +148,36 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
     });
     return appId.instanceId!;
   }
+
+  /**
+   * USED FOR TESTING
+   */
+  async shutdown(): Promise<void> {
+    super.shutdown();
+    this.factory.shutdownHandlers();
+  }
+}
+
+export class TestFDC3ServerFactory extends AbstractFDC3ServerFactory {
+  constructor(
+    private cw: CustomWorld,
+    channels: ChannelState[],
+    directory: Directory,
+    heartbeats: boolean
+  ) {
+    super(directory, channels, heartbeats, 2000, 2000);
+  }
+
+  createInstance(): TestFDC3ServerInstance {
+    return new TestFDC3ServerInstance(this, this.cw, this.handlers, this.channels, this.directory);
+  }
+}
+
+export function createTestFDC3ServerInstance(
+  cw: CustomWorld,
+  channels: ChannelState[],
+  directory: Directory,
+  heartbeats: boolean
+): TestFDC3ServerInstance {
+  return new TestFDC3ServerFactory(cw, channels, directory, heartbeats).createInstance();
 }
