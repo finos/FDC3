@@ -183,7 +183,7 @@ The `market` map can be used to further specify the instrument and help achieve 
 
 **type**: `string`
 
-classification of the instrument by type or category. SHOULD be one of the following values, although other string values are permitted: '`commodity`', '`commodityIndex`', '`corporateDebt`', '`creditDefaultSwapIndex`', '`deal`', '`debt`', '`debtIndex`', '`etf`', '`fixedIncome`', '`future`', '`governmentBenchmarkDebt`', '`loan`', '`mortgageBackedSecurity`', '`municipalDebt`', '`mutualFund`', '`mutualFundIndex`', '`option`', '`otherDebt`', '`ownershipPrivateCompany`', '`pevcFirm`', '`pevcFund`', '`privateCompany`', '`publicCompany`', '`publicCompanyIndex`', '`sovereignDebt`', '`structuredProduct`', '`unknown`'
+Optional human-readable classification, to be used if no specific data classification is available.
 
 </details>
 
