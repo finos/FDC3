@@ -32,6 +32,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Reverted schema of `fdc3.interaction` context type back to use anyOf in place of oneOf for the `interactionType` property.  Since it could be a string enum or a string, validation could not differentiate. ([#1598](https://github.com/finos/FDC3/issues/1598))
 * Fixed `fdc3.timeRange` context example to use correctly formatted dateTime. ([#1599](https://github.com/finos/FDC3/issues/1599))
 * Removed broken sourcemaps from npm package output ([#1589](https://github.com/finos/FDC3/issues/1589))
+* Fixed the `fdc3-commonjs` build to include `d.ts` files and corrects the config for easier consumption in different environments. ([#1694](https://github.com/finos/FDC3/issues/1694))
+* Updated .NET API documentation for IListener.Unsubscribe to be async for 2.2 and current. ([#1690](https://github.com/finos/FDC3/pull/1690))
 
 ## [FDC3 Standard 2.2](https://github.com/finos/FDC3/compare/v2.1..v2.2) - 2025-03-12
 

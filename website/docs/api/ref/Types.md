@@ -338,7 +338,7 @@ interface Listener {
 ```csharp
 interface IListener
 {
-    void Unsubscribe();
+    Task Unsubscribe();
 }
 ```
 
@@ -368,7 +368,7 @@ unsubscribe(): Promise<void>;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-void Unsubscribe();
+Task Unsubscribe();
 ```
 
 </TabItem>
