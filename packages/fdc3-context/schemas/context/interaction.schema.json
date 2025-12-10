@@ -46,20 +46,7 @@
         "interactionType": {
           "title": "Interaction Type",
           "description": "`interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or `'Meeting'` although other string values are permitted.",
-          "anyOf": [
-            {
-              "type": "string",
-              "enum": [
-                "Instant Message",
-                "Email",
-                "Call",
-                "Meeting"
-              ]
-            },
-            {
-              "type": "string"
-            }
-          ]
+          "type": "string"
         },
         "description": {
           "title": "Interaction Description",
