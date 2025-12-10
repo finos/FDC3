@@ -36,6 +36,7 @@
     "@finos/fdc3-schema": "2.2.2-beta.1"
   },
   "devDependencies": {
+    "@apidevtools/swagger-parser": "^10.1.1",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.19.0",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
