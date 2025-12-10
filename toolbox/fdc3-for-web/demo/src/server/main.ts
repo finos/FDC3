@@ -10,7 +10,13 @@ app.get('/iframe', (_, res) => {
 });
 
 const httpServer = ViteExpress.listen(app, 4000, () =>
-  console.log('Server is listening on port 4000. Head to http://localhost:4000/static/da/index.html')
+  console.log(`
+  ___  ___  ___  ____ ___                  
+ | __>| . \\|  _><__ /| . \\ ___ ._ _ _  ___ 
+ | _> | | || <__ <_ \\| | |/ ._>| ' ' |/ . \\
+ |_|  |___/\`___/<___/|___/\\___.|_|_|_|\\___/
+                                          
+Server is listening on port 4000. Head to http://localhost:4000/static/da/index.html`)
 );
 
 const io = new Server(httpServer);
