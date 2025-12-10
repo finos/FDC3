@@ -656,7 +656,7 @@
 		},
 		"LaunchDetails": {
 		  "description": "The type specific launch details of the application. These details are intended to be vendor-agnostic and MAY be duplicated or overridden by details provided in the hostManifests object for a specific host.",
-		  "oneOf": [
+		  "anyOf": [
 			{
 			  "$ref": "#/components/schemas/WebAppDetails"
 			},
