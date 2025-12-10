@@ -13,7 +13,9 @@ describe('App Directory Schema Validation', () => {
 
   beforeAll(async () => {
     // Parse and validate the OpenAPI schema
-    api = await SwaggerParser.validate(join(specificationDir, 'appd.schema.json'));
+    const schemaPath = join(specificationDir, 'appd.schema.json');
+    const schema = JSON.parse(readFileSync(schemaPath, 'utf-8'));
+    api = await SwaggerParser.validate(schema);
     applicationSchema = (api as { components: { schemas: { Application: unknown } } }).components.schemas.Application;
     validator = new Validator();
   });
@@ -30,10 +32,10 @@ describe('App Directory Schema Validation', () => {
 
     const result = validator.validate(exampleApplication, applicationSchema);
 
-    expect(result.valid).toBe(true);
     if (!result.valid) {
-      console.error('Validation errors:', result.errors);
+      throw new Error(`Validation errors: ${JSON.stringify(result.errors, null, 2)}`);
     }
+    expect(result.valid).toBe(true);
   });
 
   it('should validate fdc3-workbench.json example against the Application schema', () => {
