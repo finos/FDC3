@@ -51,9 +51,9 @@ jobs:
         output: test-summary.md
       if: always()
 
-    # Only post comments if the PR came from FINOS (the only repo with permission to run it)
+    # Only post comments if the PR came from this repo rather than a fork (the only repo with permission to do so)
     - name: PR comment with file
-      if: github.event.pull_request.head.repo.full_name == 'finos/FDC3'
+      if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
       uses: thollander/actions-comment-pull-request@v3
       with:
         file-path: test-summary.md
