@@ -1,61 +1,117 @@
+
 name: Publish To NPM
 
-# This workflow publishes releases to NPM.
-# The workflow will:
-# - Only trigger on the publication of a release
-# - Ignore Docusaurus workflow, docs/** and website/** as they don't affect the NPM module build
-# WARNING: the workflow does NOT confirm that the version number in package JSON matches the branch 
-# name, which should be manually set and confirmed in the branch/tag used for the release
+# This workflow publishes releases to NPM and teh GitHUb package registry
+# when releases are published in GitHub.
+
 on:
   release:
     types: [published]
+
 permissions:
   contents: read
-  id-token: write
-  packages: write
-  
+  id-token: write     # required for npm provenance
+  packages: write     # required for GitHub Packages publish
+
 jobs:
-
-  package-publish:
-    name: Publish package to ${{ matrix.name }}
+  build_and_pack:
+    name: Build and pack workspaces (once)
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-       include:
-         - name: 1-NPM
-           registry: https://registry.npmjs.org
-           token-name: NPM_TOKEN
-           scope: ''
-         - name: 2-GitHub
-           registry: https://npm.pkg.github.com
-           token-name: GITHUB_TOKEN # previously used GH_JS_REPO_TOKEN
-           scope: '@finos'
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-    - name: Configure Node
-      uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
-      with:
-        node-version: 20
-        registry-url: ${{ matrix.registry }}
-        always-auth: true
-        token: ${{ secrets[matrix.token-name] }}
+      - name: Configure Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Lint
-      run: npm run lint
+      - name: Lint
+        run: npm run lint
 
-    - name: Run tests
-      run: npm run test
+      - name: Run tests
+        run: npm run test
 
-    - name: Build
-      run:  npm run build
+      - name: Build
+        run: npm run build
 
-    - name: Publish
-      run:  npm publish --provenance --access public --workspaces
-      env:
-        NODE_AUTH_TOKEN: ${{ secrets[matrix.token-name] }}
+      # Create tarballs for each workspace so we can publish the exact same artifacts twice
+      - name: Pack workspaces
+        run: |
+          set -euo pipefail
+          # This produces one .tgz per workspace in the repo root
+          npm pack --workspaces
+          echo "Packed tarballs:"
+          ls -1 *.tgz
+
+      - name: Upload packed artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-tarballs
+          path: |
+            ./*.tgz
+          if-no-files-found: error
+          retention-days: 7
+
+  publish_npm:
+    name: Publish to npmjs.org
+    runs-on: ubuntu-latest
+    needs: build_and_pack
+    steps:
+      - name: Download packed artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: npm-tarballs
+          path: ./dist-tarballs
+
+      - name: Configure Node for npmjs.org
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+          always-auth: true
+
+      - name: Publish tarballs to npmjs.org (with provenance)
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}   # npm automation token
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          for tgz in dist-tarballs/*.tgz; do
+            echo "Publishing $tgz to npmjs.org ..."
+            npm publish "$tgz" --provenance --access public
+          done
+
+  publish_github:
+    name: Publish to GitHub Packages
+    runs-on: ubuntu-latest
+    needs: build_and_pack
+    steps:
+      - name: Download packed artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: npm-tarballs
+          path: ./dist-tarballs
+
+      - name: Configure Node for GitHub Packages
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://npm.pkg.github.com
+          scope: '@finos'
+          always-auth: true
+
+      - name: Publish tarballs to GitHub Packages
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # has packages: write via permissions
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          for tgz in dist-tarballs/*.tgz; do
+            echo "Publishing $tgz to GitHub Packages ..."
+            # No --provenance or --access here
+            npm publish "$tgz"
+          done
