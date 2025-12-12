@@ -1,0 +1,61 @@
+name: Publish To NPM
+
+# This workflow publishes releases to NPM.
+# The workflow will:
+# - Only trigger on the publication of a release
+# - Ignore Docusaurus workflow, docs/** and website/** as they don't affect the NPM module build
+# WARNING: the workflow does NOT confirm that the version number in package JSON matches the branch 
+# name, which should be manually set and confirmed in the branch/tag used for the release
+on:
+  release:
+    types: [published]
+permissions:
+  contents: read
+  id-token: write
+  packages: write
+  
+jobs:
+
+  package-publish:
+    name: Publish package to ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+       include:
+         - name: 1-NPM
+           registry: https://registry.npmjs.org
+           token-name: NPM_TOKEN
+           scope: ''
+         - name: 2-GitHub
+           registry: https://npm.pkg.github.com
+           token-name: GITHUB_TOKEN # previously used GH_JS_REPO_TOKEN
+           scope: '@finos'
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+
+    - name: Configure Node
+      uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8 # v4.0.2
+      with:
+        node-version: 20
+        registry-url: ${{ matrix.registry }}
+        always-auth: true
+        token: ${{ secrets[matrix.token-name] }}
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Lint
+      run: npm run lint
+
+    - name: Run tests
+      run: npm run test
+
+    - name: Build
+      run:  npm run build
+
+    - name: Publish
+      run:  npm publish --provenance --access public --workspaces
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets[matrix.token-name] }}
