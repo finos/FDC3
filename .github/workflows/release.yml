@@ -1,9 +1,6 @@
 
 name: Publish To NPM
 
-# This workflow publishes releases to NPM and teh GitHUb package registry
-# when releases are published in GitHub.
-
 on:
   release:
     types: [published]
@@ -17,6 +14,9 @@ jobs:
   build_and_pack:
     name: Build and pack workspaces (once)
     runs-on: ubuntu-latest
+    outputs:
+      is_prerelease: ${{ steps.version.outputs.is_prerelease }}
+      publish_tag: ${{ steps.version.outputs.publish_tag }}
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -38,11 +38,29 @@ jobs:
       - name: Build
         run: npm run build
 
+      # Compute prerelease flag & desired dist-tag from top-level package.json version
+      - name: Determine prerelease tag
+        id: version
+        run: |
+          set -euo pipefail
+          VERSION="$(node -p 'require("./package.json").version')"
+          echo "Detected version: $VERSION"
+
+          # If version contains a hyphen, it's a prerelease (e.g., 1.2.3-alpha.1)
+          if [[ "$VERSION" == *-* ]]; then
+            echo "is_prerelease=true"  >> "$GITHUB_OUTPUT"
+            echo "publish_tag=prerelease" >> "$GITHUB_OUTPUT"
+            echo "This is a prerelease. Will use tag 'prerelease'."
+          else
+            echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
+            echo "publish_tag=latest"  >> "$GITHUB_OUTPUT"
+            echo "This is a stable release. Will use tag 'latest'."
+          fi
+
       # Create tarballs for each workspace so we can publish the exact same artifacts twice
       - name: Pack workspaces
         run: |
           set -euo pipefail
-          # This produces one .tgz per workspace in the repo root
           npm pack --workspaces
           echo "Packed tarballs:"
           ls -1 *.tgz
@@ -74,15 +92,17 @@ jobs:
           registry-url: https://registry.npmjs.org
           always-auth: true
 
-      - name: Publish tarballs to npmjs.org (with provenance)
+      - name: Publish tarballs to npmjs.org (with provenance and dist-tag)
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}   # npm automation token
+          PUBLISH_TAG: ${{ needs.build_and_pack.outputs.publish_tag }}
         run: |
           set -euo pipefail
           shopt -s nullglob
           for tgz in dist-tarballs/*.tgz; do
-            echo "Publishing $tgz to npmjs.org ..."
-            npm publish "$tgz" --provenance --access public
+            echo "Publishing $tgz to npmjs.org with tag '${PUBLISH_TAG}' ..."
+            # --access public needed for first publish of public packages
+            npm publish "$tgz" --provenance --access public --tag "${PUBLISH_TAG}"
           done
 
   publish_github:
@@ -104,14 +124,14 @@ jobs:
           scope: '@finos'
           always-auth: true
 
-      - name: Publish tarballs to GitHub Packages
+      - name: Publish tarballs to GitHub Packages (with dist-tag)
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # has packages: write via permissions
+          PUBLISH_TAG: ${{ needs.build_and_pack.outputs.publish_tag }}
         run: |
           set -euo pipefail
           shopt -s nullglob
           for tgz in dist-tarballs/*.tgz; do
-            echo "Publishing $tgz to GitHub Packages ..."
-            # No --provenance or --access here
-            npm publish "$tgz"
-          done
+            echo "Publishing $tgz to GitHub Packages with tag '${PUBLISH_TAG}' ..."
+            # GitHub Packages does not support npm provenance; omit --provenance and --access
+            npm publish "$tgz" --tag "${PUBLISH_TAG}"
