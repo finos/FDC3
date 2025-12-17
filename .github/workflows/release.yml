@@ -1,0 +1,137 @@
+
+name: Publish To NPM
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write     # required for npm provenance
+  packages: write     # required for GitHub Packages publish
+
+jobs:
+  build_and_pack:
+    name: Build and pack workspaces (once)
+    runs-on: ubuntu-latest
+    outputs:
+      is_prerelease: ${{ steps.version.outputs.is_prerelease }}
+      publish_tag: ${{ steps.version.outputs.publish_tag }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Configure Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+
+      # Compute prerelease flag & desired dist-tag from top-level package.json version
+      - name: Determine prerelease tag
+        id: version
+        run: |
+          set -euo pipefail
+          VERSION="$(node -p 'require("./package.json").version')"
+          echo "Detected version: $VERSION"
+
+          # If version contains a hyphen, it's a prerelease (e.g., 1.2.3-alpha.1)
+          if [[ "$VERSION" == *-* ]]; then
+            echo "is_prerelease=true"  >> "$GITHUB_OUTPUT"
+            echo "publish_tag=prerelease" >> "$GITHUB_OUTPUT"
+            echo "This is a prerelease. Will use tag 'prerelease'."
+          else
+            echo "is_prerelease=false" >> "$GITHUB_OUTPUT"
+            echo "publish_tag=latest"  >> "$GITHUB_OUTPUT"
+            echo "This is a stable release. Will use tag 'latest'."
+          fi
+
+      # Create tarballs for each workspace so we can publish the exact same artifacts twice
+      - name: Pack workspaces
+        run: |
+          set -euo pipefail
+          npm pack --workspaces
+          echo "Packed tarballs:"
+          ls -1 *.tgz
+
+      - name: Upload packed artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-tarballs
+          path: |
+            ./*.tgz
+          if-no-files-found: error
+          retention-days: 7
+
+  publish_npm:
+    name: Publish to npmjs.org
+    runs-on: ubuntu-latest
+    needs: build_and_pack
+    steps:
+      - name: Download packed artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: npm-tarballs
+          path: ./dist-tarballs
+
+      - name: Configure Node for npmjs.org
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+          always-auth: true
+
+      - name: Publish tarballs to npmjs.org (with provenance and dist-tag)
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}   # npm automation token
+          PUBLISH_TAG: ${{ needs.build_and_pack.outputs.publish_tag }}
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          for tgz in dist-tarballs/*.tgz; do
+            echo "Publishing $tgz to npmjs.org with tag '${PUBLISH_TAG}' ..."
+            # --access public needed for first publish of public packages
+            npm publish "$tgz" --provenance --access public --tag "${PUBLISH_TAG}"
+          done
+
+  publish_github:
+    name: Publish to GitHub Packages
+    runs-on: ubuntu-latest
+    needs: build_and_pack
+    steps:
+      - name: Download packed artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: npm-tarballs
+          path: ./dist-tarballs
+
+      - name: Configure Node for GitHub Packages
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://npm.pkg.github.com
+          scope: '@finos'
+          always-auth: true
+
+      - name: Publish tarballs to GitHub Packages (with dist-tag)
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # has packages: write via permissions
+          PUBLISH_TAG: ${{ needs.build_and_pack.outputs.publish_tag }}
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          for tgz in dist-tarballs/*.tgz; do
+            echo "Publishing $tgz to GitHub Packages with tag '${PUBLISH_TAG}' ..."
+            # GitHub Packages does not support npm provenance; omit --provenance and --access
+            npm publish "$tgz" --tag "${PUBLISH_TAG}"
