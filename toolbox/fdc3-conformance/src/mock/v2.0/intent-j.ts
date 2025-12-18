@@ -5,7 +5,7 @@ import { ContextType, ControlContextType, Intent } from '../../test/support/inte
 getAgent().then(async fdc3 => {
   await closeWindowOnCompletion(fdc3);
 
-  //used in '2.0-PrivateChannelsAreNotAppChannels'
+  //used in 'PrivateChannelsAreNotAppChannels'
   fdc3.addIntentListener(Intent.privateChannelIsPrivate, async context => {
     validateContext(fdc3, context.type, ContextType.privateChannelDetails);
 

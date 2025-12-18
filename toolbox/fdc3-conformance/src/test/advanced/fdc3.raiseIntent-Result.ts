@@ -30,7 +30,7 @@ export default () =>
       }
     });
 
-    const RaiseIntentVoidResult0secs = '(2.0-RaiseIntentVoidResult0secs) App A receives a void IntentResult';
+    const RaiseIntentVoidResult0secs = '(RaiseIntentVoidResult0secs) App A receives a void IntentResult';
     it(RaiseIntentVoidResult0secs, async () => {
       errorListener = await control.listenForError();
       const intentResolution = await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextX);
@@ -40,7 +40,7 @@ export default () =>
     });
 
     const RaiseIntentVoidResult5secs =
-      '(2.0-RaiseIntentVoidResult5secs) App A receives a void IntentResult after a 5 second delay';
+      '(RaiseIntentVoidResult5secs) App A receives a void IntentResult after a 5 second delay';
     it(RaiseIntentVoidResult5secs, async () => {
       errorListener = await control.listenForError();
       const receiver = control.receiveContext(ControlContextType.A_TESTING_INTENT_LISTENER_TRIGGERED, 8000);
@@ -60,7 +60,7 @@ export default () =>
       }
     });
 
-    const RaiseIntentContextResult0secs = '(2.0-RaiseIntentContextResult0secs) IntentResult resolves to testContextY';
+    const RaiseIntentContextResult0secs = '(RaiseIntentContextResult0secs) IntentResult resolves to testContextY';
     it(RaiseIntentContextResult0secs, async () => {
       errorListener = await control.listenForError();
       const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent1, ContextType.testContextY);
@@ -70,7 +70,7 @@ export default () =>
     });
 
     const RaiseIntentContextResult5secs =
-      '(2.0-RaiseIntentContextResult5secs) IntentResult resolves to testContextY instance after a 5 second delay';
+      '(RaiseIntentContextResult5secs) IntentResult resolves to testContextY instance after a 5 second delay';
     it(RaiseIntentContextResult5secs, async () => {
       errorListener = await control.listenForError();
       const receiver = control.receiveContext(ControlContextType.SHARED_TESTING_INTENT1_LISTENER_TRIGGERED, 8000);
@@ -90,7 +90,7 @@ export default () =>
       }
     });
 
-    const RaiseIntentChannelResult = '(2.0-RaiseIntentChannelResult) IntentResult resolves to a Channel object';
+    const RaiseIntentChannelResult = '(RaiseIntentChannelResult) IntentResult resolves to a Channel object';
     it(RaiseIntentChannelResult, async () => {
       errorListener = await control.listenForError();
       const receiver = control.receiveContext(
@@ -111,7 +111,7 @@ export default () =>
     });
 
     const RaiseIntentPrivateChannelResult =
-      '(2.0-RaiseIntentPrivateChannelResult) IntentResult resolves to a private Channel object';
+      '(RaiseIntentPrivateChannelResult) IntentResult resolves to a private Channel object';
     it(RaiseIntentPrivateChannelResult, async () => {
       errorListener = await control.listenForError();
       const receiver = control.receiveContext(
@@ -132,7 +132,7 @@ export default () =>
     });
 
     const RaiseIntentVoidResult61secs =
-      '(2.0-RaiseIntentVoidResult61secs) App A receives a void IntentResult after a 61 second delay';
+      '(RaiseIntentVoidResult61secs) App A receives a void IntentResult after a 61 second delay';
     it(RaiseIntentVoidResult61secs, async () => {
       errorListener = await control.listenForError();
       const receiver = control.receiveContext(ControlContextType.A_TESTING_INTENT_LISTENER_TRIGGERED, 64000);
@@ -153,7 +153,7 @@ export default () =>
     }).timeout(80000);
 
     const RaiseIntentContextResult61secs =
-      '(2.0-RaiseIntentContextResult61secs) IntentResult resolves to testContextY instance after a 61 second delay';
+      '(RaiseIntentContextResult61secs) IntentResult resolves to testContextY instance after a 61 second delay';
     it(RaiseIntentContextResult61secs, async () => {
       errorListener = await control.listenForError();
       const receiver = control.receiveContext(ControlContextType.SHARED_TESTING_INTENT1_LISTENER_TRIGGERED, 64000);
