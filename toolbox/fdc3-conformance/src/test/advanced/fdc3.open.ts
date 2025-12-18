@@ -10,7 +10,7 @@ const documentation = '\r\nDocumentation: ' + APIDocumentation2_0 + '\r\nCause:'
 
 const config: OpenCommonConfig = {
   fdc3Version: '2.0',
-  prefix: '2.0-',
+  prefix: '',
   target: 'AppIdentifier',
   targetMultiple: 'AppIdentifier',
 };

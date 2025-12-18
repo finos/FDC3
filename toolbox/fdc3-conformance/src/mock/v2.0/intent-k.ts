@@ -4,7 +4,7 @@ import { wait } from '../../utils';
 import { IntentUtilityContext } from '../../context-types';
 import { ContextType, ControlContextType, Intent } from '../../test/support/intent-support-2.0';
 
-//used in '2.0-PrivateChannelsLifecycleEvents'
+//used in 'PrivateChannelsLifecycleEvents'
 getAgent().then(async fdc3 => {
   await closeWindowOnCompletion(fdc3);
 
