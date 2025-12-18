@@ -33,37 +33,37 @@ import {
 type testSet = { [key: string]: (() => void)[] };
 
 const basicSuite_2_0: testSet = {
-  'fdc3.basicGetAgent 2.2': [fdc3BasicGetAgent_2_2],
-  'fdc3.basicCL1 2.0': [fdc3BasicCL1_2_0],
-  'fdc3.basicCL2 2.0': [fdc3BasicCL2_2_0],
-  'fdc3.basicIL1 2.0': [fdc3BasicIL1_2_0],
-  'fdc3.basicGI1 2.0': [fdc3BasicGI1_2_0],
-  'fdc3.basicAC1 2.0': [fdc3BasicAC1_2_0],
-  'fdc3.basicUC1 2.0': [fdc3BasicUC1_2_0],
-  'fdc3.basicJC1 2.0': [fdc3BasicJC1_2_0],
-  'fdc3.basicRI1 2.0': [fdc3BasicRI1_2_0],
-  'fdc3.basicRI2 2.0': [fdc3BasicRI2_2_0],
+  'fdc3.basicGetAgent': [fdc3BasicGetAgent_2_2],
+  'fdc3.basicCL1': [fdc3BasicCL1_2_0],
+  'fdc3.basicCL2': [fdc3BasicCL2_2_0],
+  'fdc3.basicIL1': [fdc3BasicIL1_2_0],
+  'fdc3.basicGI1': [fdc3BasicGI1_2_0],
+  'fdc3.basicAC1': [fdc3BasicAC1_2_0],
+  'fdc3.basicUC1': [fdc3BasicUC1_2_0],
+  'fdc3.basicJC1': [fdc3BasicJC1_2_0],
+  'fdc3.basicRI1': [fdc3BasicRI1_2_0],
+  'fdc3.basicRI2': [fdc3BasicRI2_2_0],
 };
 
 const advancedSuite_2_0: testSet = {
-  'fdc3.open 2.0': [fdc3Open_2_0],
-  'fdc3.getInfo 2.0': [fdc3GetInfo_2_0],
-  'fdc3.getAppMetadata 2.0': [fdc3getAppMetadata_2_0],
-  'Channels 2.0': [channels_2_0],
-  'fdc3.findInstances 2.0': [fdc3FindInstances_2_0],
-  'fdc3.findIntent 2.0': [fdc3FindIntent_2_0],
-  'fdc3.findIntentsByContext 2.0': [fdc3FindIntentsByContext_2_0],
-  'fdc3.raiseIntent 2.0': [fdc3RaiseIntent_2_0],
-  'fdc3.raiseIntent 2.0 (result)': [fdc3RaiseIntent_2_0_Result],
-  'fdc3.raiseIntent 2.0 (throws error)': [fdc3RaiseIntent_2_0_NoAppsFound],
+  'fdc3.open': [fdc3Open_2_0],
+  'fdc3.getInfo': [fdc3GetInfo_2_0],
+  'fdc3.getAppMetadata': [fdc3getAppMetadata_2_0],
+  Channels: [channels_2_0],
+  'fdc3.findInstances': [fdc3FindInstances_2_0],
+  'fdc3.findIntent': [fdc3FindIntent_2_0],
+  'fdc3.findIntentsByContext': [fdc3FindIntentsByContext_2_0],
+  'fdc3.raiseIntent': [fdc3RaiseIntent_2_0],
+  'fdc3.raiseIntent (result)': [fdc3RaiseIntent_2_0_Result],
+  'fdc3.raiseIntent (throws error)': [fdc3RaiseIntent_2_0_NoAppsFound],
 };
 
 const ambiguousTests_2_0: testSet = {
-  'fdc3.ResolveAmbiguousIntentTarget 2.0': [fdc3ResolveAmbiguousIntentTarget_2_0],
-  'fdc3.ResolveAmbiguousContextTarget 2.0': [fdc3ResolveAmbiguousContextTarget_2_0],
-  'fdc3.ResolveAmbiguousIntentTargetMultiInstance 2.0': [fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0],
-  'fdc3.ResolveAmbiguousContextTargetMultiInstance 2.0': [fdc3ResolveAmbiguousContextTargetMultiInstance_2_0],
-  'fdc3.ChannelChangedEvent 2.2': [fdc3ChannelChangedEvent_2_2],
+  'fdc3.ResolveAmbiguousIntentTarget': [fdc3ResolveAmbiguousIntentTarget_2_0],
+  'fdc3.ResolveAmbiguousContextTarget': [fdc3ResolveAmbiguousContextTarget_2_0],
+  'fdc3.ResolveAmbiguousIntentTargetMultiInstance': [fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0],
+  'fdc3.ResolveAmbiguousContextTargetMultiInstance': [fdc3ResolveAmbiguousContextTargetMultiInstance_2_0],
+  'fdc3.ChannelChangedEvent': [fdc3ChannelChangedEvent_2_2],
 };
 
 function stripSuites(ts: testSet[]): (() => void)[] {
@@ -76,9 +76,9 @@ function stripSuites(ts: testSet[]): (() => void)[] {
 }
 
 export const allTests: testSet = {
-  'All 2.0': stripSuites([basicSuite_2_0, advancedSuite_2_0]),
-  'Basic 2.0': stripSuites([basicSuite_2_0]),
-  'Advanced 2.0': stripSuites([advancedSuite_2_0]),
+  All: stripSuites([basicSuite_2_0, advancedSuite_2_0]),
+  Basic: stripSuites([basicSuite_2_0]),
+  Advanced: stripSuites([advancedSuite_2_0]),
   ...basicSuite_2_0,
   ...advancedSuite_2_0,
 };
@@ -88,9 +88,9 @@ export const allManualTests: testSet = {
 };
 
 export const packs: { [index: string]: string[] } = {
-  '2.0 (Combined)': ['All 2.0', 'Basic 2.0', 'Advanced 2.0'],
-  '2.0 (Individual Basic)': Object.keys(basicSuite_2_0),
-  '2.0 (Individual Advanced)': Object.keys(advancedSuite_2_0),
+  Combined: ['All', 'Basic', 'Advanced'],
+  'Individual Basic': Object.keys(basicSuite_2_0),
+  'Individual Advanced': Object.keys(advancedSuite_2_0),
 };
 
 export function getPackNames(): string[] {
