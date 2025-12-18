@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 * Enhanced method binding for FDC3 API objects to support destructuring. All public methods of `Channel`, `PrivateChannel`, and `IntentResolution` objects are now properly bound to their instances using `.bind(this)` in their constructors. ([#1645](https://github.com/finos/FDC3/issues/1645))
 
+* Increased FDC3 Conformance Test WindowCloseWaitTime to 2000 (from 1000)
+
 ### Added
 
 * Added a notes field to Trade type ([#1563](https://github.com/finos/FDC3/pull/1563))
@@ -21,6 +23,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+* Added Conformance tests for FDC3 2.2 ([#1586](https://github.com/finos/FDC3/pull/1586))
+* Fix for channel change listeners not sending addEventListenerRequests ([#1606](https://github.com/finos/FDC3/pull/1606))
+* When adding a listener on the current channel, the payload.channelId should be null ([#1611](https://github.com/finos/FDC3/pull/1611))
+
 ### Deprecated
 
 ### Fixed
@@ -34,6 +40,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Removed broken sourcemaps from npm package output ([#1589](https://github.com/finos/FDC3/issues/1589))
 * Fixed the `fdc3-commonjs` build to include `d.ts` files and corrects the config for easier consumption in different environments. ([#1694](https://github.com/finos/FDC3/issues/1694))
 * Updated .NET API documentation for IListener.Unsubscribe to be async for 2.2 and current. ([#1690](https://github.com/finos/FDC3/pull/1690))
+* Fix for channel change listeners not sending addEventListenerRequests ([#1606](https://github.com/finos/FDC3/pull/1606))
+* Fix to ensure that Adding A Channel Change Event Listener Doesn't Send addEventListenerRequest - Conformance 2.2 ([#1606](https://github.com/finos/FDC3/pull/1606))
 
 ## [FDC3 Standard 2.2](https://github.com/finos/FDC3/compare/v2.1..v2.2) - 2025-03-12
 

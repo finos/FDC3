@@ -7,11 +7,11 @@
 			"description": "FDC3 2.0 Conformance testing framework - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/app/index.html"
+				"url": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/v2.0/app/index.html"
 			},
 			"screenshots": [
 				{
-					"src": "https://fdc3.finos.org/toolbox/fdc3-conformance/screenshots/Conformance1.png"
+					"src": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/screenshots/Conformance1.png"
 				}
 			],
 			"hostManifests": {
@@ -45,7 +45,7 @@
 			"publisher": "FINOS",
 			"icons": [
 				{
-					"src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
+					"src": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
 				}
 			],
 			"interop": {
@@ -67,7 +67,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/channels/index.html"
+				"url": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/v2.0/channels/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -99,7 +99,7 @@
 			"publisher": "FINOS",
 			"icons": [
 				{
-					"src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
+					"src": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
 				}
 			]
 		},
@@ -110,7 +110,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-a/index.html"
+				"url": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-a/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -145,7 +145,7 @@
 			"publisher": "FINOS",
 			"icons": [
 				{
-					"src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
+					"src": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
 				}
 			],
 			"interop": {
@@ -175,7 +175,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-b/index.html"
+				"url": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-b/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -210,7 +210,7 @@
 			"publisher": "FINOS",
 			"icons": [
 				{
-					"src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
+					"src": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
 				}
 			],
 			"interop": {
@@ -235,7 +235,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-c/index.html"
+				"url": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-c/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -270,7 +270,7 @@
 			"publisher": "FINOS",
 			"icons": [
 				{
-					"src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
+					"src": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
 				}
 			],
 			"interop": {
@@ -294,7 +294,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-d/index.html"
+				"url": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-d/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -329,7 +329,7 @@
 			"publisher": "FINOS",
 			"icons": [
 				{
-					"src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
+					"src": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
 				}
 			],
 			"interop": {
@@ -353,7 +353,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-e/index.html"
+				"url": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-e/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -388,7 +388,7 @@
 			"publisher": "FINOS",
 			"icons": [
 				{
-					"src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
+					"src": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
 				}
 			],
 			"interop": {
@@ -412,7 +412,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-f/index.html"
+				"url": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-f/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -447,7 +447,7 @@
 			"publisher": "FINOS",
 			"icons": [
 				{
-					"src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
+					"src": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
 				}
 			],
 			"interop": {
@@ -471,7 +471,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-g/index.html"
+				"url": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-g/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -506,7 +506,7 @@
 			"publisher": "FINOS",
 			"icons": [
 				{
-					"src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
+					"src": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
 				}
 			],
 			"interop": {
@@ -529,7 +529,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-h/index.html"
+				"url": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-h/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -564,7 +564,7 @@
 			"publisher": "FINOS",
 			"icons": [
 				{
-					"src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
+					"src": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
 				}
 			],
 			"interop": {
@@ -588,7 +588,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-i/index.html"
+				"url": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-i/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -623,7 +623,7 @@
 			"publisher": "FINOS",
 			"icons": [
 				{
-					"src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
+					"src": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
 				}
 			],
 			"interop": {
@@ -647,7 +647,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-j/index.html"
+				"url": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-j/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -682,7 +682,7 @@
 			"publisher": "FINOS",
 			"icons": [
 				{
-					"src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
+					"src": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
 				}
 			],
 			"interop": {
@@ -706,7 +706,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-k/index.html"
+				"url": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-k/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -741,7 +741,7 @@
 			"publisher": "FINOS",
 			"icons": [
 				{
-					"src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
+					"src": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
 				}
 			],
 			"interop": {
@@ -765,7 +765,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/open-a/index.html"
+				"url": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/v2.0/open-a/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -800,7 +800,7 @@
 			"publisher": "FINOS",
 			"icons": [
 				{
-					"src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
+					"src": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
 				}
 			]
 		},
@@ -811,7 +811,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/open-b/index.html"
+				"url": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/v2.0/open-b/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -846,7 +846,7 @@
 			"publisher": "FINOS",
 			"icons": [
 				{
-					"src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
+					"src": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
 				}
 			]
 		},
@@ -855,7 +855,7 @@
 			"name": "MockApp",
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/general/index.html"
+				"url": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/v2.0/general/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -894,7 +894,7 @@
 			"type": "web",
 			"icons": [
 				{
-					"src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
+					"src": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
 				}
 			]
 		},
@@ -904,7 +904,7 @@
 			"title": "App Title",
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/metadata/index.html"
+				"url": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/v2.0/metadata/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -946,12 +946,12 @@
 			"type": "web",
 			"icons": [
 				{
-					"src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
+					"src": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
 				}
 			],
 			"screenshots": [
 				{
-					"src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
+					"src": "https://deploy-preview-1586.preview-fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
 				}
 			]
 		}
