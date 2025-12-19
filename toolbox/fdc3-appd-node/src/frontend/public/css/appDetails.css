@@ -1,0 +1,38 @@
+.app-icon {
+    max-width: 64px;
+    max-height: 64px;
+    object-fit: contain;
+}
+
+.app-screenshot {
+    max-width: 200px;
+    max-height: 150px;
+    object-fit: contain;
+}
+
+.categories-container,
+.icons-container,
+.screenshots-container,
+.intents-container {
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    min-height: 50px;
+}
+
+.intent-item {
+    padding: 10px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.form-control[readonly] {
+    background-color: #f8f9fa;
+    cursor: text;
+}
+
+.badge-primary {
+    background-color: #5e72e4;
+    color: white;
+} 
