@@ -38,6 +38,7 @@
     "@finos/fdc3-schema": "2.2.0"
   },
   "devDependencies": {
+    "@apidevtools/swagger-parser": "^10.1.1",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.19.0",
     "@types/jest": "29.5.13",
@@ -52,6 +53,7 @@
     "jest-environment-jsdom": "29.7.0",
     "jest-junit": "^16.0.0",
     "jest-mock-extended": "3.0.5",
+    "jsonschema": "^1.4.0",
     "prettier": "3.4.1",
     "quicktype": "23.0.78",
     "rimraf": "^6.0.1",
