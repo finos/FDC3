@@ -50,6 +50,8 @@ export interface Channel {
    *
    * If you are working with complex context types composed of other simpler types (as recommended by the FDC3 Context Data specification) then you should broadcast each individual type (starting with the simpler types, followed by the complex type) that you want other apps to be able to respond to. Doing so allows applications to filter the context types they receive by adding listeners for specific context types.
    *
+   * An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the broadcast context.
+   *
    * If an application attempts to broadcast an invalid context argument the Promise returned by this function should reject with the `ChannelError.MalformedContext` error.
    */
   broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void>;
