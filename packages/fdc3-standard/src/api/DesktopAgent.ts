@@ -268,8 +268,8 @@ export interface DesktopAgent {
    * //Raise an intent without a context by using the null context type
    * await fdc3.raiseIntent("StartChat", {type: "fdc3.nothing"});
    *
-   * //Raise an intent with metadata, passing null for the app parameter
-   * await fdc3.raiseIntent("StartChat", context, null, { traceId: 'abc123' });
+   * //Raise an intent with metadata
+   * await fdc3.raiseIntent("StartChat", context, undefined, { traceId: 'abc123' });
    *
    * //Raise an intent and retrieve a result from the IntentResolution
    * let resolution = await agent.raiseIntent("intentName", context);
@@ -315,8 +315,8 @@ export interface DesktopAgent {
    * // Resolve against all intents registered by a specific target app for the specified context
    * await fdc3.raiseIntentForContext(context, targetAppIdentifier);
    *
-   * // Resolve with metadata, passing null for the app parameter
-   * await fdc3.raiseIntentForContext(context, null, { traceId: 'abc123' });
+   * // Resolve with metadata
+   * await fdc3.raiseIntentForContext(context, undefined, { traceId: 'abc123' });
    * ```
    */
   raiseIntentForContext(
