@@ -552,7 +552,7 @@ A single handler can be added for each specific intent. If the application attem
 
 ### Originating App Metadata
 
-Optional metadata about each intent & context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation to registered intent handlers. As this metadata is optional, apps making use of it MUST handle cases where it is not provided.
+See [[#Context_Metadata]]
 
 ### Compliance with Intent Standards
 
@@ -860,4 +860,63 @@ Channel interface provides the ability to [`clearContext`](ref/Channel.md#clearc
 
 ### Originating App Metadata
 
-Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation to registered context handlers on all types of channel. As this metadata is optional, apps making use of it MUST handle cases where it is not provided.
+See [[#Context_Metadata]]
+
+## Context Metadata
+
+Optional metadata about each context or intent message received SHOULD be provided by the desktop agent implementation to registered intent handlers. As this metadata is optional, apps making use of it MUST handle cases where it is not provided.
+
+Registered listeners SHOULD receive the following properties:
+* traceId
+* timestamp
+* source
+
+Registered listeners MAY receive the following properties:
+* custom
+<!-- * signature -->
+
+### Trace information
+
+The Desktop Agent SHOULD provide a `traceId` to intent handlers. If the originating app provides `traceId` information, the Desktop Agent SHOULD use provide the `traceId` from the app. If the originating app does not provide `traceId` information, the Desktop Agent SHOULD generate a uuid., 
+
+If an app receives a context (from a broadcast or raised intent), and then performs an action *as a result of*, the app MAY forward the `traceId`. The Desktop Agent MAY collect the use of trace information and timestamp information for observability features.
+
+Here is example code run by an app. It listens for Contact information to be broadcast. Once that Contact information is received, it starts a call to that Contact. Since the app is placing an action *as a result of* another FDC3 action, the app passes along the received traceId.
+
+```js
+fdc3.addIntentListener("ViewContact", (contactContext, metadata) => {
+  /*
+  Received contactContext: 
+  {
+    type: "fdc3.contact",
+    name: "Jane Doe",
+    id: {
+        email: 'jane@mail.com'
+    }
+  }
+
+  Received metadata: 
+  {
+    traceId: generated uuid,
+    source: {...}
+    timestamp: ...
+  }
+  */
+
+ fdc3.raiseIntent("Start Call", contactContext, {
+  traceId: metadata.traceId
+ })
+})
+```
+
+### Timestamp
+
+The Desktop Agent MAY provide timestamp information to intent handlers. 
+
+Apps SHOULD NOT provide timestamp information. If an app provides a timestamp, the Desktop Agent MUST ignore the timestamp.
+
+### Source
+
+The Desktop Agent MAY provide source information to intent handlers. If the source information is provided, it MUST be in the form of an [[AppIdentifier]].
+
+Apps SHOULD NOT provide source information. If an app provides a source, the Desktop Agent MUST ignore it.

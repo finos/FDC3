@@ -1,4 +1,11 @@
-import { AppIdentifier, AppMetadata, ImplementationMetadata, OpenError, ResolveError } from '@finos/fdc3-standard';
+import {
+  AppIdentifier,
+  AppMetadata,
+  AppProvidableContextMetadata,
+  ImplementationMetadata,
+  OpenError,
+  ResolveError,
+} from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { AppSupport } from './AppSupport';
 import { Messaging } from '../Messaging';
@@ -68,7 +75,11 @@ export class DefaultAppSupport implements AppSupport {
     return response.payload.appMetadata!;
   }
 
-  async open(app: AppIdentifier, context?: Context | undefined): Promise<AppIdentifier> {
+  async open(
+    app: AppIdentifier,
+    context?: Context | undefined,
+    metadata?: AppProvidableContextMetadata
+  ): Promise<AppIdentifier> {
     const request: OpenRequest = {
       type: 'openRequest',
       payload: {
@@ -78,6 +89,7 @@ export class DefaultAppSupport implements AppSupport {
         },
         context,
       },
+      metadata,
       meta: this.messaging.createMeta(),
     };
 

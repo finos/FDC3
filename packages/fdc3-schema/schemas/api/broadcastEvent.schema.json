@@ -17,6 +17,9 @@
 				"payload": {
 					"$ref": "#/$defs/BroadcastEventPayload"
 				},
+				"metadata": {
+					"$ref": "api.schema.json#/definitions/DesktopAgentProvidableContextMetadata"
+				},
 				"meta": true
 			},
 			"additionalProperties": false

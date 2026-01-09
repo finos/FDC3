@@ -16,6 +16,7 @@ import { AppMetadata } from './AppMetadata';
 import { Intent } from '../intents/Intents';
 import { ContextType } from '../context/ContextType';
 import { EventHandler, FDC3EventTypes } from './Events';
+import type { AppProvidableContextMetadata } from './ContextMetadata';
 
 /**
  * A Desktop Agent is a desktop component (or aggregate of components) that serves as a
@@ -37,6 +38,8 @@ export interface DesktopAgent {
    *
    * If a Context object is passed in, this object will be provided to the opened application via a contextListener. The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
    *
+   * An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the context being passed to the opened application.
+   *
    * Returns an `AppIdentifier` object with the `instanceId` field set identifying the instance of the application opened by this call.
    *
    * If an error occurs while opening the app, the promise MUST be rejected with an `Error` Object with a `message` chosen from the `OpenError` enumeration, or (if connected to a Desktop Agent Bridge) the `BridgingError` enumeration.
@@ -48,9 +51,12 @@ export interface DesktopAgent {
    *
    * //Open an app with context
    * let instanceIdentifier = await fdc3.open(appIdentifier, context);
+   *
+   * //Open an app with context and metadata
+   * let instanceIdentifier = await fdc3.open(appIdentifier, context, { traceId: 'abc123' });
    * ```
    */
-  open(app: AppIdentifier, context?: Context): Promise<AppIdentifier>;
+  open(app: AppIdentifier, context?: Context, metadata?: AppProvidableContextMetadata): Promise<AppIdentifier>;
 
   /**
    * Find out more information about a particular intent by passing its name, and optionally its context and/or a desired result context type.
@@ -213,6 +219,8 @@ export interface DesktopAgent {
    * apps to be able to respond to. Doing so allows applications to filter the context types they receive by
    * adding listeners for specific context types.
    *
+   * An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the broadcast context.
+   *
    * If an application attempts to broadcast an invalid context argument the Promise returned by this function should reject with the `ChannelError.MalformedContext` error.
    *
    * ```javascript
@@ -223,9 +231,12 @@ export interface DesktopAgent {
    *   }
    * };
    * fdc3.broadcast(context);
+   *
+   * //Broadcast context with metadata
+   * fdc3.broadcast(context, { traceId: 'abc123', signature: 'signature-value' });
    * ```
    */
-  broadcast(context: Context): Promise<void>;
+  broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void>;
 
   /**
    * Raises a specific intent for resolution against apps registered with the Desktop Agent.
@@ -236,6 +247,8 @@ export interface DesktopAgent {
    * If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, the promise MUST be rejected with an `Error` object with a `message` chosen from the `ResolveError` enumeration, or (if connected to a Desktop Agent Bridge) the `BridgingError` enumeration. If a specific target `app` parameter was set, but either the app or app instance is not available, the promise MUST be rejected with an `Error` object with either the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` string as its `message`. If an invalid context object is passed as an argument the promise MUST be rejected with an `Error` object with the `ResolveError.MalformedContext` string as its `message`.
    *
    * If you wish to raise an Intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
+   *
+   * An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the raised intent.
    *
    * Returns an `IntentResolution` object with details of the app instance that was selected (or started) to respond to the intent.
    *
@@ -255,6 +268,9 @@ export interface DesktopAgent {
    * //Raise an intent without a context by using the null context type
    * await fdc3.raiseIntent("StartChat", {type: "fdc3.nothing"});
    *
+   * //Raise an intent with metadata
+   * await fdc3.raiseIntent("StartChat", context, undefined, { traceId: 'abc123' });
+   *
    * //Raise an intent and retrieve a result from the IntentResolution
    * let resolution = await agent.raiseIntent("intentName", context);
    * try {
@@ -271,7 +287,12 @@ export interface DesktopAgent {
    * }
    * ```
    */
-  raiseIntent(intent: Intent, context: Context, app?: AppIdentifier): Promise<IntentResolution>;
+  raiseIntent(
+    intent: Intent,
+    context: Context,
+    app?: AppIdentifier,
+    metadata?: AppProvidableContextMetadata
+  ): Promise<IntentResolution>;
 
   /**
    * Finds and raises an intent against apps registered with the desktop agent based on the type of the specified context data example.
@@ -280,6 +301,8 @@ export interface DesktopAgent {
    * Alternatively, the specific app or app instance to target can also be provided, in which case the resolver SHOULD only offer intents supported by the specified application.
    *
    * Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.
+   *
+   * An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the raised intent.
    *
    * Returns an `IntentResolution` object, see `raiseIntent()` for details.
    *
@@ -291,9 +314,16 @@ export interface DesktopAgent {
    *
    * // Resolve against all intents registered by a specific target app for the specified context
    * await fdc3.raiseIntentForContext(context, targetAppIdentifier);
+   *
+   * // Resolve with metadata
+   * await fdc3.raiseIntentForContext(context, undefined, { traceId: 'abc123' });
    * ```
    */
-  raiseIntentForContext(context: Context, app?: AppIdentifier): Promise<IntentResolution>;
+  raiseIntentForContext(
+    context: Context,
+    app?: AppIdentifier,
+    metadata?: AppProvidableContextMetadata
+  ): Promise<IntentResolution>;
 
   /**
    * Adds a listener for incoming intents raised by other applications, via calls to `fdc3.raiseIntent` or `fdc3.raiseIntentForContext.  If the application is intended to be launched to resolve raised intents, it SHOULD add its intent listeners as quickly as possible after launch or an error MAY be returned to the caller and the intent and context may not be delivered. The exact timeout used is set by the Desktop Agent implementation, but MUST be at least 15 seconds.
