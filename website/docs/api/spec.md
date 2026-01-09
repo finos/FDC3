@@ -302,7 +302,7 @@ The matching of an unqualified `appId` value against a set of fully-qualified ap
 
 ### Receive metadata about a Broadcast or Raised Intent
 
-Applications often need both the business data (Context) and delivery-related information (ContextMetadata) such as origin, timestamp, or trace identifiers. To keep Context definitions clean and focused on data, FDC3 delivers metadata separately. Handlers receive two arguments: Context and ContextMetadata, enabling apps to process data and optionally use metadata for provenance, security, or correlation. See the [Context Overview](../context/spec#context-metadata) for more details on the separation of Context and Context Metadata.
+Applications often need both the business data (Context) and delivery-related information (ContextMetadata) such as origin, timestamp, or trace identifiers. To keep Context definitions clean and focused on data, FDC3 delivers metadata separately. Handlers receive two arguments: Context and ContextMetadata, enabling apps to process data and optionally use metadata for provenance, security, or correlation. See the [Context Overview](../context/spec#context-metadata) for more details on the separation of COntext and Context Metadata.
 
 ## Raising Intents
 
@@ -611,7 +611,7 @@ A single handler can be added for each specific intent. If the application attem
 
 ### Metadata
 
-See [[#Context_Metadata]]
+See [Context Metadata](#context-metadata).
 
 ### Compliance with Intent Standards
 
@@ -920,28 +920,38 @@ Channel interface provides the ability to [`clearContext`](ref/Channel.md#clearc
 
 ### Metadata
 
-See [[#Context_Metadata]]
+See [Context Metadata](#context-metadata).
 
 ## Context Metadata
 
-Optional metadata about each context or intent message received SHOULD be provided by the desktop agent implementation to registered intent handlers. As this metadata is optional, apps making use of it MUST handle cases where it is not provided.
+FDC3 separates **Context** (business data) from **ContextMetadata** (delivery and provenance information) to maintain clarity and interoperability. Metadata is optional and SHOULD be provided by the Desktop Agent to registered listeners, but apps MUST handle cases where it is absent. 
 
-Registered listeners SHOULD receive the following properties:
-* traceId
-* timestamp
-* source
+For the rationale for separating `Context` and `ContextMetadata`, see the [Context Specification](../context/spec#context-metadata).
 
-Registered listeners MAY receive the following properties:
-* custom
-<!-- * signature -->
+### Metadata properties
 
-### Trace information
+Registered listeners MUST receive:
 
-The Desktop Agent SHOULD provide a `traceId` to intent handlers. If the originating app provides `traceId` information, the Desktop Agent SHOULD use provide the `traceId` from the app. If the originating app does not provide `traceId` information, the Desktop Agent SHOULD generate a uuid., 
+*   `timestamp` – Indicates when the message was delivered.
+*   `source` – Identifies the originating app (`AppIdentifier`).
 
-If an app receives a context (from a broadcast or raised intent), and then performs an action *as a result of*, the app MAY forward the `traceId`. The Desktop Agent MAY collect the use of trace information and timestamp information for observability features.
+Registered listeners MAY receive:
 
-Here is example code run by an app. It listens for Contact information to be broadcast. Once that Contact information is received, it starts a call to that Contact. Since the app is placing an action *as a result of* another FDC3 action, the app passes along the received traceId.
+*   `traceId` – Correlates related actions and messages.
+*   `custom` – Implementation-specific metadata.
+
+<!-- TODO insert security/signature field names here -->
+
+### Trace Information
+
+The Desktop Agent MAY provide a `traceId` to intent handlers.
+
+*   If the originating app provides a `traceId`, the Desktop Agent MUST forward it.
+*   If not, the Desktop Agent MAY generate a UUID.
+
+Apps MAY propagate `traceId` when performing actions as a result of another FDC3 action. This supports observability and correlation across workflows.
+
+**Example:**
 
 ```js
 fdc3.addIntentListener("ViewContact", (contactContext, metadata) => {
@@ -950,33 +960,32 @@ fdc3.addIntentListener("ViewContact", (contactContext, metadata) => {
   {
     type: "fdc3.contact",
     name: "Jane Doe",
-    id: {
-        email: 'jane@mail.com'
-    }
+    id: { email: 'jane@mail.com' }
   }
 
   Received metadata: 
   {
     traceId: generated uuid,
-    source: {...}
+    source: {...},
     timestamp: ...
   }
   */
 
- fdc3.raiseIntent("Start Call", contactContext, {
-  traceId: metadata.traceId
- })
-})
+  // Forward traceId when raising a related intent
+  fdc3.raiseIntent("StartCall", contactContext, {
+    traceId: metadata.traceId
+  });
+});
 ```
 
 ### Timestamp
 
-The Desktop Agent MAY provide timestamp information to intent handlers. 
-
-Apps SHOULD NOT provide timestamp information. If an app provides a timestamp, the Desktop Agent MUST ignore the timestamp.
+The Desktop Agent MUST provide timestamp information.  
+Apps SHOULD NOT provide timestamps; if they do, the Desktop Agent MUST ignore them.
 
 ### Source
 
-The Desktop Agent MAY provide source information to intent handlers. If the source information is provided, it MUST be in the form of an [[AppIdentifier]].
+The Desktop Agent MUST provide source information in the form of an `AppIdentifier`.  
+Apps SHOULD NOT provide source; if they do, the Desktop Agent MUST ignore it.
 
-Apps SHOULD NOT provide source information. If an app provides a source, the Desktop Agent MUST ignore it.
+<!-- TODO insert security/signature field overviews here -->
