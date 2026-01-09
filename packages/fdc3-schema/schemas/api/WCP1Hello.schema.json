@@ -52,7 +52,8 @@
               "type": "boolean"
             }
           },
-          "required": ["identityUrl","actualUrl","fdc3Version"]
+          "required": ["identityUrl","actualUrl","fdc3Version"],
+          "additionalProperties": false
         },
         "meta": {
           "$ref": "WCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"

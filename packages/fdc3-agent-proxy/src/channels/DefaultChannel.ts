@@ -1,13 +1,17 @@
-import { ContextHandler, DisplayMetadata, Listener, Channel } from '@finos/fdc3-standard';
+import { ContextHandler, DisplayMetadata, Listener, Channel, EventHandler } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { Messaging } from '../Messaging';
 import { DefaultContextListener } from '../listeners/DefaultContextListener';
 import {
   BroadcastRequest,
   BroadcastResponse,
+  ClearContextRequest,
+  ClearContextResponse,
   GetCurrentContextRequest,
   GetCurrentContextResponse,
 } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { RegisterableListener } from '../listeners/RegisterableListener';
+import { EventListener } from '../listeners/EventListener';
 
 export class DefaultChannel implements Channel {
   protected readonly messaging: Messaging;
@@ -28,6 +32,11 @@ export class DefaultChannel implements Channel {
     this.id = id;
     this.type = type;
     this.displayMetadata = displayMetadata;
+
+    //bind all functions to allow destructuring
+    this.broadcast = this.broadcast.bind(this);
+    this.getCurrentContext = this.getCurrentContext.bind(this);
+    this.addContextListener = this.addContextListener.bind(this);
   }
 
   async broadcast(context: Context): Promise<void> {
@@ -95,6 +104,32 @@ export class DefaultChannel implements Channel {
       contextType,
       theHandler
     );
+    await listener.register();
+    return listener;
+  }
+
+  async clearContext(contextType?: string): Promise<void> {
+    // first, ensure channel state is up-to-date
+    const request: ClearContextRequest = {
+      meta: this.messaging.createMeta(),
+      payload: {
+        channelId: this.id,
+        contextType: contextType ?? null,
+      },
+      type: 'clearContextRequest',
+    };
+    await this.messaging.exchange<ClearContextResponse>(request, 'clearContextResponse', this.messageExchangeTimeout);
+  }
+
+  async addEventListener(type: string | null, handler: EventHandler): Promise<Listener> {
+    let listener: RegisterableListener;
+    switch (type) {
+      case 'contextCleared':
+        listener = new EventListener(this.messaging, 'contextCleared', handler);
+        break;
+      default:
+        throw new Error('Unsupported event type: ' + type);
+    }
     await listener.register();
     return listener;
   }

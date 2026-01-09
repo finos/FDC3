@@ -235,3 +235,68 @@ Feature: Basic User Channels Support
     Given "typesHandler" pipes events to "types"
     When I call "{api}" with "addEventListener" with parameters "unknownEventType" and "{typesHandler}"
     Then "{result}" is an error with message "UnknownEventType"
+
+  Scenario: Destructured getUserChannels returns user channels
+    When I destructure method "getUserChannels" from "{api}"
+    And I call destructured "getUserChannels"
+    Then "{result}" is an array of objects with the following contents
+      | id    | type | displayMetadata.color | displayMetadata.glyph | displayMetadata.name |
+      | one   | user | red                   | triangle              | The one channel      |
+      | two   | user | red                   | triangle              | The two channel      |
+      | three | user | red                   | triangle              | The three channel    |
+    And messaging will have posts
+      | meta.source.appId | meta.source.instanceId | matches_type           |
+      | cucumber-app      | cucumber-instance      | getUserChannelsRequest |
+
+  Scenario: Destructured joinUserChannel and getCurrentChannel work correctly
+    When I destructure method "joinUserChannel" from "{api}"
+    And I call destructured "joinUserChannel" with parameter "one"
+    And I destructure method "getCurrentChannel" from "{api}"
+    And I call destructured "getCurrentChannel"
+    Then "{result}" is an object with the following contents
+      | id  | type | displayMetadata.color |
+      | one | user | red                   |
+    And messaging will have posts
+      | payload.channelId | matches_type             |
+      | one               | joinUserChannelRequest   |
+      | {null}            | getCurrentChannelRequest |
+
+  Scenario: Destructured channel getCurrentContext after broadcast
+    Given "resultHandler" pipes context to "contexts"
+    When I call "{api}" with "joinUserChannel" with parameter "one"
+    And I call "{api}" with "getCurrentChannel"
+    And I refer to "{result}" as "theChannel"
+    And I destructure methods "broadcast", "getCurrentContext" from "{api}"
+    And I destructure method "getCurrentContext" from "{theChannel}"
+    And I call destructured "broadcast" with parameter "{instrumentContext}"
+    And I call destructured "getCurrentContext"
+    Then "{result}" is an object with the following contents
+      | id.ticker | type            | name  |
+      | AAPL      | fdc3.instrument | Apple |
+
+  Scenario: Destructured broadcast on user channel
+    Given "resultHandler" pipes context to "contexts"
+    When I destructure method "broadcast" from "{api}"
+    And I call "{api}" with "joinUserChannel" with parameter "one"
+    And I call destructured "broadcast" with parameter "{instrumentContext}"
+    And I call "{api}" with "getCurrentChannel"
+    And I refer to "{result}" as "theChannel"
+    And I call "{theChannel}" with "getCurrentContext"
+    Then "{result}" is an object with the following contents
+      | id.ticker | type            | name  |
+      | AAPL      | fdc3.instrument | Apple |
+      
+  Scenario: Destructured user channel addContextListener works correctly
+    Given "resultHandler" pipes context to "contexts"
+    When I destructure method "addContextListener" from "{api}"
+    And I call "{api}" with "joinUserChannel" with parameter "one"
+    And I call destructured "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    And messaging receives "{instrumentMessageOne}"
+    Then "{contexts}" is an array of objects with the following contents
+      | id.ticker | type            | name  |
+      | AAPL      | fdc3.instrument | Apple |
+    And messaging will have posts
+      | payload.channelId | payload.contextType | matches_type              |
+      | one               | {null}              | joinUserChannelRequest    |
+      | {null}            | {null}              | getCurrentChannelRequest  |
+      | one               | fdc3.instrument     | addContextListenerRequest |

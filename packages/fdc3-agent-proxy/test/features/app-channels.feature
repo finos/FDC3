@@ -79,3 +79,38 @@ Feature: Channel Listeners Support
     Then "{result}" is an error
     And I call "{channel1}" with "addContextListener" with parameters "{null}" and "{true}"
     Then "{result}" is an error
+
+  Scenario: Destructured channel methods - broadcast and addContextListener
+    When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I destructure methods "addContextListener", "broadcast" from "{channel1}"
+    And I call destructured "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    And messaging receives "{instrumentMessageOne}"
+    Then "{contexts}" is an array of objects with the following contents
+      | id.ticker | type            | name  |
+      | AAPL      | fdc3.instrument | Apple |
+    And messaging will have posts
+      | payload.channelId | payload.contextType | matches_type              |
+      | channel-name      | {null}              | getOrCreateChannelRequest |
+      | channel-name      | fdc3.instrument     | addContextListenerRequest |
+
+  Scenario: Destructured getCurrentContext after broadcast
+    When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I destructure methods "broadcast", "getCurrentContext" from "{channel1}"
+    And I call destructured "broadcast" with parameter "{instrumentContext}"
+    And I call destructured "getCurrentContext" with parameter "fdc3.instrument"
+    Then "{result}" is an object with the following contents
+      | id.ticker | type            | name  |
+      | AAPL      | fdc3.instrument | Apple |
+
+  Scenario: Destructured listener receives filtered context
+    Given "countryContext" is a "fdc3.country" context
+    When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I destructure methods "addContextListener", "broadcast" from "{channel1}"
+    And I call destructured "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    And messaging receives "{instrumentMessageOne}"
+    Then "{contexts}" is an array of objects with the following contents
+      | id.ticker | type            | name  |
+      | AAPL      | fdc3.instrument | Apple |
