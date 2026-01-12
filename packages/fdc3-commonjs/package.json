@@ -11,9 +11,9 @@
     "tag": "latest"
   },
   "exports": {
-      "types": "./dist/index.d.ts",
-      "require": "./dist/index.cjs",
-      "import": "./dist/index.cjs"
+    "types": "./dist/index.d.ts",
+    "require": "./dist/index.cjs",
+    "import": "./dist/index.cjs"
   },
   "license": "Apache-2.0",
   "files": [
@@ -31,6 +31,7 @@
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^15.3.0",
     "@rollup/plugin-typescript": "^12.1.1",
-    "rollup": "^4.27.4"
+    "rollup": "^4.27.4",
+    "rollup-plugin-dts": "^6.3.0"
   }
 }
