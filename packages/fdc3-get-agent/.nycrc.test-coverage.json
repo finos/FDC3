@@ -1,0 +1,14 @@
+{
+  "include": [
+    "dist/test/support/**/*.js"
+  ],
+  "exclude": [
+    "**/*.d.ts"
+  ],
+  "reporter": [
+    "lcov",
+    "text",
+    "json"
+  ],
+  "all": true
+}

@@ -18,8 +18,9 @@
   ],
   "scripts": {
     "build": "tsc --module es2022",
-    "test": "tsc && nyc --reporter=lcov --reporter=text --reporter json cucumber-js",
-    "clean": "rimraf dist cucumber-report.html coverage .nyc_output node_modules test-results.xml",
+    "test": "tsc && nyc --nycrc-path .nycrc.json cucumber-js",
+    "test:coverage-test-infra": "tsc && nyc --nycrc-path .nycrc.test-coverage.json cucumber-js",
+    "clean": "rimraf dist cucumber-report.html coverage coverage-test-infra .nyc_output node_modules test-results.xml",
     "lint": "eslint src/"
   },
   "dependencies": {
