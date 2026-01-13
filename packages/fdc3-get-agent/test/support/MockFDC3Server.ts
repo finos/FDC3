@@ -7,9 +7,6 @@ import {
   ReceivableMessage,
 } from './MockTypes';
 import { MockWindow } from './MockWindow';
-import { Broadcast } from './responses/Broadcast';
-import { FindIntent } from './responses/FindIntent';
-import { RaiseIntent } from './responses/RaiseIntent';
 import { Handshake } from './responses/Handshake';
 import { UserChannels } from './responses/UserChannels';
 import { CurrentChannel } from './responses/CurrentChannel';
@@ -20,7 +17,7 @@ import {
   WebConnectionProtocol3Handshake,
 } from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { AddEventListener } from './responses/AddEventListener';
-import { UnsubscribeEventListener } from './responses/UnsubscribeEventListener';
+import { AutomaticResponse } from './responses/AutomaticResponses';
 import { CustomWorld } from '../world';
 import { OpenError } from '@finos/fdc3-standard';
 
@@ -35,14 +32,6 @@ type ConnectionDetails = AppRegistration & {
   internalPort: MessagePort;
   url: string;
 };
-
-/**
- * Interface for automatic response handlers
- */
-export interface AutomaticResponse {
-  filter: (t: string) => boolean;
-  action: (input: object, m: MockFDC3Server, from: InstanceID) => Promise<void>;
-}
 
 export const dummyInstanceDetails = [
   { appId: 'Test App Id', url: 'https://dummyOrigin.test/path' },
@@ -83,7 +72,7 @@ export class MockFDC3Server {
     _directory?: unknown, // kept for API compatibility
     useDefaultUIUrls: boolean = false,
     timeOutIdValidation: boolean = false,
-    timeoutMessageExchanges: boolean = false,
+    _timeoutMessageExchanges: boolean = false, // kept for API compatibility
     messageExchangeTimeout?: number,
     appLaunchTimeout?: number
   ) {
@@ -101,27 +90,13 @@ export class MockFDC3Server {
       this.appLaunchTimeout = appLaunchTimeout;
     }
 
-    if (timeoutMessageExchanges) {
-      this.automaticResponses = [
-        new GetInfo(),
-        new Handshake(this.timeOutIdValidation),
-        new CurrentChannel(),
-        new UserChannels(),
-        new AddEventListener(),
-      ];
-    } else {
-      this.automaticResponses = [
-        new GetInfo(),
-        new Handshake(this.timeOutIdValidation),
-        new CurrentChannel(),
-        new FindIntent(),
-        new RaiseIntent(),
-        new UserChannels(),
-        new Broadcast(),
-        new AddEventListener(),
-        new UnsubscribeEventListener(),
-      ];
-    }
+    this.automaticResponses = [
+      new GetInfo(),
+      new Handshake(this.timeOutIdValidation),
+      new CurrentChannel(),
+      new UserChannels(),
+      new AddEventListener(),
+    ];
 
     this.init();
   }
