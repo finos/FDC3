@@ -2,24 +2,11 @@ import {
   InstanceID,
   State,
   AppRegistration,
-  Directory,
-  BasicDirectory,
   MessageHandler,
-  ChannelState,
-  ChannelType,
-  ContextListenerRegistration,
-  IntentListenerRegistration,
-  PrivateChannelEventListener,
-  DesktopAgentEventListener,
-  FDC3ServerInstanceEvent,
-  ChannelChangedServerInstanceEvent,
-  PrivateChannelDisconnectServerInstanceEvent,
   ShutdownServerInstanceEvent,
-  MockFDC3ServerInterface,
   ReceivableMessage,
 } from './MockTypes';
 import { MockWindow } from './MockWindow';
-import { AutomaticResponse } from './responses/AutomaticResponses';
 import { Broadcast } from './responses/Broadcast';
 import { FindIntent } from './responses/FindIntent';
 import { RaiseIntent } from './responses/RaiseIntent';
@@ -35,8 +22,7 @@ import {
 import { AddEventListener } from './responses/AddEventListener';
 import { UnsubscribeEventListener } from './responses/UnsubscribeEventListener';
 import { CustomWorld } from '../world';
-import { OpenError, AppIdentifier, AppIntent } from '@finos/fdc3-standard';
-import { Context } from '@finos/fdc3-context';
+import { OpenError } from '@finos/fdc3-standard';
 
 export const EMBED_URL = 'http://localhost:8080/static/da/embed.html';
 export const CHANNEL_SELECTOR_URL = 'https://mock.fdc3.com/channelSelector';
@@ -50,11 +36,13 @@ type ConnectionDetails = AppRegistration & {
   url: string;
 };
 
-type MessageRecord = {
-  to?: AppIdentifier;
-  uuid?: InstanceID;
-  msg: object;
-};
+/**
+ * Interface for automatic response handlers
+ */
+export interface AutomaticResponse {
+  filter: (t: string) => boolean;
+  action: (input: object, m: MockFDC3Server, from: InstanceID) => Promise<void>;
+}
 
 export const dummyInstanceDetails = [
   { appId: 'Test App Id', url: 'https://dummyOrigin.test/path' },
@@ -66,40 +54,33 @@ export const dummyInstanceDetails = [
  * This is a self-contained mock that manages test app connections,
  * automatic responses, and window message handling.
  */
-export class MockFDC3Server implements MockFDC3ServerInterface {
+export class MockFDC3Server {
   private useIframe: boolean;
   private useDefaultUIUrls: boolean;
   private timeOutIdValidation: boolean;
   private window: MockWindow;
   public readonly cw: CustomWorld;
-  private receivedGoodbye = false;
   private messageExchangeTimeout: number | null = null;
   private appLaunchTimeout: number | null = null;
   private instances: ConnectionDetails[] = [];
   private nextInstanceId: number = 0;
   private nextUUID: number = 0;
-  private directory: Directory;
+  private receivedGoodbye = false;
 
-  // State management fields
   protected readonly handlers: MessageHandler[];
-  protected contextListeners: ContextListenerRegistration[] = [];
-  protected privateChannelEventListeners: PrivateChannelEventListener[] = [];
-  protected desktopAgentEventListeners: DesktopAgentEventListener[] = [];
-  protected channelStates: ChannelState[];
-  protected currentChannels: { [instanceId: string]: ChannelState } = {};
-  protected intentListeners: IntentListenerRegistration[] = [];
-  protected pendingResolutions: Map<string, AppIdentifier> = new Map();
-
-  public postedMessages: MessageRecord[] = [];
   readonly automaticResponses: AutomaticResponse[];
+
+  get hasReceivedGoodbye(): boolean {
+    return this.receivedGoodbye;
+  }
 
   constructor(
     window: MockWindow,
     useIframe: boolean,
     cw: CustomWorld,
     handlers: MessageHandler[] = [],
-    channels: ChannelState[] = [],
-    directory?: Directory,
+    _channels: unknown[] = [], // kept for API compatibility
+    _directory?: unknown, // kept for API compatibility
     useDefaultUIUrls: boolean = false,
     timeOutIdValidation: boolean = false,
     timeoutMessageExchanges: boolean = false,
@@ -107,14 +88,11 @@ export class MockFDC3Server implements MockFDC3ServerInterface {
     appLaunchTimeout?: number
   ) {
     this.handlers = handlers;
-    this.channelStates = channels;
-
     this.useIframe = useIframe;
     this.useDefaultUIUrls = useDefaultUIUrls;
     this.timeOutIdValidation = timeOutIdValidation;
     this.window = window;
     this.cw = cw;
-    this.directory = directory || new BasicDirectory([]);
 
     if (messageExchangeTimeout) {
       this.messageExchangeTimeout = messageExchangeTimeout;
@@ -148,21 +126,9 @@ export class MockFDC3Server implements MockFDC3ServerInterface {
     this.init();
   }
 
-  // Directory implementation
-  getDirectory(): Directory {
-    return this.directory;
-  }
-
   // Instance management methods
   getInstanceDetails(uuid: string): ConnectionDetails | undefined {
     return this.instances.find(ca => ca.instanceId === uuid);
-  }
-
-  setInstanceDetails(uuid: InstanceID, appDetails: AppRegistration): void {
-    const existing = this.instances.find(ca => ca.instanceId === uuid);
-    if (existing) {
-      Object.assign(existing, appDetails);
-    }
   }
 
   getMatchingInstance(url: string): ConnectionDetails | undefined {
@@ -184,7 +150,7 @@ export class MockFDC3Server implements MockFDC3ServerInterface {
 
   async shutdown(): Promise<void> {
     const shutdownEvent = new ShutdownServerInstanceEvent();
-    this.notifyEventHandlers(shutdownEvent);
+    this.handlers.forEach(handler => handler.handleEvent?.(shutdownEvent, this));
     await Promise.all(this.instances.map(i => i.internalPort.close()));
     await Promise.all(this.instances.map(i => i.externalPort.close()));
   }
@@ -226,201 +192,14 @@ export class MockFDC3Server implements MockFDC3ServerInterface {
     }
   }
 
-  async getConnectedApps(): Promise<AppRegistration[]> {
-    return (await this.getAllApps()).filter(ca => ca.state == State.Connected);
-  }
-
-  async isAppConnected(app: InstanceID): Promise<boolean> {
-    const found = this.instances.find(a => a.instanceId == app && a.state == State.Connected);
-    return found != null;
-  }
-
-  async setAppState(app: InstanceID, newState: State): Promise<void> {
-    const found = this.instances.find(a => a.instanceId == app);
-    if (found) {
-      const currentState = found.state;
-      if (currentState !== State.Terminated && newState === State.Terminated) {
-        await this.cleanupApp(app);
-      }
-      found.state = newState;
-    }
-  }
-
-  async getAllApps(): Promise<AppRegistration[]> {
-    return this.instances.map(x => {
-      return {
-        appId: x.appId,
-        instanceId: x.instanceId,
-        state: x.state,
-      };
-    });
-  }
-
-  provider(): string {
-    return 'cucumber-provider';
-  }
-
-  providerVersion(): string {
-    return '1.2.3.TEST';
-  }
-
-  fdc3Version(): string {
-    return '2.0';
-  }
-
   createUUID(): string {
     return 'uuid' + this.nextUUID++;
-  }
-
-  async narrowIntents(_raiser: AppIdentifier, appIntents: AppIntent[], _context: Context): Promise<AppIntent[]> {
-    return appIntents;
   }
 
   post(msg: object, to: InstanceID): Promise<void> {
     const details = this.getInstanceDetails(to);
     details?.internalPort.postMessage(msg);
     return Promise.resolve();
-  }
-
-  log(message: string): void {
-    this.cw.log(message);
-  }
-
-  // Channel state management methods
-  getChannelStates(): ChannelState[] {
-    return this.channelStates;
-  }
-
-  addChannelState(channel: ChannelState): void {
-    this.channelStates.push(channel);
-  }
-
-  getChannelById(channelId: string | null): ChannelState | null {
-    if (channelId == null) {
-      return null;
-    }
-    return this.channelStates.find(c => c.id == channelId) ?? null;
-  }
-
-  updateChannelContext(channelId: string, context: Context): void {
-    const cs = this.getChannelById(channelId);
-    if (cs) {
-      cs.context = cs.context.filter(c => c.type != context.type);
-      cs.context.unshift(context);
-    }
-  }
-
-  // Current channel tracking methods
-  getCurrentChannel(instanceId: InstanceID): ChannelState | null {
-    return this.currentChannels[instanceId] ?? null;
-  }
-
-  setCurrentChannel(instanceId: InstanceID, channel: ChannelState | null): void {
-    if (channel === null) {
-      delete this.currentChannels[instanceId];
-    } else {
-      this.currentChannels[instanceId] = channel;
-    }
-    const event = new ChannelChangedServerInstanceEvent(instanceId, channel?.id ?? null);
-    this.notifyEventHandlers(event);
-  }
-
-  notifyEventHandlers(event: FDC3ServerInstanceEvent): void {
-    this.handlers.forEach(handler => handler.handleEvent?.(event, this));
-  }
-
-  // Context listener management methods
-  getContextListeners(): ContextListenerRegistration[] {
-    return this.contextListeners;
-  }
-
-  addContextListener(listener: ContextListenerRegistration): void {
-    this.contextListeners.push(listener);
-  }
-
-  removeContextListener(listenerUuid: string, instanceId: InstanceID): void {
-    const i = this.contextListeners.findIndex(r => r.listenerUuid == listenerUuid && r.instanceId == instanceId);
-    if (i > -1) {
-      this.contextListeners.splice(i, 1);
-    }
-  }
-
-  removeContextListenersByInstance(instanceId: InstanceID): ContextListenerRegistration[] {
-    const removed = this.contextListeners.filter(r => r.instanceId == instanceId);
-    this.contextListeners = this.contextListeners.filter(listener => listener.instanceId !== instanceId);
-    return removed;
-  }
-
-  // Intent listener management methods
-  getIntentListeners(): IntentListenerRegistration[] {
-    return this.intentListeners;
-  }
-
-  addIntentListener(listener: IntentListenerRegistration): void {
-    this.intentListeners.push(listener);
-  }
-
-  removeIntentListener(listenerUUID: string): boolean {
-    const i = this.intentListeners.findIndex(r => r.listenerUUID == listenerUUID);
-    if (i > -1) {
-      this.intentListeners.splice(i, 1);
-      return true;
-    }
-    return false;
-  }
-
-  removeIntentListenersByInstance(instanceId: InstanceID): IntentListenerRegistration[] {
-    const removed = this.intentListeners.filter(r => r.instanceId == instanceId);
-    this.intentListeners = this.intentListeners.filter(listener => listener.instanceId !== instanceId);
-    return removed;
-  }
-
-  // Pending resolution management methods
-  getPendingResolution(requestUuid: string): AppIdentifier | undefined {
-    return this.pendingResolutions.get(requestUuid);
-  }
-
-  addPendingResolution(requestUuid: string, appIdentifier: AppIdentifier): void {
-    this.pendingResolutions.set(requestUuid, appIdentifier);
-  }
-
-  removePendingResolution(requestUuid: string): void {
-    this.pendingResolutions.delete(requestUuid);
-  }
-
-  removePendingResolutionsByInstance(instanceId: InstanceID): void {
-    this.pendingResolutions.forEach((val, key) => {
-      if (val.instanceId === instanceId) {
-        this.pendingResolutions.delete(key);
-      }
-    });
-  }
-
-  // Private channel event listener management
-  removePrivateChannelEventListenersByInstance(instanceId: InstanceID): PrivateChannelEventListener[] {
-    const removed = this.privateChannelEventListeners.filter(listener => listener.instanceId == instanceId);
-    this.privateChannelEventListeners = this.privateChannelEventListeners.filter(
-      listener => listener.instanceId !== instanceId
-    );
-    return removed;
-  }
-
-  // Desktop agent event listener management
-  removeDesktopAgentEventListenersByInstance(instanceId: InstanceID): DesktopAgentEventListener[] {
-    const removed = this.desktopAgentEventListeners.filter(listener => listener.instanceId == instanceId);
-    this.desktopAgentEventListeners = this.desktopAgentEventListeners.filter(
-      listener => listener.instanceId !== instanceId
-    );
-    return removed;
-  }
-
-  /**
-   * USED FOR TESTING
-   */
-  getInstanceUUID(appId: AppIdentifier): InstanceID | undefined {
-    return this.instances.find(
-      ca => ca.appId == appId.appId && ca.instanceId == appId.instanceId && ca.state == State.Connected
-    )?.instanceId;
   }
 
   /**
@@ -432,6 +211,12 @@ export class MockFDC3Server implements MockFDC3ServerInterface {
 
   // Message handling
   async receive(message: AppRequestMessage | ReceivableMessage, from: string): Promise<void> {
+    // Handle goodbye messages
+    if (message.type === 'WCP6Goodbye') {
+      this.receivedGoodbye = true;
+      return;
+    }
+
     // First process automatic responses (for backward compatibility with tests)
     this.automaticResponses.forEach(r => {
       if (r.filter(message.type)) {
@@ -441,38 +226,6 @@ export class MockFDC3Server implements MockFDC3ServerInterface {
 
     // Then call handlers
     this.handlers.forEach(handler => handler.accept(message as ReceivableMessage, this, from));
-  }
-
-  hasReceivedGoodbye(): boolean {
-    return this.receivedGoodbye;
-  }
-
-  async cleanupApp(instanceId: InstanceID): Promise<void> {
-    // Get context listeners for this instance before removing them
-    const contextListenersToRemove = this.contextListeners.filter(l => l.instanceId === instanceId);
-
-    // Find private channels that need disconnect events
-    const privateChannelsToDisconnect = new Set<string>();
-    contextListenersToRemove
-      .filter(u => this.getChannelById(u.channelId)?.type === ChannelType.private)
-      .forEach(u => {
-        if (u.channelId) {
-          privateChannelsToDisconnect.add(u.channelId);
-        }
-      });
-
-    // Fire disconnect events for private channels
-    privateChannelsToDisconnect.forEach(channelId => {
-      const disconnectEvent = new PrivateChannelDisconnectServerInstanceEvent(instanceId, channelId);
-      this.notifyEventHandlers(disconnectEvent);
-    });
-
-    // Clean up state entries
-    this.removeContextListenersByInstance(instanceId);
-    this.removePrivateChannelEventListenersByInstance(instanceId);
-    this.removeDesktopAgentEventListenersByInstance(instanceId);
-    this.removeIntentListenersByInstance(instanceId);
-    this.removePendingResolutionsByInstance(instanceId);
   }
 
   // Window message initialization
