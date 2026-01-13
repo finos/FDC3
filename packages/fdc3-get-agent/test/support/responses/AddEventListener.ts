@@ -1,7 +1,7 @@
 import { AutomaticResponse } from './AutomaticResponses';
 import { AddEventListenerRequest, AddEventListenerResponse } from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { createUUID } from '../../../src/util/Uuid';
-import { InstanceID } from '@finos/fdc3-web-impl';
+import { InstanceID } from '../MockTypes';
 import { MockFDC3Server } from '../MockFDC3Server';
 
 export class AddEventListener implements AutomaticResponse {

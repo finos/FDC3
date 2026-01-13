@@ -1,4 +1,4 @@
-import { InstanceID } from '@finos/fdc3-web-impl';
+import { InstanceID } from '../MockTypes';
 import { MockFDC3Server } from '../MockFDC3Server';
 
 export interface AutomaticResponse {

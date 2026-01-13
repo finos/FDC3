@@ -1,5 +1,5 @@
 import { MockFDC3Server } from '../MockFDC3Server';
-import { InstanceID } from '@finos/fdc3-web-impl';
+import { InstanceID } from '../MockTypes';
 import { AutomaticResponse } from './AutomaticResponses';
 import { BroadcastRequest, BroadcastResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { createUUID } from '../../../src/util/Uuid';
