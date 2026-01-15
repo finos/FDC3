@@ -23,6 +23,7 @@ enum Opener {
 type RunningAppRegistration = AppRegistration & {
   window: Window;
   url: string;
+  messagePort?: MessagePort;
 };
 
 type LaunchingAppRegistration = AppRegistration & {
@@ -175,7 +176,19 @@ export class DemoFDC3ServerInstance extends AbstractFDC3ServerInstance {
    * Post an outgoing message to a particular app
    */
   async post(message: object, to: InstanceID): Promise<void> {
-    this.socket.emit(FDC3_DA_EVENT, message, to);
+    //figure out if we're using a MessagePort or the socket to communicate with the app
+    const registration = this.getInstanceDetails(to);
+    if (registration && isRunningAppRegistration(registration)) {
+      if (registration.messagePort) {
+        registration.messagePort.postMessage(message);
+      } else {
+        this.socket.emit(FDC3_DA_EVENT, message, to);
+      }
+    } else if (!registration) {
+      console.error("Can't message unknown app instance: ", to);
+    } else {
+      console.error("Can't message app that is not yet connected: ", to);
+    }
   }
 
   openFrame(url: string): Promise<Window | null> {
