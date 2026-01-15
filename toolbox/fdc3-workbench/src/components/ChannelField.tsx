@@ -11,7 +11,7 @@ import appChannelStore from '../store/AppChannelStore.js';
 import privateChannelStore from '../store/PrivateChannelStore.js';
 import { Button, IconButton, Tooltip, Typography, Grid, Link } from '@material-ui/core';
 import { ContextTemplates } from './ContextTemplates.js';
-import { ContextType, Fdc3Listener } from '../utility/Fdc3Api.js';
+import { ContextType } from '../utility/Fdc3Api.js';
 import { copyToClipboard } from './common/CopyToClipboard.js';
 import { codeExamples } from '../fixtures/codeExamples.js';
 import { openApiDocsLink } from '../fixtures/openApiDocs.js';

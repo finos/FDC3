@@ -16,6 +16,7 @@
     "build": "tsc",
     "test": "tsc && vitest run",
     "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "clean": "rimraf dist cucumber-report.html coverage node_modules test-results.xml",
     "lint": "eslint src/"
   },

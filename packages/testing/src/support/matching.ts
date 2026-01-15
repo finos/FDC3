@@ -1,10 +1,13 @@
 import { JSONPath } from 'jsonpath-plus';
-import { PropsWorld } from '../world/index.js';
-import expect from 'expect';
-import { DataTable } from '@cucumber/cucumber';
-import Ajv from 'ajv/dist/2019';
+import { PropsWorldLike } from '../world/PropsWorldLike.js';
+import { expect } from 'vitest';
 
-export function doesRowMatch(cw: PropsWorld, t: Record<string, string>, data: any): boolean {
+export interface HashesProvider {
+  hashes(): Record<string, string>[];
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function doesRowMatch(cw: PropsWorldLike, t: Record<string, string>, data: any): boolean {
   for (const [field, actual] of Object.entries(t)) {
     if (field.endsWith('matches_type')) {
       // validation mode
@@ -16,7 +19,7 @@ export function doesRowMatch(cw: PropsWorld, t: Record<string, string>, data: an
         valdata = JSONPath({ path: path, json: data })[0];
       }
 
-      const validator: Ajv = cw.props['ajv'];
+      const validator = cw.props['ajv'];
       const validate = validator.getSchema('https://fdc3.finos.org/schemas/next/api/' + actual + '.schema.json');
       if (validate == undefined) {
         throw Error('No schema found for ' + actual);
@@ -50,7 +53,8 @@ export function doesRowMatch(cw: PropsWorld, t: Record<string, string>, data: an
   return true;
 }
 
-export function indexOf(cw: PropsWorld, rows: Record<string, string>[], data: any): number {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function indexOf(cw: PropsWorldLike, rows: Record<string, string>[], data: any): number {
   for (var i = 0; i < rows.length; i++) {
     if (doesRowMatch(cw, rows[i], data)) {
       return i;
@@ -64,7 +68,8 @@ function isNumeric(n: string) {
   return !isNaN(parseFloat(n)) && isFinite(n as unknown as number);
 }
 
-export function handleResolve(name: string, on: PropsWorld): any {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function handleResolve(name: string, on: PropsWorldLike): any {
   if (name.startsWith('{') && name.endsWith('}')) {
     const stripped = name.substring(1, name.length - 1);
     if (stripped == 'null') {
@@ -84,7 +89,8 @@ export function handleResolve(name: string, on: PropsWorld): any {
   }
 }
 
-export function matchData(cw: PropsWorld, actual: any[], dt: DataTable) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function matchData(cw: PropsWorldLike, actual: any[], dt: HashesProvider) {
   const tableData = dt.hashes();
   const rowCount = tableData.length;
 

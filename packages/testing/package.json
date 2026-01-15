@@ -1,6 +1,6 @@
 {
   "name": "@finos/testing",
-  "version": "2.2.0",
+  "version": "2.2.2-beta.1",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -12,11 +12,19 @@
   },
   "license": "Apache-2.0",
   "private": true,
+  "type": "module",
   "files": [
     "dist"
   ],
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js",
+      "require": "./dist/src/index.js"
+    }
+  },
   "scripts": {
     "build": "tsc",
     "clean": "rimraf dist",
@@ -24,9 +32,10 @@
   },
   "dependencies": {
     "@cucumber/cucumber": "10.3.1",
+    "quickpickle": "^1.4.1",
     "@cucumber/html-formatter": "11.0.4",
     "@cucumber/pretty-formatter": "1.0.1",
-    "@finos/fdc3-standard": "2.2.0",
+    "@finos/fdc3-standard": "2.2.2-beta.1",
     "@types/expect": "24.3.0",
     "@types/lodash": "4.14.167",
     "@types/node": "^20.16.11",
@@ -35,7 +44,6 @@
     "@typescript-eslint/parser": "^8.18.2",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
-    "cucumber-console-formatter": "1.0.0",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.31.0",

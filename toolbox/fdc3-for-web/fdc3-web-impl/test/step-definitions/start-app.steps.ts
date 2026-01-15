@@ -1,4 +1,5 @@
-import { DataTable, Then, When } from '@cucumber/cucumber';
+import { Then, When } from 'quickpickle';
+import { DataTable } from '@cucumber/cucumber';
 import { CustomWorld } from '../world/index.js';
 import { contextMap, createMeta } from './generic.steps.js';
 import { matchData } from '@finos/testing';
@@ -11,27 +12,27 @@ type GetAppMetadataRequest = BrowserTypes.GetAppMetadataRequest;
 type FindInstancesRequest = BrowserTypes.FindInstancesRequest;
 type WebConnectionProtocol4ValidateAppIdentity = BrowserTypes.WebConnectionProtocol4ValidateAppIdentity;
 
-When('{string} is opened with connection id {string}', function (this: CustomWorld, app: string, uuid: string) {
-  const meta = createMeta(this, app);
-  this.sc.setInstanceDetails(uuid, {
+When('{string} is opened with connection id {string}', (world: CustomWorld, app: string, uuid: string) => {
+  const meta = createMeta(world, app);
+  world.sc.setInstanceDetails(uuid, {
     appId: meta.source.appId,
     instanceId: meta.source.instanceId!,
     state: State.Connected,
   });
 });
 
-When('{string} is closed', function (this: CustomWorld, app: string) {
-  const meta = createMeta(this, app);
-  this.server.cleanup(meta.source.instanceId!);
+When('{string} is closed', (world: CustomWorld, app: string) => {
+  const meta = createMeta(world, app);
+  world.server.cleanup(meta.source.instanceId!);
 });
 
-When('{string} sends validate', function (this: CustomWorld, uuid: string) {
-  const identity = this.sc.getInstanceDetails(uuid);
+When('{string} sends validate', (world: CustomWorld, uuid: string) => {
+  const identity = world.sc.getInstanceDetails(uuid);
   if (identity) {
     const message: WebConnectionProtocol4ValidateAppIdentity = {
       type: 'WCP4ValidateAppIdentity',
       meta: {
-        connectionAttemptUuid: this.sc.createUUID(),
+        connectionAttemptUuid: world.sc.createUUID(),
         timestamp: new Date(),
       },
       payload: {
@@ -39,18 +40,18 @@ When('{string} sends validate', function (this: CustomWorld, uuid: string) {
         identityUrl: 'something',
       },
     };
-    this.sc.setAppState(identity.instanceId, State.Connected);
-    this.server.receive(message, uuid);
+    world.sc.setAppState(identity.instanceId, State.Connected);
+    world.server.receive(message, uuid);
   } else {
     throw new Error(`Did not find app identity ${uuid}`);
   }
 });
 
-When('{string} revalidates', function (this: CustomWorld, uuid: string) {
+When('{string} revalidates', (world: CustomWorld, uuid: string) => {
   const message: WebConnectionProtocol4ValidateAppIdentity = {
     type: 'WCP4ValidateAppIdentity',
     meta: {
-      connectionAttemptUuid: this.sc.createUUID(),
+      connectionAttemptUuid: world.sc.createUUID(),
       timestamp: new Date(),
     },
     payload: {
@@ -60,17 +61,17 @@ When('{string} revalidates', function (this: CustomWorld, uuid: string) {
     },
   };
 
-  this.server.receive(message, uuid);
+  world.server.receive(message, uuid);
 });
 
-Then('running apps will be', async function (this: CustomWorld, dataTable: DataTable) {
-  const apps = await this.sc.getConnectedApps();
-  matchData(this, apps, dataTable);
+Then('running apps will be', async (world: CustomWorld, dataTable: DataTable) => {
+  const apps = await world.sc.getConnectedApps();
+  matchData(world, apps, dataTable);
 });
 
-When('{string} opens app {string}', function (this: CustomWorld, appStr: string, open: string) {
-  const from = createMeta(this, appStr);
-  const uuid = this.sc.getInstanceUUID(from.source)!;
+When('{string} opens app {string}', (world: CustomWorld, appStr: string, open: string) => {
+  const from = createMeta(world, appStr);
+  const uuid = world.sc.getInstanceUUID(from.source)!;
   const message: OpenRequest = {
     type: 'openRequest',
     meta: from,
@@ -81,14 +82,14 @@ When('{string} opens app {string}', function (this: CustomWorld, appStr: string,
       },
     },
   };
-  this.server.receive(message, uuid);
+  world.server.receive(message, uuid);
 });
 
 When(
   '{string} opens app {string} with context data {string}',
-  function (this: CustomWorld, appStr: string, open: string, context: string) {
-    const from = createMeta(this, appStr);
-    const uuid = this.sc.getInstanceUUID(from.source)!;
+  (world: CustomWorld, appStr: string, open: string, context: string) => {
+    const from = createMeta(world, appStr);
+    const uuid = world.sc.getInstanceUUID(from.source)!;
     const message: OpenRequest = {
       type: 'openRequest',
       meta: from,
@@ -100,13 +101,13 @@ When(
         context: contextMap[context],
       },
     };
-    this.server.receive(message, uuid);
+    world.server.receive(message, uuid);
   }
 );
 
-When('{string} requests metadata for {string}', function (this: CustomWorld, appStr: string, open: string) {
-  const from = createMeta(this, appStr);
-  const uuid = this.sc.getInstanceUUID(from.source)!;
+When('{string} requests metadata for {string}', (world: CustomWorld, appStr: string, open: string) => {
+  const from = createMeta(world, appStr);
+  const uuid = world.sc.getInstanceUUID(from.source)!;
   const message: GetAppMetadataRequest = {
     type: 'getAppMetadataRequest',
     meta: from,
@@ -117,23 +118,23 @@ When('{string} requests metadata for {string}', function (this: CustomWorld, app
       },
     },
   };
-  this.server.receive(message, uuid);
+  world.server.receive(message, uuid);
 });
 
-When('{string} requests info on the DesktopAgent', function (this: CustomWorld, appStr: string) {
-  const from = createMeta(this, appStr);
-  const uuid = this.sc.getInstanceUUID(from.source)!;
+When('{string} requests info on the DesktopAgent', (world: CustomWorld, appStr: string) => {
+  const from = createMeta(world, appStr);
+  const uuid = world.sc.getInstanceUUID(from.source)!;
   const message: GetInfoRequest = {
     type: 'getInfoRequest',
     meta: from,
     payload: {},
   };
-  this.server.receive(message, uuid);
+  world.server.receive(message, uuid);
 });
 
-When('{string} findsInstances of {string}', function (this: CustomWorld, appStr: string, open: string) {
-  const from = createMeta(this, appStr);
-  const uuid = this.sc.getInstanceUUID(from.source)!;
+When('{string} findsInstances of {string}', (world: CustomWorld, appStr: string, open: string) => {
+  const from = createMeta(world, appStr);
+  const uuid = world.sc.getInstanceUUID(from.source)!;
   const message: FindInstancesRequest = {
     type: 'findInstancesRequest',
     meta: from,
@@ -143,10 +144,10 @@ When('{string} findsInstances of {string}', function (this: CustomWorld, appStr:
       },
     },
   };
-  this.server.receive(message, uuid);
+  world.server.receive(message, uuid);
 });
 
-When('we wait for the listener timeout', function (this: CustomWorld) {
+When('we wait for the listener timeout', () => {
   return new Promise<void>(resolve => {
     setTimeout(() => resolve(), 3100);
   });
