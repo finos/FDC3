@@ -1,4 +1,5 @@
-import { mock } from 'jest-mock-extended';
+import { vi, beforeEach, afterAll, describe, test, expect } from 'vitest';
+import { mock } from 'vitest-mock-extended';
 import {
   addContextListener,
   addIntentListener,
@@ -41,16 +42,16 @@ const ContactContext = {
 expect.extend({
   toRejectWithUnavailableError(received) {
     expect(received).rejects.toEqual(UnavailableError);
-    return { pass: true } as jest.CustomMatcherResult;
+    return { pass: true, message: () => '' };
   },
   toThrowUnavailableError(received) {
     expect(received).toThrowError(UnavailableError);
-    return { pass: true } as jest.CustomMatcherResult;
+    return { pass: true, message: () => '' };
   },
 });
 
 beforeEach(() => {
-  jest.resetAllMocks();
+  vi.resetAllMocks();
 });
 
 describe('test ES6 module', () => {
@@ -139,7 +140,7 @@ describe('test ES6 module', () => {
   });
 
   describe('with `window.fdc3` global', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       window.fdc3 = mock<DesktopAgent>();
     });
 
@@ -147,84 +148,84 @@ describe('test ES6 module', () => {
       window.fdc3 = undefined as unknown as DesktopAgent;
     });
 
-    test('open should delegate to window.fdc3.open', async () => {
+    test('open should delegate to window.fdc3?.open', async () => {
       const target = 'MyApp';
 
       await open(target, ContactContext);
 
-      expect(window.fdc3.open).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.open).toHaveBeenCalledWith(target, ContactContext);
+      expect(window.fdc3?.open).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.open).toHaveBeenCalledWith(target, ContactContext);
     });
 
-    test('findIntent should delegate to window.fdc3.findIntent', async () => {
+    test('findIntent should delegate to window.fdc3?.findIntent', async () => {
       const intent = 'ViewChart';
 
       await findIntent(intent, ContactContext);
 
-      expect(window.fdc3.findIntent).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.findIntent).toHaveBeenLastCalledWith(intent, ContactContext, undefined);
+      expect(window.fdc3?.findIntent).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.findIntent).toHaveBeenLastCalledWith(intent, ContactContext, undefined);
     });
 
-    test('findIntent should delegate to window.fdc3.findIntent (with additional output type argument)', async () => {
+    test('findIntent should delegate to window.fdc3?.findIntent (with additional output type argument)', async () => {
       const intent = 'ViewChart';
 
       await findIntent(intent, ContactContext, 'fdc3.contact');
 
-      expect(window.fdc3.findIntent).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.findIntent).toHaveBeenLastCalledWith(intent, ContactContext, 'fdc3.contact');
+      expect(window.fdc3?.findIntent).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.findIntent).toHaveBeenLastCalledWith(intent, ContactContext, 'fdc3.contact');
     });
 
-    test('findIntentsByContext should delegate to window.fdc3.findIntentsByContext', async () => {
+    test('findIntentsByContext should delegate to window.fdc3?.findIntentsByContext', async () => {
       await findIntentsByContext(ContactContext);
 
-      expect(window.fdc3.findIntentsByContext).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.findIntentsByContext).toHaveBeenLastCalledWith(ContactContext, undefined);
+      expect(window.fdc3?.findIntentsByContext).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.findIntentsByContext).toHaveBeenLastCalledWith(ContactContext, undefined);
     });
 
-    test('findIntentsByContext should delegate to window.fdc3.findIntentsByContext (with additional output type argument)', async () => {
+    test('findIntentsByContext should delegate to window.fdc3?.findIntentsByContext (with additional output type argument)', async () => {
       await findIntentsByContext(ContactContext, 'fdc3.contact');
 
-      expect(window.fdc3.findIntentsByContext).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.findIntentsByContext).toHaveBeenLastCalledWith(ContactContext, 'fdc3.contact');
+      expect(window.fdc3?.findIntentsByContext).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.findIntentsByContext).toHaveBeenLastCalledWith(ContactContext, 'fdc3.contact');
     });
 
-    test('broadcast should delegate to window.fdc3.broadcast', async () => {
+    test('broadcast should delegate to window.fdc3?.broadcast', async () => {
       await broadcast(ContactContext);
 
-      expect(window.fdc3.broadcast).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.broadcast).toHaveBeenCalledWith(ContactContext);
+      expect(window.fdc3?.broadcast).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.broadcast).toHaveBeenCalledWith(ContactContext);
     });
 
-    test('raiseIntent should delegate to window.fdc3.raiseIntent', async () => {
+    test('raiseIntent should delegate to window.fdc3?.raiseIntent', async () => {
       const intent = 'ViewChart';
       const target = 'MyApp';
 
       await raiseIntent(intent, ContactContext, target);
 
-      expect(window.fdc3.raiseIntent).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.raiseIntent).toHaveBeenCalledWith(intent, ContactContext, target);
+      expect(window.fdc3?.raiseIntent).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.raiseIntent).toHaveBeenCalledWith(intent, ContactContext, target);
     });
 
-    test('raiseIntentForContext should delegate to window.fdc3.raiseIntentForContext', async () => {
+    test('raiseIntentForContext should delegate to window.fdc3?.raiseIntentForContext', async () => {
       const app = 'MyApp';
 
       await raiseIntentForContext(ContactContext, app);
 
-      expect(window.fdc3.raiseIntentForContext).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.raiseIntentForContext).toHaveBeenCalledWith(ContactContext, app);
+      expect(window.fdc3?.raiseIntentForContext).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.raiseIntentForContext).toHaveBeenCalledWith(ContactContext, app);
     });
 
-    test('addIntentListener should delegate to window.fdc3.addIntentListener', async () => {
+    test('addIntentListener should delegate to window.fdc3?.addIntentListener', async () => {
       const intent = 'ViewChart';
       const handler: ContextHandler = _ => {};
 
       await addIntentListener(intent, handler);
 
-      expect(window.fdc3.addIntentListener).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.addIntentListener).toHaveBeenCalledWith(intent, handler);
+      expect(window.fdc3?.addIntentListener).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.addIntentListener).toHaveBeenCalledWith(intent, handler);
     });
 
-    test('addContextListener should delegate to window.fdc3.addContextListener', async () => {
+    test('addContextListener should delegate to window.fdc3?.addContextListener', async () => {
       const type = 'fdc3.instrument';
       const handler1: ContextHandler = _ => {};
       const handler2: ContextHandler = _ => {};
@@ -232,93 +233,93 @@ describe('test ES6 module', () => {
       await addContextListener(type, handler1);
       await addContextListener(handler2);
 
-      expect(window.fdc3.addContextListener).toHaveBeenCalledTimes(2);
-      expect(window.fdc3.addContextListener).toHaveBeenNthCalledWith(1, type, handler1);
-      expect(window.fdc3.addContextListener).toHaveBeenNthCalledWith(2, null, handler2);
+      expect(window.fdc3?.addContextListener).toHaveBeenCalledTimes(2);
+      expect(window.fdc3?.addContextListener).toHaveBeenNthCalledWith(1, type, handler1);
+      expect(window.fdc3?.addContextListener).toHaveBeenNthCalledWith(2, null, handler2);
     });
 
-    test('getUserChannels should delegate to window.fdc3.getUserChannels', async () => {
+    test('getUserChannels should delegate to window.fdc3?.getUserChannels', async () => {
       await getUserChannels();
 
-      expect(window.fdc3.getUserChannels).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.getUserChannels).toHaveBeenCalledWith();
+      expect(window.fdc3?.getUserChannels).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.getUserChannels).toHaveBeenCalledWith();
     });
 
-    test('getSystemChannels should delegate to window.fdc3.getUserChannels', async () => {
+    test('getSystemChannels should delegate to window.fdc3?.getUserChannels', async () => {
       await getSystemChannels();
 
-      expect(window.fdc3.getUserChannels).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.getUserChannels).toHaveBeenCalledWith();
+      expect(window.fdc3?.getUserChannels).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.getUserChannels).toHaveBeenCalledWith();
     });
 
-    test('joinChannel should delegate to window.fdc3.joinUserChannel', async () => {
+    test('joinChannel should delegate to window.fdc3?.joinUserChannel', async () => {
       const channelId = 'channel';
 
       await joinChannel(channelId);
 
-      expect(window.fdc3.joinUserChannel).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.joinUserChannel).toHaveBeenCalledWith(channelId);
+      expect(window.fdc3?.joinUserChannel).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.joinUserChannel).toHaveBeenCalledWith(channelId);
     });
 
-    test('joinUserChannel should delegate to window.fdc3.joinUserChannel', async () => {
+    test('joinUserChannel should delegate to window.fdc3?.joinUserChannel', async () => {
       const channelId = 'channel';
 
       await joinUserChannel(channelId);
 
-      expect(window.fdc3.joinUserChannel).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.joinUserChannel).toHaveBeenCalledWith(channelId);
+      expect(window.fdc3?.joinUserChannel).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.joinUserChannel).toHaveBeenCalledWith(channelId);
     });
 
-    test('getOrCreateChannel should delegate to window.fdc3.getOrCreateChannel', async () => {
+    test('getOrCreateChannel should delegate to window.fdc3?.getOrCreateChannel', async () => {
       const channelId = 'channel';
 
       await getOrCreateChannel(channelId);
 
-      expect(window.fdc3.getOrCreateChannel).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.getOrCreateChannel).toHaveBeenCalledWith(channelId);
+      expect(window.fdc3?.getOrCreateChannel).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.getOrCreateChannel).toHaveBeenCalledWith(channelId);
     });
 
-    test('getCurrentChannel should delegate to window.fdc3.getCurrentChannel', async () => {
+    test('getCurrentChannel should delegate to window.fdc3?.getCurrentChannel', async () => {
       await getCurrentChannel();
 
-      expect(window.fdc3.getCurrentChannel).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.getCurrentChannel).toHaveBeenCalledWith();
+      expect(window.fdc3?.getCurrentChannel).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.getCurrentChannel).toHaveBeenCalledWith();
     });
 
-    test('leaveCurrentChannel should delegate to window.fdc3.leaveCurrentChannel', async () => {
+    test('leaveCurrentChannel should delegate to window.fdc3?.leaveCurrentChannel', async () => {
       await leaveCurrentChannel();
 
-      expect(window.fdc3.leaveCurrentChannel).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.leaveCurrentChannel).toHaveBeenCalledWith();
+      expect(window.fdc3?.leaveCurrentChannel).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.leaveCurrentChannel).toHaveBeenCalledWith();
     });
 
-    test('getInfo should delegate to window.fdc3.getInfo', async () => {
+    test('getInfo should delegate to window.fdc3?.getInfo', async () => {
       await getInfo();
 
-      expect(window.fdc3.getInfo).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.getInfo).toHaveBeenCalledWith();
+      expect(window.fdc3?.getInfo).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.getInfo).toHaveBeenCalledWith();
     });
 
-    test('getAppMetadata should delegate to window.fdc3.getAppMetadata', async () => {
+    test('getAppMetadata should delegate to window.fdc3?.getAppMetadata', async () => {
       const dummyApp = { appId: 'dummy' };
       await getAppMetadata(dummyApp);
 
-      expect(window.fdc3.getAppMetadata).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.getAppMetadata).toHaveBeenCalledWith(dummyApp);
+      expect(window.fdc3?.getAppMetadata).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.getAppMetadata).toHaveBeenCalledWith(dummyApp);
     });
 
-    test('createPrivateChannel should delegate to window.fdc3.createPrivateChannel', async () => {
+    test('createPrivateChannel should delegate to window.fdc3?.createPrivateChannel', async () => {
       await createPrivateChannel();
 
-      expect(window.fdc3.createPrivateChannel).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.createPrivateChannel).toHaveBeenCalledTimes(1);
     });
 
-    test('findInstances should delegate to window.fdc3.findInstances', async () => {
+    test('findInstances should delegate to window.fdc3?.findInstances', async () => {
       const dummyApp = { appId: 'dummy' };
       await findInstances(dummyApp);
 
-      expect(window.fdc3.findInstances).toHaveBeenCalledTimes(1);
-      expect(window.fdc3.findInstances).toHaveBeenCalledWith(dummyApp);
+      expect(window.fdc3?.findInstances).toHaveBeenCalledTimes(1);
+      expect(window.fdc3?.findInstances).toHaveBeenCalledWith(dummyApp);
     });
   });
 });

@@ -6,7 +6,7 @@ import {
   SyntaxKind,
   TypeAliasDeclaration,
 } from 'ts-morph';
-import messageAwait, { MessageAwait } from 'message-await';
+import messageAwait from 'message-await';
 
 // Normalise export of message-await so it works with tsx and ts-node
 const print: typeof messageAwait = (messageAwait as any).default ?? messageAwait;
