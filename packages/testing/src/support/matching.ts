@@ -1,8 +1,7 @@
 import { JSONPath } from 'jsonpath-plus';
 import { PropsWorld } from '../world/index.js';
-import expect from 'expect';
+import { expect } from 'vitest';
 import { DataTable } from '@cucumber/cucumber';
-import Ajv from 'ajv/dist/2019';
 
 export function doesRowMatch(cw: PropsWorld, t: Record<string, string>, data: any): boolean {
   for (const [field, actual] of Object.entries(t)) {
@@ -16,7 +15,7 @@ export function doesRowMatch(cw: PropsWorld, t: Record<string, string>, data: an
         valdata = JSONPath({ path: path, json: data })[0];
       }
 
-      const validator: Ajv = cw.props['ajv'];
+      const validator = cw.props['ajv'];
       const validate = validator.getSchema('https://fdc3.finos.org/schemas/next/api/' + actual + '.schema.json');
       if (validate == undefined) {
         throw Error('No schema found for ' + actual);

@@ -1,44 +1,44 @@
-import { Given } from '@cucumber/cucumber';
+import { Given } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
 import { handleResolve } from '@finos/testing';
 import { Context } from '@finos/fdc3-context';
 import { ContextMetadata, ResolveError } from '@finos/fdc3-standard';
 import { IntentEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
-Given('app {string}', function (this: CustomWorld, appStr: string) {
+Given('app {string}', (world: CustomWorld, appStr: string) => {
   const [appId, instanceId] = appStr.split('/');
   const app = { appId, instanceId };
-  this.messaging?.addAppIntentDetail({
+  world.messaging?.addAppIntentDetail({
     app,
   });
-  this.props[instanceId] = app;
+  world.props[instanceId] = app;
 });
 
-Given('app {string} resolves intent {string}', function (this: CustomWorld, appStr: string, intent: string) {
+Given('app {string} resolves intent {string}', (world: CustomWorld, appStr: string, intent: string) => {
   const [appId, instanceId] = appStr.split('/');
   const app = { appId, instanceId };
-  this.messaging?.addAppIntentDetail({
+  world.messaging?.addAppIntentDetail({
     app,
     intent,
   });
-  this.props[instanceId] = app;
-  this.props[appId] = {
+  world.props[instanceId] = app;
+  world.props[appId] = {
     appId,
   };
 });
 
 Given(
   'app {string} resolves intent {string} with result type {string}',
-  function (this: CustomWorld, appStr: string, intent: string, resultType: string) {
+  (world: CustomWorld, appStr: string, intent: string, resultType: string) => {
     const [appId, instanceId] = appStr.split('/');
     const app = { appId, instanceId };
-    this.messaging?.addAppIntentDetail({
+    world.messaging?.addAppIntentDetail({
       app,
       intent,
       resultType,
     });
-    this.props[instanceId] = app;
-    this.props[appId] = {
+    world.props[instanceId] = app;
+    world.props[appId] = {
       appId,
     };
   }
@@ -46,16 +46,16 @@ Given(
 
 Given(
   'app {string} resolves intent {string} with context {string}',
-  function (this: CustomWorld, appStr: string, intent: string, context: string) {
+  (world: CustomWorld, appStr: string, intent: string, context: string) => {
     const [appId, instanceId] = appStr.split('/');
     const app = { appId, instanceId };
-    this.messaging?.addAppIntentDetail({
+    world.messaging?.addAppIntentDetail({
       app,
       intent,
       context,
     });
-    this.props[instanceId] = app;
-    this.props[appId] = {
+    world.props[instanceId] = app;
+    world.props[appId] = {
       appId,
     };
   }
@@ -63,43 +63,43 @@ Given(
 
 Given(
   'app {string} resolves intent {string} with context {string} and result type {string}',
-  function (this: CustomWorld, appStr: string, intent: string, context: string, resultType: string) {
+  (world: CustomWorld, appStr: string, intent: string, context: string, resultType: string) => {
     const [appId, instanceId] = appStr.split('/');
     const app = { appId, instanceId };
-    this.messaging?.addAppIntentDetail({
+    world.messaging?.addAppIntentDetail({
       app,
       intent,
       context,
       resultType,
     });
-    this.props[instanceId] = app;
+    world.props[instanceId] = app;
   }
 );
 
-Given('Raise Intent returns a context of {string}', function (this: CustomWorld, result: string) {
-  this.messaging?.setIntentResult({
-    context: handleResolve(result, this),
+Given('Raise Intent returns a context of {string}', (world: CustomWorld, result: string) => {
+  world.messaging?.setIntentResult({
+    context: handleResolve(result, world),
   });
 });
 
-Given('Raise Intent will throw a {string} error', function (this: CustomWorld, error: ResolveError) {
-  this.messaging?.setIntentResult({
+Given('Raise Intent will throw a {string} error', (world: CustomWorld, error: ResolveError) => {
+  world.messaging?.setIntentResult({
     error,
   });
 });
 
-Given('Raise Intent returns no result', function (this: CustomWorld) {
-  this.messaging?.setIntentResult({});
+Given('Raise Intent returns no result', (world: CustomWorld) => {
+  world.messaging?.setIntentResult({});
 });
 
-Given('Raise Intent times out', function (this: CustomWorld) {
-  this.messaging?.setIntentResult({
+Given('Raise Intent times out', (world: CustomWorld) => {
+  world.messaging?.setIntentResult({
     timeout: true,
   });
 });
 
-Given('Raise Intent returns an app channel', function (this: CustomWorld) {
-  this.messaging?.setIntentResult({
+Given('Raise Intent returns an app channel', (world: CustomWorld) => {
+  world.messaging?.setIntentResult({
     channel: {
       type: 'app',
       id: 'result-channel',
@@ -111,8 +111,8 @@ Given('Raise Intent returns an app channel', function (this: CustomWorld) {
   });
 });
 
-Given('Raise Intent returns a user channel', function (this: CustomWorld) {
-  this.messaging?.setIntentResult({
+Given('Raise Intent returns a user channel', (world: CustomWorld) => {
+  world.messaging?.setIntentResult({
     channel: {
       type: 'user',
       id: 'result-channel',
@@ -124,8 +124,8 @@ Given('Raise Intent returns a user channel', function (this: CustomWorld) {
   });
 });
 
-Given('Raise Intent returns a private channel', function (this: CustomWorld) {
-  this.messaging?.setIntentResult({
+Given('Raise Intent returns a private channel', (world: CustomWorld) => {
+  world.messaging?.setIntentResult({
     channel: {
       type: 'private',
       id: 'result-channel',
@@ -139,11 +139,11 @@ Given('Raise Intent returns a private channel', function (this: CustomWorld) {
 
 Given(
   '{string} is a intentEvent message with intent {string} and context {string}',
-  function (this: CustomWorld, field: string, intent: string, context: string) {
+  (world: CustomWorld, field: string, intent: string, context: string) => {
     const msg: IntentEvent = {
       type: 'intentEvent',
       meta: {
-        eventUuid: this.messaging!.createUUID(),
+        eventUuid: world.messaging!.createUUID(),
         timestamp: new Date(),
       },
       payload: {
@@ -151,28 +151,28 @@ Given(
           appId: 'some-app-id',
           desktopAgent: 'some-desktop-agent',
         },
-        context: handleResolve(context, this),
+        context: handleResolve(context, world),
         intent,
         raiseIntentRequestUuid: 'request-id',
       },
     };
 
-    this.props[field] = msg;
+    world.props[field] = msg;
   }
 );
 
-Given('{string} pipes intent to {string}', function (this: CustomWorld, intentHandlerName: string, field: string) {
-  this.props[field] = [];
-  this.props[intentHandlerName] = (context: Context, metadata: ContextMetadata) => {
-    this.props[field].push({
+Given('{string} pipes intent to {string}', (world: CustomWorld, intentHandlerName: string, field: string) => {
+  world.props[field] = [];
+  world.props[intentHandlerName] = (context: Context, metadata: ContextMetadata) => {
+    world.props[field].push({
       context,
       metadata,
     });
   };
 });
 
-Given('{string} returns a context item', function (this: CustomWorld, intentHandlerName: string) {
-  this.props[intentHandlerName] = async () => {
+Given('{string} returns a context item', (world: CustomWorld, intentHandlerName: string) => {
+  world.props[intentHandlerName] = async () => {
     return {
       type: 'fdc3.returned-intent',
       id: {
@@ -183,8 +183,8 @@ Given('{string} returns a context item', function (this: CustomWorld, intentHand
   };
 });
 
-Given('{string} returns a channel', function (this: CustomWorld, intentHandlerName: string) {
-  this.props[intentHandlerName] = async () => {
+Given('{string} returns a channel', (world: CustomWorld, intentHandlerName: string) => {
+  world.props[intentHandlerName] = async () => {
     return {
       type: 'private',
       id: 'some-channel-id',
@@ -196,8 +196,8 @@ Given('{string} returns a channel', function (this: CustomWorld, intentHandlerNa
   };
 });
 
-Given('{string} returns a void promise', function (this: CustomWorld, intentHandlerName: string) {
-  this.props[intentHandlerName] = async () => {
+Given('{string} returns a void promise', (world: CustomWorld, intentHandlerName: string) => {
+  world.props[intentHandlerName] = async () => {
     return null;
   };
 });
