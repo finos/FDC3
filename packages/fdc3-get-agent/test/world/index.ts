@@ -1,5 +1,5 @@
 import { setWorldConstructor } from '@cucumber/cucumber';
-import { PropsWorld } from '@finos/testing';
+import { PropsWorld } from '@finos/fdc3-testing';
 import { MockFDC3Server } from '../support/MockFDC3Server';
 
 export class CustomWorld extends PropsWorld {

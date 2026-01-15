@@ -8,8 +8,8 @@ import {
   DefaultIntentSupport,
   DefaultHeartbeatSupport,
 } from '../../src';
-import { SimpleIntentResolver, setupGenericSteps } from '@finos/testing';
-import { CHANNEL_STATE, SimpleChannelSelector } from '@finos/testing/dist/src/agent';
+import { SimpleIntentResolver, setupGenericSteps } from '@finos/fdc3-testing';
+import { CHANNEL_STATE, SimpleChannelSelector } from '@finos/fdc3-testing/dist/src/agent';
 import { HeartbeatEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { LogLevel } from '@finos/fdc3-standard';
 

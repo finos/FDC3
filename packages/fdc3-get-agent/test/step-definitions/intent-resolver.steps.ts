@@ -1,6 +1,6 @@
 import { Given, When } from '@cucumber/cucumber';
 import { CustomWorld } from '../world';
-import { handleResolve } from '@finos/testing';
+import { handleResolve } from '@finos/fdc3-testing';
 import { DefaultDesktopAgentIntentResolver } from '../../src/ui/DefaultDesktopAgentIntentResolver';
 import { INTENT_RESOLVER_URL } from '../support/MockFDC3Server';
 import { FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';

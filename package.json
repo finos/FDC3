@@ -21,7 +21,7 @@
     "packages/fdc3-schema",
     "packages/fdc3-context",
     "packages/fdc3-standard",
-    "packages/testing",
+    "packages/fdc3-testing",
     "packages/fdc3-agent-proxy",
     "toolbox/fdc3-for-web/fdc3-web-impl",
     "packages/fdc3-get-agent",
