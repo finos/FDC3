@@ -13,7 +13,7 @@ const findIntentsByContextDocs = '\r\nDocumentation: ' + APIDocumentation2_0.fin
  */
 export default () =>
   describe('fdc3.findIntentsByContext', () => {
-    it("(2.0-FindIntentByContextSingleContext) Should find intents by context 'testContextX'", async () => {
+    it("(FindIntentByContextSingleContext) Should find intents by context 'testContextX'", async () => {
       try {
         const intents = await fdc3.findIntentsByContext({ type: ContextType.testContextX });
         expect(intents).to.have.length(5);

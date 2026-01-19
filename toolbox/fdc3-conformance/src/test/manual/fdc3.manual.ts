@@ -12,14 +12,14 @@ const raiseIntentDocs = '\r\nDocumentation: ' + APIDocumentation2_0.raiseIntent 
  */
 
 export const fdc3ResolveAmbiguousIntentTarget_2_0 = () =>
-  describe('2.0-ResolveAmbiguousIntentTarget', async () => {
+  describe('ResolveAmbiguousIntentTarget', async () => {
     const fdc3 = await getAgent();
 
     after(async function after() {
       await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test');
     });
     const ResolveAmbiguousIntentTarget =
-      "(2.0-ResolveAmbiguousIntentTarget) Should be able to raise intent using Intent and Context and manually select an app out of 'E','F','G','H' and 'I'";
+      "(ResolveAmbiguousIntentTarget) Should be able to raise intent using Intent and Context and manually select an app out of 'E','F','G','H' and 'I'";
     it(ResolveAmbiguousIntentTarget, async () => {
       try {
         const context = {
@@ -33,14 +33,14 @@ export const fdc3ResolveAmbiguousIntentTarget_2_0 = () =>
   });
 
 export const fdc3ResolveAmbiguousContextTarget_2_0 = () =>
-  describe('2.0-ResolveAmbiguousContextTarget', async () => {
+  describe('ResolveAmbiguousContextTarget', async () => {
     const fdc3 = await getAgent();
 
     after(async function after() {
       await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test');
     });
     const ResolveAmbiguousIntentTarget =
-      "(2.0-ResolveAmbiguousContextTarget) Should be able to raise intent using ContextY and manually select an app out of 'E','F','G','H' and 'I'";
+      "(ResolveAmbiguousContextTarget) Should be able to raise intent using ContextY and manually select an app out of 'E','F','G','H' and 'I'";
     it(ResolveAmbiguousIntentTarget, async () => {
       try {
         const context = {
@@ -54,7 +54,7 @@ export const fdc3ResolveAmbiguousContextTarget_2_0 = () =>
   });
 
 export const fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0 = () =>
-  describe('2.0-ResolveAmbiguousIntentTargetMultiInstance', async () => {
+  describe('ResolveAmbiguousIntentTargetMultiInstance', async () => {
     const fdc3 = await getAgent();
     const control = new RaiseIntentControl2_0(fdc3);
 
@@ -62,7 +62,7 @@ export const fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0 = () =>
       await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test');
     });
     const ResolveAmbiguousIntentTargetMultiInstance =
-      "(2.0-ResolveAmbiguousIntentTargetMultiInstance) Open 2 instances of App E and AppF respectively and then should be able to raise intent using Intent and Context and manually select an app out of 'E','F','G','H' and 'I'";
+      "(ResolveAmbiguousIntentTargetMultiInstance) Open 2 instances of App E and AppF respectively and then should be able to raise intent using Intent and Context and manually select an app out of 'E','F','G','H' and 'I'";
     it(ResolveAmbiguousIntentTargetMultiInstance, async () => {
       try {
         const context = {
@@ -82,7 +82,7 @@ export const fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0 = () =>
   });
 
 export const fdc3ResolveAmbiguousContextTargetMultiInstance_2_0 = () =>
-  describe('2.0-ResolveAmbiguousContextTargetMultiInstance', async () => {
+  describe('ResolveAmbiguousContextTargetMultiInstance', async () => {
     const fdc3 = await getAgent();
     const control = new RaiseIntentControl2_0(fdc3);
 
@@ -90,7 +90,7 @@ export const fdc3ResolveAmbiguousContextTargetMultiInstance_2_0 = () =>
       await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test');
     });
     const ResolveAmbiguousContextTargetMultiInstance =
-      "(2.0-ResolveAmbiguousContextTargetMultiInstance) Open 2 instances of App E and AppF respectively and then should be able to raise intent using Context and manually select an app out of 'E','F','G','H' and 'I'";
+      "(ResolveAmbiguousContextTargetMultiInstance) Open 2 instances of App E and AppF respectively and then should be able to raise intent using Context and manually select an app out of 'E','F','G','H' and 'I'";
     it(ResolveAmbiguousContextTargetMultiInstance, async () => {
       try {
         const context = {

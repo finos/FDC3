@@ -22,7 +22,7 @@ export default () =>
       }
     });
 
-    it('(2.0-GetInfo1) Returns a valid ImplementationMetadata object', async () => {
+    it('(GetInfo1) Returns a valid ImplementationMetadata object', async () => {
       try {
         const implMetadata = await api.getInfo();
         validator.validateImplementationMetadata(implMetadata);
@@ -31,7 +31,7 @@ export default () =>
       }
     });
 
-    it('(2.0-GetInfo2) Returns a valid ImplementationMetadata object', async function () {
+    it('(GetInfo2) Returns a valid ImplementationMetadata object', async function () {
       this.timeout(10000);
 
       try {

@@ -31,7 +31,7 @@ export default () =>
       await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test', 2);
     });
 
-    const findInstances = '(2.0-FindInstances) valid appID when opening multiple instances of the same app';
+    const findInstances = '(FindInstances) valid appID when opening multiple instances of the same app';
     it(findInstances, async () => {
       const api = new MetadataFdc3Api();
       let listener: Listener | undefined;
