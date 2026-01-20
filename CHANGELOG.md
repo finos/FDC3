@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Added Java language binding documentation to the API reference. ([#1734](https://github.com/finos/FDC3/pull/1734))
 * Added a notes field to Trade type ([#1563](https://github.com/finos/FDC3/pull/1563))
 * Added a notes field to Order and Product types ([#1597](https://github.com/finos/FDC3/pull/1597))
 * Added Go language binding. ([#1483](https://github.com/finos/FDC3/pull/1483))
