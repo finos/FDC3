@@ -11,7 +11,7 @@ import { WebConnectionProtocol3Handshake } from '@finos/fdc3-schema/dist/generat
 
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL;
 
-function createAppStartButton(app: DirectoryApp, sc: ServerContext<AppRegistration>): HTMLDivElement {
+function createAppStartButton(app: DirectoryApp, sc: FDC3ServerInstance): HTMLDivElement {
   const div: HTMLDivElement = document.createElement('div');
   div.classList.add('app');
   const h3 = document.createElement('h3');
@@ -57,7 +57,6 @@ window.addEventListener('load', () => {
     const directory = new FDC3_2_1_JSONDirectory();
     await directory.load('/static/da/appd.json');
     await directory.load('/static/da/local-conformance.v2.json');
-    const sc = new DemoServerContext(socket, directory);
 
     const channelDetails: ChannelState[] = [
       {
@@ -141,14 +140,17 @@ window.addEventListener('load', () => {
         },
       },
     ];
-    const fdc3Server = new DefaultFDC3Server(sc, directory, channelDetails, true, 20000, 10017);
+
+    // Create the factory and server instance
+    const factory = new DemoFDC3ServerFactory(socket, directory, channelDetails, true, 20000, 10000);
+    const fdc3ServerInstance = factory.createInstance() as DemoFDC3ServerInstance;
 
     socket.on(FDC3_APP_EVENT, (msg, from) => {
-      fdc3Server.receive(msg, from);
+      fdc3ServerInstance.receive(msg, from);
     });
 
     socket.on(APP_GOODBYE, (id: string) => {
-      fdc3Server.cleanup(id);
+      fdc3ServerInstance.setAppState(id, State.Terminated);
     });
 
     // let's create buttons for some apps
@@ -158,7 +160,7 @@ window.addEventListener('load', () => {
       const mani = app?.hostManifests?.demo as any;
       const show = mani?.visible ?? true;
       if (show) {
-        appList.appendChild(createAppStartButton(app, sc));
+        appList.appendChild(createAppStartButton(app, fdc3ServerInstance));
       }
     });
 
@@ -173,7 +175,7 @@ window.addEventListener('load', () => {
 
       console.log('Received window.postMessage: ' + JSON.stringify(event.data));
       if (data.type == 'WCP1Hello') {
-        const instance = await sc.getInstanceForWindow(source);
+        const instance = await fdc3ServerInstance.getInstanceForWindow(source);
         if (instance) {
           console.log('Identified instance for source window: ' + JSON.stringify(instance.instanceId));
 

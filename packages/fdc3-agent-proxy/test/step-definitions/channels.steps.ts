@@ -1,8 +1,8 @@
 import { DataTable, Given, Then, When } from '@cucumber/cucumber';
 import { Context } from '@finos/fdc3-context';
-import { handleResolve, matchData } from '@finos/testing';
+import { handleResolve, matchData } from '@finos/fdc3-testing';
 import { CustomWorld } from '../world/index';
-import { CHANNEL_STATE } from '@finos/testing';
+import { CHANNEL_STATE } from '@finos/fdc3-testing';
 import { ApiEvent } from '@finos/fdc3-standard';
 import {
   BroadcastEvent,

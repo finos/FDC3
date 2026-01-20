@@ -6,10 +6,9 @@ default:
   paths: 
    - test/features/*.feature
   require: 
-   - test/step-definitions/*.steps.ts 
-   - test/support/*.ts
-   - test/world/index.ts
+   - dist/test/step-definitions/*.steps.js 
+   - dist/test/support/*.js
+   - dist/test/world/index.js
   requireModule:
    - ts-node/register
   tags: "not @failing"
-    

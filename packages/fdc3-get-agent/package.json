@@ -18,8 +18,9 @@
   ],
   "scripts": {
     "build": "tsc --module es2022",
-    "test": "tsc && nyc --reporter=lcov --reporter=text --reporter json cucumber-js",
-    "clean": "rimraf dist cucumber-report.html coverage .nyc_output node_modules test-results.xml",
+    "test": "tsc && nyc --nycrc-path .nycrc.json cucumber-js",
+    "test:coverage-test-infra": "tsc && nyc --nycrc-path .nycrc.test-coverage.json cucumber-js",
+    "clean": "rimraf dist cucumber-report.html coverage coverage-test-infra .nyc_output node_modules test-results.xml",
     "lint": "eslint src/"
   },
   "dependencies": {
@@ -34,7 +35,6 @@
     "@cucumber/cucumber": "10.3.1",
     "@cucumber/messages": "^28.1.0",
     "@eslint/js": "^9.19.0",
-    "@finos/fdc3-web-impl": "2.2.1-beta.4",
     "@finos/testing": "2.2.1-beta.4",
     "@types/node": "^20.16.11",
     "@types/wtfnode": "^0.7.3",

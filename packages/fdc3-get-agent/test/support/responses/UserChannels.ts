@@ -1,5 +1,5 @@
-import { TestServerContext } from '../TestServerContext';
-import { InstanceID } from '@finos/fdc3-web-impl';
+import { MockFDC3Server } from '../MockFDC3Server';
+import { InstanceID } from '../MockTypes';
 import { AutomaticResponse } from './AutomaticResponses';
 import { GetUserChannelsRequest, GetUserChannelsResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
@@ -23,7 +23,7 @@ export class UserChannels implements AutomaticResponse {
     return t == 'getUserChannelsRequest';
   }
 
-  action(input: object, m: TestServerContext, from: InstanceID) {
+  action(input: object, m: MockFDC3Server, from: InstanceID) {
     const out = this.createResponse(input as GetUserChannelsRequest, m);
 
     setTimeout(() => {
@@ -32,7 +32,7 @@ export class UserChannels implements AutomaticResponse {
     return Promise.resolve();
   }
 
-  private createResponse(i: GetUserChannelsRequest, m: TestServerContext): GetUserChannelsResponse {
+  private createResponse(i: GetUserChannelsRequest, m: MockFDC3Server): GetUserChannelsResponse {
     const response: GetUserChannelsResponse = {
       meta: {
         ...i.meta,

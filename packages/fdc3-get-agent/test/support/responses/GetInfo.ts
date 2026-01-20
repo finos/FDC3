@@ -1,5 +1,5 @@
-import { TestServerContext } from '../TestServerContext';
-import { InstanceID } from '@finos/fdc3-web-impl';
+import { MockFDC3Server } from '../MockFDC3Server';
+import { InstanceID } from '../MockTypes';
 import { AutomaticResponse } from './AutomaticResponses';
 import { GetInfoRequest, GetInfoResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
@@ -8,7 +8,7 @@ export class GetInfo implements AutomaticResponse {
     return t == 'getInfoRequest';
   }
 
-  action(input: object, m: TestServerContext, from: InstanceID) {
+  action(input: object, m: MockFDC3Server, from: InstanceID) {
     const out = this.createResponse(input as GetInfoRequest, m);
     setTimeout(() => {
       m.post(out, from);
@@ -16,7 +16,7 @@ export class GetInfo implements AutomaticResponse {
     return Promise.resolve();
   }
 
-  private createResponse(i: GetInfoRequest, m: TestServerContext): GetInfoResponse {
+  private createResponse(i: GetInfoRequest, m: MockFDC3Server): GetInfoResponse {
     const response: GetInfoResponse = {
       meta: {
         ...i.meta,

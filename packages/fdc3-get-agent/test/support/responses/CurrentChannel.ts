@@ -1,5 +1,5 @@
-import { TestServerContext } from '../TestServerContext';
-import { InstanceID } from '@finos/fdc3-web-impl';
+import { MockFDC3Server } from '../MockFDC3Server';
+import { InstanceID } from '../MockTypes';
 import { AutomaticResponse } from './AutomaticResponses';
 import {
   GetCurrentChannelRequest,
@@ -11,7 +11,7 @@ export class CurrentChannel implements AutomaticResponse {
     return t == 'getCurrentChannelRequest';
   }
 
-  action(input: object, m: TestServerContext, from: InstanceID) {
+  action(input: object, m: MockFDC3Server, from: InstanceID) {
     const out = this.createResponse(input as GetCurrentChannelRequest, m);
     setTimeout(() => {
       m.post(out, from);
@@ -19,7 +19,7 @@ export class CurrentChannel implements AutomaticResponse {
     return Promise.resolve();
   }
 
-  private createResponse(i: GetCurrentChannelRequest, m: TestServerContext): GetCurrentChannelResponse {
+  private createResponse(i: GetCurrentChannelRequest, m: MockFDC3Server): GetCurrentChannelResponse {
     const response: GetCurrentChannelResponse = {
       meta: {
         ...i.meta,

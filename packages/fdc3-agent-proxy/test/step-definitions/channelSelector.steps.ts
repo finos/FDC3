@@ -1,7 +1,7 @@
 import { Given, When } from '@cucumber/cucumber';
-import { SimpleIntentResolver } from '@finos/testing';
+import { SimpleIntentResolver } from '@finos/fdc3-testing';
 import { CustomWorld } from '../world/index';
-import { CHANNEL_STATE } from '@finos/testing';
+import { CHANNEL_STATE } from '@finos/fdc3-testing';
 import {
   DefaultChannelSupport,
   DefaultHeartbeatSupport,

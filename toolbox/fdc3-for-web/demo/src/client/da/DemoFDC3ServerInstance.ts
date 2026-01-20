@@ -1,11 +1,14 @@
 import {
+  AbstractFDC3ServerInstance,
+  AbstractFDC3ServerFactory,
   AppRegistration,
   Directory,
   DirectoryApp,
-  FDC3Server,
   InstanceID,
-  ServerContext,
   State,
+  type MessageHandler,
+  type ChannelState,
+  type FDC3ServerInstance,
 } from '@finos/fdc3-web-impl';
 import { Socket } from 'socket.io-client';
 import { v4 as uuid } from 'uuid';
@@ -49,19 +52,23 @@ function isRunningAppRegistration(
   return !!(details as RunningAppRegistration).window;
 }
 
-export class DemoServerContext implements ServerContext<DemoAppRegistration> {
+/**
+ * Demo implementation of FDC3ServerInstance for the web demo.
+ * Manages app connections via socket.io and handles window/iframe launching.
+ */
+export class DemoFDC3ServerInstance extends AbstractFDC3ServerInstance {
   private readonly socket: Socket;
   private readonly directory: Directory;
   private connections: (RunningAppRegistration | LaunchingAppRegistration)[] = [];
-  private server: FDC3Server | null = null;
 
-  constructor(socket: Socket, directory: Directory) {
+  constructor(socket: Socket, directory: Directory, handlers: MessageHandler[], channels: ChannelState[]) {
+    super(handlers, channels);
     this.socket = socket;
     this.directory = directory;
   }
 
-  setFDC3Server(server: FDC3Server): void {
-    this.server = server;
+  getDirectory(): Directory {
+    return this.directory;
   }
 
   async narrowIntents(_raiser: AppIdentifier, appIntents: AppIntent[] /*, _context: Context*/): Promise<AppIntent[]> {
@@ -71,27 +78,30 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
   /**
    * Sets the appId, url, state and either the window or a Promise<Window> for a given connection UUID.
    */
-  setInstanceDetails(uuid: InstanceID, meta: RunningAppRegistration | LaunchingAppRegistration): void {
+  setInstanceDetails(uuid: InstanceID, meta: AppRegistration): void {
+    // Type assertion to handle our extended type
+    const demoMeta = meta as DemoAppRegistration;
+
     //remove any existing records with this uuid
     this.connections = this.connections.filter(ca => ca.instanceId !== uuid);
 
     const instanceDetails = {
-      ...meta,
+      ...demoMeta,
       instanceId: uuid,
     };
     this.connections.push(instanceDetails);
 
-    if (isLaunchingAppRegistration(meta)) {
+    if (isLaunchingAppRegistration(demoMeta)) {
       //If the window wasn't fully realized yet, monitor the window promise so that it
       //  sets window when resolved.
-      meta.windowPromise.then((window: Window | null) => {
+      demoMeta.windowPromise.then((window: Window | null) => {
         if (window) {
           const launchedMeta: RunningAppRegistration = {
             window: window,
-            url: meta.url,
-            appId: meta.appId,
-            instanceId: meta.instanceId,
-            state: meta.state,
+            url: demoMeta.url,
+            appId: demoMeta.appId,
+            instanceId: demoMeta.instanceId,
+            state: demoMeta.state,
           };
           //will replace any existing record
           this.setInstanceDetails(uuid, launchedMeta);
@@ -100,7 +110,7 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
           this.connections = this.connections.filter(ca => ca.instanceId !== uuid);
           console.error(
             'We did not receive a window reference after launching app: ',
-            meta.url,
+            demoMeta.url,
             '\nn.b. this may occur if a popup blocker prevented launch or the Cross-Origin-Opener-Policy opener policy is set'
           );
         }
@@ -232,7 +242,7 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
           state: State.Pending,
         };
 
-        this.setInstanceDetails(instanceId, metadata);
+        this.setInstanceDetails(instanceId, metadata as AppRegistration);
         return instanceId;
       } else {
         console.error('Unable to launch app without a URL, app: ', details[0]);
@@ -255,13 +265,11 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
   async setAppState(app: InstanceID, newState: State): Promise<void> {
     const found = this.connections.find(a => a.instanceId == app);
 
-    //if this is a new termination (which might be due to a heartbeat) then notify the server
-    //  if we were already terminated, don't bother as the server will notify us back and
-    //  create a loop
+    //if this is a new termination (which might be due to a heartbeat) then cleanup
     if (found) {
       const currentState = found.state;
       if (currentState !== State.Terminated && newState === State.Terminated) {
-        this.server?.cleanup(app);
+        await this.cleanupApp(app);
       }
       found.state = newState;
     }
@@ -291,5 +299,29 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
 
   fdc3Version(): string {
     return '2.0';
+  }
+}
+
+/**
+ * Factory for creating DemoFDC3ServerInstance instances.
+ * Sets up message handlers and manages the FDC3 server lifecycle.
+ */
+export class DemoFDC3ServerFactory extends AbstractFDC3ServerFactory {
+  private readonly socket: Socket;
+
+  constructor(
+    socket: Socket,
+    directory: Directory,
+    channels: ChannelState[],
+    heartbeats: boolean = true,
+    intentTimeoutMs: number = 20000,
+    openHandlerTimeoutMs: number = 10000
+  ) {
+    super(directory, channels, heartbeats, intentTimeoutMs, openHandlerTimeoutMs);
+    this.socket = socket;
+  }
+
+  createInstance(): FDC3ServerInstance {
+    return new DemoFDC3ServerInstance(this.socket, this.directory, this.handlers, this.channels);
   }
 }

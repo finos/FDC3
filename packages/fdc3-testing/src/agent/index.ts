@@ -14,9 +14,9 @@ export class SimpleIntentResolver implements IntentResolver {
     this.cw = cw;
   }
 
-  async connect(): Promise<void> { }
+  async connect(): Promise<void> {}
 
-  async disconnect(): Promise<void> { }
+  async disconnect(): Promise<void> {}
 
   async intentChosen(ir: IntentResult): Promise<IntentResult> {
     this.cw.props['intent-result'] = ir;
@@ -55,9 +55,9 @@ export class SimpleChannelSelector implements ChannelSelector {
     this.cw.props['channels'] = availableChannels;
   }
 
-  setChannelChangeCallback(_callback: (channelId: string | null) => void): void { }
+  setChannelChangeCallback(_callback: (channelId: string | null) => void): void {}
 
-  async connect(): Promise<void> { }
+  async connect(): Promise<void> {}
 
-  async disconnect(): Promise<void> { }
+  async disconnect(): Promise<void> {}
 }

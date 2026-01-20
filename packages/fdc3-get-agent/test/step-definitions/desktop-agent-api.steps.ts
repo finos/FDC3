@@ -1,5 +1,5 @@
 import { When } from '@cucumber/cucumber';
-import { handleResolve } from '@finos/testing';
+import { handleResolve } from '@finos/fdc3-testing';
 import { CustomWorld } from '../world';
 import { DesktopAgent } from '@finos/fdc3-standard';
 import { Instrument } from '@finos/fdc3-context';

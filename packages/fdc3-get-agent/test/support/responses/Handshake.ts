@@ -1,5 +1,5 @@
-import { TestServerContext } from '../TestServerContext';
-import { InstanceID } from '@finos/fdc3-web-impl';
+import { MockFDC3Server } from '../MockFDC3Server';
+import { InstanceID } from '../MockTypes';
 import { AutomaticResponse } from './AutomaticResponses';
 import {
   WebConnectionProtocol4ValidateAppIdentity,
@@ -22,7 +22,7 @@ export class Handshake implements AutomaticResponse {
     return t == 'WCP4ValidateAppIdentity';
   }
 
-  action(input: object, m: TestServerContext, from: InstanceID) {
+  action(input: object, m: MockFDC3Server, from: InstanceID) {
     if (!this.timeOut) {
       const out = this.createResponse(input as WebConnectionProtocol4ValidateAppIdentity);
       setTimeout(() => {
