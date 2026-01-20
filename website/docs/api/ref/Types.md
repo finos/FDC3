@@ -71,6 +71,29 @@ type AppIdentifier struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class AppIdentifier {
+    /** The unique application identifier located within a specific application
+     *  directory instance. An example of an appId might be 'app@sub.root'.
+     */
+    private String appId;
+    
+    /** An optional instance identifier, indicating that this object represents a
+     *  specific instance of the application described.
+     */
+    private String instanceId;
+    
+    public AppIdentifier(String appId) { this.appId = appId; }
+    public AppIdentifier(String appId, String instanceId) { ... }
+    
+    public String getAppId() { return appId; }
+    public String getInstanceId() { return instanceId; }
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -134,6 +157,27 @@ type IContext interface {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// In java, Context extends HashMap with some helper functions.  
+public class Context extends HashMap<String, Object> implements IntentResult {
+    public Context(String type) { setType(type); }
+    public Context(String type, String name) { setType(type); setName(name); }
+    
+    public String getType() { return (String) get("type"); }
+    public void setType(String type) { put("type", type); }
+    
+    public String getName() { return (String) get("name"); }
+    public void setName(String name) { put("name", name); }
+    
+    @SuppressWarnings("unchecked")
+    public Map<String, Object> getId() { return (Map<String, Object>) get("id"); }
+    public void setId(Map<String, Object> id) { put("id", id); }
+}
+```
+
+</TabItem>
 </Tabs>
 
 The base interface that all contexts should extend: a context data object adhering to the [FDC3 Context Data specification](../../context/spec).
@@ -176,6 +220,16 @@ delegate void ContextHandler<T>(T context, IContextMetadata? metadata = null) wh
 
 ```go
 type ContextHandler func(IContext, *ContextMetadata)
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+@FunctionalInterface
+public interface ContextHandler {
+    void handleContext(Context context, ContextMetadata metadata);
+}
 ```
 
 </TabItem>
@@ -225,6 +279,25 @@ type DesktopAgentIdentifier struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+/** @experimental */
+public class DesktopAgentIdentifier {
+    /** Used in Desktop Agent Bridging to attribute or target a message to a 
+     *  particular Desktop Agent.
+     */
+    private final String desktopAgent;
+    
+    public DesktopAgentIdentifier(String desktopAgent) {
+        this.desktopAgent = desktopAgent;
+    }
+    
+    public String getDesktopAgent() { return desktopAgent; }
+}
+```
+
+</TabItem>
 </Tabs>
 
 (Experimental) Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios where a request needs to be directed to a Desktop Agent rather than a specific app, or a response message is returned by the Desktop Agent (or more specifically its resolver) rather than a specific app. Used as a substitute for `AppIdentifier` in cases where no app details are available or are appropriate.
@@ -254,6 +327,16 @@ delegate Task<IIntentResult> IntentHandler<T>(T context, IContextMetadata? metad
 
 ```go
 type IntentHandler func(IContext, *ContextMetadata) <-chan IntentResult
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+@FunctionalInterface
+public interface IntentHandler {
+    CompletionStage<Optional<IntentResult>> handleIntent(Context context, ContextMetadata metadata);
+}
 ```
 
 </TabItem>
@@ -301,6 +384,16 @@ const (
   ContextIntentResult        IntentResultType = "Context"
   PrivateChannelIntentResult IntentResultType = "PrivateChannel"
 )
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+/** Marker interface implemented by Context and Channel types */
+public interface IntentResult {
+    // Marker interface - implementations include Context and Channel
+}
 ```
 
 </TabItem>
@@ -353,6 +446,15 @@ type Listener struct {}
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public interface Listener {
+    CompletionStage<Void> unsubscribe();
+}
+```
+
+</TabItem>
 </Tabs>
 
 ### `unsubscribe`
@@ -378,6 +480,13 @@ Task Unsubscribe();
 func (l *Listener) Unsubscribe() {
   // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Void> unsubscribe();
 ```
 
 </TabItem>
