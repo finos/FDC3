@@ -1,8 +1,8 @@
-import { MessageHandler } from '../BasicFDC3Server';
-import { AppRegistration, InstanceID, ServerContext } from '../ServerContext';
+import { MessageHandler } from '../BasicFDC3Server.js';
+import { AppRegistration, InstanceID, ServerContext } from '../ServerContext.js';
 import { Context } from '@finos/fdc3-context';
 import { AppIdentifier, ChannelError, DisplayMetadata, PrivateChannelEventTypes } from '@finos/fdc3-standard';
-import { successResponse, errorResponse, FullAppIdentifier, onlyUnique } from './support';
+import { successResponse, errorResponse, FullAppIdentifier, onlyUnique } from './support.js';
 import {
   AddContextListenerRequest,
   AgentResponseMessage,
@@ -22,7 +22,7 @@ import {
   PrivateChannelOnDisconnectEvent,
   PrivateChannelOnUnsubscribeEvent,
   PrivateChannelUnsubscribeEventListenerRequest,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 type PrivateChannelEvents =
   | PrivateChannelOnAddContextListenerEvent

@@ -1,6 +1,6 @@
 import { InstanceID } from '@finos/fdc3-web-impl';
 import { Socket } from 'socket.io-client';
-import { FDC3_APP_EVENT, FDC3_DA_EVENT } from '../../message-types';
+import { FDC3_APP_EVENT, FDC3_DA_EVENT } from '../../message-types.js';
 
 export enum UI {
   DEFAULT,

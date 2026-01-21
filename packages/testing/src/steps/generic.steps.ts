@@ -1,12 +1,16 @@
 import { DataTable, Given, Then, When } from '@cucumber/cucumber';
-import Ajv2019 from 'ajv/dist/2019';
-import * as draft7MetaSchema from 'ajv/dist/refs/json-schema-draft-07.json';
-import addFormats from 'ajv-formats';
+import * as AjvModule from 'ajv/dist/2019.js';
+import * as draft7MetaSchema from 'ajv/dist/refs/json-schema-draft-07.json' with { type: 'json' };
+import * as addFormatsModule from 'ajv-formats';
 import { expect } from 'expect';
-import { doesRowMatch, handleResolve, matchData } from '../support/matching';
-import { PropsWorld } from '../world';
+import { doesRowMatch, handleResolve, matchData } from '../support/matching.js';
+import { PropsWorld } from '../world/index.js';
 import fs from 'fs';
 import path from 'path';
+
+// this is required as AJV is not an ESM module and has an unusual way of exporting its default
+const AjvCtor = (AjvModule as any).default ?? AjvModule;
+const addFormatsFn = (addFormatsModule as any).default ?? addFormatsModule;
 
 export function setupGenericSteps() {
   Then('the promise {string} should resolve', async function (this: PropsWorld, field: string) {
@@ -194,9 +198,9 @@ export function setupGenericSteps() {
   });
 
   Given('schemas loaded', async function (this: PropsWorld) {
-    const ajv = new Ajv2019();
-    ajv.addMetaSchema(draft7MetaSchema);
-    addFormats(ajv);
+    const ajv = new AjvCtor();
+    ajv.addMetaSchema(draft7MetaSchema as any);
+    addFormatsFn(ajv);
 
     const f2 = fs;
     const p = path;

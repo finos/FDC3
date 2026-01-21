@@ -1,6 +1,6 @@
-import { Given, When } from '@cucumber/cucumber';
+import { Given, When } from 'quickpickle';
 import { SimpleIntentResolver } from '@finos/testing';
-import { CustomWorld } from '../world/index';
+import { CustomWorld } from '../world/index.js';
 import { CHANNEL_STATE } from '@finos/testing';
 import {
   DefaultChannelSupport,
@@ -8,9 +8,9 @@ import {
   DefaultIntentSupport,
   DefaultAppSupport,
   DesktopAgentProxy,
-} from '../../src';
-import { TestChannelSelector } from '../support/TestChannelSelector';
-import { TestMessaging } from '../support/TestMessaging';
+} from '../../src/index.js';
+import { TestChannelSelector } from '../support/TestChannelSelector.js';
+import { TestMessaging } from '../support/TestMessaging.js';
 import { LogLevel } from '@finos/fdc3-standard';
 
 //Update this to enable debug output when debugging test failures
@@ -18,24 +18,24 @@ const logLevel = LogLevel.WARN;
 
 Given(
   'A Channel Selector in {string} and a Desktop Agent in {string}',
-  async function (this: CustomWorld, selectorField: string, daField: string) {
-    if (!this.messaging) {
-      this.messaging = new TestMessaging(this.props[CHANNEL_STATE]);
+  async (world: CustomWorld, selectorField: string, daField: string) => {
+    if (!world.messaging) {
+      world.messaging = new TestMessaging(world.props[CHANNEL_STATE]);
     }
 
     const ts = new TestChannelSelector();
-    this.props[selectorField] = ts;
+    world.props[selectorField] = ts;
 
-    const cs = new DefaultChannelSupport(this.messaging, ts, 10000);
-    const hs = new DefaultHeartbeatSupport(this.messaging);
-    const is = new DefaultIntentSupport(this.messaging, new SimpleIntentResolver(this), 10000, 100000);
-    const as = new DefaultAppSupport(this.messaging, 10000, 100000);
+    const cs = new DefaultChannelSupport(world.messaging, ts, 10000);
+    const hs = new DefaultHeartbeatSupport(world.messaging);
+    const is = new DefaultIntentSupport(world.messaging, new SimpleIntentResolver(world), 10000, 100000);
+    const as = new DefaultAppSupport(world.messaging, 10000, 100000);
 
     const da = new DesktopAgentProxy(hs, cs, is, as, [hs], logLevel);
     await da.connect();
 
-    this.props[daField] = da;
-    this.props['result'] = null;
+    world.props[daField] = da;
+    world.props['result'] = null;
 
     //populate the channel selector
     const channel = await cs.getUserChannel();
@@ -46,24 +46,24 @@ Given(
 
 When(
   'The first channel is selected via the channel selector in {string}',
-  async function (this: CustomWorld, selectorField: string) {
-    const selector = this.props[selectorField] as TestChannelSelector;
+  async (world: CustomWorld, selectorField: string) => {
+    const selector = world.props[selectorField] as TestChannelSelector;
     selector.selectFirstChannel();
   }
 );
 
 When(
   'The second channel is selected via the channel selector in {string}',
-  async function (this: CustomWorld, selectorField: string) {
-    const selector = this.props[selectorField] as TestChannelSelector;
+  async (world: CustomWorld, selectorField: string) => {
+    const selector = world.props[selectorField] as TestChannelSelector;
     selector.selectSecondChannel();
   }
 );
 
 When(
   'The channel is deselected via the channel selector in {string}',
-  async function (this: CustomWorld, selectorField: string) {
-    const selector = this.props[selectorField] as TestChannelSelector;
+  async (world: CustomWorld, selectorField: string) => {
+    const selector = world.props[selectorField] as TestChannelSelector;
     selector.deselectChannel();
   }
 );

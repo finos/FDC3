@@ -3,7 +3,7 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import { AppIdentifier } from './AppIdentifier';
+import { AppIdentifier } from './AppIdentifier.js';
 
 /**
  * Metadata relating to a context or intent and context received through the

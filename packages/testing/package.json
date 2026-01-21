@@ -12,13 +12,29 @@
   },
   "license": "Apache-2.0",
   "private": true,
+  "type": "module",
   "files": [
     "dist"
   ],
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js",
+      "require": "./dist/src/index.js"
+    },
+    "./dist/src/agent": {
+      "types": "./dist/src/agent/index.d.ts",
+      "import": "./dist/src/agent/index.js"
+    },
+    "./dist/src/agent/index.js": {
+      "types": "./dist/src/agent/index.d.ts",
+      "import": "./dist/src/agent/index.js"
+    }
+  },
   "scripts": {
-    "build": "tsc --module es2022",
+    "build": "tsc",
     "clean": "rimraf dist",
     "test": "tsc"
   },

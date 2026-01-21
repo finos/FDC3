@@ -3,9 +3,9 @@
  * Copyright 2021 FINOS FDC3 contributors - see NOTICE file
  */
 
-import { Listener } from './Listener';
-import { Channel } from './Channel';
-import { EventHandler, PrivateChannelEventTypes } from './Events';
+import { Listener } from './Listener.js';
+import { Channel } from './Channel.js';
+import { EventHandler, PrivateChannelEventTypes } from './Events.js';
 
 /**
  * Object representing a private context channel, which is intended to support

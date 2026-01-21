@@ -1,5 +1,5 @@
-import { AgentResponseMessage, AppRequestMessage } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
-import { AppRegistration, ServerContext } from '../ServerContext';
+import { AgentResponseMessage, AppRequestMessage } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { AppRegistration, ServerContext } from '../ServerContext.js';
 import { AppIdentifier } from '@finos/fdc3-standard';
 
 /** Interface representing a full specified app identifier (instanceId is optional in the API type). */

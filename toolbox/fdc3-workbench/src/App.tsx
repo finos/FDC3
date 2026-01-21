@@ -14,16 +14,16 @@ import Alert from '@material-ui/lab/Alert';
 import 'normalize.css';
 import '@fontsource/roboto';
 import '@fontsource/source-code-pro';
-import { TabPanel } from './components/common/TabPanel';
-import { Header } from './components/Header';
-import { Channels } from './components/Channels';
-import { Workbench } from './components/Workbench/Workbench';
-import { ContextCreate } from './components/ContextCreate';
-import { Intents } from './components/Intents';
-import { AppChannels } from './components/AppChannels';
-import snackbarStore from './store/SnackbarStore';
-import './App.css';
-import { getWorkbenchAgent } from './utility/Fdc3Api';
+import { TabPanel } from './components/common/TabPanel.js';
+import { Header } from './components/Header.js';
+import { Channels } from './components/Channels.js';
+import { Workbench } from './components/Workbench/Workbench.js';
+import { ContextCreate } from './components/ContextCreate.js';
+import { Intents } from './components/Intents.js';
+import { AppChannels } from './components/AppChannels.js';
+import snackbarStore from './store/SnackbarStore.js';
+import './App.css' with { type: 'css' };
+import { getWorkbenchAgent } from './utility/Fdc3Api.js';
 
 const mainTheme = createTheme({
   palette: {
