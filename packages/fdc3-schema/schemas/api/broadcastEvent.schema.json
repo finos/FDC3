@@ -17,9 +17,6 @@
 				"payload": {
 					"$ref": "#/$defs/BroadcastEventPayload"
 				},
-				"metadata": {
-					"$ref": "api.schema.json#/definitions/DesktopAgentProvidableContextMetadata"
-				},
 				"meta": true
 			},
 			"additionalProperties": false
@@ -51,10 +48,8 @@
 					"title": "Context",
 					"description": "The context object that was broadcast."
 				},
-				"originatingApp": {
-					"title": "Originating AppIdentifier",
-					"description": "Details of the application instance that broadcast the context.",
-					"$ref": "api.schema.json#/definitions/AppIdentifier"
+				"metadata": {
+					"$ref": "api.schema.json#/definitions/ContextMetadata"
 				}
 			},
 			"additionalProperties": false,
