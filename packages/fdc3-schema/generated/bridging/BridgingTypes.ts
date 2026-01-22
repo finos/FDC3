@@ -239,8 +239,6 @@ export interface AgentRequestMetadata {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
- *
- * Identifier for the app instance that sent the context and/or intent.
  */
 export interface BridgeParticipantIdentifier {
   /**
@@ -286,8 +284,6 @@ export interface BridgeParticipantIdentifier {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
- *
- * Identifier for the app instance that sent the context and/or intent.
  *
  * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
  * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
@@ -541,8 +537,6 @@ export interface BroadcastAgentRequestMeta {
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
  *
- * Identifier for the app instance that sent the context and/or intent.
- *
  * Field that represents the source application that the request was received from, or the
  * source Desktop Agent if it issued the request itself.
  *
@@ -667,7 +661,6 @@ export interface Context {
  */
 export interface AppProvidableContextMetadata {
   custom?: { [key: string]: any };
-  signature?: string;
   traceId?: string;
 }
 
@@ -729,8 +722,6 @@ export interface BroadcastBridgeRequestMeta {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
- *
- * Identifier for the app instance that sent the context and/or intent.
  *
  * Optional field that represents the destination that the request should be routed to. Must
  * be set by the Desktop Agent for API calls that include a target app parameter and must
@@ -1273,8 +1264,6 @@ export interface FindInstancesAgentRequestMeta {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
- *
- * Identifier for the app instance that sent the context and/or intent.
  */
 export interface DestinationObject {
   /**
@@ -1321,8 +1310,6 @@ export interface FindInstancesAgentRequestPayload {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
- *
- * Identifier for the app instance that sent the context and/or intent.
  */
 export interface AppIdentifier {
   /**
@@ -1597,8 +1584,6 @@ export interface FindInstancesBridgeRequestMeta {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
- *
- * Identifier for the app instance that sent the context and/or intent.
  *
  * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
  * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
@@ -2363,8 +2348,6 @@ export interface GetAppMetadataAgentRequestPayload {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
- *
- * Identifier for the app instance that sent the context and/or intent.
  */
 export interface AppObject {
   /**
@@ -2708,8 +2691,6 @@ export interface OpenAgentRequestPayload {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
- *
- * Identifier for the app instance that sent the context and/or intent.
  */
 export interface AppToOpen {
   /**
@@ -2976,8 +2957,6 @@ export interface PrivateChannelBroadcastAgentRequestMeta {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
- *
- * Identifier for the app instance that sent the context and/or intent.
  *
  * Optional field that represents the destination that the request should be routed to. Must
  * be set by the Desktop Agent for API calls that include a target app parameter and must
@@ -3772,8 +3751,6 @@ export interface RaiseIntentAgentRequestPayload {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
- *
- * Identifier for the app instance that sent the context and/or intent.
  */
 export interface AppDestinationIdentifier {
   /**
@@ -4117,12 +4094,6 @@ export interface RaiseIntentResultAgentResponseMeta {
  */
 export interface RaiseIntentResultAgentResponsePayload {
   intentResult: IntentResult;
-  /**
-   * Metadata for the intent result, generated by the Desktop Agent and merged with any
-   * app-provided metadata from the intentResultRequest. Always present, even for void or
-   * channel results.
-   */
-  resultMetadata?: ContextMetadata;
 }
 
 export interface IntentResult {
@@ -4194,43 +4165,6 @@ export interface DisplayMetadata {
  * Can be "user", "app" or "private".
  */
 export type Type = 'app' | 'private' | 'user';
-
-/**
- * Metadata for the intent result, generated by the Desktop Agent and merged with any
- * app-provided metadata from the intentResultRequest. Always present, even for void or
- * channel results.
- *
- * Metadata relating to a broadcastEvent or intentEvent, which may include metadata provided
- * by the Desktop Agent or the App that initiated the broadcast, raise intent or open
- * request.
- */
-export interface ContextMetadata {
-  /**
-   * Custom metadata that can be used to provide additional information about the context or
-   * intent. This allows for individuals to use metadata fields that have yet to be
-   * standardized.
-   */
-  custom?: { [key: string]: any };
-  /**
-   * A cryptographic signature that can be used to verify the authenticity and integrity of
-   * the context or intent message.
-   */
-  signature?: string;
-  /**
-   * Identifier for the app instance that sent the context and/or intent.
-   */
-  source: AppIdentifier;
-  /**
-   * The timestamp when the context or intent was created, encoded according to [ISO
-   * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
-   */
-  timestamp: Date;
-  /**
-   * A unique identifier for the context or intent that can be used to trace the context or
-   * intent through the system.
-   */
-  traceId: string;
-}
 
 /**
  * A secondary response to a request to raise an intent used to deliver the intent result,
@@ -4308,12 +4242,6 @@ export interface RaiseIntentResultBridgeResponseMeta {
  */
 export interface RaiseIntentResultBridgeResponsePayload {
   intentResult: IntentResult;
-  /**
-   * Metadata for the intent result, generated by the Desktop Agent and merged with any
-   * app-provided metadata from the intentResultRequest. Always present, even for void or
-   * channel results.
-   */
-  resultMetadata?: ContextMetadata;
 }
 
 // Converts JSON strings to/from your types
@@ -5198,7 +5126,6 @@ const typeMap: any = {
   AppProvidableContextMetadata: o(
     [
       { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
-      { json: 'signature', js: 'signature', typ: u(undefined, '') },
       { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
     ],
     false
@@ -6496,10 +6423,7 @@ const typeMap: any = {
     false
   ),
   RaiseIntentResultAgentResponsePayload: o(
-    [
-      { json: 'intentResult', js: 'intentResult', typ: r('IntentResult') },
-      { json: 'resultMetadata', js: 'resultMetadata', typ: u(undefined, r('ContextMetadata')) },
-    ],
+    [{ json: 'intentResult', js: 'intentResult', typ: r('IntentResult') }],
     false
   ),
   IntentResult: o(
@@ -6522,16 +6446,6 @@ const typeMap: any = {
       { json: 'color', js: 'color', typ: u(undefined, '') },
       { json: 'glyph', js: 'glyph', typ: u(undefined, '') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    false
-  ),
-  ContextMetadata: o(
-    [
-      { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
-      { json: 'signature', js: 'signature', typ: u(undefined, '') },
-      { json: 'source', js: 'source', typ: r('AppIdentifier') },
-      { json: 'timestamp', js: 'timestamp', typ: Date },
-      { json: 'traceId', js: 'traceId', typ: '' },
     ],
     false
   ),
@@ -6577,10 +6491,7 @@ const typeMap: any = {
     false
   ),
   RaiseIntentResultBridgeResponsePayload: o(
-    [
-      { json: 'intentResult', js: 'intentResult', typ: r('IntentResult') },
-      { json: 'resultMetadata', js: 'resultMetadata', typ: u(undefined, r('ContextMetadata')) },
-    ],
+    [{ json: 'intentResult', js: 'intentResult', typ: r('IntentResult') }],
     false
   ),
   ResponseErrorDetail: [
