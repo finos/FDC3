@@ -667,7 +667,6 @@ export interface Context {
  */
 export interface AppProvidableContextMetadata {
   custom?: { [key: string]: any };
-  signature?: string;
   traceId?: string;
 }
 
@@ -5198,7 +5197,6 @@ const typeMap: any = {
   AppProvidableContextMetadata: o(
     [
       { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
-      { json: 'signature', js: 'signature', typ: u(undefined, '') },
       { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
     ],
     false
