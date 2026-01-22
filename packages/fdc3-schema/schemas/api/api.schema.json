@@ -267,10 +267,10 @@
                 "type"
             ]
         },
-        "ContextMetadataFields": {
-            "description": "Metadata relating to a context or intent and context received through the\n`addContextListener` and `addIntentListener` functions.",
-            "title": "ContextMetadataFields",
+        "ContextMetadata": {
             "type": "object",
+            "description": "Metadata relating to a broadcastEvent or intentEvent, which may include metadata provided by the Desktop Agent or the App that initiated the broadcast, raise intent or open request.",
+            "title": "Context Metadata",
             "properties": {
                 "source": {
                     "$ref": "#/definitions/AppIdentifier",
@@ -295,39 +295,22 @@
                     "description": "Custom metadata that can be used to provide additional information about the context or intent. This allows for individuals to use metadata fields that have yet to be standardized."
                 }
             },
-            "additionalProperties": false
-        },
-        "ContextMetadata": {
-            "description": "Metadata relating to a context or intent and context received through the\n`addContextListener` and `addIntentListener` functions.",
-            "title": "ContextMetadata",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/ContextMetadataFields"
-                }
-            ],
-            "properties": {
-                "source": true,
-                "traceId": true,
-                "timestamp": true,
-                "custom": true
-            },
             "required": [
                 "source",
-                "timestamp"
-            ]
+                "timestamp",
+                "traceId"
+            ],
+            "additionalProperties": false
         },
         "AppProvidableContextMetadata": {
-            "description": "Metadata that can be provided by an app.",
-            "title": "AppProvidableContextMetadata",
-            "allOf": [
-                {
-                    "$ref": "#/definitions/ContextMetadataFields"
-                }
-            ],
+            "type": "object",
+            "description": "Metadata that can be provided by an app as part of a broadcast, raise intent or open API call.",
+            "title": "App Providable Context Metadata",
             "properties": {
-                "traceId": true,
-                "custom": true
-            }
+                "traceId": {"$ref": "#/definitions/ContextMetadata/properties/traceId"},
+                "custom": {"$ref": "#/definitions/ContextMetadata/properties/custom"}
+            },
+            "additionalProperties": false
         },
         "DesktopAgentIdentifier": {
             "description": "Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios\nwhere a request needs to be directed to a Desktop Agent rather than a specific app, or a\nresponse message is returned by the Desktop Agent (or more specifically its resolver)\nrather than a specific app. Used as a substitute for `AppIdentifier` in cases where no\napp details are available or are appropriate.",
@@ -434,11 +417,6 @@
                     "description": "Metadata indicating whether the Desktop Agent implements optional features of\nthe Desktop Agent API.",
                     "type": "object",
                     "properties": {
-                        "OriginatingAppMetadata": {
-                            "description": "Used to indicate whether the exposure of 'originating app metadata' for\ncontext and intent messages is supported by the Desktop Agent.",
-                            "type": "boolean",
-                            "title": "OriginatingAppMetadata"
-                        },
                         "UserChannelMembershipAPIs": {
                             "description": "Used to indicate whether the optional `fdc3.joinUserChannel`,\n`fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by\nthe Desktop Agent.",
                             "type": "boolean",
@@ -453,7 +431,6 @@
                     "additionalProperties": false,
                     "required": [
                         "DesktopAgentBridging",
-                        "OriginatingAppMetadata",
                         "UserChannelMembershipAPIs"
                     ],
                     "title": "optionalFeatures"

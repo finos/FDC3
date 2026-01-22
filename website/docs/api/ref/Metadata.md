@@ -621,9 +621,6 @@ interface ImplementationMetadata {
    *  the Desktop Agent API.
    */
   readonly optionalFeatures: {
-    /** Used to indicate whether the exposure of 'originating app metadata' for
-     *  context and intent messages is supported by the Desktop Agent.*/
-    readonly OriginatingAppMetadata: boolean;
     /** Used to indicate whether the optional `fdc3.joinUserChannel`,
      *  `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
      *  the Desktop Agent.*/
@@ -676,12 +673,6 @@ interface IImplementationMetadata
 class OptionalDesktopAgentFeatures
 {
     /// <summary>
-    /// Used to indicate whether the exposure of 'originating app metadata' for context and intent
-    /// messages is supported by the Desktop Agent.
-    /// </summary>
-    public bool OriginatingAppMetadata { get; set; }
-    
-    /// <summary>
     /// Used to indicate whether the optional 'JoinUserChannel', 'GetCurrentChannel', and 'LeaveCurrentChannel'
     /// are implemented by the Desktop Agent.
     /// </summary>
@@ -703,9 +694,6 @@ type ImplementationMetadata struct {
   ProviderVersion  string `json:"providerVersion"`
   // Metadata indicating whether the Desktop Agent implements optional features of the Desktop Agent API.
   OptionalFeatures struct {
-    // Used to indicate whether the exposure of 'originating app metadata' for context and intent
-    // messages is supported by the Desktop Agent.
-    OriginatingAppMetadata    bool `json:"OriginatingAppMetadata"`
     // Used to indicate whether the optional 'JoinUserChannel', 'GetCurrentChannel', and 'LeaveCurrentChannel'
     // are implemented by the Desktop Agent.
     UserChannelMembershipAPIs bool `json:"UserChannelMembershipAPIs"`

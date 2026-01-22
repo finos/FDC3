@@ -17,9 +17,6 @@
 				"payload": {
 					"$ref": "#/$defs/IntentEventPayload"
 				},
-				"metadata": {
-					"$ref": "api.schema.json#/definitions/DesktopAgentProvidableContextMetadata"
-				},
 				"meta": true
 			},
 			"additionalProperties": false
@@ -44,10 +41,8 @@
 					"title": "Context",
 					"description": "The context object passed with the raised intent."
 				},
-				"originatingApp": {
-					"title": "Originating AppIdentifier",
-					"description": "Details of the application instance that raised the intent.",
-					"$ref": "api.schema.json#/definitions/AppIdentifier"
+				"metadata": {
+					"$ref": "api.schema.json#/definitions/ContextMetadata"
 				},
 				"raiseIntentRequestUuid": {
 					"title": "raiseIntentRequest UUID",

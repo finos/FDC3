@@ -17,9 +17,6 @@
 				"payload": {
 					"$ref": "#/$defs/IntentResultRequestPayload"
 				},
-				"metadata": {
-					"$ref": "api.schema.json#/definitions/AppProvidableContextMetadata"
-				},
 				"meta": true
 			},
 			"additionalProperties": false

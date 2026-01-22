@@ -17,9 +17,6 @@
 				"payload": {
 					"$ref": "#/$defs/BroadcastRequestPayload"
 				},
-				"metadata": {
-					"$ref": "api.schema.json#/definitions/AppProvidableContextMetadata"
-				},
 				"meta": true
 			},
 			"additionalProperties": false
@@ -43,12 +40,16 @@
 					"$ref": "../context/context.schema.json",
 					"title": "Context",
 					"description": "The context object that is to be broadcast."
+				},
+				"metadata": {
+					"$ref": "api.schema.json#/definitions/AppProvidableContextMetadata"
 				}
 			},
 			"additionalProperties": false,
 			"required": [
 				"channelId",
-				"context"
+				"context",
+				"metadata"
 			]
 		}
 	}
