@@ -17,9 +17,6 @@
 				"payload": {
 					"$ref": "#/$defs/RaiseIntentForContextRequestPayload"
 				},
-				"metadata": {
-					"$ref": "api.schema.json#/definitions/AppProvidableContextMetadata"
-				},
 				"meta": true
 			},
 			"additionalProperties": false
@@ -39,10 +36,13 @@
 				},
 				"app": {
 					"$ref": "api.schema.json#/definitions/AppIdentifier"
+				},
+				"metadata": {
+					"$ref": "api.schema.json#/definitions/AppProvidableContextMetadata"
 				}
 			},
 			"required": [
-				"context"
+				"context", "metadata"
 			],
 			"additionalProperties": false
 		}
