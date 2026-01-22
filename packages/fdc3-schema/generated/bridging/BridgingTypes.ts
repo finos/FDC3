@@ -601,6 +601,7 @@ export interface BroadcastAgentRequestPayload {
    */
   context: Context;
   metadata: AppProvidableContextMetadata;
+  metadata: AppProvidableContextMetadata;
 }
 
 /**
