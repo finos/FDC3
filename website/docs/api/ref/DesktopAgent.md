@@ -152,6 +152,45 @@ type IDesktopAgent interface {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public interface DesktopAgent {
+    // Apps
+    CompletionStage<AppIdentifier> open(AppIdentifier app, Context context);
+    CompletionStage<List<AppIdentifier>> findInstances(AppIdentifier app);
+    CompletionStage<AppMetadata> getAppMetadata(AppIdentifier app);
+
+    // Context
+    CompletionStage<Void> broadcast(Context context);
+    CompletionStage<Listener> addContextListener(String contextType, ContextHandler handler);
+
+    // Intents
+    CompletionStage<AppIntent> findIntent(String intent, Context context, String resultType);
+    CompletionStage<List<AppIntent>> findIntentsByContext(Context context, String resultType);
+    CompletionStage<IntentResolution> raiseIntent(String intent, Context context, AppIdentifier app);
+    CompletionStage<IntentResolution> raiseIntentForContext(Context context, AppIdentifier app);
+    CompletionStage<Listener> addIntentListener(String intent, IntentHandler handler);
+
+    // Channels
+    CompletionStage<Channel> getOrCreateChannel(String channelId);
+    CompletionStage<PrivateChannel> createPrivateChannel();
+    CompletionStage<List<Channel>> getUserChannels();
+
+    // OPTIONAL channel management functions
+    CompletionStage<Void> joinUserChannel(String channelId);
+    CompletionStage<Optional<Channel>> getCurrentChannel();
+    CompletionStage<Void> leaveCurrentChannel();
+
+    // non-context events
+    CompletionStage<Listener> addEventListener(String type, EventHandler handler);
+
+    // Implementation info
+    CompletionStage<ImplementationMetadata> getInfo();
+}
+```
+
+</TabItem>
 </Tabs>
 
 ## Functions
@@ -179,6 +218,13 @@ Task<IListener> AddContextListener<T>(string? contextType, ContextHandler<T> han
 func (desktopAgent *DesktopAgent) AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener] { 
   // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Listener> addContextListener(String contextType, ContextHandler handler);
 ```
 
 </TabItem>
@@ -251,6 +297,23 @@ listenerResult := <-desktopAgent.AddContextListener("fdc3.contact", func(context
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// any context
+Listener listener = desktopAgent.addContextListener(null, (context, metadata) -> { ... }).toCompletableFuture().get();
+
+// listener for a specific type
+Listener contactListener = desktopAgent.addContextListener("fdc3.contact", (contact, metadata) -> { ... }).toCompletableFuture().get();
+
+// listener that logs metadata for the message of a specific type
+Listener logListener = desktopAgent.addContextListener("fdc3.contact", (contact, metadata) -> {
+    System.out.println("Received context message\nContext: " + contact + "\nOriginating app: " + 
+        (metadata != null ? metadata.getSource() : "unknown"));
+}).toCompletableFuture().get();
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -282,6 +345,13 @@ Task<IListener> AddEventListener(string? eventType, Fdc3EventHandler handler);
 func (desktopAgent *DesktopAgent) AddEventListener(type *FDC3EventTypes, handler EventHandler) <-Result[Listener]  { 
   // Implmentation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Listener> addEventListener(String type, EventHandler handler);
 ```
 
 </TabItem>
@@ -319,6 +389,19 @@ var userChannelChangedListener = await _desktopAgent.AddEventListener("userChann
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// any event type
+Listener listener = desktopAgent.addEventListener(null, event -> { ... }).toCompletableFuture().get();
+
+// listener for a specific event type that logs its details
+Listener userChannelChangedListener = desktopAgent.addEventListener("userChannelChanged", event -> {
+    System.out.println("Received event " + event.getType() + "\n\tDetails: " + event.getDetails());
+}).toCompletableFuture().get();
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -350,6 +433,13 @@ Task<IListener> AddIntentListener<T>(string intent, IntentHandler<T> handler) wh
 func (desktopAgent *DesktopAgent) AddIntentListener(intent string, handler IntentHandler) <-chan Result[Listener]  { 
   // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Listener> addIntentListener(String intent, IntentHandler handler);
 ```
 
 </TabItem>
@@ -465,6 +555,24 @@ listenerResult := <-desktopAgent.AddIntentListener("fdc3.contact", func(context 
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Handle a raised intent
+Listener listener = desktopAgent.addIntentListener("StartChat", (context, metadata) -> {
+    // start chat has been requested by another application
+    return CompletableFuture.completedFuture(null);
+}).toCompletableFuture().get();
+
+// Handle a raised intent and return Context data
+desktopAgent.addIntentListener("CreateOrder", (context, metadata) -> {
+    Context order = new Context("fdc3.order");
+    order.getId().put("orderId", "1234");
+    return CompletableFuture.completedFuture(order);
+});
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -499,6 +607,13 @@ Task Broadcast(IContext context);
 func (desktopAgent *DesktopAgent) Broadcast(context IContext) <-chan Result[any]  { 
   // Implmentation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Void> broadcast(Context context);
 ```
 
 </TabItem>
@@ -556,6 +671,15 @@ desktopAgent.Broadcast(context)
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Context instrument = new Context("fdc3.instrument");
+instrument.getId().put("ticker", "AAPL");
+desktopAgent.broadcast(instrument);
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -585,6 +709,13 @@ Task<IPrivateChannel> CreatePrivateChannel();
 func (desktopAgent *DesktopAgent) CreatePrivateChannel() <-chan Result[PrivateChannel] {
   // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<PrivateChannel> createPrivateChannel();
 ```
 
 </TabItem>
@@ -682,6 +813,24 @@ desktopAgent.AddIntentListener("fdc3.contact", func(context IContext, contextMet
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+desktopAgent.addIntentListener("QuoteStream", (context, metadata) -> {
+    PrivateChannel channel = desktopAgent.createPrivateChannel().toCompletableFuture().get();
+    String symbol = context.getId().get("ticker");
+    
+    channel.addEventListener("addContextListener", event -> {
+        feed.onQuote(symbol, price -> channel.broadcast(new Context("price")));
+    });
+    
+    channel.addEventListener("disconnect", event -> feed.stop(symbol));
+    
+    return CompletableFuture.completedFuture(channel);
+});
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -714,6 +863,13 @@ func (desktopAgent *DesktopAgent) FindInstances(appIdentifier AppIdentifier) <-c
   // Implementation here
 }
 
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<List<AppIdentifier>> findInstances(AppIdentifier app);
 ```
 
 </TabItem>
@@ -764,6 +920,17 @@ resolutionResult := <-desktopAgent.RaiseIntent("ViewInstrument", context, findIn
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Retrieve a list of instances of an application
+List<AppIdentifier> instances = desktopAgent.findInstances(new AppIdentifier("MyAppId")).toCompletableFuture().get();
+
+// Target a raised intent at a specific instance
+IntentResolution resolution = desktopAgent.raiseIntent("ViewInstrument", context, instances.get(0)).toCompletableFuture().get();
+```
+
+</TabItem>
 </Tabs>
 
 ### `findIntent`
@@ -790,6 +957,13 @@ func (desktopAgent *DesktopAgent) FindIntent(intent string, context *IContext, r
   // Implmentation here
 }
 
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<AppIntent> findIntent(String intent, Context context, String resultType);
 ```
 
 </TabItem>
@@ -861,6 +1035,16 @@ if findIntentResult.Err != nil {
 
 // raise the intent against a particular app
 <-desktopAgent.RaiseIntent(findIntentResult.Value.Intent.Name, context, findInstancesResult.Value.Apps[0])
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+AppIntent appIntent = desktopAgent.findIntent("StartChat", null, null).toCompletableFuture().get();
+
+// raise the intent against a particular app
+desktopAgent.raiseIntent(appIntent.getIntent().getName(), context, appIntent.getApps().get(0));
 ```
 
 </TabItem>
@@ -949,6 +1133,20 @@ findIntentResult := <-desktopAgent.FindIntent("QuoteStream", &instrument, "chann
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+AppIntent appIntent = desktopAgent.findIntent("StartChat", contact, null).toCompletableFuture().get();
+// returns only apps that support the type of the specified input context
+
+AppIntent viewContactIntent = desktopAgent.findIntent("ViewContact", null, "fdc3.ContactList").toCompletableFuture().get();
+// returns only apps that return the specified result type
+
+AppIntent quoteStreamIntent = desktopAgent.findIntent("QuoteStream", instrument, "channel<fdc3.Quote>").toCompletableFuture().get();
+// returns only apps that return a channel which will receive the specified input and result types
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -979,6 +1177,13 @@ func (desktopAgent *DesktopAgent) FindIntentsByContext(context IContext, resultT
   // Implmentation here
 }
 
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<List<AppIntent>> findIntentsByContext(Context context, String resultType);
 ```
 
 </TabItem>
@@ -1037,6 +1242,13 @@ var appIntents = await _desktopAgent.FindIntentsByContext(context);
 
 ```go
 findIntentResult := <-desktopAgent.FindIntentsByContext(context, nil)
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+List<AppIntent> appIntents = desktopAgent.findIntentsByContext(context, null).toCompletableFuture().get();
 ```
 
 </TabItem>
@@ -1111,6 +1323,22 @@ selectedApp := startChat.Apps[0]
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+List<AppIntent> appIntentsForType = desktopAgent.findIntentsByContext(context, "fdc3.ContactList").toCompletableFuture().get();
+
+// select a particular intent to raise
+AppIntent startChat = appIntentsForType.get(0);
+
+// target a particular app or instance
+AppMetadata selectedApp = startChat.getApps().get(0);
+
+// raise the intent, passing the given context, targeting the app
+desktopAgent.raiseIntent(startChat.getIntent().getName(), context, selectedApp);
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -1145,6 +1373,13 @@ func (desktopAgent *DesktopAgent) GetAppMetadata(appIdentifier AppIdentifier) <-
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<AppMetadata> getAppMetadata(AppIdentifier app);
+```
+
+</TabItem>
 </Tabs>
 
 Retrieves the [`AppMetadata`](Metadata#appmetadata) for an [`AppIdentifier`](Types#appidentifier), which provides additional metadata (such as icons, a title and description) from the App Directory record for the application, that may be used for display purposes.
@@ -1175,6 +1410,14 @@ var appMetadata = await _desktopAgent.GetAppMetadata(appIdentifier);
 ```go
 appIdentifier := AppIdentifier{AppId: "MyAppId@my.appd.com"}
 appMetadataResult := <-desktopAgent.GetAppMetadata(appIdentifier)
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+AppIdentifier appIdentifier = new AppIdentifier("MyAppId@my.appd.com");
+AppMetadata appMetadata = desktopAgent.getAppMetadata(appIdentifier).toCompletableFuture().get();
 ```
 
 </TabItem>
@@ -1212,6 +1455,13 @@ func (desktopAgent *DesktopAgent) GetCurrentChannel() <-chan Result[Channel] {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Optional<Channel>> getCurrentChannel();
+```
+
+</TabItem>
 </Tabs>
 
 OPTIONAL function that returns the `Channel` object for the current User channel membership.  In most cases, an application's membership of channels SHOULD be managed via UX provided to the application by the desktop agent, rather than calling this function directly.
@@ -1241,6 +1491,13 @@ var current = await _desktopAgent.GetCurrentChannel();
 
 ```go
 currentResult := <-desktopAgent.GetCurrentChannel()
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Optional<Channel> current = desktopAgent.getCurrentChannel().toCompletableFuture().get();
 ```
 
 </TabItem>
@@ -1274,6 +1531,13 @@ func (desktopAgent *DesktopAgent) GetInfo() <-chan Result[ImplementationMetadata
   // Implementation here
 }
 
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<ImplementationMetadata> getInfo();
 ```
 
 </TabItem>
@@ -1316,6 +1580,14 @@ if infoResult.Value != nil {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+ImplementationMetadata info = desktopAgent.getInfo().toCompletableFuture().get();
+String version = info.getFdc3Version();
+```
+
+</TabItem>
 </Tabs>
 
 The `ImplementationMetadata` object returned also includes the metadata for the calling application, according to the Desktop Agent. This allows the application to retrieve its own `appId`, `instanceId` and other details, e.g.:
@@ -1346,6 +1618,15 @@ if implementationMetadataResult.Value != nil {
   appId := implementationMetadataResult.AppMetadata.AppId
   instanceId := implementationMetadataResult.AppMetadata.InstanceId
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+ImplementationMetadata implementationMetadata = desktopAgent.getInfo().toCompletableFuture().get();
+String appId = implementationMetadata.getAppMetadata().getAppId();
+String instanceId = implementationMetadata.getAppMetadata().getInstanceId();
 ```
 
 </TabItem>
@@ -1380,6 +1661,13 @@ func (desktopAgent *DesktopAgent) GetOrCreateChannel(channelId string) <-chan Re
   // Implementation here
 }
 
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Channel> getOrCreateChannel(String channelId);
 ```
 
 </TabItem>
@@ -1436,6 +1724,20 @@ myChannel := myChannelResult.Value
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+try {
+    Channel myChannel = desktopAgent.getOrCreateChannel("myChannel").toCompletableFuture().get();
+    myChannel.addContextListener(null, (context, metadata) -> {
+        // do something with context
+    });
+} catch (Exception e) {
+    // app could not register the channel
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -1466,6 +1768,13 @@ func (desktopAgent *DesktopAgent) GetUserChannels() <-chan Result[[]Channel] {
   // Implementation here
 }
 
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<List<Channel>> getUserChannels();
 ```
 
 </TabItem>
@@ -1504,6 +1813,14 @@ redChannel := slices.IndexFunc(userChannelsResult.Value, func(c Channel) bool { 
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+List<Channel> userChannels = desktopAgent.getUserChannels().toCompletableFuture().get();
+Channel redChannel = userChannels.stream().filter(c -> "red".equals(c.getId())).findFirst().orElse(null);
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -1534,6 +1851,13 @@ func (desktopAgent *DesktopAgent) JoinUserChannel(channelId string) <-chan Resul
   // Implementation here
 }
 
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Void> joinUserChannel(String channelId);
 ```
 
 </TabItem>
@@ -1590,6 +1914,17 @@ if userChannelsResult.Err != nil {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// get all user channels
+List<Channel> channels = desktopAgent.getUserChannels().toCompletableFuture().get();
+
+// join the channel on selection
+desktopAgent.joinUserChannel(selectedChannel.getId());
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -1619,6 +1954,13 @@ Task LeaveCurrentChannel();
 func (desktopAgent *DesktopAgent) LeaveCurrentChannel() <-chan Result[any] {
   // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Void> leaveCurrentChannel();
 ```
 
 </TabItem>
@@ -1675,6 +2017,20 @@ listenerResult := <-desktopAgent.AddContextListener("", func(context IContext, c
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// desktop-agent scope context listener
+Listener fdc3Listener = desktopAgent.addContextListener(null, (context, metadata) -> {}).toCompletableFuture().get();
+
+desktopAgent.leaveCurrentChannel().toCompletableFuture().get();
+// the fdc3Listener will now cease receiving context
+
+// listening on a specific channel though, will continue to work
+redChannel.addContextListener(null, channelListener);
+```
+
+</TabItem>
 </Tabs>
 
 ### `open`
@@ -1700,6 +2056,13 @@ Task<IAppIdentifier> Open(IAppIdentifier app, IContext? context = null);
 func (desktopAgent *DesktopAgent) Open(appIdentifier AppIdentifier, context *IContext) <-chan Result[AppIdentifier] {
   // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<AppIdentifier> open(AppIdentifier app, Context context);
 ```
 
 </TabItem>
@@ -1756,6 +2119,18 @@ instanceIdentifierResult := <-desktopAgent.Open(appIdentifier, &context)
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Open an app without context, using an AppIdentifier object to specify the target
+AppIdentifier appIdentifier = new AppIdentifier("myApp-v1.0.1");
+AppIdentifier instanceIdentifier = desktopAgent.open(appIdentifier, null).toCompletableFuture().get();
+
+// Open an app with context
+instanceIdentifier = desktopAgent.open(appIdentifier, context).toCompletableFuture().get();
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -1788,6 +2163,13 @@ Task<IIntentResolution> RaiseIntent(string intent, IContext context, IAppIdentif
 func (desktopAgent *DesktopAgent) RaiseIntent(intent string, context IContext, appIdentifier *AppIdentifier) <-chan Result[IntentResolution] {
   // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<IntentResolution> raiseIntent(String intent, Context context, AppIdentifier app);
 ```
 
 </TabItem>
@@ -1891,6 +2273,37 @@ resolutionResult := <-desktopAgent.RaiseIntent("intentName", context, nil);
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// raise an intent for resolution by the desktop agent
+desktopAgent.raiseIntent("StartChat", context, null);
+
+// or find apps to resolve an intent to start a chat with a given contact
+AppIntent appIntent = desktopAgent.findIntent("StartChat", context, null).toCompletableFuture().get();
+
+// use the metadata of an app or app instance to describe the target app for the intent
+desktopAgent.raiseIntent("StartChat", context, appIntent.getApps().get(0));
+
+// Raise an intent without a context by using the nothing context type
+desktopAgent.raiseIntent("StartChat", new Context("fdc3.nothing"), null);
+
+// Raise an intent and retrieve a result from the IntentResolution
+IntentResolution resolution = desktopAgent.raiseIntent("intentName", context, null).toCompletableFuture().get();
+try {
+    IntentResult result = resolution.getResult().toCompletableFuture().get();
+    if (result instanceof Channel) {
+        Channel channel = (Channel) result;
+        System.out.println(resolution.getSource() + " returned a channel with id " + channel.getId());
+    } else if (result instanceof Context) {
+        System.out.println(resolution.getSource() + " returned data: " + result);
+    }
+} catch (Exception e) {
+    System.err.println(resolution.getSource() + " returned an error: " + e.getMessage());
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -1926,6 +2339,13 @@ Task<IIntentResolution> RaiseIntentForContext(IContext context, IAppIdentifier? 
 func (desktopAgent *DesktopAgent) RaiseIntentForContext(context IContext, appIdentifier *AppIdentifier) <-chan Result[IntentResolution] {
   // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<IntentResolution> raiseIntentForContext(Context context, AppIdentifier app);
 ```
 
 </TabItem>
@@ -1975,6 +2395,17 @@ intentResolutionResult := <-desktopAgent.RaiseIntentForContext(context, nil)
 
 // Resolve against all intents registered by a specific target app for the specified context
 intentResolutionResult := <-desktopAgent.RaiseIntentForContext(context, &targetAppIdentifier)
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Display a resolver UI for the user to select an intent and application to resolve it
+IntentResolution intentResolution = desktopAgent.raiseIntentForContext(context, null).toCompletableFuture().get();
+
+// Resolve against all intents registered by a specific target app for the specified context
+desktopAgent.raiseIntentForContext(context, targetAppIdentifier);
 ```
 
 </TabItem>

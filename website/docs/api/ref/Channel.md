@@ -95,6 +95,36 @@ const (
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public interface Channel extends IntentResult {
+    String getId();
+    Type getType();
+    DisplayMetadata getDisplayMetadata();
+    
+    CompletionStage<Void> broadcast(Context context);
+    CompletionStage<Optional<Context>> getCurrentContext();
+    CompletionStage<Optional<Context>> getCurrentContext(String contextType);
+    CompletionStage<Listener> addContextListener(String contextType, ContextHandler handler);
+    
+    /** @deprecated Use addContextListener(null, handler) instead */
+    @Deprecated
+    CompletionStage<Listener> addContextListener(ContextHandler handler);
+    
+    enum Type {
+        User("user"),
+        App("app"),
+        Private("private");
+        
+        private final String value;
+        Type(String value) { this.value = value; }
+        public String getValue() { return value; }
+    }
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -128,6 +158,13 @@ string Id { get; }
 
 ```go
 Id string
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+String getId();
 ```
 
 </TabItem>
@@ -171,6 +208,15 @@ const (
 )
 ```
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Channel.Type getType();
+
+enum Type { User, App, Private }
+```
+
+</TabItem>
 </Tabs>
 
 Can be _user_,  _app_ or _private_.
@@ -197,6 +243,13 @@ IDisplayMetadata? DisplayMetadata { get; }
 ```go
 DisplayMetadata *DisplayMetadata
 ```
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+DisplayMetadata getDisplayMetadata();
+```
+
 </TabItem>
 </Tabs>
 
@@ -231,6 +284,13 @@ Task<IListener> AddContextListener<T>(string? contextType, ContextHandler<T> han
 func (ch *Channel) AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener]  { 
   // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Listener> addContextListener(String contextType, ContextHandler handler);
 ```
 
 </TabItem>
@@ -304,6 +364,22 @@ if listenerResult.Value != nil {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Listener listener = channel.addContextListener(null, (context, metadata) -> {
+    if ("fdc3.contact".equals(context.getType())) {
+        // handle the contact
+    } else if ("fdc3.instrument".equals(context.getType())) {
+        // handle the instrument
+    }
+}).toCompletableFuture().get();
+
+// later
+listener.unsubscribe();
+```
+
+</TabItem>
 </Tabs>
 
 Adding listeners for specific types of context that is broadcast on the channel:
@@ -363,6 +439,23 @@ if listenerResultInstrument.Value != nil {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Listener contactListener = channel.addContextListener("fdc3.contact", (contact, metadata) -> {
+    // handle the contact
+}).toCompletableFuture().get();
+
+Listener instrumentListener = channel.addContextListener("fdc3.instrument", (instrument, metadata) -> {
+    // handle the instrument
+}).toCompletableFuture().get();
+
+// later
+contactListener.unsubscribe();
+instrumentListener.unsubscribe();
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -416,6 +509,14 @@ var listener = await myChannel.AddEventListener(null, (event) => {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Not implemented on Channel interface; use PrivateChannel.addEventListener
+Not implemented
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -447,6 +548,13 @@ Task Broadcast(IContext context);
 func (channel *Channel) Broadcast(context IContext) <-chan Result[any]  { 
   // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Void> broadcast(Context context);
 ```
 
 </TabItem>
@@ -514,6 +622,19 @@ if result.Err != null {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+try {
+    Context instrument = new Context("fdc3.instrument");
+    instrument.getId().put("ticker", "AAPL");
+    channel.broadcast(instrument).toCompletableFuture().get();
+} catch (Exception e) {
+    // handle error
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -545,6 +666,13 @@ Task<IContext?> GetCurrentContext(string? contextType);
 func (channel *Channel) GetCurrentContext(contextType string) <-chan Result[Context]  { 
   // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Optional<Context>> getCurrentContext(String contextType);
 ```
 
 </TabItem>
@@ -598,6 +726,17 @@ if result.Err != null {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+try {
+    Optional<Context> context = channel.getCurrentContext(null).toCompletableFuture().get();
+} catch (Exception e) {
+    // handle error
+}
+```
+
+</TabItem>
 </Tabs>
 
 Specifying a context type:
@@ -638,6 +777,17 @@ if result.Err != null {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+try {
+    Optional<Context> contact = channel.getCurrentContext("fdc3.contact").toCompletableFuture().get();
+} catch (Exception e) {
+    // handle error
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -660,6 +810,13 @@ public clearContext(contextType?: string): Promise<void>;
 
 ```csharp
 Task ClearContext(string? contextType);
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Not implemented
 ```
 
 </TabItem>
@@ -699,6 +856,13 @@ catch (Exception ex)
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Not implemented
+```
+
+</TabItem>
 </Tabs>
 
 Specifying a context type:
@@ -729,6 +893,13 @@ catch (Exception ex)
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Not implemented
+```
+
+</TabItem>
 </Tabs>
 
 
@@ -737,7 +908,6 @@ catch (Exception ex)
 - [`getCurrentContext`](#getcurrentcontext)
 - [`addContextListener`](DesktopAgent#addContextListener)
 - [`joinUserChannel`](DesktopAgent#joinUserChannel)
-- [`addEventListener`](#addeventlistener)
 
 ## Deprecated Functions
 
@@ -765,6 +935,14 @@ Not implemented
 
 ```
 Not implemented
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+/** @deprecated Use addContextListener(null, handler) instead */
+CompletionStage<Listener> addContextListener(ContextHandler handler);
 ```
 
 </TabItem>

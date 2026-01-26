@@ -72,6 +72,21 @@ func (privateChannel *PrivateChannel) Disconnect() <-Result[any]  {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public interface PrivateChannel extends Channel {
+    CompletionStage<Listener> addEventListener(String type, EventHandler handler);
+    void disconnect();
+    
+    // deprecated functions
+    @Deprecated CompletionStage<Listener> onAddContextListener(EventHandler handler);
+    @Deprecated CompletionStage<Listener> onUnsubscribe(EventHandler handler);
+    @Deprecated CompletionStage<Listener> onDisconnect(EventHandler handler);
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -199,6 +214,38 @@ _desktopAgent.AddIntentListener<Instrument>("QuoteStream", async (context, metad
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+desktopAgent.addIntentListener("QuoteStream", (context, metadata) -> {
+    PrivateChannel channel = desktopAgent.createPrivateChannel().toCompletableFuture().get();
+    String symbol = context.getId().get("ticker");
+    
+    // This gets called when the remote side adds a context listener
+    channel.addEventListener("addContextListener", event -> {
+        PrivateChannelAddContextListenerEvent addEvent = (PrivateChannelAddContextListenerEvent) event;
+        System.out.println("remote side added listener for " + addEvent.getContextType());
+        feed.onQuote(symbol, price -> {
+            Context priceContext = new Context("price");
+            channel.broadcast(priceContext);
+        });
+    });
+    
+    // This gets called when the remote side calls Listener.unsubscribe()
+    channel.addEventListener("unsubscribe", event -> {
+        feed.stop(symbol);
+    });
+    
+    // This gets called if the remote side closes
+    channel.addEventListener("disconnect", event -> {
+        feed.stop(symbol);
+    });
+    
+    return CompletableFuture.completedFuture(channel);
+});
+```
+
+</TabItem>
 </Tabs>
 
 ### 'Client-side' example
@@ -303,6 +350,38 @@ if channel, ok := result.Value.(Channel); ok {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+try {
+    IntentResolution resolution = desktopAgent.raiseIntent("QuoteStream",
+        new Instrument("fdc3.instrument", Map.of("ticker", "AAPL"))).toCompletableFuture().get();
+    IntentResult result = resolution.getResult().toCompletableFuture().get();
+    
+    if (result instanceof Channel) {
+        Channel channel = (Channel) result;
+        Listener listener = channel.addContextListener("price", (quote, metadata) -> {
+            System.out.println(quote);
+        }).toCompletableFuture().get();
+        
+        if (channel instanceof PrivateChannel) {
+            PrivateChannel privateChannel = (PrivateChannel) channel;
+            privateChannel.addEventListener("disconnect", event -> {
+                System.out.println("Quote feed went down");
+            });
+            
+            // Sometime later...
+            listener.unsubscribe();
+        }
+    } else {
+        System.out.println(resolution.getSource() + " did not return a channel");
+    }
+} catch (Exception e) {
+    System.err.println("Error: " + e.getMessage());
+}
+```
+
+</TabItem>
 </Tabs>
 
 ## Functions
@@ -330,6 +409,13 @@ Task<IListener> AddEventListener(string? eventType, Fdc3EventHandler handler);
 func (privateChannel *PrivateChannel) AddEventListener(eventType *PrivateChannelEventTypes, handler EventHandler) <-Result[Listener] {
     // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Listener> addEventListener(String type, EventHandler handler);
 ```
 
 </TabItem>
@@ -366,6 +452,15 @@ var listener = await myPrivateChannel.AddEventListener(null, (event) => {
 listenerResult := AddEventListener(nil, func(event PrivateChannelEvent) {
     fmt.Printf("Received event %v\n\tDetails: %v", event.Type, event.Details)
 })
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Listener listener = privateChannel.addEventListener(null, event -> {
+    System.out.println("Received event " + event.getType() + "\n\tDetails: " + event.getDetails());
+}).toCompletableFuture().get();
 ```
 
 </TabItem>
@@ -406,6 +501,13 @@ func (privateChannel *PrivateChannel) Disconnect() <-Result[any] {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+void disconnect();
+```
+
+</TabItem>
 </Tabs>
   
 May be called to indicate that a participant will no longer interact with this channel.
@@ -435,6 +537,14 @@ IListener OnAddContextListener(Action<string?> handler);
 func (privateChannel *PrivateChannel) OnAddContextListener(handler func(contextType *ContextType)) Result[Listener] {
     // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+/** @deprecated Use addEventListener("addContextListener", handler) instead */
+CompletionStage<Listener> onAddContextListener(EventHandler handler);
 ```
 
 </TabItem>
@@ -470,6 +580,14 @@ func (privateChannel *PrivateChannel) OnUnsubscribe(handler func(contextType *Co
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+/** @deprecated Use addEventListener("unsubscribe", handler) instead */
+CompletionStage<Listener> onUnsubscribe(EventHandler handler);
+```
+
+</TabItem>
 </Tabs>
 
 Deprecated in favour of the async `addEventListener("unsubscribe", handler)` function.
@@ -499,6 +617,14 @@ IListener OnDisconnect(Action handler);
 func (privateChannel *PrivateChannel) OnDisconnect(handler func()) Result[Listener] {
     // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+/** @deprecated Use addEventListener("disconnect", handler) instead */
+CompletionStage<Listener> onDisconnect(EventHandler handler);
 ```
 
 </TabItem>
