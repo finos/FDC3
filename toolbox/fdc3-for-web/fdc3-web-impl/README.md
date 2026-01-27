@@ -1,6 +1,6 @@
 # FDC3 Web Implementation
 
-This repository contains a [FDC3 2.0 Conformant](../../fdc3-conformance/README.md), headless implementation of the FDC3 DACP protocol. 
+This repository contains a [FDC3 2.2 Conformant](../../fdc3-conformance/README.md), headless implementation of the FDC3 DACP protocol. 
 
 This package forms the basis of the implementation of the FDC3 Desktop Agent reference implementation, found in [the demo module](../demo/README.md) as well as the web-version of [FDC3-Sail](https://github.com/finos/FDC3-Sail/).
 
