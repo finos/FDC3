@@ -38,7 +38,11 @@ export class HeartbeatHandler implements MessageHandler {
   private readonly lastHeartbeats: Map<InstanceID, number> = new Map();
   private readonly timerFunction: NodeJS.Timeout;
 
-  constructor(pingInterval: number = 1000, disconnectedAfter: number = 5000, deadAfter: number = 20000) {
+  constructor(pingInterval: number = 5000, disconnectedAfter: number = 30000, deadAfter: number = 60000) {
+    console.log(
+      `Setting up Heartbeat handler: pingInterval: ${pingInterval} ms, disconnectedAfter: ${disconnectedAfter} ms, deadAfter: ${deadAfter} ms`
+    );
+
     this.timerFunction = setInterval(() => {
       this.contexts.forEach(async sc => {
         const apps = await sc.getAllApps();
