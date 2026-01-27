@@ -10,14 +10,14 @@ import {
   DesktopAgent,
   getOrCreateChannel,
 } from '@finos/fdc3';
-import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
+import { APIDocumentation } from './apiDocuments';
 import constants from '../../constants';
 import { handleFail, wait, wrapPromise } from '../../utils';
 import { AppControlContext, IntentUtilityContext } from '../../context-types';
 
-const raiseIntentDocs = '\r\nDocumentation: ' + APIDocumentation2_0.raiseIntent + '\r\nCause';
+const raiseIntentDocs = '\r\nDocumentation: ' + APIDocumentation.raiseIntent + '\r\nCause';
 
-export class RaiseIntentControl2_0 {
+export class RaiseIntentControl {
   private readonly fdc3: DesktopAgent;
 
   constructor(fdc3: DesktopAgent) {

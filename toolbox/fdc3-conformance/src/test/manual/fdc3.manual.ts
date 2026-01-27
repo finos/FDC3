@@ -1,17 +1,17 @@
 import { FDC3ChannelChangedEvent, getAgent } from '@finos/fdc3';
-import { closeMockAppWindow } from '../fdc3-2_0-utils';
-import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
-import { ContextType, IntentApp, Intent, RaiseIntentControl2_0 } from '../support/intent-support-2.0';
+import { closeMockAppWindow } from '../fdc3-conformance-utils';
+import { APIDocumentation } from '../support/apiDocuments';
+import { ContextType, IntentApp, Intent, RaiseIntentControl } from '../support/intent-support';
 import { handleFail, wait } from '../../utils';
 import { expect } from 'chai';
 
-const raiseIntentDocs = '\r\nDocumentation: ' + APIDocumentation2_0.raiseIntent + '\r\nCause';
+const raiseIntentDocs = '\r\nDocumentation: ' + APIDocumentation.raiseIntent + '\r\nCause';
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md
  */
 
-export const fdc3ResolveAmbiguousIntentTarget_2_0 = async () =>
+export const fdc3ResolveAmbiguousIntentTarget = async () =>
   describe('ResolveAmbiguousIntentTarget', async () => {
     const fdc3 = await getAgent();
 
@@ -32,7 +32,7 @@ export const fdc3ResolveAmbiguousIntentTarget_2_0 = async () =>
     });
   });
 
-export const fdc3ResolveAmbiguousContextTarget_2_0 = async () =>
+export const fdc3ResolveAmbiguousContextTarget = async () =>
   describe('ResolveAmbiguousContextTarget', async () => {
     const fdc3 = await getAgent();
 
@@ -53,10 +53,10 @@ export const fdc3ResolveAmbiguousContextTarget_2_0 = async () =>
     });
   });
 
-export const fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0 = async () =>
+export const fdc3ResolveAmbiguousIntentTargetMultiInstance = async () =>
   describe('ResolveAmbiguousIntentTargetMultiInstance', async () => {
     const fdc3 = await getAgent();
-    const control = new RaiseIntentControl2_0(fdc3);
+    const control = new RaiseIntentControl(fdc3);
 
     after(async function after() {
       await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test');
@@ -81,10 +81,10 @@ export const fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0 = async () =>
     });
   });
 
-export const fdc3ResolveAmbiguousContextTargetMultiInstance_2_0 = async () =>
+export const fdc3ResolveAmbiguousContextTargetMultiInstance = async () =>
   describe('ResolveAmbiguousContextTargetMultiInstance', async () => {
     const fdc3 = await getAgent();
-    const control = new RaiseIntentControl2_0(fdc3);
+    const control = new RaiseIntentControl(fdc3);
 
     after(async function after() {
       await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test');
@@ -109,9 +109,9 @@ export const fdc3ResolveAmbiguousContextTargetMultiInstance_2_0 = async () =>
     });
   });
 
-export const fdc3ChannelChangedEvent_2_2 = async () =>
-  describe('2.2-ChannelChangedEvent', () => {
-    it('(2.2-ChannelChangedEvent) Should receive an event when the user changes channel.  This is a manual test, please change the channel a few times in your browser to get this to pass.', async () => {
+export const fdc3ChannelChangedEvent = async () =>
+  describe('ChannelChangedEvent', () => {
+    it('(ChannelChangedEvent) Should receive an event when the user changes channel.  This is a manual test, please change the channel a few times in your browser to get this to pass.', async () => {
       const channels: (string | null)[] = [];
       try {
         const agent = await getAgent();

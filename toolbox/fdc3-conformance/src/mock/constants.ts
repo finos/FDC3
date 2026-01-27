@@ -8,5 +8,5 @@ export const commands = {
   retrieveTestAppChannel: 'retrieveTestAppChannel',
   broadcastInstrumentContext: 'broadcastInstrumentContext',
   broadcastContactContext: 'broadcastContactContext',
-  joinUserChannelOne: 'joinUserChannelOne', // v2.0
+  joinUserChannelOne: 'joinUserChannelOne',
 };

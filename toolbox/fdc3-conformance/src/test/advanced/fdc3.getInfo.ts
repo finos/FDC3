@@ -1,12 +1,12 @@
 import { expect } from 'chai';
 import { handleFail, wrapPromise } from '../../utils';
-import { closeMockAppWindow } from '../fdc3-2_0-utils';
+import { closeMockAppWindow } from '../fdc3-conformance-utils';
 import { ImplementationMetadata, Listener } from '@finos/fdc3';
-import { MetadataValidator, MetadataContext, MetadataFdc3Api } from '../support/metadata-support-2.0';
-import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
-import { ControlContextType } from '../support/intent-support-2.0';
+import { MetadataValidator, MetadataContext, MetadataFdc3Api } from '../support/metadata-support';
+import { APIDocumentation } from '../support/apiDocuments';
+import { ControlContextType } from '../support/intent-support';
 
-const getInfoDocs = '\r\nDocumentation: ' + APIDocumentation2_0.getInfo + '\r\nCause';
+const getInfoDocs = '\r\nDocumentation: ' + APIDocumentation.getInfo + '\r\nCause';
 const validator = new MetadataValidator();
 const api = new MetadataFdc3Api();
 

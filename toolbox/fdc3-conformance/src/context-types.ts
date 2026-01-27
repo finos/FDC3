@@ -1,4 +1,3 @@
-/** same in 1.2 and 2.0 */
 export interface CommonContext {
   id?: {
     [key: string]: string;

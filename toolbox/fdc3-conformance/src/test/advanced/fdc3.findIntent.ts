@@ -1,10 +1,10 @@
 import { AppIntent, IntentMetadata, ResolveError, DesktopAgent } from '@finos/fdc3';
 import { assert, expect } from 'chai';
-import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
-import { ContextType, IntentApp, Intent } from '../support/intent-support-2.0';
+import { APIDocumentation } from '../support/apiDocuments';
+import { ContextType, IntentApp, Intent } from '../support/intent-support';
 
 declare let fdc3: DesktopAgent;
-const findIntentDocs = '\r\nDocumentation: ' + APIDocumentation2_0.findIntent + '\r\nCause';
+const findIntentDocs = '\r\nDocumentation: ' + APIDocumentation.findIntent + '\r\nCause';
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md

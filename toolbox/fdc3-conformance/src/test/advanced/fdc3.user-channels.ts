@@ -3,16 +3,15 @@ import { wait } from '../../utils';
 import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from '../support/channel-control';
 import constants from '../../constants';
 import { Context } from '@finos/fdc3';
-import { ChannelControl2_0 } from '../support/channels-support-2.0';
+import { ChannelControlImpl } from '../support/channels-support';
 import { getAgent } from '@finos/fdc3';
-import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
+import { APIDocumentation } from '../support/apiDocuments';
 
-const documentation = '\r\nDocumentation: ' + APIDocumentation2_0.desktopAgent + '\r\nCause:';
+const documentation = '\r\nDocumentation: ' + APIDocumentation.desktopAgent + '\r\nCause:';
 
 export default async () => {
   const fdc3 = await getAgent();
-  const cc = new ChannelControl2_0(fdc3);
-  const prefix = '2.0-';
+  const cc = new ChannelControlImpl(fdc3);
 
   return describe('fdc3.userChannels', () => {
     beforeEach(cc.leaveChannel);
@@ -23,9 +22,7 @@ export default async () => {
     });
 
     const scTestId1 =
-      '(' +
-      prefix +
-      'UCBasicUsage1) Should receive context when adding a listener then joining a user channel before app B broadcasts context to the same channel';
+      '(UCBasicUsage1) Should receive context when adding a listener then joining a user channel before app B broadcasts context to the same channel';
     it(scTestId1, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- Add fdc3.instrument context listener to app A\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
 
@@ -56,9 +53,7 @@ export default async () => {
     });
 
     const scTestId2 =
-      '(' +
-      prefix +
-      'UCBasicUsage2) Should receive context when joining a user channel then adding a context listener before app B broadcasts context to the same channel';
+      '(UCBasicUsage2) Should receive context when joining a user channel then adding a context listener before app B broadcasts context to the same channel';
     it(scTestId2, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins channel 1\r\n- Add listener of type fdc3.instrument to App A\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
 
@@ -89,9 +84,7 @@ export default async () => {
     });
 
     const scTestId3 =
-      '(' +
-      prefix +
-      'UCBasicUsage3) Should receive context when app B joins then broadcasts context to a user channel before A joins and listens on the same channel';
+      '(UCBasicUsage3) Should receive context when app B joins then broadcasts context to a user channel before A joins and listens on the same channel';
     it(scTestId3, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener${documentation}`;
 
@@ -122,9 +115,7 @@ export default async () => {
     });
 
     const UCBasicUsage4 =
-      '(' +
-      prefix +
-      'UCBasicUsage4) Should receive context when app B joins then broadcasts context to a user channel before A joins and listens on the same channel';
+      '(UCBasicUsage4) Should receive context when app B joins then broadcasts context to a user channel before A joins and listens on the same channel';
     it(UCBasicUsage4, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener${documentation}`;
 
@@ -155,9 +146,7 @@ export default async () => {
     });
 
     const scTestId4 =
-      '(' +
-      prefix +
-      'UCFilteredUsage1) Should receive context when app A adds a listener before joining a user channel and app B broadcasts the listened type to the same user channel';
+      '(UCFilteredUsage1) Should receive context when app A adds a listener before joining a user channel and app B broadcasts the listened type to the same user channel';
     it(scTestId4, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument and fdc3.contact${documentation}`;
 
@@ -188,9 +177,7 @@ export default async () => {
     });
 
     const UCFilteredUsage2 =
-      '(' +
-      prefix +
-      'UCFilteredUsage2 ) Should receive context when app A joins a user channel before adding a listener and app B broadcasts the listened type to the same user channel';
+      '(UCFilteredUsage2 ) Should receive context when app A joins a user channel before adding a listener and app B broadcasts the listened type to the same user channel';
     it(UCFilteredUsage2, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument and fdc3.contact${documentation}`;
 
@@ -221,9 +208,7 @@ export default async () => {
     });
 
     const UCFilteredUsage3 =
-      '(' +
-      prefix +
-      'UCFilteredUsage3) Should receive context when B broadcasts to a user channel before A listens for the broadcast type and joins the same channel as B';
+      '(UCFilteredUsage3) Should receive context when B broadcasts to a user channel before A listens for the broadcast type and joins the same channel as B';
     it(UCFilteredUsage3, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument and fdc3.contact\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel 1${documentation}`;
 
@@ -254,9 +239,7 @@ export default async () => {
     });
 
     const UCFilteredUsage4 =
-      '(' +
-      prefix +
-      'UCFilteredUsage4) Should receive context when B broadcasts to a user channel before A joins the same channel and listens for the broadcast type';
+      '(UCFilteredUsage4) Should receive context when B broadcasts to a user channel before A joins the same channel and listens for the broadcast type';
     it(UCFilteredUsage4, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument and fdc3.contact\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener${documentation}`;
 
@@ -287,9 +270,7 @@ export default async () => {
     });
 
     const scTestId5 =
-      '(' +
-      prefix +
-      'UCFilteredUsage5) Should receive multiple contexts when app B broadcasts the listened types to the same user channel';
+      '(UCFilteredUsage5) Should receive multiple contexts when app B broadcasts the listened types to the same user channel';
     it(scTestId5, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument and fdc3.contact context listener\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts both context types${documentation}`;
 
@@ -351,9 +332,7 @@ export default async () => {
     });
 
     const scTestId6 =
-      '(' +
-      prefix +
-      'UCFilteredUsage6) Should not receive context when A & B join different user channels and app B broadcasts a listened type';
+      '(UCFilteredUsage6) Should not receive context when A & B join different user channels and app B broadcasts a listened type';
     it(scTestId6, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument and fdc3.contact context listener\r\n- App A joins channel 2\r\n- App B joins channel 1\r\n- App B broadcasts both context types${documentation}`;
 
@@ -386,9 +365,7 @@ export default async () => {
     });
 
     const scTestId7 =
-      '(' +
-      prefix +
-      'UCFilteredUsageUnsubscribe) Should not receive context when unsubscribing a user channel before app B broadcasts the listened type to that channel';
+      '(UCFilteredUsageUnsubscribe) Should not receive context when unsubscribing a user channel before app B broadcasts the listened type to that channel';
     it(scTestId7, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A unsubscribes the listener\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
@@ -419,9 +396,7 @@ export default async () => {
     });
 
     const scTestId8 =
-      '(' +
-      prefix +
-      'UCFilteredUsageChange) Should not receive context when joining two different user channels before app B broadcasts the listened type to the first channel that was joined';
+      '(UCFilteredUsageChange) Should not receive context when joining two different user channels before app B broadcasts the listened type to the first channel that was joined';
     it(scTestId8, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A joins channel 2\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
@@ -457,8 +432,7 @@ export default async () => {
       cc.unsubscribeListeners([listener, listener2]);
     });
 
-    const UCFilteredUsageLeave =
-      '(' + prefix + 'UCFilteredUsageLeave) Should not receive context after leaving a user channel';
+    const UCFilteredUsageLeave = '(UCFilteredUsageLeave) Should not receive context after leaving a user channel';
     it(UCFilteredUsageLeave, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument and fdc3.contact context listener\r\n- App A joins channel 1\r\n- App A leaves current channel\r\n- App B joins channel 1\r\n- App B broadcasts both context types${documentation}`;
 
@@ -495,9 +469,7 @@ export default async () => {
     });
 
     const scTestId9 =
-      '(' +
-      prefix +
-      "UCFilteredUsageNoJoin) Should not receive context when A doesn't join a user channel before app B broadcasts the listened type to that channel";
+      "(UCFilteredUsageNoJoin) Should not receive context when A doesn't join a user channel before app B broadcasts the listened type to that channel";
     it(scTestId9, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A unsubscribes the listener\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
@@ -514,8 +486,7 @@ export default async () => {
       await wait(constants.ShortWait);
     });
 
-    const UCFilteredUsageJoin =
-      '(' + prefix + 'UCFilteredUsageJoin) getCurrentChannel retrieves the channel that was joined';
+    const UCFilteredUsageJoin = '(UCFilteredUsageJoin) getCurrentChannel retrieves the channel that was joined';
     it(UCFilteredUsageJoin, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves user channels\r\n- App A joins the third channel\r\n- App A gets current channel${documentation}`;
       const channels = await cc.getNonGlobalUserChannels();

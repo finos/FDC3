@@ -10,10 +10,10 @@ import {
   ImplementationMetadata,
 } from '@finos/fdc3';
 import constants from '../../constants';
-import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
+import { APIDocumentation } from './apiDocuments';
 
-const getMetadataDocs = '\r\nDocumentation: ' + APIDocumentation2_0.appMetadata + '\r\nCause: ';
-const getInfoDocs = '\r\nDocumentation: ' + APIDocumentation2_0.getInfo + '\r\nCause';
+const getMetadataDocs = '\r\nDocumentation: ' + APIDocumentation.appMetadata + '\r\nCause: ';
+const getInfoDocs = '\r\nDocumentation: ' + APIDocumentation.getInfo + '\r\nCause';
 declare let fdc3: DesktopAgent;
 const validAppMetaDataProperties = [
   'appId',

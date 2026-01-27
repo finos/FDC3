@@ -2,9 +2,9 @@ import { assert, expect } from 'chai';
 import { Channel, Context, Listener, DesktopAgent } from '@finos/fdc3';
 import constants from '../../constants';
 import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from '../support/channel-control';
-import { closeMockAppWindow, waitForContext } from '../fdc3-2_0-utils';
+import { closeMockAppWindow, waitForContext } from '../fdc3-conformance-utils';
 
-export class ChannelControl2_0 implements ChannelControl {
+export class ChannelControlImpl implements ChannelControl {
   private readonly testAppChannelName = 'test-channel';
   private readonly fdc3: DesktopAgent;
 
@@ -15,7 +15,7 @@ export class ChannelControl2_0 implements ChannelControl {
   getNonGlobalUserChannels = async () => {
     const channels = await this.fdc3.getUserChannels();
     if (channels.find(channel => channel.id.indexOf('global') >= 0)) {
-      assert.fail('Global channel recieved ');
+      assert.fail('Global channel received ');
     }
     return channels.filter(channel => channel.id.indexOf('global') === -1);
   };

@@ -2,8 +2,8 @@
  * Links to API documentation
  */
 
-export const APIDocumentation2_0 = {
-  getAgent: "https://fdc3.finos.org/docs/api/ref/GetAgent",
+export const APIDocumentation = {
+  getAgent: 'https://fdc3.finos.org/docs/api/ref/GetAgent',
   desktopAgent: 'https://fdc3.finos.org/docs/api/ref/DesktopAgent',
   addContextListener: 'https://fdc3.finos.org/docs/api/ref/DesktopAgent#addcontextlistener',
   addIntentListener: 'https://fdc3.finos.org/docs/api/ref/DesktopAgent#addintentlistener',

@@ -1,14 +1,14 @@
 import { ChannelError, PrivateChannel, Listener, getAgent, DesktopAgent } from '@finos/fdc3';
 import { assert, expect } from 'chai';
 import {
-  RaiseIntentControl2_0,
+  RaiseIntentControl,
   IntentResultType,
   IntentApp,
   ContextType,
   Intent,
   ControlContextType,
-} from '../support/intent-support-2.0';
-import { closeMockAppWindow } from '../fdc3-2_0-utils';
+} from '../support/intent-support';
+import { closeMockAppWindow } from '../fdc3-conformance-utils';
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md
@@ -16,12 +16,12 @@ import { closeMockAppWindow } from '../fdc3-2_0-utils';
 export default async () =>
   describe('fdc3.raiseIntent', () => {
     let errorListener: Listener | undefined = undefined;
-    let control: RaiseIntentControl2_0;
+    let control: RaiseIntentControl;
     let fdc3: DesktopAgent;
 
     beforeEach(async () => {
       fdc3 = await getAgent();
-      control = new RaiseIntentControl2_0(fdc3);
+      control = new RaiseIntentControl(fdc3);
     });
 
     afterEach(async function afterEach() {

@@ -1,30 +1,24 @@
 import { assert, expect } from 'chai';
-import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
+import { APIDocumentation } from '../support/apiDocuments';
 import { handleFail, wrapPromise } from '../../utils';
-import { closeMockAppWindow } from '../fdc3-2_0-utils';
+import { closeMockAppWindow } from '../fdc3-conformance-utils';
 import { IntentUtilityContext } from '../../context-types';
-import { MetadataFdc3Api } from '../support/metadata-support-2.0';
-import {
-  ContextType,
-  ControlContextType,
-  Intent,
-  IntentApp,
-  RaiseIntentControl2_0,
-} from '../support/intent-support-2.0';
+import { MetadataFdc3Api } from '../support/metadata-support';
+import { ContextType, ControlContextType, Intent, IntentApp, RaiseIntentControl } from '../support/intent-support';
 import { AppIdentifier, DesktopAgent, getAgent, IntentResolution, Listener } from '@finos/fdc3';
 
-const findInstancesDocs = '\r\nDocumentation: ' + APIDocumentation2_0.findInstances + '\r\nCause: ';
+const findInstancesDocs = '\r\nDocumentation: ' + APIDocumentation.findInstances + '\r\nCause: ';
 
 export default async () =>
   describe('fdc3.findInstances', function () {
     this.timeout(5000);
 
-    let control: RaiseIntentControl2_0;
+    let control: RaiseIntentControl;
     let fdc3: DesktopAgent;
 
     beforeEach(async () => {
       fdc3 = await getAgent();
-      control = new RaiseIntentControl2_0(fdc3);
+      control = new RaiseIntentControl(fdc3);
     });
 
     after(async function after() {

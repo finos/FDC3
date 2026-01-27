@@ -4,14 +4,14 @@ import constants from '../../constants';
 import { ContextSender } from '../../mock/v2.0/general';
 import { failAfterTimeout } from '../../utils';
 import { AppControlContext } from '../../context-types';
-import { OpenControl } from '../support/open-control';
-import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
-import { closeMockAppWindow } from '../fdc3-2_0-utils';
-import { ControlContextType } from './intent-support-2.0';
+import { OpenControl } from './open-control';
+import { APIDocumentation } from './apiDocuments';
+import { closeMockAppWindow } from '../fdc3-conformance-utils';
+import { ControlContextType } from './intent-support';
 
-const openDocs = '\r\nDocumentation: ' + APIDocumentation2_0.open + '\r\nCause:';
+const openDocs = '\r\nDocumentation: ' + APIDocumentation.open + '\r\nCause:';
 
-export class OpenControl2_0 implements OpenControl {
+export class OpenControlImpl implements OpenControl {
   private readonly fdc3: DesktopAgent;
 
   constructor(fdc3: DesktopAgent) {

@@ -4,7 +4,7 @@ import { AppControlContext } from '../../../context-types';
 import { channelType } from '../../constants';
 import { IBroadcastService, IChannelService } from '../../interfaces';
 
-export class ChannelService2_0 implements IChannelService {
+export class ChannelServiceImpl implements IChannelService {
   constructor(fdc3: DesktopAgent) {
     this.fdc3 = fdc3;
   }

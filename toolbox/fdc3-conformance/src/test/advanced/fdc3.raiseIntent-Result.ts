@@ -1,24 +1,24 @@
 import { DesktopAgent, getAgent, Listener } from '@finos/fdc3';
-import { closeMockAppWindow } from '../fdc3-2_0-utils';
+import { closeMockAppWindow } from '../fdc3-conformance-utils';
 import {
-  RaiseIntentControl2_0,
+  RaiseIntentControl,
   IntentResultType,
   IntentApp,
   ContextType,
   Intent,
   ControlContextType,
-} from '../support/intent-support-2.0';
+} from '../support/intent-support';
 import constants from '../../constants';
 
 export default async () =>
   describe('fdc3.raiseIntent (Result)', () => {
     let errorListener: Listener | undefined = undefined;
-    let control: RaiseIntentControl2_0;
+    let control: RaiseIntentControl;
     let fdc3: DesktopAgent;
 
     beforeEach(async () => {
       fdc3 = await getAgent();
-      control = new RaiseIntentControl2_0(fdc3);
+      control = new RaiseIntentControl(fdc3);
     });
 
     afterEach(async function afterEach() {

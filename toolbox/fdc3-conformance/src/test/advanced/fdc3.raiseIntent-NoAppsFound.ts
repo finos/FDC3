@@ -1,24 +1,24 @@
 import { DesktopAgent, getAgent, ResolveError } from '@finos/fdc3';
 import { assert, expect } from 'chai';
-import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
-import { ContextType, IntentApp, Intent, RaiseIntentControl2_0 } from '../support/intent-support-2.0';
+import { APIDocumentation } from '../support/apiDocuments';
+import { ContextType, IntentApp, Intent, RaiseIntentControl } from '../support/intent-support';
 import constants from '../../constants';
 import { wait } from '../../utils';
-import { closeMockAppWindow } from '../fdc3-2_0-utils';
+import { closeMockAppWindow } from '../fdc3-conformance-utils';
 
-const raiseIntentDocs = '\r\nDocumentation: ' + APIDocumentation2_0.raiseIntent + '\r\nCause';
+const raiseIntentDocs = '\r\nDocumentation: ' + APIDocumentation.raiseIntent + '\r\nCause';
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md
  */
 export default async () =>
   describe('fdc3.raiseIntent (throws error)', () => {
-    let control: RaiseIntentControl2_0;
+    let control: RaiseIntentControl;
     let fdc3: DesktopAgent;
 
     beforeEach(async () => {
       fdc3 = await getAgent();
-      control = new RaiseIntentControl2_0(fdc3);
+      control = new RaiseIntentControl(fdc3);
     });
 
     const RaiseIntentFailedResolve =
