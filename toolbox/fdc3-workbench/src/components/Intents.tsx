@@ -533,14 +533,14 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
         clearTargets();
 
         if (appIntents.length > 0) {
-          setIntentsForContext(
-            appIntents.map(({ intent }: { intent: any }) => {
-              return {
-                title: intent.name,
-                value: intent.name,
-              };
-            })
-          );
+          const options = appIntents.map(({ intent }: { intent: any }) => {
+            return {
+              title: intent.name,
+              value: intent.name,
+            };
+          });
+          console.log('got intent options: ' + JSON.stringify(options, null, 2));
+          setIntentsForContext(options);
         }
       } catch (e) {
         setIntentsForContext([]);
@@ -596,9 +596,8 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
                 value={intentValue}
                 onChange={handleChangeListener(setIntentValue, setRaiseIntentError)}
                 filterOptions={filterOptions}
-                options={intentsForContext || intentListenersOptions}
+                options={intentsForContext ?? intentListenersOptions}
                 getOptionLabel={getOptionLabel}
-                renderOption={option => option.title}
                 renderInput={params => (
                   <TemplateTextField
                     label="INTENT TYPE"
@@ -821,7 +820,6 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
                 filterOptions={filterOptions}
                 options={intentListenersOptions}
                 getOptionLabel={getOptionLabel}
-                renderOption={option => option.title}
                 renderInput={params => (
                   <TemplateTextField
                     label="INTENT LISTENER"
@@ -897,21 +895,13 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
           {sendIntentResult && (
             <Grid item xs={12} sx={styles.indentLeft}>
               <RadioGroup name="intent-result-type" value={resultType} onChange={e => setResultType(e.target.value)}>
-                <FormControlLabel
-                  value="context-result"
-                  control={<Radio sx={styles.input} />}
-                  label="Context result"
-                />
+                <FormControlLabel value="context-result" control={<Radio sx={styles.input} />} label="Context result" />
                 {resultType === 'context-result' && (
                   <Grid item sx={styles.indentLeft}>
                     <ContextTemplates handleTabChange={handleTabChange} contextStateSetter={setResultTypeContext} />
                   </Grid>
                 )}
-                <FormControlLabel
-                  value="channel-result"
-                  control={<Radio sx={styles.input} />}
-                  label="Channel result"
-                />
+                <FormControlLabel value="channel-result" control={<Radio sx={styles.input} />} label="Channel result" />
                 {resultType === 'channel-result' && (
                   <Grid item sx={styles.indentLeft}>
                     <ToggleButtonGroup
