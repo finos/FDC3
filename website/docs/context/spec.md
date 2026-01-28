@@ -232,6 +232,22 @@ E.g. `"CURRENCY_ISOCODE": "GBP"`
 ISO 4217 only includes major currency codes, conversions to minor currencies is the responsibility of the consuming system (where required).
 :::
 
+### Context Metadata
+
+FDC3 Context is intended to provide a common _data_ format that is used for messaging between applications. Context object definitions should avoid including fields that represent metadata.
+
+Metadata such as the originating application, timestamps, digital signatures, or trace identifiers are important for routing, auditing, and linking related interactions, but they do not form part of the business data that the Context represents. Mixing metadata with core data can lead to ambiguity, increase complexity for developers, and reduce interoperability between implementations.
+
+To maintain clarity and consistency, FDC3 separates metadata from Context objects. This ensures that:
+
+- Context remains focused on the business data being shared, making it easier to define, validate, and reuse across different workflows.
+- Metadata can evolve independently to support advanced features such as provenance, security, and correlation without impacting the core data model.
+- Handlers receive both `Context` and `ContextMetadata` explicitly, allowing applications to process data and metadata according to their respective concerns.
+
+This separation provides a cleaner architecture, improves interoperability, and supports future enhancements without breaking existing Context definitions.
+
+For more details on `ContextMetadata` please see the [FDC3 API overview](../api/spec#receive-metadata-about-a-broadcast-or-raised-intent) and [`ContextMetadata` reference](../api/ref/Metadata#contextmetadata).
+
 ## Context Data Standard Compliance
 
 An FDC3 Standard compliant application that supports the use of context data **MUST**:

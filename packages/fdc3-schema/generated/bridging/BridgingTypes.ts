@@ -594,6 +594,7 @@ export interface BroadcastAgentRequestPayload {
    * The context object that is to be broadcast.
    */
   context: Context;
+  metadata: AppProvidableContextMetadata;
 }
 
 /**
@@ -652,6 +653,15 @@ export interface Context {
    */
   type: string;
   [property: string]: any;
+}
+
+/**
+ * Metadata that can be provided by an app as part of a broadcast, raise intent or open API
+ * call.
+ */
+export interface AppProvidableContextMetadata {
+  custom?: { [key: string]: any };
+  traceId?: string;
 }
 
 /**
@@ -778,6 +788,7 @@ export interface BroadcastBridgeRequestPayload {
    * The context object that is to be broadcast.
    */
   context: Context;
+  metadata: AppProvidableContextMetadata;
 }
 
 /**
@@ -948,11 +959,6 @@ export interface OptionalFeatures {
    * feature is implemented by the Desktop Agent.
    */
   DesktopAgentBridging: boolean;
-  /**
-   * Used to indicate whether the exposure of 'originating app metadata' for
-   * context and intent messages is supported by the Desktop Agent.
-   */
-  OriginatingAppMetadata: boolean;
   /**
    * Used to indicate whether the optional `fdc3.joinUserChannel`,
    * `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
@@ -5105,6 +5111,7 @@ const typeMap: any = {
     [
       { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'context', js: 'context', typ: r('Context') },
+      { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
     ],
     false
   ),
@@ -5115,6 +5122,13 @@ const typeMap: any = {
       { json: 'type', js: 'type', typ: '' },
     ],
     'any'
+  ),
+  AppProvidableContextMetadata: o(
+    [
+      { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
+      { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
+    ],
+    false
   ),
   BroadcastBridgeRequest: o(
     [
@@ -5144,6 +5158,7 @@ const typeMap: any = {
     [
       { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'context', js: 'context', typ: r('Context') },
+      { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
     ],
     false
   ),
@@ -5217,7 +5232,6 @@ const typeMap: any = {
   OptionalFeatures: o(
     [
       { json: 'DesktopAgentBridging', js: 'DesktopAgentBridging', typ: true },
-      { json: 'OriginatingAppMetadata', js: 'OriginatingAppMetadata', typ: true },
       { json: 'UserChannelMembershipAPIs', js: 'UserChannelMembershipAPIs', typ: true },
     ],
     false

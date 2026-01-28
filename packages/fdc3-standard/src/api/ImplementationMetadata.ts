@@ -24,9 +24,6 @@ export interface ImplementationMetadata {
    *  the Desktop Agent API.
    */
   readonly optionalFeatures: {
-    /** Used to indicate whether the exposure of 'originating app metadata' for
-     *  context and intent messages is supported by the Desktop Agent.*/
-    readonly OriginatingAppMetadata: boolean;
     /** Used to indicate whether the optional `fdc3.joinUserChannel`,
      *  `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
      *  the Desktop Agent.*/
