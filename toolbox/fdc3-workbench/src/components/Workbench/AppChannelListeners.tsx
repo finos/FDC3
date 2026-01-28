@@ -7,25 +7,20 @@ import React from "react";
 import { observer } from "mobx-react";
 import appChannelStore from "../../store/AppChannelStore";
 import { AccordionList, AccordionListItem } from "../common/AccordionList";
-import { TextField } from "@material-ui/core";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { TextField } from "@mui/material";
 import { ReceivedField } from "./ReceivedField";
 
-const useStyles = makeStyles((theme: Theme) =>
-	createStyles({
-		textField: {
-			marginTop: theme.spacing(2),
-			width: "100%",
-		},
-		input: {
-			fontSize: "14px",
-		},
-	})
-);
+const classes = {
+	textField: {
+		mt: 2,
+		width: "100%",
+	},
+	input: {
+		fontSize: "14px",
+	},
+} as const;
 
 export const AppChannelListeners = observer(() => {
-	const classes = useStyles();
-
 	let contextListeners: AccordionListItem[] = [];
 
 	appChannelStore.channelListeners.forEach(({ id, channelId, type, lastReceivedContext, metaData }) => {
@@ -35,7 +30,7 @@ export const AppChannelListeners = observer(() => {
 				<TextField
 					disabled
 					label={"LAST RECEIVED CONTEXT"}
-					className={classes.textField}
+					sx={classes.textField}
 					InputLabelProps={{
 						shrink: true,
 					}}
@@ -46,9 +41,7 @@ export const AppChannelListeners = observer(() => {
 					size="small"
 					value={receivedContextListenerValue}
 					InputProps={{
-						classes: {
-							input: classes.input,
-						},
+						sx: classes.input,
 					}}
 				/>
 				{window.fdc3Version === "2.0" && <ReceivedField metaData={metaData} />}

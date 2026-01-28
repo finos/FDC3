@@ -21,6 +21,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+ * Updated workbench from MUI 4 to MUI 5
+
 ### Deprecated
 
 ### Fixed

@@ -14,7 +14,6 @@ import {
   IntentTargetOption,
 } from '../utility/Fdc3Api';
 import { toJS } from 'mobx';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Button,
   IconButton,
@@ -30,11 +29,20 @@ import {
   Switch,
   Link,
   ListSubheader,
-} from '@material-ui/core';
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
+  RadioGroup,
+  Alert,
+  ToggleButton,
+  ToggleButtonGroup,
+  Autocomplete,
+  SelectChangeEvent,
+} from '@mui/material';
+import { createFilterOptions } from '@mui/material/Autocomplete';
 import { observer } from 'mobx-react';
-import FileCopyIcon from '@material-ui/icons/FileCopy';
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
-import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
+import FileCopyIcon from '@mui/icons-material/FileCopy';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { ContextTemplates } from '../components/ContextTemplates';
 import intentStore from '../store/IntentStore';
 import { codeExamples } from '../fixtures/codeExamples';
@@ -42,13 +50,7 @@ import { openApiDocsLink } from '../fixtures/openApiDocs';
 import { TemplateTextField } from './common/TemplateTextField';
 import { copyToClipboard } from './common/CopyToClipboard';
 import { IntentResolutionField } from './IntentResolutionField';
-
-import { Checkbox } from '@material-ui/core';
-import { FormGroup } from '@material-ui/core';
-import { FormControlLabel } from '@material-ui/core';
-import { RadioGroup } from '@material-ui/core';
-import { Alert, ToggleButton, ToggleButtonGroup } from '@material-ui/lab';
-import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
+import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
 
 // interface copied from lib @material-ui/lab/Autocomplete
 interface FilterOptionsState<T> {
@@ -65,118 +67,115 @@ type ListenerSetValue = (value: ListenerOptionType | null) => void;
 
 type ListenerSetError = (error: string | false) => void;
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
+const styles = {
+  root: {
+    flexGrow: 1,
+  },
+  title: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  form: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    mt: 1,
+    '& > *': {
+      m: 1,
+      marginLeft: '0px',
     },
-    title: {
+  },
+  controls: {
+    '& > *:first-of-type': {
+      marginLeft: 0,
+    },
+    '& > *': {
+      mr: 1,
+    },
+    '& > *:last-child': {
+      marginRight: 0,
+    },
+    '& .MuiIconButton-sizeSmall': {
+      padding: '6px 0px 6px 0px',
+    },
+    '& > a': {
       display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
+      padding: '6px 0px 6px 0px',
     },
-    form: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      alignItems: 'center',
-      marginTop: theme.spacing(1),
-      '& > *': {
-        margin: theme.spacing(1),
-        marginLeft: '0px',
-      },
+    display: 'flex',
+    alignItems: 'center',
+  },
+  rightAlign: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  spread: {
+    flexDirection: 'row',
+    '& > *:first-of-type': {
+      paddingLeft: '0px',
     },
-    controls: {
-      '& > *:first-child': {
-        marginLeft: 0,
-      },
-      '& > *': {
-        marginRight: theme.spacing(1),
-      },
-      '& > *:last-child': {
-        marginRight: 0,
-      },
-      '& .MuiIconButton-sizeSmall': {
-        padding: '6px 0px 6px 0px',
-      },
-      '& > a': {
-        display: 'flex',
-        padding: '6px 0px 6px 0px',
-      },
-      display: 'flex',
-      alignItems: 'center',
+  },
+  textField: {
+    width: '100%',
+    '& input': {
+      height: '29px',
+      padding: '6px',
     },
-    rightAlign: {
-      flexDirection: 'row',
-      justifyContent: 'flex-end',
-    },
-    spread: {
-      flexDirection: 'row',
-      '& > *:first-child': {
-        paddingLeft: '0px',
-      },
-    },
-    textField: {
-      width: '100%',
-      '& input': {
-        height: '29px',
-        padding: '6px',
-      },
-    },
-    h4: {
-      fontSize: '22px',
-    },
-    field: {
-      flexGrow: 1,
-      marginRight: theme.spacing(1),
-      minWidth: '190px',
-    },
-    border: {
-      height: '1px',
-      width: '100%',
-      backgroundColor: '#acb2c0',
-      marginTop: '24px',
-      marginBottom: '16px',
-    },
-    bottomMargin: {
-      marginBottom: theme.spacing(1),
-    },
-    removeSidePadding: {
-      paddingLeft: 0,
-    },
-    targetSelect: {
-      width: '100%',
-      marginRight: theme.spacing(1),
-    },
-    rightPadding: {
-      paddingRight: theme.spacing(0.5),
-    },
-    input: {
+  },
+  h4: {
+    fontSize: '22px',
+  },
+  field: {
+    flexGrow: 1,
+    mr: 1,
+    minWidth: '190px',
+  },
+  border: {
+    height: '1px',
+    width: '100%',
+    backgroundColor: '#acb2c0',
+    marginTop: '24px',
+    marginBottom: '16px',
+  },
+  bottomMargin: {
+    mb: 1,
+  },
+  removeSidePadding: {
+    paddingLeft: 0,
+  },
+  targetSelect: {
+    width: '100%',
+    mr: 1,
+  },
+  rightPadding: {
+    pr: 0.5,
+  },
+  input: {
+    color: '#0086bf',
+    outline: '1px',
+    '&.Mui-checked': {
       color: '#0086bf',
-      outline: '1px',
-      '&.Mui-checked': {
-        color: '#0086bf',
-      },
     },
-    toggle: {
-      '&.Mui-selected': {
-        color: '#0086bf',
-        backgroundColor: 'rgba(0, 134, 191, 0.21)',
-      },
-    },
-    indentLeft: {
-      marginLeft: '30px',
-    },
-    caption: {
+  },
+  toggle: {
+    '&.Mui-selected': {
       color: '#0086bf',
-      marginTop: '10px',
+      backgroundColor: 'rgba(0, 134, 191, 0.21)',
     },
-  })
-);
+  },
+  indentLeft: {
+    marginLeft: '30px',
+  },
+  caption: {
+    color: '#0086bf',
+    marginTop: '10px',
+  },
+} as const;
 
 const filter = createFilterOptions<ListenerOptionType>();
 
 export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) => {
-  const classes = useStyles();
   const [intentValue, setIntentValue] = useState<ListenerOptionType | null>(null);
   const [raiseIntentError, setRaiseIntentError] = useState<string | false>(false);
   const [intentListener, setIntentListener] = useState<ListenerOptionType | null>(null);
@@ -263,19 +262,19 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
     setTargetOptionsforContext([]);
   };
 
-  const handleTargetChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleTargetChange = (event: SelectChangeEvent<string>) => {
     if (event.target.value === 'None') {
       setTargetApp('None');
     } else {
-      setTargetApp(event.target.value as string);
+      setTargetApp(event.target.value);
     }
   };
 
-  const handleContextTargetChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleContextTargetChange = (event: SelectChangeEvent<string>) => {
     if (event.target.value === 'None') {
       setContextTargetApp('None');
     } else {
-      setContextTargetApp(event.target.value as string);
+      setContextTargetApp(event.target.value);
     }
   };
 
@@ -501,7 +500,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
     setContextFields(current => [
       ...current,
       <Grid container direction="row" key={contextFields.length}>
-        <Grid item className={classes.indentLeft}>
+        <Grid item sx={styles.indentLeft}>
           <TextField
             variant="outlined"
             label="Delay (ms)"
@@ -510,7 +509,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
             onChange={e => setChannelContextDelay(e.target.value, contextFields.length)}
           />
         </Grid>
-        <Grid item className={`${classes.indentLeft} ${classes.field}`}>
+        <Grid item sx={{ ...styles.indentLeft, ...styles.field }}>
           <ContextTemplates
             handleTabChange={handleTabChange}
             contextStateSetter={(context: any) => setChannelContextList(context, contextFields.length)}
@@ -534,14 +533,14 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
         clearTargets();
 
         if (appIntents.length > 0) {
-          setIntentsForContext(
-            appIntents.map(({ intent }: { intent: any }) => {
-              return {
-                title: intent.name,
-                value: intent.name,
-              };
-            })
-          );
+          const options = appIntents.map(({ intent }: { intent: any }) => {
+            return {
+              title: intent.name,
+              value: intent.name,
+            };
+          });
+          console.log('got intent options: ' + JSON.stringify(options, null, 2));
+          setIntentsForContext(options);
         }
       } catch (e) {
         setIntentsForContext([]);
@@ -576,18 +575,18 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
   }, [sendResultOverChannel]);
 
   return (
-    <div className={classes.root}>
+    <div style={styles.root}>
       <Grid item xs={12}>
         <Typography variant="h5">Raise intent</Typography>
       </Grid>
 
-      <form className={classes.form} noValidate autoComplete="off">
+      <form style={styles.form} noValidate autoComplete="off">
         <Grid container direction="row" spacing={2}>
-          <Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
-            <Grid item className={classes.field}>
+          <Grid container item spacing={2} justifyContent="flex-end" sx={styles.spread}>
+            <Grid item sx={styles.field}>
               <ContextTemplates handleTabChange={handleTabChange} contextStateSetter={setRaiseIntentContext} />
               <Autocomplete
-                className={classes.rightPadding}
+                sx={styles.rightPadding}
                 id="raise-intent"
                 size="small"
                 selectOnFocus
@@ -597,9 +596,8 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
                 value={intentValue}
                 onChange={handleChangeListener(setIntentValue, setRaiseIntentError)}
                 filterOptions={filterOptions}
-                options={intentsForContext || intentListenersOptions}
+                options={intentsForContext ?? intentListenersOptions}
                 getOptionLabel={getOptionLabel}
-                renderOption={option => option.title}
                 renderInput={params => (
                   <TemplateTextField
                     label="INTENT TYPE"
@@ -611,7 +609,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
                   />
                 )}
               />
-              <Grid className={classes.rightPadding}>
+              <Grid sx={styles.rightPadding}>
                 <FormGroup>
                   <FormControlLabel
                     control={
@@ -627,7 +625,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
                 </FormGroup>
 
                 {useTargets && (
-                  <FormControl variant="outlined" size="small" className={classes.targetSelect}>
+                  <FormControl variant="outlined" size="small" sx={styles.targetSelect}>
                     <InputLabel id="intent-target-app">Target app (optional)</InputLabel>
                     <Select
                       labelId="intent-target-app"
@@ -645,7 +643,6 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
                           vertical: 'top',
                           horizontal: 'left',
                         },
-                        getContentAnchorEl: null,
                       }}
                     >
                       {targetOptions}
@@ -654,7 +651,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
                 )}
               </Grid>
             </Grid>
-            <Grid item className={classes.controls}>
+            <Grid item sx={styles.controls}>
               <Button variant="contained" color="primary" onClick={handleRaiseIntent} disabled={!intentValue}>
                 Raise intent
               </Button>
@@ -691,8 +688,8 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
             </Grid>
           </Grid>
           {intentResolution?.source && (
-            <Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
-              <Grid item className={classes.textField}>
+            <Grid container item spacing={2} justifyContent="flex-end" sx={styles.spread}>
+              <Grid item sx={styles.textField}>
                 <IntentResolutionField data={intentResolution} handleTabChange={handleTabChange} />
               </Grid>
               <Grid item>
@@ -702,18 +699,18 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
               </Grid>
             </Grid>
           )}
-          <div className={classes.border}></div>
+          <div style={styles.border}></div>
 
-          <Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
-            <Grid item xs={12} className={classes.bottomMargin}>
+          <Grid container item spacing={2} justifyContent="flex-end" sx={styles.spread}>
+            <Grid item xs={12} sx={styles.bottomMargin}>
               <Typography variant="h5">Raise intent for context</Typography>
             </Grid>
-            <Grid item className={`${classes.field} ${classes.removeSidePadding}`}>
+            <Grid item sx={{ ...styles.field, ...styles.removeSidePadding }}>
               <ContextTemplates
                 handleTabChange={handleTabChange}
                 contextStateSetter={setRaiseIntentWithContextContext}
               />
-              <Grid className={classes.rightPadding}>
+              <Grid sx={styles.rightPadding}>
                 <FormGroup>
                   <FormControlLabel
                     control={
@@ -725,7 +722,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
                 </FormGroup>
 
                 {useContextTargets && (
-                  <FormControl variant="outlined" size="small" className={classes.targetSelect}>
+                  <FormControl variant="outlined" size="small" sx={styles.targetSelect}>
                     <InputLabel id="intent-context-target-app">Target (optional)</InputLabel>
                     <Select
                       labelId="intent-context-target-app"
@@ -743,7 +740,6 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
                           vertical: 'top',
                           horizontal: 'left',
                         },
-                        getContentAnchorEl: null,
                       }}
                     >
                       {targetOptionsforContext}
@@ -752,7 +748,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
                 )}
               </Grid>
             </Grid>
-            <Grid item className={classes.controls}>
+            <Grid item sx={styles.controls}>
               <Button
                 disabled={!raiseIntentWithContextContext}
                 variant="contained"
@@ -792,8 +788,8 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
             </Grid>
           </Grid>
           {intentForContextResolution?.source && (
-            <Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
-              <Grid item className={classes.textField}>
+            <Grid container item spacing={2} justifyContent="flex-end" sx={styles.spread}>
+              <Grid item sx={styles.textField}>
                 <IntentResolutionField data={intentForContextResolution} handleTabChange={handleTabChange} />
               </Grid>
               <Grid item>
@@ -803,15 +799,15 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
               </Grid>
             </Grid>
           )}
-          <div className={classes.border}></div>
+          <div style={styles.border}></div>
 
-          <Grid container item spacing={2} justifyContent="flex-end" className={classes.spread}>
+          <Grid container item spacing={2} justifyContent="flex-end" sx={styles.spread}>
             <Grid item xs={12}>
-              <Typography className={classes.bottomMargin} variant="h5">
+              <Typography sx={styles.bottomMargin} variant="h5">
                 Add intent listener
               </Typography>
             </Grid>
-            <Grid item className={`${classes.field} ${classes.removeSidePadding}`}>
+            <Grid item sx={{ ...styles.field, ...styles.removeSidePadding }}>
               <Autocomplete
                 id="intent-listener"
                 size="small"
@@ -824,7 +820,6 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
                 filterOptions={filterOptions}
                 options={intentListenersOptions}
                 getOptionLabel={getOptionLabel}
-                renderOption={option => option.title}
                 renderInput={params => (
                   <TemplateTextField
                     label="INTENT LISTENER"
@@ -838,7 +833,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
               />
             </Grid>
 
-            <Grid item className={classes.controls}>
+            <Grid item sx={styles.controls}>
               <Button
                 variant="contained"
                 color="primary"
@@ -886,7 +881,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
                 <FormControlLabel
                   control={
                     <Checkbox
-                      className={classes.input}
+                      sx={styles.input}
                       color="default"
                       checked={sendIntentResult}
                       onChange={e => setSendIntentResult(e.target.checked)}
@@ -898,41 +893,33 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
             </Grid>
           )}
           {sendIntentResult && (
-            <Grid item xs={12} className={classes.indentLeft}>
+            <Grid item xs={12} sx={styles.indentLeft}>
               <RadioGroup name="intent-result-type" value={resultType} onChange={e => setResultType(e.target.value)}>
-                <FormControlLabel
-                  value="context-result"
-                  control={<Radio className={classes.input} />}
-                  label="Context result"
-                />
+                <FormControlLabel value="context-result" control={<Radio sx={styles.input} />} label="Context result" />
                 {resultType === 'context-result' && (
-                  <Grid item className={classes.indentLeft}>
+                  <Grid item sx={styles.indentLeft}>
                     <ContextTemplates handleTabChange={handleTabChange} contextStateSetter={setResultTypeContext} />
                   </Grid>
                 )}
-                <FormControlLabel
-                  value="channel-result"
-                  control={<Radio className={classes.input} />}
-                  label="Channel result"
-                />
+                <FormControlLabel value="channel-result" control={<Radio sx={styles.input} />} label="Channel result" />
                 {resultType === 'channel-result' && (
-                  <Grid item className={classes.indentLeft}>
+                  <Grid item sx={styles.indentLeft}>
                     <ToggleButtonGroup
                       value={channelType}
                       exclusive
                       onChange={handleChannelTypeChange}
                       aria-label="result channel type"
                     >
-                      <ToggleButton className={classes.toggle} value="app-channel" aria-label="left aligned">
+                      <ToggleButton sx={styles.toggle} value="app-channel" aria-label="left aligned">
                         App channel
                       </ToggleButton>
-                      <ToggleButton className={classes.toggle} value="private-channel" aria-label="left aligned">
+                      <ToggleButton sx={styles.toggle} value="private-channel" aria-label="left aligned">
                         Private channel
                       </ToggleButton>
                     </ToggleButtonGroup>
 
                     {channelType === 'app-channel' && (
-                      <Grid item className={classes.field}>
+                      <Grid item sx={styles.field}>
                         <TextField
                           fullWidth
                           variant="outlined"
@@ -946,14 +933,14 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
                     )}
                     <FormGroup>
                       {channelType === 'private-channel' && (
-                        <Typography variant="caption" className={classes.caption}>
+                        <Typography variant="caption" sx={styles.caption}>
                           Context streaming will start AFTER a context listener is added to the channel
                         </Typography>
                       )}
                       <FormControlLabel
                         control={
                           <Checkbox
-                            className={classes.input}
+                            sx={styles.input}
                             color="default"
                             checked={sendResultOverChannel}
                             onChange={e => setSendResultOverChannel(e.target.checked)}
@@ -967,7 +954,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
                         {contextFields.map((field, index) => (
                           <React.Fragment key={index}>{field}</React.Fragment>
                         ))}
-                        <Grid item className={`${classes.indentLeft} ${classes.controls}`}>
+                        <Grid item sx={{ ...styles.indentLeft, ...styles.controls }}>
                           <Tooltip
                             title="Add context result (delays will trigger sequentially)"
                             aria-label="Add context result (delays will trigger sequentially)"
