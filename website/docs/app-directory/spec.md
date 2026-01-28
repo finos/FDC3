@@ -37,7 +37,7 @@ An FDC3 Standard compliant App Directory implementation **MUST**:
 
 An FDC3 Standard compliant App Directory implementation **SHOULD**:
 
-- Support authentication (where required) via the HTTP Authorization header and Bearer authentication schema (implemented via JWT tokens)
+- Support authentication (where required) via the HTTP Authorization header and Bearer authentication scheme (implemented via JWT tokens)
 - Select any `categories` field values from the recommended list.
 - Encourage the use of the `lang` and `localizedVersions` fields in appD records to support localization and accessibility.
 
