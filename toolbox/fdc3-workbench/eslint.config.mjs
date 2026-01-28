@@ -34,6 +34,8 @@ export default [
     ],
   },
   ...compat.extends('plugin:react/recommended', 'prettier'),
+  pluginJs.configs.recommended,
+  eslintConfigPrettier,
   {
     plugins: {
       react,
@@ -121,6 +123,4 @@ export default [
       'react/no-string-refs': 0,
     },
   },
-  pluginJs.configs.recommended,
-  eslintConfigPrettier,
 ];
