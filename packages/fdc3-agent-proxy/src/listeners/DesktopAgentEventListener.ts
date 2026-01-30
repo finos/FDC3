@@ -10,13 +10,13 @@ import { AbstractListener } from './AbstractListener';
 
 function wrapHandler(handler: EventHandler): (msg: AgentEventMessage) => void {
   return (m: AgentEventMessage) => {
-    if (m.type === 'channelChangedEvent') {
+    //backwards compatibility, see issue #1585
+    if (m.type === 'channelChangedEvent' && m.payload.newChannelId) {
       const restructured: FDC3ChannelChangedEvent = {
         type: 'userChannelChanged',
         details: {
-          //backwards compatibility, see issue #1585
-          currentChannelId: cm.payload.newChannelId ?? cm.payload.currentChannelId 
-        }
+          currentChannelId: m.payload.newChannelId,
+        },
       };
 
       handler(restructured);

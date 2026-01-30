@@ -23,6 +23,6 @@
     "vite": "^6.4.1"
   },
   "dependencies": {
-    "@finos/fdc3": "2.2.1-beta.4"
+    "@finos/fdc3": "2.2.2-beta.1"
   }
 }

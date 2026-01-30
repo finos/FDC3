@@ -21,9 +21,9 @@
     "build": "tsc --module es2022"
   },
   "dependencies": {
-    "@finos/fdc3-context": "2.2.1-beta.4",
-    "@finos/fdc3-get-agent": "2.2.1-beta.4",
-    "@finos/fdc3-schema": "2.2.1-beta.4",
-    "@finos/fdc3-standard": "2.2.1-beta.4"
+    "@finos/fdc3-context": "2.2.2-beta.1",
+    "@finos/fdc3-get-agent": "2.2.2-beta.1",
+    "@finos/fdc3-schema": "2.2.2-beta.1",
+    "@finos/fdc3-standard": "2.2.2-beta.1"
   }
 }

@@ -32,7 +32,6 @@ export type FDC3EventTypes = 'userChannelChanged';
  * via the FDC3 API's `addEventListener` function.
  */
 export interface FDC3Event extends ApiEvent {
-  readonly string: FDC3EventTypes;
   readonly details: any;
 }
 
