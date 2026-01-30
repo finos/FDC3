@@ -22,7 +22,7 @@ export default () =>
       }
     });
 
-    it('(2.0-GetAppMetadata) Valid metadata object', async () => {
+    it('(GetAppMetadata) Valid metadata object', async () => {
       try {
         //retrieve AppMetadata object
         const metadata = await api.getAppMetadata();
@@ -32,7 +32,7 @@ export default () =>
       }
     });
 
-    const appInstanceMetadata = '(2.0-AppInstanceMetadata) App instance metadata is valid';
+    const appInstanceMetadata = '(AppInstanceMetadata) App instance metadata is valid';
     it(appInstanceMetadata, async () => {
       try {
         const appIdentifier1 = await api.openMetadataApp();

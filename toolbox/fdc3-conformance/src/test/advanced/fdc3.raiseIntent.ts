@@ -34,7 +34,7 @@ export default () =>
     });
 
     const RaiseIntentSingleResolve =
-      "(2.0-RaiseIntentSingleResolve) Should start app intent-a when raising intent 'aTestingIntent1' with context 'testContextX'";
+      "(RaiseIntentSingleResolve) Should start app intent-a when raising intent 'aTestingIntent1' with context 'testContextX'";
     it(RaiseIntentSingleResolve, async () => {
       errorListener = await control.listenForError();
       const result = control.receiveContext(ControlContextType.A_TESTING_INTENT_LISTENER_TRIGGERED);
@@ -44,7 +44,7 @@ export default () =>
     });
 
     const RaiseIntentTargetedAppResolve =
-      "(2.0-RaiseIntentTargetedAppResolve) Should start app intent-b when raising intent 'sharedTestingIntent1' with context 'testContextX'";
+      "(RaiseIntentTargetedAppResolve) Should start app intent-b when raising intent 'sharedTestingIntent1' with context 'testContextX'";
     it(RaiseIntentTargetedAppResolve, async () => {
       errorListener = await control.listenForError();
       const result = control.receiveContext(ControlContextType.SHARED_TESTING_INTENT1_LISTENER_TRIGGERED);
@@ -56,7 +56,7 @@ export default () =>
     });
 
     const RaiseIntentTargetedInstanceResolveOpen =
-      "(2.0-RaiseIntentTargetedInstanceResolveOpen) Should target running instance of intent-a app when raising intent 'aTestingIntent1' with context 'testContextX' after opening intent-a app";
+      "(RaiseIntentTargetedInstanceResolveOpen) Should target running instance of intent-a app when raising intent 'aTestingIntent1' with context 'testContextX' after opening intent-a app";
     it(RaiseIntentTargetedInstanceResolveOpen, async () => {
       // add app control listeners
       errorListener = await control.listenForError();
@@ -78,7 +78,7 @@ export default () =>
     });
 
     const RaiseIntentTargetedInstanceResolveFindInstances =
-      "(2.0-RaiseIntentTargetedInstanceResolveFindInstances) Should start app intent-a when targeted by raising intent 'aTestingIntent1' with context 'testContextX'";
+      "(RaiseIntentTargetedInstanceResolveFindInstances) Should start app intent-a when targeted by raising intent 'aTestingIntent1' with context 'testContextX'";
     it(RaiseIntentTargetedInstanceResolveFindInstances, async () => {
       // add app control listeners
       errorListener = await control.listenForError();
@@ -103,7 +103,7 @@ export default () =>
     });
 
     const PrivateChannelsAreNotAppChannels =
-      '(2.0-PrivateChannelsAreNotAppChannels) Cannot create an app channel using a private channel id';
+      '(PrivateChannelsAreNotAppChannels) Cannot create an app channel using a private channel id';
     it(PrivateChannelsAreNotAppChannels, async () => {
       errorListener = await control.listenForError();
       const privChan = await control.createPrivateChannel();
@@ -138,7 +138,7 @@ export default () =>
     });
 
     const PrivateChannelsLifecycleEvents =
-      '(2.0-PrivateChannelsLifecycleEvents) PrivateChannel lifecycle events are triggered when expected';
+      '(PrivateChannelsLifecycleEvents) PrivateChannel lifecycle events are triggered when expected';
     it(PrivateChannelsLifecycleEvents, async () => {
       errorListener = await control.listenForError();
       const onUnsubscribeReceiver = control.receiveContext(ControlContextType.ON_UNSUBSCRIBE_TRIGGERED);

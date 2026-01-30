@@ -11,7 +11,7 @@ export default async () => {
   const control = new ChannelControl2_0(fdc3);
 
   describe('channels', () => {
-    createUserChannelTests(control, documentation, '2.0-');
-    createAppChannelTests(control, documentation, '2.0-');
+    createUserChannelTests(control, documentation, '');
+    createAppChannelTests(control, documentation, '');
   });
 };
