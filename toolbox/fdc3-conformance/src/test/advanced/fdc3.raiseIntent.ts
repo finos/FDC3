@@ -13,7 +13,7 @@ import { closeMockAppWindow } from '../fdc3-2_0-utils';
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md
  */
-export default () =>
+export default async () =>
   describe('fdc3.raiseIntent', () => {
     let errorListener: Listener | undefined = undefined;
     let control: RaiseIntentControl2_0;

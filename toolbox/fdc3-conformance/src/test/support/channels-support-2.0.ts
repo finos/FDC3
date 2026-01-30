@@ -90,7 +90,7 @@ export class ChannelControl2_0 implements ChannelControl {
   }
 
   setupAndValidateListener = async (
-    channel: Channel,
+    channel: Channel | null,
     listenContextType: string | null,
     expectedContextType: string | null,
     errorMessage: string,
