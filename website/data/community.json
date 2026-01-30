@@ -225,6 +225,10 @@
           {
             "text": "OpenFin - 32.114.76.14  Certified Conformant With FDC3 2.0 Specification on 19th October 2023",
             "link": "https://www.finos.org/press/finos-announces-fdc3-2.1"
+          }, 
+          {
+            "text": "HERE Enterprise Browser 9.0.1  Certified Conformant With FDC3 2.0 Specification on 5th December 2025",
+            "link": "https://www.finos.org/blog/conformance-news-here-enterprise-browser-9.0.1-passes-fdc3-2.0-conformance"
           }
         ]
       }
