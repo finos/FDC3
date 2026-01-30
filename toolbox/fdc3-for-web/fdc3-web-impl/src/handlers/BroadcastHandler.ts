@@ -227,7 +227,7 @@ export class BroadcastHandler implements MessageHandler {
         case 'getCurrentContextRequest':
           return this.handleGetCurrentContextRequest(msg as GetCurrentContextRequest, sc, from);
 
-        // TODO: move this out when we no longer handle just channel-based events.
+        // Handle channel events
         case 'addEventListenerRequest':
           return this.handleAddEventListenerRequest(msg as AddEventListenerRequest, sc, from);
         case 'eventListenerUnsubscribeRequest':
