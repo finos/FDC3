@@ -11,7 +11,7 @@ const findIntentsByContextDocs = '\r\nDocumentation: ' + APIDocumentation2_0.fin
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md
  */
-export default () =>
+export default async () =>
   describe('fdc3.findIntentsByContext', () => {
     it("(2.0-FindIntentByContextSingleContext) Should find intents by context 'testContextX'", async () => {
       try {

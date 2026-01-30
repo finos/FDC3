@@ -1,13 +1,20 @@
 import { assert, expect } from 'chai';
 import { wait } from '../../utils';
 import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from '../support/channel-control';
-import { ChannelControl } from '../support/channel-control';
 import constants from '../../constants';
 import { Context } from '@finos/fdc3';
+import { ChannelControl2_0 } from '../support/channels-support-2.0';
+import { getAgent } from '@finos/fdc3';
+import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
 
-export function createUserChannelTests(cc: ChannelControl, documentation: string, prefix: string): Mocha.Suite {
-  const channelName = prefix === '' ? 'System channels' : 'User channels';
-  return describe(channelName, () => {
+const documentation = '\r\nDocumentation: ' + APIDocumentation2_0.desktopAgent + '\r\nCause:';
+
+export default async () => {
+  const fdc3 = await getAgent();
+  const cc = new ChannelControl2_0(fdc3);
+  const prefix = '2.0-';
+
+  return describe('fdc3.userChannels', () => {
     beforeEach(cc.leaveChannel);
 
     afterEach(async function afterEach() {
@@ -520,4 +527,4 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
       expect(channels[2].id, errorMessage).to.be.equal(currentChannel?.id);
     });
   });
-}
+};

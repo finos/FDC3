@@ -10,7 +10,7 @@ const getInfoDocs = '\r\nDocumentation: ' + APIDocumentation2_0.getInfo + '\r\nC
 const validator = new MetadataValidator();
 const api = new MetadataFdc3Api();
 
-export default () =>
+export default async () =>
   describe('fdc3.getInfo', () => {
     let listener: Listener | undefined;
 
