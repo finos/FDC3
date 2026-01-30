@@ -10,7 +10,7 @@ export interface ChannelSupport {
   addContextListener(handler: ContextHandler, type: string | null): Promise<Listener>;
 
   /**
-   * TODO: Move out of ChannelSupport when there are other, non-channel related event types to support.
+   * TODO: Move handling for userChannelChanged out of ChannelSupport and update type to filter to channel events only.
    */
   addEventListener(handler: EventHandler, type: FDC3EventTypes | null): Promise<Listener>;
 }
