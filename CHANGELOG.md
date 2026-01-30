@@ -6,8 +6,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 * Enhanced method binding for FDC3 API objects to support destructuring. All public methods of `Channel`, `PrivateChannel`, and `IntentResolution` objects are now properly bound to their instances using `.bind(this)` in their constructors. ([#1645](https://github.com/finos/FDC3/issues/1645))
-
-* Increased FDC3 Conformance Test WindowCloseWaitTime to 2000 (from 1000)
+* Increased FDC3 Conformance Test WindowCloseWaitTime to 2000 (from 1000). ([#1586](https://github.com/finos/FDC3/issues/1586))
 
 ### Added
 
