@@ -178,7 +178,7 @@ which is sent back over the bridge as a response to the request message as:
     "type":  "findIntentResponse",
     "payload": {
         "appIntent":  {
-            "intent":  { "appId": "StartChat" },
+            "intent":  { "name": "StartChat" },
             "apps": [
                 { "appId": "WebIce"}
             ]
