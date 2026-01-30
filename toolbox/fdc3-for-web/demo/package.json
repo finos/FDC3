@@ -22,7 +22,7 @@
     "vite": "^6.4.1"
   },
   "dependencies": {
-    "@finos/fdc3": "2.2.1-beta.4",
+    "@finos/fdc3": "2.2.2-beta.1",
     "@types/uuid": "^10.0.0",
     "@types/ws": "^8.5.12",
     "express": "^4.21.1",

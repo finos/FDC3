@@ -34,8 +34,8 @@
     "outputName": "test-results.xml"
   },
   "dependencies": {
-    "@finos/fdc3-context": "2.2.1-beta.4",
-    "@finos/fdc3-schema": "2.2.1-beta.4"
+    "@finos/fdc3-context": "2.2.2-beta.1",
+    "@finos/fdc3-schema": "2.2.2-beta.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",

@@ -23,10 +23,10 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@finos/fdc3-agent-proxy": "2.2.1-beta.4",
-    "@finos/fdc3-context": "2.2.1-beta.4",
-    "@finos/fdc3-schema": "2.2.1-beta.4",
-    "@finos/fdc3-standard": "2.2.1-beta.4",
+    "@finos/fdc3-agent-proxy": "2.2.2-beta.1",
+    "@finos/fdc3-context": "2.2.2-beta.1",
+    "@finos/fdc3-schema": "2.2.2-beta.1",
+    "@finos/fdc3-standard": "2.2.2-beta.1",
     "@types/uuid": "^10.0.0",
     "uuid": "^9.0.1"
   },
@@ -34,8 +34,8 @@
     "@cucumber/cucumber": "10.3.1",
     "@cucumber/messages": "^28.1.0",
     "@eslint/js": "^9.19.0",
-    "@finos/fdc3-web-impl": "2.2.1-beta.4",
-    "@finos/testing": "2.2.1-beta.4",
+    "@finos/fdc3-web-impl": "2.2.2-beta.1",
+    "@finos/testing": "2.2.2-beta.1",
     "@types/node": "^20.16.11",
     "@types/wtfnode": "^0.7.3",
     "eslint": "^9.32.0",

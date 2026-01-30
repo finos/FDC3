@@ -1373,10 +1373,15 @@ export interface ChannelChangedEvent {
  */
 export interface ChannelChangedEventPayload {
   /**
+   * Deprecated - allowed for backwards compatibility.  The Id of the channel that the app was
+   * added to or `null` if it was removed from a channel.
+   */
+  newChannelId?: null | string;
+  /**
    * The Id of the channel that the app was added to or `null` if it was removed from a
    * channel.
    */
-  newChannelId: null | string;
+  currentChannelId?: null | string;
 }
 
 /**
@@ -5305,7 +5310,13 @@ const typeMap: any = {
     ],
     false
   ),
-  ChannelChangedEventPayload: o([{ json: 'newChannelId', js: 'newChannelId', typ: u(null, '') }], false),
+  ChannelChangedEventPayload: o(
+    [
+      { json: 'newChannelId', js: 'newChannelId', typ: u(undefined, u(null, '')) },
+      { json: 'currentChannelId', js: 'currentChannelId', typ: u(undefined, u(null, '')) },
+    ],
+    false
+  ),
   ClearContextRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
