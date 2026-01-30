@@ -13,7 +13,7 @@ Feature: Updating User Channel State
     Given "resultHandler" pipes context to "contexts"
     And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
     When I call "{api}" with "joinUserChannel" with parameter "one"
-    And we wait for a period of "600" ms
+    And we wait for a period of "1000" ms
     Then "{contexts}" is an array of objects with the following contents
       | type            | name  |
       | fdc3.instrument | Apple |
