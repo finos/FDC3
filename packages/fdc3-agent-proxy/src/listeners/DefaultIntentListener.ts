@@ -9,6 +9,7 @@ import {
   IntentResultResponse,
   //RaiseIntentResponse,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+import { v4 } from 'uuid';
 
 export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIntentListenerRequest> {
   readonly intent: string;
@@ -34,6 +35,8 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIn
   action(m: IntentEvent): void {
     const done = this.handler(m.payload.context, {
       source: m.payload.originatingApp as AppIdentifier,
+      timestamp: m.meta.timestamp,
+      traceId: m.metadata?.traceId ?? v4(),
     });
 
     this.handleIntentResult(done, m);
@@ -51,6 +54,7 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIn
         intentEventUuid: m.meta.eventUuid,
         raiseIntentRequestUuid: m.payload.raiseIntentRequestUuid,
       },
+      metadata: m.metadata,
     };
 
     return out;

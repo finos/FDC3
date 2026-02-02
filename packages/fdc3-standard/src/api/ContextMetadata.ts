@@ -18,3 +18,25 @@ export interface ContextMetadata {
    */
   readonly source: AppIdentifier;
 }
+
+export interface AppProvidableContextMetadata {
+  signature?: string;
+  traceId?: string;
+}
+
+export interface DesktopAgentProvidableContextMetadata {
+  /** The timestamp when the context was broadcast or the intent was raised.
+   * This can be used for debugging, auditing, or ordering events. */
+  timestamp?: Date;
+
+  /** The identifier of the app instance that originated the context or intent. */
+  source?: AppIdentifier;
+
+  /** A unique identifier for tracing the flow of context or intent messages across applications.
+   * This is useful for debugging and monitoring message flow in complex interop scenarios. */
+  traceId?: string;
+
+  /** A cryptographic signature that can be used to verify the authenticity and integrity
+   * of the context or intent message. This is useful for security-sensitive applications. */
+  signature?: string;
+}

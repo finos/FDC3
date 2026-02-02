@@ -545,11 +545,6 @@ export interface OptionalFeatures {
    */
   DesktopAgentBridging: boolean;
   /**
-   * Used to indicate whether the exposure of 'originating app metadata' for
-   * context and intent messages is supported by the Desktop Agent.
-   */
-  OriginatingAppMetadata: boolean;
-  /**
    * Used to indicate whether the optional `fdc3.joinUserChannel`,
    * `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
    * the Desktop Agent.
@@ -689,11 +684,9 @@ export interface AddContextListenerRequestMeta {
  * Field that represents the source application that the request being responded to was
  * received from, for debugging purposes.
  *
- * Details of the application instance that broadcast the context.
+ * Identifier for the app instance that sent the context and/or intent.
  *
  * The App resolution option chosen.
- *
- * Details of the application instance that raised the intent.
  *
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
@@ -1192,10 +1185,7 @@ export interface BroadcastEventPayload {
    * The context object that was broadcast.
    */
   context: Context;
-  /**
-   * Details of the application instance that broadcast the context.
-   */
-  originatingApp?: AppIdentifier;
+  metadata?: ContextMetadata;
 }
 
 /**
@@ -1263,6 +1253,34 @@ export interface Context {
 }
 
 /**
+ * Metadata relating to a broadcastEvent or intentEvent, which may include metadata provided
+ * by the Desktop Agent or the App that initiated the broadcast, raise intent or open
+ * request.
+ */
+export interface ContextMetadata {
+  /**
+   * Custom metadata that can be used to provide additional information about the context or
+   * intent. This allows for individuals to use metadata fields that have yet to be
+   * standardized.
+   */
+  custom?: { [key: string]: any };
+  /**
+   * Identifier for the app instance that sent the context and/or intent.
+   */
+  source: AppIdentifier;
+  /**
+   * The timestamp when the context or intent was created, encoded according to [ISO
+   * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
+   */
+  timestamp: Date;
+  /**
+   * A unique identifier for the context or intent that can be used to trace the context or
+   * intent through the system.
+   */
+  traceId: string;
+}
+
+/**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  */
@@ -1300,6 +1318,16 @@ export interface BroadcastRequestPayload {
    * The context object that is to be broadcast.
    */
   context: Context;
+  metadata: AppProvidableContextMetadata;
+}
+
+/**
+ * Metadata that can be provided by an app as part of a broadcast, raise intent or open API
+ * call.
+ */
+export interface AppProvidableContextMetadata {
+  custom?: { [key: string]: any };
+  traceId?: string;
 }
 
 /**
@@ -3027,10 +3055,7 @@ export interface IntentEventPayload {
    * The intent that was raised.
    */
   intent: string;
-  /**
-   * Details of the application instance that raised the intent.
-   */
-  originatingApp?: AppIdentifier;
+  metadata?: ContextMetadata;
   /**
    * The requestUuid value of the raiseIntentRequest that the intentEvent being sent relates
    * to.
@@ -3361,6 +3386,7 @@ export interface OpenRequestPayload {
    * target app with no context and broadcasting the context directly to it.
    */
   context?: Context;
+  metadata: AppProvidableContextMetadata;
 }
 
 /**
@@ -3799,6 +3825,7 @@ export interface RaiseIntentForContextRequest {
 export interface RaiseIntentForContextRequestPayload {
   app?: AppIdentifier;
   context: Context;
+  metadata: AppProvidableContextMetadata;
 }
 
 /**
@@ -3939,6 +3966,7 @@ export interface RaiseIntentRequestPayload {
   app?: AppIdentifier;
   context: Context;
   intent: string;
+  metadata: AppProvidableContextMetadata;
 }
 
 /**
@@ -5056,7 +5084,6 @@ const typeMap: any = {
   OptionalFeatures: o(
     [
       { json: 'DesktopAgentBridging', js: 'DesktopAgentBridging', typ: true },
-      { json: 'OriginatingAppMetadata', js: 'OriginatingAppMetadata', typ: true },
       { json: 'UserChannelMembershipAPIs', js: 'UserChannelMembershipAPIs', typ: true },
     ],
     false
@@ -5258,7 +5285,7 @@ const typeMap: any = {
     [
       { json: 'channelId', js: 'channelId', typ: u(null, '') },
       { json: 'context', js: 'context', typ: r('Context') },
-      { json: 'originatingApp', js: 'originatingApp', typ: u(undefined, r('AppIdentifier')) },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('ContextMetadata')) },
     ],
     false
   ),
@@ -5269,6 +5296,15 @@ const typeMap: any = {
       { json: 'type', js: 'type', typ: '' },
     ],
     'any'
+  ),
+  ContextMetadata: o(
+    [
+      { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
+      { json: 'source', js: 'source', typ: r('AppIdentifier') },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+      { json: 'traceId', js: 'traceId', typ: '' },
+    ],
+    false
   ),
   BroadcastRequest: o(
     [
@@ -5282,6 +5318,14 @@ const typeMap: any = {
     [
       { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'context', js: 'context', typ: r('Context') },
+      { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
+    ],
+    false
+  ),
+  AppProvidableContextMetadata: o(
+    [
+      { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
+      { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
     ],
     false
   ),
@@ -5830,7 +5874,7 @@ const typeMap: any = {
     [
       { json: 'context', js: 'context', typ: r('Context') },
       { json: 'intent', js: 'intent', typ: '' },
-      { json: 'originatingApp', js: 'originatingApp', typ: u(undefined, r('AppIdentifier')) },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('ContextMetadata')) },
       { json: 'raiseIntentRequestUuid', js: 'raiseIntentRequestUuid', typ: '' },
     ],
     false
@@ -5931,6 +5975,7 @@ const typeMap: any = {
     [
       { json: 'app', js: 'app', typ: r('AppIdentifier') },
       { json: 'context', js: 'context', typ: u(undefined, r('Context')) },
+      { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
     ],
     false
   ),
@@ -6071,6 +6116,7 @@ const typeMap: any = {
     [
       { json: 'app', js: 'app', typ: u(undefined, r('AppIdentifier')) },
       { json: 'context', js: 'context', typ: r('Context') },
+      { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
     ],
     false
   ),
@@ -6110,6 +6156,7 @@ const typeMap: any = {
       { json: 'app', js: 'app', typ: u(undefined, r('AppIdentifier')) },
       { json: 'context', js: 'context', typ: r('Context') },
       { json: 'intent', js: 'intent', typ: '' },
+      { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
     ],
     false
   ),

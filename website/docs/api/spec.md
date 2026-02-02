@@ -122,6 +122,7 @@ An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 - Provide details of whether they implement optional features of the Desktop Agent API in the `optionalFeatures` property of the [`ImplementationMetadata`](ref/Metadata#implementationmetadata) object returned by the [`fdc3.getInfo()`](ref/DesktopAgent#getinfo) function.
 - Allow, by default, at least a 15 second timeout for an application, launched via [`fdc3.open`](../api/ref/DesktopAgent#open), [`fdc3.raiseIntent`](../api/ref/DesktopAgent#raiseintent) or [`fdc3.raiseIntentForContext`](../api/ref/DesktopAgent#raiseintentforcontext) to add any context listener (via [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener)) or intent listener (via [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener)) necessary to deliver context or intent and context to it on launch. This timeout only applies to listeners needed to receive context on launch; further intent and context listeners not required on launch MAY be added later.
 - For web applications: All public methods of FDC3 interface objects (e.g. `DesktopAgent`, `Channel`, `PrivateChannel`, `IntentResolution`) **MUST** be bound to their respective instances (e.g. using `.bind(this)` in constructors) to support correct behavior when methods are destructured in JavaScript.  See [DesktopAgentProxy implementation](../../FDC3/packages/fdc3-agent-proxy/src/DesktopAgentProxy.ts) for a reference.
+- Make metadata about each context message or intent and context message received (including the app that originated the message and any supported metadata provided by that application) available to the receiving application.
 
 An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
 
@@ -130,7 +131,6 @@ An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
 - Allow applications to register an [`IntentHandler`](ref/Types#intenthandler) for particular Intent and Context type pairs by providing `interop.intents.listensFor` metadata in their AppD record.
 - Adopt the [recommended set of User channel definitions](#recommended-user-channel-set).
 - Ensure that context messages broadcast by an application on a channel are not delivered back to that same application if they are joined to the channel.
-- Make metadata about each context message or intent and context message received (including the app that originated the message) available to the receiving application.
 - Prevent external apps from listening or publishing on a [`PrivateChannel`](ref/PrivateChannel) that they did not request or provide.
 - Enforce compliance with the expected behavior of intents (where Intents specify a contract that is enforceable by schema, for example, return object types) and return an error if the interface is not met.
 
@@ -246,6 +246,10 @@ Wherever an `appId` is used to refer to a specific application as part of an [`A
 If no exact match is found then a fully-qualified `appId` provided should be split on `@` character and an attempt made to match the unqualified portion to known unqualified `appIds`, ignoring any known fully-qualified `appId` values that were already matched against. Alternatively, if an unqualified `appId` was provided then the known fully-qualified `appId` values should be split on the `@` character and the unqualified appId matched against their unqualified part.
 
 The matching of an unqualified `appId` value against a set of fully-qualified appIds may result in multiple matches. In such cases, Desktop Agents SHOULD attempt additional resolution via any suitable procedure. For API calls such as [`raiseIntent`](./ref/DesktopAgent#raiseintent) or [`raiseIntentForContext`](./ref/DesktopAgent#raiseintentforcontext) Desktop Agents SHOULD use the same approach as they do for resolving ambiguous intents, for example by displaying an Intent Resolver UI and allowing the user to select the desired application. Alternatively, Desktop Agents MAY apply an alternative procedure such as selecting the first matching `appId` or, in the case of `findInstances`, by returning results for all matching fully-qualified `appId` values. Each of the API calls accepting an [`AppIdentifier`](ref/Types#appidentifier) as input, returns details of the `appId` in its results (i.e. [`AppIdentifier`](ref/Types#appidentifier), [`AppMetadata`](ref/Metadata#appmetadata), [IntentResolution](ref/Metadata#intentresolution)), where the fully-qualified appId matched MUST be used.
+
+### Receive metadata about a Broadcast or Raised Intent
+
+Applications often need both the business data (Context) and delivery-related information (ContextMetadata) such as origin, timestamp, or trace identifiers. To keep Context definitions clean and focused on data, FDC3 delivers metadata separately. Handlers receive two arguments: Context and ContextMetadata, enabling apps to process data and optionally use metadata for provenance, security, or correlation. See the [Context Overview](../context/spec#context-metadata) for more details on the separation of COntext and Context Metadata.
 
 ## Raising Intents
 
@@ -552,7 +556,7 @@ A single handler can be added for each specific intent. If the application attem
 
 ### Originating App Metadata
 
-Optional metadata about each intent & context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation to registered intent handlers. As this metadata is optional, apps making use of it MUST handle cases where it is not provided.
+See [Context Metadata](#context-metadata).
 
 ### Compliance with Intent Standards
 
@@ -860,4 +864,72 @@ Channel interface provides the ability to [`clearContext`](ref/Channel.md#clearc
 
 ### Originating App Metadata
 
-Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation to registered context handlers on all types of channel. As this metadata is optional, apps making use of it MUST handle cases where it is not provided.
+See [Context Metadata](#context-metadata).
+
+## Context Metadata
+
+FDC3 separates **Context** (business data) from **ContextMetadata** (delivery and provenance information) to maintain clarity and interoperability. Metadata is optional and SHOULD be provided by the Desktop Agent to registered listeners, but apps MUST handle cases where it is absent. 
+
+For the rationale for separating `Context` and `ContextMetadata`, see the [Context Specification](../context/spec#context-metadata).
+
+### Metadata properties
+
+Registered listeners MUST receive:
+
+*   `timestamp` – Indicates when the message was delivered.
+*   `source` – Identifies the originating app (`AppIdentifier`).
+
+Registered listeners MAY receive:
+
+*   `traceId` – Correlates related actions and messages.
+*   `custom` – Implementation-specific metadata.
+
+<!-- TODO insert security/signature field names here -->
+
+### Trace Information
+
+The Desktop Agent MAY provide a `traceId` to intent handlers.
+
+*   If the originating app provides a `traceId`, the Desktop Agent MUST forward it.
+*   If not, the Desktop Agent MAY generate a UUID.
+
+Apps MAY propagate `traceId` when performing actions as a result of another FDC3 action. This supports observability and correlation across workflows.
+
+**Example:**
+
+```js
+fdc3.addIntentListener("ViewContact", (contactContext, metadata) => {
+  /*
+  Received contactContext: 
+  {
+    type: "fdc3.contact",
+    name: "Jane Doe",
+    id: { email: 'jane@mail.com' }
+  }
+
+  Received metadata: 
+  {
+    traceId: generated uuid,
+    source: {...},
+    timestamp: ...
+  }
+  */
+
+  // Forward traceId when raising a related intent
+  fdc3.raiseIntent("StartCall", contactContext, {
+    traceId: metadata.traceId
+  });
+});
+```
+
+### Timestamp
+
+The Desktop Agent MUST provide timestamp information.  
+Apps SHOULD NOT provide timestamps; if they do, the Desktop Agent MUST ignore them.
+
+### Source
+
+The Desktop Agent MUST provide source information in the form of an `AppIdentifier`.  
+Apps SHOULD NOT provide source; if they do, the Desktop Agent MUST ignore it.
+
+<!-- TODO insert security/signature field overviews here -->

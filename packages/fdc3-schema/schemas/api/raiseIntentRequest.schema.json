@@ -39,10 +39,13 @@
 				},
 				"app": {
 					"$ref": "api.schema.json#/definitions/AppIdentifier"
+				},
+				"metadata": {
+					"$ref": "api.schema.json#/definitions/AppProvidableContextMetadata"
 				}
 			},
 			"required": [
-				"intent", "context"
+				"intent", "context", "metadata"
 			],
 			"additionalProperties": false
 		}

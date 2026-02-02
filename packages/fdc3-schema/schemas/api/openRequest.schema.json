@@ -38,10 +38,13 @@
 					"$ref": "../context/context.schema.json",
 					"title": "Context",
 					"description": "If a Context object is passed in, this object will be provided to the opened application via a contextListener. The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it."
+				},
+				"metadata": {
+					"$ref": "api.schema.json#/definitions/AppProvidableContextMetadata"
 				}
 			},
 			"required": [
-				"app"
+				"app", "metadata"
 			],
 			"additionalProperties": false
 		}
