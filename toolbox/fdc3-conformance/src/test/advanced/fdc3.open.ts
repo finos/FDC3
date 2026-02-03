@@ -15,7 +15,7 @@ const config: OpenCommonConfig = {
   targetMultiple: 'AppIdentifier',
 };
 
-export default () => {
+export default async () => {
   let control: OpenControl2_0;
   let fdc3: DesktopAgent;
 

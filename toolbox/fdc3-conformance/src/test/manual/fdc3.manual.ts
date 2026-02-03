@@ -11,7 +11,7 @@ const raiseIntentDocs = '\r\nDocumentation: ' + APIDocumentation2_0.raiseIntent 
  * Details on the mock apps used in these tests can be found in /mock/README.md
  */
 
-export const fdc3ResolveAmbiguousIntentTarget_2_0 = () =>
+export const fdc3ResolveAmbiguousIntentTarget_2_0 = async () =>
   describe('2.0-ResolveAmbiguousIntentTarget', async () => {
     const fdc3 = await getAgent();
 
@@ -32,7 +32,7 @@ export const fdc3ResolveAmbiguousIntentTarget_2_0 = () =>
     });
   });
 
-export const fdc3ResolveAmbiguousContextTarget_2_0 = () =>
+export const fdc3ResolveAmbiguousContextTarget_2_0 = async () =>
   describe('2.0-ResolveAmbiguousContextTarget', async () => {
     const fdc3 = await getAgent();
 
@@ -53,7 +53,7 @@ export const fdc3ResolveAmbiguousContextTarget_2_0 = () =>
     });
   });
 
-export const fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0 = () =>
+export const fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0 = async () =>
   describe('2.0-ResolveAmbiguousIntentTargetMultiInstance', async () => {
     const fdc3 = await getAgent();
     const control = new RaiseIntentControl2_0(fdc3);
@@ -81,7 +81,7 @@ export const fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0 = () =>
     });
   });
 
-export const fdc3ResolveAmbiguousContextTargetMultiInstance_2_0 = () =>
+export const fdc3ResolveAmbiguousContextTargetMultiInstance_2_0 = async () =>
   describe('2.0-ResolveAmbiguousContextTargetMultiInstance', async () => {
     const fdc3 = await getAgent();
     const control = new RaiseIntentControl2_0(fdc3);
@@ -109,7 +109,7 @@ export const fdc3ResolveAmbiguousContextTargetMultiInstance_2_0 = () =>
     });
   });
 
-export const fdc3ChannelChangedEvent_2_2 = () =>
+export const fdc3ChannelChangedEvent_2_2 = async () =>
   describe('2.2-ChannelChangedEvent', () => {
     it('(2.2-ChannelChangedEvent) Should receive an event when the user changes channel.  This is a manual test, please change the channel a few times in your browser to get this to pass.', async () => {
       const channels: (string | null)[] = [];

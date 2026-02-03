@@ -10,7 +10,7 @@ import {
 } from '../support/intent-support-2.0';
 import constants from '../../constants';
 
-export default () =>
+export default async () =>
   describe('fdc3.raiseIntent (Result)', () => {
     let errorListener: Listener | undefined = undefined;
     let control: RaiseIntentControl2_0;

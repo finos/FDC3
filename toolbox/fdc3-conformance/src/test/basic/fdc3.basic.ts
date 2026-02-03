@@ -175,17 +175,17 @@ const documentation_JC = '\r\nDocumentation: ' + APIDocumentation2_0.getCurrentC
 const documentation_RI = '\r\nDocumentation: ' + APIDocumentation2_0.raiseIntentForContext + '\r\nCause';
 const documentation_GA = '\r\nDocumentation: ' + APIDocumentation2_0.getAgent + '\r\nCause';
 
-export const fdc3BasicGetAgent_2_2 = () =>
+export const fdc3BasicGetAgent_2_2 = async () =>
   describe('fdc3.basicGetAgent_2.2', () => getAgent2_2(fdc3, documentation_GA));
-export const fdc3BasicCL1_2_0 = () => describe('fdc3.basicCL1_2.0', () => basicCL1(fdc3, documentation_CL));
-export const fdc3BasicCL2_2_0 = () => describe('fdc3.basicCL2_2.0', () => basicCL2(fdc3, documentation_CL));
-export const fdc3BasicIL1_2_0 = () => describe('fdc3.basicIL1_2.0', () => basicIL1(fdc3, documentation_IL));
-export const fdc3BasicGI1_2_0 = () => describe('fdc3.basicGI1_2.0', () => basicGI1(fdc3, documentation_GI));
-export const fdc3BasicAC1_2_0 = () => describe('fdc3.basicAC1_2.0', () => basicAC1(fdc3, documentation_AC));
-export const fdc3BasicUC1_2_0 = () => describe('fdc3.basicUC1_2.0', () => basicUC1(fdc3, documentation_UC));
-export const fdc3BasicJC1_2_0 = () => describe('fdc3.basicJC1_2.0', () => basicJC1(fdc3, documentation_JC));
+export const fdc3BasicCL1_2_0 = async () => describe('fdc3.basicCL1_2.0', () => basicCL1(fdc3, documentation_CL));
+export const fdc3BasicCL2_2_0 = async () => describe('fdc3.basicCL2_2.0', () => basicCL2(fdc3, documentation_CL));
+export const fdc3BasicIL1_2_0 = async () => describe('fdc3.basicIL1_2.0', () => basicIL1(fdc3, documentation_IL));
+export const fdc3BasicGI1_2_0 = async () => describe('fdc3.basicGI1_2.0', () => basicGI1(fdc3, documentation_GI));
+export const fdc3BasicAC1_2_0 = async () => describe('fdc3.basicAC1_2.0', () => basicAC1(fdc3, documentation_AC));
+export const fdc3BasicUC1_2_0 = async () => describe('fdc3.basicUC1_2.0', () => basicUC1(fdc3, documentation_UC));
+export const fdc3BasicJC1_2_0 = async () => describe('fdc3.basicJC1_2.0', () => basicJC1(fdc3, documentation_JC));
 
-export const fdc3BasicRI1_2_0 = () =>
+export const fdc3BasicRI1_2_0 = async () =>
   describe('fdc3.basicRI1_2.0', () => {
     after(async function after() {
       await closeMockAppWindow(this.currentTest?.title ?? 'Unknown test');
@@ -193,7 +193,7 @@ export const fdc3BasicRI1_2_0 = () =>
     basicRI1(fdc3, documentation_RI, Intent.aTestingIntent, ContextType.testContextX);
   });
 
-export const fdc3BasicRI2_2_0 = () =>
+export const fdc3BasicRI2_2_0 = async () =>
   describe('fdc3.basicRI2_2.0', () => {
     after(async function after() {
       await closeMockAppWindow(this.currentTest?.title ?? 'Unknown test');
