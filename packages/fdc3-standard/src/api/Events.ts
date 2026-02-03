@@ -25,7 +25,7 @@ export type EventHandler = (event: ApiEvent) => void;
 /**
  * Type defining valid type strings for DesktopAgent interface events.
  */
-export type FDC3EventTypes = 'userChannelChanged';
+export type FDC3EventTypes = 'userChannelChanged' | 'contextCleared';
 
 /**
  * Type defining the format of event objects that may be received
@@ -33,6 +33,7 @@ export type FDC3EventTypes = 'userChannelChanged';
  */
 export interface FDC3Event extends ApiEvent {
   readonly details: any;
+  readonly type: FDC3EventTypes;
 }
 
 /**
