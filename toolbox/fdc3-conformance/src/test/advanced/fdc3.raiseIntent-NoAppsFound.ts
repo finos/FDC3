@@ -11,7 +11,7 @@ const raiseIntentDocs = '\r\nDocumentation: ' + APIDocumentation2_0.raiseIntent 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md
  */
-export default () =>
+export default async () =>
   describe('fdc3.raiseIntent (throws error)', () => {
     let control: RaiseIntentControl2_0;
     let fdc3: DesktopAgent;

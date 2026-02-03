@@ -1,10 +1,19 @@
 import { assert, expect } from 'chai';
 import { wait } from '../../utils';
 import constants from '../../constants';
-import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, ChannelControl } from '../support/channel-control';
+import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE } from '../support/channel-control';
+import { ChannelControl2_0 } from '../support/channels-support-2.0';
+import { getAgent } from '@finos/fdc3';
+import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
 
-export function createAppChannelTests(cc: ChannelControl, documentation: string, prefix: string): Mocha.Suite {
-  return describe('App channels', () => {
+const documentation = '\r\nDocumentation: ' + APIDocumentation2_0.desktopAgent + '\r\nCause:';
+
+export default async () => {
+  const fdc3 = await getAgent();
+  const cc = new ChannelControl2_0(fdc3);
+  const prefix = '2.0-';
+
+  return describe('fdc3.appChannels', () => {
     beforeEach(cc.leaveChannel);
 
     afterEach(async function afterEach() {
@@ -297,4 +306,4 @@ export function createAppChannelTests(cc: ChannelControl, documentation: string,
       }
     });
   });
-}
+};

@@ -15,7 +15,7 @@ import { AppIdentifier, DesktopAgent, getAgent, IntentResolution, Listener } fro
 
 const findInstancesDocs = '\r\nDocumentation: ' + APIDocumentation2_0.findInstances + '\r\nCause: ';
 
-export default () =>
+export default async () =>
   describe('fdc3.findInstances', function () {
     this.timeout(5000);
 
