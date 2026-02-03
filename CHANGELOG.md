@@ -25,6 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added Conformance tests for FDC3 2.2 ([#1586](https://github.com/finos/FDC3/pull/1586))
 * Fix for channel change listeners not sending addEventListenerRequests ([#1606](https://github.com/finos/FDC3/pull/1606))
 * When adding a listener on the current channel, the payload.channelId should be null ([#1611](https://github.com/finos/FDC3/pull/1611))
+* Changed fdc3-web-impl to not deliver broadcast messages back to the sending application, as recommended (SHOULD) in the Standard. [#1749](https://github.com/finos/FDC3/pull/1749)
 
 ### Deprecated
 
