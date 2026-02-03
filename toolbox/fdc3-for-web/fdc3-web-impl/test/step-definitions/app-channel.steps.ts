@@ -1,23 +1,20 @@
-import { When } from '@cucumber/cucumber';
-import { CustomWorld } from '../world';
-import { createMeta } from './generic.steps';
+import { When } from 'quickpickle';
+import { CustomWorld } from '../world/index.js';
+import { createMeta } from './generic.steps.js';
 import { handleResolve } from '@finos/testing';
 import { BrowserTypes } from '@finos/fdc3-schema';
 type GetOrCreateChannelRequest = BrowserTypes.GetOrCreateChannelRequest;
 
-When(
-  '{string} creates or gets an app channel called {string}',
-  function (this: CustomWorld, app: string, channel: string) {
-    const meta = createMeta(this, app);
-    const uuid = this.sc.getInstanceUUID(meta.source)!;
-    const message = {
-      meta,
-      payload: {
-        channelId: handleResolve(channel, this),
-      },
-      type: 'getOrCreateChannelRequest',
-    } as GetOrCreateChannelRequest;
+When('{string} creates or gets an app channel called {string}', (world: CustomWorld, app: string, channel: string) => {
+  const meta = createMeta(world, app);
+  const uuid = world.sc.getInstanceUUID(meta.source)!;
+  const message = {
+    meta,
+    payload: {
+      channelId: handleResolve(channel, world),
+    },
+    type: 'getOrCreateChannelRequest',
+  } as GetOrCreateChannelRequest;
 
-    this.server.receive(message, uuid);
-  }
-);
+  world.server.receive(message, uuid);
+});

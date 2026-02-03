@@ -1,10 +1,10 @@
 import { DataTable, Given, Then, When } from '@cucumber/cucumber';
-import Ajv2019 from 'ajv/dist/2019';
-import * as draft7MetaSchema from 'ajv/dist/refs/json-schema-draft-07.json';
+import Ajv2019 from 'ajv/dist/2019.js';
+import draft7MetaSchema from 'ajv/dist/refs/json-schema-draft-07.json' with { type: 'json' };
 import addFormats from 'ajv-formats';
 import { expect } from 'expect';
-import { doesRowMatch, handleResolve, matchData } from '../support/matching';
-import { PropsWorld } from '../world';
+import { doesRowMatch, handleResolve, matchData } from '../support/matching.js';
+import { PropsWorld } from '../world/index.js';
 import fs from 'fs';
 import path from 'path';
 
@@ -198,29 +198,25 @@ export function setupGenericSteps() {
     ajv.addMetaSchema(draft7MetaSchema);
     addFormats(ajv);
 
-    const f2 = fs;
-    const p = path;
+    const schemaDir = path.join(import.meta.dirname, '../../../../fdc3-schema/schemas');
+    const contextDir = path.join(import.meta.dirname, '../../../../fdc3-context/schemas');
 
-    const schemaDir = p.join(__dirname, '../../../../fdc3-schema/schemas');
-    const contextDir = p.join(__dirname, '../../../../fdc3-context/schemas');
-
-    const abspath = p.join(schemaDir, 'api');
+    const abspath = path.join(schemaDir, 'api');
 
     try {
-      f2.readdirSync(abspath).forEach(file => {
+      fs.readdirSync(abspath).forEach(file => {
         if (file.endsWith('.json')) {
-          const filePath = p.join(abspath, file);
+          const filePath = path.join(abspath, file);
           const contents = fs.readFileSync(filePath, 'utf8');
           const schema = JSON.parse(contents);
           ajv.addSchema(schema);
-          //console.log(`Content of ${file}: ${contents}`);
         }
       });
     } catch (error) {
       console.log(error);
     }
 
-    const contextPath = p.join(contextDir, 'context/context.schema.json');
+    const contextPath = path.join(contextDir, 'context/context.schema.json');
     const contents = fs.readFileSync(contextPath, 'utf8');
     const schema = JSON.parse(contents);
     ajv.addSchema(schema);

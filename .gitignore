@@ -30,3 +30,4 @@ nyc-coverage-report/
 .rollup.cache
 tsconfig.tsbuildinfo
 .vscode/launch.json
+**/html-report

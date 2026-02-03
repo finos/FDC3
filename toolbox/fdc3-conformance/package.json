@@ -8,6 +8,7 @@
   },
   "private": true,
   "license": "Apache-2.0",
+  "type": "module",
   "scripts": {
     "copy": "shx mkdir -p ./dist && shx cp -R static/* ./dist",
     "build": "webpack build && npm run copy",

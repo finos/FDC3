@@ -11,6 +11,7 @@
     "tag": "latest"
   },
   "license": "Apache-2.0",
+  "type": "module",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "files": [
@@ -20,7 +21,7 @@
     "clean": "rimraf dist && rimraf generated",
     "mkdirs": "npx mkdirp generated/context",
     "generate": "npm run mkdirs && npm run typegen && npm run lint",
-    "build": "npm run generate && tsc --module es2022",
+    "build": "npm run generate && tsc",
     "lint": "eslint generated/ --fix && npx prettier generated/ --write",
     "test": "npm run generate && tsc && jest",
     "typegen": "cd schemas && node ../s2tQuicktypeUtil.js context ../generated/context/ContextTypes.ts"

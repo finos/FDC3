@@ -1,14 +1,27 @@
 import { JSONPath } from 'jsonpath-plus';
-import { PropsWorld } from '../world';
 import expect from 'expect';
 import { DataTable } from '@cucumber/cucumber';
 import Ajv from 'ajv/dist/2019';
 
-export function doesRowMatch(cw: PropsWorld, t: Record<string, string>, data: any): boolean {
+// Generic interface for any world with props
+export interface PropsWorldLike {
+  props: Record<string, any>;
+  log?: (message: string) => void;
+}
+
+function safeLog(cw: PropsWorldLike, message: string) {
+  if (cw.log) {
+    cw.log(message);
+  } else {
+    console.log(message);
+  }
+}
+
+export function doesRowMatch(cw: PropsWorldLike, t: Record<string, string>, data: any): boolean {
   for (const [field, actual] of Object.entries(t)) {
     if (field.endsWith('matches_type')) {
       // validation mode
-      var valdata = data;
+      let valdata = data;
 
       if (field.length > 'matches_type'.length) {
         // deals with the case where we're validating part of the object
@@ -24,9 +37,12 @@ export function doesRowMatch(cw: PropsWorld, t: Record<string, string>, data: an
       const valid = validate(valdata);
       if (!valid) {
         try {
-          cw.log(`Comparing Validation failed: ${JSON.stringify(data, null, 2)} \n ${JSON.stringify(validate.errors)}`);
+          safeLog(
+            cw,
+            `Comparing Validation failed: ${JSON.stringify(data, null, 2)} \n ${JSON.stringify(validate.errors)}`
+          );
         } catch (e) {
-          cw.log(`Comparing Validation failed: ${JSON.stringify(validate.errors)}`);
+          safeLog(cw, `Comparing Validation failed: ${JSON.stringify(validate.errors)}`);
         }
         return false;
       }
@@ -36,11 +52,12 @@ export function doesRowMatch(cw: PropsWorld, t: Record<string, string>, data: an
 
       if (found != resolved) {
         try {
-          cw.log(
+          safeLog(
+            cw,
             `Comparing Validation failed: ${JSON.stringify(data, null, 2)} \n Match failed on ${field} '${found}' vs '${resolved}'`
           );
         } catch (e) {
-          cw.log('Match failed on ' + field + " '" + found + "' vs '" + resolved + "'");
+          safeLog(cw, 'Match failed on ' + field + " '" + found + "' vs '" + resolved + "'");
         }
         return false;
       }
@@ -50,8 +67,8 @@ export function doesRowMatch(cw: PropsWorld, t: Record<string, string>, data: an
   return true;
 }
 
-export function indexOf(cw: PropsWorld, rows: Record<string, string>[], data: any): number {
-  for (var i = 0; i < rows.length; i++) {
+export function indexOf(cw: PropsWorldLike, rows: Record<string, string>[], data: any): number {
+  for (let i = 0; i < rows.length; i++) {
     if (doesRowMatch(cw, rows[i], data)) {
       return i;
     }
@@ -64,7 +81,7 @@ function isNumeric(n: string) {
   return !isNaN(parseFloat(n)) && isFinite(n as unknown as number);
 }
 
-export function handleResolve(name: string, on: PropsWorld): any {
+export function handleResolve(name: string, on: PropsWorldLike): any {
   if (name.startsWith('{') && name.endsWith('}')) {
     const stripped = name.substring(1, name.length - 1);
     if (stripped == 'null') {
@@ -84,14 +101,14 @@ export function handleResolve(name: string, on: PropsWorld): any {
   }
 }
 
-export function matchData(cw: PropsWorld, actual: any[], dt: DataTable) {
+export function matchData(cw: PropsWorldLike, actual: any[], dt: DataTable) {
   const tableData = dt.hashes();
   const rowCount = tableData.length;
 
-  var resultCopy = JSON.parse(JSON.stringify(actual)) as any[];
-  cw.log(`result ${JSON.stringify(resultCopy, null, 2)} length ${resultCopy.length}`);
+  let resultCopy = JSON.parse(JSON.stringify(actual)) as any[];
+  safeLog(cw, `result ${JSON.stringify(resultCopy, null, 2)} length ${resultCopy.length}`);
   expect(resultCopy).toHaveLength(rowCount);
-  var row = 0;
+  let row = 0;
 
   resultCopy = resultCopy.filter(rr => {
     const matchingRow = tableData[row];
@@ -99,7 +116,7 @@ export function matchData(cw: PropsWorld, actual: any[], dt: DataTable) {
     if (doesRowMatch(cw, matchingRow, rr)) {
       return false;
     } else {
-      cw.log(`Couldn't match row: ${JSON.stringify(rr, null, 2)}`);
+      safeLog(cw, `Couldn't match row: ${JSON.stringify(rr, null, 2)}`);
       return true;
     }
   });

@@ -11,6 +11,7 @@
     "tag": "latest"
   },
   "license": "Apache-2.0",
+  "type": "module",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "files": [
@@ -21,7 +22,7 @@
     "mkdirs": "npx mkdirp generated/api && npx mkdirp generated/bridging",
     "generate-type-predicates": "ts-node code-generation/generate-type-predicates.ts",
     "generate": "npm run mkdirs && npm run typegen-browser && npm run typegen-bridging && npm run generate-type-predicates && npm run lint",
-    "build": "npm run generate && tsc --module es2022",
+    "build": "npm run generate && tsc",
     "lint": "eslint generated/ --fix && npx prettier generated/ --write",
     "test": "npm run generate && tsc",
     "typegen-browser": "cd schemas && node ../s2tQuicktypeUtil.js api/api.schema.json api/common.schema.json ../../fdc3-context/schemas/context/context.schema.json api ../generated/api/BrowserTypes.ts",

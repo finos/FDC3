@@ -3,6 +3,7 @@
   "private": true,
   "version": "2.2.2-beta.1",
   "license": "Apache-2.0",
+  "type": "module",
   "scripts": {
     "dev": "nodemon -w src/server src/server/main.ts",
     "lint": "eslint src/"
