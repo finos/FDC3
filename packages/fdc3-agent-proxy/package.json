@@ -18,7 +18,9 @@
   ],
   "scripts": {
     "build": "tsc --module es2022",
-    "test": "tsc && nyc --reporter=lcov --reporter=text  --reporter json  cucumber-js",
+    "test": "tsc && vitest run ",
+    "test:coverage": "vitest run --coverage",
+    "test-old": "nyc --reporter=lcov --reporter=text  --reporter json  cucumber-js",
     "clean": "rimraf dist cucumber-report.html coverage .nyc_output node_modules test-results.xml",
     "lint": "eslint src/"
   },
@@ -26,10 +28,6 @@
     "@finos/fdc3-standard": "2.2.2-beta.1"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "10.3.1",
-    "@cucumber/html-formatter": "11.0.4",
-    "@cucumber/messages": "^28.1.0",
-    "@cucumber/pretty-formatter": "1.0.1",
     "@eslint/js": "^9.19.0",
     "@finos/testing": "2.2.2-beta.1",
     "@types/expect": "24.3.0",
@@ -38,6 +36,7 @@
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
     "@typescript-eslint/parser": "^8.18.2",
+    "@vitest/coverage-v8": "^4.0.18",
     "cucumber-console-formatter": "1.0.0",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^9.1.0",
@@ -48,12 +47,15 @@
     "is-ci": "2.0.0",
     "jsonpath-plus": "^10.1.0",
     "nyc": "17.1.0",
+    "pixelmatch": "^7.1.0",
     "prettier": "3.4.1",
+    "quickpickle": "^1.11.0",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "tsx": "^4.19.1",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.17.0",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "vitest": "^4.0.18"
   }
 }
