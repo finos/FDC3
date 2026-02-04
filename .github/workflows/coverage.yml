@@ -67,6 +67,7 @@ jobs:
         search_artifacts: true
 
     - name: Report Coverage
+      if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
       uses: sidx1024/report-nyc-coverage-github-action@v1.2.7
       with:
         coverage_file: "nyc-coverage-report/coverage-summary.json"
