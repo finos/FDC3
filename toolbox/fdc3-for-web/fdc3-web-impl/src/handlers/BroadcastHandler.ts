@@ -426,8 +426,12 @@ export class BroadcastHandler implements MessageHandler {
     };
 
     const matchingListeners = this.contextListeners
+      // Deliver the message to apps listening to the right channel
       .filter(r => matchesExactChannel(r) || matchesUserChannel(r))
-      .filter(r => r.contextType == null || r.contextType == arg0.payload.context.type);
+      // Deliver the message to apps with matching context type listeners
+      .filter(r => r.contextType == null || r.contextType == arg0.payload.context.type)
+      // Don't deliver messages back to the broadcasting app
+      .filter(r => r.instanceId !== from.instanceId);
 
     const matchingApps: FullAppIdentifier[] = matchingListeners
       .map(r => {
