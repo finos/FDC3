@@ -11,15 +11,21 @@ import {
   IntentApp,
   RaiseIntentControl2_0,
 } from '../support/intent-support-2.0';
-import { AppIdentifier, IntentResolution, Listener } from '@finos/fdc3';
+import { AppIdentifier, DesktopAgent, getAgent, IntentResolution, Listener } from '@finos/fdc3';
 
 const findInstancesDocs = '\r\nDocumentation: ' + APIDocumentation2_0.findInstances + '\r\nCause: ';
 
-const control = new RaiseIntentControl2_0();
-
-export default () =>
+export default async () =>
   describe('fdc3.findInstances', function () {
     this.timeout(5000);
+
+    let control: RaiseIntentControl2_0;
+    let fdc3: DesktopAgent;
+
+    beforeEach(async () => {
+      fdc3 = await getAgent();
+      control = new RaiseIntentControl2_0(fdc3);
+    });
 
     after(async function after() {
       await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test', 2);
@@ -40,7 +46,7 @@ export default () =>
           `The AppIdentifier's instanceId property for both instances of the opened app should not be the same.${findInstancesDocs}`
         ).to.not.equal(appIdentifier2.instanceId);
 
-        let instances = await control.findInstances(IntentApp.IntentAppA);
+        const instances = await control.findInstances(IntentApp.IntentAppA);
         validateInstances(instances, appIdentifier, appIdentifier2);
 
         const wrapper = wrapPromise();

@@ -30,24 +30,49 @@
 		"ChannelChangedEventPayload": {
 			"title": "channelChanged Event Payload",
 			"type": "object",
-			"properties": {
-				"newChannelId": {
-					"title": "New Channel Id",
-					"description": "The Id of the channel that the app was added to or `null` if it was removed from a channel.",
-					"oneOf": [
-						{
-							"type": "string"
-						},
-						{
-							"type": "null"
-						}
-					]
-				}
-			},
-			"additionalProperties": false,
-			"required": [
-				"newChannelId"
-			]
+      "anyOf": [
+        {
+          "deprecated": true,
+          "properties": {
+    				"newChannelId": {
+    					"title": "New Channel Id",
+    					"description": "Deprecated - allowed for backwards compatibility.  The Id of the channel that the app was added to or `null` if it was removed from a channel.",
+    					"oneOf": [
+    						{
+    							"type": "string"
+    						},
+    						{
+    							"type": "null"
+    						}
+    					]
+    				}
+    			},
+    			"additionalProperties": false,
+    			"required": [
+    				"newChannelId"
+    			]
+        },{
+          "properties": {
+    				"currentChannelId": {
+    					"title": "Current Channel Id",
+    					"description": "The Id of the channel that the app was added to or `null` if it was removed from a channel.",
+    					"oneOf": [
+    						{
+    							"type": "string"
+    						},
+    						{
+    							"type": "null"
+    						}
+    					]
+    				}
+    			},
+    			"additionalProperties": false,
+    			"required": [
+    				"currentChannelId"
+    			]
+        }  
+      ]
+			
 		}
 	}
 }

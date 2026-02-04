@@ -1,6 +1,5 @@
 import mocha from 'mocha';
 import constants from '../constants';
-import channels_2_0 from './advanced/channels';
 import fdc3FindIntent_2_0 from './advanced/fdc3.findIntent';
 import fdc3FindIntentsByContext_2_0 from './advanced/fdc3.findIntentsByContext';
 import fdc3GetInfo_2_0 from './advanced/fdc3.getInfo';
@@ -10,7 +9,10 @@ import fdc3Open_2_0 from './advanced/fdc3.open';
 import fdc3RaiseIntent_2_0 from './advanced/fdc3.raiseIntent';
 import fdc3RaiseIntent_2_0_Result from './advanced/fdc3.raiseIntent-Result';
 import fdc3RaiseIntent_2_0_NoAppsFound from './advanced/fdc3.raiseIntent-NoAppsFound';
+import fdc3AppChannels from './advanced/fdc3.app-channels';
+import fdc3UserChannels from './advanced/fdc3.user-channels';
 import {
+  fdc3BasicGetAgent_2_2,
   fdc3BasicCL1_2_0,
   fdc3BasicCL2_2_0,
   fdc3BasicIL1_2_0,
@@ -26,11 +28,13 @@ import {
   fdc3ResolveAmbiguousContextTarget_2_0,
   fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0,
   fdc3ResolveAmbiguousContextTargetMultiInstance_2_0,
+  fdc3ChannelChangedEvent_2_2,
 } from './manual/fdc3.manual';
 
-type testSet = { [key: string]: (() => void)[] };
+type testSet = { [key: string]: (() => Promise<Mocha.Suite>)[] };
 
 const basicSuite_2_0: testSet = {
+  'fdc3.basicGetAgent 2.2': [fdc3BasicGetAgent_2_2],
   'fdc3.basicCL1 2.0': [fdc3BasicCL1_2_0],
   'fdc3.basicCL2 2.0': [fdc3BasicCL2_2_0],
   'fdc3.basicIL1 2.0': [fdc3BasicIL1_2_0],
@@ -46,7 +50,8 @@ const advancedSuite_2_0: testSet = {
   'fdc3.open 2.0': [fdc3Open_2_0],
   'fdc3.getInfo 2.0': [fdc3GetInfo_2_0],
   'fdc3.getAppMetadata 2.0': [fdc3getAppMetadata_2_0],
-  'Channels 2.0': [channels_2_0],
+  'fdc3.appChannels': [fdc3AppChannels],
+  'fdc3.userChannels': [fdc3UserChannels],
   'fdc3.findInstances 2.0': [fdc3FindInstances_2_0],
   'fdc3.findIntent 2.0': [fdc3FindIntent_2_0],
   'fdc3.findIntentsByContext 2.0': [fdc3FindIntentsByContext_2_0],
@@ -60,10 +65,11 @@ const ambiguousTests_2_0: testSet = {
   'fdc3.ResolveAmbiguousContextTarget 2.0': [fdc3ResolveAmbiguousContextTarget_2_0],
   'fdc3.ResolveAmbiguousIntentTargetMultiInstance 2.0': [fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0],
   'fdc3.ResolveAmbiguousContextTargetMultiInstance 2.0': [fdc3ResolveAmbiguousContextTargetMultiInstance_2_0],
+  'fdc3.ChannelChangedEvent 2.2': [fdc3ChannelChangedEvent_2_2],
 };
 
-function stripSuites(ts: testSet[]): (() => void)[] {
-  const out: (() => void)[] = [];
+function stripSuites(ts: testSet[]): (() => Promise<Mocha.Suite>)[] {
+  const out: (() => Promise<Mocha.Suite>)[] = [];
   ts.map(item => {
     const sets = Object.values(item);
     sets.forEach(set => set.forEach(test => out.push(test)));
@@ -73,8 +79,6 @@ function stripSuites(ts: testSet[]): (() => void)[] {
 
 export const allTests: testSet = {
   'All 2.0': stripSuites([basicSuite_2_0, advancedSuite_2_0]),
-  'Basic 2.0': stripSuites([basicSuite_2_0]),
-  'Advanced 2.0': stripSuites([advancedSuite_2_0]),
   ...basicSuite_2_0,
   ...advancedSuite_2_0,
 };
@@ -84,7 +88,7 @@ export const allManualTests: testSet = {
 };
 
 export const packs: { [index: string]: string[] } = {
-  '2.0 (Combined)': ['All 2.0', 'Basic 2.0', 'Advanced 2.0'],
+  '2.0 (All)': ['All 2.0'],
   '2.0 (Individual Basic)': Object.keys(basicSuite_2_0),
   '2.0 (Individual Advanced)': Object.keys(advancedSuite_2_0),
 };
@@ -101,10 +105,13 @@ export function getPackMembers(packName: string): string[] {
  * Intended for running tests in container with results shown
  * in HTML page
  */
-export const executeTestsInBrowser = (pack: string) => {
+export const executeTestsInBrowser = async (pack: string) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (mocha as any).timeout(constants.TestTimeout);
   const suite = allTests[pack];
-  suite.forEach(s => s());
+  for (let index = 0; index < suite.length; index++) {
+    await suite[index]();
+  }
   mocha.run();
 };
 
@@ -112,11 +119,14 @@ export const executeTestsInBrowser = (pack: string) => {
  * Intended for running Manual tests in container with results shown
  * in HTML page
  */
-export const executeManualTestsInBrowser = (pack: string) => {
+export const executeManualTestsInBrowser = async (pack: string) => {
   console.log('Pack', pack);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (mocha as any).timeout(constants.TestTimeout);
   const suite = allManualTests[pack];
   console.log('************ found suite******', suite);
-  suite.forEach(s => s());
+  for (let index = 0; index < suite.length; index++) {
+    await suite[index]();
+  }
   mocha.run();
 };

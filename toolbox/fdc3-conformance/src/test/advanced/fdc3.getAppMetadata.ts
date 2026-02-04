@@ -8,7 +8,7 @@ const getMetadataDocs = '\r\nDocumentation: ' + APIDocumentation2_0.appMetadata 
 const validator = new MetadataValidator();
 const api = new MetadataFdc3Api();
 
-export default () =>
+export default async () =>
   describe('fdc3.getAppMetadata', () => {
     after(async () => {
       await closeMockAppWindow(appInstanceMetadata);

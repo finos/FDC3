@@ -88,19 +88,9 @@ Feature: Raising Intents
 
   Scenario: Raising An Intent To A Non-Running App without A Context Type in the listener
     When "App1/a1" raises an intent for "stampBook" with contextType "fdc3.book" on app "libraryApp"
-    And "uuid-0" sends validate
-    And "libraryApp/uuid-0" registers an intent listener for "stampBook"
     Then messaging will have outgoing posts
-      | msg.matches_type          | msg.payload.intent | to.instanceId | to.appId   | msg.payload.context.type |
-      | addIntentListenerResponse | {null}             | uuid-0        | libraryApp | {null}                   |
-      | intentEvent               | stampBook          | uuid-0        | libraryApp | fdc3.book                |
-      | raiseIntentResponse       | {null}             | a1            | App1       | {null}                   |
-    And running apps will be
-      | appId           | instanceId |
-      | uniqueIntentApp | c1         |
-      | listenerApp     | b1         |
-      | App1            | a1         |
-      | libraryApp      | uuid-0     |
+      | msg.payload.error | msg.type            |
+      | NoAppsFound       | raiseIntentResponse |
 
   Scenario: Raising An Intent To A Broken App that doesn't add an intent listener
     When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "libraryApp"

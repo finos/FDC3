@@ -86,7 +86,7 @@ export enum ResolveError {
 
   /** Returned if `fdc3.addIntentListener` is called for a specified intent that the application has already added a listener for and has not subsequently removed it. */
   IntentListenerConflict = 'IntentListenerConflict',
-  
+
   /** @experimental Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.*/
   DesktopAgentNotFound = 'DesktopAgentNotFound',
 

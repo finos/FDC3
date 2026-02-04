@@ -75,13 +75,7 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
   }
 
   addEventListener(type: FDC3EventTypes | null, handler: EventHandler): Promise<Listener> {
-    switch (type) {
-      case 'userChannelChanged':
-        return this.channels.addChannelChangedEventHandler(handler);
-      default:
-        Logger.warn(`Tried to add a listener for an unknown event type: ${type}`);
-        return Promise.reject(new Error('UnknownEventType'));
-    }
+    return this.channels.addEventListener(handler, type);
   }
 
   getInfo(): Promise<ImplementationMetadata> {

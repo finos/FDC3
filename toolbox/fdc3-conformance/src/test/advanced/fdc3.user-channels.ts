@@ -1,13 +1,20 @@
 import { assert, expect } from 'chai';
 import { wait } from '../../utils';
 import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from '../support/channel-control';
-import { ChannelControl } from '../support/channel-control';
 import constants from '../../constants';
 import { Context } from '@finos/fdc3';
+import { ChannelControl2_0 } from '../support/channels-support-2.0';
+import { getAgent } from '@finos/fdc3';
+import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
 
-export function createUserChannelTests(cc: ChannelControl, documentation: string, prefix: string): Mocha.Suite {
-  const channelName = prefix === '' ? 'System channels' : 'User channels';
-  return describe(channelName, () => {
+const documentation = '\r\nDocumentation: ' + APIDocumentation2_0.desktopAgent + '\r\nCause:';
+
+export default async () => {
+  const fdc3 = await getAgent();
+  const cc = new ChannelControl2_0(fdc3);
+  const prefix = '2.0-';
+
+  return describe('fdc3.userChannels', () => {
     beforeEach(cc.leaveChannel);
 
     afterEach(async function afterEach() {
@@ -24,7 +31,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId1);
       let receivedContext = false;
-      let listener = await cc.setupAndValidateListener(
+      const listener = await cc.setupAndValidateListener(
         null,
         null,
         'fdc3.instrument',
@@ -59,7 +66,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
       const channel = await cc.getNonGlobalUserChannel();
       await cc.joinChannel(channel);
       let receivedContext = false;
-      let listener = await cc.setupAndValidateListener(
+      const listener = await cc.setupAndValidateListener(
         null,
         null,
         'fdc3.instrument',
@@ -92,7 +99,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
       const channel = await cc.getNonGlobalUserChannel();
       await cc.openChannelApp(scTestId3, channel.id, JOIN_AND_BROADCAST);
       let receivedContext = false;
-      let listener = await cc.setupAndValidateListener(
+      const listener = await cc.setupAndValidateListener(
         null,
         null,
         'fdc3.instrument',
@@ -126,7 +133,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
       await cc.openChannelApp(UCBasicUsage4, channel.id, JOIN_AND_BROADCAST);
       await cc.joinChannel(channel);
       let receivedContext = false;
-      let listener = await cc.setupAndValidateListener(
+      const listener = await cc.setupAndValidateListener(
         null,
         null,
         'fdc3.instrument',
@@ -156,7 +163,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId4);
       let receivedContext = false;
-      let listener = await cc.setupAndValidateListener(
+      const listener = await cc.setupAndValidateListener(
         null,
         'fdc3.instrument',
         'fdc3.instrument',
@@ -191,7 +198,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
       let receivedContext = false;
       const channel = await cc.getNonGlobalUserChannel();
       await cc.joinChannel(channel);
-      let listener = await cc.setupAndValidateListener(
+      const listener = await cc.setupAndValidateListener(
         null,
         'fdc3.instrument',
         'fdc3.instrument',
@@ -224,7 +231,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
       const userChannel = await cc.getNonGlobalUserChannel();
       let receivedContext = false;
       await cc.openChannelApp(UCFilteredUsage3, userChannel.id, JOIN_AND_BROADCAST_TWICE, undefined, true);
-      let listener = await cc.setupAndValidateListener(
+      const listener = await cc.setupAndValidateListener(
         null,
         'fdc3.instrument',
         'fdc3.instrument',
@@ -258,7 +265,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
       await cc.openChannelApp(UCFilteredUsage4, userChannel.id, JOIN_AND_BROADCAST_TWICE, undefined, true);
       await cc.joinChannel(userChannel);
       let receivedContext = false;
-      let listener = await cc.setupAndValidateListener(
+      const listener = await cc.setupAndValidateListener(
         null,
         'fdc3.instrument',
         'fdc3.instrument',
@@ -287,7 +294,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument and fdc3.contact context listener\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts both context types${documentation}`;
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId5);
-      let contextTypes: string[] = [];
+      const contextTypes: string[] = [];
       let receivedContext = false;
       const contextId = cc.getRandomId();
 
@@ -304,7 +311,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
         }
       }
 
-      let listener = await cc.setupAndValidateListener(
+      const listener = await cc.setupAndValidateListener(
         null,
         `fdc3.instrument.${contextId}`,
         `fdc3.instrument.${contextId}`,
@@ -315,7 +322,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
         }
       );
 
-      let listener2 = await cc.setupAndValidateListener(
+      const listener2 = await cc.setupAndValidateListener(
         null,
         `fdc3.contact.${contextId}`,
         `fdc3.contact.${contextId}`,
@@ -350,7 +357,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
     it(scTestId6, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument and fdc3.contact context listener\r\n- App A joins channel 2\r\n- App B joins channel 1\r\n- App B broadcasts both context types${documentation}`;
 
-      let listener = await cc.setupAndValidateListener(
+      const listener = await cc.setupAndValidateListener(
         null,
         'fdc3.instrument',
         'unexpected-context',
@@ -359,7 +366,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
           /* noop */
         }
       );
-      let listener2 = await cc.setupAndValidateListener(
+      const listener2 = await cc.setupAndValidateListener(
         null,
         'fdc3.contact',
         'unexpected-context',
@@ -374,7 +381,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
 
       await cc.joinChannel(channels[0]);
       await cc.openChannelApp(scTestId6, channels[1].id, JOIN_AND_BROADCAST_TWICE);
-      await wait(); // give listeners time to receive context
+      await wait(constants.ShortWait); // give listeners time to receive context
       cc.unsubscribeListeners([listener, listener2]);
     });
 
@@ -386,7 +393,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A unsubscribes the listener\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId7);
-      let listener = await cc.setupAndValidateListener(
+      const listener = await cc.setupAndValidateListener(
         null,
         'fdc3.instrument',
         'unexpected-context',
@@ -395,7 +402,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
           /* noop */
         }
       );
-      let listener2 = await cc.setupAndValidateListener(
+      const listener2 = await cc.setupAndValidateListener(
         null,
         'fdc3.contact',
         'unexpected-context',
@@ -419,7 +426,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A joins channel 2\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
       const contextId = cc.getRandomId();
-      let listener = await cc.setupAndValidateListener(
+      const listener = await cc.setupAndValidateListener(
         null,
         `fdc3.instrument.${contextId}`,
         'unexpected-context',
@@ -428,7 +435,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
           /* noop */
         }
       );
-      let listener2 = await cc.setupAndValidateListener(
+      const listener2 = await cc.setupAndValidateListener(
         null,
         `fdc3.contact.${contextId}`,
         'unexpected-context',
@@ -446,7 +453,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
       await cc.joinChannel(channels[0]);
       await cc.joinChannel(channels[1]);
       await cc.openChannelApp(scTestId8, channels[0].id, JOIN_AND_BROADCAST, undefined, true, contextId);
-      await wait(); // give listeners time to receive context
+      await wait(constants.ShortWait); // give listeners time to receive context
       cc.unsubscribeListeners([listener, listener2]);
     });
 
@@ -458,7 +465,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
       const resolveExecutionCompleteListener = cc.initCompleteListener(UCFilteredUsageLeave);
       const contextId = cc.getRandomId();
 
-      let listener = await cc.setupAndValidateListener(
+      const listener = await cc.setupAndValidateListener(
         null,
         `fdc3.instrument.${contextId}`,
         `fdc3.instrument.${contextId}`,
@@ -468,7 +475,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
         }
       );
 
-      let listener2 = await cc.setupAndValidateListener(
+      const listener2 = await cc.setupAndValidateListener(
         null,
         `fdc3.contact.${contextId}`,
         `fdc3.contact.${contextId}`,
@@ -483,7 +490,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
       await cc.leaveChannel();
       await cc.openChannelApp(UCFilteredUsageLeave, channel.id, JOIN_AND_BROADCAST_TWICE, undefined, true, contextId);
       await resolveExecutionCompleteListener;
-      await wait(); // give listeners time to receive context
+      await wait(constants.ShortWait); // give listeners time to receive context
       cc.unsubscribeListeners([listener, listener2]);
     });
 
@@ -504,7 +511,7 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
       const channel = await cc.getNonGlobalUserChannel();
       await cc.openChannelApp(scTestId9, channel.id, JOIN_AND_BROADCAST);
       await resolveExecutionCompleteListener;
-      await wait();
+      await wait(constants.ShortWait);
     });
 
     const UCFilteredUsageJoin =
@@ -520,4 +527,4 @@ export function createUserChannelTests(cc: ChannelControl, documentation: string
       expect(channels[2].id, errorMessage).to.be.equal(currentChannel?.id);
     });
   });
-}
+};

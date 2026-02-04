@@ -7,14 +7,14 @@ import {
   EventHandler,
   ChannelError,
   ApiEvent,
+  FDC3ChannelChangedEvent,
+  FDC3EventTypes,
 } from '@finos/fdc3-standard';
 import { Messaging } from '../Messaging';
 import { ChannelSupport } from './ChannelSupport';
 import { DefaultPrivateChannel } from './DefaultPrivateChannel';
 import { DefaultChannel } from './DefaultChannel';
 import { DefaultContextListener } from '../listeners/DefaultContextListener';
-import { UserChannelContextListener } from '../listeners/UserChannelContextListener';
-import { EventListener } from '../listeners/EventListener';
 import {
   GetCurrentChannelResponse,
   GetCurrentChannelRequest,
@@ -28,17 +28,20 @@ import {
   LeaveCurrentChannelRequest,
   JoinUserChannelResponse,
   JoinUserChannelRequest,
-  ChannelChangedEvent,
+  BroadcastEvent,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 import { throwIfUndefined } from '../util/throwIfUndefined';
 import { Logger } from '../util/Logger';
+import { DesktopAgentEventListener } from '../listeners/DesktopAgentEventListener';
+import { UserChannelContextListener } from '../listeners/UserChannelContextListener';
 
 export class DefaultChannelSupport implements ChannelSupport {
   readonly messaging: Messaging;
   readonly channelSelector: ChannelSelector;
   readonly messageExchangeTimeout: number;
-  protected userChannels: Channel[] = [];
+  protected userChannels: Channel[] | null = null;
   protected userChannelListeners: UserChannelContextListener[] = [];
+  private currentChannel: Channel | null = null;
 
   constructor(messaging: Messaging, channelSelector: ChannelSelector, messageExchangeTimeout: number) {
     this.messaging = messaging;
@@ -53,36 +56,37 @@ export class DefaultChannelSupport implements ChannelSupport {
       }
     });
 
-    this.addChannelChangedEventHandler(async (e: ApiEvent) => {
-      const cce: ChannelChangedEvent['payload'] = e.details;
-      Logger.debug('Desktop Agent reports channel changed: ', cce.newChannelId);
+    this.addEventListener(async (e: ApiEvent) => {
+      const cce = e as FDC3ChannelChangedEvent;
+      const newChannelId = cce.details.currentChannelId;
+      Logger.debug('Desktop Agent reports channel changed: ', newChannelId);
 
       let theChannel: Channel | null = null;
 
       // if theres a newChannelId, retrieve details of the channel
-      if (cce.newChannelId) {
-        theChannel = this.userChannels.find(uc => uc.id == cce.newChannelId) ?? null;
+      if (newChannelId != null) {
+        theChannel = (await this.getUserChannelsCached()).find(uc => uc.id == newChannelId) ?? null;
         if (!theChannel) {
-          //Channel not found - query user channels in case they have changed for some reason
-          Logger.debug('Unknown user channel, querying Desktop Agent for updated user channels: ', cce.newChannelId);
+          // Channel not found - query user channels in case they have changed for some reason
+          Logger.debug('Unknown user channel, querying Desktop Agent for updated user channels: ', newChannelId);
           await this.getUserChannels();
-          theChannel = this.userChannels.find(uc => uc.id == cce.newChannelId) ?? null;
+          theChannel = (await this.getUserChannelsCached()).find(uc => uc.id == newChannelId) ?? null;
           if (!theChannel) {
             Logger.warn(
               'Received user channel update with unknown user channel (user channel listeners will not work): ',
-              cce.newChannelId
+              newChannelId
             );
           }
         }
       }
 
-      this.userChannelListeners.forEach(l => l.changeChannel(theChannel));
-      this.channelSelector.updateChannel(theChannel?.id ?? null, this.userChannels);
-    });
+      this.currentChannel = theChannel;
+      this.channelSelector.updateChannel(theChannel?.id ?? null, await this.getUserChannelsCached());
+    }, 'userChannelChanged');
   }
 
-  async addChannelChangedEventHandler(handler: EventHandler): Promise<Listener> {
-    const listener = new EventListener(this.messaging, 'channelChangedEvent', handler);
+  async addEventListener(handler: EventHandler, type: FDC3EventTypes | null): Promise<Listener> {
+    const listener = new DesktopAgentEventListener(this.messaging, this.messageExchangeTimeout, type, handler);
     await listener.register();
     return listener;
   }
@@ -122,6 +126,15 @@ export class DefaultChannelSupport implements ChannelSupport {
     } else {
       //Should not reach here as we will throw in exchange or throwIfNotFound
       return null;
+    }
+  }
+
+  async getUserChannelsCached(): Promise<Channel[]> {
+    if (this.userChannels) {
+      return this.userChannels;
+    } else {
+      this.userChannels = await this.getUserChannels();
+      return this.userChannels;
     }
   }
 
@@ -209,10 +222,8 @@ export class DefaultChannelSupport implements ChannelSupport {
       'leaveCurrentChannelResponse',
       this.messageExchangeTimeout
     );
-    this.channelSelector.updateChannel(null, this.userChannels);
-    for (const l of this.userChannelListeners) {
-      await l.changeChannel(null);
-    }
+    this.currentChannel = null;
+    this.channelSelector.updateChannel(null, await this.getUserChannelsCached());
   }
 
   async joinUserChannel(id: string) {
@@ -228,29 +239,35 @@ export class DefaultChannelSupport implements ChannelSupport {
       'joinUserChannelResponse',
       this.messageExchangeTimeout
     );
-    this.channelSelector.updateChannel(id, this.userChannels);
+
+    const userChannels = await this.getUserChannelsCached();
+    this.currentChannel = userChannels.find(c => c.id == id) ?? null;
+    if (this.currentChannel == null) {
+      throw new Error(ChannelError.NoChannelFound);
+    }
+    this.channelSelector.updateChannel(id, userChannels);
     for (const l of this.userChannelListeners) {
-      await l.changeChannel(new DefaultChannel(this.messaging, this.messageExchangeTimeout, id, 'user'));
+      await l.changeChannel();
     }
   }
 
   async addContextListener(handler: ContextHandler, type: string | null): Promise<Listener> {
-    /** Utility class used to wrap the DefaultContextListener and ensure it gets removed
-     *  when its unsubscribe function is called.
+    /**
+     *  Utility class used to wrap the DefaultContextListener to match the internal channel id
+     *  and ensure it gets removed when its unsubscribe function is called.
      */
-    class UnsubscribingDefaultContextListener extends DefaultContextListener {
+    class UnsubscribingDefaultContextListener extends DefaultContextListener implements UserChannelContextListener {
       container: DefaultChannelSupport;
 
       constructor(
         container: DefaultChannelSupport,
         messaging: Messaging,
         messageExchangeTimeout: number,
-        channelId: string | null,
         contextType: string | null,
         handler: ContextHandler,
         messageType: string = 'broadcastEvent'
       ) {
-        super(messaging, messageExchangeTimeout, channelId, contextType, handler, messageType);
+        super(messaging, messageExchangeTimeout, null, contextType, handler, messageType);
         this.container = container;
       }
 
@@ -258,14 +275,42 @@ export class DefaultChannelSupport implements ChannelSupport {
         super.unsubscribe();
         this.container.userChannelListeners = this.container.userChannelListeners.filter(l => l != this);
       }
+
+      async register(): Promise<void> {
+        await super.register();
+        await this.changeChannel();
+      }
+
+      async changeChannel(): Promise<void> {
+        if (this.container.currentChannel != null) {
+          const context = await this.container.currentChannel?.getCurrentContext(this.contextType ?? undefined);
+          if (context) {
+            this.handler(context);
+          }
+        }
+      }
+
+      onAMatchingChannel(m: BroadcastEvent): boolean {
+        return this.container.currentChannel != null && m.payload.channelId == this.container.currentChannel.id;
+      }
+
+      openBroadcastEvent(m: BroadcastEvent): boolean {
+        return m.payload.channelId == null;
+      }
+
+      filter(m: BroadcastEvent): boolean {
+        return (
+          m.type == this.messageType &&
+          (this.onAMatchingChannel(m) || this.openBroadcastEvent(m)) &&
+          (m.payload.context?.type == this.contextType || this.contextType == null)
+        );
+      }
     }
 
-    const currentChannelId = (await this.getUserChannel())?.id ?? null;
     const listener = new UnsubscribingDefaultContextListener(
       this,
       this.messaging,
       this.messageExchangeTimeout,
-      currentChannelId,
       type,
       handler
     );
