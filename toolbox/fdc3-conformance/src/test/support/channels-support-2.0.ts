@@ -90,7 +90,7 @@ export class ChannelControl2_0 implements ChannelControl {
   }
 
   setupAndValidateListener = async (
-    channel: Channel,
+    channel: Channel | null,
     listenContextType: string | null,
     expectedContextType: string | null,
     errorMessage: string,
@@ -129,7 +129,7 @@ export class ChannelControl2_0 implements ChannelControl {
       requestedContextType === null
         ? await channel.getCurrentContext()
         : await channel.getCurrentContext(requestedContextType);
-    expect(context, 'await channel.getCurrentContext() returned null').to.not.be.null;
+    assert.isNotNull(context, 'await channel.getCurrentContext() returned null');
     expect(context?.type, 'retrieved context was not of the expected type').to.be.equals(
       expectedContextType,
       errorMessage
@@ -146,7 +146,7 @@ export class ChannelControl2_0 implements ChannelControl {
   }
 }
 
-function validateListenerObject(listenerObject: any) {
+function validateListenerObject(listenerObject: Listener) {
   assert.isTrue(typeof listenerObject === 'object', 'No listener object found');
   expect(typeof listenerObject.unsubscribe).to.be.equals('function', 'Listener does not contain an unsubscribe method');
 }

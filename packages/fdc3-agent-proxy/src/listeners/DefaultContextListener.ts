@@ -1,16 +1,16 @@
-import { ContextHandler, Channel } from '@finos/fdc3-standard';
+import { ContextHandler } from '@finos/fdc3-standard';
 import { Messaging } from '../Messaging';
 import { AbstractListener } from './AbstractListener';
-import { UserChannelContextListener } from './UserChannelContextListener';
 import { AddContextListenerRequest, BroadcastEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+import { RegisterableListener } from './RegisterableListener';
 
 export class DefaultContextListener
   extends AbstractListener<ContextHandler, AddContextListenerRequest>
-  implements UserChannelContextListener
+  implements RegisterableListener
 {
-  private channelId: string | null;
-  private readonly messageType: string;
-  private readonly contextType: string | null;
+  private readonly channelId: string | null;
+  protected readonly messageType: string;
+  protected readonly contextType: string | null;
 
   constructor(
     messaging: Messaging,
@@ -33,19 +33,6 @@ export class DefaultContextListener
     this.channelId = channelId;
     this.messageType = messageType;
     this.contextType = contextType;
-  }
-
-  async changeChannel(channel: Channel | null): Promise<void> {
-    if (channel == null) {
-      this.channelId = null;
-      return;
-    } else {
-      this.channelId = channel.id;
-      const context = await channel.getCurrentContext(this.contextType ?? undefined);
-      if (context) {
-        this.handler(context);
-      }
-    }
   }
 
   filter(m: BroadcastEvent): boolean {

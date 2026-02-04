@@ -23,14 +23,19 @@ export class OpenControl2_0 implements OpenControl {
 
     let listener: Listener | undefined;
 
-    const messageReceived = new Promise<Context>(async (resolve, reject) => {
-      listener = await appControlChannel.addContextListener(contextType, async (context: AppControlContext) => {
-        if (context.errorMessage) {
-          reject(new Error(context.errorMessage));
-        } else {
-          resolve(context);
-        }
-      });
+    const messageReceived = new Promise<Context>((resolve, reject) => {
+      appControlChannel
+        .addContextListener(contextType, (context: AppControlContext) => {
+          if (context.errorMessage) {
+            reject(new Error(context.errorMessage));
+          } else {
+            resolve(context);
+          }
+        })
+        .then(l => {
+          listener = l;
+        })
+        .catch(reject);
     });
 
     try {
@@ -45,8 +50,8 @@ export class OpenControl2_0 implements OpenControl {
     }
   };
 
-  openMockApp = async (targetApp: AppIdentifier, context?: any) => {
-    let instanceIdentifier: any;
+  openMockApp = async (targetApp: AppIdentifier, context?: Context) => {
+    let instanceIdentifier: AppIdentifier;
     if (context) {
       instanceIdentifier = await this.fdc3.open(targetApp, context);
     } else {
