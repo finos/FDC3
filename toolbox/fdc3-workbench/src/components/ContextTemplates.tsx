@@ -134,7 +134,9 @@ export const ContextTemplates = observer(
               filterOptions={filterOptions}
               options={contextsOptions}
               getOptionLabel={getOptionLabel}
-              renderOption={(props: HTMLAttributes<HTMLLIElement>, option: OptionType) => <li {...props}>{option.title}</li>}
+              renderOption={(props: HTMLAttributes<HTMLLIElement>, option: OptionType) => (
+                <li {...props}>{option.title}</li>
+              )}
               renderInput={params => (
                 <TemplateTextField
                   label="CONTEXT "

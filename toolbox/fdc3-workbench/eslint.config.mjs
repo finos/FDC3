@@ -58,7 +58,6 @@ export default [
         ecmaFeatures: {
           jsx: true,
         },
-        tsconfigRootDir: './src',
       },
     },
 

@@ -119,7 +119,7 @@ export const ChannelField = observer(
     ).reverse();
 
     const getOptionLabel = (option: ListenerOptionType | string) =>
-      typeof option === 'string' ? option : option.type ?? option.title ?? '';
+      typeof option === 'string' ? option : (option.type ?? option.title ?? '');
 
     const handleAddContextListener = (channelId: string) => {
       let foundChannel = currentChannelList.find((currentChannel: any) => currentChannel.id === channelId);
@@ -336,7 +336,12 @@ export const ChannelField = observer(
                     </Link>
                   </Grid>
                 </Grid>
-                <Button variant="contained" color="secondary" onClick={() => handleRemoveOrDisconnect(channel)} sx={styles.secondMargin}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={() => handleRemoveOrDisconnect(channel)}
+                  sx={styles.secondMargin}
+                >
                   {isPrivateChannel ? 'Disconnect' : 'Discard Channel'}
                 </Button>
                 <div style={styles.border}></div>
