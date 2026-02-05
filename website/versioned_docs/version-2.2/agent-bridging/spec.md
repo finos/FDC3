@@ -258,6 +258,9 @@ The DA must then respond to the `hello` message with a `handshake` request to th
              *  `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
              *  the Desktop Agent.*/
             "UserChannelMembershipAPIs": boolean;
+            /** Used to indicate whether the experimental Desktop Agent Bridging
+             *  feature is implemented by the Desktop Agent.*/
+            "DesktopAgentBridging": boolean;
           }
         },
         /** The requested DA name */
