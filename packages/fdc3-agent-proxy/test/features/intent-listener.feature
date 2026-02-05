@@ -17,6 +17,38 @@ Feature: Intent Listeners
       | type                |
       | intentResultRequest |
 
+  Scenario: Intent Listeners With non-matching Context does not handle message
+    Given "resultHandler" pipes intent to "intents"
+    When I call "{api1}" with "addIntentListenerWithContext" with parameters "BuyStock" and "fdc3.order" and "{resultHandler}"
+    And messaging receives "{intentMessageOne}"
+    Then "{intents}" is an array of objects with the following contents
+      | context.type    | context.name | metadata.source.appId |
+    And messaging will have posts
+      | type                |
+
+  Scenario: Intent Listeners With matching Context string does handle message
+    Given "resultHandler" pipes intent to "intents"
+    When I call "{api1}" with "addIntentListenerWithContext" with parameters "BuyStock" and "fdc3.instrument" and "{resultHandler}"
+    And messaging receives "{intentMessageOne}"
+    Then "{intents}" is an array of objects with the following contents
+      | context.type    | context.name | metadata.source.appId |
+      | fdc3.instrument | Apple        | some-app-id           |
+    And messaging will have posts
+      | type                |
+      | intentResultRequest |
+
+  Scenario: Intent Listeners With matching Context array does handle message
+    Given "resultHandler" pipes intent to "intents"
+    And "contextArray" is an array of contexts including "fdc3.instrument" and "fdc3.instrumentList"
+    When I call "{api1}" with "addIntentListenerWithContext" with parameters "BuyStock" and "{contextArray}" and "{resultHandler}"
+    And messaging receives "{intentMessageOne}"
+    Then "{intents}" is an array of objects with the following contents
+      | context.type    | context.name | metadata.source.appId |
+      | fdc3.instrument | Apple        | some-app-id           |
+    And messaging will have posts
+      | type                |
+      | intentResultRequest |
+
   Scenario: Intent Listeners Can Return Results (Context)
     Given "resultHandler" returns a context item
     When I call "{api1}" with "addIntentListener" with parameters "BuyStock" and "{resultHandler}"

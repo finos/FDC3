@@ -9,6 +9,13 @@ import fs from 'fs';
 import path from 'path';
 
 export function setupGenericSteps() {
+  Given(
+    '{string} is an array of contexts including {string} and {string}',
+    function (field: string, valueOne: string, valueTwo: string) {
+      this.props[field] = [valueOne, valueTwo];
+    }
+  );
+
   Then('the promise {string} should resolve', async function (this: PropsWorld, field: string) {
     try {
       const promise = handleResolve(field, this);

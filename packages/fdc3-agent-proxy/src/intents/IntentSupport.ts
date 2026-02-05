@@ -7,4 +7,9 @@ export interface IntentSupport {
   raiseIntent(intent: string, context: Context, app?: AppIdentifier): Promise<IntentResolution>;
   raiseIntentForContext(context: Context, app?: AppIdentifier): Promise<IntentResolution>;
   addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
+  addIntentListenerWithContext(
+    intent: string,
+    contextType: string | string[],
+    handler: IntentHandler
+  ): Promise<Listener>;
 }

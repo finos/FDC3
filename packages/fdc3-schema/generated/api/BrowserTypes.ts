@@ -951,6 +951,10 @@ export interface AddIntentListenerRequest {
  */
 export interface AddIntentListenerRequestPayload {
   /**
+   * The types of context to listen for.
+   */
+  contextTypes?: string[];
+  /**
    * The name of the intent to listen for.
    */
   intent: string;
@@ -5176,7 +5180,13 @@ const typeMap: any = {
     ],
     false
   ),
-  AddIntentListenerRequestPayload: o([{ json: 'intent', js: 'intent', typ: '' }], false),
+  AddIntentListenerRequestPayload: o(
+    [
+      { json: 'contextTypes', js: 'contextTypes', typ: u(undefined, a('')) },
+      { json: 'intent', js: 'intent', typ: '' },
+    ],
+    false
+  ),
   AddIntentListenerResponse: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
