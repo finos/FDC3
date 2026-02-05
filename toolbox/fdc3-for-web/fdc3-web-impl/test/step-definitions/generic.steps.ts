@@ -122,7 +122,7 @@ Given('A newly instantiated FDC3 Server with heartbeat checking', function (this
   const d = new BasicDirectory(apps);
 
   this.sc = new TestServerContext(this);
-  this.server = new DefaultFDC3Server(this.sc, d, defaultChannels(), true, 2000, 2000);
+  this.server = new DefaultFDC3Server(this.sc, d, defaultChannels(), true, 2000, 1000);
 });
 
 When('I shutdown the server', function (this: CustomWorld) {
