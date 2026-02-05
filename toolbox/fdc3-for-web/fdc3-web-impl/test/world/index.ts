@@ -1,4 +1,4 @@
-import { World, setWorldConstructor } from '@cucumber/cucumber';
+import { World, setWorldConstructor, After } from '@cucumber/cucumber';
 import { TestServerContext } from '../support/TestServerContext';
 import { DefaultFDC3Server } from '../../src/BasicFDC3Server';
 import { BasicDirectory } from '../../src/directory/BasicDirectory';
@@ -10,3 +10,7 @@ export class CustomWorld extends World {
 }
 
 setWorldConstructor(CustomWorld);
+
+After(function (this: CustomWorld) {
+  this.server.shutdown();
+});
