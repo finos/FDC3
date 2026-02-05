@@ -143,12 +143,7 @@ export const ContextLinking = observer(() => {
         <Typography variant="h5">Add context listener</Typography>
       </Grid>
 
-      <Grid
-        container
-        direction="row"
-        justifyContent="space-between"
-        sx={{ ...styles.controls, ...styles.rightAlign }}
-      >
+      <Grid container direction="row" justifyContent="space-between" sx={{ ...styles.controls, ...styles.rightAlign }}>
         <Grid item sx={styles.contextListenerName}>
           <Autocomplete
             id="context-listener"

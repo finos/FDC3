@@ -122,12 +122,7 @@ export const Channels = observer(({ handleTabChange }: { handleTabChange: any })
       <Grid item xs={12}>
         <Typography variant="h5">Current channel</Typography>
       </Grid>
-      <Grid
-        container
-        direction="row"
-        justifyContent="space-between"
-        sx={{ ...styles.controls, ...styles.rightAlign }}
-      >
+      <Grid container direction="row" justifyContent="space-between" sx={{ ...styles.controls, ...styles.rightAlign }}>
         <Grid item sx={styles.dropDown}>
           <Typography variant="body1">{channelStore.currentUserChannel?.id ?? 'None'}</Typography>
         </Grid>
@@ -174,12 +169,7 @@ export const Channels = observer(({ handleTabChange }: { handleTabChange: any })
         <Typography variant="h5">Join user channels</Typography>
       </Grid>
 
-      <Grid
-        container
-        direction="row"
-        justifyContent="space-between"
-        sx={{ ...styles.controls, ...styles.rightAlign }}
-      >
+      <Grid container direction="row" justifyContent="space-between" sx={{ ...styles.controls, ...styles.rightAlign }}>
         <Grid item sx={styles.dropDown}>
           <FormControl variant="outlined" sx={styles.channelsSelect} size="small" error={isError}>
             <InputLabel id="channel">Channel</InputLabel>
@@ -254,12 +244,7 @@ export const Channels = observer(({ handleTabChange }: { handleTabChange: any })
         <Typography variant="h5">Broadcast context</Typography>
       </Grid>
 
-      <Grid
-        container
-        direction="row"
-        justifyContent="space-between"
-        sx={{ ...styles.controls, ...styles.rightAlign }}
-      >
+      <Grid container direction="row" justifyContent="space-between" sx={{ ...styles.controls, ...styles.rightAlign }}>
         <Grid item sx={styles.dropDown}>
           <ContextTemplates handleTabChange={handleTabChange} contextStateSetter={setBroadcastContext} />
         </Grid>
