@@ -1,6 +1,6 @@
-import { MockWindow } from './MockWindow';
-import { MockIFrame } from './MockIFrame';
-import { MockElement } from './MockElement';
+import { MockWindow } from './MockWindow.js';
+import { MockIFrame } from './MockIFrame.js';
+import { MockElement } from './MockElement.js';
 
 export class MockDocument {
   name: string;

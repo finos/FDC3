@@ -1,6 +1,6 @@
-import { MessageHandler } from '../BasicFDC3Server';
-import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext';
-import { Directory, DirectoryIntent } from '../directory/DirectoryInterface';
+import { MessageHandler } from '../BasicFDC3Server.js';
+import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext.js';
+import { Directory, DirectoryIntent } from '../directory/DirectoryInterface.js';
 import { Context } from '@finos/fdc3-context';
 import { AppIntent, ResolveError, AppIdentifier } from '@finos/fdc3-standard';
 import {
@@ -10,7 +10,7 @@ import {
   isFullAppIdentifier,
   successResponse,
   successResponseId,
-} from './support';
+} from './support.js';
 import {
   IntentEvent,
   FindIntentsByContextRequest,
@@ -22,7 +22,7 @@ import {
   IntentResultRequest,
   AppRequestMessage,
   AgentResponseMessage,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 type ListenerRegistration = {
   appId: string;

@@ -6,13 +6,13 @@ import {
   DesktopAgentDetails,
   WebDesktopAgentType,
 } from '@finos/fdc3-standard';
-import { DesktopAgentPreloadLoader } from './DesktopAgentPreloadLoader';
-import { PostMessageLoader } from './PostMessageLoader';
-import { retrieveDesktopAgentDetails, storeDesktopAgentDetails } from '../sessionStorage/DesktopAgentDetails';
-import { FailoverHandler } from './FailoverHandler';
-import { Loader } from './Loader';
-import { Logger } from '../util/Logger';
-import { DEFAULT_GETAGENT_TIMEOUT_MS } from './Timeouts';
+import { DesktopAgentPreloadLoader } from './DesktopAgentPreloadLoader.js';
+import { PostMessageLoader } from './PostMessageLoader.js';
+import { retrieveDesktopAgentDetails, storeDesktopAgentDetails } from '../sessionStorage/DesktopAgentDetails.js';
+import { FailoverHandler } from './FailoverHandler.js';
+import { Loader } from './Loader.js';
+import { Logger } from '../util/Logger.js';
+import { DEFAULT_GETAGENT_TIMEOUT_MS } from './Timeouts.js';
 
 // TypeGuards used to examine results of Loaders
 const isRejected = (input: PromiseSettledResult<unknown>): input is PromiseRejectedResult =>

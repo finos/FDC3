@@ -1,6 +1,6 @@
 import { GetAgentParams, AgentError } from '@finos/fdc3-standard';
-import { retrieveDesktopAgentDetails } from '../sessionStorage/DesktopAgentDetails';
-import { Logger } from '../util/Logger';
+import { retrieveDesktopAgentDetails } from '../sessionStorage/DesktopAgentDetails.js';
+import { Logger } from '../util/Logger.js';
 
 import { BrowserTypes } from '@finos/fdc3-schema';
 const {

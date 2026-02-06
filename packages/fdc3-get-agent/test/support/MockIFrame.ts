@@ -1,7 +1,7 @@
-import { CustomWorld } from '../world';
-import { handleChannelSelectorComms, handleEmbeddedIframeComms, handleIntentResolverComms } from './FrameTypes';
-import { EMBED_URL, CHANNEL_SELECTOR_URL, INTENT_RESOLVER_URL } from './MockFDC3Server';
-import { MockWindow } from './MockWindow';
+import { CustomWorld } from '../world/index.js';
+import { handleChannelSelectorComms, handleEmbeddedIframeComms, handleIntentResolverComms } from './FrameTypes.js';
+import { EMBED_URL, CHANNEL_SELECTOR_URL, INTENT_RESOLVER_URL } from './MockFDC3Server.js';
+import { MockWindow } from './MockWindow.js';
 
 export class MockIFrame extends MockWindow {
   contentWindow: MockWindow;

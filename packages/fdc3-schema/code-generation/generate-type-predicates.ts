@@ -6,7 +6,10 @@ import {
   SyntaxKind,
   TypeAliasDeclaration,
 } from 'ts-morph';
-import print from 'message-await';
+import messageAwait from 'message-await';
+
+// Normalise export of message-await so it works with tsx and ts-node
+const print: typeof messageAwait = (messageAwait as any).default ?? messageAwait;
 
 // open a new project with just BrowserTypes as the only source file
 const project = new Project();

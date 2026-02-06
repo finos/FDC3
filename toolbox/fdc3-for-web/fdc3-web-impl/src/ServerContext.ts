@@ -1,6 +1,6 @@
 import { AppIdentifier, AppIntent } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
-import { FDC3Server } from './FDC3Server';
+import { FDC3Server } from './FDC3Server.js';
 
 export enum State {
   Pending /* App has started, but not completed FDC3 Handshake */,

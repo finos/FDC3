@@ -1,13 +1,13 @@
-import { CustomWorld } from '../world';
-import { MockWindow } from './MockWindow';
-import { CHANNEL_SELECTOR_URL, INTENT_RESOLVER_URL } from './MockFDC3Server';
-import { isWebConnectionProtocol1Hello } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+import { CustomWorld } from '../world/index.js';
+import { MockWindow } from './MockWindow.js';
+import { CHANNEL_SELECTOR_URL, INTENT_RESOLVER_URL } from './MockFDC3Server.js';
+import { isWebConnectionProtocol1Hello } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import {
   Fdc3UserInterfaceHello,
   Fdc3UserInterfaceRestyle,
   isFdc3UserInterfaceHandshake,
   WebConnectionProtocol3Handshake,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 /**
  * This handles the frame communications when we're using the embedded iframe approach

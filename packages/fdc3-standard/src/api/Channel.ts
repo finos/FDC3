@@ -4,10 +4,10 @@
  */
 
 import { Context } from '@finos/fdc3-context';
-import { ContextHandler } from './Types';
-import { DisplayMetadata } from './DisplayMetadata';
-import { Listener } from './Listener';
-import { EventHandler } from './Events';
+import { ContextHandler } from './Types.js';
+import { DisplayMetadata } from './DisplayMetadata.js';
+import { Listener } from './Listener.js';
+import { EventHandler } from './Events.js';
 
 /**
  * Represents a context channel that applications can use to send and receive

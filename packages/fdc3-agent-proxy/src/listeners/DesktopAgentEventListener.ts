@@ -4,9 +4,9 @@ import {
   AddEventListenerRequestPayload,
   AgentEventMessage,
   ChannelChangedEvent,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
-import { Messaging } from '../Messaging';
-import { AbstractListener } from './AbstractListener';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes.js';
+import { Messaging } from '../Messaging.js';
+import { AbstractListener } from './AbstractListener.js';
 
 function wrapHandler(handler: EventHandler): (msg: AgentEventMessage) => void {
   return (m: AgentEventMessage) => {

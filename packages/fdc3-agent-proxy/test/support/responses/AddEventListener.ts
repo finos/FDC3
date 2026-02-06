@@ -1,6 +1,6 @@
 import { AutomaticResponse, TestMessaging } from '../TestMessaging';
 import { createResponseMeta } from './support';
-import { AddEventListenerRequest, AddEventListenerResponse } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { AddEventListenerRequest, AddEventListenerResponse } from '@finos/fdc3-schema/generated/api/BrowserTypes.js';
 
 export class AddEventListener implements AutomaticResponse {
   count: number = 0;

@@ -3,9 +3,9 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 import { makeObservable, observable, action, runInAction } from 'mobx';
-import systemLogStore from './SystemLogStore';
+import systemLogStore from './SystemLogStore.js';
 import { Channel } from '@finos/fdc3';
-import { getWorkbenchAgent } from '../utility/Fdc3Api';
+import { getWorkbenchAgent } from '../utility/Fdc3Api.js';
 
 class ChannelStore {
   userChannels: Channel[] = [];

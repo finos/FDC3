@@ -1,7 +1,7 @@
-import { TestServerContext } from '../TestServerContext';
+import { TestServerContext } from '../TestServerContext.js';
 import { InstanceID } from '@finos/fdc3-web-impl';
-import { AutomaticResponse } from './AutomaticResponses';
-import { RaiseIntentRequest, RaiseIntentResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+import { AutomaticResponse } from './AutomaticResponses.js';
+import { RaiseIntentRequest, RaiseIntentResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 export class RaiseIntent implements AutomaticResponse {
   filter(t: string) {
@@ -17,7 +17,7 @@ export class RaiseIntent implements AutomaticResponse {
       payload: {
         intentResolution: {
           intent: intentRequest.payload.intent,
-          source: intentRequest.payload.app!!,
+          source: intentRequest.payload.app!,
         },
       },
       type: 'raiseIntentResponse',

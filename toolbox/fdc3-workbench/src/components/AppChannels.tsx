@@ -7,9 +7,9 @@ import React, { FormEvent, useState } from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Button, Typography, Grid, TextField } from '@material-ui/core';
 import { observer } from 'mobx-react';
-import contextStore from '../store/ContextStore';
-import appChannelStore from '../store/AppChannelStore';
-import { ChannelField } from './ChannelField';
+import contextStore from '../store/ContextStore.js';
+import appChannelStore from '../store/AppChannelStore.js';
+import { ChannelField } from './ChannelField.js';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

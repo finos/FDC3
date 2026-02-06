@@ -1,22 +1,22 @@
 import { AppIntent, Channel, IntentResult } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { IntentResolver, IntentResolutionChoice, ChannelSelector } from '@finos/fdc3-standard';
-import { PropsWorld } from '../world';
+import { PropsWorldLike } from '../world/PropsWorldLike.js';
 
 /**
  * This super-simple intent resolver just resolves to the first
  * intent / app in the list, unless the context is fdc3.cancel-me  and then it just cancels.
  */
 export class SimpleIntentResolver implements IntentResolver {
-  cw: PropsWorld;
+  cw: PropsWorldLike;
 
-  constructor(cw: PropsWorld) {
+  constructor(cw: PropsWorldLike) {
     this.cw = cw;
   }
 
-  async connect(): Promise<void> { }
+  async connect(): Promise<void> {}
 
-  async disconnect(): Promise<void> { }
+  async disconnect(): Promise<void> {}
 
   async intentChosen(ir: IntentResult): Promise<IntentResult> {
     this.cw.props['intent-result'] = ir;
@@ -44,9 +44,9 @@ export class SimpleIntentResolver implements IntentResolver {
 export const CHANNEL_STATE = 'CHANNEL_STATE';
 
 export class SimpleChannelSelector implements ChannelSelector {
-  cw: PropsWorld;
+  cw: PropsWorldLike;
 
-  constructor(cw: PropsWorld) {
+  constructor(cw: PropsWorldLike) {
     this.cw = cw;
   }
 
@@ -55,9 +55,9 @@ export class SimpleChannelSelector implements ChannelSelector {
     this.cw.props['channels'] = availableChannels;
   }
 
-  setChannelChangeCallback(_callback: (channelId: string | null) => void): void { }
+  setChannelChangeCallback(_callback: (channelId: string | null) => void): void {}
 
-  async connect(): Promise<void> { }
+  async connect(): Promise<void> {}
 
-  async disconnect(): Promise<void> { }
+  async disconnect(): Promise<void> {}
 }
