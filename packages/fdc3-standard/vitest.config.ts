@@ -4,6 +4,8 @@ export default defineConfig({
   test: {
     include: ['test/**/*.test.ts'],
     environment: 'jsdom',
+    reporters: ['default', 'junit'],
+    outputFile: 'test-results.xml',
     coverage: {
       enabled: true,
       provider: 'v8',
