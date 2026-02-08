@@ -27,3 +27,6 @@ toolbox/fdc3-for-web/fdc3-web-impl/generated/
 cucumber-report.html
 nyc-coverage-report/
 .history/
+.rollup.cache
+tsconfig.tsbuildinfo
+.vscode/launch.json

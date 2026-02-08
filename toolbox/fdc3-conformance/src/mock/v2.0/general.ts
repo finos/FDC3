@@ -8,9 +8,9 @@ getAgent().then(async fdc3 => {
 
   //used in AOpensB1
   const implementationMetadata = await fdc3.getInfo();
-  let { appId } = implementationMetadata.appMetadata;
+  const { appId } = implementationMetadata.appMetadata;
 
-  let appOpenedContext: AppControlContext = {
+  const appOpenedContext: AppControlContext = {
     type: 'fdc3-conformance-opened',
   };
 

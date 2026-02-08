@@ -4,7 +4,7 @@ import { AppControlContext } from '../../../context-types';
 import { channelType } from '../../constants';
 import { IBroadcastService, IChannelService } from '../../interfaces';
 
-export class ChannelService2_0 implements IChannelService<Channel> {
+export class ChannelService2_0 implements IChannelService {
   constructor(fdc3: DesktopAgent) {
     this.fdc3 = fdc3;
   }
@@ -55,7 +55,7 @@ export class ChannelService2_0 implements IChannelService<Channel> {
   }
 
   //get app/system channel broadcast service
-  private getBroadcastService(currentChannelType: string): IBroadcastService<Channel> {
+  private getBroadcastService(currentChannelType: string): IBroadcastService {
     if (currentChannelType === channelType.app) {
       return this.appChannelBroadcastService;
     } else {
@@ -64,11 +64,11 @@ export class ChannelService2_0 implements IChannelService<Channel> {
   }
 
   //app channel broadcast service
-  private appChannelBroadcastService: IBroadcastService<Channel> = {
+  private appChannelBroadcastService: IBroadcastService = {
     broadcast: async (contextType: string, historyItems: number, channel: Channel, testId: string) => {
       if (channel !== undefined) {
         for (let i = 0; i < historyItems; i++) {
-          let context: AppControlContext = {
+          const context: AppControlContext = {
             type: contextType,
             name: `History-item-${i + 1}`,
             testId,
@@ -80,10 +80,10 @@ export class ChannelService2_0 implements IChannelService<Channel> {
   };
 
   //system channel broadcast service
-  private systemChannelBroadcastService: IBroadcastService<Channel> = {
+  private systemChannelBroadcastService: IBroadcastService = {
     broadcast: async (contextType: string, historyItems: number, _ignored: Channel, testId: string) => {
       for (let i = 0; i < historyItems; i++) {
-        let context: AppControlContext = {
+        const context: AppControlContext = {
           type: contextType,
           name: `History-item-${i + 1}`,
           testId,

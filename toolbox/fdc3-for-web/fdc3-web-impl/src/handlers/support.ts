@@ -74,10 +74,3 @@ export function errorResponseId(
     to.instanceId!
   );
 }
-
-/*
- * from: https://stackoverflow.com/questions/1960473/get-all-unique-values-in-a-javascript-array-remove-duplicates#14438954
- */
-export function onlyUnique<X>(value: X, index: number, self: X[]) {
-  return self.indexOf(value) === index;
-}

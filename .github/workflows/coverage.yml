@@ -29,7 +29,7 @@ jobs:
         node-version: 20.x
 
     - name: Install dependencies
-      run: npm install
+      run: npm ci
 
     - name: Lint
       run: npm run lint
@@ -51,9 +51,9 @@ jobs:
         output: test-summary.md
       if: always()
 
-    # Only post comments if the PR came from FINOS (the only repo with permission to run it)
+    # Only post comments if the PR came from this repo rather than a fork (the only repo with permission to do so)
     - name: PR comment with file
-      if: github.event.pull_request.head.repo.full_name == 'finos/FDC3'
+      if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
       uses: thollander/actions-comment-pull-request@v3
       with:
         file-path: test-summary.md
@@ -67,6 +67,7 @@ jobs:
         search_artifacts: true
 
     - name: Report Coverage
+      if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
       uses: sidx1024/report-nyc-coverage-github-action@v1.2.7
       with:
         coverage_file: "nyc-coverage-report/coverage-summary.json"
