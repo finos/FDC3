@@ -1,4 +1,4 @@
-import { Channel, Listener } from '@finos/fdc3-standard';
+import { Listener } from '@finos/fdc3-standard';
 import { RegisterableListener } from './RegisterableListener';
 
 /**
@@ -12,5 +12,5 @@ export interface UserChannelContextListener extends Listener, RegisterableListen
    * call it's handler with the latest piece of relevant channel state and start responding to
    * events on the new channelId.
    */
-  changeChannel(ch: Channel | null): Promise<void>;
+  changeChannel(): Promise<void>;
 }

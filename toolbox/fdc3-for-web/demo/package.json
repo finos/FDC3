@@ -1,7 +1,7 @@
 {
   "name": "@finos/demo",
   "private": true,
-  "version": "2.2.0",
+  "version": "2.2.2-beta.1",
   "license": "Apache-2.0",
   "scripts": {
     "dev": "nodemon -w src/server src/server/main.ts",
@@ -19,10 +19,10 @@
     "nodemon": "^3.1.7",
     "rimraf": "^6.0.1",
     "typescript-eslint": "^8.17.0",
-    "vite": "^6.3.6"
+    "vite": "^6.4.1"
   },
   "dependencies": {
-    "@finos/fdc3": "2.2.0",
+    "@finos/fdc3": "2.2.2-beta.1",
     "@types/uuid": "^10.0.0",
     "@types/ws": "^8.5.12",
     "express": "^4.21.1",

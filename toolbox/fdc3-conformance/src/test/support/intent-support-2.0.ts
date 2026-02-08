@@ -15,12 +15,18 @@ import constants from '../../constants';
 import { handleFail, wait, wrapPromise } from '../../utils';
 import { AppControlContext, IntentUtilityContext } from '../../context-types';
 
-declare let fdc3: DesktopAgent;
 const raiseIntentDocs = '\r\nDocumentation: ' + APIDocumentation2_0.raiseIntent + '\r\nCause';
 
 export class RaiseIntentControl2_0 {
+  private readonly fdc3: DesktopAgent;
+
+  constructor(fdc3: DesktopAgent) {
+    this.fdc3 = fdc3;
+  }
+
   async receiveContext(contextType: string, waitTime?: number, count: number = 1): Promise<AppControlContext> {
-    const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
+    const appControlChannel = await this.fdc3.getOrCreateChannel(constants.ControlChannel);
+    // eslint-disable-next-line no-async-promise-executor
     return new Promise<Context>(async (resolve, reject) => {
       const listener = await appControlChannel.addContextListener(contextType, (context: AppControlContext) => {
         count--;
@@ -45,18 +51,18 @@ export class RaiseIntentControl2_0 {
 
   async openIntentApp(appId: string): Promise<AppIdentifier> {
     try {
-      return await fdc3.open({ appId: appId });
+      return await this.fdc3.open({ appId: appId });
     } catch (ex) {
       handleFail('Error while attempting to open the mock app', ex);
     }
   }
 
   async createAppChannel(channelId: string): Promise<Channel> {
-    return await fdc3.getOrCreateChannel(channelId);
+    return await this.fdc3.getOrCreateChannel(channelId);
   }
 
   async createPrivateChannel(): Promise<PrivateChannel> {
-    return await fdc3.createPrivateChannel();
+    return await this.fdc3.createPrivateChannel();
   }
 
   validatePrivateChannel(privChan: PrivateChannel): void {
@@ -70,7 +76,7 @@ export class RaiseIntentControl2_0 {
     delayBeforeReturn: number = 0,
     contextId?: { [key: string]: string }
   ): Promise<IntentResolution> {
-    let context: IntentUtilityContext = {
+    const context: IntentUtilityContext = {
       type: contextType,
       delayBeforeReturn: delayBeforeReturn,
     };
@@ -81,9 +87,9 @@ export class RaiseIntentControl2_0 {
 
     try {
       if (appIdentifier) {
-        return await fdc3.raiseIntent(intent, context, appIdentifier);
+        return await this.fdc3.raiseIntent(intent, context, appIdentifier);
       } else {
-        return await fdc3.raiseIntent(intent, context);
+        return await this.fdc3.raiseIntent(intent, context);
       }
     } catch (ex) {
       throw handleFail('', ex);
@@ -92,7 +98,7 @@ export class RaiseIntentControl2_0 {
 
   async findInstances(appId: string): Promise<AppIdentifier[]> {
     try {
-      return await fdc3.findInstances({ appId: appId });
+      return await this.fdc3.findInstances({ appId: appId });
     } catch (ex) {
       handleFail(`Error while attempting to find instances`, ex);
     }
@@ -110,7 +116,7 @@ export class RaiseIntentControl2_0 {
   }
 
   failIfResponseTimesOut() {
-    let timeout = window.setTimeout(() => {
+    const timeout = window.setTimeout(() => {
       assert.fail(
         'When running getIntentResult() the promise should be returned immediately unless it is being awaited'
       );
@@ -144,8 +150,10 @@ export class RaiseIntentControl2_0 {
         break;
       }
       case IntentResultType.Void: {
-        expect(intentResult, 'The promise received by Test from resolution.getResult() should resolve to void').to.be
-          .undefined;
+        assert.isUndefined(
+          intentResult,
+          'The promise received by Test from resolution.getResult() should resolve to void'
+        );
         break;
       }
       case IntentResultType.Channel: {
@@ -202,7 +210,6 @@ export class RaiseIntentControl2_0 {
     streamedNumberStart: number,
     streamedNumberEnd: number
   ): Promise<Listener> {
-    let timeout: number;
     const wrapper = wrapPromise();
 
     //receive multiple contexts in succession from intent-k
@@ -218,7 +225,7 @@ export class RaiseIntentControl2_0 {
       streamedNumberStart += 1;
     });
 
-    timeout = window.setTimeout(() => {
+    const timeout = window.setTimeout(() => {
       wrapper.reject(
         'Timeout: did not receive all 5 streamed contexts back from the mock app. onAddContextListener may not have been triggered'
       );

@@ -1,11 +1,11 @@
 import { io } from 'socket.io-client';
 import { v4 as uuid } from 'uuid';
-import { APP_GOODBYE, APP_HELLO, DA_HELLO, FDC3_APP_EVENT } from '../../message-types';
+import { APP_GOODBYE, DA_HELLO, FDC3_APP_EVENT } from '../../message-types';
 import { DemoServerContext } from './DemoServerContext';
 import { FDC3_2_1_JSONDirectory } from './FDC3_2_1_JSONDirectory';
 import { AppRegistration, DefaultFDC3Server, DirectoryApp, ServerContext } from '@finos/fdc3-web-impl';
 import { ChannelState, ChannelType } from '@finos/fdc3-web-impl/src/handlers/BroadcastHandler';
-import { link, UI, UI_URLS } from './util';
+import { UI, UI_URLS } from './util';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { WebConnectionProtocol3Handshake } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
 
@@ -171,11 +171,14 @@ window.addEventListener('load', () => {
       const source = event.source as Window;
       const origin = event.origin;
 
-      console.log('Received: ' + JSON.stringify(event.data));
+      console.log('Received window.postMessage: ' + JSON.stringify(event.data));
       if (data.type == 'WCP1Hello') {
         const instance = await sc.getInstanceForWindow(source);
         if (instance) {
+          console.log('Identified instance for source window: ' + JSON.stringify(instance.instanceId));
+
           if (getApproach() == Approach.IFRAME) {
+            // Let getAgent/the app know to load an adaptor into an iframe via WCP2LoadUrl
             const message: WebConnectionProtocol2LoadURL = {
               type: 'WCP2LoadUrl',
               meta: {
@@ -189,14 +192,31 @@ window.addEventListener('load', () => {
               },
             };
 
+            console.log('Responding with message: ', JSON.stringify(message));
+
+            // no message port is included as communication will be setup with the iframe
             source.postMessage(message, origin);
           } else {
+            //setup a MessageChannel and handling for incoming messages on it
             const channel = new MessageChannel();
-            link(socket, channel, instance.instanceId);
-            socket.emit(APP_HELLO, desktopAgentUUID, instance.instanceId);
+            channel.port2.onmessage = message => {
+              console.log(
+                `message received on message port for app ${instance.instanceId}, message: ${JSON.stringify(message.data)}`
+              );
+              const msg = message.data as
+                | BrowserTypes.AppRequestMessage
+                | BrowserTypes.WebConnectionProtocol4ValidateAppIdentity
+                | BrowserTypes.WebConnectionProtocol6Goodbye;
+              fdc3Server.receive(msg, instance.instanceId);
+            };
+
+            //update the server Context with the MessagePort
+            await sc.setInstanceDetails(instance.instanceId, { ...instance, messagePort: channel.port2 });
+
+            //get details of channel selector and intent resolver
             const ui = UI_URLS[getUIKey()];
 
-            // send the other end of the channel to the app
+            //prepare the handshake message
             const message: WebConnectionProtocol3Handshake = {
               type: 'WCP3Handshake',
               meta: {
@@ -208,9 +228,13 @@ window.addEventListener('load', () => {
                 ...ui,
               },
             };
+            console.log('Responding with message: ', JSON.stringify(message));
+
+            //send the handshake message and include the message port for further comms
             source.postMessage(message, origin, [channel.port1]);
           }
         } else {
+          // Log unknown windows but don't let them connect
           let sourceName;
           try {
             sourceName = source.name;
