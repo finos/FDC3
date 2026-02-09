@@ -589,6 +589,24 @@
     "type": "adopter"
   },
   {
+    "title": "NatWest Group",
+    "publisher": "NatWest Group",
+    "image": "/img/users/NatWestGroup.png",
+    "infoLink": "https://www.NatWestgroup.com/",
+    "description": "NatWest Group is proud to support the adoption of open standards such as FDC3, recognizing their transformative potential in reshaping how financial institutions connect applications and data across the desktop and thus unlocking new possibilities for both our colleagues and our customers.",
+    "badges": [],
+    "type": "adopter"
+  },
+  {
+    "title": "Agile Markets",
+    "publisher": "NatWest Group",
+    "image": "/img/users/AgileMarkets.png",
+    "infoLink": "https://www.agilemarkets.com",
+    "description": "Agile Markets is NatWest Markets's online platform for managing their clients currency needs. With trading, analysis, commentary and post-trade functionality, it’s a streamlined way to trade and navigate foreign exchange (FX) markets.",
+    "badges": [],
+    "type": "application-provider"
+  },
+  {
     "title": "FDC3 Developer Training Workshop - Rob Moffat, FINOS",
     "publisher": "FINOS",
     "image": "/img/training/fdc3-developer-training-workshop.png",
