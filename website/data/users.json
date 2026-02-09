@@ -196,9 +196,9 @@
         "isMember": true
     },
     {
-        "caption": "Natwest Group",
-        "image": "/img/users/NatwestGroup.png",
-        "infoLink": "https://www.natwestgroup.com/",
+        "caption": "NatWest Group",
+        "image": "/img/users/NatWestGroup.png",
+        "infoLink": "https://www.NatWestgroup.com/",
         "pinned": true,
         "isMember": true
     }    
