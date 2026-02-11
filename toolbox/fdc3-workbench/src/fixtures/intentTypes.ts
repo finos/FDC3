@@ -8,6 +8,10 @@ export const intentTypes: Array<{ title: string; value: string }> = [
     value: 'CreateInteraction',
   },
   {
+    title: 'CreateOrUpdateProfile',
+    value: 'CreateOrUpdateProfile',
+  },
+  {
     title: 'SendChatMessage',
     value: 'SendChatMessage',
   },
@@ -50,10 +54,6 @@ export const intentTypes: Array<{ title: string; value: string }> = [
   {
     title: 'ViewInteractions',
     value: 'ViewInteractions',
-  },
-  {
-    title: 'ViewMessages',
-    value: 'ViewMessages',
   },
   {
     title: 'ViewMessages',
