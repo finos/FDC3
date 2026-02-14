@@ -1,9 +1,9 @@
 import {
   FindIntentsByContextRequest,
   FindIntentsByContextResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
-import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from '../TestMessaging';
-import { createResponseMeta } from './support';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from '../TestMessaging.js';
+import { createResponseMeta } from './support.js';
 
 export class FindIntentByContext implements AutomaticResponse {
   filter(t: string) {

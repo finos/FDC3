@@ -8,8 +8,8 @@ import { observer } from 'mobx-react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
-import contextStore from '../store/ContextStore';
-import { TemplateTextField } from './common/TemplateTextField';
+import contextStore from '../store/ContextStore.js';
+import { TemplateTextField } from './common/TemplateTextField.js';
 
 interface FilterOptionsState<T> {
   inputValue: string;

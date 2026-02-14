@@ -1,14 +1,14 @@
 import { IntentHandler, IntentResult, AppIdentifier } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
-import { Messaging } from '../Messaging';
-import { AbstractListener } from './AbstractListener';
+import { Messaging } from '../Messaging.js';
+import { AbstractListener } from './AbstractListener.js';
 import {
   AddIntentListenerRequest,
   IntentEvent,
   IntentResultRequest,
   IntentResultResponse,
   //RaiseIntentResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIntentListenerRequest> {
   readonly intent: string;

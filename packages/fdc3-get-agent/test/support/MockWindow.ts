@@ -1,7 +1,7 @@
 import { DesktopAgent } from '@finos/fdc3-standard';
-import { CustomWorld } from '../world';
-import { EventHandler } from './EventHandler';
-import { MockElement } from './MockElement';
+import { CustomWorld } from '../world/index.js';
+import { EventHandler } from './EventHandler.js';
+import { MockElement } from './MockElement.js';
 import {
   AgentEventMessage,
   AgentResponseMessage,
@@ -9,7 +9,7 @@ import {
   Fdc3UserInterfaceMessage,
   isFdc3UserInterfaceHello,
   WebConnectionProtocolMessage,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 type STANDARD_MESSAGES =
   | AppRequestMessage

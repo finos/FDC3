@@ -6,13 +6,13 @@ import {
   AppIdentifier,
   LogLevel,
 } from '@finos/fdc3-standard';
-import { createDesktopAgentAPI } from '../messaging/message-port';
-import { DesktopAgentSelection } from './Loader';
+import { createDesktopAgentAPI } from '../messaging/message-port.js';
+import { DesktopAgentSelection } from './Loader.js';
 import { v4 as uuidv4 } from 'uuid';
-import { HelloHandler } from './HelloHandler';
-import { IdentityValidationHandler } from './IdentityValidationHandler';
-import { Logger } from '../util/Logger';
-import { ConnectionDetails } from '../messaging/MessagePortMessaging';
+import { HelloHandler } from './HelloHandler.js';
+import { IdentityValidationHandler } from './IdentityValidationHandler.js';
+import { Logger } from '../util/Logger.js';
+import { ConnectionDetails } from '../messaging/MessagePortMessaging.js';
 
 /** TypeGuard for a Desktop Agent */
 function isDesktopAgent(da: WindowProxy | DesktopAgent): da is DesktopAgent {

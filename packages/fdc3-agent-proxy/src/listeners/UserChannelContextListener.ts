@@ -1,5 +1,5 @@
 import { Listener } from '@finos/fdc3-standard';
-import { RegisterableListener } from './RegisterableListener';
+import { RegisterableListener } from './RegisterableListener.js';
 
 /**
  * This is a special version of a ContextListener created when the user calls the

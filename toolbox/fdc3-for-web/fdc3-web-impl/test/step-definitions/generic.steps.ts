@@ -1,11 +1,13 @@
-import { Given, When } from '@cucumber/cucumber';
-import { CustomWorld } from '../world';
-import { TestServerContext } from '../support/TestServerContext';
-import { DefaultFDC3Server } from '../../src/BasicFDC3Server';
-import { BasicDirectory } from '../../src/directory/BasicDirectory';
-import { ChannelType } from '../../src/handlers/BroadcastHandler';
+import { Given, When } from 'quickpickle';
+import { CustomWorld } from '../world/index.js';
+import { TestServerContext } from '../support/TestServerContext.js';
+import { DefaultFDC3Server } from '../../src/BasicFDC3Server.js';
+import { BasicDirectory } from '../../src/directory/BasicDirectory.js';
+import { ChannelType } from '../../src/handlers/BroadcastHandler.js';
 import { Context } from '@finos/fdc3-context';
 import { AppIdentifier } from '@finos/fdc3-standard';
+import { setupGenericSteps } from '@finos/testing';
+import path from 'path';
 
 export const APP_FIELD = 'apps';
 
@@ -110,21 +112,25 @@ export function createMeta(cw: CustomWorld, appStr: string) {
   };
 }
 
-Given('A newly instantiated FDC3 Server', function (this: CustomWorld) {
-  const apps = this.props[APP_FIELD] ?? [];
+// Register shared generic steps from @finos/testing
+const schemaBasePath = path.join(import.meta.dirname, '../../../../../packages/');
+setupGenericSteps(schemaBasePath);
+
+Given('A newly instantiated FDC3 Server', (world: CustomWorld) => {
+  const apps = world.props[APP_FIELD] ?? [];
   const d = new BasicDirectory(apps);
-  this.sc = new TestServerContext(this);
-  this.server = new DefaultFDC3Server(this.sc, d, defaultChannels(), false, 2000, 2000);
+  world.sc = new TestServerContext(world);
+  world.server = new DefaultFDC3Server(world.sc, d, defaultChannels(), false, 2000, 2000);
 });
 
-Given('A newly instantiated FDC3 Server with heartbeat checking', function (this: CustomWorld) {
-  const apps = this.props[APP_FIELD] ?? [];
+Given('A newly instantiated FDC3 Server with heartbeat checking', (world: CustomWorld) => {
+  const apps = world.props[APP_FIELD] ?? [];
   const d = new BasicDirectory(apps);
 
-  this.sc = new TestServerContext(this);
-  this.server = new DefaultFDC3Server(this.sc, d, defaultChannels(), true, 2000, 2000);
+  world.sc = new TestServerContext(world);
+  world.server = new DefaultFDC3Server(world.sc, d, defaultChannels(), true, 2000, 2000);
 });
 
-When('I shutdown the server', function (this: CustomWorld) {
-  this.server.shutdown();
+When('I shutdown the server', (world: CustomWorld) => {
+  world.server.shutdown();
 });

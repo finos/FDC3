@@ -1,5 +1,5 @@
 import { AppIdentifier, IntentResolution, IntentResult } from '@finos/fdc3-standard';
-import { Messaging } from '../Messaging';
+import { Messaging } from '../Messaging.js';
 
 export class DefaultIntentResolution implements IntentResolution {
   readonly messaging: Messaging;

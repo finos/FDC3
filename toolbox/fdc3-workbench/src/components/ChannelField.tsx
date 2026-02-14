@@ -7,18 +7,18 @@ import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { runInAction } from 'mobx';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import appChannelStore from '../store/AppChannelStore';
-import privateChannelStore from '../store/PrivateChannelStore';
+import appChannelStore from '../store/AppChannelStore.js';
+import privateChannelStore from '../store/PrivateChannelStore.js';
 import { Button, IconButton, Tooltip, Typography, Grid, Link } from '@material-ui/core';
-import { ContextTemplates } from './ContextTemplates';
-import { ContextType, Fdc3Listener } from '../utility/Fdc3Api';
-import { copyToClipboard } from './common/CopyToClipboard';
-import { codeExamples } from '../fixtures/codeExamples';
-import { openApiDocsLink } from '../fixtures/openApiDocs';
+import { ContextTemplates } from './ContextTemplates.js';
+import { ContextType } from '../utility/Fdc3Api.js';
+import { copyToClipboard } from './common/CopyToClipboard.js';
+import { codeExamples } from '../fixtures/codeExamples.js';
+import { openApiDocsLink } from '../fixtures/openApiDocs.js';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
-import contextStore from '../store/ContextStore';
-import { TemplateTextField } from './common/TemplateTextField';
+import contextStore from '../store/ContextStore.js';
+import { TemplateTextField } from './common/TemplateTextField.js';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
 interface ListenerOptionType {

@@ -1,5 +1,5 @@
 import { LogLevel } from '@finos/fdc3-standard';
-import { AbstractFDC3Logger } from './AbstractFDC3Logger';
+import { AbstractFDC3Logger } from './AbstractFDC3Logger.js';
 
 /**
  * Logging utility used by the DesktopAgentProxy, which defaults to

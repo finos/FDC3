@@ -7,19 +7,17 @@
     "type": "git",
     "url": "git+https://github.com/finos/FDC3.git"
   },
-  "publishConfig": {
-    "tag": "latest"
-  },
+  "publishConfig": {"tag": "latest"},
   "license": "Apache-2.0",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
-    "build": "tsc --module es2022",
-    "test": "tsc && nyc --reporter=lcov --reporter=text --reporter json cucumber-js",
-    "clean": "rimraf dist cucumber-report.html coverage .nyc_output node_modules test-results.xml",
+    "build": "tsc",
+    "test": "tsc && vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "clean": "rimraf dist cucumber-report.html coverage node_modules test-results.xml",
     "lint": "eslint src/"
   },
   "dependencies": {
@@ -32,22 +30,25 @@
   },
   "devDependencies": {
     "@cucumber/cucumber": "10.3.1",
-    "@cucumber/messages": "^28.1.0",
     "@eslint/js": "^9.19.0",
     "@finos/fdc3-web-impl": "2.2.2-beta.1",
     "@finos/testing": "2.2.2-beta.1",
     "@types/node": "^20.16.11",
     "@types/wtfnode": "^0.7.3",
+    "@vitest/coverage-v8": "^3.0.4",
+    "ajv": "^8.17.1",
+    "ajv-formats": "^3.0.1",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^9.1.0",
-    "expect": "^29.7.0",
     "globals": "^15.14.0",
     "jsonpath-plus": "^10.1.0",
-    "nyc": "17.1.0",
+    "quickpickle": "^1.6.1",
     "rimraf": "^6.0.1",
     "tsx": "^4.19.1",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.17.0",
+    "vitest": "^3.0.4",
     "wtfnode": "^0.9.3"
-  }
+  },
+  "type": "module"
 }

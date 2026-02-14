@@ -1,11 +1,11 @@
 import { AgentError, AppIdentifier, GetAgentParams, LogLevel } from '@finos/fdc3-standard';
-import { createDesktopAgentAPI } from '../messaging/message-port';
+import { createDesktopAgentAPI } from '../messaging/message-port.js';
 import { v4 as uuidv4 } from 'uuid';
-import { DesktopAgentSelection, Loader } from './Loader';
-import { HelloHandler } from './HelloHandler';
-import { IdentityValidationHandler } from './IdentityValidationHandler';
-import { Logger } from '../util/Logger';
-import { DEFAULT_GETAGENT_TIMEOUT_MS } from './Timeouts';
+import { DesktopAgentSelection, Loader } from './Loader.js';
+import { HelloHandler } from './HelloHandler.js';
+import { IdentityValidationHandler } from './IdentityValidationHandler.js';
+import { Logger } from '../util/Logger.js';
+import { DEFAULT_GETAGENT_TIMEOUT_MS } from './Timeouts.js';
 
 /**
  * Recursive search for all possible parent frames (windows) that we may

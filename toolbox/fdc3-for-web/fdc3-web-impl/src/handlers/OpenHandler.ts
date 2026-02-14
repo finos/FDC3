@@ -1,10 +1,10 @@
-import { MessageHandler } from '../BasicFDC3Server';
-import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext';
-import { Directory, DirectoryApp } from '../directory/DirectoryInterface';
+import { MessageHandler } from '../BasicFDC3Server.js';
+import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext.js';
+import { Directory, DirectoryApp } from '../directory/DirectoryInterface.js';
 import { ContextElement } from '@finos/fdc3-context';
 import { OpenError, ResolveError, AppIdentifier, AppMetadata, ImplementationMetadata } from '@finos/fdc3-standard';
 import { BrowserTypes } from '@finos/fdc3-schema';
-import { errorResponse, FullAppIdentifier, successResponse } from './support';
+import { errorResponse, FullAppIdentifier, successResponse } from './support.js';
 import {
   AgentResponseMessage,
   AppRequestMessage,
@@ -15,7 +15,7 @@ import {
   isGetInfoRequest,
   isOpenRequest,
   isWebConnectionProtocol4ValidateAppIdentity,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 type BroadcastEvent = BrowserTypes.BroadcastEvent;
 type AddContextListenerRequest = BrowserTypes.AddContextListenerRequest;

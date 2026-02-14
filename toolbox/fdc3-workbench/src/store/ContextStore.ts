@@ -3,10 +3,10 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 import { makeObservable, observable, runInAction, action, toJS } from 'mobx';
-import { ContextType, Fdc3Listener, getWorkbenchAgent } from '../utility/Fdc3Api';
+import { ContextType, Fdc3Listener, getWorkbenchAgent } from '../utility/Fdc3Api.js';
 import { nanoid } from 'nanoid';
-import { contexts } from '../fixtures/contexts';
-import systemLogStore from './SystemLogStore';
+import { contexts } from '../fixtures/contexts.js';
+import systemLogStore from './SystemLogStore.js';
 import { v4 as uuidv4 } from 'uuid';
 
 export type ContextItem = {

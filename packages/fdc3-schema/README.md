@@ -17,7 +17,7 @@ import {
   GetUserChannelsRequest,
   JoinUserChannelRequest,
   LeaveCurrentChannelRequest
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 ```
 
 Further details:

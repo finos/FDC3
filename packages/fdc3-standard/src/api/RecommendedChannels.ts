@@ -3,7 +3,7 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import { DisplayMetadata } from './DisplayMetadata';
+import { DisplayMetadata } from './DisplayMetadata.js';
 
 /** Interface representing the data fields of a user channel, without the functions. */
 interface UserChannelTemplate {

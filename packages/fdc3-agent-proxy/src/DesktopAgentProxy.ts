@@ -11,13 +11,13 @@ import {
   Listener,
   LogLevel,
 } from '@finos/fdc3-standard';
-import { ChannelSupport } from './channels/ChannelSupport';
-import { AppSupport } from './apps/AppSupport';
-import { IntentSupport } from './intents/IntentSupport';
+import { ChannelSupport } from './channels/ChannelSupport.js';
+import { AppSupport } from './apps/AppSupport.js';
+import { IntentSupport } from './intents/IntentSupport.js';
 import { Connectable, Channel } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
-import { HeartbeatSupport } from './heartbeat/HeartbeatSupport';
-import { Logger } from './util/Logger';
+import { HeartbeatSupport } from './heartbeat/HeartbeatSupport.js';
+import { Logger } from './util/Logger.js';
 
 /**
  * This splits out the functionality of the desktop agent into

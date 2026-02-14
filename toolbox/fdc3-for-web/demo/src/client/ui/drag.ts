@@ -1,4 +1,4 @@
-import { Position } from './channel-selector';
+import { Position } from './channel-selector.js';
 
 export function dragElement(drag: HTMLElement, selector: HTMLElement, position: Position) {
   let posXDrag = 0,

@@ -9,12 +9,12 @@ import {
   IntentResolver,
   IntentResolutionChoice,
 } from '@finos/fdc3-standard';
-import { IntentSupport } from './IntentSupport';
-import { Messaging } from '../Messaging';
-import { DefaultIntentResolution } from './DefaultIntentResolution';
-import { DefaultIntentListener } from '../listeners/DefaultIntentListener';
-import { DefaultChannel } from '../channels/DefaultChannel';
-import { DefaultPrivateChannel } from '../channels/DefaultPrivateChannel';
+import { IntentSupport } from './IntentSupport.js';
+import { Messaging } from '../Messaging.js';
+import { DefaultIntentResolution } from './DefaultIntentResolution.js';
+import { DefaultIntentListener } from '../listeners/DefaultIntentListener.js';
+import { DefaultChannel } from '../channels/DefaultChannel.js';
+import { DefaultPrivateChannel } from '../channels/DefaultPrivateChannel.js';
 import { Context } from '@finos/fdc3-context';
 import {
   FindIntentRequest,
@@ -26,8 +26,8 @@ import {
   RaiseIntentRequest,
   RaiseIntentResponse,
   RaiseIntentResultResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
-import { throwIfUndefined } from '../util/throwIfUndefined';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { throwIfUndefined } from '../util/throwIfUndefined.js';
 
 const convertIntentResult = async (
   { payload }: RaiseIntentResultResponse,
