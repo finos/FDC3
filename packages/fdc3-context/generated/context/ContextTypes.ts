@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, FileAttachment, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, Portfolio, Position, Product, TimeRange, Trade, TradeList, TransactionResult, Valuation } from "./file";
+//   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, FileAttachment, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, Portfolio, Position, Product, EncryptedContextWrapper, SymmetricKeyRequest, SymmetricKeyResponse, TimeRange, Trade, TradeList, TransactionResult, UserRequest, User, Valuation } from "./file";
 //
 //   const action = Convert.toAction(json);
 //   const chart = Convert.toChart(json);
@@ -26,10 +26,15 @@
 //   const portfolio = Convert.toPortfolio(json);
 //   const position = Convert.toPosition(json);
 //   const product = Convert.toProduct(json);
+//   const encryptedContextWrapper = Convert.toEncryptedContextWrapper(json);
+//   const symmetricKeyRequest = Convert.toSymmetricKeyRequest(json);
+//   const symmetricKeyResponse = Convert.toSymmetricKeyResponse(json);
 //   const timeRange = Convert.toTimeRange(json);
 //   const trade = Convert.toTrade(json);
 //   const tradeList = Convert.toTradeList(json);
 //   const transactionResult = Convert.toTransactionResult(json);
+//   const userRequest = Convert.toUserRequest(json);
+//   const user = Convert.toUser(json);
 //   const valuation = Convert.toValuation(json);
 //
 // These functions will throw an error if the JSON doesn't
@@ -1820,6 +1825,116 @@ export interface Product {
 }
 
 /**
+ * A wrapper context type for encrypted FDC3 context data. When an app broadcasts encrypted
+ * context data, the original type is preserved for routing purposes, while the remaining
+ * context information is encrypted. Recipients can request a symmetric key via
+ * 'fdc3.security.symmetricKey.request' to decrypt the payload.
+ */
+export interface EncryptedContextWrapper {
+  /**
+   * The encrypted context data as a base64-encoded string. Contains all fields from the
+   * original context except for the type. Encrypted using the symmetric key identified by
+   * 'id.kid'.
+   */
+  encryptedPayload: string;
+  /**
+   * Identifiers for the encryption key used.
+   */
+  id: EncryptedContextWrapperID;
+  /**
+   * The original FDC3 context type that was encrypted (e.g., 'fdc3.instrument',
+   * 'fdc3.contact'). This field is used by the desktop agent and context handlers for routing
+   * decisions.
+   */
+  originalType: string;
+  type: 'fdc3.security.encryptedContext';
+  name?: string;
+  [property: string]: any;
+}
+
+/**
+ * Identifiers for the encryption key used.
+ */
+export interface EncryptedContextWrapperID {
+  /**
+   * Key ID identifying the symmetric key used to encrypt the payload.
+   */
+  kid: string;
+  [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+
+/**
+ * A request to obtain a symmetric encryption key.
+ */
+export interface SymmetricKeyRequest {
+  /**
+   * Optional identifier for the requested key.
+   */
+  id?: SymmetricKeyRequestID;
+  type: 'fdc3.security.symmetricKey.request';
+  name?: string;
+  [property: string]: any;
+}
+
+/**
+ * Optional identifier for the requested key.
+ */
+export interface SymmetricKeyRequestID {
+  /**
+   * Key ID to request a specific symmetric key.
+   */
+  kid?: string;
+  [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+
+/**
+ * A response containing a wrapped symmetric key and metadata.
+ */
+export interface SymmetricKeyResponse {
+  id: SymmetricKeyResponseID;
+  type: 'fdc3.security.symmetricKey.response';
+  /**
+   * The symmetric key, encrypted using the recipient's public key.
+   */
+  wrappedKey: string;
+  name?: string;
+  [property: string]: any;
+}
+
+export interface SymmetricKeyResponseID {
+  /**
+   * Key ID used to identify the public key used to wrap the symmetric key.
+   */
+  kid: string;
+  /**
+   * Public Key Infrastructure JSON Web Key Set URL used to wrap the symmetric key.
+   */
+  pki: string;
+  [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+
+/**
  * A context representing a period of time. Any user interfaces that represent or visualize
  * events or activity over time can be filtered or focused on a particular time period,
  * e.g.:
@@ -1993,6 +2108,90 @@ export interface TransactionResult {
  * The status of the transaction being reported.
  */
 export type TransactionStatus = 'Created' | 'Deleted' | 'Updated' | 'Failed';
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+
+/**
+ * A request for the current user’s identity.
+ */
+export interface UserRequest {
+  /**
+   * The audience (aud) claim specifying the intended recipient of the user request, typically
+   * the URL of the requesting application.  This will be used in the returned JWT token for
+   * the aud claim.
+   */
+  aud: string;
+  /**
+   * The JSON Web Key Set URL (jku) claim specifying the URL where the requesting
+   * application's JSON Web Key Set (JWKS) can be retrieved. This should contain the public
+   * keys for encryption purposes
+   */
+  jku: string;
+  /**
+   * The context type identifier for user request messages
+   */
+  type: 'fdc3.user.request';
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+
+/**
+ * A user identity, extending contact with authentication metadata.
+ */
+export interface User {
+  /**
+   * User identifiers that uniquely identify this user across different systems
+   */
+  id?: UserID;
+  /**
+   * A JSON Web Token (JWT) asserting user identity and permissions. The JWT contains a header
+   * with cryptographic information and a payload with user claims. Header fields include:
+   * 'alg' (signature algorithm, e.g., 'EdDSA'), 'jku' (JSON Web Key Set URL for key
+   * verification), and 'kid' (key identifier). Payload fields include: 'iss' (issuer - the
+   * application issuing the token), 'aud' (audience - the intended recipient application),
+   * 'sub' (subject - the user identifier), 'exp' (expiration time as Unix timestamp), 'iat'
+   * (issued at time as Unix timestamp), and 'jti' (JWT ID - unique token identifier).
+   */
+  jwt: string;
+  /**
+   * The human-readable name of the user
+   */
+  name?: string;
+  type: 'fdc3.user';
+  [property: string]: any;
+}
+
+/**
+ * User identifiers that uniquely identify this user across different systems
+ */
+export interface UserID {
+  /**
+   * The user's email address as a unique identifier. If provided, this email must match the
+   * 'sub' field in the JWT token.
+   */
+  email?: string;
+  [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
 
 /**
  * A context type representing the price and value of a holding.
@@ -2222,6 +2421,30 @@ export class Convert {
     return JSON.stringify(uncast(value, r('Product')), null, 2);
   }
 
+  public static toEncryptedContextWrapper(json: string): EncryptedContextWrapper {
+    return cast(JSON.parse(json), r('EncryptedContextWrapper'));
+  }
+
+  public static encryptedContextWrapperToJson(value: EncryptedContextWrapper): string {
+    return JSON.stringify(uncast(value, r('EncryptedContextWrapper')), null, 2);
+  }
+
+  public static toSymmetricKeyRequest(json: string): SymmetricKeyRequest {
+    return cast(JSON.parse(json), r('SymmetricKeyRequest'));
+  }
+
+  public static symmetricKeyRequestToJson(value: SymmetricKeyRequest): string {
+    return JSON.stringify(uncast(value, r('SymmetricKeyRequest')), null, 2);
+  }
+
+  public static toSymmetricKeyResponse(json: string): SymmetricKeyResponse {
+    return cast(JSON.parse(json), r('SymmetricKeyResponse'));
+  }
+
+  public static symmetricKeyResponseToJson(value: SymmetricKeyResponse): string {
+    return JSON.stringify(uncast(value, r('SymmetricKeyResponse')), null, 2);
+  }
+
   public static toTimeRange(json: string): TimeRange {
     return cast(JSON.parse(json), r('TimeRange'));
   }
@@ -2252,6 +2475,22 @@ export class Convert {
 
   public static transactionResultToJson(value: TransactionResult): string {
     return JSON.stringify(uncast(value, r('TransactionResult')), null, 2);
+  }
+
+  public static toUserRequest(json: string): UserRequest {
+    return cast(JSON.parse(json), r('UserRequest'));
+  }
+
+  public static userRequestToJson(value: UserRequest): string {
+    return JSON.stringify(uncast(value, r('UserRequest')), null, 2);
+  }
+
+  public static toUser(json: string): User {
+    return cast(JSON.parse(json), r('User'));
+  }
+
+  public static userToJson(value: User): string {
+    return JSON.stringify(uncast(value, r('User')), null, 2);
   }
 
   public static toValuation(json: string): Valuation {
@@ -2965,6 +3204,42 @@ const typeMap: any = {
     ],
     'any'
   ),
+  EncryptedContextWrapper: o(
+    [
+      { json: 'encryptedPayload', js: 'encryptedPayload', typ: '' },
+      { json: 'id', js: 'id', typ: r('EncryptedContextWrapperID') },
+      { json: 'originalType', js: 'originalType', typ: '' },
+      { json: 'type', js: 'type', typ: r('EncryptedContextWrapperType') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  EncryptedContextWrapperID: o([{ json: 'kid', js: 'kid', typ: '' }], 'any'),
+  SymmetricKeyRequest: o(
+    [
+      { json: 'id', js: 'id', typ: u(undefined, r('SymmetricKeyRequestID')) },
+      { json: 'type', js: 'type', typ: r('SymmetricKeyRequestType') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  SymmetricKeyRequestID: o([{ json: 'kid', js: 'kid', typ: u(undefined, '') }], 'any'),
+  SymmetricKeyResponse: o(
+    [
+      { json: 'id', js: 'id', typ: r('SymmetricKeyResponseID') },
+      { json: 'type', js: 'type', typ: r('SymmetricKeyResponseType') },
+      { json: 'wrappedKey', js: 'wrappedKey', typ: '' },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  SymmetricKeyResponseID: o(
+    [
+      { json: 'kid', js: 'kid', typ: '' },
+      { json: 'pki', js: 'pki', typ: '' },
+    ],
+    'any'
+  ),
   TimeRange: o(
     [
       { json: 'endTime', js: 'endTime', typ: u(undefined, Date) },
@@ -3015,6 +3290,26 @@ const typeMap: any = {
     ],
     'any'
   ),
+  UserRequest: o(
+    [
+      { json: 'aud', js: 'aud', typ: '' },
+      { json: 'jku', js: 'jku', typ: '' },
+      { json: 'type', js: 'type', typ: r('UserRequestType') },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  User: o(
+    [
+      { json: 'id', js: 'id', typ: u(undefined, r('UserID')) },
+      { json: 'jwt', js: 'jwt', typ: '' },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'type', js: 'type', typ: r('UserType') },
+    ],
+    'any'
+  ),
+  UserID: o([{ json: 'email', js: 'email', typ: u(undefined, '') }], 'any'),
   Valuation: o(
     [
       { json: 'CURRENCY_ISOCODE', js: 'CURRENCY_ISOCODE', typ: '' },
@@ -3086,9 +3381,14 @@ const typeMap: any = {
   StickyAppID: ['fdc3.organization'],
   PositionType: ['fdc3.position'],
   PortfolioType: ['fdc3.portfolio'],
+  EncryptedContextWrapperType: ['fdc3.security.encryptedContext'],
+  SymmetricKeyRequestType: ['fdc3.security.symmetricKey.request'],
+  SymmetricKeyResponseType: ['fdc3.security.symmetricKey.response'],
   TradeType: ['fdc3.trade'],
   TradeListType: ['fdc3.tradeList'],
   TransactionStatus: ['Created', 'Deleted', 'Failed', 'Updated'],
   TransactionResultType: ['fdc3.transactionResult'],
+  UserRequestType: ['fdc3.user.request'],
+  UserType: ['fdc3.user'],
   ValuationType: ['fdc3.valuation'],
 };
