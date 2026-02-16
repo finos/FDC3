@@ -1,0 +1,4 @@
+1.  Add notes to contexts about the fact they need to be signed.  Link to docs.
+2.  Sort out JOSE compatibility.
+3.  (App Providable) Context Metadata - improve signature section.
+4.  GetUser

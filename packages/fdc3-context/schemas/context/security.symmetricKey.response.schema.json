@@ -1,0 +1,59 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fdc3.finos.org/schemas/next/context/symmetricKeyResponse.schema.json",
+    "type": "object",
+    "title": "Symmetric Key Response",
+    "description": "A response containing a wrapped symmetric key and metadata.",
+    "allOf": [
+        {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "const": "fdc3.security.symmetricKey.response"
+                },
+                "id": {
+                    "type": "object",
+                    "properties": {
+                        "kid": {
+                            "type": "string",
+                            "description": "Key ID used to identify the public key used to wrap the symmetric key."
+                        },
+                        "pki": {
+                            "type": "string",
+                            "description": "Public Key Infrastructure JSON Web Key Set URL used to wrap the symmetric key."
+                        }
+                    },
+                    "required": [
+                        "kid",
+                        "pki"
+                    ]
+                },
+                "wrappedKey": {
+                    "type": "string",
+                    "description": "The symmetric key, encrypted using the recipient's public key.",
+                    "examples": [
+                        "u4jvA7...=="
+                    ]
+                }
+            },
+            "required": [
+                "type",
+                "id",
+                "wrappedKey"
+            ]
+        },
+        {
+            "$ref": "context.schema.json#/definitions/BaseContext"
+        }
+    ],
+    "examples": [
+        {
+            "type": "fdc3.security.symmetricKey.response",
+            "id": {
+                "kid": "key-id-123",
+                "pki": "https://examples.com/myJWKSendpoint"
+            },
+            "wrappedKey": "u4jvA7Gx8LdH...=="
+        }
+    ]
+}
