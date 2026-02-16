@@ -24,6 +24,7 @@
           "api/ref/Metadata",
           "api/ref/Errors",
           "api/ref/Events",
+          "api/security",
           {
             "type": "category",
             "label": "Desktop Agent Specs",
@@ -111,10 +112,15 @@
           "context/ref/Portfolio",
           "context/ref/Position",
           "context/ref/Product",
+          "context/ref/EncryptedContextWrapper",
+          "context/ref/SymmetricKeyRequest",
+          "context/ref/SymmetricKeyResponse",
           "context/ref/TimeRange",
           "context/ref/Trade",
           "context/ref/TradeList",
           "context/ref/TransactionResult",
+          "context/ref/UserRequest",
+          "context/ref/User",
           "context/ref/Valuation"
         ]
       },

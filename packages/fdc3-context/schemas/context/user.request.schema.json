@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fdc3.finos.org/schemas/next/context/userRequest.schema.json",
+    "type": "object",
+    "title": "User Request",
+    "description": "A request for the current user's identity, typically raised via the CreateIdentityToken intent. An identity provider (IDP) receives this request and responds with an 'fdc3.user' context containing a signed JWT. The request includes cryptographic details needed for the IDP to create a token bound to the requesting application and to encrypt the response.",
+    "allOf": [
+        {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "const": "fdc3.user.request",
+                    "description": "The FDC3 context type identifier. Used by desktop agents and context handlers to route this request to appropriate identity providers."
+                },
+                "aud": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "The audience identifier for the returned JWT, typically the URL of the requesting application. The identity provider will embed this value in the JWT's 'aud' claim, allowing the requesting application to verify that the token was issued specifically for it. This prevents token misuse if intercepted by other applications."
+                }
+            },
+            "required": [
+                "type",
+                "aud"
+            ],
+            "additionalProperties": true
+        },
+        {
+            "$ref": "context.schema.json#/definitions/BaseContext"
+        }
+    ],
+    "examples": [
+        {
+            "type": "fdc3.user.request",
+            "aud": "https://my-app-url.com"
+        }
+    ]
+}
