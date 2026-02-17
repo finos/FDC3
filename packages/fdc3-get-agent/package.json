@@ -7,17 +7,21 @@
     "type": "git",
     "url": "git+https://github.com/finos/FDC3.git"
   },
-  "publishConfig": {"tag": "latest"},
+  "publishConfig": {
+    "tag": "latest"
+  },
   "license": "Apache-2.0",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "tsc && vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "clean": "rimraf dist cucumber-report.html coverage node_modules test-results.xml",
+    "clean": "rimraf dist coverage node_modules test-results.xml",
     "lint": "eslint src/"
   },
   "dependencies": {
