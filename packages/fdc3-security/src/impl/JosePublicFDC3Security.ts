@@ -1,7 +1,14 @@
-import { Context } from '@finos/fdc3-context';
+import { AntiReplay, Context } from '@finos/fdc3-context';
+import { BrowserTypes } from '@finos/fdc3-schema';
 import canonicalize from 'canonicalize';
 import * as jose from 'jose';
-import { FDC3JWTPayload, JSONWebSignature, MessageAuthenticity, PublicFDC3Security } from '@finos/fdc3-security';
+import { DEFAULT_FDC3_ALGORITHMS, FDC3SecurityAlgorithms } from '../FDC3SecurityAlgorithms';
+import { DEFAULT_FDC3_TIME_LIMITS, FDC3SecurityTimeLimits } from '../FDC3SecurityTimeLimits';
+import { FDC3UserClaims } from '../FDC3UserClaims';
+import { MessageAuthenticity } from '../MessageAuthenticity';
+import { JSONWebEncryption, PublicFDC3Security } from '../PublicFDC3Security';
+
+type DetachedSignature = BrowserTypes.DetachedSignature;
 
 export type JSONWebKeyWithId = JsonWebKey & {
   kid?: string; // Key ID
@@ -27,29 +34,34 @@ export type AllowListFunction = (jku: string, iss?: string) => boolean;
 /**
  * Implements the FDC3Security interface either in node or the browser.
  * Using the jose library for JSON Web Signatures and Encryption.
+ *
  * @param signingPublicKey - The signing public key
  * @param wrappingPublicKey - The wrapping public key
  * @param publicKeyResolver - Function to resolve public keys from URLs
- * @param allowListFunction - Function to check if a URL is trusted.
- * @param validityTimeLimit - Optional validity time limit in seconds (default: 5 minutes)
+ * @param allowListFunction - Function to check if a URL is trusted
+ * @param timeLimits - Optional time limits for signature freshness and context validity
+ * @param algorithms - Optional algorithm configuration (defaults to EdDSA/RSA-OAEP-256/A256GCM)
  */
 export class JosePublicFDC3Security implements PublicFDC3Security {
   readonly signingPublicKey: JSONWebKeyWithId;
   readonly wrappingPublicKey: JSONWebKeyWithId;
-  readonly validityTimeLimit: number; // in seconds
+  readonly timeLimits: FDC3SecurityTimeLimits;
   readonly publicKeyResolver: (url: string) => JWKSResolver;
   readonly allowListFunction: AllowListFunction;
+  readonly algorithms: FDC3SecurityAlgorithms;
 
   constructor(
     signingPublicKey: JsonWebKey,
     wrappingPublicKey: JsonWebKey,
     publicKeyResolver: (url: string) => JWKSResolver,
     allowListFunction: AllowListFunction,
-    validityTimeLimit: number = 5 * 60
+    timeLimits: FDC3SecurityTimeLimits = DEFAULT_FDC3_TIME_LIMITS,
+    algorithms: FDC3SecurityAlgorithms = DEFAULT_FDC3_ALGORITHMS
   ) {
     this.allowListFunction = allowListFunction;
-    this.validityTimeLimit = validityTimeLimit;
+    this.timeLimits = timeLimits;
     this.publicKeyResolver = publicKeyResolver;
+    this.algorithms = algorithms;
 
     if (!(signingPublicKey as JSONWebKeyWithId).kid) {
       throw new Error("Signing public key must have a 'kid' (Key ID) property");
@@ -71,50 +83,69 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
     return keyBytes;
   }
 
-  protected canonicalize(ctx: Context, intent: string | null, channelId: string | null): Uint8Array {
-    const canonicalJson = canonicalize({ ctx, intent, channelId });
+  protected canonicalize(ctx: Context): Uint8Array {
+    const canonicalJson = canonicalize(ctx);
     const encoder = new TextEncoder();
     const payloadBytes = encoder.encode(canonicalJson);
     return payloadBytes;
   }
 
-  protected getParametersFromHeader(sig: JSONWebSignature): { jku?: string; kid?: string; iat?: number } {
+  protected getParametersFromHeader(sig: string): { alg?: string; jku?: string; kid?: string; iat?: number } {
     const [protectedHeaderJSON] = sig.split('.');
     const protectedHeader = JSON.parse(atob(protectedHeaderJSON));
-    return { jku: protectedHeader.jku, kid: protectedHeader.kid, iat: protectedHeader.iat };
+    return { alg: protectedHeader.alg, jku: protectedHeader.jku, kid: protectedHeader.kid, iat: protectedHeader.iat };
   }
 
-  async check(
-    jws: JSONWebSignature,
-    ctx: Context,
-    intent: string | null,
-    channelId: string | null
-  ): Promise<MessageAuthenticity> {
-    try {
-      const { jku, kid, iat } = this.getParametersFromHeader(jws);
+  /**
+   * Converts a DetachedSignature to a compact JWS string for internal processing.
+   */
+  protected detachedToCompact(sig: DetachedSignature): string {
+    return `${sig.protected}..${sig.signature}`;
+  }
 
-      if (!jku || !kid || !iat) {
+  async check(sig: DetachedSignature, ctx: Context): Promise<MessageAuthenticity> {
+    try {
+      const compactSig = this.detachedToCompact(sig);
+      const { alg, jku, kid, iat } = this.getParametersFromHeader(compactSig);
+
+      if (!alg || !jku || !kid || !iat) {
         return {
           signed: false,
-          error: `Signature does not contain a public key URL / Key ID / Issued At timestamp ${JSON.stringify({ jku, kid, iat })}`,
+          errors: [`Signature does not contain required header fields: ${JSON.stringify({ alg, jku, kid, iat })}`],
         };
       }
 
       const jwksEndpoint = this.publicKeyResolver(jku);
       const now = Math.floor(Date.now() / 1000); // Current time in seconds
-      const data1 = canonicalize({ ctx, intent, channelId });
+      const data1 = canonicalize(ctx);
       const data2 = jose.base64url.encode(data1!);
-      const parts = jws.split('.');
+      const parts = compactSig.split('.');
       const reconstitutedJws = `${parts[0]}.${data2}.${parts[2]}`;
-
-      console.log('reconstitutedJws', reconstitutedJws);
 
       const result = await jose.compactVerify(reconstitutedJws, jwksEndpoint, {});
 
-      if (iat && now - iat > this.validityTimeLimit) {
+      // Check signature freshness (based on iat in header)
+      if (iat && now - iat > this.timeLimits.signatureFreshnessSeconds) {
         return {
           signed: false,
-          error: `Signature is too old, valid for ${this.validityTimeLimit} seconds`,
+          errors: [
+            `Signature is too old (iat: ${iat}, now: ${now}, max age: ${this.timeLimits.signatureFreshnessSeconds}s)`,
+          ],
+        };
+      }
+
+      // Extract anti-replay claims from context if present
+      const antiReplayClaims: AntiReplay = ctx.antiReplay ?? {
+        iat: iat,
+        exp: iat + this.timeLimits.contextValiditySeconds,
+        jti: 'unknown',
+      };
+
+      // Check context expiry (based on exp in antiReplay)
+      if (antiReplayClaims.exp && now > antiReplayClaims.exp) {
+        return {
+          signed: false,
+          errors: [`Context has expired (exp: ${antiReplayClaims.exp}, now: ${now})`],
         };
       }
 
@@ -122,12 +153,15 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
         signed: true,
         valid: result.payload != null,
         trusted: this.allowListFunction(jku),
-        publicKeyUrl: jku,
+        alg,
+        kid,
+        jku,
+        antiReplayClaims,
       };
     } catch (error) {
       return {
         signed: false,
-        error: error instanceof Error ? error.message : 'Unknown error',
+        errors: [error instanceof Error ? error.message : 'Unknown error'],
       };
     }
   }
@@ -136,7 +170,7 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
     return [this.signingPublicKey, this.wrappingPublicKey];
   }
 
-  async verifyJWTToken(token: string): Promise<FDC3JWTPayload> {
+  async verifyJWTToken(token: string): Promise<FDC3UserClaims> {
     const { jku, kid } = this.getParametersFromHeader(token);
 
     if (!jku || !kid) {
@@ -176,7 +210,25 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
       throw new Error(`JWT issuer is not trusted: ${payload.iss}`);
     }
 
-    return payload as FDC3JWTPayload;
+    return payload as FDC3UserClaims;
+  }
+
+  async encryptSymmetric(ctx: Context, symmetricKey: JsonWebKey): Promise<JSONWebEncryption> {
+    const key = await jose.importJWK(symmetricKey as jose.JWK, this.algorithms.contentEncryption);
+    const encrypted = await new jose.CompactEncrypt(new TextEncoder().encode(JSON.stringify(ctx)))
+      .setProtectedHeader({
+        alg: this.algorithms.directEncryption,
+        enc: this.algorithms.contentEncryption,
+      })
+      .encrypt(key);
+    return encrypted;
+  }
+
+  async decryptSymmetric(encrypted: JSONWebEncryption, symmetricKey: JsonWebKey): Promise<Context> {
+    const key = await jose.importJWK(symmetricKey as jose.JWK, this.algorithms.contentEncryption);
+    const decrypted = await jose.compactDecrypt(encrypted, key);
+    const plaintext = decrypted.plaintext;
+    return JSON.parse(new TextDecoder().decode(plaintext));
   }
 }
 
