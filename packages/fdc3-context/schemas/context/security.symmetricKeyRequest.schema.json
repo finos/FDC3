@@ -3,13 +3,13 @@
     "$id": "https://fdc3.finos.org/schemas/next/context/symmetricKeyRequest.schema.json",
     "type": "object",
     "title": "Symmetric Key Request",
-    "description": "A request to obtain a symmetric encryption key.",
+    "description": "A request to obtain a symmetric encryption key for decrypting encrypted context on a channel.\n\n**Note:** This context type MUST be signed to be effective. The key owner uses the signature's public key URL to encrypt the symmetric key in the response, ensuring only the requesting application can decrypt it. See the [Security & Identity documentation](../../api/security) for details on signing context objects and encrypted communications.",
     "allOf": [
         {
             "type": "object",
             "properties": {
                 "type": {
-                    "const": "fdc3.security.symmetricKey.request"
+                    "const": "fdc3.security.symmetricKeyRequest"
                 },
                 "id": {
                     "type": "object",
@@ -33,10 +33,10 @@
     ],
     "examples": [
         {
-            "type": "fdc3.security.symmetricKey.request"
+            "type": "fdc3.security.symmetricKeyRequest"
         },
         {
-            "type": "fdc3.security.symmetricKey.request",
+            "type": "fdc3.security.symmetricKeyRequest",
             "id": {
                 "kid": "channel-key-abc123"
             }

@@ -25,7 +25,32 @@
         },
         "id": {
           "type": "object",
-          "unevaluatedProperties": {"type": "string" }
+          "unevaluatedProperties": {
+            "type": "string"
+          }
+        },
+        "antiReplay": {
+          "type": "object",
+          "description": "Optional anti-replay data for signed contexts. Used to prevent replay attacks by including timing and uniqueness information that is covered by the JOSE (JSON Object Signing and Encryption) signature. This field can be automatically added by the FDC3 signing code when signing a context. The fields follow the JWT claims defined in [RFC 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security & Identity documentation](../../api/security) for details.",
+          "properties": {
+            "iat": {
+              "type": "number",
+              "description": "Issued at time as a Unix timestamp (seconds since epoch). Indicates when the context was created."
+            },
+            "exp": {
+              "type": "number",
+              "description": "Expiration time as a Unix timestamp (seconds since epoch). Receivers should reject contexts past this time."
+            },
+            "jti": {
+              "type": "string",
+              "description": "Unique identifier for this context instance. Used to detect and reject duplicate/replayed contexts."
+            }
+          },
+          "required": [
+            "iat",
+            "exp",
+            "jti"
+          ]
         }
       },
       "additionalProperties": true,
@@ -51,7 +76,9 @@
           "type": "object",
           "title": "Id",
           "description": "Context data objects may include a set of equivalent key-value pairs that can be used to help applications identify and look up the context type they receive in their own domain. The idea behind this design is that applications can provide as many equivalent identifiers to a target application as possible, e.g. an instrument may be represented by an ISIN, CUSIP or Bloomberg identifier.\n\nIdentifiers do not make sense for all types of data, so the `id` property is therefore optional, but some derived types may choose to require at least one identifier. Identifier values SHOULD always be of type string.",
-          "unevaluatedProperties": {"type": "string" }
+          "unevaluatedProperties": {
+            "type": "string"
+          }
         }
       },
       "additionalProperties": true,
