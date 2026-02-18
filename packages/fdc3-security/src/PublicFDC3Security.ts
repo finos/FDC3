@@ -2,7 +2,7 @@ import { Context } from '@finos/fdc3-context';
 import { BrowserTypes } from '@finos/fdc3-schema';
 
 import { MessageAuthenticity } from './MessageAuthenticity';
-import { FDC3ContextClaims } from './FDC3ContextClaims';
+import { FDC3UserClaims } from './FDC3UserClaims';
 
 type DetachedSignature = BrowserTypes.DetachedSignature;
 
@@ -59,26 +59,27 @@ export interface PublicFDC3Security {
   getPublicKeys(): JsonWebKey[];
 
   /**
-   * Verify a JWT token and extract its claims.
+   * Verify a user identity JWT token and extract its claims.
    *
    * Validates the token's signature, checks expiration, and returns
-   * the decoded payload containing FDC3 security claims.
+   * the decoded payload containing user identity claims. Used to verify
+   * the `jwt` field from an `fdc3.user` context.
    *
-   * @param token - The compact JWT string to verify
-   * @returns A promise resolving to the verified token's claims
+   * @param token - The compact JWT string to verify (from `fdc3.user.jwt`)
+   * @returns A promise resolving to the verified token's user identity claims
    * @throws Error if the token is invalid, expired, or signature verification fails
    *
    * @example
    * ```typescript
    * try {
-   *   const claims = await security.verifyJWTToken(user.jwt);
+   *   const claims = await security.verifyJWTToken(userContext.jwt);
    *   console.log(`User: ${claims.sub}, Issued by: ${claims.iss}`);
    * } catch (error) {
    *   console.error('Invalid token:', error.message);
    * }
    * ```
    */
-  verifyJWTToken(token: string): Promise<FDC3ContextClaims>;
+  verifyJWTToken(token: string): Promise<FDC3UserClaims>;
 
   /**
    * Encrypt a context using a symmetric key.
