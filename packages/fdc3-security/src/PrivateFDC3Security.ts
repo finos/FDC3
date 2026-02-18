@@ -19,34 +19,15 @@ type DetachedSignature = BrowserTypes.DetachedSignature;
  * @see FDC3 Security & Identity documentation for usage in FDC3 workflows at https://fdc3.finos.org.
  */
 export interface PrivateFDC3Security extends PublicFDC3Security {
-  /**
-   * Encrypt a context using a recipient's public key.
-   *
-   * Used for sending encrypted data to a specific recipient. The recipient
-   * can decrypt the data using their corresponding private key.
-   *
-   * @param ctx - The context object to encrypt
-   * @param publicKeyUrl - URL to the recipient's JWKS containing their public key
-   * @returns A promise resolving to the encrypted context as a compact JWE string
-   */
-  encryptPublicKey(ctx: Context, publicKeyUrl: string): Promise<JSONWebEncryption>;
-
-  /**
-   * Decrypt a context using this app's private key.
-   *
-   * Used for receiving encrypted data that was encrypted with this app's public key.
-   *
-   * @param encrypted - The compact JWE string containing the encrypted context
-   * @returns A promise resolving to the decrypted context object
-   * @throws Error if decryption fails
-   */
-  decryptPrivateKey(encrypted: JSONWebEncryption): Promise<Context>;
 
   /**
    * Sign a context object with this app's private key.
    *
    * Creates a detached JWS signature over the canonicalized context,
    * optionally including intent and channel information in the signed payload.
+   * 
+   * Note:  The `antiReplay` field should be added to the context before calling this, in order to 
+   * avoid replay attacks.
    *
    * @param ctx - The context object to sign
    * @param intent - The intent name if this context is being sent via an intent, or null
