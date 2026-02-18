@@ -73,7 +73,7 @@ export default async () =>
     });
 
     const RaiseIntentFailTargetedAppResolve2 =
-      "(RaiseIntentFailTargetedAppResolve2) Should fail to raise intent when targeting non-existant app id, context 'testContextY', intent 'aTestingIntent' and throw TargetAppUnavailable error";
+      "(RaiseIntentFailTargetedAppResolve2) Should fail to raise intent when targeting non-existent app id, context 'testContextY', intent 'aTestingIntent' and throw TargetAppUnavailable error";
     it(RaiseIntentFailTargetedAppResolve2, async () => {
       try {
         await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextX, { appId: 'NonExistentApp' });
@@ -85,7 +85,7 @@ export default async () =>
     });
 
     const RaiseIntentFailTargetedAppResolve3 =
-      "(RaiseIntentFailTargetedAppResolve3) Should fail to raise intent when targeting a non-existant app id, context 'testContextY', intent 'sharedTestingIntent2' and throw IntentDeliveryFailed error";
+      "(RaiseIntentFailTargetedAppResolve3) Should fail to raise intent when targeting an app that doesn't add an intent listener, context 'testContextY', intent 'sharedTestingIntent2' and throw IntentDeliveryFailed error";
     it(RaiseIntentFailTargetedAppResolve3, async () => {
       try {
         await control.raiseIntent(Intent.sharedTestingIntent2, ContextType.testContextY, {
@@ -99,7 +99,7 @@ export default async () =>
     }).timeout(constants.NoListenerTimeout + 1000);
 
     const RaiseIntentFailTargetedAppResolve4 =
-      "(RaiseIntentFailTargetedAppResolve4) Should throw an IntentDeliveryFailed error when raising intent with targeted app intent-i, context 'testContextY', intent 'sharedTestingIntent2'";
+      "(RaiseIntentFailTargetedAppResolve4) Should fail to raise intent when targeting an app that doesn't add an intent listener of the matching type, context 'testContextY', intent 'sharedTestingIntent2' and throw IntentDeliveryFailed error";
     it(RaiseIntentFailTargetedAppResolve4, async () => {
       try {
         await control.raiseIntent(Intent.sharedTestingIntent2, ContextType.testContextY, {
