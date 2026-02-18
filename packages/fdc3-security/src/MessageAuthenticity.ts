@@ -40,11 +40,6 @@ export type SignedMessageAuthenticity = {
   antiReplayClaims: AntiReplay;
 
   /**
-   * The resolved verification key if one could be downloaded.
-   */
-  jkuKey?: JsonWebKey;
-
-  /**
    * Human-readable diagnostics (optional).
    */
   errors?: string[];
