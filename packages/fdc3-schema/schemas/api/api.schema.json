@@ -319,11 +319,6 @@
                 "signature": {
                     "$ref": "#/definitions/DetachedSignature",
                     "description": "A Detached JSON Web Signature (JWS) proving the authenticity and integrity of the context."
-                },
-                "authenticity": {
-                    "type": "object",
-                    "title": "authenticity",
-                    "description": "The result of verifying the context's signature, populated by the receiving app's security layer after attempting signature verification.  See: [Security & Identity documentation](../../api/security#authenticity-metadata)."
                 }
             },
             "required": [

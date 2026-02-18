@@ -9,7 +9,7 @@
             "type": "object",
             "properties": {
                 "type": {
-                    "const": "fdc3.security.symmetricKey.request"
+                    "const": "fdc3.security.symmetricKeyRequest"
                 },
                 "id": {
                     "type": "object",
@@ -33,10 +33,10 @@
     ],
     "examples": [
         {
-            "type": "fdc3.security.symmetricKey.request"
+            "type": "fdc3.security.symmetricKeyRequest"
         },
         {
-            "type": "fdc3.security.symmetricKey.request",
+            "type": "fdc3.security.symmetricKeyRequest",
             "id": {
                 "kid": "channel-key-abc123"
             }
