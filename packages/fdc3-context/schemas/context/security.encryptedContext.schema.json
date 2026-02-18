@@ -47,7 +47,7 @@
     ],
     "examples": [
         {
-            "type": "fdc3.encrypted",
+            "type": "fdc3.security.encryptedContext",
             "originalType": "fdc3.instrument",
             "id": {
                 "kid": "channel-key-abc123"
@@ -55,7 +55,7 @@
             "encryptedPayload": "eyJuYW1lIjoiQXBwbGUiLCJpZCI6eyJ0aWNrZXIiOiJBQVBMIn19..."
         },
         {
-            "type": "fdc3.encrypted",
+            "type": "fdc3.security.encryptedContext",
             "originalType": "fdc3.contact",
             "id": {
                 "kid": "session-key-xyz789"

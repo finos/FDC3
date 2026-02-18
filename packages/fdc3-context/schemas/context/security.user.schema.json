@@ -9,7 +9,7 @@
             "type": "object",
             "properties": {
                 "type": {
-                    "const": "fdc3.user"
+                    "const": "fdc3.security.user"
                 },
                 "name": {
                     "type": "string",
@@ -43,7 +43,7 @@
     ],
     "examples": [
         {
-            "type": "fdc3.user",
+            "type": "fdc3.security.user",
             "name": "Mr Demo User",
             "jwt": "--example-jwt-token--"
         }
