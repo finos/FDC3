@@ -3,3 +3,5 @@
 3.  (App Providable) Context Metadata - improve signature section.
 4.  GetUser
 5.  Write negative tests for JosePublicFDC3Security.
+6.  readonly authenticity?: unknown;  ContextMetadata in fdc3-standard.
+
