@@ -1291,12 +1291,6 @@ export interface AntiReplay {
  */
 export interface ContextMetadata {
   /**
-   * The result of verifying the context's signature, populated by the receiving app's
-   * security layer after attempting signature verification.  See: [Security & Identity
-   * documentation](../../api/security#authenticity-metadata).
-   */
-  authenticity?: { [key: string]: any };
-  /**
    * Custom metadata that can be used to provide additional information about the context or
    * intent. This allows for individuals to use metadata fields that have yet to be
    * standardized.
@@ -5409,7 +5403,6 @@ const typeMap: any = {
   ),
   ContextMetadata: o(
     [
-      { json: 'authenticity', js: 'authenticity', typ: u(undefined, m('any')) },
       { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
       { json: 'signature', js: 'signature', typ: u(undefined, '') },
       { json: 'source', js: 'source', typ: r('AppIdentifier') },
