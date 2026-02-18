@@ -10,11 +10,11 @@ A response containing a wrapped symmetric key and metadata.
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/next/context/symmetricKeyResponse.schema.json](pathname:///schemas/next/context/symmetricKeyResponse.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/security.symmetricKey.response.schema.json))
+[https://fdc3.finos.org/schemas/next/context/symmetricKeyResponse.schema.json](pathname:///schemas/next/context/symmetricKeyResponse.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/security.symmetricKeyResponse.schema.json))
 
 ## Type
 
-`fdc3.security.symmetricKey.response`
+`fdc3.security.symmetricKeyResponse`
 
 ## Properties
 
@@ -65,7 +65,7 @@ The symmetric key, encrypted using the recipient's public key.
 
 ```json
 {
-  "type": "fdc3.security.symmetricKey.response",
+  "type": "fdc3.security.symmetricKeyResponse",
   "id": {
     "kid": "key-id-123",
     "pki": "https://examples.com/myJWKSendpoint"

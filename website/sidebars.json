@@ -65,6 +65,7 @@
           "intents/spec",
           "intents/ref/CreateInteraction",
           "intents/ref/CreateOrUpdateProfile",
+          "intents/ref/GetUser",
           "intents/ref/SendChatMessage",
           "intents/ref/StartCall",
           "intents/ref/StartChat",
@@ -91,10 +92,6 @@
           "context/spec",
           "context/ref/Action",
           "context/ref/Chart",
-          "context/ref/ChatInitSettings",
-          "context/ref/ChatMessage",
-          "context/ref/ChatRoom",
-          "context/ref/ChatSearchCriteria",
           "context/ref/Contact",
           "context/ref/ContactList",
           "context/ref/Country",
@@ -112,16 +109,32 @@
           "context/ref/Portfolio",
           "context/ref/Position",
           "context/ref/Product",
-          "context/ref/EncryptedContextWrapper",
-          "context/ref/SymmetricKeyRequest",
-          "context/ref/SymmetricKeyResponse",
           "context/ref/TimeRange",
           "context/ref/Trade",
           "context/ref/TradeList",
           "context/ref/TransactionResult",
-          "context/ref/UserRequest",
-          "context/ref/User",
-          "context/ref/Valuation"
+          "context/ref/Valuation",
+          {
+            "type": "category",
+            "label": "Chat",
+            "items": [
+              "context/ref/chat/ChatInitSettings",
+              "context/ref/chat/ChatMessage",
+              "context/ref/chat/ChatRoom",
+              "context/ref/chat/ChatSearchCriteria"
+            ]
+          },
+          {
+            "type": "category",
+            "label": "Security",
+            "items": [
+              "context/ref/security/EncryptedContextWrapper",
+              "context/ref/security/SymmetricKeyRequest",
+              "context/ref/security/SymmetricKeyResponse",
+              "context/ref/security/User",
+              "context/ref/security/UserRequest"
+            ]
+          }
         ]
       },
       {

@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, FileAttachment, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, Portfolio, Position, Product, EncryptedContextWrapper, SymmetricKeyRequest, SymmetricKeyResponse, TimeRange, Trade, TradeList, TransactionResult, UserRequest, User, Valuation } from "./file";
+//   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, FileAttachment, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, Portfolio, Position, Product, EncryptedContextWrapper, SymmetricKeyRequest, SymmetricKeyResponse, User, UserRequest, TimeRange, Trade, TradeList, TransactionResult, Valuation } from "./file";
 //
 //   const action = Convert.toAction(json);
 //   const chart = Convert.toChart(json);
@@ -29,12 +29,12 @@
 //   const encryptedContextWrapper = Convert.toEncryptedContextWrapper(json);
 //   const symmetricKeyRequest = Convert.toSymmetricKeyRequest(json);
 //   const symmetricKeyResponse = Convert.toSymmetricKeyResponse(json);
+//   const user = Convert.toUser(json);
+//   const userRequest = Convert.toUserRequest(json);
 //   const timeRange = Convert.toTimeRange(json);
 //   const trade = Convert.toTrade(json);
 //   const tradeList = Convert.toTradeList(json);
 //   const transactionResult = Convert.toTransactionResult(json);
-//   const userRequest = Convert.toUserRequest(json);
-//   const user = Convert.toUser(json);
 //   const valuation = Convert.toValuation(json);
 //
 // These functions will throw an error if the JSON doesn't
@@ -2359,7 +2359,7 @@ export interface SymmetricKeyRequest {
    * Optional identifier for the requested key.
    */
   id?: SymmetricKeyRequestID;
-  type: 'fdc3.security.symmetricKey.request';
+  type: 'fdc3.security.symmetricKeyRequest';
   /**
    * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
    * including timing and uniqueness information that is covered by the JOSE (JSON Object
@@ -2396,7 +2396,7 @@ export interface SymmetricKeyRequestID {
  */
 export interface SymmetricKeyResponse {
   id: SymmetricKeyResponseID;
-  type: 'fdc3.security.symmetricKey.response';
+  type: 'fdc3.security.symmetricKeyResponse';
   /**
    * The symmetric key, encrypted using the recipient's public key.
    */
@@ -2423,6 +2423,106 @@ export interface SymmetricKeyResponseID {
    * Public Key Infrastructure JSON Web Key Set URL used to wrap the symmetric key.
    */
   pki: string;
+  [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+
+/**
+ * A user identity, extending contact with authentication metadata.
+ */
+export interface User {
+  /**
+   * User identifiers that uniquely identify this user across different systems
+   */
+  id?: UserID;
+  /**
+   * A JSON Web Token (JWT) asserting user identity and permissions. The JWT contains a header
+   * with cryptographic information and a payload with user claims. Header fields include:
+   * 'alg' (signature algorithm, e.g., 'EdDSA'), 'jku' (JSON Web Key Set URL for key
+   * verification), and 'kid' (key identifier). Payload fields include: 'iss' (issuer - the
+   * application issuing the token), 'aud' (audience - the intended recipient application),
+   * 'sub' (subject - the user identifier), 'exp' (expiration time as Unix timestamp), 'iat'
+   * (issued at time as Unix timestamp), and 'jti' (JWT ID - unique token identifier).
+   */
+  jwt: string;
+  /**
+   * The human-readable name of the user
+   */
+  name?: string;
+  type: 'fdc3.security.user';
+  /**
+   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
+   * including timing and uniqueness information that is covered by the JOSE (JSON Object
+   * Signing and Encryption) signature. This field can be automatically added by the FDC3
+   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
+   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
+   * Identity documentation](../../api/security) for details.
+   */
+  antiReplay?: AntiReplay;
+  [property: string]: any;
+}
+
+/**
+ * User identifiers that uniquely identify this user across different systems
+ */
+export interface UserID {
+  /**
+   * The user's email address as a unique identifier. If provided, this email must match the
+   * 'sub' field in the JWT token.
+   */
+  email?: string;
+  [property: string]: any;
+}
+
+/**
+ * Free text to be used for a keyword search
+ *
+ * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
+ * `'Meeting'` although other string values are permitted.
+ */
+
+/**
+ * A request for the current user's identity, typically raised via the CreateIdentityToken
+ * intent. An identity provider (IDP) receives this request and responds with an 'fdc3.user'
+ * context containing a signed JWT. The request includes cryptographic details needed for
+ * the IDP to create a token bound to the requesting application and to encrypt the
+ * response.
+ *
+ * **Note:** This context type MUST be signed to be effective. The IDP uses the signature's
+ * public key URL to verify the requesting application's identity and to encrypt the
+ * response. See the [Security & Identity documentation](../../api/security) for details on
+ * signing context objects.
+ */
+export interface UserRequest {
+  /**
+   * The audience identifier for the returned JWT, typically the URL of the requesting
+   * application. The identity provider will embed this value in the JWT's 'aud' claim,
+   * allowing the requesting application to verify that the token was issued specifically for
+   * it. This prevents token misuse if intercepted by other applications.
+   */
+  aud: string;
+  /**
+   * The FDC3 context type identifier. Used by desktop agents and context handlers to route
+   * this request to appropriate identity providers.
+   */
+  type: 'fdc3.security.userRequest';
+  /**
+   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
+   * including timing and uniqueness information that is covered by the JOSE (JSON Object
+   * Signing and Encryption) signature. This field can be automatically added by the FDC3
+   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
+   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
+   * Identity documentation](../../api/security) for details.
+   */
+  antiReplay?: AntiReplay;
+  id?: { [key: string]: any };
+  name?: string;
   [property: string]: any;
 }
 
@@ -2666,106 +2766,6 @@ export interface TransactionResult {
  * The status of the transaction being reported.
  */
 export type TransactionStatus = 'Created' | 'Deleted' | 'Updated' | 'Failed';
-
-/**
- * Free text to be used for a keyword search
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
-
-/**
- * A request for the current user's identity, typically raised via the CreateIdentityToken
- * intent. An identity provider (IDP) receives this request and responds with an 'fdc3.user'
- * context containing a signed JWT. The request includes cryptographic details needed for
- * the IDP to create a token bound to the requesting application and to encrypt the
- * response.
- *
- * **Note:** This context type MUST be signed to be effective. The IDP uses the signature's
- * public key URL to verify the requesting application's identity and to encrypt the
- * response. See the [Security & Identity documentation](../../api/security) for details on
- * signing context objects.
- */
-export interface UserRequest {
-  /**
-   * The audience identifier for the returned JWT, typically the URL of the requesting
-   * application. The identity provider will embed this value in the JWT's 'aud' claim,
-   * allowing the requesting application to verify that the token was issued specifically for
-   * it. This prevents token misuse if intercepted by other applications.
-   */
-  aud: string;
-  /**
-   * The FDC3 context type identifier. Used by desktop agents and context handlers to route
-   * this request to appropriate identity providers.
-   */
-  type: 'fdc3.user.request';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
-  id?: { [key: string]: any };
-  name?: string;
-  [property: string]: any;
-}
-
-/**
- * Free text to be used for a keyword search
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
-
-/**
- * A user identity, extending contact with authentication metadata.
- */
-export interface User {
-  /**
-   * User identifiers that uniquely identify this user across different systems
-   */
-  id?: UserID;
-  /**
-   * A JSON Web Token (JWT) asserting user identity and permissions. The JWT contains a header
-   * with cryptographic information and a payload with user claims. Header fields include:
-   * 'alg' (signature algorithm, e.g., 'EdDSA'), 'jku' (JSON Web Key Set URL for key
-   * verification), and 'kid' (key identifier). Payload fields include: 'iss' (issuer - the
-   * application issuing the token), 'aud' (audience - the intended recipient application),
-   * 'sub' (subject - the user identifier), 'exp' (expiration time as Unix timestamp), 'iat'
-   * (issued at time as Unix timestamp), and 'jti' (JWT ID - unique token identifier).
-   */
-  jwt: string;
-  /**
-   * The human-readable name of the user
-   */
-  name?: string;
-  type: 'fdc3.user';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
-  [property: string]: any;
-}
-
-/**
- * User identifiers that uniquely identify this user across different systems
- */
-export interface UserID {
-  /**
-   * The user's email address as a unique identifier. If provided, this email must match the
-   * 'sub' field in the JWT token.
-   */
-  email?: string;
-  [property: string]: any;
-}
 
 /**
  * Free text to be used for a keyword search
@@ -3042,6 +3042,22 @@ export class Convert {
     return JSON.stringify(uncast(value, r('SymmetricKeyResponse')), null, 2);
   }
 
+  public static toUser(json: string): User {
+    return cast(JSON.parse(json), r('User'));
+  }
+
+  public static userToJson(value: User): string {
+    return JSON.stringify(uncast(value, r('User')), null, 2);
+  }
+
+  public static toUserRequest(json: string): UserRequest {
+    return cast(JSON.parse(json), r('UserRequest'));
+  }
+
+  public static userRequestToJson(value: UserRequest): string {
+    return JSON.stringify(uncast(value, r('UserRequest')), null, 2);
+  }
+
   public static toTimeRange(json: string): TimeRange {
     return cast(JSON.parse(json), r('TimeRange'));
   }
@@ -3072,22 +3088,6 @@ export class Convert {
 
   public static transactionResultToJson(value: TransactionResult): string {
     return JSON.stringify(uncast(value, r('TransactionResult')), null, 2);
-  }
-
-  public static toUserRequest(json: string): UserRequest {
-    return cast(JSON.parse(json), r('UserRequest'));
-  }
-
-  public static userRequestToJson(value: UserRequest): string {
-    return JSON.stringify(uncast(value, r('UserRequest')), null, 2);
-  }
-
-  public static toUser(json: string): User {
-    return cast(JSON.parse(json), r('User'));
-  }
-
-  public static userToJson(value: User): string {
-    return JSON.stringify(uncast(value, r('User')), null, 2);
   }
 
   public static toValuation(json: string): Valuation {
@@ -3868,6 +3868,27 @@ const typeMap: any = {
     ],
     'any'
   ),
+  User: o(
+    [
+      { json: 'id', js: 'id', typ: u(undefined, r('UserID')) },
+      { json: 'jwt', js: 'jwt', typ: '' },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'type', js: 'type', typ: r('UserType') },
+      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
+    ],
+    'any'
+  ),
+  UserID: o([{ json: 'email', js: 'email', typ: u(undefined, '') }], 'any'),
+  UserRequest: o(
+    [
+      { json: 'aud', js: 'aud', typ: '' },
+      { json: 'type', js: 'type', typ: r('UserRequestType') },
+      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
   TimeRange: o(
     [
       { json: 'endTime', js: 'endTime', typ: u(undefined, Date) },
@@ -3923,27 +3944,6 @@ const typeMap: any = {
     ],
     'any'
   ),
-  UserRequest: o(
-    [
-      { json: 'aud', js: 'aud', typ: '' },
-      { json: 'type', js: 'type', typ: r('UserRequestType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
-      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  User: o(
-    [
-      { json: 'id', js: 'id', typ: u(undefined, r('UserID')) },
-      { json: 'jwt', js: 'jwt', typ: '' },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('UserType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
-    ],
-    'any'
-  ),
-  UserID: o([{ json: 'email', js: 'email', typ: u(undefined, '') }], 'any'),
   Valuation: o(
     [
       { json: 'CURRENCY_ISOCODE', js: 'CURRENCY_ISOCODE', typ: '' },
@@ -3988,13 +3988,13 @@ const typeMap: any = {
   PositionType: ['fdc3.position'],
   PortfolioType: ['fdc3.portfolio'],
   EncryptedContextWrapperType: ['fdc3.security.encryptedContext'],
-  SymmetricKeyRequestType: ['fdc3.security.symmetricKey.request'],
-  SymmetricKeyResponseType: ['fdc3.security.symmetricKey.response'],
+  SymmetricKeyRequestType: ['fdc3.security.symmetricKeyRequest'],
+  SymmetricKeyResponseType: ['fdc3.security.symmetricKeyResponse'],
+  UserType: ['fdc3.security.user'],
+  UserRequestType: ['fdc3.security.userRequest'],
   TradeType: ['fdc3.trade'],
   TradeListType: ['fdc3.tradeList'],
   TransactionStatus: ['Created', 'Deleted', 'Failed', 'Updated'],
   TransactionResultType: ['fdc3.transactionResult'],
-  UserRequestType: ['fdc3.user.request'],
-  UserType: ['fdc3.user'],
   ValuationType: ['fdc3.valuation'],
 };
