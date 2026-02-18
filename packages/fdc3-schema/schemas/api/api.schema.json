@@ -3,6 +3,28 @@
     "$id": "https://fdc3.finos.org/schemas/next/api/api.schema.json",
     "title": "FDC3 Desktop Agent API Schemas",
     "definitions": {
+        "DetachedSignature": {
+            "type": "object",
+            "title": "Detached Signature",
+            "description": "A Detached JSON Web Signature (JWS) proving the authenticity and integrity of signed data. The signature is computed over the canonicalized JSON representation of the data (the payload is not included in the signature structure - it is the data itself). Created using the signing app's private key and verified using the public key from the JWKS URL in the protected header. See the FDC3 Security & Identity documentation for details.",
+            "properties": {
+                "protected": {
+                    "type": "string",
+                    "title": "protected",
+                    "description": "The BASE64URL-encoded protected header. When decoded, contains fields including: 'alg' (signature algorithm, e.g., 'EdDSA'), 'jku' (JSON Web Key Set URL for key verification), and 'kid' (key identifier)."
+                },
+                "signature": {
+                    "type": "string",
+                    "title": "signature",
+                    "description": "The BASE64URL-encoded digital signature computed over the protected header and the canonicalized data (detached payload)."
+                }
+            },
+            "required": [
+                "protected",
+                "signature"
+            ],
+            "additionalProperties": false
+        },
         "AppIdentifier": {
             "description": "Identifies an application, or instance of an application, and is used to target FDC3 API calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application instances.\n\nWill always include at least an `appId` field, which uniquely identifies a specific app.\n\nIf the `instanceId` field is set then the `AppMetadata` object represents a specific instance of the application that may be addressed using that Id.",
             "title": "AppIdentifier",
@@ -298,6 +320,15 @@
                     "additionalProperties": true,
                     "title": "custom",
                     "description": "Custom metadata that can be used to provide additional information about the context or intent. This allows for individuals to use metadata fields that have yet to be standardized."
+                },
+                "signature": {
+                    "$ref": "#/definitions/DetachedSignature",
+                    "description": "A Detached JSON Web Signature (JWS) proving the authenticity and integrity of the context."
+                },
+                "authenticity": {
+                    "type": "object",
+                    "title": "authenticity",
+                    "description": "The result of verifying the context's signature, populated by the receiving app's security layer after attempting signature verification.  See: [Security & Identity documentation](../../api/security#authenticity-metadata)."
                 }
             },
             "required": [
@@ -312,9 +343,17 @@
             "description": "Metadata that can be provided by an app as part of a broadcast, raise intent or open API call.",
             "title": "App Providable Context Metadata",
             "properties": {
-                "traceId": {"$ref": "#/definitions/ContextMetadata/properties/traceId"},
+                "traceId": {
+                    "$ref": "#/definitions/ContextMetadata/properties/traceId"
+                },
                 "signature": {"$ref": "#/definitions/ContextMetadata/properties/signature"},
-                "custom": {"$ref": "#/definitions/ContextMetadata/properties/custom"}
+                "custom": {
+                    "$ref": "#/definitions/ContextMetadata/properties/custom"
+                },
+                "signature": {
+                    "$ref": "#/definitions/DetachedSignature",
+                    "description": "A Detached JSON Web Signature (JWS) proving the authenticity and integrity of the context."
+                }
             },
             "additionalProperties": false
         },
@@ -564,7 +603,10 @@
                     "additionalProperties": true
                 }
             },
-            "required":["type","details"],
+            "required": [
+                "type",
+                "details"
+            ],
             "additionalProperties": false
         },
         "PrivateChannelEventType": {
@@ -591,7 +633,10 @@
                     "additionalProperties": true
                 }
             },
-            "required":["type","details"],
+            "required": [
+                "type",
+                "details"
+            ],
             "additionalProperties": false
         }
     }
