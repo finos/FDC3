@@ -9,7 +9,7 @@
             "type": "object",
             "properties": {
                 "type": {
-                    "const": "fdc3.security.symmetricKey.response"
+                    "const": "fdc3.security.symmetricKeyResponse"
                 },
                 "id": {
                     "type": "object",
@@ -48,7 +48,7 @@
     ],
     "examples": [
         {
-            "type": "fdc3.security.symmetricKey.response",
+            "type": "fdc3.security.symmetricKeyResponse",
             "id": {
                 "kid": "key-id-123",
                 "pki": "https://examples.com/myJWKSendpoint"
