@@ -1,4 +1,4 @@
-import { FDC3ContextClaims } from './FDC3ContextClaims';
+import { AntiReplay } from '@finos/fdc3-context';
 
 /**
  * Verification outcomes for signed context objects.
@@ -37,7 +37,7 @@ export type SignedMessageAuthenticity = {
   /**
    * Anti-replay claims extracted from the context's `antiReplay` field after verification.
    */
-  antiReplayClaims: FDC3ContextClaims;
+  antiReplayClaims: AntiReplay;
 
   /**
    * The resolved verification key if one could be downloaded.
