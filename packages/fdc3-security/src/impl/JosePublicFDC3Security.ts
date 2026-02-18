@@ -187,23 +187,11 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
     const { payload } = await jose.jwtVerify(token, jwksEndpoint);
 
     // Validate required fields exist
-    if (!payload.iss) {
-      throw new Error('JWT payload missing required field: iss');
-    }
-    if (!payload.aud) {
-      throw new Error('JWT payload missing required field: aud');
-    }
-    if (!payload.sub) {
-      throw new Error('JWT payload missing required field: sub');
-    }
-    if (!payload.exp) {
-      throw new Error('JWT payload missing required field: exp');
-    }
-    if (!payload.iat) {
-      throw new Error('JWT payload missing required field: iat');
-    }
-    if (!payload.jti) {
-      throw new Error('JWT payload missing required field: jti');
+    const requiredFields = ['iss', 'aud', 'sub', 'exp', 'iat', 'jti'] as const;
+    for (const field of requiredFields) {
+      if (!payload[field]) {
+        throw new Error(`JWT payload missing required field: ${field}`);
+      }
     }
 
     if (!this.allowListFunction(jku, payload.iss)) {
