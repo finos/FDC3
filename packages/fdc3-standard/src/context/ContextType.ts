@@ -38,7 +38,12 @@ export type ExperimentalContextType =
   | 'fdc3.orderList'
   | 'fdc3.product'
   | 'fdc3.trade'
-  | 'fdc3.tradeList';
+  | 'fdc3.tradeList'
+  | 'fdc3.user'
+  | 'fdc3.user.request'
+  | 'fdc3.security.symmetricKey.request'
+  | 'fdc3.security.symmetricKey.response'
+  | 'fdc3.security.encryptedContext';
 
 /**
  * @see https://fdc3.finos.org/docs/context/spec

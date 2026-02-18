@@ -652,6 +652,42 @@ export interface Context {
    * information about context data types.
    */
   type: string;
+  /**
+   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
+   * including timing and uniqueness information that is covered by the JOSE (JSON Object
+   * Signing and Encryption) signature. This field can be automatically added by the FDC3
+   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
+   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
+   * Identity documentation](../../api/security) for details.
+   */
+  antiReplay?: AntiReplay;
+  [property: string]: any;
+}
+
+/**
+ * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
+ * including timing and uniqueness information that is covered by the JOSE (JSON Object
+ * Signing and Encryption) signature. This field can be automatically added by the FDC3
+ * signing code when signing a context. The fields follow the JWT claims defined in [RFC
+ * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
+ * Identity documentation](../../api/security) for details.
+ */
+export interface AntiReplay {
+  /**
+   * Expiration time as a Unix timestamp (seconds since epoch). Receivers should reject
+   * contexts past this time.
+   */
+  exp: number;
+  /**
+   * Issued at time as a Unix timestamp (seconds since epoch). Indicates when the context was
+   * created.
+   */
+  iat: number;
+  /**
+   * Unique identifier for this context instance. Used to detect and reject duplicate/replayed
+   * contexts.
+   */
+  jti: string;
   [property: string]: any;
 }
 
@@ -661,7 +697,35 @@ export interface Context {
  */
 export interface AppProvidableContextMetadata {
   custom?: { [key: string]: any };
+  /**
+   * A Detached JSON Web Signature (JWS) proving the authenticity and integrity of the context.
+   */
+  signature?: DetachedSignature;
   traceId?: string;
+}
+
+/**
+ * A Detached JSON Web Signature (JWS) proving the authenticity and integrity of the
+ * context.
+ *
+ * A Detached JSON Web Signature (JWS) proving the authenticity and integrity of signed
+ * data. The signature is computed over the canonicalized JSON representation of the data
+ * (the payload is not included in the signature structure - it is the data itself). Created
+ * using the signing app's private key and verified using the public key from the JWKS URL
+ * in the protected header. See the FDC3 Security & Identity documentation for details.
+ */
+export interface DetachedSignature {
+  /**
+   * The BASE64URL-encoded protected header. When decoded, contains fields including: 'alg'
+   * (signature algorithm, e.g., 'EdDSA'), 'jku' (JSON Web Key Set URL for key verification),
+   * and 'kid' (key identifier).
+   */
+  protected: string;
+  /**
+   * The BASE64URL-encoded digital signature computed over the protected header and the
+   * canonicalized data (detached payload).
+   */
+  signature: string;
 }
 
 /**
@@ -5120,13 +5184,30 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: '' },
+      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
+    ],
+    'any'
+  ),
+  AntiReplay: o(
+    [
+      { json: 'exp', js: 'exp', typ: 3.14 },
+      { json: 'iat', js: 'iat', typ: 3.14 },
+      { json: 'jti', js: 'jti', typ: '' },
     ],
     'any'
   ),
   AppProvidableContextMetadata: o(
     [
       { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
+      { json: 'signature', js: 'signature', typ: u(undefined, r('DetachedSignature')) },
       { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  DetachedSignature: o(
+    [
+      { json: 'protected', js: 'protected', typ: '' },
+      { json: 'signature', js: 'signature', typ: '' },
     ],
     false
   ),
