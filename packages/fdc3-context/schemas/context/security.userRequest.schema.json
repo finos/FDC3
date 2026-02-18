@@ -9,7 +9,7 @@
             "type": "object",
             "properties": {
                 "type": {
-                    "const": "fdc3.user.request",
+                    "const": "fdc3.security.userRequest",
                     "description": "The FDC3 context type identifier. Used by desktop agents and context handlers to route this request to appropriate identity providers."
                 },
                 "aud": {
@@ -30,7 +30,7 @@
     ],
     "examples": [
         {
-            "type": "fdc3.user.request",
+            "type": "fdc3.security.userRequest",
             "aud": "https://my-app-url.com"
         }
     ]
