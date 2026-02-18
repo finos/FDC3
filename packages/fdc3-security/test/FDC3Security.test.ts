@@ -3,6 +3,8 @@ import { JosePrivateFDC3Security, createJosePrivateFDC3Security } from '../src/i
 import { Context } from '@finos/fdc3-context';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { FDC3SecurityTimeLimits } from '../src/FDC3SecurityTimeLimits';
+import { PublicFDC3Security } from '../src/PublicFDC3Security';
+import { PrivateFDC3Security } from '../src/PrivateFDC3Security';
 import * as jose from 'jose';
 
 type DetachedSignature = BrowserTypes.DetachedSignature;
@@ -54,15 +56,21 @@ const createJWKSResolver = (keys: JSONWebKeyWithId[]): JWKSResolver => {
   return resolver as JWKSResolver;
 };
 
-let sender: JosePrivateFDC3Security;
-let receiver: JosePrivateFDC3Security;
+// Keep concrete type references for resolver functions (need JSONWebKeyWithId[])
+let senderImpl: JosePrivateFDC3Security;
+let receiverImpl: JosePrivateFDC3Security;
+// Expose as interfaces for coverage attribution of inherited methods
+let sender: PrivateFDC3Security;
+let receiver: PrivateFDC3Security;
+let senderPublic: PublicFDC3Security;
+let receiverPublic: PublicFDC3Security;
 
 const senderPublicKeyResolver = (_url: string): JWKSResolver => {
-  return createJWKSResolver(receiver.getPublicKeys());
+  return createJWKSResolver(receiverImpl.getPublicKeys());
 };
 
 const receiverPublicKeyResolver = (_url: string): JWKSResolver => {
-  return createJWKSResolver(sender.getPublicKeys());
+  return createJWKSResolver(senderImpl.getPublicKeys());
 };
 
 describe('JosePrivateFDC3Security', () => {
@@ -80,20 +88,24 @@ describe('JosePrivateFDC3Security', () => {
 
   beforeAll(async () => {
     // Use the factory functions to create instances
-    sender = await createJosePrivateFDC3Security(senderBaseUrl, senderPublicKeyResolver, senderAllowListFunction);
+    senderImpl = await createJosePrivateFDC3Security(senderBaseUrl, senderPublicKeyResolver, senderAllowListFunction);
+    sender = senderImpl;
+    senderPublic = senderImpl;
 
-    receiver = await createJosePrivateFDC3Security(
+    receiverImpl = await createJosePrivateFDC3Security(
       receiverBaseUrl,
       receiverPublicKeyResolver,
       receiverAllowListFunction,
       strictTimeLimits
     );
+    receiver = receiverImpl;
+    receiverPublic = receiverImpl;
   });
 
   describe('constructor', () => {
     it('should create instance with valid parameters', () => {
-      expect(sender).toBeInstanceOf(JosePrivateFDC3Security);
-      expect(receiver).toBeInstanceOf(JosePrivateFDC3Security);
+      expect(senderImpl).toBeInstanceOf(JosePrivateFDC3Security);
+      expect(receiverImpl).toBeInstanceOf(JosePrivateFDC3Security);
     });
 
     it('should throw error when signing public key has no kid', () => {
@@ -140,7 +152,8 @@ describe('JosePrivateFDC3Security', () => {
   describe('integration', () => {
     it('should sign and then check a context using two instances', async () => {
       const signature = await sender.sign(mockContext);
-      const result = await receiver.check(signature, mockContext);
+      // Use PublicFDC3Security interface for coverage attribution
+      const result = await receiverPublic.check(signature, mockContext);
       if (result.signed) {
         expect(result.valid).toBe(true);
         expect(result.trusted).toBe(true);
@@ -154,8 +167,9 @@ describe('JosePrivateFDC3Security', () => {
 
     it('should encrypt and then decrypt a context using a symmetric key', async () => {
       const symmetricJWK = await sender.createSymmetricKey();
-      const encrypted = await sender.encryptSymmetric(mockContext, symmetricJWK);
-      const decrypted = await receiver.decryptSymmetric(encrypted, symmetricJWK);
+      // Use PublicFDC3Security interface for coverage attribution
+      const encrypted = await senderPublic.encryptSymmetric(mockContext, symmetricJWK);
+      const decrypted = await receiverPublic.decryptSymmetric(encrypted, symmetricJWK);
       expect(decrypted).toEqual(mockContext);
     });
 
@@ -190,7 +204,7 @@ describe('JosePrivateFDC3Security', () => {
         protected: 'invalid',
         signature: 'jws',
       };
-      const result = await receiver.check(malformedSignature, mockContext);
+      const result = await receiverPublic.check(malformedSignature, mockContext);
 
       expect(result.signed).toBe(false);
       // When signed is false, errors array may be present but other properties should not exist
@@ -208,7 +222,7 @@ describe('JosePrivateFDC3Security', () => {
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Verify it's rejected due to stale signature
-      const result = await receiver.check(signature, mockContext);
+      const result = await receiverPublic.check(signature, mockContext);
       expect(result.signed).toBe(false);
       expect('errors' in result).toBe(true);
       if (!result.signed && result.errors) {
@@ -233,7 +247,7 @@ describe('JosePrivateFDC3Security', () => {
       const signature = await sender.sign(contextWithExpiry);
 
       // Immediately verify it works
-      const immediateResult = await receiver.check(signature, contextWithExpiry);
+      const immediateResult = await receiverPublic.check(signature, contextWithExpiry);
       if (immediateResult.signed) {
         expect(immediateResult.valid).toBe(true);
       }
@@ -246,7 +260,7 @@ describe('JosePrivateFDC3Security', () => {
         signatureFreshnessSeconds: 60, // Long freshness - won't trigger
         contextValiditySeconds: 1, // Short validity - should trigger
       };
-      const contextExpiryReceiver = await createJosePrivateFDC3Security(
+      const contextExpiryReceiver: PublicFDC3Security = await createJosePrivateFDC3Security(
         receiverBaseUrl,
         receiverPublicKeyResolver,
         receiverAllowListFunction,
@@ -274,7 +288,7 @@ describe('JosePrivateFDC3Security', () => {
         signature: 'dummy',
       };
 
-      const result = await receiver.check(malformedSignature, mockContext);
+      const result = await receiverPublic.check(malformedSignature, mockContext);
 
       expect(result.signed).toBe(false);
       expect('errors' in result).toBe(true);
@@ -289,7 +303,7 @@ describe('JosePrivateFDC3Security', () => {
 
       console.log('TOKEN: ' + token);
 
-      const payload = await receiver.verifyJWTToken(token);
+      const payload = await receiverPublic.verifyJWTToken(token);
       expect(payload).toBeDefined();
       expect(payload.iss).toBe(senderBaseUrl);
       expect(payload.aud).toBe(receiverBaseUrl);
