@@ -8,6 +8,8 @@ sidebar_label: User Request
 
 A request for the current user's identity, typically raised via the CreateIdentityToken intent. An identity provider (IDP) receives this request and responds with an 'fdc3.user' context containing a signed JWT. The request includes cryptographic details needed for the IDP to create a token bound to the requesting application and to encrypt the response.
 
+**Note:** This context type MUST be signed to be effective. The IDP uses the signature's public key URL to verify the requesting application's identity and to encrypt the response. See the [Security & Identity documentation](../../api/security) for details on signing context objects.
+
 ## Schema
 
 [https://fdc3.finos.org/schemas/next/context/userRequest.schema.json](pathname:///schemas/next/context/userRequest.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/user.request.schema.json))
