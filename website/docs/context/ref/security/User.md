@@ -10,11 +10,11 @@ A user identity, extending contact with authentication metadata.
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/next/context/user.schema.json](pathname:///schemas/next/context/user.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/user.schema.json))
+[https://fdc3.finos.org/schemas/next/context/user.schema.json](pathname:///schemas/next/context/user.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/security.user.schema.json))
 
 ## Type
 
-`fdc3.user`
+`fdc3.security.user`
 
 ## Properties
 
@@ -60,7 +60,7 @@ A JSON Web Token (JWT) asserting user identity and permissions. The JWT contains
 
 ```json
 {
-  "type": "fdc3.user",
+  "type": "fdc3.security.user",
   "name": "Mr Demo User",
   "jwt": "--example-jwt-token--"
 }
