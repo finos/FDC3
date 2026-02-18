@@ -12,11 +12,11 @@ A request to obtain a symmetric encryption key for decrypting encrypted context 
 
 ## Schema
 
-[https://fdc3.finos.org/schemas/next/context/symmetricKeyRequest.schema.json](pathname:///schemas/next/context/symmetricKeyRequest.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/security.symmetricKey.request.schema.json))
+[https://fdc3.finos.org/schemas/next/context/symmetricKeyRequest.schema.json](pathname:///schemas/next/context/symmetricKeyRequest.schema.json) ([github](https://github.com/finos/FDC3/tree/main/packages/fdc3-context/schemas/context/security.symmetricKeyRequest.schema.json))
 
 ## Type
 
-`fdc3.security.symmetricKey.request`
+`fdc3.security.symmetricKeyRequest`
 
 ## Properties
 
@@ -44,13 +44,13 @@ Optional identifier for the requested key.
 
 ```json
 {
-  "type": "fdc3.security.symmetricKey.request"
+  "type": "fdc3.security.symmetricKeyRequest"
 }
 ```
 
 ```json
 {
-  "type": "fdc3.security.symmetricKey.request",
+  "type": "fdc3.security.symmetricKeyRequest",
   "id": {
     "kid": "channel-key-abc123"
   }

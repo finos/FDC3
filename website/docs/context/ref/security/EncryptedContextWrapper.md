@@ -60,7 +60,7 @@ The encrypted context data as a base64-encoded string. Contains all fields from 
 
 ```json
 {
-  "type": "fdc3.encrypted",
+  "type": "fdc3.security.encryptedContext",
   "originalType": "fdc3.instrument",
   "id": {
     "kid": "channel-key-abc123"
@@ -71,7 +71,7 @@ The encrypted context data as a base64-encoded string. Contains all fields from 
 
 ```json
 {
-  "type": "fdc3.encrypted",
+  "type": "fdc3.security.encryptedContext",
   "originalType": "fdc3.contact",
   "id": {
     "kid": "session-key-xyz789"
