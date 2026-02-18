@@ -1,9 +1,8 @@
-import { closeWindowOnCompletion, validateContext } from './mock-functions';
-import { sendContextToTests } from '../v2.0/mock-functions';
-import { wait } from '../../utils';
-import { IntentUtilityContext } from '../../context-types';
+import { closeWindowOnCompletion, sendContextToTests, validateContext } from './mock-functions';
+import { wait } from '../utils';
+import { IntentUtilityContext } from '../context-types';
 import { IntentResult, getAgent } from '@finos/fdc3';
-import { ContextType, ControlContextType, Intent } from '../../test/support/intent-support';
+import { ContextType, ControlContextType, Intent } from '../test/support/intent-support';
 
 getAgent().then(async fdc3 => {
   await closeWindowOnCompletion(fdc3);
@@ -39,8 +38,8 @@ getAgent().then(async fdc3 => {
   });
 });
 
-async function delayExecution(delayMiliseconds: number | undefined): Promise<void> {
-  if (delayMiliseconds && delayMiliseconds > 0) {
-    await wait(delayMiliseconds);
+async function delayExecution(delayMilliseconds: number | undefined): Promise<void> {
+  if (delayMilliseconds && delayMilliseconds > 0) {
+    await wait(delayMilliseconds);
   }
 }

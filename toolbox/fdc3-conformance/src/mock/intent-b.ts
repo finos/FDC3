@@ -1,13 +1,14 @@
-import { closeWindowOnCompletion } from './mock-functions';
+import { closeWindowOnCompletion, sendContextToTests } from './mock-functions';
 import { getAgent } from '@finos/fdc3';
-import { sendContextToTests } from '../v2.0/mock-functions';
-import { AppControlContext } from '../../context-types';
-import { ControlContextType, Intent } from '../../test/support/intent-support';
+import { wait } from '../utils';
+import { AppControlContext, IntentUtilityContext } from '../context-types';
+import { ControlContextType, Intent } from '../test/support/intent-support';
 
 getAgent().then(async fdc3 => {
   await closeWindowOnCompletion(fdc3);
 
   try {
+    //used in AOpensBMultipleListen
     await fdc3.addContextListener(null, async context => {
       // broadcast that this app has received context
       if (context.type === 'fdc3.instrument') {
@@ -25,7 +26,16 @@ getAgent().then(async fdc3 => {
     } as AppControlContext);
   }
 
-  fdc3.addIntentListener(Intent.cTestingIntent, async context => {
+  //used in 'RaiseIntentContextResult5secs'
+  await fdc3.addIntentListener(Intent.sharedTestingIntent1, async (context: IntentUtilityContext) => {
+    if (context.delayBeforeReturn ?? 0 > 0) {
+      await wait(context.delayBeforeReturn);
+    }
+
+    await sendContextToTests(fdc3, {
+      type: ControlContextType.SHARED_TESTING_INTENT1_LISTENER_TRIGGERED,
+    });
+
     return context;
   });
 });

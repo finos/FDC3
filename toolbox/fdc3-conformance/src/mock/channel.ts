@@ -1,6 +1,6 @@
-import { ChannelServiceImpl } from './support/channel-support-2.0';
+import { ChannelServiceImpl } from './support/channel-support';
 import { Context, getAgent } from '@finos/fdc3';
-import { Fdc3CommandExecutor } from '../channel-command';
+import { Fdc3CommandExecutor } from './channel-command';
 
 getAgent().then(fdc3 => {
   let firedOnce = false;

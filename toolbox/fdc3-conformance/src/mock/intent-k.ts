@@ -1,8 +1,8 @@
 import { closeWindowOnCompletion, sendContextToTests, validateContext } from './mock-functions';
 import { getAgent } from '@finos/fdc3';
-import { wait } from '../../utils';
-import { IntentUtilityContext } from '../../context-types';
-import { ContextType, ControlContextType, Intent } from '../../test/support/intent-support';
+import { wait } from '../utils';
+import { IntentUtilityContext } from '../context-types';
+import { ContextType, ControlContextType, Intent } from '../test/support/intent-support';
 
 //used in 'PrivateChannelsLifecycleEvents'
 getAgent().then(async fdc3 => {

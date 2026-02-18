@@ -1,15 +1,16 @@
 import { closeWindowOnCompletion, sendContextToTests, validateContext } from './mock-functions';
 import { getAgent } from '@finos/fdc3';
-import { ContextType, ControlContextType, Intent } from '../../test/support/intent-support';
-import constants from '../../constants';
+import { ContextType, ControlContextType, Intent } from '../test/support/intent-support';
+import constants from '../constants';
 
 getAgent().then(async fdc3 => {
   await closeWindowOnCompletion(fdc3);
+
   const { appMetadata } = await fdc3.getInfo();
 
   fdc3.addIntentListener(Intent.sharedTestingIntent2, async context => {
     validateContext(fdc3, context.type, ContextType.testContextY);
-    const channel = await fdc3.getOrCreateChannel('test-channel');
+    const privateChannel = await fdc3.createPrivateChannel();
 
     //set-up alert to test framework that the task was completed after a short delay
     setTimeout(async () => {
@@ -20,6 +21,6 @@ getAgent().then(async fdc3 => {
       });
     }, constants.ShortWait);
 
-    return channel;
+    return privateChannel;
   });
 });

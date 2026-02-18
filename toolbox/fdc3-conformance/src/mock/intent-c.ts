@@ -1,8 +1,7 @@
-import { closeWindowOnCompletion } from './mock-functions';
+import { closeWindowOnCompletion, sendContextToTests } from './mock-functions';
 import { getAgent } from '@finos/fdc3';
-import { sendContextToTests } from './mock-functions';
-import { AppControlContext } from '../../context-types';
-import { ControlContextType, Intent } from '../../test/support/intent-support';
+import { AppControlContext } from '../context-types';
+import { ControlContextType, Intent } from '../test/support/intent-support';
 
 getAgent().then(async fdc3 => {
   await closeWindowOnCompletion(fdc3);
@@ -25,7 +24,7 @@ getAgent().then(async fdc3 => {
     } as AppControlContext);
   }
 
-  fdc3.addIntentListener(Intent.lTestingIntent, async context => {
+  fdc3.addIntentListener(Intent.cTestingIntent, async context => {
     return context;
   });
 });

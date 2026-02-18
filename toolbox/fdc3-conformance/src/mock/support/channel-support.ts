@@ -1,8 +1,8 @@
 import { Channel, DesktopAgent } from '@finos/fdc3';
-import constants from '../../../constants';
-import { AppControlContext } from '../../../context-types';
-import { channelType } from '../../constants';
-import { IBroadcastService, IChannelService } from '../../interfaces';
+import constants from '../../constants';
+import { AppControlContext } from '../../context-types';
+import { channelType } from '../constants';
+import { IBroadcastService, IChannelService } from '../interfaces';
 
 export class ChannelServiceImpl implements IChannelService {
   constructor(fdc3: DesktopAgent) {

@@ -1,19 +1,19 @@
 import { DesktopAgent } from '@finos/fdc3';
-import constants from '../../constants';
-import { AppControlContext } from '../../context-types';
+import constants from '../constants';
+import { AppControlContext } from '../context-types';
 
 export const closeWindowOnCompletion = async (fdc3: DesktopAgent) => {
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   await appControlChannel.addContextListener('closeWindow', async (context: AppControlContext) => {
     //notify app A that window was closed
-    await appControlChannel.broadcast({
+    const closedContext: AppControlContext = {
       type: 'windowClosed',
       testId: context.testId,
-    } as AppControlContext);
+    };
+    await appControlChannel.broadcast(closedContext);
     setTimeout(() => {
       //yield to make sure the broadcast gets out before we close
       window.close();
-      return;
     }, 5);
   });
 };
