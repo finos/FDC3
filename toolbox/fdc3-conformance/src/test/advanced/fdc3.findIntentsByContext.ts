@@ -36,7 +36,7 @@ export default async () =>
       }
     });
 
-    it('(2.0FindIntentByContextWrongIntentAppD) Passing an invalid context causes a NoAppsFound error to be thrown', async () => {
+    it('(FindIntentByContextWrongIntentAppD) Passing an invalid context causes a NoAppsFound error to be thrown', async () => {
       const context = {
         type: 'ThisContextDoesNotExist',
       };

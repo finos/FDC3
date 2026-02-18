@@ -78,7 +78,7 @@ function stripSuites(ts: testSet[]): (() => Promise<Mocha.Suite>)[] {
 }
 
 export const allTests: testSet = {
-  'All': stripSuites([basicSuite, advancedSuite]),
+  All: stripSuites([basicSuite, advancedSuite]),
   ...basicSuite,
   ...advancedSuite,
 };
@@ -88,7 +88,7 @@ export const allManualTests: testSet = {
 };
 
 export const packs: { [index: string]: string[] } = {
-  'All': ['All'],
+  All: ['All'],
   'Individual Basic': Object.keys(basicSuite),
   'Individual Advanced': Object.keys(advancedSuite),
 };
@@ -124,7 +124,7 @@ export const executeManualTestsInBrowser = async (pack: string) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   (mocha as any).timeout(constants.TestTimeout);
   const suite = allManualTests[pack];
-  console.log('************ found suite******', suite);
+  console.log('************ found suite ************', suite);
   for (let index = 0; index < suite.length; index++) {
     await suite[index]();
   }

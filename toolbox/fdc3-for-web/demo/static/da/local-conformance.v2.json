@@ -7,7 +7,7 @@
 			"description": "FDC3 2.0 Conformance testing framework - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "http://localhost:3001/v2.0/app/index.html"
+				"url": "http://localhost:3001/apps/app/index.html"
 			},
 			"screenshots": [
 				{
@@ -67,7 +67,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "http://localhost:3001/v2.0/channels"
+				"url": "http://localhost:3001/apps/channels"
 			},
 			"hostManifests": {
 				"sail": {
@@ -110,7 +110,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "http://localhost:3001/v2.0/intent-a"
+				"url": "http://localhost:3001/apps/intent-a"
 			},
 			"hostManifests": {
 				"sail": {
@@ -175,7 +175,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "http://localhost:3001/v2.0/intent-b"
+				"url": "http://localhost:3001/apps/intent-b"
 			},
 			"hostManifests": {
 				"sail": {
@@ -235,7 +235,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "http://localhost:3001/v2.0/intent-c"
+				"url": "http://localhost:3001/apps/intent-c"
 			},
 			"hostManifests": {
 				"sail": {
@@ -294,7 +294,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "http://localhost:3001/v2.0/intent-d"
+				"url": "http://localhost:3001/apps/intent-d"
 			},
 			"hostManifests": {
 				"sail": {
@@ -353,7 +353,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "http://localhost:3001/v2.0/intent-e"
+				"url": "http://localhost:3001/apps/intent-e"
 			},
 			"hostManifests": {
 				"sail": {
@@ -412,7 +412,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "http://localhost:3001/v2.0/intent-f"
+				"url": "http://localhost:3001/apps/intent-f"
 			},
 			"hostManifests": {
 				"sail": {
@@ -471,7 +471,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "http://localhost:3001/v2.0/intent-g"
+				"url": "http://localhost:3001/apps/intent-g"
 			},
 			"hostManifests": {
 				"sail": {
@@ -529,7 +529,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "http://localhost:3001/v2.0/intent-h"
+				"url": "http://localhost:3001/apps/intent-h"
 			},
 			"hostManifests": {
 				"sail": {
@@ -588,7 +588,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "http://localhost:3001/v2.0/intent-i"
+				"url": "http://localhost:3001/apps/intent-i"
 			},
 			"hostManifests": {
 				"sail": {
@@ -647,7 +647,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "http://localhost:3001/v2.0/intent-j"
+				"url": "http://localhost:3001/apps/intent-j"
 			},
 			"hostManifests": {
 				"sail": {
@@ -706,7 +706,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "http://localhost:3001/v2.0/intent-k"
+				"url": "http://localhost:3001/apps/intent-k"
 			},
 			"hostManifests": {
 				"sail": {
@@ -765,7 +765,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "http://localhost:3001/v2.0/open-a"
+				"url": "http://localhost:3001/apps/open-a"
 			},
 			"hostManifests": {
 				"sail": {
@@ -811,7 +811,7 @@
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "http://localhost:3001/v2.0/open-b"
+				"url": "http://localhost:3001/apps/open-b"
 			},
 			"hostManifests": {
 				"sail": {
@@ -855,7 +855,7 @@
 			"name": "MockApp",
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"details": {
-				"url": "http://localhost:3001/v2.0/general"
+				"url": "http://localhost:3001/apps/general"
 			},
 			"hostManifests": {
 				"sail": {
@@ -904,7 +904,7 @@
 			"title": "App Title",
 			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
 			"details": {
-				"url": "http://localhost:3001/v2.0/metadata"
+				"url": "http://localhost:3001/apps/metadata"
 			},
 			"hostManifests": {
 				"sail": {

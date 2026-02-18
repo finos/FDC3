@@ -44,7 +44,6 @@ export const openApp = {
 };
 
 export type OpenCommonConfig = {
-  fdc3Version: string;
   target: string;
   targetMultiple: string;
 };

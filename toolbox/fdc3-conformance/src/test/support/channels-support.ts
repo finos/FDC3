@@ -70,7 +70,6 @@ export class ChannelControlImpl implements ChannelControl {
     contextId?: string
   ) => {
     const channelsAppConfig: ChannelsAppConfig = {
-      fdc3ApiVersion: '2.0',
       testId: testId,
       channelId: channelId,
       notifyAppAOnCompletion: notify,
@@ -156,7 +155,6 @@ function buildChannelsAppContext(mockAppCommands: string[], config: ChannelsAppC
     type: 'channelsAppContext',
     commands: mockAppCommands,
     config: {
-      fdc3ApiVersion: config.fdc3ApiVersion,
       testId: config.testId,
       notifyAppAOnCompletion: config.notifyAppAOnCompletion ?? false,
       historyItems: config.historyItems ?? 1,

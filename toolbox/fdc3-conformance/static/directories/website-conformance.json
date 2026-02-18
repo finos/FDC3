@@ -7,7 +7,7 @@
 			"description": "FDC3 Conformance testing framework - developed for FINOS by Scott Logic",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/app/index.html"
+				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/apps/app/index.html"
 			},
 			"screenshots": [
 				{
@@ -67,7 +67,7 @@
 			"description": "Part of the FDC3 Conformance Tests",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/channels/index.html"
+				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/apps/channels/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -110,7 +110,7 @@
 			"description": "Part of the FDC3 Conformance Tests",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-a/index.html"
+				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/apps/intent-a/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -175,7 +175,7 @@
 			"description": "Part of the FDC3 Conformance Tests",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-b/index.html"
+				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/apps/intent-b/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -235,7 +235,7 @@
 			"description": "Part of the FDC3 Conformance Tests",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-c/index.html"
+				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/apps/intent-c/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -294,7 +294,7 @@
 			"description": "Part of the FDC3 Conformance Tests",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-d/index.html"
+				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/apps/intent-d/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -353,7 +353,7 @@
 			"description": "Part of the FDC3 Conformance Tests",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-e/index.html"
+				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/apps/intent-e/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -412,7 +412,7 @@
 			"description": "Part of the FDC3 Conformance Tests",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-f/index.html"
+				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/apps/intent-f/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -471,7 +471,7 @@
 			"description": "Part of the FDC3 Conformance Tests",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-g/index.html"
+				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/apps/intent-g/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -529,7 +529,7 @@
 			"description": "Part of the FDC3 Conformance Tests",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-h/index.html"
+				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/apps/intent-h/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -588,7 +588,7 @@
 			"description": "Part of the FDC3 Conformance Tests",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-i/index.html"
+				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/apps/intent-i/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -647,7 +647,7 @@
 			"description": "Part of the FDC3 Conformance Tests",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-j/index.html"
+				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/apps/intent-j/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -706,7 +706,7 @@
 			"description": "Part of the FDC3 Conformance Tests",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/intent-k/index.html"
+				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/apps/intent-k/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -765,7 +765,7 @@
 			"description": "Part of the FDC3 Conformance Tests",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/open-a/index.html"
+				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/apps/open-a/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -811,7 +811,7 @@
 			"description": "Part of the FDC3 Conformance Tests",
 			"type": "web",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/open-b/index.html"
+				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/apps/open-b/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -855,7 +855,7 @@
 			"name": "MockApp",
 			"description": "Part of the FDC3 Conformance Tests",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/general/index.html"
+				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/apps/general/index.html"
 			},
 			"hostManifests": {
 				"sail": {
@@ -904,7 +904,7 @@
 			"title": "App Title",
 			"description": "Part of the FDC3 Conformance Tests",
 			"details": {
-				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/metadata/index.html"
+				"url": "https://fdc3.finos.org/toolbox/fdc3-conformance/apps/metadata/index.html"
 			},
 			"hostManifests": {
 				"sail": {

@@ -9,7 +9,6 @@ import { ControlContextType } from '../support/intent-support';
 const documentation = '\r\nDocumentation: ' + APIDocumentation + '\r\nCause:';
 
 const config: OpenCommonConfig = {
-  fdc3Version: '2.0',
   target: 'AppIdentifier',
   targetMultiple: 'AppIdentifier',
 };
