@@ -1,7 +1,8 @@
 1.  Add notes to contexts about the fact they need to be signed.  Link to docs. (DONE)
 2.  Sort out JOSE compatibility.  (DONE)
-3.  (App Providable) Context Metadata - improve signature section.
+3.  (App Providable) Context Metadata - improve signature section. (DONE)
 4.  GetUser
 5.  Write negative tests for JosePublicFDC3Security.
-6.  readonly authenticity?: unknown;  ContextMetadata in fdc3-standard.
-
+6.  readonly authenticity?: unknown;  ContextMetadata in fdc3-standard.  Move the Authenticity definition into schema and export it for use here.
+7. Yannick go through flow diagram and compare with Public / Private.  /Users/rob/Documents/finos/fdc3-general/FDC3/packages/fdc3-security/src/PrivateFDC3Security.ts
+8.  Ask Kris / Julianna about ContextMetadata, AppProvidableContextMetadata and DesktopAgentProvidableContextMetadata - shouldn't one be the union of the other two?
