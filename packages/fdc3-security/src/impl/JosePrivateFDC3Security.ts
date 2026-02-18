@@ -1,9 +1,19 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
-import { JSONWebEncryption, JSONWebSignature, FDC3JWTPayload, PrivateFDC3Security } from '@finos/fdc3-security';
+import { BrowserTypes } from '@finos/fdc3-schema';
 import * as jose from 'jose';
+import { DEFAULT_FDC3_ALGORITHMS, FDC3SecurityAlgorithms } from '../FDC3SecurityAlgorithms';
+import { DEFAULT_FDC3_TIME_LIMITS, FDC3SecurityTimeLimits } from '../FDC3SecurityTimeLimits';
+import { FDC3UserClaims } from '../FDC3UserClaims';
+import { PrivateFDC3Security } from '../PrivateFDC3Security';
+import { JSONWebEncryption } from '../PublicFDC3Security';
 import { AllowListFunction, JosePublicFDC3Security, JSONWebKeyWithId, JWKSResolver } from './JosePublicFDC3Security';
 
-type ProtectedHeader = {
+type DetachedSignature = BrowserTypes.DetachedSignature;
+
+/**
+ * JWE protected header parameters for encryption operations.
+ */
+type JWEProtectedHeader = {
   alg: string;
   enc: string;
 };
@@ -11,6 +21,17 @@ type ProtectedHeader = {
 /**
  * Implements the FDC3Security interface either in node or the browser.
  * Using the jose library for JSON Web Signatures and Encryption.
+ *
+ * @param signingPrivateKey - The signing private key
+ * @param signingPublicKey - The signing public key (must have 'kid' property)
+ * @param wrappingPrivateKey - The wrapping private key for decryption
+ * @param wrappingPublicKey - The wrapping public key (must have 'kid' property)
+ * @param issUrl - The issuer URL for JWT tokens
+ * @param jwksUrl - The JWKS URL where public keys are published
+ * @param publicKeyResolver - Function to resolve public keys from URLs
+ * @param allowListFunction - Function to check if a URL is trusted
+ * @param timeLimits - Optional time limits for signature freshness and context validity
+ * @param algorithms - Optional algorithm configuration (defaults to EdDSA/RSA-OAEP-256/A256GCM)
  */
 export class JosePrivateFDC3Security extends JosePublicFDC3Security implements PrivateFDC3Security {
   readonly signingPrivateKey: JsonWebKey;
@@ -27,34 +48,22 @@ export class JosePrivateFDC3Security extends JosePublicFDC3Security implements P
     jwksUrl: string,
     publicKeyResolver: (url: string) => JWKSResolver,
     allowListFunction: AllowListFunction,
-    validityTimeLimit: number = 5 * 60
+    timeLimits: FDC3SecurityTimeLimits = DEFAULT_FDC3_TIME_LIMITS,
+    algorithms: FDC3SecurityAlgorithms = DEFAULT_FDC3_ALGORITHMS
   ) {
-    super(signingPublicKey, wrappingPublicKey, publicKeyResolver, allowListFunction, validityTimeLimit);
+    super(signingPublicKey, wrappingPublicKey, publicKeyResolver, allowListFunction, timeLimits, algorithms);
     this.signingPrivateKey = signingPrivateKey;
     this.wrappingPrivateKey = wrappingPrivateKey;
     this.jwksUrl = jwksUrl;
     this.issUrl = issUrl;
   }
 
-  async encryptSymmetric(ctx: Context, symmetricKey: JsonWebKey): Promise<JSONWebEncryption> {
-    const encrypted = await new jose.CompactEncrypt(new TextEncoder().encode(JSON.stringify(ctx)))
-      .setProtectedHeader({ alg: 'dir', enc: 'A256GCM' })
-      .encrypt(symmetricKey);
-    return encrypted;
-  }
-
-  async decryptSymmetric(encrypted: JSONWebEncryption, symmetricKey: JsonWebKey): Promise<Context> {
-    const decrypted = await jose.compactDecrypt(encrypted, symmetricKey);
-    const plaintext = decrypted.plaintext;
-    return JSON.parse(new TextDecoder().decode(plaintext));
-  }
-
-  private async getPublicKey(publicKeyUrl: string, protectedHeader: ProtectedHeader): Promise<JSONWebKeyWithId> {
+  private async getPublicKey(publicKeyUrl: string, protectedHeader: JWEProtectedHeader): Promise<JSONWebKeyWithId> {
     const JWKS = this.publicKeyResolver(publicKeyUrl);
     await JWKS.reload();
 
     const allKeys = JWKS.jwks()?.keys ?? [];
-    const key = allKeys.find(k => k.alg == protectedHeader.alg);
+    const key = allKeys.find((k: JsonWebKey) => k.alg == protectedHeader.alg);
 
     if (key == undefined) {
       throw new Error(`No key found for algorithm ${protectedHeader.alg}`);
@@ -64,8 +73,12 @@ export class JosePrivateFDC3Security extends JosePublicFDC3Security implements P
   }
 
   async encryptPublicKey(ctx: Context, publicKeyUrl: string): Promise<JSONWebEncryption> {
-    const protectedHeader = { alg: 'RSA-OAEP-256', enc: 'A256GCM' };
-    const key = await this.getPublicKey(publicKeyUrl, protectedHeader);
+    const protectedHeader: JWEProtectedHeader = {
+      alg: this.algorithms.keyWrapping,
+      enc: this.algorithms.contentEncryption,
+    };
+    const jwk = await this.getPublicKey(publicKeyUrl, protectedHeader);
+    const key = await jose.importJWK(jwk, this.algorithms.keyWrapping);
     const encrypted = await new jose.CompactEncrypt(new TextEncoder().encode(JSON.stringify(ctx)))
       .setProtectedHeader(protectedHeader)
       .encrypt(key);
@@ -73,30 +86,45 @@ export class JosePrivateFDC3Security extends JosePublicFDC3Security implements P
   }
 
   async decryptPrivateKey(encrypted: JSONWebEncryption): Promise<Context> {
-    const decrypted = await jose.compactDecrypt(encrypted, this.wrappingPrivateKey);
+    const key = await jose.importJWK(this.wrappingPrivateKey, this.algorithms.keyWrapping);
+    const decrypted = await jose.compactDecrypt(encrypted, key);
     const plaintext = decrypted.plaintext;
     return JSON.parse(new TextDecoder().decode(plaintext));
   }
 
-  async sign(ctx: Context, intent: string | null, channelId: string | null): Promise<JSONWebSignature> {
-    const data = this.canonicalize(ctx, intent, channelId);
+  async sign(ctx: Context): Promise<DetachedSignature> {
+    const data = this.canonicalize(ctx);
     const now = Math.floor(Date.now() / 1000); // Current time in seconds
+    const key = await jose.importJWK(this.signingPrivateKey, this.algorithms.signing);
     const jws = await new jose.CompactSign(data)
-      .setProtectedHeader({ alg: 'EdDSA', jku: this.jwksUrl, iat: now, kid: this.signingPublicKey.kid })
-      .sign(this.signingPrivateKey);
+      .setProtectedHeader({
+        alg: this.algorithms.signing,
+        jku: this.jwksUrl,
+        iat: now,
+        kid: this.signingPublicKey.kid,
+      })
+      .sign(key);
     const parts = jws.split('.');
-    const detachedJWS = `${parts[0]}..${parts[2]}`;
-    return detachedJWS;
+
+    return {
+      protected: parts[0],
+      signature: parts[2],
+    };
   }
 
   async createSymmetricKey(): Promise<JsonWebKey> {
-    return jose.generateSecret('A256GCM', { extractable: true }).then(secret => jose.exportJWK(secret));
+    const secret = await jose.generateSecret(this.algorithms.contentEncryption, { extractable: true });
+    return jose.exportJWK(secret);
   }
 
   async wrapKey(symmetricKey: JsonWebKey, publicKeyUrl: string): Promise<SymmetricKeyResponse> {
-    const protectedHeader = { alg: 'RSA-OAEP-256', enc: 'A256GCM' };
+    const protectedHeader: JWEProtectedHeader = {
+      alg: this.algorithms.keyWrapping,
+      enc: this.algorithms.contentEncryption,
+    };
     const data = this.canonicalizeKey(symmetricKey);
-    const key = await this.getPublicKey(publicKeyUrl, protectedHeader);
+    const jwk = await this.getPublicKey(publicKeyUrl, protectedHeader);
+    const key = await jose.importJWK(jwk, this.algorithms.keyWrapping);
     const wrapped = await new jose.CompactEncrypt(data).setProtectedHeader(protectedHeader).encrypt(key);
 
     return {
@@ -104,13 +132,14 @@ export class JosePrivateFDC3Security extends JosePublicFDC3Security implements P
       wrappedKey: wrapped,
       id: {
         pki: publicKeyUrl,
-        kid: key.kid ?? 'not specified',
+        kid: jwk.kid ?? 'not specified',
       },
     };
   }
 
   async unwrapKey(ctx: SymmetricKeyResponse): Promise<JsonWebKey> {
-    const result = await jose.compactDecrypt(ctx.wrappedKey, this.wrappingPrivateKey);
+    const key = await jose.importJWK(this.wrappingPrivateKey, this.algorithms.keyWrapping);
+    const result = await jose.compactDecrypt(ctx.wrappedKey, key);
     const jsonString = new TextDecoder().decode(result.plaintext);
     const decodedKey = JSON.parse(jsonString);
     return decodedKey;
@@ -122,43 +151,66 @@ export class JosePrivateFDC3Security extends JosePublicFDC3Security implements P
     }
 
     const now = Math.floor(Date.now() / 1000); // Current time in seconds
-    const payload: FDC3JWTPayload = {
+    const payload: FDC3UserClaims = {
       iss: this.issUrl,
       aud: aud,
       sub: sub,
-      exp: now + this.validityTimeLimit,
+      exp: now + this.timeLimits.contextValiditySeconds,
       iat: now,
       jti: crypto.randomUUID(),
     };
+    const key = await jose.importJWK(this.signingPrivateKey, this.algorithms.signing);
     const token = await new jose.SignJWT(payload)
-      .setProtectedHeader({ alg: 'EdDSA', jku: this.jwksUrl, kid: this.signingPublicKey.kid })
-      .sign(this.signingPrivateKey);
+      .setProtectedHeader({
+        alg: this.algorithms.signing,
+        jku: this.jwksUrl,
+        kid: this.signingPublicKey.kid,
+      })
+      .sign(key);
     return token;
   }
 }
 
-export async function createSigningKeyPair(id: string): Promise<{ priv: JsonWebKey; pub: JsonWebKey }> {
-  const keyPair = await jose.generateKeyPair('EdDSA', {
+/**
+ * Creates a signing key pair using the specified algorithm.
+ *
+ * @param id - The key ID to assign to the public key
+ * @param algorithms - Optional algorithm configuration (defaults to EdDSA with Ed25519)
+ */
+export async function createSigningKeyPair(
+  id: string,
+  algorithms: FDC3SecurityAlgorithms = DEFAULT_FDC3_ALGORITHMS
+): Promise<{ priv: JsonWebKey; pub: JsonWebKey }> {
+  const keyPair = await jose.generateKeyPair(algorithms.signing, {
     extractable: true,
-    crv: 'Ed25519',
+    crv: algorithms.signingCurve,
   });
   const privateKey = await jose.exportJWK(keyPair.privateKey);
   const publicKey = await jose.exportJWK(keyPair.publicKey);
   publicKey.kid = id;
-  publicKey.alg = 'EdDSA';
+  publicKey.alg = algorithms.signing;
   publicKey.use = 'sig';
   return { priv: privateKey, pub: publicKey };
 }
 
-export async function createWrappingKeyPair(id: string): Promise<{ priv: JsonWebKey; pub: JsonWebKey }> {
-  const keyPair = await jose.generateKeyPair('RSA-OAEP-256', {
+/**
+ * Creates a wrapping key pair using the specified algorithm.
+ *
+ * @param id - The key ID to assign to the public key
+ * @param algorithms - Optional algorithm configuration (defaults to RSA-OAEP-256)
+ */
+export async function createWrappingKeyPair(
+  id: string,
+  algorithms: FDC3SecurityAlgorithms = DEFAULT_FDC3_ALGORITHMS
+): Promise<{ priv: JsonWebKey; pub: JsonWebKey }> {
+  const keyPair = await jose.generateKeyPair(algorithms.keyWrapping, {
     extractable: true,
-    modulusLength: 2048,
+    modulusLength: algorithms.rsaModulusLength,
   });
   const privateKey = await jose.exportJWK(keyPair.privateKey);
   const publicKey = await jose.exportJWK(keyPair.publicKey);
   publicKey.kid = id;
-  publicKey.alg = 'RSA-OAEP-256';
+  publicKey.alg = algorithms.keyWrapping;
   publicKey.use = 'enc';
   return { priv: privateKey, pub: publicKey };
 }
@@ -167,19 +219,21 @@ export async function createWrappingKeyPair(id: string): Promise<{ priv: JsonWeb
  * Creates an instance with auto-generated keys.
  * This is a simplified constructor that automatically creates all required key pairs.
  *
- * @param jwksUrl - The URL where this instance's public keys can be found
+ * @param baseUrl - The base URL for the application (used for issuer and JWKS URL)
  * @param publicKeyResolver - Function to resolve public keys from URLs
  * @param allowListFunction - Function to determine if a URL is trusted
- * @param validityTimeLimit - Optional validity time limit in seconds (default: 5 minutes)
+ * @param timeLimits - Optional time limits for signature freshness and context validity
+ * @param algorithms - Optional algorithm configuration (defaults to EdDSA/RSA-OAEP-256/A256GCM)
  * @param signingKeyId - Optional custom ID for the signing key (default: auto-generated)
  * @param wrappingKeyId - Optional custom ID for the wrapping key (default: auto-generated)
- * @returns Promise<ClientSideImplementation> - A fully configured instance
+ * @returns Promise<JosePrivateFDC3Security> - A fully configured instance
  */
 export async function createJosePrivateFDC3Security(
   baseUrl: string,
   publicKeyResolver: (url: string) => JWKSResolver,
   allowListFunction: AllowListFunction,
-  validityTimeLimit: number = 5 * 60,
+  timeLimits: FDC3SecurityTimeLimits = DEFAULT_FDC3_TIME_LIMITS,
+  algorithms: FDC3SecurityAlgorithms = DEFAULT_FDC3_ALGORITHMS,
   signingKeyId?: string,
   wrappingKeyId?: string
 ): Promise<JosePrivateFDC3Security> {
@@ -187,9 +241,9 @@ export async function createJosePrivateFDC3Security(
   const finalSigningKeyId = signingKeyId || `signing-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   const finalWrappingKeyId = wrappingKeyId || `wrapping-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
-  // Create key pairs
-  const signingKeys = await createSigningKeyPair(finalSigningKeyId);
-  const wrappingKeys = await createWrappingKeyPair(finalWrappingKeyId);
+  // Create key pairs using the configured algorithms
+  const signingKeys = await createSigningKeyPair(finalSigningKeyId, algorithms);
+  const wrappingKeys = await createWrappingKeyPair(finalWrappingKeyId, algorithms);
 
   // Create and return the instance
   return new JosePrivateFDC3Security(
@@ -201,6 +255,7 @@ export async function createJosePrivateFDC3Security(
     baseUrl + '/.well-known/jwks.json',
     publicKeyResolver,
     allowListFunction,
-    validityTimeLimit
+    timeLimits,
+    algorithms
   );
 }
