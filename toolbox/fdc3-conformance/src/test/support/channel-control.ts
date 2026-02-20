@@ -1,7 +1,7 @@
 import { Context, Channel, Listener } from '@finos/fdc3';
 
 /**
- * This interface wraps channel functionality in FDC3 2.0
+ * This interface wraps channel functionality
  */
 export interface ChannelControl {
   // channels
@@ -53,14 +53,12 @@ export type ChannelsAppContext = Context & {
     testId: string;
     notifyAppAOnCompletion: boolean;
     historyItems: number;
-    fdc3ApiVersion: string;
     channelId: string;
     contextId?: string;
   };
 };
 
 export type ChannelsAppConfig = {
-  fdc3ApiVersion: string;
   testId: string;
   notifyAppAOnCompletion?: boolean;
   historyItems?: number;
