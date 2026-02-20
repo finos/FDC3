@@ -5,7 +5,7 @@ A framework for testing whether desktop containers implement the [FDC3 standard]
 
 The tests implemented for each FDC3 version are based on the FDC3 Conformance tests specifications defined by the FDC3 maintainers and hosted on the [FDC3 website](https://fdc3.finos.org/docs/api/conformance/Conformance-Overview). 
 
-Tests in this module currently implement versions 2.0 and 2.2 of the FDC3 Standard.  For old 1.2 conformance testing, please see the [archived FDC3 Conformance project](https://github.com/finos/FDC3-Conformance-Framework) 
+Tests in this module currently implement versions 2.0 and 2.2 of the FDC3 Standard.  For old 1.2 conformance testing, please see the [archived FDC3 Conformance project](https://github.com/finos/FDC3-Conformance-Framework).
 
 ## What Is It?
 

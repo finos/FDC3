@@ -1,14 +1,14 @@
 # How to Apply For FDC3 Certification for a Desktop Agent
 
-## 1. Run The Conformance Tests Yourself.
+## 1. Run The Conformance Tests Yourself
 
 See [Readme](README.md) about how to do this.  
- 
+
 ## 2. Raise An Issue On This project
 
 [Raise An Issue](https://github.com/finos/FDC3/issues) tagging it with `conformance`.  
 
-In all likelihood, you will need to liase with the maintainers of this project in order to get the conformance tests to work with your desktop agent.  
+In all likelihood, you will need to liaise with the maintainers of this project in order to get the conformance tests to work with your desktop agent.  
 
 This will also kick off the process of applying for the "FDC3 Certified" mark.
 
@@ -48,5 +48,4 @@ On completion of the above steps you will be given your certificate via the [Cre
 
 ## 8.  Re-Certification
 
-Certification only applies to a single version of your software product. FINOS reserves the right to allow certification to carry over at no additional cost for minor/maintenance version changes of your desktop agent if no backward incompatible changes are introduced in those versions. 
-
+Certification only applies to a single version of your software product. FINOS reserves the right to allow certification to carry over at no additional cost for minor/maintenance version changes of your desktop agent if no backward incompatible changes are introduced in those versions.

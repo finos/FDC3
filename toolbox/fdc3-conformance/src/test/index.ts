@@ -8,7 +8,7 @@ require('mocha/mocha.css');
 require('source-map-support/browser-source-map-support.js');
 
 mocha.setup('bdd');
-const version = document.getElementById('version')!;
+const testSuite = document.getElementById('testSuite')!;
 
 // populate drop-down
 getPackNames().forEach(pn => {
@@ -21,15 +21,15 @@ getPackNames().forEach(pn => {
     opt.appendChild(text);
     optGroup.appendChild(opt);
   });
-  version.appendChild(optGroup);
+  testSuite.appendChild(optGroup);
 });
 
 function executeTests() {
   toggleVersionSelector();
   toggleBackButton();
-  const fdc3Versions = document.getElementById('version') as HTMLSelectElement;
-  const selectedVersion = fdc3Versions.options[fdc3Versions.selectedIndex].innerHTML;
-  const action = () => executeTestsInBrowser(selectedVersion);
+  const testSuiteMenu = document.getElementById('testSuite') as HTMLSelectElement;
+  const selectedSuite = testSuiteMenu.options[testSuiteMenu.selectedIndex].innerHTML;
+  const action = () => executeTestsInBrowser(selectedSuite);
   if (window.fdc3) {
     action();
   } else {

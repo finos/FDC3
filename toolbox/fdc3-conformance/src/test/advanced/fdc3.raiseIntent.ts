@@ -1,14 +1,14 @@
 import { ChannelError, PrivateChannel, Listener, getAgent, DesktopAgent } from '@finos/fdc3';
 import { assert, expect } from 'chai';
 import {
-  RaiseIntentControl2_0,
+  RaiseIntentControl,
   IntentResultType,
   IntentApp,
   ContextType,
   Intent,
   ControlContextType,
-} from '../support/intent-support-2.0';
-import { closeMockAppWindow } from '../fdc3-2_0-utils';
+} from '../support/intent-support';
+import { closeMockAppWindow } from '../fdc3-conformance-utils';
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md
@@ -16,12 +16,12 @@ import { closeMockAppWindow } from '../fdc3-2_0-utils';
 export default async () =>
   describe('fdc3.raiseIntent', () => {
     let errorListener: Listener | undefined = undefined;
-    let control: RaiseIntentControl2_0;
+    let control: RaiseIntentControl;
     let fdc3: DesktopAgent;
 
     beforeEach(async () => {
       fdc3 = await getAgent();
-      control = new RaiseIntentControl2_0(fdc3);
+      control = new RaiseIntentControl(fdc3);
     });
 
     afterEach(async function afterEach() {
@@ -34,7 +34,7 @@ export default async () =>
     });
 
     const RaiseIntentSingleResolve =
-      "(2.0-RaiseIntentSingleResolve) Should start app intent-a when raising intent 'aTestingIntent1' with context 'testContextX'";
+      "(RaiseIntentSingleResolve) Should start app intent-a when raising intent 'aTestingIntent1' with context 'testContextX'";
     it(RaiseIntentSingleResolve, async () => {
       errorListener = await control.listenForError();
       const result = control.receiveContext(ControlContextType.A_TESTING_INTENT_LISTENER_TRIGGERED);
@@ -44,7 +44,7 @@ export default async () =>
     });
 
     const RaiseIntentTargetedAppResolve =
-      "(2.0-RaiseIntentTargetedAppResolve) Should start app intent-b when raising intent 'sharedTestingIntent1' with context 'testContextX'";
+      "(RaiseIntentTargetedAppResolve) Should start app intent-b when raising intent 'sharedTestingIntent1' with context 'testContextX'";
     it(RaiseIntentTargetedAppResolve, async () => {
       errorListener = await control.listenForError();
       const result = control.receiveContext(ControlContextType.SHARED_TESTING_INTENT1_LISTENER_TRIGGERED);
@@ -56,7 +56,7 @@ export default async () =>
     });
 
     const RaiseIntentTargetedInstanceResolveOpen =
-      "(2.0-RaiseIntentTargetedInstanceResolveOpen) Should target running instance of intent-a app when raising intent 'aTestingIntent1' with context 'testContextX' after opening intent-a app";
+      "(RaiseIntentTargetedInstanceResolveOpen) Should target running instance of intent-a app when raising intent 'aTestingIntent1' with context 'testContextX' after opening intent-a app";
     it(RaiseIntentTargetedInstanceResolveOpen, async () => {
       // add app control listeners
       errorListener = await control.listenForError();
@@ -78,7 +78,7 @@ export default async () =>
     });
 
     const RaiseIntentTargetedInstanceResolveFindInstances =
-      "(2.0-RaiseIntentTargetedInstanceResolveFindInstances) Should start app intent-a when targeted by raising intent 'aTestingIntent1' with context 'testContextX'";
+      "(RaiseIntentTargetedInstanceResolveFindInstances) Should start app intent-a when targeted by raising intent 'aTestingIntent1' with context 'testContextX'";
     it(RaiseIntentTargetedInstanceResolveFindInstances, async () => {
       // add app control listeners
       errorListener = await control.listenForError();
@@ -103,7 +103,7 @@ export default async () =>
     });
 
     const PrivateChannelsAreNotAppChannels =
-      '(2.0-PrivateChannelsAreNotAppChannels) Cannot create an app channel using a private channel id';
+      '(PrivateChannelsAreNotAppChannels) Cannot create an app channel using a private channel id';
     it(PrivateChannelsAreNotAppChannels, async () => {
       errorListener = await control.listenForError();
       const privChan = await control.createPrivateChannel();
@@ -138,7 +138,7 @@ export default async () =>
     });
 
     const PrivateChannelsLifecycleEvents =
-      '(2.0-PrivateChannelsLifecycleEvents) PrivateChannel lifecycle events are triggered when expected';
+      '(PrivateChannelsLifecycleEvents) PrivateChannel lifecycle events are triggered when expected';
     it(PrivateChannelsLifecycleEvents, async () => {
       errorListener = await control.listenForError();
       const onUnsubscribeReceiver = control.receiveContext(ControlContextType.ON_UNSUBSCRIBE_TRIGGERED);
