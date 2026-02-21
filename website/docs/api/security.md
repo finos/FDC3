@@ -9,7 +9,7 @@ import TabItem from '@theme/TabItem';
 
 :::info _[@experimental](../fdc3-compliance#experimental-features)_
 
-Security and Identity features are experimental additions to FDC3. Limited aspects of their design may change in future versions and they are exempted from the FDC3 Standard's normal versioning and deprecation policies in order to facilitate any necessary change.
+Security and Identity features are experimental additions to FDC3. Limited aspects of their design may change in future.
 
 :::
 
