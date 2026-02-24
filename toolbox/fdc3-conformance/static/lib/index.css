@@ -42,3 +42,18 @@ body {
 .bold {
   font-weight: bold;
 }
+
+#mocha-stats .duration em {
+  min-width: 4em;
+  display: inline-block;
+  text-align: right;
+}
+
+#mocha .test.running::before {
+  content: '●';
+  font-size: 12px;
+  display: block;
+  float: left;
+  margin-right: 5px;
+  color: #daa520;
+}
