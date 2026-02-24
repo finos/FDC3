@@ -6,9 +6,9 @@ export class ProgressReporter extends Mocha.reporters.Base {
   private testElements = new Map<string, HTMLElement>();
   private suiteStack: HTMLElement[];
   private canvas: HTMLCanvasElement;
-  private passLi: HTMLElement;
-  private failLi: HTMLElement;
-  private durationLi: HTMLElement;
+  private passCount: HTMLElement;
+  private failCount: HTMLElement;
+  private durationCount: HTMLElement;
   private startTime: number;
   private durationTimer: ReturnType<typeof setInterval>;
 
@@ -16,7 +16,7 @@ export class ProgressReporter extends Mocha.reporters.Base {
     super(runner, options);
 
     const root = document.getElementById('mocha')!;
-    root.innerHTML = '';
+    root.replaceChildren();
 
     const statsEl = document.createElement('ul');
     statsEl.id = 'mocha-stats';
@@ -35,20 +35,20 @@ export class ProgressReporter extends Mocha.reporters.Base {
     progressLi.appendChild(this.canvas);
     statsEl.appendChild(progressLi);
 
-    this.passLi = document.createElement('li');
-    this.passLi.className = 'passes';
-    this.passLi.innerHTML = `<a href="javascript:void(0);">passes: <em>0</em></a>`;
-    statsEl.appendChild(this.passLi);
+    const passLi = document.createElement('li');
+    passLi.className = 'passes';
+    this.passCount = this.buildStatItem(passLi, 'passes: ', '0');
+    statsEl.appendChild(passLi);
 
-    this.failLi = document.createElement('li');
-    this.failLi.className = 'failures';
-    this.failLi.innerHTML = `<a href="javascript:void(0);">failures: <em>0</em></a>`;
-    statsEl.appendChild(this.failLi);
+    const failLi = document.createElement('li');
+    failLi.className = 'failures';
+    this.failCount = this.buildStatItem(failLi, 'failures: ', '0');
+    statsEl.appendChild(failLi);
 
-    this.durationLi = document.createElement('li');
-    this.durationLi.className = 'duration';
-    this.durationLi.innerHTML = `duration: <em>0</em>s`;
-    statsEl.appendChild(this.durationLi);
+    const durationLi = document.createElement('li');
+    durationLi.className = 'duration';
+    this.durationCount = this.buildStatItem(durationLi, 'duration: ', '0', 's');
+    statsEl.appendChild(durationLi);
 
     this.suiteStack = [report];
     this.startTime = Date.now();
@@ -139,15 +139,29 @@ export class ProgressReporter extends Mocha.reporters.Base {
     }
   }
 
+  private buildStatItem(parent: HTMLElement, label: string, initialValue: string, suffix?: string): HTMLElement {
+    const a = document.createElement('a');
+    a.href = 'javascript:void(0);';
+    a.textContent = label;
+    const em = document.createElement('em');
+    em.textContent = initialValue;
+    a.appendChild(em);
+    if (suffix) {
+      a.appendChild(document.createTextNode(suffix));
+    }
+    parent.appendChild(a);
+    return em;
+  }
+
   private updateDuration() {
     const elapsed = ((Date.now() - this.startTime) / 1000).toFixed(2);
-    this.durationLi.innerHTML = `duration: <em>${elapsed}</em>s`;
+    this.durationCount.textContent = elapsed;
   }
 
   private updateStats() {
     const { passes, failures } = this.stats;
-    this.passLi.innerHTML = `<a href="javascript:void(0);">passes: <em>${passes}</em></a>`;
-    this.failLi.innerHTML = `<a href="javascript:void(0);">failures: <em>${failures}</em></a>`;
+    this.passCount.textContent = String(passes);
+    this.failCount.textContent = String(failures);
 
     // Draw progress ring
     const total = this.runner.total;
