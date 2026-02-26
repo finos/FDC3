@@ -52,7 +52,7 @@
     "printWidth": 120
   },
   "dependencies": {
-    "syncpack": "^12.4.0"
+    "syncpack": "^14.0.0"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
