@@ -57,3 +57,7 @@ body {
   margin-right: 5px;
   color: #daa520;
 }
+
+#mocha li.suite {
+  padding: 0px 0px 25px 0px;
+}
