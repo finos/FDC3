@@ -26,7 +26,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Enhanced method binding for FDC3 API objects to support destructuring. All public methods of `Channel`, `PrivateChannel`, and `IntentResolution` objects are now properly bound to their instances using `.bind(this)` in their constructors. ([#1645](https://github.com/finos/FDC3/issues/1645))
 * Changed fdc3-web-impl to not deliver broadcast messages back to the sending application, as recommended (SHOULD) in the Standard. [#1749](https://github.com/finos/FDC3/pull/1749)
 * Removed version number prefix from conformance test names and implementation to simplify future maintenance. ([#1726](https://github.com/finos/FDC3/pull/1726))
-* Updated Conformance tests to support an agent fully qualified app Ids ([#1767](https://github.com/finos/FDC3/pull/1767))
 
 ### Deprecated
 
@@ -43,6 +42,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Updated .NET API documentation for IListener.Unsubscribe to be async for 2.2 and current. ([#1690](https://github.com/finos/FDC3/pull/1690))
 * Fix for channel change listeners not sending addEventListenerRequests ([#1606](https://github.com/finos/FDC3/pull/1606))
 * Fix to ensure that Adding A Channel Change Event Listener Doesn't Send addEventListenerRequest - Conformance 2.2 ([#1606](https://github.com/finos/FDC3/pull/1606))
+* Updated Conformance tests to allow agents that fully qualify app Ids (as recommended in the Standard) to pass the conformance tests ([#1767](https://github.com/finos/FDC3/pull/1767))
 
 ## [FDC3 Standard 2.2](https://github.com/finos/FDC3/compare/v2.1..v2.2) - 2025-03-12
 
