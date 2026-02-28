@@ -52,6 +52,5 @@ export function appIdMatches(received: string, expected: string): boolean {
     return true;
   }
 
-  const host = window.location.hostname;
-  return received === `${expected}@${host}`;
+  return received.split('@')[0] === expected.split('@')[0];
 }
