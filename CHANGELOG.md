@@ -17,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Ported FDC3 Conformance Project as-is into the FDC3 Monorepo, just including minimal fixes for typescript compilation. ([#1576](https://github.com/finos/FDC3/pull/1576))
 * Added `clearContext` function and associated `contextClearedEvent` to the `Channel` API, to be able to clear specific or all context types from the channel. ([#1379](https://github.com/finos/FDC3/pull/1379))
 * Added Conformance tests for FDC3 2.2 ([#1586](https://github.com/finos/FDC3/pull/1586))
+* Added custom mocha test runner for conformance tests to better display test progress. ([#1769](https://github.com/finos/FDC3/pull/1769))
 
 ### Changed
 
