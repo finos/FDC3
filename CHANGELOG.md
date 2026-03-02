@@ -43,6 +43,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Fix for channel change listeners not sending addEventListenerRequests ([#1606](https://github.com/finos/FDC3/pull/1606))
 * Fix to ensure that Adding A Channel Change Event Listener Doesn't Send addEventListenerRequest - Conformance 2.2 ([#1606](https://github.com/finos/FDC3/pull/1606))
 * Updated Conformance tests to allow agents that fully qualify app Ids (as recommended in the Standard) to pass the conformance tests ([#1767](https://github.com/finos/FDC3/pull/1767))
+* Fixed import file extensions and module type to be esm module compliant ([#1677](https://github.com/finos/FDC3/pull/1677))
 
 ## [FDC3 Standard 2.2](https://github.com/finos/FDC3/compare/v2.1..v2.2) - 2025-03-12
 
