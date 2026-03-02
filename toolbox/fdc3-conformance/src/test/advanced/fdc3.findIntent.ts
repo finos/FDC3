@@ -2,6 +2,7 @@ import { AppIntent, IntentMetadata, ResolveError, DesktopAgent } from '@finos/fd
 import { assert, expect } from 'chai';
 import { APIDocumentation } from '../support/apiDocuments';
 import { ContextType, IntentApp, Intent } from '../support/intent-support';
+import { appIdMatches } from '../../utils';
 
 declare let fdc3: DesktopAgent;
 const findIntentDocs = '\r\nDocumentation: ' + APIDocumentation.findIntent + '\r\nCause';
@@ -163,6 +164,10 @@ function validateAppIntent(
     expect(
       appIntent.apps[index],
       `AppIntent.apps[${index}] did not have expected property 'appId' ${findIntentDocs}`
-    ).to.have.property('appId', appId);
+    ).to.have.property('appId');
+    expect(
+      appIdMatches(appIntent.apps[index].appId, appId),
+      `AppIntent.apps[${index}].appId '${appIntent.apps[index].appId}' did not match expected '${appId}' ${findIntentDocs}`
+    ).to.be.true;
   });
 }

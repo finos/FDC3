@@ -12,7 +12,7 @@ import {
 } from '@finos/fdc3';
 import { APIDocumentation } from './apiDocuments';
 import constants from '../../constants';
-import { handleFail, wait, wrapPromise } from '../../utils';
+import { appIdMatches, handleFail, wait, wrapPromise } from '../../utils';
 import { AppControlContext, IntentUtilityContext } from '../../context-types';
 
 const raiseIntentDocs = '\r\nDocumentation: ' + APIDocumentation.raiseIntent + '\r\nCause';
@@ -194,7 +194,7 @@ export class RaiseIntentControl {
       expect(intentResolution.source as AppIdentifier).to.have.property('instanceId');
       expect(typeof intentResolution.source.instanceId).to.be.equal('string');
       expect(intentResolution.source.instanceId).to.not.be.equal('');
-      expect((intentResolution.source as AppIdentifier).appId).to.eq(appId, raiseIntentDocs);
+      expect(appIdMatches(intentResolution.source.appId, appId), raiseIntentDocs).to.be.true;
     } else assert.fail('Invalid intent resolution object');
   };
 

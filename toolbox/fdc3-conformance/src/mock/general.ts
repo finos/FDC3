@@ -1,6 +1,7 @@
 import { closeWindowOnCompletion, sendContextToTests } from './mock-functions';
 import { getAgent, Context } from '@finos/fdc3';
 import { AppControlContext } from '../context-types';
+import { appIdMatches } from '../utils';
 
 getAgent().then(async fdc3 => {
   await closeWindowOnCompletion(fdc3);
@@ -13,7 +14,7 @@ getAgent().then(async fdc3 => {
     type: 'fdc3-conformance-opened',
   };
 
-  if (appId !== 'MockAppId') {
+  if (!appIdMatches(appId, 'MockAppId')) {
     appOpenedContext.errorMessage = `Incorrect appId retrieved from getInfo(). Expected MockAppId, got ${appId}`;
   }
 
