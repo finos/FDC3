@@ -1,5 +1,5 @@
-import { Messaging } from '../Messaging';
-import { AbstractListener } from './AbstractListener';
+import { Messaging } from '../Messaging.js';
+import { AbstractListener } from './AbstractListener.js';
 import {
   ApiEvent,
   EventHandler,
@@ -10,7 +10,7 @@ import {
   PrivateChannelUnsubscribeEvent,
 } from '@finos/fdc3-standard';
 import { BrowserTypes } from '@finos/fdc3-schema';
-import { Logger } from '../util/Logger';
+import { Logger } from '../util/Logger.js';
 const {
   isPrivateChannelOnAddContextListenerEvent,
   isPrivateChannelOnDisconnectEvent,

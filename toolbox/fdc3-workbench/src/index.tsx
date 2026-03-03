@@ -5,7 +5,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import App from './App.js';
 
 //make sure URL ends with trailing / for resolution of image paths
 if (!window.location.href.endsWith('/')) {

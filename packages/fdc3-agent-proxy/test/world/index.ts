@@ -1,9 +1,17 @@
-import { setWorldConstructor } from '@cucumber/cucumber';
-import { TestMessaging } from '../support/TestMessaging';
-import { PropsWorld } from '@finos/testing';
+import { TestMessaging } from '../support/TestMessaging.js';
+import { QuickPickleWorld, QuickPickleWorldInterface } from 'quickpickle';
 
-export class CustomWorld extends PropsWorld {
-  messaging: TestMessaging | null = null;
+export interface CustomWorldInterface extends QuickPickleWorldInterface {
+  props: Record<string, any>;
+  messaging: TestMessaging | null;
+  log: (message: string) => void;
 }
 
-setWorldConstructor(CustomWorld);
+export class CustomWorld extends QuickPickleWorld implements CustomWorldInterface {
+  props: Record<string, any> = {};
+  messaging: TestMessaging | null = null;
+
+  log(message: string): void {
+    console.log(message);
+  }
+}

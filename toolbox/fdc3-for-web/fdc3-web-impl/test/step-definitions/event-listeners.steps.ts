@@ -1,6 +1,6 @@
-import { When } from '@cucumber/cucumber';
-import { CustomWorld } from '../world';
-import { createMeta } from './generic.steps';
+import { When } from 'quickpickle';
+import { CustomWorld } from '../world/index.js';
+import { createMeta } from './generic.steps.js';
 import {} from '@finos/fdc3-standard';
 import { handleResolve } from '@finos/testing';
 import { BrowserTypes } from '@finos/fdc3-schema';
@@ -8,11 +8,11 @@ import { BrowserTypes } from '@finos/fdc3-schema';
 type AddEventListenerRequest = BrowserTypes.AddEventListenerRequest;
 type EventListenerUnsubscribeRequest = BrowserTypes.EventListenerUnsubscribeRequest;
 
-When('{string} adds an event listener for {string}', function (this: CustomWorld, app: string, type: string) {
-  const meta = createMeta(this, app);
-  const resolvedType = handleResolve(type, this);
+When('{string} adds an event listener for {string}', (world: CustomWorld, app: string, type: string) => {
+  const meta = createMeta(world, app);
+  const resolvedType = handleResolve(type, world);
 
-  const uuid = this.sc.getInstanceUUID(meta.source)!;
+  const uuid = world.sc.getInstanceUUID(meta.source)!;
   const message = {
     meta,
     payload: {
@@ -21,12 +21,12 @@ When('{string} adds an event listener for {string}', function (this: CustomWorld
     type: 'addEventListenerRequest',
   } as AddEventListenerRequest;
 
-  this.server.receive(message, uuid);
+  world.server.receive(message, uuid);
 });
 
-When('{string} removes event listener with id {string}', function (this: CustomWorld, app: string, id: string) {
-  const meta = createMeta(this, app);
-  const uuid = this.sc.getInstanceUUID(meta.source)!;
+When('{string} removes event listener with id {string}', (world: CustomWorld, app: string, id: string) => {
+  const meta = createMeta(world, app);
+  const uuid = world.sc.getInstanceUUID(meta.source)!;
 
   const message = {
     meta,
@@ -36,5 +36,5 @@ When('{string} removes event listener with id {string}', function (this: CustomW
     type: 'eventListenerUnsubscribeRequest',
   } as EventListenerUnsubscribeRequest;
 
-  this.server.receive(message, uuid);
+  world.server.receive(message, uuid);
 });

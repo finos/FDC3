@@ -3,7 +3,7 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import { Intent } from '../intents/Intents';
+import { Intent } from '../intents/Intents.js';
 
 /**
  * Intent descriptor
