@@ -17,21 +17,34 @@ As FDC3 evolves from desktop containers to web-based implementations, new securi
 
 ## Overview
 
-FDC3 Security addresses six key challenges:
+FDC3 Security addresses the following key challenges:
 
 1. **Shift to Web**: Web environments are more hostile than controlled desktop containers, requiring robust identity verification
 2. **App Identity**: Applications need verifiable identities to establish trust
 3. **User Authentication**: Users need portable identity across heterogeneous applications  
 4. **Data Integrity**: Context data requires authenticity guarantees
 5. **Scalable Trust**: Moving beyond bilateral trust relationships to circles of trust
-6. **Compliance**: Meeting regulatory requirements for data protection and audit
 
 The security framework introduces:
 
 - **Digital Signatures** for proving data authenticity and app identity
 - **Encrypted Channels** for private communications
 - **JWT-based User Identity** for portable authentication
-- **Circles of Trust** for scalable authorization
+
+## Trust Model
+
+- Apps are trusted.
+- Desktop agents are untrusted.
+- The web browser is untrusted.
+
+## Trust Boundaries
+
+- why we have public / private parts of the API.  browsers are untrusted, servers are trusted.
+- how to move data / intents / context between untrusted and trusted parts of the app.
+
+(diagrams here)
+
+
 
 ## App Identity and Signatures
 
@@ -45,8 +58,8 @@ Applications can sign the context objects they broadcast using their private key
 To enable signing, an application must:
 
 1. Generate a public/private key pair
-2. Publish the public key at an HTTPS endpoint as a [JSON Web Key Set (JWKS)](https://datatracker.ietf.org/doc/html/rfc7517)
-3. Sign outgoing context objects with the private key
+2. Publish the public key at an HTTPS endpoint as a [JSON Web Key Set (JWKS)](https://datatracker.ietf.org/doc/html/rfc7517).  The URL on which the JWKS identifies the entity of the publisher.  
+3. Sign outgoing context objects with the private key.
 
 ### Signature Metadata
 
