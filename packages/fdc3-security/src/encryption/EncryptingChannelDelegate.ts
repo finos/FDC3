@@ -6,7 +6,6 @@ import { EncryptingPrivateChannel } from './EncryptingPrivateChannel';
 import { AbstractChannelDelegate } from '../delegates/AbstractChannelDelegate';
 import { signedContext } from '../signing/SigningSupport';
 
-
 /**
  * Adds encryption support for private channels.  A wrapped, symmetric key is sent via the private channel,
  * and the unwrapKey method is used to unwrap it, allowing further decoding of messages.
@@ -60,7 +59,7 @@ export class EncryptingChannelDelegate extends AbstractChannelDelegate implement
 
   async requestEncryptionKey(): Promise<void> {
     const request = {
-      type: 'fdc3.security.symmetricKey.request',
+      type: 'fdc3.security.symmetricKeyRequest',
     } as SymmetricKeyRequest;
     const signedRequest = await signedContext(this.fdc3Security, request);
     return this.broadcast(signedRequest);
@@ -92,7 +91,6 @@ export class EncryptingChannelDelegate extends AbstractChannelDelegate implement
 
   decryptingContextHandler(ch: ContextHandler, contextType: string | null): ContextHandler {
     const out = async (contextIn: Context, meta: ContextMetadata) => {
-
       if (contextIn.type !== 'fdc3.security.encryptedContext') {
         return;
       } else {
@@ -111,16 +109,14 @@ export class EncryptingChannelDelegate extends AbstractChannelDelegate implement
           if (this.symmetricKey) {
             const decryptedContext = await this.fdc3Security.decryptSymmetric(encrypted, this.symmetricKey);
             newMeta['encryption'] = 'decrypted';
+            ch(decryptedContext, newMeta);
           } else {
             newMeta['encryption'] = 'cant_decrypt';
             this.requestEncryptionKey();
           }
         }
-
-        return ch(decryptedContext, newMeta);
       }
     };
-  }
 
     return out as ContextHandler;
   }
