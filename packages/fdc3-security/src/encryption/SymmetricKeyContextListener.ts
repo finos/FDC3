@@ -18,7 +18,7 @@ export async function createSymmetricKeyRequestContextListener(
   }
 
   const listener = channel.addContextListener(
-    'fdc3.security.symmetricKey.request',
+    'fdc3.security.symmetricKeyRequest',
     async (skr1: Context, skrMeta: ContextMetadata | undefined) => {
       console.log('symmetric key request received', skr1, skrMeta);
       const { meta } = await checkSignature(fdc3Security, skrMeta, skr1, null, channel.id);
@@ -48,7 +48,7 @@ export function createSymmetricKeyResponseContextListener(
   channel: EncryptingPrivateChannel
 ): Promise<Listener> {
   const listener = channel.addContextListener(
-    'fdc3.security.symmetricKey.response',
+    'fdc3.security.symmetricKeyResponse',
     async (skr: Context, skrMeta: ContextMetadata | undefined) => {
       const { context, meta } = await checkSignature(fdc3Security, skrMeta, skr, null, channel.id);
       const ma = meta?.authenticity;
