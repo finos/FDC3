@@ -183,8 +183,19 @@ If you are an existing individual or corporate user of the FDC3 standard, we wou
 
 #### Meetings
 
-- Finally, another great way to interact with the community, is to attend the monthly [FDC3 Standard Working Group Meeting](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) and/or the quarterly [FDC3 General Meeting](https://github.com/finos/FDC3/issues?q=label%3A%22General+Meeting%22).
-- Email [help@finos.org](mailto:help@finos.org) to be added to the meeting invite directly, or find the meeting in the [FINOS Community Calendar](https://calendar.google.com/calendar/embed?src=finos.org_fac8mo1rfc6ehscg0d80fi8jig%40group.calendar.google.com).
+Another great way to interact with the community is to attend one of the following meetings:
+
+- **FDC3 General Meeting** - *Every 6 months on the third Tuesday* ([Join Meeting](https://calendar.finos.org/signup?eventId=6stt9c3m0r4boisrb6tjt4q0v7_20260317T140000Z&title=FDC3+General+Meeting))
+- **FDC3 Identity & Security Working Group** - *Monthly on the second Thursday* ([Join Meeting](https://zoom-lfx.platform.linuxfoundation.org/meeting/92600977319?password=17e9e8f8-7d4e-47b4-b8f0-8c68b02005de&invite=true))
+- **FDC3 Standard Working Group** - *Monthly on the fourth Thursday* ([Join Meeting](https://zoom-lfx.platform.linuxfoundation.org/meeting/96839365264?password=b5c2bc6a-bc47-43a5-bc49-7be3e0b422c3&invite=true))
+- **FDC3 Use Cases and Workflows Discussion Group** - *Monthly on the first Thursday* ([Join Meeting](https://zoom-lfx.platform.linuxfoundation.org/meeting/91001005768?password=0c878e0c-b8a4-42d3-9786-e8c1524d6d1c&invite=true))
+- **FDC3 Web Browsers + Bridging Discussion group** - *Monthly on the third Thursday* ([Join Meeting](https://zoom-lfx.platform.linuxfoundation.org/meeting/96615992377?password=88ed4841-afa2-41a6-8de3-e246967e5566&invite=true))
+
+Also consider:
+
+- **FDC3 Sail Project Meeting** - *Every 2 weeks on Mondays* ([Join Meeting](https://zoom-lfx.platform.linuxfoundation.org/meeting/95252800112?password=90638454-991c-4ab0-8aed-791fc372623c&invite=true))
+
+
 
 #### Need help?
 

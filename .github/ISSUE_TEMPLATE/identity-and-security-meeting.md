@@ -1,35 +1,23 @@
 ---
-name: Discussion group meeting
+name: Identity and Security group meeting
 about: Overview and notes for a discussion group
-title: '<topic> Discussion group'
-labels: help wanted, meeting
+title: 'Identity and Security group meeting - mmm dd, yyyy'
+labels: identity-security, meeting
 assignees: ''
 ---
 
-## Group overview
-
-Summary of the purpose and scope of the group
-
-### Relevant issue tags
-
-If tags have been applied to relevant issues, provide details here.
-
 ## Meeting Date
 
-Thursday DD MMM yyyy - 10am (US eastern timezone EDT/EST) / 3pm (London, GMT/BST)
+Thursday DD MMM yyyy - 10am (US eastern timezone EST/EDT) / 3pm (London, GMT/BST)
 
 ### Zoom info
 
-- **[Join Zoom Meeting](https://zoom.us/j/96940294948?pwd=SjFibVdiN25QSWxva3FqRHY2RUFCdz09)**
-- **Meeting ID:** 969 4029 4948
-- **Passcode:** 636931
-- **Dial-in:**
-    | Country      | International Dial-in | Toll-free Dial-in |
-    | :---        | :---        | :---        |
-    | **US** | [+1 929 205 6099 (New York)](tel:+19292056099) | [877 853 5247](tel:8778535247) |
-    | **UK** | [+44 330 088 5830](tel:+443300885830) | [0800 031 5717](tel:08000315717) |
-    | **France** | [+33 1 8699 5831](tel:+33186995831) | [0 800 940 415](tel:0800940415) 
-    | Find your local number | <https://zoom.us/u/ad2WVnBzb8> | |
+Register to the meeting series and receive and invitation:
+https://zoom-lfx.platform.linuxfoundation.org/meeting/92600977319?password=17e9e8f8-7d4e-47b4-b8f0-8c68b02005de&invite=true
+
+Join Zoom Meeting:
+https://zoom-lfx.platform.linuxfoundation.org/meeting/92600977319?password=17e9e8f8-7d4e-47b4-b8f0-8c68b02005de
+
 
 ## Meeting notices
 
@@ -58,10 +46,6 @@ Please click the following links at the start of the meeting if you have not don
   - Click "Accept" on the EasyCLA dialog in the PR's discussion section.
 - [Click here to send email to become a voting participant on the FDC3 Project](mailto:fdc3-participants+subscribe@finos.org?subject=Please%20enroll%20me%20as%20an%20FDC3%20Standards%20Participant&amp;body=HI%2C%20my%20name%20is%20%3CFirstName%20LastName%3E%20and%20I'd%20like%20to%20formally%20participate%20to%20the%20FDC3%20standard%20process.%20I%20plan%20to%20contribute%20as%20%3Cindividual%7Con%20behalf%20of%20organizationName%3E%20and%20I%20have%20reviewed%20the%20policies%20described%20at%20https%3A%2F%2Fgithub.com%2Ffinos%2FFDC3%2Fblob%2Fmain%2FGOVERNANCE.md%20and%20read%20the%20license%20at%20https%3A%2F%2Fgithub.com%2Ffinos%2FFDC3%2Fblob%2Fmain%2FLICENSE%20.%20Thank%20you!")
 
-## Tracking Attendance
-
-**Note:** Meeting participants are expected to _add a comment to this GitHub issue_ in order that we can track attendance of FDC3 project meetings.  Please do this at the start of the meeting.
-
 ## Agenda
 
 - [ ] Convene & roll call, review meeting notices (5mins)
@@ -74,13 +58,3 @@ Please click the following links at the start of the meeting if you have not don
 ## Minutes
 
 - ...
-
-## Action Items
-
-- [ ] ...
-
-## Untracked attendees
-
-| Full name | Affiliation | GitHub username |
-|-----------|-------------|-----------------|
-|           |             |                 |
