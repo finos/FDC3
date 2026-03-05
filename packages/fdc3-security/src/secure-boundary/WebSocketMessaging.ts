@@ -1,24 +1,16 @@
 import { AbstractMessaging, RegisterableListener } from '@finos/fdc3-agent-proxy';
-import { CLIENT_MESSAGE, SERVER_MESSAGE } from './MessageTypes';
+import { CLIENT_MESSAGE, SERVER_MESSAGE, WsEnvelope } from './MessageTypes';
 import { AppIdentifier } from '@finos/fdc3-standard';
 import { v4 as uuidv4 } from 'uuid';
 import { AppRequestMessage } from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 /**
- * WebSocket message envelope for distinguishing message types.
- */
-interface WebSocketEnvelope {
-  type: typeof CLIENT_MESSAGE | typeof SERVER_MESSAGE;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  payload: any;
-}
-
-/**
  * Implementation of Messaging that uses native WebSocket to communicate
  * across a secure boundary (e.g., between an untrusted client and a trusted server).
  *
- * Messages are wrapped in an envelope with a `type` field to distinguish
- * between client-to-server and server-to-client messages.
+ * Messages are wrapped in a {@link WsEnvelope} with an `event` field to distinguish
+ * message types (replicating Socket.IO named events) and an optional `id` / `ack`
+ * pair to support request/response semantics (replicating Socket.IO's emitWithAck).
  *
  * @example
  * ```typescript
@@ -36,10 +28,10 @@ export class WebSocketMessaging extends AbstractMessaging {
 
     this.ws.onmessage = (event: MessageEvent) => {
       try {
-        const envelope: WebSocketEnvelope = JSON.parse(event.data);
+        const envelope: WsEnvelope = JSON.parse(event.data);
 
-        // Only process client messages (messages from the other side)
-        if (envelope.type === CLIENT_MESSAGE) {
+        // Only process client-side messages (messages addressed to this side)
+        if (envelope.event === CLIENT_MESSAGE) {
           this.listeners.forEach(listener => {
             if (listener.filter(envelope.payload)) {
               listener.action(envelope.payload);
@@ -87,8 +79,8 @@ export class WebSocketMessaging extends AbstractMessaging {
       throw new Error('WebSocket is not open');
     }
 
-    const envelope: WebSocketEnvelope = {
-      type: SERVER_MESSAGE,
+    const envelope: WsEnvelope = {
+      event: SERVER_MESSAGE,
       payload: message,
     };
 

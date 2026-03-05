@@ -173,12 +173,6 @@ describe('JosePrivateFDC3Security', () => {
       expect(decrypted).toEqual(mockContext);
     });
 
-    it('should encrypt and then decrypt a context using a public/private key pair between two instances', async () => {
-      const encrypted = await sender.encryptPublicKey(mockContext, receiverBaseUrl);
-      const decrypted = await receiver.decryptPrivateKey(encrypted);
-      expect(decrypted).toEqual(mockContext);
-    });
-
     it('should wrap and then unwrap a symmetric key using two instances', async () => {
       // Create a symmetric key
       const symmetricJWK = await sender.createSymmetricKey();

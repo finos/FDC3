@@ -128,7 +128,7 @@ export class JosePrivateFDC3Security extends JosePublicFDC3Security implements P
     const wrapped = await new jose.CompactEncrypt(data).setProtectedHeader(protectedHeader).encrypt(key);
 
     return {
-      type: 'fdc3.security.symmetricKey.response',
+      type: 'fdc3.security.symmetricKeyResponse',
       wrappedKey: wrapped,
       id: {
         pki: publicKeyUrl,
