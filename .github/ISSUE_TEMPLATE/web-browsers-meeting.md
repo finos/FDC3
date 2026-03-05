@@ -1,23 +1,23 @@
 ---
-name: Standard WG Meeting
-about: minutes for an FDC3 Standard Working Group Meeting
-title: 'Standard WG Meeting - mmm dd, yyyy'
-labels: Standard WG Meeting, meeting
+name: Web Browsers group meeting
+about: Overview and notes for a discussion group
+title: 'Web Browsers group meeting - mmm dd, yyyy'
+labels: FDC3 for Web Browsers, meeting
 assignees: ''
 ---
 
-## Date
+## Meeting Date
 
 Thursday DD MMM yyyy - 10am (US eastern timezone EST/EDT) / 3pm (London, GMT/BST)
 
 ### Zoom info
 
+
 Register to the meeting series to receive an invitation:
-https://zoom-lfx.platform.linuxfoundation.org/meeting/96839365264?password=b5c2bc6a-bc47-43a5-bc49-7be3e0b422c3&invite=true
+https://zoom-lfx.platform.linuxfoundation.org/meeting/96615992377?password=88ed4841-afa2-41a6-8de3-e246967e5566&invite=true
 
 Join Zoom Meeting:
-https://zoom-lfx.platform.linuxfoundation.org/meeting/96839365264?password=b5c2bc6a-bc47-43a5-bc49-7be3e0b422c3
-
+https://zoom-lfx.platform.linuxfoundation.org/meeting/96615992377?password=88ed4841-afa2-41a6-8de3-e246967e5566
 
 ## Meeting notices
 
@@ -25,15 +25,17 @@ https://zoom-lfx.platform.linuxfoundation.org/meeting/96839365264?password=b5c2b
 
 - **All participants** in FINOS project meetings are subject to the [LF Antitrust Policy](https://www.linuxfoundation.org/antitrust-policy/), the [FINOS Community Code of Conduct](https://community.finos.org/docs/governance/code-of-conduct) and all other [FINOS policies](https://community.finos.org/docs/governance/#policies).
 
-- FINOS meetings involve participation by industry competitors, and it is the intention of FINOS and the Linux Foundation to conduct all of its activities in accordance with applicable antitrust and competition laws. It is therefore extremely important that attendees adhere to meeting agendas, and be aware of, and not participate in, any activities that are prohibited under applicable US state, federal or foreign antitrust and competition laws. Please contact legal@finos.org with any questions.
+- FINOS meetings involve participation by industry competitors, and it is the intention of FINOS and the Linux Foundation to conduct all of its activities in accordance with applicable antitrust and competition laws. It is therefore extremely important that attendees adhere to meeting agendas, and be aware of, and not participate in, any activities that are prohibited under applicable US state, federal or foreign antitrust and competition laws. Please contact <legal@finos.org> with any questions.
 
 - FINOS project meetings may be recorded for use solely by the FINOS team for administration purposes. In very limited instances, and with explicit approval, recordings may be made more widely available.
+  
+- A Discussion Group has no direct decision-making power regarding the FDC3 standard - rather it is intended that anything they propose or work on will result in proposals (via Github issues and PRs) for the Standards Working Group participants to consider and vote on for inclusion in the standard.
 
 ## Participation Requirements
 
- **Note:** Meeting participants are expected to accept the terms of the FDC3 license (Community Specification License), understand the governance process and have a CLA in place.  
+**Note:** Meeting participants are expected to accept the terms of the FDC3 license (Community Specification License), understand the governance process and have a CLA in place.  
 
- Please click the following links at the start of the meeting if you have not done so previously.
+Please click the following links at the start of the meeting if you have not done so previously.
 
 - [View the CSL](https://github.com/finos/FDC3/blob/main/LICENSE.md)
 - [View the GOVERNANCE of the Project](https://github.com/finos/FDC3/blob/main/GOVERNANCE.md)
@@ -56,3 +58,13 @@ https://zoom-lfx.platform.linuxfoundation.org/meeting/96839365264?password=b5c2b
 ## Minutes
 
 - ...
+
+## Action Items
+
+- [ ] ...
+
+## Untracked attendees
+
+| Full name | Affiliation | GitHub username |
+|-----------|-------------|-----------------|
+|           |             |                 |
