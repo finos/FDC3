@@ -1,43 +1,47 @@
-import { AbstractMessaging, RegisterableListener } from '@finos/fdc3-agent-proxy';
 import { CLIENT_MESSAGE, SERVER_MESSAGE, WsEnvelope } from './MessageTypes';
 import { AppIdentifier } from '@finos/fdc3-standard';
 import { v4 as uuidv4 } from 'uuid';
-import { AppRequestMessage } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import {
+  AppRequestMessage,
+  AgentEventMessage,
+  AgentResponseMessage,
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { Messaging, RegisterableListener } from './Messaging';
 
 /**
  * Implementation of Messaging that uses native WebSocket to communicate
- * across a secure boundary (e.g., between an untrusted client and a trusted server).
- *
- * Messages are wrapped in a {@link WsEnvelope} with an `event` field to distinguish
- * message types (replicating Socket.IO named events) and an optional `id` / `ack`
- * pair to support request/response semantics (replicating Socket.IO's emitWithAck).
- *
- * @example
- * ```typescript
- * const ws = new WebSocket('wss://trusted-server.example.com');
- * const messaging = new WebSocketMessaging(ws, { appId: 'my-app' });
- * ```
+ * across a secure boundary.
  */
-export class WebSocketMessaging extends AbstractMessaging {
+export class WebSocketMessaging implements Messaging {
   private readonly listeners: Map<string, RegisterableListener> = new Map();
   private readonly ws: WebSocket;
+  readonly appIdentifier: AppIdentifier;
+  readonly outgoingEvent: typeof CLIENT_MESSAGE | typeof SERVER_MESSAGE;
+  readonly incomingEvent: typeof CLIENT_MESSAGE | typeof SERVER_MESSAGE;
 
-  constructor(ws: WebSocket, appIdentifier: AppIdentifier) {
-    super(appIdentifier);
+  constructor(
+    ws: WebSocket,
+    appIdentifier: AppIdentifier,
+    options: {
+      outgoingEvent?: typeof CLIENT_MESSAGE | typeof SERVER_MESSAGE;
+      incomingEvent?: typeof CLIENT_MESSAGE | typeof SERVER_MESSAGE;
+    } = {}
+  ) {
     this.ws = ws;
+    this.appIdentifier = appIdentifier;
+    this.outgoingEvent = options.outgoingEvent || (SERVER_MESSAGE as any);
+    this.incomingEvent = options.incomingEvent || (CLIENT_MESSAGE as any);
 
     this.ws.onmessage = (event: MessageEvent) => {
       try {
         const envelope: WsEnvelope = JSON.parse(event.data);
+        const { event: evtName, payload, id } = envelope;
 
-        // Only process client-side messages (messages addressed to this side)
-        if (envelope.event === CLIENT_MESSAGE) {
-          this.listeners.forEach(listener => {
-            if (listener.filter(envelope.payload)) {
-              listener.action(envelope.payload);
-            }
-          });
-        }
+        this.listeners.forEach(listener => {
+          if (listener.filter(payload, evtName)) {
+            listener.action(payload, evtName, id);
+          }
+        });
       } catch (error) {
         console.error('Failed to parse WebSocket message:', error);
       }
@@ -66,7 +70,7 @@ export class WebSocketMessaging extends AbstractMessaging {
   }
 
   async disconnect(): Promise<void> {
-    this.listeners.forEach(l => l.unsubscribe());
+    this.listeners.forEach(l => l.unsubscribe?.());
     this.listeners.clear();
 
     if (this.ws.readyState === WebSocket.OPEN) {
@@ -74,16 +78,65 @@ export class WebSocketMessaging extends AbstractMessaging {
     }
   }
 
-  async post(message: unknown): Promise<void> {
-    if (this.ws.readyState !== WebSocket.OPEN) {
+  async post(message: AppRequestMessage | AgentEventMessage | AgentResponseMessage): Promise<void> {
+    return this.postEvent(this.outgoingEvent, message);
+  }
+
+  async postEvent(event: WsEnvelope['event'], payload: any, id?: string): Promise<void> {
+    if (this.ws.readyState !== 1 /* WebSocket.OPEN */) {
       throw new Error('WebSocket is not open');
     }
 
-    const envelope: WsEnvelope = {
-      event: SERVER_MESSAGE,
-      payload: message,
-    };
-
+    const envelope = { event, payload, id } as WsEnvelope;
     this.ws.send(JSON.stringify(envelope));
+  }
+
+  async exchange<X>(
+    message: any,
+    expectedTypeOrEvent: string,
+    timeoutMs: number,
+    eventName?: WsEnvelope['event']
+  ): Promise<X> {
+    const correlationId = this.createUUID();
+    return new Promise<X>((resolve, reject) => {
+      let done = false;
+      const timeout = setTimeout(() => {
+        this.unregister(correlationId);
+        if (!done) {
+          reject(new Error(`Timed out waiting for ${expectedTypeOrEvent}`));
+        }
+      }, timeoutMs);
+
+      const l: RegisterableListener = {
+        id: correlationId,
+        filter: (m: any, evt: WsEnvelope['event']) => {
+          // If it's an ack for this request, it's definitely for us
+          if (evt === `ack:${correlationId}`) return true;
+          // If it's a standard FDC3 message, check type and request ID
+          if (evt === this.incomingEvent) {
+            return m?.type === expectedTypeOrEvent && m?.meta?.requestUuid === message.meta?.requestUuid;
+          }
+          // Otherwise, it might be a direct event response if we used a custom event
+          return evt === expectedTypeOrEvent;
+        },
+        action: (m: any) => {
+          done = true;
+          this.unregister(correlationId);
+          clearTimeout(timeout);
+          if (m?.payload?.error) {
+            reject(new Error(m.payload.error));
+          } else {
+            resolve(m as X);
+          }
+        },
+      };
+
+      this.register(l);
+      this.postEvent(eventName || this.outgoingEvent, message, correlationId).catch(err => {
+        clearTimeout(timeout);
+        this.unregister(correlationId);
+        reject(err);
+      });
+    });
   }
 }

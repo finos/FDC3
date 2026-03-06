@@ -1,11 +1,13 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
 import { BrowserTypes } from '@finos/fdc3-schema';
+
+type AntiReplay = BrowserTypes.AntiReplayClaims;
 import * as jose from 'jose';
-import { DEFAULT_FDC3_ALGORITHMS, FDC3SecurityAlgorithms } from '../FDC3SecurityAlgorithms';
-import { DEFAULT_FDC3_TIME_LIMITS, FDC3SecurityTimeLimits } from '../FDC3SecurityTimeLimits';
-import { FDC3UserClaims } from '../FDC3UserClaims';
-import { PrivateFDC3Security } from '../PrivateFDC3Security';
-import { JSONWebEncryption } from '../PublicFDC3Security';
+import { DEFAULT_FDC3_ALGORITHMS, FDC3SecurityAlgorithms } from './FDC3SecurityAlgorithms';
+import { DEFAULT_FDC3_TIME_LIMITS, FDC3SecurityTimeLimits } from './FDC3SecurityTimeLimits';
+import { FDC3UserClaims } from './FDC3UserClaims';
+import { PrivateFDC3Security } from './PrivateFDC3Security';
+import { JSONWebEncryption } from './PublicFDC3Security';
 import { AllowListFunction, JosePublicFDC3Security, JSONWebKeyWithId, JWKSResolver } from './JosePublicFDC3Security';
 
 type DetachedSignature = BrowserTypes.DetachedSignature;
@@ -92,9 +94,15 @@ export class JosePrivateFDC3Security extends JosePublicFDC3Security implements P
     return JSON.parse(new TextDecoder().decode(plaintext));
   }
 
-  async sign(ctx: Context): Promise<DetachedSignature> {
-    const data = this.canonicalize(ctx);
+  async sign(ctx: Context): Promise<{ signature: DetachedSignature; antiReplay: AntiReplay }> {
     const now = Math.floor(Date.now() / 1000); // Current time in seconds
+    const antiReplay: AntiReplay = {
+      iat: now,
+      exp: now + this.timeLimits.contextValiditySeconds,
+      jti: crypto.randomUUID(),
+    };
+
+    const data = this.canonicalize({ context: ctx, antiReplay });
     const key = await jose.importJWK(this.signingPrivateKey, this.algorithms.signing);
     const jws = await new jose.CompactSign(data)
       .setProtectedHeader({
@@ -107,8 +115,11 @@ export class JosePrivateFDC3Security extends JosePublicFDC3Security implements P
     const parts = jws.split('.');
 
     return {
-      protected: parts[0],
-      signature: parts[2],
+      signature: {
+        protected: parts[0],
+        signature: parts[2],
+      },
+      antiReplay,
     };
   }
 

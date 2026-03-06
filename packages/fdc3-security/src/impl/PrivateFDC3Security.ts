@@ -1,6 +1,8 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
 import { BrowserTypes } from '@finos/fdc3-schema';
-import { JSONWebEncryption, PublicFDC3Security } from './PublicFDC3Security';
+
+type AntiReplay = BrowserTypes.AntiReplayClaims;
+import { PublicFDC3Security } from './PublicFDC3Security';
 
 type DetachedSignature = BrowserTypes.DetachedSignature;
 
@@ -19,14 +21,13 @@ type DetachedSignature = BrowserTypes.DetachedSignature;
  * @see FDC3 Security & Identity documentation for usage in FDC3 workflows at https://fdc3.finos.org.
  */
 export interface PrivateFDC3Security extends PublicFDC3Security {
-
   /**
    * Sign a context object with this app's private key.
    *
    * Creates a detached JWS signature over the canonicalized context,
    * optionally including intent and channel information in the signed payload.
-   * 
-   * Note:  The `antiReplay` field should be added to the context before calling this, in order to 
+   *
+   * Note:  The `antiReplay` field should be added to the context before calling this, in order to
    * avoid replay attacks.
    *
    * @param ctx - The context object to sign
@@ -36,11 +37,11 @@ export interface PrivateFDC3Security extends PublicFDC3Security {
    *
    * @example
    * ```typescript
-   * const signature = await security.sign(context);
-   * // Include signature in metadata when broadcasting
+   * const { signature, antiReplay } = await security.sign(context);
+   * // Include signature and antiReplay in metadata when broadcasting
    * ```
    */
-  sign(ctx: Context): Promise<DetachedSignature>;
+  sign(ctx: Context): Promise<{ signature: DetachedSignature; antiReplay: AntiReplay }>;
 
   /**
    * Create a new symmetric key for channel encryption.
