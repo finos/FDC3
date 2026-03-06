@@ -1,4 +1,4 @@
-import { Context } from '@finos/fdc3-context';
+import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
 import { BrowserTypes } from '@finos/fdc3-schema';
 
 type AntiReplay = BrowserTypes.AntiReplayClaims;
@@ -8,6 +8,7 @@ import { DEFAULT_FDC3_ALGORITHMS, FDC3SecurityAlgorithms } from './FDC3SecurityA
 import { DEFAULT_FDC3_TIME_LIMITS, FDC3SecurityTimeLimits } from './FDC3SecurityTimeLimits';
 import { FDC3UserClaims } from './FDC3UserClaims';
 import { PublicFDC3Security } from './PublicFDC3Security';
+import { AntiReplayChecker, DefaultAntiReplayChecker } from './AntiReplayChecker';
 
 type MessageAuthenticity = BrowserTypes.MessageAuthenticity;
 type JSONWebEncryption = string;
@@ -17,6 +18,14 @@ type DetachedSignature = BrowserTypes.DetachedSignature;
 export type JSONWebKeyWithId = JsonWebKey & {
   kid?: string; // Key ID
   alg: string; // Algorithm used for the key
+};
+
+/**
+ * JWE protected header parameters for encryption operations.
+ */
+export type JWEProtectedHeader = {
+  alg: string;
+  enc: string;
 };
 
 export type JWKSResolver = {
@@ -45,6 +54,7 @@ export type AllowListFunction = (jku: string, iss?: string) => boolean;
  * @param allowListFunction - Function to check if a URL is trusted
  * @param timeLimits - Optional time limits for signature freshness and context validity
  * @param algorithms - Optional algorithm configuration (defaults to EdDSA/RSA-OAEP-256/A256GCM)
+ * @param antiReplayChecker - Checks for replay attacks
  */
 export class JosePublicFDC3Security implements PublicFDC3Security {
   readonly signingPublicKey: JSONWebKeyWithId;
@@ -53,6 +63,7 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
   readonly publicKeyResolver: (url: string) => JWKSResolver;
   readonly allowListFunction: AllowListFunction;
   readonly algorithms: FDC3SecurityAlgorithms;
+  readonly antiReplayChecker?: AntiReplayChecker;
 
   constructor(
     signingPublicKey: JsonWebKey,
@@ -60,12 +71,14 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
     publicKeyResolver: (url: string) => JWKSResolver,
     allowListFunction: AllowListFunction,
     timeLimits: FDC3SecurityTimeLimits = DEFAULT_FDC3_TIME_LIMITS,
-    algorithms: FDC3SecurityAlgorithms = DEFAULT_FDC3_ALGORITHMS
+    algorithms: FDC3SecurityAlgorithms = DEFAULT_FDC3_ALGORITHMS,
+    antiReplayChecker: AntiReplayChecker = new DefaultAntiReplayChecker()
   ) {
     this.allowListFunction = allowListFunction;
     this.timeLimits = timeLimits;
     this.publicKeyResolver = publicKeyResolver;
     this.algorithms = algorithms;
+    this.antiReplayChecker = antiReplayChecker;
 
     if (!(signingPublicKey as JSONWebKeyWithId).kid) {
       throw new Error("Signing public key must have a 'kid' (Key ID) property");
@@ -98,6 +111,20 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
     const [protectedHeaderJSON] = sig.split('.');
     const protectedHeader = JSON.parse(atob(protectedHeaderJSON));
     return { alg: protectedHeader.alg, jku: protectedHeader.jku, kid: protectedHeader.kid, iat: protectedHeader.iat };
+  }
+
+  protected async getPublicKey(publicKeyUrl: string, protectedHeader: JWEProtectedHeader): Promise<JSONWebKeyWithId> {
+    const JWKS = this.publicKeyResolver(publicKeyUrl);
+    await JWKS.reload();
+
+    const allKeys = JWKS.jwks()?.keys ?? [];
+    const key = allKeys.find((k: JsonWebKey) => k.alg == protectedHeader.alg);
+
+    if (key == undefined) {
+      throw new Error(`No key found for algorithm ${protectedHeader.alg}`);
+    }
+
+    return key as JSONWebKeyWithId;
   }
 
   /**
@@ -133,7 +160,11 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
       // Check signature freshness (based on iat in header)
       if (iat && now - iat > this.timeLimits.signatureFreshnessSeconds) {
         return {
-          signed: false,
+          signed: true,
+          valid: false,
+          trusted: false,
+          antiReplayClaims: antiReplay,
+
           errors: [
             `Signature is too old (iat: ${iat}, now: ${now}, max age: ${this.timeLimits.signatureFreshnessSeconds}s)`,
           ],
@@ -146,6 +177,17 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
           signed: false,
           errors: [`Context has expired (exp: ${antiReplay.exp}, now: ${now})`],
         };
+      }
+
+      // Check pluggable anti-replay claims (like jti)
+      if (this.antiReplayChecker) {
+        const replayValid = await this.antiReplayChecker.check(antiReplay);
+        if (!replayValid) {
+          return {
+            signed: false,
+            errors: [`Anti-replay check failed for jti: ${antiReplay.jti}`],
+          };
+        }
       }
 
       return {
@@ -167,6 +209,11 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
 
   getPublicKeys(): JSONWebKeyWithId[] {
     return [this.signingPublicKey, this.wrappingPublicKey];
+  }
+
+  async createSymmetricKey(): Promise<JsonWebKey> {
+    const secret = await jose.generateSecret(this.algorithms.contentEncryption, { extractable: true });
+    return jose.exportJWK(secret);
   }
 
   async verifyJWTToken(token: string): Promise<FDC3UserClaims> {
@@ -216,6 +263,26 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
     const decrypted = await jose.compactDecrypt(encrypted, key);
     const plaintext = decrypted.plaintext;
     return JSON.parse(new TextDecoder().decode(plaintext));
+  }
+
+  async wrapKey(symmetricKey: JsonWebKey, publicKeyUrl: string): Promise<SymmetricKeyResponse> {
+    const protectedHeader: JWEProtectedHeader = {
+      alg: this.algorithms.keyWrapping,
+      enc: this.algorithms.contentEncryption,
+    };
+    const data = this.canonicalizeKey(symmetricKey);
+    const jwk = await this.getPublicKey(publicKeyUrl, protectedHeader);
+    const key = await jose.importJWK(jwk, this.algorithms.keyWrapping);
+    const wrapped = await new jose.CompactEncrypt(data).setProtectedHeader(protectedHeader).encrypt(key);
+
+    return {
+      type: 'fdc3.security.symmetricKeyResponse',
+      wrappedKey: wrapped,
+      id: {
+        pki: publicKeyUrl,
+        kid: jwk.kid ?? 'not specified',
+      },
+    };
   }
 }
 

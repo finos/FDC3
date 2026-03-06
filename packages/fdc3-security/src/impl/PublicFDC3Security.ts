@@ -1,4 +1,4 @@
-import { Context } from '@finos/fdc3-context';
+import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { FDC3UserClaims } from './FDC3UserClaims';
 
@@ -83,6 +83,16 @@ export interface PublicFDC3Security {
   verifyJWTToken(token: string): Promise<FDC3UserClaims>;
 
   /**
+   * Create a new symmetric key for channel encryption.
+   *
+   * Generates a cryptographically secure symmetric key suitable for
+   * encrypting context data on private channels.
+   *
+   * @returns A promise resolving to a new symmetric key in JWK format
+   */
+  createSymmetricKey(): Promise<JsonWebKey>;
+
+  /**
    * Encrypt a context using a symmetric key.
    *
    * Used for encrypting context data on private channels. The symmetric
@@ -108,4 +118,18 @@ export interface PublicFDC3Security {
    * @throws Error if decryption fails (wrong key, corrupted data, etc.)
    */
   decryptSymmetric(encrypted: JSONWebEncryption, symmetricKey: JsonWebKey): Promise<Context>;
+
+  /**
+   * Wrap a symmetric key for secure delivery to a recipient.
+   *
+   * Encrypts the symmetric key using the recipient's public key so it can
+   * be safely transmitted. Used when responding to `fdc3.security.symmetricKey.request`.
+   *
+   * @param symmetricKey - The symmetric key to wrap
+   * @param publicKeyUrl - URL to the recipient's JWKS containing their public key
+   * @returns A promise resolving to a SymmetricKeyResponse context
+   *
+   * @see `fdc3.security.symmetricKey.response` context type
+   */
+  wrapKey(symmetricKey: JsonWebKey, publicKeyUrl: string): Promise<SymmetricKeyResponse>;
 }
