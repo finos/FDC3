@@ -1,9 +1,9 @@
 import { Context } from '@finos/fdc3-context';
 import { BrowserTypes } from '@finos/fdc3-schema';
-
-import { MessageAuthenticity } from './MessageAuthenticity';
 import { FDC3UserClaims } from './FDC3UserClaims';
 
+type AntiReplay = BrowserTypes.AntiReplayClaims;
+type MessageAuthenticity = BrowserTypes.MessageAuthenticity;
 type DetachedSignature = BrowserTypes.DetachedSignature;
 
 /**
@@ -37,19 +37,20 @@ export interface PublicFDC3Security {
    * signature's protected header and verifying the cryptographic signature.
    *
    * @param sig - The detached JWS signature to verify
-   * @param ctx - The context object that was signed (the detached payload)
+   * @param ctx - The context object that was signed (part of the detached payload)
+   * @param antiReplay - The anti-replay claims (signed along with context, part of the detached payload)
    * @returns A promise resolving to authenticity information indicating
    *          whether the context was signed, valid, and trusted
    *
    * @example
    * ```typescript
-   * const authenticity = await security.check(metadata.signature, context);
+   * const authenticity = await security.check(metadata.signature, context, metadata.antiReplay);
    * if (authenticity.signed && authenticity.valid) {
    *   console.log(`Verified from: ${authenticity.publicKeyUrl}`);
    * }
    * ```
    */
-  check(sig: DetachedSignature, ctx: Context): Promise<MessageAuthenticity>;
+  check(sig: DetachedSignature, ctx: Context, antiReplay: AntiReplay): Promise<MessageAuthenticity>;
 
   /**
    * Get the public keys configured in this security implementation.

@@ -3,7 +3,11 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import { DetachedSignature } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import {
+  AntiReplayClaims,
+  DetachedSignature,
+  MessageAuthenticity,
+} from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { AppIdentifier } from './AppIdentifier';
 
 /**
@@ -23,9 +27,11 @@ export interface ContextMetadata {
   readonly signature?: DetachedSignature;
 
   /** The result of verifying the context's signature, populated by the receiving app's
-   * security layer after attempting signature verification.  See: [Security & Identity
-   * documentation](../../api/security#authenticity-metadata). */
-  readonly authenticity?: unknown;
+   * security layer after attempting signature verification.
+   **/
+  readonly authenticity?: MessageAuthenticity;
+
+  readonly antiReplay?: AntiReplayClaims;
 
   /** The result of attempting to decrypt the context, populated by the receiving app's
    * security layer after attempting decryption.  See: [Security & Identity
@@ -34,7 +40,7 @@ export interface ContextMetadata {
 }
 
 export interface AppProvidableContextMetadata {
-  signature?: string;
+  signature?: DetachedSignature;
   traceId?: string;
 }
 

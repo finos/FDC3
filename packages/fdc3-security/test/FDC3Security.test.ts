@@ -2,9 +2,9 @@ import { JWKSResolver, JSONWebKeyWithId } from '../src/impl/JosePublicFDC3Securi
 import { JosePrivateFDC3Security, createJosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { Context } from '@finos/fdc3-context';
 import { BrowserTypes } from '@finos/fdc3-schema';
-import { FDC3SecurityTimeLimits } from '../src/FDC3SecurityTimeLimits';
-import { PublicFDC3Security } from '../src/PublicFDC3Security';
-import { PrivateFDC3Security } from '../src/PrivateFDC3Security';
+import { FDC3SecurityTimeLimits } from '../src/impl/FDC3SecurityTimeLimits';
+import { PublicFDC3Security } from '../src/impl/PublicFDC3Security';
+import { PrivateFDC3Security } from '../src/impl/PrivateFDC3Security';
 import * as jose from 'jose';
 
 type DetachedSignature = BrowserTypes.DetachedSignature;
@@ -151,15 +151,16 @@ describe('JosePrivateFDC3Security', () => {
 
   describe('integration', () => {
     it('should sign and then check a context using two instances', async () => {
-      const signature = await sender.sign(mockContext);
+      const { signature, antiReplay } = await sender.sign(mockContext);
       // Use PublicFDC3Security interface for coverage attribution
-      const result = await receiverPublic.check(signature, mockContext);
+      const result = await receiverPublic.check(signature, mockContext, antiReplay);
       if (result.signed) {
         expect(result.valid).toBe(true);
         expect(result.trusted).toBe(true);
         expect(result.jku).toBe(senderJWKSUrl);
         expect(result.alg).toBe('EdDSA');
         expect(result.kid).toBeDefined();
+        expect(result.antiReplayClaims).toEqual(antiReplay);
       } else {
         throw new Error('Expected a signed result: ' + JSON.stringify(result));
       }
@@ -198,7 +199,8 @@ describe('JosePrivateFDC3Security', () => {
         protected: 'invalid',
         signature: 'jws',
       };
-      const result = await receiverPublic.check(malformedSignature, mockContext);
+      const dummyAntiReplay = { iat: 0, exp: 0, jti: 'dummy' };
+      const result = await receiverPublic.check(malformedSignature, mockContext, dummyAntiReplay);
 
       expect(result.signed).toBe(false);
       // When signed is false, errors array may be present but other properties should not exist
@@ -210,13 +212,13 @@ describe('JosePrivateFDC3Security', () => {
 
     it('should reject stale signatures (signature freshness)', async () => {
       // Create a signature
-      const signature = await sender.sign(mockContext);
+      const { signature, antiReplay } = await sender.sign(mockContext);
 
       // Wait for the signature to become stale (2 seconds, receiver has 1-second freshness limit)
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Verify it's rejected due to stale signature
-      const result = await receiverPublic.check(signature, mockContext);
+      const result = await receiverPublic.check(signature, mockContext, antiReplay);
       expect(result.signed).toBe(false);
       expect('errors' in result).toBe(true);
       if (!result.signed && result.errors) {
@@ -226,28 +228,20 @@ describe('JosePrivateFDC3Security', () => {
     });
 
     it('should reject expired contexts (context validity)', async () => {
-      // Create a context with explicit antiReplay claims that will expire quickly
-      const now = Math.floor(Date.now() / 1000);
-      const contextWithExpiry: Context = {
-        ...mockContext,
-        antiReplay: {
-          iat: now,
-          exp: now + 1, // Expires in 1 second
-          jti: 'test-jti-' + Date.now(),
-        },
+      // Sign the context
+      const { signature, antiReplay } = await sender.sign(mockContext);
+
+      // Create an expired antiReplay token
+      const expiredAntiReplay = {
+        ...antiReplay,
+        exp: Math.floor(Date.now() / 1000) - 10,
       };
 
-      // Sign the context with explicit expiry
-      const signature = await sender.sign(contextWithExpiry);
-
-      // Immediately verify it works
-      const immediateResult = await receiverPublic.check(signature, contextWithExpiry);
+      // Immediately verify it works with original token
+      const immediateResult = await receiverPublic.check(signature, mockContext, antiReplay);
       if (immediateResult.signed) {
         expect(immediateResult.valid).toBe(true);
       }
-
-      // Wait for the context to expire
-      await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Create a new receiver with long signature freshness but short context validity
       const contextExpiryLimits: FDC3SecurityTimeLimits = {
@@ -261,8 +255,8 @@ describe('JosePrivateFDC3Security', () => {
         contextExpiryLimits
       );
 
-      // Verify it's rejected due to context expiry
-      const result = await contextExpiryReceiver.check(signature, contextWithExpiry);
+      // Verify it's rejected due to context expiry using the expired token
+      const result = await contextExpiryReceiver.check(signature, mockContext, expiredAntiReplay);
       expect(result.signed).toBe(false);
       expect('errors' in result).toBe(true);
       if (!result.signed && result.errors) {
@@ -281,8 +275,8 @@ describe('JosePrivateFDC3Security', () => {
         protected: headerBase64,
         signature: 'dummy',
       };
-
-      const result = await receiverPublic.check(malformedSignature, mockContext);
+      const dummyAntiReplay = { iat: 0, exp: 0, jti: 'dummy' };
+      const result = await receiverPublic.check(malformedSignature, mockContext, dummyAntiReplay);
 
       expect(result.signed).toBe(false);
       expect('errors' in result).toBe(true);

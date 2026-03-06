@@ -1249,42 +1249,6 @@ export interface Context {
    * information about context data types.
    */
   type: string;
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
-  [property: string]: any;
-}
-
-/**
- * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
- * including timing and uniqueness information that is covered by the JOSE (JSON Object
- * Signing and Encryption) signature. This field can be automatically added by the FDC3
- * signing code when signing a context. The fields follow the JWT claims defined in [RFC
- * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
- * Identity documentation](../../api/security) for details.
- */
-export interface AntiReplay {
-  /**
-   * Expiration time as a Unix timestamp (seconds since epoch). Receivers should reject
-   * contexts past this time.
-   */
-  exp: number;
-  /**
-   * Issued at time as a Unix timestamp (seconds since epoch). Indicates when the context was
-   * created.
-   */
-  iat: number;
-  /**
-   * Unique identifier for this context instance. Used to detect and reject duplicate/replayed
-   * contexts.
-   */
-  jti: string;
   [property: string]: any;
 }
 
@@ -1294,6 +1258,11 @@ export interface AntiReplay {
  * request.
  */
 export interface ContextMetadata {
+  /**
+   * The result of verifying the context's signature, populated by the receiving app's
+   * security layer after attempting signature verification.
+   */
+  authenticity?: MessageAuthenticity;
   /**
    * Custom metadata that can be used to provide additional information about the context or
    * intent. This allows for individuals to use metadata fields that have yet to be
@@ -1318,6 +1287,66 @@ export interface ContextMetadata {
    * intent through the system.
    */
   traceId: string;
+}
+
+/**
+ * The result of verifying the context's signature, populated by the receiving app's
+ * security layer after attempting signature verification.
+ *
+ * Verification outcomes for signed context objects.
+ */
+export interface MessageAuthenticity {
+  /**
+   * The signature algorithm used (from JWS protected header).
+   */
+  alg?: string;
+  antiReplayClaims?: AntiReplayClaims;
+  /**
+   * Human-readable diagnostics (optional).
+   */
+  errors?: string[];
+  /**
+   * The JSON Web Key Set URL where the public key can be retrieved (from JWS protected
+   * header).
+   */
+  jku?: string;
+  /**
+   * The key identifier used to sign the message (from JWS protected header).
+   */
+  kid?: string;
+  /**
+   * Indicates whether the message was signed.
+   */
+  signed: boolean;
+  /**
+   * True if the signing key was obtained from an approved/trusted source.
+   */
+  trusted?: boolean;
+  /**
+   * True if the JWS cryptographically verifies against the signed bytes.
+   */
+  valid?: boolean;
+}
+
+/**
+ * Anti-replay claims extracted from the context's antiReplay field after verification.
+ *
+ * Should be populated when the context is signed.  Included in the signature.  Prevents
+ * replay attacks where context objects are re-used.
+ */
+export interface AntiReplayClaims {
+  /**
+   * Expiration time as a Unix timestamp (seconds since epoch).
+   */
+  exp: number;
+  /**
+   * Issued at time as a Unix timestamp (seconds since epoch).
+   */
+  iat: number;
+  /**
+   * Unique identifier for this context instance.
+   */
+  jti: string;
 }
 
 /**
@@ -1390,6 +1419,11 @@ export interface BroadcastRequestPayload {
  * call.
  */
 export interface AppProvidableContextMetadata {
+  /**
+   * Should be populated when the context is signed.  Included in the signature.  Prevents
+   * replay attacks where context objects are re-used.
+   */
+  antiReplay?: AntiReplayClaims;
   custom?: { [key: string]: any };
   /**
    * A Detached JSON Web Signature (JWS) proving the authenticity and integrity of the context.
@@ -5362,25 +5396,38 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: '' },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
-    ],
-    'any'
-  ),
-  AntiReplay: o(
-    [
-      { json: 'exp', js: 'exp', typ: 3.14 },
-      { json: 'iat', js: 'iat', typ: 3.14 },
-      { json: 'jti', js: 'jti', typ: '' },
     ],
     'any'
   ),
   ContextMetadata: o(
     [
+      { json: 'authenticity', js: 'authenticity', typ: u(undefined, r('MessageAuthenticity')) },
       { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
       { json: 'signature', js: 'signature', typ: u(undefined, r('DetachedSignature')) },
       { json: 'source', js: 'source', typ: r('AppIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'traceId', js: 'traceId', typ: '' },
+    ],
+    false
+  ),
+  MessageAuthenticity: o(
+    [
+      { json: 'alg', js: 'alg', typ: u(undefined, '') },
+      { json: 'antiReplayClaims', js: 'antiReplayClaims', typ: u(undefined, r('AntiReplayClaims')) },
+      { json: 'errors', js: 'errors', typ: u(undefined, a('')) },
+      { json: 'jku', js: 'jku', typ: u(undefined, '') },
+      { json: 'kid', js: 'kid', typ: u(undefined, '') },
+      { json: 'signed', js: 'signed', typ: true },
+      { json: 'trusted', js: 'trusted', typ: u(undefined, true) },
+      { json: 'valid', js: 'valid', typ: u(undefined, true) },
+    ],
+    false
+  ),
+  AntiReplayClaims: o(
+    [
+      { json: 'exp', js: 'exp', typ: 3.14 },
+      { json: 'iat', js: 'iat', typ: 3.14 },
+      { json: 'jti', js: 'jti', typ: '' },
     ],
     false
   ),
@@ -5409,6 +5456,7 @@ const typeMap: any = {
   ),
   AppProvidableContextMetadata: o(
     [
+      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplayClaims')) },
       { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
       { json: 'signature', js: 'signature', typ: u(undefined, r('DetachedSignature')) },
       { json: 'traceId', js: 'traceId', typ: u(undefined, '') },

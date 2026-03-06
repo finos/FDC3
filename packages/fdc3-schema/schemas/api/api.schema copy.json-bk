@@ -54,46 +54,76 @@
             "type": "object",
             "title": "Message Authenticity",
             "description": "Verification outcomes for signed context objects.",
-            "properties": {
-                "signed": {
-                    "type": "boolean",
-                    "description": "Indicates whether the message was signed."
-                },
-                "valid": {
-                    "type": "boolean",
-                    "description": "True if the JWS cryptographically verifies against the signed bytes."
-                },
-                "trusted": {
-                    "type": "boolean",
-                    "description": "True if the signing key was obtained from an approved/trusted source."
-                },
-                "alg": {
-                    "type": "string",
-                    "description": "The signature algorithm used (from JWS protected header)."
-                },
-                "kid": {
-                    "type": "string",
-                    "description": "The key identifier used to sign the message (from JWS protected header)."
-                },
-                "jku": {
-                    "type": "string",
-                    "description": "The JSON Web Key Set URL where the public key can be retrieved (from JWS protected header)."
-                },
-                "antiReplayClaims": {
-                    "$ref": "#/definitions/AntiReplay"
-                },
-                "errors": {
-                    "type": "array",
-                    "items": {
-                        "type": "string"
+            "oneOf": [
+                {
+                    "title": "Signed Message Authenticity",
+                    "type": "object",
+                    "properties": {
+                        "signed": {
+                            "const": true,
+                            "type": "boolean"
+                        },
+                        "valid": {
+                            "type": "boolean",
+                            "description": "True if the JWS cryptographically verifies against the signed bytes."
+                        },
+                        "trusted": {
+                            "type": "boolean",
+                            "description": "True if the signing key was obtained from an approved/trusted source."
+                        },
+                        "alg": {
+                            "type": "string",
+                            "description": "The signature algorithm used (from JWS protected header)."
+                        },
+                        "kid": {
+                            "type": "string",
+                            "description": "The key identifier used to sign the message (from JWS protected header)."
+                        },
+                        "jku": {
+                            "type": "string",
+                            "description": "The JSON Web Key Set URL where the public key can be retrieved (from JWS protected header)."
+                        },
+                        "antiReplayClaims": {
+                            "$ref": "#/definitions/AntiReplay"
+                        },
+                        "error": {
+                            "type": "string",
+                            "description": "Human-readable diagnostics (optional)."
+                        }
                     },
-                    "description": "Human-readable diagnostics (optional)."
+                    "required": [
+                        "signed",
+                        "valid",
+                        "trusted",
+                        "alg",
+                        "kid",
+                        "jku",
+                        "antiReplayClaims"
+                    ],
+                    "additionalProperties": false
+                },
+                {
+                    "title": "Unsigned Message Authenticity",
+                    "type": "object",
+                    "properties": {
+                        "signed": {
+                            "const": false,
+                            "type": "boolean"
+                        },
+                        "errors": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "description": "Human-readable diagnostics (optional)."
+                        }
+                    },
+                    "required": [
+                        "signed"
+                    ],
+                    "additionalProperties": false
                 }
-            },
-            "required": [
-                "signed"
-            ],
-            "additionalProperties": false
+            ]
         },
         "AppIdentifier": {
             "description": "Identifies an application, or instance of an application, and is used to target FDC3 API calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application instances.\n\nWill always include at least an `appId` field, which uniquely identifies a specific app.\n\nIf the `instanceId` field is set then the `AppMetadata` object represents a specific instance of the application that may be addressed using that Id.",

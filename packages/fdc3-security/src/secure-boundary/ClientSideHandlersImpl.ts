@@ -2,13 +2,11 @@ import { Channel, DesktopAgent, IntentHandler, Listener, PrivateChannel } from '
 import { Context } from '@finos/fdc3-context';
 import {
   REMOTE_INTENT_HANDLER,
-  RemoteIntentHandlerMessage,
   EXCHANGE_DATA,
   HANDLE_REMOTE_CHANNEL,
   CLIENT_MESSAGE,
   SERVER_MESSAGE,
   ExchangeDataMessage,
-  WsEnvelope,
 } from './MessageTypes';
 import { FDC3Handlers } from './FDC3Handlers';
 import {
@@ -23,101 +21,50 @@ import {
   PrivateChannelDisconnectRequest,
   PrivateChannelDisconnectResponse,
 } from '@finos/fdc3-schema/generated/api/BrowserTypes';
-import { v4 as uuidv4 } from 'uuid';
+import { Messaging } from './Messaging';
+import { WebSocketMessaging } from './WebSocketMessaging';
 
 /**
- * This class provides a set of helpers for clients to use
- * to move processing of secure FDC3 intents and contexts to the
- * server-side using plain WebSocket communication.
+ * Client-side implementation of FDC3 secure boundary handlers.
  */
 export class ClientSideHandlersImpl implements FDC3Handlers {
-  private readonly ws: WebSocket;
+  private readonly messaging: Messaging;
   private readonly desktopAgent: DesktopAgent;
   private readonly channels: Map<string, Channel> = new Map();
   private readonly contextListeners: Map<string, Listener> = new Map();
   private readonly callback: (ctx: ExchangeDataMessage) => Promise<ExchangeDataMessage | void>;
 
-  /** Pending request/response pairs keyed by correlation id. */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private readonly pending: Map<string, (value: any) => void> = new Map();
-
   constructor(
-    ws: WebSocket,
+    messaging: Messaging,
     desktopAgent: DesktopAgent,
     callback: (ctx: ExchangeDataMessage) => Promise<ExchangeDataMessage | void>
   ) {
-    this.ws = ws;
+    this.messaging = messaging;
     this.desktopAgent = desktopAgent;
     this.callback = callback;
 
-    this.ws.onmessage = async (event: MessageEvent) => {
-      let envelope: WsEnvelope;
-      try {
-        envelope = JSON.parse(event.data) as WsEnvelope;
-      } catch {
-        console.error('Failed to parse WebSocket message');
-        return;
-      }
+    // Register listener for FDC3 Proxy messages (SERVER_MESSAGE)
+    this.messaging.register({
+      id: 'fdc3-proxy-handler',
+      filter: (_, event) => event === SERVER_MESSAGE,
+      action: async (payload: AppRequestMessage) => {
+        const out = await this.handleServerMessage(payload);
+        if (out) this.messaging.post(out);
+      },
+    });
 
-      const { event: evtName, id, ack, payload } = envelope;
-
-      // --- Acknowledgements for our own emitWithAck requests ---
-      if (ack && id && evtName.startsWith('ack:')) {
-        const resolve = this.pending.get(evtName.slice(4));
-        if (resolve) {
-          this.pending.delete(evtName.slice(4));
-          resolve(payload);
-        }
-        return;
-      }
-
-      // --- Server-push: server-side message (e.g. broadcastRequest) ---
-      if (evtName === SERVER_MESSAGE) {
-        const out = await this.handleServerMessage(payload as AppRequestMessage);
-        if (out) {
-          console.log('emitting client message', out);
-          this.send({ event: CLIENT_MESSAGE, payload: out });
-        }
-        return;
-      }
-
-      // --- Server-push: exchange-data callback (e.g. price streams) ---
-      if (evtName === EXCHANGE_DATA) {
-        const out = await this.callback(payload as ExchangeDataMessage);
-        if (out) {
-          // Send the reply back — server listens for this with its own correlation scheme
-          this.send({ event: EXCHANGE_DATA, payload: out });
-        }
-        return;
-      }
-    };
-  }
-
-  // ---------------------------------------------------------------------------
-  // Internal helpers
-  // ---------------------------------------------------------------------------
-
-  private send(envelope: WsEnvelope): void {
-    if (this.ws.readyState === WebSocket.OPEN) {
-      this.ws.send(JSON.stringify(envelope));
-    }
-  }
-
-  /**
-   * Send an event to the server and wait for the acknowledgement.
-   * Replicates socket.io's `emitWithAck`.
-   */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private emitWithAck(eventName: string, payload: unknown): Promise<any> {
-    return new Promise(resolve => {
-      const id = uuidv4();
-      this.pending.set(id, resolve);
-      this.send({ event: eventName, id, payload });
+    // Register listener for exchange-data push messages
+    this.messaging.register({
+      id: 'exchange-data-handler',
+      filter: (_, event) => event === EXCHANGE_DATA,
+      action: async (payload: ExchangeDataMessage) => {
+        const out = await this.callback(payload);
+        if (out) this.messaging.postEvent(EXCHANGE_DATA, out);
+      },
     });
   }
 
   private async handleServerMessage(data: AppRequestMessage) {
-    console.log('SERVER_MESSAGE', data);
     switch (data.type) {
       case 'broadcastRequest':
         return this.handleBroadcast(data as BroadcastRequest);
@@ -128,26 +75,18 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
       case 'privateChannelDisconnectRequest':
         return this.handlePrivateChannelDisconnect(data as PrivateChannelDisconnectRequest);
       default:
-        console.log('Unknown message type', data);
         return null;
     }
   }
 
-  createMetadata() {
-    return {
-      requestUuid: uuidv4(),
-      timestamp: new Date(),
-      eventUuid: uuidv4(),
-    };
+  // Security layer messages use exchange with named events
+  private async callRemote(eventName: string, payload: unknown): Promise<any> {
+    return this.messaging.exchange(payload, `ack:${eventName}`, 5000, eventName);
   }
-
-  // ---------------------------------------------------------------------------
-  // FDC3Handlers interface
-  // ---------------------------------------------------------------------------
 
   async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
     this.channels.set(channel.id, channel);
-    await this.emitWithAck(HANDLE_REMOTE_CHANNEL, {
+    await this.callRemote(HANDLE_REMOTE_CHANNEL, {
       purpose,
       channelId: channel.id,
       type: channel.type,
@@ -155,121 +94,76 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
   }
 
   async remoteIntentHandler(intent: string): Promise<IntentHandler> {
-    const msg: RemoteIntentHandlerMessage = { intent };
-    // Ask the server to register a handler; it returns a unique sub-event name
-    const handlerId = await this.emitWithAck(REMOTE_INTENT_HANDLER, msg);
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const handlerId = await this.callRemote(REMOTE_INTENT_HANDLER, { intent });
     return async (context: Context, metadata?: any) => {
-      const value = await this.emitWithAck(handlerId, { context, metadata });
-
+      const value = await this.callRemote(handlerId, { context, metadata });
       if (value?.type === 'private') {
-        // in this case, handle a private channel.
         const channel = await this.desktopAgent.createPrivateChannel();
         await this.handleRemoteChannel(intent, channel);
         return channel;
-      } else {
-        // it's a context.
-        return value;
       }
+      return value;
     };
   }
 
   async exchangeData(purpose: string, ctx: Context, intent?: string, channelId?: string): Promise<Context | void> {
-    return await this.emitWithAck(EXCHANGE_DATA, { purpose, ctx, intent, channelId });
+    return await this.callRemote(EXCHANGE_DATA, { purpose, ctx, intent, channelId });
   }
-
-  // ---------------------------------------------------------------------------
-  // Private channel / context listener helpers
-  // ---------------------------------------------------------------------------
 
   private async handleBroadcast(br: BroadcastRequest): Promise<BroadcastResponse> {
     const channel = this.channels.get(br.payload.channelId)!!;
     await channel.broadcast(br.payload.context);
-
     return {
       type: 'broadcastResponse',
       meta: {
         requestUuid: br.meta.requestUuid,
         timestamp: new Date(),
-        responseUuid: uuidv4(),
+        responseUuid: this.messaging.createUUID(),
       },
-      payload: {
-        channelId: channel.id,
-      },
+      payload: { channelId: channel.id },
     };
   }
 
   private async handleAddContextListener(acl: AddContextListenerRequest): Promise<AddContextListenerResponse> {
-    console.log('handleAddContextListener', acl);
-    const channel = this.channels.get(acl.payload.channelId!); // always has a channelId
-    const type = acl.payload.contextType;
-    const id = uuidv4();
+    const channel = this.channels.get(acl.payload.channelId!);
+    const id = this.messaging.createUUID();
     if (channel) {
-      const cl = await channel.addContextListener(
-        type,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        async (ctx: Context, _metadata: any) => {
-          const msg: BroadcastEvent = {
-            type: 'broadcastEvent',
-            meta: this.createMetadata(),
-            payload: {
-              context: ctx,
-              channelId: channel.id,
-            },
-          };
-
-          console.log('Received context, sending to server', ctx, id);
-          this.send({ event: CLIENT_MESSAGE, payload: msg });
-        }
-      );
-
-      console.log('context listener added', id, this.contextListeners);
+      const cl = await channel.addContextListener(acl.payload.contextType, async (ctx: Context) => {
+        const msg: BroadcastEvent = {
+          type: 'broadcastEvent',
+          meta: {
+            requestUuid: this.messaging.createUUID(),
+            timestamp: new Date(),
+            eventUuid: this.messaging.createUUID(),
+          } as any,
+          payload: { context: ctx, channelId: channel.id },
+        };
+        this.messaging.post(msg);
+      });
       this.contextListeners.set(id, cl);
       return {
         type: 'addContextListenerResponse',
-        meta: {
-          requestUuid: acl.meta.requestUuid,
-          timestamp: new Date(),
-          responseUuid: id,
-        },
-        payload: {
-          listenerUUID: id,
-        },
-      };
-    } else {
-      return {
-        type: 'addContextListenerResponse',
-        meta: {
-          requestUuid: acl.meta.requestUuid,
-          timestamp: new Date(),
-          responseUuid: id,
-        },
-        payload: {
-          error: 'NoChannelFound',
-        },
+        meta: { requestUuid: acl.meta.requestUuid, timestamp: new Date(), responseUuid: id },
+        payload: { listenerUUID: id },
       };
     }
+    return {
+      type: 'addContextListenerResponse',
+      meta: { requestUuid: acl.meta.requestUuid, timestamp: new Date(), responseUuid: id },
+      payload: { error: 'NoChannelFound' },
+    };
   }
 
   private async handleContextListenerUnsubscribe(
     rcl: ContextListenerUnsubscribeRequest
   ): Promise<ContextListenerUnsubscribeResponse> {
     const listener = this.contextListeners.get(rcl.payload.listenerUUID);
-    if (listener) {
-      await listener.unsubscribe();
-    }
+    if (listener) await listener.unsubscribe();
     this.contextListeners.delete(rcl.payload.listenerUUID);
     return {
       type: 'contextListenerUnsubscribeResponse',
-      meta: {
-        requestUuid: rcl.meta.requestUuid,
-        timestamp: new Date(),
-        responseUuid: uuidv4(),
-      },
-      payload: {
-        listenerUUID: rcl.payload.listenerUUID,
-      },
+      meta: { requestUuid: rcl.meta.requestUuid, timestamp: new Date(), responseUuid: this.messaging.createUUID() },
+      payload: { listenerUUID: rcl.payload.listenerUUID },
     };
   }
 
@@ -277,16 +171,10 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
     pcdr: PrivateChannelDisconnectRequest
   ): Promise<PrivateChannelDisconnectResponse> {
     const channel = this.channels.get(pcdr.payload.channelId) as PrivateChannel;
-    if (channel) {
-      await channel.disconnect();
-    }
+    if (channel) await channel.disconnect();
     return {
       type: 'privateChannelDisconnectResponse',
-      meta: {
-        requestUuid: pcdr.meta.requestUuid,
-        timestamp: new Date(),
-        responseUuid: uuidv4(),
-      },
+      meta: { requestUuid: pcdr.meta.requestUuid, timestamp: new Date(), responseUuid: this.messaging.createUUID() },
       payload: {},
     };
   }
@@ -300,10 +188,16 @@ export async function connectRemoteHandlers(
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(url);
     ws.addEventListener('open', () => {
-      resolve(new ClientSideHandlersImpl(ws, da, callback));
+      const messaging = new WebSocketMessaging(
+        ws,
+        { appId: 'client-security' },
+        {
+          outgoingEvent: CLIENT_MESSAGE,
+          incomingEvent: SERVER_MESSAGE,
+        }
+      );
+      resolve(new ClientSideHandlersImpl(messaging, da, callback));
     });
-    ws.addEventListener('error', err => {
-      reject(err);
-    });
+    ws.addEventListener('error', err => reject(err));
   });
 }
