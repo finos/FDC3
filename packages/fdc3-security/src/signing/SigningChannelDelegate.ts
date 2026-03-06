@@ -19,11 +19,7 @@ export class SigningChannelDelegate extends AbstractChannelDelegate {
   }
 
   canSign(): boolean {
-    const hasSign = typeof (this.fdc3Security as any).sign === 'function';
-    if (!hasSign) {
-      console.log('SigningChannelDelegate: Security provider does not have sign method', this.fdc3Security);
-    }
-    return hasSign;
+    return typeof (this.fdc3Security as any).sign === 'function';
   }
 
   async wrapContext(ctx: Context, meta?: ContextMetadata): Promise<{ ctx: Context; meta?: ContextMetadata }> {
