@@ -1,12 +1,16 @@
-import { AntiReplay, Context } from '@finos/fdc3-context';
+import { Context } from '@finos/fdc3-context';
 import { BrowserTypes } from '@finos/fdc3-schema';
+
+type AntiReplay = BrowserTypes.AntiReplayClaims;
 import canonicalize from 'canonicalize';
 import * as jose from 'jose';
-import { DEFAULT_FDC3_ALGORITHMS, FDC3SecurityAlgorithms } from '../FDC3SecurityAlgorithms';
-import { DEFAULT_FDC3_TIME_LIMITS, FDC3SecurityTimeLimits } from '../FDC3SecurityTimeLimits';
-import { FDC3UserClaims } from '../FDC3UserClaims';
-import { MessageAuthenticity } from '../MessageAuthenticity';
-import { JSONWebEncryption, PublicFDC3Security } from '../PublicFDC3Security';
+import { DEFAULT_FDC3_ALGORITHMS, FDC3SecurityAlgorithms } from './FDC3SecurityAlgorithms';
+import { DEFAULT_FDC3_TIME_LIMITS, FDC3SecurityTimeLimits } from './FDC3SecurityTimeLimits';
+import { FDC3UserClaims } from './FDC3UserClaims';
+import { PublicFDC3Security } from './PublicFDC3Security';
+
+type MessageAuthenticity = BrowserTypes.MessageAuthenticity;
+type JSONWebEncryption = string;
 
 type DetachedSignature = BrowserTypes.DetachedSignature;
 
@@ -83,8 +87,8 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
     return keyBytes;
   }
 
-  protected canonicalize(ctx: Context): Uint8Array {
-    const canonicalJson = canonicalize(ctx);
+  protected canonicalize(obj: any): Uint8Array {
+    const canonicalJson = canonicalize(obj);
     const encoder = new TextEncoder();
     const payloadBytes = encoder.encode(canonicalJson);
     return payloadBytes;
@@ -103,7 +107,7 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
     return `${sig.protected}..${sig.signature}`;
   }
 
-  async check(sig: DetachedSignature, ctx: Context): Promise<MessageAuthenticity> {
+  async check(sig: DetachedSignature, ctx: Context, antiReplay: AntiReplay): Promise<MessageAuthenticity> {
     try {
       const compactSig = this.detachedToCompact(sig);
       const { alg, jku, kid, iat } = this.getParametersFromHeader(compactSig);
@@ -117,7 +121,9 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
 
       const jwksEndpoint = this.publicKeyResolver(jku);
       const now = Math.floor(Date.now() / 1000); // Current time in seconds
-      const data1 = canonicalize(ctx);
+
+      // Canonicalize both context and antiReplay for verification
+      const data1 = canonicalize({ context: ctx, antiReplay });
       const data2 = jose.base64url.encode(data1!);
       const parts = compactSig.split('.');
       const reconstitutedJws = `${parts[0]}.${data2}.${parts[2]}`;
@@ -134,18 +140,11 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
         };
       }
 
-      // Extract anti-replay claims from context if present
-      const antiReplayClaims: AntiReplay = ctx.antiReplay ?? {
-        iat: iat,
-        exp: iat + this.timeLimits.contextValiditySeconds,
-        jti: 'unknown',
-      };
-
       // Check context expiry (based on exp in antiReplay)
-      if (antiReplayClaims.exp && now > antiReplayClaims.exp) {
+      if (antiReplay.exp && now > antiReplay.exp) {
         return {
           signed: false,
-          errors: [`Context has expired (exp: ${antiReplayClaims.exp}, now: ${now})`],
+          errors: [`Context has expired (exp: ${antiReplay.exp}, now: ${now})`],
         };
       }
 
@@ -156,7 +155,7 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
         alg,
         kid,
         jku,
-        antiReplayClaims,
+        antiReplayClaims: antiReplay,
       };
     } catch (error) {
       return {
