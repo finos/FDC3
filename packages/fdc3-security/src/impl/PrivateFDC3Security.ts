@@ -44,30 +44,6 @@ export interface PrivateFDC3Security extends PublicFDC3Security {
   sign(ctx: Context): Promise<{ signature: DetachedSignature; antiReplay: AntiReplay }>;
 
   /**
-   * Create a new symmetric key for channel encryption.
-   *
-   * Generates a cryptographically secure symmetric key suitable for
-   * encrypting context data on private channels.
-   *
-   * @returns A promise resolving to a new symmetric key in JWK format
-   */
-  createSymmetricKey(): Promise<JsonWebKey>;
-
-  /**
-   * Wrap a symmetric key for secure delivery to a recipient.
-   *
-   * Encrypts the symmetric key using the recipient's public key so it can
-   * be safely transmitted. Used when responding to `fdc3.security.symmetricKey.request`.
-   *
-   * @param symmetricKey - The symmetric key to wrap
-   * @param publicKeyUrl - URL to the recipient's JWKS containing their public key
-   * @returns A promise resolving to a SymmetricKeyResponse context
-   *
-   * @see `fdc3.security.symmetricKey.response` context type
-   */
-  wrapKey(symmetricKey: JsonWebKey, publicKeyUrl: string): Promise<SymmetricKeyResponse>;
-
-  /**
    * Unwrap a symmetric key received from another app.
    *
    * Decrypts a wrapped symmetric key using this app's private key.
