@@ -1,7 +1,7 @@
 import { ContextHandler, ContextMetadata, Listener, PrivateChannel } from '@finos/fdc3-standard';
 import { Context, EncryptedContextWrapper, SymmetricKeyRequest } from '@finos/fdc3-context';
-import { JSONWebEncryption } from '../PublicFDC3Security';
-import { PrivateFDC3Security } from '../PrivateFDC3Security';
+import { JSONWebEncryption } from '../impl/PublicFDC3Security';
+import { PrivateFDC3Security } from '../impl/PrivateFDC3Security';
 import { EncryptingPrivateChannel } from './EncryptingPrivateChannel';
 import { AbstractChannelDelegate } from '../delegates/AbstractChannelDelegate';
 import { signedContext } from '../signing/SigningSupport';

@@ -1,8 +1,8 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
-import { EncryptingPrivateChannel } from '@finos/fdc3-security';
-import { PrivateFDC3Security } from '@finos/fdc3-security';
+import { EncryptingPrivateChannel } from './EncryptingPrivateChannel';
+import { PrivateFDC3Security } from '../impl/PrivateFDC3Security';
 import { ContextMetadata, Listener } from '@finos/fdc3-standard';
-import { checkSignature, signedContext } from '@finos/fdc3-security';
+import { checkSignature, signedContext } from '../signing/SigningSupport';
 
 /**
  * Used for agents that send the symmetric key when asked for it.

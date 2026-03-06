@@ -45,7 +45,7 @@ export interface ContextMetadata extends AppProvidableContextMetadata {
 }
 
 export interface AppProvidableContextMetadata {
-  signature?: string;
+  signature?: DetachedSignature;
   traceId?: string;
 }
 
