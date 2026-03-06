@@ -91,15 +91,6 @@ export interface Action {
    */
   title: string;
   type: 'fdc3.action';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -116,33 +107,6 @@ export interface Action {
  * the context should be broadcast to the current channel (`fdc3.broadcast()`)
  */
 export type ActionType = 'broadcast' | 'raiseIntent';
-
-/**
- * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
- * including timing and uniqueness information that is covered by the JOSE (JSON Object
- * Signing and Encryption) signature. This field can be automatically added by the FDC3
- * signing code when signing a context. The fields follow the JWT claims defined in [RFC
- * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
- * Identity documentation](../../api/security) for details.
- */
-export interface AntiReplay {
-  /**
-   * Expiration time as a Unix timestamp (seconds since epoch). Receivers should reject
-   * contexts past this time.
-   */
-  exp: number;
-  /**
-   * Issued at time as a Unix timestamp (seconds since epoch). Indicates when the context was
-   * created.
-   */
-  iat: number;
-  /**
-   * Unique identifier for this context instance. Used to detect and reject duplicate/replayed
-   * contexts.
-   */
-  jti: string;
-  [property: string]: any;
-}
 
 /**
  * An optional target application identifier that should perform the action. The `app`
@@ -231,15 +195,6 @@ export interface ContextElement {
    * information about context data types.
    */
   type: string;
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -277,15 +232,6 @@ export interface Chart {
    */
   style?: ChartStyle;
   type: 'fdc3.chart';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -331,15 +277,6 @@ export interface InstrumentElement {
    */
   name?: string;
   type: 'fdc3.instrument';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -520,15 +457,6 @@ export interface TimeRangeObject {
    */
   startTime?: Date;
   type: 'fdc3.timeRange';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -570,15 +498,6 @@ export interface ChatInitSettings {
    */
   options?: ChatOptions;
   type: 'fdc3.chat.initSettings';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -610,15 +529,6 @@ export interface ContactListObject {
    */
   name?: string;
   type: 'fdc3.contactList';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -637,15 +547,6 @@ export interface ContactElement {
    */
   name?: string;
   type: 'fdc3.contact';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -681,15 +582,6 @@ export interface MessageObject {
    */
   text?: PurpleMessageText;
   type: 'fdc3.message';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -748,15 +640,6 @@ export interface EntityValue {
    */
   title?: string;
   type: EntityType;
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   id?: { [key: string]: any };
   name?: string;
   data?: EntityData;
@@ -827,15 +710,6 @@ export interface ChatMessage {
   chatRoom: ChatRoomObject;
   message: MessageObject;
   type: 'fdc3.chat.message';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -863,15 +737,6 @@ export interface ChatRoomObject {
    * etc...
    */
   url?: string;
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -897,15 +762,6 @@ export interface ChatRoom {
    * etc...
    */
   url?: string;
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -925,15 +781,6 @@ export interface ChatSearchCriteria {
    */
   criteria: Array<OrganizationObject | string>;
   type: 'fdc3.chat.searchCriteria';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -997,15 +844,6 @@ export interface OrganizationObject {
    */
   name?: string;
   type: TentacledInteractionType;
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -1100,15 +938,6 @@ export interface Contact {
    */
   name?: string;
   type: 'fdc3.contact';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -1149,15 +978,6 @@ export interface ContactList {
    */
   name?: string;
   type: 'fdc3.contactList';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -1212,15 +1032,6 @@ export interface Context {
    * information about context data types.
    */
   type: string;
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -1248,15 +1059,6 @@ export interface Country {
    */
   name?: string;
   type: 'fdc3.country';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -1292,15 +1094,6 @@ export interface Currency {
    */
   name?: string;
   type: 'fdc3.currency';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -1330,15 +1123,6 @@ export interface Email {
    */
   textBody?: string;
   type: 'fdc3.email';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -1377,15 +1161,6 @@ export interface EmailRecipients {
   name?: string;
   type: EmailRecipientsType;
   /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
-  /**
    * An array of contact contexts that forms the list.
    */
   contacts?: ContactElement[];
@@ -1418,15 +1193,6 @@ export type EmailRecipientsType = 'fdc3.contact' | 'fdc3.contactList';
 export interface FileAttachment {
   data: FileAttachmentData;
   type: 'fdc3.fileAttachment';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -1480,15 +1246,6 @@ export interface Instrument {
    */
   name?: string;
   type: 'fdc3.instrument';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -1614,15 +1371,6 @@ export interface InstrumentList {
    */
   name?: string;
   type: 'fdc3.instrumentList';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -1668,15 +1416,6 @@ export interface Interaction {
    */
   timeRange: TimeRangeObject;
   type: 'fdc3.interaction';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   name?: string;
   [property: string]: any;
 }
@@ -1723,15 +1462,6 @@ export interface Message {
    */
   text?: FluffyMessageText;
   type: 'fdc3.message';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -1768,15 +1498,6 @@ export interface FluffyMessageText {
  */
 export interface Nothing {
   type: 'fdc3.nothing';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -1813,15 +1534,6 @@ export interface Order {
    */
   notes?: string;
   type: 'fdc3.order';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -1866,15 +1578,6 @@ export interface ProductObject {
    */
   notes?: string;
   type: 'fdc3.product';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -1901,15 +1604,6 @@ export interface OrderList {
    */
   orders: OrderElement[];
   type: 'fdc3.orderList';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -1944,15 +1638,6 @@ export interface OrderElement {
    */
   notes?: string;
   type: 'fdc3.order';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -1982,15 +1667,6 @@ export interface Organization {
    */
   name?: string;
   type: 'fdc3.organization';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -2046,15 +1722,6 @@ export interface Portfolio {
    */
   positions: PositionElement[];
   type: 'fdc3.portfolio';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -2088,15 +1755,6 @@ export interface PositionElement {
    */
   name?: string;
   type: 'fdc3.position';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -2130,15 +1788,6 @@ export interface Position {
    */
   name?: string;
   type: 'fdc3.position';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -2172,15 +1821,6 @@ export interface Product {
    */
   notes?: string;
   type: 'fdc3.product';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -2208,15 +1848,6 @@ export interface EncryptedContextWrapper {
    */
   originalType: string;
   type: 'fdc3.security.encryptedContext';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   name?: string;
   [property: string]: any;
 }
@@ -2255,15 +1886,6 @@ export interface SymmetricKeyRequest {
    */
   id?: SymmetricKeyRequestID;
   type: 'fdc3.security.symmetricKeyRequest';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   name?: string;
   [property: string]: any;
 }
@@ -2296,15 +1918,6 @@ export interface SymmetricKeyResponse {
    * The symmetric key, encrypted using the recipient's public key.
    */
   wrappedKey: string;
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   name?: string;
   [property: string]: any;
 }
@@ -2351,15 +1964,6 @@ export interface User {
    */
   name?: string;
   type: 'fdc3.security.user';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -2407,15 +2011,6 @@ export interface UserRequest {
    * this request to appropriate identity providers.
    */
   type: 'fdc3.security.userRequest';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -2472,15 +2067,6 @@ export interface TimeRange {
    */
   startTime?: Date;
   type: 'fdc3.timeRange';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -2518,15 +2104,6 @@ export interface Trade {
    */
   product: ProductObject;
   type: 'fdc3.trade';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -2553,15 +2130,6 @@ export interface TradeList {
    */
   trades: TradeElement[];
   type: 'fdc3.tradeList';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -2597,15 +2165,6 @@ export interface TradeElement {
    */
   product: ProductObject;
   type: 'fdc3.trade';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   [property: string]: any;
 }
 
@@ -2629,15 +2188,6 @@ export interface TransactionResult {
    */
   status: TransactionStatus;
   type: 'fdc3.transactionResult';
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -2683,15 +2233,6 @@ export interface Valuation {
    * The value of the holding, expresses in the nominated currency.
    */
   value: number;
-  /**
-   * Optional anti-replay data for signed contexts. Used to prevent replay attacks by
-   * including timing and uniqueness information that is covered by the JOSE (JSON Object
-   * Signing and Encryption) signature. This field can be automatically added by the FDC3
-   * signing code when signing a context. The fields follow the JWT claims defined in [RFC
-   * 7519](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1). See the [Security &
-   * Identity documentation](../../api/security) for details.
-   */
-  antiReplay?: AntiReplay;
   id?: { [key: string]: any };
   name?: string;
   [property: string]: any;
@@ -3149,17 +2690,8 @@ const typeMap: any = {
       { json: 'intent', js: 'intent', typ: u(undefined, '') },
       { json: 'title', js: 'title', typ: '' },
       { json: 'type', js: 'type', typ: r('ActionTypeEnum') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-    ],
-    'any'
-  ),
-  AntiReplay: o(
-    [
-      { json: 'exp', js: 'exp', typ: 3.14 },
-      { json: 'iat', js: 'iat', typ: 3.14 },
-      { json: 'jti', js: 'jti', typ: '' },
     ],
     'any'
   ),
@@ -3176,7 +2708,6 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: '' },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3187,7 +2718,6 @@ const typeMap: any = {
       { json: 'range', js: 'range', typ: u(undefined, r('TimeRangeObject')) },
       { json: 'style', js: 'style', typ: u(undefined, r('ChartStyle')) },
       { json: 'type', js: 'type', typ: r('ChartType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -3200,7 +2730,6 @@ const typeMap: any = {
       { json: 'market', js: 'market', typ: u(undefined, r('OrganizationMarket')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('PurpleInteractionType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3232,7 +2761,6 @@ const typeMap: any = {
       { json: 'endTime', js: 'endTime', typ: u(undefined, Date) },
       { json: 'startTime', js: 'startTime', typ: u(undefined, Date) },
       { json: 'type', js: 'type', typ: r('TimeRangeType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -3245,7 +2773,6 @@ const typeMap: any = {
       { json: 'message', js: 'message', typ: u(undefined, u(r('MessageObject'), '')) },
       { json: 'options', js: 'options', typ: u(undefined, r('ChatOptions')) },
       { json: 'type', js: 'type', typ: r('ChatInitSettingsType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -3257,7 +2784,6 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: u(undefined, m('')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('ContactListType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3266,7 +2792,6 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: r('PurpleContactIdentifiers') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('FluffyInteractionType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3282,7 +2807,6 @@ const typeMap: any = {
       { json: 'entities', js: 'entities', typ: u(undefined, m(r('EntityValue'))) },
       { json: 'text', js: 'text', typ: u(undefined, r('PurpleMessageText')) },
       { json: 'type', js: 'type', typ: r('MessageType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -3297,7 +2821,6 @@ const typeMap: any = {
       { json: 'intent', js: 'intent', typ: u(undefined, '') },
       { json: 'title', js: 'title', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('EntityType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'data', js: 'data', typ: u(undefined, r('EntityData')) },
@@ -3333,7 +2856,6 @@ const typeMap: any = {
       { json: 'chatRoom', js: 'chatRoom', typ: r('ChatRoomObject') },
       { json: 'message', js: 'message', typ: r('MessageObject') },
       { json: 'type', js: 'type', typ: r('ChatMessageType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -3346,7 +2868,6 @@ const typeMap: any = {
       { json: 'providerName', js: 'providerName', typ: '' },
       { json: 'type', js: 'type', typ: r('ChatRoomType') },
       { json: 'url', js: 'url', typ: u(undefined, '') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3357,7 +2878,6 @@ const typeMap: any = {
       { json: 'providerName', js: 'providerName', typ: '' },
       { json: 'type', js: 'type', typ: r('ChatRoomType') },
       { json: 'url', js: 'url', typ: u(undefined, '') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3365,7 +2885,6 @@ const typeMap: any = {
     [
       { json: 'criteria', js: 'criteria', typ: a(u(r('OrganizationObject'), '')) },
       { json: 'type', js: 'type', typ: r('ChatSearchCriteriaType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -3378,7 +2897,6 @@ const typeMap: any = {
       { json: 'market', js: 'market', typ: u(undefined, r('OrganizationMarket')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('TentacledInteractionType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3403,7 +2921,6 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: r('FluffyContactIdentifiers') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('FluffyInteractionType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3420,7 +2937,6 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: u(undefined, m('')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('ContactListType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3429,7 +2945,6 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: '' },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3438,7 +2953,6 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: r('CountryID') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('CountryType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3456,7 +2970,6 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: r('CurrencyID') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('CurrencyType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3467,7 +2980,6 @@ const typeMap: any = {
       { json: 'subject', js: 'subject', typ: u(undefined, '') },
       { json: 'textBody', js: 'textBody', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('EmailType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -3478,7 +2990,6 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: u(undefined, r('ContactTIdentifiers')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('EmailRecipientsType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'contacts', js: 'contacts', typ: u(undefined, a(r('ContactElement'))) },
     ],
     'any'
@@ -3494,7 +3005,6 @@ const typeMap: any = {
     [
       { json: 'data', js: 'data', typ: r('FileAttachmentData') },
       { json: 'type', js: 'type', typ: r('FileAttachmentType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -3514,7 +3024,6 @@ const typeMap: any = {
       { json: 'market', js: 'market', typ: u(undefined, r('PurpleMarket')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('PurpleInteractionType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3547,7 +3056,6 @@ const typeMap: any = {
       { json: 'instruments', js: 'instruments', typ: a(r('InstrumentElement')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('InstrumentListType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3561,7 +3069,6 @@ const typeMap: any = {
       { json: 'participants', js: 'participants', typ: r('ContactListObject') },
       { json: 'timeRange', js: 'timeRange', typ: r('TimeRangeObject') },
       { json: 'type', js: 'type', typ: r('InteractionType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
@@ -3579,7 +3086,6 @@ const typeMap: any = {
       { json: 'entities', js: 'entities', typ: u(undefined, m(r('EntityValue'))) },
       { json: 'text', js: 'text', typ: u(undefined, r('FluffyMessageText')) },
       { json: 'type', js: 'type', typ: r('MessageType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -3595,7 +3101,6 @@ const typeMap: any = {
   Nothing: o(
     [
       { json: 'type', js: 'type', typ: r('NothingType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -3608,7 +3113,6 @@ const typeMap: any = {
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'notes', js: 'notes', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('OrderType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3620,7 +3124,6 @@ const typeMap: any = {
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'notes', js: 'notes', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('ProductType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3630,7 +3133,6 @@ const typeMap: any = {
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'orders', js: 'orders', typ: a(r('OrderElement')) },
       { json: 'type', js: 'type', typ: r('OrderListType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3641,7 +3143,6 @@ const typeMap: any = {
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'notes', js: 'notes', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('OrderType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3651,7 +3152,6 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: r('OrganizationIdentifiers') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('StickyInteractionType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3669,7 +3169,6 @@ const typeMap: any = {
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'positions', js: 'positions', typ: a(r('PositionElement')) },
       { json: 'type', js: 'type', typ: r('PortfolioType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3680,7 +3179,6 @@ const typeMap: any = {
       { json: 'instrument', js: 'instrument', typ: r('InstrumentElement') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('PositionType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3691,7 +3189,6 @@ const typeMap: any = {
       { json: 'instrument', js: 'instrument', typ: r('InstrumentElement') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('PositionType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3702,7 +3199,6 @@ const typeMap: any = {
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'notes', js: 'notes', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('ProductType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3712,7 +3208,6 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: r('EncryptedContextWrapperID') },
       { json: 'originalType', js: 'originalType', typ: '' },
       { json: 'type', js: 'type', typ: r('EncryptedContextWrapperType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
@@ -3722,7 +3217,6 @@ const typeMap: any = {
     [
       { json: 'id', js: 'id', typ: u(undefined, r('SymmetricKeyRequestID')) },
       { json: 'type', js: 'type', typ: r('SymmetricKeyRequestType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
@@ -3733,7 +3227,6 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: r('SymmetricKeyResponseID') },
       { json: 'type', js: 'type', typ: r('SymmetricKeyResponseType') },
       { json: 'wrappedKey', js: 'wrappedKey', typ: '' },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
@@ -3751,7 +3244,6 @@ const typeMap: any = {
       { json: 'jwt', js: 'jwt', typ: '' },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'type', js: 'type', typ: r('UserType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3760,7 +3252,6 @@ const typeMap: any = {
     [
       { json: 'aud', js: 'aud', typ: '' },
       { json: 'type', js: 'type', typ: r('UserRequestType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -3771,7 +3262,6 @@ const typeMap: any = {
       { json: 'endTime', js: 'endTime', typ: u(undefined, Date) },
       { json: 'startTime', js: 'startTime', typ: u(undefined, Date) },
       { json: 'type', js: 'type', typ: r('TimeRangeType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -3784,7 +3274,6 @@ const typeMap: any = {
       { json: 'notes', js: 'notes', typ: u(undefined, '') },
       { json: 'product', js: 'product', typ: r('ProductObject') },
       { json: 'type', js: 'type', typ: r('TradeType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3794,7 +3283,6 @@ const typeMap: any = {
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'trades', js: 'trades', typ: a(r('TradeElement')) },
       { json: 'type', js: 'type', typ: r('TradeListType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3805,7 +3293,6 @@ const typeMap: any = {
       { json: 'notes', js: 'notes', typ: u(undefined, '') },
       { json: 'product', js: 'product', typ: r('ProductObject') },
       { json: 'type', js: 'type', typ: r('TradeType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
     ],
     'any'
   ),
@@ -3815,7 +3302,6 @@ const typeMap: any = {
       { json: 'message', js: 'message', typ: u(undefined, '') },
       { json: 'status', js: 'status', typ: r('TransactionStatus') },
       { json: 'type', js: 'type', typ: r('TransactionResultType') },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
@@ -3829,7 +3315,6 @@ const typeMap: any = {
       { json: 'type', js: 'type', typ: r('ValuationType') },
       { json: 'valuationTime', js: 'valuationTime', typ: u(undefined, Date) },
       { json: 'value', js: 'value', typ: 3.14 },
-      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplay')) },
       { json: 'id', js: 'id', typ: u(undefined, m('any')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
     ],

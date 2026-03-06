@@ -1,54 +1,81 @@
-import { Channel, ContextHandler, ContextMetadata, IntentHandler, IntentResult } from '@finos/fdc3-standard';
-import { PrivateFDC3Security } from '../PrivateFDC3Security';
+import {
+  ContextHandler,
+  IntentHandler,
+  IntentResult,
+  Channel,
+  DesktopAgentProvidableContextMetadata,
+} from '@finos/fdc3-standard';
+import { PrivateFDC3Security } from '../impl/PrivateFDC3Security';
 import { Context } from '@finos/fdc3-context';
+import { BrowserTypes } from '@finos/fdc3-schema';
+import { PublicFDC3Security } from '../impl/PublicFDC3Security';
 
-export async function signedContext(
-  fdc3Security: PrivateFDC3Security,
-  context: Context
-): Promise<Context> {
-  let unsignedContext = { ...context };
+type DetachedSignature = BrowserTypes.DetachedSignature;
+type MessageAuthenticity = BrowserTypes.MessageAuthenticity;
+type AntiReplayClaims = BrowserTypes.AntiReplayClaims;
+
+/**
+ * Extended metadata for handlers that includes signature verification results.
+ */
+export type ContextMetadataWithAuthenticity = DesktopAgentProvidableContextMetadata & {
+  authenticity?: MessageAuthenticity;
+};
+
+export async function signedContext(fdc3Security: PrivateFDC3Security, context: Context): Promise<Context> {
+  const unsignedContext = { ...context };
+  // @ts-ignore
   delete unsignedContext['__signature'];
+  // @ts-ignore
+  delete unsignedContext['__antiReplay'];
 
-  return fdc3Security.sign(unsignedContext).then(sig => {
-    let out = { ...unsignedContext };
-    out['__signature'] = sig;
-    return out;
-  });
+  const { signature, antiReplay } = await fdc3Security.sign(unsignedContext);
+  const out = { ...unsignedContext };
+  // @ts-ignore
+  out['__signature'] = signature;
+  // @ts-ignore
+  out['__antiReplay'] = antiReplay;
+  return out;
 }
 
-type X = ContextHandler | IntentHandler;
-
 export async function checkSignature(
-  fdc3Security: PrivateFDC3Security,
-  m: ContextMetadata | undefined,
+  fdc3Security: PublicFDC3Security,
+  m: DesktopAgentProvidableContextMetadata | undefined,
   c: Context,
-  intent: string | null,
-  channelId: string | null
-): Promise<{ context: Context; meta: ContextMetadata | undefined }> {
-  let signature: JSONWebSignature | null = null;
-  let unsignedContext: Context | undefined = { ...c };
+  _intent: string | null,
+  _channelId: string | null
+): Promise<{ context: Context; meta: ContextMetadataWithAuthenticity | undefined }> {
+  let signature: DetachedSignature | null = null;
+  let antiReplay: AntiReplayClaims | null = null;
+  const unsignedContext: Context = { ...c };
+  // @ts-ignore
   delete unsignedContext['__signature'];
+  // @ts-ignore
+  delete unsignedContext['__antiReplay'];
 
-  if (m != null && m.signature) {
-    signature = m['signature'];
-  } else if (c['__signature']) {
-    // context is signed, so check it.
-    signature = c['__signature'] as JSONWebSignature;
+  // Check metadata for signature (standard FDC3 Security 2.0)
+  if (m != null && (m as any).signature) {
+    signature = (m as any).signature;
+    antiReplay = (m as any).antiReplay;
+  }
+  // Check context for __signature (alternative/legacy context wrapping)
+  else if ((c as any)['__signature']) {
+    signature = (c as any)['__signature'] as DetachedSignature;
+    antiReplay = (c as any)['__antiReplay'] as AntiReplayClaims;
   }
 
-  if (signature) {
-    const res = await fdc3Security.check(signature, unsignedContext, intent, channelId);
-    const m2: ContextMetadataWithAuthenticity = m == undefined ? ({} as ContextMetadataWithAuthenticity) : m;
+  if (signature && antiReplay) {
+    const res = await fdc3Security.check(signature, unsignedContext, antiReplay);
+    const m2: ContextMetadataWithAuthenticity = m == undefined ? ({} as ContextMetadataWithAuthenticity) : { ...m };
     m2['authenticity'] = res;
     return {
       context: unsignedContext,
       meta: m2,
     };
   } else {
-    const m2 = m ? { ...m } : ({} as ContextMetadataWithAuthenticity);
-    delete m2['authenticity'];
+    const m2 = m ? ({ ...m } as ContextMetadataWithAuthenticity) : ({} as ContextMetadataWithAuthenticity);
     m2.authenticity = {
       signed: false,
+      errors: ['No signature or anti-replay claims found'],
     };
     return {
       context: unsignedContext,
@@ -58,16 +85,15 @@ export async function checkSignature(
 }
 
 export function signingContextHandler(
-  fdc3Security: PrivateFDC3Security,
+  fdc3Security: PublicFDC3Security,
   handler: ContextHandler,
   channelProvider: () => Promise<Channel | null>
-): X {
-  const out = async (c: Context, m: ContextMetadataWithAuthenticity | undefined) => {
+): ContextHandler {
+  return async (c: Context, m: DesktopAgentProvidableContextMetadata | undefined) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const res = await checkSignature(fdc3Security, m, c, null, (await channelProvider())?.id ?? null);
-    handler(res.context, res.meta);
+    handler(res.context, res.meta as any);
   };
-
-  return out as X;
 }
 
 export function signingIntentHandler(
@@ -75,29 +101,25 @@ export function signingIntentHandler(
   handler: IntentHandler,
   intentName: string
 ): IntentHandler {
-  const out = async (c: Context, m: ContextMetadataWithAuthenticity | undefined) => {
+  return async (c: Context, m: DesktopAgentProvidableContextMetadata | undefined) => {
     async function wrapIntentResult(ir: IntentResult): Promise<IntentResult> {
       if (ir == undefined) {
         return;
-      } else if (ir.type == 'app' || ir.type == 'user' || ir.type == 'private') {
-        // it's a channel, just return as-is
-        return ir;
-      } else {
+      } else if (
+        typeof ir === 'object' &&
+        ('id' in ir || 'type' in ir) &&
+        !('type' in (ir as any) && ['user', 'app', 'private'].includes((ir as any).type))
+      ) {
         // it's a context
-        return signedContext(fdc3Security, ir as Context, intentName, null);
+        return signedContext(fdc3Security, ir as Context);
+      } else {
+        // it's a channel or other result
+        return ir;
       }
     }
 
-    async function applyHandler(context: Context, meta: ContextMetadata | undefined): Promise<IntentResult> {
-      const result = await handler(context, meta);
-      const wrapped = await wrapIntentResult(result);
-      return wrapped;
-    }
-
     const res = await checkSignature(fdc3Security, m, c, intentName, null);
-    const res2 = applyHandler(res.context, res.meta);
-    return res2;
+    const result = await handler(res.context, res.meta as any);
+    return await wrapIntentResult(result);
   };
-
-  return out;
 }

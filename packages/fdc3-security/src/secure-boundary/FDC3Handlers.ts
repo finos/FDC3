@@ -1,7 +1,5 @@
-import { Channel, ContextMetadata, IntentHandler } from '@finos/fdc3';
+import { Channel, IntentHandler } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
-
-export type ContextOrErrorMetadata = ContextMetadata | { error: string } | undefined;
 
 /**
  * Functions that allow back-end processing of FDC3 requests in order to keep
@@ -24,4 +22,26 @@ export interface FDC3Handlers {
    * This function allows server-side and client-side to exchange data with one another.
    */
   exchangeData(purpose: string, ctx: Context, intent?: string, channelId?: string): Promise<Context | void>;
+}
+
+/**
+ * A default implementation of FDC3Handlers that does nothing.
+ * Extend this class and override only the methods you need.
+ */
+export class DefaultFDC3Handlers implements FDC3Handlers {
+  async handleRemoteChannel(_purpose: string, _channel: Channel): Promise<void> {
+    // Default: do nothing
+  }
+
+  async remoteIntentHandler(_intent: string): Promise<IntentHandler> {
+    // Default: return a no-op handler
+    return async () => {
+      return;
+    };
+  }
+
+  async exchangeData(_purpose: string, _ctx: Context, _intent?: string, _channelId?: string): Promise<Context | void> {
+    // Default: do nothing
+    return;
+  }
 }
