@@ -8,17 +8,10 @@ import { DEFAULT_FDC3_TIME_LIMITS, FDC3SecurityTimeLimits } from './FDC3Security
 import { FDC3UserClaims } from './FDC3UserClaims';
 import { PrivateFDC3Security } from './PrivateFDC3Security';
 import { JSONWebEncryption } from './PublicFDC3Security';
-import { AllowListFunction, JosePublicFDC3Security, JSONWebKeyWithId, JWKSResolver } from './JosePublicFDC3Security';
+import { AllowListFunction, JosePublicFDC3Security, JWEProtectedHeader, JWKSResolver } from './JosePublicFDC3Security';
+import { AntiReplayChecker, DefaultAntiReplayChecker } from './AntiReplayChecker';
 
 type DetachedSignature = BrowserTypes.DetachedSignature;
-
-/**
- * JWE protected header parameters for encryption operations.
- */
-type JWEProtectedHeader = {
-  alg: string;
-  enc: string;
-};
 
 /**
  * Implements the FDC3Security interface either in node or the browser.
@@ -51,27 +44,22 @@ export class JosePrivateFDC3Security extends JosePublicFDC3Security implements P
     publicKeyResolver: (url: string) => JWKSResolver,
     allowListFunction: AllowListFunction,
     timeLimits: FDC3SecurityTimeLimits = DEFAULT_FDC3_TIME_LIMITS,
-    algorithms: FDC3SecurityAlgorithms = DEFAULT_FDC3_ALGORITHMS
+    algorithms: FDC3SecurityAlgorithms = DEFAULT_FDC3_ALGORITHMS,
+    antiReplayChecker: AntiReplayChecker = new DefaultAntiReplayChecker()
   ) {
-    super(signingPublicKey, wrappingPublicKey, publicKeyResolver, allowListFunction, timeLimits, algorithms);
+    super(
+      signingPublicKey,
+      wrappingPublicKey,
+      publicKeyResolver,
+      allowListFunction,
+      timeLimits,
+      algorithms,
+      antiReplayChecker
+    );
     this.signingPrivateKey = signingPrivateKey;
     this.wrappingPrivateKey = wrappingPrivateKey;
     this.jwksUrl = jwksUrl;
     this.issUrl = issUrl;
-  }
-
-  private async getPublicKey(publicKeyUrl: string, protectedHeader: JWEProtectedHeader): Promise<JSONWebKeyWithId> {
-    const JWKS = this.publicKeyResolver(publicKeyUrl);
-    await JWKS.reload();
-
-    const allKeys = JWKS.jwks()?.keys ?? [];
-    const key = allKeys.find((k: JsonWebKey) => k.alg == protectedHeader.alg);
-
-    if (key == undefined) {
-      throw new Error(`No key found for algorithm ${protectedHeader.alg}`);
-    }
-
-    return key as JSONWebKeyWithId;
   }
 
   async encryptPublicKey(ctx: Context, publicKeyUrl: string): Promise<JSONWebEncryption> {
@@ -120,31 +108,6 @@ export class JosePrivateFDC3Security extends JosePublicFDC3Security implements P
         signature: parts[2],
       },
       antiReplay,
-    };
-  }
-
-  async createSymmetricKey(): Promise<JsonWebKey> {
-    const secret = await jose.generateSecret(this.algorithms.contentEncryption, { extractable: true });
-    return jose.exportJWK(secret);
-  }
-
-  async wrapKey(symmetricKey: JsonWebKey, publicKeyUrl: string): Promise<SymmetricKeyResponse> {
-    const protectedHeader: JWEProtectedHeader = {
-      alg: this.algorithms.keyWrapping,
-      enc: this.algorithms.contentEncryption,
-    };
-    const data = this.canonicalizeKey(symmetricKey);
-    const jwk = await this.getPublicKey(publicKeyUrl, protectedHeader);
-    const key = await jose.importJWK(jwk, this.algorithms.keyWrapping);
-    const wrapped = await new jose.CompactEncrypt(data).setProtectedHeader(protectedHeader).encrypt(key);
-
-    return {
-      type: 'fdc3.security.symmetricKeyResponse',
-      wrappedKey: wrapped,
-      id: {
-        pki: publicKeyUrl,
-        kid: jwk.kid ?? 'not specified',
-      },
     };
   }
 
@@ -246,7 +209,8 @@ export async function createJosePrivateFDC3Security(
   timeLimits: FDC3SecurityTimeLimits = DEFAULT_FDC3_TIME_LIMITS,
   algorithms: FDC3SecurityAlgorithms = DEFAULT_FDC3_ALGORITHMS,
   signingKeyId?: string,
-  wrappingKeyId?: string
+  wrappingKeyId?: string,
+  antiReplayChecker: AntiReplayChecker = new DefaultAntiReplayChecker()
 ): Promise<JosePrivateFDC3Security> {
   // Generate unique IDs if not provided
   const finalSigningKeyId = signingKeyId || `signing-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
@@ -267,6 +231,7 @@ export async function createJosePrivateFDC3Security(
     publicKeyResolver,
     allowListFunction,
     timeLimits,
-    algorithms
+    algorithms,
+    antiReplayChecker
   );
 }

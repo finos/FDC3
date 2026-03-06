@@ -11,7 +11,7 @@ import { Context } from '@finos/fdc3-context';
 export class MockChannel implements Channel {
   id: string;
   type: 'user' | 'app' | 'private';
-  private listeners: ContextHandler[] = [];
+  private listeners: { type: string | null; handler: ContextHandler }[] = [];
 
   constructor(id: string, type: 'user' | 'app' | 'private') {
     this.id = id;
@@ -22,17 +22,23 @@ export class MockChannel implements Channel {
     console.log(`[MockChannel ${this.id}] Broadcasting context:`, context.type);
     // Execute listeners in next tick to avoid blocking
     setImmediate(() => {
-      this.listeners.forEach(l => l(context, meta));
+      this.listeners.forEach(l => {
+        if (!l.type || l.type === context.type) {
+          l.handler(context, meta);
+        }
+      });
     });
   }
 
   async addContextListener(typeOrHandler: string | null | ContextHandler, handler?: ContextHandler): Promise<Listener> {
+    const type = typeof typeOrHandler === 'string' ? typeOrHandler : null;
     const h = typeof typeOrHandler === 'function' ? typeOrHandler : handler!;
-    this.listeners.push(h);
+    const entry = { type, handler: h };
+    this.listeners.push(entry);
     console.log(`[MockChannel ${this.id}] Listener added. Total listeners: ${this.listeners.length}`);
     return {
       unsubscribe: async () => {
-        this.listeners = this.listeners.filter(l => l !== h);
+        this.listeners = this.listeners.filter(l => l !== entry);
       },
     };
   }
