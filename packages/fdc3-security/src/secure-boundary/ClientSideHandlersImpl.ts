@@ -1,4 +1,4 @@
-import { Channel, DesktopAgent, IntentHandler, Listener, PrivateChannel } from '@finos/fdc3-standard';
+import { Channel, DesktopAgent, IntentHandler, Listener, PrivateChannel, ContextMetadata } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import {
   REMOTE_INTENT_HANDLER,
@@ -112,7 +112,7 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
 
   private async handleBroadcast(br: BroadcastRequest): Promise<BroadcastResponse> {
     const channel = this.channels.get(br.payload.channelId)!!;
-    await channel.broadcast(br.payload.context);
+    await channel.broadcast(br.payload.context, br.payload.metadata as any);
     return {
       type: 'broadcastResponse',
       meta: {
@@ -128,18 +128,21 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
     const channel = this.channels.get(acl.payload.channelId!);
     const id = this.messaging.createUUID();
     if (channel) {
-      const cl = await channel.addContextListener(acl.payload.contextType, async (ctx: Context) => {
-        const msg: BroadcastEvent = {
-          type: 'broadcastEvent',
-          meta: {
-            requestUuid: this.messaging.createUUID(),
-            timestamp: new Date(),
-            eventUuid: this.messaging.createUUID(),
-          } as any,
-          payload: { context: ctx, channelId: channel.id },
-        };
-        this.messaging.post(msg);
-      });
+      const cl = await channel.addContextListener(
+        acl.payload.contextType,
+        async (ctx: Context, meta?: ContextMetadata) => {
+          const msg: BroadcastEvent = {
+            type: 'broadcastEvent',
+            meta: {
+              requestUuid: this.messaging.createUUID(),
+              timestamp: new Date(),
+              eventUuid: this.messaging.createUUID(),
+            } as any,
+            payload: { context: ctx, channelId: channel.id, metadata: meta } as any,
+          };
+          this.messaging.post(msg);
+        }
+      );
       this.contextListeners.set(id, cl);
       return {
         type: 'addContextListenerResponse',
