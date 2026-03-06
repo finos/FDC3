@@ -1,6 +1,6 @@
 import { Channel, ContextHandler, ContextMetadata, Listener, PrivateChannel } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
-import { signingContextHandler } from './SigningSupport';
+import { signatureCheckingContextHandler, signContext } from './SigningSupport';
 import { AbstractChannelDelegate } from '../delegates/AbstractChannelDelegate';
 import { PrivateFDC3Security } from '../impl/PrivateFDC3Security';
 import { PublicFDC3Security } from '../impl/PublicFDC3Security';
@@ -13,24 +13,22 @@ import { PublicFDC3Security } from '../impl/PublicFDC3Security';
 export class SigningChannelDelegate extends AbstractChannelDelegate {
   private readonly fdc3Security: PublicFDC3Security;
 
-  constructor(d: Channel | PrivateChannel, fdc3Security: PublicFDC3Security) {
-    super(d);
+  constructor(d: Channel | PrivateChannel, fdc3Security: PublicFDC3Security, metadataAvailable: boolean) {
+    super(d, metadataAvailable);
     this.fdc3Security = fdc3Security;
   }
 
   canSign(): boolean {
-    return typeof (this.fdc3Security as any).sign === 'function';
+    const hasSign = typeof (this.fdc3Security as any).sign === 'function';
+    if (!hasSign) {
+      console.log('SigningChannelDelegate: Security provider does not have sign method', this.fdc3Security);
+    }
+    return hasSign;
   }
 
   async wrapContext(ctx: Context, meta?: ContextMetadata): Promise<{ ctx: Context; meta?: ContextMetadata }> {
     if (this.canSign()) {
-      const { signature, antiReplay } = await (this.fdc3Security as any as PrivateFDC3Security).sign(ctx);
-      const metaOut = {
-        ...meta,
-        signature,
-        antiReplay,
-      } as ContextMetadata;
-      return { ctx, meta: metaOut };
+      return signContext(this.fdc3Security as PrivateFDC3Security, ctx, meta);
     }
     return { ctx, meta };
   }
@@ -38,9 +36,6 @@ export class SigningChannelDelegate extends AbstractChannelDelegate {
   addContextListener(context: any, handler?: any): Promise<Listener> {
     const theHandler: ContextHandler = handler ? handler : (context as ContextHandler);
     const theContextType: string | null = context && handler ? (context as string) : null;
-    return super.addContextListener(
-      theContextType,
-      signingContextHandler(this.fdc3Security, theHandler, async () => this.delegate)
-    );
+    return super.addContextListener(theContextType, signatureCheckingContextHandler(this.fdc3Security, theHandler));
   }
 }

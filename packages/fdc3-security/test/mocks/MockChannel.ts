@@ -20,6 +20,7 @@ export class MockChannel implements Channel {
 
   async broadcast(context: Context, meta: ContextMetadata): Promise<void> {
     console.log(`[MockChannel ${this.id}] Broadcasting context:`, context.type);
+    console.log(`[MockChannel ${this.id}] Metadata:`, JSON.stringify(meta, null, 2));
     // Execute listeners in next tick to avoid blocking
     setImmediate(() => {
       this.listeners.forEach(l => l(context, meta));
