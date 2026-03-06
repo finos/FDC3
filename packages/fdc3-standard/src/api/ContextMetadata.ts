@@ -31,6 +31,26 @@ export interface AppProvidableContextMetadata {
   custom?: Record<string, any>;
 }
 
+interface SecurityMetadata {
+  /** A Detached JSON Web Signature (JWS) proving the authenticity and integrity of the context. */
+  signature?: DetachedSignature;
+
+  /** The result of verifying the context's signature, populated by the receiving app's
+   * security layer after attempting signature verification.
+   **/
+  authenticity?: MessageAuthenticity;
+
+  /** The anti-replay claims of the context, populated by the receiving app's
+   * security layer after attempting signature verification.
+   **/
+  antiReplay?: AntiReplayClaims;
+
+  /** The result of attempting to decrypt the context, populated by the receiving app's
+   * security layer after attempting decryption.  See: [Security & Identity
+   * documentation](../../api/security#encryption-metadata). */
+  encryption?: 'cant_decrypt' | 'not_encrypted' | 'decrypted';
+}
+
 /**
  * Metadata relating to a context or intent and context received through the
  * `addContextListener` and `addIntentListener` functions.
@@ -49,19 +69,11 @@ export interface AppProvidableContextMetadata {
   traceId?: string;
 }
 
-export interface DesktopAgentProvidableContextMetadata {
+export interface DesktopAgentProvidableContextMetadata extends SecurityMetadata {
   /** The timestamp when the context was broadcast or the intent was raised.
    * This can be used for debugging, auditing, or ordering events. */
   timestamp?: Date;
 
   /** The identifier of the app instance that originated the context or intent. */
   source?: AppIdentifier;
-
-  /** A unique identifier for tracing the flow of context or intent messages across applications.
-   * This is useful for debugging and monitoring message flow in complex interop scenarios. */
-  traceId?: string;
-
-  /** A cryptographic signature that can be used to verify the authenticity and integrity
-   * of the context or intent message. This is useful for security-sensitive applications. */
-  signature?: string;
 }
