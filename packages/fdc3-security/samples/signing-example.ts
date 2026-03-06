@@ -1,13 +1,12 @@
 import { JosePublicFDC3Security, provisionJWKS } from '../src/impl/JosePublicFDC3Security';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
-import { Channel, DesktopAgent } from '@finos/fdc3-standard';
+import { Channel, ContextMetadata, DesktopAgent } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { ExchangeDataMessage } from '../src/secure-boundary/MessageTypes';
 import { MockDesktopAgent } from '../test/mocks/MockDesktopAgent';
 import { startAppBackEnd } from '../test/mocks/AppBackEnd';
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { SigningChannelDelegate } from '../src/signing/SigningChannelDelegate';
-import { ContextMetadataWithAuthenticity } from '../src/signing/SigningSupport';
 
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
 
@@ -26,7 +25,7 @@ class AppABackendHandlers extends DefaultFDC3Handlers {
   async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
     console.log(`[App A Backend] Received remote channel for purpose: ${purpose}`);
     // Wrap with SigningChannelDelegate to handle signing automatically
-    this.channel = new SigningChannelDelegate(channel, this.security);
+    this.channel = new SigningChannelDelegate(channel, this.security, false);
     // Wait for listener to be ready
     setTimeout(() => this.broadcast(), 1000);
   }
@@ -74,7 +73,7 @@ async function runExample() {
   );
 
   // Wrap the channel with SigningChannelDelegate for automatic verification
-  const signedChanB = new SigningChannelDelegate(chanB, securityB_Public);
+  const signedChanB = new SigningChannelDelegate(chanB, securityB_Public, false);
 
   // 1. Listen to the raw channel to show what's "on the wire"
   await chanB.addContextListener('fdc3.instrument', async ctx => {
@@ -83,32 +82,29 @@ async function runExample() {
   });
 
   // 2. Listen via the Delegate to show the processed/verified version
-  await signedChanB.addContextListener(
-    'fdc3.instrument',
-    async (ctx: Context, meta: ContextMetadataWithAuthenticity | undefined) => {
-      console.log('[App B Front-end] <<< [VERIFIED] Context Received:');
-      console.log(JSON.stringify(ctx, null, 2));
-      console.log('[App B Front-end] <<< [VERIFIED] Metadata Received:');
-      console.log(JSON.stringify(meta, null, 2));
+  await signedChanB.addContextListener('fdc3.instrument', async (ctx: Context, meta: ContextMetadata | undefined) => {
+    console.log('[App B Front-end] <<< [VERIFIED] Context Received:');
+    console.log(JSON.stringify(ctx, null, 2));
+    console.log('[App B Front-end] <<< [VERIFIED] Metadata Received:');
+    console.log(JSON.stringify(meta, null, 2));
 
-      if (meta?.authenticity) {
-        const auth = meta.authenticity;
-        if (auth.signed) {
-          console.log('[App B Front-end] Verification Result: ✅ VALID');
-          console.log(`[App B Front-end] Trusted Provider: ${auth.jku}`);
-        } else {
-          console.log('[App B Front-end] Context was not signed.');
-          if (auth.errors) {
-            console.log('[App B Front-end] Errors:', auth.errors);
-          }
+    if (meta?.authenticity) {
+      const auth = meta.authenticity;
+      if (auth.signed) {
+        console.log('[App B Front-end] Verification Result: ✅ VALID');
+        console.log(`[App B Front-end] Trusted Provider: ${auth.jku}`);
+      } else {
+        console.log('[App B Front-end] Context was not signed.');
+        if (auth.errors) {
+          console.log('[App B Front-end] Errors:', auth.errors);
         }
       }
-
-      console.log('--- FDC3 Signing Example End ---');
-      httpServer.close();
-      process.exit(0);
     }
-  );
+
+    console.log('--- FDC3 Signing Example End ---');
+    httpServer.close();
+    process.exit(0);
+  });
 
   // 3. App A Front-end Execution
   console.log('[App A Front-end] Connecting to remote handlers...');
