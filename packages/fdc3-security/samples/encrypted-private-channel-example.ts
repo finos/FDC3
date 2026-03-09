@@ -33,7 +33,10 @@ async function step2SetupAppB() {
 /**
  * STEP 3: Setup App B (The Broadcaster & Key Creator)
  */
-async function step3SetupAppBDelegate(appBSecurity: JosePrivateFDC3Security, privateChannel: MockPrivateChannel) {
+async function step3SetupAppBChannelDelegate(
+  appBSecurity: JosePrivateFDC3Security,
+  privateChannel: MockPrivateChannel
+) {
   console.log('3. App B Setup: Initializing private channel delegate for broadcasting...');
   // Note: We use metadataAvailable: true here so signatures are propagated in standard metadata argument
   const appBDelegate = new EncryptingChannelDelegate(privateChannel, true, appBSecurity);
@@ -51,7 +54,10 @@ async function step3SetupAppBDelegate(appBSecurity: JosePrivateFDC3Security, pri
 /**
  * STEP 4: Setup App A (The Listener / Receiver)
  */
-async function step4SetupAppADelegate(appASecurity: JosePrivateFDC3Security, privateChannel: MockPrivateChannel) {
+async function step4SetupAppAChannelDelegate(
+  appASecurity: JosePrivateFDC3Security,
+  privateChannel: MockPrivateChannel
+) {
   console.log('4. App A Setup: Resolving intent and connecting to Private Channel as listener...');
 
   const appADelegate = new EncryptingChannelDelegate(privateChannel, true, appASecurity);
@@ -102,8 +108,8 @@ async function runExample() {
   const appB = await step2SetupAppB();
   const privateChannel = new MockPrivateChannel('private-channel-1');
 
-  const appBDelegate = await step3SetupAppBDelegate(appB.security, privateChannel);
-  await step4SetupAppADelegate(appA.security, privateChannel);
+  const appBDelegate = await step3SetupAppBChannelDelegate(appB.security, privateChannel);
+  await step4SetupAppAChannelDelegate(appA.security, privateChannel);
   step5AppBBroadcasts(appBDelegate, [appA, appB]);
 }
 
