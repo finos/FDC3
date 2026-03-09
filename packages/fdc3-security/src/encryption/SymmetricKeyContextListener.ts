@@ -27,7 +27,7 @@ export async function createSymmetricKeyRequestContextListener(
       if (ma?.signed && ma.trusted && ma.valid) {
         const theKey = await channel.getSymmetricKey();
         if (theKey) {
-          const wrappedKey = await fdc3Security.wrapKey(theKey, ma.jku!);
+          const wrappedKey = await fdc3Security.wrapSymmetricKey(theKey, ma.jku!);
           const { ctx, meta } = await signContext(fdc3Security, wrappedKey);
           return channel.broadcast(ctx, meta);
         } else {
