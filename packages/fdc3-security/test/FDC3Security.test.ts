@@ -179,7 +179,7 @@ describe('JosePrivateFDC3Security', () => {
       const symmetricJWK = await sender.createSymmetricKey();
 
       // Sender wraps the symmetric key for the receiver
-      const wrappedKeyResponse = await sender.wrapKey(symmetricJWK, receiverBaseUrl);
+      const wrappedKeyResponse = await sender.wrapSymmetricKey(symmetricJWK, receiverBaseUrl);
 
       // Verify the wrapped key response structure
       expect(wrappedKeyResponse.type).toBe('fdc3.security.symmetricKeyResponse');
@@ -187,7 +187,7 @@ describe('JosePrivateFDC3Security', () => {
       expect(wrappedKeyResponse.wrappedKey).toBeDefined();
 
       // Receiver unwraps the symmetric key
-      const unwrappedKey = await receiver.unwrapKey(wrappedKeyResponse);
+      const unwrappedKey = await receiver.unwrapSymmetricKey(wrappedKeyResponse);
 
       // Verify the unwrapped key matches the original
       expect(unwrappedKey).toEqual(symmetricJWK);

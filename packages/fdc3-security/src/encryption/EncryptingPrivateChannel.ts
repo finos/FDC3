@@ -123,7 +123,7 @@ export interface EncryptingPrivateChannel extends PrivateChannel {
    * @example
    * ```typescript
    * // After receiving a wrapped key response
-   * const unwrappedKey = await security.unwrapKey(wrappedKeyResponse);
+   * const unwrappedKey = await security.unwrapSymmetricKey(wrappedKeyResponse);
    * await channel.setSymmetricKey(unwrappedKey);
    * // Channel can now decrypt incoming messages
    * ```
