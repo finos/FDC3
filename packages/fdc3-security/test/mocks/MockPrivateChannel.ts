@@ -5,17 +5,17 @@ export class MockPrivateChannel extends MockChannel implements PrivateChannel {
   constructor(id: string) {
     super(id, 'private');
   }
-  onAddContextListener(handler: (contextType?: string) => void): Listener {
+  onAddContextListener(_handler: (contextType?: string) => void): Listener {
     return { unsubscribe: async () => {} };
   }
-  onUnsubscribe(handler: (contextType?: string) => void): Listener {
+  onUnsubscribe(_handler: (contextType?: string) => void): Listener {
     return { unsubscribe: async () => {} };
   }
-  onDisconnect(handler: () => void): Listener {
+  onDisconnect(_handler: () => void): Listener {
     return { unsubscribe: async () => {} };
   }
   async disconnect(): Promise<void> {}
-  async addEventListener(type: string | null, handler: any): Promise<Listener> {
+  async addEventListener(_type: string | null, _handler: unknown): Promise<Listener> {
     return { unsubscribe: async () => {} };
   }
 }
