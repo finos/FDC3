@@ -9,6 +9,8 @@ import {
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
 import { AppBackEnd } from '../test/mocks/AppBackEnd';
 import { MockPrivateChannel } from '../test/mocks/MockPrivateChannel';
+import { fileURLToPath } from 'url';
+import { resolve } from 'path';
 
 /**
  * STEP 1: Setup App A (listener)
@@ -77,21 +79,24 @@ async function step4SetupAppAChannelDelegate(
 /**
  * STEP 5: App B Broadcasts Encrypted Messages
  */
-function step5AppBBroadcasts(appBDelegate: EncryptingChannelDelegate, apps: AppBackEnd[]): void {
-  console.log('[App B] Starting to broadcast encrypted messages...');
+function step5AppBBroadcasts(appBDelegate: EncryptingChannelDelegate, apps: AppBackEnd[]): Promise<void> {
+  return new Promise(resolve => {
+    console.log('[App B] Starting to broadcast encrypted messages...');
 
-  let count = 0;
-  const interval = setInterval(async () => {
-    count++;
-    console.log(`\n[App B] Broadcasting encrypted message ${count}...`);
-    await appBDelegate.broadcast({ type: 'test.encrypted', id: { num: count } });
+    let count = 0;
+    const interval = setInterval(async () => {
+      count++;
+      console.log(`\n[App B] Broadcasting encrypted message ${count}...`);
+      await appBDelegate.broadcast({ type: 'test.encrypted', id: { num: count } });
 
-    if (count >= 10) {
-      clearInterval(interval);
-      console.log('\n--- FDC3 Encrypted Private Channel Example Complete ---');
-      apps.forEach(app => app.shutdown());
-    }
-  }, 1000);
+      if (count >= 10) {
+        clearInterval(interval);
+        interval.unref();
+        console.log('\n--- FDC3 Encrypted Private Channel Example Complete ---');
+        void Promise.all(apps.map(app => app.shutdown())).then(() => resolve());
+      }
+    }, 1000);
+  });
 }
 
 /**
@@ -101,7 +106,7 @@ function step5AppBBroadcasts(appBDelegate: EncryptingChannelDelegate, apps: AppB
  * data securely using symmetric encryption, securely distributing the symmetric key
  * upon request.
  */
-async function runExample() {
+export async function runExample(): Promise<void> {
   console.log('--- FDC3 Encrypted Private Channel Example Start ---');
 
   const appA = await step1SetupAppA();
@@ -110,9 +115,18 @@ async function runExample() {
 
   const appBDelegate = await step3SetupAppBChannelDelegate(appB.security, privateChannel);
   await step4SetupAppAChannelDelegate(appA.security, privateChannel);
-  step5AppBBroadcasts(appBDelegate, [appA, appB]);
+  await step5AppBBroadcasts(appBDelegate, [appA, appB]);
 }
 
-runExample().catch(err => {
-  console.error('Error running example:', err);
-});
+/**
+ * Run as a script if called directly
+ */
+const __filename = fileURLToPath(import.meta.url);
+if (process.argv[1] && resolve(process.argv[1]) === resolve(__filename)) {
+  runExample()
+    .then(() => process.exit(0))
+    .catch(err => {
+      console.error('Example failed:', err);
+      process.exit(1);
+    });
+}
