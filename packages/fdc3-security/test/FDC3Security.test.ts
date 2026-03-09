@@ -153,7 +153,7 @@ describe('JosePrivateFDC3Security', () => {
     it('should sign and then check a context using two instances', async () => {
       const { signature, antiReplay } = await sender.sign(mockContext);
       // Use PublicFDC3Security interface for coverage attribution
-      const result = await receiverPublic.check(signature, mockContext, antiReplay);
+      const result = await receiverPublic.verifySignature(signature, mockContext, antiReplay);
       if (result.signed) {
         expect(result.valid).toBe(true);
         expect(result.trusted).toBe(true);
@@ -200,7 +200,7 @@ describe('JosePrivateFDC3Security', () => {
         signature: 'jws',
       };
       const dummyAntiReplay = { iat: 0, exp: 0, jti: 'dummy' };
-      const result = await receiverPublic.check(malformedSignature, mockContext, dummyAntiReplay);
+      const result = await receiverPublic.verifySignature(malformedSignature, mockContext, dummyAntiReplay);
 
       expect(result.signed).toBe(false);
       // When signed is false, errors array may be present but other properties should not exist
@@ -218,7 +218,7 @@ describe('JosePrivateFDC3Security', () => {
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       // Verify it's rejected due to stale signature (signed=true per schema, valid=false when rejecting)
-      const result = await receiverPublic.check(signature, mockContext, antiReplay);
+      const result = await receiverPublic.verifySignature(signature, mockContext, antiReplay);
       expect(result.signed).toBe(true);
       expect(result.valid).toBe(false);
       expect(result.errors).toBeDefined();
@@ -255,7 +255,7 @@ describe('JosePrivateFDC3Security', () => {
       const { signature, antiReplay } = await shortValiditySender.sign(mockContext);
 
       // Immediately verify it works
-      const immediateResult = await receiverPublic.check(signature, mockContext, antiReplay);
+      const immediateResult = await receiverPublic.verifySignature(signature, mockContext, antiReplay);
       if (immediateResult.signed) {
         expect(immediateResult.valid).toBe(true);
       }
@@ -271,7 +271,7 @@ describe('JosePrivateFDC3Security', () => {
       );
 
       // Verify it's rejected due to context expiry (signed=true per schema, valid=false when rejecting)
-      const result = await contextExpiryReceiver.check(signature, mockContext, antiReplay);
+      const result = await contextExpiryReceiver.verifySignature(signature, mockContext, antiReplay);
       expect(result.signed).toBe(true);
       expect(result.valid).toBe(false);
       expect(result.errors).toBeDefined();
@@ -292,7 +292,7 @@ describe('JosePrivateFDC3Security', () => {
         signature: 'dummy',
       };
       const dummyAntiReplay = { iat: 0, exp: 0, jti: 'dummy' };
-      const result = await receiverPublic.check(malformedSignature, mockContext, dummyAntiReplay);
+      const result = await receiverPublic.verifySignature(malformedSignature, mockContext, dummyAntiReplay);
 
       expect(result.signed).toBe(false);
       expect('errors' in result).toBe(true);
