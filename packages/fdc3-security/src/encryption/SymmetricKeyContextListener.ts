@@ -55,7 +55,7 @@ export function createSymmetricKeyResponseContextListener(
 
       if (ma?.signed && ma.trusted && ma.valid) {
         const skr = context as SymmetricKeyResponse;
-        const key = await fdc3Security.unwrapKey(skr);
+        const key = await fdc3Security.unwrapSymmetricKey(skr);
         if (key) {
           channel.setSymmetricKey(key);
         }

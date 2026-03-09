@@ -43,7 +43,7 @@ export class EncryptingChannelDelegate extends AbstractChannelDelegate implement
       this.keyUnwrapFunction = keyUnwrapFunction;
     } else {
       if (typeof (fdc3Security as any).unwrapKey === 'function') {
-        this.keyUnwrapFunction = ctx => (fdc3Security as PrivateFDC3Security).unwrapKey(ctx);
+        this.keyUnwrapFunction = ctx => (fdc3Security as PrivateFDC3Security).unwrapSymmetricKey(ctx);
       } else {
         throw new Error(
           'Must provide keyUnwrapFunction or a PrivateFDC3Security implementation that supports unwrapKey'

@@ -111,7 +111,7 @@ export class JosePrivateFDC3Security extends JosePublicFDC3Security implements P
     };
   }
 
-  async unwrapKey(ctx: SymmetricKeyResponse): Promise<JsonWebKey> {
+  async unwrapSymmetricKey(ctx: SymmetricKeyResponse): Promise<JsonWebKey> {
     const key = await jose.importJWK(this.wrappingPrivateKey, this.algorithms.keyWrapping);
     const result = await jose.compactDecrypt(ctx.wrappedKey, key);
     const jsonString = new TextDecoder().decode(result.plaintext);
