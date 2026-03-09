@@ -57,7 +57,7 @@
             "properties": {
                 "signed": {
                     "type": "boolean",
-                    "description": "Indicates whether the message was signed."
+                    "description": "Indicates whether the context includes a signature, but check other fields to see if the signature is valid."
                 },
                 "valid": {
                     "type": "boolean",

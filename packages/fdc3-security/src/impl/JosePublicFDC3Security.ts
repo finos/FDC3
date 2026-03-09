@@ -157,37 +157,38 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
 
       const result = await jose.compactVerify(reconstitutedJws, jwksEndpoint, {});
 
+      const errors: string[] = [];
+
       // Check signature freshness (based on iat in header)
       if (iat && now - iat > this.timeLimits.signatureFreshnessSeconds) {
-        return {
-          signed: true,
-          valid: false,
-          trusted: false,
-          antiReplayClaims: antiReplay,
-
-          errors: [
-            `Signature is too old (iat: ${iat}, now: ${now}, max age: ${this.timeLimits.signatureFreshnessSeconds}s)`,
-          ],
-        };
+        errors.push(
+          `Signature is too old (iat: ${iat}, now: ${now}, max age: ${this.timeLimits.signatureFreshnessSeconds}s)`
+        );
       }
 
       // Check context expiry (based on exp in antiReplay)
       if (antiReplay.exp && now > antiReplay.exp) {
-        return {
-          signed: false,
-          errors: [`Context has expired (exp: ${antiReplay.exp}, now: ${now})`],
-        };
+        errors.push(`Context has expired (exp: ${antiReplay.exp}, now: ${now})`);
       }
 
       // Check pluggable anti-replay claims (like jti)
       if (this.antiReplayChecker) {
         const replayValid = await this.antiReplayChecker.check(antiReplay);
         if (!replayValid) {
-          return {
-            signed: false,
-            errors: [`Anti-replay check failed for jti: ${antiReplay.jti}`],
-          };
+          errors.push(`Anti-replay check failed for jti: ${antiReplay.jti}`);
         }
+      }
+
+      if (errors.length > 0) {
+        return {
+          signed: true,
+          valid: false,
+          alg,
+          kid,
+          jku,
+          antiReplayClaims: antiReplay,
+          errors,
+        };
       }
 
       return {
