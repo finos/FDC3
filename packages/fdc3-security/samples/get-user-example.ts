@@ -1,3 +1,5 @@
+import { resolve } from 'path';
+import { fileURLToPath } from 'url';
 import { Context, UserRequest } from '@finos/fdc3-context';
 import { DesktopAgent } from '@finos/fdc3-standard';
 
@@ -47,8 +49,8 @@ class UserRequestingApp {
     this.baseUrl = backend.baseUrl;
   }
 
-  shutdown(): void {
-    this.backend.shutdown();
+  async shutdown(): Promise<void> {
+    await this.backend.shutdown();
   }
 
   /**
@@ -83,6 +85,8 @@ class UserRequestingApp {
     } else {
       console.log('[UserRequestingApp] No user returned');
     }
+
+    await handlers.disconnect();
   }
 }
 
@@ -107,7 +111,7 @@ async function step2UserRequestingAppRequestsUser(idp: AppBackEnd): Promise<void
   console.log(`[UserRequestingApp] Listening at ${userRequestingAppBackend.baseUrl}`);
   const userRequestingApp = new UserRequestingApp(userRequestingAppBackend);
   await userRequestingApp.requestUserFrom(idp);
-  userRequestingApp.shutdown();
+  await userRequestingApp.shutdown();
 }
 
 /**
@@ -125,11 +129,20 @@ async function runExample() {
   await step2UserRequestingAppRequestsUser(idp);
 
   console.log('\n--- FDC3 Get User Example Complete ---');
-  idp.shutdown();
-  process.exit(0);
+  await idp.shutdown();
 }
 
-runExample().catch(err => {
-  console.error('Example failed:', err);
-  process.exit(1);
-});
+export { runExample };
+
+/**
+ * Run as a script if called directly
+ */
+const __filename = fileURLToPath(import.meta.url);
+if (process.argv[1] && resolve(process.argv[1]) === resolve(__filename)) {
+  runExample()
+    .then(() => process.exit(0))
+    .catch(err => {
+      console.error('Example failed:', err);
+      process.exit(1);
+    });
+}
