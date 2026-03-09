@@ -11,7 +11,7 @@ export type SignRequestFunction = (ctx: Context) => Promise<{ ctx: Context; meta
 
 /**
  * Adds encryption support for private channels.  A wrapped, symmetric key is sent via the private channel,
- * and the unwrapKey method is used to unwrap it, allowing further decoding of messages.
+ * and the unwrapSymmetricKey method is used to unwrap it, allowing further decoding of messages.
  *
  * Some considerations:
  *
@@ -42,11 +42,11 @@ export class EncryptingChannelDelegate extends AbstractChannelDelegate implement
     if (keyUnwrapFunction) {
       this.keyUnwrapFunction = keyUnwrapFunction;
     } else {
-      if (typeof (fdc3Security as any).unwrapKey === 'function') {
+      if (typeof (fdc3Security as any).unwrapSymmetricKey === 'function') {
         this.keyUnwrapFunction = ctx => (fdc3Security as PrivateFDC3Security).unwrapSymmetricKey(ctx);
       } else {
         throw new Error(
-          'Must provide keyUnwrapFunction or a PrivateFDC3Security implementation that supports unwrapKey'
+          'Must provide keyUnwrapFunction or a PrivateFDC3Security implementation that supports unwrapSymmetricKey'
         );
       }
     }
