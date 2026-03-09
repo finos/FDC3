@@ -79,6 +79,13 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
     }
   }
 
+  /**
+   * Closes the WebSocket connection. Call when done with the remote handlers.
+   */
+  async disconnect(): Promise<void> {
+    await this.messaging.disconnect();
+  }
+
   // Security layer messages use exchange with named events
   private async callRemote(eventName: string, payload: unknown): Promise<any> {
     return this.messaging.exchange(payload, `ack:${eventName}`, 5000, eventName);
@@ -187,7 +194,7 @@ export async function connectRemoteHandlers(
   url: string,
   da: DesktopAgent,
   callback: (ctx: ExchangeDataMessage) => Promise<ExchangeDataMessage | void>
-): Promise<FDC3Handlers> {
+): Promise<FDC3Handlers & { disconnect(): Promise<void> }> {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(url);
     ws.addEventListener('open', () => {
