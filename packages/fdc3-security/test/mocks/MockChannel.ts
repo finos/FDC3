@@ -50,8 +50,7 @@ export class MockChannel implements Channel {
   }
   async clearContext(): Promise<void> {}
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async addEventListener(type: string, handler: EventHandler): Promise<Listener> {
+  async addEventListener(_type: string, _handler: EventHandler): Promise<Listener> {
     return { unsubscribe: async () => {} };
   }
 }
