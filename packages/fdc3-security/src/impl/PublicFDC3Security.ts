@@ -44,13 +44,13 @@ export interface PublicFDC3Security {
    *
    * @example
    * ```typescript
-   * const authenticity = await security.check(metadata.signature, context, metadata.antiReplay);
+   * const authenticity = await security.verifySignature(metadata.signature, context, metadata.antiReplay);
    * if (authenticity.signed && authenticity.valid) {
    *   console.log(`Verified from: ${authenticity.publicKeyUrl}`);
    * }
    * ```
    */
-  check(sig: DetachedSignature, ctx: Context, antiReplay: AntiReplay): Promise<MessageAuthenticity>;
+  verifySignature(sig: DetachedSignature, ctx: Context, antiReplay: AntiReplay): Promise<MessageAuthenticity>;
 
   /**
    * Get the public keys configured in this security implementation.

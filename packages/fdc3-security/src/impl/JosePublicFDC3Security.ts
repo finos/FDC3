@@ -134,7 +134,7 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
     return `${sig.protected}..${sig.signature}`;
   }
 
-  async check(sig: DetachedSignature, ctx: Context, antiReplay: AntiReplay): Promise<MessageAuthenticity> {
+  async verifySignature(sig: DetachedSignature, ctx: Context, antiReplay: AntiReplay): Promise<MessageAuthenticity> {
     try {
       const compactSig = this.detachedToCompact(sig);
       const { alg, jku, kid, iat } = this.getParametersFromHeader(compactSig);
