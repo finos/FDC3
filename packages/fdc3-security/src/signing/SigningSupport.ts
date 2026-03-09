@@ -1,10 +1,4 @@
-import {
-  ContextHandler,
-  IntentHandler,
-  IntentResult,
-  DesktopAgentProvidableContextMetadata,
-  ContextMetadata,
-} from '@finos/fdc3-standard';
+import { ContextHandler, DesktopAgentProvidableContextMetadata, ContextMetadata } from '@finos/fdc3-standard';
 import { PrivateFDC3Security } from '../impl/PrivateFDC3Security';
 import { Context } from '@finos/fdc3-context';
 import { BrowserTypes } from '@finos/fdc3-schema';

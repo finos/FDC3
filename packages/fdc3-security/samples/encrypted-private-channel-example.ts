@@ -1,94 +1,75 @@
-import { Listener, PrivateChannel } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
-
-import { createJosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
-import { MockChannel } from '../test/mocks/MockChannel';
+import { WebSocket } from 'ws';
+import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { EncryptingChannelDelegate } from '../src/encryption/EncryptingChannelDelegate';
 import {
   createSymmetricKeyRequestContextListener,
   createSymmetricKeyResponseContextListener,
 } from '../src/encryption/SymmetricKeyContextListener';
-import * as jose from 'jose';
-import { JWKSResolver } from '../src/impl/JosePublicFDC3Security';
+import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
+import { AppBackEnd } from '../test/mocks/AppBackEnd';
+import { MockPrivateChannel } from '../test/mocks/MockPrivateChannel';
 
-class MockPrivateChannel extends MockChannel implements PrivateChannel {
-  constructor(id: string) {
-    super(id, 'private');
-  }
-  onAddContextListener(handler: (contextType?: string) => void): Listener {
-    return { unsubscribe: async () => {} };
-  }
-  onUnsubscribe(handler: (contextType?: string) => void): Listener {
-    return { unsubscribe: async () => {} };
-  }
-  onDisconnect(handler: () => void): Listener {
-    return { unsubscribe: async () => {} };
-  }
-  async disconnect(): Promise<void> {}
-  async addEventListener(type: string | null, handler: any): Promise<Listener> {
-    return { unsubscribe: async () => {} };
-  }
+/**
+ * STEP 1: Setup App A (listener)
+ */
+async function step1SetupAppA() {
+  console.log('1. Starting App A backend...');
+  return AppBackEnd.start(0, (_ws: WebSocket, _security: JosePrivateFDC3Security) => new DefaultFDC3Handlers());
 }
 
-async function runExample() {
-  console.log('--- FDC3 Encrypted Private Channel Example Start ---');
+/**
+ * STEP 2: Setup App B (broadcaster)
+ */
+async function step2SetupAppB() {
+  console.log('2. Starting App B backend...');
+  return AppBackEnd.start(0, (_ws: WebSocket, _security: JosePrivateFDC3Security) => new DefaultFDC3Handlers());
+}
 
-  // Setup local registry for JWKS resolving without a real HTTP server
-  const registry: Record<string, JsonWebKey[]> = {};
-  const resolver = (url: string) => {
-    const keys = registry[url] || [];
-    const localSet = jose.createLocalJWKSet({ keys: keys as any });
-    const r: any = async (ph: any, tok: any) => localSet(ph, tok);
-    r.reload = async () => {};
-    r.jwks = () => ({ keys });
-    return r as JWKSResolver;
-  };
-
-  // 1. Create App A and App B Security Objects
-  const appASecurity = await createJosePrivateFDC3Security('http://localhost:1111', resolver, () => true);
-  const appBSecurity = await createJosePrivateFDC3Security('http://localhost:2222', resolver, () => true);
-
-  registry['http://localhost:1111/.well-known/jwks.json'] = [
-    appASecurity.signingPublicKey,
-    appASecurity.wrappingPublicKey,
-  ];
-  registry['http://localhost:2222/.well-known/jwks.json'] = [
-    appBSecurity.signingPublicKey,
-    appBSecurity.wrappingPublicKey,
-  ];
-
-  // 2. Setup the underlying "wire" mock channel
-  const privateChannel = new MockPrivateChannel('private-channel-1');
-
-  // 3. App B Setup
-  console.log('[App B] Initializing private channel delegate...');
+/**
+ * STEP 3: Setup App B (The Broadcaster & Key Creator)
+ */
+async function step3SetupAppBDelegate(appBSecurity: JosePrivateFDC3Security, privateChannel: MockPrivateChannel) {
+  console.log('3. App B Setup: Initializing private channel delegate for broadcasting...');
   // Note: We use metadataAvailable: true here so signatures are propagated in standard metadata argument
   const appBDelegate = new EncryptingChannelDelegate(privateChannel, true, appBSecurity);
   await appBDelegate.setChannelEncryption(type => {
-    return type !== 'fdc3.security.symmetricKeyRequest' && type !== 'fdc3.security.symmetricKeyResponse';
-  }); // Encrypt general contexts, but keep protocol negotiation in clear text
+    return type == 'test.encrypted';
+  });
 
   // Start the symmetric key request listener.
   // It will create a symmetric key automatically and provide it upon valid request.
   await createSymmetricKeyRequestContextListener(appBSecurity, appBDelegate);
 
-  console.log('[App A] Resolving intent and connecting to Private Channel...');
+  return appBDelegate;
+}
 
-  // 4. App A Setup
+/**
+ * STEP 4: Setup App A (The Listener / Receiver)
+ */
+async function step4SetupAppADelegate(appASecurity: JosePrivateFDC3Security, privateChannel: MockPrivateChannel) {
+  console.log('4. App A Setup: Resolving intent and connecting to Private Channel as listener...');
+
   const appADelegate = new EncryptingChannelDelegate(privateChannel, true, appASecurity);
 
   // App A needs a listener to receive the wrapped symmetric key when requested
   await createSymmetricKeyResponseContextListener(appASecurity, appADelegate);
 
-  // App A adds a normal context listener
+  // App A adds a normal context listener for the encrypted content
   appADelegate.addContextListener('test.encrypted', (ctx: Context) => {
     console.log(`\n[App A] \u2705 Successfully Received and Decrypted Context:`);
     console.log(JSON.stringify(ctx, null, 2));
   });
 
+  return appADelegate;
+}
+
+/**
+ * STEP 5: App B Broadcasts Encrypted Messages
+ */
+function step5AppBBroadcasts(appBDelegate: EncryptingChannelDelegate, apps: AppBackEnd[]): void {
   console.log('[App B] Starting to broadcast encrypted messages...');
 
-  // 5. App B begins broadcasting
   let count = 0;
   const interval = setInterval(async () => {
     count++;
@@ -98,8 +79,28 @@ async function runExample() {
     if (count >= 10) {
       clearInterval(interval);
       console.log('\n--- FDC3 Encrypted Private Channel Example Complete ---');
+      apps.forEach(app => app.shutdown());
     }
   }, 1000);
+}
+
+/**
+ * MAIN EXECUTION
+ *
+ * This example simulates a private channel over which two applications stream encrypted
+ * data securely using symmetric encryption, securely distributing the symmetric key
+ * upon request.
+ */
+async function runExample() {
+  console.log('--- FDC3 Encrypted Private Channel Example Start ---');
+
+  const appA = await step1SetupAppA();
+  const appB = await step2SetupAppB();
+  const privateChannel = new MockPrivateChannel('private-channel-1');
+
+  const appBDelegate = await step3SetupAppBDelegate(appB.security, privateChannel);
+  await step4SetupAppADelegate(appA.security, privateChannel);
+  step5AppBBroadcasts(appBDelegate, [appA, appB]);
 }
 
 runExample().catch(err => {
