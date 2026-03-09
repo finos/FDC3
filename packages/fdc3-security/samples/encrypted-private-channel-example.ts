@@ -15,7 +15,9 @@ import { MockPrivateChannel } from '../test/mocks/MockPrivateChannel';
  */
 async function step1SetupAppA() {
   console.log('1. Starting App A backend...');
-  return AppBackEnd.start(0, (_ws: WebSocket, _security: JosePrivateFDC3Security) => new DefaultFDC3Handlers());
+  const app = new AppBackEnd((_ws: WebSocket, _security: JosePrivateFDC3Security) => new DefaultFDC3Handlers());
+  await app.start();
+  return app;
 }
 
 /**
@@ -23,7 +25,9 @@ async function step1SetupAppA() {
  */
 async function step2SetupAppB() {
   console.log('2. Starting App B backend...');
-  return AppBackEnd.start(0, (_ws: WebSocket, _security: JosePrivateFDC3Security) => new DefaultFDC3Handlers());
+  const app = new AppBackEnd((_ws: WebSocket, _security: JosePrivateFDC3Security) => new DefaultFDC3Handlers());
+  await app.start();
+  return app;
 }
 
 /**
