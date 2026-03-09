@@ -2,7 +2,7 @@
 export default {
   preset: 'ts-jest/presets/default-esm',
   rootDir: '.',
-  roots: ['<rootDir>/src', '<rootDir>/test'],
+  roots: ['<rootDir>/src', '<rootDir>/test', '<rootDir>/samples'],
   moduleFileExtensions: ['js', 'ts'],
   extensionsToTreatAsEsm: ['.ts'],
   transformIgnorePatterns: ['node_modules/(?!(jose|canonicalize)/)'],
