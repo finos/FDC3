@@ -4,7 +4,7 @@ import { Channel, ContextMetadata, DesktopAgent } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { ExchangeDataMessage } from '../src/secure-boundary/MessageTypes';
 import { MockDesktopAgent } from '../test/mocks/MockDesktopAgent';
-import { startAppBackEnd } from '../test/mocks/AppBackEnd';
+import { AppBackEnd } from '../test/mocks/AppBackEnd';
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { SigningChannelDelegate } from '../src/signing/SigningChannelDelegate';
 
@@ -49,7 +49,7 @@ class AppABackendHandlers extends DefaultFDC3Handlers {
  */
 async function step1SetupAppABackend() {
   console.log('1. Start App A Backend (Hosts JWKS and FDC3 Handlers)');
-  const result = await startAppBackEnd(0, (_, security) => new AppABackendHandlers(security));
+  const result = await AppBackEnd.start(0, (_, security) => new AppABackendHandlers(security));
   const wsUrl = result.baseUrl.replace('http', 'ws');
   console.log(`[Server] Listening at ${result.baseUrl}`);
   return { ...result, wsUrl };
