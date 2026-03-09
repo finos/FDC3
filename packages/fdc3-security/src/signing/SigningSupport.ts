@@ -46,7 +46,7 @@ export async function checkSignature(
   if (m?.signature) {
     let signature: DetachedSignature = m.signature;
     let antiReplay: AntiReplayClaims = m.antiReplay!;
-    const authenticity = await fdc3Security.check(signature, unsignedContext, antiReplay);
+    const authenticity = await fdc3Security.verifySignature(signature, unsignedContext, antiReplay);
     return { context: unsignedContext, meta: { ...m, authenticity } };
   } else {
     // not signed, return
