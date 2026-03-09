@@ -5,12 +5,12 @@
 10. Rob to tidy up the implementation directory (DONE).
 5.  Write negative tests for JosePublicFDC3Security.
 6.  readonly authenticity?: unknown;  ContextMetadata in fdc3-standard.  Move the Authenticity definition into schema and export it for use here.  DONE
+7.  Yannick go through flow diagram and compare with Public / Private.  /Users/rob/Documents/finos/fdc3-general/FDC3/packages/fdc3-security/src/PrivateFDC3Security.ts (DONE)
 
 For Thursday
 ------------
 12. Yannick to review website/docs/api/security.md (DONE)
 9.  Review the generated documentation in /api
-7.  Yannick go through flow diagram and compare with Public / Private.  /Users/rob/Documents/finos/fdc3-general/FDC3/packages/fdc3-security/src/PrivateFDC3Security.ts
 
 - Show people the schemas
 - Show the new metadata
