@@ -45,6 +45,7 @@ export class DefaultChannel implements Channel {
       payload: {
         channelId: this.id,
         context,
+        metadata: {},
       },
       type: 'broadcastRequest',
     };

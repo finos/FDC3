@@ -58,9 +58,8 @@ export class DefaultContextListener
 
   action(m: BroadcastEvent): void {
     const metadata: DesktopAgentProvidableContextMetadata = {
-      source: m.payload.originatingApp,
+      source: m.payload.metadata?.source,
       timestamp: m.meta.timestamp,
-      traceId: m.metadata?.traceId,
     };
     this.handler(m.payload.context, metadata);
   }

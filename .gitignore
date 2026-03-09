@@ -29,3 +29,5 @@ nyc-coverage-report/
 .history/
 .rollup.cache
 tsconfig.tsbuildinfo
+**/html-report/
+packages/fdc3-security/junit.xml

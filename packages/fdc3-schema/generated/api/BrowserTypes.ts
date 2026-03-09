@@ -1315,7 +1315,8 @@ export interface MessageAuthenticity {
    */
   kid?: string;
   /**
-   * Indicates whether the message was signed.
+   * Indicates whether the context includes a signature, but check other fields to see if the
+   * signature is valid.
    */
   signed: boolean;
   /**
