@@ -55,7 +55,12 @@ export class AppBackEnd {
     this.httpServer = httpServer;
   }
 
-  shutdown(): void {
-    this.httpServer.close();
+  shutdown(): Promise<void> {
+    return new Promise(resolve => {
+      if (typeof this.httpServer.closeAllConnections === 'function') {
+        this.httpServer.closeAllConnections();
+      }
+      this.httpServer.close(() => resolve());
+    });
   }
 }

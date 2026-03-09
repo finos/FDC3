@@ -31,12 +31,6 @@ The security framework introduces:
 - **Encrypted Channels** for private communications
 - **JWT-based User Identity** for portable authentication
 
-## Trust Model
-
-- Apps are trusted.
-- Desktop agents are untrusted.
-- The web browser is untrusted.
-
 ## Trust Boundaries
 
 - why we have public / private parts of the API.  browsers are untrusted, servers are trusted.
@@ -44,6 +38,21 @@ The security framework introduces:
 
 (diagrams here)
 
+### Public / Private Keys
+
+-- JWKS Hosting at .well-known/jwks.json (?)
+1. Generate a public/private key pair
+2. Publish the public key at an HTTPS endpoint as a [JSON Web Key Set (JWKS)](https://datatracker.ietf.org/doc/html/rfc7517).  The URL on which the JWKS identifies the entity of the publisher. 
+
+## Trust Model
+
+- Apps decide who they trust and enforced app-to-app.
+- Desktop agents are untrusted.
+- Browsers are _untrusted_ by apps, to the extent that private keys won't be sent to app front-ends.
+
+### Trust Function
+
+Receiving apps provide an `allowListFunction(jku, iss?)` when configuring their security layer. This function determines whether a signer is trusted: given the signer's JWKS URL (`jku`) from the JWS header—and optionally the issuer (`iss`) for JWT verification—it returns `true` if the signer is in the receiver's circle of trust. When verifying a signature, the security layer sets `authenticity.trusted` to the result of this function, so apps can decide who they trust without bilateral configuration.
 
 
 ## App Identity and Signatures
@@ -55,42 +64,60 @@ Applications can sign the context objects they broadcast using their private key
 1. **Origin**: Which application sent the data
 2. **Integrity**: Whether the data was tampered with in transit
 
-To enable signing, an application must:
-
-1. Generate a public/private key pair
-2. Publish the public key at an HTTPS endpoint as a [JSON Web Key Set (JWKS)](https://datatracker.ietf.org/doc/html/rfc7517).  The URL on which the JWKS identifies the entity of the publisher.  
-3. Sign outgoing context objects with the private key.
-
 ### Signature Metadata
 
-When a context is signed, a `__signature` field is added to the context object:
+When a context is signed, the signature is provided in metadata (via [`AppProvidableContextMetadata`](ref/Metadata#contextmetadata) on broadcast/raiseIntent, or [`ContextMetadata`](ref/Metadata#contextmetadata) when received), not on the context object itself.
+
+| Context Metadata field | Description |
+|------------------------|-------------|
+| `signature` | The detached JWS (`protected` + `signature`) |
+| `antiReplay` | Claims (`iat`, `exp`, `jti`) used for replay detection; must be included when signing |
+
+### Example
 
 ```typescript
-{
-  // Original context fields...
-  type: "fdc3.instrument",
-  id: { ticker: "AAPL" },
-  
-  // Signature metadata
-  __signature: {
-    digest: "<base64-encoded signature>",
-    publicKeyUrl: "https://myapp.example.com/.well-known/jwks.json",
-    algorithm: {
-      name: "ECDSA",
-      hash: "SHA-512", 
-      namedCurve: "P-521"
+// When broadcasting or raising an intent, include signature and antiReplay in metadata
+channel.broadcast(
+  { type: "fdc3.instrument", id: { ticker: "AAPL" } },
+  {
+    signature: {
+      protected: "<base64url-encoded JWS protected header>",  // contains alg, jku, kid, iat, exp, jti
+      signature: "<base64url-encoded digital signature>"
     },
-    date: "2025-02-16T12:00:00Z"
+    antiReplay: { iat: 1739692800, exp: 1739696100, jti: "unique-token-id" }
   }
-}
+);
 ```
+### Generating The Signature
 
-| Field | Description |
-|-------|-------------|
-| `digest` | The cryptographic signature of the context, encoded using the app's private key |
-| `publicKeyUrl` | URL of the JWKS containing the public key for signature verification |
-| `algorithm` | Cryptographic algorithm details (ECDSA with P-521 curve recommended) |
-| `date` | Timestamp when the message was signed, used to prevent replay attacks |
+To generate a signature, the signer:
+
+1. Creates `antiReplay` claims: `iat` (current time), `exp` (iat + validity window), and `jti` (random UUID).
+2. Canonicalizes `{ context, antiReplay }` and signs it with the private key using [JOSE](https://github.com/panva/jose) (or any [JWS](https://datatracker.ietf.org/doc/html/rfc7515)-compliant library). Use `CompactSign` to produce a compact JWS; the protected header includes `alg`, `jku`, `kid`, and `iat`.
+3. Extracts the detached form: the compact JWS (`header.payload.signature`) yields `protected` (header) and `signature`—the payload is omitted since the signed data is the context itself. Returns `{ protected, signature }` plus `antiReplay` in metadata.
+
+### Signature Structure
+
+The `signature` is a detached [JSON Web Signature (JWS)](https://datatracker.ietf.org/doc/html/rfc7515). The `protected` header, when base64url-decoded, contains:
+
+| Header field | Description |
+|--------------|-------------|
+| `alg` | Signature algorithm (e.g., `EdDSA`) |
+| `jku` | URL of the JWKS containing the public key for verification |
+| `kid` | Key identifier within the JWKS |
+| `iat` | Issued-at time (Unix timestamp), prevents replay |
+| `exp` | Expiration time (Unix timestamp) |
+| `jti` | Unique token ID for replay protection |
+
+### Checking the Signature
+
+To verify a signature, the receiver:
+
+1. Extracts `alg`, `jku`, `kid`, and `iat` from the JWS protected header.
+2. Resolves the public key from the `jku` JWKS URL (via a resolver or [JOSE](https://github.com/panva/jose) remote JWKS).
+3. Reconstitutes the full JWS: canonicalizes `{ context, antiReplay }`, base64url-encodes it as the payload, and forms `header.payload.signature`. Uses `compactVerify` (or equivalent) to verify the signature.
+4. Validates freshness (`iat`), context expiry (`antiReplay.exp`), and anti-replay claims (`jti`).
+5. Populates the `authenticity` object in context metadata.
 
 ### Authenticity Metadata
 
@@ -100,19 +127,12 @@ When a signed context is received, the FDC3 security layer verifies the signatur
 {
   authenticity: {
     signed: true,           // A signature was present
-    valid: true,            // The signature was verified successfully
-    publicKeyUrl: "https://myapp.example.com/.well-known/jwks.json",
-    trusted: true           // Both apps belong to the same circle of trust
+    valid: true,            // The signature cryptographically verified
+    jku: "https://myapp.example.com/.well-known/jwks.json",
+    trusted: true           // allowListFunction(jku) returned true
   }
 }
 ```
-
-| Field | Description |
-|-------|-------------|
-| `signed` | `true` if the context included a valid signature |
-| `valid` | `true` if the public key successfully verified the signature |
-| `publicKeyUrl` | The URL of the JWKS used to verify the signature |
-| `trusted` | `true` if both sending and receiving apps belong to the same circle of trust |
 
 Applications receiving context can check these fields to make trust decisions:
 
@@ -121,19 +141,22 @@ Applications receiving context can check these fields to make trust decisions:
 
 ```ts
 fdc3.addContextListener("fdc3.instrument", (context, metadata) => {
-  if (metadata?.authenticity?.signed && metadata.authenticity.valid) {
-    console.log(`Verified context from: ${metadata.authenticity.publicKeyUrl}`);
-    
-    if (metadata.authenticity.trusted) {
-      // App is in our circle of trust - proceed with sensitive operations
-      processVerifiedInstrument(context);
-    } else {
-      // App is verified but not in circle of trust - may require user confirmation
-      promptUserForConfirmation(context, metadata.authenticity.publicKeyUrl);
-    }
-  } else {
-    // Unsigned or invalid signature - handle accordingly
-    console.warn("Received unsigned or invalid context");
+  const auth = metadata?.authenticity;
+
+  if (!auth?.signed) {
+    // No signature present - treat as untrusted
+    console.warn("Received unsigned context");
+    handleUntrustedContext(context);
+  } else if (!auth.valid) {
+    // Signature present but verification failed (tampered, stale, or bad key)
+    console.warn("Signature verification failed", auth.errors);
+    rejectContext(context);
+  } else if (!auth.trusted) {
+    console.warn(`Untrusted context from: ${auth.jku}`);
+    promptUserForConfirmation(context, auth.jku);
+  } else {   
+    // this is trusted - continue without user intervention
+    processVerifiedInstrument(context);
   }
 });
 ```
@@ -149,54 +172,63 @@ Applications communicating over a [`PrivateChannel`](ref/PrivateChannel) can neg
 
 ### Symmetric Key Exchange
 
-Encryption uses symmetric keys that are exchanged securely between channel participants. The exchange process uses the following context types:
+Encryption uses a symmetric key (e.g. AES-GCM) created by the channel owner and distributed via [JWE](https://datatracker.ietf.org/doc/html/rfc7516). See [encrypted-private-channel-example.ts](pathname:///packages/fdc3-security/samples/encrypted-private-channel-example.ts) for a working flow.
 
-#### Requesting a Key
+**Key owner (broadcaster):** Creates and holds the symmetric key. Encrypts context payloads with it and broadcasts them as JWE in `encryptedPayload`. When a key request arrives, verifies the requestor's JWS (signature valid and `allowListFunction(jku)` returns true), reads `jku` from their JWS protected header, fetches their public key from that JWKS, wraps the symmetric key in a JWE using that public key (e.g. RSA-OAEP), signs the response with JWS, and broadcasts it.
 
-To request a symmetric key for decryption, an application broadcasts an [`fdc3.security.symmetricKey.request`](../context/ref/SymmetricKeyRequest) context:
+**Key requestor (listener):** Broadcasts a signed key request (JWS). When the response arrives, verifies the JWS, unwraps the JWE with their private key to obtain the symmetric key, then decrypts subsequent encrypted payloads. If an encrypted message arrives before the key, the requestor sends a key request.
+
+Both the key request and response **must be signed** (JWS). The key owner uses the requestor's `jku` from the JWS header to target the JWE—only that requestor's private key can unwrap it.
+
+#### Context Types
+
+| Type | Description |
+|------|-------------|
+| [`fdc3.security.symmetricKeyRequest`](../context/ref/security/SymmetricKeyRequest) | Request for the channel symmetric key (optional `id.kid`). Must be signed. |
+| [`fdc3.security.symmetricKeyResponse`](../context/ref/security/SymmetricKeyResponse) | Response containing `wrappedKey` (JWE) and `id.{kid,pki}`. Must be signed. |
+| [`fdc3.security.encryptedContext`](../context/ref/security/EncryptedContextWrapper) | Wrapper with `encryptedPayload` (JWE); `originalType` and `id.kid` preserved for routing. |
+
+**Examples:**
 
 ```typescript
-{
-  type: "fdc3.security.symmetricKey.request",
-  id: {
-    kid: "channel-key-abc123"  // Optional: request a specific key
+// fdc3.security.symmetricKeyRequest (broadcast with metadata—must be signed)
+channel.broadcast(
+  { type: "fdc3.security.symmetricKeyRequest", id: { kid: "channel-key-abc123" } },
+  {
+    signature: { protected: "eyJhbGc...", signature: "TjDgrB6k..." },
+    antiReplay: { iat: 1739692800, exp: 1739696100, jti: "req-uuid-123" }
   }
-}
-```
+);
 
-#### Providing a Key
-
-The key owner responds with an [`fdc3.security.symmetricKey.response`](../context/ref/SymmetricKeyResponse) context:
-
-```typescript
-{
-  type: "fdc3.security.symmetricKey.response",
-  id: {
-    kid: "channel-key-abc123",
-    pki: "https://requestor.example.com/.well-known/jwks.json"
+// fdc3.security.symmetricKeyResponse (broadcast with metadata—must be signed)
+channel.broadcast(
+  {
+    type: "fdc3.security.symmetricKeyResponse",
+    id: { kid: "key-id-123", pki: "https://requestor.example.com/.well-known/jwks.json" },
+    wrappedKey: "u4jvA7Gx8LdH...=="  // JWE
   },
-  wrappedKey: "u4jvA7Gx8LdH...=="  // Symmetric key encrypted with requestor's public key
-}
-```
+  {
+    signature: { protected: "eyJhbGc...", signature: "a1b2c3d4..." },
+    antiReplay: { iat: 1739692810, exp: 1739696110, jti: "resp-uuid-456" }
+  }
+);
 
-The `wrappedKey` is encrypted using the requesting application's public key (retrieved from the `pki` URL), ensuring only the intended recipient can decrypt and use the symmetric key.
-
-### Encrypted Context
-
-When context is broadcast on an encrypted channel, it is wrapped in an [`fdc3.security.encryptedContext`](../context/ref/EncryptedContext) type:
-
-```typescript
-{
-  type: "fdc3.security.encryptedContext",
-  originalType: "fdc3.instrument",  // Original type preserved for routing
-  id: {
-    kid: "channel-key-abc123"       // Key used for encryption
+// fdc3.security.encryptedContext (broadcast with metadata; typically signed)
+channel.broadcast(
+  {
+    type: "fdc3.security.encryptedContext",
+    originalType: "fdc3.instrument",
+    id: { kid: "channel-key-abc123" },
+    encryptedPayload: "eyJuYW1lIjoiQXBwbGUiLCJpZCI6eyJ0aWNrZXIiOiJBQVBMIn19..."  // JWE
   },
-  encryptedPayload: "eyJuYW1lIjoi..."  // Base64-encoded encrypted content
-}
+  {
+    signature: { protected: "eyJhbGc...", signature: "e5f6g7h8..." },
+    antiReplay: { iat: 1739692820, exp: 1739696120, jti: "ctx-uuid-789" }
+  }
+);
 ```
 
-The `originalType` field is preserved to allow desktop agents and context handlers to route messages appropriately, while the actual content remains encrypted in `encryptedPayload`.
+
 
 ## User Identity
 
@@ -407,7 +439,7 @@ Applications in the FINOS circle can trust each other without establishing direc
 
 Desktop Agents implementing security features **MUST**:
 
-- Forward signature metadata (`__signature`) with context messages
+- Forward signature metadata with context messages (signature and antiReplay in metadata)
 - Populate authenticity metadata when signature verification is performed
 - Support the `CreateIdentityToken` intent for user identity workflows
 - Handle encrypted context types appropriately
