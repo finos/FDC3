@@ -72,7 +72,7 @@ export class EncryptingChannelDelegate extends AbstractChannelDelegate implement
 
   async broadcastKey(publicKeyUrl: string): Promise<void> {
     if (this.symmetricKey) {
-      const wrappedCtx = await this.fdc3Security.wrapKey(this.symmetricKey, publicKeyUrl);
+      const wrappedCtx = await this.fdc3Security.wrapSymmetricKey(this.symmetricKey, publicKeyUrl);
       const { ctx, meta } = await this.signRequestFunction(wrappedCtx);
       return this.delegate.broadcast(ctx, meta);
     } else {
