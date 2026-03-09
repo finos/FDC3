@@ -49,7 +49,8 @@ class AppABackendHandlers extends DefaultFDC3Handlers {
  */
 async function step1SetupAppABackend() {
   console.log('1. Start App A Backend (Hosts JWKS and FDC3 Handlers)');
-  const result = await AppBackEnd.start(0, (_, security) => new AppABackendHandlers(security));
+  const result = new AppBackEnd((_, security) => new AppABackendHandlers(security));
+  await result.start();
   const wsUrl = result.baseUrl.replace('http', 'ws');
   console.log(`[Server] Listening at ${result.baseUrl}`);
   return { ...result, wsUrl };
