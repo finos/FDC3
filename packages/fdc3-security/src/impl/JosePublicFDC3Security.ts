@@ -266,7 +266,7 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
     return JSON.parse(new TextDecoder().decode(plaintext));
   }
 
-  async wrapKey(symmetricKey: JsonWebKey, publicKeyUrl: string): Promise<SymmetricKeyResponse> {
+  async wrapSymmetricKey(symmetricKey: JsonWebKey, publicKeyUrl: string): Promise<SymmetricKeyResponse> {
     const protectedHeader: JWEProtectedHeader = {
       alg: this.algorithms.keyWrapping,
       enc: this.algorithms.contentEncryption,

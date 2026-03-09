@@ -131,5 +131,5 @@ export interface PublicFDC3Security {
    *
    * @see `fdc3.security.symmetricKey.response` context type
    */
-  wrapKey(symmetricKey: JsonWebKey, publicKeyUrl: string): Promise<SymmetricKeyResponse>;
+  wrapSymmetricKey(symmetricKey: JsonWebKey, publicKeyUrl: string): Promise<SymmetricKeyResponse>;
 }
