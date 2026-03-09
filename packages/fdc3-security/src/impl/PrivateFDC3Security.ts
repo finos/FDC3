@@ -53,7 +53,7 @@ export interface PrivateFDC3Security extends PublicFDC3Security {
    * @returns A promise resolving to the unwrapped symmetric key in JWK format
    * @throws Error if unwrapping fails
    */
-  unwrapKey(ctx: SymmetricKeyResponse): Promise<JsonWebKey>;
+  unwrapSymmetricKey(ctx: SymmetricKeyResponse): Promise<JsonWebKey>;
 
   /**
    * Create a signed JWT token for user identity.
