@@ -182,7 +182,7 @@ describe('JosePrivateFDC3Security', () => {
       const wrappedKeyResponse = await sender.wrapKey(symmetricJWK, receiverBaseUrl);
 
       // Verify the wrapped key response structure
-      expect(wrappedKeyResponse.type).toBe('fdc3.security.symmetricKey.response');
+      expect(wrappedKeyResponse.type).toBe('fdc3.security.symmetricKeyResponse');
       expect(wrappedKeyResponse.id.pki).toBe(receiverBaseUrl);
       expect(wrappedKeyResponse.wrappedKey).toBeDefined();
 
@@ -217,37 +217,52 @@ describe('JosePrivateFDC3Security', () => {
       // Wait for the signature to become stale (2 seconds, receiver has 1-second freshness limit)
       await new Promise(resolve => setTimeout(resolve, 2000));
 
-      // Verify it's rejected due to stale signature
+      // Verify it's rejected due to stale signature (signed=true per schema, valid=false when rejecting)
       const result = await receiverPublic.check(signature, mockContext, antiReplay);
-      expect(result.signed).toBe(false);
-      expect('errors' in result).toBe(true);
-      if (!result.signed && result.errors) {
+      expect(result.signed).toBe(true);
+      expect(result.valid).toBe(false);
+      expect(result.errors).toBeDefined();
+      if (result.errors) {
         const hasStaleSignatureError = result.errors.some(e => e.includes('Signature is too old'));
         expect(hasStaleSignatureError).toBe(true);
       }
     });
 
     it('should reject expired contexts (context validity)', async () => {
-      // Sign the context
-      const { signature, antiReplay } = await sender.sign(mockContext);
-
-      // Create an expired antiReplay token
-      const expiredAntiReplay = {
-        ...antiReplay,
-        exp: Math.floor(Date.now() / 1000) - 10,
+      // Use senderImpl but sign with a manual antiReplay that has exp in the past.
+      // We cannot use sign() with modified antiReplay (signature would not verify), so we
+      // create a receiver with short context validity and use a signature whose antiReplay
+      // has already naturally expired by waiting.
+      const contextExpiryLimits: FDC3SecurityTimeLimits = {
+        signatureFreshnessSeconds: 60,
+        contextValiditySeconds: 1,
       };
 
-      // Immediately verify it works with original token
+      // Create a sender with same keys as senderImpl (so resolver works) but short validity
+      const shortValiditySender = new JosePrivateFDC3Security(
+        senderImpl.signingPrivateKey,
+        senderImpl.signingPublicKey,
+        senderImpl.wrappingPrivateKey,
+        senderImpl.wrappingPublicKey,
+        senderBaseUrl,
+        senderJWKSUrl,
+        senderPublicKeyResolver,
+        senderAllowListFunction,
+        contextExpiryLimits
+      );
+
+      // Sign the context (antiReplay will have exp = now + 1)
+      const { signature, antiReplay } = await shortValiditySender.sign(mockContext);
+
+      // Immediately verify it works
       const immediateResult = await receiverPublic.check(signature, mockContext, antiReplay);
       if (immediateResult.signed) {
         expect(immediateResult.valid).toBe(true);
       }
 
-      // Create a new receiver with long signature freshness but short context validity
-      const contextExpiryLimits: FDC3SecurityTimeLimits = {
-        signatureFreshnessSeconds: 60, // Long freshness - won't trigger
-        contextValiditySeconds: 1, // Short validity - should trigger
-      };
+      // Wait for the context to expire
+      await new Promise(resolve => setTimeout(resolve, 2000));
+
       const contextExpiryReceiver: PublicFDC3Security = await createJosePrivateFDC3Security(
         receiverBaseUrl,
         receiverPublicKeyResolver,
@@ -255,11 +270,12 @@ describe('JosePrivateFDC3Security', () => {
         contextExpiryLimits
       );
 
-      // Verify it's rejected due to context expiry using the expired token
-      const result = await contextExpiryReceiver.check(signature, mockContext, expiredAntiReplay);
-      expect(result.signed).toBe(false);
-      expect('errors' in result).toBe(true);
-      if (!result.signed && result.errors) {
+      // Verify it's rejected due to context expiry (signed=true per schema, valid=false when rejecting)
+      const result = await contextExpiryReceiver.check(signature, mockContext, antiReplay);
+      expect(result.signed).toBe(true);
+      expect(result.valid).toBe(false);
+      expect(result.errors).toBeDefined();
+      if (result.errors) {
         const hasExpiryError = result.errors.some(e => e.includes('Context has expired'));
         expect(hasExpiryError).toBe(true);
       }
