@@ -10,35 +10,56 @@ import { AppBackEnd } from '../test/mocks/AppBackEnd';
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { MockDesktopAgent } from '../test/mocks/MockDesktopAgent';
 
+const CREATE_IDENTITY_TOKEN = 'CreateIdentityToken';
+
 /**
  * IDP (Identity Provider) backend handlers.
- * Responds to user-request by creating a signed JWT and returning fdc3.user context.
+ * Handles the CreateIdentityToken intent: receives fdc3.security.userRequest,
+ * creates a signed JWT, encrypts the fdc3.security.user context with the
+ * requesting app's public key, and returns it wrapped in fdc3.security.encryptedContext.
  */
 class IDPBackendHandlers extends DefaultFDC3Handlers {
   constructor(private security: JosePrivateFDC3Security) {
     super();
   }
 
-  async exchangeData(purpose: string, ctx: Context): Promise<Context | void> {
-    if (purpose === 'user-request' && ctx.type === 'fdc3.security.userRequest') {
-      const aud = (ctx as UserRequest).aud;
-      console.log(`[IDP Backend] Received user request for audience: ${aud}`);
+  async remoteIntentHandler(intent: string) {
+    if (intent !== CREATE_IDENTITY_TOKEN) {
+      return super.remoteIntentHandler(intent);
+    }
+    return async (context: Context): Promise<Context> => {
+      if (context.type !== 'fdc3.security.userRequest') {
+        throw new Error(`Expected fdc3.security.userRequest, got ${context.type}`);
+      }
+      const aud = (context as UserRequest).aud;
+      console.log(`[IDP Backend] CreateIdentityToken: received request for audience ${aud}`);
 
       const jwt = await this.security.createJWTToken(aud, 'demo-user@example.com');
       const user: Context = {
-        type: 'fdc3.user',
+        type: 'fdc3.security.user',
         id: { email: 'demo-user@example.com' },
         name: 'Demo User',
         jwt,
       };
-      console.log('[IDP Backend] Returning fdc3.user with signed JWT');
-      return user;
-    }
+
+      const requestingAppJwksUrl = `${aud.replace(/\/$/, '')}/.well-known/jwks.json`;
+      const encryptedPayload = await this.security.encryptPublicKey(user, requestingAppJwksUrl);
+
+      const encryptedContext: Context = {
+        type: 'fdc3.security.encryptedContext',
+        originalType: 'fdc3.security.user',
+        encryptedPayload,
+        id: { kid: 'user-identity' },
+      };
+      console.log('[IDP Backend] Returning fdc3.security.encryptedContext (encrypted fdc3.security.user)');
+      return encryptedContext;
+    };
   }
 }
 
 /**
- * User-requesting app: has its own backend and connects to the IDP to request user identity.
+ * User-requesting app: has its own backend and connects to the IDP to request user identity
+ * via the CreateIdentityToken intent.
  */
 class UserRequestingApp {
   readonly backend: AppBackEnd;
@@ -54,36 +75,51 @@ class UserRequestingApp {
   }
 
   /**
-   * Connect to the IDP and request user identity. Verifies the JWT and returns the claims.
+   * Connect to the IDP and raise CreateIdentityToken intent.
+   * Receives encrypted fdc3.security.encryptedContext, decrypts to get fdc3.security.user, verifies JWT.
    */
   async requestUserFrom(idp: AppBackEnd): Promise<void> {
     const wsUrl = idp.baseUrl.replace('http', 'ws');
     console.log(`[UserRequestingApp] Connecting to IDP at ${wsUrl}...`);
 
-    const securityClient = new JosePublicFDC3Security(
-      idp.security.getPublicKeys()[0],
-      idp.security.getPublicKeys()[1],
-      url => provisionJWKS(url),
-      () => true
-    );
-
     const mockDA = new MockDesktopAgent() as unknown as DesktopAgent;
     const handlers = await connectRemoteHandlers(wsUrl, mockDA, async () => {});
 
-    const result = await handlers.exchangeData('user-request', {
+    const createIdentityTokenHandler = await handlers.remoteIntentHandler(CREATE_IDENTITY_TOKEN);
+    const userRequest: Context = {
       type: 'fdc3.security.userRequest',
       aud: this.baseUrl,
-    });
+    };
 
-    if (result?.type === 'fdc3.user' && result.jwt) {
-      const claims = await securityClient.verifyJWTToken(result.jwt);
-      console.log('\n[UserRequestingApp] User received and JWT verified:');
-      console.log(JSON.stringify({ name: result.name, id: result.id }, null, 2));
-      console.log('[UserRequestingApp] JWT claims:');
-      console.log(JSON.stringify(claims, null, 2));
-      console.log(`[UserRequestingApp] User: ${claims.sub}, Issued by: ${claims.iss}`);
+    const result = await createIdentityTokenHandler(userRequest);
+
+    if (!result) {
+      console.log('[UserRequestingApp] No result from IDP');
+      await handlers.disconnect();
+      return;
+    }
+
+    if (result.type === 'fdc3.security.encryptedContext' && result.encryptedPayload) {
+      const user = await this.backend.security.decryptContextWithPrivateKey(result.encryptedPayload);
+
+      if (user?.type === 'fdc3.security.user' && user.jwt) {
+        const securityClient = new JosePublicFDC3Security(
+          idp.security.getPublicKeys()[0],
+          idp.security.getPublicKeys()[1],
+          url => provisionJWKS(url),
+          () => true
+        );
+        const claims = await securityClient.verifyJWTToken(user.jwt);
+        console.log('\n[UserRequestingApp] User received and JWT verified:');
+        console.log(JSON.stringify({ name: user.name, id: user.id }, null, 2));
+        console.log('[UserRequestingApp] JWT claims:');
+        console.log(JSON.stringify(claims, null, 2));
+        console.log(`[UserRequestingApp] User: ${claims.sub}, Issued by: ${claims.iss}`);
+      } else {
+        console.log('[UserRequestingApp] Decrypted context was not fdc3.security.user');
+      }
     } else {
-      console.log('[UserRequestingApp] No user returned');
+      console.log('[UserRequestingApp] Unexpected result type:', result?.type);
     }
 
     await handlers.disconnect();
@@ -94,7 +130,7 @@ class UserRequestingApp {
  * STEP 1: Start IDP Backend
  */
 async function step1SetupIDPBackend() {
-  console.log('1. Start IDP Backend (Hosts JWKS and FDC3 Handlers)');
+  console.log('1. Start IDP Backend (Hosts JWKS, handles CreateIdentityToken intent)');
   const idp = new AppBackEnd((_, security) => new IDPBackendHandlers(security));
   await idp.start();
   console.log(`[IDP Server] Listening at ${idp.baseUrl}`);
@@ -102,41 +138,50 @@ async function step1SetupIDPBackend() {
 }
 
 /**
- * STEP 2: Start UserRequestingApp and request user from IDP
+ * STEP 2: Start UserRequestingApp backend
  */
-async function step2UserRequestingAppRequestsUser(idp: AppBackEnd): Promise<void> {
-  console.log('2. Start UserRequestingApp and request user from IDP...');
-  const userRequestingAppBackend = new AppBackEnd((_, _security) => new DefaultFDC3Handlers());
-  await userRequestingAppBackend.start();
-  console.log(`[UserRequestingApp] Listening at ${userRequestingAppBackend.baseUrl}`);
-  const userRequestingApp = new UserRequestingApp(userRequestingAppBackend);
+async function step2SetupRequestingAppBackend() {
+  console.log('2. Start UserRequestingApp Backend (Hosts JWKS, holds private key for decryption)');
+  const app = new AppBackEnd((_, _security) => new DefaultFDC3Handlers());
+  await app.start();
+  console.log(`[UserRequestingApp] Listening at ${app.baseUrl}`);
+  return app;
+}
+
+/**
+ * STEP 3: Request user from IDP via CreateIdentityToken intent
+ */
+async function step3RequestUser(idp: AppBackEnd, requestingApp: AppBackEnd) {
+  console.log('3. UserRequestingApp raises CreateIdentityToken intent...');
+  const userRequestingApp = new UserRequestingApp(requestingApp);
   await userRequestingApp.requestUserFrom(idp);
-  await userRequestingApp.shutdown();
 }
 
 /**
  * MAIN EXECUTION
  *
  * This example demonstrates requesting and verifying user identity from an Identity Provider.
- * 1. Step 1: Start the IDP backend that creates signed JWT tokens for user identity.
- * 2. Step 2: Start the UserRequestingApp (with its own backend); it connects to the IDP,
- *    requests user via exchangeData, receives fdc3.user context, and verifies the JWT.
+ * 1. Step 1: Start the IDP backend (handles CreateIdentityToken intent).
+ * 2. Step 2: Start the UserRequestingApp backend (has its own JWKS for decryption).
+ * 3. Step 3: Requesting app connects to IDP, raises CreateIdentityToken with fdc3.security.userRequest.
+ *    IDP creates fdc3.security.user, encrypts it with the requesting app's public key,
+ *    wraps in fdc3.security.encryptedContext, returns as intent result.
+ *    Requesting app decrypts, verifies JWT, and displays user.
  */
 async function runExample() {
   console.log('--- FDC3 Get User Example Start ---');
 
   const idp = await step1SetupIDPBackend();
-  await step2UserRequestingAppRequestsUser(idp);
+  const requestingApp = await step2SetupRequestingAppBackend();
+  await step3RequestUser(idp, requestingApp);
 
   console.log('\n--- FDC3 Get User Example Complete ---');
+  await requestingApp.shutdown();
   await idp.shutdown();
 }
 
 export { runExample };
 
-/**
- * Run as a script if called directly
- */
 const __filename = fileURLToPath(import.meta.url);
 if (process.argv[1] && resolve(process.argv[1]) === resolve(__filename)) {
   runExample()

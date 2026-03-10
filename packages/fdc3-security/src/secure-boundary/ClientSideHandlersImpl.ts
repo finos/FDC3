@@ -47,9 +47,15 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
     this.messaging.register({
       id: 'fdc3-proxy-handler',
       filter: (_, event) => event === SERVER_MESSAGE,
-      action: async (payload: AppRequestMessage) => {
+      action: async (payload: AppRequestMessage, _event: string, id?: string) => {
         const out = await this.handleServerMessage(payload);
-        if (out) this.messaging.post(out);
+        if (out) {
+          if (id) {
+            this.messaging.postEvent(`ack:${id}`, out);
+          } else {
+            this.messaging.post(out);
+          }
+        }
       },
     });
 
