@@ -22,3 +22,5 @@ For Thursday
 
 For Later
 ---------
+
+14.  We need to encrypt user JWTs in transit using the requester's public key.
