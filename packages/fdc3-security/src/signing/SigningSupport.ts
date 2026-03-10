@@ -64,6 +64,7 @@ export function signatureCheckingContextHandler(
   };
 }
 
+// TODO: Reinstate when we have the metadata for it.
 // export function signingIntentHandler(
 //   fdc3Security: PrivateFDC3Security,
 //   handler: IntentHandler,
