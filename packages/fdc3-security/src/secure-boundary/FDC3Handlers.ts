@@ -1,5 +1,4 @@
 import { Channel, IntentHandler } from '@finos/fdc3-standard';
-import { Context } from '@finos/fdc3-context';
 
 /**
  * Functions that allow back-end processing of FDC3 requests in order to keep
@@ -21,7 +20,7 @@ export interface FDC3Handlers {
   /**
    * This function allows server-side and client-side to exchange data with one another.
    */
-  exchangeData(purpose: string, ctx: Context, intent?: string, channelId?: string): Promise<Context | void>;
+  exchangeData(purpose: string, o: object): Promise<object | void>;
 }
 
 /**
@@ -40,7 +39,7 @@ export class DefaultFDC3Handlers implements FDC3Handlers {
     };
   }
 
-  async exchangeData(_purpose: string, _ctx: Context, _intent?: string, _channelId?: string): Promise<Context | void> {
+  async exchangeData(_purpose: string, _o: object): Promise<object | void> {
     // Default: do nothing
     return;
   }

@@ -113,8 +113,8 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
     };
   }
 
-  async exchangeData(purpose: string, ctx: Context, intent?: string, channelId?: string): Promise<Context | void> {
-    return await this.callRemote(EXCHANGE_DATA, { purpose, ctx, intent, channelId });
+  async exchangeData(purpose: string, o: object): Promise<object | void> {
+    return await this.callRemote(EXCHANGE_DATA, { purpose, o });
   }
 
   private async handleBroadcast(br: BroadcastRequest): Promise<BroadcastResponse> {

@@ -23,8 +23,8 @@ export class EncryptingChannelDelegate extends AbstractChannelDelegate implement
   private symmetricKey: JsonWebKey | null = null;
   private typeFilter: null | ((type: string) => boolean) = null;
   private readonly fdc3Security: PublicFDC3Security;
-  public readonly keyUnwrapFunction: KeyUnwrapFunction;
-  public readonly signRequestFunction: SignRequestFunction;
+  public readonly unwrapResponse: KeyUnwrapFunction;
+  public readonly signResponse: SignRequestFunction;
 
   requestListener: Listener | null = null;
   responseListener: Listener | null = null;
@@ -40,10 +40,10 @@ export class EncryptingChannelDelegate extends AbstractChannelDelegate implement
     this.fdc3Security = fdc3Security;
 
     if (keyUnwrapFunction) {
-      this.keyUnwrapFunction = keyUnwrapFunction;
+      this.unwrapResponse = keyUnwrapFunction;
     } else {
       if (typeof (fdc3Security as any).unwrapSymmetricKey === 'function') {
-        this.keyUnwrapFunction = ctx => (fdc3Security as PrivateFDC3Security).unwrapSymmetricKey(ctx);
+        this.unwrapResponse = ctx => (fdc3Security as PrivateFDC3Security).unwrapSymmetricKey(ctx);
       } else {
         throw new Error(
           'Must provide keyUnwrapFunction or a PrivateFDC3Security implementation that supports unwrapSymmetricKey'
@@ -52,10 +52,10 @@ export class EncryptingChannelDelegate extends AbstractChannelDelegate implement
     }
 
     if (signRequestFunction) {
-      this.signRequestFunction = signRequestFunction;
+      this.signResponse = signRequestFunction;
     } else {
       if (typeof (fdc3Security as any).sign === 'function') {
-        this.signRequestFunction = ctx => signContext(fdc3Security as PrivateFDC3Security, ctx);
+        this.signResponse = ctx => signContext(fdc3Security as PrivateFDC3Security, ctx);
       } else {
         throw new Error('Must provide signRequestFunction or a PrivateFDC3Security implementation that supports sign');
       }
@@ -73,7 +73,7 @@ export class EncryptingChannelDelegate extends AbstractChannelDelegate implement
   async broadcastKey(publicKeyUrl: string): Promise<void> {
     if (this.symmetricKey) {
       const wrappedCtx = await this.fdc3Security.wrapSymmetricKey(this.symmetricKey, publicKeyUrl);
-      const { ctx, meta } = await this.signRequestFunction(wrappedCtx);
+      const { ctx, meta } = await this.signResponse(wrappedCtx);
       return this.delegate.broadcast(ctx, meta);
     } else {
       throw new Error('Channel not set to encrypting');
@@ -90,11 +90,16 @@ export class EncryptingChannelDelegate extends AbstractChannelDelegate implement
     return this.symmetricKey;
   }
 
+  async createSymmetricKey(): Promise<void> {
+    const key = await this.fdc3Security.createSymmetricKey();
+    await this.setSymmetricKey(key);
+  }
+
   async requestEncryptionKey(): Promise<void> {
     const request = {
       type: 'fdc3.security.symmetricKeyRequest',
     } as SymmetricKeyRequest;
-    const { ctx, meta } = await this.signRequestFunction(request);
+    const { ctx, meta } = await this.signResponse(request);
     return this.broadcast(ctx, meta);
   }
 

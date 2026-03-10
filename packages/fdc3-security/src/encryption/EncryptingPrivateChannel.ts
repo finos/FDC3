@@ -1,4 +1,5 @@
-import { PrivateChannel } from '@finos/fdc3-standard';
+import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
+import { ContextMetadata, PrivateChannel } from '@finos/fdc3-standard';
 
 /**
  * A private channel with end-to-end encryption capabilities.
@@ -129,4 +130,23 @@ export interface EncryptingPrivateChannel extends PrivateChannel {
    * ```
    */
   setSymmetricKey(key: JsonWebKey): Promise<void>;
+
+  /**
+   * Creates a new symmetric key and sets it on the channel.
+   */
+  createSymmetricKey(): Promise<void>;
+
+  /**
+   * Unwraps the symmetric key from the SymmetricKeyResponse.
+   * @param ctx - The SymmetricKeyResponse to unwrap
+   * @returns The unwrapped symmetric key
+   */
+  unwrapResponse(ctx: SymmetricKeyResponse): Promise<JsonWebKey>;
+
+  /**
+   * Signs the context.
+   * @param ctx - The context to sign
+   * @returns The signed context
+   */
+  signResponse(ctx: SymmetricKeyResponse): Promise<{ ctx: Context; meta?: ContextMetadata }>;
 }
