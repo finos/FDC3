@@ -302,3 +302,49 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
 export function provisionJWKS(jku: string): JWKSResolver {
   return jose.createRemoteJWKSet(new URL(jku));
 }
+
+/**
+ * Creates JosePublicFDC3Security by fetching public keys from a JWKS URL.
+ * The signing key (EdDSA) and wrapping key (RSA-OAEP-256) are looked up by algorithm in the JWKS.
+ *
+ * @param jwksUrl - URL to the JWKS endpoint (e.g. https://example.com/.well-known/jwks.json)
+ * @param allowListFunction - Function to check if a URL is trusted (default: allow all)
+ * @param timeLimits - Optional time limits for signature freshness and context validity
+ * @param algorithms - Optional algorithm configuration for key lookup
+ * @param antiReplayChecker - Optional checker for replay attacks
+ * @returns Promise resolving to JosePublicFDC3Security
+ */
+export async function createJosePublicFDC3SecurityFromUrl(
+  jwksUrl: string,
+  allowListFunction: AllowListFunction,
+  timeLimits: FDC3SecurityTimeLimits = DEFAULT_FDC3_TIME_LIMITS,
+  algorithms: FDC3SecurityAlgorithms = DEFAULT_FDC3_ALGORITHMS,
+  antiReplayChecker: AntiReplayChecker = new DefaultAntiReplayChecker()
+): Promise<JosePublicFDC3Security> {
+  const res = await fetch(jwksUrl);
+  if (!res.ok) {
+    throw new Error(`Failed to fetch JWKS from ${jwksUrl}: ${res.status} ${res.statusText}`);
+  }
+  const jwks = (await res.json()) as jose.JSONWebKeySet;
+  const keys = jwks.keys ?? [];
+
+  const signingKey = keys.find((k: JsonWebKey) => k.alg === algorithms.signing) as JSONWebKeyWithId | undefined;
+  const wrappingKey = keys.find((k: JsonWebKey) => k.alg === algorithms.keyWrapping) as JSONWebKeyWithId | undefined;
+
+  if (!signingKey?.kid) {
+    throw new Error(`JWKS at ${jwksUrl} has no signing key with kid (alg: ${algorithms.signing})`);
+  }
+  if (!wrappingKey?.kid) {
+    throw new Error(`JWKS at ${jwksUrl} has no wrapping key with kid (alg: ${algorithms.keyWrapping})`);
+  }
+
+  return new JosePublicFDC3Security(
+    signingKey,
+    wrappingKey,
+    provisionJWKS,
+    allowListFunction,
+    timeLimits,
+    algorithms,
+    antiReplayChecker
+  );
+}
