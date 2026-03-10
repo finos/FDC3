@@ -285,6 +285,18 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
       },
     };
   }
+
+  async encryptContextWithPublicKey(ctx: Context, publicKeyUrl: string): Promise<JSONWebEncryption> {
+    const protectedHeader: JWEProtectedHeader = {
+      alg: this.algorithms.keyWrapping,
+      enc: this.algorithms.contentEncryption,
+    };
+    const key = await this.getPublicKey(publicKeyUrl, protectedHeader);
+    const encrypted = await new jose.CompactEncrypt(new TextEncoder().encode(JSON.stringify(ctx)))
+      .setProtectedHeader(protectedHeader)
+      .encrypt(key);
+    return encrypted;
+  }
 }
 
 export function provisionJWKS(jku: string): JWKSResolver {

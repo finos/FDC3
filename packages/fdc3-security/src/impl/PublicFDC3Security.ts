@@ -132,4 +132,21 @@ export interface PublicFDC3Security {
    * @see `fdc3.security.symmetricKey.response` context type
    */
   wrapSymmetricKey(symmetricKey: JsonWebKey, publicKeyUrl: string): Promise<SymmetricKeyResponse>;
+
+  /**
+   * Encrypt a context using a recipient's public key (JWE).
+   *
+   * Produces a compact JWE that only the holder of the corresponding private key
+   * can decrypt. Used to protect sensitive context in transit—for example, when
+   * an identity provider encrypts an `fdc3.security.user` context so that only
+   * the requesting application can read the JWT.
+   *
+   * @param ctx - The context object to encrypt
+   * @param publicKeyUrl - URL to the recipient's JWKS (e.g. `/.well-known/jwks.json`)
+   * @returns A promise resolving to the encrypted context as a compact JWE string
+   * @throws Error if the public key cannot be resolved or encryption fails
+   *
+   * @see `fdc3.security.user` context type
+   */
+  encryptContextWithPublicKey(ctx: Context, publicKeyUrl: string): Promise<JSONWebEncryption>;
 }
