@@ -20,14 +20,14 @@ export class MockChannel implements Channel {
 
   async broadcast(context: Context, meta: ContextMetadata): Promise<void> {
     console.log(`[MockChannel ${this.id}] Broadcasting context:`, context.type);
-    // Execute listeners in next tick to avoid blocking
-    setImmediate(() => {
-      this.listeners.forEach(l => {
-        if (!l.type || l.type === context.type) {
-          l.handler(context, meta);
-        }
-      });
-    });
+    const toInvoke = this.listeners.filter(l => !l.type || l.type === context.type);
+    for (const l of toInvoke) {
+      try {
+        await Promise.resolve(l.handler(context, meta));
+      } catch (err) {
+        console.error(`[MockChannel ${this.id}] Listener error:`, err);
+      }
+    }
   }
 
   async addContextListener(typeOrHandler: string | null | ContextHandler, handler?: ContextHandler): Promise<Listener> {

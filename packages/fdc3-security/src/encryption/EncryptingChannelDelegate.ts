@@ -81,12 +81,10 @@ export class EncryptingChannelDelegate extends AbstractChannelDelegate implement
   }
 
   async setSymmetricKey(key: JsonWebKey): Promise<void> {
-    console.log('setting symmetric key', key);
     this.symmetricKey = key;
   }
 
   async getSymmetricKey(): Promise<JsonWebKey | null> {
-    console.log('getting symmetric key', this.symmetricKey);
     return this.symmetricKey;
   }
 

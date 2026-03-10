@@ -119,6 +119,10 @@ export function setupWebsocketServer(
         }
 
         default:
+          // ack:${id} responses are handled by WebSocketMessaging exchange() listeners
+          if (typeof event === 'string' && event.startsWith('ack:')) {
+            break;
+          }
           console.log('Unknown event:', event);
       }
     });

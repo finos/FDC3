@@ -48,24 +48,24 @@ The following context types support security features:
 
 | Intent | Input Context | Output Context | Description |
 |--------|---------------|----------------|-------------|
-| `CreateIdentityToken` | `fdc3.security.userRequest` | `fdc3.security.user` | Request user identity from an IDP |
+| `GetUser` | `fdc3.security.userRequest` | `fdc3.security.user` | Request user identity from an IDP |
 
 ## Trust Boundaries
 
-Web applications split into a _front end_ (browser) and _back end_ (server) because browsers are untrusted—users and extensions can inspect or modify client-side code—while servers are trusted and can hold private keys safely. The FDC3 Security API therefore has public and private parts: the front end holds only public keys and delegates signing, verification, and sensitive logic to the back end. 
+Web applications split into a _front end_ (browser) and _back end_ (server) because servers are trusted and can hold private keys safely. The FDC3 Security API therefore has public and private parts: the front end holds only public keys and delegates signing, verification, and sensitive logic to the back end. 
 
 The diagram below shows how context and requests flow over a WebSocket (or similar secure boundary): the front end sends context or requests; the back end signs, processes, and returns signed context or responses.
 
 ```mermaid
 sequenceDiagram
-    participant FE as Front end (Untrusted)
-    participant BE as Back end (Trusted)
+    participant FE as Public Front End (Low Trust)
+    participant BE as Private Back End (High Trust)
 
     Note over FE: Public keys only
     Note over BE: Private keys, signing, sensitive logic
 
     FE->>+BE: context / request (WebSocket)
-    BE-->>FE: signed context / response
+    BE-->>FE: signed or encrypted context / response
 ```
 
 The FDC3 Security implementations provides various helpers to make it easy to communicate across the boundary.
@@ -91,6 +91,8 @@ Keys in the JWKS MUST include a `kid` (key ID) so signers can reference them in 
 - JWKS endpoints MUST be served over HTTPS with valid certificates
 - Key rotation SHOULD be performed periodically
 - Old keys SHOULD remain available for verification during transition periods
+- Applications SHOULD log authentication and authorization decisions for audit
+- Handle unsigned contexts gracefully with appropriate user prompts
 
 ## Trust Model
 
@@ -100,6 +102,36 @@ Trust is determined and enforced by applications, not by the Desktop Agent. Each
 
 Receiving apps provide an `allowListFunction(jku, iss?)` when configuring their security layer. This function determines whether a signer is trusted: given the signer's JWKS URL (`jku`) from the JWS header—and optionally the issuer (`iss`) for JWT verification—it returns `true` if the signer is in the receiver's circle of trust. When verifying a signature, the security layer sets `authenticity.trusted` to the result of this function, so apps can decide who they trust without bilateral configuration.
 
+```typescript
+// Example: allow list for three trusted apps
+const TRUSTED_JWKS_URLS = new Set([
+  'https://app-a.example.com/.well-known/jwks.json',
+  'https://app-b.example.com/.well-known/jwks.json',
+  'https://data-provider.example.com/.well-known/jwks.json',
+]);
+
+const allowListFunction = (jku: string, iss?: string): boolean => {
+  // jku: JWKS URL from the signer's JWS/JWT header (where to fetch public keys)
+  // iss: issuer claim from JWT payload (only passed when verifying JWT tokens, e.g. for user identity)
+  return TRUSTED_JWKS_URLS.has(jku);
+};
+```
+
+```typescript
+// Example: using iss for JWT verification (e.g. user identity)
+// Restrict which issuers are trusted per JWKS URL—useful when an IdP hosts multiple issuers
+const TRUSTED_ISSUERS_BY_JKU: Record<string, Set<string>> = {
+  'https://idp.example.com/.well-known/jwks.json': new Set(['https://idp.example.com', 'tenant-a.idp.example.com']),
+  'https://enterprise-sso.corp.com/.well-known/jwks.json': new Set(['https://enterprise-sso.corp.com']),
+};
+
+const allowListFunction = (jku: string, iss?: string): boolean => {
+  if (!TRUSTED_ISSUERS_BY_JKU[jku]) return false;
+  // For detached JWS (context signing), iss is undefined—trust jku alone
+  if (!iss) return true;
+  return TRUSTED_ISSUERS_BY_JKU[jku].has(iss);
+};
+```
 
 ## App Identity and Signatures
 
@@ -226,6 +258,37 @@ Encryption uses a symmetric key (e.g. AES-GCM) created by the channel owner and 
 
 Both the key request and response **must be signed** (JWS). The key owner uses the requestor's `jku` from the JWS header to target the JWE—only that requestor's private key can unwrap it.
 
+### Flow Diagram
+
+```mermaid
+sequenceDiagram
+    participant AppA
+    participant AppB
+    AppA->>AppB: View Orders Intent
+    note right of AppB: Generate random symmetric key K
+    note right of AppB: Create private channel C
+    AppB->>AppA: Intent Reply: Private Channel C
+    note left of AppA: Subscribe to Channel C
+    note right of AppB: I have a new order!
+    note right of AppB: Encrypt Order Context with K and sign it with AppB private key
+    AppB->>AppA: Broadcast Encrypted Context
+    note left of AppA: Context is encrypted!
+    note left of AppA: Verify signature of context with AppB public key
+    note left of AppA: Signature valid, I need the channel key
+    AppA->>AppB: Key Request Intent for Channel C
+    note right of AppB: Wrap K with AppA public key
+    AppB->>AppA: K wrapped in AppA public key
+    note left of AppA: Unwrap with AppA private key
+    note left of AppA: I now have K, I can decrypt encrypted contexts on this channel :)
+    note left of AppA: Decrypt encrypted context with K
+    note right of AppB: I have a new order!
+    note right of AppB: Encrypt Order Context with K and sign it with AppB private key
+    AppB->>AppA: Broadcast Encrypted Context
+    note left of AppA: Context is encrypted!
+    note left of AppA: Verify signature of context with AppB public key
+    note left of AppA: Decrypt encrypted context with K
+```
+
 #### Context Types
 
 | Type | Description |
@@ -287,23 +350,13 @@ The [`fdc3.security.user`](../context/ref/security/User) context type represents
 ```typescript
 {
   type: "fdc3.security.user",
-  name: "John Doe",
-  id: {
-    email: "john.doe@example.com"
-  },
-  jwt: "eyJhbGciOiJFZERTQSIsImprdSI6Imh0dHBzOi8vaWRwLmV4YW1wbGUuY29tLy53ZWxsLWtub3duL2p3a3MuanNvbiIsImtpZCI6ImtleS0xIn0..."
+  wrappedJwt: "--some encrypted content --"
 }
 ```
 
-| Field | Description |
-|-------|-------------|
-| `name` | Human-readable name of the user |
-| `id.email` | Email address as a unique identifier (must match JWT `sub` claim) |
-| `jwt` | JSON Web Token asserting user identity and permissions |
-
 ### JWT Token Structure
 
-The `jwt` field contains a signed JSON Web Token with the following structure:
+The `wrappedJwt` field contains a signed JSON Web Token.  Once you decrypt this with your application's private key, it will have the following structure:
 
 **Header:**
 ```json
@@ -339,94 +392,15 @@ The token is scoped to a specific application (`aud`) to prevent token reuse if 
 
 ### Requesting User Identity
 
-When using the secure boundary pattern (server-side processing), the requesting app connects to the IDP via WebSocket and uses `exchangeData`:
+1. The requester raises the [`GetUser`](../intents/ref/GetUser.md) intent with a signed [`fdc3.security.userRequest`](../context/ref/security/UserRequest) context. The context includes an `aud` field (the audience claim for the returned JWT—typically the requesting app's URL). The request must be signed to prevent forgery by third parties.
 
-<Tabs groupId="lang">
-<TabItem value="ts" label="TypeScript/JavaScript">
+2. The IDP verifies the requester's signature on the request.
 
-```ts
-// Connect to IDP backend over WebSocket
-const handlers = await connectRemoteHandlers(wsUrl, desktopAgent, async () => {});
+3. The IDP creates a JWT containing the claims described above, scoped to the requested audience.
 
-// Request user identity with fdc3.security.userRequest
-const result = await handlers.exchangeData('user-request', {
-  type: 'fdc3.security.userRequest',
-  aud: 'https://my-app.example.com',  // Audience: this app's URL
-});
+4. The IDP wraps the JWT with the requester's public key and returns the `fdc3.security.user` context as the intent result.
 
-if (result?.type === 'fdc3.security.user' && result.jwt) {
-  const claims = await securityClient.verifyJWTToken(result.jwt);
-  console.log(`User: ${claims.sub}, Issued by: ${claims.iss}`);
-}
-
-await handlers.disconnect();
-```
-
-</TabItem>
-</Tabs>
-
-The [`fdc3.security.userRequest`](../context/ref/security/UserRequest) context includes:
-
-| Field | Description |
-|-------|-------------|
-| `aud` | The audience claim for the returned JWT - typically the requesting app's URL |
-
-The requesting app fetches the IDP's public keys from `{idpBaseUrl}/.well-known/jwks.json` to verify the JWT.
-
-### Identity Provider (IDP) Role
-
-The IDP backend implements `exchangeData` in its FDC3 handlers. When it receives a `user-request` with `fdc3.security.userRequest` context:
-
-1. Reads `aud` from the request (the requesting app's URL)
-2. Creates a signed JWT scoped to that audience (e.g. via `JosePrivateFDC3Security.createJWTToken`)
-3. Returns an `fdc3.security.user` context with the JWT
-
-<Tabs groupId="lang">
-<TabItem value="ts" label="TypeScript/JavaScript">
-
-```ts
-// IDP backend handlers (server-side)
-async exchangeData(purpose: string, ctx: Context): Promise<Context | void> {
-  if (purpose === 'user-request' && ctx.type === 'fdc3.security.userRequest') {
-    const aud = (ctx as UserRequest).aud;
-    const jwt = await this.security.createJWTToken(aud, 'user@example.com');
-
-    return {
-      type: 'fdc3.security.user',
-      id: { email: 'user@example.com' },
-      name: 'Demo User',
-      jwt,
-    };
-  }
-}
-```
-
-</TabItem>
-</Tabs>
-
-## Implementation Requirements
-
-### Desktop Agent Requirements
-
-No changes are expected of Desktop Agents to work with security - just that they pass on context and metadata untampered-with.
-
-### Application Requirements
-
-Applications implementing security features **MUST**:
-
-- Publish public keys at a stable HTTPS endpoint using JWKS format
-- Use strong cryptographic algorithms (ECDSA with P-521 recommended)
-- Validate signatures before trusting context data
-- Scope JWT tokens to specific audiences
-
-Applications implementing security features **SHOULD**:
-
-- Implement key rotation with overlapping validity periods
-- Log authentication and authorization decisions for audit
-- Handle unsigned contexts gracefully with appropriate user prompts
-
-## Security Considerations
-
+5. The requester decrypts the wrapped JWT with their private key and verifies the JWT signature using the IDP's public keys (from `{idpBaseUrl}/.well-known/jwks.json`).
 
 ### Token Security
 
@@ -434,8 +408,6 @@ Applications implementing security features **SHOULD**:
 - Short expiration times reduce the window for token theft attacks
 - Tokens SHOULD be transmitted over encrypted channels when possible
 
-### Replay Attacks
+## Desktop Agent Requirements
 
-- Signatures include timestamps to enable replay detection
-- Applications SHOULD reject contexts with timestamps outside an acceptable window
-- JWTs include unique identifiers (`jti`) to enable single-use enforcement
+No changes are expected of Desktop Agents to work with security - just that they pass on context and metadata untampered-with.
