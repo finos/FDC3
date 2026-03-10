@@ -31,6 +31,25 @@ The security framework introduces:
 - **Encrypted Channels** for private communications
 - **JWT-based User Identity** for portable authentication
 
+
+### Context Types
+
+The following context types support security features:
+
+| Context Type | Description |
+|-------------|-------------|
+| [`fdc3.security.user`](../context/ref/security/User) | User identity with JWT |
+| [`fdc3.security.userRequest`](../context/ref/security/UserRequest) | Request for user identity |
+| [`fdc3.security.symmetricKeyRequest`](../context/ref/security/SymmetricKeyRequest) | Request for encryption key |
+| [`fdc3.security.symmetricKeyResponse`](../context/ref/security/SymmetricKeyResponse) | Encryption key response |
+| [`fdc3.security.encryptedContext`](../context/ref/security/EncryptedContextWrapper) | Encrypted context wrapper |
+
+### Intents
+
+| Intent | Input Context | Output Context | Description |
+|--------|---------------|----------------|-------------|
+| `CreateIdentityToken` | `fdc3.security.userRequest` | `fdc3.security.user` | Request user identity from an IDP |
+
 ## Trust Boundaries
 
 - why we have public / private parts of the API.  browsers are untrusted, servers are trusted.
@@ -228,17 +247,19 @@ channel.broadcast(
 );
 ```
 
-
-
 ## User Identity
+
+In a multi-app FDC3 environment, applications often need to know who the user is—for personalization, access control, audit trails, or to share session state across tools. Instead of each app authenticating the user separately, an **Identity Provider (IDP)** can issue a portable, verifiable identity that any trusted app can consume. The IDP signs a JWT containing user claims; receiving apps verify the signature and trust the identity. 
+
+**Audience scoping** ensures each JWT is bound to a specific requesting application (`aud`), so if a token is intercepted, it cannot be reused by another app. This enables single sign-on (SSO) across FDC3 applications while keeping tokens narrowly scoped.
 
 ### The User Context Type
 
-The [`fdc3.user`](../context/ref/User) context type represents a verified user identity:
+The [`fdc3.security.user`](../context/ref/security/User) context type represents a verified user identity:
 
 ```typescript
 {
-  type: "fdc3.user",
+  type: "fdc3.security.user",
   name: "John Doe",
   id: {
     email: "john.doe@example.com"
@@ -291,164 +312,76 @@ The token is scoped to a specific application (`aud`) to prevent token reuse if 
 
 ### Requesting User Identity
 
-Applications request user identity by raising the `CreateIdentityToken` intent with an [`fdc3.user.request`](../context/ref/UserRequest) context:
+When using the secure boundary pattern (server-side processing), the requesting app connects to the IDP via WebSocket and uses `exchangeData`:
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-const userRequest = {
-  type: "fdc3.user.request",
-  aud: "https://my-app.example.com",
-  jku: "https://my-app.example.com/.well-known/jwks.json"
-};
+// Connect to IDP backend over WebSocket
+const handlers = await connectRemoteHandlers(wsUrl, desktopAgent, async () => {});
 
-const resolution = await fdc3.raiseIntent("CreateIdentityToken", userRequest);
-const result = await resolution.getResult();
+// Request user identity with fdc3.security.userRequest
+const result = await handlers.exchangeData('user-request', {
+  type: 'fdc3.security.userRequest',
+  aud: 'https://my-app.example.com',  // Audience: this app's URL
+});
 
-if (result && result.type === "fdc3.user") {
-  const user = result;
-  console.log(`Authenticated user: ${user.name}`);
-  // Verify and use the JWT token
-  await verifyAndProcessUser(user);
+if (result?.type === 'fdc3.security.user' && result.jwt) {
+  const claims = await securityClient.verifyJWTToken(result.jwt);
+  console.log(`User: ${claims.sub}, Issued by: ${claims.iss}`);
 }
+
+await handlers.disconnect();
 ```
 
 </TabItem>
 </Tabs>
 
-The `fdc3.user.request` context includes:
+The [`fdc3.security.userRequest`](../context/ref/security/UserRequest) context includes:
 
 | Field | Description |
 |-------|-------------|
 | `aud` | The audience claim for the returned JWT - typically the requesting app's URL |
-| `jku` | URL to the requesting app's JWKS, used by the IDP to encrypt the response |
+
+The requesting app fetches the IDP's public keys from `{idpBaseUrl}/.well-known/jwks.json` to verify the JWT.
 
 ### Identity Provider (IDP) Role
 
-Applications acting as Identity Providers handle `CreateIdentityToken` intents:
+The IDP backend implements `exchangeData` in its FDC3 handlers. When it receives a `user-request` with `fdc3.security.userRequest` context:
 
-1. Receive the `fdc3.user.request` context with the requestor's `aud` and `jku`
-2. Verify the requesting application is trusted (via signature verification and circle of trust)
-3. Create a JWT scoped to the requesting application
-4. Return the `fdc3.user` context, optionally encrypted for the requestor
+1. Reads `aud` from the request (the requesting app's URL)
+2. Creates a signed JWT scoped to that audience (e.g. via `JosePrivateFDC3Security.createJWTToken`)
+3. Returns an `fdc3.security.user` context with the JWT
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-fdc3.addIntentListener("CreateIdentityToken", async (context, metadata) => {
-  if (context.type !== "fdc3.user.request") {
-    throw new Error("Invalid context type");
-  }
-  
-  // Verify the requesting app is trusted
-  if (!metadata?.authenticity?.trusted) {
-    throw new Error("Requesting app is not trusted");
-  }
-  
-  // Create a JWT for the authenticated user, scoped to the requesting app
-  const jwt = await createJwtForUser(
-    currentUser,
-    context.aud,  // Audience: the requesting app
-    context.jku   // Requestor's public key for encryption
-  );
-  
-  return {
-    type: "fdc3.user",
-    name: currentUser.name,
-    id: { email: currentUser.email },
-    jwt: jwt
-  };
-});
-```
+// IDP backend handlers (server-side)
+async exchangeData(purpose: string, ctx: Context): Promise<Context | void> {
+  if (purpose === 'user-request' && ctx.type === 'fdc3.security.userRequest') {
+    const aud = (ctx as UserRequest).aud;
+    const jwt = await this.security.createJWTToken(aud, 'user@example.com');
 
-</TabItem>
-</Tabs>
-
-## Trust Levels
-
-FDC3 Security introduces trust levels for both applications and users:
-
-### Application Trust Levels
-
-| Level | State | Description |
-|-------|-------|-------------|
-| Unknown | - | No identity information available |
-| Known | Authenticated | Identity verified via signature and public key |
-| Trusted | Authorized | Member of a shared circle of trust |
-
-### User Trust Levels
-
-| Level | State | Description |
-|-------|-------|-------------|
-| Unknown | - | User not authenticated |
-| Known | Authenticated | User verified via JWT from an IDP |
-| Trusted | Authorized | User authorized for specific operations |
-
-Applications should use these trust levels to make access control decisions:
-
-```ts
-function canPerformOperation(operation: string, metadata: ContextMetadata): boolean {
-  const appTrusted = metadata?.authenticity?.trusted ?? false;
-  const userKnown = metadata?.user?.jwt != null;
-  
-  switch (operation) {
-    case "ViewNews":
-      return true;  // No trust required
-    case "ViewPrice":
-      return appTrusted;  // Requires app trust
-    case "CreateOrder":
-      return appTrusted && userKnown;  // Requires both app and user trust
-    default:
-      return false;
+    return {
+      type: 'fdc3.security.user',
+      id: { email: 'user@example.com' },
+      name: 'Demo User',
+      jwt,
+    };
   }
 }
 ```
 
-## Circles of Trust
-
-### Concept
-
-A **Circle of Trust** is a group of applications that mutually recognize each other as trusted. This enables:
-
-1. **Scalable Trust**: Apps don't need bilateral relationships with every other app
-2. **Third-Party Verification**: A trusted authority (e.g., FINOS) can certify app membership
-3. **Simplified Authorization**: Trust decisions based on circle membership rather than individual app verification
-
-### How It Works
-
-1. Applications join a circle of trust by obtaining a certificate from the circle administrator
-2. When communicating, apps include their certificate proving circle membership
-3. Receiving apps verify the certificate against the circle's root certificate
-4. If both apps are members of the same circle, the `authenticity.trusted` field is set to `true`
-
-### FINOS Circle of Trust
-
-FINOS may operate a circle of trust for conformant FDC3 applications. Membership requires:
-
-1. Passing FDC3 conformance tests
-2. Meeting security requirements for key management
-3. Agreeing to circle policies for data handling
-
-Applications in the FINOS circle can trust each other without establishing direct bilateral relationships.
+</TabItem>
+</Tabs>
 
 ## Implementation Requirements
 
 ### Desktop Agent Requirements
 
-Desktop Agents implementing security features **MUST**:
-
-- Forward signature metadata with context messages (signature and antiReplay in metadata)
-- Populate authenticity metadata when signature verification is performed
-- Support the `CreateIdentityToken` intent for user identity workflows
-- Handle encrypted context types appropriately
-
-Desktop Agents implementing security features **SHOULD**:
-
-- Provide APIs for applications to sign outgoing context
-- Cache public keys from JWKS endpoints to improve performance
-- Support configuration of trusted circles
+No changes are expected of Desktop Agents to work with security - just that they pass on context and metadata untampered-with.
 
 ### Application Requirements
 
@@ -485,21 +418,3 @@ Applications implementing security features **SHOULD**:
 - Signatures include timestamps to enable replay detection
 - Applications SHOULD reject contexts with timestamps outside an acceptable window
 - JWTs include unique identifiers (`jti`) to enable single-use enforcement
-
-## Context Types
-
-The following context types support security features:
-
-| Context Type | Description |
-|-------------|-------------|
-| [`fdc3.user`](../context/ref/User) | User identity with JWT |
-| [`fdc3.user.request`](../context/ref/UserRequest) | Request for user identity |
-| [`fdc3.security.symmetricKey.request`](../context/ref/SymmetricKeyRequest) | Request for encryption key |
-| [`fdc3.security.symmetricKey.response`](../context/ref/SymmetricKeyResponse) | Encryption key response |
-| [`fdc3.security.encryptedContext`](../context/ref/EncryptedContext) | Encrypted context wrapper |
-
-## Intents
-
-| Intent | Input Context | Output Context | Description |
-|--------|---------------|----------------|-------------|
-| `CreateIdentityToken` | `fdc3.user.request` | `fdc3.user` | Request user identity from an IDP |
