@@ -143,6 +143,12 @@ export class JosePrivateFDC3Security extends JosePublicFDC3Security implements P
       .sign(key);
     return token;
   }
+
+  async decryptContextWithPrivateKey(encrypted: JSONWebEncryption): Promise<Context> {
+    const decrypted = await jose.compactDecrypt(encrypted, this.wrappingPrivateKey);
+    const plaintext = decrypted.plaintext;
+    return JSON.parse(new TextDecoder().decode(plaintext));
+  }
 }
 
 /**

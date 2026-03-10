@@ -52,22 +52,49 @@ The following context types support security features:
 
 ## Trust Boundaries
 
-- why we have public / private parts of the API.  browsers are untrusted, servers are trusted.
-- how to move data / intents / context between untrusted and trusted parts of the app.
+Web applications split into a _front end_ (browser) and _back end_ (server) because browsers are untrusted—users and extensions can inspect or modify client-side code—while servers are trusted and can hold private keys safely. The FDC3 Security API therefore has public and private parts: the front end holds only public keys and delegates signing, verification, and sensitive logic to the back end. 
 
-(diagrams here)
+The diagram below shows how context and requests flow over a WebSocket (or similar secure boundary): the front end sends context or requests; the back end signs, processes, and returns signed context or responses.
+
+```mermaid
+sequenceDiagram
+    participant FE as Front end (Untrusted)
+    participant BE as Back end (Trusted)
+
+    Note over FE: Public keys only
+    Note over BE: Private keys, signing, sensitive logic
+
+    FE->>+BE: context / request (WebSocket)
+    BE-->>FE: signed context / response
+```
+
+The FDC3 Security implementations provides various helpers to make it easy to communicate across the boundary.
+
+| Language                | Documentation   |
+|-------------------------|-----------------|
+| JavaScript / TypeScript | [README](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/README.md) |
 
 ### Public / Private Keys
 
--- JWKS Hosting at .well-known/jwks.json (?)
+To enable verification, applications publish their public keys at a stable HTTPS endpoint. The conventional location is `/.well-known/jwks.json` on the application's origin—a path established by [RFC 8615](https://datatracker.ietf.org/doc/html/rfc8615) for well-known URIs. The URL serves both as the key delivery mechanism and as an identifier for the publisher: the `jku` in a JWS header points to this endpoint so receivers know where to fetch the verification key.
+
+:::note
+Keys in the JWKS MUST include a `kid` (key ID) so signers can reference them in JWS headers and receivers can select the correct key for verification.
+:::
+
 1. Generate a public/private key pair
 2. Publish the public key at an HTTPS endpoint as a [JSON Web Key Set (JWKS)](https://datatracker.ietf.org/doc/html/rfc7517).  The URL on which the JWKS identifies the entity of the publisher. 
 
+### Key Management
+
+- Private keys MUST be stored securely and never transmitted
+- JWKS endpoints MUST be served over HTTPS with valid certificates
+- Key rotation SHOULD be performed periodically
+- Old keys SHOULD remain available for verification during transition periods
+
 ## Trust Model
 
-- Apps decide who they trust and enforced app-to-app.
-- Desktop agents are untrusted.
-- Browsers are _untrusted_ by apps, to the extent that private keys won't be sent to app front-ends.
+Trust is determined and enforced by applications, not by the Desktop Agent. Each application defines its own circle of trust. Desktop Agents are untrusted intermediaries: they route context and metadata but MUST NOT be relied upon for cryptographic operations or trust decisions. Application front-ends (browser contexts) are untrusted: private keys MUST NOT be sent to or stored in front-end code; signing and other sensitive operations MUST be performed in a trusted back-end.
 
 ### Trust Function
 
@@ -400,12 +427,6 @@ Applications implementing security features **SHOULD**:
 
 ## Security Considerations
 
-### Key Management
-
-- Private keys MUST be stored securely and never transmitted
-- JWKS endpoints MUST be served over HTTPS with valid certificates
-- Key rotation SHOULD be performed periodically
-- Old keys SHOULD remain available for verification during transition periods
 
 ### Token Security
 

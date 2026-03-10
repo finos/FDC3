@@ -2,7 +2,7 @@ import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
 import { BrowserTypes } from '@finos/fdc3-schema';
 
 type AntiReplay = BrowserTypes.AntiReplayClaims;
-import { PublicFDC3Security } from './PublicFDC3Security';
+import { JSONWebEncryption, PublicFDC3Security } from './PublicFDC3Security';
 
 type DetachedSignature = BrowserTypes.DetachedSignature;
 
@@ -75,4 +75,23 @@ export interface PrivateFDC3Security extends PublicFDC3Security {
    * ```
    */
   createJWTToken(aud: string, sub: string): Promise<string>;
+
+  /**
+   * Decrypt a context that was encrypted with this app's public key (JWE).
+   *
+   * Decrypts a compact JWE using this app's private key. Used when receiving
+   * sensitive context encrypted for this app—for example, an `fdc3.security.user`
+   * context that an identity provider encrypted so only this application can
+   * read the JWT.
+   *
+   * @param encrypted - The compact JWE string containing the encrypted context
+   * @param publicKeyUrl - URL to the JWKS that holds the public key used for
+   *        encryption (typically this app's `/.well-known/jwks.json`)
+   * @returns A promise resolving to the decrypted context object
+   * @throws Error if decryption fails (wrong key, corrupted data, etc.)
+   *
+   * @see `encryptContextWithPublicKey` for the corresponding encryption operation
+   * @see `fdc3.security.user` context type
+   */
+  decryptContextWithPrivateKey(encrypted: JSONWebEncryption, publicKeyUrl: string): Promise<Context>;
 }
