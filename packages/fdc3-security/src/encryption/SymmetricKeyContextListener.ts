@@ -1,14 +1,14 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
 import { EncryptingPrivateChannel } from './EncryptingPrivateChannel';
-import { PrivateFDC3Security } from '../impl/PrivateFDC3Security';
 import { ContextMetadata, Listener } from '@finos/fdc3-standard';
-import { checkSignature, signContext } from '../signing/SigningSupport';
+import { checkSignature } from '../signing/SigningSupport';
+import { PublicFDC3Security } from '../impl/PublicFDC3Security';
 
 /**
- * Used for agents that send the symmetric key when asked for it.
+ * Used for agents that can send the symmetric key when asked for it.
  */
 export async function createSymmetricKeyRequestContextListener(
-  fdc3Security: PrivateFDC3Security,
+  fdc3Security: PublicFDC3Security,
   channel: EncryptingPrivateChannel
 ): Promise<Listener> {
   // create the key if it doesn't exist
@@ -28,7 +28,7 @@ export async function createSymmetricKeyRequestContextListener(
         const theKey = await channel.getSymmetricKey();
         if (theKey) {
           const wrappedKey = await fdc3Security.wrapSymmetricKey(theKey, ma.jku!);
-          const { ctx, meta } = await signContext(fdc3Security, wrappedKey);
+          const { ctx, meta } = await channel.signResponse(wrappedKey);
           return channel.broadcast(ctx, meta);
         } else {
           throw new Error('Symmetric key not set');
@@ -44,7 +44,7 @@ export async function createSymmetricKeyRequestContextListener(
  * Call this for agents that need to request and receive the symmetric key.
  */
 export function createSymmetricKeyResponseContextListener(
-  fdc3Security: PrivateFDC3Security,
+  fdc3Security: PublicFDC3Security,
   channel: EncryptingPrivateChannel
 ): Promise<Listener> {
   const listener = channel.addContextListener(
@@ -55,7 +55,7 @@ export function createSymmetricKeyResponseContextListener(
 
       if (ma?.signed && ma.trusted && ma.valid) {
         const skr = context as SymmetricKeyResponse;
-        const key = await fdc3Security.unwrapSymmetricKey(skr);
+        const key = await channel.unwrapResponse(skr);
         if (key) {
           channel.setSymmetricKey(key);
         }
