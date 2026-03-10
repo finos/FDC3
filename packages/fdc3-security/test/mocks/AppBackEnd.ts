@@ -14,6 +14,7 @@ export class AppBackEnd {
   readonly baseUrl: string;
   security!: JosePrivateFDC3Security;
   httpServer!: Server;
+  public handlers: FDC3Handlers | null = null;
 
   constructor(private readonly createHandlers: CreateHandlers) {
     const port = 49152 + Math.floor(Math.random() * 16384);
@@ -47,8 +48,15 @@ export class AppBackEnd {
 
     setupWebsocketServer(
       httpServer,
-      () => console.log('Client disconnected'),
-      ws => this.createHandlers(ws, security)
+      (_ws: WebSocket) => {
+        console.log('Client disconnected');
+        this.handlers = null;
+      },
+      ws => {
+        const h = this.createHandlers(ws, security);
+        this.handlers = h;
+        return h;
+      }
     );
 
     this.security = security;
