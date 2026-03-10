@@ -10,6 +10,7 @@
 For Thursday
 ------------
 12. Yannick to review website/docs/api/security.md (DONE)
+13. Talk to Yannick about the get user process.
 9.  Review the generated documentation in /api
 
 - Show people the schemas
