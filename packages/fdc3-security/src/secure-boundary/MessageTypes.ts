@@ -1,4 +1,3 @@
-import { Context } from '@finos/fdc3-context';
 import {
   AppRequestMessage,
   AgentEventMessage,
@@ -29,9 +28,7 @@ export const EXCHANGE_DATA = 'exchange-data';
 
 export type ExchangeDataMessage = {
   purpose: string;
-  ctx: Context;
-  intent?: string;
-  channelId?: string;
+  o: object;
 };
 
 /**
