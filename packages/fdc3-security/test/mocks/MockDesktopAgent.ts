@@ -1,14 +1,59 @@
-import { DesktopAgent, Listener, Channel, ContextHandler } from '@finos/fdc3-standard';
+import {
+  DesktopAgent,
+  Listener,
+  Channel,
+  ContextHandler,
+  PrivateChannel,
+  IntentHandler,
+  IntentResolution,
+} from '@finos/fdc3-standard';
+import type { Intent } from '@finos/fdc3-standard';
+import { Context } from '@finos/fdc3-context';
 import { MockChannel } from './MockChannel';
+import { MockPrivateChannel } from './MockPrivateChannel';
 
 const sharedChannels = new Map<string, MockChannel>();
+const sharedPrivateChannels = new Map<string, MockPrivateChannel>();
 
 export class MockDesktopAgent implements Partial<DesktopAgent> {
+  private intentHandlers = new Map<string, IntentHandler>();
+
+  async addIntentListener(intent: Intent, handler: IntentHandler): Promise<Listener> {
+    const key = String(intent);
+    if (this.intentHandlers.has(key)) throw new Error(`IntentListenerConflict: ${key}`);
+    this.intentHandlers.set(key, handler);
+    return {
+      unsubscribe: async () => {
+        this.intentHandlers.delete(key);
+      },
+    };
+  }
+
+  async raiseIntent(intent: Intent, context: Context): Promise<IntentResolution> {
+    const key = String(intent);
+    const handler = this.intentHandlers.get(key);
+    if (!handler) throw new Error(`No handler registered for intent: ${key}`);
+    const result = await handler(context);
+    return {
+      source: { appId: 'mock-app', instanceId: 'mock-instance' },
+      intent: key as Intent,
+      getResult: async () => result,
+    };
+  }
+
   async getOrCreateChannel(channelId: string): Promise<Channel> {
     if (!sharedChannels.has(channelId)) {
-      sharedChannels.set(channelId, new MockChannel(channelId, 'user'));
+      sharedChannels.set(channelId, new MockChannel(channelId, 'app'));
     }
     return sharedChannels.get(channelId)!;
+  }
+
+  async createPrivateChannel(channelId?: string): Promise<PrivateChannel> {
+    const id = channelId ?? `private-${Date.now()}`;
+    if (!sharedPrivateChannels.has(id)) {
+      sharedPrivateChannels.set(id, new MockPrivateChannel(id));
+    }
+    return sharedPrivateChannels.get(id)!;
   }
 
   async addContextListener(contextType: string | ContextHandler | null, handler?: ContextHandler): Promise<Listener> {
