@@ -386,7 +386,7 @@ The `wrappedJwt` field contains a signed JSON Web Token.  Once you decrypt this 
 | `aud` | Audience - the specific application this token was issued for |
 | `exp` | Expiration time (Unix timestamp) |
 | `iat` | Issued at time (Unix timestamp) |
-| `jti` | JWT ID - unique identifier for this token |
+| `jti` | JWT ID - unique identifier for this token (replay prevention) |
 
 The token is scoped to a specific application (`aud`) to prevent token reuse if leaked.
 
@@ -400,7 +400,7 @@ The token is scoped to a specific application (`aud`) to prevent token reuse if 
 
 4. The IDP wraps the JWT with the requester's public key and returns the `fdc3.security.user` context as the intent result.
 
-5. The requester decrypts the wrapped JWT with their private key and verifies the JWT signature using the IDP's public keys (from `{idpBaseUrl}/.well-known/jwks.json`).
+5. The requester decrypts the wrapped JWT with their private key and verifies the JWT signature using the IDP's public keys (from `{idpBaseUrl}/.well-known/jwks.json`). It also verifies expiry and must verify that the `jti` has not been used recently (i.e. in the expiry window)
 
 ```mermaid
 sequenceDiagram
@@ -420,6 +420,7 @@ sequenceDiagram
 
 - JWT tokens are scoped to specific audiences to prevent misuse if leaked
 - Short expiration times reduce the window for token theft attacks
+- Unique token identifiers (jti) must be used to prevent token theft attacks
 - Tokens SHOULD be transmitted over encrypted channels when possible
 
 ## Desktop Agent Requirements
