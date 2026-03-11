@@ -2,6 +2,7 @@ import SwaggerParser from '@apidevtools/swagger-parser';
 import { Validator } from 'jsonschema';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { beforeAll, expect, it, describe } from 'vitest';
 
 // Get the directory path for loading schema and example files
 const specificationDir = join(__dirname, '..', 'src', 'app-directory', 'specification');
