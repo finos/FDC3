@@ -402,6 +402,20 @@ The token is scoped to a specific application (`aud`) to prevent token reuse if 
 
 5. The requester decrypts the wrapped JWT with their private key and verifies the JWT signature using the IDP's public keys (from `{idpBaseUrl}/.well-known/jwks.json`).
 
+```mermaid
+sequenceDiagram
+    participant Application
+    participant IDP
+    Application->>IDP: GetUser Intent Request
+    note right of IDP: Verify requesting application signature
+    note right of IDP: Generate scoped JWT
+    note right of IDP: Wrap JWT with requesting app's public key
+    IDP->>Application: GetUser Intent Reply
+    note left of Application: Unwrap JWT
+    note left of Application: Verify JWT
+    note left of Application: Authenticate user
+```
+
 ### Token Security
 
 - JWT tokens are scoped to specific audiences to prevent misuse if leaked

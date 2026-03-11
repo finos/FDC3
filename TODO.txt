@@ -26,4 +26,5 @@ For Thursday
 For Later
 ---------
 
-14.  We need to encrypt user JWTs in transit using the requester's public key.
+14.  We need to encrypt user JWTs in transit using the requester's public key. (DONE IN SPEC)
+16. User Request needs a nonce
