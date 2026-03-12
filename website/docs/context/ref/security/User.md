@@ -23,7 +23,7 @@ A user identity, expressed as a wrapped JWT.  Receivers will need to unwrap the 
 
 **type**: `string`
 
-A JSON Web Token (JWT) asserting user identity and permissions, wrapped in the public key of the requester. The JWT contains a header with cryptographic information and a payload with user claims. Header fields include: 'alg' (signature algorithm, e.g., 'EdDSA'), 'jku' (JSON Web Key Set URL for key verification), and 'kid' (key identifier). Payload fields include: 'iss' (issuer - the application issuing the token), 'aud' (audience - the intended recipient application), 'sub' (subject - the user identifier), 'exp' (expiration time as Unix timestamp), 'iat' (issued at time as Unix timestamp), and 'jti' (JWT ID - unique token identifier). The jti field must be used to prevent the JWT from being replayed from a concurrent session.
+A JSON Web Token (JWT) asserting user identity and permissions, wrapped in the public key of the requester. The JWT contains a header with cryptographic information and a payload with user claims. Header fields include: 'alg' (signature algorithm, e.g., 'EdDSA'), 'jku' (JSON Web Key Set URL for key verification), and 'kid' (key identifier). Payload fields include: 'iss' (issuer - the application issuing the token), 'aud' (audience - the intended recipient application), 'sub' (subject - the user identifier), 'exp' (expiration time as Unix timestamp), 'iat' (issued at time as Unix timestamp), and 'jti' (JWT ID - unique token identifier).
 
 </details>
 
