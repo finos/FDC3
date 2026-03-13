@@ -7,18 +7,13 @@ import * as jose from 'jose';
 import { DEFAULT_FDC3_ALGORITHMS, FDC3SecurityAlgorithms } from './FDC3SecurityAlgorithms';
 import { DEFAULT_FDC3_TIME_LIMITS, FDC3SecurityTimeLimits } from './FDC3SecurityTimeLimits';
 import { FDC3UserClaims } from './FDC3UserClaims';
-import { PublicFDC3Security } from './PublicFDC3Security';
+import { JsonWebKeyWithId, PublicFDC3Security } from './PublicFDC3Security';
 import { AntiReplayChecker, DefaultAntiReplayChecker } from './AntiReplayChecker';
 
 type MessageAuthenticity = BrowserTypes.MessageAuthenticity;
 type JSONWebEncryption = string;
 
 type DetachedSignature = BrowserTypes.DetachedSignature;
-
-export type JSONWebKeyWithId = JsonWebKey & {
-  kid?: string; // Key ID
-  alg: string; // Algorithm used for the key
-};
 
 /**
  * JWE protected header parameters for encryption operations.
@@ -57,8 +52,8 @@ export type AllowListFunction = (jku: string, iss?: string) => boolean;
  * @param antiReplayChecker - Checks for replay attacks
  */
 export class JosePublicFDC3Security implements PublicFDC3Security {
-  readonly signingPublicKey: JSONWebKeyWithId;
-  readonly wrappingPublicKey: JSONWebKeyWithId;
+  readonly signingPublicKey: JsonWebKeyWithId;
+  readonly wrappingPublicKey: JsonWebKeyWithId;
   readonly timeLimits: FDC3SecurityTimeLimits;
   readonly publicKeyResolver: (url: string) => JWKSResolver;
   readonly allowListFunction: AllowListFunction;
@@ -80,16 +75,16 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
     this.algorithms = algorithms;
     this.antiReplayChecker = antiReplayChecker;
 
-    if (!(signingPublicKey as JSONWebKeyWithId).kid) {
+    if (!(signingPublicKey as JsonWebKeyWithId).kid) {
       throw new Error("Signing public key must have a 'kid' (Key ID) property");
     } else {
-      this.signingPublicKey = signingPublicKey as JSONWebKeyWithId;
+      this.signingPublicKey = signingPublicKey as JsonWebKeyWithId;
     }
 
-    if (!(wrappingPublicKey as JSONWebKeyWithId).kid) {
+    if (!(wrappingPublicKey as JsonWebKeyWithId).kid) {
       throw new Error("Wrapping public key must have a 'kid' (Key ID) property");
     } else {
-      this.wrappingPublicKey = wrappingPublicKey as JSONWebKeyWithId;
+      this.wrappingPublicKey = wrappingPublicKey as JsonWebKeyWithId;
     }
   }
 
@@ -113,7 +108,7 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
     return { alg: protectedHeader.alg, jku: protectedHeader.jku, kid: protectedHeader.kid, iat: protectedHeader.iat };
   }
 
-  protected async getPublicKey(publicKeyUrl: string, protectedHeader: JWEProtectedHeader): Promise<JSONWebKeyWithId> {
+  protected async getPublicKey(publicKeyUrl: string, protectedHeader: JWEProtectedHeader): Promise<JsonWebKeyWithId> {
     const JWKS = this.publicKeyResolver(publicKeyUrl);
     await JWKS.reload();
 
@@ -124,7 +119,7 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
       throw new Error(`No key found for algorithm ${protectedHeader.alg}`);
     }
 
-    return key as JSONWebKeyWithId;
+    return key as JsonWebKeyWithId;
   }
 
   /**
@@ -208,13 +203,21 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
     }
   }
 
-  getPublicKeys(): JSONWebKeyWithId[] {
+  getPublicKeys(): JsonWebKeyWithId[] {
     return [this.signingPublicKey, this.wrappingPublicKey];
   }
 
-  async createSymmetricKey(): Promise<JsonWebKey> {
+  createId(): string {
+    return crypto.randomUUID();
+  }
+
+  async createSymmetricKey(): Promise<JsonWebKeyWithId> {
     const secret = await jose.generateSecret(this.algorithms.contentEncryption, { extractable: true });
-    return jose.exportJWK(secret);
+    const jwk = await jose.exportJWK(secret);
+    return {
+      ...jwk,
+      kid: jwk.kid ?? this.createId(),
+    } as JsonWebKeyWithId;
   }
 
   async verifyJWTToken(token: string): Promise<FDC3UserClaims> {
@@ -328,8 +331,8 @@ export async function createJosePublicFDC3SecurityFromUrl(
   const jwks = (await res.json()) as jose.JSONWebKeySet;
   const keys = jwks.keys ?? [];
 
-  const signingKey = keys.find((k: JsonWebKey) => k.alg === algorithms.signing) as JSONWebKeyWithId | undefined;
-  const wrappingKey = keys.find((k: JsonWebKey) => k.alg === algorithms.keyWrapping) as JSONWebKeyWithId | undefined;
+  const signingKey = keys.find((k: JsonWebKey) => k.alg === algorithms.signing) as JsonWebKeyWithId | undefined;
+  const wrappingKey = keys.find((k: JsonWebKey) => k.alg === algorithms.keyWrapping) as JsonWebKeyWithId | undefined;
 
   if (!signingKey?.kid) {
     throw new Error(`JWKS at ${jwksUrl} has no signing key with kid (alg: ${algorithms.signing})`);
