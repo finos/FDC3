@@ -3,9 +3,9 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import { IntentResult } from './Types';
-import { AppIdentifier } from './AppIdentifier';
-import { Intent } from '../intents/Intents';
+import { IntentResult } from './Types.js';
+import { AppIdentifier } from './AppIdentifier.js';
+import { Intent } from '../intents/Intents.js';
 
 /**
  * IntentResolution provides a standard format for data returned upon resolving an intent.

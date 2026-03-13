@@ -1,10 +1,10 @@
 import { DesktopAgent } from '@finos/fdc3-standard';
-import { getAgent } from './strategies/getAgent';
-import { AbstractUIComponent } from './ui/AbstractUIComponent';
-import { DefaultDesktopAgentChannelSelector } from './ui/DefaultDesktopAgentChannelSelector';
-import { DefaultDesktopAgentIntentResolver } from './ui/DefaultDesktopAgentIntentResolver';
-import { NullChannelSelector } from './ui/NullChannelSelector';
-import { NullIntentResolver } from './ui/NullIntentResolver';
+import { getAgent } from './strategies/getAgent.js';
+import { AbstractUIComponent } from './ui/AbstractUIComponent.js';
+import { DefaultDesktopAgentChannelSelector } from './ui/DefaultDesktopAgentChannelSelector.js';
+import { DefaultDesktopAgentIntentResolver } from './ui/DefaultDesktopAgentIntentResolver.js';
+import { NullChannelSelector } from './ui/NullChannelSelector.js';
+import { NullIntentResolver } from './ui/NullIntentResolver.js';
 
 const DEFAULT_WAIT_FOR_MS = 20000;
 

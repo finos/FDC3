@@ -3,7 +3,7 @@ import { assert, expect } from 'chai';
 import { APIDocumentation } from '../support/apiDocuments';
 import { DesktopAgent } from '@finos/fdc3';
 import { ContextType, IntentApp, Intent } from '../support/intent-support';
-import { handleFail } from '../../utils';
+import { appIdMatches, handleFail } from '../../utils';
 
 declare let fdc3: DesktopAgent;
 const findIntentsByContextDocs = '\r\nDocumentation: ' + APIDocumentation.findIntentsByContext;
@@ -59,7 +59,10 @@ function validateIntents(
   assert.isDefined(firstIntent);
   if (firstIntent !== undefined) {
     expect(firstIntent.apps).to.have.length(expectedAppCount);
-    const sharedAppNames = firstIntent.apps.map(app => app.appId);
-    expect(sharedAppNames).to.have.all.members(expectedAppIds);
+    const sharedAppIds = firstIntent.apps.map(app => app.appId);
+    const missingAppIds = expectedAppIds.filter(
+      expected => !sharedAppIds.some(received => appIdMatches(received, expected))
+    );
+    expect(missingAppIds, `Expected app IDs not found in [${sharedAppIds.join(', ')}]`).to.be.empty;
   }
 }

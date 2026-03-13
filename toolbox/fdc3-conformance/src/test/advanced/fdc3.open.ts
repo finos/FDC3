@@ -5,6 +5,7 @@ import { OpenControlImpl } from '../support/open-support';
 import { DesktopAgent, getAgent } from '@finos/fdc3';
 import { assert, expect } from 'chai';
 import { ControlContextType } from '../support/intent-support';
+import { appIdMatches } from '../../utils';
 
 const documentation = '\r\nDocumentation: ' + APIDocumentation + '\r\nCause:';
 
@@ -99,7 +100,7 @@ export default async () => {
       const result = control.contextReceiver('fdc3-conformance-opened');
       const targetApp = { appId: openApp.b.id };
       const instanceIdentifier = await control.openMockApp(targetApp);
-      expect(instanceIdentifier.appId).to.eq(openApp.b.id);
+      expect(appIdMatches(instanceIdentifier.appId, openApp.b.id)).to.be.true;
       expect(instanceIdentifier).to.have.property('instanceId');
       await result;
       await control.closeMockApp(AOpensB4);

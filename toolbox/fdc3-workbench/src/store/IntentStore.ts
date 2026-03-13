@@ -10,12 +10,12 @@ import {
   AppMetadata,
   PrivateChannel,
   getWorkbenchAgent,
-} from '../utility/Fdc3Api';
+} from '../utility/Fdc3Api.js';
 import { nanoid } from 'nanoid';
-import { intentTypes } from '../fixtures/intentTypes';
-import systemLogStore from './SystemLogStore';
-import appChannelStore from './AppChannelStore';
-import privateChannelStore from './PrivateChannelStore';
+import { intentTypes } from '../fixtures/intentTypes.js';
+import systemLogStore from './SystemLogStore.js';
+import appChannelStore from './AppChannelStore.js';
+import privateChannelStore from './PrivateChannelStore.js';
 import { Channel, IntentResult } from '@finos/fdc3';
 
 type IntentItem = { title: string; value: string };

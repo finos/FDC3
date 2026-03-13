@@ -1,6 +1,6 @@
 import { DesktopAgentDetails, DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX } from '@finos/fdc3-standard';
-import { Logger } from '../util/Logger';
-import { createUUID } from '../util/Uuid';
+import { Logger } from '../util/Logger.js';
+import { createUUID } from '../util/Uuid.js';
 
 /**
  * Note that we also key by the window name as well, in case multiple iframes are using the same session storage.

@@ -1,5 +1,5 @@
-import { StandardIntent } from '../intents/Intents';
-import { exhaustiveStringTuple } from './typeHelpers';
+import { StandardIntent } from '../intents/Intents.js';
+import { exhaustiveStringTuple } from './typeHelpers.js';
 
 const STANDARD_INTENTS = exhaustiveStringTuple<StandardIntent>()(
   'CreateInteraction',

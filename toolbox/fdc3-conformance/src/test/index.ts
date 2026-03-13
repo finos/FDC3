@@ -1,6 +1,7 @@
 export * from './testSuite';
 import { getAgent } from '@finos/fdc3';
 import { getPackMembers, getPackNames, executeTestsInBrowser, executeManualTestsInBrowser } from './testSuite';
+import { ProgressReporter } from './progressReporter';
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require('mocha/mocha.css');
@@ -8,6 +9,7 @@ require('mocha/mocha.css');
 require('source-map-support/browser-source-map-support.js');
 
 mocha.setup('bdd');
+mocha.reporter(ProgressReporter);
 const testSuite = document.getElementById('testSuite')!;
 
 // populate drop-down

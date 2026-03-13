@@ -6,8 +6,13 @@
 // This test validates that all examples in each JSON schema in schemas/context are valid according to their schema.
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import Ajv from 'ajv';
 import addFormats from 'ajv-formats';
+import { describe, test, expect } from 'vitest';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const sanitizeFilename = (filename: string) => filename.replace(/^(\.\.(\/|\\|$))+/, '');
 
@@ -89,14 +94,14 @@ describe('FDC3 Context Schema Example Validation', () => {
     if (examples.length === 0 && schemaFile !== 'context.schema.json') {
       // context.schema.json is the main schema and has no examples
       test(`${schemaFile} has no examples`, () => {
-        fail(`${schemaFile} has no examples to validate.`);
+        expect.fail(`${schemaFile} has no examples to validate.`);
       });
       return;
     }
 
     if (!validate) {
       test(`${schemaFile} validator could not be found`, () => {
-        fail(`Validator for ${schemaFile} could not be found. Check if $id is set and schema was added to Ajv.`);
+        expect.fail(`Validator for ${schemaFile} could not be found. Check if $id is set and schema was added to Ajv.`);
       });
       return;
     }

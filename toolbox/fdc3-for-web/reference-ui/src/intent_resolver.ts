@@ -6,7 +6,7 @@ import {
   Fdc3UserInterfaceResolveAction,
   Fdc3UserInterfaceRestyle,
   isFdc3UserInterfaceResolve,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 const setup = (
   data: Fdc3UserInterfaceResolve['payload'],

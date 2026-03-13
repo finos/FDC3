@@ -7,13 +7,13 @@ import React, { FormEvent, useState } from 'react';
 import { observer } from 'mobx-react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Typography, Grid, Button, IconButton, Tooltip, Link } from '@material-ui/core';
-import { codeExamples } from '../fixtures/codeExamples';
-import { openApiDocsLink } from '../fixtures/openApiDocs';
+import { codeExamples } from '../fixtures/codeExamples.js';
+import { openApiDocsLink } from '../fixtures/openApiDocs.js';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import Autocomplete, { createFilterOptions } from '@material-ui/lab/Autocomplete';
-import contextStore from '../store/ContextStore';
-import { TemplateTextField } from './common/TemplateTextField';
-import { copyToClipboard } from './common/CopyToClipboard';
+import contextStore from '../store/ContextStore.js';
+import { TemplateTextField } from './common/TemplateTextField.js';
+import { copyToClipboard } from './common/CopyToClipboard.js';
 import InfoOutlinedIcon from '@material-ui/icons/InfoOutlined';
 
 // interface copied from lib @material-ui/lab/Autocomplete
