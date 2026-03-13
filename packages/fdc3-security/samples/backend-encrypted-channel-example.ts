@@ -5,7 +5,8 @@ import { Channel, ContextMetadata, DesktopAgent } from '@finos/fdc3-standard';
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
-import { PrivateEncryptionSupport, EncryptedBroadcaster } from '../src/encryption/EncryptionSupport';
+import { EncryptedBroadcastSupport, EncryptedBroadcaster } from '../src/encryption/EncryptedBroadcastSupport';
+import { PrivateEncryptedContextListenerSupport } from '../src/encryption/EncryptedContextListenerSupport';
 import { AppBackEnd } from '../test/mocks/AppBackEnd';
 import { MockDesktopAgent } from '../test/mocks/MockDesktopAgent';
 import { fileURLToPath } from 'url';
@@ -18,7 +19,7 @@ const metadataHandler = new MetadataHandlerImpl(false);
 
 /**
  * Broadcasting app backend handlers (broadcaster, key creator). Receives the channel via handleRemoteChannel,
- * uses PrivateEncryptionSupport so encryption is done entirely on the backend. The symmetric key
+ * uses EncryptedBroadcastSupport so encryption is done entirely on the backend. The symmetric key
  * is created and held on the backend; key requests are responded to on the backend.
  */
 class BroadcastingAppBackendHandlers extends DefaultFDC3Handlers {
@@ -32,9 +33,9 @@ class BroadcastingAppBackendHandlers extends DefaultFDC3Handlers {
     if (purpose !== INTENT_SHARE_ENCRYPTED_CHANNEL) return;
 
     console.log(
-      '[Broadcasting App Backend] Received channel via handleRemoteChannel, setting up PrivateEncryptionSupport'
+      '[Broadcasting App Backend] Received channel via handleRemoteChannel, setting up EncryptedBroadcastSupport'
     );
-    const support = new PrivateEncryptionSupport(this.security, metadataHandler);
+    const support = new EncryptedBroadcastSupport(this.security, metadataHandler);
     this.broadcaster = await support.broadcastWrapper(channel);
   }
 
@@ -67,7 +68,7 @@ class BroadcastingAppBackendHandlers extends DefaultFDC3Handlers {
 }
 
 /**
- * Receiving app backend handlers – uses PrivateEncryptionSupport for decryption. The symmetric key
+ * Receiving app backend handlers – uses PrivateEncryptedContextListenerSupport for decryption. The symmetric key
  * is requested and unwrapped entirely on the backend when encrypted contexts arrive.
  */
 class ReceivingAppBackendHandlers extends DefaultFDC3Handlers {
@@ -79,7 +80,7 @@ class ReceivingAppBackendHandlers extends DefaultFDC3Handlers {
     if (purpose !== 'listen') return;
 
     console.log('[Receiving App Backend] Received channel via handleRemoteChannel, setting up decryption listener');
-    const support = new PrivateEncryptionSupport(this.security, metadataHandler);
+    const support = new PrivateEncryptedContextListenerSupport(this.security, metadataHandler);
     await support.addContextListener(channel, 'test.encrypted', (ctx: Context, meta?: ContextMetadata) => {
       console.log(`\n[Receiving App Backend] ✅ Decrypted context received (encryption done on backend):`);
       console.log(JSON.stringify(ctx, null, 2));
@@ -172,10 +173,10 @@ async function step5BroadcastingAppStartBroadcast(broadcastingApp: AppBackEnd): 
 /**
  * MAIN EXECUTION
  *
- * Demonstrates PrivateEncryptionSupport with FDC3Handlers – channel encryption entirely on the backend:
- * - Broadcasting app backend: receives channel via handleRemoteChannel, uses PrivateEncryptionSupport.broadcastWrapper
+ * Demonstrates EncryptedBroadcastSupport and PrivateEncryptedContextListenerSupport with FDC3Handlers:
+ * - Broadcasting app backend: receives channel via handleRemoteChannel, uses EncryptedBroadcastSupport
  *   to encrypt before broadcast; responds to key requests (BasicEncryptedBroadcaster does this)
- * - Receiving app backend: receives channel via handleRemoteChannel, uses PrivateEncryptionSupport.addContextListener
+ * - Receiving app backend: receives channel via handleRemoteChannel, uses PrivateEncryptedContextListenerSupport
  *   to decrypt incoming contexts
  * - Front-end: only transports channels via handleRemoteChannel; no encryption/decryption on front-end
  */
