@@ -1,7 +1,8 @@
 /**
  * Integration tests that run the sample scripts in-process by calling runExample() directly.
  */
-import { runExample as runEncryptedPrivateChannel } from '../samples/encrypted-private-channel-example';
+import { runExample as runBackendEncryptedChannel } from '../samples/backend-encrypted-channel-example';
+import { runExample as runFrontendEncryptedChannel } from '../samples/frontend-encrypted-channel-example';
 import { runExample as runGetUser } from '../samples/get-user-example';
 import { runExample as runSigningBroadcast } from '../samples/signing-broadcast-example';
 
@@ -9,9 +10,17 @@ const TIMEOUT_MS = 15000;
 
 describe('Samples integration', () => {
   it(
-    'encrypted-private-channel-example runs to completion',
+    'backend-encrypted-channel-example runs to completion',
     async () => {
-      await runEncryptedPrivateChannel();
+      await runBackendEncryptedChannel();
+    },
+    TIMEOUT_MS
+  );
+
+  it(
+    'frontend-encrypted-channel-example runs to completion',
+    async () => {
+      await runFrontendEncryptedChannel();
     },
     TIMEOUT_MS
   );
