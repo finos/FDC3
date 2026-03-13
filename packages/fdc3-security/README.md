@@ -20,13 +20,13 @@ The following recipes are demonstrated in the [samples](./samples) directory.
 
 ### 2. Encrypted Private Channel
 
-**Use case:** Communicate privately over a `PrivateChannel` so other apps and the desktop agent cannot read the messages.
+**Use case:** Communicate privately over a `Channel` so other apps and the desktop agent cannot read the messages.
 
-**Broadcaster (key creator):** Wrap the private channel with `EncryptingChannelDelegate`. Call `setChannelEncryption(type => …)` to specify which context types to encrypt. Add `createSymmetricKeyRequestContextListener` so you can respond to key requests—the listener validates the requestor and provides the symmetric key wrapped with their public key.
+**Broadcaster (key creator):** Use `EncryptedBroadcastSupport` to wrap your channel. Call `broadcastWrapper(channel)` to get an `EncryptedBroadcaster` that encrypts before broadcast and responds to key requests.
 
-**Listener (key requestor):** Wrap the private channel with `EncryptingChannelDelegate`. Add `createSymmetricKeyResponseContextListener` to request and receive the channel key. Add normal context listeners for the types you care about; encrypted messages are decrypted before your handler runs.
+**Listener (key requestor):** Use `EncryptedContextListenerSupport` to add decrypting listeners. `PrivateEncryptedContextListenerSupport` for backend decryption; `PublicEncryptedContextListenerSupport` for front-end decryption (requires backend for signing key requests and unwrapping key responses).
 
-**Sample:** [encrypted-private-channel-example.ts](./samples/encrypted-private-channel-example.ts)
+**Samples:** [backend-encrypted-channel-example.ts](./samples/backend-encrypted-channel-example.ts) (backend encryption), [frontend-encrypted-channel-example.ts](./samples/frontend-encrypted-channel-example.ts) (front-end encryption)
 
 ---
 
