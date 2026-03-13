@@ -18,12 +18,12 @@ export class MockChannel implements Channel {
     this.type = type;
   }
 
-  async broadcast(context: Context, meta: ContextMetadata): Promise<void> {
+  async broadcast(context: Context, metadata: ContextMetadata): Promise<void> {
     console.log(`[MockChannel ${this.id}] Broadcasting context:`, context.type);
     const toInvoke = this.listeners.filter(l => !l.type || l.type === context.type);
     for (const l of toInvoke) {
       try {
-        await Promise.resolve(l.handler(context, meta));
+        await Promise.resolve(l.handler(context, metadata));
       } catch (err) {
         console.error(`[MockChannel ${this.id}] Listener error:`, err);
       }

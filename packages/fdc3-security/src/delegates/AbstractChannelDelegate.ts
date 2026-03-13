@@ -36,7 +36,10 @@ export abstract class AbstractChannelDelegate implements PrivateChannel {
     return this.delegate.clearContext(contextType);
   }
 
-  abstract wrapContext(ctx: Context, meta?: ContextMetadata): Promise<{ ctx: Context; meta?: ContextMetadata }>;
+  abstract wrapContext(
+    context: Context,
+    metadata?: ContextMetadata
+  ): Promise<{ context: Context; metadata?: ContextMetadata }>;
 
   onAddContextListener(handler: (contextType?: string | undefined) => void): Listener {
     return this.delegate.onAddContextListener(handler);
@@ -64,11 +67,11 @@ export abstract class AbstractChannelDelegate implements PrivateChannel {
   async broadcast(context: Context, metadata?: ContextMetadata): Promise<void> {
     const wrapped = await this.wrapContext(context, metadata);
     if (this.metadataAvailable) {
-      return this.delegate.broadcast(wrapped.ctx, wrapped.meta);
+      return this.delegate.broadcast(wrapped.context, wrapped.metadata);
     } else {
       const contextWithMeta = {
         ...context,
-        __appMeta: wrapped.meta,
+        __appMeta: wrapped.metadata,
       };
       return this.delegate.broadcast(contextWithMeta);
     }
