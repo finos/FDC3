@@ -2,7 +2,6 @@ import { Context, EncryptedContextWrapper, SymmetricKeyRequest, SymmetricKeyResp
 import { Channel, ContextHandler, ContextMetadata, Listener } from '@finos/fdc3-standard';
 import { PrivateFDC3Security } from '../impl/PrivateFDC3Security';
 import { JSONWebEncryption, JsonWebKeyWithId, PublicFDC3Security } from '../impl/PublicFDC3Security';
-import { checkSignature } from '../signing/SigningSupport';
 import { MetadataHandler } from '../delegates/MetadataHandler';
 
 export type SigningFunction = (
@@ -34,7 +33,6 @@ export interface EncryptedContextListenerSupport {
  * then resolves the matching key request promise.
  */
 export function createSymmetricKeyResponseContextListener(
-  fdc3Security: PublicFDC3Security,
   metadataHandler: MetadataHandler,
   channel: Channel,
   keyRequestResolveFunctions: Map<string, (key: JsonWebKeyWithId) => void>,
@@ -89,7 +87,6 @@ export class PublicEncryptedContextListenerSupport implements EncryptedContextLi
       this.decryptingContextHandler(handler, contextType, channel)
     );
     const keyListener = createSymmetricKeyResponseContextListener(
-      this.security,
       this.metadataHandler,
       channel,
       this.keyRequestResolveFunctions,
