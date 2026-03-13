@@ -22,11 +22,14 @@ export class SigningChannelDelegate extends AbstractChannelDelegate {
     return typeof (this.fdc3Security as any).sign === 'function';
   }
 
-  async wrapContext(ctx: Context, meta?: ContextMetadata): Promise<{ ctx: Context; meta?: ContextMetadata }> {
+  async wrapContext(
+    context: Context,
+    metadata?: ContextMetadata
+  ): Promise<{ context: Context; metadata?: ContextMetadata }> {
     if (this.canSign()) {
-      return signContext(this.fdc3Security as PrivateFDC3Security, ctx, meta);
+      return signContext(this.fdc3Security as PrivateFDC3Security, context, metadata);
     }
-    return { ctx, meta };
+    return { context, metadata };
   }
 
   addContextListener(context: any, handler?: any): Promise<Listener> {

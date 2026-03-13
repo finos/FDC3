@@ -143,7 +143,7 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
     if (channel) {
       const cl = await channel.addContextListener(
         acl.payload.contextType,
-        async (ctx: Context, meta?: ContextMetadata) => {
+        async (context: Context, metadata?: ContextMetadata) => {
           const msg: BroadcastEvent = {
             type: 'broadcastEvent',
             meta: {
@@ -151,7 +151,7 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
               timestamp: new Date(),
               eventUuid: this.messaging.createUUID(),
             } as any,
-            payload: { context: ctx, channelId: channel.id, metadata: meta } as any,
+            payload: { context, channelId: channel.id, metadata } as any,
           };
           this.messaging.post(msg);
         }

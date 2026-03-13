@@ -8,6 +8,7 @@ import {
   SigningFunction,
   UnwrapFunction,
 } from './SymmetricKeyContextListener';
+import { MetadataHandler } from '../delegates/MetadataHandler';
 
 /**
  * Creates a wrapper around the broadcast function of a channel which will encrypt any context that is broadcast
@@ -47,30 +48,45 @@ export class BasicEncryptedBroadcaster implements EncryptedBroadcaster {
   private keyListener: Promise<Listener>;
   private isShutdown: boolean = false;
   private signingFunction: SigningFunction;
+  private metadataHandler: MetadataHandler;
 
-  constructor(security: PublicFDC3Security, channel: Channel, key: JsonWebKeyWithId, signingFunction: SigningFunction) {
+  constructor(
+    security: PublicFDC3Security,
+    metadataHandler: MetadataHandler,
+    channel: Channel,
+    key: JsonWebKeyWithId,
+    signingFunction: SigningFunction
+  ) {
     this.security = security;
+    this.metadataHandler = metadataHandler;
     this.channel = channel;
     this.key = key;
-    this.keyListener = createSymmetricKeyRequestContextListener(security, channel, key, signingFunction);
+    this.keyListener = createSymmetricKeyRequestContextListener(
+      security,
+      metadataHandler,
+      channel,
+      key,
+      signingFunction
+    );
     this.signingFunction = signingFunction;
   }
 
-  async broadcast(context: Context, metaIn?: ContextMetadata): Promise<void> {
+  async broadcast(contextIn: Context, metaIn?: ContextMetadata): Promise<void> {
     if (this.isShutdown) {
       throw new Error('Encryption support is shutdown');
     }
-    const encryptedContent = await this.security.encryptSymmetric(context, this.key);
+    const encryptedContent = await this.security.encryptSymmetric(contextIn, this.key);
     const encryptedContext: EncryptedContextWrapper = {
       type: 'fdc3.security.encryptedContext',
       id: {
         kid: this.key.kid,
       },
-      originalType: context.type,
+      originalType: contextIn.type,
       encryptedPayload: encryptedContent,
     };
-    const { ctx, meta } = await this.signingFunction(encryptedContext, metaIn || {});
-    return this.channel.broadcast(ctx, meta);
+    let { context, metadata } = await this.signingFunction(encryptedContext, metaIn || {});
+    ({ context, metadata } = this.metadataHandler.pack(context, metadata));
+    return this.channel.broadcast(context, metadata);
   }
 
   async shutdown(): Promise<void> {
@@ -114,9 +130,16 @@ export class PublicEncryptionSupport implements EncryptionSupport {
   private unwrapFunction: UnwrapFunction;
   private keyRequestPromises: Map<string, Promise<JsonWebKeyWithId>> = new Map();
   private keyRequestResolveFunctions: Map<string, (key: JsonWebKeyWithId) => void> = new Map();
+  private metadataHandler: MetadataHandler;
 
-  constructor(security: PublicFDC3Security, signingFunction: SigningFunction, unwrapFunction: UnwrapFunction) {
+  constructor(
+    security: PublicFDC3Security,
+    metadataHandler: MetadataHandler,
+    signingFunction: SigningFunction,
+    unwrapFunction: UnwrapFunction
+  ) {
     this.security = security;
+    this.metadataHandler = metadataHandler;
     this.signingFunction = signingFunction;
     this.unwrapFunction = unwrapFunction;
   }
@@ -143,15 +166,16 @@ export class PublicEncryptionSupport implements EncryptionSupport {
       },
       jku: jku,
     } as SymmetricKeyRequest;
-    const { ctx, meta } = await this.signingFunction(request, {});
-    await channel.broadcast(ctx, meta);
+    let { context, metadata } = await this.signingFunction(request, {});
+    ({ context, metadata } = this.metadataHandler.pack(context, metadata));
+    await channel.broadcast(context, metadata);
 
     return newKeyPromise;
   }
 
   async broadcastWrapper(channel: Channel): Promise<EncryptedBroadcaster> {
     const key = await this.security.createSymmetricKey();
-    return new BasicEncryptedBroadcaster(this.security, channel, key, this.signingFunction);
+    return new BasicEncryptedBroadcaster(this.security, this.metadataHandler, channel, key, this.signingFunction);
   }
 
   decryptingContextHandler(ch: ContextHandler, originalType: string | null, channel: Channel): ContextHandler {
@@ -192,6 +216,7 @@ export class PublicEncryptionSupport implements EncryptionSupport {
     );
     const keyListener = createSymmetricKeyResponseContextListener(
       this.security,
+      this.metadataHandler,
       channel,
       this.keyRequestResolveFunctions,
       this.unwrapFunction
@@ -212,13 +237,13 @@ export class PublicEncryptionSupport implements EncryptionSupport {
  * to be available to unwrap the symmetric key and sign requests for key.
  */
 export class PrivateEncryptionSupport extends PublicEncryptionSupport {
-  constructor(security: PrivateFDC3Security) {
-    const signingFunction: SigningFunction = async (context: Context, meta: ContextMetadata) => {
+  constructor(security: PrivateFDC3Security, metadataHandler: MetadataHandler) {
+    const signingFunction: SigningFunction = async (context: Context, metadata: ContextMetadata) => {
       const { signature: DetachedSignature, antiReplay: AntiReplayClaims } = await security.sign(context);
       return {
-        ctx: context,
-        meta: {
-          ...meta,
+        context,
+        metadata: {
+          ...metadata,
           signature: DetachedSignature,
           antiReplay: AntiReplayClaims,
         },
@@ -229,6 +254,6 @@ export class PrivateEncryptionSupport extends PublicEncryptionSupport {
       return security.unwrapSymmetricKey(ctx);
     };
 
-    super(security, signingFunction, unwrapFunction);
+    super(security, metadataHandler, signingFunction, unwrapFunction);
   }
 }
