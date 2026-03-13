@@ -10,15 +10,18 @@ import { AppBackEnd } from '../test/mocks/AppBackEnd';
 import { MockDesktopAgent } from '../test/mocks/MockDesktopAgent';
 import { fileURLToPath } from 'url';
 import { resolve } from 'path';
+import { MetadataHandlerImpl } from '../src/delegates/MetadataHandler';
 
 const INTENT_SHARE_ENCRYPTED_CHANNEL = 'ShareEncryptedChannel';
 
+const metadataHandler = new MetadataHandlerImpl(false);
+
 /**
- * App B backend handlers (broadcaster, key creator). Receives the channel via handleRemoteChannel,
+ * Broadcasting app backend handlers (broadcaster, key creator). Receives the channel via handleRemoteChannel,
  * uses PrivateEncryptionSupport so encryption is done entirely on the backend. The symmetric key
  * is created and held on the backend; key requests are responded to on the backend.
  */
-class AppBBackendHandlers extends DefaultFDC3Handlers {
+class BroadcastingAppBackendHandlers extends DefaultFDC3Handlers {
   private broadcaster: EncryptedBroadcaster | null = null;
 
   constructor(private security: JosePrivateFDC3Security) {
@@ -28,27 +31,28 @@ class AppBBackendHandlers extends DefaultFDC3Handlers {
   async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
     if (purpose !== INTENT_SHARE_ENCRYPTED_CHANNEL) return;
 
-    console.log('[App B Backend] Received channel via handleRemoteChannel, setting up PrivateEncryptionSupport');
-    const support = new PrivateEncryptionSupport(this.security);
+    console.log(
+      '[Broadcasting App Backend] Received channel via handleRemoteChannel, setting up PrivateEncryptionSupport'
+    );
+    const support = new PrivateEncryptionSupport(this.security, metadataHandler);
     this.broadcaster = await support.broadcastWrapper(channel);
   }
 
   async remoteIntentHandler(intent: string) {
     if (intent !== INTENT_SHARE_ENCRYPTED_CHANNEL) return super.remoteIntentHandler(intent);
     return async (_context: Context) => {
-      if (!this.broadcaster) throw new Error('Channel not yet set up by App B');
-      console.log('[App B Backend] Intent ShareEncryptedChannel: returning private channel to requester');
+      console.log('[Broadcasting App Backend] Intent ShareEncryptedChannel: signalling client to create channel');
       return { type: 'private' as const };
     };
   }
 
   runBroadcastLoop(): Promise<void> {
     return new Promise(resolve => {
-      console.log('[App B Backend] Starting broadcast loop...');
+      console.log('[Broadcasting App Backend] Starting broadcast loop...');
       let count = 0;
       const interval = setInterval(async () => {
         count++;
-        console.log(`\n[App B Backend] Broadcasting encrypted message ${count}...`);
+        console.log(`\n[Broadcasting App Backend] Broadcasting encrypted message ${count}...`);
         await this.broadcaster!.broadcast({ type: 'test.encrypted', id: { num: count } } as Context);
         if (count >= 3) {
           clearInterval(interval);
@@ -63,10 +67,10 @@ class AppBBackendHandlers extends DefaultFDC3Handlers {
 }
 
 /**
- * App A backend handlers – uses PrivateEncryptionSupport for decryption. The symmetric key
+ * Receiving app backend handlers – uses PrivateEncryptionSupport for decryption. The symmetric key
  * is requested and unwrapped entirely on the backend when encrypted contexts arrive.
  */
-class AppABackendHandlers extends DefaultFDC3Handlers {
+class ReceivingAppBackendHandlers extends DefaultFDC3Handlers {
   constructor(private security: JosePrivateFDC3Security) {
     super();
   }
@@ -74,52 +78,56 @@ class AppABackendHandlers extends DefaultFDC3Handlers {
   async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
     if (purpose !== 'listen') return;
 
-    console.log('[App A Backend] Received channel via handleRemoteChannel, setting up decryption listener');
-    const support = new PrivateEncryptionSupport(this.security);
+    console.log('[Receiving App Backend] Received channel via handleRemoteChannel, setting up decryption listener');
+    const support = new PrivateEncryptionSupport(this.security, metadataHandler);
     await support.addContextListener(channel, 'test.encrypted', (ctx: Context, meta?: ContextMetadata) => {
-      console.log(`\n[App A Backend] ✅ Decrypted context received (encryption done on backend):`);
+      console.log(`\n[Receiving App Backend] ✅ Decrypted context received (encryption done on backend):`);
       console.log(JSON.stringify(ctx, null, 2));
       if (meta?.encryption === 'decrypted') {
-        console.log('[App A Backend] Metadata indicates decryption performed on backend');
+        console.log('[Receiving App Backend] Metadata indicates decryption performed on backend');
       }
     });
   }
 }
 
 /**
- * STEP 1: Setup App A backend (listener)
+ * STEP 1: Setup receiving app backend (listener)
  */
-async function step1SetupAppA() {
-  console.log('1. Starting App A backend...');
-  const app = new AppBackEnd((_ws: WebSocket, security: JosePrivateFDC3Security) => new AppABackendHandlers(security));
+async function step1SetupReceivingApp() {
+  console.log('1. Starting receiving app backend...');
+  const app = new AppBackEnd(
+    (_ws: WebSocket, security: JosePrivateFDC3Security) => new ReceivingAppBackendHandlers(security)
+  );
   await app.start();
-  console.log(`[App A] Listening at ${app.baseUrl}`);
+  console.log(`[Receiving App] Listening at ${app.baseUrl}`);
   return app;
 }
 
 /**
- * STEP 2: Setup App B backend (broadcaster & key creator)
+ * STEP 2: Setup broadcasting app backend (broadcaster & key creator)
  */
-async function step2SetupAppB() {
-  console.log('2. Starting App B backend...');
-  const app = new AppBackEnd((_ws: WebSocket, security: JosePrivateFDC3Security) => new AppBBackendHandlers(security));
+async function step2SetupBroadcastingApp() {
+  console.log('2. Starting broadcasting app backend...');
+  const app = new AppBackEnd(
+    (_ws: WebSocket, security: JosePrivateFDC3Security) => new BroadcastingAppBackendHandlers(security)
+  );
   await app.start();
-  console.log(`[App B] Listening at ${app.baseUrl}`);
+  console.log(`[Broadcasting App] Listening at ${app.baseUrl}`);
   return app;
 }
 
 /**
- * STEP 3: App B "front-end" – connects to backend, registers intent handler.
+ * STEP 3: Broadcasting app "front-end" – connects to backend, registers intent handler.
  * The channel is created and exported when the intent is raised (in step 4).
  */
-async function step3AppBRegisterIntentListener(
-  appB: AppBackEnd,
+async function step3BroadcastingAppRegisterIntentListener(
+  broadcastingApp: AppBackEnd,
   mockDA: MockDesktopAgent
 ): Promise<Awaited<ReturnType<typeof connectRemoteHandlers>>> {
-  console.log('3. App B front-end: Connecting to backend, registering intent handler...');
+  console.log('3. Broadcasting app front-end: Connecting to backend, registering intent handler...');
 
   const handlers = await connectRemoteHandlers(
-    appB.baseUrl.replace('http', 'ws'),
+    broadcastingApp.baseUrl.replace('http', 'ws'),
     mockDA as unknown as DesktopAgent,
     async () => {}
   );
@@ -130,18 +138,18 @@ async function step3AppBRegisterIntentListener(
 }
 
 /**
- * STEP 4: App A "front-end" – raises intent to get the channel, sends channel to App A backend.
- * The intent handler (App B) creates the private channel and exports it to App B backend via
- * handleRemoteChannel. App A then sends the same channel to App A backend for decryption.
+ * STEP 4: Receiving app "front-end" – raises intent to get the channel, sends channel to receiving app backend.
+ * The intent handler (broadcasting app) creates the private channel and exports it to the broadcasting app backend via
+ * handleRemoteChannel. The receiving app then sends the same channel to its backend for decryption.
  */
-async function step4AppARaiseIntentAndSetupListener(
-  appA: AppBackEnd,
+async function step4ReceivingAppRaiseIntentAndSetupListener(
+  receivingApp: AppBackEnd,
   mockDA: MockDesktopAgent
 ): Promise<Awaited<ReturnType<typeof connectRemoteHandlers>>> {
-  console.log('4. App A front-end: Raising intent to App B, sending channel to App A backend...');
+  console.log('4. Receiving app front-end: Raising intent to broadcasting app, sending channel to backend...');
 
   const handlers = await connectRemoteHandlers(
-    appA.baseUrl.replace('http', 'ws'),
+    receivingApp.baseUrl.replace('http', 'ws'),
     mockDA as unknown as DesktopAgent,
     async () => {}
   );
@@ -154,40 +162,40 @@ async function step4AppARaiseIntentAndSetupListener(
 }
 
 /**
- * STEP 5: App B triggers backend to start broadcasting via exchangeData.
+ * STEP 5: Broadcasting app triggers backend to start broadcasting.
  */
-async function step5AppBStartBroadcast(appB: AppBackEnd): Promise<void> {
-  console.log('5. App B: Triggering backend to start encrypted broadcast...');
-  await (appB.handlers as AppBBackendHandlers | null)?.runBroadcastLoop();
+async function step5BroadcastingAppStartBroadcast(broadcastingApp: AppBackEnd): Promise<void> {
+  console.log('5. Broadcasting app: Triggering backend to start encrypted broadcast...');
+  await (broadcastingApp.handlers as BroadcastingAppBackendHandlers | null)?.runBroadcastLoop();
 }
 
 /**
  * MAIN EXECUTION
  *
  * Demonstrates PrivateEncryptionSupport with FDC3Handlers – channel encryption entirely on the backend:
- * - App B backend: receives channel via handleRemoteChannel, uses PrivateEncryptionSupport.broadcastWrapper
+ * - Broadcasting app backend: receives channel via handleRemoteChannel, uses PrivateEncryptionSupport.broadcastWrapper
  *   to encrypt before broadcast; responds to key requests (BasicEncryptedBroadcaster does this)
- * - App A backend: receives channel via handleRemoteChannel, uses PrivateEncryptionSupport.addContextListener
+ * - Receiving app backend: receives channel via handleRemoteChannel, uses PrivateEncryptionSupport.addContextListener
  *   to decrypt incoming contexts
  * - Front-end: only transports channels via handleRemoteChannel; no encryption/decryption on front-end
  */
 export async function runExample(): Promise<void> {
   console.log('--- FDC3 Encrypted Private Channel Example Start ---');
 
-  const appA = await step1SetupAppA();
-  const appB = await step2SetupAppB();
+  const receivingApp = await step1SetupReceivingApp();
+  const broadcastingApp = await step2SetupBroadcastingApp();
 
   const mockDA = new MockDesktopAgent();
 
-  const appBHandlers = await step3AppBRegisterIntentListener(appB, mockDA);
-  const appAHandlers = await step4AppARaiseIntentAndSetupListener(appA, mockDA);
+  const broadcastingAppHandlers = await step3BroadcastingAppRegisterIntentListener(broadcastingApp, mockDA);
+  const receivingAppHandlers = await step4ReceivingAppRaiseIntentAndSetupListener(receivingApp, mockDA);
 
-  await step5AppBStartBroadcast(appB);
+  await step5BroadcastingAppStartBroadcast(broadcastingApp);
 
-  await appBHandlers.disconnect();
-  await appAHandlers.disconnect();
-  await appA.shutdown();
-  await appB.shutdown();
+  await broadcastingAppHandlers.disconnect();
+  await receivingAppHandlers.disconnect();
+  await receivingApp.shutdown();
+  await broadcastingApp.shutdown();
 }
 
 /**
