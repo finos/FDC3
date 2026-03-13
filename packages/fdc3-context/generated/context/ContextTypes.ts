@@ -2047,49 +2047,25 @@ export interface SymmetricKeyResponseID {
  */
 
 /**
- * A user identity, extending contact with authentication metadata.
+ * A user identity, expressed as a wrapped JWT.  Receivers will need to unwrap the JWT using
+ * their own private key.
  */
 export interface User {
-  /**
-   * User identifiers that uniquely identify this user across different systems
-   */
-  id?: UserID;
-  /**
-   * A JSON Web Token (JWT) asserting user identity and permissions. The JWT contains a header
-   * with cryptographic information and a payload with user claims. Header fields include:
-   * 'alg' (signature algorithm, e.g., 'EdDSA'), 'jku' (JSON Web Key Set URL for key
-   * verification), and 'kid' (key identifier). Payload fields include: 'iss' (issuer - the
-   * application issuing the token), 'aud' (audience - the intended recipient application),
-   * 'sub' (subject - the user identifier), 'exp' (expiration time as Unix timestamp), 'iat'
-   * (issued at time as Unix timestamp), and 'jti' (JWT ID - unique token identifier).
-   */
-  jwt: string;
-  /**
-   * The human-readable name of the user
-   */
-  name?: string;
   type: 'fdc3.security.user';
-  [property: string]: any;
-}
-
-/**
- * User identifiers that uniquely identify this user across different systems
- */
-export interface UserID {
   /**
-   * The user's email address as a unique identifier. If provided, this email must match the
-   * 'sub' field in the JWT token.
+   * A JSON Web Token (JWT) asserting user identity and permissions, wrapped in the public key
+   * of the requester. The JWT contains a header with cryptographic information and a payload
+   * with user claims. Header fields include: 'alg' (signature algorithm, e.g., 'EdDSA'),
+   * 'jku' (JSON Web Key Set URL for key verification), and 'kid' (key identifier). Payload
+   * fields include: 'iss' (issuer - the application issuing the token), 'aud' (audience - the
+   * intended recipient application), 'sub' (subject - the user identifier), 'exp' (expiration
+   * time as Unix timestamp), 'iat' (issued at time as Unix timestamp), and 'jti' (JWT ID -
+   * unique token identifier).
    */
-  email?: string;
+  wrappedJwt?: string;
+  jwt: any;
   [property: string]: any;
 }
-
-/**
- * Free text to be used for a keyword search
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
 
 /**
  * A request for the current user's identity, typically raised via the CreateIdentityToken
@@ -3363,14 +3339,12 @@ const typeMap: any = {
   ),
   User: o(
     [
-      { json: 'id', js: 'id', typ: u(undefined, r('UserID')) },
-      { json: 'jwt', js: 'jwt', typ: '' },
-      { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('UserType') },
+      { json: 'type', js: 'type', typ: r('Type') },
+      { json: 'wrappedJwt', js: 'wrappedJwt', typ: u(undefined, '') },
+      { json: 'jwt', js: 'jwt', typ: 'any' },
     ],
     'any'
   ),
-  UserID: o([{ json: 'email', js: 'email', typ: u(undefined, '') }], 'any'),
   UserRequest: o(
     [
       { json: 'aud', js: 'aud', typ: '' },
@@ -3475,7 +3449,7 @@ const typeMap: any = {
   EncryptedContextWrapperType: ['fdc3.security.encryptedContext'],
   SymmetricKeyRequestType: ['fdc3.security.symmetricKeyRequest'],
   SymmetricKeyResponseType: ['fdc3.security.symmetricKeyResponse'],
-  UserType: ['fdc3.security.user'],
+  Type: ['fdc3.security.user'],
   UserRequestType: ['fdc3.security.userRequest'],
   TradeType: ['fdc3.trade'],
   TradeListType: ['fdc3.tradeList'],
