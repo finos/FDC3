@@ -1,22 +1,20 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
-import { EncryptingPrivateChannel } from './EncryptingPrivateChannel';
-import { ContextMetadata, Listener } from '@finos/fdc3-standard';
+import { Channel, ContextMetadata, Listener } from '@finos/fdc3-standard';
 import { checkSignature } from '../signing/SigningSupport';
-import { PublicFDC3Security } from '../impl/PublicFDC3Security';
+import { JsonWebKeyWithId, PublicFDC3Security } from '../impl/PublicFDC3Security';
+
+export type SigningFunction = (ctx: Context, meta: ContextMetadata) => Promise<{ ctx: Context; meta: ContextMetadata }>;
+export type UnwrapFunction = (ctx: SymmetricKeyResponse) => Promise<JsonWebKeyWithId>;
 
 /**
  * Used for agents that can send the symmetric key when asked for it.
  */
 export async function createSymmetricKeyRequestContextListener(
   fdc3Security: PublicFDC3Security,
-  channel: EncryptingPrivateChannel
+  channel: Channel,
+  symmetricKey: JsonWebKeyWithId,
+  signingFunction: SigningFunction
 ): Promise<Listener> {
-  // create the key if it doesn't exist
-  if ((await channel.getSymmetricKey()) == null) {
-    const key = await fdc3Security.createSymmetricKey();
-    await channel.setSymmetricKey(key);
-  }
-
   const listener = channel.addContextListener(
     'fdc3.security.symmetricKeyRequest',
     async (skr1: Context, skrMeta: ContextMetadata | undefined) => {
@@ -25,14 +23,11 @@ export async function createSymmetricKeyRequestContextListener(
       const ma = meta?.authenticity;
 
       if (ma?.signed && ma.trusted && ma.valid) {
-        const theKey = await channel.getSymmetricKey();
-        if (theKey) {
-          const wrappedKey = await fdc3Security.wrapSymmetricKey(theKey, ma.jku!);
-          const { ctx, meta } = await channel.signResponse(wrappedKey);
-          return channel.broadcast(ctx, meta);
-        } else {
-          throw new Error('Symmetric key not set');
-        }
+        const wrappedKey = await fdc3Security.wrapSymmetricKey(symmetricKey, ma.jku!);
+        const { ctx, meta } = await signingFunction(wrappedKey, {});
+        return channel.broadcast(ctx, meta);
+      } else {
+        throw new Error('Symmetric key not set');
       }
     }
   );
@@ -45,7 +40,9 @@ export async function createSymmetricKeyRequestContextListener(
  */
 export function createSymmetricKeyResponseContextListener(
   fdc3Security: PublicFDC3Security,
-  channel: EncryptingPrivateChannel
+  channel: Channel,
+  keyRequestResolveFunctions: Map<string, (key: JsonWebKeyWithId) => void>,
+  unwrapFunction: UnwrapFunction
 ): Promise<Listener> {
   const listener = channel.addContextListener(
     'fdc3.security.symmetricKeyResponse',
@@ -55,9 +52,13 @@ export function createSymmetricKeyResponseContextListener(
 
       if (ma?.signed && ma.trusted && ma.valid) {
         const skr = context as SymmetricKeyResponse;
-        const key = await channel.unwrapResponse(skr);
+        const key = await unwrapFunction(skr);
         if (key) {
-          channel.setSymmetricKey(key);
+          const resolveFunction = keyRequestResolveFunctions.get(key.kid);
+          if (resolveFunction) {
+            resolveFunction(key);
+            keyRequestResolveFunctions.delete(key.kid);
+          }
         }
       } else {
         throw new Error('Symmetric key response not signed and trusted');

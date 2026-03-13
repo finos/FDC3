@@ -7,7 +7,7 @@ import { DEFAULT_FDC3_ALGORITHMS, FDC3SecurityAlgorithms } from './FDC3SecurityA
 import { DEFAULT_FDC3_TIME_LIMITS, FDC3SecurityTimeLimits } from './FDC3SecurityTimeLimits';
 import { FDC3UserClaims } from './FDC3UserClaims';
 import { PrivateFDC3Security } from './PrivateFDC3Security';
-import { JSONWebEncryption } from './PublicFDC3Security';
+import { JSONWebEncryption, JsonWebKeyWithId } from './PublicFDC3Security';
 import { AllowListFunction, JosePublicFDC3Security, JWEProtectedHeader, JWKSResolver } from './JosePublicFDC3Security';
 import { AntiReplayChecker, DefaultAntiReplayChecker } from './AntiReplayChecker';
 
@@ -111,7 +111,7 @@ export class JosePrivateFDC3Security extends JosePublicFDC3Security implements P
     };
   }
 
-  async unwrapSymmetricKey(ctx: SymmetricKeyResponse): Promise<JsonWebKey> {
+  async unwrapSymmetricKey(ctx: SymmetricKeyResponse): Promise<JsonWebKeyWithId> {
     const key = await jose.importJWK(this.wrappingPrivateKey, this.algorithms.keyWrapping);
     const result = await jose.compactDecrypt(ctx.wrappedKey, key);
     const jsonString = new TextDecoder().decode(result.plaintext);

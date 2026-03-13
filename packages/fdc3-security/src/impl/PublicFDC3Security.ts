@@ -20,6 +20,16 @@ type DetachedSignature = BrowserTypes.DetachedSignature;
 export type JSONWebEncryption = string;
 
 /**
+ * JSON Web Key with Key ID and Algorithm.  These fields are ordinarily included with a JSON Web Key, but not
+ * required.  However, we require them here for Symmetric keys to enable fdc3.security.symmetricKeyRequest
+ * to ask for a key by its kid.
+ */
+export type JsonWebKeyWithId = JsonWebKey & {
+  kid: string; // Key ID
+  alg: string; // Algorithm used for the key
+};
+
+/**
  * Public interface for FDC3 Security verification operations.
  *
  * This interface provides client-side methods for verifying signatures,
@@ -90,7 +100,7 @@ export interface PublicFDC3Security {
    *
    * @returns A promise resolving to a new symmetric key in JWK format
    */
-  createSymmetricKey(): Promise<JsonWebKey>;
+  createSymmetricKey(): Promise<JsonWebKeyWithId>;
 
   /**
    * Encrypt a context using a symmetric key.
@@ -131,7 +141,7 @@ export interface PublicFDC3Security {
    *
    * @see `fdc3.security.symmetricKey.response` context type
    */
-  wrapSymmetricKey(symmetricKey: JsonWebKey, publicKeyUrl: string): Promise<SymmetricKeyResponse>;
+  wrapSymmetricKey(symmetricKey: JsonWebKeyWithId, publicKeyUrl: string): Promise<SymmetricKeyResponse>;
 
   /**
    * Encrypt a context using a recipient's public key (JWE).
