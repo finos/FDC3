@@ -2,7 +2,7 @@ import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
 import { BrowserTypes } from '@finos/fdc3-schema';
 
 type AntiReplay = BrowserTypes.AntiReplayClaims;
-import { JSONWebEncryption, PublicFDC3Security } from './PublicFDC3Security';
+import { JSONWebEncryption, JsonWebKeyWithId, PublicFDC3Security } from './PublicFDC3Security';
 
 type DetachedSignature = BrowserTypes.DetachedSignature;
 
@@ -31,8 +31,6 @@ export interface PrivateFDC3Security extends PublicFDC3Security {
    * avoid replay attacks.
    *
    * @param ctx - The context object to sign
-   * @param intent - The intent name if this context is being sent via an intent, or null
-   * @param channelId - The channel ID if this context is being broadcast on a channel, or null
    * @returns A promise resolving to a detached JWS signature
    *
    * @example
@@ -53,7 +51,7 @@ export interface PrivateFDC3Security extends PublicFDC3Security {
    * @returns A promise resolving to the unwrapped symmetric key in JWK format
    * @throws Error if unwrapping fails
    */
-  unwrapSymmetricKey(ctx: SymmetricKeyResponse): Promise<JsonWebKey>;
+  unwrapSymmetricKey(ctx: SymmetricKeyResponse): Promise<JsonWebKeyWithId>;
 
   /**
    * Create a signed JWT token for user identity.
@@ -85,13 +83,12 @@ export interface PrivateFDC3Security extends PublicFDC3Security {
    * read the JWT.
    *
    * @param encrypted - The compact JWE string containing the encrypted context
-   * @param publicKeyUrl - URL to the JWKS that holds the public key used for
-   *        encryption (typically this app's `/.well-known/jwks.json`)
    * @returns A promise resolving to the decrypted context object
    * @throws Error if decryption fails (wrong key, corrupted data, etc.)
    *
    * @see `encryptContextWithPublicKey` for the corresponding encryption operation
+   * @see `fdc3.security.encryptedContext` context type
    * @see `fdc3.security.user` context type
    */
-  decryptContextWithPrivateKey(encrypted: JSONWebEncryption, publicKeyUrl: string): Promise<Context>;
+  decryptContextWithPrivateKey(encrypted: JSONWebEncryption): Promise<Context>;
 }
