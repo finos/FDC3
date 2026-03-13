@@ -1,58 +1,44 @@
-import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
+import { Context } from '@finos/fdc3-context';
 import { WebSocket } from 'ws';
-import { Channel, ContextMetadata, DesktopAgent, PrivateChannel } from '@finos/fdc3-standard';
+import { Channel, ContextMetadata, DesktopAgent } from '@finos/fdc3-standard';
 
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
-import { createJosePublicFDC3SecurityFromUrl } from '../src/impl/JosePublicFDC3Security';
-import { EncryptingChannelDelegate } from '../src/encryption/EncryptingChannelDelegate';
-import {
-  createSymmetricKeyRequestContextListener,
-  createSymmetricKeyResponseContextListener,
-} from '../src/encryption/SymmetricKeyContextListener';
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
-import type { ExchangeDataMessage } from '../src/secure-boundary/MessageTypes';
+import { PrivateEncryptionSupport, EncryptedBroadcaster } from '../src/encryption/EncryptionSupport';
 import { AppBackEnd } from '../test/mocks/AppBackEnd';
 import { MockDesktopAgent } from '../test/mocks/MockDesktopAgent';
 import { fileURLToPath } from 'url';
 import { resolve } from 'path';
-import { checkSignature } from '../src/signing/SigningSupport';
-import { signContext } from '../src/signing/SigningSupport';
 
 const INTENT_SHARE_ENCRYPTED_CHANNEL = 'ShareEncryptedChannel';
 
 /**
- * App B backend handlers (broadcaster, key creator, and intent resolver).
- * Receives the channel via handleRemoteChannel, wraps with EncryptingChannelDelegate,
- * and sets up symmetric key request handling. Responds to exchangeData('start-broadcast')
- * to begin the broadcast loop.
+ * App B backend handlers (broadcaster, key creator). Receives the channel via handleRemoteChannel,
+ * uses PrivateEncryptionSupport so encryption is done entirely on the backend. The symmetric key
+ * is created and held on the backend; key requests are responded to on the backend.
  */
 class AppBBackendHandlers extends DefaultFDC3Handlers {
-  private broadcastDelegate: EncryptingChannelDelegate | null = null;
-  private channel: PrivateChannel | null = null;
+  private broadcaster: EncryptedBroadcaster | null = null;
 
   constructor(private security: JosePrivateFDC3Security) {
     super();
   }
 
   async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
-    if (purpose !== 'broadcast') return;
+    if (purpose !== INTENT_SHARE_ENCRYPTED_CHANNEL) return;
 
-    console.log('[App B Backend] Received channel via handleRemoteChannel, wrapping with EncryptingChannelDelegate');
-    const delegate = new EncryptingChannelDelegate(channel as PrivateChannel, true, this.security);
-    await delegate.setChannelEncryption(type => type === 'test.encrypted');
-    await delegate.createSymmetricKey();
-    await createSymmetricKeyRequestContextListener(this.security, delegate);
-    this.broadcastDelegate = delegate;
-    this.channel = channel as PrivateChannel;
+    console.log('[App B Backend] Received channel via handleRemoteChannel, setting up PrivateEncryptionSupport');
+    const support = new PrivateEncryptionSupport(this.security);
+    this.broadcaster = await support.broadcastWrapper(channel);
   }
 
   async remoteIntentHandler(intent: string) {
     if (intent !== INTENT_SHARE_ENCRYPTED_CHANNEL) return super.remoteIntentHandler(intent);
     return async (_context: Context) => {
-      if (!this.channel) throw new Error('Channel not yet created by App B');
+      if (!this.broadcaster) throw new Error('Channel not yet set up by App B');
       console.log('[App B Backend] Intent ShareEncryptedChannel: returning private channel to requester');
-      return this.channel;
+      return { type: 'private' as const };
     };
   }
 
@@ -63,10 +49,11 @@ class AppBBackendHandlers extends DefaultFDC3Handlers {
       const interval = setInterval(async () => {
         count++;
         console.log(`\n[App B Backend] Broadcasting encrypted message ${count}...`);
-        await this.broadcastDelegate!.broadcast({ type: 'test.encrypted', id: { num: count } });
+        await this.broadcaster!.broadcast({ type: 'test.encrypted', id: { num: count } } as Context);
         if (count >= 3) {
           clearInterval(interval);
           interval.unref();
+          await this.broadcaster!.shutdown();
           console.log('\n--- FDC3 Encrypted Private Channel Example Complete ---');
           resolve();
         }
@@ -76,33 +63,26 @@ class AppBBackendHandlers extends DefaultFDC3Handlers {
 }
 
 /**
- * App A backend handlers – supports exchangeData for symmetric key unwrapping and signing.
- *
- * The symmetric key lives on the front-end. The backend only unwraps the encrypted key
- * when the front-end asks (via exchangeData('unwrap-symmetric-key')), using its private key.
+ * App A backend handlers – uses PrivateEncryptionSupport for decryption. The symmetric key
+ * is requested and unwrapped entirely on the backend when encrypted contexts arrive.
  */
 class AppABackendHandlers extends DefaultFDC3Handlers {
   constructor(private security: JosePrivateFDC3Security) {
     super();
   }
 
-  async exchangeData(purpose: string, o: object): Promise<object | void> {
-    if (purpose === 'unwrap-symmetric-key') {
-      const { c, m } = o as { c: SymmetricKeyResponse; m: ContextMetadata };
-      const { context, meta } = await checkSignature(this.security, m, c);
-      const ma = meta?.authenticity;
-      if (!ma?.signed || !ma.trusted || !ma.valid) {
-        throw new Error('Symmetric key response not signed and trusted');
-      }
-      const key = await this.security.unwrapSymmetricKey(context as import('@finos/fdc3-context').SymmetricKeyResponse);
-      console.log('[App A Backend] Unwrapped symmetric key (returning to front-end)');
-      return key;
-    }
+  async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
+    if (purpose !== 'listen') return;
 
-    if (purpose === 'sign-context') {
-      const result = await signContext(this.security, o as Context);
-      return { ctx: result.ctx, meta: result.meta };
-    }
+    console.log('[App A Backend] Received channel via handleRemoteChannel, setting up decryption listener');
+    const support = new PrivateEncryptionSupport(this.security);
+    await support.addContextListener(channel, 'test.encrypted', (ctx: Context, meta?: ContextMetadata) => {
+      console.log(`\n[App A Backend] ✅ Decrypted context received (encryption done on backend):`);
+      console.log(JSON.stringify(ctx, null, 2));
+      if (meta?.encryption === 'decrypted') {
+        console.log('[App A Backend] Metadata indicates decryption performed on backend');
+      }
+    });
   }
 }
 
@@ -129,14 +109,14 @@ async function step2SetupAppB() {
 }
 
 /**
- * STEP 3: App B "front-end" – connects to backend, creates private channel, exports via handleRemoteChannel.
- * Registers intent handler with mock DA so App A can raise intent to get the channel.
+ * STEP 3: App B "front-end" – connects to backend, registers intent handler.
+ * The channel is created and exported when the intent is raised (in step 4).
  */
-async function step3AppBCreateChannelAndRegisterIntentListener(
+async function step3AppBRegisterIntentListener(
   appB: AppBackEnd,
   mockDA: MockDesktopAgent
 ): Promise<Awaited<ReturnType<typeof connectRemoteHandlers>>> {
-  console.log('3. App B front-end: Connecting to backend, creating private channel, registering intent handler...');
+  console.log('3. App B front-end: Connecting to backend, registering intent handler...');
 
   const handlers = await connectRemoteHandlers(
     appB.baseUrl.replace('http', 'ws'),
@@ -144,23 +124,21 @@ async function step3AppBCreateChannelAndRegisterIntentListener(
     async () => {}
   );
 
-  const channel = await mockDA.createPrivateChannel();
-  await handlers.handleRemoteChannel('broadcast', channel);
   const intentHandler = await handlers.remoteIntentHandler(INTENT_SHARE_ENCRYPTED_CHANNEL);
   await mockDA.addIntentListener(INTENT_SHARE_ENCRYPTED_CHANNEL, intentHandler);
   return handlers;
 }
 
 /**
- * STEP 4: App A "front-end" – raises intent to get the channel, wraps with EncryptingChannelDelegate,
- * and uses exchangeData to get the backend to unwrap the symmetric key. The symmetric key lives
- * on the front-end in the delegate.
+ * STEP 4: App A "front-end" – raises intent to get the channel, sends channel to App A backend.
+ * The intent handler (App B) creates the private channel and exports it to App B backend via
+ * handleRemoteChannel. App A then sends the same channel to App A backend for decryption.
  */
-async function step4AppARaiseIntentAndSetupDelegate(
+async function step4AppARaiseIntentAndSetupListener(
   appA: AppBackEnd,
   mockDA: MockDesktopAgent
 ): Promise<Awaited<ReturnType<typeof connectRemoteHandlers>>> {
-  console.log('4. App A front-end: Raising intent to App B, setting up EncryptingChannelDelegate...');
+  console.log('4. App A front-end: Raising intent to App B, sending channel to App A backend...');
 
   const handlers = await connectRemoteHandlers(
     appA.baseUrl.replace('http', 'ws'),
@@ -168,43 +146,10 @@ async function step4AppARaiseIntentAndSetupDelegate(
     async () => {}
   );
 
-  // get the private channel by raising an intent
-  const resolution = await mockDA.raiseIntent(INTENT_SHARE_ENCRYPTED_CHANNEL, { type: 'fdc3.nothing' });
-
+  const resolution = await mockDA.raiseIntent(INTENT_SHARE_ENCRYPTED_CHANNEL, { type: 'fdc3.nothing' } as Context);
   const channel = await resolution.getResult();
 
-  const jwksUrl = `${appA.baseUrl}/.well-known/jwks.json`;
-  const appAPublicSecurity = await createJosePublicFDC3SecurityFromUrl(jwksUrl, () => true);
-
-  const keyUnwrapFunction = async (skr: SymmetricKeyResponse) => {
-    const result = await handlers.exchangeData('unwrap-symmetric-key', skr);
-    return result as JsonWebKey;
-  };
-
-  const signRequestFunction = async (ctx: Context) => {
-    const result = await handlers.exchangeData('sign-context', ctx);
-    return result as { ctx: Context; meta: ContextMetadata };
-  };
-
-  const delegate = new EncryptingChannelDelegate(
-    channel as PrivateChannel,
-    true,
-    appAPublicSecurity,
-    keyUnwrapFunction,
-    signRequestFunction
-  );
-
-  await delegate.setChannelEncryption(type => type === 'test.encrypted');
-  await createSymmetricKeyResponseContextListener(appAPublicSecurity, delegate);
-  await delegate.addContextListener('test.encrypted', (ctx: Context) => {
-    console.log(`\n[App A Front-end] ✅ Decrypted context received (symmetric key lived on front-end):`);
-    console.log(JSON.stringify(ctx, null, 2));
-  });
-  await (channel as Channel).addContextListener(null, (ctx: Context) => {
-    console.log(`\n[App A Front-end] ✅ Raw context received:`);
-    console.log(JSON.stringify(ctx, null, 2));
-  });
-
+  await handlers.handleRemoteChannel('listen', channel as Channel);
   return handlers;
 }
 
@@ -219,13 +164,12 @@ async function step5AppBStartBroadcast(appB: AppBackEnd): Promise<void> {
 /**
  * MAIN EXECUTION
  *
- * Demonstrates the FDC3Handlers pattern with intent-based channel sharing:
- * - App B creates the private channel and registers an intent handler (ShareEncryptedChannel)
- * - App A raises the intent to App B to obtain the channel (standard FDC3 pattern)
- * - Front-end: holds channels, raises intents; Back-end: encrypts/decrypts, responds to intents
- * - App B back-end: creates symmetric key, responds to key requests, returns channel via intent
- * - App A front-end: holds EncryptingChannelDelegate and symmetric key; uses exchangeData to ask backend to unwrap key
- * - App A back-end: exchangeData('unwrap-symmetric-key') unwraps using private key, returns key to front-end
+ * Demonstrates PrivateEncryptionSupport with FDC3Handlers – channel encryption entirely on the backend:
+ * - App B backend: receives channel via handleRemoteChannel, uses PrivateEncryptionSupport.broadcastWrapper
+ *   to encrypt before broadcast; responds to key requests (BasicEncryptedBroadcaster does this)
+ * - App A backend: receives channel via handleRemoteChannel, uses PrivateEncryptionSupport.addContextListener
+ *   to decrypt incoming contexts
+ * - Front-end: only transports channels via handleRemoteChannel; no encryption/decryption on front-end
  */
 export async function runExample(): Promise<void> {
   console.log('--- FDC3 Encrypted Private Channel Example Start ---');
@@ -235,8 +179,8 @@ export async function runExample(): Promise<void> {
 
   const mockDA = new MockDesktopAgent();
 
-  const appBHandlers = await step3AppBCreateChannelAndRegisterIntentListener(appB, mockDA);
-  const appAHandlers = await step4AppARaiseIntentAndSetupDelegate(appA, mockDA);
+  const appBHandlers = await step3AppBRegisterIntentListener(appB, mockDA);
+  const appAHandlers = await step4AppARaiseIntentAndSetupListener(appA, mockDA);
 
   await step5AppBStartBroadcast(appB);
 
