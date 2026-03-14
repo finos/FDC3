@@ -21,7 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-* Converted the standalone app-directory specification test from "src/app-directory/specification/test/" into a proper Jest test that runs as part of CI. ([#1720](https://github.com/finos/FDC3/pull/1720))
+* Converted the standalone app-directory specification test from `src/app-directory/specification/test/` into a test that runs as part of CI. ([#1720](https://github.com/finos/FDC3/pull/1720))
 * Fix for channel change listeners not sending addEventListenerRequests ([#1606](https://github.com/finos/FDC3/pull/1606))
 * When adding a listener on the current channel, the payload.channelId should be null ([#1611](https://github.com/finos/FDC3/pull/1611))
 * Increased FDC3 Conformance Test WindowCloseWaitTime to 2000 (from 1000). ([#1586](https://github.com/finos/FDC3/issues/1586))
