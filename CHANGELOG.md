@@ -21,6 +21,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+* Converted the standalone app-directory specification test from `src/app-directory/specification/test/` into a test that runs as part of CI. ([#1720](https://github.com/finos/FDC3/pull/1720))
 * Fix for channel change listeners not sending addEventListenerRequests ([#1606](https://github.com/finos/FDC3/pull/1606))
 * When adding a listener on the current channel, the payload.channelId should be null ([#1611](https://github.com/finos/FDC3/pull/1611))
 * Increased FDC3 Conformance Test WindowCloseWaitTime to 2000 (from 1000). ([#1586](https://github.com/finos/FDC3/issues/1586))
@@ -73,18 +74,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added .NET docs for Events to API reference. ([#1441](https://github.com/finos/FDC3/pull/1441))
 * Setup package publishing for mono-repo packages. ([#1520](https://github.com/finos/FDC3/pull/1520))
 * Implementation PR for FDC3 for the Web ([#896](https://github.com/finos/FDC3/pull/896))
-  - resolves ([#1209](https://github.com/finos/FDC3/issues/1209))
-  - resolves ([#1297](https://github.com/finos/FDC3/issues/1297)) 
-  - resolves ([#1429](https://github.com/finos/FDC3/issues/1429)) 
-  - resolves ([#1430](https://github.com/finos/FDC3/issues/1430))
-  - resolves ([#1431](https://github.com/finos/FDC3/issues/1431))
-  - resolves ([#1432](https://github.com/finos/FDC3/issues/1432)) 
-  - resolves ([#1433](https://github.com/finos/FDC3/issues/1433))
-  - resolves ([#1468](https://github.com/finos/FDC3/issues/1468))
-  - resolves ([#810](https://github.com/finos/FDC3/issues/810))
-  - resolves ([#832](https://github.com/finos/FDC3/issues/832))
-  - resolves ([#1487](https://github.com/finos/FDC3/issues/1487))
-  - resolves ([#1488](https://github.com/finos/FDC3/issues/1488))
+  * resolves ([#1209](https://github.com/finos/FDC3/issues/1209))
+  * resolves ([#1297](https://github.com/finos/FDC3/issues/1297))
+  * resolves ([#1429](https://github.com/finos/FDC3/issues/1429))
+  * resolves ([#1430](https://github.com/finos/FDC3/issues/1430))
+  * resolves ([#1431](https://github.com/finos/FDC3/issues/1431))
+  * resolves ([#1432](https://github.com/finos/FDC3/issues/1432))
+  * resolves ([#1433](https://github.com/finos/FDC3/issues/1433))
+  * resolves ([#1468](https://github.com/finos/FDC3/issues/1468))
+  * resolves ([#810](https://github.com/finos/FDC3/issues/810))
+  * resolves ([#832](https://github.com/finos/FDC3/issues/832))
+  * resolves ([#1487](https://github.com/finos/FDC3/issues/1487))
+  * resolves ([#1488](https://github.com/finos/FDC3/issues/1488))
 * Adjusted reference Desktop Agent implementation for FDC3 for Web to open a new app instance when raiseIntent is called with an appId but no instanceId ([#1556](https://github.com/finos/FDC3/pull/1556))
 
 ### Changed
@@ -111,7 +112,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Removed the `version` field from `IntentResolution` as there are no version fields for intents in the FDC3 API definitions and hence the field has no purpose. ([#1170](https://github.com/finos/FDC3/pull/1170))
 * Fixed error in the Client-side example from `PrivateChannel` and `addIntentListener` by correcting `id.symbol` to `id.ticker` to align with the `fdc3.instrument` context. ([#1314](https://github.com/finos/FDC3/pull/1314))
 * Added missing `resultType` argument to `findIntent` agent request in the Bridging Schema. ([#1154](https://github.com/finos/FDC3/pull/1154))
-* Added missing `resultType` argument to `findIntentByContext` agent request in the Bridging Schema. ([#1212](https://github.com/finos/FDC3/pull/1212)) 
+* Added missing `resultType` argument to `findIntentByContext` agent request in the Bridging Schema. ([#1212](https://github.com/finos/FDC3/pull/1212))
 * Added missing id and name fields from the context base schema to respective context schemas (`Contact`, `ContactList`, `Country`, `InstrumentList`, `OrderList`, `Organization`, `Portfolio`, `Position`, `TradeList`). ([#1360](https://github.com/finos/FDC3/pull/1360))
 * Revised FDC3 charter to include well-known language from the FDC3 introduction, better describe FDC3's scope, focus on financial applications, update application types, etc. ([#1079](https://github.com/finos/FDC3/pull/1079))
 * Ensured that `PrivateChannelEvent` extends `ApiEvent` in both sourcecode and documentation. ([#1474](https://github.com/finos/FDC3/pull/1474))
@@ -133,7 +134,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 * Added `CreateInteraction` intent. To be used when a user wants to record an interaction into a system.  New context `Interaction` also introduced. An interaction might be a call, IM, email, a meeting (physical or virtual) or the preparation of some specialist data. ([#747](https://github.com/finos/FDC3/pull/747))
-* Added `TransactionResult` context. A context type representing the result of a transaction initiated via FDC3. Its purpose is to provide a status and message (where needed) for the transaction and MAY wrap a returned context object. ([#761] (https://github.com/finos/FDC3/pull/761))
+* Added `TransactionResult` context. A context type representing the result of a transaction initiated via FDC3. Its purpose is to provide a status and message (where needed) for the transaction and MAY wrap a returned context object. ([#761](https://github.com/finos/FDC3/pull/761))
 * Added a `MalformedContext` error to the `OpenError`, `ChannelError` and `ResolveError` enumerations, to be used when `broadcast`, `open`, `findIntents`, `raiseIntents`, and other related functions are passed an invalid context Object. ([#972](https://github.com/finos/FDC3/pull/972))
 * Added error examples to the /v2 App Directory API routes ([#973](https://github.com/finos/FDC3/pull/973))
 * Added a `SendChatMessage` intent to be used when a user wants to send a message to an existing chat room. ([#794](https://github.com/finos/FDC3/pull/794))
