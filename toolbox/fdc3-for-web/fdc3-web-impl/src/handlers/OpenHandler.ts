@@ -278,7 +278,7 @@ export class OpenHandler implements MessageHandler {
       fdc3Version: sc.fdc3Version(),
       optionalFeatures: {
         DesktopAgentBridging: false,
-        OriginatingAppMetadata: true,
+        OriginatingAppMetadata: false,
         UserChannelMembershipAPIs: true,
       },
       appMetadata: appMetadata,
