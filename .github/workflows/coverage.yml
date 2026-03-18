@@ -46,7 +46,9 @@ jobs:
     - name: Create test summary
       uses: test-summary/action@dist
       with:
-        paths: "**/test-results.xml"
+        paths: |
+          packages/*/test-results.xml
+          toolbox/**/test-results.xml
         show: "fail, skip"
         output: test-summary.md
       if: always()
