@@ -1,52 +1,62 @@
 # FDC3 Security
 
-FDC3 Security enables **signed context**, **encrypted private channels**, and **user identity** across FDC3 applications. This package provides recipes for these capabilities.
+FDC3 Security provides standardized mechanisms for **signed context**, **encrypted private channels**, and **verified user identity** across FDC3-enabled applications. 
 
-## Recipes
+This package implements the FDC3 Security specification, focusing on the separation of concerns between a low-trust frontend (e.g., a browser) and a high-trust backend where cryptographic keys are managed.
 
-The following recipes are demonstrated in the [samples](./samples) directory.
+## Package Structure
 
-### 1. Signed Broadcast
+The library is organized into specialized modules to handle different aspects of the FDC3 security ecosystem:
 
-**Use case:** Broadcast context so receivers can verify who sent it and that it wasn't tampered with.
+### `src/encryption`
+Classes and utilities for end-to-end encryption over FDC3 channels.
+- `EncryptedBroadcastSupport`: Wrappers for broadcasting encrypted context.
+- `EncryptedContextListenerSupport`: Utilities for listening to and decrypting incoming encrypted context.
 
-**Sender:** Wrap your channel with `SigningChannelDelegate` and a private security instance. Call `broadcast(context)`—signing happens automatically. Private keys stay in a trusted backend; the front-end connects via a secure bridge (e.g. remote handlers over WebSocket).
+### `src/signing`
+Supports the signing and verification of FDC3 messages (Broadcasts and Intents).
+- `SignedBroadcastSupport`: Tools for signing outgoing broadcasts.
+- `SignatureCheckingHandlerSupport`: Wrappers for context and intent handlers that automatically verify incoming signatures.
+- `SignedIntentResultSupport`: Support for signing the results returned from FDC3 intents.
 
-**Receiver:** Wrap your channel with `SigningChannelDelegate` and a public security instance. Add listeners through the delegate. Your handler receives `(context, metadata)` with `metadata.authenticity` populated (`signed`, `valid`, `trusted`, `jku`).
+### `src/delegates`
+High-level abstractions for wrapping standard FDC3 objects.
+- `MetadataHandler`: Manages the packing and unpacking of security metadata (signatures, anti-replay claims) into standard FDC3 contexts.
 
-**Sample:** [signing-broadcast-example.ts](./samples/signing-broadcast-example.ts)
+### `src/impl`
+The core cryptographic implementations.
+- `JosePrivateFDC3Security`: Implementation of private security operations (signing, decryption) using JSON Web Encryption (JWE) and JSON Web Signatures (JWS).
+- `JosePublicFDC3Security`: Implementation of public security operations (verification, encryption) using the `jose` library.
 
----
-
-### 2. Encrypted Private Channel
-
-**Use case:** Communicate privately over a `Channel` so other apps and the desktop agent cannot read the messages.
-
-**Broadcaster (key creator):** Use `EncryptedBroadcastSupport` to wrap your channel. Call `broadcastWrapper(channel)` to get an `EncryptedBroadcaster` that encrypts before broadcast and responds to key requests.
-
-**Listener (key requestor):** Use `EncryptedContextListenerSupport` to add decrypting listeners. `PrivateEncryptedContextListenerSupport` for backend decryption; `PublicEncryptedContextListenerSupport` for front-end decryption (requires backend for signing key requests and unwrapping key responses).
-
-**Samples:** [backend-encrypted-channel-example.ts](./samples/backend-encrypted-channel-example.ts) (backend encryption), [frontend-encrypted-channel-example.ts](./samples/frontend-encrypted-channel-example.ts) (front-end encryption)
-
----
-
-### 3. User Identity from an Identity Provider
-
-**Use case:** Request verified user identity from an Identity Provider (IDP) and verify the returned JWT.
-
-**IDP:** Handle `fdc3.security.userRequest` context (with `aud`). Create a signed JWT for the authenticated user and return an `fdc3.user` context containing the JWT. Private keys stay in the IDP backend.
-
-**Requesting app:** Send a `fdc3.security.userRequest` with your app URL as `aud`. Receive the `fdc3.user` context and verify the JWT using the IDP's public key to obtain claims (`sub`, `iss`, etc.).
-
-**Sample:** [get-user-example.ts](./samples/get-user-example.ts)
+### `src/secure-boundary`
+Provides a secure bridge (typically over WebSockets) to allow a frontend application to delegate sensitive cryptographic operations to a trusted backend process without exposing private keys.
 
 ---
 
-## Installation
+## Getting Started
+
+To explore the capabilities of the library and see these components in action, please refer to the comprehensive set of examples in the `samples` directory.
+
+### [Samples and Detailed Walkthroughs](./samples/README.md)
+The samples directory contains a dedicated README with sequence diagrams illustrating how the different components interact across the secure boundary.
+
+- **Signed Broadcasts**: Authenticate the sender of a context.
+- **Encrypted Channels**: Protect message privacy from third parties and the Desktop Agent.
+- **Mutual Intent Authentication**: Verify both the raiser and the responder of an FDC3 intent.
+- **User Identity**: Securely request and verify identity JWTs from an IDP.
+
+---
+
+## Installation and Development
 
 ```bash
+# Install dependencies
 npm install
+
+# Build the project
 npm run build
+
+# Run unit and integration tests
 npm run test
 ```
 
