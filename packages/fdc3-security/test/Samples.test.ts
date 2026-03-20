@@ -5,8 +5,7 @@ import { runExample as runBackendEncryptedChannel } from '../samples/backend-enc
 import { runExample as runFrontendEncryptedChannel } from '../samples/frontend-encrypted-channel-example';
 import { runExample as runGetUser } from '../samples/get-user-example';
 import { runExample as runSigningBroadcast } from '../samples/signing-broadcast-example';
-import { runExample as runSignatureCheckingIntentHandler } from '../samples/signature-checking-intent-handler';
-import { runExample as runSigningIntentResult } from '../samples/signing-intent-result-example';
+import { runExample as runSigningIntent } from '../samples/signing-intent-example';
 
 const TIMEOUT_MS = 25000;
 
@@ -44,17 +43,9 @@ describe('Samples integration', () => {
   );
 
   it(
-    'signature-checking-intent-handler runs to completion',
+    'signing-intent-example runs to completion',
     async () => {
-      await runSignatureCheckingIntentHandler();
-    },
-    TIMEOUT_MS
-  );
-
-  it(
-    'signing-intent-result-example runs to completion',
-    async () => {
-      await runSigningIntentResult();
+      await runSigningIntent();
     },
     TIMEOUT_MS
   );
