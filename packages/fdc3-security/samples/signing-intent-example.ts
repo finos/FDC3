@@ -13,13 +13,15 @@ import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
 import { MetadataHandlerImpl } from '../src/delegates/MetadataHandler';
 
-const INTENT_SEND_DATA = 'SendData';
+const INTENT_DATA_TRANSFER = 'DataTransfer';
 const metadataHandler = new MetadataHandlerImpl(false);
 
 /**
- * Handler App backend handlers.
- * Handles the SendData intent: receives a signed context, verifies it using
- * the SignatureCheckingHandlerSupport wrap, and returns a signed response.
+ * Handler App Backend Handlers.
+ * Implements a mutually authenticated intent handler:
+ * 1. Verifies the incoming signed intent request.
+ * 2. Processes the request only if authenticated.
+ * 3. Signs the response context before returning it.
  */
 class HandlerAppBackendHandlers extends DefaultFDC3Handlers {
   constructor(private security: JosePrivateFDC3Security) {
@@ -27,11 +29,11 @@ class HandlerAppBackendHandlers extends DefaultFDC3Handlers {
   }
 
   async remoteIntentHandler(intent: string) {
-    if (intent !== INTENT_SEND_DATA) {
+    if (intent !== INTENT_DATA_TRANSFER) {
       return super.remoteIntentHandler(intent);
     }
 
-    // This is the core logic handler that only cares about verified contexts
+    // Core logic handler - executes only after signature verification
     const coreHandler = async (context: Context, metadata?: ContextMetadata) => {
       console.log(`[Handler App Backend] Intent ${intent}: received context type ${context.type}`);
 
@@ -44,7 +46,7 @@ class HandlerAppBackendHandlers extends DefaultFDC3Handlers {
           id: { status: 'success', timestamp: new Date().toISOString() },
         } as Context;
 
-        // Use SignedIntentResultSupport to sign the response
+        // Sign the intent result (response)
         const signer = new PrivateSignedIntentResultSupport(this.security, metadataHandler);
         return await signer.signIntentResult(response);
       } else {
@@ -56,15 +58,16 @@ class HandlerAppBackendHandlers extends DefaultFDC3Handlers {
       }
     };
 
-    // Use SignatureCheckingHandlerSupport to wrap the intent handler
+    // Wrap the core handler with SignatureCheckingHandlerSupport for automatic verification
     const verifier = new PublicSignatureCheckingHandlerSupport(metadataHandler, this.security);
     return (await verifier.wrapContextHandler(coreHandler as any)) as IntentHandler;
   }
 }
 
 /**
- * Raiser App backend handlers.
- * Provides a 'sign-context' purpose for its frontend to sign requests.
+ * Raiser App Backend Handlers.
+ * Provides a 'sign-context' service for the frontend to sign intent requests
+ * without possessing the private key.
  */
 class RaiserAppBackendHandlers extends DefaultFDC3Handlers {
   constructor(private security: JosePrivateFDC3Security) {
@@ -74,7 +77,8 @@ class RaiserAppBackendHandlers extends DefaultFDC3Handlers {
   async exchangeData(purpose: string, o: object): Promise<object | void> {
     if (purpose === 'sign-context') {
       const { context } = o as { context: Context };
-      console.log(`[Raiser App Backend] Request for context signature...`);
+      console.log(`[Raiser App Backend] Signing intent request context...`);
+      // Return raw signature metadata
       return await this.security.sign(context);
     }
     return super.exchangeData(purpose, o);
@@ -96,8 +100,8 @@ async function step1SetupHandlerApp(mockDA: MockDesktopAgent) {
     async () => {}
   );
 
-  const intentHandler = await handlers.remoteIntentHandler(INTENT_SEND_DATA);
-  await mockDA.addIntentListener(INTENT_SEND_DATA, intentHandler);
+  const intentHandler = await handlers.remoteIntentHandler(INTENT_DATA_TRANSFER);
+  await mockDA.addIntentListener(INTENT_DATA_TRANSFER, intentHandler);
 
   return { backend, handlers };
 }
@@ -121,22 +125,26 @@ async function step2SetupRaiserApp(mockDA: MockDesktopAgent) {
 }
 
 /**
- * STEP 3: Raiser App signs request, raises intent, and verifies response
+ * STEP 3: Mutually Authenticated Intent Exchange
+ * Raiser App signs request -> Handler App verifies -> Handler App signs response -> Raiser App verifies
  */
-async function step3RaiserAppRaiseIntentAndVerify(
+async function step3MutuallyAuthenticatedExchange(
   raiserHandlers: Awaited<ReturnType<typeof connectRemoteHandlers>>,
   mockDA: MockDesktopAgent,
   handlerAppBaseUrl: string
 ) {
-  console.log('\n3. Raiser App: Signing request via backend & raising intent...');
+  console.log('\n3. Raiser App: Preparing mutually authenticated intent exchange...');
+
   const requestContext: Context = {
     type: 'demo.request',
-    id: { dataId: '12345' },
-    name: 'Sample Request Data',
+    id: { dataId: 'secure-tx-777' },
+    name: 'Secure Intent Payload',
   };
 
   /**
-   * Use BasicSignedRaiseIntentSupport with both signing and verification functions.
+   * Setup SignedRaiseIntentSupport on the Raiser Frontend.
+   * - signingFunction: Delegates signing to the Raiser Backend via exchangeData.
+   * - verificationFunction: Automatically verifies the Handler App's response via its JWKS.
    */
   const signingFunction = async (ctx: Context) => {
     return (await raiserHandlers.exchangeData('sign-context', { context: ctx })) as any;
@@ -155,22 +163,24 @@ async function step3RaiserAppRaiseIntentAndVerify(
     verificationFunction
   );
 
-  console.log(`   Raiser App: Raising intent ${INTENT_SEND_DATA} with signed context...`);
-  const resolution = await support.raiseIntent(INTENT_SEND_DATA, requestContext);
+  console.log(`   Raiser App: Raising signed intent ${INTENT_DATA_TRANSFER}...`);
+  const resolution = await support.raiseIntent(INTENT_DATA_TRANSFER, requestContext);
 
-  console.log('   Raiser App: Awaiting result...');
+  console.log('   Raiser App: Awaiting signed response from handler...');
   const result = (await resolution.getResult()) as Context;
 
-  // With BasicSignedRaiseIntentSupport, the result is already verified!
-  // We can look at the authenticity metadata packed in the context.
+  // With SignedRaiseIntentSupport, the result is automatically verified!
   const auth = (result as any).__appMeta?.authenticity;
 
   if (auth?.signed && auth?.valid && auth?.trusted) {
-    console.log(`\n[Raiser App] ✅ VERIFIED RESPONSE (Automatically verified by Support class):`);
-    console.log(JSON.stringify(result, (key, val) => (key === '__appMeta' ? undefined : val), 2));
-    console.log(`[Raiser App] Trusted Provider: ${auth.jku}`);
+    console.log(`\n[Raiser App] ✅ MUTUAL AUTHENTICATION SUCCESSFUL:`);
+    console.log(
+      `[Raiser App] Verified Response:`,
+      JSON.stringify(result, (k, v) => (k === '__appMeta' ? undefined : v), 2)
+    );
+    console.log(`[Raiser App] Trusted Provider Identity: ${auth.jku}`);
   } else {
-    console.error(`\n[Raiser App] ❌ UNVERIFIED RESPONSE:`, auth?.errors);
+    console.error(`\n[Raiser App] ❌ MUTUAL AUTHENTICATION FAILED:`, auth?.errors);
   }
 }
 
@@ -178,7 +188,7 @@ async function step3RaiserAppRaiseIntentAndVerify(
  * MAIN EXECUTION
  */
 async function runExample() {
-  console.log('--- FDC3 Signature Checking Intent Handler Example Start ---');
+  console.log('--- FDC3 Mutually Authenticated Intent Example Start ---');
 
   const mockDA = new MockDesktopAgent();
 
@@ -186,7 +196,7 @@ async function runExample() {
   const raiserApp = await step2SetupRaiserApp(mockDA);
 
   try {
-    await step3RaiserAppRaiseIntentAndVerify(raiserApp.handlers, mockDA, handlerApp.backend.baseUrl);
+    await step3MutuallyAuthenticatedExchange(raiserApp.handlers, mockDA, handlerApp.backend.baseUrl);
   } finally {
     console.log('\nClosing connections...');
     await handlerApp.handlers.disconnect();
@@ -195,7 +205,7 @@ async function runExample() {
     await raiserApp.backend.shutdown();
   }
 
-  console.log('\n--- FDC3 Signature Checking Intent Handler Example Complete ---');
+  console.log('\n--- FDC3 Mutually Authenticated Intent Example Complete ---');
 }
 
 export { runExample };
