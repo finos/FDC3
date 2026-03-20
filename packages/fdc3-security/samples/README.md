@@ -9,8 +9,8 @@ Each example is a standalone TypeScript file that can be executed directly using
 From the `packages/fdc3-security` directory:
 
 ```bash
-# Example: Run the Backend Encrypted Channel example
-npx tsx samples/backend-encrypted-channel-example.ts
+# Example: Run the Mutually Authenticated Intent example
+npx tsx samples/signing-intent-example.ts
 
 # Example: Run the Signing Broadcast example
 npx tsx samples/signing-broadcast-example.ts
@@ -105,58 +105,34 @@ sequenceDiagram
 
 ---
 
-## [Signature Checking Intent Handler](signature-checking-intent-handler.ts)
+## [Signing Intent Example (Mutual Authentication)](signing-intent-example.ts)
 
-Demonstrates mutually authenticated intent requests. The Raiser App uses the **`SignedRaiseIntentSupport`** helper to sign its request and automatically verify the return signature.
+A full end-to-end demonstration of mutual authentication in FDC3 intent flows. This composite example replaces previous partial samples to show a complete secure cycle: Raiser signs the request -> Handler verifies and signs the result -> Raiser verifies the result.
 
 ```mermaid
 sequenceDiagram
-    participant BFE as Raiser App Front End (App B)
+    participant BFE as Raiser App Front End
     participant BBE as Raiser App Back End
-    participant AFE as Handler App Front End (App A)
+    participant AFE as Handler App Front End
     participant ABE as Handler App Back End
 
-    AFE->>ABE: Register Intent Handler (SendData)
-    Note right of ABE: Wraps Handler with<br/>SignatureCheckingHandlerSupport
+    AFE->>ABE: Register Intent Handler
+    Note right of ABE: Wraps Handler with SignatureCheckingHandlerSupport
     
-    Note over BFE: Sets up BasicSignedRaiseIntentSupport<br/>(signingFunction calls BBE)
+    Note over BFE: Sets up SignedRateIntentSupport<br/>(signingFunction calls BBE)
     BFE->>BBE: exchangeData(sign-context)
-    BBE-->>BFE: Signature
-    BBE->>AFE: support.raiseIntent(SendData, Context)
+    BBE-->>BFE: Signature & Anti-Replay
+    BFE->>AFE: support.raiseIntent(DataTransfer, Context)
     
     AFE->>ABE: Invoke Remote Handler
-    Note right of ABE: verifySignature(Request)<br/>✅ Authenticated
+    Note right of ABE: verifySignature(Incoming Request)<br/>✅ Authenticated
     
     Note right of ABE: signs result with<br/>PrivateSignedIntentResultSupport
     ABE-->>AFE: Signed Response
-    AFE-->>BFE: Intent Result (Signed)
+    AFE-->>BFE: Intent Result (Signed Context)
     
     Note over BFE: getResult() triggers automatic<br/>verification via Support class
-    Note over BFE: ✅ Verified Result Logged
-```
-
----
-
-## [Signing Intent Result Example](signing-intent-result-example.ts)
-
-Focuses specifically on the **`PrivateSignedIntentResultSupport`** utility for signing intent results. The Raiser uses **`SignedRaiseIntentSupport`** for automated verification of the result.
-
-```mermaid
-sequenceDiagram
-    participant RFE as Raiser App Front End
-    participant HFE as Handler App Front End
-    participant HBE as Handler App Back End
-
-    HFE->>HBE: Register Intent Handler
-    RFE->>HFE: support.raiseIntent(GetStatus, Unsigned Context)
-    
-    HFE->>HBE: Invoke Remote Handler
-    Note right of HBE: signIntentResult(Response)
-    HBE-->>HFE: Signed Response
-    HFE-->>RFE: Intent Result (Signed)
-    
-    Note over RFE: getResult() triggers automatic<br/>verification via Support class
-    Note over RFE: ✅ Verified Result Logged
+    Note over BFE: ✅ Mutually Verified Result Logged
 ```
 
 ---
