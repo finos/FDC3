@@ -41,7 +41,7 @@ export class BasicSignatureCheckingHandlerSupport {
         ...metadata,
         authenticity,
       });
-      handler(repackedContext, repackedMetadata);
+      await (handler(repackedContext, repackedMetadata) as Promise<void> | void);
     };
   }
 }
