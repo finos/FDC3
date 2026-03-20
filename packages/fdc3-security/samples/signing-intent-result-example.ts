@@ -7,6 +7,7 @@ import { MockDesktopAgent } from '../test/mocks/MockDesktopAgent';
 import { AppBackEnd } from '../test/mocks/AppBackEnd';
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { PrivateSignedIntentResultSupport } from '../src/signing/SignedIntentResultSupport';
+import { BasicSignedRaiseIntentSupport } from '../src/signing/SignedRaiseIntentSupport';
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
 import { MetadataHandlerImpl } from '../src/delegates/MetadataHandler';
@@ -68,36 +69,45 @@ async function step1SetupHandlerApp(mockDA: MockDesktopAgent) {
 }
 
 /**
- * STEP 2: Raiser App raises intent and verifies signed result
+ * STEP 2: Raiser App raises intent and verifies signed result using Support helper
  */
 async function step2RaiserAppRaiseIntentAndVerify(mockDA: MockDesktopAgent, handlerAppBaseUrl: string) {
   console.log('\n2. Raiser App: Raising intent (unsigned request) to get status...');
 
-  const resolution = await mockDA.raiseIntent(INTENT_GET_STATUS, { type: 'fdc3.nothing' } as Context);
+  /**
+   * Use BasicSignedRaiseIntentSupport to automate result verification.
+   * Since this sample is for unsigned requests, the signingFunction is a no-op
+   * that avoids adding signature metadata to the outgoing request.
+   */
+  const noOpSigner = async () => ({ signature: '', antiReplay: '' });
 
-  console.log('   Raiser App: Awaiting signed result...');
+  const verificationFunction = async (sig: any, ctx: Context, antiReplay: any) => {
+    const jwksUrl = `${handlerAppBaseUrl}/.well-known/jwks.json`;
+    const publicSecurity = await createJosePublicFDC3SecurityFromUrl(jwksUrl, () => true);
+    return await publicSecurity.verifySignature(sig, ctx, antiReplay);
+  };
+
+  const support = new BasicSignedRaiseIntentSupport(
+    mockDA as unknown as DesktopAgent,
+    noOpSigner,
+    metadataHandler,
+    verificationFunction
+  );
+
+  const resolution = await support.raiseIntent(INTENT_GET_STATUS, { type: 'fdc3.nothing' } as Context);
+
+  console.log('   Raiser App: Awaiting result...');
   const result = (await resolution.getResult()) as Context;
-  console.log(`\n[Raiser App] Result received from ${INTENT_GET_STATUS}:`);
 
-  // Verify the response signature using the Handler App's JWKS
-  const { context: statusResponse, metadata } = metadataHandler.unpack(result, {});
-  const { signature, antiReplay } = metadata;
+  // The result is already verified and unpacked by the support class!
+  const auth = (result as any).__appMeta?.authenticity;
 
-  if (!signature || !antiReplay) {
-    console.error('[Raiser App] ❌ Result is NOT SIGNED');
-    return;
-  }
-
-  const jwksUrl = `${handlerAppBaseUrl}/.well-known/jwks.json`;
-  const publicSecurity = await createJosePublicFDC3SecurityFromUrl(jwksUrl, () => true);
-  const authenticity = await publicSecurity.verifySignature(signature, statusResponse, antiReplay);
-
-  if (authenticity.signed && authenticity.valid && authenticity.trusted) {
-    console.log(`[Raiser App] ✅ VERIFIED SIGNED RESULT:`);
-    console.log(JSON.stringify(statusResponse, null, 2));
-    console.log(`[Raiser App] Trusted Provider: ${authenticity.jku}`);
+  if (auth?.signed && auth?.valid && auth?.trusted) {
+    console.log(`\n[Raiser App] ✅ VERIFIED SIGNED RESULT (Automatically verified by Support class):`);
+    console.log(JSON.stringify(result, (key, val) => (key === '__appMeta' ? undefined : val), 2));
+    console.log(`[Raiser App] Trusted Provider: ${auth.jku}`);
   } else {
-    console.error(`[Raiser App] ❌ UNVERIFIED RESULT:`, authenticity.errors);
+    console.error(`\n[Raiser App] ❌ UNVERIFIED RESULT:`, auth?.errors);
   }
 }
 

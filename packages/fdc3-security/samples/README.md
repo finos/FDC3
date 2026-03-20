@@ -107,7 +107,7 @@ sequenceDiagram
 
 ## [Signature Checking Intent Handler](signature-checking-intent-handler.ts)
 
-Demonstrates mutually authenticated intent requests. The Raiser App signs its request, and the Handler App signs its response. Both sides verify signatures using the other app's JWKS.
+Demonstrates mutually authenticated intent requests. The Raiser App uses the **`SignedRaiseIntentSupport`** helper to sign its request and automatically verify the return signature.
 
 ```mermaid
 sequenceDiagram
@@ -119,18 +119,19 @@ sequenceDiagram
     AFE->>ABE: Register Intent Handler (SendData)
     Note right of ABE: Wraps Handler with<br/>SignatureCheckingHandlerSupport
     
+    Note over BFE: Sets up BasicSignedRaiseIntentSupport<br/>(signingFunction calls BBE)
     BFE->>BBE: exchangeData(sign-context)
     BBE-->>BFE: Signature
-    BFE->>AFE: raiseIntent(SendData, Signed Context)
+    BBE->>AFE: support.raiseIntent(SendData, Context)
     
     AFE->>ABE: Invoke Remote Handler
     Note right of ABE: verifySignature(Request)<br/>✅ Authenticated
     
-    ABE->>ABE: signIntentResult(Response)
+    Note right of ABE: signs result with<br/>PrivateSignedIntentResultSupport
     ABE-->>AFE: Signed Response
     AFE-->>BFE: Intent Result (Signed)
     
-    Note over BFE: verifySignature(Response via App A JWKS)
+    Note over BFE: getResult() triggers automatic<br/>verification via Support class
     Note over BFE: ✅ Verified Result Logged
 ```
 
@@ -138,7 +139,7 @@ sequenceDiagram
 
 ## [Signing Intent Result Example](signing-intent-result-example.ts)
 
-Focuses specifically on the `PrivateSignedIntentResultSupport` utility. A raiser makes an unsigned request, but the handler returns a signed result that the raiser verifies.
+Focuses specifically on the **`PrivateSignedIntentResultSupport`** utility for signing intent results. The Raiser uses **`SignedRaiseIntentSupport`** for automated verification of the result.
 
 ```mermaid
 sequenceDiagram
@@ -147,15 +148,14 @@ sequenceDiagram
     participant HBE as Handler App Back End
 
     HFE->>HBE: Register Intent Handler
-    RFE->>HFE: raiseIntent (Unsigned)
+    RFE->>HFE: support.raiseIntent(GetStatus, Unsigned Context)
     
     HFE->>HBE: Invoke Remote Handler
-    Note right of HBE: Logic generates Response
-    HBE->>HBE: signIntentResult(Response)
+    Note right of HBE: signIntentResult(Response)
     HBE-->>HFE: Signed Response
     HFE-->>RFE: Intent Result (Signed)
     
-    Note over RFE: verifySignature(Response via Handler JWKS)
+    Note over RFE: getResult() triggers automatic<br/>verification via Support class
     Note over RFE: ✅ Verified Result Logged
 ```
 
