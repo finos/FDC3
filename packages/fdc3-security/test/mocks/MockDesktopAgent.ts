@@ -42,6 +42,8 @@ export class MockDesktopAgent implements Partial<DesktopAgent> {
         intent: key as Intent,
         getResult: async () => thePrivateChannel!,
       };
+    } else {
+      throw new Error(`No result returned for intent: ${key}`);
     }
   }
 
