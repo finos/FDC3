@@ -8,6 +8,7 @@ import { AppBackEnd } from '../test/mocks/AppBackEnd';
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { PublicSignatureCheckingHandlerSupport } from '../src/signing/SignatureCheckingHandlerSupport';
 import { PrivateSignedIntentResultSupport } from '../src/signing/SignedIntentResultSupport';
+import { BasicSignedRaiseIntentSupport } from '../src/signing/SignedRaiseIntentSupport';
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
 import { MetadataHandlerImpl } from '../src/delegates/MetadataHandler';
@@ -73,7 +74,7 @@ class RaiserAppBackendHandlers extends DefaultFDC3Handlers {
   async exchangeData(purpose: string, o: object): Promise<object | void> {
     if (purpose === 'sign-context') {
       const { context } = o as { context: Context };
-      console.log(`[Raiser App Backend] Signing context for frontend...`);
+      console.log(`[Raiser App Backend] Request for context signature...`);
       return await this.security.sign(context);
     }
     return super.exchangeData(purpose, o);
@@ -127,39 +128,49 @@ async function step3RaiserAppRaiseIntentAndVerify(
   mockDA: MockDesktopAgent,
   handlerAppBaseUrl: string
 ) {
-  console.log('\n3. Raiser App: Signing request context via its backend...');
+  console.log('\n3. Raiser App: Signing request via backend & raising intent...');
   const requestContext: Context = {
     type: 'demo.request',
     id: { dataId: '12345' },
     name: 'Sample Request Data',
   };
 
-  const { signature, antiReplay } = (await raiserHandlers.exchangeData('sign-context', {
-    context: requestContext,
-  })) as any;
-  const { context: signedContext } = metadataHandler.pack(requestContext, { signature, antiReplay });
+  /**
+   * Use BasicSignedRaiseIntentSupport with both signing and verification functions.
+   */
+  const signingFunction = async (ctx: Context) => {
+    return (await raiserHandlers.exchangeData('sign-context', { context: ctx })) as any;
+  };
+
+  const verificationFunction = async (sig: any, ctx: Context, antiReplay: any) => {
+    const jwksUrl = `${handlerAppBaseUrl}/.well-known/jwks.json`;
+    const publicSecurity = await createJosePublicFDC3SecurityFromUrl(jwksUrl, () => true);
+    return await publicSecurity.verifySignature(sig, ctx, antiReplay);
+  };
+
+  const support = new BasicSignedRaiseIntentSupport(
+    mockDA as unknown as DesktopAgent,
+    signingFunction,
+    metadataHandler,
+    verificationFunction
+  );
 
   console.log(`   Raiser App: Raising intent ${INTENT_SEND_DATA} with signed context...`);
-  const resolution = await mockDA.raiseIntent(INTENT_SEND_DATA, signedContext);
+  const resolution = await support.raiseIntent(INTENT_SEND_DATA, requestContext);
 
   console.log('   Raiser App: Awaiting result...');
   const result = (await resolution.getResult()) as Context;
-  console.log(`\n[Raiser App] Result received from ${INTENT_SEND_DATA}:`);
 
-  // Verify the response from Handler App
-  const { context: response, metadata } = metadataHandler.unpack(result, {});
-  const { signature: resSig, antiReplay: resAntiReplay } = metadata;
+  // With BasicSignedRaiseIntentSupport, the result is already verified!
+  // We can look at the authenticity metadata packed in the context.
+  const auth = (result as any).__appMeta?.authenticity;
 
-  const jwksUrl = `${handlerAppBaseUrl}/.well-known/jwks.json`;
-  const publicSecurity = await createJosePublicFDC3SecurityFromUrl(jwksUrl, () => true);
-  const authenticity = await publicSecurity.verifySignature(resSig, response, resAntiReplay);
-
-  if (authenticity.signed && authenticity.valid && authenticity.trusted) {
-    console.log(`[Raiser App] ✅ VERIFIED RESPONSE:`);
-    console.log(JSON.stringify(response, null, 2));
-    console.log(`[Raiser App] Trusted Provider: ${authenticity.jku}`);
+  if (auth?.signed && auth?.valid && auth?.trusted) {
+    console.log(`\n[Raiser App] ✅ VERIFIED RESPONSE (Automatically verified by Support class):`);
+    console.log(JSON.stringify(result, (key, val) => (key === '__appMeta' ? undefined : val), 2));
+    console.log(`[Raiser App] Trusted Provider: ${auth.jku}`);
   } else {
-    console.error(`[Raiser App] ❌ UNVERIFIED RESPONSE:`, authenticity.errors);
+    console.error(`\n[Raiser App] ❌ UNVERIFIED RESPONSE:`, auth?.errors);
   }
 }
 
