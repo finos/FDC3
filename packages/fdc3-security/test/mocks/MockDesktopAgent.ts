@@ -34,17 +34,16 @@ export class MockDesktopAgent implements Partial<DesktopAgent> {
     const handler = this.intentHandlers.get(key);
     if (!handler) throw new Error(`No handler registered for intent: ${key}`);
     const result = await handler(context);
-    const resultChannelId = result?.id as string;
-    const thePrivateChannel = sharedPrivateChannels.get(resultChannelId);
-    if (resultChannelId != null) {
-      return {
-        source: { appId: 'mock-app', instanceId: 'mock-instance' },
-        intent: key as Intent,
-        getResult: async () => thePrivateChannel!,
-      };
-    } else {
-      throw new Error(`No result returned for intent: ${key}`);
-    }
+
+    const contextResult = result as Context;
+    const thePrivateChannel =
+      typeof contextResult?.id === 'string' ? sharedPrivateChannels.get(contextResult.id) : undefined;
+
+    return {
+      source: { appId: 'mock-app', instanceId: 'mock-instance' },
+      intent: key as Intent,
+      getResult: async () => thePrivateChannel ?? contextResult,
+    };
   }
 
   async getOrCreateChannel(channelId: string): Promise<Channel> {
