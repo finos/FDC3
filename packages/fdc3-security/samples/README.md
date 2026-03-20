@@ -2,21 +2,183 @@
 
 This directory contains examples demonstrating how to use the FDC3 Security features for context encryption, signing, and user identification.
 
-## Contents
-
-- **[Backend Encrypted Channel Example](backend-encrypted-channel-example.ts)**: Demonstrates how to use `EncryptedBroadcastSupport` and `PrivateEncryptedContextListenerSupport` on the backend. This example shows encryption and decryption being handled entirely by a backend process, with the frontend only acting as a transport for FDC3 channels.
-- **[Frontend Encrypted Channel Example](frontend-encrypted-channel-example.ts)**: Shows how to use `EncryptedBroadcastSupport` and `PublicEncryptedContextListenerSupport` for frontend-driven encryption. In this scenario, encryption and decryption occur on the frontend, with key unwrapping and signing being delegated to a secure backend.
-- **[Get User Example](get-user-example.ts)**: A comprehensive demonstration of requesting and verifying user identity from an Identity Provider (IDP). It uses encrypted contexts and JSON Web Tokens (JWT) to securely share user details between applications.
-- **[Signing Broadcast Example](signing-broadcast-example.ts)**: Illustrates how to sign and verify FDC3 broadcasts using the `SigningChannelDelegate`. This example covers the entire flow, including backend-based signing and frontend-based verification of broadcasted instrument data.
-- **[Signing Intent Example](signing-intent-example.ts)**: (Placeholder) An upcoming example for signing FDC3 intents.
+Each example is a standalone TypeScript file that can be executed directly using `tsx` from the package root. The desktop agent is mocked in each sample to illustrate the information flows between applications and their secure backends.
 
 ## Running the Examples
 
-Each example is a standalone TypeScript file that can be executed directly using `tsx` from the package root.  The desktop agent is mocked in each sample so that you can more clearly see the information flows.
+From the `packages/fdc3-security` directory:
 
 ```bash
 # Example: Run the Backend Encrypted Channel example
 npx tsx samples/backend-encrypted-channel-example.ts
+
+# Example: Run the Signing Broadcast example
+npx tsx samples/signing-broadcast-example.ts
 ```
 
 ---
+
+## [Backend Encrypted Channel Example](backend-encrypted-channel-example.ts)
+
+Demonstrates how to use `EncryptedBroadcastSupport` and `PrivateEncryptedContextListenerSupport` on the backend. Encryption and decryption are handled entirely by backend processes, with the frontend acting only as a transport for FDC3 channels.
+
+```mermaid
+sequenceDiagram
+    participant 1FE as App 1 Front End (Broadcaster)
+    participant 1BE as App 1 Back End
+    participant 2FE as App 2 Front End (Listener)
+    participant 2BE as App 2 Back End
+
+    Note over 2BE: Starts Server & JWKS
+    Note over 1BE: Starts Server & JWKS
+    
+    1FE->>1BE: Connect (WebSocket)
+    1FE->>1BE: Register Intent Handler (ShareEncryptedChannel)
+    
+    2FE->>2BE: Connect (WebSocket)
+    2FE->>1FE: raiseIntent(ShareEncryptedChannel)
+    
+    1FE->>1BE: handleRemoteChannel(ShareEncryptedChannel)
+    Note right of 1BE: Wraps Channel with<br/>EncryptedBroadcastSupport
+    
+    2FE->>2BE: handleRemoteChannel(listen)
+    Note right of 2BE: Sets up Listener with<br/>PrivateEncryptedContextListenerSupport
+    
+    1BE->>1FE: broadcast(Encrypted Context)
+    1FE->>2FE: FDC3 Broadcast
+    
+    2FE->>2BE: Incoming Context Event
+    Note right of 2BE: Requests Symmetric Key (via JWKS)<br/>Unwraps with Private Key<br/>Decrypts Context
+    Note right of 2BE: ✅ Decrypted Context Logged
+```
+
+---
+
+## [Frontend Encrypted Channel Example](frontend-encrypted-channel-example.ts)
+
+Shows how to use `EncryptedBroadcastSupport` and `PublicEncryptedContextListenerSupport` for frontend-driven encryption. Encryption and decryption occur on the frontend, while sensitive key unwrapping and signing are delegated to a secure backend via `exchangeData`.
+
+```mermaid
+sequenceDiagram
+    participant 1FE as App 1 Front End (Broadcaster)
+    participant 1BE as App 1 Back End
+    participant 2FE as App 2 Front End (Listener)
+    participant 2BE as App 2 Back End
+
+    Note over 1FE: Sets up EncryptedBroadcastSupport<br/>(signingFunction calls 1BE)
+    1FE->>1BE: exchangeData(sign-context)
+    1BE-->>1FE: Signature & Anti-Replay
+    1FE->>2FE: broadcast(Encrypted Context)
+    
+    Note over 2FE: Sets up PublicEncryptedContextListenerSupport<br/>(unwrappingFunction calls 2BE)
+    2FE->>2BE: exchangeData(unwrap-key)
+    2BE-->>2FE: Unwrapped Symmetric Key
+    Note over 2FE: ✅ Decrypts & Logs Context
+```
+
+---
+
+## [Signing Broadcast Example](signing-broadcast-example.ts)
+
+Illustrates how to sign FDC3 broadcasts using `BasicSignedBroadcaster` and verify them using `PublicSignatureCheckingHandlerSupport`. This covers a full cycle of signed context dissemination.
+
+```mermaid
+sequenceDiagram
+    participant AFE as App A Front End (Broadcaster)
+    participant ABE as App A Back End
+    participant BFE as App B Front End (Listener)
+    participant BBE as App B Back End
+
+    Note over ABE: Starts Server & JWKS
+    AFE->>ABE: Connect & Export Channel
+    Note right of ABE: Creates BasicSignedBroadcaster
+    
+    Note over BFE: Sets up Listener wrapped with<br/>PublicSignatureCheckingHandlerSupport
+    
+    ABE->>ABE: sign(context)
+    ABE->>AFE: broadcast(Signed Packed Context)
+    AFE->>BFE: FDC3 Broadcast
+    
+    BFE->>BFE: verifySignature(via App A JWKS)
+    Note over BFE: ✅ Verified Context Received
+```
+
+---
+
+## [Signature Checking Intent Handler](signature-checking-intent-handler.ts)
+
+Demonstrates mutually authenticated intent requests. The Raiser App signs its request, and the Handler App signs its response. Both sides verify signatures using the other app's JWKS.
+
+```mermaid
+sequenceDiagram
+    participant BFE as Raiser App Front End (App B)
+    participant BBE as Raiser App Back End
+    participant AFE as Handler App Front End (App A)
+    participant ABE as Handler App Back End
+
+    AFE->>ABE: Register Intent Handler (SendData)
+    Note right of ABE: Wraps Handler with<br/>SignatureCheckingHandlerSupport
+    
+    BFE->>BBE: exchangeData(sign-context)
+    BBE-->>BFE: Signature
+    BFE->>AFE: raiseIntent(SendData, Signed Context)
+    
+    AFE->>ABE: Invoke Remote Handler
+    Note right of ABE: verifySignature(Request)<br/>✅ Authenticated
+    
+    ABE->>ABE: signIntentResult(Response)
+    ABE-->>AFE: Signed Response
+    AFE-->>BFE: Intent Result (Signed)
+    
+    Note over BFE: verifySignature(Response via App A JWKS)
+    Note over BFE: ✅ Verified Result Logged
+```
+
+---
+
+## [Signing Intent Result Example](signing-intent-result-example.ts)
+
+Focuses specifically on the `PrivateSignedIntentResultSupport` utility. A raiser makes an unsigned request, but the handler returns a signed result that the raiser verifies.
+
+```mermaid
+sequenceDiagram
+    participant RFE as Raiser App Front End
+    participant HFE as Handler App Front End
+    participant HBE as Handler App Back End
+
+    HFE->>HBE: Register Intent Handler
+    RFE->>HFE: raiseIntent (Unsigned)
+    
+    HFE->>HBE: Invoke Remote Handler
+    Note right of HBE: Logic generates Response
+    HBE->>HBE: signIntentResult(Response)
+    HBE-->>HFE: Signed Response
+    HFE-->>RFE: Intent Result (Signed)
+    
+    Note over RFE: verifySignature(Response via Handler JWKS)
+    Note over RFE: ✅ Verified Result Logged
+```
+
+---
+
+## [Get User Example](get-user-example.ts)
+
+A detailed demonstration of requesting and verifying user identity from a mock Identity Provider (IDP). It uses encrypted contexts and JSON Web Tokens (JWT) for secure identity sharing.
+
+```mermaid
+sequenceDiagram
+    participant FE as Requesting App Front End
+    participant BE as Requesting App Back End
+    participant IDP as Identity Provider (IDP)
+
+    FE->>BE: exchangeData(get-jwt)
+    BE->>IDP: Request JWT
+    IDP-->>BE: JWT Token
+    BE-->>FE: JWT Token
+    
+    FE->>IDP: raiseIntent(GetUser, { jwt })
+    Note over IDP: Verifies JWT<br/>Encrypts User Data with App Public Key
+    IDP-->>FE: Encrypted User Context
+    
+    Note over FE: verifyJWTToken(Auth Check)<br/>decrypt(User Data)<br/>✅ User Identity Verified
+```
