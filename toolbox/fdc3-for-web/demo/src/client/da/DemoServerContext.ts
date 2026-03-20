@@ -286,10 +286,10 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
   }
 
   providerVersion(): string {
-    return '0.1';
+    return '2.2.2';
   }
 
   fdc3Version(): string {
-    return '2.0';
+    return '2.2';
   }
 }
