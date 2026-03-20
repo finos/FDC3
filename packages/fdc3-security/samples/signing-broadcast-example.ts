@@ -1,22 +1,25 @@
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { Channel, ContextMetadata, DesktopAgent } from '@finos/fdc3-standard';
+import { Channel, ContextHandler, ContextMetadata, DesktopAgent } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { createJosePublicFDC3SecurityFromUrl } from '../src/impl/JosePublicFDC3Security';
 import { MockDesktopAgent } from '../test/mocks/MockDesktopAgent';
 import { AppBackEnd } from '../test/mocks/AppBackEnd';
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
-import { SigningChannelDelegate } from '../src/signing/SigningChannelDelegate';
+import { BasicSignedBroadcaster, SignedBroadcaster } from '../src/signing/SignedBroadcastSupport';
+import { PublicSignatureCheckingHandlerSupport } from '../src/signing/SignatureCheckingHandlerSupport';
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
+import { MetadataHandlerImpl } from '../src/delegates/MetadataHandler';
+
+const metadataHandler = new MetadataHandlerImpl(false);
 
 /**
  * App A backend handlers (sender). Receives the channel via handleRemoteChannel,
- * wraps with SigningChannelDelegate (signing happens on backend). Responds to
- * exchangeData('broadcast', ctx) to sign and broadcast the context.
+ * wraps with BasicSignedBroadcaster (signing happens on backend).
  */
 class AppABackendHandlers extends DefaultFDC3Handlers {
-  signingDelegate: SigningChannelDelegate | null = null;
+  signedBroadcaster: SignedBroadcaster | null = null;
 
   constructor(private security: JosePrivateFDC3Security) {
     super();
@@ -24,8 +27,8 @@ class AppABackendHandlers extends DefaultFDC3Handlers {
 
   async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
     if (purpose !== 'broadcast') return;
-    console.log('[App A Backend] Received channel via handleRemoteChannel, wrapping with SigningChannelDelegate');
-    this.signingDelegate = new SigningChannelDelegate(channel, this.security, false);
+    console.log('[App A Backend] Received channel via handleRemoteChannel, wrapping with BasicSignedBroadcaster');
+    this.signedBroadcaster = new BasicSignedBroadcaster(this.security, metadataHandler, channel);
   }
 
   async broadcast(): Promise<void> {
@@ -35,7 +38,7 @@ class AppABackendHandlers extends DefaultFDC3Handlers {
       id: { ticker: 'AAPL' },
       name: 'Apple Inc.',
     } as Context;
-    await this.signingDelegate!.broadcast(instrument);
+    await this.signedBroadcaster!.broadcast(instrument);
     return;
   }
 }
@@ -61,10 +64,10 @@ async function step2SetupAppBBackend() {
 }
 
 /**
- * STEP 3: App A front-end exports channel to backend; backend wraps with SigningChannelDelegate.
+ * STEP 3: App A front-end exports channel to backend; backend wraps with BasicSignedBroadcaster.
  */
 async function step3AppAExportChannel(appA: AppBackEnd, mockDA: MockDesktopAgent) {
-  console.log('3. App A Setup: Exporting channel to backend (SigningChannelDelegate lives on backend)...');
+  console.log('3. App A Setup: Exporting channel to backend (BasicSignedBroadcaster lives on backend)...');
   const handlers = await connectRemoteHandlers(
     appA.baseUrl.replace('http', 'ws'),
     mockDA as unknown as DesktopAgent,
@@ -76,26 +79,23 @@ async function step3AppAExportChannel(appA: AppBackEnd, mockDA: MockDesktopAgent
 }
 
 /**
- * STEP 4: Setup App B (receiver) channel delegate and listener.
+ * STEP 4: Setup App B (receiver) channel handler verification and listener.
  * Uses App B's JWKS for the instance; verification fetches signer keys from jku in each signature.
  */
-async function step4SetupAppBChannelDelegate(
-  appBBaseUrl: string,
-  channel: Channel
-): Promise<{ delegate: SigningChannelDelegate; done: Promise<void> }> {
-  console.log('4. App B Setup: Wrapping channel (verification uses jku from signatures)...');
+async function step4SetupAppBChannelDelegate(appBBaseUrl: string, channel: Channel): Promise<{ done: Promise<void> }> {
+  console.log('4. App B Setup: Wrapping channel handler (verification uses jku from signatures)...');
 
   const jwksUrl = `${appBBaseUrl}/.well-known/jwks.json`;
   const securityB = await createJosePublicFDC3SecurityFromUrl(jwksUrl, () => true);
 
-  const appBDelegate = new SigningChannelDelegate(channel, securityB, false);
+  const support = new PublicSignatureCheckingHandlerSupport(metadataHandler, securityB);
 
   let resolveDone: () => void;
   const done = new Promise<void>(r => {
     resolveDone = r;
   });
 
-  await appBDelegate.addContextListener('fdc3.instrument', async (ctx: Context, meta: ContextMetadata | undefined) => {
+  const handler = async (ctx: Context, meta: ContextMetadata | undefined) => {
     console.log('[App B] <<< [VERIFIED] Context Received:');
     console.log(JSON.stringify(ctx, null, 2));
     console.log('[App B] <<< [VERIFIED] Metadata Received:');
@@ -113,9 +113,12 @@ async function step4SetupAppBChannelDelegate(
 
     console.log('--- FDC3 Signing Example End ---');
     resolveDone!();
-  });
+  };
 
-  return { delegate: appBDelegate, done };
+  const verifiedHandler = (await support.wrapContextHandler(handler as ContextHandler)) as ContextHandler;
+  await channel.addContextListener('fdc3.instrument', verifiedHandler);
+
+  return { done };
 }
 
 /**
@@ -131,7 +134,7 @@ async function step5AppABackendBroadcasts(appA: AppBackEnd): Promise<void> {
  * MAIN EXECUTION
  *
  * This example demonstrates a complete FDC3 signing and verification flow with FDC3Handlers.
- * - App A backend: receives channel, wraps with SigningChannelDelegate, signs and broadcasts instrument on trigger
+ * - App A backend: receives channel, wraps with BasicSignedBroadcaster, signs and broadcasts instrument on trigger
  * - App A front-end: exports channel, triggers backend via exchangeData (context lives in backend)
  * - App B: wraps channel, verifies using jku from signatures, receives.
  */
