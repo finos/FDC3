@@ -36,16 +36,8 @@ class ReceivingAppBackendHandlers extends DefaultFDC3Handlers {
 
   async exchangeData(purpose: string, o: object): Promise<object | void> {
     if (purpose === 'sign-context') {
-      const { context, metadata } = o as { context: Context; metadata?: ContextMetadata };
-      const { signature, antiReplay } = await this.security.sign(context);
-      return {
-        context,
-        metadata: {
-          ...metadata,
-          signature,
-          antiReplay,
-        },
-      };
+      const { context } = o as { context: Context };
+      return await this.security.sign(context);
     }
     if (purpose === 'unwrap-symmetric-key') {
       const skr = o as SymmetricKeyResponse;
@@ -138,10 +130,10 @@ async function step4ReceivingAppSetup(
   const jwksUrl = `${receivingApp.baseUrl}/.well-known/jwks.json`;
   const publicSecurity = await createJosePublicFDC3SecurityFromUrl(jwksUrl, () => true);
 
-  const signingFunction = async (context: Context, metadata: ContextMetadata) => {
-    const result = (await handlers.exchangeData('sign-context', { context, metadata })) as {
-      context: Context;
-      metadata: ContextMetadata;
+  const signingFunction = async (context: Context) => {
+    const result = (await handlers.exchangeData('sign-context', { context })) as {
+      signature: any;
+      antiReplay: any;
     };
     return result;
   };

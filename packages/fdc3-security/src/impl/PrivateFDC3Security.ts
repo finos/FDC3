@@ -6,6 +6,10 @@ import { JSONWebEncryption, JsonWebKeyWithId, PublicFDC3Security } from './Publi
 
 type DetachedSignature = BrowserTypes.DetachedSignature;
 
+export type UnwrapFunction = (context: SymmetricKeyResponse) => Promise<JsonWebKeyWithId>;
+
+export type SigningFunction = (ctx: Context) => Promise<{ signature: DetachedSignature; antiReplay: AntiReplay }>;
+
 /**
  * Private interface for FDC3 Security signing and encryption operations.
  *
@@ -39,7 +43,7 @@ export interface PrivateFDC3Security extends PublicFDC3Security {
    * // Include signature and antiReplay in metadata when broadcasting
    * ```
    */
-  sign(ctx: Context): Promise<{ signature: DetachedSignature; antiReplay: AntiReplay }>;
+  sign: SigningFunction;
 
   /**
    * Unwrap a symmetric key received from another app.
@@ -51,7 +55,7 @@ export interface PrivateFDC3Security extends PublicFDC3Security {
    * @returns A promise resolving to the unwrapped symmetric key in JWK format
    * @throws Error if unwrapping fails
    */
-  unwrapSymmetricKey(ctx: SymmetricKeyResponse): Promise<JsonWebKeyWithId>;
+  unwrapSymmetricKey: UnwrapFunction;
 
   /**
    * Create a signed JWT token for user identity.
