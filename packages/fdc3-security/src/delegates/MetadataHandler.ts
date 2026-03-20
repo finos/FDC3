@@ -29,7 +29,7 @@ export class MetadataHandlerImpl implements MetadataHandler {
     if (this.metadataAvailable) {
       return { context, metadata };
     } else {
-      return { context: { ...context, __appMeta: metadata }, metadata: {} };
+      return { context: { ...context, __appMeta: metadata }, metadata };
     }
   }
 
