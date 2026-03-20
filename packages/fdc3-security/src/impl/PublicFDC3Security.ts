@@ -29,6 +29,12 @@ export type JsonWebKeyWithId = JsonWebKey & {
   alg: string; // Algorithm used for the key
 };
 
+export type SignatureCheckingFunction = (
+  signature: DetachedSignature | undefined,
+  ctx: Context,
+  antiReplay: AntiReplay | undefined
+) => Promise<MessageAuthenticity>;
+
 /**
  * Public interface for FDC3 Security verification operations.
  *
@@ -60,7 +66,7 @@ export interface PublicFDC3Security {
    * }
    * ```
    */
-  verifySignature(sig: DetachedSignature, ctx: Context, antiReplay: AntiReplay): Promise<MessageAuthenticity>;
+  verifySignature: SignatureCheckingFunction;
 
   /**
    * Get the public keys configured in this security implementation.
