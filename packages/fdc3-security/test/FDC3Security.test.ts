@@ -1,9 +1,9 @@
-import { JWKSResolver, JSONWebKeyWithId } from '../src/impl/JosePublicFDC3Security';
+import { JWKSResolver } from '../src/impl/JosePublicFDC3Security';
 import { JosePrivateFDC3Security, createJosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { Context } from '@finos/fdc3-context';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { FDC3SecurityTimeLimits } from '../src/impl/FDC3SecurityTimeLimits';
-import { PublicFDC3Security } from '../src/impl/PublicFDC3Security';
+import { JsonWebKeyWithId, PublicFDC3Security } from '../src/impl/PublicFDC3Security';
 import { PrivateFDC3Security } from '../src/impl/PrivateFDC3Security';
 import * as jose from 'jose';
 
@@ -25,7 +25,7 @@ const receiverAllowListFunction = (url: string): boolean => {
   return result;
 };
 
-const createJWKSResolver = (keys: JSONWebKeyWithId[]): JWKSResolver => {
+const createJWKSResolver = (keys: JsonWebKeyWithId[]): JWKSResolver => {
   const resolver = async (
     protectedHeader?: jose.JWSHeaderParameters,
     _token?: jose.FlattenedJWSInput
@@ -279,6 +279,22 @@ describe('JosePrivateFDC3Security', () => {
         const hasExpiryError = result.errors.some(e => e.includes('Context has expired'));
         expect(hasExpiryError).toBe(true);
       }
+    });
+
+    it('should reject replayed signatures (anti-replay)', async () => {
+      const { signature, antiReplay } = await sender.sign(mockContext);
+
+      // First verification should succeed
+      const firstResult = await receiverPublic.verifySignature(signature, mockContext, antiReplay);
+      expect(firstResult.signed).toBe(true);
+      expect(firstResult.valid).toBe(true);
+
+      // Second verification with same signature and antiReplay should fail (replay attack)
+      const secondResult = await receiverPublic.verifySignature(signature, mockContext, antiReplay);
+      expect(secondResult.signed).toBe(true);
+      expect(secondResult.valid).toBe(false);
+      expect(secondResult.errors).toBeDefined();
+      expect(secondResult.errors?.some(e => e.includes('Anti-replay check failed'))).toBe(true);
     });
 
     it('should reject signatures with header missing required fields', async () => {

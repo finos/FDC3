@@ -1,7 +1,6 @@
 import { Context, EncryptedContextWrapper } from '@finos/fdc3-context';
 import { Channel, ContextMetadata, Listener } from '@finos/fdc3-standard';
 import { JsonWebKeyWithId, PublicFDC3Security } from '../impl/PublicFDC3Security';
-import { checkSignature } from '../signing/SigningSupport';
 import { MetadataHandler } from '../delegates/MetadataHandler';
 
 /**
@@ -41,10 +40,11 @@ export async function createSymmetricKeyRequestContextListener(
 ): Promise<Listener> {
   const listener = channel.addContextListener(
     'fdc3.security.symmetricKeyRequest',
-    async (skr1: Context, skrMeta: ContextMetadata | undefined) => {
-      console.log('symmetric key request received', skr1, skrMeta);
-      const { metadata } = await checkSignature(fdc3Security, skrMeta, skr1);
-      const ma = metadata?.authenticity;
+    async (skrContextIn: Context, skrMetaIn: ContextMetadata | undefined) => {
+      console.log('symmetric key request received', skrContextIn, skrMetaIn);
+      const { context, metadata } = metadataHandler.unpack(skrContextIn, skrMetaIn);
+      const { signature, antiReplay } = metadata;
+      const ma = await fdc3Security.verifySignature(signature, context, antiReplay);
 
       if (ma?.signed && ma.trusted && ma.valid) {
         const wrappedKey = await fdc3Security.wrapSymmetricKey(symmetricKey, ma.jku!);

@@ -1,15 +1,8 @@
 import { Context, EncryptedContextWrapper, SymmetricKeyRequest, SymmetricKeyResponse } from '@finos/fdc3-context';
 import { Channel, ContextHandler, ContextMetadata, Listener } from '@finos/fdc3-standard';
-import { PrivateFDC3Security } from '../impl/PrivateFDC3Security';
+import { PrivateFDC3Security, SigningFunction, UnwrapFunction } from '../impl/PrivateFDC3Security';
 import { JSONWebEncryption, JsonWebKeyWithId, PublicFDC3Security } from '../impl/PublicFDC3Security';
 import { MetadataHandler } from '../delegates/MetadataHandler';
-
-export type SigningFunction = (
-  context: Context,
-  metadata: ContextMetadata
-) => Promise<{ context: Context; metadata: ContextMetadata }>;
-
-export type UnwrapFunction = (context: SymmetricKeyResponse) => Promise<JsonWebKeyWithId>;
 
 /**
  * Provides support for receiving and decrypting encrypted contexts on FDC3 channels.
@@ -120,8 +113,8 @@ export class PublicEncryptedContextListenerSupport implements EncryptedContextLi
       id: { kid },
       jku,
     } as SymmetricKeyRequest;
-    let { context, metadata } = await this.signingFunction(request, {});
-    ({ context, metadata } = this.metadataHandler.pack(context, metadata));
+    const { signature, antiReplay } = await this.signingFunction(request);
+    const { context, metadata } = this.metadataHandler.pack(request, { signature, antiReplay });
     await channel.broadcast(context, metadata);
 
     return newKeyPromise;
@@ -157,28 +150,13 @@ export class PublicEncryptedContextListenerSupport implements EncryptedContextLi
  *
  * @see {@link https://fdc3.finos.org/docs/api/security | FDC3 Security & Identity}
  */
-export class PrivateEncryptedContextListenerSupport implements EncryptedContextListenerSupport {
-  private publicSupport: PublicEncryptedContextListenerSupport;
-
+export class PrivateEncryptedContextListenerSupport
+  extends PublicEncryptedContextListenerSupport
+  implements EncryptedContextListenerSupport
+{
   constructor(security: PrivateFDC3Security, metadataHandler: MetadataHandler) {
-    const signingFunction: SigningFunction = async (context: Context, metadata: ContextMetadata) => {
-      const { signature, antiReplay } = await security.sign(context);
-      return {
-        context,
-        metadata: { ...metadata, signature, antiReplay },
-      };
-    };
+    const signFunction: SigningFunction = async (context: Context) => security.sign(context);
     const unwrapFunction: UnwrapFunction = async (ctx: SymmetricKeyResponse) => security.unwrapSymmetricKey(ctx);
-
-    this.publicSupport = new PublicEncryptedContextListenerSupport(
-      security,
-      metadataHandler,
-      signingFunction,
-      unwrapFunction
-    );
-  }
-
-  async addContextListener(channel: Channel, contextType: string | null, handler: ContextHandler): Promise<Listener> {
-    return this.publicSupport.addContextListener(channel, contextType, handler);
+    super(security, metadataHandler, signFunction, unwrapFunction);
   }
 }
