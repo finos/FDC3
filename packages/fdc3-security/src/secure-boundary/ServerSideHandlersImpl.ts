@@ -57,6 +57,9 @@ export function setupWebsocketServer(
 
     const handlers = createHandlers(ws);
 
+    // Map to store dynamic event handlers (e.g. for intent handler calls)
+    const dynamicHandlers = new Map<string, (envelope: WsEnvelope) => Promise<void>>();
+
     ws.on('message', async (raw: Buffer | string) => {
       let envelope: WsEnvelope;
       try {
@@ -67,6 +70,12 @@ export function setupWebsocketServer(
       }
 
       const { event, id, payload } = envelope;
+
+      // Check if it's a dynamic handler registered for this session
+      if (dynamicHandlers.has(event)) {
+        await dynamicHandlers.get(event)!(envelope);
+        return;
+      }
 
       switch (event) {
         case HANDLE_REMOTE_CHANNEL: {
@@ -89,15 +98,9 @@ export function setupWebsocketServer(
           const ih = await handlers.remoteIntentHandler(props.intent);
           // Create a unique sub-event name the client will use to invoke the handler
           const handlerId = uuidv4();
-          // Register a listener for that sub-event on subsequent messages
-          ws.on('message', async (raw2: Buffer | string) => {
-            let env2: WsEnvelope;
-            try {
-              env2 = JSON.parse(raw2.toString()) as WsEnvelope;
-            } catch {
-              return;
-            }
-            if (env2.event === handlerId && env2.id) {
+          // Register dynamic handler
+          dynamicHandlers.set(handlerId, async (env2: WsEnvelope) => {
+            if (env2.id) {
               const result = await ih(env2.payload.context, env2.payload.metadata);
               ack(ws, env2.id, result);
             }
@@ -123,6 +126,10 @@ export function setupWebsocketServer(
           if (typeof event === 'string' && event.startsWith('ack:')) {
             break;
           }
+          // Do not log dynamic handler events here even if somehow they fall through
+          if (dynamicHandlers.has(event)) {
+            break;
+          }
           console.log('Unknown event:', event);
       }
     });
@@ -130,6 +137,7 @@ export function setupWebsocketServer(
     ws.on('close', () => {
       console.log('WebSocket client disconnected');
       disconnectCallback(ws);
+      dynamicHandlers.clear();
     });
   });
 }
