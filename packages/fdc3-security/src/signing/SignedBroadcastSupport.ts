@@ -38,6 +38,6 @@ export class BasicSignedBroadcaster implements SignedBroadcaster {
       antiReplay,
     };
     const { context: packedContext, metadata: packedMetadata } = this.metadataHandler.pack(context, newMeta);
-    this.channel.broadcast(packedContext, packedMetadata);
+    await this.channel.broadcast(packedContext, packedMetadata);
   }
 }
