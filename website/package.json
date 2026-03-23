@@ -4,9 +4,11 @@
     "examples": "docusaurus-examples",
     "prestart": "npm run copy-schemas && npm run copy-appd && node schema2Markdown.js",
     "start": "docusaurus start",
-    "prebuild": "npm run parent-build && npm run copy-schemas && npm run copy-appd && npm run copy-workbench && npm run copy-conformance && npm run copy-reference-ui && node schema2Markdown.js && npm run copy-workbench && npm run copy-explained && npm run copy-example-apps",
+    "prebuild": "npm run parent-build && npm run copy-schemas && npm run copy-appd && npm run copy-workbench && npm run copy-conformance && npm run copy-reference-ui && node schema2Markdown.js && npm run copy-explained && npm run copy-example-apps && node replaceLocalhostUrls.js",
+
     "build": "docusaurus build",
-    "build-temp": "npm run copy-schemas && npm run copy-appd && npm run copy-workbench && npm run copy-reference-ui && node schema2Markdown.js && npm run copy-workbench && npm run copy-explained && npm run copy-example-apps && docusaurus build",
+    "build-temp": "npm run copy-schemas && npm run copy-appd && npm run copy-workbench && npm run copy-reference-ui && node schema2Markdown.js && npm run copy-explained && npm run copy-example-apps && node replaceLocalhostUrls.js && docusaurus build"
+,
     "parent-build": "cd .. && npm install && npm run build",
     "copy-schemas": "del-cli static/schemas/next/*/ && cpy \"../packages/fdc3-schema/schemas/**\" static/schemas/next/ && cpy \"../packages/fdc3-context/schemas/context\" static/schemas/next/",
     "copy-appd": "cpy \"../packages/fdc3-standard/src/app-directory/specification/*.schema.json\" \"static/schemas/next/\"",

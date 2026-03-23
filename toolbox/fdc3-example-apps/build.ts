@@ -36,13 +36,16 @@ async function runBuilds() {
 
   for (const app of apps) {
     console.log(`\n--- Building Front-End App: ${app.name} ---`);
+    const outDir = path.resolve(distDir, app.name);
+
     await build({
       root: app.root,
       base: './',
       build: {
-        outDir: path.resolve(distDir, app.name),
+        outDir: outDir,
         emptyOutDir: false,
       },
+      publicDir: 'static', // Vite will flatten contents of 'static' into the root of 'dist/[appName]'
     });
   }
 

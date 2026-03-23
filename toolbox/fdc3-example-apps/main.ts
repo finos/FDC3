@@ -80,7 +80,7 @@ async function startApp(appName: string, appRoot: string, port: number) {
   // and legacy patterns from the demo.
   const staticPath = path.join(appRoot, 'static');
   if (fs.existsSync(staticPath)) {
-    app.use(`/static/`, express.static(staticPath));
+    app.use(express.static(staticPath));
   }
 
   // Each app gets its own isolated Vite server
