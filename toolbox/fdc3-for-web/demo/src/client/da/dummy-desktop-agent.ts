@@ -3,7 +3,9 @@ import { v4 as uuid } from 'uuid';
 import { APP_GOODBYE, DA_HELLO, FDC3_APP_EVENT } from '../../message-types';
 import { DemoServerContext } from './DemoServerContext';
 import { FDC3_2_1_JSONDirectory } from './FDC3_2_1_JSONDirectory';
+import { APPD_URLS } from './config';
 import { AppRegistration, DefaultFDC3Server, DirectoryApp, ServerContext } from '@finos/fdc3-web-impl';
+
 import { ChannelState, ChannelType } from '@finos/fdc3-web-impl/src/handlers/BroadcastHandler';
 import { UI, UI_URLS } from './util';
 import { BrowserTypes } from '@finos/fdc3-schema';
@@ -55,8 +57,14 @@ window.addEventListener('load', () => {
     socket.emit(DA_HELLO, desktopAgentUUID);
 
     const directory = new FDC3_2_1_JSONDirectory();
-    await directory.load('/static/da/appd.json');
-    await directory.load('/static/da/local-conformance.v2.json');
+    for (const url of APPD_URLS) {
+      try {
+        await directory.load(url);
+      } catch (e) {
+        console.warn(`Failed to load app directory from ${url}`, e);
+      }
+    }
+
     const sc = new DemoServerContext(socket, directory);
 
     const channelDetails: ChannelState[] = [
