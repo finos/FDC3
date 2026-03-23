@@ -1,0 +1,10 @@
+.state {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #2c3e50;
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+  padding: 0;
+  margin-bottom: 0;
+}

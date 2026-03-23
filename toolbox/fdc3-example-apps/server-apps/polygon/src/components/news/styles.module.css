@@ -1,0 +1,92 @@
+.newsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  background-color: #f9f9f9;
+}
+
+.newsItem {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex-basis: 5rem;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.newsHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 0.7rem;
+  font-family: sans-serif;
+}
+
+.publisherLogo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.newsTitle {
+  font-size: 1.5em;
+  margin: 0;
+}
+
+.newsTitle a {
+  text-decoration: none;
+  color: #333;
+}
+
+.newsMeta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9em;
+  color: #666;
+  margin-top: 5px;
+}
+
+.newsImage {
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+  border-radius: 8px;
+}
+
+.newsDescription {
+  margin-top: 10px;
+  font-size: 1em;
+  color: #444;
+}
+
+.newsInsights {
+  margin-top: 15px;
+}
+
+.newsInsights h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.2em;
+}
+
+.newsInsights ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.newsInsights li {
+  margin-bottom: 5px;
+  font-size: 0.9em;
+  color: #555;
+}
+
+.newsAuthor {
+  font-size: 0.8rem;
+}
+
+.newsDate {
+  font-size: 0.8rem;
+}

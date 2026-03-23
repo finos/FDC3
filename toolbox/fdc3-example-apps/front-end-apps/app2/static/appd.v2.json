@@ -1,0 +1,19 @@
+{
+    "applications": [
+        {
+            "appId": "app2",
+            "name": "App Two",
+            "title": "Receiver",
+            "description": "App will connect to the desktop agent on startup and listen to messages on the red channel",
+            "type": "web",
+            "details": {
+                "url": "http://localhost:4000/static/app2/index.html"
+            },
+            "hostManifests": {},
+            "version": "1.0.0",
+            "publisher": "FINOS",
+            "icons": []
+        }
+    ],
+    "message": "OK"
+}

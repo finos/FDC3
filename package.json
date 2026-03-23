@@ -30,8 +30,10 @@
     "toolbox/fdc3-for-web/reference-ui",
     "toolbox/fdc3-for-web/demo",
     "toolbox/fdc3-workbench",
-    "toolbox/fdc3-conformance"
+    "toolbox/fdc3-conformance",
+    "toolbox/fdc3-example-apps"
   ],
+
   "scripts": {
     "clean": "npm run clean --workspaces --if-present",
     "build": "npm run build --workspaces --if-present",
