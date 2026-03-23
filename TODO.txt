@@ -24,15 +24,22 @@ Next
 
 11. Re-write the feature files for testing the implementation, including the trust boundary.
 13. Use the new testing steps project.
-14. We need to encrypt user JWTs in transit using the requester's public key. (DONE IN SPEC)
-16. User Request needs a nonce
+14. We need to encrypt user JWTs in transit using the requester's public key. (DONE)
+16. User Request needs a nonce - IS ANTI REPLAY ENOUGH?
 17. Link to GetUser intent page.
-18. HandleEncryptedContext -> We need a function for this.
+18. HandleEncryptedContext -> We need a function for this. (DONE)
+
+## Coding side
+
 19. Add interfaces in trust boundary.
-20. Add comment the signing example to explain that arg 0 is the context, arg1 is metadata.  Actually just use consts.
+36. Create toolbox/sample-apps and add the security apps in there.
+
+## Documentation side
+
 21. Authenticity is set by the signature checker fdc3.addContextListener("fdc3.instrument", (context, metadata) => {  not this.  Rem
-22. "FDC3 security layer" -> confusing.   Can we clearly differentiate the JavaScript stuff.  
 23. "How to do this in javascript" box - Admonition.  Have a parallel file for the JavaScript walkthrough.
+20. Add comment the signing example to explain that arg 0 is the context, arg1 is metadata.  Actually just use consts.
+22. "FDC3 security layer" -> confusing.   Can we clearly differentiate the JavaScript stuff.  
 24. Diagram for signing.  
 25. Use sender / receiver.
 26. "--some encrypted content --" -- improve this description
@@ -45,5 +52,3 @@ Next
 33. Do we even need to mention private channels?  Also the listener should block
 34. AppA -> ReceiverApp AppB-> BroadcasterApp
 35. Make it clear we're broadcasting on the channel.
-36. Create toolbox/sample-apps and add the security apps in there.
-
