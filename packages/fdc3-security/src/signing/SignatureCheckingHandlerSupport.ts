@@ -37,11 +37,10 @@ export class BasicSignatureCheckingHandlerSupport {
       const { context, metadata } = this.metadataHandler.unpack(contextIn, metaIn);
       const { signature, antiReplay } = metadata;
       const authenticity = await this.signatureCheckingFunction(signature, context, antiReplay);
-      const { context: repackedContext, metadata: repackedMetadata } = this.metadataHandler.pack(context, {
+      return await handler(context, {
         ...metadata,
         authenticity,
-      });
-      return await (handler(repackedContext, repackedMetadata) as any);
+      } satisfies DesktopAgentProvidableContextMetadata);
     };
   }
 }
