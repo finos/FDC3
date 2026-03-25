@@ -2,6 +2,7 @@ import { DesktopAgentProxy } from './DesktopAgentProxy';
 import { Messaging } from './Messaging';
 import { AbstractMessaging } from './messaging/AbstractMessaging';
 import { DefaultChannel } from './channels/DefaultChannel';
+import { DefaultPrivateChannel } from './channels/DefaultPrivateChannel';
 import { ChannelSupport } from './channels/ChannelSupport';
 import { DefaultIntentSupport } from './intents/DefaultIntentSupport';
 import { DefaultChannelSupport } from './channels/DefaultChannelSupport';
@@ -18,6 +19,7 @@ export {
   AbstractMessaging,
   DesktopAgentProxy,
   DefaultChannel,
+  DefaultPrivateChannel,
   type AppSupport,
   type IntentSupport,
   type ChannelSupport,
