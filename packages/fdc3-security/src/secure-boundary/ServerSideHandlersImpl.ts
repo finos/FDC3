@@ -13,8 +13,8 @@ import {
 } from './MessageTypes';
 import { v4 as uuidv4 } from 'uuid';
 import { WebSocketMessaging } from './WebSocketMessaging';
-import { DefaultPrivateChannel } from '@finos/fdc3-agent-proxy/src/channels/DefaultPrivateChannel';
-import { DefaultChannel } from '@finos/fdc3-agent-proxy';
+import { DefaultChannel } from '@finos/fdc3-agent-proxy/dist/src/channels/DefaultChannel.js';
+import { DefaultPrivateChannel } from '@finos/fdc3-agent-proxy/dist/src/channels/DefaultPrivateChannel.js';
 
 export type DisconnectCallback = (ws: WebSocket) => void;
 
@@ -82,11 +82,11 @@ export function setupWebsocketServer(
           const data = payload as HandleRemoteChannelMessage;
           if (data.type === 'private') {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const channel = new DefaultPrivateChannel(messaging as any, 1000, data.channelId);
+            const channel = new DefaultPrivateChannel(messaging as any, 1000, data.channelId) as any;
             await handlers.handleRemoteChannel(data.purpose, channel);
           } else {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const channel = new DefaultChannel(messaging as any, 1000, data.channelId, data.type);
+            const channel = new DefaultChannel(messaging as any, 1000, data.channelId, data.type) as any;
             await handlers.handleRemoteChannel(data.purpose, channel);
           }
           if (id) ack(ws, id, true);

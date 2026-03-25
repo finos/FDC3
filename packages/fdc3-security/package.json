@@ -32,7 +32,8 @@
   "peerDependencies": {
     "@finos/fdc3-context": "^2.2.0",
     "@finos/fdc3-schema": "^2.2.0",
-    "@finos/fdc3-standard": "^2.2.0"
+    "@finos/fdc3-standard": "^2.2.0",
+    "@finos/fdc3-agent-proxy": "2.2.0"
   },
   "devDependencies": {
     "@cucumber/cucumber": "10.3.1",

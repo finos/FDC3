@@ -18,6 +18,7 @@ export {
   AbstractMessaging,
   DesktopAgentProxy,
   DefaultChannel,
+  DefaultPrivateChannel,
   type AppSupport,
   type IntentSupport,
   type ChannelSupport,
