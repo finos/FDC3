@@ -7,10 +7,10 @@ import {
   IntentListenerUnsubscribeResponse,
   PrivateChannelUnsubscribeEventListenerRequest,
   PrivateChannelUnsubscribeEventListenerResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+} from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { AutomaticResponse, TestMessaging } from '../TestMessaging.js';
 import { createResponseMeta } from './support.js';
-import { EventListenerUnsubscribeResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { EventListenerUnsubscribeResponse } from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 type Requests =
   | IntentListenerUnsubscribeRequest

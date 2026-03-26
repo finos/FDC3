@@ -8,14 +8,14 @@ import {
   IntentResult,
   IntentResolver,
   IntentResolutionChoice,
-} from '@finos/fdc3-standard';
+} from '@robmoffat/fdc3-standard';
 import { IntentSupport } from './IntentSupport.js';
 import { Messaging } from '../Messaging.js';
 import { DefaultIntentResolution } from './DefaultIntentResolution.js';
 import { DefaultIntentListener } from '../listeners/DefaultIntentListener.js';
 import { DefaultChannel } from '../channels/DefaultChannel.js';
 import { DefaultPrivateChannel } from '../channels/DefaultPrivateChannel.js';
-import { Context } from '@finos/fdc3-context';
+import { Context } from '@robmoffat/fdc3-context';
 import {
   FindIntentRequest,
   FindIntentResponse,
@@ -26,7 +26,7 @@ import {
   RaiseIntentRequest,
   RaiseIntentResponse,
   RaiseIntentResultResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+} from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { throwIfUndefined } from '../util/throwIfUndefined.js';
 
 const convertIntentResult = async (

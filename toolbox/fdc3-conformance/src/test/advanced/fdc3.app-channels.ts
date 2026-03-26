@@ -3,7 +3,7 @@ import { wait } from '../../utils';
 import constants from '../../constants';
 import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE } from '../support/channel-control';
 import { ChannelControlImpl } from '../support/channels-support';
-import { getAgent } from '@finos/fdc3';
+import { getAgent } from '@robmoffat/fdc3';
 import { APIDocumentation } from '../support/apiDocuments';
 
 const documentation = '\r\nDocumentation: ' + APIDocumentation.desktopAgent + '\r\nCause:';

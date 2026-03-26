@@ -1,8 +1,8 @@
 import { When } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
 import { createMeta } from './generic.steps.js';
-import { handleResolve } from '@finos/testing';
-import { BrowserTypes } from '@finos/fdc3-schema';
+import { handleResolve } from '@robmoffat/testing';
+import { BrowserTypes } from '@robmoffat/fdc3-schema';
 type GetOrCreateChannelRequest = BrowserTypes.GetOrCreateChannelRequest;
 
 When('{string} creates or gets an app channel called {string}', (world: CustomWorld, app: string, channel: string) => {

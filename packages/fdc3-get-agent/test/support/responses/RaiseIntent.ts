@@ -1,7 +1,7 @@
 import { TestServerContext } from '../TestServerContext.js';
-import { InstanceID } from '@finos/fdc3-web-impl';
+import { InstanceID } from '@robmoffat/fdc3-web-impl';
 import { AutomaticResponse } from './AutomaticResponses.js';
-import { RaiseIntentRequest, RaiseIntentResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { RaiseIntentRequest, RaiseIntentResponse } from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 export class RaiseIntent implements AutomaticResponse {
   filter(t: string) {

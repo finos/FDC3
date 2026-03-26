@@ -1,4 +1,4 @@
-import { IntentResultRequest, IntentResultResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { IntentResultRequest, IntentResultResponse } from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { AutomaticResponse, TestMessaging } from '../TestMessaging.js';
 
 export class IntentResult implements AutomaticResponse {

@@ -1,7 +1,7 @@
 import {
   FindIntentsByContextRequest,
   FindIntentsByContextResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+} from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { AutomaticResponse, IntentDetail, TestMessaging, intentDetailMatches } from '../TestMessaging.js';
 import { createResponseMeta } from './support.js';
 

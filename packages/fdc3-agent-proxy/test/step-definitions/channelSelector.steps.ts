@@ -1,7 +1,7 @@
 import { Given, When } from 'quickpickle';
-import { SimpleIntentResolver } from '@finos/testing';
+import { SimpleIntentResolver } from '@robmoffat/testing';
 import { CustomWorld } from '../world/index.js';
-import { CHANNEL_STATE } from '@finos/testing';
+import { CHANNEL_STATE } from '@robmoffat/testing';
 import {
   DefaultChannelSupport,
   DefaultHeartbeatSupport,
@@ -11,7 +11,7 @@ import {
 } from '../../src/index.js';
 import { TestChannelSelector } from '../support/TestChannelSelector.js';
 import { TestMessaging } from '../support/TestMessaging.js';
-import { LogLevel } from '@finos/fdc3-standard';
+import { LogLevel } from '@robmoffat/fdc3-standard';
 
 //Update this to enable debug output when debugging test failures
 const logLevel = LogLevel.WARN;

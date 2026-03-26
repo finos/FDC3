@@ -1,5 +1,5 @@
 import { closeWindowOnCompletion, sendContextToTests } from './mock-functions';
-import { getAgent, Context } from '@finos/fdc3';
+import { getAgent, Context } from '@robmoffat/fdc3';
 import { AppControlContext } from '../context-types';
 import { appIdMatches } from '../utils';
 

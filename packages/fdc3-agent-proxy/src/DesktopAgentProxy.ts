@@ -10,12 +10,12 @@ import {
   IntentResolution,
   Listener,
   LogLevel,
-} from '@finos/fdc3-standard';
+} from '@robmoffat/fdc3-standard';
 import { ChannelSupport } from './channels/ChannelSupport.js';
 import { AppSupport } from './apps/AppSupport.js';
 import { IntentSupport } from './intents/IntentSupport.js';
-import { Connectable, Channel } from '@finos/fdc3-standard';
-import { Context } from '@finos/fdc3-context';
+import { Connectable, Channel } from '@robmoffat/fdc3-standard';
+import { Context } from '@robmoffat/fdc3-context';
 import { HeartbeatSupport } from './heartbeat/HeartbeatSupport.js';
 import { Logger } from './util/Logger.js';
 

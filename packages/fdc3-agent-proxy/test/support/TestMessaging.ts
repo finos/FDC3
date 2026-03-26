@@ -1,5 +1,5 @@
-import { AppIdentifier, ResolveError } from '@finos/fdc3-standard';
-import { Context } from '@finos/fdc3-context';
+import { AppIdentifier, ResolveError } from '@robmoffat/fdc3-standard';
+import { Context } from '@robmoffat/fdc3-context';
 import { v4 as uuidv4 } from 'uuid';
 import { AbstractMessaging } from '../../src/messaging/AbstractMessaging.js';
 import { RegisterableListener } from '../../src/listeners/RegisterableListener.js';
@@ -24,7 +24,7 @@ import {
   AppRequestMessage,
   Channel,
   WebConnectionProtocol6Goodbye,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+} from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { GetInfo } from './responses/GetInfo.js';
 import { AddEventListener } from './responses/AddEventListener.js';
 

@@ -5,7 +5,7 @@ import {
   AgentError,
   AppIdentifier,
   LogLevel,
-} from '@finos/fdc3-standard';
+} from '@robmoffat/fdc3-standard';
 import { createDesktopAgentAPI } from '../messaging/message-port.js';
 import { DesktopAgentSelection } from './Loader.js';
 import { v4 as uuidv4 } from 'uuid';

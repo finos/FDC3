@@ -1,7 +1,10 @@
 import { TestServerContext } from '../TestServerContext.js';
-import { InstanceID } from '@finos/fdc3-web-impl';
+import { InstanceID } from '@robmoffat/fdc3-web-impl';
 import { AutomaticResponse } from './AutomaticResponses.js';
-import { GetUserChannelsRequest, GetUserChannelsResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import {
+  GetUserChannelsRequest,
+  GetUserChannelsResponse,
+} from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 export const USER_CHANNELS = [
   {

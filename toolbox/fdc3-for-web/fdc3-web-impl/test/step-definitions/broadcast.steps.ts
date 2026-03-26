@@ -1,10 +1,10 @@
 import { When } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
 import { createMeta } from './generic.steps.js';
-import {} from '@finos/fdc3-standard';
-import { handleResolve } from '@finos/testing';
+import {} from '@robmoffat/fdc3-standard';
+import { handleResolve } from '@robmoffat/testing';
 import { contextMap } from './generic.steps.js';
-import { BrowserTypes } from '@finos/fdc3-schema';
+import { BrowserTypes } from '@robmoffat/fdc3-schema';
 
 type AddContextListenerRequest = BrowserTypes.AddContextListenerRequest;
 type ContextListenerUnsubscribeRequest = BrowserTypes.ContextListenerUnsubscribeRequest;

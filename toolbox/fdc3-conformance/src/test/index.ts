@@ -1,5 +1,5 @@
 export * from './testSuite';
-import { getAgent } from '@finos/fdc3';
+import { getAgent } from '@robmoffat/fdc3';
 import { getPackMembers, getPackNames, executeTestsInBrowser, executeManualTestsInBrowser } from './testSuite';
 import { ProgressReporter } from './progressReporter';
 

@@ -1,4 +1,4 @@
-import { getAgent } from '@finos/fdc3-get-agent';
+import { getAgent } from '@robmoffat/fdc3-get-agent';
 
 function createContext(i: number) {
   return {

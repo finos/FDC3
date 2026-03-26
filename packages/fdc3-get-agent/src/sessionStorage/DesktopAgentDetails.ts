@@ -1,4 +1,4 @@
-import { DesktopAgentDetails, DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX } from '@finos/fdc3-standard';
+import { DesktopAgentDetails, DESKTOP_AGENT_SESSION_STORAGE_KEY_PREFIX } from '@robmoffat/fdc3-standard';
 import { Logger } from '../util/Logger.js';
 import { createUUID } from '../util/Uuid.js';
 

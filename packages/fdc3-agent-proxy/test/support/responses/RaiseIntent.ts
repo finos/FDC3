@@ -2,9 +2,9 @@ import {
   RaiseIntentRequest,
   RaiseIntentResponse,
   RaiseIntentResultResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+} from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { AutomaticResponse, IntentDetail, intentDetailMatches, TestMessaging } from '../TestMessaging.js';
-import { AppMetadata, ResolveError } from '@finos/fdc3-standard';
+import { AppMetadata, ResolveError } from '@robmoffat/fdc3-standard';
 import { createResponseMeta } from './support.js';
 
 export class RaiseIntent implements AutomaticResponse {

@@ -1,9 +1,9 @@
 import { Given } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
-import { handleResolve } from '@finos/testing';
-import { Context } from '@finos/fdc3-context';
-import { ContextMetadata, ResolveError } from '@finos/fdc3-standard';
-import { IntentEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { handleResolve } from '@robmoffat/testing';
+import { Context } from '@robmoffat/fdc3-context';
+import { ContextMetadata, ResolveError } from '@robmoffat/fdc3-standard';
+import { IntentEvent } from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 Given('app {string}', (world: CustomWorld, appStr: string) => {
   const [appId, instanceId] = appStr.split('/');

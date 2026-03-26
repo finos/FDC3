@@ -2,7 +2,7 @@ import {
   AgentEventMessage,
   HeartbeatAcknowledgementRequest,
   HeartbeatEvent,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+} from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { Messaging } from '../Messaging.js';
 import { RegisterableListener } from './RegisterableListener.js';
 import { Logger } from '../util/Logger.js';

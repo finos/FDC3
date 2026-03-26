@@ -1,4 +1,4 @@
-import { AppIdentifier, IntentResolution, IntentResult } from '@finos/fdc3-standard';
+import { AppIdentifier, IntentResolution, IntentResult } from '@robmoffat/fdc3-standard';
 import { Messaging } from '../Messaging.js';
 
 export class DefaultIntentResolution implements IntentResolution {

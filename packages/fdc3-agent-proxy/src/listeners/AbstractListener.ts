@@ -16,11 +16,11 @@ import {
   IntentListenerUnsubscribeResponse,
   EventListenerUnsubscribeResponse,
   PrivateChannelUnsubscribeEventListenerResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+} from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { Messaging } from '../Messaging.js';
 import { RegisterableListener } from './RegisterableListener.js';
 import { throwIfUndefined } from '../util/throwIfUndefined.js';
-import { ChannelError } from '@finos/fdc3-standard';
+import { ChannelError } from '@robmoffat/fdc3-standard';
 
 type SubscriptionRequest =
   | AddContextListenerRequest

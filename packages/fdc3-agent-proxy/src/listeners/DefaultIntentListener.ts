@@ -1,5 +1,5 @@
-import { IntentHandler, IntentResult, AppIdentifier } from '@finos/fdc3-standard';
-import { Context } from '@finos/fdc3-context';
+import { IntentHandler, IntentResult, AppIdentifier } from '@robmoffat/fdc3-standard';
+import { Context } from '@robmoffat/fdc3-context';
 import { Messaging } from '../Messaging.js';
 import { AbstractListener } from './AbstractListener.js';
 import {
@@ -8,7 +8,7 @@ import {
   IntentResultRequest,
   IntentResultResponse,
   //RaiseIntentResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+} from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIntentListenerRequest> {
   readonly intent: string;

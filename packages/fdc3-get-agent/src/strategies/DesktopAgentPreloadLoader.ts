@@ -1,5 +1,5 @@
-import { AgentError, DesktopAgent, WebDesktopAgentType } from '@finos/fdc3-standard';
-import { GetAgentParams } from '@finos/fdc3-standard';
+import { AgentError, DesktopAgent, WebDesktopAgentType } from '@robmoffat/fdc3-standard';
+import { GetAgentParams } from '@robmoffat/fdc3-standard';
 import { DesktopAgentSelection, Loader } from './Loader.js';
 import { Logger } from '../util/Logger.js';
 import { DEFAULT_GETAGENT_TIMEOUT_MS } from './Timeouts.js';

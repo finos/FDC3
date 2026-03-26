@@ -1,4 +1,11 @@
-import { Channel, ContextHandler, EventHandler, FDC3EventTypes, Listener, PrivateChannel } from '@finos/fdc3-standard';
+import {
+  Channel,
+  ContextHandler,
+  EventHandler,
+  FDC3EventTypes,
+  Listener,
+  PrivateChannel,
+} from '@robmoffat/fdc3-standard';
 
 export interface ChannelSupport {
   getUserChannel(): Promise<Channel | null>;

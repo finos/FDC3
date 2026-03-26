@@ -1,5 +1,5 @@
 import { InstanceID } from './ServerContext.js';
-import { BrowserTypes } from '@finos/fdc3-schema';
+import { BrowserTypes } from '@robmoffat/fdc3-schema';
 
 type AppRequestMessage = BrowserTypes.AppRequestMessage;
 

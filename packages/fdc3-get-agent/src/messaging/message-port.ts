@@ -1,4 +1,4 @@
-import { AppIdentifier, DesktopAgent, LogLevel } from '@finos/fdc3-standard';
+import { AppIdentifier, DesktopAgent, LogLevel } from '@robmoffat/fdc3-standard';
 import {
   DesktopAgentProxy,
   DefaultChannelSupport,
@@ -6,13 +6,13 @@ import {
   DefaultIntentSupport,
   ChannelSupport,
   DefaultHeartbeatSupport,
-} from '@finos/fdc3-agent-proxy';
+} from '@robmoffat/fdc3-agent-proxy';
 import { ConnectionDetails, MessagePortMessaging } from './MessagePortMessaging.js';
 import { DefaultDesktopAgentIntentResolver } from '../ui/DefaultDesktopAgentIntentResolver.js';
 import { DefaultDesktopAgentChannelSelector } from '../ui/DefaultDesktopAgentChannelSelector.js';
 import { NullIntentResolver } from '../ui/NullIntentResolver.js';
 import { NullChannelSelector } from '../ui/NullChannelSelector.js';
-import { ChannelSelector } from '@finos/fdc3-standard';
+import { ChannelSelector } from '@robmoffat/fdc3-standard';
 import { Logger } from '../util/Logger.js';
 
 /**

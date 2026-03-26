@@ -5,7 +5,7 @@ import { closeMockAppWindow } from '../fdc3-conformance-utils';
 import { IntentUtilityContext } from '../../context-types';
 import { MetadataFdc3Api } from '../support/metadata-support';
 import { ContextType, ControlContextType, Intent, IntentApp, RaiseIntentControl } from '../support/intent-support';
-import { AppIdentifier, DesktopAgent, getAgent, IntentResolution, Listener } from '@finos/fdc3';
+import { AppIdentifier, DesktopAgent, getAgent, IntentResolution, Listener } from '@robmoffat/fdc3';
 
 const findInstancesDocs = '\r\nDocumentation: ' + APIDocumentation.findInstances + '\r\nCause: ';
 

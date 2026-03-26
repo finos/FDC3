@@ -4,9 +4,9 @@ import { TestServerContext } from '../support/TestServerContext.js';
 import { DefaultFDC3Server } from '../../src/BasicFDC3Server.js';
 import { BasicDirectory } from '../../src/directory/BasicDirectory.js';
 import { ChannelType } from '../../src/handlers/BroadcastHandler.js';
-import { Context } from '@finos/fdc3-context';
-import { AppIdentifier } from '@finos/fdc3-standard';
-import { setupGenericSteps } from '@finos/testing';
+import { Context } from '@robmoffat/fdc3-context';
+import { AppIdentifier } from '@robmoffat/fdc3-standard';
+import { setupGenericSteps } from '@robmoffat/testing';
 import path from 'path';
 
 export const APP_FIELD = 'apps';
@@ -112,7 +112,7 @@ export function createMeta(cw: CustomWorld, appStr: string) {
   };
 }
 
-// Register shared generic steps from @finos/testing
+// Register shared generic steps from @robmoffat/testing
 const schemaBasePath = path.join(import.meta.dirname, '../../../../../packages/');
 setupGenericSteps(schemaBasePath);
 

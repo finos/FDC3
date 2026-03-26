@@ -1,10 +1,10 @@
-import { AppIdentifier } from '@finos/fdc3-standard';
+import { AppIdentifier } from '@robmoffat/fdc3-standard';
 import { RegisterableListener } from './listeners/RegisterableListener.js';
 import {
   AppRequestMessage,
   AgentResponseMessage,
   WebConnectionProtocol6Goodbye,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+} from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 export interface Messaging {
   /**

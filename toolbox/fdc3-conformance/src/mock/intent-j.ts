@@ -1,5 +1,5 @@
 import { closeWindowOnCompletion, sendContextToTests, validateContext } from './mock-functions';
-import { ChannelError, getAgent } from '@finos/fdc3';
+import { ChannelError, getAgent } from '@robmoffat/fdc3';
 import { ContextType, ControlContextType, Intent } from '../test/support/intent-support';
 
 getAgent().then(async fdc3 => {

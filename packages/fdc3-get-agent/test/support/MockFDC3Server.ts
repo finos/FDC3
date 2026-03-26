@@ -1,4 +1,4 @@
-import { FDC3Server, InstanceID, State } from '@finos/fdc3-web-impl';
+import { FDC3Server, InstanceID, State } from '@robmoffat/fdc3-web-impl';
 import { TestServerContext } from './TestServerContext.js';
 import { MockWindow } from './MockWindow.js';
 import { AutomaticResponse } from './responses/AutomaticResponses.js';
@@ -13,7 +13,7 @@ import {
   AppRequestMessage,
   WebConnectionProtocol2LoadURL,
   WebConnectionProtocol3Handshake,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+} from '@robmoffat/fdc3-schema/generated/api/BrowserTypes';
 import { AddEventListener } from './responses/AddEventListener';
 import { UnsubscribeEventListener } from './responses/UnsubscribeEventListener';
 

@@ -2,9 +2,9 @@ import { assert, expect } from 'chai';
 import { wait } from '../../utils';
 import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from '../support/channel-control';
 import constants from '../../constants';
-import { Context } from '@finos/fdc3';
+import { Context } from '@robmoffat/fdc3';
 import { ChannelControlImpl } from '../support/channels-support';
-import { getAgent } from '@finos/fdc3';
+import { getAgent } from '@robmoffat/fdc3';
 import { APIDocumentation } from '../support/apiDocuments';
 
 const documentation = '\r\nDocumentation: ' + APIDocumentation.desktopAgent + '\r\nCause:';

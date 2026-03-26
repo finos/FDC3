@@ -1,9 +1,9 @@
-import { AppIntent } from '@finos/fdc3-standard';
-import { IntentResolver, IntentResolutionChoice } from '@finos/fdc3-standard';
+import { AppIntent } from '@robmoffat/fdc3-standard';
+import { IntentResolver, IntentResolutionChoice } from '@robmoffat/fdc3-standard';
 import { AbstractUIComponent, DEFAULT_UI_ROOT_URL } from './AbstractUIComponent.js';
-import { Context } from '@finos/fdc3-context';
+import { Context } from '@robmoffat/fdc3-context';
 import { Logger } from '../util/Logger.js';
-import { BrowserTypes } from '@finos/fdc3-schema';
+import { BrowserTypes } from '@robmoffat/fdc3-schema';
 const { isFdc3UserInterfaceResolveAction } = BrowserTypes;
 type Fdc3UserInterfaceResolve = BrowserTypes.Fdc3UserInterfaceResolve;
 

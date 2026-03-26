@@ -8,7 +8,7 @@ import {
   ContextMetadata,
   DesktopAgent,
   ImplementationMetadata,
-} from '@finos/fdc3';
+} from '@robmoffat/fdc3';
 import constants from '../../constants';
 import { APIDocumentation } from './apiDocuments';
 

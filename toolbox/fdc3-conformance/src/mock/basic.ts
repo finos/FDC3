@@ -1,5 +1,5 @@
 import { closeWindowOnCompletion, sendContextToTests } from './mock-functions';
-import { getAgent } from '@finos/fdc3';
+import { getAgent } from '@robmoffat/fdc3';
 import { AppControlContext } from '../context-types';
 import { ControlContextType, Intent } from '../test/support/intent-support';
 

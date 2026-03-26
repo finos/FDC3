@@ -3,7 +3,7 @@ import { CustomWorld } from '../world/index.js';
 import {
   HeartbeatAcknowledgementRequest,
   WebConnectionProtocol6Goodbye,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+} from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { createMeta } from './generic.steps.js';
 import { HeartbeatHandler } from '../../src/handlers/HeartbeatHandler.js';
 

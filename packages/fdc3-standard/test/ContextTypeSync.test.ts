@@ -26,7 +26,7 @@ function extractContextType(schemaPath: string): string | null {
  * the set of fdc3.* type strings they define.
  */
 function getSchemaContextTypes(): Set<string> {
-  const fdc3ContextEntry = require.resolve('@finos/fdc3-context');
+  const fdc3ContextEntry = require.resolve('@robmoffat/fdc3-context');
   const schemasDir = resolve(dirname(fdc3ContextEntry), '../schemas/context');
   const types = new Set<string>();
 

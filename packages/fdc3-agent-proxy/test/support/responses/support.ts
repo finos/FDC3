@@ -1,4 +1,4 @@
-import { AppRequestMessageMeta, AgentResponseMessage } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { AppRequestMessageMeta, AgentResponseMessage } from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { v4 as uuidv4 } from 'uuid';
 
 export function createResponseMeta(m: AppRequestMessageMeta): AgentResponseMessage['meta'] {

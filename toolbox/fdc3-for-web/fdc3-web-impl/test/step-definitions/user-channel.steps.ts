@@ -1,8 +1,8 @@
 import { When } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
 import { createMeta } from './generic.steps.js';
-import { BrowserTypes } from '@finos/fdc3-schema';
-import { handleResolve } from '@finos/testing';
+import { BrowserTypes } from '@robmoffat/fdc3-schema';
+import { handleResolve } from '@robmoffat/testing';
 
 type GetUserChannelsRequest = BrowserTypes.GetUserChannelsRequest;
 type GetCurrentChannelRequest = BrowserTypes.GetCurrentChannelRequest;
