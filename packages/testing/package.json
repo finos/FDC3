@@ -1,6 +1,10 @@
 {
   "name": "@finos/testing",
+<<<<<<< HEAD
   "version": "2.2.2",
+=======
+  "version": "3.0.0-alpha.2",
+>>>>>>> 76c34ae5 (Updated to 3.0.0-alpha.2)
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -36,7 +40,11 @@
     "quickpickle": "^1.4.1",
     "@cucumber/html-formatter": "23.1.0",
     "@cucumber/pretty-formatter": "1.0.1",
+<<<<<<< HEAD
     "@finos/fdc3-standard": "2.2.2",
+=======
+    "@finos/fdc3-standard": "3.0.0-alpha.2",
+>>>>>>> 76c34ae5 (Updated to 3.0.0-alpha.2)
     "@types/expect": "24.3.0",
     "@types/lodash": "4.14.167",
     "@types/uuid": "^10.0.0",

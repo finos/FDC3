@@ -1,6 +1,10 @@
 {
   "name": "fdc3-conformance",
+<<<<<<< HEAD
   "version": "2.2.2",
+=======
+  "version": "3.0.0-alpha.2",
+>>>>>>> 76c34ae5 (Updated to 3.0.0-alpha.2)
   "homepage": "https://fdc3.finos.org",
   "repository": {
     "type": "git",
@@ -16,7 +20,11 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@finos/fdc3": "2.2.2",
+=======
+    "@finos/fdc3": "3.0.0-alpha.2",
+>>>>>>> 76c34ae5 (Updated to 3.0.0-alpha.2)
     "buffer": "^6.0.3",
     "chai": "^4.3.6",
     "get-func-name": "^2.0.2",

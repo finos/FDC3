@@ -1,7 +1,11 @@
 {
   "name": "@finos/demo",
   "private": true,
+<<<<<<< HEAD
   "version": "2.2.2",
+=======
+  "version": "3.0.0-alpha.2",
+>>>>>>> 76c34ae5 (Updated to 3.0.0-alpha.2)
   "license": "Apache-2.0",
   "scripts": {
     "dev": "tsx src/server/main.ts",
@@ -22,7 +26,11 @@
     "vite": "^6.4.2"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@finos/fdc3": "2.2.2",
+=======
+    "@finos/fdc3": "3.0.0-alpha.2",
+>>>>>>> 76c34ae5 (Updated to 3.0.0-alpha.2)
     "@types/uuid": "^10.0.0",
     "@types/ws": "^8.5.12",
     "express": "^4.22.2",
