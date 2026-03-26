@@ -3,13 +3,18 @@ import { BrowserTypes } from '@finos/fdc3-schema';
 
 type AntiReplay = BrowserTypes.AntiReplayClaims;
 import * as jose from 'jose';
-import { DEFAULT_FDC3_ALGORITHMS, FDC3SecurityAlgorithms } from './FDC3SecurityAlgorithms';
-import { DEFAULT_FDC3_TIME_LIMITS, FDC3SecurityTimeLimits } from './FDC3SecurityTimeLimits';
-import { FDC3UserClaims } from './FDC3UserClaims';
-import { PrivateFDC3Security } from './PrivateFDC3Security';
-import { JSONWebEncryption, JsonWebKeyWithId } from './PublicFDC3Security';
-import { AllowListFunction, JosePublicFDC3Security, JWEProtectedHeader, JWKSResolver } from './JosePublicFDC3Security';
-import { AntiReplayChecker, DefaultAntiReplayChecker } from './AntiReplayChecker';
+import { DEFAULT_FDC3_ALGORITHMS, FDC3SecurityAlgorithms } from './FDC3SecurityAlgorithms.js';
+import { DEFAULT_FDC3_TIME_LIMITS, FDC3SecurityTimeLimits } from './FDC3SecurityTimeLimits.js';
+import { FDC3UserClaims } from './FDC3UserClaims.js';
+import { PrivateFDC3Security } from './PrivateFDC3Security.js';
+import { JSONWebEncryption, JsonWebKeyWithId } from './PublicFDC3Security.js';
+import {
+  AllowListFunction,
+  JosePublicFDC3Security,
+  JWEProtectedHeader,
+  JWKSResolver,
+} from './JosePublicFDC3Security.js';
+import { AntiReplayChecker, DefaultAntiReplayChecker } from './AntiReplayChecker.js';
 
 type DetachedSignature = BrowserTypes.DetachedSignature;
 

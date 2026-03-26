@@ -1,7 +1,7 @@
 import { Context, EncryptedContextWrapper } from '@finos/fdc3-context';
 import { Channel, ContextMetadata, Listener } from '@finos/fdc3-standard';
-import { JsonWebKeyWithId, PublicFDC3Security } from '../impl/PublicFDC3Security';
-import { MetadataHandler } from '../delegates/MetadataHandler';
+import { JsonWebKeyWithId, PublicFDC3Security } from '../impl/PublicFDC3Security.js';
+import { MetadataHandler } from '../delegates/MetadataHandler.js';
 
 /**
  * A wrapper around the broadcast function of a channel which will encrypt any context that is broadcast
