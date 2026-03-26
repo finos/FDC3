@@ -1,7 +1,7 @@
 import { Context } from '@finos/fdc3-context';
 import { Channel, ContextMetadata } from '@finos/fdc3-standard';
-import { MetadataHandler } from '../delegates/MetadataHandler';
-import { PrivateFDC3Security } from '../impl/PrivateFDC3Security';
+import { MetadataHandler } from '../delegates/MetadataHandler.js';
+import { PrivateFDC3Security } from '../impl/PrivateFDC3Security.js';
 
 /**
  * A wrapper around the broadcast function of a channel which will sign any context that is broadcast.

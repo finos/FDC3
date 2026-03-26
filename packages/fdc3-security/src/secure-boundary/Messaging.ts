@@ -1,10 +1,6 @@
 import { AppIdentifier } from '@finos/fdc3-standard';
-import {
-  AppRequestMessage,
-  AgentEventMessage,
-  AgentResponseMessage,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
-import { WsEnvelope } from './MessageTypes';
+import { BrowserTypes } from '@finos/fdc3-schema';
+import { WsEnvelope } from './MessageTypes.js';
 
 export interface RegisterableListener {
   id: string;
@@ -23,7 +19,9 @@ export interface Messaging {
   /**
    * Post an outgoing message using the default outgoing event.
    */
-  post(message: AppRequestMessage | AgentEventMessage | AgentResponseMessage): Promise<void>;
+  post(
+    message: BrowserTypes.AppRequestMessage | BrowserTypes.AgentEventMessage | BrowserTypes.AgentResponseMessage
+  ): Promise<void>;
 
   /**
    * Post an outgoing message with a specific event name.

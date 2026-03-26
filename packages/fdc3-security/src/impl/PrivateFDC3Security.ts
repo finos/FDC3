@@ -2,7 +2,7 @@ import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
 import { BrowserTypes } from '@finos/fdc3-schema';
 
 type AntiReplay = BrowserTypes.AntiReplayClaims;
-import { JSONWebEncryption, JsonWebKeyWithId, PublicFDC3Security } from './PublicFDC3Security';
+import { JSONWebEncryption, JsonWebKeyWithId, PublicFDC3Security } from './PublicFDC3Security.js';
 
 type DetachedSignature = BrowserTypes.DetachedSignature;
 

@@ -1,14 +1,10 @@
-import {
-  AppRequestMessage,
-  AgentEventMessage,
-  AgentResponseMessage,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { BrowserTypes } from '@finos/fdc3-schema';
 
 /**
  * These types describe the protocol for cross-secure-boundary messaging,
  * used by the ClientSideHandlersImpl and ServerSideHandlersImpl classes.
  *
- * As far as possible, we use the types defined in @finos/fdc3-schema/generated/api/BrowserTypes (DACP protocol).
+ * As far as possible, we use the types defined in @finos/fdc3-schema (DACP / BrowserTypes).
  */
 export const HANDLE_REMOTE_CHANNEL = 'handle-remote-channel';
 
@@ -70,13 +66,13 @@ export type WsEnvelope =
       event: typeof CLIENT_MESSAGE;
       id?: string;
       ack?: boolean;
-      payload: AppRequestMessage | AgentEventMessage | AgentResponseMessage;
+      payload: BrowserTypes.AppRequestMessage | BrowserTypes.AgentEventMessage | BrowserTypes.AgentResponseMessage;
     }
   | {
       event: typeof SERVER_MESSAGE;
       id?: string;
       ack?: boolean;
-      payload: AppRequestMessage | AgentEventMessage | AgentResponseMessage;
+      payload: BrowserTypes.AppRequestMessage | BrowserTypes.AgentEventMessage | BrowserTypes.AgentResponseMessage;
     }
   | {
       event: string; // Dynamic IDs, ACKs, or custom handlers
