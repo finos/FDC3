@@ -1,6 +1,10 @@
 {
   "name": "@finos/fdc3-context",
+<<<<<<< HEAD
   "version": "2.2.2",
+=======
+  "version": "3.0.0-alpha.2",
+>>>>>>> 76c34ae5 (Updated to 3.0.0-alpha.2)
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
