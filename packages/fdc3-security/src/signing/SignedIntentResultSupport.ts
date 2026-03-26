@@ -1,6 +1,6 @@
 import { IntentResult } from '@finos/fdc3-standard';
-import { PrivateFDC3Security, SigningFunction } from '../impl/PrivateFDC3Security';
-import { MetadataHandler } from '../delegates/MetadataHandler';
+import { PrivateFDC3Security, SigningFunction } from '../impl/PrivateFDC3Security.js';
+import { MetadataHandler } from '../delegates/MetadataHandler.js';
 import { Context } from '@finos/fdc3-context';
 
 /**

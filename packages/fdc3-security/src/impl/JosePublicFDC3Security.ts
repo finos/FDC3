@@ -2,13 +2,13 @@ import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
 import { BrowserTypes } from '@finos/fdc3-schema';
 
 type AntiReplay = BrowserTypes.AntiReplayClaims;
-import canonicalize from 'canonicalize';
+import { canonicalize } from 'json-canonicalize';
 import * as jose from 'jose';
-import { DEFAULT_FDC3_ALGORITHMS, FDC3SecurityAlgorithms } from './FDC3SecurityAlgorithms';
-import { DEFAULT_FDC3_TIME_LIMITS, FDC3SecurityTimeLimits } from './FDC3SecurityTimeLimits';
-import { FDC3UserClaims } from './FDC3UserClaims';
-import { JsonWebKeyWithId, PublicFDC3Security } from './PublicFDC3Security';
-import { AntiReplayChecker, DefaultAntiReplayChecker } from './AntiReplayChecker';
+import { DEFAULT_FDC3_ALGORITHMS, FDC3SecurityAlgorithms } from './FDC3SecurityAlgorithms.js';
+import { DEFAULT_FDC3_TIME_LIMITS, FDC3SecurityTimeLimits } from './FDC3SecurityTimeLimits.js';
+import { FDC3UserClaims } from './FDC3UserClaims.js';
+import { JsonWebKeyWithId, PublicFDC3Security } from './PublicFDC3Security.js';
+import { AntiReplayChecker, DefaultAntiReplayChecker } from './AntiReplayChecker.js';
 
 type MessageAuthenticity = BrowserTypes.MessageAuthenticity;
 type JSONWebEncryption = string;
@@ -156,7 +156,7 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
 
       // Canonicalize both context and antiReplay for verification
       const data1 = canonicalize({ context: ctx, antiReplay });
-      const data2 = jose.base64url.encode(data1!);
+      const data2 = jose.base64url.encode(data1);
       const parts = compactSig.split('.');
       const reconstitutedJws = `${parts[0]}.${data2}.${parts[2]}`;
 

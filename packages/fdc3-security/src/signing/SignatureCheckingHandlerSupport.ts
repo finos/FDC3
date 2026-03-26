@@ -1,6 +1,6 @@
 import { ContextHandler, DesktopAgentProvidableContextMetadata, IntentHandler } from '@finos/fdc3-standard';
-import { MetadataHandler } from '../delegates/MetadataHandler';
-import { PublicFDC3Security, SignatureCheckingFunction } from '../impl/PublicFDC3Security';
+import { MetadataHandler } from '../delegates/MetadataHandler.js';
+import { PublicFDC3Security, SignatureCheckingFunction } from '../impl/PublicFDC3Security.js';
 import { Context } from '@finos/fdc3-context';
 
 /**

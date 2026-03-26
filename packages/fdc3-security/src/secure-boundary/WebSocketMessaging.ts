@@ -1,12 +1,8 @@
-import { CLIENT_MESSAGE, SERVER_MESSAGE, WsEnvelope } from './MessageTypes';
+import { CLIENT_MESSAGE, SERVER_MESSAGE, WsEnvelope } from './MessageTypes.js';
 import { AppIdentifier } from '@finos/fdc3-standard';
 import { v4 as uuidv4 } from 'uuid';
-import {
-  AppRequestMessage,
-  AgentEventMessage,
-  AgentResponseMessage,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
-import { Messaging, RegisterableListener } from './Messaging';
+import { BrowserTypes } from '@finos/fdc3-schema';
+import { Messaging, RegisterableListener } from './Messaging.js';
 
 /**
  * Implementation of Messaging that uses native WebSocket to communicate
@@ -58,7 +54,7 @@ export class WebSocketMessaging implements Messaging {
     this.listeners.delete(id);
   }
 
-  createMeta(): AppRequestMessage['meta'] {
+  createMeta(): BrowserTypes.AppRequestMessage['meta'] {
     return {
       requestUuid: this.createUUID(),
       timestamp: new Date(),
@@ -78,7 +74,9 @@ export class WebSocketMessaging implements Messaging {
     }
   }
 
-  async post(message: AppRequestMessage | AgentEventMessage | AgentResponseMessage): Promise<void> {
+  async post(
+    message: BrowserTypes.AppRequestMessage | BrowserTypes.AgentEventMessage | BrowserTypes.AgentResponseMessage
+  ): Promise<void> {
     return this.postEvent(this.outgoingEvent, message);
   }
 

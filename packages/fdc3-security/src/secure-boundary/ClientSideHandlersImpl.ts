@@ -7,22 +7,22 @@ import {
   CLIENT_MESSAGE,
   SERVER_MESSAGE,
   ExchangeDataMessage,
-} from './MessageTypes';
-import { FDC3Handlers } from './FDC3Handlers';
-import {
-  AddContextListenerRequest,
-  AddContextListenerResponse,
-  AppRequestMessage,
-  BroadcastEvent,
-  BroadcastRequest,
-  BroadcastResponse,
-  ContextListenerUnsubscribeRequest,
-  ContextListenerUnsubscribeResponse,
-  PrivateChannelDisconnectRequest,
-  PrivateChannelDisconnectResponse,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
-import { Messaging } from './Messaging';
-import { WebSocketMessaging } from './WebSocketMessaging';
+} from './MessageTypes.js';
+import { FDC3Handlers } from './FDC3Handlers.js';
+import { BrowserTypes } from '@finos/fdc3-schema';
+import { Messaging } from './Messaging.js';
+import { WebSocketMessaging } from './WebSocketMessaging.js';
+
+type AppRequestMessage = BrowserTypes.AppRequestMessage;
+type AddContextListenerRequest = BrowserTypes.AddContextListenerRequest;
+type AddContextListenerResponse = BrowserTypes.AddContextListenerResponse;
+type BroadcastEvent = BrowserTypes.BroadcastEvent;
+type BroadcastRequest = BrowserTypes.BroadcastRequest;
+type BroadcastResponse = BrowserTypes.BroadcastResponse;
+type ContextListenerUnsubscribeRequest = BrowserTypes.ContextListenerUnsubscribeRequest;
+type ContextListenerUnsubscribeResponse = BrowserTypes.ContextListenerUnsubscribeResponse;
+type PrivateChannelDisconnectRequest = BrowserTypes.PrivateChannelDisconnectRequest;
+type PrivateChannelDisconnectResponse = BrowserTypes.PrivateChannelDisconnectResponse;
 
 /**
  * Client-side implementation of FDC3 secure boundary handlers.
