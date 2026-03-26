@@ -5,7 +5,7 @@ export default {
   roots: ['<rootDir>/src', '<rootDir>/test', '<rootDir>/samples'],
   moduleFileExtensions: ['js', 'ts'],
   extensionsToTreatAsEsm: ['.ts'],
-  transformIgnorePatterns: ['node_modules/(?!(jose|canonicalize)/)'],
+  transformIgnorePatterns: ['node_modules/(?!(jose|json-canonicalize)/)'],
   testRegex: '.+\\.test\\.ts?$',
   testEnvironment: 'node',
   reporters: ['default', 'jest-junit'],

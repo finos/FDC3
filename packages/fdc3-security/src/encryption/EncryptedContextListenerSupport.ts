@@ -1,8 +1,8 @@
 import { Context, EncryptedContextWrapper, SymmetricKeyRequest, SymmetricKeyResponse } from '@finos/fdc3-context';
 import { Channel, ContextHandler, ContextMetadata, Listener } from '@finos/fdc3-standard';
-import { PrivateFDC3Security, SigningFunction, UnwrapFunction } from '../impl/PrivateFDC3Security';
-import { JSONWebEncryption, JsonWebKeyWithId, PublicFDC3Security } from '../impl/PublicFDC3Security';
-import { MetadataHandler } from '../delegates/MetadataHandler';
+import { PrivateFDC3Security, SigningFunction, UnwrapFunction } from '../impl/PrivateFDC3Security.js';
+import { JSONWebEncryption, JsonWebKeyWithId, PublicFDC3Security } from '../impl/PublicFDC3Security.js';
+import { MetadataHandler } from '../delegates/MetadataHandler.js';
 
 /**
  * Provides support for receiving and decrypting encrypted contexts on FDC3 channels.
