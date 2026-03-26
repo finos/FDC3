@@ -3,27 +3,25 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import { withStyles } from "@material-ui/core/styles";
-import { TextField } from "@material-ui/core";
+import { styled } from '@mui/material/styles';
+import { TextField } from '@mui/material';
 
-export const TemplateTextField = withStyles({
-	root: {
-		"& label.Mui-focused": {
-			color: "#0086bf",
-		},
-		"& .MuiInput-underline:after": {
-			borderBottomColor: "#0086bf",
-		},
-		"& .MuiOutlinedInput-root": {
-			"& fieldset": {
-				borderColor: "#0086bf",
-			},
-			"&:hover fieldset": {
-				borderColor: "#0086bf",
-			},
-			"&.Mui-focused fieldset": {
-				borderColor: "#0086bf",
-			},
-		},
-	},
-})(TextField);
+export const TemplateTextField = styled(TextField)({
+  '& label.Mui-focused': {
+    color: '#0086bf',
+  },
+  '& .MuiInput-underline:after': {
+    borderBottomColor: '#0086bf',
+  },
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: '#0086bf',
+    },
+    '&:hover fieldset': {
+      borderColor: '#0086bf',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#0086bf',
+    },
+  },
+});

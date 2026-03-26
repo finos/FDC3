@@ -1,7 +1,7 @@
 import { ContextHandler, DisplayMetadata, Listener, Channel, EventHandler } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
-import { Messaging } from '../Messaging';
-import { DefaultContextListener } from '../listeners/DefaultContextListener';
+import { Messaging } from '../Messaging.js';
+import { DefaultContextListener } from '../listeners/DefaultContextListener.js';
 import {
   BroadcastRequest,
   BroadcastResponse,
@@ -9,9 +9,9 @@ import {
   ClearContextResponse,
   GetCurrentContextRequest,
   GetCurrentContextResponse,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
-import { RegisterableListener } from '../listeners/RegisterableListener';
-import { EventListener } from '../listeners/EventListener';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes.js';
+import { RegisterableListener } from '../listeners/RegisterableListener.js';
+import { EventListener } from '../listeners/EventListener.js';
 
 export class DefaultChannel implements Channel {
   protected readonly messaging: Messaging;

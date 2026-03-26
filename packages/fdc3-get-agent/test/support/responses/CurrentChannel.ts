@@ -1,10 +1,10 @@
-import { TestServerContext } from '../TestServerContext';
+import { TestServerContext } from '../TestServerContext.js';
 import { InstanceID } from '@finos/fdc3-web-impl';
-import { AutomaticResponse } from './AutomaticResponses';
+import { AutomaticResponse } from './AutomaticResponses.js';
 import {
   GetCurrentChannelRequest,
   GetCurrentChannelResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 export class CurrentChannel implements AutomaticResponse {
   filter(t: string) {

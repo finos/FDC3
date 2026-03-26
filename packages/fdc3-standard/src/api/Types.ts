@@ -4,8 +4,8 @@
  */
 
 import { Context } from '@finos/fdc3-context';
-import { Channel } from './Channel';
-import type { DesktopAgentProvidableContextMetadata } from './ContextMetadata';
+import { Channel } from './Channel.js';
+import { DesktopAgentProvidableContextMetadata } from './ContextMetadata.js';
 
 /**
  * Describes a callback that handles a context event.

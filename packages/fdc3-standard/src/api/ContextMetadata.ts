@@ -6,8 +6,8 @@ import {
   AntiReplayClaims,
   DetachedSignature,
   MessageAuthenticity,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
-import { AppIdentifier } from './AppIdentifier';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes.js';
+import { AppIdentifier } from './AppIdentifier.js';
 
 interface SecurityMetadata {
   /** A Detached JSON Web Signature (JWS) proving the authenticity and integrity of the context. */

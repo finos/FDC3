@@ -1,230 +1,129 @@
-import { DataTable, Given, Then, When } from '@cucumber/cucumber';
-import Ajv2019 from 'ajv/dist/2019';
-import * as draft7MetaSchema from 'ajv/dist/refs/json-schema-draft-07.json';
-import addFormats from 'ajv-formats';
-import { expect } from 'expect';
-import { doesRowMatch, handleResolve, matchData } from '../support/matching';
-import { PropsWorld } from '../world';
-import fs from 'fs';
-import path from 'path';
+import { Given, When, Then } from 'quickpickle';
+import { DataTable } from '@cucumber/cucumber';
+import { PropsWorldLike } from '../world/PropsWorldLike.js';
+import * as impl from './generic.impl.js';
 
-export function setupGenericSteps() {
-  Then('the promise {string} should resolve', async function (this: PropsWorld, field: string) {
-    try {
-      const promise = handleResolve(field, this);
-      const object = await promise;
-      this.props['result'] = object;
-    } catch (error) {
-      this.props['result'] = error;
-    }
+export function setupGenericSteps(schemaBasePath: string): void {
+  Then('the promise {string} should resolve', async (world: PropsWorldLike, field: string) => {
+    await impl.promiseShouldResolve(world, field);
   });
 
-  Then(
-    'the promise {string} should resolve within 10 seconds',
-    { timeout: 10 * 1000 },
-    async function (this: PropsWorld, field: string) {
-      try {
-        const promise = handleResolve(field, this);
-        const object = await promise;
-        this.props['result'] = object;
-      } catch (error) {
-        this.props['result'] = error;
-      }
-    }
-  );
+  Then('the promise {string} should resolve within 10 seconds', async (world: PropsWorldLike, field: string) => {
+    await impl.promiseShouldResolveWithin10Seconds(world, field);
+  });
 
-  When('I call {string} with {string}', async function (this: PropsWorld, field: string, fnName: string) {
-    try {
-      const object = handleResolve(field, this);
-      const fn = object[fnName];
-      const result = await fn.call(object);
-      this.props['result'] = result;
-    } catch (error) {
-      this.props['result'] = error;
-    }
+  When('I call {string} with {string}', async (world: PropsWorldLike, field: string, fnName: string) => {
+    await impl.callWithMethod(world, field, fnName);
   });
 
   When(
     'I call {string} with {string} with parameter {string}',
-    async function (this: PropsWorld, field: string, fnName: string, param: string) {
-      try {
-        const object = handleResolve(field, this);
-        const fn = object[fnName];
-        const result = await fn.call(object, handleResolve(param, this));
-        this.props['result'] = result;
-      } catch (error) {
-        this.props['result'] = error;
-      }
+    async (world: PropsWorldLike, field: string, fnName: string, param: string) => {
+      await impl.callWithMethodAndParam(world, field, fnName, param);
     }
   );
 
   When(
     'I call {string} with {string} with parameters {string} and {string}',
-    async function (this: PropsWorld, field: string, fnName: string, param1: string, param2: string) {
-      try {
-        const object = handleResolve(field, this);
-        const fn = object[fnName];
-        const result = await fn.call(object, handleResolve(param1, this), handleResolve(param2, this));
-        this.props['result'] = result;
-      } catch (error) {
-        this.props['result'] = error;
-      }
+    async (world: PropsWorldLike, field: string, fnName: string, param1: string, param2: string) => {
+      await impl.callWithMethodAndTwoParams(world, field, fnName, param1, param2);
     }
   );
 
   When(
     'I call {string} with {string} with parameters {string} and {string} and {string}',
-    async function (this: PropsWorld, field: string, fnName: string, param1: string, param2: string, param3: string) {
-      try {
-        const object = handleResolve(field, this);
-        const fn = object[fnName];
-        const result = await fn.call(
-          object,
-          handleResolve(param1, this),
-          handleResolve(param2, this),
-          handleResolve(param3, this)
-        );
-        this.props['result'] = result;
-      } catch (error) {
-        this.props['result'] = error;
-      }
+    async (world: PropsWorldLike, field: string, fnName: string, param1: string, param2: string, param3: string) => {
+      await impl.callWithMethodAndThreeParams(world, field, fnName, param1, param2, param3);
     }
   );
 
-  When('I refer to {string} as {string}', async function (this: PropsWorld, from: string, to: string) {
-    this.props[to] = handleResolve(from, this);
+  When('I refer to {string} as {string}', (world: PropsWorldLike, from: string, to: string) => {
+    impl.referToAs(world, from, to);
   });
 
   Then(
     '{string} is an array of objects with the following contents',
-    function (this: PropsWorld, field: string, dt: DataTable) {
-      matchData(this, handleResolve(field, this), dt);
+    (world: PropsWorldLike, field: string, dt: DataTable) => {
+      impl.isArrayOfObjectsWithContents(world, field, dt);
     }
   );
 
   Then(
     '{string} is an array of objects with length {string}',
-    function (this: PropsWorld, field: string, field2: string) {
-      expect(handleResolve(field, this).length).toEqual(Number.parseInt(handleResolve(field2, this)));
+    (world: PropsWorldLike, field: string, field2: string) => {
+      impl.isArrayOfObjectsWithLength(world, field, field2);
     }
   );
 
   Then(
     '{string} is an array of strings with the following values',
-    function (this: PropsWorld, field: string, dt: DataTable) {
-      const values = handleResolve(field, this).map((s: string) => {
-        return { value: s };
-      });
-      matchData(this, values, dt);
+    (world: PropsWorldLike, field: string, dt: DataTable) => {
+      impl.isArrayOfStringsWithValues(world, field, dt);
     }
   );
 
   Then(
     '{string} is an object with the following contents',
-    function (this: PropsWorld, field: string, params: DataTable) {
-      const table = params.hashes();
-      expect(doesRowMatch(this, table[0], handleResolve(field, this))).toBeTruthy();
+    (world: PropsWorldLike, field: string, params: DataTable) => {
+      impl.isObjectWithContents(world, field, params);
     }
   );
 
-  Then('{string} is null', function (this: PropsWorld, field: string) {
-    expect(handleResolve(field, this)).toBeNull();
+  Then('{string} is null', (world: PropsWorldLike, field: string) => {
+    impl.isNull(world, field);
   });
 
-  Then('{string} is not null', function (this: PropsWorld, field: string) {
-    expect(handleResolve(field, this)).toBeDefined();
+  Then('{string} is not null', (world: PropsWorldLike, field: string) => {
+    impl.isNotNull(world, field);
   });
 
-  Then('{string} is true', function (this: PropsWorld, field: string) {
-    expect(handleResolve(field, this)).toBeTruthy();
+  Then('{string} is true', (world: PropsWorldLike, field: string) => {
+    impl.isTrue(world, field);
   });
 
-  Then('{string} is false', function (this: PropsWorld, field: string) {
-    expect(handleResolve(field, this)).toBeFalsy();
+  Then('{string} is false', (world: PropsWorldLike, field: string) => {
+    impl.isFalse(world, field);
   });
 
-  Then('{string} is undefined', function (this: PropsWorld, field: string) {
-    expect(handleResolve(field, this)).toBeUndefined();
+  Then('{string} is undefined', (world: PropsWorldLike, field: string) => {
+    impl.isUndefined(world, field);
   });
 
-  Then('{string} is empty', function (this: PropsWorld, field: string) {
-    expect(handleResolve(field, this)).toHaveLength(0);
+  Then('{string} is empty', (world: PropsWorldLike, field: string) => {
+    impl.isEmpty(world, field);
   });
 
-  Then('{string} is {string}', function (this: PropsWorld, field: string, expected: string) {
-    const fVal = handleResolve(field, this);
-    const eVal = handleResolve(expected, this);
-    expect('' + fVal).toEqual('' + eVal);
+  Then('{string} is {string}', (world: PropsWorldLike, field: string, expected: string) => {
+    impl.isEqual(world, field, expected);
   });
 
-  Then('{string} is an error with message {string}', function (this: PropsWorld, field: string, errorType: string) {
-    expect(handleResolve(field, this)['message']).toBe(errorType);
+  Then('{string} is an error with message {string}', (world: PropsWorldLike, field: string, errorType: string) => {
+    impl.isErrorWithMessage(world, field, errorType);
   });
 
-  Then('{string} is an error', function (this: PropsWorld, field: string) {
-    expect(handleResolve(field, this)).toBeInstanceOf(Error);
+  Then('{string} is an error', (world: PropsWorldLike, field: string) => {
+    impl.isError(world, field);
   });
 
   Given(
     '{string} is a invocation counter into {string}',
-    function (this: PropsWorld, handlerName: string, field: string) {
-      this.props[handlerName] = () => {
-        var amount: number = this.props[field];
-        amount++;
-        this.props[field] = amount;
-      };
-      this.props[field] = 0;
+    (world: PropsWorldLike, handlerName: string, field: string) => {
+      impl.isInvocationCounter(world, handlerName, field);
     }
   );
 
   Given(
     '{string} is a function which returns a promise of {string}',
-    function (this: PropsWorld, fnName: string, field: string) {
-      const value = handleResolve(field, this);
-      this.props[fnName] = async () => {
-        return value;
-      };
+    (world: PropsWorldLike, fnName: string, field: string) => {
+      impl.isFunctionReturningPromiseOf(world, fnName, field);
     }
   );
 
-  Given('we wait for a period of {string} ms', function (this: PropsWorld, ms: string) {
-    return new Promise<void>((resolve, _reject) => {
-      setTimeout(() => resolve(), parseInt(ms));
-    });
+  Given('we wait for a period of {string} ms', (world: PropsWorldLike, ms: string) => {
+    return impl.waitForPeriod(world, ms);
   });
 
-  Given('schemas loaded', async function (this: PropsWorld) {
-    const ajv = new Ajv2019();
-    ajv.addMetaSchema(draft7MetaSchema);
-    addFormats(ajv);
-
-    const f2 = fs;
-    const p = path;
-
-    const schemaDir = p.join(__dirname, '../../../../fdc3-schema/schemas');
-    const contextDir = p.join(__dirname, '../../../../fdc3-context/schemas');
-
-    const abspath = p.join(schemaDir, 'api');
-
-    try {
-      f2.readdirSync(abspath).forEach(file => {
-        if (file.endsWith('.json')) {
-          const filePath = p.join(abspath, file);
-          const contents = fs.readFileSync(filePath, 'utf8');
-          const schema = JSON.parse(contents);
-          ajv.addSchema(schema);
-          //console.log(`Content of ${file}: ${contents}`);
-        }
-      });
-    } catch (error) {
-      console.log(error);
-    }
-
-    const contextPath = p.join(contextDir, 'context/context.schema.json');
-    const contents = fs.readFileSync(contextPath, 'utf8');
-    const schema = JSON.parse(contents);
-    ajv.addSchema(schema);
-
-    this.props['ajv'] = ajv;
+  Given('schemas loaded', async (world: PropsWorldLike) => {
+    await impl.schemasLoaded(world, schemaBasePath);
   });
 }

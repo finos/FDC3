@@ -1,19 +1,19 @@
 import { AppIntent, ResolveError } from '@finos/fdc3';
 import { assert, expect } from 'chai';
-import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
+import { APIDocumentation } from '../support/apiDocuments';
 import { DesktopAgent } from '@finos/fdc3';
-import { ContextType, IntentApp, Intent } from '../support/intent-support-2.0';
-import { handleFail } from '../../utils';
+import { ContextType, IntentApp, Intent } from '../support/intent-support';
+import { appIdMatches, handleFail } from '../../utils';
 
 declare let fdc3: DesktopAgent;
-const findIntentsByContextDocs = '\r\nDocumentation: ' + APIDocumentation2_0.findIntentsByContext;
+const findIntentsByContextDocs = '\r\nDocumentation: ' + APIDocumentation.findIntentsByContext;
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md
  */
-export default () =>
+export default async () =>
   describe('fdc3.findIntentsByContext', () => {
-    it("(2.0-FindIntentByContextSingleContext) Should find intents by context 'testContextX'", async () => {
+    it("(FindIntentByContextSingleContext) Should find intents by context 'testContextX'", async () => {
       try {
         const intents = await fdc3.findIntentsByContext({ type: ContextType.testContextX });
         expect(intents).to.have.length(5);
@@ -36,7 +36,7 @@ export default () =>
       }
     });
 
-    it('(2.0FindIntentByContextWrongIntentAppD) Passing an invalid context causes a NoAppsFound error to be thrown', async () => {
+    it('(FindIntentByContextWrongIntentAppD) Passing an invalid context causes a NoAppsFound error to be thrown', async () => {
       const context = {
         type: 'ThisContextDoesNotExist',
       };
@@ -56,10 +56,13 @@ function validateIntents(
   expectedAppIds: string[]
 ) {
   const firstIntent = intents.find(appIntent => appIntent.intent.name === intentFilter);
-  expect(firstIntent).to.not.be.undefined;
+  assert.isDefined(firstIntent);
   if (firstIntent !== undefined) {
     expect(firstIntent.apps).to.have.length(expectedAppCount);
-    const sharedAppNames = firstIntent.apps.map(app => app.appId);
-    expect(sharedAppNames).to.have.all.members(expectedAppIds);
+    const sharedAppIds = firstIntent.apps.map(app => app.appId);
+    const missingAppIds = expectedAppIds.filter(
+      expected => !sharedAppIds.some(received => appIdMatches(received, expected))
+    );
+    expect(missingAppIds, `Expected app IDs not found in [${sharedAppIds.join(', ')}]`).to.be.empty;
   }
 }

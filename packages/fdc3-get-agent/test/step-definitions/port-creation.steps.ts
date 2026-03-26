@@ -1,14 +1,12 @@
-import { Given, Then } from '@cucumber/cucumber';
-import { CustomWorld } from '../world';
+import { Given, Then } from 'quickpickle';
+import { CustomWorld } from '../world/index.js';
 import { handleResolve } from '@finos/testing';
-// used to debug tests not ending - only available as a commonJs module
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const wtf = require('wtfnode');
+import wtf from 'wtfnode';
 
 Given(
   '{string} receives a {string} message for the {string} and creates port {string}',
-  async function (this: CustomWorld, frame: string, type: string, _item: string, port: string) {
-    const channelSelectorIframe = handleResolve(frame, this);
+  async (world: CustomWorld, frame: string, type: string, _item: string, port: string) => {
+    const channelSelectorIframe = handleResolve(frame, world);
     const mc = new MessageChannel();
     const internalPort = mc.port1;
     const externalPort = mc.port2;
@@ -26,24 +24,21 @@ Given(
     }
 
     internalPort.start();
-    this.props[port] = internalPort;
+    world.props[port] = internalPort;
   }
 );
 
-Given('{string} pipes messages to {string}', async function (this: CustomWorld, port: string, output: string) {
+Given('{string} pipes messages to {string}', async (world: CustomWorld, port: string, output: string) => {
   const out: { type: string; data: unknown }[] = [];
-  this.props[output] = out;
+  world.props[output] = out;
 
-  const internalPort = handleResolve(port, this);
+  const internalPort = handleResolve(port, world);
   internalPort.onmessage = (e: MessageEvent) => {
     out.push({ type: e.type, data: e.data });
   };
 });
 
-/**
- * Avoid checking this in as a line in .features - just used for debugging
- */
-Given('Testing ends after {string} ms', function (string) {
+Given('Testing ends after {string} ms', (world: CustomWorld, string: string) => {
   setTimeout(() => {
     wtf.dump();
 
@@ -51,8 +46,8 @@ Given('Testing ends after {string} ms', function (string) {
   }, parseInt(string));
 });
 
-Then('{string} receives a {string} message', function (this: CustomWorld, port: string, type: string) {
-  const internalPort = handleResolve(port, this);
+Then('{string} receives a {string} message', (world: CustomWorld, port: string, type: string) => {
+  const internalPort = handleResolve(port, world);
 
   if (type == 'ResolverMessageChoice') {
     (internalPort as MessagePort).postMessage({

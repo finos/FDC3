@@ -7,8 +7,8 @@ import {
   ResolveError,
 } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
-import { AppSupport } from './AppSupport';
-import { Messaging } from '../Messaging';
+import { AppSupport } from './AppSupport.js';
+import { Messaging } from '../Messaging.js';
 import {
   FindInstancesRequest,
   FindInstancesResponse,
@@ -18,9 +18,9 @@ import {
   GetInfoResponse,
   OpenRequest,
   OpenResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
-import { throwIfUndefined } from '../util/throwIfUndefined';
-import { Logger } from '../util/Logger';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { throwIfUndefined } from '../util/throwIfUndefined.js';
+import { Logger } from '../util/Logger.js';
 
 export class DefaultAppSupport implements AppSupport {
   readonly messaging: Messaging;

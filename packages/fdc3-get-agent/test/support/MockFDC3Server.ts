@@ -1,19 +1,21 @@
 import { FDC3Server, InstanceID, State } from '@finos/fdc3-web-impl';
-import { TestServerContext } from './TestServerContext';
-import { MockWindow } from './MockWindow';
-import { AutomaticResponse } from './responses/AutomaticResponses';
-import { Broadcast } from './responses/Broadcast';
-import { FindIntent } from './responses/FindIntent';
-import { RaiseIntent } from './responses/RaiseIntent';
-import { Handshake } from './responses/Handshake';
-import { UserChannels } from './responses/UserChannels';
-import { CurrentChannel } from './responses/CurrentChannel';
-import { GetInfo } from './responses/GetInfo';
+import { TestServerContext } from './TestServerContext.js';
+import { MockWindow } from './MockWindow.js';
+import { AutomaticResponse } from './responses/AutomaticResponses.js';
+import { Broadcast } from './responses/Broadcast.js';
+import { FindIntent } from './responses/FindIntent.js';
+import { RaiseIntent } from './responses/RaiseIntent.js';
+import { Handshake } from './responses/Handshake.js';
+import { UserChannels } from './responses/UserChannels.js';
+import { CurrentChannel } from './responses/CurrentChannel.js';
+import { GetInfo } from './responses/GetInfo.js';
 import {
   AppRequestMessage,
   WebConnectionProtocol2LoadURL,
   WebConnectionProtocol3Handshake,
 } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import { AddEventListener } from './responses/AddEventListener';
+import { UnsubscribeEventListener } from './responses/UnsubscribeEventListener';
 
 export const EMBED_URL = 'http://localhost:8080/static/da/embed.html';
 export const CHANNEL_SELECTOR_URL = 'https://mock.fdc3.com/channelSelector';
@@ -59,6 +61,7 @@ export class MockFDC3Server implements FDC3Server {
         new Handshake(this.timeOutIdValidation),
         new CurrentChannel(),
         new UserChannels(),
+        new AddEventListener(),
       ];
     } else {
       this.automaticResponses = [
@@ -69,6 +72,8 @@ export class MockFDC3Server implements FDC3Server {
         new RaiseIntent(),
         new UserChannels(),
         new Broadcast(),
+        new AddEventListener(),
+        new UnsubscribeEventListener(),
       ];
     }
 

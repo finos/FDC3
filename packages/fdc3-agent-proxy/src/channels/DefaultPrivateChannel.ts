@@ -6,20 +6,20 @@ import {
   PrivateChannel,
   PrivateChannelEventTypes,
 } from '@finos/fdc3-standard';
-import { DefaultChannel } from './DefaultChannel';
-import { Messaging } from '../Messaging';
+import { DefaultChannel } from './DefaultChannel.js';
+import { Messaging } from '../Messaging.js';
 import {
   PrivateChannelNullEventListener,
   PrivateChannelAddContextEventListener,
   PrivateChannelDisconnectEventListener,
   PrivateChannelUnsubscribeEventListener,
-} from '../listeners/PrivateChannelEventListener';
-import { DefaultContextListener } from '../listeners/DefaultContextListener';
-import { RegisterableListener } from '../listeners/RegisterableListener';
+} from '../listeners/PrivateChannelEventListener.js';
+import { DefaultContextListener } from '../listeners/DefaultContextListener.js';
+import { RegisterableListener } from '../listeners/RegisterableListener.js';
 import {
   PrivateChannelDisconnectRequest,
   PrivateChannelDisconnectResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 export class DefaultPrivateChannel extends DefaultChannel implements PrivateChannel {
   constructor(messaging: Messaging, messageExchangeTimeout: number, id: string) {

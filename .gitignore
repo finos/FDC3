@@ -31,3 +31,4 @@ nyc-coverage-report/
 tsconfig.tsbuildinfo
 **/html-report/
 packages/fdc3-security/junit.xml
+.vscode/launch.json

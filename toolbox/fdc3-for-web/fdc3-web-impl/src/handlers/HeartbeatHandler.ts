@@ -1,11 +1,11 @@
-import { MessageHandler } from '../BasicFDC3Server';
-import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext';
+import { MessageHandler } from '../BasicFDC3Server.js';
+import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext.js';
 import {
   AppRequestMessage,
   HeartbeatEvent,
   WebConnectionProtocol6Goodbye,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
-import { FullAppIdentifier } from './support';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { FullAppIdentifier } from './support.js';
 
 type HeartbeatDetails = {
   instanceId: string;
@@ -38,7 +38,11 @@ export class HeartbeatHandler implements MessageHandler {
   private readonly lastHeartbeats: Map<InstanceID, number> = new Map();
   private readonly timerFunction: NodeJS.Timeout;
 
-  constructor(pingInterval: number = 1000, disconnectedAfter: number = 5000, deadAfter: number = 20000) {
+  constructor(pingInterval: number = 5000, disconnectedAfter: number = 30000, deadAfter: number = 60000) {
+    console.log(
+      `Setting up Heartbeat handler: pingInterval: ${pingInterval} ms, disconnectedAfter: ${disconnectedAfter} ms, deadAfter: ${deadAfter} ms`
+    );
+
     this.timerFunction = setInterval(() => {
       this.contexts.forEach(async sc => {
         const apps = await sc.getAllApps();
