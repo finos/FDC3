@@ -1,6 +1,6 @@
 import { WebSocketServer, WebSocket } from 'ws';
 import { Server as HttpServer } from 'http';
-import { FDC3Handlers } from './FDC3Handlers';
+import { FDC3Handlers } from './FDC3Handlers.js';
 import {
   REMOTE_INTENT_HANDLER,
   RemoteIntentHandlerMessage,
@@ -10,9 +10,9 @@ import {
   HandleRemoteChannelMessage,
   WsEnvelope,
   CLIENT_MESSAGE,
-} from './MessageTypes';
+} from './MessageTypes.js';
 import { v4 as uuidv4 } from 'uuid';
-import { WebSocketMessaging } from './WebSocketMessaging';
+import { WebSocketMessaging } from './WebSocketMessaging.js';
 import { DefaultChannel } from '@finos/fdc3-agent-proxy/dist/src/channels/DefaultChannel.js';
 import { DefaultPrivateChannel } from '@finos/fdc3-agent-proxy/dist/src/channels/DefaultPrivateChannel.js';
 
