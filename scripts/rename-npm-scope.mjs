@@ -5,6 +5,7 @@
  *
  * Usage:
  *   node scripts/rename-npm-scope.mjs @finos @your-scope
+ *   node scripts/rename-npm-scope.mjs @finos @your-scope --root /path/to/other-monorepo
  *   node scripts/rename-npm-scope.mjs @finos @your-scope --dry-run
  */
 import fs from 'fs';
@@ -12,7 +13,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const repoRoot = path.resolve(__dirname, '..');
+const defaultRepoRoot = path.resolve(__dirname, '..');
 
 const SKIP_DIRS = new Set(['node_modules', 'dist', 'coverage', '.git', '.nyc_output', '.husky']);
 
@@ -20,13 +21,33 @@ const EXT_OK = new Set(['.ts', '.tsx', '.js', '.mjs', '.cjs', '.json', '.mts', '
 
 function parseArgs(argv) {
   const dryRun = argv.includes('--dry-run');
-  const rest = argv.filter(a => a !== '--dry-run');
+  let rest = argv.filter(a => a !== '--dry-run');
+  let repoRoot = defaultRepoRoot;
+  const rootIdx = rest.indexOf('--root');
+  if (rootIdx !== -1) {
+    const rootArg = rest[rootIdx + 1];
+    if (!rootArg) {
+      console.error('Usage: ... --root /path/to/repo');
+      process.exit(1);
+    }
+    repoRoot = path.resolve(rootArg);
+    rest = rest.filter((_, i) => i !== rootIdx && i !== rootIdx + 1);
+  }
   const [oldScope, newScope] = rest;
   if (!oldScope?.startsWith('@') || !newScope?.startsWith('@')) {
-    console.error('Usage: node scripts/rename-npm-scope.mjs @old-scope @new-scope [--dry-run]');
+    console.error('Usage: node scripts/rename-npm-scope.mjs @old-scope @new-scope [--root /path] [--dry-run]');
     process.exit(1);
   }
-  return { oldScope, newScope, dryRun };
+  try {
+    if (!fs.statSync(repoRoot).isDirectory()) {
+      console.error(`Not a directory: ${repoRoot}`);
+      process.exit(1);
+    }
+  } catch (e) {
+    console.error(`Cannot read repo root: ${repoRoot}`);
+    process.exit(1);
+  }
+  return { oldScope, newScope, dryRun, repoRoot };
 }
 
 function shouldProcessFile(filePath) {
@@ -51,7 +72,7 @@ async function* walk(dir) {
 }
 
 function main() {
-  const { oldScope, newScope, dryRun } = parseArgs(process.argv.slice(2));
+  const { oldScope, newScope, dryRun, repoRoot } = parseArgs(process.argv.slice(2));
   const from = `${oldScope}/`;
   const to = `${newScope}/`;
 
@@ -59,6 +80,8 @@ function main() {
     console.error('Old and new scope are the same.');
     process.exit(1);
   }
+
+  console.error(`Repo root: ${repoRoot}`);
 
   (async () => {
     let changedFiles = 0;
