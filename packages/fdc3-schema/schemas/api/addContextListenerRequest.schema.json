@@ -54,11 +54,35 @@
 							"type": "null"
 						}
 					]
+				},
+				"contextTypes": {
+					"title": "Context types",
+					"description": "Array of context types to listen for. May contain `null` to listen to all context types in addition to specific types. When `null` is present, other context types are ignored as the listener will receive all context types.",
+					"type": "array",
+					"items": {
+						"oneOf": [
+							{
+								"type": "string"
+							},
+							{
+								"type": "null"
+							}
+						]
+					},
+					"minItems": 1
 				}
 			},
 			"additionalProperties": false,
 			"required": [
-				"channelId", "contextType"
+				"channelId"
+			],
+			"oneOf": [
+				{
+					"required": ["contextType"]
+				},
+				{
+					"required": ["contextTypes"]
+				}
 			]
 		}
 	}
