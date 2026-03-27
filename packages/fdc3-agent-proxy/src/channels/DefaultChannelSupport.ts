@@ -10,6 +10,7 @@ import {
   ApiEvent,
   FDC3ChannelChangedEvent,
   FDC3EventTypes,
+  ContextMetadata,
 } from '@finos/fdc3-standard';
 import { Messaging } from '../Messaging.js';
 import { ChannelSupport } from './ChannelSupport.js';
@@ -289,7 +290,28 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
     }
   }
 
-  async addContextListener(handler: ContextHandler, type: string | null): Promise<Listener> {
+  async addContextListener(handler: ContextHandler, type: string | null | (string | null)[]): Promise<Listener> {
+    // Handle array-based context types
+    if (Array.isArray(type)) {
+      if (type.length === 0) {
+        // Empty array - return a dummy listener that does nothing
+        return Promise.resolve({
+          unsubscribe: () => Promise.resolve(),
+          id: 'dummy-listener',
+        });
+      }
+
+      // If array contains null, treat as null (listen to all contexts)
+      if (type.includes(null)) {
+        return this.addContextListener(handler, null);
+      }
+
+      // For multiple specific types, pass the array directly to DefaultContextListener
+      // The DefaultContextListener will handle creating multiple individual listeners internally
+      return this.addContextListener(handler, type);
+    }
+
+    // Handle single context type
     /**
      *  Utility class used to wrap the DefaultContextListener to match the internal channel id
      *  and ensure it gets removed when its unsubscribe function is called.
@@ -301,7 +323,7 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
         container: DefaultChannelSupport,
         messaging: Messaging,
         messageExchangeTimeout: number,
-        contextType: string | null,
+        contextType: string | null | (string | null)[],
         handler: ContextHandler,
         messageType: string = 'broadcastEvent'
       ) {
@@ -322,7 +344,24 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
       async changeChannel(): Promise<void> {
         if (this.container.currentChannel != null) {
           const channel = this.container.currentChannel as DefaultChannel;
-          const result = await channel.getCurrentContextWithMetadata(this.contextType ?? undefined);
+          
+          // Handle array context types for getCurrentContextWithMetadata
+          let contextTypeParam: string | undefined;
+          if (Array.isArray(this.contextType)) {
+            // For arrays, if it contains null, don't pass a type parameter (get all contexts)
+            // Otherwise, get the current context without filtering by type to ensure we don't miss any
+            // The individual listeners will filter their specific types
+            if (this.contextType.includes(null)) {
+              contextTypeParam = undefined;
+            } else {
+              // Don't filter by type - let the individual listeners handle their own filtering
+              contextTypeParam = undefined;
+            }
+          } else if (this.contextType != null) {
+            contextTypeParam = this.contextType;
+          }
+
+          const result = await channel.getCurrentContextWithMetadata(contextTypeParam);
           if (result) {
             this.handler(result.context, result.metadata);
           }
@@ -338,11 +377,35 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
       }
 
       filter(m: BroadcastEvent): boolean {
+        // Handle array context types in filtering
+        let contextTypeMatch = false;
+        if (Array.isArray(this.contextType)) {
+          // For arrays, match if any type in the array matches or if null is included (match all)
+          if (this.contextType.includes(null)) {
+            contextTypeMatch = true; // null means match all context types
+          } else {
+            contextTypeMatch = this.contextType.includes(m.payload.context?.type ?? null);
+          }
+        } else {
+          // Single context type - use original logic
+          contextTypeMatch = m.payload.context?.type == this.contextType || this.contextType == null;
+        }
+
         return (
-          m.type == this.messageType &&
-          (this.onAMatchingChannel(m) || this.openBroadcastEvent(m)) &&
-          (m.payload.context?.type == this.contextType || this.contextType == null)
+          m.type == this.messageType && (this.onAMatchingChannel(m) || this.openBroadcastEvent(m)) && contextTypeMatch
         );
+      }
+
+      action(m: BroadcastEvent): void {
+        const metadata: ContextMetadata = {
+          source: m.payload.metadata?.source ?? { appId: 'unknown' },
+          timestamp: m.payload.metadata?.timestamp ?? m.meta.timestamp,
+          traceId: m.payload.metadata?.traceId ?? '',
+          signature: m.payload.metadata?.signature,
+          custom: m.payload.metadata?.custom,
+          antiReplay: m.payload.metadata?.antiReplay,
+        };
+        this.handler(m.payload.context, metadata);
       }
     }
 
