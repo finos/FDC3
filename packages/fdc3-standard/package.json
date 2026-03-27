@@ -1,6 +1,6 @@
 {
   "name": "@robmoffat/fdc3-standard",
-  "version": "2.2.2-beta.1",
+  "version": "2.2.2-beta.2",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -32,8 +32,8 @@
     "printWidth": 120
   },
   "dependencies": {
-    "@robmoffat/fdc3-context": "2.2.2-beta.1",
-    "@robmoffat/fdc3-schema": "2.2.2-beta.1"
+    "@robmoffat/fdc3-context": "2.2.2-beta.2",
+    "@robmoffat/fdc3-schema": "2.2.2-beta.2"
   },
   "devDependencies": {
     "@apidevtools/swagger-parser": "^10.1.1",
