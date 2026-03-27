@@ -1,7 +1,7 @@
-import { checkSignature, JSONWebSignature, PrivateFDC3Security } from '@finos/fdc3-security';
+import { checkSignature, JSONWebSignature, PrivateFDC3Security } from '@robmoffat/fdc3-security';
 import { FDC3Handlers } from '../../../src/secure-boundary/FDC3Handlers';
-import { ContextMetadata, ContextHandler, IntentHandler, IntentResult, Channel } from '@finos/fdc3';
-import { Context, User, UserRequest } from '@finos/fdc3-context';
+import { ContextMetadata, ContextHandler, IntentHandler, IntentResult, Channel } from '@robmoffat/fdc3';
+import { Context, User, UserRequest } from '@robmoffat/fdc3-context';
 import { JosePrivateFDC3Security } from '../../../src/JosePrivateFDC3Security';
 import e from 'express';
 

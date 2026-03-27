@@ -1,5 +1,5 @@
 import { closeWindowOnCompletion } from './mock-functions';
-import { getAgent } from '@finos/fdc3';
+import { getAgent } from '@robmoffat/fdc3';
 import { Intent } from '../test/support/intent-support';
 
 getAgent().then(async fdc3 => {

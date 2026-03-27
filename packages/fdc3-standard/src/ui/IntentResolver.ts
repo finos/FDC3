@@ -1,4 +1,4 @@
-import { Context } from '@finos/fdc3-context';
+import { Context } from '@robmoffat/fdc3-context';
 import { AppIdentifier } from '../api/AppIdentifier.js';
 import { AppIntent } from '../api/AppIntent.js';
 import { Connectable } from './Connectable.js';

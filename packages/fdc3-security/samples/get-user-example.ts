@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { Context, UserRequest } from '@finos/fdc3-context';
-import { DesktopAgent } from '@finos/fdc3-standard';
+import { Context, UserRequest } from '@robmoffat/fdc3-context';
+import { DesktopAgent } from '@robmoffat/fdc3-standard';
 
 import { JosePublicFDC3Security, provisionJWKS } from '../src/impl/JosePublicFDC3Security';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';

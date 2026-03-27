@@ -6,7 +6,7 @@ import {
   AntiReplayClaims,
   DetachedSignature,
   MessageAuthenticity,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes.js';
+} from '@robmoffat/fdc3-schema/generated/api/BrowserTypes.js';
 import { AppIdentifier } from './AppIdentifier.js';
 
 interface SecurityMetadata {

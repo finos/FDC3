@@ -1,5 +1,5 @@
-import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
-import { BrowserTypes } from '@finos/fdc3-schema';
+import { Context, SymmetricKeyResponse } from '@robmoffat/fdc3-context';
+import { BrowserTypes } from '@robmoffat/fdc3-schema';
 import { FDC3UserClaims } from './FDC3UserClaims.js';
 
 type AntiReplay = BrowserTypes.AntiReplayClaims;

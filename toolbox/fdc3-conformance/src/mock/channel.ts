@@ -1,5 +1,5 @@
 import { ChannelServiceImpl } from './support/channel-support';
-import { Context, getAgent } from '@finos/fdc3';
+import { Context, getAgent } from '@robmoffat/fdc3';
 import { Fdc3CommandExecutor } from './channel-command';
 
 getAgent().then(fdc3 => {

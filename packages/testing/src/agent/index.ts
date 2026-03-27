@@ -1,6 +1,6 @@
-import { AppIntent, Channel, IntentResult } from '@finos/fdc3-standard';
-import { Context } from '@finos/fdc3-context';
-import { IntentResolver, IntentResolutionChoice, ChannelSelector } from '@finos/fdc3-standard';
+import { AppIntent, Channel, IntentResult } from '@robmoffat/fdc3-standard';
+import { Context } from '@robmoffat/fdc3-context';
+import { IntentResolver, IntentResolutionChoice, ChannelSelector } from '@robmoffat/fdc3-standard';
 import { PropsWorldLike } from '../world/PropsWorldLike.js';
 
 /**

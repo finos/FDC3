@@ -1,6 +1,6 @@
 import { MessageHandler } from '../BasicFDC3Server.js';
 import { AppRegistration, InstanceID, ServerContext } from '../ServerContext.js';
-import { AppIdentifier, ChannelError, DisplayMetadata, PrivateChannelEventTypes } from '@finos/fdc3-standard';
+import { AppIdentifier, ChannelError, DisplayMetadata, PrivateChannelEventTypes } from '@robmoffat/fdc3-standard';
 import { successResponse, errorResponse, FullAppIdentifier } from './support.js';
 import {
   AddContextListenerRequest,
@@ -24,8 +24,8 @@ import {
   PrivateChannelOnDisconnectEvent,
   PrivateChannelOnUnsubscribeEvent,
   PrivateChannelUnsubscribeEventListenerRequest,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
-import { Context } from '@finos/fdc3-context';
+} from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { Context } from '@robmoffat/fdc3-context';
 
 type PrivateChannelEvents =
   | PrivateChannelOnAddContextListenerEvent

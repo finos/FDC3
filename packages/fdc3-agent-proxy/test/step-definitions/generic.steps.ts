@@ -8,15 +8,15 @@ import {
   DefaultIntentSupport,
   DefaultHeartbeatSupport,
 } from '../../src/index.js';
-import { SimpleIntentResolver, SimpleChannelSelector, CHANNEL_STATE, setupGenericSteps } from '@finos/testing';
-import { HeartbeatEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
-import { LogLevel } from '@finos/fdc3-standard';
+import { SimpleIntentResolver, SimpleChannelSelector, CHANNEL_STATE, setupGenericSteps } from '@robmoffat/testing';
+import { HeartbeatEvent } from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { LogLevel } from '@robmoffat/fdc3-standard';
 import path from 'path';
 
 // Update this to enable debug output when debugging test failures
 const logLevel = LogLevel.WARN;
 
-// Register shared generic steps from @finos/testing
+// Register shared generic steps from @robmoffat/testing
 const schemaBasePath = path.join(import.meta.dirname, '../../../');
 setupGenericSteps(schemaBasePath);
 

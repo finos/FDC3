@@ -1,4 +1,4 @@
-import { PrivateFDC3Security } from '@finos/fdc3-security';
+import { PrivateFDC3Security } from '@robmoffat/fdc3-security';
 import express, { Express, NextFunction, Request, Response } from 'express';
 import { Server } from 'http';
 import ViteExpress from 'vite-express';

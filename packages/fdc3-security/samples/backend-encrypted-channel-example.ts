@@ -1,6 +1,6 @@
-import { Context } from '@finos/fdc3-context';
+import { Context } from '@robmoffat/fdc3-context';
 import { WebSocket } from 'ws';
-import { Channel, ContextMetadata, DesktopAgent } from '@finos/fdc3-standard';
+import { Channel, ContextMetadata, DesktopAgent } from '@robmoffat/fdc3-standard';
 
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';

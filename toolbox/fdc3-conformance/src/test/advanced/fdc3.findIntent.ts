@@ -1,4 +1,4 @@
-import { AppIntent, IntentMetadata, ResolveError, DesktopAgent } from '@finos/fdc3';
+import { AppIntent, IntentMetadata, ResolveError, DesktopAgent } from '@robmoffat/fdc3';
 import { assert, expect } from 'chai';
 import { APIDocumentation } from '../support/apiDocuments';
 import { ContextType, IntentApp, Intent } from '../support/intent-support';

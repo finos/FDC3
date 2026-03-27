@@ -1,4 +1,4 @@
-import { Channel, IntentHandler } from '@finos/fdc3-standard';
+import { Channel, IntentHandler } from '@robmoffat/fdc3-standard';
 
 /**
  * Functions that allow back-end processing of FDC3 requests in order to keep

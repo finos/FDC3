@@ -1,6 +1,6 @@
-import { Connectable, FDC3_VERSION } from '@finos/fdc3-standard';
+import { Connectable, FDC3_VERSION } from '@robmoffat/fdc3-standard';
 import { Logger } from '../util/Logger.js';
-import { BrowserTypes } from '@finos/fdc3-schema';
+import { BrowserTypes } from '@robmoffat/fdc3-schema';
 const { isFdc3UserInterfaceHello, isFdc3UserInterfaceRestyle } = BrowserTypes;
 type Fdc3UserInterfaceHandshake = BrowserTypes.Fdc3UserInterfaceHandshake;
 type InitialCSS = BrowserTypes.InitialCSS;

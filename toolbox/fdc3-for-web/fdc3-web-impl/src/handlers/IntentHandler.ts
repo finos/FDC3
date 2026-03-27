@@ -1,8 +1,8 @@
 import { MessageHandler } from '../BasicFDC3Server.js';
 import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext.js';
 import { Directory, DirectoryIntent } from '../directory/DirectoryInterface.js';
-import { Context } from '@finos/fdc3-context';
-import { AppIntent, ResolveError, AppIdentifier } from '@finos/fdc3-standard';
+import { Context } from '@robmoffat/fdc3-context';
+import { AppIntent, ResolveError, AppIdentifier } from '@robmoffat/fdc3-standard';
 import {
   errorResponse,
   errorResponseId,
@@ -22,7 +22,7 @@ import {
   IntentResultRequest,
   AppRequestMessage,
   AgentResponseMessage,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+} from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 type ListenerRegistration = {
   appId: string;

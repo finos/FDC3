@@ -1,4 +1,4 @@
-import { InstanceID } from '@finos/fdc3-web-impl';
+import { InstanceID } from '@robmoffat/fdc3-web-impl';
 import { TestServerContext } from '../TestServerContext.js';
 
 export interface AutomaticResponse {

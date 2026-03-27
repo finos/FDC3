@@ -1,4 +1,4 @@
-import { DesktopAgent } from '@finos/fdc3-standard';
+import { DesktopAgent } from '@robmoffat/fdc3-standard';
 import { getAgent } from './strategies/getAgent.js';
 import { AbstractUIComponent } from './ui/AbstractUIComponent.js';
 import { DefaultDesktopAgentChannelSelector } from './ui/DefaultDesktopAgentChannelSelector.js';

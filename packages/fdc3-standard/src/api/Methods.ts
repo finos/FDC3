@@ -23,7 +23,7 @@ import {
 } from '../index.js';
 import { StandardContextsSet } from '../internal/contextConfiguration.js';
 import { StandardIntentsSet } from '../internal/intentConfiguration.js';
-import { Context } from '@finos/fdc3-context';
+import { Context } from '@robmoffat/fdc3-context';
 
 const UnavailableError = new Error('FDC3 DesktopAgent not available at `window.fdc3`.');
 

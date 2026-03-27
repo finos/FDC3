@@ -1,8 +1,8 @@
-import { GetAgentParams, AgentError } from '@finos/fdc3-standard';
+import { GetAgentParams, AgentError } from '@robmoffat/fdc3-standard';
 import { retrieveDesktopAgentDetails } from '../sessionStorage/DesktopAgentDetails.js';
 import { Logger } from '../util/Logger.js';
 
-import { BrowserTypes } from '@finos/fdc3-schema';
+import { BrowserTypes } from '@robmoffat/fdc3-schema';
 const {
   isWebConnectionProtocol5ValidateAppIdentitySuccessResponse,
   isWebConnectionProtocol5ValidateAppIdentityFailedResponse,

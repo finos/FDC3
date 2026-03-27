@@ -1,7 +1,7 @@
-import { AppIntent, ResolveError } from '@finos/fdc3';
+import { AppIntent, ResolveError } from '@robmoffat/fdc3';
 import { assert, expect } from 'chai';
 import { APIDocumentation } from '../support/apiDocuments';
-import { DesktopAgent } from '@finos/fdc3';
+import { DesktopAgent } from '@robmoffat/fdc3';
 import { ContextType, IntentApp, Intent } from '../support/intent-support';
 import { appIdMatches, handleFail } from '../../utils';
 

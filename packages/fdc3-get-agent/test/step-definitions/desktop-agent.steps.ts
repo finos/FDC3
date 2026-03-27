@@ -1,7 +1,7 @@
 import { After, Given, Then, When } from 'quickpickle';
 import { DataTable } from '@cucumber/cucumber';
 import { CustomWorld } from '../world/index.js';
-import { doesRowMatch, handleResolve } from '@finos/testing';
+import { doesRowMatch, handleResolve } from '@robmoffat/testing';
 import { MockDocument } from '../support/MockDocument.js';
 import { MockWindow } from '../support/MockWindow.js';
 import { fdc3Ready, getAgent } from '../../src/index.js';
@@ -11,10 +11,10 @@ import {
   GetAgentLogLevels,
   GetAgentParams,
   LogLevel,
-} from '@finos/fdc3-standard';
+} from '@robmoffat/fdc3-standard';
 import { EMBED_URL, MockFDC3Server } from '../support/MockFDC3Server.js';
 import { MockStorage } from '../support/MockStorage.js';
-import { DesktopAgent, ImplementationMetadata } from '@finos/fdc3-standard';
+import { DesktopAgent, ImplementationMetadata } from '@robmoffat/fdc3-standard';
 import { clearAgentPromise } from '../../src/strategies/getAgent.js';
 import { expect } from 'vitest';
 import { dummyInstanceDetails } from '../support/TestServerContext.js';

@@ -1,5 +1,5 @@
 // Shared session status utility for FDC3 demo apps
-import { User } from '@finos/fdc3-context';
+import { User } from '@robmoffat/fdc3-context';
 import { createLogEntry } from './logging';
 import { FDC3Handlers } from '../../../../src/secure-boundary/FDC3Handlers';
 

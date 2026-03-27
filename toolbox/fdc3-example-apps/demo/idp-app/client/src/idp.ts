@@ -1,5 +1,5 @@
 // IDP App Client Implementation
-import { DesktopAgent, getAgent, Context, ContextMetadata, User } from '@finos/fdc3';
+import { DesktopAgent, getAgent, Context, ContextMetadata, User } from '@robmoffat/fdc3';
 import { createLogEntry, updateStatus, clearLog } from '../../../app1/common/src/logging';
 import { initializeFDC3 } from '../../../app1/common/src/fdc3';
 import { FDC3Handlers } from '../../../../src/secure-boundary/FDC3Handlers';

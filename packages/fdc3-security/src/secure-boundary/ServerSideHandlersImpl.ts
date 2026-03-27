@@ -13,8 +13,8 @@ import {
 } from './MessageTypes.js';
 import { v4 as uuidv4 } from 'uuid';
 import { WebSocketMessaging } from './WebSocketMessaging.js';
-import { DefaultChannel } from '@finos/fdc3-agent-proxy/dist/src/channels/DefaultChannel.js';
-import { DefaultPrivateChannel } from '@finos/fdc3-agent-proxy/dist/src/channels/DefaultPrivateChannel.js';
+import { DefaultChannel } from '@robmoffat/fdc3-agent-proxy/dist/src/channels/DefaultChannel.js';
+import { DefaultPrivateChannel } from '@robmoffat/fdc3-agent-proxy/dist/src/channels/DefaultPrivateChannel.js';
 
 export type DisconnectCallback = (ws: WebSocket) => void;
 

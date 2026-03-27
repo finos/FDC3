@@ -1,4 +1,4 @@
-import { DesktopAgent, getAgent } from '@finos/fdc3';
+import { DesktopAgent, getAgent } from '@robmoffat/fdc3';
 import { createLogEntry, updateStatus } from './logging';
 
 // Initialize FDC3 connection

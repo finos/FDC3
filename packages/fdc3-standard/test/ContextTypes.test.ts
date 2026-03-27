@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { Convert, Contact } from '@finos/fdc3-context';
+import { Convert, Contact } from '@robmoffat/fdc3-context';
 
 const json = '{ "type": "fdc3.contact", "id": { "email": "joe@mail.com" } }';
 const contact: Contact = {

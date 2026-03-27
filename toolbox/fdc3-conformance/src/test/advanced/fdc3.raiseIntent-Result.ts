@@ -1,4 +1,4 @@
-import { DesktopAgent, getAgent, Listener } from '@finos/fdc3';
+import { DesktopAgent, getAgent, Listener } from '@robmoffat/fdc3';
 import { closeMockAppWindow } from '../fdc3-conformance-utils';
 import {
   RaiseIntentControl,

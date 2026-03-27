@@ -1,4 +1,4 @@
-import { Channel, DesktopAgent } from '@finos/fdc3';
+import { Channel, DesktopAgent } from '@robmoffat/fdc3';
 import constants from '../../constants';
 import { AppControlContext } from '../../context-types';
 import { channelType } from '../constants';

@@ -1,5 +1,5 @@
-import { Context, EncryptedContextWrapper } from '@finos/fdc3-context';
-import { Channel, ContextMetadata, Listener } from '@finos/fdc3-standard';
+import { Context, EncryptedContextWrapper } from '@robmoffat/fdc3-context';
+import { Channel, ContextMetadata, Listener } from '@robmoffat/fdc3-standard';
 import { JsonWebKeyWithId, PublicFDC3Security } from '../impl/PublicFDC3Security.js';
 import { MetadataHandler } from '../delegates/MetadataHandler.js';
 

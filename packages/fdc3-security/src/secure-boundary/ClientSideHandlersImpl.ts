@@ -1,5 +1,12 @@
-import { Channel, DesktopAgent, IntentHandler, Listener, PrivateChannel, ContextMetadata } from '@finos/fdc3-standard';
-import { Context } from '@finos/fdc3-context';
+import {
+  Channel,
+  DesktopAgent,
+  IntentHandler,
+  Listener,
+  PrivateChannel,
+  ContextMetadata,
+} from '@robmoffat/fdc3-standard';
+import { Context } from '@robmoffat/fdc3-context';
 import {
   REMOTE_INTENT_HANDLER,
   EXCHANGE_DATA,
@@ -9,7 +16,7 @@ import {
   ExchangeDataMessage,
 } from './MessageTypes.js';
 import { FDC3Handlers } from './FDC3Handlers.js';
-import { BrowserTypes } from '@finos/fdc3-schema';
+import { BrowserTypes } from '@robmoffat/fdc3-schema';
 import { Messaging } from './Messaging.js';
 import { WebSocketMessaging } from './WebSocketMessaging.js';
 

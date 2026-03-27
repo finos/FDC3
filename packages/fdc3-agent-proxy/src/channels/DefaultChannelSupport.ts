@@ -9,7 +9,7 @@ import {
   ApiEvent,
   FDC3ChannelChangedEvent,
   FDC3EventTypes,
-} from '@finos/fdc3-standard';
+} from '@robmoffat/fdc3-standard';
 import { Messaging } from '../Messaging.js';
 import { ChannelSupport } from './ChannelSupport.js';
 import { DefaultPrivateChannel } from './DefaultPrivateChannel.js';
@@ -31,7 +31,7 @@ import {
   JoinUserChannelResponse,
   JoinUserChannelRequest,
   BroadcastEvent,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+} from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { throwIfUndefined } from '../util/throwIfUndefined.js';
 import { Logger } from '../util/Logger.js';
 

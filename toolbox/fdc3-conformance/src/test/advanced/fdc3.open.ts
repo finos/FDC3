@@ -2,7 +2,7 @@ import constants from '../../constants';
 import { openApp, OpenCommonConfig } from '../support/open-control';
 import { APIDocumentation } from '../support/apiDocuments';
 import { OpenControlImpl } from '../support/open-support';
-import { DesktopAgent, getAgent } from '@finos/fdc3';
+import { DesktopAgent, getAgent } from '@robmoffat/fdc3';
 import { assert, expect } from 'chai';
 import { ControlContextType } from '../support/intent-support';
 import { appIdMatches } from '../../utils';

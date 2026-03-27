@@ -1,12 +1,15 @@
-import { Channel, IntentHandler, PrivateChannel } from '@finos/fdc3';
-import { Context, User } from '@finos/fdc3-context';
+import { Channel, IntentHandler, PrivateChannel } from '@robmoffat/fdc3';
+import { Context, User } from '@robmoffat/fdc3-context';
 import {
   EncryptingChannelDelegate,
   MessageAuthenticity,
   PrivateFDC3Security,
   signedContext,
-} from '@finos/fdc3-security';
-import { checkSignature, ContextMetadataWithAuthenticity } from '@finos/fdc3-security/dist/src/signing/SigningSupport';
+} from '@robmoffat/fdc3-security';
+import {
+  checkSignature,
+  ContextMetadataWithAuthenticity,
+} from '@robmoffat/fdc3-security/dist/src/signing/SigningSupport';
 import { createSymmetricKeyResponseContextListener } from '../../../src/encryption/SymmetricKeyContextListener';
 import { ExchangeDataMessage } from '../../../src/secure-boundary/MessageTypes';
 

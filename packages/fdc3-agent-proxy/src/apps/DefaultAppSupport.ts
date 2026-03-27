@@ -5,8 +5,8 @@ import {
   ImplementationMetadata,
   OpenError,
   ResolveError,
-} from '@finos/fdc3-standard';
-import { Context } from '@finos/fdc3-context';
+} from '@robmoffat/fdc3-standard';
+import { Context } from '@robmoffat/fdc3-context';
 import { AppSupport } from './AppSupport.js';
 import { Messaging } from '../Messaging.js';
 import {
@@ -18,7 +18,7 @@ import {
   GetInfoResponse,
   OpenRequest,
   OpenResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+} from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { throwIfUndefined } from '../util/throwIfUndefined.js';
 import { Logger } from '../util/Logger.js';
 

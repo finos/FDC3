@@ -2,7 +2,7 @@
  * SPDX-License-Identifier: Apache-2.0
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
-import * as fdc3_2 from '@finos/fdc3';
+import * as fdc3_2 from '@robmoffat/fdc3';
 import * as fdc3_1 from 'fdc3-1.2';
 
 interface fdc3_1IntentResolution extends fdc3_1.IntentResolution {

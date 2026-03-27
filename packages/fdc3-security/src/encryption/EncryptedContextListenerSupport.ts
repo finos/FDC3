@@ -1,5 +1,5 @@
-import { Context, EncryptedContextWrapper, SymmetricKeyRequest, SymmetricKeyResponse } from '@finos/fdc3-context';
-import { Channel, ContextHandler, ContextMetadata, Listener } from '@finos/fdc3-standard';
+import { Context, EncryptedContextWrapper, SymmetricKeyRequest, SymmetricKeyResponse } from '@robmoffat/fdc3-context';
+import { Channel, ContextHandler, ContextMetadata, Listener } from '@robmoffat/fdc3-standard';
 import { PrivateFDC3Security, SigningFunction, UnwrapFunction } from '../impl/PrivateFDC3Security.js';
 import { JSONWebEncryption, JsonWebKeyWithId, PublicFDC3Security } from '../impl/PublicFDC3Security.js';
 import { MetadataHandler } from '../delegates/MetadataHandler.js';

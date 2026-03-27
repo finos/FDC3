@@ -1,4 +1,4 @@
-import { Channel } from '@finos/fdc3';
+import { Channel } from '@robmoffat/fdc3';
 
 export interface IChannelService {
   joinRetrievedUserChannel(channelId: string): Promise<Channel>;

@@ -6,9 +6,9 @@ import {
   PrivateChannel,
   IntentHandler,
   IntentResolution,
-} from '@finos/fdc3-standard';
-import type { Intent } from '@finos/fdc3-standard';
-import { Context } from '@finos/fdc3-context';
+} from '@robmoffat/fdc3-standard';
+import type { Intent } from '@robmoffat/fdc3-standard';
+import { Context } from '@robmoffat/fdc3-context';
 import { MockChannel } from './MockChannel';
 import { MockPrivateChannel } from './MockPrivateChannel';
 

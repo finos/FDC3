@@ -8,8 +8,8 @@ import {
   PrivateChannelEvent,
   PrivateChannelEventTypes,
   PrivateChannelUnsubscribeEvent,
-} from '@finos/fdc3-standard';
-import { BrowserTypes } from '@finos/fdc3-schema';
+} from '@robmoffat/fdc3-standard';
+import { BrowserTypes } from '@robmoffat/fdc3-schema';
 import { Logger } from '../util/Logger.js';
 const {
   isPrivateChannelOnAddContextListenerEvent,

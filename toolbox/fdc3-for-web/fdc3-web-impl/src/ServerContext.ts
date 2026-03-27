@@ -1,5 +1,5 @@
-import { AppIdentifier, AppIntent } from '@finos/fdc3-standard';
-import { Context } from '@finos/fdc3-context';
+import { AppIdentifier, AppIntent } from '@robmoffat/fdc3-standard';
+import { Context } from '@robmoffat/fdc3-context';
 import { FDC3Server } from './FDC3Server.js';
 
 export enum State {

@@ -8,7 +8,7 @@ import { Channel } from './Channel.js';
 import { ContextHandler, IntentHandler } from './Types.js';
 import { IntentResolution } from './IntentResolution.js';
 import { Listener } from './Listener.js';
-import { Context } from '@finos/fdc3-context';
+import { Context } from '@robmoffat/fdc3-context';
 import { ImplementationMetadata } from './ImplementationMetadata.js';
 import { PrivateChannel } from './PrivateChannel.js';
 import { AppIdentifier } from './AppIdentifier.js';
@@ -547,7 +547,7 @@ export interface DesktopAgent {
    * of an application based on the version supported by the Desktop Agent and for logging purposes.
    *
    * ```js
-   * import {compareVersionNumbers, versionIsAtLeast} from '@finos/fdc3';
+   * import {compareVersionNumbers, versionIsAtLeast} from '@robmoffat/fdc3';
    *
    * if (fdc3.getInfo && versionIsAtLeast(await fdc3.getInfo(), "1.2")) {
    *   await fdc3.raiseIntentForContext(context);

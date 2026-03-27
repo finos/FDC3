@@ -1,7 +1,7 @@
 import { TestServerContext } from '../TestServerContext.js';
-import { InstanceID } from '@finos/fdc3-web-impl';
+import { InstanceID } from '@robmoffat/fdc3-web-impl';
 import { AutomaticResponse } from './AutomaticResponses.js';
-import { BroadcastRequest, BroadcastResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { BroadcastRequest, BroadcastResponse } from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { createUUID } from '../../../src/util/Uuid.js';
 
 export class Broadcast implements AutomaticResponse {

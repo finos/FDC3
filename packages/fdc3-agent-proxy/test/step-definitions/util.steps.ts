@@ -1,8 +1,8 @@
 import { When } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
 import { throwIfUndefined } from '../../src/util/throwIfUndefined.js';
-import { AgentResponseMessage } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
-import { LogLevel, OpenError } from '@finos/fdc3-standard';
+import { AgentResponseMessage } from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { LogLevel, OpenError } from '@robmoffat/fdc3-standard';
 import { expect } from 'vitest';
 import { Logger } from '../../src/util/Logger.js';
 

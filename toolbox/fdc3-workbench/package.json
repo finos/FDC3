@@ -38,7 +38,7 @@
     "@eslint/compat": "^1.2.5",
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.19.0",
-    "@finos/fdc3": "3.0.0-alpha.2",
+    "@robmoffat/fdc3": "3.0.0-alpha.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@fontsource/roboto": "5.1.0",

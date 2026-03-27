@@ -6,7 +6,7 @@ import { makeObservable, observable, action, runInAction, toJS } from 'mobx';
 import { ContextType, Fdc3Listener, getWorkbenchAgent } from '../utility/Fdc3Api.js';
 import systemLogStore from './SystemLogStore.js';
 import { nanoid } from 'nanoid';
-import { Channel } from '@finos/fdc3';
+import { Channel } from '@robmoffat/fdc3';
 
 interface ListenerOptionType {
   title: string;

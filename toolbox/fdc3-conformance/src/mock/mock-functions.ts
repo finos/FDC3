@@ -1,4 +1,4 @@
-import { DesktopAgent } from '@finos/fdc3';
+import { DesktopAgent } from '@robmoffat/fdc3';
 import constants from '../constants';
 import { AppControlContext } from '../context-types';
 

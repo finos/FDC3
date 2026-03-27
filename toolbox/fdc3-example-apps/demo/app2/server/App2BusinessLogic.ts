@@ -6,8 +6,8 @@ import {
   PrivateChannel,
   PrivateFDC3Security,
   SigningChannelDelegate,
-} from '@finos/fdc3';
-import { Context, Valuation } from '@finos/fdc3-context';
+} from '@robmoffat/fdc3';
+import { Context, Valuation } from '@robmoffat/fdc3-context';
 import { FDC3Handlers } from '../../../src/secure-boundary/FDC3Handlers';
 import { createSymmetricKeyRequestContextListener } from '../../../src/encryption/SymmetricKeyContextListener';
 import { ExchangeDataMessage } from '../../../src/secure-boundary/MessageTypes';

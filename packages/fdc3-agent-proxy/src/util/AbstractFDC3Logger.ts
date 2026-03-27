@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { LogLevel } from '@finos/fdc3-standard';
+import { LogLevel } from '@robmoffat/fdc3-standard';
 
 //check if color is supported in (node) console;
 let noColor = true;

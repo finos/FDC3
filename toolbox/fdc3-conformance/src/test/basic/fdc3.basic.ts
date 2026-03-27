@@ -1,4 +1,4 @@
-import { Context, DesktopAgent } from '@finos/fdc3';
+import { Context, DesktopAgent } from '@robmoffat/fdc3';
 
 import { APIDocumentation } from '../support/apiDocuments';
 import { ContextType, Intent } from '../support/intent-support';

@@ -1,4 +1,4 @@
-import { Channel } from '@finos/fdc3';
+import { Channel } from '@robmoffat/fdc3';
 import { ChannelsAppConfig } from '../test/support/channel-control';
 import { commands } from './constants';
 import { IChannelService } from './interfaces';

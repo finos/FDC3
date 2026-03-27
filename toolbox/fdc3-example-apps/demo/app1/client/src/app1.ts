@@ -1,9 +1,9 @@
-import { DesktopAgent, PrivateChannel } from '@finos/fdc3';
+import { DesktopAgent, PrivateChannel } from '@robmoffat/fdc3';
 import { createLogEntry } from '../../common/src/logging';
 import { checkSessionStatus, setupSessionStatusButton, setupLogoutButton } from '../../common/src/session-logic';
 import { FDC3Handlers } from '../../../../src/secure-boundary/FDC3Handlers';
 import { connectRemoteHandlers } from '../../../../src/secure-boundary/ClientSideHandlersImpl';
-import { Context, Instrument, UserRequest } from '@finos/fdc3-context';
+import { Context, Instrument, UserRequest } from '@robmoffat/fdc3-context';
 import { initializeFDC3 } from '../../common/src/fdc3';
 import { ExchangeDataMessage } from '../../../../src/secure-boundary/MessageTypes';
 

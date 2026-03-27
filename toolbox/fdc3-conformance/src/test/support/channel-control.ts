@@ -1,4 +1,4 @@
-import { Context, Channel, Listener } from '@finos/fdc3';
+import { Context, Channel, Listener } from '@robmoffat/fdc3';
 
 /**
  * This interface wraps channel functionality

@@ -1,6 +1,6 @@
 /**
  * @packageDocumentation
- * @module @finos/fdc3-security
+ * @module @robmoffat/fdc3-security
  * Public entry — re-exports all implementation modules.
  */
 

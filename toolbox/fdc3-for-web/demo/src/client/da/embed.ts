@@ -1,7 +1,7 @@
 import { io } from 'socket.io-client';
 import { link, UI, UI_URLS } from './util.js';
 import { APP_HELLO } from '../../message-types.js';
-import { isWebConnectionProtocol1Hello } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { isWebConnectionProtocol1Hello } from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 const appWindow = window.parent;
 

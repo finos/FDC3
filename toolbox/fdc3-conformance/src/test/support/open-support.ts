@@ -1,5 +1,5 @@
 import { assert, expect } from 'chai';
-import { AppIdentifier, Context, DesktopAgent, Listener, OpenError } from '@finos/fdc3';
+import { AppIdentifier, Context, DesktopAgent, Listener, OpenError } from '@robmoffat/fdc3';
 import constants from '../../constants';
 import { ContextSender } from '../../mock/general';
 import { failAfterTimeout } from '../../utils';

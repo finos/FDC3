@@ -11,7 +11,7 @@ import { RegisterableListener } from './listeners/RegisterableListener.js';
 import { DefaultAppSupport } from './apps/DefaultAppSupport.js';
 import { AppSupport } from './apps/AppSupport.js';
 import { DefaultHeartbeatSupport } from './heartbeat/DefaultHeartbeatSupport.js';
-import { Connectable } from '@finos/fdc3-standard';
+import { Connectable } from '@robmoffat/fdc3-standard';
 import { AbstractFDC3Logger } from './util/AbstractFDC3Logger.js';
 
 export {

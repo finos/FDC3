@@ -1,5 +1,5 @@
 {
-  "name": "@finos/fdc3-web-impl",
+  "name": "@robmoffat/fdc3-web-impl",
   "version": "3.0.0-alpha.2",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
@@ -27,7 +27,7 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@finos/fdc3-standard": "3.0.0-alpha.2",
+    "@robmoffat/fdc3-standard": "3.0.0-alpha.4",
     "@types/uuid": "^10.0.0",
     "uuid": "^9.0.1"
   },
@@ -37,14 +37,14 @@
     "@cucumber/messages": "^28.1.0",
     "@cucumber/pretty-formatter": "1.0.1",
     "@eslint/js": "^9.19.0",
-    "@finos/testing": "3.0.0-alpha.2",
+    "@robmoffat/testing": "3.0.0-alpha.4",
     "@types/expect": "24.3.0",
     "@types/lodash": "4.14.167",
     "@types/node": "^20.16.11",
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
     "@typescript-eslint/parser": "^8.18.2",
-    "@vitest/coverage-v8": "^2.0.0",
+    "@vitest/coverage-v8": "^3.2.3",
     "cucumber-console-formatter": "1.0.0",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^9.1.0",
@@ -55,12 +55,12 @@
     "jsonpath-plus": "^10.1.0",
     "openapi-typescript": "^6.7.6",
     "prettier": "3.4.1",
-    "quickpickle": "^1.0.0",
+    "quickpickle": "^1.6.1",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.17.0",
     "uuid": "^9.0.1",
-    "vitest": "^2.0.0"
+    "vitest": "^3.2.3"
   }
 }

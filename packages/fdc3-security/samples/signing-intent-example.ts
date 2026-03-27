@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { ContextMetadata, DesktopAgent, IntentHandler } from '@finos/fdc3-standard';
-import { Context } from '@finos/fdc3-context';
+import { ContextMetadata, DesktopAgent, IntentHandler } from '@robmoffat/fdc3-standard';
+import { Context } from '@robmoffat/fdc3-context';
 import { createJosePublicFDC3SecurityFromUrl } from '../src/impl/JosePublicFDC3Security';
 import { MockDesktopAgent } from '../test/mocks/MockDesktopAgent';
 import { AppBackEnd } from '../test/mocks/AppBackEnd';

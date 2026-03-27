@@ -1,11 +1,11 @@
-import { AgentError, AppIdentifier } from '@finos/fdc3-standard';
+import { AgentError, AppIdentifier } from '@robmoffat/fdc3-standard';
 import { Messaging } from '../Messaging.js';
 import { RegisterableListener } from '../listeners/RegisterableListener.js';
 import {
   AgentResponseMessage,
   AppRequestMessage,
   WebConnectionProtocol6Goodbye,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+} from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { Logger } from '../util/Logger.js';
 
 export abstract class AbstractMessaging implements Messaging {

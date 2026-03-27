@@ -1,4 +1,4 @@
-import { FDC3ChannelChangedEvent, getAgent } from '@finos/fdc3';
+import { FDC3ChannelChangedEvent, getAgent } from '@robmoffat/fdc3';
 import { closeMockAppWindow } from '../fdc3-conformance-utils';
 import { APIDocumentation } from '../support/apiDocuments';
 import { ContextType, IntentApp, Intent, RaiseIntentControl } from '../support/intent-support';

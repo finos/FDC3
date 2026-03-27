@@ -1,5 +1,5 @@
-import { AgentEventMessage, AgentResponseMessage } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
-import { Listener } from '@finos/fdc3-standard';
+import { AgentEventMessage, AgentResponseMessage } from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { Listener } from '@robmoffat/fdc3-standard';
 
 /**
  * Extends the basic concept of FDC3 listeners to include lifecycle methods.

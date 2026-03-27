@@ -1,7 +1,7 @@
-import { IntentResult } from '@finos/fdc3-standard';
+import { IntentResult } from '@robmoffat/fdc3-standard';
 import { PrivateFDC3Security, SigningFunction } from '../impl/PrivateFDC3Security.js';
 import { MetadataHandler } from '../delegates/MetadataHandler.js';
-import { Context } from '@finos/fdc3-context';
+import { Context } from '@robmoffat/fdc3-context';
 
 /**
  * A helper function for signing intent results.

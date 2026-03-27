@@ -1,6 +1,6 @@
 {
-  "name": "@finos/fdc3-agent-proxy",
-  "version": "3.0.0-alpha.2",
+  "name": "@robmoffat/fdc3-agent-proxy",
+  "version": "3.0.0-alpha.4",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -26,17 +26,17 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@finos/fdc3-standard": "3.0.0-alpha.2"
+    "@robmoffat/fdc3-standard": "3.0.0-alpha.4"
   },
   "devDependencies": {
     "@cucumber/cucumber": "10.3.1",
     "@eslint/js": "^9.19.0",
-    "@finos/testing": "3.0.0-alpha.2",
+    "@robmoffat/testing": "3.0.0-alpha.4",
     "@types/node": "^20.16.11",
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
     "@typescript-eslint/parser": "^8.18.2",
-    "@vitest/coverage-v8": "^2.0.0",
+    "@vitest/coverage-v8": "^3.2.3",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.31.0",
@@ -45,12 +45,12 @@
     "is-ci": "2.0.0",
     "jsonpath-plus": "^10.1.0",
     "prettier": "3.4.1",
-    "quickpickle": "^1.0.0",
+    "quickpickle": "^1.6.1",
     "rimraf": "^6.0.1",
-    "tsx": "^4.19.1",
+    "tsx": "^4.20.5",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.17.0",
     "uuid": "^9.0.1",
-    "vitest": "^2.0.0"
+    "vitest": "^3.2.3"
   }
 }

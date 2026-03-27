@@ -1,13 +1,13 @@
-export * from '@finos/fdc3-context';
+export * from '@robmoffat/fdc3-context';
 
-import { BrowserTypes, BridgingTypes } from '@finos/fdc3-schema';
+import { BrowserTypes, BridgingTypes } from '@robmoffat/fdc3-schema';
 export { BridgingTypes, BrowserTypes };
 
-import { DesktopAgent, AppIdentifier } from '@finos/fdc3-standard';
-export * from '@finos/fdc3-standard';
+import { DesktopAgent, AppIdentifier } from '@robmoffat/fdc3-standard';
+export * from '@robmoffat/fdc3-standard';
 export { AppIdentifier };
 
-import { getAgent, fdc3Ready } from '@finos/fdc3-get-agent';
+import { getAgent, fdc3Ready } from '@robmoffat/fdc3-get-agent';
 export { getAgent, fdc3Ready };
 
 declare global {

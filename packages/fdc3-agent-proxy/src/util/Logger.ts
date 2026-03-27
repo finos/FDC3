@@ -1,4 +1,4 @@
-import { LogLevel } from '@finos/fdc3-standard';
+import { LogLevel } from '@robmoffat/fdc3-standard';
 import { AbstractFDC3Logger } from './AbstractFDC3Logger.js';
 
 /**

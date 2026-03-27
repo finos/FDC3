@@ -5,7 +5,7 @@ import {
   AgentError,
   DesktopAgentDetails,
   WebDesktopAgentType,
-} from '@finos/fdc3-standard';
+} from '@robmoffat/fdc3-standard';
 import { DesktopAgentPreloadLoader } from './DesktopAgentPreloadLoader.js';
 import { PostMessageLoader } from './PostMessageLoader.js';
 import { retrieveDesktopAgentDetails, storeDesktopAgentDetails } from '../sessionStorage/DesktopAgentDetails.js';

@@ -1,4 +1,4 @@
-import { DesktopAgent, Context, ContextMetadata } from '@finos/fdc3';
+import { DesktopAgent, Context, ContextMetadata } from '@robmoffat/fdc3';
 import { createLogEntry } from '../../../app1/common/src/logging';
 import { initializeFDC3 } from '../../../app1/common/src/fdc3';
 import { connectRemoteHandlers } from '../../../../src/secure-boundary/ClientSideHandlersImpl';

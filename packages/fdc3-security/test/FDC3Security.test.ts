@@ -1,7 +1,7 @@
 import { JWKSResolver } from '../src/impl/JosePublicFDC3Security';
 import { JosePrivateFDC3Security, createJosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
-import { Context } from '@finos/fdc3-context';
-import { BrowserTypes } from '@finos/fdc3-schema';
+import { Context } from '@robmoffat/fdc3-context';
+import { BrowserTypes } from '@robmoffat/fdc3-schema';
 import { FDC3SecurityTimeLimits } from '../src/impl/FDC3SecurityTimeLimits';
 import { JsonWebKeyWithId, PublicFDC3Security } from '../src/impl/PublicFDC3Security';
 import { PrivateFDC3Security } from '../src/impl/PrivateFDC3Security';

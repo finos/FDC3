@@ -1,7 +1,7 @@
-import { ContextHandler, DesktopAgentProvidableContextMetadata, IntentHandler } from '@finos/fdc3-standard';
+import { ContextHandler, DesktopAgentProvidableContextMetadata, IntentHandler } from '@robmoffat/fdc3-standard';
 import { MetadataHandler } from '../delegates/MetadataHandler.js';
 import { PublicFDC3Security, SignatureCheckingFunction } from '../impl/PublicFDC3Security.js';
-import { Context } from '@finos/fdc3-context';
+import { Context } from '@robmoffat/fdc3-context';
 
 /**
  * Provides support for receiving and verifying signed contexts on FDC3 channels or from raise intent requests.

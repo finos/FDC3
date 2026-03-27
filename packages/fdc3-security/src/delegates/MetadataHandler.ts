@@ -1,5 +1,5 @@
-import { Context } from '@finos/fdc3-context';
-import { ContextMetadata } from '@finos/fdc3-standard';
+import { Context } from '@robmoffat/fdc3-context';
+import { ContextMetadata } from '@robmoffat/fdc3-standard';
 
 /**
  * Older versions of FDC3 (< 3.0) did not allow metadata to be broadcast with a context.

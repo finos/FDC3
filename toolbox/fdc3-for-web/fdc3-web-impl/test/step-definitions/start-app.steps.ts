@@ -2,10 +2,10 @@ import { Then, When } from 'quickpickle';
 import { DataTable } from '@cucumber/cucumber';
 import { CustomWorld } from '../world/index.js';
 import { contextMap, createMeta } from './generic.steps.js';
-import { matchData } from '@finos/testing';
-import { BrowserTypes } from '@finos/fdc3-schema';
+import { matchData } from '@robmoffat/testing';
+import { BrowserTypes } from '@robmoffat/fdc3-schema';
 import { State } from '../../src/ServerContext.js';
-import { GetInfoRequest } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { GetInfoRequest } from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 type OpenRequest = BrowserTypes.OpenRequest;
 type GetAppMetadataRequest = BrowserTypes.GetAppMetadataRequest;

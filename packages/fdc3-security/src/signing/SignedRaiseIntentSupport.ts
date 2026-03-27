@@ -1,8 +1,8 @@
-import { Context } from '@finos/fdc3-context';
+import { Context } from '@robmoffat/fdc3-context';
 import { PrivateFDC3Security, SigningFunction } from '../impl/PrivateFDC3Security.js';
 import { SignatureCheckingFunction } from '../impl/PublicFDC3Security.js';
 import { MetadataHandler } from '../delegates/MetadataHandler.js';
-import { AppIdentifier, DesktopAgent, IntentResolution, IntentResult } from '@finos/fdc3-standard';
+import { AppIdentifier, DesktopAgent, IntentResolution, IntentResult } from '@robmoffat/fdc3-standard';
 
 /**
  * A helper for signing intent requests and verifying signed results.

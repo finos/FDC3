@@ -1,4 +1,4 @@
-import { Listener, PrivateChannel } from '@finos/fdc3-standard';
+import { Listener, PrivateChannel } from '@robmoffat/fdc3-standard';
 import { MockChannel } from './MockChannel';
 
 export class MockPrivateChannel extends MockChannel implements PrivateChannel {

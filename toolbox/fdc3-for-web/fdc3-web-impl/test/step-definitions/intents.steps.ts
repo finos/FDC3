@@ -3,8 +3,8 @@ import { DataTable } from '@cucumber/cucumber';
 import { CustomWorld } from '../world/index.js';
 import { DirectoryApp } from '../../src/directory/DirectoryInterface.js';
 import { APP_FIELD, contextMap, createMeta } from './generic.steps.js';
-import { handleResolve } from '@finos/testing';
-import { BrowserTypes } from '@finos/fdc3-schema';
+import { handleResolve } from '@robmoffat/testing';
+import { BrowserTypes } from '@robmoffat/fdc3-schema';
 
 type FindIntentRequest = BrowserTypes.FindIntentRequest;
 type FindIntentsByContextRequest = BrowserTypes.FindIntentsByContextRequest;

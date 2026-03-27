@@ -1,5 +1,5 @@
 import { AutomaticResponse, TestMessaging } from '../TestMessaging.js';
-import { Context } from '@finos/fdc3-context';
+import { Context } from '@robmoffat/fdc3-context';
 import { createResponseMeta } from './support.js';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -19,7 +19,7 @@ import {
   JoinUserChannelResponse,
   LeaveCurrentChannelRequest,
   LeaveCurrentChannelResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+} from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 export class ChannelState implements AutomaticResponse {
   private channelId: string | null = null;

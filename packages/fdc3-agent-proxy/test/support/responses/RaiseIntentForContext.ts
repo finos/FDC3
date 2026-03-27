@@ -2,9 +2,9 @@ import {
   RaiseIntentForContextRequest,
   RaiseIntentForContextResponse,
   RaiseIntentResultResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+} from '@robmoffat/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { AutomaticResponse, IntentDetail, intentDetailMatches, TestMessaging } from '../TestMessaging.js';
-import { AppIdentifier, AppIntent, ResolveError } from '@finos/fdc3-standard';
+import { AppIdentifier, AppIntent, ResolveError } from '@robmoffat/fdc3-standard';
 import { createResponseMeta } from './support.js';
 
 export class RaiseIntentForContext implements AutomaticResponse {
