@@ -1,6 +1,6 @@
 {
   "name": "@robmoffat/fdc3",
-  "version": "3.0.0-alpha.2",
+  "version": "3.0.0-alpha.5",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -21,11 +21,11 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@robmoffat/fdc3-context": "3.0.0-alpha.4",
-    "@robmoffat/fdc3-get-agent": "3.0.0-alpha.2",
-    "@robmoffat/fdc3-schema": "3.0.0-alpha.4",
-    "@robmoffat/fdc3-standard": "3.0.0-alpha.4",
-    "@robmoffat/fdc3-security": "3.0.0-alpha.4"
+    "@robmoffat/fdc3-context": "3.0.0-alpha.5",
+    "@robmoffat/fdc3-get-agent": "3.0.0-alpha.5",
+    "@robmoffat/fdc3-schema": "3.0.0-alpha.5",
+    "@robmoffat/fdc3-standard": "3.0.0-alpha.5",
+    "@robmoffat/fdc3-security": "3.0.0-alpha.5"
   },
   "type": "module"
 }

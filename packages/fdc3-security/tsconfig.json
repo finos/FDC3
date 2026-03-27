@@ -15,5 +15,22 @@
   "exclude": [
     "test/**",
     "dist/**"
+  ],
+  "references": [
+    {
+      "path": "../fdc3-standard"
+    },
+    {
+      "path": "../fdc3-schema"
+    },
+    {
+      "path": "../fdc3-context"
+    },
+    {
+      "path": "../fdc3-agent-proxy"
+    },
+    {
+      "path": "../fdc3-get-agent"
+    }
   ]
 }

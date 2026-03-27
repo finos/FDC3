@@ -1,7 +1,7 @@
 {
   "name": "@robmoffat/demo",
   "private": true,
-  "version": "3.0.0-alpha.2",
+  "version": "3.0.0-alpha.5",
   "license": "Apache-2.0",
   "scripts": {
     "dev": "tsx src/server/main.ts",
@@ -22,7 +22,7 @@
     "vite": "^6.4.1"
   },
   "dependencies": {
-    "@robmoffat/fdc3": "3.0.0-alpha.2",
+    "@robmoffat/fdc3": "3.0.0-alpha.5",
     "@types/uuid": "^10.0.0",
     "@types/ws": "^8.5.12",
     "express": "^4.21.1",
