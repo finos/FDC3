@@ -20,5 +20,6 @@ export const APIDocumentation = {
   raiseIntent: 'https://fdc3.finos.org/docs/api/ref/DesktopAgent#raiseintent',
   raiseIntentForContext: 'https://fdc3.finos.org/docs/api/ref/DesktopAgent#raiseintentforcontext',
   appMetadata: 'https://fdc3.finos.org/docs/api/ref/Metadata#appmetadata',
+  addEventListener: 'https://fdc3.finos.org/docs/api/ref/DesktopAgent#addeventlistener',
   findInstances: 'https://fdc3.finos.org/docs/api/ref/DesktopAgent#findinstances',
 };
