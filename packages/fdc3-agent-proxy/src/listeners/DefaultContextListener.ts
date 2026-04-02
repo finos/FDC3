@@ -1,4 +1,4 @@
-import { ContextHandler } from '@finos/fdc3-standard';
+import { AppIdentifier, ContextHandler } from '@finos/fdc3-standard';
 import { Messaging } from '../Messaging.js';
 import { AbstractListener } from './AbstractListener.js';
 import { AddContextListenerRequest, BroadcastEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
@@ -44,6 +44,8 @@ export class DefaultContextListener
   }
 
   action(m: BroadcastEvent): void {
-    this.handler(m.payload.context);
+    this.handler(m.payload.context, {
+      source: m.payload.originatingApp as AppIdentifier,
+    });
   }
 }

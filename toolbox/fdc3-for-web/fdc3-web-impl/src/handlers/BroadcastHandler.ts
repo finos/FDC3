@@ -7,6 +7,7 @@ import {
   AddEventListenerRequest,
   AgentResponseMessage,
   AppRequestMessage,
+  BroadcastEvent,
   BroadcastRequest,
   ChannelChangedEvent,
   ContextListenerUnsubscribeRequest,
@@ -439,21 +440,24 @@ export class BroadcastHandler implements MessageHandler {
       })
       .filter(onlyUniqueAppIds);
 
-    matchingApps.forEach(app => {
-      sc.post(
-        {
-          meta: {
-            eventUuid: sc.createUUID(),
-            timestamp: new Date(),
-          },
-          type: 'broadcastEvent',
-          payload: {
-            channelId: arg0.payload.channelId,
-            context: arg0.payload.context,
-          },
+    const msg: BroadcastEvent = {
+      meta: {
+        eventUuid: sc.createUUID(),
+        timestamp: new Date(),
+      },
+      type: 'broadcastEvent',
+      payload: {
+        channelId: arg0.payload.channelId,
+        context: arg0.payload.context,
+        originatingApp: {
+          appId: from.appId,
+          instanceId: from.instanceId,
         },
-        app.instanceId
-      );
+      },
+    };
+
+    matchingApps.forEach(app => {
+      sc.post(msg, app.instanceId);
     });
 
     this.updateChannelState(arg0.payload.channelId, arg0.payload.context);
