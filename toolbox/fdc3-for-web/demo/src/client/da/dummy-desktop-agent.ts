@@ -3,8 +3,14 @@ import { v4 as uuid } from 'uuid';
 import { APP_GOODBYE, DA_HELLO, FDC3_APP_EVENT } from '../../message-types.js';
 import { DemoServerContext } from './DemoServerContext.js';
 import { FDC3_2_1_JSONDirectory } from './FDC3_2_1_JSONDirectory.js';
-import { AppRegistration, DefaultFDC3Server, DirectoryApp, ServerContext } from '@finos/fdc3-web-impl';
-import { ChannelState, ChannelType } from '@finos/fdc3-web-impl/src/handlers/BroadcastHandler.js';
+import {
+  AppRegistration,
+  ChannelState,
+  ChannelType,
+  DefaultFDC3Server,
+  DirectoryApp,
+  ServerContext,
+} from '@finos/fdc3-web-impl';
 import { UI, UI_URLS } from './util.js';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { WebConnectionProtocol3Handshake } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
@@ -153,7 +159,7 @@ window.addEventListener('load', () => {
 
     // let's create buttons for some apps
     const appList = document.getElementById('app-list') as HTMLOListElement;
-    directory.retrieveAllApps().forEach(app => {
+    directory.retrieveAllApps().forEach((app: DirectoryApp) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mani = app?.hostManifests?.demo as any;
       const show = mani?.visible ?? true;
