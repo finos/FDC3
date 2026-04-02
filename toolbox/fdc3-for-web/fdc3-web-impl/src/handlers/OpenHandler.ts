@@ -247,7 +247,7 @@ export class OpenHandler implements MessageHandler {
     const context = arg0.payload.context;
 
     try {
-      const uuid = await sc.open(toOpen.appId);
+      const uuid = await sc.open(toOpen.appId, from);
       this.pending.set(uuid, new PendingApp(sc, arg0, context, from, this.timeoutMs));
     } catch (e) {
       errorResponse(sc, arg0, from, (e as Error).message ?? e, 'openResponse');

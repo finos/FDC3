@@ -283,7 +283,7 @@ export class IntentHandler implements MessageHandler {
     // app exists but needs starting
     const pi = new PendingIntent(arg0, sc, this, target);
     this.pendingIntents.add(pi);
-    sc.open(target.appId).then(() => {
+    sc.open(target.appId, arg0.from).then(() => {
       return undefined;
     });
   }

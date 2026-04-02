@@ -212,7 +212,8 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
     }
   }
 
-  async open(appId: string): Promise<InstanceID> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async open(appId: string, _source?: AppIdentifier): Promise<InstanceID> {
     const details: DirectoryApp[] = this.directory.retrieveAppsById(appId) as DirectoryApp[];
     if (details.length > 0) {
       const launchDetails = details[0].details;
