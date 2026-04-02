@@ -42,8 +42,6 @@
     "@types/lodash": "4.14.167",
     "@types/node": "^20.16.11",
     "@types/uuid": "^10.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.18.2",
-    "@typescript-eslint/parser": "^8.18.2",
     "@vitest/coverage-v8": "^2.0.0",
     "cucumber-console-formatter": "1.0.0",
     "eslint": "^9.32.0",

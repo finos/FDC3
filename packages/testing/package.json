@@ -40,8 +40,6 @@
     "@types/lodash": "4.14.167",
     "@types/node": "^20.16.11",
     "@types/uuid": "^10.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.18.2",
-    "@typescript-eslint/parser": "^8.18.2",
     "ajv": "^8.18.0",
     "ajv-formats": "^3.0.1",
     "eslint": "^9.32.0",
