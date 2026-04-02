@@ -115,7 +115,7 @@ class PrivateChannelStore {
   async addChannelListener(currentChannel: PrivateChannel, newListener: string | undefined) {
     const channelId = currentChannel.id;
     try {
-      let foundListener = this.channelListeners.find(
+      const foundListener = this.channelListeners.find(
         currentListener => currentListener.type === newListener && currentListener.channelId === channelId
       );
       if (!foundListener && currentChannel && newListener !== undefined) {
@@ -195,7 +195,7 @@ class PrivateChannelStore {
 
         if (Object.keys(channelContexts).length !== 0) {
           Object.keys(channelContexts).forEach(key => {
-            let broadcast = setTimeout(async () => {
+            const broadcast = setTimeout(async () => {
               this.broadcast(channel, channelContexts[key]);
               clearTimeout(broadcast);
             }, channelContextDelay[key]);

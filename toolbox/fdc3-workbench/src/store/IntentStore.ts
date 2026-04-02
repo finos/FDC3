@@ -73,7 +73,7 @@ class IntentStore {
           if (!isPrivate && channel) {
             if (Object.keys(channelContexts).length !== 0) {
               Object.keys(channelContexts).forEach(key => {
-                let broadcast = setTimeout(async () => {
+                const broadcast = setTimeout(async () => {
                   appChannelStore.broadcast(<Channel>channel, channelContexts[key]);
                   clearTimeout(broadcast);
                 }, channelContextDelay[key]);

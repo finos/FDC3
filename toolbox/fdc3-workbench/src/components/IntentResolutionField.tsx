@@ -28,14 +28,14 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
   const [channelsList, setChannelsList] = useState<any[]>([]);
   const [channelName, setChannelName] = useState<string>('');
 
-  let results = `appId: ${data.source.appId}\ninstanceId: ${data.source.instanceId}`;
+  const results = `appId: ${data.source.appId}\ninstanceId: ${data.source.instanceId}`;
 
   const displayIntentResults = async () => {
     try {
       if (data.getResult) {
         const result = await data.getResult();
 
-        if (!!result?.broadcast) {
+        if (result?.broadcast) {
           setResolutionResult('');
 
           if (result.type === 'app') {

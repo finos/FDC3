@@ -115,7 +115,7 @@ export const AppChannels = observer(({ handleTabChange }: { handleTabChange: any
   const handleGetorCreateChannel = (e: FormEvent | null = null) => {
     e?.preventDefault();
     if (currentAppChannelId) {
-      let foundChannel = appChannelStore.appChannelsList.find(
+      const foundChannel = appChannelStore.appChannelsList.find(
         currentChannel => currentChannel.id === currentAppChannelId
       );
       if (!foundChannel) {

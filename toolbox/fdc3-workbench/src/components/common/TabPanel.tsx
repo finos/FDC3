@@ -14,9 +14,11 @@ interface TabPanelProps {
 }
 
 const classes = {
-  tabPanel: (theme: Theme) => ({
-    padding: theme.spacing(2),
-  }),
+  tabPanel: (theme: Theme) => {
+    return {
+      padding: theme.spacing(2),
+    };
+  },
 } as const;
 
 export const TabPanel: React.FC<TabPanelProps> = (props: TabPanelProps) => {

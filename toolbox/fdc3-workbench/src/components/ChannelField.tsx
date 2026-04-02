@@ -122,7 +122,7 @@ export const ChannelField = observer(
       typeof option === 'string' ? option : (option.type ?? option.title ?? '');
 
     const handleAddContextListener = (channelId: string) => {
-      let foundChannel = currentChannelList.find((currentChannel: any) => currentChannel.id === channelId);
+      const foundChannel = currentChannelList.find((currentChannel: any) => currentChannel.id === channelId);
       if (!foundChannel) {
         return;
       }
@@ -140,7 +140,7 @@ export const ChannelField = observer(
     };
 
     const handleContextStateChange = (context: ContextType, channel: string) => {
-      let foundChannel = currentChannelList.find((currentChannel: any) => currentChannel.id === channel);
+      const foundChannel = currentChannelList.find((currentChannel: any) => currentChannel.id === channel);
       if (foundChannel) {
         setContextItem(context);
         runInAction(() => {
@@ -156,13 +156,13 @@ export const ChannelField = observer(
     };
 
     const handleChangeAppListener = (channelId: string) => (event: React.ChangeEvent<{}>, newValue: any) => {
-      let foundChannel = currentChannelList.find((currentChannel: any) => currentChannel.id === channelId);
+      const foundChannel = currentChannelList.find((currentChannel: any) => currentChannel.id === channelId);
       if (!foundChannel) {
         return;
       }
 
       let newListener: ListenerOptionType | undefined;
-      let foundListener = channelStore.channelListeners?.find(
+      const foundListener = channelStore.channelListeners?.find(
         currentListener => currentListener.type === newValue && currentListener.channelId === channelId
       );
       if (foundListener) {

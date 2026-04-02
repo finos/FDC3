@@ -73,7 +73,7 @@ export const Header = (props: { fdc3Available: boolean }) => {
   const params = new URLSearchParams(window.location.search);
   const paramVersion = params.get('fdc3Version')?.replace(/\/$/, '') || '';
   const [chosenVersion, setChosenVersion] = useState<string>('2.0');
-  let warningText = `Your FDC3 version (${appInfo?.fdc3Version}) doesn't match the version of the FDC3 Workbench you are using (${chosenVersion})`;
+  const warningText = `Your FDC3 version (${appInfo?.fdc3Version}) doesn't match the version of the FDC3 Workbench you are using (${chosenVersion})`;
   const supportedVersion = ['2.0', '1.2'];
 
   useEffect(() => {
@@ -99,7 +99,7 @@ export const Header = (props: { fdc3Available: boolean }) => {
             },
           };
 
-          let mergedAppMetaData = Object.assign({}, displayInfo.appMetadata, implInfo.appMetadata);
+          const mergedAppMetaData = Object.assign({}, displayInfo.appMetadata, implInfo.appMetadata);
           displayInfo = Object.assign(displayInfo, implInfo, { appMetadata: mergedAppMetaData });
 
           setAppInfo(displayInfo);

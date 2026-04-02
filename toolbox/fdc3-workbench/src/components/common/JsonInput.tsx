@@ -21,36 +21,40 @@ interface JsonInputProps {
 }
 
 const classes = {
-  root: (theme: Theme) => ({
-    position: 'relative',
-    flexGrow: 1,
-    padding: theme.spacing(1),
-    border: `1px solid #0086bf`,
-    borderRadius: theme.shape.borderRadius,
-    '& .jsoneditor': {
-      border: 'none',
-    },
-    '& .ace-jsoneditor .ace_gutter': {
-      backgroundColor: 'transparent',
-    },
-    '& .ace-jsoneditor .ace_gutter-active-line': {
-      backgroundColor: theme.palette.grey['200'],
-    },
-    '& .ace-jsoneditor .ace_marker-layer .ace_active-line': {
-      backgroundColor: theme.palette.grey['200'],
-    },
-  }),
+  root: (theme: Theme) => {
+    return {
+      position: 'relative',
+      flexGrow: 1,
+      padding: theme.spacing(1),
+      border: `1px solid #0086bf`,
+      borderRadius: theme.shape.borderRadius,
+      '& .jsoneditor': {
+        border: 'none',
+      },
+      '& .ace-jsoneditor .ace_gutter': {
+        backgroundColor: 'transparent',
+      },
+      '& .ace-jsoneditor .ace_gutter-active-line': {
+        backgroundColor: theme.palette.grey['200'],
+      },
+      '& .ace-jsoneditor .ace_marker-layer .ace_active-line': {
+        backgroundColor: theme.palette.grey['200'],
+      },
+    };
+  },
   jsonInput: {
     height: '270px',
   },
-  errorText: (theme: Theme) => ({
-    bottom: '-8px',
-    padding: theme.spacing(0, 0.5),
-    fontSize: '0.75rem',
-    position: 'absolute',
-    backgroundColor: '#fff',
-    color: theme.palette.error.main,
-  }),
+  errorText: (theme: Theme) => {
+    return {
+      bottom: '-8px',
+      padding: theme.spacing(0, 0.5),
+      fontSize: '0.75rem',
+      position: 'absolute',
+      backgroundColor: '#fff',
+      color: theme.palette.error.main,
+    };
+  },
 } as const;
 
 export const JsonInput: React.FC<JsonInputProps> = (props: JsonInputProps) => {

@@ -102,7 +102,7 @@ class ContextStore {
       return;
     } else {
       //check that we're on a channel
-      let currentChannel = await agent.getCurrentChannel();
+      const currentChannel = await agent.getCurrentChannel();
       if (!currentChannel) {
         systemLogStore.addLog({
           name: 'broadcast',

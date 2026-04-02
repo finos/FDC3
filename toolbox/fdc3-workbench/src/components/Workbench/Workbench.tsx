@@ -19,13 +19,15 @@ const classes = {
   root: {
     flexGrow: 1,
   },
-  paper: (theme: any) => ({
-    mt: 2,
-    p: 2,
-    '&:first-of-type': {
-      mt: 0,
-    },
-  }),
+  paper: (theme: any) => {
+    return {
+      mt: 2,
+      p: 2,
+      '&:first-of-type': {
+        mt: 0,
+      },
+    };
+  },
   systemLog: {
     maxHeight: '1000px',
     overflowY: 'scroll',

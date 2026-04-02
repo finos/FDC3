@@ -214,7 +214,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
       if (targetApp && targetApp != 'None') {
         try {
           const targetObj = JSON.parse(targetApp);
-          let target = targetObj as AppMetadata;
+          const target = targetObj as AppMetadata;
 
           setIntentResolution(await intentStore.raiseIntent(intentValue.value, raiseIntentContext, target));
           setRaiseIntentError('');
@@ -238,7 +238,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
     if (contextTargetApp && contextTargetApp != 'None') {
       try {
         const targetObj = JSON.parse(contextTargetApp);
-        let target = targetObj as AppMetadata;
+        const target = targetObj as AppMetadata;
 
         setIntentForContextResolution(await intentStore.raiseIntentForContext(raiseIntentWithContextContext, target));
         return;
@@ -527,7 +527,9 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
           return;
         }
         setRaiseIntentError(false);
-        let appIntents = await getWorkbenchAgent().then(agent => agent.findIntentsByContext(toJS(raiseIntentContext)));
+        const appIntents = await getWorkbenchAgent().then(agent =>
+          agent.findIntentsByContext(toJS(raiseIntentContext))
+        );
 
         setUseTargets(false);
         clearTargets();
@@ -539,7 +541,7 @@ export const Intents = observer(({ handleTabChange }: { handleTabChange: any }) 
               value: intent.name,
             };
           });
-          console.log('got intent options: ' + JSON.stringify(options, null, 2));
+          console.log(`got intent options: ${JSON.stringify(options, null, 2)}`);
           setIntentsForContext(options);
         }
       } catch (e) {
