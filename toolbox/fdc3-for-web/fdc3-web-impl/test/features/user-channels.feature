@@ -38,18 +38,18 @@ Feature: Relaying Private Channel Broadcast messages
     And "App/a1" adds a user-channel context listener with type "fdc3.instrument"
     And "App2/a2" broadcasts "fdc3.instrument" on "one"
     Then messaging will have outgoing posts
-      | msg.payload.channelId | msg.payload.context.type | msg.matches_type  | to.instanceId |
-      | one                   | fdc3.instrument          | broadcastEvent    | a1            |
-      | {null}                | {null}                   | broadcastResponse | a2            |
+      | msg.payload.channelId | msg.payload.context.type | msg.matches_type  | to.instanceId | msg.payload.originatingApp.appId | msg.payload.originatingApp.instanceId |
+      | one                   | fdc3.instrument          | broadcastEvent    | a1            | App2                             | a2                                    |
+      | {null}                | {null}                   | broadcastResponse | a2            | {null}                           | {null}                                |
 
   Scenario: Adding an Un-Typed Listener on a given User Channel
     When "App/a1" joins user channel "one"
     And "App/a1" adds a user-channel context listener with type "{null}"
     And "App2/a2" broadcasts "fdc3.instrument" on "one"
     Then messaging will have outgoing posts
-      | msg.payload.channelId | msg.payload.context.type | msg.matches_type  | to.instanceId |
-      | one                   | fdc3.instrument          | broadcastEvent    | a1            |
-      | {null}                | {null}                   | broadcastResponse | a2            |
+      | msg.payload.channelId | msg.payload.context.type | msg.matches_type  | to.instanceId | msg.payload.originatingApp.appId | msg.payload.originatingApp.instanceId |
+      | one                   | fdc3.instrument          | broadcastEvent    | a1            | App2                             | a2                                    |
+      | {null}                | {null}                   | broadcastResponse | a2            | {null}                           | {null}                                |
 
   Scenario: If you haven't joined a channel, your listener receives nothing
     When "App/a1" joins user channel "one"
@@ -125,10 +125,10 @@ Feature: Relaying Private Channel Broadcast messages
     And "App2/a2" broadcasts "fdc3.instrument" on "two"
     And "App2/a2" broadcasts "fdc3.country" on "one"
     Then messaging will have outgoing posts
-      | msg.payload.channelId | msg.payload.context.type | msg.matches_type  |
-      | two                   | fdc3.instrument          | broadcastEvent    |
-      | {null}                | {null}                   | broadcastResponse |
-      | {null}                | {null}                   | broadcastResponse |
+      | msg.payload.channelId | msg.payload.context.type | msg.matches_type  | msg.payload.originatingApp.appId | msg.payload.originatingApp.instanceId |
+      | two                   | fdc3.instrument          | broadcastEvent    | App2                             | a2                                    |
+      | {null}                | {null}                   | broadcastResponse | {null}                           | {null}                                |
+      | {null}                | {null}                   | broadcastResponse | {null}                           | {null}                                |
 
   Scenario: You can get the details of the last context type when none is set
     When "App/a1" joins user channel "one"
