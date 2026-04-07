@@ -52,10 +52,8 @@ export {
   PrivateChannelDisconnectEventListener,
   PrivateChannelAddContextEventListener,
   PrivateChannelUnsubscribeEventListener,
-  Connectable,
   AbstractFDC3Logger,
-  Logger,
-  throwIfUndefined,
+  Logger
 };
 
 export type { HeartbeatSupport } from './heartbeat/HeartbeatSupport.js';

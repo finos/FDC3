@@ -29,7 +29,6 @@ const DEFAULT_WAIT_FOR_MS = 20000;
 
 export {
   getAgent,
-  clearAgentPromise,
   AbstractUIComponent,
   DefaultDesktopAgentChannelSelector,
   DefaultDesktopAgentIntentResolver,
@@ -50,9 +49,7 @@ export {
   FDC3_VERSION,
   DEFAULT_GETAGENT_TIMEOUT_MS,
   DEFAULT_MESSAGE_EXCHANGE_TIMEOUT_MS,
-  DEFAULT_APP_LAUNCH_TIMEOUT_MS,
-  Logger,
-  createUUID,
+  DEFAULT_APP_LAUNCH_TIMEOUT_MS
 };
 
 export type { Loader, DesktopAgentSelection } from './strategies/Loader.js';
