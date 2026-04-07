@@ -1,4 +1,3 @@
-import { DesktopAgent } from '@finos/fdc3-standard';
 import { getAgent, clearAgentPromise } from './strategies/getAgent.js';
 import { AbstractUIComponent } from './ui/AbstractUIComponent.js';
 import { DefaultDesktopAgentChannelSelector } from './ui/DefaultDesktopAgentChannelSelector.js';
@@ -25,8 +24,6 @@ import {
   DEFAULT_MESSAGE_EXCHANGE_TIMEOUT_MS,
   DEFAULT_APP_LAUNCH_TIMEOUT_MS,
 } from './strategies/Timeouts.js';
-import { Logger } from './util/Logger.js';
-import { createUUID } from './util/Uuid.js';
 
 const DEFAULT_WAIT_FOR_MS = 20000;
 

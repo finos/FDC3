@@ -24,10 +24,8 @@ import {
 import { DefaultAppSupport } from './apps/DefaultAppSupport.js';
 import { AppSupport } from './apps/AppSupport.js';
 import { DefaultHeartbeatSupport } from './heartbeat/DefaultHeartbeatSupport.js';
-import { Connectable } from '@finos/fdc3-standard';
 import { AbstractFDC3Logger } from './util/AbstractFDC3Logger.js';
 import { Logger } from './util/Logger.js';
-import { throwIfUndefined } from './util/throwIfUndefined.js';
 
 export {
   type Messaging,
