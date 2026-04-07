@@ -1,5 +1,5 @@
 import { DesktopAgent } from '@finos/fdc3-standard';
-import { getAgent, clearAgentPromise } from './strategies/getAgent.js';
+import { getAgent } from './strategies/getAgent.js';
 import { AbstractUIComponent } from './ui/AbstractUIComponent.js';
 import { DefaultDesktopAgentChannelSelector } from './ui/DefaultDesktopAgentChannelSelector.js';
 import { DefaultDesktopAgentIntentResolver } from './ui/DefaultDesktopAgentIntentResolver.js';
@@ -42,7 +42,7 @@ export {
   retrieveAllDesktopAgentDetails,
   retrieveDesktopAgentDetails,
   NoopAppSupport,
-  FDC3_VERSION
+  FDC3_VERSION,
 };
 
 export type { Loader, DesktopAgentSelection } from './strategies/Loader.js';
