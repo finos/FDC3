@@ -1,3 +1,4 @@
+import { DesktopAgent } from '@finos/fdc3-standard';
 import { getAgent, clearAgentPromise } from './strategies/getAgent.js';
 import { AbstractUIComponent } from './ui/AbstractUIComponent.js';
 import { DefaultDesktopAgentChannelSelector } from './ui/DefaultDesktopAgentChannelSelector.js';
@@ -19,11 +20,6 @@ import {
 } from './sessionStorage/DesktopAgentDetails.js';
 import { NoopAppSupport } from './apps/NoopAppSupport.js';
 import { FDC3_VERSION } from './Fdc3Version.js';
-import {
-  DEFAULT_GETAGENT_TIMEOUT_MS,
-  DEFAULT_MESSAGE_EXCHANGE_TIMEOUT_MS,
-  DEFAULT_APP_LAUNCH_TIMEOUT_MS,
-} from './strategies/Timeouts.js';
 
 const DEFAULT_WAIT_FOR_MS = 20000;
 
@@ -46,10 +42,7 @@ export {
   retrieveAllDesktopAgentDetails,
   retrieveDesktopAgentDetails,
   NoopAppSupport,
-  FDC3_VERSION,
-  DEFAULT_GETAGENT_TIMEOUT_MS,
-  DEFAULT_MESSAGE_EXCHANGE_TIMEOUT_MS,
-  DEFAULT_APP_LAUNCH_TIMEOUT_MS
+  FDC3_VERSION
 };
 
 export type { Loader, DesktopAgentSelection } from './strategies/Loader.js';
