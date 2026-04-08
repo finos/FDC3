@@ -30,6 +30,7 @@
     "@docusaurus/core": "^3.7.0",
     "@docusaurus/preset-classic": "^3.7.0",
     "@docusaurus/theme-mermaid": "^3.7.0",
+    "@mermaid-js/layout-elk": "^0.1.9",
     "clsx": "^1.2.1",
     "cpy-cli": "4.2.0",
     "cross-env": "^7.0.3",
@@ -46,5 +47,9 @@
   "dependencies": {
     "axios": "1.13.5",
     "trim": "1.0.1"
+  },
+  "overrides": {
+    "serialize-javascript": "^7.0.5",
+    "webpack": "~5.105.0"
   }
 }
