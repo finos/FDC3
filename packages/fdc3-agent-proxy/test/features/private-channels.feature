@@ -26,6 +26,17 @@ Feature: Basic Private Channels Support
       | id.ticker | type            | name  |
       | AAPL      | fdc3.instrument | Apple |
 
+  Scenario: Private channel context listener receives originating app metadata
+    Given "resultHandler" pipes context and metadata to "contexts" and "metadatas"
+    When I call "{privateChannel}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    And messaging receives "{instrumentMessageOne}"
+    Then "{contexts}" is an array of objects with the following contents
+      | id.ticker | type            | name  |
+      | AAPL      | fdc3.instrument | Apple |
+    And "{metadatas}" is an array of objects with the following contents
+      | source.appId      | source.instanceId     |
+      | broadcasting-app   | broadcasting-instance |
+
   Scenario: Adding and then unsubscribing an "onAddContextListener" listener will send a notification of each event to the agent
     Given "typesHandler" pipes events to "types"
     When I call "{privateChannel}" with "addEventListener" with parameters "addContextListener" and "{typesHandler}"

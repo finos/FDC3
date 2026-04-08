@@ -34,6 +34,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+* Added support for passing `originatingApp` metadata to context listeners in `fdc3-agent-proxy` and `fdc3-web-impl`, matching the `ContextMetadata` spec for `addContextListener` callbacks. ([#1819](https://github.com/finos/FDC3/pull/1819))
 * Corrected /toolbox/fdc3-for-web/demo to only use MessagePort communication when 'Parent Post-Message' selected in the demo. ([#1695](https://github.com/finos/FDC3/pull/1695))
 * Corrected the property set in WCP1Hello by getAgent that indicates whether an intent resolver is needed. ([#1684](https://github.com/finos/FDC3/issues/1684))
 * Added unit tests to the fdc3-context package for validating context examples are valid schema.

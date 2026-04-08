@@ -339,3 +339,15 @@ Feature: Basic User Channels Support
     And messaging will have posts
       | payload.channelId | payload.contextType | matches_type              |
       | {null}            | fdc3.instrument     | addContextListenerRequest |
+
+  Scenario: User channel context listener receives originating app metadata
+    Given "resultHandler" pipes context and metadata to "contexts" and "metadatas"
+    When I call "{api}" with "joinUserChannel" with parameter "one"
+    And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    And messaging receives "{instrumentMessageOne}"
+    Then "{contexts}" is an array of objects with the following contents
+      | id.ticker | type            | name  |
+      | AAPL      | fdc3.instrument | Apple |
+    And "{metadatas}" is an array of objects with the following contents
+      | source.appId      | source.instanceId     |
+      | broadcasting-app   | broadcasting-instance |

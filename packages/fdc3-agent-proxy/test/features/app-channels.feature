@@ -114,3 +114,16 @@ Feature: Channel Listeners Support
     Then "{contexts}" is an array of objects with the following contents
       | id.ticker | type            | name  |
       | AAPL      | fdc3.instrument | Apple |
+
+  Scenario: App channel context listener receives originating app metadata
+    Given "resultHandler" pipes context and metadata to "contexts" and "metadatas"
+    When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I call "{channel1}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    And messaging receives "{instrumentMessageOne}"
+    Then "{contexts}" is an array of objects with the following contents
+      | id.ticker | type            | name  |
+      | AAPL      | fdc3.instrument | Apple |
+    And "{metadatas}" is an array of objects with the following contents
+      | source.appId      | source.instanceId     |
+      | broadcasting-app   | broadcasting-instance |

@@ -25,10 +25,10 @@ Feature: Relaying Private Channel Broadcast messages
     When "App2/a2" adds a context listener on "{channel1Id}" with type "fdc3.instrument"
     And "App1/a1" broadcasts "fdc3.instrument" on "{channel1Id}"
     Then messaging will have outgoing posts
-      | msg.matches_type           | msg.payload.channelId | msg.payload.context.id.ticker | msg.payload.context.type | to.appId | to.instanceId |
-      | addContextListenerResponse | {null}                | {null}                        | {null}                   | App2     | a2            |
-      | broadcastEvent             | {channel1Id}          | AAPL                          | fdc3.instrument          | App2     | a2            |
-      | broadcastResponse          | {null}                | {null}                        | {null}                   | App1     | a1            |
+      | msg.matches_type           | msg.payload.channelId | msg.payload.context.id.ticker | msg.payload.context.type | to.appId | to.instanceId | msg.payload.originatingApp.appId | msg.payload.originatingApp.instanceId |
+      | addContextListenerResponse | {null}                | {null}                        | {null}                   | App2     | a2            | {null}                           | {null}                                |
+      | broadcastEvent             | {channel1Id}          | AAPL                          | fdc3.instrument          | App2     | a2            | App1                             | a1                                    |
+      | broadcastResponse          | {null}                | {null}                        | {null}                   | App1     | a1            | {null}                           | {null}                                |
 
   Scenario: Event Listener created for addContextListener and unsubscribe
     When "App2/a2" adds an "addContextListener" event listener on "{channel1Id}"

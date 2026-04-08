@@ -54,11 +54,11 @@ Feature: Opening and Requesting App Details
     And we wait for a period of "100" ms
     And "storageApp/uuid-0" adds a context listener on "{null}" with type "fdc3.instrument"
     Then messaging will have outgoing posts
-      | msg.matches_type                | msg.payload.channelId | msg.payload.context.type | to.instanceId | to.appId   |
-      | WCP5ValidateAppIdentityResponse | {null}                | {null}                   | uuid-0        | storageApp |
-      | addContextListenerResponse      | {empty}               | {empty}                  | uuid-0        | storageApp |
-      | openResponse                    | {empty}               | {empty}                  | a1            | libraryApp |
-      | broadcastEvent                  | {null}                | fdc3.instrument          | uuid-0        | storageApp |
+      | msg.matches_type                | msg.payload.channelId | msg.payload.context.type | to.instanceId | to.appId   | msg.payload.originatingApp.appId | msg.payload.originatingApp.instanceId |
+      | WCP5ValidateAppIdentityResponse | {null}                | {null}                   | uuid-0        | storageApp | {null}                           | {null}                                |
+      | addContextListenerResponse      | {empty}               | {empty}                  | uuid-0        | storageApp | {null}                           | {null}                                |
+      | openResponse                    | {empty}               | {empty}                  | a1            | libraryApp | {null}                           | {null}                                |
+      | broadcastEvent                  | {null}                | fdc3.instrument          | uuid-0        | storageApp | libraryApp                       | a1                                    |
 
   Scenario: Opening An App With Context, But No Listener Added
     When "libraryApp/a1" opens app "storageApp" with context data "fdc3.instrument"
