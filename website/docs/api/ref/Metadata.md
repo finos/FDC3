@@ -57,6 +57,22 @@ type AppIntent struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class AppIntent {
+    /** Details of the intent whose relationship to resolving applications is being described. */
+    private IntentMetadata intent;
+    
+    /** Details of applications that can resolve the intent. */
+    private AppMetadata[] apps;
+    
+    public IntentMetadata getIntent() { return intent; }
+    public AppMetadata[] getApps() { return apps; }
+}
+```
+
+</TabItem>
 </Tabs>
 
 An interface that represents the binding of an intent to apps, returned as part of intent discovery.
@@ -205,6 +221,33 @@ type AppMetadata struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class AppMetadata extends AppIdentifier {
+    private String name;
+    private String version;
+    private String title;
+    private String tooltip;
+    private String description;
+    private List<Icon> icons;
+    private List<Image> screenshots;
+    private String resultType;
+    private Map<String, Object> instanceMetadata;
+    
+    public String getName() { return name; }
+    public String getVersion() { return version; }
+    public String getTitle() { return title; }
+    public String getTooltip() { return tooltip; }
+    public String getDescription() { return description; }
+    public List<Icon> getIcons() { return icons; }
+    public List<Image> getScreenshots() { return screenshots; }
+    public String getResultType() { return resultType; }
+    public Map<String, Object> getInstanceMetadata() { return instanceMetadata; }
+}
+```
+
+</TabItem>
 </Tabs>
 
 Extends an AppIdentifier, describing an application or instance of an application, with additional descriptive metadata that is usually provided by an FDC3 App Directory that the desktop agent connects to.
@@ -257,6 +300,22 @@ interface IContextMetadata
 type ContextMetadata struct {
   // Identifier for the app instance that sent the context and/or intent.
   Source AppIdentifier `json:"source"`
+}
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+/** @experimental */
+public class ContextMetadata extends HashMap<String, Object> {
+    public AppIdentifier getSource() {
+        return (AppIdentifier) this.get("source");
+    }
+    
+    public void setSource(AppIdentifier source) {
+        this.put("source", source);
+    }
 }
 ```
 
@@ -340,6 +399,26 @@ type DisplayMetadata struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class DisplayMetadata {
+    /** A user-readable name for this channel, e.g: "Red". */
+    private String name;
+    
+    /** The color associated with this channel, e.g: "#FF0000". */
+    private String color;
+    
+    /** A URL of an image that can be used to display this channel. */
+    private String glyph;
+    
+    public String getName() { return name; }
+    public String getColor() { return color; }
+    public String getGlyph() { return glyph; }
+}
+```
+
+</TabItem>
 </Tabs>
 
 A desktop agent (typically for _system_ channels) may want to provide additional information about how a channel can be represented in a UI. A common use case is for color linking.
@@ -400,6 +479,21 @@ type Icon struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class Icon {
+    private String src;
+    private String size;
+    private String type;
+    
+    public String getSrc() { return src; }
+    public String getSize() { return size; }
+    public String getType() { return type; }
+}
+```
+
+</TabItem>
 </Tabs>
 
 Metadata relating to a single icon image at a remote URL, used to represent an application in a user interface.
@@ -449,6 +543,16 @@ icons := []Icon{
         Type: "image/svg+xml",
       },
     }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Icon icon = appMetadata.getIcons().stream()
+    .filter(i -> "48x48".equals(i.getSize()))
+    .findFirst()
+    .orElse(null);
 ```
 
 </TabItem>
@@ -524,6 +628,23 @@ type Image struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class Image {
+    private String src;
+    private String size;
+    private String type;
+    private String label;
+    
+    public String getSrc() { return src; }
+    public String getSize() { return size; }
+    public String getType() { return type; }
+    public String getLabel() { return label; }
+}
+```
+
+</TabItem>
 </Tabs>
 
 Metadata relating to a single image at a remote URL, used to represent screenshot images.
@@ -580,6 +701,15 @@ icons := []Image{
         Label: "Order notifications view",
       },
     }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+for (Image screenshot : appMetadata.getScreenshots()) {
+    System.out.println(screenshot.getSrc());
+}
 ```
 
 </TabItem>
@@ -716,6 +846,35 @@ type ImplementationMetadata struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class ImplementationMetadata {
+    private String fdc3Version;
+    private String provider;
+    private String providerVersion;
+    private OptionalFeatures optionalFeatures;
+    private AppMetadata appMetadata;
+    
+    public String getFdc3Version() { return fdc3Version; }
+    public String getProvider() { return provider; }
+    public String getProviderVersion() { return providerVersion; }
+    public OptionalFeatures getOptionalFeatures() { return optionalFeatures; }
+    public AppMetadata getAppMetadata() { return appMetadata; }
+}
+
+public class OptionalFeatures {
+    private boolean originatingAppMetadata;
+    private boolean userChannelMembershipAPIs;
+    private boolean desktopAgentBridging;
+    
+    public boolean isOriginatingAppMetadata() { return originatingAppMetadata; }
+    public boolean isUserChannelMembershipAPIs() { return userChannelMembershipAPIs; }
+    public boolean isDesktopAgentBridging() { return desktopAgentBridging; }
+}
+```
+
+</TabItem>
 </Tabs>
 
 Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification, the name of the provider of the implementation, its own version number and the metadata of the calling application according to the desktop agent.
@@ -773,6 +932,22 @@ type IntentMetadata struct {
   DisplayName string `json:"displayName"`
 }
 
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class IntentMetadata {
+    /** The unique name of the intent that can be invoked by the raiseIntent call. */
+    private String name;
+    
+    /** @deprecated Display name for the intent. */
+    private String displayName;
+    
+    public String getName() { return name; }
+    public String getDisplayName() { return displayName; }
+}
 ```
 
 </TabItem>
@@ -867,6 +1042,25 @@ func (ir *IntentResolution) GetResult() <-chan Result[IntentResult] {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public interface IntentResolution {
+    /** Identifier for the app instance that resolved the intent. */
+    AppIdentifier getSource();
+    
+    /** The intent that was raised. */
+    String getIntent();
+    
+    /** The version number of the Intents schema being used. */
+    Optional<String> getVersion();
+    
+    /** Retrieves the result returned by the intent handler. */
+    CompletionStage<IntentResult> getResult();
+}
+```
+
+</TabItem>
 </Tabs>
 
 IntentResolution provides a standard format for data returned upon resolving an intent.
@@ -956,6 +1150,27 @@ if channel, ok := resolutionResult.Value.(Channel); ok {
     log.Println("The result is a context")
 } else {
   log.Error("The result is of incorrect data type!")
+}
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Raise an intent and retrieve a result
+IntentResolution resolution = desktopAgent.raiseIntent("intentName", context).toCompletableFuture().get();
+try {
+    IntentResult result = resolution.getResult().toCompletableFuture().get();
+    if (result instanceof Channel) {
+        Channel channel = (Channel) result;
+        System.out.println(resolution.getSource() + " returned a channel with id " + channel.getId());
+    } else if (result instanceof Context) {
+        System.out.println(resolution.getSource() + " returned data: " + result);
+    } else {
+        System.err.println(resolution.getSource() + " didn't return anything");
+    }
+} catch (Exception e) {
+    System.err.println(resolution.getSource() + " returned an error: " + e.getMessage());
 }
 ```
 

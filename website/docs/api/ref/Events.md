@@ -38,6 +38,14 @@ type ApiEvent struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Java uses FDC3Event directly instead of a separate ApiEvent interface
+// See FDC3Event below
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -65,6 +73,16 @@ public delegate void Fdc3EventHandler(IFdc3Event fdc3Event);
 
 ```go
 type EventHandler func(ApiEvent)
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+@FunctionalInterface
+public interface EventHandler {
+    void handleEvent(FDC3Event event);
+}
 ```
 
 </TabItem>
@@ -108,6 +126,23 @@ type FDC3EventTypes string
 const (
 	UserChannelChanged     FDC3EventTypes = "userChannelChanged"
 )
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Event types are defined as FDC3Event.Type enum
+public enum Type {
+    ADD_CONTEXT_LISTENER("addContextListener"),
+    ON_UNSUBSCRIBE("onUnsubscribe"),
+    ON_DISCONNECT("onDisconnect"),
+    USER_CHANNEL_CHANGED("userChannelChanged");
+    
+    private final String value;
+    Type(String value) { this.value = value; }
+    public String getValue() { return value; }
+}
 ```
 
 </TabItem>
@@ -160,6 +195,25 @@ public class Fdc3Event : IFdc3Event
 type FDC3Event struct {
   ApiEvent
   Type FDC3EventTypes
+}
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class FDC3Event {
+   
+    private final Type type;
+    private final Object details;
+    
+    public FDC3Event(Type type, Object details) {
+        this.type = type;
+        this.details = details;
+    }
+    
+    public Type getType() { return type; }
+    public Object getDetails() { return details; }
 }
 ```
 
@@ -230,6 +284,19 @@ type FDC3ChannelChangedEventDetails struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Received as FDC3Event with type USER_CHANNEL_CHANGED
+desktopAgent.addEventListener("userChannelChanged", event -> {
+    if (event.getType() == FDC3Event.Type.USER_CHANNEL_CHANGED) {
+        Map<String, Object> details = (Map<String, Object>) event.getDetails();
+        String currentChannelId = (String) details.get("currentChannelId");
+    }
+});
+```
+
+</TabItem>
 </Tabs>
 
 Type representing the format of `userChannelChanged`  events.
@@ -277,6 +344,17 @@ public class Fdc3ContextClearedEvent : Fdc3Event
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Received as FDC3Event - contextCleared not yet in FDC3Event.Type enum
+desktopAgent.addEventListener("contextCleared", event -> {
+    Map<String, Object> details = (Map<String, Object>) event.getDetails();
+    String contextType = (String) details.get("type");
+});
+```
+
+</TabItem>
 </Tabs>
 
 
@@ -315,6 +393,14 @@ const (
   UnsubscribePrivateChannelEventType PrivateChannelEventTypes = "unsubscribe"
   DisconnectPrivateChannelEventType PrivateChannelEventTypes = "disconnect"
 )
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Private channel event types are defined in FDC3Event.Type enum:
+// ADD_CONTEXT_LISTENER, ON_UNSUBSCRIBE, ON_DISCONNECT
 ```
 
 </TabItem>
@@ -364,6 +450,18 @@ type PrivateChannelEvent struct {
   ApiEvent
   Type PrivateChannelEventTypes
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// PrivateChannel events are received as FDC3Event objects
+privateChannel.addEventListener("addContextListener", event -> {
+    // event.getType() returns FDC3Event.Type.ADD_CONTEXT_LISTENER
+    Map<String, Object> details = (Map<String, Object>) event.getDetails();
+    String contextType = (String) details.get("contextType");
+});
 ```
 
 </TabItem>
@@ -417,6 +515,17 @@ type PrivateChannelAddContextListenerEventDetails struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Received as FDC3Event with type ADD_CONTEXT_LISTENER
+privateChannel.addEventListener("addContextListener", event -> {
+    Map<String, Object> details = (Map<String, Object>) event.getDetails();
+    String contextType = (String) details.get("contextType"); // may be null
+});
+```
+
+</TabItem>
 </Tabs>
 
 Type defining the format of events representing a context listener being added to the channel (`addContextListener`). Desktop Agents MUST fire this event for each invocation of `addContextListener` on the channel, including those that occurred before this handler was registered (to prevent race conditions).
@@ -464,6 +573,17 @@ type PrivateChannelUnsubscribeEventDetails struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Received as FDC3Event with type ON_UNSUBSCRIBE
+privateChannel.addEventListener("unsubscribe", event -> {
+    Map<String, Object> details = (Map<String, Object>) event.getDetails();
+    String contextType = (String) details.get("contextType"); // may be null
+});
+```
+
+</TabItem>
 </Tabs>
 
 Type defining the format of events representing a context listener removed from the channel (`Listener.unsubscribe()`). Desktop Agents MUST call this when `disconnect()` is called by the other party, for each listener that they had added.
@@ -501,6 +621,16 @@ public class Fdc3PrivateChanneDisconnectEvent : Fdc3Event
 type PrivateChannelDisconnectEvent struct {
   PrivateChannelEvent
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Received as FDC3Event with type ON_DISCONNECT
+privateChannel.addEventListener("disconnect", event -> {
+    // No details for disconnect events
+});
 ```
 
 </TabItem>
