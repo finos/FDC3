@@ -6,7 +6,7 @@ import { makeObservable, observable, action, runInAction, toJS } from 'mobx';
 import { ContextType, Fdc3Listener, getWorkbenchAgent } from '../utility/Fdc3Api.js';
 import systemLogStore from './SystemLogStore.js';
 import { nanoid } from 'nanoid';
-import { Channel } from '@finos/fdc3';
+import { Channel, ContextMetadata } from '@finos/fdc3';
 
 interface ListenerOptionType {
   title: string;
@@ -182,7 +182,7 @@ class AppChannelStore {
         const listenerId = nanoid();
         const contactListener = await currentChannel.channel.addContextListener(
           newListener?.toLowerCase() === 'all' ? null : newListener,
-          (context, metaData?: any) => {
+          (context, metaData?: ContextMetadata) => {
             const currentListener = this.channelListeners.find(
               listener => listener.type === newListener && listener.channelId === channelId
             );

@@ -17,6 +17,7 @@ import systemLogStore from './SystemLogStore.js';
 import appChannelStore from './AppChannelStore.js';
 import privateChannelStore from './PrivateChannelStore.js';
 import { Channel, IntentResult } from '@finos/fdc3';
+import { ContextMetadata } from '@finos/fdc3-standard';
 
 type IntentItem = { title: string; value: string };
 
@@ -41,8 +42,8 @@ class IntentStore {
     resultContext?: ContextType | null,
     channelName?: string | null,
     isPrivate?: boolean,
-    channelContexts?: any,
-    channelContextDelay?: any
+    channelContexts?: Record<string, ContextType>,
+    channelContextDelay?: Record<string, number>
   ) {
     try {
       const listenerId = nanoid();
@@ -51,7 +52,7 @@ class IntentStore {
 
       const intentListener = await agent.addIntentListener(
         intent,
-        async (context: ContextType, metaData?: any): Promise<IntentResult> => {
+        async (context: ContextType, metaData?: ContextMetadata): Promise<IntentResult> => {
           const currentListener = this.intentListeners.find(({ id }) => id === listenerId);
           let channel: Channel | undefined;
 
@@ -71,12 +72,12 @@ class IntentStore {
           }
 
           if (!isPrivate && channel) {
-            if (Object.keys(channelContexts).length !== 0) {
+            if (channelContexts && Object.keys(channelContexts).length !== 0) {
               Object.keys(channelContexts).forEach(key => {
                 const broadcast = setTimeout(async () => {
                   appChannelStore.broadcast(<Channel>channel, channelContexts[key]);
                   clearTimeout(broadcast);
-                }, channelContextDelay[key]);
+                }, channelContextDelay?.[key] ?? 0);
               });
             } else {
               await channel.broadcast(context);

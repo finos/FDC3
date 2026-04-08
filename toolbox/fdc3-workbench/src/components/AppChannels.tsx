@@ -97,71 +97,83 @@ interface ListenerOptionType {
   type: string | undefined;
 }
 
-export const AppChannels = observer(({ handleTabChange }: { handleTabChange: any }) => {
-  const [currentAppChannelId, setCurrentAppChannelId] = useState<string>('');
-  const contextListenersOptionsAll: ListenerOptionType[] = contextStore.contextsList.map(({ id, template }) => {
-    return {
-      title: id,
-      value: id,
-      type: template?.type,
-    };
-  });
-  contextListenersOptionsAll.unshift({
-    title: 'All',
-    value: 'all',
-    type: 'All',
-  });
+export const AppChannels = observer(
+  ({
+    handleTabChange,
+  }: {
+    handleTabChange: (event: React.ChangeEvent<object> | null, newValue: number, contextName?: string) => void;
+  }) => {
+    const [currentAppChannelId, setCurrentAppChannelId] = useState<string>('');
+    const contextListenersOptionsAll: ListenerOptionType[] = contextStore.contextsList.map(({ id, template }) => {
+      return {
+        title: id,
+        value: id,
+        type: template?.type,
+      };
+    });
+    contextListenersOptionsAll.unshift({
+      title: 'All',
+      value: 'all',
+      type: 'All',
+    });
 
-  const handleGetorCreateChannel = (e: FormEvent | null = null) => {
-    e?.preventDefault();
-    if (currentAppChannelId) {
-      const foundChannel = appChannelStore.appChannelsList.find(
-        currentChannel => currentChannel.id === currentAppChannelId
-      );
-      if (!foundChannel) {
-        appChannelStore.getOrCreateChannel(currentAppChannelId);
+    const handleGetorCreateChannel = (e: FormEvent | null = null) => {
+      e?.preventDefault();
+      if (currentAppChannelId) {
+        const foundChannel = appChannelStore.appChannelsList.find(
+          currentChannel => currentChannel.id === currentAppChannelId
+        );
+        if (!foundChannel) {
+          appChannelStore.getOrCreateChannel(currentAppChannelId);
+        }
+        setCurrentAppChannelId('');
       }
-      setCurrentAppChannelId('');
-    }
-  };
+    };
 
-  const handleChannelChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setCurrentAppChannelId(event.target.value as string);
-  };
+    const handleChannelChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+      setCurrentAppChannelId(event.target.value as string);
+    };
 
-  return (
-    <Box sx={classes.root}>
-      <Grid item xs={12}>
-        <Typography variant="h5">Get Channel</Typography>
-      </Grid>
-
-      <Box component="form" sx={classes.form} noValidate autoComplete="off" onSubmit={e => handleGetorCreateChannel(e)}>
-        <Grid container direction="row" spacing={1}>
-          <Grid item sx={classes.field}>
-            <TextField
-              fullWidth
-              variant="outlined"
-              label="Channel Name"
-              type="text"
-              size="small"
-              onChange={handleChannelChange}
-              value={currentAppChannelId}
-            />
-          </Grid>
-          <Grid item sx={classes.controls}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleGetorCreateChannel}
-              disabled={!currentAppChannelId}
-            >
-              Get or Create Channel
-            </Button>
-          </Grid>
+    return (
+      <Box sx={classes.root}>
+        <Grid item xs={12}>
+          <Typography variant="h5">Get Channel</Typography>
         </Grid>
+
+        <Box
+          component="form"
+          sx={classes.form}
+          noValidate
+          autoComplete="off"
+          onSubmit={e => handleGetorCreateChannel(e)}
+        >
+          <Grid container direction="row" spacing={1}>
+            <Grid item sx={classes.field}>
+              <TextField
+                fullWidth
+                variant="outlined"
+                label="Channel Name"
+                type="text"
+                size="small"
+                onChange={handleChannelChange}
+                value={currentAppChannelId}
+              />
+            </Grid>
+            <Grid item sx={classes.controls}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleGetorCreateChannel}
+                disabled={!currentAppChannelId}
+              >
+                Get or Create Channel
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
+        <Box sx={classes.border}></Box>
+        <ChannelField handleTabChange={handleTabChange} channelsList={appChannelStore.appChannelsList} />
       </Box>
-      <Box sx={classes.border}></Box>
-      <ChannelField handleTabChange={handleTabChange} channelsList={appChannelStore.appChannelsList} />
-    </Box>
-  );
-});
+    );
+  }
+);

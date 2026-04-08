@@ -16,7 +16,7 @@ interface JsonInputProps {
   schema?: object | null;
   onJsonError?: (errors: Array<string>) => void;
   readOnly?: boolean;
-  onChange: (value: any) => void;
+  onChange: (value: object | null) => void;
   error?: string | false;
 }
 
@@ -71,6 +71,7 @@ export const JsonInput: React.FC<JsonInputProps> = (props: JsonInputProps) => {
       } else {
         try {
           props.onChange(JSON.parse(text));
+          // eslint-disable-next-line no-empty, @typescript-eslint/no-unused-vars
         } catch (e) {}
       }
     },

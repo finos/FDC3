@@ -14,7 +14,7 @@ const classes = {
     mt: 2,
     width: '100%',
   },
-  input: (theme: any) => {
+  input: (theme: { palette: { text: { primary: string } } }) => {
     return {
       fontSize: '14px',
       color: theme.palette.text.primary,

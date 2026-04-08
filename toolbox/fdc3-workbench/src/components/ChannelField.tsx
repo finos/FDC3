@@ -6,12 +6,12 @@
 import React, { HTMLAttributes, useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { runInAction } from 'mobx';
-import appChannelStore from '../store/AppChannelStore.js';
+import appChannelStore, { Fdc3ChannelRecord } from '../store/AppChannelStore.js';
 import privateChannelStore from '../store/PrivateChannelStore.js';
 import { Button, IconButton, Tooltip, Typography, Grid, Link, Autocomplete } from '@mui/material';
 import { createFilterOptions } from '@mui/material/Autocomplete';
 import { ContextTemplates } from './ContextTemplates.js';
-import { ContextType, Fdc3Listener } from '../utility/Fdc3Api.js';
+import { ContextType, PrivateChannel } from '../utility/Fdc3Api.js';
 import { copyToClipboard } from './common/CopyToClipboard.js';
 import { codeExamples } from '../fixtures/codeExamples.js';
 import { openApiDocsLink } from '../fixtures/openApiDocs.js';
@@ -84,6 +84,8 @@ const styles = {
   },
 };
 
+type TabChangeHandler = (event: React.ChangeEvent<object> | null, newValue: number, contextName?: string) => void;
+
 export const ChannelField = observer(
   ({
     handleTabChange,
@@ -91,13 +93,13 @@ export const ChannelField = observer(
     isPrivateChannel = false,
     channelName,
   }: {
-    handleTabChange: any;
-    channelsList: any;
+    handleTabChange: TabChangeHandler;
+    channelsList: Fdc3ChannelRecord[];
     isPrivateChannel?: boolean;
     channelName?: string;
   }) => {
     const [contextItem, setContextItem] = useState<ContextType | null>(null);
-    const [currentChannelList, setCurrentChannelList] = useState<any>(channelsList);
+    const [currentChannelList, setCurrentChannelList] = useState<Fdc3ChannelRecord[]>(channelsList);
 
     const channelStore = isPrivateChannel ? privateChannelStore : appChannelStore;
 
@@ -122,7 +124,7 @@ export const ChannelField = observer(
       typeof option === 'string' ? option : (option.type ?? option.title ?? '');
 
     const handleAddContextListener = (channelId: string) => {
-      const foundChannel = currentChannelList.find((currentChannel: any) => currentChannel.id === channelId);
+      const foundChannel = currentChannelList.find(currentChannel => currentChannel.id === channelId);
       if (!foundChannel) {
         return;
       }
@@ -131,7 +133,7 @@ export const ChannelField = observer(
         if (channelStore.isContextListenerExists(channelId, foundChannel?.currentListener.type)) {
           foundChannel.listenerError = 'Listener already added';
         } else {
-          channelStore.addChannelListener(foundChannel, foundChannel.currentListener.type);
+          channelStore.addChannelListener(foundChannel.channel as PrivateChannel, foundChannel.currentListener.type);
           foundChannel.listenerError = '';
         }
       } else {
@@ -139,9 +141,11 @@ export const ChannelField = observer(
       }
     };
 
-    const handleContextStateChange = (context: ContextType, channel: string) => {
-      const foundChannel = currentChannelList.find((currentChannel: any) => currentChannel.id === channel);
-      if (foundChannel) {
+    const handleContextStateChange = (context: ContextType | null, channel?: string) => {
+      const foundChannel = channel
+        ? currentChannelList.find(currentChannel => currentChannel.id === channel)
+        : undefined;
+      if (foundChannel && context) {
         setContextItem(context);
         runInAction(() => {
           foundChannel.context = context;
@@ -149,47 +153,48 @@ export const ChannelField = observer(
       }
     };
 
-    const handleBroadcast = (channel: any) => {
+    const handleBroadcast = (channel: Fdc3ChannelRecord) => {
       if (channel.context && contextItem) {
-        channelStore.broadcast(channel, contextItem);
+        channelStore.broadcast(channel.channel as PrivateChannel, contextItem);
       }
     };
 
-    const handleChangeAppListener = (channelId: string) => (event: React.ChangeEvent<{}>, newValue: any) => {
-      const foundChannel = currentChannelList.find((currentChannel: any) => currentChannel.id === channelId);
-      if (!foundChannel) {
-        return;
-      }
+    const handleChangeAppListener =
+      (channelId: string) => (event: React.ChangeEvent<object>, newValue: ListenerOptionType | string | null) => {
+        const foundChannel = currentChannelList.find(currentChannel => currentChannel.id === channelId);
+        if (!foundChannel) {
+          return;
+        }
 
-      let newListener: ListenerOptionType | undefined;
-      const foundListener = channelStore.channelListeners?.find(
-        currentListener => currentListener.type === newValue && currentListener.channelId === channelId
-      );
-      if (foundListener) {
-        return;
-      }
+        let newListener: ListenerOptionType | undefined;
+        const foundListener = channelStore.channelListeners?.find(
+          currentListener => currentListener.type === newValue && currentListener.channelId === channelId
+        );
+        if (foundListener) {
+          return;
+        }
 
-      if (typeof newValue === 'string') {
-        newListener = {
-          title: newValue,
-          value: newValue,
-          type: newValue,
-        };
-      } else if (newValue && newValue.inputValue) {
-        newListener = {
-          title: newValue.inputValue,
-          value: newValue.inputValue,
-          type: newValue.inputValue,
-        };
-      } else {
-        newListener = newValue;
-      }
+        if (typeof newValue === 'string') {
+          newListener = {
+            title: newValue,
+            value: newValue,
+            type: newValue,
+          };
+        } else if (newValue && typeof newValue !== 'string' && 'inputValue' in newValue) {
+          newListener = {
+            title: (newValue as ListenerOptionType & { inputValue: string }).inputValue,
+            value: (newValue as ListenerOptionType & { inputValue: string }).inputValue,
+            type: (newValue as ListenerOptionType & { inputValue: string }).inputValue,
+          };
+        } else {
+          newListener = newValue ?? undefined;
+        }
 
-      runInAction(() => {
-        foundChannel.currentListener = newListener;
-      });
-      foundChannel.listenerError = '';
-    };
+        runInAction(() => {
+          foundChannel.currentListener = newListener;
+        });
+        foundChannel.listenerError = '';
+      };
 
     const filterOptions = (options: ListenerOptionType[], params: FilterOptionsState<ListenerOptionType>) => {
       const filtered = listenerFilter(options, params);
@@ -203,13 +208,13 @@ export const ChannelField = observer(
       return filtered;
     };
 
-    const handleRemoveOrDisconnect = (channel: any) => {
+    const handleRemoveOrDisconnect = (channel: Fdc3ChannelRecord) => {
       if (isPrivateChannel) {
-        privateChannelStore.disconnect(channel);
+        privateChannelStore.disconnect(channel.channel as PrivateChannel);
       } else {
-        appChannelStore.remove(channel);
+        appChannelStore.remove(channel.channel);
       }
-      setCurrentChannelList(currentChannelList.filter((currentChannel: any) => currentChannel.id !== channel.id));
+      setCurrentChannelList(currentChannelList.filter(currentChannel => currentChannel.id !== channel.id));
     };
 
     useEffect(() => {
@@ -219,7 +224,7 @@ export const ChannelField = observer(
     return (
       <div style={{ marginTop: 16 }}>
         {currentChannelList.length > 0 &&
-          currentChannelList.map((channel: any) => {
+          currentChannelList.map(channel => {
             const element = (
               <Grid container key={channel.id} sx={styles.spread}>
                 <Grid item sx={styles.field}>

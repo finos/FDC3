@@ -69,7 +69,12 @@ const classes = {
 };
 
 export const Header = (props: { fdc3Available: boolean }) => {
-  const [appInfo, setAppInfo] = useState<any>();
+  const [appInfo, setAppInfo] = useState<{
+    fdc3Version: string;
+    provider: string;
+    providerVersion: string;
+    appMetadata: { appId: string; version: string };
+  }>();
   const params = new URLSearchParams(window.location.search);
   const paramVersion = params.get('fdc3Version')?.replace(/\/$/, '') || '';
   const [chosenVersion, setChosenVersion] = useState<string>('2.0');

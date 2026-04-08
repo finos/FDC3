@@ -19,7 +19,7 @@ const classes = {
   root: {
     flexGrow: 1,
   },
-  paper: (theme: any) => {
+  paper: () => {
     return {
       mt: 2,
       p: 2,
@@ -54,7 +54,7 @@ const globalStyles = {
   },
 };
 
-const a11yProps = (index: any) => {
+const a11yProps = (index: number) => {
   return {
     id: `scrollable-auto-tab-${index}`,
     'aria-controls': `scrollable-auto-tabpanel-${index}`,
@@ -64,7 +64,7 @@ const a11yProps = (index: any) => {
 export const Workbench = observer(() => {
   const [tabValue, setTabValue] = useState<number>(0);
 
-  const handleTabChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+  const handleTabChange = (event: React.ChangeEvent<object>, newValue: number) => {
     setTabValue(newValue);
   };
 

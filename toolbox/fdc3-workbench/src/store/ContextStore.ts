@@ -8,6 +8,7 @@ import { nanoid } from 'nanoid';
 import { contexts } from '../fixtures/contexts.js';
 import systemLogStore from './SystemLogStore.js';
 import { v4 as uuidv4 } from 'uuid';
+import { ContextMetadata } from '@finos/fdc3-standard';
 
 export type ContextItem = {
   id: string;
@@ -50,7 +51,7 @@ class ContextStore {
       console.error('Failed to parse context list from localstorage', err);
     }
     if (usingDefaultContexts) {
-      this.updateLocalStorage(JSON.stringify(contexts));
+      this.updateLocalStorage(contexts);
     }
   }
 
@@ -64,9 +65,9 @@ class ContextStore {
   saveContextItem(contextItem: ContextItem, selectedId?: string) {
     const context = this.contextsList.find(({ id }) => id === selectedId || id === contextItem.id);
     if (context) {
-      Object.keys(contextItem).forEach(
-        (key: any) => ((context[key as keyof ContextItem] as any) = contextItem[key as keyof ContextItem])
-      );
+      (Object.keys(contextItem) as (keyof ContextItem)[]).forEach(key => {
+        (context as Record<string, unknown>)[key] = contextItem[key];
+      });
     }
     this.updateLocalStorage(this.contextsList);
   }
@@ -85,7 +86,7 @@ class ContextStore {
     this.updateLocalStorage(this.contextsList);
   }
 
-  updateLocalStorage(data: any) {
+  updateLocalStorage(data: object) {
     localStorage.setItem('contextList', JSON.stringify(data));
   }
 
@@ -141,7 +142,7 @@ class ContextStore {
         // TODO: remove window after fixing https://github.com/finos/FDC3/issues/435
         const contextListener = await agent.addContextListener(
           contextType.toLowerCase() === 'all' ? null : contextType,
-          (context: ContextType, metaData?: any) => {
+          (context: ContextType, metaData?: ContextMetadata) => {
             const currentListener = this.contextListeners.find(({ id }) => id === listenerId);
 
             runInAction(() => {

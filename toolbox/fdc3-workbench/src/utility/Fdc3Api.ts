@@ -6,19 +6,19 @@ import * as fdc3_2 from '@finos/fdc3';
 import * as fdc3_1 from 'fdc3-1.2';
 
 interface fdc3_1IntentResolution extends fdc3_1.IntentResolution {
-  getResult?: any;
-  resultContext?: any;
+  getResult?: () => Promise<fdc3_2.IntentResult>;
+  resultContext?: fdc3_2.Context;
 }
 interface fdc3_2IntentResolution extends fdc3_2.IntentResolution {
-  resultContext?: any;
+  resultContext?: fdc3_2.Context;
 }
 
 interface fdc3_1ImplementationMetadata extends fdc3_1.ImplementationMetadata {
-  appMetadata?: any;
+  appMetadata?: fdc3_2.AppMetadata;
 }
 
 interface fdc3_2ImplementationMetadata extends fdc3_2.ImplementationMetadata {
-  appMetadata: any;
+  appMetadata: fdc3_2.AppMetadata;
 }
 
 export type ContextType = {
@@ -27,7 +27,7 @@ export type ContextType = {
     [key: string]: string;
   };
   name?: string;
-  [x: string]: any;
+  [x: string]: unknown;
 };
 
 export interface Fdc3Listener {
@@ -36,7 +36,7 @@ export interface Fdc3Listener {
   type: string | undefined;
   listener: fdc3_1.Listener | fdc3_2.Listener;
   lastReceivedContext?: ContextType | null;
-  metaData?: any;
+  metaData?: fdc3_2.ContextMetadata;
 }
 
 export type IntentResolution = fdc3_1IntentResolution | fdc3_2IntentResolution;

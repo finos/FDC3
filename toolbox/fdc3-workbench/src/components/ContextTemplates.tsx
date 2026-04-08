@@ -8,6 +8,7 @@ import { observer } from 'mobx-react';
 import { Grid, Autocomplete } from '@mui/material';
 import { createFilterOptions } from '@mui/material/Autocomplete';
 import contextStore from '../store/ContextStore.js';
+import { ContextType } from '../utility/Fdc3Api.js';
 import { TemplateTextField } from './common/TemplateTextField.js';
 
 interface FilterOptionsState<T> {
@@ -52,9 +53,9 @@ export const ContextTemplates = observer(
     contextStateSetter,
     channel,
   }: {
-    handleTabChange: any;
-    contextStateSetter: any;
-    channel?: any;
+    handleTabChange: (event: React.ChangeEvent<object> | null, newValue: number, contextName?: string) => void;
+    contextStateSetter: (context: ContextType | null, channel?: string) => void;
+    channel?: string;
   }) => {
     const [context, setContext] = useState<OptionType | null>(null);
     const [contextError, setContextError] = useState<string | false>(false);
@@ -66,26 +67,31 @@ export const ContextTemplates = observer(
     });
     const isInitialMount = useRef(true);
 
-    const handleChange = (setValue: SetValue, setError: SetError) => (event: React.ChangeEvent<{}>, newValue: any) => {
-      const selectedContext = contextStore.contextsList.find(({ id }) => id === newValue?.value);
-      if (selectedContext) contextStateSetter(selectedContext.template, channel);
+    const handleChange =
+      (setValue: SetValue, setError: SetError) =>
+      (event: React.ChangeEvent<object>, newValue: OptionType | string | null) => {
+        if (typeof newValue !== 'string') {
+          const selectedContext = contextStore.contextsList.find(({ id }) => id === newValue?.value);
+          if (selectedContext) contextStateSetter(selectedContext.template, channel);
+        }
 
-      if (typeof newValue === 'string') {
-        setValue({
-          title: newValue,
-          value: newValue,
-        });
-      } else if (newValue && newValue.inputValue) {
-        setValue({
-          title: newValue.inputValue,
-          value: newValue.inputValue,
-        });
-      } else {
-        setValue(newValue);
-      }
+        if (typeof newValue === 'string') {
+          setValue({
+            title: newValue,
+            value: newValue,
+          });
+        } else if (newValue && 'inputValue' in newValue) {
+          const inputVal = (newValue as OptionType & { inputValue: string }).inputValue;
+          setValue({
+            title: inputVal,
+            value: inputVal,
+          });
+        } else {
+          setValue(newValue);
+        }
 
-      setError(false);
-    };
+        setError(false);
+      };
 
     const getOptionLabel = (option: OptionType) => option.value || option.title;
 
