@@ -2,6 +2,9 @@ name: Node.js CI Tests and Coverage
 
 # Controls when the workflow will run on any branch
 on:
+  push:
+    branches:
+      - main
   pull_request:
 
 # Allows Coverage to be written back as a PR comment
@@ -13,18 +16,17 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: write
+
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
-      with:
-        ref: ${{ github.event.pull_request.head.sha }}
-        fetch-depth: 1000
-
-    - name: Fetch base
-      run: git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1000
+      uses: actions/checkout@v6
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v6
       with:
         node-version: 20.x
 
@@ -37,41 +39,7 @@ jobs:
     - name: Run tests
       run: npm run test
 
-    - name: Merge Results
-      run: npm run merge
-
-    - name: Create Report
-      run: npm run report
-
-    - name: Create test summary
-      uses: test-summary/action@dist
+    - name: Codecov
+      uses: codecov/codecov-action@v6
       with:
-        paths: |
-          packages/*/test-results.xml
-          toolbox/**/test-results.xml
-        show: "fail, skip"
-        output: test-summary.md
-      if: always()
-
-    # Only post comments if the PR came from this repo rather than a fork (the only repo with permission to do so)
-    - name: PR comment with file
-      if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
-      uses: thollander/actions-comment-pull-request@v3
-      with:
-        file-path: test-summary.md
-
-    - name: Download previous coverage
-      uses: dawidd6/action-download-artifact@v7
-      with:
-        workflow: base-coverage.yml
-        name: 'test-coverage-output'
-        path: base-artifacts
-        search_artifacts: true
-
-    - name: Report Coverage
-      if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
-      uses: sidx1024/report-nyc-coverage-github-action@v1.2.7
-      with:
-        coverage_file: "nyc-coverage-report/coverage-summary.json"
-        base_coverage_file: "base-artifacts/coverage-summary.json"
-
+        use_oidc: true
