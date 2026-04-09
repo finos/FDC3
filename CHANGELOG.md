@@ -28,7 +28,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Enhanced method binding for FDC3 API objects to support destructuring. All public methods of `Channel`, `PrivateChannel`, and `IntentResolution` objects are now properly bound to their instances using `.bind(this)` in their constructors. ([#1645](https://github.com/finos/FDC3/issues/1645))
 * Changed fdc3-web-impl to not deliver broadcast messages back to the sending application, as recommended (SHOULD) in the Standard. [#1749](https://github.com/finos/FDC3/pull/1749)
 * Removed version number prefix from conformance test names and implementation to simplify future maintenance. ([#1726](https://github.com/finos/FDC3/pull/1726))
- * Updated workbench from MUI 4 to MUI 5 ([#1714](https://github.com/finos/FDC3/pull/1714))
+* Updated workbench from MUI 4 to MUI 5 ([#1714](https://github.com/finos/FDC3/pull/1714))
+* Modernized and standardised eslint configuration in all packages. ([#1823](https://github.com/finos/FDC3/pull/1823))
 
 ### Deprecated
 
@@ -49,6 +50,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Updated Conformance tests to allow agents that fully qualify app Ids (as recommended in the Standard) to pass the conformance tests ([#1767](https://github.com/finos/FDC3/pull/1767))
 * Fixed import file extensions and module type to be esm module compliant ([#1677](https://github.com/finos/FDC3/pull/1677))
 * Added mising context types to types and enums in. ContextTypes.ts and implemented tests to ensure they stay in sync with the fdc3-context package ([#1796](https://github.com/finos/FDC3/pull/1796))
+* Corrected description of UCBasic3 in the fdc-conformance framework implementation. ([#1823](https://github.com/finos/FDC3/pull/1823))
+* Fixed a race condition in fdc3-workbench's context store which caused the context listeners on user channels to miss replay of current context in some cases. ([#1823](https://github.com/finos/FDC3/pull/1823))
+* Fixed lint in the fdc30workbench implementation. ([#1823](https://github.com/finos/FDC3/pull/1823))
+
 
 ## [FDC3 Standard 2.2](https://github.com/finos/FDC3/compare/v2.1..v2.2) - 2025-03-12
 
