@@ -139,7 +139,9 @@ class ContextStore {
 
         const agent = await getWorkbenchAgent();
 
-        // TODO: remove window after fixing https://github.com/finos/FDC3/issues/435
+        //pre-populate listener in store to avoid races
+        this.contextListeners.push({ id: listenerId, type: contextType, listener: { unsubscribe: () => {} } });
+
         const contextListener = await agent.addContextListener(
           contextType.toLowerCase() === 'all' ? null : contextType,
           (context: ContextType, metaData?: ContextMetadata) => {
@@ -149,6 +151,8 @@ class ContextStore {
               if (currentListener) {
                 currentListener.lastReceivedContext = context;
                 currentListener.metaData = metaData;
+              } else {
+                console.error('Did not find contextListener in store to update!');
               }
             });
 
@@ -169,7 +173,16 @@ class ContextStore {
             value: contextType,
             variant: 'text',
           });
-          this.contextListeners.push({ id: listenerId, type: contextType, listener: contextListener });
+
+          //populate unsubscribe function with actual listener
+          const currentListener = this.contextListeners.find(({ id }) => id === listenerId);
+          if (currentListener) {
+            currentListener.listener = contextListener;
+          } else {
+            console.error(
+              'ContextStore could not find this listener due to a race, you will not be able to unsubscribe it correctly'
+            );
+          }
         });
       } else {
         runInAction(() => {
