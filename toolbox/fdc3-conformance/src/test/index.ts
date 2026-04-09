@@ -3,10 +3,8 @@ import { getAgent } from '@finos/fdc3';
 import { getPackMembers, getPackNames, executeTestsInBrowser, executeManualTestsInBrowser } from './testSuite';
 import { ProgressReporter } from './progressReporter';
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-require('mocha/mocha.css');
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-require('source-map-support/browser-source-map-support.js');
+import 'mocha/mocha.css';
+import 'source-map-support/browser-source-map-support.js';
 
 mocha.setup('bdd');
 mocha.reporter(ProgressReporter);
