@@ -33,6 +33,18 @@ Feature: Relaying Broadcast messages
       | contextListenerUnsubscribeResponse | App2     | a2            | {null}                   |
       | broadcastResponse                  | App1     | a1            | {null}                   |
 
+  Scenario: Retrieve an existing user channel via getOrCreateChannel
+    When "App1/a1" creates or gets an app channel called "one"
+    Then messaging will have outgoing posts
+      | msg.type                   | to.instanceId | msg.payload.channel.id | msg.payload.channel.type | msg.payload.error |
+      | getOrCreateChannelResponse | a1            | one                    | {0}                      | {null}            |
+
+  Scenario: Retrieve a new app channel via getOrCreateChannel
+    When "App1/a1" creates or gets an app channel called "myAppChannel"
+    Then messaging will have outgoing posts
+      | msg.type                   | to.instanceId | msg.payload.channel.id | msg.payload.channel.type | msg.payload.error |
+      | getOrCreateChannelResponse | a1            | myAppChannel           | {1}                      | {null}            |
+
   Scenario: Get The Latest Context From A Channel
     Given "App1/a1" broadcasts "fdc3.instrument" on "one"
     And "App1/a1" asks for the latest context on "one" with type "fdc3.instrument"

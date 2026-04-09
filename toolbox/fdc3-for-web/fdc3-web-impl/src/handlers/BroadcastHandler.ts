@@ -540,9 +540,8 @@ export class BroadcastHandler implements MessageHandler {
       this.state.push(channel);
     }
 
-    if (channel.type != ChannelType.app) {
-      errorResponse(sc, arg0, from, ChannelError.AccessDenied, 'getOrCreateChannelResponse');
-    } else {
+    //only allow retrieval of app channels or user channels
+    if (channel.type == ChannelType.app || channel.type == ChannelType.user) {
       successResponse(
         sc,
         arg0,
@@ -550,6 +549,9 @@ export class BroadcastHandler implements MessageHandler {
         { channel: { id: channel.id, type: channel.type } },
         'getOrCreateChannelResponse'
       );
+    } else {
+      //block retrieval of private channels
+      errorResponse(sc, arg0, from, ChannelError.AccessDenied, 'getOrCreateChannelResponse');
     }
   }
 
