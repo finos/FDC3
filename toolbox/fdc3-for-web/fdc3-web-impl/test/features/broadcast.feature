@@ -36,14 +36,14 @@ Feature: Relaying Broadcast messages
   Scenario: Retrieve an existing user channel via getOrCreateChannel
     When "App1/a1" creates or gets an app channel called "one"
     Then messaging will have outgoing posts
-      | msg.type                   | to.instanceId | msg.payload.channel.id | msg.payload.channel.type | msg.payload.error |
-      | getOrCreateChannelResponse | a1            | one                    | {0}                      | {null}            |
+      | msg.matches_type           | to.instanceId | msg.payload.channel.id | msg.payload.channel.type | msg.payload.error |
+      | getOrCreateChannelResponse | a1            | one                    | user                     | {null}            |
 
   Scenario: Retrieve a new app channel via getOrCreateChannel
     When "App1/a1" creates or gets an app channel called "myAppChannel"
     Then messaging will have outgoing posts
-      | msg.type                   | to.instanceId | msg.payload.channel.id | msg.payload.channel.type | msg.payload.error |
-      | getOrCreateChannelResponse | a1            | myAppChannel           | {1}                      | {null}            |
+      | msg.matches_type           | to.instanceId | msg.payload.channel.id | msg.payload.channel.type | msg.payload.error |
+      | getOrCreateChannelResponse | a1            | myAppChannel           | app                      | {null}            |
 
   Scenario: Get The Latest Context From A Channel
     Given "App1/a1" broadcasts "fdc3.instrument" on "one"

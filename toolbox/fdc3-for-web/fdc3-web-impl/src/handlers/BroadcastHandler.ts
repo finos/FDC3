@@ -546,7 +546,7 @@ export class BroadcastHandler implements MessageHandler {
         sc,
         arg0,
         from,
-        { channel: { id: channel.id, type: channel.type } },
+        { channel: { id: channel.id, type: this.convertChannelTypeToString(channel.type) } },
         'getOrCreateChannelResponse'
       );
     } else {
