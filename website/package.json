@@ -44,10 +44,7 @@
     "replace-json-property": "1.8.0",
     "rimraf": "5.0.0"
   },
-  "dependencies": {
-    "axios": "1.13.5",
-    "trim": "1.0.1"
-  },
+
   "overrides": {
     "serialize-javascript": "^7.0.5",
     "webpack": "~5.105.0"
