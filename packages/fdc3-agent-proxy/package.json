@@ -34,8 +34,6 @@
     "@finos/testing": "2.2.2-beta.1",
     "@types/node": "^20.16.11",
     "@types/uuid": "^10.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.18.2",
-    "@typescript-eslint/parser": "^8.18.2",
     "@vitest/coverage-v8": "^2.0.0",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^9.1.0",

@@ -16,16 +16,18 @@ export interface AccordionContentProps {
 }
 
 const classes = {
-  accordion: (theme: Theme) => ({
-    margin: theme.spacing(1, 0, 0, 0),
-    boxShadow: 'none',
-    '&::before': {
-      display: 'none',
-    },
-    '&.Mui-expanded': {
+  accordion: (theme: Theme) => {
+    return {
       margin: theme.spacing(1, 0, 0, 0),
-    },
-  }),
+      boxShadow: 'none',
+      '&::before': {
+        display: 'none',
+      },
+      '&.Mui-expanded': {
+        margin: theme.spacing(1, 0, 0, 0),
+      },
+    };
+  },
   accordionSummary: {
     border: 'none',
     padding: 0,
@@ -62,27 +64,25 @@ const classes = {
   },
 } as const;
 
-export const AccordionContent: React.FC<AccordionContentProps> = ({ icon, title, children }: AccordionContentProps) => {
-  return (
-    <Accordion sx={classes.accordion} defaultExpanded>
-      <AccordionSummary
-        sx={classes.accordionSummary}
-        expandIcon={<ExpandMoreIcon sx={classes.expand_icon} />}
-        aria-label="Expand"
-        aria-controls="additional-actions1-content"
-        id="additional-actions1-header"
-      >
-        <Typography variant="h5" sx={classes.accordionTitle}>
-          {title}
-          {icon && (
-            <Tooltip title={icon} aria-label={icon}>
-              <InfoIcon sx={classes.icon} />
-            </Tooltip>
-          )}
-        </Typography>
-      </AccordionSummary>
+export const AccordionContent: React.FC<AccordionContentProps> = ({ icon, title, children }: AccordionContentProps) => (
+  <Accordion sx={classes.accordion} defaultExpanded>
+    <AccordionSummary
+      sx={classes.accordionSummary}
+      expandIcon={<ExpandMoreIcon sx={classes.expand_icon} />}
+      aria-label="Expand"
+      aria-controls="additional-actions1-content"
+      id="additional-actions1-header"
+    >
+      <Typography variant="h5" sx={classes.accordionTitle}>
+        {title}
+        {icon && (
+          <Tooltip title={icon} aria-label={icon}>
+            <InfoIcon sx={classes.icon} />
+          </Tooltip>
+        )}
+      </Typography>
+    </AccordionSummary>
 
-      <AccordionDetails sx={classes.accordionDetails}>{children}</AccordionDetails>
-    </Accordion>
-  );
-};
+    <AccordionDetails sx={classes.accordionDetails}>{children}</AccordionDetails>
+  </Accordion>
+);

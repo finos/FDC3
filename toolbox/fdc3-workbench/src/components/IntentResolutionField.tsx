@@ -7,8 +7,10 @@ import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react';
 import { TextField, Box } from '@mui/material';
 import { ChannelField } from './ChannelField.js';
-import appChannelStore from '../store/AppChannelStore.js';
+import appChannelStore, { Fdc3ChannelRecord } from '../store/AppChannelStore.js';
 import privateChannelStore from '../store/PrivateChannelStore.js';
+import { IntentResolution } from '../utility/Fdc3Api.js';
+import { AppIdentifier, Channel, PrivateChannel } from '@finos/fdc3';
 
 const classes = {
   textField: {
@@ -21,76 +23,68 @@ const classes = {
   },
 };
 
-export const IntentResolutionField = observer(({ data, handleTabChange }: { data: any; handleTabChange: any }) => {
-  const [resolutionResult, setResolutionResult] = useState<any>('pending...');
-  const [isChannel, setIsChannel] = useState(false);
-  const [privateChannel, setPrivateChannel] = useState(false);
-  const [channelsList, setChannelsList] = useState<any[]>([]);
-  const [channelName, setChannelName] = useState<string>('');
+export const IntentResolutionField = observer(
+  ({
+    data,
+    handleTabChange,
+  }: {
+    data: IntentResolution;
+    handleTabChange: (event: React.ChangeEvent<object> | null, newValue: number, contextName?: string) => void;
+  }) => {
+    const [resolutionResult, setResolutionResult] = useState<string | null>('pending...');
+    const [isChannel, setIsChannel] = useState(false);
+    const [privateChannel, setPrivateChannel] = useState(false);
+    const [channelsList, setChannelsList] = useState<Fdc3ChannelRecord[]>([]);
+    const [channelName, setChannelName] = useState<string>('');
 
-  let results = `appId: ${data.source.appId}\ninstanceId: ${data.source.instanceId}`;
+    const source = data.source as AppIdentifier;
+    const results = `appId: ${source.appId}\ninstanceId: ${source.instanceId}`;
 
-  const displayIntentResults = async () => {
-    try {
-      if (data.getResult) {
-        const result = await data.getResult();
+    const displayIntentResults = async () => {
+      try {
+        if (data.getResult) {
+          const result = await data.getResult();
 
-        if (!!result?.broadcast) {
-          setResolutionResult('');
+          if (result && typeof result === 'object' && 'broadcast' in result) {
+            const channel = result as Channel;
+            setResolutionResult('');
 
-          if (result.type === 'app') {
-            await appChannelStore.getOrCreateChannel(result.id);
-            setChannelName(result.id);
-            setIsChannel(true);
-            setChannelsList(appChannelStore.appChannelsList);
+            if (channel.type === 'app') {
+              await appChannelStore.getOrCreateChannel(channel.id);
+              setChannelName(channel.id);
+              setIsChannel(true);
+              setChannelsList(appChannelStore.appChannelsList);
+            }
+
+            if (channel.type === 'private') {
+              setIsChannel(true);
+              setPrivateChannel(true);
+              setChannelsList([{ id: channel.id, channel: channel }]);
+              privateChannelStore.addChannelListener(channel as PrivateChannel, 'all');
+            }
+            setResolutionResult(null);
+          } else if (result) {
+            setResolutionResult(JSON.stringify(result, null, 2));
+          } else {
+            setResolutionResult('<void>');
           }
-
-          if (result.type === 'private') {
-            setIsChannel(true);
-            setPrivateChannel(true);
-            setChannelsList([result]);
-            privateChannelStore.addChannelListener(result, 'all');
-          }
-          setResolutionResult(null);
-        } else if (result) {
-          setResolutionResult(JSON.stringify(result, null, 2));
-        } else {
-          setResolutionResult('<void>');
         }
+      } catch (error) {
+        if (`${error}`.includes('NoResultReturned')) setResolutionResult('<void>');
+        else setResolutionResult(`${error}`);
+        console.error(`${source.appId} returned a result error: ${error}`);
       }
-    } catch (error) {
-      if (`${error}`.includes('NoResultReturned')) setResolutionResult('<void>');
-      else setResolutionResult(`${error}`);
-      console.error(`${data.source.appId} returned a result error: ${error}`);
-    }
-  };
+    };
 
-  useEffect(() => {
-    displayIntentResults();
-  }, []);
+    useEffect(() => {
+      displayIntentResults();
+    }, []);
 
-  return (
-    <Box>
-      <TextField
-        disabled
-        label={'Resolved By'}
-        InputLabelProps={{
-          shrink: true,
-        }}
-        contentEditable={false}
-        fullWidth
-        multiline
-        variant="outlined"
-        size="small"
-        value={results}
-        InputProps={{
-          sx: classes.input,
-        }}
-      />
-      {resolutionResult && (
+    return (
+      <Box>
         <TextField
           disabled
-          label={'Results'}
+          label={'Resolved By'}
           InputLabelProps={{
             shrink: true,
           }}
@@ -99,21 +93,39 @@ export const IntentResolutionField = observer(({ data, handleTabChange }: { data
           multiline
           variant="outlined"
           size="small"
-          value={resolutionResult}
-          sx={classes.textField}
+          value={results}
           InputProps={{
             sx: classes.input,
           }}
         />
-      )}
-      {isChannel && (
-        <ChannelField
-          handleTabChange={handleTabChange}
-          channelsList={channelsList}
-          isPrivateChannel={privateChannel}
-          channelName={channelName}
-        />
-      )}
-    </Box>
-  );
-});
+        {resolutionResult && (
+          <TextField
+            disabled
+            label={'Results'}
+            InputLabelProps={{
+              shrink: true,
+            }}
+            contentEditable={false}
+            fullWidth
+            multiline
+            variant="outlined"
+            size="small"
+            value={resolutionResult}
+            sx={classes.textField}
+            InputProps={{
+              sx: classes.input,
+            }}
+          />
+        )}
+        {isChannel && (
+          <ChannelField
+            handleTabChange={handleTabChange}
+            channelsList={channelsList}
+            isPrivateChannel={privateChannel}
+            channelName={channelName}
+          />
+        )}
+      </Box>
+    );
+  }
+);

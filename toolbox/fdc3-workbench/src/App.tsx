@@ -4,7 +4,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { Theme, ThemeProvider, createTheme, styled } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Grid, Paper, Tabs, Tab, Typography, Link, Snackbar, Alert, SnackbarCloseReason } from '@mui/material';
 import { observer } from 'mobx-react';
 import 'normalize.css';
@@ -154,7 +154,7 @@ export const App = observer(() => {
   const [tabIndex, setTabIndex] = useState(0);
   const [contextName, setContextName] = useState('');
 
-  const handleTabChange = (event: React.ChangeEvent<{}>, newIndex: number, name: string = '') => {
+  const handleTabChange = (event: React.ChangeEvent<object> | null, newIndex: number, name: string = '') => {
     setContextName(name);
     setTabIndex(newIndex);
   };
@@ -174,7 +174,9 @@ export const App = observer(() => {
       try {
         await getWorkbenchAgent();
         setFdc3Available(true);
-      } catch (e) {}
+      } catch (e) {
+        console.warn('No FDC3 desktop agent was found', e);
+      }
     })();
   }, []);
 
