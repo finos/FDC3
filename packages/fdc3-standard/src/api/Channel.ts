@@ -112,5 +112,6 @@ export interface Channel {
   /**
    * @deprecated use `addContextListener(null, handler)` instead of `addContextListener(handler)`.
    */
+  // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
   addContextListener(handler: ContextHandler): Promise<Listener>;
 }

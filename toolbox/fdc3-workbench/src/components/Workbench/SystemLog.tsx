@@ -15,12 +15,10 @@ const classes = {
   },
 } as const;
 
-export const SystemLog = observer(() => {
-  return (
-    <List component="nav" sx={classes.root} aria-label="mailbox folders">
-      {systemLogStore.logList.map(logItem => (
-        <SystemLogItem key={logItem.id} logItem={logItem} />
-      ))}
-    </List>
-  );
-});
+export const SystemLog = observer(() => (
+  <List component="nav" sx={classes.root} aria-label="mailbox folders">
+    {systemLogStore.logList.map(logItem => (
+      <SystemLogItem key={logItem.id} logItem={logItem} />
+    ))}
+  </List>
+));

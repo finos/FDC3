@@ -8,6 +8,7 @@ import { nanoid } from 'nanoid';
 import { contexts } from '../fixtures/contexts.js';
 import systemLogStore from './SystemLogStore.js';
 import { v4 as uuidv4 } from 'uuid';
+import { ContextMetadata } from '@finos/fdc3-standard';
 
 export type ContextItem = {
   id: string;
@@ -50,7 +51,7 @@ class ContextStore {
       console.error('Failed to parse context list from localstorage', err);
     }
     if (usingDefaultContexts) {
-      this.updateLocalStorage(JSON.stringify(contexts));
+      this.updateLocalStorage(contexts);
     }
   }
 
@@ -64,9 +65,9 @@ class ContextStore {
   saveContextItem(contextItem: ContextItem, selectedId?: string) {
     const context = this.contextsList.find(({ id }) => id === selectedId || id === contextItem.id);
     if (context) {
-      Object.keys(contextItem).forEach(
-        (key: any) => ((context[key as keyof ContextItem] as any) = contextItem[key as keyof ContextItem])
-      );
+      (Object.keys(contextItem) as (keyof ContextItem)[]).forEach(key => {
+        (context as Record<string, unknown>)[key] = contextItem[key];
+      });
     }
     this.updateLocalStorage(this.contextsList);
   }
@@ -85,7 +86,7 @@ class ContextStore {
     this.updateLocalStorage(this.contextsList);
   }
 
-  updateLocalStorage(data: any) {
+  updateLocalStorage(data: object) {
     localStorage.setItem('contextList', JSON.stringify(data));
   }
 
@@ -102,7 +103,7 @@ class ContextStore {
       return;
     } else {
       //check that we're on a channel
-      let currentChannel = await agent.getCurrentChannel();
+      const currentChannel = await agent.getCurrentChannel();
       if (!currentChannel) {
         systemLogStore.addLog({
           name: 'broadcast',
@@ -138,16 +139,20 @@ class ContextStore {
 
         const agent = await getWorkbenchAgent();
 
-        // TODO: remove window after fixing https://github.com/finos/FDC3/issues/435
+        //pre-populate listener in store to avoid races
+        this.contextListeners.push({ id: listenerId, type: contextType, listener: { unsubscribe: () => {} } });
+
         const contextListener = await agent.addContextListener(
           contextType.toLowerCase() === 'all' ? null : contextType,
-          (context: ContextType, metaData?: any) => {
+          (context: ContextType, metaData?: ContextMetadata) => {
             const currentListener = this.contextListeners.find(({ id }) => id === listenerId);
 
             runInAction(() => {
               if (currentListener) {
                 currentListener.lastReceivedContext = context;
                 currentListener.metaData = metaData;
+              } else {
+                console.error('Did not find contextListener in store to update!');
               }
             });
 
@@ -168,7 +173,16 @@ class ContextStore {
             value: contextType,
             variant: 'text',
           });
-          this.contextListeners.push({ id: listenerId, type: contextType, listener: contextListener });
+
+          //populate unsubscribe function with actual listener
+          const currentListener = this.contextListeners.find(({ id }) => id === listenerId);
+          if (currentListener) {
+            currentListener.listener = contextListener;
+          } else {
+            console.error(
+              'ContextStore could not find this listener due to a race, you will not be able to unsubscribe it correctly'
+            );
+          }
         });
       } else {
         runInAction(() => {

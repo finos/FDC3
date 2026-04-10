@@ -6,19 +6,19 @@ import * as fdc3_2 from '@finos/fdc3';
 import * as fdc3_1 from 'fdc3-1.2';
 
 interface fdc3_1IntentResolution extends fdc3_1.IntentResolution {
-  getResult?: any;
-  resultContext?: any;
+  getResult?: () => Promise<fdc3_2.IntentResult>;
+  resultContext?: fdc3_2.Context;
 }
 interface fdc3_2IntentResolution extends fdc3_2.IntentResolution {
-  resultContext?: any;
+  resultContext?: fdc3_2.Context;
 }
 
 interface fdc3_1ImplementationMetadata extends fdc3_1.ImplementationMetadata {
-  appMetadata?: any;
+  appMetadata?: fdc3_2.AppMetadata;
 }
 
 interface fdc3_2ImplementationMetadata extends fdc3_2.ImplementationMetadata {
-  appMetadata: any;
+  appMetadata: fdc3_2.AppMetadata;
 }
 
 export type ContextType = {
@@ -27,7 +27,7 @@ export type ContextType = {
     [key: string]: string;
   };
   name?: string;
-  [x: string]: any;
+  [x: string]: unknown;
 };
 
 export interface Fdc3Listener {
@@ -36,7 +36,7 @@ export interface Fdc3Listener {
   type: string | undefined;
   listener: fdc3_1.Listener | fdc3_2.Listener;
   lastReceivedContext?: ContextType | null;
-  metaData?: any;
+  metaData?: fdc3_2.ContextMetadata;
 }
 
 export type IntentResolution = fdc3_1IntentResolution | fdc3_2IntentResolution;
@@ -76,7 +76,7 @@ export function getWorkbenchAgent(): Promise<fdc3_2.DesktopAgent> {
 export async function getTargetOptions(intent: string, context: ContextType): Promise<IntentTargetOption[]> {
   const agent = await getWorkbenchAgent();
 
-  let appIntent = await agent.findIntent(intent, context);
+  const appIntent = await agent.findIntent(intent, context);
   if (!appIntent?.apps) {
     return [];
   }
@@ -85,10 +85,10 @@ export async function getTargetOptions(intent: string, context: ContextType): Pr
 
   if (window.fdc3Version === '2.0') {
     (appIntent as fdc3_2.AppIntent).apps.forEach(currentApp => {
-      let foundApp = groupedApps.find(app => app.appId === currentApp.appId);
+      const foundApp = groupedApps.find(app => app.appId === currentApp.appId);
       if (!foundApp) {
         //separate out the instanceId if present
-        // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { instanceId: _, ...metadata } = currentApp;
         const option: IntentTargetOption = {
           appId: currentApp.appId,
@@ -114,7 +114,7 @@ export async function getTargetOptions(intent: string, context: ContextType): Pr
     //no instances in FDC3 < 2
     (appIntent as fdc3_1.AppIntent).apps.forEach(currentApp => {
       //deduplicate results in case a 2.0 implementation returned instances
-      let foundApp = groupedApps.find(app => app.appId === currentApp.appId);
+      const foundApp = groupedApps.find(app => app.appId === currentApp.appId);
       if (!foundApp) {
         groupedApps.push({
           appId: currentApp.appId ?? currentApp.name,
@@ -132,7 +132,7 @@ export async function getTargetOptions(intent: string, context: ContextType): Pr
 export async function getTargetOptionsForContext(context: ContextType): Promise<IntentTargetOption[]> {
   const agent = await getWorkbenchAgent();
 
-  let appIntents = await agent.findIntentsByContext(context);
+  const appIntents = await agent.findIntentsByContext(context);
   if (appIntents.length === 0) {
     return [];
   }
@@ -143,10 +143,10 @@ export async function getTargetOptionsForContext(context: ContextType): Promise<
   if (window.fdc3Version === '2.0') {
     (appIntents as fdc3_2.AppIntent[]).forEach(currentIntent => {
       currentIntent.apps.forEach(currentApp => {
-        let foundApp = groupedApps.find(app => app.appId === currentApp.appId);
+        const foundApp = groupedApps.find(app => app.appId === currentApp.appId);
         if (!foundApp) {
           //separate out the instanceId if present
-          // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { instanceId: _, ...metadata } = currentApp;
           const option: IntentTargetOption = {
             appId: currentApp.appId,
@@ -163,7 +163,7 @@ export async function getTargetOptionsForContext(context: ContextType): Promise<
         } else {
           if (currentApp.instanceId) {
             //deduplicate instances
-            let foundInstance = foundApp.instances.find(instance => instance.instanceId === currentApp.instanceId);
+            const foundInstance = foundApp.instances.find(instance => instance.instanceId === currentApp.instanceId);
             if (!foundInstance) {
               foundApp.instances.push(currentApp);
             }
@@ -177,7 +177,7 @@ export async function getTargetOptionsForContext(context: ContextType): Promise<
     (appIntents as fdc3_1.AppIntent[]).forEach(currentIntent => {
       currentIntent.apps.forEach(currentApp => {
         //deduplicate in case a 2.0 implementation returned some instances
-        let foundApp = groupedApps.find(app => app.appId === currentApp.appId);
+        const foundApp = groupedApps.find(app => app.appId === currentApp.appId);
         if (!foundApp) {
           groupedApps.push({
             appId: currentApp.appId ?? currentApp.name,

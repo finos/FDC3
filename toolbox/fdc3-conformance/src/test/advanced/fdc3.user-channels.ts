@@ -84,9 +84,9 @@ export default async () => {
     });
 
     const scTestId3 =
-      '(UCBasicUsage3) Should receive context when app B joins then broadcasts context to a user channel before A joins and listens on the same channel';
+      '(UCBasicUsage3) Should receive context when app B joins then broadcasts context to a user channel before A adds a listener and then joins the same channel';
     it(scTestId3, async () => {
-      const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener${documentation}`;
+      const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel 1${documentation}`;
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId3);
       const channel = await cc.getNonGlobalUserChannel();
