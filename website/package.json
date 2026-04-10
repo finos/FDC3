@@ -44,7 +44,6 @@
     "replace-json-property": "1.8.0",
     "rimraf": "5.0.0"
   },
-
   "overrides": {
     "serialize-javascript": "^7.0.5",
     "webpack": "~5.105.0"
