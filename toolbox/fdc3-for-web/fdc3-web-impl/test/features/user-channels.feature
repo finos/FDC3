@@ -130,6 +130,16 @@ Feature: Relaying Private Channel Broadcast messages
       | {null}                | {null}                   | broadcastResponse | {null}                           | {null}                                |
       | {null}                | {null}                   | broadcastResponse | {null}                           | {null}                                |
 
+  Scenario: A user channel retrieved via getOrCreateChannel is the same channel
+    When "App/a1" joins user channel "one"
+    And "App/a1" adds a user-channel context listener with type "fdc3.instrument"
+    And "App2/a2" creates or gets an app channel called "one"
+    And "App2/a2" broadcasts "fdc3.instrument" on "one"
+    Then messaging will have outgoing posts
+      | msg.payload.channelId | msg.payload.context.type | msg.matches_type  | to.instanceId | msg.payload.originatingApp.appId | msg.payload.originatingApp.instanceId |
+      | one                   | fdc3.instrument          | broadcastEvent    | a1            | App2                             | a2                                    |
+      | {null}                | {null}                   | broadcastResponse | a2            | {null}                           | {null}                                |
+
   Scenario: You can get the details of the last context type when none is set
     When "App/a1" joins user channel "one"
     And "App/a1" gets the latest context on "one" with type "fdc3.instrument"
