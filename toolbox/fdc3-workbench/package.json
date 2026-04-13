@@ -35,6 +35,8 @@
   },
   "devDependencies": {
     "@apidevtools/json-schema-ref-parser": "11.7.2",
+    "buffer": "^6.0.3",
+    "path-browserify": "^1.0.1",
     "@eslint/compat": "^1.2.5",
     "@eslint/js": "^9.19.0",
     "@finos/fdc3": "2.2.2-beta.1",
@@ -69,7 +71,6 @@
     "typescript-eslint": "^8.17.0",
     "uuid": "^9.0.1",
     "vite": "^6.4.2",
-    "vite-plugin-node-polyfills": "^0.23.0",
     "web-vitals": "^1.1.2"
   }
 }
