@@ -42,7 +42,7 @@
     "@types/lodash": "4.14.167",
     "@types/node": "^20.16.11",
     "@types/uuid": "^10.0.0",
-    "@vitest/coverage-v8": "^2.0.0",
+    "@vitest/coverage-v8": "^3.2.4",
     "cucumber-console-formatter": "1.0.0",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^9.1.0",
@@ -59,6 +59,6 @@
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.17.0",
     "uuid": "^9.0.1",
-    "vitest": "^2.0.0"
+    "vitest": "^3.2.4"
   }
 }
