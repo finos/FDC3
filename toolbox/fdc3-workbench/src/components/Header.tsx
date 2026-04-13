@@ -114,7 +114,7 @@ export const Header = (props: { fdc3Available: boolean }) => {
 
         if (paramVersion) {
           setChosenVersion(paramVersion);
-        } else if (implInfo?.fdc3Version && implInfo.fdc3Version == '2.1') {
+        } else if (implInfo?.fdc3Version && (implInfo.fdc3Version == '2.1' || implInfo.fdc3Version == '2.2')) {
           setChosenVersion('2.0');
         } else if (implInfo?.fdc3Version && supportedVersion.includes(implInfo.fdc3Version)) {
           setChosenVersion(implInfo.fdc3Version);
@@ -174,7 +174,7 @@ export const Header = (props: { fdc3Available: boolean }) => {
                   <th scope="row">FDC3 Version</th>
                   {appInfo?.fdc3Version ? (
                     chosenVersion === appInfo.fdc3Version ||
-                    (chosenVersion === '2.0' && appInfo.fdc3Version === '2.1') ? (
+                    (chosenVersion === '2.0' && (appInfo.fdc3Version === '2.1' || appInfo.fdc3Version === '2.2')) ? (
                       <td>{appInfo.fdc3Version}</td>
                     ) : (
                       <Box component="td" sx={classes.warningText}>
