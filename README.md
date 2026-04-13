@@ -12,6 +12,7 @@
 [![Slack](https://img.shields.io/badge/slack-@finos/fdc3-green.svg?logo=slack)](https://finos-lf.slack.com/messages/fdc3/)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6579/badge)](https://bestpractices.coreinfrastructure.org/projects/6579)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/finos/FDC3/badge)](https://scorecard.dev/viewer/?uri=github.com/finos/FDC3)
+[![Codecov](https://codecov.io/gh/finos/FDC3/branch/main/graph/badge.svg)](https://codecov.io/gh/finos/FDC3)
 
 ## What Is It?
 
