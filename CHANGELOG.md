@@ -8,14 +8,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-* Added a notes field to Trade type ([#1563](https://github.com/finos/FDC3/pull/1563))
-* Added a notes field to Order and Product types ([#1597](https://github.com/finos/FDC3/pull/1597))
 * Added Go language binding. ([#1483](https://github.com/finos/FDC3/pull/1483))
-* Added dynamic intent listener support to the reference Desktop Agent implementation ([#1613](https://github.com/finos/FDC3/pull/1613))
 * Added details of and procedures for resolving fully-qualified appIds and unqualified appIds in the API and Bridging Parts of the Standard. ([#1523](https://github.com/finos/FDC3/pull/1523))
 * Added clarification regarding expected behavior upon repeated calls to `addContextListener` on same or overlapping types (allowed) and `addIntentListener` on same intent (rejected; new error type added). ([#1394](https://github.com/finos/FDC3/pull/1394))
-* Ported FDC3 Conformance Project as-is into the FDC3 Monorepo, just including minimal fixes for typescript compilation. ([#1576](https://github.com/finos/FDC3/pull/1576))
 * Added `clearContext` function and associated `contextClearedEvent` to the `Channel` API, to be able to clear specific or all context types from the channel. ([#1379](https://github.com/finos/FDC3/pull/1379))
+
+### Changed
+
+### Deprecated
+
+### Fixed
+
+## [npm v2.2.2] - 2026-04-13
+
+### Added
+
+* Added a notes field to Trade type ([#1563](https://github.com/finos/FDC3/pull/1563))
+* Added a notes field to Order and Product types ([#1597](https://github.com/finos/FDC3/pull/1597))
+* Added dynamic intent listener support to the reference Desktop Agent implementation ([#1613](https://github.com/finos/FDC3/pull/1613))
+* Ported FDC3 Conformance Project as-is into the FDC3 Monorepo, just including minimal fixes for typescript compilation. ([#1576](https://github.com/finos/FDC3/pull/1576))
 * Added Conformance tests for FDC3 2.2 ([#1586](https://github.com/finos/FDC3/pull/1586))
 * Added custom mocha test runner for conformance tests to better display test progress. ([#1769](https://github.com/finos/FDC3/pull/1769))
 
@@ -30,8 +41,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Removed version number prefix from conformance test names and implementation to simplify future maintenance. ([#1726](https://github.com/finos/FDC3/pull/1726))
 * Updated workbench from MUI 4 to MUI 5 ([#1714](https://github.com/finos/FDC3/pull/1714))
 * Modernized and standardised eslint configuration in all packages. ([#1823](https://github.com/finos/FDC3/pull/1823))
-
-### Deprecated
 
 ### Fixed
 
