@@ -50,6 +50,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Updated Conformance tests to allow agents that fully qualify app Ids (as recommended in the Standard) to pass the conformance tests ([#1767](https://github.com/finos/FDC3/pull/1767))
 * Fixed import file extensions and module type to be esm module compliant ([#1677](https://github.com/finos/FDC3/pull/1677))
 * Added mising context types to types and enums in. ContextTypes.ts and implemented tests to ensure they stay in sync with the fdc3-context package ([#1796](https://github.com/finos/FDC3/pull/1796))
+* Allowed retrieval of User channels as App channels via getOrCreateChannel and getCurrentChannel in fdc3-web-impl. ([#1835](https://github.com/finos/FDC3/pull/1835))
 * Corrected description of UCBasic3 in the fdc-conformance framework implementation. ([#1823](https://github.com/finos/FDC3/pull/1823))
 * Fixed a race condition in fdc3-workbench's context store which caused the context listeners on user channels to miss replay of current context in some cases. ([#1823](https://github.com/finos/FDC3/pull/1823))
 * Fixed lint in the fdc3-workbench implementation. ([#1823](https://github.com/finos/FDC3/pull/1823))

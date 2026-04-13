@@ -74,6 +74,14 @@ Feature: Relaying Private Channel Broadcast messages
       | msg.type                   | to.appId | to.instanceId | msg.payload.error |
       | getOrCreateChannelResponse | App2     | a2            | AccessDenied      |
 
+  Scenario: A newly created private channel cannot be retrieved via getOrCreateChannel
+    When "App1/a1" creates a private channel
+    And I refer to "uuid6" as "channel2Id"
+    And "App2/a2" creates or gets an app channel called "{channel2Id}"
+    Then messaging will have outgoing posts
+      | msg.type                   | to.appId | to.instanceId | msg.payload.error |
+      | getOrCreateChannelResponse | App2     | a2            | AccessDenied      |
+
   Scenario: Subscribe to a non-existent channel
     When "App2/a2" adds a context listener on "IDontExist" with type "fdc3.instrument"
     Then messaging will have outgoing posts
