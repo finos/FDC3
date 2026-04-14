@@ -113,7 +113,7 @@ jobs:
         run: |
           set -euo pipefail
           shopt -s nullglob
-          for tgz in dist-tarballs/*.tgz; do
+          for tgz in ./dist-tarballs/*.tgz; do
             echo "Publishing $tgz to npmjs.org with tag '${PUBLISH_TAG}' ..."
             # --access public needed for first publish of public packages
             npm publish "$tgz" --provenance --access public --tag "${PUBLISH_TAG}"
@@ -145,7 +145,7 @@ jobs:
         run: |
           set -euo pipefail
           shopt -s nullglob
-          for tgz in dist-tarballs/*.tgz; do
+          for tgz in ./dist-tarballs/*.tgz; do
             echo "Publishing $tgz to GitHub Packages with tag '${PUBLISH_TAG}' ..."
             # GitHub Packages does not support npm provenance; omit --provenance and --access
             npm publish "$tgz" --tag "${PUBLISH_TAG}"
