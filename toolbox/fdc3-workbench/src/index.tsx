@@ -3,6 +3,9 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
+import { Buffer } from 'buffer';
+globalThis.Buffer = Buffer;
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App.js';

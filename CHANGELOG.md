@@ -53,8 +53,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Allowed retrieval of User channels as App channels via getOrCreateChannel and getCurrentChannel in fdc3-web-impl. ([#1835](https://github.com/finos/FDC3/pull/1835))
 * Corrected description of UCBasic3 in the fdc-conformance framework implementation. ([#1823](https://github.com/finos/FDC3/pull/1823))
 * Fixed a race condition in fdc3-workbench's context store which caused the context listeners on user channels to miss replay of current context in some cases. ([#1823](https://github.com/finos/FDC3/pull/1823))
-* Fixed lint in the fdc30workbench implementation. ([#1823](https://github.com/finos/FDC3/pull/1823))
-
+* Fixed lint in the fdc3-workbench implementation. ([#1823](https://github.com/finos/FDC3/pull/1823))
+* Stopped fdc3-workbench flagging FDC3 version 2.2 as unsupported. ([#1841](https://github.com/finos/FDC3/pull/1841))
+* Resolved vulnerable dependencies (esbuild, serialize-javascript, elliptic) and consolidated shared devDependencies to simplify future maintenance. ([#1841](https://github.com/finos/FDC3/pull/1841))
 
 ## [FDC3 Standard 2.2](https://github.com/finos/FDC3/compare/v2.1..v2.2) - 2025-03-12
 
