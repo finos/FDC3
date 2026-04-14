@@ -57,11 +57,14 @@ jobs:
             echo "This is a stable release. Will use tag 'latest'."
           fi
 
-      # Create tarballs for each workspace so we can publish the exact same artifacts twice
-      - name: Pack workspaces
+      # Create tarballs for each public workspace so we can publish the exact same artifacts twice
+      - name: Pack workspaces (skip private)
         run: |
           set -euo pipefail
-          npm pack --workspaces
+          for ws in $(npm query ':not(.private)' --workspaces | jq -r '.[].location'); do
+            echo "Packing $ws ..."
+            npm pack --workspace "$ws"
+          done
           echo "Packed tarballs:"
           ls -1 *.tgz
 
