@@ -90,6 +90,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_and_pack
     steps:
+      - name: Checkout repo (required for npm provenance)
+        uses: actions/checkout@v4
+
       - name: Download packed artifacts
         uses: actions/download-artifact@v4
         with:
@@ -146,3 +149,4 @@ jobs:
             echo "Publishing $tgz to GitHub Packages with tag '${PUBLISH_TAG}' ..."
             # GitHub Packages does not support npm provenance; omit --provenance and --access
             npm publish "$tgz" --tag "${PUBLISH_TAG}"
+          done
