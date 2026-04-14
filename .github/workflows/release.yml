@@ -24,7 +24,7 @@ jobs:
       - name: Configure Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Install dependencies
         run: npm ci
@@ -43,7 +43,7 @@ jobs:
         id: version
         run: |
           set -euo pipefail
-          VERSION="$(node -p 'require("./package.json").version')"
+          VERSION="$(node -p 'JSON.parse(require("fs").readFileSync("./package.json","utf8")).version')"
           echo "Detected version: $VERSION"
 
           # If version contains a hyphen, it's a prerelease (e.g., 1.2.3-alpha.1)
@@ -61,7 +61,15 @@ jobs:
       - name: Pack workspaces (skip private)
         run: |
           set -euo pipefail
-          for ws in $(npm query ':not(.private)' --workspaces | jq -r '.[].location'); do
+          for ws in $(node -e '
+            const fs = require("fs");
+            const read = (p) => JSON.parse(fs.readFileSync(p, "utf8"));
+            const root = read("./package.json");
+            for (const dir of root.workspaces || []) {
+              const pkg = read("./" + dir + "/package.json");
+              if (!pkg.private) console.log(dir);
+            }
+          '); do
             echo "Packing $ws ..."
             npm pack --workspace "$ws"
           done
@@ -91,7 +99,7 @@ jobs:
       - name: Configure Node for npmjs.org
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           registry-url: https://registry.npmjs.org
           always-auth: true
 
@@ -122,7 +130,7 @@ jobs:
       - name: Configure Node for GitHub Packages
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           registry-url: https://npm.pkg.github.com
           scope: '@finos'
           always-auth: true
