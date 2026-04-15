@@ -176,8 +176,6 @@ export class BroadcastHandler implements MessageHandler {
       return;
     }
 
-    console.log(`BroadcastHandler: accept called with msg: ${JSON.stringify(msg)}`);
-
     try {
       switch (msg.type as string | null) {
         // app channels registration
@@ -621,7 +619,7 @@ export class BroadcastHandler implements MessageHandler {
         },
       } as PrivateChannelEvents; //Typescript doesn't like comparing an object with a union property (messageType) with a union of object types
 
-      console.log('invokePrivateChannelEventListeners msg: ', msg);
+      console.debug('invokePrivateChannelEventListeners msg: ', msg);
       this.privateChannelEventListeners
         .filter(
           listener =>
@@ -629,7 +627,7 @@ export class BroadcastHandler implements MessageHandler {
         )
         .filter(onlyUniqueAppIds)
         .forEach(e => {
-          console.log(`invokePrivateChannelEventListeners: posting to instance ${e.instanceId}`);
+          console.debug(`invokePrivateChannelEventListeners: posting to instance ${e.instanceId}`);
           sc.post(msg, e.instanceId);
         });
     }
