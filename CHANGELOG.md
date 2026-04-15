@@ -66,6 +66,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Fixed lint in the fdc3-workbench implementation. ([#1823](https://github.com/finos/FDC3/pull/1823))
 * Stopped fdc3-workbench flagging FDC3 version 2.2 as unsupported. ([#1841](https://github.com/finos/FDC3/pull/1841))
 * Resolved vulnerable dependencies (esbuild, serialize-javascript, elliptic) and consolidated shared devDependencies to simplify future maintenance. ([#1841](https://github.com/finos/FDC3/pull/1841))
+* Fixed the lack of handling of WCP6Disconnect messages in MessagePort example in the FDC3 Web reference implementation. ([#1854](https://github.com/finos/FDC3/pull/1854))
 
 ## [FDC3 Standard 2.2](https://github.com/finos/FDC3/compare/v2.1..v2.2) - 2025-03-12
 

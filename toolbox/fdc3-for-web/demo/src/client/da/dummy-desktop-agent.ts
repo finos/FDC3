@@ -213,7 +213,14 @@ window.addEventListener('load', () => {
                 | BrowserTypes.AppRequestMessage
                 | BrowserTypes.WebConnectionProtocol4ValidateAppIdentity
                 | BrowserTypes.WebConnectionProtocol6Goodbye;
-              fdc3Server.receive(msg, instance.instanceId);
+
+              if (msg.type == 'WCP6Goodbye') {
+                // handle disconnect messages
+                fdc3Server.cleanup(instance.instanceId);
+              } else {
+                // handle DACP messages and WCP4ValidateAppIdentity
+                fdc3Server.receive(msg, instance.instanceId);
+              }
             };
 
             //update the server Context with the MessagePort
