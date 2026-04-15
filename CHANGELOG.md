@@ -41,6 +41,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Removed version number prefix from conformance test names and implementation to simplify future maintenance. ([#1726](https://github.com/finos/FDC3/pull/1726))
 * Updated workbench from MUI 4 to MUI 5 ([#1714](https://github.com/finos/FDC3/pull/1714))
 * Modernized and standardised eslint configuration in all packages. ([#1823](https://github.com/finos/FDC3/pull/1823))
+* Reduced log messages in fdc3-web-impl to the debug level and removed logging of all messages recevied in the BroadcastHandler. ([#1851](https://github.com/finos/FDC3/pull/1851))
 
 ### Fixed
 
