@@ -323,12 +323,12 @@ export class OpenHandler implements MessageHandler {
 
     if (arg0.payload.instanceUuid) {
       // existing app reconnecting
-      console.log('App attempting to reconnect:', arg0.payload.instanceUuid);
+      console.debug('App attempting to reconnect:', arg0.payload.instanceUuid);
       const appIdentity = sc.getInstanceDetails(arg0.payload.instanceUuid);
 
       if (appIdentity) {
         // in this case, the app is reconnecting, so let's just re-assign the identity
-        console.log(
+        console.debug(
           `Reassigned existing identity, appId: `,
           appIdentity.appId,
           ', instanceId',
@@ -339,7 +339,7 @@ export class OpenHandler implements MessageHandler {
         return returnSuccess(appIdentity.appId, appIdentity.instanceId);
       } else {
         //we didn't find the identity, assign a new one
-        console.log('Existing identity not found for, assigning a new one: ', arg0.payload.instanceUuid);
+        console.debug('Existing identity not found for, assigning a new one: ', arg0.payload.instanceUuid);
       }
     }
 
