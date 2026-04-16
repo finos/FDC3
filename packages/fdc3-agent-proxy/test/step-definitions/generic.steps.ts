@@ -31,7 +31,7 @@ function createDesktopAgent(world: CustomWorld, field: string, initialChannelId?
   const is = new DefaultIntentSupport(world.messaging, new SimpleIntentResolver(world), 1500, 3000);
   const as = new DefaultAppSupport(world.messaging, 1500, 3000);
 
-  const da = new DesktopAgentProxy(hs, cs, is, as, [hs], logLevel);
+  const da = new DesktopAgentProxy(hs, cs, is, as, [hs, cs], logLevel);
   return da;
 }
 
