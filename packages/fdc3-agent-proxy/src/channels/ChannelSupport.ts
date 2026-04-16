@@ -1,6 +1,14 @@
-import { Channel, ContextHandler, EventHandler, FDC3EventTypes, Listener, PrivateChannel } from '@finos/fdc3-standard';
+import {
+  Channel,
+  Connectable,
+  ContextHandler,
+  EventHandler,
+  FDC3EventTypes,
+  Listener,
+  PrivateChannel,
+} from '@finos/fdc3-standard';
 
-export interface ChannelSupport {
+export interface ChannelSupport extends Connectable {
   getUserChannel(): Promise<Channel | null>;
   getUserChannels(): Promise<Channel[]>;
   getOrCreate(id: string): Promise<Channel>;
