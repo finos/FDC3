@@ -27,7 +27,6 @@ Feature: Updating User Channel State
       | one               | {null}              | {null}               | joinUserChannelRequest   |
       | {null}            | {null}              | {null}               | getUserChannelsRequest   |
       | one               | fdc3.instrument     | {null}               | getCurrentContextRequest |
-      | {null}            | {null}              | {null}               | getCurrentChannelRequest |
       | one               | fdc3.instrument     | {null}               | getCurrentContextRequest |
 
   Scenario: Changing User Channel Doesn't Receive Incorrect Context on Listener
