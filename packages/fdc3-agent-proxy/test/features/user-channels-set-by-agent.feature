@@ -13,9 +13,6 @@ Feature: User Channels Support where the Desktop Agent puts the app on a channel
     Then "{result}" is an object with the following contents
       | id  | type | displayMetadata.color |
       | one | user | red                   |
-    And messaging will have posts
-      | meta.source.appId | meta.source.instanceId | matches_type             |
-      | cucumber-app      | cucumber-instance      | getCurrentChannelRequest |
 
   Scenario: Adding a Typed Listener on a given User Channel
     Given "resultHandler" pipes context to "contexts"

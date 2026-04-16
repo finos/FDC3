@@ -1,5 +1,6 @@
 import {
   Channel,
+  Connectable,
   ContextHandler,
   Listener,
   PrivateChannel,
@@ -35,7 +36,7 @@ import {
 import { throwIfUndefined } from '../util/throwIfUndefined.js';
 import { Logger } from '../util/Logger.js';
 
-export class DefaultChannelSupport implements ChannelSupport {
+export class DefaultChannelSupport implements ChannelSupport, Connectable {
   readonly messaging: Messaging;
   readonly channelSelector: ChannelSelector;
   readonly messageExchangeTimeout: number;
@@ -55,14 +56,14 @@ export class DefaultChannelSupport implements ChannelSupport {
         this.joinUserChannel(channelId);
       }
     });
+  }
 
+  async connect(): Promise<void> {
     //retrieve the current user channel in case the Desktop Agent started us on a channel
-    this.getUserChannel().then((channel: Channel | null) => {
-      this.currentChannel = channel;
-    });
+    this.currentChannel = await this.getUserChannel();
 
     //register for channelChangedEvents to track any DesktopAgent managed user channel changes
-    this.addEventListener(async (e: ApiEvent) => {
+    await this.addEventListener(async (e: ApiEvent) => {
       const cce = e as FDC3ChannelChangedEvent;
       const newChannelId = cce.details.currentChannelId;
       Logger.debug('Desktop Agent reports channel changed: ', newChannelId);
@@ -89,6 +90,10 @@ export class DefaultChannelSupport implements ChannelSupport {
       this.currentChannel = theChannel;
       this.channelSelector.updateChannel(theChannel?.id ?? null, await this.getUserChannels());
     }, 'userChannelChanged');
+  }
+
+  async disconnect(): Promise<void> {
+    // no-op
   }
 
   async addEventListener(handler: EventHandler, type: FDC3EventTypes | null): Promise<Listener> {
