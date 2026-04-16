@@ -60,7 +60,6 @@ Feature: Basic User Channels Support
       | payload.channelId | matches_type             |
       | one               | joinUserChannelRequest   |
       | {null}            | getUserChannelsRequest   |
-      | {null}            | getCurrentChannelRequest |
 
   Scenario: Changing Channel via Deprecated API
         You should be able to join a channel knowing it's ID.
@@ -74,7 +73,6 @@ Feature: Basic User Channels Support
       | payload.channelId | matches_type             |
       | one               | joinUserChannelRequest   |
       | {null}            | getUserChannelsRequest   |
-      | {null}            | getCurrentChannelRequest |
 
   Scenario: Adding a Typed Listener on a given User Channel
     Given "resultHandler" pipes context to "contexts"
@@ -192,8 +190,6 @@ Feature: Basic User Channels Support
       | payload.channelId | payload.context.type | payload.context.id.ticker | matches_type             |
       | one               | {null}               | {null}                    | joinUserChannelRequest   |
       | {null}            | {null}               | {null}                    | getUserChannelsRequest   |
-      | {null}            | {null}               | {null}                    | getCurrentChannelRequest |
-      | {null}            | {null}               | {null}                    | getCurrentChannelRequest |
       | one               | fdc3.instrument      | AAPL                      | broadcastRequest         |
       | one               | {null}               | {null}                    | getCurrentContextRequest |
 
@@ -279,9 +275,6 @@ Feature: Basic User Channels Support
       | one   | user | red                   | triangle              | The one channel      |
       | two   | user | red                   | triangle              | The two channel      |
       | three | user | red                   | triangle              | The three channel    |
-    And messaging will have posts
-      | meta.source.appId | meta.source.instanceId | matches_type           |
-      | cucumber-app      | cucumber-instance      | getUserChannelsRequest |
 
   Scenario: Destructured joinUserChannel and getCurrentChannel work correctly
     When I destructure method "joinUserChannel" from "{api}"
@@ -295,7 +288,6 @@ Feature: Basic User Channels Support
       | payload.channelId | matches_type             |
       | one               | joinUserChannelRequest   |
       | {null}            | getUserChannelsRequest   |
-      | {null}            | getCurrentChannelRequest |
 
   Scenario: Destructured channel getCurrentContext after broadcast
     Given "resultHandler" pipes context to "contexts"
