@@ -56,6 +56,15 @@ export class DefaultChannelSupport implements ChannelSupport {
       }
     });
 
+    //retrieve the current user channel in case the Desktop Agent started us on a channel
+    this.getUserChannel().then((channel: Channel | null) => {
+      this.currentChannel = channel;
+      this.getUserChannelsCached().then((channels: Channel[]) => {
+        this.channelSelector.updateChannel(channel?.id ?? null, channels);
+      });
+    });
+
+    //register for channelChangedEvents to track any DesktopAgent managed user channel changes
     this.addEventListener(async (e: ApiEvent) => {
       const cce = e as FDC3ChannelChangedEvent;
       const newChannelId = cce.details.currentChannelId;
