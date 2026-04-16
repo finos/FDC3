@@ -20,9 +20,9 @@ const logLevel = LogLevel.WARN;
 const schemaBasePath = path.join(import.meta.dirname, '../../../');
 setupGenericSteps(schemaBasePath);
 
-Given('A Desktop Agent in {string}', async (world: CustomWorld, field: string) => {
+function createDesktopAgent(world: CustomWorld, field: string, initialChannelId?: string) {
   if (!world.messaging) {
-    world.messaging = new TestMessaging(world.props[CHANNEL_STATE]);
+    world.messaging = new TestMessaging(world.props[CHANNEL_STATE], initialChannelId);
   }
 
   // n.b. using short timeouts to avoid extending tests unnecessarily
@@ -32,11 +32,27 @@ Given('A Desktop Agent in {string}', async (world: CustomWorld, field: string) =
   const as = new DefaultAppSupport(world.messaging, 1500, 3000);
 
   const da = new DesktopAgentProxy(hs, cs, is, as, [hs], logLevel);
+  return da;
+}
+
+Given('A Desktop Agent in {string}', async (world: CustomWorld, field: string) => {
+  const da = createDesktopAgent(world, field);
   await da.connect();
 
   world.props[field] = da;
   world.props['result'] = null;
 });
+
+Given(
+  'A Desktop Agent in {string} that puts apps on channel {string}',
+  async (world: CustomWorld, field: string, channelId: string) => {
+    const da = createDesktopAgent(world, field, channelId);
+    await da.connect();
+
+    world.props[field] = da;
+    world.props['result'] = null;
+  }
+);
 
 When('messaging receives a heartbeat event', (world: CustomWorld) => {
   world.messaging?.receive({

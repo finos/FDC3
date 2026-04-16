@@ -111,7 +111,7 @@ export class TestMessaging extends AbstractMessaging {
 
   readonly automaticResponses: AutomaticResponse[];
 
-  constructor(channelState: { [key: string]: Context[] }) {
+  constructor(channelState: { [key: string]: Context[] }, initialChannelId?: string) {
     super({ appId: 'cucumber-app', instanceId: 'cucumber-instance' });
 
     this.channelState = channelState;
@@ -126,7 +126,7 @@ export class TestMessaging extends AbstractMessaging {
       new FindInstances(),
       new Open(),
       new GetOrCreateChannel(),
-      new ChannelState(this.channelState),
+      new ChannelState(this.channelState, initialChannelId),
       new GetUserChannels(),
       new RegisterListeners(),
       new UnsubscribeListeners(),
