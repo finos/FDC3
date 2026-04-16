@@ -26,8 +26,9 @@ export class ChannelState implements AutomaticResponse {
   private listeners: { [channel: string]: string[] } = {};
   private contextHistory: { [channel: string]: Context[] } = {};
 
-  constructor(contextHistory: { [channel: string]: Context[] }) {
+  constructor(contextHistory: { [channel: string]: Context[] }, initialChannelId?: string) {
     this.contextHistory = contextHistory;
+    this.channelId = initialChannelId ?? null;
   }
 
   filter(t: string) {
