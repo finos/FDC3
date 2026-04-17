@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3-agent-proxy",
-  "version": "2.2.2-beta.1",
+  "version": "2.2.2",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -26,11 +26,11 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@finos/fdc3-standard": "2.2.2-beta.1"
+    "@finos/fdc3-standard": "2.2.2"
   },
   "devDependencies": {
     "@cucumber/cucumber": "10.3.1",
-    "@finos/testing": "2.2.2-beta.1",
+    "@finos/testing": "2.2.2",
     "@types/uuid": "^10.0.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "3.3.1",
