@@ -1,5 +1,6 @@
 import {
   Channel,
+  Connectable,
   ContextHandler,
   Listener,
   PrivateChannel,
@@ -35,7 +36,7 @@ import {
 import { throwIfUndefined } from '../util/throwIfUndefined.js';
 import { Logger } from '../util/Logger.js';
 
-export class DefaultChannelSupport implements ChannelSupport {
+export class DefaultChannelSupport implements ChannelSupport, Connectable {
   readonly messaging: Messaging;
   readonly channelSelector: ChannelSelector;
   readonly messageExchangeTimeout: number;
@@ -55,8 +56,14 @@ export class DefaultChannelSupport implements ChannelSupport {
         this.joinUserChannel(channelId);
       }
     });
+  }
 
-    this.addEventListener(async (e: ApiEvent) => {
+  async connect(): Promise<void> {
+    //retrieve the current user channel in case the Desktop Agent started us on a channel
+    this.currentChannel = await this.getUserChannel();
+
+    //register for channelChangedEvents to track any DesktopAgent managed user channel changes
+    await this.addEventListener(async (e: ApiEvent) => {
       const cce = e as FDC3ChannelChangedEvent;
       const newChannelId = cce.details.currentChannelId;
       Logger.debug('Desktop Agent reports channel changed: ', newChannelId);
@@ -65,12 +72,12 @@ export class DefaultChannelSupport implements ChannelSupport {
 
       // if theres a newChannelId, retrieve details of the channel
       if (newChannelId != null) {
-        theChannel = (await this.getUserChannelsCached()).find(uc => uc.id == newChannelId) ?? null;
+        theChannel = (await this.getUserChannels()).find(uc => uc.id == newChannelId) ?? null;
         if (!theChannel) {
           // Channel not found - query user channels in case they have changed for some reason
           Logger.debug('Unknown user channel, querying Desktop Agent for updated user channels: ', newChannelId);
           await this.getUserChannels();
-          theChannel = (await this.getUserChannelsCached()).find(uc => uc.id == newChannelId) ?? null;
+          theChannel = (await this.getUserChannels()).find(uc => uc.id == newChannelId) ?? null;
           if (!theChannel) {
             Logger.warn(
               'Received user channel update with unknown user channel (user channel listeners will not work): ',
@@ -81,8 +88,12 @@ export class DefaultChannelSupport implements ChannelSupport {
       }
 
       this.currentChannel = theChannel;
-      this.channelSelector.updateChannel(theChannel?.id ?? null, await this.getUserChannelsCached());
+      this.channelSelector.updateChannel(theChannel?.id ?? null, await this.getUserChannels());
     }, 'userChannelChanged');
+  }
+
+  async disconnect(): Promise<void> {
+    // no-op
   }
 
   async addEventListener(handler: EventHandler, type: FDC3EventTypes | null): Promise<Listener> {
@@ -92,70 +103,71 @@ export class DefaultChannelSupport implements ChannelSupport {
   }
 
   async getUserChannel(): Promise<Channel | null> {
-    const request: GetCurrentChannelRequest = {
-      meta: this.messaging.createMeta(),
-      type: 'getCurrentChannelRequest',
-      payload: {},
-    };
-    const response = await this.messaging.exchange<GetCurrentChannelResponse>(
-      request,
-      'getCurrentChannelResponse',
-      this.messageExchangeTimeout
-    );
-
-    throwIfUndefined(
-      response.payload.channel,
-      'Invalid response from Desktop Agent to getCurrentChannel (channel should be explicitly null if no channel is set)!',
-      response,
-      ChannelError.NoChannelFound
-    );
-
-    //handle successful responses - errors will already have been thrown by exchange above
-    /* istanbul ignore else */
-    if (response.payload.channel) {
-      return new DefaultChannel(
-        this.messaging,
-        this.messageExchangeTimeout,
-        response.payload.channel.id,
-        'user',
-        response.payload.channel.displayMetadata
+    if (this.currentChannel) {
+      //if the current channel is know,, return it as this variable is maintained by a channelChangedEvent listener
+      return this.currentChannel;
+    } else {
+      const request: GetCurrentChannelRequest = {
+        meta: this.messaging.createMeta(),
+        type: 'getCurrentChannelRequest',
+        payload: {},
+      };
+      const response = await this.messaging.exchange<GetCurrentChannelResponse>(
+        request,
+        'getCurrentChannelResponse',
+        this.messageExchangeTimeout
       );
-    } else if (response.payload.channel === null) {
-      //this is a valid response if no channel is set
-      return null;
-    } else {
-      //Should not reach here as we will throw in exchange or throwIfNotFound
-      return null;
-    }
-  }
 
-  async getUserChannelsCached(): Promise<Channel[]> {
-    if (this.userChannels) {
-      return this.userChannels;
-    } else {
-      this.userChannels = await this.getUserChannels();
-      return this.userChannels;
+      throwIfUndefined(
+        response.payload.channel,
+        'Invalid response from Desktop Agent to getCurrentChannel (channel should be explicitly null if no channel is set)!',
+        response,
+        ChannelError.NoChannelFound
+      );
+
+      //handle successful responses - errors will already have been thrown by exchange above
+      /* istanbul ignore else */
+      if (response.payload.channel) {
+        return new DefaultChannel(
+          this.messaging,
+          this.messageExchangeTimeout,
+          response.payload.channel.id,
+          'user',
+          response.payload.channel.displayMetadata
+        );
+      } else if (response.payload.channel === null) {
+        //this is a valid response if no channel is set
+        return null;
+      } else {
+        //Should not reach here as we will throw in exchange or throwIfNotFound
+        return null;
+      }
     }
   }
 
   async getUserChannels(): Promise<Channel[]> {
-    const request: GetUserChannelsRequest = {
-      meta: this.messaging.createMeta(),
-      type: 'getUserChannelsRequest',
-      payload: {},
-    };
-    const response = await this.messaging.exchange<GetUserChannelsResponse>(
-      request,
-      'getUserChannelsResponse',
-      this.messageExchangeTimeout
-    );
+    //If the user channels are known, return them as they are not expected to change
+    if (this.userChannels) {
+      return this.userChannels;
+    } else {
+      const request: GetUserChannelsRequest = {
+        meta: this.messaging.createMeta(),
+        type: 'getUserChannelsRequest',
+        payload: {},
+      };
+      const response = await this.messaging.exchange<GetUserChannelsResponse>(
+        request,
+        'getUserChannelsResponse',
+        this.messageExchangeTimeout
+      );
 
-    //handle successful responses
-    const channels = response.payload.userChannels!;
-    this.userChannels = channels.map(
-      c => new DefaultChannel(this.messaging, this.messageExchangeTimeout, c.id, 'user', c.displayMetadata)
-    );
-    return this.userChannels;
+      //handle successful responses
+      const channels = response.payload.userChannels!;
+      this.userChannels = channels.map(
+        c => new DefaultChannel(this.messaging, this.messageExchangeTimeout, c.id, 'user', c.displayMetadata)
+      );
+      return this.userChannels;
+    }
   }
 
   async getOrCreate(id: string): Promise<Channel> {
@@ -223,7 +235,7 @@ export class DefaultChannelSupport implements ChannelSupport {
       this.messageExchangeTimeout
     );
     this.currentChannel = null;
-    this.channelSelector.updateChannel(null, await this.getUserChannelsCached());
+    this.channelSelector.updateChannel(null, await this.getUserChannels());
   }
 
   async joinUserChannel(id: string) {
@@ -240,7 +252,7 @@ export class DefaultChannelSupport implements ChannelSupport {
       this.messageExchangeTimeout
     );
 
-    const userChannels = await this.getUserChannelsCached();
+    const userChannels = await this.getUserChannels();
     this.currentChannel = userChannels.find(c => c.id == id) ?? null;
     if (this.currentChannel == null) {
       throw new Error(ChannelError.NoChannelFound);
