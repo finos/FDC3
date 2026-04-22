@@ -1,4 +1,11 @@
-import { ContextHandler, DisplayMetadata, Listener, Channel, EventHandler } from '@finos/fdc3-standard';
+import {
+  ContextHandler,
+  DisplayMetadata,
+  Listener,
+  Channel,
+  EventHandler,
+  AppProvidableContextMetadata,
+} from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { Messaging } from '../Messaging.js';
 import { DefaultContextListener } from '../listeners/DefaultContextListener.js';
@@ -39,12 +46,13 @@ export class DefaultChannel implements Channel {
     this.addContextListener = this.addContextListener.bind(this);
   }
 
-  async broadcast(context: Context): Promise<void> {
+  async broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void> {
     const request: BroadcastRequest = {
       meta: this.messaging.createMeta(),
       payload: {
         channelId: this.id,
         context,
+        metadata: metadata ?? {},
       },
       type: 'broadcastRequest',
     };

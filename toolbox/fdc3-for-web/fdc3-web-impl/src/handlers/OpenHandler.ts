@@ -169,9 +169,13 @@ export class OpenHandler implements MessageHandler {
             payload: {
               channelId: null,
               context: pendingOpen.context,
-              originatingApp: {
-                appId: pendingOpen.source.appId,
-                instanceId: pendingOpen.source.instanceId,
+              metadata: {
+                source: {
+                  appId: pendingOpen.source.appId,
+                  instanceId: pendingOpen.source.instanceId,
+                },
+                timestamp: new Date(),
+                traceId: sc.createUUID(),
               },
             },
           };
@@ -278,7 +282,6 @@ export class OpenHandler implements MessageHandler {
       fdc3Version: sc.fdc3Version(),
       optionalFeatures: {
         DesktopAgentBridging: false,
-        OriginatingAppMetadata: true,
         UserChannelMembershipAPIs: true,
       },
       appMetadata: appMetadata,
