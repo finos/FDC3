@@ -52,7 +52,7 @@
 			},
 			"additionalProperties": false,
 			"required": [
-				"intent", "context", "raiseIntentRequestUuid"
+				"intent", "context", "raiseIntentRequestUuid", "metadata"
 			]
 		}
 	}
