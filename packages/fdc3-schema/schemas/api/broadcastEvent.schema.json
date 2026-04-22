@@ -54,7 +54,7 @@
 			},
 			"additionalProperties": false,
 			"required": [
-				"channelId", "context"
+				"channelId", "context", "metadata"
 			]
 		}
 	}
