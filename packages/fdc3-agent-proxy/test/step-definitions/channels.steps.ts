@@ -51,6 +51,12 @@ Given(
       payload: {
         channelId: handleResolve(channel, this),
         context: contextMap[context],
+        metadata: {
+          timestamp: new Date(),
+          source: this.messaging!.getAppIdentifier(),
+          traceId: this.messaging!.createUUID(),
+          signature: '',
+        },
       },
       type: 'broadcastEvent',
     } as BroadcastEvent;
