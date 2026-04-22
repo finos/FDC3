@@ -207,7 +207,7 @@ Represents a context object paired with its associated metadata. Returned by [`C
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-type ContextHandler = (context: Context, metadata: ContextMetadata) => void;
+type ContextHandler = (context: Context, metadata?: DesktopAgentProvidableContextMetadata) => void;
 ```
 
 </TabItem>
@@ -283,10 +283,7 @@ type DesktopAgentIdentifier struct {
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-type IntentHandler = (
-  context: Context,
-  metadata: ContextMetadata
-) => Promise<Context | ContextWithMetadata | Channel | PrivateChannel | void> | void;
+type IntentHandler = (context: Context, metadata?: DesktopAgentProvidableContextMetadata) => Promise<IntentResult> | void;
 ```
 
 </TabItem>
