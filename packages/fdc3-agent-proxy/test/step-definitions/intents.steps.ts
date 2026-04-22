@@ -147,13 +147,14 @@ Given(
         timestamp: new Date(),
       },
       payload: {
-        originatingApp: {
-          appId: 'some-app-id',
-          desktopAgent: 'some-desktop-agent',
-        },
         context: handleResolve(context, this),
         intent,
         raiseIntentRequestUuid: 'request-id',
+        metadata: {
+          timestamp: new Date(),
+          source: this.messaging!.getAppIdentifier(),
+          traceId: this.messaging!.createUUID(),
+        },
       },
     };
 
