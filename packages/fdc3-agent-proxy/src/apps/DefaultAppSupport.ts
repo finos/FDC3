@@ -87,10 +87,9 @@ export class DefaultAppSupport implements AppSupport {
           appId: app.appId,
           instanceId: app.instanceId,
         },
-        context: context || undefined,
+        context,
         metadata: metadata ?? {},
       },
-      metadata,
       meta: this.messaging.createMeta(),
     };
 

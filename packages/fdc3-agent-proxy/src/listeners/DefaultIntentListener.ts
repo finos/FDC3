@@ -40,9 +40,9 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIn
 
   action(m: IntentEvent): void {
     const done = this.handler(m.payload.context, {
-      source: m.payload.originatingApp as AppIdentifier,
-      timestamp: m.meta.timestamp,
-      traceId: m.metadata?.traceId ?? v4(),
+      source: m.payload.metadata?.source as AppIdentifier,
+      timestamp: m.payload.metadata?.timestamp ?? m.meta.timestamp,
+      traceId: m.payload.metadata?.traceId ?? v4(),
     });
 
     this.handleIntentResult(done, m);
@@ -65,7 +65,6 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIn
         raiseIntentRequestUuid: m.payload.raiseIntentRequestUuid,
         ...(appMetadata !== undefined && { metadata: appMetadata }),
       },
-      metadata: m.metadata,
     };
 
     return out;
