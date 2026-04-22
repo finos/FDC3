@@ -205,7 +205,6 @@ Given('A Dummy Desktop Agent in {string}', async function (this: CustomWorld, fi
         fdc3Version: '2.0',
         optionalFeatures: {
           DesktopAgentBridging: false,
-          OriginatingAppMetadata: false,
           UserChannelMembershipAPIs: false,
         },
         appMetadata: {

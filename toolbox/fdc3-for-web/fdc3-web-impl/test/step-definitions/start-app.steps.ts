@@ -79,6 +79,7 @@ When('{string} opens app {string}', function (this: CustomWorld, appStr: string,
         appId: open,
         desktopAgent: 'n/a',
       },
+      metadata: {},
     },
   };
   this.server.receive(message, uuid);
@@ -98,6 +99,7 @@ When(
           desktopAgent: 'n/a',
         },
         context: contextMap[context],
+        metadata: {},
       },
     };
     this.server.receive(message, uuid);
