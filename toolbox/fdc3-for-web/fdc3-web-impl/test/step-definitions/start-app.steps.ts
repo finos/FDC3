@@ -80,6 +80,7 @@ When('{string} opens app {string}', (world: CustomWorld, appStr: string, open: s
         appId: open,
         desktopAgent: 'n/a',
       },
+      metadata: {},
     },
   };
   world.server.receive(message, uuid);
@@ -99,6 +100,7 @@ When(
           desktopAgent: 'n/a',
         },
         context: contextMap[context],
+        metadata: {},
       },
     };
     world.server.receive(message, uuid);
