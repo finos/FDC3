@@ -33,7 +33,7 @@ interface Channel {
   displayMetadata?: DisplayMetadata;
 
   // functions
-  broadcast(context: Context): Promise<void>;
+  broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void>;
   getCurrentContext(contextType?: string): Promise<Context|null>;
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
   clearContext(contextType?: string): Promise<void>;
@@ -430,7 +430,7 @@ var listener = await myChannel.AddEventListener(null, (event) => {
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-public broadcast(context: Context): Promise<void>;
+public broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void>;
 ```
 
 </TabItem>

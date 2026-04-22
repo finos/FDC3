@@ -161,7 +161,7 @@ This means that it must at least have a `type` property that indicates what type
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-type ContextHandler = (context: Context, metadata?: ContextMetadata) => void;
+type ContextHandler = (context: Context, metadata?: DesktopAgentProvidableContextMetadata) => void;
 ```
 
 </TabItem>
@@ -239,7 +239,7 @@ type DesktopAgentIdentifier struct {
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-type IntentHandler = (context: Context, metadata?: ContextMetadata) => Promise<IntentResult> | void;
+type IntentHandler = (context: Context, metadata?: DesktopAgentProvidableContextMetadata) => Promise<IntentResult> | void;
 ```
 
 </TabItem>
