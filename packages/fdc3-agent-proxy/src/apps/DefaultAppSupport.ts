@@ -88,8 +88,8 @@ export class DefaultAppSupport implements AppSupport {
           instanceId: app.instanceId,
         },
         context,
+        metadata: metadata ?? {},
       },
-      metadata,
       meta: this.messaging.createMeta(),
     };
 
@@ -128,7 +128,6 @@ export class DefaultAppSupport implements AppSupport {
         provider: 'unknown',
         appMetadata: { appId: 'unknown', instanceId: 'unknown' },
         optionalFeatures: {
-          OriginatingAppMetadata: false,
           UserChannelMembershipAPIs: false,
           DesktopAgentBridging: false,
         },
