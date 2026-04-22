@@ -52,9 +52,11 @@ Given(
       payload: {
         channelId: handleResolve(channel, world),
         context: contextMap[context],
-        originatingApp: {
-          appId: 'broadcasting-app',
-          instanceId: 'broadcasting-instance',
+        metadata: {
+          timestamp: new Date(),
+          source: world.messaging!.getAppIdentifier(),
+          traceId: world.messaging!.createUUID(),
+          signature: '',
         },
       },
       type: 'broadcastEvent',
