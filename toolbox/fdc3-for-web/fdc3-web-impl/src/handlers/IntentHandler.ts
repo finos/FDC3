@@ -53,9 +53,13 @@ async function forwardRequest(
     payload: {
       context: arg0.context,
       intent: arg0.intent,
-      originatingApp: {
-        appId: arg0.from.appId,
-        instanceId: arg0.from.instanceId,
+      metadata: {
+        source: {
+          appId: arg0.from.appId,
+          instanceId: arg0.from.instanceId,
+        },
+        timestamp: new Date(),
+        traceId: sc.createUUID(),
       },
       raiseIntentRequestUuid: arg0.requestUuid,
     },

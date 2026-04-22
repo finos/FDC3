@@ -135,7 +135,7 @@ export class DefaultIntentSupport implements IntentSupport {
   async raiseIntent(
     intent: string,
     context: Context,
-    app: AppIdentifier,
+    app?: AppIdentifier | null,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution> {
     const meta = this.messaging.createMeta();
@@ -144,7 +144,7 @@ export class DefaultIntentSupport implements IntentSupport {
       payload: {
         intent,
         context,
-        app,
+        app: app || undefined,
         metadata: {
           traceId: metadata?.traceId ?? v4(),
         },
@@ -195,9 +195,9 @@ export class DefaultIntentSupport implements IntentSupport {
       payload: {
         context,
         app,
-      },
-      metadata: {
-        traceId: metadata?.traceId ?? v4(),
+        metadata: {
+          traceId: metadata?.traceId ?? v4(),
+        },
       },
       meta,
     };
