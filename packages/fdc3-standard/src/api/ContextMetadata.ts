@@ -45,8 +45,17 @@ export interface ContextMetadata extends AppProvidableContextMetadata {
 }
 
 export interface AppProvidableContextMetadata {
-  signature?: string;
+  /** A unique identifier for tracing the flow of context or intent messages across applications.
+   * This is useful for debugging and monitoring message flow in complex interop scenarios.
+   * If a traceId is provided by the app, the Desktop Agent SHOULD forward it.
+   * If no traceId is provided by the app, the Desktop Agent SHOULD generate a new one.
+   * */
   traceId?: string;
+
+  /** A cryptographic signature that can be used to verify the authenticity and integrity
+   * of the context or intent message. This is useful for security-sensitive applications.
+   * If a signature is provided by an app, it MAY be verified by the Desktop Agent. */
+  signature?: string;
 }
 
 export interface DesktopAgentProvidableContextMetadata {
@@ -58,7 +67,10 @@ export interface DesktopAgentProvidableContextMetadata {
   source?: AppIdentifier;
 
   /** A unique identifier for tracing the flow of context or intent messages across applications.
-   * This is useful for debugging and monitoring message flow in complex interop scenarios. */
+   * This is useful for debugging and monitoring message flow in complex interop scenarios.
+   * If a traceId is provided by the app, the Desktop Agent SHOULD forward it.
+   * If no traceId is provided by the app, the Desktop Agent SHOULD generate a new one.
+   * */
   traceId?: string;
 
   /** A cryptographic signature that can be used to verify the authenticity and integrity
