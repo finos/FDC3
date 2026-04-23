@@ -115,7 +115,7 @@ Feature: Channel Listeners Support
       | id.ticker | type            | name  |
       | AAPL      | fdc3.instrument | Apple |
 
-  Scenario: App channel context listener receives originating app metadata
+  Scenario: App channel context listener receives source metadata
     Given "resultHandler" pipes context and metadata to "contexts" and "metadatas"
     When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
     And I refer to "{result}" as "channel1"
@@ -126,4 +126,4 @@ Feature: Channel Listeners Support
       | AAPL      | fdc3.instrument | Apple |
     And "{metadatas}" is an array of objects with the following contents
       | source.appId      | source.instanceId     |
-      | broadcasting-app   | broadcasting-instance |
+      | cucumber-app   | cucumber-instance |
