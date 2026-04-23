@@ -281,9 +281,7 @@ type ContextMetadata struct {
 </TabItem>
 </Tabs>
 
-Metadata relating to a context or intent and context received through the `addContextListener` and `addIntentListener` functions. Can include timestamp, security, observability, or other information.
-
-[`@experimental`](../../fdc3-compliance#experimental-features) Introduced in FDC3 2.0 and may be refined by further changes outside the normal FDC3 versioning policy.
+Metadata relating to a context or intent and context received through the `addContextListener` and `addIntentListener` functions. Includes delivery information provided by the Desktop Agent (`source`, `timestamp`, `traceId`) and optional metadata forwarded from the originating app (`traceId`, `signature`, `custom`).
 
 **See also:**
 

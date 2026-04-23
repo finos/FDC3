@@ -1265,6 +1265,11 @@ export interface ContextMetadata {
    */
   custom?: { [key: string]: any };
   /**
+   * A cryptographic signature that can be used to verify the authenticity and integrity of
+   * the context or intent message.
+   */
+  signature?: string;
+  /**
    * Identifier for the app instance that sent the context and/or intent.
    */
   source: AppIdentifier;
@@ -1327,6 +1332,7 @@ export interface BroadcastRequestPayload {
  */
 export interface AppProvidableContextMetadata {
   custom?: { [key: string]: any };
+  signature?: string;
   traceId?: string;
 }
 
@@ -5861,6 +5867,7 @@ const typeMap: any = {
   ContextMetadata: o(
     [
       { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
+      { json: 'signature', js: 'signature', typ: u(undefined, '') },
       { json: 'source', js: 'source', typ: r('AppIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'traceId', js: 'traceId', typ: '' },
@@ -5886,6 +5893,7 @@ const typeMap: any = {
   AppProvidableContextMetadata: o(
     [
       { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
+      { json: 'signature', js: 'signature', typ: u(undefined, '') },
       { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
     ],
     false

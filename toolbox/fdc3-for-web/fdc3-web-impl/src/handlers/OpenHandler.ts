@@ -178,7 +178,13 @@ export class OpenHandler implements MessageHandler {
                   instanceId: pendingOpen.source.instanceId,
                 },
                 timestamp: new Date(),
-                traceId: sc.createUUID(),
+                traceId: pendingOpen.appProvidedMetadata.traceId ?? sc.createUUID(),
+                ...(pendingOpen.appProvidedMetadata.signature !== undefined && {
+                  signature: pendingOpen.appProvidedMetadata.signature,
+                }),
+                ...(pendingOpen.appProvidedMetadata.custom !== undefined && {
+                  custom: pendingOpen.appProvidedMetadata.custom,
+                }),
               },
             },
           };

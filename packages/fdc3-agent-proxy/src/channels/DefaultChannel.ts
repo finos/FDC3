@@ -1,5 +1,7 @@
 import {
   ContextHandler,
+  ContextWithMetadata,
+  ContextMetadata,
   DisplayMetadata,
   Listener,
   Channel,
