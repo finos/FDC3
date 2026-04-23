@@ -332,7 +332,7 @@ Feature: Basic User Channels Support
       | payload.channelId | payload.contextType | matches_type              |
       | {null}            | fdc3.instrument     | addContextListenerRequest |
 
-  Scenario: User channel context listener receives originating app metadata
+  Scenario: User channel context listener receives source metadata
     Given "resultHandler" pipes context and metadata to "contexts" and "metadatas"
     When I call "{api}" with "joinUserChannel" with parameter "one"
     And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
@@ -342,4 +342,4 @@ Feature: Basic User Channels Support
       | AAPL      | fdc3.instrument | Apple |
     And "{metadatas}" is an array of objects with the following contents
       | source.appId      | source.instanceId     |
-      | broadcasting-app   | broadcasting-instance |
+      | cucumber-app   | cucumber-instance |

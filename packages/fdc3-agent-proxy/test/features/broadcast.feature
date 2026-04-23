@@ -30,7 +30,7 @@ Feature: Broadcasting
       | {null}            | {null}               | {null}               | getUserChannelsRequest   |
       | one               | fdc3.instrument      | Apple                | broadcastRequest         |
 
-  Scenario: Context listener receives originating app metadata
+  Scenario: Context listener receives source metadata
     Given "resultHandler" pipes context and metadata to "contexts" and "metadatas"
     When I call "{api}" with "getOrCreateChannel" with parameter "channel-name"
     And I refer to "{result}" as "channel1"
@@ -41,4 +41,4 @@ Feature: Broadcasting
       | AAPL      | fdc3.instrument | Apple |
     And "{metadatas}" is an array of objects with the following contents
       | source.appId      | source.instanceId     |
-      | broadcasting-app   | broadcasting-instance |
+      | cucumber-app   | cucumber-instance |
