@@ -288,6 +288,11 @@
                     "title": "timestamp",
                     "description": "The timestamp when the context or intent was created, encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator."
                 },
+                "signature": {
+                    "type": "string",
+                    "title": "signature",
+                    "description": "A cryptographic signature that can be used to verify the authenticity and integrity of the context or intent message."
+                },
                 "custom": {
                     "type": "object",
                     "additionalProperties": true,
@@ -308,6 +313,7 @@
             "title": "App Providable Context Metadata",
             "properties": {
                 "traceId": {"$ref": "#/definitions/ContextMetadata/properties/traceId"},
+                "signature": {"$ref": "#/definitions/ContextMetadata/properties/signature"},
                 "custom": {"$ref": "#/definitions/ContextMetadata/properties/custom"}
             },
             "additionalProperties": false

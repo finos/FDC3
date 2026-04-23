@@ -45,9 +45,9 @@ Feature: App Disconnection and Cleanup
     And "LibraryApp/l1" sends a intentResultRequest with eventUuid "uuid7" and contextType "fdc3.book" and raiseIntentUuid "ABC123"
     Then messaging will have outgoing posts
       | msg.matches_type          | msg.meta.eventUuid | msg.meta.requestUuid | to.appId   | to.instanceId | msg.payload.raiseIntentRequestUuid | msg.payload.intentResolution.source.instanceId | msg.payload.intentResult.context.type |
-      | intentEvent               | uuid7              | {null}               | LibraryApp | l1            | ABC123                             | {null}                                         | {null}                                |
+      | intentEvent               | uuid8              | {null}               | LibraryApp | l1            | ABC123                             | {null}                                         | {null}                                |
       | raiseIntentResponse       | {null}             | ABC123               | App1       | a1            | {null}                             | l1                                             | {null}                                |
-      | intentResultResponse      | {null}             | uuid10               | LibraryApp | l1            | {null}                             | {null}                                         | {null}                                |
+      | intentResultResponse      | {null}             | uuid11               | LibraryApp | l1            | {null}                             | {null}                                         | {null}                                |
 
 Scenario: Disconnecting from the DA when subscribed to a private channel channel sends unsubscribe and disconnect messages
     And A newly instantiated FDC3 Server

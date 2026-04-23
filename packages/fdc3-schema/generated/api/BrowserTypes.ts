@@ -1265,6 +1265,11 @@ export interface ContextMetadata {
    */
   custom?: { [key: string]: any };
   /**
+   * A cryptographic signature that can be used to verify the authenticity and integrity of
+   * the context or intent message.
+   */
+  signature?: string;
+  /**
    * Identifier for the app instance that sent the context and/or intent.
    */
   source: AppIdentifier;
@@ -1327,6 +1332,7 @@ export interface BroadcastRequestPayload {
  */
 export interface AppProvidableContextMetadata {
   custom?: { [key: string]: any };
+  signature?: string;
   traceId?: string;
 }
 
@@ -2732,6 +2738,13 @@ export interface GetCurrentContextResponsePayload {
    * or `null` if none was available in the channel.
    */
   context?: null | Context;
+  /**
+   * Metadata relating to the most recently broadcast context object, if available. This is
+   * not returned by the public getCurrentContext API but is used internally by the Desktop
+   * Agent proxy to deliver metadata to context listeners when replaying context after a
+   * channel change.
+   */
+  metadata?: ContextMetadata | null;
 }
 
 /**
@@ -5305,6 +5318,7 @@ const typeMap: any = {
   ContextMetadata: o(
     [
       { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
+      { json: 'signature', js: 'signature', typ: u(undefined, '') },
       { json: 'source', js: 'source', typ: r('AppIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'traceId', js: 'traceId', typ: '' },
@@ -5330,6 +5344,7 @@ const typeMap: any = {
   AppProvidableContextMetadata: o(
     [
       { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
+      { json: 'signature', js: 'signature', typ: u(undefined, '') },
       { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
     ],
     false
@@ -5780,6 +5795,7 @@ const typeMap: any = {
     [
       { json: 'error', js: 'error', typ: u(undefined, r('PurpleError')) },
       { json: 'context', js: 'context', typ: u(undefined, u(null, r('Context'))) },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, u(r('ContextMetadata'), null)) },
     ],
     false
   ),

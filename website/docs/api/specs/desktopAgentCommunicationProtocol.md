@@ -406,12 +406,14 @@ Owing to the significant overlap between the FDC3 [`DesktopAgent`](../ref/Deskto
 
 The following additional function is unique to the `Channel` interface:
 
-#### `getCurrentContext()`
+#### `getCurrentContext()` / `getCurrentContextWithMetadata()`
 
-Request and response used to implement the [`Channel.getCurrentContext()`](../ref/Channel#getcurrentcontext) API call:
+Request and response used to implement the [`Channel.getCurrentContext()`](../ref/Channel#getcurrentcontext) and [`Channel.getCurrentContextWithMetadata()`](../ref/Channel#getcurrentcontextwithmetadata) API calls:
 
 - [`getCurrentContextRequest`](pathname:///schemas/next/api/getCurrentContextRequest.schema.json)
 - [`getCurrentContextResponse`](pathname:///schemas/next/api/getCurrentContextResponse.schema.json)
+
+The `getCurrentContextResponse` payload includes an optional `metadata` field containing the [`ContextMetadata`](../ref/Metadata#contextmetadata) associated with the most recently broadcast context. This field is used by `getCurrentContextWithMetadata()` to return both the context and its metadata. The `getCurrentContext()` function uses the same request/response messages but ignores the `metadata` field, returning only the context.
 
 ### `PrivateChannel`
 
