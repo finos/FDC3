@@ -1,6 +1,6 @@
 {
   "name": "fdc3-workbench",
-  "version": "2.2.2-beta.1",
+  "version": "2.2.2",
   "private": true,
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -39,7 +39,7 @@
     "path-browserify": "^1.0.1",
     "@eslint/compat": "^1.2.5",
     "@eslint/js": "^9.19.0",
-    "@finos/fdc3": "2.2.2-beta.1",
+    "@finos/fdc3": "2.2.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@fontsource/roboto": "5.1.0",
