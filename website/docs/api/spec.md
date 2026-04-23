@@ -932,14 +932,14 @@ For the rationale for separating `Context` and `ContextMetadata`, see the [Conte
 
 Registered listeners MUST receive:
 
-*   `timestamp` – Indicates when the message was delivered.
-*   `source` – Identifies the originating app (`AppIdentifier`).
+- `timestamp` – Indicates when the message was delivered.
+- `source` – Identifies the originating app (`AppIdentifier`).
 
 Registered listeners MAY receive:
 
-*   `traceId` – A unique identifier for tracing the flow of context or intent messages across applications.
-*   `signature` – A cryptographic signature that can be used to verify the authenticity and integrity of the context or intent message.
-*   `custom` – Implementation-specific metadata.
+- `traceId` – A unique identifier for tracing the flow of context or intent messages across applications.
+- `signature` – A cryptographic signature that can be used to verify the authenticity and integrity of the context or intent message.
+- `custom` – Implementation-specific metadata.
 
 <!-- TODO insert security/signature field names here -->
 
@@ -947,8 +947,8 @@ Registered listeners MAY receive:
 
 The Desktop Agent MAY provide a `traceId` to intent handlers.
 
-*   If the originating app provides a `traceId`, the Desktop Agent MUST forward it.
-*   If no `traceId` is provided by the app, the Desktop Agent MAY generate a new one.
+- If the originating app provides a `traceId`, the Desktop Agent MUST forward it.
+- If no `traceId` is provided by the app, the Desktop Agent MAY generate a new one.
 
 Apps MAY propagate `traceId` when performing actions as a result of another FDC3 action. This supports observability and correlation across workflows.
 
