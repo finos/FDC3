@@ -230,10 +230,24 @@ Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passe
 
 ```ts
 interface ContextMetadata {
-  /** Identifier for the app instance that sent the context and/or intent. 
-   *  @experimental 
-   */
+  /** Identifier for the app instance that sent the context and/or intent. */
   readonly source: AppIdentifier;
+
+  /** The timestamp when the context was broadcast or the intent was raised. */
+  readonly timestamp: Date;
+
+  /** A unique identifier for tracing the flow of context or intent messages
+   *  across applications. If a traceId is provided by the app, the Desktop
+   *  Agent SHOULD forward it. If no traceId is provided, the Desktop Agent
+   *  SHOULD generate a new one. */
+  readonly traceId: string;
+
+  /** A cryptographic signature that can be used to verify the authenticity
+   *  and integrity of the context or intent message. */
+  readonly signature?: string;
+
+  /** Custom metadata provided by the originating app. */
+  readonly custom?: Record<string, any>;
 }
 ```
 
@@ -243,10 +257,11 @@ interface ContextMetadata {
 ```csharp
 interface IContextMetadata
 {
-    /// <summary>
-    /// Identifier for the app instance that sent the context and/or intent.
-    /// </summary>
     IAppIdentifier? Source { get; }
+    DateTime? Timestamp { get; }
+    string? TraceId { get; }
+    string? Signature { get; }
+    IDictionary<string, object>? Custom { get; }
 }
 ```
 
@@ -255,26 +270,85 @@ interface IContextMetadata
 
 ```go
 type ContextMetadata struct {
-  // Identifier for the app instance that sent the context and/or intent.
-  Source AppIdentifier `json:"source"`
+  Source    AppIdentifier          `json:"source"`
+  Timestamp time.Time              `json:"timestamp"`
+  TraceId   string                 `json:"traceId"`
+  Signature string                 `json:"signature,omitempty"`
+  Custom    map[string]interface{} `json:"custom,omitempty"`
 }
 ```
 
 </TabItem>
 </Tabs>
 
-Metadata relating to a context or intent and context received through the `addContextListener` and `addIntentListener` functions. Can include timestamp, security, observability, or other information.
-
-[`@experimental`](../../fdc3-compliance#experimental-features) Introduced in FDC3 2.0 and may be refined by further changes outside the normal FDC3 versioning policy.
+Metadata relating to a context or intent and context received through the `addContextListener` and `addIntentListener` functions. Includes delivery information provided by the Desktop Agent (`source`, `timestamp`, `traceId`) and optional metadata forwarded from the originating app (`traceId`, `signature`, `custom`).
 
 **See also:**
 
+- [`AppProvidableContextMetadata`](#appprovidablecontextmetadata)
 - [`AppMetadata`](#appmetadata)
 - [`ContextHandler`](Types#contexthandler)
 - [`IntentHandler`](Types#intenthandler)
 - [`addIntentListener`](DesktopAgent#addintentlistener)
 - [`addContextListener`](DesktopAgent#addcontextlistener)
 - [`Channel.addContextListener`](Channel#addcontextlistener)
+
+## `AppProvidableContextMetadata`
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+interface AppProvidableContextMetadata {
+  /** A unique identifier for tracing the flow of context or intent messages
+   *  across applications. If provided, the Desktop Agent SHOULD forward it. */
+  traceId?: string;
+
+  /** A cryptographic signature that can be used to verify the authenticity
+   *  and integrity of the context or intent message. */
+  signature?: string;
+
+  /** Custom metadata. Allows use of metadata fields that have yet to be
+   *  standardized. */
+  custom?: Record<string, any>;
+}
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+interface IAppProvidableContextMetadata
+{
+    string? TraceId { get; set; }
+    string? Signature { get; set; }
+    IDictionary<string, object>? Custom { get; set; }
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type AppProvidableContextMetadata struct {
+  TraceId   string                 `json:"traceId,omitempty"`
+  Signature string                 `json:"signature,omitempty"`
+  Custom    map[string]interface{} `json:"custom,omitempty"`
+}
+```
+
+</TabItem>
+</Tabs>
+
+Metadata that may be provided by an app when calling `broadcast`, `open`, `raiseIntent` or `raiseIntentForContext`. The Desktop Agent MUST forward any provided fields to the receiving app's handler via `ContextMetadata`, while always overriding `source` and `timestamp` with its own values.
+
+**See also:**
+
+- [`ContextMetadata`](#contextmetadata)
+- [`DesktopAgent.broadcast`](DesktopAgent#broadcast)
+- [`DesktopAgent.open`](DesktopAgent#open)
+- [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+- [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
 
 ## `DisplayMetadata`
 

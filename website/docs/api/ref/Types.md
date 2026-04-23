@@ -155,13 +155,57 @@ This means that it must at least have a `type` property that indicates what type
 - [`Channel.getCurrentContext`](Channel#getcurrentcontext)
 - [`Channel.addContextListener`](Channel#addcontextlistener)
 
+## `ContextWithMetadata`
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+type ContextWithMetadata = {
+  context: Context;
+  metadata: ContextMetadata;
+};
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+interface IContextWithMetadata
+{
+    IContext Context { get; }
+    IContextMetadata Metadata { get; }
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type ContextWithMetadata struct {
+  Context  Context         `json:"context"`
+  Metadata ContextMetadata `json:"metadata"`
+}
+```
+
+</TabItem>
+</Tabs>
+
+Represents a context object paired with its associated metadata. Returned by [`Channel.getCurrentContextWithMetadata()`](Channel#getcurrentcontextwithmetadata) to allow retrieval of both the current context and the [`ContextMetadata`](Metadata#contextmetadata) that was provided when it was broadcast.
+
+**See also:**
+
+- [`Context`](#context)
+- [`ContextMetadata`](Metadata#contextmetadata)
+- [`Channel.getCurrentContextWithMetadata`](Channel#getcurrentcontextwithmetadata)
+
 ## `ContextHandler`
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-type ContextHandler = (context: Context, metadata?: DesktopAgentProvidableContextMetadata) => void;
+type ContextHandler = (context: Context, metadata: ContextMetadata) => void;
 ```
 
 </TabItem>
@@ -181,11 +225,9 @@ type ContextHandler func(IContext, *ContextMetadata)
 </TabItem>
 </Tabs>
 
-Describes a callback that handles a context event. Optional metadata about the context message, including the app that originated the message, may be provided.
+Describes a callback that handles a context event. Used when attaching listeners for context broadcasts.
 
-Used when attaching listeners for context broadcasts.
-
-Optional metadata about the context message, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
+Metadata about each context message received, including the app that originated the message and a timestamp, MUST be provided by the Desktop Agent implementation. Apps raising intents MAY provide additional metadata (such as a traceId, signature or custom metadata), which the Desktop Agent MUST pass on to the handler.
 
 **See also:**
 
@@ -239,7 +281,7 @@ type DesktopAgentIdentifier struct {
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-type IntentHandler = (context: Context, metadata?: DesktopAgentProvidableContextMetadata) => Promise<IntentResult> | void;
+type IntentHandler = (context: Context, metadata: ContextMetadata) => Promise<IntentResult> | void;
 ```
 
 </TabItem>
@@ -259,11 +301,9 @@ type IntentHandler func(IContext, *ContextMetadata) <-chan IntentResult
 </TabItem>
 </Tabs>
 
-Describes a callback that handles a context event and may return a promise of a Context, Channel object or `void` to be returned to the application that raised the intent.
+Describes a callback that handles a context event and may return a promise of a Context, Channel object or `void` to be returned to the application that raised the intent. Used when attaching listeners for raised intents.
 
-Used when attaching listeners for raised intents.
-
-Optional metadata about the intent & context message, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
+Metadata about each intent & context message received, including the app that originated the message and a timestamp, MUST be provided by the Desktop Agent implementation. Apps raising intents MAY provide additional metadata (such as a traceId, signature or custom metadata), which the Desktop Agent MUST pass on to the handler.
 
 **See also:**
 
