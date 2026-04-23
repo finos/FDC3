@@ -58,7 +58,7 @@ export class PostMessageLoader implements Loader {
   identityValidationHandler?: IdentityValidationHandler;
 
   /** Initial timeout (released once a MessagePort is received - additional steps are outside timeout) */
-  timeout: NodeJS.Timeout | null = null;
+  timeout: ReturnType<typeof setTimeout> | null = null;
 
   /** Reference to the get fn's Promise's reject call - used when cancelling. */
   rejectFn: ((reason?: string) => void) | null = null;
