@@ -35,6 +35,7 @@ interface Channel {
   // functions
   broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void>;
   getCurrentContext(contextType?: string): Promise<Context|null>;
+  getCurrentContextWithMetadata(contextType?: string): Promise<ContextWithMetadata|null>;
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
   clearContext(contextType?: string): Promise<void>;
   addEventListener(type: string  | null, handler: EventHandler): Promise<Listener>;
@@ -645,6 +646,79 @@ if result.Err != null {
 - [`ChannelError`](Errors#channelerror)
 - [`broadcast`](#broadcast)
 - [`addContextListener`](#addcontextlistener)
+
+### `getCurrentContextWithMetadata`
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+public getCurrentContextWithMetadata(contextType?: string): Promise<ContextWithMetadata|null>;
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+Task<IContextWithMetadata?> GetCurrentContextWithMetadata(string? contextType);
+```
+
+</TabItem>
+</Tabs>
+
+Returns the most recent context that was broadcast on the channel along with its associated [`ContextMetadata`](Metadata#contextmetadata), or `null` if no matching context is found.
+
+When a _context type_ is provided, the most recent context matching the type will be returned. If no _context type_ is provided, the most recent context that was broadcast on the channel - regardless of type - will be returned.
+
+This function is similar to [`getCurrentContext()`](#getcurrentcontext) but additionally returns the metadata that was associated with the context when it was broadcast, allowing applications to access information such as the source app, timestamp, traceId, signature and any custom metadata.
+
+If getting the current context fails, the promise will be rejected with an `Error` with a `message` string from the [`ChannelError`](Errors#channelerror) enumeration.
+
+**Examples:**
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+try {
+    const result = await channel.getCurrentContextWithMetadata('fdc3.contact');
+    if (result) {
+        console.log(`Context from ${result.metadata.source.appId} at ${result.metadata.timestamp}`);
+        console.log(`Contact: ${result.context.name}`);
+    }
+} catch (err: ChannelError) {
+    // handle error
+}
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+try
+{
+    var result = await channel.GetCurrentContextWithMetadata("fdc3.contact");
+    if (result != null)
+    {
+        System.Diagnostics.Debug.WriteLine($"Context from {result.Metadata.Source.AppId}");
+    }
+}
+catch (Exception ex)
+{
+    // handle error
+}
+```
+
+</TabItem>
+</Tabs>
+
+**See also:**
+
+- [`ContextWithMetadata`](Types#contextwithmetadata)
+- [`ContextMetadata`](Metadata#contextmetadata)
+- [`ChannelError`](Errors#channelerror)
+- [`getCurrentContext`](#getcurrentcontext)
+- [`broadcast`](#broadcast)
 
 ### `clearContext`
 

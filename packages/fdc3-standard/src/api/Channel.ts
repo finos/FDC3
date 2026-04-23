@@ -4,7 +4,7 @@
  */
 
 import { Context } from '@finos/fdc3-context';
-import { ContextHandler } from './Types.js';
+import { ContextHandler, ContextWithMetadata } from './Types.js';
 import { DisplayMetadata } from './DisplayMetadata.js';
 import { Listener } from './Listener.js';
 import { EventHandler } from './Events.js';
@@ -67,6 +67,24 @@ export interface Channel {
    * If getting the current context fails, the promise will be rejected with an `Error` with a `message` string from the `ChannelError` enumeration.
    */
   getCurrentContext(contextType?: string): Promise<Context | null>;
+
+  /**
+   * Returns the most recent context that was broadcast on the channel, along
+   * with its associated metadata, or `null` if no matching context is found.
+   *
+   * When a `contextType` is provided, the most recent context matching the type
+   * will be returned. If no `contextType` is provided, the most recent context
+   * that was broadcast on the channel - regardless of type - will be returned.
+   *
+   * This function is similar to `getCurrentContext()` but additionally returns
+   * the `ContextMetadata` that was associated with the context when it was
+   * broadcast, allowing applications to access information such as the source
+   * app, timestamp, traceId, signature and any custom metadata.
+   *
+   * If getting the current context fails, the promise will be rejected with an
+   * `Error` with a `message` string from the `ChannelError` enumeration.
+   */
+  getCurrentContextWithMetadata(contextType?: string): Promise<ContextWithMetadata | null>;
 
   /**
    * Adds a listener for incoming contexts of the specified _context type_ whenever a broadcast happens on this channel.

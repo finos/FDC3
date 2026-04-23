@@ -295,9 +295,10 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
 
       async changeChannel(): Promise<void> {
         if (this.container.currentChannel != null) {
-          const context = await this.container.currentChannel?.getCurrentContext(this.contextType ?? undefined);
-          if (context) {
-            this.handler(context);
+          const channel = this.container.currentChannel as DefaultChannel;
+          const result = await channel.getCurrentContextWithMetadata(this.contextType ?? undefined);
+          if (result) {
+            this.handler(result.context, result.metadata);
           }
         }
       }
