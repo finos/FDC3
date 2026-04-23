@@ -39,7 +39,8 @@
     "merge": "istanbul-merge --out coverage/complete.json packages/fdc3-standard/coverage/coverage-final.json packages/fdc3-get-agent/coverage/coverage-final.json packages/fdc3-agent-proxy/coverage/coverage-final.json toolbox/fdc3-for-web/fdc3-web-impl/coverage/coverage-final.json",
     "report": "nyc report --reporter json-summary --report-dir nyc-coverage-report --exclude-after-remap false --temp-dir coverage",
     "lint": "npm run lint --workspaces --if-present",
-    "syncpack": "npm exec syncpack -- fix --dependencies \"@finos/*\"",
+    "syncpack": "npm exec syncpack -- fix --dependencies \"@finos/*\" && npm run version-check",
+    "version-check": "node scripts/version-check.js",
     "dev": "concurrently \"cd toolbox/fdc3-conformance && npm run dev\" \"cd toolbox/fdc3-workbench && npm run dev\" \"cd toolbox/fdc3-for-web/reference-ui && npm run dev\" \"cd toolbox/fdc3-for-web/demo && npm run dev\"",
     "prepare": "husky"
   },
