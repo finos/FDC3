@@ -77,7 +77,7 @@ export class DefaultAppSupport implements AppSupport {
 
   async open(
     app: AppIdentifier,
-    context?: Context | undefined,
+    context?: Context | null,
     metadata?: AppProvidableContextMetadata
   ): Promise<AppIdentifier> {
     const request: OpenRequest = {
@@ -87,7 +87,7 @@ export class DefaultAppSupport implements AppSupport {
           appId: app.appId,
           instanceId: app.instanceId,
         },
-        context,
+        context: context || undefined,
         metadata: metadata ?? {},
       },
       meta: this.messaging.createMeta(),

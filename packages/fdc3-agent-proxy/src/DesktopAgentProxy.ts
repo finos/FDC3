@@ -158,7 +158,7 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     return this.intents.findIntentsByContext(context);
   }
 
-  private ensureAppId(app?: string | AppIdentifier): AppIdentifier | undefined {
+  private ensureAppId(app?: string | AppIdentifier | null): AppIdentifier | undefined {
     if (typeof app === 'string') {
       return {
         appId: app,
@@ -170,7 +170,12 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     }
   }
 
-  raiseIntent(intent: string, context: Context, app?: string | AppIdentifier, metadata?: AppProvidableContextMetadata) {
+  raiseIntent(
+    intent: string,
+    context: Context,
+    app?: string | AppIdentifier | null,
+    metadata?: AppProvidableContextMetadata
+  ) {
     return this.intents.raiseIntent(intent, context, this.ensureAppId(app), metadata);
   }
 
@@ -180,13 +185,13 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
 
   raiseIntentForContext(
     context: Context,
-    app?: string | AppIdentifier,
+    app?: string | AppIdentifier | null,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution> {
     return this.intents.raiseIntentForContext(context, this.ensureAppId(app), metadata);
   }
 
-  open(app: string | AppIdentifier, context?: Context, metadata?: AppProvidableContextMetadata) {
+  open(app: string | AppIdentifier, context?: Context | null, metadata?: AppProvidableContextMetadata) {
     return this.apps.open(this.ensureAppId(app)!, context, metadata);
   }
 
