@@ -16,7 +16,7 @@ export default async () => {
     });
 
     const intentMetadata =
-      '(IntentContextMetadata) Should receive ContextMetadata with source and timestamp when an intent is raised';
+      '(3.0-IntentContextMetadata) Should receive ContextMetadata with source and timestamp when an intent is raised';
     it(intentMetadata, async function () {
       this.timeout(constants.TestTimeout);
 
@@ -32,10 +32,10 @@ export default async () => {
         }
       );
 
-      const resolution = await control.raiseIntent(Intent.lTestingIntent, ContextType.testContextX, {
-        appId: IntentApp.IntentAppL,
+      const resolution = await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextX, {
+        appId: IntentApp.IntentAppA,
       });
-      control.validateIntentResolution(IntentApp.IntentAppL, resolution);
+      control.validateIntentResolution(IntentApp.IntentAppA, resolution);
 
       await wrapper.promise;
       listener.unsubscribe();
@@ -46,7 +46,7 @@ export default async () => {
     });
 
     const intentMetadataWithAppMeta =
-      '(IntentContextMetadataWithAppMetadata) Should forward app-provided traceId, signature and custom in ContextMetadata on raised intent';
+      '(3.0-IntentContextMetadataWithAppMetadata) Should forward app-provided traceId, signature and custom in ContextMetadata on raised intent';
     it(intentMetadataWithAppMeta, async function () {
       this.timeout(constants.TestTimeout);
 
@@ -65,9 +65,9 @@ export default async () => {
       // Raise intent with app-provided metadata
       const context = { type: ContextType.testContextX };
       await fdc3.raiseIntent(
-        Intent.lTestingIntent,
+        Intent.aTestingIntent,
         context,
-        { appId: IntentApp.IntentAppL },
+        { appId: IntentApp.IntentAppA },
         {
           traceId: 'intent-trace-456',
           signature: 'intent-sig',

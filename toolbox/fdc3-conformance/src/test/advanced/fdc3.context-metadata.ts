@@ -19,24 +19,18 @@ const validator = new ContextMetadataValidator();
 export default async () => {
   const fdc3 = await getAgent();
   const cc = new ChannelControlImpl(fdc3);
-  let mockAppOpened = false;
 
   return describe('fdc3.contextMetadata', () => {
-    beforeEach(async function beforeEach() {
-      mockAppOpened = false;
-      await cc.leaveChannel();
-    });
+    beforeEach(cc.leaveChannel);
 
     afterEach(async function afterEach() {
-      if (mockAppOpened) {
-        await cc.closeMockApp(this.currentTest?.title ?? 'Some-Test-Title');
-      }
+      await cc.closeMockApp(this.currentTest?.title ?? 'Some-Test-Title');
     });
 
     // --- User Channel Tests ---
 
     const ucMetadataBroadcast =
-      '(UCContextMetadataOnBroadcast) Should receive ContextMetadata with source and timestamp when context is broadcast on a user channel';
+      '(3.0-UCContextMetadataOnBroadcast) Should receive ContextMetadata with source and timestamp when context is broadcast on a user channel';
     it(ucMetadataBroadcast, async () => {
       const errorMessage = `\r\nSteps:\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel\r\n- App B joins channel and broadcasts fdc3.instrument${documentation}`;
 
@@ -57,7 +51,6 @@ export default async () => {
 
       const channel = await cc.getNonGlobalUserChannel();
       await cc.joinChannel(channel);
-      mockAppOpened = true;
       await cc.openChannelApp(ucMetadataBroadcast, channel.id, JOIN_AND_BROADCAST);
       await resolveExecutionCompleteListener;
 
@@ -74,7 +67,7 @@ export default async () => {
     });
 
     const ucMetadataTraceId =
-      '(UCContextMetadataTraceId) Should receive app-provided traceId in ContextMetadata on user channel broadcast';
+      '(3.0-UCContextMetadataTraceId) Should receive app-provided traceId in ContextMetadata on user channel broadcast';
     it(ucMetadataTraceId, async () => {
       const errorMessage = `\r\nSteps:\r\n- App A adds listener\r\n- App B broadcasts with traceId metadata${documentation}`;
 
@@ -95,7 +88,6 @@ export default async () => {
 
       const channel = await cc.getNonGlobalUserChannel();
       await cc.joinChannel(channel);
-      mockAppOpened = true;
       await cc.openChannelApp(ucMetadataTraceId, channel.id, JOIN_AND_BROADCAST_WITH_TRACE_ID);
       await resolveExecutionCompleteListener;
 
@@ -113,7 +105,7 @@ export default async () => {
     });
 
     const ucMetadataSignatureCustom =
-      '(UCContextMetadataSignatureCustom) Should receive app-provided signature and custom fields in ContextMetadata on user channel broadcast';
+      '(3.0-UCContextMetadataSignatureCustom) Should receive app-provided signature and custom fields in ContextMetadata on user channel broadcast';
     it(ucMetadataSignatureCustom, async () => {
       const errorMessage = `\r\nSteps:\r\n- App A adds listener\r\n- App B broadcasts with signature and custom metadata${documentation}`;
 
@@ -134,7 +126,6 @@ export default async () => {
 
       const channel = await cc.getNonGlobalUserChannel();
       await cc.joinChannel(channel);
-      mockAppOpened = true;
       await cc.openChannelApp(ucMetadataSignatureCustom, channel.id, JOIN_AND_BROADCAST_WITH_SIGNATURE_CUSTOM);
       await resolveExecutionCompleteListener;
 
@@ -155,7 +146,7 @@ export default async () => {
     // --- App Channel Tests ---
 
     const acMetadataBroadcast =
-      '(ACContextMetadataOnBroadcast) Should receive ContextMetadata with source and timestamp when context is broadcast on an app channel';
+      '(3.0-ACContextMetadataOnBroadcast) Should receive ContextMetadata with source and timestamp when context is broadcast on an app channel';
     it(acMetadataBroadcast, async () => {
       const errorMessage = `\r\nSteps:\r\n- App A gets app channel and adds listener\r\n- App B gets same channel and broadcasts${documentation}`;
 
@@ -173,7 +164,6 @@ export default async () => {
         }
       );
 
-      mockAppOpened = true;
       await cc.openChannelApp(acMetadataBroadcast, 'test-channel', APP_CHANNEL_AND_BROADCAST);
       await resolveExecutionCompleteListener;
 
@@ -192,14 +182,13 @@ export default async () => {
     // --- getCurrentContextWithMetadata Tests ---
 
     const acGetCurrentContextWithMetadata =
-      '(ACGetCurrentContextWithMetadata) getCurrentContextWithMetadata should return context and metadata from an app channel';
+      '(3.0-ACGetCurrentContextWithMetadata) getCurrentContextWithMetadata should return context and metadata from an app channel';
     it(acGetCurrentContextWithMetadata, async () => {
       const errorMessage = `\r\nSteps:\r\n- App B broadcasts to app channel\r\n- App A calls getCurrentContextWithMetadata${documentation}`;
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(acGetCurrentContextWithMetadata);
       const testChannel = await fdc3.getOrCreateChannel('test-channel');
 
-      mockAppOpened = true;
       await cc.openChannelApp(acGetCurrentContextWithMetadata, 'test-channel', APP_CHANNEL_AND_BROADCAST);
       await resolveExecutionCompleteListener;
 
@@ -215,7 +204,7 @@ export default async () => {
     });
 
     const acGetCurrentContextWithMetadataNull =
-      '(ACGetCurrentContextWithMetadataNull) getCurrentContextWithMetadata should return null on an empty channel';
+      '(3.0-ACGetCurrentContextWithMetadataNull) getCurrentContextWithMetadata should return null on an empty channel';
     it(acGetCurrentContextWithMetadataNull, async () => {
       const testChannel = await fdc3.getOrCreateChannel('test-channel-empty-' + cc.getRandomId());
       const result: ContextWithMetadata | null = await testChannel.getCurrentContextWithMetadata('fdc3.instrument');

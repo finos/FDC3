@@ -916,7 +916,7 @@ To facilitate context linking in such situations it is recommended that applicat
 
 ### Context clearing on channels
 
-Channel interface provides the ability to [`clearContext`](ref/Channel.md#clearcontext) on the channel, either for the specific context type, if provided, or for all contexts on that channel. Applications may listen to the `contextCleared` event on the channel. If a specific type was cleared, the `contextType` field of the event will be set with that type. Once cleared, any apps that join the channel, add new context listeners or call [`getCurrentContext`](ref/Channel.md#getcurrentcontext) will not return anything to the caller (other than the `fdc3.nothing` type indicating that context was cleared) until new context is broadcast to the channel. 
+Channel interface provides the ability to [`clearContext`](ref/Channel.md#clearcontext) on the channel, either for the specific context type, if provided, or for all contexts on that channel. Applications may listen to the `contextCleared` event on the channel. If a specific type was cleared, the `contextType` field of the event will be set with that type. Once cleared, any apps that join the channel, add new context listeners or call [`getCurrentContext`](ref/Channel.md#getcurrentcontext) will not return anything to the caller (other than the `fdc3.nothing` type indicating that context was cleared) until new context is broadcast to the channel.
 
 ### Metadata
 
@@ -924,7 +924,7 @@ See [Context Metadata](#context-metadata).
 
 ## Context Metadata
 
-FDC3 separates **Context** (business data) from **ContextMetadata** (delivery and provenance information) to maintain clarity and interoperability. Metadata is optional and SHOULD be provided by the Desktop Agent to registered listeners, but apps MUST handle cases where it is absent. 
+FDC3 separates **Context** (business data) from **ContextMetadata** (delivery and provenance information) to maintain clarity and interoperability. Metadata is optional and SHOULD be provided by the Desktop Agent to registered listeners, but apps MUST handle cases where it is absent.
 
 For the rationale for separating `Context` and `ContextMetadata`, see the [Context Specification](../context/spec#context-metadata).
 
