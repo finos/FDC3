@@ -147,6 +147,8 @@ export class DefaultIntentSupport implements IntentSupport {
         app: app || undefined,
         metadata: {
           traceId: metadata?.traceId ?? v4(),
+          ...(metadata?.signature !== undefined && { signature: metadata.signature }),
+          ...(metadata?.custom !== undefined && { custom: metadata.custom }),
         },
       },
       meta,
@@ -197,6 +199,8 @@ export class DefaultIntentSupport implements IntentSupport {
         app,
         metadata: {
           traceId: metadata?.traceId ?? v4(),
+          ...(metadata?.signature !== undefined && { signature: metadata.signature }),
+          ...(metadata?.custom !== undefined && { custom: metadata.custom }),
         },
       },
       meta,
