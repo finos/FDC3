@@ -70,7 +70,6 @@ const basicIL1 = (fdc3: DesktopAgent, documentation: string) => {
 };
 
 const basicGI1 = (fdc3: DesktopAgent, documentation: string) => {
-  console.log('coming here in');
   it('(BasicGI1) Returns ImplementationMetadata object', async () => {
     try {
       const info = await fdc3.getInfo();
