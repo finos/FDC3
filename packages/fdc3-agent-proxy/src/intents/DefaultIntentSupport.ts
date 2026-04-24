@@ -221,7 +221,7 @@ export class DefaultIntentSupport implements IntentSupport {
 
   async raiseIntentForContext(
     context: Context,
-    app?: AppIdentifier,
+    app?: AppIdentifier | null,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution> {
     const meta = this.messaging.createMeta();
@@ -229,7 +229,7 @@ export class DefaultIntentSupport implements IntentSupport {
       type: 'raiseIntentForContextRequest',
       payload: {
         context,
-        app,
+        app: app || undefined,
         metadata: {
           traceId: metadata?.traceId ?? v4(),
           ...(metadata?.signature !== undefined && { signature: metadata.signature }),
@@ -258,8 +258,8 @@ export class DefaultIntentSupport implements IntentSupport {
         response.payload.appIntents,
         context
       );
-      if (choice) {
-        return this.raiseIntent(choice.intent, context, choice.appId, metadata);
+      if (result) {
+        return this.raiseIntent(result.intent, context, result.appId, metadata);
       } else {
         throw new Error(ResolveError.UserCancelled);
       }

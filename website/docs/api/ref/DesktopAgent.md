@@ -22,7 +22,7 @@ For details of how implementations of the `DesktopAgent` are made available to a
 ```ts
 interface DesktopAgent {
   // apps
-  open(app: AppIdentifier, context?: Context, metadata?: AppProvidableContextMetadata): Promise<AppIdentifier>;
+  open(app: AppIdentifier, context?: Context | null, metadata?: AppProvidableContextMetadata): Promise<AppIdentifier>;
   findInstances(app: AppIdentifier): Promise<Array<AppIdentifier>>;
   getAppMetadata(app: AppIdentifier): Promise<AppMetadata>;
 
@@ -33,8 +33,8 @@ interface DesktopAgent {
   // intents
   findIntent(intent: string, context?: Context, resultType?: string): Promise<AppIntent>;
   findIntentsByContext(context: Context, resultType?: string): Promise<Array<AppIntent>>;
-  raiseIntent(intent: string, context: Context, app?: AppIdentifier, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
-  raiseIntentForContext(context: Context, app?: AppIdentifier, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
+  raiseIntent(intent: string, context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
+  raiseIntentForContext(context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
   addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
 
   // channels
@@ -1685,7 +1685,7 @@ listenerResult := <-desktopAgent.AddContextListener("", func(context IContext, c
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-open(app: AppIdentifier, context?: Context, metadata?: AppProvidableContextMetadata): Promise<AppIdentifier>;
+open(app: AppIdentifier, context?: Context | null, metadata?: AppProvidableContextMetadata): Promise<AppIdentifier>;
 ```
 
 </TabItem>
@@ -1778,7 +1778,7 @@ instanceIdentifierResult := <-desktopAgent.Open(appIdentifier, &context)
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-raiseIntent(intent: string, context: Context, app?: AppIdentifier, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
+raiseIntent(intent: string, context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
 ```
 
 </TabItem>
@@ -1921,7 +1921,7 @@ resolutionResult := <-desktopAgent.RaiseIntent("intentName", context, nil);
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-raiseIntentForContext(context: Context, app?: AppIdentifier, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
+raiseIntentForContext(context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
 ```
 
 </TabItem>
