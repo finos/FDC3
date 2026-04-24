@@ -107,52 +107,44 @@ For installation and usage instructions, see: <https://fdc3.finos.org/docs/suppo
 
 ### Releasing FDC3 to NPM (for maintainers)
 
-This is a 4-step process:
+Publishing to npm is handled automatically by the [Publish To NPM](.github/workflows/release.yml) GitHub Actions workflow, which is triggered when a GitHub Release is published. The workflow will lint, test and build the project, then publish all public workspace packages to both npmjs.org and GitHub Packages.
+
+The npm dist-tag is determined by the version in the root `package.json`: versions containing a hyphen (e.g. `2.3.0-beta.1`) are published with the `prerelease` tag, while all other versions are published with the `latest` tag.
 
 1.  **Create a release branch**
 
-  Do this locally.  Ensure the branch is named `release/v2.0` (or whatever the next version is).
-  
   ```bash
-  git checkout -b release/v2.0
-  ```
-  
-2.  **Update the version numbers in the package.json files**
-
-  It's important that all of the versions of the submodules stay on the same version, and that the references between them are consistent to that version.  To change the version number (say before or after a release) run the following:
-
-  ```bash
-  // first, update version number in package.json
-  npm login
-  npm version <new version from package.json> --workspaces // changes the version number in all submodule package.json files
-  npm run syncpack                          // sycnhronizes version numbers
-  npm up                                    // fixes node_module references
-  npm run build                             // builds all the modules against the new version
+  git checkout -b release/v2.3
   ```
 
-3.  **Push the branch to publish the packages to npm**
+2.  **Update version numbers**
+
+  All workspace versions and the root `package.json` version must match. Update them as follows:
+
+  ```bash
+  npm version <new-version> --include-workspace-root --workspaces
+  npm run syncpack   # synchronizes @finos/* dependency versions and verifies consistency
+  npm up             # fixes node_module references
+  npm run build      # builds all modules against the new version
+  ```
+
+  The `syncpack` script will automatically run `version-check` to verify that the root version matches all public workspace versions. You can also run `npm run version-check` independently at any time.
+
+3.  **Push the branch and create a PR**
 
   ```bash
   git add .
-  git commit -m "Updated to version vx.x" 
-  git push origin release/v2.0
-  ```
-  
-  This should trigger a GitHub action that will publish the packages to npm.
-
-4.  **Create a PR for merging the release branch.**
-
-  Once the packages are published, create a PR to merge the release branch into the main branch.  You will need other FDC3 maintainers to review and approve the PR.
-
-5.  **Reset the `latest` NPM Version Tag If Releasing A Prerelease**
-
-  If you're releasing beta/alpha code, be sure to replace the latest version in NPM like so:
-
-  ```
-  npm dist-tag add @finos/fdc3@2.1.1 latest
+  git commit -m "Updated to version v2.3.0"
+  git push origin release/v2.3
   ```
 
-  You will need support from help@finos.org for this step.
+  Create a PR to merge the release branch into main. You will need other FDC3 maintainers to review and approve the PR.
+
+4.  **Create a GitHub Release to publish to npm**
+
+  Once the PR is merged, [create a new GitHub Release](https://github.com/finos/FDC3/releases/new) targeting the main branch. Publishing the release will trigger the workflow, which will publish all packages to npm and GitHub Packages.
+
+  The workflow also runs a version consistency check before publishing — if the root version doesn't match the workspace versions, the workflow will fail before any packages are published.
 
 ### Releasing the FDC3 Website (for maintainers)
 

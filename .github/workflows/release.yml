@@ -38,6 +38,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Verify version consistency across workspaces
+        run: npm run version-check
+
       # Compute prerelease flag & desired dist-tag from top-level package.json version
       - name: Determine prerelease tag
         id: version
