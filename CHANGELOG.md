@@ -16,6 +16,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added `getCurrentContextWithMetadata()` to the `Channel` interface and `ContextWithMetadata` type, allowing retrieval of both the current context and its associated `ContextMetadata` from a channel. ([#1728](https://github.com/finos/FDC3/pull/1728))
 * Added `ContextMetadata` and `AppProvidableContextMetadata` types, replacing the optional `OriginatingAppMetadata` feature with required metadata support on `ContextHandler` and `IntentHandler` callbacks. Desktop Agents MUST provide `source` and `timestamp` metadata, and MUST forward app-supplied `traceId`, `signature` and `custom` fields, supporting observability and security use cases. ([#1728](https://github.com/finos/FDC3/pull/1728))
 * Added `version-check` script and integrated it into the `syncpack` script and Publish To NPM workflow to prevent version mismatches causing incorrect npm dist-tags. ([#1864](https://github.com/finos/FDC3/pull/1864))
+* Added Channel Interface Compliance and PrivateChannel Interface Compliance subsections to the Desktop Agent API Standard Compliance section in the API spec, enumerating MUST/SHOULD/MAY requirements for all `Channel` and `PrivateChannel` functions including `getCurrentContextWithMetadata`. ([#1728](https://github.com/finos/FDC3/pull/1728))
 
 ### Changed
 

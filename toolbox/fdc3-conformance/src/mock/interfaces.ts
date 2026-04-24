@@ -1,4 +1,4 @@
-import { Channel } from '@finos/fdc3';
+import { AppProvidableContextMetadata, Channel } from '@finos/fdc3';
 
 export interface IChannelService {
   joinRetrievedUserChannel(channelId: string): Promise<Channel>;
@@ -6,6 +6,13 @@ export interface IChannelService {
   retrieveTestAppChannel(channelId: string): Promise<Channel>;
 
   broadcastContextItem(contextType: string, channel: Channel, historyItems: number, testId: string): Promise<void>;
+
+  broadcastContextItemWithMetadata(
+    contextType: string,
+    channel: Channel,
+    testId: string,
+    metadata: AppProvidableContextMetadata
+  ): Promise<void>;
 
   closeWindowOnCompletion(testId: string): Promise<void>;
 

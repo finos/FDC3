@@ -109,8 +109,8 @@ interface IDesktopAgent
 ```go
 @experimental
 type Result[T any] struct {
-	Value *T
-	Err   error
+  Value *T
+  Err   error
 }
 @experimental
 type DesktopAgent struct {}
@@ -192,7 +192,7 @@ Context may also be received via this listener if the application was launched v
 
 Metadata about each context message received, including the app that originated the message and a timestamp, MUST be provided by the Desktop Agent implementation. Apps raising intents MAY provide additional metadata (such as a traceId, signature or custom metadata), which the Desktop Agent MUST pass on to the handler.
 
-Adding multiple context listeners on the same or overlapping types (i.e. specific `contextType` and `null` type) MUST be allowed, and MUST trigger all ContextHandlers when a relevant context type is broadcast on the current user channel. Please note, that this behavior differs from [`fdc3.addIntentListener`](#addintentlistener) call; refer to the relevant documentation for more details. 
+Adding multiple context listeners on the same or overlapping types (i.e. specific `contextType` and `null` type) MUST be allowed, and MUST trigger all ContextHandlers when a relevant context type is broadcast on the current user channel. Please note, that this behavior differs from [`fdc3.addIntentListener`](#addintentlistener) call; refer to the relevant documentation for more details.
 
 **Examples:**
 
@@ -2010,7 +2010,7 @@ Not implemented
 </TabItem>
 <TabItem value="golang" label="Go">
 
-```
+```go
 Not implemented
 ```
 
@@ -2042,7 +2042,7 @@ Not implemented
 </TabItem>
 <TabItem value="golang" label="Go">
 
-```
+```go
 Not implemented
 ```
 
@@ -2073,7 +2073,7 @@ Not implemented
 </TabItem>
 <TabItem value="golang" label="Go">
 
-```
+```go
 Not implemented
 ```
 
@@ -2105,7 +2105,7 @@ Not implemented
 </TabItem>
 <TabItem value="golang" label="Go">
 
-```
+```go
 Not implemented
 ```
 
@@ -2137,7 +2137,7 @@ Not implemented
 </TabItem>
 <TabItem value="golang" label="Go">
 
-```
+```go
 Not implemented
 ```
 
@@ -2169,7 +2169,7 @@ Not implemented
 </TabItem>
 <TabItem value="golang" label="Go">
 
-```
+```go
 Not implemented
 ```
 
