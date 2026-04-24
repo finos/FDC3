@@ -128,6 +128,15 @@ export class ChannelState implements AutomaticResponse {
       type: 'getCurrentContextResponse',
       payload: {
         context: last ?? null,
+        metadata: last
+          ? {
+              source: { appId: 'test-app', instanceId: 'test-instance' },
+              timestamp: new Date(),
+              traceId: 'test-trace-id',
+              signature: 'test-signature',
+              custom: { key: 'value' },
+            }
+          : null,
       },
     };
   }
