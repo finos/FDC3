@@ -1,4 +1,4 @@
-import { Channel, DesktopAgent } from '@finos/fdc3';
+import { AppProvidableContextMetadata, Channel, DesktopAgent } from '@finos/fdc3';
 import constants from '../../constants';
 import { AppControlContext } from '../../context-types';
 import { channelType } from '../constants';
@@ -52,6 +52,24 @@ export class ChannelServiceImpl implements IChannelService {
   async notifyTestOnCompletion(testId: string): Promise<void> {
     const appControlChannel = await this.fdc3.getOrCreateChannel(constants.ControlChannel);
     await this.broadcastContextItem('executionComplete', appControlChannel, 1, testId);
+  }
+
+  async broadcastContextItemWithMetadata(
+    contextType: string,
+    channel: Channel,
+    testId: string,
+    metadata: AppProvidableContextMetadata
+  ): Promise<void> {
+    const context: AppControlContext = {
+      type: contextType,
+      name: 'History-item-1',
+      testId,
+    };
+    if (channel.type === channelType.app) {
+      await channel.broadcast(context, metadata);
+    } else {
+      await this.fdc3.broadcast(context, metadata);
+    }
   }
 
   //get app/system channel broadcast service

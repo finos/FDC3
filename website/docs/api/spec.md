@@ -149,9 +149,62 @@ An FDC3 Standard compliant Desktop Agent implementation **MAY**:
   - [`open`](ref/DesktopAgent#open-deprecated) (deprecated version that addresses apps via `name` field)
   - [`raiseIntent`](ref/DesktopAgent#raiseintent-deprecated) (deprecated version that addresses apps via `name` field)
   - [`raiseIntentForContext`](ref/DesktopAgent#raiseintentforcontext-deprecated) (deprecated version that addresses apps via `name` field)
-- Make use of a resolver user interface or other suitable procedure to resolve an ambiguous unqualified `appId` value received as part of an `AppIdentifier` passed as a paremeter to an API function. 
+- Make use of a resolver user interface or other suitable procedure to resolve an ambiguous unqualified `appId` value received as part of an `AppIdentifier` passed as a paremeter to an API function.
 
 For more details on FDC3 Standards compliance (including the versioning, deprecation and experimental features policies) please see the [FDC3 Compliance page](../fdc3-compliance).
+
+#### Channel Interface Compliance
+
+A Desktop Agent's [`Channel`](ref/Channel) implementation **MUST**:
+
+- Include implementations of the following functions, as defined in this Standard:
+  - [`addContextListener`](ref/Channel#addcontextlistener)
+  - [`addEventListener`](ref/Channel#addeventlistener)
+  - [`broadcast`](ref/Channel#broadcast)
+  - [`clearContext`](ref/Channel#clearcontext)
+  - [`getCurrentContext`](ref/Channel#getcurrentcontext)
+  - [`getCurrentContextWithMetadata`](ref/Channel#getcurrentcontextwithmetadata)
+- Accept an optional [`AppProvidableContextMetadata`](ref/Metadata#appprovidablecontextmetadata) argument in [`broadcast`](ref/Channel#broadcast), allowing applications to provide `traceId`, `signature` and `custom` metadata with context messages.
+- Allow adding multiple context listeners on the same or overlapping types (i.e. a specific `contextType` and `null` type) and trigger all matching [`ContextHandler`](ref/Types#contexthandler) functions when a relevant context type is broadcast on the channel.
+- Provide [`ContextMetadata`](ref/Metadata#contextmetadata) (including `source` and `timestamp`) to [`ContextHandler`](ref/Types#contexthandler) functions registered via [`addContextListener`](ref/Channel#addcontextlistener).
+- Return the most recent context (and associated metadata for [`getCurrentContextWithMetadata`](ref/Channel#getcurrentcontextwithmetadata)) matching the requested type, or `null` if no matching context is found.
+- Return `null` from [`getCurrentContext`](ref/Channel#getcurrentcontext) and [`getCurrentContextWithMetadata`](ref/Channel#getcurrentcontextwithmetadata) for context types that have been cleared via [`clearContext`](ref/Channel#clearcontext), until new context of that type is broadcast.
+- Notify listeners registered for the `contextCleared` event (via [`addEventListener`](ref/Channel#addeventlistener)) when [`clearContext`](ref/Channel#clearcontext) is called, including the `contextType` in the event if one was specified.
+- Reject with an `Error` with a `message` string from the [`ChannelError`](ref/Errors#channelerror) enumeration if a [`broadcast`](ref/Channel#broadcast), [`getCurrentContext`](ref/Channel#getcurrentcontext), [`getCurrentContextWithMetadata`](ref/Channel#getcurrentcontextwithmetadata) or [`clearContext`](ref/Channel#clearcontext) call fails.
+- Reject with the [`ChannelError.MalformedContext`](ref/Errors#channelerror) error if an application attempts to broadcast an invalid context argument.
+
+A Desktop Agent's [`Channel`](ref/Channel) implementation **SHOULD**:
+
+- Ensure that context messages broadcast by an application on a channel are not delivered back to that same application if it is also listening on the channel.
+- Provide [`ContextMetadata`](ref/Metadata#contextmetadata) to [`ContextHandler`](ref/Types#contexthandler) functions, including any app-provided `traceId`, `signature` and `custom` metadata that was included in the [`broadcast`](ref/Channel#broadcast) call.
+
+A Desktop Agent's [`Channel`](ref/Channel) implementation **MAY**:
+
+- Implement the following deprecated function:
+  - [`addContextListener`](ref/Channel#addcontextlistener-deprecated) (without a `contextType` argument)
+
+#### PrivateChannel Interface Compliance
+
+A Desktop Agent's [`PrivateChannel`](ref/PrivateChannel) implementation **MUST** meet all [`Channel`](#channel-interface-compliance) requirements and additionally **MUST**:
+
+- Include implementations of the following functions, as defined in this Standard:
+  - [`addEventListener`](ref/PrivateChannel#addeventlistener)
+  - [`disconnect`](ref/PrivateChannel#disconnect)
+- Prevent `PrivateChannels` from being retrieved via [`getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel).
+- Provide the `id` value for the channel as required by the [`Channel`](ref/Channel) interface.
+- Automatically call `Listener.unsubscribe()` for each listener added by a participant when [`disconnect`](ref/PrivateChannel#disconnect) is called (causing any `unsubscribe` event handler added by the other party to be called), before triggering any `disconnect` event handler added by the other party.
+
+A Desktop Agent's [`PrivateChannel`](ref/PrivateChannel) implementation **SHOULD**:
+
+- Restrict external apps from listening or publishing on a `PrivateChannel` that they did not request or provide.
+- Prevent apps from broadcasting on the channel after [`disconnect`](ref/PrivateChannel#disconnect) has been called.
+
+A Desktop Agent's [`PrivateChannel`](ref/PrivateChannel) implementation **MAY**:
+
+- Implement the following deprecated functions:
+  - [`onAddContextListener`](ref/PrivateChannel#onaddcontextlistener)
+  - [`onUnsubscribe`](ref/PrivateChannel#onunsubscribe)
+  - [`onDisconnect`](ref/PrivateChannel#ondisconnect)
 
 ## Functional Use Cases
 
@@ -861,7 +914,7 @@ To facilitate context linking in such situations it is recommended that applicat
 
 ### Context clearing on channels
 
-Channel interface provides the ability to [`clearContext`](ref/Channel.md#clearcontext) on the channel, either for the specific context type, if provided, or for all contexts on that channel. Applications may listen to the `contextCleared` event on the channel. If a specific type was cleared, the `contextType` field of the event will be set with that type. Once cleared, any apps that join the channel, add new context listeners or call [`getCurrentContext`](ref/Channel.md#getcurrentcontext) will not return anything to the caller (other than the `fdc3.nothing` type indicating that context was cleared) until new context is broadcast to the channel. 
+Channel interface provides the ability to [`clearContext`](ref/Channel.md#clearcontext) on the channel, either for the specific context type, if provided, or for all contexts on that channel. Applications may listen to the `contextCleared` event on the channel. If a specific type was cleared, the `contextType` field of the event will be set with that type. Once cleared, any apps that join the channel, add new context listeners or call [`getCurrentContext`](ref/Channel.md#getcurrentcontext) will not return anything to the caller (other than the `fdc3.nothing` type indicating that context was cleared) until new context is broadcast to the channel.
 
 ### Metadata
 
@@ -869,7 +922,7 @@ See [Context Metadata](#context-metadata).
 
 ## Context Metadata
 
-FDC3 separates **Context** (business data) from **ContextMetadata** (delivery and provenance information) to maintain clarity and interoperability. Metadata is optional and SHOULD be provided by the Desktop Agent to registered listeners, but apps MUST handle cases where it is absent. 
+FDC3 separates **Context** (business data) from **ContextMetadata** (delivery and provenance information) to maintain clarity and interoperability. Metadata is optional and SHOULD be provided by the Desktop Agent to registered listeners, but apps MUST handle cases where it is absent.
 
 For the rationale for separating `Context` and `ContextMetadata`, see the [Context Specification](../context/spec#context-metadata).
 
