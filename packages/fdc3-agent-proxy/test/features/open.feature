@@ -50,3 +50,13 @@ Feature: Desktop Agent Information
     And messaging will have posts
       | payload.app.appId | payload.context.type | payload.context.id.ticker | matches_type |
       | chipShop          | fdc3.instrument      | AAPL                      | openRequest  |
+
+  Scenario: Open An App with null context and metadata
+    Given "openMetadata" is metadata with traceId "trace-open" and signature "sig-open"
+    When I call "{api}" with "open" with parameters "{c1}" and "{null}" and "{openMetadata}"
+    Then "{result}" is an object with the following contents
+      | appId    | instanceId |
+      | chipShop | abc123     |
+    And messaging will have posts
+      | payload.app.appId | payload.context | payload.metadata.traceId | payload.metadata.signature | matches_type |
+      | chipShop          | {null}          | trace-open               | sig-open                   | openRequest  |

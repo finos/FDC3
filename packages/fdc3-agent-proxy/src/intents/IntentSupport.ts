@@ -14,12 +14,12 @@ export interface IntentSupport {
   raiseIntent(
     intent: string,
     context: Context,
-    app?: AppIdentifier,
+    app?: AppIdentifier | null,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution>;
   raiseIntentForContext(
     context: Context,
-    app?: AppIdentifier,
+    app?: AppIdentifier | null,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution>;
   addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;

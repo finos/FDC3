@@ -188,7 +188,7 @@ export class DefaultIntentSupport implements IntentSupport {
 
   async raiseIntentForContext(
     context: Context,
-    app?: AppIdentifier,
+    app?: AppIdentifier | null,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution> {
     const meta = this.messaging.createMeta();
@@ -196,7 +196,7 @@ export class DefaultIntentSupport implements IntentSupport {
       type: 'raiseIntentForContextRequest',
       payload: {
         context,
-        app,
+        app: app || undefined,
         metadata: {
           traceId: metadata?.traceId ?? v4(),
           ...(metadata?.signature !== undefined && { signature: metadata.signature }),
@@ -227,7 +227,7 @@ export class DefaultIntentSupport implements IntentSupport {
         context
       );
       if (result) {
-        return this.raiseIntent(result.intent, context, result.appId);
+        return this.raiseIntent(result.intent, context, result.appId, metadata);
       } else {
         throw new Error(ResolveError.UserCancelled);
       }
