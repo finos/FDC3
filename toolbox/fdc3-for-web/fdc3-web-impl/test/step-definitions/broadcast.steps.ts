@@ -98,3 +98,54 @@ When(
     world.server.receive(message, uuid);
   }
 );
+
+When(
+  '{string} broadcasts {string} on {string} with metadata traceId {string} signature {string} and custom key {string}',
+  (
+    world: CustomWorld,
+    app: string,
+    contextType: string,
+    channelId: string,
+    traceId: string,
+    signature: string,
+    customKey: string
+  ) => {
+    const meta = createMeta(world, app);
+    const uuid = world.sc.getInstanceUUID(meta.source)!;
+
+    const message = {
+      meta,
+      payload: {
+        channelId: handleResolve(channelId, world),
+        context: contextMap[contextType],
+        metadata: {
+          traceId: handleResolve(traceId, world),
+          signature: handleResolve(signature, world),
+          custom: { region: handleResolve(customKey, world) },
+        },
+      },
+      type: 'broadcastRequest',
+    } as BroadcastRequest;
+
+    world.server.receive(message, uuid);
+  }
+);
+
+When(
+  '{string} broadcasts {string} on {string} without metadata',
+  (world: CustomWorld, app: string, contextType: string, channelId: string) => {
+    const meta = createMeta(world, app);
+    const uuid = world.sc.getInstanceUUID(meta.source)!;
+
+    const message = {
+      meta,
+      payload: {
+        channelId: handleResolve(channelId, world),
+        context: contextMap[contextType],
+      },
+      type: 'broadcastRequest',
+    } as BroadcastRequest;
+
+    world.server.receive(message, uuid);
+  }
+);
