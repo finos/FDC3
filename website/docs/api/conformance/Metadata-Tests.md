@@ -56,7 +56,7 @@ You will need to pre-populate the AppDirectory with the following items:
 | Test | 1. getInfo       | Retrieve the `ImplementationMetadata` for the DesktopAgent with <br/> - `fdc3.getInfo().then((implMetadata) => { subsequent steps }`   <br />**Note that the use of `then` is deliberate and intended to confirm that a promise returned (as this function switched from synchronous to asynchronous in 2.0)**|
 | Test | 2. CheckVersion  | Check that the `fdc3Version` variable is present and at or greater than:  <br /> - 2.0  <br />(which you can do with the [`versionIsAtLeast` function from FDC3's Methods.ts](https://github.com/finos/FDC3/blob/add64f8302c6dcdc8437cf0e245101e927b69ec2/src/api/Methods.ts#L207):<br />`const isFDC3v2 = versionIsAtLeast(implMetadata, "2.0")`  |
 | Test | 3. CheckProvider | Check that the `provider` variable is present and not an empty string  |
-| Test | 4. CheckFeatures | Check that the `optionalFeatures`, `optionalFeatures.OriginatingAppMetadata` and `optionalFeatures.UserChannelMembershipAPIs` variables are all present and that the latter two provide boolean values  |
+| Test | 4. CheckFeatures | Check that the `optionalFeatures` and `optionalFeatures.UserChannelMembershipAPIs` variables are present and that the latter provides a boolean value. ![3.0](https://img.shields.io/badge/FDC3-3.0-purple) Also check that `optionalFeatures.DesktopAgentBridging` is present and provides a boolean value. |
 
 - `GetInfo1`: Perform the above steps.
 
@@ -67,3 +67,96 @@ You will need to pre-populate the AppDirectory with the following items:
 | A + Test | 3. Confirm | Check that `implMetadata.appMetadata` contains an `appId` and `instanceId` matching that retrieved in the first step (will require transmission of the details from A to Test or vice-versa). Also compare the `AppMetadata` object to the expected definition for the fields provided above during setup and ensure that the metadata matches. |
 
 - `GetInfo2`: Perform the above steps.
+
+## Context Metadata on Broadcast
+
+![3.0](https://img.shields.io/badge/FDC3-3.0-purple) In FDC3 3.0, `ContextMetadata` was introduced as a required second argument to `ContextHandler` and `IntentHandler` callbacks. The Desktop Agent MUST provide `source` and `timestamp` fields. If the broadcasting app provides a `traceId`, the Desktop Agent MUST forward it; if not, the Desktop Agent MAY generate one. The `signature` and `custom` fields, if provided by the broadcasting app, MUST be forwarded.
+
+| App | Step                  | Details                                                                          |
+|-----|-----------------------|----------------------------------------------------------------------------------|
+| A   | 1. addContextListener | A adds a typed Context Listener using `addContextListener("fdc3.instrument",handler)`. The handler should accept both `context` and `metadata` arguments. |
+| A   | 2. joinUserChannel    | A joins the first available (non-global) user channel. |
+| B   | 3. joinUserChannel    | B joins the same channel as A. |
+| B   | 4. Broadcast          | B broadcasts an `fdc3.instrument` context to the channel using `fdc3.broadcast(<fdc3.instrument>)`. |
+| A   | 5. Receive Context & Metadata | A receives the instrument context matching that sent by B. A also receives a `ContextMetadata` object as the second argument to the handler. |
+| A   | 6. Validate Metadata  | Check that `metadata.source` is an `AppIdentifier` with at least `appId` set, matching B's identity. Check that `metadata.timestamp` is a valid `Date`. |
+
+- `3.0-UCContextMetadataOnBroadcast`: Perform above test.
+
+## Context Metadata with App-Provided traceId
+
+| App | Step                  | Details                                                                          |
+|-----|-----------------------|----------------------------------------------------------------------------------|
+| A   | 1. addContextListener | A adds a typed Context Listener using `addContextListener("fdc3.instrument",handler)`. |
+| A   | 2. joinUserChannel    | A joins the first available (non-global) user channel. |
+| B   | 3. joinUserChannel    | B joins the same channel as A. |
+| B   | 4. Broadcast with metadata | B broadcasts an `fdc3.instrument` context with metadata: `fdc3.broadcast(<fdc3.instrument>, { traceId: "test-trace-123" })`. |
+| A   | 5. Receive & Validate | A receives the context and metadata. Check that `metadata.traceId` equals `"test-trace-123"`. Check that `metadata.source` and `metadata.timestamp` are also present. |
+
+- `3.0-UCContextMetadataTraceId`: Perform above test.
+
+## Context Metadata with signature and custom fields
+
+| App | Step                  | Details                                                                          |
+|-----|-----------------------|----------------------------------------------------------------------------------|
+| A   | 1. addContextListener | A adds a typed Context Listener using `addContextListener("fdc3.instrument",handler)`. |
+| A   | 2. joinUserChannel    | A joins the first available (non-global) user channel. |
+| B   | 3. joinUserChannel    | B joins the same channel as A. |
+| B   | 4. Broadcast with metadata | B broadcasts with metadata: `fdc3.broadcast(<fdc3.instrument>, { signature: "sig-abc", custom: { region: "EMEA" } })`. |
+| A   | 5. Receive & Validate | A receives the context and metadata. Check that `metadata.signature` equals `"sig-abc"`. Check that `metadata.custom.region` equals `"EMEA"`. Check that `metadata.source` and `metadata.timestamp` are present. |
+
+- `3.0-UCContextMetadataSignatureCustom`: Perform above test.
+
+## Context Metadata on App Channel Broadcast
+
+| App | Step                    | Details                                                                    |
+|-----|-------------------------|----------------------------------------------------------------------------|
+| A   | 1. Retrieve `Channel`   | Retrieve a `Channel` object representing an 'App' channel called `test-channel` using: <br />`const testChannel = await fdc3.getOrCreateChannel("test-channel")` |
+| A   | 2. Add Context Listener | Add a typed context listener: `await testChannel.addContextListener("fdc3.instrument", handler)` where handler accepts `(context, metadata)`. |
+| B   | 3. Retrieve `Channel`   | Retrieve the same 'App' channel (`test-channel`). |
+| B   | 4. Broadcast            | B broadcasts an `fdc3.instrument` context to the channel. |
+| A   | 5. Receive & Validate   | A receives the context and metadata. Check that `metadata.source` is an `AppIdentifier` matching B. Check that `metadata.timestamp` is a valid `Date`. |
+
+- `3.0-ACContextMetadataOnBroadcast`: Perform above test.
+
+## Context Metadata on Intent
+
+| App   | Step                        | Details                                                                                           |
+|-------|-----------------------------|---------------------------------------------------------------------------------------------------|
+| Test  | 1. Raise Intent             | `fdc3.raiseIntent("aTestingIntent", testContextX)` starts app A. |
+| A     | 2. Receive Intent & Metadata | After starting, A runs `fdc3.addIntentListener("aTestingIntent", handler)`. The handler receives `(context, metadata)`. |
+| A     | 3. Validate Metadata        | Check that `metadata.source` is an `AppIdentifier` matching Test's identity. Check that `metadata.timestamp` is a valid `Date`. |
+
+- `3.0-IntentContextMetadata`: Perform above test.
+
+## Context Metadata on Intent with App-Provided Metadata
+
+| App   | Step                        | Details                                                                                           |
+|-------|-----------------------------|---------------------------------------------------------------------------------------------------|
+| Test  | 1. Raise Intent with metadata | `fdc3.raiseIntent("aTestingIntent", testContextX, undefined, { traceId: "intent-trace-456", signature: "intent-sig", custom: { priority: "high" } })` starts app A. |
+| A     | 2. Receive Intent & Metadata | A receives the intent with context and metadata. |
+| A     | 3. Validate Metadata        | Check that `metadata.traceId` equals `"intent-trace-456"`. Check that `metadata.signature` equals `"intent-sig"`. Check that `metadata.custom.priority` equals `"high"`. Check that `metadata.source` and `metadata.timestamp` are present. |
+
+- `3.0-IntentContextMetadataWithAppMetadata`: Perform above test.
+
+## getCurrentContextWithMetadata
+
+![3.0](https://img.shields.io/badge/FDC3-3.0-purple) In FDC3 3.0, `getCurrentContextWithMetadata()` was added to the `Channel` interface to allow retrieval of both the current context and its associated metadata.
+
+| App | Step                        | Details                                                                    |
+|-----|-----------------------------|----------------------------------------------------------------------------|
+| B   | 1. Retrieve `Channel`       | Retrieve a `Channel` object representing an 'App' channel called `test-channel`. |
+| B   | 2. Broadcast                | B broadcasts an `fdc3.instrument` context to the channel. |
+| A   | 3. Retrieve `Channel`       | Retrieve the same 'App' channel (`test-channel`). |
+| A   | 4. Get Context With Metadata | A calls `await testChannel.getCurrentContextWithMetadata("fdc3.instrument")`. |
+| A   | 5. Validate                 | Check that the result is a `ContextWithMetadata` object. Check that `result.context` matches the instrument broadcast by B. Check that `result.metadata.source` is an `AppIdentifier` matching B. Check that `result.metadata.timestamp` is a valid `Date`. |
+
+- `3.0-ACGetCurrentContextWithMetadata`: Perform above test.
+
+| App | Step                        | Details                                                                    |
+|-----|-----------------------------|----------------------------------------------------------------------------|
+| A   | 1. Retrieve `Channel`       | Retrieve a `Channel` object representing an 'App' channel called `test-channel`. |
+| A   | 2. Get Context With Metadata | A calls `await testChannel.getCurrentContextWithMetadata("fdc3.instrument")` on a channel with no prior broadcasts. |
+| A   | 3. Validate                 | Check that the result is `null`. |
+
+- `3.0-ACGetCurrentContextWithMetadataNull`: Perform above test.

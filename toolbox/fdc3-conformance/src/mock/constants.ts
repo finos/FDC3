@@ -9,4 +9,6 @@ export const commands = {
   broadcastInstrumentContext: 'broadcastInstrumentContext',
   broadcastContactContext: 'broadcastContactContext',
   joinUserChannelOne: 'joinUserChannelOne',
+  broadcastInstrumentWithTraceId: 'broadcastInstrumentWithTraceId',
+  broadcastInstrumentWithSignatureCustom: 'broadcastInstrumentWithSignatureCustom',
 };

@@ -1,26 +1,41 @@
 import { closeWindowOnCompletion, sendContextToTests, validateContext } from './mock-functions';
 import { wait } from '../utils';
 import { IntentUtilityContext } from '../context-types';
-import { IntentResult, getAgent } from '@finos/fdc3';
+import { ContextMetadata, IntentResult, getAgent } from '@finos/fdc3';
 import { ContextType, ControlContextType, Intent } from '../test/support/intent-support';
 
 getAgent().then(async fdc3 => {
   await closeWindowOnCompletion(fdc3);
 
   //used in 'Raise Intent Result (void result)' and 'Raise Intent (Ignoring any results)'
-  fdc3.addIntentListener(Intent.aTestingIntent, async (context: IntentUtilityContext): Promise<IntentResult> => {
-    validateContext(fdc3, context.type, ContextType.testContextX);
-    await delayExecution(context.delayBeforeReturn);
+  fdc3.addIntentListener(
+    Intent.aTestingIntent,
+    async (context: IntentUtilityContext, metadata?: ContextMetadata): Promise<IntentResult> => {
+      validateContext(fdc3, context.type, ContextType.testContextX);
+      await delayExecution(context.delayBeforeReturn);
 
-    const { appMetadata } = await fdc3.getInfo();
+      const { appMetadata } = await fdc3.getInfo();
 
-    await sendContextToTests(fdc3, {
-      type: ControlContextType.A_TESTING_INTENT_LISTENER_TRIGGERED,
-      instanceId: appMetadata.instanceId,
-    });
+      const controlContext: Record<string, unknown> = {
+        type: ControlContextType.A_TESTING_INTENT_LISTENER_TRIGGERED,
+        instanceId: appMetadata.instanceId,
+      };
 
-    return;
-  });
+      if (metadata) {
+        controlContext.contextMetadata = {
+          source: metadata.source,
+          timestamp: metadata.timestamp instanceof Date ? metadata.timestamp.toISOString() : String(metadata.timestamp),
+          traceId: metadata.traceId,
+          signature: metadata.signature,
+          custom: metadata.custom,
+        };
+      }
+
+      await sendContextToTests(fdc3, controlContext as unknown as IntentUtilityContext);
+
+      return;
+    }
+  );
 
   fdc3.addIntentListener(Intent.sharedTestingIntent1, async (context: IntentUtilityContext): Promise<IntentResult> => {
     validateContext(fdc3, context.type, ContextType.testContextY);
