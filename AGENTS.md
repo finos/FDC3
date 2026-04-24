@@ -178,6 +178,96 @@ The `packages/testing` module provides shared generic step definitions (e.g. `I 
 
 Context type schemas live in `packages/fdc3-context/schemas/context/`. Changes regenerate `ContextTypes.ts`. These are independent of the DACP protocol schemas.
 
+## Conformance Testing
+
+FDC3 includes a conformance testing system that validates whether a Desktop Agent implementation conforms to the standard. This system has two parts: **test definitions** (in the standard's documentation) and **test implementations** (in the conformance package).
+
+### Compliance Requirements and RFC 2119 Keywords
+
+The FDC3 standard follows [RFC 2119](https://tools.ietf.org/html/rfc2119) for requirement levels. The compliance requirements for each part of the standard are defined in:
+
+- **Desktop Agent API**: `website/docs/api/spec.md` — section "Desktop Agent API Standard Compliance"
+- **App Directory**: `website/docs/app-directory/spec.md` — section "App Directory Standard Compliance"
+- **Intents**: `website/docs/intents/spec.md` — section "Intents Standard Compliance"
+- **Context Data**: `website/docs/context/spec.md` — section "Context Data Standard Compliance"
+
+The overall compliance policy is described in `website/docs/fdc3-compliance.md`.
+
+**When conformance tests are required:**
+- Features described with **MUST** or **MUST NOT** keywords require conformance tests.
+- Features described with **SHOULD**, **MAY**, or **OPTIONAL** do not always require tests. However, if an optional feature is implemented, it MUST conform to the standard — in which case a **conditional** conformance test should be provided (one that only runs if the feature is present).
+- Features marked `@experimental` are generally optional for compliance but recommended for implementation.
+
+### Test Definitions
+
+Conformance test definitions live in `website/docs/api/conformance/` and form part of the published FDC3 standard:
+
+| File | Coverage |
+|------|----------|
+| `Overview.md` | Index and general notes |
+| `Basic-Tests.md` | Connection, basic API sanity checks |
+| `Open-Tests.md` | `fdc3.open()` behavior |
+| `User-Channel-Tests.md` | User channel broadcast, filtering, join/leave |
+| `App-Channel-Tests.md` | App channel behavior |
+| `Metadata-Tests.md` | `getInfo()`, `getAppMetadata()`, `findInstances()` |
+| `Intents-Tests.md` | `findIntent`, `raiseIntent`, intent results, private channels |
+
+Each test definition has a **unique identifier** (e.g. `UCBasicUsage1`, `2.0-RaiseIntentSingleResolve`, `BasicCL1`). These IDs are the link between the definitions and their implementations.
+
+Test definitions describe multi-app scenarios in table format, specifying which app performs each step. Some tests are **manual** (e.g. intent resolver UI, channel selector UI) because they require user interaction.
+
+### Test Implementations
+
+Conformance tests are implemented in `toolbox/fdc3-conformance/`. This is a browser-based test suite using **Mocha** and **Chai**, bundled with **Webpack**. It runs inside a Desktop Agent (e.g. the `demo` reference implementation) and tests the agent's behavior from the perspective of web applications.
+
+The implementation has three key parts:
+
+```
+toolbox/fdc3-conformance/
+├── src/
+│   ├── test/                    # Test runner and test implementations
+│   │   ├── basic/               # Basic sanity tests (e.g. fdc3.basic.ts)
+│   │   ├── advanced/            # Full test suites (channels, intents, open, etc.)
+│   │   ├── manual/              # Manual/interactive tests (resolver UI, etc.)
+│   │   ├── support/             # Shared test utilities and helpers
+│   │   ├── testSuite.ts         # Test registry — maps test names to implementations
+│   │   └── index.ts             # Browser entry point
+│   ├── mock/                    # Mock applications used as counterparts in tests
+│   │   ├── basic.ts             # Simple app that listens for context/intents
+│   │   ├── channel.ts           # App for channel tests
+│   │   ├── intent-a.ts .. k.ts  # Apps A-K for intent tests (each with specific behavior)
+│   │   ├── open-a.ts            # App for open tests
+│   │   └── metadata.ts          # App for metadata tests
+│   └── context-types.ts         # Custom context types used in tests
+├── static/
+│   ├── apps/                    # HTML entry points for each mock app
+│   └── directories/             # AppD records for test apps
+└── package.json
+```
+
+**Architecture:** Tests are multi-app. A "Test" app (the runner) orchestrates the scenario, while "mock" apps (A, B, C, etc.) are launched by the Desktop Agent and perform their roles (listening for intents, broadcasting context, etc.). Communication between the test runner and mock apps happens via FDC3 context broadcasts on a control channel.
+
+**Naming convention:** Each test implementation's `it()` block title must include the test definition ID in parentheses, e.g.:
+```typescript
+it('(UCBasicUsage1) Should receive context when adding a listener...', async () => { ... });
+```
+This allows tracing from a test result back to the corresponding definition in the standard.
+
+### Adding or Updating Conformance Tests
+
+When adding a new standard feature that includes MUST/MUST NOT requirements:
+
+1. **Write the test definition** in the appropriate file under `website/docs/api/conformance/`. Follow the existing table format describing the multi-app steps. Assign a unique test ID.
+2. **Implement the test** in `toolbox/fdc3-conformance/src/test/`. Add it to the appropriate file in `basic/` or `advanced/`, or create a new file if needed.
+3. **Register the test** in `testSuite.ts` so it appears in the test runner UI.
+4. **Create or update mock apps** if the test requires new app behaviors. Each mock app needs:
+   - A TypeScript source file in `src/mock/`
+   - An HTML entry point in `static/apps/<app-name>/`
+   - An AppD record in `static/directories/website-conformance.json`
+5. **Use the test definition ID** as the prefix in the `it()` block title.
+
+For optional/conditional features (SHOULD/MAY), implement the test but make it conditional on the feature being available (e.g. check `ImplementationMetadata.optionalFeatures`).
+
 ## Version Management
 
 All workspace packages share the same version number (currently `2.2.2`). Use `syncpack` to keep versions consistent:
