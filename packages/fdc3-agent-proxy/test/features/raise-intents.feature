@@ -71,3 +71,19 @@ Feature: Basic Intents Support
     And messaging will have posts
       | payload.context.type | matches_type                 |
       | fdc3.cancel-me       | raiseIntentForContextRequest |
+
+  Scenario: Raising an intent with metadata forwards traceId, signature and custom
+    Given "intentMetadata" is metadata with traceId "trace-123" and signature "sig-abc"
+    When I call "{api}" with "raiseIntent" with parameters "Buy" and "{instrumentContext}" and "{null}" and "{intentMetadata}"
+    Then "{result}" is an object with the following contents
+      | source.appId | source.instanceId |
+      | bank         | b1                |
+    And messaging will have posts
+      | payload.intent | payload.context.type | payload.metadata.traceId | payload.metadata.signature | payload.metadata.custom.priority | matches_type       |
+      | Buy            | fdc3.instrument      | trace-123                | sig-abc                    | high                             | raiseIntentRequest |
+
+  Scenario: Raising an intent without metadata generates a traceId but omits signature and custom
+    When I call "{api}" with "raiseIntent" with parameters "Buy" and "{instrumentContext}"
+    And messaging will have posts
+      | payload.intent | payload.context.type | payload.metadata.signature | payload.metadata.custom | matches_type       |
+      | Buy            | fdc3.instrument      | {null}                     | {null}                  | raiseIntentRequest |

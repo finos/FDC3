@@ -202,3 +202,14 @@ Given('{string} returns a void promise', (world: CustomWorld, intentHandlerName:
     return null;
   };
 });
+
+Given(
+  '{string} is metadata with traceId {string} and signature {string}',
+  (world: CustomWorld, field: string, traceId: string, signature: string) => {
+    world.props[field] = {
+      traceId,
+      signature,
+      custom: { priority: 'high' },
+    };
+  }
+);

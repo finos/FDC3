@@ -19,12 +19,18 @@ const validator = new ContextMetadataValidator();
 export default async () => {
   const fdc3 = await getAgent();
   const cc = new ChannelControlImpl(fdc3);
+  let mockAppOpened = false;
 
   return describe('fdc3.contextMetadata', () => {
-    beforeEach(cc.leaveChannel);
+    beforeEach(async function beforeEach() {
+      mockAppOpened = false;
+      await cc.leaveChannel();
+    });
 
     afterEach(async function afterEach() {
-      await cc.closeMockApp(this.currentTest?.title ?? 'Some-Test-Title');
+      if (mockAppOpened) {
+        await cc.closeMockApp(this.currentTest?.title ?? 'Some-Test-Title');
+      }
     });
 
     // --- User Channel Tests ---
@@ -51,6 +57,7 @@ export default async () => {
 
       const channel = await cc.getNonGlobalUserChannel();
       await cc.joinChannel(channel);
+      mockAppOpened = true;
       await cc.openChannelApp(ucMetadataBroadcast, channel.id, JOIN_AND_BROADCAST);
       await resolveExecutionCompleteListener;
 
@@ -88,6 +95,7 @@ export default async () => {
 
       const channel = await cc.getNonGlobalUserChannel();
       await cc.joinChannel(channel);
+      mockAppOpened = true;
       await cc.openChannelApp(ucMetadataTraceId, channel.id, JOIN_AND_BROADCAST_WITH_TRACE_ID);
       await resolveExecutionCompleteListener;
 
@@ -126,6 +134,7 @@ export default async () => {
 
       const channel = await cc.getNonGlobalUserChannel();
       await cc.joinChannel(channel);
+      mockAppOpened = true;
       await cc.openChannelApp(ucMetadataSignatureCustom, channel.id, JOIN_AND_BROADCAST_WITH_SIGNATURE_CUSTOM);
       await resolveExecutionCompleteListener;
 
@@ -164,6 +173,7 @@ export default async () => {
         }
       );
 
+      mockAppOpened = true;
       await cc.openChannelApp(acMetadataBroadcast, 'test-channel', APP_CHANNEL_AND_BROADCAST);
       await resolveExecutionCompleteListener;
 
@@ -189,6 +199,7 @@ export default async () => {
       const resolveExecutionCompleteListener = cc.initCompleteListener(acGetCurrentContextWithMetadata);
       const testChannel = await fdc3.getOrCreateChannel('test-channel');
 
+      mockAppOpened = true;
       await cc.openChannelApp(acGetCurrentContextWithMetadata, 'test-channel', APP_CHANNEL_AND_BROADCAST);
       await resolveExecutionCompleteListener;
 

@@ -53,12 +53,12 @@ export class ChannelControlImpl implements ChannelControl {
   };
 
   initCompleteListener = async (testId: string) => {
-    const { listenerPromise } = await waitForContext(
+    const { listenerPromise, listener } = await waitForContext(
       'executionComplete',
       testId,
       await this.fdc3.getOrCreateChannel(constants.ControlChannel)
     );
-    return listenerPromise;
+    return listenerPromise.finally(() => listener.unsubscribe());
   };
 
   openChannelApp = async (
