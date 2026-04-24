@@ -14,3 +14,4 @@ Read and follow the guidance in [AGENTS.md](../AGENTS.md) at the root of this re
 - Update `CHANGELOG.md` under `[Unreleased]` for non-trivial changes.
 - Contributions must maintain or improve test coverage in `fdc3-agent-proxy`, `fdc3-get-agent`, `fdc3-standard`, and `fdc3-web-impl`.
 - Do not edit `website/versioned_docs/`, `website/versioned_sidebars/`, or `website/static/schemas/` — these are snapshots from past FDC3 releases, unless a correction is specifically requested.
+- Conformance tests validate Desktop Agent compliance. Test definitions (with unique IDs like `UCBasicUsage1`) live in `website/docs/api/conformance/`; implementations live in `toolbox/fdc3-conformance/`. Features using MUST/MUST NOT keywords require conformance tests. See AGENTS.md for full details.
