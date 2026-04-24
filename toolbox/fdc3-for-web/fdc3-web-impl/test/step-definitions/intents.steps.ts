@@ -272,6 +272,29 @@ When(
 );
 
 When(
+  '{string} raises an intent for {string} with contextType {string} with metadata traceId {string} signature {string} and custom key {string}',
+  async (
+    world: CustomWorld,
+    appStr: string,
+    intentName: string,
+    contextType: string,
+    traceId: string,
+    signature: string,
+    customKey: string
+  ) => {
+    const meta = createMeta(world, appStr);
+    const uuid = world.sc.getInstanceUUID(meta.source)!;
+    const message = raise(world, intentName, contextType, null, meta);
+    message.payload.metadata = {
+      traceId: handleResolve(traceId, world),
+      signature: handleResolve(signature, world),
+      custom: { region: handleResolve(customKey, world) },
+    };
+    await world.server.receive(message, uuid);
+  }
+);
+
+When(
   '{string} raises an intent for {string} with contextType {string} on an invalid app instance',
   async (world: CustomWorld, appStr: string, intentName: string, contextType: string) => {
     const meta = createMeta(world, appStr);
