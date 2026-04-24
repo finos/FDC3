@@ -56,7 +56,7 @@ export interface DesktopAgent {
    * let instanceIdentifier = await fdc3.open(appIdentifier, context, { traceId: 'abc123' });
    * ```
    */
-  open(app: AppIdentifier, context?: Context, metadata?: AppProvidableContextMetadata): Promise<AppIdentifier>;
+  open(app: AppIdentifier, context?: Context | null, metadata?: AppProvidableContextMetadata): Promise<AppIdentifier>;
 
   /**
    * Find out more information about a particular intent by passing its name, and optionally its context and/or a desired result context type.
@@ -268,8 +268,8 @@ export interface DesktopAgent {
    * //Raise an intent without a context by using the null context type
    * await fdc3.raiseIntent("StartChat", {type: "fdc3.nothing"});
    *
-   * //Raise an intent with metadata
-   * await fdc3.raiseIntent("StartChat", context, undefined, { traceId: 'abc123' });
+   * //Raise an intent with metadata, passing null for the app parameter
+   * await fdc3.raiseIntent("StartChat", context, null, { traceId: 'abc123' });
    *
    * //Raise an intent and retrieve a result from the IntentResolution
    * let resolution = await agent.raiseIntent("intentName", context);
@@ -290,7 +290,7 @@ export interface DesktopAgent {
   raiseIntent(
     intent: Intent,
     context: Context,
-    app?: AppIdentifier,
+    app?: AppIdentifier | null,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution>;
 
@@ -315,13 +315,13 @@ export interface DesktopAgent {
    * // Resolve against all intents registered by a specific target app for the specified context
    * await fdc3.raiseIntentForContext(context, targetAppIdentifier);
    *
-   * // Resolve with metadata
-   * await fdc3.raiseIntentForContext(context, undefined, { traceId: 'abc123' });
+   * // Resolve with metadata, passing null for the app parameter
+   * await fdc3.raiseIntentForContext(context, null, { traceId: 'abc123' });
    * ```
    */
   raiseIntentForContext(
     context: Context,
-    app?: AppIdentifier,
+    app?: AppIdentifier | null,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution>;
 

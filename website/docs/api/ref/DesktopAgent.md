@@ -22,7 +22,7 @@ For details of how implementations of the `DesktopAgent` are made available to a
 ```ts
 interface DesktopAgent {
   // apps
-  open(app: AppIdentifier, context?: Context, metadata?: AppProvidableContextMetadata): Promise<AppIdentifier>;
+  open(app: AppIdentifier, context?: Context | null, metadata?: AppProvidableContextMetadata): Promise<AppIdentifier>;
   findInstances(app: AppIdentifier): Promise<Array<AppIdentifier>>;
   getAppMetadata(app: AppIdentifier): Promise<AppMetadata>;
 
@@ -33,8 +33,8 @@ interface DesktopAgent {
   // intents
   findIntent(intent: string, context?: Context, resultType?: string): Promise<AppIntent>;
   findIntentsByContext(context: Context, resultType?: string): Promise<Array<AppIntent>>;
-  raiseIntent(intent: string, context: Context, app?: AppIdentifier, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
-  raiseIntentForContext(context: Context, app?: AppIdentifier, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
+  raiseIntent(intent: string, context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
+  raiseIntentForContext(context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
   addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
 
   // channels
@@ -1683,7 +1683,7 @@ listenerResult := <-desktopAgent.AddContextListener("", func(context IContext, c
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-open(app: AppIdentifier, context?: Context, metadata?: AppProvidableContextMetadata): Promise<AppIdentifier>;
+open(app: AppIdentifier, context?: Context | null, metadata?: AppProvidableContextMetadata): Promise<AppIdentifier>;
 ```
 
 </TabItem>
@@ -1713,6 +1713,8 @@ The `open` method differs in use from [`raiseIntent`](#raiseintent).  Generally,
 
 If a [`Context`](Types#context) object is passed in, this object will be provided to the opened application via a contextListener. The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it.
 
+An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the context being passed to the opened application. If metadata is provided without a context, `null` may be passed for the `context` parameter.
+
 Returns an [`AppIdentifier`](Types#appidentifier) object with the `instanceId` field set to identify the instance of the application opened by this call.
 
 If an error occurs while opening the app, the promise MUST be rejected with an `Error` Object with a `message` chosen from the [`OpenError`](Errors#openerror) enumeration, or (if connected to a Desktop Agent Bridge) the [`BridgingError`](Errors#bridgingerror) enumeration.
@@ -1729,6 +1731,9 @@ let instanceIdentifier = await fdc3.open(appIdentifier);
 
 // Open an app with context
 let instanceIdentifier = await fdc3.open(appIdentifier, context);
+
+// Open an app with metadata but no context, passing null for the context parameter
+let instanceIdentifier = await fdc3.open(appIdentifier, null, { traceId: 'abc123' });
 ```
 
 </TabItem>
@@ -1771,7 +1776,7 @@ instanceIdentifierResult := <-desktopAgent.Open(appIdentifier, &context)
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-raiseIntent(intent: string, context: Context, app?: AppIdentifier, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
+raiseIntent(intent: string, context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
 ```
 
 </TabItem>
@@ -1802,6 +1807,8 @@ If a target app for the intent cannot be found with the criteria provided or the
 
 If you wish to raise an intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
 
+An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the raised intent. If metadata is provided without a target app, `null` may be passed for the `app` parameter.
+
 Returns an [`IntentResolution`](Metadata#intentresolution) object with details of the app instance that was selected (or started) to respond to the intent.
 
 Issuing apps may optionally wait on the promise that is returned by the `getResult()` member of the `IntentResolution`. This promise will resolve when the _receiving app's_ intent handler function returns and resolves a promise. The Desktop Agent resolves the issuing app's promise with the Context object, Channel object or void that is provided as resolution within the receiving app. The Desktop Agent MUST reject the issuing app's promise, with a string from the [`ResultError`](Errors#resulterror) enumeration, if: (1) the intent handling function's returned promise rejects, (2) the intent handling function doesn't return a valid response (a promise or void), or (3) the returned promise resolves to an invalid type.
@@ -1825,6 +1832,9 @@ await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
 
 //Raise an intent without a context by using the null context type
 await fdc3.raiseIntent("StartChat", {type: "fdc3.nothing"});
+
+//Raise an intent with metadata, passing null for the app parameter
+await fdc3.raiseIntent("StartChat", context, null, { traceId: 'abc123' });
 
 //Raise an intent and retrieve a result from the IntentResolution
 let resolution = await agent.raiseIntent("intentName", context);
@@ -1909,7 +1919,7 @@ resolutionResult := <-desktopAgent.RaiseIntent("intentName", context, nil);
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-raiseIntentForContext(context: Context, app?: AppIdentifier, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
+raiseIntentForContext(context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
 ```
 
 </TabItem>
@@ -1938,6 +1948,8 @@ Alternatively, the specific app or app instance to target can also be provided, 
 
 Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.
 
+An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the raised intent. If metadata is provided without a target app, `null` may be passed for the `app` parameter.
+
 Returns an `IntentResolution` object, see [`raiseIntent()`](#raiseintent) for details.
 
 If a target intent and app cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, the promise MUST be rejected with an `Error` object with a `message` chosen from the [`ResolveError`](Errors#resolveerror) enumeration, or (if connected to a Desktop Agent Bridge) the [`BridgingError`](Errors#bridgingerror) enumeration. If a specific target `app` parameter was set, but either the app or app instance is not available, the promise MUST be rejected with an `Error` object with either the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` string as its `message`. If an invalid context object is passed as an argument the promise MUST be rejected with an `Error` object with the [`ResolveError.MalformedContext`](Errors#resolveerror) string as its `message`.
@@ -1953,6 +1965,9 @@ const intentResolution = await fdc3.raiseIntentForContext(context);
 
 // Resolve against all intents registered by a specific target app for the specified context
 await fdc3.raiseIntentForContext(context, targetAppIdentifier);
+
+// Resolve with metadata, passing null for the app parameter
+await fdc3.raiseIntentForContext(context, null, { traceId: 'abc123' });
 ```
 
 </TabItem>
