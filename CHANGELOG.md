@@ -12,6 +12,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added details of and procedures for resolving fully-qualified appIds and unqualified appIds in the API and Bridging Parts of the Standard. ([#1523](https://github.com/finos/FDC3/pull/1523))
 * Added clarification regarding expected behavior upon repeated calls to `addContextListener` on same or overlapping types (allowed) and `addIntentListener` on same intent (rejected; new error type added). ([#1394](https://github.com/finos/FDC3/pull/1394))
 * Added `clearContext` function and associated `contextClearedEvent` to the `Channel` API, to be able to clear specific or all context types from the channel. ([#1379](https://github.com/finos/FDC3/pull/1379))
+* Added optional `metadata` parameter of type `AppProvidableContextMetadata` to `broadcast`, `open`, `raiseIntent` and `raiseIntentForContext` API calls, allowing apps to provide `traceId`, `signature` and `custom` metadata with context and intent messages. ([#1728](https://github.com/finos/FDC3/pull/1728))
+* Added `getCurrentContextWithMetadata()` to the `Channel` interface and `ContextWithMetadata` type, allowing retrieval of both the current context and its associated `ContextMetadata` from a channel. ([#1728](https://github.com/finos/FDC3/pull/1728))
+* Added `ContextMetadata` and `AppProvidableContextMetadata` types, replacing the optional `OriginatingAppMetadata` feature with required metadata support on `ContextHandler` and `IntentHandler` callbacks. Desktop Agents MUST provide `source` and `timestamp` metadata, and MUST forward app-supplied `traceId`, `signature` and `custom` fields, supporting observability and security use cases. ([#1728](https://github.com/finos/FDC3/pull/1728))
 
 ### Changed
 
