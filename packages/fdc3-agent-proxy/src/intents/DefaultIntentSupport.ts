@@ -197,8 +197,8 @@ export class DefaultIntentSupport implements IntentSupport {
         [response.payload.appIntent],
         context
       );
-      if (result) {
-        return this.raiseIntent(intent, context, result.appId, metadata);
+      if (choice) {
+        return this.raiseIntent(intent, context, choice.appId, metadata);
       } else {
         throw new Error(ResolveError.UserCancelled);
       }
@@ -258,8 +258,8 @@ export class DefaultIntentSupport implements IntentSupport {
         response.payload.appIntents,
         context
       );
-      if (result) {
-        return this.raiseIntent(result.intent, context, result.appId, metadata);
+      if (choice) {
+        return this.raiseIntent(choice.intent, context, choice.appId, metadata);
       } else {
         throw new Error(ResolveError.UserCancelled);
       }

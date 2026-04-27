@@ -1034,8 +1034,6 @@ if channel, ok := resolutionResult.Value.(Channel); ok {
 ```
 
 </TabItem>
-</Tabs>
-
 IntentResolution provides a standard format for data returned upon resolving an intent.
 
 ### `getResult`

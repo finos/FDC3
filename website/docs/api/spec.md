@@ -302,7 +302,7 @@ The matching of an unqualified `appId` value against a set of fully-qualified ap
 
 ### Receive metadata about a Broadcast or Raised Intent
 
-Applications often need both the business data (Context) and delivery-related information (ContextMetadata) such as origin, timestamp, or trace identifiers. To keep Context definitions clean and focused on data, FDC3 delivers metadata separately. Handlers receive two arguments: Context and ContextMetadata, enabling apps to process data and optionally use metadata for provenance, security, or correlation. See the [Context Overview](../context/spec#context-metadata) for more details on the separation of COntext and Context Metadata.
+Applications often need both the business data (Context) and delivery-related information (ContextMetadata) such as origin, timestamp, or trace identifiers. To keep Context definitions clean and focused on data, FDC3 delivers metadata separately. Handlers receive two arguments: Context and ContextMetadata, enabling apps to process data and optionally use metadata for provenance, security, or correlation. See the [Context Overview](../context/spec#context-metadata) for more details on the separation of Context and Context Metadata.
 
 ## Raising Intents
 
