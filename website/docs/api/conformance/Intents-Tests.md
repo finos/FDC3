@@ -38,6 +38,7 @@ You will need to pre-populate the AppDirectory with the following items (some of
 | I   | Raise Intent (bad config/behavior)                    | `sharedTestingIntent2(testContextY) => testContextZ`                                           | `addIntentListener("MadeUpIntent", handler)`                          |
 | J   | PrivateChannels are private                           | `privateChannelIsPrivate(privateChannelDetails) => privateChannelIsPrivateResult`                   | Tries to retrieve privateChannel sent in the privateChannelDetails context, fails |
 | K   | PrivateChannel lifecycle events                       | `kTestingIntent(testContextX) => channel<testContextZ>`                                         | `addIntentListener()` for given intents                                       |
+| L   | Intent Context Metadata tests                         | `lTestingIntent(testContextX)`                                                                  | `addIntentListener()` for given intents                                       |
 
 NB:
 
@@ -63,6 +64,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
   - `cTestingIntent` (**C**),
   - `sharedTestingIntent2` (**D**)
   - `kTestingIntent` (**K**),
+  - `lTestingIntent` (**L**),
   - AND nothing else.
 - `FindIntentByContextWrongIntentAppD` ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue): Calls `fdc3.findIntentsByContext(nonExistentContext)`. Rejects with an Error whose `message` is [`ResolveError.NoAppsFound`](https://fdc3.finos.org/docs/api/ref/Errors#resolveerror)
 

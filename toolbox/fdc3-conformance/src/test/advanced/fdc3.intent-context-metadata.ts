@@ -32,10 +32,10 @@ export default async () => {
         }
       );
 
-      const resolution = await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextX, {
-        appId: IntentApp.IntentAppA,
+      const resolution = await control.raiseIntent(Intent.lTestingIntent, ContextType.testContextX, {
+        appId: IntentApp.IntentAppL,
       });
-      control.validateIntentResolution(IntentApp.IntentAppA, resolution);
+      control.validateIntentResolution(IntentApp.IntentAppL, resolution);
 
       await wrapper.promise;
       listener.unsubscribe();
@@ -65,9 +65,9 @@ export default async () => {
       // Raise intent with app-provided metadata
       const context = { type: ContextType.testContextX };
       await fdc3.raiseIntent(
-        Intent.aTestingIntent,
+        Intent.lTestingIntent,
         context,
-        { appId: IntentApp.IntentAppA },
+        { appId: IntentApp.IntentAppL },
         {
           traceId: 'intent-trace-456',
           signature: 'intent-sig',

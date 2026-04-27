@@ -123,9 +123,9 @@ You will need to pre-populate the AppDirectory with the following items:
 
 | App   | Step                        | Details                                                                                           |
 |-------|-----------------------------|---------------------------------------------------------------------------------------------------|
-| Test  | 1. Raise Intent             | `fdc3.raiseIntent("aTestingIntent", testContextX)` starts app A. |
-| A     | 2. Receive Intent & Metadata | After starting, A runs `fdc3.addIntentListener("aTestingIntent", handler)`. The handler receives `(context, metadata)`. |
-| A     | 3. Validate Metadata        | Check that `metadata.source` is an `AppIdentifier` matching Test's identity. Check that `metadata.timestamp` is a valid `Date`. |
+| Test  | 1. Raise Intent             | `fdc3.raiseIntent("lTestingIntent", testContextX)` starts app **L**. |
+| L     | 2. Receive Intent & Metadata | After starting, L runs `fdc3.addIntentListener("lTestingIntent", handler)`. The handler receives `(context, metadata)`. |
+| L     | 3. Validate Metadata        | Check that `metadata.source` is an `AppIdentifier` matching Test's identity. Check that `metadata.timestamp` is a valid `Date`. |
 
 - `IntentContextMetadata` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above test.
 
@@ -133,9 +133,9 @@ You will need to pre-populate the AppDirectory with the following items:
 
 | App   | Step                        | Details                                                                                           |
 |-------|-----------------------------|---------------------------------------------------------------------------------------------------|
-| Test  | 1. Raise Intent with metadata | `fdc3.raiseIntent("aTestingIntent", testContextX, undefined, { traceId: "intent-trace-456", signature: "intent-sig", custom: { priority: "high" } })` starts app A. |
-| A     | 2. Receive Intent & Metadata | A receives the intent with context and metadata. |
-| A     | 3. Validate Metadata        | Check that `metadata.traceId` equals `"intent-trace-456"`. Check that `metadata.signature` equals `"intent-sig"`. Check that `metadata.custom.priority` equals `"high"`. Check that `metadata.source` and `metadata.timestamp` are present. |
+| Test  | 1. Raise Intent with metadata | `fdc3.raiseIntent("lTestingIntent", testContextX, undefined, { traceId: "intent-trace-456", signature: "intent-sig", custom: { priority: "high" } })` starts app **L**. |
+| L     | 2. Receive Intent & Metadata | L receives the intent with context and metadata. |
+| L     | 3. Validate Metadata        | Check that `metadata.traceId` equals `"intent-trace-456"`. Check that `metadata.signature` equals `"intent-sig"`. Check that `metadata.custom.priority` equals `"high"`. Check that `metadata.source` and `metadata.timestamp` are present. |
 
 - `IntentContextMetadataWithAppMetadata` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above test.
 
