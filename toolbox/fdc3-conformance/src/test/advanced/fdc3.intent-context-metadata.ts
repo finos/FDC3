@@ -16,7 +16,7 @@ export default async () => {
     });
 
     const intentMetadata =
-      '(3.0-IntentContextMetadata) Should receive ContextMetadata with source and timestamp when an intent is raised';
+      '(IntentContextMetadata) Should receive ContextMetadata with source and timestamp when an intent is raised';
     it(intentMetadata, async function () {
       this.timeout(constants.TestTimeout);
 
@@ -46,7 +46,7 @@ export default async () => {
     });
 
     const intentMetadataWithAppMeta =
-      '(3.0-IntentContextMetadataWithAppMetadata) Should forward app-provided traceId, signature and custom in ContextMetadata on raised intent';
+      '(IntentContextMetadataWithAppMetadata) Should forward app-provided traceId, signature and custom in ContextMetadata on raised intent';
     it(intentMetadataWithAppMeta, async function () {
       this.timeout(constants.TestTimeout);
 
