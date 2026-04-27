@@ -36,7 +36,7 @@ export default async () => {
     // --- User Channel Tests ---
 
     const ucMetadataBroadcast =
-      '(3.0-UCContextMetadataOnBroadcast) Should receive ContextMetadata with source and timestamp when context is broadcast on a user channel';
+      '(UCContextMetadataOnBroadcast) Should receive ContextMetadata with source and timestamp when context is broadcast on a user channel';
     it(ucMetadataBroadcast, async () => {
       const errorMessage = `\r\nSteps:\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel\r\n- App B joins channel and broadcasts fdc3.instrument${documentation}`;
 
@@ -74,7 +74,7 @@ export default async () => {
     });
 
     const ucMetadataTraceId =
-      '(3.0-UCContextMetadataTraceId) Should receive app-provided traceId in ContextMetadata on user channel broadcast';
+      '(UCContextMetadataTraceId) Should receive app-provided traceId in ContextMetadata on user channel broadcast';
     it(ucMetadataTraceId, async () => {
       const errorMessage = `\r\nSteps:\r\n- App A adds listener\r\n- App B broadcasts with traceId metadata${documentation}`;
 
@@ -113,7 +113,7 @@ export default async () => {
     });
 
     const ucMetadataSignatureCustom =
-      '(3.0-UCContextMetadataSignatureCustom) Should receive app-provided signature and custom fields in ContextMetadata on user channel broadcast';
+      '(UCContextMetadataSignatureCustom) Should receive app-provided signature and custom fields in ContextMetadata on user channel broadcast';
     it(ucMetadataSignatureCustom, async () => {
       const errorMessage = `\r\nSteps:\r\n- App A adds listener\r\n- App B broadcasts with signature and custom metadata${documentation}`;
 
@@ -155,7 +155,7 @@ export default async () => {
     // --- App Channel Tests ---
 
     const acMetadataBroadcast =
-      '(3.0-ACContextMetadataOnBroadcast) Should receive ContextMetadata with source and timestamp when context is broadcast on an app channel';
+      '(ACContextMetadataOnBroadcast) Should receive ContextMetadata with source and timestamp when context is broadcast on an app channel';
     it(acMetadataBroadcast, async () => {
       const errorMessage = `\r\nSteps:\r\n- App A gets app channel and adds listener\r\n- App B gets same channel and broadcasts${documentation}`;
 
@@ -192,7 +192,7 @@ export default async () => {
     // --- getCurrentContextWithMetadata Tests ---
 
     const acGetCurrentContextWithMetadata =
-      '(3.0-ACGetCurrentContextWithMetadata) getCurrentContextWithMetadata should return context and metadata from an app channel';
+      '(ACGetCurrentContextWithMetadata) getCurrentContextWithMetadata should return context and metadata from an app channel';
     it(acGetCurrentContextWithMetadata, async () => {
       const errorMessage = `\r\nSteps:\r\n- App B broadcasts to app channel\r\n- App A calls getCurrentContextWithMetadata${documentation}`;
 
@@ -215,7 +215,7 @@ export default async () => {
     });
 
     const acGetCurrentContextWithMetadataNull =
-      '(3.0-ACGetCurrentContextWithMetadataNull) getCurrentContextWithMetadata should return null on an empty channel';
+      '(ACGetCurrentContextWithMetadataNull) getCurrentContextWithMetadata should return null on an empty channel';
     it(acGetCurrentContextWithMetadataNull, async () => {
       const testChannel = await fdc3.getOrCreateChannel('test-channel-empty-' + cc.getRandomId());
       const result: ContextWithMetadata | null = await testChannel.getCurrentContextWithMetadata('fdc3.instrument');
