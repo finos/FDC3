@@ -82,6 +82,22 @@ Given('Raise Intent returns a context of {string}', (world: CustomWorld, result:
   });
 });
 
+Given(
+  'Raise Intent returns a context of {string} with traceId {string} and signature {string}',
+  (world: CustomWorld, result: string, traceId: string, signature: string) => {
+    world.messaging?.setIntentResult({
+      context: handleResolve(result, world),
+      resultMetadata: {
+        source: { appId: 'some-app', instanceId: 'abc123' },
+        timestamp: new Date('2024-01-01T00:00:00Z'),
+        traceId,
+        signature,
+        custom: { priority: 'high' },
+      },
+    });
+  }
+);
+
 Given('Raise Intent will throw a {string} error', (world: CustomWorld, error: ResolveError) => {
   world.messaging?.setIntentResult({
     error,

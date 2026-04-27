@@ -2,6 +2,7 @@ import { assert, expect } from 'chai';
 import {
   AppIdentifier,
   Channel,
+  ContextMetadata,
   IntentResolution,
   IntentResult,
   Listener,
@@ -113,6 +114,38 @@ export class RaiseIntentControl {
     }
     clearTimeout(timeout);
     return intentResult;
+  }
+
+  getIntentResultMetadata(intentResolution: IntentResolution): Promise<ContextMetadata> {
+    const timeout = this.failIfResponseTimesOut();
+    const metadataPromise = intentResolution.getResultMetadata();
+    if (typeof metadataPromise.then !== 'function') {
+      assert.fail(
+        `intentResolution.getResultMetadata() did not return a Promise: ${JSON.stringify(metadataPromise, null, 2)}`
+      );
+    }
+    clearTimeout(timeout);
+    return metadataPromise;
+  }
+
+  validateResultMetadata(metadata: ContextMetadata, expectedSource?: AppIdentifier): void {
+    expect(metadata, 'getResultMetadata() should resolve to a ContextMetadata object').to.be.an('object');
+    expect(metadata).to.have.property('source');
+    expect(metadata).to.have.property('timestamp');
+    expect(metadata).to.have.property('traceId');
+    expect(typeof metadata.traceId).to.equal('string');
+    expect(metadata.traceId).to.not.equal('');
+    if (expectedSource) {
+      expect(metadata.source.appId, 'resultMetadata.source.appId should match the resolving app').to.equal(
+        expectedSource.appId
+      );
+      if (expectedSource.instanceId) {
+        expect(
+          metadata.source.instanceId,
+          'resultMetadata.source.instanceId should match the resolving app instance'
+        ).to.equal(expectedSource.instanceId);
+      }
+    }
   }
 
   failIfResponseTimesOut() {
