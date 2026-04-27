@@ -214,6 +214,16 @@ export class IntentHandler implements MessageHandler {
     const requestId = arg0.payload.raiseIntentRequestUuid;
     const to = this.pendingResolutions.get(requestId);
     if (to) {
+      // Merge app-provided metadata with DA-generated fields
+      const appMeta = arg0.payload.metadata ?? {};
+      const resultMetadata = {
+        source: { appId: from.appId, instanceId: from.instanceId },
+        timestamp: new Date(),
+        traceId: appMeta.traceId ?? sc.createUUID(),
+        ...(appMeta.signature !== undefined && { signature: appMeta.signature }),
+        ...(appMeta.custom !== undefined && { custom: appMeta.custom }),
+      };
+
       // post the result to the app that raised the intent
       //   if its still connected, otherwise do nothing
       successResponseId(
@@ -222,6 +232,7 @@ export class IntentHandler implements MessageHandler {
         to,
         {
           intentResult: arg0.payload.intentResult,
+          resultMetadata,
         },
         'raiseIntentResultResponse'
       );

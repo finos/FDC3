@@ -1,4 +1,4 @@
-import { AppIdentifier, ResolveError } from '@finos/fdc3-standard';
+import { AppIdentifier, ContextMetadata, ResolveError } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { v4 as uuidv4 } from 'uuid';
 import { AbstractMessaging } from '../../src/messaging/AbstractMessaging.js';
@@ -45,6 +45,7 @@ export interface PossibleIntentResult {
   channel?: Channel;
   error?: ResolveError;
   timeout?: boolean;
+  resultMetadata?: ContextMetadata;
 }
 
 function matchStringOrUndefined(expected: string | undefined, actual: string | undefined) {
