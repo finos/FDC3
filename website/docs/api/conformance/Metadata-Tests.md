@@ -66,7 +66,7 @@ You will need to pre-populate the AppDirectory with the following items:
 | A        | 2 .getInfo |   Retrieve the `ImplementationMetadata` for the DesktopAgent with: <br  />`fdc3.getInfo().then((implMetadata) => {  ... subsequent steps ...}` <br/> This should include `AppMetadata` for the retrieving app. |
 | A + Test | 3. Confirm | Check that `implMetadata.appMetadata` contains an `appId` and `instanceId` matching that retrieved in the first step (will require transmission of the details from A to Test or vice-versa). Also compare the `AppMetadata` object to the expected definition for the fields provided above during setup and ensure that the metadata matches. |
 
-- `GetInfo2`: Perform the above steps.
+- `GetInfo2` ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue): Perform the above steps.
 
 ## Context Metadata on Broadcast
 
@@ -81,7 +81,7 @@ You will need to pre-populate the AppDirectory with the following items:
 | A   | 5. Receive Context & Metadata | A receives the instrument context matching that sent by B. A also receives a `ContextMetadata` object as the second argument to the handler. |
 | A   | 6. Validate Metadata  | Check that `metadata.source` is an `AppIdentifier` with at least `appId` set, matching B's identity. Check that `metadata.timestamp` is a valid `Date`. |
 
-- `3.0-UCContextMetadataOnBroadcast`: Perform above test.
+- `UCContextMetadataOnBroadcast` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above test.
 
 ## Context Metadata with App-Provided traceId
 
@@ -93,7 +93,7 @@ You will need to pre-populate the AppDirectory with the following items:
 | B   | 4. Broadcast with metadata | B broadcasts an `fdc3.instrument` context with metadata: `fdc3.broadcast(<fdc3.instrument>, { traceId: "test-trace-123" })`. |
 | A   | 5. Receive & Validate | A receives the context and metadata. Check that `metadata.traceId` equals `"test-trace-123"`. Check that `metadata.source` and `metadata.timestamp` are also present. |
 
-- `3.0-UCContextMetadataTraceId`: Perform above test.
+- `UCContextMetadataTraceId` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above test.
 
 ## Context Metadata with signature and custom fields
 
@@ -105,7 +105,7 @@ You will need to pre-populate the AppDirectory with the following items:
 | B   | 4. Broadcast with metadata | B broadcasts with metadata: `fdc3.broadcast(<fdc3.instrument>, { signature: "sig-abc", custom: { region: "EMEA" } })`. |
 | A   | 5. Receive & Validate | A receives the context and metadata. Check that `metadata.signature` equals `"sig-abc"`. Check that `metadata.custom.region` equals `"EMEA"`. Check that `metadata.source` and `metadata.timestamp` are present. |
 
-- `3.0-UCContextMetadataSignatureCustom`: Perform above test.
+- `UCContextMetadataSignatureCustom` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above test.
 
 ## Context Metadata on App Channel Broadcast
 
@@ -117,7 +117,7 @@ You will need to pre-populate the AppDirectory with the following items:
 | B   | 4. Broadcast            | B broadcasts an `fdc3.instrument` context to the channel. |
 | A   | 5. Receive & Validate   | A receives the context and metadata. Check that `metadata.source` is an `AppIdentifier` matching B. Check that `metadata.timestamp` is a valid `Date`. |
 
-- `3.0-ACContextMetadataOnBroadcast`: Perform above test.
+- `ACContextMetadataOnBroadcast` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above test.
 
 ## Context Metadata on Intent
 
@@ -127,7 +127,7 @@ You will need to pre-populate the AppDirectory with the following items:
 | A     | 2. Receive Intent & Metadata | After starting, A runs `fdc3.addIntentListener("aTestingIntent", handler)`. The handler receives `(context, metadata)`. |
 | A     | 3. Validate Metadata        | Check that `metadata.source` is an `AppIdentifier` matching Test's identity. Check that `metadata.timestamp` is a valid `Date`. |
 
-- `3.0-IntentContextMetadata`: Perform above test.
+- `IntentContextMetadata` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above test.
 
 ## Context Metadata on Intent with App-Provided Metadata
 
@@ -137,7 +137,7 @@ You will need to pre-populate the AppDirectory with the following items:
 | A     | 2. Receive Intent & Metadata | A receives the intent with context and metadata. |
 | A     | 3. Validate Metadata        | Check that `metadata.traceId` equals `"intent-trace-456"`. Check that `metadata.signature` equals `"intent-sig"`. Check that `metadata.custom.priority` equals `"high"`. Check that `metadata.source` and `metadata.timestamp` are present. |
 
-- `3.0-IntentContextMetadataWithAppMetadata`: Perform above test.
+- `IntentContextMetadataWithAppMetadata` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above test.
 
 ## getCurrentContextWithMetadata
 
@@ -151,7 +151,7 @@ You will need to pre-populate the AppDirectory with the following items:
 | A   | 4. Get Context With Metadata | A calls `await testChannel.getCurrentContextWithMetadata("fdc3.instrument")`. |
 | A   | 5. Validate                 | Check that the result is a `ContextWithMetadata` object. Check that `result.context` matches the instrument broadcast by B. Check that `result.metadata.source` is an `AppIdentifier` matching B. Check that `result.metadata.timestamp` is a valid `Date`. |
 
-- `3.0-ACGetCurrentContextWithMetadata`: Perform above test.
+- `ACGetCurrentContextWithMetadata` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above test.
 
 | App | Step                        | Details                                                                    |
 |-----|-----------------------------|----------------------------------------------------------------------------|
@@ -159,4 +159,4 @@ You will need to pre-populate the AppDirectory with the following items:
 | A   | 2. Get Context With Metadata | A calls `await testChannel.getCurrentContextWithMetadata("fdc3.instrument")` on a channel with no prior broadcasts. |
 | A   | 3. Validate                 | Check that the result is `null`. |
 
-- `3.0-ACGetCurrentContextWithMetadataNull`: Perform above test.
+- `ACGetCurrentContextWithMetadataNull` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above test.
