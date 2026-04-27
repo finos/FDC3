@@ -43,6 +43,10 @@
 				},
 				"intentResult": {
 					"$ref": "api.schema.json#/definitions/IntentResult"
+				},
+				"metadata": {
+					"$ref": "api.schema.json#/definitions/AppProvidableContextMetadata",
+					"description": "Optional app-provided metadata returned by the intent handler alongside a context result (i.e. when the handler returns a ContextWithMetadata object). The Desktop Agent will merge this with its own generated metadata before delivering to the raising app via raiseIntentResultResponse."
 				}
 			},
 			"required": [

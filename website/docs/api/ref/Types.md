@@ -191,13 +191,15 @@ type ContextWithMetadata struct {
 </TabItem>
 </Tabs>
 
-Represents a context object paired with its associated metadata. Returned by [`Channel.getCurrentContextWithMetadata()`](Channel#getcurrentcontextwithmetadata) to allow retrieval of both the current context and the [`ContextMetadata`](Metadata#contextmetadata) that was provided when it was broadcast.
+Represents a context object paired with its associated metadata. Returned by [`Channel.getCurrentContextWithMetadata()`](Channel#getcurrentcontextwithmetadata) to allow retrieval of both the current context and the [`ContextMetadata`](Metadata#contextmetadata) that was provided when it was broadcast. May also be returned by an [`IntentHandler`](#intenthandler) to include app-provided metadata alongside a context result, which will be merged with Desktop Agent generated metadata and made available to the raising app via [`IntentResolution.getResultMetadata()`](Metadata#intentresolution).
 
 **See also:**
 
 - [`Context`](#context)
 - [`ContextMetadata`](Metadata#contextmetadata)
 - [`Channel.getCurrentContextWithMetadata`](Channel#getcurrentcontextwithmetadata)
+- [`IntentHandler`](#intenthandler)
+- [`IntentResolution.getResultMetadata`](Metadata#intentresolution)
 
 ## `ContextHandler`
 
@@ -281,7 +283,10 @@ type DesktopAgentIdentifier struct {
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-type IntentHandler = (context: Context, metadata: ContextMetadata) => Promise<IntentResult> | void;
+type IntentHandler = (
+  context: Context,
+  metadata: ContextMetadata
+) => Promise<Context | ContextWithMetadata | Channel | PrivateChannel | void> | void;
 ```
 
 </TabItem>
@@ -301,13 +306,16 @@ type IntentHandler func(IContext, *ContextMetadata) <-chan IntentResult
 </TabItem>
 </Tabs>
 
-Describes a callback that handles a context event and may return a promise of a Context, Channel object or `void` to be returned to the application that raised the intent. Used when attaching listeners for raised intents.
+Describes a callback that handles a context event and may return a promise of a `Context`, `ContextWithMetadata`, `Channel`, `PrivateChannel` or `void` to be returned to the application that raised the intent. Used when attaching listeners for raised intents.
 
 Metadata about each intent & context message received, including the app that originated the message and a timestamp, MUST be provided by the Desktop Agent implementation. Apps raising intents MAY provide additional metadata (such as a traceId, signature or custom metadata), which the Desktop Agent MUST pass on to the handler.
+
+An `IntentHandler` MAY return a [`ContextWithMetadata`](#contextwithmetadata) object instead of a plain `Context` to include app-provided metadata (e.g. a `traceId` or `signature`) alongside the context result. The Desktop Agent will merge this with its own generated metadata and make the combined [`ContextMetadata`](Metadata#contextmetadata) available to the raising app via [`IntentResolution.getResultMetadata()`](Metadata#intentresolution). [`IntentResolution.getResult()`](Metadata#intentresolution) will still return only the `Context` portion.
 
 **See also:**
 
 - [`Context`](#context)
+- [`ContextWithMetadata`](#contextwithmetadata)
 - [`ContextMetadata`](Metadata#contextmetadata)
 - [`PrivateChannel`](PrivateChannel)
 - [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
@@ -346,13 +354,14 @@ const (
 </TabItem>
 </Tabs>
 
-Describes results that an Intent handler may return that should be communicated back to the app that raised the intent, via the [`IntentResolution`](Metadata#intentresolution).
+Describes results returned by [`IntentResolution.getResult()`](Metadata#intentresolution) after an intent is resolved. Note that [`IntentHandler`](#intenthandler) functions may also return [`ContextWithMetadata`](#contextwithmetadata) to include app-provided metadata alongside a context result; in that case `getResult()` still returns only the `Context` portion, while the metadata is available via [`IntentResolution.getResultMetadata()`](Metadata#intentresolution).
 
 Represented as a union type in TypeScript, however, this type may be rendered as an interface in other languages that both the `Context` and `Channel` types implement, allowing either to be returned by an `IntentHandler`.
 
 **See also:**
 
 - [`Context`](#context)
+- [`ContextWithMetadata`](#contextwithmetadata)
 - [`Channel`](Channel)
 - [`PrivateChannel`](PrivateChannel)
 - [`IntentHandler`](#intenthandler)

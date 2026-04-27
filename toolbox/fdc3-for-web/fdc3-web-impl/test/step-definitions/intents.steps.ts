@@ -363,6 +363,40 @@ When(
 );
 
 When(
+  '{string} sends a intentResultRequest with eventUuid {string} and contextType {string} and raiseIntentUuid {string} with traceId {string} and signature {string}',
+  async (
+    world: CustomWorld,
+    appStr: string,
+    eventUuid: string,
+    contextType: string,
+    raiseIntentUuid: string,
+    traceId: string,
+    signature: string
+  ) => {
+    const meta = createMeta(world, appStr);
+    const uuid1 = world.sc.getInstanceUUID(meta.source)!;
+    const message: IntentResultRequest = {
+      type: 'intentResultRequest',
+      meta: {
+        ...meta,
+      },
+      payload: {
+        intentResult: {
+          context: contextMap[contextType],
+        },
+        intentEventUuid: eventUuid,
+        raiseIntentRequestUuid: raiseIntentUuid,
+        metadata: {
+          traceId,
+          signature,
+        },
+      },
+    };
+    await world.server.receive(message, uuid1);
+  }
+);
+
+When(
   '{string} sends a intentResultRequest with eventUuid {string} and void contents and raiseIntentUuid {string}',
   async (world: CustomWorld, appStr: string, eventUuid: string, raiseIntentUuid: string) => {
     const meta = createMeta(world, appStr);
