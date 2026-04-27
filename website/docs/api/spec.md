@@ -302,7 +302,7 @@ The matching of an unqualified `appId` value against a set of fully-qualified ap
 
 ### Receive metadata about a Broadcast or Raised Intent
 
-Applications often need both the business data (Context) and delivery-related information (ContextMetadata) such as origin, timestamp, or trace identifiers. To keep Context definitions clean and focused on data, FDC3 delivers metadata separately. Handlers receive two arguments: Context and ContextMetadata, enabling apps to process data and optionally use metadata for provenance, security, or correlation. See the [Context Overview](../context/spec#context-metadata) for more details on the separation of COntext and Context Metadata.
+Applications often need both the business data (Context) and delivery-related information (ContextMetadata) such as origin, timestamp, or trace identifiers. To keep Context definitions clean and focused on data, FDC3 delivers metadata separately. Handlers receive two arguments: Context and ContextMetadata, enabling apps to process data and optionally use metadata for provenance, security, or correlation. See the [Context Overview](../context/spec#context-metadata) for more details on the separation of Context and Context Metadata.
 
 ## Raising Intents
 
@@ -323,6 +323,8 @@ As an alternative to raising a specific intent, you may also raise an unspecifie
 An optional [`IntentResult`](ref/Types#intentresult) may also be returned as output by an application handling an intent. Results may be a single `Context` object, a `Channel` that may be used to send a stream of responses, or `void` (no result). The [`PrivateChannel`](ref/PrivateChannel) type is provided to support synchronization of data transmitted over returned channels, by allowing both parties to listen for events denoting subscription and unsubscription from the returned channel. `PrivateChannels` are only retrievable via [raising an intent](ref/DesktopAgent#raiseintent).
 
 For example, an application handling a `CreateOrder` intent might return a context representing the order and including an ID, allowing the application that raised the intent to make further calls using that ID.
+
+An [`IntentHandler`](ref/Types#intenthandler) may also return a [`ContextWithMetadata`](ref/Types#contextwithmetadata) object instead of a plain `Context` to include app-provided metadata (e.g. a `traceId` or `signature`) alongside the context result. The Desktop Agent will merge this with its own generated metadata and make the combined [`ContextMetadata`](ref/Metadata#contextmetadata) available to the raising app via [`IntentResolution.getResultMetadata()`](ref/Metadata#intentresolution). [`IntentResolution.getResult()`](ref/Metadata#intentresolution) will still return only the `Context` portion. For `Channel` or `void` results, `getResultMetadata()` returns only Desktop Agent generated metadata.
 
 An optional result type is also supported when programmatically resolving an intent via [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentsByContext`](ref/DesktopAgent#findintentsbycontext).
 
