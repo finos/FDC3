@@ -21,6 +21,7 @@ const config = {
     'intent-i': './src/mock/intent-i.ts',
     'intent-j': './src/mock/intent-j.ts',
     'intent-k': './src/mock/intent-k.ts',
+    'intent-l': './src/mock/intent-l.ts',
     basic: './src/mock/basic.ts',
     'open-a': './src/mock/open-a.ts',
   },

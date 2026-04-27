@@ -326,7 +326,7 @@ export enum Intent {
   bTestingIntent = 'bTestingIntent',
   cTestingIntent = 'cTestingIntent',
   kTestingIntent = 'kTestingIntent',
-  lTestingIntent = 'LTestingIntent',
+  lTestingIntent = 'lTestingIntent',
   sharedTestingIntent1 = 'sharedTestingIntent1',
   sharedTestingIntent2 = 'sharedTestingIntent2',
   privateChannelIsPrivate = 'privateChannelIsPrivate',
