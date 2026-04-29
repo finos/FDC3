@@ -24,7 +24,7 @@ jobs:
       - name: Configure Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24
 
       - name: Install dependencies
         run: npm ci
@@ -105,11 +105,11 @@ jobs:
       - name: Configure Node for npmjs.org
         uses: actions/setup-node@v4
         with:
+<<<<<<< HEAD
           node-version: 22
-          registry-url: https://registry.npmjs.org
-          always-auth: true
-
-      - name: Publish tarballs to npmjs.org (with provenance and dist-tag)
+=======
+          node-version: 24
+          node-version: 24
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}   # npm automation token
           PUBLISH_TAG: ${{ needs.build_and_pack.outputs.publish_tag }}
@@ -136,9 +136,10 @@ jobs:
       - name: Configure Node for GitHub Packages
         uses: actions/setup-node@v4
         with:
+<<<<<<< HEAD
           node-version: 22
-          registry-url: https://npm.pkg.github.com
-          scope: '@finos'
+=======
+          node-version: 24
           always-auth: true
 
       - name: Publish tarballs to GitHub Packages (with dist-tag)
