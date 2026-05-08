@@ -10,7 +10,6 @@ import {
   IntentResolver,
   IntentResolutionChoice,
   AppProvidableContextMetadata,
-  AppProvidableContextMetadata,
 } from '@finos/fdc3-standard';
 import { IntentSupport } from './IntentSupport.js';
 import { Messaging } from '../Messaging.js';

@@ -601,7 +601,6 @@ export interface BroadcastAgentRequestPayload {
    */
   context: Context;
   metadata: AppProvidableContextMetadata;
-  metadata: AppProvidableContextMetadata;
 }
 
 /**
@@ -4260,16 +4259,20 @@ export type Type = 'app' | 'private' | 'user';
  */
 export interface ContextMetadata {
   /**
+   * The result of verifying the context's signature, populated by the receiving app's
+   * security layer after attempting signature verification.
+   */
+  authenticity?: MessageAuthenticity;
+  /**
    * Custom metadata that can be used to provide additional information about the context or
    * intent. This allows for individuals to use metadata fields that have yet to be
    * standardized.
    */
   custom?: { [key: string]: any };
   /**
-   * A cryptographic signature that can be used to verify the authenticity and integrity of
-   * the context or intent message.
+   * A Detached JSON Web Signature (JWS) proving the authenticity and integrity of the context.
    */
-  signature?: string;
+  signature?: DetachedSignature;
   /**
    * Identifier for the app instance that sent the context and/or intent.
    */
@@ -4284,6 +4287,46 @@ export interface ContextMetadata {
    * intent through the system.
    */
   traceId: string;
+}
+
+/**
+ * The result of verifying the context's signature, populated by the receiving app's
+ * security layer after attempting signature verification.
+ *
+ * Verification outcomes for signed context objects.
+ */
+export interface MessageAuthenticity {
+  /**
+   * The signature algorithm used (from JWS protected header).
+   */
+  alg?: string;
+  antiReplayClaims?: AntiReplayClaims;
+  /**
+   * Human-readable diagnostics (optional).
+   */
+  errors?: string[];
+  /**
+   * The JSON Web Key Set URL where the public key can be retrieved (from JWS protected
+   * header).
+   */
+  jku?: string;
+  /**
+   * The key identifier used to sign the message (from JWS protected header).
+   */
+  kid?: string;
+  /**
+   * Indicates whether the context includes a signature, but check other fields to see if the
+   * signature is valid.
+   */
+  signed: boolean;
+  /**
+   * True if the signing key was obtained from an approved/trusted source.
+   */
+  trusted?: boolean;
+  /**
+   * True if the JWS cryptographically verifies against the signed bytes.
+   */
+  valid?: boolean;
 }
 
 /**
@@ -6597,11 +6640,25 @@ const typeMap: any = {
   ),
   ContextMetadata: o(
     [
+      { json: 'authenticity', js: 'authenticity', typ: u(undefined, r('MessageAuthenticity')) },
       { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
-      { json: 'signature', js: 'signature', typ: u(undefined, '') },
+      { json: 'signature', js: 'signature', typ: u(undefined, r('DetachedSignature')) },
       { json: 'source', js: 'source', typ: r('AppIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'traceId', js: 'traceId', typ: '' },
+    ],
+    false
+  ),
+  MessageAuthenticity: o(
+    [
+      { json: 'alg', js: 'alg', typ: u(undefined, '') },
+      { json: 'antiReplayClaims', js: 'antiReplayClaims', typ: u(undefined, r('AntiReplayClaims')) },
+      { json: 'errors', js: 'errors', typ: u(undefined, a('')) },
+      { json: 'jku', js: 'jku', typ: u(undefined, '') },
+      { json: 'kid', js: 'kid', typ: u(undefined, '') },
+      { json: 'signed', js: 'signed', typ: true },
+      { json: 'trusted', js: 'trusted', typ: u(undefined, true) },
+      { json: 'valid', js: 'valid', typ: u(undefined, true) },
     ],
     false
   ),

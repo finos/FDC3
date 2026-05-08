@@ -65,6 +65,7 @@ export class BasicSignedRaiseIntentSupport implements SignedRaiseIntentSupport {
 
   private wrapResolution(resolution: IntentResolution): IntentResolution {
     const originalGetResult = resolution.getResult.bind(resolution);
+    const originalGetResultMetadata = resolution.getResultMetadata.bind(resolution);
 
     resolution.getResult = async (): Promise<IntentResult> => {
       const result = await originalGetResult();
@@ -78,13 +79,18 @@ export class BasicSignedRaiseIntentSupport implements SignedRaiseIntentSupport {
         } else {
           // It's likely a Context (result has 'type' property)
           const contextIn = result as Context;
-          const { context: unpackedContext, metadata } = this.metadataHandler.unpack(contextIn, {});
+          const metadataIn = await originalGetResultMetadata();
 
-          const { signature, antiReplay } = metadata;
+          const { context: unpackedContext, metadata: unpackedMetadata } = this.metadataHandler.unpack(
+            contextIn,
+            metadataIn
+          );
+
+          const { signature, antiReplay } = unpackedMetadata;
           const authenticity = await this.signatureCheckingFunction(signature, unpackedContext, antiReplay);
 
           const { context: repackedContext } = this.metadataHandler.pack(unpackedContext, {
-            ...metadata,
+            ...unpackedMetadata,
             authenticity,
           });
           return repackedContext;

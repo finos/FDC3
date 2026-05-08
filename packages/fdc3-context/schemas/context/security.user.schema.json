@@ -3,7 +3,7 @@
     "$id": "https://fdc3.finos.org/schemas/next/context/user.schema.json",
     "type": "object",
     "title": "User",
-    "description": "A user identity, expressed as a wrapped JWT.  Receivers will need to unwrap the JWT using their own private key.",
+    "description": "@experimental A user identity, expressed as a wrapped JWT.  Receivers will need to unwrap the JWT using their own private key.",
     "allOf": [
         {
             "type": "object",
@@ -18,7 +18,7 @@
             },
             "required": [
                 "type",
-                "jwt"
+                "wrappedJwt"
             ]
         }
     ],

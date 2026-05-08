@@ -2,6 +2,14 @@
 //
 //   import { Convert, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ClearContextRequest, ClearContextResponse, ContextClearedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, Fdc3UserInterfaceChannels, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceDrag, Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, Fdc3UserInterfaceMessage, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage } from "./file";
 //
+//   const webConnectionProtocol1Hello = Convert.toWebConnectionProtocol1Hello(json);
+//   const webConnectionProtocol2LoadURL = Convert.toWebConnectionProtocol2LoadURL(json);
+//   const webConnectionProtocol3Handshake = Convert.toWebConnectionProtocol3Handshake(json);
+//   const webConnectionProtocol4ValidateAppIdentity = Convert.toWebConnectionProtocol4ValidateAppIdentity(json);
+//   const webConnectionProtocol5ValidateAppIdentityFailedResponse = Convert.toWebConnectionProtocol5ValidateAppIdentityFailedResponse(json);
+//   const webConnectionProtocol5ValidateAppIdentitySuccessResponse = Convert.toWebConnectionProtocol5ValidateAppIdentitySuccessResponse(json);
+//   const webConnectionProtocol6Goodbye = Convert.toWebConnectionProtocol6Goodbye(json);
+//   const webConnectionProtocolMessage = Convert.toWebConnectionProtocolMessage(json);
 //   const addContextListenerRequest = Convert.toAddContextListenerRequest(json);
 //   const addContextListenerResponse = Convert.toAddContextListenerResponse(json);
 //   const addEventListenerRequest = Convert.toAddEventListenerRequest(json);
@@ -1266,10 +1274,9 @@ export interface ContextMetadata {
    */
   custom?: { [key: string]: any };
   /**
-   * A cryptographic signature that can be used to verify the authenticity and integrity of
-   * the context or intent message.
+   * A Detached JSON Web Signature (JWS) proving the authenticity and integrity of the context.
    */
-  signature?: string;
+  signature?: DetachedSignature;
   /**
    * Identifier for the app instance that sent the context and/or intent.
    */
@@ -1428,7 +1435,10 @@ export interface AppProvidableContextMetadata {
    */
   antiReplay?: AntiReplayClaims;
   custom?: { [key: string]: any };
-  signature?: string;
+  /**
+   * A Detached JSON Web Signature (JWS) proving the authenticity and integrity of the context.
+   */
+  signature?: DetachedSignature;
   traceId?: string;
 }
 
@@ -2423,6 +2433,10 @@ export interface FindInstancesResponsePayload {
  * Constants representing the errors that can be encountered when calling the
  * `addIntentListener`, `findIntent`, `findIntentsByContext`, `raiseIntent` or
  * `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).
+ *
+ * Unique identifier for a for an attempt to connect to a Desktop Agent. A Unique UUID
+ * should be used in the first (WCP1Hello) message and should be quoted in all subsequent
+ * messages to link them to the same connection attempt.
  *
  * Unique identifier for a request or event message. Required in all message types.
  *
@@ -4087,13 +4101,6 @@ export interface RaiseIntentRequestPayload {
 }
 
 /**
- * Metadata that can be provided by an app.
- */
-export interface AppProvidableContextMetadata {
-  traceId?: string;
-}
-
-/**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  */
@@ -5431,7 +5438,7 @@ const typeMap: any = {
     [
       { json: 'authenticity', js: 'authenticity', typ: u(undefined, r('MessageAuthenticity')) },
       { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
-      { json: 'signature', js: 'signature', typ: u(undefined, '') },
+      { json: 'signature', js: 'signature', typ: u(undefined, r('DetachedSignature')) },
       { json: 'source', js: 'source', typ: r('AppIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'traceId', js: 'traceId', typ: '' },
@@ -5486,7 +5493,7 @@ const typeMap: any = {
     [
       { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplayClaims')) },
       { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
-      { json: 'signature', js: 'signature', typ: u(undefined, '') },
+      { json: 'signature', js: 'signature', typ: u(undefined, r('DetachedSignature')) },
       { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
     ],
     false

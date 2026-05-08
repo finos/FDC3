@@ -41,7 +41,7 @@ export class Fdc3CommandExecutor {
         }
         case commands.broadcastInstrumentWithSignatureCustom: {
           await channelService.broadcastContextItemWithMetadata('fdc3.instrument', channel!, config.testId, {
-            signature: 'sig-abc',
+            signature: { protected: 'protected-abc', signature: 'signature-abc' },
             custom: { region: 'EMEA' },
           });
           break;
