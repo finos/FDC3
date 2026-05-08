@@ -90,7 +90,6 @@ export class DefaultAppSupport implements AppSupport {
         context: context || undefined,
         metadata: metadata ?? {},
       },
-      metadata,
       meta: this.messaging.createMeta(),
     };
 

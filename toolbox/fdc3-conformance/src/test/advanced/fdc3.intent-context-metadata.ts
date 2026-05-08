@@ -70,7 +70,7 @@ export default async () => {
         { appId: IntentApp.IntentAppL },
         {
           traceId: 'intent-trace-456',
-          signature: 'intent-sig',
+          signature: { protected: 'protected-abc', signature: 'signature-abc' },
           custom: { priority: 'high' },
         }
       );

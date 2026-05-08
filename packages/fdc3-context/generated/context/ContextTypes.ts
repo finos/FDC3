@@ -1930,10 +1930,10 @@ export interface Product {
 }
 
 /**
- * A wrapper context type for encrypted FDC3 context data. When an app broadcasts encrypted
- * context data, the original type is preserved for routing purposes, while the remaining
- * context information is encrypted. Recipients can request a symmetric key via
- * 'fdc3.security.symmetricKey.request' to decrypt the payload.
+ * @experimental A wrapper context type for encrypted FDC3 context data. When an app
+ * broadcasts encrypted context data, the original type is preserved for routing purposes,
+ * while the remaining context information is encrypted. Recipients can request a symmetric
+ * key via 'fdc3.security.symmetricKey.request' to decrypt the payload.
  */
 export interface EncryptedContextWrapper {
   /**
@@ -1976,8 +1976,8 @@ export interface EncryptedContextWrapperID {
  */
 
 /**
- * A request to obtain a symmetric encryption key for decrypting encrypted context on a
- * channel.
+ * @experimental A request to obtain a symmetric encryption key for decrypting encrypted
+ * context on a channel.
  *
  * **Note:** This context type MUST be signed to be effective. The key owner uses the
  * signature's public key URL to encrypt the symmetric key in the response, ensuring only
@@ -2014,7 +2014,7 @@ export interface SymmetricKeyRequestID {
  */
 
 /**
- * A response containing a wrapped symmetric key and metadata.
+ * @experimental A response containing a wrapped symmetric key and metadata.
  */
 export interface SymmetricKeyResponse {
   id: SymmetricKeyResponseID;
@@ -2047,8 +2047,8 @@ export interface SymmetricKeyResponseID {
  */
 
 /**
- * A user identity, expressed as a wrapped JWT.  Receivers will need to unwrap the JWT using
- * their own private key.
+ * @experimental A user identity, expressed as a wrapped JWT.  Receivers will need to unwrap
+ * the JWT using their own private key.
  */
 export interface User {
   type: 'fdc3.security.user';
@@ -2062,17 +2062,16 @@ export interface User {
    * time as Unix timestamp), 'iat' (issued at time as Unix timestamp), and 'jti' (JWT ID -
    * unique token identifier).
    */
-  wrappedJwt?: string;
-  jwt: any;
+  wrappedJwt: string;
   [property: string]: any;
 }
 
 /**
- * A request for the current user's identity, typically raised via the CreateIdentityToken
- * intent. An identity provider (IDP) receives this request and responds with an 'fdc3.user'
- * context containing a signed JWT. The request includes cryptographic details needed for
- * the IDP to create a token bound to the requesting application and to encrypt the
- * response.
+ * @experimental A request for the current user's identity, typically raised via the
+ * CreateIdentityToken intent. An identity provider (IDP) receives this request and responds
+ * with an 'fdc3.user' context containing a signed JWT. The request includes cryptographic
+ * details needed for the IDP to create a token bound to the requesting application and to
+ * encrypt the response.
  *
  * **Note:** This context type MUST be signed to be effective. The IDP uses the signature's
  * public key URL to verify the requesting application's identity and to encrypt the
@@ -3340,8 +3339,7 @@ const typeMap: any = {
   User: o(
     [
       { json: 'type', js: 'type', typ: r('Type') },
-      { json: 'wrappedJwt', js: 'wrappedJwt', typ: u(undefined, '') },
-      { json: 'jwt', js: 'jwt', typ: 'any' },
+      { json: 'wrappedJwt', js: 'wrappedJwt', typ: '' },
     ],
     'any'
   ),
