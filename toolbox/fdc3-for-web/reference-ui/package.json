@@ -1,11 +1,7 @@
 {
   "name": "fdc3-for-web-reference-ui",
   "private": true,
-<<<<<<< HEAD
   "version": "2.2.2",
-=======
-  "version": "3.0.0-alpha.2",
->>>>>>> 76c34ae5 (Updated to 3.0.0-alpha.2)
   "license": "Apache-2.0",
   "type": "module",
   "scripts": {
@@ -27,10 +23,6 @@
     "vite": "^6.4.2"
   },
   "dependencies": {
-<<<<<<< HEAD
     "@finos/fdc3": "2.2.2"
-=======
-    "@finos/fdc3": "3.0.0-alpha.2"
->>>>>>> 76c34ae5 (Updated to 3.0.0-alpha.2)
   }
 }
