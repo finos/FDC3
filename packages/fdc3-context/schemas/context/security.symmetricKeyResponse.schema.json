@@ -3,7 +3,7 @@
     "$id": "https://fdc3.finos.org/schemas/next/context/symmetricKeyResponse.schema.json",
     "type": "object",
     "title": "Symmetric Key Response",
-    "description": "A response containing a wrapped symmetric key and metadata.",
+    "description": "@experimental A response containing a wrapped symmetric key and metadata.",
     "allOf": [
         {
             "type": "object",

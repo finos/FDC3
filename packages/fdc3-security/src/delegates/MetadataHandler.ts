@@ -1,4 +1,4 @@
-import { Context } from '@finos/fdc3-context';
+import { AppIdentifier, Context } from '@finos/fdc3-context';
 import { ContextMetadata } from '@finos/fdc3-standard';
 
 /**
@@ -8,9 +8,10 @@ import { ContextMetadata } from '@finos/fdc3-standard';
  */
 export interface MetadataHandler {
   /**
-   * Packs metadata in context when required.
+   * Packs metadata in context when required.  It's possible to only pass in a few of the properties of the
+   * metadata and the remaining ones will be created automatically.
    */
-  pack(context: Context, metadata?: ContextMetadata): { context: Context; metadata: ContextMetadata };
+  pack(context: Context, metadata?: { [key: string]: any }): { context: Context; metadata: ContextMetadata };
 
   /**
    * Unpacks metadata from context when required.
@@ -20,16 +21,27 @@ export interface MetadataHandler {
 
 export class MetadataHandlerImpl implements MetadataHandler {
   private metadataAvailable: boolean;
+  private source: AppIdentifier;
 
-  constructor(metadataAvailable: boolean) {
+  constructor(metadataAvailable: boolean, source: AppIdentifier) {
     this.metadataAvailable = metadataAvailable;
+    this.source = source;
   }
 
-  pack(context: Context, metadata: ContextMetadata): { context: Context; metadata: ContextMetadata } {
+  private createMetadata(metadata?: { [key: string]: any }): ContextMetadata {
+    return {
+      timestamp: new Date(),
+      source: this.source,
+      ...metadata,
+    };
+  }
+
+  pack(context: Context, metadata?: { [key: string]: any }): { context: Context; metadata: ContextMetadata } {
+    const fullMetadata = this.createMetadata(metadata);
     if (this.metadataAvailable) {
-      return { context, metadata };
+      return { context, metadata: fullMetadata };
     } else {
-      return { context: { ...context, __appMeta: metadata }, metadata };
+      return { context: { ...context, __appMeta: fullMetadata }, metadata: fullMetadata };
     }
   }
 

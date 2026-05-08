@@ -1,4 +1,4 @@
-import { ContextHandler, DesktopAgentProvidableContextMetadata, IntentHandler } from '@finos/fdc3-standard';
+import { ContextHandler, ContextMetadata, IntentHandler } from '@finos/fdc3-standard';
 import { MetadataHandler } from '../delegates/MetadataHandler.js';
 import { PublicFDC3Security, SignatureCheckingFunction } from '../impl/PublicFDC3Security.js';
 import { Context } from '@finos/fdc3-context';
@@ -33,14 +33,14 @@ export class BasicSignatureCheckingHandlerSupport {
   }
 
   async wrapContextHandler(handler: ContextHandler | IntentHandler): Promise<ContextHandler | IntentHandler> {
-    return async (contextIn: Context, metaIn: DesktopAgentProvidableContextMetadata | undefined) => {
+    return async (contextIn: Context, metaIn: ContextMetadata | undefined) => {
       const { context, metadata } = this.metadataHandler.unpack(contextIn, metaIn);
       const { signature, antiReplay } = metadata;
       const authenticity = await this.signatureCheckingFunction(signature, context, antiReplay);
       return await handler(context, {
         ...metadata,
         authenticity,
-      } satisfies DesktopAgentProvidableContextMetadata);
+      } satisfies ContextMetadata);
     };
   }
 }
