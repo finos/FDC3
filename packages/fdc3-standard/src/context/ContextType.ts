@@ -44,7 +44,7 @@ export type ExperimentalContextType =
   | 'fdc3.security.userRequest'
   | 'fdc3.security.symmetricKeyRequest'
   | 'fdc3.security.symmetricKeyResponse'
-  | 'fdc3.security.encryptedContextWrapper';
+  | 'fdc3.security.encryptedContext';
 
 /**
  * @see https://fdc3.finos.org/docs/context/spec
@@ -83,4 +83,9 @@ export enum ContextTypes {
   TradeList = 'fdc3.tradeList',
   TransactionResult = 'fdc3.transactionResult',
   Valuation = 'fdc3.valuation',
+  SecurityUser = 'fdc3.security.user',
+  SecurityUserRequest = 'fdc3.security.userRequest',
+  SecuritySymmetricKeyRequest = 'fdc3.security.symmetricKeyRequest',
+  SecuritySymmetricKeyResponse = 'fdc3.security.symmetricKeyResponse',
+  SecurityEncryptedContext = 'fdc3.security.encryptedContext',
 }
