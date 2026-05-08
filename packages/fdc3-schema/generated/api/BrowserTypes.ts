@@ -640,6 +640,7 @@ export interface AddContextListenerRequest {
    * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
    */
   meta: AddContextListenerRequestMeta;
+  metadata?: AppProvidableContextMetadata;
   /**
    * The message payload typically contains the arguments to FDC3 API functions.
    */
@@ -709,6 +710,15 @@ export interface AppIdentifier {
    */
   instanceId?: string;
   [property: string]: any;
+}
+
+/**
+ * Metadata that can be provided by an app.
+ */
+export interface AppProvidableContextMetadata {
+  hostParams?: { [key: string]: any };
+  signature?: string;
+  traceId?: string;
 }
 
 /**
@@ -814,6 +824,7 @@ export interface AddEventListenerRequest {
    * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
    */
   meta: AddContextListenerRequestMeta;
+  metadata?: AppProvidableContextMetadata;
   /**
    * The message payload typically contains the arguments to FDC3 API functions.
    */
@@ -928,6 +939,7 @@ export interface AddIntentListenerRequest {
    * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
    */
   meta: AddContextListenerRequestMeta;
+  metadata?: AppProvidableContextMetadata;
   /**
    * The message payload typically contains the arguments to FDC3 API functions.
    */
@@ -1017,6 +1029,19 @@ export type FluffyError =
 export interface AgentEventMessageMeta {
   eventUuid: string;
   timestamp: Date;
+}
+
+/**
+ * Metadata that can be provided by an app.
+ */
+export interface DesktopAgentProvidableContextMetadata {
+  signature?: string;
+  /**
+   * Identifier for the source app instance
+   */
+  source?: AppIdentifier;
+  timestamp?: number;
+  traceId?: string;
 }
 
 /**
@@ -1153,6 +1178,7 @@ export interface BroadcastEvent {
    * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
    */
   meta: BroadcastEventMeta;
+  metadata?: ProvidableContextMetadata;
   /**
    * The message payload contains details of the event that the app is being notified about.
    */
@@ -1170,6 +1196,14 @@ export interface BroadcastEvent {
 export interface BroadcastEventMeta {
   eventUuid: string;
   timestamp: Date;
+}
+
+/**
+ * Metadata that can be provided by an app.
+ */
+export interface ProvidableContextMetadata {
+  signature?: string;
+  traceId?: string;
 }
 
 /**
@@ -1304,6 +1338,7 @@ export interface BroadcastRequest {
    * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
    */
   meta: AddContextListenerRequestMeta;
+  metadata?: AppProvidableContextMetadata;
   /**
    * The message payload typically contains the arguments to FDC3 API functions.
    */
@@ -2992,6 +3027,11 @@ export interface OptionalFeatures {
    */
   DesktopAgentBridging: boolean;
   /**
+   * Used to indicate whether the exposure of 'originating app metadata' for
+   * context and intent messages is supported by the Desktop Agent.
+   */
+  OriginatingAppMetadata: boolean;
+  /**
    * Used to indicate whether the optional `fdc3.joinUserChannel`,
    * `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
    * the Desktop Agent.
@@ -3231,6 +3271,7 @@ export interface IntentEvent {
    * Metadata for messages sent by a Desktop Agent to an app notifying it of an event.
    */
   meta: BroadcastEventMeta;
+  metadata?: DesktopAgentProvidableContextMetadata;
   /**
    * The message payload contains details of the event that the app is being notified about.
    */
@@ -3341,6 +3382,7 @@ export interface IntentResultRequest {
    * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
    */
   meta: AddContextListenerRequestMeta;
+  metadata?: AppProvidableContextMetadata;
   /**
    * The message payload typically contains the arguments to FDC3 API functions.
    */
@@ -3570,6 +3612,7 @@ export interface OpenRequest {
    * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
    */
   meta: AddContextListenerRequestMeta;
+  metadata?: AppProvidableContextMetadata;
   /**
    * The message payload typically contains the arguments to FDC3 API functions.
    */
@@ -4014,6 +4057,7 @@ export interface RaiseIntentForContextRequest {
    * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
    */
   meta: AddContextListenerRequestMeta;
+  metadata?: AppProvidableContextMetadata;
   /**
    * The message payload typically contains the arguments to FDC3 API functions.
    */
@@ -4154,6 +4198,7 @@ export interface RaiseIntentRequest {
    * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
    */
   meta: AddContextListenerRequestMeta;
+  metadata?: AppProvidableContextMetadata;
   /**
    * The message payload typically contains the arguments to FDC3 API functions.
    */
@@ -4358,6 +4403,7 @@ export interface WebConnectionProtocol1HelloPayload {
    * `false` if no intents, or only targeted intents, are raised.
    */
   intentResolver?: boolean;
+  [property: string]: any;
 }
 
 /**
@@ -4397,6 +4443,7 @@ export interface WebConnectionProtocol2LoadURLPayload {
    * target.
    */
   iframeUrl: string;
+  [property: string]: any;
 }
 
 /**
@@ -5699,6 +5746,7 @@ const typeMap: any = {
   AddContextListenerRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: r('AddContextListenerRequestPayload') },
       { json: 'type', js: 'type', typ: r('AddContextListenerRequestType') },
     ],
@@ -5719,6 +5767,14 @@ const typeMap: any = {
       { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
     ],
     'any'
+  ),
+  AppProvidableContextMetadata: o(
+    [
+      { json: 'hostParams', js: 'hostParams', typ: u(undefined, m('any')) },
+      { json: 'signature', js: 'signature', typ: u(undefined, '') },
+      { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
+    ],
+    false
   ),
   AddContextListenerRequestPayload: o(
     [
@@ -5754,6 +5810,7 @@ const typeMap: any = {
   AddEventListenerRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: r('AddEventListenerRequestPayload') },
       { json: 'type', js: 'type', typ: r('AddEventListenerRequestType') },
     ],
@@ -5778,6 +5835,7 @@ const typeMap: any = {
   AddIntentListenerRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: r('AddIntentListenerRequestPayload') },
       { json: 'type', js: 'type', typ: r('AddIntentListenerRequestType') },
     ],
@@ -5802,6 +5860,7 @@ const typeMap: any = {
   AgentEventMessage: o(
     [
       { json: 'meta', js: 'meta', typ: r('AgentEventMessageMeta') },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('DesktopAgentProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: m('any') },
       { json: 'type', js: 'type', typ: r('EventMessageType') },
     ],
@@ -5811,6 +5870,15 @@ const typeMap: any = {
     [
       { json: 'eventUuid', js: 'eventUuid', typ: '' },
       { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  DesktopAgentProvidableContextMetadata: o(
+    [
+      { json: 'signature', js: 'signature', typ: u(undefined, '') },
+      { json: 'source', js: 'source', typ: u(undefined, r('AppIdentifier')) },
+      { json: 'timestamp', js: 'timestamp', typ: u(undefined, 3.14) },
+      { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
     ],
     false
   ),
@@ -5838,6 +5906,7 @@ const typeMap: any = {
   AppRequestMessage: o(
     [
       { json: 'meta', js: 'meta', typ: r('AppRequestMessageMeta') },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: m('any') },
       { json: 'type', js: 'type', typ: r('RequestMessageType') },
     ],
@@ -5854,6 +5923,7 @@ const typeMap: any = {
   BroadcastEvent: o(
     [
       { json: 'meta', js: 'meta', typ: r('BroadcastEventMeta') },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('ProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: r('BroadcastEventPayload') },
       { json: 'type', js: 'type', typ: r('BroadcastEventType') },
     ],
@@ -5863,6 +5933,13 @@ const typeMap: any = {
     [
       { json: 'eventUuid', js: 'eventUuid', typ: '' },
       { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  ProvidableContextMetadata: o(
+    [
+      { json: 'signature', js: 'signature', typ: u(undefined, '') },
+      { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
     ],
     false
   ),
@@ -5895,6 +5972,7 @@ const typeMap: any = {
   BroadcastRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: r('BroadcastRequestPayload') },
       { json: 'type', js: 'type', typ: r('BroadcastRequestType') },
     ],
@@ -6437,6 +6515,7 @@ const typeMap: any = {
   OptionalFeatures: o(
     [
       { json: 'DesktopAgentBridging', js: 'DesktopAgentBridging', typ: true },
+      { json: 'OriginatingAppMetadata', js: 'OriginatingAppMetadata', typ: true },
       { json: 'UserChannelMembershipAPIs', js: 'UserChannelMembershipAPIs', typ: true },
     ],
     false
@@ -6510,6 +6589,7 @@ const typeMap: any = {
   IntentEvent: o(
     [
       { json: 'meta', js: 'meta', typ: r('BroadcastEventMeta') },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('DesktopAgentProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: r('IntentEventPayload') },
       { json: 'type', js: 'type', typ: r('IntentEventType') },
     ],
@@ -6544,6 +6624,7 @@ const typeMap: any = {
   IntentResultRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: r('IntentResultRequestPayload') },
       { json: 'type', js: 'type', typ: r('IntentResultRequestType') },
     ],
@@ -6612,6 +6693,7 @@ const typeMap: any = {
   OpenRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: r('OpenRequestPayload') },
       { json: 'type', js: 'type', typ: r('OpenRequestType') },
     ],
@@ -6753,6 +6835,7 @@ const typeMap: any = {
   RaiseIntentForContextRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentForContextRequestPayload') },
       { json: 'type', js: 'type', typ: r('RaiseIntentForContextRequestType') },
     ],
@@ -6792,6 +6875,7 @@ const typeMap: any = {
   RaiseIntentRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'payload', js: 'payload', typ: r('RaiseIntentRequestPayload') },
       { json: 'type', js: 'type', typ: r('RaiseIntentRequestType') },
     ],
@@ -6843,6 +6927,127 @@ const typeMap: any = {
       { json: 'error', js: 'error', typ: u(undefined, r('ResponsePayloadError')) },
       { json: 'intentResult', js: 'intentResult', typ: u(undefined, r('IntentResult')) },
       { json: 'resultMetadata', js: 'resultMetadata', typ: u(undefined, r('ContextMetadata')) },
+    ],
+    false
+  ),
+  WebConnectionProtocol1Hello: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('WebConnectionProtocol1HelloMeta') },
+      { json: 'payload', js: 'payload', typ: r('WebConnectionProtocol1HelloPayload') },
+      { json: 'type', js: 'type', typ: r('WebConnectionProtocol1HelloType') },
+    ],
+    false
+  ),
+  WebConnectionProtocol1HelloMeta: o(
+    [
+      { json: 'connectionAttemptUuid', js: 'connectionAttemptUuid', typ: '' },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  WebConnectionProtocol1HelloPayload: o(
+    [
+      { json: 'actualUrl', js: 'actualUrl', typ: '' },
+      { json: 'channelSelector', js: 'channelSelector', typ: u(undefined, true) },
+      { json: 'fdc3Version', js: 'fdc3Version', typ: '' },
+      { json: 'identityUrl', js: 'identityUrl', typ: '' },
+      { json: 'intentResolver', js: 'intentResolver', typ: u(undefined, true) },
+    ],
+    'any'
+  ),
+  WebConnectionProtocol2LoadURL: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('WebConnectionProtocol1HelloMeta') },
+      { json: 'payload', js: 'payload', typ: r('WebConnectionProtocol2LoadURLPayload') },
+      { json: 'type', js: 'type', typ: r('WebConnectionProtocol2LoadURLType') },
+    ],
+    false
+  ),
+  WebConnectionProtocol2LoadURLPayload: o([{ json: 'iframeUrl', js: 'iframeUrl', typ: '' }], 'any'),
+  WebConnectionProtocol3Handshake: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('WebConnectionProtocol1HelloMeta') },
+      { json: 'payload', js: 'payload', typ: r('WebConnectionProtocol3HandshakePayload') },
+      { json: 'type', js: 'type', typ: r('WebConnectionProtocol3HandshakeType') },
+    ],
+    false
+  ),
+  WebConnectionProtocol3HandshakePayload: o(
+    [
+      { json: 'appLaunchTimeout', js: 'appLaunchTimeout', typ: u(undefined, 3.14) },
+      { json: 'channelSelectorUrl', js: 'channelSelectorUrl', typ: u(true, '') },
+      { json: 'fdc3Version', js: 'fdc3Version', typ: '' },
+      { json: 'intentResolverUrl', js: 'intentResolverUrl', typ: u(true, '') },
+      { json: 'messageExchangeTimeout', js: 'messageExchangeTimeout', typ: u(undefined, 3.14) },
+    ],
+    false
+  ),
+  WebConnectionProtocol4ValidateAppIdentity: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('WebConnectionProtocol1HelloMeta') },
+      { json: 'payload', js: 'payload', typ: r('WebConnectionProtocol4ValidateAppIdentityPayload') },
+      { json: 'type', js: 'type', typ: r('WebConnectionProtocol4ValidateAppIdentityType') },
+    ],
+    false
+  ),
+  WebConnectionProtocol4ValidateAppIdentityPayload: o(
+    [
+      { json: 'actualUrl', js: 'actualUrl', typ: '' },
+      { json: 'identityUrl', js: 'identityUrl', typ: '' },
+      { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
+      { json: 'instanceUuid', js: 'instanceUuid', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  WebConnectionProtocol5ValidateAppIdentityFailedResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('WebConnectionProtocol1HelloMeta') },
+      { json: 'payload', js: 'payload', typ: r('WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload') },
+      { json: 'type', js: 'type', typ: r('WebConnectionProtocol5ValidateAppIdentityFailedResponseType') },
+    ],
+    false
+  ),
+  WebConnectionProtocol5ValidateAppIdentityFailedResponsePayload: o(
+    [{ json: 'message', js: 'message', typ: u(undefined, '') }],
+    false
+  ),
+  WebConnectionProtocol5ValidateAppIdentitySuccessResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('WebConnectionProtocol1HelloMeta') },
+      { json: 'payload', js: 'payload', typ: r('WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload') },
+      { json: 'type', js: 'type', typ: r('WebConnectionProtocol5ValidateAppIdentitySuccessResponseType') },
+    ],
+    false
+  ),
+  WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload: o(
+    [
+      { json: 'appId', js: 'appId', typ: '' },
+      { json: 'implementationMetadata', js: 'implementationMetadata', typ: r('ImplementationMetadata') },
+      { json: 'instanceId', js: 'instanceId', typ: '' },
+      { json: 'instanceUuid', js: 'instanceUuid', typ: '' },
+    ],
+    false
+  ),
+  WebConnectionProtocol6Goodbye: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('WebConnectionProtocol6GoodbyeMeta') },
+      { json: 'type', js: 'type', typ: r('WebConnectionProtocol6GoodbyeType') },
+    ],
+    false
+  ),
+  WebConnectionProtocol6GoodbyeMeta: o([{ json: 'timestamp', js: 'timestamp', typ: Date }], false),
+  WebConnectionProtocolMessage: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('ConnectionStepMetadata') },
+      { json: 'payload', js: 'payload', typ: u(undefined, m('any')) },
+      { json: 'type', js: 'type', typ: r('ConnectionStepMessageType') },
+    ],
+    false
+  ),
+  ConnectionStepMetadata: o(
+    [
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+      { json: 'connectionAttemptUuid', js: 'connectionAttemptUuid', typ: u(undefined, '') },
     ],
     false
   ),
