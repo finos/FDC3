@@ -17,7 +17,7 @@ import { resolve } from 'path';
 
 const INTENT_SHARE_ENCRYPTED_CHANNEL = 'ShareEncryptedChannel';
 
-const metadataHandler = new MetadataHandlerImpl(false);
+const metadataHandler = new MetadataHandlerImpl(false, { appId: 'test.app', instanceId: '123' });
 
 /**
  * Broadcasting app backend – no exchangeData handlers needed.

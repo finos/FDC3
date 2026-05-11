@@ -91,7 +91,10 @@ class UserRequestingApp {
       aud: this.baseUrl,
     };
 
-    const result = await createIdentityTokenHandler(userRequest);
+    const result = await createIdentityTokenHandler(userRequest, {
+      timestamp: new Date(),
+      source: { appId: 'test.app', instanceId: '123' },
+    });
 
     if (!result) {
       console.log('[UserRequestingApp] No result from IDP');
@@ -99,7 +102,11 @@ class UserRequestingApp {
       return;
     }
 
-    if (result.type === 'fdc3.security.encryptedContext' && result.encryptedPayload) {
+    if (
+      'type' in result &&
+      result.type === 'fdc3.security.encryptedContext' &&
+      typeof result.encryptedPayload === 'string'
+    ) {
       const user = await this.backend.security.decryptContextWithPrivateKey(result.encryptedPayload);
 
       if (user?.type === 'fdc3.security.user' && user.jwt) {
@@ -119,7 +126,7 @@ class UserRequestingApp {
         console.log('[UserRequestingApp] Decrypted context was not fdc3.security.user');
       }
     } else {
-      console.log('[UserRequestingApp] Unexpected result type:', result?.type);
+      console.log('[UserRequestingApp] Unexpected result type:', 'type' in result ? result.type : 'unknown');
     }
 
     await handlers.disconnect();
