@@ -57,9 +57,9 @@ Feature: Raising Intents
   Scenario: Raising an intent with app-provided metadata forwards to intent listener
     When "App1/a1" raises an intent for "uniqueIntent" with contextType "fdc3.magazine" with metadata traceId "intent-trace" signature "intent-sig" and custom key "EMEA"
     Then messaging will have outgoing posts
-      | msg.matches_type    | msg.payload.context.type | msg.payload.intent | msg.payload.metadata.source.appId | msg.payload.metadata.traceId | msg.payload.metadata.signature | msg.payload.metadata.custom.region | to.instanceId | to.appId        |
-      | intentEvent         | fdc3.magazine            | uniqueIntent       | App1                              | intent-trace                 | intent-sig                     | EMEA                               | c1            | uniqueIntentApp |
-      | raiseIntentResponse | {null}                   | {null}             | {null}                            | {null}                       | {null}                         | {null}                             | a1            | App1            |
+      | msg.matches_type    | msg.payload.context.type | msg.payload.intent | msg.payload.metadata.source.appId | msg.payload.metadata.traceId | msg.payload.metadata.signature.signature | msg.payload.metadata.signature.protected | msg.payload.metadata.custom.region | to.instanceId | to.appId        |
+      | intentEvent         | fdc3.magazine            | uniqueIntent       | App1                              | intent-trace                 | intent-sig (signature part)                     | intent-sig (protected part)                     | EMEA                               | c1            | uniqueIntentApp |
+      | raiseIntentResponse | {null}                   | {null}             | {null}                            | {null}                       | {null}                         | {null}                             | {null}                             | a1            | App1            |
 
   Scenario: Raising An Intent To A Non-Running App
     When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "libraryApp"

@@ -287,7 +287,10 @@ When(
     const message = raise(world, intentName, contextType, null, meta);
     message.payload.metadata = {
       traceId: handleResolve(traceId, world),
-      signature: handleResolve(signature, world),
+      signature: {
+        signature: handleResolve(signature, world) + ' (signature part)',
+        protected: handleResolve(signature, world) + ' (protected part)',
+      },
       custom: { region: handleResolve(customKey, world) },
     };
     await world.server.receive(message, uuid);

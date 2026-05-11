@@ -57,10 +57,10 @@ Feature: Relaying Broadcast messages
     And we wait for a period of "100" ms
     And "App1/a1" broadcasts "fdc3.instrument" on "one" with metadata traceId "my-trace" signature "my-sig" and custom key "EMEA"
     Then messaging will have outgoing posts
-      | msg.matches_type           | msg.payload.channelId | msg.payload.context.type | msg.payload.metadata.source.appId | msg.payload.metadata.traceId | msg.payload.metadata.signature | msg.payload.metadata.custom.region |
-      | addContextListenerResponse | {null}                | {null}                   | {null}                            | {null}                       | {null}                         | {null}                             |
-      | broadcastEvent             | one                   | fdc3.instrument          | App1                              | my-trace                     | my-sig                         | EMEA                               |
-      | broadcastResponse          | {null}                | {null}                   | {null}                            | {null}                       | {null}                         | {null}                             |
+      | msg.matches_type           | msg.payload.channelId | msg.payload.context.type | msg.payload.metadata.source.appId | msg.payload.metadata.traceId | msg.payload.metadata.signature.signature |msg.payload.metadata.signature.protected |   msg.payload.metadata.custom.region |
+      | addContextListenerResponse | {null}                | {null}                   | {null}                            | {null}                       | {null}                         | {null}                         | {null}                             |
+      | broadcastEvent             | one                   | fdc3.instrument          | App1                              | my-trace                     | my-sig (signature part)                        | my-sig (protected part)                        |  EMEA                               |
+      | broadcastResponse          | {null}                | {null}                   | {null}                            | {null}                       | {null}                         | {null}                         | {null}                             |
 
   Scenario: Broadcast without app-provided traceId gets a DA-generated traceId
     When "App2/a2" adds a context listener on "one" with type "fdc3.instrument"
@@ -76,5 +76,5 @@ Feature: Relaying Broadcast messages
     Given "App1/a1" broadcasts "fdc3.instrument" on "one" with metadata traceId "stored-trace" signature "stored-sig" and custom key "APAC"
     And "App1/a1" asks for the latest context on "one" with type "fdc3.instrument"
     Then messaging will have outgoing posts
-      | msg.matches_type          | to.appId | to.instanceId | msg.payload.context.id.ticker | msg.payload.context.type | msg.payload.metadata.traceId | msg.payload.metadata.signature | msg.payload.metadata.custom.region |
-      | getCurrentContextResponse | App1     | a1            | AAPL                          | fdc3.instrument          | stored-trace                 | stored-sig                     | APAC                               |
+      | msg.matches_type          | to.appId | to.instanceId | msg.payload.context.id.ticker | msg.payload.context.type | msg.payload.metadata.traceId | msg.payload.metadata.signature.signature | msg.payload.metadata.signature.protected | msg.payload.metadata.custom.region |
+      | getCurrentContextResponse | App1     | a1            | AAPL                          | fdc3.instrument          | stored-trace                 | stored-sig (signature part)                     | stored-sig (protected part)                     | APAC                               |
