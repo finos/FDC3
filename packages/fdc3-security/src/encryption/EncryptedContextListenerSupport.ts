@@ -34,7 +34,7 @@ export function createSymmetricKeyResponseContextListener(
   return channel.addContextListener(
     'fdc3.security.symmetricKeyResponse',
     async (skr: Context, skrMeta: ContextMetadata | undefined) => {
-      let { context } = metadataHandler.unpack(skr, skrMeta);
+      const { context } = metadataHandler.unpack(skr, skrMeta);
       const skrCtx = context as SymmetricKeyResponse;
       const key = await unwrapFunction(skrCtx);
       if (key) {
