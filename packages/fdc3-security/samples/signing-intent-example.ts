@@ -14,7 +14,7 @@ import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlers
 import { MetadataHandlerImpl } from '../src/delegates/MetadataHandler';
 
 const INTENT_DATA_TRANSFER = 'DataTransfer';
-const metadataHandler = new MetadataHandlerImpl(false);
+const metadataHandler = new MetadataHandlerImpl(false, { appId: 'test.app', instanceId: '123' });
 
 /**
  * Handler App Backend Handlers.
