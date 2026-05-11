@@ -140,8 +140,8 @@ Feature: Intents Can Return Different Results
     When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
     And I call "{result}" with "getResultMetadata"
     Then "{result}" is an object with the following contents
-      | source.appId | source.instanceId | traceId       | signature |
-      | some-app     | abc123            | my-trace-123  | sig-abc   |
+      | source.appId | source.instanceId | traceId       | signature.signature | signature.protected |
+      | some-app     | abc123            | my-trace-123  | sig-abc (signature part)   | sig-abc (protected part) |
 
   Scenario: getResultMetadata returns DA-generated metadata for a channel result
     Given Raise Intent returns a private channel

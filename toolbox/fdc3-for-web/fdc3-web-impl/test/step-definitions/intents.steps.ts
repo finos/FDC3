@@ -375,6 +375,10 @@ When(
   ) => {
     const meta = createMeta(world, appStr);
     const uuid1 = world.sc.getInstanceUUID(meta.source)!;
+    const detachedSignature = {
+      protected: signature + ' (protected part)',
+      signature: signature + ' (signature part)',
+    };
     const message: IntentResultRequest = {
       type: 'intentResultRequest',
       meta: {
@@ -388,7 +392,12 @@ When(
         raiseIntentRequestUuid: raiseIntentUuid,
         metadata: {
           traceId,
-          signature,
+          signature: detachedSignature,
+          antiReplay: {
+            iat: 1739692800,
+            exp: 1739696100,
+            jti: 'unique-token-id',
+          },
         },
       },
     };
