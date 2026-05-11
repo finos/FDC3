@@ -17,9 +17,9 @@
     "dist"
   ],
   "scripts": {
-    "clean": "npx rimraf dist && npx rimraf generated",
+    "clean": "npx rimraf dist && npx rimraf generated && npx rimraf code-generation/.cache",
     "mkdirs": "npx mkdirp generated/api && npx mkdirp generated/bridging",
-    "generate-type-predicates": "tsx code-generation/generate-type-predicates.ts",
+    "generate-type-predicates": "tsc -p code-generation/tsconfig.codegen.json && node code-generation/.cache/generate-type-predicates.js",
     "generate": "npm run mkdirs && npm run typegen-browser && npm run typegen-bridging && npm run generate-type-predicates && npm run lint",
     "build": "npm run generate && tsc",
     "lint": "eslint generated/ --fix && npx prettier generated/ --write",
@@ -32,7 +32,8 @@
     "mkdirp": "^3.0.1",
     "quicktype": "23.0.78",
     "ts-morph": "^24.0.0",
-    "tslib": "^2.7.0"
+    "tslib": "^2.7.0",
+    "typescript": "^5.6.3"
   },
   "type": "module"
 }
