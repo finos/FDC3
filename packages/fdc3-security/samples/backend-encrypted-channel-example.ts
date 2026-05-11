@@ -15,7 +15,7 @@ import { MetadataHandlerImpl } from '../src/delegates/MetadataHandler';
 
 const INTENT_SHARE_ENCRYPTED_CHANNEL = 'ShareEncryptedChannel';
 
-const metadataHandler = new MetadataHandlerImpl(false);
+const metadataHandler = new MetadataHandlerImpl(false, { appId: 'test.app', instanceId: '123' });
 
 /**
  * Broadcasting app backend handlers (broadcaster, key creator). Receives the channel via handleRemoteChannel,

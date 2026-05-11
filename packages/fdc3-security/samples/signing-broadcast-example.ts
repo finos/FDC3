@@ -12,7 +12,7 @@ import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
 import { MetadataHandlerImpl } from '../src/delegates/MetadataHandler';
 
-const metadataHandler = new MetadataHandlerImpl(false);
+const metadataHandler = new MetadataHandlerImpl(false, { appId: 'test.app', instanceId: '123' });
 
 /**
  * App A backend handlers (sender). Receives the channel via handleRemoteChannel,
