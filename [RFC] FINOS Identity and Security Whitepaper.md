@@ -546,7 +546,7 @@ For identity consumers to receive the details of the user, we need a new FDC3 co
      "emailAddress": "john.doe@somebank.com",
      "name": "John Doe"
    },
-   "jwt":  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIzNDU2Nzg5LCJuYW1lIjoiSm9zZXBoIn0.OpOSSw7e485LOP5PrzScxHb7SR6sAOMRckfFwi4rp7o", // original JWT
+   "jwt":  "--blah--", // original JWT
 }
 ```
 
