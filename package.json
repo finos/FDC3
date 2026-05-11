@@ -79,7 +79,8 @@
     "vitest": "^3.2.4"
   },
   "overrides": {
-    "serialize-javascript": "^7.0.5"
+    "serialize-javascript": "^7.0.5",
+    "@cucumber/messages": "^27.2.0"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
