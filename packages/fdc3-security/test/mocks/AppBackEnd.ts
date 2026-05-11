@@ -8,25 +8,30 @@ import { FDC3Handlers } from '../../src/secure-boundary/FDC3Handlers';
 export type CreateHandlers = (ws: WebSocket, security: JosePrivateFDC3Security) => FDC3Handlers;
 
 /**
- * A mock backend server (on localhost) that hosts JWKS and handles FDC3 WebSocket connections.
+ * A mock backend server (on loopback) that hosts JWKS and handles FDC3 WebSocket connections.
+ * Uses an OS-assigned TCP port ({@link Server.listen} with port 0) so parallel Jest workers and
+ * other processes never collide on a pre-chosen random port — collisions produced fetch failures
+ * with `HTTPParserError: Expected HTTP/` when the wrong peer answered the socket.
  */
 export class AppBackEnd {
-  readonly baseUrl: string;
+  /** Set in {@link AppBackEnd.start}; do not read before `start` completes. */
+  baseUrl!: string;
   security!: JosePrivateFDC3Security;
   httpServer!: Server;
   public handlers: FDC3Handlers | null = null;
 
-  constructor(private readonly createHandlers: CreateHandlers) {
-    const port = 49152 + Math.floor(Math.random() * 16384);
-    this.baseUrl = `http://localhost:${port}`;
-  }
+  constructor(private readonly createHandlers: CreateHandlers) {}
 
   async start(): Promise<void> {
-    let security: JosePrivateFDC3Security;
+    let security: JosePrivateFDC3Security | undefined;
 
-    const port = parseInt(new URL(this.baseUrl).port, 10);
     const httpServer = createServer((req, res) => {
       if (req.url === '/.well-known/jwks.json') {
+        if (!security) {
+          res.writeHead(503, { Connection: 'close' });
+          res.end();
+          return;
+        }
         res.writeHead(200, {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
@@ -38,7 +43,19 @@ export class AppBackEnd {
       }
     });
 
-    await new Promise<void>(resolve => httpServer.listen(port, resolve));
+    await new Promise<void>((resolve, reject) => {
+      httpServer.once('error', reject);
+      httpServer.listen(0, '127.0.0.1', () => {
+        httpServer.off('error', reject);
+        resolve();
+      });
+    });
+
+    const addr = httpServer.address();
+    if (addr === null || typeof addr === 'string') {
+      throw new Error('Unable to determine AppBackEnd listen address');
+    }
+    this.baseUrl = `http://127.0.0.1:${addr.port}`;
 
     security = await createJosePrivateFDC3Security(
       this.baseUrl,
