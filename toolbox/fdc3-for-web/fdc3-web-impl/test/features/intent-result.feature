@@ -58,11 +58,11 @@ Feature: Intent Results Are Correctly Delivered
     When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "LibraryApp/l1" with requestUuid "ABC123"
     When "LibraryApp/l1" sends a intentResultRequest with eventUuid "uuid7" and contextType "fdc3.book" and raiseIntentUuid "ABC123" with traceId "my-trace-123" and signature "sig-abc"
     Then messaging will have outgoing posts
-      | msg.matches_type          | msg.meta.eventUuid | to.appId   | to.instanceId | msg.payload.intentResult.context.type | msg.payload.resultMetadata.traceId | msg.payload.resultMetadata.signature | msg.payload.resultMetadata.source.instanceId |
-      | intentEvent               | uuid8              | LibraryApp | l1            | {null}                                | {null}                             | {null}                               | {null}                                       |
-      | raiseIntentResponse       | {null}             | App1       | a1            | {null}                                | {null}                             | {null}                               | {null}                                       |
-      | raiseIntentResultResponse | {null}             | App1       | a1            | fdc3.book                             | my-trace-123                       | sig-abc                              | l1                                           |
-      | intentResultResponse      | {null}             | LibraryApp | l1            | {null}                                | {null}                             | {null}                               | {null}                                       |
+      | msg.matches_type          | msg.meta.eventUuid | to.appId   | to.instanceId | msg.payload.intentResult.context.type | msg.payload.resultMetadata.traceId | msg.payload.resultMetadata.signature.signature | msg.payload.resultMetadata.signature.protected | msg.payload.resultMetadata.source.instanceId |
+      | intentEvent               | uuid8              | LibraryApp | l1            | {null}                                | {null}                             | {null}                               | {null}                                   | {null}                                       |
+      | raiseIntentResponse       | {null}             | App1       | a1            | {null}                                | {null}                             | {null}                               | {null}                                 | {null}                                       |
+      | raiseIntentResultResponse | {null}             | App1       | a1            | fdc3.book                             | my-trace-123                       | sig-abc (signature part)            | sig-abc (protected part)            | l1                                           |
+      | intentResultResponse      | {null}             | LibraryApp | l1            | {null}                                | {null}                             | {null}                               | {null}                                 | {null}                                       |
 
   Scenario: DA-generated resultMetadata is present for a channel result
     When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "LibraryApp/l1" with requestUuid "ABC123"

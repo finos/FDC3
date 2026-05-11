@@ -58,5 +58,5 @@ Feature: Desktop Agent Information
       | appId    | instanceId |
       | chipShop | abc123     |
     And messaging will have posts
-      | payload.app.appId | payload.context | payload.metadata.traceId | payload.metadata.signature | matches_type |
-      | chipShop          | {null}          | trace-open               | sig-open                   | openRequest  |
+      | payload.app.appId | payload.context | payload.metadata.traceId | payload.metadata.signature.signature | payload.metadata.signature.protected | matches_type |
+      | chipShop          | {null}          | trace-open               | sig-open (signature part)   | sig-open (protected part)   | openRequest  |
