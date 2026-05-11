@@ -79,14 +79,14 @@ Feature: Basic Intents Support
       | source.appId | source.instanceId |
       | bank         | b1                |
     And messaging will have posts
-      | payload.intent | payload.context.type | payload.metadata.traceId | payload.metadata.signature | payload.metadata.custom.priority | matches_type       |
-      | Buy            | fdc3.instrument      | trace-123                | sig-abc                    | high                             | raiseIntentRequest |
+      | payload.intent | payload.context.type | payload.metadata.traceId | payload.metadata.signature.signature | payload.metadata.signature.protected | payload.metadata.custom.priority | matches_type       |
+      | Buy            | fdc3.instrument      | trace-123                | sig-abc (signature part)   | sig-abc (protected part)   | high                             | raiseIntentRequest |
 
   Scenario: Raising an intent without metadata generates a traceId but omits signature and custom
     When I call "{api}" with "raiseIntent" with parameters "Buy" and "{instrumentContext}"
     And messaging will have posts
-      | payload.intent | payload.context.type | payload.metadata.signature | payload.metadata.custom | matches_type       |
-      | Buy            | fdc3.instrument      | {null}                     | {null}                  | raiseIntentRequest |
+      | payload.intent | payload.context.type | payload.metadata.signature.signature | payload.metadata.signature.protected | payload.metadata.custom | matches_type       |
+      | Buy            | fdc3.instrument      | {null}                     | {null}                     | {null}                  | raiseIntentRequest |
 
   Scenario: Raising an intent for context with null app and metadata forwards metadata through resolver
     Given "intentMetadata" is metadata with traceId "trace-456" and signature "sig-def"
@@ -95,6 +95,6 @@ Feature: Basic Intents Support
       | source.appId | source.instanceId |
       | chipShop     | c1                |
     And messaging will have posts
-      | payload.context.type | payload.metadata.traceId | payload.metadata.signature | payload.metadata.custom.priority | payload.app.appId | matches_type                 |
-      | fdc3.country         | trace-456                | sig-def                    | high                             | {null}            | raiseIntentForContextRequest |
-      | fdc3.country         | trace-456                | sig-def                    | high                             | chipShop          | raiseIntentRequest           |
+      | payload.context.type | payload.metadata.traceId | payload.metadata.signature.signature | payload.metadata.signature.protected | payload.metadata.custom.priority | payload.app.appId | matches_type                 |
+      | fdc3.country         | trace-456                | sig-def (signature part)   | sig-def (protected part)   | high                             | {null}            | raiseIntentForContextRequest |
+      | fdc3.country         | trace-456                | sig-def (signature part)   | sig-def (protected part)   | high                             | chipShop          | raiseIntentRequest           |

@@ -91,7 +91,15 @@ Given(
         source: { appId: 'some-app', instanceId: 'abc123' },
         timestamp: new Date('2024-01-01T00:00:00Z'),
         traceId,
-        signature,
+        signature: {
+          protected: signature + ' (protected part)',
+          signature: signature + ' (signature part)',
+        },
+        antiReplay: {
+          iat: 1739692800,
+          exp: 1739696100,
+          jti: 'unique-token-id',
+        },
         custom: { priority: 'high' },
       },
     });
@@ -224,7 +232,15 @@ Given(
   (world: CustomWorld, field: string, traceId: string, signature: string) => {
     world.props[field] = {
       traceId,
-      signature,
+      signature: {
+        protected: signature + ' (protected part)',
+        signature: signature + ' (signature part)',
+      },
+      antiReplay: {
+        iat: 1739692800,
+        exp: 1739696100,
+        jti: 'unique-token-id',
+      },
       custom: { priority: 'high' },
     };
   }
