@@ -5,6 +5,7 @@ import {
   EventHandler,
   ContextHandler,
   ContextMetadata,
+  ContextWithMetadata,
 } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 
@@ -52,5 +53,9 @@ export class MockChannel implements Channel {
 
   async addEventListener(_type: string, _handler: EventHandler): Promise<Listener> {
     return { unsubscribe: async () => {} };
+  }
+
+  async getCurrentContextWithMetadata(): Promise<ContextWithMetadata | null> {
+    return null;
   }
 }
