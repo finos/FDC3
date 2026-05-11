@@ -7,7 +7,7 @@ import {
   IntentHandler,
   IntentResolution,
 } from '@finos/fdc3-standard';
-import type { Intent } from '@finos/fdc3-standard';
+import type { AppIdentifier, AppProvidableContextMetadata, ContextMetadata, Intent } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { MockChannel } from './MockChannel';
 import { MockPrivateChannel } from './MockPrivateChannel';
@@ -29,20 +29,45 @@ export class MockDesktopAgent implements Partial<DesktopAgent> {
     };
   }
 
-  async raiseIntent(intent: Intent, context: Context): Promise<IntentResolution> {
+  async raiseIntent(
+    intent: Intent,
+    context: Context,
+    _app?: AppIdentifier | null | string | undefined,
+    metadata?: AppProvidableContextMetadata | undefined
+  ): Promise<IntentResolution> {
     const key = String(intent);
     const handler = this.intentHandlers.get(key);
     if (!handler) throw new Error(`No handler registered for intent: ${key}`);
-    const result = await handler(context);
 
-    const contextResult = result as Context;
-    const thePrivateChannel =
-      typeof contextResult?.id === 'string' ? sharedPrivateChannels.get(contextResult.id) : undefined;
+    const result = await handler(context, (metadata ?? {}) as ContextMetadata);
+    const type = result && 'type' in result ? result.type : undefined;
+    const contextWithMetadata = result && 'context' in result && 'metadata' in result;
+    let resolvedMetadata = (contextWithMetadata ? result.metadata : {}) as ContextMetadata;
+    let resolvedResult = (contextWithMetadata ? result.context : result) as
+      | Context
+      | Channel
+      | PrivateChannel
+      | undefined;
+
+    switch (type) {
+      case 'user':
+      case 'app':
+        resolvedResult = sharedChannels.get((resolvedResult as Channel).id) as Channel | undefined;
+        break;
+      case 'private':
+        resolvedResult = sharedPrivateChannels.get((resolvedResult as PrivateChannel).id) as PrivateChannel | undefined;
+        break;
+    }
 
     return {
       source: { appId: 'mock-app', instanceId: 'mock-instance' },
       intent: key as Intent,
-      getResult: async () => thePrivateChannel ?? contextResult,
+      getResult: async () => {
+        return resolvedResult;
+      },
+      getResultMetadata: async () => {
+        return resolvedMetadata;
+      },
     };
   }
 
