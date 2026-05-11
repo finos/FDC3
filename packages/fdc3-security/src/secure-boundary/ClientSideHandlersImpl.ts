@@ -124,7 +124,7 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
   }
 
   private async handleBroadcast(br: BroadcastRequest): Promise<BroadcastResponse> {
-    const channel = this.channels.get(br.payload.channelId)!!;
+    const channel = this.channels.get(br.payload.channelId)!;
     await channel.broadcast(br.payload.context, br.payload.metadata as any);
     return {
       type: 'broadcastResponse',

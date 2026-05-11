@@ -50,7 +50,6 @@ export function setupWebsocketServer(
 
     // WebSocketMessaging expects a browser-style WebSocket interface; the `ws` package's
     // WebSocket is structurally compatible for the subset we use, so cast via `any`.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const messaging = new WebSocketMessaging(ws as any, {
       appId: 'demo-security-implementation',
     });
@@ -81,11 +80,9 @@ export function setupWebsocketServer(
         case HANDLE_REMOTE_CHANNEL: {
           const data = payload as HandleRemoteChannelMessage;
           if (data.type === 'private') {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const channel = new DefaultPrivateChannel(messaging as any, 1000, data.channelId) as any;
             await handlers.handleRemoteChannel(data.purpose, channel);
           } else {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const channel = new DefaultChannel(messaging as any, 1000, data.channelId, data.type) as any;
             await handlers.handleRemoteChannel(data.purpose, channel);
           }
