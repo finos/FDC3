@@ -159,32 +159,32 @@ When a context is signed, the signature is provided in metadata (via [`AppProvid
 
 ### Flow Diagram
 
-The sender signs `{ context, antiReplay }` with its private key and attaches the detached JWS plus `antiReplay` in metadata. The Desktop Agent forwards context and metadata without modification. The receiver resolves the signer’s public key from `jku`, verifies the signature, validates anti-replay and time claims, and applies `allowListFunction(jku)` to set `authenticity.trusted`.
-
 ```mermaid
 sequenceDiagram
-    participant Sender as Sender (trusted back end)
+    participant SBE as Sender (trusted back end)
+    participant SFE as Sender (front end)
     participant DA as Desktop Agent
-    participant Receiver as Receiver (FDC3 security layer)
-    participant JWKS as Signer JWKS (HTTPS)
+    participant R as Receiver (front end)
 
-    Note over Sender: Build antiReplay (iat, exp, jti)
-    Note over Sender: Canonicalize { context, antiReplay }
-    Note over Sender: Sign with private key → detached JWS in metadata
+    Note over SBE: Build antiReplay (iat, exp, jti)
+    Note over SBE: Canonicalize { context, antiReplay }
+    Note over SBE: Sign with private key → detached JWS in metadata
+    Note over SBE: Serve JWKS at jku (HTTPS)
 
-    Sender->>DA: broadcast / raiseIntent (context + signature + antiReplay)
+    SBE->>SFE: Relay signed message (context + signature + antiReplay)
+    SFE->>DA: broadcast / raiseIntent (context + metadata)
     Note over DA: Untrusted relay — forward unchanged
-    DA->>Receiver: context + metadata
+    DA->>R: context + metadata
 
-    Note over Receiver: Decode protected header (alg, jku, kid, …)
-    Receiver->>JWKS: Fetch public key for kid
-    JWKS-->>Receiver: JWKS / verification key
+    Note over R: Decode protected header (alg, jku, kid, …)
+    R->>SBE: HTTPS: fetch JWKS (jku)
+    SBE-->>R: JWKS / verification key
 
-    Note over Receiver: Reconstitute compact JWS, verify signature
-    Note over Receiver: Validate iat, antiReplay.exp, jti
-    Note over Receiver: allowListFunction(jku) → authenticity.trusted
+    Note over R: Reconstitute compact JWS, verify signature
+    Note over R: Validate iat, antiReplay.exp, jti
+    Note over R: allowListFunction(jku) → authenticity.trusted
 
-    Note over Receiver: Expose context + ContextMetadata.authenticity to app
+    Note over R: Expose context + ContextMetadata.authenticity to app
 ```
 
 ### Example
