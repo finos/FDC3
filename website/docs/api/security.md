@@ -321,7 +321,7 @@ sequenceDiagram
     note right of SxReq: Wrap K for Receiver (JWE), sign response (JWS)
     SxReq->>RxKey: Broadcast fdc3.security.symmetricKeyResponse
     note right of RxKey: Verify response JWS, unwrap K (private key)
-    note right of RxKey: K held for channel C — decrypt subsequent payloads
+    note right of RxKey: K now held for channel C
     RxKey->>RxCtx: decrypt instrument
     RxCtx->>RxCtx: process context handler
 ```
