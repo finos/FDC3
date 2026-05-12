@@ -164,7 +164,7 @@ sequenceDiagram
     participant SBE as Sender (trusted back end)
     participant SFE as Sender (front end)
     participant DA as Desktop Agent
-    participant R as Receiver (front end)
+    participant R as Receiver
 
     Note over SBE: Build antiReplay (iat, exp, jti)
     Note over SBE: Canonicalize { context, antiReplay }
@@ -298,31 +298,31 @@ Both the key request and response **must be signed** (JWS). The key owner uses t
 
 ```mermaid
 sequenceDiagram
-    participant AppA
-    participant AppB
-    AppA->>AppB: View Orders Intent
-    note right of AppB: Generate random symmetric key K
-    note right of AppB: Create private channel C
-    AppB->>AppA: Intent Reply: Private Channel C
-    note left of AppA: Subscribe to Channel C
-    note right of AppB: I have a new order!
-    note right of AppB: Encrypt Order Context with K and sign it with AppB private key
-    AppB->>AppA: Broadcast Encrypted Context
-    note left of AppA: Context is encrypted!
-    note left of AppA: Verify signature of context with AppB public key
-    note left of AppA: Signature valid, I need the channel key
-    AppA->>AppB: Key Request Intent for Channel C
-    note right of AppB: Wrap K with AppA public key
-    AppB->>AppA: K wrapped in AppA public key
-    note left of AppA: Unwrap with AppA private key
-    note left of AppA: I now have K, I can decrypt encrypted contexts on this channel :)
-    note left of AppA: Decrypt encrypted context with K
-    note right of AppB: I have a new order!
-    note right of AppB: Encrypt Order Context with K and sign it with AppB private key
-    AppB->>AppA: Broadcast Encrypted Context
-    note left of AppA: Context is encrypted!
-    note left of AppA: Verify signature of context with AppB public key
-    note left of AppA: Decrypt encrypted context with K
+    participant Receiver
+    participant Sender
+    Receiver->>Sender: View Orders Intent
+    note right of Sender: Generate random symmetric key K
+    note right of Sender: Create private channel C
+    Sender->>Receiver: Intent Reply: Private Channel C
+    note left of Receiver: Subscribe to Channel C
+    note right of Sender: I have a new order!
+    note right of Sender: Encrypt Order Context with K and sign it with Sender private key
+    Sender->>Receiver: Broadcast Encrypted Context
+    note left of Receiver: Context is encrypted!
+    note left of Receiver: Verify signature of context with Sender public key
+    note left of Receiver: Signature valid, I need the channel key
+    Receiver->>Sender: Key Request Intent for Channel C
+    note right of Sender: Wrap K with Receiver public key
+    Sender->>Receiver: K wrapped in Receiver public key
+    note left of Receiver: Unwrap with Receiver private key
+    note left of Receiver: I now have K, I can decrypt encrypted contexts on this channel :)
+    note left of Receiver: Decrypt encrypted context with K
+    note right of Sender: I have a new order!
+    note right of Sender: Encrypt Order Context with K and sign it with Sender private key
+    Sender->>Receiver: Broadcast Encrypted Context
+    note left of Receiver: Context is encrypted!
+    note left of Receiver: Verify signature of context with Sender public key
+    note left of Receiver: Decrypt encrypted context with K
 ```
 
 #### Context Types
