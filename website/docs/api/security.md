@@ -157,6 +157,36 @@ When a context is signed, the signature is provided in metadata (via [`AppProvid
 | `signature` | The detached JWS (`protected` + `signature`) |
 | `antiReplay` | Claims (`iat`, `exp`, `jti`) used for replay detection; must be included when signing |
 
+### Flow Diagram
+
+The sender signs `{ context, antiReplay }` with its private key and attaches the detached JWS plus `antiReplay` in metadata. The Desktop Agent forwards context and metadata without modification. The receiver resolves the signer’s public key from `jku`, verifies the signature, validates anti-replay and time claims, and applies `allowListFunction(jku)` to set `authenticity.trusted`.
+
+```mermaid
+sequenceDiagram
+    participant Sender as Sender (trusted back end)
+    participant DA as Desktop Agent
+    participant Receiver as Receiver (FDC3 security layer)
+    participant JWKS as Signer JWKS (HTTPS)
+
+    Note over Sender: Build antiReplay (iat, exp, jti)
+    Note over Sender: Canonicalize { context, antiReplay }
+    Note over Sender: Sign with private key → detached JWS in metadata
+
+    Sender->>DA: broadcast / raiseIntent (context + signature + antiReplay)
+    Note over DA: Untrusted relay — forward unchanged
+    DA->>Receiver: context + metadata
+
+    Note over Receiver: Decode protected header (alg, jku, kid, …)
+    Receiver->>JWKS: Fetch public key for kid
+    JWKS-->>Receiver: JWKS / verification key
+
+    Note over Receiver: Reconstitute compact JWS, verify signature
+    Note over Receiver: Validate iat, antiReplay.exp, jti
+    Note over Receiver: allowListFunction(jku) → authenticity.trusted
+
+    Note over Receiver: Expose context + ContextMetadata.authenticity to app
+```
+
 ### Example
 
 ```typescript
