@@ -299,10 +299,10 @@ Both the key request and response **must be signed** (JWS). The key owner uses t
 ```mermaid
 sequenceDiagram
     participant Rx as Receiver App
-    participant RxCtx as "Receiver App's `fdc3.instrument` contextHandler"
-    participant RxKey as "Receiver App's `symmetricKeyResponse` contextHandler"
+    participant RxCtx as Receiver App's `fdc3.instrument` contextHandler
+    participant RxKey as Receiver App's `symmetricKeyResponse` contextHandler
     participant Sx as Broadcaster App
-    participant SxReq as "Broadcaster App's `symmetricKeyRequest` contextHandler"
+    participant SxReq as Broadcaster App's `symmetricKeyRequest` contextHandler
     Rx->>Sx: Raises `ViewInstrument` Intent
     note right of Sx: Generate random symmetric key K
     note right of Sx: Create private channel C
@@ -320,8 +320,8 @@ sequenceDiagram
     note right of SxReq: Verify request JWS, fetch Receiver JWKS from jku
     note right of SxReq: Wrap K for Receiver (JWE), sign response (JWS)
     SxReq->>RxKey: Broadcast fdc3.security.symmetricKeyResponse
-    note left of RxKey: Verify response JWS, unwrap K (private key)
-    note left of RxKey: K held for channel C — decrypt subsequent payloads
+    note right of RxKey: Verify response JWS, unwrap K (private key)
+    note right of RxKey: K held for channel C — decrypt subsequent payloads
     RxKey->>RxCtx: decrypt instrument
     RxCtx->>RxCtx: process context handler
 ```
