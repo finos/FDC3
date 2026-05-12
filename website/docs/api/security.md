@@ -298,31 +298,33 @@ Both the key request and response **must be signed** (JWS). The key owner uses t
 
 ```mermaid
 sequenceDiagram
-    participant Receiver
-    participant Sender
-    Receiver->>Sender: View Orders Intent
-    note right of Sender: Generate random symmetric key K
-    note right of Sender: Create private channel C
-    Sender->>Receiver: Intent Reply: Private Channel C
-    note left of Receiver: Subscribe to Channel C
-    note right of Sender: I have a new order!
-    note right of Sender: Encrypt Order Context with K and sign it with Sender private key
-    Sender->>Receiver: Broadcast Encrypted Context
-    note left of Receiver: Context is encrypted!
-    note left of Receiver: Verify signature of context with Sender public key
-    note left of Receiver: Signature valid, I need the channel key
-    Receiver->>Sender: Key Request Intent for Channel C
-    note right of Sender: Wrap K with Receiver public key
-    Sender->>Receiver: K wrapped in Receiver public key
-    note left of Receiver: Unwrap with Receiver private key
-    note left of Receiver: I now have K, I can decrypt encrypted contexts on this channel :)
-    note left of Receiver: Decrypt encrypted context with K
-    note right of Sender: I have a new order!
-    note right of Sender: Encrypt Order Context with K and sign it with Sender private key
-    Sender->>Receiver: Broadcast Encrypted Context
-    note left of Receiver: Context is encrypted!
-    note left of Receiver: Verify signature of context with Sender public key
-    note left of Receiver: Decrypt encrypted context with K
+    participant Rx as Receiver
+    participant RxCtx as "Receiver: fdc3.instrument handler"
+    participant RxKey as "Receiver: symmetricKeyResponse listener"
+    participant Sx as Sender
+    participant SxReq as "Sender: symmetricKeyRequest listener"
+    Rx->>Sx: View Instrument Intent
+    note right of Sx: Generate random symmetric key K
+    note right of Sx: Create private channel C
+    Sx->>Rx: Intent reply: private channel C
+    note left of Rx: Join channel C
+    note over RxCtx,RxKey: addContextListener on C
+    note right of Sx: New instrument snapshot
+    note right of Sx: Encrypt fdc3.instrument with K, sign (JWS)
+    Sx->>RxCtx: Broadcast fdc3.security.encryptedContext (originalType fdc3.instrument)
+    note left of RxCtx: Payload is JWE — need K
+    note left of RxCtx: Verify context JWS (sender)
+    Rx->>SxReq: Broadcast fdc3.security.symmetricKeyRequest (signed)
+    note right of SxReq: Verify request JWS, fetch Receiver JWKS from jku
+    note right of SxReq: Wrap K for Receiver (JWE), sign response (JWS)
+    Sx->>RxKey: Broadcast fdc3.security.symmetricKeyResponse
+    note left of RxKey: Verify response JWS, unwrap K (private key)
+    note left of Rx: K held for channel C — decrypt subsequent payloads
+    note right of Sx: Instrument update
+    note right of Sx: Encrypt fdc3.instrument with K, sign (JWS)
+    Sx->>RxCtx: Broadcast fdc3.security.encryptedContext (originalType fdc3.instrument)
+    note left of RxCtx: Verify JWS, decrypt JWE with K
+    note left of RxCtx: Handle fdc3.instrument
 ```
 
 #### Context Types
@@ -371,7 +373,20 @@ channel.broadcast(
     antiReplay: { iat: 1739692820, exp: 1739696120, jti: "ctx-uuid-789" }
   }
 );
+
+// this is taken from backend-encrypted-channel-example.ts
+// in packages/fdc3-security/samples
+const support = new PrivateEncryptedContextListenerSupport(this.security, metadataHandler);
+await support.addContextListener(channel, 'test.encrypted', (ctx: Context, meta?:ContextMetadata) => {
+  console.log(`\n[Receiving App Backend] ✅ Decrypted context received (encryption done on backend):`);
+  console.log(JSON.stringify(ctx, null, 2));
+  if (meta?.encryption === 'decrypted') {
+    console.log('[Receiving App Backend] Metadata indicates decryption performed on backend');
+  }
+});
+
 ```
+channel.addContextListener
 
 ## User Identity
 
@@ -386,7 +401,7 @@ The [`fdc3.security.user`](../context/ref/security/User) context type represents
 ```typescript
 {
   type: "fdc3.security.user",
-  wrappedJwt: "--some encrypted content --"
+  wrappedJwt: "--example-jwt-token--but-wrapped-in-the-public-key-of-the-requester--"
 }
 ```
 
