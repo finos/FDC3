@@ -334,58 +334,15 @@ sequenceDiagram
 | [`fdc3.security.symmetricKeyResponse`](../context/ref/security/SymmetricKeyResponse) | Response containing `wrappedKey` (JWE) and `id.{kid,pki}`. Must be signed. |
 | [`fdc3.security.encryptedContext`](../context/ref/security/EncryptedContextWrapper) | Wrapper with `encryptedPayload` (JWE); `originalType` and `id.kid` preserved for routing. |
 
-**Examples:**
+::: tip
 
-```typescript
-// fdc3.security.symmetricKeyRequest (broadcast with metadata—must be signed)
-channel.broadcast(
-  { type: "fdc3.security.symmetricKeyRequest", id: { kid: "channel-key-abc123" } },
-  {
-    signature: { protected: "eyJhbGc...", signature: "TjDgrB6k..." },
-    antiReplay: { iat: 1739692800, exp: 1739696100, jti: "req-uuid-123" }
-  }
-);
+## Javascript Examples
 
-// fdc3.security.symmetricKeyResponse (broadcast with metadata—must be signed)
-channel.broadcast(
-  {
-    type: "fdc3.security.symmetricKeyResponse",
-    id: { kid: "key-id-123", pki: "https://requestor.example.com/.well-known/jwks.json" },
-    wrappedKey: "u4jvA7Gx8LdH...=="  // JWE
-  },
-  {
-    signature: { protected: "eyJhbGc...", signature: "a1b2c3d4..." },
-    antiReplay: { iat: 1739692810, exp: 1739696110, jti: "resp-uuid-456" }
-  }
-);
+See: 
+- https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/backend-encrypted-channel-example.ts
+- https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/frontend-encrypted-channel-example.ts
 
-// fdc3.security.encryptedContext (broadcast with metadata; typically signed)
-channel.broadcast(
-  {
-    type: "fdc3.security.encryptedContext",
-    originalType: "fdc3.instrument",
-    id: { kid: "channel-key-abc123" },
-    encryptedPayload: "eyJuYW1lIjoiQXBwbGUiLCJpZCI6eyJ0aWNrZXIiOiJBQVBMIn19..."  // JWE
-  },
-  {
-    signature: { protected: "eyJhbGc...", signature: "e5f6g7h8..." },
-    antiReplay: { iat: 1739692820, exp: 1739696120, jti: "ctx-uuid-789" }
-  }
-);
-
-// this is taken from backend-encrypted-channel-example.ts
-// in packages/fdc3-security/samples
-const support = new PrivateEncryptedContextListenerSupport(this.security, metadataHandler);
-await support.addContextListener(channel, 'test.encrypted', (ctx: Context, meta?:ContextMetadata) => {
-  console.log(`\n[Receiving App Backend] ✅ Decrypted context received (encryption done on backend):`);
-  console.log(JSON.stringify(ctx, null, 2));
-  if (meta?.encryption === 'decrypted') {
-    console.log('[Receiving App Backend] Metadata indicates decryption performed on backend');
-  }
-});
-
-```
-channel.addContextListener
+::: 
 
 ## User Identity
 
