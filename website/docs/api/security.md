@@ -68,11 +68,17 @@ sequenceDiagram
     BE-->>FE: signed or encrypted context / response
 ```
 
+:::tip 
+
+### Security Implementations
+
 The FDC3 Security implementations provides various helpers to make it easy to communicate across the boundary.
 
 | Language                | Documentation   |
 |-------------------------|-----------------|
 | JavaScript / TypeScript | [README](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/README.md) |
+
+:::
 
 ### Public / Private Keys
 
@@ -100,7 +106,7 @@ Trust is determined and enforced by applications, not by the Desktop Agent. Each
 
 ### Trust Function
 
-Receiving apps provide an `allowListFunction(jku, iss?)` when configuring their security layer. This function determines whether a signer is trusted: given the signer's JWKS URL (`jku`) from the JWS header—and optionally the issuer (`iss`) for JWT verification—it returns `true` if the signer is in the receiver's circle of trust. When verifying a signature, the security layer sets `authenticity.trusted` to the result of this function, so apps can decide who they trust without bilateral configuration.
+Receiving apps provide an `allowListFunction(jku, iss?)` when configuring their security implementation. This function determines whether a signer is trusted: given the signer's JWKS URL (`jku`) from the JWS header—and optionally the issuer (`iss`) for JWT verification—it returns `true` if the signer is in the receiver's circle of trust. When verifying a signature, the security layer sets `authenticity.trusted` to the result of this function, so apps can decide who they trust without bilateral configuration.
 
 ```typescript
 // Example: allow list for three trusted apps
