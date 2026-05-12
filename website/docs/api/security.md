@@ -298,33 +298,32 @@ Both the key request and response **must be signed** (JWS). The key owner uses t
 
 ```mermaid
 sequenceDiagram
-    participant Rx as Receiver
-    participant RxCtx as "Receiver: fdc3.instrument handler"
-    participant RxKey as "Receiver: symmetricKeyResponse listener"
-    participant Sx as Sender
-    participant SxReq as "Sender: symmetricKeyRequest listener"
-    Rx->>Sx: View Instrument Intent
+    participant Rx as Receiver App
+    participant RxCtx as "Receiver App's `fdc3.instrument` contextHandler"
+    participant RxKey as "Receiver App's `symmetricKeyResponse` contextHandler"
+    participant Sx as Broadcaster App
+    participant SxReq as "Broadcaster App's `symmetricKeyRequest` contextHandler"
+    Rx->>Sx: Raises `ViewInstrument` Intent
     note right of Sx: Generate random symmetric key K
     note right of Sx: Create private channel C
-    Sx->>Rx: Intent reply: private channel C
+    Sx->>Rx: Intent result: private channel C
     note left of Rx: Join channel C
-    note over RxCtx,RxKey: addContextListener on C
+    Rx->>RxCtx: addContextListener for `fdc3.instrument`
+    Rx->>RxKey: addContextListener for `symmetricKeyResponse`
+    Sx->>SxReq: addContextListener for `symmetricKeyRequest`
     note right of Sx: New instrument snapshot
     note right of Sx: Encrypt fdc3.instrument with K, sign (JWS)
     Sx->>RxCtx: Broadcast fdc3.security.encryptedContext (originalType fdc3.instrument)
-    note left of RxCtx: Payload is JWE — need K
-    note left of RxCtx: Verify context JWS (sender)
-    Rx->>SxReq: Broadcast fdc3.security.symmetricKeyRequest (signed)
+    note right of RxCtx: Payload is JWE — need K
+    note right of RxCtx: Verify context JWS (sender)
+    RxCtx->>SxReq: Broadcast fdc3.security.symmetricKeyRequest (signed)
     note right of SxReq: Verify request JWS, fetch Receiver JWKS from jku
     note right of SxReq: Wrap K for Receiver (JWE), sign response (JWS)
-    Sx->>RxKey: Broadcast fdc3.security.symmetricKeyResponse
+    SxReq->>RxKey: Broadcast fdc3.security.symmetricKeyResponse
     note left of RxKey: Verify response JWS, unwrap K (private key)
-    note left of Rx: K held for channel C — decrypt subsequent payloads
-    note right of Sx: Instrument update
-    note right of Sx: Encrypt fdc3.instrument with K, sign (JWS)
-    Sx->>RxCtx: Broadcast fdc3.security.encryptedContext (originalType fdc3.instrument)
-    note left of RxCtx: Verify JWS, decrypt JWE with K
-    note left of RxCtx: Handle fdc3.instrument
+    note left of RxKey: K held for channel C — decrypt subsequent payloads
+    RxKey->>RxCtx: decrypt instrument
+    RxCtx->>RxCtx: process context handler
 ```
 
 #### Context Types
