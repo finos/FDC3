@@ -6,7 +6,7 @@ sidebar_label: Symmetric Key Request
 
 # Symmetric Key Request
 
-A request to obtain a symmetric encryption key for decrypting encrypted context on a channel.
+[@experimental](/docs/fdc3-compliance#experimental-features) A request to obtain a symmetric encryption key for decrypting encrypted context on a channel.
 
 **Note:** This context type MUST be signed to be effective. The key owner uses the signature's public key URL to encrypt the symmetric key in the response, ensuring only the requesting application can decrypt it. See the [Security & Identity documentation](../../api/security) for details on signing context objects and encrypted communications.
 

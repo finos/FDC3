@@ -54,7 +54,8 @@ The following context types support security features:
 
 Web applications split into a _front end_ (browser) and _back end_ (server) because servers are trusted and can hold private keys safely. The FDC3 Security API therefore has public and private parts: the front end holds only public keys and delegates signing, verification, and sensitive logic to the back end. 
 
-The diagram below shows how context and requests flow over a WebSocket (or similar secure boundary): the front end sends context or requests; the back end signs, processes, and returns signed context or responses.
+The diagram below shows how traffic crosses a WebSocket (or similar secure boundary). The browser uses [`connectRemoteHandlers`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/src/secure-boundary/ClientSideHandlersImpl.ts); the server runs your [`FDC3Handlers`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/src/secure-boundary/FDC3Handlers.ts) implementation (for example a subclass of [`DefaultFDC3Handlers`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/src/secure-boundary/FDC3Handlers.ts)). Each labeled message maps to one interface method.
+
 
 ```mermaid
 sequenceDiagram
@@ -79,6 +80,142 @@ The FDC3 Security implementations provides various helpers to make it easy to co
 | JavaScript / TypeScript | [README](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/README.md) |
 
 :::
+
+### `FDC3Handlers`
+
+[`FDC3Handlers`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/src/secure-boundary/FDC3Handlers.ts) is the contract your **trusted backend** implements.  This enables the front-end part of your application to get contexts signed, generate encryption keys or deal with any secure operations that might involve the application's private key or sensitive data.
+
+:::tip
+
+It is not a requirement for applications to use this code, but it is provided to simplify the efforts required to export the parts of FDC3 functionality your app needs to run in a "high-trust" environment onto the server side.  
+
+
+:::
+
+<Tabs groupId="fdc3-handlers-lang">
+<TabItem value="js-backend" label="JavaScript FDC3Handlers">
+
+```typescript
+/**
+ * Contract for **application** code that must run in a high-trust environment (private keys,
+ * JWS/JWE, symmetric key material).
+ *
+ * Two library modules implement opposite sides of the same wire protocol:
+ *
+ * - **`ClientSideHandlersImpl`** — Implements `FDC3Handlers` on the **low-trust** side as a
+ *   remote stub. {@link connectRemoteHandlers} constructs it over a WebSocket.
+ *
+ * - **`ServerSideHandlersImpl`** `setupWebsocketServer` takes an implementation of `FDC3Handlers` .
+ *   to run on the **high-trust** server side.
+ *
+ */
+export interface FDC3Handlers {
+  /**
+   * Called on the client so that the server has a version of the channel to which it can attach
+   * listeners and broadcast from the **high-trust** part of the application. This means you can attach
+   * signing or encryption helpers that need private keys.
+   *
+   * **Samples**
+   * - `signing-broadcast-example.ts` — shows how you can wrap the channel on the server side with
+   *   `BasicSignedBroadcaster` so every broadcast is JWS-signed on the server.
+   * - `backend-encrypted-channel-example.ts` — shows how you can use `EncryptedBroadcastSupport` to
+   *   encrypt context on the backend and send across FDC3.
+   *
+   * @param purpose — Allows the client to tell the server the purpose for which it is sharing the
+   *   channel. This is up to applications to define and use.
+   * @param channel — Proxy `Channel`/`PrivateChannel` bridged from the client agent.
+   */
+  handleRemoteChannel(purpose: string, channel: Channel): Promise<void>;
+
+  /**
+   * Called on the client so that the server can provide the real `IntentHandler` for a given intent
+   * name. You `await handlers.remoteIntentHandler(intent)` once to register; every later call with
+   * `(context, metadata)` runs on the **high-trust** side over the WebSocket.
+   *
+   * **Samples**
+   * - `get-user-example.ts` — shows how you can handle `CreateIdentityToken`: take
+   *   `fdc3.security.userRequest`, mint a JWT, build `fdc3.security.user`, encrypt for the requestor’s
+   *   JWKS, and return `fdc3.security.encryptedContext`.
+   * - `signing-intent-example.ts` — shows how you can wire `DataTransfer` with
+   *   `PublicSignatureCheckingHandlerSupport` and `PrivateSignedIntentResultSupport` so the handler
+   *   verifies the raiser’s JWS and signs the response (the raiser signs its outbound context via
+   *   `exchangeData` instead of holding the private key in the browser).
+   * - `backend-encrypted-channel-example.ts` — shows how you can handle `ShareEncryptedChannel` by
+   *   returning `{ type: 'private' }` so the client opens a private channel and calls
+   *   `handleRemoteChannel`, then runs `EncryptedBroadcastSupport` on the server.
+   *
+   * @param intent — The intent name the server should bind (must match the client’s
+   *   `remoteIntentHandler` calls).
+   */
+  remoteIntentHandler(intent: string): Promise<IntentHandler>;
+
+  /**
+   * A convenience function.  Called on the client so that the server can return it items of data it needs. The client calls
+   * `handlers.exchangeData(purpose, o)`; the server returns an object or `void`. Use stable `purpose`
+   * strings so both sides agree on the payload shape.   
+   *
+   * **Samples**
+   * - `signing-intent-example.ts` — shows how you can implement `sign-context` when raising an intent so the browser
+   *   never sees the private key.
+   * - `frontend-encrypted-channel-example.ts` — shows how you can implement `sign-context` and
+   *   `unwrap-symmetric-key` on the receiver backend so key-request signing and symmetric-key
+   *   unwrapping stay off the frontend (`fdc3.security.symmetricKeyResponse` in, unwrapped JWK out).
+   *
+   * @param purpose — Tells the server which operation this call represents; defined by your app.
+   * @param o — The payload for that operation (for example `{ context }` or an object compatible with
+   *   `fdc3.security.symmetricKeyResponse`).
+   */
+  exchangeData(purpose: string, o: object): Promise<object | void>;
+}
+```
+
+#### Example 1: Bridging a channel with `handleRemoteChannel`
+
+The front end keeps the live `Channel` from the Desktop Agent; `handleRemoteChannel` mirrors it to the back end so signing can run where private keys live. Broadcasts initiated on the server flow through the proxy to the real channel.
+
+```mermaid
+sequenceDiagram
+    participant FEA as App Front End
+    participant DA as Desktop Agent
+    participant BEA as App Back End
+
+    DA-->>FEA: Channel
+    FEA->>BEA: handleRemoteChannel(purpose, channel) over WebSocket
+    BEA->>BEA: broadcast signed context
+    Note over BEA: sign context on the back end
+    BEA-->FEA: proxied channel ops
+    FEA->>DA: channel broadcast (with signed context)
+    Note over DA: context delivered to other apps / listeners
+```
+
+#### Example 2: Resolving intents with `remoteIntentHandler`
+
+App A registers an intent listener in the browser using a handler obtained from its back end. When App B raises the intent, the Desktop Agent delivers it to App A’s front end, which forwards handling to **App Back End A** and returns the result.
+
+```mermaid
+sequenceDiagram
+    participant FEA as App Front End A
+    participant BEA as App Back End A
+    participant DA as Desktop Agent
+    participant FEB as App Front End B
+    Note over FEA:  App A wants to handle MyIntent
+    FEA->>BEA: calls remoteIntentHandler 'MyIntent'
+    BEA-->>FEA: returns remoteIntentHandler
+    FEA->>DA: addIntentListener('MyIntent', remoteIntentHandler)
+    FEB->>DA: raiseIntent('MyIntent', context)
+    DA->>BEA: deliver intent to listener
+    BEA->>DA: handle intent, perhaps return signed or encrypted context
+    DA-->>FEB: resolution
+```
+
+</TabItem>
+</Tabs>
+
+
+
+
+
+Working samples (signed broadcasts, encrypted channels, identity, intents) live under [`packages/fdc3-security/samples/`](https://github.com/finos/FDC3/tree/main/packages/fdc3-security/samples).
 
 ### Public / Private Keys
 
@@ -334,9 +471,9 @@ sequenceDiagram
 | [`fdc3.security.symmetricKeyResponse`](../context/ref/security/SymmetricKeyResponse) | Response containing `wrappedKey` (JWE) and `id.{kid,pki}`. Must be signed. |
 | [`fdc3.security.encryptedContext`](../context/ref/security/EncryptedContextWrapper) | Wrapper with `encryptedPayload` (JWE); `originalType` and `id.kid` preserved for routing. |
 
-::: tip
+:::tip
 
-## Javascript Examples
+#### Javascript Examples
 
 See: 
 - https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/backend-encrypted-channel-example.ts
