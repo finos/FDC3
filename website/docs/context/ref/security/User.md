@@ -6,7 +6,7 @@ sidebar_label: User
 
 # User
 
-A user identity, expressed as a wrapped JWT.  Receivers will need to unwrap the JWT using their own private key.
+[@experimental](/docs/fdc3-compliance#experimental-features) A user identity, expressed as a wrapped JWT.  Receivers will need to unwrap the JWT using their own private key.
 
 ## Schema
 
@@ -19,7 +19,7 @@ A user identity, expressed as a wrapped JWT.  Receivers will need to unwrap the 
 ## Properties
 
 <details>
-  <summary><code>wrappedJwt</code></summary>
+  <summary><code>wrappedJwt</code> <strong>(required)</strong></summary>
 
 **type**: `string`
 
