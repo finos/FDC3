@@ -29,9 +29,10 @@
     "packages/fdc3",
     "packages/fdc3-commonjs",
     "toolbox/fdc3-for-web/reference-ui",
-    "toolbox/fdc3-for-web/demo",
     "toolbox/fdc3-workbench",
-    "toolbox/fdc3-conformance"
+    "toolbox/fdc3-conformance",
+    "toolbox/fdc3-example-apps",
+    "toolbox/fdc3-for-web/demo"
   ],
   "scripts": {
     "clean": "npm run clean --workspaces --if-present",
