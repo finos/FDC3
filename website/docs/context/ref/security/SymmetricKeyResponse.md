@@ -6,7 +6,7 @@ sidebar_label: Symmetric Key Response
 
 # Symmetric Key Response
 
-A response containing a wrapped symmetric key and metadata.
+[@experimental](/docs/fdc3-compliance#experimental-features) A response containing a wrapped symmetric key and metadata.
 
 ## Schema
 
