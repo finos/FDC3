@@ -221,6 +221,7 @@ export class IntentHandler implements MessageHandler {
         timestamp: new Date(),
         traceId: appMeta.traceId ?? sc.createUUID(),
         ...(appMeta.signature !== undefined && { signature: appMeta.signature }),
+        ...(appMeta.antiReplay !== undefined && { antiReplay: appMeta.antiReplay }),
         ...(appMeta.custom !== undefined && { custom: appMeta.custom }),
       };
 

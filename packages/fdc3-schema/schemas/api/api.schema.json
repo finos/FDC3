@@ -393,6 +393,10 @@
                 "authenticity": {
                     "$ref": "#/definitions/MessageAuthenticity",
                     "description": "The result of verifying the context's signature, populated by the receiving app's security layer after attempting signature verification."
+                },
+                "antiReplay": {
+                    "$ref": "#/definitions/AntiReplay",
+                    "description": "Anti-replay claims supplied with signed context (e.g. merged from intentResultRequest metadata into resultMetadata)."
                 }
             },
             "required": [
