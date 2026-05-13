@@ -3,7 +3,7 @@ import { DataTable } from '@cucumber/cucumber';
 import { CustomWorld } from '../world/index.js';
 import { DirectoryApp } from '../../src/directory/DirectoryInterface.js';
 import { APP_FIELD, contextMap, createMeta } from './generic.steps.js';
-import { handleResolve } from '@finos/testing';
+import { handleResolve, parseAntiReplayClaims } from '@finos/testing';
 import { BrowserTypes } from '@finos/fdc3-schema';
 
 type FindIntentRequest = BrowserTypes.FindIntentRequest;
@@ -366,7 +366,7 @@ When(
 );
 
 When(
-  '{string} sends a intentResultRequest with eventUuid {string} and contextType {string} and raiseIntentUuid {string} with traceId {string} and signature {string}',
+  '{string} sends a intentResultRequest with eventUuid {string} and contextType {string} and raiseIntentUuid {string} with traceId {string} and signature {string} and antiReplay claims {string}',
   async (
     world: CustomWorld,
     appStr: string,
@@ -374,7 +374,8 @@ When(
     contextType: string,
     raiseIntentUuid: string,
     traceId: string,
-    signature: string
+    signature: string,
+    antiReplayClaims: string
   ) => {
     const meta = createMeta(world, appStr);
     const uuid1 = world.sc.getInstanceUUID(meta.source)!;
@@ -396,11 +397,7 @@ When(
         metadata: {
           traceId,
           signature: detachedSignature,
-          antiReplay: {
-            iat: 1739692800,
-            exp: 1739696100,
-            jti: 'unique-token-id',
-          },
+          antiReplay: parseAntiReplayClaims(antiReplayClaims),
         },
       },
     };
