@@ -7,6 +7,7 @@ import {
   CLIENT_MESSAGE,
   SERVER_MESSAGE,
   ExchangeDataMessage,
+  INSTANCE_DETAILS,
 } from './MessageTypes.js';
 import { FDC3Handlers } from './FDC3Handlers.js';
 import { BrowserTypes } from '@finos/fdc3-schema';
@@ -203,15 +204,18 @@ export async function connectRemoteHandlers(
 ): Promise<FDC3Handlers & { disconnect(): Promise<void> }> {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(url);
-    ws.addEventListener('open', () => {
-      const messaging = new WebSocketMessaging(
-        ws,
-        { appId: 'client-security' },
-        {
-          outgoingEvent: CLIENT_MESSAGE,
-          incomingEvent: SERVER_MESSAGE,
-        }
-      );
+    ws.addEventListener('open', async () => {
+      const implementationMetadata = await da.getInfo();
+      const messaging = new WebSocketMessaging(ws, implementationMetadata.appMetadata, {
+        outgoingEvent: CLIENT_MESSAGE,
+        incomingEvent: SERVER_MESSAGE,
+      });
+
+      await messaging.postEvent(INSTANCE_DETAILS, {
+        appIdentifier: implementationMetadata.appMetadata,
+        fdc3Version: implementationMetadata.fdc3Version,
+      });
+
       resolve(new ClientSideHandlersImpl(messaging, da, callback));
     });
     ws.addEventListener('error', err => reject(err));
