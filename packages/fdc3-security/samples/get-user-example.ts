@@ -8,7 +8,8 @@ import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlers
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
 import { AppBackEnd } from '../test/mocks/AppBackEnd';
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
-import { MockDesktopAgent } from '../test/mocks/MockDesktopAgent';
+import { MockDesktopAgent, resetMockDesktopAgentFixtureState } from '../test/mocks/MockDesktopAgent';
+import { createMetadataHandler } from '../src/delegates/MetadataHandler';
 
 const CREATE_IDENTITY_TOKEN = 'CreateIdentityToken';
 
@@ -78,12 +79,11 @@ class UserRequestingApp {
    * Connect to the IDP and raise CreateIdentityToken intent.
    * Receives encrypted fdc3.security.encryptedContext, decrypts to get fdc3.security.user, verifies JWT.
    */
-  async requestUserFrom(idp: AppBackEnd): Promise<void> {
+  async requestUserFrom(idp: AppBackEnd, mockDA: MockDesktopAgent): Promise<void> {
     const wsUrl = idp.baseUrl.replace('http', 'ws');
     console.log(`[UserRequestingApp] Connecting to IDP at ${wsUrl}...`);
 
-    const mockDA = new MockDesktopAgent() as unknown as DesktopAgent;
-    const handlers = await connectRemoteHandlers(wsUrl, mockDA, async () => {});
+    const handlers = await connectRemoteHandlers(wsUrl, mockDA as unknown as DesktopAgent, async () => {});
 
     const createIdentityTokenHandler = await handlers.remoteIntentHandler(CREATE_IDENTITY_TOKEN);
     const userRequest: Context = {
@@ -91,9 +91,10 @@ class UserRequestingApp {
       aud: this.baseUrl,
     };
 
+    const info = await mockDA.getInfo();
     const result = await createIdentityTokenHandler(userRequest, {
       timestamp: new Date(),
-      source: { appId: 'test.app', instanceId: '123' },
+      source: info.appMetadata,
     });
 
     if (!result) {
@@ -158,10 +159,10 @@ async function step2SetupRequestingAppBackend() {
 /**
  * STEP 3: Request user from IDP via CreateIdentityToken intent
  */
-async function step3RequestUser(idp: AppBackEnd, requestingApp: AppBackEnd) {
+async function step3RequestUser(idp: AppBackEnd, requestingApp: AppBackEnd, mockDA: MockDesktopAgent) {
   console.log('3. UserRequestingApp raises CreateIdentityToken intent...');
   const userRequestingApp = new UserRequestingApp(requestingApp);
-  await userRequestingApp.requestUserFrom(idp);
+  await userRequestingApp.requestUserFrom(idp, mockDA);
 }
 
 /**
@@ -175,12 +176,16 @@ async function step3RequestUser(idp: AppBackEnd, requestingApp: AppBackEnd) {
  *    wraps in fdc3.security.encryptedContext, returns as intent result.
  *    Requesting app decrypts, verifies JWT, and displays user.
  */
-async function runExample() {
+async function runExample(fdc3Version: string = '3.0') {
+  resetMockDesktopAgentFixtureState();
   console.log('--- FDC3 Get User Example Start ---');
+
+  const mockRequesting = new MockDesktopAgent(fdc3Version, { appId: 'user-requesting.app', instanceId: 'u1' });
+  await createMetadataHandler(mockRequesting as unknown as DesktopAgent);
 
   const idp = await step1SetupIDPBackend();
   const requestingApp = await step2SetupRequestingAppBackend();
-  await step3RequestUser(idp, requestingApp);
+  await step3RequestUser(idp, requestingApp, mockRequesting);
 
   console.log('\n--- FDC3 Get User Example Complete ---');
   await requestingApp.shutdown();
@@ -191,7 +196,8 @@ export { runExample };
 
 const __filename = fileURLToPath(import.meta.url);
 if (process.argv[1] && resolve(process.argv[1]) === resolve(__filename)) {
-  runExample()
+  const fdc3Version = process.argv[2] ?? '3.0';
+  runExample(fdc3Version)
     .then(() => process.exit(0))
     .catch(err => {
       console.error('Example failed:', err);

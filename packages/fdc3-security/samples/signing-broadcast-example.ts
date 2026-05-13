@@ -3,16 +3,14 @@ import { fileURLToPath } from 'url';
 import { Channel, ContextHandler, ContextMetadata, DesktopAgent } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { createJosePublicFDC3SecurityFromUrl } from '../src/impl/JosePublicFDC3Security';
-import { MockDesktopAgent } from '../test/mocks/MockDesktopAgent';
+import { MockDesktopAgent, resetMockDesktopAgentFixtureState } from '../test/mocks/MockDesktopAgent';
 import { AppBackEnd } from '../test/mocks/AppBackEnd';
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { BasicSignedBroadcaster, SignedBroadcaster } from '../src/signing/SignedBroadcastSupport';
 import { PublicSignatureCheckingHandlerSupport } from '../src/signing/SignatureCheckingHandlerSupport';
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
-import { MetadataHandlerImpl } from '../src/delegates/MetadataHandler';
-
-const metadataHandler = new MetadataHandlerImpl(false, { appId: 'test.app', instanceId: '123' });
+import { createMetadataHandler, type MetadataHandler } from '../src/delegates/MetadataHandler';
 
 /**
  * App A backend handlers (sender). Receives the channel via handleRemoteChannel,
@@ -21,14 +19,17 @@ const metadataHandler = new MetadataHandlerImpl(false, { appId: 'test.app', inst
 class AppABackendHandlers extends DefaultFDC3Handlers {
   signedBroadcaster: SignedBroadcaster | null = null;
 
-  constructor(private security: JosePrivateFDC3Security) {
+  constructor(
+    private security: JosePrivateFDC3Security,
+    private metadataHandler: MetadataHandler
+  ) {
     super();
   }
 
   async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
     if (purpose !== 'broadcast') return;
     console.log('[App A Backend] Received channel via handleRemoteChannel, wrapping with BasicSignedBroadcaster');
-    this.signedBroadcaster = new BasicSignedBroadcaster(this.security, metadataHandler, channel);
+    this.signedBroadcaster = new BasicSignedBroadcaster(this.security, this.metadataHandler, channel);
   }
 
   async broadcast(): Promise<void> {
@@ -46,9 +47,9 @@ class AppABackendHandlers extends DefaultFDC3Handlers {
 /**
  * STEP 1: Setup App A (sender) backend
  */
-async function step1SetupAppABackend() {
+async function step1SetupAppABackend(metadataHandler: MetadataHandler) {
   console.log('1. Starting App A backend...');
-  const app = new AppBackEnd((_ws, security) => new AppABackendHandlers(security));
+  const app = new AppBackEnd((_ws, security) => new AppABackendHandlers(security, metadataHandler));
   await app.start();
   return app;
 }
@@ -82,7 +83,11 @@ async function step3AppAExportChannel(appA: AppBackEnd, mockDA: MockDesktopAgent
  * STEP 4: Setup App B (receiver) channel handler verification and listener.
  * Uses App B's JWKS for the instance; verification fetches signer keys from jku in each signature.
  */
-async function step4SetupAppBChannelDelegate(appBBaseUrl: string, channel: Channel): Promise<{ done: Promise<void> }> {
+async function step4SetupAppBChannelDelegate(
+  appBBaseUrl: string,
+  channel: Channel,
+  metadataHandler: MetadataHandler
+): Promise<{ done: Promise<void> }> {
   console.log('4. App B Setup: Wrapping channel handler (verification uses jku from signatures)...');
 
   const jwksUrl = `${appBBaseUrl}/.well-known/jwks.json`;
@@ -138,16 +143,21 @@ async function step5AppABackendBroadcasts(appA: AppBackEnd): Promise<void> {
  * - App A front-end: exports channel, triggers backend via exchangeData (context lives in backend)
  * - App B: wraps channel, verifies using jku from signatures, receives.
  */
-async function runExample(): Promise<void> {
+async function runExample(fdc3Version: string = '3.0'): Promise<void> {
+  resetMockDesktopAgentFixtureState();
   console.log('--- FDC3 Signing Example Start ---');
 
-  const appA = await step1SetupAppABackend();
-  const appB = await step2SetupAppBBackend();
-  const mockDA = new MockDesktopAgent();
-  const channel = await mockDA.getOrCreateChannel('fdc3.channel.1');
+  const mockAppA = new MockDesktopAgent(fdc3Version, { appId: 'app-a', instanceId: 'a1' });
+  const mockAppB = new MockDesktopAgent(fdc3Version, { appId: 'app-b', instanceId: 'b1' });
+  const metadataHandlerA = await createMetadataHandler(mockAppA as unknown as DesktopAgent);
+  const metadataHandlerB = await createMetadataHandler(mockAppB as unknown as DesktopAgent);
 
-  const appAHandlers = await step3AppAExportChannel(appA, mockDA);
-  const { done } = await step4SetupAppBChannelDelegate(appB.baseUrl, channel);
+  const appA = await step1SetupAppABackend(metadataHandlerA);
+  const appB = await step2SetupAppBBackend();
+  const channel = await mockAppA.getOrCreateChannel('fdc3.channel.1');
+
+  const appAHandlers = await step3AppAExportChannel(appA, mockAppA);
+  const { done } = await step4SetupAppBChannelDelegate(appB.baseUrl, channel, metadataHandlerB);
 
   await step5AppABackendBroadcasts(appA);
   await done;
@@ -164,7 +174,8 @@ export { runExample };
  */
 const __filename = fileURLToPath(import.meta.url);
 if (process.argv[1] && resolve(process.argv[1]) === resolve(__filename)) {
-  runExample()
+  const fdc3Version = process.argv[2] ?? '3.0';
+  runExample(fdc3Version)
     .then(() => process.exit(0))
     .catch(err => {
       console.error('Example failed:', err);
