@@ -1,4 +1,5 @@
 import { BrowserTypes } from '@finos/fdc3-schema';
+import { AppIdentifier } from '@finos/fdc3-standard';
 
 /**
  * These types describe the protocol for cross-secure-boundary messaging,
@@ -25,6 +26,13 @@ export const EXCHANGE_DATA = 'exchange-data';
 export type ExchangeDataMessage = {
   purpose: string;
   o: object;
+};
+
+export const INSTANCE_DETAILS = 'instance-details';
+
+export type InstanceDetailsMessage = {
+  appIdentifier: AppIdentifier;
+  fdc3Version: string;
 };
 
 /**
@@ -73,6 +81,12 @@ export type WsEnvelope =
       id?: string;
       ack?: boolean;
       payload: BrowserTypes.AppRequestMessage | BrowserTypes.AgentEventMessage | BrowserTypes.AgentResponseMessage;
+    }
+  | {
+      event: typeof INSTANCE_DETAILS;
+      id?: string;
+      ack?: boolean;
+      payload: InstanceDetailsMessage;
     }
   | {
       event: string; // Dynamic IDs, ACKs, or custom handlers
