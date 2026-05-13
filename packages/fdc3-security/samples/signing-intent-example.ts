@@ -3,7 +3,7 @@ import { fileURLToPath } from 'url';
 import { ContextMetadata, DesktopAgent, IntentHandler } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { createJosePublicFDC3SecurityFromUrl } from '../src/impl/JosePublicFDC3Security';
-import { MockDesktopAgent } from '../test/mocks/MockDesktopAgent';
+import { MockDesktopAgent, resetMockDesktopAgentFixtureState } from '../test/mocks/MockDesktopAgent';
 import { AppBackEnd } from '../test/mocks/AppBackEnd';
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { PublicSignatureCheckingHandlerSupport } from '../src/signing/SignatureCheckingHandlerSupport';
@@ -11,10 +11,9 @@ import { PrivateSignedIntentResultSupport } from '../src/signing/SignedIntentRes
 import { BasicSignedRaiseIntentSupport } from '../src/signing/SignedRaiseIntentSupport';
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
-import { MetadataHandlerImpl } from '../src/delegates/MetadataHandler';
+import { createMetadataHandler, type MetadataHandler } from '../src/delegates/MetadataHandler';
 
 const INTENT_DATA_TRANSFER = 'DataTransfer';
-const metadataHandler = new MetadataHandlerImpl(false, { appId: 'test.app', instanceId: '123' });
 
 /**
  * Handler App Backend Handlers.
@@ -24,7 +23,10 @@ const metadataHandler = new MetadataHandlerImpl(false, { appId: 'test.app', inst
  * 3. Signs the response context before returning it.
  */
 class HandlerAppBackendHandlers extends DefaultFDC3Handlers {
-  constructor(private security: JosePrivateFDC3Security) {
+  constructor(
+    private security: JosePrivateFDC3Security,
+    private metadataHandler: MetadataHandler
+  ) {
     super();
   }
 
@@ -47,7 +49,7 @@ class HandlerAppBackendHandlers extends DefaultFDC3Handlers {
         } as Context;
 
         // Sign the intent result (response)
-        const signer = new PrivateSignedIntentResultSupport(this.security, metadataHandler);
+        const signer = new PrivateSignedIntentResultSupport(this.security, this.metadataHandler);
         return await signer.signIntentResult(response);
       } else {
         console.error(
@@ -59,7 +61,7 @@ class HandlerAppBackendHandlers extends DefaultFDC3Handlers {
     };
 
     // Wrap the core handler with SignatureCheckingHandlerSupport for automatic verification
-    const verifier = new PublicSignatureCheckingHandlerSupport(metadataHandler, this.security);
+    const verifier = new PublicSignatureCheckingHandlerSupport(this.metadataHandler, this.security);
     return (await verifier.wrapContextHandler(coreHandler as any)) as IntentHandler;
   }
 }
@@ -88,9 +90,9 @@ class RaiserAppBackendHandlers extends DefaultFDC3Handlers {
 /**
  * STEP 1: Setup Handler App
  */
-async function step1SetupHandlerApp(mockDA: MockDesktopAgent) {
+async function step1SetupHandlerApp(mockDA: MockDesktopAgent, metadataHandler: MetadataHandler) {
   console.log('1. Starting Handler App backend...');
-  const backend = new AppBackEnd((_ws, security) => new HandlerAppBackendHandlers(security));
+  const backend = new AppBackEnd((_ws, security) => new HandlerAppBackendHandlers(security, metadataHandler));
   await backend.start();
 
   console.log('   Handler App Frontend: Connecting to backend, registering intent listener...');
@@ -131,7 +133,8 @@ async function step2SetupRaiserApp(mockDA: MockDesktopAgent) {
 async function step3MutuallyAuthenticatedExchange(
   raiserHandlers: Awaited<ReturnType<typeof connectRemoteHandlers>>,
   mockDA: MockDesktopAgent,
-  handlerAppBaseUrl: string
+  handlerAppBaseUrl: string,
+  metadataHandler: MetadataHandler
 ) {
   console.log('\n3. Raiser App: Preparing mutually authenticated intent exchange...');
 
@@ -168,9 +171,10 @@ async function step3MutuallyAuthenticatedExchange(
 
   console.log('   Raiser App: Awaiting signed response from handler...');
   const result = (await resolution.getResult()) as Context;
-
-  // With SignedRaiseIntentSupport, the result is automatically verified!
-  const auth = (result as any).__appMeta?.authenticity;
+  const resultMetadata = await resolution.getResultMetadata();
+  const fromPacked = (result as { __appMeta?: { authenticity?: ContextMetadata['authenticity'] } }).__appMeta
+    ?.authenticity;
+  const auth: ContextMetadata['authenticity'] = fromPacked ?? resultMetadata?.authenticity;
 
   if (auth?.signed && auth?.valid && auth?.trusted) {
     console.log(`\n[Raiser App] ✅ MUTUAL AUTHENTICATION SUCCESSFUL:`);
@@ -187,16 +191,25 @@ async function step3MutuallyAuthenticatedExchange(
 /**
  * MAIN EXECUTION
  */
-async function runExample() {
+async function runExample(fdc3Version: string = '3.0') {
+  resetMockDesktopAgentFixtureState();
   console.log('--- FDC3 Mutually Authenticated Intent Example Start ---');
 
-  const mockDA = new MockDesktopAgent();
+  const mockHandler = new MockDesktopAgent(fdc3Version, { appId: 'handler.app', instanceId: 'h1' });
+  const mockRaiser = new MockDesktopAgent(fdc3Version, { appId: 'raiser.app', instanceId: 'r1' });
+  const metadataHandlerHandler = await createMetadataHandler(mockHandler as unknown as DesktopAgent);
+  const metadataHandlerRaiser = await createMetadataHandler(mockRaiser as unknown as DesktopAgent);
 
-  const handlerApp = await step1SetupHandlerApp(mockDA);
-  const raiserApp = await step2SetupRaiserApp(mockDA);
+  const handlerApp = await step1SetupHandlerApp(mockHandler, metadataHandlerHandler);
+  const raiserApp = await step2SetupRaiserApp(mockRaiser);
 
   try {
-    await step3MutuallyAuthenticatedExchange(raiserApp.handlers, mockDA, handlerApp.backend.baseUrl);
+    await step3MutuallyAuthenticatedExchange(
+      raiserApp.handlers,
+      mockRaiser,
+      handlerApp.backend.baseUrl,
+      metadataHandlerRaiser
+    );
   } finally {
     console.log('\nClosing connections...');
     await handlerApp.handlers.disconnect();
@@ -212,7 +225,8 @@ export { runExample };
 
 const __filename = fileURLToPath(import.meta.url);
 if (process.argv[1] && resolve(process.argv[1]) === resolve(__filename)) {
-  runExample()
+  const fdc3Version = process.argv[2] ?? '3.0';
+  runExample(fdc3Version)
     .then(() => process.exit(0))
     .catch(err => {
       console.error('Example failed:', err);

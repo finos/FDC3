@@ -1,5 +1,5 @@
 import { AppIdentifier, Context } from '@finos/fdc3-context';
-import { ContextMetadata } from '@finos/fdc3-standard';
+import { ContextMetadata, DesktopAgent, versionIsAtLeast } from '@finos/fdc3-standard';
 
 /**
  * Older versions of FDC3 (< 3.0) did not allow metadata to be broadcast with a context.
@@ -20,7 +20,7 @@ export interface MetadataHandler {
 }
 
 export class MetadataHandlerImpl implements MetadataHandler {
-  private metadataAvailable: boolean;
+  protected metadataAvailable: boolean;
   private source: AppIdentifier;
 
   constructor(metadataAvailable: boolean, source: AppIdentifier) {
@@ -60,4 +60,14 @@ export class MetadataHandlerImpl implements MetadataHandler {
       return { context, metadata };
     }
   }
+}
+
+/**
+ * Builds a handler based on the FDC3 platform that we're on.
+ * To use metadata, `fdc3Version` must be at least **3.0**.
+ */
+export async function createMetadataHandler(desktopAgent: DesktopAgent): Promise<MetadataHandler> {
+  const info = await desktopAgent.getInfo();
+  const metadataAvailable = versionIsAtLeast(info, '3.0') === true;
+  return new MetadataHandlerImpl(metadataAvailable, info.appMetadata);
 }

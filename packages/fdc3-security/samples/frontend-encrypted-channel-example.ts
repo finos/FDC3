@@ -10,14 +10,12 @@ import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlers
 import { EncryptedBroadcastSupport, EncryptedBroadcaster } from '../src/encryption/EncryptedBroadcastSupport';
 import { PublicEncryptedContextListenerSupport } from '../src/encryption/EncryptedContextListenerSupport';
 import { AppBackEnd } from '../test/mocks/AppBackEnd';
-import { MockDesktopAgent } from '../test/mocks/MockDesktopAgent';
-import { MetadataHandlerImpl } from '../src/delegates/MetadataHandler';
+import { MockDesktopAgent, resetMockDesktopAgentFixtureState } from '../test/mocks/MockDesktopAgent';
+import { createMetadataHandler, type MetadataHandler } from '../src/delegates/MetadataHandler';
 import { fileURLToPath } from 'url';
 import { resolve } from 'path';
 
 const INTENT_SHARE_ENCRYPTED_CHANNEL = 'ShareEncryptedChannel';
-
-const metadataHandler = new MetadataHandlerImpl(false, { appId: 'test.app', instanceId: '123' });
 
 /**
  * Broadcasting app backend – no exchangeData handlers needed.
@@ -78,7 +76,8 @@ async function step2SetupBroadcastingApp() {
  */
 async function step3BroadcastingAppSetup(
   broadcastingApp: AppBackEnd,
-  mockDA: MockDesktopAgent
+  mockDA: MockDesktopAgent,
+  metadataHandler: MetadataHandler
 ): Promise<{ handlers: Awaited<ReturnType<typeof connectRemoteHandlers>>; broadcaster: EncryptedBroadcaster }> {
   console.log(
     '3. Broadcasting app front-end: Creating channel, setting up EncryptedBroadcastSupport (key on front-end)...'
@@ -112,7 +111,8 @@ async function step3BroadcastingAppSetup(
  */
 async function step4ReceivingAppSetup(
   receivingApp: AppBackEnd,
-  mockDA: MockDesktopAgent
+  mockDA: MockDesktopAgent,
+  metadataHandler: MetadataHandler
 ): Promise<Awaited<ReturnType<typeof connectRemoteHandlers>>> {
   console.log(
     '4. Receiving app front-end: Raising intent, setting up PublicEncryptedContextListenerSupport (decrypt on front-end)...'
@@ -190,16 +190,24 @@ async function step5BroadcastLoop(broadcaster: EncryptedBroadcaster): Promise<vo
  * - Receiving app front-end: PublicEncryptedContextListenerSupport, decrypts on front-end.
  *   Signs key requests and unwraps key responses via exchangeData to backend.
  */
-export async function runExample(): Promise<void> {
+export async function runExample(fdc3Version: string = '3.0'): Promise<void> {
+  resetMockDesktopAgentFixtureState();
   console.log('--- FDC3 Front-end Encrypted Channel Example Start ---');
+
+  const mockReceiving = new MockDesktopAgent(fdc3Version, { appId: 'receiving.app', instanceId: 'r1' });
+  const mockBroadcasting = new MockDesktopAgent(fdc3Version, { appId: 'broadcasting.app', instanceId: 'b1' });
+  const metadataHandlerReceiving = await createMetadataHandler(mockReceiving as unknown as DesktopAgent);
+  const metadataHandlerBroadcasting = await createMetadataHandler(mockBroadcasting as unknown as DesktopAgent);
 
   const receivingApp = await step1SetupReceivingApp();
   const broadcastingApp = await step2SetupBroadcastingApp();
 
-  const mockDA = new MockDesktopAgent();
-
-  const { handlers: broadcastingHandlers, broadcaster } = await step3BroadcastingAppSetup(broadcastingApp, mockDA);
-  const receivingHandlers = await step4ReceivingAppSetup(receivingApp, mockDA);
+  const { handlers: broadcastingHandlers, broadcaster } = await step3BroadcastingAppSetup(
+    broadcastingApp,
+    mockBroadcasting,
+    metadataHandlerBroadcasting
+  );
+  const receivingHandlers = await step4ReceivingAppSetup(receivingApp, mockReceiving, metadataHandlerReceiving);
 
   await step5BroadcastLoop(broadcaster);
 
@@ -214,7 +222,8 @@ export async function runExample(): Promise<void> {
  */
 const __filename = fileURLToPath(import.meta.url);
 if (process.argv[1] && resolve(process.argv[1]) === resolve(__filename)) {
-  runExample()
+  const fdc3Version = process.argv[2] ?? '3.0';
+  runExample(fdc3Version)
     .then(() => process.exit(0))
     .catch(err => {
       console.error('Example failed:', err);
