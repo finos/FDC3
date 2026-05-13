@@ -136,12 +136,12 @@ Feature: Intents Can Return Different Results
       | some-app     | abc123            |
 
   Scenario: getResultMetadata returns merged metadata when ContextWithMetadata is returned
-    Given Raise Intent returns a context of "{instrumentContext}" with traceId "my-trace-123" and signature "sig-abc"
+    Given Raise Intent returns a context of "{instrumentContext}" with traceId "my-trace-123" and signature "sig-abc" and antiReplay claims "1234/2345/result-jti"
     When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
     And I call "{result}" with "getResultMetadata"
     Then "{result}" is an object with the following contents
-      | source.appId | source.instanceId | traceId       | signature.signature | signature.protected |
-      | some-app     | abc123            | my-trace-123  | sig-abc (signature part)   | sig-abc (protected part) |
+      | source.appId | source.instanceId | traceId       | signature.signature | signature.protected | antiReplay.iat | antiReplay.exp | antiReplay.jti |
+      | some-app     | abc123            | my-trace-123  | sig-abc (signature part)   | sig-abc (protected part) | {1234}       | {2345}       | result-jti |
 
   Scenario: getResultMetadata returns DA-generated metadata for a channel result
     Given Raise Intent returns a private channel
