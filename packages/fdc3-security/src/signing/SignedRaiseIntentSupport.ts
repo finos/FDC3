@@ -2,7 +2,7 @@ import { Context } from '@finos/fdc3-context';
 import { PrivateFDC3Security, SigningFunction } from '../impl/PrivateFDC3Security.js';
 import { SignatureCheckingFunction } from '../impl/PublicFDC3Security.js';
 import { MetadataHandler } from '../delegates/MetadataHandler.js';
-import { AppIdentifier, DesktopAgent, IntentResolution, IntentResult } from '@finos/fdc3-standard';
+import { AppIdentifier, ContextMetadata, DesktopAgent, IntentResolution, IntentResult } from '@finos/fdc3-standard';
 
 /**
  * A helper for signing intent requests and verifying signed results.
@@ -51,15 +51,21 @@ export class BasicSignedRaiseIntentSupport implements SignedRaiseIntentSupport {
 
   async raiseIntent(intent: string, context: Context, app?: AppIdentifier): Promise<IntentResolution> {
     const { signature, antiReplay } = await this.signingFunction(context);
-    const { context: packedContext } = this.metadataHandler.pack(context, { signature, antiReplay });
-    const resolution = await this.desktopAgent.raiseIntent(intent as any, packedContext, app);
+    const { context: packedContext, metadata: packedMetadata } = this.metadataHandler.pack(context, {
+      signature,
+      antiReplay,
+    });
+    const resolution = await this.desktopAgent.raiseIntent(intent as any, packedContext, app ?? null, packedMetadata);
     return this.wrapResolution(resolution);
   }
 
   async raiseIntentForContext(context: Context, app?: AppIdentifier): Promise<IntentResolution> {
     const { signature, antiReplay } = await this.signingFunction(context);
-    const { context: packedContext } = this.metadataHandler.pack(context, { signature, antiReplay });
-    const resolution = await this.desktopAgent.raiseIntentForContext(packedContext, app);
+    const { context: packedContext, metadata: packedMetadata } = this.metadataHandler.pack(context, {
+      signature,
+      antiReplay,
+    });
+    const resolution = await this.desktopAgent.raiseIntentForContext(packedContext, app ?? null, packedMetadata);
     return this.wrapResolution(resolution);
   }
 
@@ -67,40 +73,49 @@ export class BasicSignedRaiseIntentSupport implements SignedRaiseIntentSupport {
     const originalGetResult = resolution.getResult.bind(resolution);
     const originalGetResultMetadata = resolution.getResultMetadata.bind(resolution);
 
-    resolution.getResult = async (): Promise<IntentResult> => {
+    const rewrapResult = async (): Promise<{ result: IntentResult; metadata: ContextMetadata }> => {
       const result = await originalGetResult();
-      if (this.signatureCheckingFunction && result && typeof result === 'object' && 'type' in result) {
-        if (!result) {
-          // void result
-          return result;
-        } else if (result.type == 'user' || result.type == 'app' || result.type == 'private') {
-          // it's a channel, return as-is
-          return result;
-        } else {
-          // It's likely a Context (result has 'type' property)
-          const contextIn = result as Context;
-          const metadataIn = await originalGetResultMetadata();
+      const metadata = await originalGetResultMetadata();
 
-          const { context: unpackedContext, metadata: unpackedMetadata } = this.metadataHandler.unpack(
-            contextIn,
-            metadataIn
-          );
+      if (!result) {
+        // void result
+        return { result, metadata };
+      } else if (result.type == 'user' || result.type == 'app' || result.type == 'private') {
+        // it's a channel, return as-is
+        return { result, metadata };
+      } else {
+        // It's likely a Context (result has 'type' property)
+        const contextIn = result as Context;
+        const { context: unpackedContext, metadata: unpackedMetadata } = this.metadataHandler.unpack(
+          contextIn,
+          metadata
+        );
 
+        if (this.signatureCheckingFunction) {
           const { signature, antiReplay } = unpackedMetadata;
           const authenticity = await this.signatureCheckingFunction(signature, unpackedContext, antiReplay);
-
-          const { context: repackedContext } = this.metadataHandler.pack(unpackedContext, {
+          const { context: repackedContext, metadata: repackedMetadata } = this.metadataHandler.pack(unpackedContext, {
             ...unpackedMetadata,
             authenticity,
           });
-          return repackedContext;
+          return { result: repackedContext, metadata: repackedMetadata };
+        } else {
+          return { result: unpackedContext, metadata: unpackedMetadata };
         }
-      } else {
-        return result;
       }
     };
 
-    return resolution;
+    let memoized: Promise<{ result: IntentResult; metadata: ContextMetadata }> | undefined;
+    const getRewrapped = () => {
+      memoized ??= rewrapResult();
+      return memoized;
+    };
+
+    return {
+      ...resolution,
+      getResult: async (): Promise<IntentResult> => (await getRewrapped()).result,
+      getResultMetadata: async (): Promise<ContextMetadata> => (await getRewrapped()).metadata,
+    } as IntentResolution;
   }
 }
 

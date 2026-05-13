@@ -108,6 +108,7 @@ export class DefaultChannel implements Channel {
         traceId: response.payload.metadata?.traceId ?? '',
         signature: response.payload.metadata?.signature,
         custom: response.payload.metadata?.custom,
+        antiReplay: response.payload.metadata?.antiReplay,
       };
       return { context, metadata };
     }

@@ -45,6 +45,7 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIn
       traceId: m.payload.metadata?.traceId ?? v4(),
       signature: m.payload.metadata?.signature,
       custom: m.payload.metadata?.custom,
+      antiReplay: m.payload.metadata?.antiReplay,
     });
 
     this.handleIntentResult(done, m);

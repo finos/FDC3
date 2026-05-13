@@ -1,7 +1,9 @@
-import { IntentResult } from '@finos/fdc3-standard';
+import { Channel, ContextWithMetadata, PrivateChannel } from '@finos/fdc3-standard';
 import { PrivateFDC3Security, SigningFunction } from '../impl/PrivateFDC3Security.js';
 import { MetadataHandler } from '../delegates/MetadataHandler.js';
 import { Context } from '@finos/fdc3-context';
+
+export type IntentHandlerReturn = Context | ContextWithMetadata | Channel | PrivateChannel | void;
 
 /**
  * A helper function for signing intent results.
@@ -14,7 +16,7 @@ export interface SignedIntentResultSupport {
    *
    * @param r The intent result to sign
    */
-  signIntentResult(r: IntentResult): Promise<IntentResult>;
+  signIntentResult(r: IntentHandlerReturn): Promise<IntentHandlerReturn>;
 }
 
 /**
@@ -31,19 +33,26 @@ export class BasicSignedIntentResultSupport implements SignedIntentResultSupport
     this.metadataHandler = metadataHandler;
   }
 
-  async signIntentResult(r: IntentResult): Promise<IntentResult> {
+  async signIntentResult(r: IntentHandlerReturn): Promise<IntentHandlerReturn> {
+    const type = typeof r === 'object' && r !== null && 'type' in r ? r.type : undefined;
     if (!r) {
       // void result
       return r;
-    } else if (r.type == 'user' || r.type == 'app' || r.type == 'private') {
+    } else if (type && (type == 'user' || type == 'app' || type == 'private')) {
       // it's a channel, return as-is
       return r;
-    } else {
-      // its a context, sign it.
+    } else if (type) {
+      // its a bare context, sign it.
       const contextIn = r as Context;
       const { signature, antiReplay } = await this.signingFunction(contextIn);
-      const { context } = this.metadataHandler.pack(contextIn, { signature, antiReplay });
-      return context; // FIXME: how to return metadata here?
+      const { context, metadata } = this.metadataHandler.pack(contextIn, { signature, antiReplay });
+      return { context, metadata };
+    } else {
+      const cwm = r as ContextWithMetadata;
+      const { context: contextIn, metadata: metadataIn } = cwm;
+      const { signature, antiReplay } = await this.signingFunction(contextIn);
+      const { context, metadata } = this.metadataHandler.pack(contextIn, { signature, antiReplay, ...metadataIn });
+      return { context, metadata };
     }
   }
 }
