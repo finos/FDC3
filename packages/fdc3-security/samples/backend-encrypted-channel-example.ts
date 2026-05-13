@@ -8,14 +8,12 @@ import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlers
 import { EncryptedBroadcastSupport, EncryptedBroadcaster } from '../src/encryption/EncryptedBroadcastSupport';
 import { PrivateEncryptedContextListenerSupport } from '../src/encryption/EncryptedContextListenerSupport';
 import { AppBackEnd } from '../test/mocks/AppBackEnd';
-import { MockDesktopAgent } from '../test/mocks/MockDesktopAgent';
+import { MockDesktopAgent, resetMockDesktopAgentFixtureState } from '../test/mocks/MockDesktopAgent';
 import { fileURLToPath } from 'url';
 import { resolve } from 'path';
-import { MetadataHandlerImpl } from '../src/delegates/MetadataHandler';
+import { createMetadataHandler, type MetadataHandler } from '../src/delegates/MetadataHandler';
 
 const INTENT_SHARE_ENCRYPTED_CHANNEL = 'ShareEncryptedChannel';
-
-const metadataHandler = new MetadataHandlerImpl(false, { appId: 'test.app', instanceId: '123' });
 
 /**
  * Broadcasting app backend handlers (broadcaster, key creator). Receives the channel via handleRemoteChannel,
@@ -25,7 +23,10 @@ const metadataHandler = new MetadataHandlerImpl(false, { appId: 'test.app', inst
 class BroadcastingAppBackendHandlers extends DefaultFDC3Handlers {
   private broadcaster: EncryptedBroadcaster | null = null;
 
-  constructor(private security: JosePrivateFDC3Security) {
+  constructor(
+    private security: JosePrivateFDC3Security,
+    private metadataHandler: MetadataHandler
+  ) {
     super();
   }
 
@@ -35,7 +36,7 @@ class BroadcastingAppBackendHandlers extends DefaultFDC3Handlers {
     console.log(
       '[Broadcasting App Backend] Received channel via handleRemoteChannel, setting up EncryptedBroadcastSupport'
     );
-    const support = new EncryptedBroadcastSupport(this.security, metadataHandler);
+    const support = new EncryptedBroadcastSupport(this.security, this.metadataHandler);
     this.broadcaster = await support.broadcastWrapper(channel);
   }
 
@@ -72,7 +73,10 @@ class BroadcastingAppBackendHandlers extends DefaultFDC3Handlers {
  * is requested and unwrapped entirely on the backend when encrypted contexts arrive.
  */
 class ReceivingAppBackendHandlers extends DefaultFDC3Handlers {
-  constructor(private security: JosePrivateFDC3Security) {
+  constructor(
+    private security: JosePrivateFDC3Security,
+    private metadataHandler: MetadataHandler
+  ) {
     super();
   }
 
@@ -80,7 +84,7 @@ class ReceivingAppBackendHandlers extends DefaultFDC3Handlers {
     if (purpose !== 'listen') return;
 
     console.log('[Receiving App Backend] Received channel via handleRemoteChannel, setting up decryption listener');
-    const support = new PrivateEncryptedContextListenerSupport(this.security, metadataHandler);
+    const support = new PrivateEncryptedContextListenerSupport(this.security, this.metadataHandler);
     await support.addContextListener(channel, 'test.encrypted', (ctx: Context, meta?: ContextMetadata) => {
       console.log(`\n[Receiving App Backend] ✅ Decrypted context received (encryption done on backend):`);
       console.log(JSON.stringify(ctx, null, 2));
@@ -94,10 +98,10 @@ class ReceivingAppBackendHandlers extends DefaultFDC3Handlers {
 /**
  * STEP 1: Setup receiving app backend (listener)
  */
-async function step1SetupReceivingApp() {
+async function step1SetupReceivingApp(metadataHandler: MetadataHandler) {
   console.log('1. Starting receiving app backend...');
   const app = new AppBackEnd(
-    (_ws: WebSocket, security: JosePrivateFDC3Security) => new ReceivingAppBackendHandlers(security)
+    (_ws: WebSocket, security: JosePrivateFDC3Security) => new ReceivingAppBackendHandlers(security, metadataHandler)
   );
   await app.start();
   console.log(`[Receiving App] Listening at ${app.baseUrl}`);
@@ -107,10 +111,10 @@ async function step1SetupReceivingApp() {
 /**
  * STEP 2: Setup broadcasting app backend (broadcaster & key creator)
  */
-async function step2SetupBroadcastingApp() {
+async function step2SetupBroadcastingApp(metadataHandler: MetadataHandler) {
   console.log('2. Starting broadcasting app backend...');
   const app = new AppBackEnd(
-    (_ws: WebSocket, security: JosePrivateFDC3Security) => new BroadcastingAppBackendHandlers(security)
+    (_ws: WebSocket, security: JosePrivateFDC3Security) => new BroadcastingAppBackendHandlers(security, metadataHandler)
   );
   await app.start();
   console.log(`[Broadcasting App] Listening at ${app.baseUrl}`);
@@ -180,16 +184,20 @@ async function step5BroadcastingAppStartBroadcast(broadcastingApp: AppBackEnd): 
  *   to decrypt incoming contexts
  * - Front-end: only transports channels via handleRemoteChannel; no encryption/decryption on front-end
  */
-export async function runExample(): Promise<void> {
+export async function runExample(fdc3Version: string = '3.0'): Promise<void> {
+  resetMockDesktopAgentFixtureState();
   console.log('--- FDC3 Encrypted Private Channel Example Start ---');
 
-  const receivingApp = await step1SetupReceivingApp();
-  const broadcastingApp = await step2SetupBroadcastingApp();
+  const mockDA1 = new MockDesktopAgent(fdc3Version, { appId: 'receiving.app', instanceId: 'r1' });
+  const mockDA2 = new MockDesktopAgent(fdc3Version, { appId: 'broadcasting.app', instanceId: 'b1' });
+  const metadataHandler1 = await createMetadataHandler(mockDA1 as unknown as DesktopAgent);
+  const metadataHandler2 = await createMetadataHandler(mockDA2 as unknown as DesktopAgent);
 
-  const mockDA = new MockDesktopAgent();
+  const receivingApp = await step1SetupReceivingApp(metadataHandler1);
+  const broadcastingApp = await step2SetupBroadcastingApp(metadataHandler2);
 
-  const broadcastingAppHandlers = await step3BroadcastingAppRegisterIntentListener(broadcastingApp, mockDA);
-  const receivingAppHandlers = await step4ReceivingAppRaiseIntentAndSetupListener(receivingApp, mockDA);
+  const broadcastingAppHandlers = await step3BroadcastingAppRegisterIntentListener(broadcastingApp, mockDA1);
+  const receivingAppHandlers = await step4ReceivingAppRaiseIntentAndSetupListener(receivingApp, mockDA2);
 
   await step5BroadcastingAppStartBroadcast(broadcastingApp);
 
@@ -204,7 +212,8 @@ export async function runExample(): Promise<void> {
  */
 const __filename = fileURLToPath(import.meta.url);
 if (process.argv[1] && resolve(process.argv[1]) === resolve(__filename)) {
-  runExample()
+  const fdc3Version = process.argv[2] ?? '3.0';
+  runExample(fdc3Version)
     .then(() => process.exit(0))
     .catch(err => {
       console.error('Example failed:', err);
