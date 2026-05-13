@@ -23,7 +23,7 @@ export class AppBackEnd {
   constructor(private readonly createHandlers: CreateHandlers) {}
 
   async start(): Promise<void> {
-    let security: JosePrivateFDC3Security | undefined;
+    let security: JosePrivateFDC3Security | undefined = undefined;
 
     const httpServer = createServer((req, res) => {
       if (req.url === '/.well-known/jwks.json') {
@@ -66,7 +66,6 @@ export class AppBackEnd {
     setupWebsocketServer(
       httpServer,
       (_ws: WebSocket) => {
-        console.log('Client disconnected');
         this.handlers = null;
       },
       ws => {
