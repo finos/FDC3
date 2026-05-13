@@ -50,7 +50,9 @@ const createJWKSResolver = (keys: JsonWebKeyWithId[]): JWKSResolver => {
   resolver.coolingDown = false;
   resolver.fresh = true;
   resolver.reloading = false;
-  resolver.reload = async () => {};
+  resolver.reload = async (): Promise<void> => {
+    /* JWKSResolver contract: optional reload hook */
+  };
   resolver.jwks = () => ({ keys: keys as jose.JWK[] });
 
   return resolver as JWKSResolver;
