@@ -1263,6 +1263,11 @@ export interface Context {
  */
 export interface ContextMetadata {
   /**
+   * Anti-replay claims supplied with signed context (e.g. merged from intentResultRequest
+   * metadata into resultMetadata).
+   */
+  antiReplay?: AntiReplayClaims;
+  /**
    * The result of verifying the context's signature, populated by the receiving app's
    * security layer after attempting signature verification.
    */
@@ -1291,6 +1296,30 @@ export interface ContextMetadata {
    * intent through the system.
    */
   traceId: string;
+}
+
+/**
+ * Anti-replay claims supplied with signed context (e.g. merged from intentResultRequest
+ * metadata into resultMetadata).
+ *
+ * Anti-replay claims extracted from the context's antiReplay field after verification.
+ *
+ * Should be populated when the context is signed.  Included in the signature.  Prevents
+ * replay attacks where context objects are re-used.
+ */
+export interface AntiReplayClaims {
+  /**
+   * Expiration time as a Unix timestamp (seconds since epoch).
+   */
+  exp: number;
+  /**
+   * Issued at time as a Unix timestamp (seconds since epoch).
+   */
+  iat: number;
+  /**
+   * Unique identifier for this context instance.
+   */
+  jti: string;
 }
 
 /**
@@ -1331,27 +1360,6 @@ export interface MessageAuthenticity {
    * True if the JWS cryptographically verifies against the signed bytes.
    */
   valid?: boolean;
-}
-
-/**
- * Anti-replay claims extracted from the context's antiReplay field after verification.
- *
- * Should be populated when the context is signed.  Included in the signature.  Prevents
- * replay attacks where context objects are re-used.
- */
-export interface AntiReplayClaims {
-  /**
-   * Expiration time as a Unix timestamp (seconds since epoch).
-   */
-  exp: number;
-  /**
-   * Issued at time as a Unix timestamp (seconds since epoch).
-   */
-  iat: number;
-  /**
-   * Unique identifier for this context instance.
-   */
-  jti: string;
 }
 
 /**
@@ -5436,12 +5444,21 @@ const typeMap: any = {
   ),
   ContextMetadata: o(
     [
+      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplayClaims')) },
       { json: 'authenticity', js: 'authenticity', typ: u(undefined, r('MessageAuthenticity')) },
       { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
       { json: 'signature', js: 'signature', typ: u(undefined, r('DetachedSignature')) },
       { json: 'source', js: 'source', typ: r('AppIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'traceId', js: 'traceId', typ: '' },
+    ],
+    false
+  ),
+  AntiReplayClaims: o(
+    [
+      { json: 'exp', js: 'exp', typ: 3.14 },
+      { json: 'iat', js: 'iat', typ: 3.14 },
+      { json: 'jti', js: 'jti', typ: '' },
     ],
     false
   ),
@@ -5455,14 +5472,6 @@ const typeMap: any = {
       { json: 'signed', js: 'signed', typ: true },
       { json: 'trusted', js: 'trusted', typ: u(undefined, true) },
       { json: 'valid', js: 'valid', typ: u(undefined, true) },
-    ],
-    false
-  ),
-  AntiReplayClaims: o(
-    [
-      { json: 'exp', js: 'exp', typ: 3.14 },
-      { json: 'iat', js: 'iat', typ: 3.14 },
-      { json: 'jti', js: 'jti', typ: '' },
     ],
     false
   ),

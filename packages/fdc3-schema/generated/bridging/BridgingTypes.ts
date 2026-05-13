@@ -684,6 +684,9 @@ export interface AppProvidableContextMetadata {
  * replay attacks where context objects are re-used.
  *
  * Anti-replay claims extracted from the context's antiReplay field after verification.
+ *
+ * Anti-replay claims supplied with signed context (e.g. merged from intentResultRequest
+ * metadata into resultMetadata).
  */
 export interface AntiReplayClaims {
   /**
@@ -4259,6 +4262,11 @@ export type Type = 'app' | 'private' | 'user';
  */
 export interface ContextMetadata {
   /**
+   * Anti-replay claims supplied with signed context (e.g. merged from intentResultRequest
+   * metadata into resultMetadata).
+   */
+  antiReplay?: AntiReplayClaims;
+  /**
    * The result of verifying the context's signature, populated by the receiving app's
    * security layer after attempting signature verification.
    */
@@ -6640,6 +6648,7 @@ const typeMap: any = {
   ),
   ContextMetadata: o(
     [
+      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplayClaims')) },
       { json: 'authenticity', js: 'authenticity', typ: u(undefined, r('MessageAuthenticity')) },
       { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
       { json: 'signature', js: 'signature', typ: u(undefined, r('DetachedSignature')) },

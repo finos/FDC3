@@ -72,15 +72,15 @@ Feature: Basic Intents Support
       | payload.context.type | matches_type                 |
       | fdc3.cancel-me       | raiseIntentForContextRequest |
 
-  Scenario: Raising an intent with null app and metadata forwards traceId, signature and custom
-    Given "intentMetadata" is metadata with traceId "trace-123" and signature "sig-abc"
+  Scenario: Raising an intent with null app and metadata forwards traceId, signature, antiReplay and custom
+    Given "intentMetadata" is metadata with traceId "trace-123" and signature "sig-abc" and antiReplay claims "1234/2345/intent-null-app-jti"
     When I call "{api}" with "raiseIntent" with parameters "Buy" and "{instrumentContext}" and "{null}" and "{intentMetadata}"
     Then "{result}" is an object with the following contents
       | source.appId | source.instanceId |
       | bank         | b1                |
     And messaging will have posts
-      | payload.intent | payload.context.type | payload.metadata.traceId | payload.metadata.signature.signature | payload.metadata.signature.protected | payload.metadata.custom.priority | matches_type       |
-      | Buy            | fdc3.instrument      | trace-123                | sig-abc (signature part)   | sig-abc (protected part)   | high                             | raiseIntentRequest |
+      | payload.intent | payload.context.type | payload.metadata.traceId | payload.metadata.signature.signature | payload.metadata.signature.protected | payload.metadata.antiReplay.iat | payload.metadata.antiReplay.exp | payload.metadata.antiReplay.jti | payload.metadata.custom.priority | matches_type       |
+      | Buy            | fdc3.instrument      | trace-123                | sig-abc (signature part)   | sig-abc (protected part)   | {1234}                          | {2345}                          | intent-null-app-jti             | high                             | raiseIntentRequest |
 
   Scenario: Raising an intent without metadata generates a traceId but omits signature and custom
     When I call "{api}" with "raiseIntent" with parameters "Buy" and "{instrumentContext}"
@@ -89,12 +89,12 @@ Feature: Basic Intents Support
       | Buy            | fdc3.instrument      | {null}                     | {null}                     | {null}                  | raiseIntentRequest |
 
   Scenario: Raising an intent for context with null app and metadata forwards metadata through resolver
-    Given "intentMetadata" is metadata with traceId "trace-456" and signature "sig-def"
+    Given "intentMetadata" is metadata with traceId "trace-456" and signature "sig-def" and antiReplay claims "1234/2345/intent-context-jti"
     When I call "{api}" with "raiseIntentForContext" with parameters "{countryContext}" and "{null}" and "{intentMetadata}"
     Then "{result}" is an object with the following contents
       | source.appId | source.instanceId |
       | chipShop     | c1                |
     And messaging will have posts
-      | payload.context.type | payload.metadata.traceId | payload.metadata.signature.signature | payload.metadata.signature.protected | payload.metadata.custom.priority | payload.app.appId | matches_type                 |
-      | fdc3.country         | trace-456                | sig-def (signature part)   | sig-def (protected part)   | high                             | {null}            | raiseIntentForContextRequest |
-      | fdc3.country         | trace-456                | sig-def (signature part)   | sig-def (protected part)   | high                             | chipShop          | raiseIntentRequest           |
+      | payload.context.type | payload.metadata.traceId | payload.metadata.signature.signature | payload.metadata.signature.protected | payload.metadata.antiReplay.iat | payload.metadata.antiReplay.exp | payload.metadata.antiReplay.jti | payload.metadata.custom.priority | payload.app.appId | matches_type                 |
+      | fdc3.country         | trace-456                | sig-def (signature part)   | sig-def (protected part)   | {1234}                          | {2345}                          | intent-context-jti              | high                             | {null}            | raiseIntentForContextRequest |
+      | fdc3.country         | trace-456                | sig-def (signature part)   | sig-def (protected part)   | {1234}                          | {2345}                          | intent-context-jti              | high                             | chipShop          | raiseIntentRequest           |
