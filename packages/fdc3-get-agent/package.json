@@ -30,7 +30,7 @@
     "@finos/fdc3-schema": "2.2.2",
     "@finos/fdc3-standard": "2.2.2",
     "@types/uuid": "^10.0.0",
-    "uuid": "^9.0.1"
+    "uuid": "^14.0.0"
   },
   "devDependencies": {
     "@cucumber/cucumber": "10.3.1",
