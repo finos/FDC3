@@ -6,25 +6,58 @@ import {
   PrivateChannel,
   IntentHandler,
   IntentResolution,
+  ImplementationMetadata,
 } from '@finos/fdc3-standard';
-import type { AppIdentifier, AppProvidableContextMetadata, ContextMetadata, Intent } from '@finos/fdc3-standard';
+import type {
+  AppIdentifier,
+  AppMetadata,
+  AppProvidableContextMetadata,
+  ContextMetadata,
+  Intent,
+} from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { MockChannel } from './MockChannel';
 import { MockPrivateChannel } from './MockPrivateChannel';
 
 const sharedChannels = new Map<string, MockChannel>();
 const sharedPrivateChannels = new Map<string, MockPrivateChannel>();
+const intentHandlers = new Map<string, IntentHandler>();
+
+/** Clears module-level mock state so sample scripts and tests can run back-to-back. */
+export function resetMockDesktopAgentFixtureState(): void {
+  intentHandlers.clear();
+  sharedChannels.clear();
+  sharedPrivateChannels.clear();
+}
 
 export class MockDesktopAgent implements Partial<DesktopAgent> {
-  private intentHandlers = new Map<string, IntentHandler>();
+  /**
+   * @param fdc3Version Semver string reported by {@link MockDesktopAgent.getInfo} as {@link ImplementationMetadata.fdc3Version}.
+   */
+  constructor(
+    readonly fdc3Version: string = '3.0',
+    readonly appMetadata: AppMetadata = { appId: 'test.app', instanceId: '123' }
+  ) {}
+
+  async getInfo(): Promise<ImplementationMetadata> {
+    return {
+      fdc3Version: this.fdc3Version,
+      provider: 'fdc3-security-mock',
+      optionalFeatures: {
+        UserChannelMembershipAPIs: true,
+        DesktopAgentBridging: false,
+      },
+      appMetadata: this.appMetadata,
+    };
+  }
 
   async addIntentListener(intent: Intent, handler: IntentHandler): Promise<Listener> {
     const key = String(intent);
-    if (this.intentHandlers.has(key)) throw new Error(`IntentListenerConflict: ${key}`);
-    this.intentHandlers.set(key, handler);
+    if (intentHandlers.has(key)) throw new Error(`IntentListenerConflict: ${key}`);
+    intentHandlers.set(key, handler);
     return {
       unsubscribe: async () => {
-        this.intentHandlers.delete(key);
+        intentHandlers.delete(key);
       },
     };
   }
@@ -36,13 +69,13 @@ export class MockDesktopAgent implements Partial<DesktopAgent> {
     metadata?: AppProvidableContextMetadata | undefined
   ): Promise<IntentResolution> {
     const key = String(intent);
-    const handler = this.intentHandlers.get(key);
+    const handler = intentHandlers.get(key);
     if (!handler) throw new Error(`No handler registered for intent: ${key}`);
 
     const result = await handler(context, (metadata ?? {}) as ContextMetadata);
     const type = result && 'type' in result ? result.type : undefined;
     const contextWithMetadata = result && 'context' in result && 'metadata' in result;
-    let resolvedMetadata = (contextWithMetadata ? result.metadata : {}) as ContextMetadata;
+    const resolvedMetadata = (contextWithMetadata ? result.metadata : {}) as ContextMetadata;
     let resolvedResult = (contextWithMetadata ? result.context : result) as
       | Context
       | Channel

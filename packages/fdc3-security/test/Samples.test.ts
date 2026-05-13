@@ -17,11 +17,12 @@ describe('Samples integration', () => {
   });
 
   it('backend-encrypted-channel-example runs to completion', async () => {
-    await runBackendEncryptedChannel();
+    // 2.x: metadata embedded in context (__appMeta); matches mock channel behaviour in CI.
+    await runBackendEncryptedChannel('2.2');
   });
 
   it('frontend-encrypted-channel-example runs to completion', async () => {
-    await runFrontendEncryptedChannel();
+    await runFrontendEncryptedChannel('2.2');
   });
 
   it('signing-broadcast-example runs to completion', async () => {
@@ -33,6 +34,6 @@ describe('Samples integration', () => {
   });
 
   it('signing-intent-example runs to completion', async () => {
-    await runSigningIntent();
+    await runSigningIntent('2.2');
   });
 });
