@@ -132,7 +132,6 @@ export function setupWebsocketServer(
     });
 
     ws.on('close', () => {
-      console.log('WebSocket client disconnected');
       disconnectCallback(ws);
       dynamicHandlers.clear();
     });

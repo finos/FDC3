@@ -4,7 +4,13 @@
  */
 
 import { Context } from '@finos/fdc3-context';
-import { AppIdentifier, ContextMetadata, DesktopAgent, IntentResolution } from '@finos/fdc3-standard';
+import {
+  AppIdentifier,
+  ContextMetadata,
+  ContextWithMetadata,
+  DesktopAgent,
+  IntentResolution,
+} from '@finos/fdc3-standard';
 import * as jose from 'jose';
 import { JosePrivateFDC3Security, createJosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { JWKSResolver } from '../src/impl/JosePublicFDC3Security';
@@ -112,10 +118,10 @@ describe('BasicSignedIntentResultSupport', () => {
   it('signs a context result and embeds metadata via MetadataHandler', async () => {
     const support = new BasicSignedIntentResultSupport(ctx => solo.sign(ctx), metadataHandler);
     const response: Context = { type: 'demo.response', id: { ok: true } };
-    const out = (await support.signIntentResult(response)) as Context & { __appMeta?: ContextMetadata };
-    expect(out.type).toBe('demo.response');
-    expect(out.__appMeta?.signature).toBeDefined();
-    expect(out.__appMeta?.antiReplay).toBeDefined();
+    const out = (await support.signIntentResult(response)) as ContextWithMetadata;
+    expect(out.context.type).toBe('demo.response');
+    expect(out.metadata?.signature).toBeDefined();
+    expect(out.metadata?.antiReplay).toBeDefined();
   });
 });
 
@@ -130,8 +136,8 @@ describe('PrivateSignedIntentResultSupport', () => {
   it('delegates signing to PrivateFDC3Security', async () => {
     const support = new PrivateSignedIntentResultSupport(solo, metadataHandler);
     const response: Context = { type: 'demo.response', id: { n: 2 } };
-    const out = (await support.signIntentResult(response)) as Context & { __appMeta?: { signature?: unknown } };
-    expect(out.__appMeta?.signature).toBeDefined();
+    const out = (await support.signIntentResult(response)) as ContextWithMetadata;
+    expect(out.metadata?.signature).toBeDefined();
   });
 });
 
