@@ -107,7 +107,12 @@ sequenceDiagram
 
 ## [Signing Intent Example (Mutual Authentication)](signing-intent-example.ts)
 
-A full end-to-end demonstration of mutual authentication in FDC3 intent flows. This composite example replaces previous partial samples to show a complete secure cycle: Raiser signs the request -> Handler verifies and signs the result -> Raiser verifies the result.
+A full end-to-end demonstration of mutual authentication in FDC3 intent flows. This composite example replaces previous partial samples to show a complete secure cycle: 
+ - Raiser signs the request 
+ - Handler verifies and signs the result 
+ - Raiser verifies the result.
+
+Potentially, users could modify this to do one-way authentication.
 
 ```mermaid
 sequenceDiagram
@@ -118,11 +123,14 @@ sequenceDiagram
 
     AFE->>ABE: Register Intent Handler
     Note right of ABE: Wraps Handler with SignatureCheckingHandlerSupport
-    
-    Note over BFE: Sets up SignedRateIntentSupport<br/>(signingFunction calls BBE)
-    BFE->>BBE: exchangeData(sign-context)
-    BBE-->>BFE: Signature & Anti-Replay
-    BFE->>AFE: support.raiseIntent(DataTransfer, Context)
+
+    BFE->>BFE: raiseIntent(name, Context)
+    activate BFE
+    Note over BFE: Uses SignedRaiseIntentSupport
+    BFE->>BBE: exchangeData('sign', Context)
+    BBE-->>BFE: Signature & Anti-Replay Metadata
+    BFE->>AFE: raiseIntent(name, Context, Metadata)
+    deactivate BFE
     
     AFE->>ABE: Invoke Remote Handler
     Note right of ABE: verifySignature(Incoming Request)<br/>✅ Authenticated
@@ -130,11 +138,12 @@ sequenceDiagram
     Note right of ABE: signs result with<br/>PrivateSignedIntentResultSupport
     ABE-->>AFE: Signed Response
     AFE-->>BFE: Intent Result (Signed Context)
-    
-    Note over BFE: getResult() triggers automatic<br/>verification via Support class
-    Note over BFE: ✅ Mutually Verified Result Logged
-```
 
+    activate BFE
+    BFE->>BFE: checks signature
+    deactivate BFE    
+    Note over BFE: ✅ Mutually Verified Result Returned
+```
 ---
 
 ## [Get User Example](get-user-example.ts)
