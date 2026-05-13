@@ -41,7 +41,7 @@ class HandlerAppBackendHandlers extends DefaultFDC3Handlers {
 
       const auth = metadata?.authenticity;
       if (auth?.signed && auth?.valid && auth?.trusted) {
-        console.log(`[Handler App Backend] ✅ AUTHENTICATED: Request from ${auth.jku} is trusted.`);
+        console.log(`[Handler App Backend] ✅ AUTHENTICATED: Request from ${auth.jku} is trusted.`, context, metadata);
 
         const response = {
           type: 'demo.response',
@@ -166,15 +166,14 @@ async function step3MutuallyAuthenticatedExchange(
     verificationFunction
   );
 
-  console.log(`   Raiser App: Raising signed intent ${INTENT_DATA_TRANSFER}...`);
+  console.log(`   Raiser App: Raising signed intent ${INTENT_DATA_TRANSFER}...`, requestContext);
   const resolution = await support.raiseIntent(INTENT_DATA_TRANSFER, requestContext);
 
   console.log('   Raiser App: Awaiting signed response from handler...');
   const result = (await resolution.getResult()) as Context;
   const resultMetadata = await resolution.getResultMetadata();
-  const fromPacked = (result as { __appMeta?: { authenticity?: ContextMetadata['authenticity'] } }).__appMeta
-    ?.authenticity;
-  const auth: ContextMetadata['authenticity'] = fromPacked ?? resultMetadata?.authenticity;
+  const auth = resultMetadata?.authenticity;
+  console.log('   Raiser App: Received context and metadata:', result, resultMetadata);
 
   if (auth?.signed && auth?.valid && auth?.trusted) {
     console.log(`\n[Raiser App] ✅ MUTUAL AUTHENTICATION SUCCESSFUL:`);
