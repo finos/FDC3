@@ -10,11 +10,14 @@ import {
   HandleRemoteChannelMessage,
   WsEnvelope,
   CLIENT_MESSAGE,
+  InstanceDetailsMessage,
+  INSTANCE_DETAILS,
 } from './MessageTypes.js';
 import { v4 as uuidv4 } from 'uuid';
 import { WebSocketMessaging } from './WebSocketMessaging.js';
 import { DefaultChannel } from '@finos/fdc3-agent-proxy/dist/src/channels/DefaultChannel.js';
 import { DefaultPrivateChannel } from '@finos/fdc3-agent-proxy/dist/src/channels/DefaultPrivateChannel.js';
+import { AppIdentifier } from '@finos/fdc3-standard';
 
 export type DisconnectCallback = (ws: WebSocket) => void;
 
@@ -41,20 +44,15 @@ function ack(ws: WebSocket, id: string, payload: unknown): void {
 export function setupWebsocketServer(
   httpServer: HttpServer,
   disconnectCallback: DisconnectCallback,
-  createHandlers: (ws: WebSocket) => FDC3Handlers
+  createHandlers: (ws: WebSocket, appIdentifier: AppIdentifier, fdc3Version: string) => FDC3Handlers
 ) {
   const wss = new WebSocketServer({ server: httpServer });
 
   wss.on('connection', ws => {
     console.log('WebSocket client connected');
 
-    // WebSocketMessaging expects a browser-style WebSocket interface; the `ws` package's
-    // WebSocket is structurally compatible for the subset we use, so cast via `any`.
-    const messaging = new WebSocketMessaging(ws as any, {
-      appId: 'demo-security-implementation',
-    });
-
-    const handlers = createHandlers(ws);
+    let messaging: WebSocketMessaging;
+    let handlers: FDC3Handlers;
 
     // Map to store dynamic event handlers (e.g. for intent handler calls)
     const dynamicHandlers = new Map<string, (envelope: WsEnvelope) => Promise<void>>();
@@ -70,64 +68,76 @@ export function setupWebsocketServer(
 
       const { event, id, payload } = envelope;
 
-      // Check if it's a dynamic handler registered for this session
-      if (dynamicHandlers.has(event)) {
-        await dynamicHandlers.get(event)!(envelope);
-        return;
-      }
-
-      switch (event) {
-        case HANDLE_REMOTE_CHANNEL: {
-          const data = payload as HandleRemoteChannelMessage;
-          if (data.type === 'private') {
-            const channel = new DefaultPrivateChannel(messaging as any, 1000, data.channelId) as any;
-            await handlers.handleRemoteChannel(data.purpose, channel);
-          } else {
-            const channel = new DefaultChannel(messaging as any, 1000, data.channelId, data.type) as any;
-            await handlers.handleRemoteChannel(data.purpose, channel);
-          }
+      if (handlers == undefined) {
+        if (event === INSTANCE_DETAILS) {
+          const props = payload as InstanceDetailsMessage;
+          messaging = new WebSocketMessaging(ws as any, props.appIdentifier);
+          handlers = createHandlers(ws, props.appIdentifier, props.fdc3Version);
           if (id) ack(ws, id, true);
-          break;
+        } else {
+          console.error('Unknown event:', event);
+        }
+      } else {
+        // connection and handlers are set up.
+        // Check if it's a dynamic handler registered for this session
+        if (dynamicHandlers.has(event)) {
+          await dynamicHandlers.get(event)!(envelope);
+          return;
         }
 
-        case REMOTE_INTENT_HANDLER: {
-          const props = payload as RemoteIntentHandlerMessage;
-          const ih = await handlers.remoteIntentHandler(props.intent);
-          // Create a unique sub-event name the client will use to invoke the handler
-          const handlerId = uuidv4();
-          // Register dynamic handler
-          dynamicHandlers.set(handlerId, async (env2: WsEnvelope) => {
-            if (env2.id) {
-              const result = await ih(env2.payload.context, env2.payload.metadata);
-              ack(ws, env2.id, result);
+        switch (event) {
+          case HANDLE_REMOTE_CHANNEL: {
+            const data = payload as HandleRemoteChannelMessage;
+            if (data.type === 'private') {
+              const channel = new DefaultPrivateChannel(messaging as any, 1000, data.channelId) as any;
+              await handlers.handleRemoteChannel(data.purpose, channel);
+            } else {
+              const channel = new DefaultChannel(messaging as any, 1000, data.channelId, data.type) as any;
+              await handlers.handleRemoteChannel(data.purpose, channel);
             }
-          });
-          if (id) ack(ws, id, handlerId);
-          break;
-        }
-
-        case EXCHANGE_DATA: {
-          const props = payload as ExchangeDataMessage;
-          const obj = await handlers.exchangeData(props.purpose, props.o);
-          if (id) ack(ws, id, obj);
-          break;
-        }
-
-        case CLIENT_MESSAGE: {
-          // CLIENT_MESSAGE is handled by WebSocketMessaging directly via its own onmessage handler.
-          break;
-        }
-
-        default:
-          // ack:${id} responses are handled by WebSocketMessaging exchange() listeners
-          if (typeof event === 'string' && event.startsWith('ack:')) {
+            if (id) ack(ws, id, true);
             break;
           }
-          // Do not log dynamic handler events here even if somehow they fall through
-          if (dynamicHandlers.has(event)) {
+
+          case REMOTE_INTENT_HANDLER: {
+            const props = payload as RemoteIntentHandlerMessage;
+            const ih = await handlers.remoteIntentHandler(props.intent);
+            // Create a unique sub-event name the client will use to invoke the handler
+            const handlerId = uuidv4();
+            // Register dynamic handler
+            dynamicHandlers.set(handlerId, async (env2: WsEnvelope) => {
+              if (env2.id) {
+                const result = await ih(env2.payload.context, env2.payload.metadata);
+                ack(ws, env2.id, result);
+              }
+            });
+            if (id) ack(ws, id, handlerId);
             break;
           }
-          console.log('Unknown event:', event);
+
+          case EXCHANGE_DATA: {
+            const props = payload as ExchangeDataMessage;
+            const obj = await handlers.exchangeData(props.purpose, props.o);
+            if (id) ack(ws, id, obj);
+            break;
+          }
+
+          case CLIENT_MESSAGE: {
+            // CLIENT_MESSAGE is handled by WebSocketMessaging directly via its own onmessage handler.
+            break;
+          }
+
+          default:
+            // ack:${id} responses are handled by WebSocketMessaging exchange() listeners
+            if (typeof event === 'string' && event.startsWith('ack:')) {
+              break;
+            }
+            // Do not log dynamic handler events here even if somehow they fall through
+            if (dynamicHandlers.has(event)) {
+              break;
+            }
+            console.log('Unknown event:', event);
+        }
       }
     });
 

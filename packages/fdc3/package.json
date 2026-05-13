@@ -25,6 +25,6 @@
     "@finos/fdc3-get-agent": "3.0.0-alpha.2",
     "@finos/fdc3-schema": "3.0.0-alpha.2",
     "@finos/fdc3-standard": "3.0.0-alpha.2",
-    "@robmoffat/fdc3-security": "3.0.0-alpha.2"
+    "@finos/fdc3-security": "3.0.0-alpha.2"
   }
 }

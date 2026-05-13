@@ -4,12 +4,18 @@ import { JosePrivateFDC3Security, createJosePrivateFDC3Security } from '../../sr
 import { provisionJWKS } from '../../src/impl/JosePublicFDC3Security';
 import { setupWebsocketServer } from '../../src/secure-boundary/ServerSideHandlersImpl';
 import { FDC3Handlers } from '../../src/secure-boundary/FDC3Handlers';
+import { AppIdentifier } from '@finos/fdc3-standard';
 
-export type CreateHandlers = (ws: WebSocket, security: JosePrivateFDC3Security) => FDC3Handlers;
+export type CreateHandlers = (
+  ws: WebSocket,
+  security: JosePrivateFDC3Security,
+  appId: AppIdentifier,
+  instanceId: string
+) => FDC3Handlers;
 
 /**
  * A mock backend server (on loopback) that hosts JWKS and handles FDC3 WebSocket connections.
- * Uses an OS-assigned TCP port ({@link Server.listen} with port 0) so parallel Jest workers and
+ * Uses an OS-assigned TCP port so parallel Jest workers and
  * other processes never collide on a pre-chosen random port — collisions produced fetch failures
  * with `HTTPParserError: Expected HTTP/` when the wrong peer answered the socket.
  */
@@ -68,8 +74,8 @@ export class AppBackEnd {
       (_ws: WebSocket) => {
         this.handlers = null;
       },
-      ws => {
-        const h = this.createHandlers(ws, security);
+      (ws, appIdentifier, fdc3Version) => {
+        const h = this.createHandlers(ws, security, appIdentifier, fdc3Version);
         this.handlers = h;
         return h;
       }

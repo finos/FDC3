@@ -1,4 +1,4 @@
-import { Context } from '@finos/fdc3-context';
+import { AppIdentifier, Context } from '@finos/fdc3-context';
 import { WebSocket } from 'ws';
 import { Channel, ContextMetadata, DesktopAgent } from '@finos/fdc3-standard';
 
@@ -11,7 +11,7 @@ import { AppBackEnd } from '../test/mocks/AppBackEnd';
 import { MockDesktopAgent, resetMockDesktopAgentFixtureState } from '../test/mocks/MockDesktopAgent';
 import { fileURLToPath } from 'url';
 import { resolve } from 'path';
-import { createMetadataHandler, type MetadataHandler } from '../src/delegates/MetadataHandler';
+import { createMetadataHandler, MetadataHandlerImpl, type MetadataHandler } from '../src/delegates/MetadataHandler';
 
 const INTENT_SHARE_ENCRYPTED_CHANNEL = 'ShareEncryptedChannel';
 
@@ -22,12 +22,15 @@ const INTENT_SHARE_ENCRYPTED_CHANNEL = 'ShareEncryptedChannel';
  */
 class BroadcastingAppBackendHandlers extends DefaultFDC3Handlers {
   private broadcaster: EncryptedBroadcaster | null = null;
+  private metadataHandler: MetadataHandler;
 
   constructor(
     private security: JosePrivateFDC3Security,
-    private metadataHandler: MetadataHandler
+    appIdentifier: AppIdentifier,
+    fdc3Version: string
   ) {
     super();
+    this.metadataHandler = new MetadataHandlerImpl(fdc3Version == '3.0.0', appIdentifier);
   }
 
   async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
@@ -73,11 +76,15 @@ class BroadcastingAppBackendHandlers extends DefaultFDC3Handlers {
  * is requested and unwrapped entirely on the backend when encrypted contexts arrive.
  */
 class ReceivingAppBackendHandlers extends DefaultFDC3Handlers {
+  private metadataHandler: MetadataHandler;
+
   constructor(
     private security: JosePrivateFDC3Security,
-    private metadataHandler: MetadataHandler
+    appIdentifier: AppIdentifier,
+    fdc3Version: string
   ) {
     super();
+    this.metadataHandler = new MetadataHandlerImpl(fdc3Version == '3.0.0', appIdentifier);
   }
 
   async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
@@ -98,10 +105,11 @@ class ReceivingAppBackendHandlers extends DefaultFDC3Handlers {
 /**
  * STEP 1: Setup receiving app backend (listener)
  */
-async function step1SetupReceivingApp(metadataHandler: MetadataHandler) {
+async function step1SetupReceivingApp() {
   console.log('1. Starting receiving app backend...');
   const app = new AppBackEnd(
-    (_ws: WebSocket, security: JosePrivateFDC3Security) => new ReceivingAppBackendHandlers(security, metadataHandler)
+    (_ws: WebSocket, security: JosePrivateFDC3Security, appIdentifier: AppIdentifier, fdc3Version: string) =>
+      new ReceivingAppBackendHandlers(security, appIdentifier, fdc3Version)
   );
   await app.start();
   console.log(`[Receiving App] Listening at ${app.baseUrl}`);
@@ -111,10 +119,11 @@ async function step1SetupReceivingApp(metadataHandler: MetadataHandler) {
 /**
  * STEP 2: Setup broadcasting app backend (broadcaster & key creator)
  */
-async function step2SetupBroadcastingApp(metadataHandler: MetadataHandler) {
+async function step2SetupBroadcastingApp() {
   console.log('2. Starting broadcasting app backend...');
   const app = new AppBackEnd(
-    (_ws: WebSocket, security: JosePrivateFDC3Security) => new BroadcastingAppBackendHandlers(security, metadataHandler)
+    (_ws: WebSocket, security: JosePrivateFDC3Security, appIdentifier: AppIdentifier, fdc3Version: string) =>
+      new BroadcastingAppBackendHandlers(security, appIdentifier, fdc3Version)
   );
   await app.start();
   console.log(`[Broadcasting App] Listening at ${app.baseUrl}`);
@@ -190,11 +199,9 @@ export async function runExample(fdc3Version: string = '3.0'): Promise<void> {
 
   const mockDA1 = new MockDesktopAgent(fdc3Version, { appId: 'receiving.app', instanceId: 'r1' });
   const mockDA2 = new MockDesktopAgent(fdc3Version, { appId: 'broadcasting.app', instanceId: 'b1' });
-  const metadataHandler1 = await createMetadataHandler(mockDA1 as unknown as DesktopAgent);
-  const metadataHandler2 = await createMetadataHandler(mockDA2 as unknown as DesktopAgent);
 
-  const receivingApp = await step1SetupReceivingApp(metadataHandler1);
-  const broadcastingApp = await step2SetupBroadcastingApp(metadataHandler2);
+  const receivingApp = await step1SetupReceivingApp();
+  const broadcastingApp = await step2SetupBroadcastingApp();
 
   const broadcastingAppHandlers = await step3BroadcastingAppRegisterIntentListener(broadcastingApp, mockDA1);
   const receivingAppHandlers = await step4ReceivingAppRaiseIntentAndSetupListener(receivingApp, mockDA2);

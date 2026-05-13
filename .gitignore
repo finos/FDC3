@@ -34,3 +34,6 @@ tsconfig.tsbuildinfo
 **/html-report/
 packages/fdc3-security/junit.xml
 **/html-test-results/
+toolbox/fdc3-example-apps/directory/generated/
+toolbox/fdc3-example-apps/front-end-apps/*/.vite
+toolbox/fdc3-example-apps/server-apps/*/.vite
