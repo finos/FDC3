@@ -50,6 +50,7 @@ export class DefaultContextListener
       traceId: m.payload.metadata?.traceId,
       signature: m.payload.metadata?.signature,
       custom: m.payload.metadata?.custom,
+      antiReplay: m.payload.metadata?.antiReplay,
     };
     this.handler(m.payload.context, metadata);
   }

@@ -1,4 +1,7 @@
 /**
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright FINOS FDC3 contributors - see NOTICE file
+ *
  * Integration tests that run the sample scripts in-process by calling runExample() directly.
  */
 import { beforeAll, describe, it, jest } from '@jest/globals';
@@ -10,30 +13,34 @@ import { runExample as runSigningIntent } from '../samples/signing-intent-exampl
 
 const TIMEOUT_MS = 25000;
 
+/** Simulated Desktop Agent API levels exercised against each sample. */
+const SAMPLE_FDC3_VERSIONS = ['2.2', '3.0'] as const;
+
 describe('Samples integration', () => {
-  /** Per-suite timeout; `it(name, fn, ms)` works at runtime but @types/jest often omits the 3rd overload. */
   beforeAll(() => {
     jest.setTimeout(TIMEOUT_MS);
   });
 
-  it('backend-encrypted-channel-example runs to completion', async () => {
-    // 2.x: metadata embedded in context (__appMeta); matches mock channel behaviour in CI.
-    await runBackendEncryptedChannel('2.2');
+  it.each(SAMPLE_FDC3_VERSIONS)('backend-encrypted-channel-example runs to completion (FDC3 %s)', async fdc3Version => {
+    await runBackendEncryptedChannel(fdc3Version);
   });
 
-  it('frontend-encrypted-channel-example runs to completion', async () => {
-    await runFrontendEncryptedChannel('2.2');
+  it.each(SAMPLE_FDC3_VERSIONS)(
+    'frontend-encrypted-channel-example runs to completion (FDC3 %s)',
+    async fdc3Version => {
+      await runFrontendEncryptedChannel(fdc3Version);
+    }
+  );
+
+  it.each(SAMPLE_FDC3_VERSIONS)('signing-broadcast-example runs to completion (FDC3 %s)', async fdc3Version => {
+    await runSigningBroadcast(fdc3Version);
   });
 
-  it('signing-broadcast-example runs to completion', async () => {
-    await runSigningBroadcast();
+  it.each(SAMPLE_FDC3_VERSIONS)('get-user-example runs to completion (FDC3 %s)', async fdc3Version => {
+    await runGetUser(fdc3Version);
   });
 
-  it('get-user-example runs to completion', async () => {
-    await runGetUser();
-  });
-
-  it('signing-intent-example runs to completion', async () => {
-    await runSigningIntent('2.2');
+  it.each(SAMPLE_FDC3_VERSIONS)('signing-intent-example runs to completion (FDC3 %s)', async fdc3Version => {
+    await runSigningIntent(fdc3Version);
   });
 });
