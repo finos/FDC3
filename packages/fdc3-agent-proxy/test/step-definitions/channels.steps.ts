@@ -114,6 +114,43 @@ Given(
 );
 
 Given(
+  '{string} is a channelChangedEvent message with currentChannelId {string}',
+  (world: CustomWorld, field: string, channelId: string) => {
+    const message: ChannelChangedEvent = {
+      meta: {
+        eventUuid: world.messaging!.createUUID(),
+        timestamp: new Date(),
+      },
+      payload: {
+        currentChannelId: handleResolve(channelId, world),
+      },
+      type: 'channelChangedEvent',
+    };
+
+    world.props[field] = message;
+  }
+);
+
+Given(
+  '{string} is a channelChangedEvent message with currentChannelId {string} and newChannelId {string}',
+  (world: CustomWorld, field: string, currentChannelId: string, newChannelId: string) => {
+    const message: ChannelChangedEvent = {
+      meta: {
+        eventUuid: world.messaging!.createUUID(),
+        timestamp: new Date(),
+      },
+      payload: {
+        currentChannelId: handleResolve(currentChannelId, world),
+        newChannelId: handleResolve(newChannelId, world),
+      },
+      type: 'channelChangedEvent',
+    };
+
+    world.props[field] = message;
+  }
+);
+
+Given(
   '{string} is a PrivateChannelOnUnsubscribeEvent message on channel {string} with contextType as {string}',
   (world: CustomWorld, field: string, channel: string, contextType: string) => {
     const message = {
