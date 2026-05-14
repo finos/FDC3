@@ -1,0 +1,175 @@
+{
+  "applications": [
+    {
+      "appId": "trading-view-symbol-info-1",
+      "name": "Trading View Symbol Info",
+      "title": "Trading View Symbol Info",
+      "description": "Displays a symbol info of a given stock, using the TradingView applications",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4023/?mode=symbol-info"
+      },
+      "screenshots": [
+        {
+          "src": "http://localhost:4023/symbol-info.png",
+          "label": "Demo Screenshot"
+        }
+      ],
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "icons": [
+        {
+          "src": "http://localhost:4023/tradingview-icon.png"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "ViewInstrument": {
+              "contexts": ["fdc3.instrument"],
+              "displayName": "View Instrument"
+            }
+          }
+        }
+      }
+    },
+    {
+      "appId": "trading-view-chart-1",
+      "name": "Trading View Chart",
+      "title": "Trading View Chart",
+      "description": "Displays a chart of a given stock, using the TradingView applications",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4023/?mode=chart"
+      },
+      "screenshots": [
+        {
+          "src": "http://localhost:4023/chart.png",
+          "label": "Demo Screenshot"
+        }
+      ],
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "icons": [
+        {
+          "src": "http://localhost:4023/tradingview-icon.png"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "ViewChart": {
+              "contexts": ["fdc3.instrument"],
+              "displayName": "View Chart"
+            }
+          }
+        }
+      }
+    },
+    {
+      "appId": "trading-view-fundamentals-1",
+      "name": "Trading View Fundamentals",
+      "title": "Trading View Fundamentals",
+      "description": "Displays fundamentals of a given stock, using the TradingView applications",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4023/?mode=fundamentals"
+      },
+      "screenshots": [
+        {
+          "src": "http://localhost:4023/fundamentals.png",
+          "label": "Demo Screenshot"
+        }
+      ],
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "icons": [
+        {
+          "src": "http://localhost:4023/tradingview-icon.png"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "ViewInstrument": {
+              "contexts": ["fdc3.instrument"],
+              "displayName": "View Instrument"
+            }
+          }
+        }
+      }
+    },
+    {
+      "appId": "trading-view-tickers-1",
+      "name": "Trading View Tickers",
+      "title": "Trading View Tickers",
+      "description": "Displays tickers of a given stock, using the TradingView applications",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4023/?mode=tickers"
+      },
+      "screenshots": [
+        {
+          "src": "http://localhost:4023/tickers.png",
+          "label": "Demo Screenshot"
+        }
+      ],
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "icons": [
+        {
+          "src": "http://localhost:4023/tradingview-icon.png"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "ViewInstrument": {
+              "contexts": ["fdc3.instrument"],
+              "displayName": "View Instrument"
+            }
+          }
+        }
+      }
+    },
+    {
+      "appId": "trading-view-market-data-1",
+      "name": "Trading View Market Data",
+      "title": "Trading View Market Data",
+      "description": "Displays market data of a given stock, using the TradingView applications",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4023/?mode=market-data"
+      },
+      "screenshots": [
+        {
+          "src": "http://localhost:4023/market-data.png",
+          "label": "Demo Screenshot"
+        }
+      ],
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "icons": [
+        {
+          "src": "http://localhost:4023/tradingview-icon.png"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "ViewInstrument": {
+              "contexts": ["fdc3.instrument"],
+              "displayName": "View Instrument"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "message": "OK"
+}

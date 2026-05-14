@@ -1,0 +1,34 @@
+{
+  "applications": [
+    {
+      "appId": "sp2",
+      "name": "Security POC 2",
+      "title": "Security POC 2: Responds to GetPrices intent",
+      "description": "Creates a private channel to broadcast encrypted prices",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4034"
+      },
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "icons": [
+        {
+          "src": "http://localhost:4034/icon.svg"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "demo.GetPrices": {
+              "displayName": "Get Prices",
+              "contexts": ["fdc3.instrument"],
+              "resultType": "channel<fdc3.valuation>"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "message": "OK"
+}
