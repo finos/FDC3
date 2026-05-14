@@ -64,6 +64,8 @@ export interface FDC3Handlers {
    * - `frontend-encrypted-channel-example.ts` — shows how you can implement `sign-context` and
    *   `unwrap-symmetric-key` on the receiver backend so key-request signing and symmetric-key
    *   unwrapping stay off the frontend (`fdc3.security.symmetricKeyResponse` in, unwrapped JWK out).
+   * - `get-user-example.ts` — also implements `get-user-identity` on the requesting backend so JWE decryption,
+   *   JWT verification, and projection to `fdc3.contact` stay server-side (the JWT never reaches the client).
    *
    * @param purpose — Tells the server which operation this call represents; defined by your app.
    * @param o — The payload for that operation (for example `{ context }` or an object compatible with
