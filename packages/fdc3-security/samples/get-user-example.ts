@@ -1,9 +1,8 @@
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { AppIdentifier, Context, UserRequest } from '@finos/fdc3-context';
-import { ContextMetadata, DesktopAgent, IntentHandler } from '@finos/fdc3-standard';
+import { AppIdentifier, Contact, Context, EncryptedContextWrapper, UserRequest } from '@finos/fdc3-context';
+import type { ContextMetadata, DesktopAgent, Intent, IntentHandler } from '@finos/fdc3-standard';
 import { WebSocket } from 'ws';
-
 import { JosePublicFDC3Security, provisionJWKS } from '../src/impl/JosePublicFDC3Security';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
@@ -12,9 +11,21 @@ import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { createMockDesktopAgent, resetMockDesktopAgentFixtureState } from '../test/mocks/MockDesktopAgent';
 import { createMetadataHandlerWithFDC3Version, type MetadataHandler } from '../src/delegates/MetadataHandler';
 import { PublicSignatureCheckingHandlerSupport } from '../src/signing/SignatureCheckingHandlerSupport';
+import { AntiReplayClaims, DetachedSignature } from '@finos/fdc3-schema/generated/api/BrowserTypes';
 
 /** Standard intent name per FDC3 Security: `GetUser` with `fdc3.security.userRequest` input. */
 const GET_USER_INTENT = 'GetUser';
+
+/**
+ * Requesting-app backend: accepts `fdc3.security.encryptedContext`, decrypts with this app's wrapping private key,
+ * verifies the embedded JWT with the IDP's public keys, and returns **`fdc3.contact`** so the JWT never reaches the front end.
+ */
+const EXCHANGE_GET_USER_IDENTITY = 'get-user-identity';
+
+type UserRequestSignResult = {
+  signature: DetachedSignature;
+  antiReplay: AntiReplayClaims;
+};
 
 /**
  * IDP (Identity Provider) backend handlers.
@@ -49,7 +60,9 @@ class IDPBackendHandlers extends DefaultFDC3Handlers {
         throw new Error('Unauthorized');
       }
       console.log(
-        `[IDP Backend] ✅ Verified requesting-app signature (jku: ${auth.jku ?? 'n/a'}, kid: ${auth.kid ?? 'n/a'})`
+        `[IDP Backend] ✅ Verified requesting-app signature (jku: ${auth.jku ?? 'n/a'}, kid: ${auth.kid ?? 'n/a'})`,
+        context,
+        metadata
       );
 
       if (context.type !== 'fdc3.security.userRequest') {
@@ -75,7 +88,10 @@ class IDPBackendHandlers extends DefaultFDC3Handlers {
         encryptedPayload,
         id: { kid: 'user-identity' },
       };
-      console.log('[IDP Backend] Returning fdc3.security.encryptedContext (encrypted fdc3.security.user)');
+      console.log(
+        '[IDP Backend] Returning fdc3.security.encryptedContext (encrypted fdc3.security.user)',
+        encryptedContext
+      );
       return encryptedContext;
     };
 
@@ -85,174 +101,186 @@ class IDPBackendHandlers extends DefaultFDC3Handlers {
 }
 
 /**
- * Requesting-app backend: signs `fdc3.security.userRequest` payloads for the `GetUser` intent (private key stays here).
+ * Requesting-app backend: signs `fdc3.security.userRequest` for `GetUser`, and resolves identity via
+ * `get-user-identity` (decrypt + JWT verify + `fdc3.contact` projection — all server-side).
  */
 class RequestingAppBackendHandlers extends DefaultFDC3Handlers {
-  constructor(private readonly security: JosePrivateFDC3Security) {
+  constructor(
+    private readonly security: JosePrivateFDC3Security,
+    private readonly idp: AppBackEnd
+  ) {
     super();
   }
 
   async exchangeData(purpose: string, o: object): Promise<object | void> {
     if (purpose === 'sign-context') {
-      const { context } = o as { context: Context };
-      return await this.security.sign(context);
+      return await this.security.sign(o as Context);
+    }
+    if (purpose === EXCHANGE_GET_USER_IDENTITY) {
+      const encryptedContext = o as EncryptedContextWrapper;
+      if (!encryptedContext || encryptedContext.type !== 'fdc3.security.encryptedContext') {
+        throw new Error('get-user-identity: expected fdc3.security.encryptedContext with encryptedPayload');
+      }
+      const payload = encryptedContext.encryptedPayload;
+      if (typeof payload !== 'string') {
+        throw new Error('get-user-identity: encryptedPayload must be a string');
+      }
+      const decrypted = await this.security.decryptContextWithPrivateKey(payload);
+      if (decrypted.type !== 'fdc3.security.user') {
+        throw new Error(`get-user-identity: expected fdc3.security.user, got ${decrypted.type}`);
+      }
+      const userCtx = decrypted as unknown as {
+        jwt?: string;
+        wrappedJwt?: string;
+        id?: { email?: string };
+        name?: string;
+      };
+      const jwt =
+        typeof userCtx.jwt === 'string'
+          ? userCtx.jwt
+          : typeof userCtx.wrappedJwt === 'string'
+            ? userCtx.wrappedJwt
+            : undefined;
+      if (!jwt) {
+        throw new Error('get-user-identity: fdc3.security.user missing jwt / wrappedJwt');
+      }
+
+      const securityClient = new JosePublicFDC3Security(
+        this.idp.security.getPublicKeys()[0],
+        this.idp.security.getPublicKeys()[1],
+        url => provisionJWKS(url),
+        () => true
+      );
+      const claims = await securityClient.verifyJWTToken(jwt);
+
+      const id = userCtx.id;
+      const email = id?.email ?? (typeof claims.sub === 'string' && claims.sub.includes('@') ? claims.sub : undefined);
+      if (!email) {
+        throw new Error('get-user-identity: cannot derive contact email from user context or JWT sub');
+      }
+      const name = userCtx.name ?? claims.sub;
+      const contact: Contact = {
+        type: 'fdc3.contact',
+        id: { email },
+        ...(name !== undefined ? { name } : {}),
+      };
+      console.log(
+        '[RequestingApp Backend] get-user-identity: verified JWT, returning fdc3.contact (JWT not sent to client)'
+      );
+      return { context: contact as Context };
     }
     return super.exchangeData(purpose, o);
   }
 }
 
 /**
- * User-requesting app: has its own backend and connects to the IDP to request user identity
- * via the `GetUser` intent.
+ * STEP 1: Start IDP backend (GetUser handler, JWKS).
  */
-class UserRequestingApp {
-  readonly backend: AppBackEnd;
-  readonly baseUrl: string;
-
-  constructor(backend: AppBackEnd) {
-    this.backend = backend;
-    this.baseUrl = backend.baseUrl;
-  }
-
-  async shutdown(): Promise<void> {
-    await this.backend.shutdown();
-  }
-
-  /**
-   * Connect to the IDP and invoke the `GetUser` intent handler (same payload as `raiseIntent('GetUser', …)`).
-   * Signs `fdc3.security.userRequest` on the requesting-app backend, then invokes the IDP handler with packed metadata.
-   * Receives encrypted fdc3.security.encryptedContext, decrypts to get fdc3.security.user, verifies JWT.
-   */
-  async requestUserFrom(idp: AppBackEnd, mockDA: DesktopAgent, metadataHandler: MetadataHandler): Promise<void> {
-    const localWsUrl = this.backend.baseUrl.replace('http', 'ws');
-    console.log(`[UserRequestingApp] Connecting to own backend for signing at ${localWsUrl}...`);
-    const localHandlers = await connectRemoteHandlers(localWsUrl, mockDA, async () => {});
-
-    const userRequest: Context = {
-      type: 'fdc3.security.userRequest',
-      aud: this.baseUrl,
-    };
-
-    const signResult = (await localHandlers.exchangeData('sign-context', { context: userRequest })) as Awaited<
-      ReturnType<JosePrivateFDC3Security['sign']>
-    >;
-    const { context: packedContext, metadata: packedMetadata } = metadataHandler.pack(userRequest, {
-      signature: signResult.signature,
-      antiReplay: signResult.antiReplay,
-    });
-
-    const idpWsUrl = idp.baseUrl.replace('http', 'ws');
-    console.log(`[UserRequestingApp] Connecting to IDP at ${idpWsUrl}...`);
-    const idpHandlers = await connectRemoteHandlers(idpWsUrl, mockDA, async () => {});
-
-    const getUserHandler = await idpHandlers.remoteIntentHandler(GET_USER_INTENT);
-    const result = await getUserHandler(packedContext, packedMetadata);
-
-    await localHandlers.disconnect();
-
-    if (!result) {
-      console.log('[UserRequestingApp] No result from IDP');
-      await idpHandlers.disconnect();
-      return;
-    }
-
-    if (
-      'type' in result &&
-      result.type === 'fdc3.security.encryptedContext' &&
-      typeof result.encryptedPayload === 'string'
-    ) {
-      const user = await this.backend.security.decryptContextWithPrivateKey(result.encryptedPayload);
-
-      if (user?.type === 'fdc3.security.user' && user.jwt) {
-        const securityClient = new JosePublicFDC3Security(
-          idp.security.getPublicKeys()[0],
-          idp.security.getPublicKeys()[1],
-          url => provisionJWKS(url),
-          () => true
-        );
-        const claims = await securityClient.verifyJWTToken(user.jwt);
-        console.log('\n[UserRequestingApp] User received and JWT verified:');
-        console.log(JSON.stringify({ name: user.name, id: user.id }, null, 2));
-        console.log('[UserRequestingApp] JWT claims:');
-        console.log(JSON.stringify(claims, null, 2));
-        console.log(`[UserRequestingApp] User: ${claims.sub}, Issued by: ${claims.iss}`);
-      } else {
-        console.log('[UserRequestingApp] Decrypted context was not fdc3.security.user');
-      }
-    } else {
-      console.log('[UserRequestingApp] Unexpected result type:', 'type' in result ? result.type : 'unknown');
-    }
-
-    await idpHandlers.disconnect();
-  }
-}
-
-/**
- * STEP 1: Start IDP Backend
- */
-async function step1SetupIDPBackend() {
-  console.log('1. Start IDP Backend (Hosts JWKS, handles GetUser intent)');
+async function step1SetupIdpApp() {
+  console.log('1. Starting IDP backend...');
   const idp = new AppBackEnd(
     (_ws: WebSocket, security: JosePrivateFDC3Security, appIdentifier: AppIdentifier, fdc3Version: string) =>
       new IDPBackendHandlers(security, appIdentifier, fdc3Version)
   );
   await idp.start();
-  console.log(`[IDP Server] Listening at ${idp.baseUrl}`);
+  console.log(`   IDP listening at ${idp.baseUrl}`);
   return idp;
 }
 
 /**
- * STEP 2: Start UserRequestingApp backend
+ * STEP 2: Start requesting-app backend (JWKS, sign-context + get-user-identity; needs IDP for JWT verification).
  */
-async function step2SetupRequestingAppBackend() {
-  console.log('2. Start UserRequestingApp Backend (Hosts JWKS, holds private key for decryption)');
+async function step2SetupRequestingApp(idp: AppBackEnd) {
+  console.log('2. Starting requesting-app backend...');
   const app = new AppBackEnd(
     (_ws: WebSocket, security: JosePrivateFDC3Security, _appIdentifier: AppIdentifier, _fdc3Version: string) =>
-      new RequestingAppBackendHandlers(security)
+      new RequestingAppBackendHandlers(security, idp)
   );
   await app.start();
-  console.log(`[UserRequestingApp] Listening at ${app.baseUrl}`);
+  console.log(`   Requesting app listening at ${app.baseUrl}`);
   return app;
 }
 
 /**
- * STEP 3: Request user from IDP via GetUser intent
+ * STEP 3: IDP front-end — connect to IDP backend and register the GetUser intent listener on the (mock) desktop agent.
  */
-async function step3RequestUser(
-  idp: AppBackEnd,
-  requestingApp: AppBackEnd,
-  mockDA: DesktopAgent,
-  metadataHandler: MetadataHandler
-) {
-  console.log('3. UserRequestingApp invokes GetUser intent...');
-  const userRequestingApp = new UserRequestingApp(requestingApp);
-  await userRequestingApp.requestUserFrom(idp, mockDA, metadataHandler);
+async function step3IdpRegisterGetUserListener(idp: AppBackEnd, mockIdp: DesktopAgent) {
+  console.log('3. IDP front-end: Connecting to IDP backend, registering GetUser intent listener...');
+
+  const idpHandlers = await connectRemoteHandlers(idp.baseUrl.replace('http', 'ws'), mockIdp, async () => {});
+  const intentHandler = await idpHandlers.remoteIntentHandler(GET_USER_INTENT);
+  await mockIdp.addIntentListener(GET_USER_INTENT as Intent, intentHandler);
+
+  return { handlers: idpHandlers };
+}
+
+/**
+ * STEP 4: Requesting-app front-end — sign `fdc3.security.userRequest`, raise GetUser, then exchangeData(get-user-identity).
+ * Uses a separate mock desktop agent from step 3; the mock shares intent routing so the raised intent reaches the IDP listener.
+ */
+async function step4RequestingAppRaiseGetUser(requestingApp: AppBackEnd, mockRequesting: DesktopAgent) {
+  console.log('4. Requesting-app front-end: Signing user request, raising GetUser, resolving contact via backend...');
+
+  const requestingHandlers = await connectRemoteHandlers(
+    requestingApp.baseUrl.replace('http', 'ws'),
+    mockRequesting,
+    async () => {}
+  );
+
+  try {
+    const userRequest: Context = {
+      type: 'fdc3.security.userRequest',
+      aud: requestingApp.baseUrl,
+    };
+
+    const signResult = (await requestingHandlers.exchangeData('sign-context', userRequest)) as UserRequestSignResult;
+
+    const resolution = await mockRequesting.raiseIntent(GET_USER_INTENT as Intent, userRequest, null, {
+      signature: signResult.signature,
+      antiReplay: signResult.antiReplay,
+    });
+
+    const userResult = await resolution.getResult();
+
+    console.log('[RequestingApp Front End] Result from GetUser', userResult);
+
+    const identityOut = await requestingHandlers.exchangeData(EXCHANGE_GET_USER_IDENTITY, userResult as object);
+    const contact = identityOut as Contact;
+    console.log('[RequestingApp Front End] Contact from backend', contact);
+  } finally {
+    await requestingHandlers.disconnect();
+  }
 }
 
 /**
  * MAIN EXECUTION
  *
- * This example demonstrates requesting and verifying user identity from an Identity Provider.
- * 1. Step 1: Start the IDP backend (handles GetUser intent).
- * 2. Step 2: Start the UserRequestingApp backend (has its own JWKS for decryption).
- * 3. Step 3: Requesting app signs fdc3.security.userRequest on its backend, then invokes the IDP's GetUser handler.
- *    The IDP verifies the signature (JWKS from the request's jku) before issuing a user JWT and encrypted response.
- *    The IDP returns fdc3.security.encryptedContext; the requesting app decrypts, verifies the JWT, and displays the user.
+ * 1. IDP backend (mint JWT, encrypt for requestor JWKS).
+ * 2. Requesting-app backend (sign user requests, get-user-identity decrypt + verify + fdc3.contact).
+ * 3. IDP front-end: WebSocket to IDP backend, register **GetUser** on the mock desktop agent.
+ * 4. Requesting-app front-end: sign `fdc3.security.userRequest`, **raiseIntent(GetUser, …)**, then **exchangeData(get-user-identity)**.
  */
 async function runExample(fdc3Version: string = '3.0') {
   resetMockDesktopAgentFixtureState();
   console.log('--- FDC3 Get User Example Start ---');
 
+  const mockIdp = createMockDesktopAgent(fdc3Version, { appId: 'idp.app', instanceId: 'idp1' });
   const mockRequesting = createMockDesktopAgent(fdc3Version, { appId: 'user-requesting.app', instanceId: 'u1' });
-  const metadataHandler = createMetadataHandlerWithFDC3Version(fdc3Version);
 
-  const idp = await step1SetupIDPBackend();
-  const requestingApp = await step2SetupRequestingAppBackend();
-  await step3RequestUser(idp, requestingApp, mockRequesting, metadataHandler);
+  const idp = await step1SetupIdpApp();
+  const requestingApp = await step2SetupRequestingApp(idp);
+  const idpClient = await step3IdpRegisterGetUserListener(idp, mockIdp);
+
+  try {
+    await step4RequestingAppRaiseGetUser(requestingApp, mockRequesting);
+  } finally {
+    console.log('\nClosing connections...');
+    await idpClient.handlers.disconnect();
+    await requestingApp.shutdown();
+    await idp.shutdown();
+  }
 
   console.log('\n--- FDC3 Get User Example Complete ---');
-  await requestingApp.shutdown();
-  await idp.shutdown();
 }
 
 export { runExample };

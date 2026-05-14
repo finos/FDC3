@@ -148,22 +148,35 @@ sequenceDiagram
 
 ## [Get User Example](get-user-example.ts)
 
-A detailed demonstration of requesting and verifying user identity from a mock Identity Provider (IDP) using the standard **`GetUser`** intent (`fdc3.security.userRequest` in, user identity out). It uses encrypted contexts and JSON Web Tokens (JWT) for secure identity sharing.
+A detailed demonstration of the **`GetUser`** intent (`fdc3.security.userRequest` in, **`fdc3.contact`** out on the requesting side). The sample follows the same layout as other security samples: **(1)** start the IDP backend, **(2)** start the requesting-app backend, **(3)** IDP front-end connects and registers a **GetUser** intent listener on a mock desktop agent, **(4)** requesting-app front-end signs the user request, **raises** `GetUser`, then calls **`exchangeData('get-user-identity', …)`** so the JWT is verified only on the requesting backend and never reaches the browser-side code path shown here.
 
 ```mermaid
 sequenceDiagram
-    participant FE as Requesting App Front End
+    participant RFE as Requesting App Front End
     participant RBE as Requesting App Back End
-    participant IDP as IDP Back End
+    participant IDPFE as IDP Front End
+    participant IDPBE as IDP Back End
 
-    FE->>RBE: exchangeData(sign-context, fdc3.security.userRequest)
-    RBE-->>FE: signature + antiReplay
-    Note over FE: metadataHandler.pack(context, metadata)
+    Note over IDPBE,RBE: Steps 1-2: start IDP backend and requesting-app backend (JWKS on each)
 
-    FE->>IDP: GetUser (context + metadata)
-    Note over IDP: PublicSignatureCheckingHandlerSupport<br/>verifySignature (JWKS @ jku)<br/>createJWTToken, encrypt user for aud
+    Note over IDPFE,IDPBE: Step 3: IDP front-end binds GetUser to IDP backend and mock agent
+    IDPFE->>IDPBE: connectRemoteHandlers + remoteIntentHandler(GetUser)
+    Note over IDPFE: addIntentListener(GetUser) on mock IDP desktop agent
 
-    IDP-->>FE: fdc3.security.encryptedContext
+    Note over RFE,RBE: Step 4: requesting front-end
+    RFE->>RBE: exchangeData(sign-context, userRequest as payload object)
+    RBE-->>RFE: detached signature + antiReplay
 
-    Note over FE: decryptContextWithPrivateKey<br/>verifyJWTToken (IDP JWKS)<br/>✅ User identity verified
+    Note over RFE: mockRequesting.raiseIntent(GetUser, userRequest, metadata from sign)
+    RFE->>IDPFE: intent delivered to GetUser listener (from step 3)
+    IDPFE->>IDPBE: execute remote GetUser handler
+    Note over IDPBE: PublicSignatureCheckingHandlerSupport<br/>verify signature + antiReplay (JWKS @ jku)<br/>createJWTToken, encrypt user for aud
+    IDPBE-->>IDPFE: fdc3.security.encryptedContext
+    IDPFE-->>RFE: intent result (encrypted context)
+
+    RFE->>RBE: exchangeData(get-user-identity, GetUser result as payload object)
+    Note over RBE: decrypt JWE (requesting private key)<br/>verifyJWT (IDP public keys)<br/>return fdc3.contact
+    RBE-->>RFE: exchangeData response (context = fdc3.contact)
+
+    Note over RFE: JWT verified only on RBE; not shown in front-end payload
 ```
