@@ -1,3 +1,4 @@
+import './dummy-desktop-agent.css';
 import { io } from 'socket.io-client';
 import { v4 as uuid } from 'uuid';
 import { APP_GOODBYE, DA_HELLO, FDC3_APP_EVENT } from '../../message-types.js';
@@ -17,20 +18,76 @@ import { WebConnectionProtocol3Handshake } from '@finos/fdc3-schema/dist/generat
 
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL;
 
+function primaryIconSrc(app: DirectoryApp): string | undefined {
+  const icons = app.icons;
+  if (!icons?.length) return undefined;
+  const first = icons[0] as { src?: string };
+  return typeof first?.src === 'string' && first.src.length > 0 ? first.src : undefined;
+}
+
 function createAppStartButton(app: DirectoryApp, sc: ServerContext<AppRegistration>): HTMLDivElement {
-  const div: HTMLDivElement = document.createElement('div');
-  div.classList.add('app');
-  const h3 = document.createElement('h3');
-  h3.textContent = app.title;
-  div.appendChild(h3);
-  const button = document.createElement('button');
-  button.textContent = 'Start';
-  button.onclick = () => sc.open(app.appId);
-  div.appendChild(button);
-  const p = document.createElement('p');
-  p.textContent = app.description ?? '';
-  div.appendChild(p);
-  return div;
+  const card = document.createElement('div');
+  card.classList.add('da-app-card');
+
+  const description = (app.description ?? '').trim();
+  const popoverId = `da-app-desc-${app.appId.replace(/[^a-zA-Z0-9_-]/g, '-')}`;
+
+  if (description.length > 0) {
+    const descBtn = document.createElement('button');
+    descBtn.type = 'button';
+    descBtn.classList.add('da-app-card__desc-trigger');
+    descBtn.textContent = 'i';
+    descBtn.setAttribute('popovertarget', popoverId);
+    descBtn.setAttribute('aria-label', `About ${app.title}`);
+    card.appendChild(descBtn);
+
+    const pop = document.createElement('div');
+    pop.id = popoverId;
+    pop.classList.add('da-app-card__popover');
+    pop.setAttribute('popover', 'auto');
+    pop.textContent = description;
+    card.appendChild(pop);
+  }
+
+  const iconWrap = document.createElement('div');
+  iconWrap.classList.add('da-app-card__icon-wrap');
+  const iconSrc = primaryIconSrc(app);
+  if (iconSrc) {
+    const img = document.createElement('img');
+    img.classList.add('da-app-card__icon');
+    img.alt = '';
+    img.decoding = 'async';
+    img.loading = 'lazy';
+    img.src = iconSrc;
+    img.addEventListener('error', () => {
+      img.replaceWith(fallbackIconEl(app.title ?? app.appId));
+    });
+    iconWrap.appendChild(img);
+  } else {
+    iconWrap.appendChild(fallbackIconEl(app.title ?? app.appId));
+  }
+  card.appendChild(iconWrap);
+
+  const titleEl = document.createElement('div');
+  titleEl.classList.add('da-app-card__title');
+  titleEl.textContent = app.title ?? app.appId;
+  card.appendChild(titleEl);
+
+  const start = document.createElement('button');
+  start.type = 'button';
+  start.classList.add('da-app-card__start');
+  start.textContent = 'Start';
+  start.onclick = () => sc.open(app.appId);
+  card.appendChild(start);
+
+  return card;
+}
+
+function fallbackIconEl(label: string): HTMLDivElement {
+  const el = document.createElement('div');
+  el.classList.add('da-app-card__icon-fallback');
+  el.textContent = (label.trim().charAt(0) || '?').toUpperCase();
+  return el;
 }
 
 enum Approach {
@@ -158,7 +215,7 @@ window.addEventListener('load', () => {
     });
 
     // let's create buttons for some apps
-    const appList = document.getElementById('app-list') as HTMLOListElement;
+    const appList = document.getElementById('app-list') as HTMLDivElement;
     directory.retrieveAllApps().forEach((app: DirectoryApp) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mani = app?.hostManifests?.demo as any;
