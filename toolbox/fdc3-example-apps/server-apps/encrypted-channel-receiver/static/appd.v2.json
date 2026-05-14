@@ -1,0 +1,23 @@
+{
+  "applications": [
+    {
+      "appId": "encrypted-channel-receiver-1",
+      "name": "Encrypted channel receiver",
+      "title": "Encrypted channel receiver",
+      "description": "FDC3 encrypted context demo — decrypting on the current user channel (PublicEncryptedContextListenerSupport).",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4030"
+      },
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "icons": [
+        {
+          "src": "http://localhost:4030/icon.svg"
+        }
+      ]
+    }
+  ],
+  "message": "OK"
+}

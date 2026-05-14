@@ -1,0 +1,45 @@
+{
+  "applications": [
+    {
+      "appId": "pricer",
+      "name": "Pricer",
+      "title": "Pricer",
+      "description": "A demo app for the FDC3 Developer Course",
+      "icons": [
+        {
+          "src": "http://localhost:4020/icon.png"
+        }
+      ],
+      "screenshots": [
+        {
+          "src": "http://localhost:4020/screenshot.png",
+          "label": "Demo Screenshot"
+        }
+      ],
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4020/"
+      },
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "ViewQuote": {
+              "displayName": "View Quote",
+              "contexts": ["fdc3.instrument"]
+            },
+            "demo.GetPrices": {
+              "displayName": "Get Prices",
+              "contexts": ["fdc3.instrument"]
+            }
+          }
+        }
+      },
+      "hostManifests": {
+        "sail": {
+          "injectApi": "2.0"
+        }
+      }
+    }
+  ],
+  "message": "OK"
+}

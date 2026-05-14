@@ -1,0 +1,180 @@
+import type { Application } from 'express';
+import type { Server } from 'http';
+import * as dotenv from 'dotenv';
+import express from 'express';
+import path from 'path';
+import { WebSocket } from 'ws';
+import { IntentHandler } from '@finos/fdc3';
+import { Context } from '@finos/fdc3-context';
+import {
+  AllowListFunction,
+  createJosePrivateFDC3Security,
+  DefaultFDC3Handlers,
+  JosePrivateFDC3Security,
+  provisionJWKS,
+  setupWebsocketServer,
+} from '@finos/fdc3-security';
+import { loadEntraConfig, type EntraConfig } from './config';
+import { JWTValidator } from './jwt-validator';
+
+/** Same intent name as security-demo-idp-app / get-user-example flow */
+export const CREATE_IDENTITY_TOKEN = 'CreateIdentityToken';
+
+type EntraUserSession = Context & {
+  type: 'fdc3.security.user';
+  jwt?: unknown;
+  id?: { email?: string };
+  name?: string;
+};
+
+/**
+ * Entra-backed IDP: validates Microsoft ID tokens via {@link JWTValidator}, then issues
+ * FDC3-encrypted user contexts for {@link CREATE_IDENTITY_TOKEN} like the Sail IDP demo.
+ */
+class EntraBackendHandlers extends DefaultFDC3Handlers {
+  private user: EntraUserSession | null = null;
+  private readonly jwtValidator: JWTValidator;
+
+  constructor(
+    private readonly security: JosePrivateFDC3Security,
+    private readonly issuerBaseUrl: string,
+    entraConfig: EntraConfig
+  ) {
+    super();
+    this.jwtValidator = new JWTValidator(entraConfig);
+  }
+
+  async exchangeData(purpose: string, o: object): Promise<object | void> {
+    const ctx = o as Context;
+
+    if (purpose === 'user-data' && ctx.type === 'fdc3.security.user') {
+      const jwt = (ctx as EntraUserSession).jwt;
+      if (typeof jwt !== 'string' || !jwt.trim()) {
+        console.error('user-data: missing jwt on fdc3.security.user');
+        return;
+      }
+      const { valid, claims, error } = await this.jwtValidator.validateToken(jwt);
+      if (error) {
+        console.error('Invalid Microsoft Entra ID token:', error);
+        return;
+      }
+      if (!valid || !claims) {
+        console.error('Invalid Microsoft Entra ID token');
+        return;
+      }
+
+      this.user = {
+        type: 'fdc3.security.user',
+        jwt,
+        id: {
+          email: (claims.email as string) || (claims.preferred_username as string) || '',
+        },
+        name: (claims.name as string) || (claims.given_name as string) || '',
+      };
+      return this.user;
+    }
+
+    if (purpose === 'user-request' && ctx.type === 'fdc3.security.userRequest') {
+      return this.user ?? undefined;
+    }
+
+    if (purpose === 'user-logout') {
+      this.user = null;
+      return;
+    }
+
+    return super.exchangeData(purpose, o);
+  }
+
+  async remoteIntentHandler(intent: string): Promise<IntentHandler> {
+    if (intent !== CREATE_IDENTITY_TOKEN) {
+      return super.remoteIntentHandler(intent);
+    }
+
+    return async (context: Context): Promise<Context> => {
+      if (context.type !== 'fdc3.security.userRequest') {
+        throw new Error(`Expected fdc3.security.userRequest, got ${context.type}`);
+      }
+      if (!this.user) {
+        throw new Error('No authenticated Entra user — sign in with Microsoft first');
+      }
+
+      const aud = (context as unknown as { aud: string }).aud;
+      const sub =
+        (typeof this.user.id?.email === 'string' && this.user.id.email) ||
+        (typeof this.user.name === 'string' && this.user.name) ||
+        'entra-user';
+
+      const jwt = await this.security.createJWTToken(aud, sub);
+      const userOut: Context = {
+        type: 'fdc3.security.user',
+        id: this.user.id,
+        name: this.user.name,
+        jwt,
+      };
+
+      const requestingAppJwksUrl = `${aud.replace(/\/$/, '')}/.well-known/jwks.json`;
+      const encryptedPayload = await this.security.encryptPublicKey(userOut, requestingAppJwksUrl);
+
+      return {
+        type: 'fdc3.security.encryptedContext',
+        originalType: 'fdc3.security.user',
+        encryptedPayload,
+        id: { kid: 'user-identity' },
+      };
+    };
+  }
+}
+
+export default async function backend(
+  app: Application,
+  server: Server,
+  opts: { port: number; appRoot: string }
+): Promise<void> {
+  dotenv.config({ path: path.join(opts.appRoot, '.env') });
+
+  const entraConfig = loadEntraConfig(opts.appRoot);
+  const baseUrl = `http://localhost:${opts.port}`;
+
+  app.use(express.json());
+
+  app.use((_req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    next();
+  });
+
+  app.get('/api/config', (_req, res) => {
+    res.json(entraConfig);
+  });
+
+  const allowListFunction: AllowListFunction = (jku: string, iss?: string) => {
+    if (iss && !jku.startsWith(iss)) {
+      return false;
+    }
+    return ['https://', 'http://localhost', 'http://127.0.0.1'].some(allowed => jku.startsWith(allowed));
+  };
+
+  const security = await createJosePrivateFDC3Security(
+    baseUrl,
+    url => provisionJWKS(url),
+    allowListFunction,
+    undefined,
+    undefined,
+    'entra-signing-key',
+    'entra-wrapping-key'
+  );
+
+  app.get('/.well-known/jwks.json', (_req, res) => {
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.json({ keys: security.getPublicKeys() });
+  });
+
+  setupWebsocketServer(
+    server,
+    () => {},
+    (_ws: WebSocket) => new EntraBackendHandlers(security, baseUrl, entraConfig)
+  );
+}

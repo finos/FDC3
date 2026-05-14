@@ -1,0 +1,32 @@
+{
+  "applications": [
+    {
+      "appId": "tradelist",
+      "name": "TradeList",
+      "title": "TradeList",
+      "description": "A demo app for the FDC3 Developer Course",
+      "icons": [
+        {
+          "src": "http://localhost:4022/icon.png"
+        }
+      ],
+      "screenshots": [
+        {
+          "src": "http://localhost:4022/screenshot.png",
+          "label": "Demo Screenshot"
+        }
+      ],
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4022/"
+      },
+      "interop": {},
+      "hostManifests": {
+        "sail": {
+          "injectApi": "2.0"
+        }
+      }
+    }
+  ],
+  "message": "OK"
+}
