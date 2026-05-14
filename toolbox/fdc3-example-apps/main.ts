@@ -123,7 +123,7 @@ async function startApp(appName: string, appRoot: string, port: number) {
     }
   }
 
-  // Mount the app's static director at /static/appName to match the expected URL structure
+  // Mount the app's static directory at /static/appName to match the expected URL structure
   // and legacy patterns from the demo.
   const staticPath = path.join(appRoot, 'static');
   if (fs.existsSync(staticPath)) {
@@ -191,4 +191,9 @@ async function startApp(appName: string, appRoot: string, port: number) {
       console.error({ appName: a.name, error: err }, 'Failed to start application server');
     }
   }
+
+  // host the directory files
+  const propPath = path.join('directory', 'properties.json');
+  const props = JSON.parse(fs.readFileSync(propPath, 'utf-8'));
+  await startApp('directory', path.join(packageRoot, 'directory'), props.port);
 })();
