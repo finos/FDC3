@@ -80,18 +80,14 @@ export interface FDC3Handlers {
  */
 export class DefaultFDC3Handlers implements FDC3Handlers {
   async handleRemoteChannel(_purpose: string, _channel: Channel): Promise<void> {
-    // Default: do nothing
+    return;
   }
 
   async remoteIntentHandler(_intent: string): Promise<IntentHandler> {
-    // Default: return a no-op handler
-    return async () => {
-      return;
-    };
+    return async () => undefined;
   }
 
   async exchangeData(_purpose: string, _o: object): Promise<object | void> {
-    // Default: do nothing
-    return;
+    return undefined;
   }
 }
