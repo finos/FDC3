@@ -1,5 +1,4 @@
 import {
-  DesktopAgent,
   Listener,
   Channel,
   ContextHandler,
@@ -13,6 +12,7 @@ import type {
   AppMetadata,
   AppProvidableContextMetadata,
   ContextMetadata,
+  DesktopAgent,
   Intent,
 } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
@@ -30,10 +30,8 @@ export function resetMockDesktopAgentFixtureState(): void {
   sharedPrivateChannels.clear();
 }
 
-export class MockDesktopAgent implements Partial<DesktopAgent> {
-  /**
-   * @param fdc3Version Semver string reported by {@link MockDesktopAgent.getInfo} as {@link ImplementationMetadata.fdc3Version}.
-   */
+/** Minimal Desktop Agent stand-in for samples and security tests (subset of API surface). */
+class MockDesktopAgent implements Partial<DesktopAgent> {
   constructor(
     readonly fdc3Version: string = '3.0',
     readonly appMetadata: AppMetadata = { appId: 'test.app', instanceId: '123' }
@@ -124,4 +122,8 @@ export class MockDesktopAgent implements Partial<DesktopAgent> {
     const chan = await this.getOrCreateChannel('fdc3.channel.1');
     return chan.addContextListener(h);
   }
+}
+
+export function createMockDesktopAgent(fdc3Version: string, appMetadata: AppMetadata): DesktopAgent {
+  return new MockDesktopAgent(fdc3Version, appMetadata) as unknown as DesktopAgent;
 }
