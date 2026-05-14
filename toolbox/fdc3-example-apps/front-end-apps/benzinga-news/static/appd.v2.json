@@ -1,0 +1,39 @@
+{
+  "applications": [
+    {
+      "appId": "benzinga-view-news-1",
+      "name": "Benzinga News",
+      "title": "Benzinga News",
+      "description": "Benzinga Finance News",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4012/"
+      },
+      "screenshots": [
+        {
+          "src": "http://localhost:4012/screenshot.png",
+          "label": "Demo Screenshot"
+        }
+      ],
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "icons": [
+        {
+          "src": "http://localhost:4012/benzinga.svg"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "ViewNews": {
+              "contexts": ["fdc3.instrument"],
+              "displayName": "View News"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "message": "OK"
+}

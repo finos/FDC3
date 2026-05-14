@@ -1,0 +1,23 @@
+{
+  "applications": [
+    {
+      "appId": "signed-receiver-1",
+      "name": "Signed broadcast receiver",
+      "title": "Signed broadcast receiver",
+      "description": "FDC3 signed broadcast demo — verifies fdc3.instrument using PublicSignatureCheckingHandlerSupport (JWKS from signatures).",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4037"
+      },
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "icons": [
+        {
+          "src": "http://localhost:4037/icon.svg"
+        }
+      ]
+    }
+  ],
+  "message": "OK"
+}

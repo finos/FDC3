@@ -1,0 +1,23 @@
+{
+  "applications": [
+    {
+      "appId": "app6",
+      "name": "App Six",
+      "title": "Intent Result",
+      "description": "App asks for the result of a ViewQuote intent",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4017/"
+      },
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "icons": [
+        {
+          "src": "http://localhost:4017/icon.svg"
+        }
+      ]
+    }
+  ],
+  "message": "OK"
+}

@@ -43,7 +43,7 @@
     "lint": "npm run lint --workspaces --if-present",
     "syncpack": "npm exec syncpack -- fix --dependencies \"@finos/*\" && npm run version-check",
     "version-check": "node scripts/version-check.js",
-    "dev": "concurrently \"cd toolbox/fdc3-conformance && npm run dev\" \"cd toolbox/fdc3-workbench && npm run dev\" \"cd toolbox/fdc3-for-web/reference-ui && npm run dev\" \"cd toolbox/fdc3-for-web/demo && npm run dev\"",
+    "dev": "concurrently \"cd toolbox/fdc3-example-apps && npm run dev\"  \"cd toolbox/fdc3-conformance && npm run dev\" \"cd toolbox/fdc3-workbench && npm run dev\" \"cd toolbox/fdc3-for-web/reference-ui && npm run dev\" \"cd toolbox/fdc3-for-web/demo && npm run dev\"",
     "prepare": "husky"
   },
   "prettier": {

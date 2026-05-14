@@ -1,0 +1,23 @@
+{
+  "applications": [
+    {
+      "appId": "app7",
+      "name": "App Seven",
+      "title": "Intent Result 2",
+      "description": "App asks for the result of a ViewNews intent",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4015/"
+      },
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "icons": [
+        {
+          "src": "http://localhost:4015/icon.svg"
+        }
+      ]
+    }
+  ],
+  "message": "OK"
+}

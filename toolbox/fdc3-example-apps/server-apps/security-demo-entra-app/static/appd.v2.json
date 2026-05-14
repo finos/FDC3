@@ -1,0 +1,34 @@
+{
+  "applications": [
+    {
+      "appId": "entra",
+      "name": "Entra Example",
+      "title": "Entra",
+      "description": "Entra, used by the security POC apps to get a JWT",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4035"
+      },
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "icons": [
+        {
+          "src": "http://localhost:4035/icon.svg"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "CreateIdentityToken": {
+              "displayName": "Create identity token",
+              "contexts": ["fdc3.security.userRequest"],
+              "resultType": "fdc3.security.encryptedContext"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "message": "OK"
+}

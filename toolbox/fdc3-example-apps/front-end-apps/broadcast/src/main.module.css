@@ -1,0 +1,49 @@
+.broadcastComponent {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.channelInfo {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.broadcast {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1em;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.broadcast:hover {
+  background-color: #0056b3;
+}
+
+.channelList {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.channelItem {
+  background-color: #888888;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1em;
+}

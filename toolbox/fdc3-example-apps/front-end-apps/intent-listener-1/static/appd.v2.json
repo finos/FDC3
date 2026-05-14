@@ -1,0 +1,37 @@
+{
+  "applications": [
+    {
+      "appId": "app5",
+      "name": "App Five",
+      "title": "View News + View Quote Intent Listener",
+      "description": "Listens for the ViewNews intent only",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4014/"
+      },
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "icons": [
+        {
+          "src": "http://localhost:4014/icon.svg"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "ViewNews": {
+              "displayName": "View News",
+              "contexts": ["fdc3.instrument"]
+            },
+            "ViewQuote": {
+              "displayName": "View Quote",
+              "contexts": ["fdc3.instrument"]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "message": "OK"
+}

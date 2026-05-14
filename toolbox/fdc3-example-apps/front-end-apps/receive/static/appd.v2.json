@@ -1,0 +1,29 @@
+{
+  "applications": [
+    {
+      "appId": "sail-training-receiver",
+      "name": "Sail Receiver",
+      "title": "Sail Receiver",
+      "description": "App will connect to the desktop agent on startup and listen to messages",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4021/"
+      },
+      "icons": [
+        {
+          "src": "http://localhost:4021/icon.svg"
+        }
+      ],
+      "screenshots": [
+        {
+          "src": "http://localhost:4021/screenshot.png",
+          "label": "Demo Screenshot"
+        }
+      ],
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS"
+    }
+  ],
+  "message": "OK"
+}
