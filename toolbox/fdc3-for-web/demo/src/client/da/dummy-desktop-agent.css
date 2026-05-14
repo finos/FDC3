@@ -1,0 +1,126 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+
+#app-list {
+  margin-top: 16px;
+  display: grid;
+  /* Fixed track width so columns do not stretch to fill the viewport */
+  grid-template-columns: repeat(auto-fill, 7rem);
+  justify-content: start;
+  gap: 0.5rem;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.da-app-card {
+  box-sizing: border-box;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 7rem;
+  height: 8rem;
+  padding: 0.3rem 0.35rem 1.75rem;
+  border: 1px solid #c5ccd6;
+  border-radius: 8px;
+  background: linear-gradient(165deg, #fafbfc 0%, #eef1f5 100%);
+  box-shadow: 0 1px 2px rgb(15 23 42 / 6%);
+}
+
+.da-app-card__desc-trigger {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 1.15rem;
+  height: 1.15rem;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  font-size: 0.6rem;
+  font-weight: 600;
+  line-height: 1;
+  color: #475569;
+  background: #fff;
+  box-shadow: 0 0 0 1px rgb(15 23 42 / 12%);
+  cursor: pointer;
+}
+
+.da-app-card__desc-trigger:hover {
+  color: #0f172a;
+  background: #f1f5f9;
+}
+
+.da-app-card__icon-wrap {
+  flex: 1;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+}
+
+.da-app-card__icon {
+  width: 3.65rem;
+  height: 4.2rem;
+  object-fit: contain;
+}
+
+.da-app-card__icon-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.65rem;
+  height: 3.65rem;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #475569;
+  background: #e2e8f0;
+}
+
+.da-app-card__title {
+  margin-top: 0.15rem;
+  max-width: 100%;
+  font-size: 0.58rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  color: #334155;
+  word-break: break-word;
+}
+
+.da-app-card__start {
+  position: absolute;
+  left: 0.35rem;
+  right: 0.35rem;
+  bottom: 0.35rem;
+  padding: 0.25rem 0.35rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: #fff;
+  background: #2563eb;
+  cursor: pointer;
+}
+
+.da-app-card__start:hover {
+  background: #1d4ed8;
+}
+
+.da-app-card__popover {
+  max-width: min(18rem, calc(100vw - 2rem));
+  margin: 0;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  line-height: 1.35;
+  color: #1e293b;
+  background: #fff;
+  box-shadow: 0 10px 25px rgb(15 23 42 / 15%);
+}
+
+.da-app-card__popover::backdrop {
+  background: rgb(15 23 42 / 12%);
+}
