@@ -1,0 +1,23 @@
+{
+  "applications": [
+    {
+      "appId": "sp1",
+      "name": "Security POC 1",
+      "title": "Security POC 1:  Needs Prices",
+      "description": "Requests prices from POC 2",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4033"
+      },
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "icons": [
+        {
+          "src": "http://localhost:4033/icon.svg"
+        }
+      ]
+    }
+  ],
+  "message": "OK"
+}

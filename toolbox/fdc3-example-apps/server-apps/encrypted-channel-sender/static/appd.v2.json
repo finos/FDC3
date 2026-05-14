@@ -1,0 +1,23 @@
+{
+  "applications": [
+    {
+      "appId": "encrypted-channel-sender-1",
+      "name": "Encrypted channel sender",
+      "title": "Encrypted channel sender",
+      "description": "FDC3 encrypted context demo — broadcasting on the current user channel (EncryptedBroadcastSupport).",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4031"
+      },
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "icons": [
+        {
+          "src": "http://localhost:4031/icon.svg"
+        }
+      ]
+    }
+  ],
+  "message": "OK"
+}
