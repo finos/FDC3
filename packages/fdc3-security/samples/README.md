@@ -178,5 +178,5 @@ sequenceDiagram
     Note over RBE: decrypt JWE (requesting private key)<br/>verifyJWT (IDP public keys)<br/>return fdc3.contact
     RBE-->>RFE: exchangeData response (context = fdc3.contact)
 
-    Note over RFE: JWT verified only on RBE; not shown in front-end payload
+    Note over RFE: JWT verified only on RBE not shown in front-end payload
 ```
