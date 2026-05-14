@@ -37,6 +37,6 @@
     "is-ci": "2.0.0",
     "jsonpath-plus": "^10.1.0",
     "quickpickle": "^1.0.0",
-    "uuid": "^9.0.1"
+    "uuid": "^14.0.0"
   }
 }
