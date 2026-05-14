@@ -1,9 +1,10 @@
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { ContextMetadata, DesktopAgent, IntentHandler } from '@finos/fdc3-standard';
-import { Context } from '@finos/fdc3-context';
+import { AppIdentifier, Context } from '@finos/fdc3-context';
+import { WebSocket } from 'ws';
 import { createJosePublicFDC3SecurityFromUrl } from '../src/impl/JosePublicFDC3Security';
-import { MockDesktopAgent, resetMockDesktopAgentFixtureState } from '../test/mocks/MockDesktopAgent';
+import { createMockDesktopAgent, resetMockDesktopAgentFixtureState } from '../test/mocks/MockDesktopAgent';
 import { AppBackEnd } from '../test/mocks/AppBackEnd';
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { PublicSignatureCheckingHandlerSupport } from '../src/signing/SignatureCheckingHandlerSupport';
@@ -11,7 +12,7 @@ import { PrivateSignedIntentResultSupport } from '../src/signing/SignedIntentRes
 import { BasicSignedRaiseIntentSupport } from '../src/signing/SignedRaiseIntentSupport';
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
-import { createMetadataHandler, type MetadataHandler } from '../src/delegates/MetadataHandler';
+import { createMetadataHandlerWithFDC3Version, type MetadataHandler } from '../src/delegates/MetadataHandler';
 
 const INTENT_DATA_TRANSFER = 'DataTransfer';
 
@@ -23,11 +24,15 @@ const INTENT_DATA_TRANSFER = 'DataTransfer';
  * 3. Signs the response context before returning it.
  */
 class HandlerAppBackendHandlers extends DefaultFDC3Handlers {
+  private readonly metadataHandler: MetadataHandler;
+
   constructor(
     private security: JosePrivateFDC3Security,
-    private metadataHandler: MetadataHandler
+    _appIdentifier: AppIdentifier,
+    fdc3Version: string
   ) {
     super();
+    this.metadataHandler = createMetadataHandlerWithFDC3Version(fdc3Version);
   }
 
   async remoteIntentHandler(intent: string) {
@@ -90,17 +95,16 @@ class RaiserAppBackendHandlers extends DefaultFDC3Handlers {
 /**
  * STEP 1: Setup Handler App
  */
-async function step1SetupHandlerApp(mockDA: MockDesktopAgent, metadataHandler: MetadataHandler) {
+async function step1SetupHandlerApp(mockDA: DesktopAgent) {
   console.log('1. Starting Handler App backend...');
-  const backend = new AppBackEnd((_ws, security) => new HandlerAppBackendHandlers(security, metadataHandler));
+  const backend = new AppBackEnd(
+    (_ws: WebSocket, security: JosePrivateFDC3Security, appIdentifier: AppIdentifier, fdc3Version: string) =>
+      new HandlerAppBackendHandlers(security, appIdentifier, fdc3Version)
+  );
   await backend.start();
 
   console.log('   Handler App Frontend: Connecting to backend, registering intent listener...');
-  const handlers = await connectRemoteHandlers(
-    backend.baseUrl.replace('http', 'ws'),
-    mockDA as unknown as DesktopAgent,
-    async () => {}
-  );
+  const handlers = await connectRemoteHandlers(backend.baseUrl.replace('http', 'ws'), mockDA, async () => {});
 
   const intentHandler = await handlers.remoteIntentHandler(INTENT_DATA_TRANSFER);
   await mockDA.addIntentListener(INTENT_DATA_TRANSFER, intentHandler);
@@ -111,17 +115,16 @@ async function step1SetupHandlerApp(mockDA: MockDesktopAgent, metadataHandler: M
 /**
  * STEP 2: Setup Raiser App
  */
-async function step2SetupRaiserApp(mockDA: MockDesktopAgent) {
+async function step2SetupRaiserApp(mockDA: DesktopAgent) {
   console.log('2. Starting Raiser App backend...');
-  const backend = new AppBackEnd((_ws, security) => new RaiserAppBackendHandlers(security));
+  const backend = new AppBackEnd(
+    (_ws: WebSocket, security: JosePrivateFDC3Security, _appIdentifier: AppIdentifier, _fdc3Version: string) =>
+      new RaiserAppBackendHandlers(security)
+  );
   await backend.start();
 
   console.log('   Raiser App Frontend: Connecting to its own backend...');
-  const handlers = await connectRemoteHandlers(
-    backend.baseUrl.replace('http', 'ws'),
-    mockDA as unknown as DesktopAgent,
-    async () => {}
-  );
+  const handlers = await connectRemoteHandlers(backend.baseUrl.replace('http', 'ws'), mockDA, async () => {});
 
   return { backend, handlers };
 }
@@ -132,7 +135,7 @@ async function step2SetupRaiserApp(mockDA: MockDesktopAgent) {
  */
 async function step3MutuallyAuthenticatedExchange(
   raiserHandlers: Awaited<ReturnType<typeof connectRemoteHandlers>>,
-  mockDA: MockDesktopAgent,
+  mockDA: DesktopAgent,
   handlerAppBaseUrl: string,
   metadataHandler: MetadataHandler
 ) {
@@ -159,12 +162,7 @@ async function step3MutuallyAuthenticatedExchange(
     return await publicSecurity.verifySignature(sig, ctx, antiReplay);
   };
 
-  const support = new BasicSignedRaiseIntentSupport(
-    mockDA as unknown as DesktopAgent,
-    signingFunction,
-    metadataHandler,
-    verificationFunction
-  );
+  const support = new BasicSignedRaiseIntentSupport(mockDA, signingFunction, metadataHandler, verificationFunction);
 
   console.log(`   Raiser App: Raising signed intent ${INTENT_DATA_TRANSFER}...`, requestContext);
   const resolution = await support.raiseIntent(INTENT_DATA_TRANSFER, requestContext);
@@ -194,12 +192,11 @@ async function runExample(fdc3Version: string = '3.0') {
   resetMockDesktopAgentFixtureState();
   console.log('--- FDC3 Mutually Authenticated Intent Example Start ---');
 
-  const mockHandler = new MockDesktopAgent(fdc3Version, { appId: 'handler.app', instanceId: 'h1' });
-  const mockRaiser = new MockDesktopAgent(fdc3Version, { appId: 'raiser.app', instanceId: 'r1' });
-  const metadataHandlerHandler = await createMetadataHandler(mockHandler as unknown as DesktopAgent);
-  const metadataHandlerRaiser = await createMetadataHandler(mockRaiser as unknown as DesktopAgent);
+  const mockHandler = createMockDesktopAgent(fdc3Version, { appId: 'handler.app', instanceId: 'h1' });
+  const mockRaiser = createMockDesktopAgent(fdc3Version, { appId: 'raiser.app', instanceId: 'r1' });
+  const metadataHandlerRaiser = createMetadataHandlerWithFDC3Version(fdc3Version);
 
-  const handlerApp = await step1SetupHandlerApp(mockHandler, metadataHandlerHandler);
+  const handlerApp = await step1SetupHandlerApp(mockHandler);
   const raiserApp = await step2SetupRaiserApp(mockRaiser);
 
   try {

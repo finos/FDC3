@@ -1,16 +1,17 @@
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { Channel, ContextHandler, ContextMetadata, DesktopAgent } from '@finos/fdc3-standard';
-import { Context } from '@finos/fdc3-context';
+import { AppIdentifier, Context } from '@finos/fdc3-context';
+import { WebSocket } from 'ws';
 import { createJosePublicFDC3SecurityFromUrl } from '../src/impl/JosePublicFDC3Security';
-import { MockDesktopAgent, resetMockDesktopAgentFixtureState } from '../test/mocks/MockDesktopAgent';
+import { createMockDesktopAgent, resetMockDesktopAgentFixtureState } from '../test/mocks/MockDesktopAgent';
 import { AppBackEnd } from '../test/mocks/AppBackEnd';
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { BasicSignedBroadcaster, SignedBroadcaster } from '../src/signing/SignedBroadcastSupport';
 import { PublicSignatureCheckingHandlerSupport } from '../src/signing/SignatureCheckingHandlerSupport';
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
-import { createMetadataHandler, type MetadataHandler } from '../src/delegates/MetadataHandler';
+import { createMetadataHandlerWithFDC3Version, type MetadataHandler } from '../src/delegates/MetadataHandler';
 
 /**
  * App A backend handlers (sender). Receives the channel via handleRemoteChannel,
@@ -18,12 +19,15 @@ import { createMetadataHandler, type MetadataHandler } from '../src/delegates/Me
  */
 class AppABackendHandlers extends DefaultFDC3Handlers {
   signedBroadcaster: SignedBroadcaster | null = null;
+  private readonly metadataHandler: MetadataHandler;
 
   constructor(
     private security: JosePrivateFDC3Security,
-    private metadataHandler: MetadataHandler
+    _appIdentifier: AppIdentifier,
+    fdc3Version: string
   ) {
     super();
+    this.metadataHandler = createMetadataHandlerWithFDC3Version(fdc3Version);
   }
 
   async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
@@ -47,9 +51,12 @@ class AppABackendHandlers extends DefaultFDC3Handlers {
 /**
  * STEP 1: Setup App A (sender) backend
  */
-async function step1SetupAppABackend(metadataHandler: MetadataHandler) {
+async function step1SetupAppABackend() {
   console.log('1. Starting App A backend...');
-  const app = new AppBackEnd((_ws, security) => new AppABackendHandlers(security, metadataHandler));
+  const app = new AppBackEnd(
+    (_ws: WebSocket, security: JosePrivateFDC3Security, appIdentifier: AppIdentifier, fdc3Version: string) =>
+      new AppABackendHandlers(security, appIdentifier, fdc3Version)
+  );
   await app.start();
   return app;
 }
@@ -59,7 +66,10 @@ async function step1SetupAppABackend(metadataHandler: MetadataHandler) {
  */
 async function step2SetupAppBBackend() {
   console.log('2. Starting App B backend...');
-  const app = new AppBackEnd((_ws, _security) => new DefaultFDC3Handlers());
+  const app = new AppBackEnd(
+    (_ws: WebSocket, _security: JosePrivateFDC3Security, _appIdentifier: AppIdentifier, _fdc3Version: string) =>
+      new DefaultFDC3Handlers()
+  );
   await app.start();
   return app;
 }
@@ -67,13 +77,9 @@ async function step2SetupAppBBackend() {
 /**
  * STEP 3: App A front-end exports channel to backend; backend wraps with BasicSignedBroadcaster.
  */
-async function step3AppAExportChannel(appA: AppBackEnd, mockDA: MockDesktopAgent) {
+async function step3AppAExportChannel(appA: AppBackEnd, mockDA: DesktopAgent) {
   console.log('3. App A Setup: Exporting channel to backend (BasicSignedBroadcaster lives on backend)...');
-  const handlers = await connectRemoteHandlers(
-    appA.baseUrl.replace('http', 'ws'),
-    mockDA as unknown as DesktopAgent,
-    async () => {}
-  );
+  const handlers = await connectRemoteHandlers(appA.baseUrl.replace('http', 'ws'), mockDA, async () => {});
   const channel = await mockDA.getOrCreateChannel('fdc3.channel.1');
   await handlers.handleRemoteChannel('broadcast', channel);
   return handlers;
@@ -147,12 +153,10 @@ async function runExample(fdc3Version: string = '3.0'): Promise<void> {
   resetMockDesktopAgentFixtureState();
   console.log('--- FDC3 Signing Example Start ---');
 
-  const mockAppA = new MockDesktopAgent(fdc3Version, { appId: 'app-a', instanceId: 'a1' });
-  const mockAppB = new MockDesktopAgent(fdc3Version, { appId: 'app-b', instanceId: 'b1' });
-  const metadataHandlerA = await createMetadataHandler(mockAppA as unknown as DesktopAgent);
-  const metadataHandlerB = await createMetadataHandler(mockAppB as unknown as DesktopAgent);
+  const mockAppA = createMockDesktopAgent(fdc3Version, { appId: 'app-a', instanceId: 'a1' });
+  const metadataHandlerB = createMetadataHandlerWithFDC3Version(fdc3Version);
 
-  const appA = await step1SetupAppABackend(metadataHandlerA);
+  const appA = await step1SetupAppABackend();
   const appB = await step2SetupAppBBackend();
   const channel = await mockAppA.getOrCreateChannel('fdc3.channel.1');
 

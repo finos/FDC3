@@ -62,7 +62,7 @@ export interface PrivateFDC3Security extends PublicFDC3Security {
    *
    * Generates a JWT token asserting user identity, scoped to a specific
    * audience (requesting application). Used by Identity Providers when
-   * responding to `CreateIdentityToken` intents.
+   * responding to `GetUser` intents.
    *
    * @param aud - The audience claim (typically the requesting app's URL)
    * @param sub - The subject claim (the user's unique identifier, e.g., email)

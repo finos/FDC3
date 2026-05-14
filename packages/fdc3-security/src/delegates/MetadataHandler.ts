@@ -1,5 +1,10 @@
-import { AppIdentifier, Context } from '@finos/fdc3-context';
-import { ContextMetadata, DesktopAgent, versionIsAtLeast } from '@finos/fdc3-standard';
+import { Context } from '@finos/fdc3-context';
+import {
+  AppProvidableContextMetadata,
+  compareVersionNumbers,
+  ContextMetadata,
+  DesktopAgent,
+} from '@finos/fdc3-standard';
 
 /**
  * Older versions of FDC3 (< 3.0) did not allow metadata to be broadcast with a context.
@@ -21,23 +26,19 @@ export interface MetadataHandler {
 
 export class MetadataHandlerImpl implements MetadataHandler {
   protected metadataAvailable: boolean;
-  private source: AppIdentifier;
 
-  constructor(metadataAvailable: boolean, source: AppIdentifier) {
+  constructor(metadataAvailable: boolean) {
     this.metadataAvailable = metadataAvailable;
-    this.source = source;
   }
 
-  private createMetadata(metadata?: { [key: string]: any }): ContextMetadata {
+  private createMetadata(metadata?: { [key: string]: any }): AppProvidableContextMetadata {
     return {
-      timestamp: new Date(),
-      source: this.source,
       ...metadata,
     };
   }
 
   pack(context: Context, metadata?: { [key: string]: any }): { context: Context; metadata: ContextMetadata } {
-    const fullMetadata = this.createMetadata(metadata);
+    const fullMetadata = this.createMetadata(metadata) as ContextMetadata;
     if (this.metadataAvailable) {
       return { context, metadata: fullMetadata };
     } else {
@@ -63,11 +64,19 @@ export class MetadataHandlerImpl implements MetadataHandler {
 }
 
 /**
+ * Builds a {@link MetadataHandler} from the FDC3 version string sent on the secure-boundary handshake
+ * (same semver rule as {@link createMetadataHandler} after `getInfo().fdc3Version`).
+ */
+export function createMetadataHandlerWithFDC3Version(fdc3Version: string): MetadataHandler {
+  const metadataAvailable: boolean = (compareVersionNumbers(fdc3Version, '3.0') ?? 0) >= 0;
+  return new MetadataHandlerImpl(metadataAvailable);
+}
+
+/**
  * Builds a handler based on the FDC3 platform that we're on.
  * To use metadata, `fdc3Version` must be at least **3.0**.
  */
 export async function createMetadataHandler(desktopAgent: DesktopAgent): Promise<MetadataHandler> {
   const info = await desktopAgent.getInfo();
-  const metadataAvailable = versionIsAtLeast(info, '3.0') === true;
-  return new MetadataHandlerImpl(metadataAvailable, info.appMetadata);
+  return createMetadataHandlerWithFDC3Version(info.fdc3Version);
 }
