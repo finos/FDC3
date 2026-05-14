@@ -1,5 +1,16 @@
-import { DesktopAgent, getAgent } from '@finos/fdc3';
+import { DesktopAgent, getAgent, type ContextMetadata } from '@finos/fdc3';
 import { createLogEntry, updateStatus } from './logging';
+
+/** Minimal metadata when the desktop agent omits it; satisfies {@link IntentHandler} second argument. */
+export function ensureContextMetadata(metadata?: ContextMetadata): ContextMetadata {
+  if (metadata) {
+    return metadata;
+  }
+  return {
+    timestamp: new Date(),
+    source: { appId: 'fdc3-example-apps', instanceId: 'local' },
+  };
+}
 
 // Initialize FDC3 connection
 export async function initializeFDC3(): Promise<DesktopAgent> {

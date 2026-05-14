@@ -6,8 +6,8 @@ import {
   createJosePublicFDC3SecurityFromUrl,
   createMetadataHandler,
   JsonWebKeyWithId,
-  MetadataHandlerImpl,
   PublicEncryptedContextListenerSupport,
+  type SigningFunction,
 } from '@finos/fdc3-security';
 import styles from './main.module.css';
 
@@ -106,16 +106,12 @@ export const EncryptedReceiveComponent = () => {
 
         const jwksUrl = `${window.location.origin}/.well-known/jwks.json`;
         const publicSecurity = await createJosePublicFDC3SecurityFromUrl(jwksUrl, () => true);
-        const metadataHandler = createMetadataHandler(agent);
+        const metadataHandler = await createMetadataHandler(agent);
 
-        const signingFunction = async (context: Context) => {
-          const result = (await remoteHandlers!.exchangeData('sign-context', {
+        const signingFunction: SigningFunction = async (context: Context) => {
+          return (await remoteHandlers!.exchangeData('sign-context', {
             context,
-          })) as {
-            signature: unknown;
-            antiReplay: unknown;
-          };
-          return result;
+          })) as Awaited<ReturnType<SigningFunction>>;
         };
 
         const unwrapFunction = async (skr: object): Promise<JsonWebKeyWithId> => {
