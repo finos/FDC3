@@ -6,6 +6,7 @@
 import { Context } from '@finos/fdc3-context';
 import {
   AppIdentifier,
+  AppProvidableContextMetadata,
   ContextMetadata,
   ContextWithMetadata,
   DesktopAgent,
@@ -72,17 +73,31 @@ async function createSoloSecurity(): Promise<JosePrivateFDC3Security> {
 
 /** Minimal stand-in for tests; cast to DesktopAgent when wiring SignedRaiseIntentSupport. */
 class CapturingDesktopAgent {
-  lastRaiseIntent?: { intent: string; context: Context; app?: AppIdentifier };
-  lastRaiseForContext?: { context: Context; app?: AppIdentifier };
+  lastRaiseIntent?: {
+    intent: string;
+    context: Context;
+    app?: AppIdentifier;
+    metadata?: AppProvidableContextMetadata;
+  };
+  lastRaiseForContext?: { context: Context; app?: AppIdentifier; metadata?: AppProvidableContextMetadata };
   constructor(public nextResolution: IntentResolution) {}
 
-  async raiseIntent(intent: string, context: Context, app?: AppIdentifier): Promise<IntentResolution> {
-    this.lastRaiseIntent = { intent, context, app };
+  async raiseIntent(
+    intent: string,
+    context: Context,
+    app?: AppIdentifier,
+    metadata?: AppProvidableContextMetadata
+  ): Promise<IntentResolution> {
+    this.lastRaiseIntent = { intent, context, app, metadata };
     return this.nextResolution;
   }
 
-  async raiseIntentForContext(context: Context, app?: AppIdentifier): Promise<IntentResolution> {
-    this.lastRaiseForContext = { context, app };
+  async raiseIntentForContext(
+    context: Context,
+    app?: AppIdentifier,
+    metadata?: AppProvidableContextMetadata
+  ): Promise<IntentResolution> {
+    this.lastRaiseForContext = { context, app, metadata };
     return this.nextResolution;
   }
 }
@@ -96,8 +111,13 @@ function intentResolution(resultContext: Context, resultMetadata: ContextMetadat
   };
 }
 
-describe('BasicSignedIntentResultSupport', () => {
-  const metadataHandler = new MetadataHandlerImpl(false);
+const metadataAvailabilityCases = [
+  { label: 'metadata packed in context (__appMeta)', metadataAvailable: false },
+  { label: 'metadata passed separately (FDC3 3.0+)', metadataAvailable: true },
+] as const;
+
+describe.each(metadataAvailabilityCases)('BasicSignedIntentResultSupport ($label)', ({ metadataAvailable }) => {
+  const metadataHandler = new MetadataHandlerImpl(metadataAvailable);
   let solo: JosePrivateFDC3Security;
 
   beforeAll(async () => {
@@ -122,11 +142,16 @@ describe('BasicSignedIntentResultSupport', () => {
     expect(out.context.type).toBe('demo.response');
     expect(out.metadata?.signature).toBeDefined();
     expect(out.metadata?.antiReplay).toBeDefined();
+    if (metadataAvailable) {
+      expect((out.context as Context & { __appMeta?: unknown }).__appMeta).toBeUndefined();
+    } else {
+      expect((out.context as Context & { __appMeta?: unknown }).__appMeta).toBeDefined();
+    }
   });
 });
 
-describe('PrivateSignedIntentResultSupport', () => {
-  const metadataHandler = new MetadataHandlerImpl(false);
+describe.each(metadataAvailabilityCases)('PrivateSignedIntentResultSupport ($label)', ({ metadataAvailable }) => {
+  const metadataHandler = new MetadataHandlerImpl(metadataAvailable);
   let solo: JosePrivateFDC3Security;
 
   beforeAll(async () => {
@@ -138,72 +163,98 @@ describe('PrivateSignedIntentResultSupport', () => {
     const response: Context = { type: 'demo.response', id: { n: 2 } };
     const out = (await support.signIntentResult(response)) as ContextWithMetadata;
     expect(out.metadata?.signature).toBeDefined();
+    if (metadataAvailable) {
+      expect((out.context as Context & { __appMeta?: unknown }).__appMeta).toBeUndefined();
+    } else {
+      expect((out.context as Context & { __appMeta?: unknown }).__appMeta).toBeDefined();
+    }
   });
 });
 
-describe('BasicSignedRaiseIntentSupport / PrivateSignedRaiseIntentSupport', () => {
-  const metadataHandler = new MetadataHandlerImpl(false);
-  let solo: JosePrivateFDC3Security;
+describe.each(metadataAvailabilityCases)(
+  'BasicSignedRaiseIntentSupport / PrivateSignedRaiseIntentSupport ($label)',
+  ({ metadataAvailable }) => {
+    const metadataHandler = new MetadataHandlerImpl(metadataAvailable);
+    let solo: JosePrivateFDC3Security;
 
-  beforeAll(async () => {
-    solo = await createSoloSecurity();
-  });
+    beforeAll(async () => {
+      solo = await createSoloSecurity();
+    });
 
-  it('raiseIntent signs the outbound context and passes packed context to the DesktopAgent', async () => {
-    const input: Context = { type: 'fdc3.instrument', id: { ticker: 'MSFT' }, name: 'Microsoft' };
-    const response: Context = { type: 'demo.response', id: { status: 'ok' } };
-    const { signature, antiReplay } = await solo.sign(response);
-    const packedResponse = metadataHandler.pack(response, { signature, antiReplay });
+    it('raiseIntent signs the outbound context and passes packed context to the DesktopAgent', async () => {
+      const input: Context = { type: 'fdc3.instrument', id: { ticker: 'MSFT' }, name: 'Microsoft' };
+      const response: Context = { type: 'demo.response', id: { status: 'ok' } };
+      const { signature, antiReplay } = await solo.sign(response);
+      const packedResponse = metadataHandler.pack(response, { signature, antiReplay });
 
-    const da = new CapturingDesktopAgent(
-      intentResolution(packedResponse.context, packedResponse.metadata, 'DataTransfer')
-    );
-    const support = new PrivateSignedRaiseIntentSupport(da as unknown as DesktopAgent, solo, metadataHandler);
+      const da = new CapturingDesktopAgent(
+        intentResolution(packedResponse.context, packedResponse.metadata, 'DataTransfer')
+      );
+      const support = new PrivateSignedRaiseIntentSupport(da as unknown as DesktopAgent, solo, metadataHandler);
 
-    const resolution = await support.raiseIntent('DataTransfer', input);
-    expect(da.lastRaiseIntent?.intent).toBe('DataTransfer');
-    expect(da.lastRaiseIntent?.context).toMatchObject({ type: 'fdc3.instrument', id: { ticker: 'MSFT' } });
-    expect((da.lastRaiseIntent?.context as Context & { __appMeta?: unknown }).__appMeta).toBeDefined();
+      const resolution = await support.raiseIntent('DataTransfer', input);
+      expect(da.lastRaiseIntent?.intent).toBe('DataTransfer');
+      expect(da.lastRaiseIntent?.context).toMatchObject({ type: 'fdc3.instrument', id: { ticker: 'MSFT' } });
+      if (metadataAvailable) {
+        expect((da.lastRaiseIntent?.context as Context & { __appMeta?: unknown }).__appMeta).toBeUndefined();
+        expect(da.lastRaiseIntent?.metadata?.signature).toBeDefined();
+        expect(da.lastRaiseIntent?.metadata?.antiReplay).toBeDefined();
+      } else {
+        expect((da.lastRaiseIntent?.context as Context & { __appMeta?: unknown }).__appMeta).toBeDefined();
+      }
 
-    const result = await resolution.getResult();
-    expect(result).toMatchObject({ type: 'demo.response' });
-    const withMeta = result as Context & { __appMeta?: { authenticity?: { signed?: boolean; valid?: boolean } } };
-    expect(withMeta.__appMeta?.authenticity).toMatchObject({ signed: true, valid: true });
-  });
+      const result = await resolution.getResult();
+      expect(result).toMatchObject({ type: 'demo.response' });
+      if (metadataAvailable) {
+        const resultMetadata = await resolution.getResultMetadata();
+        expect(resultMetadata.authenticity).toMatchObject({ signed: true, valid: true });
+        expect((result as Context & { __appMeta?: unknown }).__appMeta).toBeUndefined();
+      } else {
+        const withMeta = result as Context & { __appMeta?: { authenticity?: { signed?: boolean; valid?: boolean } } };
+        expect(withMeta.__appMeta?.authenticity).toMatchObject({ signed: true, valid: true });
+      }
+    });
 
-  it('raiseIntentForContext signs and calls raiseIntentForContext on the DesktopAgent', async () => {
-    const input: Context = { type: 'fdc3.country', id: { iso: 'GB' } };
-    const response: Context = { type: 'demo.response', id: { done: true } };
-    const { signature, antiReplay } = await solo.sign(response);
-    const packedResponse = metadataHandler.pack(response, { signature, antiReplay });
+    it('raiseIntentForContext signs and calls raiseIntentForContext on the DesktopAgent', async () => {
+      const input: Context = { type: 'fdc3.country', id: { iso: 'GB' } };
+      const response: Context = { type: 'demo.response', id: { done: true } };
+      const { signature, antiReplay } = await solo.sign(response);
+      const packedResponse = metadataHandler.pack(response, { signature, antiReplay });
 
-    const da = new CapturingDesktopAgent(
-      intentResolution(packedResponse.context, packedResponse.metadata, 'ForContext')
-    );
-    const support = new PrivateSignedRaiseIntentSupport(da as unknown as DesktopAgent, solo, metadataHandler);
+      const da = new CapturingDesktopAgent(
+        intentResolution(packedResponse.context, packedResponse.metadata, 'ForContext')
+      );
+      const support = new PrivateSignedRaiseIntentSupport(da as unknown as DesktopAgent, solo, metadataHandler);
 
-    await support.raiseIntentForContext(input, { appId: 'target', instanceId: 't1' } as AppIdentifier);
-    expect(da.lastRaiseForContext?.context).toMatchObject({ type: 'fdc3.country' });
-    expect((da.lastRaiseForContext?.context as Context & { __appMeta?: unknown }).__appMeta).toBeDefined();
-    expect(da.lastRaiseForContext?.app).toEqual({ appId: 'target', instanceId: 't1' });
-  });
+      await support.raiseIntentForContext(input, { appId: 'target', instanceId: 't1' } as AppIdentifier);
+      expect(da.lastRaiseForContext?.context).toMatchObject({ type: 'fdc3.country' });
+      if (metadataAvailable) {
+        expect((da.lastRaiseForContext?.context as Context & { __appMeta?: unknown }).__appMeta).toBeUndefined();
+        expect(da.lastRaiseForContext?.metadata?.signature).toBeDefined();
+        expect(da.lastRaiseForContext?.metadata?.antiReplay).toBeDefined();
+      } else {
+        expect((da.lastRaiseForContext?.context as Context & { __appMeta?: unknown }).__appMeta).toBeDefined();
+      }
+      expect(da.lastRaiseForContext?.app).toEqual({ appId: 'target', instanceId: 't1' });
+    });
 
-  it('passes resolution through unchanged when no signature checker is configured', async () => {
-    const input: Context = { type: 'fdc3.instrument', id: { ticker: 'A' } };
-    const da = new CapturingDesktopAgent(
-      intentResolution(
-        { type: 'demo.response', id: { plain: true } },
-        { source: { appId: 'h', instanceId: '1' }, timestamp: new Date(), traceId: 't' },
-        'X'
-      )
-    );
-    const support = new BasicSignedRaiseIntentSupport(
-      da as unknown as DesktopAgent,
-      ctx => solo.sign(ctx),
-      metadataHandler
-    );
-    const resolution = await support.raiseIntent('X', input);
-    const result = await resolution.getResult();
-    expect(result).toEqual({ type: 'demo.response', id: { plain: true } });
-  });
-});
+    it('passes resolution through unchanged when no signature checker is configured', async () => {
+      const input: Context = { type: 'fdc3.instrument', id: { ticker: 'A' } };
+      const da = new CapturingDesktopAgent(
+        intentResolution(
+          { type: 'demo.response', id: { plain: true } },
+          { source: { appId: 'h', instanceId: '1' }, timestamp: new Date(), traceId: 't' },
+          'X'
+        )
+      );
+      const support = new BasicSignedRaiseIntentSupport(
+        da as unknown as DesktopAgent,
+        ctx => solo.sign(ctx),
+        metadataHandler
+      );
+      const resolution = await support.raiseIntent('X', input);
+      const result = await resolution.getResult();
+      expect(result).toEqual({ type: 'demo.response', id: { plain: true } });
+    });
+  }
+);

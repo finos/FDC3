@@ -10,7 +10,7 @@ export default {
   testEnvironment: 'node',
   reporters: ['default', 'jest-junit'],
   collectCoverage: true,
-  collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts'],
+  collectCoverageFrom: ['src/**/*.ts', '!src/**/*.d.ts', '!src/index.ts'],
   coverageDirectory: 'coverage',
   coverageReporters: ['lcov', 'text', 'json', 'html'],
   coveragePathIgnorePatterns: [
