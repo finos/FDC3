@@ -97,7 +97,7 @@ function intentResolution(resultContext: Context, resultMetadata: ContextMetadat
 }
 
 describe('BasicSignedIntentResultSupport', () => {
-  const metadataHandler = new MetadataHandlerImpl(false, { appId: 'test.app', instanceId: 'inst-1' });
+  const metadataHandler = new MetadataHandlerImpl(false);
   let solo: JosePrivateFDC3Security;
 
   beforeAll(async () => {
@@ -126,7 +126,7 @@ describe('BasicSignedIntentResultSupport', () => {
 });
 
 describe('PrivateSignedIntentResultSupport', () => {
-  const metadataHandler = new MetadataHandlerImpl(false, { appId: 'test.app', instanceId: 'inst-2' });
+  const metadataHandler = new MetadataHandlerImpl(false);
   let solo: JosePrivateFDC3Security;
 
   beforeAll(async () => {
@@ -142,7 +142,7 @@ describe('PrivateSignedIntentResultSupport', () => {
 });
 
 describe('BasicSignedRaiseIntentSupport / PrivateSignedRaiseIntentSupport', () => {
-  const metadataHandler = new MetadataHandlerImpl(false, { appId: 'raiser.app', instanceId: 'r1' });
+  const metadataHandler = new MetadataHandlerImpl(false);
   let solo: JosePrivateFDC3Security;
 
   beforeAll(async () => {

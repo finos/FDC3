@@ -6,12 +6,13 @@
  * (subscribe / broadcast / unsubscribe / private disconnect) across the secure WebSocket boundary.
  */
 
-import { Context } from '@finos/fdc3-context';
-import { Channel, DesktopAgent, PrivateChannel } from '@finos/fdc3-standard';
+import { AppIdentifier, Context } from '@finos/fdc3-context';
+import { Channel, PrivateChannel } from '@finos/fdc3-standard';
+import { WebSocket } from 'ws';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
 import { AppBackEnd } from './mocks/AppBackEnd';
-import { MockDesktopAgent } from './mocks/MockDesktopAgent';
+import { createMockDesktopAgent } from './mocks/MockDesktopAgent';
 import { MockPrivateChannel } from './mocks/MockPrivateChannel';
 
 const PURPOSE_APP_CHANNEL = 'secure-boundary-app-channel';
@@ -78,14 +79,14 @@ class EchoExchangeHandlers extends DefaultFDC3Handlers {
 describe('Secure boundary — WebSocket channel proxy', () => {
   it('forwards addContextListener, broadcast, and unsubscribe for an app channel', async () => {
     let serverHandlers!: AppChannelSecureBoundaryHandlers;
-    const backend = new AppBackEnd((_ws, _sec) => {
+    const backend = new AppBackEnd((_ws: WebSocket, _sec, _appIdentifier: AppIdentifier, _fdc3Version: string) => {
       serverHandlers = new AppChannelSecureBoundaryHandlers();
       return serverHandlers;
     });
     await backend.start();
     try {
       const wsUrl = backend.baseUrl.replace('http', 'ws');
-      const mockDA = new MockDesktopAgent() as unknown as DesktopAgent;
+      const mockDA = createMockDesktopAgent('3.0', { appId: 'test.app', instanceId: '123' });
       const clientHandlers = await connectRemoteHandlers(wsUrl, mockDA, async () => {
         return undefined;
       });
@@ -101,11 +102,14 @@ describe('Secure boundary — WebSocket channel proxy', () => {
   });
 
   it('forwards private channel disconnect to the client DesktopAgent channel', async () => {
-    const backend = new AppBackEnd((_ws, _sec) => new PrivateChannelDisconnectHandlers());
+    const backend = new AppBackEnd(
+      (_ws: WebSocket, _sec, _appIdentifier: AppIdentifier, _fdc3Version: string) =>
+        new PrivateChannelDisconnectHandlers()
+    );
     await backend.start();
     try {
       const wsUrl = backend.baseUrl.replace('http', 'ws');
-      const mockDA = new MockDesktopAgent() as unknown as DesktopAgent;
+      const mockDA = createMockDesktopAgent('3.0', { appId: 'test.app', instanceId: '123' });
       const priv = await mockDA.createPrivateChannel();
       expect((priv as MockPrivateChannel).disconnectCallCount).toBe(0);
 
@@ -124,11 +128,13 @@ describe('Secure boundary — WebSocket channel proxy', () => {
   });
 
   it('exchangeData round-trips between client proxy and server handler', async () => {
-    const backend = new AppBackEnd((_ws, _sec) => new EchoExchangeHandlers());
+    const backend = new AppBackEnd(
+      (_ws: WebSocket, _sec, _appIdentifier: AppIdentifier, _fdc3Version: string) => new EchoExchangeHandlers()
+    );
     await backend.start();
     try {
       const wsUrl = backend.baseUrl.replace('http', 'ws');
-      const mockDA = new MockDesktopAgent() as unknown as DesktopAgent;
+      const mockDA = createMockDesktopAgent('3.0', { appId: 'test.app', instanceId: '123' });
       const clientHandlers = await connectRemoteHandlers(wsUrl, mockDA, async () => {
         return undefined;
       });
