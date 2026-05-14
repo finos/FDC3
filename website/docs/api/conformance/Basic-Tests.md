@@ -26,6 +26,9 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 
 - `BasicCL1`: A context listener can be created for a specific context type by calling `fdc3.addContextListener("fdc3.contact",<handler>)`.  A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
 - `BasicCL2`: An **unfiltered** context listener can be created by calling `fdc3.addContextListener(null,<handler>)`.  A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
+- `BasicCL3`: A context listener can be created for multiple specific context types by calling `fdc3.addContextListener(["fdc3.instrument", "fdc3.contact"],<handler>)`. A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function. The listener should only receive contexts matching the specified types.
+- `BasicCL4`: A context listener created with an array containing `null` (e.g. `["fdc3.instrument", null]`) should behave as if `null` was passed directly, receiving all context types. A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
+- `BasicCL5`: Attempting to create a context listener with an empty array should be ignored.
 - `BasicIL1`: An intent listener can be created for a specific intent by calling `fdc3.addIntentListener(<intentName>,<handler>)`. A `Listener` object is returned and can be used to remove the listener again by calling its `unsubscribe` function.
 - `BasicGI1`: An `ImplementationMetadata` object can be retrieved, to find out the version of FDC3 that is in use along with details of the provider, by calling:
   - `await fdc3.getInfo()`. The FDC3 version should match the API version being tested for conformance.

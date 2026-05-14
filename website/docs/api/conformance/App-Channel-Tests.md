@@ -47,6 +47,24 @@ hide_title: true
 - `ACFilteredContext4`: Perform above test, except that after creating the channel **A** creates another channel with a further _different_ channel id and adds a further context listener to it.  Ensure that **A** is still able to receive context on the first channel (i.e. it is unaffected by the additional channel) and does NOT receive anything on the second channel.
 - `ACUnsubscribe`: Perform above test, except that after creating the channel **A** then `unsubscribe()`s the listener it added to the channel. Check that **A** does NOT receive anything.
 
+## Array Context Listeners
+
+In FDC3 3.0, support for arrays of context types was added to `addContextListener`, allowing applications to listen for multiple specific context types with a single listener registration.
+
+### Array Context Listeners
+
+| App | Step                    | Details                                                         |
+|-----|-------------------------|-----------------------------------------------------------------|
+| A   | 1. Retrieve `Channel`   | Retrieve a `Channel` object representing an 'App' channel called `test-channel` using: <br />`const testChannel = await fdc3.getOrCreateChannel("test-channel")` |
+| A   | 2. Add Context Listener  | Add a context listener for multiple types: <br/>`await testChannel.addContextListener(["fdc3.instrument", "fdc3.contact"],handler)` |
+| B   | 3. Retrieve `Channel`   | Retrieve a `Channel` object representing the same 'App' channel A did (`test-channel`)|
+| B   | 4. Broadcast            | B broadcasts: <br/> 1.`testChannel.broadcast(<fdc3.instrument>)` <br/> 2. `testChannel.broadcast(<fdc3.contact>)` <br/> 3. `testChannel.broadcast(<fdc3.portfolio>)`|
+| A   | 5. Receive Context      | Handler receives `fdc3.instrument` and `fdc3.contact` contexts only.<br/>Verify that `fdc3.portfolio` is NOT received.                                                                   |
+
+- `ACArrayContextListeners1`: Perform above test to verify array filtering works correctly.
+- `ACArrayNullContext1`: Perform above test, but in step2 use `await testChannel.addContextListener(["fdc3.instrument", null],handler)` to verify arrays with null behave like direct null (receives ALL contexts).
+- `ACArrayEmptyContext1`: Attempt to create a context listener with an empty array `await testChannel.addContextListener([],handler)` and verify context is not recieved.
+
 ### App Channel History
 
 | App | Step                        | Details                                                 |

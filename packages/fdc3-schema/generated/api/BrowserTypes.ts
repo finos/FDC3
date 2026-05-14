@@ -731,7 +731,13 @@ export interface AddContextListenerRequestPayload {
    * The type of context to listen for OR `null` indicating that it should listen to all
    * context types.
    */
-  contextType: null | string;
+  contextType?: null | string;
+  /**
+   * Array of context types to listen for. May contain `null` to listen to all context types
+   * in addition to specific types. When `null` is present, other context types are ignored as
+   * the listener will receive all context types.
+   */
+  contextTypes?: Array<null | string>;
 }
 
 /**
@@ -5116,7 +5122,8 @@ const typeMap: any = {
   AddContextListenerRequestPayload: o(
     [
       { json: 'channelId', js: 'channelId', typ: u(null, '') },
-      { json: 'contextType', js: 'contextType', typ: u(null, '') },
+      { json: 'contextType', js: 'contextType', typ: u(undefined, u(null, '')) },
+      { json: 'contextTypes', js: 'contextTypes', typ: u(undefined, a(u(null, ''))) },
     ],
     false
   ),

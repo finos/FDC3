@@ -34,6 +34,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Ported FDC3 Conformance Project as-is into the FDC3 Monorepo, just including minimal fixes for typescript compilation. ([#1576](https://github.com/finos/FDC3/pull/1576))
 * Added Conformance tests for FDC3 2.2 ([#1586](https://github.com/finos/FDC3/pull/1586))
 * Added custom mocha test runner for conformance tests to better display test progress. ([#1769](https://github.com/finos/FDC3/pull/1769))
+* Added support for arrays of context types in `addContextListener` methods across DesktopAgent, Channel, and PrivateChannel interfaces. This allows applications to listen for multiple specific context types with a single listener registration, improving code conciseness and performance. The array may contain `null` to listen for all context types in addition to specific types. ([#1646](https://github.com/finos/FDC3/issues/1646))
 
 ### Changed
 

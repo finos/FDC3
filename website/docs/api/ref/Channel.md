@@ -36,6 +36,7 @@ interface Channel {
   broadcast(context: Context): Promise<void>;
   getCurrentContext(contextType?: string): Promise<Context|null>;
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
+  addContextListener(contextTypes: (string | null)[], handler: ContextHandler): Promise<Listener>;
   clearContext(contextType?: string): Promise<void>;
   addEventListener(type: string  | null, handler: EventHandler): Promise<Listener>;
   
@@ -214,7 +215,11 @@ DisplayMetadata can be used to provide display hints for User Channels intended 
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
+// Single context type
 public addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
+
+// Array of context types
+public addContextListener(contextTypes: (string | null)[], handler: ContextHandler): Promise<Listener>;
 ```
 
 </TabItem>
@@ -238,6 +243,8 @@ func (ch *Channel) AddContextListener(contextType string, handler ContextHandler
 
 Adds a listener for incoming contexts of the specified _context type_ whenever a broadcast happens on this channel.
 
+Alternatively, you can pass an array of context types to listen for multiple specific types at once. If the array contains `null`, it will be treated as if `null` was passed directly (meaning listen to all context types), so any other context types are ignored as the listener will receive all context types. Empty arrays will be ignored.
+
 If, when this function is called, the channel already contains context that would be passed to the listener it is NOT called or passed this context automatically (this behavior differs from that of the [`fdc3.addContextListener`](DesktopAgent#addcontextlistener) function). Apps wishing to access to the current context of the channel should instead call the [`getCurrentContext(contextType)`](#getcurrentcontext) function.
 
 Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
@@ -255,7 +262,7 @@ Add a listener for any context that is broadcast on the channel:
 const listener = await channel.addContextListener(null, context => {
     if (context.type === 'fdc3.contact') {
         // handle the contact
-    } else if (context.type === 'fdc3.instrument') => {
+    } else if (context.type === 'fdc3.instrument') {
         // handle the instrument
     }
 });
@@ -301,6 +308,36 @@ listenerResult := <-channel.AddContextListener("", func(contextInt IContext, con
 if listenerResult.Value != nil {
 	listenerResult.Value.Unsubscribe()
 }
+```
+
+</TabItem>
+</Tabs>
+
+Add a listener for multiple specific context types:
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+// Listen for multiple specific context types
+const multiListener = await channel.addContextListener(
+  ['fdc3.instrument', 'fdc3.contact', 'fdc3.portfolio'], 
+  (context, metadata) => {
+    console.log(`Received ${context.type} from ${metadata?.source}`);
+  }
+);
+
+// Listen for specific types plus all others (null in array - treated as if null was passed)
+const combinedListener = await channel.addContextListener(
+  ['fdc3.instrument', null], 
+  (context, metadata) => {
+    // Handles ALL context types (because null is in the array)
+  }
+);
+
+// later
+multiListener.unsubscribe();
+combinedListener.unsubscribe();
 ```
 
 </TabItem>

@@ -2,6 +2,7 @@ import {
   AppIdentifier,
   AppMetadata,
   ContextHandler,
+  ContextType,
   DesktopAgent,
   EventHandler,
   FDC3EventTypes,
@@ -92,10 +93,10 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
   }
 
   addContextListener(
-    contextTypeOrHandler: ContextHandler | string | null,
+    contextTypeOrHandler: ContextHandler | ContextType | null | (ContextType | null)[],
     handler?: ContextHandler
   ): Promise<Listener> {
-    let theContextType: string | null;
+    let theContextType: ContextType | null | (ContextType | null)[];
     let theHandler: ContextHandler;
 
     if (contextTypeOrHandler == null && typeof handler === 'function') {
@@ -103,6 +104,16 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
       theHandler = handler;
     } else if (typeof contextTypeOrHandler === 'string' && typeof handler === 'function') {
       theContextType = contextTypeOrHandler;
+      theHandler = handler;
+    } else if (Array.isArray(contextTypeOrHandler) && typeof handler === 'function') {
+      // Handle array-based context types
+      if (contextTypeOrHandler.length === 0) {
+        // Empty array
+        return Promise.resolve({
+          unsubscribe: () => Promise.resolve(),
+        });
+      }
+      theContextType = contextTypeOrHandler; // Pass the array directly
       theHandler = handler;
     } else if (typeof contextTypeOrHandler === 'function') {
       // deprecated one-arg version
@@ -114,7 +125,7 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
       throw new Error('Invalid arguments passed to addContextListener!');
     }
 
-    return this.channels.addContextListener(theHandler, theContextType);
+    return this.channels.addContextListener(theHandler, theContextType as string | null | (string | null)[]);
   }
 
   getUserChannels() {
