@@ -19,6 +19,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+## [npm v2.2.3] - 2026-04-15
+
+### Fixed
+
 * Fixed `addEventListener` callback receiving the raw `channelChangedEvent` wire message instead of a properly structured `FDC3ChannelChangedEvent` when a user leaves a channel or when the `currentChannelId` field is used in place of the deprecated `newChannelId` field. ([#1870](https://github.com/finos/FDC3/pull/1870))
 
 ## [npm v2.2.2] - 2026-04-13
