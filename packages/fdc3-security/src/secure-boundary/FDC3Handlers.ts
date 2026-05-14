@@ -37,7 +37,7 @@ export interface FDC3Handlers {
    * `(context, metadata)` runs on the **high-trust** side over the WebSocket.
    *
    * **Samples**
-   * - `get-user-example.ts` — shows how you can handle `CreateIdentityToken`: take
+   * - `get-user-example.ts` — shows how you can handle `GetUser`: take
    *   `fdc3.security.userRequest`, mint a JWT, build `fdc3.security.user`, encrypt for the requestor’s
    *   JWKS, and return `fdc3.security.encryptedContext`.
    * - `signing-intent-example.ts` — shows how you can wire `DataTransfer` with

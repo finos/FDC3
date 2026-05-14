@@ -6,11 +6,12 @@ import { setupWebsocketServer } from '../../src/secure-boundary/ServerSideHandle
 import { FDC3Handlers } from '../../src/secure-boundary/FDC3Handlers';
 import { AppIdentifier } from '@finos/fdc3-standard';
 
+/** Factory invoked after the client sends {@link INSTANCE_DETAILS} (app instance + FDC3 version). */
 export type CreateHandlers = (
   ws: WebSocket,
   security: JosePrivateFDC3Security,
-  appId: AppIdentifier,
-  instanceId: string
+  appIdentifier: AppIdentifier,
+  fdc3Version: string
 ) => FDC3Handlers;
 
 /**

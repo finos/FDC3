@@ -8,10 +8,10 @@ import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlers
 import { EncryptedBroadcastSupport, EncryptedBroadcaster } from '../src/encryption/EncryptedBroadcastSupport';
 import { PrivateEncryptedContextListenerSupport } from '../src/encryption/EncryptedContextListenerSupport';
 import { AppBackEnd } from '../test/mocks/AppBackEnd';
-import { MockDesktopAgent, resetMockDesktopAgentFixtureState } from '../test/mocks/MockDesktopAgent';
+import { createMockDesktopAgent, resetMockDesktopAgentFixtureState } from '../test/mocks/MockDesktopAgent';
 import { fileURLToPath } from 'url';
 import { resolve } from 'path';
-import { createMetadataHandler, MetadataHandlerImpl, type MetadataHandler } from '../src/delegates/MetadataHandler';
+import { createMetadataHandlerWithFDC3Version, type MetadataHandler } from '../src/delegates/MetadataHandler';
 
 const INTENT_SHARE_ENCRYPTED_CHANNEL = 'ShareEncryptedChannel';
 
@@ -26,11 +26,11 @@ class BroadcastingAppBackendHandlers extends DefaultFDC3Handlers {
 
   constructor(
     private security: JosePrivateFDC3Security,
-    appIdentifier: AppIdentifier,
+    _appIdentifier: AppIdentifier,
     fdc3Version: string
   ) {
     super();
-    this.metadataHandler = new MetadataHandlerImpl(fdc3Version == '3.0.0', appIdentifier);
+    this.metadataHandler = createMetadataHandlerWithFDC3Version(fdc3Version);
   }
 
   async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
@@ -80,11 +80,11 @@ class ReceivingAppBackendHandlers extends DefaultFDC3Handlers {
 
   constructor(
     private security: JosePrivateFDC3Security,
-    appIdentifier: AppIdentifier,
+    _appIdentifier: AppIdentifier,
     fdc3Version: string
   ) {
     super();
-    this.metadataHandler = new MetadataHandlerImpl(fdc3Version == '3.0.0', appIdentifier);
+    this.metadataHandler = createMetadataHandlerWithFDC3Version(fdc3Version);
   }
 
   async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
@@ -136,15 +136,11 @@ async function step2SetupBroadcastingApp() {
  */
 async function step3BroadcastingAppRegisterIntentListener(
   broadcastingApp: AppBackEnd,
-  mockDA: MockDesktopAgent
+  mockDA: DesktopAgent
 ): Promise<Awaited<ReturnType<typeof connectRemoteHandlers>>> {
   console.log('3. Broadcasting app front-end: Connecting to backend, registering intent handler...');
 
-  const handlers = await connectRemoteHandlers(
-    broadcastingApp.baseUrl.replace('http', 'ws'),
-    mockDA as unknown as DesktopAgent,
-    async () => {}
-  );
+  const handlers = await connectRemoteHandlers(broadcastingApp.baseUrl.replace('http', 'ws'), mockDA, async () => {});
 
   const intentHandler = await handlers.remoteIntentHandler(INTENT_SHARE_ENCRYPTED_CHANNEL);
   await mockDA.addIntentListener(INTENT_SHARE_ENCRYPTED_CHANNEL, intentHandler);
@@ -158,15 +154,11 @@ async function step3BroadcastingAppRegisterIntentListener(
  */
 async function step4ReceivingAppRaiseIntentAndSetupListener(
   receivingApp: AppBackEnd,
-  mockDA: MockDesktopAgent
+  mockDA: DesktopAgent
 ): Promise<Awaited<ReturnType<typeof connectRemoteHandlers>>> {
   console.log('4. Receiving app front-end: Raising intent to broadcasting app, sending channel to backend...');
 
-  const handlers = await connectRemoteHandlers(
-    receivingApp.baseUrl.replace('http', 'ws'),
-    mockDA as unknown as DesktopAgent,
-    async () => {}
-  );
+  const handlers = await connectRemoteHandlers(receivingApp.baseUrl.replace('http', 'ws'), mockDA, async () => {});
 
   const resolution = await mockDA.raiseIntent(INTENT_SHARE_ENCRYPTED_CHANNEL, { type: 'fdc3.nothing' } as Context);
   const channel = await resolution.getResult();
@@ -197,8 +189,8 @@ export async function runExample(fdc3Version: string = '3.0'): Promise<void> {
   resetMockDesktopAgentFixtureState();
   console.log('--- FDC3 Encrypted Private Channel Example Start ---');
 
-  const mockDA1 = new MockDesktopAgent(fdc3Version, { appId: 'receiving.app', instanceId: 'r1' });
-  const mockDA2 = new MockDesktopAgent(fdc3Version, { appId: 'broadcasting.app', instanceId: 'b1' });
+  const mockDA1 = createMockDesktopAgent(fdc3Version, { appId: 'receiving.app', instanceId: 'r1' });
+  const mockDA2 = createMockDesktopAgent(fdc3Version, { appId: 'broadcasting.app', instanceId: 'b1' });
 
   const receivingApp = await step1SetupReceivingApp();
   const broadcastingApp = await step2SetupBroadcastingApp();

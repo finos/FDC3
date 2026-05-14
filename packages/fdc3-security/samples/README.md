@@ -148,22 +148,22 @@ sequenceDiagram
 
 ## [Get User Example](get-user-example.ts)
 
-A detailed demonstration of requesting and verifying user identity from a mock Identity Provider (IDP). It uses encrypted contexts and JSON Web Tokens (JWT) for secure identity sharing.
+A detailed demonstration of requesting and verifying user identity from a mock Identity Provider (IDP) using the standard **`GetUser`** intent (`fdc3.security.userRequest` in, user identity out). It uses encrypted contexts and JSON Web Tokens (JWT) for secure identity sharing.
 
 ```mermaid
 sequenceDiagram
     participant FE as Requesting App Front End
-    participant BE as Requesting App Back End
-    participant IDP as Identity Provider (IDP)
+    participant RBE as Requesting App Back End
+    participant IDP as IDP Back End
 
-    FE->>BE: exchangeData(get-jwt)
-    BE->>IDP: Request JWT
-    IDP-->>BE: JWT Token
-    BE-->>FE: JWT Token
-    
-    FE->>IDP: raiseIntent(GetUser, { jwt })
-    Note over IDP: Verifies JWT<br/>Encrypts User Data with App Public Key
-    IDP-->>FE: Encrypted User Context
-    
-    Note over FE: verifyJWTToken(Auth Check)<br/>decrypt(User Data)<br/>✅ User Identity Verified
+    FE->>RBE: exchangeData(sign-context, fdc3.security.userRequest)
+    RBE-->>FE: signature + antiReplay
+    Note over FE: metadataHandler.pack(context, metadata)
+
+    FE->>IDP: GetUser (context + metadata)
+    Note over IDP: PublicSignatureCheckingHandlerSupport<br/>verifySignature (JWKS @ jku)<br/>createJWTToken, encrypt user for aud
+
+    IDP-->>FE: fdc3.security.encryptedContext
+
+    Note over FE: decryptContextWithPrivateKey<br/>verifyJWTToken (IDP JWKS)<br/>✅ User identity verified
 ```
