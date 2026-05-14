@@ -8,22 +8,30 @@ import {
 import { Messaging } from '../Messaging.js';
 import { AbstractListener } from './AbstractListener.js';
 
+const handleChannelChangedEvent = (handler: EventHandler, m: ChannelChangedEvent) => {
+  const currentChannelId = m.payload.currentChannelId ?? m.payload.newChannelId ?? null;
+
+  const channelChangedEvent: FDC3ChannelChangedEvent = {
+    type: 'userChannelChanged',
+    details: {
+      currentChannelId,
+    },
+  };
+
+  handler(channelChangedEvent);
+};
+
 function wrapHandler(handler: EventHandler): (msg: AgentEventMessage) => void {
   return (m: AgentEventMessage) => {
-    if (m.type !== 'channelChangedEvent') {
-      return;
+    if (m.type === 'channelChangedEvent') {
+      return handleChannelChangedEvent(handler, m);
     }
 
-    const currentChannelId = m.payload.currentChannelId ?? m.payload.newChannelId ?? null;
-
-    const channelChangedEvent: FDC3ChannelChangedEvent = {
-      type: 'userChannelChanged',
-      details: {
-        currentChannelId,
-      },
-    };
-
-    handler(channelChangedEvent);
+    //forward other events
+    handler({
+      type: m.type,
+      details: m.payload,
+    });
   };
 }
 
