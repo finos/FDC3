@@ -1,7 +1,7 @@
 import { DesktopAgent, Context, ContextMetadata } from '@finos/fdc3';
 import { connectRemoteHandlers, type ExchangeDataMessage, type FDC3Handlers } from '@finos/fdc3-security';
 import { createLogEntry } from '../../../common/src/security-demo/logging';
-import { initializeFDC3 } from '../../../common/src/security-demo/fdc3';
+import { initializeFDC3, ensureContextMetadata } from '../../../common/src/security-demo/fdc3';
 
 /** Must match `VALUATION_PUSH_PURPOSE` in `src/backend.ts`. */
 const VALUATION_PUSH_PURPOSE = 'valuation-push';
@@ -15,7 +15,7 @@ async function setupIntentListener(fdc3: DesktopAgent, remoteHandlers: FDC3Handl
 
   await fdc3.addIntentListener('demo.GetPrices', async (context: Context, metadata?: ContextMetadata) => {
     createLogEntry('info', 'demo.GetPrices intent received', context);
-    const result = await intentHandler(context, metadata);
+    const result = await intentHandler(context, ensureContextMetadata(metadata));
     createLogEntry('success', 'demo.GetPrices intent result', result);
     return result;
   });

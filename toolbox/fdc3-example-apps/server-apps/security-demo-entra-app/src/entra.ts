@@ -2,7 +2,7 @@ import { DesktopAgent, Context, ContextMetadata } from '@finos/fdc3';
 import { PublicClientApplication, type Configuration, type AuthenticationResult } from '@azure/msal-browser';
 import { connectRemoteHandlers, type FDC3Handlers } from '@finos/fdc3-security';
 import { createLogEntry } from '../../../common/src/security-demo/logging';
-import { initializeFDC3 } from '../../../common/src/security-demo/fdc3';
+import { initializeFDC3, ensureContextMetadata } from '../../../common/src/security-demo/fdc3';
 import {
   setupSessionStatusButton,
   showAuthenticatedState,
@@ -106,7 +106,7 @@ async function setupCreateIdentityTokenListener(fdc3: DesktopAgent, handlers: FD
     CREATE_IDENTITY_TOKEN,
     async (context: Context, metadata: ContextMetadata | undefined) => {
       createLogEntry('info', `${CREATE_IDENTITY_TOKEN} intent received`, context);
-      const result = await intentHandler(context, metadata);
+      const result = await intentHandler(context, ensureContextMetadata(metadata));
       createLogEntry('success', `${CREATE_IDENTITY_TOKEN} intent result`, result);
       return result;
     }
