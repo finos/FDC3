@@ -1,0 +1,8 @@
+# Generated at runtime by main.ts
+directory/static/generated
+
+# Vite caches (must not ship in the npm package)
+.vite
+**/.vite
+
+dist

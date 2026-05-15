@@ -1,12 +1,41 @@
 {
   "name": "@finos/fdc3-example-apps",
   "version": "3.0.0-alpha.2",
+  "description": "FDC3 example web applications and a local App Directory server for Desktop Agent demos",
+  "author": "Fintech Open Source Foundation (FINOS)",
+  "homepage": "https://fdc3.finos.org",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/finos/FDC3.git",
+    "directory": "toolbox/fdc3-example-apps"
+  },
+  "publishConfig": {
+    "access": "public",
+    "tag": "latest"
+  },
   "license": "Apache-2.0",
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "fdc3-example-apps": "./bin/run.mjs"
+  },
+  "files": [
+    "bin",
+    "main.ts",
+    "front-end-apps",
+    "server-apps",
+    "common",
+    "directory/properties.json",
+    "directory/static"
+  ],
   "scripts": {
-    "clean": "rimraf directory/generated front-end-apps/*/.vite server-apps/*/.vite",
+    "clean": "rimraf directory/static/generated front-end-apps/*/.vite server-apps/*/.vite directory/.vite",
     "build": "tsc",
-    "dev": "tsx main.ts"
+    "dev": "tsx main.ts",
+    "start": "tsx main.ts",
+    "prepack": "npm run clean"
   },
   "dependencies": {
     "@azure/msal-browser": "^4.12.0",

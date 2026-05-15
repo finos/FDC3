@@ -70,9 +70,57 @@ const apps = allApps.map((a, index) => {
 
 type AppWithPort = { name: string; root: string; port: number };
 
+type AppDirectoryRecord = {
+  details?: { url?: string };
+  icons?: Array<{ src?: string }>;
+  screenshots?: Array<{ src?: string }>;
+};
+
+function rewriteLocalhostUrl(url: string, port: number): string {
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1') {
+      parsed.port = String(port);
+      return parsed.toString();
+    }
+  } catch {
+    /* keep original */
+  }
+  return url;
+}
+
+/** Align AppD launch URLs and asset paths with the port assigned by this orchestrator. */
+function applyPortToAppDirectoryRecords(applications: AppDirectoryRecord[], port: number): AppDirectoryRecord[] {
+  const base = `http://localhost:${port}`;
+  return applications.map(app => {
+    const next: AppDirectoryRecord = { ...app, details: app.details ? { ...app.details } : {} };
+    if (next.details) {
+      let pathAndQuery = '/';
+      if (app.details?.url) {
+        try {
+          const parsed = new URL(app.details.url);
+          pathAndQuery = `${parsed.pathname}${parsed.search}`;
+        } catch {
+          pathAndQuery = '/';
+        }
+      }
+      next.details.url = `${base}${pathAndQuery.startsWith('/') ? pathAndQuery : `/${pathAndQuery}`}`;
+    }
+    if (next.icons) {
+      next.icons = next.icons.map(icon => (icon.src ? { ...icon, src: rewriteLocalhostUrl(icon.src, port) } : icon));
+    }
+    if (next.screenshots) {
+      next.screenshots = next.screenshots.map(shot =>
+        shot.src ? { ...shot, src: rewriteLocalhostUrl(shot.src, port) } : shot
+      );
+    }
+    return next;
+  });
+}
+
 function buildCombinedAppDirectory(appsList: AppWithPort[]) {
   const combined = {
-    applications: [] as any[],
+    applications: [] as AppDirectoryRecord[],
     message: 'OK',
   };
 
@@ -82,7 +130,7 @@ function buildCombinedAppDirectory(appsList: AppWithPort[]) {
       try {
         const content = JSON.parse(fs.readFileSync(appdPath, 'utf-8'));
         if (Array.isArray(content.applications)) {
-          combined.applications.push(...content.applications);
+          combined.applications.push(...applyPortToAppDirectoryRecords(content.applications, a.port));
         }
       } catch (e) {
         console.error(`Failed to read appd.v2.json for ${a.name}`, e);
@@ -191,8 +239,12 @@ async function startApp(appName: string, appRoot: string, port: number) {
     }
   }
 
-  // host the directory files
-  const propPath = path.join('directory', 'properties.json');
-  const props = JSON.parse(fs.readFileSync(propPath, 'utf-8'));
-  await startApp('directory', path.join(packageRoot, 'directory'), props.port);
+  const directoryRoot = path.join(packageRoot, 'directory');
+  const directoryPropsPath = path.join(directoryRoot, 'properties.json');
+  const directoryProps = JSON.parse(fs.readFileSync(directoryPropsPath, 'utf-8')) as { port: number };
+  await startApp('directory', directoryRoot, directoryProps.port);
+
+  console.info(
+    `Combined App Directory: http://localhost:${directoryProps.port}/static/generated/fdc3-example-apps.json`
+  );
 })();
