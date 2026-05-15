@@ -465,6 +465,7 @@ export class BroadcastHandler implements MessageHandler {
           timestamp: new Date(),
           traceId: appProvidedMetadata.traceId ?? sc.createUUID(),
           ...(appProvidedMetadata.signature !== undefined && { signature: appProvidedMetadata.signature }),
+          ...(appProvidedMetadata.antiReplay !== undefined && { antiReplay: appProvidedMetadata.antiReplay }),
           ...(appProvidedMetadata.custom !== undefined && { custom: appProvidedMetadata.custom }),
         },
       },

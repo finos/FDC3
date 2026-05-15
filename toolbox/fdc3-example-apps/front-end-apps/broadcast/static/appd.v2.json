@@ -1,9 +1,9 @@
 {
   "applications": [
     {
-      "appId": "sail-training-broadcaster",
-      "name": "Sail Broadcaster",
-      "title": "Sail Broadcaster",
+      "appId": "fdc3-training-broadcaster",
+      "name": "FDC3 Broadcaster",
+      "title": "FDC3 Broadcaster",
       "description": "App will connect to the desktop agent and broadcast on the user channel when you hit the button",
       "type": "web",
       "details": {

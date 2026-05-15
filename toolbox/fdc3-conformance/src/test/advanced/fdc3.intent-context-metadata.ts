@@ -46,7 +46,7 @@ export default async () => {
     });
 
     const intentMetadataWithAppMeta =
-      '(IntentContextMetadataWithAppMetadata) Should forward app-provided traceId, signature and custom in ContextMetadata on raised intent';
+      '(IntentContextMetadataWithAppMetadata) Should forward app-provided traceId, signature, antiReplay and custom in ContextMetadata on raised intent';
     it(intentMetadataWithAppMeta, async function () {
       this.timeout(constants.TestTimeout);
 
@@ -72,6 +72,11 @@ export default async () => {
           traceId: 'intent-trace-456',
           signature: { protected: 'protected-abc', signature: 'signature-abc' },
           custom: { priority: 'high' },
+          antiReplay: {
+            exp: 1234,
+            iat: 2345,
+            jti: 'anti-replay-123',
+          },
         }
       );
 
@@ -82,7 +87,11 @@ export default async () => {
       expect(receivedMetadata!.source).to.have.property('appId');
       expect(receivedMetadata!.timestamp).to.not.be.undefined;
       expect(receivedMetadata!.traceId).to.be.equal('intent-trace-456');
-      expect(receivedMetadata!.signature).to.be.equal('intent-sig');
+      expect(receivedMetadata!.signature!.protected).to.be.equal('protected-abc');
+      expect(receivedMetadata!.signature!.signature).to.be.equal('signature-abc');
+      expect(receivedMetadata!.antiReplay!.exp).to.be.equal(1234);
+      expect(receivedMetadata!.antiReplay!.iat).to.be.equal(2345);
+      expect(receivedMetadata!.antiReplay!.jti).to.be.equal('anti-replay-123');
       expect(receivedMetadata!.custom).to.have.property('priority');
       expect(receivedMetadata!.custom!.priority).to.be.equal('high');
     });
