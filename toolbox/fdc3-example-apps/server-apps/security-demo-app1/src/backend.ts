@@ -7,14 +7,16 @@ import type { ContextMetadata } from '@finos/fdc3-standard';
 import {
   AllowListFunction,
   createJosePrivateFDC3Security,
+  createMetadataHandlerWithFDC3Version,
   DefaultFDC3Handlers,
   emitToClient,
   EXCHANGE_DATA,
   JosePrivateFDC3Security,
-  MetadataHandlerImpl,
+  PrivateEncryptedContextListenerSupport,
   provisionJWKS,
   setupWebsocketServer,
   type JSONWebEncryption,
+  type MetadataHandler,
 } from '@finos/fdc3-security';
 
 /** Legacy name; valuations are pushed over the secure-boundary WebSocket with purpose {@link VALUATION_PUSH_PURPOSE}. */
@@ -37,13 +39,14 @@ type RequestPricesPayload = {
  */
 class App1BackendHandlers extends DefaultFDC3Handlers {
   private user: App1UserSession | null = null;
-  private readonly metadataHandler = new MetadataHandlerImpl(true);
+  private readonly metadataHandler: MetadataHandler;
 
   constructor(
     private readonly security: JosePrivateFDC3Security,
     private readonly ws: WebSocket
   ) {
     super();
+    this.metadataHandler = createMetadataHandlerWithFDC3Version('3.0');
   }
 
   async exchangeData(purpose: string, o: object): Promise<object | void> {
@@ -92,9 +95,7 @@ class App1BackendHandlers extends DefaultFDC3Handlers {
       }
 
       const { signature, antiReplay } = await this.security.sign(instrument);
-      const packedMeta = { signature, antiReplay } as unknown as ContextMetadata;
-      const { context: signed } = this.metadataHandler.pack(instrument, packedMeta);
-      return signed;
+      return { signature, antiReplay };
     }
 
     return super.exchangeData(purpose, o);
@@ -114,7 +115,8 @@ class App1BackendHandlers extends DefaultFDC3Handlers {
     // answers addContextListenerRequest (timeout on addContextListenerResponse).
     setTimeout(() => {
       void (async () => {
-        await channel.addContextListener('fdc3.valuation', async (ctx: Context, meta?: ContextMetadata) => {
+        const support = new PrivateEncryptedContextListenerSupport(this.security, this.metadataHandler);
+        await support.addContextListener(channel, 'fdc3.valuation', async (ctx: Context, meta?: ContextMetadata) => {
           emitToClient(this.ws, EXCHANGE_DATA, {
             purpose: VALUATION_PUSH_PURPOSE,
             o: { ctx, meta },
