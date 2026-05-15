@@ -22,9 +22,31 @@ Each app lives in its own directory and is expected to have at least:
 - **`src/`** — application source (TypeScript or TSX). For server-style apps, an optional **`backend.ts`** default-export can attach Express middleware and share the HTTP server (for example APIs plus WebSockets on the app port).
 - **`properties.json`** (optional) — may set a fixed **`port`**; otherwise ports are assigned sequentially from a base port when you run the dev orchestrator.
 
+## Running locally (monorepo)
+
+From this directory:
+
+```bash
+npm run dev
+# or
+npm start
+```
+
+## Running from npm (after publish)
+
+Once `@finos/fdc3-example-apps` is published:
+
+```bash
+npx @finos/fdc3-example-apps
+# or, after npm install @finos/fdc3-example-apps
+npx fdc3-example-apps
+```
+
+Point your Desktop Agent at the combined App Directory URL printed on startup (by default `http://localhost:4005/static/generated/fdc3-example-apps.json`).
+
 ## Dev orchestrator (`main.ts`)
 
-`npm run dev` runs `tsx main.ts`, which:
+`npm run dev` (or the `fdc3-example-apps` bin) runs `main.ts`, which:
 
 1. **Discovers** every subdirectory of `front-end-apps/` and `server-apps/` that contains `index.html`.
 2. **Assigns** each app an HTTP port (with optional overrides from `properties.json`).
