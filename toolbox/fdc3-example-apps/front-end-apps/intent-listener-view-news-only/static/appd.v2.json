@@ -1,8 +1,8 @@
 {
   "applications": [
     {
-      "appId": "app4",
-      "name": "App Four",
+      "appId": "view-news-intent-listener",
+      "name": "View News Intent Listener",
       "title": "View News Intent Listener",
       "description": "Listens for the ViewNews intent only",
       "type": "web",
@@ -12,6 +12,7 @@
       "hostManifests": {},
       "version": "1.0.0",
       "publisher": "FINOS",
+      "categories": ["Intent Listening Demo"],
       "icons": [
         {
           "src": "http://localhost:4016/icon.svg"

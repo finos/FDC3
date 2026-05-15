@@ -14,7 +14,7 @@ getAgent().then(async fdc3 => {
     return {
       type: 'fdc3.test',
       id: {
-        from: 'app5',
+        from: 'intent-listener-view-news-view-quote',
         intent: 'ViewNews',
       },
     };
@@ -28,7 +28,7 @@ getAgent().then(async fdc3 => {
     return {
       type: 'fdc3.test',
       id: {
-        from: 'app5',
+        from: 'intent-listener-view-news-view-quote',
         intent: 'ViewQuote',
       },
     };

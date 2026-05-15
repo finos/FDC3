@@ -12,6 +12,9 @@
       "hostManifests": {},
       "version": "1.0.0",
       "publisher": "FINOS",
+      "categories": [
+        "Secure FDC3 Workflow Example"
+      ],
       "icons": [
         {
           "src": "http://localhost:4035/icon.svg"

@@ -5,6 +5,9 @@
       "name": "TradeList",
       "title": "TradeList",
       "description": "A demo app for the FDC3 Developer Course",
+      "categories": [
+        "FDC3 Developer Tutorial Apps"
+      ],
       "icons": [
         {
           "src": "http://localhost:4022/icon.png"

@@ -5,6 +5,9 @@
       "name": "Pricer",
       "title": "Pricer",
       "description": "A demo app for the FDC3 Developer Course",
+      "categories": [
+        "FDC3 Developer Tutorial Apps"
+      ],
       "icons": [
         {
           "src": "http://localhost:4020/icon.png"

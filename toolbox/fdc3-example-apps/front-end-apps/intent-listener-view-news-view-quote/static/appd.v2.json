@@ -1,8 +1,8 @@
 {
   "applications": [
     {
-      "appId": "app5",
-      "name": "App Five",
+      "appId": "view-news-view-quote-intent-listener",
+      "name": "View News + View Quote Intent Listener",
       "title": "View News + View Quote Intent Listener",
       "description": "Listens for the ViewNews intent only",
       "type": "web",
@@ -12,6 +12,9 @@
       "hostManifests": {},
       "version": "1.0.0",
       "publisher": "FINOS",
+      "categories": [
+        "Intent Listening Demo"
+      ],
       "icons": [
         {
           "src": "http://localhost:4014/icon.svg"

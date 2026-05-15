@@ -1,9 +1,9 @@
 {
   "applications": [
     {
-      "appId": "sp2",
+      "appId": "security-poc-2",
       "name": "Security POC 2",
-      "title": "Security POC 2: Responds to GetPrices intent",
+      "title": "Security POC 2: Responds to GetPrices",
       "description": "Creates a private channel to broadcast encrypted prices",
       "type": "web",
       "details": {
@@ -12,6 +12,9 @@
       "hostManifests": {},
       "version": "1.0.0",
       "publisher": "FINOS",
+      "categories": [
+        "Secure FDC3 Workflow Example"
+      ],
       "icons": [
         {
           "src": "http://localhost:4034/icon.svg"

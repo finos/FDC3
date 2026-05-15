@@ -1,5 +1,5 @@
 // TradingViewWidget.jsx
-import { getAgent } from '@finos/fdc3';
+import { getAgent, Listener } from '@finos/fdc3';
 import { useEffect, useRef, memo, useState } from 'react';
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
@@ -20,26 +20,40 @@ export const TradingViewWidget = ({ mode }: { mode: string }) => {
   const [state, setState] = useState(modeProps.initialState);
 
   useEffect(() => {
-    getAgent().then(fdc3 => {
-      modeProps.intents.forEach(intent => {
-        fdc3.addIntentListener(intent.name, context => {
-          const newState = intent.function(context, state);
-          setState(() => newState);
-          console.log('new state', newState);
-        });
-      });
+    const registrations: Listener[] = [];
+    let contextListenerTimer: ReturnType<typeof setTimeout> | undefined;
+    let cancelled = false;
 
-      setTimeout(() => {
-        modeProps.listeners.forEach(listener => {
-          fdc3.addContextListener(listener.name, context => {
-            const newState = listener.function(context, state);
-            setState(() => newState);
-            console.log('new state', newState);
-          });
+    void getAgent().then(async fdc3 => {
+      for (const intent of modeProps.intents) {
+        if (cancelled) return;
+        const registration = await fdc3.addIntentListener(intent.name, context => {
+          setState((prev: any) => intent.function(context, prev));
         });
+        registrations.push(registration);
+      }
+
+      contextListenerTimer = setTimeout(() => {
+        void (async () => {
+          for (const listener of modeProps.listeners) {
+            if (cancelled) return;
+            const registration = await fdc3.addContextListener(listener.name, context => {
+              setState((prev: any) => listener.function(context, prev));
+            });
+            registrations.push(registration);
+          }
+        })();
       }, 2000);
     });
-  }, [state]);
+
+    return () => {
+      cancelled = true;
+      if (contextListenerTimer !== undefined) {
+        clearTimeout(contextListenerTimer);
+      }
+      void Promise.all(registrations.map(r => r.unsubscribe()));
+    };
+  }, [mode]);
 
   useEffect(() => {
     let script: HTMLScriptElement | null = null;

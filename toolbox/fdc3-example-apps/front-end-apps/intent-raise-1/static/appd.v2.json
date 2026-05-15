@@ -10,6 +10,9 @@
         "url": "http://localhost:4017/"
       },
       "hostManifests": {},
+      "categories": [
+        "Intent Listening Demo"
+      ],
       "version": "1.0.0",
       "publisher": "FINOS",
       "icons": [

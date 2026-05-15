@@ -18,6 +18,9 @@
       "hostManifests": {},
       "version": "1.0.0",
       "publisher": "FINOS",
+      "categories": [
+        "Trading View Widgets"
+      ],
       "icons": [
         {
           "src": "http://localhost:4023/tradingview-icon.png"
@@ -52,6 +55,9 @@
       "hostManifests": {},
       "version": "1.0.0",
       "publisher": "FINOS",
+      "categories": [
+        "Trading View Widgets"
+      ],
       "icons": [
         {
           "src": "http://localhost:4023/tradingview-icon.png"
@@ -86,6 +92,9 @@
       "hostManifests": {},
       "version": "1.0.0",
       "publisher": "FINOS",
+      "categories": [
+        "Trading View Widgets"
+      ],
       "icons": [
         {
           "src": "http://localhost:4023/tradingview-icon.png"
@@ -120,6 +129,9 @@
       "hostManifests": {},
       "version": "1.0.0",
       "publisher": "FINOS",
+      "categories": [
+        "Trading View Widgets"
+      ],
       "icons": [
         {
           "src": "http://localhost:4023/tradingview-icon.png"
@@ -154,6 +166,9 @@
       "hostManifests": {},
       "version": "1.0.0",
       "publisher": "FINOS",
+      "categories": [
+        "Trading View Widgets"
+      ],
       "icons": [
         {
           "src": "http://localhost:4023/tradingview-icon.png"
