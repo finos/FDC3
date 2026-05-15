@@ -1,0 +1,134 @@
+html {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  line-height: 1.4;
+  font-size: 15px;
+}
+
+.container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.box {
+  border: 1px solid grey;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.17);
+}
+
+.app-title {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 40px;
+  opacity: 0.5;
+}
+
+/* Stock-List Specific Stuff */
+
+body.tradelist {
+  background-color: lightblue;
+}
+
+.stock-list {
+  width: 100%;
+}
+
+.stock-list thead th {
+  text-align: left;
+}
+
+.stock-list tbody td {
+  color: #888888;
+}
+
+.stock-list tfoot td {
+  padding-top: 15px;
+}
+
+form {
+  width: 100%;
+  display: flex;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 4px;
+  border: 2px solid midnightblue;
+  font-size: 20px;
+}
+
+select {
+  width: 80%;
+  font-size: 35px;
+  margin: auto;
+  display: flex;
+}
+
+button {
+  font-size: 20px;
+  color: #888888;
+  margin: 10px;
+}
+
+/* Pricer Specific Stuff */
+
+body.pricer {
+  background-color: lightgoldenrodyellow;
+}
+
+.ticker {
+  font-size: 40px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.price {
+  font-size: 40px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.box.d0 .price {
+  color: green;
+  animation-duration: 2s;
+  animation-name: fadingUp;
+}
+
+.box.d1 .price {
+  color: red;
+  animation-duration: 2s;
+  animation-name: fadingDown;
+}
+
+.box.d2 .price {
+  color: grey;
+}
+
+@keyframes fadingUp {
+  from {
+    color: green;
+  }
+
+  to {
+    color: grey;
+  }
+}
+
+@keyframes fadingDown {
+  from {
+    color: red;
+  }
+
+  to {
+    color: grey;
+  }
+}

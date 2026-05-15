@@ -52,15 +52,15 @@ Feature: Relaying Broadcast messages
       | msg.matches_type          | to.appId | to.instanceId | msg.payload.context.id.ticker | msg.payload.context.type |
       | getCurrentContextResponse | App1     | a1            | AAPL                          | fdc3.instrument          |
 
-  Scenario: Broadcast with app-provided metadata forwards traceId, signature and custom
+  Scenario: Broadcast with app-provided metadata forwards traceId, signature, antiReplay and custom
     When "App2/a2" adds a context listener on "one" with type "fdc3.instrument"
     And we wait for a period of "100" ms
-    And "App1/a1" broadcasts "fdc3.instrument" on "one" with metadata traceId "my-trace" signature "my-sig" and custom key "EMEA"
+    And "App1/a1" broadcasts "fdc3.instrument" on "one" with metadata traceId "my-trace" signature "my-sig" antiReplay claims "1234/2345/anti-replay-123" and custom key "EMEA"
     Then messaging will have outgoing posts
-      | msg.matches_type           | msg.payload.channelId | msg.payload.context.type | msg.payload.metadata.source.appId | msg.payload.metadata.traceId | msg.payload.metadata.signature | msg.payload.metadata.custom.region |
-      | addContextListenerResponse | {null}                | {null}                   | {null}                            | {null}                       | {null}                         | {null}                             |
-      | broadcastEvent             | one                   | fdc3.instrument          | App1                              | my-trace                     | my-sig                         | EMEA                               |
-      | broadcastResponse          | {null}                | {null}                   | {null}                            | {null}                       | {null}                         | {null}                             |
+      | msg.matches_type           | msg.payload.channelId | msg.payload.context.type | msg.payload.metadata.source.appId | msg.payload.metadata.traceId | msg.payload.metadata.signature.signature |msg.payload.metadata.signature.protected |   msg.payload.metadata.antiReplay.exp | msg.payload.metadata.antiReplay.iat | msg.payload.metadata.antiReplay.jti | msg.payload.metadata.custom.region |
+      | addContextListenerResponse | {null}                | {null}                   | {null}                            | {null}                       | {null}                         | {null}                         | {null}                             | {null}                         | {null}                         | {null}                             |
+      | broadcastEvent             | one                   | fdc3.instrument          | App1                              | my-trace                     | my-sig (signature part)                        | my-sig (protected part)                        | 2345                             | 1234                             | anti-replay-123                    | EMEA                               |
+      | broadcastResponse          | {null}                | {null}                   | {null}                            | {null}                       | {null}                         | {null}                         | {null}                             | {null}                         | {null}                         | {null}                             |
 
   Scenario: Broadcast without app-provided traceId gets a DA-generated traceId
     When "App2/a2" adds a context listener on "one" with type "fdc3.instrument"
@@ -73,8 +73,8 @@ Feature: Relaying Broadcast messages
       | broadcastResponse          | {null}                | {null}                   | {null}                            |
 
   Scenario: getCurrentContext returns stored metadata after broadcast with app-provided metadata
-    Given "App1/a1" broadcasts "fdc3.instrument" on "one" with metadata traceId "stored-trace" signature "stored-sig" and custom key "APAC"
+    Given "App1/a1" broadcasts "fdc3.instrument" on "one" with metadata traceId "stored-trace" signature "stored-sig" antiReplay claims "1234/2345/anti-replay-123" and custom key "APAC"
     And "App1/a1" asks for the latest context on "one" with type "fdc3.instrument"
     Then messaging will have outgoing posts
-      | msg.matches_type          | to.appId | to.instanceId | msg.payload.context.id.ticker | msg.payload.context.type | msg.payload.metadata.traceId | msg.payload.metadata.signature | msg.payload.metadata.custom.region |
-      | getCurrentContextResponse | App1     | a1            | AAPL                          | fdc3.instrument          | stored-trace                 | stored-sig                     | APAC                               |
+      | msg.matches_type          | to.appId | to.instanceId | msg.payload.context.id.ticker | msg.payload.context.type | msg.payload.metadata.traceId | msg.payload.metadata.signature.signature | msg.payload.metadata.signature.protected | msg.payload.metadata.antiReplay.exp | msg.payload.metadata.antiReplay.iat | msg.payload.metadata.antiReplay.jti | msg.payload.metadata.custom.region |
+      | getCurrentContextResponse | App1     | a1            | AAPL                          | fdc3.instrument          | stored-trace                 | stored-sig (signature part)                     | stored-sig (protected part)                     | 2345                             | 1234                             | anti-replay-123                    | APAC                               |

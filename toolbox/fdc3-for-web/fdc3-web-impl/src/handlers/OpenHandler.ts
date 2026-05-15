@@ -16,6 +16,7 @@ import {
   isOpenRequest,
   isWebConnectionProtocol4ValidateAppIdentity,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { DetachedSignature } from '@finos/fdc3-schema/generated/bridging/BridgingTypes.js';
 
 type BroadcastEvent = BrowserTypes.BroadcastEvent;
 type AddContextListenerRequest = BrowserTypes.AddContextListenerRequest;
@@ -39,7 +40,7 @@ class PendingApp {
   private readonly msg: OpenRequest;
   readonly context: ContextElement | undefined;
   readonly source: FullAppIdentifier;
-  readonly appProvidedMetadata: { traceId?: string; signature?: string; custom?: Record<string, unknown> };
+  readonly appProvidedMetadata: { traceId?: string; signature?: DetachedSignature; custom?: Record<string, unknown> };
   state: AppState = AppState.Opening;
   private openedApp: AppIdentifier | undefined = undefined;
 
@@ -49,7 +50,7 @@ class PendingApp {
     context: ContextElement | undefined,
     source: FullAppIdentifier,
     timeoutMs: number,
-    appProvidedMetadata?: { traceId?: string; signature?: string; custom?: Record<string, unknown> }
+    appProvidedMetadata?: { traceId?: string; signature?: DetachedSignature; custom?: Record<string, unknown> }
   ) {
     this.context = context;
     this.source = source;

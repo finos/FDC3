@@ -1,0 +1,31 @@
+{
+  "extends": "../../tsconfig.root.json",
+  "compilerOptions": {
+    "rootDirs": [
+      "src",
+      "test"
+    ],
+    "outDir": "dist",
+  },
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "test/**",
+    "dist/**"
+  ],
+  "references": [
+    {
+      "path": "../fdc3-standard"
+    },
+    {
+      "path": "../fdc3-schema"
+    },
+    {
+      "path": "../fdc3-context"
+    },
+    {
+      "path": "../testing"
+    }
+  ]
+}

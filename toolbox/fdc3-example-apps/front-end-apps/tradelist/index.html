@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Trade List</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="./static/styles.css" />
+  </head>
+
+  <body class="tradelist">
+    <main>
+      <div class="container">
+        <h1 class="app-title">Trade List</h1>
+
+        <div class="box">
+          <table class="stock-list js-stock-list">
+            <thead>
+              <th>Ticker</th>
+              <th>Holding</th>
+              <th>Price</th>
+              <th>Value</th>
+              <th></th>
+
+              <th></th>
+            </thead>
+            <tbody id="stock-list"></tbody>
+            <tfoot>
+              <td colspan="3">Total</td>
+              <td id="total">0</td>
+              <td />
+            </tfoot>
+          </table>
+        </div>
+
+        <form id="js-form">
+          <input
+            id="ticker"
+            name="ticker"
+            autofocus
+            type="text"
+            aria-label="Enter a new stock item"
+            placeholder="MSFT"
+            class="js-stock-input"
+          />
+          <input
+            id="holding"
+            name="holding"
+            type="number"
+            aria-label="Set number of stocks"
+            placeholder="1"
+            class="js-stock-number"
+          />
+          <input
+            type="submit"
+            name="Add"
+            value="Add"
+            aria-label="Add the holding"
+          />
+        </form>
+      </div>
+    </main>
+
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>
