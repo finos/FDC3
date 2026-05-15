@@ -1,9 +1,9 @@
 {
   "applications": [
     {
-      "appId": "sail-training-receiver",
-      "name": "Sail Receiver",
-      "title": "Sail Receiver",
+      "appId": "fdc3-training-receiver",
+      "name": "FDC3 Receiver",
+      "title": "FDC3 Receiver",
       "description": "App will connect to the desktop agent on startup and listen to messages",
       "type": "web",
       "details": {

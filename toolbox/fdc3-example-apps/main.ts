@@ -169,7 +169,7 @@ async function startApp(appName: string, appRoot: string, port: number) {
   });
 
   server.listen(port, () => {
-    console.info({ appName, port, url: `http://localhost:${port}` }, 'Application server online');
+    console.info(`Application ${appName} online`, `http://localhost:${port}`);
   });
 }
 
@@ -178,7 +178,6 @@ async function startApp(appName: string, appRoot: string, port: number) {
     console.warn('No apps found to start.');
     return;
   }
-  console.log(`Starting ${apps.length} applications from ${frontEndAppsDir} and ${serverAppsDir}...`);
 
   const combinedAppd = buildCombinedAppDirectory(apps);
   writeGeneratedAppDirectory(combinedAppd);
