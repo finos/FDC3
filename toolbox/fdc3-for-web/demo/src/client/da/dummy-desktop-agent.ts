@@ -90,6 +90,84 @@ function fallbackIconEl(label: string): HTMLDivElement {
   return el;
 }
 
+const UNCATEGORIZED = 'Uncategorized';
+
+const CATEGORY_PASTELS = ['#e3f2fd', '#e8f5e9', '#fff3e0', '#f3e5f5', '#e0f7fa', '#fce4ec', '#f1f8e9', '#ede7f6'];
+
+function primaryCategory(app: DirectoryApp): string {
+  const first = app.categories?.[0];
+  if (typeof first === 'string' && first.trim().length > 0) {
+    return first.trim();
+  }
+  return UNCATEGORIZED;
+}
+
+function groupAppsByCategory(apps: DirectoryApp[]): Map<string, DirectoryApp[]> {
+  const groups = new Map<string, DirectoryApp[]>();
+  for (const app of apps) {
+    const category = primaryCategory(app);
+    const bucket = groups.get(category) ?? [];
+    bucket.push(app);
+    groups.set(category, bucket);
+  }
+  for (const bucket of groups.values()) {
+    bucket.sort((a, b) => (a.title ?? a.appId).localeCompare(b.title ?? b.appId));
+  }
+  return groups;
+}
+
+function sortedCategoryNames(groups: Map<string, DirectoryApp[]>): string[] {
+  const names = [...groups.keys()].filter(c => c !== UNCATEGORIZED).sort((a, b) => a.localeCompare(b));
+  if (groups.has(UNCATEGORIZED)) {
+    names.push(UNCATEGORIZED);
+  }
+  return names;
+}
+
+function pastelForCategoryIndex(index: number, category: string): string {
+  if (category === UNCATEGORIZED) {
+    return '#f1f5f9';
+  }
+  return CATEGORY_PASTELS[index % CATEGORY_PASTELS.length];
+}
+
+function createCategorySection(
+  category: string,
+  apps: DirectoryApp[],
+  sc: ServerContext<AppRegistration>,
+  backgroundColor: string
+): HTMLElement {
+  const section = document.createElement('section');
+  section.classList.add('da-category-section');
+  section.style.backgroundColor = backgroundColor;
+
+  const heading = document.createElement('h3');
+  heading.classList.add('da-category-section__title');
+  heading.textContent = category;
+  section.appendChild(heading);
+
+  const grid = document.createElement('div');
+  grid.classList.add('da-category-section__apps');
+  for (const app of apps) {
+    grid.appendChild(createAppStartButton(app, sc));
+  }
+  section.appendChild(grid);
+
+  return section;
+}
+
+function renderAppList(container: HTMLDivElement, apps: DirectoryApp[], sc: ServerContext<AppRegistration>): void {
+  container.replaceChildren();
+  const groups = groupAppsByCategory(apps);
+  const categories = sortedCategoryNames(groups);
+
+  categories.forEach((category, index) => {
+    const bucket = groups.get(category);
+    if (!bucket?.length) return;
+    container.appendChild(createCategorySection(category, bucket, sc, pastelForCategoryIndex(index, category)));
+  });
+}
+
 enum Approach {
   IFRAME,
   PARENT_POST_MESSAGE,
@@ -119,7 +197,8 @@ window.addEventListener('load', () => {
 
     const directory = new FDC3_2_1_JSONDirectory();
     await directory.load('http://localhost:4005/static/generated/fdc3-example-apps.json');
-    await directory.load('/static/da/local-conformance.v2.json');
+    await directory.load('http://localhost:4005/static/localhost-workbench.json');
+    await directory.load('http://localhost:4005/static/localhost-conformance.json');
     const sc = new DemoServerContext(socket, directory);
 
     const channelDetails: ChannelState[] = [
@@ -214,16 +293,13 @@ window.addEventListener('load', () => {
       fdc3Server.cleanup(id);
     });
 
-    // let's create buttons for some apps
     const appList = document.getElementById('app-list') as HTMLDivElement;
-    directory.retrieveAllApps().forEach((app: DirectoryApp) => {
+    const visibleApps = directory.retrieveAllApps().filter((app: DirectoryApp) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const mani = app?.hostManifests?.demo as any;
-      const show = mani?.visible ?? true;
-      if (show) {
-        appList.appendChild(createAppStartButton(app, sc));
-      }
+      return mani?.visible ?? true;
     });
+    renderAppList(appList, visibleApps, sc);
 
     // set up Desktop Agent Proxy interface here
     // disabling rule for checks on origin of messages - this could be improved by validating for origins we know we are working with

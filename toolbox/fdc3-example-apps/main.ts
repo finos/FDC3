@@ -42,7 +42,7 @@ const frontEndAppsDir = path.join(packageRoot, 'front-end-apps');
 const serverAppsDir = path.join(packageRoot, 'server-apps');
 /** Shared browser + Node demo utilities (Vite may import outside each app `root`). */
 const securityDemoDir = path.join(packageRoot, 'common', 'src', 'security-demo');
-const generatedAppdPath = path.join(packageRoot, 'directory', 'generated', 'fdc3-example-apps.json');
+const generatedAppdPath = path.join(packageRoot, 'directory', 'static/generated', 'fdc3-example-apps.json');
 
 const allApps = [...discoverApps(frontEndAppsDir), ...discoverApps(serverAppsDir)].sort((a, b) =>
   a.name.localeCompare(b.name)

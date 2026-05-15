@@ -12,6 +12,9 @@
       "hostManifests": {},
       "version": "1.0.0",
       "publisher": "FINOS",
+      "categories": [
+        "Broadcasting and Receiving Contexts Demo"
+      ],
       "icons": [
         {
           "src": "http://localhost:4013/icon.svg"
