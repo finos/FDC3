@@ -92,7 +92,7 @@ function fallbackIconEl(label: string): HTMLDivElement {
 
 const UNCATEGORIZED = 'Uncategorized';
 
-const CATEGORY_PASTELS = ['#e3f2fd', '#e8f5e9', '#fff3e0', '#f3e5f5', '#e0f7fa', '#fce4ec', '#f1f8e9', '#ede7f6'];
+const CATEGORY_COLOURS = ['#e3f2fd', '#e8f5e9', '#fff3e0', '#f3e5f5', '#e0f7fa', '#fce4ec', '#f1f8e9', '#ede7f6'];
 
 function primaryCategory(app: DirectoryApp): string {
   const first = app.categories?.[0];
@@ -128,7 +128,7 @@ function pastelForCategoryIndex(index: number, category: string): string {
   if (category === UNCATEGORIZED) {
     return '#f1f5f9';
   }
-  return CATEGORY_PASTELS[index % CATEGORY_PASTELS.length];
+  return CATEGORY_COLOURS[index % CATEGORY_COLOURS.length];
 }
 
 function createCategorySection(
