@@ -7,13 +7,16 @@ import type { ContextMetadata } from '@finos/fdc3-standard';
 import {
   AllowListFunction,
   createJosePrivateFDC3Security,
+  createMetadataHandlerWithFDC3Version,
   DefaultFDC3Handlers,
   emitToClient,
+  EncryptedBroadcastSupport,
   EXCHANGE_DATA,
   JosePrivateFDC3Security,
-  MetadataHandlerImpl,
   provisionJWKS,
   setupWebsocketServer,
+  type EncryptedBroadcaster,
+  type MetadataHandler,
 } from '@finos/fdc3-security';
 
 /** Pushed to the App2 browser over the secure-boundary WebSocket when a valuation is broadcast on the private channel. */
@@ -24,13 +27,14 @@ export const VALUATION_PUSH_PURPOSE = 'valuation-push';
  * then broadcasts demo valuations on that channel and mirrors them to the connected client via {@link EXCHANGE_DATA}.
  */
 class App2BackendHandlers extends DefaultFDC3Handlers {
-  private readonly metadataHandler = new MetadataHandlerImpl(false);
+  private readonly metadataHandler: MetadataHandler;
 
   constructor(
     private readonly security: JosePrivateFDC3Security,
     private readonly ws: WebSocket
   ) {
     super();
+    this.metadataHandler = createMetadataHandlerWithFDC3Version('3.0');
   }
 
   async remoteIntentHandler(intent: string): Promise<IntentHandler> {
@@ -38,17 +42,10 @@ class App2BackendHandlers extends DefaultFDC3Handlers {
       return super.remoteIntentHandler(intent);
     }
 
-    return async (ctx: Context, incomingMeta?: ContextMetadata): Promise<Context> => {
-      const emptyMeta = {} as ContextMetadata;
-      const { context, metadata } = this.metadataHandler.unpack(ctx, incomingMeta ?? emptyMeta);
-      const md = metadata as ContextMetadata & {
-        signature?: unknown;
-        antiReplay?: unknown;
-      };
-
-      const auth = await this.security.verifySignature(md.signature as never, context, md.antiReplay as never);
+    return async (ctx: Context, md: ContextMetadata): Promise<Context> => {
+      const auth = await this.security.verifySignature(md.signature, ctx, md.antiReplay);
       if (!auth.signed || !auth.trusted || !auth.valid) {
-        return unauthorizedContext(context, 'Signature verification failed');
+        return unauthorizedContext(ctx, 'Signature verification failed');
       }
 
       return { type: 'private' } as unknown as Context;
@@ -66,12 +63,8 @@ class App2BackendHandlers extends DefaultFDC3Handlers {
     // handleRemoteChannel exchange (same race as security-demo-app1 backend).
     setTimeout(() => {
       void (async () => {
-        await channel.addContextListener('fdc3.valuation', async (ctx: Context, meta?: ContextMetadata) => {
-          emitToClient(this.ws, EXCHANGE_DATA, {
-            purpose: VALUATION_PUSH_PURPOSE,
-            o: { ctx, meta },
-          });
-        });
+        const broadcastSupport = new EncryptedBroadcastSupport(this.security, this.metadataHandler);
+        const broadcaster: EncryptedBroadcaster = await broadcastSupport.broadcastWrapper(channel);
 
         for (let i = 0; i < 5; i++) {
           setTimeout(() => {
@@ -83,14 +76,21 @@ class App2BackendHandlers extends DefaultFDC3Handlers {
                 price: 100 + i,
                 value: 100 + i,
               };
-              await pc.broadcast(valuation);
-              console.log('[app2 backend] broadcast valuation', i);
+              await broadcaster.broadcast(valuation);
+              emitToClient(this.ws, EXCHANGE_DATA, {
+                purpose: VALUATION_PUSH_PURPOSE,
+                o: { ctx: valuation },
+              });
+              console.log('[app2 backend] broadcast encrypted valuation', i);
             })();
           }, i * 1000);
         }
 
         setTimeout(() => {
-          void pc.disconnect();
+          void (async () => {
+            await broadcaster.shutdown();
+            await pc.disconnect();
+          })();
         }, 10000);
       })();
     }, 0);

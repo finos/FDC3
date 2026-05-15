@@ -84,12 +84,12 @@ async function raiseGetPricesIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Hand
       name: 'Apple Inc.',
     };
 
-    const signedInstrument = (await remoteHandlers.exchangeData('request-prices', {
+    const { signature, antiReplay } = (await remoteHandlers.exchangeData('request-prices', {
       context: instrument,
       intent: 'demo.GetPrices',
     })) as Context;
 
-    const resolution = await fdc3.raiseIntent('demo.GetPrices', signedInstrument);
+    const resolution = await fdc3.raiseIntent('demo.GetPrices', instrument, null, { signature, antiReplay });
 
     const result = await resolution.getResult();
 
@@ -151,18 +151,11 @@ function handleReturnedMessage(msg: ExchangeDataMessage): void {
   if (msg.purpose === VALUATION_PUSH_PURPOSE) {
     const o = msg.o as { ctx?: Context; meta?: unknown };
     const ctx = o.ctx;
-    if (!ctx) return;
-    if ((ctx as Context & { __encrypted?: string }).__encrypted) {
-      createLogEntry('error', '❌ Got An Encrypted Price - Will Request Channel Key', {
-        context: ctx,
-        timestamp: new Date().toISOString(),
-      });
-    } else {
-      createLogEntry('success', '✅ Got A Price', {
-        context: ctx,
-        timestamp: new Date().toISOString(),
-      });
-    }
+    createLogEntry('success', '✅ Decrypted A Price', {
+      context: ctx,
+      metadata: o.meta,
+      timestamp: new Date().toISOString(),
+    });
     return;
   }
 
