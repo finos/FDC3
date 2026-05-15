@@ -4,7 +4,7 @@
       "appId": "benzinga-view-news-1",
       "name": "Benzinga News",
       "title": "Benzinga News",
-      "description": "Benzinga Finance News",
+      "description": "Benzinga Finance News.  NOTE: This requires the Desktop Agent to be running on an https port.",
       "type": "web",
       "details": {
         "url": "http://localhost:4012/"

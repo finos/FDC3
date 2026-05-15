@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Channel, DesktopAgent } from '@finos/fdc3';
+import { Channel, DesktopAgent, FDC3ChannelChangedEvent } from '@finos/fdc3';
 import { getAgent } from '@finos/fdc3-get-agent';
 import { createRoot } from 'react-dom/client';
 import styles from './main.module.css';
@@ -22,17 +22,21 @@ export const BroadcastComponent = () => {
     getAgent().then(agent => {
       console.log('got api...');
       setFdc3(agent);
-      handleChannelChanged(agent);
-      agent.addEventListener('userChannelChanged', () => handleChannelChanged(agent));
+      refreshChannels(agent);
+      agent.addEventListener('userChannelChanged', e => {
+        const { currentChannelId } = (e as FDC3ChannelChangedEvent).details;
+        setCurrentChannel(currentChannelId);
+        void refreshChannels(agent);
+      });
     });
   }, []);
 
-  const handleChannelChanged = async (fdc3: DesktopAgent) => {
-    const channel = await fdc3.getCurrentChannel();
-    console.log('changed channel', channel);
-    setCurrentChannel(channel?.id || null);
+  const refreshChannels = async (fdc3: DesktopAgent) => {
     const channels = await fdc3.getUserChannels();
     setChannelList(channels);
+    const channel = await fdc3.getCurrentChannel();
+    console.log('current channel', channel);
+    setCurrentChannel(channel?.id ?? null);
   };
 
   const broadcastContexts = async () => {
@@ -49,6 +53,7 @@ export const BroadcastComponent = () => {
   return (
     <div className={styles.broadcastComponent}>
       <h2>Broadcast Component</h2>
+      <p>Note: must be connected to a user channel to broadcast.</p>
       <div className={styles.channelList}>
         {channelList.map(channel => (
           <div
