@@ -53,19 +53,19 @@ export class MetadataValidator {
     expect(implMetadata.provider).to.not.be.equal('');
     expect(
       implMetadata.optionalFeatures,
-      `ImplementationMetadata.optionalFeatures did not have property OriginatingAppMetadata${getInfoDocs}`
-    ).to.have.property('OriginatingAppMetadata');
-    expect(
-      implMetadata.optionalFeatures,
       `ImplementationMetadata.optionalFeatures did not have property UserChannelMembershipAPIs${getInfoDocs}`
     ).to.have.property('UserChannelMembershipAPIs');
     expect(
-      typeof implMetadata.optionalFeatures.OriginatingAppMetadata,
-      `ImplementationMetadata.optionalFeatures.OriginatingAppMetadata should be of type boolean`
-    ).to.be.equal('boolean');
-    expect(
       typeof implMetadata.optionalFeatures.UserChannelMembershipAPIs,
       'ImplementationMetadata.optionalFeatures.UserChannelMembershipAPIs should be of type boolean'
+    ).to.be.equal('boolean');
+    expect(
+      implMetadata.optionalFeatures,
+      `ImplementationMetadata.optionalFeatures did not have property DesktopAgentBridging${getInfoDocs}`
+    ).to.have.property('DesktopAgentBridging');
+    expect(
+      typeof implMetadata.optionalFeatures.DesktopAgentBridging,
+      'ImplementationMetadata.optionalFeatures.DesktopAgentBridging should be of type boolean'
     ).to.be.equal('boolean');
   }
 

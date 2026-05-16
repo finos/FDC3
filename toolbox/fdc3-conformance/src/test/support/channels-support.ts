@@ -1,5 +1,5 @@
 import { assert, expect } from 'chai';
-import { Channel, Context, Listener, DesktopAgent } from '@finos/fdc3';
+import { Channel, Context, ContextMetadata, Listener, DesktopAgent } from '@finos/fdc3';
 import constants from '../../constants';
 import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from '../support/channel-control';
 import { closeMockAppWindow, waitForContext } from '../fdc3-conformance-utils';
@@ -53,12 +53,12 @@ export class ChannelControlImpl implements ChannelControl {
   };
 
   initCompleteListener = async (testId: string) => {
-    const { listenerPromise } = await waitForContext(
+    const { listenerPromise, listener } = await waitForContext(
       'executionComplete',
       testId,
       await this.fdc3.getOrCreateChannel(constants.ControlChannel)
     );
-    return listenerPromise;
+    return listenerPromise.finally(() => listener.unsubscribe());
   };
 
   openChannelApp = async (
@@ -93,22 +93,22 @@ export class ChannelControlImpl implements ChannelControl {
     listenContextType: string | null,
     expectedContextType: string | null,
     errorMessage: string,
-    onComplete: (ctx: Context) => void
+    onComplete: (ctx: Context, metadata?: ContextMetadata) => void
   ): Promise<Listener> => {
     let listener;
     if (channel) {
-      listener = await channel.addContextListener(listenContextType, context => {
+      listener = await channel.addContextListener(listenContextType, (context, metadata) => {
         if (expectedContextType != null) {
           expect(context.type).to.be.equals(expectedContextType, errorMessage);
         }
-        onComplete(context);
+        onComplete(context, metadata);
       });
     } else {
-      listener = await this.fdc3.addContextListener(expectedContextType, context => {
+      listener = await this.fdc3.addContextListener(expectedContextType, (context, metadata) => {
         if (expectedContextType != null) {
           expect(context.type).to.be.equals(expectedContextType, errorMessage);
         }
-        onComplete(context);
+        onComplete(context, metadata);
       });
     }
 

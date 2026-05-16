@@ -39,6 +39,7 @@ class PendingApp {
   private readonly msg: OpenRequest;
   readonly context: ContextElement | undefined;
   readonly source: FullAppIdentifier;
+  readonly appProvidedMetadata: { traceId?: string; signature?: string; custom?: Record<string, unknown> };
   state: AppState = AppState.Opening;
   private openedApp: AppIdentifier | undefined = undefined;
 
@@ -47,12 +48,14 @@ class PendingApp {
     msg: OpenRequest,
     context: ContextElement | undefined,
     source: FullAppIdentifier,
-    timeoutMs: number
+    timeoutMs: number,
+    appProvidedMetadata?: { traceId?: string; signature?: string; custom?: Record<string, unknown> }
   ) {
     this.context = context;
     this.source = source;
     this.sc = sc;
     this.msg = msg;
+    this.appProvidedMetadata = appProvidedMetadata ?? {};
 
     setTimeout(() => {
       if (this.state != AppState.Done) {
@@ -169,9 +172,19 @@ export class OpenHandler implements MessageHandler {
             payload: {
               channelId: null,
               context: pendingOpen.context,
-              originatingApp: {
-                appId: pendingOpen.source.appId,
-                instanceId: pendingOpen.source.instanceId,
+              metadata: {
+                source: {
+                  appId: pendingOpen.source.appId,
+                  instanceId: pendingOpen.source.instanceId,
+                },
+                timestamp: new Date(),
+                traceId: pendingOpen.appProvidedMetadata.traceId ?? sc.createUUID(),
+                ...(pendingOpen.appProvidedMetadata.signature !== undefined && {
+                  signature: pendingOpen.appProvidedMetadata.signature,
+                }),
+                ...(pendingOpen.appProvidedMetadata.custom !== undefined && {
+                  custom: pendingOpen.appProvidedMetadata.custom,
+                }),
               },
             },
           };
@@ -247,8 +260,16 @@ export class OpenHandler implements MessageHandler {
     const context = arg0.payload.context;
 
     try {
+      const reqMeta = arg0.payload.metadata ?? {};
       const uuid = await sc.open(toOpen.appId, from);
-      this.pending.set(uuid, new PendingApp(sc, arg0, context, from, this.timeoutMs));
+      this.pending.set(
+        uuid,
+        new PendingApp(sc, arg0, context, from, this.timeoutMs, {
+          traceId: reqMeta.traceId,
+          signature: reqMeta.signature,
+          custom: reqMeta.custom,
+        })
+      );
     } catch (e) {
       errorResponse(sc, arg0, from, (e as Error).message ?? e, 'openResponse');
     }
@@ -278,7 +299,6 @@ export class OpenHandler implements MessageHandler {
       fdc3Version: sc.fdc3Version(),
       optionalFeatures: {
         DesktopAgentBridging: false,
-        OriginatingAppMetadata: true,
         UserChannelMembershipAPIs: true,
       },
       appMetadata: appMetadata,

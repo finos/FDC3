@@ -37,6 +37,21 @@ export function setupGenericSteps(schemaBasePath: string): void {
     }
   );
 
+  When(
+    'I call {string} with {string} with parameters {string} and {string} and {string} and {string}',
+    async (
+      world: PropsWorldLike,
+      field: string,
+      fnName: string,
+      param1: string,
+      param2: string,
+      param3: string,
+      param4: string
+    ) => {
+      await impl.callWithMethodAndFourParams(world, field, fnName, param1, param2, param3, param4);
+    }
+  );
+
   When('I refer to {string} as {string}', (world: PropsWorldLike, from: string, to: string) => {
     impl.referToAs(world, from, to);
   });

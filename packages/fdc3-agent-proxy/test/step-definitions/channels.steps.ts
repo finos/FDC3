@@ -52,9 +52,36 @@ Given(
       payload: {
         channelId: handleResolve(channel, world),
         context: contextMap[context],
-        originatingApp: {
-          appId: 'broadcasting-app',
-          instanceId: 'broadcasting-instance',
+        metadata: {
+          timestamp: new Date(),
+          source: world.messaging!.getAppIdentifier(),
+          traceId: world.messaging!.createUUID(),
+          signature: '',
+        },
+      },
+      type: 'broadcastEvent',
+    } as BroadcastEvent;
+
+    world.props[field] = message;
+  }
+);
+
+Given(
+  '{string} is a BroadcastEvent message on channel {string} with context {string} and metadata',
+  (world: CustomWorld, field: string, channel: string, context: string) => {
+    const message = {
+      meta: {
+        ...world.messaging!.createEventMeta(),
+      },
+      payload: {
+        channelId: handleResolve(channel, world),
+        context: contextMap[context],
+        metadata: {
+          timestamp: new Date(),
+          source: world.messaging!.getAppIdentifier(),
+          traceId: world.messaging!.createUUID(),
+          signature: 'test-sig',
+          custom: { region: 'EMEA' },
         },
       },
       type: 'broadcastEvent',

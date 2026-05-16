@@ -2,7 +2,7 @@ import { MessageHandler } from '../BasicFDC3Server.js';
 import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext.js';
 import { Directory, DirectoryIntent } from '../directory/DirectoryInterface.js';
 import { Context } from '@finos/fdc3-context';
-import { AppIntent, ResolveError, AppIdentifier } from '@finos/fdc3-standard';
+import { AppIntent, ResolveError, AppIdentifier, AppProvidableContextMetadata } from '@finos/fdc3-standard';
 import {
   errorResponse,
   errorResponseId,
@@ -37,6 +37,7 @@ type IntentRequest = {
   requestUuid: string;
   from: FullAppIdentifier;
   type: 'raiseIntentResponse' | 'raiseIntentForContextResponse';
+  appProvidedMetadata?: AppProvidableContextMetadata;
 };
 
 /**
@@ -48,14 +49,21 @@ async function forwardRequest(
   sc: ServerContext<AppRegistration>,
   ih: IntentHandler
 ): Promise<void> {
+  const appProvidedMeta = arg0.appProvidedMetadata ?? {};
   const out: IntentEvent = {
     type: 'intentEvent',
     payload: {
       context: arg0.context,
       intent: arg0.intent,
-      originatingApp: {
-        appId: arg0.from.appId,
-        instanceId: arg0.from.instanceId,
+      metadata: {
+        source: {
+          appId: arg0.from.appId,
+          instanceId: arg0.from.instanceId,
+        },
+        timestamp: new Date(),
+        traceId: appProvidedMeta.traceId ?? sc.createUUID(),
+        ...(appProvidedMeta.signature !== undefined && { signature: appProvidedMeta.signature }),
+        ...(appProvidedMeta.custom !== undefined && { custom: appProvidedMeta.custom }),
       },
       raiseIntentRequestUuid: arg0.requestUuid,
     },
@@ -206,6 +214,16 @@ export class IntentHandler implements MessageHandler {
     const requestId = arg0.payload.raiseIntentRequestUuid;
     const to = this.pendingResolutions.get(requestId);
     if (to) {
+      // Merge app-provided metadata with DA-generated fields
+      const appMeta = arg0.payload.metadata ?? {};
+      const resultMetadata = {
+        source: { appId: from.appId, instanceId: from.instanceId },
+        timestamp: new Date(),
+        traceId: appMeta.traceId ?? sc.createUUID(),
+        ...(appMeta.signature !== undefined && { signature: appMeta.signature }),
+        ...(appMeta.custom !== undefined && { custom: appMeta.custom }),
+      };
+
       // post the result to the app that raised the intent
       //   if its still connected, otherwise do nothing
       successResponseId(
@@ -214,6 +232,7 @@ export class IntentHandler implements MessageHandler {
         to,
         {
           intentResult: arg0.payload.intentResult,
+          resultMetadata,
         },
         'raiseIntentResultResponse'
       );
@@ -474,12 +493,18 @@ export class IntentHandler implements MessageHandler {
     sc: ServerContext<AppRegistration>,
     from: FullAppIdentifier
   ): Promise<void> {
+    const reqMeta = arg0.payload.metadata ?? {};
     const intentRequest: IntentRequest = {
       context: arg0.payload.context,
       from,
       intent: arg0.payload.intent,
       requestUuid: arg0.meta.requestUuid,
       type: 'raiseIntentResponse',
+      appProvidedMetadata: {
+        traceId: reqMeta.traceId,
+        signature: reqMeta.signature,
+        custom: reqMeta.custom,
+      },
     };
 
     const target = arg0.payload.app;
@@ -513,6 +538,7 @@ export class IntentHandler implements MessageHandler {
     // dealing with a specific instance of an app
     const mappedIntents = this.directory.retrieveIntents(arg0.payload.context.type, undefined, undefined);
     const uniqueIntentNames = mappedIntents.filter((v, i, a) => a.findIndex(v2 => v2.intentName == v.intentName) == i);
+    const rifcMeta = arg0.payload.metadata ?? {};
     const possibleIntentRequests: IntentRequest[] = uniqueIntentNames.map(i => {
       return {
         context: arg0.payload.context,
@@ -520,6 +546,11 @@ export class IntentHandler implements MessageHandler {
         intent: i.intentName,
         requestUuid: arg0.meta.requestUuid,
         type: 'raiseIntentForContextResponse',
+        appProvidedMetadata: {
+          traceId: rifcMeta.traceId,
+          signature: rifcMeta.signature,
+          custom: rifcMeta.custom,
+        },
       };
     });
 

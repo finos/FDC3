@@ -1,18 +1,17 @@
 import { closeWindowOnCompletion, sendContextToTests, validateContext } from './mock-functions';
-import { wait } from '../utils';
+import { getAgent } from '@finos/fdc3';
 import { IntentUtilityContext } from '../context-types';
-import { ContextMetadata, IntentResult, getAgent } from '@finos/fdc3';
+import { ContextMetadata, IntentResult } from '@finos/fdc3';
 import { ContextType, ControlContextType, Intent } from '../test/support/intent-support';
 
+// Used in 'IntentContextMetadata' and 'IntentContextMetadataWithAppMetadata' conformance tests
 getAgent().then(async fdc3 => {
   await closeWindowOnCompletion(fdc3);
 
-  //used in 'Raise Intent Result (void result)' and 'Raise Intent (Ignoring any results)'
   fdc3.addIntentListener(
-    Intent.aTestingIntent,
+    Intent.lTestingIntent,
     async (context: IntentUtilityContext, metadata?: ContextMetadata): Promise<IntentResult> => {
       validateContext(fdc3, context.type, ContextType.testContextX);
-      await delayExecution(context.delayBeforeReturn);
 
       const { appMetadata } = await fdc3.getInfo();
 
@@ -36,25 +35,4 @@ getAgent().then(async fdc3 => {
       return;
     }
   );
-
-  fdc3.addIntentListener(Intent.sharedTestingIntent1, async (context: IntentUtilityContext): Promise<IntentResult> => {
-    validateContext(fdc3, context.type, ContextType.testContextY);
-    await delayExecution(context.delayBeforeReturn);
-
-    await sendContextToTests(fdc3, {
-      type: ControlContextType.SHARED_TESTING_INTENT1_LISTENER_TRIGGERED,
-    });
-
-    return context;
-  });
-
-  await sendContextToTests(fdc3, {
-    type: ControlContextType.INTENT_APP_A_OPENED,
-  });
 });
-
-async function delayExecution(delayMilliseconds: number | undefined): Promise<void> {
-  if (delayMilliseconds && delayMilliseconds > 0) {
-    await wait(delayMilliseconds);
-  }
-}

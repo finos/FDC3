@@ -272,6 +272,29 @@ When(
 );
 
 When(
+  '{string} raises an intent for {string} with contextType {string} with metadata traceId {string} signature {string} and custom key {string}',
+  async (
+    world: CustomWorld,
+    appStr: string,
+    intentName: string,
+    contextType: string,
+    traceId: string,
+    signature: string,
+    customKey: string
+  ) => {
+    const meta = createMeta(world, appStr);
+    const uuid = world.sc.getInstanceUUID(meta.source)!;
+    const message = raise(world, intentName, contextType, null, meta);
+    message.payload.metadata = {
+      traceId: handleResolve(traceId, world),
+      signature: handleResolve(signature, world),
+      custom: { region: handleResolve(customKey, world) },
+    };
+    await world.server.receive(message, uuid);
+  }
+);
+
+When(
   '{string} raises an intent for {string} with contextType {string} on an invalid app instance',
   async (world: CustomWorld, appStr: string, intentName: string, contextType: string) => {
     const meta = createMeta(world, appStr);
@@ -333,6 +356,40 @@ When(
         },
         intentEventUuid: eventUuid,
         raiseIntentRequestUuid: raiseIntentUuid,
+      },
+    };
+    await world.server.receive(message, uuid1);
+  }
+);
+
+When(
+  '{string} sends a intentResultRequest with eventUuid {string} and contextType {string} and raiseIntentUuid {string} with traceId {string} and signature {string}',
+  async (
+    world: CustomWorld,
+    appStr: string,
+    eventUuid: string,
+    contextType: string,
+    raiseIntentUuid: string,
+    traceId: string,
+    signature: string
+  ) => {
+    const meta = createMeta(world, appStr);
+    const uuid1 = world.sc.getInstanceUUID(meta.source)!;
+    const message: IntentResultRequest = {
+      type: 'intentResultRequest',
+      meta: {
+        ...meta,
+      },
+      payload: {
+        intentResult: {
+          context: contextMap[contextType],
+        },
+        intentEventUuid: eventUuid,
+        raiseIntentRequestUuid: raiseIntentUuid,
+        metadata: {
+          traceId,
+          signature,
+        },
       },
     };
     await world.server.receive(message, uuid1);

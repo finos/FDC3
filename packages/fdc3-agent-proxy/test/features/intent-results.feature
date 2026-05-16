@@ -126,3 +126,35 @@ Feature: Intents Can Return Different Results
     And messaging will have posts
       | payload.intent | payload.context.type | payload.context.id.ticker | matches_type       |
       | OrderFood      | fdc3.instrument      | AAPL                      | raiseIntentRequest |
+
+  Scenario: getResultMetadata returns DA-generated metadata for a context result
+    Given Raise Intent returns a context of "{instrumentContext}"
+    When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    And I call "{result}" with "getResultMetadata"
+    Then "{result}" is an object with the following contents
+      | source.appId | source.instanceId |
+      | some-app     | abc123            |
+
+  Scenario: getResultMetadata returns merged metadata when ContextWithMetadata is returned
+    Given Raise Intent returns a context of "{instrumentContext}" with traceId "my-trace-123" and signature "sig-abc"
+    When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    And I call "{result}" with "getResultMetadata"
+    Then "{result}" is an object with the following contents
+      | source.appId | source.instanceId | traceId       | signature |
+      | some-app     | abc123            | my-trace-123  | sig-abc   |
+
+  Scenario: getResultMetadata returns DA-generated metadata for a channel result
+    Given Raise Intent returns a private channel
+    When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    And I call "{result}" with "getResultMetadata"
+    Then "{result}" is an object with the following contents
+      | source.appId | source.instanceId |
+      | some-app     | abc123            |
+
+  Scenario: getResultMetadata returns DA-generated metadata for a void result
+    Given Raise Intent returns no result
+    When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    And I call "{result}" with "getResultMetadata"
+    Then "{result}" is an object with the following contents
+      | source.appId | source.instanceId |
+      | some-app     | abc123            |

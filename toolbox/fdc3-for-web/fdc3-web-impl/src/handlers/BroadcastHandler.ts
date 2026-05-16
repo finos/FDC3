@@ -27,6 +27,12 @@ import {
   PrivateChannelUnsubscribeEventListenerRequest,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { Context } from '@finos/fdc3-context';
+import { ContextMetadata } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+
+type StoredContext = {
+  context: Context;
+  metadata: ContextMetadata;
+};
 
 type PrivateChannelEvents =
   | PrivateChannelOnAddContextListenerEvent
@@ -65,7 +71,7 @@ export enum ChannelType {
 export type ChannelState = {
   id: string;
   type: ChannelType;
-  context: Context[];
+  context: StoredContext[];
   displayMetadata: DisplayMetadata;
 };
 
@@ -160,11 +166,11 @@ export class BroadcastHandler implements MessageHandler {
     }
   }
 
-  updateChannelState(channelId: string, context: Context) {
+  updateChannelState(channelId: string, context: Context, metadata: ContextMetadata) {
     const cs = this.getChannelById(channelId);
     if (cs) {
-      cs.context = cs.context.filter(c => c.type != context.type);
-      cs.context.unshift(context);
+      cs.context = cs.context.filter(c => c.context.type != context.type);
+      cs.context.unshift({ context, metadata });
     }
   }
 
@@ -299,8 +305,14 @@ export class BroadcastHandler implements MessageHandler {
     const type = arg0.payload.contextType;
 
     if (channel) {
-      const context = type ? (channel.context.find(c => c.type == type) ?? null) : (channel.context[0] ?? null);
-      successResponse(sc, arg0, from, { context: context }, 'getCurrentContextResponse');
+      const stored = type ? (channel.context.find(c => c.context.type == type) ?? null) : (channel.context[0] ?? null);
+      successResponse(
+        sc,
+        arg0,
+        from,
+        { context: stored?.context ?? null, metadata: stored?.metadata ?? null },
+        'getCurrentContextResponse'
+      );
     } else {
       errorResponse(sc, arg0, from, ChannelError.NoChannelFound, 'getCurrentContextResponse');
     }
@@ -438,6 +450,7 @@ export class BroadcastHandler implements MessageHandler {
       })
       .filter(onlyUniqueAppIds);
 
+    const appProvidedMetadata = arg0.payload.metadata ?? {};
     const msg: BroadcastEvent = {
       meta: {
         eventUuid: sc.createUUID(),
@@ -447,9 +460,12 @@ export class BroadcastHandler implements MessageHandler {
       payload: {
         channelId: arg0.payload.channelId,
         context: arg0.payload.context,
-        originatingApp: {
-          appId: from.appId,
-          instanceId: from.instanceId,
+        metadata: {
+          source: { appId: from.appId, instanceId: from.instanceId },
+          timestamp: new Date(),
+          traceId: appProvidedMetadata.traceId ?? sc.createUUID(),
+          ...(appProvidedMetadata.signature !== undefined && { signature: appProvidedMetadata.signature }),
+          ...(appProvidedMetadata.custom !== undefined && { custom: appProvidedMetadata.custom }),
         },
       },
     };
@@ -458,7 +474,7 @@ export class BroadcastHandler implements MessageHandler {
       sc.post(msg, app.instanceId);
     });
 
-    this.updateChannelState(arg0.payload.channelId, arg0.payload.context);
+    this.updateChannelState(arg0.payload.channelId, arg0.payload.context, msg.payload.metadata!);
     successResponse(sc, arg0, from, {}, 'broadcastResponse');
   }
 
