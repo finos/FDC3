@@ -3,9 +3,12 @@ import { Context, DesktopAgent } from '@finos/fdc3';
 import { APIDocumentation } from '../support/apiDocuments';
 import { ContextType, Intent } from '../support/intent-support';
 import { closeMockAppWindow } from '../fdc3-conformance-utils';
+import { MetadataValidator } from '../support/metadata-support';
 
 import { assert, expect } from 'chai';
 import { handleFail } from '../../utils';
+
+const metadataValidator = new MetadataValidator();
 
 const getAgent2_2 = (fdc3: DesktopAgent, documentation: string) => {
   it('(GetAgentAPI) Method is callable', async () => {
@@ -75,6 +78,17 @@ const basicGI1 = (fdc3: DesktopAgent, documentation: string) => {
       const info = await fdc3.getInfo();
       expect(info, documentation).to.have.property('fdc3Version');
       expect(info, documentation).to.have.property('provider');
+    } catch (ex) {
+      handleFail(documentation, ex);
+    }
+  });
+};
+
+const basicGI2 = (fdc3: DesktopAgent, documentation: string) => {
+  it('(BasicGI2) ImplementationMetadata contains optionalFeatures with required boolean members', async () => {
+    try {
+      const info = await fdc3.getInfo();
+      metadataValidator.validateOptionalFeatures(info);
     } catch (ex) {
       handleFail(documentation, ex);
     }
@@ -179,6 +193,7 @@ export const fdc3BasicCL1 = async () => describe('fdc3.basicCL1', () => basicCL1
 export const fdc3BasicCL2 = async () => describe('fdc3.basicCL2', () => basicCL2(fdc3, documentation_CL));
 export const fdc3BasicIL1 = async () => describe('fdc3.basicIL1', () => basicIL1(fdc3, documentation_IL));
 export const fdc3BasicGI1 = async () => describe('fdc3.basicGI1', () => basicGI1(fdc3, documentation_GI));
+export const fdc3BasicGI2 = async () => describe('fdc3.basicGI2', () => basicGI2(fdc3, documentation_GI));
 export const fdc3BasicAC1 = async () => describe('fdc3.basicAC1', () => basicAC1(fdc3, documentation_AC));
 export const fdc3BasicUC1 = async () => describe('fdc3.basicUC1', () => basicUC1(fdc3, documentation_UC));
 export const fdc3BasicJC1 = async () => describe('fdc3.basicJC1', () => basicJC1(fdc3, documentation_JC));

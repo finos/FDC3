@@ -51,6 +51,13 @@ export class MetadataValidator {
       'provider'
     );
     expect(implMetadata.provider).to.not.be.equal('');
+    this.validateOptionalFeatures(implMetadata);
+  }
+
+  validateOptionalFeatures(implMetadata: ImplementationMetadata) {
+    expect(implMetadata, `ImplementationMetadata did not have property optionalFeatures${getInfoDocs}`).to.have.property(
+      'optionalFeatures'
+    );
     expect(
       implMetadata.optionalFeatures,
       `ImplementationMetadata.optionalFeatures did not have property UserChannelMembershipAPIs${getInfoDocs}`
