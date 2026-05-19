@@ -1,4 +1,4 @@
-import { Given, When } from 'quickpickle';
+import { Given, Then, When } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
 import { TestServerContext } from '../support/TestServerContext.js';
 import { DefaultFDC3Server } from '../../src/BasicFDC3Server.js';
@@ -6,9 +6,9 @@ import { BasicDirectory } from '../../src/directory/BasicDirectory.js';
 import { ChannelType } from '../../src/handlers/BroadcastHandler.js';
 import { Context } from '@finos/fdc3-context';
 import { AppIdentifier } from '@finos/fdc3-standard';
-import { setupGenericSteps } from '@finos/testing';
-import path from 'path';
-
+import { setupGenericSteps, quickpickleWrapStep } from '@robmoffat/standard-cucumber-steps';
+import { setupSchemaSteps } from '@finos/fdc3-schema/test/setupSchemaSteps.js';
+import { registerFdc3SchemaMatchers } from '@finos/fdc3-schema/test/fdc3SchemaMatchers.js';
 export const APP_FIELD = 'apps';
 
 export const contextMap: Record<string, Context> = {
@@ -112,9 +112,9 @@ export function createMeta(cw: CustomWorld, appStr: string) {
   };
 }
 
-// Register shared generic steps from @finos/testing
-const schemaBasePath = path.join(import.meta.dirname, '../../../../../packages/');
-setupGenericSteps(schemaBasePath);
+setupGenericSteps({ Given, When, Then, wrapStep: quickpickleWrapStep });
+setupSchemaSteps();
+registerFdc3SchemaMatchers();
 
 Given('A newly instantiated FDC3 Server', (world: CustomWorld) => {
   const apps = world.props[APP_FIELD] ?? [];
