@@ -25,20 +25,6 @@ Given('the promise {string} should resolve', async (world: CustomWorld, field: s
   }
 });
 
-export function isFunctionReturningPromiseOf(world: PropsWorldLike, fnName: string, field: string): void {
-  const value = handleResolve(field, world);
-  world.props[fnName] = async () => {
-    return value;
-  };
-}
-
-Given(
-  '{string} is a function which returns a promise of {string}',
-  (world: PropsWorldLike, fnName: string, field: string) => {
-    isFunctionReturningPromiseOf(world, fnName, field);
-  }
-);
-
 export async function promiseShouldResolveWithin10Seconds(world: PropsWorldLike, field: string): Promise<void> {
   try {
     const promise = handleResolve(field, world) as Promise<unknown>;

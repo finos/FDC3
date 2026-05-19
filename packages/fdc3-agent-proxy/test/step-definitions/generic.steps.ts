@@ -1,4 +1,4 @@
-import { DataTable, Given, Then, When } from 'quickpickle';
+import { Given, Then, When } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
 import {
   DesktopAgentProxy,

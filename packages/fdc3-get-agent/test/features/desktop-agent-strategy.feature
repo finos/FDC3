@@ -171,7 +171,7 @@ Scenario: Connecting but identity validation times out
 
   Scenario: Failover Strategy returning desktop agent
     Given A Dummy Desktop Agent in "dummy-api"
-    And "dummyFailover" is a function which returns a promise of "{dummy-api}"
+    And "dummyFailover" is an async function returning "{dummy-api}"
     And I call getAgent for a promise result with the following options
       | failover        | timeoutMs |
       | {dummyFailover} |      1000 |
@@ -197,7 +197,7 @@ Scenario: Connecting but identity validation times out
     And I call "{desktopAgent}" with "disconnect"
 
   Scenario: Failover Strategy returning an invalid result
-    Given "invalidFailover" is a function which returns a promise of "some string"
+    Given "invalidFailover" is an async function returning "some string"
     And I call getAgent for a promise result with the following options
       | failover        | timeoutMs |
       | {invalidFailover} |      1000 |
@@ -248,7 +248,7 @@ Scenario: Go straight to (preload) failover as directed by SessionStorage
   to do discovery and going straight to failover.
 
     Given A Dummy Desktop Agent in "dummy-api"
-    And "dummyFailover" is a function which returns a promise of "{dummy-api}"
+    And "dummyFailover" is an async function returning "{dummy-api}"
     And SessionStorage contains instanceUuid "uuid-0", appId "cucumber-app" with identityUrl "https://dummyOrigin.test/path", agentType "FAILOVER" and agentUrl "{undefined}"
     And I call getAgent for a promise result with the following options
       | failover        | timeoutMs |
