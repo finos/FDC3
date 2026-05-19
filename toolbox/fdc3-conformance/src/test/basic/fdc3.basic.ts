@@ -93,7 +93,7 @@ const basicGI2 = (fdc3: DesktopAgent, documentation: string) => {
       for (const key of requiredKeys) {
         expect(info.optionalFeatures, documentation).to.have.property(key);
         expect(
-          info.optionalFeatures[key],
+          info.optionalFeatures[key as keyof typeof info.optionalFeatures],
           documentation + ' optionalFeatures.' + key + ' must be a boolean'
         ).to.be.a('boolean');
       }
