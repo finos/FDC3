@@ -1,9 +1,9 @@
 import { Given, Then, When } from 'quickpickle';
 import { DataTable } from '@cucumber/cucumber';
 import { Context } from '@finos/fdc3-context';
-import { handleResolve, matchData } from '@finos/testing';
+import { handleResolve, matchData } from '@robmoffat/standard-cucumber-steps';
 import { CustomWorld } from '../world/index.js';
-import { CHANNEL_STATE } from '@finos/testing';
+import { CHANNEL_STATE } from '../support/agentDoubles.js';
 import { ApiEvent, ContextMetadata } from '@finos/fdc3-standard';
 import {
   BroadcastEvent,
@@ -281,7 +281,7 @@ When('I call destructured {string}', async (world: CustomWorld, methodName: stri
 });
 
 When(
-  'I call destructured {string} with parameter {string}',
+  'I call destructured {string} using argument {string}',
   async (world: CustomWorld, methodName: string, param: string) => {
     const destructuredMethod = world.props[`destructured_${methodName}`];
     const resolvedParam = handleResolve(param, world);
@@ -296,7 +296,7 @@ When(
 );
 
 When(
-  'I call destructured {string} with parameters {string} and {string}',
+  'I call destructured {string} using arguments {string} and {string}',
   async (world: CustomWorld, methodName: string, param1: string, param2: string) => {
     const destructuredMethod = world.props[`destructured_${methodName}`];
     const resolvedParam1 = handleResolve(param1, world);
@@ -312,7 +312,7 @@ When(
 );
 
 When(
-  'I call destructured {string} with parameters {string} and {string} and {string}',
+  'I call destructured {string} using arguments {string} and {string} and {string}',
   async (world: CustomWorld, methodName: string, param1: string, param2: string, param3: string) => {
     const destructuredMethod = world.props[`destructured_${methodName}`];
     const resolvedParam1 = handleResolve(param1, world);

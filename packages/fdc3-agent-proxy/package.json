@@ -30,7 +30,8 @@
   },
   "devDependencies": {
     "@cucumber/cucumber": "^11.3.0",
-    "@finos/testing": "3.0.0-alpha.2",
+    "@finos/fdc3-schema": "3.0.0-alpha.2",
+    "@robmoffat/standard-cucumber-steps": "1.0.6",
     "@types/uuid": "^10.0.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "3.3.1",

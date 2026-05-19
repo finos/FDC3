@@ -1,5 +1,4 @@
-import { TestMessaging } from '../support/TestMessaging.js';
-import { Given, When } from 'quickpickle';
+import { DataTable, Given, Then, When } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
 import {
   DesktopAgentProxy,
@@ -8,31 +7,31 @@ import {
   DefaultIntentSupport,
   DefaultHeartbeatSupport,
 } from '../../src/index.js';
-import { SimpleIntentResolver, SimpleChannelSelector, CHANNEL_STATE, setupGenericSteps } from '@finos/testing';
+import { SimpleIntentResolver, SimpleChannelSelector, CHANNEL_STATE } from '../support/agentDoubles.js';
+import { TestMessaging } from '../support/TestMessaging.js';
 import { HeartbeatEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { LogLevel } from '@finos/fdc3-standard';
-import path from 'path';
+import { setupSchemaSteps } from '@finos/fdc3-schema/test/setupSchemaSteps.js';
+import { registerFdc3SchemaMatchers } from '@finos/fdc3-schema/test/fdc3SchemaMatchers.js';
+import { setupGenericSteps, quickpickleWrapStep } from '@robmoffat/standard-cucumber-steps';
 
-// Update this to enable debug output when debugging test failures
 const logLevel = LogLevel.WARN;
 
-// Register shared generic steps from @finos/testing
-const schemaBasePath = path.join(import.meta.dirname, '../../../');
-setupGenericSteps(schemaBasePath);
+setupSchemaSteps();
+registerFdc3SchemaMatchers();
+setupGenericSteps({ Given, When, Then, wrapStep: quickpickleWrapStep });
 
 function createDesktopAgent(world: CustomWorld, field: string, initialChannelId?: string) {
   if (!world.messaging) {
     world.messaging = new TestMessaging(world.props[CHANNEL_STATE], initialChannelId);
   }
 
-  // n.b. using short timeouts to avoid extending tests unnecessarily
   const cs = new DefaultChannelSupport(world.messaging, new SimpleChannelSelector(world), 1500);
   const hs = new DefaultHeartbeatSupport(world.messaging);
   const is = new DefaultIntentSupport(world.messaging, new SimpleIntentResolver(world), 1500, 3000);
   const as = new DefaultAppSupport(world.messaging, 1500, 3000);
 
-  const da = new DesktopAgentProxy(hs, cs, is, as, [hs, cs], logLevel);
-  return da;
+  return new DesktopAgentProxy(hs, cs, is, as, [hs, cs], logLevel);
 }
 
 Given('A Desktop Agent in {string}', async (world: CustomWorld, field: string) => {
