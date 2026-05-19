@@ -1,7 +1,6 @@
 import { After, Given, Then, When } from 'quickpickle';
 import { DataTable } from '@cucumber/cucumber';
 import { CustomWorld } from '../world/index.js';
-import { doesRowMatch, handleResolve } from '@finos/testing';
 import { MockDocument } from '../support/MockDocument.js';
 import { MockWindow } from '../support/MockWindow.js';
 import { fdc3Ready, getAgent } from '../../src/index.js';
@@ -19,6 +18,7 @@ import { clearAgentPromise } from '../../src/strategies/getAgent.js';
 import { expect } from 'vitest';
 import { dummyInstanceDetails } from '../support/TestServerContext.js';
 import { MockIFrame } from '../support/MockIFrame.js';
+import { doesRowMatch, handleResolve } from '@robmoffat/standard-cucumber-steps';
 
 interface MockPageTransitionEvent extends Event {
   persisted?: boolean;
@@ -273,28 +273,28 @@ When('I call fdc3Ready for a promise result', (world: CustomWorld) => {
   }
 });
 
-After((world: CustomWorld) => {
+After(async () => {
   console.log('    Cleaning up test infrastructure');
   clearAgentPromise();
   MockDocument.shutdownAllDocuments();
 });
 
 When('I call getAgent for a promise result with the following options', (world: CustomWorld, dt: DataTable) => {
-  try {
-    const first = dt.hashes()[0];
-    const toArgs: GetAgentParams = Object.fromEntries(
-      Object.entries(first).map(([k, v]) => {
-        const val = handleResolve(v, world);
-        const val2 = isNaN(val) ? val : Number(val);
-        const val3 = val2 === 'true' ? true : val2 === 'false' ? false : val2;
-        return [k, val3];
-      })
-    );
-    toArgs.logLevels = loggingSettings;
-    world.props['result'] = getAgent(toArgs);
-  } catch (error) {
-    world.props['result'] = error;
-  }
+  //try {
+  const first = dt.hashes()[0];
+  const toArgs: GetAgentParams = Object.fromEntries(
+    Object.entries(first).map(([k, v]) => {
+      const val = handleResolve(v, world);
+      const val2 = isNaN(val) ? val : Number(val);
+      const val3 = val2 === 'true' ? true : val2 === 'false' ? false : val2;
+      return [k, val3];
+    })
+  );
+  toArgs.logLevels = loggingSettings;
+  world.props['result'] = getAgent(toArgs);
+  // } catch (error) {
+  //   world.props['result'] = error;
+  // }
 });
 
 Given(

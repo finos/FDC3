@@ -1,6 +1,6 @@
 import { Given, When } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
-import { handleResolve } from '@finos/testing';
+import { handleResolve } from '@robmoffat/standard-cucumber-steps';
 import { DefaultDesktopAgentIntentResolver } from '../../src/ui/DefaultDesktopAgentIntentResolver.js';
 import { INTENT_RESOLVER_URL } from '../support/MockFDC3Server.js';
 import { FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
