@@ -7,18 +7,10 @@ export default defineConfig({
       stepTimeout: 15000,
     }),
   ],
-  resolve: {
-    dedupe: ['quickpickle'],
-  },
   test: {
     include: ['test/features/**/*.feature'],
     setupFiles: ['test/steps.ts'],
     testTimeout: 30000,
-    server: {
-      deps: {
-        inline: ['quickpickle'],
-      },
-    },
     reporters: ['default', 'junit', 'html'],
     outputFile: {
       junit: 'test-results.xml',

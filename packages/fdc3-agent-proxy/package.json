@@ -22,6 +22,7 @@
     "test": "tsc && vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "view": "vite preview --outDir html-test-results",
     "clean": "rimraf dist coverage node_modules",
     "lint": "eslint src/"
   },
