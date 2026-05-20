@@ -265,12 +265,14 @@ When('I call getAgent for a promise result', (world: CustomWorld) => {
   }
 });
 
-When('I call fdc3Ready for a promise result', (world: CustomWorld) => {
-  try {
-    world.props['result'] = fdc3Ready();
-  } catch (error) {
-    world.props['result'] = error;
-  }
+When('I call fdc3Ready as {string}', (world: CustomWorld, jobName: string) => {
+  const jobs: Map<string, Promise<DesktopAgent>> = world.props['_jobs'] ?? new Map();
+  jobs.set(
+    jobName,
+    Promise.resolve().then(() => fdc3Ready())
+  );
+  world.props['result'] = jobs.get(jobName);
+  world.props['_jobs'] = jobs;
 });
 
 After(async () => {
@@ -279,8 +281,8 @@ After(async () => {
   MockDocument.shutdownAllDocuments();
 });
 
-When('I call getAgent for a promise result with the following options', (world: CustomWorld, dt: DataTable) => {
-  //try {
+When('I call getAgent as {string} with the following options', (world: CustomWorld, jobName: string, dt: DataTable) => {
+  const jobs: Map<string, Promise<DesktopAgent>> = world.props['_jobs'] ?? new Map();
   const first = dt.hashes()[0];
   const toArgs: GetAgentParams = Object.fromEntries(
     Object.entries(first).map(([k, v]) => {
@@ -291,10 +293,12 @@ When('I call getAgent for a promise result with the following options', (world: 
     })
   );
   toArgs.logLevels = loggingSettings;
+  jobs.set(
+    jobName,
+    Promise.resolve().then(() => getAgent(toArgs))
+  );
+  world.props['_jobs'] = jobs;
   world.props['result'] = getAgent(toArgs);
-  // } catch (error) {
-  //   world.props['result'] = error;
-  // }
 });
 
 Given(

@@ -37,7 +37,7 @@
     "@cucumber/cucumber": "^11.3.0",
     "@finos/fdc3-web-impl": "3.0.0-alpha.2",
     "@finos/fdc3-schema": "3.0.0-alpha.2",
-    "@robmoffat/standard-cucumber-steps": "1.0.6",
+    "@robmoffat/standard-cucumber-steps": "1.1.0",
     "@types/wtfnode": "^0.7.3",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
