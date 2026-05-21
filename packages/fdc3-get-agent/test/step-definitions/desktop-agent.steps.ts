@@ -18,7 +18,7 @@ import { clearAgentPromise } from '../../src/strategies/getAgent.js';
 import { expect } from 'vitest';
 import { dummyInstanceDetails } from '../support/TestServerContext.js';
 import { MockIFrame } from '../support/MockIFrame.js';
-import { doesRowMatch, handleResolve } from '@robmoffat/standard-cucumber-steps';
+import { doesRowMatch, getJobsMap, handleResolve } from '@robmoffat/standard-cucumber-steps';
 
 interface MockPageTransitionEvent extends Event {
   persisted?: boolean;
@@ -266,13 +266,12 @@ When('I call getAgent for a promise result', (world: CustomWorld) => {
 });
 
 When('I call fdc3Ready as {string}', (world: CustomWorld, jobName: string) => {
-  const jobs: Map<string, Promise<DesktopAgent>> = world.props['_jobs'] ?? new Map();
+  const jobs = getJobsMap(world) as Map<string, Promise<DesktopAgent>>;
   jobs.set(
     jobName,
     Promise.resolve().then(() => fdc3Ready())
   );
   world.props['result'] = jobs.get(jobName);
-  world.props['_jobs'] = jobs;
 });
 
 After(async () => {
@@ -282,7 +281,7 @@ After(async () => {
 });
 
 When('I call getAgent as {string} with the following options', (world: CustomWorld, jobName: string, dt: DataTable) => {
-  const jobs: Map<string, Promise<DesktopAgent>> = world.props['_jobs'] ?? new Map();
+  const jobs = getJobsMap(world) as Map<string, Promise<DesktopAgent>>;
   const first = dt.hashes()[0];
   const toArgs: GetAgentParams = Object.fromEntries(
     Object.entries(first).map(([k, v]) => {
@@ -297,8 +296,7 @@ When('I call getAgent as {string} with the following options', (world: CustomWor
     jobName,
     Promise.resolve().then(() => getAgent(toArgs))
   );
-  world.props['_jobs'] = jobs;
-  world.props['result'] = getAgent(toArgs);
+  world.props['result'] = jobs.get(jobName);
 });
 
 Given(
