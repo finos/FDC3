@@ -1,5 +1,5 @@
-import { MockCSSStyleDeclaration } from './MockCSSStyleDeclaration';
-import { MockIFrame } from './MockIFrame';
+import { MockCSSStyleDeclaration } from './MockCSSStyleDeclaration.js';
+import { MockIFrame } from './MockIFrame.js';
 
 export class MockElement {
   public tag: string;

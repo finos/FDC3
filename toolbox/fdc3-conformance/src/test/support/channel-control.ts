@@ -1,7 +1,7 @@
-import { Context, Channel, Listener } from '@finos/fdc3';
+import { Context, ContextMetadata, Channel, Listener } from '@finos/fdc3';
 
 /**
- * This interface wraps channel functionality in FDC3 2.0
+ * This interface wraps channel functionality
  */
 export interface ChannelControl {
   // channels
@@ -32,7 +32,7 @@ export interface ChannelControl {
     listenContextType: string | null,
     expectedContextType: string | null,
     errorMessage: string,
-    onComplete: (ctx: Context) => void
+    onComplete: (ctx: Context, metadata?: ContextMetadata) => void
   ): Promise<Listener>;
 
   setupContextChecker(
@@ -53,14 +53,12 @@ export type ChannelsAppContext = Context & {
     testId: string;
     notifyAppAOnCompletion: boolean;
     historyItems: number;
-    fdc3ApiVersion: string;
     channelId: string;
     contextId?: string;
   };
 };
 
 export type ChannelsAppConfig = {
-  fdc3ApiVersion: string;
   testId: string;
   notifyAppAOnCompletion?: boolean;
   historyItems?: number;
@@ -73,6 +71,8 @@ export const commands = {
   retrieveTestAppChannel: 'retrieveTestAppChannel',
   broadcastInstrumentContext: 'broadcastInstrumentContext',
   broadcastContactContext: 'broadcastContactContext',
+  broadcastInstrumentWithTraceId: 'broadcastInstrumentWithTraceId',
+  broadcastInstrumentWithSignatureCustom: 'broadcastInstrumentWithSignatureCustom',
 };
 
 export const APP_CHANNEL_AND_BROADCAST = [commands.retrieveTestAppChannel, commands.broadcastInstrumentContext];
@@ -89,4 +89,24 @@ export const JOIN_AND_BROADCAST_TWICE = [
   commands.joinRetrievedUserChannel,
   commands.broadcastInstrumentContext,
   commands.broadcastContactContext,
+];
+
+export const JOIN_AND_BROADCAST_WITH_TRACE_ID = [
+  commands.joinRetrievedUserChannel,
+  commands.broadcastInstrumentWithTraceId,
+];
+
+export const JOIN_AND_BROADCAST_WITH_SIGNATURE_CUSTOM = [
+  commands.joinRetrievedUserChannel,
+  commands.broadcastInstrumentWithSignatureCustom,
+];
+
+export const APP_CHANNEL_AND_BROADCAST_WITH_TRACE_ID = [
+  commands.retrieveTestAppChannel,
+  commands.broadcastInstrumentWithTraceId,
+];
+
+export const APP_CHANNEL_AND_BROADCAST_WITH_SIGNATURE_CUSTOM = [
+  commands.retrieveTestAppChannel,
+  commands.broadcastInstrumentWithSignatureCustom,
 ];

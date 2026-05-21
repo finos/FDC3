@@ -1,14 +1,14 @@
 # How to Apply For FDC3 Certification for a Desktop Agent
 
-## 1. Run The Conformance Tests Yourself.
+## 1. Run The Conformance Tests Yourself
 
 See [Readme](README.md) about how to do this.  
- 
+
 ## 2. Raise An Issue On This project
 
-[Raise An Issue](https://github.com/finos/FDC3-Conformance-Framework/issues) on the FDC3 Conformance Project.  
+[Raise An Issue](https://github.com/finos/FDC3/issues) tagging it with `conformance`.  
 
-In all likelihood, you will need to liase with the maintainers of this project in order to get the conformance tests to work with your desktop agent.  
+In all likelihood, you will need to liaise with the maintainers of this project in order to get the conformance tests to work with your desktop agent.  
 
 This will also kick off the process of applying for the "FDC3 Certified" mark.
 
@@ -32,7 +32,7 @@ Fees for certification are:
 
 These fees are to cover work done by the FINOS for the formal certification process and badge issuance. 
 
-*A _unit_ here refers to a particular vendor software version and FDC3 version _combination_, as described in the [Terms and Conditions](terms-conditions/FDC3-Certified-Terms.md)
+*A _unit_ here refers to a particular vendor software version and FDC3 version _combination_, as described in the [Terms and Conditions](terms-conditions/participation-form.md)
 
 ## 5.  Failed Tests
 
@@ -40,7 +40,7 @@ If your desktop agent fails any of the conformance tests, the maintainers will i
 
 ## 6.  Terms
 
-Once your desktop agent has passed the complete suite of tests, you will be required to accept the [Terms and Conditions](terms-conditions/FDC3-Certified-Terms.md) via the completion of the [Participation Form](terms-conditions/participation-form.md).
+Once your desktop agent has passed the complete suite of tests, you will be required to accept the terms and conditions via the completion of the [Participation Form](terms-conditions/participation-form.md).
 
 ## 7.  Badge
 
@@ -48,5 +48,4 @@ On completion of the above steps you will be given your certificate via the [Cre
 
 ## 8.  Re-Certification
 
-Certification only applies to a single version of your software product. FINOS reserves the right to allow certification to carry over at no additional cost for minor/maintenance version changes of your desktop agent if no backward incompatible changes are introduced in those versions. 
-
+Certification only applies to a single version of your software product. FINOS reserves the right to allow certification to carry over at no additional cost for minor/maintenance version changes of your desktop agent if no backward incompatible changes are introduced in those versions.

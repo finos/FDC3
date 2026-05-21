@@ -1,6 +1,6 @@
-import { AutomaticResponse, TestMessaging } from '../TestMessaging';
-import { createResponseMeta } from './support';
-import { GetInfoRequest, GetInfoResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+import { AutomaticResponse, TestMessaging } from '../TestMessaging.js';
+import { createResponseMeta } from './support.js';
+import { GetInfoRequest, GetInfoResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 export class GetInfo implements AutomaticResponse {
   filter(t: string) {
@@ -29,7 +29,6 @@ export class GetInfo implements AutomaticResponse {
           fdc3Version: '2.0',
           optionalFeatures: {
             DesktopAgentBridging: false,
-            OriginatingAppMetadata: true,
             UserChannelMembershipAPIs: true,
           },
           provider: 'cucumber-provider',

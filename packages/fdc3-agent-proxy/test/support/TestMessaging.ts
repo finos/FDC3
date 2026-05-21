@@ -1,31 +1,32 @@
-import { AppIdentifier, ResolveError } from '@finos/fdc3-standard';
+import { AppIdentifier, ContextMetadata, ResolveError } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { v4 as uuidv4 } from 'uuid';
-import { AbstractMessaging } from '../../src/messaging/AbstractMessaging';
-import { RegisterableListener } from '../../src/listeners/RegisterableListener';
-import { FindIntent } from './responses/FindIntent';
-import { FindIntentByContext } from './responses/FindIntentByContext';
-import { RaiseIntent } from './responses/RaiseIntent';
-import { GetAppMetadata } from './responses/GetAppMetadata';
-import { FindInstances } from './responses/FindInstances';
-import { Open } from './responses/Open';
-import { GetOrCreateChannel } from './responses/GetOrCreateChannel';
-import { ChannelState } from './responses/ChannelState';
-import { GetUserChannels } from './responses/GetUserChannels';
-import { RegisterListeners } from './responses/RegisterListeners';
-import { UnsubscribeListeners } from './responses/UnsubscribeListeners';
-import { CreatePrivateChannel } from './responses/CreatePrivateChannel';
-import { DisconnectPrivateChannel } from './responses/DisconnectPrivateChannel';
-import { IntentResult } from './responses/IntentResult';
-import { RaiseIntentForContext } from './responses/RaiseIntentForContext';
+import { AbstractMessaging } from '../../src/messaging/AbstractMessaging.js';
+import { RegisterableListener } from '../../src/listeners/RegisterableListener.js';
+import { FindIntent } from './responses/FindIntent.js';
+import { FindIntentByContext } from './responses/FindIntentByContext.js';
+import { RaiseIntent } from './responses/RaiseIntent.js';
+import { GetAppMetadata } from './responses/GetAppMetadata.js';
+import { FindInstances } from './responses/FindInstances.js';
+import { Open } from './responses/Open.js';
+import { GetOrCreateChannel } from './responses/GetOrCreateChannel.js';
+import { ChannelState } from './responses/ChannelState.js';
+import { GetUserChannels } from './responses/GetUserChannels.js';
+import { RegisterListeners } from './responses/RegisterListeners.js';
+import { UnsubscribeListeners } from './responses/UnsubscribeListeners.js';
+import { CreatePrivateChannel } from './responses/CreatePrivateChannel.js';
+import { DisconnectPrivateChannel } from './responses/DisconnectPrivateChannel.js';
+import { IntentResult } from './responses/IntentResult.js';
+import { RaiseIntentForContext } from './responses/RaiseIntentForContext.js';
 import {
   AgentEventMessage,
   AgentResponseMessage,
   AppRequestMessage,
   Channel,
   WebConnectionProtocol6Goodbye,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
-import { GetInfo } from './responses/GetInfo';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { GetInfo } from './responses/GetInfo.js';
+import { AddEventListener } from './responses/AddEventListener.js';
 
 export interface IntentDetail {
   app?: AppIdentifier;
@@ -44,6 +45,7 @@ export interface PossibleIntentResult {
   channel?: Channel;
   error?: ResolveError;
   timeout?: boolean;
+  resultMetadata?: ContextMetadata;
 }
 
 function matchStringOrUndefined(expected: string | undefined, actual: string | undefined) {
@@ -110,7 +112,7 @@ export class TestMessaging extends AbstractMessaging {
 
   readonly automaticResponses: AutomaticResponse[];
 
-  constructor(channelState: { [key: string]: Context[] }) {
+  constructor(channelState: { [key: string]: Context[] }, initialChannelId?: string) {
     super({ appId: 'cucumber-app', instanceId: 'cucumber-instance' });
 
     this.channelState = channelState;
@@ -125,12 +127,13 @@ export class TestMessaging extends AbstractMessaging {
       new FindInstances(),
       new Open(),
       new GetOrCreateChannel(),
-      new ChannelState(this.channelState),
+      new ChannelState(this.channelState, initialChannelId),
       new GetUserChannels(),
       new RegisterListeners(),
       new UnsubscribeListeners(),
       new CreatePrivateChannel(),
       new DisconnectPrivateChannel(),
+      new AddEventListener(),
     ];
   }
 

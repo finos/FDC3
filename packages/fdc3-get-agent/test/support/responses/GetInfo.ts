@@ -1,7 +1,7 @@
-import { TestServerContext } from '../TestServerContext';
+import { TestServerContext } from '../TestServerContext.js';
 import { InstanceID } from '@finos/fdc3-web-impl';
-import { AutomaticResponse } from './AutomaticResponses';
-import { GetInfoRequest, GetInfoResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+import { AutomaticResponse } from './AutomaticResponses.js';
+import { GetInfoRequest, GetInfoResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 export class GetInfo implements AutomaticResponse {
   filter(t: string) {
@@ -31,7 +31,6 @@ export class GetInfo implements AutomaticResponse {
           fdc3Version: '2.0',
           optionalFeatures: {
             DesktopAgentBridging: false,
-            OriginatingAppMetadata: false,
             UserChannelMembershipAPIs: false,
           },
         },

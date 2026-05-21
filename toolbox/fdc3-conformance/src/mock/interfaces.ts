@@ -1,15 +1,24 @@
-export interface IChannelService<TChannel> {
-  joinRetrievedUserChannel(channelId: string): Promise<TChannel>;
+import { AppProvidableContextMetadata, Channel } from '@finos/fdc3';
 
-  retrieveTestAppChannel(channelId: string): Promise<TChannel>;
+export interface IChannelService {
+  joinRetrievedUserChannel(channelId: string): Promise<Channel>;
 
-  broadcastContextItem(contextType: string, channel: TChannel, historyItems: number, testId: string): Promise<void>;
+  retrieveTestAppChannel(channelId: string): Promise<Channel>;
+
+  broadcastContextItem(contextType: string, channel: Channel, historyItems: number, testId: string): Promise<void>;
+
+  broadcastContextItemWithMetadata(
+    contextType: string,
+    channel: Channel,
+    testId: string,
+    metadata: AppProvidableContextMetadata
+  ): Promise<void>;
 
   closeWindowOnCompletion(testId: string): Promise<void>;
 
   notifyTestOnCompletion(testId: string): Promise<void>;
 }
 
-export interface IBroadcastService<TChannel> {
-  broadcast(contextType: string, historyItems: number, channel: TChannel, testId: string): Promise<void>;
+export interface IBroadcastService {
+  broadcast(contextType: string, historyItems: number, channel: Channel, testId: string): Promise<void>;
 }

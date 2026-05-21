@@ -9,7 +9,7 @@ import {
 } from '@finos/fdc3-web-impl';
 import { Socket } from 'socket.io-client';
 import { v4 as uuid } from 'uuid';
-import { FDC3_DA_EVENT } from '../../message-types';
+import { FDC3_DA_EVENT } from '../../message-types.js';
 import { AppIdentifier, AppIntent, OpenError } from '@finos/fdc3';
 
 enum Opener {
@@ -212,7 +212,8 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
     }
   }
 
-  async open(appId: string): Promise<InstanceID> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async open(appId: string, _source?: AppIdentifier): Promise<InstanceID> {
     const details: DirectoryApp[] = this.directory.retrieveAppsById(appId) as DirectoryApp[];
     if (details.length > 0) {
       const launchDetails = details[0].details;
@@ -286,10 +287,10 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
   }
 
   providerVersion(): string {
-    return '0.1';
+    return '2.2.2';
   }
 
   fdc3Version(): string {
-    return '2.0';
+    return '2.2';
   }
 }

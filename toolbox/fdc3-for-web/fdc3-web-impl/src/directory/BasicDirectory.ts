@@ -1,4 +1,4 @@
-import { Directory, DirectoryApp, DirectoryIntent } from './DirectoryInterface';
+import { Directory, DirectoryApp, DirectoryIntent } from './DirectoryInterface.js';
 
 export function genericResultTypeSame(real: string | undefined, required: string | undefined) {
   if (required == undefined) {

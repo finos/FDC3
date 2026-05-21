@@ -11,9 +11,9 @@ FDC3 API operations make use of several type declarations.
 
 Identifies an application, or instance of an application, and is used to target FDC3 API calls at specific applications.
 
-An `AppIdentifier` will always include at least an `appId` property, which can be used with `fdc3.open`, `fdc3.raiseIntent` etc.. An `appId` is intended to reference a specific record from an [App Directory](../../app-directory/overview), which it uniquely identifies within that App Directory. 
+An `AppIdentifier` will always include at least an `appId` property, which can be used with `fdc3.open`, `fdc3.raiseIntent` etc.. An `appId` is intended to reference a specific record from an [App Directory](../../app-directory/overview), which it uniquely identifies within that App Directory.
 
-The `appId` may be unqualified or fully-qualified as described in the [API overview](../spec#fully-qualified-appids) and [App Directory](../../app-directory/overview#application-identifiers) Parts of the Standard and may be resolved and used interchangeably as described in the [API overview](../spec#fully-qualified-appids). 
+The `appId` may be unqualified or fully-qualified as described in the [API overview](../spec#fully-qualified-appids) and [App Directory](../../app-directory/overview#application-identifiers) Parts of the Standard and may be resolved and used interchangeably as described in the [API overview](../spec#fully-qualified-appids).
 
 If the `instanceId` field is set then the `AppIdentifier` object represents a specific instance of the application that may be addressed using that Id.
 
@@ -199,13 +199,59 @@ This means that it must at least have a `type` property that indicates what type
 - [`Channel.getCurrentContext`](Channel#getcurrentcontext)
 - [`Channel.addContextListener`](Channel#addcontextlistener)
 
+## `ContextWithMetadata`
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+type ContextWithMetadata = {
+  context: Context;
+  metadata: ContextMetadata;
+};
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+interface IContextWithMetadata
+{
+    IContext Context { get; }
+    IContextMetadata Metadata { get; }
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type ContextWithMetadata struct {
+  Context  Context         `json:"context"`
+  Metadata ContextMetadata `json:"metadata"`
+}
+```
+
+</TabItem>
+</Tabs>
+
+Represents a context object paired with its associated metadata. Returned by [`Channel.getCurrentContextWithMetadata()`](Channel#getcurrentcontextwithmetadata) to allow retrieval of both the current context and the [`ContextMetadata`](Metadata#contextmetadata) that was provided when it was broadcast. May also be returned by an [`IntentHandler`](#intenthandler) to include app-provided metadata alongside a context result, which will be merged with Desktop Agent generated metadata and made available to the raising app via [`IntentResolution.getResultMetadata()`](Metadata#intentresolution).
+
+**See also:**
+
+- [`Context`](#context)
+- [`ContextMetadata`](Metadata#contextmetadata)
+- [`Channel.getCurrentContextWithMetadata`](Channel#getcurrentcontextwithmetadata)
+- [`IntentHandler`](#intenthandler)
+- [`IntentResolution.getResultMetadata`](Metadata#intentresolution)
+
 ## `ContextHandler`
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-type ContextHandler = (context: Context, metadata?: ContextMetadata) => void;
+type ContextHandler = (context: Context, metadata: ContextMetadata) => void;
 ```
 
 </TabItem>
@@ -235,11 +281,9 @@ public interface ContextHandler {
 </TabItem>
 </Tabs>
 
-Describes a callback that handles a context event. Optional metadata about the context message, including the app that originated the message, may be provided.
+Describes a callback that handles a context event. Used when attaching listeners for context broadcasts.
 
-Used when attaching listeners for context broadcasts.
-
-Optional metadata about the context message, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
+Metadata about each context message received, including the app that originated the message and a timestamp, MUST be provided by the Desktop Agent implementation. Apps raising intents MAY provide additional metadata (such as a traceId, signature or custom metadata), which the Desktop Agent MUST pass on to the handler.
 
 **See also:**
 
@@ -265,7 +309,7 @@ interface DesktopAgentIdentifier {
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
-```
+```csharp
 Not implemented
 ```
 
@@ -304,7 +348,7 @@ public class DesktopAgentIdentifier {
 
 **See also:**
 
-* [Agent Bridging - Identifying Desktop Agents Identity and Message Sources](../../agent-bridging/spec#identifying-desktop-agents-identity-and-message-sources)
+- [Agent Bridging - Identifying Desktop Agents Identity and Message Sources](../../agent-bridging/spec#identifying-desktop-agents-identity-and-message-sources)
 
 ## `IntentHandler`
 
@@ -312,7 +356,10 @@ public class DesktopAgentIdentifier {
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-type IntentHandler = (context: Context, metadata?: ContextMetadata) => Promise<IntentResult> | void;
+type IntentHandler = (
+  context: Context,
+  metadata: ContextMetadata
+) => Promise<Context | ContextWithMetadata | Channel | PrivateChannel | void> | void;
 ```
 
 </TabItem>
@@ -342,15 +389,16 @@ public interface IntentHandler {
 </TabItem>
 </Tabs>
 
-Describes a callback that handles a context event and may return a promise of a Context, Channel object or `void` to be returned to the application that raised the intent.
+Describes a callback that handles a context event and may return a promise of a `Context`, `ContextWithMetadata`, `Channel`, `PrivateChannel` or `void` to be returned to the application that raised the intent. Used when attaching listeners for raised intents.
 
-Used when attaching listeners for raised intents.
+Metadata about each intent & context message received, including the app that originated the message and a timestamp, MUST be provided by the Desktop Agent implementation. Apps raising intents MAY provide additional metadata (such as a traceId, signature or custom metadata), which the Desktop Agent MUST pass on to the handler.
 
-Optional metadata about the intent & context message, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
+An `IntentHandler` MAY return a [`ContextWithMetadata`](#contextwithmetadata) object instead of a plain `Context` to include app-provided metadata (e.g. a `traceId` or `signature`) alongside the context result. The Desktop Agent will merge this with its own generated metadata and make the combined [`ContextMetadata`](Metadata#contextmetadata) available to the raising app via [`IntentResolution.getResultMetadata()`](Metadata#intentresolution). [`IntentResolution.getResult()`](Metadata#intentresolution) will still return only the `Context` portion.
 
 **See also:**
 
 - [`Context`](#context)
+- [`ContextWithMetadata`](#contextwithmetadata)
 - [`ContextMetadata`](Metadata#contextmetadata)
 - [`PrivateChannel`](PrivateChannel)
 - [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
@@ -399,13 +447,14 @@ public interface IntentResult {
 </TabItem>
 </Tabs>
 
-Describes results that an Intent handler may return that should be communicated back to the app that raised the intent, via the [`IntentResolution`](Metadata#intentresolution).
+Describes results returned by [`IntentResolution.getResult()`](Metadata#intentresolution) after an intent is resolved. Note that [`IntentHandler`](#intenthandler) functions may also return [`ContextWithMetadata`](#contextwithmetadata) to include app-provided metadata alongside a context result; in that case `getResult()` still returns only the `Context` portion, while the metadata is available via [`IntentResolution.getResultMetadata()`](Metadata#intentresolution).
 
 Represented as a union type in TypeScript, however, this type may be rendered as an interface in other languages that both the `Context` and `Channel` types implement, allowing either to be returned by an `IntentHandler`.
 
 **See also:**
 
 - [`Context`](#context)
+- [`ContextWithMetadata`](#contextwithmetadata)
 - [`Channel`](Channel)
 - [`PrivateChannel`](PrivateChannel)
 - [`IntentHandler`](#intenthandler)

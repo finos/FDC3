@@ -1,23 +1,28 @@
-import { ChannelError, PrivateChannel, Listener } from '@finos/fdc3';
+import { ChannelError, PrivateChannel, Listener, getAgent, DesktopAgent } from '@finos/fdc3';
 import { assert, expect } from 'chai';
 import {
-  RaiseIntentControl2_0,
+  RaiseIntentControl,
   IntentResultType,
   IntentApp,
   ContextType,
   Intent,
   ControlContextType,
-} from '../support/intent-support-2.0';
-import { closeMockAppWindow } from '../fdc3-2_0-utils';
-
-const control = new RaiseIntentControl2_0();
+} from '../support/intent-support';
+import { closeMockAppWindow } from '../fdc3-conformance-utils';
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md
  */
-export default () =>
+export default async () =>
   describe('fdc3.raiseIntent', () => {
     let errorListener: Listener | undefined = undefined;
+    let control: RaiseIntentControl;
+    let fdc3: DesktopAgent;
+
+    beforeEach(async () => {
+      fdc3 = await getAgent();
+      control = new RaiseIntentControl(fdc3);
+    });
 
     afterEach(async function afterEach() {
       await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test');
@@ -29,7 +34,7 @@ export default () =>
     });
 
     const RaiseIntentSingleResolve =
-      "(2.0-RaiseIntentSingleResolve) Should start app intent-a when raising intent 'aTestingIntent1' with context 'testContextX'";
+      "(RaiseIntentSingleResolve) Should start app intent-a when raising intent 'aTestingIntent1' with context 'testContextX'";
     it(RaiseIntentSingleResolve, async () => {
       errorListener = await control.listenForError();
       const result = control.receiveContext(ControlContextType.A_TESTING_INTENT_LISTENER_TRIGGERED);
@@ -39,7 +44,7 @@ export default () =>
     });
 
     const RaiseIntentTargetedAppResolve =
-      "(2.0-RaiseIntentTargetedAppResolve) Should start app intent-b when raising intent 'sharedTestingIntent1' with context 'testContextX'";
+      "(RaiseIntentTargetedAppResolve) Should start app intent-b when raising intent 'sharedTestingIntent1' with context 'testContextX'";
     it(RaiseIntentTargetedAppResolve, async () => {
       errorListener = await control.listenForError();
       const result = control.receiveContext(ControlContextType.SHARED_TESTING_INTENT1_LISTENER_TRIGGERED);
@@ -51,7 +56,7 @@ export default () =>
     });
 
     const RaiseIntentTargetedInstanceResolveOpen =
-      "(2.0-RaiseIntentTargetedInstanceResolveOpen) Should target running instance of intent-a app when raising intent 'aTestingIntent1' with context 'testContextX' after opening intent-a app";
+      "(RaiseIntentTargetedInstanceResolveOpen) Should target running instance of intent-a app when raising intent 'aTestingIntent1' with context 'testContextX' after opening intent-a app";
     it(RaiseIntentTargetedInstanceResolveOpen, async () => {
       // add app control listeners
       errorListener = await control.listenForError();
@@ -73,7 +78,7 @@ export default () =>
     });
 
     const RaiseIntentTargetedInstanceResolveFindInstances =
-      "(2.0-RaiseIntentTargetedInstanceResolveFindInstances) Should start app intent-a when targeted by raising intent 'aTestingIntent1' with context 'testContextX'";
+      "(RaiseIntentTargetedInstanceResolveFindInstances) Should start app intent-a when targeted by raising intent 'aTestingIntent1' with context 'testContextX'";
     it(RaiseIntentTargetedInstanceResolveFindInstances, async () => {
       // add app control listeners
       errorListener = await control.listenForError();
@@ -98,7 +103,7 @@ export default () =>
     });
 
     const PrivateChannelsAreNotAppChannels =
-      '(2.0-PrivateChannelsAreNotAppChannels) Cannot create an app channel using a private channel id';
+      '(PrivateChannelsAreNotAppChannels) Cannot create an app channel using a private channel id';
     it(PrivateChannelsAreNotAppChannels, async () => {
       errorListener = await control.listenForError();
       const privChan = await control.createPrivateChannel();
@@ -128,12 +133,12 @@ export default () =>
         { key: privChan2.id }
       );
       control.validateIntentResolution(IntentApp.IntentAppJ, intentResolution);
-      let result = await control.getIntentResult(intentResolution);
+      const result = await control.getIntentResult(intentResolution);
       control.validateIntentResult(result, IntentResultType.Context, ContextType.privateChannelDetails);
     });
 
     const PrivateChannelsLifecycleEvents =
-      '(2.0-PrivateChannelsLifecycleEvents) PrivateChannel lifecycle events are triggered when expected';
+      '(PrivateChannelsLifecycleEvents) PrivateChannel lifecycle events are triggered when expected';
     it(PrivateChannelsLifecycleEvents, async () => {
       errorListener = await control.listenForError();
       const onUnsubscribeReceiver = control.receiveContext(ControlContextType.ON_UNSUBSCRIBE_TRIGGERED);
@@ -141,9 +146,9 @@ export default () =>
         appId: IntentApp.IntentAppK,
       });
       control.validateIntentResolution(IntentApp.IntentAppK, intentResolution);
-      let result = await control.getIntentResult(intentResolution);
+      const result = await control.getIntentResult(intentResolution);
       control.validateIntentResult(result, IntentResultType.PrivateChannel);
-      let listener = await control.receiveContextStreamFromMockApp(<PrivateChannel>result, 1, 5);
+      const listener = await control.receiveContextStreamFromMockApp(<PrivateChannel>result, 1, 5);
       control.unsubscribeListener(listener);
 
       await onUnsubscribeReceiver; //should receive context from privChannel.onUnsubscribe in mock app
@@ -152,7 +157,7 @@ export default () =>
       await textContextXReceiver;
       const onUnsubscribeReceiver2 = control.receiveContext(ControlContextType.ON_UNSUBSCRIBE_TRIGGERED);
       const onDisconnectReceiver = control.receiveContext(ControlContextType.ON_DISCONNECT_TRIGGERED);
-      let listener2 = await control.receiveContextStreamFromMockApp(<PrivateChannel>result, 6, 10);
+      const listener2 = await control.receiveContextStreamFromMockApp(<PrivateChannel>result, 6, 10);
       control.disconnectPrivateChannel(<PrivateChannel>result);
 
       //confirm that onUnsubscribe and onDisconnect were triggered in intent-k

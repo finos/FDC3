@@ -1,12 +1,16 @@
 export * from './testSuite';
-import { fdc3Ready } from '@finos/fdc3';
+import { getAgent } from '@finos/fdc3';
 import { getPackMembers, getPackNames, executeTestsInBrowser, executeManualTestsInBrowser } from './testSuite';
+import { ProgressReporter } from './progressReporter';
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('mocha/mocha.css');
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 require('source-map-support/browser-source-map-support.js');
 
 mocha.setup('bdd');
-const version = document.getElementById('version')!;
+mocha.reporter(ProgressReporter);
+const testSuite = document.getElementById('testSuite')!;
 
 // populate drop-down
 getPackNames().forEach(pn => {
@@ -19,19 +23,19 @@ getPackNames().forEach(pn => {
     opt.appendChild(text);
     optGroup.appendChild(opt);
   });
-  version.appendChild(optGroup);
+  testSuite.appendChild(optGroup);
 });
 
 function executeTests() {
   toggleVersionSelector();
   toggleBackButton();
-  const fdc3Versions = document.getElementById('version') as HTMLSelectElement;
-  var selectedVersion = fdc3Versions.options[fdc3Versions.selectedIndex].innerHTML;
-  const action = () => executeTestsInBrowser(selectedVersion);
+  const testSuiteMenu = document.getElementById('testSuite') as HTMLSelectElement;
+  const selectedSuite = testSuiteMenu.options[testSuiteMenu.selectedIndex].innerHTML;
+  const action = () => executeTestsInBrowser(selectedSuite);
   if (window.fdc3) {
     action();
   } else {
-    fdc3Ready().then(() => action());
+    getAgent().then(() => action());
   }
 }
 
@@ -39,13 +43,13 @@ function executeManualTests() {
   toggleVersionSelector();
   toggleBackButton();
   const manualTests = document.getElementById('manualTests') as HTMLSelectElement;
-  var selectedManualTest = manualTests.options[manualTests.selectedIndex].innerHTML;
+  const selectedManualTest = manualTests.options[manualTests.selectedIndex].innerHTML;
   console.log('******** Selected manual test is', selectedManualTest);
   const action = () => executeManualTestsInBrowser(selectedManualTest);
   if (window.fdc3) {
     action();
   } else {
-    fdc3Ready().then(() => action());
+    getAgent().then(() => action());
   }
 }
 
@@ -77,3 +81,5 @@ function toggleBackButton() {
 document.getElementById('runButton')!.addEventListener('click', executeTests);
 document.getElementById('back-button')!.addEventListener('click', returnToTestSelection);
 document.getElementById('manualTestsRunButton')!.addEventListener('click', executeManualTests);
+
+getAgent(); // ensure the agent is ready before running tests

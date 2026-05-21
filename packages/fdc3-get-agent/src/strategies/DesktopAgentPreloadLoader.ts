@@ -1,8 +1,8 @@
 import { AgentError, DesktopAgent, WebDesktopAgentType } from '@finos/fdc3-standard';
 import { GetAgentParams } from '@finos/fdc3-standard';
-import { DesktopAgentSelection, Loader } from './Loader';
-import { Logger } from '../util/Logger';
-import { DEFAULT_GETAGENT_TIMEOUT_MS } from './Timeouts';
+import { DesktopAgentSelection, Loader } from './Loader.js';
+import { Logger } from '../util/Logger.js';
+import { DEFAULT_GETAGENT_TIMEOUT_MS } from './Timeouts.js';
 
 /**
  * This approach will resolve the loader promise if the fdc3Ready event occurs.

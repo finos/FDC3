@@ -1,21 +1,29 @@
-import { ResolveError } from '@finos/fdc3';
+import { DesktopAgent, getAgent, ResolveError } from '@finos/fdc3';
 import { assert, expect } from 'chai';
-import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
-import { ContextType, IntentApp, Intent, RaiseIntentControl2_0 } from '../support/intent-support-2.0';
+import { APIDocumentation } from '../support/apiDocuments';
+import { ContextType, IntentApp, Intent, RaiseIntentControl } from '../support/intent-support';
 import constants from '../../constants';
 import { wait } from '../../utils';
-import { closeMockAppWindow } from '../fdc3-2_0-utils';
+import { closeMockAppWindow } from '../fdc3-conformance-utils';
 
-const control = new RaiseIntentControl2_0();
-const raiseIntentDocs = '\r\nDocumentation: ' + APIDocumentation2_0.raiseIntent + '\r\nCause';
+const raiseIntentDocs = '\r\nDocumentation: ' + APIDocumentation.raiseIntent + '\r\nCause';
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md
  */
-export default () =>
+export default async () =>
   describe('fdc3.raiseIntent (throws error)', () => {
+    let control: RaiseIntentControl;
+    let fdc3: DesktopAgent;
+
+    beforeEach(async () => {
+      fdc3 = await getAgent();
+      control = new RaiseIntentControl(fdc3);
+    });
+
     const RaiseIntentFailedResolve =
       "(RaiseIntentFailedResolve) Should fail to raise intent when targeted app intent-a, context 'testContextY' and intent 'aTestingIntent' do not correlate";
+
     it(RaiseIntentFailedResolve, async () => {
       try {
         await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextY);
@@ -65,7 +73,7 @@ export default () =>
     });
 
     const RaiseIntentFailTargetedAppResolve2 =
-      "(RaiseIntentFailTargetedAppResolve2) Should fail to raise intent when targeting non-existant app id, context 'testContextY', intent 'aTestingIntent' and throw TargetAppUnavailable error";
+      "(RaiseIntentFailTargetedAppResolve2) Should fail to raise intent when targeting non-existent app id, context 'testContextY', intent 'aTestingIntent' and throw TargetAppUnavailable error";
     it(RaiseIntentFailTargetedAppResolve2, async () => {
       try {
         await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextX, { appId: 'NonExistentApp' });
@@ -77,7 +85,7 @@ export default () =>
     });
 
     const RaiseIntentFailTargetedAppResolve3 =
-      "(RaiseIntentFailTargetedAppResolve3) Should fail to raise intent when targeting a non-existant app id, context 'testContextY', intent 'sharedTestingIntent2' and throw IntentDeliveryFailed error";
+      "(RaiseIntentFailTargetedAppResolve3) Should fail to raise intent when targeting an app that doesn't add an intent listener, context 'testContextY', intent 'sharedTestingIntent2' and throw IntentDeliveryFailed error";
     it(RaiseIntentFailTargetedAppResolve3, async () => {
       try {
         await control.raiseIntent(Intent.sharedTestingIntent2, ContextType.testContextY, {
@@ -91,7 +99,7 @@ export default () =>
     }).timeout(constants.NoListenerTimeout + 1000);
 
     const RaiseIntentFailTargetedAppResolve4 =
-      "(RaiseIntentFailTargetedAppResolve4) Should throw an IntentDeliveryFailed error when raising intent with targeted app intent-i, context 'testContextY', intent 'sharedTestingIntent2'";
+      "(RaiseIntentFailTargetedAppResolve4) Should fail to raise intent when targeting an app that doesn't add an intent listener of the matching type, context 'testContextY', intent 'sharedTestingIntent2' and throw IntentDeliveryFailed error";
     it(RaiseIntentFailTargetedAppResolve4, async () => {
       try {
         await control.raiseIntent(Intent.sharedTestingIntent2, ContextType.testContextY, {

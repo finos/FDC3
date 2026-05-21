@@ -194,5 +194,12 @@
         "infoLink": "https://www.morganstanley.com/",
         "pinned": true,
         "isMember": true
-    }
+    },
+    {
+        "caption": "NatWest Group",
+        "image": "/img/users/NatWestGroup.png",
+        "infoLink": "https://www.natwestgroup.com/",
+        "pinned": true,
+        "isMember": true
+    }    
 ]

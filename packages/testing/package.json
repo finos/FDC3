@@ -1,6 +1,6 @@
 {
   "name": "@finos/testing",
-  "version": "2.2.0",
+  "version": "2.2.3",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -12,43 +12,48 @@
   },
   "license": "Apache-2.0",
   "private": true,
+  "type": "module",
   "files": [
     "dist"
   ],
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js",
+      "require": "./dist/src/index.js"
+    }
+  },
   "scripts": {
-    "build": "tsc --module es2022",
+    "build": "tsc",
     "clean": "rimraf dist",
     "test": "tsc"
   },
   "dependencies": {
     "@cucumber/cucumber": "10.3.1",
-    "@cucumber/html-formatter": "11.0.4",
+    "pixelmatch": "^7.1.0",
+    "quickpickle": "^1.4.1",
+    "@cucumber/html-formatter": "23.1.0",
     "@cucumber/pretty-formatter": "1.0.1",
-    "@finos/fdc3-standard": "2.2.0",
+    "@finos/fdc3-standard": "2.2.3",
     "@types/expect": "24.3.0",
     "@types/lodash": "4.14.167",
-    "@types/node": "^20.16.11",
     "@types/uuid": "^10.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.18.2",
-    "@typescript-eslint/parser": "^8.18.2",
-    "ajv": "^8.17.1",
+    "ajv": "^8.18.0",
     "ajv-formats": "^3.0.1",
-    "cucumber-console-formatter": "1.0.0",
-    "eslint": "^9.32.0",
-    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "3.3.1",
     "expect": "^29.7.0",
     "is-ci": "2.0.0",
     "jsonpath-plus": "^10.1.0",
     "nyc": "17.1.0",
-    "prettier": "3.4.1",
-    "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
-    "tsx": "^4.19.1",
-    "typescript": "^5.6.3",
-    "uuid": "^9.0.1"
+    "uuid": "^14.0.0"
+  },
+  "overrides": {
+    "ajv-formats": {
+      "ajv": "8.18.0"
+    }
   }
 }

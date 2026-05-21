@@ -1,6 +1,7 @@
 import {
   AppIdentifier,
   AppMetadata,
+  AppProvidableContextMetadata,
   ContextHandler,
   DesktopAgent,
   EventHandler,
@@ -11,13 +12,13 @@ import {
   Listener,
   LogLevel,
 } from '@finos/fdc3-standard';
-import { ChannelSupport } from './channels/ChannelSupport';
-import { AppSupport } from './apps/AppSupport';
-import { IntentSupport } from './intents/IntentSupport';
+import { ChannelSupport } from './channels/ChannelSupport.js';
+import { AppSupport } from './apps/AppSupport.js';
+import { IntentSupport } from './intents/IntentSupport.js';
 import { Connectable, Channel } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
-import { HeartbeatSupport } from './heartbeat/HeartbeatSupport';
-import { Logger } from './util/Logger';
+import { HeartbeatSupport } from './heartbeat/HeartbeatSupport.js';
+import { Logger } from './util/Logger.js';
 
 /**
  * This splits out the functionality of the desktop agent into
@@ -75,23 +76,17 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
   }
 
   addEventListener(type: FDC3EventTypes | null, handler: EventHandler): Promise<Listener> {
-    switch (type) {
-      case 'userChannelChanged':
-        return this.channels.addChannelChangedEventHandler(handler);
-      default:
-        Logger.warn(`Tried to add a listener for an unknown event type: ${type}`);
-        return Promise.reject(new Error('UnknownEventType'));
-    }
+    return this.channels.addEventListener(handler, type);
   }
 
   getInfo(): Promise<ImplementationMetadata> {
     return this.apps.getImplementationMetadata();
   }
 
-  async broadcast(context: Context): Promise<void> {
+  async broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void> {
     const channel = await this.channels.getUserChannel();
     if (channel) {
-      return channel.broadcast(context);
+      return channel.broadcast(context, metadata);
     } else {
       return Promise.resolve();
     }
@@ -163,7 +158,7 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     return this.intents.findIntentsByContext(context);
   }
 
-  private ensureAppId(app?: string | AppIdentifier): AppIdentifier | undefined {
+  private ensureAppId(app?: string | AppIdentifier | null): AppIdentifier | undefined {
     if (typeof app === 'string') {
       return {
         appId: app,
@@ -175,20 +170,29 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     }
   }
 
-  raiseIntent(intent: string, context: Context, app?: string | AppIdentifier) {
-    return this.intents.raiseIntent(intent, context, this.ensureAppId(app));
+  raiseIntent(
+    intent: string,
+    context: Context,
+    app?: string | AppIdentifier | null,
+    metadata?: AppProvidableContextMetadata
+  ) {
+    return this.intents.raiseIntent(intent, context, this.ensureAppId(app), metadata);
   }
 
   addIntentListener(intent: string, handler: IntentHandler) {
     return this.intents.addIntentListener(intent, handler);
   }
 
-  raiseIntentForContext(context: Context, app?: string | AppIdentifier): Promise<IntentResolution> {
-    return this.intents.raiseIntentForContext(context, this.ensureAppId(app));
+  raiseIntentForContext(
+    context: Context,
+    app?: string | AppIdentifier | null,
+    metadata?: AppProvidableContextMetadata
+  ): Promise<IntentResolution> {
+    return this.intents.raiseIntentForContext(context, this.ensureAppId(app), metadata);
   }
 
-  open(app: string | AppIdentifier, context?: Context | undefined) {
-    return this.apps.open(this.ensureAppId(app)!, context);
+  open(app: string | AppIdentifier, context?: Context | null, metadata?: AppProvidableContextMetadata) {
+    return this.apps.open(this.ensureAppId(app)!, context, metadata);
   }
 
   findInstances(app: AppIdentifier) {

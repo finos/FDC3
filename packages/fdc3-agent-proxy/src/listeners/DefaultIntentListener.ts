@@ -1,14 +1,21 @@
-import { IntentHandler, IntentResult, AppIdentifier } from '@finos/fdc3-standard';
+import {
+  IntentHandler,
+  IntentResult,
+  AppIdentifier,
+  AppProvidableContextMetadata,
+  ContextWithMetadata,
+} from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
-import { Messaging } from '../Messaging';
-import { AbstractListener } from './AbstractListener';
+import { Messaging } from '../Messaging.js';
+import { AbstractListener } from './AbstractListener.js';
 import {
   AddIntentListenerRequest,
   IntentEvent,
   IntentResultRequest,
   IntentResultResponse,
   //RaiseIntentResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { v4 } from 'uuid';
 
 export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIntentListenerRequest> {
   readonly intent: string;
@@ -33,13 +40,21 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIn
 
   action(m: IntentEvent): void {
     const done = this.handler(m.payload.context, {
-      source: m.payload.originatingApp as AppIdentifier,
+      source: m.payload.metadata?.source as AppIdentifier,
+      timestamp: m.payload.metadata?.timestamp ?? m.meta.timestamp,
+      traceId: m.payload.metadata?.traceId ?? v4(),
+      signature: m.payload.metadata?.signature,
+      custom: m.payload.metadata?.custom,
     });
 
     this.handleIntentResult(done, m);
   }
 
-  private intentResultRequestMessage(ir: IntentResult, m: IntentEvent): IntentResultRequest {
+  private intentResultRequestMessage(
+    ir: IntentResult,
+    appMetadata: AppProvidableContextMetadata | undefined,
+    m: IntentEvent
+  ): IntentResultRequest {
     const out: IntentResultRequest = {
       type: 'intentResultRequest',
       meta: {
@@ -50,31 +65,43 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIn
         intentResult: convertIntentResult(ir),
         intentEventUuid: m.meta.eventUuid,
         raiseIntentRequestUuid: m.payload.raiseIntentRequestUuid,
+        ...(appMetadata !== undefined && { metadata: appMetadata }),
       },
     };
 
     return out;
   }
 
-  private handleIntentResult(done: Promise<IntentResult> | void, m: IntentEvent) {
+  private handleIntentResult(done: Promise<IntentResult | ContextWithMetadata> | void, m: IntentEvent) {
     if (done == null) {
-      // send an empty intent result response
       return this.messaging.exchange<IntentResultResponse>(
-        this.intentResultRequestMessage(undefined, m),
+        this.intentResultRequestMessage(undefined, undefined, m),
         'intentResultResponse',
         this.messageExchangeTimeout
       );
     } else {
-      // respond after promise completes
-      return done.then(ir => {
+      return done.then(raw => {
+        const { result, appMetadata } = unwrapIntentResult(raw);
         return this.messaging.exchange<IntentResultResponse>(
-          this.intentResultRequestMessage(ir, m),
+          this.intentResultRequestMessage(result, appMetadata, m),
           'intentResultResponse',
           this.messageExchangeTimeout
         );
       });
     }
   }
+}
+
+function unwrapIntentResult(raw: IntentResult | ContextWithMetadata): {
+  result: IntentResult;
+  appMetadata: AppProvidableContextMetadata | undefined;
+} {
+  if (raw && typeof raw === 'object' && 'context' in raw && 'metadata' in raw && !('type' in raw) && !('id' in raw)) {
+    // It's a ContextWithMetadata — unwrap it
+    const cwm = raw as ContextWithMetadata;
+    return { result: cwm.context, appMetadata: cwm.metadata };
+  }
+  return { result: raw as IntentResult, appMetadata: undefined };
 }
 
 function convertIntentResult(intentResult: IntentResult): IntentResultRequest['payload']['intentResult'] {

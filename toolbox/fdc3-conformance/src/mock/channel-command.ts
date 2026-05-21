@@ -1,10 +1,11 @@
+import { Channel } from '@finos/fdc3';
 import { ChannelsAppConfig } from '../test/support/channel-control';
 import { commands } from './constants';
 import { IChannelService } from './interfaces';
 
 export class Fdc3CommandExecutor {
-  async executeCommands(orderedCommands: string[], config: ChannelsAppConfig, channelService: IChannelService<any>) {
-    let channel;
+  async executeCommands(orderedCommands: string[], config: ChannelsAppConfig, channelService: IChannelService) {
+    let channel: Channel | undefined;
 
     //close ChannelsApp when test is complete
     await channelService.closeWindowOnCompletion(config.testId);
@@ -24,12 +25,25 @@ export class Fdc3CommandExecutor {
         }
         case commands.broadcastInstrumentContext: {
           const contextType = config.contextId ? `fdc3.instrument.${config.contextId}` : 'fdc3.instrument';
-          await channelService.broadcastContextItem(contextType, channel, config.historyItems ?? 1, config.testId);
+          await channelService.broadcastContextItem(contextType, channel!, config.historyItems ?? 1, config.testId);
           break;
         }
         case commands.broadcastContactContext: {
           const contextType = config.contextId ? `fdc3.contact.${config.contextId}` : 'fdc3.contact';
-          await channelService.broadcastContextItem(contextType, channel, config.historyItems ?? 1, config.testId);
+          await channelService.broadcastContextItem(contextType, channel!, config.historyItems ?? 1, config.testId);
+          break;
+        }
+        case commands.broadcastInstrumentWithTraceId: {
+          await channelService.broadcastContextItemWithMetadata('fdc3.instrument', channel!, config.testId, {
+            traceId: 'test-trace-123',
+          });
+          break;
+        }
+        case commands.broadcastInstrumentWithSignatureCustom: {
+          await channelService.broadcastContextItemWithMetadata('fdc3.instrument', channel!, config.testId, {
+            signature: 'sig-abc',
+            custom: { region: 'EMEA' },
+          });
           break;
         }
       }

@@ -20,10 +20,10 @@ export async function wait(timeoutMs?: number): Promise<void> {
 export function wrapPromise(): {
   promise: Promise<void>;
   resolve: () => void;
-  reject: (reason?: any) => void;
+  reject: (reason?: unknown) => void;
 } {
   let wrapperResolve: (() => void) | undefined;
-  let wrapperReject: ((reason?: any) => void) | undefined;
+  let wrapperReject: ((reason?: unknown) => void) | undefined;
 
   const promise = new Promise<void>((resolve, reject) => {
     wrapperResolve = resolve;
@@ -37,7 +37,20 @@ export function wrapPromise(): {
   };
 }
 
-export function handleFail(documentation: string, ex: any): never {
+export function handleFail(documentation: string, ex: unknown): never {
   const message = ex instanceof Error ? ex.message : String(ex);
   assert.fail(documentation + message);
+}
+
+/**
+ * Checks whether a received appId matches an expected unqualified appId.
+ * Accepts either an exact match (e.g. 'MockAppId') or a fully qualified
+ * appId with the current hostname (e.g. 'MockAppId@localhost').
+ */
+export function appIdMatches(received: string, expected: string): boolean {
+  if (received === expected) {
+    return true;
+  }
+
+  return received.split('@')[0] === expected.split('@')[0];
 }

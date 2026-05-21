@@ -1,5 +1,5 @@
-import { Channel } from '../api/Channel';
-import { Connectable } from '../ui/Connectable';
+import { Channel } from '../api/Channel.js';
+import { Connectable } from '../ui/Connectable.js';
 
 /**
  * Interface used by the desktop agent proxy to handle the channel selection process.
@@ -11,7 +11,7 @@ export interface ChannelSelector extends Connectable {
   updateChannel(channelId: string | null, availableChannels: Channel[]): Promise<void>;
 
   /**
-   * Called on initialization.  The channel selector will invoke the callback after the
+   * Called on initialization. The channel selector will invoke the callback after the
    * channel is changed.
    */
   setChannelChangeCallback(callback: (channelId: string | null) => void): void;

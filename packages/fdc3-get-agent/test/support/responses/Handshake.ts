@@ -1,11 +1,11 @@
-import { TestServerContext } from '../TestServerContext';
+import { TestServerContext } from '../TestServerContext.js';
 import { InstanceID } from '@finos/fdc3-web-impl';
-import { AutomaticResponse } from './AutomaticResponses';
+import { AutomaticResponse } from './AutomaticResponses.js';
 import {
   WebConnectionProtocol4ValidateAppIdentity,
   WebConnectionProtocol5ValidateAppIdentityFailedResponse,
   WebConnectionProtocol5ValidateAppIdentitySuccessResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
 export const BAD_INSTANCE_ID = 'BAD_INSTANCE';
 export const EXPECTED_IDENTITY_URL = 'https://dummyOrigin.test/path';
@@ -78,7 +78,6 @@ export class Handshake implements AutomaticResponse {
             fdc3Version: '2.0',
             optionalFeatures: {
               DesktopAgentBridging: false,
-              OriginatingAppMetadata: true,
               UserChannelMembershipAPIs: true,
             },
             provider: 'cucumber-provider',

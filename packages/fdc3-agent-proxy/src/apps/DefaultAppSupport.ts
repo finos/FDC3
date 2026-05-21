@@ -1,7 +1,14 @@
-import { AppIdentifier, AppMetadata, ImplementationMetadata, OpenError, ResolveError } from '@finos/fdc3-standard';
+import {
+  AppIdentifier,
+  AppMetadata,
+  AppProvidableContextMetadata,
+  ImplementationMetadata,
+  OpenError,
+  ResolveError,
+} from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
-import { AppSupport } from './AppSupport';
-import { Messaging } from '../Messaging';
+import { AppSupport } from './AppSupport.js';
+import { Messaging } from '../Messaging.js';
 import {
   FindInstancesRequest,
   FindInstancesResponse,
@@ -11,9 +18,9 @@ import {
   GetInfoResponse,
   OpenRequest,
   OpenResponse,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
-import { throwIfUndefined } from '../util/throwIfUndefined';
-import { Logger } from '../util/Logger';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { throwIfUndefined } from '../util/throwIfUndefined.js';
+import { Logger } from '../util/Logger.js';
 
 export class DefaultAppSupport implements AppSupport {
   readonly messaging: Messaging;
@@ -68,7 +75,11 @@ export class DefaultAppSupport implements AppSupport {
     return response.payload.appMetadata!;
   }
 
-  async open(app: AppIdentifier, context?: Context | undefined): Promise<AppIdentifier> {
+  async open(
+    app: AppIdentifier,
+    context?: Context | null,
+    metadata?: AppProvidableContextMetadata
+  ): Promise<AppIdentifier> {
     const request: OpenRequest = {
       type: 'openRequest',
       payload: {
@@ -76,7 +87,8 @@ export class DefaultAppSupport implements AppSupport {
           appId: app.appId,
           instanceId: app.instanceId,
         },
-        context,
+        context: context || undefined,
+        metadata: metadata ?? {},
       },
       meta: this.messaging.createMeta(),
     };
@@ -116,7 +128,6 @@ export class DefaultAppSupport implements AppSupport {
         provider: 'unknown',
         appMetadata: { appId: 'unknown', instanceId: 'unknown' },
         optionalFeatures: {
-          OriginatingAppMetadata: false,
           UserChannelMembershipAPIs: false,
           DesktopAgentBridging: false,
         },

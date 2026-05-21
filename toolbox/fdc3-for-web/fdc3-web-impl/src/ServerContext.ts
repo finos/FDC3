@@ -1,6 +1,6 @@
 import { AppIdentifier, AppIntent } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
-import { FDC3Server } from './FDC3Server';
+import { FDC3Server } from './FDC3Server.js';
 
 export enum State {
   Pending /* App has started, but not completed FDC3 Handshake */,
@@ -40,8 +40,10 @@ export interface ServerContext<X extends AppRegistration> {
   /**
    * Opens a new instance of an application.
    * Promise completes once the application window is opened
+   * @param appId - the appId of the application to open
+   * @param source - the AppIdentifier of the app that requested the open, if available
    */
-  open(appId: string): Promise<InstanceID>;
+  open(appId: string, source?: AppIdentifier): Promise<InstanceID>;
 
   /** Set the FDC3Server instance associated with this context. This reference is
    *  used to notify the server to cleanup state for apps that have been terminated.

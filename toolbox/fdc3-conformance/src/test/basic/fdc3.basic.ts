@@ -1,17 +1,26 @@
-import { DesktopAgent } from '@finos/fdc3';
+import { Context, DesktopAgent } from '@finos/fdc3';
 
-import { APIDocumentation2_0 } from '../support/apiDocuments-2.0';
-import { ContextType, Intent } from '../support/intent-support-2.0';
-import { closeMockAppWindow } from '../fdc3-2_0-utils';
+import { APIDocumentation } from '../support/apiDocuments';
+import { ContextType, Intent } from '../support/intent-support';
+import { closeMockAppWindow } from '../fdc3-conformance-utils';
 
 import { assert, expect } from 'chai';
 import { handleFail } from '../../utils';
 
-let basicCL1 = (fdc3: DesktopAgent, documentation: string) => {
+const getAgent2_2 = (fdc3: DesktopAgent, documentation: string) => {
+  it('(GetAgentAPI) Method is callable', async () => {
+    const info = await fdc3.getInfo();
+    assert.isTrue(info.fdc3Version.startsWith('2.'), documentation);
+    const userChannels = await fdc3.getUserChannels();
+    assert.isTrue(userChannels.length > 0, documentation);
+  });
+};
+
+const basicCL1 = (fdc3: DesktopAgent, documentation: string) => {
   it('(BasicCL1) Method is callable', async () => {
     const contextType = 'fdc3.contact';
     try {
-      const listener = await fdc3.addContextListener(contextType, (info: any) => {
+      const listener = await fdc3.addContextListener(contextType, (info: Context) => {
         console.log(`Context listener of type ${contextType} triggered with result ${info}`);
       });
       assert.isTrue(listener && typeof listener === 'object', documentation);
@@ -28,7 +37,7 @@ let basicCL1 = (fdc3: DesktopAgent, documentation: string) => {
   });
 };
 
-let basicCL2 = (fdc3: DesktopAgent, documentation: string) => {
+const basicCL2 = (fdc3: DesktopAgent, documentation: string) => {
   it('(BasicCL2) Returns listener object', async () => {
     try {
       const listener = await fdc3.addContextListener(null, () => {});
@@ -43,11 +52,11 @@ let basicCL2 = (fdc3: DesktopAgent, documentation: string) => {
   });
 };
 
-let basicIL1 = (fdc3: DesktopAgent, documentation: string) => {
+const basicIL1 = (fdc3: DesktopAgent, documentation: string) => {
   it('(BasicIL1) Method is callable', async () => {
     const intentName = 'ConformanceListener';
     try {
-      const listener = await fdc3.addIntentListener(intentName, (info: any) => {
+      const listener = await fdc3.addIntentListener(intentName, (info: Context) => {
         console.log(`Intent listener for intent ${intentName} triggered with result ${info}`);
       });
       expect(listener).to.have.property('unsubscribe').that.is.a('function');
@@ -60,11 +69,10 @@ let basicIL1 = (fdc3: DesktopAgent, documentation: string) => {
   });
 };
 
-let basicGI1 = (fdc3: DesktopAgent, documentation: string) => {
-  console.log('coming here in');
+const basicGI1 = (fdc3: DesktopAgent, documentation: string) => {
   it('(BasicGI1) Returns ImplementationMetadata object', async () => {
     try {
-      let info = await fdc3.getInfo();
+      const info = await fdc3.getInfo();
       expect(info, documentation).to.have.property('fdc3Version');
       expect(info, documentation).to.have.property('provider');
     } catch (ex) {
@@ -73,7 +81,7 @@ let basicGI1 = (fdc3: DesktopAgent, documentation: string) => {
   });
 };
 
-let basicAC1 = (fdc3: DesktopAgent, documentation: string) => {
+const basicAC1 = (fdc3: DesktopAgent, documentation: string) => {
   it('(BasicAC1) Returns Channel object', async () => {
     try {
       const channel = await fdc3.getOrCreateChannel('FDC3Conformance');
@@ -88,7 +96,7 @@ let basicAC1 = (fdc3: DesktopAgent, documentation: string) => {
   });
 };
 
-let basicUC1 = (fdc3: DesktopAgent, documentation: string) => {
+const basicUC1 = (fdc3: DesktopAgent, documentation: string) => {
   it('(BasicUC1) Channel object is valid', async () => {
     try {
       const channels = await fdc3.getUserChannels();
@@ -104,7 +112,7 @@ let basicUC1 = (fdc3: DesktopAgent, documentation: string) => {
   });
 };
 
-let basicJC1 = (fdc3: DesktopAgent, documentation: string) => {
+const basicJC1 = (fdc3: DesktopAgent, documentation: string) => {
   it("(BasicJC1) getCurrentChannel should retrieve 'null' or a channel object depending upon whether the channel has been joined or not", async () => {
     const channels = await fdc3.getUserChannels();
     if (channels.length > 0) {
@@ -117,7 +125,7 @@ let basicJC1 = (fdc3: DesktopAgent, documentation: string) => {
         expect(currentChannel?.id).to.eql(channels[0].id);
         await fdc3.leaveCurrentChannel();
         const currentChannelAfterLeave = await fdc3.getCurrentChannel();
-        expect(currentChannelAfterLeave).to.be.null;
+        assert.isNull(currentChannelAfterLeave);
       } catch (ex) {
         handleFail(documentation, ex);
       }
@@ -127,7 +135,7 @@ let basicJC1 = (fdc3: DesktopAgent, documentation: string) => {
   });
 };
 
-let basicRI1 = (fdc3: DesktopAgent, documentation: string, intent: string, contextType: string) => {
+const basicRI1 = (fdc3: DesktopAgent, documentation: string, intent: string, contextType: string) => {
   const basicRI1 =
     '(BasicRI1) application should be able to raise an intent by passing Intent name and gets a promise in return';
   it(basicRI1, async () => {
@@ -139,7 +147,7 @@ let basicRI1 = (fdc3: DesktopAgent, documentation: string, intent: string, conte
   });
 };
 
-let basicRI2 = (fdc3: DesktopAgent, documentation: string, contextType: string) => {
+const basicRI2 = (fdc3: DesktopAgent, documentation: string, contextType: string) => {
   const basicRI2 =
     '(BasicRI2) application should be able to raise an intent for some item by passing context and gets a promise in return';
   it(basicRI2, async () => {
@@ -157,32 +165,34 @@ let basicRI2 = (fdc3: DesktopAgent, documentation: string, contextType: string) 
 
 declare let fdc3: DesktopAgent;
 
-const documentation_CL = '\r\nDocumentation: ' + APIDocumentation2_0.addContextListener + '\r\nCause';
-const documentation_IL = '\r\nDocumentation: ' + APIDocumentation2_0.addIntentListener + '\r\nCause';
-const documentation_GI = '\r\nDocumentation: ' + APIDocumentation2_0.getInfo + '\r\nCause';
-const documentation_AC = '\r\nDocumentation: ' + APIDocumentation2_0.getOrCreateChannel + '\r\nCause';
-const documentation_UC = '\r\nDocumentation: ' + APIDocumentation2_0.getUserChannels + '\r\nCause';
-const documentation_JC = '\r\nDocumentation: ' + APIDocumentation2_0.getCurrentChannel + '\r\nCause';
-const documentation_RI = '\r\nDocumentation: ' + APIDocumentation2_0.raiseIntentForContext + '\r\nCause';
+const documentation_CL = '\r\nDocumentation: ' + APIDocumentation.addContextListener + '\r\nCause';
+const documentation_IL = '\r\nDocumentation: ' + APIDocumentation.addIntentListener + '\r\nCause';
+const documentation_GI = '\r\nDocumentation: ' + APIDocumentation.getInfo + '\r\nCause';
+const documentation_AC = '\r\nDocumentation: ' + APIDocumentation.getOrCreateChannel + '\r\nCause';
+const documentation_UC = '\r\nDocumentation: ' + APIDocumentation.getUserChannels + '\r\nCause';
+const documentation_JC = '\r\nDocumentation: ' + APIDocumentation.getCurrentChannel + '\r\nCause';
+const documentation_RI = '\r\nDocumentation: ' + APIDocumentation.raiseIntentForContext + '\r\nCause';
+const documentation_GA = '\r\nDocumentation: ' + APIDocumentation.getAgent + '\r\nCause';
 
-export let fdc3BasicCL1_2_0 = () => describe('fdc3.basicCL1_2.0', () => basicCL1(fdc3, documentation_CL));
-export let fdc3BasicCL2_2_0 = () => describe('fdc3.basicCL2_2.0', () => basicCL2(fdc3, documentation_CL));
-export let fdc3BasicIL1_2_0 = () => describe('fdc3.basicIL1_2.0', () => basicIL1(fdc3, documentation_IL));
-export let fdc3BasicGI1_2_0 = () => describe('fdc3.basicGI1_2.0', () => basicGI1(fdc3, documentation_GI));
-export let fdc3BasicAC1_2_0 = () => describe('fdc3.basicAC1_2.0', () => basicAC1(fdc3, documentation_AC));
-export let fdc3BasicUC1_2_0 = () => describe('fdc3.basicUC1_2.0', () => basicUC1(fdc3, documentation_UC));
-export let fdc3BasicJC1_2_0 = () => describe('fdc3.basicJC1_2.0', () => basicJC1(fdc3, documentation_JC));
+export const fdc3BasicGetAgent = async () => describe('fdc3.basicGetAgent', () => getAgent2_2(fdc3, documentation_GA));
+export const fdc3BasicCL1 = async () => describe('fdc3.basicCL1', () => basicCL1(fdc3, documentation_CL));
+export const fdc3BasicCL2 = async () => describe('fdc3.basicCL2', () => basicCL2(fdc3, documentation_CL));
+export const fdc3BasicIL1 = async () => describe('fdc3.basicIL1', () => basicIL1(fdc3, documentation_IL));
+export const fdc3BasicGI1 = async () => describe('fdc3.basicGI1', () => basicGI1(fdc3, documentation_GI));
+export const fdc3BasicAC1 = async () => describe('fdc3.basicAC1', () => basicAC1(fdc3, documentation_AC));
+export const fdc3BasicUC1 = async () => describe('fdc3.basicUC1', () => basicUC1(fdc3, documentation_UC));
+export const fdc3BasicJC1 = async () => describe('fdc3.basicJC1', () => basicJC1(fdc3, documentation_JC));
 
-export let fdc3BasicRI1_2_0 = () =>
-  describe('fdc3.basicRI1_2.0', () => {
+export const fdc3BasicRI1 = async () =>
+  describe('fdc3.basicRI1', () => {
     after(async function after() {
       await closeMockAppWindow(this.currentTest?.title ?? 'Unknown test');
     });
     basicRI1(fdc3, documentation_RI, Intent.aTestingIntent, ContextType.testContextX);
   });
 
-export let fdc3BasicRI2_2_0 = () =>
-  describe('fdc3.basicRI2_2.0', () => {
+export const fdc3BasicRI2 = async () =>
+  describe('fdc3.basicRI2', () => {
     after(async function after() {
       await closeMockAppWindow(this.currentTest?.title ?? 'Unknown test');
     });

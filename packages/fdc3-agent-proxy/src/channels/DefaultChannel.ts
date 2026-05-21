@@ -1,7 +1,16 @@
-import { ContextHandler, DisplayMetadata, Listener, Channel, EventHandler } from '@finos/fdc3-standard';
+import {
+  ContextHandler,
+  ContextWithMetadata,
+  ContextMetadata,
+  DisplayMetadata,
+  Listener,
+  Channel,
+  EventHandler,
+  AppProvidableContextMetadata,
+} from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
-import { Messaging } from '../Messaging';
-import { DefaultContextListener } from '../listeners/DefaultContextListener';
+import { Messaging } from '../Messaging.js';
+import { DefaultContextListener } from '../listeners/DefaultContextListener.js';
 import {
   BroadcastRequest,
   BroadcastResponse,
@@ -9,9 +18,9 @@ import {
   ClearContextResponse,
   GetCurrentContextRequest,
   GetCurrentContextResponse,
-} from '@finos/fdc3-schema/generated/api/BrowserTypes';
-import { RegisterableListener } from '../listeners/RegisterableListener';
-import { EventListener } from '../listeners/EventListener';
+} from '@finos/fdc3-schema/generated/api/BrowserTypes.js';
+import { RegisterableListener } from '../listeners/RegisterableListener.js';
+import { EventListener } from '../listeners/EventListener.js';
 
 export class DefaultChannel implements Channel {
   protected readonly messaging: Messaging;
@@ -39,12 +48,13 @@ export class DefaultChannel implements Channel {
     this.addContextListener = this.addContextListener.bind(this);
   }
 
-  async broadcast(context: Context): Promise<void> {
+  async broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void> {
     const request: BroadcastRequest = {
       meta: this.messaging.createMeta(),
       payload: {
         channelId: this.id,
         context,
+        metadata: metadata ?? {},
       },
       type: 'broadcastRequest',
     };
@@ -68,6 +78,40 @@ export class DefaultChannel implements Channel {
     );
 
     return response.payload.context ?? null;
+  }
+
+  /**
+   * Retrieves the current context along with its metadata.
+   * Used by the proxy to deliver metadata to context listeners when replaying
+   * context after a channel change.
+   */
+  async getCurrentContextWithMetadata(contextType?: string): Promise<ContextWithMetadata | null> {
+    const request: GetCurrentContextRequest = {
+      meta: this.messaging.createMeta(),
+      payload: {
+        channelId: this.id,
+        contextType: contextType ?? null,
+      },
+      type: 'getCurrentContextRequest',
+    };
+    const response = await this.messaging.exchange<GetCurrentContextResponse>(
+      request,
+      'getCurrentContextResponse',
+      this.messageExchangeTimeout
+    );
+
+    const context = response.payload.context;
+    if (context) {
+      const metadata: ContextMetadata = {
+        source: response.payload.metadata?.source ?? { appId: 'unknown' },
+        timestamp: response.payload.metadata?.timestamp ?? response.meta.timestamp,
+        traceId: response.payload.metadata?.traceId ?? '',
+        signature: response.payload.metadata?.signature,
+        custom: response.payload.metadata?.custom,
+      };
+      return { context, metadata };
+    }
+    return null;
   }
 
   async addContextListener(

@@ -167,6 +167,8 @@ An additional request and response used to deliver an [`IntentResult`](../ref/Ty
 
 Please note this exchange (and the `IntentResolution.getResult()` API call) support `void` results from a raised intent and hence this message exchange should occur for all raised intents, including those that do not return a result. In such cases, the void intent result allows resolution of the `IntentResolution.getResult()` API call and indicates that the intent handler has finished running.
 
+The `intentResultRequest` payload includes an optional `metadata` field of type `AppProvidableContextMetadata`. This is populated by the agent-proxy when the intent handler returns a [`ContextWithMetadata`](../ref/Types#contextwithmetadata) result, carrying the app-provided portion of the metadata (e.g. `traceId`, `signature`, `custom`). The Desktop Agent merges this with its own generated metadata and delivers the combined [`ContextMetadata`](../ref/Metadata#contextmetadata) to the raising app via the `resultMetadata` field of the `raiseIntentResultResponse`.
+
 Request and response for removing the intent listener ([`Listener.unsubscribe()`](../ref/Types#listener)):
 
 - [`intentListenerUnsubscribeRequest`](pathname:///schemas/next/api/intentListenerUnsubscribeRequest.schema.json)
@@ -337,6 +339,8 @@ An additional response message is provided for the delivery of an `IntentResult`
 
 There is no request message to indicate a call to the `resolution.getResult()` function of `IntentResolution`. Hence, Desktop Agents MUST send this additional response message to indicate the status of the intent handling function and to deliver its result (or void if none was returned).
 
+The `raiseIntentResultResponse` success payload includes an optional `resultMetadata` field of type [`ContextMetadata`](../ref/Metadata#contextmetadata). The Desktop Agent MUST populate this field by merging any app-provided metadata from the `intentResultRequest`'s `metadata` field with its own generated fields (`source`, `timestamp`, `traceId`). This metadata is always present, even for `Channel` or `void` results, and is retrieved by the raising app via [`IntentResolution.getResultMetadata()`](../ref/Metadata#intentresolution).
+
 :::tip
 
 See [`addIntentListener`](#addintentlistener) above for details of the messages used for the resolving app to deliver the result to the Desktop Agent.
@@ -406,12 +410,14 @@ Owing to the significant overlap between the FDC3 [`DesktopAgent`](../ref/Deskto
 
 The following additional function is unique to the `Channel` interface:
 
-#### `getCurrentContext()`
+#### `getCurrentContext()` / `getCurrentContextWithMetadata()`
 
-Request and response used to implement the [`Channel.getCurrentContext()`](../ref/Channel#getcurrentcontext) API call:
+Request and response used to implement the [`Channel.getCurrentContext()`](../ref/Channel#getcurrentcontext) and [`Channel.getCurrentContextWithMetadata()`](../ref/Channel#getcurrentcontextwithmetadata) API calls:
 
 - [`getCurrentContextRequest`](pathname:///schemas/next/api/getCurrentContextRequest.schema.json)
 - [`getCurrentContextResponse`](pathname:///schemas/next/api/getCurrentContextResponse.schema.json)
+
+The `getCurrentContextResponse` payload includes an optional `metadata` field containing the [`ContextMetadata`](../ref/Metadata#contextmetadata) associated with the most recently broadcast context. This field is used by `getCurrentContextWithMetadata()` to return both the context and its metadata. The `getCurrentContext()` function uses the same request/response messages but ignores the `metadata` field, returning only the context.
 
 ### `PrivateChannel`
 

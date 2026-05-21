@@ -1,5 +1,5 @@
-import { IntentResultRequest, IntentResultResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
-import { AutomaticResponse, TestMessaging } from '../TestMessaging';
+import { IntentResultRequest, IntentResultResponse } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { AutomaticResponse, TestMessaging } from '../TestMessaging.js';
 
 export class IntentResult implements AutomaticResponse {
   filter(t: string) {

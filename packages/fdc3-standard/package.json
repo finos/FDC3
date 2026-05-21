@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3-standard",
-  "version": "2.2.0",
+  "version": "2.2.3",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -17,9 +17,10 @@
     "dist"
   ],
   "scripts": {
-    "clean": "rimraf dist",
-    "build": "tsc --module es2022",
-    "test": "tsc && jest",
+    "clean": "rimraf dist coverage",
+    "build": "tsc",
+    "test": "tsc && vitest run",
+    "test:watch": "vitest",
     "lint": "eslint src/ --fix"
   },
   "prettier": {
@@ -30,33 +31,17 @@
     "endOfLine": "auto",
     "printWidth": 120
   },
-  "jest-junit": {
-    "outputName": "test-results.xml"
-  },
   "dependencies": {
-    "@finos/fdc3-context": "2.2.0",
-    "@finos/fdc3-schema": "2.2.0"
+    "@finos/fdc3-context": "2.2.3",
+    "@finos/fdc3-schema": "2.2.3"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.2.0",
-    "@eslint/js": "^9.19.0",
-    "@types/jest": "29.5.13",
-    "@typescript-eslint/eslint-plugin": "^8.18.2",
-    "@typescript-eslint/parser": "^8.18.2",
-    "eslint": "^9.32.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-jest": "28.8.3",
-    "eslint-plugin-jsx-a11y": "^6.10.0",
-    "globals": "^15.14.0",
-    "jest": "29.7.0",
-    "jest-environment-jsdom": "29.7.0",
-    "jest-junit": "^16.0.0",
-    "jest-mock-extended": "3.0.5",
-    "prettier": "3.4.1",
+    "@apidevtools/swagger-parser": "^10.1.1",
+    "jsdom": "^28.1.0",
+    "jsonschema": "^1.4.0",
     "quicktype": "23.0.78",
-    "rimraf": "^6.0.1",
-    "ts-jest": "29.2.5",
     "tslib": "^2.7.0",
-    "typescript": "^5.6.3"
-  }
+    "vitest-mock-extended": "^3.0.0"
+  },
+  "type": "module"
 }

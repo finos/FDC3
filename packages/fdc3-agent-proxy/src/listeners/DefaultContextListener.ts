@@ -1,16 +1,16 @@
-import { ContextHandler, Channel } from '@finos/fdc3-standard';
-import { Messaging } from '../Messaging';
-import { AbstractListener } from './AbstractListener';
-import { UserChannelContextListener } from './UserChannelContextListener';
-import { AddContextListenerRequest, BroadcastEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
+import { ContextHandler, ContextMetadata } from '@finos/fdc3-standard';
+import { Messaging } from '../Messaging.js';
+import { AbstractListener } from './AbstractListener.js';
+import { AddContextListenerRequest, BroadcastEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { RegisterableListener } from './RegisterableListener.js';
 
 export class DefaultContextListener
   extends AbstractListener<ContextHandler, AddContextListenerRequest>
-  implements UserChannelContextListener
+  implements RegisterableListener
 {
-  private channelId: string | null;
-  private readonly messageType: string;
-  private readonly contextType: string | null;
+  private readonly channelId: string | null;
+  protected readonly messageType: string;
+  protected readonly contextType: string | null;
 
   constructor(
     messaging: Messaging,
@@ -35,19 +35,6 @@ export class DefaultContextListener
     this.contextType = contextType;
   }
 
-  async changeChannel(channel: Channel | null): Promise<void> {
-    if (channel == null) {
-      this.channelId = null;
-      return;
-    } else {
-      this.channelId = channel.id;
-      const context = await channel.getCurrentContext(this.contextType ?? undefined);
-      if (context) {
-        this.handler(context);
-      }
-    }
-  }
-
   filter(m: BroadcastEvent): boolean {
     return (
       m.type == this.messageType &&
@@ -57,6 +44,13 @@ export class DefaultContextListener
   }
 
   action(m: BroadcastEvent): void {
-    this.handler(m.payload.context);
+    const metadata: ContextMetadata = {
+      source: m.payload.metadata?.source,
+      timestamp: m.payload.metadata?.timestamp ?? m.meta.timestamp,
+      traceId: m.payload.metadata?.traceId,
+      signature: m.payload.metadata?.signature,
+      custom: m.payload.metadata?.custom,
+    };
+    this.handler(m.payload.context, metadata);
   }
 }

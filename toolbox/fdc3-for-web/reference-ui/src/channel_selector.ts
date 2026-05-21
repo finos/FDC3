@@ -5,8 +5,8 @@ import {
   Fdc3UserInterfaceRestyle,
   isFdc3UserInterfaceChannels,
   isFdc3UserInterfaceHandshake,
-} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes';
-import { selectHighestContrast } from './contrast';
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { selectHighestContrast } from './contrast.js';
 
 const fillChannels = (data: Channel[], selected: string | null, messageClickedChannel: (s: string | null) => void) => {
   const list = document.getElementById('list')!;

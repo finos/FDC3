@@ -2,7 +2,7 @@
 
 <a href='http://fdc3.finos.org'><img src='./website/static/img/fdc3-logo-2019-color.png' height='150' alt='FDC3 Logo' aria-label='fdc3.finos.org' /></a>
 
-[![Latest Standard](https://img.shields.io/badge/release-2.0-blue)](https://github.com/finos/fdc3/releases/v2.0)
+[![Latest Standard](https://img.shields.io/badge/release-2.2-blue)](https://github.com/finos/fdc3/releases/v2.2)
 [![npm](https://img.shields.io/npm/v/@finos/fdc3)](https://www.npmjs.com/package/@finos/fdc3)
 [![FINOS - Released](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@main/images/badge-released.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Released)
 [![License Code](https://img.shields.io/badge/code_license-Apache_2.0-blue)](https://opensource.org/licenses/Apache-2.0)
@@ -11,6 +11,7 @@
 [![npm-build](https://github.com/finos/FDC3/workflows/npm-build/badge.svg)](https://github.com/finos/FDC3/actions?query=workflow%3Anpm-build)
 [![Slack](https://img.shields.io/badge/slack-@finos/fdc3-green.svg?logo=slack)](https://finos-lf.slack.com/messages/fdc3/)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6579/badge)](https://bestpractices.coreinfrastructure.org/projects/6579)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/finos/FDC3/badge)](https://scorecard.dev/viewer/?uri=github.com/finos/FDC3)
 
 ## What Is It?
 
@@ -89,69 +90,61 @@ This project (the FDC3 Standard repo) is now a monorepo containing the following
 | `packages/fdc3-agent-proxy`          | `@finos/fdc3-agent-proxy` (npm)                        | Contains a complete implementation of the FDC3 DACP.  Written in a platform-agnostic manner.                                                                                                                            | Cucumber, NYC         |
 | `packages/fdc3-get-agent`            | `@finos/fdc3-get-agent` (npm)                          | Implements the `getAgent` and `fdc3Ready()` functions as well as the FDC3 Web Connection protocol to allow FDC3 to work on the web or in an electron container.                                                     | Cucumber, NYC         |
 | `packages/testing`                   | -not released-                                         | Contains testing tools used by the cucumber tests used within other modules of this project.                                                                                                                           |                       |
-| `toolbox/fdc3-conformance`           | -not released-                                         | Contains definitions of the FDC3 conformance test suite, implemented by the [FDC3 Conformance Framework](https://github.com/finos/FDC3-conformance-framework)                                                          | Test Definitions Only |
+| `toolbox/fdc3-conformance`           | -not released-                                         | Contains definitions of the [FDC3 conformance test suite](https://fdc3.finos.org/docs/api/conformance/Conformance-Overview)                                                         | Test Definitions Only |
 | `toolbox/fdc3-workbench`             | [here](https://fdc3.finos.org/toolbox/fdc3-workbench/) | Contains an FDC3-For-Web ready version of the [FDC3 Workbench](toolbox/fdc3-workbench/README.md).                                                                                                                      |                       |
 | `toolbox/fdc3-explained`             | [Here](https://fdc3.finos.org/toolbox/fdc3-explained)  | [Readme Here](toolbox/fdc3-explained/README.md)                                                                                                                                                                        |                       |
 | `toolbox/fdc3-for-web/fdc3-web-impl` | `@finos/fdc3-web-impl` (npm)                           | Portable and reusable implementation of the FDC3 For-The-Web Desktop Agent-Side protocol,                                                                                                                              | Cucumber, NYC         |
-| `toolbox/fdc3-for-web/demo`          | -not released-                                         | A reference implementation of an FDC3-For-The-Web Desktop Agent, using the above implementation and conforming to FDC3 2.0 from the  [FDC3 Conformance Framework](https://github.com/finos/FDC3-conformance-framework) |                       |
+| `toolbox/fdc3-for-web/demo`          | -not released-                                         | A reference implementation of an FDC3-For-The-Web Desktop Agent, using the above implementation and conforming to  the conformance test suite (see above) |                       |
 | `packages/fdc3`                      | `@finos/fdc3` (npm)                                    | Imports `fdc3-standard`, `fdc3-context`, `fdc3-schema` and `fdc3-get-agent` sub-modules.  This is intended to be the main entry point for typescript / javascript applications using FDC3         |                       |
 | `packages/fdc3-commonjs`                      | `@finos/fdc3-commonjs` (npm)                                    | A roll-up of the `fdc3` sub-module.  This is for **backwards compatibility where CommonJS is required**.  May not be provided in future versions of FDC3.         |                       |
 
 
 ### Building and Running The FDC3 Modules
 
-From the root package, you can run `npm run build` to build all the modules, or `npm run test` to run all the tests.  `npm run dev` will start the `demo` and `fdc3-workbench` modules.
+From the root package, you can run `npm run build` to build all the modules, or `npm run test` to run all the tests.  `npm run dev` will start the `demo` and `fdc3-workbench` modules.  You can play with both of these components in your browser at <http://localhost:4000/static/da/index.html>.  Additionally, the conformance suite is included as one of the demo apps, and can also be run.  
 
 For installation and usage instructions, see: <https://fdc3.finos.org/docs/supported-platforms#usage>
 
 ### Releasing FDC3 to NPM (for maintainers)
 
-This is a 4-step process:
+Publishing to npm is handled automatically by the [Publish To NPM](.github/workflows/release.yml) GitHub Actions workflow, which is triggered when a GitHub Release is published. The workflow will lint, test and build the project, then publish all public workspace packages to both npmjs.org and GitHub Packages.
+
+The npm dist-tag is determined by the version in the root `package.json`: versions containing a hyphen (e.g. `2.3.0-beta.1`) are published with the `prerelease` tag, while all other versions are published with the `latest` tag.
 
 1.  **Create a release branch**
 
-  Do this locally.  Ensure the branch is named `release/v2.0` (or whatever the next version is).
-  
   ```bash
-  git checkout -b release/v2.0
-  ```
-  
-2.  **Update the version numbers in the package.json files**
-
-  It's important that all of the versions of the submodules stay on the same version, and that the references between them are consistent to that version.  To change the version number (say before or after a release) run the following:
-
-  ```bash
-  // first, update version number in package.json
-  npm login
-  npm version <new version from package.json> --workspaces // changes the version number in all submodule package.json files
-  npm run syncpack                          // sycnhronizes version numbers
-  npm up                                    // fixes node_module references
-  npm run build                             // builds all the modules against the new version
+  git checkout -b release/v2.3
   ```
 
-3.  **Push the branch to publish the packages to npm**
+2.  **Update version numbers**
+
+  All workspace versions and the root `package.json` version must match. Update them as follows:
+
+  ```bash
+  npm version <new-version> --include-workspace-root --workspaces
+  npm run syncpack   # synchronizes @finos/* dependency versions and verifies consistency
+  npm up             # fixes node_module references
+  npm run build      # builds all modules against the new version
+  ```
+
+  The `syncpack` script will automatically run `version-check` to verify that the root version matches all public workspace versions. You can also run `npm run version-check` independently at any time.
+
+3.  **Push the branch and create a PR**
 
   ```bash
   git add .
-  git commit -m "Updated to version vx.x" 
-  git push origin release/v2.0
-  ```
-  
-  This should trigger a GitHub action that will publish the packages to npm.
-
-4.  **Create a PR for merging the release branch.**
-
-  Once the packages are published, create a PR to merge the release branch into the main branch.  You will need other FDC3 maintainers to review and approve the PR.
-
-5.  **Reset the `latest` NPM Version Tag If Releasing A Prerelease**
-
-  If you're releasing beta/alpha code, be sure to replace the latest version in NPM like so:
-
-  ```
-  npm dist-tag add @finos/fdc3@2.1.1 latest
+  git commit -m "Updated to version v2.3.0"
+  git push origin release/v2.3
   ```
 
-  You will need support from help@finos.org for this step.
+  Create a PR to merge the release branch into main. You will need other FDC3 maintainers to review and approve the PR.
+
+4.  **Create a GitHub Release to publish to npm**
+
+  Once the PR is merged, [create a new GitHub Release](https://github.com/finos/FDC3/releases/new) targeting the main branch. Publishing the release will trigger the workflow, which will publish all packages to npm and GitHub Packages.
+
+  The workflow also runs a version consistency check before publishing — if the root version doesn't match the workspace versions, the workflow will fail before any packages are published.
 
 ### Releasing the FDC3 Website (for maintainers)
 
@@ -183,8 +176,19 @@ If you are an existing individual or corporate user of the FDC3 standard, we wou
 
 #### Meetings
 
-- Finally, another great way to interact with the community, is to attend the monthly [FDC3 Standard Working Group Meeting](https://github.com/finos/FDC3/issues?q=label%3A%22Standard+WG+Meeting%22) and/or the quarterly [FDC3 General Meeting](https://github.com/finos/FDC3/issues?q=label%3A%22General+Meeting%22).
-- Email [help@finos.org](mailto:help@finos.org) to be added to the meeting invite directly, or find the meeting in the [FINOS Community Calendar](https://calendar.google.com/calendar/embed?src=finos.org_fac8mo1rfc6ehscg0d80fi8jig%40group.calendar.google.com).
+Another great way to interact with the community is to attend one of the following meetings:
+
+- **FDC3 General Meeting** - *Every 6 months on the third Tuesday* ([Join Meeting](https://calendar.finos.org/signup?eventId=6stt9c3m0r4boisrb6tjt4q0v7_20260317T140000Z&title=FDC3+General+Meeting))
+- **FDC3 Identity & Security Working Group** - *Monthly on the second Thursday* ([Join Meeting](https://zoom-lfx.platform.linuxfoundation.org/meeting/92600977319?password=17e9e8f8-7d4e-47b4-b8f0-8c68b02005de&invite=true))
+- **FDC3 Standard Working Group** - *Monthly on the fourth Thursday* ([Join Meeting](https://zoom-lfx.platform.linuxfoundation.org/meeting/96839365264?password=b5c2bc6a-bc47-43a5-bc49-7be3e0b422c3&invite=true))
+- **FDC3 Use Cases and Workflows Discussion Group** - *Monthly on the first Thursday* ([Join Meeting](https://zoom-lfx.platform.linuxfoundation.org/meeting/91001005768?password=0c878e0c-b8a4-42d3-9786-e8c1524d6d1c&invite=true))
+- **FDC3 Web Browsers + Bridging Discussion group** - *Monthly on the third Thursday* ([Join Meeting](https://zoom-lfx.platform.linuxfoundation.org/meeting/96615992377?password=88ed4841-afa2-41a6-8de3-e246967e5566&invite=true))
+
+Also consider:
+
+- **FDC3 Sail Project Meeting** - *Every 2 weeks on Mondays* ([Join Meeting](https://zoom-lfx.platform.linuxfoundation.org/meeting/95252800112?password=90638454-991c-4ab0-8aed-791fc372623c&invite=true))
+
+
 
 #### Need help?
 

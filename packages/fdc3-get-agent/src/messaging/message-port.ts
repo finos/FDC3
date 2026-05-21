@@ -7,13 +7,13 @@ import {
   ChannelSupport,
   DefaultHeartbeatSupport,
 } from '@finos/fdc3-agent-proxy';
-import { ConnectionDetails, MessagePortMessaging } from './MessagePortMessaging';
-import { DefaultDesktopAgentIntentResolver } from '../ui/DefaultDesktopAgentIntentResolver';
-import { DefaultDesktopAgentChannelSelector } from '../ui/DefaultDesktopAgentChannelSelector';
-import { NullIntentResolver } from '../ui/NullIntentResolver';
-import { NullChannelSelector } from '../ui/NullChannelSelector';
+import { ConnectionDetails, MessagePortMessaging } from './MessagePortMessaging.js';
+import { DefaultDesktopAgentIntentResolver } from '../ui/DefaultDesktopAgentIntentResolver.js';
+import { DefaultDesktopAgentChannelSelector } from '../ui/DefaultDesktopAgentChannelSelector.js';
+import { NullIntentResolver } from '../ui/NullIntentResolver.js';
+import { NullChannelSelector } from '../ui/NullChannelSelector.js';
 import { ChannelSelector } from '@finos/fdc3-standard';
-import { Logger } from '../util/Logger';
+import { Logger } from '../util/Logger.js';
 
 /**
  * Given a message port, constructs a desktop agent to communicate via that.
@@ -54,7 +54,7 @@ export async function createDesktopAgentAPI(
   const cs = new DefaultChannelSupport(messaging, channelSelector, cd.messageExchangeTimeout);
   const is = new DefaultIntentSupport(messaging, intentResolver, cd.messageExchangeTimeout, cd.appLaunchTimeout);
   const as = new DefaultAppSupport(messaging, cd.messageExchangeTimeout, cd.appLaunchTimeout);
-  const da = new DesktopAgentProxy(hs, cs, is, as, [hs, intentResolver, channelSelector], logLevel);
+  const da = new DesktopAgentProxy(hs, cs, is, as, [hs, cs, intentResolver, channelSelector], logLevel);
 
   Logger.debug('message-port: Connecting components ...');
 

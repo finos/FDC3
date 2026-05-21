@@ -31,9 +31,9 @@ Feature: Raising Intents
   Scenario: Raising an Intent that should auto-resolve (only one option)
     And "App1/a1" raises an intent for "uniqueIntent" with contextType "fdc3.magazine"
     Then messaging will have outgoing posts
-      | msg.matches_type    | msg.payload.context.type | msg.payload.intent | msg.payload.originatingApp.appId | msg.payload.originatingApp.instanceId | msg.payload.intentResolution.intent | to.instanceId | to.appId        | msg.payload.intentResolution.source.appId |
-      | intentEvent         | fdc3.magazine            | uniqueIntent       | App1                             | a1                                    | {null}                              | c1            | uniqueIntentApp | {null}                                    |
-      | raiseIntentResponse | {null}                   | {null}             | {null}                           | {null}                                | uniqueIntent                        | a1            | App1            | uniqueIntentApp                           |
+      | msg.matches_type    | msg.payload.context.type | msg.payload.intent | msg.payload.metadata.source.appId | msg.payload.metadata.source.instanceId | msg.payload.intentResolution.intent | to.instanceId | to.appId        | msg.payload.intentResolution.source.appId |
+      | intentEvent         | fdc3.magazine            | uniqueIntent       | App1                              | a1                                     | {null}                              | c1            | uniqueIntentApp | {null}                                    |
+      | raiseIntentResponse | {null}                   | {null}             | {null}                            | {null}                                 | uniqueIntent                        | a1            | App1            | uniqueIntentApp                           |
 
   Scenario: Raising an Intent to a Non-Existent App
     And "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "completelyMadeUp"
@@ -50,9 +50,16 @@ Feature: Raising Intents
   Scenario: Raising An Intent To A Running App instance by instanceId
     When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "listenerApp/b1"
     Then messaging will have outgoing posts
-      | msg.matches_type    | msg.payload.context.type | msg.payload.intent | msg.payload.originatingApp.appId | msg.payload.originatingApp.instanceId | msg.payload.intentResolution.intent | to.instanceId | to.appId    | msg.payload.intentResolution.source.appId |
-      | intentEvent         | fdc3.book                | returnBook         | App1                             | a1                                    | {null}                              | b1            | listenerApp | {null}                                    |
-      | raiseIntentResponse | {null}                   | {null}             | {null}                           | {null}                                | returnBook                          | a1            | App1        | listenerApp                               |
+      | msg.matches_type    | msg.payload.context.type | msg.payload.intent | msg.payload.metadata.source.appId | msg.payload.metadata.source.instanceId | msg.payload.intentResolution.intent | to.instanceId | to.appId    | msg.payload.intentResolution.source.appId |
+      | intentEvent         | fdc3.book                | returnBook         | App1                              | a1                                     | {null}                              | b1            | listenerApp | {null}                                    |
+      | raiseIntentResponse | {null}                   | {null}             | {null}                            | {null}                                 | returnBook                          | a1            | App1        | listenerApp                               |
+
+  Scenario: Raising an intent with app-provided metadata forwards to intent listener
+    When "App1/a1" raises an intent for "uniqueIntent" with contextType "fdc3.magazine" with metadata traceId "intent-trace" signature "intent-sig" and custom key "EMEA"
+    Then messaging will have outgoing posts
+      | msg.matches_type    | msg.payload.context.type | msg.payload.intent | msg.payload.metadata.source.appId | msg.payload.metadata.traceId | msg.payload.metadata.signature | msg.payload.metadata.custom.region | to.instanceId | to.appId        |
+      | intentEvent         | fdc3.magazine            | uniqueIntent       | App1                              | intent-trace                 | intent-sig                     | EMEA                               | c1            | uniqueIntentApp |
+      | raiseIntentResponse | {null}                   | {null}             | {null}                            | {null}                       | {null}                         | {null}                             | a1            | App1            |
 
   Scenario: Raising An Intent To A Non-Running App
     When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "libraryApp"
@@ -88,19 +95,9 @@ Feature: Raising Intents
 
   Scenario: Raising An Intent To A Non-Running App without A Context Type in the listener
     When "App1/a1" raises an intent for "stampBook" with contextType "fdc3.book" on app "libraryApp"
-    And "uuid-0" sends validate
-    And "libraryApp/uuid-0" registers an intent listener for "stampBook"
     Then messaging will have outgoing posts
-      | msg.matches_type          | msg.payload.intent | to.instanceId | to.appId   | msg.payload.context.type |
-      | addIntentListenerResponse | {null}             | uuid-0        | libraryApp | {null}                   |
-      | intentEvent               | stampBook          | uuid-0        | libraryApp | fdc3.book                |
-      | raiseIntentResponse       | {null}             | a1            | App1       | {null}                   |
-    And running apps will be
-      | appId           | instanceId |
-      | uniqueIntentApp | c1         |
-      | listenerApp     | b1         |
-      | App1            | a1         |
-      | libraryApp      | uuid-0     |
+      | msg.payload.error | msg.type            |
+      | NoAppsFound       | raiseIntentResponse |
 
   Scenario: Raising An Intent To A Broken App that doesn't add an intent listener
     When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "libraryApp"

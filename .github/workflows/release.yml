@@ -24,7 +24,7 @@ jobs:
       - name: Configure Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Install dependencies
         run: npm ci
@@ -38,12 +38,15 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Verify version consistency across workspaces
+        run: npm run version-check
+
       # Compute prerelease flag & desired dist-tag from top-level package.json version
       - name: Determine prerelease tag
         id: version
         run: |
           set -euo pipefail
-          VERSION="$(node -p 'require("./package.json").version')"
+          VERSION="$(node -p 'JSON.parse(require("fs").readFileSync("./package.json","utf8")).version')"
           echo "Detected version: $VERSION"
 
           # If version contains a hyphen, it's a prerelease (e.g., 1.2.3-alpha.1)
@@ -57,11 +60,22 @@ jobs:
             echo "This is a stable release. Will use tag 'latest'."
           fi
 
-      # Create tarballs for each workspace so we can publish the exact same artifacts twice
-      - name: Pack workspaces
+      # Create tarballs for each public workspace so we can publish the exact same artifacts twice
+      - name: Pack workspaces (skip private)
         run: |
           set -euo pipefail
-          npm pack --workspaces
+          for ws in $(node -e '
+            const fs = require("fs");
+            const read = (p) => JSON.parse(fs.readFileSync(p, "utf8"));
+            const root = read("./package.json");
+            for (const dir of root.workspaces || []) {
+              const pkg = read("./" + dir + "/package.json");
+              if (!pkg.private) console.log(dir);
+            }
+          '); do
+            echo "Packing $ws ..."
+            npm pack --workspace "$ws"
+          done
           echo "Packed tarballs:"
           ls -1 *.tgz
 
@@ -79,6 +93,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_and_pack
     steps:
+      - name: Checkout repo (required for npm provenance)
+        uses: actions/checkout@v4
+
       - name: Download packed artifacts
         uses: actions/download-artifact@v4
         with:
@@ -88,7 +105,7 @@ jobs:
       - name: Configure Node for npmjs.org
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           registry-url: https://registry.npmjs.org
           always-auth: true
 
@@ -99,7 +116,7 @@ jobs:
         run: |
           set -euo pipefail
           shopt -s nullglob
-          for tgz in dist-tarballs/*.tgz; do
+          for tgz in ./dist-tarballs/*.tgz; do
             echo "Publishing $tgz to npmjs.org with tag '${PUBLISH_TAG}' ..."
             # --access public needed for first publish of public packages
             npm publish "$tgz" --provenance --access public --tag "${PUBLISH_TAG}"
@@ -119,7 +136,7 @@ jobs:
       - name: Configure Node for GitHub Packages
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           registry-url: https://npm.pkg.github.com
           scope: '@finos'
           always-auth: true
@@ -131,7 +148,8 @@ jobs:
         run: |
           set -euo pipefail
           shopt -s nullglob
-          for tgz in dist-tarballs/*.tgz; do
+          for tgz in ./dist-tarballs/*.tgz; do
             echo "Publishing $tgz to GitHub Packages with tag '${PUBLISH_TAG}' ..."
             # GitHub Packages does not support npm provenance; omit --provenance and --access
             npm publish "$tgz" --tag "${PUBLISH_TAG}"
+          done
