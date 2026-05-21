@@ -2,7 +2,8 @@ import { When } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
 import { createMeta } from './generic.steps.js';
 import {} from '@finos/fdc3-standard';
-import { handleResolve, parseAntiReplayClaims } from '@finos/testing';
+import { handleResolve } from '@robmoffat/standard-cucumber-steps';
+import { parseAntiReplayClaims } from '../support/parseAntiReplayClaims.js';
 import { contextMap } from './generic.steps.js';
 import { BrowserTypes } from '@finos/fdc3-schema';
 

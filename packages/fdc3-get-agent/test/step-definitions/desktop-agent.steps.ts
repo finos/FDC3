@@ -1,7 +1,6 @@
 import { After, Given, Then, When } from 'quickpickle';
 import { DataTable } from '@cucumber/cucumber';
 import { CustomWorld } from '../world/index.js';
-import { doesRowMatch, handleResolve } from '@finos/testing';
 import { MockDocument } from '../support/MockDocument.js';
 import { MockWindow } from '../support/MockWindow.js';
 import { fdc3Ready, getAgent } from '../../src/index.js';
@@ -19,6 +18,7 @@ import { clearAgentPromise } from '../../src/strategies/getAgent.js';
 import { expect } from 'vitest';
 import { dummyInstanceDetails } from '../support/TestServerContext.js';
 import { MockIFrame } from '../support/MockIFrame.js';
+import { doesRowMatch, getJobsMap, handleResolve } from '@robmoffat/standard-cucumber-steps';
 
 interface MockPageTransitionEvent extends Event {
   persisted?: boolean;
@@ -265,36 +265,38 @@ When('I call getAgent for a promise result', (world: CustomWorld) => {
   }
 });
 
-When('I call fdc3Ready for a promise result', (world: CustomWorld) => {
-  try {
-    world.props['result'] = fdc3Ready();
-  } catch (error) {
-    world.props['result'] = error;
-  }
+When('I call fdc3Ready as {string}', (world: CustomWorld, jobName: string) => {
+  const jobs = getJobsMap(world) as Map<string, Promise<DesktopAgent>>;
+  jobs.set(
+    jobName,
+    Promise.resolve().then(() => fdc3Ready())
+  );
+  world.props['result'] = jobs.get(jobName);
 });
 
-After((world: CustomWorld) => {
+After(async () => {
   console.log('    Cleaning up test infrastructure');
   clearAgentPromise();
   MockDocument.shutdownAllDocuments();
 });
 
-When('I call getAgent for a promise result with the following options', (world: CustomWorld, dt: DataTable) => {
-  try {
-    const first = dt.hashes()[0];
-    const toArgs: GetAgentParams = Object.fromEntries(
-      Object.entries(first).map(([k, v]) => {
-        const val = handleResolve(v, world);
-        const val2 = isNaN(val) ? val : Number(val);
-        const val3 = val2 === 'true' ? true : val2 === 'false' ? false : val2;
-        return [k, val3];
-      })
-    );
-    toArgs.logLevels = loggingSettings;
-    world.props['result'] = getAgent(toArgs);
-  } catch (error) {
-    world.props['result'] = error;
-  }
+When('I call getAgent as {string} with the following options', (world: CustomWorld, jobName: string, dt: DataTable) => {
+  const jobs = getJobsMap(world) as Map<string, Promise<DesktopAgent>>;
+  const first = dt.hashes()[0];
+  const toArgs: GetAgentParams = Object.fromEntries(
+    Object.entries(first).map(([k, v]) => {
+      const val = handleResolve(v, world);
+      const val2 = isNaN(val) ? val : Number(val);
+      const val3 = val2 === 'true' ? true : val2 === 'false' ? false : val2;
+      return [k, val3];
+    })
+  );
+  toArgs.logLevels = loggingSettings;
+  jobs.set(
+    jobName,
+    Promise.resolve().then(() => getAgent(toArgs))
+  );
+  world.props['result'] = jobs.get(jobName);
 });
 
 Given(

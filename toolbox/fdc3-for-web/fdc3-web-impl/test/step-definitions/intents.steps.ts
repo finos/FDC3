@@ -3,7 +3,8 @@ import { DataTable } from '@cucumber/cucumber';
 import { CustomWorld } from '../world/index.js';
 import { DirectoryApp } from '../../src/directory/DirectoryInterface.js';
 import { APP_FIELD, contextMap, createMeta } from './generic.steps.js';
-import { handleResolve, parseAntiReplayClaims } from '@finos/testing';
+import { handleResolve } from '@robmoffat/standard-cucumber-steps';
+import { parseAntiReplayClaims } from '../support/parseAntiReplayClaims.js';
 import { BrowserTypes } from '@finos/fdc3-schema';
 
 type FindIntentRequest = BrowserTypes.FindIntentRequest;

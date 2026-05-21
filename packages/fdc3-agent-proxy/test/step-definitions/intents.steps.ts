@@ -1,6 +1,7 @@
 import { Given } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
-import { handleResolve, parseAntiReplayClaims } from '@finos/testing';
+import { handleResolve } from '@robmoffat/standard-cucumber-steps';
+import { parseAntiReplayClaims } from '../support/parseAntiReplayClaims.js';
 import { Context } from '@finos/fdc3-context';
 import { ContextMetadata, ResolveError } from '@finos/fdc3-standard';
 import { IntentEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';

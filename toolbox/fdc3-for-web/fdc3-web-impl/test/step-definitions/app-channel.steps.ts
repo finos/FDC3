@@ -1,7 +1,7 @@
 import { When } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
 import { createMeta } from './generic.steps.js';
-import { handleResolve } from '@finos/testing';
+import { handleResolve } from '@robmoffat/standard-cucumber-steps';
 import { BrowserTypes } from '@finos/fdc3-schema';
 type GetOrCreateChannelRequest = BrowserTypes.GetOrCreateChannelRequest;
 

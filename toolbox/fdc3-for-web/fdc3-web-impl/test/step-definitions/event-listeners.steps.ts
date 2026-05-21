@@ -2,7 +2,7 @@ import { When } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
 import { createMeta } from './generic.steps.js';
 import {} from '@finos/fdc3-standard';
-import { handleResolve } from '@finos/testing';
+import { handleResolve } from '@robmoffat/standard-cucumber-steps';
 import { BrowserTypes } from '@finos/fdc3-schema';
 
 type AddEventListenerRequest = BrowserTypes.AddEventListenerRequest;

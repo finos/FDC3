@@ -7,11 +7,10 @@ Feature: Different Strategies for Accessing the Desktop Agent
   Scenario: Running inside a Browser and using post message with direct message ports and no identityUrl
     Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response
     And we wait for a period of "200" ms
-    And I call getAgent for a promise result with the following options
+    And I call getAgent as "theAPIPromise" with the following options
       | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
       | true              |    8000 | false          | false           |
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise"
     And I refer to "{result}" as "desktopAgent"
     And I call "{desktopAgent}" with "getInfo"
     Then "{result}" is an object with the following contents
@@ -31,11 +30,10 @@ Feature: Different Strategies for Accessing the Desktop Agent
   Scenario: Running inside a Browser and using post message, direct message ports, no identityUrl and default UI URLs
     Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response and uses default UI URLs
     And we wait for a period of "200" ms
-    And I call getAgent for a promise result with the following options
+    And I call getAgent as "theAPIPromise" with the following options
       | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
       | true              |    8000 | false          | false           |
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise"
     And I refer to "{result}" as "desktopAgent"
     And I call "{desktopAgent}" with "getInfo"
     Then "{result}" is an object with the following contents
@@ -55,11 +53,10 @@ Feature: Different Strategies for Accessing the Desktop Agent
   Scenario: Connecting with a specified identityUrl
     Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response
     And we wait for a period of "200" ms
-    And I call getAgent for a promise result with the following options
+    And I call getAgent as "theAPIPromise" with the following options
       | dontSetWindowFdc3 | identityUrl                              | timeoutMs | intentResolver | channelSelector |
       | true              | https://dummyOrigin.test/alternativePath | 8000      | false          | false           |
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise"
     And I refer to "{result}" as "desktopAgent"
     And I call "{desktopAgent}" with "getInfo"
     Then "{result}" is an object with the following contents
@@ -76,31 +73,28 @@ Feature: Different Strategies for Accessing the Desktop Agent
   Scenario: Connecting with an unknown identityUrl fails
     Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response
     And we wait for a period of "200" ms
-    And I call getAgent for a promise result with the following options
+    And I call getAgent as "theAPIPromise" with the following options
       | dontSetWindowFdc3 | identityUrl                     | timeoutMs | intentResolver | channelSelector |
       | true              | "https://bad.identity.com/path" | 4000      | false          | false           |
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise"
     And "{result}" is an error with message "AccessDenied"
 
 Scenario: Connecting but identity validation times out
     Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response, but times out identity validation
     And we wait for a period of "200" ms
-    And I call getAgent for a promise result with the following options
+    And I call getAgent as "theAPIPromise" with the following options
       | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
       | true              | 2000      | false          | false           |
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise"
     And "{result}" is an error with message "ErrorOnConnect"
 
   Scenario: Running inside a Browser using the embedded iframe strategy
     Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns iframe response
     And we wait for a period of "200" ms
-    And I call getAgent for a promise result with the following options
+    And I call getAgent as "theAPIPromise" with the following options
       | dontSetWindowFdc3 | timeoutMs |
       | false             |    8000 |
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise"
     And I refer to "{result}" as "desktopAgent"
     And I call "{desktopAgent}" with "getInfo"
     Then "{result}" is an object with the following contents
@@ -132,11 +126,10 @@ Scenario: Connecting but identity validation times out
     In this scenario, window.fdc3 is set by the electron container and returned by getAgent
 
     Given A Dummy Desktop Agent in "dummy-api"
-    And I call fdc3Ready for a promise result
-    And I refer to "{result}" as "theAPIPromise"
+    And I call fdc3Ready as "theAPIPromise"
     And we wait for a period of "500" ms
     And `window.fdc3` is injected into the runtime with the value in "{dummy-api}"
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise"
     And I call "{result}" with "getInfo"
     Then "{result}" is an object with the following contents
       | fdc3Version | appMetadata.appId | provider          |
@@ -146,11 +139,10 @@ Scenario: Connecting but identity validation times out
     In this scenario, window.fdc3 is set by the electron container and returned by getAgent
 
     Given A Dummy Desktop Agent in "dummy-api"
-    And I call fdc3Ready for a promise result
-    And I refer to "{result}" as "theAPIPromise"
+    And I call fdc3Ready as "theAPIPromise"
     And we wait for a period of "100" ms
     And `window.fdc3` is injected into the runtime with the value in "{dummy-api}" and fdc3Ready is fired
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise"
     And I call "{result}" with "getInfo"
     Then "{result}" is an object with the following contents
       | fdc3Version | appMetadata.appId | provider          |
@@ -161,9 +153,8 @@ Scenario: Connecting but identity validation times out
 
     Given A Dummy Desktop Agent in "dummy-api"
     And `window.fdc3` is injected into the runtime with the value in "{dummy-api}"
-    And I call fdc3Ready for a promise result
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I call fdc3Ready as "theAPIPromise"
+    And I wait for job "theAPIPromise"
     And I call "{result}" with "getInfo"
     Then "{result}" is an object with the following contents
       | fdc3Version | appMetadata.appId | provider          |
@@ -171,12 +162,11 @@ Scenario: Connecting but identity validation times out
 
   Scenario: Failover Strategy returning desktop agent
     Given A Dummy Desktop Agent in "dummy-api"
-    And "dummyFailover" is a function which returns a promise of "{dummy-api}"
-    And I call getAgent for a promise result with the following options
+    And "dummyFailover" is an async function returning "{dummy-api}"
+    And I call getAgent as "theAPIPromise" with the following options
       | failover        | timeoutMs |
       | {dummyFailover} |      1000 |
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise"
     And I call "{result}" with "getInfo"
     Then "{result}" is an object with the following contents
       | fdc3Version | appMetadata.appId | provider          |
@@ -184,11 +174,10 @@ Scenario: Connecting but identity validation times out
 
   Scenario: Failover Strategy returning a proxy
     Given "dummyFailover2" is a function which opens an iframe for communications on "{childDoc}"
-    And I call getAgent for a promise result with the following options
+    And I call getAgent as "theAPIPromise" with the following options
       | failover         | timeoutMs |
       | {dummyFailover2} |      1000 |
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise"
     And I refer to "{result}" as "desktopAgent"
     And I call "{desktopAgent}" with "getInfo"
     Then "{result}" is an object with the following contents
@@ -197,29 +186,26 @@ Scenario: Connecting but identity validation times out
     And I call "{desktopAgent}" with "disconnect"
 
   Scenario: Failover Strategy returning an invalid result
-    Given "invalidFailover" is a function which returns a promise of "some string"
-    And I call getAgent for a promise result with the following options
+    Given "invalidFailover" is an async function returning "some string"
+    And I call getAgent as "theAPIPromise" with the following options
       | failover        | timeoutMs |
       | {invalidFailover} |      1000 |
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise"
     And "{result}" is an error with message "InvalidFailover"
 
   Scenario: Failover that is not a function
-    Given I call getAgent for a promise result with the following options
+    Given I call getAgent as "theAPIPromise" with the following options
       | failover        | timeoutMs |
       | "some string" |      1000 |
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise"
     And "{result}" is an error with message "InvalidFailover"
 
   Scenario: Failover with identity validation timeout
     Given "dummyFailover2" is a function which opens an iframe for communications on "{childDoc}" but times out identity validation
-    And I call getAgent for a promise result with the following options
+    And I call getAgent as "theAPIPromise" with the following options
       | failover         | timeoutMs |
       | {dummyFailover2} |      1000 |
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve within 10 seconds
+    And I wait for job "theAPIPromise" within "10000" ms
     And "{result}" is an error with message "ErrorOnConnect"
 
   Scenario: Recover adaptor URL from SessionStorage
@@ -230,11 +216,10 @@ Scenario: Connecting but identity validation times out
     And an existing app instance in "instanceID"
     And SessionStorage contains instanceUuid "some-instance-uuid", appId "cucumber-app" with identityUrl "https://dummyOrigin.test/path", agentType "PROXY_URL" and agentUrl "http://localhost:8080/static/da/embed.html"
     And we wait for a period of "200" ms
-    And I call getAgent for a promise result with the following options
+    And I call getAgent as "theAPIPromise" with the following options
       | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
       | true              |      8000 | false          | false           |
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise"
     And I refer to "{result}" as "desktopAgent"
     And I call "{desktopAgent}" with "getInfo"
     Then "{result}" is an object with the following contents
@@ -248,13 +233,12 @@ Scenario: Go straight to (preload) failover as directed by SessionStorage
   to do discovery and going straight to failover.
 
     Given A Dummy Desktop Agent in "dummy-api"
-    And "dummyFailover" is a function which returns a promise of "{dummy-api}"
+    And "dummyFailover" is an async function returning "{dummy-api}"
     And SessionStorage contains instanceUuid "uuid-0", appId "cucumber-app" with identityUrl "https://dummyOrigin.test/path", agentType "FAILOVER" and agentUrl "{undefined}"
-    And I call getAgent for a promise result with the following options
+    And I call getAgent as "theAPIPromise" with the following options
       | failover        | timeoutMs |
       | {dummyFailover} |      1000 |
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise"
     And I call "{result}" with "getInfo"
     Then "{result}" is an object with the following contents
       | fdc3Version | appMetadata.appId | provider          |
@@ -268,15 +252,14 @@ Scenario: Go straight to (preload) failover as directed by SessionStorage
   to do discovery and going straight to failover.
 
     Given "dummyFailover2" is a function which opens an iframe for communications on "{childDoc}"
-    And I call getAgent for a promise result with the following options
+    And I call getAgent as "theAPIPromise1" with the following options
       | failover         | timeoutMs |
       | {dummyFailover2} |      1000 |
     And SessionStorage contains instanceUuid "uuid-0", appId "cucumber-app" with identityUrl "https://dummyOrigin.test/path", agentType "FAILOVER" and agentUrl "{undefined}"
-    And I call getAgent for a promise result with the following options
+    And I call getAgent as "theAPIPromise2" with the following options
       | failover        | timeoutMs |
       | {dummyFailover} |      1000 |
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise2"
     And I call "{result}" with "getInfo"
     Then "{result}" is an object with the following contents
       | fdc3Version | appMetadata.appId | provider          |
@@ -293,11 +276,10 @@ Scenario: Go straight to (preload) failover as directed by SessionStorage
     And an existing app instance in "instanceID"
     And SessionStorage contains corrupted data
     And we wait for a period of "200" ms
-    And I call getAgent for a promise result with the following options
+    And I call getAgent as "theAPIPromise" with the following options
       | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
       | true              |      8000 | false          | false           |
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise"
     And I refer to "{result}" as "desktopAgent"
     And I call "{desktopAgent}" with "getInfo"
     Then "{result}" is an object with the following contents
@@ -312,11 +294,10 @@ Scenario: Go straight to (preload) failover as directed by SessionStorage
     And an existing app instance in "instanceID"
     And SessionStorage contains partial data with with identityUrl "https://dummyOrigin.test/path", appId "cucumber-app" and agentType "PROXY_PARENT"
     And we wait for a period of "200" ms
-    And I call getAgent for a promise result with the following options
+    And I call getAgent as "theAPIPromise" with the following options
       | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
       | true              |      8000 | false          | false           |
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise"
     And I refer to "{result}" as "desktopAgent"
     And I call "{desktopAgent}" with "getInfo"
     Then "{result}" is an object with the following contents
@@ -332,9 +313,8 @@ Scenario: Go straight to (preload) failover as directed by SessionStorage
     And Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response
     And SessionStorage contains instanceUuid "{instanceID}", appId "cucumber-app" with identityUrl "https://dummyOrigin.test/path" and agentType "PROXY_PARENT"
     And `window.fdc3` is injected into the runtime with the value in "{dummy-api}"
-    And I call fdc3Ready for a promise result
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I call fdc3Ready as "theAPIPromise"
+    And I wait for job "theAPIPromise"
     And I refer to "{result}" as "desktopAgent"
     And I call "{desktopAgent}" with "getInfo"
     Then "{result}" is an object with the following contents
@@ -348,11 +328,10 @@ Scenario: Go straight to (preload) failover as directed by SessionStorage
     Given A Dummy Desktop Agent in "dummy-api"
     And Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response
     And SessionStorage contains instanceUuid "{instanceID}", appId "cucumber-app" with identityUrl "https://dummyOrigin.test/path" and agentType "PRELOAD"
-    And I call fdc3Ready for a promise result
-    And I refer to "{result}" as "theAPIPromise"
+    And I call fdc3Ready as "theAPIPromise"
     And we wait for a period of "500" ms
     And `window.fdc3` is injected into the runtime with the value in "{dummy-api}"
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise"
     And I refer to "{result}" as "desktopAgent"
     And I call "{desktopAgent}" with "getInfo"
     Then "{result}" is an object with the following contents
@@ -364,11 +343,10 @@ Scenario: Latch to Desktop Agent Preload via SessionStorage which has gone away
   same Desktop Agent type (preload) - the connection should fail.
     Given SessionStorage contains instanceUuid "{instanceID}", appId "cucumber-app" with identityUrl "https://dummyOrigin.test/path" and agentType "PRELOAD"
     And Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response
-    And I call getAgent for a promise result with the following options
+    And I call getAgent as "theAPIPromise" with the following options
       | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
       | true              |    3000   | false          | false           |
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise"
     And "{result}" is an error with message "AgentNotFound"
 
   Scenario: Ignore invalid agentType in SessionStorage
@@ -377,9 +355,8 @@ Scenario: Latch to Desktop Agent Preload via SessionStorage which has gone away
     Given A Dummy Desktop Agent in "dummy-api"
     And SessionStorage contains instanceUuid "{instanceID}", appId "cucumber-app" with identityUrl "https://dummyOrigin.test/path" and agentType "SPOON"
     And `window.fdc3` is injected into the runtime with the value in "{dummy-api}"
-    And I call fdc3Ready for a promise result
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I call fdc3Ready as "theAPIPromise"
+    And I wait for job "theAPIPromise"
     And I refer to "{result}" as "desktopAgent"
     And I call "{desktopAgent}" with "getInfo"
     Then "{result}" is an object with the following contents
@@ -387,27 +364,24 @@ Scenario: Latch to Desktop Agent Preload via SessionStorage which has gone away
       |         2.0 | cucumber-app      | preload-provider |
 
   Scenario: Nothing works and we timeout
-    When I call getAgent for a promise result with the following options
+    When I call getAgent as "theAPIPromise" with the following options
       | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
       | true              |      4000 | false          | false           |
-    And I refer to "{result}" as "theAPIPromise"
-    Then the promise "{theAPIPromise}" should resolve
+    And I wait for job "theAPIPromise"
     And "{result}" is an error with message "AgentNotFound"
 
   Scenario: Someone calls getAgent twice
     Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response
     And we wait for a period of "200" ms
-    And I call getAgent for a promise result with the following options
+    And I call getAgent as "theAPIPromise1" with the following options
       | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
       | true              |      8000 | false          | false           |
-    And I refer to "{result}" as "theAPIPromise1"
-    And I call getAgent for a promise result with the following options
+    And I call getAgent as "theAPIPromise2" with the following options
       | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
       | true              |      8000 | false          | false           |
-    And I refer to "{result}" as "theAPIPromise2"
-    Then the promise "{theAPIPromise1}" should resolve
+    And I wait for job "theAPIPromise1"
     And I refer to "{result}" as "desktopAgent1"
-    And the promise "{theAPIPromise2}" should resolve
+    And I wait for job "theAPIPromise2"
     And I refer to "{result}" as "desktopAgent2"
     And "{desktopAgent1}" is "{desktopAgent2}"
     And I call "{desktopAgent1}" with "disconnect"

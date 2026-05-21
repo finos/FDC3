@@ -2,7 +2,7 @@ import { Then } from 'quickpickle';
 import { DataTable } from '@cucumber/cucumber';
 import { CustomWorld } from '../world/index.js';
 import { expect } from 'vitest';
-import { matchData } from '@finos/testing';
+import { matchData } from '@robmoffat/standard-cucumber-steps';
 
 Then('messaging will have outgoing posts', (world: CustomWorld, dt: DataTable) => {
   const matching = dt.rows().length;

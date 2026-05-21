@@ -1,12 +1,26 @@
+/*
+ * Copyright 2026 FINOS, The Fintech Open Source Foundation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import { AppIntent, Channel, IntentResult } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { IntentResolver, IntentResolutionChoice, ChannelSelector } from '@finos/fdc3-standard';
-import { PropsWorldLike } from '../world/PropsWorldLike.js';
+import type { PropsWorldLike } from '@robmoffat/standard-cucumber-steps';
 
-/**
- * This super-simple intent resolver just resolves to the first
- * intent / app in the list, unless the context is fdc3.cancel-me  and then it just cancels.
- */
+export const CHANNEL_STATE = 'CHANNEL_STATE';
+
 export class SimpleIntentResolver implements IntentResolver {
   cw: PropsWorldLike;
 
@@ -40,8 +54,6 @@ export class SimpleIntentResolver implements IntentResolver {
     };
   }
 }
-
-export const CHANNEL_STATE = 'CHANNEL_STATE';
 
 export class SimpleChannelSelector implements ChannelSelector {
   cw: PropsWorldLike;
