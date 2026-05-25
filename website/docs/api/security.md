@@ -394,26 +394,26 @@ The token is scoped to a specific application (`aud`) to prevent token reuse if 
 
 1. The requester raises the [`GetUser`](../intents/ref/GetUser.md) intent with a signed [`fdc3.security.userRequest`](../context/ref/security/UserRequest) context. The context includes an `aud` field (the audience claim for the returned JWT—typically the requesting app's URL). The request must be signed to prevent forgery by third parties.
 
-2. The IDP verifies the requester's signature on the request.
+2. The application providing identity (IDP App) verifies the requester's signature on the request.
 
-3. The IDP creates a JWT containing the claims described above, scoped to the requested audience.
+3. The IDP App creates a JWT containing the claims described above, scoped to the requested audience.
 
-4. The IDP wraps the JWT with the requester's public key and returns the `fdc3.security.user` context as the intent result.
+4. The IDP App wraps the JWT with the requester's public key and returns the `fdc3.security.user` context as the intent result.
 
 5. The requester decrypts the wrapped JWT with their private key and verifies the JWT signature using the IDP's public keys (from `{idpBaseUrl}/.well-known/jwks.json`). It also verifies expiry and must verify that the `jti` has not been used recently (i.e. in the expiry window)
 
 ```mermaid
 sequenceDiagram
-    participant Application
-    participant IDP
-    Application->>IDP: GetUser Intent Request
-    note right of IDP: Verify requesting application signature
-    note right of IDP: Generate scoped JWT
-    note right of IDP: Wrap JWT with requesting app's public key
-    IDP->>Application: GetUser Intent Reply
-    note left of Application: Unwrap JWT
-    note left of Application: Verify JWT
-    note left of Application: Authenticate user
+    participant Requesting App
+    participant IDP App
+    Requesting App->>IDP App: GetUser Intent Request
+    note right of IDP App: Verify requesting app signature
+    note right of IDP App: Generate scoped JWT
+    note right of IDP App: Wrap JWT with requesting app's public key
+    IDP App->>Requesting App: GetUser Intent Reply
+    note left of Requesting App: Unwrap JWT
+    note left of Requesting App: Verify JWT
+    note left of Requesting App: Authenticate user
 ```
 
 ### Token Security
