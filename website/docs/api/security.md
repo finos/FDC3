@@ -100,7 +100,7 @@ Trust is determined and enforced by applications, not by the Desktop Agent. Each
 
 ### Trust Function
 
-Receiving apps provide an `allowListFunction(jku, iss?)` when configuring their security layer. This function determines whether a signer is trusted: given the signer's JWKS URL (`jku`) from the JWS header—and optionally the issuer (`iss`) for JWT verification—it returns `true` if the signer is in the receiver's circle of trust. When verifying a signature, the security layer sets `authenticity.trusted` to the result of this function, so apps can decide who they trust without bilateral configuration.
+Receiving Apps provide an `allowListFunction(jku, iss?)` when configuring their security layer. This function determines whether a signer is trusted: given the signer's JWKS URL (`jku`) from the JWS header—and optionally the issuer (`iss`) for JWT verification—it returns `true` if the signer is in the receiver's circle of trust. When verifying a signature, the security layer sets `authenticity.trusted` to the result of this function, so apps can decide who they trust without bilateral configuration.
 
 ```typescript
 // Example: allow list for three trusted apps
@@ -137,7 +137,7 @@ const allowListFunction = (jku: string, iss?: string): boolean => {
 
 ### Signing Context Data
 
-Applications can sign the context objects they broadcast using their private key. This allows receiving applications to verify:
+Applications can sign the context objects they broadcast using their private key. This allows Receiving Applications to verify:
 
 1. **Origin**: Which application sent the data
 2. **Integrity**: Whether the data was tampered with in transit
@@ -262,31 +262,31 @@ Both the key request and response **must be signed** (JWS). The key owner uses t
 
 ```mermaid
 sequenceDiagram
-    participant AppA
-    participant AppB
-    AppA->>AppB: View Orders Intent
-    note right of AppB: Generate random symmetric key K
-    note right of AppB: Create private channel C
-    AppB->>AppA: Intent Reply: Private Channel C
-    note left of AppA: Subscribe to Channel C
-    note right of AppB: I have a new order!
-    note right of AppB: Encrypt Order Context with K and sign it with AppB private key
-    AppB->>AppA: Broadcast Encrypted Context
-    note left of AppA: Context is encrypted!
-    note left of AppA: Verify signature of context with AppB public key
-    note left of AppA: Signature valid, I need the channel key
-    AppA->>AppB: Key Request Intent for Channel C
-    note right of AppB: Wrap K with AppA public key
-    AppB->>AppA: K wrapped in AppA public key
-    note left of AppA: Unwrap with AppA private key
-    note left of AppA: I now have K, I can decrypt encrypted contexts on this channel :)
-    note left of AppA: Decrypt encrypted context with K
-    note right of AppB: I have a new order!
-    note right of AppB: Encrypt Order Context with K and sign it with AppB private key
-    AppB->>AppA: Broadcast Encrypted Context
-    note left of AppA: Context is encrypted!
-    note left of AppA: Verify signature of context with AppB public key
-    note left of AppA: Decrypt encrypted context with K
+    participant Subscribing App
+    participant Broadcasting App
+    Subscribing App->>Broadcasting App: View Orders Intent
+    note right of Broadcasting App: Generate random symmetric key K
+    note right of Broadcasting App: Create private channel C
+    Broadcasting App->>Subscribing App: Intent Reply: Private Channel C
+    note left of Subscribing App: Subscribe to Channel C
+    note right of Broadcasting App: I have a new order!
+    note right of Broadcasting App: Encrypt Order Context with K and sign it with Broadcasting App private key
+    Broadcasting App->>Subscribing App: Broadcast Encrypted Context
+    note left of Subscribing App: Context is encrypted!
+    note left of Subscribing App: Verify signature of context with Broadcasting App public key
+    note left of Subscribing App: Signature valid, I need the channel key
+    Subscribing App->>Broadcasting App: Key Request Intent for Channel C
+    note right of Broadcasting App: Wrap K with Subscribing App public key
+    Broadcasting App->>Subscribing App: K wrapped in Subscribing App public key
+    note left of Subscribing App: Unwrap with Subscribing App private key
+    note left of Subscribing App: I now have K, I can decrypt encrypted contexts on this channel :)
+    note left of Subscribing App: Decrypt encrypted context with K
+    note right of Broadcasting App: I have a new order!
+    note right of Broadcasting App: Encrypt Order Context with K and sign it with Broadcasting App private key
+    Broadcasting App->>Subscribing App: Broadcast Encrypted Context
+    note left of Subscribing App: Context is encrypted!
+    note left of Subscribing App: Verify signature of context with Broadcasting App public key
+    note left of Subscribing App: Decrypt encrypted context with K
 ```
 
 #### Context Types
@@ -339,7 +339,7 @@ channel.broadcast(
 
 ## User Identity
 
-In a multi-app FDC3 environment, applications often need to know who the user is—for personalization, access control, audit trails, or to share session state across tools. Instead of each app authenticating the user separately, an **Identity Provider (IDP)** can issue a portable, verifiable identity that any trusted app can consume. The IDP signs a JWT containing user claims; receiving apps verify the signature and trust the identity. 
+In a multi-app FDC3 environment, applications often need to know who the user is—for personalization, access control, audit trails, or to share session state across tools. Instead of each app authenticating the user separately, an **Identity Provider (IDP)** can issue a portable, verifiable identity that any trusted app can consume. The IDP signs a JWT containing user claims; Receiving Apps verify the signature and trust the identity. 
 
 **Audience scoping** ensures each JWT is bound to a specific requesting application (`aud`), so if a token is intercepted, it cannot be reused by another app. This enables single sign-on (SSO) across FDC3 applications while keeping tokens narrowly scoped.
 

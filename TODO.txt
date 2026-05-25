@@ -10,6 +10,7 @@
 13. Talk to Yannick about the get user process. (DONE)
 15. Document allowList function. (RM)
 31. Describe IDP as "IDP App".  or FDC3 IDP App. (DONE)
+34. AppA -> ReceiverApp AppB-> BroadcasterApp (DONE)
 
 For Thursday
 ------------
@@ -51,5 +52,4 @@ Next
 
 32. Add a note to the namespacing section "All well-known types at FDC3 level are prefixed with fdc3."  Mention other dictionaries, e.g. fdc3.retail.
 33. Do we even need to mention private channels?  Also the listener should block
-34. AppA -> ReceiverApp AppB-> BroadcasterApp
 35. Make it clear we're broadcasting on the channel.
