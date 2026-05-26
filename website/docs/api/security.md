@@ -407,6 +407,7 @@ The token is scoped to a specific application (`aud`) to prevent token reuse if 
 sequenceDiagram
     participant Requesting App
     participant IDP App
+    note right of IDP App: Register intent listener for GetUser
     Requesting App->>IDP App: GetUser Intent Request
     note right of IDP App: Verify requesting app signature
     note right of IDP App: Generate scoped JWT

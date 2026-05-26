@@ -12,6 +12,7 @@
 31. Describe IDP as "IDP App".  or FDC3 IDP App. (DONE)
 34. AppA -> ReceiverApp AppB-> BroadcasterApp (DONE)
 27. Encrypted context addContextListener (DONE)
+28.  fdc3.security.user listener (DONE)
 
 For Thursday
 ------------
@@ -47,7 +48,7 @@ Next
 25. Use sender / receiver.
 26. "--some encrypted content --" -- improve this description
 
-28.  fdc3.security.user listener
+
 29. Tokens SHOULD be transmitted over encrypted channels when possible - > should be a response to an intent.
 30. Update the Glossary
 
