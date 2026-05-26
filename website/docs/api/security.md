@@ -212,14 +212,14 @@ When a signed context is received, the FDC3 security layer verifies the signatur
 }
 ```
 
-Applications receiving context can check these fields to make trust decisions:
+Applications receiving context can then check these fields to make trust decisions:
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 fdc3.addContextListener("fdc3.instrument", (context, metadata) => {
-  const auth = metadata?.authenticity;
+  const auth = metadata?.authenticity; // set by signature checker in security layer
 
   if (!auth?.signed) {
     // No signature present - treat as untrusted
@@ -244,9 +244,9 @@ fdc3.addContextListener("fdc3.instrument", (context, metadata) => {
 
 ## Encrypted Communications
 
-### Private Channel Encryption
+### Channel Encryption
 
-Applications communicating over a [`PrivateChannel`](ref/PrivateChannel) can negotiate encryption to ensure their communications remain confidential. This is particularly important when sharing sensitive data such as positions, pricing, or user information.
+Applications communicating over a [`Channel`](ref/Channel) can negotiate encryption to ensure their communications remain confidential. This is particularly important when sharing sensitive data such as positions, pricing, or user information.
 
 ### Symmetric Key Exchange
 
