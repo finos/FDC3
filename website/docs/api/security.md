@@ -264,6 +264,7 @@ Both the key request and response **must be signed** (JWS). The key owner uses t
 sequenceDiagram
     participant Subscribing App
     participant Broadcasting App
+    note left of Subscribing App: App supports secure flows - Add Context Listener for Encrypted Context
     Subscribing App->>Broadcasting App: View Orders Intent
     note right of Broadcasting App: Generate random symmetric key K
     note right of Broadcasting App: Create private channel C
