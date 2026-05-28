@@ -11,6 +11,9 @@
     "tag": "latest"
   },
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22"
+  },
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "module": "dist/fdc3.esm.js",
