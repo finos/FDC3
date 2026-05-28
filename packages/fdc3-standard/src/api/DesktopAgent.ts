@@ -384,15 +384,28 @@ export interface DesktopAgent {
   addIntentListener(intent: Intent, handler: IntentHandler): Promise<Listener>;
 
   /**
-   * Adds a listener for incoming intents raised by other applications, via calls to `fdc3.raiseIntent` or `fdc3.raiseIntentForContext, but filters intents for one or more context types. See `addIntentListener` for details and restrictions for both usage and implementation.
+   * Adds a listener for incoming intents raised by other applications, via calls to `fdc3.raiseIntent` or `fdc3.raiseIntentForContext`, but filtered to one or more context types. The handler will only be invoked when the incoming intent's context `type` matches one of the supplied `contextType` values.
    *
-   * //Handle a raised intent
-   * const listener = fdc3.addIntentListenerWithContext('StartChat', 'fdc3.contact', context => {
-   *     // start chat has been requested by another application
-   *     return;
+   * The `contextType` parameter MAY be either a single context type string or an array of context type strings. See `addIntentListener` for details and restrictions for both usage and implementation that also apply to this method.
+   *
+   * ```js
+   * //Handle a raised intent filtered to a single context type
+   * const listener = await fdc3.addIntentListenerWithContext('StartChat', 'fdc3.contact', context => {
+   *   // start chat has been requested by another application
+   *   return;
    * });
+   *
+   * //Handle a raised intent filtered to multiple context types
+   * const listener = await fdc3.addIntentListenerWithContext(
+   *   'ViewChart',
+   *   ['fdc3.instrument', 'fdc3.instrumentList'],
+   *   context => {
+   *     // view chart has been requested by another application
+   *     return;
+   *   }
+   * );
+   * ```
    */
-
   addIntentListenerWithContext(
     intent: Intent,
     contextType: string | string[],

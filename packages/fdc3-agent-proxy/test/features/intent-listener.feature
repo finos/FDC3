@@ -32,7 +32,7 @@ Feature: Intent Listeners
     And messaging receives "{intentMessageOne}"
     Then "{intents}" is an array of objects with the following contents
       | context.type    | context.name | metadata.source.appId |
-      | fdc3.instrument | Apple        | some-app-id           |
+      | fdc3.instrument | Apple        | cucumber-app          |
     And messaging will have posts
       | type                |
       | intentResultRequest |
@@ -44,7 +44,7 @@ Feature: Intent Listeners
     And messaging receives "{intentMessageOne}"
     Then "{intents}" is an array of objects with the following contents
       | context.type    | context.name | metadata.source.appId |
-      | fdc3.instrument | Apple        | some-app-id           |
+      | fdc3.instrument | Apple        | cucumber-app          |
     And messaging will have posts
       | type                |
       | intentResultRequest |

@@ -135,7 +135,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   * resolves ([#1487](https://github.com/finos/FDC3/issues/1487))
   * resolves ([#1488](https://github.com/finos/FDC3/issues/1488))
 * Adjusted reference Desktop Agent implementation for FDC3 for Web to open a new app instance when raiseIntent is called with an appId but no instanceId ([#1556](https://github.com/finos/FDC3/pull/1556))
-* Added `addIntentListenerWithContext` to `DesktopAgent` and implemented in `DesktopAgentProxy`. Added handling of optional `contextTypes` to reference implementation
+* Added `addIntentListenerWithContext` to `DesktopAgent` and implemented it in `DesktopAgentProxy`. Added an optional `contextTypes` field to the `addIntentListenerRequest` DACP message and handling of it in the reference Desktop Agent implementation (`@finos/fdc3-web-impl`) so that listeners are only invoked for matching context types during intent resolution and delivery. Added documentation in `DesktopAgent.md` and the Desktop Agent Communication Protocol spec, plus Cucumber test coverage in both `@finos/fdc3-agent-proxy` and `@finos/fdc3-web-impl`. Workbench updated to expose the new API.
 
 ### Changed
 
