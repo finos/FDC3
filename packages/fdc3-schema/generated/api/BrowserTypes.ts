@@ -408,6 +408,11 @@ export interface AddIntentListenerRequest {
  */
 export interface AddIntentListenerRequestPayload {
   /**
+   * Optional list of context types that the listener should be invoked for. If omitted, the
+   * listener will be invoked for all context types that match the intent.
+   */
+  contextTypes?: string[];
+  /**
    * The name of the intent to listen for.
    */
   intent: string;
@@ -5066,7 +5071,13 @@ const typeMap: any = {
     ],
     false
   ),
-  AddIntentListenerRequestPayload: o([{ json: 'intent', js: 'intent', typ: '' }], false),
+  AddIntentListenerRequestPayload: o(
+    [
+      { json: 'contextTypes', js: 'contextTypes', typ: u(undefined, a('')) },
+      { json: 'intent', js: 'intent', typ: '' },
+    ],
+    false
+  ),
   AddIntentListenerResponse: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },

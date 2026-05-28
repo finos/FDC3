@@ -384,6 +384,35 @@ export interface DesktopAgent {
   addIntentListener(intent: Intent, handler: IntentHandler): Promise<Listener>;
 
   /**
+   * Adds a listener for incoming intents raised by other applications, via calls to `fdc3.raiseIntent` or `fdc3.raiseIntentForContext`, but filtered to one or more context types. The handler will only be invoked when the incoming intent's context `type` matches one of the supplied `contextType` values.
+   *
+   * The `contextType` parameter MAY be either a single context type string or an array of context type strings. See `addIntentListener` for details and restrictions for both usage and implementation that also apply to this method.
+   *
+   * ```js
+   * //Handle a raised intent filtered to a single context type
+   * const listener = await fdc3.addIntentListenerWithContext('StartChat', 'fdc3.contact', context => {
+   *   // start chat has been requested by another application
+   *   return;
+   * });
+   *
+   * //Handle a raised intent filtered to multiple context types
+   * const listener = await fdc3.addIntentListenerWithContext(
+   *   'ViewChart',
+   *   ['fdc3.instrument', 'fdc3.instrumentList'],
+   *   context => {
+   *     // view chart has been requested by another application
+   *     return;
+   *   }
+   * );
+   * ```
+   */
+  addIntentListenerWithContext(
+    intent: Intent,
+    contextType: string | string[],
+    handler: IntentHandler
+  ): Promise<Listener>;
+
+  /**
    * Adds a listener for incoming context broadcasts from the Desktop Agent (via a User channel or `fdc3.open`API call. If the consumer is only interested in a context of a particular type, they can they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
    *
    * Context broadcasts are primarily received from apps that are joined to the same User Channel as the listening application, hence, if the application is not currently joined to a User Channel no broadcasts will be received from channels. If this function is called after the app has already joined a channel and the channel already contains context that would be passed to the context listener, then it will be called immediately with that context.

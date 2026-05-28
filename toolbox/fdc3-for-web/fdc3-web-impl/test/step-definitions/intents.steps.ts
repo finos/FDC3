@@ -129,7 +129,24 @@ Given(
       meta,
       payload: {
         intent: handleResolve(intent, world),
-        contextType: handleResolve(contextType, world),
+        contextTypes: [handleResolve(contextType, world)],
+      },
+    } as AddIntentListenerRequest;
+    await world.server.receive(message, uuid);
+  }
+);
+
+Given(
+  '{string} registers an intent listener for {string} with contextTypes {string} and {string}',
+  async (world: CustomWorld, appStr: string, intent: string, contextType1: string, contextType2: string) => {
+    const meta = createMeta(world, appStr);
+    const uuid = world.sc.getInstanceUUID(meta.source)!;
+    const message = {
+      type: 'addIntentListenerRequest',
+      meta,
+      payload: {
+        intent: handleResolve(intent, world),
+        contextTypes: [handleResolve(contextType1, world), handleResolve(contextType2, world)],
       },
     } as AddIntentListenerRequest;
     await world.server.receive(message, uuid);
