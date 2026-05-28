@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 * Added Go language binding. ([#1483](https://github.com/finos/FDC3/pull/1483))
-* Added FDC3 API Metadata support to the Go language binding. ([]())
+* Added FDC3 API Metadata support to the Go language binding. ([#1905](https://github.com/finos/FDC3/pull/1905))
 * Added details of and procedures for resolving fully-qualified appIds and unqualified appIds in the API and Bridging Parts of the Standard. ([#1523](https://github.com/finos/FDC3/pull/1523))
 * Added clarification regarding expected behavior upon repeated calls to `addContextListener` on same or overlapping types (allowed) and `addIntentListener` on same intent (rejected; new error type added). ([#1394](https://github.com/finos/FDC3/pull/1394))
 * Added `clearContext` function and associated `contextClearedEvent` to the `Channel` API, to be able to clear specific or all context types from the channel. ([#1379](https://github.com/finos/FDC3/pull/1379))
