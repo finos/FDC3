@@ -118,19 +118,19 @@ type DesktopAgent struct {}
 @experimental
 type IDesktopAgent interface {
     // Apps
-    Open(appIdentifier AppIdentifier, context *IContext) <-chan Result[AppIdentifier]
+    Open(appIdentifier AppIdentifier, context *IContext, metadata *AppProvidableContextMetadata) <-chan Result[AppIdentifier]
     FindInstances(appIdentifier AppIdentifier) <-chan Result[[]AppIdentifier]
     GetAppMetadata(appIdentifier AppIdentifier) <-chan Result[AppIdentifier]
 
     // Context
-    Broadcast(context IContext) <-chan Result[any]
+    Broadcast(context IContext, metadata *AppProvidableContextMetadata) <-chan Result[any]
     AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener]
 
     // Intents
     FindIntent(intent string, context *IContext, resultType *string) <-chan Result[AppIntent]
     FindIntentsByContext(context IContext, resultType *string) <-chan Result[[]AppIntent]
-    RaiseIntent(intent string, context IContext, appIdentifier *AppIdentifier) <-chan Result[IntentResolution]
-    RaiseIntentForContext(context IContext, appIdentifier *AppIdentifier) <-chan Result[IntentResolution]
+    RaiseIntent(intent string, context IContext, appIdentifier *AppIdentifier, metadata *AppProvidableContextMetadata) <-chan Result[IntentResolution]
+    RaiseIntentForContext(context IContext, appIdentifier *AppIdentifier, metadata *AppProvidableContextMetadata) <-chan Result[IntentResolution]
     AddIntentListener(intent string, handler IntentHandler) <-chan Result[Listener]
 
     // Channels
@@ -496,7 +496,7 @@ Task Broadcast(IContext context);
 <TabItem value="golang" label="Go">
 
 ```go
-func (desktopAgent *DesktopAgent) Broadcast(context IContext) <-chan Result[any]  { 
+func (desktopAgent *DesktopAgent) Broadcast(context IContext, metadata *AppProvidableContextMetadata) <-chan Result[any]  { 
   // Implmentation here
 }
 ```
@@ -1699,7 +1699,7 @@ Task<IAppIdentifier> Open(IAppIdentifier app, IContext? context = null);
 <TabItem value="golang" label="Go">
 
 ```go
-func (desktopAgent *DesktopAgent) Open(appIdentifier AppIdentifier, context *IContext) <-chan Result[AppIdentifier] {
+func (desktopAgent *DesktopAgent) Open(appIdentifier AppIdentifier, context *IContext, metadata *AppProvidableContextMetadata) <-chan Result[AppIdentifier] {
   // Implementation here
 }
 ```
@@ -1792,7 +1792,7 @@ Task<IIntentResolution> RaiseIntent(string intent, IContext context, IAppIdentif
 <TabItem value="golang" label="Go">
 
 ```go
-func (desktopAgent *DesktopAgent) RaiseIntent(intent string, context IContext, appIdentifier *AppIdentifier) <-chan Result[IntentResolution] {
+func (desktopAgent *DesktopAgent) RaiseIntent(intent string, context IContext, appIdentifier *AppIdentifier, metadata *AppProvidableContextMetadata) <-chan Result[IntentResolution] {
   // Implementation here
 }
 ```
@@ -1935,7 +1935,7 @@ Task<IIntentResolution> RaiseIntentForContext(IContext context, IAppIdentifier? 
 <TabItem value="golang" label="Go">
 
 ```go
-func (desktopAgent *DesktopAgent) RaiseIntentForContext(context IContext, appIdentifier *AppIdentifier) <-chan Result[IntentResolution] {
+func (desktopAgent *DesktopAgent) RaiseIntentForContext(context IContext, appIdentifier *AppIdentifier, metadata *AppProvidableContextMetadata) <-chan Result[IntentResolution] {
   // Implementation here
 }
 ```
