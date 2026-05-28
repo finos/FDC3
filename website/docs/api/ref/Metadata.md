@@ -938,6 +938,11 @@ type IntentResult any
 func (ir *IntentResolution) GetResult() <-chan Result[IntentResult] {
   // implementation here
 }
+
+// getResultMetadata retrieves the ContextMetadata for the intent result.
+func (resolution *IntentResolution) GetResultMetadata() <-chan Result[ContextMetadata] {
+  // Implementation here
+}
 ```
 
 </TabItem>
@@ -1061,6 +1066,13 @@ If an error occurs (i.e. an error is thrown by the handler function, the promise
 
 ```ts
 getResultMetadata(): Promise<ContextMetadata>;
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (resolution *IntentResolution) GetResultMetadata() <-chan Result[ContextMetadata]
 ```
 
 </TabItem>
