@@ -208,6 +208,8 @@ export const Intents = observer(
     const [currentAppChannelId, setCurrentAppChannelId] = useState<string>('');
     const [targetOptions, setTargetOptions] = useState<ReactElement[]>([]);
     const [targetOptionsforContext, setTargetOptionsforContext] = useState<ReactElement[]>([]);
+    const [filterByContext, setFilterByContext] = useState<boolean>(false);
+    const [listenerContext, setListenerContext] = useState<ContextType | null>(null);
 
     const handleRaiseIntent = async () => {
       setIntentResolution(null);
@@ -463,7 +465,7 @@ export const Intents = observer(
       } else {
         intentStore.addIntentListener(
           intentListener.value,
-          undefined,
+          filterByContext ? toJS(listenerContext) : undefined,
           sendIntentResult && resultType === 'context-result' ? toJS(resultTypeContext) : null,
           sendIntentResult && resultType === 'channel-result' ? currentAppChannelId : undefined,
           sendIntentResult && resultType === 'channel-result' ? channelType === 'private-channel' : undefined,
@@ -863,7 +865,9 @@ export const Intents = observer(
                     aria-label="Copy code example"
                     color="primary"
                     onClick={() => {
-                      let exampleToUse = codeExamples.intentListener;
+                      let exampleToUse = filterByContext
+                        ? codeExamples.intentListenerWithContext
+                        : codeExamples.intentListener;
                       if (resultType === 'context-result') {
                         exampleToUse = codeExamples.intentListenerWithContextResult;
                       } else if (resultType === 'channel-result') {
@@ -889,6 +893,31 @@ export const Intents = observer(
                 </Link>
               </Grid>
             </Grid>
+            <Grid item xs={12}>
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      sx={styles.input}
+                      color="default"
+                      checked={filterByContext}
+                      onChange={e => {
+                        setFilterByContext(e.target.checked);
+                        if (!e.target.checked) {
+                          setListenerContext(null);
+                        }
+                      }}
+                    />
+                  }
+                  label="Filter by context type"
+                />
+              </FormGroup>
+            </Grid>
+            {filterByContext && (
+              <Grid item xs={12} sx={styles.indentLeft}>
+                <ContextTemplates handleTabChange={handleTabChange} contextStateSetter={setListenerContext} />
+              </Grid>
+            )}
             {window.fdc3Version === '2.0' && (
               <Grid item xs={12}>
                 <FormGroup>
