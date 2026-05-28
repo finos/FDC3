@@ -408,7 +408,8 @@ export interface AddIntentListenerRequest {
  */
 export interface AddIntentListenerRequestPayload {
   /**
-   * The types of context to listen for.
+   * Optional list of context types that the listener should be invoked for. If omitted, the
+   * listener will be invoked for all context types that match the intent.
    */
   contextTypes?: string[];
   /**

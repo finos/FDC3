@@ -149,12 +149,14 @@ Request and response for removing the event listener ([`Listener.unsubscribe()`]
 - [`eventListenerUnsubscribeRequest`](pathname:///schemas/next/api/eventListenerUnsubscribeRequest.schema.json)
 - [`eventListenerUnsubscribeResponse`](pathname:///schemas/next/api/eventListenerUnsubscribeResponse.schema.json)
 
-#### `addIntentListener()`
+#### `addIntentListener()` / `addIntentListenerWithContext()`
 
-Request and response used to implement the [`addIntentListener()`](../ref/DesktopAgent#addintentlistener) API call:
+Request and response used to implement both the [`addIntentListener()`](../ref/DesktopAgent#addintentlistener) and [`addIntentListenerWithContext()`](../ref/DesktopAgent#addintentlistenerwithcontext) API calls:
 
 - [`addIntentListenerRequest`](pathname:///schemas/next/api/addIntentListenerRequest.schema.json)
 - [`addIntentListenerResponse`](pathname:///schemas/next/api/addIntentListenerResponse.schema.json)
+
+The `addIntentListenerRequest` payload includes an optional `contextTypes` field (an array of context type strings) used to restrict the listener to incoming intents whose context type matches one of the supplied values. When `addIntentListener()` is used the field is omitted (meaning all context types match); when `addIntentListenerWithContext()` is used the field MUST be populated. Desktop Agents MUST use this field both when matching intent listeners during intent resolution and when delivering raised intents, so that listeners are only invoked for matching context types.
 
 Event message used to a raised intent and context object from another app to the listener:
 
