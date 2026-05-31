@@ -10,7 +10,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "copy": "shx mkdir -p ./dist && shx cp -R static/* ./dist",
-    "build": "webpack build && npm run copy",
+    "build": "vite build && npm run copy",
     "serve": "npx http-server ./dist -p 3001 -c-1",
     "dev": "npm run clean && npm run build && npm run serve",
     "clean": "rimraf dist"
@@ -19,27 +19,21 @@
     "@finos/fdc3": "2.2.3",
     "buffer": "^6.0.3",
     "chai": "^4.3.6",
-    "get-func-name": "^2.0.2",
     "mocha": "^10.0.0",
     "process": "^0.11.10",
     "source-map-support": "^0.5.21",
     "stream-browserify": "^3.0.0",
-    "type-detect": "^4.1.0",
-    "util": "^0.12.4",
-    "window": "^1.0.0"
+    "util": "^0.12.5"
   },
   "devDependencies": {
     "@types/chai": "^4.3.0",
     "@types/mocha": "^10.0.10",
-    "css-loader": "^6.7.2",
     "http-server": "^14.1.1",
     "prettier": "3.4.1",
     "replace-in-file": "^6.3.5",
     "shx": "^0.3.4",
-    "style-loader": "^3.3.1",
-    "ts-loader": "^9.2.7",
     "typescript": "^5.6.3",
-    "webpack": "^5.69.1",
-    "webpack-cli": "^4.9.2"
+    "vite": "^6.4.1",
+    "vite-plugin-css-injected-by-js": "^4.0.1"
   }
 }
