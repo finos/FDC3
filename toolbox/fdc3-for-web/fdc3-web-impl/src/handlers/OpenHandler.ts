@@ -14,6 +14,7 @@ import {
   isGetAppMetadataRequest,
   isGetInfoRequest,
   isOpenRequest,
+  isSetInstanceMetadataRequest,
   isWebConnectionProtocol4ValidateAppIdentity,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
@@ -22,6 +23,7 @@ type AddContextListenerRequest = BrowserTypes.AddContextListenerRequest;
 type FindInstancesRequest = BrowserTypes.FindInstancesRequest;
 type GetAppMetadataRequest = BrowserTypes.GetAppMetadataRequest;
 type OpenRequest = BrowserTypes.OpenRequest;
+type SetInstanceMetadataRequest = BrowserTypes.SetInstanceMetadataRequest;
 type WebConnectionProtocol4ValidateAppIdentity = BrowserTypes.WebConnectionProtocol4ValidateAppIdentity;
 type WebConnectionProtocol5ValidateAppIdentityFailedResponse =
   BrowserTypes.WebConnectionProtocol5ValidateAppIdentityFailedResponse;
@@ -138,6 +140,8 @@ export class OpenHandler implements MessageHandler {
             return this.getAppMetadata(msg, sc, from);
           } else if (isGetInfoRequest(msg)) {
             return this.getInfo(msg, sc, from);
+          } else if (isSetInstanceMetadataRequest(msg)) {
+            return this.setInstanceMetadata(msg, sc, from);
           }
         } catch (e) {
           const responseType = msg.type.replace(new RegExp('Request$'), 'Response') as AgentResponseMessage['type'];
@@ -197,7 +201,7 @@ export class OpenHandler implements MessageHandler {
     }
   }
 
-  filterPublicDetails(appD: DirectoryApp, appID: AppIdentifier): AppMetadata {
+  filterPublicDetails(appD: DirectoryApp, appID: AppIdentifier, instanceMetadata?: Record<string, any>): AppMetadata {
     return {
       appId: appD.appId,
       name: appD.name,
@@ -208,6 +212,7 @@ export class OpenHandler implements MessageHandler {
       icons: appD.icons,
       screenshots: appD.screenshots,
       instanceId: appID.instanceId,
+      ...(instanceMetadata && { instanceMetadata }),
     };
   }
 
@@ -215,12 +220,17 @@ export class OpenHandler implements MessageHandler {
     const appID = arg0.payload.app;
     const details = this.directory.retrieveAppsById(appID.appId);
     if (details.length > 0) {
+      let instanceMetadata: Record<string, any> | undefined;
+      if (appID.instanceId) {
+        const registration = sc.getInstanceDetails(appID.instanceId);
+        instanceMetadata = registration?.instanceMetadata;
+      }
       successResponse(
         sc,
         arg0,
         from,
         {
-          appMetadata: this.filterPublicDetails(details[0], appID),
+          appMetadata: this.filterPublicDetails(details[0], appID, instanceMetadata),
         },
         'getAppMetadataResponse'
       );
@@ -289,6 +299,24 @@ export class OpenHandler implements MessageHandler {
       },
       'getInfoResponse'
     );
+  }
+
+  setInstanceMetadata(
+    arg0: SetInstanceMetadataRequest,
+    sc: ServerContext<AppRegistration>,
+    from: FullAppIdentifier
+  ): void {
+    const details = sc.getInstanceDetails(from.instanceId);
+    if (details) {
+      details.instanceMetadata = {
+        ...details.instanceMetadata,
+        ...arg0.payload.instanceMetadata,
+      };
+      sc.setInstanceDetails(from.instanceId, details);
+      successResponse(sc, arg0, from, {}, 'setInstanceMetadataResponse');
+    } else {
+      errorResponse(sc, arg0, from, ResolveError.TargetInstanceUnavailable, 'setInstanceMetadataResponse');
+    }
   }
 
   getImplementationMetadata(sc: ServerContext<AppRegistration>, appIdentity: AppIdentifier) {

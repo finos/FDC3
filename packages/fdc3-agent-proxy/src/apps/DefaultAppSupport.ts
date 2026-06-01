@@ -3,6 +3,7 @@ import {
   AppMetadata,
   AppProvidableContextMetadata,
   ImplementationMetadata,
+  InstanceMetadata,
   OpenError,
   ResolveError,
 } from '@finos/fdc3-standard';
@@ -18,6 +19,8 @@ import {
   GetInfoResponse,
   OpenRequest,
   OpenResponse,
+  SetInstanceMetadataRequest,
+  SetInstanceMetadataResponse,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { throwIfUndefined } from '../util/throwIfUndefined.js';
 import { Logger } from '../util/Logger.js';
@@ -103,6 +106,22 @@ export class DefaultAppSupport implements AppSupport {
     );
 
     return response.payload.appIdentifier!;
+  }
+
+  async setInstanceMetadata(metadata: InstanceMetadata): Promise<void> {
+    const request: SetInstanceMetadataRequest = {
+      type: 'setInstanceMetadataRequest',
+      payload: {
+        instanceMetadata: metadata,
+      },
+      meta: this.messaging.createMeta(),
+    };
+
+    await this.messaging.exchange<SetInstanceMetadataResponse>(
+      request,
+      'setInstanceMetadataResponse',
+      this.messageExchangeTimeout
+    );
   }
 
   async getImplementationMetadata(): Promise<ImplementationMetadata> {

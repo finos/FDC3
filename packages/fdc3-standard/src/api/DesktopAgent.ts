@@ -10,6 +10,7 @@ import { IntentResolution } from './IntentResolution.js';
 import { Listener } from './Listener.js';
 import { Context } from '@finos/fdc3-context';
 import { ImplementationMetadata } from './ImplementationMetadata.js';
+import { InstanceMetadata } from './InstanceMetadata.js';
 import { PrivateChannel } from './PrivateChannel.js';
 import { AppIdentifier } from './AppIdentifier.js';
 import { AppMetadata } from './AppMetadata.js';
@@ -566,6 +567,29 @@ export interface DesktopAgent {
    * ```
    */
   getInfo(): Promise<ImplementationMetadata>;
+
+  /**
+   * Updates the instance metadata for the calling application instance.
+   *
+   * The provided metadata will be merged with any existing instance metadata held by the Desktop Agent
+   * for this instance, replacing any previously set fields with the same keys.
+   * The updated metadata will then be returned in the `instanceMetadata` field of `AppMetadata` objects
+   * returned by `findIntent`, `findIntentsByContext`, `getAppMetadata` and other API calls that return
+   * `AppMetadata` for this instance.
+   *
+   * This allows an application to provide instance-specific information, such as a title describing
+   * the content currently being displayed, that can be used to disambiguate instances in UI elements
+   * such as a resolver or intent picker.
+   *
+   * ```js
+   * // Set a title for this instance based on the instrument being displayed
+   * await fdc3.setInstanceMetadata({ title: "AAPL Stock Chart" });
+   *
+   * // Update the title when the displayed content changes
+   * await fdc3.setInstanceMetadata({ title: "MSFT Stock Chart" });
+   * ```
+   */
+  setInstanceMetadata(metadata: InstanceMetadata): Promise<void>;
 
   /**
    * Retrieves the `AppMetadata` for an `AppIdentifier`, which provides additional metadata (such as icons,
