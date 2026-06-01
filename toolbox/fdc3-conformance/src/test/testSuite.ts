@@ -24,6 +24,8 @@ import {
   fdc3BasicJC1,
   fdc3BasicRI1,
   fdc3BasicRI2,
+  fdc3BasicAEL1,
+  fdc3BasicAEL2,
 } from './basic/fdc3.basic';
 import {
   fdc3ResolveAmbiguousIntentTarget,
@@ -44,6 +46,8 @@ const basicSuite: testSet = {
   'fdc3.basicAC1': [fdc3BasicAC1],
   'fdc3.basicUC1': [fdc3BasicUC1],
   'fdc3.basicJC1': [fdc3BasicJC1],
+  'fdc3.basicAEL1': [fdc3BasicAEL1],
+  'fdc3.basicAEL2': [fdc3BasicAEL2],
   'fdc3.basicRI1': [fdc3BasicRI1],
   'fdc3.basicRI2': [fdc3BasicRI2],
 };
