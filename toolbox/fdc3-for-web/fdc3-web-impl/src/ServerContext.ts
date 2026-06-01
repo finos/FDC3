@@ -1,4 +1,4 @@
-import { AppIdentifier, AppIntent } from '@finos/fdc3-standard';
+import { AppIdentifier, AppIntent, InstanceMetadata } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { FDC3Server } from './FDC3Server.js';
 
@@ -13,6 +13,7 @@ export type AppRegistration = {
   state: State;
   appId: string;
   instanceId: InstanceID;
+  instanceMetadata?: InstanceMetadata;
 };
 
 /**

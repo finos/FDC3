@@ -95,3 +95,17 @@ Feature: Opening and Requesting App Details
     Then messaging will have outgoing posts
       | msg.type                              | msg.payload.message    |
       | WCP5ValidateAppIdentityFailedResponse | App Instance not found |
+
+  Scenario: Setting instance metadata
+    When "libraryApp/a1" sets instance metadata with title "AAPL Stock Chart"
+    Then messaging will have outgoing posts
+      | msg.matches_type                  | msg.payload.error | to.instanceId |
+      | setInstanceMetadataResponse       | {null}            | a1            |
+
+  Scenario: Setting instance metadata and retrieving it via getAppMetadata
+    When "libraryApp/a1" sets instance metadata with title "AAPL Stock Chart"
+    And "libraryApp/a1" requests metadata for "libraryApp" with instanceId "a1"
+    Then messaging will have outgoing posts
+      | msg.matches_type                  | msg.payload.appMetadata.instanceMetadata.title | to.instanceId |
+      | setInstanceMetadataResponse       | {null}                                         | a1            |
+      | getAppMetadataResponse            | AAPL Stock Chart                               | a1            |

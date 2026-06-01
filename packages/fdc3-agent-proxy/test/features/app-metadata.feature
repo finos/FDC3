@@ -33,3 +33,10 @@ Feature: Desktop Agent Information
     And messaging will have posts
       | payload.app.appId | payload.app.instanceId | matches_type         |
       | chipShop          | c1                     | findInstancesRequest |
+
+  Scenario: Setting instance metadata
+    Given "instanceMeta" is instance metadata with title "AAPL Stock Chart"
+    When I call "{api}" with "setInstanceMetadata" with parameter "{instanceMeta}"
+    And messaging will have posts
+      | payload.instanceMetadata.title | matches_type                  |
+      | AAPL Stock Chart               | setInstanceMetadataRequest    |
