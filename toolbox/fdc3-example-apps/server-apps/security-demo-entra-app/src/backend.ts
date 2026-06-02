@@ -20,6 +20,15 @@ import { JWTValidator } from './jwt-validator';
 /** Same intent name as security-demo-idp-app / get-user-example flow */
 export const CREATE_IDENTITY_TOKEN = 'CreateIdentityToken';
 
+function resolveWithinRoot(root: string, ...segments: string[]): string {
+  const normalizedRoot = path.resolve(root);
+  const resolvedPath = path.resolve(normalizedRoot, ...segments);
+  if (resolvedPath !== normalizedRoot && !resolvedPath.startsWith(`${normalizedRoot}${path.sep}`)) {
+    throw new Error(`Resolved path escapes app root: ${resolvedPath}`);
+  }
+  return resolvedPath;
+}
+
 type EntraUserSession = Context & {
   type: 'fdc3.security.user';
   jwt?: unknown;
@@ -131,9 +140,10 @@ export default async function backend(
   server: Server,
   opts: { port: number; appRoot: string }
 ): Promise<void> {
-  dotenv.config({ path: path.join(opts.appRoot, '.env') });
+  const appRoot = path.resolve(opts.appRoot);
+  dotenv.config({ path: resolveWithinRoot(appRoot, '.env') });
 
-  const entraConfig = loadEntraConfig(opts.appRoot);
+  const entraConfig = loadEntraConfig(appRoot);
   const baseUrl = `http://localhost:${opts.port}`;
 
   app.use(express.json());

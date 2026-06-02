@@ -18,9 +18,18 @@ type PropertiesFile = {
   entra?: Partial<EntraConfig>;
 };
 
+function resolveWithinRoot(root: string, ...segments: string[]): string {
+  const normalizedRoot = path.resolve(root);
+  const resolvedPath = path.resolve(normalizedRoot, ...segments);
+  if (resolvedPath !== normalizedRoot && !resolvedPath.startsWith(`${normalizedRoot}${path.sep}`)) {
+    throw new Error(`Resolved path escapes app root: ${resolvedPath}`);
+  }
+  return resolvedPath;
+}
+
 /** Server-only: read `properties.json` from the app root (same folder as `index.html`). */
 export function loadEntraConfig(appRoot: string): EntraConfig {
-  const propPath = path.join(appRoot, 'properties.json');
+  const propPath = resolveWithinRoot(appRoot, 'properties.json');
   const raw = fs.readFileSync(propPath, 'utf-8');
   const props = JSON.parse(raw) as PropertiesFile;
   const e = props.entra;
