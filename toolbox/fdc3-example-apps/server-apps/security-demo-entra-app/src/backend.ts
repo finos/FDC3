@@ -2,6 +2,7 @@ import type { Application } from 'express';
 import type { Server } from 'http';
 import * as dotenv from 'dotenv';
 import express from 'express';
+import fs from 'fs';
 import path from 'path';
 import { WebSocket } from 'ws';
 import { IntentHandler } from '@finos/fdc3';
@@ -21,8 +22,9 @@ import { JWTValidator } from './jwt-validator';
 export const CREATE_IDENTITY_TOKEN = 'CreateIdentityToken';
 
 function resolveWithinRoot(root: string, ...segments: string[]): string {
-  const normalizedRoot = path.resolve(root);
-  const resolvedPath = path.resolve(normalizedRoot, ...segments);
+  const normalizedRoot = fs.realpathSync(root);
+  const suffix = segments.join('/');
+  const resolvedPath = path.normalize(suffix ? `${normalizedRoot}/${suffix}` : normalizedRoot);
   if (resolvedPath !== normalizedRoot && !resolvedPath.startsWith(`${normalizedRoot}${path.sep}`)) {
     throw new Error(`Resolved path escapes app root: ${resolvedPath}`);
   }
@@ -140,7 +142,7 @@ export default async function backend(
   server: Server,
   opts: { port: number; appRoot: string }
 ): Promise<void> {
-  const appRoot = path.resolve(opts.appRoot);
+  const appRoot = fs.realpathSync(opts.appRoot);
   dotenv.config({ path: resolveWithinRoot(appRoot, '.env') });
 
   const entraConfig = loadEntraConfig(appRoot);

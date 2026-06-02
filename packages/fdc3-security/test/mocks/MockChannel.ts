@@ -20,13 +20,13 @@ export class MockChannel implements Channel {
   }
 
   async broadcast(context: Context, metadata: ContextMetadata): Promise<void> {
-    console.log(`[MockChannel ${this.id}] Broadcasting context:`, context, metadata);
+    console.log('[MockChannel] Broadcasting context', { channelId: this.id, context, metadata });
     const toInvoke = this.listeners.filter(l => !l.type || l.type === context.type);
     for (const l of toInvoke) {
       try {
         await Promise.resolve(l.handler(context, metadata));
       } catch (err) {
-        console.error(`[MockChannel ${this.id}] Listener error:`, err);
+        console.error('[MockChannel] Listener error', { channelId: this.id, err });
       }
     }
   }
@@ -36,7 +36,7 @@ export class MockChannel implements Channel {
     const h = typeof typeOrHandler === 'function' ? typeOrHandler : handler!;
     const entry = { type, handler: h };
     this.listeners.push(entry);
-    console.log(`[MockChannel ${this.id}] Listener added. Total listeners: ${this.listeners.length}`);
+    console.log('[MockChannel] Listener added', { channelId: this.id, listenerCount: this.listeners.length });
     return {
       unsubscribe: async () => {
         this.listeners = this.listeners.filter(l => l !== entry);

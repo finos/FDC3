@@ -15,8 +15,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BASE_PORT = 4010;
 
 function resolveWithinRoot(root: string, ...segments: string[]): string {
-  const normalizedRoot = path.resolve(root);
-  const resolvedPath = path.resolve(normalizedRoot, ...segments);
+  const normalizedRoot = fs.realpathSync(root);
+  const suffix = segments.join('/');
+  const resolvedPath = path.normalize(suffix ? `${normalizedRoot}/${suffix}` : normalizedRoot);
   if (resolvedPath !== normalizedRoot && !resolvedPath.startsWith(`${normalizedRoot}${path.sep}`)) {
     throw new Error(`Resolved path escapes app root: ${resolvedPath}`);
   }
@@ -31,12 +32,12 @@ function discoverApps(baseDir: string) {
   return fs
     .readdirSync(baseDir, { withFileTypes: true })
     .filter(dirent => {
-      const appPath = path.join(baseDir, dirent.name);
+      const appPath = resolveWithinRoot(baseDir, dirent.name);
       return (
         dirent.isDirectory() &&
         dirent.name !== 'node_modules' &&
         dirent.name !== 'dist' &&
-        fs.existsSync(path.join(appPath, 'index.html'))
+        fs.existsSync(resolveWithinRoot(appPath, 'index.html'))
       );
     })
     .map(dirent => ({
@@ -60,7 +61,7 @@ const allApps = [...discoverApps(frontEndAppsDir), ...discoverApps(serverAppsDir
 // Assign ports, respecting properties.json if present
 const apps = allApps.map((a, index) => {
   let port = BASE_PORT + index;
-  const propPath = path.join(a.root, 'properties.json');
+  const propPath = resolveWithinRoot(a.root, 'properties.json');
   if (fs.existsSync(propPath)) {
     try {
       const props = JSON.parse(fs.readFileSync(propPath, 'utf-8'));
@@ -68,7 +69,7 @@ const apps = allApps.map((a, index) => {
         port = props.port;
       }
     } catch (e) {
-      console.error(`Failed to read properties.json for ${a.name}`, e);
+      console.error('Failed to read properties.json', { appName: a.name, error: e });
     }
   }
   return {
@@ -158,7 +159,7 @@ function writeGeneratedAppDirectory(combined: { applications: any[]; message: st
 }
 
 async function startApp(appName: string, appRoot: string, port: number) {
-  const normalizedAppRoot = path.resolve(appRoot);
+  const normalizedAppRoot = fs.realpathSync(appRoot);
   const app = express();
   app.use(express.json());
 

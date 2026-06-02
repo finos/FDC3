@@ -19,8 +19,9 @@ type PropertiesFile = {
 };
 
 function resolveWithinRoot(root: string, ...segments: string[]): string {
-  const normalizedRoot = path.resolve(root);
-  const resolvedPath = path.resolve(normalizedRoot, ...segments);
+  const normalizedRoot = fs.realpathSync(root);
+  const suffix = segments.join('/');
+  const resolvedPath = path.normalize(suffix ? `${normalizedRoot}/${suffix}` : normalizedRoot);
   if (resolvedPath !== normalizedRoot && !resolvedPath.startsWith(`${normalizedRoot}${path.sep}`)) {
     throw new Error(`Resolved path escapes app root: ${resolvedPath}`);
   }
