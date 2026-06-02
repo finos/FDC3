@@ -843,7 +843,7 @@ export interface OrganizationObject {
    * An optional human-readable name for the contact
    */
   name?: string;
-  type: TentacledInteractionType;
+  type: TentacledAppID;
   [property: string]: any;
 }
 
@@ -1864,13 +1864,6 @@ export interface EncryptedContextWrapperID {
 }
 
 /**
- * Free text to be used for a keyword search
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
-
-/**
  * @experimental A request to obtain a symmetric encryption key for decrypting encrypted
  * context on a channel.
  *
@@ -1902,13 +1895,6 @@ export interface SymmetricKeyRequestID {
 }
 
 /**
- * Free text to be used for a keyword search
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
-
-/**
  * @experimental A response containing a wrapped symmetric key and metadata.
  */
 export interface SymmetricKeyResponse {
@@ -1933,13 +1919,6 @@ export interface SymmetricKeyResponseID {
   pki: string;
   [property: string]: any;
 }
-
-/**
- * Free text to be used for a keyword search
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
 
 /**
  * @experimental A user identity, expressed as a wrapped JWT.  Receivers will need to unwrap
@@ -1990,13 +1969,6 @@ export interface UserRequest {
   name?: string;
   [property: string]: any;
 }
-
-/**
- * Free text to be used for a keyword search
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
 
 /**
  * A context representing a period of time. Any user interfaces that represent or visualize
@@ -2172,13 +2144,6 @@ export interface TransactionResult {
  * The status of the transaction being reported.
  */
 export type TransactionStatus = 'Created' | 'Deleted' | 'Updated' | 'Failed';
-
-/**
- * Free text to be used for a keyword search
- *
- * `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or
- * `'Meeting'` although other string values are permitted.
- */
 
 /**
  * A context type representing the price and value of a holding.
@@ -2704,7 +2669,14 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: r('PurpleInstrumentIdentifiers') },
       { json: 'market', js: 'market', typ: u(undefined, r('OrganizationMarket')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('PurpleInteractionType') },
+      { json: 'type', js: 'type', typ: r('PurpleAppID') },
+    ],
+    'any'
+  ),
+  OrganizationClassification: o(
+    [
+      { json: 'FDS_TYPE', js: 'FDS_TYPE', typ: u(undefined, r('FactSetType')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
@@ -2766,7 +2738,7 @@ const typeMap: any = {
     [
       { json: 'id', js: 'id', typ: r('PurpleContactIdentifiers') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('FluffyInteractionType') },
+      { json: 'type', js: 'type', typ: r('FluffyAppID') },
     ],
     'any'
   ),
@@ -2871,7 +2843,7 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: r('Identifiers') },
       { json: 'market', js: 'market', typ: u(undefined, r('OrganizationMarket')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('TentacledInteractionType') },
+      { json: 'type', js: 'type', typ: r('TentacledAppID') },
     ],
     'any'
   ),
@@ -2895,7 +2867,7 @@ const typeMap: any = {
     [
       { json: 'id', js: 'id', typ: r('FluffyContactIdentifiers') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('FluffyInteractionType') },
+      { json: 'type', js: 'type', typ: r('FluffyAppID') },
     ],
     'any'
   ),
@@ -2998,7 +2970,14 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: r('FluffyInstrumentIdentifiers') },
       { json: 'market', js: 'market', typ: u(undefined, r('PurpleMarket')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('PurpleInteractionType') },
+      { json: 'type', js: 'type', typ: r('PurpleAppID') },
+    ],
+    'any'
+  ),
+  PurpleInstrumentClassification: o(
+    [
+      { json: 'FDS_TYPE', js: 'FDS_TYPE', typ: u(undefined, r('FactSetType')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
@@ -3126,7 +3105,7 @@ const typeMap: any = {
     [
       { json: 'id', js: 'id', typ: r('OrganizationIdentifiers') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
-      { json: 'type', js: 'type', typ: r('StickyInteractionType') },
+      { json: 'type', js: 'type', typ: r('StickyAppID') },
     ],
     'any'
   ),
