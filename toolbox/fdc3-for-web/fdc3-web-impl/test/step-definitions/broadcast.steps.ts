@@ -2,7 +2,7 @@ import { When } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
 import { createMeta } from './generic.steps.js';
 import {} from '@finos/fdc3-standard';
-import { handleResolve } from '@finos/testing';
+import { handleResolve, parseAntiReplayClaims } from '@finos/testing';
 import { contextMap } from './generic.steps.js';
 import { BrowserTypes } from '@finos/fdc3-schema';
 
@@ -100,7 +100,7 @@ When(
 );
 
 When(
-  '{string} broadcasts {string} on {string} with metadata traceId {string} signature {string} and custom key {string}',
+  '{string} broadcasts {string} on {string} with metadata traceId {string} signature {string} antiReplay claims {string} and custom key {string}',
   (
     world: CustomWorld,
     app: string,
@@ -108,6 +108,7 @@ When(
     channelId: string,
     traceId: string,
     signature: string,
+    antiReplayClaims: string,
     customKey: string
   ) => {
     const meta = createMeta(world, app);
@@ -120,8 +121,12 @@ When(
         context: contextMap[contextType],
         metadata: {
           traceId: handleResolve(traceId, world),
-          signature: handleResolve(signature, world),
+          signature: {
+            signature: handleResolve(signature, world) + ' (signature part)',
+            protected: handleResolve(signature, world) + ' (protected part)',
+          },
           custom: { region: handleResolve(customKey, world) },
+          antiReplay: parseAntiReplayClaims(antiReplayClaims),
         },
       },
       type: 'broadcastRequest',

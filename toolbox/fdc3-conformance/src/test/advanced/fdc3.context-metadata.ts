@@ -145,7 +145,8 @@ export default async () => {
         assert.isTrue(receivedContext, `No context received!${errorMessage}`);
         assert.isDefined(receivedMetadata, `No metadata received${errorMessage}`);
         validator.validateRequiredFields(receivedMetadata!);
-        validator.validateSignature(receivedMetadata!, 'sig-abc');
+        validator.validateSignature(receivedMetadata!, { protected: 'protected-abc', signature: 'signature-abc' });
+        validator.validateAntiReplay(receivedMetadata!, { exp: 1234, iat: 2345, jti: 'anti-replay-123' });
         validator.validateCustom(receivedMetadata!, 'region', 'EMEA');
       } finally {
         cc.unsubscribeListeners([listener]);
