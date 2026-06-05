@@ -6,20 +6,19 @@ This file lists the maintainers of this repository.
 
 | GitHub Username | Name | Organization | Email |
 |----------------|------|--------------|-------|
-| @Roaders | *please add name* | *please add organization* | *please add email* |
+| @Roaders | Giles Roadnight | Morgan Stanley | Giles.Roadnight@morganstanley.com |
 | @Vivek-NatWest | *please add name* | *please add organization* | *please add email* |
 | @Yannick-Malins | Yannick | @SymphonyOSF | *please add email* |
-| @bingenito | Brian Ingenito | @morganstanley  | *please add email* |
-| @donbasuno | Johan Sandersson | *please add organization* | *please add email* |
-| @hughtroeger | Hugh Troeger | FactSet Research Systems | *please add email* |
-| @julianna-ciq | Julianna Langston | interop.io | *please add email* |
-| @kemerava | *please add name* | *please add organization* | *please add email* |
-| @kriswest | Kris West | NatWest Group | *please add email* |
+| @bingenito | Brian Ingenito | Morgan Stanley  | Brian.Ingenito@morganstanley.com |
+| @hughtroeger | Hugh Troeger | FactSet Research Systems | htroeger@factset.com |
+| @julianna-ciq | Julianna Mealin | interop.io | julianna.mealin@interop.io |
+| @kemerava | Elizabeth (Lizaveta) Kemerava | BlackRock | kemerava@mail.yu.edu  |
+| @kriswest | Kris West | NatWest Group | kristopher.west@natwest.com |
 | @mattjamieson | Matt Jamieson | @whitedogio  | *please add email* |
 | @mistryvinay | Vinay Mistry | Symphony | mrvinaymistry@gmail.com |
 | @nkolba | Nicholas Kolba | *please add organization* | *please add email* |
 | @novavi | Derek Novavi | S&P Global | *please add email* |
-| @openfin-johans | Johan Sandersson | OpenFin | *please add email* |
+| @openfin-johans | Johan Sandersson | HERE (formerly OpenFin) | johan.sandersson@here.io |
 
 For information about maintainer responsibilities and resources, see the [FINOS Maintainers Cheatsheet](https://community.finos.org/docs/finos-maintainers-cheatsheet).
 
