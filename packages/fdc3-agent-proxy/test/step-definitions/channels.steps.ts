@@ -80,7 +80,10 @@ Given(
           timestamp: new Date(),
           source: world.messaging!.getAppIdentifier(),
           traceId: world.messaging!.createUUID(),
-          signature: 'test-sig',
+          signature: {
+            protected: 'test-sig (protected part)',
+            signature: 'test-sig (signature part)',
+          },
           custom: { region: 'EMEA' },
         },
       },
