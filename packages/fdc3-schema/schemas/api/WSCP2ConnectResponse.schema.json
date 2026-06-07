@@ -1,0 +1,68 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/WSCP2ConnectResponse.schema.json",
+  "title": "WebSocket Connection Protocol 2 Connect Success Response",
+  "description": "Message sent by the acceptor after successful WSCP handshake.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/WSCP2ConnectResponseBase"
+    },
+    {
+      "$ref": "WSCPConnectionStep.schema.json"
+    }
+  ],
+  "$defs": {
+    "WSCP2ConnectResponseBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "WSCP2ConnectResponse Message Type",
+          "const": "WSCP2ConnectResponse"
+        },
+        "payload": {
+          "title": "WSCP2ConnectResponse Payload",
+          "type": "object",
+          "properties": {
+            "appId": {
+              "title": "appId",
+              "description": "The appId that the connection was validated against.",
+              "type": "string"
+            },
+            "instanceId": {
+              "title": "instanceId",
+              "description": "The instance Id granted to the application by the Desktop Agent.",
+              "type": "string"
+            },
+            "instanceUuid": {
+              "title": "instanceUuid",
+              "description": "Instance UUID associated with the instanceId granted, which may be used to retrieve the same instanceId on reconnection.",
+              "type": "string"
+            },
+            "implementationMetadata": {
+              "title": "ImplementationMetadata",
+              "description": "Implementation metadata for the Desktop Agent.",
+              "$ref": "api.schema.json#/definitions/ImplementationMetadata"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "appId",
+            "instanceId",
+            "instanceUuid",
+            "implementationMetadata"
+          ]
+        },
+        "meta": {
+          "$ref": "WSCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"
+        }
+      },
+      "required": [
+        "type",
+        "payload",
+        "meta"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

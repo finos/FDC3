@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ClearContextRequest, ClearContextResponse, ContextClearedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceChannels, Fdc3UserInterfaceDrag, Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, Fdc3UserInterfaceMessage, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse } from "./file";
+//   import { Convert, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage, WebSocketConnectionProtocol1ConnectRequest, WebSocketConnectionProtocol2ConnectFailedResponse, WebSocketConnectionProtocol2ConnectSuccessResponse, WebSocketConnectionProtocol3Goodbye, WebSocketConnectionProtocolMessage, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ClearContextRequest, ClearContextResponse, ContextClearedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceChannels, Fdc3UserInterfaceDrag, Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, Fdc3UserInterfaceMessage, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse } from "./file";
 //
 //   const webConnectionProtocol1Hello = Convert.toWebConnectionProtocol1Hello(json);
 //   const webConnectionProtocol2LoadURL = Convert.toWebConnectionProtocol2LoadURL(json);
@@ -10,6 +10,11 @@
 //   const webConnectionProtocol5ValidateAppIdentitySuccessResponse = Convert.toWebConnectionProtocol5ValidateAppIdentitySuccessResponse(json);
 //   const webConnectionProtocol6Goodbye = Convert.toWebConnectionProtocol6Goodbye(json);
 //   const webConnectionProtocolMessage = Convert.toWebConnectionProtocolMessage(json);
+//   const webSocketConnectionProtocol1ConnectRequest = Convert.toWebSocketConnectionProtocol1ConnectRequest(json);
+//   const webSocketConnectionProtocol2ConnectFailedResponse = Convert.toWebSocketConnectionProtocol2ConnectFailedResponse(json);
+//   const webSocketConnectionProtocol2ConnectSuccessResponse = Convert.toWebSocketConnectionProtocol2ConnectSuccessResponse(json);
+//   const webSocketConnectionProtocol3Goodbye = Convert.toWebSocketConnectionProtocol3Goodbye(json);
+//   const webSocketConnectionProtocolMessage = Convert.toWebSocketConnectionProtocolMessage(json);
 //   const addContextListenerRequest = Convert.toAddContextListenerRequest(json);
 //   const addContextListenerResponse = Convert.toAddContextListenerResponse(json);
 //   const addEventListenerRequest = Convert.toAddEventListenerRequest(json);
@@ -384,6 +389,8 @@ export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload
  * Implementation metadata for the Desktop Agent, which includes an appMetadata element
  * containing a copy of the app's own metadata.
  *
+ * Implementation metadata for the Desktop Agent.
+ *
  * Includes Metadata for the current application.
  *
  * Metadata relating to the FDC3 Desktop Agent implementation and its provider.
@@ -595,7 +602,7 @@ export interface WebConnectionProtocolMessage {
   /**
    * Metadata for a Web Connection Protocol message.
    */
-  meta: ConnectionStepMetadata;
+  meta: WebConnectionProtocolMessageConnectionStepMetadata;
   /**
    * The message payload, containing data pertaining to this connection step.
    */
@@ -603,13 +610,13 @@ export interface WebConnectionProtocolMessage {
   /**
    * Identifies the type of the connection step message.
    */
-  type: ConnectionStepMessageType;
+  type: WebConnectionProtocolMessageType;
 }
 
 /**
  * Metadata for a Web Connection Protocol message.
  */
-export interface ConnectionStepMetadata {
+export interface WebConnectionProtocolMessageConnectionStepMetadata {
   timestamp: Date;
   connectionAttemptUuid?: string;
 }
@@ -617,7 +624,7 @@ export interface ConnectionStepMetadata {
 /**
  * Identifies the type of the connection step message.
  */
-export type ConnectionStepMessageType =
+export type WebConnectionProtocolMessageType =
   | 'WCP1Hello'
   | 'WCP2LoadUrl'
   | 'WCP3Handshake'
@@ -625,6 +632,227 @@ export type ConnectionStepMessageType =
   | 'WCP5ValidateAppIdentityFailedResponse'
   | 'WCP5ValidateAppIdentityResponse'
   | 'WCP6Goodbye';
+
+/**
+ * Handshake request sent by the party that opens the WebSocket TCP connection.
+ *
+ * A message used during the WebSocket connection flow between a native application and a
+ * Desktop Agent. Used for messages sent in either direction.
+ */
+export interface WebSocketConnectionProtocol1ConnectRequest {
+  /**
+   * Metadata for a WebSocket Connection Protocol message.
+   */
+  meta: WebSocketConnectionProtocol1ConnectRequestMeta;
+  /**
+   * The message payload, containing data pertaining to this connection step.
+   */
+  payload: WebSocketConnectionProtocol1ConnectRequestPayload;
+  /**
+   * Identifies the type of the WebSocket connection step message.
+   */
+  type: 'WSCP1ConnectRequest';
+}
+
+/**
+ * Metadata for a WebSocket Connection Protocol message.
+ */
+export interface WebSocketConnectionProtocol1ConnectRequestMeta {
+  connectionAttemptUuid: string;
+  timestamp: Date;
+}
+
+/**
+ * The message payload, containing data pertaining to this connection step.
+ */
+export interface WebSocketConnectionProtocol1ConnectRequestPayload {
+  /**
+   * Optional app identifier. If provided, the acceptor MUST verify it matches the pairing.
+   */
+  appId?: string;
+  /**
+   * Optional prior instance ID for reconnection.
+   */
+  instanceId?: string;
+  /**
+   * Optional DA-assigned instance UUID for reconnection.
+   */
+  instanceUuid?: string;
+  /**
+   * WSCP protocol version.
+   */
+  protocolVersion: '1.0';
+  /**
+   * Identifies the initiator's role: application when a native app connects to a DA,
+   * desktopAgent when a DA connects to a native app WS server.
+   */
+  role: ConnectionRole;
+  /**
+   * Routes the connection to the correct DA user session.
+   */
+  sessionId: string;
+  /**
+   * Per-user, per-app pairing credential. MUST NOT appear in published App Directory entries
+   * or URLs.
+   */
+  sharedSecret: string;
+}
+
+/**
+ * Identifies the initiator's role: application when a native app connects to a DA,
+ * desktopAgent when a DA connects to a native app WS server.
+ */
+export type ConnectionRole = 'application' | 'desktopAgent';
+
+/**
+ * Identifies the type of the WebSocket connection step message.
+ */
+
+/**
+ * Message sent by the acceptor if the WSCP handshake fails.
+ *
+ * A message used during the WebSocket connection flow between a native application and a
+ * Desktop Agent. Used for messages sent in either direction.
+ */
+export interface WebSocketConnectionProtocol2ConnectFailedResponse {
+  /**
+   * Metadata for a WebSocket Connection Protocol message.
+   */
+  meta: WebSocketConnectionProtocol1ConnectRequestMeta;
+  /**
+   * The message payload, containing data pertaining to this connection step.
+   */
+  payload: WebSocketConnectionProtocol2ConnectFailedResponsePayload;
+  /**
+   * Identifies the type of the WebSocket connection step message.
+   */
+  type: 'WSCP2ConnectFailedResponse';
+}
+
+/**
+ * The message payload, containing data pertaining to this connection step.
+ */
+export interface WebSocketConnectionProtocol2ConnectFailedResponsePayload {
+  message: string;
+}
+
+/**
+ * Identifies the type of the WebSocket connection step message.
+ */
+
+/**
+ * Message sent by the acceptor after successful WSCP handshake.
+ *
+ * A message used during the WebSocket connection flow between a native application and a
+ * Desktop Agent. Used for messages sent in either direction.
+ */
+export interface WebSocketConnectionProtocol2ConnectSuccessResponse {
+  /**
+   * Metadata for a WebSocket Connection Protocol message.
+   */
+  meta: WebSocketConnectionProtocol1ConnectRequestMeta;
+  /**
+   * The message payload, containing data pertaining to this connection step.
+   */
+  payload: WebSocketConnectionProtocol2ConnectSuccessResponsePayload;
+  /**
+   * Identifies the type of the WebSocket connection step message.
+   */
+  type: 'WSCP2ConnectResponse';
+}
+
+/**
+ * The message payload, containing data pertaining to this connection step.
+ */
+export interface WebSocketConnectionProtocol2ConnectSuccessResponsePayload {
+  /**
+   * The appId that the connection was validated against.
+   */
+  appId: string;
+  /**
+   * Implementation metadata for the Desktop Agent.
+   */
+  implementationMetadata: ImplementationMetadata;
+  /**
+   * The instance Id granted to the application by the Desktop Agent.
+   */
+  instanceId: string;
+  /**
+   * Instance UUID associated with the instanceId granted, which may be used to retrieve the
+   * same instanceId on reconnection.
+   */
+  instanceUuid: string;
+}
+
+/**
+ * Identifies the type of the WebSocket connection step message.
+ */
+
+/**
+ * Goodbye message to be sent when disconnecting a WebSocket connection. The acceptor should
+ * close the connection after receiving this message but retain instance details in case the
+ * application reconnects.
+ *
+ * A message used during the WebSocket connection flow between a native application and a
+ * Desktop Agent. Used for messages sent in either direction.
+ */
+export interface WebSocketConnectionProtocol3Goodbye {
+  /**
+   * Metadata for a WebSocket Connection Protocol message.
+   */
+  meta: WebSocketConnectionProtocol3GoodbyeMeta;
+  /**
+   * Identifies the type of the WebSocket connection step message.
+   */
+  type: 'WSCP3Goodbye';
+}
+
+/**
+ * Metadata for a WebSocket Connection Protocol message.
+ */
+export interface WebSocketConnectionProtocol3GoodbyeMeta {
+  timestamp: Date;
+}
+
+/**
+ * Identifies the type of the WebSocket connection step message.
+ */
+
+/**
+ * A message used during the WebSocket connection flow between a native application and a
+ * Desktop Agent. Used for messages sent in either direction.
+ */
+export interface WebSocketConnectionProtocolMessage {
+  /**
+   * Metadata for a WebSocket Connection Protocol message.
+   */
+  meta: WebSocketConnectionProtocolMessageConnectionStepMetadata;
+  /**
+   * The message payload, containing data pertaining to this connection step.
+   */
+  payload?: { [key: string]: any };
+  /**
+   * Identifies the type of the WebSocket connection step message.
+   */
+  type: WebSocketConnectionProtocolMessageType;
+}
+
+/**
+ * Metadata for a WebSocket Connection Protocol message.
+ */
+export interface WebSocketConnectionProtocolMessageConnectionStepMetadata {
+  timestamp: Date;
+  connectionAttemptUuid?: string;
+}
+
+/**
+ * Identifies the type of the WebSocket connection step message.
+ */
+export type WebSocketConnectionProtocolMessageType =
+  | 'WSCP1ConnectRequest'
+  | 'WSCP2ConnectResponse'
+  | 'WSCP2ConnectFailedResponse'
+  | 'WSCP3Goodbye';
 
 /**
  * A request to add a context listener to a specified Channel OR to the current user
@@ -4300,6 +4528,56 @@ export class Convert {
     return JSON.stringify(uncast(value, r('WebConnectionProtocolMessage')), null, 2);
   }
 
+  public static toWebSocketConnectionProtocol1ConnectRequest(json: string): WebSocketConnectionProtocol1ConnectRequest {
+    return cast(JSON.parse(json), r('WebSocketConnectionProtocol1ConnectRequest'));
+  }
+
+  public static webSocketConnectionProtocol1ConnectRequestToJson(
+    value: WebSocketConnectionProtocol1ConnectRequest
+  ): string {
+    return JSON.stringify(uncast(value, r('WebSocketConnectionProtocol1ConnectRequest')), null, 2);
+  }
+
+  public static toWebSocketConnectionProtocol2ConnectFailedResponse(
+    json: string
+  ): WebSocketConnectionProtocol2ConnectFailedResponse {
+    return cast(JSON.parse(json), r('WebSocketConnectionProtocol2ConnectFailedResponse'));
+  }
+
+  public static webSocketConnectionProtocol2ConnectFailedResponseToJson(
+    value: WebSocketConnectionProtocol2ConnectFailedResponse
+  ): string {
+    return JSON.stringify(uncast(value, r('WebSocketConnectionProtocol2ConnectFailedResponse')), null, 2);
+  }
+
+  public static toWebSocketConnectionProtocol2ConnectSuccessResponse(
+    json: string
+  ): WebSocketConnectionProtocol2ConnectSuccessResponse {
+    return cast(JSON.parse(json), r('WebSocketConnectionProtocol2ConnectSuccessResponse'));
+  }
+
+  public static webSocketConnectionProtocol2ConnectSuccessResponseToJson(
+    value: WebSocketConnectionProtocol2ConnectSuccessResponse
+  ): string {
+    return JSON.stringify(uncast(value, r('WebSocketConnectionProtocol2ConnectSuccessResponse')), null, 2);
+  }
+
+  public static toWebSocketConnectionProtocol3Goodbye(json: string): WebSocketConnectionProtocol3Goodbye {
+    return cast(JSON.parse(json), r('WebSocketConnectionProtocol3Goodbye'));
+  }
+
+  public static webSocketConnectionProtocol3GoodbyeToJson(value: WebSocketConnectionProtocol3Goodbye): string {
+    return JSON.stringify(uncast(value, r('WebSocketConnectionProtocol3Goodbye')), null, 2);
+  }
+
+  public static toWebSocketConnectionProtocolMessage(json: string): WebSocketConnectionProtocolMessage {
+    return cast(JSON.parse(json), r('WebSocketConnectionProtocolMessage'));
+  }
+
+  public static webSocketConnectionProtocolMessageToJson(value: WebSocketConnectionProtocolMessage): string {
+    return JSON.stringify(uncast(value, r('WebSocketConnectionProtocolMessage')), null, 2);
+  }
+
   public static toAddContextListenerRequest(json: string): AddContextListenerRequest {
     return cast(JSON.parse(json), r('AddContextListenerRequest'));
   }
@@ -5243,13 +5521,89 @@ const typeMap: any = {
   WebConnectionProtocol6GoodbyeMeta: o([{ json: 'timestamp', js: 'timestamp', typ: Date }], false),
   WebConnectionProtocolMessage: o(
     [
-      { json: 'meta', js: 'meta', typ: r('ConnectionStepMetadata') },
+      { json: 'meta', js: 'meta', typ: r('WebConnectionProtocolMessageConnectionStepMetadata') },
       { json: 'payload', js: 'payload', typ: u(undefined, m('any')) },
-      { json: 'type', js: 'type', typ: r('ConnectionStepMessageType') },
+      { json: 'type', js: 'type', typ: r('WebConnectionProtocolMessageType') },
     ],
     false
   ),
-  ConnectionStepMetadata: o(
+  WebConnectionProtocolMessageConnectionStepMetadata: o(
+    [
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+      { json: 'connectionAttemptUuid', js: 'connectionAttemptUuid', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  WebSocketConnectionProtocol1ConnectRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('WebSocketConnectionProtocol1ConnectRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('WebSocketConnectionProtocol1ConnectRequestPayload') },
+      { json: 'type', js: 'type', typ: r('WebSocketConnectionProtocol1ConnectRequestType') },
+    ],
+    false
+  ),
+  WebSocketConnectionProtocol1ConnectRequestMeta: o(
+    [
+      { json: 'connectionAttemptUuid', js: 'connectionAttemptUuid', typ: '' },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+    ],
+    false
+  ),
+  WebSocketConnectionProtocol1ConnectRequestPayload: o(
+    [
+      { json: 'appId', js: 'appId', typ: u(undefined, '') },
+      { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
+      { json: 'instanceUuid', js: 'instanceUuid', typ: u(undefined, '') },
+      { json: 'protocolVersion', js: 'protocolVersion', typ: r('ProtocolVersion') },
+      { json: 'role', js: 'role', typ: r('ConnectionRole') },
+      { json: 'sessionId', js: 'sessionId', typ: '' },
+      { json: 'sharedSecret', js: 'sharedSecret', typ: '' },
+    ],
+    false
+  ),
+  WebSocketConnectionProtocol2ConnectFailedResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('WebSocketConnectionProtocol1ConnectRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('WebSocketConnectionProtocol2ConnectFailedResponsePayload') },
+      { json: 'type', js: 'type', typ: r('WebSocketConnectionProtocol2ConnectFailedResponseType') },
+    ],
+    false
+  ),
+  WebSocketConnectionProtocol2ConnectFailedResponsePayload: o([{ json: 'message', js: 'message', typ: '' }], false),
+  WebSocketConnectionProtocol2ConnectSuccessResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('WebSocketConnectionProtocol1ConnectRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('WebSocketConnectionProtocol2ConnectSuccessResponsePayload') },
+      { json: 'type', js: 'type', typ: r('WebSocketConnectionProtocol2ConnectSuccessResponseType') },
+    ],
+    false
+  ),
+  WebSocketConnectionProtocol2ConnectSuccessResponsePayload: o(
+    [
+      { json: 'appId', js: 'appId', typ: '' },
+      { json: 'implementationMetadata', js: 'implementationMetadata', typ: r('ImplementationMetadata') },
+      { json: 'instanceId', js: 'instanceId', typ: '' },
+      { json: 'instanceUuid', js: 'instanceUuid', typ: '' },
+    ],
+    false
+  ),
+  WebSocketConnectionProtocol3Goodbye: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('WebSocketConnectionProtocol3GoodbyeMeta') },
+      { json: 'type', js: 'type', typ: r('WebSocketConnectionProtocol3GoodbyeType') },
+    ],
+    false
+  ),
+  WebSocketConnectionProtocol3GoodbyeMeta: o([{ json: 'timestamp', js: 'timestamp', typ: Date }], false),
+  WebSocketConnectionProtocolMessage: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('WebSocketConnectionProtocolMessageConnectionStepMetadata') },
+      { json: 'payload', js: 'payload', typ: u(undefined, m('any')) },
+      { json: 'type', js: 'type', typ: r('WebSocketConnectionProtocolMessageType') },
+    ],
+    false
+  ),
+  WebSocketConnectionProtocolMessageConnectionStepMetadata: o(
     [
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'connectionAttemptUuid', js: 'connectionAttemptUuid', typ: u(undefined, '') },
@@ -6385,7 +6739,7 @@ const typeMap: any = {
   WebConnectionProtocol5ValidateAppIdentityFailedResponseType: ['WCP5ValidateAppIdentityFailedResponse'],
   WebConnectionProtocol5ValidateAppIdentitySuccessResponseType: ['WCP5ValidateAppIdentityResponse'],
   WebConnectionProtocol6GoodbyeType: ['WCP6Goodbye'],
-  ConnectionStepMessageType: [
+  WebConnectionProtocolMessageType: [
     'WCP1Hello',
     'WCP2LoadUrl',
     'WCP3Handshake',
@@ -6393,6 +6747,18 @@ const typeMap: any = {
     'WCP5ValidateAppIdentityFailedResponse',
     'WCP5ValidateAppIdentityResponse',
     'WCP6Goodbye',
+  ],
+  ProtocolVersion: ['1.0'],
+  ConnectionRole: ['application', 'desktopAgent'],
+  WebSocketConnectionProtocol1ConnectRequestType: ['WSCP1ConnectRequest'],
+  WebSocketConnectionProtocol2ConnectFailedResponseType: ['WSCP2ConnectFailedResponse'],
+  WebSocketConnectionProtocol2ConnectSuccessResponseType: ['WSCP2ConnectResponse'],
+  WebSocketConnectionProtocol3GoodbyeType: ['WSCP3Goodbye'],
+  WebSocketConnectionProtocolMessageType: [
+    'WSCP1ConnectRequest',
+    'WSCP2ConnectFailedResponse',
+    'WSCP2ConnectResponse',
+    'WSCP3Goodbye',
   ],
   AddContextListenerRequestType: ['addContextListenerRequest'],
   PurpleError: [
@@ -6877,6 +7243,118 @@ export function isValidWebConnectionProtocolMessage(value: any): value is WebCon
 }
 
 export const WEB_CONNECTION_PROTOCOL_MESSAGE_TYPE = 'WebConnectionProtocolMessage';
+
+/**
+ * Returns true if the value has a type property with value 'WSCP1ConnectRequest'. This is a fast check that does not check the format of the message
+ */
+export function isWebSocketConnectionProtocol1ConnectRequest(
+  value: any
+): value is WebSocketConnectionProtocol1ConnectRequest {
+  return value != null && value.type === 'WSCP1ConnectRequest';
+}
+
+/**
+ * Returns true if value is a valid WebSocketConnectionProtocol1ConnectRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebSocketConnectionProtocol1ConnectRequest(
+  value: any
+): value is WebSocketConnectionProtocol1ConnectRequest {
+  try {
+    Convert.webSocketConnectionProtocol1ConnectRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const WEB_SOCKET_CONNECTION_PROTOCOL1_CONNECT_REQUEST_TYPE = 'WebSocketConnectionProtocol1ConnectRequest';
+
+/**
+ * Returns true if the value has a type property with value 'WSCP2ConnectFailedResponse'. This is a fast check that does not check the format of the message
+ */
+export function isWebSocketConnectionProtocol2ConnectFailedResponse(
+  value: any
+): value is WebSocketConnectionProtocol2ConnectFailedResponse {
+  return value != null && value.type === 'WSCP2ConnectFailedResponse';
+}
+
+/**
+ * Returns true if value is a valid WebSocketConnectionProtocol2ConnectFailedResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebSocketConnectionProtocol2ConnectFailedResponse(
+  value: any
+): value is WebSocketConnectionProtocol2ConnectFailedResponse {
+  try {
+    Convert.webSocketConnectionProtocol2ConnectFailedResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const WEB_SOCKET_CONNECTION_PROTOCOL2_CONNECT_FAILED_RESPONSE_TYPE =
+  'WebSocketConnectionProtocol2ConnectFailedResponse';
+
+/**
+ * Returns true if the value has a type property with value 'WSCP2ConnectResponse'. This is a fast check that does not check the format of the message
+ */
+export function isWebSocketConnectionProtocol2ConnectSuccessResponse(
+  value: any
+): value is WebSocketConnectionProtocol2ConnectSuccessResponse {
+  return value != null && value.type === 'WSCP2ConnectResponse';
+}
+
+/**
+ * Returns true if value is a valid WebSocketConnectionProtocol2ConnectSuccessResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebSocketConnectionProtocol2ConnectSuccessResponse(
+  value: any
+): value is WebSocketConnectionProtocol2ConnectSuccessResponse {
+  try {
+    Convert.webSocketConnectionProtocol2ConnectSuccessResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const WEB_SOCKET_CONNECTION_PROTOCOL2_CONNECT_SUCCESS_RESPONSE_TYPE =
+  'WebSocketConnectionProtocol2ConnectSuccessResponse';
+
+/**
+ * Returns true if the value has a type property with value 'WSCP3Goodbye'. This is a fast check that does not check the format of the message
+ */
+export function isWebSocketConnectionProtocol3Goodbye(value: any): value is WebSocketConnectionProtocol3Goodbye {
+  return value != null && value.type === 'WSCP3Goodbye';
+}
+
+/**
+ * Returns true if value is a valid WebSocketConnectionProtocol3Goodbye. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebSocketConnectionProtocol3Goodbye(value: any): value is WebSocketConnectionProtocol3Goodbye {
+  try {
+    Convert.webSocketConnectionProtocol3GoodbyeToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const WEB_SOCKET_CONNECTION_PROTOCOL3_GOODBYE_TYPE = 'WebSocketConnectionProtocol3Goodbye';
+
+/**
+ * Returns true if value is a valid WebSocketConnectionProtocolMessage. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidWebSocketConnectionProtocolMessage(value: any): value is WebSocketConnectionProtocolMessage {
+  try {
+    Convert.webSocketConnectionProtocolMessageToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const WEB_SOCKET_CONNECTION_PROTOCOL_MESSAGE_TYPE = 'WebSocketConnectionProtocolMessage';
 
 /**
  * Returns true if the value has a type property with value 'addContextListenerRequest'. This is a fast check that does not check the format of the message
