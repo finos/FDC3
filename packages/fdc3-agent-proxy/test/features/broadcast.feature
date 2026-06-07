@@ -51,8 +51,8 @@ Feature: Broadcasting
     And I call "{channel1}" with "addContextListener" using arguments "fdc3.instrument" and "{resultHandler}"
     And messaging receives "{fullMetadataMessage}"
     Then "{metadatas}" is an array of objects with the following contents
-      | source.appId   | source.instanceId | signature     | custom.region |
-      | cucumber-app   | cucumber-instance | test-sig      | EMEA          |
+      | source.appId   | source.instanceId | signature.signature      | signature.protected      | custom.region |
+      | cucumber-app   | cucumber-instance | test-sig (signature part) | test-sig (protected part) | EMEA          |
 
   Scenario: getCurrentContextWithMetadata returns context and metadata
     When I call "{api}" with "getOrCreateChannel" using argument "channel-name"
@@ -60,8 +60,8 @@ Feature: Broadcasting
     And I call "{channel1}" with "broadcast" using argument "{instrumentContext}"
     And I call "{channel1}" with "getCurrentContextWithMetadata" using argument "fdc3.instrument"
     Then "{result}" is an object with the following contents
-      | context.type    | context.name | metadata.source.appId | metadata.traceId | metadata.signature | metadata.custom.key |
-      | fdc3.instrument | Apple        | test-app              | test-trace-id    | test-signature     | value               |
+      | context.type    | context.name | metadata.source.appId | metadata.traceId | metadata.signature.signature      | metadata.signature.protected      | metadata.custom.key |
+      | fdc3.instrument | Apple        | test-app              | test-trace-id    | test-signature (signature part) | test-signature (protected part) | value               |
 
   Scenario: getCurrentContextWithMetadata returns null for empty channel
     When I call "{api}" with "getOrCreateChannel" using argument "channel-name"

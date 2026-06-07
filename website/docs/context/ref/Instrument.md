@@ -171,6 +171,35 @@ The `market` map can be used to further specify the instrument and help achieve 
 
 </details>
 
+<details>
+  <summary><code>classification</code></summary>
+
+**type**: `object`
+
+**Subproperties:**
+
+<details>
+  <summary><code>name</code></summary>
+
+**type**: `string`
+
+Optional human-readable classification, to be used if no specific data classification is available.
+
+</details>
+
+<details>
+  <summary><code>FDS_TYPE</code></summary>
+
+**type**: `string`
+
+FactSet classification for the instrument.
+
+</details>
+
+[@experimental](/docs/fdc3-compliance#experimental-features) The `classification` map can be used to specify the categorization of the instrument and help achieve interoperability between disparate data sources.
+
+</details>
+
 ## Example
 
 ```json
@@ -184,6 +213,9 @@ The `market` map can be used to further specify the instrument and help achieve 
   },
   "market": {
     "MIC": "XNAS"
+  },
+  "classification": {
+    "name": "publicCompany"
   }
 }
 ```

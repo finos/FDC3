@@ -80,7 +80,10 @@ Given(
           timestamp: new Date(),
           source: world.messaging!.getAppIdentifier(),
           traceId: world.messaging!.createUUID(),
-          signature: 'test-sig',
+          signature: {
+            protected: 'test-sig (protected part)',
+            signature: 'test-sig (signature part)',
+          },
           custom: { region: 'EMEA' },
         },
       },
@@ -132,6 +135,43 @@ Given(
       },
       payload: {
         newChannelId: handleResolve(channel, world),
+      },
+      type: 'channelChangedEvent',
+    };
+
+    world.props[field] = message;
+  }
+);
+
+Given(
+  '{string} is a channelChangedEvent message with currentChannelId {string}',
+  (world: CustomWorld, field: string, channelId: string) => {
+    const message: ChannelChangedEvent = {
+      meta: {
+        eventUuid: world.messaging!.createUUID(),
+        timestamp: new Date(),
+      },
+      payload: {
+        currentChannelId: handleResolve(channelId, world),
+      },
+      type: 'channelChangedEvent',
+    };
+
+    world.props[field] = message;
+  }
+);
+
+Given(
+  '{string} is a channelChangedEvent message with currentChannelId {string} and newChannelId {string}',
+  (world: CustomWorld, field: string, currentChannelId: string, newChannelId: string) => {
+    const message: ChannelChangedEvent = {
+      meta: {
+        eventUuid: world.messaging!.createUUID(),
+        timestamp: new Date(),
+      },
+      payload: {
+        currentChannelId: handleResolve(currentChannelId, world),
+        newChannelId: handleResolve(newChannelId, world),
       },
       type: 'channelChangedEvent',
     };

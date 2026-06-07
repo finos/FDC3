@@ -14,6 +14,16 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const BASE_PORT = 4010;
 
+function resolveWithinRoot(root: string, ...segments: string[]): string {
+  const normalizedRoot = fs.realpathSync(root);
+  const suffix = segments.join('/');
+  const resolvedPath = path.normalize(suffix ? `${normalizedRoot}/${suffix}` : normalizedRoot);
+  if (resolvedPath !== normalizedRoot && !resolvedPath.startsWith(`${normalizedRoot}${path.sep}`)) {
+    throw new Error(`Resolved path escapes app root: ${resolvedPath}`);
+  }
+  return resolvedPath;
+}
+
 /**
  * Discovery utility for both front-end and server apps.
  */
@@ -22,17 +32,17 @@ function discoverApps(baseDir: string) {
   return fs
     .readdirSync(baseDir, { withFileTypes: true })
     .filter(dirent => {
-      const appPath = path.join(baseDir, dirent.name);
+      const appPath = resolveWithinRoot(baseDir, dirent.name);
       return (
         dirent.isDirectory() &&
         dirent.name !== 'node_modules' &&
         dirent.name !== 'dist' &&
-        fs.existsSync(path.join(appPath, 'index.html'))
+        fs.existsSync(resolveWithinRoot(appPath, 'index.html'))
       );
     })
     .map(dirent => ({
       name: dirent.name,
-      root: path.join(baseDir, dirent.name),
+      root: resolveWithinRoot(baseDir, dirent.name),
     }));
 }
 
@@ -51,7 +61,7 @@ const allApps = [...discoverApps(frontEndAppsDir), ...discoverApps(serverAppsDir
 // Assign ports, respecting properties.json if present
 const apps = allApps.map((a, index) => {
   let port = BASE_PORT + index;
-  const propPath = path.join(a.root, 'properties.json');
+  const propPath = resolveWithinRoot(a.root, 'properties.json');
   if (fs.existsSync(propPath)) {
     try {
       const props = JSON.parse(fs.readFileSync(propPath, 'utf-8'));
@@ -59,7 +69,7 @@ const apps = allApps.map((a, index) => {
         port = props.port;
       }
     } catch (e) {
-      console.error(`Failed to read properties.json for ${a.name}`, e);
+      console.error('Failed to read properties.json', { appName: a.name, error: e });
     }
   }
   return {
@@ -125,7 +135,7 @@ function buildCombinedAppDirectory(appsList: AppWithPort[]) {
   };
 
   for (const a of appsList) {
-    const appdPath = path.join(a.root, 'static', 'appd.v2.json');
+    const appdPath = resolveWithinRoot(a.root, 'static', 'appd.v2.json');
     if (fs.existsSync(appdPath)) {
       try {
         const content = JSON.parse(fs.readFileSync(appdPath, 'utf-8'));
@@ -133,7 +143,7 @@ function buildCombinedAppDirectory(appsList: AppWithPort[]) {
           combined.applications.push(...applyPortToAppDirectoryRecords(content.applications, a.port));
         }
       } catch (e) {
-        console.error(`Failed to read appd.v2.json for ${a.name}`, e);
+        console.error('Failed to read appd.v2.json', { appName: a.name, error: e });
       }
     }
   }
@@ -149,19 +159,20 @@ function writeGeneratedAppDirectory(combined: { applications: any[]; message: st
 }
 
 async function startApp(appName: string, appRoot: string, port: number) {
+  const normalizedAppRoot = fs.realpathSync(appRoot);
   const app = express();
   app.use(express.json());
 
   // Load backend if exists (mostly used in server-apps). Receives the shared HTTP server
   // so WebSocket + JWKS can bind to the same port as Express + Vite.
-  const backendPath = path.join(appRoot, 'src', 'backend.ts');
+  const backendPath = resolveWithinRoot(normalizedAppRoot, 'src', 'backend.ts');
   const server = http.createServer(app);
   if (fs.existsSync(backendPath)) {
     try {
       const backendUrl = `file://${backendPath}`;
       const { default: backend } = await import(backendUrl);
       if (typeof backend === 'function') {
-        const result = backend(app, server, { port, appRoot });
+        const result = backend(app, server, { port, appRoot: normalizedAppRoot });
         if (result != null && typeof (result as Promise<void>).then === 'function') {
           await result;
         }
@@ -173,19 +184,19 @@ async function startApp(appName: string, appRoot: string, port: number) {
 
   // Mount the app's static directory at /static/appName to match the expected URL structure
   // and legacy patterns from the demo.
-  const staticPath = path.join(appRoot, 'static');
+  const staticPath = resolveWithinRoot(normalizedAppRoot, 'static');
   if (fs.existsSync(staticPath)) {
     app.use(express.static(staticPath));
   }
 
   // Each app gets its own isolated Vite server
   const vite = await createServer({
-    root: appRoot,
-    cacheDir: path.join(appRoot, '.vite'),
+    root: normalizedAppRoot,
+    cacheDir: resolveWithinRoot(normalizedAppRoot, '.vite'),
     server: {
       middlewareMode: true,
       fs: {
-        allow: [appRoot, securityDemoDir, packageRoot],
+        allow: [normalizedAppRoot, securityDemoDir, packageRoot],
       },
       hmr: {
         port: port + 100, // Avoid HMR port conflicts
@@ -208,16 +219,16 @@ async function startApp(appName: string, appRoot: string, port: number) {
   // Serve index.html for unknown routes
   app.get('*', spaIndexLimiter, (req, res, next) => {
     if (req.path.startsWith('/api')) return next();
-    const indexPath = path.join(appRoot, 'index.html');
+    const indexPath = resolveWithinRoot(normalizedAppRoot, 'index.html');
     if (fs.existsSync(indexPath)) {
-      res.sendFile(indexPath);
+      res.sendFile('index.html', { root: normalizedAppRoot });
     } else {
       next();
     }
   });
 
   server.listen(port, () => {
-    console.info(`Application ${appName} online`, `http://localhost:${port}`);
+    console.info('Application online', { appName, url: `http://localhost:${port}` });
   });
 }
 

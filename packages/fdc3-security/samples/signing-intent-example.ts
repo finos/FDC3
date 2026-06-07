@@ -42,11 +42,15 @@ class HandlerAppBackendHandlers extends DefaultFDC3Handlers {
 
     // Core logic handler - executes only after signature verification
     const coreHandler = async (context: Context, metadata?: ContextMetadata) => {
-      console.log(`[Handler App Backend] Intent ${intent}: received context type ${context.type}`);
+      console.log('[Handler App Backend] Intent received', { intent, contextType: context.type });
 
       const auth = metadata?.authenticity;
       if (auth?.signed && auth?.valid && auth?.trusted) {
-        console.log(`[Handler App Backend] ✅ AUTHENTICATED: Request from ${auth.jku} is trusted.`, context, metadata);
+        console.log('[Handler App Backend] ✅ AUTHENTICATED: Request is trusted.', {
+          jku: auth.jku,
+          context,
+          metadata,
+        });
 
         const response = {
           type: 'demo.response',
@@ -84,7 +88,7 @@ class RaiserAppBackendHandlers extends DefaultFDC3Handlers {
   async exchangeData(purpose: string, o: object): Promise<object | void> {
     if (purpose === 'sign-context') {
       const { context } = o as { context: Context };
-      console.log(`[Raiser App Backend] Signing intent request context...`);
+      console.log('[Raiser App Backend] Signing intent request context...');
       // Return raw signature metadata
       return await this.security.sign(context);
     }
@@ -164,7 +168,7 @@ async function step3MutuallyAuthenticatedExchange(
 
   const support = new BasicSignedRaiseIntentSupport(mockDA, signingFunction, metadataHandler, verificationFunction);
 
-  console.log(`   Raiser App: Raising signed intent ${INTENT_DATA_TRANSFER}...`, requestContext);
+  console.log('   Raiser App: Raising signed intent...', { intent: INTENT_DATA_TRANSFER, requestContext });
   const resolution = await support.raiseIntent(INTENT_DATA_TRANSFER, requestContext);
 
   console.log('   Raiser App: Awaiting signed response from handler...');
@@ -179,7 +183,7 @@ async function step3MutuallyAuthenticatedExchange(
       `[Raiser App] Verified Response:`,
       JSON.stringify(result, (k, v) => (k === '__appMeta' ? undefined : v), 2)
     );
-    console.log(`[Raiser App] Trusted Provider Identity: ${auth.jku}`);
+    console.log('[Raiser App] Trusted Provider Identity:', auth.jku);
   } else {
     console.error(`\n[Raiser App] ❌ MUTUAL AUTHENTICATION FAILED:`, auth?.errors);
   }
