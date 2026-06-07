@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3",
-  "version": "2.2.2",
+  "version": "3.0.0-alpha.2",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -21,7 +21,6 @@
     "packages/fdc3-schema",
     "packages/fdc3-context",
     "packages/fdc3-standard",
-    "packages/testing",
     "packages/fdc3-agent-proxy",
     "packages/fdc3-security",
     "toolbox/fdc3-for-web/fdc3-web-impl",
@@ -61,8 +60,8 @@
     "@eslint/js": "^9.19.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "^20.16.11",
-    "@vitest/coverage-v8": "^3.2.4",
-    "@vitest/ui": "3.2.4",
+    "@vitest/coverage-v8": "^3.2.6",
+    "@vitest/ui": "^3.2.6",
     "concurrently": "^8.2.2",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^9.1.0",
@@ -77,7 +76,7 @@
     "tsx": "^4.19.1",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.17.0",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.6"
   },
   "overrides": {
     "serialize-javascript": "^7.0.5",

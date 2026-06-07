@@ -1,9 +1,9 @@
 import { Given, Then, When } from 'quickpickle';
 import { DataTable } from '@cucumber/cucumber';
 import { Context } from '@finos/fdc3-context';
-import { handleResolve, matchData } from '@finos/testing';
+import { handleResolve, matchData } from '@robmoffat/standard-cucumber-steps';
 import { CustomWorld } from '../world/index.js';
-import { CHANNEL_STATE } from '@finos/testing';
+import { CHANNEL_STATE } from '../support/agentDoubles.js';
 import { ApiEvent, ContextMetadata } from '@finos/fdc3-standard';
 import {
   BroadcastEvent,
@@ -80,7 +80,10 @@ Given(
           timestamp: new Date(),
           source: world.messaging!.getAppIdentifier(),
           traceId: world.messaging!.createUUID(),
-          signature: 'test-sig',
+          signature: {
+            protected: 'test-sig (protected part)',
+            signature: 'test-sig (signature part)',
+          },
           custom: { region: 'EMEA' },
         },
       },
@@ -132,6 +135,43 @@ Given(
       },
       payload: {
         newChannelId: handleResolve(channel, world),
+      },
+      type: 'channelChangedEvent',
+    };
+
+    world.props[field] = message;
+  }
+);
+
+Given(
+  '{string} is a channelChangedEvent message with currentChannelId {string}',
+  (world: CustomWorld, field: string, channelId: string) => {
+    const message: ChannelChangedEvent = {
+      meta: {
+        eventUuid: world.messaging!.createUUID(),
+        timestamp: new Date(),
+      },
+      payload: {
+        currentChannelId: handleResolve(channelId, world),
+      },
+      type: 'channelChangedEvent',
+    };
+
+    world.props[field] = message;
+  }
+);
+
+Given(
+  '{string} is a channelChangedEvent message with currentChannelId {string} and newChannelId {string}',
+  (world: CustomWorld, field: string, currentChannelId: string, newChannelId: string) => {
+    const message: ChannelChangedEvent = {
+      meta: {
+        eventUuid: world.messaging!.createUUID(),
+        timestamp: new Date(),
+      },
+      payload: {
+        currentChannelId: handleResolve(currentChannelId, world),
+        newChannelId: handleResolve(newChannelId, world),
       },
       type: 'channelChangedEvent',
     };
@@ -281,7 +321,7 @@ When('I call destructured {string}', async (world: CustomWorld, methodName: stri
 });
 
 When(
-  'I call destructured {string} with parameter {string}',
+  'I call destructured {string} using argument {string}',
   async (world: CustomWorld, methodName: string, param: string) => {
     const destructuredMethod = world.props[`destructured_${methodName}`];
     const resolvedParam = handleResolve(param, world);
@@ -296,7 +336,7 @@ When(
 );
 
 When(
-  'I call destructured {string} with parameters {string} and {string}',
+  'I call destructured {string} using arguments {string} and {string}',
   async (world: CustomWorld, methodName: string, param1: string, param2: string) => {
     const destructuredMethod = world.props[`destructured_${methodName}`];
     const resolvedParam1 = handleResolve(param1, world);
@@ -312,7 +352,7 @@ When(
 );
 
 When(
-  'I call destructured {string} with parameters {string} and {string} and {string}',
+  'I call destructured {string} using arguments {string} and {string} and {string}',
   async (world: CustomWorld, methodName: string, param1: string, param2: string, param3: string) => {
     const destructuredMethod = world.props[`destructured_${methodName}`];
     const resolvedParam1 = handleResolve(param1, world);

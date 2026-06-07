@@ -15,22 +15,25 @@
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "files": [
-    "dist"
+    "dist",
+    "test/features"
   ],
   "scripts": {
     "build": "tsc",
     "test": "tsc && vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "view": "vite preview --outDir html-test-results",
     "clean": "rimraf dist coverage node_modules",
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@finos/fdc3-standard": "3.0.0-alpha.2"
+    "@finos/fdc3-standard": "3.0.0-alpha.2",
+    "@finos/fdc3-schema": "3.0.0-alpha.2"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^11.3.0",
-    "@finos/testing": "3.0.0-alpha.2",
+    "@robmoffat/standard-cucumber-steps": "1.1.0",
     "@types/uuid": "^10.0.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "3.3.1",

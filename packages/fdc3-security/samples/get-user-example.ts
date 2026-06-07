@@ -59,11 +59,12 @@ class IDPBackendHandlers extends DefaultFDC3Handlers {
         );
         throw new Error('Unauthorized');
       }
-      console.log(
-        `[IDP Backend] ✅ Verified requesting-app signature (jku: ${auth.jku ?? 'n/a'}, kid: ${auth.kid ?? 'n/a'})`,
+      console.log('[IDP Backend] ✅ Verified requesting-app signature', {
+        jku: auth.jku ?? 'n/a',
+        kid: auth.kid ?? 'n/a',
         context,
-        metadata
-      );
+        metadata,
+      });
 
       if (context.type !== 'fdc3.security.userRequest') {
         throw new Error(`Expected fdc3.security.userRequest, got ${context.type}`);

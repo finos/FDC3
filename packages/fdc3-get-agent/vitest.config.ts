@@ -11,8 +11,11 @@ export default defineConfig({
     include: ['test/features/**/*.feature'],
     setupFiles: ['test/steps.ts'],
     testTimeout: 30000,
-    reporters: ['default', 'junit'],
-    outputFile: 'test-results.xml',
+    reporters: ['default', 'junit', 'html'],
+    outputFile: {
+      junit: 'test-results.xml',
+      html: 'html-test-results/index.html',
+    },
     coverage: {
       enabled: true,
       provider: 'v8',

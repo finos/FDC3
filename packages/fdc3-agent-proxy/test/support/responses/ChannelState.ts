@@ -133,7 +133,10 @@ export class ChannelState implements AutomaticResponse {
               source: { appId: 'test-app', instanceId: 'test-instance' },
               timestamp: new Date(),
               traceId: 'test-trace-id',
-              signature: 'test-signature',
+              signature: {
+                protected: 'test-signature (protected part)',
+                signature: 'test-signature (signature part)',
+              },
               custom: { key: 'value' },
             }
           : null,

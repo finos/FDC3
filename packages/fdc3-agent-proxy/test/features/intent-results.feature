@@ -8,17 +8,17 @@ Feature: Intents Can Return Different Results
 
   Scenario: Raise Intent times out
     Given Raise Intent times out
-    When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    When I call "{api}" with "raiseIntent" using arguments "OrderFood" and "{instrumentContext}"
     Then "{result}" is an error with message "ApiTimeout"
 
   Scenario: Raise Intent Fails With An Error
     Given Raise Intent will throw a "TargetAppUnavailable" error
-    When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    When I call "{api}" with "raiseIntent" using arguments "OrderFood" and "{instrumentContext}"
     Then "{result}" is an error with message "TargetAppUnavailable"
 
   Scenario: void is returned in the result
     Given Raise Intent returns no result
-    When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    When I call "{api}" with "raiseIntent" using arguments "OrderFood" and "{instrumentContext}"
     And I call "{result}" with "getResult"
     Then "{result}" is undefined
     And messaging will have posts
@@ -26,7 +26,7 @@ Feature: Intents Can Return Different Results
       | OrderFood      | fdc3.instrument      | AAPL                      | raiseIntentRequest |
 
   Scenario: Raising An intent With The App Parameter
-    When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}" and "{c1}"
+    When I call "{api}" with "raiseIntent" using arguments "OrderFood", "{instrumentContext}", and "{c1}"
     Then "{result}" is an object with the following contents
       | source.appId | source.instanceId | intent    |
       | chipShop     | c1                | OrderFood |
@@ -36,7 +36,7 @@ Feature: Intents Can Return Different Results
 
   Scenario: Context Data is returned in the result
     Given Raise Intent returns a context of "{instrumentContext}"
-    When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    When I call "{api}" with "raiseIntent" using arguments "OrderFood" and "{instrumentContext}"
     And I call "{result}" with "getResult"
     Then "{result}" is an object with the following contents
       | type            | name  |
@@ -47,7 +47,7 @@ Feature: Intents Can Return Different Results
 
   Scenario: App Channel is returned in the result
     Given Raise Intent returns an app channel
-    When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    When I call "{api}" with "raiseIntent" using arguments "OrderFood" and "{instrumentContext}"
     And I call "{result}" with "getResult"
     Then "{result}" is an object with the following contents
       | type | id             |
@@ -58,7 +58,7 @@ Feature: Intents Can Return Different Results
 
   Scenario: User Channel is returned in the result
     Given Raise Intent returns a user channel
-    When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    When I call "{api}" with "raiseIntent" using arguments "OrderFood" and "{instrumentContext}"
     And I call "{result}" with "getResult"
     Then "{result}" is an object with the following contents
       | type | id             |
@@ -69,7 +69,7 @@ Feature: Intents Can Return Different Results
 
   Scenario: Private Channel is returned in the result
     Given Raise Intent returns a private channel
-    When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    When I call "{api}" with "raiseIntent" using arguments "OrderFood" and "{instrumentContext}"
     And I call "{result}" with "getResult"
     Then "{result}" is an object with the following contents
       | type    | id             |
@@ -81,7 +81,7 @@ Feature: Intents Can Return Different Results
   Scenario: Destructured getResult returns context data
     Given Raise Intent returns a context of "{instrumentContext}"
     When I destructure method "raiseIntent" from "{api}"
-    And I call destructured "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    And I call destructured "raiseIntent" using arguments "OrderFood" and "{instrumentContext}"
     And I destructure method "getResult" from "{result}"
     And I call destructured "getResult"
     Then "{result}" is an object with the following contents
@@ -93,7 +93,7 @@ Feature: Intents Can Return Different Results
 
   Scenario: Destructured raiseIntent with app parameter
     When I destructure method "raiseIntent" from "{api}"
-    And I call destructured "raiseIntent" with parameters "OrderFood" and "{instrumentContext}" and "{c1}"
+    And I call destructured "raiseIntent" using arguments "OrderFood" and "{instrumentContext}" and "{c1}"
     Then "{result}" is an object with the following contents
       | source.appId | source.instanceId | intent    |
       | chipShop     | c1                | OrderFood |
@@ -104,7 +104,7 @@ Feature: Intents Can Return Different Results
   Scenario: Destructured getResult returns app channel
     Given Raise Intent returns an app channel
     When I destructure method "raiseIntent" from "{api}"
-    And I call destructured "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    And I call destructured "raiseIntent" using arguments "OrderFood" and "{instrumentContext}"
     And I destructure method "getResult" from "{result}"
     And I call destructured "getResult"
     Then "{result}" is an object with the following contents
@@ -117,7 +117,7 @@ Feature: Intents Can Return Different Results
   Scenario: Destructured getResult returns private channel
     Given Raise Intent returns a private channel
     When I destructure method "raiseIntent" from "{api}"
-    And I call destructured "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    And I call destructured "raiseIntent" using arguments "OrderFood" and "{instrumentContext}"
     And I destructure method "getResult" from "{result}"
     And I call destructured "getResult"
     Then "{result}" is an object with the following contents
@@ -129,7 +129,7 @@ Feature: Intents Can Return Different Results
 
   Scenario: getResultMetadata returns DA-generated metadata for a context result
     Given Raise Intent returns a context of "{instrumentContext}"
-    When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    When I call "{api}" with "raiseIntent" using arguments "OrderFood" and "{instrumentContext}"
     And I call "{result}" with "getResultMetadata"
     Then "{result}" is an object with the following contents
       | source.appId | source.instanceId |
@@ -137,7 +137,7 @@ Feature: Intents Can Return Different Results
 
   Scenario: getResultMetadata returns merged metadata when ContextWithMetadata is returned
     Given Raise Intent returns a context of "{instrumentContext}" with traceId "my-trace-123" and signature "sig-abc" and antiReplay claims "1234/2345/result-jti"
-    When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    When I call "{api}" with "raiseIntent" using arguments "OrderFood" and "{instrumentContext}"
     And I call "{result}" with "getResultMetadata"
     Then "{result}" is an object with the following contents
       | source.appId | source.instanceId | traceId       | signature.signature | signature.protected | antiReplay.iat | antiReplay.exp | antiReplay.jti |
@@ -145,7 +145,7 @@ Feature: Intents Can Return Different Results
 
   Scenario: getResultMetadata returns DA-generated metadata for a channel result
     Given Raise Intent returns a private channel
-    When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    When I call "{api}" with "raiseIntent" using arguments "OrderFood" and "{instrumentContext}"
     And I call "{result}" with "getResultMetadata"
     Then "{result}" is an object with the following contents
       | source.appId | source.instanceId |
@@ -153,7 +153,7 @@ Feature: Intents Can Return Different Results
 
   Scenario: getResultMetadata returns DA-generated metadata for a void result
     Given Raise Intent returns no result
-    When I call "{api}" with "raiseIntent" with parameters "OrderFood" and "{instrumentContext}"
+    When I call "{api}" with "raiseIntent" using arguments "OrderFood" and "{instrumentContext}"
     And I call "{result}" with "getResultMetadata"
     Then "{result}" is an object with the following contents
       | source.appId | source.instanceId |

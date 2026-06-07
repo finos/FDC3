@@ -1,5 +1,5 @@
 import { When } from 'quickpickle';
-import { handleResolve } from '@finos/testing';
+import { handleResolve } from '@robmoffat/standard-cucumber-steps';
 import { CustomWorld } from '../world/index.js';
 import { DesktopAgent } from '@finos/fdc3-standard';
 import { Instrument } from '@finos/fdc3-context';

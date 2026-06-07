@@ -1,5 +1,5 @@
 import { Given } from 'quickpickle';
-import { handleResolve } from '@finos/testing';
+import { handleResolve } from '@robmoffat/standard-cucumber-steps';
 import { DefaultDesktopAgentChannelSelector } from '../../src/ui/DefaultDesktopAgentChannelSelector.js';
 import { CHANNEL_SELECTOR_URL } from '../support/MockFDC3Server.js';
 import { USER_CHANNELS } from '../support/responses/UserChannels.js';

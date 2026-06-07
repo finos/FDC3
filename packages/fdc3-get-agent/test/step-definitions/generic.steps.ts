@@ -1,6 +1,4 @@
-import { setupGenericSteps } from '@finos/testing';
-import path from 'path';
+import { Given, Then, When } from 'quickpickle';
+import { quickpickleWrapStep, setupGenericSteps } from '@robmoffat/standard-cucumber-steps';
 
-// Register shared generic steps from @finos/testing
-const schemaBasePath = path.join(import.meta.dirname, '../../../');
-setupGenericSteps(schemaBasePath);
+setupGenericSteps({ Given, When, Then, wrapStep: quickpickleWrapStep });
