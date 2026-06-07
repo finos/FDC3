@@ -34,7 +34,6 @@
   "devDependencies": {
     "@cucumber/cucumber": "^11.3.0",
     "@robmoffat/standard-cucumber-steps": "1.1.0",
-    "@finos/testing": "3.0.0-alpha.2",
     "@types/uuid": "^10.0.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "3.3.1",

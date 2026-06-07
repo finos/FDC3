@@ -270,7 +270,7 @@ Feature: Basic User Channels Support
   Scenario: User Channel Changed Event fires when currentChannelId field is used
     Given "typesHandler" pipes events to "types"
     And "modernMessage" is a channelChangedEvent message with currentChannelId "channelX"
-    When I call "{api}" with "addEventListener" with parameters "userChannelChanged" and "{typesHandler}"
+    When I call "{api}" with "addEventListener" using arguments "userChannelChanged" and "{typesHandler}"
     And I refer to "{result}" as "theListener"
     And messaging receives "{modernMessage}"
     Then "{types}" is an array of objects with the following contents
@@ -280,7 +280,7 @@ Feature: Basic User Channels Support
   Scenario: User Channel Changed Event fires when user leaves a channel via currentChannelId null
     Given "typesHandler" pipes events to "types"
     And "leaveMessage" is a channelChangedEvent message with currentChannelId "{null}"
-    When I call "{api}" with "addEventListener" with parameters "userChannelChanged" and "{typesHandler}"
+    When I call "{api}" with "addEventListener" using arguments "userChannelChanged" and "{typesHandler}"
     And I refer to "{result}" as "theListener"
     And messaging receives "{leaveMessage}"
     Then "{types}" is an array of objects with the following contents
@@ -290,7 +290,7 @@ Feature: Basic User Channels Support
   Scenario: User Channel Changed Event fires when user leaves a channel via deprecated newChannelId null
     Given "typesHandler" pipes events to "types"
     And "leaveMessageDeprecated" is a channelChangedEvent message on channel "{null}"
-    When I call "{api}" with "addEventListener" with parameters "userChannelChanged" and "{typesHandler}"
+    When I call "{api}" with "addEventListener" using arguments "userChannelChanged" and "{typesHandler}"
     And I refer to "{result}" as "theListener"
     And messaging receives "{leaveMessageDeprecated}"
     Then "{types}" is an array of objects with the following contents
@@ -300,7 +300,7 @@ Feature: Basic User Channels Support
   Scenario: currentChannelId takes precedence over deprecated newChannelId in channel changed events
     Given "typesHandler" pipes events to "types"
     And "bothFieldsMessage" is a channelChangedEvent message with currentChannelId "modern" and newChannelId "deprecated"
-    When I call "{api}" with "addEventListener" with parameters "userChannelChanged" and "{typesHandler}"
+    When I call "{api}" with "addEventListener" using arguments "userChannelChanged" and "{typesHandler}"
     And I refer to "{result}" as "theListener"
     And messaging receives "{bothFieldsMessage}"
     Then "{types}" is an array of objects with the following contents
@@ -309,7 +309,7 @@ Feature: Basic User Channels Support
 
   Scenario: Wildcard event listener fires and forwards non-channelChangedEvent messages
     Given "typesHandler" pipes events to "types"
-    When I call "{api}" with "addEventListener" with parameters "{null}" and "{typesHandler}"
+    When I call "{api}" with "addEventListener" using arguments "{null}" and "{typesHandler}"
     And messaging receives "{instrumentMessageOne}"
     Then "{types}" is an array of objects with the following contents
       | channelId | context.type    |

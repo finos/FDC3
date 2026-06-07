@@ -36,10 +36,6 @@ fdc3-schema ───┘                   │                       │
 | `fdc3-web-impl` | `toolbox/fdc3-for-web/fdc3-web-impl` | `@finos/fdc3-web-impl` | Server-side (Desktop Agent side) DACP implementation |
 | `fdc3` | `packages/fdc3` | `@finos/fdc3` | Roll-up package: the main entry point for apps using FDC3 |
 | `fdc3-commonjs` | `packages/fdc3-commonjs` | `@finos/fdc3-commonjs` | CommonJS backwards-compatibility roll-up |
-<<<<<<< HEAD
-=======
-| `testing` | `packages/testing` | `@finos/testing` | Shared Cucumber step definitions and test utilities (not published) |
->>>>>>> security-documentation-rebase2
 | `demo` | `toolbox/fdc3-for-web/demo` | — | Reference Desktop Agent implementation |
 | `fdc3-workbench` | `toolbox/fdc3-workbench` | — | Interactive FDC3 testing tool |
 | `fdc3-conformance` | `toolbox/fdc3-conformance` | — | Conformance test suite definitions |
