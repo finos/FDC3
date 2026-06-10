@@ -1,21 +1,21 @@
 /**
- * JWT claims used for **user identity tokens** (`fdc3.user`).
+ * JWT claims used for **user identity tokens** (`fdc3.security.user`).
  *
- * These claims are included in the JWT payload of an `fdc3.user` context
- * to assert user identity. The token is created by an Identity Provider (IDP)
+ * These claims are included in the JWT payload of an `fdc3.security.user` context
+ * to assert user identity. The token is created by an identity provider app
  * and scoped to a specific audience (requesting app) to prevent token misuse
  * if intercepted.
  *
- * **Usage:** User identity JWT tokens (in the `jwt` field of `fdc3.user` context)
+ * **Usage:** User identity JWT tokens (in the `wrappedJwt` field of `fdc3.security.user` context)
  *
  * @see {@link https://datatracker.ietf.org/doc/html/rfc7519#section-4.1 | RFC 7519 Section 4.1 - Registered Claim Names}
- * @see {@link AntiReplay} from `@finos/fdc3-context` for claims used in **context signing** (anti-replay)
+ * @see {@link AntiReplayClaims} from `@finos/fdc3-schema` for claims used in **context signing** (anti-replay)
  * @see FDC3 Security & Identity documentation for usage in FDC3 workflows
  */
 export interface FDC3UserClaims extends Record<string, unknown> {
   /**
-   * Issuer - The identity provider (IDP) that created and signed this token.
-   * Typically the URL of the IDP application.
+   * Issuer - The identity provider app that created and signed this token.
+   * Typically the URL of the identity provider app's JWKS endpoint origin.
    * @example "https://idp.example.com"
    */
   iss: string;

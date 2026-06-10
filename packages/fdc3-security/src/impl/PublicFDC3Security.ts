@@ -119,7 +119,7 @@ export interface PublicFDC3Security {
    * @param symmetricKey - The symmetric key (as JWK) to use for encryption
    * @returns A promise resolving to the encrypted context as a compact JWE string
    *
-   * @see `fdc3.security.symmetricKey.request` for key exchange
+   * @see `fdc3.security.symmetricKeyRequest` for key exchange
    */
   encryptSymmetric(ctx: Context, symmetricKey: JsonWebKey): Promise<JSONWebEncryption>;
 
@@ -139,13 +139,13 @@ export interface PublicFDC3Security {
    * Wrap a symmetric key for secure delivery to a recipient.
    *
    * Encrypts the symmetric key using the recipient's public key so it can
-   * be safely transmitted. Used when responding to `fdc3.security.symmetricKey.request`.
+   * be safely transmitted. Used when responding to `fdc3.security.symmetricKeyRequest`.
    *
    * @param symmetricKey - The symmetric key to wrap
    * @param publicKeyUrl - URL to the recipient's JWKS containing their public key
    * @returns A promise resolving to a SymmetricKeyResponse context
    *
-   * @see `fdc3.security.symmetricKey.response` context type
+   * @see `fdc3.security.symmetricKeyResponse` context type
    */
   wrapSymmetricKey(symmetricKey: JsonWebKeyWithId, publicKeyUrl: string): Promise<SymmetricKeyResponse>;
 

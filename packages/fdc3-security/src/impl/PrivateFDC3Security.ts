@@ -49,7 +49,7 @@ export interface PrivateFDC3Security extends PublicFDC3Security {
    * Unwrap a symmetric key received from another app.
    *
    * Decrypts a wrapped symmetric key using this app's private key.
-   * Used when receiving `fdc3.security.symmetricKey.response`.
+   * Used when receiving `fdc3.security.symmetricKeyResponse`.
    *
    * @param ctx - The SymmetricKeyResponse containing the wrapped key
    * @returns A promise resolving to the unwrapped symmetric key in JWK format
