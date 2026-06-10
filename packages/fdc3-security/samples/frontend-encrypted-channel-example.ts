@@ -146,7 +146,9 @@ async function step4ReceivingAppSetup(
   await support.addContextListener(channel, 'test.encrypted', (ctx: Context, meta?: ContextMetadata) => {
     console.log(`\n[Receiving App Front-end] ✅ Decrypted context received (symmetric key on front-end):`);
     console.log(JSON.stringify(ctx, null, 2));
-    if (meta?.encryption === 'decrypted') {
+    // encryption status is stored in custom.__verified by EncryptedContextListenerSupport
+    const verified = meta?.custom?.__verified as { encryption?: string } | undefined;
+    if (verified?.encryption === 'decrypted') {
       console.log('[Receiving App Front-end] Metadata indicates decryption performed on front-end');
     }
   });

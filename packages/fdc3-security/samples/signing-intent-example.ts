@@ -1,13 +1,16 @@
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { ContextMetadata, DesktopAgent, IntentHandler } from '@finos/fdc3-standard';
+import { DesktopAgent, IntentHandler, VerifiedContextMetadata } from '@finos/fdc3-standard';
 import { AppIdentifier, Context } from '@finos/fdc3-context';
 import { WebSocket } from 'ws';
 import { createJosePublicFDC3SecurityFromUrl } from '../src/impl/JosePublicFDC3Security';
 import { createMockDesktopAgent, resetMockDesktopAgentFixtureState } from '../test/mocks/MockDesktopAgent';
 import { AppBackEnd } from '../test/mocks/AppBackEnd';
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
-import { PublicSignatureCheckingHandlerSupport } from '../src/signing/SignatureCheckingHandlerSupport';
+import {
+  PublicSignatureCheckingHandlerSupport,
+  SecurityAwareIntentHandler,
+} from '../src/signing/SignatureCheckingHandlerSupport';
 import { PrivateSignedIntentResultSupport } from '../src/signing/SignedIntentResultSupport';
 import { BasicSignedRaiseIntentSupport } from '../src/signing/SignedRaiseIntentSupport';
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
@@ -41,15 +44,14 @@ class HandlerAppBackendHandlers extends DefaultFDC3Handlers {
     }
 
     // Core logic handler - executes only after signature verification
-    const coreHandler = async (context: Context, metadata?: ContextMetadata) => {
+    const coreHandler: SecurityAwareIntentHandler = async (context, _metadata, verified) => {
       console.log('[Handler App Backend] Intent received', { intent, contextType: context.type });
 
-      const auth = metadata?.authenticity;
+      const auth = verified.authenticity;
       if (auth?.signed && auth?.valid && auth?.trusted) {
         console.log('[Handler App Backend] ✅ AUTHENTICATED: Request is trusted.', {
           jku: auth.jku,
           context,
-          metadata,
         });
 
         const response = {
@@ -174,7 +176,9 @@ async function step3MutuallyAuthenticatedExchange(
   console.log('   Raiser App: Awaiting signed response from handler...');
   const result = (await resolution.getResult()) as Context;
   const resultMetadata = await resolution.getResultMetadata();
-  const auth = resultMetadata?.authenticity;
+  // VerifiedContextMetadata is stored in custom.__verified by BasicSignedRaiseIntentSupport
+  const verified = resultMetadata?.custom?.__verified as VerifiedContextMetadata | undefined;
+  const auth = verified?.authenticity;
   console.log('   Raiser App: Received context and metadata:', result, resultMetadata);
 
   if (auth?.signed && auth?.valid && auth?.trusted) {

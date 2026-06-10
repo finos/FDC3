@@ -127,7 +127,11 @@ export class PublicEncryptedContextListenerSupport implements EncryptedContextLi
       }
       const encryptedContext = contextIn as EncryptedContextWrapper;
       const newMeta = { ...meta };
-      delete newMeta['encryption'];
+      // Store decryption status in custom.__verified (not directly on ContextMetadata)
+      const existingVerified = (newMeta.custom?.__verified as Record<string, unknown> | undefined) ?? {};
+      const newCustom = { ...newMeta.custom, __verified: { ...existingVerified } };
+      delete (newCustom.__verified as Record<string, unknown>)['encryption'];
+      newMeta.custom = newCustom;
 
       const encrypted = encryptedContext.encryptedPayload as JSONWebEncryption;
       const kid = encryptedContext.id?.kid;
@@ -137,7 +141,10 @@ export class PublicEncryptedContextListenerSupport implements EncryptedContextLi
         return;
       }
 
-      newMeta['encryption'] = 'decrypted';
+      newMeta.custom = {
+        ...newMeta.custom,
+        __verified: { ...(newMeta.custom?.__verified as object | undefined), encryption: 'decrypted' },
+      };
       ch(decryptedContext, newMeta);
     };
     return out as ContextHandler;

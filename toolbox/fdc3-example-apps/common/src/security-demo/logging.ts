@@ -92,20 +92,28 @@ export function formatContext(context: any): string {
 }
 
 // Helper function to check authenticity status
-export function getAuthenticityStatus(metadata: any): {
+export function getAuthenticityStatus(
+  verified:
+    | {
+        authenticity?:
+          | { signed?: boolean; valid?: boolean; trusted?: boolean; jku?: string; errors?: string[] }
+          | undefined;
+      }
+    | undefined
+): {
   status: string;
   message: string;
 } {
-  const auth = metadata.authenticity;
-  if (auth?.verified && 'valid' in auth && auth.valid && 'publicKeyUrl' in auth) {
+  const auth = verified?.authenticity;
+  if (auth?.signed && auth.valid && auth.trusted && auth.jku) {
     return {
       status: 'success',
-      message: `✅ Verified from ${auth.publicKeyUrl}`,
+      message: `✅ Verified from ${auth.jku}`,
     };
-  } else if (auth?.verified && 'valid' in auth && !auth.valid && 'publicKeyUrl' in auth) {
+  } else if (auth?.signed && !auth.valid && auth.jku) {
     return {
       status: 'error',
-      message: `❌ Verification failed for ${auth.publicKeyUrl}`,
+      message: `❌ Verification failed for ${auth.jku}`,
     };
   } else {
     return { status: 'warning', message: '⚠️ No authenticity verification' };

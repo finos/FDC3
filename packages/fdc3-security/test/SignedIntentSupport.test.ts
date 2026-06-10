@@ -207,11 +207,17 @@ describe.each(metadataAvailabilityCases)(
       expect(result).toMatchObject({ type: 'demo.response' });
       if (metadataAvailable) {
         const resultMetadata = await resolution.getResultMetadata();
-        expect(resultMetadata.authenticity).toMatchObject({ signed: true, valid: true });
+        // VerifiedContextMetadata is stored in custom.__verified by BasicSignedRaiseIntentSupport
+        const verified = resultMetadata.custom?.__verified as
+          | { authenticity?: { signed?: boolean; valid?: boolean } }
+          | undefined;
+        expect(verified?.authenticity).toMatchObject({ signed: true, valid: true });
         expect((result as Context & { __appMeta?: unknown }).__appMeta).toBeUndefined();
       } else {
-        const withMeta = result as Context & { __appMeta?: { authenticity?: { signed?: boolean; valid?: boolean } } };
-        expect(withMeta.__appMeta?.authenticity).toMatchObject({ signed: true, valid: true });
+        const withMeta = result as Context & {
+          __appMeta?: { custom?: { __verified?: { authenticity?: { signed?: boolean; valid?: boolean } } } };
+        };
+        expect(withMeta.__appMeta?.custom?.__verified?.authenticity).toMatchObject({ signed: true, valid: true });
       }
     });
 

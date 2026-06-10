@@ -1,10 +1,8 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
-import { BrowserTypes } from '@finos/fdc3-schema';
+import { AntiReplayClaims, DetachedSignature } from '@finos/fdc3-standard';
 
-type AntiReplay = BrowserTypes.AntiReplayClaims;
+type AntiReplay = AntiReplayClaims;
 import { JSONWebEncryption, JsonWebKeyWithId, PublicFDC3Security } from './PublicFDC3Security.js';
-
-type DetachedSignature = BrowserTypes.DetachedSignature;
 
 export type UnwrapFunction = (context: SymmetricKeyResponse) => Promise<JsonWebKeyWithId>;
 

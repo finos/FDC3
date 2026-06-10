@@ -2,7 +2,14 @@ import { Context } from '@finos/fdc3-context';
 import { PrivateFDC3Security, SigningFunction } from '../impl/PrivateFDC3Security.js';
 import { SignatureCheckingFunction } from '../impl/PublicFDC3Security.js';
 import { MetadataHandler } from '../delegates/MetadataHandler.js';
-import { AppIdentifier, ContextMetadata, DesktopAgent, IntentResolution, IntentResult } from '@finos/fdc3-standard';
+import {
+  AppIdentifier,
+  ContextMetadata,
+  DesktopAgent,
+  IntentResolution,
+  IntentResult,
+  VerifiedContextMetadata,
+} from '@finos/fdc3-standard';
 
 /**
  * A helper for signing intent requests and verifying signed results.
@@ -94,9 +101,12 @@ export class BasicSignedRaiseIntentSupport implements SignedRaiseIntentSupport {
         if (this.signatureCheckingFunction) {
           const { signature, antiReplay } = unpackedMetadata;
           const authenticity = await this.signatureCheckingFunction(signature, unpackedContext, antiReplay);
+          // authenticity is a VerifiedContextMetadata result — not a wire field.
+          // Store it in custom so callers can retrieve it without polluting ContextMetadata.
+          const verified: VerifiedContextMetadata = { authenticity };
           const { context: repackedContext, metadata: repackedMetadata } = this.metadataHandler.pack(unpackedContext, {
             ...unpackedMetadata,
-            authenticity,
+            custom: { ...unpackedMetadata.custom, __verified: verified },
           });
           return { result: repackedContext, metadata: repackedMetadata };
         } else {

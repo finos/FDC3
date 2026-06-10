@@ -1,7 +1,25 @@
-import { ContextHandler, ContextMetadata, IntentHandler } from '@finos/fdc3-standard';
+import { ContextHandler, ContextMetadata, IntentHandler, VerifiedContextMetadata } from '@finos/fdc3-standard';
 import { MetadataHandler } from '../delegates/MetadataHandler.js';
 import { PublicFDC3Security, SignatureCheckingFunction } from '../impl/PublicFDC3Security.js';
 import { Context } from '@finos/fdc3-context';
+
+/**
+ * A context handler variant that also receives the result of signature verification
+ * as a `VerifiedContextMetadata` object alongside the standard `ContextMetadata`.
+ * This is the handler type you should use when wrapping with
+ * `SignatureCheckingHandlerSupport`.
+ */
+export type SecurityAwareContextHandler = (
+  context: Context,
+  metadata: ContextMetadata | undefined,
+  verified: VerifiedContextMetadata
+) => Promise<void> | void;
+
+export type SecurityAwareIntentHandler = (
+  context: Context,
+  metadata: ContextMetadata | undefined,
+  verified: VerifiedContextMetadata
+) => Promise<any> | any;
 
 /**
  * Provides support for receiving and verifying signed contexts on FDC3 channels or from raise intent requests.
@@ -11,12 +29,15 @@ import { Context } from '@finos/fdc3-context';
  */
 export interface SignatureCheckingHandlerSupport {
   /**
-   * Add a context listener that will verify the signature of incoming contexts
-   * and pass on the signature check result to the underlying context handler.
+   * Wrap a `SecurityAwareContextHandler` or `SecurityAwareIntentHandler` so that incoming
+   * contexts have their signatures verified before the handler is called. The verification
+   * result is passed as the third argument (`VerifiedContextMetadata`).
    *
    * @see DesktopAgent.addContextListener
    */
-  wrapContextHandler(handler: ContextHandler | IntentHandler): Promise<ContextHandler | IntentHandler>;
+  wrapContextHandler(
+    handler: SecurityAwareContextHandler | SecurityAwareIntentHandler
+  ): Promise<ContextHandler | IntentHandler>;
 }
 
 /**
@@ -32,15 +53,15 @@ export class BasicSignatureCheckingHandlerSupport {
     this.signatureCheckingFunction = signatureCheckingFunction;
   }
 
-  async wrapContextHandler(handler: ContextHandler | IntentHandler): Promise<ContextHandler | IntentHandler> {
+  async wrapContextHandler(
+    handler: SecurityAwareContextHandler | SecurityAwareIntentHandler
+  ): Promise<ContextHandler | IntentHandler> {
     return async (contextIn: Context, metaIn: ContextMetadata | undefined) => {
       const { context, metadata } = this.metadataHandler.unpack(contextIn, metaIn);
       const { signature, antiReplay } = metadata;
       const authenticity = await this.signatureCheckingFunction(signature, context, antiReplay);
-      return await handler(context, {
-        ...metadata,
-        authenticity,
-      } satisfies ContextMetadata);
+      const verified: VerifiedContextMetadata = { authenticity };
+      return await handler(context, metadata, verified);
     };
   }
 }

@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { AppIdentifier, Contact, Context, EncryptedContextWrapper, UserRequest } from '@finos/fdc3-context';
-import type { ContextMetadata, DesktopAgent, Intent, IntentHandler } from '@finos/fdc3-standard';
+import type { DesktopAgent, Intent, IntentHandler } from '@finos/fdc3-standard';
 import { WebSocket } from 'ws';
 import { JosePublicFDC3Security, provisionJWKS } from '../src/impl/JosePublicFDC3Security';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
@@ -10,8 +10,11 @@ import { AppBackEnd } from '../test/mocks/AppBackEnd';
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { createMockDesktopAgent, resetMockDesktopAgentFixtureState } from '../test/mocks/MockDesktopAgent';
 import { createMetadataHandlerWithFDC3Version, type MetadataHandler } from '../src/delegates/MetadataHandler';
-import { PublicSignatureCheckingHandlerSupport } from '../src/signing/SignatureCheckingHandlerSupport';
-import { AntiReplayClaims, DetachedSignature } from '@finos/fdc3-schema/generated/api/BrowserTypes';
+import {
+  PublicSignatureCheckingHandlerSupport,
+  SecurityAwareIntentHandler,
+} from '../src/signing/SignatureCheckingHandlerSupport';
+import { AntiReplayClaims, DetachedSignature } from '@finos/fdc3-standard';
 
 /** Standard intent name per FDC3 Security: `GetUser` with `fdc3.security.userRequest` input. */
 const GET_USER_INTENT = 'GetUser';
@@ -50,8 +53,8 @@ class IDPBackendHandlers extends DefaultFDC3Handlers {
       return super.remoteIntentHandler(intent);
     }
 
-    const coreHandler = async (context: Context, metadata?: ContextMetadata): Promise<Context> => {
-      const auth = metadata?.authenticity;
+    const coreHandler: SecurityAwareIntentHandler = async (context, _metadata, verified): Promise<Context> => {
+      const auth = verified.authenticity;
       if (!auth?.signed || !auth?.valid || !auth?.trusted) {
         console.error(
           '[IDP Backend] ❌ UNAUTHORIZED: GetUser context is missing a valid trusted signature.',
@@ -63,7 +66,6 @@ class IDPBackendHandlers extends DefaultFDC3Handlers {
         jku: auth.jku ?? 'n/a',
         kid: auth.kid ?? 'n/a',
         context,
-        metadata,
       });
 
       if (context.type !== 'fdc3.security.userRequest') {
@@ -97,7 +99,7 @@ class IDPBackendHandlers extends DefaultFDC3Handlers {
     };
 
     const verifier = new PublicSignatureCheckingHandlerSupport(this.metadataHandler, this.security);
-    return (await verifier.wrapContextHandler(coreHandler as IntentHandler)) as IntentHandler;
+    return (await verifier.wrapContextHandler(coreHandler)) as IntentHandler;
   }
 }
 

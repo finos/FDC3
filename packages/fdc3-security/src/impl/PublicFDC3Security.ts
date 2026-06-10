@@ -1,10 +1,9 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
-import { BrowserTypes } from '@finos/fdc3-schema';
+import { AntiReplayClaims, DetachedSignature, VerifiedContextMetadata } from '@finos/fdc3-standard';
 import { FDC3UserClaims } from './FDC3UserClaims.js';
 
-type AntiReplay = BrowserTypes.AntiReplayClaims;
-type MessageAuthenticity = BrowserTypes.MessageAuthenticity;
-type DetachedSignature = BrowserTypes.DetachedSignature;
+type AntiReplay = AntiReplayClaims;
+type Authenticity = NonNullable<VerifiedContextMetadata['authenticity']>;
 
 /**
  * Compact JSON Web Encryption (JWE) string.
@@ -33,7 +32,7 @@ export type SignatureCheckingFunction = (
   signature: DetachedSignature | undefined,
   ctx: Context,
   antiReplay: AntiReplay | undefined
-) => Promise<MessageAuthenticity>;
+) => Promise<Authenticity>;
 
 /**
  * Public interface for FDC3 Security verification operations.

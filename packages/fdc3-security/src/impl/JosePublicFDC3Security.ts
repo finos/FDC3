@@ -1,7 +1,8 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
-import { BrowserTypes } from '@finos/fdc3-schema';
+import { AntiReplayClaims, DetachedSignature, VerifiedContextMetadata } from '@finos/fdc3-standard';
 
-type AntiReplay = BrowserTypes.AntiReplayClaims;
+type AntiReplay = AntiReplayClaims;
+type Authenticity = NonNullable<VerifiedContextMetadata['authenticity']>;
 import { canonicalize } from 'json-canonicalize';
 import * as jose from 'jose';
 import { DEFAULT_FDC3_ALGORITHMS, FDC3SecurityAlgorithms } from './FDC3SecurityAlgorithms.js';
@@ -10,10 +11,7 @@ import { FDC3UserClaims } from './FDC3UserClaims.js';
 import { JsonWebKeyWithId, PublicFDC3Security } from './PublicFDC3Security.js';
 import { AntiReplayChecker, DefaultAntiReplayChecker } from './AntiReplayChecker.js';
 
-type MessageAuthenticity = BrowserTypes.MessageAuthenticity;
 type JSONWebEncryption = string;
-
-type DetachedSignature = BrowserTypes.DetachedSignature;
 
 /**
  * JWE protected header parameters for encryption operations.
@@ -133,7 +131,7 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
     sig: DetachedSignature | undefined,
     ctx: Context,
     antiReplay: AntiReplay | undefined
-  ): Promise<MessageAuthenticity> {
+  ): Promise<Authenticity> {
     try {
       if (!sig || !antiReplay) {
         return {
@@ -191,7 +189,6 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
           alg,
           kid,
           jku,
-          antiReplayClaims: antiReplay,
           errors,
         };
       }
@@ -203,7 +200,6 @@ export class JosePublicFDC3Security implements PublicFDC3Security {
         alg,
         kid,
         jku,
-        antiReplayClaims: antiReplay,
       };
     } catch (error) {
       return {

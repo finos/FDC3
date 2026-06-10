@@ -95,7 +95,9 @@ class ReceivingAppBackendHandlers extends DefaultFDC3Handlers {
     await support.addContextListener(channel, 'test.encrypted', (ctx: Context, meta?: ContextMetadata) => {
       console.log(`\n[Receiving App Backend] ✅ Decrypted context received (encryption done on backend):`);
       console.log(JSON.stringify(ctx, null, 2));
-      if (meta?.encryption === 'decrypted') {
+      // encryption status is stored in custom.__verified by EncryptedContextListenerSupport
+      const verified = meta?.custom?.__verified as { encryption?: string } | undefined;
+      if (verified?.encryption === 'decrypted') {
         console.log('[Receiving App Backend] Metadata indicates decryption performed on backend');
       }
     });

@@ -1,22 +1,16 @@
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Channel, Context, ContextHandler, ContextMetadata, DesktopAgent, getAgent, Listener } from '@finos/fdc3';
+import { Channel, ContextHandler, DesktopAgent, getAgent, Listener } from '@finos/fdc3';
 import {
   connectRemoteHandlers,
   createJosePublicFDC3SecurityFromUrl,
   MetadataHandlerImpl,
   PublicSignatureCheckingHandlerSupport,
+  SecurityAwareContextHandler,
 } from '@finos/fdc3-security';
 import styles from './main.module.css';
 
 const CONTEXT_TYPE = 'fdc3.instrument';
-
-type AuthenticityMeta = {
-  signed?: boolean;
-  trusted?: boolean;
-  jku?: string;
-  errors?: unknown;
-};
 
 function wsUrlForPage(): string {
   return (window.location.protocol === 'https:' ? 'wss:' : 'ws:') + '//' + window.location.host;
@@ -74,15 +68,14 @@ export const SignedReceiverComponent = () => {
       setChannelId(id);
       setStatus(`Listening for signed ${CONTEXT_TYPE} on user channel ${id} (verification via jku in signature).`);
 
-      const baseHandler: ContextHandler = async (ctx: Context, meta?: ContextMetadata) => {
+      const baseHandler: SecurityAwareContextHandler = async (ctx, meta, verified) => {
         pushLog('[VERIFIED] Context:\n' + prettyJson(ctx));
         pushLog('[VERIFIED] Metadata:\n' + prettyJson(meta));
-        const authenticity =
-          meta && 'authenticity' in meta ? (meta as { authenticity?: AuthenticityMeta }).authenticity : undefined;
-        if (authenticity?.signed && authenticity.trusted) {
-          pushLog('Verification: trusted; signer JWKS URL: ' + String(authenticity.jku ?? '(none)'));
-        } else if (authenticity?.errors) {
-          pushLog('Verification issues:\n' + prettyJson(authenticity.errors));
+        const auth = verified.authenticity;
+        if (auth?.signed && auth.trusted) {
+          pushLog('Verification: trusted; signer JWKS URL: ' + String(auth.jku ?? '(none)'));
+        } else if (auth?.errors) {
+          pushLog('Verification issues:\n' + prettyJson(auth.errors));
         }
       };
 
