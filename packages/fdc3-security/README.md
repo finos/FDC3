@@ -93,7 +93,7 @@ To explore the capabilities of the library and see these components in action, r
 The samples directory contains a dedicated README with sequence diagrams illustrating how the different components interact across the secure boundary.
 
 - **Signed Broadcasts**: Authenticate the sender of a context message.
-- **Encrypted Channels**: Protect message privacy from the Desktop Agent and other observers.
+- **Encrypted Channels**: Protect message privacy from the Desktop Agent and other observers. Two patterns are provided: backend key (stricter data boundary, decrypted plaintext never in browser) and frontend key (lower latency, symmetric key returned to browser after one-time unwrap on backend).
 - **Mutual Intent Authentication**: Verify both the raiser and the responder of an FDC3 intent.
 - **User Identity**: Securely request and verify identity tokens from an identity provider app via the `GetUser` intent.
 

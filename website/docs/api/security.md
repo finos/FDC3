@@ -451,6 +451,16 @@ Encrypting every message directly with the recipient's asymmetric public key is 
 
 A [JSON Web Encryption (JWE)](https://datatracker.ietf.org/doc/html/rfc7516) token is used to wrap (encrypt) the symmetric key using the recipient's public key, ensuring only the recipient — holding the corresponding private key — can unwrap it.
 
+### Where Should the Symmetric Key Live?
+
+Once the key has been unwrapped, the application must decide whether to hold it in the browser frontend or only in the trusted backend. This is a trade-off between latency and threat model:
+
+**Frontend key (lower latency):** The unwrapping operation happens once on the backend (the only step requiring the private key), and the unwrapped symmetric key is returned to the frontend. All subsequent message decryption happens in the browser using the cheap symmetric cipher, with no per-message backend round-trip. This mirrors the TLS pattern most closely and is the right choice when the browser is considered a sufficiently trusted environment for a short-lived session key.
+
+**Backend key (stricter boundary):** The symmetric key never leaves the backend. Every received message is forwarded from the frontend to the backend for decryption, and the plaintext is returned to the frontend. This adds a per-message WebSocket round-trip, which largely offsets the latency advantage of symmetric encryption. However, it is the correct choice when the threat model requires that decrypted plaintext *never* exists in browser memory — for example, when handling highly regulated data or when the browser environment itself is not considered trusted.
+
+Both approaches use exactly the same key exchange protocol (`fdc3.security.symmetricKeyRequest` / `fdc3.security.symmetricKeyResponse`). The choice affects only what happens to the key after it is unwrapped.
+
 ### Private Channel Encryption
 
 Applications communicating over a [`PrivateChannel`](ref/PrivateChannel) can negotiate encryption to ensure their communications remain confidential. This is particularly important when sharing sensitive data such as positions, pricing, or user information.
@@ -506,8 +516,8 @@ sequenceDiagram
 | [`fdc3.security.encryptedContext`](../context/ref/security/EncryptedContextWrapper) | Wrapper with `encryptedPayload` (JWE compact serialization); `originalType` and `id.kid` preserved for routing. |
 
 :::tip Reference implementation samples
-- [`backend-encrypted-channel-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/backend-encrypted-channel-example.ts) — encryption and decryption handled entirely on both apps' backends via `EncryptedBroadcastSupport` and `PrivateEncryptedContextListenerSupport`.
-- [`frontend-encrypted-channel-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/frontend-encrypted-channel-example.ts) — encryption on the broadcasting app's frontend, with key request signing and key unwrapping delegated to the receiving app's backend via `exchangeData`.
+- [`backend-encrypted-channel-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/backend-encrypted-channel-example.ts) — **backend key**: the symmetric key is held entirely on both apps' backends. Every message decryption incurs a backend round-trip. Use this pattern when decrypted plaintext must never exist in browser memory.
+- [`frontend-encrypted-channel-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/frontend-encrypted-channel-example.ts) — **frontend key**: the symmetric key is unwrapped once on the receiving app's backend, then returned to the frontend for low-latency per-message decryption. Use this pattern when the browser is a sufficiently trusted environment for a short-lived session key.
 ::: 
 
 ## User Identity

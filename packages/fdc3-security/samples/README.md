@@ -29,7 +29,7 @@ npx tsx samples/get-user-example.ts
 
 ## [Backend Encrypted Channel Example](backend-encrypted-channel-example.ts)
 
-Demonstrates how to use `EncryptedBroadcastSupport` and `PrivateEncryptedContextListenerSupport` with the backend handling all cryptographic operations. The symmetric key is created and held by the broadcasting app's backend; key requests from the receiving app's backend are also serviced there. Both frontends act only as transport layers for FDC3 channels — no encryption or decryption occurs in the browser.
+Demonstrates the **backend key** pattern: the symmetric key is created and held entirely on the broadcasting app's backend, and all message decryption happens on the receiving app's backend. Neither the key nor the decrypted plaintext ever enters the browser. Every received message incurs a backend round-trip for decryption, which largely offsets the latency advantage of symmetric encryption, but this is the correct choice when the threat model requires that decrypted plaintext never exists in browser memory — for example, when handling highly regulated data or when the browser environment itself is not considered trusted.
 
 ```mermaid
 sequenceDiagram
@@ -71,7 +71,7 @@ sequenceDiagram
 
 ## [Frontend Encrypted Channel Example](frontend-encrypted-channel-example.ts)
 
-Shows how to use `EncryptedBroadcastSupport` and `PublicEncryptedContextListenerSupport` for frontend-driven encryption. The symmetric key is created and held by the broadcasting app's frontend. Decryption also occurs on the receiving app's frontend, but the two sensitive backend operations — signing key requests and unwrapping the received JWE key — are delegated to the receiving app's backend via `exchangeData`.
+Demonstrates the **frontend key** pattern: the symmetric key is unwrapped once on the receiving app's backend (the only operation requiring the private key), then returned to the frontend for low-latency per-message decryption in the browser. This mirrors the TLS model most closely — pay the asymmetric cost once, then use the cheap symmetric cipher for the stream. Use this pattern when the browser is a sufficiently trusted environment for a short-lived session key and message throughput or latency matters.
 
 ```mermaid
 sequenceDiagram

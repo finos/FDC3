@@ -20,6 +20,14 @@ const INTENT_SHARE_ENCRYPTED_CHANNEL = 'ShareEncryptedChannel';
 /**
  * Broadcasting app backend – no exchangeData handlers needed.
  * The symmetric key and encryption live entirely on the front-end.
+ *
+ * FRONTEND KEY PATTERN: The symmetric key is unwrapped once on the receiving app's backend
+ * (the only step requiring the private key), then held in the browser for low-latency
+ * per-message decryption. This mirrors the TLS model: pay the asymmetric cost once, then
+ * use the cheap symmetric cipher (AES-GCM) for the stream. Use this pattern when the browser
+ * is a sufficiently trusted environment for a short-lived session key and latency matters.
+ * For stricter data boundaries where plaintext must never reach the browser, see
+ * backend-encrypted-channel-example.ts.
  */
 class BroadcastingAppBackendHandlers extends DefaultFDC3Handlers {}
 

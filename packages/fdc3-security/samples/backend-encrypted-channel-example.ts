@@ -19,6 +19,12 @@ const INTENT_SHARE_ENCRYPTED_CHANNEL = 'ShareEncryptedChannel';
  * Broadcasting app backend handlers (broadcaster, key creator). Receives the channel via handleRemoteChannel,
  * uses EncryptedBroadcastSupport so encryption is done entirely on the backend. The symmetric key
  * is created and held on the backend; key requests are responded to on the backend.
+ *
+ * BACKEND KEY PATTERN: The symmetric key never leaves the backend. Every decrypted message
+ * incurs a backend round-trip, which largely offsets the latency advantage of symmetric encryption.
+ * Use this pattern when decrypted plaintext must never exist in browser memory — for example,
+ * when handling highly regulated data or when the browser environment itself is not trusted.
+ * For lower-latency decryption where the browser is trusted, see frontend-encrypted-channel-example.ts.
  */
 class BroadcastingAppBackendHandlers extends DefaultFDC3Handlers {
   private broadcaster: EncryptedBroadcaster | null = null;
