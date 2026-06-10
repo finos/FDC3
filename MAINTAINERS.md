@@ -8,7 +8,7 @@ This file lists the maintainers of this repository.
 |----------------|------|--------------|-------|
 | @Roaders | Giles Roadnight | Morgan Stanley | Giles.Roadnight@morganstanley.com |
 | @Vivek-NatWest | *please add name* | *please add organization* | *please add email* |
-| @Yannick-Malins | Yannick | @SymphonyOSF | *please add email* |
+| @Yannick-Malins | Yannick | @SymphonyOSF | yannick.malins@symphony.com |
 | @bingenito | Brian Ingenito | Morgan Stanley  | Brian.Ingenito@morganstanley.com |
 | @hughtroeger | Hugh Troeger | FactSet Research Systems | htroeger@factset.com |
 | @julianna-ciq | Julianna Mealin | interop.io | julianna.mealin@interop.io |
