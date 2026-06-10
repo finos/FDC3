@@ -436,6 +436,11 @@ fdc3.addContextListener("fdc3.instrument", (context, metadata) => {
 </TabItem>
 </Tabs>
 
+:::tip Reference implementation samples
+- [`signing-broadcast-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/signing-broadcast-example.ts) — signing and verifying a broadcast: `BasicSignedBroadcaster` on the sender's backend, `PublicSignatureCheckingHandlerSupport` on the receiver's frontend.
+- [`signing-intent-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/signing-intent-example.ts) — mutual authentication for intents: raiser signs the request via `BasicSignedRaiseIntentSupport`, handler verifies and signs the response via `PrivateSignedIntentResultSupport`.
+:::
+
 ## Encrypted Communications
 
 While digital signatures prove *who* sent a message, they do not prevent the Desktop Agent or other intermediaries from reading it. To keep context data confidential, applications can encrypt it so that only the intended recipient can decrypt it.
@@ -501,10 +506,8 @@ sequenceDiagram
 | [`fdc3.security.encryptedContext`](../context/ref/security/EncryptedContextWrapper) | Wrapper with `encryptedPayload` (JWE compact serialization); `originalType` and `id.kid` preserved for routing. |
 
 :::tip Reference implementation samples
-
-- https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/backend-encrypted-channel-example.ts
-- https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/frontend-encrypted-channel-example.ts
-
+- [`backend-encrypted-channel-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/backend-encrypted-channel-example.ts) — encryption and decryption handled entirely on both apps' backends via `EncryptedBroadcastSupport` and `PrivateEncryptedContextListenerSupport`.
+- [`frontend-encrypted-channel-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/frontend-encrypted-channel-example.ts) — encryption on the broadcasting app's frontend, with key request signing and key unwrapping delegated to the receiving app's backend via `exchangeData`.
 ::: 
 
 ## User Identity
@@ -596,3 +599,7 @@ sequenceDiagram
 - Short expiration times reduce the window for token theft attacks
 - Unique token identifiers (`jti`) MUST be used to prevent token replay attacks
 - Tokens SHOULD be transmitted over encrypted channels when possible
+
+:::tip Reference implementation sample
+[`get-user-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/get-user-example.ts) — full end-to-end `GetUser` flow: signing the `fdc3.security.userRequest`, returning an encrypted `fdc3.security.user` response, and decrypting and verifying the JWT on the requesting application's backend.
+:::
