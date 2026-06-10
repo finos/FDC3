@@ -242,9 +242,15 @@ interface ContextMetadata {
    *  SHOULD generate a new one. */
   readonly traceId: string;
 
-  /** A cryptographic signature that can be used to verify the authenticity
-   *  and integrity of the context or intent message. */
-  readonly signature?: string;
+  /** A detached JSON Web Signature (JWS) proving the authenticity and integrity
+   *  of the context, forwarded from the originating app's AppProvidableContextMetadata.
+   *  See [Security & Identity](../security) for details. */
+  readonly signature?: DetachedSignature;
+
+  /** Anti-replay claims (`iat`, `exp`, `jti`) forwarded from the originating app.
+   *  Used alongside `signature` to prevent replay attacks.
+   *  See [Security & Identity](../security) for details. */
+  readonly antiReplay?: AntiReplayClaims;
 
   /** Custom metadata provided by the originating app. */
   readonly custom?: Record<string, any>;
@@ -281,7 +287,7 @@ type ContextMetadata struct {
 </TabItem>
 </Tabs>
 
-Metadata relating to a context or intent and context received through the `addContextListener` and `addIntentListener` functions. Includes delivery information provided by the Desktop Agent (`source`, `timestamp`, `traceId`) and optional metadata forwarded from the originating app (`traceId`, `signature`, `custom`).
+Metadata relating to a context or intent and context received through the `addContextListener` and `addIntentListener` functions. Includes delivery information provided by the Desktop Agent (`source`, `timestamp`, `traceId`) and optional metadata forwarded from the originating app (`traceId`, `signature`, `antiReplay`, `custom`).
 
 **See also:**
 
@@ -304,9 +310,17 @@ interface AppProvidableContextMetadata {
    *  across applications. If provided, the Desktop Agent SHOULD forward it. */
   traceId?: string;
 
-  /** A cryptographic signature that can be used to verify the authenticity
-   *  and integrity of the context or intent message. */
-  signature?: string;
+  /** A detached JSON Web Signature (JWS) proving the authenticity and integrity
+   *  of the context. The signature is computed over the canonicalized context
+   *  object and the `antiReplay` claims. MUST be accompanied by `antiReplay`.
+   *  See [Security & Identity](../security) for details. */
+  signature?: DetachedSignature;
+
+  /** Anti-replay claims (`iat`, `exp`, `jti`) used alongside `signature` to
+   *  prevent a signed message from being replayed by an attacker.
+   *  MUST be included when `signature` is present.
+   *  See [Security & Identity](../security) for details. */
+  antiReplay?: AntiReplayClaims;
 
   /** Custom metadata. Allows use of metadata fields that have yet to be
    *  standardized. */
@@ -341,6 +355,8 @@ type AppProvidableContextMetadata struct {
 </Tabs>
 
 Metadata that may be provided by an app when calling `broadcast`, `open`, `raiseIntent` or `raiseIntentForContext`. The Desktop Agent MUST forward any provided fields to the receiving app's handler via `ContextMetadata`, while always overriding `source` and `timestamp` with its own values.
+
+The `signature` and `antiReplay` fields support the [Security & Identity](../security) features. `DetachedSignature` and `AntiReplayClaims` are defined in the FDC3 schema — see the [Security & Identity](../security) documentation for full details on generating and verifying signatures.
 
 **See also:**
 

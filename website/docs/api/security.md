@@ -15,6 +15,8 @@ Security and Identity features are experimental additions to FDC3. Limited aspec
 
 As FDC3 evolves from desktop containers to web-based implementations, new security challenges arise in open, decentralized environments. This specification defines mechanisms for **application identity verification**, **encrypted communications**, and **user identity sharing** across FDC3-enabled applications.
 
+The security model is built on **asymmetric cryptography**: each participating application holds a private key (kept secret) and publishes a corresponding public key at a stable HTTPS endpoint. Other applications use that public key to verify the application's digital signatures and to encrypt data that only it can read. All cryptographic operations that involve a private key MUST be performed in a trusted backend (server), not in the browser frontend.
+
 ## Overview
 
 FDC3 Security addresses the following key challenges:
@@ -23,7 +25,7 @@ FDC3 Security addresses the following key challenges:
 2. **App Identity**: Applications need verifiable identities to establish trust
 3. **User Authentication**: Users need portable identity across heterogeneous applications  
 4. **Data Integrity**: Context data requires authenticity guarantees
-5. **Scalable Trust**: Moving beyond bilateral trust relationships to circles of trust
+5. **Scalable Trust**: Moving beyond bilateral trust relationships to independently maintained allowlists
 
 The security framework introduces:
 
@@ -48,32 +50,25 @@ The following context types support security features:
 
 | Intent | Input Context | Output Context | Description |
 |--------|---------------|----------------|-------------|
-| `GetUser` | `fdc3.security.userRequest` | `fdc3.security.user` | Request user identity from an IDP |
+| `GetUser` | `fdc3.security.userRequest` | `fdc3.security.user` | Request user identity from an identity provider app |
 
-## Trust Boundaries
+## Desktop Agent Requirements
 
-Web applications split into a _front end_ (browser) and _back end_ (server) because servers are trusted and can hold private keys safely. The FDC3 Security API therefore has public and private parts: the front end holds only public keys and delegates signing, verification, and sensitive logic to the back end. 
+Desktop Agents MUST forward context objects and their associated metadata to receiving applications without modification. Desktop Agents MUST NOT inspect, strip, or alter `signature`, `antiReplay`, or any other security-related metadata fields. The security model defined in this document relies on this guarantee: cryptographic verification is performed end-to-end between applications, not by the Desktop Agent.
 
-The diagram below shows how traffic crosses a WebSocket (or similar secure boundary). The browser uses [`connectRemoteHandlers`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/src/secure-boundary/ClientSideHandlersImpl.ts); the server runs your [`FDC3Handlers`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/src/secure-boundary/FDC3Handlers.ts) implementation (for example a subclass of [`DefaultFDC3Handlers`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/src/secure-boundary/FDC3Handlers.ts)). Each labeled message maps to one interface method.
+## Trusted Backend Contract
 
+Web applications are split into a *front end* (browser context) and a *back end* (server). Because servers can hold private keys securely, all cryptographic operations — signing, key generation, decryption — MUST be performed in the trusted backend. The frontend holds only public keys and delegates sensitive operations to the backend over a secure channel (e.g. a WebSocket).
 
-```mermaid
-sequenceDiagram
-    participant FE as Public Front End (Low Trust)
-    participant BE as Private Back End (High Trust)
+The contract between the frontend and backend is application-defined, but must cover at minimum:
 
-    Note over FE: Public keys only
-    Note over BE: Private keys, signing, sensitive logic
+- Signing outbound context objects
+- Generating or holding symmetric encryption keys
+- Unwrapping JWE-wrapped keys received from other applications
 
-    FE->>+BE: context / request (WebSocket)
-    BE-->>FE: signed or encrypted context / response
-```
+:::tip Reference implementation
 
-:::tip 
-
-### Security Implementations
-
-The FDC3 Security implementations provides various helpers to make it easy to communicate across the boundary.
+`@finos/fdc3-security` provides `FDC3Handlers` (a TypeScript interface) and matching `ClientSideHandlersImpl` / `ServerSideHandlersImpl` helpers that implement this pattern over a WebSocket. See the [README](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/README.md) for details.
 
 | Language                | Documentation   |
 |-------------------------|-----------------|
@@ -83,7 +78,7 @@ The FDC3 Security implementations provides various helpers to make it easy to co
 
 ### `FDC3Handlers`
 
-[`FDC3Handlers`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/src/secure-boundary/FDC3Handlers.ts) is the contract your **trusted backend** implements.  This enables the front-end part of your application to get contexts signed, generate encryption keys or deal with any secure operations that might involve the application's private key or sensitive data.
+[`FDC3Handlers`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/src/secure-boundary/FDC3Handlers.ts) is the contract the trusted backend implements in the `@finos/fdc3-security` reference implementation. This enables the front-end part of your application to get contexts signed, generate encryption keys or deal with any secure operations that might involve the application's private key or sensitive data.
 
 :::tip
 
@@ -105,8 +100,8 @@ It is not a requirement for applications to use this code, but it is provided to
  * - **`ClientSideHandlersImpl`** — Implements `FDC3Handlers` on the **low-trust** side as a
  *   remote stub. {@link connectRemoteHandlers} constructs it over a WebSocket.
  *
- * - **`ServerSideHandlersImpl`** `setupWebsocketServer` takes an implementation of `FDC3Handlers` .
- *   to run on the **high-trust** server side.
+ * - **`ServerSideHandlersImpl`** — `setupWebsocketServer` takes an application-provided
+ *   implementation of `FDC3Handlers` to run on the **high-trust** server side.
  *
  */
 export interface FDC3Handlers {
@@ -133,26 +128,26 @@ export interface FDC3Handlers {
    * `(context, metadata)` runs on the **high-trust** side over the WebSocket.
    *
    * **Samples**
-   * - `get-user-example.ts` — shows how you can handle `CreateIdentityToken`: take
-   *   `fdc3.security.userRequest`, mint a JWT, build `fdc3.security.user`, encrypt for the requestor’s
+   * - `get-user-example.ts` — shows how you can handle `GetUser`: take
+   *   `fdc3.security.userRequest`, mint a JWT, build `fdc3.security.user`, encrypt for the requestor's
    *   JWKS, and return `fdc3.security.encryptedContext`.
    * - `signing-intent-example.ts` — shows how you can wire `DataTransfer` with
    *   `PublicSignatureCheckingHandlerSupport` and `PrivateSignedIntentResultSupport` so the handler
-   *   verifies the raiser’s JWS and signs the response (the raiser signs its outbound context via
+   *   verifies the raiser's JWS and signs the response (the raiser signs its outbound context via
    *   `exchangeData` instead of holding the private key in the browser).
    * - `backend-encrypted-channel-example.ts` — shows how you can handle `ShareEncryptedChannel` by
    *   returning `{ type: 'private' }` so the client opens a private channel and calls
    *   `handleRemoteChannel`, then runs `EncryptedBroadcastSupport` on the server.
    *
-   * @param intent — The intent name the server should bind (must match the client’s
+   * @param intent — The intent name the server should bind (must match the client's
    *   `remoteIntentHandler` calls).
    */
   remoteIntentHandler(intent: string): Promise<IntentHandler>;
 
   /**
-   * A convenience function.  Called on the client so that the server can return it items of data it needs. The client calls
+   * A convenience function. Called on the client so that the server can return it items of data it needs. The client calls
    * `handlers.exchangeData(purpose, o)`; the server returns an object or `void`. Use stable `purpose`
-   * strings so both sides agree on the payload shape.   
+   * strings so both sides agree on the payload shape.
    *
    * **Samples**
    * - `signing-intent-example.ts` — shows how you can implement `sign-context` when raising an intent so the browser
@@ -175,49 +170,52 @@ The front end keeps the live `Channel` from the Desktop Agent; `handleRemoteChan
 
 ```mermaid
 sequenceDiagram
+    participant BEA as App Back End
     participant FEA as App Front End
     participant DA as Desktop Agent
-    participant BEA as App Back End
 
     DA-->>FEA: Channel
     FEA->>BEA: handleRemoteChannel(purpose, channel) over WebSocket
-    BEA->>BEA: broadcast signed context
-    Note over BEA: sign context on the back end
-    BEA-->FEA: proxied channel ops
+
+    Note over BEA: back end decides to broadcast
+    BEA->>BEA: sign context on the back end
+    BEA-->>FEA: Signed context passed to front end
     FEA->>DA: channel broadcast (with signed context)
     Note over DA: context delivered to other apps / listeners
 ```
 
 #### Example 2: Resolving intents with `remoteIntentHandler`
 
-App A registers an intent listener in the browser using a handler obtained from its back end. When App B raises the intent, the Desktop Agent delivers it to App A’s front end, which forwards handling to **App Back End A** and returns the result.
+App A registers an intent listener in the browser using a handler obtained from its back end. When App B raises the intent, the Desktop Agent delivers it to App A's front end, which forwards handling to **App Back End A** and returns the result.
 
 ```mermaid
 sequenceDiagram
-    participant FEA as App Front End A
     participant BEA as App Back End A
+    participant FEA as App Front End A
     participant DA as Desktop Agent
     participant FEB as App Front End B
-    Note over FEA:  App A wants to handle MyIntent
+    Note over FEA: App A wants to handle MyIntent
     FEA->>BEA: calls remoteIntentHandler 'MyIntent'
     BEA-->>FEA: returns remoteIntentHandler
     FEA->>DA: addIntentListener('MyIntent', remoteIntentHandler)
     FEB->>DA: raiseIntent('MyIntent', context)
-    DA->>BEA: deliver intent to listener
-    BEA->>DA: handle intent, perhaps return signed or encrypted context
+    DA->>FEA: deliver intent to listener
+    FEA->>BEA: forward to backend handler
+    BEA-->>FEA: signed or encrypted result
+    FEA->>DA: return result
     DA-->>FEB: resolution
 ```
 
 </TabItem>
 </Tabs>
 
-
-
-
-
+:::tip Reference implementation samples
 Working samples (signed broadcasts, encrypted channels, identity, intents) live under [`packages/fdc3-security/samples/`](https://github.com/finos/FDC3/tree/main/packages/fdc3-security/samples).
+:::
 
 ### Public / Private Keys
+
+To participate in the FDC3 security model, an application needs a public/private key pair. The private key is used to sign outbound context objects and to decrypt data encrypted for this application by others. The public key is shared so that other applications can verify signatures and encrypt data that only this application can read.
 
 To enable verification, applications publish their public keys at a stable HTTPS endpoint. The conventional location is `/.well-known/jwks.json` on the application's origin—a path established by [RFC 8615](https://datatracker.ietf.org/doc/html/rfc8615) for well-known URIs. The URL serves both as the key delivery mechanism and as an identifier for the publisher: the `jku` in a JWS header points to this endpoint so receivers know where to fetch the verification key.
 
@@ -225,10 +223,14 @@ To enable verification, applications publish their public keys at a stable HTTPS
 Keys in the JWKS MUST include a `kid` (key ID) so signers can reference them in JWS headers and receivers can select the correct key for verification.
 :::
 
-1. Generate a public/private key pair
-2. Publish the public key at an HTTPS endpoint as a [JSON Web Key Set (JWKS)](https://datatracker.ietf.org/doc/html/rfc7517).  The URL on which the JWKS identifies the entity of the publisher. 
+To participate in the FDC3 security model, an application should:
+
+1. Generate a public/private key pair.
+2. Publish the public key at an HTTPS endpoint as a [JSON Web Key Set (JWKS)](https://datatracker.ietf.org/doc/html/rfc7517). The URL at which the JWKS is served identifies the entity of the publisher.
 
 ### Key Management
+
+Applications participating in the FDC3 security model are responsible for the following key management practices:
 
 - Private keys MUST be stored securely and never transmitted
 - JWKS endpoints MUST be served over HTTPS with valid certificates
@@ -239,42 +241,58 @@ Keys in the JWKS MUST include a `kid` (key ID) so signers can reference them in 
 
 ## Trust Model
 
-Trust is determined and enforced by applications, not by the Desktop Agent. Each application defines its own circle of trust. Desktop Agents are untrusted intermediaries: they route context and metadata but MUST NOT be relied upon for cryptographic operations or trust decisions. Application front-ends (browser contexts) are untrusted: private keys MUST NOT be sent to or stored in front-end code; signing and other sensitive operations MUST be performed in a trusted back-end.
+In this context, *trust* means that a receiving application has decided that a particular sender's identity claims and signed data are credible and should be acted upon. Trust is determined and enforced by applications, not by the Desktop Agent. Each application independently maintains an allowlist of senders it trusts. Desktop Agents are untrusted intermediaries: they route context and metadata but MUST NOT be relied upon for cryptographic operations or trust decisions. Application front-ends (browser contexts) are untrusted: private keys MUST NOT be sent to or stored in front-end code; signing and other sensitive operations MUST be performed in a trusted back-end.
 
 ### Trust Function
 
-Receiving apps provide an `allowListFunction(jku, iss?)` when configuring their security implementation. This function determines whether a signer is trusted: given the signer's JWKS URL (`jku`) from the JWS header—and optionally the issuer (`iss`) for JWT verification—it returns `true` if the signer is in the receiver's circle of trust. When verifying a signature, the security layer sets `authenticity.trusted` to the result of this function, so apps can decide who they trust without bilateral configuration.
+Receiving applications define an allowlist of trusted senders — other applications whose signed data they are willing to accept. Each application independently decides which senders it trusts; there is no shared membership mechanism. Given the signer's JWKS URL (`jku`) from the JWS header — and optionally the issuer (`iss`) for JWT verification — the allowlist function returns `true` if the signer is trusted. When verifying a signature, the receiving application's security implementation sets `authenticity.trusted` to the result of this function.
+
+:::tip Example implementation
+
+The `@finos/fdc3-security` library supports an `allowListFunction(jku, iss?)` callback when configuring signature verification. The following are example implementations:
 
 ```typescript
+/**
+ * Determines whether a signing application is trusted by this application.
+ * @param jku - The JWKS URL from the signer's JWS protected header, identifying the signer.
+ * @param iss - The issuer claim from a JWT payload; only present when verifying user identity tokens.
+ * @returns true if the signer should be trusted; false otherwise.
+ */
+const allowListFunction = (jku: string, iss?: string): boolean => {
+  return TRUSTED_JWKS_URLS.has(jku);
+};
+
 // Example: allow list for three trusted apps
 const TRUSTED_JWKS_URLS = new Set([
   'https://app-a.example.com/.well-known/jwks.json',
   'https://app-b.example.com/.well-known/jwks.json',
   'https://data-provider.example.com/.well-known/jwks.json',
 ]);
-
-const allowListFunction = (jku: string, iss?: string): boolean => {
-  // jku: JWKS URL from the signer's JWS/JWT header (where to fetch public keys)
-  // iss: issuer claim from JWT payload (only passed when verifying JWT tokens, e.g. for user identity)
-  return TRUSTED_JWKS_URLS.has(jku);
-};
 ```
 
 ```typescript
-// Example: using iss for JWT verification (e.g. user identity)
-// Restrict which issuers are trusted per JWKS URL—useful when an IdP hosts multiple issuers
-const TRUSTED_ISSUERS_BY_JKU: Record<string, Set<string>> = {
-  'https://idp.example.com/.well-known/jwks.json': new Set(['https://idp.example.com', 'tenant-a.idp.example.com']),
-  'https://enterprise-sso.corp.com/.well-known/jwks.json': new Set(['https://enterprise-sso.corp.com']),
-};
-
+/**
+ * Determines whether a signing application is trusted, with per-issuer restrictions.
+ * @param jku - The JWKS URL from the signer's JWS protected header, identifying the signer.
+ * @param iss - The issuer claim from a JWT payload; only present when verifying user identity tokens.
+ * @returns true if the signer should be trusted; false otherwise.
+ */
 const allowListFunction = (jku: string, iss?: string): boolean => {
+  // Example: using iss for JWT verification (e.g. user identity)
+  // Restrict which issuers are trusted per JWKS URL—useful when an identity provider app hosts multiple issuers
   if (!TRUSTED_ISSUERS_BY_JKU[jku]) return false;
   // For detached JWS (context signing), iss is undefined—trust jku alone
   if (!iss) return true;
   return TRUSTED_ISSUERS_BY_JKU[jku].has(iss);
 };
+
+const TRUSTED_ISSUERS_BY_JKU: Record<string, Set<string>> = {
+  'https://idp.example.com/.well-known/jwks.json': new Set(['https://idp.example.com', 'tenant-a.idp.example.com']),
+  'https://enterprise-sso.corp.com/.well-known/jwks.json': new Set(['https://enterprise-sso.corp.com']),
+};
 ```
+
+:::
 
 ## App Identity and Signatures
 
@@ -287,12 +305,33 @@ Applications can sign the context objects they broadcast using their private key
 
 ### Signature Metadata
 
-When a context is signed, the signature is provided in metadata (via [`AppProvidableContextMetadata`](ref/Metadata#contextmetadata) on broadcast/raiseIntent, or [`ContextMetadata`](ref/Metadata#contextmetadata) when received), not on the context object itself.
+When signing a context, the sender includes the `signature` and `antiReplay` fields in the `metadata` parameter passed to `broadcast()` or `raiseIntent()` (typed as [`AppProvidableContextMetadata`](ref/Metadata#appprovidablecontextmetadata)). The signature is therefore carried separately from the context object itself. When a receiving application's [`ContextHandler`](ref/Types#contexthandler) or [`IntentHandler`](ref/Types#intenthandler) is invoked, those fields are present in the [`ContextMetadata`](ref/Metadata#contextmetadata) argument alongside the Desktop Agent-provided `source` field.
 
 | Context Metadata field | Description |
 |------------------------|-------------|
 | `signature` | The detached JWS (`protected` + `signature`) |
 | `antiReplay` | Claims (`iat`, `exp`, `jti`) used for replay detection; must be included when signing |
+
+### Signature Structure
+
+The `signature` is a detached [JSON Web Signature (JWS)](https://datatracker.ietf.org/doc/html/rfc7515). The `protected` header, when base64url-decoded, contains:
+
+| Header field | Description |
+|--------------|-------------|
+| `alg` | Signature algorithm (e.g., `EdDSA`) |
+| `jku` | URL of the JWKS containing the public key for verification |
+| `kid` | Key identifier within the JWKS |
+| `iat` | Issued-at time (Unix timestamp), prevents replay |
+| `exp` | Expiration time (Unix timestamp) |
+| `jti` | Unique token ID for replay protection |
+
+### Generating The Signature
+
+To generate a signature, the signer:
+
+1. Creates `antiReplay` claims: `iat` (current time), `exp` (iat + validity window), and `jti` (random UUID).
+2. Canonicalizes `{ context, antiReplay }` and signs it with the private key using [JOSE](https://github.com/panva/jose) (or any [JWS](https://datatracker.ietf.org/doc/html/rfc7515)-compliant library). Use `CompactSign` to produce a compact JWS; the protected header includes `alg`, `jku`, `kid`, and `iat`.
+3. Extracts the detached form: the compact JWS (`header.payload.signature`) yields `protected` (header) and `signature`—the payload is omitted since the signed data is the context itself. Returns `{ protected, signature }` plus `antiReplay` in metadata.
 
 ### Flow Diagram
 
@@ -321,7 +360,8 @@ sequenceDiagram
     Note over R: Validate iat, antiReplay.exp, jti
     Note over R: allowListFunction(jku) → authenticity.trusted
 
-    Note over R: Expose context + ContextMetadata.authenticity to app
+    Note over R: Pass context + metadata to security implementation
+    Note over R: Receive authenticity result for trust decision
 ```
 
 ### Example
@@ -339,26 +379,6 @@ channel.broadcast(
   }
 );
 ```
-### Generating The Signature
-
-To generate a signature, the signer:
-
-1. Creates `antiReplay` claims: `iat` (current time), `exp` (iat + validity window), and `jti` (random UUID).
-2. Canonicalizes `{ context, antiReplay }` and signs it with the private key using [JOSE](https://github.com/panva/jose) (or any [JWS](https://datatracker.ietf.org/doc/html/rfc7515)-compliant library). Use `CompactSign` to produce a compact JWS; the protected header includes `alg`, `jku`, `kid`, and `iat`.
-3. Extracts the detached form: the compact JWS (`header.payload.signature`) yields `protected` (header) and `signature`—the payload is omitted since the signed data is the context itself. Returns `{ protected, signature }` plus `antiReplay` in metadata.
-
-### Signature Structure
-
-The `signature` is a detached [JSON Web Signature (JWS)](https://datatracker.ietf.org/doc/html/rfc7515). The `protected` header, when base64url-decoded, contains:
-
-| Header field | Description |
-|--------------|-------------|
-| `alg` | Signature algorithm (e.g., `EdDSA`) |
-| `jku` | URL of the JWKS containing the public key for verification |
-| `kid` | Key identifier within the JWKS |
-| `iat` | Issued-at time (Unix timestamp), prevents replay |
-| `exp` | Expiration time (Unix timestamp) |
-| `jti` | Unique token ID for replay protection |
 
 ### Checking the Signature
 
@@ -368,11 +388,11 @@ To verify a signature, the receiver:
 2. Resolves the public key from the `jku` JWKS URL (via a resolver or [JOSE](https://github.com/panva/jose) remote JWKS).
 3. Reconstitutes the full JWS: canonicalizes `{ context, antiReplay }`, base64url-encodes it as the payload, and forms `header.payload.signature`. Uses `compactVerify` (or equivalent) to verify the signature.
 4. Validates freshness (`iat`), context expiry (`antiReplay.exp`), and anti-replay claims (`jti`).
-5. Populates the `authenticity` object in context metadata.
+5. Returns an authenticity result object for the application to use in trust decisions.
 
 ### Authenticity Metadata
 
-When a signed context is received, the FDC3 security layer verifies the signature and populates the `authenticity` field in [`ContextMetadata`](ref/Metadata#contextmetadata):
+After receiving a signed context, the application passes the received [`ContextMetadata`](ref/Metadata#contextmetadata) to its security implementation's verification function. That function returns an authenticity result object — corresponding to the `SecurityMetadata` interface — containing the outcome of signature verification:
 
 ```typescript
 {
@@ -385,14 +405,14 @@ When a signed context is received, the FDC3 security layer verifies the signatur
 }
 ```
 
-Applications receiving context can check these fields to make trust decisions:
+Applications can check these fields to make trust decisions:
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
 fdc3.addContextListener("fdc3.instrument", (context, metadata) => {
-  const auth = metadata?.authenticity;
+  const auth = securityImpl.verify(metadata)?.authenticity;
 
   if (!auth?.signed) {
     // No signature present - treat as untrusted
@@ -417,30 +437,38 @@ fdc3.addContextListener("fdc3.instrument", (context, metadata) => {
 
 ## Encrypted Communications
 
+While digital signatures prove *who* sent a message, they do not prevent the Desktop Agent or other intermediaries from reading it. To keep context data confidential, applications can encrypt it so that only the intended recipient can decrypt it.
+
+### Why Symmetric Key Exchange?
+
+Encrypting every message directly with the recipient's asymmetric public key is computationally expensive and impractical for a stream of context messages. The approach used here mirrors TLS: asymmetric cryptography is used once to securely exchange a *symmetric key*, then the much cheaper symmetric cipher (e.g. AES-GCM) encrypts the data stream itself.
+
+A [JSON Web Encryption (JWE)](https://datatracker.ietf.org/doc/html/rfc7516) token is used to wrap (encrypt) the symmetric key using the recipient's public key, ensuring only the recipient — holding the corresponding private key — can unwrap it.
+
 ### Private Channel Encryption
 
 Applications communicating over a [`PrivateChannel`](ref/PrivateChannel) can negotiate encryption to ensure their communications remain confidential. This is particularly important when sharing sensitive data such as positions, pricing, or user information.
 
 ### Symmetric Key Exchange
 
-Encryption uses a symmetric key (e.g. AES-GCM) created by the channel owner and distributed via [JWE](https://datatracker.ietf.org/doc/html/rfc7516). See [encrypted-private-channel-example.ts](pathname:///packages/fdc3-security/samples/encrypted-private-channel-example.ts) for a working flow.
+Encryption uses a symmetric key (e.g. AES-GCM) created by the channel owner and distributed via JWE.
 
-**Key owner (broadcaster):** Creates and holds the symmetric key. Encrypts context payloads with it and broadcasts them as JWE in `encryptedPayload`. When a key request arrives, verifies the requestor's JWS (signature valid and `allowListFunction(jku)` returns true), reads `jku` from their JWS protected header, fetches their public key from that JWKS, wraps the symmetric key in a JWE using that public key (e.g. RSA-OAEP), signs the response with JWS, and broadcasts it.
+**Key owner (broadcaster):** Creates and holds the symmetric key. Encrypts context payloads with it and broadcasts them wrapped in [`fdc3.security.encryptedContext`](../context/ref/security/EncryptedContextWrapper). The `originalType` field of the wrapper preserves the original context type for routing, and `id.kid` identifies the symmetric key. The encrypted payload (all remaining fields of the original context) is stored as a JWE compact serialization in `encryptedPayload`. When a key request arrives, verifies the requestor's JWS (signature valid and `allowListFunction(jku)` returns true), reads `jku` from their JWS protected header, fetches their public key from that JWKS, wraps the symmetric key in a JWE using that public key (e.g. RSA-OAEP), signs the response with JWS, and broadcasts it.
 
-**Key requestor (listener):** Broadcasts a signed key request (JWS). When the response arrives, verifies the JWS, unwraps the JWE with their private key to obtain the symmetric key, then decrypts subsequent encrypted payloads. If an encrypted message arrives before the key, the requestor sends a key request.
+**Key requestor (listener):** Listens for `fdc3.security.encryptedContext` by checking `type === 'fdc3.security.encryptedContext'` before dispatching to the appropriate handler. Broadcasts a signed key request (JWS) when it needs the symmetric key. When the response arrives, verifies the JWS, unwraps the JWE with their private key to obtain the symmetric key, then decrypts subsequent encrypted payloads. If an encrypted message arrives before the key, the requestor sends a key request.
 
-Both the key request and response **must be signed** (JWS). The key owner uses the requestor's `jku` from the JWS header to target the JWE—only that requestor's private key can unwrap it.
+Both the key request and response **MUST be signed** (JWS). The key owner uses the requestor's `jku` from the JWS header to target the JWE—only that requestor's private key can unwrap it.
 
 ### Flow Diagram
 
 ```mermaid
 sequenceDiagram
-    participant Rx as Receiver App
-    participant RxCtx as Receiver App's `fdc3.instrument` contextHandler
-    participant RxKey as Receiver App's `symmetricKeyResponse` contextHandler
-    participant Sx as Broadcaster App
-    participant SxReq as Broadcaster App's `symmetricKeyRequest` contextHandler
-    Rx->>Sx: Raises `ViewInstrument` Intent
+    participant Rx as Buy-side App
+    participant RxCtx as Buy-side App's `fdc3.instrument` contextHandler
+    participant RxKey as Buy-side App's `symmetricKeyResponse` contextHandler
+    participant Sx as Market Data App
+    participant SxReq as Market Data App's `symmetricKeyRequest` contextHandler
+    Rx->>Sx: Raises Intent to request data stream
     note right of Sx: Generate random symmetric key K
     note right of Sx: Create private channel C
     Sx->>Rx: Intent result: private channel C
@@ -454,8 +482,8 @@ sequenceDiagram
     note right of RxCtx: Payload is JWE — need K
     note right of RxCtx: Verify context JWS (sender)
     RxCtx->>SxReq: Broadcast fdc3.security.symmetricKeyRequest (signed)
-    note right of SxReq: Verify request JWS, fetch Receiver JWKS from jku
-    note right of SxReq: Wrap K for Receiver (JWE), sign response (JWS)
+    note right of SxReq: Verify request JWS, fetch Buy-side JWKS from jku
+    note right of SxReq: Wrap K for Buy-side App (JWE), sign response (JWS)
     SxReq->>RxKey: Broadcast fdc3.security.symmetricKeyResponse
     note right of RxKey: Verify response JWS, unwrap K (private key)
     note right of RxKey: K now held for channel C
@@ -467,15 +495,12 @@ sequenceDiagram
 
 | Type | Description |
 |------|-------------|
-| [`fdc3.security.symmetricKeyRequest`](../context/ref/security/SymmetricKeyRequest) | Request for the channel symmetric key (optional `id.kid`). Must be signed. |
-| [`fdc3.security.symmetricKeyResponse`](../context/ref/security/SymmetricKeyResponse) | Response containing `wrappedKey` (JWE) and `id.{kid,pki}`. Must be signed. |
-| [`fdc3.security.encryptedContext`](../context/ref/security/EncryptedContextWrapper) | Wrapper with `encryptedPayload` (JWE); `originalType` and `id.kid` preserved for routing. |
+| [`fdc3.security.symmetricKeyRequest`](../context/ref/security/SymmetricKeyRequest) | Request for the channel symmetric key (optional `id.kid`). MUST be signed. |
+| [`fdc3.security.symmetricKeyResponse`](../context/ref/security/SymmetricKeyResponse) | Response containing `wrappedKey` (JWE) and `id.{kid,pki}`. MUST be signed. |
+| [`fdc3.security.encryptedContext`](../context/ref/security/EncryptedContextWrapper) | Wrapper with `encryptedPayload` (JWE compact serialization); `originalType` and `id.kid` preserved for routing. |
 
-:::tip
+:::tip Reference implementation samples
 
-#### Javascript Examples
-
-See: 
 - https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/backend-encrypted-channel-example.ts
 - https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/frontend-encrypted-channel-example.ts
 
@@ -483,24 +508,24 @@ See:
 
 ## User Identity
 
-In a multi-app FDC3 environment, applications often need to know who the user is—for personalization, access control, audit trails, or to share session state across tools. Instead of each app authenticating the user separately, an **Identity Provider (IDP)** can issue a portable, verifiable identity that any trusted app can consume. The IDP signs a JWT containing user claims; receiving apps verify the signature and trust the identity. 
+In a multi-app FDC3 environment, applications often need to know who the user is—for personalization, access control, audit trails, or to share session state across tools. Instead of each app authenticating the user separately, an **identity provider app** — an FDC3 application with the ability to authenticate the current user and issue signed identity tokens (not to be confused with an OAuth 2.0 / OIDC identity provider; no redirect flows or token endpoints are involved) — can issue a portable, verifiable identity that any trusted app can consume. The identity provider app signs a JWT containing user claims; receiving apps verify the signature and trust the identity.
 
-**Audience scoping** ensures each JWT is bound to a specific requesting application (`aud`), so if a token is intercepted, it cannot be reused by another app. This enables single sign-on (SSO) across FDC3 applications while keeping tokens narrowly scoped.
+**Audience scoping** ensures each JWT is bound to a specific requesting application via the `aud` (audience) claim — a standard JWT field ([RFC 7519 §4.1.3](https://datatracker.ietf.org/doc/html/rfc7519#section-4.1.3)) that identifies the intended recipient of the token. By setting `aud` to the requesting application's URL, the token cannot be reused by a different application even if intercepted. This enables single sign-on (SSO) across FDC3 applications while keeping tokens narrowly scoped.
 
 ### The User Context Type
 
-The [`fdc3.security.user`](../context/ref/security/User) context type represents a verified user identity:
+The [`fdc3.security.user`](../context/ref/security/User) context type carries a verified user identity. The `wrappedJwt` field contains a JWT that has been encrypted (wrapped as a JWE) using the *requesting application's public key*, so that only the requesting application — which holds the corresponding private key — can decrypt and read it. This prevents the token from being read by the Desktop Agent or any other application that may observe the intent result.
 
 ```typescript
 {
   type: "fdc3.security.user",
-  wrappedJwt: "--example-jwt-token--but-wrapped-in-the-public-key-of-the-requester--"
+  wrappedJwt: "<JWE-wrapped JWT — decrypt with your application's private key>"
 }
 ```
 
 ### JWT Token Structure
 
-The `wrappedJwt` field contains a signed JSON Web Token.  Once you decrypt this with your application's private key, it will have the following structure:
+The `wrappedJwt` field, once decrypted with the application's private key, contains a signed JSON Web Token with the following structure:
 
 **Header:**
 ```json
@@ -525,38 +550,42 @@ The `wrappedJwt` field contains a signed JSON Web Token.  Once you decrypt this 
 
 | Claim | Description |
 |-------|-------------|
-| `iss` | Issuer - the identity provider that created the token |
+| `iss` | Issuer - the identity provider app that created the token |
 | `sub` | Subject - the user's unique identifier |
-| `aud` | Audience - the specific application this token was issued for |
-| `exp` | Expiration time (Unix timestamp) |
-| `iat` | Issued at time (Unix timestamp) |
+| `aud` | Audience - the URL of the application this token was issued for |
+| `exp` | Expiration time (Unix epoch seconds — see note below) |
+| `iat` | Issued at time (Unix epoch seconds — see note below) |
 | `jti` | JWT ID - unique identifier for this token (replay prevention) |
+
+:::note
+`exp` and `iat` use Unix epoch seconds (NumericDate as defined in [RFC 7519](https://datatracker.ietf.org/doc/html/rfc7519)), rather than the ISO 8601 format used elsewhere in FDC3. This is mandated by the JWT specification.
+:::
 
 The token is scoped to a specific application (`aud`) to prevent token reuse if leaked.
 
 ### Requesting User Identity
 
-1. The requester raises the [`GetUser`](../intents/ref/GetUser.md) intent with a signed [`fdc3.security.userRequest`](../context/ref/security/UserRequest) context. The context includes an `aud` field (the audience claim for the returned JWT—typically the requesting app's URL). The request must be signed to prevent forgery by third parties.
+1. The requester raises the [`GetUser`](../intents/ref/GetUser.md) intent with a signed [`fdc3.security.userRequest`](../context/ref/security/UserRequest) context. The context includes an `aud` field set to the requesting application's URL — the identity provider app embeds this in the JWT's `aud` claim so the requester can verify the token was issued specifically for it. The request MUST be signed to prevent forgery by third parties.
 
-2. The IDP verifies the requester's signature on the request.
+2. The identity provider app verifies the requester's signature on the request.
 
-3. The IDP creates a JWT containing the claims described above, scoped to the requested audience.
+3. The identity provider app creates a JWT containing the claims described above, scoped to the requested audience.
 
-4. The IDP wraps the JWT with the requester's public key and returns the `fdc3.security.user` context as the intent result.
+4. The identity provider app wraps the JWT with the requester's public key (as a JWE) and returns the `fdc3.security.user` context as the intent result.
 
-5. The requester decrypts the wrapped JWT with their private key and verifies the JWT signature using the IDP's public keys (from `{idpBaseUrl}/.well-known/jwks.json`). It also verifies expiry and must verify that the `jti` has not been used recently (i.e. in the expiry window)
+5. The requester decrypts the wrapped JWT with their private key and verifies the JWT signature using the identity provider app's public keys (from `{idpBaseUrl}/.well-known/jwks.json`). It also verifies expiry and MUST verify that the `jti` has not been used recently (i.e. within the expiry window).
 
 ```mermaid
 sequenceDiagram
     participant Application
-    participant IDP
-    Application->>IDP: GetUser Intent Request
-    note right of IDP: Verify requesting application signature
-    note right of IDP: Generate scoped JWT
-    note right of IDP: Wrap JWT with requesting app's public key
-    IDP->>Application: GetUser Intent Reply
-    note left of Application: Unwrap JWT
-    note left of Application: Verify JWT
+    participant IdentityProviderApp as Identity Provider App
+    Application->>IdentityProviderApp: GetUser Intent Request (signed)
+    note right of IdentityProviderApp: Verify requesting application signature
+    note right of IdentityProviderApp: Generate scoped JWT
+    note right of IdentityProviderApp: Wrap JWT with requesting app's public key (JWE)
+    IdentityProviderApp->>Application: GetUser Intent Reply
+    note left of Application: Unwrap JWT (private key)
+    note left of Application: Verify JWT signature
     note left of Application: Authenticate user
 ```
 
@@ -564,9 +593,5 @@ sequenceDiagram
 
 - JWT tokens are scoped to specific audiences to prevent misuse if leaked
 - Short expiration times reduce the window for token theft attacks
-- Unique token identifiers (jti) must be used to prevent token theft attacks
+- Unique token identifiers (`jti`) MUST be used to prevent token replay attacks
 - Tokens SHOULD be transmitted over encrypted channels when possible
-
-## Desktop Agent Requirements
-
-No changes are expected of Desktop Agents to work with security - just that they pass on context and metadata untampered-with.
