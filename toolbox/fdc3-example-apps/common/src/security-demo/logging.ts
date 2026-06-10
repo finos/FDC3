@@ -93,7 +93,7 @@ export function formatContext(context: any): string {
 
 // Helper function to check authenticity status
 export function getAuthenticityStatus(
-  verified:
+  verification:
     | {
         authenticity?:
           | { signed?: boolean; valid?: boolean; trusted?: boolean; jku?: string; errors?: string[] }
@@ -104,7 +104,7 @@ export function getAuthenticityStatus(
   status: string;
   message: string;
 } {
-  const auth = verified?.authenticity;
+  const auth = verification?.authenticity;
   if (auth?.signed && auth.valid && auth.trusted && auth.jku) {
     return {
       status: 'success',

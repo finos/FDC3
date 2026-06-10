@@ -1,9 +1,9 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
-import { AntiReplayClaims, DetachedSignature, VerifiedContextMetadata } from '@finos/fdc3-standard';
+import { AntiReplayClaims, DetachedSignature, ContextVerificationMetadata } from '@finos/fdc3-standard';
 import { FDC3UserClaims } from './FDC3UserClaims.js';
 
 type AntiReplay = AntiReplayClaims;
-type Authenticity = NonNullable<VerifiedContextMetadata['authenticity']>;
+type Authenticity = NonNullable<ContextVerificationMetadata['authenticity']>;
 
 /**
  * Compact JSON Web Encryption (JWE) string.

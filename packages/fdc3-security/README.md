@@ -10,14 +10,14 @@ This package implements the [@experimental](https://fdc3.finos.org/docs/next/fdc
 
 All cryptographic operations that involve a private key — signing outbound context, generating symmetric encryption keys, unwrapping received JWE-wrapped keys — MUST be performed in a trusted backend (server), not in the browser frontend. This package provides `FDC3Handlers`, a TypeScript interface defining the contract between a frontend and its backend, together with `ClientSideHandlersImpl` and `ServerSideHandlersImpl` to implement that contract over a WebSocket.
 
-### VerifiedContextMetadata
+### ContextVerificationMetadata
 
-Verification results are never placed on `ContextMetadata` (the wire type forwarded by the Desktop Agent). Instead, when a receiving application calls its security implementation's verification function with the received `ContextMetadata`, it gets back a `VerifiedContextMetadata` object containing:
+Verification results are never placed on `ContextMetadata` (the wire type forwarded by the Desktop Agent). Instead, when a receiving application calls its security implementation's verification function with the received `ContextMetadata`, it gets back a `ContextVerificationMetadata` object containing:
 
 - `authenticity` — the result of signature verification (`signed`, `valid`, `trusted`, `jku`, `kid`, `alg`, `errors`)
 - `encryption` — the result of decryption (`'decrypted'` | `'cant_decrypt'` | `'not_encrypted'`)
 
-`VerifiedContextMetadata` is available from `@finos/fdc3-standard` and is also the type used by `SecurityAwareContextHandler` and `SecurityAwareIntentHandler`.
+`ContextVerificationMetadata` is available from `@finos/fdc3-standard` and is also the type used by `SecurityAwareContextHandler` and `SecurityAwareIntentHandler`.
 
 ### SecurityAwareContextHandler / SecurityAwareIntentHandler
 
@@ -28,7 +28,7 @@ When wrapping a context or intent handler with `SignatureCheckingHandlerSupport`
 (context: Context, metadata: ContextMetadata | undefined) => void
 
 // Security-aware handler — receives verification result as third argument
-(context: Context, metadata: ContextMetadata | undefined, verified: VerifiedContextMetadata) => void
+(context: Context, metadata: ContextMetadata | undefined, verification: ContextVerificationMetadata) => void
 ```
 
 This keeps `ContextMetadata` clean as a wire type while making the verification result conveniently available to handler logic.
@@ -55,17 +55,17 @@ The core cryptographic interfaces and implementations.
 Supports the signing and verification of FDC3 messages (broadcasts and intents).
 
 - `SignedBroadcastSupport` / `BasicSignedBroadcaster`: Signs outgoing broadcasts using a `PrivateFDC3Security` instance running on the backend.
-- `SignatureCheckingHandlerSupport` / `BasicSignatureCheckingHandlerSupport`: Wraps a `SecurityAwareContextHandler` or `SecurityAwareIntentHandler` so that incoming signatures are verified before the handler is called. The `VerifiedContextMetadata` result is passed as the third argument to the handler.
-- `SecurityAwareContextHandler` / `SecurityAwareIntentHandler`: Handler types that receive `VerifiedContextMetadata` as a third argument alongside the standard `Context` and `ContextMetadata`.
+- `SignatureCheckingHandlerSupport` / `BasicSignatureCheckingHandlerSupport`: Wraps a `SecurityAwareContextHandler` or `SecurityAwareIntentHandler` so that incoming signatures are verified before the handler is called. The `ContextVerificationMetadata` result is passed as the third argument to the handler.
+- `SecurityAwareContextHandler` / `SecurityAwareIntentHandler`: Handler types that receive `ContextVerificationMetadata` as a third argument alongside the standard `Context` and `ContextMetadata`.
 - `SignedIntentResultSupport`: Signs context returned as an intent result.
-- `SignedRaiseIntentSupport`: Raises intents with a signed context and optionally verifies the signature on the returned result.
+- `SignedRaiseIntentSupport` / `BasicSignedRaiseIntentSupport`: Raises intents with a signed context and optionally verifies the signature on the returned result. Returns a `VerifiedIntentResolution` whose `getVerification()` method provides the `ContextVerificationMetadata` for the context result, without storing it in `ContextMetadata`.
 
 ### `src/encryption`
 
 Classes and utilities for end-to-end encryption over FDC3 channels.
 
 - `EncryptedBroadcastSupport`: Encrypts outgoing context with a symmetric key and broadcasts it as `fdc3.security.encryptedContext`. Also sets up a listener for incoming `fdc3.security.symmetricKeyRequest` messages to deliver the wrapped key to authorized requestors.
-- `EncryptedContextListenerSupport`: Listens for `fdc3.security.encryptedContext` broadcasts, negotiates the symmetric key with the broadcaster via `fdc3.security.symmetricKeyRequest` / `fdc3.security.symmetricKeyResponse`, and decrypts the payload before passing the plaintext context to the application's handler. Decryption status is available in `custom.__verified.encryption` on the received `ContextMetadata`.
+- `EncryptedContextListenerSupport`: Listens for `fdc3.security.encryptedContext` broadcasts, negotiates the symmetric key with the broadcaster via `fdc3.security.symmetricKeyRequest` / `fdc3.security.symmetricKeyResponse`, and decrypts the payload. The handler receives a `ContextVerificationMetadata` third argument (as a `SecurityAwareContextHandler`) with `encryption: 'decrypted'` on success.
 
 ### `src/delegates`
 

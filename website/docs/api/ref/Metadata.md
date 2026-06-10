@@ -292,7 +292,7 @@ type ContextMetadata struct {
 
 Metadata relating to a context or intent received through the `addContextListener` and `addIntentListener` functions. Includes delivery information provided by the Desktop Agent (`source`, `timestamp`, `traceId`) and optional metadata forwarded from the originating app (`signature`, `antiReplay`, `traceId`, `custom`).
 
-Note that `signature` and `antiReplay` are transmitted metadata fields — forwarded by the Desktop Agent unchanged from the sender's `AppProvidableContextMetadata`. The result of _verifying_ a signature is not a metadata field; it is returned by the receiving application's security implementation as a [`VerifiedContextMetadata`](#verifiedcontextmetadata) object.
+Note that `signature` and `antiReplay` are transmitted metadata fields — forwarded by the Desktop Agent unchanged from the sender's `AppProvidableContextMetadata`. The result of _verifying_ a signature is not a metadata field; it is returned by the receiving application's security implementation as a [`ContextVerificationMetadata`](#contextverificationmetadata) object.
 
 **See also:**
 
@@ -429,13 +429,13 @@ Anti-replay claims that MUST accompany a `DetachedSignature` to prevent a captur
 - [`AppProvidableContextMetadata`](#appprovidablecontextmetadata)
 - [Security & Identity](../security)
 
-## `VerifiedContextMetadata`
+## `ContextVerificationMetadata`
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-interface VerifiedContextMetadata {
+interface ContextVerificationMetadata {
   /** The result of signature verification for this context. */
   authenticity?: {
     /** True if a `signature` field was present in the received metadata. */

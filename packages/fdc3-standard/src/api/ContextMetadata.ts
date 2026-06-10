@@ -53,7 +53,7 @@ export interface AntiReplayClaims {
  *
  * See the [Security & Identity documentation](../../api/security) for details.
  */
-export interface VerifiedContextMetadata {
+export interface ContextVerificationMetadata {
   /** The result of signature verification for this context. */
   authenticity?: {
     /** True if a `signature` field was present in the received metadata. */

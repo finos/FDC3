@@ -1,8 +1,8 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
-import { AntiReplayClaims, DetachedSignature, VerifiedContextMetadata } from '@finos/fdc3-standard';
+import { AntiReplayClaims, DetachedSignature, ContextVerificationMetadata } from '@finos/fdc3-standard';
 
 type AntiReplay = AntiReplayClaims;
-type Authenticity = NonNullable<VerifiedContextMetadata['authenticity']>;
+type Authenticity = NonNullable<ContextVerificationMetadata['authenticity']>;
 import { canonicalize } from 'json-canonicalize';
 import * as jose from 'jose';
 import { DEFAULT_FDC3_ALGORITHMS, FDC3SecurityAlgorithms } from './FDC3SecurityAlgorithms.js';

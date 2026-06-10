@@ -109,17 +109,21 @@ async function step4SetupAppBChannelDelegate(
     resolveDone = r;
   });
 
-  const handler: SecurityAwareContextHandler = async (ctx, meta, verified) => {
+  const handler: SecurityAwareContextHandler = async (ctx, meta, verification) => {
     console.log('[App B] <<< [VERIFIED] Context Received:');
     console.log(JSON.stringify(ctx, null, 2));
     console.log('[App B] <<< [VERIFIED] Metadata Received:');
     console.log(JSON.stringify(meta, null, 2));
 
-    const auth = verified.authenticity;
+    // The third argument is ContextVerificationMetadata populated by
+    // PublicSignatureCheckingHandlerSupport before invoking this handler.
+    const auth = verification.authenticity;
     if (auth?.signed && auth?.trusted) {
+      // Signature cryptographically valid and signer's JWKS URL is in our allowlist.
       console.log('[App B] Verification Result: ✅ TRUSTED');
       console.log(`[App B] Trusted Provider: ${auth.jku}`);
     } else if (auth?.errors) {
+      // Signature present but verification failed — log errors and discard.
       console.log('[App B] Errors:', auth.errors);
     }
 

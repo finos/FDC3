@@ -361,7 +361,7 @@ sequenceDiagram
     Note over R: allowListFunction(jku) → authenticity.trusted
 
     Note over R: Pass context + metadata to security implementation
-    Note over R: Receive VerifiedContextMetadata for trust decision
+    Note over R: Receive ContextVerificationMetadata for trust decision
 ```
 
 ### Example
@@ -392,7 +392,7 @@ To verify a signature, the receiver:
 
 ### Authenticity Metadata
 
-After receiving a signed context, the application passes the received [`ContextMetadata`](ref/Metadata#contextmetadata) to its security implementation's verification function. That function returns a [`VerifiedContextMetadata`](ref/Metadata#verifiedcontextmetadata) object containing the outcome of signature verification:
+After receiving a signed context, the application passes the received [`ContextMetadata`](ref/Metadata#contextmetadata) to its security implementation's verification function. That function returns a [`ContextVerificationMetadata`](ref/Metadata#contextverificationmetadata) object containing the outcome of signature verification:
 
 ```typescript
 {
@@ -412,8 +412,8 @@ Applications can check these fields to make trust decisions:
 
 ```ts
 fdc3.addContextListener("fdc3.instrument", (context, metadata) => {
-  const verified = securityImpl.verify(metadata);
-  const auth = verified?.authenticity;
+  const verification = securityImpl.verify(metadata);
+  const auth = verification?.authenticity;
 
   if (!auth?.signed) {
     // No signature present - treat as untrusted

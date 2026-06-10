@@ -64,7 +64,7 @@ sequenceDiagram
     Note right of BBE: Verifies request JWS<br/>Wraps K with Receiving App public key (JWE)<br/>Signs response
     BBE->>RBE: broadcast fdc3.security.symmetricKeyResponse
     Note right of RBE: Verifies response JWS<br/>Unwraps K with private key<br/>Decrypts context
-    Note right of RBE: ✅ Decrypted context logged<br/>(custom.__verified.encryption === 'decrypted')
+    Note right of RBE: ✅ Decrypted context logged<br/>(verification.encryption === 'decrypted')
 ```
 
 ---
@@ -98,14 +98,14 @@ sequenceDiagram
     RBE-->>RFE: unwrapped symmetric key K
 
     Note over RFE: Decrypts context with K
-    Note over RFE: ✅ Decrypted context logged<br/>(custom.__verified.encryption === 'decrypted')
+    Note over RFE: ✅ Decrypted context logged<br/>(verification.encryption === 'decrypted')
 ```
 
 ---
 
 ## [Signing Broadcast Example](signing-broadcast-example.ts)
 
-Illustrates how to sign FDC3 broadcasts using `BasicSignedBroadcaster` (running on the sender's backend) and verify them using `PublicSignatureCheckingHandlerSupport` (running on the receiver's frontend). The handler is wrapped using a `SecurityAwareContextHandler`, which receives a `VerifiedContextMetadata` object as its third argument rather than reading verification results from `ContextMetadata` directly.
+Illustrates how to sign FDC3 broadcasts using `BasicSignedBroadcaster` (running on the sender's backend) and verify them using `PublicSignatureCheckingHandlerSupport` (running on the receiver's frontend). The handler is wrapped using a `SecurityAwareContextHandler`, which receives a `ContextVerificationMetadata` object as its third argument rather than reading verification results from `ContextMetadata` directly.
 
 ```mermaid
 sequenceDiagram
@@ -117,7 +117,7 @@ sequenceDiagram
     AFE->>ABE: handleRemoteChannel('broadcast', channel)
     Note right of ABE: Wraps channel with BasicSignedBroadcaster
 
-    Note over BFE: Wraps handler with PublicSignatureCheckingHandlerSupport<br/>(SecurityAwareContextHandler receives VerifiedContextMetadata)
+    Note over BFE: Wraps handler with PublicSignatureCheckingHandlerSupport<br/>(SecurityAwareContextHandler receives ContextVerificationMetadata)
     BFE->>BFE: addContextListener(wrapped handler)
 
     ABE->>ABE: sign(context) → DetachedSignature + AntiReplayClaims
@@ -125,7 +125,7 @@ sequenceDiagram
     AFE->>BFE: FDC3 channel broadcast
 
     BFE->>BFE: verifySignature(signature, context, antiReplay) via App A JWKS
-    Note over BFE: Handler called with (context, metadata, verified)<br/>verified.authenticity.trusted === true
+    Note over BFE: Handler called with (context, metadata, verification)<br/>verification.authenticity.trusted === true
     Note over BFE: ✅ Verified context received
 ```
 
@@ -133,7 +133,7 @@ sequenceDiagram
 
 ## [Signing Intent Example (Mutual Authentication)](signing-intent-example.ts)
 
-A full end-to-end demonstration of mutual authentication in FDC3 intent flows. The raiser signs its request context (via its backend), the handler verifies the request and signs its response (via its backend), and the raiser verifies the response. Both sides use `SecurityAwareIntentHandler` so that `VerifiedContextMetadata` is available in the handler without polluting `ContextMetadata`.
+A full end-to-end demonstration of mutual authentication in FDC3 intent flows. The raiser signs its request context (via its backend), the handler verifies the request and signs its response (via its backend), and the raiser verifies the response. Both sides use `SecurityAwareIntentHandler` so that `ContextVerificationMetadata` is available in the handler without polluting `ContextMetadata`.
 
 One-way authentication (raiser only, or handler only) can be achieved by removing either the signing or the verification half.
 
@@ -154,12 +154,12 @@ sequenceDiagram
     RFE->>HFE: raiseIntent(DataTransfer, context, metadata)
     HFE->>HBE: forward to remote handler
 
-    Note right of HBE: verifySignature → VerifiedContextMetadata<br/>verified.authenticity.trusted === true ✅
+    Note right of HBE: verifySignature → ContextVerificationMetadata<br/>verification.authenticity.trusted === true ✅
     HBE->>HBE: sign(responseContext) via PrivateSignedIntentResultSupport
     HBE-->>HFE: ContextWithMetadata (signed response)
     HFE-->>RFE: Intent result
 
-    Note over RFE: VerifiedContextMetadata available via<br/>resultMetadata.custom.__verified
+    Note over RFE: ContextVerificationMetadata available via<br/>resolution.getVerification()
     Note over RFE: ✅ Mutually verified result returned
 ```
 

@@ -68,10 +68,10 @@ export const SignedReceiverComponent = () => {
       setChannelId(id);
       setStatus(`Listening for signed ${CONTEXT_TYPE} on user channel ${id} (verification via jku in signature).`);
 
-      const baseHandler: SecurityAwareContextHandler = async (ctx, meta, verified) => {
+      const baseHandler: SecurityAwareContextHandler = async (ctx, meta, verification) => {
         pushLog('[VERIFIED] Context:\n' + prettyJson(ctx));
         pushLog('[VERIFIED] Metadata:\n' + prettyJson(meta));
-        const auth = verified.authenticity;
+        const auth = verification.authenticity;
         if (auth?.signed && auth.trusted) {
           pushLog('Verification: trusted; signer JWKS URL: ' + String(auth.jku ?? '(none)'));
         } else if (auth?.errors) {
