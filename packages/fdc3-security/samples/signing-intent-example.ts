@@ -16,6 +16,7 @@ import { BasicSignedRaiseIntentSupport } from '../src/signing/SignedRaiseIntentS
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
 import { createMetadataHandlerWithFDC3Version, type MetadataHandler } from '../src/delegates/MetadataHandler';
+import { assertIsContext } from '../src/impl/TypeGuards';
 
 const INTENT_DATA_TRANSFER = 'DataTransfer';
 
@@ -54,10 +55,10 @@ class HandlerAppBackendHandlers extends DefaultFDC3Handlers {
           context,
         });
 
-        const response = {
+        const response: Context = {
           type: 'demo.response',
           id: { status: 'success', timestamp: new Date().toISOString() },
-        } as Context;
+        };
 
         // Sign the intent result (response)
         const signer = new PrivateSignedIntentResultSupport(this.security, this.metadataHandler);
@@ -73,7 +74,7 @@ class HandlerAppBackendHandlers extends DefaultFDC3Handlers {
 
     // Wrap the core handler with SignatureCheckingHandlerSupport for automatic verification
     const verifier = new PublicSignatureCheckingHandlerSupport(this.metadataHandler, this.security);
-    return (await verifier.wrapContextHandler(coreHandler as any)) as IntentHandler;
+    return (await verifier.wrapContextHandler(coreHandler)) as IntentHandler;
   }
 }
 
@@ -183,7 +184,9 @@ async function step3MutuallyAuthenticatedExchange(
   const resolution = await support.raiseIntent(INTENT_DATA_TRANSFER, requestContext);
 
   console.log('   Raiser App: Awaiting signed response from handler...');
-  const result = (await resolution.getResult()) as Context;
+  const rawResult = await resolution.getResult();
+  assertIsContext(rawResult, 'step3MutuallyAuthenticatedExchange: intent result');
+  const result = rawResult;
   const resultMetadata = await resolution.getResultMetadata();
 
   // getVerification() returns the ContextVerificationMetadata produced by verificationFunction

@@ -11,6 +11,7 @@ export * from './impl/AntiReplayChecker.js';
 export * from './impl/FDC3SecurityAlgorithms.js';
 export * from './impl/FDC3SecurityTimeLimits.js';
 export * from './impl/FDC3UserClaims.js';
+export * from './impl/TypeGuards.js';
 export * from './impl/JosePrivateFDC3Security.js';
 export * from './impl/JosePublicFDC3Security.js';
 export * from './impl/PrivateFDC3Security.js';

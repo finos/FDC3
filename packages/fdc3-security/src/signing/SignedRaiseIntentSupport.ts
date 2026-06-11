@@ -2,6 +2,7 @@ import { Context } from '@finos/fdc3-context';
 import { PrivateFDC3Security, SigningFunction } from '../impl/PrivateFDC3Security.js';
 import { SignatureCheckingFunction } from '../impl/PublicFDC3Security.js';
 import { MetadataHandler } from '../delegates/MetadataHandler.js';
+import { assertIsContext } from '../impl/TypeGuards.js';
 import {
   AppIdentifier,
   ContextMetadata,
@@ -133,7 +134,8 @@ export class BasicSignedRaiseIntentSupport implements SignedRaiseIntentSupport {
       } else {
         // Context result — unpack any __appMeta embedded by the handler (FDC3 < 3.0
         // compatibility), then verify the signature if a checking function was provided.
-        const contextIn = result as Context;
+        assertIsContext(result, 'SignedRaiseIntentSupport.wrapResolution');
+        const contextIn = result;
         const { context: unpackedContext, metadata: unpackedMetadata } = this.metadataHandler.unpack(
           contextIn,
           metadata

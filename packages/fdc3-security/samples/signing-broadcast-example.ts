@@ -41,11 +41,11 @@ class AppABackendHandlers extends DefaultFDC3Handlers {
 
   async broadcast(): Promise<void> {
     console.log('\n[App A Backend] Signing and broadcasting instrument...');
-    const instrument = {
+    const instrument: Context = {
       type: 'fdc3.instrument',
       id: { ticker: 'AAPL' },
       name: 'Apple Inc.',
-    } as Context;
+    };
     await this.signedBroadcaster!.broadcast(instrument);
     return;
   }
@@ -131,7 +131,7 @@ async function step4SetupAppBChannelDelegate(
     resolveDone!();
   };
 
-  const verifiedHandler = (await support.wrapContextHandler(handler)) as ContextHandler;
+  const verifiedHandler: ContextHandler = (await support.wrapContextHandler(handler)) as ContextHandler;
   await channel.addContextListener('fdc3.instrument', verifiedHandler);
 
   return { done };

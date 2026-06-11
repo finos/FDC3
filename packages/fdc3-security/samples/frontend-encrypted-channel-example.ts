@@ -52,7 +52,7 @@ class ReceivingAppBackendHandlers extends DefaultFDC3Handlers {
       // The symmetric key arrives wrapped in a JWE targeting our public key.
       // Unwrapping requires our private key and must happen on the backend.
       // The unwrapped key is returned to the frontend for low-latency per-message decryption.
-      const skr = o as SymmetricKeyResponse;
+      const skr: SymmetricKeyResponse = o as SymmetricKeyResponse;
       return await this.security.unwrapSymmetricKey(skr);
     }
   }
@@ -109,9 +109,9 @@ async function step3BroadcastingAppSetup(
 
   // Create the PrivateChannel on the frontend and wrap it with EncryptedBroadcastSupport.
   // The symmetric key is generated here on the frontend and held in memory.
-  const channel = await mockDA.createPrivateChannel();
+  const channel: Channel = await mockDA.createPrivateChannel();
   const support = new EncryptedBroadcastSupport(publicSecurity, metadataHandler);
-  const broadcaster = await support.broadcastWrapper(channel as Channel);
+  const broadcaster = await support.broadcastWrapper(channel);
 
   // Register the intent handler that returns this channel when a listener raises
   // ShareEncryptedChannel.

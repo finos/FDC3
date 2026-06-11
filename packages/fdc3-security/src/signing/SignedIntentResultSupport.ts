@@ -2,6 +2,7 @@ import { Channel, ContextWithMetadata, PrivateChannel } from '@finos/fdc3-standa
 import { PrivateFDC3Security, SigningFunction } from '../impl/PrivateFDC3Security.js';
 import { MetadataHandler } from '../delegates/MetadataHandler.js';
 import { Context } from '@finos/fdc3-context';
+import { isContext, isContextWithMetadata } from '../impl/TypeGuards.js';
 
 /**
  * The union of types that an `IntentHandler` may return.
@@ -67,14 +68,22 @@ export class BasicSignedIntentResultSupport implements SignedIntentResultSupport
     } else if (type) {
       // Bare Context result — sign it and return as ContextWithMetadata so the
       // Desktop Agent can forward the signature to the raiser.
-      const contextIn = r as Context;
+      if (!isContext(r)) {
+        throw new Error(`SignedIntentResultSupport: expected a Context result but received ${JSON.stringify(r)}`);
+      }
+      const contextIn = r;
       const { signature, antiReplay } = await this.signingFunction(contextIn);
       const { context, metadata } = this.metadataHandler.pack(contextIn, { signature, antiReplay });
       return { context, metadata };
     } else {
       // ContextWithMetadata result — sign the context portion and merge the
       // existing caller-provided metadata with the new signature fields.
-      const cwm = r as ContextWithMetadata;
+      if (!isContextWithMetadata(r)) {
+        throw new Error(
+          `SignedIntentResultSupport: expected a ContextWithMetadata result but received ${JSON.stringify(r)}`
+        );
+      }
+      const cwm = r;
       const { context: contextIn, metadata: metadataIn } = cwm;
       const { signature, antiReplay } = await this.signingFunction(contextIn);
       const { context, metadata } = this.metadataHandler.pack(contextIn, { signature, antiReplay, ...metadataIn });

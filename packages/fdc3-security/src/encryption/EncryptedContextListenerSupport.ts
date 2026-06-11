@@ -1,9 +1,10 @@
-import { Context, EncryptedContextWrapper, SymmetricKeyRequest, SymmetricKeyResponse } from '@finos/fdc3-context';
+import { Context, SymmetricKeyRequest, SymmetricKeyResponse } from '@finos/fdc3-context';
 import { Channel, ContextHandler, ContextMetadata, ContextVerificationMetadata, Listener } from '@finos/fdc3-standard';
 import { PrivateFDC3Security, SigningFunction, UnwrapFunction } from '../impl/PrivateFDC3Security.js';
 import { JSONWebEncryption, JsonWebKeyWithId, PublicFDC3Security } from '../impl/PublicFDC3Security.js';
 import { MetadataHandler } from '../delegates/MetadataHandler.js';
 import { SecurityAwareContextHandler } from '../signing/SignatureCheckingHandlerSupport.js';
+import { isEncryptedContextWrapper, isSymmetricKeyResponse } from '../impl/TypeGuards.js';
 
 /**
  * Provides support for receiving and decrypting encrypted contexts on FDC3 channels.
@@ -55,7 +56,11 @@ export function createSymmetricKeyResponseContextListener(
     'fdc3.security.symmetricKeyResponse',
     async (skr: Context, skrMeta: ContextMetadata | undefined) => {
       const { context } = metadataHandler.unpack(skr, skrMeta);
-      const skrCtx = context as SymmetricKeyResponse;
+      if (!isSymmetricKeyResponse(context)) {
+        console.warn('fdc3-security: received unexpected context type on symmetricKeyResponse listener:', context.type);
+        return;
+      }
+      const skrCtx = context;
       const key = await unwrapFunction(skrCtx);
       if (key) {
         const resolveFunction = keyRequestResolveFunctions.get(key.kid);
@@ -190,10 +195,12 @@ export class PublicEncryptedContextListenerSupport implements EncryptedContextLi
     channel: Channel
   ): ContextHandler {
     const out = async (contextIn: Context, meta: ContextMetadata) => {
-      if (contextIn.type !== 'fdc3.security.encryptedContext') {
+      if (!isEncryptedContextWrapper(contextIn)) {
+        // Listener is registered for 'fdc3.security.encryptedContext' but guard
+        // defensively against any unexpected context type.
         return;
       }
-      const encryptedContext = contextIn as EncryptedContextWrapper;
+      const encryptedContext = contextIn;
       // Preserve the received ContextMetadata unchanged — we do not modify it.
       const cleanMeta = { ...meta };
 
