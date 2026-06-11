@@ -22,7 +22,7 @@
       ],
       "interop": {
         "contexts": {
-          "listensFor": ["fdc3.security.encryptedContext", "fdc3.security.symmetricKeyResponse"]
+          "listensFor": ["fdc3.security.encryptedContext"]
         }
       }
     }
