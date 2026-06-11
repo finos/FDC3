@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { DesktopAgent, IntentHandler } from '@finos/fdc3-standard';
+import { DesktopAgent } from '@finos/fdc3-standard';
 import { AppIdentifier, Context } from '@finos/fdc3-context';
 import { WebSocket } from 'ws';
 import { createJosePublicFDC3SecurityFromUrl } from '../src/impl/JosePublicFDC3Security';
@@ -74,7 +74,7 @@ class HandlerAppBackendHandlers extends DefaultFDC3Handlers {
 
     // Wrap the core handler with SignatureCheckingHandlerSupport for automatic verification
     const verifier = new PublicSignatureCheckingHandlerSupport(this.metadataHandler, this.security);
-    return (await verifier.wrapContextHandler(coreHandler)) as IntentHandler;
+    return verifier.wrapContextHandler(coreHandler);
   }
 }
 

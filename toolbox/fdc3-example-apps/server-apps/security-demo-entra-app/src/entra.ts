@@ -1,6 +1,6 @@
 import { DesktopAgent, Context, ContextMetadata } from '@finos/fdc3';
 import { PublicClientApplication, type Configuration, type AuthenticationResult } from '@azure/msal-browser';
-import { connectRemoteHandlers, type FDC3Handlers } from '@finos/fdc3-security';
+import { connectRemoteHandlers, isContext, type FDC3Handlers } from '@finos/fdc3-security';
 import { createLogEntry } from '../../../common/src/security-demo/logging';
 import { initializeFDC3, ensureContextMetadata } from '../../../common/src/security-demo/fdc3';
 import {
@@ -10,8 +10,8 @@ import {
 } from '../../../common/src/security-demo/session-logic';
 import type { EntraConfig } from './config';
 
-/** Must match `CREATE_IDENTITY_TOKEN` in `src/backend.ts`. */
-const CREATE_IDENTITY_TOKEN = 'CreateIdentityToken';
+/** Standard intent name per FDC3 Security & Identity specification. */
+const GET_USER_INTENT = 'GetUser';
 
 let msalInstance: PublicClientApplication;
 
@@ -61,7 +61,7 @@ async function setupLoginButton(handlers: FDC3Handlers): Promise<void> {
       };
       const result = await handlers.exchangeData('user-data', fdc3User);
 
-      if (result && (result as Context).type === 'fdc3.security.user') {
+      if (result && isContext(result) && result.type === 'fdc3.security.user') {
         showAuthenticatedState(result as UserSessionContext);
         createLogEntry('success', 'FDC3 user session established', result);
       } else {
@@ -99,18 +99,15 @@ async function setupLogoutButton(handlers: FDC3Handlers): Promise<void> {
   });
 }
 
-async function setupCreateIdentityTokenListener(fdc3: DesktopAgent, handlers: FDC3Handlers): Promise<void> {
-  const intentHandler = await handlers.remoteIntentHandler(CREATE_IDENTITY_TOKEN);
+async function setupGetUserIntentListener(fdc3: DesktopAgent, handlers: FDC3Handlers): Promise<void> {
+  const intentHandler = await handlers.remoteIntentHandler(GET_USER_INTENT);
 
-  await fdc3.addIntentListener(
-    CREATE_IDENTITY_TOKEN,
-    async (context: Context, metadata: ContextMetadata | undefined) => {
-      createLogEntry('info', `${CREATE_IDENTITY_TOKEN} intent received`, context);
-      const result = await intentHandler(context, ensureContextMetadata(metadata));
-      createLogEntry('success', `${CREATE_IDENTITY_TOKEN} intent result`, result);
-      return result;
-    }
-  );
+  await fdc3.addIntentListener(GET_USER_INTENT, async (context: Context, metadata: ContextMetadata | undefined) => {
+    createLogEntry('info', `${GET_USER_INTENT} intent received`, context);
+    const result = await intentHandler(context, ensureContextMetadata(metadata));
+    createLogEntry('success', `${GET_USER_INTENT} intent result`, result);
+    return result;
+  });
 }
 
 async function main(): Promise<void> {
@@ -139,7 +136,7 @@ async function main(): Promise<void> {
   await setupLogoutButton(remoteHandlers);
   await setupLoginButton(remoteHandlers);
   showAuthenticatedState(null);
-  await setupCreateIdentityTokenListener(fdc3, remoteHandlers);
+  await setupGetUserIntentListener(fdc3, remoteHandlers);
 
   createLogEntry('info', 'Microsoft Entra IDP ready', 'Application ready');
 }

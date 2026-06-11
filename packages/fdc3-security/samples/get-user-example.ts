@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
 import { AppIdentifier, Contact, Context, EncryptedContextWrapper, UserRequest } from '@finos/fdc3-context';
-import type { DesktopAgent, Intent, IntentHandler } from '@finos/fdc3-standard';
+import type { DesktopAgent, Intent } from '@finos/fdc3-standard';
 import { WebSocket } from 'ws';
 import { JosePublicFDC3Security, provisionJWKS } from '../src/impl/JosePublicFDC3Security';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
@@ -111,7 +111,7 @@ class IDPBackendHandlers extends DefaultFDC3Handlers {
     };
 
     const verifier = new PublicSignatureCheckingHandlerSupport(this.metadataHandler, this.security);
-    return (await verifier.wrapContextHandler(coreHandler)) as IntentHandler;
+    return verifier.wrapContextHandler(coreHandler);
   }
 }
 

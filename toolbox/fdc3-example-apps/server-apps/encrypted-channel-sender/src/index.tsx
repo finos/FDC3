@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Channel, Context, DesktopAgent, getAgent, Listener } from '@finos/fdc3';
+import { Channel, DesktopAgent, getAgent, Listener } from '@finos/fdc3';
 import {
   connectRemoteHandlers,
   createJosePublicFDC3SecurityFromUrl,
@@ -17,6 +17,23 @@ function wsUrlForPage(): string {
   return (window.location.protocol === 'https:' ? 'wss:' : 'ws:') + '//' + window.location.host;
 }
 
+/**
+ * Frontend for the encrypted-channel-sender app (FRONTEND KEY pattern).
+ *
+ * Security flow:
+ * 1. On mount, connects to the backend WebSocket and initialises
+ *    `EncryptedBroadcastSupport` with this app's public security instance.
+ * 2. When the user joins a channel, calls `support.broadcastWrapper(channel)`,
+ *    which creates a fresh symmetric key in the browser and registers a
+ *    `fdc3.security.symmetricKeyRequest` listener on the channel. The key
+ *    is held in memory in this tab for the lifetime of the channel session.
+ * 3. On button press, encrypts the test context with the symmetric key and
+ *    broadcasts it as `fdc3.security.encryptedContext`.
+ * 4. When a receiver requests the key, `BasicEncryptedBroadcaster` verifies the
+ *    signed request, wraps the symmetric key for the receiver's public key (JWE),
+ *    and broadcasts the `fdc3.security.symmetricKeyResponse` — all without any
+ *    backend round-trip.
+ */
 export const EncryptedBroadcastComponent = () => {
   const [status, setStatus] = useState('Connecting to desktop agent…');
   const [channelId, setChannelId] = useState<string | null>(null);
@@ -41,6 +58,7 @@ export const EncryptedBroadcastComponent = () => {
     let broadcaster: EncryptedBroadcaster | null = null;
     let userChannelListener: Listener | null = null;
 
+    /** Shuts down the existing broadcaster and key request listener when the channel changes. */
     const shutdownBroadcaster = async () => {
       broadcasterRef.current = null;
       if (broadcaster) {
@@ -53,6 +71,10 @@ export const EncryptedBroadcastComponent = () => {
       }
     };
 
+    /**
+     * Creates a new `EncryptedBroadcaster` for the given channel. Generates a fresh
+     * symmetric key in the browser and sets up the symmetricKeyRequest listener.
+     */
     const bindToUserChannel = async (channel: Channel | null) => {
       await shutdownBroadcaster();
       if (!channel) {
@@ -87,6 +109,7 @@ export const EncryptedBroadcastComponent = () => {
     let publicSecurity!: Awaited<ReturnType<typeof createJosePublicFDC3SecurityFromUrl>>;
     const metadataHandler = new MetadataHandlerImpl(false);
 
+    /** Re-binds the broadcaster whenever the user switches to a different channel. */
     const onUserChannelChanged = () => {
       void (async () => {
         if (!agent || cancelled) return;
@@ -154,7 +177,7 @@ export const EncryptedBroadcastComponent = () => {
 
     sendCountRef.current += 1;
     const n = sendCountRef.current;
-    const ctx = { type: PAYLOAD_CONTEXT_TYPE, id: { num: n } } as Context;
+    const ctx = { type: PAYLOAD_CONTEXT_TYPE, id: { num: n } };
 
     try {
       await b.broadcast(ctx);

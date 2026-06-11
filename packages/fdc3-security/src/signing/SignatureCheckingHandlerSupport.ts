@@ -37,15 +37,20 @@ export type SecurityAwareIntentHandler = (
  */
 export interface SignatureCheckingHandlerSupport {
   /**
-   * Wrap a `SecurityAwareContextHandler` or `SecurityAwareIntentHandler` so that incoming
-   * contexts have their signatures verified before the handler is called. The verification
-   * result is passed as the third argument (`ContextVerificationMetadata`).
-   *
-   * @see DesktopAgent.addContextListener
+   * Wrap a `SecurityAwareContextHandler` so that incoming contexts have their signatures
+   * verified before the handler is called. The verification result is passed as the third
+   * argument (`ContextVerificationMetadata`). Returns a standard `ContextHandler` suitable
+   * for use with `addContextListener`.
    */
-  wrapContextHandler(
-    handler: SecurityAwareContextHandler | SecurityAwareIntentHandler
-  ): Promise<ContextHandler | IntentHandler>;
+  wrapContextHandler(handler: SecurityAwareContextHandler): Promise<ContextHandler>;
+
+  /**
+   * Wrap a `SecurityAwareIntentHandler` so that incoming intent contexts have their signatures
+   * verified before the handler is called. The verification result is passed as the third
+   * argument (`ContextVerificationMetadata`). Returns a standard `IntentHandler` suitable
+   * for use with `addIntentListener`.
+   */
+  wrapContextHandler(handler: SecurityAwareIntentHandler): Promise<IntentHandler>;
 }
 
 /**
@@ -69,6 +74,8 @@ export class BasicSignatureCheckingHandlerSupport {
     this.signatureCheckingFunction = signatureCheckingFunction;
   }
 
+  wrapContextHandler(handler: SecurityAwareContextHandler): Promise<ContextHandler>;
+  wrapContextHandler(handler: SecurityAwareIntentHandler): Promise<IntentHandler>;
   async wrapContextHandler(
     handler: SecurityAwareContextHandler | SecurityAwareIntentHandler
   ): Promise<ContextHandler | IntentHandler> {

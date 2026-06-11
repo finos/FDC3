@@ -131,7 +131,7 @@ async function step4SetupAppBChannelDelegate(
     resolveDone!();
   };
 
-  const verifiedHandler: ContextHandler = (await support.wrapContextHandler(handler)) as ContextHandler;
+  const verifiedHandler: ContextHandler = await support.wrapContextHandler(handler);
   await channel.addContextListener('fdc3.instrument', verifiedHandler);
 
   return { done };

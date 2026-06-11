@@ -24,6 +24,20 @@ function prettyJson(value: unknown): string {
   }
 }
 
+/**
+ * Frontend for the signed-receiver app.
+ *
+ * Security flow:
+ * 1. On mount, connects to the backend WebSocket and constructs a
+ *    `PublicSignatureCheckingHandlerSupport` instance using this app's JWKS URL.
+ * 2. When the user joins a channel, wraps a `SecurityAwareContextHandler` using
+ *    `wrapContextHandler`. The wrapper verifies the JWS signature on each incoming
+ *    `fdc3.instrument` before calling the handler, passing a `ContextVerificationMetadata`
+ *    third argument containing the verification result.
+ * 3. The signer's public key is fetched from the `jku` URL in each signature's protected
+ *    header — no allowlist pre-configuration is needed.
+ * 4. The handler logs the context and whether the signature was trusted.
+ */
 export const SignedReceiverComponent = () => {
   const [logMessages, setLogMessages] = useState<string[]>([]);
   const [channelId, setChannelId] = useState<string | null>(null);
@@ -44,6 +58,7 @@ export const SignedReceiverComponent = () => {
       setLogMessages(prev => [...prev, line]);
     };
 
+    /** Tears down the existing instrument listener when the channel changes. */
     const teardownInstrumentListener = async () => {
       if (instrumentListener) {
         try {
@@ -55,6 +70,11 @@ export const SignedReceiverComponent = () => {
       }
     };
 
+    /**
+     * Attaches a `SecurityAwareContextHandler` to the given channel.
+     * The handler receives `ContextVerificationMetadata` as a third argument and
+     * logs whether the signature was present and trusted.
+     */
     const bindToUserChannel = async (channel: Channel | null) => {
       await teardownInstrumentListener();
       if (!channel) {
@@ -68,6 +88,8 @@ export const SignedReceiverComponent = () => {
       setChannelId(id);
       setStatus(`Listening for signed ${CONTEXT_TYPE} on user channel ${id} (verification via jku in signature).`);
 
+      // SecurityAwareContextHandler receives (context, metadata, verification).
+      // verification.authenticity is populated by wrapContextHandler before calling us.
       const baseHandler: SecurityAwareContextHandler = async (ctx, meta, verification) => {
         pushLog('[VERIFIED] Context:\n' + prettyJson(ctx));
         pushLog('[VERIFIED] Metadata:\n' + prettyJson(meta));
@@ -79,12 +101,13 @@ export const SignedReceiverComponent = () => {
         }
       };
 
-      const wrapped = (await support.wrapContextHandler(baseHandler)) as ContextHandler;
+      const wrapped = await support.wrapContextHandler(baseHandler);
       instrumentListener = await channel.addContextListener(CONTEXT_TYPE, wrapped);
     };
 
     let support: PublicSignatureCheckingHandlerSupport | null = null;
 
+    /** Re-binds the listener whenever the user switches to a different channel. */
     const onUserChannelChanged = () => {
       void (async () => {
         if (!agent || cancelled) return;

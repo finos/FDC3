@@ -2,9 +2,9 @@
   "applications": [
     {
       "appId": "entra",
-      "name": "Entra Example",
-      "title": "Entra",
-      "description": "Entra, used by the security POC apps to get a JWT",
+      "name": "Microsoft Entra Identity Provider App (Demo)",
+      "title": "Entra Identity Provider App",
+      "description": "A demonstration identity provider app backed by Microsoft Entra ID. Handles the GetUser intent: validates the Microsoft ID token obtained via MSAL, then issues a signed FDC3 JWT scoped to the requesting application's audience and returns it as fdc3.security.encryptedContext.",
       "type": "web",
       "details": {
         "url": "http://localhost:4035"
@@ -23,8 +23,8 @@
       "interop": {
         "intents": {
           "listensFor": {
-            "CreateIdentityToken": {
-              "displayName": "Create identity token",
+            "GetUser": {
+              "displayName": "Get User Identity",
               "contexts": ["fdc3.security.userRequest"],
               "resultType": "fdc3.security.encryptedContext"
             }

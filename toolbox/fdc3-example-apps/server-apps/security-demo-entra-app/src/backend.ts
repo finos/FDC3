@@ -18,8 +18,8 @@ import {
 import { loadEntraConfig, type EntraConfig } from './config';
 import { JWTValidator } from './jwt-validator';
 
-/** Same intent name as security-demo-idp-app / get-user-example flow */
-export const CREATE_IDENTITY_TOKEN = 'CreateIdentityToken';
+/** Standard intent name per FDC3 Security & Identity specification. */
+export const GET_USER_INTENT = 'GetUser';
 
 function resolveWithinRoot(root: string, ...segments: string[]): string {
   const normalizedRoot = fs.realpathSync(root);
@@ -40,7 +40,7 @@ type EntraUserSession = Context & {
 
 /**
  * Entra-backed IDP: validates Microsoft ID tokens via {@link JWTValidator}, then issues
- * FDC3-encrypted user contexts for {@link CREATE_IDENTITY_TOKEN} like the Sail IDP demo.
+ * FDC3-encrypted user contexts for {@link GET_USER_INTENT} like the Sail IDP demo.
  */
 class EntraBackendHandlers extends DefaultFDC3Handlers {
   private user: EntraUserSession | null = null;
@@ -98,7 +98,7 @@ class EntraBackendHandlers extends DefaultFDC3Handlers {
   }
 
   async remoteIntentHandler(intent: string): Promise<IntentHandler> {
-    if (intent !== CREATE_IDENTITY_TOKEN) {
+    if (intent !== GET_USER_INTENT) {
       return super.remoteIntentHandler(intent);
     }
 
@@ -110,7 +110,7 @@ class EntraBackendHandlers extends DefaultFDC3Handlers {
         throw new Error('No authenticated Entra user — sign in with Microsoft first');
       }
 
-      const aud = (context as unknown as { aud: string }).aud;
+      const { aud } = context as { type: string; aud: string };
       const sub =
         (typeof this.user.id?.email === 'string' && this.user.id.email) ||
         (typeof this.user.name === 'string' && this.user.name) ||

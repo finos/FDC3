@@ -4,7 +4,7 @@
       "appId": "signed-sender-1",
       "name": "Signed broadcast sender",
       "title": "Signed broadcast sender",
-      "description": "FDC3 signed broadcast demo — signs fdc3.instrument on the backend (BasicSignedBroadcaster) and broadcasts on the user channel.",
+      "description": "FDC3 signed broadcast demo. Signs fdc3.instrument contexts on the backend using BasicSignedBroadcaster (private key never reaches the browser) and broadcasts them on the current user channel. Receivers can verify the signature using the JWKS URL embedded in each message.",
       "type": "web",
       "details": {
         "url": "http://localhost:4038"
@@ -19,7 +19,12 @@
         {
           "src": "http://localhost:4038/icon.svg"
         }
-      ]
+      ],
+      "interop": {
+        "contexts": {
+          "broadcasts": ["fdc3.instrument"]
+        }
+      }
     }
   ],
   "message": "OK"

@@ -15,6 +15,20 @@ type RemoteHandlers = Awaited<ReturnType<typeof connectRemoteHandlers>> & {
   disconnect(): Promise<void>;
 };
 
+/**
+ * Frontend for the signed-sender app.
+ *
+ * Security flow:
+ * 1. On mount, connects to the backend WebSocket via `connectRemoteHandlers`.
+ * 2. When the user joins a channel, exports it to the backend via
+ *    `handleRemoteChannel('broadcast', channel)`. The backend wraps it with
+ *    `BasicSignedBroadcaster` — signing happens server-side so the private key
+ *    never enters the browser.
+ * 3. On button press, calls `exchangeData(SIGNED_BROADCAST_TRIGGER)` which asks
+ *    the backend to sign and broadcast a sample `fdc3.instrument`.
+ * 4. Receivers can verify the signature using the `jku` URL embedded in each
+ *    message's JWS protected header — no pre-configuration required.
+ */
 export const SignedSenderComponent = () => {
   const [status, setStatus] = useState('Connecting to desktop agent…');
   const [channelId, setChannelId] = useState<string | null>(null);
@@ -33,6 +47,8 @@ export const SignedSenderComponent = () => {
     let agent: DesktopAgent | null = null;
     let userChannelListener: Listener | null = null;
 
+    /** Exports the current user channel to the backend for signed broadcasting.
+     * If channel is null (user left the channel), clears ready state. */
     const exportChannelToBackend = async (channel: Channel | null) => {
       const rh = remoteHandlersRef.current;
       if (!rh) return;
@@ -59,6 +75,7 @@ export const SignedSenderComponent = () => {
       }
     };
 
+    /** Re-exports the channel whenever the user switches to a different one. */
     const onUserChannelChanged = () => {
       void (async () => {
         if (!agent || cancelled) return;

@@ -10,6 +10,14 @@ function wsUrlForPage(): string {
   return (window.location.protocol === 'https:' ? 'wss:' : 'ws:') + '//' + window.location.host;
 }
 
+/**
+ * Sets up the `demo.GetPrices` intent listener.
+ *
+ * The intent handler is obtained from the backend via `remoteIntentHandler` so that
+ * signature verification runs server-side (private key never in the browser).
+ * The handler receives the signed `fdc3.instrument` from App1, verifies the signature
+ * on the backend, and returns a PrivateChannel result for the encrypted price stream.
+ */
 async function setupIntentListener(fdc3: DesktopAgent, remoteHandlers: FDC3Handlers): Promise<void> {
   const intentHandler = await remoteHandlers.remoteIntentHandler('demo.GetPrices');
 
@@ -21,6 +29,11 @@ async function setupIntentListener(fdc3: DesktopAgent, remoteHandlers: FDC3Handl
   });
 }
 
+/**
+ * Handles server → client push of decrypted `fdc3.valuation` contexts from App2's backend.
+ * These arrive over the secure-boundary WebSocket after the backend has decrypted each
+ * encrypted broadcast from the private channel.
+ */
 function handleValuationPush(msg: ExchangeDataMessage): void {
   if (msg.purpose !== VALUATION_PUSH_PURPOSE) {
     return;
