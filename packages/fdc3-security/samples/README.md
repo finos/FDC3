@@ -43,16 +43,18 @@ sequenceDiagram
     end
 
     Note over BBE: Starts Server & JWKS
-    Note over BFE: Starts, connects web socket & registers IntentHandler
     Note over RBE: Starts Server & JWKS
-    Note over RFE: Starts & connects web socket
-    
-    BFE->>BBE: Connect (WebSocket)
-    BFE->>BBE: remoteIntentHandler(ShareEncryptedChannel)
-    BBE-->>BFE: returns intent handler
-    BFE->>BFE: addIntentListener(ShareEncryptedChannel)
 
+    Note over BFE: UI loaded in browser
+    BFE->>BBE: Connect (WebSocket)
+    
+    Note over RFE: UI loaded in browser
     RFE->>RBE: Connect (WebSocket)
+    
+    BFE->>BBE: remoteIntentHandler(ShareEncryptedChannel)
+    BBE->>BFE: returns intent handler
+    BFE-->>BFE: addIntentListener(ShareEncryptedChannel)
+
     RFE-->>BFE: raiseIntent(ShareEncryptedChannel) ···via DA···
     Note right of BFE: Intent handler returns { type: 'private' }<br/>FDC3 client creates PrivateChannel
     BFE->>BBE: handleRemoteChannel(ShareEncryptedChannel, channel)
@@ -89,6 +91,7 @@ Demonstrates the **frontend key** pattern: the symmetric key is unwrapped once o
 ```mermaid
 sequenceDiagram
     box Broadcasting App
+        participant BBE as Back End
         participant BFE as Front End
     end
     box Receiving App
@@ -96,25 +99,38 @@ sequenceDiagram
         participant RBE as Back End
     end
 
-    Note over BFE: Creates PrivateChannel<br/>Sets up EncryptedBroadcastSupport<br/>Creates symmetric key K on front end
+    Note over BBE: Starts Server & JWKS
+    Note over RBE: Starts Server & JWKS
 
-    BFE-->>RFE: raiseIntent result: PrivateChannel ···via DA···
+    Note over BFE: UI loaded in browser
+    BFE->>BBE: Connect (WebSocket)
+    BFE-->>BFE: createPrivateChannel()<br/>Sets up EncryptedBroadcastSupport<br/>Creates symmetric key K on front end
+    BFE-->>BFE: addIntentListener(ShareEncryptedChannel)
+
+    Note over RFE: UI loaded in browser
+    RFE->>RBE: Connect (WebSocket)
+    RFE-->>BFE: raiseIntent(ShareEncryptedChannel) ···via DA···
+    Note right of BFE: Intent handler returns channel
+    BFE-->>RFE: return PrivateChannel as IntentResult ···via DA···
+
     Note over RFE: Sets up PublicEncryptedContextListenerSupport<br/>signingFunction → calls RBE<br/>unwrapFunction → calls RBE
 
-    BFE->>BFE: Encrypt context with K, sign (JWS)
+    BFE->>BFE: Encrypt context with K (JWS)
     BFE-->>RFE: broadcast(fdc3.security.encryptedContext) ···via DA···
+    RFE->>RBE: forward fdc3.security.encryptedContext
+    Note right of RBE: No key yet<br/>Encrypted context is buffered<br/>Create and sign symmetricKeyRequest
+
+    RBE->>RFE: forward fdc3.security.symmetricKeyRequest (signed)
+    RFE-->>BFE: broadcast(fdc3.security.symmetricKeyRequest) ···via DA···
+    Note right of BFE: Wraps K for Receiving App (JWE)<br/>Signs response
+    BFE-->>RFE: broadcast(fdc3.security.symmetricKeyResponse) ···via DA···
 
     RFE->>RBE: exchangeData('sign-context', symmetricKeyRequest context)
-    RBE-->>RFE: DetachedSignature + AntiReplayClaims
-    RFE-->>BFE: broadcast fdc3.security.symmetricKeyRequest (signed) ···via DA···
-
-    Note right of BFE: Wraps K for Receiving App (JWE)<br/>Signs response
-    BFE-->>RFE: broadcast fdc3.security.symmetricKeyResponse ···via DA···
-
+    RBE->>RFE: DetachedSignature + AntiReplayClaims
     RFE->>RBE: exchangeData('unwrap-symmetric-key', symmetricKeyResponse)
-    RBE-->>RFE: unwrapped symmetric key K
+    RBE->>RFE: unwrapped symmetric key K
 
-    Note over RFE: Decrypts context with K
+    Note over RFE: Decrypts buffered context with K
     Note over RFE: ✅ Decrypted context logged<br/>(verification.encryption === 'decrypted')
 ```
 
@@ -132,20 +148,28 @@ sequenceDiagram
     end
     box App B (Listener)
         participant BFE as Front End
+        participant BBE as Back End
     end
 
     Note over ABE: Starts Server & JWKS
+    Note over BBE: Starts Server & JWKS
+
+    Note over AFE: UI loaded in browser
+    AFE->>ABE: Connect (WebSocket)
+    AFE-->>AFE: getOrCreateChannel('fdc3.channel.1')
     AFE->>ABE: handleRemoteChannel('broadcast', channel)
     Note right of ABE: Wraps channel with BasicSignedBroadcaster
 
+    Note over BFE: UI loaded in browser
+    BFE-->>BFE: getOrCreateChannel('fdc3.channel.1')
     Note over BFE: Wraps handler with PublicSignatureCheckingHandlerSupport<br/>(SecurityAwareContextHandler receives ContextVerificationMetadata)
-    BFE->>BFE: addContextListener(wrapped handler)
+    BFE-->>BFE: addContextListener('fdc3.instrument', wrapped handler)
 
     ABE->>ABE: sign(context) → DetachedSignature + AntiReplayClaims
-    ABE->>AFE: broadcast(context + metadata)
-    AFE-->>BFE: FDC3 channel broadcast ···via DA···
+    ABE->>AFE: send fdc3.instrument (context + metadata)
+    AFE-->>BFE: broadcast(fdc3.instrument) ···via DA···
 
-    BFE->>BFE: verifySignature(signature, context, antiReplay) via App A JWKS
+    Note over BFE: PublicSignatureCheckingHandlerSupport verifies signature<br/>fetches App A JWKS from jku in signature header
     Note over BFE: Handler called with (context, metadata, verification)<br/>verification.authenticity.trusted === true
     Note over BFE: ✅ Verified context received
 ```
@@ -169,21 +193,32 @@ sequenceDiagram
         participant RBE as Back End
     end
 
+    Note over HBE: Starts Server & JWKS
+    Note over RBE: Starts Server & JWKS
+
+    Note over HFE: UI loaded in browser
+    HFE->>HBE: Connect (WebSocket)
     HFE->>HBE: remoteIntentHandler(DataTransfer)
     Note right of HBE: Wraps handler with SignatureCheckingHandlerSupport<br/>(SecurityAwareIntentHandler)
-    HFE->>HFE: addIntentListener(DataTransfer, wrappedHandler)
+    HFE-->>HFE: addIntentListener(DataTransfer, wrappedHandler)
 
+    Note over RFE: UI loaded in browser
+    RFE->>RBE: Connect (WebSocket)
     RFE->>RBE: exchangeData('sign-context', requestContext)
-    RBE-->>RFE: DetachedSignature + AntiReplayClaims
+    RBE->>RFE: DetachedSignature + AntiReplayClaims
 
     RFE-->>HFE: raiseIntent(DataTransfer, context, metadata) ···via DA···
     HFE->>HBE: forward to remote handler
 
     Note right of HBE: verifySignature → ContextVerificationMetadata<br/>verification.authenticity.trusted === true ✅
     HBE->>HBE: sign(responseContext) via PrivateSignedIntentResultSupport
-    HBE-->>HFE: ContextWithMetadata (signed response)
-    HFE-->>RFE: Intent result ···via DA···
+    HBE->>HFE: send ContextWithMetadata (signed response)
+    HFE-->>RFE: intent result ···via DA···
 
+    RFE-->>RFE: resolution.getResult()
+    RFE->>HBE: fetch Handler App JWKS (HTTPS)
+    HBE->>RFE: JWKS
+    Note right of RFE: verificationFunction verifies response signature
     Note over RFE: ContextVerificationMetadata available via<br/>resolution.getVerification()
     Note over RFE: ✅ Mutually verified result returned
 ```
@@ -205,24 +240,31 @@ sequenceDiagram
         participant RBE as Back End
     end
 
+    Note over IDPBE: Starts Server & JWKS
+    Note over RBE: Starts Server & JWKS
+
+    Note over IDPFE: UI loaded in browser
+    IDPFE->>IDPBE: Connect (WebSocket)
     IDPFE->>IDPBE: remoteIntentHandler(GetUser)
     Note right of IDPBE: Wraps handler with SignatureCheckingHandlerSupport
-    IDPFE->>IDPFE: addIntentListener(GetUser, wrappedHandler)
+    IDPFE-->>IDPFE: addIntentListener(GetUser, wrappedHandler)
 
-    RFE->>RBE: exchangeData('sign-context', userRequest context)
-    RBE-->>RFE: DetachedSignature + AntiReplayClaims
+    Note over RFE: UI loaded in browser
+    RFE->>RBE: Connect (WebSocket)
+    RFE->>RBE: exchangeData('sign-context', userRequest)
+    RBE->>RFE: DetachedSignature + AntiReplayClaims
 
     RFE-->>IDPFE: raiseIntent(GetUser, userRequest, metadata) ···via DA···
     IDPFE->>IDPBE: forward to remote handler
 
     Note right of IDPBE: Verifies requesting app signature ✅<br/>Creates JWT (sub, aud = requesting app URL)<br/>Encrypts fdc3.security.user with<br/>requesting app's public key (JWE)<br/>Returns as fdc3.security.encryptedContext
 
-    IDPBE-->>IDPFE: fdc3.security.encryptedContext
+    IDPBE->>IDPFE: send fdc3.security.encryptedContext
     IDPFE-->>RFE: intent result ···via DA···
 
     RFE->>RBE: exchangeData('get-user-identity', encryptedContext)
     Note right of RBE: Decrypts JWE with private key<br/>Extracts JWT from fdc3.security.user<br/>Verifies JWT signature (identity provider JWKS)<br/>Projects to fdc3.contact
-    RBE-->>RFE: fdc3.contact (email from verified JWT sub)
+    RBE->>RFE: fdc3.contact (email from verified JWT sub)
 
     Note over RFE: ✅ Requesting app has verified fdc3.contact<br/>JWT never reaches the frontend
 ```
