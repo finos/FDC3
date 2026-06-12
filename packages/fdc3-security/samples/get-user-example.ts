@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { AppIdentifier, Contact, Context, EncryptedContextWrapper, UserRequest } from '@finos/fdc3-context';
+import { AppIdentifier, Contact, Context, EncryptedContextWrapper, User, UserRequest } from '@finos/fdc3-context';
 import type { DesktopAgent, Intent } from '@finos/fdc3-standard';
 import { WebSocket } from 'ws';
 import { JosePublicFDC3Security, provisionJWKS } from '../src/impl/JosePublicFDC3Security';
@@ -83,12 +83,12 @@ class IDPBackendHandlers extends DefaultFDC3Handlers {
       // Mint a JWT scoped to the requesting app's audience URL.
       // The audience claim (aud) binds the token to this specific requester —
       // other apps cannot reuse it even if they observe the intent result.
-      const jwt = await this.security.createJWTToken(aud, 'demo-user@example.com');
-      const user: Context = {
+      const wrappedJwt = await this.security.createJWTToken(aud, 'demo-user@example.com');
+      const user: User = {
         type: 'fdc3.security.user',
         id: { email: 'demo-user@example.com' },
         name: 'Demo User',
-        jwt,
+        wrappedJwt,
       };
 
       // Encrypt the fdc3.security.user context with the requesting app's public key (JWE).
@@ -97,7 +97,7 @@ class IDPBackendHandlers extends DefaultFDC3Handlers {
       const encryptedPayload = await this.security.encryptPublicKey(user, requestingAppJwksUrl);
 
       // Wrap in fdc3.security.encryptedContext for transport over FDC3.
-      const encryptedContext: Context = {
+      const encryptedContext: EncryptedContextWrapper = {
         type: 'fdc3.security.encryptedContext',
         originalType: 'fdc3.security.user',
         encryptedPayload,
@@ -151,21 +151,10 @@ class RequestingAppBackendHandlers extends DefaultFDC3Handlers {
       if (decrypted.type !== 'fdc3.security.user') {
         throw new Error(`get-user-identity: expected fdc3.security.user, got ${decrypted.type}`);
       }
-      const userCtx = decrypted as unknown as {
-        jwt?: string;
-        wrappedJwt?: string;
-        id?: { email?: string };
-        name?: string;
-      };
-      // Support both jwt (legacy field name) and wrappedJwt (current standard field).
-      const jwt =
-        typeof userCtx.jwt === 'string'
-          ? userCtx.jwt
-          : typeof userCtx.wrappedJwt === 'string'
-            ? userCtx.wrappedJwt
-            : undefined;
+      const userCtx = decrypted as unknown as User;
+      const jwt = userCtx.wrappedJwt;
       if (!jwt) {
-        throw new Error('get-user-identity: fdc3.security.user missing jwt / wrappedJwt');
+        throw new Error('get-user-identity: fdc3.security.user missing wrappedJwt');
       }
 
       // Verify the JWT signature against the identity provider app's JWKS.
@@ -262,7 +251,7 @@ async function step4RequestingAppRaiseGetUser(requestingApp: AppBackEnd, mockReq
     // Build the userRequest context. The aud field is set to this app's base URL —
     // the identity provider app will embed this in the JWT's aud claim so we can
     // verify the token was issued specifically for us.
-    const userRequest: Context = {
+    const userRequest: UserRequest = {
       type: 'fdc3.security.userRequest',
       aud: requestingApp.baseUrl,
     };

@@ -2,7 +2,7 @@ import type { Application } from 'express';
 import type { Server } from 'http';
 import { WebSocket } from 'ws';
 import { Channel, IntentHandler } from '@finos/fdc3';
-import { Context } from '@finos/fdc3-context';
+import { Context, EncryptedContextWrapper, User, UserRequest } from '@finos/fdc3-context';
 import {
   AllowListFunction,
   createJosePrivateFDC3Security,
@@ -15,7 +15,6 @@ import {
   provisionJWKS,
   SecurityAwareContextHandler,
   setupWebsocketServer,
-  type JSONWebEncryption,
   type MetadataHandler,
 } from '@finos/fdc3-security';
 
@@ -24,9 +23,6 @@ export const GET_PRICES_PURPOSE = 'price-stream';
 
 /** Purpose string for server → client valuation push over the secure-boundary WebSocket. */
 export const VALUATION_PUSH_PURPOSE = 'valuation-push';
-
-/** Session after decrypting identity provider app response (matches `fdc3.security.user`; see get-user-example.ts). */
-type App1UserSession = Context & { type: 'fdc3.security.user'; jwt?: unknown };
 
 /** Payload shape for the `request-prices` exchangeData call from the frontend. */
 type RequestPricesPayload = {
@@ -52,7 +48,7 @@ type RequestPricesPayload = {
  *   are pushed to the browser over the WebSocket using {@link EXCHANGE_DATA}.
  */
 class App1BackendHandlers extends DefaultFDC3Handlers {
-  private user: App1UserSession | null = null;
+  private user: User | null = null;
   private readonly metadataHandler: MetadataHandler;
 
   constructor(
@@ -72,7 +68,7 @@ class App1BackendHandlers extends DefaultFDC3Handlers {
 
       const ctx = o as Context;
       if (ctx.type === 'fdc3.security.encryptedContext') {
-        const enc = (ctx as { encryptedPayload?: JSONWebEncryption }).encryptedPayload;
+        const enc = (ctx as EncryptedContextWrapper).encryptedPayload;
         if (!enc) {
           return undefined;
         }
@@ -82,14 +78,14 @@ class App1BackendHandlers extends DefaultFDC3Handlers {
           if (decrypted.type !== 'fdc3.security.user') {
             return undefined;
           }
-          const jwtVal = (decrypted as App1UserSession).jwt;
-          if (jwtVal == null) {
+          const user = decrypted as unknown as User;
+          const jwtStr = user.wrappedJwt;
+          if (!jwtStr) {
             return undefined;
           }
-          const jwtStr = typeof jwtVal === 'string' ? jwtVal : JSON.stringify(jwtVal);
           // Verify the JWT signature against the identity provider app's JWKS.
           await this.security.verifyJWTToken(jwtStr);
-          this.user = decrypted as App1UserSession;
+          this.user = decrypted as unknown as User;
           return this.user;
         } catch {
           return undefined;

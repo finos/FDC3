@@ -2,7 +2,7 @@ import type { Application } from 'express';
 import type { Server } from 'http';
 import { WebSocket } from 'ws';
 import { IntentHandler } from '@finos/fdc3';
-import { Context } from '@finos/fdc3-context';
+import { Context, EncryptedContextWrapper, User, UserRequest } from '@finos/fdc3-context';
 import {
   AllowListFunction,
   createJosePrivateFDC3Security,
@@ -30,7 +30,7 @@ export const GET_USER_INTENT = 'GetUser';
  *   it as `fdc3.security.encryptedContext` so only the requesting app can decrypt it.
  */
 class IDPBackendHandlers extends DefaultFDC3Handlers {
-  private demoUser: Context | null = null;
+  private demoUser: User | null = null;
 
   constructor(
     private readonly security: JosePrivateFDC3Security,
@@ -45,12 +45,12 @@ class IDPBackendHandlers extends DefaultFDC3Handlers {
       // Return cached session if already created for this connection.
       if (!this.demoUser) {
         // Mint a JWT signed with this app's private key and create the user session.
-        const jwt = await this.security.createJWTToken(this.issuerBaseUrl, 'demo-user@example.com');
+        const wrappedJwt = await this.security.createJWTToken(this.issuerBaseUrl, 'demo-user@example.com');
         this.demoUser = {
           type: 'fdc3.security.user',
           id: { email: 'demo-user@example.com' },
           name: 'Mr Demo User',
-          jwt,
+          wrappedJwt,
         };
       }
       return this.demoUser;
@@ -70,15 +70,15 @@ class IDPBackendHandlers extends DefaultFDC3Handlers {
       if (context.type !== 'fdc3.security.userRequest') {
         throw new Error(`Expected fdc3.security.userRequest, got ${context.type}`);
       }
-      const { aud } = context as { type: string; aud: string };
+      const { aud } = context as UserRequest;
 
       // Mint a JWT scoped to the requesting application's audience URL.
-      const jwt = await this.security.createJWTToken(aud, 'demo-user@example.com');
-      const user: Context = {
+      const wrappedJwt = await this.security.createJWTToken(aud, 'demo-user@example.com');
+      const user: User = {
         type: 'fdc3.security.user',
         id: { email: 'demo-user@example.com' },
         name: 'Demo User',
-        jwt,
+        wrappedJwt,
       };
 
       // Encrypt the fdc3.security.user with the requesting app's public key (JWE).
@@ -86,13 +86,13 @@ class IDPBackendHandlers extends DefaultFDC3Handlers {
       const requestingAppJwksUrl = `${aud.replace(/\/$/, '')}/.well-known/jwks.json`;
       const encryptedPayload = await this.security.encryptPublicKey(user, requestingAppJwksUrl);
 
-      // Return as fdc3.security.encryptedContext for transport over FDC3.
-      return {
+      const encryptedContext: EncryptedContextWrapper = {
         type: 'fdc3.security.encryptedContext',
         originalType: 'fdc3.security.user',
         encryptedPayload,
         id: { kid: 'user-identity' },
       };
+      return encryptedContext;
     };
   }
 }

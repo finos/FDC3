@@ -6,7 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import { WebSocket } from 'ws';
 import { IntentHandler } from '@finos/fdc3';
-import { Context } from '@finos/fdc3-context';
+import { Context, EncryptedContextWrapper, User, UserRequest } from '@finos/fdc3-context';
 import {
   AllowListFunction,
   createJosePrivateFDC3Security,
@@ -31,19 +31,12 @@ function resolveWithinRoot(root: string, ...segments: string[]): string {
   return resolvedPath;
 }
 
-type EntraUserSession = Context & {
-  type: 'fdc3.security.user';
-  jwt?: unknown;
-  id?: { email?: string };
-  name?: string;
-};
-
 /**
  * Entra-backed IDP: validates Microsoft ID tokens via {@link JWTValidator}, then issues
  * FDC3-encrypted user contexts for {@link GET_USER_INTENT} like the Sail IDP demo.
  */
 class EntraBackendHandlers extends DefaultFDC3Handlers {
-  private user: EntraUserSession | null = null;
+  private user: User | null = null;
   private readonly jwtValidator: JWTValidator;
 
   constructor(
@@ -59,9 +52,9 @@ class EntraBackendHandlers extends DefaultFDC3Handlers {
     const ctx = o as Context;
 
     if (purpose === 'user-data' && ctx.type === 'fdc3.security.user') {
-      const jwt = (ctx as EntraUserSession).jwt;
+      const jwt = (ctx as User).wrappedJwt;
       if (typeof jwt !== 'string' || !jwt.trim()) {
-        console.error('user-data: missing jwt on fdc3.security.user');
+        console.error('user-data: missing wrappedJwt on fdc3.security.user');
         return;
       }
       const { valid, claims, error } = await this.jwtValidator.validateToken(jwt);
@@ -76,12 +69,12 @@ class EntraBackendHandlers extends DefaultFDC3Handlers {
 
       this.user = {
         type: 'fdc3.security.user',
-        jwt,
+        wrappedJwt: jwt,
         id: {
           email: (claims.email as string) || (claims.preferred_username as string) || '',
         },
         name: (claims.name as string) || (claims.given_name as string) || '',
-      };
+      } as User;
       return this.user;
     }
 
@@ -110,29 +103,30 @@ class EntraBackendHandlers extends DefaultFDC3Handlers {
         throw new Error('No authenticated Entra user — sign in with Microsoft first');
       }
 
-      const { aud } = context as { type: string; aud: string };
+      const { aud } = context as UserRequest;
       const sub =
         (typeof this.user.id?.email === 'string' && this.user.id.email) ||
         (typeof this.user.name === 'string' && this.user.name) ||
         'entra-user';
 
-      const jwt = await this.security.createJWTToken(aud, sub);
-      const userOut: Context = {
+      const wrappedJwt = await this.security.createJWTToken(aud, sub);
+      const userCtx: User = {
         type: 'fdc3.security.user',
         id: this.user.id,
         name: this.user.name,
-        jwt,
+        wrappedJwt,
       };
 
       const requestingAppJwksUrl = `${aud.replace(/\/$/, '')}/.well-known/jwks.json`;
-      const encryptedPayload = await this.security.encryptPublicKey(userOut, requestingAppJwksUrl);
+      const encryptedPayload = await this.security.encryptPublicKey(userCtx, requestingAppJwksUrl);
 
-      return {
+      const encryptedContext: EncryptedContextWrapper = {
         type: 'fdc3.security.encryptedContext',
         originalType: 'fdc3.security.user',
         encryptedPayload,
         id: { kid: 'user-identity' },
       };
+      return encryptedContext;
     };
   }
 }
