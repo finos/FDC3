@@ -2,11 +2,12 @@ import type { Application } from 'express';
 import type { Server } from 'http';
 import { WebSocket } from 'ws';
 import { IntentHandler } from '@finos/fdc3';
-import { Context, EncryptedContextWrapper, User, UserRequest } from '@finos/fdc3-context';
+import { Context, EncryptedContextWrapper, User } from '@finos/fdc3-context';
 import {
   AllowListFunction,
   createJosePrivateFDC3Security,
   DefaultFDC3Handlers,
+  isUserRequest,
   JosePrivateFDC3Security,
   provisionJWKS,
   setupWebsocketServer,
@@ -67,10 +68,10 @@ class IDPBackendHandlers extends DefaultFDC3Handlers {
       return super.remoteIntentHandler(intent);
     }
     return async (context: Context): Promise<Context> => {
-      if (context.type !== 'fdc3.security.userRequest') {
+      if (!isUserRequest(context)) {
         throw new Error(`Expected fdc3.security.userRequest, got ${context.type}`);
       }
-      const { aud } = context as UserRequest;
+      const aud = context.aud;
 
       // Mint a JWT scoped to the requesting application's audience URL.
       const wrappedJwt = await this.security.createJWTToken(aud, 'demo-user@example.com');

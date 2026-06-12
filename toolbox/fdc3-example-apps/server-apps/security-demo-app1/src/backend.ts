@@ -2,7 +2,7 @@ import type { Application } from 'express';
 import type { Server } from 'http';
 import { WebSocket } from 'ws';
 import { Channel, IntentHandler } from '@finos/fdc3';
-import { Context, EncryptedContextWrapper, User, UserRequest } from '@finos/fdc3-context';
+import { Context, EncryptedContextWrapper, User } from '@finos/fdc3-context';
 import {
   AllowListFunction,
   createJosePrivateFDC3Security,
@@ -10,6 +10,7 @@ import {
   DefaultFDC3Handlers,
   emitToClient,
   EXCHANGE_DATA,
+  isUser,
   JosePrivateFDC3Security,
   PrivateEncryptedContextListenerSupport,
   provisionJWKS,
@@ -75,17 +76,16 @@ class App1BackendHandlers extends DefaultFDC3Handlers {
         try {
           // Decrypt the JWE using this app's private key to obtain fdc3.security.user.
           const decrypted = await this.security.decryptContextWithPrivateKey(enc);
-          if (decrypted.type !== 'fdc3.security.user') {
+          if (!isUser(decrypted)) {
             return undefined;
           }
-          const user = decrypted as unknown as User;
-          const jwtStr = user.wrappedJwt;
+          const jwtStr = decrypted.wrappedJwt;
           if (!jwtStr) {
             return undefined;
           }
           // Verify the JWT signature against the identity provider app's JWKS.
           await this.security.verifyJWTToken(jwtStr);
-          this.user = decrypted as unknown as User;
+          this.user = decrypted;
           return this.user;
         } catch {
           return undefined;

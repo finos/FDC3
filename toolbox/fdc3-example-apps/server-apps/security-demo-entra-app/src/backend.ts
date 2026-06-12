@@ -6,11 +6,13 @@ import fs from 'fs';
 import path from 'path';
 import { WebSocket } from 'ws';
 import { IntentHandler } from '@finos/fdc3';
-import { Context, EncryptedContextWrapper, User, UserRequest } from '@finos/fdc3-context';
+import { Context, EncryptedContextWrapper, User } from '@finos/fdc3-context';
 import {
   AllowListFunction,
   createJosePrivateFDC3Security,
   DefaultFDC3Handlers,
+  isUser,
+  isUserRequest,
   JosePrivateFDC3Security,
   provisionJWKS,
   setupWebsocketServer,
@@ -51,8 +53,8 @@ class EntraBackendHandlers extends DefaultFDC3Handlers {
   async exchangeData(purpose: string, o: object): Promise<object | void> {
     const ctx = o as Context;
 
-    if (purpose === 'user-data' && ctx.type === 'fdc3.security.user') {
-      const jwt = (ctx as User).wrappedJwt;
+    if (purpose === 'user-data' && isUser(ctx)) {
+      const jwt = ctx.wrappedJwt;
       if (typeof jwt !== 'string' || !jwt.trim()) {
         console.error('user-data: missing wrappedJwt on fdc3.security.user');
         return;
@@ -74,7 +76,7 @@ class EntraBackendHandlers extends DefaultFDC3Handlers {
           email: (claims.email as string) || (claims.preferred_username as string) || '',
         },
         name: (claims.name as string) || (claims.given_name as string) || '',
-      } as User;
+      };
       return this.user;
     }
 
@@ -96,14 +98,14 @@ class EntraBackendHandlers extends DefaultFDC3Handlers {
     }
 
     return async (context: Context): Promise<Context> => {
-      if (context.type !== 'fdc3.security.userRequest') {
+      if (!isUserRequest(context)) {
         throw new Error(`Expected fdc3.security.userRequest, got ${context.type}`);
       }
       if (!this.user) {
         throw new Error('No authenticated Entra user — sign in with Microsoft first');
       }
 
-      const { aud } = context as UserRequest;
+      const aud = context.aud;
       const sub =
         (typeof this.user.id?.email === 'string' && this.user.id.email) ||
         (typeof this.user.name === 'string' && this.user.name) ||

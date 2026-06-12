@@ -3,7 +3,7 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import { Context, EncryptedContextWrapper, SymmetricKeyResponse } from '@finos/fdc3-context';
+import { Context, EncryptedContextWrapper, SymmetricKeyResponse, User, UserRequest } from '@finos/fdc3-context';
 import { Channel, ContextMetadata, ContextWithMetadata, IntentResult } from '@finos/fdc3-standard';
 
 /**
@@ -57,6 +57,20 @@ export function isEncryptedContextWrapper(value: Context): value is EncryptedCon
     'encryptedPayload' in value &&
     'id' in value
   );
+}
+
+/**
+ * Returns true if `value` is a `User` context (fdc3.security.user with a wrappedJwt string).
+ */
+export function isUser(value: Context): value is User {
+  return value.type === 'fdc3.security.user' && 'wrappedJwt' in value && typeof (value as User).wrappedJwt === 'string';
+}
+
+/**
+ * Returns true if `value` is a `UserRequest` context (fdc3.security.userRequest with an aud string).
+ */
+export function isUserRequest(value: Context): value is UserRequest {
+  return value.type === 'fdc3.security.userRequest' && 'aud' in value && typeof (value as UserRequest).aud === 'string';
 }
 
 /**
