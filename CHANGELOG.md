@@ -26,6 +26,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   * `fdc3-example-apps` toolbox with runnable security demos (identity provider apps, Login POC, signed broadcast, encrypted channels).
   * READMEs, Glossary entries and an API spec introduction for securing inter-app communication.
 
+* Added `fdc3.close()` API call allowing an app to request that its own window or frame be closed, with `closeRequest`/`closeResponse` DACP messages and `CloseError` enumeration ([#1918](https://github.com/finos/FDC3/pull/1918))
+
 ### Changed
 
 * DACP `ContextMetadata` in `api.schema.json` now allows optional `antiReplay` claims on the wire (e.g. merged into `raiseIntentResultResponse.resultMetadata`). The agent proxy and reference web implementation forward `antiReplay` from app metadata on `raiseIntent` / `raiseIntentForContext` and merge it from `intentResultRequest` metadata into the intent result delivered to the raising app. Cucumber steps and features cover `iat` / `exp` / `jti` alongside signatures.
