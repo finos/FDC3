@@ -148,13 +148,6 @@ An FDC3 Standard compliant Desktop Agent implementation **MAY**:
   - [`joinUserChannel`](ref/DesktopAgent#joinuserchannel)
   - [`leaveCurrentChannel`](ref/DesktopAgent#leavecurrentchannel)
   - [`getCurrentChannel`](ref/DesktopAgent#getcurrentchannel)
-- Implement the following deprecated API functions:
-  - [`addContextListener`](ref/DesktopAgent#addcontextlistener-deprecated) (without a contextType argument)
-  - [`getSystemChannels`](ref/DesktopAgent#getsystemchannels-deprecated) (renamed getUserChannels)
-  - [`joinChannel`](ref/DesktopAgent#joinchannel-deprecated) (renamed joinUserChannel)
-  - [`open`](ref/DesktopAgent#open-deprecated) (deprecated version that addresses apps via `name` field)
-  - [`raiseIntent`](ref/DesktopAgent#raiseintent-deprecated) (deprecated version that addresses apps via `name` field)
-  - [`raiseIntentForContext`](ref/DesktopAgent#raiseintentforcontext-deprecated) (deprecated version that addresses apps via `name` field)
 - Make use of a resolver user interface or other suitable procedure to resolve an ambiguous unqualified `appId` value received as part of an `AppIdentifier` passed as a paremeter to an API function.
 
 For more details on FDC3 Standards compliance (including the versioning, deprecation and experimental features policies) please see the [FDC3 Compliance page](../fdc3-compliance).
@@ -183,11 +176,6 @@ A Desktop Agent's [`Channel`](ref/Channel) implementation **SHOULD**:
 
 - Ensure that context messages broadcast by an application on a channel are not delivered back to that same application if it is also listening on the channel.
 - Provide [`ContextMetadata`](ref/Metadata#contextmetadata) to [`ContextHandler`](ref/Types#contexthandler) functions, including any app-provided `traceId`, `signature`, `antiReplay` and `custom` metadata that was included in the [`broadcast`](ref/Channel#broadcast) call.
-
-A Desktop Agent's [`Channel`](ref/Channel) implementation **MAY**:
-
-- Implement the following deprecated function:
-  - [`addContextListener`](ref/Channel#addcontextlistener-deprecated) (without a `contextType` argument)
 
 #### PrivateChannel Interface Compliance
 

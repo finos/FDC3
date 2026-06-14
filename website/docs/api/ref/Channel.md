@@ -39,12 +39,6 @@ interface Channel {
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
   clearContext(contextType?: string): Promise<void>;
   addEventListener(type: string  | null, handler: EventHandler): Promise<Listener>;
-  
-  //deprecated functions
-  /**
-   * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
-   */
-  addContextListener(handler: ContextHandler): Promise<Listener>;
 }
 ```
 
@@ -838,41 +832,3 @@ catch (Exception ex)
 - [`addContextListener`](DesktopAgent#addContextListener)
 - [`joinUserChannel`](DesktopAgent#joinUserChannel)
 - [`addEventListener`](#addeventlistener)
-
-## Deprecated Functions
-
-### `addContextListener` (deprecated)
-
-<Tabs groupId="lang">
-<TabItem value="ts" label="TypeScript/JavaScript">
-
-```ts
-/**
- * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
- */
-public addContextListener(handler: ContextHandler): Promise<Listener>;
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```
-Not implemented
-```
-
-</TabItem>
-<TabItem value="golang" label="Go">
-
-```
-Not implemented
-```
-
-</TabItem>
-
-</Tabs>
-
-Adds a listener for incoming contexts whenever a broadcast happens on the channel.
-
-**See also:**
-
-- [`addContextListener`](#addcontextlistener)

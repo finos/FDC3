@@ -229,8 +229,6 @@ Given('A Dummy Desktop Agent in {string}', async (world: CustomWorld, field: str
     getCurrentChannel: notImplemented,
     leaveCurrentChannel: notImplemented,
     getAppMetadata: notImplemented,
-    getSystemChannels: notImplemented,
-    joinChannel: notImplemented,
   };
 
   world.props[field] = da;

@@ -115,30 +115,14 @@ export class DefaultChannel implements Channel {
     return null;
   }
 
-  async addContextListener(
-    contextTypeOrHandler: string | null | ContextHandler,
-    handler?: ContextHandler
-  ): Promise<Listener> {
-    let theContextType: string | null;
-    let theHandler: ContextHandler;
-
-    if (contextTypeOrHandler == null && typeof handler === 'function') {
-      theContextType = null;
-      theHandler = handler;
-    } else if (typeof contextTypeOrHandler === 'string' && typeof handler === 'function') {
-      theContextType = contextTypeOrHandler;
-      theHandler = handler;
-    } else if (typeof contextTypeOrHandler === 'function') {
-      // deprecated one-arg version
-      theContextType = null;
-      theHandler = contextTypeOrHandler as ContextHandler;
-    } else {
-      //invalid call
-      // TODO: Replace with Standardized error when #1490 is resolved
+  async addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener> {
+    if (typeof contextType !== 'string' && contextType !== null) {
       throw new Error('Invalid arguments passed to addContextListener!');
     }
-
-    return await this.addContextListenerInner(theContextType, theHandler);
+    if (typeof handler !== 'function') {
+      throw new Error('Invalid arguments passed to addContextListener!');
+    }
+    return await this.addContextListenerInner(contextType, handler);
   }
 
   async addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
