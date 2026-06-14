@@ -10,7 +10,7 @@ import {
 import { Socket } from 'socket.io-client';
 import { v4 as uuid } from 'uuid';
 import { FDC3_DA_EVENT } from '../../message-types.js';
-import { AppIdentifier, AppIntent, OpenError } from '@finos/fdc3';
+import { AppIdentifier, AppIntent, CloseError, OpenError } from '@finos/fdc3';
 
 enum Opener {
   Tab,
@@ -21,11 +21,13 @@ type RunningAppRegistration = AppRegistration & {
   window: Window;
   url: string;
   messagePort?: MessagePort;
+  iframe?: HTMLIFrameElement;
 };
 
 type LaunchingAppRegistration = AppRegistration & {
   windowPromise: Promise<Window | null>;
   url: string;
+  iframe?: HTMLIFrameElement;
 };
 
 type DemoAppRegistration = RunningAppRegistration | LaunchingAppRegistration;
@@ -92,6 +94,7 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
             appId: meta.appId,
             instanceId: meta.instanceId,
             state: meta.state,
+            iframe: meta.iframe,
           };
           //will replace any existing record
           this.setInstanceDetails(uuid, launchedMeta);
@@ -181,7 +184,7 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
     }
   }
 
-  openFrame(url: string): Promise<Window | null> {
+  openFrame(url: string): { windowPromise: Promise<Window | null>; iframe: HTMLIFrameElement } {
     const iframe = document.createElement('iframe');
     iframe.setAttribute('src', url);
     iframe.classList.add('da-app-frame');
@@ -193,7 +196,7 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
     const loadPromise = new Promise<Window | null>(resolve => {
       iframe.onload = () => resolve(iframe.contentWindow);
     });
-    return loadPromise;
+    return { windowPromise: loadPromise, iframe };
   }
 
   openTab(url: string): Promise<Window | null> {
@@ -201,16 +204,6 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
     // That can happen if the Cross-Origin-Opener-Policy opener policy is set (see: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy)
     // or a browser pop-up blocker gets in the way...
     return Promise.resolve(window.open(url, '_blank'));
-  }
-
-  async openUrl(url: string): Promise<Window | null> {
-    const opener = this.getOpener();
-    switch (opener) {
-      case Opener.Tab:
-        return this.openTab(url);
-      case Opener.Frame:
-        return this.openFrame(url);
-    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -223,8 +216,16 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
 
         //We do not await the window or frame opening here as that can cause a race condition
         //  where the app loads and attempts to connect before we call `this.setInstanceDetails`.
-        //const window = await this.openUrl(url);
-        const windowPromise = this.openUrl(url);
+        const opener = this.getOpener();
+        let windowPromise: Promise<Window | null>;
+        let iframe: HTMLIFrameElement | undefined;
+        if (opener === Opener.Frame) {
+          const frameLaunch = this.openFrame(url);
+          windowPromise = frameLaunch.windowPromise;
+          iframe = frameLaunch.iframe;
+        } else {
+          windowPromise = this.openTab(url);
+        }
         const instanceId: InstanceID = this.createUUID();
         const metadata: LaunchingAppRegistration = {
           appId,
@@ -232,6 +233,7 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
           windowPromise,
           url,
           state: State.Pending,
+          iframe,
         };
 
         this.setInstanceDetails(instanceId, metadata);
@@ -252,6 +254,23 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
   async isAppConnected(app: InstanceID): Promise<boolean> {
     const found = this.connections.find(a => a.instanceId == app && a.state == State.Connected);
     return found != null;
+  }
+
+  async close(instanceId: InstanceID): Promise<void> {
+    const registration = this.getInstanceDetails(instanceId);
+    if (!registration || registration.state !== State.Connected) {
+      throw new Error(CloseError.ErrorOnClose);
+    }
+
+    if (isRunningAppRegistration(registration)) {
+      if (registration.iframe) {
+        registration.iframe.remove();
+      } else {
+        registration.window?.close();
+      }
+    }
+
+    await this.setAppState(instanceId, State.Terminated);
   }
 
   async setAppState(app: InstanceID, newState: State): Promise<void> {

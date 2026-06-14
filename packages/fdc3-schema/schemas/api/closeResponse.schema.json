@@ -1,0 +1,57 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/closeResponse.schema.json",
+	"type": "object",
+	"title": "Close Response",
+	"description": "A response to a close request. On a successful close the app is destroyed before a success response can be delivered; only error responses are received by the app in that case.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/CloseResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/CloseSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/CloseErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"CloseResponseType": {
+			"title": "Close Response Message Type",
+			"const": "closeResponse"
+		},
+		"CloseSuccessResponsePayload": {
+			"title": "Close Success Response Payload",
+			"type": "object",
+			"properties": {},
+			"additionalProperties": false
+		},
+		"CloseErrorResponsePayload": {
+			"title": "Close Error Response Payload",
+			"type": "object",
+			"properties": {
+				"error": {
+					"$ref": "api.schema.json#/definitions/CloseError"
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}
