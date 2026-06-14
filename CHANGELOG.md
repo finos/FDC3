@@ -26,6 +26,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 * Updated "Releasing FDC3 to NPM" instructions in README to reflect the current GitHub Actions release workflow. ([#1864](https://github.com/finos/FDC3/pull/1864))
 
+### Removed
+
+* Removed deprecated methods etc. from FDC3 2.0 release. ([#1916](https://github.com/finos/FDC3/pull/1916))
+
 ### Deprecated
 
 ### Fixed
