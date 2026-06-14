@@ -798,7 +798,7 @@ interface IntentMetadata {
   readonly name: string;
 
   /** Display name for the intent.
-   * @deprecated Use the intent name for display as display name may vary for
+   * @deprecated Since FDC3 2.1. Use the intent name for display as display name may vary for
    * each application as it is defined in the app's AppD record.
    */
   readonly displayName?: string;

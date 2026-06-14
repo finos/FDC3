@@ -14,6 +14,10 @@ Given('app {string}', (world: CustomWorld, appStr: string) => {
   world.props[instanceId] = app;
 });
 
+Given('{string} is app identifier {string}', (world: CustomWorld, field: string, appId: string) => {
+  world.props[field] = { appId };
+});
+
 Given('app {string} resolves intent {string}', (world: CustomWorld, appStr: string, intent: string) => {
   const [appId, instanceId] = appStr.split('/');
   const app = { appId, instanceId };

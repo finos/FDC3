@@ -52,7 +52,7 @@ export type ExperimentalContextType =
 export type ContextType = StandardContextType | ExperimentalContextType | (string & {});
 
 /**
- * @deprecated Use {@link StandardContextType} instead
+ * @deprecated Since FDC3 2.2. Use {@link StandardContextType} instead.
  */
 export enum ContextTypes {
   Action = 'fdc3.action',

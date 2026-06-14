@@ -26,19 +26,6 @@ Feature: Basic User Channels Support
       | meta.source.appId | meta.source.instanceId | matches_type           |
       | cucumber-app      | cucumber-instance      | getUserChannelsRequest |
 
-  Scenario: List User Channels via Deprecated API call
-        There should be a selection of user channels to choose from
-
-    When I call "{api}" with "getSystemChannels"
-    Then "{result}" is an array of objects with the following contents
-      | id    | type | displayMetadata.color | displayMetadata.glyph | displayMetadata.name |
-      | one   | user | red                   | triangle              | The one channel      |
-      | two   | user | red                   | triangle              | The two channel      |
-      | three | user | red                   | triangle              | The three channel    |
-    And messaging will have posts
-      | meta.source.appId | meta.source.instanceId | matches_type           |
-      | cucumber-app      | cucumber-instance      | getUserChannelsRequest |
-
   Scenario: Initial User Channel
         At startup, the user channel shouldn't be set
 
@@ -52,19 +39,6 @@ Feature: Basic User Channels Support
         You should be able to join a channel knowing it's ID.
 
     When I call "{api}" with "joinUserChannel" with parameter "one"
-    When I call "{api}" with "getCurrentChannel"
-    Then "{result}" is an object with the following contents
-      | id  | type | displayMetadata.color |
-      | one | user | red                   |
-    And messaging will have posts
-      | payload.channelId | matches_type             |
-      | one               | joinUserChannelRequest   |
-      | {null}            | getUserChannelsRequest   |
-
-  Scenario: Changing Channel via Deprecated API
-        You should be able to join a channel knowing it's ID.
-
-    When I call "{api}" with "joinChannel" with parameter "one"
     When I call "{api}" with "getCurrentChannel"
     Then "{result}" is an object with the following contents
       | id  | type | displayMetadata.color |
@@ -92,22 +66,7 @@ Feature: Basic User Channels Support
   Scenario: Adding an Un-Typed Listener on a given User Channel
     Given "resultHandler" pipes context to "contexts"
     When I call "{api}" with "joinUserChannel" with parameter "one"
-    And I call "{api}" with "addContextListener" with parameters "{empty}" and "{resultHandler}"
-    And messaging receives "{instrumentMessageOne}"
-    Then "{contexts}" is an array of objects with the following contents
-      | id.ticker | type            | name  |
-      | AAPL      | fdc3.instrument | Apple |
-    And messaging will have posts
-      | payload.channelId | payload.contextType | matches_type              |
-      | one               | {null}              | joinUserChannelRequest    |
-      | {null}            | {null}              | getUserChannelsRequest    |
-      | {null}            | {null}              | addContextListenerRequest |
-      | one               | {null}              | getCurrentContextRequest  |
-
-  Scenario: Adding an Un-Typed Listener on a given User Channel (deprecated API)
-    Given "resultHandler" pipes context to "contexts"
-    When I call "{api}" with "joinUserChannel" with parameter "one"
-    And I call "{api}" with "addContextListener" with parameter "{resultHandler}"
+    And I call "{api}" with "addContextListener" with parameters "{null}" and "{resultHandler}"
     And messaging receives "{instrumentMessageOne}"
     Then "{contexts}" is an array of objects with the following contents
       | id.ticker | type            | name  |

@@ -9,7 +9,6 @@ import {
   PrivateChannel,
   Context,
   DesktopAgent,
-  getOrCreateChannel,
 } from '@finos/fdc3';
 import { APIDocumentation } from './apiDocuments';
 import constants from '../../constants';
@@ -232,7 +231,7 @@ export class RaiseIntentControl {
   };
 
   async listenForError() {
-    const appControlChannel = await getOrCreateChannel('app-control');
+    const appControlChannel = await this.fdc3.getOrCreateChannel(constants.ControlChannel);
     return appControlChannel.addContextListener('error', (context: AppControlContext) => {
       assert.fail(context.errorMessage);
     });
