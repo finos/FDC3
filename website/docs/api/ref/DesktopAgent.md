@@ -23,6 +23,7 @@ For details of how implementations of the `DesktopAgent` are made available to a
 interface DesktopAgent {
   // apps
   open(app: AppIdentifier, context?: Context | null, metadata?: AppProvidableContextMetadata): Promise<AppIdentifier>;
+  close(): Promise<void>;
   findInstances(app: AppIdentifier): Promise<Array<AppIdentifier>>;
   getAppMetadata(app: AppIdentifier): Promise<AppMetadata>;
 
@@ -1771,6 +1772,43 @@ instanceIdentifierResult := <-desktopAgent.Open(appIdentifier, &context)
 - [`AppIdentifier`](Types#appidentifier)
 - [`AppMetadata`](Metadata#appmetadata)
 - [`OpenError`](Errors#openerror)
+
+### `close`
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+close(): Promise<void>;
+```
+
+</TabItem>
+</Tabs>
+
+Requests that the Desktop Agent close the calling application's own window or frame. This API is limited to self-close only — it cannot be used to close another application.
+
+On a successful close, the app is destroyed. Callers MUST perform any required cleanup *before* calling `close()`.
+
+If the Desktop Agent cannot close the app, the promise MUST be rejected with an `Error` Object with a `message` chosen from the [`CloseError`](Errors#closeerror) enumeration. The promise MAY reject with `CloseError.ApiTimeout` if no `closeResponse` is received before the message exchange timeout (which is the expected outcome when the app is closed successfully without an error response).
+
+**Example:**
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```js
+// Perform cleanup, then request close
+await saveState();
+fdc3.close();
+```
+
+</TabItem>
+</Tabs>
+
+**See also:**
+
+- [`open`](#open)
+- [`CloseError`](Errors#closeerror)
 
 ### `raiseIntent`
 

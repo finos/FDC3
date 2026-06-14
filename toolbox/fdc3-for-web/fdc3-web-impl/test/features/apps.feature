@@ -95,3 +95,14 @@ Feature: Opening and Requesting App Details
     Then messaging will have outgoing posts
       | msg.type                              | msg.payload.message    |
       | WCP5ValidateAppIdentityFailedResponse | App Instance not found |
+
+  Scenario: App requests close
+    When "libraryApp/a1" requests close
+    Then no apps are connected
+
+  Scenario: Close when not connected
+    Given "libraryApp/a2" is opened with connection id "a2"
+    When "libraryApp/a2" requests close before connected
+    Then messaging will have outgoing posts
+      | msg.type        | msg.payload.error | to.instanceId |
+      | closeResponse   | ErrorOnClose      | a2            |

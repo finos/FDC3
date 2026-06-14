@@ -58,6 +58,15 @@ export enum OpenError {
   InvalidArguments = 'InvalidArguments',
 }
 
+/** Constants representing the errors that can be encountered when calling the `close` method on the DesktopAgent object (`fdc3`). */
+export enum CloseError {
+  /** Returned if the Desktop Agent cannot close the app's window or frame. */
+  ErrorOnClose = 'ErrorOnClose',
+
+  /** Returned if a timeout occurs before a call to close is resolved for any reason other than the app being closed. */
+  ApiTimeout = 'ApiTimeout',
+}
+
 /** Constants representing the errors that can be encountered when calling the `findIntent`, `findIntentsByContext`, `raiseIntent` or `raiseIntentForContext` methods on the DesktopAgent (`fdc3`). */
 export enum ResolveError {
   /** SHOULD be returned if no apps are available that can resolve the intent and context combination.*/

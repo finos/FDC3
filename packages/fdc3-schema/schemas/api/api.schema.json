@@ -444,6 +444,15 @@
                 "desktopAgent"
             ]
         },
+        "CloseError": {
+            "description": "Constants representing the errors that can be encountered when calling the `close` method on the DesktopAgent object (`fdc3`).",
+            "title": "CloseError",
+            "enum": [
+                "ErrorOnClose",
+                "ApiTimeout"
+            ],
+            "type": "string"
+        },
         "OpenError": {
             "description": "Constants representing the errors that can be encountered when calling the `open` method on the DesktopAgent object (`fdc3`).",
             "title": "OpenError",

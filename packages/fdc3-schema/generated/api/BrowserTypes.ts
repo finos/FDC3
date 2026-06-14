@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ClearContextRequest, ClearContextResponse, ContextClearedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceChannels, Fdc3UserInterfaceDrag, Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, Fdc3UserInterfaceMessage, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse } from "./file";
+//   import { Convert, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ClearContextRequest, ClearContextResponse, CloseRequest, CloseResponse, ContextClearedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceChannels, Fdc3UserInterfaceDrag, Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, Fdc3UserInterfaceMessage, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse } from "./file";
 //
 //   const webConnectionProtocol1Hello = Convert.toWebConnectionProtocol1Hello(json);
 //   const webConnectionProtocol2LoadURL = Convert.toWebConnectionProtocol2LoadURL(json);
@@ -25,6 +25,8 @@
 //   const channelChangedEvent = Convert.toChannelChangedEvent(json);
 //   const clearContextRequest = Convert.toClearContextRequest(json);
 //   const clearContextResponse = Convert.toClearContextResponse(json);
+//   const closeRequest = Convert.toCloseRequest(json);
+//   const closeResponse = Convert.toCloseResponse(json);
 //   const contextClearedEvent = Convert.toContextClearedEvent(json);
 //   const contextListenerUnsubscribeRequest = Convert.toContextListenerUnsubscribeRequest(json);
 //   const contextListenerUnsubscribeResponse = Convert.toContextListenerUnsubscribeResponse(json);
@@ -1090,7 +1092,8 @@ export type ResponseMessageType =
   | 'raiseIntentForContextResponse'
   | 'raiseIntentResponse'
   | 'raiseIntentResultResponse'
-  | 'clearContextResponse';
+  | 'clearContextResponse'
+  | 'closeResponse';
 
 /**
  * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
@@ -1139,7 +1142,8 @@ export type RequestMessageType =
   | 'privateChannelUnsubscribeEventListenerRequest'
   | 'raiseIntentForContextRequest'
   | 'raiseIntentRequest'
-  | 'clearContextRequest';
+  | 'clearContextRequest'
+  | 'closeRequest';
 
 /**
  * An event message from the Desktop Agent to an app indicating that context has been
@@ -1601,6 +1605,89 @@ export interface ClearContextResponse {
    */
   type: 'clearContextResponse';
 }
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ */
+
+/**
+ * A request from an FDC3-enabled app to close its own window or frame.
+ *
+ * A request message from an FDC3-enabled app to a Desktop Agent.
+ */
+export interface CloseRequest {
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: CloseRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'closeRequest';
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface CloseRequestPayload {}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ */
+
+/**
+ * A response to a close request. On a successful close the app is destroyed before a
+ * success response can be delivered; only error responses are received by the app in that
+ * case.
+ *
+ * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
+ * payload contains an `error` property, the request was unsuccessful.
+ */
+export interface CloseResponse {
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: CloseResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'closeResponse';
+}
+
+/**
+ * A payload for a response to an API call that will contain any return values or an `error`
+ * property containing a standardized error message indicating that the request was
+ * unsuccessful.
+ */
+export interface CloseResponsePayload {
+  error?: 'ApiTimeout';
+}
+
+/**
+ * Constants representing the errors that can be encountered when calling the `open` method
+ * on the DesktopAgent object (`fdc3`).
+ *
+ * Constants representing the errors that can be encountered when calling the
+ * `addIntentListener`, `findIntent`, `findIntentsByContext`, `raiseIntent` or
+ * `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).
+ *
+ * Constants representing the errors that can be encountered when calling the `close` method
+ * on the DesktopAgent object (`fdc3`).
+ */
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -4420,6 +4507,22 @@ export class Convert {
     return JSON.stringify(uncast(value, r('ClearContextResponse')), null, 2);
   }
 
+  public static toCloseRequest(json: string): CloseRequest {
+    return cast(JSON.parse(json), r('CloseRequest'));
+  }
+
+  public static closeRequestToJson(value: CloseRequest): string {
+    return JSON.stringify(uncast(value, r('CloseRequest')), null, 2);
+  }
+
+  public static toCloseResponse(json: string): CloseResponse {
+    return cast(JSON.parse(json), r('CloseResponse'));
+  }
+
+  public static closeResponseToJson(value: CloseResponse): string {
+    return JSON.stringify(uncast(value, r('CloseResponse')), null, 2);
+  }
+
   public static toContextClearedEvent(json: string): ContextClearedEvent {
     return cast(JSON.parse(json), r('ContextClearedEvent'));
   }
@@ -5557,6 +5660,24 @@ const typeMap: any = {
     ],
     false
   ),
+  CloseRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('CloseRequestPayload') },
+      { json: 'type', js: 'type', typ: r('CloseRequestType') },
+    ],
+    false
+  ),
+  CloseRequestPayload: o([], false),
+  CloseResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('CloseResponsePayload') },
+      { json: 'type', js: 'type', typ: r('CloseResponseType') },
+    ],
+    false
+  ),
+  CloseResponsePayload: o([{ json: 'error', js: 'error', typ: u(undefined, r('TentacledError')) }], false),
   ContextClearedEvent: o(
     [
       { json: 'meta', js: 'meta', typ: r('BroadcastEventMeta') },
@@ -6466,6 +6587,7 @@ const typeMap: any = {
     'addIntentListenerResponse',
     'broadcastResponse',
     'clearContextResponse',
+    'closeResponse',
     'contextListenerUnsubscribeResponse',
     'createPrivateChannelResponse',
     'eventListenerUnsubscribeResponse',
@@ -6496,6 +6618,7 @@ const typeMap: any = {
     'addIntentListenerRequest',
     'broadcastRequest',
     'clearContextRequest',
+    'closeRequest',
     'contextListenerUnsubscribeRequest',
     'createPrivateChannelRequest',
     'eventListenerUnsubscribeRequest',
@@ -6526,6 +6649,9 @@ const typeMap: any = {
   ChannelChangedEventType: ['channelChangedEvent'],
   ClearContextRequestType: ['clearContextRequest'],
   ClearContextResponseType: ['clearContextResponse'],
+  CloseRequestType: ['closeRequest'],
+  TentacledError: ['ApiTimeout'],
+  CloseResponseType: ['closeResponse'],
   ContextClearedEventType: ['contextClearedEvent'],
   ContextListenerUnsubscribeRequestType: ['contextListenerUnsubscribeRequest'],
   ContextListenerUnsubscribeResponseType: ['contextListenerUnsubscribeResponse'],
@@ -6639,6 +6765,7 @@ export type AppRequestMessage =
   | AddIntentListenerRequest
   | BroadcastRequest
   | ClearContextRequest
+  | CloseRequest
   | ContextListenerUnsubscribeRequest
   | CreatePrivateChannelRequest
   | EventListenerUnsubscribeRequest
@@ -6669,6 +6796,7 @@ export type AgentResponseMessage =
   | AddIntentListenerResponse
   | BroadcastResponse
   | ClearContextResponse
+  | CloseResponse
   | ContextListenerUnsubscribeResponse
   | CreatePrivateChannelResponse
   | EventListenerUnsubscribeResponse
@@ -7129,6 +7257,48 @@ export function isValidClearContextResponse(value: any): value is ClearContextRe
 }
 
 export const CLEAR_CONTEXT_RESPONSE_TYPE = 'ClearContextResponse';
+
+/**
+ * Returns true if the value has a type property with value 'closeRequest'. This is a fast check that does not check the format of the message
+ */
+export function isCloseRequest(value: any): value is CloseRequest {
+  return value != null && value.type === 'closeRequest';
+}
+
+/**
+ * Returns true if value is a valid CloseRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidCloseRequest(value: any): value is CloseRequest {
+  try {
+    Convert.closeRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const CLOSE_REQUEST_TYPE = 'CloseRequest';
+
+/**
+ * Returns true if the value has a type property with value 'closeResponse'. This is a fast check that does not check the format of the message
+ */
+export function isCloseResponse(value: any): value is CloseResponse {
+  return value != null && value.type === 'closeResponse';
+}
+
+/**
+ * Returns true if value is a valid CloseResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidCloseResponse(value: any): value is CloseResponse {
+  try {
+    Convert.closeResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const CLOSE_RESPONSE_TYPE = 'CloseResponse';
 
 /**
  * Returns true if the value has a type property with value 'contextClearedEvent'. This is a fast check that does not check the format of the message
