@@ -1,31 +1,32 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/api/WSCP2ConnectFailedResponse.schema.json",
-  "title": "WebSocket Connection Protocol 2 Connect Failed Response",
+  "$id": "https://fdc3.finos.org/schemas/next/api/WSCPConnectFailed.schema.json",
+  "title": "WebSocket Connection Protocol Connect Failed",
   "description": "Message sent by the acceptor if the WSCP handshake fails.",
   "type": "object",
   "allOf": [
     {
-      "$ref": "#/$defs/WSCP2ConnectFailedResponseBase"
+      "$ref": "#/$defs/WSCPConnectFailedBase"
     },
     {
       "$ref": "WSCPConnectionStep.schema.json"
     }
   ],
   "$defs": {
-    "WSCP2ConnectFailedResponseBase": {
+    "WSCPConnectFailedBase": {
       "type": "object",
       "properties": {
         "type": {
-          "title": "WSCP2ConnectFailedResponse Message Type",
-          "const": "WSCP2ConnectFailedResponse"
+          "title": "WSCPConnectFailed Message Type",
+          "const": "WSCPConnectFailed"
         },
         "payload": {
-          "title": "WSCP2ConnectFailedResponse Payload",
+          "title": "WSCPConnectFailed Payload",
           "type": "object",
           "properties": {
             "message": {
               "title": "Connection failed message",
+              "description": "Human-readable description of why the handshake failed.",
               "type": "string"
             }
           },
@@ -36,11 +37,7 @@
           "$ref": "WSCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"
         }
       },
-      "required": [
-        "type",
-        "payload",
-        "meta"
-      ],
+      "required": ["type", "payload", "meta"],
       "additionalProperties": false
     }
   }

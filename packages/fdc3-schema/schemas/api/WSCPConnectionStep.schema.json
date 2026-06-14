@@ -9,10 +9,10 @@
       "title": "Connection Step Message type",
       "type": "string",
       "enum": [
-        "WSCP1ConnectRequest",
-        "WSCP2ConnectResponse",
-        "WSCP2ConnectFailedResponse",
-        "WSCP3Goodbye"
+        "WSCPApplicationConnect",
+        "WSCPDesktopAgentConnect",
+        "WSCPConnectFailed",
+        "WSCPGoodbye"
       ],
       "description": "Identifies the type of the WebSocket connection step message."
     },

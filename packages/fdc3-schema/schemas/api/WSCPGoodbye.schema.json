@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/WSCPGoodbye.schema.json",
+  "title": "WebSocket Connection Protocol Goodbye",
+  "description": "Goodbye message to be sent when disconnecting a WebSocket connection. The acceptor should close the connection after receiving this message but retain the sharedSecret mapping for the app instance so that a subsequent connect can resume the session.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/WSCPGoodbyeBase"
+    },
+    {
+      "$ref": "WSCPConnectionStep.schema.json"
+    }
+  ],
+  "$defs": {
+    "WSCPGoodbyeBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "WSCPGoodbye Message Type",
+          "const": "WSCPGoodbye"
+        },
+        "meta": {
+          "$ref": "WSCPConnectionStep.schema.json#/$defs/DisconnectStepMeta"
+        }
+      },
+      "required": ["type", "meta"],
+      "additionalProperties": false
+    }
+  }
+}
