@@ -24,14 +24,19 @@
         "intents": {
           "raises": {
             "GetUser": {
-              "contexts": ["fdc3.security.userRequest"]
+              "contexts": [
+                "fdc3.security.userRequest"
+              ]
             },
             "demo.GetPrices": {
-              "contexts": ["fdc3.instrument"]
+              "contexts": [
+                "fdc3.instrument"
+              ]
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     }
   ],
   "message": "OK"

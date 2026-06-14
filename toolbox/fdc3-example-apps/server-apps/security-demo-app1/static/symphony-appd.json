@@ -14,12 +14,15 @@
           "listensFor": {
             "GetUser": {
               "displayName": "Get User Identity",
-              "contexts": ["fdc3.security.userRequest"],
+              "contexts": [
+                "fdc3.security.userRequest"
+              ],
               "resultType": "fdc3.security.encryptedContext"
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     }
   ],
   "message": "OK"

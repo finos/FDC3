@@ -41,6 +41,10 @@
           "type": "string",
           "description": "Version of the application. This allows multiple app versions to be defined using the same app name. This can be a triplet but can also include things like 1.2.5 (BETA)"
         },
+        "minimumAgentVersion": {
+          "type": "string",
+          "description": "The minimum FDC3 API version that the application requires the Desktop Agent to implement. Uses the same version format as ImplementationMetadata.fdc3Version. When this value is 2.2 or higher, the application is assumed to require getAgent() and the Web Connection Protocol. This is distinct from the application software version in the `version` field."
+        },
         "tooltip": {
           "type": "string",
           "description": "Optional tooltip description e.g. for a launcher"

@@ -28,7 +28,8 @@
         "sail": {
           "injectApi": "2.0"
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     }
   ],
   "message": "OK"

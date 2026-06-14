@@ -53,4 +53,15 @@ describe('App Directory Schema Validation', () => {
       console.error('Validation errors:', result.errors);
     }
   });
+
+  it('should include minimumAgentVersion on spec examples', () => {
+    const myApp = JSON.parse(
+      readFileSync(join(specificationDir, 'examples', 'application', 'myApplication.json'), 'utf-8')
+    );
+    const workbench = JSON.parse(
+      readFileSync(join(specificationDir, 'examples', 'application', 'fdc3-workbench.json'), 'utf-8')
+    );
+    expect(myApp.minimumAgentVersion).toBe('2.0');
+    expect(workbench.minimumAgentVersion).toBe('1.2');
+  });
 });

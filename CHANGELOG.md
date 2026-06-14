@@ -25,7 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 * Updated "Releasing FDC3 to NPM" instructions in README to reflect the current GitHub Actions release workflow. ([#1864](https://github.com/finos/FDC3/pull/1864))
 
-* Export App Directory record types ([#1917](https://github.com/finos/FDC3/pull/1917))
+* Export App Directory record type.  Added optional `minimumAgentVersion` field to App Directory application records ([#1917](https://github.com/finos/FDC3/pull/1917))
 
 
 ### Deprecated

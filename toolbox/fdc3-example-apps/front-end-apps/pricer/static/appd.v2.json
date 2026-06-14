@@ -28,11 +28,15 @@
           "listensFor": {
             "ViewQuote": {
               "displayName": "View Quote",
-              "contexts": ["fdc3.instrument"]
+              "contexts": [
+                "fdc3.instrument"
+              ]
             },
             "demo.GetPrices": {
               "displayName": "Get Prices",
-              "contexts": ["fdc3.instrument"]
+              "contexts": [
+                "fdc3.instrument"
+              ]
             }
           }
         }
@@ -41,7 +45,8 @@
         "sail": {
           "injectApi": "2.0"
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     }
   ],
   "message": "OK"

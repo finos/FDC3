@@ -14,7 +14,9 @@
           "src": "https://directory.fdc3.finos.org/assets/app/Conformance1.png"
         }
       ],
-      "categories": ["Developer Tools"],
+      "categories": [
+        "Developer Tools"
+      ],
       "hostManifests": {
         "sail": {
           "inject-api": "2.0"
@@ -59,7 +61,8 @@
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "ChannelsAppId",
@@ -102,7 +105,8 @@
         {
           "src": "http://localhost:3001/finos-icon-256.png"
         }
-      ]
+      ],
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppAId",
@@ -167,7 +171,8 @@
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppBId",
@@ -227,7 +232,8 @@
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppCId",
@@ -286,7 +292,8 @@
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppDId",
@@ -345,7 +352,8 @@
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppEId",
@@ -404,7 +412,8 @@
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppFId",
@@ -463,7 +472,8 @@
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppGId",
@@ -521,7 +531,8 @@
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppHId",
@@ -580,7 +591,8 @@
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppIId",
@@ -639,7 +651,8 @@
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppJId",
@@ -698,7 +711,8 @@
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppKId",
@@ -757,7 +771,8 @@
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppLId",
@@ -807,7 +822,8 @@
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "OpenAppAId",
@@ -853,7 +869,8 @@
         {
           "src": "http://localhost:3001/finos-icon-256.png"
         }
-      ]
+      ],
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "OpenAppBId",
@@ -899,7 +916,8 @@
         {
           "src": "http://localhost:3001/finos-icon-256.png"
         }
-      ]
+      ],
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "MockAppId",
@@ -947,7 +965,8 @@
         {
           "src": "http://localhost:3001/finos-icon-256.png"
         }
-      ]
+      ],
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "MetadataAppId",
@@ -1004,7 +1023,8 @@
         {
           "src": "http://localhost:3001/finos-icon-256.png"
         }
-      ]
+      ],
+      "minimumAgentVersion": "2.0"
     }
   ],
   "message": "OK"

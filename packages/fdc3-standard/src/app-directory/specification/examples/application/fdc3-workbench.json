@@ -8,6 +8,7 @@
     "training"
   ],
   "version": "1.0.0",
+  "minimumAgentVersion": "1.2",
   "tooltip": "FDC3 Workbench",
   "lang": "en-US",
   "icons": [

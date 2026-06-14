@@ -25,7 +25,8 @@
       ],
       "hostManifests": {},
       "version": "1.0.0",
-      "publisher": "FINOS"
+      "publisher": "FINOS",
+      "minimumAgentVersion": "2.0"
     }
   ],
   "message": "OK"

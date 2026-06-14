@@ -11,12 +11,15 @@
       },
       "version": "1.0.0",
       "publisher": "FINOS",
-      "categories": ["Developer Tools" ],
+      "categories": [
+        "Developer Tools"
+      ],
       "icons": [
         {
           "src": "http://localhost:4018/icon.svg"
         }
-      ]
+      ],
+      "minimumAgentVersion": "2.0"
     }
   ],
   "message": "OK"

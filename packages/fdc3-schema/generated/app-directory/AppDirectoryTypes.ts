@@ -112,6 +112,14 @@ export interface Application {
    */
   lang?: string;
   /**
+   * The minimum FDC3 API version that the application requires the Desktop Agent to
+   * implement. Uses the same version format as ImplementationMetadata.fdc3Version. When this
+   * value is 2.2 or higher, the application is assumed to require getAgent() and the Web
+   * Connection Protocol. This is distinct from the application software version in the
+   * `version` field.
+   */
+  minimumAgentVersion?: string;
+  /**
    * Optional URL that provides more information about the application
    */
   moreInfo?: string;
@@ -427,6 +435,14 @@ export interface BaseApplicationObject {
    */
   lang?: string;
   /**
+   * The minimum FDC3 API version that the application requires the Desktop Agent to
+   * implement. Uses the same version format as ImplementationMetadata.fdc3Version. When this
+   * value is 2.2 or higher, the application is assumed to require getAgent() and the Web
+   * Connection Protocol. This is distinct from the application software version in the
+   * `version` field.
+   */
+  minimumAgentVersion?: string;
+  /**
    * Optional URL that provides more information about the application
    */
   moreInfo?: string;
@@ -728,6 +744,7 @@ const typeMap: any = {
       { json: 'icons', js: 'icons', typ: u(undefined, a(u(a('any'), true, r('IconClass'), 3.14, 0, null, ''))) },
       { json: 'interop', js: 'interop', typ: u(undefined, r('Interop')) },
       { json: 'lang', js: 'lang', typ: u(undefined, '') },
+      { json: 'minimumAgentVersion', js: 'minimumAgentVersion', typ: u(undefined, '') },
       { json: 'moreInfo', js: 'moreInfo', typ: u(undefined, '') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'publisher', js: 'publisher', typ: u(undefined, '') },
@@ -831,6 +848,7 @@ const typeMap: any = {
       { json: 'icons', js: 'icons', typ: u(undefined, a(u(a('any'), true, r('IconClass'), 3.14, 0, null, ''))) },
       { json: 'interop', js: 'interop', typ: u(undefined, r('Interop')) },
       { json: 'lang', js: 'lang', typ: u(undefined, '') },
+      { json: 'minimumAgentVersion', js: 'minimumAgentVersion', typ: u(undefined, '') },
       { json: 'moreInfo', js: 'moreInfo', typ: u(undefined, '') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'publisher', js: 'publisher', typ: u(undefined, '') },

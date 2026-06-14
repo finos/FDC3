@@ -46,6 +46,10 @@ AppD reduces fragmentation in the market and allows end-users more flexibility i
 
 AppD provides information to the Desktop Agent on which applications can handle particular [intents](../intents/spec) and the context types they support as input to them. This allows the Desktop Agent to implement an [intent resolver](../api/spec#resolvers) that can launch applications and pass the intent and context to them to operate on, supporting workflows between applications that didn't require prior bilateral agreements between the application providers.
 
+#### Application compatibility
+
+AppD records MAY include a `minimumAgentVersion` field indicating the minimum FDC3 API version an application requires from the Desktop Agent. This helps Desktop Agents filter out applications that cannot run in the current environment—for example, legacy apps that rely on `window.fdc3` rather than [`getAgent()`](../api/ref/GetAgent) when the agent only supports the Web Connection Protocol. When `minimumAgentVersion` is 2.2 or higher, the application is assumed to require `getAgent()`. Omitting the field is valid for legacy records but prevents compatibility filtering. See the [App Directory API specification](spec#application-compatibility) for details.
+
 ### For an Application Provider
 
 Until now, we've looked at appD from the perspective of a desktop owner and user. But appD also offers advantages to vendors who develop apps for the financial services desktop.

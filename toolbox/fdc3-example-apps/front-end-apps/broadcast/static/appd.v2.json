@@ -25,7 +25,8 @@
           "src": "http://localhost:4013/screenshot.png",
           "label": "Demo Screenshot"
         }
-      ]
+      ],
+      "minimumAgentVersion": "2.0"
     }
   ],
   "message": "OK"

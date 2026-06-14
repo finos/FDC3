@@ -22,10 +22,15 @@
       ],
       "interop": {
         "contexts": {
-          "broadcasts": ["fdc3.security.encryptedContext"],
-          "listensFor": ["fdc3.security.symmetricKeyRequest"]
+          "broadcasts": [
+            "fdc3.security.encryptedContext"
+          ],
+          "listensFor": [
+            "fdc3.security.symmetricKeyRequest"
+          ]
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     }
   ],
   "message": "OK"

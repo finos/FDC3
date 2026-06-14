@@ -22,9 +22,12 @@
       ],
       "interop": {
         "contexts": {
-          "listensFor": ["fdc3.security.encryptedContext"]
+          "listensFor": [
+            "fdc3.security.encryptedContext"
+          ]
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     }
   ],
   "message": "OK"
