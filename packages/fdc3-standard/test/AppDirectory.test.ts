@@ -1,7 +1,11 @@
+/**
+ * @vitest-environment node
+ */
 import SwaggerParser from '@apidevtools/swagger-parser';
 import { Validator } from 'jsonschema';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { pathToFileURL } from 'url';
 import { beforeAll, expect, it, describe } from 'vitest';
 
 // Get the directory path for loading schema and example files
@@ -13,10 +17,9 @@ describe('App Directory Schema Validation', () => {
   let validator: Validator;
 
   beforeAll(async () => {
-    // Parse and validate the OpenAPI schema
     const schemaPath = join(specificationDir, 'appd.schema.json');
-    const schema = JSON.parse(readFileSync(schemaPath, 'utf-8'));
-    api = await SwaggerParser.validate(schema);
+    api = await SwaggerParser.bundle(pathToFileURL(schemaPath).href);
+    await SwaggerParser.validate(api);
     applicationSchema = (api as { components: { schemas: { Application: unknown } } }).components.schemas.Application;
     validator = new Validator();
   });

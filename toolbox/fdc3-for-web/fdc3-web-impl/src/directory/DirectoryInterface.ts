@@ -1,10 +1,8 @@
-import { components } from '../../generated/directory-schema.js';
+import { Application, Intent, WebAppDetails } from '@finos/fdc3-schema';
 
-type schemas = components['schemas'];
-
-export type DirectoryIntent = schemas['Intent'] & { intentName: string; appId: string };
-export type DirectoryApp = schemas['Application'];
-export type WebAppDetails = schemas['WebAppDetails'];
+export type DirectoryIntent = Intent & { intentName: string; appId: string };
+export type DirectoryApp = Application;
+export type { WebAppDetails };
 
 /**
  * This interface wraps the functionality of the FDC3 Directory structure (stored in JSON),

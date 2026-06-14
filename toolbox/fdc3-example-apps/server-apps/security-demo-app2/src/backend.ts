@@ -22,9 +22,6 @@ import {
 /** Pushed to the App2 browser over the secure-boundary WebSocket when a valuation is broadcast on the private channel. */
 export const VALUATION_PUSH_PURPOSE = 'valuation-push';
 
-/** Purpose string for server → client push of decrypted valuations over the secure-boundary WebSocket. */
-export const VALUATION_PUSH_PURPOSE = 'valuation-push';
-
 /**
  * Trusted-backend handlers for App2 (sell-side app).
  *

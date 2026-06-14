@@ -3,14 +3,12 @@
     "compilerOptions": {
         "rootDirs": [
             "src",
-            "test",
-            "generated"
+            "test"
         ],
         "outDir": "dist",
     },
     "include": [
-        "src",
-        "generated",
+        "src"
     ],
     "exclude": [
         "test/**",

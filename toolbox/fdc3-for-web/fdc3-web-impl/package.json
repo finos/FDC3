@@ -18,15 +18,15 @@
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
   "scripts": {
-    "clean": "rimraf dist coverage node_modules test-results.xml generated",
-    "directory-openapi": "npx openapi-typescript ../../../packages/fdc3-standard/src/app-directory/specification/appd.schema.json -o generated/directory-schema.ts",
-    "test": "npm run directory-openapi && tsc && vitest run",
+    "clean": "rimraf dist coverage node_modules test-results.xml",
+    "test": "tsc && vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "build": "npm run directory-openapi && tsc",
+    "build": "tsc",
     "lint": "eslint src/"
   },
   "dependencies": {
+    "@finos/fdc3-schema": "3.0.0-alpha.2",
     "@finos/fdc3-standard": "3.0.0-alpha.2",
     "@types/uuid": "^10.0.0",
     "uuid": "^14.0.0"
@@ -45,7 +45,6 @@
     "eslint-plugin-prettier": "3.3.1",
     "is-ci": "2.0.0",
     "jsonpath-plus": "^10.1.0",
-    "openapi-typescript": "^7.13.0",
     "quickpickle": "^1.6.1",
     "ts-node": "^10.9.2",
     "uuid": "^14.0.0"

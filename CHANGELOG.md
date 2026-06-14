@@ -19,12 +19,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added `version-check` script and integrated it into the `syncpack` script and Publish To NPM workflow to prevent version mismatches causing incorrect npm dist-tags. ([#1864](https://github.com/finos/FDC3/pull/1864))
 * Added Channel Interface Compliance and PrivateChannel Interface Compliance subsections to the Desktop Agent API Standard Compliance section in the API spec, enumerating MUST/SHOULD/MAY requirements for all `Channel` and `PrivateChannel` functions including `getCurrentContextWithMetadata`. ([#1728](https://github.com/finos/FDC3/pull/1728))
 * Added `getResultMetadata()` to `IntentResolution` to allow the raising app to retrieve `ContextMetadata` for an intent result. Updated `IntentHandler` to allow returning `ContextWithMetadata` so that handlers can include app-provided metadata (e.g. `traceId`, `signature`) alongside a context result. The Desktop Agent merges app-provided metadata with its own generated fields before delivering to the raising app. For `Channel` or `void` results, only Desktop Agent generated metadata is returned. ([#1728](https://github.com/finos/FDC3/pull/1728))
-
 ### Changed
 
 * DACP `ContextMetadata` in `api.schema.json` now allows optional `antiReplay` claims on the wire (e.g. merged into `raiseIntentResultResponse.resultMetadata`). The agent proxy and reference web implementation forward `antiReplay` from app metadata on `raiseIntent` / `raiseIntentForContext` and merge it from `intentResultRequest` metadata into the intent result delivered to the raising app. Cucumber steps and features cover `iat` / `exp` / `jti` alongside signatures.
 
 * Updated "Releasing FDC3 to NPM" instructions in README to reflect the current GitHub Actions release workflow. ([#1864](https://github.com/finos/FDC3/pull/1864))
+
+* Export App Directory record types ([#1917](https://github.com/finos/FDC3/pull/1917))
+
 
 ### Deprecated
 

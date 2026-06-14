@@ -295,9 +295,11 @@ window.addEventListener('load', () => {
 
     const appList = document.getElementById('app-list') as HTMLDivElement;
     const visibleApps = directory.retrieveAllApps().filter((app: DirectoryApp) => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const mani = app?.hostManifests?.demo as any;
-      return mani?.visible ?? true;
+      const demoManifest = app.hostManifests?.demo;
+      if (typeof demoManifest === 'object' && demoManifest !== null && 'visible' in demoManifest) {
+        return (demoManifest as { visible?: boolean }).visible ?? true;
+      }
+      return true;
     });
     renderAppList(appList, visibleApps, sc);
 

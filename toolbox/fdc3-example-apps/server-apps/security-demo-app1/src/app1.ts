@@ -1,4 +1,4 @@
-import { DesktopAgent, PrivateChannel } from '@finos/fdc3';
+import { AntiReplayClaims, DesktopAgent, DetachedSignature, PrivateChannel } from '@finos/fdc3';
 import type { Context } from '@finos/fdc3-context';
 import { connectRemoteHandlers, type ExchangeDataMessage, type FDC3Handlers } from '@finos/fdc3-security';
 import { createLogEntry } from '../../../common/src/security-demo/logging';
@@ -109,7 +109,7 @@ async function raiseGetPricesIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Hand
     const signResult = (await remoteHandlers.exchangeData('request-prices', {
       context: instrument,
       intent: 'demo.GetPrices',
-    })) as { signature: unknown; antiReplay: unknown };
+    })) as { signature: DetachedSignature; antiReplay: AntiReplayClaims };
     const { signature, antiReplay } = signResult;
 
     const resolution = await fdc3.raiseIntent('demo.GetPrices', instrument, null, { signature, antiReplay });

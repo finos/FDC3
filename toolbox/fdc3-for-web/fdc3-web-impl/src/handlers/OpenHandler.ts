@@ -206,8 +206,8 @@ export class OpenHandler implements MessageHandler {
       title: appD.title,
       tooltip: appD.tooltip,
       description: appD.description,
-      icons: appD.icons,
-      screenshots: appD.screenshots,
+      icons: appD.icons as AppMetadata['icons'],
+      screenshots: appD.screenshots as AppMetadata['screenshots'],
       instanceId: appID.instanceId,
     };
   }

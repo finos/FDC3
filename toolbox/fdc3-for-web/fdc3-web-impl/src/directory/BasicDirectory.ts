@@ -41,9 +41,10 @@ export class BasicDirectory implements Directory {
     const lf = a.interop?.intents?.listensFor ?? {};
     const lfa = Object.entries(lf);
     const lfAugmented = lfa.map(([key, value]) => {
+      const intent = value as DirectoryIntent;
       return {
+        ...intent,
         intentName: key,
-        ...value,
         appId: a.appId,
       };
     });
