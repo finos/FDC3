@@ -3,7 +3,7 @@ import { WebSocket } from 'ws';
 import { Channel, DesktopAgent } from '@finos/fdc3-standard';
 
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
-import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
+import { DefaultFDC3Handlers, PRIVATE_CHANNEL_SIGNAL, PrivateChannelSignal } from '../src/secure-boundary/FDC3Handlers';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
 import { EncryptedBroadcastSupport, EncryptedBroadcaster } from '../src/encryption/EncryptedBroadcastSupport';
 import { PrivateEncryptedContextListenerSupport } from '../src/encryption/EncryptedContextListenerSupport';
@@ -54,11 +54,11 @@ class BroadcastingAppBackendHandlers extends DefaultFDC3Handlers {
 
   async remoteIntentHandler(intent: string) {
     if (intent !== INTENT_SHARE_ENCRYPTED_CHANNEL) return super.remoteIntentHandler(intent);
-    // Return { type: 'private' } to tell the frontend to create a PrivateChannel
+    // Return PRIVATE_CHANNEL_SIGNAL to tell the frontend to create a PrivateChannel
     // and export it to us via handleRemoteChannel.
-    return async (_context: Context) => {
+    return async (_context: Context): Promise<PrivateChannelSignal> => {
       console.log('[Broadcasting App Backend] Intent ShareEncryptedChannel: signalling client to create channel');
-      return { type: 'private' as const };
+      return PRIVATE_CHANNEL_SIGNAL;
     };
   }
 

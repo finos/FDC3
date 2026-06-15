@@ -56,7 +56,7 @@ sequenceDiagram
     BFE-->>BFE: addIntentListener(ShareEncryptedChannel)
 
     RFE-->>BFE: raiseIntent(ShareEncryptedChannel) ···via DA···
-    Note right of BFE: Intent handler returns { type: 'private' }<br/>FDC3 client creates PrivateChannel
+    Note right of BFE: Intent handler returns PRIVATE_CHANNEL_SIGNAL<br/>FDC3 client creates PrivateChannel
     BFE->>BBE: handleRemoteChannel(ShareEncryptedChannel, channel)
     Note right of BBE: Wraps channel with EncryptedBroadcastSupport<br/>Creates symmetric key (K)<br/>Listens for symmetricKeyRequest
     BFE-->>RFE: return PrivateChannel as IntentResult ···via DA···

@@ -1,7 +1,7 @@
 import type { Application } from 'express';
 import type { Server } from 'http';
 import { WebSocket } from 'ws';
-import { Channel, IntentHandler, PrivateChannel } from '@finos/fdc3';
+import { Channel, PrivateChannel } from '@finos/fdc3';
 import { Context, Valuation } from '@finos/fdc3-context';
 import type { ContextMetadata } from '@finos/fdc3-standard';
 import {
@@ -13,14 +13,14 @@ import {
   EncryptedBroadcastSupport,
   EXCHANGE_DATA,
   JosePrivateFDC3Security,
+  PRIVATE_CHANNEL_SIGNAL,
   provisionJWKS,
   setupWebsocketServer,
+  type BackendIntentHandler,
   type EncryptedBroadcaster,
   type MetadataHandler,
+  type PrivateChannelSignal,
 } from '@finos/fdc3-security';
-
-/** Pushed to the App2 browser over the secure-boundary WebSocket when a valuation is broadcast on the private channel. */
-export const VALUATION_PUSH_PURPOSE = 'valuation-push';
 
 /** Purpose string for server → client push of decrypted valuations over the secure-boundary WebSocket. */
 export const VALUATION_PUSH_PURPOSE = 'valuation-push';
@@ -51,12 +51,12 @@ class App2BackendHandlers extends DefaultFDC3Handlers {
     this.metadataHandler = createMetadataHandlerWithFDC3Version('3.0');
   }
 
-  async remoteIntentHandler(intent: string): Promise<IntentHandler> {
+  async remoteIntentHandler(intent: string): Promise<BackendIntentHandler> {
     if (intent !== 'demo.GetPrices') {
       return super.remoteIntentHandler(intent);
     }
 
-    return async (ctx: Context, md: ContextMetadata): Promise<Context> => {
+    return async (ctx: Context, md: ContextMetadata): Promise<Context | PrivateChannelSignal> => {
       // Verify the JWS signature on the inbound instrument to confirm the request
       // came from a trusted application. Reject if unsigned or untrusted.
       const auth = await this.security.verifySignature(md.signature, ctx, md.antiReplay);
@@ -65,7 +65,7 @@ class App2BackendHandlers extends DefaultFDC3Handlers {
       }
 
       // Signal the frontend to create a PrivateChannel and call handleRemoteChannel.
-      return { type: 'private' } as unknown as Context;
+      return PRIVATE_CHANNEL_SIGNAL;
     };
   }
 

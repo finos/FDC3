@@ -145,13 +145,13 @@ export interface FDC3Handlers {
    *   verifies the raiser's JWS and signs the response (the raiser signs its outbound context via
    *   `exchangeData` instead of holding the private key in the browser).
    * - `backend-encrypted-channel-example.ts` — shows how you can handle `ShareEncryptedChannel` by
-   *   returning `{ type: 'private' }` so the client opens a private channel and calls
+   *   returning `PRIVATE_CHANNEL_SIGNAL` so the client opens a private channel and calls
    *   `handleRemoteChannel`, then runs `EncryptedBroadcastSupport` on the server.
    *
    * @param intent — The intent name the server should bind (must match the client's
    *   `remoteIntentHandler` calls).
    */
-  remoteIntentHandler(intent: string): Promise<IntentHandler>;
+  remoteIntentHandler(intent: string): Promise<BackendIntentHandler>;
 
   /**
    * A convenience function. Called on the client so that the server can return it items of data it needs. The client calls
@@ -164,6 +164,8 @@ export interface FDC3Handlers {
    * - `frontend-encrypted-channel-example.ts` — shows how you can implement `sign-context` and
    *   `unwrap-symmetric-key` on the receiver backend so key-request signing and symmetric-key
    *   unwrapping stay off the frontend (`fdc3.security.symmetricKeyResponse` in, unwrapped JWK out).
+   * - `get-user-example.ts` — also implements `get-user-identity` on the requesting backend so JWE decryption,
+   *   JWT verification, and projection to `fdc3.contact` stay server-side (the JWT never reaches the client).
    *
    * @param purpose — Tells the server which operation this call represents; defined by your app.
    * @param o — The payload for that operation (for example `{ context }` or an object compatible with

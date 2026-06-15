@@ -78,6 +78,8 @@ High-level abstractions for managing metadata alongside FDC3 contexts.
 Provides a secure bridge — typically over WebSockets — allowing a frontend application to delegate sensitive cryptographic operations to a trusted backend without exposing private keys in the browser.
 
 - `FDC3Handlers`: The interface your trusted backend implements. Defines three methods: `handleRemoteChannel` (mirror a channel to the backend for signing/encrypting broadcasts), `remoteIntentHandler` (register an intent handler that runs on the backend), and `exchangeData` (a general-purpose RPC for operations such as signing a context or unwrapping a symmetric key).
+- `BackendIntentHandler`: The handler type returned by `remoteIntentHandler`. Like the standard FDC3 `IntentHandler` but with the return type widened to include `PrivateChannelSignal`, so backend implementations can signal the frontend to create a `PrivateChannel` without unsafe casts.
+- `PrivateChannelSignal` / `PRIVATE_CHANNEL_SIGNAL`: A sentinel type and constant (`{ type: 'private' }`) that a `BackendIntentHandler` returns to signal the frontend to call `createPrivateChannel()` and export it to the backend via `handleRemoteChannel`. This is a secure-boundary-internal protocol token — it is never transmitted over FDC3 or seen by the Desktop Agent.
 - `DefaultFDC3Handlers`: A base class implementing `FDC3Handlers` with no-op defaults, intended to be subclassed.
 - `ClientSideHandlersImpl` / `connectRemoteHandlers`: Client-side stub that implements `FDC3Handlers` by forwarding calls to the backend over a WebSocket.
 - `ServerSideHandlersImpl` / `setupWebsocketServer`: Server-side adapter that receives WebSocket messages and dispatches them to your `FDC3Handlers` implementation.
