@@ -475,37 +475,41 @@ Runnable example apps:
 
 ## Encrypted Communications
 
-While digital signatures prove *who* sent a message, they do not prevent the Desktop Agent or other intermediaries from reading it. To keep context data confidential, applications can encrypt it so that only the intended recipient can decrypt it.
+While digital signatures prove *who* sent a message, they do not prevent the Desktop Agent or other intermediaries from reading it. To keep context data confidential, applications can encrypt messages so that only the intended recipient can decrypt them.
 
-### Why Symmetric Key Exchange?
+FDC3 encrypted communications use a **symmetric key** (e.g. AES-GCM) to encrypt the data stream. The key itself is distributed securely using asymmetric cryptography: the broadcaster wraps it in a [JSON Web Encryption (JWE)](https://datatracker.ietf.org/doc/html/rfc7516) token addressed to the recipient's public key, so only the recipient — holding the corresponding private key — can unwrap it. Both the key request and key response **MUST be signed** (JWS) so each party can verify the other's identity before exchanging key material.
 
-Encrypting every message directly with the recipient's asymmetric public key is computationally expensive and impractical for a stream of context messages. The approach used here mirrors TLS: asymmetric cryptography is used once to securely exchange a *symmetric key*, then the much cheaper symmetric cipher (e.g. AES-GCM) encrypts the data stream itself.
+Encrypted messages are wrapped in [`fdc3.security.encryptedContext`](../context/ref/security/EncryptedContextWrapper), which preserves `originalType` for routing and stores the encrypted payload as a JWE compact serialization in `encryptedPayload`.
 
-A [JSON Web Encryption (JWE)](https://datatracker.ietf.org/doc/html/rfc7516) token is used to wrap (encrypt) the symmetric key using the recipient's public key, ensuring only the recipient — holding the corresponding private key — can unwrap it.
+### Why Symmetric Encryption?
+
+Encrypting every message directly with the recipient's asymmetric public key is computationally expensive and impractical for a stream of context messages. The approach used here mirrors TLS: asymmetric cryptography is used once to securely exchange a symmetric key, then the much cheaper symmetric cipher encrypts the data stream itself.
+
+### Symmetric Key Exchange Protocol
+
+The key exchange is driven reactively: the broadcaster starts encrypting and broadcasting immediately. When the receiver encounters a message it cannot decrypt, it broadcasts a signed [`fdc3.security.symmetricKeyRequest`](../context/ref/security/SymmetricKeyRequest). The broadcaster verifies the request signature, wraps the symmetric key as a JWE addressed to the requestor's public key (`jku` from their JWS header), signs the response, and broadcasts the [`fdc3.security.symmetricKeyResponse`](../context/ref/security/SymmetricKeyResponse). The receiver verifies the response JWS, unwraps the JWE with its private key, and decrypts any buffered messages.
+
+**Broadcaster responsibilities:**
+
+- Creates and holds the symmetric key.
+- Encrypts context payloads and broadcasts them as `fdc3.security.encryptedContext`. The `originalType` field preserves the original context type for routing; `id.kid` identifies the symmetric key.
+- When a `symmetricKeyRequest` arrives: verifies the requestor's JWS, reads `jku` from their JWS protected header to fetch their public key, wraps the symmetric key in a JWE using that public key (e.g. RSA-OAEP), signs the response, and broadcasts it.
+
+**Receiver responsibilities:**
+
+- Listens for `fdc3.security.encryptedContext` (checking `type` before dispatching to the appropriate handler).
+- On receiving an encrypted message without a key: broadcasts a signed `symmetricKeyRequest`.
+- On receiving the `symmetricKeyResponse`: verifies the JWS, unwraps the JWE to obtain the symmetric key, and decrypts any buffered messages.
 
 ### Where Should the Symmetric Key Live?
 
-Once the key has been unwrapped, the application must decide whether to hold it in the browser frontend or only in the trusted backend. This is a trade-off between latency and threat model:
+Once the key has been unwrapped, the receiver must decide whether to hold it in the browser frontend or only in the trusted backend. This is a trade-off between latency and threat model:
 
 **Frontend key (lower latency):** The unwrapping operation happens once on the backend (the only step requiring the private key), and the unwrapped symmetric key is returned to the frontend. All subsequent message decryption happens in the browser using the cheap symmetric cipher, with no per-message backend round-trip. This mirrors the TLS pattern most closely and is the right choice when the browser is considered a sufficiently trusted environment for a short-lived session key.
 
 **Backend key (stricter boundary):** The symmetric key never leaves the backend. Every received message is forwarded from the frontend to the backend for decryption, and the plaintext is returned to the frontend. This adds a per-message WebSocket round-trip, which largely offsets the latency advantage of symmetric encryption. However, it is the correct choice when the threat model requires that decrypted plaintext *never* exists in browser memory — for example, when handling highly regulated data or when the browser environment itself is not considered trusted.
 
-Both approaches use exactly the same key exchange protocol (`fdc3.security.symmetricKeyRequest` / `fdc3.security.symmetricKeyResponse`). The choice affects only what happens to the key after it is unwrapped.
-
-### Private Channel Encryption
-
-Applications communicating over a [`PrivateChannel`](ref/PrivateChannel) can negotiate encryption to ensure their communications remain confidential. This is particularly important when sharing sensitive data such as positions, pricing, or user information.
-
-### Symmetric Key Exchange
-
-Encryption uses a symmetric key (e.g. AES-GCM) created by the channel owner and distributed via JWE.
-
-**Key owner (broadcaster):** Creates and holds the symmetric key. Encrypts context payloads with it and broadcasts them wrapped in [`fdc3.security.encryptedContext`](../context/ref/security/EncryptedContextWrapper). The `originalType` field of the wrapper preserves the original context type for routing, and `id.kid` identifies the symmetric key. The encrypted payload (all remaining fields of the original context) is stored as a JWE compact serialization in `encryptedPayload`. When a key request arrives, verifies the requestor's JWS (signature valid and `allowListFunction(jku)` returns true), reads `jku` from their JWS protected header, fetches their public key from that JWKS, wraps the symmetric key in a JWE using that public key (e.g. RSA-OAEP), signs the response with JWS, and broadcasts it.
-
-**Key requestor (listener):** Listens for `fdc3.security.encryptedContext` by checking `type === 'fdc3.security.encryptedContext'` before dispatching to the appropriate handler. Broadcasts a signed key request (JWS) when it needs the symmetric key. When the response arrives, verifies the JWS, unwraps the JWE with their private key to obtain the symmetric key, then decrypts subsequent encrypted payloads. If an encrypted message arrives before the key, the requestor sends a key request.
-
-Both the key request and response **MUST be signed** (JWS). The key owner uses the requestor's `jku` from the JWS header to target the JWE—only that requestor's private key can unwrap it.
+Both patterns use exactly the same key exchange protocol. The choice affects only what happens to the key after it is unwrapped.
 
 ### Flow Diagram
 
