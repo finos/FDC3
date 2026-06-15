@@ -17,7 +17,7 @@ Verification results are never placed on `ContextMetadata` (the wire type forwar
 - `authenticity` — the result of signature verification (`signed`, `valid`, `trusted`, `jku`, `kid`, `alg`, `errors`)
 - `encryption` — the result of decryption (`'decrypted'` | `'cant_decrypt'` | `'not_encrypted'`)
 
-`ContextVerificationMetadata` is available from `@finos/fdc3-standard` and is also the type used by `SecurityAwareContextHandler` and `SecurityAwareIntentHandler`.
+`ContextVerificationMetadata` is exported from `@finos/fdc3-security` and is also the type used by `SecurityAwareContextHandler` and `SecurityAwareIntentHandler`.
 
 ### SecurityAwareContextHandler / SecurityAwareIntentHandler
 
@@ -46,6 +46,7 @@ The core cryptographic interfaces and implementations.
 - `JosePublicFDC3Security`: Implementation of `PublicFDC3Security` using the [`jose`](https://github.com/panva/jose) library (JWS/JWE).
 - `JosePrivateFDC3Security`: Extends `JosePublicFDC3Security` with private-key operations.
 - `AntiReplayChecker`: Interface and `DefaultAntiReplayChecker` implementation for tracking seen `jti` values to prevent replay attacks. In production, back with a shared cache (e.g. Redis) rather than the in-memory default.
+- `ContextVerificationMetadata`: The outcome of verifying a signed or encrypted context — populated locally by the security library, never sent on the wire. Contains `authenticity` (signature check result) and `encryption` (decryption status). This type is defined here rather than in `@finos/fdc3-standard` because it is a library-computed result, not part of the FDC3 wire protocol.
 - `FDC3UserClaims`: TypeScript interface for the JWT payload returned by a `GetUser` intent (`iss`, `sub`, `aud`, `exp`, `iat`, `jti`).
 - `FDC3SecurityAlgorithms`: Configuration record for the cryptographic algorithms used (signing, key wrapping, content encryption). Defaults to `EdDSA` / `RSA-OAEP-256` / `A256GCM`.
 - `FDC3SecurityTimeLimits`: Configuration for signature freshness and context expiry windows.

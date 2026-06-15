@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Channel, DesktopAgent, getAgent, Listener } from '@finos/fdc3';
+import type { Context } from '@finos/fdc3-context';
 import {
   connectRemoteHandlers,
   createJosePublicFDC3SecurityFromUrl,

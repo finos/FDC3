@@ -3,14 +3,8 @@ import { PrivateFDC3Security, SigningFunction } from '../impl/PrivateFDC3Securit
 import { SignatureCheckingFunction } from '../impl/PublicFDC3Security.js';
 import { MetadataHandler } from '../delegates/MetadataHandler.js';
 import { assertIsContext } from '../impl/TypeGuards.js';
-import {
-  AppIdentifier,
-  ContextMetadata,
-  ContextVerificationMetadata,
-  DesktopAgent,
-  IntentResolution,
-  IntentResult,
-} from '@finos/fdc3-standard';
+import { AppIdentifier, ContextMetadata, DesktopAgent, IntentResolution, IntentResult } from '@finos/fdc3-standard';
+import { ContextVerificationMetadata } from '../impl/ContextVerificationMetadata.js';
 
 /**
  * Extends `IntentResolution` with a `getVerification()` method that returns the

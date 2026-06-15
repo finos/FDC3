@@ -431,10 +431,16 @@ Anti-replay claims that MUST accompany a `DetachedSignature` to prevent a captur
 
 ## `ContextVerificationMetadata`
 
+:::note
+`ContextVerificationMetadata` is defined in the `@finos/fdc3-security` package, not `@finos/fdc3-standard`. It is documented here for reference alongside the wire-type metadata interfaces it relates to.
+:::
+
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
+// import { ContextVerificationMetadata } from '@finos/fdc3-security';
+
 interface ContextVerificationMetadata {
   /** The result of signature verification for this context. */
   authenticity?: {

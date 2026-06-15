@@ -415,7 +415,7 @@ To verify a signature, the receiver:
 
 ### Authenticity Metadata
 
-After receiving a signed context, the application passes the received [`ContextMetadata`](ref/Metadata#contextmetadata) to its security implementation's verification function. That function returns a [`ContextVerificationMetadata`](ref/Metadata#contextverificationmetadata) object containing the outcome of signature verification:
+After receiving a signed context, the application passes the received [`ContextMetadata`](ref/Metadata#contextmetadata) to its security implementation's verification function. That function returns a `ContextVerificationMetadata` object (exported from `@finos/fdc3-security`) containing the outcome of signature verification:
 
 ```typescript
 {
