@@ -33,12 +33,12 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
   private readonly desktopAgent: DesktopAgent;
   private readonly channels: Map<string, Channel> = new Map();
   private readonly contextListeners: Map<string, Listener> = new Map();
-  private readonly callback: (ctx: ExchangeDataMessage) => Promise<ExchangeDataMessage | void>;
+  private readonly callback: (message: ExchangeDataMessage) => Promise<ExchangeDataMessage | void>;
 
   constructor(
     messaging: Messaging,
     desktopAgent: DesktopAgent,
-    callback: (ctx: ExchangeDataMessage) => Promise<ExchangeDataMessage | void>
+    callback: (message: ExchangeDataMessage) => Promise<ExchangeDataMessage | void>
   ) {
     this.messaging = messaging;
     this.desktopAgent = desktopAgent;
@@ -120,8 +120,8 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
     };
   }
 
-  async exchangeData(purpose: string, o: object): Promise<object | void> {
-    return await this.callRemote(EXCHANGE_DATA, { purpose, o });
+  async exchangeData(purpose: string, payload: unknown): Promise<unknown> {
+    return await this.callRemote(EXCHANGE_DATA, { purpose, payload });
   }
 
   private async handleBroadcast(br: BroadcastRequest): Promise<BroadcastResponse> {
@@ -200,7 +200,7 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
 export async function connectRemoteHandlers(
   url: string,
   da: DesktopAgent,
-  callback: (ctx: ExchangeDataMessage) => Promise<ExchangeDataMessage | void>
+  callback: (message: ExchangeDataMessage) => Promise<ExchangeDataMessage | void>
 ): Promise<FDC3Handlers & { disconnect(): Promise<void> }> {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(url);

@@ -58,7 +58,7 @@ async function raiseGetUserIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Handle
 
     // Pass the encrypted context to the backend for decryption and JWT verification.
     // The backend returns the decrypted fdc3.security.user session on success.
-    const userSession = await remoteHandlers.exchangeData('user-request', intentResult as object);
+    const userSession = await remoteHandlers.exchangeData('user-request', intentResult);
 
     if (userSession) {
       createLogEntry('success', '✅ User decrypted and JWT verified (app1 backend)', {
@@ -182,24 +182,23 @@ function setupButtonListeners(fdc3: DesktopAgent, remoteHandlers: FDC3Handlers) 
  */
 function handleReturnedMessage(msg: ExchangeDataMessage): void {
   if (msg.purpose === VALUATION_PUSH_PURPOSE) {
-    const o = msg.o as { ctx?: Context; meta?: unknown };
-    const ctx = o.ctx;
+    const { ctx, meta } = msg.payload as { ctx?: Context; meta?: unknown };
     createLogEntry('success', '✅ Decrypted A Price', {
       context: ctx,
-      metadata: o.meta,
+      metadata: meta,
       timestamp: new Date().toISOString(),
     });
     return;
   }
 
-  if ((msg.o as Context & { __encrypted?: string }).__encrypted) {
+  if ((msg.payload as Context & { __encrypted?: string }).__encrypted) {
     createLogEntry('error', '❌ Got An Encrypted Price - Will Request Channel Key', {
-      context: msg.o,
+      context: msg.payload,
       timestamp: new Date().toISOString(),
     });
   } else {
     createLogEntry('success', '✅ Got A Price', {
-      context: msg.o,
+      context: msg.payload,
       timestamp: new Date().toISOString(),
     });
   }

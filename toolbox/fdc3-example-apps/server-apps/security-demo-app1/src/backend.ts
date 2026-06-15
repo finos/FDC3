@@ -60,14 +60,14 @@ class App1BackendHandlers extends DefaultFDC3Handlers {
     this.metadataHandler = createMetadataHandlerWithFDC3Version('3.0');
   }
 
-  async exchangeData(purpose: string, o: object): Promise<object | void> {
+  async exchangeData(purpose: string, payload: unknown): Promise<unknown> {
     if (purpose === 'user-request') {
       // Return cached session immediately if already authenticated.
       if (this.user) {
         return this.user;
       }
 
-      const ctx = o as Context;
+      const ctx = payload as Context;
       if (ctx.type === 'fdc3.security.encryptedContext') {
         const enc = (ctx as EncryptedContextWrapper).encryptedPayload;
         if (!enc) {
@@ -101,7 +101,7 @@ class App1BackendHandlers extends DefaultFDC3Handlers {
     }
 
     if (purpose === 'request-prices') {
-      const body = o as RequestPricesPayload;
+      const body = payload as RequestPricesPayload;
       const instrument = body.context ?? body.instrument;
       if (!instrument || typeof instrument !== 'object') {
         return undefined;
@@ -111,7 +111,7 @@ class App1BackendHandlers extends DefaultFDC3Handlers {
       return { signature, antiReplay };
     }
 
-    return super.exchangeData(purpose, o);
+    return super.exchangeData(purpose, payload);
   }
 
   async remoteIntentHandler(intent: string): Promise<IntentHandler> {
@@ -132,7 +132,7 @@ class App1BackendHandlers extends DefaultFDC3Handlers {
         const valuationHandler: SecurityAwareContextHandler = (ctx, meta) => {
           emitToClient(this.ws, EXCHANGE_DATA, {
             purpose: VALUATION_PUSH_PURPOSE,
-            o: { ctx, meta },
+            payload: { ctx, meta },
           });
         };
         await support.addContextListener(channel, 'fdc3.valuation', valuationHandler);

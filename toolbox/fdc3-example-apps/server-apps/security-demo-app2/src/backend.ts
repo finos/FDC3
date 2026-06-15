@@ -96,7 +96,7 @@ class App2BackendHandlers extends DefaultFDC3Handlers {
               await broadcaster.broadcast(valuation);
               emitToClient(this.ws, EXCHANGE_DATA, {
                 purpose: VALUATION_PUSH_PURPOSE,
-                o: { ctx: valuation },
+                payload: { ctx: valuation },
               });
               console.log('[app2 backend] broadcast encrypted valuation', i);
             })();

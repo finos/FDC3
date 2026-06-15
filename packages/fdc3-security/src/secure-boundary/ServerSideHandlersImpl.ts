@@ -117,7 +117,7 @@ export function setupWebsocketServer(
 
           case EXCHANGE_DATA: {
             const props = payload as ExchangeDataMessage;
-            const obj = await handlers.exchangeData(props.purpose, props.o);
+            const obj = await handlers.exchangeData(props.purpose, props.payload);
             if (id) ack(ws, id, obj);
             break;
           }

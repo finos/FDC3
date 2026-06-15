@@ -40,8 +40,8 @@ class IDPBackendHandlers extends DefaultFDC3Handlers {
     super();
   }
 
-  async exchangeData(purpose: string, o: object): Promise<object | void> {
-    const ctx = o as Context;
+  async exchangeData(purpose: string, payload: unknown): Promise<unknown> {
+    const ctx = payload as Context;
     if (purpose === 'user-request' && ctx.type === 'fdc3.security.userRequest') {
       // Return cached session if already created for this connection.
       if (!this.demoUser) {
@@ -60,7 +60,7 @@ class IDPBackendHandlers extends DefaultFDC3Handlers {
       this.demoUser = null;
       return;
     }
-    return super.exchangeData(purpose, o);
+    return super.exchangeData(purpose, payload);
   }
 
   async remoteIntentHandler(intent: string): Promise<IntentHandler> {

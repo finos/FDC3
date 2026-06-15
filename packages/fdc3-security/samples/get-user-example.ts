@@ -126,27 +126,29 @@ class RequestingAppBackendHandlers extends DefaultFDC3Handlers {
     super();
   }
 
-  async exchangeData(purpose: string, o: object): Promise<object | void> {
+  async exchangeData(purpose: string, payload: unknown): Promise<unknown> {
     if (purpose === 'sign-context') {
       // Sign the fdc3.security.userRequest on the backend so the identity provider app
       // can verify the requesting app's identity before issuing a token.
-      return await this.security.sign(o as Context);
+      return await this.security.sign(payload as Context);
     }
     if (purpose === EXCHANGE_GET_USER_IDENTITY) {
       // The frontend received fdc3.security.encryptedContext as the GetUser intent result.
       // We decrypt it here on the backend (private key required), verify the JWT signature,
       // and project to fdc3.contact so the raw JWT never reaches the frontend.
-      if (!isEncryptedContextWrapper(o as Context)) {
-        throw new Error(`get-user-identity: expected fdc3.security.encryptedContext but received ${JSON.stringify(o)}`);
+      if (!isEncryptedContextWrapper(payload as Context)) {
+        throw new Error(
+          `get-user-identity: expected fdc3.security.encryptedContext but received ${JSON.stringify(payload)}`
+        );
       }
-      const encryptedContext: EncryptedContextWrapper = o as EncryptedContextWrapper;
-      const payload = encryptedContext.encryptedPayload;
-      if (typeof payload !== 'string') {
+      const encryptedContext: EncryptedContextWrapper = payload as EncryptedContextWrapper;
+      const encryptedPayload = encryptedContext.encryptedPayload;
+      if (typeof encryptedPayload !== 'string') {
         throw new Error('get-user-identity: encryptedPayload must be a string');
       }
 
       // Decrypt the JWE payload using this app's private key to get fdc3.security.user.
-      const decrypted = await this.security.decryptContextWithPrivateKey(payload);
+      const decrypted = await this.security.decryptContextWithPrivateKey(encryptedPayload);
       if (!isUser(decrypted)) {
         throw new Error(`get-user-identity: expected fdc3.security.user, got ${decrypted.type}`);
       }
@@ -182,7 +184,7 @@ class RequestingAppBackendHandlers extends DefaultFDC3Handlers {
       // Contact extends Context so this satisfies the Context return type.
       return { context: contact };
     }
-    return super.exchangeData(purpose, o);
+    return super.exchangeData(purpose, payload);
   }
 }
 
@@ -270,7 +272,7 @@ async function step4RequestingAppRaiseGetUser(requestingApp: AppBackEnd, mockReq
 
     // Backend decrypts, verifies the JWT signature, and returns a typed fdc3.contact
     // wrapped in { context } as required by the exchangeData return shape.
-    const identityOut = await requestingHandlers.exchangeData(EXCHANGE_GET_USER_IDENTITY, userResult as object);
+    const identityOut = await requestingHandlers.exchangeData(EXCHANGE_GET_USER_IDENTITY, userResult);
     assertDefined(identityOut, 'step4RequestingAppRaiseGetUser: get-user-identity exchangeData');
     if (!('context' in (identityOut as object))) {
       throw new Error('step4RequestingAppRaiseGetUser: get-user-identity result missing context field');

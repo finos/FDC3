@@ -50,8 +50,8 @@ class EntraBackendHandlers extends DefaultFDC3Handlers {
     this.jwtValidator = new JWTValidator(entraConfig);
   }
 
-  async exchangeData(purpose: string, o: object): Promise<object | void> {
-    const ctx = o as Context;
+  async exchangeData(purpose: string, payload: unknown): Promise<unknown> {
+    const ctx = payload as Context;
 
     if (purpose === 'user-data' && isUser(ctx)) {
       const jwt = ctx.wrappedJwt;
@@ -89,7 +89,7 @@ class EntraBackendHandlers extends DefaultFDC3Handlers {
       return;
     }
 
-    return super.exchangeData(purpose, o);
+    return super.exchangeData(purpose, payload);
   }
 
   async remoteIntentHandler(intent: string): Promise<IntentHandler> {

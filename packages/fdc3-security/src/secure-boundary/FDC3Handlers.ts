@@ -90,10 +90,10 @@ export interface FDC3Handlers {
    *   JWT verification, and projection to `fdc3.contact` stay server-side (the JWT never reaches the client).
    *
    * @param purpose — Tells the server which operation this call represents; defined by your app.
-   * @param o — The payload for that operation (for example `{ context }` or an object compatible with
+   * @param payload — The payload for that operation (for example `{ context }` or an object compatible with
    *   `fdc3.security.symmetricKeyResponse`).
    */
-  exchangeData(purpose: string, o: object): Promise<object | void>;
+  exchangeData(purpose: string, payload: unknown): Promise<unknown>;
 }
 
 /**
@@ -109,7 +109,7 @@ export class DefaultFDC3Handlers implements FDC3Handlers {
     return async () => undefined;
   }
 
-  async exchangeData(_purpose: string, _o: object): Promise<object | void> {
+  async exchangeData(_purpose: string, _payload: unknown): Promise<unknown> {
     return undefined;
   }
 }

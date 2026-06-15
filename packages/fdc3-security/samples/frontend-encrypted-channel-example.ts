@@ -40,21 +40,22 @@ class ReceivingAppBackendHandlers extends DefaultFDC3Handlers {
     super();
   }
 
-  async exchangeData(purpose: string, o: object): Promise<object | void> {
+  async exchangeData(purpose: string, payload: unknown): Promise<unknown> {
     if (purpose === 'sign-context') {
       // The frontend needs to sign fdc3.security.symmetricKeyRequest messages to prove
       // identity to the broadcaster before the key is released. Signing requires the
       // private key and must happen on the backend.
-      const { context } = o as { context: Context };
+      const { context } = payload as { context: Context };
       return await this.security.sign(context);
     }
     if (purpose === 'unwrap-symmetric-key') {
       // The symmetric key arrives wrapped in a JWE targeting our public key.
       // Unwrapping requires our private key and must happen on the backend.
       // The unwrapped key is returned to the frontend for low-latency per-message decryption.
-      const skr: SymmetricKeyResponse = o as SymmetricKeyResponse;
+      const skr = payload as SymmetricKeyResponse;
       return await this.security.unwrapSymmetricKey(skr);
     }
+    return undefined;
   }
 }
 
