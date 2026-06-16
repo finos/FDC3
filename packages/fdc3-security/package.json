@@ -67,6 +67,6 @@
     "tsx": "^4.19.1",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.17.0",
-    "uuid": "^9.0.1"
+    "uuid": "^14.0.0"
   }
 }
