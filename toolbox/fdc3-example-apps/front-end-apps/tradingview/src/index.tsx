@@ -1,3 +1,4 @@
+import '../../static/styles.css';
 import { createRoot } from 'react-dom/client';
 import TradingViewWidget from './TradingViewWidget';
 

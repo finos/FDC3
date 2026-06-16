@@ -1,3 +1,4 @@
+import '../../static/styles.css';
 import { useEffect, useState } from 'react';
 import { Channel, DesktopAgent, FDC3ChannelChangedEvent } from '@finos/fdc3';
 import { getAgent } from '@finos/fdc3-get-agent';
