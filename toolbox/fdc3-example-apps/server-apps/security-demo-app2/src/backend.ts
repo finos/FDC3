@@ -1,7 +1,7 @@
 import type { Application } from 'express';
 import type { Server } from 'http';
 import { WebSocket } from 'ws';
-import { Channel, IntentHandler, PrivateChannel } from '@finos/fdc3';
+import { Channel, PrivateChannel } from '@finos/fdc3';
 import { Context, Valuation } from '@finos/fdc3-context';
 import type { ContextMetadata } from '@finos/fdc3-standard';
 import {
@@ -13,18 +13,32 @@ import {
   EncryptedBroadcastSupport,
   EXCHANGE_DATA,
   JosePrivateFDC3Security,
+  PRIVATE_CHANNEL_SIGNAL,
   provisionJWKS,
   setupWebsocketServer,
+  type BackendIntentHandler,
   type EncryptedBroadcaster,
   type MetadataHandler,
+  type PrivateChannelSignal,
 } from '@finos/fdc3-security';
 
-/** Pushed to the App2 browser over the secure-boundary WebSocket when a valuation is broadcast on the private channel. */
+/** Purpose string for server → client push of decrypted valuations over the secure-boundary WebSocket. */
 export const VALUATION_PUSH_PURPOSE = 'valuation-push';
 
 /**
- * App2: verifies signed `demo.GetPrices` context, returns a private channel result,
- * then broadcasts demo valuations on that channel and mirrors them to the connected client via {@link EXCHANGE_DATA}.
+ * Trusted-backend handlers for App2 (sell-side app).
+ *
+ * Handles one `remoteIntentHandler` intent:
+ * - `'demo.GetPrices'`: verifies the JWS signature on the inbound `fdc3.instrument` context
+ *   to confirm the request genuinely came from a trusted application. If valid, signals the
+ *   frontend to create a PrivateChannel by returning `{ type: 'private' }`.
+ *
+ * Handles one `handleRemoteChannel` purpose:
+ * - `'demo.GetPrices'`: receives the PrivateChannel created by the frontend, wraps it with
+ *   `EncryptedBroadcastSupport`, and broadcasts five encrypted `fdc3.valuation` snapshots
+ *   at one-second intervals. Each broadcast is also mirrored to the App2 browser via
+ *   {@link EXCHANGE_DATA} push. After 10 seconds the broadcaster shuts down and the
+ *   PrivateChannel is disconnected.
  */
 class App2BackendHandlers extends DefaultFDC3Handlers {
   private readonly metadataHandler: MetadataHandler;
@@ -37,18 +51,21 @@ class App2BackendHandlers extends DefaultFDC3Handlers {
     this.metadataHandler = createMetadataHandlerWithFDC3Version('3.0');
   }
 
-  async remoteIntentHandler(intent: string): Promise<IntentHandler> {
+  async remoteIntentHandler(intent: string): Promise<BackendIntentHandler> {
     if (intent !== 'demo.GetPrices') {
       return super.remoteIntentHandler(intent);
     }
 
-    return async (ctx: Context, md: ContextMetadata): Promise<Context> => {
+    return async (ctx: Context, md: ContextMetadata): Promise<Context | PrivateChannelSignal> => {
+      // Verify the JWS signature on the inbound instrument to confirm the request
+      // came from a trusted application. Reject if unsigned or untrusted.
       const auth = await this.security.verifySignature(md.signature, ctx, md.antiReplay);
       if (!auth.signed || !auth.trusted || !auth.valid) {
         return unauthorizedContext(ctx, 'Signature verification failed');
       }
 
-      return { type: 'private' } as unknown as Context;
+      // Signal the frontend to create a PrivateChannel and call handleRemoteChannel.
+      return PRIVATE_CHANNEL_SIGNAL;
     };
   }
 
@@ -79,7 +96,7 @@ class App2BackendHandlers extends DefaultFDC3Handlers {
               await broadcaster.broadcast(valuation);
               emitToClient(this.ws, EXCHANGE_DATA, {
                 purpose: VALUATION_PUSH_PURPOSE,
-                o: { ctx: valuation },
+                payload: { ctx: valuation },
               });
               console.log('[app2 backend] broadcast encrypted valuation', i);
             })();
@@ -101,7 +118,7 @@ function unauthorizedContext(ctx: Context, reason: string): Context {
   return {
     type: 'fdc3.error',
     error: `${reason}: ${JSON.stringify(ctx)}`,
-  } as Context;
+  };
 }
 
 export default async function backend(

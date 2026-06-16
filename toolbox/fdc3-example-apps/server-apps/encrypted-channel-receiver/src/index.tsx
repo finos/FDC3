@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Channel, Context, ContextMetadata, DesktopAgent, getAgent, Listener } from '@finos/fdc3';
+import { Channel, DesktopAgent, getAgent, Listener } from '@finos/fdc3';
+import type { Context } from '@finos/fdc3-context';
 import {
   connectRemoteHandlers,
   createJosePublicFDC3SecurityFromUrl,
   createMetadataHandler,
   JsonWebKeyWithId,
   PublicEncryptedContextListenerSupport,
+  SecurityAwareContextHandler,
   type SigningFunction,
 } from '@finos/fdc3-security';
 import styles from './main.module.css';
@@ -26,6 +28,23 @@ function prettyJson(value: unknown): string {
   }
 }
 
+/**
+ * Frontend for the encrypted-channel-receiver app (FRONTEND KEY pattern).
+ *
+ * Security flow:
+ * 1. On mount, connects to the backend WebSocket and constructs a
+ *    `PublicEncryptedContextListenerSupport` instance.
+ * 2. When the user joins a channel, calls `support.addContextListener` with a
+ *    `SecurityAwareContextHandler`. The support layer intercepts incoming
+ *    `fdc3.security.encryptedContext` broadcasts and automatically handles key
+ *    exchange when needed:
+ *    a. Signs `fdc3.security.symmetricKeyRequest` via the backend (`sign-context`).
+ *    b. Receives the wrapped key response and unwraps it via the backend
+ *       (`unwrap-symmetric-key`), returning the symmetric key to the frontend.
+ *    c. Decrypts each subsequent payload in the browser using the symmetric key.
+ * 3. The handler receives the decrypted context and `ContextVerificationMetadata`
+ *    (with `encryption: 'decrypted'`) as a typed third argument.
+ */
 export const EncryptedReceiveComponent = () => {
   const [logMessages, setLogMessages] = useState<string[]>([]);
   const [channelId, setChannelId] = useState<string | null>(null);
@@ -47,6 +66,7 @@ export const EncryptedReceiveComponent = () => {
       setLogMessages(prev => [...prev, line]);
     };
 
+    /** Unsubscribes the encrypted context listener when the channel changes. */
     const teardownEncryptedListener = async () => {
       if (encryptedListener) {
         try {
@@ -58,6 +78,11 @@ export const EncryptedReceiveComponent = () => {
       }
     };
 
+    /**
+     * Attaches `PublicEncryptedContextListenerSupport` to the given channel.
+     * The support layer handles key requests/responses automatically; the handler
+     * is only called once each message is successfully decrypted.
+     */
     const bindToUserChannel = async (channel: Channel | null) => {
       await teardownEncryptedListener();
       if (!channel) {
@@ -71,19 +96,16 @@ export const EncryptedReceiveComponent = () => {
       setChannelId(id);
       setStatus(`Listening for encrypted → ${DECRYPTED_CONTEXT_TYPE} on user channel ${id}`);
 
-      encryptedListener = await support.addContextListener(
-        channel,
-        DECRYPTED_CONTEXT_TYPE,
-        (ctx: Context, meta?: ContextMetadata) => {
-          pushLog('Decrypted:\n' + prettyJson(ctx));
-          const encryption = meta && 'encryption' in meta ? (meta as { encryption?: string }).encryption : undefined;
-          if (encryption === 'decrypted') {
-            pushLog('(metadata: decryption performed on front-end)');
-          }
+      const decryptedHandler: SecurityAwareContextHandler = (ctx, _meta, verification) => {
+        pushLog('Decrypted:\n' + prettyJson(ctx));
+        if (verification.encryption === 'decrypted') {
+          pushLog('(metadata: decryption performed on front-end)');
         }
-      );
+      };
+      encryptedListener = await support.addContextListener(channel, DECRYPTED_CONTEXT_TYPE, decryptedHandler);
     };
 
+    /** Re-binds the listener whenever the user switches to a different channel. */
     const onUserChannelChanged = () => {
       void (async () => {
         if (!agent || cancelled) return;
@@ -108,12 +130,16 @@ export const EncryptedReceiveComponent = () => {
         const publicSecurity = await createJosePublicFDC3SecurityFromUrl(jwksUrl, () => true);
         const metadataHandler = await createMetadataHandler(agent);
 
+        // signingFunction: delegates signing of symmetricKeyRequest to the backend
+        // (private key must not enter the browser).
         const signingFunction: SigningFunction = async (context: Context) => {
           return (await remoteHandlers!.exchangeData('sign-context', {
             context,
           })) as Awaited<ReturnType<SigningFunction>>;
         };
 
+        // unwrapFunction: delegates JWE key unwrapping to the backend. The unwrapped
+        // symmetric key is returned to the frontend for fast per-message decryption.
         const unwrapFunction = async (skr: object): Promise<JsonWebKeyWithId> => {
           return (await remoteHandlers!.exchangeData('unwrap-symmetric-key', skr)) as JsonWebKeyWithId;
         };

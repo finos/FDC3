@@ -3,7 +3,7 @@
     "$id": "https://fdc3.finos.org/schemas/next/context/encrypted.schema.json",
     "type": "object",
     "title": "Encrypted Context Wrapper",
-    "description": "@experimental A wrapper context type for encrypted FDC3 context data. When an app broadcasts encrypted context data, the original type is preserved for routing purposes, while the remaining context information is encrypted. Recipients can request a symmetric key via 'fdc3.security.symmetricKey.request' to decrypt the payload.",
+    "description": "@experimental A wrapper context type for encrypted FDC3 context data. When an app broadcasts encrypted context data, the original type is preserved for routing purposes, while the remaining context information is encrypted. Recipients can request a symmetric key via 'fdc3.security.symmetricKeyRequest' to decrypt the payload.",
     "allOf": [
         {
             "type": "object",

@@ -162,7 +162,7 @@ describe('JosePrivateFDC3Security', () => {
         expect(result.jku).toBe(senderJWKSUrl);
         expect(result.alg).toBe('EdDSA');
         expect(result.kid).toBeDefined();
-        expect(result.antiReplayClaims).toEqual(antiReplay);
+        // antiReplayClaims was removed from Authenticity — anti-replay data is on ContextMetadata.antiReplay
       } else {
         throw new Error('Expected a signed result: ' + JSON.stringify(result));
       }

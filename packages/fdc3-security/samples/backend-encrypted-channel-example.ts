@@ -1,9 +1,9 @@
 import { AppIdentifier, Context } from '@finos/fdc3-context';
 import { WebSocket } from 'ws';
-import { Channel, ContextMetadata, DesktopAgent } from '@finos/fdc3-standard';
+import { Channel, DesktopAgent } from '@finos/fdc3-standard';
 
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
-import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
+import { DefaultFDC3Handlers, PRIVATE_CHANNEL_SIGNAL, PrivateChannelSignal } from '../src/secure-boundary/FDC3Handlers';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
 import { EncryptedBroadcastSupport, EncryptedBroadcaster } from '../src/encryption/EncryptedBroadcastSupport';
 import { PrivateEncryptedContextListenerSupport } from '../src/encryption/EncryptedContextListenerSupport';
@@ -19,6 +19,12 @@ const INTENT_SHARE_ENCRYPTED_CHANNEL = 'ShareEncryptedChannel';
  * Broadcasting app backend handlers (broadcaster, key creator). Receives the channel via handleRemoteChannel,
  * uses EncryptedBroadcastSupport so encryption is done entirely on the backend. The symmetric key
  * is created and held on the backend; key requests are responded to on the backend.
+ *
+ * BACKEND KEY PATTERN: The symmetric key never leaves the backend. Every decrypted message
+ * incurs a backend round-trip, which largely offsets the latency advantage of symmetric encryption.
+ * Use this pattern when decrypted plaintext must never exist in browser memory — for example,
+ * when handling highly regulated data or when the browser environment itself is not trusted.
+ * For lower-latency decryption where the browser is trusted, see frontend-encrypted-channel-example.ts.
  */
 class BroadcastingAppBackendHandlers extends DefaultFDC3Handlers {
   private broadcaster: EncryptedBroadcaster | null = null;
@@ -39,15 +45,20 @@ class BroadcastingAppBackendHandlers extends DefaultFDC3Handlers {
     console.log(
       '[Broadcasting App Backend] Received channel via handleRemoteChannel, setting up EncryptedBroadcastSupport'
     );
+    // EncryptedBroadcastSupport creates a fresh symmetric key and starts listening
+    // for fdc3.security.symmetricKeyRequest messages on this channel so it can
+    // distribute the key to verified listeners.
     const support = new EncryptedBroadcastSupport(this.security, this.metadataHandler);
     this.broadcaster = await support.broadcastWrapper(channel);
   }
 
   async remoteIntentHandler(intent: string) {
     if (intent !== INTENT_SHARE_ENCRYPTED_CHANNEL) return super.remoteIntentHandler(intent);
-    return async (_context: Context) => {
+    // Return PRIVATE_CHANNEL_SIGNAL to tell the frontend to create a PrivateChannel
+    // and export it to us via handleRemoteChannel.
+    return async (_context: Context): Promise<PrivateChannelSignal> => {
       console.log('[Broadcasting App Backend] Intent ShareEncryptedChannel: signalling client to create channel');
-      return { type: 'private' as const };
+      return PRIVATE_CHANNEL_SIGNAL;
     };
   }
 
@@ -91,11 +102,16 @@ class ReceivingAppBackendHandlers extends DefaultFDC3Handlers {
     if (purpose !== 'listen') return;
 
     console.log('[Receiving App Backend] Received channel via handleRemoteChannel, setting up decryption listener');
+    // PrivateEncryptedContextListenerSupport listens for fdc3.security.encryptedContext,
+    // automatically requests the symmetric key from the broadcaster when needed,
+    // and decrypts each payload using the backend's private key — so plaintext
+    // never reaches the frontend.
     const support = new PrivateEncryptedContextListenerSupport(this.security, this.metadataHandler);
-    await support.addContextListener(channel, 'test.encrypted', (ctx: Context, meta?: ContextMetadata) => {
+    await support.addContextListener(channel, 'test.encrypted', (ctx: Context, _meta, verification) => {
       console.log(`\n[Receiving App Backend] ✅ Decrypted context received (encryption done on backend):`);
       console.log(JSON.stringify(ctx, null, 2));
-      if (meta?.encryption === 'decrypted') {
+      // verification.encryption is 'decrypted' on successful decryption.
+      if (verification.encryption === 'decrypted') {
         console.log('[Receiving App Backend] Metadata indicates decryption performed on backend');
       }
     });
@@ -160,9 +176,13 @@ async function step4ReceivingAppRaiseIntentAndSetupListener(
 
   const handlers = await connectRemoteHandlers(receivingApp.baseUrl.replace('http', 'ws'), mockDA, async () => {});
 
+  // Raise the intent to obtain the PrivateChannel from the broadcasting app.
   const resolution = await mockDA.raiseIntent(INTENT_SHARE_ENCRYPTED_CHANNEL, { type: 'fdc3.nothing' } as Context);
   const channel = await resolution.getResult();
 
+  // Forward the channel to the receiving app's backend via handleRemoteChannel.
+  // The backend will set up PrivateEncryptedContextListenerSupport on it — all
+  // decryption and key exchange happens there, never in the frontend.
   await handlers.handleRemoteChannel('listen', channel as Channel);
   return handlers;
 }

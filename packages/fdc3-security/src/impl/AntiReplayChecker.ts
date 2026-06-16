@@ -1,6 +1,4 @@
-import { BrowserTypes } from '@finos/fdc3-schema';
-
-type AntiReplayClaims = BrowserTypes.AntiReplayClaims;
+import { AntiReplayClaims } from '@finos/fdc3-standard';
 
 /**
  * Interface for checking anti-replay claims to ensure that a signed context

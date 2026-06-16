@@ -3,8 +3,8 @@
     {
       "appId": "security-poc-1",
       "name": "Security POC 1",
-      "title": "Security POC 1:  Needs Prices",
-      "description": "Requests prices from POC 2",
+      "title": "Security POC 1: Requests Prices",
+      "description": "Buy-side application demonstrating the FDC3 security model. Raises the GetUser intent to authenticate the user via an identity provider app, then raises demo.GetPrices with a signed fdc3.instrument context to request an encrypted price stream from Security POC 2.",
       "type": "web",
       "details": {
         "url": "http://localhost:4033"
@@ -19,7 +19,19 @@
         {
           "src": "http://localhost:4033/icon.svg"
         }
-      ]
+      ],
+      "interop": {
+        "intents": {
+          "raises": {
+            "GetUser": {
+              "contexts": ["fdc3.security.userRequest"]
+            },
+            "demo.GetPrices": {
+              "contexts": ["fdc3.instrument"]
+            }
+          }
+        }
+      }
     }
   ],
   "message": "OK"

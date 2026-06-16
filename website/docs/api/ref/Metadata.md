@@ -242,9 +242,16 @@ interface ContextMetadata {
    *  SHOULD generate a new one. */
   readonly traceId: string;
 
-  /** A cryptographic signature that can be used to verify the authenticity
-   *  and integrity of the context or intent message. */
-  readonly signature?: string;
+  /** A detached JSON Web Signature (JWS) proving the authenticity and integrity
+   *  of the context, forwarded from the originating app's AppProvidableContextMetadata.
+   *  See [Security & Identity](../security) for details. */
+  readonly signature?: DetachedSignature;
+
+  /** Anti-replay claims (`iat`, `exp`, `jti`) forwarded from the originating app.
+   *  Used alongside `signature` to prevent replay attacks.
+   *  MUST be present when `signature` is set.
+   *  See [Security & Identity](../security) for details. */
+  readonly antiReplay?: AntiReplayClaims;
 
   /** Custom metadata provided by the originating app. */
   readonly custom?: Record<string, any>;
@@ -260,7 +267,8 @@ interface IContextMetadata
     IAppIdentifier? Source { get; }
     DateTime? Timestamp { get; }
     string? TraceId { get; }
-    string? Signature { get; }
+    IDetachedSignature? Signature { get; }
+    IAntiReplayClaims? AntiReplay { get; }
     IDictionary<string, object>? Custom { get; }
 }
 ```
@@ -270,18 +278,21 @@ interface IContextMetadata
 
 ```go
 type ContextMetadata struct {
-  Source    AppIdentifier          `json:"source"`
-  Timestamp time.Time              `json:"timestamp"`
-  TraceId   string                 `json:"traceId"`
-  Signature string                 `json:"signature,omitempty"`
-  Custom    map[string]interface{} `json:"custom,omitempty"`
+  Source     AppIdentifier          `json:"source"`
+  Timestamp  time.Time              `json:"timestamp"`
+  TraceId    string                 `json:"traceId"`
+  Signature  *DetachedSignature     `json:"signature,omitempty"`
+  AntiReplay *AntiReplayClaims      `json:"antiReplay,omitempty"`
+  Custom     map[string]interface{} `json:"custom,omitempty"`
 }
 ```
 
 </TabItem>
 </Tabs>
 
-Metadata relating to a context or intent and context received through the `addContextListener` and `addIntentListener` functions. Includes delivery information provided by the Desktop Agent (`source`, `timestamp`, `traceId`) and optional metadata forwarded from the originating app (`traceId`, `signature`, `custom`).
+Metadata relating to a context or intent received through the `addContextListener` and `addIntentListener` functions. Includes delivery information provided by the Desktop Agent (`source`, `timestamp`, `traceId`) and optional metadata forwarded from the originating app (`signature`, `antiReplay`, `traceId`, `custom`).
+
+Note that `signature` and `antiReplay` are transmitted metadata fields — forwarded by the Desktop Agent unchanged from the sender's `AppProvidableContextMetadata`. The result of _verifying_ a signature is not a metadata field; it is returned by the receiving application's security implementation as a [`ContextVerificationMetadata`](#contextverificationmetadata) object.
 
 **See also:**
 
@@ -304,9 +315,17 @@ interface AppProvidableContextMetadata {
    *  across applications. If provided, the Desktop Agent SHOULD forward it. */
   traceId?: string;
 
-  /** A cryptographic signature that can be used to verify the authenticity
-   *  and integrity of the context or intent message. */
-  signature?: string;
+  /** A detached JSON Web Signature (JWS) proving the authenticity and integrity
+   *  of the context. The signature is computed over the canonicalized context
+   *  object and the `antiReplay` claims. MUST be accompanied by `antiReplay`.
+   *  See [Security & Identity](../security) for details. */
+  signature?: DetachedSignature;
+
+  /** Anti-replay claims (`iat`, `exp`, `jti`) used alongside `signature` to
+   *  prevent a signed message from being replayed by an attacker.
+   *  MUST be included when `signature` is present.
+   *  See [Security & Identity](../security) for details. */
+  antiReplay?: AntiReplayClaims;
 
   /** Custom metadata. Allows use of metadata fields that have yet to be
    *  standardized. */
@@ -342,6 +361,8 @@ type AppProvidableContextMetadata struct {
 
 Metadata that may be provided by an app when calling `broadcast`, `open`, `raiseIntent` or `raiseIntentForContext`. The Desktop Agent MUST forward any provided fields to the receiving app's handler via `ContextMetadata`, while always overriding `source` and `timestamp` with its own values.
 
+The `signature` and `antiReplay` fields support the [Security & Identity](../security) features. `DetachedSignature` and `AntiReplayClaims` are defined in the FDC3 schema — see the [Security & Identity](../security) documentation for full details on generating and verifying signatures.
+
 **See also:**
 
 - [`ContextMetadata`](#contextmetadata)
@@ -349,6 +370,114 @@ Metadata that may be provided by an app when calling `broadcast`, `open`, `raise
 - [`DesktopAgent.open`](DesktopAgent#open)
 - [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
 - [`DesktopAgent.raiseIntentForContext`](DesktopAgent#raiseintentforcontext)
+
+## `DetachedSignature`
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+interface DetachedSignature {
+  /** The BASE64URL-encoded JWS protected header. When decoded, contains
+   *  fields including: `alg` (signature algorithm), `jku` (JWKS URL for
+   *  key verification), and `kid` (key identifier). */
+  readonly protected: string;
+
+  /** The BASE64URL-encoded digital signature computed over the protected
+   *  header and the canonicalized context payload (detached). */
+  readonly signature: string;
+}
+```
+
+</TabItem>
+</Tabs>
+
+A Detached JSON Web Signature (JWS) used to prove the authenticity and integrity of a signed context object. The signature is computed over the canonicalized JSON of `{ context, antiReplay }` using the signing application's private key, and can be verified using the public key retrieved from the JWKS URL in the protected header. See [Security & Identity](../security) for the full signing and verification flow.
+
+**See also:**
+
+- [`AppProvidableContextMetadata`](#appprovidablecontextmetadata)
+- [`AntiReplayClaims`](#antireplayclaims)
+- [Security & Identity](../security)
+
+## `AntiReplayClaims`
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+interface AntiReplayClaims {
+  /** Issued-at time as a Unix timestamp (seconds since epoch). */
+  readonly iat: number;
+
+  /** Expiration time as a Unix timestamp (seconds since epoch). */
+  readonly exp: number;
+
+  /** Unique identifier for this signed context instance (UUID). */
+  readonly jti: string;
+}
+```
+
+</TabItem>
+</Tabs>
+
+Anti-replay claims that MUST accompany a `DetachedSignature` to prevent a captured signed message from being resubmitted by an attacker. The `jti` is a unique token ID that receiving applications MUST record and reject if seen again within the `exp` window. Note that timestamps use Unix epoch seconds (NumericDate per [RFC 7519](https://datatracker.ietf.org/doc/html/rfc7519)), not the ISO 8601 format used elsewhere in FDC3.
+
+**See also:**
+
+- [`DetachedSignature`](#detachedsignature)
+- [`AppProvidableContextMetadata`](#appprovidablecontextmetadata)
+- [Security & Identity](../security)
+
+## `ContextVerificationMetadata`
+
+:::note
+`ContextVerificationMetadata` is defined in the `@finos/fdc3-security` package, not `@finos/fdc3-standard`. It is documented here for reference alongside the wire-type metadata interfaces it relates to.
+:::
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+// import { ContextVerificationMetadata } from '@finos/fdc3-security';
+
+interface ContextVerificationMetadata {
+  /** The result of signature verification for this context. */
+  authenticity?: {
+    /** True if a `signature` field was present in the received metadata. */
+    signed: boolean;
+    /** True if the JWS cryptographically verified against the signed bytes. */
+    valid?: boolean;
+    /** True if the signing key's JWKS URL was in the application's allowlist. */
+    trusted?: boolean;
+    /** The JWKS URL from the JWS protected header, identifying the signer. */
+    jku?: string;
+    /** The key identifier from the JWS protected header. */
+    kid?: string;
+    /** The signature algorithm from the JWS protected header. */
+    alg?: string;
+    /** Human-readable diagnostics from the verification attempt. */
+    errors?: string[];
+  };
+
+  /** The result of attempting to decrypt a `fdc3.security.encryptedContext`
+   *  payload. Only relevant when the received context type is
+   *  `fdc3.security.encryptedContext`. */
+  encryption?: 'decrypted' | 'cant_decrypt' | 'not_encrypted';
+}
+```
+
+</TabItem>
+</Tabs>
+
+The result of processing received `ContextMetadata` through a security verification function. This is **not** a transmitted metadata field and is never sent over the wire by the Desktop Agent. It is produced locally by the receiving application's security implementation after verifying the `signature` and `antiReplay` fields present in the received `ContextMetadata`. See [Security & Identity](../security) for the full verification flow.
+
+**See also:**
+
+- [`ContextMetadata`](#contextmetadata)
+- [`DetachedSignature`](#detachedsignature)
+- [`AntiReplayClaims`](#antireplayclaims)
+- [Security & Identity](../security)
 
 ## `DisplayMetadata`
 

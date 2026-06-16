@@ -87,6 +87,10 @@ There is currently no method of discovering all the apps supported by a Desktop 
 
 ![Desktop Agent - Interop](/assets/api-2.png)
 
+### Securing Communications
+
+In open, web-based environments the Desktop Agent acts as an untrusted relay: it routes context and metadata but has no role in verifying the identity of the applications it connects. Applications that require stronger guarantees — for example, confirming that context data originated from a known counterparty, or ensuring that sensitive data cannot be read by the Desktop Agent or other observers — can use the security mechanisms defined in the [@experimental](../fdc3-compliance#experimental-features) [Security & Identity](security) specification.
+
 ### Desktop Agent API Standard Compliance
 
 An FDC3 Standard compliant Desktop Agent implementation **MUST**:
@@ -122,7 +126,7 @@ An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 - Provide details of whether they implement optional features of the Desktop Agent API in the `optionalFeatures` property of the [`ImplementationMetadata`](ref/Metadata#implementationmetadata) object returned by the [`fdc3.getInfo()`](ref/DesktopAgent#getinfo) function.
 - Allow, by default, at least a 15 second timeout for an application, launched via [`fdc3.open`](../api/ref/DesktopAgent#open), [`fdc3.raiseIntent`](../api/ref/DesktopAgent#raiseintent) or [`fdc3.raiseIntentForContext`](../api/ref/DesktopAgent#raiseintentforcontext) to add any context listener (via [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener)) or intent listener (via [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener)) necessary to deliver context or intent and context to it on launch. This timeout only applies to listeners needed to receive context on launch; further intent and context listeners not required on launch MAY be added later.
 - For web applications: All public methods of FDC3 interface objects (e.g. `DesktopAgent`, `Channel`, `PrivateChannel`, `IntentResolution`) **MUST** be bound to their respective instances (e.g. using `.bind(this)` in constructors) to support correct behavior when methods are destructured in JavaScript.  See [DesktopAgentProxy implementation](../../FDC3/packages/fdc3-agent-proxy/src/DesktopAgentProxy.ts) for a reference.
-- Make metadata about each context message or intent and context message received (including the app that originated the message and any supported metadata provided by that application) available to the receiving application.
+- Make metadata about each context message or intent and context message received (including the app that originated the message, timestamp, and any supported metadata provided by that application including `traceId`, `signature`, `antiReplay` and `custom` fields) available to the receiving application. Desktop Agents MUST NOT modify or strip `signature` or `antiReplay` fields.
 
 An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
 
@@ -164,7 +168,7 @@ A Desktop Agent's [`Channel`](ref/Channel) implementation **MUST**:
   - [`clearContext`](ref/Channel#clearcontext)
   - [`getCurrentContext`](ref/Channel#getcurrentcontext)
   - [`getCurrentContextWithMetadata`](ref/Channel#getcurrentcontextwithmetadata)
-- Accept an optional [`AppProvidableContextMetadata`](ref/Metadata#appprovidablecontextmetadata) argument in [`broadcast`](ref/Channel#broadcast), allowing applications to provide `traceId`, `signature` and `custom` metadata with context messages.
+- Accept an optional [`AppProvidableContextMetadata`](ref/Metadata#appprovidablecontextmetadata) argument in [`broadcast`](ref/Channel#broadcast), allowing applications to provide `traceId`, `signature`, `antiReplay` and `custom` metadata with context messages.
 - Allow adding multiple context listeners on the same or overlapping types (i.e. a specific `contextType` and `null` type) and trigger all matching [`ContextHandler`](ref/Types#contexthandler) functions when a relevant context type is broadcast on the channel.
 - Provide [`ContextMetadata`](ref/Metadata#contextmetadata) (including `source` and `timestamp`) to [`ContextHandler`](ref/Types#contexthandler) functions registered via [`addContextListener`](ref/Channel#addcontextlistener).
 - Return the most recent context (and associated metadata for [`getCurrentContextWithMetadata`](ref/Channel#getcurrentcontextwithmetadata)) matching the requested type, or `null` if no matching context is found.
@@ -176,7 +180,7 @@ A Desktop Agent's [`Channel`](ref/Channel) implementation **MUST**:
 A Desktop Agent's [`Channel`](ref/Channel) implementation **SHOULD**:
 
 - Ensure that context messages broadcast by an application on a channel are not delivered back to that same application if it is also listening on the channel.
-- Provide [`ContextMetadata`](ref/Metadata#contextmetadata) to [`ContextHandler`](ref/Types#contexthandler) functions, including any app-provided `traceId`, `signature` and `custom` metadata that was included in the [`broadcast`](ref/Channel#broadcast) call.
+- Provide [`ContextMetadata`](ref/Metadata#contextmetadata) to [`ContextHandler`](ref/Types#contexthandler) functions, including any app-provided `traceId`, `signature`, `antiReplay` and `custom` metadata that was included in the [`broadcast`](ref/Channel#broadcast) call.
 
 A Desktop Agent's [`Channel`](ref/Channel) implementation **MAY**:
 
@@ -303,6 +307,24 @@ The matching of an unqualified `appId` value against a set of fully-qualified ap
 ### Receive metadata about a Broadcast or Raised Intent
 
 Applications often need both the business data (Context) and delivery-related information (ContextMetadata) such as origin, timestamp, or trace identifiers. To keep Context definitions clean and focused on data, FDC3 delivers metadata separately. Handlers receive two arguments: Context and ContextMetadata, enabling apps to process data and optionally use metadata for provenance, security, or correlation. See the [Context Overview](../context/spec#context-metadata) for more details on the separation of Context and Context Metadata.
+
+### Secure Communications Between Apps
+
+Certain applications or workflows require additional protection: confirming which application sent a context message, or keeping the content of a communication confidential from the Desktop Agent and other observers. The following use cases illustrate when the [Security & Identity](security) features are applicable.
+
+**Confirming the origin of a context message.** A buy-side platform receives a pricing context broadcast and needs to verify it genuinely came from a trusted market data application and has not been tampered with in transit. The sender signs the context with its private key; the receiver verifies the signature against the sender's published public key (JWKS).
+
+**Keeping a request confidential.** A trader raises an intent to retrieve margin requirements from a sell-side platform. The mere fact of the request — which instrument, from which firm — is commercially sensitive. By using an encrypted private channel, the data exchanged remains confidential to the two parties; neither the Desktop Agent nor any other application can read the payload.
+
+**Sharing sensitive internal data.** An analyst's workflow touches an internal CRM: the context sent over FDC3 contains client call notes. The application uses an encrypted private channel so that neither the Desktop Agent nor any other application can read the payload.
+
+See [Security & Identity](security) for full details on the above, including key exchange flows, context type definitions, and a reference implementation.
+
+### Establish User Identity Across Applications
+
+A multi-app workflow often requires each application to know the authenticated identity of the current user without each app running its own authentication flow. An FDC3 identity provider app can issue a signed, audience-scoped JWT in response to a [`GetUser`](../intents/ref/GetUser) intent, allowing the requesting application to verify the user's identity — and confirm it was issued specifically for that application — without trusting the Desktop Agent to relay it faithfully. Because the token is encrypted with the requesting application's public key before being returned as an intent result, it remains confidential even from the Desktop Agent.
+
+See [Security & Identity](security) for details on the `GetUser` intent flow, the `fdc3.security.userRequest` and `fdc3.security.user` context types, and key management requirements.
 
 ## Raising Intents
 
@@ -609,9 +631,13 @@ Intent handlers SHOULD be registered via [`fdc3.addIntentListener`](ref/DesktopA
 
 A single handler can be added for each specific intent. If the application attempts to call [`fdc3.addIntentListener`](ref/DesktopAgent#addintentlistener) passing the same `intent` a second time, before unsubscribing to the previously added listener, the Desktop Agent MUST reject it with an `Error` Object with the message given by [`ResolveError.IntentListenerConflict`](ref/Errors#resolveerror).
 
-### Metadata
+### Metadata & Securing Communication
 
-See [Context Metadata](#context-metadata).
+When an intent is raised and resolved, the receiving application's [`IntentHandler`](ref/Types#intenthandler) is called with two arguments: the `Context` object (the business data) and a [`ContextMetadata`](ref/Metadata#contextmetadata) object supplied by the Desktop Agent. The metadata identifies the originating application (`source`) and the time the intent was raised (`timestamp`), which can be useful for auditing, ordering of events, and building observability into cross-application workflows.
+
+The raising application may also include optional app-provided metadata — `traceId`, `signature`, `antiReplay` and `custom` — in the `metadata` parameter of [`raiseIntent`](ref/DesktopAgent#raiseintent) or [`raiseIntentForContext`](ref/DesktopAgent#raiseintentforcontext). The Desktop Agent MUST forward these fields unchanged to the handler. If the raising application signs the context (`signature` + `antiReplay`), the handling application can verify the origin and integrity of the intent request without trusting the Desktop Agent as an intermediary. Similarly, an intent handler may return a [`ContextWithMetadata`](ref/Types#contextwithmetadata) result that includes a `signature`, allowing the raising application to verify the authenticity of the response it receives.
+
+See [Context Metadata](#context-metadata) for the full field definitions, and [Security & Identity](security) for guidance on signing and verifying intent messages.
 
 ### Compliance with Intent Standards
 
@@ -918,9 +944,13 @@ To facilitate context linking in such situations it is recommended that applicat
 
 Channel interface provides the ability to [`clearContext`](ref/Channel.md#clearcontext) on the channel, either for the specific context type, if provided, or for all contexts on that channel. Applications may listen to the `contextCleared` event on the channel. If a specific type was cleared, the `contextType` field of the event will be set with that type. Once cleared, any apps that join the channel, add new context listeners or call [`getCurrentContext`](ref/Channel.md#getcurrentcontext) will not return anything to the caller (other than the `fdc3.nothing` type indicating that context was cleared) until new context is broadcast to the channel.
 
-### Metadata
+### Metadata & Securing Communication
 
-See [Context Metadata](#context-metadata).
+When a context is broadcast on a channel or received by a [`ContextHandler`](ref/Types#contexthandler), the handler receives both the `Context` object and a [`ContextMetadata`](ref/Metadata#contextmetadata) object provided by the Desktop Agent. The metadata always includes the originating application (`source`) and the broadcast timestamp, enabling receivers to identify who sent a message and when — which is particularly valuable in multi-application workflows where the same context type may arrive from several sources.
+
+Applications broadcasting on a channel may include optional app-provided metadata — `traceId`, `signature`, `antiReplay` and `custom` — in the `metadata` parameter of [`broadcast`](ref/Channel#broadcast). The Desktop Agent MUST forward these fields unchanged to any listening [`ContextHandler`](ref/Types#contexthandler). A `signature` and accompanying `antiReplay` claims give receiving applications a way to cryptographically verify that a broadcast genuinely originated from a trusted sender and has not been tampered with in transit, without any involvement of the Desktop Agent in that verification. For workflows requiring full confidentiality — where even the Desktop Agent should not be able to read the payload — a [`PrivateChannel`](ref/PrivateChannel) with symmetric key encryption provides end-to-end protection for the data stream.
+
+See [Context Metadata](#context-metadata) for the full field definitions, and [Security & Identity](security) for guidance on signing channel broadcasts and establishing encrypted private channels.
 
 ## Context Metadata
 
@@ -938,10 +968,9 @@ Registered listeners MUST receive:
 Registered listeners MAY receive:
 
 - `traceId` – A unique identifier for tracing the flow of context or intent messages across applications.
-- `signature` – A cryptographic signature that can be used to verify the authenticity and integrity of the context or intent message.
+- `signature` – A detached [JSON Web Signature (JWS)](https://datatracker.ietf.org/doc/html/rfc7515) (`DetachedSignature`) that can be used to verify the authenticity and integrity of the context or intent message. MUST be accompanied by `antiReplay` when present.
+- `antiReplay` – Anti-replay claims (`AntiReplayClaims`: `iat`, `exp`, `jti`) used alongside `signature` to prevent replay attacks.
 - `custom` – Implementation-specific metadata.
-
-<!-- TODO insert security/signature field names here -->
 
 ### Trace Information
 
@@ -994,7 +1023,8 @@ The `source` identifies the app instance that originated the context or intent.
 The Desktop Agent MUST provide source information in the form of an `AppIdentifier`.  
 Apps SHOULD NOT provide source; if they do, the Desktop Agent MUST ignore it.
 
-### Signature
+### Signature and Anti-Replay Claims
 
-The `signature` can be used to verify the authenticity and integrity of a context or intent message.  
-If a signature is provided by an app, it MAY be verified by the Desktop Agent.
+The `signature` field carries a `DetachedSignature` — a detached [JSON Web Signature (JWS)](https://datatracker.ietf.org/doc/html/rfc7515) that can be used to verify the authenticity and integrity of a context or intent message. When present, it MUST be accompanied by `antiReplay` claims (`iat`, `exp`, `jti`) to prevent replay attacks. Desktop Agents MUST forward both fields unchanged from the sender's `AppProvidableContextMetadata` to the receiving application's handler — they MUST NOT inspect, strip, or modify them. Cryptographic verification is the sole responsibility of the receiving application, not the Desktop Agent.
+
+See [Security & Identity](security) for the full signing and verification model, including use cases, key management, and encrypted communications.

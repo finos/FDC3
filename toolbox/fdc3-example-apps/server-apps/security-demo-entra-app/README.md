@@ -1,6 +1,6 @@
 # Microsoft Entra ID Integration for FDC3 Security Demo
 
-This example mirrors the demo IDP’s `CreateIdentityToken` flow but signs users in with Microsoft Entra ID through MSAL and validates Entra-issued JWTs on the server. It supplies identity tokens to the same security POC apps that pair with the simple IDP example.
+This example mirrors the demo IDP’s `GetUser` flow but signs users in with Microsoft Entra ID through MSAL and validates Entra-issued JWTs on the server. It supplies identity tokens to the same security POC apps that pair with the simple IDP example.
 
 ## Features
 

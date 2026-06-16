@@ -1,7 +1,7 @@
 import { AppIdentifier, Context, SymmetricKeyResponse } from '@finos/fdc3-context';
 import type { JsonWebKeyWithId } from '../src/impl/PublicFDC3Security';
 import { WebSocket } from 'ws';
-import { Channel, ContextMetadata, DesktopAgent } from '@finos/fdc3-standard';
+import { Channel, DesktopAgent } from '@finos/fdc3-standard';
 
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { createJosePublicFDC3SecurityFromUrl } from '../src/impl/JosePublicFDC3Security';
@@ -20,6 +20,14 @@ const INTENT_SHARE_ENCRYPTED_CHANNEL = 'ShareEncryptedChannel';
 /**
  * Broadcasting app backend – no exchangeData handlers needed.
  * The symmetric key and encryption live entirely on the front-end.
+ *
+ * FRONTEND KEY PATTERN: The symmetric key is unwrapped once on the receiving app's backend
+ * (the only step requiring the private key), then held in the browser for low-latency
+ * per-message decryption. This mirrors the TLS model: pay the asymmetric cost once, then
+ * use the cheap symmetric cipher (AES-GCM) for the stream. Use this pattern when the browser
+ * is a sufficiently trusted environment for a short-lived session key and latency matters.
+ * For stricter data boundaries where plaintext must never reach the browser, see
+ * backend-encrypted-channel-example.ts.
  */
 class BroadcastingAppBackendHandlers extends DefaultFDC3Handlers {}
 
@@ -32,15 +40,22 @@ class ReceivingAppBackendHandlers extends DefaultFDC3Handlers {
     super();
   }
 
-  async exchangeData(purpose: string, o: object): Promise<object | void> {
+  async exchangeData(purpose: string, payload: unknown): Promise<unknown> {
     if (purpose === 'sign-context') {
-      const { context } = o as { context: Context };
+      // The frontend needs to sign fdc3.security.symmetricKeyRequest messages to prove
+      // identity to the broadcaster before the key is released. Signing requires the
+      // private key and must happen on the backend.
+      const { context } = payload as { context: Context };
       return await this.security.sign(context);
     }
     if (purpose === 'unwrap-symmetric-key') {
-      const skr = o as SymmetricKeyResponse;
+      // The symmetric key arrives wrapped in a JWE targeting our public key.
+      // Unwrapping requires our private key and must happen on the backend.
+      // The unwrapped key is returned to the frontend for low-latency per-message decryption.
+      const skr = payload as SymmetricKeyResponse;
       return await this.security.unwrapSymmetricKey(skr);
     }
+    return undefined;
   }
 }
 
@@ -87,13 +102,20 @@ async function step3BroadcastingAppSetup(
 
   const handlers = await connectRemoteHandlers(broadcastingApp.baseUrl.replace('http', 'ws'), mockDA, async () => {});
 
+  // Retrieve the public security instance for this app's JWKS.
+  // The broadcasting app does not need a backend for signing — it uses public
+  // operations only (symmetric encryption) so no exchangeData calls are needed.
   const jwksUrl = `${broadcastingApp.baseUrl}/.well-known/jwks.json`;
   const publicSecurity = await createJosePublicFDC3SecurityFromUrl(jwksUrl, () => true);
 
-  const channel = await mockDA.createPrivateChannel();
+  // Create the PrivateChannel on the frontend and wrap it with EncryptedBroadcastSupport.
+  // The symmetric key is generated here on the frontend and held in memory.
+  const channel: Channel = await mockDA.createPrivateChannel();
   const support = new EncryptedBroadcastSupport(publicSecurity, metadataHandler);
-  const broadcaster = await support.broadcastWrapper(channel as Channel);
+  const broadcaster = await support.broadcastWrapper(channel);
 
+  // Register the intent handler that returns this channel when a listener raises
+  // ShareEncryptedChannel.
   const intentHandler = async () => {
     console.log('[Broadcasting App Front-end] Intent ShareEncryptedChannel: returning channel');
     return channel;
@@ -124,6 +146,8 @@ async function step4ReceivingAppSetup(
   const jwksUrl = `${receivingApp.baseUrl}/.well-known/jwks.json`;
   const publicSecurity = await createJosePublicFDC3SecurityFromUrl(jwksUrl, () => true);
 
+  // signingFunction: delegates to the receiving app's backend to sign key requests.
+  // The frontend never holds the private key.
   const signingFunction = async (context: Context) => {
     const result = (await handlers.exchangeData('sign-context', { context })) as {
       signature: any;
@@ -132,6 +156,9 @@ async function step4ReceivingAppSetup(
     return result;
   };
 
+  // unwrapFunction: delegates to the receiving app's backend to unwrap the JWE-wrapped
+  // symmetric key. Once unwrapped, the key is returned to the frontend for fast
+  // per-message decryption (the FRONTEND KEY PATTERN).
   const unwrapFunction = async (skr: SymmetricKeyResponse): Promise<JsonWebKeyWithId> => {
     return (await handlers.exchangeData('unwrap-symmetric-key', skr)) as JsonWebKeyWithId;
   };
@@ -143,10 +170,12 @@ async function step4ReceivingAppSetup(
     unwrapFunction
   );
 
-  await support.addContextListener(channel, 'test.encrypted', (ctx: Context, meta?: ContextMetadata) => {
+  // Register the context listener. The support layer handles the key request/response
+  // flow automatically; once the key is available, decryption runs on the frontend.
+  await support.addContextListener(channel, 'test.encrypted', (ctx: Context, _meta, verification) => {
     console.log(`\n[Receiving App Front-end] ✅ Decrypted context received (symmetric key on front-end):`);
     console.log(JSON.stringify(ctx, null, 2));
-    if (meta?.encryption === 'decrypted') {
+    if (verification.encryption === 'decrypted') {
       console.log('[Receiving App Front-end] Metadata indicates decryption performed on front-end');
     }
   });

@@ -4,7 +4,7 @@
       "appId": "encrypted-channel-sender-1",
       "name": "Encrypted channel sender",
       "title": "Encrypted channel sender",
-      "description": "FDC3 encrypted context demo — broadcasting on the current user channel (EncryptedBroadcastSupport).",
+      "description": "FDC3 encrypted channel demo (frontend-key pattern). Broadcasts on the current user channel using EncryptedBroadcastSupport: creates a symmetric key in the browser, encrypts each payload as fdc3.security.encryptedContext, and responds to signed fdc3.security.symmetricKeyRequest messages from receivers.",
       "type": "web",
       "details": {
         "url": "http://localhost:4031"
@@ -19,7 +19,13 @@
         {
           "src": "http://localhost:4031/icon.svg"
         }
-      ]
+      ],
+      "interop": {
+        "contexts": {
+          "broadcasts": ["fdc3.security.encryptedContext"],
+          "listensFor": ["fdc3.security.symmetricKeyRequest"]
+        }
+      }
     }
   ],
   "message": "OK"
