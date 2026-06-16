@@ -12,7 +12,7 @@
       "hostManifests": {},
       "version": "1.0.0",
       "publisher": "FINOS",
-      "categories": ["Intent Listening Demo"],
+      "categories": ["Basic FDC3: Intents Demo"],
       "icons": [
         {
           "src": "http://localhost:4016/icon.svg"
