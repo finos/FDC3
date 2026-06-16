@@ -211,13 +211,7 @@ export class DefaultIntentSupport implements IntentSupport {
         request,
         details.source
       );
-      return new DefaultIntentResolution(
-        this.messaging,
-        resolvedResult,
-        resolvedMetadata,
-        details.source,
-        details.intent
-      );
+      return new DefaultIntentResolution(resolvedResult, resolvedMetadata, details.source, details.intent);
     }
   }
 
@@ -273,13 +267,7 @@ export class DefaultIntentSupport implements IntentSupport {
         request,
         details.source
       );
-      return new DefaultIntentResolution(
-        this.messaging,
-        resolvedResult,
-        resolvedMetadata,
-        details.source,
-        details.intent
-      );
+      return new DefaultIntentResolution(resolvedResult, resolvedMetadata, details.source, details.intent);
     }
   }
 
