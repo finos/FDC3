@@ -11,7 +11,7 @@
   "scripts": {
     "copy": "shx mkdir -p ./dist && shx cp -R static/* ./dist",
     "build": "webpack build && npm run copy",
-    "serve": "npx http-server ./dist -p 3001 -c-1",
+    "serve": "npx http-server ./dist -p 3001 -c-1 --cors",
     "dev": "npm run clean && npm run build && npm run serve",
     "clean": "rimraf dist"
   },
