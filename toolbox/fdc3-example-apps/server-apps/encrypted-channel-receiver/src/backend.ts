@@ -47,7 +47,7 @@ class ReceivingAppBackendHandlers extends DefaultFDC3Handlers {
         );
       }
     } catch (err) {
-      console.error(`exchangeData(${purpose}) error:`, err);
+      console.error('exchangeData(%s) error:', purpose, err);
       return undefined;
     }
   }
