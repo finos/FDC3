@@ -48,9 +48,11 @@ The following context types support security features:
 
 ### Intents
 
+The following intents support user identity features, other Get* intents may be used to create requests for encrypted channels:
+
 | Intent | Input Context | Output Context | Description |
 |--------|---------------|----------------|-------------|
-| `GetUser` | `fdc3.security.userRequest` | `fdc3.security.user` | Request user identity from an identity provider app |
+| [`GetUser`](../intents/ref/GetUser) | [`fdc3.security.userRequest`](../context/ref/security/UserRequest) | [`fdc3.security.user`](../context/ref/security/User) | Request user identity from an identity provider app |
 
 ## Desktop Agent Requirements
 
