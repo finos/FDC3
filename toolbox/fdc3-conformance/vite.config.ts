@@ -1,4 +1,5 @@
 import path from 'path';
+import inject from '@rollup/plugin-inject';
 import { defineConfig } from 'vite';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
 
@@ -7,6 +8,12 @@ export default defineConfig({
     outDir: 'dist/lib',
     sourcemap: true,
     rollupOptions: {
+      plugins: [
+        inject({
+          process: 'process/browser.js',
+          Buffer: ['buffer', 'Buffer'],
+        }),
+      ],
       input: {
         'fdc3-compliance': path.resolve(__dirname, './src/test/index.ts'),
         channel: path.resolve(__dirname, './src/mock/channel.ts'),
@@ -36,15 +43,26 @@ export default defineConfig({
   resolve: {
     alias: {
       buffer: 'buffer',
-      process: 'process/browser',
       stream: 'stream-browserify',
       util: 'util',
     },
   },
   define: {
     'process.env.NODE_DEBUG': 'false',
-    'process.env': 'import.meta.env',
     'global.process': 'globalThis.process',
   },
-  plugins: [cssInjectedByJsPlugin()],
+  plugins: [
+    cssInjectedByJsPlugin(),
+    {
+      name: 'fix-source-map-support-global',
+      transform(code, id) {
+        if (id.includes('browser-source-map-support')) {
+          return code.replace(
+            '(this.define||function(R,U){this.sourceMapSupport=U()})',
+            '(globalThis.define||function(R,U){globalThis.sourceMapSupport=U()})'
+          );
+        }
+      },
+    },
+  ],
 });
