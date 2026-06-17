@@ -23,11 +23,12 @@ This specification defines mechanisms for **application identity verification**,
 
 FDC3 Security addresses the following key challenges:
 
-1. **Shift to Web**: Web environments are more hostile than controlled desktop containers, requiring robust identity verification
-2. **App Identity**: Applications need verifiable identities to establish trust
+1. **Untrusted Channel**: Applications communicate through a Desktop Agent they may not control or fully trust, requiring end-to-end identity verification
+2. **App Identity**: Applications need verifiable identities to establish trust with their counterparts independently of the Desktop Agent
 3. **User Authentication**: Users need portable identity across heterogeneous applications  
 4. **Data Integrity**: Context data requires authenticity guarantees
-5. **Scalable Trust**: Moving beyond bilateral trust relationships to independently maintained allowlists
+5. **Data Confidentiality**: Sensitive data must be protected from the Desktop Agent and other observers
+6. **Scalable Trust**: Moving beyond bilateral trust relationships to independently maintained allowlists
 
 The security framework introduces:
 
