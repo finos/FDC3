@@ -7,7 +7,7 @@
       "description": "FDC3 2.0 Conformance testing framework - developed for FINOS by Scott Logic",
       "type": "web",
       "categories": [
-              "Developer Tools"
+        "Developer Tools"
       ],
       "details": {
         "url": "https://fdc3.finos.org/toolbox/fdc3-conformance/v2.0/app/index.html"
@@ -55,11 +55,14 @@
         "intents": {
           "listensFor": {
             "ConformanceListener": {
-              "contexts": ["fdc3.nothing"]
+              "contexts": [
+                "fdc3.nothing"
+              ]
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "ChannelsAppId",
@@ -102,7 +105,8 @@
         {
           "src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
         }
-      ]
+      ],
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppAId",
@@ -154,15 +158,21 @@
           "listensFor": {
             "aTestingIntent": {
               "displayName": "A Testing Intent",
-              "contexts": ["testContextX", "testContextZ"]
+              "contexts": [
+                "testContextX",
+                "testContextZ"
+              ]
             },
             "sharedTestingIntent1": {
               "displayName": "Shared Testing Intent 1",
-              "contexts": ["testContextX"]
+              "contexts": [
+                "testContextX"
+              ]
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppBId",
@@ -214,12 +224,16 @@
           "listensFor": {
             "sharedTestingIntent1": {
               "displayName": "Shared Testing Intent 1",
-              "contexts": ["testContextX", "testContextY"],
+              "contexts": [
+                "testContextX",
+                "testContextY"
+              ],
               "resultType": "testContextY"
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppCId",
@@ -271,12 +285,15 @@
           "listensFor": {
             "cTestingIntent": {
               "displayName": "C Testing Intent",
-              "contexts": ["testContextX"],
+              "contexts": [
+                "testContextX"
+              ],
               "resultType": "testContextZ"
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppDId",
@@ -328,12 +345,15 @@
           "listensFor": {
             "sharedTestingIntent2": {
               "displayName": "Shared Testing Intent 2",
-              "contexts": ["testContextX"],
+              "contexts": [
+                "testContextX"
+              ],
               "resultType": "testContextZ"
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppEId",
@@ -385,12 +405,15 @@
           "listensFor": {
             "sharedTestingIntent2": {
               "displayName": "Shared Testing Intent 2",
-              "contexts": ["testContextY"],
+              "contexts": [
+                "testContextY"
+              ],
               "resultType": "channel"
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppFId",
@@ -442,12 +465,15 @@
           "listensFor": {
             "sharedTestingIntent2": {
               "displayName": "Shared Testing Intent 2",
-              "contexts": ["testContextY"],
+              "contexts": [
+                "testContextY"
+              ],
               "resultType": "channel<testContextZ>"
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppGId",
@@ -499,11 +525,14 @@
           "listensFor": {
             "sharedTestingIntent2": {
               "displayName": "Shared Testing Intent 2",
-              "contexts": ["testContextY"]
+              "contexts": [
+                "testContextY"
+              ]
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppHId",
@@ -555,12 +584,15 @@
           "listensFor": {
             "sharedTestingIntent2": {
               "displayName": "Shared Testing Intent 2",
-              "contexts": ["testContextY"],
+              "contexts": [
+                "testContextY"
+              ],
               "resultType": "testContextZ"
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppIId",
@@ -612,12 +644,15 @@
           "listensFor": {
             "sharedTestingIntent2": {
               "displayName": "Shared Testing Intent 2",
-              "contexts": ["testContextY"],
+              "contexts": [
+                "testContextY"
+              ],
               "resultType": "testContextZ"
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppJId",
@@ -669,12 +704,15 @@
           "listensFor": {
             "privateChannelIsPrivate": {
               "displayName": "J Testing Intent",
-              "contexts": ["privateChannelDetails"],
+              "contexts": [
+                "privateChannelDetails"
+              ],
               "resultType": "privateChannelIsPrivateResult"
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "IntentAppKId",
@@ -726,12 +764,15 @@
           "listensFor": {
             "kTestingIntent": {
               "displayName": "K Testing Intent",
-              "contexts": ["testContextX"],
+              "contexts": [
+                "testContextX"
+              ],
               "resultType": "channel<testContextZ>"
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "OpenAppAId",
@@ -777,7 +818,8 @@
         {
           "src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
         }
-      ]
+      ],
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "OpenAppBId",
@@ -823,7 +865,8 @@
         {
           "src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
         }
-      ]
+      ],
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "MockAppId",
@@ -871,7 +914,8 @@
         {
           "src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
         }
-      ]
+      ],
+      "minimumAgentVersion": "2.0"
     },
     {
       "appId": "MetadataAppId",
@@ -928,7 +972,8 @@
         {
           "src": "https://fdc3.finos.org/toolbox/fdc3-conformance/finos-icon-256.png"
         }
-      ]
+      ],
+      "minimumAgentVersion": "2.0"
     }
   ],
   "message": "OK"

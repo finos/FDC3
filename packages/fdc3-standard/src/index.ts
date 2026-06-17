@@ -34,6 +34,17 @@ export * from './ui/IntentResolver.js';
 export * from './ui/ChannelSelector.js';
 export * from './ui/Connectable.js';
 
+export type {
+  Application,
+  AppDirectoryIntent,
+  AllApplicationsResponse,
+  Interop,
+  LaunchDetails,
+  ApplicationType,
+  WebAppDetails,
+  HostManifests,
+} from '@finos/fdc3-schema';
+
 export const FDC3_VERSION = '2.2';
 
 declare global {

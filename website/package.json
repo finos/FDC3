@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "clean": "npx rimraf build .docusaurus",
+    "clean": "npx rimraf build .docusaurus static/schemas/next static/schemas/packages static/toolbox",
     "examples": "docusaurus-examples",
     "prestart": "npm run copy-schemas && npm run copy-appd && npm run copy-conformance && cross-env NODE_ENV=development npm run replace-conformance-urls && node schema2Markdown.js",
     "start": "docusaurus start",
@@ -8,8 +8,8 @@
     "build": "docusaurus build",
     "build-temp": "npm run copy-schemas && npm run copy-appd && npm run copy-workbench && npm run copy-reference-ui && node schema2Markdown.js && npm run copy-workbench && npm run copy-explained && docusaurus build",
     "parent-build": "cd .. && npm install && npm run build",
-    "copy-schemas": "del-cli static/schemas/next/*/ && cpy \"../packages/fdc3-schema/schemas/**\" static/schemas/next/ && cpy \"../packages/fdc3-context/schemas/context\" static/schemas/next/",
-    "copy-appd": "cpy \"../packages/fdc3-standard/src/app-directory/specification/*.schema.json\" \"static/schemas/next/\"",
+    "copy-schemas": "del-cli static/schemas/next/*/ && cpy \"../packages/fdc3-schema/schemas/api/**\" static/schemas/next/api/ && cpy \"../packages/fdc3-schema/schemas/bridging/**\" static/schemas/next/bridging/ && cpy \"../packages/fdc3-schema/schemas/bridgingAsyncAPI/**\" static/schemas/next/bridgingAsyncAPI/ && cpy \"../packages/fdc3-schema/schemas/appDirectory/**\" static/schemas/next/appDirectory/ && cpy \"../packages/fdc3-context/schemas/context\" static/schemas/next/",
+    "copy-appd": "cp ../packages/fdc3-schema/generated/app-directory/appd.bundled.schema.json static/schemas/next/appd.schema.json && cp src/pages/schemas/next/app-directory.html static/schemas/next/app-directory.html",
     "copy-workbench": "del-cli static/toolbox/fdc3-workbench && cpy \"../toolbox/fdc3-workbench/build/**\" static/toolbox/fdc3-workbench",
     "copy-reference-ui": "del-cli static/toolbox/fdc3-reference-ui && cpy \"../toolbox/fdc3-for-web/reference-ui/dist/**\" static/toolbox/fdc3-reference-ui",
     "copy-explained": "del-cli static/toolbox/fdc3-explained && cpy \"../toolbox/fdc3-explained\" ./static/toolbox/",

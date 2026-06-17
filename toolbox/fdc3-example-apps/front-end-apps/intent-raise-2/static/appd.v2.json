@@ -19,7 +19,8 @@
         {
           "src": "http://localhost:4015/icon.svg"
         }
-      ]
+      ],
+      "minimumAgentVersion": "2.0"
     }
   ],
   "message": "OK"

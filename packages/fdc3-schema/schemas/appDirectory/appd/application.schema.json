@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/app-directory/application.schema.json",
+  "title": "Application",
+  "description": "Defines an application retrieved from an FDC3 App Directory.",
+  "allOf": [
+    {
+      "$ref": "../app-directory.schema.json#/definitions/Application"
+    }
+  ]
+}

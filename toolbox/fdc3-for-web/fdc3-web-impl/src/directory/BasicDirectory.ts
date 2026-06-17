@@ -1,4 +1,4 @@
-import { Directory, DirectoryApp, DirectoryIntent } from './DirectoryInterface.js';
+import { Directory, DirectoryApp, DirectoryIntent, type AppDirectoryIntent } from './DirectoryInterface.js';
 
 export function genericResultTypeSame(real: string | undefined, required: string | undefined) {
   if (required == undefined) {
@@ -41,11 +41,13 @@ export class BasicDirectory implements Directory {
     const lf = a.interop?.intents?.listensFor ?? {};
     const lfa = Object.entries(lf);
     const lfAugmented = lfa.map(([key, value]) => {
+      const intentDetails =
+        typeof value === 'object' && value !== null && !Array.isArray(value) ? (value as AppDirectoryIntent) : {};
       return {
         intentName: key,
-        ...value,
+        ...intentDetails,
         appId: a.appId,
-      };
+      } as DirectoryIntent;
     });
     return lfAugmented;
   }

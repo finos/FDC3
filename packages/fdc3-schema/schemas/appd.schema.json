@@ -1,0 +1,1012 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "FDC3 Application Directory",
+    "version": "next",
+    "description": "Application Directory specification providing both interface definition and objects necessary to construct an application directory service.",
+    "x-logo": {
+      "url": "/img/fdc3-logo-2019-color.png",
+      "altText": "FDC3 logo"
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/v2/apps/{appId}": {
+      "get": {
+        "summary": "Retrieve an application definition",
+        "parameters": [
+          {
+            "name": "appId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Application"
+                },
+                "examples": {
+                  "MyAppDefinition": {
+                    "$ref": "#/components/examples/MyAppDefinition"
+                  },
+                  "FDC3WorkbenchAppDefinition": {
+                    "$ref": "#/components/examples/FDC3WorkbenchAppDefinition"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDTO"
+                },
+                "examples": {
+                  "Error400Example": {
+                    "$ref": "#/components/examples/Error400Example"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDTO"
+                },
+                "examples": {
+                  "Error403Example": {
+                    "$ref": "#/components/examples/Error403Example"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDTO"
+                },
+                "examples": {
+                  "Error500Example": {
+                    "$ref": "#/components/examples/Error500Example"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Application"
+        ]
+      }
+    },
+    "/v2/apps": {
+      "get": {
+        "summary": "Retrieve all application definitions",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AllApplicationsResponse"
+                },
+                "examples": {
+                  "AllAppsResponse": {
+                    "$ref": "#/components/examples/AllAppsResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDTO"
+                },
+                "examples": {
+                  "Error400Example": {
+                    "$ref": "#/components/examples/Error400Example"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDTO"
+                },
+                "examples": {
+                  "Error403Example": {
+                    "$ref": "#/components/examples/Error403Example"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDTO"
+                },
+                "examples": {
+                  "Error500Example": {
+                    "$ref": "#/components/examples/Error500Example"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Application"
+        ]
+      }
+    },
+    "/v1/apps/{appId}": {
+      "get": {
+        "deprecated": true,
+        "summary": "Retrieve an application definition",
+        "parameters": [
+          {
+            "name": "appId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationV1"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDTO"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: Certificate authentication is not allowed for the requested user.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDTO"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error, see response body for further details.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Application"
+        ]
+      }
+    },
+    "/v1/apps": {
+      "post": {
+        "deprecated": true,
+        "summary": "Create a new application definition",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationSearchResponseV1"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDTO"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: Certificate authentication is not allowed for the requested user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDTO"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error, see response body for further details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Application"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApplicationV1"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/v1/apps/search": {
+      "get": {
+        "deprecated": true,
+        "summary": "Retrieve a list of applications based on parameters provided.  Depending on implementation, parameter values should self describe search format and type (e.g. Regex)",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "appId",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The unique application identifier located within a specific application directory instance."
+          },
+          {
+            "in": "query",
+            "name": "name",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "The name of the application. The name should be unique within an FDC3 App Directory instance. The exception to the uniqueness constraint is that an App Directory can hold definitions for multiple versions of the same app. The same appName could occur in other directories. We are not currently specifying app name conventions in the document."
+          },
+          {
+            "in": "query",
+            "name": "version",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Version of the application. This allows multiple app versions to be defined using the same app name. This can be a triplet but can also include things like 1.2.5 (BETA)"
+          },
+          {
+            "in": "query",
+            "name": "title",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Optional title for the application, if missing use appName, typically used in a launcher UI."
+          },
+          {
+            "in": "query",
+            "name": "tooltip",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Optional tooltip description e.g. for a launcher"
+          },
+          {
+            "in": "query",
+            "name": "description",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "Description of the application. This will typically be a 1-2 paragraph style blurb about the application. Allow mark up language"
+          },
+          {
+            "in": "query",
+            "name": "intent_name",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "name of intent"
+          },
+          {
+            "in": "query",
+            "name": "intent_displayName",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "displayName of intent"
+          },
+          {
+            "in": "query",
+            "name": "intent_context",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "search contexts list"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApplicationSearchResponseV1"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDTO"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden: Certificate authentication is not allowed for the requested user.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDTO"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error, see response body for further details.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorDTO"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Application"
+        ]
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/appd"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "ErrorDTO": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/ErrorDTO"
+      },
+      "BaseApplication": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/BaseApplication"
+      },
+      "Application": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/Application"
+      },
+      "AllApplicationsResponse": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/AllApplicationsResponse"
+      },
+      "NameValuePair": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/NameValuePair"
+      },
+      "Icon": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/Icon"
+      },
+      "Screenshot": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/Screenshot"
+      },
+      "Type": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/Type"
+      },
+      "LaunchDetails": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/LaunchDetails"
+      },
+      "WebAppDetails": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/WebAppDetails"
+      },
+      "NativeAppDetails": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/NativeAppDetails"
+      },
+      "CitrixAppDetails": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/CitrixAppDetails"
+      },
+      "OnlineNativeAppDetails": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/OnlineNativeAppDetails"
+      },
+      "OtherAppDetails": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/OtherAppDetails"
+      },
+      "HostManifests": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/HostManifests"
+      },
+      "HostManifest": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/HostManifest"
+      },
+      "LocalizedVersions": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/LocalizedVersions"
+      },
+      "Intent": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/Intent"
+      },
+      "Interop": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/Interop"
+      },
+      "AppImageV1": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/AppImageV1"
+      },
+      "IconV1": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/IconV1"
+      },
+      "IntentV1": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/IntentV1"
+      },
+      "ApplicationV1": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/ApplicationV1"
+      },
+      "ApplicationSearchResponseV1": {
+        "$ref": "appDirectory/app-directory.schema.json#/definitions/ApplicationSearchResponseV1"
+      }
+    },
+    "examples": {
+      "FDC3WorkbenchAppDefinition": {
+        "value": {
+          "appId": "fdc3-workbench",
+          "title": "FDC3 Workbench",
+          "description": "Development and test tool for FDC3 desktop agents and apps",
+          "categories": [
+            "developer tools",
+            "training"
+          ],
+          "version": "1.0.0",
+          "minimumAgentVersion": "1.2",
+          "tooltip": "FDC3 Workbench",
+          "lang": "en-US",
+          "icons": [
+            {
+              "src": "https://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png"
+            }
+          ],
+          "screenshots": [
+            {
+              "src": "https://fdc3.finos.org/docs/assets/fdc3-logo.png",
+              "label": "FDC3 logo"
+            }
+          ],
+          "contactEmail": "fdc3@finos.org",
+          "supportEmail": "fdc3-maintainers@finos.org",
+          "moreInfo": "https://fdc3.finos.org",
+          "publisher": "FDC3",
+          "type": "web",
+          "details": {
+            "url": "https://fdc3.finos.org/toolbox/fdc3-workbench/"
+          },
+          "hostManifests": {
+            "Glue42": {
+              "type": "window",
+              "icon": "https://fdc3.finos.org/docs/assets/fdc3-logo.png",
+              "details": {
+                "height": 640,
+                "width": 560,
+                "left": 120,
+                "top": 120,
+                "mode": "tab",
+                "allowChannels": true,
+                "loader": {
+                  "enabled": true,
+                  "hideOnLoad": true
+                }
+              },
+              "customProperties": {
+                "folder": "FDC3 Toolbox"
+              }
+            },
+            "Finsemble": {
+              "window": {
+                "left": 120,
+                "top": 120,
+                "width": 800,
+                "height": 750,
+                "options": {
+                  "minWidth": 75
+                }
+              },
+              "foreign": {
+                "components": {
+                  "App Launcher": {
+                    "launchableByUser": true
+                  },
+                  "Toolbar": {
+                    "iconURL": "http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png"
+                  },
+                  "Window Manager": {
+                    "FSBLHeader": true,
+                    "persistWindowState": true
+                  }
+                }
+              },
+              "interop": {
+                "autoConnect": true
+              }
+            },
+            "Web App Manifest": "https://example.com/fdc3-workbench.json"
+          },
+          "localizedVersions": {
+            "fr-FR": {
+              "title": "FDC3 Table de travail",
+              "description": "Outil de développement et de test pour les desktop agents et applications FDC3"
+            }
+          }
+        },
+        "summary": "A sample app definition for the FDC3 Workbench"
+      },
+      "MyAppDefinition": {
+        "value": {
+          "appId": "my-application",
+          "title": "My Application",
+          "description": "An example application that uses FDC3 and fully describes itself in an AppD record.",
+          "categories": [
+            "market data",
+            "research",
+            "news"
+          ],
+          "version": "1.0.0",
+          "minimumAgentVersion": "2.0",
+          "tooltip": "My example application definition",
+          "lang": "en-US",
+          "icons": [
+            {
+              "src": "http://example.domain.com/assets/my-app-icon.png",
+              "size": "256x256",
+              "type": "image/png"
+            }
+          ],
+          "screenshots": [
+            {
+              "src": "http://example.domain.com/assets/my-app-screenshot-1.png",
+              "label": "The first screenshot of my example app",
+              "type": "image/png",
+              "size": "800x600"
+            },
+            {
+              "src": "http://example.domain.com/assets/my-app-screenshot-2.png",
+              "label": "The second screenshot of my example app",
+              "type": "image/png",
+              "size": "800x600"
+            }
+          ],
+          "contactEmail": "fdc3@finos.org",
+          "supportEmail": "fdc3-maintainers@finos.org",
+          "moreInfo": "http://example.domain.com/",
+          "publisher": "Example App, Inc.",
+          "type": "web",
+          "details": {
+            "url": "http://example.domain.com/app.html"
+          },
+          "hostManifests": {
+            "Finsemble": {
+              "window": {
+                "left": 120,
+                "top": 120,
+                "width": 600,
+                "height": 800,
+                "options": {
+                  "minWidth": 75
+                }
+              },
+              "foreign": {
+                "components": {
+                  "App Launcher": {
+                    "launchableByUser": true
+                  },
+                  "Window Manager": {
+                    "FSBLHeader": true,
+                    "persistWindowState": true
+                  }
+                }
+              },
+              "interop": {
+                "autoConnect": true
+              }
+            },
+            "Glue42": {
+              "type": "window",
+              "details": {
+                "height": 800,
+                "width": 600,
+                "left": 120,
+                "top": 120,
+                "mode": "tab",
+                "allowChannels": true,
+                "loader": {
+                  "enabled": true,
+                  "hideOnLoad": true
+                }
+              },
+              "customProperties": {
+                "folder": "FDC3 Toolbox"
+              }
+            },
+            "Web App Manifest": "http://example.domain.com/my-app.json"
+          },
+          "interop": {
+            "intents": {
+              "listensFor": {
+                "ViewChart": {
+                  "contexts": [
+                    "fdc3.instrument"
+                  ]
+                },
+                "myApp.GetPrice": {
+                  "contexts": [
+                    "fdc3.instrument"
+                  ],
+                  "resultType": "myApp.quote"
+                }
+              },
+              "raises": {
+                "ViewOrders": [
+                  "fdc3.instrument",
+                  "fdc3.organization"
+                ],
+                "StartEmail": [
+                  "fdc3.email"
+                ]
+              }
+            },
+            "userChannels": {
+              "broadcasts": [
+                "fdc3.instrument",
+                "fdc3.organization"
+              ],
+              "listensFor": [
+                "fdc3.instrument",
+                "fdc3.organization"
+              ]
+            },
+            "appChannels": [
+              {
+                "id": "myApp.quotes,",
+                "description": "Used to share a stream of quotes for currently displayed instrument and may be used to change the currently displayed symbol,",
+                "broadcasts": [
+                  "myApp.quote"
+                ],
+                "listensFor": [
+                  "fdc3.instrument"
+                ]
+              }
+            ]
+          },
+          "localizedVersions": {
+            "fr-FR": {
+              "title": "Mon application,",
+              "description": "Un exemple d'application qui utilise FDC3 et se décrit entièrement dans un enregistrement AppD."
+            }
+          }
+        },
+        "summary": "A sample app definition that describes the app's use of interop."
+      },
+      "AllAppsResponse": {
+        "value": {
+          "applications": [
+            {
+              "appId": "my-application",
+              "title": "My Application",
+              "description": "An example application that uses FDC3 and fully describes itself in an AppD record.",
+              "categories": [
+                "market data",
+                "research",
+                "news"
+              ],
+              "version": "1.0.0",
+              "tooltip": "My example application definition",
+              "lang": "en-US",
+              "icons": [
+                {
+                  "src": "http://example.domain.com/assets/my-app-icon.png",
+                  "size": "256x256",
+                  "type": "image/png"
+                }
+              ],
+              "screenshots": [
+                {
+                  "src": "http://example.domain.com/assets/my-app-screenshot-1.png",
+                  "label": "The first screenshot of my example app",
+                  "type": "image/png",
+                  "size": "800x600"
+                },
+                {
+                  "src": "http://example.domain.com/assets/my-app-screenshot-2.png",
+                  "label": "The second screenshot of my example app",
+                  "type": "image/png",
+                  "size": "800x600"
+                }
+              ],
+              "contactEmail": "fdc3@finos.org",
+              "supportEmail": "fdc3-maintainers@finos.org",
+              "moreInfo": "http://example.domain.com/",
+              "publisher": "Example App, Inc.",
+              "type": "web",
+              "details": {
+                "url": "http://example.domain.com/app.html"
+              },
+              "hostManifests": {
+                "Finsemble": {
+                  "window": {
+                    "left": 120,
+                    "top": 120,
+                    "width": 600,
+                    "height": 800,
+                    "options": {
+                      "minWidth": 75
+                    }
+                  },
+                  "foreign": {
+                    "components": {
+                      "App Launcher": {
+                        "launchableByUser": true
+                      },
+                      "Window Manager": {
+                        "FSBLHeader": true,
+                        "persistWindowState": true
+                      }
+                    }
+                  },
+                  "interop": {
+                    "autoConnect": true
+                  }
+                },
+                "Glue42": {
+                  "type": "window",
+                  "details": {
+                    "height": 800,
+                    "width": 600,
+                    "left": 120,
+                    "top": 120,
+                    "mode": "tab",
+                    "allowChannels": true,
+                    "loader": {
+                      "enabled": true,
+                      "hideOnLoad": true
+                    }
+                  },
+                  "customProperties": {
+                    "folder": "FDC3 Toolbox"
+                  }
+                },
+                "Web App Manifest": "http://example.domain.com/my-app.json"
+              },
+              "interop": {
+                "intents": {
+                  "listensFor": {
+                    "ViewChart": {
+                      "contexts": [
+                        "fdc3.instrument"
+                      ]
+                    },
+                    "myApp.GetPrice": {
+                      "contexts": [
+                        "fdc3.instrument"
+                      ],
+                      "resultType": "myApp.quote"
+                    }
+                  },
+                  "raises": {
+                    "ViewOrders": [
+                      "fdc3.instrument",
+                      "fdc3.organization"
+                    ],
+                    "StartEmail": [
+                      "fdc3.email"
+                    ]
+                  }
+                },
+                "userChannels": {
+                  "broadcasts": [
+                    "fdc3.instrument",
+                    "fdc3.organization"
+                  ],
+                  "listensFor": [
+                    "fdc3.instrument",
+                    "fdc3.organization"
+                  ]
+                },
+                "appChannels": [
+                  {
+                    "id": "myApp.quotes,",
+                    "description": "Used to share a stream of quotes for currently displayed instrument and may be used to change the currently displayed symbol,",
+                    "broadcasts": [
+                      "myApp.quote"
+                    ],
+                    "listensFor": [
+                      "fdc3.instrument"
+                    ]
+                  }
+                ]
+              },
+              "localizedVersions": {
+                "fr-FR": {
+                  "title": "Mon application,",
+                  "description": "Un exemple d'application qui utilise FDC3 et se décrit entièrement dans un enregistrement AppD."
+                }
+              }
+            },
+            {
+              "appId": "fdc3-workbench",
+              "title": "FDC3 Workbench",
+              "description": "Development and test tool for FDC3 desktop agents and apps",
+              "categories": [
+                "developer tools",
+                "training"
+              ],
+              "version": "1.0.0",
+              "tooltip": "FDC3 Workbench",
+              "lang": "en-US",
+              "icons": [
+                {
+                  "src": "https://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png"
+                }
+              ],
+              "screenshots": [
+                {
+                  "src": "https://fdc3.finos.org/docs/assets/fdc3-logo.png,",
+                  "label": "FDC3 logo"
+                }
+              ],
+              "contactEmail": "fdc3@finos.org",
+              "supportEmail": "fdc3-maintainers@finos.org",
+              "publisher": "FDC3,",
+              "type": "web",
+              "details": {
+                "url": "https://fdc3.finos.org/toolbox/fdc3-workbench/"
+              },
+              "hostManifests": {
+                "Glue42": {
+                  "type": "window",
+                  "icon": "https://fdc3.finos.org/docs/assets/fdc3-logo.png",
+                  "details": {
+                    "height": 640,
+                    "width": 560,
+                    "left": 120,
+                    "top": 120,
+                    "mode": "tab",
+                    "allowChannels": true,
+                    "loader": {
+                      "enabled": true,
+                      "hideOnLoad": true
+                    }
+                  },
+                  "customProperties": {
+                    "folder": "FDC3 Toolbox"
+                  }
+                },
+                "Finsemble": {
+                  "window": {
+                    "left": 120,
+                    "top": 120,
+                    "width": 800,
+                    "height": 750,
+                    "options": {
+                      "minWidth": 75
+                    }
+                  },
+                  "foreign": {
+                    "components": {
+                      "App Launcher": {
+                        "launchableByUser": true
+                      },
+                      "Toolbar": {
+                        "iconURL": "http://fdc3.finos.org/toolbox/fdc3-workbench/fdc3-icon-256.png"
+                      },
+                      "Window Manager": {
+                        "FSBLHeader": true,
+                        "persistWindowState": true
+                      }
+                    }
+                  },
+                  "interop": {
+                    "autoConnect": true
+                  }
+                },
+                "Web App Manifest": "https://example.com/fdc3-workbench.json"
+              },
+              "localizedVersions": {
+                "fr-FR": {
+                  "title": "FDC3 Table de travail",
+                  "description": "Outil de développement et de test pour les desktop agents et applications FDC3"
+                }
+              }
+            }
+          ],
+          "message": "OK"
+        },
+        "summary": "A sample 'all applications' listing response"
+      },
+      "Error400Example": {
+        "value": {
+          "code": 400,
+          "message": "There was an error in your request."
+        },
+        "summary": "A sample Bad Request error."
+      },
+      "Error403Example": {
+        "value": {
+          "code": 403,
+          "message": "Certificate authentication failed for the requested user."
+        },
+        "summary": "A sample Forbidden error."
+      },
+      "Error500Example": {
+        "value": {
+          "code": 500,
+          "message": "An internal server error occurred. See the response body for further details."
+        },
+        "summary": "A sample Server error."
+      }
+    }
+  }
+}

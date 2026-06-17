@@ -6,7 +6,7 @@
       "title": "TradeList",
       "description": "A demo app for the FDC3 Developer Course",
       "categories": [
-         "Tutoral: FDC3 Developer"
+        "Tutoral: FDC3 Developer"
       ],
       "icons": [
         {
@@ -28,7 +28,8 @@
         "sail": {
           "injectApi": "2.0"
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     }
   ],
   "message": "OK"

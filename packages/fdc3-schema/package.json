@@ -18,16 +18,19 @@
   ],
   "scripts": {
     "clean": "npx rimraf dist && npx rimraf generated && npx rimraf code-generation/.cache",
-    "mkdirs": "npx mkdirp generated/api && npx mkdirp generated/bridging",
+    "mkdirs": "npx mkdirp generated/api && npx mkdirp generated/bridging && npx mkdirp generated/app-directory",
     "generate-type-predicates": "tsc -p code-generation/tsconfig.codegen.json && node code-generation/.cache/generate-type-predicates.js",
-    "generate": "npm run mkdirs && npm run typegen-browser && npm run typegen-bridging && npm run generate-type-predicates && npm run lint",
+    "generate": "npm run mkdirs && npm run typegen-browser && npm run typegen-bridging && npm run typegen-appd && npm run generate-type-predicates && npm run bundle-appd && npm run lint",
     "build": "npm run generate && tsc",
     "lint": "eslint generated/ --fix && npx prettier generated/ --write",
     "test": "npm run generate && tsc",
     "typegen-browser": "cd schemas && node ../s2tQuicktypeUtil.cjs api/api.schema.json api/common.schema.json ../../fdc3-context/schemas/context/context.schema.json api ../generated/api/BrowserTypes.ts",
-    "typegen-bridging": "cd schemas && node ../s2tQuicktypeUtil.cjs api/api.schema.json api/common.schema.json api/broadcastRequest.schema.json api/findInstancesRequest.schema.json api/findInstancesResponse.schema.json api/findIntentRequest.schema.json api/findIntentResponse.schema.json api/findIntentsByContextRequest.schema.json api/findIntentsByContextResponse.schema.json api/getAppMetadataRequest.schema.json api/getAppMetadataResponse.schema.json api/openRequest.schema.json api/openResponse.schema.json api/raiseIntentRequest.schema.json api/raiseIntentResponse.schema.json api/raiseIntentResultResponse.schema.json ../../fdc3-context/schemas/context/context.schema.json bridging ../generated/bridging/BridgingTypes.ts"
+    "typegen-bridging": "cd schemas && node ../s2tQuicktypeUtil.cjs api/api.schema.json api/common.schema.json api/broadcastRequest.schema.json api/findInstancesRequest.schema.json api/findInstancesResponse.schema.json api/findIntentRequest.schema.json api/findIntentResponse.schema.json api/findIntentsByContextRequest.schema.json api/findIntentsByContextResponse.schema.json api/getAppMetadataRequest.schema.json api/getAppMetadataResponse.schema.json api/openRequest.schema.json api/openResponse.schema.json api/raiseIntentRequest.schema.json api/raiseIntentResponse.schema.json api/raiseIntentResultResponse.schema.json ../../fdc3-context/schemas/context/context.schema.json bridging ../generated/bridging/BridgingTypes.ts",
+    "typegen-appd": "cd schemas && node ../s2tQuicktypeUtil.cjs api/api.schema.json appDirectory/app-directory.schema.json appDirectory/appd ../generated/app-directory/AppDirectoryTypes.ts",
+    "bundle-appd": "node scripts/bundle-appd-schema.mjs"
   },
   "devDependencies": {
+    "@apidevtools/swagger-parser": "^10.1.1",
     "message-await": "^1.1.0",
     "mkdirp": "^3.0.1",
     "quicktype": "23.0.78",
