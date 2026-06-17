@@ -57,15 +57,20 @@ class App2BackendHandlers extends DefaultFDC3Handlers {
     }
 
     return async (ctx: Context, md: ContextMetadata): Promise<Context | PrivateChannelSignal> => {
-      // Verify the JWS signature on the inbound instrument to confirm the request
-      // came from a trusted application. Reject if unsigned or untrusted.
-      const auth = await this.security.verifySignature(md.signature, ctx, md.antiReplay);
-      if (!auth.signed || !auth.trusted || !auth.valid) {
-        return unauthorizedContext(ctx, 'Signature verification failed');
-      }
+      try {
+        // Verify the JWS signature on the inbound instrument to confirm the request
+        // came from a trusted application. Reject if unsigned or untrusted.
+        const auth = await this.security.verifySignature(md.signature, ctx, md.antiReplay);
+        if (!auth.signed || !auth.trusted || !auth.valid) {
+          return unauthorizedContext(ctx, 'Signature verification failed');
+        }
 
-      // Signal the frontend to create a PrivateChannel and call handleRemoteChannel.
-      return PRIVATE_CHANNEL_SIGNAL;
+        // Signal the frontend to create a PrivateChannel and call handleRemoteChannel.
+        return PRIVATE_CHANNEL_SIGNAL;
+      } catch (err) {
+        console.error('demo.GetPrices handler error:', err);
+        return unauthorizedContext(ctx, 'Handler error');
+      }
     };
   }
 
@@ -80,35 +85,47 @@ class App2BackendHandlers extends DefaultFDC3Handlers {
     // handleRemoteChannel exchange (same race as security-demo-app1 backend).
     setTimeout(() => {
       void (async () => {
-        const broadcastSupport = new EncryptedBroadcastSupport(this.security, this.metadataHandler);
-        const broadcaster: EncryptedBroadcaster = await broadcastSupport.broadcastWrapper(channel);
+        try {
+          const broadcastSupport = new EncryptedBroadcastSupport(this.security, this.metadataHandler);
+          const broadcaster: EncryptedBroadcaster = await broadcastSupport.broadcastWrapper(channel);
 
-        for (let i = 0; i < 5; i++) {
+          for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+              void (async () => {
+                try {
+                  const valuation: Valuation = {
+                    type: 'fdc3.valuation',
+                    currency: 'Dollars',
+                    CURRENCY_ISOCODE: 'USD',
+                    price: 100 + i,
+                    value: 100 + i,
+                  };
+                  await broadcaster.broadcast(valuation);
+                  emitToClient(this.ws, EXCHANGE_DATA, {
+                    purpose: VALUATION_PUSH_PURPOSE,
+                    payload: { ctx: valuation },
+                  });
+                  console.log('[app2 backend] broadcast encrypted valuation', i);
+                } catch (err) {
+                  console.error('[app2 backend] broadcast error:', err);
+                }
+              })();
+            }, i * 1000);
+          }
+
           setTimeout(() => {
             void (async () => {
-              const valuation: Valuation = {
-                type: 'fdc3.valuation',
-                currency: 'Dollars',
-                CURRENCY_ISOCODE: 'USD',
-                price: 100 + i,
-                value: 100 + i,
-              };
-              await broadcaster.broadcast(valuation);
-              emitToClient(this.ws, EXCHANGE_DATA, {
-                purpose: VALUATION_PUSH_PURPOSE,
-                payload: { ctx: valuation },
-              });
-              console.log('[app2 backend] broadcast encrypted valuation', i);
+              try {
+                await broadcaster.shutdown();
+                await pc.disconnect();
+              } catch (err) {
+                console.error('[app2 backend] shutdown error:', err);
+              }
             })();
-          }, i * 1000);
+          }, 10000);
+        } catch (err) {
+          console.error('handleRemoteChannel(demo.GetPrices) error:', err);
         }
-
-        setTimeout(() => {
-          void (async () => {
-            await broadcaster.shutdown();
-            await pc.disconnect();
-          })();
-        }, 10000);
       })();
     }, 0);
   }

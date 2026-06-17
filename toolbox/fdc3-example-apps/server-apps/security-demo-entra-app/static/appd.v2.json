@@ -13,7 +13,7 @@
       "version": "1.0.0",
       "publisher": "FINOS",
       "categories": [
-        "Security: FDC3 Workflow Example"
+        "Security: Identity Provider Workflow Example"
       ],
       "icons": [
         {

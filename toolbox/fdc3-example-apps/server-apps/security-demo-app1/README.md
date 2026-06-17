@@ -1,3 +1,3 @@
-# Security demo app 1
+# Security demo app 1 (Security POC 1)
 
-This “Security POC 1” client requests prices from the companion POC 2 app through FDC3 intents and related security flows. Run it with the IDP or Entra issuer and POC 2 to walk through the full multi-app security demonstration.
+Buy-side client that raises `demo.GetPrices` with a signed `fdc3.instrument` context and receives encrypted valuations from Security POC 2.

@@ -3,91 +3,17 @@ import type { Context } from '@finos/fdc3-context';
 import type { AntiReplayClaims, DetachedSignature } from '@finos/fdc3-standard';
 import { connectRemoteHandlers, type ExchangeDataMessage, type FDC3Handlers } from '@finos/fdc3-security';
 import { createLogEntry } from '../../../common/src/security-demo/logging';
-import {
-  checkSessionStatus,
-  setupSessionStatusButton,
-  setupLogoutButton,
-} from '../../../common/src/security-demo/session-logic';
 import { initializeFDC3 } from '../../../common/src/security-demo/fdc3';
 
 /** Must match `VALUATION_PUSH_PURPOSE` in `src/backend.ts`. */
 const VALUATION_PUSH_PURPOSE = 'valuation-push';
-
-/** Standard intent name per FDC3 Security & Identity specification. */
-const GET_USER_INTENT = 'GetUser';
 
 function wsUrlForPage(): string {
   return (window.location.protocol === 'https:' ? 'wss:' : 'ws:') + '//' + window.location.host;
 }
 
 /**
- * Login flow — raises the GetUser intent to authenticate the user.
- *
- * Steps:
- * 1. Raise GetUser with a signed `fdc3.security.userRequest` (aud = this app's origin).
- *    The identity provider app verifies our signature, mints a JWT, and returns it as
- *    `fdc3.security.encryptedContext` so only this app can decrypt it.
- * 2. Pass the encrypted result to this app's backend (`user-request` exchangeData).
- *    The backend decrypts it with our private key and verifies the JWT signature.
- * 3. On success the backend returns the `fdc3.security.user` session.
- */
-async function raiseGetUserIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Handlers, loginBtn: HTMLButtonElement) {
-  try {
-    loginBtn.disabled = true;
-    loginBtn.textContent = '🔄 Processing...';
-
-    const userRequest: Context = {
-      type: 'fdc3.security.userRequest',
-      aud: window.location.origin,
-    };
-
-    createLogEntry('info', `✅ Raising ${GET_USER_INTENT} intent`, {
-      result: userRequest,
-      timestamp: new Date().toISOString(),
-    });
-
-    const resolution = await fdc3.raiseIntent(GET_USER_INTENT, userRequest);
-
-    // getResult() returns IntentResult — expect fdc3.security.encryptedContext here.
-    const intentResult = await resolution.getResult();
-
-    createLogEntry('info', `✅ ${GET_USER_INTENT} intent resolved`, {
-      result: intentResult,
-      timestamp: new Date().toISOString(),
-    });
-
-    // Pass the encrypted context to the backend for decryption and JWT verification.
-    // The backend returns the decrypted fdc3.security.user session on success.
-    const userSession = await remoteHandlers.exchangeData('user-request', intentResult);
-
-    if (userSession) {
-      createLogEntry('success', '✅ User decrypted and JWT verified (app1 backend)', {
-        result: userSession,
-        timestamp: new Date().toISOString(),
-      });
-    }
-  } catch (error) {
-    createLogEntry('error', `❌ Failed to raise ${GET_USER_INTENT} intent`, {
-      error: error instanceof Error ? error.message : String(error),
-      timestamp: new Date().toISOString(),
-    });
-  } finally {
-    loginBtn.disabled = false;
-    loginBtn.textContent = '🔐 Login (GetUser)';
-  }
-}
-
-/**
  * Get Prices flow — raises the demo.GetPrices intent to request an encrypted price stream.
- *
- * Steps:
- * 1. Ask the backend to sign the instrument context (`request-prices` exchangeData).
- *    Signing happens server-side so the private key never enters the browser.
- * 2. Raise demo.GetPrices with the signed instrument and await the intent resolution.
- *    App2 verifies the signature and returns a PrivateChannel.
- * 3. Forward the PrivateChannel to the backend (`handleRemoteChannel('demo.GetPrices')`).
- *    The backend sets up `PrivateEncryptedContextListenerSupport` on the channel and pushes
- *    decrypted valuations to the browser via EXCHANGE_DATA server → client push.
  */
 async function raiseGetPricesIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Handlers, pricesBtn: HTMLButtonElement) {
   try {
@@ -105,12 +31,17 @@ async function raiseGetPricesIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Hand
       name: 'Apple Inc.',
     };
 
-    // Sign the instrument on the backend — the signature proves to App2 that this
-    // request genuinely came from App1.
     const signResult = (await remoteHandlers.exchangeData('request-prices', {
       context: instrument,
       intent: 'demo.GetPrices',
-    })) as { signature: DetachedSignature; antiReplay: AntiReplayClaims };
+    })) as { signature?: DetachedSignature; antiReplay?: AntiReplayClaims } | undefined;
+    if (!signResult?.signature || !signResult?.antiReplay) {
+      createLogEntry('error', '❌ Backend failed to sign instrument for demo.GetPrices', {
+        intent: 'demo.GetPrices',
+        timestamp: new Date().toISOString(),
+      });
+      return;
+    }
     const { signature, antiReplay } = signResult;
 
     const resolution = await fdc3.raiseIntent('demo.GetPrices', instrument, null, { signature, antiReplay });
@@ -124,8 +55,6 @@ async function raiseGetPricesIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Hand
     });
 
     if (intentResult?.type == 'private') {
-      // App2 returned a PrivateChannel. Forward it to our backend so it can listen
-      // for encrypted valuations and push them to us via the WebSocket.
       const pc: PrivateChannel = intentResult as PrivateChannel;
       remoteHandlers.handleRemoteChannel('demo.GetPrices', pc);
     } else {
@@ -154,32 +83,16 @@ async function raiseGetPricesIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Hand
   }
 }
 
-/** Wires up the Login and Get Prices button click handlers. */
 function setupButtonListeners(fdc3: DesktopAgent, remoteHandlers: FDC3Handlers) {
-  const loginBtn = document.getElementById('login-btn') as HTMLButtonElement;
   const pricesBtn = document.getElementById('prices-btn') as HTMLButtonElement;
-
-  if (loginBtn) {
-    loginBtn.addEventListener('click', async () => {
-      await raiseGetUserIntent(fdc3, remoteHandlers, loginBtn);
-    });
-  }
 
   if (pricesBtn) {
     pricesBtn.addEventListener('click', async () => {
       await raiseGetPricesIntent(fdc3, remoteHandlers, pricesBtn);
     });
   }
-
-  setupSessionStatusButton(remoteHandlers);
 }
 
-/**
- * Handles server → client push messages from the backend over the secure-boundary WebSocket.
- * `valuation-push` messages carry decrypted `fdc3.valuation` contexts from the private channel.
- * Legacy `__encrypted` messages indicate an in-flight context that has not yet been decrypted
- * (the backend is still negotiating the symmetric key).
- */
 function handleReturnedMessage(msg: ExchangeDataMessage): void {
   if (msg.purpose === VALUATION_PUSH_PURPOSE) {
     const { ctx, meta } = msg.payload as { ctx?: Context; meta?: unknown };
@@ -206,9 +119,9 @@ function handleReturnedMessage(msg: ExchangeDataMessage): void {
 
 initializeFDC3()
   .then(async fdc3 => {
-    createLogEntry('info', '🎯 App1 ready - buttons are now active', {
+    createLogEntry('info', '🎯 Security POC 1 ready', {
       status: 'Ready',
-      buttons: ['Login', 'Get Prices', 'Check Session Status', 'Logout'],
+      buttons: ['Get Prices'],
       timestamp: new Date().toISOString(),
     });
 
@@ -216,12 +129,9 @@ initializeFDC3()
       handleReturnedMessage(msg);
     }).then(remoteHandlers => {
       setupButtonListeners(fdc3, remoteHandlers);
-      setupSessionStatusButton(remoteHandlers);
-      setupLogoutButton(remoteHandlers);
-      checkSessionStatus(remoteHandlers);
     });
   })
 
   .catch(error => {
-    console.error('Failed to initialize app1:', error);
+    console.error('Failed to initialize Security POC 1:', error);
   });
