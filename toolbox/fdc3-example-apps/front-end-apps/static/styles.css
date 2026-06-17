@@ -84,6 +84,27 @@ body.tradelist {
 
 body.tradingview {
   background-color: #e0f2f1;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  overflow: hidden;
+}
+
+body.tradingview .app-title {
+  margin-bottom: 4px;
+  font-size: 20px;
+}
+
+body.tradingview .app-subtitle {
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+
+body.tradingview #app {
+  flex: 1;
+  min-height: 0;
 }
 
 /* Trade List specific */
