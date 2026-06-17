@@ -9,6 +9,7 @@
 	  "news"
 	],
 	"version": "1.0.0",
+	"minimumAgentVersion": "2.0",
 	"tooltip": "My example application definition",
 	"lang": "en-US",
 	"icons": [

@@ -22,9 +22,12 @@
       ],
       "interop": {
         "contexts": {
-          "listensFor": ["fdc3.instrument"]
+          "listensFor": [
+            "fdc3.instrument"
+          ]
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     }
   ],
   "message": "OK"

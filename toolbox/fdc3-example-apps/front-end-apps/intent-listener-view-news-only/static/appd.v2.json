@@ -12,7 +12,9 @@
       "hostManifests": {},
       "version": "1.0.0",
       "publisher": "FINOS",
-      "categories": ["Basic FDC3: Intents Demo"],
+      "categories": [
+        "Basic FDC3: Intents Demo"
+      ],
       "icons": [
         {
           "src": "http://localhost:4016/icon.svg"
@@ -23,11 +25,14 @@
           "listensFor": {
             "ViewNews": {
               "displayName": "View News",
-              "contexts": ["fdc3.instrument"]
+              "contexts": [
+                "fdc3.instrument"
+              ]
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     }
   ],
   "message": "OK"

@@ -12,7 +12,9 @@
       "hostManifests": {},
       "version": "1.0.0",
       "publisher": "FINOS",
-      "categories": ["Security: Identity Provider Workflow Example"],
+      "categories": [
+        "Security: Identity Provider Workflow Example"
+      ],
       "icons": [
         {
           "src": "http://localhost:4032/icon.svg"
@@ -22,11 +24,14 @@
         "intents": {
           "raises": {
             "GetUser": {
-              "contexts": ["fdc3.security.userRequest"]
+              "contexts": [
+                "fdc3.security.userRequest"
+              ]
             }
           }
         }
-      }
+      },
+      "minimumAgentVersion": "2.0"
     }
   ],
   "message": "OK"
