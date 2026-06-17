@@ -58,6 +58,25 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
     });
   }
 
+  /**
+   * Update cached user channel synchronously from a channel id (e.g. from userChannelChanged).
+   * Must run before any await in event handlers so other listeners calling getCurrentChannel()
+   * do not read a stale channel.
+   */
+  private applyCurrentChannelFromId(channelId: string | null): void {
+    if (channelId == null) {
+      this.currentChannel = null;
+      return;
+    }
+    const cached = this.userChannels?.find(uc => uc.id === channelId);
+    if (cached) {
+      this.currentChannel = cached;
+    } else if (this.currentChannel?.id !== channelId) {
+      // Avoid showing the previous channel while the async lookup runs.
+      this.currentChannel = null;
+    }
+  }
+
   async connect(): Promise<void> {
     //retrieve the current user channel in case the Desktop Agent started us on a channel
     this.currentChannel = await this.getUserChannel();
@@ -68,14 +87,17 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
       const newChannelId = cce.details.currentChannelId;
       Logger.debug('Desktop Agent reports channel changed: ', newChannelId);
 
-      let theChannel: Channel | null = null;
+      this.applyCurrentChannelFromId(newChannelId);
+
+      let theChannel: Channel | null = this.currentChannel;
 
       // if theres a newChannelId, retrieve details of the channel
-      if (newChannelId != null) {
+      if (newChannelId != null && theChannel == null) {
         theChannel = (await this.getUserChannels()).find(uc => uc.id == newChannelId) ?? null;
         if (!theChannel) {
           // Channel not found - query user channels in case they have changed for some reason
           Logger.debug('Unknown user channel, querying Desktop Agent for updated user channels: ', newChannelId);
+          this.userChannels = null;
           await this.getUserChannels();
           theChannel = (await this.getUserChannels()).find(uc => uc.id == newChannelId) ?? null;
           if (!theChannel) {
@@ -85,10 +107,10 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
             );
           }
         }
+        this.currentChannel = theChannel;
       }
 
-      this.currentChannel = theChannel;
-      this.channelSelector.updateChannel(theChannel?.id ?? null, await this.getUserChannels());
+      this.channelSelector.updateChannel(this.currentChannel?.id ?? null, await this.getUserChannels());
     }, 'userChannelChanged');
   }
 

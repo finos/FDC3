@@ -27,6 +27,7 @@ getAgent().then(async fdc3 => {
           timestamp: metadata.timestamp instanceof Date ? metadata.timestamp.toISOString() : String(metadata.timestamp),
           traceId: metadata.traceId,
           signature: metadata.signature,
+          antiReplay: metadata.antiReplay,
           custom: metadata.custom,
         };
       }

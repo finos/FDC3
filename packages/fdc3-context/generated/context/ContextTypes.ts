@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, FileAttachment, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, Portfolio, Position, Product, TimeRange, Trade, TradeList, TransactionResult, Valuation } from "./file";
+//   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, FileAttachment, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, Portfolio, Position, Product, EncryptedContextWrapper, SymmetricKeyRequest, SymmetricKeyResponse, User, UserRequest, TimeRange, Trade, TradeList, TransactionResult, Valuation } from "./file";
 //
 //   const action = Convert.toAction(json);
 //   const chart = Convert.toChart(json);
@@ -26,6 +26,11 @@
 //   const portfolio = Convert.toPortfolio(json);
 //   const position = Convert.toPosition(json);
 //   const product = Convert.toProduct(json);
+//   const encryptedContextWrapper = Convert.toEncryptedContextWrapper(json);
+//   const symmetricKeyRequest = Convert.toSymmetricKeyRequest(json);
+//   const symmetricKeyResponse = Convert.toSymmetricKeyResponse(json);
+//   const user = Convert.toUser(json);
+//   const userRequest = Convert.toUserRequest(json);
 //   const timeRange = Convert.toTimeRange(json);
 //   const trade = Convert.toTrade(json);
 //   const tradeList = Convert.toTradeList(json);
@@ -1820,6 +1825,152 @@ export interface Product {
 }
 
 /**
+ * @experimental A wrapper context type for encrypted FDC3 context data. When an app
+ * broadcasts encrypted context data, the original type is preserved for routing purposes,
+ * while the remaining context information is encrypted. Recipients can request a symmetric
+ * key via 'fdc3.security.symmetricKeyRequest' to decrypt the payload.
+ */
+export interface EncryptedContextWrapper {
+  /**
+   * The encrypted context data as a base64-encoded string. Contains all fields from the
+   * original context except for the type. Encrypted using the symmetric key identified by
+   * 'id.kid'.
+   */
+  encryptedPayload: string;
+  /**
+   * Identifiers for the encryption key used.
+   */
+  id: EncryptedContextWrapperID;
+  /**
+   * The original FDC3 context type that was encrypted (e.g., 'fdc3.instrument',
+   * 'fdc3.contact'). This field is used by the desktop agent and context handlers for routing
+   * decisions.
+   */
+  originalType: string;
+  type: 'fdc3.security.encryptedContext';
+  name?: string;
+  [property: string]: any;
+}
+
+/**
+ * Identifiers for the encryption key used.
+ */
+export interface EncryptedContextWrapperID {
+  /**
+   * Key ID identifying the symmetric key used to encrypt the payload.
+   */
+  kid: string;
+  [property: string]: any;
+}
+
+/**
+ * @experimental A request to obtain a symmetric encryption key for decrypting encrypted
+ * context on a channel.
+ *
+ * **Note:** This context type MUST be signed to be effective. The key owner uses the
+ * signature's public key URL to encrypt the symmetric key in the response, ensuring only
+ * the requesting application can decrypt it. See the [Security & Identity
+ * documentation](../../api/security) for details on signing context objects and encrypted
+ * communications.
+ */
+export interface SymmetricKeyRequest {
+  /**
+   * Optional identifier for the requested key.
+   */
+  id?: SymmetricKeyRequestID;
+  type: 'fdc3.security.symmetricKeyRequest';
+  name?: string;
+  [property: string]: any;
+}
+
+/**
+ * Optional identifier for the requested key.
+ */
+export interface SymmetricKeyRequestID {
+  /**
+   * Key ID to request a specific symmetric key.
+   */
+  kid?: string;
+  [property: string]: any;
+}
+
+/**
+ * @experimental A response containing a wrapped symmetric key and metadata.
+ */
+export interface SymmetricKeyResponse {
+  id: SymmetricKeyResponseID;
+  type: 'fdc3.security.symmetricKeyResponse';
+  /**
+   * The symmetric key, encrypted using the recipient's public key.
+   */
+  wrappedKey: string;
+  name?: string;
+  [property: string]: any;
+}
+
+export interface SymmetricKeyResponseID {
+  /**
+   * Key ID used to identify the public key used to wrap the symmetric key.
+   */
+  kid: string;
+  /**
+   * Public Key Infrastructure JSON Web Key Set URL used to wrap the symmetric key.
+   */
+  pki: string;
+  [property: string]: any;
+}
+
+/**
+ * @experimental A user identity, expressed as a wrapped JWT.  Receivers will need to unwrap
+ * the JWT using their own private key.
+ */
+export interface User {
+  type: 'fdc3.security.user';
+  /**
+   * A JSON Web Token (JWT) asserting user identity and permissions, wrapped in the public key
+   * of the requester. The JWT contains a header with cryptographic information and a payload
+   * with user claims. Header fields include: 'alg' (signature algorithm, e.g., 'EdDSA'),
+   * 'jku' (JSON Web Key Set URL for key verification), and 'kid' (key identifier). Payload
+   * fields include: 'iss' (issuer - the application issuing the token), 'aud' (audience - the
+   * intended recipient application), 'sub' (subject - the user identifier), 'exp' (expiration
+   * time as Unix timestamp), 'iat' (issued at time as Unix timestamp), and 'jti' (JWT ID -
+   * unique token identifier).
+   */
+  wrappedJwt: string;
+  [property: string]: any;
+}
+
+/**
+ * @experimental A request for the current user's identity, raised via the GetUser intent.
+ * An identity provider app receives this request and responds with an 'fdc3.security.user'
+ * context containing a signed JWT wrapped in the requester's public key. The request
+ * includes the requesting application's audience identifier needed for the identity
+ * provider app to create a token bound to that application and to encrypt the response.
+ *
+ * **Note:** This context type MUST be signed to be effective. The identity provider app
+ * uses the signature's public key URL to verify the requesting application's identity and
+ * to encrypt the response. See the [Security & Identity documentation](../../api/security)
+ * for details on signing context objects.
+ */
+export interface UserRequest {
+  /**
+   * The audience identifier for the returned JWT, typically the URL of the requesting
+   * application. The identity provider will embed this value in the JWT's 'aud' claim,
+   * allowing the requesting application to verify that the token was issued specifically for
+   * it. This prevents token misuse if intercepted by other applications.
+   */
+  aud: string;
+  /**
+   * The FDC3 context type identifier. Used by desktop agents and context handlers to route
+   * this request to appropriate identity providers.
+   */
+  type: 'fdc3.security.userRequest';
+  id?: { [key: string]: any };
+  name?: string;
+  [property: string]: any;
+}
+
+/**
  * A context representing a period of time. Any user interfaces that represent or visualize
  * events or activity over time can be filtered or focused on a particular time period,
  * e.g.:
@@ -2220,6 +2371,46 @@ export class Convert {
 
   public static productToJson(value: Product): string {
     return JSON.stringify(uncast(value, r('Product')), null, 2);
+  }
+
+  public static toEncryptedContextWrapper(json: string): EncryptedContextWrapper {
+    return cast(JSON.parse(json), r('EncryptedContextWrapper'));
+  }
+
+  public static encryptedContextWrapperToJson(value: EncryptedContextWrapper): string {
+    return JSON.stringify(uncast(value, r('EncryptedContextWrapper')), null, 2);
+  }
+
+  public static toSymmetricKeyRequest(json: string): SymmetricKeyRequest {
+    return cast(JSON.parse(json), r('SymmetricKeyRequest'));
+  }
+
+  public static symmetricKeyRequestToJson(value: SymmetricKeyRequest): string {
+    return JSON.stringify(uncast(value, r('SymmetricKeyRequest')), null, 2);
+  }
+
+  public static toSymmetricKeyResponse(json: string): SymmetricKeyResponse {
+    return cast(JSON.parse(json), r('SymmetricKeyResponse'));
+  }
+
+  public static symmetricKeyResponseToJson(value: SymmetricKeyResponse): string {
+    return JSON.stringify(uncast(value, r('SymmetricKeyResponse')), null, 2);
+  }
+
+  public static toUser(json: string): User {
+    return cast(JSON.parse(json), r('User'));
+  }
+
+  public static userToJson(value: User): string {
+    return JSON.stringify(uncast(value, r('User')), null, 2);
+  }
+
+  public static toUserRequest(json: string): UserRequest {
+    return cast(JSON.parse(json), r('UserRequest'));
+  }
+
+  public static userRequestToJson(value: UserRequest): string {
+    return JSON.stringify(uncast(value, r('UserRequest')), null, 2);
   }
 
   public static toTimeRange(json: string): TimeRange {
@@ -2965,6 +3156,58 @@ const typeMap: any = {
     ],
     'any'
   ),
+  EncryptedContextWrapper: o(
+    [
+      { json: 'encryptedPayload', js: 'encryptedPayload', typ: '' },
+      { json: 'id', js: 'id', typ: r('EncryptedContextWrapperID') },
+      { json: 'originalType', js: 'originalType', typ: '' },
+      { json: 'type', js: 'type', typ: r('EncryptedContextWrapperType') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  EncryptedContextWrapperID: o([{ json: 'kid', js: 'kid', typ: '' }], 'any'),
+  SymmetricKeyRequest: o(
+    [
+      { json: 'id', js: 'id', typ: u(undefined, r('SymmetricKeyRequestID')) },
+      { json: 'type', js: 'type', typ: r('SymmetricKeyRequestType') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  SymmetricKeyRequestID: o([{ json: 'kid', js: 'kid', typ: u(undefined, '') }], 'any'),
+  SymmetricKeyResponse: o(
+    [
+      { json: 'id', js: 'id', typ: r('SymmetricKeyResponseID') },
+      { json: 'type', js: 'type', typ: r('SymmetricKeyResponseType') },
+      { json: 'wrappedKey', js: 'wrappedKey', typ: '' },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  SymmetricKeyResponseID: o(
+    [
+      { json: 'kid', js: 'kid', typ: '' },
+      { json: 'pki', js: 'pki', typ: '' },
+    ],
+    'any'
+  ),
+  User: o(
+    [
+      { json: 'type', js: 'type', typ: r('Type') },
+      { json: 'wrappedJwt', js: 'wrappedJwt', typ: '' },
+    ],
+    'any'
+  ),
+  UserRequest: o(
+    [
+      { json: 'aud', js: 'aud', typ: '' },
+      { json: 'type', js: 'type', typ: r('UserRequestType') },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
   TimeRange: o(
     [
       { json: 'endTime', js: 'endTime', typ: u(undefined, Date) },
@@ -3086,6 +3329,11 @@ const typeMap: any = {
   StickyAppID: ['fdc3.organization'],
   PositionType: ['fdc3.position'],
   PortfolioType: ['fdc3.portfolio'],
+  EncryptedContextWrapperType: ['fdc3.security.encryptedContext'],
+  SymmetricKeyRequestType: ['fdc3.security.symmetricKeyRequest'],
+  SymmetricKeyResponseType: ['fdc3.security.symmetricKeyResponse'],
+  Type: ['fdc3.security.user'],
+  UserRequestType: ['fdc3.security.userRequest'],
   TradeType: ['fdc3.trade'],
   TradeListType: ['fdc3.tradeList'],
   TransactionStatus: ['Created', 'Deleted', 'Failed', 'Updated'],

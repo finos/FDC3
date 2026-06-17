@@ -19,10 +19,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added `version-check` script and integrated it into the `syncpack` script and Publish To NPM workflow to prevent version mismatches causing incorrect npm dist-tags. ([#1864](https://github.com/finos/FDC3/pull/1864))
 * Added Channel Interface Compliance and PrivateChannel Interface Compliance subsections to the Desktop Agent API Standard Compliance section in the API spec, enumerating MUST/SHOULD/MAY requirements for all `Channel` and `PrivateChannel` functions including `getCurrentContextWithMetadata`. ([#1728](https://github.com/finos/FDC3/pull/1728))
 * Added `getResultMetadata()` to `IntentResolution` to allow the raising app to retrieve `ContextMetadata` for an intent result. Updated `IntentHandler` to allow returning `ContextWithMetadata` so that handlers can include app-provided metadata (e.g. `traceId`, `signature`) alongside a context result. The Desktop Agent merges app-provided metadata with its own generated fields before delivering to the raising app. For `Channel` or `void` results, only Desktop Agent generated metadata is returned. ([#1728](https://github.com/finos/FDC3/pull/1728))
+* Added FDC3 Security & Identity support, enabling applications to sign, encrypt, and validate contexts, and securely exchange user identity information, without relying on the Desktop Agent ([#1909](https://github.com/finos/FDC3/pull/1909):
+  * `@experimental` standard documentation, `GetUser` intent, and `fdc3.security.*` context types for signed contexts, encrypted payloads, symmetric key exchange, and user identity.
+  * `@finos/fdc3-security` reference library (JWS/JWE, anti-replay, secure-boundary handlers) with samples and tests.
+  * `fdc3-example-apps` toolbox with runnable security demos (identity provider apps, Login POC, signed broadcast, encrypted channels).
+  * READMEs, Glossary entries and an API spec introduction for securing inter-app communication.
 
 ### Changed
 
+* DACP `ContextMetadata` in `api.schema.json` now allows optional `antiReplay` claims on the wire (e.g. merged into `raiseIntentResultResponse.resultMetadata`). The agent proxy and reference web implementation forward `antiReplay` from app metadata on `raiseIntent` / `raiseIntentForContext` and merge it from `intentResultRequest` metadata into the intent result delivered to the raising app. Cucumber steps and features cover `iat` / `exp` / `jti` alongside signatures.
+
 * Updated "Releasing FDC3 to NPM" instructions in README to reflect the current GitHub Actions release workflow. ([#1864](https://github.com/finos/FDC3/pull/1864))
+* Improved loading of example applications, fdc3-conformance and fdc3-workbench in the FDC3 for Web reference implementation demo. ([#1924](https://github.com/finos/FDC3/pull/1924))
 
 ### Deprecated
 

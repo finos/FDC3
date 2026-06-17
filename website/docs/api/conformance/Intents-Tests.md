@@ -193,6 +193,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 - `RaiseIntentChannelResultMetadata` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform the above test with a Channel result.
 - `RaiseIntentVoidResultMetadata` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform the above test with a void result.
 
+
 ## Raise Intent Result (Channel results)
 
 | App  | Step                        | Details                                                                                           |

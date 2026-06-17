@@ -184,9 +184,10 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
   openFrame(url: string): Promise<Window | null> {
     const iframe = document.createElement('iframe');
     iframe.setAttribute('src', url);
-    iframe.style.width = '640px';
-    iframe.style.height = '480px';
-    document.body.appendChild(iframe);
+    iframe.classList.add('da-app-frame');
+
+    const container = document.getElementById('app-frames') ?? document.body;
+    container.appendChild(iframe);
 
     //wait for load event, after which contentWindow should not be null
     const loadPromise = new Promise<Window | null>(resolve => {

@@ -1,0 +1,66 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fdc3.finos.org/schemas/next/context/encrypted.schema.json",
+    "type": "object",
+    "title": "Encrypted Context Wrapper",
+    "description": "@experimental A wrapper context type for encrypted FDC3 context data. When an app broadcasts encrypted context data, the original type is preserved for routing purposes, while the remaining context information is encrypted. Recipients can request a symmetric key via 'fdc3.security.symmetricKeyRequest' to decrypt the payload.",
+    "allOf": [
+        {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "const": "fdc3.security.encryptedContext"
+                },
+                "originalType": {
+                    "type": "string",
+                    "description": "The original FDC3 context type that was encrypted (e.g., 'fdc3.instrument', 'fdc3.contact'). This field is used by the desktop agent and context handlers for routing decisions."
+                },
+                "id": {
+                    "type": "object",
+                    "description": "Identifiers for the encryption key used.",
+                    "properties": {
+                        "kid": {
+                            "type": "string",
+                            "description": "Key ID identifying the symmetric key used to encrypt the payload."
+                        }
+                    },
+                    "required": [
+                        "kid"
+                    ],
+                    "additionalProperties": true
+                },
+                "encryptedPayload": {
+                    "type": "string",
+                    "description": "The encrypted context data as a base64-encoded string. Contains all fields from the original context except for the type. Encrypted using the symmetric key identified by 'id.kid'."
+                }
+            },
+            "required": [
+                "type",
+                "originalType",
+                "id",
+                "encryptedPayload"
+            ]
+        },
+        {
+            "$ref": "context.schema.json#/definitions/BaseContext"
+        }
+    ],
+    "examples": [
+        {
+            "type": "fdc3.security.encryptedContext",
+            "originalType": "fdc3.instrument",
+            "id": {
+                "kid": "channel-key-abc123"
+            },
+            "encryptedPayload": "eyJuYW1lIjoiQXBwbGUiLCJpZCI6eyJ0aWNrZXIiOiJBQVBMIn19..."
+        },
+        {
+            "type": "fdc3.security.encryptedContext",
+            "originalType": "fdc3.contact",
+            "id": {
+                "kid": "session-key-xyz789"
+            },
+            "encryptedPayload": "eyJuYW1lIjoiSm9obiBEb2UiLCJpZCI6eyJlbWFpbCI6ImpvaG5AZXhhbXBsZS5jb20ifX0=..."
+        }
+    ]
+}

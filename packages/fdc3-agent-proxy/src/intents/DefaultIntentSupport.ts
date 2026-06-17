@@ -64,6 +64,7 @@ const extractResultMetadata = ({ payload }: RaiseIntentResultResponse, source: A
     timestamp: rm?.timestamp ?? new Date(),
     traceId: rm?.traceId ?? '',
     ...(rm?.signature !== undefined && { signature: rm.signature }),
+    ...(rm?.antiReplay !== undefined && { antiReplay: rm.antiReplay }),
     ...(rm?.custom !== undefined && { custom: rm.custom }),
   };
 };
@@ -172,6 +173,7 @@ export class DefaultIntentSupport implements IntentSupport {
         metadata: {
           traceId: metadata?.traceId ?? v4(),
           ...(metadata?.signature !== undefined && { signature: metadata.signature }),
+          ...(metadata?.antiReplay !== undefined && { antiReplay: metadata.antiReplay }),
           ...(metadata?.custom !== undefined && { custom: metadata.custom }),
         },
       },
@@ -209,13 +211,7 @@ export class DefaultIntentSupport implements IntentSupport {
         request,
         details.source
       );
-      return new DefaultIntentResolution(
-        this.messaging,
-        resolvedResult,
-        resolvedMetadata,
-        details.source,
-        details.intent
-      );
+      return new DefaultIntentResolution(resolvedResult, resolvedMetadata, details.source, details.intent);
     }
   }
 
@@ -233,6 +229,7 @@ export class DefaultIntentSupport implements IntentSupport {
         metadata: {
           traceId: metadata?.traceId ?? v4(),
           ...(metadata?.signature !== undefined && { signature: metadata.signature }),
+          ...(metadata?.antiReplay !== undefined && { antiReplay: metadata.antiReplay }),
           ...(metadata?.custom !== undefined && { custom: metadata.custom }),
         },
       },
@@ -270,13 +267,7 @@ export class DefaultIntentSupport implements IntentSupport {
         request,
         details.source
       );
-      return new DefaultIntentResolution(
-        this.messaging,
-        resolvedResult,
-        resolvedMetadata,
-        details.source,
-        details.intent
-      );
+      return new DefaultIntentResolution(resolvedResult, resolvedMetadata, details.source, details.intent);
     }
   }
 

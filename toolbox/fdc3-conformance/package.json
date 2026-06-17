@@ -1,6 +1,6 @@
 {
   "name": "fdc3-conformance",
-  "version": "2.2.3",
+  "version": "3.0.0-alpha.2",
   "homepage": "https://fdc3.finos.org",
   "repository": {
     "type": "git",
@@ -11,12 +11,12 @@
   "scripts": {
     "copy": "shx mkdir -p ./dist && shx cp -R static/* ./dist",
     "build": "webpack build && npm run copy",
-    "serve": "npx http-server ./dist -p 3001 -c-1",
+    "serve": "npx http-server ./dist -p 3001 -c-1 --cors",
     "dev": "npm run clean && npm run build && npm run serve",
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@finos/fdc3": "2.2.3",
+    "@finos/fdc3": "3.0.0-alpha.2",
     "buffer": "^6.0.3",
     "chai": "^4.3.6",
     "get-func-name": "^2.0.2",
@@ -31,6 +31,8 @@
   "devDependencies": {
     "@types/chai": "^4.3.0",
     "@types/mocha": "^10.0.10",
+    "ajv": "^8.17.1",
+    "ajv-keywords": "^5.1.0",
     "css-loader": "^6.7.2",
     "http-server": "^14.1.1",
     "prettier": "3.4.1",

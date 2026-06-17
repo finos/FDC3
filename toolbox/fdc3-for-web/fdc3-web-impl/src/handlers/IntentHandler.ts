@@ -63,6 +63,7 @@ async function forwardRequest(
         timestamp: new Date(),
         traceId: appProvidedMeta.traceId ?? sc.createUUID(),
         ...(appProvidedMeta.signature !== undefined && { signature: appProvidedMeta.signature }),
+        ...(appProvidedMeta.antiReplay !== undefined && { antiReplay: appProvidedMeta.antiReplay }),
         ...(appProvidedMeta.custom !== undefined && { custom: appProvidedMeta.custom }),
       },
       raiseIntentRequestUuid: arg0.requestUuid,
@@ -221,6 +222,7 @@ export class IntentHandler implements MessageHandler {
         timestamp: new Date(),
         traceId: appMeta.traceId ?? sc.createUUID(),
         ...(appMeta.signature !== undefined && { signature: appMeta.signature }),
+        ...(appMeta.antiReplay !== undefined && { antiReplay: appMeta.antiReplay }),
         ...(appMeta.custom !== undefined && { custom: appMeta.custom }),
       };
 
@@ -503,6 +505,7 @@ export class IntentHandler implements MessageHandler {
       appProvidedMetadata: {
         traceId: reqMeta.traceId,
         signature: reqMeta.signature,
+        antiReplay: reqMeta.antiReplay,
         custom: reqMeta.custom,
       },
     };
@@ -549,6 +552,7 @@ export class IntentHandler implements MessageHandler {
         appProvidedMetadata: {
           traceId: rifcMeta.traceId,
           signature: rifcMeta.signature,
+          antiReplay: rifcMeta.antiReplay,
           custom: rifcMeta.custom,
         },
       };
