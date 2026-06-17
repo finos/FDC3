@@ -89,7 +89,9 @@ There is currently no method of discovering all the apps supported by a Desktop 
 
 ### Securing Communications
 
-In open, web-based environments the Desktop Agent acts as an untrusted relay: it routes context and metadata but has no role in verifying the identity of the applications it connects. Applications that require stronger guarantees — for example, confirming that context data originated from a known counterparty, or ensuring that sensitive data cannot be read by the Desktop Agent or other observers — can use the security mechanisms defined in the [@experimental](../fdc3-compliance#experimental-features) [Security & Identity](security) specification.
+In FDC3, applications communicate through a Desktop Agent rather than directly with each other. While the Desktop Agent is responsible for verifying the identity of the applications it connects — for example, by launching applications from known URLs and, in web-based implementations, validating the origin of messages against the application's directory record (see [Browser-Resident Desktop Agents](specs/browserResidentDesktopAgents) and the [Desktop Agent Communication Protocol](specs/desktopAgentCommunicationProtocol)) — applications themselves have no direct relationship with their counterparts. Because FDC3 aims to build an ecosystem of interoperable applications that can run under any conformant Desktop Agent, applications cannot necessarily know or trust the specific Desktop Agent implementation they are running under.
+
+This gives rise to the need for applications to independently verify the identity of the applications they are communicating with and to secure their communications over a potentially untrusted channel. The [@experimental](../fdc3-compliance#experimental-features) [Security & Identity](security) specification defines mechanisms for **application identity verification** (digital signatures), **encrypted communications** (symmetric key exchange over private channels), and **portable user identity** (JWT-based tokens issued by an identity provider app).
 
 ### Desktop Agent API Standard Compliance
 
