@@ -13,9 +13,11 @@ Security and Identity features are experimental additions to FDC3. Limited aspec
 
 :::
 
-As FDC3 evolves from desktop containers to web-based implementations, new security challenges arise in open, decentralized environments. This specification defines mechanisms for **application identity verification**, **encrypted communications**, and **user identity sharing** across FDC3-enabled applications.
+In the FDC3 model, applications communicate through a Desktop Agent rather than directly with each other. While Desktop Agents are responsible for verifying the identity of the applications they connect (for example, by launching applications from known URLs and validating message origins against directory records), applications themselves have no direct relationship with their counterparts. Because the FDC3 standard aims to build an ecosystem of interoperable applications that can run under any conformant Desktop Agent, applications cannot necessarily know or trust the specific Desktop Agent they are running under and must treat it as an untrusted intermediary when it comes to verifying the identity of other applications or protecting sensitive data in transit.
 
-The security model is built on **asymmetric cryptography**: each participating application holds a private key (kept secret) and publishes a corresponding public key at a stable HTTPS endpoint. Other applications use that public key to verify the application's digital signatures and to encrypt data that only it can read. All cryptographic operations that involve a private key MUST be performed in a trusted backend (server), not in the browser frontend.
+This gives rise to the need for applications to independently establish the identity of the applications they are communicating with and to secure their communications over a potentially untrusted channel. The security model is built on **asymmetric cryptography**: each participating application holds a private key (kept secret) and publishes a corresponding public key at a stable HTTPS endpoint. Other applications use that public key to verify the application's digital signatures and to encrypt data that only it can read.
+
+This specification defines mechanisms for **application identity verification**, **encrypted communications**, and **user identity sharing** across FDC3-enabled applications.
 
 ## Overview
 
