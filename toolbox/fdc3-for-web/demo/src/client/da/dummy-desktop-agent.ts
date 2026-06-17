@@ -206,10 +206,7 @@ window.addEventListener('load', () => {
       try {
         await directory.load(url);
       } catch (e) {
-        console.warn(
-          `[Demo DA] Failed to load directory from ${url}, is it running?:`,
-          e instanceof Error ? e.message : e
-        );
+        console.warn('[Demo DA] Failed to load directory, is it running?:', url, e instanceof Error ? e.message : e);
       }
     }
 
