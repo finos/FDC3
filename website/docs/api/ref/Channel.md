@@ -71,8 +71,9 @@ interface IChannel: IIntentResult
 ```go
 @experimental
 type IChannel interface {
-    Broadcast(context Context) <-chan Result[any]
+    Broadcast(context Context, metadata *AppProvidableContextMetadata) <-chan Result[any]
     GetCurrentContext(contextType string) <-chan Result[IContext]
+    GetCurrentContextWithMetadata(contextType string) <-chan Result[ContextWithMetadata]
     AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener]
 }
 
@@ -446,7 +447,7 @@ Task Broadcast(IContext context);
 <TabItem value="golang" label="Go">
 
 ```go
-func (channel *Channel) Broadcast(context IContext) <-chan Result[any]  { 
+func (channel *Channel) Broadcast(context IContext, metadata *AppProvidableContextMetadata) <-chan Result[any]  { 
   // Implementation here
 }
 ```
@@ -667,6 +668,15 @@ Task<IContextWithMetadata?> GetCurrentContextWithMetadata(string? contextType);
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (channel *Channel) GetCurrentContextWithMetadata(contextType string) <-chan Result[ContextWithMetadata]  { 
+  // Implementation here
+}
+```
+
+</TabItem>
 </Tabs>
 
 Returns the most recent context that was broadcast on the channel along with its associated [`ContextMetadata`](Metadata#contextmetadata), or `null` if no matching context is found.
@@ -709,6 +719,19 @@ try
 catch (Exception ex)
 {
     // handle error
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+result := <-myChannel.GetCurrentContextWithMetadata("fdc3.contact")
+if result.Err != nil {
+    // handle error 
+}
+if result.Value != nil {
+    fmt.Printf("Context from %s\n", result.Value.Metadata.Source.AppId)
 }
 ```
 
