@@ -1,11 +1,27 @@
+// @vitest-environment node
 import SwaggerParser from '@apidevtools/swagger-parser';
 import { Validator } from 'jsonschema';
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import { beforeAll, expect, it, describe } from 'vitest';
 
-// Get the directory path for loading schema and example files
-const specificationDir = join(__dirname, '..', 'src', 'app-directory', 'specification');
+const schemasDir = join(__dirname, '..', '..', 'fdc3-schema', 'schemas');
+const contextSchemaPath = join(__dirname, '..', '..', 'fdc3-context', 'schemas', 'context', 'context.schema.json');
+
+/** api.schema.json references context types outside fdc3-schema. */
+const schemaParserOptions = {
+  resolve: {
+    file: {
+      canRead: true,
+      read(file: { url: string }) {
+        if (file.url.endsWith('context/context.schema.json')) {
+          return readFileSync(contextSchemaPath, 'utf-8');
+        }
+        return readFileSync(file.url, 'utf-8');
+      },
+    },
+  },
+};
 
 describe('App Directory Schema Validation', () => {
   let api: unknown;
@@ -13,11 +29,11 @@ describe('App Directory Schema Validation', () => {
   let validator: Validator;
 
   beforeAll(async () => {
-    // Parse and validate the OpenAPI schema
-    const schemaPath = join(specificationDir, 'appd.schema.json');
-    const schema = JSON.parse(readFileSync(schemaPath, 'utf-8'));
-    api = await SwaggerParser.validate(schema);
-    applicationSchema = (api as { components: { schemas: { Application: unknown } } }).components.schemas.Application;
+    const schemaPath = join(schemasDir, 'appd.schema.json');
+    api = await SwaggerParser.validate(schemaPath, schemaParserOptions);
+    const dereferenced = await SwaggerParser.dereference(schemaPath, schemaParserOptions);
+    applicationSchema = (dereferenced as { components: { schemas: { Application: unknown } } }).components.schemas
+      .Application;
     validator = new Validator();
   });
 
@@ -28,7 +44,7 @@ describe('App Directory Schema Validation', () => {
   });
 
   it('should validate myApplication.json example against the Application schema', () => {
-    const examplePath = join(specificationDir, 'examples', 'application', 'myApplication.json');
+    const examplePath = join(schemasDir, 'appDirectory', 'examples', 'application', 'myApplication.json');
     const exampleApplication = JSON.parse(readFileSync(examplePath, 'utf-8'));
 
     const result = validator.validate(exampleApplication, applicationSchema);
@@ -40,7 +56,7 @@ describe('App Directory Schema Validation', () => {
   });
 
   it('should validate fdc3-workbench.json example against the Application schema', () => {
-    const examplePath = join(specificationDir, 'examples', 'application', 'fdc3-workbench.json');
+    const examplePath = join(schemasDir, 'appDirectory', 'examples', 'application', 'fdc3-workbench.json');
     const exampleApplication = JSON.parse(readFileSync(examplePath, 'utf-8'));
 
     const result = validator.validate(exampleApplication, applicationSchema);

@@ -7,6 +7,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import fs from 'fs';
+import type { Application } from '@finos/fdc3-standard';
 
 dotenv.config();
 
@@ -80,12 +81,6 @@ const apps = allApps.map((a, index) => {
 
 type AppWithPort = { name: string; root: string; port: number };
 
-type AppDirectoryRecord = {
-  details?: { url?: string };
-  icons?: Array<{ src?: string }>;
-  screenshots?: Array<{ src?: string }>;
-};
-
 function rewriteLocalhostUrl(url: string, port: number): string {
   try {
     const parsed = new URL(url);
@@ -100,10 +95,10 @@ function rewriteLocalhostUrl(url: string, port: number): string {
 }
 
 /** Align AppD launch URLs and asset paths with the port assigned by this orchestrator. */
-function applyPortToAppDirectoryRecords(applications: AppDirectoryRecord[], port: number): AppDirectoryRecord[] {
+function applyPortToAppDirectoryRecords(applications: Application[], port: number): Application[] {
   const base = `http://localhost:${port}`;
   return applications.map(app => {
-    const next: AppDirectoryRecord = { ...app, details: app.details ? { ...app.details } : {} };
+    const next: Application = { ...app, details: app.details ? { ...app.details } : {} };
     if (next.details) {
       let pathAndQuery = '/';
       if (app.details?.url) {
@@ -130,7 +125,7 @@ function applyPortToAppDirectoryRecords(applications: AppDirectoryRecord[], port
 
 function buildCombinedAppDirectory(appsList: AppWithPort[]) {
   const combined = {
-    applications: [] as AppDirectoryRecord[],
+    applications: [] as Application[],
     message: 'OK',
   };
 
