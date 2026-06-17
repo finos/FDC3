@@ -460,10 +460,11 @@ fdc3.addContextListener("fdc3.instrument", (context, metadata) => {
 </Tabs>
 
 :::tip Reference implementation samples
-- [`signing-broadcast-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/signing-broadcast-example.ts) — signing and verifying a broadcast: `BasicSignedBroadcaster` on the sender's backend, `PublicSignatureCheckingHandlerSupport` on the receiver's frontend.
-- [`signing-intent-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/signing-intent-example.ts) — mutual authentication for intents: raiser signs the request via `BasicSignedRaiseIntentSupport`, handler verifies and signs the response via `PrivateSignedIntentResultSupport`.
 
-Runnable example apps:
+| Sample | What it shows |
+|--------|---------------|
+| [`signing-broadcast-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/signing-broadcast-example.ts) | Signing and verifying a broadcast: `BasicSignedBroadcaster` on the sender's backend, `PublicSignatureCheckingHandlerSupport` on the receiver's frontend |
+| [`signing-intent-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/signing-intent-example.ts) | Mutual authentication for intents: raiser signs the request via `BasicSignedRaiseIntentSupport`, handler verifies and signs the response via `PrivateSignedIntentResultSupport` |
 
 | App | What it shows |
 |-----|---------------|
@@ -552,10 +553,11 @@ sequenceDiagram
 | [`fdc3.security.encryptedContext`](../context/ref/security/EncryptedContextWrapper) | Wrapper with `encryptedPayload` (JWE compact serialization); `originalType` and `id.kid` preserved for routing. |
 
 :::tip Reference implementation samples
-- [`backend-encrypted-channel-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/backend-encrypted-channel-example.ts) — **backend key**: the symmetric key is held entirely on both apps' backends. Every message decryption incurs a backend round-trip. Use this pattern when decrypted plaintext must never exist in browser memory.
-- [`frontend-encrypted-channel-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/frontend-encrypted-channel-example.ts) — **frontend key**: the symmetric key is unwrapped once on the receiving app's backend, then returned to the frontend for low-latency per-message decryption. Use this pattern when the browser is a sufficiently trusted environment for a short-lived session key.
 
-Runnable example apps:
+| Sample | What it shows |
+|--------|---------------|
+| [`backend-encrypted-channel-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/backend-encrypted-channel-example.ts) | **Backend key** — the symmetric key is held entirely on both apps' backends. Every message decryption incurs a backend round-trip. Use this pattern when decrypted plaintext must never exist in browser memory |
+| [`frontend-encrypted-channel-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/frontend-encrypted-channel-example.ts) | **Frontend key** — the symmetric key is unwrapped once on the receiving app's backend, then returned to the frontend for low-latency per-message decryption. Use this pattern when the browser is a sufficiently trusted environment for a short-lived session key |
 
 | App | What it shows |
 |-----|---------------|
@@ -563,7 +565,7 @@ Runnable example apps:
 | [`encrypted-channel-receiver`](https://github.com/finos/FDC3/tree/main/toolbox/fdc3-example-apps/server-apps/encrypted-channel-receiver) | **Frontend key** — backend unwraps the symmetric key once via `exchangeData('unwrap-symmetric-key')`; frontend decrypts each message directly |
 | [`security-demo-app1`](https://github.com/finos/FDC3/tree/main/toolbox/fdc3-example-apps/server-apps/security-demo-app1) | Receives encrypted `fdc3.valuation` snapshots over a private channel obtained from `demo.GetPrices` |
 | [`security-demo-app2`](https://github.com/finos/FDC3/tree/main/toolbox/fdc3-example-apps/server-apps/security-demo-app2) | Broadcasts encrypted `fdc3.valuation` snapshots over the private channel using `EncryptedBroadcastSupport` |
-::: 
+:::
 
 ## User Identity
 
@@ -656,13 +658,14 @@ sequenceDiagram
 - Tokens SHOULD be transmitted over encrypted channels when possible
 
 :::tip Reference implementation samples
-- [`get-user-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/get-user-example.ts) — full end-to-end `GetUser` flow: signing the `fdc3.security.userRequest`, returning an encrypted `fdc3.security.user` response, and decrypting and verifying the JWT on the requesting application's backend.
 
-Runnable example apps:
+| Sample | What it shows |
+|--------|---------------|
+| [`get-user-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/get-user-example.ts) | Full end-to-end `GetUser` flow: signing the `fdc3.security.userRequest`, returning an encrypted `fdc3.security.user` response, and decrypting and verifying the JWT on the requesting application's backend |
 
 | App | What it shows |
 |-----|---------------|
 | [`security-demo-idp-app`](https://github.com/finos/FDC3/tree/main/toolbox/fdc3-example-apps/server-apps/security-demo-idp-app) | Lightweight local identity provider app: handles `GetUser`, mints a signed JWT, wraps it as JWE in `fdc3.security.encryptedContext` |
 | [`security-demo-entra-app`](https://github.com/finos/FDC3/tree/main/toolbox/fdc3-example-apps/server-apps/security-demo-entra-app) | Same `GetUser` flow backed by Microsoft Entra ID via MSAL — a real-world identity provider app integration |
-| [`security-demo-app1`](https://github.com/finos/FDC3/tree/main/toolbox/fdc3-example-apps/server-apps/security-demo-app1) | Raises `GetUser` with a signed `fdc3.security.userRequest`, decrypts the response, and verifies the JWT on its backend |
+| [`login-poc`](https://github.com/finos/FDC3/tree/main/toolbox/fdc3-example-apps/server-apps/login-poc) | Raises `GetUser` with a signed `fdc3.security.userRequest`, decrypts the response, and verifies the JWT on its backend |
 :::

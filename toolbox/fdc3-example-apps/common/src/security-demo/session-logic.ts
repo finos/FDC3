@@ -1,6 +1,6 @@
 // Shared session status utility for FDC3 demo apps
 import type { Context } from '@finos/fdc3-context';
-import type { FDC3Handlers } from '@finos/fdc3-security';
+import { isContext, type FDC3Handlers } from '@finos/fdc3-security';
 import { createLogEntry } from './logging';
 
 /** Minimal shape for UI after backend session is established */
@@ -20,6 +20,28 @@ function displayNameForUser(u: UserSessionContext | null | undefined): string {
   return 'Signed in';
 }
 
+/** Load cached `fdc3.security.user` from the backend and refresh action bar + status bar. */
+export async function restoreCachedSession(handlers: FDC3Handlers): Promise<UserSessionContext | null> {
+  try {
+    const result = (await handlers.exchangeData('user-request', {
+      type: 'fdc3.security.userRequest',
+    })) as UserSessionContext | void;
+
+    const user =
+      result && isContext(result) && (result as Context).type === 'fdc3.security.user'
+        ? (result as UserSessionContext)
+        : null;
+    showAuthenticatedState(user);
+    return user;
+  } catch (error) {
+    showAuthenticatedState(null);
+    createLogEntry('error', 'Failed to restore cached session', {
+      error: error instanceof Error ? error.message : String(error),
+    });
+    return null;
+  }
+}
+
 export async function checkSessionStatus(handlers: FDC3Handlers): Promise<void> {
   try {
     createLogEntry('info', '🔍 Checking session status...', {
@@ -30,7 +52,7 @@ export async function checkSessionStatus(handlers: FDC3Handlers): Promise<void> 
       type: 'fdc3.security.userRequest',
     })) as UserSessionContext | void;
 
-    showAuthenticatedState(result ?? null);
+    showAuthenticatedState(result && isContext(result) ? (result as UserSessionContext) : null);
 
     createLogEntry('info', `📋 Session status`, result ?? 'No user found');
   } catch (error) {
@@ -109,9 +131,21 @@ export function showAuthenticatedState(currentUser: UserSessionContext | null): 
     if (logoutBtn) logoutBtn.style.display = 'inline-block';
     if (userInfo) userInfo.style.display = 'block';
     if (userName) userName.textContent = displayNameForUser(currentUser);
+
+    const statusEl = document.getElementById('status');
+    if (statusEl) {
+      statusEl.className = 'status-indicator status-connected';
+      statusEl.innerHTML = `<span class="status-dot">●</span>Signed in as ${displayNameForUser(currentUser)}`;
+    }
   } else {
     if (loginBtn) loginBtn.style.display = 'inline-block';
     if (logoutBtn) logoutBtn.style.display = 'none';
     if (userInfo) userInfo.style.display = 'none';
+
+    const statusEl = document.getElementById('status');
+    if (statusEl) {
+      statusEl.className = 'status-indicator status-connected';
+      statusEl.innerHTML = '<span class="status-dot">●</span>Connected — not signed in';
+    }
   }
 }

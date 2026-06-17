@@ -5,7 +5,6 @@ import express from 'express';
 import fs from 'fs';
 import path from 'path';
 import { WebSocket } from 'ws';
-import { IntentHandler } from '@finos/fdc3';
 import { Context, EncryptedContextWrapper, User } from '@finos/fdc3-context';
 import {
   AllowListFunction,
@@ -16,6 +15,7 @@ import {
   JosePrivateFDC3Security,
   provisionJWKS,
   setupWebsocketServer,
+  type BackendIntentHandler,
 } from '@finos/fdc3-security';
 import { loadEntraConfig, type EntraConfig } from './config';
 import { JWTValidator } from './jwt-validator';
@@ -92,43 +92,50 @@ class EntraBackendHandlers extends DefaultFDC3Handlers {
     return super.exchangeData(purpose, payload);
   }
 
-  async remoteIntentHandler(intent: string): Promise<IntentHandler> {
+  async remoteIntentHandler(intent: string): Promise<BackendIntentHandler> {
     if (intent !== GET_USER_INTENT) {
       return super.remoteIntentHandler(intent);
     }
 
-    return async (context: Context): Promise<Context> => {
-      if (!isUserRequest(context)) {
-        throw new Error(`Expected fdc3.security.userRequest, got ${context.type}`);
+    return async (context: Context): Promise<Context | void> => {
+      try {
+        if (!isUserRequest(context)) {
+          console.error(`GetUser: expected fdc3.security.userRequest, got ${context.type}`);
+          return;
+        }
+        if (!this.user) {
+          console.error('GetUser: no authenticated Entra user — sign in with Microsoft first');
+          return;
+        }
+
+        const aud = context.aud;
+        const sub =
+          (typeof this.user.id?.email === 'string' && this.user.id.email) ||
+          (typeof this.user.name === 'string' && this.user.name) ||
+          'entra-user';
+
+        const wrappedJwt = await this.security.createJWTToken(aud, sub);
+        const userCtx: User = {
+          type: 'fdc3.security.user',
+          id: this.user.id,
+          name: this.user.name,
+          wrappedJwt,
+        };
+
+        const requestingAppJwksUrl = `${aud.replace(/\/$/, '')}/.well-known/jwks.json`;
+        const encryptedPayload = await this.security.encryptPublicKey(userCtx, requestingAppJwksUrl);
+
+        const encryptedContext: EncryptedContextWrapper = {
+          type: 'fdc3.security.encryptedContext',
+          originalType: 'fdc3.security.user',
+          encryptedPayload,
+          id: { kid: 'user-identity' },
+        };
+        return encryptedContext;
+      } catch (err) {
+        console.error('GetUser handler error:', err);
+        return;
       }
-      if (!this.user) {
-        throw new Error('No authenticated Entra user — sign in with Microsoft first');
-      }
-
-      const aud = context.aud;
-      const sub =
-        (typeof this.user.id?.email === 'string' && this.user.id.email) ||
-        (typeof this.user.name === 'string' && this.user.name) ||
-        'entra-user';
-
-      const wrappedJwt = await this.security.createJWTToken(aud, sub);
-      const userCtx: User = {
-        type: 'fdc3.security.user',
-        id: this.user.id,
-        name: this.user.name,
-        wrappedJwt,
-      };
-
-      const requestingAppJwksUrl = `${aud.replace(/\/$/, '')}/.well-known/jwks.json`;
-      const encryptedPayload = await this.security.encryptPublicKey(userCtx, requestingAppJwksUrl);
-
-      const encryptedContext: EncryptedContextWrapper = {
-        type: 'fdc3.security.encryptedContext',
-        originalType: 'fdc3.security.user',
-        encryptedPayload,
-        id: { kid: 'user-identity' },
-      };
-      return encryptedContext;
     };
   }
 }

@@ -1,17 +1,17 @@
 <html lang="en">
   <head>
-    <title>Security POC 1</title>
+    <title>Login POC</title>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script type="module" src="/src/app1.ts"></script>
+    <script type="module" src="/src/login-poc.ts"></script>
     <link rel="stylesheet" href="/security-demo-styles.css" />
   </head>
 
   <body>
     <div class="container">
       <div class="header">
-        <h1>📊 Security POC 1</h1>
-        <h2>FDC3 Security Demo — Get Prices Client</h2>
+        <h1>🔐 Login POC</h1>
+        <h2>FDC3 Security Demo — GetUser Client</h2>
       </div>
 
       <div class="status-bar">
@@ -22,9 +22,15 @@
       </div>
 
       <div class="action-bar">
-        <button class="action-btn" id="prices-btn">
-          📊 Get Prices (demo.GetPrices Intent)
-        </button>
+        <button class="action-btn" id="login-btn">🔐 Login (GetUser)</button>
+        <button class="action-btn" id="session-status-btn">🔍 Check Session Status</button>
+        <button class="action-btn" id="logout-btn">🚪 Logout</button>
+      </div>
+
+      <div id="user-info" style="display: none; margin-top: 15px">
+        <p style="color: white; font-weight: 600">
+          Logged in as: <span id="user-name">user</span>
+        </p>
       </div>
 
       <div class="log-container">

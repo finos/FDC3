@@ -4,8 +4,8 @@
 export function updateStatus(status: string, message: string): void {
   const statusEl = document.getElementById('status') as HTMLDivElement;
   if (statusEl) {
-    statusEl.className = `status ${status}`;
-    statusEl.textContent = message;
+    statusEl.className = `status-indicator status-${status}`;
+    statusEl.innerHTML = `<span class="status-dot">●</span>${message}`;
   }
 }
 
