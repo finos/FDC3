@@ -1,3 +1,5 @@
+/* Shared stylesheet for FDC3 front-end demo apps */
+
 html {
   box-sizing: border-box;
 }
@@ -6,6 +8,8 @@ body {
   font-family: sans-serif;
   line-height: 1.4;
   font-size: 15px;
+  margin: 0;
+  padding: 20px;
 }
 
 .container {
@@ -25,16 +29,64 @@ body {
 
 .app-title {
   text-align: center;
-  margin-bottom: 20px;
-  font-size: 40px;
-  opacity: 0.5;
+  margin-bottom: 10px;
+  font-size: 28px;
+  opacity: 0.6;
 }
 
-/* Stock-List Specific Stuff */
+.app-subtitle {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+#log {
+  white-space: pre-wrap;
+  font-family: monospace;
+  font-size: 0.85em;
+}
+
+/* Per-app background colours */
+
+body.broadcast {
+  background-color: #e8f5e9;
+}
+
+body.receive {
+  background-color: #e3f2fd;
+}
+
+body.intent-raise-1 {
+  background-color: #fff3e0;
+}
+
+body.intent-raise-2 {
+  background-color: #fce4ec;
+}
+
+body.intent-listener-view-news-only {
+  background-color: #f3e5f5;
+}
+
+body.intent-listener-view-news-view-quote {
+  background-color: #ede7f6;
+}
+
+body.pricer {
+  background-color: lightgoldenrodyellow;
+}
 
 body.tradelist {
   background-color: lightblue;
 }
+
+body.tradingview {
+  background-color: #e0f2f1;
+}
+
+/* Trade List specific */
 
 .stock-list {
   width: 100%;
@@ -79,11 +131,7 @@ button {
   margin: 10px;
 }
 
-/* Pricer Specific Stuff */
-
-body.pricer {
-  background-color: lightgoldenrodyellow;
-}
+/* Pricer specific */
 
 .ticker {
   font-size: 40px;

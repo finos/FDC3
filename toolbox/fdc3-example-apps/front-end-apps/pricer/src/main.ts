@@ -1,3 +1,4 @@
+import '../../static/styles.css';
 import { Channel, getAgent } from '@finos/fdc3';
 
 enum Direction {
