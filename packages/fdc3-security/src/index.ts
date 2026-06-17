@@ -8,6 +8,7 @@ export * from './delegates/MetadataHandler.js';
 export * from './encryption/EncryptedBroadcastSupport.js';
 export * from './encryption/EncryptedContextListenerSupport.js';
 export * from './impl/AntiReplayChecker.js';
+export * from './impl/ContextVerificationMetadata.js';
 export * from './impl/FDC3SecurityAlgorithms.js';
 export * from './impl/FDC3SecurityTimeLimits.js';
 export * from './impl/FDC3UserClaims.js';

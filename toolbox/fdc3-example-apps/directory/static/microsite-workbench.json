@@ -5,10 +5,7 @@
       "name": "fdc3-workbench",
       "title": "FDC3 Workbench",
       "description": "Development and test tool for FDC3 desktop agents and apps",
-      "categories": [
-        "developer tools",
-        "training"
-      ],
+      "categories": ["developer tools", "training"],
       "version": "1.0.0",
       "tooltip": "FDC3 Workbench",
       "lang": "en-US",
@@ -88,8 +85,7 @@
           "title": "FDC3 Table de travail",
           "description": "Outil de développement et de test pour les desktop agents et applications FDC3"
         }
-      },
-      "minimumAgentVersion": "1.2"
+      }
     }
   ],
   "message": "OK"

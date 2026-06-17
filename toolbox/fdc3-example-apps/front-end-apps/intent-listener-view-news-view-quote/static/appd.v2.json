@@ -13,7 +13,7 @@
       "version": "1.0.0",
       "publisher": "FINOS",
       "categories": [
-        "Intent Listening Demo"
+        "Basic FDC3: Intents Demo"
       ],
       "icons": [
         {
@@ -25,20 +25,15 @@
           "listensFor": {
             "ViewNews": {
               "displayName": "View News",
-              "contexts": [
-                "fdc3.instrument"
-              ]
+              "contexts": ["fdc3.instrument"]
             },
             "ViewQuote": {
               "displayName": "View Quote",
-              "contexts": [
-                "fdc3.instrument"
-              ]
+              "contexts": ["fdc3.instrument"]
             }
           }
         }
-      },
-      "minimumAgentVersion": "2.0"
+      }
     }
   ],
   "message": "OK"

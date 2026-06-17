@@ -11,37 +11,62 @@
   max-width: 100%;
 }
 
+#app-frames {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+.da-app-frame {
+  width: 640px;
+  height: 480px;
+  border: 1px solid #c5ccd6;
+  border-radius: 6px;
+  background: #fff;
+}
+
 .da-category-section {
   box-sizing: border-box;
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   align-items: stretch;
-  max-width: 100%;
   flex: 0 1 auto;
-  padding: 0.75rem 0.85rem 0.85rem;
+  height: 9.75rem;
+  min-height: 9.75rem;
+  max-height: 9.75rem;
+  max-width: 100%;
+  padding: 0.6rem 0.7rem 0.7rem;
   border: 1px solid rgb(15 23 42 / 8%);
   border-radius: 10px;
+  overflow: hidden;
 }
 
 .da-category-section__title {
-  width: 0;
-  min-width: 100%;
-  margin: 0 0 0.6rem;
-  font-size: 0.85rem;
+  flex: 0 0 auto;
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
   font-weight: 700;
   line-height: 1.25;
   color: #334155;
   letter-spacing: 0.01em;
-  white-space: normal;
-  overflow-wrap: anywhere;
-  word-break: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .da-category-section__apps {
-  display: grid;
-  grid-template-columns: repeat(3, 7rem);
-  justify-content: start;
-  gap: 0.5rem;
+  flex: 1 1 auto;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 0.4rem;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .da-app-card {
@@ -51,9 +76,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: 7rem;
-  height: 8rem;
-  padding: 0.3rem 0.35rem 1.75rem;
+  flex: 0 0 auto;
+  width: 5.6rem;
+  height: 6.4rem;
+  padding: 0.25rem 0.3rem 1.4rem;
   border: 1px solid #c5ccd6;
   border-radius: 8px;
   background: linear-gradient(165deg, #fafbfc 0%, #eef1f5 100%);
@@ -93,8 +119,8 @@
 }
 
 .da-app-card__icon {
-  width: 3.65rem;
-  height: 4.2rem;
+  width: 2.92rem;
+  height: 3.36rem;
   object-fit: contain;
 }
 
@@ -102,19 +128,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 3.65rem;
-  height: 3.65rem;
+  width: 2.92rem;
+  height: 2.92rem;
   border-radius: 6px;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: #475569;
   background: #e2e8f0;
 }
 
 .da-app-card__title {
-  margin-top: 0.15rem;
+  margin-top: 0.1rem;
   max-width: 100%;
-  font-size: 0.58rem;
+  font-size: 0.52rem;
   font-weight: 600;
   line-height: 1.2;
   text-align: center;
@@ -124,13 +150,13 @@
 
 .da-app-card__start {
   position: absolute;
-  left: 0.35rem;
-  right: 0.35rem;
-  bottom: 0.35rem;
-  padding: 0.25rem 0.35rem;
+  left: 0.3rem;
+  right: 0.3rem;
+  bottom: 0.3rem;
+  padding: 0.2rem 0.3rem;
   border: none;
   border-radius: 5px;
-  font-size: 0.65rem;
+  font-size: 0.58rem;
   font-weight: 600;
   color: #fff;
   background: #2563eb;

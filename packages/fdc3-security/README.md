@@ -17,7 +17,7 @@ Verification results are never placed on `ContextMetadata` (the wire type forwar
 - `authenticity` — the result of signature verification (`signed`, `valid`, `trusted`, `jku`, `kid`, `alg`, `errors`)
 - `encryption` — the result of decryption (`'decrypted'` | `'cant_decrypt'` | `'not_encrypted'`)
 
-`ContextVerificationMetadata` is available from `@finos/fdc3-standard` and is also the type used by `SecurityAwareContextHandler` and `SecurityAwareIntentHandler`.
+`ContextVerificationMetadata` is exported from `@finos/fdc3-security` and is also the type used by `SecurityAwareContextHandler` and `SecurityAwareIntentHandler`.
 
 ### SecurityAwareContextHandler / SecurityAwareIntentHandler
 
@@ -46,6 +46,7 @@ The core cryptographic interfaces and implementations.
 - `JosePublicFDC3Security`: Implementation of `PublicFDC3Security` using the [`jose`](https://github.com/panva/jose) library (JWS/JWE).
 - `JosePrivateFDC3Security`: Extends `JosePublicFDC3Security` with private-key operations.
 - `AntiReplayChecker`: Interface and `DefaultAntiReplayChecker` implementation for tracking seen `jti` values to prevent replay attacks. In production, back with a shared cache (e.g. Redis) rather than the in-memory default.
+- `ContextVerificationMetadata`: The outcome of verifying a signed or encrypted context — populated locally by the security library, never sent on the wire. Contains `authenticity` (signature check result) and `encryption` (decryption status). This type is defined here rather than in `@finos/fdc3-standard` because it is a library-computed result, not part of the FDC3 wire protocol.
 - `FDC3UserClaims`: TypeScript interface for the JWT payload returned by a `GetUser` intent (`iss`, `sub`, `aud`, `exp`, `iat`, `jti`).
 - `FDC3SecurityAlgorithms`: Configuration record for the cryptographic algorithms used (signing, key wrapping, content encryption). Defaults to `EdDSA` / `RSA-OAEP-256` / `A256GCM`.
 - `FDC3SecurityTimeLimits`: Configuration for signature freshness and context expiry windows.
@@ -78,6 +79,8 @@ High-level abstractions for managing metadata alongside FDC3 contexts.
 Provides a secure bridge — typically over WebSockets — allowing a frontend application to delegate sensitive cryptographic operations to a trusted backend without exposing private keys in the browser.
 
 - `FDC3Handlers`: The interface your trusted backend implements. Defines three methods: `handleRemoteChannel` (mirror a channel to the backend for signing/encrypting broadcasts), `remoteIntentHandler` (register an intent handler that runs on the backend), and `exchangeData` (a general-purpose RPC for operations such as signing a context or unwrapping a symmetric key).
+- `BackendIntentHandler`: The handler type returned by `remoteIntentHandler`. Like the standard FDC3 `IntentHandler` but with the return type widened to include `PrivateChannelSignal`, so backend implementations can signal the frontend to create a `PrivateChannel` without unsafe casts.
+- `PrivateChannelSignal` / `PRIVATE_CHANNEL_SIGNAL`: A sentinel type and constant (`{ type: 'private' }`) that a `BackendIntentHandler` returns to signal the frontend to call `createPrivateChannel()` and export it to the backend via `handleRemoteChannel`. This is a secure-boundary-internal protocol token — it is never transmitted over FDC3 or seen by the Desktop Agent.
 - `DefaultFDC3Handlers`: A base class implementing `FDC3Handlers` with no-op defaults, intended to be subclassed.
 - `ClientSideHandlersImpl` / `connectRemoteHandlers`: Client-side stub that implements `FDC3Handlers` by forwarding calls to the backend over a WebSocket.
 - `ServerSideHandlersImpl` / `setupWebsocketServer`: Server-side adapter that receives WebSocket messages and dispatches them to your `FDC3Handlers` implementation.

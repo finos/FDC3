@@ -30,15 +30,12 @@
         "intents": {
           "listensFor": {
             "ViewInstrument": {
-              "contexts": [
-                "fdc3.instrument"
-              ],
+              "contexts": ["fdc3.instrument"],
               "displayName": "View Instrument"
             }
           }
         }
-      },
-      "minimumAgentVersion": "2.0"
+      }
     },
     {
       "appId": "trading-view-chart-1",
@@ -70,15 +67,12 @@
         "intents": {
           "listensFor": {
             "ViewChart": {
-              "contexts": [
-                "fdc3.instrument"
-              ],
+              "contexts": ["fdc3.instrument"],
               "displayName": "View Chart"
             }
           }
         }
-      },
-      "minimumAgentVersion": "2.0"
+      }
     },
     {
       "appId": "trading-view-fundamentals-1",
@@ -110,15 +104,12 @@
         "intents": {
           "listensFor": {
             "ViewInstrument": {
-              "contexts": [
-                "fdc3.instrument"
-              ],
+              "contexts": ["fdc3.instrument"],
               "displayName": "View Instrument"
             }
           }
         }
-      },
-      "minimumAgentVersion": "2.0"
+      }
     },
     {
       "appId": "trading-view-tickers-1",
@@ -150,15 +141,12 @@
         "intents": {
           "listensFor": {
             "ViewInstrument": {
-              "contexts": [
-                "fdc3.instrument"
-              ],
+              "contexts": ["fdc3.instrument"],
               "displayName": "View Instrument"
             }
           }
         }
-      },
-      "minimumAgentVersion": "2.0"
+      }
     },
     {
       "appId": "trading-view-market-data-1",
@@ -190,15 +178,12 @@
         "intents": {
           "listensFor": {
             "ViewInstrument": {
-              "contexts": [
-                "fdc3.instrument"
-              ],
+              "contexts": ["fdc3.instrument"],
               "displayName": "View Instrument"
             }
           }
         }
-      },
-      "minimumAgentVersion": "2.0"
+      }
     }
   ],
   "message": "OK"

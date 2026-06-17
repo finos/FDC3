@@ -4,7 +4,7 @@
       "appId": "security-poc-1",
       "name": "Security POC 1",
       "title": "Security POC 1: Requests Prices",
-      "description": "Buy-side application demonstrating the FDC3 security model. Raises the GetUser intent to authenticate the user via an identity provider app, then raises demo.GetPrices with a signed fdc3.instrument context to request an encrypted price stream from Security POC 2.",
+      "description": "Buy-side application demonstrating encrypted intent handling. Raises demo.GetPrices with a signed fdc3.instrument context to request an encrypted price stream from Security POC 2.",
       "type": "web",
       "details": {
         "url": "http://localhost:4033"
@@ -12,9 +12,7 @@
       "hostManifests": {},
       "version": "1.0.0",
       "publisher": "FINOS",
-      "categories": [
-        "Secure FDC3 Workflow Example"
-      ],
+      "categories": ["Security: Pricing Workflow Example"],
       "icons": [
         {
           "src": "http://localhost:4033/icon.svg"
@@ -23,20 +21,12 @@
       "interop": {
         "intents": {
           "raises": {
-            "GetUser": {
-              "contexts": [
-                "fdc3.security.userRequest"
-              ]
-            },
             "demo.GetPrices": {
-              "contexts": [
-                "fdc3.instrument"
-              ]
+              "contexts": ["fdc3.instrument"]
             }
           }
         }
-      },
-      "minimumAgentVersion": "2.0"
+      }
     }
   ],
   "message": "OK"

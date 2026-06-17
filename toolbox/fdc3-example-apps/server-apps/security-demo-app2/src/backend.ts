@@ -1,7 +1,7 @@
 import type { Application } from 'express';
 import type { Server } from 'http';
 import { WebSocket } from 'ws';
-import { Channel, IntentHandler, PrivateChannel } from '@finos/fdc3';
+import { Channel, PrivateChannel } from '@finos/fdc3';
 import { Context, Valuation } from '@finos/fdc3-context';
 import type { ContextMetadata } from '@finos/fdc3-standard';
 import {
@@ -13,13 +13,16 @@ import {
   EncryptedBroadcastSupport,
   EXCHANGE_DATA,
   JosePrivateFDC3Security,
+  PRIVATE_CHANNEL_SIGNAL,
   provisionJWKS,
   setupWebsocketServer,
+  type BackendIntentHandler,
   type EncryptedBroadcaster,
   type MetadataHandler,
+  type PrivateChannelSignal,
 } from '@finos/fdc3-security';
 
-/** Pushed to the App2 browser over the secure-boundary WebSocket when a valuation is broadcast on the private channel. */
+/** Purpose string for server → client push of decrypted valuations over the secure-boundary WebSocket. */
 export const VALUATION_PUSH_PURPOSE = 'valuation-push';
 
 /**
@@ -48,21 +51,26 @@ class App2BackendHandlers extends DefaultFDC3Handlers {
     this.metadataHandler = createMetadataHandlerWithFDC3Version('3.0');
   }
 
-  async remoteIntentHandler(intent: string): Promise<IntentHandler> {
+  async remoteIntentHandler(intent: string): Promise<BackendIntentHandler> {
     if (intent !== 'demo.GetPrices') {
       return super.remoteIntentHandler(intent);
     }
 
-    return async (ctx: Context, md: ContextMetadata): Promise<Context> => {
-      // Verify the JWS signature on the inbound instrument to confirm the request
-      // came from a trusted application. Reject if unsigned or untrusted.
-      const auth = await this.security.verifySignature(md.signature, ctx, md.antiReplay);
-      if (!auth.signed || !auth.trusted || !auth.valid) {
-        return unauthorizedContext(ctx, 'Signature verification failed');
-      }
+    return async (ctx: Context, md: ContextMetadata): Promise<Context | PrivateChannelSignal> => {
+      try {
+        // Verify the JWS signature on the inbound instrument to confirm the request
+        // came from a trusted application. Reject if unsigned or untrusted.
+        const auth = await this.security.verifySignature(md.signature, ctx, md.antiReplay);
+        if (!auth.signed || !auth.trusted || !auth.valid) {
+          return unauthorizedContext(ctx, 'Signature verification failed');
+        }
 
-      // Signal the frontend to create a PrivateChannel and call handleRemoteChannel.
-      return { type: 'private' } as unknown as Context;
+        // Signal the frontend to create a PrivateChannel and call handleRemoteChannel.
+        return PRIVATE_CHANNEL_SIGNAL;
+      } catch (err) {
+        console.error('demo.GetPrices handler error:', err);
+        return unauthorizedContext(ctx, 'Handler error');
+      }
     };
   }
 
@@ -77,35 +85,47 @@ class App2BackendHandlers extends DefaultFDC3Handlers {
     // handleRemoteChannel exchange (same race as security-demo-app1 backend).
     setTimeout(() => {
       void (async () => {
-        const broadcastSupport = new EncryptedBroadcastSupport(this.security, this.metadataHandler);
-        const broadcaster: EncryptedBroadcaster = await broadcastSupport.broadcastWrapper(channel);
+        try {
+          const broadcastSupport = new EncryptedBroadcastSupport(this.security, this.metadataHandler);
+          const broadcaster: EncryptedBroadcaster = await broadcastSupport.broadcastWrapper(channel);
 
-        for (let i = 0; i < 5; i++) {
+          for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+              void (async () => {
+                try {
+                  const valuation: Valuation = {
+                    type: 'fdc3.valuation',
+                    currency: 'Dollars',
+                    CURRENCY_ISOCODE: 'USD',
+                    price: 100 + i,
+                    value: 100 + i,
+                  };
+                  await broadcaster.broadcast(valuation);
+                  emitToClient(this.ws, EXCHANGE_DATA, {
+                    purpose: VALUATION_PUSH_PURPOSE,
+                    payload: { ctx: valuation },
+                  });
+                  console.log('[app2 backend] broadcast encrypted valuation', i);
+                } catch (err) {
+                  console.error('[app2 backend] broadcast error:', err);
+                }
+              })();
+            }, i * 1000);
+          }
+
           setTimeout(() => {
             void (async () => {
-              const valuation: Valuation = {
-                type: 'fdc3.valuation',
-                currency: 'Dollars',
-                CURRENCY_ISOCODE: 'USD',
-                price: 100 + i,
-                value: 100 + i,
-              };
-              await broadcaster.broadcast(valuation);
-              emitToClient(this.ws, EXCHANGE_DATA, {
-                purpose: VALUATION_PUSH_PURPOSE,
-                o: { ctx: valuation },
-              });
-              console.log('[app2 backend] broadcast encrypted valuation', i);
+              try {
+                await broadcaster.shutdown();
+                await pc.disconnect();
+              } catch (err) {
+                console.error('[app2 backend] shutdown error:', err);
+              }
             })();
-          }, i * 1000);
+          }, 10000);
+        } catch (err) {
+          console.error('handleRemoteChannel(demo.GetPrices) error:', err);
         }
-
-        setTimeout(() => {
-          void (async () => {
-            await broadcaster.shutdown();
-            await pc.disconnect();
-          })();
-        }, 10000);
       })();
     }, 0);
   }

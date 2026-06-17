@@ -1,0 +1,33 @@
+{
+  "applications": [
+    {
+      "appId": "login-poc",
+      "name": "Login POC",
+      "title": "Login POC: GetUser Client",
+      "description": "Demonstrates the FDC3 Security & Identity login flow. Raises the GetUser intent with fdc3.security.userRequest, receives fdc3.security.encryptedContext from an identity provider app, and decrypts the embedded fdc3.security.user on the trusted backend.",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4032"
+      },
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "categories": ["Security: Identity Provider Workflow Example"],
+      "icons": [
+        {
+          "src": "http://localhost:4032/icon.svg"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "raises": {
+            "GetUser": {
+              "contexts": ["fdc3.security.userRequest"]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "message": "OK"
+}

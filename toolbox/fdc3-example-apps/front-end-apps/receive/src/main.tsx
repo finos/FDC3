@@ -1,3 +1,4 @@
+import '../../static/styles.css';
 import { useEffect, useState } from 'react';
 import { getAgent } from '@finos/fdc3-get-agent';
 import { DesktopAgent, Listener } from '@finos/fdc3';

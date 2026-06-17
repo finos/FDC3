@@ -6,7 +6,7 @@
       "title": "Pricer",
       "description": "A demo app for the FDC3 Developer Course",
       "categories": [
-        "FDC3 Developer Tutorial Apps"
+        "Tutoral: FDC3 Developer"
       ],
       "icons": [
         {
@@ -28,15 +28,11 @@
           "listensFor": {
             "ViewQuote": {
               "displayName": "View Quote",
-              "contexts": [
-                "fdc3.instrument"
-              ]
+              "contexts": ["fdc3.instrument"]
             },
             "demo.GetPrices": {
               "displayName": "Get Prices",
-              "contexts": [
-                "fdc3.instrument"
-              ]
+              "contexts": ["fdc3.instrument"]
             }
           }
         }
@@ -45,8 +41,7 @@
         "sail": {
           "injectApi": "2.0"
         }
-      },
-      "minimumAgentVersion": "2.0"
+      }
     }
   ],
   "message": "OK"

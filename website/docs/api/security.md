@@ -13,19 +13,22 @@ Security and Identity features are experimental additions to FDC3. Limited aspec
 
 :::
 
-As FDC3 evolves from desktop containers to web-based implementations, new security challenges arise in open, decentralized environments. This specification defines mechanisms for **application identity verification**, **encrypted communications**, and **user identity sharing** across FDC3-enabled applications.
+In the FDC3 model, applications communicate through a Desktop Agent rather than directly with each other. While Desktop Agents are responsible for verifying the identity of the applications they connect (for example, by launching applications from known URLs and validating message origins against directory records), applications themselves have no direct relationship with their counterparts. Because the FDC3 standard aims to build an ecosystem of interoperable applications that can run under any conformant Desktop Agent, applications cannot necessarily know or trust the specific Desktop Agent they are running under and must treat it as an untrusted intermediary when it comes to verifying the identity of other applications or protecting sensitive data in transit.
 
-The security model is built on **asymmetric cryptography**: each participating application holds a private key (kept secret) and publishes a corresponding public key at a stable HTTPS endpoint. Other applications use that public key to verify the application's digital signatures and to encrypt data that only it can read. All cryptographic operations that involve a private key MUST be performed in a trusted backend (server), not in the browser frontend.
+This gives rise to the need for applications to independently establish the identity of the applications they are communicating with and to secure their communications over a potentially untrusted channel. The security model is built on **asymmetric cryptography**: each participating application holds a private key (kept secret) and publishes a corresponding public key at a stable HTTPS endpoint. Other applications use that public key to verify the application's digital signatures and to encrypt data that only it can read.
+
+This specification defines mechanisms for **application identity verification**, **encrypted communications**, and **user identity sharing** across FDC3-enabled applications.
 
 ## Overview
 
 FDC3 Security addresses the following key challenges:
 
-1. **Shift to Web**: Web environments are more hostile than controlled desktop containers, requiring robust identity verification
-2. **App Identity**: Applications need verifiable identities to establish trust
+1. **Untrusted Channel**: Applications communicate through a Desktop Agent they may not control or fully trust, requiring end-to-end identity verification
+2. **App Identity**: Applications need verifiable identities to establish trust with their counterparts independently of the Desktop Agent
 3. **User Authentication**: Users need portable identity across heterogeneous applications  
 4. **Data Integrity**: Context data requires authenticity guarantees
-5. **Scalable Trust**: Moving beyond bilateral trust relationships to independently maintained allowlists
+5. **Data Confidentiality**: Sensitive data must be protected from the Desktop Agent and other observers
+6. **Scalable Trust**: Moving beyond bilateral trust relationships to independently maintained allowlists
 
 The security framework introduces:
 
@@ -48,9 +51,11 @@ The following context types support security features:
 
 ### Intents
 
+The following intents support user identity features, other Get* intents may be used to create requests for encrypted channels:
+
 | Intent | Input Context | Output Context | Description |
 |--------|---------------|----------------|-------------|
-| `GetUser` | `fdc3.security.userRequest` | `fdc3.security.user` | Request user identity from an identity provider app |
+| [`GetUser`](../intents/ref/GetUser) | [`fdc3.security.userRequest`](../context/ref/security/UserRequest) | [`fdc3.security.user`](../context/ref/security/User) | Request user identity from an identity provider app |
 
 ## Desktop Agent Requirements
 
@@ -145,13 +150,13 @@ export interface FDC3Handlers {
    *   verifies the raiser's JWS and signs the response (the raiser signs its outbound context via
    *   `exchangeData` instead of holding the private key in the browser).
    * - `backend-encrypted-channel-example.ts` — shows how you can handle `ShareEncryptedChannel` by
-   *   returning `{ type: 'private' }` so the client opens a private channel and calls
+   *   returning `PRIVATE_CHANNEL_SIGNAL` so the client opens a private channel and calls
    *   `handleRemoteChannel`, then runs `EncryptedBroadcastSupport` on the server.
    *
    * @param intent — The intent name the server should bind (must match the client's
    *   `remoteIntentHandler` calls).
    */
-  remoteIntentHandler(intent: string): Promise<IntentHandler>;
+  remoteIntentHandler(intent: string): Promise<BackendIntentHandler>;
 
   /**
    * A convenience function. Called on the client so that the server can return it items of data it needs. The client calls
@@ -164,6 +169,8 @@ export interface FDC3Handlers {
    * - `frontend-encrypted-channel-example.ts` — shows how you can implement `sign-context` and
    *   `unwrap-symmetric-key` on the receiver backend so key-request signing and symmetric-key
    *   unwrapping stay off the frontend (`fdc3.security.symmetricKeyResponse` in, unwrapped JWK out).
+   * - `get-user-example.ts` — also implements `get-user-identity` on the requesting backend so JWE decryption,
+   *   JWT verification, and projection to `fdc3.contact` stay server-side (the JWT never reaches the client).
    *
    * @param purpose — Tells the server which operation this call represents; defined by your app.
    * @param o — The payload for that operation (for example `{ context }` or an object compatible with
@@ -413,7 +420,7 @@ To verify a signature, the receiver:
 
 ### Authenticity Metadata
 
-After receiving a signed context, the application passes the received [`ContextMetadata`](ref/Metadata#contextmetadata) to its security implementation's verification function. That function returns a [`ContextVerificationMetadata`](ref/Metadata#contextverificationmetadata) object containing the outcome of signature verification:
+After receiving a signed context, the application passes the received [`ContextMetadata`](ref/Metadata#contextmetadata) to its security implementation's verification function. That function returns a `ContextVerificationMetadata` object (exported from `@finos/fdc3-security`) containing the outcome of signature verification:
 
 ```typescript
 {
@@ -458,10 +465,11 @@ fdc3.addContextListener("fdc3.instrument", (context, metadata) => {
 </Tabs>
 
 :::tip Reference implementation samples
-- [`signing-broadcast-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/signing-broadcast-example.ts) — signing and verifying a broadcast: `BasicSignedBroadcaster` on the sender's backend, `PublicSignatureCheckingHandlerSupport` on the receiver's frontend.
-- [`signing-intent-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/signing-intent-example.ts) — mutual authentication for intents: raiser signs the request via `BasicSignedRaiseIntentSupport`, handler verifies and signs the response via `PrivateSignedIntentResultSupport`.
 
-Runnable example apps:
+| Sample | What it shows |
+|--------|---------------|
+| [`signing-broadcast-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/signing-broadcast-example.ts) | Signing and verifying a broadcast: `BasicSignedBroadcaster` on the sender's backend, `PublicSignatureCheckingHandlerSupport` on the receiver's frontend |
+| [`signing-intent-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/signing-intent-example.ts) | Mutual authentication for intents: raiser signs the request via `BasicSignedRaiseIntentSupport`, handler verifies and signs the response via `PrivateSignedIntentResultSupport` |
 
 | App | What it shows |
 |-----|---------------|
@@ -473,37 +481,41 @@ Runnable example apps:
 
 ## Encrypted Communications
 
-While digital signatures prove *who* sent a message, they do not prevent the Desktop Agent or other intermediaries from reading it. To keep context data confidential, applications can encrypt it so that only the intended recipient can decrypt it.
+While digital signatures prove *who* sent a message, they do not prevent the Desktop Agent or other intermediaries from reading it. To keep context data confidential, applications can encrypt messages so that only the intended recipient can decrypt them.
 
-### Why Symmetric Key Exchange?
+FDC3 encrypted communications use a **symmetric key** (e.g. AES-GCM) to encrypt the data stream. The key itself is distributed securely using asymmetric cryptography: the broadcaster wraps it in a [JSON Web Encryption (JWE)](https://datatracker.ietf.org/doc/html/rfc7516) token addressed to the recipient's public key, so only the recipient — holding the corresponding private key — can unwrap it. Both the key request and key response **MUST be signed** (JWS) so each party can verify the other's identity before exchanging key material.
 
-Encrypting every message directly with the recipient's asymmetric public key is computationally expensive and impractical for a stream of context messages. The approach used here mirrors TLS: asymmetric cryptography is used once to securely exchange a *symmetric key*, then the much cheaper symmetric cipher (e.g. AES-GCM) encrypts the data stream itself.
+Encrypted messages are wrapped in [`fdc3.security.encryptedContext`](../context/ref/security/EncryptedContextWrapper), which preserves `originalType` for routing and stores the encrypted payload as a JWE compact serialization in `encryptedPayload`.
 
-A [JSON Web Encryption (JWE)](https://datatracker.ietf.org/doc/html/rfc7516) token is used to wrap (encrypt) the symmetric key using the recipient's public key, ensuring only the recipient — holding the corresponding private key — can unwrap it.
+### Why Symmetric Encryption?
+
+Encrypting every message directly with the recipient's asymmetric public key is computationally expensive and impractical for a stream of context messages. The approach used here mirrors TLS: asymmetric cryptography is used once to securely exchange a symmetric key, then the much cheaper symmetric cipher encrypts the data stream itself.
+
+### Symmetric Key Exchange Protocol
+
+The key exchange is driven reactively: the broadcaster starts encrypting and broadcasting immediately. When the receiver encounters a message it cannot decrypt, it broadcasts a signed [`fdc3.security.symmetricKeyRequest`](../context/ref/security/SymmetricKeyRequest). The broadcaster verifies the request signature, wraps the symmetric key as a JWE addressed to the requestor's public key (`jku` from their JWS header), signs the response, and broadcasts the [`fdc3.security.symmetricKeyResponse`](../context/ref/security/SymmetricKeyResponse). The receiver verifies the response JWS, unwraps the JWE with its private key, and decrypts any buffered messages.
+
+**Broadcaster responsibilities:**
+
+- Creates and holds the symmetric key.
+- Encrypts context payloads and broadcasts them as `fdc3.security.encryptedContext`. The `originalType` field preserves the original context type for routing; `id.kid` identifies the symmetric key.
+- When a `symmetricKeyRequest` arrives: verifies the requestor's JWS, reads `jku` from their JWS protected header to fetch their public key, wraps the symmetric key in a JWE using that public key (e.g. RSA-OAEP), signs the response, and broadcasts it.
+
+**Receiver responsibilities:**
+
+- Listens for `fdc3.security.encryptedContext` (checking `type` before dispatching to the appropriate handler).
+- On receiving an encrypted message without a key: broadcasts a signed `symmetricKeyRequest`.
+- On receiving the `symmetricKeyResponse`: verifies the JWS, unwraps the JWE to obtain the symmetric key, and decrypts any buffered messages.
 
 ### Where Should the Symmetric Key Live?
 
-Once the key has been unwrapped, the application must decide whether to hold it in the browser frontend or only in the trusted backend. This is a trade-off between latency and threat model:
+Once the key has been unwrapped, the receiver must decide whether to hold it in the browser frontend or only in the trusted backend. This is a trade-off between latency and threat model:
 
 **Frontend key (lower latency):** The unwrapping operation happens once on the backend (the only step requiring the private key), and the unwrapped symmetric key is returned to the frontend. All subsequent message decryption happens in the browser using the cheap symmetric cipher, with no per-message backend round-trip. This mirrors the TLS pattern most closely and is the right choice when the browser is considered a sufficiently trusted environment for a short-lived session key.
 
 **Backend key (stricter boundary):** The symmetric key never leaves the backend. Every received message is forwarded from the frontend to the backend for decryption, and the plaintext is returned to the frontend. This adds a per-message WebSocket round-trip, which largely offsets the latency advantage of symmetric encryption. However, it is the correct choice when the threat model requires that decrypted plaintext *never* exists in browser memory — for example, when handling highly regulated data or when the browser environment itself is not considered trusted.
 
-Both approaches use exactly the same key exchange protocol (`fdc3.security.symmetricKeyRequest` / `fdc3.security.symmetricKeyResponse`). The choice affects only what happens to the key after it is unwrapped.
-
-### Private Channel Encryption
-
-Applications communicating over a [`PrivateChannel`](ref/PrivateChannel) can negotiate encryption to ensure their communications remain confidential. This is particularly important when sharing sensitive data such as positions, pricing, or user information.
-
-### Symmetric Key Exchange
-
-Encryption uses a symmetric key (e.g. AES-GCM) created by the channel owner and distributed via JWE.
-
-**Key owner (broadcaster):** Creates and holds the symmetric key. Encrypts context payloads with it and broadcasts them wrapped in [`fdc3.security.encryptedContext`](../context/ref/security/EncryptedContextWrapper). The `originalType` field of the wrapper preserves the original context type for routing, and `id.kid` identifies the symmetric key. The encrypted payload (all remaining fields of the original context) is stored as a JWE compact serialization in `encryptedPayload`. When a key request arrives, verifies the requestor's JWS (signature valid and `allowListFunction(jku)` returns true), reads `jku` from their JWS protected header, fetches their public key from that JWKS, wraps the symmetric key in a JWE using that public key (e.g. RSA-OAEP), signs the response with JWS, and broadcasts it.
-
-**Key requestor (listener):** Listens for `fdc3.security.encryptedContext` by checking `type === 'fdc3.security.encryptedContext'` before dispatching to the appropriate handler. Broadcasts a signed key request (JWS) when it needs the symmetric key. When the response arrives, verifies the JWS, unwraps the JWE with their private key to obtain the symmetric key, then decrypts subsequent encrypted payloads. If an encrypted message arrives before the key, the requestor sends a key request.
-
-Both the key request and response **MUST be signed** (JWS). The key owner uses the requestor's `jku` from the JWS header to target the JWE—only that requestor's private key can unwrap it.
+Both patterns use exactly the same key exchange protocol. The choice affects only what happens to the key after it is unwrapped.
 
 ### Flow Diagram
 
@@ -546,10 +558,11 @@ sequenceDiagram
 | [`fdc3.security.encryptedContext`](../context/ref/security/EncryptedContextWrapper) | Wrapper with `encryptedPayload` (JWE compact serialization); `originalType` and `id.kid` preserved for routing. |
 
 :::tip Reference implementation samples
-- [`backend-encrypted-channel-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/backend-encrypted-channel-example.ts) — **backend key**: the symmetric key is held entirely on both apps' backends. Every message decryption incurs a backend round-trip. Use this pattern when decrypted plaintext must never exist in browser memory.
-- [`frontend-encrypted-channel-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/frontend-encrypted-channel-example.ts) — **frontend key**: the symmetric key is unwrapped once on the receiving app's backend, then returned to the frontend for low-latency per-message decryption. Use this pattern when the browser is a sufficiently trusted environment for a short-lived session key.
 
-Runnable example apps:
+| Sample | What it shows |
+|--------|---------------|
+| [`backend-encrypted-channel-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/backend-encrypted-channel-example.ts) | **Backend key** — the symmetric key is held entirely on both apps' backends. Every message decryption incurs a backend round-trip. Use this pattern when decrypted plaintext must never exist in browser memory |
+| [`frontend-encrypted-channel-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/frontend-encrypted-channel-example.ts) | **Frontend key** — the symmetric key is unwrapped once on the receiving app's backend, then returned to the frontend for low-latency per-message decryption. Use this pattern when the browser is a sufficiently trusted environment for a short-lived session key |
 
 | App | What it shows |
 |-----|---------------|
@@ -557,7 +570,7 @@ Runnable example apps:
 | [`encrypted-channel-receiver`](https://github.com/finos/FDC3/tree/main/toolbox/fdc3-example-apps/server-apps/encrypted-channel-receiver) | **Frontend key** — backend unwraps the symmetric key once via `exchangeData('unwrap-symmetric-key')`; frontend decrypts each message directly |
 | [`security-demo-app1`](https://github.com/finos/FDC3/tree/main/toolbox/fdc3-example-apps/server-apps/security-demo-app1) | Receives encrypted `fdc3.valuation` snapshots over a private channel obtained from `demo.GetPrices` |
 | [`security-demo-app2`](https://github.com/finos/FDC3/tree/main/toolbox/fdc3-example-apps/server-apps/security-demo-app2) | Broadcasts encrypted `fdc3.valuation` snapshots over the private channel using `EncryptedBroadcastSupport` |
-::: 
+:::
 
 ## User Identity
 
@@ -650,13 +663,14 @@ sequenceDiagram
 - Tokens SHOULD be transmitted over encrypted channels when possible
 
 :::tip Reference implementation samples
-- [`get-user-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/get-user-example.ts) — full end-to-end `GetUser` flow: signing the `fdc3.security.userRequest`, returning an encrypted `fdc3.security.user` response, and decrypting and verifying the JWT on the requesting application's backend.
 
-Runnable example apps:
+| Sample | What it shows |
+|--------|---------------|
+| [`get-user-example.ts`](https://github.com/finos/FDC3/blob/main/packages/fdc3-security/samples/get-user-example.ts) | Full end-to-end `GetUser` flow: signing the `fdc3.security.userRequest`, returning an encrypted `fdc3.security.user` response, and decrypting and verifying the JWT on the requesting application's backend |
 
 | App | What it shows |
 |-----|---------------|
 | [`security-demo-idp-app`](https://github.com/finos/FDC3/tree/main/toolbox/fdc3-example-apps/server-apps/security-demo-idp-app) | Lightweight local identity provider app: handles `GetUser`, mints a signed JWT, wraps it as JWE in `fdc3.security.encryptedContext` |
 | [`security-demo-entra-app`](https://github.com/finos/FDC3/tree/main/toolbox/fdc3-example-apps/server-apps/security-demo-entra-app) | Same `GetUser` flow backed by Microsoft Entra ID via MSAL — a real-world identity provider app integration |
-| [`security-demo-app1`](https://github.com/finos/FDC3/tree/main/toolbox/fdc3-example-apps/server-apps/security-demo-app1) | Raises `GetUser` with a signed `fdc3.security.userRequest`, decrypts the response, and verifies the JWT on its backend |
+| [`login-poc`](https://github.com/finos/FDC3/tree/main/toolbox/fdc3-example-apps/server-apps/login-poc) | Raises `GetUser` with a signed `fdc3.security.userRequest`, decrypts the response, and verifies the JWT on its backend |
 :::

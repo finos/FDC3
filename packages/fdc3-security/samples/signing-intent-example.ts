@@ -88,14 +88,14 @@ class RaiserAppBackendHandlers extends DefaultFDC3Handlers {
     super();
   }
 
-  async exchangeData(purpose: string, o: object): Promise<object | void> {
+  async exchangeData(purpose: string, payload: unknown): Promise<unknown> {
     if (purpose === 'sign-context') {
-      const { context } = o as { context: Context };
+      const { context } = payload as { context: Context };
       console.log('[Raiser App Backend] Signing intent request context...');
       // Return raw signature metadata
       return await this.security.sign(context);
     }
-    return super.exchangeData(purpose, o);
+    return super.exchangeData(purpose, payload);
   }
 }
 

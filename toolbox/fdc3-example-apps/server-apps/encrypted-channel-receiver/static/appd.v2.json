@@ -13,7 +13,7 @@
       "version": "1.0.0",
       "publisher": "FINOS",
       "categories": [
-        "Broadcasting and Receiving Contexts Demo"
+        "Security: Encrypted Channels Demo"
       ],
       "icons": [
         {
@@ -22,12 +22,9 @@
       ],
       "interop": {
         "contexts": {
-          "listensFor": [
-            "fdc3.security.encryptedContext"
-          ]
+          "listensFor": ["fdc3.security.encryptedContext"]
         }
-      },
-      "minimumAgentVersion": "2.0"
+      }
     }
   ],
   "message": "OK"

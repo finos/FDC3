@@ -7,7 +7,6 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 import fs from 'fs';
-import type { Application } from '@finos/fdc3';
 
 dotenv.config();
 
@@ -131,7 +130,7 @@ function applyPortToAppDirectoryRecords(applications: AppDirectoryRecord[], port
 
 function buildCombinedAppDirectory(appsList: AppWithPort[]) {
   const combined = {
-    applications: [] as Application[],
+    applications: [] as AppDirectoryRecord[],
     message: 'OK',
   };
 
@@ -141,9 +140,7 @@ function buildCombinedAppDirectory(appsList: AppWithPort[]) {
       try {
         const content = JSON.parse(fs.readFileSync(appdPath, 'utf-8'));
         if (Array.isArray(content.applications)) {
-          combined.applications.push(
-            ...(applyPortToAppDirectoryRecords(content.applications, a.port) as Application[])
-          );
+          combined.applications.push(...applyPortToAppDirectoryRecords(content.applications, a.port));
         }
       } catch (e) {
         console.error('Failed to read appd.v2.json', { appName: a.name, error: e });

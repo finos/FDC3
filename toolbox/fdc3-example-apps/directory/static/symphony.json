@@ -2,12 +2,7 @@
   "applications": [
     {
       "appId": "symphony",
-      "categories": [
-        "chat",
-        "communication",
-        "compliance",
-        "productivity"
-      ],
+      "categories": ["chat", "communication", "compliance", "productivity"],
       "contactEmail": "sales@symphony.com",
       "description": "Symphony is the most secure and compliance-enabling markets’ infrastructure and technology platform, where solutions are built or integrated to standardize, automate and innovate financial services workflows. It is a vibrant community of over half a million financial professionals with a trusted directory and serves over 1,000 institutions.",
       "details": {
@@ -22,22 +17,15 @@
         "intents": {
           "listensFor": {
             "SendChatMessage": {
-              "contexts": [
-                "fdc3.chat.message"
-              ],
+              "contexts": ["fdc3.chat.message"],
               "displayName": "Send Chat Message"
             },
             "StartChat": {
-              "contexts": [
-                "fdc3.chat.initSettings",
-                "fdc3.contact"
-              ],
+              "contexts": ["fdc3.chat.initSettings", "fdc3.contact"],
               "displayName": "Start Chat"
             },
             "ViewMessages": {
-              "contexts": [
-                "fdc3.searchCriteria"
-              ],
+              "contexts": ["fdc3.searchCriteria"],
               "displayName": "View Messages"
             },
             "ViewChat": {
@@ -50,15 +38,9 @@
             }
           },
           "raises": {
-            "CreateInteraction": [
-              "fdc3.interaction"
-            ],
-            "ViewContact": [
-              "fdc3.contact"
-            ],
-            "ViewInstrument": [
-              "fdc3.instrument"
-            ]
+            "CreateInteraction": ["fdc3.interaction"],
+            "ViewContact": ["fdc3.contact"],
+            "ViewInstrument": ["fdc3.instrument"]
           }
         }
       },
@@ -72,8 +54,7 @@
       ],
       "supportEmail": "support@symphony.com",
       "title": "Symphony",
-      "type": "web",
-      "minimumAgentVersion": "2.0"
+      "type": "web"
     }
   ],
   "message": "OK"

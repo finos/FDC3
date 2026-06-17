@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Channel, DesktopAgent, getAgent, Listener, Context } from '@finos/fdc3';
+import { Channel, DesktopAgent, getAgent, Listener } from '@finos/fdc3';
+import type { Context } from '@finos/fdc3-context';
 import {
   connectRemoteHandlers,
   createJosePublicFDC3SecurityFromUrl,
@@ -132,15 +133,21 @@ export const EncryptedReceiveComponent = () => {
         // signingFunction: delegates signing of symmetricKeyRequest to the backend
         // (private key must not enter the browser).
         const signingFunction: SigningFunction = async (context: Context) => {
-          return (await remoteHandlers!.exchangeData('sign-context', {
-            context,
-          })) as Awaited<ReturnType<SigningFunction>>;
+          const result = await remoteHandlers!.exchangeData('sign-context', { context });
+          if (!result || typeof result !== 'object') {
+            throw new Error('Backend sign-context failed');
+          }
+          return result as Awaited<ReturnType<SigningFunction>>;
         };
 
         // unwrapFunction: delegates JWE key unwrapping to the backend. The unwrapped
         // symmetric key is returned to the frontend for fast per-message decryption.
         const unwrapFunction = async (skr: object): Promise<JsonWebKeyWithId> => {
-          return (await remoteHandlers!.exchangeData('unwrap-symmetric-key', skr)) as JsonWebKeyWithId;
+          const result = await remoteHandlers!.exchangeData('unwrap-symmetric-key', skr);
+          if (!result || typeof result !== 'object') {
+            throw new Error('Backend unwrap-symmetric-key failed');
+          }
+          return result as JsonWebKeyWithId;
         };
 
         support = new PublicEncryptedContextListenerSupport(

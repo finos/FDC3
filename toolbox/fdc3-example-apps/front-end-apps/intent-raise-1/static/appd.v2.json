@@ -11,7 +11,7 @@
       },
       "hostManifests": {},
       "categories": [
-        "Intent Listening Demo"
+        "Basic FDC3: Intents Demo"
       ],
       "version": "1.0.0",
       "publisher": "FINOS",
@@ -19,8 +19,7 @@
         {
           "src": "http://localhost:4017/icon.svg"
         }
-      ],
-      "minimumAgentVersion": "2.0"
+      ]
     }
   ],
   "message": "OK"

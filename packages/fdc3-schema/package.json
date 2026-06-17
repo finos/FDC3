@@ -18,10 +18,9 @@
   ],
   "scripts": {
     "clean": "npx rimraf dist && npx rimraf generated && npx rimraf code-generation/.cache",
-    "mkdirs": "npx mkdirp generated/api && npx mkdirp generated/bridging && npx mkdirp generated/app-directory",
+    "mkdirs": "npx mkdirp generated/api && npx mkdirp generated/bridging",
     "generate-type-predicates": "tsc -p code-generation/tsconfig.codegen.json && node code-generation/.cache/generate-type-predicates.js",
-    "generate": "npm run mkdirs && npm run typegen-browser && npm run typegen-bridging && npm run typegen-appd && npm run generate-type-predicates && npm run lint",
-    "typegen-appd": "cd schemas && node ../s2tQuicktypeUtil.cjs ../../fdc3-standard/src/app-directory/specification/schemas/app-directory.schema.json ../../fdc3-standard/src/app-directory/specification/schemas ../generated/app-directory/AppDirectoryTypes.ts",
+    "generate": "npm run mkdirs && npm run typegen-browser && npm run typegen-bridging && npm run generate-type-predicates && npm run lint",
     "build": "npm run generate && tsc",
     "lint": "eslint generated/ --fix && npx prettier generated/ --write",
     "test": "npm run generate && tsc",

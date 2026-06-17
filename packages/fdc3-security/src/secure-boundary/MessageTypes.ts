@@ -25,7 +25,7 @@ export const EXCHANGE_DATA = 'exchange-data';
 
 export type ExchangeDataMessage = {
   purpose: string;
-  o: object;
+  payload: unknown;
 };
 
 export const INSTANCE_DETAILS = 'instance-details';

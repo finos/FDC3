@@ -38,9 +38,9 @@ function handleValuationPush(msg: ExchangeDataMessage): void {
   if (msg.purpose !== VALUATION_PUSH_PURPOSE) {
     return;
   }
-  const o = msg.o as { ctx?: Context };
+  const { ctx } = msg.payload as { ctx?: Context };
   createLogEntry('success', '✅ Published a price', {
-    context: o.ctx ?? msg.o,
+    context: ctx ?? msg.payload,
     timestamp: new Date().toISOString(),
   });
 }

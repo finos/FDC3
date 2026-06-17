@@ -13,7 +13,7 @@
       "version": "1.0.0",
       "publisher": "FINOS",
       "categories": [
-        "Secure FDC3 Workflow Example"
+        "Security: Identity Provider Workflow Example"
       ],
       "icons": [
         {
@@ -25,15 +25,12 @@
           "listensFor": {
             "GetUser": {
               "displayName": "Get User Identity",
-              "contexts": [
-                "fdc3.security.userRequest"
-              ],
+              "contexts": ["fdc3.security.userRequest"],
               "resultType": "fdc3.security.encryptedContext"
             }
           }
         }
-      },
-      "minimumAgentVersion": "2.0"
+      }
     }
   ],
   "message": "OK"

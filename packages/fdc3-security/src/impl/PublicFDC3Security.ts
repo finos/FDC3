@@ -1,5 +1,6 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
-import { AntiReplayClaims, DetachedSignature, ContextVerificationMetadata } from '@finos/fdc3-standard';
+import { AntiReplayClaims, DetachedSignature } from '@finos/fdc3-standard';
+import { ContextVerificationMetadata } from './ContextVerificationMetadata.js';
 import { FDC3UserClaims } from './FDC3UserClaims.js';
 
 type AntiReplay = AntiReplayClaims;

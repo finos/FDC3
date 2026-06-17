@@ -13,7 +13,7 @@
       "version": "1.0.0",
       "publisher": "FINOS",
       "categories": [
-        "Broadcasting and Receiving Contexts Demo"
+        "Basic FDC3: User Channels Demo"
       ],
       "icons": [
         {
@@ -25,8 +25,7 @@
           "src": "http://localhost:4013/screenshot.png",
           "label": "Demo Screenshot"
         }
-      ],
-      "minimumAgentVersion": "2.0"
+      ]
     }
   ],
   "message": "OK"

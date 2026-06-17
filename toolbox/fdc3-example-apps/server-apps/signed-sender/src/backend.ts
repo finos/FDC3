@@ -58,7 +58,7 @@ class SignedSenderBackendHandlers extends DefaultFDC3Handlers {
    * `fdc3.instrument` context on the wrapped channel. Returns `{ ok: true }` on success
    * or `{ ok: false, error }` if no channel has been exported yet.
    */
-  async exchangeData(purpose: string, _o: object): Promise<object | void> {
+  async exchangeData(purpose: string, _payload: unknown): Promise<unknown> {
     if (purpose === SIGNED_BROADCAST_TRIGGER) {
       if (!this.signedBroadcaster) {
         return {
@@ -77,7 +77,7 @@ class SignedSenderBackendHandlers extends DefaultFDC3Handlers {
       await this.signedBroadcaster.broadcast(instrument);
       return { ok: true };
     }
-    return super.exchangeData(purpose, _o);
+    return super.exchangeData(purpose, _payload);
   }
 }
 

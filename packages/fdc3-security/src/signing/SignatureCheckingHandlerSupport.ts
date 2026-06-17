@@ -1,4 +1,5 @@
-import { ContextHandler, ContextMetadata, IntentHandler, ContextVerificationMetadata } from '@finos/fdc3-standard';
+import { ContextHandler, ContextMetadata, IntentHandler } from '@finos/fdc3-standard';
+import { ContextVerificationMetadata } from '../impl/ContextVerificationMetadata.js';
 import { MetadataHandler } from '../delegates/MetadataHandler.js';
 import { PublicFDC3Security, SignatureCheckingFunction } from '../impl/PublicFDC3Security.js';
 import { Context } from '@finos/fdc3-context';

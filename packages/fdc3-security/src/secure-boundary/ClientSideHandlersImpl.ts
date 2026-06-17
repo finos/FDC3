@@ -1,4 +1,4 @@
-import { Channel, DesktopAgent, IntentHandler, Listener, PrivateChannel, ContextMetadata } from '@finos/fdc3-standard';
+import { Channel, DesktopAgent, Listener, PrivateChannel, ContextMetadata } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import {
   REMOTE_INTENT_HANDLER,
@@ -9,7 +9,7 @@ import {
   ExchangeDataMessage,
   INSTANCE_DETAILS,
 } from './MessageTypes.js';
-import { FDC3Handlers } from './FDC3Handlers.js';
+import { FDC3Handlers, BackendIntentHandler } from './FDC3Handlers.js';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { Messaging } from './Messaging.js';
 import { WebSocketMessaging } from './WebSocketMessaging.js';
@@ -33,12 +33,12 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
   private readonly desktopAgent: DesktopAgent;
   private readonly channels: Map<string, Channel> = new Map();
   private readonly contextListeners: Map<string, Listener> = new Map();
-  private readonly callback: (ctx: ExchangeDataMessage) => Promise<ExchangeDataMessage | void>;
+  private readonly callback: (message: ExchangeDataMessage) => Promise<ExchangeDataMessage | void>;
 
   constructor(
     messaging: Messaging,
     desktopAgent: DesktopAgent,
-    callback: (ctx: ExchangeDataMessage) => Promise<ExchangeDataMessage | void>
+    callback: (message: ExchangeDataMessage) => Promise<ExchangeDataMessage | void>
   ) {
     this.messaging = messaging;
     this.desktopAgent = desktopAgent;
@@ -107,9 +107,9 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
     });
   }
 
-  async remoteIntentHandler(intent: string): Promise<IntentHandler> {
+  async remoteIntentHandler(intent: string): Promise<BackendIntentHandler> {
     const handlerId = await this.callRemote(REMOTE_INTENT_HANDLER, { intent });
-    return async (context: Context, metadata?: any) => {
+    return async (context: Context, metadata?: any): Promise<Context | PrivateChannel | void> => {
       const value = await this.callRemote(handlerId, { context, metadata });
       if (value?.type === 'private') {
         const channel = await this.desktopAgent.createPrivateChannel();
@@ -120,8 +120,8 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
     };
   }
 
-  async exchangeData(purpose: string, o: object): Promise<object | void> {
-    return await this.callRemote(EXCHANGE_DATA, { purpose, o });
+  async exchangeData(purpose: string, payload: unknown): Promise<unknown> {
+    return await this.callRemote(EXCHANGE_DATA, { purpose, payload });
   }
 
   private async handleBroadcast(br: BroadcastRequest): Promise<BroadcastResponse> {
@@ -200,7 +200,7 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
 export async function connectRemoteHandlers(
   url: string,
   da: DesktopAgent,
-  callback: (ctx: ExchangeDataMessage) => Promise<ExchangeDataMessage | void>
+  callback: (message: ExchangeDataMessage) => Promise<ExchangeDataMessage | void>
 ): Promise<FDC3Handlers & { disconnect(): Promise<void> }> {
   return new Promise((resolve, reject) => {
     const ws = new WebSocket(url);
