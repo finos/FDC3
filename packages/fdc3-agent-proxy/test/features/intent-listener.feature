@@ -72,3 +72,56 @@ Feature: Intent Listeners
     Then messaging will have posts
       | type                | payload.intentResult.channel | payload.intentResult.context |
       | intentResultRequest | {empty}                      | {empty}                      |
+
+  Scenario: Adding a second unfiltered intent listener for the same intent throws a conflict
+    Given "resultHandler" pipes intent to "intents"
+    When I call "{api1}" with "addIntentListener" with parameters "BuyStock" and "{resultHandler}"
+    And I call "{api1}" with "addIntentListener" with parameters "BuyStock" and "{resultHandler}"
+    Then "{result}" is an error with message "IntentListenerConflict"
+
+  Scenario: Adding a filtered intent listener when an unfiltered one exists throws a conflict
+    Given "resultHandler" pipes intent to "intents"
+    When I call "{api1}" with "addIntentListener" with parameters "BuyStock" and "{resultHandler}"
+    And I call "{api1}" with "addIntentListenerWithContext" with parameters "BuyStock" and "fdc3.instrument" and "{resultHandler}"
+    Then "{result}" is an error with message "IntentListenerConflict"
+
+  Scenario: Adding an unfiltered intent listener when a filtered one exists throws a conflict
+    Given "resultHandler" pipes intent to "intents"
+    When I call "{api1}" with "addIntentListenerWithContext" with parameters "BuyStock" and "fdc3.instrument" and "{resultHandler}"
+    And I call "{api1}" with "addIntentListener" with parameters "BuyStock" and "{resultHandler}"
+    Then "{result}" is an error with message "IntentListenerConflict"
+
+  Scenario: Adding a filtered intent listener with an overlapping context type throws a conflict
+    Given "resultHandler" pipes intent to "intents"
+    When I call "{api1}" with "addIntentListenerWithContext" with parameters "BuyStock" and "fdc3.instrument" and "{resultHandler}"
+    And I call "{api1}" with "addIntentListenerWithContext" with parameters "BuyStock" and "fdc3.instrument" and "{resultHandler}"
+    Then "{result}" is an error with message "IntentListenerConflict"
+
+  Scenario: Adding filtered intent listeners for the same intent with different context types is allowed
+    Given "resultHandler" pipes intent to "intents"
+    When I call "{api1}" with "addIntentListenerWithContext" with parameters "BuyStock" and "fdc3.instrument" and "{resultHandler}"
+    And I call "{api1}" with "addIntentListenerWithContext" with parameters "BuyStock" and "fdc3.order" and "{resultHandler}"
+    Then messaging will have posts
+      | type                     |
+      | addIntentListenerRequest |
+      | addIntentListenerRequest |
+
+  Scenario: Adding an intent listener for a different intent is allowed
+    Given "resultHandler" pipes intent to "intents"
+    When I call "{api1}" with "addIntentListener" with parameters "BuyStock" and "{resultHandler}"
+    And I call "{api1}" with "addIntentListener" with parameters "SellStock" and "{resultHandler}"
+    Then messaging will have posts
+      | type                     |
+      | addIntentListenerRequest |
+      | addIntentListenerRequest |
+
+  Scenario: An intent listener can be re-added once the conflicting listener is unsubscribed
+    Given "resultHandler" pipes intent to "intents"
+    When I call "{api1}" with "addIntentListener" with parameters "BuyStock" and "{resultHandler}"
+    And I refer to "{result}" as "firstListener"
+    And I call "{firstListener}" with "unsubscribe"
+    And I call "{api1}" with "addIntentListener" with parameters "BuyStock" and "{resultHandler}"
+    Then "{result}" is not null
+    And messaging will have posts
+      | type                     |
+      | addIntentListenerRequest |

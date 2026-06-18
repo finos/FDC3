@@ -20,10 +20,11 @@ import { v4 } from 'uuid';
 export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIntentListenerRequest> {
   constructor(
     messaging: Messaging,
-    private readonly intent: string,
-    private readonly contextTypes: string[] | undefined,
+    readonly intent: string,
+    readonly contextTypes: string[] | undefined,
     action: IntentHandler,
-    messageExchangeTimeout: number
+    messageExchangeTimeout: number,
+    private readonly onUnsubscribe?: () => void
   ) {
     super(
       messaging,
@@ -35,6 +36,11 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIn
       'intentListenerUnsubscribeRequest',
       'intentListenerUnsubscribeResponse'
     );
+  }
+
+  override async unsubscribe(): Promise<void> {
+    await super.unsubscribe();
+    this.onUnsubscribe?.();
   }
 
   filter(m: IntentEvent): boolean {
@@ -74,7 +80,7 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIn
         intentEventUuid: m.meta.eventUuid,
         raiseIntentRequestUuid: m.payload.raiseIntentRequestUuid,
         ...(appMetadata !== undefined && { metadata: appMetadata }),
-      }
+      },
     };
 
     return out;
