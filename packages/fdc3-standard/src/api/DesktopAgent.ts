@@ -336,7 +336,7 @@ export interface DesktopAgent {
    *
    * Optional metadata about the raised intent, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
    *
-   * Adding multiple intent listeners on the same type MUST be rejected with the `ResolveError.IntentListenerConflict`, unless the previous listener was removed first though `listener.unsubscribe()`
+   * Multiple intent listeners MAY be added for the same intent, provided they are filtered to different context types (see `addIntentListenerWithContext`). Adding an intent listener that conflicts with an existing listener for the same intent MUST be rejected with the `ResolveError.IntentListenerConflict`, unless the conflicting listener was removed first through `listener.unsubscribe()`. A new listener conflicts with an existing one for the same intent when either listener is unfiltered (added via `addIntentListener`, and so handles all context types) or when their declared context types overlap.
    *
    * ```javascript
    * //Handle a raised intent
