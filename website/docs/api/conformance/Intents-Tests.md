@@ -335,6 +335,45 @@ As the methods of resolving ambiguous intents are often user interactive, it is 
 
 - `MultipleAddingOfTheSameIntentListenerCausesIntentListenerConflict` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above steps to which should cause `IntentListenerConflict` error.
 
+A new listener conflicts with an existing one for the same intent when either listener is **unfiltered** (added via `addIntentListener`, so it handles all context types) or when their declared context types **overlap**. The following cases all cause an `IntentListenerConflict` error:
+
+| App  | Step                      | Details |
+|------|---------------------------|---------|
+| Test | 1. Add Intent Listener            | App performs `fdc3.addIntentListener("aTestingIntent1")`. |
+| Test | 2. Add filtered Intent Listener | App performs `fdc3.addIntentListenerWithContext("aTestingIntent1", "fdc3.instrument")`. |
+
+- `AddingFilteredIntentListenerWhenUnfilteredExistsCausesIntentListenerConflict` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above steps which should cause an `IntentListenerConflict` error (the existing unfiltered listener handles all context types).
+
+| App  | Step                      | Details |
+|------|---------------------------|---------|
+| Test | 1. Add filtered Intent Listener | App performs `fdc3.addIntentListenerWithContext("aTestingIntent1", "fdc3.instrument")`. |
+| Test | 2. Add Intent Listener | App performs `fdc3.addIntentListener("aTestingIntent1")`. |
+
+- `AddingUnfilteredIntentListenerWhenFilteredExistsCausesIntentListenerConflict` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above steps which should cause an `IntentListenerConflict` error (the new unfiltered listener handles all context types, overlapping the existing filtered listener).
+
+| App  | Step                      | Details |
+|------|---------------------------|---------|
+| Test | 1. Add filtered Intent Listener | App performs `fdc3.addIntentListenerWithContext("aTestingIntent1", ["fdc3.instrument", "fdc3.contact"])`. |
+| Test | 2. Add overlapping filtered Intent Listener | App performs `fdc3.addIntentListenerWithContext("aTestingIntent1", ["fdc3.contact", "fdc3.order"])`. |
+
+- `AddingFilteredIntentListenerWithOverlappingContextCausesIntentListenerConflict` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above steps which should cause an `IntentListenerConflict` error (the declared context types overlap on `fdc3.contact`).
+
+Filtered listeners for the same intent with **non-overlapping** context types, and listeners for **different** intents, MUST be allowed:
+
+| App  | Step                      | Details |
+|------|---------------------------|---------|
+| Test | 1. Add filtered Intent Listener | App performs `fdc3.addIntentListenerWithContext("aTestingIntent1", "fdc3.instrument")`. |
+| Test | 2. Add non-overlapping filtered Intent Listener | App performs `fdc3.addIntentListenerWithContext("aTestingIntent1", "fdc3.order")`. |
+
+- `AddingFilteredIntentListenersWithDifferentContextsIsAllowed` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above steps which should successfully add both listeners (no error thrown).
+
+| App  | Step                      | Details |
+|------|---------------------------|---------|
+| Test | 1. Add Intent Listener | App performs `fdc3.addIntentListener("aTestingIntent1")`. |
+| Test | 2. Add Intent Listener for a different intent | App performs `fdc3.addIntentListener("aTestingIntent12")`. |
+
+- `AddingIntentListenersForDifferentIntentsIsAllowed` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above steps which should successfully add both listeners (no error thrown).
+
 | App  | Step                      | Details |
 |------|---------------------------|---------|
 | Test | 1. Add Intent Listener            | App performs `fdc3.addIntentListener("aTestingIntent1")` and saves listener. |
