@@ -14,21 +14,38 @@
         </h1>
     </header>
 
-    <select name="opener" id="opener">
-        <option value="Frame" default>Frame</option>
-        <option value="Tab">New Tab</option>
-    </select>
+    <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 16px; font-family: sans-serif;">
+        <div>
+            <label for="opener" style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #555;">App Opener</label>
+            <select name="opener" id="opener"
+                    title="Controls whether new applications are opened in iframes in the current page or as new tabs in a separate browser window"
+                    aria-label="App opener: choose whether apps open in iframes or new tabs">
+                <option value="Frame" default>Frame</option>
+                <option value="Tab">New Tab</option>
+            </select>
+        </div>
 
-    <select name="approach" id="approach">
-        <option value="IFRAME">Create Iframe</option>
-        <option value="PARENT_POST_MESSAGE" default>Parent Post-Message</option>
-    </select>
+        <div>
+            <label for="approach" style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #555;">Communication Approach</label>
+            <select name="approach" id="approach"
+                    title="Controls the approach the Desktop Agent uses to communicate with FDC3 apps: direct communication over the app's window/frame, or injection of a hidden iframe by getAgent for comms"
+                    aria-label="Communication approach: direct post-message or injected iframe for Desktop Agent comms">
+                <option value="IFRAME">Create Iframe</option>
+                <option value="PARENT_POST_MESSAGE" default>Parent Post-Message</option>
+            </select>
+        </div>
 
-    <select name="ui" id="ui">
-        <option value="DEMO" default>Demo's Own Implementation</option>
-        <option value="DEFAULT">Default Web FDC3 (Running on fdc3.finos.org)</option>
-        <option value="LOCAL">Default Web FDC3 (Running on Localhost)</option>
-    </select>
+        <div>
+            <label for="ui" style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px; color: #555;">App Selector UI</label>
+            <select name="ui" id="ui"
+                    title="Controls which App Selector UI is injected into applications by the Desktop Agent, demonstrating that UI selection is driven by the Desktop Agent"
+                    aria-label="App selector UI: choose which intent resolver UI the Desktop Agent injects into apps">
+                <option value="DEMO" default>Demo's Own Implementation</option>
+                <option value="DEFAULT">Default Web FDC3 (Running on fdc3.finos.org)</option>
+                <option value="LOCAL">Default Web FDC3 (Running on Localhost)</option>
+            </select>
+        </div>
+    </div>
 
     <div id="app-list"></div>
     <div id="app-frames"></div>
