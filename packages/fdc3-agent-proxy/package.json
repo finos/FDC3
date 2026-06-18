@@ -38,5 +38,8 @@
     "jsonpath-plus": "^10.1.0",
     "quickpickle": "^1.6.1",
     "uuid": "^14.0.0"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

@@ -24,5 +24,8 @@
   },
   "dependencies": {
     "@finos/fdc3": "3.0.0-alpha.2"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

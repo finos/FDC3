@@ -16,7 +16,7 @@
   "license": "Apache-2.0",
   "type": "module",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "bin": {
     "fdc3-example-apps": "./bin/run.mjs"
