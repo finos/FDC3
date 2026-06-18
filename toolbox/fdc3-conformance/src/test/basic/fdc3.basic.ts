@@ -1,4 +1,4 @@
-import { Context, DesktopAgent } from '@finos/fdc3';
+import { Context, DesktopAgent, FDC3Event } from '@finos/fdc3';
 
 import { APIDocumentation } from '../support/apiDocuments';
 import { ContextType, Intent } from '../support/intent-support';
@@ -75,6 +75,41 @@ const basicGI1 = (fdc3: DesktopAgent, documentation: string) => {
       const info = await fdc3.getInfo();
       expect(info, documentation).to.have.property('fdc3Version');
       expect(info, documentation).to.have.property('provider');
+    } catch (ex) {
+      handleFail(documentation, ex);
+    }
+  });
+};
+
+const basicAEL1 = (fdc3: DesktopAgent, documentation: string) => {
+  it('(BasicAEL1) Method is callable', async () => {
+    try {
+      const listener = await fdc3.addEventListener('userChannelChanged', (event: FDC3Event) => {
+        console.log(`Event listener for userChannelChanged triggered with result ${event}`);
+      });
+      assert.isTrue(listener && typeof listener === 'object', documentation);
+      expect(
+        typeof listener.unsubscribe,
+        'the listener did not contain an unsubscribe function' + documentation
+      ).to.be.equals('function');
+      if (listener !== undefined) {
+        listener.unsubscribe();
+      }
+    } catch (ex) {
+      handleFail(documentation, ex);
+    }
+  });
+};
+
+const basicAEL2 = (fdc3: DesktopAgent, documentation: string) => {
+  it('(BasicAEL2) Returns listener object when passing null type', async () => {
+    try {
+      const listener = await fdc3.addEventListener(null, () => {});
+      assert.isTrue(listener && typeof listener === 'object', documentation);
+      expect(typeof listener.unsubscribe, documentation).to.be.equals('function');
+      if (listener !== undefined) {
+        listener.unsubscribe();
+      }
     } catch (ex) {
       handleFail(documentation, ex);
     }
@@ -173,12 +208,16 @@ const documentation_UC = '\r\nDocumentation: ' + APIDocumentation.getUserChannel
 const documentation_JC = '\r\nDocumentation: ' + APIDocumentation.getCurrentChannel + '\r\nCause';
 const documentation_RI = '\r\nDocumentation: ' + APIDocumentation.raiseIntentForContext + '\r\nCause';
 const documentation_GA = '\r\nDocumentation: ' + APIDocumentation.getAgent + '\r\nCause';
+const documentation_AEL = '\r\nDocumentation: ' + APIDocumentation.addEventListener + '\r\nCause';
+
 
 export const fdc3BasicGetAgent = async () => describe('fdc3.basicGetAgent', () => getAgent2_2(fdc3, documentation_GA));
 export const fdc3BasicCL1 = async () => describe('fdc3.basicCL1', () => basicCL1(fdc3, documentation_CL));
 export const fdc3BasicCL2 = async () => describe('fdc3.basicCL2', () => basicCL2(fdc3, documentation_CL));
 export const fdc3BasicIL1 = async () => describe('fdc3.basicIL1', () => basicIL1(fdc3, documentation_IL));
 export const fdc3BasicGI1 = async () => describe('fdc3.basicGI1', () => basicGI1(fdc3, documentation_GI));
+export const fdc3BasicAEL1 = async () => describe('fdc3.basicAEL1', () => basicAEL1(fdc3, documentation_AEL));
+export const fdc3BasicAEL2 = async () => describe('fdc3.basicAEL2', () => basicAEL2(fdc3, documentation_AEL));
 export const fdc3BasicAC1 = async () => describe('fdc3.basicAC1', () => basicAC1(fdc3, documentation_AC));
 export const fdc3BasicUC1 = async () => describe('fdc3.basicUC1', () => basicUC1(fdc3, documentation_UC));
 export const fdc3BasicJC1 = async () => describe('fdc3.basicJC1', () => basicJC1(fdc3, documentation_JC));
