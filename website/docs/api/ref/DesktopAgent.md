@@ -36,6 +36,7 @@ interface DesktopAgent {
   raiseIntent(intent: string, context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
   raiseIntentForContext(context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
   addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
+  addIntentListenerWithContext(intent: string, contextType: string | string[], handler: IntentHandler): Promise<Listener>;
 
   // channels
   getOrCreateChannel(channelId: string): Promise<Channel>;
@@ -369,7 +370,7 @@ The [`PrivateChannel`](PrivateChannel) type is provided to support synchronizati
 
 Metadata about each intent & context message received, including the app that originated the message and a timestamp, MUST be provided by the Desktop Agent implementation. Apps raising intents MAY provide additional metadata (such as a traceId, signature or custom metadata), which the Desktop Agent MUST pass on to the handler.
 
- Adding multiple intent listeners on the same type MUST be rejected with the [`ResolveError.IntentListenerConflict`](Errors#resolveerror), unless the previous listener was removed first though [`listener.unsubscribe`](Types#unsubscribe)
+ Multiple intent listeners MAY be added for the same intent, provided they are filtered to different context types (see [`addIntentListenerWithContext`](#addintentlistenerwithcontext)). Adding an intent listener that conflicts with an existing listener for the same intent MUST be rejected with the [`ResolveError.IntentListenerConflict`](Errors#resolveerror), unless the conflicting listener was removed first through [`listener.unsubscribe`](Types#unsubscribe). A new listener conflicts with an existing one for the same intent when either listener is unfiltered (added via [`addIntentListener`](#addintentlistener), and so handles all context types) or when their declared context types overlap.
 
 **Examples:**
 
@@ -471,6 +472,62 @@ listenerResult := <-desktopAgent.AddIntentListener("fdc3.contact", func(context 
 
 - [Register an Intent Handler](../spec#register-an-intent-handler)
 - [`PrivateChannel`](PrivateChannel)
+- [`Listener`](Types#listener)
+- [`Context`](Types#context)
+- [`IntentHandler`](Types#intenthandler)
+- [`ResolveError`](Errors#resolveerror)
+
+### `addIntentListenerWithContext`
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+addIntentListenerWithContext(
+  intent: string,
+  contextType: string | string[],
+  handler: IntentHandler
+): Promise<Listener>;
+```
+
+</TabItem>
+</Tabs>
+
+Adds a listener for incoming intents raised by other applications, via calls to [`fdc3.raiseIntent`](#raiseintent) or [`fdc3.raiseIntentForContext`](#raiseintentforcontext), filtered by one or more context types. The handler will only be invoked when the incoming intent's context `type` matches one of the supplied `contextType` values; all other behaviour is identical to [`addIntentListener`](#addintentlistener) — see that section for details, restrictions and result handling that also apply here.
+
+The `contextType` parameter MAY be either a single context type string or an array of context type strings. Multiple intent listeners MAY be added for the same intent, provided they are filtered to different (non-overlapping) context types. Adding an intent listener that conflicts with an existing listener for the same intent MUST be rejected with the [`ResolveError.IntentListenerConflict`](Errors#resolveerror), regardless of whether the listeners are added with `addIntentListener` or `addIntentListenerWithContext`, unless the conflicting listener was removed first through [`listener.unsubscribe`](Types#unsubscribe). A new listener conflicts with an existing one for the same intent when either listener is unfiltered (added via `addIntentListener`, and so handles all context types) or when their declared context types overlap.
+
+Desktop Agents MUST forward `contextTypes` declared on the listener to intent resolution so that the listener is only considered for raised intents whose context type matches.
+
+**Examples:**
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```js
+//Handle a raised intent filtered to a single context type
+const listener = await fdc3.addIntentListenerWithContext('StartChat', 'fdc3.contact', context => {
+  // start chat has been requested by another application
+  return;
+});
+
+//Handle a raised intent filtered to multiple context types
+const listener = await fdc3.addIntentListenerWithContext(
+  'ViewChart',
+  ['fdc3.instrument', 'fdc3.instrumentList'],
+  context => {
+    // view chart has been requested by another application
+    return;
+  }
+);
+```
+
+</TabItem>
+</Tabs>
+
+**See also:**
+
+- [`addIntentListener`](#addintentlistener)
 - [`Listener`](Types#listener)
 - [`Context`](Types#context)
 - [`IntentHandler`](Types#intenthandler)

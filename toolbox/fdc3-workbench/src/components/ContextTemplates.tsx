@@ -3,7 +3,7 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import React, { HTMLAttributes, useEffect, useRef, useState } from 'react';
+import React, { forwardRef, HTMLAttributes, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { observer } from 'mobx-react';
 import { Grid, Autocomplete } from '@mui/material';
 import { createFilterOptions } from '@mui/material/Autocomplete';
@@ -19,6 +19,10 @@ interface FilterOptionsState<T> {
 interface OptionType {
   title: string;
   value: string;
+}
+
+export interface ContextTemplatesHandle {
+  reset: () => void;
 }
 
 type SetValue = (value: OptionType | null) => void;
@@ -48,17 +52,23 @@ const styles = {
 const contextFilter = createFilterOptions<OptionType>();
 
 export const ContextTemplates = observer(
-  ({
-    handleTabChange,
-    contextStateSetter,
-    channel,
-  }: {
-    handleTabChange: (event: React.ChangeEvent<object> | null, newValue: number, contextName?: string) => void;
-    contextStateSetter: (context: ContextType | null, channel?: string) => void;
-    channel?: string;
-  }) => {
+  forwardRef<
+    ContextTemplatesHandle,
+    {
+      handleTabChange: (event: React.ChangeEvent<object> | null, newValue: number, contextName?: string) => void;
+      contextStateSetter: (context: ContextType | null, channel?: string) => void;
+      channel?: string;
+    }
+  >(({ handleTabChange, contextStateSetter, channel }, ref) => {
     const [context, setContext] = useState<OptionType | null>(null);
     const [contextError, setContextError] = useState<string | false>(false);
+
+    useImperativeHandle(ref, () => ({
+      reset: () => {
+        setContext(null);
+        setContextError(false);
+      },
+    }));
     const contextsOptions: OptionType[] = contextStore.contextsList.map(({ id }) => {
       return {
         title: id,
@@ -113,7 +123,7 @@ export const ContextTemplates = observer(
         isInitialMount.current = false;
       } else {
         const selectedContext = contextStore.contextsList.find(({ id }) => id === context?.value);
-        if (!selectedContext) handleTabChange(null, 0, context?.value);
+        if (context != null && !selectedContext) handleTabChange(null, 0, context?.value);
       }
     }, [context]);
 
@@ -158,5 +168,5 @@ export const ContextTemplates = observer(
         </Grid>
       </div>
     );
-  }
+  })
 );

@@ -106,6 +106,10 @@ const listener = fdc3.addIntentListener('StartChat', context => {
 	return channel;
 });`,
 
+  intentListenerWithContext: `const listener = fdc3.addIntentListenerWithContext('StartChat', 'fdc3.contact', context => {
+  // start chat has been requested by another application
+});`,
+
   raiseIntentForContext: (context: string) =>
     `let context = ${
       context !== 'null' ? context : '{type: "fdc3.instrument", name: "Tesla, inc.", id: {ticker: "TSLA"}}'

@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Added advanced conformance tests (`fdc3.intentListenerConflict`) covering intent listener conflicts, verifying that `addIntentListener`/`addIntentListenerWithContext` reject with `ResolveError.IntentListenerConflict` for conflicting listeners (unfiltered, or overlapping context types) and allow non-overlapping filtered listeners, listeners for different intents, and re-adding after `unsubscribe()`. Added the corresponding test definitions to the "Avoiding Adding Multiple Intent Listeners" section of the Intents conformance docs.
 * Added a classification field to Instrument context type ([#1665](https://github.com/finos/FDC3/pull/1665))
 * Added Go language binding. ([#1483](https://github.com/finos/FDC3/pull/1483))
 * Added FDC3 API Metadata support to the Go language binding. ([#1905](https://github.com/finos/FDC3/pull/1905))
@@ -29,6 +30,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added labels and tooltips to dropdowns in the FDC3 for Web reference implementation demo. ([#193](https://github.com/finos/FDC3/pull/1932))
 
 ### Changed
+
+* The `fdc3-agent-proxy` now enforces intent listener conflicts on the client side: `addIntentListener` and `addIntentListenerWithContext` reject with `ResolveError.IntentListenerConflict` when a new listener conflicts with an existing one for the same intent (either listener being unfiltered, or their context types overlapping). Multiple filtered listeners for the same intent with non-overlapping context types are now allowed, and the `addIntentListener`/`addIntentListenerWithContext` documentation was updated accordingly.
 
 * DACP `ContextMetadata` in `api.schema.json` now allows optional `antiReplay` claims on the wire (e.g. merged into `raiseIntentResultResponse.resultMetadata`). The agent proxy and reference web implementation forward `antiReplay` from app metadata on `raiseIntent` / `raiseIntentForContext` and merge it from `intentResultRequest` metadata into the intent result delivered to the raising app. Cucumber steps and features cover `iat` / `exp` / `jti` alongside signatures.
 * Updated "Releasing FDC3 to NPM" instructions in README to reflect the current GitHub Actions release workflow. ([#1864](https://github.com/finos/FDC3/pull/1864))
@@ -136,6 +139,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   * resolves ([#1487](https://github.com/finos/FDC3/issues/1487))
   * resolves ([#1488](https://github.com/finos/FDC3/issues/1488))
 * Adjusted reference Desktop Agent implementation for FDC3 for Web to open a new app instance when raiseIntent is called with an appId but no instanceId ([#1556](https://github.com/finos/FDC3/pull/1556))
+* Added `addIntentListenerWithContext` to `DesktopAgent` and implemented it in `DesktopAgentProxy`. Added an optional `contextTypes` field to the `addIntentListenerRequest` DACP message and handling of it in the reference Desktop Agent implementation (`@finos/fdc3-web-impl`) so that listeners are only invoked for matching context types during intent resolution and delivery. Added documentation in `DesktopAgent.md` and the Desktop Agent Communication Protocol spec, plus Cucumber test coverage in both `@finos/fdc3-agent-proxy` and `@finos/fdc3-web-impl`. Workbench updated to expose the new API.
 
 ### Changed
 
