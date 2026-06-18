@@ -115,7 +115,11 @@ class IntentStore {
           value: intent,
           variant: 'text',
         });
-        this.intentListeners.push({ id: listenerId, type: intent, listener: intentListener });
+        this.intentListeners.push({
+          id: listenerId,
+          type: context?.type != null ? `${intent} (${context.type})` : intent,
+          listener: intentListener,
+        });
       });
     } catch (e) {
       systemLogStore.addLog({

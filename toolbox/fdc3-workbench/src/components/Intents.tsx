@@ -3,7 +3,7 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import React, { ChangeEvent, ReactElement, useEffect, useState } from 'react';
+import React, { ChangeEvent, ReactElement, useEffect, useRef, useState } from 'react';
 import {
   AppMetadata,
   ContextType,
@@ -43,7 +43,7 @@ import { createFilterOptions } from '@mui/material/Autocomplete';
 import { observer } from 'mobx-react';
 import FileCopyIcon from '@mui/icons-material/FileCopy';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import { ContextTemplates } from '../components/ContextTemplates.js';
+import { ContextTemplates, ContextTemplatesHandle } from '../components/ContextTemplates.js';
 import intentStore from '../store/IntentStore.js';
 import { codeExamples } from '../fixtures/codeExamples.js';
 import { openApiDocsLink } from '../fixtures/openApiDocs.js';
@@ -210,6 +210,7 @@ export const Intents = observer(
     const [targetOptionsforContext, setTargetOptionsforContext] = useState<ReactElement[]>([]);
     const [filterByContext, setFilterByContext] = useState<boolean>(false);
     const [listenerContext, setListenerContext] = useState<ContextType | null>(null);
+    const listenerContextRef = useRef<ContextTemplatesHandle>(null);
 
     const handleRaiseIntent = async () => {
       setIntentResolution(null);
@@ -473,6 +474,8 @@ export const Intents = observer(
           sendIntentResult && resultType === 'channel-result' ? resultOverChannelContextDelays : undefined
         );
         setIntentListener(null);
+        setListenerContext(null);
+        listenerContextRef.current?.reset();
       }
       setSendIntentResult(false);
     };
@@ -915,7 +918,11 @@ export const Intents = observer(
             </Grid>
             {filterByContext && (
               <Grid item xs={12} sx={styles.indentLeft}>
-                <ContextTemplates handleTabChange={handleTabChange} contextStateSetter={setListenerContext} />
+                <ContextTemplates
+                  ref={listenerContextRef}
+                  handleTabChange={handleTabChange}
+                  contextStateSetter={setListenerContext}
+                />
               </Grid>
             )}
             {window.fdc3Version === '2.0' && (
