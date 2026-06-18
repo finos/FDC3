@@ -55,5 +55,8 @@
     "ajv-formats": {
       "ajv": "8.18.0"
     }
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

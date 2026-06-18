@@ -27,5 +27,8 @@
     "@finos/fdc3-schema": "3.0.0-alpha.2",
     "@finos/fdc3-standard": "3.0.0-alpha.2",
     "@finos/fdc3-security": "3.0.0-alpha.2"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

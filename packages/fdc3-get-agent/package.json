@@ -43,5 +43,8 @@
     "quickpickle": "^1.6.1",
     "wtfnode": "^0.9.3"
   },
-  "type": "module"
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  }
 }

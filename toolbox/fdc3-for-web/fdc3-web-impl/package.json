@@ -49,5 +49,8 @@
     "quickpickle": "^1.6.1",
     "ts-node": "^10.9.2",
     "uuid": "^14.0.0"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }
