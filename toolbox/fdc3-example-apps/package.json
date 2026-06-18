@@ -31,7 +31,7 @@
     "directory/static"
   ],
   "scripts": {
-    "clean": "rimraf directory/static/generated front-end-apps/*/.vite server-apps/*/.vite directory/.vite",
+    "clean": "rimraf --glob \"directory/static/generated\" \"front-end-apps/*/.vite\" \"server-apps/*/.vite\" \"directory/.vite\"",
     "build": "tsc",
     "dev": "tsx main.ts",
     "start": "tsx main.ts",
