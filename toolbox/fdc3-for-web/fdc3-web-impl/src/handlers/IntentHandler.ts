@@ -295,8 +295,15 @@ export class IntentHandler implements MessageHandler {
     }
   }
 
-  hasListener(instanceId: string, intentName: string): boolean {
-    return this.registrations.find(r => r.instanceId == instanceId && r.intentName == intentName) != null;
+  hasListener(instanceId: string, intentName: string, contextType?: string): boolean {
+    return (
+      this.registrations.find(
+        r =>
+          r.instanceId == instanceId &&
+          r.intentName == intentName &&
+          (contextType == undefined || r.contextTypes == null || r.contextTypes.includes(contextType))
+      ) != null
+    );
   }
 
   async startWithPendingIntent(
@@ -328,7 +335,7 @@ export class IntentHandler implements MessageHandler {
       );
     }
 
-    const requestsWithListeners = arg0.filter(r => this.hasListener(target.instanceId, r.intent));
+    const requestsWithListeners = arg0.filter(r => this.hasListener(target.instanceId, r.intent, r.context.type));
 
     if (requestsWithListeners.length == 0) {
       this.createPendingIntentIfAllowed(arg0[0], sc, target);
