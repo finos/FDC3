@@ -26,6 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   * `fdc3-example-apps` toolbox with runnable security demos (identity provider apps, Login POC, signed broadcast, encrypted channels).
   * READMEs, Glossary entries and an API spec introduction for securing inter-app communication.
 * Added engines restriction to all package.json files requiring at least node 22 for all packages. ([#1926](https://github.com/finos/FDC3/pull/1926))
+* Added labels and tooltips to dropdowns in the FDC3 for Web reference implementation demo. ([#193](https://github.com/finos/FDC3/pull/1932))
 
 ### Changed
 
