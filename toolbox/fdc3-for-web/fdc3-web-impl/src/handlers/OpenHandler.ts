@@ -2,7 +2,14 @@ import { MessageHandler } from '../BasicFDC3Server.js';
 import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext.js';
 import { Directory, DirectoryApp } from '../directory/DirectoryInterface.js';
 import { ContextElement } from '@finos/fdc3-context';
-import { OpenError, ResolveError, AppIdentifier, AppMetadata, ImplementationMetadata } from '@finos/fdc3-standard';
+import {
+  OpenError,
+  ResolveError,
+  AppIdentifier,
+  AppMetadata,
+  ImplementationMetadata,
+  InstanceMetadata,
+} from '@finos/fdc3-standard';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { errorResponse, FullAppIdentifier, successResponse } from './support.js';
 import {
@@ -202,7 +209,7 @@ export class OpenHandler implements MessageHandler {
     }
   }
 
-  filterPublicDetails(appD: DirectoryApp, appID: AppIdentifier, instanceMetadata?: Record<string, any>): AppMetadata {
+  filterPublicDetails(appD: DirectoryApp, appID: AppIdentifier, instanceMetadata?: InstanceMetadata): AppMetadata {
     return {
       appId: appD.appId,
       name: appD.name,
@@ -221,7 +228,7 @@ export class OpenHandler implements MessageHandler {
     const appID = arg0.payload.app;
     const details = this.directory.retrieveAppsById(appID.appId);
     if (details.length > 0) {
-      let instanceMetadata: Record<string, any> | undefined;
+      let instanceMetadata: InstanceMetadata | undefined;
       if (appID.instanceId) {
         const registration = sc.getInstanceDetails(appID.instanceId);
         instanceMetadata = registration?.instanceMetadata;
