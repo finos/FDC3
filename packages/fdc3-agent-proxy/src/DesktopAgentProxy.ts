@@ -67,8 +67,10 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     this.findIntentsByContext = this.findIntentsByContext.bind(this);
     this.raiseIntent = this.raiseIntent.bind(this);
     this.addIntentListener = this.addIntentListener.bind(this);
+    this.addIntentListenerWithContext = this.addIntentListenerWithContext.bind(this);
     this.raiseIntentForContext = this.raiseIntentForContext.bind(this);
     this.open = this.open.bind(this);
+    this.close = this.close.bind(this);
     this.findInstances = this.findInstances.bind(this);
     this.getAppMetadata = this.getAppMetadata.bind(this);
     this.disconnect = this.disconnect.bind(this);
@@ -183,6 +185,10 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     return this.intents.addIntentListener(intent, handler);
   }
 
+  addIntentListenerWithContext(intent: string, contextType: string | string[], handler: IntentHandler) {
+    return this.intents.addIntentListenerWithContext(intent, contextType, handler);
+  }
+
   raiseIntentForContext(
     context: Context,
     app?: string | AppIdentifier | null,
@@ -193,6 +199,10 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
 
   open(app: string | AppIdentifier, context?: Context | null, metadata?: AppProvidableContextMetadata) {
     return this.apps.open(this.ensureAppId(app)!, context, metadata);
+  }
+
+  close(): Promise<void> {
+    return this.apps.close();
   }
 
   findInstances(app: AppIdentifier) {

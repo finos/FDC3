@@ -193,6 +193,7 @@ Finally, please note that this is a larger set of apps than were required for 1.
 - `RaiseIntentChannelResultMetadata` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform the above test with a Channel result.
 - `RaiseIntentVoidResultMetadata` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform the above test with a void result.
 
+
 ## Raise Intent Result (Channel results)
 
 | App  | Step                        | Details                                                                                           |
@@ -334,10 +335,57 @@ As the methods of resolving ambiguous intents are often user interactive, it is 
 
 - `MultipleAddingOfTheSameIntentListenerCausesIntentListenerConflict` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above steps to which should cause `IntentListenerConflict` error.
 
+A new listener conflicts with an existing one for the same intent when either listener is **unfiltered** (added via `addIntentListener`, so it handles all context types) or when their declared context types **overlap**. The following cases all cause an `IntentListenerConflict` error:
+
 | App  | Step                      | Details |
 |------|---------------------------|---------|
-| Test | 1. Add Intent Listener            | App performs `fdc3.addIntentListener("aTestingIntent1")` and saves listener. |
-| Test | 2. Unsubscribe from the intent | App performs `listener.unsubscribe()`. |
-| Test | 2. Perform Step 1 again | App performs `fdc3.addIntentListener("aTestingIntent1")` again. |
+| Test | 1. Add Intent Listener            | App performs `fdc3.addIntentListener("aTestingIntent1")`. |
+| Test | 2. Add filtered Intent Listener | App performs `fdc3.addIntentListenerWithContext("aTestingIntent1", "fdc3.instrument")`. |
 
-- `MultipleAddingOfTheSameIntentListenerAfterUnsubscribe` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above steps to which should successfully add the listener again.
+- `AddingFilteredIntentListenerWhenUnfilteredExistsCausesIntentListenerConflict` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above steps which should cause an `IntentListenerConflict` error (the existing unfiltered listener handles all context types).
+
+| App  | Step                      | Details |
+|------|---------------------------|---------|
+| Test | 1. Add filtered Intent Listener | App performs `fdc3.addIntentListenerWithContext("aTestingIntent1", "fdc3.instrument")`. |
+| Test | 2. Add Intent Listener | App performs `fdc3.addIntentListener("aTestingIntent1")`. |
+
+- `AddingUnfilteredIntentListenerWhenFilteredExistsCausesIntentListenerConflict` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above steps which should cause an `IntentListenerConflict` error (the new unfiltered listener handles all context types, overlapping the existing filtered listener).
+
+| App  | Step                      | Details |
+|------|---------------------------|---------|
+| Test | 1. Add filtered Intent Listener | App performs `fdc3.addIntentListenerWithContext("aTestingIntent1", ["fdc3.instrument", "fdc3.contact"])`. |
+| Test | 2. Add overlapping filtered Intent Listener | App performs `fdc3.addIntentListenerWithContext("aTestingIntent1", ["fdc3.contact", "fdc3.order"])`. |
+
+- `AddingFilteredIntentListenerWithOverlappingContextCausesIntentListenerConflict` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above steps which should cause an `IntentListenerConflict` error (the declared context types overlap on `fdc3.contact`).
+
+### Allowed Intent Listener Combinations
+
+Filtered listeners for the same intent whose declared context types do not overlap MUST be allowed:
+
+| App  | Step                      | Details |
+|------|---------------------------|---------|
+| Test | 1. Add filtered Intent Listener | App performs `fdc3.addIntentListenerWithContext("aTestingIntent1", "fdc3.instrument")`. |
+| Test | 2. Add non-overlapping filtered Intent Listener | App performs `fdc3.addIntentListenerWithContext("aTestingIntent1", "fdc3.order")`. |
+
+- `AddingFilteredIntentListenersWithDifferentContextsIsAllowed` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above steps which should successfully add both listeners (no error thrown).
+
+Listeners for **different** intents MUST be allowed, regardless of whether they are filtered or unfiltered:
+
+| App  | Step                      | Details |
+|------|---------------------------|---------|
+| Test | 1. Add Intent Listener | App performs `fdc3.addIntentListener("aTestingIntent1")`. |
+| Test | 2. Add Intent Listener for a different intent | App performs `fdc3.addIntentListener("aTestingIntent12")`. |
+
+- `AddingIntentListenersForDifferentIntentsIsAllowed` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above steps which should successfully add both listeners (no error thrown).
+
+### Re-adding an Intent Listener after Unsubscribe
+
+Unsubscribing an intent listener MUST remove it as a source of conflict, so that a new listener that would previously have been rejected with an `IntentListenerConflict` error can be added successfully. This ensures an application can replace a listener for an intent (for example to change the context types it handles) without restarting:
+
+| App  | Step                      | Details |
+|------|---------------------------|---------|
+| Test | 1. Add Intent Listener            | App performs `const listener = await fdc3.addIntentListener("aTestingIntent1")`, saving the returned `Listener` object. |
+| Test | 2. Unsubscribe from the intent | App removes the listener by performing `await listener.unsubscribe()`. |
+| Test | 3. Add Intent Listener again | App performs `fdc3.addIntentListener("aTestingIntent1")` again. As the previous listener has been removed there is no longer a conflict, so this MUST resolve successfully (no `IntentListenerConflict` error is thrown) and return a new `Listener`. |
+
+- `MultipleAddingOfTheSameIntentListenerAfterUnsubscribe` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above steps, which should successfully add the listener again without an `IntentListenerConflict` error being thrown.

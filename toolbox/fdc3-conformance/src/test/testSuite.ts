@@ -13,6 +13,7 @@ import fdc3AppChannels from './advanced/fdc3.app-channels';
 import fdc3UserChannels from './advanced/fdc3.user-channels';
 import fdc3ContextMetadata from './advanced/fdc3.context-metadata';
 import fdc3IntentContextMetadata from './advanced/fdc3.intent-context-metadata';
+import fdc3IntentListenerConflict from './advanced/fdc3.intent-listener-conflict';
 import {
   fdc3BasicGetAgent,
   fdc3BasicCL1,
@@ -64,6 +65,7 @@ const advancedSuite: testSet = {
   'fdc3.raiseIntent (throws error)': [fdc3RaiseIntent_NoAppsFound],
   'fdc3.contextMetadata': [fdc3ContextMetadata],
   'fdc3.intentContextMetadata': [fdc3IntentContextMetadata],
+  'fdc3.intentListenerConflict': [fdc3IntentListenerConflict],
 };
 
 const ambiguousTests: testSet = {

@@ -27,6 +27,7 @@ import {
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { GetInfo } from './responses/GetInfo.js';
 import { AddEventListener } from './responses/AddEventListener.js';
+import { Close } from './responses/Close.js';
 
 export interface IntentDetail {
   app?: AppIdentifier;
@@ -109,6 +110,7 @@ export class TestMessaging extends AbstractMessaging {
   readonly intentDetails: IntentDetail[] = [];
   readonly channelState: { [key: string]: Context[] };
   currentChannel: Channel | null = null;
+  closeShouldFail = false;
 
   readonly automaticResponses: AutomaticResponse[];
 
@@ -126,6 +128,7 @@ export class TestMessaging extends AbstractMessaging {
       new GetInfo(),
       new FindInstances(),
       new Open(),
+      new Close(),
       new GetOrCreateChannel(),
       new ChannelState(this.channelState, initialChannelId),
       new GetUserChannels(),

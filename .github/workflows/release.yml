@@ -24,7 +24,7 @@ jobs:
       - name: Configure Node
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24.0.2
 
       - name: Install dependencies
         run: npm ci
@@ -105,7 +105,7 @@ jobs:
       - name: Configure Node for npmjs.org
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24.0.2
           registry-url: https://registry.npmjs.org
           always-auth: true
 
@@ -136,7 +136,7 @@ jobs:
       - name: Configure Node for GitHub Packages
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 24.0.2
           registry-url: https://npm.pkg.github.com
           scope: '@finos'
           always-auth: true

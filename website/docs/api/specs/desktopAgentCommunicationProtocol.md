@@ -149,12 +149,14 @@ Request and response for removing the event listener ([`Listener.unsubscribe()`]
 - [`eventListenerUnsubscribeRequest`](pathname:///schemas/next/api/eventListenerUnsubscribeRequest.schema.json)
 - [`eventListenerUnsubscribeResponse`](pathname:///schemas/next/api/eventListenerUnsubscribeResponse.schema.json)
 
-#### `addIntentListener()`
+#### `addIntentListener()` / `addIntentListenerWithContext()`
 
-Request and response used to implement the [`addIntentListener()`](../ref/DesktopAgent#addintentlistener) API call:
+Request and response used to implement both the [`addIntentListener()`](../ref/DesktopAgent#addintentlistener) and [`addIntentListenerWithContext()`](../ref/DesktopAgent#addintentlistenerwithcontext) API calls:
 
 - [`addIntentListenerRequest`](pathname:///schemas/next/api/addIntentListenerRequest.schema.json)
 - [`addIntentListenerResponse`](pathname:///schemas/next/api/addIntentListenerResponse.schema.json)
+
+The `addIntentListenerRequest` payload includes an optional `contextTypes` field (an array of context type strings) used to restrict the listener to incoming intents whose context type matches one of the supplied values. When `addIntentListener()` is used the field is omitted (meaning all context types match); when `addIntentListenerWithContext()` is used the field MUST be populated. Desktop Agents MUST use this field both when matching intent listeners during intent resolution and when delivering raised intents, so that listeners are only invoked for matching context types.
 
 Event message used to a raised intent and context object from another app to the listener:
 
@@ -295,6 +297,26 @@ Request and response used to implement the [`leaveCurrentChannel()`](../ref/Desk
 
 - [`leaveCurrentChannelRequest`](pathname:///schemas/next/api/leaveCurrentChannelRequest.schema.json)
 - [`leaveCurrentChannelResponse`](pathname:///schemas/next/api/leaveCurrentChannelResponse.schema.json)
+
+#### `close()`
+
+Request and response used to implement the [`close()`](../ref/DesktopAgent#close) API call:
+
+- [`closeRequest`](pathname:///schemas/next/api/closeRequest.schema.json)
+- [`closeResponse`](pathname:///schemas/next/api/closeResponse.schema.json)
+
+On a successful close, the app container is torn down before a success `closeResponse` can be delivered. The calling app will therefore never receive a successful `closeResponse` — only an error `closeResponse` is possible (when the Desktop Agent cannot complete the close).
+
+```mermaid
+sequenceDiagram
+    App ->> DesktopAgent: closeRequest
+    alt close succeeds
+        DesktopAgent ->> DesktopAgent: close app window/frame
+        Note over App: app destroyed — no closeResponse received
+    else close fails
+        DesktopAgent ->> App: closeResponse with error
+    end
+```
 
 #### `open()`
 

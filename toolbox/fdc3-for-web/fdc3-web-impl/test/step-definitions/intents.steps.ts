@@ -3,7 +3,7 @@ import { DataTable } from '@cucumber/cucumber';
 import { CustomWorld } from '../world/index.js';
 import { DirectoryApp } from '../../src/directory/DirectoryInterface.js';
 import { APP_FIELD, contextMap, createMeta } from './generic.steps.js';
-import { handleResolve } from '@finos/testing';
+import { handleResolve, parseAntiReplayClaims } from '@finos/testing';
 import { BrowserTypes } from '@finos/fdc3-schema';
 
 type FindIntentRequest = BrowserTypes.FindIntentRequest;
@@ -129,7 +129,24 @@ Given(
       meta,
       payload: {
         intent: handleResolve(intent, world),
-        contextType: handleResolve(contextType, world),
+        contextTypes: [handleResolve(contextType, world)],
+      },
+    } as AddIntentListenerRequest;
+    await world.server.receive(message, uuid);
+  }
+);
+
+Given(
+  '{string} registers an intent listener for {string} with contextTypes {string} and {string}',
+  async (world: CustomWorld, appStr: string, intent: string, contextType1: string, contextType2: string) => {
+    const meta = createMeta(world, appStr);
+    const uuid = world.sc.getInstanceUUID(meta.source)!;
+    const message = {
+      type: 'addIntentListenerRequest',
+      meta,
+      payload: {
+        intent: handleResolve(intent, world),
+        contextTypes: [handleResolve(contextType1, world), handleResolve(contextType2, world)],
       },
     } as AddIntentListenerRequest;
     await world.server.receive(message, uuid);
@@ -287,7 +304,10 @@ When(
     const message = raise(world, intentName, contextType, null, meta);
     message.payload.metadata = {
       traceId: handleResolve(traceId, world),
-      signature: handleResolve(signature, world),
+      signature: {
+        signature: handleResolve(signature, world) + ' (signature part)',
+        protected: handleResolve(signature, world) + ' (protected part)',
+      },
       custom: { region: handleResolve(customKey, world) },
     };
     await world.server.receive(message, uuid);
@@ -363,7 +383,7 @@ When(
 );
 
 When(
-  '{string} sends a intentResultRequest with eventUuid {string} and contextType {string} and raiseIntentUuid {string} with traceId {string} and signature {string}',
+  '{string} sends a intentResultRequest with eventUuid {string} and contextType {string} and raiseIntentUuid {string} with traceId {string} and signature {string} and antiReplay claims {string}',
   async (
     world: CustomWorld,
     appStr: string,
@@ -371,10 +391,15 @@ When(
     contextType: string,
     raiseIntentUuid: string,
     traceId: string,
-    signature: string
+    signature: string,
+    antiReplayClaims: string
   ) => {
     const meta = createMeta(world, appStr);
     const uuid1 = world.sc.getInstanceUUID(meta.source)!;
+    const detachedSignature = {
+      protected: signature + ' (protected part)',
+      signature: signature + ' (signature part)',
+    };
     const message: IntentResultRequest = {
       type: 'intentResultRequest',
       meta: {
@@ -388,7 +413,8 @@ When(
         raiseIntentRequestUuid: raiseIntentUuid,
         metadata: {
           traceId,
-          signature,
+          signature: detachedSignature,
+          antiReplay: parseAntiReplayClaims(antiReplayClaims),
         },
       },
     };

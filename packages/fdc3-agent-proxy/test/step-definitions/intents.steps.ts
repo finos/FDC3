@@ -1,6 +1,6 @@
 import { Given } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
-import { handleResolve } from '@finos/testing';
+import { handleResolve, parseAntiReplayClaims } from '@finos/testing';
 import { Context } from '@finos/fdc3-context';
 import { ContextMetadata, ResolveError } from '@finos/fdc3-standard';
 import { IntentEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
@@ -83,15 +83,19 @@ Given('Raise Intent returns a context of {string}', (world: CustomWorld, result:
 });
 
 Given(
-  'Raise Intent returns a context of {string} with traceId {string} and signature {string}',
-  (world: CustomWorld, result: string, traceId: string, signature: string) => {
+  'Raise Intent returns a context of {string} with traceId {string} and signature {string} and antiReplay claims {string}',
+  (world: CustomWorld, result: string, traceId: string, signature: string, antiReplayClaims: string) => {
     world.messaging?.setIntentResult({
       context: handleResolve(result, world),
       resultMetadata: {
         source: { appId: 'some-app', instanceId: 'abc123' },
         timestamp: new Date('2024-01-01T00:00:00Z'),
         traceId,
-        signature,
+        signature: {
+          protected: signature + ' (protected part)',
+          signature: signature + ' (signature part)',
+        },
+        antiReplay: parseAntiReplayClaims(antiReplayClaims),
         custom: { priority: 'high' },
       },
     });
@@ -220,11 +224,15 @@ Given('{string} returns a void promise', (world: CustomWorld, intentHandlerName:
 });
 
 Given(
-  '{string} is metadata with traceId {string} and signature {string}',
-  (world: CustomWorld, field: string, traceId: string, signature: string) => {
+  '{string} is metadata with traceId {string} and signature {string} and antiReplay claims {string}',
+  (world: CustomWorld, field: string, traceId: string, signature: string, antiReplayClaims: string) => {
     world.props[field] = {
       traceId,
-      signature,
+      signature: {
+        protected: signature + ' (protected part)',
+        signature: signature + ' (signature part)',
+      },
+      antiReplay: parseAntiReplayClaims(antiReplayClaims),
       custom: { priority: 'high' },
     };
   }

@@ -16,7 +16,7 @@ A channel can be either a ["User" channel](../spec#joining-user-channels) (retri
 
 :::note
 
-There are differences in behavior when you interact with a User channel via the Desktop Agent interface and the Channel interface. Specifically, when 'joining' a User channel or adding a context listener when already joined to a channel via the `DesktopAgent` interface, existing context (matching the type of the context listener) on the channel is received by the context listener immediately. Whereas, when add a context listener via the Channel interface, context is not received automatically, but may be retrieved manually via the [`getCurrentContext()`](#getcurrentcontext) function.
+There are differences in behaviour when you interact with a User channel via the Desktop Agent interface and the Channel interface. Specifically, when 'joining' a User channel or adding a context listener when already joined to a channel via the `DesktopAgent` interface, existing context (matching the type of the context listener) on the channel is received by the context listener immediately. Whereas, when add a context listener via the Channel interface, context is not received automatically, but may be retrieved manually via the [`getCurrentContext()`](#getcurrentcontext) function.
 
 :::
 
@@ -71,8 +71,9 @@ interface IChannel: IIntentResult
 ```go
 @experimental
 type IChannel interface {
-    Broadcast(context Context) <-chan Result[any]
+    Broadcast(context Context, metadata *AppProvidableContextMetadata) <-chan Result[any]
     GetCurrentContext(contextType string) <-chan Result[IContext]
+    GetCurrentContextWithMetadata(contextType string) <-chan Result[ContextWithMetadata]
     AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener]
 }
 
@@ -241,7 +242,7 @@ Adds a listener for incoming contexts of the specified _context type_ whenever a
 
 If, when this function is called, the channel already contains context that would be passed to the listener it is NOT called or passed this context automatically (this behavior differs from that of the [`fdc3.addContextListener`](DesktopAgent#addcontextlistener) function). Apps wishing to access to the current context of the channel should instead call the [`getCurrentContext(contextType)`](#getcurrentcontext) function.
 
-Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
+Metadata about each context message received, including the app that originated the message and a timestamp, MUST be provided by the Desktop Agent implementation. Apps broadcasting context MAY provide additional metadata (such as a `traceId`, `signature` or custom metadata), which the Desktop Agent MUST pass on to the handler.
 
 Adding multiple context listeners on the same or overlapping types (i.e. specific `contextType` and `null` type) MUST be allowed, and MUST trigger all ContextHandlers when a relevant context type is broadcast on the current channel. 
 
@@ -253,10 +254,11 @@ Add a listener for any context that is broadcast on the channel:
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-const listener = await channel.addContextListener(null, context => {
+const listener = await channel.addContextListener(null, (context, metadata) => {
+    console.log(`Received context from ${metadata.source.appId} at ${metadata.timestamp}`);
     if (context.type === 'fdc3.contact') {
         // handle the contact
-    } else if (context.type === 'fdc3.instrument') => {
+    } else if (context.type === 'fdc3.instrument') {
         // handle the instrument
     }
 });
@@ -445,7 +447,7 @@ Task Broadcast(IContext context);
 <TabItem value="golang" label="Go">
 
 ```go
-func (channel *Channel) Broadcast(context IContext) <-chan Result[any]  { 
+func (channel *Channel) Broadcast(context IContext, metadata *AppProvidableContextMetadata) <-chan Result[any]  { 
   // Implementation here
 }
 ```
@@ -666,6 +668,15 @@ Task<IContextWithMetadata?> GetCurrentContextWithMetadata(string? contextType);
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (channel *Channel) GetCurrentContextWithMetadata(contextType string) <-chan Result[ContextWithMetadata]  { 
+  // Implementation here
+}
+```
+
+</TabItem>
 </Tabs>
 
 Returns the most recent context that was broadcast on the channel along with its associated [`ContextMetadata`](Metadata#contextmetadata), or `null` if no matching context is found.
@@ -708,6 +719,19 @@ try
 catch (Exception ex)
 {
     // handle error
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+result := <-myChannel.GetCurrentContextWithMetadata("fdc3.contact")
+if result.Err != nil {
+    // handle error 
+}
+if result.Value != nil {
+    fmt.Printf("Context from %s\n", result.Value.Metadata.Source.AppId)
 }
 ```
 

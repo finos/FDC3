@@ -190,7 +190,34 @@ Optional human-readable classification, to be used if no specific data classific
 <details>
   <summary><code>FDS_TYPE</code></summary>
 
-**type**: `string`
+**type**: `string` with values:
+- `commodity`,
+- `commodityIndex`,
+- `corporateDebt`,
+- `creditDefaultSwapIndex`,
+- `deal`,
+- `debt`,
+- `debtIndex`,
+- `etf`,
+- `fixedIncome`,
+- `future`,
+- `governmentBenchmarkDebt`,
+- `loan`,
+- `mortgageBackedSecurity`,
+- `municipalDebt`,
+- `mutualFund`,
+- `mutualFundIndex`,
+- `option`,
+- `otherDebt`,
+- `ownershipPrivateCompany`,
+- `pevcFirm`,
+- `pevcFund`,
+- `privateCompany`,
+- `publicCompany`,
+- `publicCompanyIndex`,
+- `sovereignDebt`,
+- `structuredProduct`,
+- `unknown`
 
 FactSet classification for the instrument.
 

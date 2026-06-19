@@ -1,0 +1,37 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://fdc3.finos.org/schemas/next/context/userRequest.schema.json",
+    "type": "object",
+    "title": "User Request",
+    "description": "@experimental A request for the current user's identity, raised via the GetUser intent. An identity provider app receives this request and responds with an 'fdc3.security.user' context containing a signed JWT wrapped in the requester's public key. The request includes the requesting application's audience identifier needed for the identity provider app to create a token bound to that application and to encrypt the response.\n\n**Note:** This context type MUST be signed to be effective. The identity provider app uses the signature's public key URL to verify the requesting application's identity and to encrypt the response. See the [Security & Identity documentation](../../api/security) for details on signing context objects.",
+    "allOf": [
+        {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "const": "fdc3.security.userRequest",
+                    "description": "The FDC3 context type identifier. Used by desktop agents and context handlers to route this request to appropriate identity providers."
+                },
+                "aud": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "The audience identifier for the returned JWT, typically the URL of the requesting application. The identity provider will embed this value in the JWT's 'aud' claim, allowing the requesting application to verify that the token was issued specifically for it. This prevents token misuse if intercepted by other applications."
+                }
+            },
+            "required": [
+                "type",
+                "aud"
+            ],
+            "additionalProperties": true
+        },
+        {
+            "$ref": "context.schema.json#/definitions/BaseContext"
+        }
+    ],
+    "examples": [
+        {
+            "type": "fdc3.security.userRequest",
+            "aud": "https://my-app-url.com"
+        }
+    ]
+}

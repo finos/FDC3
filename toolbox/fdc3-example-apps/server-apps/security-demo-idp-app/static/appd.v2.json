@@ -1,0 +1,37 @@
+{
+  "applications": [
+    {
+      "appId": "idp",
+      "name": "Identity Provider App (Demo)",
+      "title": "Identity Provider App",
+      "description": "A demonstration identity provider app that handles the GetUser intent. Verifies the requesting application's signature on fdc3.security.userRequest, mints a signed JWT scoped to the requesting application's audience, and returns it encrypted as fdc3.security.encryptedContext so only the requesting app can decrypt it.",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4036"
+      },
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "categories": [
+        "Security: Identity Provider Workflow Example"
+      ],
+      "icons": [
+        {
+          "src": "http://localhost:4036/icon.svg"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "GetUser": {
+              "displayName": "Get User Identity",
+              "contexts": ["fdc3.security.userRequest"],
+              "resultType": "fdc3.security.encryptedContext"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "message": "OK"
+}

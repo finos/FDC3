@@ -1,0 +1,31 @@
+{
+  "applications": [
+    {
+      "appId": "signed-receiver-1",
+      "name": "Signed broadcast receiver",
+      "title": "Signed broadcast receiver",
+      "description": "FDC3 signed broadcast demo. Listens on the current user channel for signed fdc3.instrument contexts and verifies each signature using PublicSignatureCheckingHandlerSupport. The signer's public key is fetched from the JWKS URL embedded in each signature's protected header — no pre-configuration of trusted keys is required.",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4037"
+      },
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "categories": [
+        "Security: Signed Context Demo"
+      ],
+      "icons": [
+        {
+          "src": "http://localhost:4037/icon.svg"
+        }
+      ],
+      "interop": {
+        "contexts": {
+          "listensFor": ["fdc3.instrument"]
+        }
+      }
+    }
+  ],
+  "message": "OK"
+}

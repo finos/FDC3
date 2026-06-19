@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3-standard",
-  "version": "2.2.3",
+  "version": "3.0.0-alpha.2",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -32,8 +32,8 @@
     "printWidth": 120
   },
   "dependencies": {
-    "@finos/fdc3-context": "2.2.3",
-    "@finos/fdc3-schema": "2.2.3"
+    "@finos/fdc3-context": "3.0.0-alpha.2",
+    "@finos/fdc3-schema": "3.0.0-alpha.2"
   },
   "devDependencies": {
     "@apidevtools/swagger-parser": "^10.1.1",
@@ -43,5 +43,8 @@
     "tslib": "^2.7.0",
     "vitest-mock-extended": "^3.0.0"
   },
-  "type": "module"
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  }
 }

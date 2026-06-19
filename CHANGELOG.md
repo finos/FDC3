@@ -9,8 +9,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 * Added a Basic conformance test for Desktop Agent `optionalFeatures` metadata. ([#1920](https://github.com/finos/FDC3/pull/1920))
+* Added advanced conformance tests (`fdc3.intentListenerConflict`) covering intent listener conflicts, verifying that `addIntentListener`/`addIntentListenerWithContext` reject with `ResolveError.IntentListenerConflict` for conflicting listeners (unfiltered, or overlapping context types) and allow non-overlapping filtered listeners, listeners for different intents, and re-adding after `unsubscribe()`. Added the corresponding test definitions to the "Avoiding Adding Multiple Intent Listeners" section of the Intents conformance docs.
 * Added a classification field to Instrument context type ([#1665](https://github.com/finos/FDC3/pull/1665))
 * Added Go language binding. ([#1483](https://github.com/finos/FDC3/pull/1483))
+* Added FDC3 API Metadata support to the Go language binding. ([#1905](https://github.com/finos/FDC3/pull/1905))
 * Added details of and procedures for resolving fully-qualified appIds and unqualified appIds in the API and Bridging Parts of the Standard. ([#1523](https://github.com/finos/FDC3/pull/1523))
 * Added clarification regarding expected behavior upon repeated calls to `addContextListener` on same or overlapping types (allowed) and `addIntentListener` on same intent (rejected; new error type added). ([#1394](https://github.com/finos/FDC3/pull/1394))
 * Added `clearContext` function and associated `contextClearedEvent` to the `Channel` API, to be able to clear specific or all context types from the channel. ([#1379](https://github.com/finos/FDC3/pull/1379))
@@ -20,10 +22,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added `version-check` script and integrated it into the `syncpack` script and Publish To NPM workflow to prevent version mismatches causing incorrect npm dist-tags. ([#1864](https://github.com/finos/FDC3/pull/1864))
 * Added Channel Interface Compliance and PrivateChannel Interface Compliance subsections to the Desktop Agent API Standard Compliance section in the API spec, enumerating MUST/SHOULD/MAY requirements for all `Channel` and `PrivateChannel` functions including `getCurrentContextWithMetadata`. ([#1728](https://github.com/finos/FDC3/pull/1728))
 * Added `getResultMetadata()` to `IntentResolution` to allow the raising app to retrieve `ContextMetadata` for an intent result. Updated `IntentHandler` to allow returning `ContextWithMetadata` so that handlers can include app-provided metadata (e.g. `traceId`, `signature`) alongside a context result. The Desktop Agent merges app-provided metadata with its own generated fields before delivering to the raising app. For `Channel` or `void` results, only Desktop Agent generated metadata is returned. ([#1728](https://github.com/finos/FDC3/pull/1728))
+* Added FDC3 Security & Identity support, enabling applications to sign, encrypt, and validate contexts, and securely exchange user identity information, without relying on the Desktop Agent ([#1909](https://github.com/finos/FDC3/pull/1909):
+  * `@experimental` standard documentation, `GetUser` intent, and `fdc3.security.*` context types for signed contexts, encrypted payloads, symmetric key exchange, and user identity.
+  * `@finos/fdc3-security` reference library (JWS/JWE, anti-replay, secure-boundary handlers) with samples and tests.
+  * `fdc3-example-apps` toolbox with runnable security demos (identity provider apps, Login POC, signed broadcast, encrypted channels).
+  * READMEs, Glossary entries and an API spec introduction for securing inter-app communication.
+* Added engines restriction to all package.json files requiring at least node 22 for all packages. ([#1926](https://github.com/finos/FDC3/pull/1926))
+* Added labels and tooltips to dropdowns in the FDC3 for Web reference implementation demo. ([#193](https://github.com/finos/FDC3/pull/1932))
+
+* Added `fdc3.close()` API call allowing an app to request that its own window or frame be closed, with `closeRequest`/`closeResponse` DACP messages and `CloseError` enumeration ([#1918](https://github.com/finos/FDC3/pull/1918))
 
 ### Changed
 
+* The `fdc3-agent-proxy` now enforces intent listener conflicts on the client side: `addIntentListener` and `addIntentListenerWithContext` reject with `ResolveError.IntentListenerConflict` when a new listener conflicts with an existing one for the same intent (either listener being unfiltered, or their context types overlapping). Multiple filtered listeners for the same intent with non-overlapping context types are now allowed, and the `addIntentListener`/`addIntentListenerWithContext` documentation was updated accordingly.
+
+* DACP `ContextMetadata` in `api.schema.json` now allows optional `antiReplay` claims on the wire (e.g. merged into `raiseIntentResultResponse.resultMetadata`). The agent proxy and reference web implementation forward `antiReplay` from app metadata on `raiseIntent` / `raiseIntentForContext` and merge it from `intentResultRequest` metadata into the intent result delivered to the raising app. Cucumber steps and features cover `iat` / `exp` / `jti` alongside signatures.
 * Updated "Releasing FDC3 to NPM" instructions in README to reflect the current GitHub Actions release workflow. ([#1864](https://github.com/finos/FDC3/pull/1864))
+* Improved loading of example applications, fdc3-conformance and fdc3-workbench in the FDC3 for Web reference implementation demo. ([#1924](https://github.com/finos/FDC3/pull/1924))
 
 ### Deprecated
 
@@ -48,6 +63,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+* Replaced the webpack build in `toolbox/fdc3-conformance` with a Vite build to align with other packages. ([#1830](https://github.com/finos/FDC3/issues/1830))
 * Converted the standalone app-directory specification test from `src/app-directory/specification/test/` into a test that runs as part of CI. ([#1720](https://github.com/finos/FDC3/pull/1720))
 * Fix for channel change listeners not sending addEventListenerRequests ([#1606](https://github.com/finos/FDC3/pull/1606))
 * When adding a listener on the current channel, the payload.channelId should be null ([#1611](https://github.com/finos/FDC3/pull/1611))
@@ -126,6 +142,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   * resolves ([#1487](https://github.com/finos/FDC3/issues/1487))
   * resolves ([#1488](https://github.com/finos/FDC3/issues/1488))
 * Adjusted reference Desktop Agent implementation for FDC3 for Web to open a new app instance when raiseIntent is called with an appId but no instanceId ([#1556](https://github.com/finos/FDC3/pull/1556))
+* Added `addIntentListenerWithContext` to `DesktopAgent` and implemented it in `DesktopAgentProxy`. Added an optional `contextTypes` field to the `addIntentListenerRequest` DACP message and handling of it in the reference Desktop Agent implementation (`@finos/fdc3-web-impl`) so that listeners are only invoked for matching context types during intent resolution and delivery. Added documentation in `DesktopAgent.md` and the Desktop Agent Communication Protocol spec, plus Cucumber test coverage in both `@finos/fdc3-agent-proxy` and `@finos/fdc3-web-impl`. Workbench updated to expose the new API.
 
 ### Changed
 

@@ -1,0 +1,67 @@
+<html lang="en">
+  <head>
+    <title>Microsoft Entra: Identity Provider</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="module" src="/src/entra.ts"></script>
+    <link rel="stylesheet" href="/security-demo-styles.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🔐 Microsoft Entra: Identity Provider</h1>
+        <h2>FDC3 Security Demo</h2>
+      </div>
+
+      <div class="status-bar">
+        <div class="status-indicator status-connecting" id="status">
+          <span class="status-dot">●</span>
+          Connecting...
+        </div>
+      </div>
+
+      <div class="action-bar">
+        <button class="action-btn" id="login-btn">
+          🔐 Log In with Microsoft
+        </button>
+        <button class="action-btn" id="logout-btn">🚪 Log Out</button>
+        <button class="action-btn" id="session-status-btn">
+          🔍 Check Session Status
+        </button>
+      </div>
+
+      <div id="user-info" style="display: none; margin-top: 15px">
+        <p style="color: white; font-weight: 600">
+          Logged in as: <span id="user-name">entra-user</span>
+        </p>
+      </div>
+
+      <div class="log-container">
+        <div class="log-header">
+          <h2 class="log-title">Activity Log</h2>
+          <button class="clear-btn" onclick="clearLog()">Clear Log</button>
+        </div>
+        <div class="log-content" id="log">
+          <!-- Log entries will be dynamically added here -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function clearLog() {
+        const log = document.getElementById("log")
+        log.innerHTML =
+          '<div class="log-entry info"><div class="log-timestamp">' +
+          new Date().toLocaleTimeString() +
+          '</div><div class="log-message">Log cleared</div></div>'
+      }
+
+      function updateStatus(status, message) {
+        const statusEl = document.getElementById("status")
+        statusEl.className = "status-indicator status-" + status
+        statusEl.innerHTML = '<span class="status-dot">●</span>' + message
+      }
+    </script>
+  </body>
+</html>

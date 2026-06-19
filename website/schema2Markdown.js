@@ -158,6 +158,26 @@ function hasAllOf(allOfArray) {
         allOfArray[0].properties != null
 }
 
+/**
+ * Extract category from a context type string.
+ * E.g., "fdc3.security.userRequest" -> "security"
+ *       "fdc3.chat.message" -> "chat"
+ *       "fdc3.contact" -> null (no subcategory)
+ * 
+ * @param {string} typeString - The context type (e.g., "fdc3.security.userRequest")
+ * @returns {string|null} - The category name or null if no subcategory
+ */
+function extractCategoryFromType(typeString) {
+    if (!typeString) return null;
+    
+    // Match patterns like fdc3.category.* where category has subcontent
+    const match = typeString.match(/^fdc3\.([a-z]+)\..+$/i);
+    if (match) {
+        return match[1]; // e.g., "security", "chat"
+    }
+    return null;
+}
+
 function hasProperties(schema) {
     return schema.properties != null;
 }
@@ -234,12 +254,22 @@ function generateObjectMD(schema, objectName, schemaFolderName, filePath) {
 
         // outputDocName must not contain any spaces
         const outputDocName = `${title.replace(/\s+/g, '')}`;
-        const outputDocsPath = `${schemaFolderName}/ref/${outputDocName}`;
-        const outputFilePath = `./docs/${schemaFolderName}/ref/${outputDocName}.md`;
+        
+        // Check if this context belongs to a subcategory
+        const category = extractCategoryFromType(typeString);
+        
+        let outputDocsPath, outputFilePath;
+        if (category) {
+            outputDocsPath = `${schemaFolderName}/ref/${category}/${outputDocName}`;
+            outputFilePath = `./docs/${schemaFolderName}/ref/${category}/${outputDocName}.md`;
+        } else {
+            outputDocsPath = `${schemaFolderName}/ref/${outputDocName}`;
+            outputFilePath = `./docs/${schemaFolderName}/ref/${outputDocName}.md`;
+        }
 
         fse.outputFileSync(outputFilePath, `---\n${yaml.dump(frontMatter)}\n---\n\n${markdownContent}`);
 
-        return outputDocsPath;
+        return { path: outputDocsPath, category: category, title: title };
     }
 }
 
@@ -261,11 +291,13 @@ function processSchemaFile(schemaFile, schemaFolderName) {
     const allOfArray = schemaData.allOf;
     let sidebarItems = [];
     if (Array.isArray(allOfArray) && allOfArray.length > 0) {
-        sidebarItems.push(generateObjectMD(schemaData, null, schemaFolderName, schemaFile));
+        const result = generateObjectMD(schemaData, null, schemaFolderName, schemaFile);
+        if (result) sidebarItems.push(result);
     }
     if (schemaData.definitions) {
         for (const [objectName, objectDetails] of Object.entries(schemaData.definitions)) {
-            sidebarItems.push(generateObjectMD(objectDetails, objectName, schemaFolderName, schemaFile));
+            const result = generateObjectMD(objectDetails, objectName, schemaFolderName, schemaFile);
+            if (result) sidebarItems.push(result);
         }
     }
 
@@ -364,20 +396,52 @@ function parseSchemaFolder(schemaFolderName) {
         // nosemgrep
         .map(file => path.join(schemaFolder, file));
 
-    // Process each schema file
-    let sidebarItems = [];
+    // Process each schema file - collect items with category info
+    let allItems = [];
     for (const schemaFile of schemaFiles) {
         
         if (path.basename(schemaFile) === "context.schema.json"){
             console.log(`  Skipping ${schemaFile}`);
         } else {
             console.log(`  Processing schema File: ${schemaFile}`);
-            sidebarItems.push(processSchemaFile(schemaFile, schemaFolderName));
+            const items = processSchemaFile(schemaFile, schemaFolderName);
+            allItems.push(...items);
         }
     }
 
-    // filter out null values
-    return sidebarItems.flat().filter(item => item);
+    // Filter out null values
+    allItems = allItems.filter(item => item);
+
+    // Group items by category
+    const categorized = {};
+    const uncategorized = [];
+    
+    for (const item of allItems) {
+        if (item.category) {
+            if (!categorized[item.category]) {
+                categorized[item.category] = [];
+            }
+            categorized[item.category].push(item.path);
+        } else {
+            uncategorized.push(item.path);
+        }
+    }
+
+    // Build sidebar structure with categories as subcategories
+    let sidebarItems = [...uncategorized];
+    
+    // Add categorized items as nested categories
+    for (const [category, items] of Object.entries(categorized)) {
+        // Capitalize first letter for display
+        const label = category.charAt(0).toUpperCase() + category.slice(1);
+        sidebarItems.push({
+            type: "category",
+            label: label,
+            items: items.sort()
+        });
+    }
+
+    return sidebarItems;
 }
 
 function main() {

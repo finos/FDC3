@@ -1,0 +1,37 @@
+{
+  "applications": [
+    {
+      "appId": "entra",
+      "name": "Microsoft Entra Identity Provider App (Demo)",
+      "title": "Entra Identity Provider App",
+      "description": "A demonstration identity provider app backed by Microsoft Entra ID. Handles the GetUser intent: validates the Microsoft ID token obtained via MSAL, then issues a signed FDC3 JWT scoped to the requesting application's audience and returns it as fdc3.security.encryptedContext.",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4035"
+      },
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "categories": [
+        "Security: Identity Provider Workflow Example"
+      ],
+      "icons": [
+        {
+          "src": "http://localhost:4035/icon.svg"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "GetUser": {
+              "displayName": "Get User Identity",
+              "contexts": ["fdc3.security.userRequest"],
+              "resultType": "fdc3.security.encryptedContext"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "message": "OK"
+}

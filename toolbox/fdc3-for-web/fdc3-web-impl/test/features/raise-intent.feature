@@ -57,9 +57,9 @@ Feature: Raising Intents
   Scenario: Raising an intent with app-provided metadata forwards to intent listener
     When "App1/a1" raises an intent for "uniqueIntent" with contextType "fdc3.magazine" with metadata traceId "intent-trace" signature "intent-sig" and custom key "EMEA"
     Then messaging will have outgoing posts
-      | msg.matches_type    | msg.payload.context.type | msg.payload.intent | msg.payload.metadata.source.appId | msg.payload.metadata.traceId | msg.payload.metadata.signature | msg.payload.metadata.custom.region | to.instanceId | to.appId        |
-      | intentEvent         | fdc3.magazine            | uniqueIntent       | App1                              | intent-trace                 | intent-sig                     | EMEA                               | c1            | uniqueIntentApp |
-      | raiseIntentResponse | {null}                   | {null}             | {null}                            | {null}                       | {null}                         | {null}                             | a1            | App1            |
+      | msg.matches_type    | msg.payload.context.type | msg.payload.intent | msg.payload.metadata.source.appId | msg.payload.metadata.traceId | msg.payload.metadata.signature.signature | msg.payload.metadata.signature.protected | msg.payload.metadata.custom.region | to.instanceId | to.appId        |
+      | intentEvent         | fdc3.magazine            | uniqueIntent       | App1                              | intent-trace                 | intent-sig (signature part)                     | intent-sig (protected part)                     | EMEA                               | c1            | uniqueIntentApp |
+      | raiseIntentResponse | {null}                   | {null}             | {null}                            | {null}                       | {null}                         | {null}                             | {null}                             | a1            | App1            |
 
   Scenario: Raising An Intent To A Non-Running App
     When "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "libraryApp"
@@ -171,3 +171,26 @@ Feature: Raising Intents
     Then messaging will have outgoing posts
       | msg.payload.error | msg.type            |
       | NoAppsFound       | raiseIntentResponse |
+
+  Scenario: Listener registered with matching contextType receives the raised intent
+    When "App2/a2" registers an intent listener for "borrowBook" with contextType "fdc3.book"
+    And "App1/a1" raises an intent for "borrowBook" with contextType "fdc3.book" on app "App2/a2"
+    Then messaging will have outgoing posts
+      | msg.matches_type    | msg.payload.context.type | msg.payload.intent | to.instanceId | to.appId |
+      | intentEvent         | fdc3.book                | borrowBook         | a2            | App2     |
+      | raiseIntentResponse | {null}                   | {null}             | a1            | App1     |
+
+  Scenario: Listener registered with non-matching contextType is skipped during direct intent delivery
+    When "App2/a2" registers an intent listener for "borrowBook" with contextType "fdc3.magazine"
+    And "App1/a1" raises an intent for "borrowBook" with contextType "fdc3.book" on app "App2/a2"
+    Then messaging will have outgoing posts
+      | msg.type            | msg.payload.error |
+      | raiseIntentResponse | NoAppsFound       |
+
+  Scenario: Listener registered with multiple contextTypes receives the raised intent for any of them
+    When "App2/a2" registers an intent listener for "borrowBook" with contextTypes "fdc3.book" and "fdc3.magazine"
+    And "App1/a1" raises an intent for "borrowBook" with contextType "fdc3.magazine" on app "App2/a2"
+    Then messaging will have outgoing posts
+      | msg.matches_type    | msg.payload.context.type | msg.payload.intent | to.instanceId | to.appId |
+      | intentEvent         | fdc3.magazine            | borrowBook         | a2            | App2     |
+      | raiseIntentResponse | {null}                   | {null}             | a1            | App1     |

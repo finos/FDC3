@@ -59,6 +59,17 @@ export interface DesktopAgent {
   open(app: AppIdentifier, context?: Context | null, metadata?: AppProvidableContextMetadata): Promise<AppIdentifier>;
 
   /**
+   * Requests that the Desktop Agent close the calling application's own window or frame.
+   *
+   * This API is limited to self-close only — it cannot be used to close another application.
+   *
+   * On a successful close, the app is destroyed. The promise MUST reject with a string from
+   * `CloseError` if the Desktop Agent cannot close the app. It MAY reject with `CloseError.ApiTimeout`
+   * if no `closeResponse` is received before the message exchange timeout.
+   */
+  close(): Promise<void>;
+
+  /**
    * Find out more information about a particular intent by passing its name, and optionally its context and/or a desired result context type.
    *
    * `findIntent` is effectively granting programmatic access to the Desktop Agent's resolver.
@@ -336,7 +347,7 @@ export interface DesktopAgent {
    *
    * Optional metadata about the raised intent, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
    *
-   * Adding multiple intent listeners on the same type MUST be rejected with the `ResolveError.IntentListenerConflict`, unless the previous listener was removed first though `listener.unsubscribe()`
+   * Multiple intent listeners MAY be added for the same intent, provided they are filtered to different context types (see `addIntentListenerWithContext`). Adding an intent listener that conflicts with an existing listener for the same intent MUST be rejected with the `ResolveError.IntentListenerConflict`, unless the conflicting listener was removed first through `listener.unsubscribe()`. A new listener conflicts with an existing one for the same intent when either listener is unfiltered (added via `addIntentListener`, and so handles all context types) or when their declared context types overlap.
    *
    * ```javascript
    * //Handle a raised intent
@@ -382,6 +393,35 @@ export interface DesktopAgent {
    * ```
    */
   addIntentListener(intent: Intent, handler: IntentHandler): Promise<Listener>;
+
+  /**
+   * Adds a listener for incoming intents raised by other applications, via calls to `fdc3.raiseIntent` or `fdc3.raiseIntentForContext`, but filtered to one or more context types. The handler will only be invoked when the incoming intent's context `type` matches one of the supplied `contextType` values.
+   *
+   * The `contextType` parameter MAY be either a single context type string or an array of context type strings. See `addIntentListener` for details and restrictions for both usage and implementation that also apply to this method.
+   *
+   * ```js
+   * //Handle a raised intent filtered to a single context type
+   * const listener = await fdc3.addIntentListenerWithContext('StartChat', 'fdc3.contact', context => {
+   *   // start chat has been requested by another application
+   *   return;
+   * });
+   *
+   * //Handle a raised intent filtered to multiple context types
+   * const listener = await fdc3.addIntentListenerWithContext(
+   *   'ViewChart',
+   *   ['fdc3.instrument', 'fdc3.instrumentList'],
+   *   context => {
+   *     // view chart has been requested by another application
+   *     return;
+   *   }
+   * );
+   * ```
+   */
+  addIntentListenerWithContext(
+    intent: Intent,
+    contextType: string | string[],
+    handler: IntentHandler
+  ): Promise<Listener>;
 
   /**
    * Adds a listener for incoming context broadcasts from the Desktop Agent (via a User channel or `fdc3.open`API call. If the consumer is only interested in a context of a particular type, they can they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
