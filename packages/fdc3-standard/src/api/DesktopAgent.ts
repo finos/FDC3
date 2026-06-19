@@ -59,6 +59,17 @@ export interface DesktopAgent {
   open(app: AppIdentifier, context?: Context | null, metadata?: AppProvidableContextMetadata): Promise<AppIdentifier>;
 
   /**
+   * Requests that the Desktop Agent close the calling application's own window or frame.
+   *
+   * This API is limited to self-close only — it cannot be used to close another application.
+   *
+   * On a successful close, the app is destroyed. The promise MUST reject with a string from
+   * `CloseError` if the Desktop Agent cannot close the app. It MAY reject with `CloseError.ApiTimeout`
+   * if no `closeResponse` is received before the message exchange timeout.
+   */
+  close(): Promise<void>;
+
+  /**
    * Find out more information about a particular intent by passing its name, and optionally its context and/or a desired result context type.
    *
    * `findIntent` is effectively granting programmatic access to the Desktop Agent's resolver.

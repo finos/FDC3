@@ -2,7 +2,14 @@ import { MessageHandler } from '../BasicFDC3Server.js';
 import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext.js';
 import { Directory, DirectoryApp } from '../directory/DirectoryInterface.js';
 import { ContextElement } from '@finos/fdc3-context';
-import { OpenError, ResolveError, AppIdentifier, AppMetadata, ImplementationMetadata } from '@finos/fdc3-standard';
+import {
+  OpenError,
+  ResolveError,
+  AppIdentifier,
+  AppMetadata,
+  ImplementationMetadata,
+  CloseError,
+} from '@finos/fdc3-standard';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { errorResponse, FullAppIdentifier, successResponse } from './support.js';
 import {
@@ -14,6 +21,7 @@ import {
   isGetAppMetadataRequest,
   isGetInfoRequest,
   isOpenRequest,
+  isCloseRequest,
   isWebConnectionProtocol4ValidateAppIdentity,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { DetachedSignature } from '@finos/fdc3-schema/generated/bridging/BridgingTypes.js';
@@ -23,6 +31,7 @@ type AddContextListenerRequest = BrowserTypes.AddContextListenerRequest;
 type FindInstancesRequest = BrowserTypes.FindInstancesRequest;
 type GetAppMetadataRequest = BrowserTypes.GetAppMetadataRequest;
 type OpenRequest = BrowserTypes.OpenRequest;
+type CloseRequest = BrowserTypes.CloseRequest;
 type WebConnectionProtocol4ValidateAppIdentity = BrowserTypes.WebConnectionProtocol4ValidateAppIdentity;
 type WebConnectionProtocol5ValidateAppIdentityFailedResponse =
   BrowserTypes.WebConnectionProtocol5ValidateAppIdentityFailedResponse;
@@ -139,6 +148,8 @@ export class OpenHandler implements MessageHandler {
             return this.getAppMetadata(msg, sc, from);
           } else if (isGetInfoRequest(msg)) {
             return this.getInfo(msg, sc, from);
+          } else if (isCloseRequest(msg)) {
+            return this.close(msg, sc, from);
           }
         } catch (e) {
           const responseType = msg.type.replace(new RegExp('Request$'), 'Response') as AgentResponseMessage['type'];
@@ -290,6 +301,19 @@ export class OpenHandler implements MessageHandler {
       },
       'getInfoResponse'
     );
+  }
+
+  async close(arg0: CloseRequest, sc: ServerContext<AppRegistration>, from: FullAppIdentifier): Promise<void> {
+    if (!(await sc.isAppConnected(from.instanceId))) {
+      errorResponse(sc, arg0, from, CloseError.ErrorOnClose, 'closeResponse');
+      return;
+    }
+
+    try {
+      await sc.close(from.instanceId);
+    } catch (e) {
+      errorResponse(sc, arg0, from, (e as Error).message ?? CloseError.ErrorOnClose, 'closeResponse');
+    }
   }
 
   getImplementationMetadata(sc: ServerContext<AppRegistration>, appIdentity: AppIdentifier) {

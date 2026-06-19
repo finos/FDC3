@@ -29,6 +29,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added engines restriction to all package.json files requiring at least node 22 for all packages. ([#1926](https://github.com/finos/FDC3/pull/1926))
 * Added labels and tooltips to dropdowns in the FDC3 for Web reference implementation demo. ([#193](https://github.com/finos/FDC3/pull/1932))
 
+* Added `fdc3.close()` API call allowing an app to request that its own window or frame be closed, with `closeRequest`/`closeResponse` DACP messages and `CloseError` enumeration ([#1918](https://github.com/finos/FDC3/pull/1918))
+
 ### Changed
 
 * The `fdc3-agent-proxy` now enforces intent listener conflicts on the client side: `addIntentListener` and `addIntentListenerWithContext` reject with `ResolveError.IntentListenerConflict` when a new listener conflicts with an existing one for the same intent (either listener being unfiltered, or their context types overlapping). Multiple filtered listeners for the same intent with non-overlapping context types are now allowed, and the `addIntentListener`/`addIntentListenerWithContext` documentation was updated accordingly.

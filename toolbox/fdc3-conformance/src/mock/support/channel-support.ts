@@ -42,10 +42,7 @@ export class ChannelServiceImpl implements IChannelService {
     await appControlChannel.addContextListener('closeWindow', async () => {
       console.log(Date.now() + ` Received closeWindow message`);
       await appControlChannel.broadcast({ type: 'windowClosed', testId: testId } as AppControlContext);
-      setTimeout(() => {
-        //yield to make sure the broadcast gets out before we close
-        window.close();
-      }, 1);
+      void this.fdc3.close();
     });
   }
 

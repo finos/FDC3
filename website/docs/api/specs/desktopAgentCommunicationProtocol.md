@@ -298,6 +298,26 @@ Request and response used to implement the [`leaveCurrentChannel()`](../ref/Desk
 - [`leaveCurrentChannelRequest`](pathname:///schemas/next/api/leaveCurrentChannelRequest.schema.json)
 - [`leaveCurrentChannelResponse`](pathname:///schemas/next/api/leaveCurrentChannelResponse.schema.json)
 
+#### `close()`
+
+Request and response used to implement the [`close()`](../ref/DesktopAgent#close) API call:
+
+- [`closeRequest`](pathname:///schemas/next/api/closeRequest.schema.json)
+- [`closeResponse`](pathname:///schemas/next/api/closeResponse.schema.json)
+
+On a successful close, the app container is torn down before a success `closeResponse` can be delivered. The calling app will therefore never receive a successful `closeResponse` — only an error `closeResponse` is possible (when the Desktop Agent cannot complete the close).
+
+```mermaid
+sequenceDiagram
+    App ->> DesktopAgent: closeRequest
+    alt close succeeds
+        DesktopAgent ->> DesktopAgent: close app window/frame
+        Note over App: app destroyed — no closeResponse received
+    else close fails
+        DesktopAgent ->> App: closeResponse with error
+    end
+```
+
 #### `open()`
 
 Request and response used to implement the [`open()`](../ref/DesktopAgent#open) API call:
