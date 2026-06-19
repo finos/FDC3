@@ -84,6 +84,7 @@ export class ProgressReporter extends Mocha.reporters.Base {
   }
 
   private onTest(test: Mocha.Test) {
+    console.log('Executing test: ', test.title);
     const li = document.createElement('li');
     li.className = 'test running';
     const h2 = document.createElement('h2');
@@ -95,6 +96,7 @@ export class ProgressReporter extends Mocha.reporters.Base {
   }
 
   private onPass(test: Mocha.Test) {
+    console.log('Test PASSED: ', test.title);
     const li = this.testElements.get(test.fullTitle());
     if (li) {
       li.className = `test pass ${this.getSpeedClass(test)}`;
@@ -104,6 +106,7 @@ export class ProgressReporter extends Mocha.reporters.Base {
   }
 
   private onFail(test: Mocha.Test, err: Error) {
+    console.log('Test FAILED: ', test.title);
     const li = this.testElements.get(test.fullTitle());
     if (li) {
       li.className = 'test fail';
