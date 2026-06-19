@@ -8,6 +8,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Updated both intent resolver UIs (the `demo` reference Desktop Agent resolver and the `reference-ui` resolver) to display an open app instance's `instanceMetadata.title`, when set, in preference to the generic instance identifier/app title when listing apps to resolve an intent.
+* Added an "Info" tab to the FDC3 Workbench with a "Get Info" button that calls `fdc3.getInfo()` and displays the returned `ImplementationMetadata` in the System Log (the workbench automatically switches to the System Log tab when the Info tab is selected). The tab also provides an instance title text field with an "Update Title" button (which updates `document.title`, triggering an automatic `setInstanceMetadata()` call) and an "Update Metadata" button (which calls `fdc3.setInstanceMetadata()` directly).
 * Added advanced conformance tests (`fdc3.intentListenerConflict`) covering intent listener conflicts, verifying that `addIntentListener`/`addIntentListenerWithContext` reject with `ResolveError.IntentListenerConflict` for conflicting listeners (unfiltered, or overlapping context types) and allow non-overlapping filtered listeners, listeners for different intents, and re-adding after `unsubscribe()`. Added the corresponding test definitions to the "Avoiding Adding Multiple Intent Listeners" section of the Intents conformance docs.
 * Added a classification field to Instrument context type ([#1665](https://github.com/finos/FDC3/pull/1665))
 * Added Go language binding. ([#1483](https://github.com/finos/FDC3/pull/1483))
@@ -20,6 +22,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added `ContextMetadata` and `AppProvidableContextMetadata` types, replacing the optional `OriginatingAppMetadata` feature with required metadata support on `ContextHandler` and `IntentHandler` callbacks. Desktop Agents MUST provide `source` and `timestamp` metadata, and MUST forward app-supplied `traceId`, `signature` and `custom` fields, supporting observability and security use cases. ([#1728](https://github.com/finos/FDC3/pull/1728))
 * Added `version-check` script and integrated it into the `syncpack` script and Publish To NPM workflow to prevent version mismatches causing incorrect npm dist-tags. ([#1864](https://github.com/finos/FDC3/pull/1864))
 * Added Channel Interface Compliance and PrivateChannel Interface Compliance subsections to the Desktop Agent API Standard Compliance section in the API spec, enumerating MUST/SHOULD/MAY requirements for all `Channel` and `PrivateChannel` functions including `getCurrentContextWithMetadata`. ([#1728](https://github.com/finos/FDC3/pull/1728))
+* Added `InstanceMetadata` type and `setInstanceMetadata()` method to `DesktopAgent`, allowing apps to update their instance-specific metadata (e.g. title) so Desktop Agents can display meaningful information in resolver UIs to disambiguate multiple instances of the same app. Updated `AppMetadata.instanceMetadata` to use the new `InstanceMetadata` type. Added DACP `setInstanceMetadataRequest`/`setInstanceMetadataResponse` message schemas. ([#1930](https://github.com/finos/FDC3/pull/1930))
+* Added automatic synchronization of the page title (`document.title`) to the Desktop Agent's instance metadata for proxy connections established via `getAgent`. An initial `setInstanceMetadata` request is sent on connection and further requests are sent automatically whenever the page title changes (empty/whitespace-only titles are never sent). This behavior is enabled by default and can be disabled via the new `syncPageTitle: false` option on `getAgent`. ([#1930](https://github.com/finos/FDC3/pull/1930))
 * Added `getResultMetadata()` to `IntentResolution` to allow the raising app to retrieve `ContextMetadata` for an intent result. Updated `IntentHandler` to allow returning `ContextWithMetadata` so that handlers can include app-provided metadata (e.g. `traceId`, `signature`) alongside a context result. The Desktop Agent merges app-provided metadata with its own generated fields before delivering to the raising app. For `Channel` or `void` results, only Desktop Agent generated metadata is returned. ([#1728](https://github.com/finos/FDC3/pull/1728))
 * Added FDC3 Security & Identity support, enabling applications to sign, encrypt, and validate contexts, and securely exchange user identity information, without relying on the Desktop Agent ([#1909](https://github.com/finos/FDC3/pull/1909):
   * `@experimental` standard documentation, `GetUser` intent, and `fdc3.security.*` context types for signed contexts, encrypted payloads, symmetric key exchange, and user identity.
@@ -40,6 +44,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Deprecated
 
 ### Fixed
+
+* Fixed `getInfo()` not including an instance's `instanceMetadata` (e.g. the title set via `setInstanceMetadata()`) in the returned `ImplementationMetadata.appMetadata`. The web-impl `getImplementationMetadata` now looks up and includes the stored instance metadata, consistent with `getAppMetadata()`.
+* Fixed running app instances returned in the `appIntent`/`appIntents` of `raiseIntent` and `raiseIntentForContext` responses not including their `instanceMetadata` (e.g. the title set via `setInstanceMetadata()`). The web-impl now enriches resolved app instances with their stored instance metadata so intent resolver UIs can display instance-specific titles.
 
 ## [npm v2.2.3] - 2026-04-15
 

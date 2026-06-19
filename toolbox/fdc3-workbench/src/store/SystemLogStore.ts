@@ -9,6 +9,9 @@ import snackbarStore from './SnackbarStore.js';
 
 export type logMessagesName =
   | 'getFdc3'
+  | 'getInfo'
+  | 'setInstanceMetadata'
+  | 'updateTitle'
   | 'getChannels'
   | 'getCurrentChannel'
   | 'joinUserChannel'

@@ -10,6 +10,7 @@ import { GetInfoRequest } from '@finos/fdc3-schema/dist/generated/api/BrowserTyp
 type OpenRequest = BrowserTypes.OpenRequest;
 type GetAppMetadataRequest = BrowserTypes.GetAppMetadataRequest;
 type FindInstancesRequest = BrowserTypes.FindInstancesRequest;
+type SetInstanceMetadataRequest = BrowserTypes.SetInstanceMetadataRequest;
 type WebConnectionProtocol4ValidateAppIdentity = BrowserTypes.WebConnectionProtocol4ValidateAppIdentity;
 
 When('{string} is opened with connection id {string}', (world: CustomWorld, app: string, uuid: string) => {
@@ -154,3 +155,37 @@ When('we wait for the listener timeout', () => {
     setTimeout(() => resolve(), 3100);
   });
 });
+
+When('{string} sets instance metadata with title {string}', (world: CustomWorld, appStr: string, title: string) => {
+  const from = createMeta(world, appStr);
+  const uuid = world.sc.getInstanceUUID(from.source)!;
+  const message: SetInstanceMetadataRequest = {
+    type: 'setInstanceMetadataRequest',
+    meta: from,
+    payload: {
+      instanceMetadata: {
+        title,
+      },
+    },
+  };
+  world.server.receive(message, uuid);
+});
+
+When(
+  '{string} requests metadata for {string} with instanceId {string}',
+  (world: CustomWorld, appStr: string, open: string, instanceId: string) => {
+    const from = createMeta(world, appStr);
+    const uuid = world.sc.getInstanceUUID(from.source)!;
+    const message: GetAppMetadataRequest = {
+      type: 'getAppMetadataRequest',
+      meta: from,
+      payload: {
+        app: {
+          appId: open,
+          instanceId,
+        },
+      },
+    };
+    world.server.receive(message, uuid);
+  }
+);

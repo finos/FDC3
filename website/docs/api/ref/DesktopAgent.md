@@ -25,6 +25,7 @@ interface DesktopAgent {
   open(app: AppIdentifier, context?: Context | null, metadata?: AppProvidableContextMetadata): Promise<AppIdentifier>;
   findInstances(app: AppIdentifier): Promise<Array<AppIdentifier>>;
   getAppMetadata(app: AppIdentifier): Promise<AppMetadata>;
+  setInstanceMetadata(metadata: InstanceMetadata): Promise<void>;
 
   // context
   broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void>;
@@ -74,6 +75,7 @@ interface IDesktopAgent
     Task<IAppIdentifier> Open(IAppIdentifier app, IContext? context = null);
     Task<IEnumerable<IAppIdentifier>> FindInstances(IAppIdentifier app);
     Task<IAppMetadata> GetAppMetadata(IAppIdentifier app);
+    Task SetInstanceMetadata(IInstanceMetadata metadata);
 
     // Context
     Task Broadcast(IContext context);
@@ -122,6 +124,7 @@ type IDesktopAgent interface {
     Open(appIdentifier AppIdentifier, context *IContext, metadata *AppProvidableContextMetadata) <-chan Result[AppIdentifier]
     FindInstances(appIdentifier AppIdentifier) <-chan Result[[]AppIdentifier]
     GetAppMetadata(appIdentifier AppIdentifier) <-chan Result[AppIdentifier]
+    SetInstanceMetadata(metadata InstanceMetadata) <-chan Result[any]
 
     // Context
     Broadcast(context IContext, metadata *AppProvidableContextMetadata) <-chan Result[any]
@@ -2062,6 +2065,78 @@ intentResolutionResult := <-desktopAgent.RaiseIntentForContext(context, &targetA
 - [`AppIdentifier`](Types#appidentifier)
 - [`IntentResolution`](Metadata#intentresolution)
 - [`ResolveError`](Errors#resolveerror)
+
+### `setInstanceMetadata`
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+setInstanceMetadata(metadata: InstanceMetadata): Promise<void>;
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+Task SetInstanceMetadata(IInstanceMetadata metadata);
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (desktopAgent *DesktopAgent) SetInstanceMetadata(metadata InstanceMetadata) <-chan Result[any] {
+  // Implementation here
+}
+
+```
+
+</TabItem>
+</Tabs>
+
+Updates the [`InstanceMetadata`](Metadata#instancemetadata) for the calling application instance.
+
+The provided metadata MUST be merged with any existing instance metadata held by the Desktop Agent for this instance, replacing any previously set fields with the same keys. The updated metadata MUST then be returned in the `instanceMetadata` field of [`AppMetadata`](Metadata#appmetadata) objects returned by [`findInstances`](#findinstances), [`getAppMetadata`](#getappmetadata) and other API calls that return `AppMetadata` for this instance.
+
+This allows an application to provide instance-specific information, such as a title describing the content currently being displayed, that can be used to disambiguate instances in UI elements such as a resolver or intent picker.
+
+**Example:**
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```js
+// Set a title for this instance based on the instrument being displayed
+await fdc3.setInstanceMetadata({ title: "AAPL Stock Chart" });
+
+// Update the title when the displayed content changes
+await fdc3.setInstanceMetadata({ title: "MSFT Stock Chart" });
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+await _desktopAgent.SetInstanceMetadata(new InstanceMetadata { Title = "AAPL Stock Chart" });
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+result := <-desktopAgent.SetInstanceMetadata(InstanceMetadata{Title: "AAPL Stock Chart"})
+```
+
+</TabItem>
+</Tabs>
+
+**See also:**
+
+- [`InstanceMetadata`](Metadata#instancemetadata)
+- [`AppMetadata`](Metadata#appmetadata)
+- [`getAppMetadata()`](#getappmetadata)
+- [`findInstances()`](#findinstances)
 
 ## Deprecated Functions
 

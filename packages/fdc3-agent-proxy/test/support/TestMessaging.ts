@@ -27,6 +27,7 @@ import {
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { GetInfo } from './responses/GetInfo.js';
 import { AddEventListener } from './responses/AddEventListener.js';
+import { SetInstanceMetadata } from './responses/SetInstanceMetadata.js';
 
 export interface IntentDetail {
   app?: AppIdentifier;
@@ -123,6 +124,7 @@ export class TestMessaging extends AbstractMessaging {
       new RaiseIntentForContext(),
       new IntentResult(),
       new GetAppMetadata(),
+      new SetInstanceMetadata(),
       new GetInfo(),
       new FindInstances(),
       new Open(),

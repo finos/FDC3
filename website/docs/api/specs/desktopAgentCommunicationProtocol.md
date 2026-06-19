@@ -403,6 +403,17 @@ Request and response used to implement the [`raiseIntentForContext()`](../ref/De
 
 Message exchanges for handling `raiseIntentForContext()` are the same as for `raiseIntent`, except for the substitution of `raiseIntentForContextRequest` for `raiseIntentRequest` and `raiseIntentForContextResponse` for `raiseIntentResponse`. Hence, please see [`raiseIntent`](#raiseintent) and [`addIntentListener`](#addintentlistener) for further details.
 
+#### `setInstanceMetadata()`
+
+Request and response used to implement the [`setInstanceMetadata()`](../ref/DesktopAgent#setinstancemetadata) API call:
+
+- [`setInstanceMetadataRequest`](pathname:///schemas/next/api/setInstanceMetadataRequest.schema.json)
+- [`setInstanceMetadataResponse`](pathname:///schemas/next/api/setInstanceMetadataResponse.schema.json)
+
+The `setInstanceMetadataRequest` payload includes an `instanceMetadata` field of type [`InstanceMetadata`](../ref/Metadata#instancemetadata). The Desktop Agent MUST merge the supplied metadata with any existing instance metadata held for the calling instance, replacing any previously set fields with the same keys, and MUST subsequently return the updated metadata in the `instanceMetadata` field of [`AppMetadata`](../ref/Metadata#appmetadata) objects it returns for that instance (e.g. via `getAppMetadataResponse` and `findInstancesResponse`).
+
+When connecting to a Desktop Agent Proxy, `getAgent` will, by default, automatically send a `setInstanceMetadataRequest` containing the current page title (`document.title`) as the `title` field on connection, and again whenever the page title changes. Empty or whitespace-only titles are never sent. Applications may disable this behavior by passing `syncPageTitle: false` to [`getAgent`](../ref/GetAgent).
+
 ### `Channel`
 
 Owing to the significant overlap between the FDC3 [`DesktopAgent`](../ref/DesktopAgent) and [`Channel`](../ref/Channel) interfaces, which includes the ability to retrieve and work with User channels as App Channels, most of the messaging for the `Channel` API is shared with `DesktopAgent`. Specifically, all messages defined in the the [`broadcast`](#broadcast) and [`addContextListener`](#addcontextlistener) sections above are reused, with a few minor differences to note:
