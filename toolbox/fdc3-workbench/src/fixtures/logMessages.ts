@@ -11,6 +11,10 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
     getFdc3: {
       error: `The FDC3 API is not ready${value ? ` (${value})` : ''}`,
     },
+    getInfo: {
+      success: `Retrieved implementation metadata via getInfo()`,
+      error: `Failed to retrieve implementation metadata via getInfo()`,
+    },
     getChannels: {
       success: `Retrieved User channels`,
       error: `Failed to retrieve User channels`,
