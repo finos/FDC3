@@ -230,8 +230,6 @@ Finally, please note that this is a larger set of apps than were required for 1.
 
 ## PrivateChannel Lifecycle Events
 
-![2.2+](https://img.shields.io/badge/FDC3-2.2+-purple) In FDC3 2.2, the existing [`PrivateChannel`](../ref/PrivateChannel) lifecycle event functions (`onAddContextListener`, `onUnsubscribe` and `onDisconnect`) functions were deprecated in favour of a new [`addEventListener`](https://fdc3.finos.org/docs/next/api/ref/PrivateChannel#addeventlistener) function which supports events of all three types. Hence, the tests in this section have been updated to use [`addEventListener`](https://fdc3.finos.org/docs/next/api/ref/PrivateChannel#addeventlistener).
-
 | App  | Step                                       | Details                                                                                                                                    |
 |------|--------------------------------------------|---------------------------------------------------------------------------------------------------|
 | Test | 1. Raise intent                            | Test raises an intent with `fdc3.raiseIntent("kTestingIntent", testContextX, {appId: "<K's appId>"})`<br />starts app K. |

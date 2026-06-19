@@ -194,7 +194,7 @@ class PrivateChannelStore {
     channelContexts?: Record<string, ContextType>,
     channelContextDelay?: Record<string, number>
   ) {
-    channel.onAddContextListener(() => {
+    channel.addEventListener('addContextListener', () => {
       try {
         systemLogStore.addLog({
           name: 'pcAddContextListener',
@@ -221,7 +221,7 @@ class PrivateChannelStore {
   }
 
   onUnsubscribe(channel: PrivateChannel) {
-    channel.onUnsubscribe(() => {
+    channel.addEventListener('unsubscribe', () => {
       try {
         systemLogStore.addLog({
           name: 'pcOnUnsubscribe',
@@ -239,7 +239,7 @@ class PrivateChannelStore {
   }
 
   onDisconnect(channel: PrivateChannel) {
-    channel.onDisconnect(() => {
+    channel.addEventListener('disconnect', () => {
       try {
         this.channelListeners.forEach(listener => {
           this.removeContextListener(listener.id);

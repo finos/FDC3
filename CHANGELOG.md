@@ -39,6 +39,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Updated "Releasing FDC3 to NPM" instructions in README to reflect the current GitHub Actions release workflow. ([#1864](https://github.com/finos/FDC3/pull/1864))
 * Improved loading of example applications, fdc3-conformance and fdc3-workbench in the FDC3 for Web reference implementation demo. ([#1924](https://github.com/finos/FDC3/pull/1924))
 
+### Removed
+
+* Removed deprecated functions from the Desktop Agent, Channel and PrivateChannel APIs for deprecations applied in FDC3 2.0-2.2 ([#1928](https://github.com/finos/FDC3/pull/1928))
+
 ### Deprecated
 
 ### Fixed

@@ -54,14 +54,6 @@ interface DesktopAgent {
 
   //implementation info
   getInfo(): Promise<ImplementationMetadata>;
-
-  //Deprecated functions
-  addContextListener(handler: ContextHandler): Promise<Listener>;
-  getSystemChannels(): Promise<Array<Channel>>;
-  joinChannel(channelId: string) : Promise<void>;
-  open(name: string, context?: Context): Promise<AppIdentifier>;
-  raiseIntent(intent: string, context: Context, name: string): Promise<IntentResolution>;
-  raiseIntentForContext(context: Context, name: string): Promise<IntentResolution>;
 }
 ```
 
@@ -405,17 +397,21 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
   const symbol = context.id.ticker;
 
   // Called when the remote side adds a context listener
-  const addContextListener = channel.onAddContextListener((contextType) => {
-    // broadcast price quotes as they come in from our quote feed
-    feed.onQuote(symbol, (price) => {
-      channel.broadcast({ type: "price", price});
-    });
-  });
+  const addContextListener = await channel.addEventListener("addContextListener",
+    (event) => {
+      // broadcast price quotes as they come in from our quote feed
+      feed.onQuote(symbol, (price) => {
+        channel.broadcast({ type: "price", price});
+      });
+    }
+  );
 
   // Stop the feed if the remote side closes
-  const disconnectListener = channel.onDisconnect(() => {
-    feed.stop(symbol);
-  });
+  const disconnectListener = await channel.addEventListener("disconnect",
+    () => {
+      feed.stop(symbol);
+    }
+  );
 
   return channel;
 });
@@ -673,22 +669,28 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
   const symbol = context.id.ticker;
 
   // This gets called when the remote side adds a context listener
-  const addContextListener = channel.onAddContextListener((contextType) => {
-    // broadcast price quotes as they come in from our quote feed
-    feed.onQuote(symbol, (price) => {
-      channel.broadcast({ type: "price", price});
-    });
-  });
+  const addContextListener = await channel.addEventListener("addContextListener",
+    (event) => {
+      // broadcast price quotes as they come in from our quote feed
+      feed.onQuote(symbol, (price) => {
+        channel.broadcast({ type: "price", price});
+      });
+    }
+  );
 
   // This gets called when the remote side calls Listener.unsubscribe()
-  const unsubscribeListener = channel.onUnsubscribe((contextType) => {
-    feed.stop(symbol);
-  });
+  const unsubscribeListener = await channel.addEventListener("unsubscribe",
+    (event) => {
+      feed.stop(symbol);
+    }
+  );
 
   // This gets called if the remote side closes
-  const disconnectListener = channel.onDisconnect(() => {
-    feed.stop(symbol);
-  });
+  const disconnectListener = await channel.addEventListener("disconnect",
+    () => {
+      feed.stop(symbol);
+    }
+  );
 
   return channel;
 });
@@ -703,7 +705,7 @@ _desktopAgent.AddIntentListener<Instrument>("QuoteStream", async (context, metad
   var symbol = context?.ID?.Ticker;
 
   // This gets called when the remote side adds a context listener
-  var addContextListener = channel.OnAddContextListener((contextType) => {
+  var addContextListener = await channel.AddEventListener("addContextListener", (evt) => {
       // broadcast price quotes as they come in from our quote feed
       _feed.OnQuote(symbol, (price) => {
           channel.Broadcast(new Price(price));
@@ -711,13 +713,13 @@ _desktopAgent.AddIntentListener<Instrument>("QuoteStream", async (context, metad
   });
 
   // This gets called when the remote side calls Listener.unsubscribe()
-  var unsubscribeListener = channel.OnUnsubscribe((contextType) => {
+  var unsubscribeListener = await channel.AddEventListener("unsubscribe", (evt) => {
       _feed.Stop(symbol);
   });
 
   // This gets called if the remote side closes
-  var disconnectListener = channel.OnDisconnect(() => {
-      _feed.stop(symbol);
+  var disconnectListener = await channel.AddEventListener("disconnect", (evt) => {
+      _feed.Stop(symbol);
   });
 
   return channel;
@@ -728,7 +730,7 @@ _desktopAgent.AddIntentListener<Instrument>("QuoteStream", async (context, metad
 <TabItem value="golang" label="Go">
 
 ```go
-desktopAgent.AddIntentListener("fdc3.contact", func(context IContext, contextMetadata *ContextMetadata) {
+desktopAgent.AddIntentListener("QuoteStream", func(context IContext, contextMetadata *ContextMetadata) {
   channelResult := <-desktopAgent.CreatePrivateChannel()
   symbol := context.Id["ticker"]
 
@@ -736,7 +738,13 @@ desktopAgent.AddIntentListener("fdc3.contact", func(context IContext, contextMet
     return 
   }
   channel := channelResult.Value
-  channel.OnAddContextListener
+
+  // This gets called when the remote side adds a context listener
+  <-channel.AddEventListener(&PrivateChannelEventTypes.AddContextListener, func(event PrivateChannelEvent) {
+    feed.OnQuote(symbol, func(price string) {
+      channel.Broadcast(Context{Type: price})
+    })
+  })
 })
 
 ```
@@ -2100,196 +2108,3 @@ intentResolutionResult := <-desktopAgent.RaiseIntentForContext(context, &targetA
 - [`AppIdentifier`](Types#appidentifier)
 - [`IntentResolution`](Metadata#intentresolution)
 - [`ResolveError`](Errors#resolveerror)
-
-## Deprecated Functions
-
-### `addContextListener` (deprecated)
-
-<Tabs groupId="lang">
-<TabItem value="ts" label="TypeScript/JavaScript">
-
-```ts
-addContextListener(handler: ContextHandler): Promise<Listener>;
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-Not implemented
-```
-
-</TabItem>
-<TabItem value="golang" label="Go">
-
-```go
-Not implemented
-```
-
-</TabItem>
-</Tabs>
-
-Adds a listener for incoming context broadcasts from the Desktop Agent. Provided for backwards compatibility with versions FDC3 standard &lt;2.0.
-
-**See also:**
-
-- [`addContextListener`](#addcontextlistener)
-
-### `getSystemChannels` (deprecated)
-
-<Tabs groupId="lang">
-<TabItem value="ts" label="TypeScript/JavaScript">
-
-```ts
-getSystemChannels() : Promise<Array<Channel>>;
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-Not implemented
-```
-
-</TabItem>
-<TabItem value="golang" label="Go">
-
-```go
-Not implemented
-```
-
-</TabItem>
-</Tabs>
-
-Alias to the [`getUserChannels`](#getuserchannels) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
-**See also:**
-
-- [`getUserChannels`](#getuserchannels)
-
-### `joinChannel` (deprecated)
-
-<Tabs groupId="lang">
-<TabItem value="ts" label="TypeScript/JavaScript">
-
-```ts
-joinChannel(channelId: string) : Promise<void>;
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-Not implemented
-```
-
-</TabItem>
-<TabItem value="golang" label="Go">
-
-```go
-Not implemented
-```
-
-</TabItem>
-</Tabs>
-
-Alias to the [`joinUserChannel`](#joinuserchannel) function provided for backwards compatibility with version 1.1 & 1.2 of the FDC3 standard.
-
-**See also:**
-
-- [`joinUserChannel`](#joinuserchannel)
-
-### `open` (deprecated)
-
-<Tabs groupId="lang">
-<TabItem value="ts" label="TypeScript/JavaScript">
-
-```ts
-open(name: string, context?: Context): Promise<AppIdentifier>;
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-Not implemented
-```
-
-</TabItem>
-<TabItem value="golang" label="Go">
-
-```go
-Not implemented
-```
-
-</TabItem>
-</Tabs>
-
-Version of `open` that launches an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard &lt;2.0.
-
-**See also:**
-
-- [`open`](#open)
-
-### `raiseIntent` (deprecated)
-
-<Tabs groupId="lang">
-<TabItem value="ts" label="TypeScript/JavaScript">
-
-```ts
-raiseIntent(intent: string, context: Context, name: string): Promise<IntentResolution>;
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-Not implemented
-```
-
-</TabItem>
-<TabItem value="golang" label="Go">
-
-```go
-Not implemented
-```
-
-</TabItem>
-</Tabs>
-
-Version of `raiseIntent` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard &lt;2.0.
-
-**See also:**
-
-- [`raiseIntent`](#raiseintent)
-
-### `raiseIntentForContext` (deprecated)
-
-<Tabs groupId="lang">
-<TabItem value="ts" label="TypeScript/JavaScript">
-
-```ts
-raiseIntentForContext(context: Context, name: string): Promise<IntentResolution>;
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-Not implemented
-```
-
-</TabItem>
-<TabItem value="golang" label="Go">
-
-```go
-Not implemented
-```
-
-</TabItem>
-</Tabs>
-
-Version of `raiseIntentForContext` that targets an app by name rather than `AppIdentifier`. Provided for backwards compatibility with versions of the FDC3 Standard &lt;2.0.
-
-**See also:**
-
-- [`raiseIntentForContext`](#raiseintentforcontext)
