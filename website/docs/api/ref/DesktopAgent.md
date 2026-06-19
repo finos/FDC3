@@ -395,17 +395,21 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
   const symbol = context.id.ticker;
 
   // Called when the remote side adds a context listener
-  const addContextListener = channel.onAddContextListener((contextType) => {
-    // broadcast price quotes as they come in from our quote feed
-    feed.onQuote(symbol, (price) => {
-      channel.broadcast({ type: "price", price});
-    });
-  });
+  const addContextListener = await channel.addEventListener("addContextListener",
+    (event) => {
+      // broadcast price quotes as they come in from our quote feed
+      feed.onQuote(symbol, (price) => {
+        channel.broadcast({ type: "price", price});
+      });
+    }
+  );
 
   // Stop the feed if the remote side closes
-  const disconnectListener = channel.onDisconnect(() => {
-    feed.stop(symbol);
-  });
+  const disconnectListener = await channel.addEventListener("disconnect",
+    () => {
+      feed.stop(symbol);
+    }
+  );
 
   return channel;
 });
@@ -607,22 +611,28 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
   const symbol = context.id.ticker;
 
   // This gets called when the remote side adds a context listener
-  const addContextListener = channel.onAddContextListener((contextType) => {
-    // broadcast price quotes as they come in from our quote feed
-    feed.onQuote(symbol, (price) => {
-      channel.broadcast({ type: "price", price});
-    });
-  });
+  const addContextListener = await channel.addEventListener("addContextListener",
+    (event) => {
+      // broadcast price quotes as they come in from our quote feed
+      feed.onQuote(symbol, (price) => {
+        channel.broadcast({ type: "price", price});
+      });
+    }
+  );
 
   // This gets called when the remote side calls Listener.unsubscribe()
-  const unsubscribeListener = channel.onUnsubscribe((contextType) => {
-    feed.stop(symbol);
-  });
+  const unsubscribeListener = await channel.addEventListener("unsubscribe",
+    (event) => {
+      feed.stop(symbol);
+    }
+  );
 
   // This gets called if the remote side closes
-  const disconnectListener = channel.onDisconnect(() => {
-    feed.stop(symbol);
-  });
+  const disconnectListener = await channel.addEventListener("disconnect",
+    () => {
+      feed.stop(symbol);
+    }
+  );
 
   return channel;
 });
@@ -637,7 +647,7 @@ _desktopAgent.AddIntentListener<Instrument>("QuoteStream", async (context, metad
   var symbol = context?.ID?.Ticker;
 
   // This gets called when the remote side adds a context listener
-  var addContextListener = channel.OnAddContextListener((contextType) => {
+  var addContextListener = await channel.AddEventListener("addContextListener", (evt) => {
       // broadcast price quotes as they come in from our quote feed
       _feed.OnQuote(symbol, (price) => {
           channel.Broadcast(new Price(price));
@@ -645,13 +655,13 @@ _desktopAgent.AddIntentListener<Instrument>("QuoteStream", async (context, metad
   });
 
   // This gets called when the remote side calls Listener.unsubscribe()
-  var unsubscribeListener = channel.OnUnsubscribe((contextType) => {
+  var unsubscribeListener = await channel.AddEventListener("unsubscribe", (evt) => {
       _feed.Stop(symbol);
   });
 
   // This gets called if the remote side closes
-  var disconnectListener = channel.OnDisconnect(() => {
-      _feed.stop(symbol);
+  var disconnectListener = await channel.AddEventListener("disconnect", (evt) => {
+      _feed.Stop(symbol);
   });
 
   return channel;
@@ -662,7 +672,7 @@ _desktopAgent.AddIntentListener<Instrument>("QuoteStream", async (context, metad
 <TabItem value="golang" label="Go">
 
 ```go
-desktopAgent.AddIntentListener("fdc3.contact", func(context IContext, contextMetadata *ContextMetadata) {
+desktopAgent.AddIntentListener("QuoteStream", func(context IContext, contextMetadata *ContextMetadata) {
   channelResult := <-desktopAgent.CreatePrivateChannel()
   symbol := context.Id["ticker"]
 
@@ -670,7 +680,13 @@ desktopAgent.AddIntentListener("fdc3.contact", func(context IContext, contextMet
     return 
   }
   channel := channelResult.Value
-  channel.OnAddContextListener
+
+  // This gets called when the remote side adds a context listener
+  <-channel.AddEventListener(&PrivateChannelEventTypes.AddContextListener, func(event PrivateChannelEvent) {
+    feed.OnQuote(symbol, func(price string) {
+      channel.Broadcast(Context{Type: price})
+    })
+  })
 })
 
 ```

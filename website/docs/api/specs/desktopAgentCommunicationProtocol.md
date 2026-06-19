@@ -438,8 +438,6 @@ Event messages used to deliver events that have occurred:
 
 :::tip
 
-The above messages may also be used to implement the deprecated [`onAddContextListener()`](../ref/PrivateChannel#onaddcontextlistener), [`onUnsubscribe`](../ref/PrivateChannel#onunsubscribe) and [`onDisconnect`](../ref/PrivateChannel#ondisconnect) functions of the `PrivateChannel` interface.
-
 :::
 
 Message exchange for removing the event listener [`Listener.unsubscribe`](../ref/Types#listener):

@@ -35,7 +35,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Removed
 
-* Removed deprecated methods etc. from FDC3 2.0 release. ([#1916](https://github.com/finos/FDC3/pull/1916))
+* Removed deprecated functions from the Desktop Agent, Channel and PrivateChannel APIs for deprecations applied in FDC3 2.0-2.2 ([#1928](https://github.com/finos/FDC3/pull/1928))
 
 ### Deprecated
 

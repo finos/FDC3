@@ -193,13 +193,6 @@ A Desktop Agent's [`PrivateChannel`](ref/PrivateChannel) implementation **SHOULD
 - Restrict external apps from listening or publishing on a `PrivateChannel` that they did not request or provide.
 - Prevent apps from broadcasting on the channel after [`disconnect`](ref/PrivateChannel#disconnect) has been called.
 
-A Desktop Agent's [`PrivateChannel`](ref/PrivateChannel) implementation **MAY**:
-
-- Implement the following deprecated functions:
-  - [`onAddContextListener`](ref/PrivateChannel#onaddcontextlistener)
-  - [`onUnsubscribe`](ref/PrivateChannel#onunsubscribe)
-  - [`onDisconnect`](ref/PrivateChannel#ondisconnect)
-
 ## Functional Use Cases
 
 ### Open an Application

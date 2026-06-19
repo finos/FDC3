@@ -365,17 +365,21 @@ export interface DesktopAgent {
    *   const symbol = context.id.symbol;
    *
    *   // Called when the remote side adds a context listener
-   *   const addContextListener = channel.onAddContextListener((contextType) => {
-   *     // broadcast price quotes as they come in from our quote feed
-   *     feed.onQuote(symbol, (price) => {
-   *       channel.broadcast({ type: "price", price});
-   *     });
-   *   });
+   *   const addContextListener = await channel.addEventListener("addContextListener",
+   *     (event) => {
+   *       // broadcast price quotes as they come in from our quote feed
+   *       feed.onQuote(symbol, (price) => {
+   *         channel.broadcast({ type: "price", price});
+   *       });
+   *     }
+   *   );
    *
    *   // Stop the feed if the remote side closes
-   *   const disconnectListener = channel.onDisconnect(() => {
-   *     feed.stop(symbol);
-   *   });
+   *   const disconnectListener = await channel.addEventListener("disconnect",
+   *     () => {
+   *       feed.stop(symbol);
+   *     }
+   *   );
    *
    *   return channel;
    * });
@@ -492,22 +496,28 @@ export interface DesktopAgent {
    * 	const symbol = context.id.ticker;
    *
    * 	// This gets called when the remote side adds a context listener
-   * 	const addContextListener = channel.onAddContextListener((contextType) => {
-   * 		// broadcast price quotes as they come in from our quote feed
-   * 		feed.onQuote(symbol, (price) => {
-   * 			channel.broadcast({ type: "price", price});
-   * 		});
-   * 	});
+   * 	const addContextListener = await channel.addEventListener("addContextListener",
+   * 		(event) => {
+   * 			// broadcast price quotes as they come in from our quote feed
+   * 			feed.onQuote(symbol, (price) => {
+   * 				channel.broadcast({ type: "price", price});
+   * 			});
+   * 		}
+   * 	);
    *
    * 	// This gets called when the remote side calls Listener.unsubscribe()
-   * 	const unsubscriberListener = channel.onUnsubscribe((contextType) => {
-   * 		feed.stop(symbol);
-   * 	});
+   * 	const unsubscribeListener = await channel.addEventListener("unsubscribe",
+   * 		(event) => {
+   * 			feed.stop(symbol);
+   * 		}
+   * 	);
    *
    * 	// This gets called if the remote side closes
-   * 	const disconnectListener = channel.onDisconnect(() => {
-   * 		feed.stop(symbol);
-   * 	})
+   * 	const disconnectListener = await channel.addEventListener("disconnect",
+   * 		() => {
+   * 			feed.stop(symbol);
+   * 		}
+   * 	);
    *
    * 	return channel;
    * });
