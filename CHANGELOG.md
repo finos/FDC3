@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-* Added an "Info" tab to the FDC3 Workbench with a "Get Info" button that calls `fdc3.getInfo()` and displays the returned `ImplementationMetadata` in the System Log (the workbench automatically switches to the System Log tab when the Info tab is selected).
+* Added an "Info" tab to the FDC3 Workbench with a "Get Info" button that calls `fdc3.getInfo()` and displays the returned `ImplementationMetadata` in the System Log (the workbench automatically switches to the System Log tab when the Info tab is selected). The tab also provides an instance title text field with an "Update Title" button (which updates `document.title`, triggering an automatic `setInstanceMetadata()` call) and an "Update Metadata" button (which calls `fdc3.setInstanceMetadata()` directly).
 * Added advanced conformance tests (`fdc3.intentListenerConflict`) covering intent listener conflicts, verifying that `addIntentListener`/`addIntentListenerWithContext` reject with `ResolveError.IntentListenerConflict` for conflicting listeners (unfiltered, or overlapping context types) and allow non-overlapping filtered listeners, listeners for different intents, and re-adding after `unsubscribe()`. Added the corresponding test definitions to the "Avoiding Adding Multiple Intent Listeners" section of the Intents conformance docs.
 * Added a classification field to Instrument context type ([#1665](https://github.com/finos/FDC3/pull/1665))
 * Added Go language binding. ([#1483](https://github.com/finos/FDC3/pull/1483))
@@ -43,6 +43,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Deprecated
 
 ### Fixed
+
+* Fixed `getInfo()` not including an instance's `instanceMetadata` (e.g. the title set via `setInstanceMetadata()`) in the returned `ImplementationMetadata.appMetadata`. The web-impl `getImplementationMetadata` now looks up and includes the stored instance metadata, consistent with `getAppMetadata()`.
 
 ## [npm v2.2.3] - 2026-04-15
 

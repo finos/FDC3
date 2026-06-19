@@ -15,6 +15,14 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
       success: `Retrieved implementation metadata via getInfo()`,
       error: `Failed to retrieve implementation metadata via getInfo()`,
     },
+    setInstanceMetadata: {
+      success: `Called setInstanceMetadata() with title [${value}]`,
+      error: `Failed to call setInstanceMetadata() with title [${value}]`,
+    },
+    updateTitle: {
+      success: `Updated document title to [${value}] (should trigger an automatic setInstanceMetadata() call)`,
+      error: `Failed to update document title`,
+    },
     getChannels: {
       success: `Retrieved User channels`,
       error: `Failed to retrieve User channels`,

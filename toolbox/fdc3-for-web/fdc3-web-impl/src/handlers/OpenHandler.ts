@@ -328,7 +328,15 @@ export class OpenHandler implements MessageHandler {
   }
 
   getImplementationMetadata(sc: ServerContext<AppRegistration>, appIdentity: AppIdentifier) {
-    const appMetadata = this.filterPublicDetails(this.directory.retrieveAppsById(appIdentity.appId)[0], appIdentity);
+    let instanceMetadata: InstanceMetadata | undefined;
+    if (appIdentity.instanceId) {
+      instanceMetadata = sc.getInstanceDetails(appIdentity.instanceId)?.instanceMetadata;
+    }
+    const appMetadata = this.filterPublicDetails(
+      this.directory.retrieveAppsById(appIdentity.appId)[0],
+      appIdentity,
+      instanceMetadata
+    );
     return {
       provider: sc.provider(),
       providerVersion: sc.providerVersion(),

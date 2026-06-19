@@ -109,3 +109,11 @@ Feature: Opening and Requesting App Details
       | msg.matches_type                  | msg.payload.appMetadata.instanceMetadata.title | to.instanceId |
       | setInstanceMetadataResponse       | {null}                                         | a1            |
       | getAppMetadataResponse            | AAPL Stock Chart                               | a1            |
+
+  Scenario: Setting instance metadata and retrieving it via getInfo
+    When "libraryApp/a1" sets instance metadata with title "AAPL Stock Chart"
+    And "libraryApp/a1" requests info on the DesktopAgent
+    Then messaging will have outgoing posts
+      | msg.matches_type                  | msg.payload.implementationMetadata.appMetadata.instanceMetadata.title | to.instanceId |
+      | setInstanceMetadataResponse       | {null}                                                                | a1            |
+      | getInfoResponse                   | AAPL Stock Chart                                                       | a1            |

@@ -10,6 +10,8 @@ class InfoStore {
   constructor() {
     makeObservable(this, {
       getInfo: action,
+      updateTitle: action,
+      setInstanceMetadata: action,
     });
   }
 
@@ -27,6 +29,44 @@ class InfoStore {
       systemLogStore.addLog({
         name: 'getInfo',
         type: 'error',
+        variant: 'code',
+        body: JSON.stringify(e, null, 4),
+      });
+    }
+  }
+
+  /**
+   * Updates the document title. When the workbench is connected via getAgent with the default
+   * page-title syncing enabled, this triggers an automatic setInstanceMetadata() call.
+   */
+  updateTitle(title: string) {
+    document.title = title;
+    systemLogStore.addLog({
+      name: 'updateTitle',
+      type: 'success',
+      value: title,
+      variant: 'text',
+    });
+  }
+
+  /**
+   * Directly calls fdc3.setInstanceMetadata() with the provided title.
+   */
+  async setInstanceMetadata(title: string) {
+    try {
+      const agent = await getWorkbenchAgent();
+      await agent.setInstanceMetadata({ title });
+      systemLogStore.addLog({
+        name: 'setInstanceMetadata',
+        type: 'success',
+        value: title,
+        variant: 'text',
+      });
+    } catch (e) {
+      systemLogStore.addLog({
+        name: 'setInstanceMetadata',
+        type: 'error',
+        value: title,
         variant: 'code',
         body: JSON.stringify(e, null, 4),
       });
