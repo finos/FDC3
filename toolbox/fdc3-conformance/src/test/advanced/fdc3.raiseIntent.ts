@@ -151,7 +151,7 @@ export default async () =>
       const listener = await control.receiveContextStreamFromMockApp(<PrivateChannel>result, 1, 5);
       control.unsubscribeListener(listener);
 
-      await onUnsubscribeReceiver; //should receive context from privChannel.onUnsubscribe in mock app
+      await onUnsubscribeReceiver; //should receive context from privChannel addEventListener("unsubscribe") in mock app
       const textContextXReceiver = control.receiveContext(ContextType.testContextX);
       control.privateChannelBroadcast(<PrivateChannel>result, ContextType.testContextX);
       await textContextXReceiver;
@@ -160,7 +160,7 @@ export default async () =>
       const listener2 = await control.receiveContextStreamFromMockApp(<PrivateChannel>result, 6, 10);
       control.disconnectPrivateChannel(<PrivateChannel>result);
 
-      //confirm that onUnsubscribe and onDisconnect were triggered in intent-k
+      //confirm that unsubscribe and disconnect events were triggered in intent-k
       await onUnsubscribeReceiver2;
       await onDisconnectReceiver;
       control.unsubscribeListener(listener2);

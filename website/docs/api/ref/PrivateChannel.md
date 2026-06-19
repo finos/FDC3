@@ -26,11 +26,6 @@ interface  PrivateChannel extends Channel {
   // functions
   addEventListener(type: PrivateChannelEventTypes  | null, handler: EventHandler): Promise<Listener>;
   disconnect(): Promise<void>;
-
-  //deprecated functions
-  onAddContextListener(handler: (contextType?: string) => void): Listener;
-  onUnsubscribe(handler: (contextType?: string) => void): Listener;
-  onDisconnect(handler: () => void): Listener;
 }
 ```
 
@@ -42,12 +37,7 @@ interface IPrivateChannel : IChannel, IIntentResult
 {
     //functions
     Task<IListener> AddEventListener(string? eventType, Fdc3EventHandler handler);
-
-    //deprecated functions
-    IListener OnAddContextListener(Action<string?> handler);
-    IListener OnUnsubscribe(Action<string?> handler);
-    IListener OnDisconnect(Action handler);
-    void Disconnect();
+    Task Disconnect();
 }
 ```
 
@@ -140,7 +130,7 @@ _desktopAgent.AddIntentListener<Instrument>("QuoteStream", async (context, metad
   var symbol = context?.ID?.Ticker;
 
   // This gets called when the remote side adds a context listener
-  var addContextListener = channel.OnAddContextListener((contextType) => {
+  var addContextListener = await channel.AddEventListener("addContextListener", (evt) => {
       // broadcast price quotes as they come in from our quote feed
       _feed.OnQuote(symbol, (price) => {
           channel.Broadcast(new Price(price));
@@ -148,13 +138,13 @@ _desktopAgent.AddIntentListener<Instrument>("QuoteStream", async (context, metad
   });
 
   // This gets called when the remote side calls Listener.unsubscribe()
-  var unsubscribeListener = channel.OnUnsubscribe((contextType) => {
+  var unsubscribeListener = await channel.AddEventListener("unsubscribe", (evt) => {
       _feed.Stop(symbol);
   });
 
   // This gets called if the remote side closes
-  var disconnectListener = channel.OnDisconnect(() => {
-      _feed.stop(symbol);
+  var disconnectListener = await channel.AddEventListener("disconnect", (evt) => {
+      _feed.Stop(symbol);
   });
   
   return channel;
@@ -176,21 +166,30 @@ _desktopAgent.AddIntentListener<Instrument>("QuoteStream", async (context, metad
             // handle not having ticker
         }
          // This gets called when the remote side adds a context listener
-        addContextlistenerResult := channelResult.Value.OnAddContextListener(func(contextType *string) {
-            feed.OnQuote(symbol, func(price string) {
-                channelResult.Value.Broadcast(Context{Type:price})
-            })
-        })
+        addContextlistenerResult := <-channelResult.Value.AddEventListener(
+            &PrivateChannelEventTypes.AddContextListener,
+            func(event PrivateChannelEvent) {
+                feed.OnQuote(symbol, func(price string) {
+                    channelResult.Value.Broadcast(Context{Type:price})
+                })
+            },
+        )
 
         // This gets called when the remote side calls Listener.unsubscribe()
-        unsubscribeListenerResult := channelResult.Value.OnUnsubscribe(func(contextType *string) {
-            feed.Stop(symbol)
-        })
+        unsubscribeListenerResult := <-channelResult.Value.AddEventListener(
+            &PrivateChannelEventTypes.Unsubscribe,
+            func(event PrivateChannelEvent) {
+                feed.Stop(symbol)
+            },
+        )
 
         // This gets called if the remote side closes
-        unsubscribeListenerResult := channelResult.Value.OnDisconnect(func() {
-            feed.Stop(symbol)
-        })
+        disconnectListenerResult := <-channelResult.Value.AddEventListener(
+            &PrivateChannelEventTypes.Disconnect,
+            func(event PrivateChannelEvent) {
+                feed.Stop(symbol)
+            },
+        )
         result := make(chan types.IntentResult)
         result <- channelResult.Value
         return result
@@ -203,7 +202,7 @@ _desktopAgent.AddIntentListener<Instrument>("QuoteStream", async (context, metad
 
 ### 'Client-side' example
 
-The 'client' application retrieves a `Channel` by raising an intent with context and awaiting the result. It adds a `ContextListener` so that it can receive messages from it. If a `PrivateChannel` was returned this may in turn trigger a handler added on the 'server-side' with `onAddContextListener()` and start the stream. The `onDisconnect()` listener may also be used to clean up when the 'server-side' disconnects the stream.
+The 'client' application retrieves a `Channel` by raising an intent with context and awaiting the result. It adds a `ContextListener` so that it can receive messages from it. If a `PrivateChannel` was returned this may in turn trigger a handler added on the 'server-side' with `addEventListener("addContextListener", ...)` and start the stream. The `addEventListener("disconnect", ...)` listener may also be used to clean up when the 'server-side' disconnects the stream.
 
 Although this interaction occurs entirely in frontend code, we refer to it as the 'client-side' interaction as it requests and receives a stream of responses.
 
@@ -257,7 +256,7 @@ try
         //if it's a PrivateChannel
         if (channel is IPrivateChannel privateChannel)
         {
-            privateChannel.OnDisconnect(() => {
+            await privateChannel.AddEventListener("disconnect", (evt) => {
                 System.Diagnostics.Debug.WriteLine("Quote feed went down");
             });
 
@@ -292,7 +291,7 @@ if channel, ok := result.Value.(Channel); ok {
     })
     if channel.Type == Private {
         if privateChannel, ok := interface{}(channel).(PrivateChannel); ok {
-            privateChannel.OnDisconnect(() {
+            <-privateChannel.AddEventListener(&PrivateChannelEventTypes.Disconnect, func(event PrivateChannelEvent) {
                 log.Println("Quote feed went down")
             })
         }
@@ -410,100 +409,4 @@ func (privateChannel *PrivateChannel) Disconnect() <-Result[any] {
   
 May be called to indicate that a participant will no longer interact with this channel.
 
-## Deprecated Functions
 
-### `onAddContextListener`
-
-<Tabs groupId="lang">
-<TabItem value="ts" label="TypeScript/JavaScript">
-
-```ts
-onAddContextListener(handler: (contextType?: string) => void): Listener;
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-IListener OnAddContextListener(Action<string?> handler);
-```
-
-</TabItem>
-<TabItem value="golang" label="Go">
-
-```go
-func (privateChannel *PrivateChannel) OnAddContextListener(handler func(contextType *ContextType)) Result[Listener] {
-    // Implementation here
-}
-```
-
-</TabItem>
-</Tabs>
-  
-Deprecated in favour of the async `addEventListener("addContextListener", handler)` function.
-
-Adds a listener that will be called each time that the remote app invokes addContextListener on this channel.
-
-### `onUnsubscribe`
-
-<Tabs groupId="lang">
-<TabItem value="ts" label="TypeScript/JavaScript">
-
-```ts
-onUnsubscribe(handler: (contextType?: string) => void): Listener;
-```
-  
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-IListener OnUnsubscribe(Action<string?> handler);
-```
-
-</TabItem>
-<TabItem value="golang" label="Go">
-
-```go
-func (privateChannel *PrivateChannel) OnUnsubscribe(handler func(contextType *ContextType)) Result[Listener] {
-    // Implementation here
-}
-```
-
-</TabItem>
-</Tabs>
-
-Deprecated in favour of the async `addEventListener("unsubscribe", handler)` function.
-
-Adds a listener that will be called whenever the remote app invokes `Listener.unsubscribe()` on a context listener that it previously added.
-
-### `onDisconnect`
-
-<Tabs groupId="lang">
-<TabItem value="ts" label="TypeScript/JavaScript">
-
-```ts
-onDisconnect(handler: () => void): Listener;
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-IListener OnDisconnect(Action handler);
-```
-
-</TabItem>
-<TabItem value="golang" label="Go">
-
-```go
-func (privateChannel *PrivateChannel) OnDisconnect(handler func()) Result[Listener] {
-    // Implementation here
-}
-```
-
-</TabItem>
-</Tabs>
-
-Deprecated in favour of the async `addEventListener("disconnect", handler)` function.
-
-Adds a listener that will be called when the remote app terminates, for example when its window is closed or because disconnect was called.

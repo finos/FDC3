@@ -196,9 +196,7 @@ export class RaiseIntentControl {
         break;
       }
       case IntentResultType.PrivateChannel: {
-        expect(intentResult).to.have.property('onAddContextListener');
-        expect(intentResult).to.have.property('onUnsubscribe');
-        expect(intentResult).to.have.property('onDisconnect');
+        expect(intentResult).to.have.property('addEventListener');
         expect(intentResult).to.have.property('disconnect');
         expect(intentResult).to.have.property('id');
         expect(intentResult).to.have.property('type');
@@ -259,7 +257,7 @@ export class RaiseIntentControl {
 
     const timeout = window.setTimeout(() => {
       wrapper.reject(
-        'Timeout: did not receive all 5 streamed contexts back from the mock app. onAddContextListener may not have been triggered'
+        'Timeout: did not receive all 5 streamed contexts back from the mock app. addEventListener("addContextListener") may not have been triggered'
       );
     }, constants.WaitTime);
 
