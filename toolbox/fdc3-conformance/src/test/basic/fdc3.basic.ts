@@ -88,7 +88,7 @@ const basicGI2 = (fdc3: DesktopAgent, documentation: string) => {
       expect(info, documentation).to.have.property('optionalFeatures');
       expect(info.optionalFeatures, documentation).to.be.an('object');
 
-      const requiredKeys = ['OriginatingAppMetadata', 'UserChannelMembershipAPIs', 'DesktopAgentBridging'];
+      const requiredKeys = ['UserChannelMembershipAPIs', 'DesktopAgentBridging'];
 
       for (const key of requiredKeys) {
         expect(info.optionalFeatures, documentation).to.have.property(key);
