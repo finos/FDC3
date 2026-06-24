@@ -31,6 +31,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 * Added `fdc3.close()` API call allowing an app to request that its own window or frame be closed, with `closeRequest`/`closeResponse` DACP messages and `CloseError` enumeration ([#1918](https://github.com/finos/FDC3/pull/1918))
 
+* Added an optional `newInstance` parameter to the `raiseIntent` and `raiseIntentForContext` API calls, allowing an app to explicitly request that a **new instance** of the target application be launched (`newInstance: true`) or that an **existing instance** be used and a new one never launched (`newInstance: false`, which rejects with `ResolveError.TargetInstanceUnavailable` if no running instance is available). Omitting the parameter preserves the Desktop Agent's default resolution behavior. The parameter is carried on the `raiseIntentRequest` / `raiseIntentForContextRequest` DACP payloads, implemented in the agent proxy and reference web implementation, and covered by unit and conformance tests (`RaiseIntentNewInstanceForced`, `RaiseIntentExistingInstanceRequired`, `RaiseIntentFailExistingInstanceRequired`). ([#1940](https://github.com/finos/FDC3/issues/1940))
+
 ### Changed
 
 * The `fdc3-agent-proxy` now enforces intent listener conflicts on the client side: `addIntentListener` and `addIntentListenerWithContext` reject with `ResolveError.IntentListenerConflict` when a new listener conflicts with an existing one for the same intent (either listener being unfiltered, or their context types overlapping). Multiple filtered listeners for the same intent with non-overlapping context types are now allowed, and the `addIntentListener`/`addIntentListenerWithContext` documentation was updated accordingly.
