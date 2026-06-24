@@ -30,14 +30,23 @@ export interface SignedRaiseIntentSupport {
    * Returns a `VerifiedIntentResolution` whose `getVerification()` method provides
    * the `ContextVerificationMetadata` for the returned context result.
    */
-  raiseIntent(intent: string, context: Context, app?: AppIdentifier): Promise<VerifiedIntentResolution>;
+  raiseIntent(
+    intent: string,
+    context: Context,
+    app?: AppIdentifier,
+    newInstance?: boolean
+  ): Promise<VerifiedIntentResolution>;
 
   /**
    * Raise an intent based on the context type, with a signed context, and verify the signed result (if any).
    * Returns a `VerifiedIntentResolution` whose `getVerification()` method provides
    * the `ContextVerificationMetadata` for the returned context result.
    */
-  raiseIntentForContext(context: Context, app?: AppIdentifier): Promise<VerifiedIntentResolution>;
+  raiseIntentForContext(
+    context: Context,
+    app?: AppIdentifier,
+    newInstance?: boolean
+  ): Promise<VerifiedIntentResolution>;
 }
 
 /**
@@ -76,26 +85,46 @@ export class BasicSignedRaiseIntentSupport implements SignedRaiseIntentSupport {
     this.signatureCheckingFunction = signatureCheckingFunction;
   }
 
-  async raiseIntent(intent: string, context: Context, app?: AppIdentifier): Promise<VerifiedIntentResolution> {
+  async raiseIntent(
+    intent: string,
+    context: Context,
+    app?: AppIdentifier,
+    newInstance?: boolean
+  ): Promise<VerifiedIntentResolution> {
     // Sign the outbound context on the trusted backend before raising the intent.
     const { signature, antiReplay } = await this.signingFunction(context);
     const { context: packedContext, metadata: packedMetadata } = this.metadataHandler.pack(context, {
       signature,
       antiReplay,
     });
-    const resolution = await this.desktopAgent.raiseIntent(intent as any, packedContext, app ?? null, packedMetadata);
+    const resolution = await this.desktopAgent.raiseIntent(
+      intent as any,
+      packedContext,
+      app ?? null,
+      newInstance,
+      packedMetadata
+    );
     // Wrap the resolution so that the result is unpacked and optionally verified.
     return this.wrapResolution(resolution);
   }
 
-  async raiseIntentForContext(context: Context, app?: AppIdentifier): Promise<VerifiedIntentResolution> {
+  async raiseIntentForContext(
+    context: Context,
+    app?: AppIdentifier,
+    newInstance?: boolean
+  ): Promise<VerifiedIntentResolution> {
     // Sign the outbound context on the trusted backend before raising the intent.
     const { signature, antiReplay } = await this.signingFunction(context);
     const { context: packedContext, metadata: packedMetadata } = this.metadataHandler.pack(context, {
       signature,
       antiReplay,
     });
-    const resolution = await this.desktopAgent.raiseIntentForContext(packedContext, app ?? null, packedMetadata);
+    const resolution = await this.desktopAgent.raiseIntentForContext(
+      packedContext,
+      app ?? null,
+      newInstance,
+      packedMetadata
+    );
     // Wrap the resolution so that the result is unpacked and optionally verified.
     return this.wrapResolution(resolution);
   }
