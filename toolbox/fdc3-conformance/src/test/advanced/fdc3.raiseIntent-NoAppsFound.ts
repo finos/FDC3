@@ -64,6 +64,11 @@ export default async () =>
       '(RaiseIntentFailExistingInstanceRequired) Should fail to raise intent with newInstance=false when no running instance of the targeted app intent-a is available and throw TargetInstanceUnavailable error';
     it(RaiseIntentFailExistingInstanceRequired, async () => {
       try {
+        const runningInstances = await control.findInstances(IntentApp.IntentAppA);
+        if (runningInstances.length > 0) {
+          await closeMockAppWindow(RaiseIntentFailExistingInstanceRequired, runningInstances.length);
+        }
+
         // No instance of intent-a is running, so requiring an existing instance must fail
         await control.raiseIntent(
           Intent.aTestingIntent,

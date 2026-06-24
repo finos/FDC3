@@ -64,21 +64,16 @@ export default async () => {
 
       // Raise intent with app-provided metadata
       const context = { type: ContextType.testContextX };
-      await fdc3.raiseIntent(
-        Intent.lTestingIntent,
-        context,
-        { appId: IntentApp.IntentAppL },
-        {
-          traceId: 'intent-trace-456',
-          signature: { protected: 'protected-abc', signature: 'signature-abc' },
-          custom: { priority: 'high' },
-          antiReplay: {
-            exp: 1234,
-            iat: 2345,
-            jti: 'anti-replay-123',
-          },
-        }
-      );
+      await fdc3.raiseIntent(Intent.lTestingIntent, context, { appId: IntentApp.IntentAppL }, undefined, {
+        traceId: 'intent-trace-456',
+        signature: { protected: 'protected-abc', signature: 'signature-abc' },
+        custom: { priority: 'high' },
+        antiReplay: {
+          exp: 1234,
+          iat: 2345,
+          jti: 'anti-replay-123',
+        },
+      });
 
       await wrapper.promise;
       listener.unsubscribe();
