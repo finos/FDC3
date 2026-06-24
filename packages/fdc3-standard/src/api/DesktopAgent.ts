@@ -259,6 +259,13 @@ export interface DesktopAgent {
    *
    * If you wish to raise an Intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
    *
+   * An optional `newInstance` parameter allows the caller to express how an instance of the target application should be selected, overriding the Desktop Agent's default resolution behavior:
+   * - When `newInstance` is omitted (`undefined`), the Desktop Agent applies its default behavior, which MAY present a resolver UI allowing the user to choose between launching a new instance or selecting an existing one.
+   * - When `newInstance` is `true`, the caller is explicitly requesting that a **new instance** of the target application be launched, even if existing instances are available. This is useful when the user has already resolved the application to target (e.g. via `findIntent`) and has chosen to open a fresh instance. Note that as resolution always remains the purview of the Desktop Agent, it MAY still reject the request (for example, according to firm policy).
+   * - When `newInstance` is `false`, the caller is explicitly requesting that an **existing instance** of the target application be used and that a new instance MUST NOT be launched. If no suitable running instance is available, the promise MUST be rejected with an `Error` object with the `ResolveError.TargetInstanceUnavailable` string as its `message`.
+   *
+   * A `newInstance` value of `true` or `false` SHOULD be used together with an `app` argument that targets a specific `appId`. If the target application is ambiguous (i.e. more than one application could resolve the intent), the Desktop Agent MAY still present a resolver UI to select the application, but MUST honor the `newInstance` preference once an application has been selected.
+   *
    * An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the raised intent.
    *
    * Returns an `IntentResolution` object with details of the app instance that was selected (or started) to respond to the intent.
@@ -279,8 +286,14 @@ export interface DesktopAgent {
    * //Raise an intent without a context by using the null context type
    * await fdc3.raiseIntent("StartChat", {type: "fdc3.nothing"});
    *
-   * //Raise an intent with metadata, passing null for the app parameter
-   * await fdc3.raiseIntent("StartChat", context, null, { traceId: 'abc123' });
+   * //Force a new instance of a specific app to be launched to handle the intent
+   * await fdc3.raiseIntent("StartChat", context, { appId: "myApp" }, true);
+   *
+   * //Require an existing instance of a specific app to be used (never launch a new one)
+   * await fdc3.raiseIntent("StartChat", context, { appId: "myApp" }, false);
+   *
+   * //Raise an intent with metadata, passing null for the app and newInstance parameters
+   * await fdc3.raiseIntent("StartChat", context, null, undefined, { traceId: 'abc123' });
    *
    * //Raise an intent and retrieve a result from the IntentResolution
    * let resolution = await agent.raiseIntent("intentName", context);
@@ -302,6 +315,7 @@ export interface DesktopAgent {
     intent: Intent,
     context: Context,
     app?: AppIdentifier | null,
+    newInstance?: boolean,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution>;
 
@@ -312,6 +326,8 @@ export interface DesktopAgent {
    * Alternatively, the specific app or app instance to target can also be provided, in which case the resolver SHOULD only offer intents supported by the specified application.
    *
    * Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.
+   *
+   * As with `raiseIntent`, an optional `newInstance` parameter allows the caller to express how an instance of the target application should be selected: omitting it (`undefined`) applies the Desktop Agent's default behavior, `true` requests that a **new instance** be launched even if existing instances are available, and `false` requires that an **existing instance** be used (a new instance MUST NOT be launched and, if no suitable running instance is available, the promise MUST be rejected with an `Error` object with the `ResolveError.TargetInstanceUnavailable` string as its `message`). See `raiseIntent()` for full details.
    *
    * An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the raised intent.
    *
@@ -326,13 +342,17 @@ export interface DesktopAgent {
    * // Resolve against all intents registered by a specific target app for the specified context
    * await fdc3.raiseIntentForContext(context, targetAppIdentifier);
    *
-   * // Resolve with metadata, passing null for the app parameter
-   * await fdc3.raiseIntentForContext(context, null, { traceId: 'abc123' });
+   * // Force a new instance of the target app to be launched
+   * await fdc3.raiseIntentForContext(context, { appId: "myApp" }, true);
+   *
+   * // Resolve with metadata, passing null for the app and newInstance parameters
+   * await fdc3.raiseIntentForContext(context, null, undefined, { traceId: 'abc123' });
    * ```
    */
   raiseIntentForContext(
     context: Context,
     app?: AppIdentifier | null,
+    newInstance?: boolean,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution>;
 

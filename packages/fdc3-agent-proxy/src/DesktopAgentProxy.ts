@@ -133,8 +133,14 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     return this.intents.findIntentsByContext(context);
   }
 
-  raiseIntent(intent: string, context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata) {
-    return this.intents.raiseIntent(intent, context, app ?? undefined, metadata);
+  raiseIntent(
+    intent: string,
+    context: Context,
+    app?: AppIdentifier | null,
+    newInstance?: boolean,
+    metadata?: AppProvidableContextMetadata
+  ) {
+    return this.intents.raiseIntent(intent, context, app ?? undefined, newInstance, metadata);
   }
 
   addIntentListener(intent: string, handler: IntentHandler) {
@@ -148,9 +154,10 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
   raiseIntentForContext(
     context: Context,
     app?: AppIdentifier | null,
+    newInstance?: boolean,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution> {
-    return this.intents.raiseIntentForContext(context, app ?? undefined, metadata);
+    return this.intents.raiseIntentForContext(context, app ?? undefined, newInstance, metadata);
   }
 
   open(app: AppIdentifier, context?: Context | null, metadata?: AppProvidableContextMetadata) {

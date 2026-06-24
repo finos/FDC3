@@ -162,6 +162,7 @@ export class DefaultIntentSupport implements IntentSupport {
     intent: string,
     context: Context,
     app?: AppIdentifier | null,
+    newInstance?: boolean,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution> {
     const meta = this.messaging.createMeta();
@@ -171,6 +172,7 @@ export class DefaultIntentSupport implements IntentSupport {
         intent,
         context,
         app: app || undefined,
+        ...(typeof newInstance === 'boolean' && { newInstance }),
         metadata: {
           traceId: metadata?.traceId ?? v4(),
           ...(metadata?.signature !== undefined && { signature: metadata.signature }),
@@ -201,7 +203,10 @@ export class DefaultIntentSupport implements IntentSupport {
         context
       );
       if (choice) {
-        return this.raiseIntent(intent, context, choice.appId, metadata);
+        // If the user picked a specific running instance, target that instance directly and
+        // drop the newInstance preference (it would conflict with an explicit instanceId).
+        const chosenNewInstance = choice.appId.instanceId !== undefined ? undefined : newInstance;
+        return this.raiseIntent(intent, context, choice.appId, chosenNewInstance, metadata);
       } else {
         throw new Error(ResolveError.UserCancelled);
       }
@@ -219,6 +224,7 @@ export class DefaultIntentSupport implements IntentSupport {
   async raiseIntentForContext(
     context: Context,
     app?: AppIdentifier | null,
+    newInstance?: boolean,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution> {
     const meta = this.messaging.createMeta();
@@ -227,6 +233,7 @@ export class DefaultIntentSupport implements IntentSupport {
       payload: {
         context,
         app: app || undefined,
+        ...(typeof newInstance === 'boolean' && { newInstance }),
         metadata: {
           traceId: metadata?.traceId ?? v4(),
           ...(metadata?.signature !== undefined && { signature: metadata.signature }),
@@ -257,7 +264,10 @@ export class DefaultIntentSupport implements IntentSupport {
         context
       );
       if (choice) {
-        return this.raiseIntent(choice.intent, context, choice.appId, metadata);
+        // If the user picked a specific running instance, target that instance directly and
+        // drop the newInstance preference (it would conflict with an explicit instanceId).
+        const chosenNewInstance = choice.appId.instanceId !== undefined ? undefined : newInstance;
+        return this.raiseIntent(choice.intent, context, choice.appId, chosenNewInstance, metadata);
       } else {
         throw new Error(ResolveError.UserCancelled);
       }

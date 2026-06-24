@@ -122,6 +122,23 @@ Finally, please note that this is a larger set of apps than were required for 1.
   - Use `fdc3.raiseIntent("aTestingIntent",testContextX, {appId:"<A's-appId>",instanceId:"NonExistentInstanceId"})`.  
   - You should receive a JavaScript Error with the message `ResolveError.TargetInstanceUnavailable`.
 
+## Raise Intent (`newInstance` preference)
+
+The optional `newInstance` argument to `raiseIntent` lets a calling application express whether it requires a brand-new instance of the target application to be launched (`true`) or that an existing, running instance must be used (`false`). When the argument is omitted the Desktop Agent applies its default resolution behavior. As resolution always remains the purview of the Desktop Agent, a `newInstance` preference is a request that the Desktop Agent MUST honor where possible, but MAY reject according to its own policy.
+
+- `RaiseIntentNewInstanceForced` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform the `RaiseIntentSingleResolve` test, but:
+  - Before the first step, use `let appIdentifier = await fdc3.open({appId:"<A's-appId>"})` to start an instance of app A, and confirm via `fdc3.findInstances({appId:"<A's-appId>"})` that exactly one instance is running.
+  - Then in the first step, use `fdc3.raiseIntent("aTestingIntent",testContextX,{appId:"<A's-appId>"},true)` to request that a **new instance** be launched.
+  - Confirm via `fdc3.findInstances({appId:"<A's-appId>"})` that a **second** instance has been started, and that the `instanceId` in the `IntentResolution`'s `source` does NOT match the instance opened in the first step.
+- `RaiseIntentExistingInstanceRequired` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform the `RaiseIntentSingleResolve` test, but:
+  - Before the first step, use `let appIdentifier = await fdc3.open({appId:"<A's-appId>"})` to start an instance of app A, and confirm via `fdc3.findInstances({appId:"<A's-appId>"})` that exactly one instance is running.
+  - Then in the first step, use `fdc3.raiseIntent("aTestingIntent",testContextX,{appId:"<A's-appId>"},false)` to require that an **existing instance** be used.
+  - Confirm that the intent is delivered to the existing instance (the `instanceId` in the `IntentResolution`'s `source` matches `appIdentifier.instanceId`) and that NO new instance is started (`fdc3.findInstances` still returns exactly one instance).
+- `RaiseIntentFailExistingInstanceRequired` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform the `RaiseIntentSingleResolve` test, but:
+  - Ensure that no instance of app A is running.
+  - Use `fdc3.raiseIntent("aTestingIntent",testContextX,{appId:"<A's-appId>"},false)` to require that an existing instance be used.
+  - You should receive a JavaScript Error with the message `ResolveError.TargetInstanceUnavailable` (as there is no running instance to deliver the intent to and a new instance must not be launched).
+
 ## Raise Intent Result (void result)
 
 | App    | Step                        | Details                                                                                           |
