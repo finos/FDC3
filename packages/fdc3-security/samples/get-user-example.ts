@@ -258,7 +258,7 @@ async function step4RequestingAppRaiseGetUser(requestingApp: AppBackEnd, mockReq
     const signResult = (await requestingHandlers.exchangeData('sign-context', userRequest)) as UserRequestSignResult;
 
     // Raise the GetUser intent with the signed context.
-    const resolution = await mockRequesting.raiseIntent(GET_USER_INTENT as Intent, userRequest, null, {
+    const resolution = await mockRequesting.raiseIntent(GET_USER_INTENT as Intent, userRequest, null, undefined, {
       signature: signResult.signature,
       antiReplay: signResult.antiReplay,
     });

@@ -78,27 +78,35 @@ class CapturingDesktopAgent {
     intent: string;
     context: Context;
     app?: AppIdentifier;
+    newInstance?: boolean;
     metadata?: AppProvidableContextMetadata;
   };
-  lastRaiseForContext?: { context: Context; app?: AppIdentifier; metadata?: AppProvidableContextMetadata };
+  lastRaiseForContext?: {
+    context: Context;
+    app?: AppIdentifier;
+    newInstance?: boolean;
+    metadata?: AppProvidableContextMetadata;
+  };
   constructor(public nextResolution: IntentResolution) {}
 
   async raiseIntent(
     intent: string,
     context: Context,
     app?: AppIdentifier,
+    newInstance?: boolean,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution> {
-    this.lastRaiseIntent = { intent, context, app, metadata };
+    this.lastRaiseIntent = { intent, context, app, newInstance, metadata };
     return this.nextResolution;
   }
 
   async raiseIntentForContext(
     context: Context,
     app?: AppIdentifier,
+    newInstance?: boolean,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution> {
-    this.lastRaiseForContext = { context, app, metadata };
+    this.lastRaiseForContext = { context, app, newInstance, metadata };
     return this.nextResolution;
   }
 }

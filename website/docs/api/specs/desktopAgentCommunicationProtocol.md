@@ -359,6 +359,8 @@ An additional response message is provided for the delivery of an `IntentResult`
 
 - [`raiseIntentResultResponse`](pathname:///schemas/next/api/raiseIntentResultResponse.schema.json)
 
+The `raiseIntentRequest` payload includes an optional `newInstance` field of type `boolean` that carries the caller's preference for how an instance of the target application should be selected. When `newInstance` is `true`, the Desktop Agent MUST launch a new instance of the resolved application even if existing instances are available. When `newInstance` is `false`, the Desktop Agent MUST use an existing instance and MUST NOT launch a new one, responding with a `TargetInstanceUnavailable` error if no suitable running instance is available. When the field is omitted, the Desktop Agent applies its default resolution behavior.
+
 There is no request message to indicate a call to the `resolution.getResult()` function of `IntentResolution`. Hence, Desktop Agents MUST send this additional response message to indicate the status of the intent handling function and to deliver its result (or void if none was returned).
 
 The `raiseIntentResultResponse` success payload includes an optional `resultMetadata` field of type [`ContextMetadata`](../ref/Metadata#contextmetadata). The Desktop Agent MUST populate this field by merging any app-provided metadata from the `intentResultRequest`'s `metadata` field with its own generated fields (`source`, `timestamp`, `traceId`). This metadata is always present, even for `Channel` or `void` results, and is retrieved by the raising app via [`IntentResolution.getResultMetadata()`](../ref/Metadata#intentresolution).
