@@ -212,7 +212,6 @@ export class OpenHandler implements MessageHandler {
   filterPublicDetails(appD: DirectoryApp, appID: AppIdentifier): AppMetadata {
     return {
       appId: appD.appId,
-      name: appD.name,
       version: appD.version,
       title: appD.title,
       tooltip: appD.tooltip,

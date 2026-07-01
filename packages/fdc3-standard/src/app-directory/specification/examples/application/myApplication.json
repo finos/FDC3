@@ -1,6 +1,5 @@
 {
 	"appId": "my-application",
-	"name": "my-application",
 	"title": "My Application",
 	"description": "An example application that uses FDC3 and fully describes itself in an AppD record.",
 	"categories": [
