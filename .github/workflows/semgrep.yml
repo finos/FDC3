@@ -17,7 +17,15 @@ jobs:
     container:
       image: returntocorp/semgrep
     steps:
-    - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-    - run: semgrep scan --error --config auto
+    - name: Harden runner
+      uses: step-security/harden-runner@9af89fc71515a100421586dfdb3dc9c984fbf411 # v2.19.4
+      with:
+        egress-policy: audit
+
+    - name: Checkout repository
+      uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+    - name: Run Semgrep
+      run: semgrep scan --error --config auto
       env:
         SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}

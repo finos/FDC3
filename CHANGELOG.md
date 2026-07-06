@@ -34,10 +34,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 
 * The `fdc3-agent-proxy` now enforces intent listener conflicts on the client side: `addIntentListener` and `addIntentListenerWithContext` reject with `ResolveError.IntentListenerConflict` when a new listener conflicts with an existing one for the same intent (either listener being unfiltered, or their context types overlapping). Multiple filtered listeners for the same intent with non-overlapping context types are now allowed, and the `addIntentListener`/`addIntentListenerWithContext` documentation was updated accordingly.
-
 * DACP `ContextMetadata` in `api.schema.json` now allows optional `antiReplay` claims on the wire (e.g. merged into `raiseIntentResultResponse.resultMetadata`). The agent proxy and reference web implementation forward `antiReplay` from app metadata on `raiseIntent` / `raiseIntentForContext` and merge it from `intentResultRequest` metadata into the intent result delivered to the raising app. Cucumber steps and features cover `iat` / `exp` / `jti` alongside signatures.
 * Updated "Releasing FDC3 to NPM" instructions in README to reflect the current GitHub Actions release workflow. ([#1864](https://github.com/finos/FDC3/pull/1864))
 * Improved loading of example applications, fdc3-conformance and fdc3-workbench in the FDC3 for Web reference implementation demo. ([#1924](https://github.com/finos/FDC3/pull/1924))
+- Upgraded all GitHub Actions to latest major versions and pinned to commit SHAs to prevent supply-chain attacks ([#XXXX](https://github.com/finos/FDC3/pull/XXXX))
+- Added StepSecurity harden-runner to all CI workflow jobs ([#XXXX](https://github.com/finos/FDC3/pull/XXXX))
+- Added `min-release-age = 7` to `.npmrc` requiring packages to be at least 7 days old before resolution ([#XXXX](https://github.com/finos/FDC3/pull/XXXX))
+- Added Dependabot configuration with cooldown periods and grouped minor/patch updates ([#XXXX](https://github.com/finos/FDC3/pull/XXXX))
 
 ### Removed
 
