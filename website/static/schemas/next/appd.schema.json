@@ -476,6 +476,11 @@
 			  "type": "string",
 			  "description": "Version of the application. This allows multiple app versions to be defined using the same app name. This can be a triplet but can also include things like 1.2.5 (BETA)"
 			},
+			"fdc3Version": {
+			  "type": "string",
+			  "format": "semver-range",
+			  "description": "The FDC3 version or versions supported by the application, expressed as an npm-style semantic version range, for example `2.2`, `<=2.3`, `^2.2`, or `>=2.2`. Desktop Agents MAY use this value to filter applications that are incompatible with the FDC3 version they provide."
+			},
 			"tooltip": {
 			  "type": "string",
 			  "description": "Optional tooltip description e.g. for a launcher"
@@ -966,6 +971,11 @@
 			  "type": "string",
 			  "description": "Version of the application. This allows multiple app versions to be defined using the same app name. This can be a triplet but can also include things like 1.2.5 (BETA)"
 			},
+			"fdc3Version": {
+			  "type": "string",
+			  "format": "semver-range",
+			  "description": "The FDC3 version or versions supported by the application, expressed as an npm-style semantic version range, for example `2.2`, `<=2.3`, `^2.2`, or `>=2.2`. Desktop Agents MAY use this value to filter applications that are incompatible with the FDC3 version they provide."
+			},
 			"title": {
 			  "type": "string",
 			  "description": "Optional title for the application, if missing use appName, typically used in a launcher UI."
@@ -1050,6 +1060,7 @@
 			  "training"
 			],
 			"version": "1.0.0",
+			"fdc3Version": ">=2.2",
 			"tooltip": "FDC3 Workbench",
 			"lang": "en-US",
 			"icons": [
@@ -1141,6 +1152,7 @@
 			  "news"
 			],
 			"version": "1.0.0",
+			"fdc3Version": "^2.2",
 			"tooltip": "My example application definition",
 			"lang": "en-US",
 			"icons": [
@@ -1288,6 +1300,7 @@
 				  "news"
 				],
 				"version": "1.0.0",
+				"fdc3Version": "^2.2",
 				"tooltip": "My example application definition",
 				"lang": "en-US",
 				"icons": [
@@ -1429,6 +1442,7 @@
 				  "training"
 				],
 				"version": "1.0.0",
+				"fdc3Version": ">=2.2",
 				"tooltip": "FDC3 Workbench",
 				"lang": "en-US",
 				"icons": [

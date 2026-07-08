@@ -9,6 +9,7 @@
 	  "news"
 	],
 	"version": "1.0.0",
+	"fdc3Version": "^2.2",
 	"tooltip": "My example application definition",
 	"lang": "en-US",
 	"icons": [
