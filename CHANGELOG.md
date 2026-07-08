@@ -50,6 +50,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+* Fixed the `BasicJC1` conformance test to skip user channel membership checks when `getInfo().optionalFeatures.UserChannelMembershipAPIs` is not advertised, while still validating `joinUserChannel`, `getCurrentChannel`, and `leaveCurrentChannel` when the feature is enabled. ([#1777](https://github.com/finos/FDC3/issues/1777))
 * Fixed an issue in conformance test AOpensBWithWrongContext, which was not correctly waiting for the timeout and was sending close messages outside of the execution of the test. Also added logging of test starts and finishes to aid debugging. ([#1933](https://github.com/finos/FDC3/pull/1933))
 
 ## [npm v2.2.3] - 2026-04-15
