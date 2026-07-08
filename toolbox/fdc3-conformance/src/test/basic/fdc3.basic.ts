@@ -1,4 +1,4 @@
-import { Context, DesktopAgent } from '@finos/fdc3';
+import { Context, DesktopAgent, Listener } from '@finos/fdc3';
 
 import { APIDocumentation } from '../support/apiDocuments';
 import { ContextType, Intent } from '../support/intent-support';
@@ -185,6 +185,66 @@ const basicRI2 = (fdc3: DesktopAgent, documentation: string, contextType: string
   });
 };
 
+const basicDM1 = (fdc3: DesktopAgent, documentation: string, intent: string, contextType: string) => {
+  const basicDM1 = '(BasicDM1) DesktopAgent methods should remain callable when destructured';
+  it(basicDM1, async () => {
+    let contextListener: Listener | undefined;
+    let intentListener: Listener | undefined;
+
+    try {
+      const {
+        addContextListener,
+        addIntentListener,
+        broadcast,
+        findIntent,
+        findIntentsByContext,
+        getCurrentChannel,
+        getInfo,
+        getOrCreateChannel,
+        getUserChannels,
+        joinUserChannel,
+        leaveCurrentChannel,
+        raiseIntent,
+      } = fdc3;
+
+      const info = await getInfo();
+      expect(info, documentation).to.have.property('fdc3Version');
+
+      contextListener = await addContextListener(contextType, () => {});
+      expect(contextListener, documentation).to.have.property('unsubscribe').that.is.a('function');
+
+      intentListener = await addIntentListener('ConformanceListener', () => {});
+      expect(intentListener, documentation).to.have.property('unsubscribe').that.is.a('function');
+      intentListener.unsubscribe();
+      intentListener = undefined;
+
+      const channel = await getOrCreateChannel('FDC3Conformance');
+      expect(channel, documentation).to.have.property('id');
+
+      const userChannels = await getUserChannels();
+      expect(userChannels, documentation).to.be.an('array');
+
+      if (userChannels.length > 0) {
+        await joinUserChannel(userChannels[0].id);
+        const currentChannel = await getCurrentChannel();
+        expect(currentChannel?.id, documentation).to.eql(userChannels[0].id);
+        await broadcast({ type: contextType });
+        await leaveCurrentChannel();
+        assert.isNull(await getCurrentChannel(), documentation);
+      }
+
+      await findIntent(intent, { type: contextType });
+      await findIntentsByContext({ type: contextType });
+      await raiseIntent(intent, { type: contextType });
+    } catch (ex) {
+      handleFail(documentation, ex);
+    } finally {
+      contextListener?.unsubscribe();
+      intentListener?.unsubscribe();
+    }
+  });
+};
+
 declare let fdc3: DesktopAgent;
 
 const documentation_CL = '\r\nDocumentation: ' + APIDocumentation.addContextListener + '\r\nCause';
@@ -195,6 +255,7 @@ const documentation_UC = '\r\nDocumentation: ' + APIDocumentation.getUserChannel
 const documentation_JC = '\r\nDocumentation: ' + APIDocumentation.getCurrentChannel + '\r\nCause';
 const documentation_RI = '\r\nDocumentation: ' + APIDocumentation.raiseIntentForContext + '\r\nCause';
 const documentation_GA = '\r\nDocumentation: ' + APIDocumentation.getAgent + '\r\nCause';
+const documentation_DM = '\r\nDocumentation: ' + APIDocumentation.desktopAgent + '\r\nCause';
 
 export const fdc3BasicGetAgent = async () => describe('fdc3.basicGetAgent', () => getAgent2_2(fdc3, documentation_GA));
 export const fdc3BasicCL1 = async () => describe('fdc3.basicCL1', () => basicCL1(fdc3, documentation_CL));
@@ -205,6 +266,13 @@ export const fdc3BasicGI2 = async () => describe('fdc3.basicGI2', () => basicGI2
 export const fdc3BasicAC1 = async () => describe('fdc3.basicAC1', () => basicAC1(fdc3, documentation_AC));
 export const fdc3BasicUC1 = async () => describe('fdc3.basicUC1', () => basicUC1(fdc3, documentation_UC));
 export const fdc3BasicJC1 = async () => describe('fdc3.basicJC1', () => basicJC1(fdc3, documentation_JC));
+export const fdc3BasicDM1 = async () =>
+  describe('fdc3.basicDM1', () => {
+    after(async function after() {
+      await closeMockAppWindow(this.currentTest?.title ?? 'Unknown test');
+    });
+    basicDM1(fdc3, documentation_DM, Intent.aTestingIntent, ContextType.testContextX);
+  });
 
 export const fdc3BasicRI1 = async () =>
   describe('fdc3.basicRI1', () => {
