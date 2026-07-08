@@ -17,6 +17,8 @@ import { WebConnectionProtocol3Handshake } from '@finos/fdc3-schema/dist/generat
 
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL;
 
+const FDC3_VERSION = '2.2';
+
 function createAppStartButton(app: DirectoryApp, sc: ServerContext<AppRegistration>): HTMLDivElement {
   const div: HTMLDivElement = document.createElement('div');
   div.classList.add('app');
@@ -60,7 +62,7 @@ window.addEventListener('load', () => {
   socket.on('connect', async () => {
     socket.emit(DA_HELLO, desktopAgentUUID);
 
-    const directory = new FDC3_2_1_JSONDirectory();
+    const directory = new FDC3_2_1_JSONDirectory(FDC3_VERSION);
     await directory.load('/static/da/appd.json');
     await directory.load('/static/da/local-conformance.v2.json');
     const sc = new DemoServerContext(socket, directory);
@@ -237,7 +239,7 @@ window.addEventListener('load', () => {
                 timestamp: new Date(),
               },
               payload: {
-                fdc3Version: '2.2',
+                fdc3Version: FDC3_VERSION,
                 ...ui,
               },
             };

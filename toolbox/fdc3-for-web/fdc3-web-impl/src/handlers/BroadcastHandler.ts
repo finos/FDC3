@@ -451,6 +451,14 @@ export class BroadcastHandler implements MessageHandler {
           appId: from.appId,
           instanceId: from.instanceId,
         },
+        metadata: {
+          source: {
+            appId: from.appId,
+            instanceId: from.instanceId,
+          },
+          timestamp: new Date(),
+          traceId: sc.createUUID(),
+        },
       },
     };
 

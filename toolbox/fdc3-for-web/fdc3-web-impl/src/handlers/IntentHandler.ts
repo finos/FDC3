@@ -57,6 +57,14 @@ async function forwardRequest(
         appId: arg0.from.appId,
         instanceId: arg0.from.instanceId,
       },
+      metadata: {
+        source: {
+          appId: arg0.from.appId,
+          instanceId: arg0.from.instanceId,
+        },
+        timestamp: new Date(),
+        traceId: sc.createUUID(),
+      },
       raiseIntentRequestUuid: arg0.requestUuid,
     },
     meta: {
