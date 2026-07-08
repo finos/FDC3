@@ -38,6 +38,10 @@ export interface FDC3Event extends ApiEvent {
 
 /**
  * Type defining the format of event `userChannelChanged` objects
+ *
+ * Desktop Agents SHOULD emit this event to the app after its User channel
+ * membership changes, including when the app initiated the change by calling
+ * `joinUserChannel`.
  */
 export interface FDC3ChannelChangedEvent extends FDC3Event {
   readonly type: 'userChannelChanged';

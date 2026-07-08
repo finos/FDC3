@@ -185,6 +185,8 @@ Type representing the format of `userChannelChanged`  events.
 
 The identity of the channel joined is provided as `details.currentChannelId`, which will be `null` if the app is no longer joined to any channel.
 
+Desktop Agents SHOULD emit this event to the app after its User channel membership changes, including when the app initiated the change by calling `joinUserChannel`.
+
 ## `PrivateChannelEventTypes`
 
 <Tabs groupId="lang">

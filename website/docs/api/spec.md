@@ -682,6 +682,8 @@ When an app is joined to a User channel, calls to [`fdc3.broadcast`](ref/Desktop
 
 When an app joins a User channel, or adds a context listener when already joined to a channel, it will automatically receive the current context for that channel, unless the context was cleared through [`clearContext`](ref/Channel.md#clearcontext).
 
+If the Desktop Agent supports `userChannelChanged` events, it should dispatch that event to the app after the app's User channel membership changes, including when the change was initiated by the app's own call to [`fdc3.joinUserChannel`](ref/DesktopAgent#joinuserchannel). This allows channel selector UIs in the app to update consistently for both user-initiated and programmatic channel changes.
+
 It is possible that a call to join a User channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.
 
 Joining channels in FDC3 is intended to be a behavior initiated by the end user. For example: by color linking or apps being grouped in the same workspace.  Most of the time, it is expected that apps will be joined to a channel by mechanisms outside of the app. To support programmatic management of joined channels and the implementation of channel selector UIs other than those provided outside of the app, Desktop Agent implementations MAY provide [`fdc3.joinUserChannel()`](ref/DesktopAgent#joinuserchannel), [`fdc3.getCurrentChannel()`](ref/DesktopAgent#getcurrentchannel) and [`fdc3.leaveCurrentChannel()`](ref/DesktopAgent#leavecurrentchannel) functions and if they do, MUST do so as defined in the [Desktop Agent API reference](ref/DesktopAgent).
