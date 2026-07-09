@@ -115,6 +115,56 @@ organization-specific namespace, e.g. `blackrock.fund`.
 
 All well-known types at FDC3 level are prefixed with `fdc3`. For private type definitions, or type definitions issued by other organizations, different namespaces MUST be used, e.g. `blackrock.fund`, etc.
 
+### Private and Proprietary Context Types
+
+Organizations frequently need to share domain-specific data that is not (yet) covered by a standardized FDC3 context type. FDC3 explicitly supports this through the use of organization-specific namespaces.
+
+#### Naming conventions
+
+Private context type names MUST be prefixed with a namespace that is unique to the issuing organization. Using a reverse-domain convention (e.g. `com.example`) or a well-known organizational abbreviation (e.g. `acme`) avoids collisions with both FDC3-defined types and types created by other organizations:
+
+```
+com.example.account       ✔  reverse-domain namespace
+acme.rfq                  ✔  organizational abbreviation
+account                   ✗  no namespace — risks collision with future standard types
+fdc3.account              ✗  reserved for FDC3 standard types
+```
+
+#### Structure and fields
+
+Private types are still derived from the base [Context](ref/Context) interface and MUST include a `type` property. The optional `name` and `id` fields are available and their use is encouraged where appropriate:
+
+- Use `name` for a human-readable display label.
+- Use `id` for reference identifiers that allow a receiving application to look the object up in its own domain (e.g. an internal account ID). Identifier values SHOULD always be of type `string`.
+- Use additional top-level fields for data that is neither an identifier nor a display name.
+
+Example of a well-structured private context type for an internal trading account:
+
+```json
+{
+  "type": "com.example.account",
+  "name": "Internal Trading Book A",
+  "id": {
+    "accountId": "12345"
+  }
+}
+```
+
+Keeping the `id` object limited to reference identifiers — rather than embedding sensitive financial data such as balances or P&L — means the context object can be safely broadcast on a User Channel without inadvertently leaking business-sensitive information to other channel participants.
+
+#### Privacy considerations
+
+Because User Channel broadcasts reach **all** applications that are currently joined to that channel, care should be taken about what data is included in any context object broadcast to a User Channel — standard or private. Best practice is to include only the minimum data needed to reference the entity (i.e. an identifier) and to allow each receiving application to fetch the full details from its own back-end using that identifier. Sensitive fields (balances, P&L, personal data, etc.) SHOULD NOT be embedded in context payloads broadcast on User Channels.
+
+If richer data needs to be shared with a specific application, consider:
+- Using `fdc3.open` with a context argument to pass data directly to a target app.
+- Using a Private Channel, which provides point-to-point communication that is not visible to other channel participants.
+- Raising an intent that delivers a result directly to the requesting application.
+
+#### AppD declarations for private context types
+
+An application that listens for or broadcasts private context types does **not** need to declare those types in any special way in its AppD record. AppD records may optionally list context types under the `interop.userChannels.broadcasts` and `interop.userChannels.listensFor` fields to support discovery; however, this is optional and the absence of such declarations does not prevent an application from participating in User Channel context exchange at runtime.
+
 ### `name`
 
 Context data objects may include an optional name property that can be used for more information, or display purposes. Some

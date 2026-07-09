@@ -155,6 +155,18 @@ As web applications can navigate to or be navigated by users to different URLs a
 
 :::
 
+### Multiple apps on one origin
+
+When several FDC3-enabled applications are hosted on the same origin (e.g. `https://myplatform.example.com/trade` and `https://myplatform.example.com/watchlist`), each should be registered as a separate AppD record using a URL that includes the distinguishing path.  Pass the matching stable URL as `identityUrl` when calling `getAgent()` to ensure the Desktop Agent associates the application with the correct AppD record, regardless of any internal SPA navigation that may have already taken place:
+
+```ts
+const desktopAgent = await getAgent({
+    identityUrl: "https://myplatform.example.com/trade"
+});
+```
+
+See the [Supported Platforms: Multiple FDC3 Apps on a Single Origin](../supported-platforms#multiple-fdc3-apps-on-a-single-origin) section for more details.
+
 Finally, if there is still no Desktop Agent available, or an issue prevents connection to it, the `getAgent()` function will reject its promise with a message from the [`AgentError`](./Errors#agenterror) enumeration.
 
 ## Injected iframes for adaptors and user interfaces

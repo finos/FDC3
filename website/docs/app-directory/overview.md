@@ -97,7 +97,40 @@ The AppD API specification defines the optional use of an access token to identi
 
 The specification does not define or make mandatory any authorizations or roles that a provider or enterprise can define.
 
-A key concept in the App Directory is how applications are identified and referenced across different environments. Application identifiers are used both to uniquely describe apps within a directory and, in some cases, to locate the directory instance that hosts an application’s record.
+### Context-only Apps
+
+Not every FDC3-enabled application needs to handle intents. Some applications participate in FDC3 context sharing (via User Channels or App Channels) without ever acting as a target for a raised intent. These are sometimes called _context-only_ apps.
+
+Examples include:
+- A compact companion window that reflects the currently selected instrument or contact but does not open trade tickets.
+- A status-bar widget that listens for account context to display a balance without offering any workflow actions.
+
+#### AppD records for context-only apps
+
+A context-only app SHOULD be registered in an AppD record **without** an `intents` array (or with an empty `intents` array). The absence of intent declarations tells the Desktop Agent that this app must not be offered as a resolution target for any intent.
+
+For example, a minimal AppD record for a context-only web app might look like:
+
+```json
+{
+  "appId": "com.example.watchlist",
+  "name": "Watchlist",
+  "type": "web",
+  "details": {
+    "url": "https://myplatform.example.com/watchlist"
+  }
+}
+```
+
+Note that no `intents` field is present. The Desktop Agent will still recognize the app as an FDC3 participant and allow it to join User Channels and listen for context broadcasts, but it will **not** present it in an intent resolver UI.
+
+#### Runtime behavior
+
+At runtime, a context-only app connects to the Desktop Agent via `getAgent()` and uses `addContextListener()` (or `Channel.addContextListener()`) to subscribe to context updates — exactly as any other FDC3 app would. The app simply does not call `addIntentListener()`, and because its AppD record contains no `intents` declarations, it will not be returned by `findIntent()` or `findIntentsByContext()` and will never be presented in intent resolver flows.
+
+Desktop Agent implementations MUST NOT present applications to a user as candidates for intent resolution unless those applications have declared support for the raised intent in their AppD record or have registered a live intent listener at runtime.
+
+A key concept in the App Directory is how applications are identified and referenced across different environments. Application identifiers are used both to uniquely describe apps within a directory and, in some cases, to locate the directory instance that hosts an application's record.
 
 ## Application Identifiers
 

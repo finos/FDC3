@@ -88,6 +88,39 @@ Hence, from FDC3 2.2 onwards apps SHOULD call `getAgent()` to retrieve a `Deskto
 
 As web applications can navigate to or be navigated by users to different URLs and become different applications, validation of apps identity is often necessary. The web application's current URL is passed to web browser-based Desktop Agents to allow them to establish the app's identity - usually connecting it with an App Directory record already known to the Desktop Agent. For more details on identity validation see the Identity Validation section of the [Web Connection Protocol (WCP)](specs/webConnectionProtocol).
 
+### Multiple FDC3 Apps on a Single Origin
+
+It is common for organizations to host several FDC3-capable web applications from a single origin (host, scheme and port), distinguishing them by path, e.g.:
+
+- `https://myplatform.example.com/trade` — main trading application
+- `https://myplatform.example.com/watchlist` — companion watchlist application
+
+Each of these should be registered as a **separate App Directory record** with a distinct `appId` and a `details.url` that includes the path. When each app calls `getAgent()`, the Desktop Agent matches the application's URL against the known App Directory records using the URL-matching rules described in the [Browser-Resident Desktop Agent Specification](specs/browserResidentDesktopAgents#validating-app-identity).
+
+For most single-page applications (SPAs) the URL changes as the user navigates within the app. Because the `getAgent()` call is typically made once at start-up, the URL present at that point is usually the correct one to use for identity matching. However, if the initial URL is unstable (e.g. it contains a one-time token or a randomly chosen sub-route), pass a stable `identityUrl` that corresponds to the App Directory record's URL:
+
+```ts
+import { getAgent } from "@finos/fdc3";
+
+const desktopAgent = await getAgent({
+    // Supply a stable URL that matches the AppD record, even if the browser's
+    // current URL differs (e.g. because the SPA has already navigated internally).
+    identityUrl: "https://myplatform.example.com/trade"
+});
+```
+
+:::tip
+
+The `identityUrl` MUST share the same **origin** (scheme, hostname and port) as the page that calls `getAgent()`. It may include a path, query parameters and/or hash fragment if these are needed to distinguish the app from others hosted on the same origin. Path matching is supported by Desktop Agent implementations that follow the recommended URL-matching algorithm.
+
+:::
+
+:::caution
+
+Avoid using URLs with one-time tokens or highly dynamic path segments as `details.url` in App Directory records, as these cannot be matched reliably. Register a stable, canonical URL in the AppD record (e.g. `https://myplatform.example.com/trade`) and, if necessary, pass that same stable URL as `identityUrl` when calling `getAgent()`.
+
+:::
+
 ### Usage
 
 Once you've retrieved a `DesktopAgent` interface you may use its functions to communicate with the Desktop Agent and through it, other applications:
