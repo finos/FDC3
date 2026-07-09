@@ -115,11 +115,9 @@ organization-specific namespace, e.g. `blackrock.fund`.
 
 All well-known types at FDC3 level are prefixed with `fdc3`. For private type definitions, or type definitions issued by other organizations, different namespaces MUST be used, e.g. `blackrock.fund`, etc.
 
-### Private and Proprietary Context Types
+#### Private and Proprietary Context Types
 
 Organizations frequently need to share domain-specific data that is not (yet) covered by a standardized FDC3 context type. FDC3 explicitly supports this through the use of organization-specific namespaces.
-
-#### Naming conventions
 
 Private context type names MUST be prefixed with a namespace that is unique to the issuing organization. Using a reverse-domain convention (e.g. `com.example`) or a well-known organizational abbreviation (e.g. `acme`) avoids collisions with both FDC3-defined types and types created by other organizations:
 
@@ -129,6 +127,73 @@ acme.rfq                  ✔  organizational abbreviation
 account                   ✗  no namespace — risks collision with future standard types
 fdc3.account              ✗  reserved for FDC3 standard types
 ```
+
+
+### `name`
+
+Context data objects may include an optional name property that can be used for more information, or display purposes. Some
+derived types may require the name object as mandatory, depending on use case.
+
+### `id`
+
+Context data objects may include a set of equivalent key-value pairs in the `id` property that can be used to help applications identify and look up the context type they receive in their own domain. The idea behind this design is that applications can provide as many equivalent identifiers to a target application as possible, e.g. an instrument may be represented by an ISIN, CUSIP or Bloomberg identifier.
+
+Identifiers do not make sense for all types of data, so the `id` property is therefore optional, but some derived types choose to require at least one identifier.
+
+Where an identifier is the name of an existing standard, external to FDC3, it is represented in all caps. For example: FIGI, PERMID, CUSIP, ISO-2. When an identifier is a more general concept, it is represented in all lower case.  For example: ticker, name, geocode, email.
+
+Identifier values SHOULD always be of type string.
+
+All standard identifier names are reserved names. Applications may use their own identifiers ad hoc. For example:
+
+```json
+"id": {
+    "CUSIP":"037833100",
+    "foo":"bar"
+}
+```
+
+The identifier "foo" is proprietary, an application that can use it is free to do so. However, since multiple applications may want to use the "foo" name and may use it to mean different things, there is a need for applications to ensure that their identifiers use naming conventions that will avoid collision. The recommended approach here is to prefix the identifier name with a namespace. For example:
+
+```json
+"id": {
+    "CUSIP":"037833100",
+    "com.company.foo": "000C7F-E"
+}
+```
+
+### Avoid union types / composition of primitive types
+
+Both Typescript and JSON Schema allow for a type of polymorphism in types and interfaces that is hard to represent in other languages: allowing the type of a variable to be a ['union'](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types) of other, unrelated types. E.g.: in TypeScript
+
+```ts
+type Example = SomeOtherType | YetAnotherType;
+```
+
+Similar constructs are allowed in JSON Schema by [combining or composing schemas](https://json-schema.org/understanding-json-schema/reference/combining) using the `anyOf` or `oneOf` keywords to specify that a value can take the form defined in one-or-more or one-of-several sub-schemas.
+
+```json
+"recipients": {
+    "title": "Email Recipients",
+    "description": "One or more recipients for the email.",
+    "oneOf": [
+        {
+            "$ref": "contact.schema.json#"
+        },
+        {
+            "$ref": "contactList.schema.json#"
+        }
+    ]
+}
+```
+
+However, other languages can be less flexible. In most languages, polymorphism of object types is possible via the implementation and/or extension of an interface (for example all context types are derived from the [Context](ref/Context) schema, which can be modelled as an interface). However, this approach is not possible if one of the types in the union is a primitive, meaning it's not a class and can't be modified to implement an interface, e.g.:
+
+```ts
+type Example2 = SomeOtherType | number;
+```
+
+Hence, to ensure that FDC3 context objects are implementable in other languages context schemas MUST NOT use `anyOf`/`oneOf` compositions of primitive types in JSON schema (and, hence, unions of primitive types in TypeScript) and SHOULD avoid compositions of Object types unless a concept that can be defined as an interface (such as [Context](ref/Context)) is available.
 
 #### Structure and fields
 
