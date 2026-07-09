@@ -195,28 +195,6 @@ type Example2 = SomeOtherType | number;
 
 Hence, to ensure that FDC3 context objects are implementable in other languages context schemas MUST NOT use `anyOf`/`oneOf` compositions of primitive types in JSON schema (and, hence, unions of primitive types in TypeScript) and SHOULD avoid compositions of Object types unless a concept that can be defined as an interface (such as [Context](ref/Context)) is available.
 
-#### Structure and fields
-
-Private types are still derived from the base [Context](ref/Context) interface and MUST include a `type` property. The optional `name` and `id` fields are available and their use is encouraged where appropriate:
-
-- Use `name` for a human-readable display label.
-- Use `id` for reference identifiers that allow a receiving application to look the object up in its own domain (e.g. an internal account ID). Identifier values SHOULD always be of type `string`.
-- Use additional top-level fields for data that is neither an identifier nor a display name.
-
-Example of a well-structured private context type for an internal trading account:
-
-```json
-{
-  "type": "com.example.account",
-  "name": "Internal Trading Book A",
-  "id": {
-    "accountId": "12345"
-  }
-}
-```
-
-Keeping the `id` object limited to reference identifiers — rather than embedding sensitive financial data such as balances or P&L — means the context object can be safely broadcast on a User Channel without inadvertently leaking business-sensitive information to other channel participants.
-
 ### Other Field Type Conventions
 
 This Standard defines a number of conventions for the fields of context types that all context objects SHOULD adhere to in order to reduce or prevent competing conventions from being established in both standardized types and proprietary types created by app developers.
