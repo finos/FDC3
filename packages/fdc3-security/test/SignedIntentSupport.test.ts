@@ -78,13 +78,13 @@ class CapturingDesktopAgent {
     intent: string;
     context: Context;
     app?: AppIdentifier;
-    newInstance?: boolean;
+    newInstance?: boolean | null;
     metadata?: AppProvidableContextMetadata;
   };
   lastRaiseForContext?: {
     context: Context;
     app?: AppIdentifier;
-    newInstance?: boolean;
+    newInstance?: boolean | null;
     metadata?: AppProvidableContextMetadata;
   };
   constructor(public nextResolution: IntentResolution) {}
@@ -93,7 +93,7 @@ class CapturingDesktopAgent {
     intent: string,
     context: Context,
     app?: AppIdentifier,
-    newInstance?: boolean,
+    newInstance?: boolean | null,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution> {
     this.lastRaiseIntent = { intent, context, app, newInstance, metadata };
@@ -103,7 +103,7 @@ class CapturingDesktopAgent {
   async raiseIntentForContext(
     context: Context,
     app?: AppIdentifier,
-    newInstance?: boolean,
+    newInstance?: boolean | null,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution> {
     this.lastRaiseForContext = { context, app, newInstance, metadata };

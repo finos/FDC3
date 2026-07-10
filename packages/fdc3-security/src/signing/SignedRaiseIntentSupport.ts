@@ -34,7 +34,7 @@ export interface SignedRaiseIntentSupport {
     intent: string,
     context: Context,
     app?: AppIdentifier,
-    newInstance?: boolean
+    newInstance?: boolean | null
   ): Promise<VerifiedIntentResolution>;
 
   /**
@@ -45,7 +45,7 @@ export interface SignedRaiseIntentSupport {
   raiseIntentForContext(
     context: Context,
     app?: AppIdentifier,
-    newInstance?: boolean
+    newInstance?: boolean | null
   ): Promise<VerifiedIntentResolution>;
 }
 
@@ -89,7 +89,7 @@ export class BasicSignedRaiseIntentSupport implements SignedRaiseIntentSupport {
     intent: string,
     context: Context,
     app?: AppIdentifier,
-    newInstance?: boolean
+    newInstance?: boolean | null
   ): Promise<VerifiedIntentResolution> {
     // Sign the outbound context on the trusted backend before raising the intent.
     const { signature, antiReplay } = await this.signingFunction(context);
@@ -111,7 +111,7 @@ export class BasicSignedRaiseIntentSupport implements SignedRaiseIntentSupport {
   async raiseIntentForContext(
     context: Context,
     app?: AppIdentifier,
-    newInstance?: boolean
+    newInstance?: boolean | null
   ): Promise<VerifiedIntentResolution> {
     // Sign the outbound context on the trusted backend before raising the intent.
     const { signature, antiReplay } = await this.signingFunction(context);

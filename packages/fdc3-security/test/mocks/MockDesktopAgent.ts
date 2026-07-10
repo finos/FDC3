@@ -64,7 +64,7 @@ class MockDesktopAgent implements Partial<DesktopAgent> {
     intent: Intent,
     context: Context,
     _app?: AppIdentifier | null | string | undefined,
-    _newInstance?: boolean | undefined,
+    _newInstance?: boolean | null | undefined,
     metadata?: AppProvidableContextMetadata | undefined
   ): Promise<IntentResolution> {
     const key = String(intent);
