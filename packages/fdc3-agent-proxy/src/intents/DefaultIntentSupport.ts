@@ -162,7 +162,7 @@ export class DefaultIntentSupport implements IntentSupport {
     intent: string,
     context: Context,
     app?: AppIdentifier | null,
-    newInstance?: boolean,
+    newInstance?: boolean | null,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution> {
     const meta = this.messaging.createMeta();
@@ -224,7 +224,7 @@ export class DefaultIntentSupport implements IntentSupport {
   async raiseIntentForContext(
     context: Context,
     app?: AppIdentifier | null,
-    newInstance?: boolean,
+    newInstance?: boolean | null,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution> {
     const meta = this.messaging.createMeta();
