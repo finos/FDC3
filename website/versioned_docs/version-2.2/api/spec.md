@@ -597,7 +597,7 @@ When an app is joined to a User channel, calls to [`fdc3.broadcast`](ref/Desktop
 
 When an app joins a User channel, or adds a context listener when already joined to a channel, it will automatically receive the current context for that channel.
 
-If the Desktop Agent supports `userChannelChanged` events, it should dispatch that event to the app after the app's User channel membership changes, including when the change was initiated by the app's own call to [`fdc3.joinUserChannel`](ref/DesktopAgent#joinuserchannel). This allows channel selector UIs in the app to update consistently for both user-initiated and programmatic channel changes.
+After an app's User channel membership changes, the Desktop Agent should dispatch a `userChannelChanged` event if the app has registered a matching event listener. When the change is initiated by the app's own call to [`fdc3.joinUserChannel`](ref/DesktopAgent#joinuserchannel), the event should be dispatched before the returned promise resolves. This allows channel selector UIs in the app to update consistently for both user-initiated and programmatic channel changes.
 
 It is possible that a call to join a User channel could be rejected.  If for example, the desktop agent wanted to implement controls around what data apps can access.
 
