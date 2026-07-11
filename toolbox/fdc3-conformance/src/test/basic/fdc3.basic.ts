@@ -190,6 +190,7 @@ const basicDM1 = (fdc3: DesktopAgent, documentation: string, intent: string, con
   it(basicDM1, async () => {
     let contextListener: Listener | undefined;
     let intentListener: Listener | undefined;
+    let joinedUserChannel = false;
 
     try {
       const {
@@ -224,12 +225,15 @@ const basicDM1 = (fdc3: DesktopAgent, documentation: string, intent: string, con
       const userChannels = await getUserChannels();
       expect(userChannels, documentation).to.be.an('array');
 
-      if (userChannels.length > 0) {
+      if (info.optionalFeatures.UserChannelMembershipAPIs) {
+        expect(userChannels, documentation).to.not.be.empty;
         await joinUserChannel(userChannels[0].id);
+        joinedUserChannel = true;
         const currentChannel = await getCurrentChannel();
         expect(currentChannel?.id, documentation).to.eql(userChannels[0].id);
         await broadcast({ type: contextType });
         await leaveCurrentChannel();
+        joinedUserChannel = false;
         assert.isNull(await getCurrentChannel(), documentation);
       }
 
@@ -239,6 +243,9 @@ const basicDM1 = (fdc3: DesktopAgent, documentation: string, intent: string, con
     } catch (ex) {
       handleFail(documentation, ex);
     } finally {
+      if (joinedUserChannel) {
+        await fdc3.leaveCurrentChannel();
+      }
       contextListener?.unsubscribe();
       intentListener?.unsubscribe();
     }
