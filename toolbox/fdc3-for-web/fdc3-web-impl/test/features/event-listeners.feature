@@ -33,6 +33,24 @@ Feature: Client can add an event Listener
       | addEventListenerResponse | a1            | App1     | uuid2                    | {null}                   |
       | channelChangedEvent      | a1            | App1     | {null}                   | one                      |
       | joinUserChannelResponse  | a1            | App1     | {null}                   | {null}                   |
+    And messaging will have 3 posts
+
+  Scenario: App Receives User Channel Changed Events With An Untyped Listener
+    When "App1/a1" adds an event listener for "{null}"
+    And "App1/a1" joins user channel "one"
+    Then messaging will have outgoing posts
+      | msg.matches_type         | to.instanceId | to.appId | msg.payload.listenerUUID | msg.payload.newChannelId |
+      | addEventListenerResponse | a1            | App1     | uuid2                    | {null}                   |
+      | channelChangedEvent      | a1            | App1     | {null}                   | one                      |
+      | joinUserChannelResponse  | a1            | App1     | {null}                   | {null}                   |
+    And messaging will have 3 posts
+
+  Scenario: App Does Not Receive User Channel Changed Events Without A Listener
+    When "App1/a1" joins user channel "one"
+    Then messaging will have outgoing posts
+      | msg.matches_type        | to.instanceId | to.appId |
+      | joinUserChannelResponse | a1            | App1     |
+    And messaging will have 1 posts
 
   Scenario: Unsubscribe a non-existent Event Listener
     When "App1/a1" removes event listener with id "uuid-na"
