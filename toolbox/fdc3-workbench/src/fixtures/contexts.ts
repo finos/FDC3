@@ -11,9 +11,9 @@ export const contexts: ContextItem[] = [
     id: 'Action example',
     template: {
       type: 'fdc3.action',
-      action: 'raiseIntent',
+      action: 'broadcast',
+      channelId: 'Channel 1',
       title: 'Click to view Chart',
-      intent: 'ViewChart',
       context: {
         type: 'fdc3.chart',
         instruments: [
@@ -30,10 +30,6 @@ export const contexts: ContextItem[] = [
           endTime: '2020-10-31T08:00:00.000Z',
         },
         style: 'candle',
-      },
-      app: {
-        appId: 'MyChartViewingApp',
-        instanceId: 'instance1',
       },
     },
     schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context/action.schema.json'),
@@ -555,61 +551,6 @@ export const contexts: ContextItem[] = [
       },
     },
     schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context/product.schema.json'),
-  },
-  {
-    uuid: uuidv4(),
-    id: 'Security encrypted context example',
-    template: {
-      type: 'fdc3.security.encryptedContext',
-      originalType: 'fdc3.instrument',
-      id: {
-        kid: 'channel-key-abc123',
-      },
-      encryptedPayload: 'eyJuYW1lIjoiQXBwbGUiLCJpZCI6eyJ0aWNrZXIiOiJBQVBMIn19...',
-    },
-    schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context/encrypted.schema.json'),
-  },
-  {
-    uuid: uuidv4(),
-    id: 'Security symmetric key request example',
-    template: {
-      type: 'fdc3.security.symmetricKeyRequest',
-      id: {
-        kid: 'channel-key-abc123',
-      },
-    },
-    schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context/symmetricKeyRequest.schema.json'),
-  },
-  {
-    uuid: uuidv4(),
-    id: 'Security symmetric key response example',
-    template: {
-      type: 'fdc3.security.symmetricKeyResponse',
-      id: {
-        kid: 'key-id-123',
-        pki: 'https://examples.com/myJWKSendpoint',
-      },
-      wrappedKey: 'u4jvA7Gx8LdH...==',
-    },
-    schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context/symmetricKeyResponse.schema.json'),
-  },
-  {
-    uuid: uuidv4(),
-    id: 'Security user example',
-    template: {
-      type: 'fdc3.security.user',
-      wrappedJwt: '--example-jwt-token--but-wrapped-in-the-public-key-of-the-requester--',
-    },
-    schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context/user.schema.json'),
-  },
-  {
-    uuid: uuidv4(),
-    id: 'Security user request example',
-    template: {
-      type: 'fdc3.security.userRequest',
-      aud: 'https://my-app-url.com',
-    },
-    schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context/userRequest.schema.json'),
   },
   {
     uuid: uuidv4(),
