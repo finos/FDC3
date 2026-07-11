@@ -119,6 +119,45 @@ When(
   }
 );
 
+When(
+  'a HelloHandler for connection attempt {string} receives WCP messages for other connection attempts',
+  async (_world: CustomWorld, connectionUuid: string) => {
+    const handler = new HelloHandler({}, connectionUuid);
+    handler.listenForHelloResponses();
+
+    const messages = [
+      {
+        type: 'WCP2LoadUrl',
+        meta: {
+          connectionAttemptUuid: 'wcp2-other-connection-uuid',
+          timestamp: new Date(),
+        },
+        payload: {
+          iframeUrl: 'https://example.com/desktop-agent',
+        },
+      },
+      {
+        type: 'WCP3Handshake',
+        meta: {
+          connectionAttemptUuid: 'wcp3-other-connection-uuid',
+          timestamp: new Date(),
+        },
+        payload: {
+          fdc3Version: '2.2',
+          intentResolverUrl: true,
+          channelSelectorUrl: true,
+        },
+      },
+    ];
+
+    for (const data of messages) {
+      globalThis.window.dispatchEvent({ type: 'message', data } as unknown as MessageEvent);
+    }
+
+    handler.cancel();
+  }
+);
+
 Then(
   'captured console {word} output should contain {string}',
   async (world: CustomWorld, method: ConsoleMethod, text: string) => {

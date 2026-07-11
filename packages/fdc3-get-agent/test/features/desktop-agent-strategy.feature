@@ -402,6 +402,12 @@ Scenario: Latch to Desktop Agent Preload via SessionStorage which has gone away
     When a HelloHandler for connection attempt "expected-connection-uuid" receives unrelated postMessage traffic
     Then captured console warn output should not contain "invalid connectionAttemptUuid"
 
+  Scenario: WCP messages for another connection attempt still produce warnings
+    Given console output is captured
+    When a HelloHandler for connection attempt "expected-connection-uuid" receives WCP messages for other connection attempts
+    Then captured console warn output should contain "received: wcp2-other-connection-uuid"
+    And captured console warn output should contain "received: wcp3-other-connection-uuid"
+
   Scenario: Someone calls getAgent twice
     Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response
     And we wait for a period of "200" ms
