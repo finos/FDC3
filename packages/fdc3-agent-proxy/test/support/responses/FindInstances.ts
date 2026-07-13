@@ -22,7 +22,7 @@ export class FindInstances implements AutomaticResponse {
       type: 'findInstancesResponse',
       payload: {
         appIdentifiers: [
-          { appId: 'One', instanceId: '1' },
+          { appId: 'One', instanceId: '1', instanceMetadata: { title: 'AAPL Stock Chart' } },
           { appId: 'Two', instanceId: '2' },
           { appId: 'Three', instanceId: '3' },
         ],

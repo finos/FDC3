@@ -36,6 +36,7 @@
         "privateChannelUnsubscribeEventListenerRequest",
         "raiseIntentForContextRequest",
         "raiseIntentRequest",
+        "updateInstanceMetadataRequest",
         "clearContextRequest",
         "closeRequest"
       ],

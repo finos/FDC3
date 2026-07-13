@@ -194,9 +194,8 @@
                     "title": "version"
                 },
                 "instanceMetadata": {
-                    "description": "An optional set of, implementation specific, metadata fields that can be used to disambiguate instances, such as a window title or screen position. Must only be set if `instanceId` is set.",
-                    "type": "object",
-                    "additionalProperties": true,
+                    "$ref": "#/definitions/InstanceMetadata",
+                    "description": "An optional set of metadata fields that can be used to disambiguate instances, such as a window title or screen position. Must only be set if `instanceId` is set.",
                     "title": "instanceMetadata"
                 },
                 "title": {
@@ -258,6 +257,19 @@
             "required": [
                 "appId"
             ]
+        },
+        "InstanceMetadata": {
+            "description": "Metadata that describes a specific instance of an application, which can be used to disambiguate instances in UI elements such as a resolver or intent picker.",
+            "title": "InstanceMetadata",
+            "type": "object",
+            "properties": {
+                "title": {
+                    "description": "A user-friendly title for this specific instance that can be used to render UI elements, such as a resolver or intent picker, to help distinguish it from other instances of the same application.",
+                    "type": "string",
+                    "title": "title"
+                }
+            },
+            "additionalProperties": true
         },
         "IntentMetadata": {
             "description": "Metadata describing an Intent.",

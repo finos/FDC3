@@ -137,13 +137,13 @@ const fillList = (
   const openList = document.getElementById('open-list')!;
   openList.innerHTML = '';
 
-  openApps.forEach(({ appId, title, icons, instanceId }) => {
+  openApps.forEach(({ appId, title, icons, instanceId, instanceMetadata }) => {
     const node = document.createElement('div');
     node.setAttribute('tabIndex', '0');
     node.setAttribute('data-appId', appId);
 
     const span = document.createElement('span');
-    span.textContent = title ?? appId;
+    span.textContent = instanceMetadata?.title ?? title ?? appId;
 
     const img = createIcon(icons);
 

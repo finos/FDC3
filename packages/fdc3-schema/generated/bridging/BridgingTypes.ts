@@ -1475,11 +1475,10 @@ export interface AppMetadata {
    */
   instanceId?: string;
   /**
-   * An optional set of, implementation specific, metadata fields that can be used to
-   * disambiguate instances, such as a window title or screen position. Must only be set if
-   * `instanceId` is set.
+   * An optional set of metadata fields that can be used to disambiguate instances, such as a
+   * window title or screen position. Must only be set if `instanceId` is set.
    */
-  instanceMetadata?: { [key: string]: any };
+  instanceMetadata?: InstanceMetadata;
   /**
    * The 'friendly' app name.
    * This field was used with the `open` and `raiseIntent` calls in FDC3 <2.0, which now
@@ -1529,6 +1528,23 @@ export interface Icon {
    * Icon media type. If not present the Desktop Agent may use the src file extension.
    */
   type?: string;
+}
+
+/**
+ * An optional set of metadata fields that can be used to disambiguate instances, such as a
+ * window title or screen position. Must only be set if `instanceId` is set.
+ *
+ * Metadata that describes a specific instance of an application, which can be used to
+ * disambiguate instances in UI elements such as a resolver or intent picker.
+ */
+export interface InstanceMetadata {
+  /**
+   * A user-friendly title for this specific instance that can be used to render UI elements,
+   * such as a resolver or intent picker, to help distinguish it from other instances of the
+   * same application.
+   */
+  title?: string;
+  [property: string]: any;
 }
 
 /**
@@ -5507,7 +5523,7 @@ const typeMap: any = {
       { json: 'desktopAgent', js: 'desktopAgent', typ: u(undefined, '') },
       { json: 'icons', js: 'icons', typ: u(undefined, a(r('Icon'))) },
       { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
-      { json: 'instanceMetadata', js: 'instanceMetadata', typ: u(undefined, m('any')) },
+      { json: 'instanceMetadata', js: 'instanceMetadata', typ: u(undefined, r('InstanceMetadata')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'resultType', js: 'resultType', typ: u(undefined, u(null, '')) },
       { json: 'screenshots', js: 'screenshots', typ: u(undefined, a(r('Image'))) },
@@ -5525,6 +5541,7 @@ const typeMap: any = {
     ],
     false
   ),
+  InstanceMetadata: o([{ json: 'title', js: 'title', typ: u(undefined, '') }], 'any'),
   Image: o(
     [
       { json: 'label', js: 'label', typ: u(undefined, '') },

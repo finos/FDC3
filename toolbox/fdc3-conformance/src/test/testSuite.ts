@@ -5,6 +5,7 @@ import fdc3FindIntentsByContext from './advanced/fdc3.findIntentsByContext';
 import fdc3DestructuredMethods from './advanced/fdc3.destructured-methods';
 import fdc3GetInfo from './advanced/fdc3.getInfo';
 import fdc3getAppMetadata from './advanced/fdc3.getAppMetadata';
+import fdc3UpdateInstanceMetadata from './advanced/fdc3.updateInstanceMetadata';
 import fdc3FindInstances from './advanced/fdc3.findInstances';
 import fdc3Open from './advanced/fdc3.open';
 import fdc3RaiseIntent from './advanced/fdc3.raiseIntent';
@@ -58,6 +59,7 @@ const advancedSuite: testSet = {
   'fdc3.open': [fdc3Open],
   'fdc3.getInfo': [fdc3GetInfo],
   'fdc3.getAppMetadata': [fdc3getAppMetadata],
+  'fdc3.updateInstanceMetadata': [fdc3UpdateInstanceMetadata],
   'fdc3.appChannels': [fdc3AppChannels],
   'fdc3.userChannels': [fdc3UserChannels],
   'fdc3.findInstances': [fdc3FindInstances],

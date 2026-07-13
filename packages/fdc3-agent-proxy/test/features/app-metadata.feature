@@ -26,10 +26,17 @@ Feature: Desktop Agent Information
   Scenario: Getting instance information
     When I call "{api}" with "findInstances" with parameter "{c1}"
     Then "{result}" is an array of objects with the following contents
-      | appId | instanceId |
-      | One   |          1 |
-      | Two   |          2 |
-      | Three |          3 |
+      | appId | instanceId | instanceMetadata.title |
+      | One   |          1 | AAPL Stock Chart       |
+      | Two   |          2 | {null}                 |
+      | Three |          3 | {null}                 |
     And messaging will have posts
       | payload.app.appId | payload.app.instanceId | matches_type         |
       | chipShop          | c1                     | findInstancesRequest |
+
+  Scenario: Setting instance metadata
+    Given "instanceMeta" is instance metadata with title "AAPL Stock Chart"
+    When I call "{api}" with "updateInstanceMetadata" with parameter "{instanceMeta}"
+    And messaging will have posts
+      | payload.instanceMetadata.title | matches_type                  |
+      | AAPL Stock Chart               | updateInstanceMetadataRequest    |

@@ -10,6 +10,7 @@ import { IntentResolution } from './IntentResolution.js';
 import { Listener } from './Listener.js';
 import { Context } from '@finos/fdc3-context';
 import { ImplementationMetadata } from './ImplementationMetadata.js';
+import { InstanceMetadata } from './InstanceMetadata.js';
 import { PrivateChannel } from './PrivateChannel.js';
 import { AppIdentifier } from './AppIdentifier.js';
 import { AppMetadata } from './AppMetadata.js';
@@ -207,18 +208,25 @@ export interface DesktopAgent {
    *
    * If there are no instances of the specified application the returned promise should resolve to an empty array.
    *
+   * Each returned `AppMetadata` object includes the `instanceId` of the running instance and, where the instance
+   * has set it via [`updateInstanceMetadata`](#updateinstancemetadata), its `instanceMetadata` (e.g. a `title`),
+   * allowing instances of the same application to be distinguished in UI elements such as a resolver.
+   *
    * If the request fails for another reason, the promise MUST be rejected with an `Error` Object with a `message` chosen from the `ResolveError` enumeration, or (if connected to a Desktop Agent Bridge) the `BridgingError` enumeration.
    *
    * ```javascript
    * // Retrieve a list of instances of an application
    * let instances = await fdc3.findInstances({appId: "MyAppId"});
    *
+   * // Display the instance-specific title, where set, to distinguish instances
+   * let title = instances[0].instanceMetadata?.title;
+   *
    * // Target a raised intent at a specific instance
    * let resolution = fdc3.raiseIntent("ViewInstrument", context, instances[0]);
    * ```
    * @param app
    */
-  findInstances(app: AppIdentifier): Promise<Array<AppIdentifier>>;
+  findInstances(app: AppIdentifier): Promise<Array<AppMetadata>>;
 
   /**
    * Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever _User Channel_ the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
@@ -618,6 +626,29 @@ export interface DesktopAgent {
    * ```
    */
   getInfo(): Promise<ImplementationMetadata>;
+
+  /**
+   * Updates the instance metadata for the calling application instance.
+   *
+   * The provided metadata will be merged with any existing instance metadata held by the Desktop Agent
+   * for this instance, replacing any previously set fields with the same keys.
+   * The updated metadata will then be returned in the `instanceMetadata` field of `AppMetadata` objects
+   * returned by `findIntent`, `findIntentsByContext`, `getAppMetadata` and other API calls that return
+   * `AppMetadata` for this instance.
+   *
+   * This allows an application to provide instance-specific information, such as a title describing
+   * the content currently being displayed, that can be used to disambiguate instances in UI elements
+   * such as a resolver or intent picker.
+   *
+   * ```js
+   * // Set a title for this instance based on the instrument being displayed
+   * await fdc3.updateInstanceMetadata({ title: "AAPL Stock Chart" });
+   *
+   * // Update the title when the displayed content changes
+   * await fdc3.updateInstanceMetadata({ title: "MSFT Stock Chart" });
+   * ```
+   */
+  updateInstanceMetadata(metadata: InstanceMetadata): Promise<void>;
 
   /**
    * Retrieves the `AppMetadata` for an `AppIdentifier`, which provides additional metadata (such as icons,
