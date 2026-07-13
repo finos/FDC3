@@ -50,6 +50,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+* Added conformance coverage for `ChannelError.NoChannelFound`, `ChannelError.MalformedContext`, and `ChannelError.InvalidArguments`. ([#1779](https://github.com/finos/FDC3/issues/1779))
 * Fixed an issue in conformance test AOpensBWithWrongContext, which was not correctly waiting for the timeout and was sending close messages outside of the execution of the test. Also added logging of test starts and finishes to aid debugging. ([#1933](https://github.com/finos/FDC3/pull/1933))
 
 ## [npm v2.2.3] - 2026-04-15
