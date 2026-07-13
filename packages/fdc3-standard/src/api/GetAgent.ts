@@ -67,6 +67,15 @@ export type GetAgentType = (params?: GetAgentParams) => Promise<DesktopAgent>;
  * apps). Defaults to `true`. MAY be ignored by Desktop Agent Preload (container)
  * implementations.
  *
+ * @property {boolean} syncPageTitle Flag indicating that `getAgent` should
+ * automatically keep the Desktop Agent's instance metadata `title` in sync with
+ * the page title (`document.title`). When enabled (the default), an initial
+ * `updateInstanceMetadata` request is sent on connection and further requests are
+ * sent whenever the page title changes. Empty or whitespace-only titles are
+ * never sent. Defaults to `true`. Set to `false` to disable this behavior.
+ * Only applies to Desktop Agent Proxy (browser-based) connections; it is
+ * ignored by Desktop Agent Preload (container) implementations.
+ *
  * @property {boolean} dontSetWindowFdc3 For backwards compatibility, `getAgent`
  * will set a reference to the Desktop Agent implementation at `window.fdc3`
  * if one does not already exist, and will fire the fdc3Ready event. Defaults to
@@ -91,6 +100,7 @@ export type GetAgentParams = {
   identityUrl?: string;
   channelSelector?: boolean;
   intentResolver?: boolean;
+  syncPageTitle?: boolean;
   dontSetWindowFdc3?: boolean;
   failover?: (args: GetAgentParams) => Promise<WindowProxy | DesktopAgent>;
   logLevels?: GetAgentLogLevels;

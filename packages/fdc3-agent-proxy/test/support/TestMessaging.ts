@@ -28,6 +28,7 @@ import {
 import { GetInfo } from './responses/GetInfo.js';
 import { AddEventListener } from './responses/AddEventListener.js';
 import { Close } from './responses/Close.js';
+import { UpdateInstanceMetadata } from './responses/UpdateInstanceMetadata.js';
 
 export interface IntentDetail {
   app?: AppIdentifier;
@@ -125,6 +126,7 @@ export class TestMessaging extends AbstractMessaging {
       new RaiseIntentForContext(),
       new IntentResult(),
       new GetAppMetadata(),
+      new UpdateInstanceMetadata(),
       new GetInfo(),
       new FindInstances(),
       new Open(),

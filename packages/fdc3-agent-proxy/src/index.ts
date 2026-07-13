@@ -9,6 +9,7 @@ import { IntentSupport } from './intents/IntentSupport.js';
 import { RegisterableListener } from './listeners/RegisterableListener.js';
 import { DefaultAppSupport } from './apps/DefaultAppSupport.js';
 import { AppSupport } from './apps/AppSupport.js';
+import { PageTitleSupport, DomTitleWatcher, TitleWatcher } from './apps/PageTitleSupport.js';
 import { DefaultHeartbeatSupport } from './heartbeat/DefaultHeartbeatSupport.js';
 import { Connectable } from '@finos/fdc3-standard';
 import { AbstractFDC3Logger } from './util/AbstractFDC3Logger.js';
@@ -25,6 +26,9 @@ export {
   DefaultChannelSupport,
   DefaultIntentSupport,
   DefaultHeartbeatSupport,
+  PageTitleSupport,
+  DomTitleWatcher,
+  type TitleWatcher,
   RegisterableListener,
   Connectable,
   AbstractFDC3Logger,

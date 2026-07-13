@@ -7,6 +7,7 @@ import {
   EventHandler,
   FDC3EventTypes,
   ImplementationMetadata,
+  InstanceMetadata,
   IntentHandler,
   IntentResolution,
   Listener,
@@ -70,6 +71,7 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     this.close = this.close.bind(this);
     this.findInstances = this.findInstances.bind(this);
     this.getAppMetadata = this.getAppMetadata.bind(this);
+    this.updateInstanceMetadata = this.updateInstanceMetadata.bind(this);
     this.disconnect = this.disconnect.bind(this);
     this.connect = this.connect.bind(this);
   }
@@ -167,6 +169,10 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
 
   getAppMetadata(app: AppIdentifier): Promise<AppMetadata> {
     return this.apps.getAppMetadata(app);
+  }
+
+  updateInstanceMetadata(metadata: InstanceMetadata): Promise<void> {
+    return this.apps.updateInstanceMetadata(metadata);
   }
 
   async disconnect(): Promise<void> {

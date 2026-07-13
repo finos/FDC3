@@ -36,6 +36,26 @@ You will need to pre-populate the AppDirectory with the following items:
 
 - `AppInstanceMetadata` ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue): Perform the above steps.
 
+## Setting Instance Metadata
+
+| App      | Step                   | Details                                                                                           |
+|----------|------------------------|---------------------------------------------------------------------------------------------------|
+| Test     | 1. Open                | Open an instance of App A using <br/> `const appIdentifier = await fdc3.open({appId: "<A's-appId>"}, { type: "updateInstanceMetadataAppContext", title: "<a test title>" })` <br/>and confirm that its `AppIdentifier` contains an `instanceId`. |
+| A        | 2. updateInstanceMetadata | On launch, the opened instance reads the title from the context it received and sets its instance metadata with <br/> `await fdc3.updateInstanceMetadata({ title: "<a test title>" })`, confirms that the returned promise resolves, and signals completion to the Test app via a control channel broadcast. |
+| Test     | 3. getAppMetadata      | After receiving the completion signal, retrieve metadata for the instance with <br/> `const metadata = await fdc3.getAppMetadata(appIdentifier)` |
+| Test     | 4. Confirm             | Confirm that `metadata.instanceId` matches the one in `appIdentifier` and that `metadata.instanceMetadata.title` equals the title set in step 2, demonstrating that metadata set by an instance is merged and returned to other apps via `getAppMetadata`. |
+
+- `UpdateInstanceMetadata1` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform the above steps.
+
+| App      | Step                   | Details                                                                                           |
+|----------|------------------------|---------------------------------------------------------------------------------------------------|
+| Test     | 1. Open                | Open an instance of App A using <br/> `const appIdentifier = await fdc3.open({appId: "<A's-appId>"}, { type: "updateInstanceMetadataAppContext", title: "<a test title>" })` <br/>and confirm that its `AppIdentifier` contains an `instanceId`. |
+| A        | 2. updateInstanceMetadata | On launch, the opened instance sets its instance metadata with <br/> `await fdc3.updateInstanceMetadata({ title: "<a test title>" })` and signals completion to the Test app via a control channel broadcast. |
+| Test     | 3. findInstances       | After receiving the completion signal, retrieve the instances with <br/> `const instances = await fdc3.findInstances({appId: "<A's-appId>"})` |
+| Test     | 4. Confirm             | Confirm that the `AppMetadata` entry in `instances` whose `instanceId` matches `appIdentifier` has an `instanceMetadata.title` equal to the title set in step 2, demonstrating that metadata set by an instance is returned to other apps via `findInstances`. |
+
+- `UpdateInstanceMetadata2` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform the above steps.
+
 ## Finding Instances
 
 | App  | Step              | Details                                                                                           |

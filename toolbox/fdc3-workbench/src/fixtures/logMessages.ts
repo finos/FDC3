@@ -11,6 +11,18 @@ export const getLogMessage = (name: logMessagesName, type: logMessagesType, valu
     getFdc3: {
       error: `The FDC3 API is not ready${value ? ` (${value})` : ''}`,
     },
+    getInfo: {
+      success: `Retrieved implementation metadata via getInfo()`,
+      error: `Failed to retrieve implementation metadata via getInfo()`,
+    },
+    updateInstanceMetadata: {
+      success: `Called updateInstanceMetadata() with title [${value}]`,
+      error: `Failed to call updateInstanceMetadata() with title [${value}]`,
+    },
+    updateTitle: {
+      success: `Updated document title to [${value}] (should trigger an automatic updateInstanceMetadata() call)`,
+      error: `Failed to update document title`,
+    },
     getChannels: {
       success: `Retrieved User channels`,
       error: `Failed to retrieve User channels`,

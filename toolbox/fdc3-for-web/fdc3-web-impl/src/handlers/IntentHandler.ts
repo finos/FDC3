@@ -2,7 +2,13 @@ import { MessageHandler } from '../BasicFDC3Server.js';
 import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext.js';
 import { Directory, DirectoryIntent } from '../directory/DirectoryInterface.js';
 import { Context } from '@finos/fdc3-context';
-import { AppIntent, ResolveError, AppIdentifier, AppProvidableContextMetadata } from '@finos/fdc3-standard';
+import {
+  AppIntent,
+  ResolveError,
+  AppIdentifier,
+  AppMetadata,
+  AppProvidableContextMetadata,
+} from '@finos/fdc3-standard';
 import {
   errorResponse,
   errorResponseId,
@@ -167,7 +173,25 @@ export class IntentHandler implements MessageHandler {
     sc: ServerContext<AppRegistration>
   ): Promise<AppIntent[]> {
     const out = await sc.narrowIntents(raiser, appIntents, context);
-    return out;
+    // Enrich running instances with their instanceMetadata (e.g. title set via updateInstanceMetadata)
+    // so that intent resolver UIs can display meaningful, instance-specific information.
+    return out.map(ai => ({
+      ...ai,
+      apps: ai.apps.map(app => this.addInstanceMetadata(app, sc)),
+    }));
+  }
+
+  /**
+   * Adds the stored instanceMetadata to an app if it represents a running instance and metadata exists.
+   */
+  addInstanceMetadata(app: AppMetadata, sc: ServerContext<AppRegistration>): AppMetadata {
+    if (app.instanceId) {
+      const instanceMetadata = sc.getInstanceDetails(app.instanceId)?.instanceMetadata;
+      if (instanceMetadata) {
+        return { ...app, instanceMetadata };
+      }
+    }
+    return app;
   }
 
   async accept(msg: AppRequestMessage, sc: ServerContext<AppRegistration>, uuid: InstanceID): Promise<void> {

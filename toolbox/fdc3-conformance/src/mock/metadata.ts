@@ -1,5 +1,5 @@
 import { closeWindowOnCompletion, sendContextToTests } from './mock-functions';
-import { getAgent } from '@finos/fdc3';
+import { Context, getAgent } from '@finos/fdc3';
 import { ControlContextType } from '../test/support/intent-support';
 
 getAgent().then(async fdc3 => {
@@ -15,5 +15,14 @@ getAgent().then(async fdc3 => {
     };
 
     sendContextToTests(fdc3, metadataContext);
+  });
+
+  //set this instance's metadata using the title provided by the test app, then signal completion
+  await fdc3.addContextListener('updateInstanceMetadataAppContext', async (context: Context & { title?: string }) => {
+    await fdc3.updateInstanceMetadata({ title: context.title });
+
+    sendContextToTests(fdc3, {
+      type: ControlContextType.INSTANCE_METADATA_SET,
+    });
   });
 });

@@ -9,6 +9,7 @@ import {
   AppMetadata,
   ImplementationMetadata,
   CloseError,
+  InstanceMetadata,
 } from '@finos/fdc3-standard';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { errorResponse, FullAppIdentifier, successResponse } from './support.js';
@@ -22,6 +23,7 @@ import {
   isGetInfoRequest,
   isOpenRequest,
   isCloseRequest,
+  isUpdateInstanceMetadataRequest,
   isWebConnectionProtocol4ValidateAppIdentity,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { DetachedSignature } from '@finos/fdc3-schema/generated/bridging/BridgingTypes.js';
@@ -32,6 +34,7 @@ type FindInstancesRequest = BrowserTypes.FindInstancesRequest;
 type GetAppMetadataRequest = BrowserTypes.GetAppMetadataRequest;
 type OpenRequest = BrowserTypes.OpenRequest;
 type CloseRequest = BrowserTypes.CloseRequest;
+type UpdateInstanceMetadataRequest = BrowserTypes.UpdateInstanceMetadataRequest;
 type WebConnectionProtocol4ValidateAppIdentity = BrowserTypes.WebConnectionProtocol4ValidateAppIdentity;
 type WebConnectionProtocol5ValidateAppIdentityFailedResponse =
   BrowserTypes.WebConnectionProtocol5ValidateAppIdentityFailedResponse;
@@ -138,7 +141,7 @@ export class OpenHandler implements MessageHandler {
       return this.handleAddContextListener(msg as AddContextListenerRequest, sc, uuid);
     } else {
       const from = sc.getInstanceDetails(uuid);
-      if (from) {
+      if (from != null) {
         try {
           if (isOpenRequest(msg)) {
             return this.open(msg, sc, from);
@@ -150,6 +153,8 @@ export class OpenHandler implements MessageHandler {
             return this.getInfo(msg, sc, from);
           } else if (isCloseRequest(msg)) {
             return this.close(msg, sc, from);
+          } else if (isUpdateInstanceMetadataRequest(msg)) {
+            return this.updateInstanceMetadata(msg, sc, from);
           }
         } catch (e) {
           const responseType = msg.type.replace(new RegExp('Request$'), 'Response') as AgentResponseMessage['type'];
@@ -170,7 +175,7 @@ export class OpenHandler implements MessageHandler {
     from: InstanceID
   ): void {
     const pendingOpen = this.pending.get(from);
-    if (pendingOpen) {
+    if (pendingOpen != null) {
       const contextType = arg0.payload.contextType;
       if (pendingOpen.context && pendingOpen.state == AppState.DeliveringContext) {
         if (contextType == pendingOpen.context.type || contextType == undefined) {
@@ -209,7 +214,7 @@ export class OpenHandler implements MessageHandler {
     }
   }
 
-  filterPublicDetails(appD: DirectoryApp, appID: AppIdentifier): AppMetadata {
+  filterPublicDetails(appD: DirectoryApp, appID: AppIdentifier, instanceMetadata?: InstanceMetadata): AppMetadata {
     return {
       appId: appD.appId,
       version: appD.version,
@@ -219,6 +224,7 @@ export class OpenHandler implements MessageHandler {
       icons: appD.icons,
       screenshots: appD.screenshots,
       instanceId: appID.instanceId,
+      ...(instanceMetadata && { instanceMetadata }),
     };
   }
 
@@ -226,12 +232,17 @@ export class OpenHandler implements MessageHandler {
     const appID = arg0.payload.app;
     const details = this.directory.retrieveAppsById(appID.appId);
     if (details.length > 0) {
+      let instanceMetadata: InstanceMetadata | undefined;
+      if (appID.instanceId) {
+        const registration = sc.getInstanceDetails(appID.instanceId);
+        instanceMetadata = registration?.instanceMetadata;
+      }
       successResponse(
         sc,
         arg0,
         from,
         {
-          appMetadata: this.filterPublicDetails(details[0], appID),
+          appMetadata: this.filterPublicDetails(details[0], appID, instanceMetadata),
         },
         'getAppMetadataResponse'
       );
@@ -250,9 +261,11 @@ export class OpenHandler implements MessageHandler {
     const matching = openApps
       .filter(a => a.appId == appId)
       .map(a => {
+        const instanceMetadata = sc.getInstanceDetails(a.instanceId)?.instanceMetadata;
         return {
           appId: a.appId,
           instanceId: a.instanceId,
+          ...(instanceMetadata && { instanceMetadata }),
         };
       });
     successResponse(
@@ -315,8 +328,40 @@ export class OpenHandler implements MessageHandler {
     }
   }
 
-  getImplementationMetadata(sc: ServerContext<AppRegistration>, appIdentity: AppIdentifier) {
-    const appMetadata = this.filterPublicDetails(this.directory.retrieveAppsById(appIdentity.appId)[0], appIdentity);
+  updateInstanceMetadata(
+    request: UpdateInstanceMetadataRequest,
+    serverContext: ServerContext<AppRegistration>,
+    from: FullAppIdentifier
+  ): void {
+    const details = serverContext.getInstanceDetails(from.instanceId);
+    if (details != null) {
+      details.instanceMetadata = {
+        ...details.instanceMetadata,
+        ...request.payload.instanceMetadata,
+      };
+      serverContext.setInstanceDetails(from.instanceId, details);
+      successResponse(serverContext, request, from, {}, 'updateInstanceMetadataResponse');
+    } else {
+      errorResponse(
+        serverContext,
+        request,
+        from,
+        ResolveError.TargetInstanceUnavailable,
+        'updateInstanceMetadataResponse'
+      );
+    }
+  }
+
+  getImplementationMetadata(sc: ServerContext<AppRegistration>, appIdentity: AppIdentifier): ImplementationMetadata {
+    let instanceMetadata: InstanceMetadata | undefined;
+    if (appIdentity.instanceId != null) {
+      instanceMetadata = sc.getInstanceDetails(appIdentity.instanceId)?.instanceMetadata;
+    }
+    const appMetadata = this.filterPublicDetails(
+      this.directory.retrieveAppsById(appIdentity.appId)[0],
+      appIdentity,
+      instanceMetadata
+    );
     return {
       provider: sc.provider(),
       providerVersion: sc.providerVersion(),
@@ -370,7 +415,7 @@ export class OpenHandler implements MessageHandler {
       console.debug('App attempting to reconnect:', arg0.payload.instanceUuid);
       const appIdentity = sc.getInstanceDetails(arg0.payload.instanceUuid);
 
-      if (appIdentity) {
+      if (appIdentity != null) {
         // in this case, the app is reconnecting, so let's just re-assign the identity
         console.debug(
           `Reassigned existing identity, appId: `,
@@ -389,13 +434,13 @@ export class OpenHandler implements MessageHandler {
 
     // we need to assign an identity to this app - this should have been generated when it was launched
     const appIdentity = sc.getInstanceDetails(from);
-    if (appIdentity) {
+    if (appIdentity != null) {
       sc.setAppState(appIdentity.instanceId, State.Connected);
       returnSuccess(appIdentity.appId, appIdentity.instanceId);
 
       // make sure, if the opener is listening for this app to open, then it gets informed
       const pendingOpen = this.pending.get(from);
-      if (pendingOpen) {
+      if (pendingOpen != null) {
         if (pendingOpen.state == AppState.Opening) {
           pendingOpen.setOpened(appIdentity);
         }

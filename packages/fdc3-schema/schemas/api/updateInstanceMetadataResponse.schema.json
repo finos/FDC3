@@ -1,0 +1,65 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/updateInstanceMetadataResponse.schema.json",
+	"type": "object",
+	"title": "UpdateInstanceMetadata Response",
+	"description": "A response to a updateInstanceMetadata request.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/UpdateInstanceMetadataResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/UpdateInstanceMetadataSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/UpdateInstanceMetadataErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"UpdateInstanceMetadataResponseType": {
+			"title": "UpdateInstanceMetadata Response Message Type",
+			"const": "updateInstanceMetadataResponse"
+		},
+		"UpdateInstanceMetadataSuccessResponsePayload": {
+			"title": "UpdateInstanceMetadata Response Payload",
+			"type": "object",
+			"properties": {},
+			"additionalProperties": false
+		},
+		"UpdateInstanceMetadataErrorResponsePayload": {
+			"title": "UpdateInstanceMetadata Error Response Payload",
+			"type": "object",
+			"properties": {
+				"error": {
+					"title": "UpdateInstanceMetadata Error Message",
+					"oneOf": [
+						{
+							"$ref": "api.schema.json#/definitions/ResolveError"
+						},
+						{
+							"$ref": "api.schema.json#/definitions/BridgingError"
+						}
+					]
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}
