@@ -8,6 +8,7 @@ Feature: Basic Intents Support
     And app "bank/b1" resolves intent "Buy" with context "fdc3.instrument" and result type "fdc3.order"
     And app "bank/b1" resolves intent "Sell" with context "fdc3.instrument" and result type "fdc3.order"
     And app "travelAgent/t1" resolves intent "BookFlight" with context "fdc3.country" and result type "fdc3.order"
+    And app "phone/p1" resolves intent "StartCall"
     And app "notused/n1" resolves intent "Buy" with context "fdc3.cancel-me" and result type "fdc3.order"
     And app "notused/n2" resolves intent "Buy" with context "fdc3.cancel-me" and result type "fdc3.order"
     And "instrumentContext" is a "fdc3.instrument" context
@@ -87,6 +88,31 @@ Feature: Basic Intents Support
     And messaging will have posts
       | payload.intent | payload.context.type | payload.metadata.signature.signature | payload.metadata.signature.protected | payload.metadata.custom | matches_type       |
       | Buy            | fdc3.instrument      | {null}                     | {null}                     | {null}                  | raiseIntentRequest |
+
+  Scenario: Raising an intent without a context substitutes the fdc3.nothing context type
+            An app that only raises an intent to obtain a result can omit the context
+            argument entirely; the proxy substitutes the fdc3.nothing context so the
+            wire message remains valid.
+
+    When I call "{api}" with "raiseIntent" with parameter "StartCall"
+    Then "{result}" is an object with the following contents
+      | source.appId | source.instanceId |
+      | phone        | p1                |
+    And messaging will have posts
+      | payload.intent | payload.context.type | matches_type       |
+      | StartCall      | fdc3.nothing         | raiseIntentRequest |
+
+  Scenario: Raising an intent with a null context and a target app substitutes the fdc3.nothing context type
+            Passing null (or undefined) as the context while still targeting a specific
+            app results in the fdc3.nothing context being sent to that app.
+
+    When I call "{api}" with "raiseIntent" with parameters "StartCall" and "{null}" and "{p1}"
+    Then "{result}" is an object with the following contents
+      | source.appId | source.instanceId |
+      | phone        | p1                |
+    And messaging will have posts
+      | payload.intent | payload.context.type | payload.app.instanceId | matches_type       |
+      | StartCall      | fdc3.nothing         | p1                     | raiseIntentRequest |
 
   Scenario: Raising an intent for context with null app and metadata forwards metadata through resolver
     Given "intentMetadata" is metadata with traceId "trace-456" and signature "sig-def" and antiReplay claims "1234/2345/intent-context-jti"

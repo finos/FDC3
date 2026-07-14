@@ -1883,7 +1883,7 @@ fdc3.close();
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-raiseIntent(intent: string, context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
+raiseIntent(intent: string, context?: Context | null, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
 ```
 
 </TabItem>
@@ -1912,7 +1912,7 @@ Alternatively, the specific app or app instance to target can also be provided. 
 
 If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, the promise MUST be rejected with an `Error` object with a `message` chosen from the [`ResolveError`](Errors#resolveerror) enumeration, or (if connected to a Desktop Agent Bridge) the [`BridgingError`](Errors#bridgingerror) enumeration. If a specific target `app` parameter was set, but either the app or app instance is not available, the promise MUST be rejected with an `Error` object with either the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` string as its `message`. If an invalid context object is passed as an argument the promise MUST be rejected with an `Error` object with the [`ResolveError.MalformedContext`](Errors#resolveerror) string as its `message`.
 
-If you wish to raise an intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
+If you wish to raise an intent without a context, the `context` argument may be omitted (or `null`/`undefined` passed). In this case the Desktop Agent MUST substitute the `fdc3.nothing` context type, which apps may use to explicitly declare support for raising an intent without context. A `{ type: "fdc3.nothing" }` context may also be passed explicitly.
 
 An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the raised intent. If metadata is provided without a target app, `null` may be passed for the `app` parameter.
 
@@ -1937,7 +1937,13 @@ const appIntent = await fdc3.findIntent("StartChat", context);
 // use the metadata of an app or app instance to describe the target app for the intent
 await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
 
-//Raise an intent without a context by using the null context type
+//Raise an intent without a context by omitting the context argument
+await fdc3.raiseIntent("StartCall");
+
+//Raise an intent without a context, but targeting a specific app (pass null or undefined for context)
+await fdc3.raiseIntent("StartCall", null, appIntent.apps[0]);
+
+//Raise an intent without a context by explicitly using the fdc3.nothing context type
 await fdc3.raiseIntent("StartChat", {type: "fdc3.nothing"});
 
 //Raise an intent with metadata, passing null for the app parameter
