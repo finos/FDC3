@@ -48,6 +48,66 @@ When('{string} sends validate', (world: CustomWorld, uuid: string) => {
   }
 });
 
+const assertKnownSelfInteractionOption = (option: string) => {
+  if (option !== 'receiveOwnBroadcasts' && option !== 'resolveOwnIntents') {
+    throw new Error(`Unknown self-interaction option ${option}`);
+  }
+};
+
+// Sets a self-interaction option (receiveOwnBroadcasts / resolveOwnIntents) directly
+// on an already-opened instance's registration, as if it had been supplied via getAgent
+// and captured during connection. Used for behaviour tests without the extra handshake post.
+When('{string} has opted in to {string}', (world: CustomWorld, app: string, option: string) => {
+  assertKnownSelfInteractionOption(option);
+  const meta = createMeta(world, app);
+  const details = world.sc.getInstanceDetails(meta.source.instanceId!);
+  if (!details) {
+    throw new Error(`No instance details found for ${app}`);
+  }
+  (details as Record<string, unknown>)[option] = true;
+  world.sc.setInstanceDetails(details.instanceId, details);
+});
+
+// Sends a WCP4 identity validation message carrying a self-interaction option, exercising
+// the full handshake -> storage path in OpenHandler.handleValidate. Requires a directory app
+// so that implementation metadata can be built for the success response.
+When('{string} sends validate opting in to {string}', (world: CustomWorld, uuid: string, option: string) => {
+  assertKnownSelfInteractionOption(option);
+  const identity = world.sc.getInstanceDetails(uuid);
+  if (!identity) {
+    throw new Error(`Did not find app identity ${uuid}`);
+  }
+  const payload: WebConnectionProtocol4ValidateAppIdentity['payload'] = {
+    actualUrl: 'something',
+    identityUrl: 'something',
+  };
+  if (option === 'receiveOwnBroadcasts') {
+    payload.receiveOwnBroadcasts = true;
+  } else {
+    payload.resolveOwnIntents = true;
+  }
+  const message: WebConnectionProtocol4ValidateAppIdentity = {
+    type: 'WCP4ValidateAppIdentity',
+    meta: {
+      connectionAttemptUuid: world.sc.createUUID(),
+      timestamp: new Date(),
+    },
+    payload,
+  };
+  world.sc.setAppState(identity.instanceId, State.Connected);
+  world.server.receive(message, uuid);
+});
+
+Then(
+  'instance {string} has {string} equal to {string}',
+  (world: CustomWorld, uuid: string, option: string, expected: string) => {
+    assertKnownSelfInteractionOption(option);
+    const details = world.sc.getInstanceDetails(uuid);
+    expect(details).toBeDefined();
+    expect((details as unknown as Record<string, unknown>)[option]).toEqual(expected === 'true');
+  }
+);
+
 When('{string} revalidates', (world: CustomWorld, uuid: string) => {
   const message: WebConnectionProtocol4ValidateAppIdentity = {
     type: 'WCP4ValidateAppIdentity',

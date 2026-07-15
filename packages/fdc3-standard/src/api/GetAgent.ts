@@ -85,6 +85,25 @@ export type GetAgentType = (params?: GetAgentParams) => Promise<DesktopAgent>;
  * @property {GetAgentLogLevels} logLevels Settings that determine what should
  * will logged by the getAgent() implementation and DesktopAgentProxy to the
  * JavaScript console.
+ *
+ * @property {boolean} receiveOwnBroadcasts Flag indicating that the application
+ * wishes to receive its own broadcasts, i.e. context messages that it broadcasts
+ * to a channel it is joined to (or listening on) should be delivered back to it.
+ * Defaults to `false`, in which case a Desktop Agent SHOULD NOT deliver an
+ * application's own broadcasts back to it. Applications can distinguish their own
+ * broadcasts from those of other instances of the same app via the `source`
+ * (`instanceId`) in the [`ContextMetadata`](ref/Metadata#contextmetadata) provided
+ * to their context handlers. MAY be ignored by Desktop Agent Preload (container)
+ * implementations.
+ *
+ * @property {boolean} resolveOwnIntents Flag indicating that the application is
+ * willing for its own instance to be considered when resolving intents that it
+ * raises (i.e. an intent it raises may be delivered back to the same instance).
+ * Defaults to `false`, in which case a Desktop Agent SHOULD NOT resolve an intent
+ * raised by an application instance to that same instance (other instances of the
+ * same app remain eligible). If enabling this leaves no eligible targets, the
+ * raising app receives a `NoAppsFound` error. MAY be ignored by Desktop Agent
+ * Preload (container) implementations.
  */
 export type GetAgentParams = {
   timeoutMs?: number;
@@ -94,6 +113,8 @@ export type GetAgentParams = {
   dontSetWindowFdc3?: boolean;
   failover?: (args: GetAgentParams) => Promise<WindowProxy | DesktopAgent>;
   logLevels?: GetAgentLogLevels;
+  receiveOwnBroadcasts?: boolean;
+  resolveOwnIntents?: boolean;
 };
 
 /**

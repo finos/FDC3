@@ -445,13 +445,17 @@ export class BroadcastHandler implements MessageHandler {
       return r.channelId == null && ucId == arg0.payload.channelId;
     };
 
+    // Unless the broadcasting app opted in (via getAgent's receiveOwnBroadcasts),
+    // its own broadcasts are not delivered back to it.
+    const receiveOwnBroadcasts = sc.getInstanceDetails(from.instanceId)?.receiveOwnBroadcasts ?? false;
+
     const matchingListeners = this.contextListeners
       // Deliver the message to apps listening to the right channel
       .filter(r => matchesExactChannel(r) || matchesUserChannel(r))
       // Deliver the message to apps with matching context type listeners
       .filter(r => r.contextType == null || r.contextType == arg0.payload.context.type)
-      // Don't deliver messages back to the broadcasting app
-      .filter(r => r.instanceId !== from.instanceId);
+      // Don't deliver messages back to the broadcasting app (unless it opted in)
+      .filter(r => receiveOwnBroadcasts || r.instanceId !== from.instanceId);
 
     const matchingApps: FullAppIdentifier[] = matchingListeners
       .map(r => {

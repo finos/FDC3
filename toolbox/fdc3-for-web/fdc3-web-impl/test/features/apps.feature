@@ -37,6 +37,16 @@ Feature: Opening and Requesting App Details
       | WCP5ValidateAppIdentityResponse | {null}                          | {null}                               | storageApp        | uuid-0                 | uuid-0        | storageApp |
       | openResponse                    | storageApp                      | uuid-0                               | {null}            | {null}                 | a1            | libraryApp |
 
+  Scenario: Self-interaction options supplied during validation are stored against the instance
+    When "libraryApp/a1" opens app "storageApp"
+    And "uuid-0" sends validate opting in to "receiveOwnBroadcasts"
+    Then messaging will have outgoing posts
+      | msg.matches_type                | msg.payload.appId | to.instanceId | to.appId   |
+      | WCP5ValidateAppIdentityResponse | storageApp        | uuid-0        | storageApp |
+      | openResponse                    | {null}            | a1            | libraryApp |
+    And instance "uuid-0" has "receiveOwnBroadcasts" equal to "true"
+    And instance "uuid-0" has "resolveOwnIntents" equal to "false"
+
   Scenario: Storage App Reconnects
     When "libraryApp/a1" opens app "storageApp"
     And "uuid-0" sends validate

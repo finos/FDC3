@@ -560,7 +560,7 @@ func (desktopAgent *DesktopAgent) Broadcast(context IContext, metadata *AppProvi
 
 Publishes context to other apps on the desktop.  Calling `broadcast` at the `DesktopAgent` scope will push the context to whatever _User Channel_ the app is joined to.  If the app is not currently joined to a channel, calling `fdc3.broadcast` will have no effect.  Apps can still directly broadcast and listen to context on any channel via the methods on the `Channel` class.
 
-DesktopAgent implementations SHOULD ensure that context messages broadcast to a channel by an application joined to it are not delivered back to that same application.
+DesktopAgent implementations SHOULD ensure that context messages broadcast to a channel by an application joined to it are not delivered back to that same application, unless that application has opted in to receiving its own broadcasts via the [`receiveOwnBroadcasts`](GetAgent#type-definitions) option of [`getAgent`](GetAgent). Where an application has opted in, it can distinguish its own broadcasts from those of other instances of the same application via the `source` field (which includes the originating `instanceId`) of the [`ContextMetadata`](Metadata#contextmetadata) provided to its context handlers.
 
 If you are working with complex context types composed of other simpler types (as recommended by the [Context Data specification](../../context/spec#assumptions)) then you should broadcast each individual type (starting with the simpler types, followed by the complex type) that you want other apps to be able to respond to. Doing so allows applications to filter the context types they receive by adding listeners for specific context types.
 
@@ -1910,6 +1910,8 @@ Raises a specific intent for resolution against apps registered with the desktop
 The desktop agent MUST resolve the correct app to target based on the provided intent name and context data. If multiple matching apps are found, a method for resolving the intent to a target app, such as presenting the user with a resolver UI allowing them to pick an app, SHOULD be provided.
 Alternatively, the specific app or app instance to target can also be provided. A list of valid target applications and instances can be retrieved via [`findIntent`](DesktopAgent#findintent).
 
+By default, the instance raising the intent SHOULD NOT be considered when resolving it (i.e. the intent will not be delivered back to the same instance), although other instances of the same application remain eligible. An application may opt in to having its own instance considered via the [`resolveOwnIntents`](GetAgent#type-definitions) option of [`getAgent`](GetAgent). If excluding the raising instance leaves no app able to resolve the intent, the promise MUST be rejected with a [`ResolveError.NoAppsFound`](Errors#resolveerror) error.
+
 If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, the promise MUST be rejected with an `Error` object with a `message` chosen from the [`ResolveError`](Errors#resolveerror) enumeration, or (if connected to a Desktop Agent Bridge) the [`BridgingError`](Errors#bridgingerror) enumeration. If a specific target `app` parameter was set, but either the app or app instance is not available, the promise MUST be rejected with an `Error` object with either the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` string as its `message`. If an invalid context object is passed as an argument the promise MUST be rejected with an `Error` object with the [`ResolveError.MalformedContext`](Errors#resolveerror) string as its `message`.
 
 If you wish to raise an intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
@@ -2054,6 +2056,8 @@ The desktop agent SHOULD first resolve to a specific intent based on the provide
 Alternatively, the specific app or app instance to target can also be provided, in which case any method of resolution SHOULD only consider intents supported by the specified application.
 
 Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.
+
+As with [`raiseIntent`](#raiseintent), the instance raising the intent SHOULD NOT be considered when resolving it unless it has opted in via the [`resolveOwnIntents`](GetAgent#type-definitions) option of [`getAgent`](GetAgent).
 
 An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the raised intent. If metadata is provided without a target app, `null` may be passed for the `app` parameter.
 

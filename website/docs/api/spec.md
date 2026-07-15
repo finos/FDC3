@@ -139,7 +139,8 @@ An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
 - Qualify `appId` values received from an app directory with the hostname of the app directory server (e.g. `myAppId@name.domain.com`) [as defined in the app directory standard](../app-directory/overview#application-identifiers).
 - Allow applications to register an [`IntentHandler`](ref/Types#intenthandler) for particular Intent and Context type pairs by providing `interop.intents.listensFor` metadata in their AppD record.
 - Adopt the [recommended set of User channel definitions](#recommended-user-channel-set).
-- Ensure that context messages broadcast by an application on a channel are not delivered back to that same application if they are joined to the channel.
+- Ensure that context messages broadcast by an application on a channel are not delivered back to that same application if they are joined to the channel, unless that application has opted in to receiving its own broadcasts (see the [`receiveOwnBroadcasts`](ref/GetAgent#type-definitions) option of [`getAgent`](ref/GetAgent)).
+- Ensure that an intent raised by an application instance is not resolved to that same instance, unless that application has opted in to resolving its own intents (see the [`resolveOwnIntents`](ref/GetAgent#type-definitions) option of [`getAgent`](ref/GetAgent)). Other instances of the same application remain eligible to resolve the intent.
 - Prevent external apps from listening or publishing on a [`PrivateChannel`](ref/PrivateChannel) that they did not request or provide.
 - Enforce compliance with the expected behavior of intents (where Intents specify a contract that is enforceable by schema, for example, return object types) and return an error if the interface is not met.
 
@@ -177,7 +178,7 @@ A Desktop Agent's [`Channel`](ref/Channel) implementation **MUST**:
 
 A Desktop Agent's [`Channel`](ref/Channel) implementation **SHOULD**:
 
-- Ensure that context messages broadcast by an application on a channel are not delivered back to that same application if it is also listening on the channel.
+- Ensure that context messages broadcast by an application on a channel are not delivered back to that same application if it is also listening on the channel, unless that application has opted in to receiving its own broadcasts (see the [`receiveOwnBroadcasts`](ref/GetAgent#type-definitions) option of [`getAgent`](ref/GetAgent)).
 - Provide [`ContextMetadata`](ref/Metadata#contextmetadata) to [`ContextHandler`](ref/Types#contexthandler) functions, including any app-provided `traceId`, `signature`, `antiReplay` and `custom` metadata that was included in the [`broadcast`](ref/Channel#broadcast) call.
 
 #### PrivateChannel Interface Compliance
@@ -339,6 +340,12 @@ An optional result type is also supported when programmatically resolving an int
 ### Resolvers
 
 Successful delivery of an intent depends first upon the Desktop Agent's ability to "resolve the intent" (i.e. map the intent to a specific App instance). Where the target application is ambiguous (because there is more than one application that could resolve the intent and context) Desktop Agents may resolve intents by any suitable methodology. A common method is to display a UI that allows the user to pick the desired App from a list of those that will accept the intent and context. Alternatively, the app issuing the intent may proactively handle resolution by calling [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentsByContext`](ref/DesktopAgent#findintentsbycontext) and then raise the intent with a specific target application, e.g.:
+
+:::note
+
+By default, the instance of an application that raises an intent SHOULD NOT be considered when resolving that intent, i.e. an intent is not delivered back to the same instance that raised it. Other instances of the same application remain eligible to resolve the intent. An application may opt in to having its own instance considered (so that an intent it raises may be delivered back to the same instance) via the [`resolveOwnIntents`](ref/GetAgent#type-definitions) option of [`getAgent`](ref/GetAgent). If excluding the raising instance leaves no application able to resolve the intent, the Desktop Agent MUST reject the `raiseIntent` call with a [`ResolveError.NoAppsFound`](ref/Errors#resolveerror) error.
+
+:::
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
@@ -673,7 +680,7 @@ There are three types of channels, which have different visibility and discovera
 
 Channels are interacted with via `broadcast` and `addContextListener` functions, allowing an application to send and receive Context objects via the channel. For User channels, these functions are provided on the Desktop Agent, e.g. [`fdc3.broadcast(context)`](ref/DesktopAgent#broadcast), and apply to channels joined via [`fdc3.joinUserChannel`](ref/DesktopAgent#joinuserchannel). For App channels, a channel object must be retrieved, via [`fdc3.getOrCreateChannel(channelName)`](ref/DesktopAgent#getorcreatechannel), which provides the functions, i.e. [`myChannel.broadcast(context)`](ref/Channel#broadcast) and [`myChannel.addContextListener(context)`](ref/Channel#addcontextlistener). For `PrivateChannels`, a channel object must also be retrieved, but via an intent raised with [`fdc3.raiseIntent(intent, context)`](ref/DesktopAgent#raiseintent) and returned as an [`IntentResult`](ref/Types#intentresult).
 
-Channel implementations SHOULD ensure that context messages broadcast by an application on a channel are not delivered back to that same application if they are also listening on the channel.
+Channel implementations SHOULD ensure that context messages broadcast by an application on a channel are not delivered back to that same application if they are also listening on the channel, unless that application has opted in to receiving its own broadcasts via the [`receiveOwnBroadcasts`](ref/GetAgent#type-definitions) option of [`getAgent`](ref/GetAgent). Where an application has opted in, it can distinguish its own broadcasts from those of other instances of the same application via the `source` field (which includes the originating `instanceId`) of the [`ContextMetadata`](ref/Metadata#contextmetadata) provided to its context handlers.
 
 ### Joining User Channels
 
@@ -736,7 +743,7 @@ await _desktopAgent.JoinUserChannel(redChannel.Id);
 
 Calling `fdc3.broadcast` will now route context to the joined channel.
 
-Channel implementations SHOULD ensure that context messages broadcast by an application on a channel are not delivered back to that same application if they are joined to the channel.
+Channel implementations SHOULD ensure that context messages broadcast by an application on a channel are not delivered back to that same application if they are joined to the channel, unless that application has opted in to receiving its own broadcasts via the [`receiveOwnBroadcasts`](ref/GetAgent#type-definitions) option of [`getAgent`](ref/GetAgent).
 
   > Prior to FDC3 2.0, 'user' channels were known as 'system' channels. They were renamed in FDC3 2.0 to reflect their intended usage, rather than the fact that they are created by system (which could also create 'app' channels). The `joinChannel` function was also renamed to `joinUserChannel` to clarify that it is only intended to be used to join 'user', rather than 'app', channels.
 
