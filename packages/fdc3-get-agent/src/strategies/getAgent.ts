@@ -211,6 +211,8 @@ export const getAgent: GetAgentType = (params?: GetAgentParams) => {
     channelSelector: true,
     intentResolver: true,
     timeoutMs: DEFAULT_GETAGENT_TIMEOUT_MS,
+    receiveOwnBroadcasts: false,
+    resolveOwnIntents: false,
     //default log levels are set in the relevant logging utils
   };
 

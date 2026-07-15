@@ -299,6 +299,20 @@ export interface WebConnectionProtocol4ValidateAppIdentityPayload {
    * Instance UUID associated with the requested instanceId.
    */
   instanceUuid?: string;
+  /**
+   * Flag indicating that the application wishes to receive its own broadcasts, i.e. context
+   * messages it broadcasts to a channel it is joined to (or listening on) should be delivered
+   * back to it. Defaults to false when omitted, in which case the Desktop Agent SHOULD NOT
+   * deliver the application's own broadcasts back to it.
+   */
+  receiveOwnBroadcasts?: boolean;
+  /**
+   * Flag indicating that the application is willing for its own instance to be considered
+   * when resolving intents that it raises. Defaults to false when omitted, in which case the
+   * Desktop Agent SHOULD NOT resolve an intent raised by the application instance to that
+   * same instance (other instances of the same app remain eligible).
+   */
+  resolveOwnIntents?: boolean;
 }
 
 /**
@@ -5213,6 +5227,8 @@ const typeMap: any = {
       { json: 'identityUrl', js: 'identityUrl', typ: '' },
       { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
       { json: 'instanceUuid', js: 'instanceUuid', typ: u(undefined, '') },
+      { json: 'receiveOwnBroadcasts', js: 'receiveOwnBroadcasts', typ: u(undefined, true) },
+      { json: 'resolveOwnIntents', js: 'resolveOwnIntents', typ: u(undefined, true) },
     ],
     false
   ),
