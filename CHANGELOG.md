@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Added programmatic context schema discovery to `@finos/fdc3-context` (re-exported from `@finos/fdc3`), exposing `getContextTypes()`, `getContextSchema()`, `getAllContextSchemas()`, `getContextSchemaMetadata()` and `hasContextSchema()` so that applications and tooling can enumerate the standardized context types and retrieve their JSON Schemas at runtime. The registry is generated from the existing context schema files (the single source of truth) via a new `schemagen` build step, keeping it automatically in sync.
 * Added advanced conformance tests (`fdc3.intentListenerConflict`) covering intent listener conflicts, verifying that `addIntentListener`/`addIntentListenerWithContext` reject with `ResolveError.IntentListenerConflict` for conflicting listeners (unfiltered, or overlapping context types) and allow non-overlapping filtered listeners, listeners for different intents, and re-adding after `unsubscribe()`. Added the corresponding test definitions to the "Avoiding Adding Multiple Intent Listeners" section of the Intents conformance docs.
 * Added a classification field to Instrument context type ([#1665](https://github.com/finos/FDC3/pull/1665))
 * Added Go language binding. ([#1483](https://github.com/finos/FDC3/pull/1483))
