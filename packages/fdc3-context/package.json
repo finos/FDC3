@@ -38,7 +38,7 @@
     "ajv": "^8.18.0",
     "ajv-formats": "^3.0.1",
     "mkdirp": "^3.0.1",
-    "quicktype": "23.0.78",
+    "quicktype": "23.3.23",
     "tslib": "^2.7.0"
   },
   "overrides": {
