@@ -31,7 +31,7 @@
     "test": "tsc"
   },
   "dependencies": {
-    "@cucumber/cucumber": "^11.3.0",
+    "@cucumber/cucumber": "^13.0.0",
     "pixelmatch": "^6.0.0",
     "quickpickle": "^1.6.1",
     "@cucumber/html-formatter": "23.1.0",
