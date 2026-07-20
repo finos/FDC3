@@ -3,8 +3,8 @@
     {
       "appId": "security-poc-2",
       "name": "Security POC 2",
-      "title": "Security POC 2: Responds to GetPrices",
-      "description": "Creates a private channel to broadcast encrypted prices",
+      "title": "Security POC 2: Responds with Prices",
+      "description": "Sell-side application demonstrating the FDC3 security model. Handles the demo.GetPrices intent: verifies the requesting application's JWS signature on the inbound fdc3.instrument context, then returns a private channel over which encrypted fdc3.valuation snapshots are broadcast using symmetric key encryption.",
       "type": "web",
       "details": {
         "url": "http://localhost:4034"
@@ -13,7 +13,7 @@
       "version": "1.0.0",
       "publisher": "FINOS",
       "categories": [
-        "Secure FDC3 Workflow Example"
+        "Security: Pricing Workflow Example"
       ],
       "icons": [
         {

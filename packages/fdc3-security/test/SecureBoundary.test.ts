@@ -68,11 +68,11 @@ class PrivateChannelDisconnectHandlers extends DefaultFDC3Handlers {
 }
 
 class EchoExchangeHandlers extends DefaultFDC3Handlers {
-  async exchangeData(purpose: string, o: object): Promise<object | void> {
+  async exchangeData(purpose: string, payload: unknown): Promise<unknown> {
     if (purpose === 'echo') {
-      return { ...(o as Record<string, unknown>), echoed: true };
+      return { ...(payload as Record<string, unknown>), echoed: true };
     }
-    return super.exchangeData(purpose, o);
+    return super.exchangeData(purpose, payload);
   }
 }
 

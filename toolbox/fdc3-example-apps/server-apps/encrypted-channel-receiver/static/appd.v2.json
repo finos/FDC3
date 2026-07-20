@@ -4,7 +4,7 @@
       "appId": "encrypted-channel-receiver-1",
       "name": "Encrypted channel receiver",
       "title": "Encrypted channel receiver",
-      "description": "FDC3 encrypted context demo — decrypting on the current user channel (PublicEncryptedContextListenerSupport).",
+      "description": "FDC3 encrypted channel demo (frontend-key pattern). Listens on the current user channel for fdc3.security.encryptedContext broadcasts. Requests the symmetric key via a signed fdc3.security.symmetricKeyRequest, unwraps it on the backend, and decrypts each payload in the browser using PublicEncryptedContextListenerSupport.",
       "type": "web",
       "details": {
         "url": "http://localhost:4030"
@@ -13,13 +13,18 @@
       "version": "1.0.0",
       "publisher": "FINOS",
       "categories": [
-        "Broadcasting and Receiving Contexts Demo"
+        "Security: Encrypted Channels Demo"
       ],
       "icons": [
         {
           "src": "http://localhost:4030/icon.svg"
         }
-      ]
+      ],
+      "interop": {
+        "contexts": {
+          "listensFor": ["fdc3.security.encryptedContext"]
+        }
+      }
     }
   ],
   "message": "OK"

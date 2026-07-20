@@ -45,6 +45,11 @@ export interface ServerContext<X extends AppRegistration> {
    */
   open(appId: string, source?: AppIdentifier): Promise<InstanceID>;
 
+  /**
+   * Closes the app instance identified by instanceId.
+   */
+  close(instanceId: InstanceID): Promise<void>;
+
   /** Set the FDC3Server instance associated with this context. This reference is
    *  used to notify the server to cleanup state for apps that have been terminated.
    *  The FDC3Server is passed a ServerContext when created and should call this fn

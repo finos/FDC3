@@ -196,9 +196,20 @@ window.addEventListener('load', () => {
     socket.emit(DA_HELLO, desktopAgentUUID);
 
     const directory = new FDC3_2_1_JSONDirectory();
-    await directory.load('http://localhost:4005/static/generated/fdc3-example-apps.json');
-    await directory.load('http://localhost:4005/static/localhost-workbench.json');
-    await directory.load('http://localhost:4005/static/localhost-conformance.json');
+
+    const directoryUrls = [
+      'http://localhost:4005/static/generated/fdc3-example-apps.json',
+      'http://localhost:4001/toolbox/fdc3-workbench/localhost-workbench.json',
+      'http://localhost:3001/directories/localhost-conformance.json',
+    ];
+    for (const url of directoryUrls) {
+      try {
+        await directory.load(url);
+      } catch (e) {
+        console.warn('[Demo DA] Failed to load directory, is it running?:', url, e instanceof Error ? e.message : e);
+      }
+    }
+
     const sc = new DemoServerContext(socket, directory);
 
     const channelDetails: ChannelState[] = [
@@ -299,7 +310,19 @@ window.addEventListener('load', () => {
       const mani = app?.hostManifests?.demo as any;
       return mani?.visible ?? true;
     });
-    renderAppList(appList, visibleApps, sc);
+
+    if (visibleApps.length === 0) {
+      appList.replaceChildren();
+      const msg = document.createElement('p');
+      msg.style.padding = '20px';
+      msg.style.color = '#666';
+      msg.style.textAlign = 'center';
+      msg.textContent =
+        'No apps available. At least one of fdc3-example-apps, fdc3-workbench, or fdc3-conformance needs to be running.';
+      appList.appendChild(msg);
+    } else {
+      renderAppList(appList, visibleApps, sc);
+    }
 
     // set up Desktop Agent Proxy interface here
     // disabling rule for checks on origin of messages - this could be improved by validating for origins we know we are working with

@@ -18,6 +18,8 @@ import {
   GetInfoResponse,
   OpenRequest,
   OpenResponse,
+  CloseRequest,
+  CloseResponse,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { throwIfUndefined } from '../util/throwIfUndefined.js';
 import { Logger } from '../util/Logger.js';
@@ -103,6 +105,16 @@ export class DefaultAppSupport implements AppSupport {
     );
 
     return response.payload.appIdentifier!;
+  }
+
+  async close(): Promise<void> {
+    const request: CloseRequest = {
+      type: 'closeRequest',
+      payload: {},
+      meta: this.messaging.createMeta(),
+    };
+
+    await this.messaging.exchange<CloseResponse>(request, 'closeResponse', this.messageExchangeTimeout);
   }
 
   async getImplementationMetadata(): Promise<ImplementationMetadata> {

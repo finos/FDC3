@@ -74,6 +74,7 @@ export class DefaultIntentSupport implements IntentSupport {
   readonly intentResolver: IntentResolver;
   readonly messageExchangeTimeout: number;
   readonly appLaunchTimeout: number;
+  private readonly intentListeners: DefaultIntentListener[] = [];
 
   constructor(
     messaging: Messaging,
@@ -211,13 +212,7 @@ export class DefaultIntentSupport implements IntentSupport {
         request,
         details.source
       );
-      return new DefaultIntentResolution(
-        this.messaging,
-        resolvedResult,
-        resolvedMetadata,
-        details.source,
-        details.intent
-      );
+      return new DefaultIntentResolution(resolvedResult, resolvedMetadata, details.source, details.intent);
     }
   }
 
@@ -273,19 +268,65 @@ export class DefaultIntentSupport implements IntentSupport {
         request,
         details.source
       );
-      return new DefaultIntentResolution(
-        this.messaging,
-        resolvedResult,
-        resolvedMetadata,
-        details.source,
-        details.intent
-      );
+      return new DefaultIntentResolution(resolvedResult, resolvedMetadata, details.source, details.intent);
     }
   }
 
   async addIntentListener(intent: string, handler: IntentHandler): Promise<Listener> {
-    const out = new DefaultIntentListener(this.messaging, intent, handler, this.messageExchangeTimeout);
+    return this.registerIntentListener(intent, undefined, handler);
+  }
+
+  async addIntentListenerWithContext(
+    intent: string,
+    contextType: string | string[],
+    handler: IntentHandler
+  ): Promise<Listener> {
+    return this.registerIntentListener(intent, Array.isArray(contextType) ? contextType : [contextType], handler);
+  }
+
+  private async registerIntentListener(
+    intent: string,
+    contextTypes: string[] | undefined,
+    handler: IntentHandler
+  ): Promise<Listener> {
+    this.throwIfConflicting(intent, contextTypes);
+
+    const out = new DefaultIntentListener(
+      this.messaging,
+      intent,
+      contextTypes,
+      handler,
+      this.messageExchangeTimeout,
+      () => {
+        const index = this.intentListeners.indexOf(out);
+        if (index !== -1) {
+          this.intentListeners.splice(index, 1);
+        }
+      }
+    );
     await out.register();
+    this.intentListeners.push(out);
     return out;
+  }
+
+  /**
+   * A new intent listener conflicts with an existing one registered for the same intent when either
+   * listener is unfiltered (no context types, so it handles all contexts) or their declared context
+   * types overlap.
+   */
+  private throwIfConflicting(intent: string, contextTypes: string[] | undefined): void {
+    const conflict = this.intentListeners.some(existing => {
+      if (existing.intent !== intent) {
+        return false;
+      }
+      if (existing.contextTypes == null || contextTypes == null) {
+        return true;
+      }
+      return existing.contextTypes.some(ct => contextTypes.includes(ct));
+    });
+
+    if (conflict) {
+      throw new Error(ResolveError.IntentListenerConflict);
+    }
   }
 }

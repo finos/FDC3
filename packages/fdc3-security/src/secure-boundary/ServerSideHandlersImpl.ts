@@ -1,6 +1,6 @@
 import { WebSocketServer, WebSocket } from 'ws';
 import { Server as HttpServer } from 'http';
-import { FDC3Handlers } from './FDC3Handlers.js';
+import { FDC3Handlers, BackendIntentHandler } from './FDC3Handlers.js';
 import {
   REMOTE_INTENT_HANDLER,
   RemoteIntentHandlerMessage,
@@ -101,7 +101,7 @@ export function setupWebsocketServer(
 
           case REMOTE_INTENT_HANDLER: {
             const props = payload as RemoteIntentHandlerMessage;
-            const ih = await handlers.remoteIntentHandler(props.intent);
+            const ih: BackendIntentHandler = await handlers.remoteIntentHandler(props.intent);
             // Create a unique sub-event name the client will use to invoke the handler
             const handlerId = uuidv4();
             // Register dynamic handler
@@ -117,7 +117,7 @@ export function setupWebsocketServer(
 
           case EXCHANGE_DATA: {
             const props = payload as ExchangeDataMessage;
-            const obj = await handlers.exchangeData(props.purpose, props.o);
+            const obj = await handlers.exchangeData(props.purpose, props.payload);
             if (id) ack(ws, id, obj);
             break;
           }

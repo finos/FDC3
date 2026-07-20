@@ -1,10 +1,8 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
-import { BrowserTypes } from '@finos/fdc3-schema';
+import { AntiReplayClaims, DetachedSignature } from '@finos/fdc3-standard';
 
-type AntiReplay = BrowserTypes.AntiReplayClaims;
+type AntiReplay = AntiReplayClaims;
 import { JSONWebEncryption, JsonWebKeyWithId, PublicFDC3Security } from './PublicFDC3Security.js';
-
-type DetachedSignature = BrowserTypes.DetachedSignature;
 
 export type UnwrapFunction = (context: SymmetricKeyResponse) => Promise<JsonWebKeyWithId>;
 
@@ -49,7 +47,7 @@ export interface PrivateFDC3Security extends PublicFDC3Security {
    * Unwrap a symmetric key received from another app.
    *
    * Decrypts a wrapped symmetric key using this app's private key.
-   * Used when receiving `fdc3.security.symmetricKey.response`.
+   * Used when receiving `fdc3.security.symmetricKeyResponse`.
    *
    * @param ctx - The SymmetricKeyResponse containing the wrapped key
    * @returns A promise resolving to the unwrapped symmetric key in JWK format

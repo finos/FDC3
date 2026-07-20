@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage, WebSocketConnectionProtocolApplicationConnect, WebSocketConnectionProtocolConnectFailed, WebSocketConnectionProtocolMessage, WebSocketConnectionProtocolDesktopAgentConnect, WebSocketConnectionProtocolGoodbye, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ClearContextRequest, ClearContextResponse, ContextClearedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceChannels, Fdc3UserInterfaceDrag, Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, Fdc3UserInterfaceMessage, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse } from "./file";
+//   import { Convert, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ClearContextRequest, ClearContextResponse, CloseRequest, CloseResponse, ContextClearedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceChannels, Fdc3UserInterfaceDrag, Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, Fdc3UserInterfaceMessage, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse } from "./file";
 //
 //   const webConnectionProtocol1Hello = Convert.toWebConnectionProtocol1Hello(json);
 //   const webConnectionProtocol2LoadURL = Convert.toWebConnectionProtocol2LoadURL(json);
@@ -10,11 +10,6 @@
 //   const webConnectionProtocol5ValidateAppIdentitySuccessResponse = Convert.toWebConnectionProtocol5ValidateAppIdentitySuccessResponse(json);
 //   const webConnectionProtocol6Goodbye = Convert.toWebConnectionProtocol6Goodbye(json);
 //   const webConnectionProtocolMessage = Convert.toWebConnectionProtocolMessage(json);
-//   const webSocketConnectionProtocolApplicationConnect = Convert.toWebSocketConnectionProtocolApplicationConnect(json);
-//   const webSocketConnectionProtocolConnectFailed = Convert.toWebSocketConnectionProtocolConnectFailed(json);
-//   const webSocketConnectionProtocolMessage = Convert.toWebSocketConnectionProtocolMessage(json);
-//   const webSocketConnectionProtocolDesktopAgentConnect = Convert.toWebSocketConnectionProtocolDesktopAgentConnect(json);
-//   const webSocketConnectionProtocolGoodbye = Convert.toWebSocketConnectionProtocolGoodbye(json);
 //   const addContextListenerRequest = Convert.toAddContextListenerRequest(json);
 //   const addContextListenerResponse = Convert.toAddContextListenerResponse(json);
 //   const addEventListenerRequest = Convert.toAddEventListenerRequest(json);
@@ -30,6 +25,8 @@
 //   const channelChangedEvent = Convert.toChannelChangedEvent(json);
 //   const clearContextRequest = Convert.toClearContextRequest(json);
 //   const clearContextResponse = Convert.toClearContextResponse(json);
+//   const closeRequest = Convert.toCloseRequest(json);
+//   const closeResponse = Convert.toCloseResponse(json);
 //   const contextClearedEvent = Convert.toContextClearedEvent(json);
 //   const contextListenerUnsubscribeRequest = Convert.toContextListenerUnsubscribeRequest(json);
 //   const contextListenerUnsubscribeResponse = Convert.toContextListenerUnsubscribeResponse(json);
@@ -389,10 +386,6 @@ export interface WebConnectionProtocol5ValidateAppIdentitySuccessResponsePayload
  * Implementation metadata for the Desktop Agent, which includes an appMetadata element
  * containing a copy of the app's own metadata.
  *
- * Implementation metadata for the Desktop Agent, including the connecting application
- * instance's appMetadata (MUST include at least appId and instanceId). Same shape as
- * returned by fdc3.getInfo().
- *
  * Includes Metadata for the current application.
  *
  * Metadata relating to the FDC3 Desktop Agent implementation and its provider.
@@ -604,7 +597,7 @@ export interface WebConnectionProtocolMessage {
   /**
    * Metadata for a Web Connection Protocol message.
    */
-  meta: WebConnectionProtocolMessageConnectionStepMetadata;
+  meta: ConnectionStepMetadata;
   /**
    * The message payload, containing data pertaining to this connection step.
    */
@@ -612,13 +605,13 @@ export interface WebConnectionProtocolMessage {
   /**
    * Identifies the type of the connection step message.
    */
-  type: WebConnectionProtocolMessageType;
+  type: ConnectionStepMessageType;
 }
 
 /**
  * Metadata for a Web Connection Protocol message.
  */
-export interface WebConnectionProtocolMessageConnectionStepMetadata {
+export interface ConnectionStepMetadata {
   timestamp: Date;
   connectionAttemptUuid?: string;
 }
@@ -626,7 +619,7 @@ export interface WebConnectionProtocolMessageConnectionStepMetadata {
 /**
  * Identifies the type of the connection step message.
  */
-export type WebConnectionProtocolMessageType =
+export type ConnectionStepMessageType =
   | 'WCP1Hello'
   | 'WCP2LoadUrl'
   | 'WCP3Handshake'
@@ -634,207 +627,6 @@ export type WebConnectionProtocolMessageType =
   | 'WCP5ValidateAppIdentityFailedResponse'
   | 'WCP5ValidateAppIdentityResponse'
   | 'WCP6Goodbye';
-
-/**
- * Connect message sent by a native application during the WSCP handshake. When the
- * application is the TCP initiator it MUST include sharedSecret. When the application is
- * the acceptor (responding to WSCPDesktopAgentConnect) it MUST NOT include sharedSecret.
- *
- * A message used during the WebSocket connection flow between a native application and a
- * Desktop Agent. Used for messages sent in either direction.
- */
-export interface WebSocketConnectionProtocolApplicationConnect {
-  /**
-   * Metadata for a WebSocket Connection Protocol message.
-   */
-  meta: WebSocketConnectionProtocolApplicationConnectMeta;
-  /**
-   * The message payload, containing data pertaining to this connection step.
-   */
-  payload: WebSocketConnectionProtocolApplicationConnectPayload;
-  /**
-   * Identifies the type of the WebSocket connection step message.
-   */
-  type: 'WSCPApplicationConnect';
-}
-
-/**
- * Metadata for a WebSocket Connection Protocol message.
- */
-export interface WebSocketConnectionProtocolApplicationConnectMeta {
-  connectionAttemptUuid: string;
-  timestamp: Date;
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebSocketConnectionProtocolApplicationConnectPayload {
-  /**
-   * WSCP protocol version.
-   */
-  protocolVersion: '1.0';
-  /**
-   * Pairing credential scoped to a single (fdc3Session, appInstance) pair. MUST be included
-   * when the application is the TCP initiator. MUST NOT be included when the application is
-   * the acceptor.
-   */
-  sharedSecret?: string;
-}
-
-/**
- * Identifies the type of the WebSocket connection step message.
- */
-
-/**
- * Message sent by the acceptor if the WSCP handshake fails.
- *
- * A message used during the WebSocket connection flow between a native application and a
- * Desktop Agent. Used for messages sent in either direction.
- */
-export interface WebSocketConnectionProtocolConnectFailed {
-  /**
-   * Metadata for a WebSocket Connection Protocol message.
-   */
-  meta: WebSocketConnectionProtocolApplicationConnectMeta;
-  /**
-   * The message payload, containing data pertaining to this connection step.
-   */
-  payload: WebSocketConnectionProtocolConnectFailedPayload;
-  /**
-   * Identifies the type of the WebSocket connection step message.
-   */
-  type: 'WSCPConnectFailed';
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebSocketConnectionProtocolConnectFailedPayload {
-  /**
-   * Human-readable description of why the handshake failed.
-   */
-  message: string;
-}
-
-/**
- * Identifies the type of the WebSocket connection step message.
- */
-
-/**
- * A message used during the WebSocket connection flow between a native application and a
- * Desktop Agent. Used for messages sent in either direction.
- */
-export interface WebSocketConnectionProtocolMessage {
-  /**
-   * Metadata for a WebSocket Connection Protocol message.
-   */
-  meta: WebSocketConnectionProtocolMessageConnectionStepMetadata;
-  /**
-   * The message payload, containing data pertaining to this connection step.
-   */
-  payload?: { [key: string]: any };
-  /**
-   * Identifies the type of the WebSocket connection step message.
-   */
-  type: WebSocketConnectionProtocolMessageType;
-}
-
-/**
- * Metadata for a WebSocket Connection Protocol message.
- */
-export interface WebSocketConnectionProtocolMessageConnectionStepMetadata {
-  timestamp: Date;
-  connectionAttemptUuid?: string;
-}
-
-/**
- * Identifies the type of the WebSocket connection step message.
- */
-export type WebSocketConnectionProtocolMessageType =
-  | 'WSCPApplicationConnect'
-  | 'WSCPDesktopAgentConnect'
-  | 'WSCPConnectFailed'
-  | 'WSCPGoodbye';
-
-/**
- * Connect message sent by a Desktop Agent during the WSCP handshake. When the Desktop Agent
- * is the TCP initiator it MUST include sharedSecret. When the Desktop Agent is the acceptor
- * (responding to WSCPApplicationConnect) it MUST NOT include sharedSecret.
- *
- * A message used during the WebSocket connection flow between a native application and a
- * Desktop Agent. Used for messages sent in either direction.
- */
-export interface WebSocketConnectionProtocolDesktopAgentConnect {
-  /**
-   * Metadata for a WebSocket Connection Protocol message.
-   */
-  meta: WebSocketConnectionProtocolApplicationConnectMeta;
-  /**
-   * The message payload, containing data pertaining to this connection step.
-   */
-  payload: WebSocketConnectionProtocolDesktopAgentConnectPayload;
-  /**
-   * Identifies the type of the WebSocket connection step message.
-   */
-  type: 'WSCPDesktopAgentConnect';
-}
-
-/**
- * The message payload, containing data pertaining to this connection step.
- */
-export interface WebSocketConnectionProtocolDesktopAgentConnectPayload {
-  /**
-   * Implementation metadata for the Desktop Agent, including the connecting application
-   * instance's appMetadata (MUST include at least appId and instanceId). Same shape as
-   * returned by fdc3.getInfo().
-   */
-  implementationMetadata: ImplementationMetadata;
-  /**
-   * WSCP protocol version.
-   */
-  protocolVersion: '1.0';
-  /**
-   * Pairing credential scoped to a single (fdc3Session, appInstance) pair. MUST be included
-   * when the Desktop Agent is the TCP initiator. MUST NOT be included when the Desktop Agent
-   * is the acceptor.
-   */
-  sharedSecret?: string;
-}
-
-/**
- * Identifies the type of the WebSocket connection step message.
- */
-
-/**
- * Goodbye message to be sent when disconnecting a WebSocket connection. The acceptor should
- * close the connection after receiving this message but retain the sharedSecret mapping for
- * the app instance so that a subsequent connect can resume the session.
- *
- * A message used during the WebSocket connection flow between a native application and a
- * Desktop Agent. Used for messages sent in either direction.
- */
-export interface WebSocketConnectionProtocolGoodbye {
-  /**
-   * Metadata for a WebSocket Connection Protocol message.
-   */
-  meta: WebSocketConnectionProtocolGoodbyeMeta;
-  /**
-   * Identifies the type of the WebSocket connection step message.
-   */
-  type: 'WSCPGoodbye';
-}
-
-/**
- * Metadata for a WebSocket Connection Protocol message.
- */
-export interface WebSocketConnectionProtocolGoodbyeMeta {
-  timestamp: Date;
-}
-
-/**
- * Identifies the type of the WebSocket connection step message.
- */
 
 /**
  * A request to add a context listener to a specified Channel OR to the current user
@@ -1154,6 +946,11 @@ export interface AddIntentListenerRequest {
  */
 export interface AddIntentListenerRequestPayload {
   /**
+   * Optional list of context types that the listener should be invoked for. If omitted, the
+   * listener will be invoked for all context types that match the intent.
+   */
+  contextTypes?: string[];
+  /**
    * The name of the intent to listen for.
    */
   intent: string;
@@ -1300,7 +1097,8 @@ export type ResponseMessageType =
   | 'raiseIntentForContextResponse'
   | 'raiseIntentResponse'
   | 'raiseIntentResultResponse'
-  | 'clearContextResponse';
+  | 'clearContextResponse'
+  | 'closeResponse';
 
 /**
  * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
@@ -1349,7 +1147,8 @@ export type RequestMessageType =
   | 'privateChannelUnsubscribeEventListenerRequest'
   | 'raiseIntentForContextRequest'
   | 'raiseIntentRequest'
-  | 'clearContextRequest';
+  | 'clearContextRequest'
+  | 'closeRequest';
 
 /**
  * An event message from the Desktop Agent to an app indicating that context has been
@@ -1478,11 +1277,6 @@ export interface ContextMetadata {
    */
   antiReplay?: AntiReplayClaims;
   /**
-   * The result of verifying the context's signature, populated by the receiving app's
-   * security layer after attempting signature verification.
-   */
-  authenticity?: MessageAuthenticity;
-  /**
    * Custom metadata that can be used to provide additional information about the context or
    * intent. This allows for individuals to use metadata fields that have yet to be
    * standardized.
@@ -1530,46 +1324,6 @@ export interface AntiReplayClaims {
    * Unique identifier for this context instance.
    */
   jti: string;
-}
-
-/**
- * The result of verifying the context's signature, populated by the receiving app's
- * security layer after attempting signature verification.
- *
- * Verification outcomes for signed context objects.
- */
-export interface MessageAuthenticity {
-  /**
-   * The signature algorithm used (from JWS protected header).
-   */
-  alg?: string;
-  antiReplayClaims?: AntiReplayClaims;
-  /**
-   * Human-readable diagnostics (optional).
-   */
-  errors?: string[];
-  /**
-   * The JSON Web Key Set URL where the public key can be retrieved (from JWS protected
-   * header).
-   */
-  jku?: string;
-  /**
-   * The key identifier used to sign the message (from JWS protected header).
-   */
-  kid?: string;
-  /**
-   * Indicates whether the context includes a signature, but check other fields to see if the
-   * signature is valid.
-   */
-  signed: boolean;
-  /**
-   * True if the signing key was obtained from an approved/trusted source.
-   */
-  trusted?: boolean;
-  /**
-   * True if the JWS cryptographically verifies against the signed bytes.
-   */
-  valid?: boolean;
 }
 
 /**
@@ -1811,6 +1565,89 @@ export interface ClearContextResponse {
    */
   type: 'clearContextResponse';
 }
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ */
+
+/**
+ * A request from an FDC3-enabled app to close its own window or frame.
+ *
+ * A request message from an FDC3-enabled app to a Desktop Agent.
+ */
+export interface CloseRequest {
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: CloseRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'closeRequest';
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface CloseRequestPayload {}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ */
+
+/**
+ * A response to a close request. On a successful close the app is destroyed before a
+ * success response can be delivered; only error responses are received by the app in that
+ * case.
+ *
+ * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
+ * payload contains an `error` property, the request was unsuccessful.
+ */
+export interface CloseResponse {
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: CloseResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'closeResponse';
+}
+
+/**
+ * A payload for a response to an API call that will contain any return values or an `error`
+ * property containing a standardized error message indicating that the request was
+ * unsuccessful.
+ */
+export interface CloseResponsePayload {
+  error?: 'ApiTimeout';
+}
+
+/**
+ * Constants representing the errors that can be encountered when calling the `open` method
+ * on the DesktopAgent object (`fdc3`).
+ *
+ * Constants representing the errors that can be encountered when calling the
+ * `addIntentListener`, `findIntent`, `findIntentsByContext`, `raiseIntent` or
+ * `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).
+ *
+ * Constants representing the errors that can be encountered when calling the `close` method
+ * on the DesktopAgent object (`fdc3`).
+ */
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -4510,56 +4347,6 @@ export class Convert {
     return JSON.stringify(uncast(value, r('WebConnectionProtocolMessage')), null, 2);
   }
 
-  public static toWebSocketConnectionProtocolApplicationConnect(
-    json: string
-  ): WebSocketConnectionProtocolApplicationConnect {
-    return cast(JSON.parse(json), r('WebSocketConnectionProtocolApplicationConnect'));
-  }
-
-  public static webSocketConnectionProtocolApplicationConnectToJson(
-    value: WebSocketConnectionProtocolApplicationConnect
-  ): string {
-    return JSON.stringify(uncast(value, r('WebSocketConnectionProtocolApplicationConnect')), null, 2);
-  }
-
-  public static toWebSocketConnectionProtocolConnectFailed(json: string): WebSocketConnectionProtocolConnectFailed {
-    return cast(JSON.parse(json), r('WebSocketConnectionProtocolConnectFailed'));
-  }
-
-  public static webSocketConnectionProtocolConnectFailedToJson(
-    value: WebSocketConnectionProtocolConnectFailed
-  ): string {
-    return JSON.stringify(uncast(value, r('WebSocketConnectionProtocolConnectFailed')), null, 2);
-  }
-
-  public static toWebSocketConnectionProtocolMessage(json: string): WebSocketConnectionProtocolMessage {
-    return cast(JSON.parse(json), r('WebSocketConnectionProtocolMessage'));
-  }
-
-  public static webSocketConnectionProtocolMessageToJson(value: WebSocketConnectionProtocolMessage): string {
-    return JSON.stringify(uncast(value, r('WebSocketConnectionProtocolMessage')), null, 2);
-  }
-
-  public static toWebSocketConnectionProtocolDesktopAgentConnect(
-    json: string
-  ): WebSocketConnectionProtocolDesktopAgentConnect {
-    return cast(JSON.parse(json), r('WebSocketConnectionProtocolDesktopAgentConnect'));
-  }
-
-  public static webSocketConnectionProtocolDesktopAgentConnectToJson(
-    value: WebSocketConnectionProtocolDesktopAgentConnect
-  ): string {
-    return JSON.stringify(uncast(value, r('WebSocketConnectionProtocolDesktopAgentConnect')), null, 2);
-  }
-
-  public static toWebSocketConnectionProtocolGoodbye(json: string): WebSocketConnectionProtocolGoodbye {
-    return cast(JSON.parse(json), r('WebSocketConnectionProtocolGoodbye'));
-  }
-
-  public static webSocketConnectionProtocolGoodbyeToJson(value: WebSocketConnectionProtocolGoodbye): string {
-    return JSON.stringify(uncast(value, r('WebSocketConnectionProtocolGoodbye')), null, 2);
-  }
-
   public static toAddContextListenerRequest(json: string): AddContextListenerRequest {
     return cast(JSON.parse(json), r('AddContextListenerRequest'));
   }
@@ -4678,6 +4465,22 @@ export class Convert {
 
   public static clearContextResponseToJson(value: ClearContextResponse): string {
     return JSON.stringify(uncast(value, r('ClearContextResponse')), null, 2);
+  }
+
+  public static toCloseRequest(json: string): CloseRequest {
+    return cast(JSON.parse(json), r('CloseRequest'));
+  }
+
+  public static closeRequestToJson(value: CloseRequest): string {
+    return JSON.stringify(uncast(value, r('CloseRequest')), null, 2);
+  }
+
+  public static toCloseResponse(json: string): CloseResponse {
+    return cast(JSON.parse(json), r('CloseResponse'));
+  }
+
+  public static closeResponseToJson(value: CloseResponse): string {
+    return JSON.stringify(uncast(value, r('CloseResponse')), null, 2);
   }
 
   public static toContextClearedEvent(json: string): ContextClearedEvent {
@@ -5503,89 +5306,19 @@ const typeMap: any = {
   WebConnectionProtocol6GoodbyeMeta: o([{ json: 'timestamp', js: 'timestamp', typ: Date }], false),
   WebConnectionProtocolMessage: o(
     [
-      { json: 'meta', js: 'meta', typ: r('WebConnectionProtocolMessageConnectionStepMetadata') },
+      { json: 'meta', js: 'meta', typ: r('ConnectionStepMetadata') },
       { json: 'payload', js: 'payload', typ: u(undefined, m('any')) },
-      { json: 'type', js: 'type', typ: r('WebConnectionProtocolMessageType') },
+      { json: 'type', js: 'type', typ: r('ConnectionStepMessageType') },
     ],
     false
   ),
-  WebConnectionProtocolMessageConnectionStepMetadata: o(
+  ConnectionStepMetadata: o(
     [
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'connectionAttemptUuid', js: 'connectionAttemptUuid', typ: u(undefined, '') },
     ],
     false
   ),
-  WebSocketConnectionProtocolApplicationConnect: o(
-    [
-      { json: 'meta', js: 'meta', typ: r('WebSocketConnectionProtocolApplicationConnectMeta') },
-      { json: 'payload', js: 'payload', typ: r('WebSocketConnectionProtocolApplicationConnectPayload') },
-      { json: 'type', js: 'type', typ: r('WebSocketConnectionProtocolApplicationConnectType') },
-    ],
-    false
-  ),
-  WebSocketConnectionProtocolApplicationConnectMeta: o(
-    [
-      { json: 'connectionAttemptUuid', js: 'connectionAttemptUuid', typ: '' },
-      { json: 'timestamp', js: 'timestamp', typ: Date },
-    ],
-    false
-  ),
-  WebSocketConnectionProtocolApplicationConnectPayload: o(
-    [
-      { json: 'protocolVersion', js: 'protocolVersion', typ: r('ProtocolVersion') },
-      { json: 'sharedSecret', js: 'sharedSecret', typ: u(undefined, '') },
-    ],
-    false
-  ),
-  WebSocketConnectionProtocolConnectFailed: o(
-    [
-      { json: 'meta', js: 'meta', typ: r('WebSocketConnectionProtocolApplicationConnectMeta') },
-      { json: 'payload', js: 'payload', typ: r('WebSocketConnectionProtocolConnectFailedPayload') },
-      { json: 'type', js: 'type', typ: r('WebSocketConnectionProtocolConnectFailedType') },
-    ],
-    false
-  ),
-  WebSocketConnectionProtocolConnectFailedPayload: o([{ json: 'message', js: 'message', typ: '' }], false),
-  WebSocketConnectionProtocolMessage: o(
-    [
-      { json: 'meta', js: 'meta', typ: r('WebSocketConnectionProtocolMessageConnectionStepMetadata') },
-      { json: 'payload', js: 'payload', typ: u(undefined, m('any')) },
-      { json: 'type', js: 'type', typ: r('WebSocketConnectionProtocolMessageType') },
-    ],
-    false
-  ),
-  WebSocketConnectionProtocolMessageConnectionStepMetadata: o(
-    [
-      { json: 'timestamp', js: 'timestamp', typ: Date },
-      { json: 'connectionAttemptUuid', js: 'connectionAttemptUuid', typ: u(undefined, '') },
-    ],
-    false
-  ),
-  WebSocketConnectionProtocolDesktopAgentConnect: o(
-    [
-      { json: 'meta', js: 'meta', typ: r('WebSocketConnectionProtocolApplicationConnectMeta') },
-      { json: 'payload', js: 'payload', typ: r('WebSocketConnectionProtocolDesktopAgentConnectPayload') },
-      { json: 'type', js: 'type', typ: r('WebSocketConnectionProtocolDesktopAgentConnectType') },
-    ],
-    false
-  ),
-  WebSocketConnectionProtocolDesktopAgentConnectPayload: o(
-    [
-      { json: 'implementationMetadata', js: 'implementationMetadata', typ: r('ImplementationMetadata') },
-      { json: 'protocolVersion', js: 'protocolVersion', typ: r('ProtocolVersion') },
-      { json: 'sharedSecret', js: 'sharedSecret', typ: u(undefined, '') },
-    ],
-    false
-  ),
-  WebSocketConnectionProtocolGoodbye: o(
-    [
-      { json: 'meta', js: 'meta', typ: r('WebSocketConnectionProtocolGoodbyeMeta') },
-      { json: 'type', js: 'type', typ: r('WebSocketConnectionProtocolGoodbyeType') },
-    ],
-    false
-  ),
-  WebSocketConnectionProtocolGoodbyeMeta: o([{ json: 'timestamp', js: 'timestamp', typ: Date }], false),
   AddContextListenerRequest: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
@@ -5673,7 +5406,13 @@ const typeMap: any = {
     ],
     false
   ),
-  AddIntentListenerRequestPayload: o([{ json: 'intent', js: 'intent', typ: '' }], false),
+  AddIntentListenerRequestPayload: o(
+    [
+      { json: 'contextTypes', js: 'contextTypes', typ: u(undefined, a('')) },
+      { json: 'intent', js: 'intent', typ: '' },
+    ],
+    false
+  ),
   AddIntentListenerResponse: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
@@ -5775,7 +5514,6 @@ const typeMap: any = {
   ContextMetadata: o(
     [
       { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplayClaims')) },
-      { json: 'authenticity', js: 'authenticity', typ: u(undefined, r('MessageAuthenticity')) },
       { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
       { json: 'signature', js: 'signature', typ: u(undefined, r('DetachedSignature')) },
       { json: 'source', js: 'source', typ: r('AppIdentifier') },
@@ -5789,19 +5527,6 @@ const typeMap: any = {
       { json: 'exp', js: 'exp', typ: 3.14 },
       { json: 'iat', js: 'iat', typ: 3.14 },
       { json: 'jti', js: 'jti', typ: '' },
-    ],
-    false
-  ),
-  MessageAuthenticity: o(
-    [
-      { json: 'alg', js: 'alg', typ: u(undefined, '') },
-      { json: 'antiReplayClaims', js: 'antiReplayClaims', typ: u(undefined, r('AntiReplayClaims')) },
-      { json: 'errors', js: 'errors', typ: u(undefined, a('')) },
-      { json: 'jku', js: 'jku', typ: u(undefined, '') },
-      { json: 'kid', js: 'kid', typ: u(undefined, '') },
-      { json: 'signed', js: 'signed', typ: true },
-      { json: 'trusted', js: 'trusted', typ: u(undefined, true) },
-      { json: 'valid', js: 'valid', typ: u(undefined, true) },
     ],
     false
   ),
@@ -5887,6 +5612,24 @@ const typeMap: any = {
     ],
     false
   ),
+  CloseRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('CloseRequestPayload') },
+      { json: 'type', js: 'type', typ: r('CloseRequestType') },
+    ],
+    false
+  ),
+  CloseRequestPayload: o([], false),
+  CloseResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('CloseResponsePayload') },
+      { json: 'type', js: 'type', typ: r('CloseResponseType') },
+    ],
+    false
+  ),
+  CloseResponsePayload: o([{ json: 'error', js: 'error', typ: u(undefined, r('TentacledError')) }], false),
   ContextClearedEvent: o(
     [
       { json: 'meta', js: 'meta', typ: r('BroadcastEventMeta') },
@@ -6715,7 +6458,7 @@ const typeMap: any = {
   WebConnectionProtocol5ValidateAppIdentityFailedResponseType: ['WCP5ValidateAppIdentityFailedResponse'],
   WebConnectionProtocol5ValidateAppIdentitySuccessResponseType: ['WCP5ValidateAppIdentityResponse'],
   WebConnectionProtocol6GoodbyeType: ['WCP6Goodbye'],
-  WebConnectionProtocolMessageType: [
+  ConnectionStepMessageType: [
     'WCP1Hello',
     'WCP2LoadUrl',
     'WCP3Handshake',
@@ -6724,17 +6467,6 @@ const typeMap: any = {
     'WCP5ValidateAppIdentityResponse',
     'WCP6Goodbye',
   ],
-  ProtocolVersion: ['1.0'],
-  WebSocketConnectionProtocolApplicationConnectType: ['WSCPApplicationConnect'],
-  WebSocketConnectionProtocolConnectFailedType: ['WSCPConnectFailed'],
-  WebSocketConnectionProtocolMessageType: [
-    'WSCPApplicationConnect',
-    'WSCPConnectFailed',
-    'WSCPDesktopAgentConnect',
-    'WSCPGoodbye',
-  ],
-  WebSocketConnectionProtocolDesktopAgentConnectType: ['WSCPDesktopAgentConnect'],
-  WebSocketConnectionProtocolGoodbyeType: ['WSCPGoodbye'],
   AddContextListenerRequestType: ['addContextListenerRequest'],
   PurpleError: [
     'ApiTimeout',
@@ -6807,6 +6539,7 @@ const typeMap: any = {
     'addIntentListenerResponse',
     'broadcastResponse',
     'clearContextResponse',
+    'closeResponse',
     'contextListenerUnsubscribeResponse',
     'createPrivateChannelResponse',
     'eventListenerUnsubscribeResponse',
@@ -6837,6 +6570,7 @@ const typeMap: any = {
     'addIntentListenerRequest',
     'broadcastRequest',
     'clearContextRequest',
+    'closeRequest',
     'contextListenerUnsubscribeRequest',
     'createPrivateChannelRequest',
     'eventListenerUnsubscribeRequest',
@@ -6867,6 +6601,9 @@ const typeMap: any = {
   ChannelChangedEventType: ['channelChangedEvent'],
   ClearContextRequestType: ['clearContextRequest'],
   ClearContextResponseType: ['clearContextResponse'],
+  CloseRequestType: ['closeRequest'],
+  TentacledError: ['ApiTimeout'],
+  CloseResponseType: ['closeResponse'],
   ContextClearedEventType: ['contextClearedEvent'],
   ContextListenerUnsubscribeRequestType: ['contextListenerUnsubscribeRequest'],
   ContextListenerUnsubscribeResponseType: ['contextListenerUnsubscribeResponse'],
@@ -6980,6 +6717,7 @@ export type AppRequestMessage =
   | AddIntentListenerRequest
   | BroadcastRequest
   | ClearContextRequest
+  | CloseRequest
   | ContextListenerUnsubscribeRequest
   | CreatePrivateChannelRequest
   | EventListenerUnsubscribeRequest
@@ -7010,6 +6748,7 @@ export type AgentResponseMessage =
   | AddIntentListenerResponse
   | BroadcastResponse
   | ClearContextResponse
+  | CloseResponse
   | ContextListenerUnsubscribeResponse
   | CreatePrivateChannelResponse
   | EventListenerUnsubscribeResponse
@@ -7218,117 +6957,6 @@ export function isValidWebConnectionProtocolMessage(value: any): value is WebCon
 }
 
 export const WEB_CONNECTION_PROTOCOL_MESSAGE_TYPE = 'WebConnectionProtocolMessage';
-
-/**
- * Returns true if the value has a type property with value 'WSCPApplicationConnect'. This is a fast check that does not check the format of the message
- */
-export function isWebSocketConnectionProtocolApplicationConnect(
-  value: any
-): value is WebSocketConnectionProtocolApplicationConnect {
-  return value != null && value.type === 'WSCPApplicationConnect';
-}
-
-/**
- * Returns true if value is a valid WebSocketConnectionProtocolApplicationConnect. This checks the type against the json schema for the message and will be slower
- */
-export function isValidWebSocketConnectionProtocolApplicationConnect(
-  value: any
-): value is WebSocketConnectionProtocolApplicationConnect {
-  try {
-    Convert.webSocketConnectionProtocolApplicationConnectToJson(value);
-    return true;
-  } catch (_e: any) {
-    return false;
-  }
-}
-
-export const WEB_SOCKET_CONNECTION_PROTOCOL_APPLICATION_CONNECT_TYPE = 'WebSocketConnectionProtocolApplicationConnect';
-
-/**
- * Returns true if the value has a type property with value 'WSCPConnectFailed'. This is a fast check that does not check the format of the message
- */
-export function isWebSocketConnectionProtocolConnectFailed(
-  value: any
-): value is WebSocketConnectionProtocolConnectFailed {
-  return value != null && value.type === 'WSCPConnectFailed';
-}
-
-/**
- * Returns true if value is a valid WebSocketConnectionProtocolConnectFailed. This checks the type against the json schema for the message and will be slower
- */
-export function isValidWebSocketConnectionProtocolConnectFailed(
-  value: any
-): value is WebSocketConnectionProtocolConnectFailed {
-  try {
-    Convert.webSocketConnectionProtocolConnectFailedToJson(value);
-    return true;
-  } catch (_e: any) {
-    return false;
-  }
-}
-
-export const WEB_SOCKET_CONNECTION_PROTOCOL_CONNECT_FAILED_TYPE = 'WebSocketConnectionProtocolConnectFailed';
-
-/**
- * Returns true if value is a valid WebSocketConnectionProtocolMessage. This checks the type against the json schema for the message and will be slower
- */
-export function isValidWebSocketConnectionProtocolMessage(value: any): value is WebSocketConnectionProtocolMessage {
-  try {
-    Convert.webSocketConnectionProtocolMessageToJson(value);
-    return true;
-  } catch (_e: any) {
-    return false;
-  }
-}
-
-export const WEB_SOCKET_CONNECTION_PROTOCOL_MESSAGE_TYPE = 'WebSocketConnectionProtocolMessage';
-
-/**
- * Returns true if the value has a type property with value 'WSCPDesktopAgentConnect'. This is a fast check that does not check the format of the message
- */
-export function isWebSocketConnectionProtocolDesktopAgentConnect(
-  value: any
-): value is WebSocketConnectionProtocolDesktopAgentConnect {
-  return value != null && value.type === 'WSCPDesktopAgentConnect';
-}
-
-/**
- * Returns true if value is a valid WebSocketConnectionProtocolDesktopAgentConnect. This checks the type against the json schema for the message and will be slower
- */
-export function isValidWebSocketConnectionProtocolDesktopAgentConnect(
-  value: any
-): value is WebSocketConnectionProtocolDesktopAgentConnect {
-  try {
-    Convert.webSocketConnectionProtocolDesktopAgentConnectToJson(value);
-    return true;
-  } catch (_e: any) {
-    return false;
-  }
-}
-
-export const WEB_SOCKET_CONNECTION_PROTOCOL_DESKTOP_AGENT_CONNECT_TYPE =
-  'WebSocketConnectionProtocolDesktopAgentConnect';
-
-/**
- * Returns true if the value has a type property with value 'WSCPGoodbye'. This is a fast check that does not check the format of the message
- */
-export function isWebSocketConnectionProtocolGoodbye(value: any): value is WebSocketConnectionProtocolGoodbye {
-  return value != null && value.type === 'WSCPGoodbye';
-}
-
-/**
- * Returns true if value is a valid WebSocketConnectionProtocolGoodbye. This checks the type against the json schema for the message and will be slower
- */
-export function isValidWebSocketConnectionProtocolGoodbye(value: any): value is WebSocketConnectionProtocolGoodbye {
-  try {
-    Convert.webSocketConnectionProtocolGoodbyeToJson(value);
-    return true;
-  } catch (_e: any) {
-    return false;
-  }
-}
-
-export const WEB_SOCKET_CONNECTION_PROTOCOL_GOODBYE_TYPE = 'WebSocketConnectionProtocolGoodbye';
 
 /**
  * Returns true if the value has a type property with value 'addContextListenerRequest'. This is a fast check that does not check the format of the message
@@ -7581,6 +7209,48 @@ export function isValidClearContextResponse(value: any): value is ClearContextRe
 }
 
 export const CLEAR_CONTEXT_RESPONSE_TYPE = 'ClearContextResponse';
+
+/**
+ * Returns true if the value has a type property with value 'closeRequest'. This is a fast check that does not check the format of the message
+ */
+export function isCloseRequest(value: any): value is CloseRequest {
+  return value != null && value.type === 'closeRequest';
+}
+
+/**
+ * Returns true if value is a valid CloseRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidCloseRequest(value: any): value is CloseRequest {
+  try {
+    Convert.closeRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const CLOSE_REQUEST_TYPE = 'CloseRequest';
+
+/**
+ * Returns true if the value has a type property with value 'closeResponse'. This is a fast check that does not check the format of the message
+ */
+export function isCloseResponse(value: any): value is CloseResponse {
+  return value != null && value.type === 'closeResponse';
+}
+
+/**
+ * Returns true if value is a valid CloseResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidCloseResponse(value: any): value is CloseResponse {
+  try {
+    Convert.closeResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const CLOSE_RESPONSE_TYPE = 'CloseResponse';
 
 /**
  * Returns true if the value has a type property with value 'contextClearedEvent'. This is a fast check that does not check the format of the message

@@ -91,7 +91,7 @@ export interface Channel {
    *
    * If, when this function is called, the channel already contains context that would be passed to the listener it is NOT called or passed this context automatically (this behavior differs from that of the [`fdc3.addContextListener`](DesktopAgent#addcontextlistener) function). Apps wishing to access to the current context of the channel should instead call the `getCurrentContext(contextType)` function.
    *
-   * Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
+   * Metadata about each context message received, including the app that originated the message and a timestamp, MUST be provided by the Desktop Agent implementation. Apps broadcasting context MAY provide additional metadata (such as a `traceId`, `signature` or custom metadata), which the Desktop Agent MUST pass on to the handler.
    *
    * Adding multiple context listeners on the same or overlapping types (i.e. named type and null type) MUST be allowed, and MUST trigger all context handlers when a relevant context type is broadcast on the current channel.
    *
@@ -129,10 +129,4 @@ export interface Channel {
    *
    */
   addEventListener(type: string | null, handler: EventHandler): Promise<Listener>;
-
-  /**
-   * @deprecated use `addContextListener(null, handler)` instead of `addContextListener(handler)`.
-   */
-  // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
-  addContextListener(handler: ContextHandler): Promise<Listener>;
 }

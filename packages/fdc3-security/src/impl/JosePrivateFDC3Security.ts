@@ -1,7 +1,7 @@
 import { Context, SymmetricKeyResponse } from '@finos/fdc3-context';
-import { BrowserTypes } from '@finos/fdc3-schema';
+import { AntiReplayClaims, DetachedSignature } from '@finos/fdc3-standard';
 
-type AntiReplay = BrowserTypes.AntiReplayClaims;
+type AntiReplay = AntiReplayClaims;
 import * as jose from 'jose';
 import { DEFAULT_FDC3_ALGORITHMS, FDC3SecurityAlgorithms } from './FDC3SecurityAlgorithms.js';
 import { DEFAULT_FDC3_TIME_LIMITS, FDC3SecurityTimeLimits } from './FDC3SecurityTimeLimits.js';
@@ -15,8 +15,6 @@ import {
   JWKSResolver,
 } from './JosePublicFDC3Security.js';
 import { AntiReplayChecker, DefaultAntiReplayChecker } from './AntiReplayChecker.js';
-
-type DetachedSignature = BrowserTypes.DetachedSignature;
 
 /**
  * Implements the FDC3Security interface either in node or the browser.

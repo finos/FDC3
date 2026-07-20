@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { Channel, ContextHandler, ContextMetadata, DesktopAgent } from '@finos/fdc3-standard';
+import { Channel, ContextHandler, DesktopAgent } from '@finos/fdc3-standard';
 import { AppIdentifier, Context } from '@finos/fdc3-context';
 import { WebSocket } from 'ws';
 import { createJosePublicFDC3SecurityFromUrl } from '../src/impl/JosePublicFDC3Security';
@@ -8,7 +8,10 @@ import { createMockDesktopAgent, resetMockDesktopAgentFixtureState } from '../te
 import { AppBackEnd } from '../test/mocks/AppBackEnd';
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { BasicSignedBroadcaster, SignedBroadcaster } from '../src/signing/SignedBroadcastSupport';
-import { PublicSignatureCheckingHandlerSupport } from '../src/signing/SignatureCheckingHandlerSupport';
+import {
+  PublicSignatureCheckingHandlerSupport,
+  SecurityAwareContextHandler,
+} from '../src/signing/SignatureCheckingHandlerSupport';
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
 import { createMetadataHandlerWithFDC3Version, type MetadataHandler } from '../src/delegates/MetadataHandler';
@@ -38,11 +41,11 @@ class AppABackendHandlers extends DefaultFDC3Handlers {
 
   async broadcast(): Promise<void> {
     console.log('\n[App A Backend] Signing and broadcasting instrument...');
-    const instrument = {
+    const instrument: Context = {
       type: 'fdc3.instrument',
       id: { ticker: 'AAPL' },
       name: 'Apple Inc.',
-    } as Context;
+    };
     await this.signedBroadcaster!.broadcast(instrument);
     return;
   }
@@ -106,27 +109,29 @@ async function step4SetupAppBChannelDelegate(
     resolveDone = r;
   });
 
-  const handler = async (ctx: Context, meta: ContextMetadata | undefined) => {
+  const handler: SecurityAwareContextHandler = async (ctx, meta, verification) => {
     console.log('[App B] <<< [VERIFIED] Context Received:');
     console.log(JSON.stringify(ctx, null, 2));
     console.log('[App B] <<< [VERIFIED] Metadata Received:');
     console.log(JSON.stringify(meta, null, 2));
 
-    if (meta?.authenticity) {
-      const auth = meta.authenticity;
-      if (auth.signed && auth.trusted) {
-        console.log('[App B] Verification Result: ✅ TRUSTED');
-        console.log(`[App B] Trusted Provider: ${auth.jku}`);
-      } else if (auth.errors) {
-        console.log('[App B] Errors:', auth.errors);
-      }
+    // The third argument is ContextVerificationMetadata populated by
+    // PublicSignatureCheckingHandlerSupport before invoking this handler.
+    const auth = verification.authenticity;
+    if (auth?.signed && auth?.trusted) {
+      // Signature cryptographically valid and signer's JWKS URL is in our allowlist.
+      console.log('[App B] Verification Result: ✅ TRUSTED');
+      console.log(`[App B] Trusted Provider: ${auth.jku}`);
+    } else if (auth?.errors) {
+      // Signature present but verification failed — log errors and discard.
+      console.log('[App B] Errors:', auth.errors);
     }
 
     console.log('--- FDC3 Signing Example End ---');
     resolveDone!();
   };
 
-  const verifiedHandler = (await support.wrapContextHandler(handler as ContextHandler)) as ContextHandler;
+  const verifiedHandler: ContextHandler = await support.wrapContextHandler(handler);
   await channel.addContextListener('fdc3.instrument', verifiedHandler);
 
   return { done };

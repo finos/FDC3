@@ -6,7 +6,7 @@ sidebar_label: Encrypted Context Wrapper
 
 # Encrypted Context Wrapper
 
-[@experimental](/docs/fdc3-compliance#experimental-features) A wrapper context type for encrypted FDC3 context data. When an app broadcasts encrypted context data, the original type is preserved for routing purposes, while the remaining context information is encrypted. Recipients can request a symmetric key via 'fdc3.security.symmetricKey.request' to decrypt the payload.
+[@experimental](/docs/fdc3-compliance#experimental-features) A wrapper context type for encrypted FDC3 context data. When an app broadcasts encrypted context data, the original type is preserved for routing purposes, while the remaining context information is encrypted. Recipients can request a symmetric key via 'fdc3.security.symmetricKeyRequest' to decrypt the payload.
 
 ## Schema
 

@@ -23,4 +23,9 @@ export interface IntentSupport {
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution>;
   addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
+  addIntentListenerWithContext(
+    intent: string,
+    contextType: string | string[],
+    handler: IntentHandler
+  ): Promise<Listener>;
 }

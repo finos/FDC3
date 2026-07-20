@@ -1,17 +1,18 @@
 import { DesktopAgent, Context, ContextMetadata } from '@finos/fdc3';
 import { PublicClientApplication, type Configuration, type AuthenticationResult } from '@azure/msal-browser';
-import { connectRemoteHandlers, type FDC3Handlers } from '@finos/fdc3-security';
+import { connectRemoteHandlers, isContext, type FDC3Handlers } from '@finos/fdc3-security';
 import { createLogEntry } from '../../../common/src/security-demo/logging';
 import { initializeFDC3, ensureContextMetadata } from '../../../common/src/security-demo/fdc3';
 import {
   setupSessionStatusButton,
   showAuthenticatedState,
+  restoreCachedSession,
   type UserSessionContext,
 } from '../../../common/src/security-demo/session-logic';
 import type { EntraConfig } from './config';
 
-/** Must match `CREATE_IDENTITY_TOKEN` in `src/backend.ts`. */
-const CREATE_IDENTITY_TOKEN = 'CreateIdentityToken';
+/** Standard intent name per FDC3 Security & Identity specification. */
+const GET_USER_INTENT = 'GetUser';
 
 let msalInstance: PublicClientApplication;
 
@@ -41,39 +42,86 @@ function buildMsalConfiguration(config: EntraConfig): Configuration {
   };
 }
 
+async function performLogin(handlers: FDC3Handlers): Promise<UserSessionContext | null> {
+  try {
+    createLogEntry('info', 'Starting Microsoft Entra login', '');
+
+    const authResult: AuthenticationResult = await msalInstance.loginPopup({
+      scopes: ['User.Read'],
+      prompt: 'select_account',
+    });
+    createLogEntry('success', 'Microsoft Entra login successful', authResult.account);
+
+    const result = await handlers.exchangeData('user-data', {
+      type: 'fdc3.security.user',
+      wrappedJwt: authResult.idToken,
+    });
+
+    if (result && isContext(result) && result.type === 'fdc3.security.user') {
+      const user = result as UserSessionContext;
+      showAuthenticatedState(user);
+      createLogEntry('success', 'FDC3 user session established', result);
+      return user;
+    }
+
+    createLogEntry('info', 'No FDC3 user returned', result);
+    showAuthenticatedState(null);
+    return null;
+  } catch (error) {
+    console.error('Microsoft Entra login error:', error);
+    createLogEntry('error', 'Microsoft Entra login error', error instanceof Error ? error.message : String(error));
+    return null;
+  }
+}
+
+/** Ensures a cached session exists, restoring MSAL silently or prompting login if not. */
+async function ensureAuthenticatedSession(handlers: FDC3Handlers): Promise<boolean> {
+  if (await restoreCachedSession(handlers)) {
+    return true;
+  }
+
+  await syncMsalSessionToBackend(handlers);
+  if (await restoreCachedSession(handlers)) {
+    return true;
+  }
+
+  createLogEntry('info', 'No Entra session — starting login for GetUser', '');
+  return (await performLogin(handlers)) !== null;
+}
+
 async function setupLoginButton(handlers: FDC3Handlers): Promise<void> {
   const loginBtn = document.getElementById('login-btn') as HTMLButtonElement;
   loginBtn.addEventListener('click', async () => {
-    try {
-      createLogEntry('info', 'Starting Microsoft Entra login', '');
-
-      const loginRequest = {
-        scopes: ['User.Read'],
-        prompt: 'select_account' as const,
-      };
-
-      const authResult: AuthenticationResult = await msalInstance.loginPopup(loginRequest);
-      createLogEntry('success', 'Microsoft Entra login successful', authResult.account);
-
-      const fdc3User: Context = {
-        type: 'fdc3.security.user',
-        jwt: authResult.idToken,
-      };
-      const result = await handlers.exchangeData('user-data', fdc3User);
-
-      if (result && (result as Context).type === 'fdc3.security.user') {
-        showAuthenticatedState(result as UserSessionContext);
-        createLogEntry('success', 'FDC3 user session established', result);
-      } else {
-        createLogEntry('info', 'No FDC3 user returned', result);
-        showAuthenticatedState(null);
-      }
-    } catch (error) {
-      console.error('Microsoft Entra login error:', error);
-      createLogEntry('error', 'Microsoft Entra login error', error instanceof Error ? error.message : String(error));
-      throw error;
-    }
+    await performLogin(handlers);
   });
+}
+
+async function syncMsalSessionToBackend(handlers: FDC3Handlers): Promise<void> {
+  const account = msalInstance.getActiveAccount();
+  if (!account) {
+    return;
+  }
+
+  try {
+    const authResult = await msalInstance.acquireTokenSilent({
+      scopes: ['User.Read'],
+      account,
+    });
+    const result = await handlers.exchangeData('user-data', {
+      type: 'fdc3.security.user',
+      wrappedJwt: authResult.idToken,
+    });
+    if (result && isContext(result) && result.type === 'fdc3.security.user') {
+      createLogEntry('info', 'Restored Microsoft Entra session on backend', result);
+    }
+  } catch (error) {
+    console.error('Failed to sync MSAL session to backend:', error);
+    createLogEntry(
+      'warning',
+      'Could not restore Microsoft session on backend',
+      error instanceof Error ? error.message : String(error)
+    );
+  }
 }
 
 async function setupLogoutButton(handlers: FDC3Handlers): Promise<void> {
@@ -99,18 +147,26 @@ async function setupLogoutButton(handlers: FDC3Handlers): Promise<void> {
   });
 }
 
-async function setupCreateIdentityTokenListener(fdc3: DesktopAgent, handlers: FDC3Handlers): Promise<void> {
-  const intentHandler = await handlers.remoteIntentHandler(CREATE_IDENTITY_TOKEN);
+async function setupGetUserIntentListener(fdc3: DesktopAgent, handlers: FDC3Handlers): Promise<void> {
+  const intentHandler = await handlers.remoteIntentHandler(GET_USER_INTENT);
 
-  await fdc3.addIntentListener(
-    CREATE_IDENTITY_TOKEN,
-    async (context: Context, metadata: ContextMetadata | undefined) => {
-      createLogEntry('info', `${CREATE_IDENTITY_TOKEN} intent received`, context);
-      const result = await intentHandler(context, ensureContextMetadata(metadata));
-      createLogEntry('success', `${CREATE_IDENTITY_TOKEN} intent result`, result);
+  await fdc3.addIntentListener(GET_USER_INTENT, async (context: Context, metadata: ContextMetadata | undefined) => {
+    createLogEntry('info', `${GET_USER_INTENT} intent received`, context);
+
+    if (!(await ensureAuthenticatedSession(handlers))) {
+      createLogEntry('error', `${GET_USER_INTENT} failed — login required or cancelled`, '');
+      return;
+    }
+
+    const result = await intentHandler(context, ensureContextMetadata(metadata));
+    if (result && isContext(result) && result.type === 'fdc3.security.encryptedContext') {
+      createLogEntry('success', `${GET_USER_INTENT} intent result`, result);
+      await restoreCachedSession(handlers);
       return result;
     }
-  );
+    createLogEntry('error', `${GET_USER_INTENT} failed — sign in with Microsoft first or retry`, result ?? '');
+    return;
+  });
 }
 
 async function main(): Promise<void> {
@@ -138,8 +194,9 @@ async function main(): Promise<void> {
   setupSessionStatusButton(remoteHandlers);
   await setupLogoutButton(remoteHandlers);
   await setupLoginButton(remoteHandlers);
-  showAuthenticatedState(null);
-  await setupCreateIdentityTokenListener(fdc3, remoteHandlers);
+  await syncMsalSessionToBackend(remoteHandlers);
+  await restoreCachedSession(remoteHandlers);
+  await setupGetUserIntentListener(fdc3, remoteHandlers);
 
   createLogEntry('info', 'Microsoft Entra IDP ready', 'Application ready');
 }

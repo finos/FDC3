@@ -1,26 +1,37 @@
 import type { Application } from 'express';
 import type { Server } from 'http';
 import { WebSocket } from 'ws';
-import { IntentHandler } from '@finos/fdc3';
-import { Context } from '@finos/fdc3-context';
+import { Context, EncryptedContextWrapper, User } from '@finos/fdc3-context';
 import {
   AllowListFunction,
   createJosePrivateFDC3Security,
   DefaultFDC3Handlers,
+  isUserRequest,
   JosePrivateFDC3Security,
   provisionJWKS,
   setupWebsocketServer,
+  type BackendIntentHandler,
 } from '@finos/fdc3-security';
 
-/** Standard intent name; matches FDC3 Security & Identity docs and get-user-example.ts */
-export const CREATE_IDENTITY_TOKEN = 'CreateIdentityToken';
+/** Standard intent name per FDC3 Security & Identity specification. */
+export const GET_USER_INTENT = 'GetUser';
 
 /**
- * IDP secure-boundary: {@link CREATE_IDENTITY_TOKEN} returns `fdc3.security.encryptedContext`
- * wrapping an encrypted `fdc3.security.user` (see fdc3-security/samples/get-user-example.ts).
+ * Trusted-backend handlers for the identity provider app (demo).
+ *
+ * Handles two `exchangeData` purposes:
+ * - `'user-login'`: creates (and caches) a demo `fdc3.security.user` session on first login.
+ * - `'user-request'`: returns the cached session, if any (does not create one).
+ * - `'user-logout'`: clears the cached session.
+ *
+ * Handles one `remoteIntentHandler` intent:
+ * - `GetUser`: verifies the requesting application's `fdc3.security.userRequest` context
+ *   type, mints a JWT scoped to the requesting app's audience (aud = the app's URL), encrypts
+ *   the `fdc3.security.user` result with the requesting app's public key (JWE), and returns
+ *   it as `fdc3.security.encryptedContext` so only the requesting app can decrypt it.
  */
 class IDPBackendHandlers extends DefaultFDC3Handlers {
-  private demoUser: Context | null = null;
+  private demoUser: User | null = null;
 
   constructor(
     private readonly security: JosePrivateFDC3Security,
@@ -29,51 +40,70 @@ class IDPBackendHandlers extends DefaultFDC3Handlers {
     super();
   }
 
-  async exchangeData(purpose: string, o: object): Promise<object | void> {
-    const ctx = o as Context;
-    if (purpose === 'user-request' && ctx.type === 'fdc3.security.userRequest') {
+  async exchangeData(purpose: string, payload: unknown): Promise<unknown> {
+    const ctx = payload as Context;
+    if (purpose === 'user-login' && ctx.type === 'fdc3.security.userRequest') {
       if (!this.demoUser) {
-        const jwt = await this.security.createJWTToken(this.issuerBaseUrl, 'demo-user@example.com');
+        const wrappedJwt = await this.security.createJWTToken(this.issuerBaseUrl, 'demo-user@example.com');
         this.demoUser = {
           type: 'fdc3.security.user',
           id: { email: 'demo-user@example.com' },
           name: 'Mr Demo User',
-          jwt,
+          wrappedJwt,
         };
       }
       return this.demoUser;
+    }
+    if (purpose === 'user-request' && ctx.type === 'fdc3.security.userRequest') {
+      return this.demoUser ?? undefined;
     }
     if (purpose === 'user-logout') {
       this.demoUser = null;
       return;
     }
-    return super.exchangeData(purpose, o);
+    return super.exchangeData(purpose, payload);
   }
 
-  async remoteIntentHandler(intent: string): Promise<IntentHandler> {
-    if (intent !== CREATE_IDENTITY_TOKEN) {
+  async remoteIntentHandler(intent: string): Promise<BackendIntentHandler> {
+    if (intent !== GET_USER_INTENT) {
       return super.remoteIntentHandler(intent);
     }
-    return async (context: Context): Promise<Context> => {
-      if (context.type !== 'fdc3.security.userRequest') {
-        throw new Error(`Expected fdc3.security.userRequest, got ${context.type}`);
+    return async (context: Context): Promise<Context | void> => {
+      try {
+        if (!isUserRequest(context)) {
+          console.error(`GetUser: expected fdc3.security.userRequest, got ${context.type}`);
+          return;
+        }
+        if (!this.demoUser) {
+          console.error('GetUser: no authenticated user — log in first');
+          return;
+        }
+        const aud = context.aud;
+
+        const wrappedJwt = await this.security.createJWTToken(aud, 'demo-user@example.com');
+        const user: User = {
+          type: 'fdc3.security.user',
+          id: this.demoUser.id,
+          name: this.demoUser.name,
+          wrappedJwt,
+        };
+
+        // Encrypt the fdc3.security.user with the requesting app's public key (JWE).
+        // Only the requesting app — holding the corresponding private key — can decrypt it.
+        const requestingAppJwksUrl = `${aud.replace(/\/$/, '')}/.well-known/jwks.json`;
+        const encryptedPayload = await this.security.encryptPublicKey(user, requestingAppJwksUrl);
+
+        const encryptedContext: EncryptedContextWrapper = {
+          type: 'fdc3.security.encryptedContext',
+          originalType: 'fdc3.security.user',
+          encryptedPayload,
+          id: { kid: 'user-identity' },
+        };
+        return encryptedContext;
+      } catch (err) {
+        console.error('GetUser handler error:', err);
+        return;
       }
-      const aud = (context as unknown as { aud: string }).aud;
-      const jwt = await this.security.createJWTToken(aud, 'demo-user@example.com');
-      const user: Context = {
-        type: 'fdc3.security.user',
-        id: { email: 'demo-user@example.com' },
-        name: 'Demo User',
-        jwt,
-      };
-      const requestingAppJwksUrl = `${aud.replace(/\/$/, '')}/.well-known/jwks.json`;
-      const encryptedPayload = await this.security.encryptPublicKey(user, requestingAppJwksUrl);
-      return {
-        type: 'fdc3.security.encryptedContext',
-        originalType: 'fdc3.security.user',
-        encryptedPayload,
-        id: { kid: 'user-identity' },
-      };
     };
   }
 }

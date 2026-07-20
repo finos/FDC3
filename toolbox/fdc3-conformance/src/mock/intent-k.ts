@@ -36,12 +36,12 @@ getAgent().then(async fdc3 => {
     });
 
     await privChan.addEventListener('unsubscribe', async () => {
-      //let test know onUnsubscribe was triggered
+      //let test know unsubscribe event was triggered
       await sendContextToTests(fdc3, { type: ControlContextType.ON_UNSUBSCRIBE_TRIGGERED });
     });
 
     await privChan.addEventListener('disconnect', async () => {
-      //let test know onUnsubscribe was triggered
+      //let test know disconnect event was triggered
       await sendContextToTests(fdc3, { type: ControlContextType.ON_DISCONNECT_TRIGGERED });
     });
 

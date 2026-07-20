@@ -120,7 +120,7 @@ class MockDesktopAgent implements Partial<DesktopAgent> {
   async addContextListener(contextType: string | ContextHandler | null, handler?: ContextHandler): Promise<Listener> {
     const h = typeof contextType === 'function' ? contextType : handler!;
     const chan = await this.getOrCreateChannel('fdc3.channel.1');
-    return chan.addContextListener(h);
+    return chan.addContextListener(null, h);
   }
 }
 

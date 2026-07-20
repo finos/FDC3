@@ -87,7 +87,7 @@ export class OpenControlImpl implements OpenControl {
   expectAppTimeoutErrorOnOpen = async (targetApp: AppIdentifier) => {
     try {
       //wait for the open promise to be rejected
-      Promise.race([
+      await Promise.race([
         this.fdc3.open(targetApp, { type: 'fdc3.contextDoesNotExist' }),
         failAfterTimeout(constants.NoListenerTimeout),
       ]);

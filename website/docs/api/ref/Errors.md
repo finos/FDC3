@@ -230,6 +230,28 @@ public enum ChannelError {
 - [`Channel.addContextListener`](Channel#addcontextlistener)
 - [`Channel.getCurrentContext`](Channel#getcurrentcontext)
 
+## `CloseError`
+
+Contains constants representing the errors that can be encountered when calling the [`close`](DesktopAgent#close) method on the [DesktopAgent](DesktopAgent) object.
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+enum CloseError {
+  /** Returned if the Desktop Agent cannot close the app's window or frame. */
+  ErrorOnClose = "ErrorOnClose",
+
+  /** Returned if a timeout occurs before a call to close is resolved for any
+   *  reason other than the app being closed.
+   */
+  ApiTimeout = "ApiTimeout",
+}
+```
+
+</TabItem>
+</Tabs>
+
 ## `OpenError`
 
 Contains constants representing the errors that can be encountered when calling the [`open`](DesktopAgent#open) method on the [DesktopAgent](DesktopAgent) object.

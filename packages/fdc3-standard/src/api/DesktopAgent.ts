@@ -59,6 +59,17 @@ export interface DesktopAgent {
   open(app: AppIdentifier, context?: Context | null, metadata?: AppProvidableContextMetadata): Promise<AppIdentifier>;
 
   /**
+   * Requests that the Desktop Agent close the calling application's own window or frame.
+   *
+   * This API is limited to self-close only — it cannot be used to close another application.
+   *
+   * On a successful close, the app is destroyed. The promise MUST reject with a string from
+   * `CloseError` if the Desktop Agent cannot close the app. It MAY reject with `CloseError.ApiTimeout`
+   * if no `closeResponse` is received before the message exchange timeout.
+   */
+  close(): Promise<void>;
+
+  /**
    * Find out more information about a particular intent by passing its name, and optionally its context and/or a desired result context type.
    *
    * `findIntent` is effectively granting programmatic access to the Desktop Agent's resolver.
@@ -336,7 +347,7 @@ export interface DesktopAgent {
    *
    * Optional metadata about the raised intent, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
    *
-   * Adding multiple intent listeners on the same type MUST be rejected with the `ResolveError.IntentListenerConflict`, unless the previous listener was removed first though `listener.unsubscribe()`
+   * Multiple intent listeners MAY be added for the same intent, provided they are filtered to different context types (see `addIntentListenerWithContext`). Adding an intent listener that conflicts with an existing listener for the same intent MUST be rejected with the `ResolveError.IntentListenerConflict`, unless the conflicting listener was removed first through `listener.unsubscribe()`. A new listener conflicts with an existing one for the same intent when either listener is unfiltered (added via `addIntentListener`, and so handles all context types) or when their declared context types overlap.
    *
    * ```javascript
    * //Handle a raised intent
@@ -365,23 +376,56 @@ export interface DesktopAgent {
    *   const symbol = context.id.symbol;
    *
    *   // Called when the remote side adds a context listener
-   *   const addContextListener = channel.onAddContextListener((contextType) => {
-   *     // broadcast price quotes as they come in from our quote feed
-   *     feed.onQuote(symbol, (price) => {
-   *       channel.broadcast({ type: "price", price});
-   *     });
-   *   });
+   *   const addContextListener = await channel.addEventListener("addContextListener",
+   *     (event) => {
+   *       // broadcast price quotes as they come in from our quote feed
+   *       feed.onQuote(symbol, (price) => {
+   *         channel.broadcast({ type: "price", price});
+   *       });
+   *     }
+   *   );
    *
    *   // Stop the feed if the remote side closes
-   *   const disconnectListener = channel.onDisconnect(() => {
-   *     feed.stop(symbol);
-   *   });
+   *   const disconnectListener = await channel.addEventListener("disconnect",
+   *     () => {
+   *       feed.stop(symbol);
+   *     }
+   *   );
    *
    *   return channel;
    * });
    * ```
    */
   addIntentListener(intent: Intent, handler: IntentHandler): Promise<Listener>;
+
+  /**
+   * Adds a listener for incoming intents raised by other applications, via calls to `fdc3.raiseIntent` or `fdc3.raiseIntentForContext`, but filtered to one or more context types. The handler will only be invoked when the incoming intent's context `type` matches one of the supplied `contextType` values.
+   *
+   * The `contextType` parameter MAY be either a single context type string or an array of context type strings. See `addIntentListener` for details and restrictions for both usage and implementation that also apply to this method.
+   *
+   * ```js
+   * //Handle a raised intent filtered to a single context type
+   * const listener = await fdc3.addIntentListenerWithContext('StartChat', 'fdc3.contact', context => {
+   *   // start chat has been requested by another application
+   *   return;
+   * });
+   *
+   * //Handle a raised intent filtered to multiple context types
+   * const listener = await fdc3.addIntentListenerWithContext(
+   *   'ViewChart',
+   *   ['fdc3.instrument', 'fdc3.instrumentList'],
+   *   context => {
+   *     // view chart has been requested by another application
+   *     return;
+   *   }
+   * );
+   * ```
+   */
+  addIntentListenerWithContext(
+    intent: Intent,
+    contextType: string | string[],
+    handler: IntentHandler
+  ): Promise<Listener>;
 
   /**
    * Adds a listener for incoming context broadcasts from the Desktop Agent (via a User channel or `fdc3.open`API call. If the consumer is only interested in a context of a particular type, they can they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
@@ -492,22 +536,28 @@ export interface DesktopAgent {
    * 	const symbol = context.id.ticker;
    *
    * 	// This gets called when the remote side adds a context listener
-   * 	const addContextListener = channel.onAddContextListener((contextType) => {
-   * 		// broadcast price quotes as they come in from our quote feed
-   * 		feed.onQuote(symbol, (price) => {
-   * 			channel.broadcast({ type: "price", price});
-   * 		});
-   * 	});
+   * 	const addContextListener = await channel.addEventListener("addContextListener",
+   * 		(event) => {
+   * 			// broadcast price quotes as they come in from our quote feed
+   * 			feed.onQuote(symbol, (price) => {
+   * 				channel.broadcast({ type: "price", price});
+   * 			});
+   * 		}
+   * 	);
    *
    * 	// This gets called when the remote side calls Listener.unsubscribe()
-   * 	const unsubscriberListener = channel.onUnsubscribe((contextType) => {
-   * 		feed.stop(symbol);
-   * 	});
+   * 	const unsubscribeListener = await channel.addEventListener("unsubscribe",
+   * 		(event) => {
+   * 			feed.stop(symbol);
+   * 		}
+   * 	);
    *
    * 	// This gets called if the remote side closes
-   * 	const disconnectListener = channel.onDisconnect(() => {
-   * 		feed.stop(symbol);
-   * 	})
+   * 	const disconnectListener = await channel.addEventListener("disconnect",
+   * 		() => {
+   * 			feed.stop(symbol);
+   * 		}
+   * 	);
    *
    * 	return channel;
    * });
@@ -580,58 +630,4 @@ export interface DesktopAgent {
    * ```
    */
   getAppMetadata(app: AppIdentifier): Promise<AppMetadata>;
-
-  //---------------------------------------------------------------------------------------------
-  // Deprecated function signatures
-  //---------------------------------------------------------------------------------------------
-
-  /**
-   * Adds a listener for incoming context broadcasts from the Desktop Agent.
-   * @deprecated use `addContextListener(null, handler)` instead of `addContextListener(handler)`. Provided for backwards compatibility with versions FDC3 standard <2.0.
-   */
-  // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
-  addContextListener(handler: ContextHandler): Promise<Listener>;
-
-  /**
-   * @deprecated Alias to the `getUserChannels` function provided for backwards compatibility with versions FDC3 standard <2.0.
-   */
-  getSystemChannels(): Promise<Array<Channel>>;
-
-  /**
-   * @deprecated Alias to the `joinUserChannel` function Provided for backwards compatibility with versions FDC3 standard <2.0.
-   */
-  joinChannel(channelId: string): Promise<void>;
-
-  /**
-   * @deprecated version of `open` that launches an app by by name rather than `AppIdentifier`. Provided for backwards compatibility with versions FDC3 standard <2.0.
-   *
-   * ```javascript
-   * //Open an app without context, using the app name
-   * let instanceMetadata = await fdc3.open('myApp');
-   * ```
-   */
-  // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
-  open(name: string, context?: Context): Promise<AppIdentifier>;
-
-  /**
-   * @deprecated version of `raiseIntent` that targets an app by by name rather than `AppIdentifier`. Provided for backwards compatibility with versions FDC3 standard <2.0.
-   *
-   * ```javascript
-   * // use the `name` metadata of an app to describe the target app for the intent
-   * await fdc3.raiseIntent("StartChat", context, appIntent.apps[0].name);
-   * ```
-   */
-  // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
-  raiseIntent(intent: Intent, context: Context, name: string): Promise<IntentResolution>;
-
-  /**
-   * @deprecated version of `raiseIntentForContext` that targets an app by by name rather than `AppIdentifier`. Provided for backwards compatibility with versions FDC3 standard <2.0.
-   *
-   * ```javascript
-   * // Resolve against all intents registered by a specific target app name for the specified context
-   * await fdc3.raiseIntentForContext(context, targetAppName);
-   * ```
-   */
-  // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
-  raiseIntentForContext(context: Context, name: string): Promise<IntentResolution>;
 }

@@ -16,7 +16,7 @@ A channel can be either a ["User" channel](../spec#joining-user-channels) (retri
 
 :::note
 
-There are differences in behavior when you interact with a User channel via the Desktop Agent interface and the Channel interface. Specifically, when 'joining' a User channel or adding a context listener when already joined to a channel via the `DesktopAgent` interface, existing context (matching the type of the context listener) on the channel is received by the context listener immediately. Whereas, when add a context listener via the Channel interface, context is not received automatically, but may be retrieved manually via the [`getCurrentContext()`](#getcurrentcontext) function.
+There are differences in behaviour when you interact with a User channel via the Desktop Agent interface and the Channel interface. Specifically, when 'joining' a User channel or adding a context listener when already joined to a channel via the `DesktopAgent` interface, existing context (matching the type of the context listener) on the channel is received by the context listener immediately. Whereas, when add a context listener via the Channel interface, context is not received automatically, but may be retrieved manually via the [`getCurrentContext()`](#getcurrentcontext) function.
 
 :::
 
@@ -39,12 +39,6 @@ interface Channel {
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
   clearContext(contextType?: string): Promise<void>;
   addEventListener(type: string  | null, handler: EventHandler): Promise<Listener>;
-  
-  //deprecated functions
-  /**
-   * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
-   */
-  addContextListener(handler: ContextHandler): Promise<Listener>;
 }
 ```
 
@@ -71,8 +65,9 @@ interface IChannel: IIntentResult
 ```go
 @experimental
 type IChannel interface {
-    Broadcast(context Context) <-chan Result[any]
+    Broadcast(context Context, metadata *AppProvidableContextMetadata) <-chan Result[any]
     GetCurrentContext(contextType string) <-chan Result[IContext]
+    GetCurrentContextWithMetadata(contextType string) <-chan Result[ContextWithMetadata]
     AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener]
 }
 
@@ -93,36 +88,6 @@ const (
 	User    ChannelType = "user"
 	System  ChannelType = "system"
 )
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-```java
-public interface Channel extends IntentResult {
-    String getId();
-    Type getType();
-    DisplayMetadata getDisplayMetadata();
-    
-    CompletionStage<Void> broadcast(Context context);
-    CompletionStage<Optional<Context>> getCurrentContext();
-    CompletionStage<Optional<Context>> getCurrentContext(String contextType);
-    CompletionStage<Listener> addContextListener(String contextType, ContextHandler handler);
-    
-    /** @deprecated Use addContextListener(null, handler) instead */
-    @Deprecated
-    CompletionStage<Listener> addContextListener(ContextHandler handler);
-    
-    enum Type {
-        User("user"),
-        App("app"),
-        Private("private");
-        
-        private final String value;
-        Type(String value) { this.value = value; }
-        public String getValue() { return value; }
-    }
-}
 ```
 
 </TabItem>
@@ -159,13 +124,6 @@ string Id { get; }
 
 ```go
 Id string
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-```java
-String getId();
 ```
 
 </TabItem>
@@ -209,15 +167,6 @@ const (
 )
 ```
 </TabItem>
-<TabItem value="java" label="Java">
-
-```java
-Channel.Type getType();
-
-enum Type { User, App, Private }
-```
-
-</TabItem>
 </Tabs>
 
 Can be _user_,  _app_ or _private_.
@@ -244,13 +193,6 @@ IDisplayMetadata? DisplayMetadata { get; }
 ```go
 DisplayMetadata *DisplayMetadata
 ```
-</TabItem>
-<TabItem value="java" label="Java">
-
-```java
-DisplayMetadata getDisplayMetadata();
-```
-
 </TabItem>
 </Tabs>
 
@@ -288,20 +230,13 @@ func (ch *Channel) AddContextListener(contextType string, handler ContextHandler
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
-
-```java
-CompletionStage<Listener> addContextListener(String contextType, ContextHandler handler);
-```
-
-</TabItem>
 </Tabs>
 
 Adds a listener for incoming contexts of the specified _context type_ whenever a broadcast happens on this channel.
 
 If, when this function is called, the channel already contains context that would be passed to the listener it is NOT called or passed this context automatically (this behavior differs from that of the [`fdc3.addContextListener`](DesktopAgent#addcontextlistener) function). Apps wishing to access to the current context of the channel should instead call the [`getCurrentContext(contextType)`](#getcurrentcontext) function.
 
-Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
+Metadata about each context message received, including the app that originated the message and a timestamp, MUST be provided by the Desktop Agent implementation. Apps broadcasting context MAY provide additional metadata (such as a `traceId`, `signature` or custom metadata), which the Desktop Agent MUST pass on to the handler.
 
 Adding multiple context listeners on the same or overlapping types (i.e. specific `contextType` and `null` type) MUST be allowed, and MUST trigger all ContextHandlers when a relevant context type is broadcast on the current channel. 
 
@@ -313,10 +248,11 @@ Add a listener for any context that is broadcast on the channel:
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-const listener = await channel.addContextListener(null, context => {
+const listener = await channel.addContextListener(null, (context, metadata) => {
+    console.log(`Received context from ${metadata.source.appId} at ${metadata.timestamp}`);
     if (context.type === 'fdc3.contact') {
         // handle the contact
-    } else if (context.type === 'fdc3.instrument') => {
+    } else if (context.type === 'fdc3.instrument') {
         // handle the instrument
     }
 });
@@ -362,22 +298,6 @@ listenerResult := <-channel.AddContextListener("", func(contextInt IContext, con
 if listenerResult.Value != nil {
 	listenerResult.Value.Unsubscribe()
 }
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-```java
-Listener listener = channel.addContextListener(null, (context, metadata) -> {
-    if ("fdc3.contact".equals(context.getType())) {
-        // handle the contact
-    } else if ("fdc3.instrument".equals(context.getType())) {
-        // handle the instrument
-    }
-}).toCompletableFuture().get();
-
-// later
-listener.unsubscribe();
 ```
 
 </TabItem>
@@ -440,23 +360,6 @@ if listenerResultInstrument.Value != nil {
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
-
-```java
-Listener contactListener = channel.addContextListener("fdc3.contact", (contact, metadata) -> {
-    // handle the contact
-}).toCompletableFuture().get();
-
-Listener instrumentListener = channel.addContextListener("fdc3.instrument", (instrument, metadata) -> {
-    // handle the instrument
-}).toCompletableFuture().get();
-
-// later
-contactListener.unsubscribe();
-instrumentListener.unsubscribe();
-```
-
-</TabItem>
 </Tabs>
 
 **See also:**
@@ -510,14 +413,6 @@ var listener = await myChannel.AddEventListener(null, (event) => {
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
-
-```java
-// Not implemented on Channel interface; use PrivateChannel.addEventListener
-Not implemented
-```
-
-</TabItem>
 </Tabs>
 
 **See also:**
@@ -546,16 +441,9 @@ Task Broadcast(IContext context);
 <TabItem value="golang" label="Go">
 
 ```go
-func (channel *Channel) Broadcast(context IContext) <-chan Result[any]  { 
+func (channel *Channel) Broadcast(context IContext, metadata *AppProvidableContextMetadata) <-chan Result[any]  { 
   // Implementation here
 }
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-```java
-CompletionStage<Void> broadcast(Context context);
 ```
 
 </TabItem>
@@ -625,19 +513,6 @@ if result.Err != null {
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
-
-```java
-try {
-    Context instrument = new Context("fdc3.instrument");
-    instrument.getId().put("ticker", "AAPL");
-    channel.broadcast(instrument).toCompletableFuture().get();
-} catch (Exception e) {
-    // handle error
-}
-```
-
-</TabItem>
 </Tabs>
 
 **See also:**
@@ -669,13 +544,6 @@ Task<IContext?> GetCurrentContext(string? contextType);
 func (channel *Channel) GetCurrentContext(contextType string) <-chan Result[Context]  { 
   // Implementation here
 }
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-```java
-CompletionStage<Optional<Context>> getCurrentContext(String contextType);
 ```
 
 </TabItem>
@@ -729,17 +597,6 @@ if result.Err != null {
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
-
-```java
-try {
-    Optional<Context> context = channel.getCurrentContext(null).toCompletableFuture().get();
-} catch (Exception e) {
-    // handle error
-}
-```
-
-</TabItem>
 </Tabs>
 
 Specifying a context type:
@@ -780,17 +637,6 @@ if result.Err != null {
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
-
-```java
-try {
-    Optional<Context> contact = channel.getCurrentContext("fdc3.contact").toCompletableFuture().get();
-} catch (Exception e) {
-    // handle error
-}
-```
-
-</TabItem>
 </Tabs>
 
 **See also:**
@@ -813,6 +659,15 @@ public getCurrentContextWithMetadata(contextType?: string): Promise<ContextWithM
 
 ```csharp
 Task<IContextWithMetadata?> GetCurrentContextWithMetadata(string? contextType);
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (channel *Channel) GetCurrentContextWithMetadata(contextType string) <-chan Result[ContextWithMetadata]  { 
+  // Implementation here
+}
 ```
 
 </TabItem>
@@ -862,6 +717,19 @@ catch (Exception ex)
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+result := <-myChannel.GetCurrentContextWithMetadata("fdc3.contact")
+if result.Err != nil {
+    // handle error 
+}
+if result.Value != nil {
+    fmt.Printf("Context from %s\n", result.Value.Metadata.Source.AppId)
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -886,13 +754,6 @@ public clearContext(contextType?: string): Promise<void>;
 
 ```csharp
 Task ClearContext(string? contextType);
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-```java
-Not implemented
 ```
 
 </TabItem>
@@ -932,13 +793,6 @@ catch (Exception ex)
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
-
-```java
-Not implemented
-```
-
-</TabItem>
 </Tabs>
 
 Specifying a context type:
@@ -969,13 +823,6 @@ catch (Exception ex)
 ```
 
 </TabItem>
-<TabItem value="java" label="Java">
-
-```java
-Not implemented
-```
-
-</TabItem>
 </Tabs>
 
 
@@ -984,49 +831,4 @@ Not implemented
 - [`getCurrentContext`](#getcurrentcontext)
 - [`addContextListener`](DesktopAgent#addContextListener)
 - [`joinUserChannel`](DesktopAgent#joinUserChannel)
-
-## Deprecated Functions
-
-### `addContextListener` (deprecated)
-
-<Tabs groupId="lang">
-<TabItem value="ts" label="TypeScript/JavaScript">
-
-```ts
-/**
- * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
- */
-public addContextListener(handler: ContextHandler): Promise<Listener>;
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```
-Not implemented
-```
-
-</TabItem>
-<TabItem value="golang" label="Go">
-
-```
-Not implemented
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-```java
-/** @deprecated Use addContextListener(null, handler) instead */
-CompletionStage<Listener> addContextListener(ContextHandler handler);
-```
-
-</TabItem>
-
-</Tabs>
-
-Adds a listener for incoming contexts whenever a broadcast happens on the channel.
-
-**See also:**
-
-- [`addContextListener`](#addcontextlistener)
+- [`addEventListener`](#addeventlistener)

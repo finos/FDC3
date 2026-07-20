@@ -1,9 +1,8 @@
 import type { Application } from 'express';
 import type { Server } from 'http';
 import { WebSocket } from 'ws';
-import { Channel, IntentHandler } from '@finos/fdc3';
+import { Channel } from '@finos/fdc3';
 import { Context } from '@finos/fdc3-context';
-import type { ContextMetadata } from '@finos/fdc3-standard';
 import {
   AllowListFunction,
   createJosePrivateFDC3Security,
@@ -14,19 +13,15 @@ import {
   JosePrivateFDC3Security,
   PrivateEncryptedContextListenerSupport,
   provisionJWKS,
+  SecurityAwareContextHandler,
   setupWebsocketServer,
-  type JSONWebEncryption,
   type MetadataHandler,
 } from '@finos/fdc3-security';
 
-/** Legacy name; valuations are pushed over the secure-boundary WebSocket with purpose {@link VALUATION_PUSH_PURPOSE}. */
-export const GET_PRICES_PURPOSE = 'price-stream';
-
+/** Purpose string for server → client valuation push over the secure-boundary WebSocket. */
 export const VALUATION_PUSH_PURPOSE = 'valuation-push';
 
-/** Session after decrypting IDP response (matches `fdc3.security.user`; see get-user-example.ts). */
-type App1UserSession = Context & { type: 'fdc3.security.user'; jwt?: unknown };
-
+/** Payload shape for the `request-prices` exchangeData call from the frontend. */
 type RequestPricesPayload = {
   context?: Context;
   instrument?: Context;
@@ -34,11 +29,18 @@ type RequestPricesPayload = {
 };
 
 /**
- * App1 secure-boundary handlers: CreateIdentityToken follow-up (`user-request` exchangeData), signed request-prices for demo.GetPrices,
- * and valuation notifications from the private channel (server → client via EXCHANGE_DATA push).
+ * Trusted-backend handlers for Security POC 1 (buy-side app).
+ *
+ * Handles one `exchangeData` purpose:
+ * - `'request-prices'`: signs the provided `fdc3.instrument` context so POC 2 can verify
+ *   this request genuinely originated from this app.
+ *
+ * Handles one `handleRemoteChannel` purpose:
+ * - `'demo.GetPrices'`: receives the PrivateChannel returned by POC 2 and attaches a
+ *   `PrivateEncryptedContextListenerSupport` listener. Decrypted `fdc3.valuation` contexts
+ *   are pushed to the browser over the WebSocket using {@link EXCHANGE_DATA}.
  */
 class App1BackendHandlers extends DefaultFDC3Handlers {
-  private user: App1UserSession | null = null;
   private readonly metadataHandler: MetadataHandler;
 
   constructor(
@@ -49,60 +51,23 @@ class App1BackendHandlers extends DefaultFDC3Handlers {
     this.metadataHandler = createMetadataHandlerWithFDC3Version('3.0');
   }
 
-  async exchangeData(purpose: string, o: object): Promise<object | void> {
-    if (purpose === 'user-request') {
-      if (this.user) {
-        return this.user;
-      }
-
-      const ctx = o as Context;
-      if (ctx.type === 'fdc3.security.encryptedContext') {
-        const enc = (ctx as { encryptedPayload?: JSONWebEncryption }).encryptedPayload;
-        if (!enc) {
-          return undefined;
-        }
-        try {
-          const decrypted = await this.security.decryptContextWithPrivateKey(enc);
-          if (decrypted.type !== 'fdc3.security.user') {
-            return undefined;
-          }
-          const jwtVal = (decrypted as App1UserSession).jwt;
-          if (jwtVal == null) {
-            return undefined;
-          }
-          const jwtStr = typeof jwtVal === 'string' ? jwtVal : JSON.stringify(jwtVal);
-          await this.security.verifyJWTToken(jwtStr);
-          this.user = decrypted as App1UserSession;
-          return this.user;
-        } catch {
-          return undefined;
-        }
-      }
-
-      return undefined;
-    }
-
-    if (purpose === 'user-logout') {
-      this.user = null;
-      return undefined;
-    }
-
+  async exchangeData(purpose: string, payload: unknown): Promise<unknown> {
     if (purpose === 'request-prices') {
-      const body = o as RequestPricesPayload;
+      const body = payload as RequestPricesPayload;
       const instrument = body.context ?? body.instrument;
       if (!instrument || typeof instrument !== 'object') {
         return undefined;
       }
-
-      const { signature, antiReplay } = await this.security.sign(instrument);
-      return { signature, antiReplay };
+      try {
+        const { signature, antiReplay } = await this.security.sign(instrument);
+        return { signature, antiReplay };
+      } catch (err) {
+        console.error('request-prices error:', err);
+        return undefined;
+      }
     }
 
-    return super.exchangeData(purpose, o);
-  }
-
-  async remoteIntentHandler(intent: string): Promise<IntentHandler> {
-    return super.remoteIntentHandler(intent);
+    return super.exchangeData(purpose, payload);
   }
 
   async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
@@ -110,18 +75,20 @@ class App1BackendHandlers extends DefaultFDC3Handlers {
       return;
     }
 
-    // Defer addContextListener until after the secure-boundary server has ack'd
-    // HANDLE_REMOTE_CHANNEL; otherwise the client stays blocked in exchange() and never
-    // answers addContextListenerRequest (timeout on addContextListenerResponse).
     setTimeout(() => {
       void (async () => {
-        const support = new PrivateEncryptedContextListenerSupport(this.security, this.metadataHandler);
-        await support.addContextListener(channel, 'fdc3.valuation', async (ctx: Context, meta?: ContextMetadata) => {
-          emitToClient(this.ws, EXCHANGE_DATA, {
-            purpose: VALUATION_PUSH_PURPOSE,
-            o: { ctx, meta },
-          });
-        });
+        try {
+          const support = new PrivateEncryptedContextListenerSupport(this.security, this.metadataHandler);
+          const valuationHandler: SecurityAwareContextHandler = (ctx, meta) => {
+            emitToClient(this.ws, EXCHANGE_DATA, {
+              purpose: VALUATION_PUSH_PURPOSE,
+              payload: { ctx, meta },
+            });
+          };
+          await support.addContextListener(channel, 'fdc3.valuation', valuationHandler);
+        } catch (err) {
+          console.error('handleRemoteChannel(demo.GetPrices) error:', err);
+        }
       })();
     }, 0);
   }

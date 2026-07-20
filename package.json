@@ -11,6 +11,9 @@
     "tag": "latest"
   },
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22"
+  },
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "module": "dist/fdc3.esm.js",
@@ -18,8 +21,8 @@
     "dist"
   ],
   "workspaces": [
-    "packages/fdc3-schema",
     "packages/fdc3-context",
+    "packages/fdc3-schema",
     "packages/fdc3-standard",
     "packages/testing",
     "packages/fdc3-agent-proxy",
@@ -85,5 +88,8 @@
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

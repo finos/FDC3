@@ -18,24 +18,37 @@ import {
 import { v4 } from 'uuid';
 
 export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIntentListenerRequest> {
-  readonly intent: string;
-
-  constructor(messaging: Messaging, intent: string, action: IntentHandler, messageExchangeTimeout: number) {
+  constructor(
+    messaging: Messaging,
+    readonly intent: string,
+    readonly contextTypes: string[] | undefined,
+    action: IntentHandler,
+    messageExchangeTimeout: number,
+    private readonly onUnsubscribe?: () => void
+  ) {
     super(
       messaging,
       messageExchangeTimeout,
-      { intent },
+      { intent, contextTypes },
       action,
       'addIntentListenerRequest',
       'addIntentListenerResponse',
       'intentListenerUnsubscribeRequest',
       'intentListenerUnsubscribeResponse'
     );
-    this.intent = intent;
+  }
+
+  override async unsubscribe(): Promise<void> {
+    await super.unsubscribe();
+    this.onUnsubscribe?.();
   }
 
   filter(m: IntentEvent): boolean {
-    return m.type == 'intentEvent' && m.payload.intent == this.intent;
+    return (
+      m.type == 'intentEvent' &&
+      m.payload.intent == this.intent &&
+      (this.contextTypes == null || this.contextTypes.includes(m.payload.context.type))
+    );
   }
 
   action(m: IntentEvent): void {

@@ -24,6 +24,7 @@ import {
 import {
   BasicSignedRaiseIntentSupport,
   PrivateSignedRaiseIntentSupport,
+  VerifiedIntentResolution,
 } from '../src/signing/SignedRaiseIntentSupport';
 
 const soloBaseUrl = 'https://signed-intent.test';
@@ -206,12 +207,13 @@ describe.each(metadataAvailabilityCases)(
       const result = await resolution.getResult();
       expect(result).toMatchObject({ type: 'demo.response' });
       if (metadataAvailable) {
-        const resultMetadata = await resolution.getResultMetadata();
-        expect(resultMetadata.authenticity).toMatchObject({ signed: true, valid: true });
+        const verification = await (resolution as VerifiedIntentResolution).getVerification();
+        expect(verification?.authenticity).toMatchObject({ signed: true, valid: true });
         expect((result as Context & { __appMeta?: unknown }).__appMeta).toBeUndefined();
       } else {
-        const withMeta = result as Context & { __appMeta?: { authenticity?: { signed?: boolean; valid?: boolean } } };
-        expect(withMeta.__appMeta?.authenticity).toMatchObject({ signed: true, valid: true });
+        // In pre-3.0 mode metadata is packed into __appMeta; verification is still via getVerification()
+        const verification = await (resolution as VerifiedIntentResolution).getVerification();
+        expect(verification?.authenticity).toMatchObject({ signed: true, valid: true });
       }
     });
 
