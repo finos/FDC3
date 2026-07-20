@@ -37,7 +37,7 @@
     "is-ci": "4.1.0",
     "jsonpath-plus": "^10.1.0",
     "quickpickle": "^1.6.1",
-    "uuid": "^14.0.0"
+    "uuid": "^14.0.1"
   },
   "engines": {
     "node": ">=22"

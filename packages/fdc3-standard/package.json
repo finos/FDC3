@@ -39,7 +39,7 @@
     "@apidevtools/swagger-parser": "^10.1.1",
     "jsdom": "^28.1.0",
     "jsonschema": "^1.4.0",
-    "quicktype": "23.0.78",
+    "quicktype": "23.3.25",
     "tslib": "^2.7.0",
     "vitest-mock-extended": "^3.0.0"
   },
