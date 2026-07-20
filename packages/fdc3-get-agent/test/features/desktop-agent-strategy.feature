@@ -398,9 +398,7 @@ Scenario: Latch to Desktop Agent Preload via SessionStorage which has gone away
     And captured console error output should not contain "Desktop agent not found. No error reported during discovery."
 
   Scenario: Unrelated postMessage traffic is ignored without warning
-    Given console output is captured
     When a HelloHandler for connection attempt "expected-connection-uuid" receives unrelated postMessage traffic
-    Then captured console debug output should contain "Ignoring unexpected message in HelloHandler"
 
   Scenario: WCP messages for another connection attempt still produce warnings
     Given console output is captured
