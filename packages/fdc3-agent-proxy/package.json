@@ -29,12 +29,12 @@
     "@finos/fdc3-standard": "3.0.0-alpha.2"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "^11.3.0",
+    "@cucumber/cucumber": "^13.0.0",
     "@finos/testing": "3.0.0-alpha.2",
     "@types/uuid": "^10.0.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "3.3.1",
-    "is-ci": "2.0.0",
+    "is-ci": "4.1.0",
     "jsonpath-plus": "^10.1.0",
     "quickpickle": "^1.6.1",
     "uuid": "^14.0.0"
