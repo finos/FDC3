@@ -27,12 +27,13 @@
   "scripts": {
     "clean": "rimraf dist generated coverage",
     "mkdirs": "npx mkdirp generated/context",
-    "generate": "npm run mkdirs && npm run typegen && npm run lint",
+    "generate": "npm run mkdirs && npm run typegen && npm run schemagen && npm run lint",
     "build": "npm run generate && tsc",
     "lint": "eslint generated/ --fix && npx prettier generated/ --write",
     "test": "npm run generate && tsc && vitest run",
     "test:watch": "vitest",
-    "typegen": "cd schemas && node ../s2tQuicktypeUtil.cjs context ../generated/context/ContextTypes.ts"
+    "typegen": "cd schemas && node ../s2tQuicktypeUtil.cjs context ../generated/context/ContextTypes.ts",
+    "schemagen": "node generateContextSchemas.cjs schemas/context generated/context/ContextSchemas.ts"
   },
   "devDependencies": {
     "ajv": "^8.18.0",
