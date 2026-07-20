@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Added standalone Workbench examples for the FDC3 2.2 `fdc3.action`, `fdc3.fileAttachment`, `fdc3.message`, `fdc3.orderList`, `fdc3.tradeList`, and `fdc3.timeRange` context types. ([#1949](https://github.com/finos/FDC3/pull/1949))
 * Added advanced conformance tests (`fdc3.intentListenerConflict`) covering intent listener conflicts, verifying that `addIntentListener`/`addIntentListenerWithContext` reject with `ResolveError.IntentListenerConflict` for conflicting listeners (unfiltered, or overlapping context types) and allow non-overlapping filtered listeners, listeners for different intents, and re-adding after `unsubscribe()`. Added the corresponding test definitions to the "Avoiding Adding Multiple Intent Listeners" section of the Intents conformance docs.
 * Added a classification field to Instrument context type ([#1665](https://github.com/finos/FDC3/pull/1665))
 * Added Go language binding. ([#1483](https://github.com/finos/FDC3/pull/1483))
@@ -51,6 +52,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 
 * Reduced normal `getAgent` discovery console noise by ignoring unrelated `postMessage` traffic and reporting expected agent-not-found timeouts as warnings instead of errors. ([#1902](https://github.com/finos/FDC3/issues/1902))
+* Prevented the FDC3 for Web reference implementation from sending channel-changed events to applications that have not registered a matching listener. ([#1806](https://github.com/finos/FDC3/issues/1806))
 * Fixed an issue in conformance test AOpensBWithWrongContext, which was not correctly waiting for the timeout and was sending close messages outside of the execution of the test. Also added logging of test starts and finishes to aid debugging. ([#1933](https://github.com/finos/FDC3/pull/1933))
 
 ## [npm v2.2.3] - 2026-04-15
