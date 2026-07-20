@@ -1130,8 +1130,6 @@ If an app is joined to a channel, all `fdc3.broadcast` calls will go to the chan
 
 If the channel already contains context that would be passed to context listeners added via `fdc3.addContextListener` then those listeners will be called immediately with that context.
 
-After a successful User channel membership change, the Desktop Agent SHOULD dispatch a `userChannelChanged` event to the app if it has registered a matching event listener. When the change is initiated by the app's own call to `joinUserChannel`, the event SHOULD be dispatched before the returned promise resolves.
-
 An app can only be joined to one channel at a time.
 
 If an error occurs (such as the channel is unavailable or the join request is denied) the promise MUST be rejected with an `Error` Object with a `message` chosen from the [`ChannelError`](Errors#channelerror) enumeration.

@@ -287,8 +287,6 @@ Request and response used to implement the [`joinUserChannel()`](../ref/DesktopA
 - [`joinUserChannelRequest`](pathname:///schemas/2.2/api/joinUserChannelRequest.schema.json)
 - [`joinUserChannelResponse`](pathname:///schemas/2.2/api/joinUserChannelResponse.schema.json)
 
-On success, if the requesting app has registered a matching event listener, the Desktop Agent SHOULD send a [`channelChangedEvent`](pathname:///schemas/2.2/api/channelChangedEvent.schema.json) after applying the membership change and before the successful `joinUserChannelResponse`. This ordering dispatches the event before the promise returned by `joinUserChannel()` resolves.
-
 #### `leaveCurrentChannel()`
 
 Request and response used to implement the [`leaveCurrentChannel()`](../ref/DesktopAgent#leavecurrentchannel) API call:

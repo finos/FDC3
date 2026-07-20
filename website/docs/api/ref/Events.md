@@ -236,7 +236,7 @@ Type representing the format of `userChannelChanged`  events.
 
 The identity of the channel joined is provided as `details.currentChannelId`, which will be `null` if the app is no longer joined to any channel.
 
-Desktop Agents SHOULD emit this event after applying a User channel membership change when the app has registered a matching event listener. When the app initiated the change by calling `joinUserChannel`, the event SHOULD be dispatched before the returned promise resolves.
+Desktop Agents MUST emit this event after applying a User channel membership change when the app has registered a matching event listener. When the app initiated the change by calling `joinUserChannel`, the event SHOULD be dispatched before the returned promise resolves.
 
 ### `FDC3ContextClearedEvent`
 
