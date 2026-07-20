@@ -31,6 +31,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 * Added `fdc3.close()` API call allowing an app to request that its own window or frame be closed, with `closeRequest`/`closeResponse` DACP messages and `CloseError` enumeration ([#1918](https://github.com/finos/FDC3/pull/1918))
 
+* Added Java language binding documentation to the API reference. ([#1734](https://github.com/finos/FDC3/pull/1734))
+
 ### Changed
 
 * The `fdc3-agent-proxy` now enforces intent listener conflicts on the client side: `addIntentListener` and `addIntentListenerWithContext` reject with `ResolveError.IntentListenerConflict` when a new listener conflicts with an existing one for the same intent (either listener being unfiltered, or their context types overlapping). Multiple filtered listeners for the same intent with non-overlapping context types are now allowed, and the `addIntentListener`/`addIntentListenerWithContext` documentation was updated accordingly.
@@ -40,6 +42,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Hardened all CI workflows: upgraded GitHub Actions to latest major versions, pinned all action references to immutable commit SHAs, and added StepSecurity harden-runner to every job ([#1948](https://github.com/finos/FDC3/pull/1948))
 - Added `min-release-age = 7` to `.npmrc` requiring packages to be at least 7 days old before resolution ([#1948](https://github.com/finos/FDC3/pull/1948))
 - Added Dependabot configuration with cooldown periods and grouped minor/patch updates ([#1948](https://github.com/finos/FDC3/pull/1948))
+* Refactored the WebSocket Connection Protocol (WSCP) to use role-specific connect messages with order determined by TCP initiator. `sharedSecret` is sent by the initiator only; acceptors MUST NOT echo it. Assigned app identity is carried in `implementationMetadata.appMetadata`.
 
 ### Removed
 

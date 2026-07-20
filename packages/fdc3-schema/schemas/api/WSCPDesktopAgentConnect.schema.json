@@ -1,0 +1,55 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/WSCPDesktopAgentConnect.schema.json",
+  "title": "WebSocket Connection Protocol Desktop Agent Connect",
+  "description": "Connect message sent by a Desktop Agent during the WSCP handshake. When the Desktop Agent is the TCP initiator it MUST include sharedSecret. When the Desktop Agent is the acceptor (responding to WSCPApplicationConnect) it MUST NOT include sharedSecret.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/WSCPDesktopAgentConnectBase"
+    },
+    {
+      "$ref": "WSCPConnectionStep.schema.json"
+    }
+  ],
+  "$defs": {
+    "WSCPDesktopAgentConnectBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "WSCPDesktopAgentConnect Message Type",
+          "const": "WSCPDesktopAgentConnect"
+        },
+        "payload": {
+          "title": "WSCPDesktopAgentConnect Payload",
+          "type": "object",
+          "properties": {
+            "protocolVersion": {
+              "title": "Protocol version",
+              "description": "WSCP protocol version.",
+              "type": "string",
+              "const": "1.0"
+            },
+            "sharedSecret": {
+              "title": "Shared secret",
+              "description": "Pairing credential scoped to a single (fdc3Session, appInstance) pair. MUST be included when the Desktop Agent is the TCP initiator. MUST NOT be included when the Desktop Agent is the acceptor.",
+              "type": "string"
+            },
+            "implementationMetadata": {
+              "title": "ImplementationMetadata",
+              "description": "Implementation metadata for the Desktop Agent, including the connecting application instance's appMetadata (MUST include at least appId and instanceId). Same shape as returned by fdc3.getInfo().",
+              "$ref": "api.schema.json#/definitions/ImplementationMetadata"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["protocolVersion", "implementationMetadata"]
+        },
+        "meta": {
+          "$ref": "WSCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"
+        }
+      },
+      "required": ["type", "payload", "meta"],
+      "additionalProperties": false
+    }
+  }
+}

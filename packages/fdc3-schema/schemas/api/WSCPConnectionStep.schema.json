@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/WSCPConnectionStep.schema.json",
+  "title": "WebSocket Connection Protocol Message",
+  "type": "object",
+  "description": "A message used during the WebSocket connection flow between a native application and a Desktop Agent. Used for messages sent in either direction.",
+  "properties": {
+    "type": {
+      "title": "Connection Step Message type",
+      "type": "string",
+      "enum": [
+        "WSCPApplicationConnect",
+        "WSCPDesktopAgentConnect",
+        "WSCPConnectFailed",
+        "WSCPGoodbye"
+      ],
+      "description": "Identifies the type of the WebSocket connection step message."
+    },
+    "payload": {
+      "title": "Message payload",
+      "type": "object",
+      "description": "The message payload, containing data pertaining to this connection step.",
+      "additionalProperties": true
+    },
+    "meta": {
+      "title": "Connection Step Metadata",
+      "description": "Metadata for a WebSocket Connection Protocol message.",
+      "oneOf": [
+        {
+          "$ref": "#/$defs/DisconnectStepMeta"
+        },
+        {
+          "$ref": "#/$defs/ConnectionStepMeta"
+        }
+      ]
+    }
+  },
+  "required": [
+    "type",
+    "meta"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "ConnectionStepMeta": {
+      "type": "object",
+      "properties": {
+        "connectionAttemptUuid": {
+          "$ref": "common.schema.json#/$defs/ConnectionAttemptUuid"
+        },
+        "timestamp": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "timestamp",
+        "connectionAttemptUuid"
+      ],
+      "additionalProperties": false
+    },
+    "DisconnectStepMeta": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "$ref": "common.schema.json#/$defs/Timestamp"
+        }
+      },
+      "required": [
+        "timestamp"
+      ],
+      "additionalProperties": false
+    }
+  }
+}
