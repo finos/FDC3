@@ -134,6 +134,15 @@ export class BroadcastHandler implements MessageHandler {
   }
 
   fireChannelChangedEvent(channelId: string | null, sc: ServerContext<AppRegistration>, instanceId: string) {
+    const hasChannelChangedListener = this.desktopAgentEventListeners.some(
+      listener =>
+        listener.instanceId === instanceId &&
+        (listener.eventType === null || listener.eventType === 'USER_CHANNEL_CHANGED')
+    );
+    if (!hasChannelChangedListener) {
+      return;
+    }
+
     const event: ChannelChangedEvent = {
       meta: {
         eventUuid: sc.createUUID(),
