@@ -29,7 +29,7 @@
     "@finos/fdc3-standard": "3.0.0-alpha.2"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "^11.3.0",
+    "@cucumber/cucumber": "^13.0.0",
     "@finos/testing": "3.0.0-alpha.2",
     "@types/uuid": "^10.0.0",
     "eslint-plugin-import": "^2.31.0",
