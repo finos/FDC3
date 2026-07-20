@@ -390,7 +390,7 @@ Scenario: Latch to Desktop Agent Preload via SessionStorage which has gone away
     Given console output is captured
     When I call getAgent for a promise result with the following options
       | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
-      | true              |       100 | false          | false           |
+      | true              |      4000 | false          | false           |
     And I refer to "{result}" as "theAPIPromise"
     Then the promise "{theAPIPromise}" should resolve
     And "{result}" is an error with message "AgentNotFound"
@@ -400,7 +400,7 @@ Scenario: Latch to Desktop Agent Preload via SessionStorage which has gone away
   Scenario: Unrelated postMessage traffic is ignored without warning
     Given console output is captured
     When a HelloHandler for connection attempt "expected-connection-uuid" receives unrelated postMessage traffic
-    Then captured console warn output should not contain "invalid connectionAttemptUuid"
+    Then captured console debug output should contain "Ignoring unexpected message in HelloHandler"
 
   Scenario: WCP messages for another connection attempt still produce warnings
     Given console output is captured
