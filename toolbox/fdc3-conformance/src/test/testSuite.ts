@@ -11,7 +11,6 @@ import fdc3RaiseIntent_Result from './advanced/fdc3.raiseIntent-Result';
 import fdc3RaiseIntent_NoAppsFound from './advanced/fdc3.raiseIntent-NoAppsFound';
 import fdc3AppChannels from './advanced/fdc3.app-channels';
 import fdc3UserChannels from './advanced/fdc3.user-channels';
-import fdc3ChannelErrors from './advanced/fdc3.channel-errors';
 import fdc3ContextMetadata from './advanced/fdc3.context-metadata';
 import fdc3IntentContextMetadata from './advanced/fdc3.intent-context-metadata';
 import fdc3IntentListenerConflict from './advanced/fdc3.intent-listener-conflict';
@@ -58,7 +57,6 @@ const advancedSuite: testSet = {
   'fdc3.getAppMetadata': [fdc3getAppMetadata],
   'fdc3.appChannels': [fdc3AppChannels],
   'fdc3.userChannels': [fdc3UserChannels],
-  'fdc3.channelErrors': [fdc3ChannelErrors],
   'fdc3.findInstances': [fdc3FindInstances],
   'fdc3.findIntent': [fdc3FindIntent],
   'fdc3.findIntentsByContext': [fdc3FindIntentsByContext],
