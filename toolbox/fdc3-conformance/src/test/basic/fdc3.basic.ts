@@ -188,13 +188,13 @@ const basicRI2 = (fdc3: DesktopAgent, documentation: string, contextType: string
 const basicDM1 = (fdc3: DesktopAgent, documentation: string, intent: string, contextType: string) => {
   const basicDM1 = '(BasicDM1) DesktopAgent methods should remain callable when destructured';
   it(basicDM1, async () => {
-    let contextListener: Listener | undefined;
-    let intentListener: Listener | undefined;
+    const unsubscribeFunctions: Array<() => Promise<void>> = [];
     let joinedUserChannel = false;
 
     try {
       const {
         addContextListener,
+        addEventListener,
         addIntentListener,
         broadcast,
         findIntent,
@@ -211,16 +211,35 @@ const basicDM1 = (fdc3: DesktopAgent, documentation: string, intent: string, con
       const info = await getInfo();
       expect(info, documentation).to.have.property('fdc3Version');
 
-      contextListener = await addContextListener(contextType, () => {});
+      const contextListener = await addContextListener(contextType, () => {});
       expect(contextListener, documentation).to.have.property('unsubscribe').that.is.a('function');
+      const { unsubscribe: unsubscribeContextListener } = contextListener;
+      unsubscribeFunctions.push(unsubscribeContextListener);
 
-      intentListener = await addIntentListener('ConformanceListener', () => {});
+      const intentListener = await addIntentListener('ConformanceListener', () => {});
       expect(intentListener, documentation).to.have.property('unsubscribe').that.is.a('function');
-      intentListener.unsubscribe();
-      intentListener = undefined;
+      const { unsubscribe: unsubscribeIntentListener } = intentListener;
+      unsubscribeFunctions.push(unsubscribeIntentListener);
+
+      const eventListener = await addEventListener(null, () => {});
+      expect(eventListener, documentation).to.have.property('unsubscribe').that.is.a('function');
+      const { unsubscribe: unsubscribeEventListener } = eventListener;
+      unsubscribeFunctions.push(unsubscribeEventListener);
 
       const channel = await getOrCreateChannel('FDC3Conformance');
       expect(channel, documentation).to.have.property('id');
+      const {
+        addContextListener: addChannelContextListener,
+        addEventListener: addChannelEventListener,
+        broadcast: broadcastToChannel,
+      } = channel;
+      const channelContextListener = await addChannelContextListener(contextType, () => {});
+      const { unsubscribe: unsubscribeChannelContextListener } = channelContextListener;
+      unsubscribeFunctions.push(unsubscribeChannelContextListener);
+      const channelEventListener = await addChannelEventListener(null, () => {});
+      const { unsubscribe: unsubscribeChannelEventListener } = channelEventListener;
+      unsubscribeFunctions.push(unsubscribeChannelEventListener);
+      await broadcastToChannel({ type: contextType });
 
       const userChannels = await getUserChannels();
       expect(userChannels, documentation).to.be.an('array');
@@ -231,6 +250,18 @@ const basicDM1 = (fdc3: DesktopAgent, documentation: string, intent: string, con
         joinedUserChannel = true;
         const currentChannel = await getCurrentChannel();
         expect(currentChannel?.id, documentation).to.eql(userChannels[0].id);
+        const {
+          addContextListener: addCurrentChannelContextListener,
+          addEventListener: addCurrentChannelEventListener,
+          broadcast: broadcastToCurrentChannel,
+        } = currentChannel!;
+        const currentChannelContextListener = await addCurrentChannelContextListener(contextType, () => {});
+        const { unsubscribe: unsubscribeCurrentChannelContextListener } = currentChannelContextListener;
+        unsubscribeFunctions.push(unsubscribeCurrentChannelContextListener);
+        const currentChannelEventListener = await addCurrentChannelEventListener(null, () => {});
+        const { unsubscribe: unsubscribeCurrentChannelEventListener } = currentChannelEventListener;
+        unsubscribeFunctions.push(unsubscribeCurrentChannelEventListener);
+        await broadcastToCurrentChannel({ type: contextType });
         await broadcast({ type: contextType });
         await leaveCurrentChannel();
         joinedUserChannel = false;
@@ -246,8 +277,7 @@ const basicDM1 = (fdc3: DesktopAgent, documentation: string, intent: string, con
       if (joinedUserChannel) {
         await fdc3.leaveCurrentChannel();
       }
-      contextListener?.unsubscribe();
-      intentListener?.unsubscribe();
+      await Promise.all(unsubscribeFunctions.map(unsubscribe => unsubscribe()));
     }
   });
 };
