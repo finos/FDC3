@@ -149,8 +149,9 @@ const basicJC1 = (fdc3: DesktopAgent, documentation: string) => {
 
     try {
       const channels = await fdc3.getUserChannels();
+      expect(channels, documentation).to.be.an('array');
       if (channels.length === 0) {
-        assert.fail('No system channels available');
+        assert.fail('No user channels available');
       }
 
       await fdc3.joinUserChannel(channels[0].id);
