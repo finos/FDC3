@@ -487,7 +487,7 @@ export interface DesktopAgent {
    *
    * If the channel already contains context that would be passed to context listeners added via `fdc3.addContextListener` then those listeners will be called immediately with that context.
    *
-   * After a successful User channel membership change, the Desktop Agent MUST dispatch a `userChannelChanged` event to the app if it has registered a matching event listener. When the change is initiated by the app's own call to `joinUserChannel`, the event SHOULD be dispatched before the returned promise resolves.
+   * After a successful User channel membership change, the Desktop Agent MUST dispatch a `userChannelChanged` event to the app if it has registered a matching event listener. When the change is initiated by the app's own call to `joinUserChannel`, the event MUST be dispatched before the returned promise resolves.
    *
    * An app can only be joined to one channel at a time.
    *
