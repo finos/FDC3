@@ -1,4 +1,4 @@
-import { Context, DesktopAgent } from '@finos/fdc3';
+import { Context, DesktopAgent, FDC3_VERSION, versionIsAtLeast } from '@finos/fdc3';
 
 import { APIDocumentation } from '../support/apiDocuments';
 import { ContextType, Intent } from '../support/intent-support';
@@ -8,9 +8,12 @@ import { assert, expect } from 'chai';
 import { handleFail } from '../../utils';
 
 const getAgent2_2 = (fdc3: DesktopAgent, documentation: string) => {
-  it('(GetAgentAPI) Method is callable', async () => {
+  it('(GetInfoFDC3Version) getInfo returns an FDC3 version at least the conformance test version', async () => {
     const info = await fdc3.getInfo();
-    assert.isTrue(info.fdc3Version.startsWith('2.'), documentation);
+    assert.isTrue(
+      versionIsAtLeast(info, FDC3_VERSION),
+      `${documentation} Expected getInfo().fdc3Version ${info.fdc3Version} to be at least ${FDC3_VERSION}`
+    );
     const userChannels = await fdc3.getUserChannels();
     assert.isTrue(userChannels.length > 0, documentation);
   });
