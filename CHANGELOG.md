@@ -51,6 +51,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+* Fixed the basic conformance version check to use the exported FDC3 version and accept newer compatible Desktop Agents. ([#1966](https://github.com/finos/FDC3/pull/1966))
 * Prevented the FDC3 for Web reference implementation from sending channel-changed events to applications that have not registered a matching listener. ([#1806](https://github.com/finos/FDC3/issues/1806))
 * Fixed an issue in conformance test AOpensBWithWrongContext, which was not correctly waiting for the timeout and was sending close messages outside of the execution of the test. Also added logging of test starts and finishes to aid debugging. ([#1933](https://github.com/finos/FDC3/pull/1933))
 
