@@ -12,15 +12,14 @@ _These are some basic sanity tests implemented in the FDC3 Conformance Framework
 
 ## Connection
 
-![2.2+](https://img.shields.io/badge/FDC3-2.2+-purple) In FDC3 2.2, a new interface was introduced to support Browser-based FDC3 Desktop Agents, known as a 'Desktop Agent Proxy', and a new [`getAgent`](../ref/GetAgent) API call was introduced to all apps to retrieve the Desktop Agent API via that interface or the existing 'Desktop Agent Preload' interface. This test pack checks that the a connection is made correctly via `getAgent`.
+![2.2+](https://img.shields.io/badge/FDC3-2.2+-purple) In FDC3 2.2, a new interface was introduced to support Browser-based FDC3 Desktop Agents, known as a 'Desktop Agent Proxy', and a new [`getAgent`](../ref/GetAgent) API call was introduced to all apps to retrieve the Desktop Agent API via that interface or the existing 'Desktop Agent Preload' interface. This test checks that the connected Desktop Agent reports a compatible FDC3 version and provides User channels.
 
 | App | Step            | Description                                              |
 |-----|-----------------|----------------------------------------------------------|
-| A   | `getAgent`      | App A calls `getAgent` and waits for the promise to resolve to a `DesktopAgent` instance. |
-| A   | `getInfo`       | App A can call the `getInfo()` method on the `DesktopAgent` instance to get the `ImplementationMetadata` object. <br /> Check that fdc3Version is set to 2.x.  <br />Check that provider and providerVersion are populated. |
-| A   | `getUserChannels`| App A can call the `getUserChannels()` method on the `DesktopAgent` instance to get the `Channel` objects representing the system channels.<br />Check **user** channels are returned.|
+| A   | `getInfo`       | App A calls `getInfo()` on the connected `DesktopAgent` and checks that `fdc3Version` is at least the FDC3 version used by the conformance framework. |
+| A   | `getUserChannels`| App A calls `getUserChannels()` and checks that at least one User channel is returned. |
 
-- `GetAgentAPI`: ![2.2+](https://img.shields.io/badge/FDC3-2.2+-purple) Perform the above test.
+- `GetInfoFDC3Version`: ![2.2+](https://img.shields.io/badge/FDC3-2.2+-purple) Perform the above steps as a single test.
 
 ## Basic API Usage
 
