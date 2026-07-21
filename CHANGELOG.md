@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Added conformance coverage for `ChannelError.NoChannelFound`, `ChannelError.MalformedContext`, and `ChannelError.InvalidArguments`. ([#1779](https://github.com/finos/FDC3/issues/1779))
 * Added conformance coverage verifying that Desktop Agent methods continue to work when destructured from the `fdc3` object. ([#1778](https://github.com/finos/FDC3/issues/1778))
 * Added standalone Workbench examples for the FDC3 2.2 `fdc3.action`, `fdc3.fileAttachment`, `fdc3.message`, `fdc3.orderList`, `fdc3.tradeList`, and `fdc3.timeRange` context types. ([#1949](https://github.com/finos/FDC3/pull/1949))
 * Added advanced conformance tests (`fdc3.intentListenerConflict`) covering intent listener conflicts, verifying that `addIntentListener`/`addIntentListenerWithContext` reject with `ResolveError.IntentListenerConflict` for conflicting listeners (unfiltered, or overlapping context types) and allow non-overlapping filtered listeners, listeners for different intents, and re-adding after `unsubscribe()`. Added the corresponding test definitions to the "Avoiding Adding Multiple Intent Listeners" section of the Intents conformance docs.
