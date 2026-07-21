@@ -397,10 +397,13 @@ Scenario: Latch to Desktop Agent Preload via SessionStorage which has gone away
     And captured console warn output should contain "Desktop agent not found. No error reported during discovery."
     And captured console error output should not contain "Desktop agent not found. No error reported during discovery."
 
-  Scenario: Unrelated postMessage traffic is ignored without warning
+  Scenario: Unrelated postMessage traffic is logged at debug level
+    Given console output is captured
+    And connection logger outputs debug messages
     When a HelloHandler for connection attempt "expected-connection-uuid" receives unrelated postMessage traffic
+    Then captured console debug output should contain "Ignoring unexpected message in HelloHandler"
 
-  Scenario: WCP messages for another connection attempt still produce warnings
+  Scenario: WCP messages for another connection attempt produce warnings
     Given console output is captured
     When a HelloHandler for connection attempt "expected-connection-uuid" receives WCP messages for other connection attempts
     Then captured console warn output should contain "received: wcp2-other-connection-uuid"

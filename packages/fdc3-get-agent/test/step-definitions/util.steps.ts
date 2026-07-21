@@ -4,6 +4,7 @@ import { expect } from 'vitest';
 import { Logger } from '../../src/util/Logger.js';
 import { createUUID } from '../../src/util/Uuid.js';
 import { HelloHandler } from '../../src/strategies/HelloHandler.js';
+import { LogLevel } from '@finos/fdc3-standard';
 
 const TEST_ERROR = 'Test error - This is expected on the console';
 const CONSOLE_METHODS = ['debug', 'log', 'warn', 'error'] as const;
@@ -80,6 +81,11 @@ Given('console output is captured', async (world: CustomWorld) => {
 
 After((world: CustomWorld) => {
   restoreConsoleCapture(world);
+  Logger.setLogLevel(LogLevel.INFO);
+});
+
+Given('connection logger outputs debug messages', async () => {
+  Logger.setLogLevel(LogLevel.DEBUG);
 });
 
 When('All log functions are used with a message', async (world: CustomWorld) => {
