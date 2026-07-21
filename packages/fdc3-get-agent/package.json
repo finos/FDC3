@@ -33,7 +33,7 @@
     "uuid": "^14.0.0"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "^11.3.0",
+    "@cucumber/cucumber": "^13.0.0",
     "@finos/fdc3-web-impl": "3.0.0-alpha.2",
     "@finos/testing": "3.0.0-alpha.2",
     "@types/wtfnode": "^0.7.3",

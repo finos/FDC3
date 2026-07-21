@@ -8,6 +8,15 @@ hide_title: true
 # User Channel Tests
 <!-- markdownlint-disable MD033 -->
 
+## Unknown User Channel
+
+| App | Step | Details |
+|-----|------|---------|
+| A | 1. Retrieve channels | Call `fdc3.getUserChannels()` and choose an id that is not present in the returned list. |
+| A | 2. Join unknown channel | Call `fdc3.joinUserChannel(<unknownChannelId>)`. The promise rejects with `ChannelError.NoChannelFound`. |
+
+- `ChannelErrorNoChannelFound` ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue): Verify that joining an unknown User Channel rejects with `ChannelError.NoChannelFound`. Skip the test when `UserChannelMembershipAPIs` is not supported.
+
 ## Basic Broadcast
 
 | App | Step                  | Details                                                                          |

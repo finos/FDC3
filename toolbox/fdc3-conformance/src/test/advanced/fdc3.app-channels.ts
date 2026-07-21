@@ -3,8 +3,9 @@ import { wait } from '../../utils';
 import constants from '../../constants';
 import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE } from '../support/channel-control';
 import { ChannelControlImpl } from '../support/channels-support';
-import { getAgent } from '@finos/fdc3';
+import { ChannelError, Context, getAgent } from '@finos/fdc3';
 import { APIDocumentation } from '../support/apiDocuments';
+import { expectChannelError } from '../support/error-support';
 
 const documentation = '\r\nDocumentation: ' + APIDocumentation.desktopAgent + '\r\nCause:';
 
@@ -16,7 +17,26 @@ export default async () => {
     beforeEach(cc.leaveChannel);
 
     afterEach(async function afterEach() {
-      await cc.closeMockApp(this.currentTest!.title);
+      if (!this.currentTest?.title.startsWith('(ChannelError')) {
+        await cc.closeMockApp(this.currentTest!.title);
+      }
+    });
+
+    it('(ChannelErrorMalformedContext) Should reject channel broadcast with MalformedContext for an invalid context', async () => {
+      const errorMessage = `\r\nSteps to reproduce:\r\n- Retrieve an app channel\r\n- Broadcast a context object without a string type${documentation}`;
+      const channel = await fdc3.getOrCreateChannel('fdc3.conformance.channel-errors');
+
+      await expectChannelError(() => channel.broadcast({} as Context), ChannelError.MalformedContext, errorMessage);
+    });
+
+    it('(ChannelErrorInvalidArguments) Should reject getOrCreateChannel with InvalidArguments for a non-string channel id', async () => {
+      const errorMessage = `\r\nSteps to reproduce:\r\n- Call getOrCreateChannel with a non-string channel id${documentation}`;
+
+      await expectChannelError(
+        () => fdc3.getOrCreateChannel(null as unknown as string),
+        ChannelError.InvalidArguments,
+        errorMessage
+      );
     });
 
     const acTestId =
