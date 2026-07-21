@@ -138,24 +138,42 @@ const basicUC1 = (fdc3: DesktopAgent, documentation: string) => {
 };
 
 const basicJC1 = (fdc3: DesktopAgent, documentation: string) => {
-  it("(BasicJC1) getCurrentChannel should retrieve 'null' or a channel object depending upon whether the channel has been joined or not", async () => {
-    const channels = await fdc3.getUserChannels();
-    if (channels.length > 0) {
-      try {
-        await fdc3.joinUserChannel(channels[0].id);
-        const currentChannel = await fdc3.getCurrentChannel();
-        if (typeof currentChannel !== 'object') {
-          assert.fail('getCurrentChannel did not retrieve a channel object');
-        }
-        expect(currentChannel?.id).to.eql(channels[0].id);
-        await fdc3.leaveCurrentChannel();
-        const currentChannelAfterLeave = await fdc3.getCurrentChannel();
-        assert.isNull(currentChannelAfterLeave);
-      } catch (ex) {
-        handleFail(documentation, ex);
+  it('(BasicJC1) User channel membership APIs are callable when advertised by getInfo', async function (this: Mocha.Context) {
+    const info = await fdc3.getInfo();
+    if (!info.optionalFeatures.UserChannelMembershipAPIs) {
+      this.skip();
+    }
+
+    expect(typeof fdc3.joinUserChannel, documentation).to.be.equals('function');
+    expect(typeof fdc3.getCurrentChannel, documentation).to.be.equals('function');
+    expect(typeof fdc3.leaveCurrentChannel, documentation).to.be.equals('function');
+
+    let joinedUserChannel = false;
+
+    try {
+      const channels = await fdc3.getUserChannels();
+      expect(channels, documentation).to.be.an('array');
+      if (channels.length === 0) {
+        assert.fail('No user channels available');
       }
-    } else {
-      assert.fail('No system channels available');
+
+      await fdc3.joinUserChannel(channels[0].id);
+      joinedUserChannel = true;
+      const currentChannel = await fdc3.getCurrentChannel();
+      if (typeof currentChannel !== 'object') {
+        assert.fail('getCurrentChannel did not retrieve a channel object');
+      }
+      expect(currentChannel?.id).to.eql(channels[0].id);
+      await fdc3.leaveCurrentChannel();
+      joinedUserChannel = false;
+      const currentChannelAfterLeave = await fdc3.getCurrentChannel();
+      assert.isNull(currentChannelAfterLeave);
+    } catch (ex) {
+      handleFail(documentation, ex);
+    } finally {
+      if (joinedUserChannel) {
+        await fdc3.leaveCurrentChannel();
+      }
     }
   });
 };
