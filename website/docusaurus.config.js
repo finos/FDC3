@@ -41,6 +41,19 @@ module.exports = {
         }
       }
     ]
+    ,
+    [
+      'redocusaurus',
+      {
+        specs: [
+          { spec: '../packages/fdc3-standard/src/app-directory/specification/appd.schema.json', route: '/docs/app-directory/api' },
+          { spec: './static/schemas/2.2/appd.schema.json', route: '/docs/2.2/app-directory/api' },
+          { spec: './static/schemas/2.1/appd.schema.json', route: '/docs/2.1/app-directory/api' },
+          { spec: './static/schemas/2.0/app-directory.yaml', route: '/docs/2.0/app-directory/api' },
+        ],
+        theme: { primaryColor: '#1890ff' },
+      },
+    ]
   ],
   markdown: {
     mermaid: true,
