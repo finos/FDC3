@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@apidevtools/swagger-parser": "^10.1.1",
-    "jsdom": "^28.1.0",
+    "jsdom": "^29.1.1",
     "jsonschema": "^1.4.0",
     "quicktype": "23.0.78",
     "tslib": "^2.7.0",
