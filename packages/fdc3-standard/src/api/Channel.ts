@@ -4,10 +4,11 @@
  */
 
 import { Context } from '@finos/fdc3-context';
-import { ContextHandler } from './Types.js';
+import { ContextHandler, ContextWithMetadata } from './Types.js';
 import { DisplayMetadata } from './DisplayMetadata.js';
 import { Listener } from './Listener.js';
 import { EventHandler } from './Events.js';
+import type { AppProvidableContextMetadata } from './ContextMetadata.js';
 
 /**
  * Represents a context channel that applications can use to send and receive
@@ -50,9 +51,11 @@ export interface Channel {
    *
    * If you are working with complex context types composed of other simpler types (as recommended by the FDC3 Context Data specification) then you should broadcast each individual type (starting with the simpler types, followed by the complex type) that you want other apps to be able to respond to. Doing so allows applications to filter the context types they receive by adding listeners for specific context types.
    *
+   * An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the broadcast context.
+   *
    * If an application attempts to broadcast an invalid context argument the Promise returned by this function should reject with the `ChannelError.MalformedContext` error.
    */
-  broadcast(context: Context): Promise<void>;
+  broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void>;
 
   /**
    * When a `contextType`_` is provided, the most recent context matching the type will be returned, or `null` if no matching context is found.
@@ -66,11 +69,29 @@ export interface Channel {
   getCurrentContext(contextType?: string): Promise<Context | null>;
 
   /**
+   * Returns the most recent context that was broadcast on the channel, along
+   * with its associated metadata, or `null` if no matching context is found.
+   *
+   * When a `contextType` is provided, the most recent context matching the type
+   * will be returned. If no `contextType` is provided, the most recent context
+   * that was broadcast on the channel - regardless of type - will be returned.
+   *
+   * This function is similar to `getCurrentContext()` but additionally returns
+   * the `ContextMetadata` that was associated with the context when it was
+   * broadcast, allowing applications to access information such as the source
+   * app, timestamp, traceId, signature and any custom metadata.
+   *
+   * If getting the current context fails, the promise will be rejected with an
+   * `Error` with a `message` string from the `ChannelError` enumeration.
+   */
+  getCurrentContextWithMetadata(contextType?: string): Promise<ContextWithMetadata | null>;
+
+  /**
    * Adds a listener for incoming contexts of the specified _context type_ whenever a broadcast happens on this channel.
    *
    * If, when this function is called, the channel already contains context that would be passed to the listener it is NOT called or passed this context automatically (this behavior differs from that of the [`fdc3.addContextListener`](DesktopAgent#addcontextlistener) function). Apps wishing to access to the current context of the channel should instead call the `getCurrentContext(contextType)` function.
    *
-   * Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
+   * Metadata about each context message received, including the app that originated the message and a timestamp, MUST be provided by the Desktop Agent implementation. Apps broadcasting context MAY provide additional metadata (such as a `traceId`, `signature` or custom metadata), which the Desktop Agent MUST pass on to the handler.
    *
    * Adding multiple context listeners on the same or overlapping types (i.e. named type and null type) MUST be allowed, and MUST trigger all context handlers when a relevant context type is broadcast on the current channel.
    *
@@ -108,10 +129,4 @@ export interface Channel {
    *
    */
   addEventListener(type: string | null, handler: EventHandler): Promise<Listener>;
-
-  /**
-   * @deprecated use `addContextListener(null, handler)` instead of `addContextListener(handler)`.
-   */
-  // eslint-disable-next-line @typescript-eslint/adjacent-overload-signatures
-  addContextListener(handler: ContextHandler): Promise<Listener>;
 }

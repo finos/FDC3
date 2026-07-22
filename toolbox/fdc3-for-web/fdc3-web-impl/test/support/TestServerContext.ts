@@ -58,6 +58,14 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
     }
   }
 
+  async close(instanceId: InstanceID): Promise<void> {
+    const found = this.instances.find(a => a.instanceId == instanceId);
+    if (!found || found.state !== State.Connected) {
+      throw new Error('ErrorOnClose');
+    }
+    await this.setAppState(instanceId, State.Terminated);
+  }
+
   async setAppState(app: InstanceID, newState: State): Promise<void> {
     const found = this.instances.find(a => a.instanceId == app);
     if (found) {

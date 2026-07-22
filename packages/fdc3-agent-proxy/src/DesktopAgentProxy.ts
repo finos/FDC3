@@ -1,6 +1,7 @@
 import {
   AppIdentifier,
   AppMetadata,
+  AppProvidableContextMetadata,
   ContextHandler,
   DesktopAgent,
   EventHandler,
@@ -54,20 +55,19 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     this.broadcast = this.broadcast.bind(this);
     this.addContextListener = this.addContextListener.bind(this);
     this.getUserChannels = this.getUserChannels.bind(this);
-    this.getSystemChannels = this.getSystemChannels.bind(this);
     this.getOrCreateChannel = this.getOrCreateChannel.bind(this);
     this.createPrivateChannel = this.createPrivateChannel.bind(this);
     this.leaveCurrentChannel = this.leaveCurrentChannel.bind(this);
     this.joinUserChannel = this.joinUserChannel.bind(this);
-    this.joinChannel = this.joinChannel.bind(this);
     this.getCurrentChannel = this.getCurrentChannel.bind(this);
-    this.joinChannel = this.joinChannel.bind(this);
     this.findIntent = this.findIntent.bind(this);
     this.findIntentsByContext = this.findIntentsByContext.bind(this);
     this.raiseIntent = this.raiseIntent.bind(this);
     this.addIntentListener = this.addIntentListener.bind(this);
+    this.addIntentListenerWithContext = this.addIntentListenerWithContext.bind(this);
     this.raiseIntentForContext = this.raiseIntentForContext.bind(this);
     this.open = this.open.bind(this);
+    this.close = this.close.bind(this);
     this.findInstances = this.findInstances.bind(this);
     this.getAppMetadata = this.getAppMetadata.bind(this);
     this.disconnect = this.disconnect.bind(this);
@@ -82,46 +82,26 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     return this.apps.getImplementationMetadata();
   }
 
-  async broadcast(context: Context): Promise<void> {
+  async broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void> {
     const channel = await this.channels.getUserChannel();
     if (channel) {
-      return channel.broadcast(context);
+      return channel.broadcast(context, metadata);
     } else {
       return Promise.resolve();
     }
   }
 
-  addContextListener(
-    contextTypeOrHandler: ContextHandler | string | null,
-    handler?: ContextHandler
-  ): Promise<Listener> {
-    let theContextType: string | null;
-    let theHandler: ContextHandler;
-
-    if (contextTypeOrHandler == null && typeof handler === 'function') {
-      theContextType = null;
-      theHandler = handler;
-    } else if (typeof contextTypeOrHandler === 'string' && typeof handler === 'function') {
-      theContextType = contextTypeOrHandler;
-      theHandler = handler;
-    } else if (typeof contextTypeOrHandler === 'function') {
-      // deprecated one-arg version
-      theContextType = null;
-      theHandler = contextTypeOrHandler as ContextHandler;
-    } else {
-      //invalid call
-      // TODO: Replace with Standardized error when #1490 is resolved
+  addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener> {
+    if (typeof contextType !== 'string' && contextType !== null) {
       throw new Error('Invalid arguments passed to addContextListener!');
     }
-
-    return this.channels.addContextListener(theHandler, theContextType);
+    if (typeof handler !== 'function') {
+      throw new Error('Invalid arguments passed to addContextListener!');
+    }
+    return this.channels.addContextListener(handler, contextType);
   }
 
   getUserChannels() {
-    return this.channels.getUserChannels();
-  }
-
-  getSystemChannels() {
     return this.channels.getUserChannels();
   }
 
@@ -141,10 +121,6 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     return this.channels.joinUserChannel(channelId);
   }
 
-  joinChannel(channelId: string) {
-    return this.channels.joinUserChannel(channelId);
-  }
-
   getCurrentChannel(): Promise<Channel | null> {
     return this.channels.getUserChannel();
   }
@@ -157,32 +133,32 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     return this.intents.findIntentsByContext(context);
   }
 
-  private ensureAppId(app?: string | AppIdentifier): AppIdentifier | undefined {
-    if (typeof app === 'string') {
-      return {
-        appId: app,
-      };
-    } else if (app?.appId) {
-      return app as AppIdentifier;
-    } else {
-      return undefined;
-    }
-  }
-
-  raiseIntent(intent: string, context: Context, app?: string | AppIdentifier) {
-    return this.intents.raiseIntent(intent, context, this.ensureAppId(app));
+  raiseIntent(intent: string, context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata) {
+    return this.intents.raiseIntent(intent, context, app ?? undefined, metadata);
   }
 
   addIntentListener(intent: string, handler: IntentHandler) {
     return this.intents.addIntentListener(intent, handler);
   }
 
-  raiseIntentForContext(context: Context, app?: string | AppIdentifier): Promise<IntentResolution> {
-    return this.intents.raiseIntentForContext(context, this.ensureAppId(app));
+  addIntentListenerWithContext(intent: string, contextType: string | string[], handler: IntentHandler) {
+    return this.intents.addIntentListenerWithContext(intent, contextType, handler);
   }
 
-  open(app: string | AppIdentifier, context?: Context | undefined) {
-    return this.apps.open(this.ensureAppId(app)!, context);
+  raiseIntentForContext(
+    context: Context,
+    app?: AppIdentifier | null,
+    metadata?: AppProvidableContextMetadata
+  ): Promise<IntentResolution> {
+    return this.intents.raiseIntentForContext(context, app ?? undefined, metadata);
+  }
+
+  open(app: AppIdentifier, context?: Context | null, metadata?: AppProvidableContextMetadata) {
+    return this.apps.open(app, context, metadata);
+  }
+
+  close(): Promise<void> {
+    return this.apps.close();
   }
 
   findInstances(app: AppIdentifier) {

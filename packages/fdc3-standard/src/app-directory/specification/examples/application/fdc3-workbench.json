@@ -1,6 +1,5 @@
 {
   "appId": "fdc3-workbench",
-  "name": "fdc3-workbench",
   "title": "FDC3 Workbench",
   "description": "Development and test tool for FDC3 desktop agents and apps",
   "categories": [

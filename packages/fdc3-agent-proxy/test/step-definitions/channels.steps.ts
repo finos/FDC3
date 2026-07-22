@@ -52,9 +52,39 @@ Given(
       payload: {
         channelId: handleResolve(channel, world),
         context: contextMap[context],
-        originatingApp: {
-          appId: 'broadcasting-app',
-          instanceId: 'broadcasting-instance',
+        metadata: {
+          timestamp: new Date(),
+          source: world.messaging!.getAppIdentifier(),
+          traceId: world.messaging!.createUUID(),
+          signature: '',
+        },
+      },
+      type: 'broadcastEvent',
+    } as BroadcastEvent;
+
+    world.props[field] = message;
+  }
+);
+
+Given(
+  '{string} is a BroadcastEvent message on channel {string} with context {string} and metadata',
+  (world: CustomWorld, field: string, channel: string, context: string) => {
+    const message = {
+      meta: {
+        ...world.messaging!.createEventMeta(),
+      },
+      payload: {
+        channelId: handleResolve(channel, world),
+        context: contextMap[context],
+        metadata: {
+          timestamp: new Date(),
+          source: world.messaging!.getAppIdentifier(),
+          traceId: world.messaging!.createUUID(),
+          signature: {
+            protected: 'test-sig (protected part)',
+            signature: 'test-sig (signature part)',
+          },
+          custom: { region: 'EMEA' },
         },
       },
       type: 'broadcastEvent',
@@ -105,6 +135,43 @@ Given(
       },
       payload: {
         newChannelId: handleResolve(channel, world),
+      },
+      type: 'channelChangedEvent',
+    };
+
+    world.props[field] = message;
+  }
+);
+
+Given(
+  '{string} is a channelChangedEvent message with currentChannelId {string}',
+  (world: CustomWorld, field: string, channelId: string) => {
+    const message: ChannelChangedEvent = {
+      meta: {
+        eventUuid: world.messaging!.createUUID(),
+        timestamp: new Date(),
+      },
+      payload: {
+        currentChannelId: handleResolve(channelId, world),
+      },
+      type: 'channelChangedEvent',
+    };
+
+    world.props[field] = message;
+  }
+);
+
+Given(
+  '{string} is a channelChangedEvent message with currentChannelId {string} and newChannelId {string}',
+  (world: CustomWorld, field: string, currentChannelId: string, newChannelId: string) => {
+    const message: ChannelChangedEvent = {
+      meta: {
+        eventUuid: world.messaging!.createUUID(),
+        timestamp: new Date(),
+      },
+      payload: {
+        currentChannelId: handleResolve(currentChannelId, world),
+        newChannelId: handleResolve(newChannelId, world),
       },
       type: 'channelChangedEvent',
     };

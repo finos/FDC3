@@ -1,4 +1,4 @@
-import { AppIdentifier, ResolveError } from '@finos/fdc3-standard';
+import { AppIdentifier, ContextMetadata, ResolveError } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { v4 as uuidv4 } from 'uuid';
 import { AbstractMessaging } from '../../src/messaging/AbstractMessaging.js';
@@ -27,6 +27,7 @@ import {
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { GetInfo } from './responses/GetInfo.js';
 import { AddEventListener } from './responses/AddEventListener.js';
+import { Close } from './responses/Close.js';
 
 export interface IntentDetail {
   app?: AppIdentifier;
@@ -45,6 +46,7 @@ export interface PossibleIntentResult {
   channel?: Channel;
   error?: ResolveError;
   timeout?: boolean;
+  resultMetadata?: ContextMetadata;
 }
 
 function matchStringOrUndefined(expected: string | undefined, actual: string | undefined) {
@@ -108,6 +110,7 @@ export class TestMessaging extends AbstractMessaging {
   readonly intentDetails: IntentDetail[] = [];
   readonly channelState: { [key: string]: Context[] };
   currentChannel: Channel | null = null;
+  closeShouldFail = false;
 
   readonly automaticResponses: AutomaticResponse[];
 
@@ -125,6 +128,7 @@ export class TestMessaging extends AbstractMessaging {
       new GetInfo(),
       new FindInstances(),
       new Open(),
+      new Close(),
       new GetOrCreateChannel(),
       new ChannelState(this.channelState, initialChannelId),
       new GetUserChannels(),

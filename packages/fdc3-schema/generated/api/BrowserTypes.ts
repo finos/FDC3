@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ClearContextRequest, ClearContextResponse, ContextClearedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceChannels, Fdc3UserInterfaceDrag, Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, Fdc3UserInterfaceMessage, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse } from "./file";
+//   import { Convert, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ClearContextRequest, ClearContextResponse, CloseRequest, CloseResponse, ContextClearedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceChannels, Fdc3UserInterfaceDrag, Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, Fdc3UserInterfaceMessage, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse } from "./file";
 //
 //   const webConnectionProtocol1Hello = Convert.toWebConnectionProtocol1Hello(json);
 //   const webConnectionProtocol2LoadURL = Convert.toWebConnectionProtocol2LoadURL(json);
@@ -25,6 +25,8 @@
 //   const channelChangedEvent = Convert.toChannelChangedEvent(json);
 //   const clearContextRequest = Convert.toClearContextRequest(json);
 //   const clearContextResponse = Convert.toClearContextResponse(json);
+//   const closeRequest = Convert.toCloseRequest(json);
+//   const closeResponse = Convert.toCloseResponse(json);
 //   const contextClearedEvent = Convert.toContextClearedEvent(json);
 //   const contextListenerUnsubscribeRequest = Convert.toContextListenerUnsubscribeRequest(json);
 //   const contextListenerUnsubscribeResponse = Convert.toContextListenerUnsubscribeResponse(json);
@@ -545,11 +547,6 @@ export interface OptionalFeatures {
    */
   DesktopAgentBridging: boolean;
   /**
-   * Used to indicate whether the exposure of 'originating app metadata' for
-   * context and intent messages is supported by the Desktop Agent.
-   */
-  OriginatingAppMetadata: boolean;
-  /**
    * Used to indicate whether the optional `fdc3.joinUserChannel`,
    * `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
    * the Desktop Agent.
@@ -689,11 +686,9 @@ export interface AddContextListenerRequestMeta {
  * Field that represents the source application that the request being responded to was
  * received from, for debugging purposes.
  *
- * Details of the application instance that broadcast the context.
+ * Identifier for the app instance that sent the context and/or intent.
  *
  * The App resolution option chosen.
- *
- * Details of the application instance that raised the intent.
  *
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
@@ -951,6 +946,11 @@ export interface AddIntentListenerRequest {
  */
 export interface AddIntentListenerRequestPayload {
   /**
+   * Optional list of context types that the listener should be invoked for. If omitted, the
+   * listener will be invoked for all context types that match the intent.
+   */
+  contextTypes?: string[];
+  /**
    * The name of the intent to listen for.
    */
   intent: string;
@@ -1097,7 +1097,8 @@ export type ResponseMessageType =
   | 'raiseIntentForContextResponse'
   | 'raiseIntentResponse'
   | 'raiseIntentResultResponse'
-  | 'clearContextResponse';
+  | 'clearContextResponse'
+  | 'closeResponse';
 
 /**
  * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
@@ -1146,7 +1147,8 @@ export type RequestMessageType =
   | 'privateChannelUnsubscribeEventListenerRequest'
   | 'raiseIntentForContextRequest'
   | 'raiseIntentRequest'
-  | 'clearContextRequest';
+  | 'clearContextRequest'
+  | 'closeRequest';
 
 /**
  * An event message from the Desktop Agent to an app indicating that context has been
@@ -1192,10 +1194,7 @@ export interface BroadcastEventPayload {
    * The context object that was broadcast.
    */
   context: Context;
-  /**
-   * Details of the application instance that broadcast the context.
-   */
-  originatingApp?: AppIdentifier;
+  metadata: ContextMetadata;
 }
 
 /**
@@ -1263,6 +1262,95 @@ export interface Context {
 }
 
 /**
+ * Metadata relating to a broadcastEvent or intentEvent, which may include metadata provided
+ * by the Desktop Agent or the App that initiated the broadcast, raise intent or open
+ * request.
+ *
+ * Metadata for the intent result, generated by the Desktop Agent and merged with any
+ * app-provided metadata from the intentResultRequest. Always present, even for void or
+ * channel results.
+ */
+export interface ContextMetadata {
+  /**
+   * Anti-replay claims supplied with signed context (e.g. merged from intentResultRequest
+   * metadata into resultMetadata).
+   */
+  antiReplay?: AntiReplayClaims;
+  /**
+   * Custom metadata that can be used to provide additional information about the context or
+   * intent. This allows for individuals to use metadata fields that have yet to be
+   * standardized.
+   */
+  custom?: { [key: string]: any };
+  /**
+   * A Detached JSON Web Signature (JWS) proving the authenticity and integrity of the context.
+   */
+  signature?: DetachedSignature;
+  /**
+   * Identifier for the app instance that sent the context and/or intent.
+   */
+  source: AppIdentifier;
+  /**
+   * The timestamp when the context or intent was created, encoded according to [ISO
+   * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
+   */
+  timestamp: Date;
+  /**
+   * A unique identifier for the context or intent that can be used to trace the context or
+   * intent through the system.
+   */
+  traceId: string;
+}
+
+/**
+ * Anti-replay claims supplied with signed context (e.g. merged from intentResultRequest
+ * metadata into resultMetadata).
+ *
+ * Anti-replay claims extracted from the context's antiReplay field after verification.
+ *
+ * Should be populated when the context is signed.  Included in the signature.  Prevents
+ * replay attacks where context objects are re-used.
+ */
+export interface AntiReplayClaims {
+  /**
+   * Expiration time as a Unix timestamp (seconds since epoch).
+   */
+  exp: number;
+  /**
+   * Issued at time as a Unix timestamp (seconds since epoch).
+   */
+  iat: number;
+  /**
+   * Unique identifier for this context instance.
+   */
+  jti: string;
+}
+
+/**
+ * A Detached JSON Web Signature (JWS) proving the authenticity and integrity of the
+ * context.
+ *
+ * A Detached JSON Web Signature (JWS) proving the authenticity and integrity of signed
+ * data. The signature is computed over the canonicalized JSON representation of the data
+ * (the payload is not included in the signature structure - it is the data itself). Created
+ * using the signing app's private key and verified using the public key from the JWKS URL
+ * in the protected header. See the FDC3 Security & Identity documentation for details.
+ */
+export interface DetachedSignature {
+  /**
+   * The BASE64URL-encoded protected header. When decoded, contains fields including: 'alg'
+   * (signature algorithm, e.g., 'EdDSA'), 'jku' (JSON Web Key Set URL for key verification),
+   * and 'kid' (key identifier).
+   */
+  protected: string;
+  /**
+   * The BASE64URL-encoded digital signature computed over the protected header and the
+   * canonicalized data (detached payload).
+   */
+  signature: string;
+}
+
+/**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  */
@@ -1300,6 +1388,30 @@ export interface BroadcastRequestPayload {
    * The context object that is to be broadcast.
    */
   context: Context;
+  metadata: AppProvidableContextMetadata;
+}
+
+/**
+ * Metadata that can be provided by an app as part of a broadcast, raise intent or open API
+ * call.
+ *
+ * Optional app-provided metadata returned by the intent handler alongside a context result
+ * (i.e. when the handler returns a ContextWithMetadata object). The Desktop Agent will
+ * merge this with its own generated metadata before delivering to the raising app via
+ * raiseIntentResultResponse.
+ */
+export interface AppProvidableContextMetadata {
+  /**
+   * Should be populated when the context is signed.  Included in the signature.  Prevents
+   * replay attacks where context objects are re-used.
+   */
+  antiReplay?: AntiReplayClaims;
+  custom?: { [key: string]: any };
+  /**
+   * A Detached JSON Web Signature (JWS) proving the authenticity and integrity of the context.
+   */
+  signature?: DetachedSignature;
+  traceId?: string;
 }
 
 /**
@@ -1453,6 +1565,89 @@ export interface ClearContextResponse {
    */
   type: 'clearContextResponse';
 }
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ */
+
+/**
+ * A request from an FDC3-enabled app to close its own window or frame.
+ *
+ * A request message from an FDC3-enabled app to a Desktop Agent.
+ */
+export interface CloseRequest {
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: CloseRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'closeRequest';
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface CloseRequestPayload {}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ */
+
+/**
+ * A response to a close request. On a successful close the app is destroyed before a
+ * success response can be delivered; only error responses are received by the app in that
+ * case.
+ *
+ * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
+ * payload contains an `error` property, the request was unsuccessful.
+ */
+export interface CloseResponse {
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: CloseResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'closeResponse';
+}
+
+/**
+ * A payload for a response to an API call that will contain any return values or an `error`
+ * property containing a standardized error message indicating that the request was
+ * unsuccessful.
+ */
+export interface CloseResponsePayload {
+  error?: 'ApiTimeout';
+}
+
+/**
+ * Constants representing the errors that can be encountered when calling the `open` method
+ * on the DesktopAgent object (`fdc3`).
+ *
+ * Constants representing the errors that can be encountered when calling the
+ * `addIntentListener`, `findIntent`, `findIntentsByContext`, `raiseIntent` or
+ * `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).
+ *
+ * Constants representing the errors that can be encountered when calling the `close` method
+ * on the DesktopAgent object (`fdc3`).
+ */
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -2704,6 +2899,13 @@ export interface GetCurrentContextResponsePayload {
    * or `null` if none was available in the channel.
    */
   context?: null | Context;
+  /**
+   * Metadata relating to the most recently broadcast context object, if available. This is
+   * not returned by the public getCurrentContext API but is used internally by the Desktop
+   * Agent proxy to deliver metadata to context listeners when replaying context after a
+   * channel change.
+   */
+  metadata?: ContextMetadata | null;
 }
 
 /**
@@ -3032,10 +3234,7 @@ export interface IntentEventPayload {
    * The intent that was raised.
    */
   intent: string;
-  /**
-   * Details of the application instance that raised the intent.
-   */
-  originatingApp?: AppIdentifier;
+  metadata: ContextMetadata;
   /**
    * The requestUuid value of the raiseIntentRequest that the intentEvent being sent relates
    * to.
@@ -3142,6 +3341,13 @@ export interface IntentResultRequestPayload {
    */
   intentEventUuid: string;
   intentResult: IntentResult;
+  /**
+   * Optional app-provided metadata returned by the intent handler alongside a context result
+   * (i.e. when the handler returns a ContextWithMetadata object). The Desktop Agent will
+   * merge this with its own generated metadata before delivering to the raising app via
+   * raiseIntentResultResponse.
+   */
+  metadata?: AppProvidableContextMetadata;
   /**
    * The requestUuid value of the raiseIntentRequest that the result being sent relates to.
    */
@@ -3366,6 +3572,7 @@ export interface OpenRequestPayload {
    * target app with no context and broadcasting the context directly to it.
    */
   context?: Context;
+  metadata: AppProvidableContextMetadata;
 }
 
 /**
@@ -3804,6 +4011,7 @@ export interface RaiseIntentForContextRequest {
 export interface RaiseIntentForContextRequestPayload {
   app?: AppIdentifier;
   context: Context;
+  metadata: AppProvidableContextMetadata;
 }
 
 /**
@@ -3944,6 +4152,7 @@ export interface RaiseIntentRequestPayload {
   app?: AppIdentifier;
   context: Context;
   intent: string;
+  metadata: AppProvidableContextMetadata;
 }
 
 /**
@@ -4048,6 +4257,12 @@ export interface RaiseIntentResultResponse {
 export interface RaiseIntentResultResponsePayload {
   error?: ResponsePayloadError;
   intentResult?: IntentResult;
+  /**
+   * Metadata for the intent result, generated by the Desktop Agent and merged with any
+   * app-provided metadata from the intentResultRequest. Always present, even for void or
+   * channel results.
+   */
+  resultMetadata?: ContextMetadata;
 }
 
 /**
@@ -4250,6 +4465,22 @@ export class Convert {
 
   public static clearContextResponseToJson(value: ClearContextResponse): string {
     return JSON.stringify(uncast(value, r('ClearContextResponse')), null, 2);
+  }
+
+  public static toCloseRequest(json: string): CloseRequest {
+    return cast(JSON.parse(json), r('CloseRequest'));
+  }
+
+  public static closeRequestToJson(value: CloseRequest): string {
+    return JSON.stringify(uncast(value, r('CloseRequest')), null, 2);
+  }
+
+  public static toCloseResponse(json: string): CloseResponse {
+    return cast(JSON.parse(json), r('CloseResponse'));
+  }
+
+  public static closeResponseToJson(value: CloseResponse): string {
+    return JSON.stringify(uncast(value, r('CloseResponse')), null, 2);
   }
 
   public static toContextClearedEvent(json: string): ContextClearedEvent {
@@ -5061,7 +5292,6 @@ const typeMap: any = {
   OptionalFeatures: o(
     [
       { json: 'DesktopAgentBridging', js: 'DesktopAgentBridging', typ: true },
-      { json: 'OriginatingAppMetadata', js: 'OriginatingAppMetadata', typ: true },
       { json: 'UserChannelMembershipAPIs', js: 'UserChannelMembershipAPIs', typ: true },
     ],
     false
@@ -5176,7 +5406,13 @@ const typeMap: any = {
     ],
     false
   ),
-  AddIntentListenerRequestPayload: o([{ json: 'intent', js: 'intent', typ: '' }], false),
+  AddIntentListenerRequestPayload: o(
+    [
+      { json: 'contextTypes', js: 'contextTypes', typ: u(undefined, a('')) },
+      { json: 'intent', js: 'intent', typ: '' },
+    ],
+    false
+  ),
   AddIntentListenerResponse: o(
     [
       { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
@@ -5263,7 +5499,7 @@ const typeMap: any = {
     [
       { json: 'channelId', js: 'channelId', typ: u(null, '') },
       { json: 'context', js: 'context', typ: r('Context') },
-      { json: 'originatingApp', js: 'originatingApp', typ: u(undefined, r('AppIdentifier')) },
+      { json: 'metadata', js: 'metadata', typ: r('ContextMetadata') },
     ],
     false
   ),
@@ -5274,6 +5510,32 @@ const typeMap: any = {
       { json: 'type', js: 'type', typ: '' },
     ],
     'any'
+  ),
+  ContextMetadata: o(
+    [
+      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplayClaims')) },
+      { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
+      { json: 'signature', js: 'signature', typ: u(undefined, r('DetachedSignature')) },
+      { json: 'source', js: 'source', typ: r('AppIdentifier') },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+      { json: 'traceId', js: 'traceId', typ: '' },
+    ],
+    false
+  ),
+  AntiReplayClaims: o(
+    [
+      { json: 'exp', js: 'exp', typ: 3.14 },
+      { json: 'iat', js: 'iat', typ: 3.14 },
+      { json: 'jti', js: 'jti', typ: '' },
+    ],
+    false
+  ),
+  DetachedSignature: o(
+    [
+      { json: 'protected', js: 'protected', typ: '' },
+      { json: 'signature', js: 'signature', typ: '' },
+    ],
+    false
   ),
   BroadcastRequest: o(
     [
@@ -5287,6 +5549,16 @@ const typeMap: any = {
     [
       { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'context', js: 'context', typ: r('Context') },
+      { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
+    ],
+    false
+  ),
+  AppProvidableContextMetadata: o(
+    [
+      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplayClaims')) },
+      { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
+      { json: 'signature', js: 'signature', typ: u(undefined, r('DetachedSignature')) },
+      { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
     ],
     false
   ),
@@ -5340,6 +5612,24 @@ const typeMap: any = {
     ],
     false
   ),
+  CloseRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('CloseRequestPayload') },
+      { json: 'type', js: 'type', typ: r('CloseRequestType') },
+    ],
+    false
+  ),
+  CloseRequestPayload: o([], false),
+  CloseResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('CloseResponsePayload') },
+      { json: 'type', js: 'type', typ: r('CloseResponseType') },
+    ],
+    false
+  ),
+  CloseResponsePayload: o([{ json: 'error', js: 'error', typ: u(undefined, r('TentacledError')) }], false),
   ContextClearedEvent: o(
     [
       { json: 'meta', js: 'meta', typ: r('BroadcastEventMeta') },
@@ -5736,6 +6026,7 @@ const typeMap: any = {
     [
       { json: 'error', js: 'error', typ: u(undefined, r('PurpleError')) },
       { json: 'context', js: 'context', typ: u(undefined, u(null, r('Context'))) },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, u(r('ContextMetadata'), null)) },
     ],
     false
   ),
@@ -5841,7 +6132,7 @@ const typeMap: any = {
     [
       { json: 'context', js: 'context', typ: r('Context') },
       { json: 'intent', js: 'intent', typ: '' },
-      { json: 'originatingApp', js: 'originatingApp', typ: u(undefined, r('AppIdentifier')) },
+      { json: 'metadata', js: 'metadata', typ: r('ContextMetadata') },
       { json: 'raiseIntentRequestUuid', js: 'raiseIntentRequestUuid', typ: '' },
     ],
     false
@@ -5875,6 +6166,7 @@ const typeMap: any = {
     [
       { json: 'intentEventUuid', js: 'intentEventUuid', typ: '' },
       { json: 'intentResult', js: 'intentResult', typ: r('IntentResult') },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'raiseIntentRequestUuid', js: 'raiseIntentRequestUuid', typ: '' },
     ],
     false
@@ -5942,6 +6234,7 @@ const typeMap: any = {
     [
       { json: 'app', js: 'app', typ: r('AppIdentifier') },
       { json: 'context', js: 'context', typ: u(undefined, r('Context')) },
+      { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
     ],
     false
   ),
@@ -6082,6 +6375,7 @@ const typeMap: any = {
     [
       { json: 'app', js: 'app', typ: u(undefined, r('AppIdentifier')) },
       { json: 'context', js: 'context', typ: r('Context') },
+      { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
     ],
     false
   ),
@@ -6121,6 +6415,7 @@ const typeMap: any = {
       { json: 'app', js: 'app', typ: u(undefined, r('AppIdentifier')) },
       { json: 'context', js: 'context', typ: r('Context') },
       { json: 'intent', js: 'intent', typ: '' },
+      { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
     ],
     false
   ),
@@ -6152,6 +6447,7 @@ const typeMap: any = {
     [
       { json: 'error', js: 'error', typ: u(undefined, r('ResponsePayloadError')) },
       { json: 'intentResult', js: 'intentResult', typ: u(undefined, r('IntentResult')) },
+      { json: 'resultMetadata', js: 'resultMetadata', typ: u(undefined, r('ContextMetadata')) },
     ],
     false
   ),
@@ -6243,6 +6539,7 @@ const typeMap: any = {
     'addIntentListenerResponse',
     'broadcastResponse',
     'clearContextResponse',
+    'closeResponse',
     'contextListenerUnsubscribeResponse',
     'createPrivateChannelResponse',
     'eventListenerUnsubscribeResponse',
@@ -6273,6 +6570,7 @@ const typeMap: any = {
     'addIntentListenerRequest',
     'broadcastRequest',
     'clearContextRequest',
+    'closeRequest',
     'contextListenerUnsubscribeRequest',
     'createPrivateChannelRequest',
     'eventListenerUnsubscribeRequest',
@@ -6303,6 +6601,9 @@ const typeMap: any = {
   ChannelChangedEventType: ['channelChangedEvent'],
   ClearContextRequestType: ['clearContextRequest'],
   ClearContextResponseType: ['clearContextResponse'],
+  CloseRequestType: ['closeRequest'],
+  TentacledError: ['ApiTimeout'],
+  CloseResponseType: ['closeResponse'],
   ContextClearedEventType: ['contextClearedEvent'],
   ContextListenerUnsubscribeRequestType: ['contextListenerUnsubscribeRequest'],
   ContextListenerUnsubscribeResponseType: ['contextListenerUnsubscribeResponse'],
@@ -6416,6 +6717,7 @@ export type AppRequestMessage =
   | AddIntentListenerRequest
   | BroadcastRequest
   | ClearContextRequest
+  | CloseRequest
   | ContextListenerUnsubscribeRequest
   | CreatePrivateChannelRequest
   | EventListenerUnsubscribeRequest
@@ -6446,6 +6748,7 @@ export type AgentResponseMessage =
   | AddIntentListenerResponse
   | BroadcastResponse
   | ClearContextResponse
+  | CloseResponse
   | ContextListenerUnsubscribeResponse
   | CreatePrivateChannelResponse
   | EventListenerUnsubscribeResponse
@@ -6906,6 +7209,48 @@ export function isValidClearContextResponse(value: any): value is ClearContextRe
 }
 
 export const CLEAR_CONTEXT_RESPONSE_TYPE = 'ClearContextResponse';
+
+/**
+ * Returns true if the value has a type property with value 'closeRequest'. This is a fast check that does not check the format of the message
+ */
+export function isCloseRequest(value: any): value is CloseRequest {
+  return value != null && value.type === 'closeRequest';
+}
+
+/**
+ * Returns true if value is a valid CloseRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidCloseRequest(value: any): value is CloseRequest {
+  try {
+    Convert.closeRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const CLOSE_REQUEST_TYPE = 'CloseRequest';
+
+/**
+ * Returns true if the value has a type property with value 'closeResponse'. This is a fast check that does not check the format of the message
+ */
+export function isCloseResponse(value: any): value is CloseResponse {
+  return value != null && value.type === 'closeResponse';
+}
+
+/**
+ * Returns true if value is a valid CloseResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidCloseResponse(value: any): value is CloseResponse {
+  try {
+    Convert.closeResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+export const CLOSE_RESPONSE_TYPE = 'CloseResponse';
 
 /**
  * Returns true if the value has a type property with value 'contextClearedEvent'. This is a fast check that does not check the format of the message

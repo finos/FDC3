@@ -26,19 +26,6 @@ Feature: Basic User Channels Support
       | meta.source.appId | meta.source.instanceId | matches_type           |
       | cucumber-app      | cucumber-instance      | getUserChannelsRequest |
 
-  Scenario: List User Channels via Deprecated API call
-        There should be a selection of user channels to choose from
-
-    When I call "{api}" with "getSystemChannels"
-    Then "{result}" is an array of objects with the following contents
-      | id    | type | displayMetadata.color | displayMetadata.glyph | displayMetadata.name |
-      | one   | user | red                   | triangle              | The one channel      |
-      | two   | user | red                   | triangle              | The two channel      |
-      | three | user | red                   | triangle              | The three channel    |
-    And messaging will have posts
-      | meta.source.appId | meta.source.instanceId | matches_type           |
-      | cucumber-app      | cucumber-instance      | getUserChannelsRequest |
-
   Scenario: Initial User Channel
         At startup, the user channel shouldn't be set
 
@@ -52,19 +39,6 @@ Feature: Basic User Channels Support
         You should be able to join a channel knowing it's ID.
 
     When I call "{api}" with "joinUserChannel" with parameter "one"
-    When I call "{api}" with "getCurrentChannel"
-    Then "{result}" is an object with the following contents
-      | id  | type | displayMetadata.color |
-      | one | user | red                   |
-    And messaging will have posts
-      | payload.channelId | matches_type             |
-      | one               | joinUserChannelRequest   |
-      | {null}            | getUserChannelsRequest   |
-
-  Scenario: Changing Channel via Deprecated API
-        You should be able to join a channel knowing it's ID.
-
-    When I call "{api}" with "joinChannel" with parameter "one"
     When I call "{api}" with "getCurrentChannel"
     Then "{result}" is an object with the following contents
       | id  | type | displayMetadata.color |
@@ -92,22 +66,7 @@ Feature: Basic User Channels Support
   Scenario: Adding an Un-Typed Listener on a given User Channel
     Given "resultHandler" pipes context to "contexts"
     When I call "{api}" with "joinUserChannel" with parameter "one"
-    And I call "{api}" with "addContextListener" with parameters "{empty}" and "{resultHandler}"
-    And messaging receives "{instrumentMessageOne}"
-    Then "{contexts}" is an array of objects with the following contents
-      | id.ticker | type            | name  |
-      | AAPL      | fdc3.instrument | Apple |
-    And messaging will have posts
-      | payload.channelId | payload.contextType | matches_type              |
-      | one               | {null}              | joinUserChannelRequest    |
-      | {null}            | {null}              | getUserChannelsRequest    |
-      | {null}            | {null}              | addContextListenerRequest |
-      | one               | {null}              | getCurrentContextRequest  |
-
-  Scenario: Adding an Un-Typed Listener on a given User Channel (deprecated API)
-    Given "resultHandler" pipes context to "contexts"
-    When I call "{api}" with "joinUserChannel" with parameter "one"
-    And I call "{api}" with "addContextListener" with parameter "{resultHandler}"
+    And I call "{api}" with "addContextListener" with parameters "{null}" and "{resultHandler}"
     And messaging receives "{instrumentMessageOne}"
     Then "{contexts}" is an array of objects with the following contents
       | id.ticker | type            | name  |
@@ -267,6 +226,54 @@ Feature: Basic User Channels Support
     When I call "{api}" with "addEventListener" with parameters "unknownEventType" and "{typesHandler}"
     Then "{result}" is an error with message "UnknownEventType"
 
+  Scenario: User Channel Changed Event fires when currentChannelId field is used
+    Given "typesHandler" pipes events to "types"
+    And "modernMessage" is a channelChangedEvent message with currentChannelId "channelX"
+    When I call "{api}" with "addEventListener" with parameters "userChannelChanged" and "{typesHandler}"
+    And I refer to "{result}" as "theListener"
+    And messaging receives "{modernMessage}"
+    Then "{types}" is an array of objects with the following contents
+      | currentChannelId |
+      | channelX         |
+
+  Scenario: User Channel Changed Event fires when user leaves a channel via currentChannelId null
+    Given "typesHandler" pipes events to "types"
+    And "leaveMessage" is a channelChangedEvent message with currentChannelId "{null}"
+    When I call "{api}" with "addEventListener" with parameters "userChannelChanged" and "{typesHandler}"
+    And I refer to "{result}" as "theListener"
+    And messaging receives "{leaveMessage}"
+    Then "{types}" is an array of objects with the following contents
+      | currentChannelId |
+      | {null}           |
+
+  Scenario: User Channel Changed Event fires when user leaves a channel via deprecated newChannelId null
+    Given "typesHandler" pipes events to "types"
+    And "leaveMessageDeprecated" is a channelChangedEvent message on channel "{null}"
+    When I call "{api}" with "addEventListener" with parameters "userChannelChanged" and "{typesHandler}"
+    And I refer to "{result}" as "theListener"
+    And messaging receives "{leaveMessageDeprecated}"
+    Then "{types}" is an array of objects with the following contents
+      | currentChannelId |
+      | {null}           |
+
+  Scenario: currentChannelId takes precedence over deprecated newChannelId in channel changed events
+    Given "typesHandler" pipes events to "types"
+    And "bothFieldsMessage" is a channelChangedEvent message with currentChannelId "modern" and newChannelId "deprecated"
+    When I call "{api}" with "addEventListener" with parameters "userChannelChanged" and "{typesHandler}"
+    And I refer to "{result}" as "theListener"
+    And messaging receives "{bothFieldsMessage}"
+    Then "{types}" is an array of objects with the following contents
+      | currentChannelId |
+      | modern           |
+
+  Scenario: Wildcard event listener fires and forwards non-channelChangedEvent messages
+    Given "typesHandler" pipes events to "types"
+    When I call "{api}" with "addEventListener" with parameters "{null}" and "{typesHandler}"
+    And messaging receives "{instrumentMessageOne}"
+    Then "{types}" is an array of objects with the following contents
+      | channelId | context.type    |
+      | one       | fdc3.instrument |
+
   Scenario: Destructured getUserChannels returns user channels
     When I destructure method "getUserChannels" from "{api}"
     And I call destructured "getUserChannels"
@@ -332,7 +339,7 @@ Feature: Basic User Channels Support
       | payload.channelId | payload.contextType | matches_type              |
       | {null}            | fdc3.instrument     | addContextListenerRequest |
 
-  Scenario: User channel context listener receives originating app metadata
+  Scenario: User channel context listener receives source metadata
     Given "resultHandler" pipes context and metadata to "contexts" and "metadatas"
     When I call "{api}" with "joinUserChannel" with parameter "one"
     And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
@@ -342,4 +349,4 @@ Feature: Basic User Channels Support
       | AAPL      | fdc3.instrument | Apple |
     And "{metadatas}" is an array of objects with the following contents
       | source.appId      | source.instanceId     |
-      | broadcasting-app   | broadcasting-instance |
+      | cucumber-app   | cucumber-instance |

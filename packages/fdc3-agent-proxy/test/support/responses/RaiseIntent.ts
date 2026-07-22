@@ -121,6 +121,7 @@ export class RaiseIntent implements AutomaticResponse {
         meta: createResponseMeta(intentRequest.meta),
         payload: {
           intentResult: result,
+          ...(result.resultMetadata && { resultMetadata: result.resultMetadata }),
         },
         type: 'raiseIntentResultResponse',
       };

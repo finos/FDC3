@@ -2,6 +2,7 @@ import mocha from 'mocha';
 import constants from '../constants';
 import fdc3FindIntent from './advanced/fdc3.findIntent';
 import fdc3FindIntentsByContext from './advanced/fdc3.findIntentsByContext';
+import fdc3DestructuredMethods from './advanced/fdc3.destructured-methods';
 import fdc3GetInfo from './advanced/fdc3.getInfo';
 import fdc3getAppMetadata from './advanced/fdc3.getAppMetadata';
 import fdc3FindInstances from './advanced/fdc3.findInstances';
@@ -11,15 +12,20 @@ import fdc3RaiseIntent_Result from './advanced/fdc3.raiseIntent-Result';
 import fdc3RaiseIntent_NoAppsFound from './advanced/fdc3.raiseIntent-NoAppsFound';
 import fdc3AppChannels from './advanced/fdc3.app-channels';
 import fdc3UserChannels from './advanced/fdc3.user-channels';
+import fdc3ContextMetadata from './advanced/fdc3.context-metadata';
+import fdc3IntentContextMetadata from './advanced/fdc3.intent-context-metadata';
+import fdc3IntentListenerConflict from './advanced/fdc3.intent-listener-conflict';
 import {
   fdc3BasicGetAgent,
   fdc3BasicCL1,
   fdc3BasicCL2,
   fdc3BasicIL1,
   fdc3BasicGI1,
+  fdc3BasicGI2,
   fdc3BasicAC1,
   fdc3BasicUC1,
   fdc3BasicJC1,
+  fdc3BasicDM1,
   fdc3BasicRI1,
   fdc3BasicRI2,
 } from './basic/fdc3.basic';
@@ -39,9 +45,11 @@ const basicSuite: testSet = {
   'fdc3.basicCL2': [fdc3BasicCL2],
   'fdc3.basicIL1': [fdc3BasicIL1],
   'fdc3.basicGI1': [fdc3BasicGI1],
+  'fdc3.basicGI2': [fdc3BasicGI2],
   'fdc3.basicAC1': [fdc3BasicAC1],
   'fdc3.basicUC1': [fdc3BasicUC1],
   'fdc3.basicJC1': [fdc3BasicJC1],
+  'fdc3.basicDM1': [fdc3BasicDM1],
   'fdc3.basicRI1': [fdc3BasicRI1],
   'fdc3.basicRI2': [fdc3BasicRI2],
 };
@@ -58,6 +66,10 @@ const advancedSuite: testSet = {
   'fdc3.raiseIntent': [fdc3RaiseIntent],
   'fdc3.raiseIntent (result)': [fdc3RaiseIntent_Result],
   'fdc3.raiseIntent (throws error)': [fdc3RaiseIntent_NoAppsFound],
+  'fdc3.contextMetadata': [fdc3ContextMetadata],
+  'fdc3.intentContextMetadata': [fdc3IntentContextMetadata],
+  'fdc3.intentListenerConflict': [fdc3IntentListenerConflict],
+  'fdc3.destructuredMethods': [fdc3DestructuredMethods],
 };
 
 const ambiguousTests: testSet = {

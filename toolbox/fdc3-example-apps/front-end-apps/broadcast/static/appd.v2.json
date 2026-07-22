@@ -1,0 +1,32 @@
+{
+  "applications": [
+    {
+      "appId": "fdc3-training-broadcaster",
+      "name": "FDC3 Broadcaster",
+      "title": "FDC3 Broadcaster",
+      "description": "App will connect to the desktop agent and broadcast on the user channel when you hit the button",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:4013/"
+      },
+      "hostManifests": {},
+      "version": "1.0.0",
+      "publisher": "FINOS",
+      "categories": [
+        "Basic FDC3: User Channels Demo"
+      ],
+      "icons": [
+        {
+          "src": "http://localhost:4013/icon.svg"
+        }
+      ],
+      "screenshots": [
+        {
+          "src": "http://localhost:4013/screenshot.png",
+          "label": "Demo Screenshot"
+        }
+      ]
+    }
+  ],
+  "message": "OK"
+}

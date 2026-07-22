@@ -54,11 +54,11 @@ Feature: Opening and Requesting App Details
     And we wait for a period of "100" ms
     And "storageApp/uuid-0" adds a context listener on "{null}" with type "fdc3.instrument"
     Then messaging will have outgoing posts
-      | msg.matches_type                | msg.payload.channelId | msg.payload.context.type | to.instanceId | to.appId   | msg.payload.originatingApp.appId | msg.payload.originatingApp.instanceId |
-      | WCP5ValidateAppIdentityResponse | {null}                | {null}                   | uuid-0        | storageApp | {null}                           | {null}                                |
-      | addContextListenerResponse      | {empty}               | {empty}                  | uuid-0        | storageApp | {null}                           | {null}                                |
-      | openResponse                    | {empty}               | {empty}                  | a1            | libraryApp | {null}                           | {null}                                |
-      | broadcastEvent                  | {null}                | fdc3.instrument          | uuid-0        | storageApp | libraryApp                       | a1                                    |
+      | msg.matches_type                | msg.payload.channelId | msg.payload.context.type | to.instanceId | to.appId   | msg.payload.metadata.source.appId | msg.payload.metadata.source.instanceId |
+      | WCP5ValidateAppIdentityResponse | {null}                | {null}                   | uuid-0        | storageApp | {null}                            | {null}                                 |
+      | addContextListenerResponse      | {empty}               | {empty}                  | uuid-0        | storageApp | {null}                            | {null}                                 |
+      | openResponse                    | {empty}               | {empty}                  | a1            | libraryApp | {null}                            | {null}                                 |
+      | broadcastEvent                  | {null}                | fdc3.instrument          | uuid-0        | storageApp | libraryApp                        | a1                                     |
 
   Scenario: Opening An App With Context, But No Listener Added
     When "libraryApp/a1" opens app "storageApp" with context data "fdc3.instrument"
@@ -95,3 +95,14 @@ Feature: Opening and Requesting App Details
     Then messaging will have outgoing posts
       | msg.type                              | msg.payload.message    |
       | WCP5ValidateAppIdentityFailedResponse | App Instance not found |
+
+  Scenario: App requests close
+    When "libraryApp/a1" requests close
+    Then no apps are connected
+
+  Scenario: Close when not connected
+    Given "libraryApp/a2" is opened with connection id "a2"
+    When "libraryApp/a2" requests close before connected
+    Then messaging will have outgoing posts
+      | msg.type        | msg.payload.error | to.instanceId |
+      | closeResponse   | ErrorOnClose      | a2            |

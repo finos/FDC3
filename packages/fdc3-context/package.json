@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3-context",
-  "version": "2.2.2",
+  "version": "3.0.0-alpha.2",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -45,5 +45,8 @@
     "ajv-formats": {
       "ajv": "8.18.0"
     }
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

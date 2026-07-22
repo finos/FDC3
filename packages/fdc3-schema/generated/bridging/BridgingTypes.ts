@@ -239,6 +239,8 @@ export interface AgentRequestMetadata {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
+ *
+ * Identifier for the app instance that sent the context and/or intent.
  */
 export interface BridgeParticipantIdentifier {
   /**
@@ -284,6 +286,8 @@ export interface BridgeParticipantIdentifier {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
+ *
+ * Identifier for the app instance that sent the context and/or intent.
  *
  * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
  * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
@@ -537,6 +541,8 @@ export interface BroadcastAgentRequestMeta {
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
  *
+ * Identifier for the app instance that sent the context and/or intent.
+ *
  * Field that represents the source application that the request was received from, or the
  * source Desktop Agent if it issued the request itself.
  *
@@ -594,6 +600,7 @@ export interface BroadcastAgentRequestPayload {
    * The context object that is to be broadcast.
    */
   context: Context;
+  metadata: AppProvidableContextMetadata;
 }
 
 /**
@@ -655,6 +662,72 @@ export interface Context {
 }
 
 /**
+ * Metadata that can be provided by an app as part of a broadcast, raise intent or open API
+ * call.
+ */
+export interface AppProvidableContextMetadata {
+  /**
+   * Should be populated when the context is signed.  Included in the signature.  Prevents
+   * replay attacks where context objects are re-used.
+   */
+  antiReplay?: AntiReplayClaims;
+  custom?: { [key: string]: any };
+  /**
+   * A Detached JSON Web Signature (JWS) proving the authenticity and integrity of the context.
+   */
+  signature?: DetachedSignature;
+  traceId?: string;
+}
+
+/**
+ * Should be populated when the context is signed.  Included in the signature.  Prevents
+ * replay attacks where context objects are re-used.
+ *
+ * Anti-replay claims extracted from the context's antiReplay field after verification.
+ *
+ * Anti-replay claims supplied with signed context (e.g. merged from intentResultRequest
+ * metadata into resultMetadata).
+ */
+export interface AntiReplayClaims {
+  /**
+   * Expiration time as a Unix timestamp (seconds since epoch).
+   */
+  exp: number;
+  /**
+   * Issued at time as a Unix timestamp (seconds since epoch).
+   */
+  iat: number;
+  /**
+   * Unique identifier for this context instance.
+   */
+  jti: string;
+}
+
+/**
+ * A Detached JSON Web Signature (JWS) proving the authenticity and integrity of the
+ * context.
+ *
+ * A Detached JSON Web Signature (JWS) proving the authenticity and integrity of signed
+ * data. The signature is computed over the canonicalized JSON representation of the data
+ * (the payload is not included in the signature structure - it is the data itself). Created
+ * using the signing app's private key and verified using the public key from the JWKS URL
+ * in the protected header. See the FDC3 Security & Identity documentation for details.
+ */
+export interface DetachedSignature {
+  /**
+   * The BASE64URL-encoded protected header. When decoded, contains fields including: 'alg'
+   * (signature algorithm, e.g., 'EdDSA'), 'jku' (JSON Web Key Set URL for key verification),
+   * and 'kid' (key identifier).
+   */
+  protected: string;
+  /**
+   * The BASE64URL-encoded digital signature computed over the protected header and the
+   * canonicalized data (detached payload).
+   */
+  signature: string;
+}
+
+/**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
  * the message relates to, e.g. 'findIntent', with 'Request' appended.
  *
@@ -712,6 +785,8 @@ export interface BroadcastBridgeRequestMeta {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
+ *
+ * Identifier for the app instance that sent the context and/or intent.
  *
  * Optional field that represents the destination that the request should be routed to. Must
  * be set by the Desktop Agent for API calls that include a target app parameter and must
@@ -778,6 +853,7 @@ export interface BroadcastBridgeRequestPayload {
    * The context object that is to be broadcast.
    */
   context: Context;
+  metadata: AppProvidableContextMetadata;
 }
 
 /**
@@ -948,11 +1024,6 @@ export interface OptionalFeatures {
    * feature is implemented by the Desktop Agent.
    */
   DesktopAgentBridging: boolean;
-  /**
-   * Used to indicate whether the exposure of 'originating app metadata' for
-   * context and intent messages is supported by the Desktop Agent.
-   */
-  OriginatingAppMetadata: boolean;
   /**
    * Used to indicate whether the optional `fdc3.joinUserChannel`,
    * `fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by
@@ -1258,6 +1329,8 @@ export interface FindInstancesAgentRequestMeta {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
+ *
+ * Identifier for the app instance that sent the context and/or intent.
  */
 export interface DestinationObject {
   /**
@@ -1304,6 +1377,8 @@ export interface FindInstancesAgentRequestPayload {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
+ *
+ * Identifier for the app instance that sent the context and/or intent.
  */
 export interface AppIdentifier {
   /**
@@ -1578,6 +1653,8 @@ export interface FindInstancesBridgeRequestMeta {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
+ *
+ * Identifier for the app instance that sent the context and/or intent.
  *
  * Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios
  * where a request needs to be directed to a Desktop Agent rather than a specific app, or a
@@ -2342,6 +2419,8 @@ export interface GetAppMetadataAgentRequestPayload {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
+ *
+ * Identifier for the app instance that sent the context and/or intent.
  */
 export interface AppObject {
   /**
@@ -2685,6 +2764,8 @@ export interface OpenAgentRequestPayload {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
+ *
+ * Identifier for the app instance that sent the context and/or intent.
  */
 export interface AppToOpen {
   /**
@@ -2951,6 +3032,8 @@ export interface PrivateChannelBroadcastAgentRequestMeta {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
+ *
+ * Identifier for the app instance that sent the context and/or intent.
  *
  * Optional field that represents the destination that the request should be routed to. Must
  * be set by the Desktop Agent for API calls that include a target app parameter and must
@@ -3745,6 +3828,8 @@ export interface RaiseIntentAgentRequestPayload {
  * Identifier for the app instance that was selected (or started) to resolve the intent.
  * `source.instanceId` MUST be set, indicating the specific app instance that
  * received the intent.
+ *
+ * Identifier for the app instance that sent the context and/or intent.
  */
 export interface AppDestinationIdentifier {
   /**
@@ -4088,6 +4173,12 @@ export interface RaiseIntentResultAgentResponseMeta {
  */
 export interface RaiseIntentResultAgentResponsePayload {
   intentResult: IntentResult;
+  /**
+   * Metadata for the intent result, generated by the Desktop Agent and merged with any
+   * app-provided metadata from the intentResultRequest. Always present, even for void or
+   * channel results.
+   */
+  resultMetadata?: ContextMetadata;
 }
 
 export interface IntentResult {
@@ -4159,6 +4250,47 @@ export interface DisplayMetadata {
  * Can be "user", "app" or "private".
  */
 export type Type = 'app' | 'private' | 'user';
+
+/**
+ * Metadata for the intent result, generated by the Desktop Agent and merged with any
+ * app-provided metadata from the intentResultRequest. Always present, even for void or
+ * channel results.
+ *
+ * Metadata relating to a broadcastEvent or intentEvent, which may include metadata provided
+ * by the Desktop Agent or the App that initiated the broadcast, raise intent or open
+ * request.
+ */
+export interface ContextMetadata {
+  /**
+   * Anti-replay claims supplied with signed context (e.g. merged from intentResultRequest
+   * metadata into resultMetadata).
+   */
+  antiReplay?: AntiReplayClaims;
+  /**
+   * Custom metadata that can be used to provide additional information about the context or
+   * intent. This allows for individuals to use metadata fields that have yet to be
+   * standardized.
+   */
+  custom?: { [key: string]: any };
+  /**
+   * A Detached JSON Web Signature (JWS) proving the authenticity and integrity of the context.
+   */
+  signature?: DetachedSignature;
+  /**
+   * Identifier for the app instance that sent the context and/or intent.
+   */
+  source: AppIdentifier;
+  /**
+   * The timestamp when the context or intent was created, encoded according to [ISO
+   * 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator.
+   */
+  timestamp: Date;
+  /**
+   * A unique identifier for the context or intent that can be used to trace the context or
+   * intent through the system.
+   */
+  traceId: string;
+}
 
 /**
  * A secondary response to a request to raise an intent used to deliver the intent result,
@@ -4236,6 +4368,12 @@ export interface RaiseIntentResultBridgeResponseMeta {
  */
 export interface RaiseIntentResultBridgeResponsePayload {
   intentResult: IntentResult;
+  /**
+   * Metadata for the intent result, generated by the Desktop Agent and merged with any
+   * app-provided metadata from the intentResultRequest. Always present, even for void or
+   * channel results.
+   */
+  resultMetadata?: ContextMetadata;
 }
 
 // Converts JSON strings to/from your types
@@ -5105,6 +5243,7 @@ const typeMap: any = {
     [
       { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'context', js: 'context', typ: r('Context') },
+      { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
     ],
     false
   ),
@@ -5115,6 +5254,30 @@ const typeMap: any = {
       { json: 'type', js: 'type', typ: '' },
     ],
     'any'
+  ),
+  AppProvidableContextMetadata: o(
+    [
+      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplayClaims')) },
+      { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
+      { json: 'signature', js: 'signature', typ: u(undefined, r('DetachedSignature')) },
+      { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  AntiReplayClaims: o(
+    [
+      { json: 'exp', js: 'exp', typ: 3.14 },
+      { json: 'iat', js: 'iat', typ: 3.14 },
+      { json: 'jti', js: 'jti', typ: '' },
+    ],
+    false
+  ),
+  DetachedSignature: o(
+    [
+      { json: 'protected', js: 'protected', typ: '' },
+      { json: 'signature', js: 'signature', typ: '' },
+    ],
+    false
   ),
   BroadcastBridgeRequest: o(
     [
@@ -5144,6 +5307,7 @@ const typeMap: any = {
     [
       { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'context', js: 'context', typ: r('Context') },
+      { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
     ],
     false
   ),
@@ -5217,7 +5381,6 @@ const typeMap: any = {
   OptionalFeatures: o(
     [
       { json: 'DesktopAgentBridging', js: 'DesktopAgentBridging', typ: true },
-      { json: 'OriginatingAppMetadata', js: 'OriginatingAppMetadata', typ: true },
       { json: 'UserChannelMembershipAPIs', js: 'UserChannelMembershipAPIs', typ: true },
     ],
     false
@@ -6409,7 +6572,10 @@ const typeMap: any = {
     false
   ),
   RaiseIntentResultAgentResponsePayload: o(
-    [{ json: 'intentResult', js: 'intentResult', typ: r('IntentResult') }],
+    [
+      { json: 'intentResult', js: 'intentResult', typ: r('IntentResult') },
+      { json: 'resultMetadata', js: 'resultMetadata', typ: u(undefined, r('ContextMetadata')) },
+    ],
     false
   ),
   IntentResult: o(
@@ -6432,6 +6598,17 @@ const typeMap: any = {
       { json: 'color', js: 'color', typ: u(undefined, '') },
       { json: 'glyph', js: 'glyph', typ: u(undefined, '') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    false
+  ),
+  ContextMetadata: o(
+    [
+      { json: 'antiReplay', js: 'antiReplay', typ: u(undefined, r('AntiReplayClaims')) },
+      { json: 'custom', js: 'custom', typ: u(undefined, m('any')) },
+      { json: 'signature', js: 'signature', typ: u(undefined, r('DetachedSignature')) },
+      { json: 'source', js: 'source', typ: r('AppIdentifier') },
+      { json: 'timestamp', js: 'timestamp', typ: Date },
+      { json: 'traceId', js: 'traceId', typ: '' },
     ],
     false
   ),
@@ -6477,7 +6654,10 @@ const typeMap: any = {
     false
   ),
   RaiseIntentResultBridgeResponsePayload: o(
-    [{ json: 'intentResult', js: 'intentResult', typ: r('IntentResult') }],
+    [
+      { json: 'intentResult', js: 'intentResult', typ: r('IntentResult') },
+      { json: 'resultMetadata', js: 'resultMetadata', typ: u(undefined, r('ContextMetadata')) },
+    ],
     false
   ),
   ResponseErrorDetail: [

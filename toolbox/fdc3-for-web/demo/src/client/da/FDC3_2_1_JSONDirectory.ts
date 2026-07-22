@@ -18,7 +18,7 @@ const convertToDirectoryList = (data: any): DirectoryApp[] => {
 };
 
 export class FDC3_2_1_JSONDirectory extends BasicDirectory {
-  constructor(fdc3Version = '2.2') {
+  constructor(fdc3Version = '3.0') {
     super([], fdc3Version);
   }
 

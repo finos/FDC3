@@ -32,7 +32,7 @@ export class BasicDirectory implements Directory {
   allApps: DirectoryApp[];
   readonly fdc3Version: string;
 
-  constructor(apps: DirectoryApp[], fdc3Version = '2.2') {
+  constructor(apps: DirectoryApp[], fdc3Version = '3.0') {
     this.fdc3Version = fdc3Version;
     this.allApps = apps.filter(app => appSupportsFdc3Version(app, fdc3Version));
   }

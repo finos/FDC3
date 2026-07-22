@@ -1,4 +1,13 @@
-import { ContextHandler, DisplayMetadata, Listener, Channel, EventHandler } from '@finos/fdc3-standard';
+import {
+  ContextHandler,
+  ContextWithMetadata,
+  ContextMetadata,
+  DisplayMetadata,
+  Listener,
+  Channel,
+  EventHandler,
+  AppProvidableContextMetadata,
+} from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { Messaging } from '../Messaging.js';
 import { DefaultContextListener } from '../listeners/DefaultContextListener.js';
@@ -39,12 +48,13 @@ export class DefaultChannel implements Channel {
     this.addContextListener = this.addContextListener.bind(this);
   }
 
-  async broadcast(context: Context): Promise<void> {
+  async broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void> {
     const request: BroadcastRequest = {
       meta: this.messaging.createMeta(),
       payload: {
         channelId: this.id,
         context,
+        metadata: metadata ?? {},
       },
       type: 'broadcastRequest',
     };
@@ -70,30 +80,49 @@ export class DefaultChannel implements Channel {
     return response.payload.context ?? null;
   }
 
-  async addContextListener(
-    contextTypeOrHandler: string | null | ContextHandler,
-    handler?: ContextHandler
-  ): Promise<Listener> {
-    let theContextType: string | null;
-    let theHandler: ContextHandler;
+  /**
+   * Retrieves the current context along with its metadata.
+   * Used by the proxy to deliver metadata to context listeners when replaying
+   * context after a channel change.
+   */
+  async getCurrentContextWithMetadata(contextType?: string): Promise<ContextWithMetadata | null> {
+    const request: GetCurrentContextRequest = {
+      meta: this.messaging.createMeta(),
+      payload: {
+        channelId: this.id,
+        contextType: contextType ?? null,
+      },
+      type: 'getCurrentContextRequest',
+    };
+    const response = await this.messaging.exchange<GetCurrentContextResponse>(
+      request,
+      'getCurrentContextResponse',
+      this.messageExchangeTimeout
+    );
 
-    if (contextTypeOrHandler == null && typeof handler === 'function') {
-      theContextType = null;
-      theHandler = handler;
-    } else if (typeof contextTypeOrHandler === 'string' && typeof handler === 'function') {
-      theContextType = contextTypeOrHandler;
-      theHandler = handler;
-    } else if (typeof contextTypeOrHandler === 'function') {
-      // deprecated one-arg version
-      theContextType = null;
-      theHandler = contextTypeOrHandler as ContextHandler;
-    } else {
-      //invalid call
-      // TODO: Replace with Standardized error when #1490 is resolved
+    const context = response.payload.context;
+    if (context) {
+      const metadata: ContextMetadata = {
+        source: response.payload.metadata?.source ?? { appId: 'unknown' },
+        timestamp: response.payload.metadata?.timestamp ?? response.meta.timestamp,
+        traceId: response.payload.metadata?.traceId ?? '',
+        signature: response.payload.metadata?.signature,
+        custom: response.payload.metadata?.custom,
+        antiReplay: response.payload.metadata?.antiReplay,
+      };
+      return { context, metadata };
+    }
+    return null;
+  }
+
+  async addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener> {
+    if (typeof contextType !== 'string' && contextType !== null) {
       throw new Error('Invalid arguments passed to addContextListener!');
     }
-
-    return await this.addContextListenerInner(theContextType, theHandler);
+    if (typeof handler !== 'function') {
+      throw new Error('Invalid arguments passed to addContextListener!');
+    }
+    return await this.addContextListenerInner(contextType, handler);
   }
 
   async addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {

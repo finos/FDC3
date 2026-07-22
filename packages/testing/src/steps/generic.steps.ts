@@ -4,6 +4,13 @@ import { PropsWorldLike } from '../world/PropsWorldLike.js';
 import * as impl from './generic.impl.js';
 
 export function setupGenericSteps(schemaBasePath: string): void {
+  Given(
+    '{string} is an array of contexts including {string} and {string}',
+    (world: PropsWorldLike, field: string, valueOne: string, valueTwo: string) => {
+      world.props[field] = [valueOne, valueTwo];
+    }
+  );
+
   Then('the promise {string} should resolve', async (world: PropsWorldLike, field: string) => {
     await impl.promiseShouldResolve(world, field);
   });
@@ -34,6 +41,21 @@ export function setupGenericSteps(schemaBasePath: string): void {
     'I call {string} with {string} with parameters {string} and {string} and {string}',
     async (world: PropsWorldLike, field: string, fnName: string, param1: string, param2: string, param3: string) => {
       await impl.callWithMethodAndThreeParams(world, field, fnName, param1, param2, param3);
+    }
+  );
+
+  When(
+    'I call {string} with {string} with parameters {string} and {string} and {string} and {string}',
+    async (
+      world: PropsWorldLike,
+      field: string,
+      fnName: string,
+      param1: string,
+      param2: string,
+      param3: string,
+      param4: string
+    ) => {
+      await impl.callWithMethodAndFourParams(world, field, fnName, param1, param2, param3, param4);
     }
   );
 

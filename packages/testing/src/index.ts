@@ -1,5 +1,12 @@
 import { setupGenericSteps } from './steps/generic.steps.js';
-import { doesRowMatch, handleResolve, indexOf, matchData, HashesProvider } from './support/matching.js';
+import {
+  doesRowMatch,
+  handleResolve,
+  indexOf,
+  matchData,
+  parseAntiReplayClaims,
+  HashesProvider,
+} from './support/matching.js';
 import { PropsWorldLike } from './world/PropsWorldLike.js';
 import Ajv2019 from 'ajv/dist/2019.js';
 import addFormats from 'ajv-formats';
@@ -12,6 +19,7 @@ export {
   handleResolve,
   indexOf,
   matchData,
+  parseAntiReplayClaims,
   setupGenericSteps,
   SimpleIntentResolver,
   SimpleChannelSelector,

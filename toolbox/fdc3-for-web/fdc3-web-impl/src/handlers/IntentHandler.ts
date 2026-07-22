@@ -2,7 +2,7 @@ import { MessageHandler } from '../BasicFDC3Server.js';
 import { AppRegistration, InstanceID, ServerContext, State } from '../ServerContext.js';
 import { Directory, DirectoryIntent } from '../directory/DirectoryInterface.js';
 import { Context } from '@finos/fdc3-context';
-import { AppIntent, ResolveError, AppIdentifier } from '@finos/fdc3-standard';
+import { AppIntent, ResolveError, AppIdentifier, AppProvidableContextMetadata } from '@finos/fdc3-standard';
 import {
   errorResponse,
   errorResponseId,
@@ -28,6 +28,7 @@ type ListenerRegistration = {
   appId: string;
   instanceId: string;
   intentName: string;
+  contextTypes?: string[];
   listenerUUID: string;
 };
 
@@ -37,6 +38,7 @@ type IntentRequest = {
   requestUuid: string;
   from: FullAppIdentifier;
   type: 'raiseIntentResponse' | 'raiseIntentForContextResponse';
+  appProvidedMetadata?: AppProvidableContextMetadata;
 };
 
 /**
@@ -48,22 +50,22 @@ async function forwardRequest(
   sc: ServerContext<AppRegistration>,
   ih: IntentHandler
 ): Promise<void> {
+  const appProvidedMeta = arg0.appProvidedMetadata ?? {};
   const out: IntentEvent = {
     type: 'intentEvent',
     payload: {
       context: arg0.context,
       intent: arg0.intent,
-      originatingApp: {
-        appId: arg0.from.appId,
-        instanceId: arg0.from.instanceId,
-      },
       metadata: {
         source: {
           appId: arg0.from.appId,
           instanceId: arg0.from.instanceId,
         },
         timestamp: new Date(),
-        traceId: sc.createUUID(),
+        traceId: appProvidedMeta.traceId ?? sc.createUUID(),
+        ...(appProvidedMeta.signature !== undefined && { signature: appProvidedMeta.signature }),
+        ...(appProvidedMeta.antiReplay !== undefined && { antiReplay: appProvidedMeta.antiReplay }),
+        ...(appProvidedMeta.custom !== undefined && { custom: appProvidedMeta.custom }),
       },
       raiseIntentRequestUuid: arg0.requestUuid,
     },
@@ -122,6 +124,7 @@ class PendingIntent {
     if (
       arg0.appId == this.appId.appId &&
       arg0.intentName == this.r.intent &&
+      (arg0.contextTypes == undefined || arg0.contextTypes.includes(this.r.context.type)) &&
       (arg0.instanceId == this.appId.instanceId || this.appId.instanceId == undefined)
     ) {
       this.complete = true;
@@ -214,6 +217,17 @@ export class IntentHandler implements MessageHandler {
     const requestId = arg0.payload.raiseIntentRequestUuid;
     const to = this.pendingResolutions.get(requestId);
     if (to) {
+      // Merge app-provided metadata with DA-generated fields
+      const appMeta = arg0.payload.metadata ?? {};
+      const resultMetadata = {
+        source: { appId: from.appId, instanceId: from.instanceId },
+        timestamp: new Date(),
+        traceId: appMeta.traceId ?? sc.createUUID(),
+        ...(appMeta.signature !== undefined && { signature: appMeta.signature }),
+        ...(appMeta.antiReplay !== undefined && { antiReplay: appMeta.antiReplay }),
+        ...(appMeta.custom !== undefined && { custom: appMeta.custom }),
+      };
+
       // post the result to the app that raised the intent
       //   if its still connected, otherwise do nothing
       successResponseId(
@@ -222,6 +236,7 @@ export class IntentHandler implements MessageHandler {
         to,
         {
           intentResult: arg0.payload.intentResult,
+          resultMetadata,
         },
         'raiseIntentResultResponse'
       );
@@ -256,6 +271,7 @@ export class IntentHandler implements MessageHandler {
       appId: from.appId,
       instanceId: from.instanceId,
       intentName: arg0.payload.intent,
+      contextTypes: arg0.payload.contextTypes,
       listenerUUID: sc.createUUID(),
     };
 
@@ -279,8 +295,15 @@ export class IntentHandler implements MessageHandler {
     }
   }
 
-  hasListener(instanceId: string, intentName: string): boolean {
-    return this.registrations.find(r => r.instanceId == instanceId && r.intentName == intentName) != null;
+  hasListener(instanceId: string, intentName: string, contextType?: string): boolean {
+    return (
+      this.registrations.find(
+        r =>
+          r.instanceId == instanceId &&
+          r.intentName == intentName &&
+          (contextType == undefined || r.contextTypes == null || r.contextTypes.includes(contextType))
+      ) != null
+    );
   }
 
   async startWithPendingIntent(
@@ -312,7 +335,7 @@ export class IntentHandler implements MessageHandler {
       );
     }
 
-    const requestsWithListeners = arg0.filter(r => this.hasListener(target.instanceId, r.intent));
+    const requestsWithListeners = arg0.filter(r => this.hasListener(target.instanceId, r.intent, r.context.type));
 
     if (requestsWithListeners.length == 0) {
       this.createPendingIntentIfAllowed(arg0[0], sc, target);
@@ -404,7 +427,11 @@ export class IntentHandler implements MessageHandler {
   async raiseIntentToAnyApp(arg0: IntentRequest[], sc: ServerContext<AppRegistration>): Promise<void> {
     const connectedApps = await sc.getConnectedApps();
     const matchingIntents = arg0.flatMap(i => this.directory.retrieveIntents(i.context.type, i.intent, undefined));
-    const matchingRegistrations = arg0.flatMap(i => this.registrations.filter(r => r.intentName == i.intent));
+    const matchingRegistrations = arg0.flatMap(i =>
+      this.registrations.filter(
+        r => r.intentName == i.intent && (r.contextTypes == null || r.contextTypes.includes(i.context.type))
+      )
+    ); // Get a list of intent listeners that match the intent and context type
     const uniqueIntentNames = [
       ...matchingIntents.map(i => i.intentName),
       ...matchingRegistrations.map(r => r.intentName),
@@ -482,12 +509,19 @@ export class IntentHandler implements MessageHandler {
     sc: ServerContext<AppRegistration>,
     from: FullAppIdentifier
   ): Promise<void> {
+    const reqMeta = arg0.payload.metadata ?? {};
     const intentRequest: IntentRequest = {
       context: arg0.payload.context,
       from,
       intent: arg0.payload.intent,
       requestUuid: arg0.meta.requestUuid,
       type: 'raiseIntentResponse',
+      appProvidedMetadata: {
+        traceId: reqMeta.traceId,
+        signature: reqMeta.signature,
+        antiReplay: reqMeta.antiReplay,
+        custom: reqMeta.custom,
+      },
     };
 
     const target = arg0.payload.app;
@@ -521,6 +555,7 @@ export class IntentHandler implements MessageHandler {
     // dealing with a specific instance of an app
     const mappedIntents = this.directory.retrieveIntents(arg0.payload.context.type, undefined, undefined);
     const uniqueIntentNames = mappedIntents.filter((v, i, a) => a.findIndex(v2 => v2.intentName == v.intentName) == i);
+    const rifcMeta = arg0.payload.metadata ?? {};
     const possibleIntentRequests: IntentRequest[] = uniqueIntentNames.map(i => {
       return {
         context: arg0.payload.context,
@@ -528,6 +563,12 @@ export class IntentHandler implements MessageHandler {
         intent: i.intentName,
         requestUuid: arg0.meta.requestUuid,
         type: 'raiseIntentForContextResponse',
+        appProvidedMetadata: {
+          traceId: rifcMeta.traceId,
+          signature: rifcMeta.signature,
+          antiReplay: rifcMeta.antiReplay,
+          custom: rifcMeta.custom,
+        },
       };
     });
 

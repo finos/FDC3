@@ -39,22 +39,6 @@ Feature: Channel Listeners Support
       | {null}            | {null}              | contextListenerUnsubscribeRequest |
 
   Scenario: I can create a listener which listens for any context type
-        In this version we are using the deprecated 1-arg approach
-    When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
-    And I refer to "{result}" as "channel1"
-    And I call "{channel1}" with "addContextListener" with parameter "{resultHandler}"
-    And messaging receives "{instrumentMessageOne}"
-    And messaging receives "{countryMessageOne}"
-    Then "{contexts}" is an array of objects with the following contents
-      | type            | name   |
-      | fdc3.instrument | Apple  |
-      | fdc3.country    | Sweden |
-    And messaging will have posts
-      | payload.channelId | payload.contextType | matches_type              |
-      | channel-name      | {null}              | getOrCreateChannelRequest |
-      | channel-name      | {null}              | addContextListenerRequest |
-
-  Scenario: I can create a listener which listens for any context type
         In this version we are using the non-deprecated 2 args approach
     When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
     And I refer to "{result}" as "channel1"
@@ -115,7 +99,7 @@ Feature: Channel Listeners Support
       | id.ticker | type            | name  |
       | AAPL      | fdc3.instrument | Apple |
 
-  Scenario: App channel context listener receives originating app metadata
+  Scenario: App channel context listener receives source metadata
     Given "resultHandler" pipes context and metadata to "contexts" and "metadatas"
     When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
     And I refer to "{result}" as "channel1"
@@ -126,4 +110,4 @@ Feature: Channel Listeners Support
       | AAPL      | fdc3.instrument | Apple |
     And "{metadatas}" is an array of objects with the following contents
       | source.appId      | source.instanceId     |
-      | broadcasting-app   | broadcasting-instance |
+      | cucumber-app   | cucumber-instance |

@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3",
-  "version": "2.2.2",
+  "version": "3.0.0-alpha.2",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -11,6 +11,9 @@
     "tag": "latest"
   },
   "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22"
+  },
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "module": "dist/fdc3.esm.js",
@@ -18,19 +21,21 @@
     "dist"
   ],
   "workspaces": [
-    "packages/fdc3-schema",
     "packages/fdc3-context",
+    "packages/fdc3-schema",
     "packages/fdc3-standard",
     "packages/testing",
     "packages/fdc3-agent-proxy",
+    "packages/fdc3-security",
     "toolbox/fdc3-for-web/fdc3-web-impl",
     "packages/fdc3-get-agent",
     "packages/fdc3",
     "packages/fdc3-commonjs",
     "toolbox/fdc3-for-web/reference-ui",
-    "toolbox/fdc3-for-web/demo",
     "toolbox/fdc3-workbench",
-    "toolbox/fdc3-conformance"
+    "toolbox/fdc3-conformance",
+    "toolbox/fdc3-example-apps",
+    "toolbox/fdc3-for-web/demo"
   ],
   "scripts": {
     "clean": "npm run clean --workspaces --if-present",
@@ -41,7 +46,7 @@
     "lint": "npm run lint --workspaces --if-present",
     "syncpack": "npm exec syncpack -- fix --dependencies \"@finos/*\" && npm run version-check",
     "version-check": "node scripts/version-check.js",
-    "dev": "concurrently \"cd toolbox/fdc3-conformance && npm run dev\" \"cd toolbox/fdc3-workbench && npm run dev\" \"cd toolbox/fdc3-for-web/reference-ui && npm run dev\" \"cd toolbox/fdc3-for-web/demo && npm run dev\"",
+    "dev": "concurrently \"cd toolbox/fdc3-example-apps && npm run dev\"  \"cd toolbox/fdc3-conformance && npm run dev\" \"cd toolbox/fdc3-workbench && npm run dev\" \"cd toolbox/fdc3-for-web/reference-ui && npm run dev\" \"cd toolbox/fdc3-for-web/demo && npm run dev\"",
     "prepare": "husky"
   },
   "prettier": {
@@ -59,7 +64,8 @@
     "@eslint/js": "^9.19.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "^20.16.11",
-    "@vitest/coverage-v8": "^3.2.4",
+    "@vitest/coverage-v8": "^3.2.6",
+    "@vitest/ui": "^3.2.6",
     "concurrently": "^8.2.2",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^9.1.0",
@@ -68,18 +74,22 @@
     "istanbul-merge": "^2.0.0",
     "lint-staged": "^15.2.10",
     "nyc": "17.1.0",
-    "pixelmatch": "^7.1.0",
+    "pixelmatch": "^6.0.0",
     "prettier": "3.4.1",
     "rimraf": "^6.0.1",
     "tsx": "^4.19.1",
     "typescript": "^5.6.3",
     "typescript-eslint": "^8.17.0",
-    "vitest": "^3.2.4"
+    "vitest": "^3.2.6"
   },
   "overrides": {
-    "serialize-javascript": "^7.0.5"
+    "serialize-javascript": "^7.0.5",
+    "@cucumber/messages": "^27.2.0"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

@@ -16,7 +16,7 @@ A channel can be either a ["User" channel](../spec#joining-user-channels) (retri
 
 :::note
 
-There are differences in behavior when you interact with a User channel via the Desktop Agent interface and the Channel interface. Specifically, when 'joining' a User channel or adding a context listener when already joined to a channel via the `DesktopAgent` interface, existing context (matching the type of the context listener) on the channel is received by the context listener immediately. Whereas, when add a context listener via the Channel interface, context is not received automatically, but may be retrieved manually via the [`getCurrentContext()`](#getcurrentcontext) function.
+There are differences in behaviour when you interact with a User channel via the Desktop Agent interface and the Channel interface. Specifically, when 'joining' a User channel or adding a context listener when already joined to a channel via the `DesktopAgent` interface, existing context (matching the type of the context listener) on the channel is received by the context listener immediately. Whereas, when add a context listener via the Channel interface, context is not received automatically, but may be retrieved manually via the [`getCurrentContext()`](#getcurrentcontext) function.
 
 :::
 
@@ -33,17 +33,12 @@ interface Channel {
   displayMetadata?: DisplayMetadata;
 
   // functions
-  broadcast(context: Context): Promise<void>;
+  broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void>;
   getCurrentContext(contextType?: string): Promise<Context|null>;
+  getCurrentContextWithMetadata(contextType?: string): Promise<ContextWithMetadata|null>;
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
   clearContext(contextType?: string): Promise<void>;
   addEventListener(type: string  | null, handler: EventHandler): Promise<Listener>;
-  
-  //deprecated functions
-  /**
-   * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
-   */
-  addContextListener(handler: ContextHandler): Promise<Listener>;
 }
 ```
 
@@ -70,8 +65,9 @@ interface IChannel: IIntentResult
 ```go
 @experimental
 type IChannel interface {
-    Broadcast(context Context) <-chan Result[any]
+    Broadcast(context Context, metadata *AppProvidableContextMetadata) <-chan Result[any]
     GetCurrentContext(contextType string) <-chan Result[IContext]
+    GetCurrentContextWithMetadata(contextType string) <-chan Result[ContextWithMetadata]
     AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener]
 }
 
@@ -240,7 +236,7 @@ Adds a listener for incoming contexts of the specified _context type_ whenever a
 
 If, when this function is called, the channel already contains context that would be passed to the listener it is NOT called or passed this context automatically (this behavior differs from that of the [`fdc3.addContextListener`](DesktopAgent#addcontextlistener) function). Apps wishing to access to the current context of the channel should instead call the [`getCurrentContext(contextType)`](#getcurrentcontext) function.
 
-Optional metadata about each context message received, including the app that originated the message, SHOULD be provided by the desktop agent implementation.
+Metadata about each context message received, including the app that originated the message and a timestamp, MUST be provided by the Desktop Agent implementation. Apps broadcasting context MAY provide additional metadata (such as a `traceId`, `signature` or custom metadata), which the Desktop Agent MUST pass on to the handler.
 
 Adding multiple context listeners on the same or overlapping types (i.e. specific `contextType` and `null` type) MUST be allowed, and MUST trigger all ContextHandlers when a relevant context type is broadcast on the current channel. 
 
@@ -252,10 +248,11 @@ Add a listener for any context that is broadcast on the channel:
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-const listener = await channel.addContextListener(null, context => {
+const listener = await channel.addContextListener(null, (context, metadata) => {
+    console.log(`Received context from ${metadata.source.appId} at ${metadata.timestamp}`);
     if (context.type === 'fdc3.contact') {
         // handle the contact
-    } else if (context.type === 'fdc3.instrument') => {
+    } else if (context.type === 'fdc3.instrument') {
         // handle the instrument
     }
 });
@@ -430,7 +427,7 @@ var listener = await myChannel.AddEventListener(null, (event) => {
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-public broadcast(context: Context): Promise<void>;
+public broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void>;
 ```
 
 </TabItem>
@@ -444,7 +441,7 @@ Task Broadcast(IContext context);
 <TabItem value="golang" label="Go">
 
 ```go
-func (channel *Channel) Broadcast(context IContext) <-chan Result[any]  { 
+func (channel *Channel) Broadcast(context IContext, metadata *AppProvidableContextMetadata) <-chan Result[any]  { 
   // Implementation here
 }
 ```
@@ -459,6 +456,8 @@ If the broadcast is denied by the channel or the channel is not available, the p
 Channel implementations should ensure that context messages broadcast by an application on a channel should not be delivered back to that same application if they are joined to the channel.
 
 If you are working with complex context types composed of other simpler types (as recommended by the [FDC3 Context Data specification](../../context/spec#assumptions)) then you should broadcast each individual type (starting with the simpler types, followed by the complex type) that you want other apps to be able to respond to. Doing so allows applications to filter the context types they receive by adding listeners for specific context types.
+
+An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the broadcast context.
 
 If an application attempts to broadcast an invalid context argument the Promise returned by this function should reject with the [`ChannelError.MalformedContext` error](Errors#channelerror).
 
@@ -646,6 +645,101 @@ if result.Err != null {
 - [`broadcast`](#broadcast)
 - [`addContextListener`](#addcontextlistener)
 
+### `getCurrentContextWithMetadata`
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+public getCurrentContextWithMetadata(contextType?: string): Promise<ContextWithMetadata|null>;
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+Task<IContextWithMetadata?> GetCurrentContextWithMetadata(string? contextType);
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (channel *Channel) GetCurrentContextWithMetadata(contextType string) <-chan Result[ContextWithMetadata]  { 
+  // Implementation here
+}
+```
+
+</TabItem>
+</Tabs>
+
+Returns the most recent context that was broadcast on the channel along with its associated [`ContextMetadata`](Metadata#contextmetadata), or `null` if no matching context is found.
+
+When a _context type_ is provided, the most recent context matching the type will be returned. If no _context type_ is provided, the most recent context that was broadcast on the channel - regardless of type - will be returned.
+
+This function is similar to [`getCurrentContext()`](#getcurrentcontext) but additionally returns the metadata that was associated with the context when it was broadcast, allowing applications to access information such as the source app, timestamp, traceId, signature and any custom metadata.
+
+If getting the current context fails, the promise will be rejected with an `Error` with a `message` string from the [`ChannelError`](Errors#channelerror) enumeration.
+
+**Examples:**
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+try {
+    const result = await channel.getCurrentContextWithMetadata('fdc3.contact');
+    if (result) {
+        console.log(`Context from ${result.metadata.source.appId} at ${result.metadata.timestamp}`);
+        console.log(`Contact: ${result.context.name}`);
+    }
+} catch (err: ChannelError) {
+    // handle error
+}
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+try
+{
+    var result = await channel.GetCurrentContextWithMetadata("fdc3.contact");
+    if (result != null)
+    {
+        System.Diagnostics.Debug.WriteLine($"Context from {result.Metadata.Source.AppId}");
+    }
+}
+catch (Exception ex)
+{
+    // handle error
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+result := <-myChannel.GetCurrentContextWithMetadata("fdc3.contact")
+if result.Err != nil {
+    // handle error 
+}
+if result.Value != nil {
+    fmt.Printf("Context from %s\n", result.Value.Metadata.Source.AppId)
+}
+```
+
+</TabItem>
+</Tabs>
+
+**See also:**
+
+- [`ContextWithMetadata`](Types#contextwithmetadata)
+- [`ContextMetadata`](Metadata#contextmetadata)
+- [`ChannelError`](Errors#channelerror)
+- [`getCurrentContext`](#getcurrentcontext)
+- [`broadcast`](#broadcast)
+
 ### `clearContext`
 
 <Tabs groupId="lang">
@@ -738,41 +832,3 @@ catch (Exception ex)
 - [`addContextListener`](DesktopAgent#addContextListener)
 - [`joinUserChannel`](DesktopAgent#joinUserChannel)
 - [`addEventListener`](#addeventlistener)
-
-## Deprecated Functions
-
-### `addContextListener` (deprecated)
-
-<Tabs groupId="lang">
-<TabItem value="ts" label="TypeScript/JavaScript">
-
-```ts
-/**
- * @deprecated Use `addContextListener(null, handler)` instead of `addContextListener(handler)`
- */
-public addContextListener(handler: ContextHandler): Promise<Listener>;
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```
-Not implemented
-```
-
-</TabItem>
-<TabItem value="golang" label="Go">
-
-```
-Not implemented
-```
-
-</TabItem>
-
-</Tabs>
-
-Adds a listener for incoming contexts whenever a broadcast happens on the channel.
-
-**See also:**
-
-- [`addContextListener`](#addcontextlistener)
