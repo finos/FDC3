@@ -115,6 +115,20 @@ organization-specific namespace, e.g. `blackrock.fund`.
 
 All well-known types at FDC3 level are prefixed with `fdc3`. For private type definitions, or type definitions issued by other organizations, different namespaces MUST be used, e.g. `blackrock.fund`, etc.
 
+#### Private and Proprietary Context Types
+
+Organizations frequently need to share domain-specific data that is not (yet) covered by a standardized FDC3 context type. FDC3 explicitly supports this through the use of organization-specific namespaces.
+
+Private context type names MUST be prefixed with a namespace that is unique to the issuing organization. Using a reverse-domain convention (e.g. `com.example`) or a well-known organizational abbreviation (e.g. `acme`) avoids collisions with both FDC3-defined types and types created by other organizations:
+
+```
+com.example.account       ✔  reverse-domain namespace
+acme.rfq                  ✔  organizational abbreviation
+account                   ✗  no namespace — risks collision with future standard types
+fdc3.account              ✗  reserved for FDC3 standard types
+```
+
+
 ### `name`
 
 Context data objects may include an optional name property that can be used for more information, or display purposes. Some

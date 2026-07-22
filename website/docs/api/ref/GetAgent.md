@@ -155,7 +155,11 @@ As web applications can navigate to or be navigated by users to different URLs a
 
 :::
 
-Finally, if there is still no Desktop Agent available, or an issue prevents connection to it, the `getAgent()` function will reject its promise with a message from the [`AgentError`](./Errors#agenterror) enumeration.
+::: note 
+
+When several FDC3-enabled applications are hosted on the same origin (e.g. `https://myplatform.example.com/trade` and `https://myplatform.example.com/watchlist`), each should be registered as a separate AppD record using a URL that includes the distinguishing path.  
+
+:::
 
 ## Injected iframes for adaptors and user interfaces
 
