@@ -1,4 +1,4 @@
-import { Context, DesktopAgent } from '@finos/fdc3';
+import { Context, DesktopAgent, FDC3_VERSION, Listener, versionIsAtLeast } from '@finos/fdc3';
 
 import { APIDocumentation } from '../support/apiDocuments';
 import { ContextType, Intent } from '../support/intent-support';
@@ -8,9 +8,12 @@ import { assert, expect } from 'chai';
 import { handleFail } from '../../utils';
 
 const getAgent2_2 = (fdc3: DesktopAgent, documentation: string) => {
-  it('(GetAgentAPI) Method is callable', async () => {
+  it('(GetInfoFDC3Version) getInfo returns an FDC3 version at least the conformance test version', async () => {
     const info = await fdc3.getInfo();
-    assert.isTrue(info.fdc3Version.startsWith('2.'), documentation);
+    assert.isTrue(
+      versionIsAtLeast(info, FDC3_VERSION),
+      `${documentation} Expected getInfo().fdc3Version ${info.fdc3Version} to be at least ${FDC3_VERSION}`
+    );
     const userChannels = await fdc3.getUserChannels();
     assert.isTrue(userChannels.length > 0, documentation);
   });
@@ -135,24 +138,42 @@ const basicUC1 = (fdc3: DesktopAgent, documentation: string) => {
 };
 
 const basicJC1 = (fdc3: DesktopAgent, documentation: string) => {
-  it("(BasicJC1) getCurrentChannel should retrieve 'null' or a channel object depending upon whether the channel has been joined or not", async () => {
-    const channels = await fdc3.getUserChannels();
-    if (channels.length > 0) {
-      try {
-        await fdc3.joinUserChannel(channels[0].id);
-        const currentChannel = await fdc3.getCurrentChannel();
-        if (typeof currentChannel !== 'object') {
-          assert.fail('getCurrentChannel did not retrieve a channel object');
-        }
-        expect(currentChannel?.id).to.eql(channels[0].id);
-        await fdc3.leaveCurrentChannel();
-        const currentChannelAfterLeave = await fdc3.getCurrentChannel();
-        assert.isNull(currentChannelAfterLeave);
-      } catch (ex) {
-        handleFail(documentation, ex);
+  it('(BasicJC1) User channel membership APIs are callable when advertised by getInfo', async function (this: Mocha.Context) {
+    const info = await fdc3.getInfo();
+    if (!info.optionalFeatures.UserChannelMembershipAPIs) {
+      this.skip();
+    }
+
+    expect(typeof fdc3.joinUserChannel, documentation).to.be.equals('function');
+    expect(typeof fdc3.getCurrentChannel, documentation).to.be.equals('function');
+    expect(typeof fdc3.leaveCurrentChannel, documentation).to.be.equals('function');
+
+    let joinedUserChannel = false;
+
+    try {
+      const channels = await fdc3.getUserChannels();
+      expect(channels, documentation).to.be.an('array');
+      if (channels.length === 0) {
+        assert.fail('No user channels available');
       }
-    } else {
-      assert.fail('No system channels available');
+
+      await fdc3.joinUserChannel(channels[0].id);
+      joinedUserChannel = true;
+      const currentChannel = await fdc3.getCurrentChannel();
+      if (typeof currentChannel !== 'object') {
+        assert.fail('getCurrentChannel did not retrieve a channel object');
+      }
+      expect(currentChannel?.id).to.eql(channels[0].id);
+      await fdc3.leaveCurrentChannel();
+      joinedUserChannel = false;
+      const currentChannelAfterLeave = await fdc3.getCurrentChannel();
+      assert.isNull(currentChannelAfterLeave);
+    } catch (ex) {
+      handleFail(documentation, ex);
+    } finally {
+      if (joinedUserChannel) {
+        await fdc3.leaveCurrentChannel();
+      }
     }
   });
 };
@@ -185,6 +206,103 @@ const basicRI2 = (fdc3: DesktopAgent, documentation: string, contextType: string
   });
 };
 
+const basicDM1 = (fdc3: DesktopAgent, documentation: string, intent: string, contextType: string) => {
+  const basicDM1 = '(BasicDM1) DesktopAgent methods should remain callable when destructured';
+  it(basicDM1, async () => {
+    const unsubscribeFunctions: Array<() => Promise<void>> = [];
+    let joinedUserChannel = false;
+
+    try {
+      const {
+        addContextListener,
+        addEventListener,
+        addIntentListener,
+        broadcast,
+        findIntent,
+        findIntentsByContext,
+        getCurrentChannel,
+        getInfo,
+        getOrCreateChannel,
+        getUserChannels,
+        joinUserChannel,
+        leaveCurrentChannel,
+        raiseIntent,
+      } = fdc3;
+
+      const info = await getInfo();
+      expect(info, documentation).to.have.property('fdc3Version');
+
+      const contextListener = await addContextListener(contextType, () => {});
+      expect(contextListener, documentation).to.have.property('unsubscribe').that.is.a('function');
+      const { unsubscribe: unsubscribeContextListener } = contextListener;
+      unsubscribeFunctions.push(unsubscribeContextListener);
+
+      const intentListener = await addIntentListener('ConformanceListener', () => {});
+      expect(intentListener, documentation).to.have.property('unsubscribe').that.is.a('function');
+      const { unsubscribe: unsubscribeIntentListener } = intentListener;
+      unsubscribeFunctions.push(unsubscribeIntentListener);
+
+      const eventListener = await addEventListener(null, () => {});
+      expect(eventListener, documentation).to.have.property('unsubscribe').that.is.a('function');
+      const { unsubscribe: unsubscribeEventListener } = eventListener;
+      unsubscribeFunctions.push(unsubscribeEventListener);
+
+      const channel = await getOrCreateChannel('FDC3Conformance');
+      expect(channel, documentation).to.have.property('id');
+      const {
+        addContextListener: addChannelContextListener,
+        addEventListener: addChannelEventListener,
+        broadcast: broadcastToChannel,
+      } = channel;
+      const channelContextListener = await addChannelContextListener(contextType, () => {});
+      const { unsubscribe: unsubscribeChannelContextListener } = channelContextListener;
+      unsubscribeFunctions.push(unsubscribeChannelContextListener);
+      const channelEventListener = await addChannelEventListener(null, () => {});
+      const { unsubscribe: unsubscribeChannelEventListener } = channelEventListener;
+      unsubscribeFunctions.push(unsubscribeChannelEventListener);
+      await broadcastToChannel({ type: contextType });
+
+      const userChannels = await getUserChannels();
+      expect(userChannels, documentation).to.be.an('array');
+
+      if (info.optionalFeatures.UserChannelMembershipAPIs) {
+        expect(userChannels, documentation).to.not.be.empty;
+        await joinUserChannel(userChannels[0].id);
+        joinedUserChannel = true;
+        const currentChannel = await getCurrentChannel();
+        expect(currentChannel?.id, documentation).to.eql(userChannels[0].id);
+        const {
+          addContextListener: addCurrentChannelContextListener,
+          addEventListener: addCurrentChannelEventListener,
+          broadcast: broadcastToCurrentChannel,
+        } = currentChannel!;
+        const currentChannelContextListener = await addCurrentChannelContextListener(contextType, () => {});
+        const { unsubscribe: unsubscribeCurrentChannelContextListener } = currentChannelContextListener;
+        unsubscribeFunctions.push(unsubscribeCurrentChannelContextListener);
+        const currentChannelEventListener = await addCurrentChannelEventListener(null, () => {});
+        const { unsubscribe: unsubscribeCurrentChannelEventListener } = currentChannelEventListener;
+        unsubscribeFunctions.push(unsubscribeCurrentChannelEventListener);
+        await broadcastToCurrentChannel({ type: contextType });
+        await broadcast({ type: contextType });
+        await leaveCurrentChannel();
+        joinedUserChannel = false;
+        assert.isNull(await getCurrentChannel(), documentation);
+      }
+
+      await findIntent(intent, { type: contextType });
+      await findIntentsByContext({ type: contextType });
+      await raiseIntent(intent, { type: contextType });
+    } catch (ex) {
+      handleFail(documentation, ex);
+    } finally {
+      if (joinedUserChannel) {
+        await fdc3.leaveCurrentChannel();
+      }
+      await Promise.all(unsubscribeFunctions.map(unsubscribe => unsubscribe()));
+    }
+  });
+};
+
 declare let fdc3: DesktopAgent;
 
 const documentation_CL = '\r\nDocumentation: ' + APIDocumentation.addContextListener + '\r\nCause';
@@ -195,6 +313,7 @@ const documentation_UC = '\r\nDocumentation: ' + APIDocumentation.getUserChannel
 const documentation_JC = '\r\nDocumentation: ' + APIDocumentation.getCurrentChannel + '\r\nCause';
 const documentation_RI = '\r\nDocumentation: ' + APIDocumentation.raiseIntentForContext + '\r\nCause';
 const documentation_GA = '\r\nDocumentation: ' + APIDocumentation.getAgent + '\r\nCause';
+const documentation_DM = '\r\nDocumentation: ' + APIDocumentation.desktopAgent + '\r\nCause';
 
 export const fdc3BasicGetAgent = async () => describe('fdc3.basicGetAgent', () => getAgent2_2(fdc3, documentation_GA));
 export const fdc3BasicCL1 = async () => describe('fdc3.basicCL1', () => basicCL1(fdc3, documentation_CL));
@@ -205,6 +324,13 @@ export const fdc3BasicGI2 = async () => describe('fdc3.basicGI2', () => basicGI2
 export const fdc3BasicAC1 = async () => describe('fdc3.basicAC1', () => basicAC1(fdc3, documentation_AC));
 export const fdc3BasicUC1 = async () => describe('fdc3.basicUC1', () => basicUC1(fdc3, documentation_UC));
 export const fdc3BasicJC1 = async () => describe('fdc3.basicJC1', () => basicJC1(fdc3, documentation_JC));
+export const fdc3BasicDM1 = async () =>
+  describe('fdc3.basicDM1', () => {
+    after(async function after() {
+      await closeMockAppWindow(this.currentTest?.title ?? 'Unknown test');
+    });
+    basicDM1(fdc3, documentation_DM, Intent.aTestingIntent, ContextType.testContextX);
+  });
 
 export const fdc3BasicRI1 = async () =>
   describe('fdc3.basicRI1', () => {
