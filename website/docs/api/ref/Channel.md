@@ -421,7 +421,7 @@ var listener = await myChannel.AddEventListener(null, (event) => {
 
 - [Events](./Events)
 - [EventHandler](./Events#eventhandler)
-- [ApiEvent](./Events#ApiEvent)
+- [ApiEvent](./Events#apievent)
 
 ### `broadcast`
 
@@ -761,7 +761,7 @@ Task ClearContext(string? contextType);
 </TabItem>
 </Tabs>
 
-Used to clear the specified context type if provided, otherwise, clear all context types present in the channel. The Desktop Agent MUST update its internal representation of the context in the channel and ensure that subsequent calls to [`getCurrentContext`](#getcurrentcontext) and any new joiners to that channel (through [`joinUserChannel`](DesktopAgent#joinUserChannel) or [`addContextListener`](DesktopAgent#addContextListener)) will not receive anything for either the specified context type or the most recent context until new context has been broadcast to the channel. 
+Used to clear the specified context type if provided, otherwise, clear all context types present in the channel. The Desktop Agent MUST update its internal representation of the context in the channel and ensure that subsequent calls to [`getCurrentContext`](#getcurrentcontext) and any new joiners to that channel (through [`joinUserChannel`](DesktopAgent#joinuserchannel) or [`addContextListener`](DesktopAgent#addcontextlistener)) will not receive anything for either the specified context type or the most recent context until new context has been broadcast to the channel. 
 Desktop Agents MUST also immediately notify the apps that are listening to `contextCleared` event for this channel. If a `contextType` parameter was provided, then the `contextType` field will be set to that type, otherwise, it is omitted. 
 
 
@@ -831,6 +831,6 @@ catch (Exception ex)
 **See also:**
 
 - [`getCurrentContext`](#getcurrentcontext)
-- [`addContextListener`](DesktopAgent#addContextListener)
-- [`joinUserChannel`](DesktopAgent#joinUserChannel)
+- [`addContextListener`](DesktopAgent#addcontextlistener)
+- [`joinUserChannel`](DesktopAgent#joinuserchannel)
 - [`addEventListener`](#addeventlistener)

@@ -48,6 +48,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Documented `getAgent()` promise caching behaviour: subsequent calls return the cached promise (ignoring parameters), and the cache is cleared on failure to allow retries. ([#1464](https://github.com/finos/FDC3/issues/1464))
 * Clarified in the Context Data overview that context types are defined in JSON Schema (source of truth) and may be represented differently in language-specific API bindings; added wire format guidance, language binding type mapping table, and links to packages and source code. ([#1486](https://github.com/finos/FDC3/issues/1486))
 * Clarified the stateful nature of channels at the start of the Context Channels section and Channel API reference page, documenting that channels retain the most recent context and metadata for each type. ([#1660](https://github.com/finos/FDC3/issues/1660))
+* Fixed broken links in the website: updated `schema2Markdown.js` to generate absolute links for context type cross-references (fixing chat and security subcategory links), fixed broken links in `api/spec.md`, `supported-platforms.md`, `context/spec.md`, intent pages, `Channel.md` and `desktopAgentCommunicationProtocol.md`. ([#2028](https://github.com/finos/FDC3/issues/2028))
 
 ### Removed
 

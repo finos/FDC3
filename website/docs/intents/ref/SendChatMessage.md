@@ -18,7 +18,7 @@ Send a message to an existing chat room.
 
 ## Possible Contexts
 
-- [ChatMessage](../../context/ref/ChatMessage)
+- [ChatMessage](../../context/ref/chat/ChatMessage)
 
 ## Example
 
@@ -55,8 +55,8 @@ await fdc3.raiseIntent("SendChatMessage", context, intentResolution.source);
 ## See Also
 
 Context
-- [ChatMessage](../../context/ref/ChatMessage)
-- [ChatRoom](../../context/ref/ChatRoom)
+- [ChatMessage](../../context/ref/chat/ChatMessage)
+- [ChatRoom](../../context/ref/chat/ChatRoom)
 
 Intents
 - [StartChat](StartChat)

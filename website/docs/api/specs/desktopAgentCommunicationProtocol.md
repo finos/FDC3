@@ -371,7 +371,7 @@ The `raiseIntentResultResponse` success payload includes an optional `resultMeta
 
 :::tip
 
-See [`addIntentListener`](#addintentlistener) above for details of the messages used for the resolving app to deliver the result to the Desktop Agent.
+See [`addIntentListener`](#addintentlistener--addintentlistenerwithcontext) above for details of the messages used for the resolving app to deliver the result to the Desktop Agent.
 
 :::
 
@@ -427,7 +427,7 @@ Request and response used to implement the [`raiseIntentForContext()`](../ref/De
 - [`raiseIntentForContextRequest`](pathname:///schemas/next/api/raiseIntentForContextRequest.schema.json)
 - [`raiseIntentForContextResponse`](pathname:///schemas/next/api/raiseIntentForContextResponse.schema.json)
 
-Message exchanges for handling `raiseIntentForContext()` are the same as for `raiseIntent`, except for the substitution of `raiseIntentForContextRequest` for `raiseIntentRequest` and `raiseIntentForContextResponse` for `raiseIntentResponse`. Hence, please see [`raiseIntent`](#raiseintent) and [`addIntentListener`](#addintentlistener) for further details.
+Message exchanges for handling `raiseIntentForContext()` are the same as for `raiseIntent`, except for the substitution of `raiseIntentForContextRequest` for `raiseIntentRequest` and `raiseIntentForContextResponse` for `raiseIntentResponse`. Hence, please see [`raiseIntent`](#raiseintent) and [`addIntentListener`](#addintentlistener--addintentlistenerwithcontext) for further details.
 
 ### `Channel`
 

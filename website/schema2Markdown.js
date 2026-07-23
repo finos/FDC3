@@ -136,7 +136,21 @@ function renderRef(contextRef, currentSchemaFilePath) {
             if (title == "Context"){
                 return `**type**: [Context](/docs/next/context/spec#the-context-interface)\n\n`;
             } else {
-                return `**type**: [${title}](${outputDocName})\n`;
+                //determine if the referenced schema belongs to a subcategory
+                //by checking its type field (e.g. "fdc3.chat.message" -> category "chat")
+                let referencedTypeString = null;
+                if (hasAllOf(schemaData.allOf)) {
+                    referencedTypeString = schemaData.allOf[0]?.properties?.type?.const;
+                } else if (hasProperties(schemaData)) {
+                    referencedTypeString = schemaData.properties?.type?.const;
+                }
+                const referencedCategory = extractCategoryFromType(referencedTypeString);
+
+                if (referencedCategory) {
+                    return `**type**: [${title}](/docs/next/context/ref/${referencedCategory}/${outputDocName})\n`;
+                } else {
+                    return `**type**: [${title}](/docs/next/context/ref/${outputDocName})\n`;
+                }
             }
         } else if (standardPart === "api") {
             //link to the unified Types page with an anchor for the specific type
