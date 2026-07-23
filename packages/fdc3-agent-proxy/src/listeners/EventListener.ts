@@ -6,24 +6,27 @@ import { AgentEventMessage } from '@finos/fdc3-schema/dist/generated/api/Browser
 export class EventListener implements RegisterableListener {
   readonly id: string;
   readonly messaging: Messaging;
-  readonly type: string;
+  readonly type: string | null;
   readonly handler: EventHandler;
 
-  constructor(messaging: Messaging, type: string, handler: EventHandler) {
-    this.id = type + '-' + messaging.createUUID();
+  constructor(messaging: Messaging, type: string | null, handler: EventHandler) {
+    this.id = (type ?? 'all') + '-' + messaging.createUUID();
     this.messaging = messaging;
     this.type = type;
     this.handler = handler;
+
+    //bind to allow destructuring
+    this.unsubscribe = this.unsubscribe.bind(this);
   }
 
   filter(m: AgentEventMessage): boolean {
-    return m.type === this.type;
+    return this.type == null || m.type === this.type;
   }
 
   action(m: AgentEventMessage): void {
-    if (m.type === this.type) {
+    if (this.type == null || m.type === this.type) {
       this.handler({
-        type: this.type,
+        type: m.type,
         details: m.payload,
       } as ApiEvent);
     }
