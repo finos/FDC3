@@ -27,21 +27,21 @@
     "docusaurus": "docusaurus"
   },
   "devDependencies": {
-    "@docusaurus/core": "^3.7.0",
-    "@docusaurus/preset-classic": "^3.7.0",
-    "@docusaurus/theme-mermaid": "^3.7.0",
-    "@mermaid-js/layout-elk": "^0.1.9",
+    "@docusaurus/core": "^3.10.2",
+    "@docusaurus/preset-classic": "^3.10.2",
+    "@docusaurus/theme-mermaid": "^3.10.2",
+    "@mermaid-js/layout-elk": "^0.2.2",
     "clsx": "^1.2.1",
     "cpy-cli": "4.2.0",
     "cross-env": "^7.0.3",
     "del-cli": "5.0.0",
-    "fs-extra": "^11.2.0",
+    "fs-extra": "^11.3.6",
     "js-yaml": "^4.1.1",
     "prism-react-renderer": "^2.4.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "replace-in-files-cli": "2.0.0",
-    "replace-json-property": "1.8.0",
+    "replace-json-property": "1.9.0",
     "rimraf": "5.0.0"
   },
   "overrides": {
