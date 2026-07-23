@@ -63,7 +63,7 @@
   "devDependencies": {
     "@eslint/js": "^9.19.0",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^20.16.11",
+    "@types/node": "^26.1.1",
     "@vitest/coverage-v8": "^3.2.6",
     "@vitest/ui": "^3.2.6",
     "concurrently": "^8.2.2",
