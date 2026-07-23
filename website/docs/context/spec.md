@@ -246,7 +246,7 @@ To maintain clarity and consistency, FDC3 separates metadata from Context object
 
 This separation provides a cleaner architecture, improves interoperability, and supports future enhancements without breaking existing Context definitions.
 
-For more details on `ContextMetadata` please see the [FDC3 API overview](../api/spec#receive-metadata-about-a-broadcast-or-raised-intent) and [`ContextMetadata` reference](../api/ref/Metadata#contextmetadata).
+For more details on `ContextMetadata` please see the [FDC3 API overview](../api/spec#receive-metadata-about-a-broadcast-or-raised-intent) and [`ContextMetadata` reference](../api/ref/Types#contextmetadata).
 
 ## Context Data Standard Compliance
 

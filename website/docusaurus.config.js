@@ -46,7 +46,23 @@ module.exports = {
     mermaid: true,
   },
   themes: ['@docusaurus/theme-mermaid'],
-  "plugins": [],
+  "plugins": [
+    [
+      "@docusaurus/plugin-client-redirects",
+      {
+        redirects: [
+          {
+            from: "/docs/api/ref/Metadata",
+            to: "/docs/api/ref/Types",
+          },
+          {
+            from: "/docs/next/api/ref/Metadata",
+            to: "/docs/next/api/ref/Types",
+          },
+        ],
+      },
+    ],
+  ],
   "themeConfig": {
     "prism": {
       "additionalLanguages": ["typescript", "javascript", "json", "csharp", "go"],

@@ -351,7 +351,7 @@ func (desktopAgent *DesktopAgent) AddIntentListener(intent string, handler Inten
 
 Adds a listener for incoming intents raised by other applications, via calls to [`fdc3.raiseIntent`](#raiseintent) or [`fdc3.raiseIntentForContext`](#raiseintentforcontext). If the application is intended to be launched to resolve raised intents, it SHOULD add its intent listeners as quickly as possible after launch or an error MAY be returned to the caller and the intent and context may not be delivered. The exact timeout used is set by the Desktop Agent implementation, but MUST be at least 15 seconds.
 
-The handler function may return void or a promise that resolves to a [`IntentResult`](Types#intentresult), which is either a [`Context`](Types#context) object, representing any data that should be returned to the app that raised the intent, or a [`Channel`](Channel), a [`PrivateChannel`](PrivateChannel) over which data responses will be sent, or `void`. The `IntentResult` will be returned to the app that raised the intent via the [`IntentResolution`](Metadata#intentresolution) and retrieved from it using the `getResult()` function.
+The handler function may return void or a promise that resolves to a [`IntentResult`](Types#intentresult), which is either a [`Context`](Types#context) object, representing any data that should be returned to the app that raised the intent, or a [`Channel`](Channel), a [`PrivateChannel`](PrivateChannel) over which data responses will be sent, or `void`. The `IntentResult` will be returned to the app that raised the intent via the [`IntentResolution`](Types#intentresolution) and retrieved from it using the `getResult()` function.
 
 The Desktop Agent MUST reject the promise returned by the `getResult()` function of `IntentResolution` if any of the following is true:
 
@@ -1215,7 +1215,7 @@ func (desktopAgent *DesktopAgent) GetAppMetadata(appIdentifier AppIdentifier) <-
 </TabItem>
 </Tabs>
 
-Retrieves the [`AppMetadata`](Metadata#appmetadata) for an [`AppIdentifier`](Types#appidentifier), which provides additional metadata (such as icons, a title and description) from the App Directory record for the application, that may be used for display purposes.
+Retrieves the [`AppMetadata`](Types#appmetadata) for an [`AppIdentifier`](Types#appidentifier), which provides additional metadata (such as icons, a title and description) from the App Directory record for the application, that may be used for display purposes.
 
 If the app is not found, the promise MUST be rejected with an `Error` Object with the `message` given by [`ResolveError.TargetAppUnavailable`](Errors#resolveerror), or (if connected to a Desktop Agent Bridge) an error from the [`BridgingError`](Errors#bridgingerror) enumeration.
 
@@ -1250,7 +1250,7 @@ appMetadataResult := <-desktopAgent.GetAppMetadata(appIdentifier)
 
 **See also:**
 
-- [`AppMetadata`](Metadata#appmetadata)
+- [`AppMetadata`](Types#appmetadata)
 - [`AppIdentifier`](Types#appidentifier)
 
 ### `getCurrentChannel`
@@ -1349,7 +1349,7 @@ func (desktopAgent *DesktopAgent) GetInfo() <-chan Result[ImplementationMetadata
 
 Retrieves information about the FDC3 Desktop Agent implementation, including the supported version of the FDC3 specification, the name of the provider of the implementation, its own version number, details of whether optional API features are implemented and the metadata of the calling application according to the desktop agent.
 
-Returns an [`ImplementationMetadata`](Metadata#implementationmetadata) object.  This metadata object can be used to vary the behavior of an application based on the version supported by the Desktop Agent and for logging purposes.
+Returns an [`ImplementationMetadata`](Types#implementationmetadata) object.  This metadata object can be used to vary the behavior of an application based on the version supported by the Desktop Agent and for logging purposes.
 
 **Example:**
 
@@ -1421,8 +1421,8 @@ if implementationMetadataResult.Value != nil {
 
 **See also:**
 
-- [`ImplementationMetadata`](Metadata#implementationmetadata)
-- [`AppMetadata`](Metadata#appmetadata)
+- [`ImplementationMetadata`](Types#implementationmetadata)
+- [`AppMetadata`](Types#appmetadata)
 
 ### `getOrCreateChannel`
 
@@ -1837,7 +1837,7 @@ instanceIdentifierResult := <-desktopAgent.Open(appIdentifier, &context)
 
 - [`Context`](Types#context)
 - [`AppIdentifier`](Types#appidentifier)
-- [`AppMetadata`](Metadata#appmetadata)
+- [`AppMetadata`](Types#appmetadata)
 - [`OpenError`](Errors#openerror)
 
 ### `close`
@@ -1916,7 +1916,7 @@ If you wish to raise an intent without a context, use the `fdc3.nothing` context
 
 An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the raised intent. If metadata is provided without a target app, `null` may be passed for the `app` parameter.
 
-Returns an [`IntentResolution`](Metadata#intentresolution) object with details of the app instance that was selected (or started) to respond to the intent.
+Returns an [`IntentResolution`](Types#intentresolution) object with details of the app instance that was selected (or started) to respond to the intent.
 
 Issuing apps may optionally wait on the promise that is returned by the `getResult()` member of the `IntentResolution`. This promise will resolve when the _receiving app's_ intent handler function returns and resolves a promise. The Desktop Agent resolves the issuing app's promise with the Context object, Channel object or void that is provided as resolution within the receiving app. The Desktop Agent MUST reject the issuing app's promise, with a string from the [`ResultError`](Errors#resulterror) enumeration, if: (1) the intent handling function's returned promise rejects, (2) the intent handling function doesn't return a valid response (a promise or void), or (3) the returned promise resolves to an invalid type.
 
@@ -2016,7 +2016,7 @@ resolutionResult := <-desktopAgent.RaiseIntent("intentName", context, nil);
 - [`Context`](Types#context)
 - [`AppIdentifier`](Types#appidentifier)
 - [`IntentResult`](Types#intentresult)
-- [`IntentResolution`](Metadata#intentresolution)
+- [`IntentResolution`](Types#intentresolution)
 - [`ResolveError`](Errors#resolveerror)
 - [`ResultError`](Errors#resulterror)
 
@@ -2108,5 +2108,5 @@ intentResolutionResult := <-desktopAgent.RaiseIntentForContext(context, &targetA
 - [`raiseIntent()`](#raiseintent)
 - [`Context`](Types#context)
 - [`AppIdentifier`](Types#appidentifier)
-- [`IntentResolution`](Metadata#intentresolution)
+- [`IntentResolution`](Types#intentresolution)
 - [`ResolveError`](Errors#resolveerror)

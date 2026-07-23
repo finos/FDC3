@@ -138,13 +138,13 @@ function renderRef(contextRef, currentSchemaFilePath) {
             } else {
                 return `**type**: [${title}](${outputDocName})\n`;
             }
+        } else if (standardPart === "api") {
+            //link to the unified Types page with an anchor for the specific type
+            const anchor = title.toLowerCase().replace(/\s+/g, '-');
+            return `**type**: [${title}](/docs/next/api/ref/Types#${anchor})\n`;
         } else {
             //custom handling for other standard parts...
             return `**type**: ${standardPart}/${title}\n`;
-
-            //TODO handle API schema refs 
-            // - which are currently split across two different docs pages (Types and Metadata)
-            // - perhaps reunite these pages and just link to the resulting page.
         }
     }
     

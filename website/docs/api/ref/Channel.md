@@ -200,7 +200,7 @@ DisplayMetadata can be used to provide display hints for User Channels intended 
 
 **See also:**
 
-- [`DisplayMetadata`](Metadata#displaymetadata)
+- [`DisplayMetadata`](Types#displaymetadata)
 
 ## Functions
 
@@ -673,7 +673,7 @@ func (channel *Channel) GetCurrentContextWithMetadata(contextType string) <-chan
 </TabItem>
 </Tabs>
 
-Returns the most recent context that was broadcast on the channel along with its associated [`ContextMetadata`](Metadata#contextmetadata), or `null` if no matching context is found.
+Returns the most recent context that was broadcast on the channel along with its associated [`ContextMetadata`](Types#contextmetadata), or `null` if no matching context is found.
 
 When a _context type_ is provided, the most recent context matching the type will be returned. If no _context type_ is provided, the most recent context that was broadcast on the channel - regardless of type - will be returned.
 
@@ -735,7 +735,7 @@ if result.Value != nil {
 **See also:**
 
 - [`ContextWithMetadata`](Types#contextwithmetadata)
-- [`ContextMetadata`](Metadata#contextmetadata)
+- [`ContextMetadata`](Types#contextmetadata)
 - [`ChannelError`](Errors#channelerror)
 - [`getCurrentContext`](#getcurrentcontext)
 - [`broadcast`](#broadcast)

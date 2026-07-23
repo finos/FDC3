@@ -44,6 +44,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Hardened all CI workflows: upgraded GitHub Actions to latest major versions, pinned all action references to immutable commit SHAs, and added StepSecurity harden-runner to every job ([#1948](https://github.com/finos/FDC3/pull/1948))
 - Added `min-release-age = 7` to `.npmrc` requiring packages to be at least 7 days old before resolution ([#1948](https://github.com/finos/FDC3/pull/1948))
 - Added Dependabot configuration with cooldown periods and grouped minor/patch updates ([#1948](https://github.com/finos/FDC3/pull/1948))
+* Merged the `api/ref/Metadata` and `api/ref/Types` documentation pages into a single `Types` page, added a Docusaurus redirect from the old Metadata URL, and updated `schema2Markdown.js` to generate links to the Types page for API type references in generated context docs. ([#1282](https://github.com/finos/FDC3/issues/1282))
 
 ### Removed
 

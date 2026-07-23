@@ -48,7 +48,7 @@ The FDC3 API specification consists of interfaces.  It is expected that each Des
 - [`Channel`](ref/Channel)
 - [`PrivateChannel`](ref/PrivateChannel)
 - [`Listener`](ref/Types#listener)
-- [Utility types](ref/Types) and [Metadata Objects](ref/Metadata).
+- [Utility types and Metadata](ref/Types).
 
 The means to access the main FDC3 API interface (a `DesktopAgent` implementation) is defined separately for each language in which FDC3 is implemented. These definitions are important as they affect whether applications can be written in a vendor agnostic format so that they run under any Standards-conformant implementation.
 
@@ -126,7 +126,7 @@ An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 - Return (JavaScript or platform appropriate) Error Objects with messages from the [`ChannelError`](ref/Errors#channelerror), [`CloseError`](ref/Errors#closeerror), [`OpenError`](ref/Errors#openerror), [`ResolveError`](ref/Errors#resolveerror) and [`ResultError`](ref/Errors#resulterror) enumerations as appropriate.
 - Provide an ID for each [`PrivateChannel`](ref/PrivateChannel) created via [`createPrivateChannel`](ref/DesktopAgent#createprivatechannel) and prevent them from being retrieved via [`getOrCreateChannel`](ref/DesktopAgent#getorcreatechannel) by ID.
 - Only require app directories that they connect to to have implemented only the minimum requirements specified in the [App Directory API Part](../app-directory/spec) of this Standard.
-- Provide details of whether they implement optional features of the Desktop Agent API in the `optionalFeatures` property of the [`ImplementationMetadata`](ref/Metadata#implementationmetadata) object returned by the [`fdc3.getInfo()`](ref/DesktopAgent#getinfo) function.
+- Provide details of whether they implement optional features of the Desktop Agent API in the `optionalFeatures` property of the [`ImplementationMetadata`](ref/Types#implementationmetadata) object returned by the [`fdc3.getInfo()`](ref/DesktopAgent#getinfo) function.
 - Dispatch a `userChannelChanged` event after applying a User channel membership change when the app has registered a matching event listener. When the change is initiated by the app's own call to [`fdc3.joinUserChannel`](ref/DesktopAgent#joinuserchannel), the event MUST be dispatched before the returned promise resolves.
 - Allow, by default, at least a 15 second timeout for an application, launched via [`fdc3.open`](../api/ref/DesktopAgent#open), [`fdc3.raiseIntent`](../api/ref/DesktopAgent#raiseintent) or [`fdc3.raiseIntentForContext`](../api/ref/DesktopAgent#raiseintentforcontext) to add any context listener (via [`fdc3.addContextListener`](../api/ref/DesktopAgent#addcontextlistener)) or intent listener (via [`fdc3.addIntentListener`](../api/ref/DesktopAgent#addintentlistener)) necessary to deliver context or intent and context to it on launch. This timeout only applies to listeners needed to receive context on launch; further intent and context listeners not required on launch MAY be added later.
 - Implement the [`fdc3.close()`](../api/ref/DesktopAgent#close) API call, allowing an app to request that its own window or frame be closed. On success, the app MUST be closed without delivering a success `closeResponse`. On failure, the Desktop Agent MUST respond with a `closeResponse` containing an error from the [`CloseError`](../api/ref/Errors#closeerror) enumeration while the app remains connected.
@@ -166,9 +166,9 @@ A Desktop Agent's [`Channel`](ref/Channel) implementation **MUST**:
   - [`clearContext`](ref/Channel#clearcontext)
   - [`getCurrentContext`](ref/Channel#getcurrentcontext)
   - [`getCurrentContextWithMetadata`](ref/Channel#getcurrentcontextwithmetadata)
-- Accept an optional [`AppProvidableContextMetadata`](ref/Metadata#appprovidablecontextmetadata) argument in [`broadcast`](ref/Channel#broadcast), allowing applications to provide `traceId`, `signature`, `antiReplay` and `custom` metadata with context messages.
+- Accept an optional [`AppProvidableContextMetadata`](ref/Types#appprovidablecontextmetadata) argument in [`broadcast`](ref/Channel#broadcast), allowing applications to provide `traceId`, `signature`, `antiReplay` and `custom` metadata with context messages.
 - Allow adding multiple context listeners on the same or overlapping types (i.e. a specific `contextType` and `null` type) and trigger all matching [`ContextHandler`](ref/Types#contexthandler) functions when a relevant context type is broadcast on the channel.
-- Provide [`ContextMetadata`](ref/Metadata#contextmetadata) (including `source` and `timestamp`) to [`ContextHandler`](ref/Types#contexthandler) functions registered via [`addContextListener`](ref/Channel#addcontextlistener).
+- Provide [`ContextMetadata`](ref/Types#contextmetadata) (including `source` and `timestamp`) to [`ContextHandler`](ref/Types#contexthandler) functions registered via [`addContextListener`](ref/Channel#addcontextlistener).
 - Return the most recent context (and associated metadata for [`getCurrentContextWithMetadata`](ref/Channel#getcurrentcontextwithmetadata)) matching the requested type, or `null` if no matching context is found.
 - Return `null` from [`getCurrentContext`](ref/Channel#getcurrentcontext) and [`getCurrentContextWithMetadata`](ref/Channel#getcurrentcontextwithmetadata) for context types that have been cleared via [`clearContext`](ref/Channel#clearcontext), until new context of that type is broadcast.
 - Notify listeners registered for the `contextCleared` event (via [`addEventListener`](ref/Channel#addeventlistener)) when [`clearContext`](ref/Channel#clearcontext) is called, including the `contextType` in the event if one was specified.
@@ -178,7 +178,7 @@ A Desktop Agent's [`Channel`](ref/Channel) implementation **MUST**:
 A Desktop Agent's [`Channel`](ref/Channel) implementation **SHOULD**:
 
 - Ensure that context messages broadcast by an application on a channel are not delivered back to that same application if it is also listening on the channel.
-- Provide [`ContextMetadata`](ref/Metadata#contextmetadata) to [`ContextHandler`](ref/Types#contexthandler) functions, including any app-provided `traceId`, `signature`, `antiReplay` and `custom` metadata that was included in the [`broadcast`](ref/Channel#broadcast) call.
+- Provide [`ContextMetadata`](ref/Types#contextmetadata) to [`ContextHandler`](ref/Types#contexthandler) functions, including any app-provided `traceId`, `signature`, `antiReplay` and `custom` metadata that was included in the [`broadcast`](ref/Channel#broadcast) call.
 
 #### PrivateChannel Interface Compliance
 
@@ -247,7 +247,7 @@ var version = (await _desktopAgent.GetInfo()).Fdc3Version;
 </TabItem>
 </Tabs>
 
-The [`ImplementationMetadata`](ref/Metadata#implementationmetadata) object returned also includes the metadata for the calling application, according to the Desktop Agent. This allows the application to retrieve its own `appId`, `instanceId` and other details, e.g.:
+The [`ImplementationMetadata`](ref/Types#implementationmetadata) object returned also includes the metadata for the calling application, according to the Desktop Agent. This allows the application to retrieve its own `appId`, `instanceId` and other details, e.g.:
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
@@ -276,7 +276,7 @@ To construct workflows between applications, you need to be able to reference sp
 
 From version 2.0 of the FDC3 Standard, Desktop Agent functions that reference or return information about other applications do so via an [`AppIdentifier`](ref/Types#appidentifier) type. [`AppIdentifier`](ref/Types#appidentifier) references specific applications via an `appId` from an [App Directory](../app-directory/overview) record and instances of that application via an `instanceId` assigned by the Desktop Agent.
 
-Additional metadata for an application can be retrieved via the [`fdc3.getAppMetadata(appIdentifier)`](ref/DesktopAgent#getappmetadata) function, which returns an [`AppMetadata`](ref/Metadata#appmetadata) object. The additional metadata may include a title, description, icons, etc., which may be used for display purposes.
+Additional metadata for an application can be retrieved via the [`fdc3.getAppMetadata(appIdentifier)`](ref/DesktopAgent#getappmetadata) function, which returns an [`AppMetadata`](ref/Types#appmetadata) object. The additional metadata may include a title, description, icons, etc., which may be used for display purposes.
 
 Identifiers for instances of an application may be retrieved via the [`fdc3.findInstances(appIdentifier)`](ref/DesktopAgent#findinstances) function.
 
@@ -288,7 +288,7 @@ Wherever an `appId` is used to refer to a specific application as part of an [`A
 
 If no exact match is found then a fully-qualified `appId` provided should be split on `@` character and an attempt made to match the unqualified portion to known unqualified `appIds`, ignoring any known fully-qualified `appId` values that were already matched against. Alternatively, if an unqualified `appId` was provided then the known fully-qualified `appId` values should be split on the `@` character and the unqualified appId matched against their unqualified part.
 
-The matching of an unqualified `appId` value against a set of fully-qualified appIds may result in multiple matches. In such cases, Desktop Agents SHOULD attempt additional resolution via any suitable procedure. For API calls such as [`raiseIntent`](./ref/DesktopAgent#raiseintent) or [`raiseIntentForContext`](./ref/DesktopAgent#raiseintentforcontext) Desktop Agents SHOULD use the same approach as they do for resolving ambiguous intents, for example by displaying an Intent Resolver UI and allowing the user to select the desired application. Alternatively, Desktop Agents MAY apply an alternative procedure such as selecting the first matching `appId` or, in the case of `findInstances`, by returning results for all matching fully-qualified `appId` values. Each of the API calls accepting an [`AppIdentifier`](ref/Types#appidentifier) as input, returns details of the `appId` in its results (i.e. [`AppIdentifier`](ref/Types#appidentifier), [`AppMetadata`](ref/Metadata#appmetadata), [IntentResolution](ref/Metadata#intentresolution)), where the fully-qualified appId matched MUST be used.
+The matching of an unqualified `appId` value against a set of fully-qualified appIds may result in multiple matches. In such cases, Desktop Agents SHOULD attempt additional resolution via any suitable procedure. For API calls such as [`raiseIntent`](./ref/DesktopAgent#raiseintent) or [`raiseIntentForContext`](./ref/DesktopAgent#raiseintentforcontext) Desktop Agents SHOULD use the same approach as they do for resolving ambiguous intents, for example by displaying an Intent Resolver UI and allowing the user to select the desired application. Alternatively, Desktop Agents MAY apply an alternative procedure such as selecting the first matching `appId` or, in the case of `findInstances`, by returning results for all matching fully-qualified `appId` values. Each of the API calls accepting an [`AppIdentifier`](ref/Types#appidentifier) as input, returns details of the `appId` in its results (i.e. [`AppIdentifier`](ref/Types#appidentifier), [`AppMetadata`](ref/Types#appmetadata), [IntentResolution](ref/Types#intentresolution)), where the fully-qualified appId matched MUST be used.
 
 ### Receive metadata about a Broadcast or Raised Intent
 
@@ -332,7 +332,7 @@ An optional [`IntentResult`](ref/Types#intentresult) may also be returned as out
 
 For example, an application handling a `CreateOrder` intent might return a context representing the order and including an ID, allowing the application that raised the intent to make further calls using that ID.
 
-An [`IntentHandler`](ref/Types#intenthandler) may also return a [`ContextWithMetadata`](ref/Types#contextwithmetadata) object instead of a plain `Context` to include app-provided metadata (e.g. a `traceId` or `signature`) alongside the context result. The Desktop Agent will merge this with its own generated metadata and make the combined [`ContextMetadata`](ref/Metadata#contextmetadata) available to the raising app via [`IntentResolution.getResultMetadata()`](ref/Metadata#intentresolution). [`IntentResolution.getResult()`](ref/Metadata#intentresolution) will still return only the `Context` portion. For `Channel` or `void` results, `getResultMetadata()` returns only Desktop Agent generated metadata.
+An [`IntentHandler`](ref/Types#intenthandler) may also return a [`ContextWithMetadata`](ref/Types#contextwithmetadata) object instead of a plain `Context` to include app-provided metadata (e.g. a `traceId` or `signature`) alongside the context result. The Desktop Agent will merge this with its own generated metadata and make the combined [`ContextMetadata`](ref/Types#contextmetadata) available to the raising app via [`IntentResolution.getResultMetadata()`](ref/Types#intentresolution). [`IntentResolution.getResult()`](ref/Types#intentresolution) will still return only the `Context` portion. For `Channel` or `void` results, `getResultMetadata()` returns only Desktop Agent generated metadata.
 
 An optional result type is also supported when programmatically resolving an intent via [`findIntent`](ref/DesktopAgent#findintent) or [`findIntentsByContext`](ref/DesktopAgent#findintentsbycontext).
 
@@ -460,7 +460,7 @@ Raising an intent will return a Promise-type object that will resolve/reject bas
 
 #### Resolution Object
 
-If the raising of the intent resolves (or rejects), a standard [`IntentResolution`](ref/Metadata#intentresolution) object will be passed into the resolver function with details of the application that resolved the intent and the means to access any results subsequently returned.
+If the raising of the intent resolves (or rejects), a standard [`IntentResolution`](ref/Types#intentresolution) object will be passed into the resolver function with details of the application that resolved the intent and the means to access any results subsequently returned.
 
 For example, to raise a specific intent:
 
@@ -619,7 +619,7 @@ A single handler can be added for each specific intent. If the application attem
 
 ### Metadata & Securing Communication
 
-When an intent is raised and resolved, the receiving application's [`IntentHandler`](ref/Types#intenthandler) is called with two arguments: the `Context` object (the business data) and a [`ContextMetadata`](ref/Metadata#contextmetadata) object supplied by the Desktop Agent. The metadata identifies the originating application (`source`) and the time the intent was raised (`timestamp`), which can be useful for auditing, ordering of events, and building observability into cross-application workflows.
+When an intent is raised and resolved, the receiving application's [`IntentHandler`](ref/Types#intenthandler) is called with two arguments: the `Context` object (the business data) and a [`ContextMetadata`](ref/Types#contextmetadata) object supplied by the Desktop Agent. The metadata identifies the originating application (`source`) and the time the intent was raised (`timestamp`), which can be useful for auditing, ordering of events, and building observability into cross-application workflows.
 
 The raising application may also include optional app-provided metadata — `traceId`, `signature`, `antiReplay` and `custom` — in the `metadata` parameter of [`raiseIntent`](ref/DesktopAgent#raiseintent) or [`raiseIntentForContext`](ref/DesktopAgent#raiseintentforcontext). The Desktop Agent MUST forward these fields unchanged to the handler. If the raising application signs the context (`signature` + `antiReplay`), the handling application can verify the origin and integrity of the intent request without trusting the Desktop Agent as an intermediary. Similarly, an intent handler may return a [`ContextWithMetadata`](ref/Types#contextwithmetadata) result that includes a `signature`, allowing the raising application to verify the authenticity of the response it receives.
 
@@ -934,7 +934,7 @@ Channel interface provides the ability to [`clearContext`](ref/Channel.md#clearc
 
 ### Metadata & Securing Communication
 
-When a context is broadcast on a channel or received by a [`ContextHandler`](ref/Types#contexthandler), the handler receives both the `Context` object and a [`ContextMetadata`](ref/Metadata#contextmetadata) object provided by the Desktop Agent. The metadata always includes the originating application (`source`) and the broadcast timestamp, enabling receivers to identify who sent a message and when — which is particularly valuable in multi-application workflows where the same context type may arrive from several sources.
+When a context is broadcast on a channel or received by a [`ContextHandler`](ref/Types#contexthandler), the handler receives both the `Context` object and a [`ContextMetadata`](ref/Types#contextmetadata) object provided by the Desktop Agent. The metadata always includes the originating application (`source`) and the broadcast timestamp, enabling receivers to identify who sent a message and when — which is particularly valuable in multi-application workflows where the same context type may arrive from several sources.
 
 Applications broadcasting on a channel may include optional app-provided metadata — `traceId`, `signature`, `antiReplay` and `custom` — in the `metadata` parameter of [`broadcast`](ref/Channel#broadcast). The Desktop Agent MUST forward these fields unchanged to any listening [`ContextHandler`](ref/Types#contexthandler). A `signature` and accompanying `antiReplay` claims give receiving applications a way to cryptographically verify that a broadcast genuinely originated from a trusted sender and has not been tampered with in transit, without any involvement of the Desktop Agent in that verification. For workflows requiring full confidentiality — where even the Desktop Agent should not be able to read the payload — a [`PrivateChannel`](ref/PrivateChannel) with symmetric key encryption provides end-to-end protection for the data stream.
 
