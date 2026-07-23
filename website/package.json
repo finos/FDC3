@@ -31,7 +31,7 @@
     "@docusaurus/preset-classic": "^3.10.2",
     "@docusaurus/theme-mermaid": "^3.10.2",
     "@mermaid-js/layout-elk": "^0.2.2",
-    "clsx": "^1.2.1",
+    "clsx": "^2.1.1",
     "cpy-cli": "4.2.0",
     "cross-env": "^7.0.3",
     "del-cli": "5.0.0",
