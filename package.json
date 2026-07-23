@@ -58,7 +58,7 @@
     "printWidth": 120
   },
   "dependencies": {
-    "syncpack": "^14.0.0"
+    "syncpack": "^15.3.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
