@@ -44,7 +44,7 @@
     "@emotion/styled": "^11.11.5",
     "@fontsource/roboto": "5.2.10",
     "@fontsource/source-code-pro": "5.2.7",
-    "@mui/icons-material": "^5.15.20",
+    "@mui/icons-material": "^9.2.0",
     "@mui/material": "^5.15.20",
     "@mui/lab": "^5.0.0-alpha.170",
     "@types/jsoneditor": "^8.6.1",
