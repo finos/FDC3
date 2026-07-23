@@ -129,6 +129,13 @@ Feature: Raising Intents
       | listenerApp                         | {null}                                   |
 
 
+  Scenario: Instance metadata is included in the app resolver list
+    When "listenerApp/b1" sets instance metadata with title "Borrowed: War and Peace"
+    And "App1/a1" raises an intent for "borrowBook" with contextType "fdc3.book"
+    Then messaging will have outgoing posts
+      | msg.payload.appIntent.apps[0].appId | msg.payload.appIntent.apps[0].instanceId | msg.payload.appIntent.apps[0].instanceMetadata.title |
+      | listenerApp                         | b1                                       | Borrowed: War and Peace                              |
+
   Scenario: Dynamic registrations are displayed in the app resolver
     When "App2/a2" registers an intent listener for "borrowBook" with contextType "fdc3.book"
     When "App1/a1" raises an intent for "borrowBook" with contextType "fdc3.book"

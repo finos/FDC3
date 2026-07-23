@@ -316,6 +316,7 @@ export enum ControlContextType {
   ON_DISCONNECT_TRIGGERED = 'onDisconnectTriggered',
   CONTEXT_LISTENER_TRIGGERED = 'context-listener-triggered',
   INTENT_LISTENER_TRIGGERED = 'intent-listener-triggered',
+  INSTANCE_METADATA_SET = 'instance-metadata-set',
 }
 
 export enum Intent {

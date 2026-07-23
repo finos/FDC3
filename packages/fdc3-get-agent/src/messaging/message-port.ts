@@ -1,4 +1,4 @@
-import { AppIdentifier, DesktopAgent, LogLevel } from '@finos/fdc3-standard';
+import { AppIdentifier, Connectable, DesktopAgent, LogLevel } from '@finos/fdc3-standard';
 import {
   DesktopAgentProxy,
   DefaultChannelSupport,
@@ -6,6 +6,7 @@ import {
   DefaultIntentSupport,
   ChannelSupport,
   DefaultHeartbeatSupport,
+  PageTitleSupport,
 } from '@finos/fdc3-agent-proxy';
 import { ConnectionDetails, MessagePortMessaging } from './MessagePortMessaging.js';
 import { DefaultDesktopAgentIntentResolver } from '../ui/DefaultDesktopAgentIntentResolver.js';
@@ -54,7 +55,17 @@ export async function createDesktopAgentAPI(
   const cs = new DefaultChannelSupport(messaging, channelSelector, cd.messageExchangeTimeout);
   const is = new DefaultIntentSupport(messaging, intentResolver, cd.messageExchangeTimeout, cd.appLaunchTimeout);
   const as = new DefaultAppSupport(messaging, cd.messageExchangeTimeout, cd.appLaunchTimeout);
-  const da = new DesktopAgentProxy(hs, cs, is, as, [hs, cs, intentResolver, channelSelector], logLevel);
+
+  const connectables: Connectable[] = [hs, cs, intentResolver, channelSelector];
+
+  // Automatically keep the Desktop Agent's instance metadata title in sync with
+  // the page title unless the application has opted out. This only applies to
+  // proxy connections (which this function handles).
+  if (cd.options.syncPageTitle !== false) {
+    connectables.push(new PageTitleSupport(as));
+  }
+
+  const da = new DesktopAgentProxy(hs, cs, is, as, connectables, logLevel);
 
   Logger.debug('message-port: Connecting components ...');
 

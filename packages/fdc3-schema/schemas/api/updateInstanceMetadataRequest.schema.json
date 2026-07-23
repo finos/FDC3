@@ -1,0 +1,44 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/next/api/updateInstanceMetadataRequest.schema.json",
+	"type": "object",
+	"title": "UpdateInstanceMetadata Request",
+	"description": "A request to update the instance metadata for the calling application instance.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/UpdateInstanceMetadataRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/UpdateInstanceMetadataRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"UpdateInstanceMetadataRequestType": {
+			"title": "UpdateInstanceMetadata Request Message Type",
+			"const": "updateInstanceMetadataRequest"
+		},
+		"UpdateInstanceMetadataRequestPayload": {
+			"title": "UpdateInstanceMetadata Request Payload",
+			"type": "object",
+			"properties": {
+				"instanceMetadata": {
+					"$ref": "api.schema.json#/definitions/InstanceMetadata"
+				}
+			},
+			"required": [
+				"instanceMetadata"
+			],
+			"additionalProperties": false
+		}
+	}
+}

@@ -35,6 +35,7 @@
         "privateChannelUnsubscribeEventListenerResponse",
         "raiseIntentForContextResponse",
         "raiseIntentResponse",
+        "updateInstanceMetadataResponse",
         "raiseIntentResultResponse",
         "clearContextResponse",
         "closeResponse"

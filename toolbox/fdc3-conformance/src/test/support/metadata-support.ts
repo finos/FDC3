@@ -96,7 +96,16 @@ export class MetadataFdc3Api {
     }
   }
 
-  async getAppInstances(): Promise<AppIdentifier[]> {
+  async openMetadataAppWithContext(context: Context): Promise<AppIdentifier> {
+    return await fdc3.open(
+      {
+        appId: 'MetadataAppId',
+      },
+      context
+    );
+  }
+
+  async getAppInstances(): Promise<AppMetadata[]> {
     return await fdc3.findInstances({ appId: 'MetadataAppId' });
   }
 
@@ -120,6 +129,10 @@ export class MetadataFdc3Api {
 
   async getInfo(): Promise<ImplementationMetadata> {
     return await fdc3.getInfo();
+  }
+
+  async updateInstanceMetadata(metadata: { title?: string }): Promise<void> {
+    return await fdc3.updateInstanceMetadata(metadata);
   }
 }
 

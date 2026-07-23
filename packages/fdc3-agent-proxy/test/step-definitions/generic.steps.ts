@@ -54,6 +54,10 @@ Given(
   }
 );
 
+Given('{string} is instance metadata with title {string}', (world: CustomWorld, field: string, title: string) => {
+  world.props[field] = { title };
+});
+
 When('messaging receives a heartbeat event', (world: CustomWorld) => {
   world.messaging?.receive({
     type: 'heartbeatEvent',
