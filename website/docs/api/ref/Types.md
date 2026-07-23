@@ -327,7 +327,7 @@ An `IntentHandler` MAY return a [`ContextWithMetadata`](#contextwithmetadata) ob
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-type IntentResult = Context | Channel | void;
+type IntentResult = Context | ContextWithMetadata | Channel | void;
 ```
 
 </TabItem>

@@ -37,7 +37,7 @@ export type ContextHandler = (context: Context, metadata: ContextMetadata) => vo
  * or a reference to a Channel. Used as the return type of
  * `IntentResolution.getResult()`.
  */
-export type IntentResult = Context | Channel | void;
+export type IntentResult = Context | ContextWithMetadata | Channel | void;
 /**
  * Describes a callback that handles a context event and may return a
  * promise of a Context, ContextWithMetadata, Channel, PrivateChannel or void
