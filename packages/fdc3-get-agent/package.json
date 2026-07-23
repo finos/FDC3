@@ -30,10 +30,10 @@
     "@finos/fdc3-schema": "3.0.0-alpha.2",
     "@finos/fdc3-standard": "3.0.0-alpha.2",
     "@types/uuid": "^10.0.0",
-    "uuid": "^14.0.0"
+    "uuid": "^14.0.1"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "^13.0.0",
+    "@cucumber/cucumber": "^13.1.1",
     "@finos/fdc3-web-impl": "3.0.0-alpha.2",
     "@finos/testing": "3.0.0-alpha.2",
     "@types/wtfnode": "^0.7.3",
@@ -41,7 +41,7 @@
     "ajv-formats": "^3.0.1",
     "jsonpath-plus": "^10.1.0",
     "quickpickle": "^1.6.1",
-    "wtfnode": "^0.9.3"
+    "wtfnode": "^0.10.1"
   },
   "type": "module",
   "engines": {
