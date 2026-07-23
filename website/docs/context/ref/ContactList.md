@@ -53,7 +53,7 @@ An optional human-readable summary of the contact list
 <details>
   <summary><code>Items</code></summary>
 
-**type**: [Contact](Contact)
+**type**: [Contact](/docs/next/context/ref/Contact)
 
 </details>
 

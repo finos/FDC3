@@ -59,7 +59,7 @@ Can be used by a target application to pass an identifier back to the originatin
 <details>
   <summary><code>participants</code> <strong>(required)</strong></summary>
 
-**type**: [ContactList](ContactList)
+**type**: [ContactList](/docs/next/context/ref/ContactList)
 
 A list of contacts involved in the interaction
 
@@ -68,7 +68,7 @@ A list of contacts involved in the interaction
 <details>
   <summary><code>timeRange</code> <strong>(required)</strong></summary>
 
-**type**: [TimeRange](TimeRange)
+**type**: [TimeRange](/docs/next/context/ref/TimeRange)
 
 The time range over which the interaction occurred
 
@@ -95,7 +95,7 @@ A human-readable description of the interaction
 <details>
   <summary><code>initiator</code></summary>
 
-**type**: [Contact](Contact)
+**type**: [Contact](/docs/next/context/ref/Contact)
 
 The contact that initiated the interaction
 

@@ -71,6 +71,10 @@ All messages defined in the DACP follow a common structure:
 
 `meta.timestamp` fields are formatted as strings, according to the format defined by [ISO 8601-1:2019](https://www.iso.org/standard/70907.html), which is produced in JavaScript via the `Date` class's `toISOString()` function, e.g. `(new Date()).toISOString()`.
 
+### Context Data Encoding
+
+Context objects carried in DACP message payloads are JSON-compatible structures. When transmitted over a `MessagePort` (as used in Browser-Resident Desktop Agent implementations), context objects are serialised and deserialised by the browser's [Structured Clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm) — implementations SHOULD pass context objects directly to `postMessage` without additional serialisation steps (e.g. without calling `JSON.stringify()`). For further details on how context types are defined and how they relate to language-specific bindings, see the [Context Data specification](../../context/spec#context-schemas).
+
 ### Routing, Registering Listeners & Multiplexing
 
 The design of the Desktop Agent Communication Protocol is guided by the following sentence from the introduction to the Desktop Agent overview:
@@ -113,7 +117,7 @@ The message exchange timeouts are used to detect a lack of response from the Des
 
 ## Message Definitions Supporting FDC3 API calls
 
-This section provides details of the messages defined in the DACP, grouped according to the FDC3 API functions that they support, and defined by JSON Schema files. Many of these message definitions make use of JSON versions of [metadata](../ref/Metadata) and other [types](../ref/Types) defined by the Desktop Agent API, the JSON versions of which can be found in [api.schema.json](pathname:///schemas/next/api/api.schema.json), while a number of DACP specific object definitions that are reused through the messages can be found in [common.schema.json](pathname:///schemas/next/api/common.schema.json).
+This section provides details of the messages defined in the DACP, grouped according to the FDC3 API functions that they support, and defined by JSON Schema files. Many of these message definitions make use of JSON versions of [types and metadata](../ref/Types) defined by the Desktop Agent API, the JSON versions of which can be found in [api.schema.json](pathname:///schemas/next/api/api.schema.json), while a number of DACP specific object definitions that are reused through the messages can be found in [common.schema.json](pathname:///schemas/next/api/common.schema.json).
 
 ### `DesktopAgent`
 
@@ -169,7 +173,7 @@ An additional request and response used to deliver an [`IntentResult`](../ref/Ty
 
 Please note this exchange (and the `IntentResolution.getResult()` API call) support `void` results from a raised intent and hence this message exchange should occur for all raised intents, including those that do not return a result. In such cases, the void intent result allows resolution of the `IntentResolution.getResult()` API call and indicates that the intent handler has finished running.
 
-The `intentResultRequest` payload includes an optional `metadata` field of type `AppProvidableContextMetadata`. This is populated by the agent-proxy when the intent handler returns a [`ContextWithMetadata`](../ref/Types#contextwithmetadata) result, carrying the app-provided portion of the metadata (e.g. `traceId`, `signature`, `custom`). The Desktop Agent merges this with its own generated metadata and delivers the combined [`ContextMetadata`](../ref/Metadata#contextmetadata) to the raising app via the `resultMetadata` field of the `raiseIntentResultResponse`.
+The `intentResultRequest` payload includes an optional `metadata` field of type `AppProvidableContextMetadata`. This is populated by the agent-proxy when the intent handler returns a [`ContextWithMetadata`](../ref/Types#contextwithmetadata) result, carrying the app-provided portion of the metadata (e.g. `traceId`, `signature`, `custom`). The Desktop Agent merges this with its own generated metadata and delivers the combined [`ContextMetadata`](../ref/Types#contextmetadata) to the raising app via the `resultMetadata` field of the `raiseIntentResultResponse`.
 
 Request and response for removing the intent listener ([`Listener.unsubscribe()`](../ref/Types#listener)):
 
@@ -357,17 +361,17 @@ Request and response used to implement the [`raiseIntent()`](../ref/DesktopAgent
 - [`raiseIntentRequest`](pathname:///schemas/next/api/raiseIntentRequest.schema.json)
 - [`raiseIntentResponse`](pathname:///schemas/next/api/raiseIntentResponse.schema.json)
 
-An additional response message is provided for the delivery of an `IntentResult` from the resolving application to the raising application (which is collected via the [`IntentResolution.getResult()`](../ref/Metadata#intentresolution) API call), which should quote the `requestUuid` from the original `raiseIntentRequest`:
+An additional response message is provided for the delivery of an `IntentResult` from the resolving application to the raising application (which is collected via the [`IntentResolution.getResult()`](../ref/Types#intentresolution) API call), which should quote the `requestUuid` from the original `raiseIntentRequest`:
 
 - [`raiseIntentResultResponse`](pathname:///schemas/next/api/raiseIntentResultResponse.schema.json)
 
 There is no request message to indicate a call to the `resolution.getResult()` function of `IntentResolution`. Hence, Desktop Agents MUST send this additional response message to indicate the status of the intent handling function and to deliver its result (or void if none was returned).
 
-The `raiseIntentResultResponse` success payload includes an optional `resultMetadata` field of type [`ContextMetadata`](../ref/Metadata#contextmetadata). The Desktop Agent MUST populate this field by merging any app-provided metadata from the `intentResultRequest`'s `metadata` field with its own generated fields (`source`, `timestamp`, `traceId`). This metadata is always present, even for `Channel` or `void` results, and is retrieved by the raising app via [`IntentResolution.getResultMetadata()`](../ref/Metadata#intentresolution).
+The `raiseIntentResultResponse` success payload includes an optional `resultMetadata` field of type [`ContextMetadata`](../ref/Types#contextmetadata). The Desktop Agent MUST populate this field by merging any app-provided metadata from the `intentResultRequest`'s `metadata` field with its own generated fields (`source`, `timestamp`, `traceId`). This metadata is always present, even for `Channel` or `void` results, and is retrieved by the raising app via [`IntentResolution.getResultMetadata()`](../ref/Types#intentresolution).
 
 :::tip
 
-See [`addIntentListener`](#addintentlistener) above for details of the messages used for the resolving app to deliver the result to the Desktop Agent.
+See [`addIntentListener`](#addintentlistener--addintentlistenerwithcontext) above for details of the messages used for the resolving app to deliver the result to the Desktop Agent.
 
 :::
 
@@ -423,7 +427,7 @@ Request and response used to implement the [`raiseIntentForContext()`](../ref/De
 - [`raiseIntentForContextRequest`](pathname:///schemas/next/api/raiseIntentForContextRequest.schema.json)
 - [`raiseIntentForContextResponse`](pathname:///schemas/next/api/raiseIntentForContextResponse.schema.json)
 
-Message exchanges for handling `raiseIntentForContext()` are the same as for `raiseIntent`, except for the substitution of `raiseIntentForContextRequest` for `raiseIntentRequest` and `raiseIntentForContextResponse` for `raiseIntentResponse`. Hence, please see [`raiseIntent`](#raiseintent) and [`addIntentListener`](#addintentlistener) for further details.
+Message exchanges for handling `raiseIntentForContext()` are the same as for `raiseIntent`, except for the substitution of `raiseIntentForContextRequest` for `raiseIntentRequest` and `raiseIntentForContextResponse` for `raiseIntentResponse`. Hence, please see [`raiseIntent`](#raiseintent) and [`addIntentListener`](#addintentlistener--addintentlistenerwithcontext) for further details.
 
 ### `Channel`
 
@@ -441,7 +445,7 @@ Request and response used to implement the [`Channel.getCurrentContext()`](../re
 - [`getCurrentContextRequest`](pathname:///schemas/next/api/getCurrentContextRequest.schema.json)
 - [`getCurrentContextResponse`](pathname:///schemas/next/api/getCurrentContextResponse.schema.json)
 
-The `getCurrentContextResponse` payload includes an optional `metadata` field containing the [`ContextMetadata`](../ref/Metadata#contextmetadata) associated with the most recently broadcast context. This field is used by `getCurrentContextWithMetadata()` to return both the context and its metadata. The `getCurrentContext()` function uses the same request/response messages but ignores the `metadata` field, returning only the context.
+The `getCurrentContextResponse` payload includes an optional `metadata` field containing the [`ContextMetadata`](../ref/Types#contextmetadata) associated with the most recently broadcast context. This field is used by `getCurrentContextWithMetadata()` to return both the context and its metadata. The `getCurrentContext()` function uses the same request/response messages but ignores the `metadata` field, returning only the context.
 
 ### `PrivateChannel`
 
@@ -478,7 +482,7 @@ Request and response used to implement the [`PrivateChannel.disconnect()`](../re
 
 ### Checking apps are alive
 
-Depending on the connection over which the Desktop Agent and app are connected, it may be necessary for the Desktop Agent to check whether the application is still alive. This can be done, either periodically or on demand (for example to validate options that will be provided in an [`AppIntent`](../ref/Metadata#appintent) as part of a `findIntentResponse` or `raiseIntentResponse` and displayed in an intent resolver interface), using the following message exchange:
+Depending on the connection over which the Desktop Agent and app are connected, it may be necessary for the Desktop Agent to check whether the application is still alive. This can be done, either periodically or on demand (for example to validate options that will be provided in an [`AppIntent`](../ref/Types#appintent) as part of a `findIntentResponse` or `raiseIntentResponse` and displayed in an intent resolver interface), using the following message exchange:
 
 - [`heartbeatEvent`](pathname:///schemas/next/api/heartbeatEvent.schema.json)
 - [`heartbeatAcknowledgment`](pathname:///schemas/next/api/heartbeatAcknowledgment.schema.json)
@@ -509,5 +513,5 @@ Messages are also provided that are specific to each user interface type provide
 
 Messages specific to Intent Resolver user interfaces:
 
-- [`Fdc3UserInterfaceResolve`](pathname:///schemas/next/api/fdc3UserInterfaceResolve.schema.json): Sent by the parent frame to initialize an Intent Resolver user interface to resolve a raised intent, before making the iframe visible. The message includes the context object sent with the intent and an array of one or more [`AppIntent`](../ref/Metadata#appintent) objects representing the resolution options for the intent ([`raiseIntent`](../ref/DesktopAgent#raiseintent)) or context ([`raiseIntentForContext`](../ref/DesktopAgent#raiseintentforcontext)) that was raised.
+- [`Fdc3UserInterfaceResolve`](pathname:///schemas/next/api/fdc3UserInterfaceResolve.schema.json): Sent by the parent frame to initialize an Intent Resolver user interface to resolve a raised intent, before making the iframe visible. The message includes the context object sent with the intent and an array of one or more [`AppIntent`](../ref/Types#appintent) objects representing the resolution options for the intent ([`raiseIntent`](../ref/DesktopAgent#raiseintent)) or context ([`raiseIntentForContext`](../ref/DesktopAgent#raiseintentforcontext)) that was raised.
 - [`Fdc3UserInterfaceResolveAction`](pathname:///schemas/next/api/fdc3UserInterfaceResolveAction.schema.json): Sent by the Intent Resolver to indicate actions taken by the user in the interface, including hovering over an option, clicking a cancel button, or selecting a resolution option. The Intent Resolver should be hidden by the `getAgent()` implementation after a resolution option is selected to ensure that it does not interfere with user's ongoing interaction with the app's user interface.

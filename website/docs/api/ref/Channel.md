@@ -14,6 +14,8 @@ Represents a context channel that applications can join to share context data an
 
 A channel can be either a ["User" channel](../spec#joining-user-channels) (retrieved with [`getUserChannels`](DesktopAgent#getuserchannels)), a custom ["App" channel](../spec#app-channels) (obtained through [`getOrCreateChannel`](DesktopAgent#getorcreatechannel)) or a ["Private" channel](../spec#private-channels) (obtained via an intent result).
 
+Channels are **stateful**: each channel retains the most recent context object of each type that has been broadcast to it, along with the associated [`ContextMetadata`](Types#contextmetadata). This allows applications to retrieve the current context at any time via [`getCurrentContext()`](#getcurrentcontext) or [`getCurrentContextWithMetadata()`](#getcurrentcontextwithmetadata), without requiring a new broadcast. Context for a specific type (or all types) may be cleared via [`clearContext()`](#clearcontext). For more detail, see [Channel State](../spec#channel-state).
+
 :::note
 
 There are differences in behaviour when you interact with a User channel via the Desktop Agent interface and the Channel interface. Specifically, when 'joining' a User channel or adding a context listener when already joined to a channel via the `DesktopAgent` interface, existing context (matching the type of the context listener) on the channel is received by the context listener immediately. Whereas, when add a context listener via the Channel interface, context is not received automatically, but may be retrieved manually via the [`getCurrentContext()`](#getcurrentcontext) function.
@@ -200,7 +202,7 @@ DisplayMetadata can be used to provide display hints for User Channels intended 
 
 **See also:**
 
-- [`DisplayMetadata`](Metadata#displaymetadata)
+- [`DisplayMetadata`](Types#displaymetadata)
 
 ## Functions
 
@@ -419,7 +421,7 @@ var listener = await myChannel.AddEventListener(null, (event) => {
 
 - [Events](./Events)
 - [EventHandler](./Events#eventhandler)
-- [ApiEvent](./Events#ApiEvent)
+- [ApiEvent](./Events#apievent)
 
 ### `broadcast`
 
@@ -673,7 +675,7 @@ func (channel *Channel) GetCurrentContextWithMetadata(contextType string) <-chan
 </TabItem>
 </Tabs>
 
-Returns the most recent context that was broadcast on the channel along with its associated [`ContextMetadata`](Metadata#contextmetadata), or `null` if no matching context is found.
+Returns the most recent context that was broadcast on the channel along with its associated [`ContextMetadata`](Types#contextmetadata), or `null` if no matching context is found.
 
 When a _context type_ is provided, the most recent context matching the type will be returned. If no _context type_ is provided, the most recent context that was broadcast on the channel - regardless of type - will be returned.
 
@@ -735,7 +737,7 @@ if result.Value != nil {
 **See also:**
 
 - [`ContextWithMetadata`](Types#contextwithmetadata)
-- [`ContextMetadata`](Metadata#contextmetadata)
+- [`ContextMetadata`](Types#contextmetadata)
 - [`ChannelError`](Errors#channelerror)
 - [`getCurrentContext`](#getcurrentcontext)
 - [`broadcast`](#broadcast)
@@ -759,7 +761,7 @@ Task ClearContext(string? contextType);
 </TabItem>
 </Tabs>
 
-Used to clear the specified context type if provided, otherwise, clear all context types present in the channel. The Desktop Agent MUST update its internal representation of the context in the channel and ensure that subsequent calls to [`getCurrentContext`](#getcurrentcontext) and any new joiners to that channel (through [`joinUserChannel`](DesktopAgent#joinUserChannel) or [`addContextListener`](DesktopAgent#addContextListener)) will not receive anything for either the specified context type or the most recent context until new context has been broadcast to the channel. 
+Used to clear the specified context type if provided, otherwise, clear all context types present in the channel. The Desktop Agent MUST update its internal representation of the context in the channel and ensure that subsequent calls to [`getCurrentContext`](#getcurrentcontext) and any new joiners to that channel (through [`joinUserChannel`](DesktopAgent#joinuserchannel) or [`addContextListener`](DesktopAgent#addcontextlistener)) will not receive anything for either the specified context type or the most recent context until new context has been broadcast to the channel. 
 Desktop Agents MUST also immediately notify the apps that are listening to `contextCleared` event for this channel. If a `contextType` parameter was provided, then the `contextType` field will be set to that type, otherwise, it is omitted. 
 
 
@@ -829,6 +831,6 @@ catch (Exception ex)
 **See also:**
 
 - [`getCurrentContext`](#getcurrentcontext)
-- [`addContextListener`](DesktopAgent#addContextListener)
-- [`joinUserChannel`](DesktopAgent#joinUserChannel)
+- [`addContextListener`](DesktopAgent#addcontextlistener)
+- [`joinUserChannel`](DesktopAgent#joinuserchannel)
 - [`addEventListener`](#addeventlistener)

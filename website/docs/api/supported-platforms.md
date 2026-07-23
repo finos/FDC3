@@ -132,7 +132,7 @@ FDC3 offers the [`Finos.Fdc3` NuGet package](https://www.nuget.org/packages/Fino
 [`@experimental`](../../fdc3-compliance#experimental-features) Introduced in FDC3 3.0 and may be refined by further changes outside the normal FDC3 versioning policy.
 
 For a Go application to be FDC3-enabled, it needs to run in the context of a platform provider that makes the FDC3 API available to Go applications. The Go language API binding varies from the JavaScript/TypeScript implementation in a number of ways due to the specifics of the Go language. Namely:
-- A `Result` type, as described in [the Desktop Agent specs](../api/ref/DesktopAgent.md#desktopagent), is returned by API calls to accommodate for error handling via golang Channels. Channel is the closest equivalent to `Promise`. Result type has `Value` and `Err` fields, where `Value` type corresponds with the return type expected from this function, and `Err` would contain the golang `error` type error for handling:
+- A `Result` type, as described in [the Desktop Agent specs](../api/ref/DesktopAgent), is returned by API calls to accommodate for error handling via golang Channels. Channel is the closest equivalent to `Promise`. Result type has `Value` and `Err` fields, where `Value` type corresponds with the return type expected from this function, and `Err` would contain the golang `error` type error for handling:
 
     ```go
     type Result[T any] struct {
@@ -141,7 +141,7 @@ For a Go application to be FDC3-enabled, it needs to run in the context of a pla
     }
     ```
     
-- In order to create [additional contexts](../context/ref/), please use the provided type [Context](../api/ref/Types.md/#context) as a field in the custom contexts. This way the base fields ("type", "name", "id") will be embedded in the resulting json:
+- In order to create [additional contexts](../context/spec#standard-context-types), please use the provided type [Context](../api/ref/Types#context) as a field in the custom contexts. This way the base fields ("type", "name", "id") will be embedded in the resulting json:
 
     ```go
     type TimeRange struct {
@@ -151,7 +151,7 @@ For a Go application to be FDC3-enabled, it needs to run in the context of a pla
     }
     ```
     
-    However, this is a trade-off, since this is optimized for the ability to create the correct json, however, it introduces the need for each of the specific context classes to implement the interface [IContext](../api/ref/Types.md/#context) which is ultimately not required. Add at least one method in your implementation of IContext, and implement it for Context type as well as any other specific contexts you create, for example:
+    However, this is a trade-off, since this is optimized for the ability to create the correct json, however, it introduces the need for each of the specific context classes to implement the interface [IContext](../api/ref/Types#context) which is ultimately not required. Add at least one method in your implementation of IContext, and implement it for Context type as well as any other specific contexts you create, for example:
 
     ```go
     type IContext interface {
@@ -167,7 +167,7 @@ For a Go application to be FDC3-enabled, it needs to run in the context of a pla
     }
     ```
 
-- Golang has no strict requirement for a type to declare that it implements an interface: if a type implements a specific method, then it implements that interface implicitly. The Go language binding for FDC3 includes `interface`, `struct` and `func` types for all of the entities defined in the FDC3 API Part (i.e. `DesktopAgent`, `Channel`, `AppIdentifier`, `ContextHandler` etc.) . However, to be able to use the interfaces, specific types need to be created with the implementation of that interface, even if they are empty structs. Hence, types for these are defined alongside the interface (ex. [`DesktopAgent` is an empty struct, but it would implement methods of the IDesktopAgent interface](../api/ref/DesktopAgent.md#desktopagent)).
+- Golang has no strict requirement for a type to declare that it implements an interface: if a type implements a specific method, then it implements that interface implicitly. The Go language binding for FDC3 includes `interface`, `struct` and `func` types for all of the entities defined in the FDC3 API Part (i.e. `DesktopAgent`, `Channel`, `AppIdentifier`, `ContextHandler` etc.) . However, to be able to use the interfaces, specific types need to be created with the implementation of that interface, even if they are empty structs. Hence, types for these are defined alongside the interface (ex. [`DesktopAgent` is an empty struct, but it would implement methods of the IDesktopAgent interface](../api/ref/DesktopAgent)).
 - Deprecated functions with the same name as other functions are omitted in golang, as it does not allow function/method overloading. In the event that additional function/method overloads are added to FDC3 these should be handled in the Go binding with a different function name to the overloaded function.
 
 ## Hybrid

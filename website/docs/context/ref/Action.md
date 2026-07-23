@@ -78,7 +78,7 @@ Optional channel on which to broadcast the context. The `channelId` property is 
 <details>
   <summary><code>app</code></summary>
 
-**type**: api/AppIdentifier
+**type**: [AppIdentifier](/docs/next/api/ref/Types#appidentifier)
 
 An optional target application identifier that should perform the action. The `app` property is ignored unless the action is raiseIntent.
 
