@@ -365,6 +365,13 @@ export class OpenHandler implements MessageHandler {
       sc.post(msg, instanceId);
     };
 
+    // Self-interaction preferences supplied by the app via getAgent, captured
+    // per-instance (each instance of an app may connect with different options).
+    const applySelfInteractionOptions = (registration: AppRegistration) => {
+      registration.receiveOwnBroadcasts = arg0.payload.receiveOwnBroadcasts ?? false;
+      registration.resolveOwnIntents = arg0.payload.resolveOwnIntents ?? false;
+    };
+
     if (arg0.payload.instanceUuid) {
       // existing app reconnecting
       console.debug('App attempting to reconnect:', arg0.payload.instanceUuid);
@@ -378,6 +385,7 @@ export class OpenHandler implements MessageHandler {
           ', instanceId',
           arg0.payload.instanceUuid
         );
+        applySelfInteractionOptions(appIdentity);
         sc.setInstanceDetails(from, appIdentity);
         sc.setAppState(from, State.Connected);
         return returnSuccess(appIdentity.appId, appIdentity.instanceId);
@@ -390,6 +398,8 @@ export class OpenHandler implements MessageHandler {
     // we need to assign an identity to this app - this should have been generated when it was launched
     const appIdentity = sc.getInstanceDetails(from);
     if (appIdentity) {
+      applySelfInteractionOptions(appIdentity);
+      sc.setInstanceDetails(from, appIdentity);
       sc.setAppState(appIdentity.instanceId, State.Connected);
       returnSuccess(appIdentity.appId, appIdentity.instanceId);
 

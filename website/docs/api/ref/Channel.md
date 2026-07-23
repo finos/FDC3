@@ -453,7 +453,7 @@ Broadcasts a context on the channel. This function can be used without first joi
 
 If the broadcast is denied by the channel or the channel is not available, the promise will be rejected with an `Error` with a `message` string from the [`ChannelError`](Errors#channelerror) enumeration.
 
-Channel implementations should ensure that context messages broadcast by an application on a channel should not be delivered back to that same application if they are joined to the channel.
+Channel implementations should ensure that context messages broadcast by an application on a channel should not be delivered back to that same application if they are joined to the channel, unless that application has opted in to receiving its own broadcasts via the [`receiveOwnBroadcasts`](GetAgent#type-definitions) option of [`getAgent`](GetAgent).
 
 If you are working with complex context types composed of other simpler types (as recommended by the [FDC3 Context Data specification](../../context/spec#assumptions)) then you should broadcast each individual type (starting with the simpler types, followed by the complex type) that you want other apps to be able to respond to. Doing so allows applications to filter the context types they receive by adding listeners for specific context types.
 

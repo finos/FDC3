@@ -35,6 +35,26 @@ Feature: Raising Intents
       | intentEvent         | fdc3.magazine            | uniqueIntent       | App1                              | a1                                     | {null}                              | c1            | uniqueIntentApp | {null}                                    |
       | raiseIntentResponse | {null}                   | {null}             | {null}                            | {null}                                 | uniqueIntent                        | a1            | App1            | uniqueIntentApp                           |
 
+  Scenario: An app is not offered its own instance to resolve an intent it raised
+    When "unusedApp/u1" is opened with connection id "u1"
+    And "unusedApp/u1" registers an intent listener for "selfServiceIntent"
+    And "unusedApp/u1" raises an intent for "selfServiceIntent" with contextType "fdc3.book"
+    Then messaging will have outgoing posts
+      | msg.type                  | msg.payload.error | to.instanceId |
+      | addIntentListenerResponse | {null}            | u1            |
+      | raiseIntentResponse       | NoAppsFound       | u1            |
+
+  Scenario: An app can resolve an intent it raised to its own instance when opted in
+    When "unusedApp/u1" is opened with connection id "u1"
+    And "unusedApp/u1" has opted in to "resolveOwnIntents"
+    And "unusedApp/u1" registers an intent listener for "selfServiceIntent"
+    And "unusedApp/u1" raises an intent for "selfServiceIntent" with contextType "fdc3.book"
+    Then messaging will have outgoing posts
+      | msg.matches_type          | msg.payload.intent | msg.payload.metadata.source.instanceId | msg.payload.intentResolution.intent | to.instanceId | to.appId  | msg.payload.intentResolution.source.appId |
+      | addIntentListenerResponse | {null}             | {null}                                 | {null}                              | u1            | unusedApp | {null}                                    |
+      | intentEvent               | selfServiceIntent  | u1                                     | {null}                              | u1            | unusedApp | {null}                                    |
+      | raiseIntentResponse       | {null}             | {null}                                 | selfServiceIntent                   | u1            | unusedApp | unusedApp                                 |
+
   Scenario: Raising an Intent to a Non-Existent App
     And "App1/a1" raises an intent for "returnBook" with contextType "fdc3.book" on app "completelyMadeUp"
     Then messaging will have outgoing posts
