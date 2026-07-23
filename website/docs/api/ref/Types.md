@@ -1652,4 +1652,3 @@ Allows an application to unsubscribe from listening to intents or context broadc
 - [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
 - [`Channel.addContextListener`](Channel#addcontextlistener)
 - [`ContextHandler`](Types#contexthandler)
-

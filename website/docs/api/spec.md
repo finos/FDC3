@@ -166,6 +166,7 @@ A Desktop Agent's [`Channel`](ref/Channel) implementation **MUST**:
   - [`clearContext`](ref/Channel#clearcontext)
   - [`getCurrentContext`](ref/Channel#getcurrentcontext)
   - [`getCurrentContextWithMetadata`](ref/Channel#getcurrentcontextwithmetadata)
+- Retain the most recent context broadcast for each distinct context type on the channel, along with its associated [`ContextMetadata`](ref/Types#contextmetadata) (see [Channel State](#channel-state)).
 - Accept an optional [`AppProvidableContextMetadata`](ref/Types#appprovidablecontextmetadata) argument in [`broadcast`](ref/Channel#broadcast), allowing applications to provide `traceId`, `signature`, `antiReplay` and `custom` metadata with context messages.
 - Allow adding multiple context listeners on the same or overlapping types (i.e. a specific `contextType` and `null` type) and trigger all matching [`ContextHandler`](ref/Types#contexthandler) functions when a relevant context type is broadcast on the channel.
 - Provide [`ContextMetadata`](ref/Types#contextmetadata) (including `source` and `timestamp`) to [`ContextHandler`](ref/Types#contexthandler) functions registered via [`addContextListener`](ref/Channel#addcontextlistener).
@@ -634,6 +635,19 @@ It is expected that App Directories SHOULD also curate listed apps and ensure th
 ## Context Channels
 
 Context channels allows a set of apps to share a stateful piece of data between them, and be alerted when it changes.  Use cases for channels include color linking between applications to automate the sharing of context and topic based pub/sub such as theme.
+
+### Channel State
+
+Channels are **stateful**: a channel retains the most recent context object of each type that has been broadcast to it, along with the associated [`ContextMetadata`](ref/Types#contextmetadata) (including `source`, `timestamp`, and any app-provided metadata). This state enables applications that join a channel (or add a listener) after a broadcast has occurred to retrieve the current context via [`getCurrentContext()`](ref/Channel#getcurrentcontext) or [`getCurrentContextWithMetadata()`](ref/Channel#getcurrentcontextwithmetadata), rather than requiring a new broadcast.
+
+Specifically, a Desktop Agent MUST:
+
+- Retain the most recent context broadcast for **each distinct context type** on a channel.
+- Retain the [`ContextMetadata`](ref/Types#contextmetadata) associated with the most recent broadcast of each context type.
+- Clear retained context (for a specific type or all types) when [`clearContext()`](ref/Channel#clearcontext) is called.
+- Deliver the current context to new context listeners added via the `DesktopAgent` interface (i.e. when an app joins a User channel or adds a listener while joined), unless the context has been cleared.
+
+This stateful behaviour applies equally to User channels, App channels and Private channels.
 
 ### Types of Channel
 

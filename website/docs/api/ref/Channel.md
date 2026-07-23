@@ -14,6 +14,8 @@ Represents a context channel that applications can join to share context data an
 
 A channel can be either a ["User" channel](../spec#joining-user-channels) (retrieved with [`getUserChannels`](DesktopAgent#getuserchannels)), a custom ["App" channel](../spec#app-channels) (obtained through [`getOrCreateChannel`](DesktopAgent#getorcreatechannel)) or a ["Private" channel](../spec#private-channels) (obtained via an intent result).
 
+Channels are **stateful**: each channel retains the most recent context object of each type that has been broadcast to it, along with the associated [`ContextMetadata`](Types#contextmetadata). This allows applications to retrieve the current context at any time via [`getCurrentContext()`](#getcurrentcontext) or [`getCurrentContextWithMetadata()`](#getcurrentcontextwithmetadata), without requiring a new broadcast. Context for a specific type (or all types) may be cleared via [`clearContext()`](#clearcontext). For more detail, see [Channel State](../spec#channel-state).
+
 :::note
 
 There are differences in behaviour when you interact with a User channel via the Desktop Agent interface and the Channel interface. Specifically, when 'joining' a User channel or adding a context listener when already joined to a channel via the `DesktopAgent` interface, existing context (matching the type of the context listener) on the channel is received by the context listener immediately. Whereas, when add a context listener via the Channel interface, context is not received automatically, but may be retrieved manually via the [`getCurrentContext()`](#getcurrentcontext) function.
