@@ -50,4 +50,24 @@ describe('App Directory Schema Validation', () => {
       console.error('Validation errors:', result.errors);
     }
   });
+
+  it('should define fdc3Version as an optional npm-style version range field', () => {
+    const baseApplicationSchema = (
+      api as { components: { schemas: { BaseApplication: { properties: Record<string, unknown> } } } }
+    ).components.schemas.BaseApplication;
+    const fdc3Version = baseApplicationSchema.properties.fdc3Version as {
+      type: string;
+      format: string;
+      description: string;
+    };
+
+    expect(fdc3Version).toBeDefined();
+    expect(fdc3Version.type).toBe('string');
+    expect(fdc3Version.format).toBe('semver-range');
+    expect(fdc3Version.description).toContain('npm-style semantic version range');
+    expect(fdc3Version.description).toContain('`2.2`');
+    expect(fdc3Version.description).toContain('`<=2.3`');
+    expect(fdc3Version.description).toContain('`^2.2`');
+    expect(fdc3Version.description).toContain('`>=2.2`');
+  });
 });

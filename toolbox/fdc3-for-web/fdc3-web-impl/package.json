@@ -29,6 +29,7 @@
   "dependencies": {
     "@finos/fdc3-standard": "3.0.0-alpha.2",
     "@types/uuid": "^10.0.0",
+    "semver": "^7.5.3",
     "uuid": "^14.0.0"
   },
   "devDependencies": {

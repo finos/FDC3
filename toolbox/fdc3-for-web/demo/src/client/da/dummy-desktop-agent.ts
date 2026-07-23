@@ -18,6 +18,8 @@ import { WebConnectionProtocol3Handshake } from '@finos/fdc3-schema/dist/generat
 
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL;
 
+const FDC3_VERSION = '3.0';
+
 function primaryIconSrc(app: DirectoryApp): string | undefined {
   const icons = app.icons;
   if (!icons?.length) return undefined;
@@ -195,7 +197,7 @@ window.addEventListener('load', () => {
   socket.on('connect', async () => {
     socket.emit(DA_HELLO, desktopAgentUUID);
 
-    const directory = new FDC3_2_1_JSONDirectory();
+    const directory = new FDC3_2_1_JSONDirectory(FDC3_VERSION);
 
     const directoryUrls = [
       'http://localhost:4005/static/generated/fdc3-example-apps.json',
@@ -393,7 +395,7 @@ window.addEventListener('load', () => {
                 timestamp: new Date(),
               },
               payload: {
-                fdc3Version: '2.2',
+                fdc3Version: FDC3_VERSION,
                 ...ui,
               },
             };
