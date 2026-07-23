@@ -71,6 +71,10 @@ All messages defined in the DACP follow a common structure:
 
 `meta.timestamp` fields are formatted as strings, according to the format defined by [ISO 8601-1:2019](https://www.iso.org/standard/70907.html), which is produced in JavaScript via the `Date` class's `toISOString()` function, e.g. `(new Date()).toISOString()`.
 
+### Context Data Encoding
+
+Context objects carried in DACP message payloads are JSON-compatible structures. When transmitted over a `MessagePort` (as used in Browser-Resident Desktop Agent implementations), context objects are serialised and deserialised by the browser's [Structured Clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm) — implementations SHOULD pass context objects directly to `postMessage` without additional serialisation steps (e.g. without calling `JSON.stringify()`). For further details on how context types are defined and how they relate to language-specific bindings, see the [Context Data specification](../../context/spec#context-schemas).
+
 ### Routing, Registering Listeners & Multiplexing
 
 The design of the Desktop Agent Communication Protocol is guided by the following sentence from the introduction to the Desktop Agent overview:
