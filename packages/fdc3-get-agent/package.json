@@ -36,7 +36,7 @@
     "@cucumber/cucumber": "^13.1.1",
     "@finos/fdc3-web-impl": "3.0.0-alpha.2",
     "@finos/testing": "3.0.0-alpha.2",
-    "@types/wtfnode": "^0.7.3",
+    "@types/wtfnode": "^0.10.0",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "jsonpath-plus": "^10.1.0",
