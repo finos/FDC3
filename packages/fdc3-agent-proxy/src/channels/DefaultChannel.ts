@@ -160,6 +160,8 @@ export class DefaultChannel implements Channel {
     let listener: RegisterableListener;
     switch (type) {
       case 'contextCleared':
+        listener = new EventListener(this.messaging, 'contextCleared', handler);
+        break;
       case null:
         listener = new EventListener(this.messaging, type, handler);
         break;
