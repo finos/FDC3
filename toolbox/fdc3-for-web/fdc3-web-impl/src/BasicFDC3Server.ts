@@ -31,6 +31,15 @@ export interface MessageHandler {
   shutdown(): void;
 }
 
+export interface HeartbeatOptions {
+  /** Interval in milliseconds between heartbeat events. Defaults to 5000. */
+  pingInterval?: number;
+  /** Time in milliseconds before an app is considered not responding. Defaults to 30000. */
+  disconnectedAfter?: number;
+  /** Time in milliseconds before an app is considered terminated. Defaults to 60000. */
+  deadAfter?: number;
+}
+
 /**
  * This defers all functionality to either MessageHandler's or the ServerContext objects.
  */
@@ -66,7 +75,7 @@ export class DefaultFDC3Server extends BasicFDC3Server {
     sc: ServerContext<AppRegistration>,
     directory: Directory,
     userChannels: ChannelState[],
-    heartbeats: boolean,
+    heartbeats: boolean | HeartbeatOptions,
     intentTimeoutMs: number = 20000,
     openHandlerTimeoutMs: number = 15000
   ) {
@@ -77,7 +86,14 @@ export class DefaultFDC3Server extends BasicFDC3Server {
     ];
 
     if (heartbeats) {
-      handlers.push(new HeartbeatHandler(openHandlerTimeoutMs / 3, openHandlerTimeoutMs, openHandlerTimeoutMs * 3));
+      const heartbeatOptions = typeof heartbeats === 'boolean' ? {} : heartbeats;
+      handlers.push(
+        new HeartbeatHandler(
+          heartbeatOptions.pingInterval,
+          heartbeatOptions.disconnectedAfter,
+          heartbeatOptions.deadAfter
+        )
+      );
     }
 
     super(handlers, sc);
