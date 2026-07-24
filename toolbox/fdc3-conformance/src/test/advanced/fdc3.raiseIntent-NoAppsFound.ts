@@ -60,6 +60,31 @@ export default async () =>
       }
     });
 
+    const RaiseIntentFailExistingInstanceRequired =
+      '(RaiseIntentFailExistingInstanceRequired) Should fail to raise intent with newInstance=false when no running instance of the targeted app intent-a is available and throw TargetInstanceUnavailable error';
+    it(RaiseIntentFailExistingInstanceRequired, async () => {
+      try {
+        const runningInstances = await control.findInstances(IntentApp.IntentAppA);
+        if (runningInstances.length > 0) {
+          await closeMockAppWindow(RaiseIntentFailExistingInstanceRequired, runningInstances.length);
+        }
+
+        // No instance of intent-a is running, so requiring an existing instance must fail
+        await control.raiseIntent(
+          Intent.aTestingIntent,
+          ContextType.testContextX,
+          { appId: IntentApp.IntentAppA },
+          0,
+          undefined,
+          false
+        );
+        await wait(); // give test time to throw error
+        assert.fail('Expected the raised intent to be rejected with an error but no error was thrown');
+      } catch (ex) {
+        expect(ex, raiseIntentDocs).to.have.property('message', ResolveError.TargetInstanceUnavailable);
+      }
+    });
+
     const RaiseIntentFailTargetedAppResolve1 =
       "(RaiseIntentFailTargetedAppResolve1) Should fail to raise intent when targeted app intent-a, context 'testContextY', intent 'aTestingIntent' and AppIdentifier IntentAppAId do not correlate";
     it(RaiseIntentFailTargetedAppResolve1, async () => {

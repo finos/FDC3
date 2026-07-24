@@ -40,8 +40,35 @@ Feature: Basic Intents Support
       | source.appId | source.instanceId |
       | bank         | b1                |
     And messaging will have posts
-      | payload.intent | payload.context.type | payload.context.id.ticker | matches_type       |
-      | Buy            | fdc3.instrument      | AAPL                      | raiseIntentRequest |
+      | payload.intent | payload.context.type | payload.context.id.ticker | payload.newInstance | matches_type       |
+      | Buy            | fdc3.instrument      | AAPL                      | {null}              | raiseIntentRequest |
+
+  Scenario: Raising an intent forcing a new instance forwards newInstance true in the request payload
+    When I call "{api}" with "raiseIntent" with parameters "Buy" and "{instrumentContext}" and "{null}" and "{true}"
+    Then "{result}" is an object with the following contents
+      | source.appId | source.instanceId |
+      | bank         | b1                |
+    And messaging will have posts
+      | payload.intent | payload.context.type | payload.newInstance | matches_type       |
+      | Buy            | fdc3.instrument      | {true}              | raiseIntentRequest |
+
+  Scenario: Raising an intent requiring an existing instance forwards newInstance false in the request payload
+    When I call "{api}" with "raiseIntent" with parameters "Buy" and "{instrumentContext}" and "{null}" and "{false}"
+    Then "{result}" is an object with the following contents
+      | source.appId | source.instanceId |
+      | bank         | b1                |
+    And messaging will have posts
+      | payload.intent | payload.context.type | payload.newInstance | matches_type       |
+      | Buy            | fdc3.instrument      | {false}             | raiseIntentRequest |
+
+  Scenario: Raising an intent for context forcing a new instance forwards newInstance true in the request payload
+    When I call "{api}" with "raiseIntentForContext" with parameters "{countryContext}" and "{t1}" and "{true}"
+    Then "{result}" is an object with the following contents
+      | source.appId | source.instanceId |
+      | travelAgent  | t1                |
+    And messaging will have posts
+      | payload.context.type | payload.app.instanceId | payload.newInstance | matches_type                 |
+      | fdc3.country         | t1                     | {true}              | raiseIntentForContextRequest |
 
   Scenario: Raising Intent By Context and invoking the intent resolver when it's not clear which intent is required
             The intent resolver will just take the first matching application
@@ -74,7 +101,7 @@ Feature: Basic Intents Support
 
   Scenario: Raising an intent with null app and metadata forwards traceId, signature, antiReplay and custom
     Given "intentMetadata" is metadata with traceId "trace-123" and signature "sig-abc" and antiReplay claims "1234/2345/intent-null-app-jti"
-    When I call "{api}" with "raiseIntent" with parameters "Buy" and "{instrumentContext}" and "{null}" and "{intentMetadata}"
+    When I call "{api}" with "raiseIntent" with parameters "Buy" and "{instrumentContext}" and "{null}" and "{null}" and "{intentMetadata}"
     Then "{result}" is an object with the following contents
       | source.appId | source.instanceId |
       | bank         | b1                |
@@ -90,7 +117,7 @@ Feature: Basic Intents Support
 
   Scenario: Raising an intent for context with null app and metadata forwards metadata through resolver
     Given "intentMetadata" is metadata with traceId "trace-456" and signature "sig-def" and antiReplay claims "1234/2345/intent-context-jti"
-    When I call "{api}" with "raiseIntentForContext" with parameters "{countryContext}" and "{null}" and "{intentMetadata}"
+    When I call "{api}" with "raiseIntentForContext" with parameters "{countryContext}" and "{null}" and "{null}" and "{intentMetadata}"
     Then "{result}" is an object with the following contents
       | source.appId | source.instanceId |
       | chipShop     | c1                |
