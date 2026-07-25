@@ -50,7 +50,7 @@ A human-readable summary of the trade.
 <details>
   <summary><code>product</code> <strong>(required)</strong></summary>
 
-**type**: [Product](Product)
+**type**: [Product](/docs/next/context/ref/Product)
 
 A product that is the subject of the trade.
 
