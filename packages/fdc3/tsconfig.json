@@ -22,6 +22,9 @@
     },
     {
       "path": "../fdc3-standard"
+    },
+    {
+      "path": "../fdc3-security"
     }
   ]
 }

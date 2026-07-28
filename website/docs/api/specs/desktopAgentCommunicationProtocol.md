@@ -149,12 +149,14 @@ Request and response for removing the event listener ([`Listener.unsubscribe()`]
 - [`eventListenerUnsubscribeRequest`](pathname:///schemas/next/api/eventListenerUnsubscribeRequest.schema.json)
 - [`eventListenerUnsubscribeResponse`](pathname:///schemas/next/api/eventListenerUnsubscribeResponse.schema.json)
 
-#### `addIntentListener()`
+#### `addIntentListener()` / `addIntentListenerWithContext()`
 
-Request and response used to implement the [`addIntentListener()`](../ref/DesktopAgent#addintentlistener) API call:
+Request and response used to implement both the [`addIntentListener()`](../ref/DesktopAgent#addintentlistener) and [`addIntentListenerWithContext()`](../ref/DesktopAgent#addintentlistenerwithcontext) API calls:
 
 - [`addIntentListenerRequest`](pathname:///schemas/next/api/addIntentListenerRequest.schema.json)
 - [`addIntentListenerResponse`](pathname:///schemas/next/api/addIntentListenerResponse.schema.json)
+
+The `addIntentListenerRequest` payload includes an optional `contextTypes` field (an array of context type strings) used to restrict the listener to incoming intents whose context type matches one of the supplied values. When `addIntentListener()` is used the field is omitted (meaning all context types match); when `addIntentListenerWithContext()` is used the field MUST be populated. Desktop Agents MUST use this field both when matching intent listeners during intent resolution and when delivering raised intents, so that listeners are only invoked for matching context types.
 
 Event message used to a raised intent and context object from another app to the listener:
 
@@ -166,6 +168,8 @@ An additional request and response used to deliver an [`IntentResult`](../ref/Ty
 - [`intentResultResponse`](pathname:///schemas/next/api/intentResultResponse.schema.json)
 
 Please note this exchange (and the `IntentResolution.getResult()` API call) support `void` results from a raised intent and hence this message exchange should occur for all raised intents, including those that do not return a result. In such cases, the void intent result allows resolution of the `IntentResolution.getResult()` API call and indicates that the intent handler has finished running.
+
+The `intentResultRequest` payload includes an optional `metadata` field of type `AppProvidableContextMetadata`. This is populated by the agent-proxy when the intent handler returns a [`ContextWithMetadata`](../ref/Types#contextwithmetadata) result, carrying the app-provided portion of the metadata (e.g. `traceId`, `signature`, `custom`). The Desktop Agent merges this with its own generated metadata and delivers the combined [`ContextMetadata`](../ref/Metadata#contextmetadata) to the raising app via the `resultMetadata` field of the `raiseIntentResultResponse`.
 
 Request and response for removing the intent listener ([`Listener.unsubscribe()`](../ref/Types#listener)):
 
@@ -287,12 +291,34 @@ Request and response used to implement the [`joinUserChannel()`](../ref/DesktopA
 - [`joinUserChannelRequest`](pathname:///schemas/next/api/joinUserChannelRequest.schema.json)
 - [`joinUserChannelResponse`](pathname:///schemas/next/api/joinUserChannelResponse.schema.json)
 
+On success, if the requesting app has registered a matching event listener, the Desktop Agent MUST send a [`channelChangedEvent`](pathname:///schemas/next/api/channelChangedEvent.schema.json) after applying the membership change and before the successful `joinUserChannelResponse` is sent. This ordering dispatches the event before the promise returned by `joinUserChannel()` resolves.
+
 #### `leaveCurrentChannel()`
 
 Request and response used to implement the [`leaveCurrentChannel()`](../ref/DesktopAgent#leavecurrentchannel) API call:
 
 - [`leaveCurrentChannelRequest`](pathname:///schemas/next/api/leaveCurrentChannelRequest.schema.json)
 - [`leaveCurrentChannelResponse`](pathname:///schemas/next/api/leaveCurrentChannelResponse.schema.json)
+
+#### `close()`
+
+Request and response used to implement the [`close()`](../ref/DesktopAgent#close) API call:
+
+- [`closeRequest`](pathname:///schemas/next/api/closeRequest.schema.json)
+- [`closeResponse`](pathname:///schemas/next/api/closeResponse.schema.json)
+
+On a successful close, the app container is torn down before a success `closeResponse` can be delivered. The calling app will therefore never receive a successful `closeResponse` — only an error `closeResponse` is possible (when the Desktop Agent cannot complete the close).
+
+```mermaid
+sequenceDiagram
+    App ->> DesktopAgent: closeRequest
+    alt close succeeds
+        DesktopAgent ->> DesktopAgent: close app window/frame
+        Note over App: app destroyed — no closeResponse received
+    else close fails
+        DesktopAgent ->> App: closeResponse with error
+    end
+```
 
 #### `open()`
 
@@ -336,6 +362,8 @@ An additional response message is provided for the delivery of an `IntentResult`
 - [`raiseIntentResultResponse`](pathname:///schemas/next/api/raiseIntentResultResponse.schema.json)
 
 There is no request message to indicate a call to the `resolution.getResult()` function of `IntentResolution`. Hence, Desktop Agents MUST send this additional response message to indicate the status of the intent handling function and to deliver its result (or void if none was returned).
+
+The `raiseIntentResultResponse` success payload includes an optional `resultMetadata` field of type [`ContextMetadata`](../ref/Metadata#contextmetadata). The Desktop Agent MUST populate this field by merging any app-provided metadata from the `intentResultRequest`'s `metadata` field with its own generated fields (`source`, `timestamp`, `traceId`). This metadata is always present, even for `Channel` or `void` results, and is retrieved by the raising app via [`IntentResolution.getResultMetadata()`](../ref/Metadata#intentresolution).
 
 :::tip
 
@@ -406,12 +434,14 @@ Owing to the significant overlap between the FDC3 [`DesktopAgent`](../ref/Deskto
 
 The following additional function is unique to the `Channel` interface:
 
-#### `getCurrentContext()`
+#### `getCurrentContext()` / `getCurrentContextWithMetadata()`
 
-Request and response used to implement the [`Channel.getCurrentContext()`](../ref/Channel#getcurrentcontext) API call:
+Request and response used to implement the [`Channel.getCurrentContext()`](../ref/Channel#getcurrentcontext) and [`Channel.getCurrentContextWithMetadata()`](../ref/Channel#getcurrentcontextwithmetadata) API calls:
 
 - [`getCurrentContextRequest`](pathname:///schemas/next/api/getCurrentContextRequest.schema.json)
 - [`getCurrentContextResponse`](pathname:///schemas/next/api/getCurrentContextResponse.schema.json)
+
+The `getCurrentContextResponse` payload includes an optional `metadata` field containing the [`ContextMetadata`](../ref/Metadata#contextmetadata) associated with the most recently broadcast context. This field is used by `getCurrentContextWithMetadata()` to return both the context and its metadata. The `getCurrentContext()` function uses the same request/response messages but ignores the `metadata` field, returning only the context.
 
 ### `PrivateChannel`
 
@@ -431,8 +461,6 @@ Event messages used to deliver events that have occurred:
 - [`privateChannelOnUnsubscribeEvent`](pathname:///schemas/next/api/privateChannelOnUnsubscribeEvent.schema.json)
 
 :::tip
-
-The above messages may also be used to implement the deprecated [`onAddContextListener()`](../ref/PrivateChannel#onaddcontextlistener), [`onUnsubscribe`](../ref/PrivateChannel#onunsubscribe) and [`onDisconnect`](../ref/PrivateChannel#ondisconnect) functions of the `PrivateChannel` interface.
 
 :::
 

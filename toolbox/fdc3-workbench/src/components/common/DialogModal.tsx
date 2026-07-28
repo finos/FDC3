@@ -10,7 +10,7 @@ interface DialogModalProps {
   open: boolean;
   onClose: (value: boolean) => void;
   onAgree: (value: string) => void;
-  selectedValue: any;
+  selectedValue: { id: string; name?: string } | null;
 }
 
 export function DialogModal(props: DialogModalProps) {

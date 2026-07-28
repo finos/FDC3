@@ -7,6 +7,8 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import { TextField } from '@mui/material';
 
+import { ContextMetadata } from '@finos/fdc3-standard';
+
 const classes = {
   textField: {
     mt: 2,
@@ -17,7 +19,7 @@ const classes = {
   },
 } as const;
 
-export const ReceivedField = observer(({ metaData }: { metaData: any }) => {
+export const ReceivedField = observer(({ metaData }: { metaData: ContextMetadata | undefined }) => {
   const formattedData = !metaData?.source
     ? 'METADATA NOT PROVIDED'
     : `appId: ${metaData.source.appId}\ninstanceId: ${metaData.source.instanceId}`;

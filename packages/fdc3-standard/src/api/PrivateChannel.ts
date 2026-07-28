@@ -49,44 +49,8 @@ export interface PrivateChannel extends Channel {
    *
    * After this function has been called, Desktop Agents SHOULD prevent apps from broadcasting
    * on this channel and MUST automatically call Listener.unsubscribe() for each listener that
-   * they've added (causing any onUnsubscribe handler added by the other party to be called)
-   * before triggering any onDisconnect handler added by the other party.
+   * they've added (causing any "unsubscribe" event handler added by the other party to fire)
+   * before triggering any "disconnect" event handler added by the other party.
    */
   disconnect(): Promise<void>;
-
-  //---------------------------------------------------------------------------------------------
-  //Deprecated function signatures
-  //---------------------------------------------------------------------------------------------
-
-  /**
-   * @deprecated use `addEventListener("addContextListener", handler)` instead.
-   *
-   * Adds a listener that will be called each time that the remote app invokes
-   * addContextListener on this channel.
-   *
-   * Desktop Agents MUST call this for each invocation of addContextListener on this
-   * channel, including those that occurred before this handler was registered
-   * (to prevent race conditions).
-   */
-  onAddContextListener(handler: (contextType?: string) => void): Listener;
-
-  /**
-   * @deprecated use `addEventListener("unsubscribe", handler)` instead.
-   *
-   * Adds a listener that will be called whenever the remote app invokes
-   * Listener.unsubscribe() on a context listener that it previously added.
-   *
-   * Desktop Agents MUST call this when disconnect() is called by the other party, for
-   * each listener that they have added.
-   */
-  onUnsubscribe(handler: (contextType?: string) => void): Listener;
-
-  /**
-   * @deprecated use `addEventListener("disconnect", handler)` instead.
-   *
-   * Adds a listener that will be called when the remote app terminates, for example
-   * when its window is closed or because disconnect was called. This is in addition
-   * to calls that will be made to onUnsubscribe listeners.
-   */
-  onDisconnect(handler: () => void): Listener;
 }

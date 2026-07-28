@@ -1,0 +1,61 @@
+{
+  "applications": [
+    {
+      "appId": "symphony",
+      "categories": ["chat", "communication", "compliance", "productivity"],
+      "contactEmail": "sales@symphony.com",
+      "description": "Symphony is the most secure and compliance-enabling markets’ infrastructure and technology platform, where solutions are built or integrated to standardize, automate and innovate financial services workflows. It is a vibrant community of over half a million financial professionals with a trusted directory and serves over 1,000 institutions.",
+      "details": {
+        "url": "https://develop2.symphony.com"
+      },
+      "icons": [
+        {
+          "src": "https://fdc3.finos.org/img/users/Symphony.png"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "SendChatMessage": {
+              "contexts": ["fdc3.chat.message"],
+              "displayName": "Send Chat Message"
+            },
+            "StartChat": {
+              "contexts": ["fdc3.chat.initSettings", "fdc3.contact"],
+              "displayName": "Start Chat"
+            },
+            "ViewMessages": {
+              "contexts": ["fdc3.searchCriteria"],
+              "displayName": "View Messages"
+            },
+            "ViewChat": {
+              "contexts": [
+                "fdc3.chat.room",
+                "fdc3.contact",
+                "fdc3.contactList"
+              ],
+              "displayName": "View Chat"
+            }
+          },
+          "raises": {
+            "CreateInteraction": ["fdc3.interaction"],
+            "ViewContact": ["fdc3.contact"],
+            "ViewInstrument": ["fdc3.instrument"]
+          }
+        }
+      },
+      "moreInfo": "https://symphony.com/",
+      "name": "Symphony",
+      "publisher": "Symphony Communication Services, LLC",
+      "screenshots": [
+        {
+          "src": "https://symphony.com/wp-content/uploads/2021/09/SYM-Hero-with-C9-1-2048x1688.png"
+        }
+      ],
+      "supportEmail": "support@symphony.com",
+      "title": "Symphony",
+      "type": "web"
+    }
+  ],
+  "message": "OK"
+}

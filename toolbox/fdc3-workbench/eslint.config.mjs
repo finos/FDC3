@@ -1,25 +1,20 @@
 import react from 'eslint-plugin-react';
 import _import from 'eslint-plugin-import';
-import typescriptEslint from '@typescript-eslint/eslint-plugin';
 import { fixupPluginRules } from '@eslint/compat';
 import globals from 'globals';
-import tsParser from '@typescript-eslint/parser';
 import pluginJs from '@eslint/js';
+import tseslint from 'typescript-eslint';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-import js from '@eslint/js';
-import { FlatCompat } from '@eslint/eslintrc';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
-
+/** @type {import('eslint').Linter.Config[]} */
 export default [
+  {
+    languageOptions: {
+      parserOptions: {
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
   { files: ['**/*.{js,mjs,cjs,ts}'] },
   {
     ignores: [
@@ -33,14 +28,13 @@ export default [
       '**/package.json',
     ],
   },
-  ...compat.extends('plugin:react/recommended', 'prettier'),
   pluginJs.configs.recommended,
+  ...tseslint.configs.recommended,
   eslintConfigPrettier,
   {
     plugins: {
       react,
       import: fixupPluginRules(_import),
-      '@typescript-eslint': typescriptEslint,
     },
 
     languageOptions: {
@@ -49,10 +43,6 @@ export default [
         ...globals.commonjs,
         fdc3: 'readonly',
       },
-
-      parser: tsParser,
-      ecmaVersion: 2018,
-      sourceType: 'module',
 
       parserOptions: {
         ecmaFeatures: {

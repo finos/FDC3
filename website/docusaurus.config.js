@@ -21,7 +21,6 @@ module.exports = {
     "repoUrl": "https://github.com/finos/FDC3"
   },
   "onBrokenLinks": "log",
-  "onBrokenMarkdownLinks": "log",
   "presets": [
     [
       "@docusaurus/preset-classic",
@@ -44,6 +43,9 @@ module.exports = {
   ],
   markdown: {
     mermaid: true,
+    hooks: {
+      onBrokenMarkdownLinks: "log",
+    },
   },
   themes: ['@docusaurus/theme-mermaid'],
   "plugins": [],

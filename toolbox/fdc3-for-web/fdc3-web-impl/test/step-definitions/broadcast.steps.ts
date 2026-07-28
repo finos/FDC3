@@ -2,7 +2,7 @@ import { When } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
 import { createMeta } from './generic.steps.js';
 import {} from '@finos/fdc3-standard';
-import { handleResolve } from '@finos/testing';
+import { handleResolve, parseAntiReplayClaims } from '@finos/testing';
 import { contextMap } from './generic.steps.js';
 import { BrowserTypes } from '@finos/fdc3-schema';
 
@@ -82,6 +82,62 @@ When('{string} removes context listener with id {string}', (world: CustomWorld, 
 
 When(
   '{string} broadcasts {string} on {string}',
+  (world: CustomWorld, app: string, contextType: string, channelId: string) => {
+    const meta = createMeta(world, app);
+    const uuid = world.sc.getInstanceUUID(meta.source)!;
+
+    const message = {
+      meta,
+      payload: {
+        channelId: handleResolve(channelId, world),
+        context: contextMap[contextType],
+      },
+      type: 'broadcastRequest',
+    } as BroadcastRequest;
+
+    world.server.receive(message, uuid);
+  }
+);
+
+When(
+  '{string} broadcasts {string} on {string} with metadata traceId {string} signature {string} antiReplay claims {string} and custom key {string}',
+  (
+    world: CustomWorld,
+    app: string,
+    contextType: string,
+    channelId: string,
+    traceId: string,
+    signature: string,
+    antiReplayClaims: string,
+    customKey: string
+  ) => {
+    const meta = createMeta(world, app);
+    const uuid = world.sc.getInstanceUUID(meta.source)!;
+
+    const message = {
+      meta,
+      payload: {
+        channelId: handleResolve(channelId, world),
+        context: contextMap[contextType],
+        metadata: {
+          traceId: handleResolve(traceId, world),
+          signature: {
+            signature: handleResolve(signature, world) + ' (signature part)',
+            protected: handleResolve(signature, world) + ' (protected part)',
+          },
+          custom: { region: handleResolve(customKey, world) },
+          antiReplay: parseAntiReplayClaims(antiReplayClaims),
+        },
+      },
+      type: 'broadcastRequest',
+    } as BroadcastRequest;
+
+    world.server.receive(message, uuid);
+  }
+);
+
+When(
+  '{string} broadcasts {string} on {string} without metadata',
   (world: CustomWorld, app: string, contextType: string, channelId: string) => {
     const meta = createMeta(world, app);
     const uuid = world.sc.getInstanceUUID(meta.source)!;

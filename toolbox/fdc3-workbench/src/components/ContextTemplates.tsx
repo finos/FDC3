@@ -3,11 +3,12 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import React, { HTMLAttributes, useEffect, useRef, useState } from 'react';
+import React, { forwardRef, HTMLAttributes, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { observer } from 'mobx-react';
 import { Grid, Autocomplete } from '@mui/material';
 import { createFilterOptions } from '@mui/material/Autocomplete';
 import contextStore from '../store/ContextStore.js';
+import { ContextType } from '../utility/Fdc3Api.js';
 import { TemplateTextField } from './common/TemplateTextField.js';
 
 interface FilterOptionsState<T> {
@@ -18,6 +19,10 @@ interface FilterOptionsState<T> {
 interface OptionType {
   title: string;
   value: string;
+}
+
+export interface ContextTemplatesHandle {
+  reset: () => void;
 }
 
 type SetValue = (value: OptionType | null) => void;
@@ -47,17 +52,23 @@ const styles = {
 const contextFilter = createFilterOptions<OptionType>();
 
 export const ContextTemplates = observer(
-  ({
-    handleTabChange,
-    contextStateSetter,
-    channel,
-  }: {
-    handleTabChange: any;
-    contextStateSetter: any;
-    channel?: any;
-  }) => {
+  forwardRef<
+    ContextTemplatesHandle,
+    {
+      handleTabChange: (event: React.ChangeEvent<object> | null, newValue: number, contextName?: string) => void;
+      contextStateSetter: (context: ContextType | null, channel?: string) => void;
+      channel?: string;
+    }
+  >(({ handleTabChange, contextStateSetter, channel }, ref) => {
     const [context, setContext] = useState<OptionType | null>(null);
     const [contextError, setContextError] = useState<string | false>(false);
+
+    useImperativeHandle(ref, () => ({
+      reset: () => {
+        setContext(null);
+        setContextError(false);
+      },
+    }));
     const contextsOptions: OptionType[] = contextStore.contextsList.map(({ id }) => {
       return {
         title: id,
@@ -66,26 +77,31 @@ export const ContextTemplates = observer(
     });
     const isInitialMount = useRef(true);
 
-    const handleChange = (setValue: SetValue, setError: SetError) => (event: React.ChangeEvent<{}>, newValue: any) => {
-      const selectedContext = contextStore.contextsList.find(({ id }) => id === newValue?.value);
-      if (selectedContext) contextStateSetter(selectedContext.template, channel);
+    const handleChange =
+      (setValue: SetValue, setError: SetError) =>
+      (event: React.ChangeEvent<object>, newValue: OptionType | string | null) => {
+        if (typeof newValue !== 'string') {
+          const selectedContext = contextStore.contextsList.find(({ id }) => id === newValue?.value);
+          if (selectedContext) contextStateSetter(selectedContext.template, channel);
+        }
 
-      if (typeof newValue === 'string') {
-        setValue({
-          title: newValue,
-          value: newValue,
-        });
-      } else if (newValue && newValue.inputValue) {
-        setValue({
-          title: newValue.inputValue,
-          value: newValue.inputValue,
-        });
-      } else {
-        setValue(newValue);
-      }
+        if (typeof newValue === 'string') {
+          setValue({
+            title: newValue,
+            value: newValue,
+          });
+        } else if (newValue && 'inputValue' in newValue) {
+          const inputVal = (newValue as OptionType & { inputValue: string }).inputValue;
+          setValue({
+            title: inputVal,
+            value: inputVal,
+          });
+        } else {
+          setValue(newValue);
+        }
 
-      setError(false);
-    };
+        setError(false);
+      };
 
     const getOptionLabel = (option: OptionType) => option.value || option.title;
 
@@ -107,7 +123,7 @@ export const ContextTemplates = observer(
         isInitialMount.current = false;
       } else {
         const selectedContext = contextStore.contextsList.find(({ id }) => id === context?.value);
-        if (!selectedContext) handleTabChange(null, 0, context?.value);
+        if (context != null && !selectedContext) handleTabChange(null, 0, context?.value);
       }
     }, [context]);
 
@@ -152,5 +168,5 @@ export const ContextTemplates = observer(
         </Grid>
       </div>
     );
-  }
+  })
 );

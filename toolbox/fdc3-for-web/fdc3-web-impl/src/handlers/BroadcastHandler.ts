@@ -7,6 +7,7 @@ import {
   AddEventListenerRequest,
   AgentResponseMessage,
   AppRequestMessage,
+  BroadcastEvent,
   BroadcastRequest,
   ChannelChangedEvent,
   ContextListenerUnsubscribeRequest,
@@ -26,6 +27,12 @@ import {
   PrivateChannelUnsubscribeEventListenerRequest,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { Context } from '@finos/fdc3-context';
+import { ContextMetadata } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+
+type StoredContext = {
+  context: Context;
+  metadata: ContextMetadata;
+};
 
 type PrivateChannelEvents =
   | PrivateChannelOnAddContextListenerEvent
@@ -64,7 +71,7 @@ export enum ChannelType {
 export type ChannelState = {
   id: string;
   type: ChannelType;
-  context: Context[];
+  context: StoredContext[];
   displayMetadata: DisplayMetadata;
 };
 
@@ -127,6 +134,15 @@ export class BroadcastHandler implements MessageHandler {
   }
 
   fireChannelChangedEvent(channelId: string | null, sc: ServerContext<AppRegistration>, instanceId: string) {
+    const hasChannelChangedListener = this.desktopAgentEventListeners.some(
+      listener =>
+        listener.instanceId === instanceId &&
+        (listener.eventType === null || listener.eventType === 'USER_CHANNEL_CHANGED')
+    );
+    if (!hasChannelChangedListener) {
+      return;
+    }
+
     const event: ChannelChangedEvent = {
       meta: {
         eventUuid: sc.createUUID(),
@@ -159,11 +175,11 @@ export class BroadcastHandler implements MessageHandler {
     }
   }
 
-  updateChannelState(channelId: string, context: Context) {
+  updateChannelState(channelId: string, context: Context, metadata: ContextMetadata) {
     const cs = this.getChannelById(channelId);
     if (cs) {
-      cs.context = cs.context.filter(c => c.type != context.type);
-      cs.context.unshift(context);
+      cs.context = cs.context.filter(c => c.context.type != context.type);
+      cs.context.unshift({ context, metadata });
     }
   }
 
@@ -174,8 +190,6 @@ export class BroadcastHandler implements MessageHandler {
       // this handler only deals with connected apps
       return;
     }
-
-    console.log(`BroadcastHandler: accept called with msg: ${JSON.stringify(msg)}`);
 
     try {
       switch (msg.type as string | null) {
@@ -300,8 +314,14 @@ export class BroadcastHandler implements MessageHandler {
     const type = arg0.payload.contextType;
 
     if (channel) {
-      const context = type ? (channel.context.find(c => c.type == type) ?? null) : (channel.context[0] ?? null);
-      successResponse(sc, arg0, from, { context: context }, 'getCurrentContextResponse');
+      const stored = type ? (channel.context.find(c => c.context.type == type) ?? null) : (channel.context[0] ?? null);
+      successResponse(
+        sc,
+        arg0,
+        from,
+        { context: stored?.context ?? null, metadata: stored?.metadata ?? null },
+        'getCurrentContextResponse'
+      );
     } else {
       errorResponse(sc, arg0, from, ChannelError.NoChannelFound, 'getCurrentContextResponse');
     }
@@ -439,24 +459,32 @@ export class BroadcastHandler implements MessageHandler {
       })
       .filter(onlyUniqueAppIds);
 
-    matchingApps.forEach(app => {
-      sc.post(
-        {
-          meta: {
-            eventUuid: sc.createUUID(),
-            timestamp: new Date(),
-          },
-          type: 'broadcastEvent',
-          payload: {
-            channelId: arg0.payload.channelId,
-            context: arg0.payload.context,
-          },
+    const appProvidedMetadata = arg0.payload.metadata ?? {};
+    const msg: BroadcastEvent = {
+      meta: {
+        eventUuid: sc.createUUID(),
+        timestamp: new Date(),
+      },
+      type: 'broadcastEvent',
+      payload: {
+        channelId: arg0.payload.channelId,
+        context: arg0.payload.context,
+        metadata: {
+          source: { appId: from.appId, instanceId: from.instanceId },
+          timestamp: new Date(),
+          traceId: appProvidedMetadata.traceId ?? sc.createUUID(),
+          ...(appProvidedMetadata.signature !== undefined && { signature: appProvidedMetadata.signature }),
+          ...(appProvidedMetadata.antiReplay !== undefined && { antiReplay: appProvidedMetadata.antiReplay }),
+          ...(appProvidedMetadata.custom !== undefined && { custom: appProvidedMetadata.custom }),
         },
-        app.instanceId
-      );
+      },
+    };
+
+    matchingApps.forEach(app => {
+      sc.post(msg, app.instanceId);
     });
 
-    this.updateChannelState(arg0.payload.channelId, arg0.payload.context);
+    this.updateChannelState(arg0.payload.channelId, arg0.payload.context, msg.payload.metadata!);
     successResponse(sc, arg0, from, {}, 'broadcastResponse');
   }
 
@@ -536,16 +564,18 @@ export class BroadcastHandler implements MessageHandler {
       this.state.push(channel);
     }
 
-    if (channel.type != ChannelType.app) {
-      errorResponse(sc, arg0, from, ChannelError.AccessDenied, 'getOrCreateChannelResponse');
-    } else {
+    //only allow retrieval of app channels or user channels
+    if (channel.type == ChannelType.app || channel.type == ChannelType.user) {
       successResponse(
         sc,
         arg0,
         from,
-        { channel: { id: channel.id, type: channel.type } },
+        { channel: { id: channel.id, type: this.convertChannelTypeToString(channel.type) } },
         'getOrCreateChannelResponse'
       );
+    } else {
+      //block retrieval of private channels
+      errorResponse(sc, arg0, from, ChannelError.AccessDenied, 'getOrCreateChannelResponse');
     }
   }
 
@@ -615,7 +645,7 @@ export class BroadcastHandler implements MessageHandler {
         },
       } as PrivateChannelEvents; //Typescript doesn't like comparing an object with a union property (messageType) with a union of object types
 
-      console.log('invokePrivateChannelEventListeners msg: ', msg);
+      console.debug('invokePrivateChannelEventListeners msg: ', msg);
       this.privateChannelEventListeners
         .filter(
           listener =>
@@ -623,7 +653,7 @@ export class BroadcastHandler implements MessageHandler {
         )
         .filter(onlyUniqueAppIds)
         .forEach(e => {
-          console.log(`invokePrivateChannelEventListeners: posting to instance ${e.instanceId}`);
+          console.debug(`invokePrivateChannelEventListeners: posting to instance ${e.instanceId}`);
           sc.post(msg, e.instanceId);
         });
     }

@@ -16,7 +16,7 @@ Some additional tracking of PrivateChannel metadata is required on the Desktop A
 
 :::
 
-When a `ContextListener` is added to a `PrivateChannel` any applications that have added an `onAddContextListener` handler MUST be notified. If the listener is on the agent that created that channel, it should forward the message onto all the registered listeners. If the listener is added on a remote agent it MUST send the message to the agent that created the channel which will repeat it onto the other listeners without modifying the source information.
+When a `ContextListener` is added to a `PrivateChannel` any applications that have registered an `addEventListener("addContextListener", ...)` handler MUST be notified. If the listener is on the agent that created that channel, it should forward the message onto all the registered listeners. If the listener is added on a remote agent it MUST send the message to the agent that created the channel which will repeat it onto the other listeners without modifying the source information.
 
 ## Message exchange
 

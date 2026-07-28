@@ -203,7 +203,6 @@ Given('A Dummy Desktop Agent in {string}', async (world: CustomWorld, field: str
         fdc3Version: '2.0',
         optionalFeatures: {
           DesktopAgentBridging: false,
-          OriginatingAppMetadata: false,
           UserChannelMembershipAPIs: false,
         },
         appMetadata: {
@@ -221,6 +220,7 @@ Given('A Dummy Desktop Agent in {string}', async (world: CustomWorld, field: str
     raiseIntent: notImplemented,
     raiseIntentForContext: notImplemented,
     addIntentListener: notImplemented,
+    addIntentListenerWithContext: notImplemented,
     addContextListener: notImplemented,
     addEventListener: notImplemented,
     getUserChannels: notImplemented,
@@ -230,8 +230,6 @@ Given('A Dummy Desktop Agent in {string}', async (world: CustomWorld, field: str
     getCurrentChannel: notImplemented,
     leaveCurrentChannel: notImplemented,
     getAppMetadata: notImplemented,
-    getSystemChannels: notImplemented,
-    joinChannel: notImplemented,
   };
 
   world.props[field] = da;

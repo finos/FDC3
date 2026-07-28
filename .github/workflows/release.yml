@@ -1,4 +1,3 @@
-
 name: Publish To NPM
 
 on:
@@ -18,13 +17,18 @@ jobs:
       is_prerelease: ${{ steps.version.outputs.is_prerelease }}
       publish_tag: ${{ steps.version.outputs.publish_tag }}
     steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Configure Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 20
+          node-version: 24.18.0
 
       - name: Install dependencies
         run: npm ci
@@ -38,12 +42,15 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Verify version consistency across workspaces
+        run: npm run version-check
+
       # Compute prerelease flag & desired dist-tag from top-level package.json version
       - name: Determine prerelease tag
         id: version
         run: |
           set -euo pipefail
-          VERSION="$(node -p 'require("./package.json").version')"
+          VERSION="$(node -p 'JSON.parse(require("fs").readFileSync("./package.json","utf8")).version')"
           echo "Detected version: $VERSION"
 
           # If version contains a hyphen, it's a prerelease (e.g., 1.2.3-alpha.1)
@@ -57,16 +64,27 @@ jobs:
             echo "This is a stable release. Will use tag 'latest'."
           fi
 
-      # Create tarballs for each workspace so we can publish the exact same artifacts twice
-      - name: Pack workspaces
+      # Create tarballs for each public workspace so we can publish the exact same artifacts twice
+      - name: Pack workspaces (skip private)
         run: |
           set -euo pipefail
-          npm pack --workspaces
+          for ws in $(node -e '
+            const fs = require("fs");
+            const read = (p) => JSON.parse(fs.readFileSync(p, "utf8"));
+            const root = read("./package.json");
+            for (const dir of root.workspaces || []) {
+              const pkg = read("./" + dir + "/package.json");
+              if (!pkg.private) console.log(dir);
+            }
+          '); do
+            echo "Packing $ws ..."
+            npm pack --workspace "$ws"
+          done
           echo "Packed tarballs:"
           ls -1 *.tgz
 
       - name: Upload packed artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: npm-tarballs
           path: |
@@ -79,16 +97,24 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_and_pack
     steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+
+      - name: Checkout repo (required for npm provenance)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
       - name: Download packed artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: npm-tarballs
           path: ./dist-tarballs
 
       - name: Configure Node for npmjs.org
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 20
+          node-version: 24.18.0
           registry-url: https://registry.npmjs.org
           always-auth: true
 
@@ -99,7 +125,7 @@ jobs:
         run: |
           set -euo pipefail
           shopt -s nullglob
-          for tgz in dist-tarballs/*.tgz; do
+          for tgz in ./dist-tarballs/*.tgz; do
             echo "Publishing $tgz to npmjs.org with tag '${PUBLISH_TAG}' ..."
             # --access public needed for first publish of public packages
             npm publish "$tgz" --provenance --access public --tag "${PUBLISH_TAG}"
@@ -110,16 +136,21 @@ jobs:
     runs-on: ubuntu-latest
     needs: build_and_pack
     steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+        with:
+          egress-policy: audit
+
       - name: Download packed artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
           name: npm-tarballs
           path: ./dist-tarballs
 
       - name: Configure Node for GitHub Packages
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
-          node-version: 20
+          node-version: 24.18.0
           registry-url: https://npm.pkg.github.com
           scope: '@finos'
           always-auth: true
@@ -131,7 +162,8 @@ jobs:
         run: |
           set -euo pipefail
           shopt -s nullglob
-          for tgz in dist-tarballs/*.tgz; do
+          for tgz in ./dist-tarballs/*.tgz; do
             echo "Publishing $tgz to GitHub Packages with tag '${PUBLISH_TAG}' ..."
             # GitHub Packages does not support npm provenance; omit --provenance and --access
             npm publish "$tgz" --tag "${PUBLISH_TAG}"
+          done

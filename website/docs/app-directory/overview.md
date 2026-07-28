@@ -6,6 +6,8 @@ title: App Directory Overview (next)
 
 An application directory (appD) is a structured repository of information about apps that can be used in an FDC3-enabled desktop. In other words, it’s a convenient way of storing and managing metadata about apps in your ecosystem.
 
+This section provides a conceptual overview of the App Directory, explaining what it is, who uses it, and how it fits into an FDC3-enabled desktop. It is intended for readers who are new to App Directory concepts, before moving on to the more detailed API and specification sections.
+
 The application metadata stored in appD records may include: the app name, type, details about how to run the application, its icons, publisher, support contact details and so on. It may also include links to or embed manifest formats defined elsewhere, such as proprietary manifests for launching the app in a container product or a Web Application Manifest (as [defined by the W3C](https://www.w3.org/TR/appmanifest/)).
 
 All this information is readily available in one place and can be used both to populate a launcher or app catalog UI for your users, and by the Desktop Agent managing the apps on your desktop. In fact, if your desktop platform supports the FDC3 standard, appD is the primary way that the FDC3 Desktop Agent implementation should receive the details about apps available to run on your desktop. Conversely, if an app is not listed in appD, the Desktop Agent can’t ensure its participation in context sharing or use it to resolve intents.
@@ -22,7 +24,7 @@ Your appD is the one place to collect all the information about apps. The more a
 
 #### Human Readable
 
-AppD has two types of users. One is the Desktop Agent, but the other is humans administrating and using the smart desktop at your organization. Hence, an appD contains information about apps in both machine- and human-readable forms. For example, it includes both unique identifiers for apps that are used to refer to them in code and human-friendly app names, icons, descriptions and tooltips necessary to populate a launcher menu or app catalog user interface for your users.
+AppD has two types of users. One is the Desktop Agent, but the other is humans administering and using the smart desktop at your organization. Hence, an appD contains information about apps in both machine- and human-readable forms. For example, it includes both unique identifiers for apps that are used to refer to them in code and human-friendly app names, icons, descriptions and tooltips necessary to populate a launcher menu or app catalog user interface for your users.
 
 #### Apps are Discoverable
 
@@ -95,6 +97,8 @@ The AppD API specification defines the optional use of an access token to identi
 
 The specification does not define or make mandatory any authorizations or roles that a provider or enterprise can define.
 
+A key concept in the App Directory is how applications are identified and referenced across different environments. Application identifiers are used both to uniquely describe apps within a directory and, in some cases, to locate the directory instance that hosts an application’s record.
+
 ## Application Identifiers
 
 Application Records served by an app directory are each labelled with an identifier, `appId`, which should be unique within the app directory instance and may be used to refer to or retrieve the application's record via the [app directory API](spec). This identifier may be made globally unique through a nested namespace approach and email address construction (`appId@fqdn`) where `@` followed by the app directory instance's host name is appended to it. The resulting globally unique identifier is known as a 'fully qualified application identifier'.
@@ -108,6 +112,8 @@ Although the concept of fully qualified application IDs are useful in resolving 
 ## Service Discovery
 
 In order to support the discovery of applications that can be used with a Desktop Agent, it is necessary to access data stored in one or more app directory instances.
+
+Because App Directory services may be hosted by different providers or enterprises, a Desktop Agent needs a way to determine where a given App Directory instance is located before it can retrieve application data. The FDC3 standard defines multiple discovery mechanisms to support different deployment and infrastructure models.
 
 ![img](/assets/appd_service_distribution.png)
 

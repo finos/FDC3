@@ -18,6 +18,11 @@ The following normative documents contain provisions, which, through reference i
 - **RFC 2782**, _A DNS RR for specifying the location of services (DNS SRV), February 2000_, [https://datatracker.ietf.org/doc/html/rfc2782](https://datatracker.ietf.org/doc/html/rfc2782).
 - **RFC 4122**, _A Universally Unique IDentifier (UUID) URN Namespace, July 2005_, [https://datatracker.ietf.org/doc/html/rfc4122](https://datatracker.ietf.org/doc/html/rfc4122).
 - **RFC 5646**, _Tags for Identifying Languages, September 2009_, [https://datatracker.ietf.org/doc/html/rfc5646](https://datatracker.ietf.org/doc/html/rfc5646).
+- **RFC 7515**, _JSON Web Signature (JWS), May 2015_, [https://datatracker.ietf.org/doc/html/rfc7515](https://datatracker.ietf.org/doc/html/rfc7515).
+- **RFC 7516**, _JSON Web Encryption (JWE), May 2015_, [https://datatracker.ietf.org/doc/html/rfc7516](https://datatracker.ietf.org/doc/html/rfc7516).
+- **RFC 7517**, _JSON Web Key (JWK), May 2015_, [https://datatracker.ietf.org/doc/html/rfc7517](https://datatracker.ietf.org/doc/html/rfc7517).
+- **RFC 7519**, _JSON Web Token (JWT), May 2015_, [https://datatracker.ietf.org/doc/html/rfc7519](https://datatracker.ietf.org/doc/html/rfc7519).
+- **RFC 8615**, _Well-Known Uniform Resource Identifiers (URIs), May 2019_, [https://datatracker.ietf.org/doc/html/rfc8615](https://datatracker.ietf.org/doc/html/rfc8615).
 - **TypeScript Programming Language**, [https://www.typescriptlang.org/](https://www.typescriptlang.org/).
 - **Web Application Manifest**, _W3C Working Draft_, February 2022 [https://www.w3.org/TR/appmanifest/](https://www.w3.org/TR/appmanifest/)
 

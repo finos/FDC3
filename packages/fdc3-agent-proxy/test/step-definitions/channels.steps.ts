@@ -4,7 +4,7 @@ import { Context } from '@finos/fdc3-context';
 import { handleResolve, matchData } from '@finos/testing';
 import { CustomWorld } from '../world/index.js';
 import { CHANNEL_STATE } from '@finos/testing';
-import { ApiEvent } from '@finos/fdc3-standard';
+import { ApiEvent, ContextMetadata } from '@finos/fdc3-standard';
 import {
   BroadcastEvent,
   ChannelChangedEvent,
@@ -52,6 +52,40 @@ Given(
       payload: {
         channelId: handleResolve(channel, world),
         context: contextMap[context],
+        metadata: {
+          timestamp: new Date(),
+          source: world.messaging!.getAppIdentifier(),
+          traceId: world.messaging!.createUUID(),
+          signature: '',
+        },
+      },
+      type: 'broadcastEvent',
+    } as BroadcastEvent;
+
+    world.props[field] = message;
+  }
+);
+
+Given(
+  '{string} is a BroadcastEvent message on channel {string} with context {string} and metadata',
+  (world: CustomWorld, field: string, channel: string, context: string) => {
+    const message = {
+      meta: {
+        ...world.messaging!.createEventMeta(),
+      },
+      payload: {
+        channelId: handleResolve(channel, world),
+        context: contextMap[context],
+        metadata: {
+          timestamp: new Date(),
+          source: world.messaging!.getAppIdentifier(),
+          traceId: world.messaging!.createUUID(),
+          signature: {
+            protected: 'test-sig (protected part)',
+            signature: 'test-sig (signature part)',
+          },
+          custom: { region: 'EMEA' },
+        },
       },
       type: 'broadcastEvent',
     } as BroadcastEvent;
@@ -101,6 +135,43 @@ Given(
       },
       payload: {
         newChannelId: handleResolve(channel, world),
+      },
+      type: 'channelChangedEvent',
+    };
+
+    world.props[field] = message;
+  }
+);
+
+Given(
+  '{string} is a channelChangedEvent message with currentChannelId {string}',
+  (world: CustomWorld, field: string, channelId: string) => {
+    const message: ChannelChangedEvent = {
+      meta: {
+        eventUuid: world.messaging!.createUUID(),
+        timestamp: new Date(),
+      },
+      payload: {
+        currentChannelId: handleResolve(channelId, world),
+      },
+      type: 'channelChangedEvent',
+    };
+
+    world.props[field] = message;
+  }
+);
+
+Given(
+  '{string} is a channelChangedEvent message with currentChannelId {string} and newChannelId {string}',
+  (world: CustomWorld, field: string, currentChannelId: string, newChannelId: string) => {
+    const message: ChannelChangedEvent = {
+      meta: {
+        eventUuid: world.messaging!.createUUID(),
+        timestamp: new Date(),
+      },
+      payload: {
+        currentChannelId: handleResolve(currentChannelId, world),
+        newChannelId: handleResolve(newChannelId, world),
       },
       type: 'channelChangedEvent',
     };
@@ -176,6 +247,18 @@ Given('{string} pipes context to {string}', (world: CustomWorld, contextHandlerN
     world.props[field].push(context);
   };
 });
+
+Given(
+  '{string} pipes context and metadata to {string} and {string}',
+  (world: CustomWorld, contextHandlerName: string, contextField: string, metadataField: string) => {
+    world.props[contextField] = [];
+    world.props[metadataField] = [];
+    world.props[contextHandlerName] = (context: Context, metadata?: ContextMetadata) => {
+      world.props[contextField].push(context);
+      world.props[metadataField].push(metadata);
+    };
+  }
+);
 
 When('messaging receives {string}', (world: CustomWorld, field: string) => {
   const message = handleResolve(field, world);

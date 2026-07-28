@@ -45,6 +45,14 @@
 						{ "$ref": "../context/context.schema.json" },
 						{ "type": "null" }
 					]
+				},
+				"metadata": {
+					"title": "Context Metadata",
+					"description": "Metadata relating to the most recently broadcast context object, if available. This is not returned by the public getCurrentContext API but is used internally by the Desktop Agent proxy to deliver metadata to context listeners when replaying context after a channel change.",
+					"oneOf": [
+						{ "$ref": "api.schema.json#/definitions/ContextMetadata" },
+						{ "type": "null" }
+					]
 				}
 			},
 			"required": [

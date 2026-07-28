@@ -7,6 +7,7 @@ import { ContextType, Fdc3Listener, PrivateChannel } from '../utility/Fdc3Api.js
 import systemLogStore from './SystemLogStore.js';
 import { nanoid } from 'nanoid';
 import { getWorkbenchAgent } from '../utility/Fdc3Api.js';
+import { ContextMetadata } from '@finos/fdc3-standard';
 // interface ListenerOptionType {
 // 	title: string;
 // 	value: string;
@@ -36,7 +37,9 @@ class PrivateChannelStore {
 
   async createPrivateChannel() {
     try {
-      const currentPrivateChannel: any = await getWorkbenchAgent().then(agent => agent.createPrivateChannel());
+      const currentPrivateChannel: PrivateChannel = await getWorkbenchAgent().then(agent =>
+        agent.createPrivateChannel()
+      );
       const isSuccess = currentPrivateChannel !== null;
       if (isSuccess) {
         this.privateChannelsList.push(currentPrivateChannel);
@@ -46,7 +49,7 @@ class PrivateChannelStore {
         systemLogStore.addLog({
           name: 'createPrivateChannel',
           type: isSuccess ? 'success' : 'error',
-          value: isSuccess ? currentPrivateChannel?.id : currentPrivateChannel.id,
+          value: currentPrivateChannel.id,
           variant: 'text',
         });
       });
@@ -115,14 +118,14 @@ class PrivateChannelStore {
   async addChannelListener(currentChannel: PrivateChannel, newListener: string | undefined) {
     const channelId = currentChannel.id;
     try {
-      let foundListener = this.channelListeners.find(
+      const foundListener = this.channelListeners.find(
         currentListener => currentListener.type === newListener && currentListener.channelId === channelId
       );
       if (!foundListener && currentChannel && newListener !== undefined) {
         const listenerId = nanoid();
         const contactListener = await currentChannel.addContextListener(
           newListener?.toLowerCase() === 'all' ? null : newListener,
-          (context, metaData?: any) => {
+          (context, metaData?: ContextMetadata) => {
             const currentListener = this.channelListeners.find(
               listener => listener.type === newListener && listener.channelId === channelId
             );
@@ -153,7 +156,9 @@ class PrivateChannelStore {
           });
         });
       }
-    } catch (e) {}
+    } catch {
+      /* empty */
+    }
   }
 
   removeContextListener(id: string) {
@@ -184,8 +189,12 @@ class PrivateChannelStore {
     }
   }
 
-  onAddContextListener(channel: PrivateChannel, channelContexts?: any, channelContextDelay?: any) {
-    channel.onAddContextListener(() => {
+  onAddContextListener(
+    channel: PrivateChannel,
+    channelContexts?: Record<string, ContextType>,
+    channelContextDelay?: Record<string, number>
+  ) {
+    channel.addEventListener('addContextListener', () => {
       try {
         systemLogStore.addLog({
           name: 'pcAddContextListener',
@@ -193,15 +202,15 @@ class PrivateChannelStore {
           value: `A context listener for '[all]' has been added on channel [${channel.id}]`,
         });
 
-        if (Object.keys(channelContexts).length !== 0) {
+        if (channelContexts && Object.keys(channelContexts).length !== 0) {
           Object.keys(channelContexts).forEach(key => {
-            let broadcast = setTimeout(async () => {
+            const broadcast = setTimeout(async () => {
               this.broadcast(channel, channelContexts[key]);
               clearTimeout(broadcast);
-            }, channelContextDelay[key]);
+            }, channelContextDelay?.[key] ?? 0);
           });
         }
-      } catch (e) {
+      } catch {
         systemLogStore.addLog({
           name: 'pcAddContextListener',
           type: 'error',
@@ -212,14 +221,14 @@ class PrivateChannelStore {
   }
 
   onUnsubscribe(channel: PrivateChannel) {
-    channel.onUnsubscribe(() => {
+    channel.addEventListener('unsubscribe', () => {
       try {
         systemLogStore.addLog({
           name: 'pcOnUnsubscribe',
           type: 'success',
           value: `Sucessfully unsubscribed from listener '[all]' for channel [${channel.id}]`,
         });
-      } catch (e) {
+      } catch {
         systemLogStore.addLog({
           name: 'pcOnUnsubscribe',
           type: 'error',
@@ -230,7 +239,7 @@ class PrivateChannelStore {
   }
 
   onDisconnect(channel: PrivateChannel) {
-    channel.onDisconnect(() => {
+    channel.addEventListener('disconnect', () => {
       try {
         this.channelListeners.forEach(listener => {
           this.removeContextListener(listener.id);
@@ -241,7 +250,7 @@ class PrivateChannelStore {
           type: 'success',
           value: `Sucessfully disconntected from channel [${channel.id}]`,
         });
-      } catch (e) {
+      } catch {
         systemLogStore.addLog({
           name: 'pcOnDisconnect',
           type: 'error',

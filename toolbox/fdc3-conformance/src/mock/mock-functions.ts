@@ -11,10 +11,8 @@ export const closeWindowOnCompletion = async (fdc3: DesktopAgent) => {
       testId: context.testId,
     };
     await appControlChannel.broadcast(closedContext);
-    setTimeout(() => {
-      //yield to make sure the broadcast gets out before we close
-      window.close();
-    }, 5);
+    // On successful close the app is destroyed before fdc3.close() resolves
+    void fdc3.close();
   });
 };
 

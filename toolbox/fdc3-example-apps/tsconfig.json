@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
+  },
+  "include": [
+    "vite-env.d.ts",
+    "main.ts",
+    "build.ts",
+    "common/**/*.ts",
+    "front-end-apps/**/*.ts",
+    "front-end-apps/**/*.tsx",
+    "server-apps/**/*.ts",
+    "server-apps/**/*.tsx"
+  ]
+}

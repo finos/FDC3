@@ -17,12 +17,12 @@ A Preload Desktop Agent is an FDC3 Desktop Agent (DA) supporting web application
 
 Since FDC3 is typically available to the whole web application, Desktop Agents are expected to make the [`DesktopAgent`](../ref/DesktopAgent) interface available at a global level. Hence, a Preload Desktop Agent MUST provide the FDC3 API via a global accessible as `window.fdc3`. Implementors MAY additionally make the API available through modules, imports, or other means.
 
-The global `window.fdc3` MUST only be available after the API is ready to use. Implementors MUST provide a global `fdc3Ready` event that is fired when the API is ready for use.
+The global `window.fdc3` MUST only be available after the API is ready to use. Implementors MUST provide a global `fdc3Ready` event that is fired when the API is ready for use. The `fdc3Ready()` function exported by `@finos/fdc3` is deprecated since FDC3 2.2; apps SHOULD use `getAgent()` instead, which handles connection internally.
 
 However, implementors SHOULD also ensure that the global is made available as soon as possible after the window is created to ensure that it can be detected by `getAgent()`. Queuing of requests to the API MAY be used to make the API available, while initialization is underway.
 
 :::note
 
-Prior to FDC3 2.2, apps were advised to check for the existence of the FDC3 API at `window.fdc3` and then add a listener for the `fdc3Ready` event if it was not found. This has since been superseded by the recommendation to use `getAgent()`, which handles those steps internally, alongside supporting FDC3 in web browsers ( via the [Browser Resident Desktop Agent spec](./browserResidentDesktopAgents)).
+Prior to FDC3 2.2, apps were advised to check for the existence of the FDC3 API at `window.fdc3` and then add a listener for the `fdc3Ready` event if it was not found, or call the deprecated `fdc3Ready()` function. This has since been superseded by the recommendation to use `getAgent()`, which handles those steps internally, alongside supporting FDC3 in web browsers ( via the [Browser Resident Desktop Agent spec](./browserResidentDesktopAgents)).
 
 :::

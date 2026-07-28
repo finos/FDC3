@@ -82,18 +82,20 @@ export const ContextLinking = observer(() => {
   ).reverse();
 
   const handleChangeListener =
-    (setValue: ListenerSetValue, setError: ListenerSetError) => (event: React.ChangeEvent<{}>, newValue: any) => {
+    (setValue: ListenerSetValue, setError: ListenerSetError) =>
+    (event: React.ChangeEvent<object>, newValue: ListenerOptionType | string | null) => {
       if (typeof newValue === 'string') {
         setValue({
           title: newValue,
           value: newValue,
           type: newValue,
         });
-      } else if (newValue && newValue.inputValue) {
+      } else if (newValue && 'inputValue' in newValue) {
+        const inputVal = (newValue as ListenerOptionType & { inputValue: string }).inputValue;
         setValue({
-          title: newValue.inputValue,
-          value: newValue.inputValue,
-          type: newValue.inputValue,
+          title: inputVal,
+          value: inputVal,
+          type: inputVal,
         });
       } else {
         setValue(newValue);

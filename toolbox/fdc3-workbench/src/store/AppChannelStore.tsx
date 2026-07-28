@@ -6,7 +6,7 @@ import { makeObservable, observable, action, runInAction, toJS } from 'mobx';
 import { ContextType, Fdc3Listener, getWorkbenchAgent } from '../utility/Fdc3Api.js';
 import systemLogStore from './SystemLogStore.js';
 import { nanoid } from 'nanoid';
-import { Channel } from '@finos/fdc3';
+import { Channel, ContextMetadata } from '@finos/fdc3';
 
 interface ListenerOptionType {
   title: string;
@@ -49,7 +49,7 @@ class AppChannelStore {
           channel: currentAppChannelObj,
         };
         this.currentAppChannel = record;
-        let foundChannel = this.appChannelsList.find(channel => channel.id === channelId);
+        const foundChannel = this.appChannelsList.find(channel => channel.id === channelId);
         if (!foundChannel) {
           runInAction(() => {
             this.appChannelsList.push(record);
@@ -97,7 +97,7 @@ class AppChannelStore {
     }
 
     //check that we're on a channel
-    let currentChannel = this.appChannelsList.find(chan => chan.id === channelId);
+    const currentChannel = this.appChannelsList.find(chan => chan.id === channelId);
 
     if (!currentChannel) {
       systemLogStore.addLog({
@@ -173,8 +173,8 @@ class AppChannelStore {
   async addChannelListener(currChannel: Channel, newListener: string | undefined) {
     const channelId = currChannel.id;
     try {
-      let currentChannel = this.appChannelsList.find(channel => channel.id === channelId);
-      let foundListener = this.channelListeners.find(
+      const currentChannel = this.appChannelsList.find(channel => channel.id === channelId);
+      const foundListener = this.channelListeners.find(
         currentListener => currentListener.type === newListener && currentListener.channelId === channelId
       );
 
@@ -182,7 +182,7 @@ class AppChannelStore {
         const listenerId = nanoid();
         const contactListener = await currentChannel.channel.addContextListener(
           newListener?.toLowerCase() === 'all' ? null : newListener,
-          (context, metaData?: any) => {
+          (context, metaData?: ContextMetadata) => {
             const currentListener = this.channelListeners.find(
               listener => listener.type === newListener && listener.channelId === channelId
             );

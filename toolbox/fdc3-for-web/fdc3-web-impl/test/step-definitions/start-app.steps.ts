@@ -6,6 +6,7 @@ import { matchData } from '@finos/testing';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { State } from '../../src/ServerContext.js';
 import { GetInfoRequest } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { expect } from 'vitest';
 
 type OpenRequest = BrowserTypes.OpenRequest;
 type GetAppMetadataRequest = BrowserTypes.GetAppMetadataRequest;
@@ -69,6 +70,11 @@ Then('running apps will be', async (world: CustomWorld, dataTable: DataTable) =>
   matchData(world, apps, dataTable);
 });
 
+Then('no apps are connected', async (world: CustomWorld) => {
+  const apps = await world.sc.getConnectedApps();
+  expect(apps.length).toEqual(0);
+});
+
 When('{string} opens app {string}', (world: CustomWorld, appStr: string, open: string) => {
   const from = createMeta(world, appStr);
   const uuid = world.sc.getInstanceUUID(from.source)!;
@@ -80,6 +86,7 @@ When('{string} opens app {string}', (world: CustomWorld, appStr: string, open: s
         appId: open,
         desktopAgent: 'n/a',
       },
+      metadata: {},
     },
   };
   world.server.receive(message, uuid);
@@ -99,6 +106,7 @@ When(
           desktopAgent: 'n/a',
         },
         context: contextMap[context],
+        metadata: {},
       },
     };
     world.server.receive(message, uuid);
@@ -130,6 +138,31 @@ When('{string} requests info on the DesktopAgent', (world: CustomWorld, appStr: 
     payload: {},
   };
   world.server.receive(message, uuid);
+});
+
+When('{string} requests close', (world: CustomWorld, appStr: string) => {
+  const from = createMeta(world, appStr);
+  const uuid = world.sc.getInstanceUUID(from.source)!;
+  const message: BrowserTypes.CloseRequest = {
+    type: 'closeRequest',
+    meta: from,
+    payload: {},
+  };
+  world.server.receive(message, uuid);
+});
+
+When('{string} requests close before connected', (world: CustomWorld, appStr: string) => {
+  const from = createMeta(world, appStr);
+  const details = world.sc.getInstanceDetails(from.source.instanceId!);
+  if (details) {
+    details.state = State.Pending;
+  }
+  const message: BrowserTypes.CloseRequest = {
+    type: 'closeRequest',
+    meta: from,
+    payload: {},
+  };
+  world.server.receive(message, from.source.instanceId!);
 });
 
 When('{string} findsInstances of {string}', (world: CustomWorld, appStr: string, open: string) => {

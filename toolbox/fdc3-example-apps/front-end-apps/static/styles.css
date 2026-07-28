@@ -1,0 +1,203 @@
+/* Shared stylesheet for FDC3 front-end demo apps */
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: sans-serif;
+  line-height: 1.4;
+  font-size: 15px;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.box {
+  border: 1px solid grey;
+  border-radius: 15px;
+  margin-bottom: 20px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.17);
+}
+
+.app-title {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 28px;
+  opacity: 0.6;
+}
+
+.app-subtitle {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+#log {
+  white-space: pre-wrap;
+  font-family: monospace;
+  font-size: 0.85em;
+}
+
+/* Per-app background colours */
+
+body.broadcast {
+  background-color: #e8f5e9;
+}
+
+body.receive {
+  background-color: #e3f2fd;
+}
+
+body.intent-raise-1 {
+  background-color: #fff3e0;
+}
+
+body.intent-raise-2 {
+  background-color: #fce4ec;
+}
+
+body.intent-listener-view-news-only {
+  background-color: #f3e5f5;
+}
+
+body.intent-listener-view-news-view-quote {
+  background-color: #ede7f6;
+}
+
+body.pricer {
+  background-color: lightgoldenrodyellow;
+}
+
+body.tradelist {
+  background-color: lightblue;
+}
+
+body.tradingview {
+  background-color: #e0f2f1;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  overflow: hidden;
+}
+
+body.tradingview .app-title {
+  margin-bottom: 4px;
+  font-size: 20px;
+}
+
+body.tradingview .app-subtitle {
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+
+body.tradingview #app {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Trade List specific */
+
+.stock-list {
+  width: 100%;
+}
+
+.stock-list thead th {
+  text-align: left;
+}
+
+.stock-list tbody td {
+  color: #888888;
+}
+
+.stock-list tfoot td {
+  padding-top: 15px;
+}
+
+form {
+  width: 100%;
+  display: flex;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 4px;
+  border: 2px solid midnightblue;
+  font-size: 20px;
+}
+
+select {
+  width: 80%;
+  font-size: 35px;
+  margin: auto;
+  display: flex;
+}
+
+button {
+  font-size: 20px;
+  color: #888888;
+  margin: 10px;
+}
+
+/* Pricer specific */
+
+.ticker {
+  font-size: 40px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.price {
+  font-size: 40px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.box.d0 .price {
+  color: green;
+  animation-duration: 2s;
+  animation-name: fadingUp;
+}
+
+.box.d1 .price {
+  color: red;
+  animation-duration: 2s;
+  animation-name: fadingDown;
+}
+
+.box.d2 .price {
+  color: grey;
+}
+
+@keyframes fadingUp {
+  from {
+    color: green;
+  }
+
+  to {
+    color: grey;
+  }
+}
+
+@keyframes fadingDown {
+  from {
+    color: red;
+  }
+
+  to {
+    color: grey;
+  }
+}

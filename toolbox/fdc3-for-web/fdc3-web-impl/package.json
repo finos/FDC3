@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3-web-impl",
-  "version": "2.2.2-beta.1",
+  "version": "3.0.0-alpha.2",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -19,7 +19,7 @@
   "types": "dist/src/index.d.ts",
   "scripts": {
     "clean": "rimraf dist coverage node_modules test-results.xml generated",
-    "directory-openapi": "npx openapi-typescript ../../../packages/fdc3-standard/src/app-directory/specification/appd.schema.json --output generated/directory-schema.ts",
+    "directory-openapi": "npx openapi-typescript ../../../packages/fdc3-standard/src/app-directory/specification/appd.schema.json -o generated/directory-schema.ts",
     "test": "npm run directory-openapi && tsc && vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
@@ -27,40 +27,30 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@finos/fdc3-standard": "2.2.2-beta.1",
+    "@finos/fdc3-standard": "3.0.0-alpha.2",
     "@types/uuid": "^10.0.0",
-    "uuid": "^9.0.1"
+    "uuid": "^14.0.1"
   },
   "devDependencies": {
-    "@cucumber/cucumber": "10.3.1",
-    "@cucumber/html-formatter": "11.0.4",
+    "@cucumber/cucumber": "13.1.1",
+    "@cucumber/html-formatter": "23.1.0",
     "@cucumber/messages": "^28.1.0",
-    "@cucumber/pretty-formatter": "1.0.1",
-    "@eslint/js": "^9.19.0",
-    "@finos/testing": "2.2.2-beta.1",
+    "@cucumber/pretty-formatter": "4.0.0",
+    "@finos/testing": "3.0.0-alpha.2",
     "@types/expect": "24.3.0",
-    "@types/lodash": "4.14.167",
-    "@types/node": "^20.16.11",
+    "@types/lodash": "4.17.24",
     "@types/uuid": "^10.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.18.2",
-    "@typescript-eslint/parser": "^8.18.2",
-    "@vitest/coverage-v8": "^2.0.0",
     "cucumber-console-formatter": "1.0.0",
-    "eslint": "^9.32.0",
-    "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "3.3.1",
-    "globals": "^15.14.0",
-    "is-ci": "2.0.0",
+    "is-ci": "4.1.0",
     "jsonpath-plus": "^10.1.0",
-    "openapi-typescript": "^6.7.6",
-    "prettier": "3.4.1",
-    "quickpickle": "^1.0.0",
-    "rimraf": "^6.0.1",
+    "openapi-typescript": "^7.13.0",
+    "quickpickle": "^1.6.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3",
-    "typescript-eslint": "^8.17.0",
-    "uuid": "^9.0.1",
-    "vitest": "^2.0.0"
+    "uuid": "^14.0.1"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

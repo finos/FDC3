@@ -1,6 +1,6 @@
 import { Given } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
-import { handleResolve } from '@finos/testing';
+import { handleResolve, parseAntiReplayClaims } from '@finos/testing';
 import { Context } from '@finos/fdc3-context';
 import { ContextMetadata, ResolveError } from '@finos/fdc3-standard';
 import { IntentEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
@@ -12,6 +12,10 @@ Given('app {string}', (world: CustomWorld, appStr: string) => {
     app,
   });
   world.props[instanceId] = app;
+});
+
+Given('{string} is app identifier {string}', (world: CustomWorld, field: string, appId: string) => {
+  world.props[field] = { appId };
 });
 
 Given('app {string} resolves intent {string}', (world: CustomWorld, appStr: string, intent: string) => {
@@ -82,6 +86,26 @@ Given('Raise Intent returns a context of {string}', (world: CustomWorld, result:
   });
 });
 
+Given(
+  'Raise Intent returns a context of {string} with traceId {string} and signature {string} and antiReplay claims {string}',
+  (world: CustomWorld, result: string, traceId: string, signature: string, antiReplayClaims: string) => {
+    world.messaging?.setIntentResult({
+      context: handleResolve(result, world),
+      resultMetadata: {
+        source: { appId: 'some-app', instanceId: 'abc123' },
+        timestamp: new Date('2024-01-01T00:00:00Z'),
+        traceId,
+        signature: {
+          protected: signature + ' (protected part)',
+          signature: signature + ' (signature part)',
+        },
+        antiReplay: parseAntiReplayClaims(antiReplayClaims),
+        custom: { priority: 'high' },
+      },
+    });
+  }
+);
+
 Given('Raise Intent will throw a {string} error', (world: CustomWorld, error: ResolveError) => {
   world.messaging?.setIntentResult({
     error,
@@ -147,13 +171,14 @@ Given(
         timestamp: new Date(),
       },
       payload: {
-        originatingApp: {
-          appId: 'some-app-id',
-          desktopAgent: 'some-desktop-agent',
-        },
         context: handleResolve(context, world),
         intent,
         raiseIntentRequestUuid: 'request-id',
+        metadata: {
+          timestamp: new Date(),
+          source: world.messaging!.getAppIdentifier(),
+          traceId: world.messaging!.createUUID(),
+        },
       },
     };
 
@@ -201,3 +226,18 @@ Given('{string} returns a void promise', (world: CustomWorld, intentHandlerName:
     return null;
   };
 });
+
+Given(
+  '{string} is metadata with traceId {string} and signature {string} and antiReplay claims {string}',
+  (world: CustomWorld, field: string, traceId: string, signature: string, antiReplayClaims: string) => {
+    world.props[field] = {
+      traceId,
+      signature: {
+        protected: signature + ' (protected part)',
+        signature: signature + ' (signature part)',
+      },
+      antiReplay: parseAntiReplayClaims(antiReplayClaims),
+      custom: { priority: 'high' },
+    };
+  }
+);

@@ -77,14 +77,7 @@ The time range over which the interaction occurred
 <details>
   <summary><code>interactionType</code> <strong>(required)</strong></summary>
 
-**Any of:**
-
-- **type**: `string` with values:
-- `Instant Message`,
-- `Email`,
-- `Call`,
-- `Meeting`
-- **type**: `string`
+**type**: `string`
 
 `interactionType` SHOULD be one of `'Instant Message'`, `'Email'`, `'Call'`, or `'Meeting'` although other string values are permitted.
 

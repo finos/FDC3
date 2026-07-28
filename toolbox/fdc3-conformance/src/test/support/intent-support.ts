@@ -2,13 +2,13 @@ import { assert, expect } from 'chai';
 import {
   AppIdentifier,
   Channel,
+  ContextMetadata,
   IntentResolution,
   IntentResult,
   Listener,
   PrivateChannel,
   Context,
   DesktopAgent,
-  getOrCreateChannel,
 } from '@finos/fdc3';
 import { APIDocumentation } from './apiDocuments';
 import constants from '../../constants';
@@ -115,6 +115,38 @@ export class RaiseIntentControl {
     return intentResult;
   }
 
+  getIntentResultMetadata(intentResolution: IntentResolution): Promise<ContextMetadata> {
+    const timeout = this.failIfResponseTimesOut();
+    const metadataPromise = intentResolution.getResultMetadata();
+    if (typeof metadataPromise.then !== 'function') {
+      assert.fail(
+        `intentResolution.getResultMetadata() did not return a Promise: ${JSON.stringify(metadataPromise, null, 2)}`
+      );
+    }
+    clearTimeout(timeout);
+    return metadataPromise;
+  }
+
+  validateResultMetadata(metadata: ContextMetadata, expectedSource?: AppIdentifier): void {
+    expect(metadata, 'getResultMetadata() should resolve to a ContextMetadata object').to.be.an('object');
+    expect(metadata).to.have.property('source');
+    expect(metadata).to.have.property('timestamp');
+    expect(metadata).to.have.property('traceId');
+    expect(typeof metadata.traceId).to.equal('string');
+    expect(metadata.traceId).to.not.equal('');
+    if (expectedSource) {
+      expect(metadata.source.appId, 'resultMetadata.source.appId should match the resolving app').to.equal(
+        expectedSource.appId
+      );
+      if (expectedSource.instanceId) {
+        expect(
+          metadata.source.instanceId,
+          'resultMetadata.source.instanceId should match the resolving app instance'
+        ).to.equal(expectedSource.instanceId);
+      }
+    }
+  }
+
   failIfResponseTimesOut() {
     const timeout = window.setTimeout(() => {
       assert.fail(
@@ -164,9 +196,7 @@ export class RaiseIntentControl {
         break;
       }
       case IntentResultType.PrivateChannel: {
-        expect(intentResult).to.have.property('onAddContextListener');
-        expect(intentResult).to.have.property('onUnsubscribe');
-        expect(intentResult).to.have.property('onDisconnect');
+        expect(intentResult).to.have.property('addEventListener');
         expect(intentResult).to.have.property('disconnect');
         expect(intentResult).to.have.property('id');
         expect(intentResult).to.have.property('type');
@@ -199,7 +229,7 @@ export class RaiseIntentControl {
   };
 
   async listenForError() {
-    const appControlChannel = await getOrCreateChannel('app-control');
+    const appControlChannel = await this.fdc3.getOrCreateChannel(constants.ControlChannel);
     return appControlChannel.addContextListener('error', (context: AppControlContext) => {
       assert.fail(context.errorMessage);
     });
@@ -227,7 +257,7 @@ export class RaiseIntentControl {
 
     const timeout = window.setTimeout(() => {
       wrapper.reject(
-        'Timeout: did not receive all 5 streamed contexts back from the mock app. onAddContextListener may not have been triggered'
+        'Timeout: did not receive all 5 streamed contexts back from the mock app. addEventListener("addContextListener") may not have been triggered'
       );
     }, constants.WaitTime);
 
@@ -293,7 +323,7 @@ export enum Intent {
   bTestingIntent = 'bTestingIntent',
   cTestingIntent = 'cTestingIntent',
   kTestingIntent = 'kTestingIntent',
-  lTestingIntent = 'LTestingIntent',
+  lTestingIntent = 'lTestingIntent',
   sharedTestingIntent1 = 'sharedTestingIntent1',
   sharedTestingIntent2 = 'sharedTestingIntent2',
   privateChannelIsPrivate = 'privateChannelIsPrivate',

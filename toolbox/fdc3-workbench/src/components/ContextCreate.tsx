@@ -134,11 +134,11 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
   });
   const [contextError, setContextError] = useState<string | false>(false);
   const [open, setOpen] = useState(false);
-  const [deleteContext, setDeleteContext] = useState<object | null>(null);
+  const [deleteContext, setDeleteContext] = useState<{ id: string; name?: string } | null>(null);
   const [disabled, setDisabled] = useState(true);
-  const gridRef = useRef<any>(null);
+  const gridRef = useRef<HTMLTableRowElement>(null);
 
-  const handleClickOpen = (id: string, name: any) => {
+  const handleClickOpen = (id: string, name: string | undefined) => {
     setOpen(true);
     setDeleteContext({ id, name });
   };
@@ -151,7 +151,7 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
     setContextError(errors[0]);
   };
 
-  const handleChangeExample = (newValue: any) => {
+  const handleChangeExample = (newValue: OptionType | null) => {
     setExampleName(newValue);
 
     if (newValue?.value) {
@@ -173,7 +173,7 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
       return count;
     }, 0);
 
-  const handleChangeExampleName = (newValue: any) => {
+  const handleChangeExampleName = (newValue: OptionType) => {
     setDisabled(false);
     setContextError(false);
     setExampleName(newValue);
@@ -182,8 +182,8 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
     else if (found(newValue.value) >= 1) setDuplicateName(true);
   };
 
-  const handleContextChange = (json: ContextType) => {
-    setContextValue(json);
+  const handleContextChange = (json: object | null) => {
+    setContextValue(json as ContextType | null);
     setContextError(false);
   };
 
@@ -256,7 +256,7 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
     }
   };
 
-  const handleDuplicateExample = (newValue: any, count = 0) => {
+  const handleDuplicateExample = (newValue: OptionType, count = 0) => {
     const copyName = `${newValue.value}-copy${count > 0 ? ` (${count})` : ''}`;
     if (newValue?.value && !found(copyName)) {
       setExampleName({ value: copyName, title: copyName });
@@ -294,7 +294,7 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
     handleCreateExample();
   };
 
-  const handleDeleteExample = (contextId: any) => {
+  const handleDeleteExample = (contextId: string) => {
     const selectedContext = contextStore.contextsList.find(({ id }) => id === contextId);
     if (selectedContext) {
       contextStore.deleteContextItem(selectedContext);

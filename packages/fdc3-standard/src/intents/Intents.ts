@@ -33,7 +33,7 @@ export type StandardIntent =
 export type Intent = StandardIntent | (string & {});
 
 /**
- * @deprecated Use {@link StandardIntent} instead
+ * @deprecated Since FDC3 2.2. Use {@link StandardIntent} instead.
  */
 export enum Intents {
   CreateInteraction = 'CreateInteraction',

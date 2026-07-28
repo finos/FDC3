@@ -28,12 +28,14 @@ const classes = {
     padding: 0,
     width: '100%',
   },
-  listItem: (theme: Theme) => ({
-    padding: 0,
-    '&.MuiListItem-secondaryAction': {
-      paddingRight: theme.spacing(6),
-    },
-  }),
+  listItem: (theme: Theme) => {
+    return {
+      padding: 0,
+      '&.MuiListItem-secondaryAction': {
+        paddingRight: theme.spacing(6),
+      },
+    };
+  },
   listAction: {
     top: '2px',
     transform: 'none',

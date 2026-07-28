@@ -130,6 +130,7 @@ export class RaiseIntentForContext implements AutomaticResponse {
         },
         payload: {
           intentResult: result,
+          ...(result.resultMetadata && { resultMetadata: result.resultMetadata }),
         },
         type: 'raiseIntentResultResponse',
       };

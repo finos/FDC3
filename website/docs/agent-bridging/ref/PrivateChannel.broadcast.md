@@ -47,12 +47,14 @@ fdc3.addIntentListener("QuoteStream", async (context) => {
     const symbol = context.id.ticker;
 
     // This gets called when the remote side adds a context listener
-    const addContextListener = privateChannel.onAddContextListener((contextType) => {
-        // broadcast price quotes as they come in from our quote feed
-        feed.onQuote(symbol, (price) => {
-            privateChannel.broadcast({ type: "price", price});
-        });
-    });
+    const addContextListener = await privateChannel.addEventListener("addContextListener",
+        (event) => {
+            // broadcast price quotes as they come in from our quote feed
+            feed.onQuote(symbol, (price) => {
+                privateChannel.broadcast({ type: "price", price});
+            });
+        }
+    );
 
     ...
 

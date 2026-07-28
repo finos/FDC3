@@ -1,4 +1,4 @@
-import { Channel, Context, DesktopAgent } from '@finos/fdc3';
+import { Channel, Context, DesktopAgent, Listener } from '@finos/fdc3';
 import { AppControlContext, AppControlContextListener } from '../context-types';
 import constants from '../constants';
 import { wait } from '../utils';
@@ -7,9 +7,18 @@ declare let fdc3: DesktopAgent;
 
 export async function closeMockAppWindow(testId: string, count: number = 1) {
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-  const { listenerPromise: contextPromise } = await waitForContext('windowClosed', testId, appControlChannel, count);
+  const { listenerPromise: contextPromise, listener } = await waitForContext(
+    'windowClosed',
+    testId,
+    appControlChannel,
+    count
+  );
   await broadcastCloseWindow(testId);
-  await contextPromise;
+  try {
+    await contextPromise;
+  } finally {
+    listener.unsubscribe();
+  }
   await wait(constants.WindowCloseWaitTime); // wait for window to close
 }
 
@@ -26,7 +35,7 @@ export const waitForContext = async (
   testId: string,
   channel: Channel,
   count = 1
-): Promise<AppControlContextListener> => {
+): Promise<AppControlContextListener & { listener: Listener }> => {
   let promiseResolve: (c: Context) => void;
   let promiseReject: (x: unknown) => void;
 
@@ -41,23 +50,22 @@ export const waitForContext = async (
     }
   }, 1000);
 
-  return channel
-    .addContextListener(contextType, ctx => {
-      if (ctx['testId'] == testId) {
-        console.log(`Received ${contextType}`);
-        count--;
-        if (count == 0) {
-          promiseResolve(ctx);
-        } else {
-          console.log(`Waiting for ${count} more ${contextType}`);
-        }
+  const listener = await channel.addContextListener(contextType, ctx => {
+    if (ctx['testId'] == testId) {
+      console.log(`Received ${contextType}`);
+      count--;
+      if (count == 0) {
+        promiseResolve(ctx);
       } else {
-        console.log(`Wrong test id expected:  ${testId} got: ${ctx['testId']}`);
+        console.log(`Waiting for ${count} more ${contextType}`);
       }
-    })
-    .then(() => {
-      return {
-        listenerPromise,
-      };
-    });
+    } else {
+      console.log(`Wrong test id expected:  ${testId} got: ${ctx['testId']}`);
+    }
+  });
+
+  return {
+    listenerPromise,
+    listener,
+  };
 };

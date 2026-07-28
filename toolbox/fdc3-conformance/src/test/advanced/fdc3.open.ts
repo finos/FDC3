@@ -79,28 +79,17 @@ export default async () => {
     it(AOpensBWithWrongContext, async () => {
       await control.addListenerAndFailIfReceived();
       const targetApp = control.createTargetAppIdentifier(openApp.b.id);
-      let closed = false;
-      setTimeout(() => {
-        if (!closed) {
-          control.closeMockApp(AOpensBWithWrongContext);
-          closed = true;
-        }
-      }, constants.NoListenerTimeout + 100);
-
       await control.expectAppTimeoutErrorOnOpen(targetApp);
-      if (!closed) {
-        control.closeMockApp(AOpensBWithWrongContext);
-        closed = true;
-      }
+      await control.closeMockApp(AOpensBWithWrongContext);
     }).timeout(constants.NoListenerTimeout + 2000);
 
     const AOpensB4 =
-      '(AOpensB4) Can open app B from app A with appId as config.target, and recieves the same appId and also contains InstanceId';
+      '(AOpensB4) Can open app B from app A with appId as config.target, and receives the same appId and also contains InstanceId';
     it(AOpensB4, async () => {
       const result = control.contextReceiver('fdc3-conformance-opened');
       const targetApp = { appId: openApp.b.id };
       const instanceIdentifier = await control.openMockApp(targetApp);
-      expect(appIdMatches(instanceIdentifier.appId, openApp.b.id)).to.be.true;
+      expect(appIdMatches(instanceIdentifier.appId, openApp.b.id)).to.equal(true);
       expect(instanceIdentifier).to.have.property('instanceId');
       await result;
       await control.closeMockApp(AOpensB4);

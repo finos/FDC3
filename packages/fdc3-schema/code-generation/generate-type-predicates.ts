@@ -1,15 +1,17 @@
-import {
-  InterfaceDeclaration,
-  KindToNodeMappings,
-  MethodDeclaration,
-  Project,
-  SyntaxKind,
-  TypeAliasDeclaration,
-} from 'ts-morph';
-import messageAwait from 'message-await';
+import type { InterfaceDeclaration, KindToNodeMappings, MethodDeclaration, TypeAliasDeclaration } from 'ts-morph';
+import { createRequire } from 'node:module';
+import { Project, SyntaxKind } from 'ts-morph';
 
-// Normalise export of message-await so it works with tsx and ts-node
-const print: typeof messageAwait = (messageAwait as any).default ?? messageAwait;
+// CJS default export (message-await) via require so emitted ESM runs under plain node (no tsx/esbuild)
+const requireModule = createRequire(import.meta.url);
+const messageAwaitMod = requireModule('message-await') as { default?: (...args: unknown[]) => unknown };
+const print = (messageAwaitMod.default ?? messageAwaitMod) as (
+  message: string,
+  options?: { spinner?: boolean }
+) => {
+  updateMessage: (message: string, force?: boolean) => void;
+  complete: (success: boolean, message: string) => void;
+};
 
 // open a new project with just BrowserTypes as the only source file
 const project = new Project();
@@ -40,7 +42,7 @@ function writeMessageUnionTypes() {
 }
 
 function writeMessageUnion(unionName: string, typeUnionName: string, typeAliases: TypeAliasDeclaration[]) {
-  let awaitMessage = print(`Writing ${unionName} (finding types)`, { spinner: true });
+  const awaitMessage = print(`Writing ${unionName} (finding types)`, { spinner: true });
 
   // get the types listed in the types union type
   // i.e. look for: export type RequestMessageType = "addContextListenerRequest" | "whatever"
@@ -63,7 +65,7 @@ function writeMessageUnion(unionName: string, typeUnionName: string, typeAliases
  * Writes type predicates for all interfaces found that have a matching convert function
  */
 function writeTypePredicates() {
-  let awaitMessage = print(`Writing Type Predicates (finding convert functions)`, { spinner: true });
+  const awaitMessage = print(`Writing Type Predicates (finding convert functions)`, { spinner: true });
 
   // get a list of all conversion functions in the Convert class that return a string
   const convert = sourceFile.getClass('Convert');
@@ -74,7 +76,7 @@ function writeTypePredicates() {
   awaitMessage.updateMessage(`Writing Type Predicates (finding message interfaces)`, true);
 
   //get a list of all interfaces in the file
-  let messageInterfaces = sourceFile.getChildrenOfKind(SyntaxKind.InterfaceDeclaration);
+  const messageInterfaces = sourceFile.getChildrenOfKind(SyntaxKind.InterfaceDeclaration);
 
   // generate a list of Interfaces that have an associated conversion function
   const matchedInterfaces = convertFunctions
@@ -136,9 +138,9 @@ function findUnionType(typeAliases: TypeAliasDeclaration[], name: string): strin
  * @returns
  */
 function findExisting<T extends SyntaxKind>(name: string, kind: T, allDeclarationsOfType?: KindToNodeMappings[T][]) {
-  allDeclarationsOfType = allDeclarationsOfType ?? sourceFile.getChildrenOfKind(kind);
+  const declarations = allDeclarationsOfType ?? sourceFile.getChildrenOfKind(kind);
 
-  return sourceFile.getChildrenOfKind(kind).filter(child => {
+  return declarations.filter(child => {
     const identifier = child.getDescendantsOfKind(SyntaxKind.Identifier)[0];
 
     return identifier?.getText() === name;

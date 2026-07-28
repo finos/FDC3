@@ -8,25 +8,30 @@ import {
 import { Messaging } from '../Messaging.js';
 import { AbstractListener } from './AbstractListener.js';
 
+const handleChannelChangedEvent = (handler: EventHandler, m: ChannelChangedEvent) => {
+  const currentChannelId = m.payload.currentChannelId ?? m.payload.newChannelId ?? null;
+
+  const channelChangedEvent: FDC3ChannelChangedEvent = {
+    type: 'userChannelChanged',
+    details: {
+      currentChannelId,
+    },
+  };
+
+  handler(channelChangedEvent);
+};
+
 function wrapHandler(handler: EventHandler): (msg: AgentEventMessage) => void {
   return (m: AgentEventMessage) => {
-    //backwards compatibility, see issue #1585
-    if (m.type === 'channelChangedEvent' && m.payload.newChannelId) {
-      const restructured: FDC3ChannelChangedEvent = {
-        type: 'userChannelChanged',
-        details: {
-          currentChannelId: m.payload.newChannelId,
-        },
-      };
-
-      handler(restructured);
-    } else {
-      // currently unused but meeting issue #1585
-      handler({
-        type: m.type,
-        details: m.payload,
-      });
+    if (m.type === 'channelChangedEvent') {
+      return handleChannelChangedEvent(handler, m);
     }
+
+    //forward other events
+    handler({
+      type: m.type,
+      details: m.payload,
+    });
   };
 }
 

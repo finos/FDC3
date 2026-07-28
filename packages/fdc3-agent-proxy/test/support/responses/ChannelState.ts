@@ -26,8 +26,9 @@ export class ChannelState implements AutomaticResponse {
   private listeners: { [channel: string]: string[] } = {};
   private contextHistory: { [channel: string]: Context[] } = {};
 
-  constructor(contextHistory: { [channel: string]: Context[] }) {
+  constructor(contextHistory: { [channel: string]: Context[] }, initialChannelId?: string) {
     this.contextHistory = contextHistory;
+    this.channelId = initialChannelId ?? null;
   }
 
   filter(t: string) {
@@ -127,6 +128,18 @@ export class ChannelState implements AutomaticResponse {
       type: 'getCurrentContextResponse',
       payload: {
         context: last ?? null,
+        metadata: last
+          ? {
+              source: { appId: 'test-app', instanceId: 'test-instance' },
+              timestamp: new Date(),
+              traceId: 'test-trace-id',
+              signature: {
+                protected: 'test-signature (protected part)',
+                signature: 'test-signature (signature part)',
+              },
+              custom: { key: 'value' },
+            }
+          : null,
       },
     };
   }

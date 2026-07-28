@@ -33,6 +33,20 @@ export class Fdc3CommandExecutor {
           await channelService.broadcastContextItem(contextType, channel!, config.historyItems ?? 1, config.testId);
           break;
         }
+        case commands.broadcastInstrumentWithTraceId: {
+          await channelService.broadcastContextItemWithMetadata('fdc3.instrument', channel!, config.testId, {
+            traceId: 'test-trace-123',
+          });
+          break;
+        }
+        case commands.broadcastInstrumentWithSignatureCustom: {
+          await channelService.broadcastContextItemWithMetadata('fdc3.instrument', channel!, config.testId, {
+            signature: { protected: 'protected-abc', signature: 'signature-abc' },
+            antiReplay: { exp: 1234, iat: 2345, jti: 'anti-replay-123' },
+            custom: { region: 'EMEA' },
+          });
+          break;
+        }
       }
     }
 

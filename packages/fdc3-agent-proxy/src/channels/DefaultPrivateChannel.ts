@@ -1,11 +1,4 @@
-import {
-  ApiEvent,
-  ContextHandler,
-  EventHandler,
-  Listener,
-  PrivateChannel,
-  PrivateChannelEventTypes,
-} from '@finos/fdc3-standard';
+import { ContextHandler, EventHandler, Listener, PrivateChannel, PrivateChannelEventTypes } from '@finos/fdc3-standard';
 import { DefaultChannel } from './DefaultChannel.js';
 import { Messaging } from '../Messaging.js';
 import {
@@ -51,52 +44,6 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
     }
     await a.register();
     return a;
-  }
-
-  //implementations of the deprecated listener functions
-  onAddContextListener(handler: (contextType?: string) => void): Listener {
-    //Adapt handler type for differences between addEventListener and onAddContextListener handler types
-    const adaptorHandler: EventHandler = (event: ApiEvent) => {
-      handler(event.details.contextType ?? undefined);
-    };
-    const l = new PrivateChannelAddContextEventListener(
-      this.messaging,
-      this.messageExchangeTimeout,
-      this.id,
-      adaptorHandler
-    );
-    l.register();
-    return l;
-  }
-
-  onUnsubscribe(handler: (contextType?: string) => void): Listener {
-    //Adapt handler type for differences between addEventListener and onUnsubscribeListener handler types
-    const adaptorHandler: EventHandler = (event: ApiEvent) => {
-      handler(event.details.contextType ?? undefined);
-    };
-    const l = new PrivateChannelUnsubscribeEventListener(
-      this.messaging,
-      this.messageExchangeTimeout,
-      this.id,
-      adaptorHandler
-    );
-    l.register();
-    return l;
-  }
-
-  onDisconnect(handler: () => void): Listener {
-    //Adapt handler type for differences between addEventListener and onDisconnectListener handler types
-    const adaptorHandler: EventHandler = () => {
-      handler();
-    };
-    const l = new PrivateChannelDisconnectEventListener(
-      this.messaging,
-      this.messageExchangeTimeout,
-      this.id,
-      adaptorHandler
-    );
-    l.register();
-    return l;
   }
 
   async disconnect(): Promise<void> {

@@ -1,4 +1,5 @@
 import { DesktopAgent, getAgent, Listener } from '@finos/fdc3';
+import { expect } from 'chai';
 import { closeMockAppWindow } from '../fdc3-conformance-utils';
 import {
   RaiseIntentControl,
@@ -172,4 +173,67 @@ export default async () =>
         control.validateIntentResult(intentResult, IntentResultType.Context, ContextType.testContextY);
       }
     }).timeout(80000);
+
+    const RaiseIntentContextResultMetadata =
+      '(RaiseIntentContextResultMetadata) getResultMetadata returns DA-generated metadata for a context result';
+    it(RaiseIntentContextResultMetadata, async () => {
+      errorListener = await control.listenForError();
+      const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent1, ContextType.testContextY);
+      control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
+      await control.getIntentResult(intentResolution);
+      const metadata = await control.getIntentResultMetadata(intentResolution);
+      control.validateResultMetadata(metadata, intentResolution.source);
+    });
+
+    const RaiseIntentContextWithMetadataResult =
+      '(RaiseIntentContextWithMetadataResult) getResult returns plain Context and getResultMetadata returns merged metadata when handler returns ContextWithMetadata';
+    it(RaiseIntentContextWithMetadataResult, async () => {
+      errorListener = await control.listenForError();
+      // IntentAppB is expected to return a ContextWithMetadata result for sharedTestingIntent1
+      // when the context id contains a "returnWithMetadata" flag
+      const intentResolution = await control.raiseIntent(
+        Intent.sharedTestingIntent1,
+        ContextType.testContextY,
+        { appId: IntentApp.IntentAppB },
+        0,
+        { returnWithMetadata: 'true' }
+      );
+      control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
+      const intentResult = await control.getIntentResult(intentResolution);
+      // getResult() must return only the Context, not the ContextWithMetadata wrapper
+      control.validateIntentResult(intentResult, IntentResultType.Context, ContextType.testContextY);
+      const metadata = await control.getIntentResultMetadata(intentResolution);
+      control.validateResultMetadata(metadata, intentResolution.source);
+      // DA-generated traceId must be present
+      expect(metadata.traceId, 'traceId should be a non-empty string').to.be.a('string').and.not.equal('');
+    });
+
+    const RaiseIntentChannelResultMetadata =
+      '(RaiseIntentChannelResultMetadata) getResultMetadata returns DA-generated metadata for a channel result';
+    it(RaiseIntentChannelResultMetadata, async () => {
+      errorListener = await control.listenForError();
+      const receiver = control.receiveContext(
+        ControlContextType.SHARED_TESTING_INTENT_2_RESULT_SENT,
+        constants.WaitTime
+      );
+      const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent2, ContextType.testContextY, {
+        appId: IntentApp.IntentAppE,
+      });
+      control.validateIntentResolution(IntentApp.IntentAppE, intentResolution);
+      await receiver;
+      await control.getIntentResult(intentResolution);
+      const metadata = await control.getIntentResultMetadata(intentResolution);
+      control.validateResultMetadata(metadata, intentResolution.source);
+    });
+
+    const RaiseIntentVoidResultMetadata =
+      '(RaiseIntentVoidResultMetadata) getResultMetadata returns DA-generated metadata for a void result';
+    it(RaiseIntentVoidResultMetadata, async () => {
+      errorListener = await control.listenForError();
+      const intentResolution = await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextX);
+      control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
+      await control.getIntentResult(intentResolution);
+      const metadata = await control.getIntentResultMetadata(intentResolution);
+      control.validateResultMetadata(metadata, intentResolution.source);
+    });
   });

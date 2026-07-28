@@ -96,6 +96,52 @@
           "unevaluatedProperties": {
             "type": "string"
           }
+        },
+        "classification": {
+          "title": "Instrument Classification",
+          "description": "@experimental The `classification` map can be used to specify the categorization of the instrument and help achieve interoperability between disparate data sources.",
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "title": "FDC3 Instrument Classification Name",
+              "description": "Optional human-readable classification, to be used if no specific data classification is available."
+            },
+            "FDS_TYPE": {
+              "title": "FactSet Type",
+              "description": "FactSet classification for the instrument.",
+              "type": "string",
+              "enum": [
+                "commodity",
+                "commodityIndex",
+                "corporateDebt",
+                "creditDefaultSwapIndex",
+                "deal",
+                "debt",
+                "debtIndex",
+                "etf",
+                "fixedIncome",
+                "future",
+                "governmentBenchmarkDebt",
+                "loan",
+                "mortgageBackedSecurity",
+                "municipalDebt",
+                "mutualFund",
+                "mutualFundIndex",
+                "option",
+                "otherDebt",
+                "ownershipPrivateCompany",
+                "pevcFirm",
+                "pevcFund",
+                "privateCompany",
+                "publicCompany",
+                "publicCompanyIndex",
+                "sovereignDebt",
+                "structuredProduct",
+                "unknown"
+              ]
+            }
+          }
         }
       },
       "required": [
@@ -115,6 +161,9 @@
       },
       "market": {
           "MIC": "XNAS"
+      },
+      "classification": {
+          "name": "publicCompany"
       }
     }
   ]

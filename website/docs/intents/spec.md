@@ -160,6 +160,7 @@ A list of standardized intents are defined in the following pages:
 
 - [`CreateInteraction`](ref/CreateInteraction)
 - [`CreateOrUpdateProfile`](ref/CreateOrUpdateProfile)
+- [`GetUser`](ref/GetUser)
 - [`StartCall`](ref/StartCall)
 - [`StartChat`](ref/StartChat)
 - [`StartEmail`](ref/StartEmail)

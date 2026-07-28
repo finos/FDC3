@@ -10,6 +10,7 @@ export { AppIdentifier } from './api/AppIdentifier.js';
 export * from './api/AppIntent.js';
 export * from './api/AppMetadata.js';
 export * from './api/Channel.js';
+export { type Context } from '@finos/fdc3-context';
 export * from './api/ContextMetadata.js';
 export * from './api/DesktopAgent.js';
 export * from './api/DisplayMetadata.js';

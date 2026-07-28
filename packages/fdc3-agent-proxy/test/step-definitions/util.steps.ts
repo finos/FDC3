@@ -1,10 +1,16 @@
-import { When } from 'quickpickle';
+import { Given, When } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
 import { throwIfUndefined } from '../../src/util/throwIfUndefined.js';
 import { AgentResponseMessage } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { LogLevel, OpenError } from '@finos/fdc3-standard';
 import { expect } from 'vitest';
 import { Logger } from '../../src/util/Logger.js';
+
+Given('close will fail', (world: CustomWorld) => {
+  if (world.messaging) {
+    world.messaging.closeShouldFail = true;
+  }
+});
 
 When('I call throwIfUndefined it throws if a specified property is not defined', async (world: CustomWorld) => {
   let thrown: Error | null = null;

@@ -1,0 +1,34 @@
+.receiveComponent {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.channelInfo {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.receiveLog {
+  background-color: white;
+  text-align: left;
+  word-wrap: normal;
+  font-family: monospace;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1em;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.message {
+  padding: 5px;
+  border-radius: 5px;
+  margin: 5px;
+  overflow-x: auto;
+}

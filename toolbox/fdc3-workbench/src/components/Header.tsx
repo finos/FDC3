@@ -69,11 +69,16 @@ const classes = {
 };
 
 export const Header = (props: { fdc3Available: boolean }) => {
-  const [appInfo, setAppInfo] = useState<any>();
+  const [appInfo, setAppInfo] = useState<{
+    fdc3Version: string;
+    provider: string;
+    providerVersion: string;
+    appMetadata: { appId: string; version: string };
+  }>();
   const params = new URLSearchParams(window.location.search);
   const paramVersion = params.get('fdc3Version')?.replace(/\/$/, '') || '';
   const [chosenVersion, setChosenVersion] = useState<string>('2.0');
-  let warningText = `Your FDC3 version (${appInfo?.fdc3Version}) doesn't match the version of the FDC3 Workbench you are using (${chosenVersion})`;
+  const warningText = `Your FDC3 version (${appInfo?.fdc3Version}) doesn't match the version of the FDC3 Workbench you are using (${chosenVersion})`;
   const supportedVersion = ['2.0', '1.2'];
 
   useEffect(() => {
@@ -99,7 +104,7 @@ export const Header = (props: { fdc3Available: boolean }) => {
             },
           };
 
-          let mergedAppMetaData = Object.assign({}, displayInfo.appMetadata, implInfo.appMetadata);
+          const mergedAppMetaData = Object.assign({}, displayInfo.appMetadata, implInfo.appMetadata);
           displayInfo = Object.assign(displayInfo, implInfo, { appMetadata: mergedAppMetaData });
 
           setAppInfo(displayInfo);
@@ -109,7 +114,7 @@ export const Header = (props: { fdc3Available: boolean }) => {
 
         if (paramVersion) {
           setChosenVersion(paramVersion);
-        } else if (implInfo?.fdc3Version && implInfo.fdc3Version == '2.1') {
+        } else if (implInfo?.fdc3Version && (implInfo.fdc3Version == '2.1' || implInfo.fdc3Version == '2.2')) {
           setChosenVersion('2.0');
         } else if (implInfo?.fdc3Version && supportedVersion.includes(implInfo.fdc3Version)) {
           setChosenVersion(implInfo.fdc3Version);
@@ -169,7 +174,7 @@ export const Header = (props: { fdc3Available: boolean }) => {
                   <th scope="row">FDC3 Version</th>
                   {appInfo?.fdc3Version ? (
                     chosenVersion === appInfo.fdc3Version ||
-                    (chosenVersion === '2.0' && appInfo.fdc3Version === '2.1') ? (
+                    (chosenVersion === '2.0' && (appInfo.fdc3Version === '2.1' || appInfo.fdc3Version === '2.2')) ? (
                       <td>{appInfo.fdc3Version}</td>
                     ) : (
                       <Box component="td" sx={classes.warningText}>

@@ -100,6 +100,31 @@ export async function callWithMethodAndThreeParams(
   }
 }
 
+export async function callWithMethodAndFourParams(
+  world: PropsWorldLike,
+  field: string,
+  fnName: string,
+  param1: string,
+  param2: string,
+  param3: string,
+  param4: string
+): Promise<void> {
+  try {
+    const object = handleResolve(field, world) as Record<string, (...args: unknown[]) => unknown>;
+    const fn = object[fnName];
+    const result = await fn.call(
+      object,
+      handleResolve(param1, world),
+      handleResolve(param2, world),
+      handleResolve(param3, world),
+      handleResolve(param4, world)
+    );
+    world.props['result'] = result;
+  } catch (error) {
+    world.props['result'] = error;
+  }
+}
+
 export function referToAs(world: PropsWorldLike, from: string, to: string): void {
   world.props[to] = handleResolve(from, world);
 }

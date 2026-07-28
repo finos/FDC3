@@ -1,0 +1,15 @@
+{
+  "extends": "../../../tsconfig.root.json",
+  "compilerOptions": {
+    "composite": false,
+    "declaration": false,
+    "noEmit": false,
+    "outDir": "./.cache",
+    "rootDir": ".",
+    "skipLibCheck": true,
+    "types": ["node"],
+    "target": "ES2022",
+    "lib": ["ES2022"]
+  },
+  "include": ["./generate-type-predicates.ts"]
+}

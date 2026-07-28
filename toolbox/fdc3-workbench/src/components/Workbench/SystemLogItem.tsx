@@ -26,15 +26,19 @@ const classes = {
   textField: {
     width: '100%',
   },
-  input: (theme: Theme) => ({
-    fontSize: '14px',
-    color: theme.palette.text.primary,
-  }),
+  input: (theme: Theme) => {
+    return {
+      fontSize: '14px',
+      color: theme.palette.text.primary,
+    };
+  },
 } as const;
 
-const getMessageSx = (logItem: LogItem): SxProps<Theme> => ({
-  color: theme => theme.palette[logItem.type].dark,
-});
+const getMessageSx = (logItem: LogItem): SxProps<Theme> => {
+  return {
+    color: theme => theme.palette[logItem.type].dark,
+  };
+};
 
 export const SystemLogItem: React.FC<SystemLogItemProps> = (props: SystemLogItemProps) => {
   const { logItem } = props;

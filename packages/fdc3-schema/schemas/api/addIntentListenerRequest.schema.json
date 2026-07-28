@@ -35,6 +35,14 @@
 					"title": "Intent name",
 					"description": "The name of the intent to listen for.",
 					"type": "string"
+				},
+				"contextTypes": {
+					"title": "Context types",
+					"description": "Optional list of context types that the listener should be invoked for. If omitted, the listener will be invoked for all context types that match the intent.",
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
 				}
 			},
 			"additionalProperties": false,

@@ -29,7 +29,6 @@ export class GetInfo implements AutomaticResponse {
           fdc3Version: '2.0',
           optionalFeatures: {
             DesktopAgentBridging: false,
-            OriginatingAppMetadata: true,
             UserChannelMembershipAPIs: true,
           },
           provider: 'cucumber-provider',

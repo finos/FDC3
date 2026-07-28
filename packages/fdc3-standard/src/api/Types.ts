@@ -5,28 +5,61 @@
 
 import { Context } from '@finos/fdc3-context';
 import { Channel } from './Channel.js';
-import { ContextMetadata } from './ContextMetadata.js';
+import { PrivateChannel } from './PrivateChannel.js';
+import type { ContextMetadata } from './ContextMetadata.js';
+
+/**
+ * Represents a context object paired with its associated metadata.
+ * Returned by `Channel.getCurrentContextWithMetadata()` to allow
+ * retrieval of both the current context and the metadata that was
+ * provided when it was broadcast.
+ */
+export type ContextWithMetadata = {
+  context: Context;
+  metadata: ContextMetadata;
+};
 
 /**
  * Describes a callback that handles a context event.
  * Used when attaching listeners for context broadcasts.
  *
- * Optional metadata about the context message, including the app that originated
- * the message, SHOULD be provided by the desktop agent implementation.
+ * The handler receives the context object and a `metadata` parameter.
+ *
+ * Metadata about each context message received, including the app that
+ * originated the message and a timestamp, MUST be provided by the
+ * Desktop Agent implementation. Apps raising intents MAY provide additional
+ * metadata (such as a traceId, signature or custom metadata), which the
+ * Desktop Agent MUST pass on to the handler.
  */
-export type ContextHandler = (context: Context, metadata?: ContextMetadata) => void;
+export type ContextHandler = (context: Context, metadata: ContextMetadata) => void;
 /**
  * Intents can return results that are either context data objects
- * or a reference to a Channel.
+ * or a reference to a Channel. Used as the return type of
+ * `IntentResolution.getResult()`.
  */
 export type IntentResult = Context | Channel | void;
 /**
  * Describes a callback that handles a context event and may return a
- * promise of a Context, Channel object or void to be returned to the
- * application that raised the intent.
+ * promise of a Context, ContextWithMetadata, Channel, PrivateChannel or void
+ * to be returned to the application that raised the intent.
  * Used when attaching listeners for raised intents.
  *
- * Optional metadata about the raised intent, including the app that originated
- * the message, SHOULD be provided by the desktop agent implementation.
+ * The handler receives the context object and a `metadata` parameter.
+ *
+ * Metadata about each intent & context message received, including the app
+ * that originated the message and a timestamp, MUST be provided by the
+ * Desktop Agent implementation. Apps raising intents MAY provide additional
+ * metadata (such as a traceId, signature or custom metadata), which the
+ * Desktop Agent MUST pass on to the handler.
+ *
+ * An `IntentHandler` MAY return a `ContextWithMetadata` object instead of a
+ * plain `Context` to include app-provided metadata (e.g. a `traceId` or
+ * `signature`) alongside the context result. The Desktop Agent will merge
+ * this with its own generated metadata and make the combined `ContextMetadata`
+ * available to the raising app via `IntentResolution.getResultMetadata()`.
+ * `IntentResolution.getResult()` will still return only the `Context` portion.
  */
-export type IntentHandler = (context: Context, metadata?: ContextMetadata) => Promise<IntentResult> | void;
+export type IntentHandler = (
+  context: Context,
+  metadata: ContextMetadata
+) => Promise<Context | ContextWithMetadata | Channel | PrivateChannel | void> | void;

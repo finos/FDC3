@@ -7,8 +7,7 @@ import { DesktopAgent, AppIdentifier } from '@finos/fdc3-standard';
 export * from '@finos/fdc3-standard';
 export { AppIdentifier };
 
-import { getAgent, fdc3Ready } from '@finos/fdc3-get-agent';
-export { getAgent, fdc3Ready };
+export { getAgent, fdc3Ready } from '@finos/fdc3-get-agent';
 
 declare global {
   interface Window {

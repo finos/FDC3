@@ -89,6 +89,24 @@ export function handleResolve(name: string, on: PropsWorldLike): any {
   }
 }
 
+/**
+ * Parses `iat/exp/jti` from a single Gherkin string (three slash-separated parts).
+ * Used by security-related step definitions alongside signature metadata.
+ */
+export function parseAntiReplayClaims(claims: string): { iat: number; exp: number; jti: string } {
+  const parts = claims.split('/');
+  if (parts.length !== 3) {
+    throw new Error(`antiReplay claims must be three slash-separated parts (iat/exp/jti), got: ${claims}`);
+  }
+  const iat = Number(parts[0]);
+  const exp = Number(parts[1]);
+  const jti = parts[2];
+  if (!Number.isFinite(iat) || !Number.isFinite(exp)) {
+    throw new Error(`antiReplay iat and exp must be finite numbers, got iat=${parts[0]}, exp=${parts[1]}`);
+  }
+  return { iat, exp, jti };
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function matchData(cw: PropsWorldLike, actual: any[], dt: HashesProvider) {
   const tableData = dt.hashes();

@@ -2,6 +2,9 @@ name: Node.js CI Tests and Coverage
 
 # Controls when the workflow will run on any branch
 on:
+  push:
+    branches:
+      - main
   pull_request:
 
 # Allows Coverage to be written back as a PR comment
@@ -13,20 +16,24 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-      with:
-        ref: ${{ github.event.pull_request.head.sha }}
-        fetch-depth: 1000
+    permissions:
+      contents: read
+      id-token: write
+      pull-requests: write
 
-    - name: Fetch base
-      run: git fetch origin ${{ github.event.pull_request.base.ref }} --depth=1000
+    steps:
+    - name: Harden runner
+      uses: step-security/harden-runner@bf7454d06d71f1098171f2acdf0cd4708d7b5920 # v2.20.0
+      with:
+        egress-policy: audit
+
+    - name: Checkout repository
+      uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
       with:
-        node-version: 20.x
+        node-version: 24.18.0
 
     - name: Install dependencies
       run: npm ci
@@ -37,41 +44,7 @@ jobs:
     - name: Run tests
       run: npm run test
 
-    - name: Merge Results
-      run: npm run merge
-
-    - name: Create Report
-      run: npm run report
-
-    - name: Create test summary
-      uses: test-summary/action@dist
+    - name: Codecov
+      uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
       with:
-        paths: |
-          packages/*/test-results.xml
-          toolbox/**/test-results.xml
-        show: "fail, skip"
-        output: test-summary.md
-      if: always()
-
-    # Only post comments if the PR came from this repo rather than a fork (the only repo with permission to do so)
-    - name: PR comment with file
-      if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
-      uses: thollander/actions-comment-pull-request@v3
-      with:
-        file-path: test-summary.md
-
-    - name: Download previous coverage
-      uses: dawidd6/action-download-artifact@v7
-      with:
-        workflow: base-coverage.yml
-        name: 'test-coverage-output'
-        path: base-artifacts
-        search_artifacts: true
-
-    - name: Report Coverage
-      if: ${{ github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository }}
-      uses: sidx1024/report-nyc-coverage-github-action@v1.2.7
-      with:
-        coverage_file: "nyc-coverage-report/coverage-summary.json"
-        base_coverage_file: "base-artifacts/coverage-summary.json"
-
+        use_oidc: true

@@ -3,6 +3,98 @@
     "$id": "https://fdc3.finos.org/schemas/next/api/api.schema.json",
     "title": "FDC3 Desktop Agent API Schemas",
     "definitions": {
+        "DetachedSignature": {
+            "type": "object",
+            "title": "Detached Signature",
+            "description": "A Detached JSON Web Signature (JWS) proving the authenticity and integrity of signed data. The signature is computed over the canonicalized JSON representation of the data (the payload is not included in the signature structure - it is the data itself). Created using the signing app's private key and verified using the public key from the JWKS URL in the protected header. See the FDC3 Security & Identity documentation for details.",
+            "properties": {
+                "protected": {
+                    "type": "string",
+                    "title": "protected",
+                    "description": "The BASE64URL-encoded protected header. When decoded, contains fields including: 'alg' (signature algorithm, e.g., 'EdDSA'), 'jku' (JSON Web Key Set URL for key verification), and 'kid' (key identifier)."
+                },
+                "signature": {
+                    "type": "string",
+                    "title": "signature",
+                    "description": "The BASE64URL-encoded digital signature computed over the protected header and the canonicalized data (detached payload)."
+                }
+            },
+            "required": [
+                "protected",
+                "signature"
+            ],
+            "additionalProperties": false
+        },
+        "AntiReplay": {
+            "type": "object",
+            "title": "Anti-Replay Claims",
+            "description": "Anti-replay claims extracted from the context's antiReplay field after verification.",
+            "properties": {
+                "iat": {
+                    "type": "number",
+                    "description": "Issued at time as a Unix timestamp (seconds since epoch)."
+                },
+                "exp": {
+                    "type": "number",
+                    "description": "Expiration time as a Unix timestamp (seconds since epoch)."
+                },
+                "jti": {
+                    "type": "string",
+                    "description": "Unique identifier for this context instance."
+                }
+            },
+            "required": [
+                "iat",
+                "exp",
+                "jti"
+            ],
+            "additionalProperties": false
+        },
+        "MessageAuthenticity": {
+            "type": "object",
+            "title": "Message Authenticity",
+            "description": "Verification outcomes for signed context objects.",
+            "properties": {
+                "signed": {
+                    "type": "boolean",
+                    "description": "Indicates whether the context includes a signature, but check other fields to see if the signature is valid."
+                },
+                "valid": {
+                    "type": "boolean",
+                    "description": "True if the JWS cryptographically verifies against the signed bytes."
+                },
+                "trusted": {
+                    "type": "boolean",
+                    "description": "True if the signing key was obtained from an approved/trusted source."
+                },
+                "alg": {
+                    "type": "string",
+                    "description": "The signature algorithm used (from JWS protected header)."
+                },
+                "kid": {
+                    "type": "string",
+                    "description": "The key identifier used to sign the message (from JWS protected header)."
+                },
+                "jku": {
+                    "type": "string",
+                    "description": "The JSON Web Key Set URL where the public key can be retrieved (from JWS protected header)."
+                },
+                "antiReplayClaims": {
+                    "$ref": "#/definitions/AntiReplay"
+                },
+                "errors": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "description": "Human-readable diagnostics (optional)."
+                }
+            },
+            "required": [
+                "signed"
+            ],
+            "additionalProperties": false
+        },
         "AppIdentifier": {
             "description": "Identifies an application, or instance of an application, and is used to target FDC3 API calls, such as `fdc3.open` or `fdc3.raiseIntent` at specific applications or application instances.\n\nWill always include at least an `appId` field, which uniquely identifies a specific app.\n\nIf the `instanceId` field is set then the `AppMetadata` object represents a specific instance of the application that may be addressed using that Id.",
             "title": "AppIdentifier",
@@ -268,20 +360,69 @@
             ]
         },
         "ContextMetadata": {
-            "description": "Metadata relating to a context or intent and context received through the\n`addContextListener` and `addIntentListener` functions.",
-            "title": "ContextMetadata",
             "type": "object",
+            "description": "Metadata relating to a broadcastEvent or intentEvent, which may include metadata provided by the Desktop Agent or the App that initiated the broadcast, raise intent or open request.",
+            "title": "Context Metadata",
             "properties": {
                 "source": {
                     "$ref": "#/definitions/AppIdentifier",
                     "description": "Identifier for the app instance that sent the context and/or intent.",
                     "title": "source"
+                },
+                "traceId": {
+                    "type": "string",
+                    "title": "traceId",
+                    "description": "A unique identifier for the context or intent that can be used to trace the context or intent through the system."
+                },
+                "timestamp": {
+                    "type": "string",
+                    "format": "date-time",
+                    "title": "timestamp",
+                    "description": "The timestamp when the context or intent was created, encoded according to [ISO 8601-1:2019](https://www.iso.org/standard/70907.html) with a timezone indicator."
+                },
+                "custom": {
+                    "type": "object",
+                    "additionalProperties": true,
+                    "title": "custom",
+                    "description": "Custom metadata that can be used to provide additional information about the context or intent. This allows for individuals to use metadata fields that have yet to be standardized."
+                },
+                "signature": {
+                    "$ref": "#/definitions/DetachedSignature",
+                    "description": "A Detached JSON Web Signature (JWS) proving the authenticity and integrity of the context."
+                },
+                "antiReplay": {
+                    "$ref": "#/definitions/AntiReplay",
+                    "description": "Anti-replay claims supplied with signed context (e.g. merged from intentResultRequest metadata into resultMetadata)."
                 }
             },
-            "additionalProperties": false,
             "required": [
-                "source"
-            ]
+                "source",
+                "timestamp",
+                "traceId"
+            ],
+            "additionalProperties": false
+        },
+        "AppProvidableContextMetadata": {
+            "type": "object",
+            "description": "Metadata that can be provided by an app as part of a broadcast, raise intent or open API call.",
+            "title": "App Providable Context Metadata",
+            "properties": {
+                "traceId": {
+                    "$ref": "#/definitions/ContextMetadata/properties/traceId"
+                },
+                "custom": {
+                    "$ref": "#/definitions/ContextMetadata/properties/custom"
+                },
+                "signature": {
+                    "$ref": "#/definitions/DetachedSignature",
+                    "description": "A Detached JSON Web Signature (JWS) proving the authenticity and integrity of the context."
+                },
+                "antiReplay": {
+                    "description": "Should be populated when the context is signed.  Included in the signature.  Prevents replay attacks where context objects are re-used.",
+                    "$ref": "#/definitions/AntiReplay"
+                }
+            },
+            "additionalProperties": false
         },
         "DesktopAgentIdentifier": {
             "description": "Identifies a particular Desktop Agent in Desktop Agent Bridging scenarios\nwhere a request needs to be directed to a Desktop Agent rather than a specific app, or a\nresponse message is returned by the Desktop Agent (or more specifically its resolver)\nrather than a specific app. Used as a substitute for `AppIdentifier` in cases where no\napp details are available or are appropriate.",
@@ -298,6 +439,15 @@
             "required": [
                 "desktopAgent"
             ]
+        },
+        "CloseError": {
+            "description": "Constants representing the errors that can be encountered when calling the `close` method on the DesktopAgent object (`fdc3`).",
+            "title": "CloseError",
+            "enum": [
+                "ErrorOnClose",
+                "ApiTimeout"
+            ],
+            "type": "string"
         },
         "OpenError": {
             "description": "Constants representing the errors that can be encountered when calling the `open` method on the DesktopAgent object (`fdc3`).",
@@ -388,11 +538,6 @@
                     "description": "Metadata indicating whether the Desktop Agent implements optional features of\nthe Desktop Agent API.",
                     "type": "object",
                     "properties": {
-                        "OriginatingAppMetadata": {
-                            "description": "Used to indicate whether the exposure of 'originating app metadata' for\ncontext and intent messages is supported by the Desktop Agent.",
-                            "type": "boolean",
-                            "title": "OriginatingAppMetadata"
-                        },
                         "UserChannelMembershipAPIs": {
                             "description": "Used to indicate whether the optional `fdc3.joinUserChannel`,\n`fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by\nthe Desktop Agent.",
                             "type": "boolean",
@@ -407,7 +552,6 @@
                     "additionalProperties": false,
                     "required": [
                         "DesktopAgentBridging",
-                        "OriginatingAppMetadata",
                         "UserChannelMembershipAPIs"
                     ],
                     "title": "optionalFeatures"
@@ -535,7 +679,10 @@
                     "additionalProperties": true
                 }
             },
-            "required":["type","details"],
+            "required": [
+                "type",
+                "details"
+            ],
             "additionalProperties": false
         },
         "PrivateChannelEventType": {
@@ -562,7 +709,10 @@
                     "additionalProperties": true
                 }
             },
-            "required":["type","details"],
+            "required": [
+                "type",
+                "details"
+            ],
             "additionalProperties": false
         }
     }
