@@ -55,6 +55,61 @@ const basicCL2 = (fdc3: DesktopAgent, documentation: string) => {
   });
 };
 
+const basicCL3 = (fdc3: DesktopAgent, documentation: string) => {
+  it('(BasicCL3) Array context listener returns listener object', async () => {
+    const contextTypes = ['fdc3.instrument', 'fdc3.contact'];
+    try {
+      const listener = await fdc3.addContextListener(contextTypes, (info: Context) => {
+        console.log(`Array context listener triggered with result ${info}`);
+      });
+      assert.isTrue(listener && typeof listener === 'object', documentation);
+      expect(
+        typeof listener.unsubscribe,
+        'the listener did not contain an unsubscribe function' + documentation
+      ).to.be.equals('function');
+      if (listener !== undefined) {
+        listener.unsubscribe();
+      }
+    } catch (ex) {
+      handleFail(documentation, ex);
+    }
+  });
+};
+
+
+const basicCL4 = (fdc3: DesktopAgent, documentation: string) => {
+  it('(BasicCL4) Array with null behaves like null (receives all contexts)', async () => {
+    try {
+      // Array containing null should behave like passing null directly
+      const listener = await fdc3.addContextListener(['fdc3.instrument', null] as unknown as string[], () => {});
+      assert.isTrue(listener && typeof listener === 'object', documentation);
+      expect(typeof listener.unsubscribe, documentation).to.be.equals('function');
+      if (listener !== undefined) {
+        listener.unsubscribe();
+      }
+    } catch (ex) {
+      handleFail(documentation, ex);
+    }
+  });
+};
+
+const basicCL5 = (fdc3: DesktopAgent, documentation: string) => {
+  it('(BasicCL5) Empty array context listener should be ignored', async () => {
+    try {
+      // Empty array should return a dummy listener
+      const listener = await fdc3.addContextListener([], () => {});
+      assert.isTrue(listener && typeof listener === 'object', documentation);
+      // Should still have unsubscribe even if it's a no-op
+      expect(typeof listener.unsubscribe, documentation).to.be.equals('function');
+      if (listener !== undefined) {
+        listener.unsubscribe();
+      }
+    } catch (ex) {
+      handleFail(documentation, ex);
+    }
+  });
+};
+
 const basicIL1 = (fdc3: DesktopAgent, documentation: string) => {
   it('(BasicIL1) Method is callable', async () => {
     const intentName = 'ConformanceListener';
@@ -318,6 +373,9 @@ const documentation_DM = '\r\nDocumentation: ' + APIDocumentation.desktopAgent +
 export const fdc3BasicGetAgent = async () => describe('fdc3.basicGetAgent', () => getAgent2_2(fdc3, documentation_GA));
 export const fdc3BasicCL1 = async () => describe('fdc3.basicCL1', () => basicCL1(fdc3, documentation_CL));
 export const fdc3BasicCL2 = async () => describe('fdc3.basicCL2', () => basicCL2(fdc3, documentation_CL));
+export const fdc3BasicCL3 = async () => describe('fdc3.basicCL3', () => basicCL3(fdc3, documentation_CL));
+export const fdc3BasicCL4 = async () => describe('fdc3.basicCL4', () => basicCL4(fdc3, documentation_CL));
+export const fdc3BasicCL5 = async () => describe('fdc3.basicCL5', () => basicCL5(fdc3, documentation_CL));
 export const fdc3BasicIL1 = async () => describe('fdc3.basicIL1', () => basicIL1(fdc3, documentation_IL));
 export const fdc3BasicGI1 = async () => describe('fdc3.basicGI1', () => basicGI1(fdc3, documentation_GI));
 export const fdc3BasicGI2 = async () => describe('fdc3.basicGI2', () => basicGI2(fdc3, documentation_GI));

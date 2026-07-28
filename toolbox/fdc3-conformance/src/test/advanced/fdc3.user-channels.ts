@@ -519,5 +519,103 @@ export default async () => {
       const currentChannel = await cc.getCurrentChannel();
       expect(channels[2].id, errorMessage).to.be.equal(currentChannel?.id);
     });
+
+    const UCArrayContextListeners1 =
+      '(UCArrayContextListeners1) Should receive context for multiple types when using array-based addContextListener';
+    it(UCArrayContextListeners1, async () => {
+      const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener for ["fdc3.instrument", "fdc3.contact"]\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument and fdc3.contact contexts${documentation}`;
+
+      const resolveExecutionCompleteListener = cc.initCompleteListener(UCArrayContextListeners1);
+      const contextId = cc.getRandomId();
+      const receivedContextTypes: string[] = [];
+
+      const listener = await cc.setupArrayContextListener(
+        null,
+        [`fdc3.instrument.${contextId}`, `fdc3.contact.${contextId}`],
+        [`fdc3.instrument.${contextId}`, `fdc3.contact.${contextId}`],
+        errorMessage,
+        (context: Context) => {
+          receivedContextTypes.push(context.type);
+        }
+      );
+
+      const channel = await cc.getNonGlobalUserChannel();
+      await cc.joinChannel(channel);
+      await cc.openChannelApp(UCArrayContextListeners1, channel.id, JOIN_AND_BROADCAST_TWICE, undefined, true, contextId);
+      await resolveExecutionCompleteListener;
+
+      try {
+        await wait(constants.ShortWait);
+        // Should receive both instrument and contact
+        expect(receivedContextTypes).to.include(`fdc3.instrument.${contextId}`, errorMessage);
+        expect(receivedContextTypes).to.include(`fdc3.contact.${contextId}`, errorMessage);
+        // Should have received exactly 2 contexts (not portfolio)
+        expect(receivedContextTypes.length).to.equal(2, `Should receive exactly 2 contexts, received: ${receivedContextTypes.join(', ')}`);
+      } finally {
+        cc.unsubscribeListeners([listener]);
+      }
+    });
+
+    const UCArrayNullContext1 =
+      '(UCArrayNullContext1) Should receive all contexts when using array with null in addContextListener';
+    it(UCArrayNullContext1, async () => {
+      const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener for ["fdc3.instrument", null]\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument and fdc3.contact contexts${documentation}`;
+
+      const resolveExecutionCompleteListener = cc.initCompleteListener(UCArrayNullContext1);
+      const contextId = cc.getRandomId();
+      const receivedContextTypes: string[] = [];
+
+      // Array containing null should behave like passing null directly (receives all contexts)
+      const listener = await fdc3.addContextListener(
+        [`fdc3.instrument.${contextId}`, null] as unknown as string[],
+        (context: Context) => {
+          receivedContextTypes.push(context.type);
+        }
+      );
+
+      const channel = await cc.getNonGlobalUserChannel();
+      await cc.joinChannel(channel);
+      await cc.openChannelApp(UCArrayNullContext1, channel.id, JOIN_AND_BROADCAST_TWICE, undefined, true, contextId);
+      await resolveExecutionCompleteListener;
+
+      try {
+        await wait(constants.ShortWait);
+        // Should receive BOTH contexts because null means "all contexts"
+        expect(receivedContextTypes).to.include(`fdc3.instrument.${contextId}`, errorMessage);
+        expect(receivedContextTypes).to.include(`fdc3.contact.${contextId}`, errorMessage);
+      } finally {
+        if (listener && listener.unsubscribe) {
+          listener.unsubscribe();
+        }
+      }
+    });
+
+    const UCArrayEmptyContext1 =
+      '(UCArrayEmptyContext1) Should not receive context when using empty array addContextListener';
+    it(UCArrayEmptyContext1, async () => {
+      const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener with empty array []\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
+
+      const resolveExecutionCompleteListener = cc.initCompleteListener(UCArrayEmptyContext1);
+      let receivedContext = false;
+
+      // Empty array should return a dummy listener that receives nothing
+      const listener = await fdc3.addContextListener([], () => {
+        receivedContext = true;
+      });
+
+      const channel = await cc.getNonGlobalUserChannel();
+      await cc.joinChannel(channel);
+      await cc.openChannelApp(UCArrayEmptyContext1, channel.id, JOIN_AND_BROADCAST);
+      await resolveExecutionCompleteListener;
+
+      try {
+        await wait(constants.ShortWait);
+        expect(receivedContext, errorMessage).to.be.false;
+      } finally {
+        if (listener && listener.unsubscribe) {
+          listener.unsubscribe();
+        }
+      }
+    });
   });
 };

@@ -116,6 +116,34 @@ export class ChannelControlImpl implements ChannelControl {
     return listener;
   };
 
+  setupArrayContextListener = async (
+    channel: Channel | null,
+    listenContextTypes: string[],
+    expectedContextTypes: string[],
+    errorMessage: string,
+    onComplete: (ctx: Context, metadata?: ContextMetadata) => void
+  ): Promise<Listener> => {
+    let listener;
+    if (channel) {
+      listener = await channel.addContextListener(listenContextTypes, (context, metadata) => {
+        if (expectedContextTypes.length > 0) {
+          expect(expectedContextTypes).to.include(context.type, errorMessage);
+        }
+        onComplete(context, metadata);
+      });
+    } else {
+      listener = await this.fdc3.addContextListener(listenContextTypes, (context, metadata) => {
+        if (expectedContextTypes.length > 0) {
+          expect(expectedContextTypes).to.include(context.type, errorMessage);
+        }
+        onComplete(context, metadata);
+      });
+    }
+
+    validateListenerObject(listener);
+    return listener;
+  };
+
   setupContextChecker = async (
     channel: Channel,
     requestedContextType: string | null,
