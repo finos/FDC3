@@ -39,7 +39,7 @@ interface Channel {
   getCurrentContext(contextType?: string): Promise<Context|null>;
   getCurrentContextWithMetadata(contextType?: string): Promise<ContextWithMetadata|null>;
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
-  addContextListener(contextTypes: (string | null)[], handler: ContextHandler): Promise<Listener>;
+  addContextListener(contextTypes: string[], handler: ContextHandler): Promise<Listener>;
   clearContext(contextType?: string): Promise<void>;
   addEventListener(type: ChannelEventTypes  | null, handler: EventHandler): Promise<Listener>;
 }
@@ -219,7 +219,7 @@ DisplayMetadata can be used to provide display hints for User Channels intended 
 public addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
 
 // Array of context types
-public addContextListener(contextTypes: (string | null)[], handler: ContextHandler): Promise<Listener>;
+public addContextListener(contextTypes: string[], handler: ContextHandler): Promise<Listener>;
 ```
 
 </TabItem>
