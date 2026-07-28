@@ -375,7 +375,7 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
       }
 
       action(m: BroadcastEvent): void {
-        this.handler(m.payload.context);
+        this.handler(m.payload.context, m.payload.metadata);
       }
     }
 
