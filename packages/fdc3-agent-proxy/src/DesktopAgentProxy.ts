@@ -93,10 +93,10 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
   }
 
   addContextListener(
-    contextTypeOrHandler: ContextHandler | ContextType | null | (ContextType | null)[],
+    contextTypeOrHandler: ContextHandler | ContextType | null | ContextType[],
     handler?: ContextHandler
   ): Promise<Listener> {
-    let theContextType: ContextType | null | (ContextType | null)[];
+    let theContextType: ContextType | ContextType[] | null;
     let theHandler: ContextHandler;
 
     if (contextTypeOrHandler == null && typeof handler === 'function') {
@@ -125,7 +125,7 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
       throw new Error('Invalid arguments passed to addContextListener!');
     }
 
-    return this.channels.addContextListener(theHandler, theContextType as string | null | (string | null)[]);
+    return this.channels.addContextListener(theHandler, theContextType as string | string[] | null);
   }
 
   getUserChannels() {

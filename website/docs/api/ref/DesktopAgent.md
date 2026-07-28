@@ -166,7 +166,7 @@ type IDesktopAgent interface {
 addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
 
 // Array of context types
-addContextListener(contextTypes: (string | null)[], handler: ContextHandler): Promise<Listener>;
+addContextListener(contextTypes: string[], handler: ContextHandler): Promise<Listener>;
 ```
 
 </TabItem>

@@ -7,7 +7,7 @@ export interface ChannelSupport {
   createPrivateChannel(): Promise<PrivateChannel>;
   leaveUserChannel(): Promise<void>;
   joinUserChannel(id: string): Promise<void>;
-  addContextListener(handler: ContextHandler, type: string | null | (string | null)[]): Promise<Listener>;
+  addContextListener(handler: ContextHandler, type: string | string[] | null): Promise<Listener>;
 
   /**
    * TODO: Move handling for userChannelChanged out of ChannelSupport and update type to filter to channel events only.

@@ -10,13 +10,13 @@ export class DefaultContextListener
 {
   private readonly channelId: string | null;
   protected readonly messageType: string;
-  protected readonly contextType: string | null | (string | null)[];
+  protected readonly contextType: string | string[] | null;
 
   constructor(
     messaging: Messaging,
     messageExchangeTimeout: number,
     channelId: string | null,
-    contextType: string | null | (string | null)[],
+    contextType: string | string[] | null,
     handler: ContextHandler,
     messageType: string = 'broadcastEvent'
   ) {
@@ -27,31 +27,17 @@ export class DefaultContextListener
         throw new Error('Empty arrays should be handled upstream');
       }
 
-      // If array contains null, create a single listener for all contexts
-      if (contextType.includes(null)) {
-        super(
-          messaging,
-          messageExchangeTimeout,
-          { channelId, contextType: null },
-          handler,
-          'addContextListenerRequest',
-          'addContextListenerResponse',
-          'contextListenerUnsubscribeRequest',
-          'contextListenerUnsubscribeResponse'
-        );
-      } else {
-        // Use the contextTypes field for array-based context types
-        super(
-          messaging,
-          messageExchangeTimeout,
-          { channelId, contextType: undefined, contextTypes: contextType },
-          handler,
-          'addContextListenerRequest',
-          'addContextListenerResponse',
-          'contextListenerUnsubscribeRequest',
-          'contextListenerUnsubscribeResponse'
-        );
-      }
+      // Use the contextTypes field for array-based context types
+      super(
+        messaging,
+        messageExchangeTimeout,
+        { channelId, contextType: undefined, contextTypes: contextType },
+        handler,
+        'addContextListenerRequest',
+        'addContextListenerResponse',
+        'contextListenerUnsubscribeRequest',
+        'contextListenerUnsubscribeResponse'
+      );
     } else {
       // Single context type - use original logic
       super(
@@ -75,12 +61,8 @@ export class DefaultContextListener
     // Handle array context types in filtering
     let contextTypeMatch = false;
     if (Array.isArray(this.contextType)) {
-      // For arrays, match if any type in the array matches or if null is included (match all)
-      if (this.contextType.includes(null)) {
-        contextTypeMatch = true; // null means match all context types
-      } else {
-        contextTypeMatch = this.contextType.includes(m.payload.context?.type ?? null);
-      }
+      // For arrays, match if any type in the array matches
+      contextTypeMatch = this.contextType.includes(m.payload.context?.type ?? '');
     } else {
       // Single context type - use original logic
       contextTypeMatch = m.payload.context?.type == this.contextType || this.contextType == null;

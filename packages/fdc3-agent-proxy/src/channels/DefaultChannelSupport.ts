@@ -251,7 +251,7 @@ export class DefaultChannelSupport implements ChannelSupport {
     }
   }
 
-  async addContextListener(handler: ContextHandler, type: string | null | (string | null)[]): Promise<Listener> {
+  async addContextListener(handler: ContextHandler, type: string | string[] | null): Promise<Listener> {
     // Handle array-based context types
     if (Array.isArray(type)) {
       if (type.length === 0) {
@@ -261,15 +261,6 @@ export class DefaultChannelSupport implements ChannelSupport {
           id: 'dummy-listener',
         });
       }
-
-      // If array contains null, treat as null (listen to all contexts)
-      if (type.includes(null)) {
-        return this.addContextListener(handler, null);
-      }
-
-      // For multiple specific types, pass the array directly to DefaultContextListener
-      // The DefaultContextListener will handle creating multiple individual listeners internally
-      return this.addContextListener(handler, type);
     }
 
     // Handle single context type
@@ -284,7 +275,7 @@ export class DefaultChannelSupport implements ChannelSupport {
         container: DefaultChannelSupport,
         messaging: Messaging,
         messageExchangeTimeout: number,
-        contextType: string | null | (string | null)[],
+        contextType: string | string[] | null,
         handler: ContextHandler,
         messageType: string = 'broadcastEvent'
       ) {
@@ -307,15 +298,8 @@ export class DefaultChannelSupport implements ChannelSupport {
           // Handle array context types for getCurrentContext
           let contextTypeParam: string | undefined;
           if (Array.isArray(this.contextType)) {
-            // For arrays, if it contains null, don't pass a type parameter (get all contexts)
-            // Otherwise, get the current context without filtering by type to ensure we don't miss any
-            // The individual listeners will filter their specific types
-            if (this.contextType.includes(null)) {
-              contextTypeParam = undefined;
-            } else {
-              // Don't filter by type - let the individual listeners handle their own filtering
-              contextTypeParam = undefined;
-            }
+            // Don't filter by type - let the individual listeners handle their own filtering
+            contextTypeParam = undefined;
           } else if (this.contextType != null) {
             contextTypeParam = this.contextType;
           }
@@ -339,12 +323,8 @@ export class DefaultChannelSupport implements ChannelSupport {
         // Handle array context types in filtering
         let contextTypeMatch = false;
         if (Array.isArray(this.contextType)) {
-          // For arrays, match if any type in the array matches or if null is included (match all)
-          if (this.contextType.includes(null)) {
-            contextTypeMatch = true; // null means match all context types
-          } else {
-            contextTypeMatch = this.contextType.includes(m.payload.context?.type ?? null);
-          }
+          // For arrays, match if any type in the array matches
+          contextTypeMatch = this.contextType.includes(m.payload.context?.type ?? '');
         } else {
           // Single context type - use original logic
           contextTypeMatch = m.payload.context?.type == this.contextType || this.contextType == null;

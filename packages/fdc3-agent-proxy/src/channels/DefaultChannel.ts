@@ -71,10 +71,10 @@ export class DefaultChannel implements Channel {
   }
 
   async addContextListener(
-    contextTypeOrHandler: string | null | ContextHandler | (string | null)[],
+    contextTypeOrHandler: string | null | ContextHandler | string[],
     handler?: ContextHandler
   ): Promise<Listener> {
-    let theContextType: string | null | (string | null)[];
+    let theContextType: string | string[] | null;
     let theHandler: ContextHandler;
 
     if (contextTypeOrHandler == null && typeof handler === 'function') {
@@ -112,10 +112,7 @@ export class DefaultChannel implements Channel {
     return await this.addContextListenerInner(theContextType as string | null, theHandler);
   }
 
-  async addContextListenerInner(
-    contextType: string | null | (string | null)[],
-    theHandler: ContextHandler
-  ): Promise<Listener> {
+  async addContextListenerInner(contextType: string | string[] | null, theHandler: ContextHandler): Promise<Listener> {
     const listener = new DefaultContextListener(
       this.messaging,
       this.messageExchangeTimeout,
