@@ -290,18 +290,7 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
   }
 
   async addContextListener(handler: ContextHandler, type: string | string[] | null): Promise<Listener> {
-    // Handle array-based context types
-    if (Array.isArray(type)) {
-      if (type.length === 0) {
-        // Empty array - return a dummy listener that does nothing
-        return Promise.resolve({
-          unsubscribe: () => Promise.resolve(),
-          id: 'dummy-listener',
-        });
-      }
-    }
-
-    // Handle single context type
+    // Note: Empty arrays are handled upstream in DesktopAgentProxy.addContextListener
     /**
      *  Utility class used to wrap the DefaultContextListener to match the internal channel id
      *  and ensure it gets removed when its unsubscribe function is called.
