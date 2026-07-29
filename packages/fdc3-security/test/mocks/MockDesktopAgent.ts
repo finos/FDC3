@@ -73,7 +73,6 @@ class MockDesktopAgent implements Partial<DesktopAgent> {
     const result = await handler(context, {} as ContextMetadata);
     const type = result && 'type' in result ? result.type : undefined;
     const contextWithMetadata = result && 'context' in result && 'metadata' in result;
-    const resolvedMetadata = (contextWithMetadata ? result.metadata : {}) as ContextMetadata;
     let resolvedResult = (contextWithMetadata ? result.context : result) as
       | Context
       | Channel
@@ -96,7 +95,10 @@ class MockDesktopAgent implements Partial<DesktopAgent> {
       getResult: async () => {
         return resolvedResult;
       },
-    };
+      getResultMetadata: async () => {
+        return {} as ContextMetadata;
+      },
+    } as any;
   }
 
   async getOrCreateChannel(channelId: string): Promise<Channel> {
