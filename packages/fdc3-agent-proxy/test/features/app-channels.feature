@@ -111,3 +111,40 @@ Feature: Channel Listeners Support
     And "{metadatas}" is an array of objects with the following contents
       | source.appId      | source.instanceId     |
       | cucumber-app   | cucumber-instance |
+
+  Scenario: Adding a context listener with an array of context types receives matching contexts
+    Given "contextTypes" is an array of context types "fdc3.instrument, fdc3.country"
+    When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I call "{channel1}" with "addContextListener" with parameters "{contextTypes}" and "{resultHandler}"
+    And messaging receives "{instrumentMessageOne}"
+    And messaging receives "{countryMessageOne}"
+    Then "{contexts}" is an array of objects with the following contents
+      | type            | name   |
+      | fdc3.instrument | Apple  |
+      | fdc3.country    | Sweden |
+
+  Scenario: Adding a context listener with an array of context types filters non-matching contexts
+    Given "unsupportedMessage" is a BroadcastEvent message on channel "channel-name" with context "fdc3.unsupported"
+    Given "contextTypes" is an array of context types "fdc3.instrument, fdc3.country"
+    When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I call "{channel1}" with "addContextListener" with parameters "{contextTypes}" and "{resultHandler}"
+    And messaging receives "{instrumentMessageOne}"
+    And messaging receives "{unsupportedMessage}"
+    And messaging receives "{countryMessageOne}"
+    Then "{contexts}" is an array of objects with the following contents
+      | type            | name   |
+      | fdc3.instrument | Apple  |
+      | fdc3.country    | Sweden |
+
+  Scenario: Adding a context listener with an empty array returns a dummy listener
+    Given "emptyArray" is an empty array
+    When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I call "{channel1}" with "addContextListener" with parameters "{emptyArray}" and "{resultHandler}"
+    And I refer to "{result}" as "theListener"
+    And messaging receives "{instrumentMessageOne}"
+    Then "{contexts}" is empty
+    And I call "{theListener}" with "unsubscribe"
+    Then "{result}" is undefined

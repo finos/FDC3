@@ -42,6 +42,14 @@ Given('{string} is a {string} context', (world: CustomWorld, field: string, type
   world.props[field] = contextMap[type];
 });
 
+Given('{string} is an array of context types {string}', (world: CustomWorld, field: string, types: string) => {
+  world.props[field] = types.split(',').map(t => t.trim());
+});
+
+Given('{string} is an empty array', (world: CustomWorld, field: string) => {
+  world.props[field] = [];
+});
+
 Given(
   '{string} is a BroadcastEvent message on channel {string} with context {string}',
   (world: CustomWorld, field: string, channel: string, context: string) => {
