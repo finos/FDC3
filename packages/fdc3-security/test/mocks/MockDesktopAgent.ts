@@ -14,6 +14,7 @@ import type {
   DesktopAgent,
   Intent,
 } from '@finos/fdc3-standard';
+import type { AppProvidableContextMetadata } from '@finos/fdc3-standard/src/api/ContextMetadata';
 import { Context } from '@finos/fdc3-context';
 import { MockChannel } from './MockChannel';
 import { MockPrivateChannel } from './MockPrivateChannel';
@@ -64,15 +65,16 @@ class MockDesktopAgent implements Partial<DesktopAgent> {
     intent: Intent,
     context: Context,
     _app?: AppIdentifier | null | string | undefined,
-    _metadata?: ContextMetadata | undefined
+    metadata?: AppProvidableContextMetadata | undefined
   ): Promise<IntentResolution> {
     const key = String(intent);
     const handler = intentHandlers.get(key);
     if (!handler) throw new Error(`No handler registered for intent: ${key}`);
 
-    const result = await handler(context, {} as ContextMetadata);
+    const result = await handler(context, (metadata ?? {}) as ContextMetadata);
     const type = result && 'type' in result ? result.type : undefined;
     const contextWithMetadata = result && 'context' in result && 'metadata' in result;
+    const resolvedMetadata = (contextWithMetadata ? result.metadata : {}) as ContextMetadata;
     let resolvedResult = (contextWithMetadata ? result.context : result) as
       | Context
       | Channel
@@ -96,9 +98,9 @@ class MockDesktopAgent implements Partial<DesktopAgent> {
         return resolvedResult;
       },
       getResultMetadata: async () => {
-        return {} as ContextMetadata;
+        return resolvedMetadata;
       },
-    } as any;
+    } as IntentResolution;
   }
 
   async getOrCreateChannel(channelId: string): Promise<Channel> {

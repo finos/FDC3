@@ -538,6 +538,11 @@
                     "description": "Metadata indicating whether the Desktop Agent implements optional features of\nthe Desktop Agent API.",
                     "type": "object",
                     "properties": {
+                        "OriginatingAppMetadata": {
+                            "description": "Used to indicate whether the exposure of `originating app metadata` for\ncontext and intent messages is supported by the Desktop Agent.",
+                            "type": "boolean",
+                            "title": "OriginatingAppMetadata"
+                        },
                         "UserChannelMembershipAPIs": {
                             "description": "Used to indicate whether the optional `fdc3.joinUserChannel`,\n`fdc3.getCurrentChannel` and `fdc3.leaveCurrentChannel` are implemented by\nthe Desktop Agent.",
                             "type": "boolean",
@@ -551,6 +556,7 @@
                     },
                     "additionalProperties": false,
                     "required": [
+                        "OriginatingAppMetadata",
                         "DesktopAgentBridging",
                         "UserChannelMembershipAPIs"
                     ],
