@@ -397,3 +397,15 @@ Feature: Basic User Channels Support
     Then "{contexts}" is an array of objects with the following contents
       | type            | name  |
       | fdc3.instrument | Apple |
+
+  Scenario: Array context listener receives broadcast after joining channel
+    Given "resultHandler" pipes context to "contexts"
+    Given "contextTypes" is an array of context types "fdc3.instrument, fdc3.country"
+    When I call "{api}" with "addContextListener" with parameters "{contextTypes}" and "{resultHandler}"
+    And I call "{api}" with "joinUserChannel" with parameter "one"
+    And messaging receives "{instrumentMessageOne}"
+    And messaging receives "{countryMessageOne}"
+    Then "{contexts}" is an array of objects with the following contents
+      | type            | name   |
+      | fdc3.instrument | Apple  |
+      | fdc3.country    | Sweden |

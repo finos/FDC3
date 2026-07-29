@@ -42,3 +42,12 @@ Feature: Desktop Agent Information
     And messaging will have posts
       | payload.app.appId | payload.context | payload.metadata.traceId | payload.metadata.signature.signature | payload.metadata.signature.protected | payload.metadata.antiReplay.iat | payload.metadata.antiReplay.exp | payload.metadata.antiReplay.jti | matches_type |
       | chipShop          | {null}          | trace-open               | sig-open (signature part)   | sig-open (protected part)   | {1234}                          | {2345}                          | open-jti                        | openRequest  |
+
+  Scenario: Open An App with context but no metadata uses empty metadata object
+    When I call "{api}" with "open" with parameters "{c1}" and "{instrumentContext}" and "{undefined}"
+    Then "{result}" is an object with the following contents
+      | appId    | instanceId |
+      | chipShop | abc123     |
+    And messaging will have posts
+      | payload.app.appId | payload.context.type | payload.metadata | matches_type |
+      | chipShop          | fdc3.instrument      | {}               | openRequest  |
