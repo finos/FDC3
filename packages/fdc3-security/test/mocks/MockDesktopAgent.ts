@@ -10,7 +10,6 @@ import {
 import type {
   AppIdentifier,
   AppMetadata,
-  AppProvidableContextMetadata,
   ContextMetadata,
   DesktopAgent,
   Intent,
@@ -42,6 +41,7 @@ class MockDesktopAgent implements Partial<DesktopAgent> {
       fdc3Version: this.fdc3Version,
       provider: 'fdc3-security-mock',
       optionalFeatures: {
+        OriginatingAppMetadata: true,
         UserChannelMembershipAPIs: true,
         DesktopAgentBridging: false,
       },
@@ -64,13 +64,13 @@ class MockDesktopAgent implements Partial<DesktopAgent> {
     intent: Intent,
     context: Context,
     _app?: AppIdentifier | null | string | undefined,
-    metadata?: AppProvidableContextMetadata | undefined
+    _metadata?: ContextMetadata | undefined
   ): Promise<IntentResolution> {
     const key = String(intent);
     const handler = intentHandlers.get(key);
     if (!handler) throw new Error(`No handler registered for intent: ${key}`);
 
-    const result = await handler(context, (metadata ?? {}) as ContextMetadata);
+    const result = await handler(context, {} as ContextMetadata);
     const type = result && 'type' in result ? result.type : undefined;
     const contextWithMetadata = result && 'context' in result && 'metadata' in result;
     const resolvedMetadata = (contextWithMetadata ? result.metadata : {}) as ContextMetadata;
@@ -96,9 +96,6 @@ class MockDesktopAgent implements Partial<DesktopAgent> {
       getResult: async () => {
         return resolvedResult;
       },
-      getResultMetadata: async () => {
-        return resolvedMetadata;
-      },
     };
   }
 
@@ -117,7 +114,13 @@ class MockDesktopAgent implements Partial<DesktopAgent> {
     return sharedPrivateChannels.get(id)!;
   }
 
-  async addContextListener(contextType: string | ContextHandler | null, handler?: ContextHandler): Promise<Listener> {
+  addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
+  addContextListener(contextTypes: string[], handler: ContextHandler): Promise<Listener>;
+  addContextListener(handler: ContextHandler): Promise<Listener>;
+  async addContextListener(
+    contextType: string | string[] | ContextHandler | null,
+    handler?: ContextHandler
+  ): Promise<Listener> {
     const h = typeof contextType === 'function' ? contextType : handler!;
     const chan = await this.getOrCreateChannel('fdc3.channel.1');
     return chan.addContextListener(null, h);

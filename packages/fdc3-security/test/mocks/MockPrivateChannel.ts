@@ -14,4 +14,16 @@ export class MockPrivateChannel extends MockChannel implements PrivateChannel {
   async addEventListener(_type: string | null, _handler: unknown): Promise<Listener> {
     return { unsubscribe: async () => {} };
   }
+
+  onAddContextListener(_handler: (contextType?: string) => void): Listener {
+    return { unsubscribe: async () => {} };
+  }
+
+  onUnsubscribe(_handler: (contextType?: string) => void): Listener {
+    return { unsubscribe: async () => {} };
+  }
+
+  onDisconnect(_handler: () => void): Listener {
+    return { unsubscribe: async () => {} };
+  }
 }
