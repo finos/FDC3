@@ -4,8 +4,8 @@ import {
   DisplayMetadata,
   EventHandler,
   ContextHandler,
-  ContextMetadata,
 } from '@finos/fdc3-standard';
+import type { ContextMetadata } from '@finos/fdc3-standard/src/api/ContextMetadata';
 import { Context } from '@finos/fdc3-context';
 
 export class MockChannel implements Channel {
@@ -18,16 +18,21 @@ export class MockChannel implements Channel {
     this.type = type;
   }
 
-  async broadcast(context: Context): Promise<void> {
+  async broadcast(context: Context, metadata?: ContextMetadata): Promise<void> {
     console.log('[MockChannel] Broadcasting context', { channelId: this.id, context });
     const toInvoke = this.listeners.filter(l => {
       if (!l.type) return true; // null means all types
       if (Array.isArray(l.type)) return l.type.includes(context.type);
       return l.type === context.type;
     });
+    const resolvedMetadata: ContextMetadata = metadata ?? {
+      source: { appId: 'mock-app', instanceId: 'mock-instance' },
+      timestamp: new Date(),
+      traceId: 'mock-trace-id',
+    };
     for (const l of toInvoke) {
       try {
-        await Promise.resolve(l.handler(context, undefined as unknown as ContextMetadata));
+        await Promise.resolve(l.handler(context, resolvedMetadata));
       } catch (err) {
         console.error('[MockChannel] Listener error', { channelId: this.id, err });
       }

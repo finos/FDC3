@@ -12,7 +12,6 @@ import {
 } from '@finos/fdc3-standard';
 import type { AppProvidableContextMetadata } from '@finos/fdc3-standard/src/api/ContextMetadata';
 import type { ContextWithMetadata } from '@finos/fdc3-standard/src/api/Types';
-import type { IntentResolution as IntentResolutionType } from '@finos/fdc3-standard/src/api/IntentResolution';
 import * as jose from 'jose';
 import { JosePrivateFDC3Security, createJosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { JWKSResolver } from '../src/impl/JosePublicFDC3Security';
