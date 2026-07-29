@@ -279,6 +279,20 @@ public class Fdc3ContextClearedEvent : Fdc3Event
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type FDC3ContextClearedEventDetails struct {
+  Type *string `json:"type"`
+}
+
+type FDC3ContextClearedEvent struct {
+  Type   string                        `json:"type"`
+  Details FDC3ContextClearedEventDetails `json:"details"`
+}
+```
+
+</TabItem>
 </Tabs>
 
 

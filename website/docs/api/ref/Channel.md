@@ -69,6 +69,8 @@ type IChannel interface {
     GetCurrentContext(contextType string) <-chan Result[IContext]
     GetCurrentContextWithMetadata(contextType string) <-chan Result[ContextWithMetadata]
     AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener]
+    ClearContext(contextType string) <-chan Result[any]
+    AddEventListener(eventType *FDC3EventTypes, handler EventHandler) <-chan Result[Listener]
 }
 
 @experimental
@@ -410,6 +412,18 @@ IChannel myChannel;
 var listener = await myChannel.AddEventListener(null, (event) => {
     System.Diagnostics.Debug.WriteLine($"Received event ${event.Type}\n\tDetails: ${event.Details}");
 });
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+listenerResult := <-myChannel.AddEventListener(nil, func(event ApiEvent) {
+    log.Printf("Received event %s\n\tDetails: %v", event.Type, event.Details)
+})
+if listenerResult.Err != nil {
+    // handle error
+}
 ```
 
 </TabItem>
@@ -757,6 +771,15 @@ Task ClearContext(string? contextType);
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (channel *Channel) ClearContext(contextType string) <-chan Result[any] {
+  // Implementation here
+}
+```
+
+</TabItem>
 </Tabs>
 
 Used to clear the specified context type if provided, otherwise, clear all context types present in the channel. The Desktop Agent MUST update its internal representation of the context in the channel and ensure that subsequent calls to [`getCurrentContext`](#getcurrentcontext) and any new joiners to that channel (through [`joinUserChannel`](DesktopAgent#joinUserChannel) or [`addContextListener`](DesktopAgent#addContextListener)) will not receive anything for either the specified context type or the most recent context until new context has been broadcast to the channel. 
@@ -793,6 +816,16 @@ catch (Exception ex)
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+result := <-myChannel.ClearContext("")
+if result.Err != nil {
+    // handle error
+}
+```
+
+</TabItem>
 </Tabs>
 
 Specifying a context type:
@@ -818,6 +851,16 @@ try
 }
 catch (Exception ex)
 {
+    // handle error
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+result := <-myChannel.ClearContext("fdc3.contact")
+if result.Err != nil {
     // handle error
 }
 ```
