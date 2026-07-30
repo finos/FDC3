@@ -247,7 +247,8 @@ Desktop Agents MUST emit this event after applying a User channel membership cha
 export interface FDC3ContextClearedEvent extends FDC3Event {
   readonly type: 'contextCleared';
   readonly details: {
-    type: string | null;
+    channelId: string;
+    contextType: string | null;
   };
 }
 ```
@@ -257,22 +258,25 @@ export interface FDC3ContextClearedEvent extends FDC3Event {
 ```csharp
 public interface IFdc3ContextClearedEventDetails
 {
+    string ChannelId { get; }
     string? ContextType { get; }
 }
 public class Fdc3ContextClearedEventDetails : IFdc3ContextClearedEventDetails
 {
+    public string ChannelId { get; }
     public string? ContextType { get; }
 
-    public Fdc3ContextClearedEventDetails(string? contextType)
+    public Fdc3ContextClearedEventDetails(string channelId, string? contextType)
     {
+        this.ChannelId = channelId;
         this.ContextType = contextType;
     }
 }
 
 public class Fdc3ContextClearedEvent : Fdc3Event
 {
-    public Fdc3ContextClearedEvent(string? contextType)
-        : base(Fdc3EventType.ContextCleared, new Fdc3ContextClearedEventDetails(contextType))
+    public Fdc3ContextClearedEvent(string channelId, string? contextType)
+        : base(Fdc3EventType.ContextCleared, new Fdc3ContextClearedEventDetails(channelId, contextType))
     {
     }
 }
@@ -284,7 +288,12 @@ public class Fdc3ContextClearedEvent : Fdc3Event
 
 Type representing the format of `contextCleared`  events.
 
-The specific type of context is defined in the contextType field, which can be empty if we are clearing all the contexts on the channel.
+The channel on which context was cleared is identified by `details.channelId`. This field is included for events
+received through both `DesktopAgent.addEventListener` and `Channel.addEventListener`, allowing the same event handler
+to be used with either API.
+
+The specific type of context is defined in `details.contextType`, which will be `null` if all contexts on the channel
+were cleared.
 
 
 ## `PrivateChannelEventTypes`
