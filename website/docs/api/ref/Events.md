@@ -288,12 +288,9 @@ public class Fdc3ContextClearedEvent : Fdc3Event
 
 Type representing the format of `contextCleared`  events.
 
-The channel on which context was cleared is identified by `details.channelId`. This field is included for events
-received through both `DesktopAgent.addEventListener` and `Channel.addEventListener`, allowing the same event handler
-to be used with either API.
+The channel on which context was cleared is identified by `details.channelId`. This field is included for events received through both `DesktopAgent.addEventListener` and `Channel.addEventListener`, allowing the same event handler to be used with either API.
 
-The specific type of context is defined in `details.contextType`, which will be `null` if all contexts on the channel
-were cleared.
+The specific type of context is defined in `details.contextType`, which will be `null` if all contexts on the channel were cleared.
 
 
 ## `PrivateChannelEventTypes`
