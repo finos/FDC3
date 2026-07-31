@@ -3,10 +3,10 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
-import { IntentResult } from './Types.js';
 import { AppIdentifier } from './AppIdentifier.js';
 import { Intent } from '../intents/Intents.js';
 import { ContextMetadata } from './ContextMetadata.js';
+import { IntentResolutionResult } from './Types.js';
 
 /**
  * IntentResolution provides a standard format for data returned upon resolving an intent.
@@ -62,7 +62,7 @@ export interface IntentResolution {
    * the `ResultError` enumeration, or (if connected to a Desktop Agent
    * Bridge) the `BridgingError` enumeration.
    */
-  getResult(): Promise<IntentResult>;
+  getResult(): Promise<IntentResolutionResult>;
 
   /**
    * Retrieves a promise that will resolve to `ContextMetadata` for the intent

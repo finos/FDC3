@@ -33,11 +33,15 @@ export type ContextWithMetadata = {
  */
 export type ContextHandler = (context: Context, metadata: ContextMetadata) => void;
 /**
- * Intents can return results that are either context data objects
- * or a reference to a Channel. Used as the return type of
- * `IntentResolution.getResult()`.
+ * Describes values that an intent handler may return, including context data
+ * with optional app-provided metadata, a Channel reference or void.
  */
 export type IntentResult = Context | ContextWithMetadata | Channel | void;
+/**
+ * Describes results returned by `IntentResolution.getResult()` after any
+ * `ContextWithMetadata` result from the intent handler has been unwrapped.
+ */
+export type IntentResolutionResult = Exclude<IntentResult, ContextWithMetadata>;
 /**
  * Describes a callback that handles a context event and may return a
  * promise of a Context, ContextWithMetadata, Channel, PrivateChannel or void
