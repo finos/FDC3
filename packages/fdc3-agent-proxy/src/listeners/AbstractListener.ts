@@ -76,6 +76,9 @@ export abstract class AbstractListener<X, Y extends SubscriptionRequest> impleme
     this.subscribeResponseType = subscribeResponseType;
     this.unsubscribeRequestType = unsubscribeRequestType;
     this.unsubscribeResponseType = unsubscribeResponseType;
+
+    //bind to allow destructuring
+    this.unsubscribe = this.unsubscribe.bind(this);
   }
 
   abstract filter(m: AgentEventMessage): boolean;
