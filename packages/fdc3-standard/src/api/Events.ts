@@ -84,10 +84,12 @@ export interface PrivateChannelEvent extends ApiEvent {
  * conditions).
  * The context type of the listener added is provided as `details.contextType`,
  * which will be `null` if all event types are being listened to.
+ * The PrivateChannel is identified by `details.channelId`.
  */
 export interface PrivateChannelAddContextListenerEvent extends PrivateChannelEvent {
   readonly type: 'addContextListener';
   readonly details: {
+    channelId: string;
     contextType: string | null;
   };
 }
@@ -99,10 +101,12 @@ export interface PrivateChannelAddContextListenerEvent extends PrivateChannelEve
  * they had added.
  * The context type of the  listener removed is provided as `details.contextType`,
  * which will be `null` if all event types were being listened to.
+ * The PrivateChannel is identified by `details.channelId`.
  */
 export interface PrivateChannelUnsubscribeEvent extends PrivateChannelEvent {
   readonly type: 'unsubscribe';
   readonly details: {
+    channelId: string;
     contextType: string | null;
   };
 }
@@ -111,9 +115,11 @@ export interface PrivateChannelUnsubscribeEvent extends PrivateChannelEvent {
  * Type defining the format of events representing a remote app being terminated
  * or otherwise disconnecting from the PrivateChannel. This event is in addition to
  * unsubscribe events that will also be fired for any context listeners they had added.
- * No details are provided.
+ * The PrivateChannel is identified by `details.channelId`.
  */
 export interface PrivateChannelDisconnectEvent extends PrivateChannelEvent {
   readonly type: 'disconnect';
-  readonly details: null | undefined;
+  readonly details: {
+    channelId: string;
+  };
 }

@@ -290,6 +290,10 @@ Type representing the format of `contextCleared`  events.
 
 The channel on which context was cleared is identified by `details.channelId`. This field is included for events received through both `DesktopAgent.addEventListener` and `Channel.addEventListener`, allowing the same event handler to be used with either API.
 
+Desktop Agents are compliant if they deliver only `contextCleared` events for the individual channel on which a
+listener was registered, or if they deliver events for all public channels. Applications that need to distinguish
+between channels must inspect `details.channelId`.
+
 The specific type of context is defined in `details.contextType`, which will be `null` if all contexts on the channel were cleared.
 
 
@@ -379,6 +383,10 @@ type PrivateChannelEvent struct {
 
 Type defining the format of event objects that may be received via a PrivateChannel's `addEventListener` function.
 
+All PrivateChannel events identify the channel to which they relate through `details.channelId`. The corresponding
+DACP event payloads use the field name `privateChannelId`; Desktop Agent API implementations expose that value as
+`channelId` for consistency with other channel-related events.
+
 **See also:**
 
 - [`PrivateChannel.addEventListener`](PrivateChannel#addeventlistener)
@@ -393,6 +401,7 @@ Type defining the format of event objects that may be received via a PrivateChan
 interface PrivateChannelAddContextListenerEvent extends PrivateChannelEvent {
   readonly type: "addContextListener";
   readonly details: {
+    channelId: string;
     contextType: string | null
   };
 }
@@ -429,7 +438,8 @@ type PrivateChannelAddContextListenerEventDetails struct {
 
 Type defining the format of events representing a context listener being added to the channel (`addContextListener`). Desktop Agents MUST fire this event for each invocation of `addContextListener` on the channel, including those that occurred before this handler was registered (to prevent race conditions).
 
-The context type of the listener added is provided as `details.contextType`, which will be `null` if all event types are being listened to.
+The channel is identified by `details.channelId`. The context type of the listener added is provided as
+`details.contextType`, which will be `null` if all event types are being listened to.
 
 ### `PrivateChannelUnsubscribeEvent`
 
@@ -440,6 +450,7 @@ The context type of the listener added is provided as `details.contextType`, whi
 interface PrivateChannelUnsubscribeEvent extends PrivateChannelEvent {
   readonly type: "unsubscribe";
   readonly details: {
+    channelId: string;
     contextType: string | null
   };
 }
@@ -476,7 +487,8 @@ type PrivateChannelUnsubscribeEventDetails struct {
 
 Type defining the format of events representing a context listener removed from the channel (`Listener.unsubscribe()`). Desktop Agents MUST call this when `disconnect()` is called by the other party, for each listener that they had added.
 
-The context type of the  listener removed is provided as `details.contextType`, which will be `null` if all event types were being listened to.
+The channel is identified by `details.channelId`. The context type of the listener removed is provided as
+`details.contextType`, which will be `null` if all event types were being listened to.
 
 ### `PrivateChannelDisconnectEvent`
 
@@ -486,7 +498,9 @@ The context type of the  listener removed is provided as `details.contextType`, 
 ```ts
 export interface PrivateChannelDisconnectEvent extends PrivateChannelEvent {
   readonly type: "disconnect";
-  readonly details: null | undefined;
+  readonly details: {
+    channelId: string;
+  };
 }
 ```
 </TabItem>
@@ -514,6 +528,6 @@ type PrivateChannelDisconnectEvent struct {
 </TabItem>
 </Tabs>
 
-Type defining the format of events representing a remote app being terminated or is otherwise disconnecting from the PrivateChannel. This event is fired in addition to unsubscribe events that will also be fired for any context listeners the disconnecting app had added.
-
-No details are provided.
+Type defining the format of events representing a remote app being terminated or otherwise disconnecting from the
+PrivateChannel. This event is fired in addition to unsubscribe events that will also be fired for any context listeners
+the disconnecting app had added. The channel is identified by `details.channelId`.
