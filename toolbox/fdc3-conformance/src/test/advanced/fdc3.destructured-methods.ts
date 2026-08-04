@@ -1,6 +1,7 @@
 import { AppIdentifier, DesktopAgent, getAgent, IntentResolution, PrivateChannel } from '@finos/fdc3';
 import { expect } from 'chai';
-import { handleFail } from '../../utils';
+import constants from '../../constants';
+import { handleFail, wait } from '../../utils';
 import { closeMockAppWindow } from '../fdc3-conformance-utils';
 import { APIDocumentation } from '../support/apiDocuments';
 import { ContextType, Intent, IntentApp } from '../support/intent-support';
@@ -53,6 +54,9 @@ export default async () =>
         const appIdentifier = await open({ appId: IntentApp.IntentAppA });
         openedWindows = 1;
 
+        // open() may resolve before the mock app has registered its close listener.
+        await wait(constants.ShortWait);
+
         validateAppIdentifier(appIdentifier);
       } catch (ex) {
         handleFail(documentation + '\r\n' + APIDocumentation.open, ex);
@@ -65,6 +69,9 @@ export default async () =>
         const appIdentifier1 = await open({ appId: IntentApp.IntentAppA });
         const appIdentifier2 = await open({ appId: IntentApp.IntentAppA });
         openedWindows = 2;
+
+        // Ensure both mock apps are ready before querying and later closing them.
+        await wait(constants.ShortWait);
 
         const instances = await findInstances({ appId: IntentApp.IntentAppA });
 
@@ -84,7 +91,7 @@ export default async () =>
     it('(DestructuredGetAppMetadata) getAppMetadata should remain callable when destructured', async () => {
       try {
         const { getAppMetadata } = fdc3;
-        const metadata = await getAppMetadata();
+        const metadata = await getAppMetadata({ appId: IntentApp.IntentAppA });
 
         expect(metadata, documentation).to.have.property('appId');
       } catch (ex) {
