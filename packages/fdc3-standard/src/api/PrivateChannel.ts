@@ -20,7 +20,7 @@ import { EventHandler, PrivateChannelEventTypes } from './Events.js';
  * - MUST prevent private channels from being retrieved via fdc3.getOrCreateChannel.
  * - MUST provide the `id` value for the channel as required by the Channel interface.
  */
-export interface PrivateChannel extends Channel {
+export interface PrivateChannel extends Omit<Channel, 'addEventListener'> {
   /**
    * Register a handler for events from the PrivateChannel. Whenever the handler function
    * is called it will be passed an event object with details related to the event.

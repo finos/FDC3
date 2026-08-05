@@ -22,7 +22,7 @@ It is intended that Desktop Agent implementations:
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-interface  PrivateChannel extends Channel {
+interface PrivateChannel extends Omit<Channel, 'addEventListener'> {
   // functions
   addEventListener(type: PrivateChannelEventTypes  | null, handler: EventHandler): Promise<Listener>;
   disconnect(): Promise<void>;

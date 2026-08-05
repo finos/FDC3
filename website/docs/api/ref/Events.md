@@ -119,6 +119,44 @@ Type defining valid type strings for DesktopAgent interface events.
 
 - [`DesktopAgent.addEventListener`](DesktopAgent#addeventlistener)
 
+## `ChannelEventTypes`
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+type ChannelEventTypes = "contextCleared";
+```
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+public static class ChannelEventType
+{
+    public const string ContextCleared = "contextCleared";
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type ChannelEventTypes string
+
+const (
+  ContextClearedChannelEventType ChannelEventTypes = "contextCleared"
+)
+```
+
+</TabItem>
+</Tabs>
+
+Type defining valid type strings for Channel interface events.
+
+**See also:**
+
+- [`Channel.addEventListener`](Channel#addeventlistener)
+
 ## `FDC3Event`
 
 <Tabs groupId="lang">

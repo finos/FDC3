@@ -5,6 +5,7 @@ import {
   DisplayMetadata,
   Listener,
   Channel,
+  ChannelEventTypes,
   EventHandler,
   AppProvidableContextMetadata,
   ChannelError,
@@ -156,7 +157,7 @@ export class DefaultChannel implements Channel {
     await this.messaging.exchange<ClearContextResponse>(request, 'clearContextResponse', this.messageExchangeTimeout);
   }
 
-  async addEventListener(type: string | null, handler: EventHandler): Promise<Listener> {
+  async addEventListener(type: ChannelEventTypes | null, handler: EventHandler): Promise<Listener> {
     let listener: RegisterableListener;
     switch (type) {
       case 'contextCleared':

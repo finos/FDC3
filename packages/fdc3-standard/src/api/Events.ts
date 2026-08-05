@@ -28,6 +28,11 @@ export type EventHandler = (event: ApiEvent) => void;
 export type FDC3EventTypes = 'userChannelChanged' | 'contextCleared';
 
 /**
+ * Type defining valid type strings for Channel interface events.
+ */
+export type ChannelEventTypes = 'contextCleared';
+
+/**
  * Type defining the format of event objects that may be received
  * via the FDC3 API's `addEventListener` function.
  */
