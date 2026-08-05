@@ -193,6 +193,10 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
   }
 
   async getOrCreate(id: string): Promise<Channel> {
+    if (typeof id !== 'string' || id.trim() === "") {
+      throw new Error(ChannelError.InvalidArguments);
+    }
+
     const request: GetOrCreateChannelRequest = {
       meta: this.messaging.createMeta(),
       type: 'getOrCreateChannelRequest',
@@ -306,7 +310,7 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
       }
 
       async unsubscribe(): Promise<void> {
-        super.unsubscribe();
+        await super.unsubscribe();
         this.container.userChannelListeners = this.container.userChannelListeners.filter(l => l != this);
       }
 
