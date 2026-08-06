@@ -1,6 +1,6 @@
 import { AppIdentifier, Context } from '@finos/fdc3-context';
 import { WebSocket } from 'ws';
-import { Channel, DesktopAgent } from '@finos/fdc3-standard';
+import { BaseChannel, DesktopAgent } from '@finos/fdc3-standard';
 
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { DefaultFDC3Handlers, PRIVATE_CHANNEL_SIGNAL, PrivateChannelSignal } from '../src/secure-boundary/FDC3Handlers';
@@ -39,7 +39,7 @@ class BroadcastingAppBackendHandlers extends DefaultFDC3Handlers {
     this.metadataHandler = createMetadataHandlerWithFDC3Version(fdc3Version);
   }
 
-  async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
+  async handleRemoteChannel(purpose: string, channel: BaseChannel): Promise<void> {
     if (purpose !== INTENT_SHARE_ENCRYPTED_CHANNEL) return;
 
     console.log(
@@ -98,7 +98,7 @@ class ReceivingAppBackendHandlers extends DefaultFDC3Handlers {
     this.metadataHandler = createMetadataHandlerWithFDC3Version(fdc3Version);
   }
 
-  async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
+  async handleRemoteChannel(purpose: string, channel: BaseChannel): Promise<void> {
     if (purpose !== 'listen') return;
 
     console.log('[Receiving App Backend] Received channel via handleRemoteChannel, setting up decryption listener');
@@ -183,7 +183,7 @@ async function step4ReceivingAppRaiseIntentAndSetupListener(
   // Forward the channel to the receiving app's backend via handleRemoteChannel.
   // The backend will set up PrivateEncryptedContextListenerSupport on it — all
   // decryption and key exchange happens there, never in the frontend.
-  await handlers.handleRemoteChannel('listen', channel as Channel);
+  await handlers.handleRemoteChannel('listen', channel);
   return handlers;
 }
 

@@ -1,4 +1,4 @@
-import { Channel, ContextMetadata, ContextWithMetadata, PrivateChannel } from '@finos/fdc3-standard';
+import { BaseChannel, Channel, ContextMetadata, ContextWithMetadata, PrivateChannel } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 
 /**
@@ -51,7 +51,7 @@ export interface FDC3Handlers {
    *   channel. This is up to applications to define and use.
    * @param channel — Proxy `Channel`/`PrivateChannel` bridged from the client agent.
    */
-  handleRemoteChannel(purpose: string, channel: Channel): Promise<void>;
+  handleRemoteChannel(purpose: string, channel: BaseChannel): Promise<void>;
 
   /**
    * Called on the client so that the server can provide the real `IntentHandler` for a given intent
@@ -101,7 +101,7 @@ export interface FDC3Handlers {
  * override it. Extend this on the **high-trust** server and implement only the hooks your app uses.
  */
 export class DefaultFDC3Handlers implements FDC3Handlers {
-  async handleRemoteChannel(_purpose: string, _channel: Channel): Promise<void> {
+  async handleRemoteChannel(_purpose: string, _channel: BaseChannel): Promise<void> {
     return;
   }
 

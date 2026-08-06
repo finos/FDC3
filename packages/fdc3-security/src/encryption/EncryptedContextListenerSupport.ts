@@ -1,5 +1,5 @@
 import { Context, SymmetricKeyRequest, SymmetricKeyResponse } from '@finos/fdc3-context';
-import { Channel, ContextHandler, ContextMetadata, Listener } from '@finos/fdc3-standard';
+import { BaseChannel, ContextHandler, ContextMetadata, Listener } from '@finos/fdc3-standard';
 import { ContextVerificationMetadata } from '../impl/ContextVerificationMetadata.js';
 import { PrivateFDC3Security, SigningFunction, UnwrapFunction } from '../impl/PrivateFDC3Security.js';
 import { JSONWebEncryption, JsonWebKeyWithId, PublicFDC3Security } from '../impl/PublicFDC3Security.js';
@@ -29,7 +29,7 @@ export interface EncryptedContextListenerSupport {
    * @see DesktopAgent.addContextListener
    */
   addContextListener(
-    channel: Channel,
+    channel: BaseChannel,
     contextType: string | null,
     handler: SecurityAwareContextHandler
   ): Promise<Listener>;
@@ -49,7 +49,7 @@ export interface EncryptedContextListenerSupport {
  */
 export function createSymmetricKeyResponseContextListener(
   metadataHandler: MetadataHandler,
-  channel: Channel,
+  channel: BaseChannel,
   keyRequestResolveFunctions: Map<string, (key: JsonWebKeyWithId) => void>,
   unwrapFunction: UnwrapFunction
 ): Promise<Listener> {
@@ -116,7 +116,7 @@ export class PublicEncryptedContextListenerSupport implements EncryptedContextLi
   }
 
   async addContextListener(
-    channel: Channel,
+    channel: BaseChannel,
     contextType: string | null,
     handler: SecurityAwareContextHandler
   ): Promise<Listener> {
@@ -149,7 +149,7 @@ export class PublicEncryptedContextListenerSupport implements EncryptedContextLi
    *   broadcaster knows which public key to use when wrapping the response.
    * @param channel The channel on which to broadcast the key request.
    */
-  private async getSymmetricKey(kid: string, jku: string, channel: Channel): Promise<JsonWebKeyWithId> {
+  private async getSymmetricKey(kid: string, jku: string, channel: BaseChannel): Promise<JsonWebKeyWithId> {
     // Deduplication: if a request for this kid is already in flight, wait for it.
     const keyPromise = this.keyRequestPromises.get(kid);
     if (keyPromise) {
@@ -193,7 +193,7 @@ export class PublicEncryptedContextListenerSupport implements EncryptedContextLi
   private decryptingContextHandler(
     ch: SecurityAwareContextHandler,
     originalType: string | null,
-    channel: Channel
+    channel: BaseChannel
   ): ContextHandler {
     const out = async (contextIn: Context, meta: ContextMetadata) => {
       if (!isEncryptedContextWrapper(contextIn)) {

@@ -1,7 +1,7 @@
 import type { Application } from 'express';
 import type { Server } from 'http';
 import { WebSocket } from 'ws';
-import { Channel, PrivateChannel } from '@finos/fdc3';
+import { BaseChannel, PrivateChannel } from '@finos/fdc3';
 import { Context, Valuation } from '@finos/fdc3-context';
 import type { ContextMetadata } from '@finos/fdc3-standard';
 import {
@@ -74,7 +74,7 @@ class App2BackendHandlers extends DefaultFDC3Handlers {
     };
   }
 
-  async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
+  async handleRemoteChannel(purpose: string, channel: BaseChannel): Promise<void> {
     if (purpose !== 'demo.GetPrices') {
       return;
     }

@@ -10,19 +10,19 @@ import TabItem from '@theme/TabItem';
 
 # `PrivateChannel`
 
-Object representing a private context channel, which is intended to support secure communication between applications, and extends the `Channel` interface with event handlers which provide information on the connection state of both parties, ensuring that desktop agents do not need to queue or retain messages that are broadcast before a context listener is added and that applications are able to stop broadcasting messages when the other party has disconnected.
+Object representing a private context channel, which is intended to support secure communication between applications, and extends the `BaseChannel` interface with event handlers which provide information on the connection state of both parties, ensuring that desktop agents do not need to queue or retain messages that are broadcast before a context listener is added and that applications are able to stop broadcasting messages when the other party has disconnected.
 
 It is intended that Desktop Agent implementations:
 
 - SHOULD restrict external apps from listening or publishing on this channel.
 - MUST prevent `PrivateChannels` from being retrieved via `fdc3.getOrCreateChannel`.
-- MUST provide the `id` value for the channel as required by the `Channel` interface.
+- MUST provide the `id` value for the channel as required by the `BaseChannel` interface.
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-interface PrivateChannel extends Omit<Channel, 'addEventListener'> {
+interface PrivateChannel extends BaseChannel {
   // functions
   addEventListener(type: PrivateChannelEventTypes  | null, handler: EventHandler): Promise<Listener>;
   disconnect(): Promise<void>;

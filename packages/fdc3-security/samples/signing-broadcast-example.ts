@@ -1,6 +1,6 @@
 import { resolve } from 'path';
 import { fileURLToPath } from 'url';
-import { Channel, ContextHandler, DesktopAgent } from '@finos/fdc3-standard';
+import { BaseChannel, ContextHandler, DesktopAgent } from '@finos/fdc3-standard';
 import { AppIdentifier, Context } from '@finos/fdc3-context';
 import { WebSocket } from 'ws';
 import { createJosePublicFDC3SecurityFromUrl } from '../src/impl/JosePublicFDC3Security';
@@ -33,7 +33,7 @@ class AppABackendHandlers extends DefaultFDC3Handlers {
     this.metadataHandler = createMetadataHandlerWithFDC3Version(fdc3Version);
   }
 
-  async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
+  async handleRemoteChannel(purpose: string, channel: BaseChannel): Promise<void> {
     if (purpose !== 'broadcast') return;
     console.log('[App A Backend] Received channel via handleRemoteChannel, wrapping with BasicSignedBroadcaster');
     this.signedBroadcaster = new BasicSignedBroadcaster(this.security, this.metadataHandler, channel);
@@ -94,7 +94,7 @@ async function step3AppAExportChannel(appA: AppBackEnd, mockDA: DesktopAgent) {
  */
 async function step4SetupAppBChannelDelegate(
   appBBaseUrl: string,
-  channel: Channel,
+  channel: BaseChannel,
   metadataHandler: MetadataHandler
 ): Promise<{ done: Promise<void> }> {
   console.log('4. App B Setup: Wrapping channel handler (verification uses jku from signatures)...');

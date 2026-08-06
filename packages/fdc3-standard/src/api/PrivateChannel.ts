@@ -4,12 +4,12 @@
  */
 
 import { Listener } from './Listener.js';
-import { Channel } from './Channel.js';
+import { BaseChannel } from './Channel.js';
 import { EventHandler, PrivateChannelEventTypes } from './Events.js';
 
 /**
  * Object representing a private context channel, which is intended to support
- * secure communication between applications, and extends the Channel interface
+ * secure communication between applications, and extends the BaseChannel interface
  * with event handlers which provide information on the connection state of both
  * parties, ensuring that desktop agents do not need to queue or retain messages
  * that are broadcast before a context listener is added and that applications
@@ -18,9 +18,9 @@ import { EventHandler, PrivateChannelEventTypes } from './Events.js';
  * It is intended that Desktop Agent implementations:
  * - SHOULD restrict external apps from listening or publishing on this channel.
  * - MUST prevent private channels from being retrieved via fdc3.getOrCreateChannel.
- * - MUST provide the `id` value for the channel as required by the Channel interface.
+ * - MUST provide the `id` value for the channel as required by the BaseChannel interface.
  */
-export interface PrivateChannel extends Omit<Channel, 'addEventListener'> {
+export interface PrivateChannel extends BaseChannel {
   /**
    * Register a handler for events from the PrivateChannel. Whenever the handler function
    * is called it will be passed an event object with details related to the event.

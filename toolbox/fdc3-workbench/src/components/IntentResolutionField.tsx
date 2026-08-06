@@ -10,7 +10,7 @@ import { ChannelField } from './ChannelField.js';
 import appChannelStore, { Fdc3ChannelRecord } from '../store/AppChannelStore.js';
 import privateChannelStore from '../store/PrivateChannelStore.js';
 import { IntentResolution } from '../utility/Fdc3Api.js';
-import { AppIdentifier, Channel, PrivateChannel } from '@finos/fdc3';
+import { AppIdentifier, BaseChannel, PrivateChannel } from '@finos/fdc3';
 
 const classes = {
   textField: {
@@ -46,7 +46,7 @@ export const IntentResolutionField = observer(
           const result = await data.getResult();
 
           if (result && typeof result === 'object' && 'broadcast' in result) {
-            const channel = result as Channel;
+            const channel = result as BaseChannel;
             setResolutionResult('');
 
             if (channel.type === 'app') {

@@ -1,5 +1,5 @@
 import { ContextHandler, EventHandler, Listener, PrivateChannel, PrivateChannelEventTypes } from '@finos/fdc3-standard';
-import { DefaultChannel } from './DefaultChannel.js';
+import { DefaultBaseChannel } from './DefaultChannel.js';
 import { Messaging } from '../Messaging.js';
 import {
   PrivateChannelNullEventListener,
@@ -14,7 +14,7 @@ import {
   PrivateChannelDisconnectResponse,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
-export class DefaultPrivateChannel extends DefaultChannel implements PrivateChannel {
+export class DefaultPrivateChannel extends DefaultBaseChannel implements PrivateChannel {
   constructor(messaging: Messaging, messageExchangeTimeout: number, id: string) {
     super(messaging, messageExchangeTimeout, id, 'private');
 

@@ -4,6 +4,7 @@ import {
   ContextMetadata,
   DisplayMetadata,
   Listener,
+  BaseChannel,
   Channel,
   ChannelEventTypes,
   EventHandler,
@@ -24,7 +25,7 @@ import {
 import { RegisterableListener } from '../listeners/RegisterableListener.js';
 import { EventListener } from '../listeners/EventListener.js';
 
-export class DefaultChannel implements Channel {
+export abstract class DefaultBaseChannel implements BaseChannel {
   protected readonly messaging: Messaging;
   protected readonly messageExchangeTimeout;
   readonly id: string;
@@ -48,7 +49,6 @@ export class DefaultChannel implements Channel {
     this.broadcast = this.broadcast.bind(this);
     this.getCurrentContext = this.getCurrentContext.bind(this);
     this.addContextListener = this.addContextListener.bind(this);
-    this.addEventListener = this.addEventListener.bind(this);
   }
 
   async broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void> {
@@ -155,6 +155,19 @@ export class DefaultChannel implements Channel {
       type: 'clearContextRequest',
     };
     await this.messaging.exchange<ClearContextResponse>(request, 'clearContextResponse', this.messageExchangeTimeout);
+  }
+}
+
+export class DefaultChannel extends DefaultBaseChannel implements Channel {
+  constructor(
+    messaging: Messaging,
+    messageExchangeTimeout: number,
+    id: string,
+    type: 'user' | 'app',
+    displayMetadata?: DisplayMetadata
+  ) {
+    super(messaging, messageExchangeTimeout, id, type, displayMetadata);
+    this.addEventListener = this.addEventListener.bind(this);
   }
 
   async addEventListener(type: ChannelEventTypes | null, handler: EventHandler): Promise<Listener> {

@@ -53,7 +53,7 @@ class IntentStore {
 
       const handler = async (handlerContext: ContextType, metaData?: ContextMetadata): Promise<IntentResult> => {
         const currentListener = this.intentListeners.find(({ id }) => id === listenerId);
-        let channel: Channel | undefined;
+        let channel: Channel | PrivateChannel | undefined;
 
         //app channel
         if (channelName && !isPrivate) {

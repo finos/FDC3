@@ -24,7 +24,7 @@ import type { AppProvidableContextMetadata } from './ContextMetadata.js';
  * automatically, but may be retrieved manually via the `getCurrentContext()`
  * function.
  */
-export interface Channel {
+export interface BaseChannel {
   /**
    * Constant that uniquely identifies this channel.
    */
@@ -106,7 +106,13 @@ export interface Channel {
    * If no `contextType` is provided, all contexts will be cleared.
    */
   clearContext(contextType?: string): Promise<void>;
+}
 
+/**
+ * Represents a context channel that applications can use to send and receive
+ * context data and listen for Channel events.
+ */
+export interface Channel extends BaseChannel {
   /**
    * Register a handler for events from the Channel. Whenever the handler function
    * is called it will be passed an event object with details related to the event.
