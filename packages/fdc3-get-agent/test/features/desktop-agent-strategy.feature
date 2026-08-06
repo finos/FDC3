@@ -387,12 +387,27 @@ Scenario: Latch to Desktop Agent Preload via SessionStorage which has gone away
       |         2.0 | cucumber-app      | preload-provider |
 
   Scenario: Nothing works and we timeout
+    Given console output is captured
     When I call getAgent for a promise result with the following options
       | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
       | true              |      4000 | false          | false           |
     And I refer to "{result}" as "theAPIPromise"
     Then the promise "{theAPIPromise}" should resolve
     And "{result}" is an error with message "AgentNotFound"
+    And captured console warn output should contain "Desktop agent not found. No error reported during discovery."
+    And captured console error output should not contain "Desktop agent not found. No error reported during discovery."
+
+  Scenario: Unrelated postMessage traffic is logged at debug level
+    Given console output is captured
+    And connection logger outputs debug messages
+    When a HelloHandler for connection attempt "expected-connection-uuid" receives unrelated postMessage traffic
+    Then captured console debug output should contain "Ignoring unexpected message in HelloHandler"
+
+  Scenario: WCP messages for another connection attempt produce warnings
+    Given console output is captured
+    When a HelloHandler for connection attempt "expected-connection-uuid" receives WCP messages for other connection attempts
+    Then captured console warn output should contain "received: wcp2-other-connection-uuid"
+    And captured console warn output should contain "received: wcp3-other-connection-uuid"
 
   Scenario: Someone calls getAgent twice
     Given Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns direct message response
@@ -411,4 +426,3 @@ Scenario: Latch to Desktop Agent Preload via SessionStorage which has gone away
     And I refer to "{result}" as "desktopAgent2"
     And "{desktopAgent1}" is "{desktopAgent2}"
     And I call "{desktopAgent1}" with "disconnect"
-

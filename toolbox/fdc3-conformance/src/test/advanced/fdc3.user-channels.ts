@@ -2,10 +2,11 @@ import { assert, expect } from 'chai';
 import { wait } from '../../utils';
 import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from '../support/channel-control';
 import constants from '../../constants';
-import { Context } from '@finos/fdc3';
+import { ChannelError, Context } from '@finos/fdc3';
 import { ChannelControlImpl } from '../support/channels-support';
 import { getAgent } from '@finos/fdc3';
 import { APIDocumentation } from '../support/apiDocuments';
+import { expectChannelError } from '../support/error-support';
 
 const documentation = '\r\nDocumentation: ' + APIDocumentation.desktopAgent + '\r\nCause:';
 
@@ -17,8 +18,29 @@ export default async () => {
     beforeEach(cc.leaveChannel);
 
     afterEach(async function afterEach() {
-      if (this.currentTest?.title !== UCFilteredUsageJoin)
+      if (this.currentTest?.title !== UCFilteredUsageJoin && !this.currentTest?.title.startsWith('(ChannelError'))
         await cc.closeMockApp(this.currentTest?.title ?? 'Some-Test-Title');
+    });
+
+    it('(ChannelErrorNoChannelFound) Should reject joinUserChannel with NoChannelFound for an unknown user channel', async function (this: Mocha.Context) {
+      const info = await fdc3.getInfo();
+      if (!info.optionalFeatures.UserChannelMembershipAPIs) {
+        this.skip();
+      }
+
+      const userChannels = await fdc3.getUserChannels();
+      let unknownUserChannelId = '__fdc3_conformance_unknown_user_channel__';
+      while (userChannels.some(channel => channel.id === unknownUserChannelId)) {
+        unknownUserChannelId += '_';
+      }
+
+      const errorMessage = `\r\nSteps to reproduce:\r\n- Call joinUserChannel with a channel id not returned by getUserChannels${documentation}`;
+
+      await expectChannelError(
+        () => fdc3.joinUserChannel(unknownUserChannelId),
+        ChannelError.NoChannelFound,
+        errorMessage
+      );
     });
 
     const scTestId1 =

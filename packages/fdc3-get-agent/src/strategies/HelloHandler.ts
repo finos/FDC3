@@ -113,39 +113,48 @@ export class HelloHandler {
       this.helloResponseListener = (event: MessageEvent<WebConnectionProtocolMessage>) => {
         const data = event.data;
 
-        if (data?.meta?.connectionAttemptUuid == this.connectionAttemptUuid) {
-          if (isWebConnectionProtocol2LoadURL(data)) {
-            // in this case, we need to load the URL with the embedded Iframe
-            const url = data.payload.iframeUrl;
-            this.openFrame(url);
-
-            //n.b event listener remains in place to receive messages from the iframe
-          } else if (isWebConnectionProtocol3Handshake(data)) {
-            Logger.debug(`HelloHandler: successful handshake:`, data);
-            const connectionDetails: ConnectionDetails = {
-              connectionAttemptUuid: this.connectionAttemptUuid,
-              handshake: data,
-              messagePort: event.ports[0],
-              options: this.options,
-              actualUrl: globalThis.window.location.href,
-              agentType: this.agentType,
-              agentUrl: this.agentUrl ?? undefined,
-              messageExchangeTimeout: data.payload.messageExchangeTimeout ?? DEFAULT_MESSAGE_EXCHANGE_TIMEOUT_MS,
-              appLaunchTimeout: data.payload.appLaunchTimeout ?? DEFAULT_APP_LAUNCH_TIMEOUT_MS,
-            };
-            resolve(connectionDetails);
-
-            //remove the event listener as we've received a messagePort to use
-            this.cancel();
-          } else {
-            Logger.debug(
-              `Ignoring unexpected message in HelloHandler (because its not WCP2LoadUrl or WCP3Handshake).`,
+        if (isWebConnectionProtocol2LoadURL(data)) {
+          if (data.meta.connectionAttemptUuid != this.connectionAttemptUuid) {
+            Logger.warn(
+              `HelloHandler: Ignoring message with invalid connectionAttemptUuid. Expected ${this.connectionAttemptUuid}, received: ${data.meta.connectionAttemptUuid}`,
               data
             );
+            return;
           }
+
+          // in this case, we need to load the URL with the embedded Iframe
+          const url = data.payload.iframeUrl;
+          this.openFrame(url);
+
+          //n.b event listener remains in place to receive messages from the iframe
+        } else if (isWebConnectionProtocol3Handshake(data)) {
+          if (data.meta.connectionAttemptUuid != this.connectionAttemptUuid) {
+            Logger.warn(
+              `HelloHandler: Ignoring message with invalid connectionAttemptUuid. Expected ${this.connectionAttemptUuid}, received: ${data.meta.connectionAttemptUuid}`,
+              data
+            );
+            return;
+          }
+
+          Logger.debug(`HelloHandler: successful handshake:`, data);
+          const connectionDetails: ConnectionDetails = {
+            connectionAttemptUuid: this.connectionAttemptUuid,
+            handshake: data,
+            messagePort: event.ports[0],
+            options: this.options,
+            actualUrl: globalThis.window.location.href,
+            agentType: this.agentType,
+            agentUrl: this.agentUrl ?? undefined,
+            messageExchangeTimeout: data.payload.messageExchangeTimeout ?? DEFAULT_MESSAGE_EXCHANGE_TIMEOUT_MS,
+            appLaunchTimeout: data.payload.appLaunchTimeout ?? DEFAULT_APP_LAUNCH_TIMEOUT_MS,
+          };
+          resolve(connectionDetails);
+
+          //remove the event listener as we've received a messagePort to use
+          this.cancel();
         } else {
-          Logger.warn(
-            `HelloHandler: Ignoring message with invalid connectionAttemptUuid. Expected ${this.connectionAttemptUuid}, received: ${data?.meta?.connectionAttemptUuid}`,
+          Logger.debug(
+            `Ignoring unexpected message in HelloHandler (because its not WCP2LoadUrl or WCP3Handshake).`,
             data
           );
         }
