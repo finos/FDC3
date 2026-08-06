@@ -6,7 +6,7 @@ import { makeObservable, observable, action, runInAction, toJS } from 'mobx';
 import { ContextType, Fdc3Listener, getWorkbenchAgent } from '../utility/Fdc3Api.js';
 import systemLogStore from './SystemLogStore.js';
 import { nanoid } from 'nanoid';
-import { BaseChannel, ContextMetadata } from '@finos/fdc3';
+import { Channel, ContextMetadata, PrivateChannel } from '@finos/fdc3';
 
 interface ListenerOptionType {
   title: string;
@@ -16,7 +16,7 @@ interface ListenerOptionType {
 
 export interface Fdc3ChannelRecord {
   id: string;
-  channel: BaseChannel;
+  channel: Channel | PrivateChannel;
   currentListener?: ListenerOptionType | null;
   broadcastError?: string;
   context?: ContextType | null;
@@ -85,7 +85,7 @@ class AppChannelStore {
     return !!this.appChannelsList.find(channel => channel.id === channelId);
   }
 
-  async broadcast(channel: BaseChannel, context: ContextType) {
+  async broadcast(channel: Channel, context: ContextType) {
     const channelId = channel.id;
     if (!context) {
       systemLogStore.addLog({
@@ -170,7 +170,7 @@ class AppChannelStore {
     }
   }
 
-  async addChannelListener(currChannel: BaseChannel, newListener: string | undefined) {
+  async addChannelListener(currChannel: Channel, newListener: string | undefined) {
     const channelId = currChannel.id;
     try {
       const currentChannel = this.appChannelsList.find(channel => channel.id === channelId);
@@ -253,7 +253,7 @@ class AppChannelStore {
     }
   }
 
-  remove(channel: BaseChannel) {
+  remove(channel: Channel) {
     this.channelListeners.forEach(listener => this.removeContextListener(listener.id));
     runInAction(() => {
       this.appChannelsList = this.appChannelsList.filter(chan => chan.id !== channel.id);

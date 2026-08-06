@@ -49,6 +49,7 @@ export abstract class DefaultBaseChannel implements BaseChannel {
     this.broadcast = this.broadcast.bind(this);
     this.getCurrentContext = this.getCurrentContext.bind(this);
     this.addContextListener = this.addContextListener.bind(this);
+    this.addEventListener = this.addEventListener.bind(this);
   }
 
   async broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void> {
@@ -156,6 +157,12 @@ export abstract class DefaultBaseChannel implements BaseChannel {
     };
     await this.messaging.exchange<ClearContextResponse>(request, 'clearContextResponse', this.messageExchangeTimeout);
   }
+
+  /**
+   * Registers a channel event listener. Classes extending `DefaultBaseChannel`
+   * must implement this method and define the event types they support.
+   */
+  abstract addEventListener(type: string | null, handler: EventHandler): Promise<Listener>;
 }
 
 export class DefaultChannel extends DefaultBaseChannel implements Channel {
@@ -167,7 +174,6 @@ export class DefaultChannel extends DefaultBaseChannel implements Channel {
     displayMetadata?: DisplayMetadata
   ) {
     super(messaging, messageExchangeTimeout, id, type, displayMetadata);
-    this.addEventListener = this.addEventListener.bind(this);
   }
 
   async addEventListener(type: ChannelEventTypes | null, handler: EventHandler): Promise<Listener> {

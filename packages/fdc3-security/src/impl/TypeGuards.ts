@@ -5,7 +5,6 @@
 
 import { Context, EncryptedContextWrapper, SymmetricKeyResponse, User, UserRequest } from '@finos/fdc3-context';
 import {
-  BaseChannel,
   Channel,
   ContextMetadata,
   ContextWithMetadata,
@@ -43,9 +42,9 @@ export function isChannelResult(value: IntentResult): value is Channel | Private
     typeof value === 'object' &&
     value !== null &&
     'type' in value &&
-    ((value as BaseChannel).type === 'user' ||
-      (value as BaseChannel).type === 'app' ||
-      (value as BaseChannel).type === 'private')
+    ((value as Channel | PrivateChannel).type === 'user' ||
+      (value as Channel | PrivateChannel).type === 'app' ||
+      (value as Channel | PrivateChannel).type === 'private')
   );
 }
 

@@ -106,6 +106,14 @@ export interface BaseChannel {
    * If no `contextType` is provided, all contexts will be cleared.
    */
   clearContext(contextType?: string): Promise<void>;
+
+  /**
+   * Register a handler for events from the channel.
+   *
+   * Interfaces that extend `BaseChannel` MUST override this method to define
+   * the event types that they support.
+   */
+  addEventListener(type: string | null, handler: EventHandler): Promise<Listener>;
 }
 
 /**

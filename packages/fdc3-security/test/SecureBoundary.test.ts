@@ -7,7 +7,7 @@
  */
 
 import { AppIdentifier, Context } from '@finos/fdc3-context';
-import { BaseChannel, PrivateChannel } from '@finos/fdc3-standard';
+import { Channel, PrivateChannel } from '@finos/fdc3-standard';
 import { WebSocket } from 'ws';
 import { connectRemoteHandlers } from '../src/secure-boundary/ClientSideHandlersImpl';
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
@@ -29,7 +29,7 @@ async function flushWebSocketClose(): Promise<void> {
 class AppChannelSecureBoundaryHandlers extends DefaultFDC3Handlers {
   listenerNotifications = 0;
 
-  async handleRemoteChannel(purpose: string, channel: BaseChannel): Promise<void> {
+  async handleRemoteChannel(purpose: string, channel: Channel | PrivateChannel): Promise<void> {
     if (purpose !== PURPOSE_APP_CHANNEL) {
       return super.handleRemoteChannel(purpose, channel);
     }
@@ -59,7 +59,7 @@ class AppChannelSecureBoundaryHandlers extends DefaultFDC3Handlers {
 }
 
 class PrivateChannelDisconnectHandlers extends DefaultFDC3Handlers {
-  async handleRemoteChannel(purpose: string, channel: BaseChannel): Promise<void> {
+  async handleRemoteChannel(purpose: string, channel: Channel | PrivateChannel): Promise<void> {
     if (purpose !== PURPOSE_PRIVATE_DISCONNECT) {
       return super.handleRemoteChannel(purpose, channel);
     }

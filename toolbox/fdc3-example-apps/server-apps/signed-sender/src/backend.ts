@@ -1,7 +1,7 @@
 import type { Application } from 'express';
 import type { Server } from 'http';
 import { WebSocket } from 'ws';
-import { BaseChannel } from '@finos/fdc3-standard';
+import { Channel } from '@finos/fdc3-standard';
 import {
   BasicSignedBroadcaster,
   createJosePrivateFDC3Security,
@@ -48,7 +48,7 @@ class SignedSenderBackendHandlers extends DefaultFDC3Handlers {
    * After this returns, any call to `exchangeData(SIGNED_BROADCAST_TRIGGER)` will sign and
    * broadcast on this channel.
    */
-  async handleRemoteChannel(purpose: string, channel: BaseChannel): Promise<void> {
+  async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
     if (purpose !== 'broadcast') return;
     this.signedBroadcaster = new BasicSignedBroadcaster(this.security, this.metadataHandler, channel);
   }

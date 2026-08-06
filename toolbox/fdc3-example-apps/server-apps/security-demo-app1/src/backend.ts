@@ -1,7 +1,7 @@
 import type { Application } from 'express';
 import type { Server } from 'http';
 import { WebSocket } from 'ws';
-import { BaseChannel } from '@finos/fdc3';
+import { PrivateChannel } from '@finos/fdc3';
 import { Context } from '@finos/fdc3-context';
 import {
   AllowListFunction,
@@ -70,7 +70,7 @@ class App1BackendHandlers extends DefaultFDC3Handlers {
     return super.exchangeData(purpose, payload);
   }
 
-  async handleRemoteChannel(purpose: string, channel: BaseChannel): Promise<void> {
+  async handleRemoteChannel(purpose: string, channel: PrivateChannel): Promise<void> {
     if (purpose !== 'demo.GetPrices') {
       return;
     }

@@ -20,7 +20,6 @@ export class DefaultPrivateChannel extends DefaultBaseChannel implements Private
 
     //bind all functions to allow destructuring
     this.addContextListener = this.addContextListener.bind(this);
-    this.addEventListener = this.addEventListener.bind(this);
     this.disconnect = this.disconnect.bind(this);
   }
 

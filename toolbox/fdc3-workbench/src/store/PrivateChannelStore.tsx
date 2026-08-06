@@ -7,7 +7,7 @@ import { ContextType, Fdc3Listener, PrivateChannel } from '../utility/Fdc3Api.js
 import systemLogStore from './SystemLogStore.js';
 import { nanoid } from 'nanoid';
 import { getWorkbenchAgent } from '../utility/Fdc3Api.js';
-import { BaseChannel, ContextMetadata } from '@finos/fdc3-standard';
+import { ContextMetadata } from '@finos/fdc3-standard';
 // interface ListenerOptionType {
 // 	title: string;
 // 	value: string;
@@ -74,7 +74,7 @@ class PrivateChannelStore {
     return !!this.privateChannelsList.find(channel => channel.id === channelId);
   }
 
-  async broadcast(channel: BaseChannel, context: ContextType) {
+  async broadcast(channel: PrivateChannel, context: ContextType) {
     const channelId = channel.id;
     if (!context) {
       systemLogStore.addLog({
@@ -115,7 +115,7 @@ class PrivateChannelStore {
     }
   }
 
-  async addChannelListener(currentChannel: BaseChannel, newListener: string | undefined) {
+  async addChannelListener(currentChannel: PrivateChannel, newListener: string | undefined) {
     const channelId = currentChannel.id;
     try {
       const foundListener = this.channelListeners.find(
