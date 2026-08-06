@@ -12,6 +12,7 @@ import { createMockDesktopAgent, resetMockDesktopAgentFixtureState } from '../te
 import { fileURLToPath } from 'url';
 import { resolve } from 'path';
 import { createMetadataHandlerWithFDC3Version, type MetadataHandler } from '../src/delegates/MetadataHandler';
+import { isChannelResult } from '../src/impl/TypeGuards';
 
 const INTENT_SHARE_ENCRYPTED_CHANNEL = 'ShareEncryptedChannel';
 
@@ -179,6 +180,10 @@ async function step4ReceivingAppRaiseIntentAndSetupListener(
   // Raise the intent to obtain the PrivateChannel from the broadcasting app.
   const resolution = await mockDA.raiseIntent(INTENT_SHARE_ENCRYPTED_CHANNEL, { type: 'fdc3.nothing' } as Context);
   const channel = await resolution.getResult();
+
+  if (!isChannelResult(channel)) {
+    throw new Error('ShareEncryptedChannel did not return a Channel or PrivateChannel');
+  }
 
   // Forward the channel to the receiving app's backend via handleRemoteChannel.
   // The backend will set up PrivateEncryptedContextListenerSupport on it — all
