@@ -6,6 +6,16 @@ ignore-patterns:
 # This is an explicit baseline for dependencies reported as unused by depcheck.
 # Remove an entry when the dependency is removed or depcheck learns how it is used.
 ignores:
+  # Invoked by the root `dev` script to run the example applications concurrently.
+  - concurrently
+  # Invoked by the root `prepare` script to install the repository's Git hooks.
+  - husky
+  # Invoked by the root `merge` script to combine workspace coverage reports.
+  - istanbul-merge
+  # Invoked by the root `report` script to generate the merged coverage report.
+  - nyc
+  # Invoked by the root `syncpack` script to align workspace package versions.
+  - syncpack
   # Used by ESLint flat configurations throughout the npm workspaces.
   - "@eslint/js"
   # Supplies Mocha globals to the conformance test TypeScript build.
