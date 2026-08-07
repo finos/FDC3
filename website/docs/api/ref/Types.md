@@ -327,7 +327,7 @@ An `IntentHandler` MAY return a [`ContextWithMetadata`](#contextwithmetadata) ob
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-type IntentResult = Context | Channel | void;
+type IntentResult = Context | ContextWithMetadata | Channel | void;
 ```
 
 </TabItem>
@@ -354,7 +354,7 @@ const (
 </TabItem>
 </Tabs>
 
-Describes results returned by [`IntentResolution.getResult()`](Metadata#intentresolution) after an intent is resolved. Note that [`IntentHandler`](#intenthandler) functions may also return [`ContextWithMetadata`](#contextwithmetadata) to include app-provided metadata alongside a context result; in that case `getResult()` still returns only the `Context` portion, while the metadata is available via [`IntentResolution.getResultMetadata()`](Metadata#intentresolution).
+Describes values that an [`IntentHandler`](#intenthandler) may return after resolving an intent. A handler may return [`ContextWithMetadata`](#contextwithmetadata) to include app-provided metadata alongside a context result; in that case `getResult()` returns only the `Context` portion, while the metadata is available via [`IntentResolution.getResultMetadata()`](Metadata#intentresolution).
 
 Represented as a union type in TypeScript, however, this type may be rendered as an interface in other languages that both the `Context` and `Channel` types implement, allowing either to be returned by an `IntentHandler`.
 
@@ -366,6 +366,20 @@ Represented as a union type in TypeScript, however, this type may be rendered as
 - [`PrivateChannel`](PrivateChannel)
 - [`IntentHandler`](#intenthandler)
 - [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
+- [`IntentResolution`](Metadata#intentresolution)
+
+## `IntentResolutionResult`
+
+```ts
+type IntentResolutionResult = Exclude<IntentResult, ContextWithMetadata>;
+```
+
+Describes results returned by [`IntentResolution.getResult()`](Metadata#intentresolution) after any `ContextWithMetadata` result from the intent handler has been unwrapped. The associated metadata is available via [`IntentResolution.getResultMetadata()`](Metadata#intentresolution).
+
+**See also:**
+
+- [`IntentResult`](#intentresult)
+- [`ContextWithMetadata`](#contextwithmetadata)
 - [`IntentResolution`](Metadata#intentresolution)
 
 ## `Listener`
