@@ -1,4 +1,8 @@
 ignores:
+  # Invoked by the `lint` package script.
+  - eslint
+  # Invoked by the build and test package scripts.
+  - typescript
   # No direct type reference was found; likely valid to remove.
   - "@types/expect"
   # Supplies Jest globals to the TypeScript test build.

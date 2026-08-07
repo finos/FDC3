@@ -23,3 +23,5 @@ ignores:
   - ts-node
   # No source import was found; likely valid to remove.
   - uuid
+  # Imported by the shared screenshot-comparison Cucumber steps.
+  - pixelmatch

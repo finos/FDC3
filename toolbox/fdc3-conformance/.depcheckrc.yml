@@ -1,4 +1,6 @@
 ignores:
+  # Used by Vite to compile the TypeScript application sources.
+  - typescript
   # Injected as a browser polyfill by vite.config.ts.
   - buffer
   # Injected as a browser polyfill by vite.config.ts.

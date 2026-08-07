@@ -1,4 +1,8 @@
 ignores:
+  # Invoked by the lint package scripts.
+  - eslint
+  # Invoked by the `build` package script.
+  - typescript
   # Aliased for browser builds in vite.config.ts.
   - buffer
   # Aliased for browser builds in vite.config.ts.

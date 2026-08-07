@@ -1,4 +1,10 @@
 ignores:
+  # Invoked by the `lint` package script.
+  - eslint
+  # Invoked by the `dev` package script.
+  - tsx
+  # Used by tsx and Vite to compile the TypeScript sources.
+  - typescript
   # Supplies Node.js types to the server-side TypeScript source.
   - "@types/node"
   # No direct ws import exists and ws ships its own types; likely valid to remove.

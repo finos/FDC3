@@ -1,2 +1,5 @@
-# depcheck currently reports no unused dependencies for this workspace.
-ignores: []
+ignores:
+  # Invoked by the `lint` package script.
+  - eslint
+  # Invoked by the `build` package script.
+  - typescript
