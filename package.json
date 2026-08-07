@@ -73,7 +73,7 @@
     "husky": "^9.1.7",
     "istanbul-merge": "^2.0.0",
     "lint-staged": "^15.2.10",
-    "nyc": "17.1.0",
+    "nyc": "18.0.0",
     "pixelmatch": "^6.0.0",
     "prettier": "3.9.5",
     "rimraf": "^6.0.1",
