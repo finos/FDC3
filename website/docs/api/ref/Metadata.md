@@ -350,9 +350,10 @@ interface IAppProvidableContextMetadata
 
 ```go
 type AppProvidableContextMetadata struct {
-  TraceId   string                 `json:"traceId,omitempty"`
-  Signature string                 `json:"signature,omitempty"`
-  Custom    map[string]interface{} `json:"custom,omitempty"`
+  TraceId    string                 `json:"traceId,omitempty"`
+  Signature  *DetachedSignature     `json:"signature,omitempty"`
+  AntiReplay *AntiReplayClaims      `json:"antiReplay,omitempty"`
+  Custom     map[string]interface{} `json:"custom,omitempty"`
 }
 ```
 
@@ -390,6 +391,21 @@ interface DetachedSignature {
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type DetachedSignature struct {
+  // The BASE64URL-encoded JWS protected header. When decoded, contains
+  // fields including: `alg` (signature algorithm), `jku` (JWKS URL for
+  // key verification), and `kid` (key identifier).
+  Protected string `json:"protected"`
+  // The BASE64URL-encoded digital signature computed over the protected
+  // header and the canonicalized context payload (detached).
+  Signature string `json:"signature"`
+}
+```
+
+</TabItem>
 </Tabs>
 
 A Detached JSON Web Signature (JWS) used to prove the authenticity and integrity of a signed context object. The signature is computed over the canonicalized JSON of `{ context, antiReplay }` using the signing application's private key, and can be verified using the public key retrieved from the JWKS URL in the protected header. See [Security & Identity](../security) for the full signing and verification flow.
@@ -415,6 +431,20 @@ interface AntiReplayClaims {
 
   /** Unique identifier for this signed context instance (UUID). */
   readonly jti: string;
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type AntiReplayClaims struct {
+  // Issued-at time as a Unix timestamp (seconds since epoch).
+  Iat int64 `json:"iat"`
+  // Expiration time as a Unix timestamp (seconds since epoch).
+  Exp int64 `json:"exp"`
+  // Unique identifier for this signed context instance (UUID).
+  Jti string `json:"jti"`
 }
 ```
 
