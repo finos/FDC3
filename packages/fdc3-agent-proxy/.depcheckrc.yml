@@ -1,0 +1,9 @@
+ignores:
+  # Not referenced by this package's current ESLint configuration; likely valid to remove.
+  - eslint-plugin-import
+  # Not referenced by this package's current ESLint configuration; likely valid to remove.
+  - eslint-plugin-prettier
+  # No source or script reference was found; likely valid to remove.
+  - is-ci
+  # Matching helpers come from @finos/testing; likely valid to remove here.
+  - jsonpath-plus

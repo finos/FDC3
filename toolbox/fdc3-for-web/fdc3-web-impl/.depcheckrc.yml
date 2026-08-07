@@ -1,0 +1,29 @@
+ignores:
+  # Installed for Cucumber report formatting; likely removable if no external runner relies on it.
+  - "@cucumber/html-formatter"
+  # Used by Cucumber formatters through their plugin API rather than a source import.
+  - "@cucumber/messages"
+  # Installed for Cucumber report formatting; likely removable if no external runner relies on it.
+  - "@cucumber/pretty-formatter"
+  # No direct type reference was found; likely valid to remove.
+  - "@types/expect"
+  # No direct type reference was found; likely valid to remove.
+  - "@types/lodash"
+  # uuid now ships its own types; likely valid to remove from both dependency sections.
+  - "@types/uuid"
+  # Loaded by Cucumber as a formatter plugin rather than imported by source.
+  - cucumber-console-formatter
+  # Not referenced by this package's current ESLint configuration; likely valid to remove.
+  - eslint-plugin-import
+  # Not referenced by this package's current ESLint configuration; likely valid to remove.
+  - eslint-plugin-prettier
+  # No source or script reference was found; likely valid to remove.
+  - is-ci
+  # Matching helpers come from @finos/testing; likely valid to remove here.
+  - jsonpath-plus
+  # Invoked by the `directory-openapi` package script.
+  - openapi-typescript
+  # TypeScript is compiled with tsc rather than ts-node; likely valid to remove.
+  - ts-node
+  # No source import was found; likely valid to remove from both dependency sections.
+  - uuid

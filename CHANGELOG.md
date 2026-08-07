@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-* Added a CI dependency check with a documented baseline of existing unused-dependency findings.
+* Added CI dependency checks for the root package and every npm workspace, with documented baselines of existing unused-dependency findings.
 * Added conformance coverage for `ChannelError.NoChannelFound`, `ChannelError.MalformedContext`, and `ChannelError.InvalidArguments`. ([#1779](https://github.com/finos/FDC3/issues/1779))
 * Added conformance coverage verifying that Desktop Agent methods continue to work when destructured from the `fdc3` object. ([#1778](https://github.com/finos/FDC3/issues/1778))
 * Added standalone Workbench examples for the FDC3 2.2 `fdc3.action`, `fdc3.fileAttachment`, `fdc3.message`, `fdc3.orderList`, `fdc3.tradeList`, and `fdc3.timeRange` context types. ([#1949](https://github.com/finos/FDC3/pull/1949))

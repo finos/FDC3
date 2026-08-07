@@ -1,0 +1,21 @@
+ignores:
+  # Injected as a browser polyfill by vite.config.ts.
+  - buffer
+  # Injected as a browser polyfill by vite.config.ts.
+  - process
+  # Injected as a browser polyfill by vite.config.ts.
+  - stream-browserify
+  # Injected as a browser polyfill by vite.config.ts.
+  - util
+  # No source or configuration reference was found; likely valid to remove.
+  - ajv
+  # No source or configuration reference was found; likely valid to remove.
+  - ajv-keywords
+  # Invoked by the `serve` package script.
+  - http-server
+  # No source or script reference was found; likely valid to remove.
+  - replace-in-file
+  # Invoked by the `copy` package script.
+  - shx
+  # No package script invokes Prettier directly; likely valid to remove.
+  - prettier

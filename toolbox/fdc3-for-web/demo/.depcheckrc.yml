@@ -1,0 +1,11 @@
+ignores:
+  # Supplies Node.js types to the server-side TypeScript source.
+  - "@types/node"
+  # No direct ws import exists and ws ships its own types; likely valid to remove.
+  - "@types/ws"
+  # No package script invokes nodemon; likely valid to remove.
+  - nodemon
+  # Used by vite-express at runtime rather than imported directly by this package.
+  - vite
+  # No package script invokes rimraf; likely valid to remove.
+  - rimraf

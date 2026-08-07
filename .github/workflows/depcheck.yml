@@ -28,4 +28,15 @@ jobs:
           node-version: 24.18.0
 
       - name: Check for unused dependencies
-        run: npx depcheck
+        shell: bash
+        run: |
+          status=0
+
+          npx depcheck --skip-missing || status=1
+
+          while IFS= read -r workspace; do
+            echo "Checking ${workspace}"
+            (cd "${workspace}" && npx depcheck --skip-missing) || status=1
+          done < <(node -e "require('./package.json').workspaces.forEach(workspace => console.log(workspace))")
+
+          exit "${status}"
