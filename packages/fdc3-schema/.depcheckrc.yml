@@ -5,5 +5,3 @@ ignores:
   - mkdirp
   # Invoked directly by s2tQuicktypeUtil.cjs during schema generation.
   - quicktype
-  # No tslib helpers are imported by the emitted code; likely valid to remove.
-  - tslib
