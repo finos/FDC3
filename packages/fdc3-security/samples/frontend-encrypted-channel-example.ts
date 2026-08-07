@@ -1,7 +1,7 @@
 import { AppIdentifier, Context, SymmetricKeyResponse } from '@finos/fdc3-context';
 import type { JsonWebKeyWithId } from '../src/impl/PublicFDC3Security';
 import { WebSocket } from 'ws';
-import { DesktopAgent, PrivateChannel } from '@finos/fdc3-standard';
+import { Channel, DesktopAgent } from '@finos/fdc3-standard';
 
 import { JosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { createJosePublicFDC3SecurityFromUrl } from '../src/impl/JosePublicFDC3Security';
@@ -110,7 +110,7 @@ async function step3BroadcastingAppSetup(
 
   // Create the PrivateChannel on the frontend and wrap it with EncryptedBroadcastSupport.
   // The symmetric key is generated here on the frontend and held in memory.
-  const channel: PrivateChannel = await mockDA.createPrivateChannel();
+  const channel: Channel = await mockDA.createPrivateChannel();
   const support = new EncryptedBroadcastSupport(publicSecurity, metadataHandler);
   const broadcaster = await support.broadcastWrapper(channel);
 
@@ -141,7 +141,7 @@ async function step4ReceivingAppSetup(
   const handlers = await connectRemoteHandlers(receivingApp.baseUrl.replace('http', 'ws'), mockDA, async () => {});
 
   const resolution = await mockDA.raiseIntent(INTENT_SHARE_ENCRYPTED_CHANNEL, { type: 'fdc3.nothing' } as Context);
-  const channel = (await resolution.getResult()) as PrivateChannel;
+  const channel = (await resolution.getResult()) as Channel;
 
   const jwksUrl = `${receivingApp.baseUrl}/.well-known/jwks.json`;
   const publicSecurity = await createJosePublicFDC3SecurityFromUrl(jwksUrl, () => true);

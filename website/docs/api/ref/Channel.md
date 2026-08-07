@@ -26,7 +26,7 @@ Channels each have a unique identifier, some display metadata and operations for
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-interface BaseChannel {
+interface Channel {
   // properties
   id: string;
   type: "user" | "app" | "private";
@@ -38,9 +38,6 @@ interface BaseChannel {
   getCurrentContextWithMetadata(contextType?: string): Promise<ContextWithMetadata|null>;
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
   clearContext(contextType?: string): Promise<void>;
-}
-
-interface Channel extends BaseChannel {
   addEventListener(type: ChannelEventTypes  | null, handler: EventHandler): Promise<Listener>;
 }
 ```

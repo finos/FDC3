@@ -69,7 +69,7 @@ export interface FDC3ContextClearedEvent extends FDC3Event {
 /**
  * Type defining valid type strings for Private Channel events.
  */
-export type PrivateChannelEventTypes = 'addContextListener' | 'unsubscribe' | 'disconnect';
+export type PrivateChannelEventTypes = ChannelEventTypes | 'addContextListener' | 'unsubscribe' | 'disconnect';
 
 /**
  * Type defining the format of event objects that may be received

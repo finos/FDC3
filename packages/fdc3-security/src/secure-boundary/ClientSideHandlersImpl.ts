@@ -31,7 +31,7 @@ type PrivateChannelDisconnectResponse = BrowserTypes.PrivateChannelDisconnectRes
 export class ClientSideHandlersImpl implements FDC3Handlers {
   private readonly messaging: Messaging;
   private readonly desktopAgent: DesktopAgent;
-  private readonly channels: Map<string, Channel | PrivateChannel> = new Map();
+  private readonly channels: Map<string, Channel> = new Map();
   private readonly contextListeners: Map<string, Listener> = new Map();
   private readonly callback: (message: ExchangeDataMessage) => Promise<ExchangeDataMessage | void>;
 
@@ -98,7 +98,7 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
     return this.messaging.exchange(payload, `ack:${eventName}`, 5000, eventName);
   }
 
-  async handleRemoteChannel(purpose: string, channel: Channel | PrivateChannel): Promise<void> {
+  async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
     this.channels.set(channel.id, channel);
     await this.callRemote(HANDLE_REMOTE_CHANNEL, {
       purpose,

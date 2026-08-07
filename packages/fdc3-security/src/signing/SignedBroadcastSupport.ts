@@ -1,5 +1,5 @@
 import { Context } from '@finos/fdc3-context';
-import { Channel, ContextMetadata, PrivateChannel } from '@finos/fdc3-standard';
+import { Channel, ContextMetadata } from '@finos/fdc3-standard';
 import { MetadataHandler } from '../delegates/MetadataHandler.js';
 import { PrivateFDC3Security } from '../impl/PrivateFDC3Security.js';
 
@@ -32,7 +32,7 @@ export interface SignedBroadcaster {
  */
 export class BasicSignedBroadcaster implements SignedBroadcaster {
   private security: PrivateFDC3Security;
-  private channel: Channel | PrivateChannel;
+  private channel: Channel;
   private metadataHandler: MetadataHandler;
 
   /**
@@ -40,7 +40,7 @@ export class BasicSignedBroadcaster implements SignedBroadcaster {
    * @param metadataHandler Handles packing metadata into the context for FDC3 < 3.0 compatibility.
    * @param channel The FDC3 channel on which signed contexts will be broadcast.
    */
-  constructor(security: PrivateFDC3Security, metadataHandler: MetadataHandler, channel: Channel | PrivateChannel) {
+  constructor(security: PrivateFDC3Security, metadataHandler: MetadataHandler, channel: Channel) {
     this.security = security;
     this.metadataHandler = metadataHandler;
     this.channel = channel;

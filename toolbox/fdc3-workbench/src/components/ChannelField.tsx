@@ -19,7 +19,6 @@ import FileCopyIcon from '@mui/icons-material/FileCopy';
 import contextStore from '../store/ContextStore.js';
 import { TemplateTextField } from './common/TemplateTextField.js';
 import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
-import { Channel } from '@finos/fdc3';
 
 interface ListenerOptionType {
   title: string;
@@ -134,14 +133,7 @@ export const ChannelField = observer(
         if (channelStore.isContextListenerExists(channelId, foundChannel?.currentListener.type)) {
           foundChannel.listenerError = 'Listener already added';
         } else {
-          if (isPrivateChannel) {
-            privateChannelStore.addChannelListener(
-              foundChannel.channel as PrivateChannel,
-              foundChannel.currentListener.type
-            );
-          } else {
-            appChannelStore.addChannelListener(foundChannel.channel as Channel, foundChannel.currentListener.type);
-          }
+          channelStore.addChannelListener(foundChannel.channel as PrivateChannel, foundChannel.currentListener.type);
           foundChannel.listenerError = '';
         }
       } else {
@@ -163,11 +155,7 @@ export const ChannelField = observer(
 
     const handleBroadcast = (channel: Fdc3ChannelRecord) => {
       if (channel.context && contextItem) {
-        if (isPrivateChannel) {
-          privateChannelStore.broadcast(channel.channel as PrivateChannel, contextItem);
-        } else {
-          appChannelStore.broadcast(channel.channel as Channel, contextItem);
-        }
+        channelStore.broadcast(channel.channel as PrivateChannel, contextItem);
       }
     };
 
@@ -224,7 +212,7 @@ export const ChannelField = observer(
       if (isPrivateChannel) {
         privateChannelStore.disconnect(channel.channel as PrivateChannel);
       } else {
-        appChannelStore.remove(channel.channel as Channel);
+        appChannelStore.remove(channel.channel);
       }
       setCurrentChannelList(currentChannelList.filter(currentChannel => currentChannel.id !== channel.id));
     };

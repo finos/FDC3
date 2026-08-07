@@ -6,7 +6,7 @@ import { makeObservable, observable, action, runInAction, toJS } from 'mobx';
 import { ContextType, Fdc3Listener, getWorkbenchAgent } from '../utility/Fdc3Api.js';
 import systemLogStore from './SystemLogStore.js';
 import { nanoid } from 'nanoid';
-import { Channel, ContextMetadata, PrivateChannel } from '@finos/fdc3';
+import { Channel, ContextMetadata } from '@finos/fdc3';
 
 interface ListenerOptionType {
   title: string;
@@ -16,7 +16,7 @@ interface ListenerOptionType {
 
 export interface Fdc3ChannelRecord {
   id: string;
-  channel: Channel | PrivateChannel;
+  channel: Channel;
   currentListener?: ListenerOptionType | null;
   broadcastError?: string;
   context?: ContextType | null;

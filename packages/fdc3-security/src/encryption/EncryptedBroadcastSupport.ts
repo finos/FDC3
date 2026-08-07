@@ -1,5 +1,5 @@
 import { Context, EncryptedContextWrapper } from '@finos/fdc3-context';
-import { Channel, ContextMetadata, Listener, PrivateChannel } from '@finos/fdc3-standard';
+import { Channel, ContextMetadata, Listener } from '@finos/fdc3-standard';
 import { JsonWebKeyWithId, PublicFDC3Security } from '../impl/PublicFDC3Security.js';
 import { MetadataHandler } from '../delegates/MetadataHandler.js';
 
@@ -43,7 +43,7 @@ export interface EncryptedBroadcaster {
 export async function createSymmetricKeyRequestContextListener(
   fdc3Security: PublicFDC3Security,
   metadataHandler: MetadataHandler,
-  channel: Channel | PrivateChannel,
+  channel: Channel,
   symmetricKey: JsonWebKeyWithId
 ): Promise<Listener> {
   const listener = channel.addContextListener(
@@ -87,7 +87,7 @@ export async function createSymmetricKeyRequestContextListener(
  */
 export class BasicEncryptedBroadcaster implements EncryptedBroadcaster {
   private security: PublicFDC3Security;
-  private channel: Channel | PrivateChannel;
+  private channel: Channel;
   private key: JsonWebKeyWithId;
   private keyListener: Promise<Listener>;
   private isShutdown: boolean = false;
@@ -100,12 +100,7 @@ export class BasicEncryptedBroadcaster implements EncryptedBroadcaster {
    * @param key The symmetric key to use for encryption. Must already have been created
    *   (e.g. via `PublicFDC3Security.createSymmetricKey()`).
    */
-  constructor(
-    security: PublicFDC3Security,
-    metadataHandler: MetadataHandler,
-    channel: Channel | PrivateChannel,
-    key: JsonWebKeyWithId
-  ) {
+  constructor(security: PublicFDC3Security, metadataHandler: MetadataHandler, channel: Channel, key: JsonWebKeyWithId) {
     this.security = security;
     this.metadataHandler = metadataHandler;
     this.channel = channel;
@@ -156,7 +151,7 @@ export class EncryptedBroadcastSupport {
    *
    * @see DesktopAgent.broadcast
    */
-  async broadcastWrapper(channel: Channel | PrivateChannel): Promise<EncryptedBroadcaster> {
+  async broadcastWrapper(channel: Channel): Promise<EncryptedBroadcaster> {
     const key = await this.security.createSymmetricKey();
     return new BasicEncryptedBroadcaster(this.security, this.metadataHandler, channel, key);
   }

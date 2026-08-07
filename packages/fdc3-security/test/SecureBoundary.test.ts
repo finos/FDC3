@@ -29,7 +29,7 @@ async function flushWebSocketClose(): Promise<void> {
 class AppChannelSecureBoundaryHandlers extends DefaultFDC3Handlers {
   listenerNotifications = 0;
 
-  async handleRemoteChannel(purpose: string, channel: Channel | PrivateChannel): Promise<void> {
+  async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
     if (purpose !== PURPOSE_APP_CHANNEL) {
       return super.handleRemoteChannel(purpose, channel);
     }
@@ -59,7 +59,7 @@ class AppChannelSecureBoundaryHandlers extends DefaultFDC3Handlers {
 }
 
 class PrivateChannelDisconnectHandlers extends DefaultFDC3Handlers {
-  async handleRemoteChannel(purpose: string, channel: Channel | PrivateChannel): Promise<void> {
+  async handleRemoteChannel(purpose: string, channel: Channel): Promise<void> {
     if (purpose !== PURPOSE_PRIVATE_DISCONNECT) {
       return super.handleRemoteChannel(purpose, channel);
     }

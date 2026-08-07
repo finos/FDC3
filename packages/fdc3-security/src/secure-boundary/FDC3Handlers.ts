@@ -51,7 +51,7 @@ export interface FDC3Handlers {
    *   channel. This is up to applications to define and use.
    * @param channel — Proxy `Channel`/`PrivateChannel` bridged from the client agent.
    */
-  handleRemoteChannel(purpose: string, channel: Channel | PrivateChannel): Promise<void>;
+  handleRemoteChannel(purpose: string, channel: Channel): Promise<void>;
 
   /**
    * Called on the client so that the server can provide the real `IntentHandler` for a given intent
@@ -101,7 +101,7 @@ export interface FDC3Handlers {
  * override it. Extend this on the **high-trust** server and implement only the hooks your app uses.
  */
 export class DefaultFDC3Handlers implements FDC3Handlers {
-  async handleRemoteChannel(_purpose: string, _channel: Channel | PrivateChannel): Promise<void> {
+  async handleRemoteChannel(_purpose: string, _channel: Channel): Promise<void> {
     return;
   }
 

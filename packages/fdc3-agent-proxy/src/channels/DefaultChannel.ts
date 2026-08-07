@@ -4,7 +4,6 @@ import {
   ContextMetadata,
   DisplayMetadata,
   Listener,
-  BaseChannel,
   Channel,
   ChannelEventTypes,
   EventHandler,
@@ -25,7 +24,7 @@ import {
 import { RegisterableListener } from '../listeners/RegisterableListener.js';
 import { EventListener } from '../listeners/EventListener.js';
 
-export abstract class DefaultBaseChannel implements BaseChannel {
+export class DefaultChannel implements Channel {
   protected readonly messaging: Messaging;
   protected readonly messageExchangeTimeout;
   readonly id: string;
@@ -158,32 +157,14 @@ export abstract class DefaultBaseChannel implements BaseChannel {
     await this.messaging.exchange<ClearContextResponse>(request, 'clearContextResponse', this.messageExchangeTimeout);
   }
 
-  /**
-   * Registers a channel event listener. Classes extending `DefaultBaseChannel`
-   * must implement this method and define the event types they support.
-   */
-  abstract addEventListener(type: string | null, handler: EventHandler): Promise<Listener>;
-}
-
-export class DefaultChannel extends DefaultBaseChannel implements Channel {
-  constructor(
-    messaging: Messaging,
-    messageExchangeTimeout: number,
-    id: string,
-    type: 'user' | 'app',
-    displayMetadata?: DisplayMetadata
-  ) {
-    super(messaging, messageExchangeTimeout, id, type, displayMetadata);
-  }
-
   async addEventListener(type: ChannelEventTypes | null, handler: EventHandler): Promise<Listener> {
     let listener: RegisterableListener;
     switch (type) {
       case 'contextCleared':
-        listener = new EventListener(this.messaging, 'contextCleared', handler);
+        listener = new EventListener(this.messaging, 'contextCleared', this.id, handler);
         break;
       case null:
-        listener = new EventListener(this.messaging, type, handler);
+        listener = new EventListener(this.messaging, type, this.id, handler);
         break;
       default:
         throw new Error('Unsupported event type: ' + type);

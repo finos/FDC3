@@ -46,7 +46,7 @@ export const IntentResolutionField = observer(
           const result = await data.getResult();
 
           if (result && typeof result === 'object' && 'broadcast' in result) {
-            const channel = result as Channel | PrivateChannel;
+            const channel = result as Channel;
             setResolutionResult('');
 
             if (channel.type === 'app') {

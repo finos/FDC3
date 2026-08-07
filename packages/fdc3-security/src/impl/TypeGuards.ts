@@ -4,13 +4,7 @@
  */
 
 import { Context, EncryptedContextWrapper, SymmetricKeyResponse, User, UserRequest } from '@finos/fdc3-context';
-import {
-  Channel,
-  ContextMetadata,
-  ContextWithMetadata,
-  IntentResult,
-  PrivateChannel,
-} from '@finos/fdc3-standard';
+import { Channel, ContextMetadata, ContextWithMetadata, IntentResult } from '@finos/fdc3-standard';
 
 /**
  * Returns true if `value` is a FDC3 `Context` object (has a string `type` property
@@ -37,14 +31,12 @@ export function isContextWithMetadata(value: unknown): value is ContextWithMetad
 /**
  * Returns true if `value` is a Channel intent result (type is 'user', 'app', or 'private').
  */
-export function isChannelResult(value: IntentResult): value is Channel | PrivateChannel {
+export function isChannelResult(value: IntentResult): value is Channel {
   return (
     typeof value === 'object' &&
     value !== null &&
     'type' in value &&
-    ((value as Channel | PrivateChannel).type === 'user' ||
-      (value as Channel | PrivateChannel).type === 'app' ||
-      (value as Channel | PrivateChannel).type === 'private')
+    ((value as Channel).type === 'user' || (value as Channel).type === 'app' || (value as Channel).type === 'private')
   );
 }
 

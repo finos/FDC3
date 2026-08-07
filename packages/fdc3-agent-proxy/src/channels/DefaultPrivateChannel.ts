@@ -1,5 +1,5 @@
 import { ContextHandler, EventHandler, Listener, PrivateChannel, PrivateChannelEventTypes } from '@finos/fdc3-standard';
-import { DefaultBaseChannel } from './DefaultChannel.js';
+import { DefaultChannel } from './DefaultChannel.js';
 import { Messaging } from '../Messaging.js';
 import {
   PrivateChannelNullEventListener,
@@ -14,7 +14,7 @@ import {
   PrivateChannelDisconnectResponse,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
-export class DefaultPrivateChannel extends DefaultBaseChannel implements PrivateChannel {
+export class DefaultPrivateChannel extends DefaultChannel implements PrivateChannel {
   constructor(messaging: Messaging, messageExchangeTimeout: number, id: string) {
     super(messaging, messageExchangeTimeout, id, 'private');
 
@@ -24,6 +24,10 @@ export class DefaultPrivateChannel extends DefaultBaseChannel implements Private
   }
 
   async addEventListener(type: PrivateChannelEventTypes | null, handler: EventHandler): Promise<Listener> {
+    if (type === 'contextCleared') {
+      return super.addEventListener(type, handler);
+    }
+
     let a: RegisterableListener;
     switch (type) {
       case 'addContextListener':
@@ -36,13 +40,35 @@ export class DefaultPrivateChannel extends DefaultBaseChannel implements Private
         a = new PrivateChannelDisconnectEventListener(this.messaging, this.messageExchangeTimeout, this.id, handler);
         break;
       case null:
-        a = new PrivateChannelNullEventListener(this.messaging, this.messageExchangeTimeout, this.id, handler);
-        break;
+        return this.addAllEventListener(handler);
       default:
         throw new Error('Unsupported event type: ' + type);
     }
     await a.register();
     return a;
+  }
+
+  private async addAllEventListener(handler: EventHandler): Promise<Listener> {
+    const channelListener = await super.addEventListener('contextCleared', handler);
+    const privateChannelListener = new PrivateChannelNullEventListener(
+      this.messaging,
+      this.messageExchangeTimeout,
+      this.id,
+      handler
+    );
+
+    try {
+      await privateChannelListener.register();
+    } catch (error) {
+      await channelListener.unsubscribe();
+      throw error;
+    }
+
+    return {
+      unsubscribe: async () => {
+        await Promise.all([channelListener.unsubscribe(), privateChannelListener.unsubscribe()]);
+      },
+    };
   }
 
   async disconnect(): Promise<void> {
