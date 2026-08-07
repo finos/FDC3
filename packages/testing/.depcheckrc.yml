@@ -1,0 +1,27 @@
+ignores:
+  # Installed for Cucumber report formatting; likely removable if no external runner relies on it.
+  - "@cucumber/html-formatter"
+  # Installed for Cucumber report formatting; likely removable if no external runner relies on it.
+  - "@cucumber/pretty-formatter"
+  # No direct type reference was found; likely valid to remove.
+  - "@types/expect"
+  # No direct type reference was found; likely valid to remove.
+  - "@types/lodash"
+  # uuid now ships its own types; likely valid to remove.
+  - "@types/uuid"
+  # Not referenced by this package's current ESLint configuration; likely valid to remove.
+  - eslint-plugin-import
+  # Not referenced by this package's current ESLint configuration; likely valid to remove.
+  - eslint-plugin-prettier
+  # Tests import expect from Vitest instead; likely valid to remove.
+  - expect
+  # No source or script reference was found; likely valid to remove.
+  - is-ci
+  # No package script invokes nyc; likely valid to remove.
+  - nyc
+  # TypeScript is compiled with tsc rather than ts-node; likely valid to remove.
+  - ts-node
+  # No source import was found; likely valid to remove.
+  - uuid
+  # Imported by the shared screenshot-comparison Cucumber steps.
+  - pixelmatch

@@ -1,0 +1,37 @@
+ignores:
+  # Invoked by the `lint` package script.
+  - eslint
+  # Invoked by the build and test package scripts.
+  - typescript
+  # No direct type reference was found; likely valid to remove.
+  - "@types/expect"
+  # Supplies Jest globals to the TypeScript test build.
+  - "@types/jest"
+  # No direct type reference was found; likely valid to remove.
+  - "@types/lodash"
+  # Superseded by the package's typescript-eslint flat-config dependency; likely valid to remove.
+  - "@typescript-eslint/eslint-plugin"
+  # Superseded by the package's typescript-eslint flat-config dependency; likely valid to remove.
+  - "@typescript-eslint/parser"
+  # Not referenced by this package's current ESLint configuration; likely valid to remove.
+  - eslint-plugin-import
+  # Not referenced by this package's current ESLint configuration; likely valid to remove.
+  - eslint-plugin-prettier
+  # Tests use Jest's global expect; likely valid to remove.
+  - expect
+  # No source or script reference was found; likely valid to remove.
+  - is-ci
+  # Invoked by the `test-jest` package script.
+  - jest
+  # Configured as a reporter in jest.config.mjs.
+  - jest-junit
+  # No source or configuration reference was found; likely valid to remove.
+  - jsonpath-plus
+  # Configured as the ESM TypeScript transform in jest.config.mjs.
+  - ts-jest
+  # No package script invokes Prettier directly; likely valid to remove.
+  - prettier
+  # Invoked by the `clean` package script.
+  - rimraf
+  # No source or package script reference was found; likely valid to remove.
+  - tsx

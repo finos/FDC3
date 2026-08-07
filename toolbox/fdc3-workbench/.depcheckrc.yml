@@ -1,0 +1,23 @@
+ignores:
+  # Invoked by the lint package scripts.
+  - eslint
+  # Invoked by the `build` package script.
+  - typescript
+  # Aliased for browser builds in vite.config.ts.
+  - buffer
+  # Aliased for browser builds in vite.config.ts.
+  - path-browserify
+  # Required as a peer dependency by Material UI.
+  - "@emotion/react"
+  # Required as a peer dependency by Material UI.
+  - "@emotion/styled"
+  # No source import was found; likely valid to remove.
+  - "@mui/lab"
+  # No lint-staged configuration was found in this package; likely valid to remove.
+  - lint-staged
+  # No package script invokes pretty-quick; likely valid to remove.
+  - pretty-quick
+  # Used by Vite's legacy build minification rather than imported by application source.
+  - terser
+  # No source import was found; likely valid to remove.
+  - web-vitals

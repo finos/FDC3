@@ -1,0 +1,11 @@
+ignores:
+  # Invoked by the `build` package script and used by tsx/Vite compilation.
+  - typescript
+  # No source or configuration reference was found; likely valid to remove.
+  - "@jridgewell/trace-mapping"
+  # No source import was found; likely valid to remove.
+  - canonicalize
+  # No source import was found; likely valid to remove.
+  - uuid
+  # Invoked by the `clean` package script.
+  - rimraf
