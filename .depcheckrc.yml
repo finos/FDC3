@@ -1,0 +1,38 @@
+# depcheck cannot parse the comments and trailing commas permitted in this shared
+# TypeScript configuration. TypeScript itself consumes it successfully.
+ignore-patterns:
+  - tsconfig.root.json
+
+# This is an explicit baseline for dependencies reported as unused by depcheck.
+# Remove an entry when the dependency is removed or depcheck learns how it is used.
+ignores:
+  # Used by ESLint flat configurations throughout the npm workspaces.
+  - "@eslint/js"
+  # Supplies Mocha globals to the conformance test TypeScript build.
+  - "@types/mocha"
+  # Supplies Node.js types to workspace builds and code-generation utilities.
+  - "@types/node"
+  # Loaded by Vitest when workspace coverage scripts use `--coverage`.
+  - "@vitest/coverage-v8"
+  # No current `--ui` invocation was found; likely valid to remove.
+  - "@vitest/ui"
+  # Invoked by workspace `lint` scripts and imported by ESLint configurations.
+  - eslint
+  # Imported by workspace ESLint configurations to disable conflicting rules.
+  - eslint-config-prettier
+  # Imported by workspace ESLint configurations to define runtime globals.
+  - globals
+  # Imported by the shared `@finos/testing` screenshot comparison steps.
+  - pixelmatch
+  # Invoked by lint-staged and workspace formatting/generation scripts.
+  - prettier
+  # Invoked by clean scripts throughout the npm workspaces.
+  - rimraf
+  # Invoked by the demo and example-app workspace development scripts.
+  - tsx
+  # Invoked by build scripts and imported by ESLint/code-generation configuration.
+  - typescript
+  # Imported by ESLint flat configurations throughout the npm workspaces.
+  - typescript-eslint
+  # Imported by tests/configuration and invoked by workspace test scripts.
+  - vitest
