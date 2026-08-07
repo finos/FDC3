@@ -61,7 +61,7 @@
     "lint-staged": "^15.2.10",
     "mobx": "^6.13.3",
     "mobx-react": "^7.6.0",
-    "nanoid": "^3.3.7",
+    "nanoid": "^3.3.18",
     "normalize.css": "^8.0.1",
     "pretty-quick": "^4.0.0",
     "react": "^17.0.2",
