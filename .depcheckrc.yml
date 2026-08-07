@@ -24,7 +24,7 @@ ignores:
   - "@types/node"
   # Loaded by Vitest when workspace coverage scripts use `--coverage`.
   - "@vitest/coverage-v8"
-  # No current `--ui` invocation was found; likely valid to remove.
+  # Loaded as `@vitest/ui/reporter` by the fdc3-web-impl Vitest configuration.
   - "@vitest/ui"
   # Invoked by workspace `lint` scripts and imported by ESLint configurations.
   - eslint
