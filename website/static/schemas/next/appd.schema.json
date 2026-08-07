@@ -473,8 +473,8 @@
 			},
 			"fdc3Version": {
 			  "type": "string",
-			  "format": "semver-range",
-			  "description": "The FDC3 version or versions supported by the application, expressed as an npm-style semantic version range, for example `2.2`, `<=2.3`, `^2.2`, or `>=2.2`. Desktop Agents MAY use this value to filter applications that are incompatible with the FDC3 version they provide."
+			  "pattern": "^(?:[<>=~^]{0,2}\\s*)?\\d+(?:\\.\\d+){1,2}(?:\\s*(?:-\\s*|\\|\\|\\s*|[<>=~^]{1,2}\\s*)\\d+(?:\\.\\d+){1,2})*$",
+			  "description": "The FDC3 version or versions supported by the application, expressed as an npm-style semantic version range, for example `2.2`, `<=2.3`, `^2.2`, or `>=2.2`. JSON Schema and OpenAPI do not define a standard semantic-version-range format, so this field uses a pattern that accepts numeric FDC3 versions with npm range comparators, compound ranges, and hyphen ranges. Desktop Agents MAY use this value to filter applications that are incompatible with the FDC3 version they provide."
 			},
 			"tooltip": {
 			  "type": "string",
@@ -960,8 +960,8 @@
 			},
 			"fdc3Version": {
 			  "type": "string",
-			  "format": "semver-range",
-			  "description": "The FDC3 version or versions supported by the application, expressed as an npm-style semantic version range, for example `2.2`, `<=2.3`, `^2.2`, or `>=2.2`. Desktop Agents MAY use this value to filter applications that are incompatible with the FDC3 version they provide."
+			  "pattern": "^(?:[<>=~^]{0,2}\\s*)?\\d+(?:\\.\\d+){1,2}(?:\\s*(?:-\\s*|\\|\\|\\s*|[<>=~^]{1,2}\\s*)\\d+(?:\\.\\d+){1,2})*$",
+			  "description": "The FDC3 version or versions supported by the application, expressed as an npm-style semantic version range, for example `2.2`, `<=2.3`, `^2.2`, or `>=2.2`. JSON Schema and OpenAPI do not define a standard semantic-version-range format, so this field uses a pattern that accepts numeric FDC3 versions with npm range comparators, compound ranges, and hyphen ranges. Desktop Agents MAY use this value to filter applications that are incompatible with the FDC3 version they provide."
 			},
 			"title": {
 			  "type": "string",
