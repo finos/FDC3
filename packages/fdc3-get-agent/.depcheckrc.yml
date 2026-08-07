@@ -1,7 +1,0 @@
-ignores:
-  # No source or test import was found; likely valid to remove.
-  - ajv
-  # No source or test import was found; likely valid to remove.
-  - ajv-formats
-  # Matching helpers come from @finos/testing; likely valid to remove here.
-  - jsonpath-plus
