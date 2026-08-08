@@ -7,7 +7,7 @@ title: App Directory API (2.1)
 View the [full specification][1] in [OpenAPI v3.0][2] format (generated with [ReDoc][3]),
 or explore with the [Swagger Editor][4].
 
-[1]: pathname:///schemas/2.1/app-directory.html
+[1]: /docs/2.1/app-directory/api
 [2]: https://www.openapis.org/
 [3]: https://github.com/Redocly/redoc/
 [4]: https://editor.swagger.io/?url=https://fdc3.finos.org/schemas/2.1/appd.schema.json
@@ -28,11 +28,11 @@ App Directory implementations MAY extend the list of endpoints to provide other 
 
 An FDC3 Standard compliant App Directory implementation **MUST**:
 
-- Implement the specified `/v2` endpoints for retrieving app definitions as defined in the [app directory OpenAPI specification](pathname:///schemas/2.1/app-directory.html#tag/Application):
+- Implement the specified `/v2` endpoints for retrieving app definitions as defined in the [app directory OpenAPI specification](/docs/2.1/app-directory/api#tag/Application):
   - `/v2/apps` (GET)
   - `/v2/apps/{appId}` (GET)
 - Ensure that `appId` field values assigned to applications are unique within the directory.
-- Ensure that app directory records served meet the minimum requirements specified in the [app directory OpenAPI specification](pathname:///schemas/2.1/app-directory.html#tag/Application)
+- Ensure that app directory records served meet the minimum requirements specified in the [app directory OpenAPI specification](/docs/2.1/app-directory/api#tag/Application)
 - Support retrieval of app directory records via either the raw `appId` (e.g. `myAppId`) or fully-qualified appId (e.g. `myAppId@host.domain.com`) as defined in the [app directory overview](overview#shrinking-the-uri).
 
 An FDC3 Standard compliant App Directory implementation **SHOULD**:

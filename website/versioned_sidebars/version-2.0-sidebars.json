@@ -43,7 +43,12 @@
         "label": "App Directory Part",
         "items": [
           "app-directory/overview",
-          "app-directory/spec"
+          "app-directory/spec",
+          {
+            "type": "link",
+            "label": "App Directory API Reference",
+            "href": "/docs/2.0/app-directory/api"
+          }
         ]
       },
       {
