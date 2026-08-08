@@ -97,9 +97,15 @@ The AppD API specification defines the optional use of an access token to identi
 
 The specification does not define or make mandatory any authorizations or roles that a provider or enterprise can define.
 
-A key concept in the App Directory is how applications are identified and referenced across different environments. Application identifiers are used both to uniquely describe apps within a directory and, in some cases, to locate the directory instance that hosts an application’s record.
+## Application `interop` Metadata
+
+AppD records include an optional `interop` field that describes how the application uses FDC3 APIs. This metadata serves multiple purposes: it supports intent resolution by declaring what intents the app listens for (`interop.intents.listensFor`) and raises (`interop.intents.raises`); it enables app catalog UIs to surface apps that interoperate with a given application; and it documents the app's interactions with User Channels (`interop.userChannels`) and App Channels (`interop.appChannels`) for other developers and desktop assemblers. See the [App Directory specification](pathname:///schemas/next/app-directory.html) (or the raw [OpenAPI schema](https://fdc3.finos.org/schemas/next/appd.schema.json)) for the full definition of the `interop` field.
+
+Applications only need to complete the elements of the `interop` element that they make use of.  An app that only listens to context on a user channel need only complete this section, for example.
 
 ## Application Identifiers
+
+A key concept in the App Directory is how applications are identified and referenced across different environments. Application identifiers are used both to uniquely describe apps within a directory and, in some cases, to locate the directory instance that hosts an application's record.
 
 Application Records served by an app directory are each labelled with an identifier, `appId`, which should be unique within the app directory instance and may be used to refer to or retrieve the application's record via the [app directory API](spec). This identifier may be made globally unique through a nested namespace approach and email address construction (`appId@fqdn`) where `@` followed by the app directory instance's host name is appended to it. The resulting globally unique identifier is known as a 'fully qualified application identifier'.
 

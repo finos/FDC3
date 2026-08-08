@@ -157,6 +157,12 @@ As web applications can navigate to or be navigated by users to different URLs a
 
 Finally, if there is still no Desktop Agent available, or an issue prevents connection to it, the `getAgent()` function will reject its promise with a message from the [`AgentError`](./Errors#agenterror) enumeration.
 
+::: note 
+
+When several FDC3-enabled applications are hosted on the same origin (e.g. `https://myplatform.example.com/trade` and `https://myplatform.example.com/watchlist`), each should be registered as a separate AppD record using a URL that includes the distinguishing path.  
+
+:::
+
 ## Injected iframes for adaptors and user interfaces
 
 The `getAgent()` function may try to create hidden iframes within an application window in order to load either an adaptor to a Desktop Agent, or Intent Resolver and Channel Selector user interfaces when needed. The iframes are used in order to sandbox the relevant software, and are communicated with securely via the HTML Standard's Channel Messaging API ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API), [HTML Living Standard](https://html.spec.whatwg.org/multipage/web-messaging.html)).
