@@ -89,11 +89,12 @@ interface AppMetadata extends AppIdentifier {
   /** The version of the application. */
   readonly version?: string;
 
-  /** An optional set of, implementation specific, metadata fields that can be
-   *  used to disambiguate instances, such as a window title or screen position.
-   *  Must only be set if `instanceId` is set. 
+  /** An optional set of metadata fields that can be used to disambiguate
+   *  instances, such as a window title or screen position. May be updated by the
+   *  instance itself via `fdc3.updateInstanceMetadata()`. Must only be set if
+   *  `instanceId` is set.
    */
-  readonly instanceMetadata?: Record<string, any>;
+  readonly instanceMetadata?: InstanceMetadata;
 
   /** A more user-friendly application title that can be used to render UI
    *  elements.
@@ -171,6 +172,12 @@ interface IAppMetadata : IAppIdentifier
     /// channel, or channel with specified type
     /// </summary>
     string? ResultType { get; }
+
+    /// <summary>
+    /// An optional set of metadata fields that can be used to disambiguate instances, such as a window title or screen
+    /// position. May be updated by the instance itself via UpdateInstanceMetadata. Must only be set if InstanceId is set.
+    /// </summary>
+    IInstanceMetadata? InstanceMetadata { get; }
 }
 ```
 
@@ -197,10 +204,11 @@ type AppMetadata struct {
   // The type of output returned for any intent specified during resolution. May express a particular context type,
   // channel, or channel with specified type
   ResultType       string                 `json:"resultType"`
-  // An optional set of, implementation specific, metadata fields that can be
-  // used to disambiguate instances, such as a window title or screen position.
-  // Must only be set if `instanceId` is set. 
-  InstanceMetadata map[string]interface{} `json:"instanceMetadata"`
+  // An optional set of metadata fields that can be used to disambiguate
+  // instances, such as a window title or screen position. May be updated by the
+  // instance itself via UpdateInstanceMetadata. Must only be set if `instanceId`
+  // is set.
+  InstanceMetadata *InstanceMetadata      `json:"instanceMetadata"`
 }
 ```
 
@@ -222,6 +230,72 @@ Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passe
 - [`DesktopAgent.open`](DesktopAgent#open)
 - [`DesktopAgent.findIntent`](DesktopAgent#findintent)
 - [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
+
+## `InstanceMetadata`
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+interface InstanceMetadata {
+  /** A user-friendly title for this specific instance that can be used to
+   *  render UI elements, such as a resolver or intent picker, to help
+   *  distinguish it from other instances of the same application. For example,
+   *  an app displaying a stock chart might set this to the name of the
+   *  instrument being displayed.
+   */
+  readonly title?: string;
+
+  /** Additional, implementation-specific, custom metadata fields that can be
+   *  used to further disambiguate instances, such as screen position or
+   *  workspace assignment.
+   */
+  readonly [key: string]: any;
+}
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+interface IInstanceMetadata
+{
+    /// <summary>
+    /// A user-friendly title for this specific instance that can be used to render UI elements, such as a resolver or
+    /// intent picker, to help distinguish it from other instances of the same application.
+    /// </summary>
+    string? Title { get; }
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type InstanceMetadata struct {
+  // A user-friendly title for this specific instance that can be used to render UI elements, such as a resolver or
+  // intent picker, to help distinguish it from other instances of the same application.
+  Title  string                 `json:"title"`
+  // Additional, implementation-specific, custom metadata fields that can be used to further disambiguate instances.
+  Custom map[string]interface{} `json:"-"`
+}
+```
+
+</TabItem>
+</Tabs>
+
+Metadata that describes a specific instance of an application, which can be used to disambiguate instances in UI elements such as a resolver or intent picker.
+
+An application MAY update its own instance metadata via [`fdc3.updateInstanceMetadata()`](DesktopAgent#updateinstancemetadata), allowing Desktop Agents to display meaningful, instance-specific information (e.g. the name of the contact or instrument currently being viewed). It is returned in the `instanceMetadata` field of an [`AppMetadata`](#appmetadata) object and MUST only be set if `instanceId` is also set.
+
+In addition to the standardized `title` field, `InstanceMetadata` MAY include additional implementation-specific fields.
+
+**See also:**
+
+- [`AppMetadata`](#appmetadata)
+- [`DesktopAgent.updateInstanceMetadata`](DesktopAgent#updateinstancemetadata)
+- [`DesktopAgent.getAppMetadata`](DesktopAgent#getappmetadata)
+- [`DesktopAgent.findInstances`](DesktopAgent#findinstances)
 
 ## `ContextMetadata`
 
