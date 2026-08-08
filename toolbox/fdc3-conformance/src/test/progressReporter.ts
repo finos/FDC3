@@ -3,7 +3,9 @@
  * starts, then updates the indicator to a green tick or red cross when the test completes.
  */
 export class ProgressReporter extends Mocha.reporters.Base {
+  private root: HTMLElement;
   private testElements = new Map<string, HTMLElement>();
+  private failureMessages: string[] = [];
   private suiteStack: HTMLElement[];
   private canvas: HTMLCanvasElement;
   private passCount: HTMLElement;
@@ -15,16 +17,17 @@ export class ProgressReporter extends Mocha.reporters.Base {
   constructor(runner: Mocha.Runner, options?: Mocha.MochaOptions) {
     super(runner, options);
 
-    const root = document.getElementById('mocha')!;
-    root.replaceChildren();
+    this.root = document.getElementById('mocha')!;
+    this.root.replaceChildren();
+    this.root.dataset.conformanceStatus = 'running';
 
     const statsEl = document.createElement('ul');
     statsEl.id = 'mocha-stats';
-    root.appendChild(statsEl);
+    this.root.appendChild(statsEl);
 
     const report = document.createElement('ul');
     report.id = 'mocha-report';
-    root.appendChild(report);
+    this.root.appendChild(report);
 
     // Progress ring canvas
     const progressLi = document.createElement('li');
@@ -107,6 +110,7 @@ export class ProgressReporter extends Mocha.reporters.Base {
 
   private onFail(test: Mocha.Test, err: Error) {
     console.log('Test FAILED: ', test.title);
+    this.failureMessages.push(`${test.fullTitle()}: ${err.message}`);
     const li = this.testElements.get(test.fullTitle());
     if (li) {
       li.className = 'test fail';
@@ -122,6 +126,11 @@ export class ProgressReporter extends Mocha.reporters.Base {
   private onEnd() {
     clearInterval(this.durationTimer);
     this.updateDuration();
+    this.root.dataset.conformanceStatus = this.stats.failures === 0 ? 'passed' : 'failed';
+    this.root.dataset.conformancePasses = String(this.stats.passes);
+    this.root.dataset.conformanceFailures = String(this.stats.failures);
+    this.root.dataset.conformanceTests = String(this.runner.total);
+    this.root.dataset.conformanceFailureMessages = JSON.stringify(this.failureMessages);
   }
 
   private getSpeedClass(test: Mocha.Test): string {
