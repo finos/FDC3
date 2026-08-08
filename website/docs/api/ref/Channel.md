@@ -38,7 +38,7 @@ interface Channel {
   getCurrentContextWithMetadata(contextType?: string): Promise<ContextWithMetadata|null>;
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
   clearContext(contextType?: string): Promise<void>;
-  addEventListener(type: string  | null, handler: EventHandler): Promise<Listener>;
+  addEventListener(type: ChannelEventTypes  | null, handler: EventHandler): Promise<Listener>;
 }
 ```
 
@@ -375,7 +375,7 @@ if listenerResultInstrument.Value != nil {
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-addEventListener(type: string  | null, handler: EventHandler): Promise<Listener>;
+addEventListener(type: ChannelEventTypes  | null, handler: EventHandler): Promise<Listener>;
 ```
 
 </TabItem>
@@ -419,6 +419,7 @@ var listener = await myChannel.AddEventListener(null, (event) => {
 
 - [Events](./Events)
 - [EventHandler](./Events#eventhandler)
+- [ChannelEventTypes](./Events#channeleventtypes)
 - [ApiEvent](./Events#ApiEvent)
 
 ### `broadcast`

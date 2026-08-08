@@ -5,6 +5,7 @@ import {
   DisplayMetadata,
   Listener,
   Channel,
+  ChannelEventTypes,
   EventHandler,
   AppProvidableContextMetadata,
   ChannelError,
@@ -156,14 +157,14 @@ export class DefaultChannel implements Channel {
     await this.messaging.exchange<ClearContextResponse>(request, 'clearContextResponse', this.messageExchangeTimeout);
   }
 
-  async addEventListener(type: string | null, handler: EventHandler): Promise<Listener> {
+  async addEventListener(type: ChannelEventTypes | null, handler: EventHandler): Promise<Listener> {
     let listener: RegisterableListener;
     switch (type) {
       case 'contextCleared':
-        listener = new EventListener(this.messaging, 'contextCleared', handler);
+        listener = new EventListener(this.messaging, 'contextCleared', this.id, handler);
         break;
       case null:
-        listener = new EventListener(this.messaging, type, handler);
+        listener = new EventListener(this.messaging, type, this.id, handler);
         break;
       default:
         throw new Error('Unsupported event type: ' + type);

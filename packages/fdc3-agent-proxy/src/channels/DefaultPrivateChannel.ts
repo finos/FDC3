@@ -20,11 +20,14 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
 
     //bind all functions to allow destructuring
     this.addContextListener = this.addContextListener.bind(this);
-    this.addEventListener = this.addEventListener.bind(this);
     this.disconnect = this.disconnect.bind(this);
   }
 
   async addEventListener(type: PrivateChannelEventTypes | null, handler: EventHandler): Promise<Listener> {
+    if (type === 'contextCleared') {
+      return super.addEventListener(type, handler);
+    }
+
     let a: RegisterableListener;
     switch (type) {
       case 'addContextListener':
@@ -37,13 +40,35 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
         a = new PrivateChannelDisconnectEventListener(this.messaging, this.messageExchangeTimeout, this.id, handler);
         break;
       case null:
-        a = new PrivateChannelNullEventListener(this.messaging, this.messageExchangeTimeout, this.id, handler);
-        break;
+        return this.addAllEventListener(handler);
       default:
         throw new Error('Unsupported event type: ' + type);
     }
     await a.register();
     return a;
+  }
+
+  private async addAllEventListener(handler: EventHandler): Promise<Listener> {
+    const channelListener = await super.addEventListener('contextCleared', handler);
+    const privateChannelListener = new PrivateChannelNullEventListener(
+      this.messaging,
+      this.messageExchangeTimeout,
+      this.id,
+      handler
+    );
+
+    try {
+      await privateChannelListener.register();
+    } catch (error) {
+      await channelListener.unsubscribe();
+      throw error;
+    }
+
+    return {
+      unsubscribe: async () => {
+        await Promise.all([channelListener.unsubscribe(), privateChannelListener.unsubscribe()]);
+      },
+    };
   }
 
   async disconnect(): Promise<void> {
