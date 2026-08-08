@@ -2,6 +2,35 @@
 
 This folder contains Typescript interfaces, in ContextTypes.ts generated from the context JSONSchema (https://json-schema.org/) files via quicktype (https://quicktype.io/).
 
+## Programmatic context schema discovery
+
+In addition to the generated TypeScript interfaces, this package exposes the standardized context JSON Schemas at runtime so that tooling (resolvers, validators, form/UI generators, agents bridging FDC3 to other protocols, etc.) can enumerate the context types and retrieve their schemas without a Desktop Agent connection:
+
+```TypeScript
+import {
+  getContextTypes,
+  getContextSchema,
+  getAllContextSchemas,
+  getContextSchemaMetadata,
+  hasContextSchema,
+} from '@finos/fdc3-context';
+
+getContextTypes();
+// ["fdc3.action", "fdc3.chart", "fdc3.contact", ...]
+
+const schema = getContextSchema('fdc3.instrument'); // JSON Schema (draft-07), or undefined
+getContextSchemaMetadata('fdc3.instrument');
+// { type: 'fdc3.instrument', title: 'Instrument', description: '...', id: '...', examples: [...] }
+
+hasContextSchema('fdc3.instrument'); // true
+```
+
+The registry is generated (into `generated/context/ContextSchemas.ts`) from the schema files in `schemas/context` by `generateContextSchemas.cjs`, so it stays in sync with the source-of-truth schemas. The abstract base context type (`fdc3.context`) is excluded, as it is not a concrete context type. All returned values are defensive copies.
+
+## Generated TypeScript interfaces
+
+The `ContextTypes.ts` file contains TypeScript interfaces generated from the context JSONSchema files via quicktype.
+
 Please note that these definitions are provided to help developers working in TypeScript to produce valid context objects - but should not be considered the 'source of truth' for context definitions (instead look to the schemas and documentation). Source files may also be generated for us in other languages supported by quicktype.
 
 It is not always possible to perfectly replicate a type/interface defined in JSONSchema via TypeScript. Hence, in the event of any disagreement between the definitions, the JSONSchema should be assumed to be correct, rather than the Typescript. For example, JSONSchema may define optional fields on an object + a restriction on the type of additional properties (via `"additionalProperties": { "type": "string"}`), which will result in an index signature `[property: string]: string;` in generated TypeScript. That signature, is incompatible with with an optional properties (including string properties) as they have type `string | undefined`. A similar problem may occur in JSON Schema if the schema is used to create a subtype via composition as `additionalProperties` is not aware of teh subschema's definitions. Both issues can be worked around by using `unevaluatedProperties` in the schema, which will defer to the declared type of the optional property in the subschema, but is also currently ignored by quicktype - resulting in a type that will compile, but doesn't restrict the type of optional property values as defined in the schema.

@@ -38,6 +38,35 @@ FDC3 Context data is primarily encoded in JSON, but may also be encoded in langu
 
 Each Standardized context type defined by the FDC3 Standard has an associated [JSON Schema](https://json-schema.org/) definition that should be considered the 'source of truth' for the context definition, although examples in documentation may also be given in TypeScript or JavaScript. The TypeScript definitions distributed in the FDC3 NPM module are generated from the JSON Schema files using [quicktype](https://quicktype.io/). Both documentation for fields defined (in the form of a `title` and `description` entry for each field defined) and examples SHOULD be included in JSON Schema definitions for Context types to ensure that the schema file can serve as a single source of truth, and that code generated from the schema files can also include that documentation.
 
+### Programmatic Schema Discovery
+
+To support tooling that needs to reason about context types at runtime — for example resolvers, form generators, validators, or agents that map FDC3 onto other protocols — the standardized context JSON Schemas are also made available programmatically from the `@finos/fdc3-context` (and, by re-export, `@finos/fdc3`) package.
+
+The following functions allow applications to enumerate the standardized context types and retrieve their schemas and metadata:
+
+| Function | Description |
+|----------|-------------|
+| `getContextTypes(): string[]` | Returns the sorted list of standardized context type identifiers that have a published JSON Schema (e.g. `"fdc3.instrument"`). |
+| `getContextSchema(type: string): ContextSchema \| undefined` | Returns the JSON Schema for a standardized context type, or `undefined` if the type is not standardized. |
+| `getAllContextSchemas(): Record<string, ContextSchema>` | Returns a map of every standardized context type identifier to its JSON Schema. |
+| `getContextSchemaMetadata(type: string): ContextSchemaMetadata \| undefined` | Returns lightweight metadata (`title`, `description`, `$id` and `examples`) for a standardized context type. |
+| `hasContextSchema(type: string): boolean` | Returns `true` if the identifier corresponds to a standardized context type with a published JSON Schema. |
+
+The abstract base context type (`fdc3.context`) is intentionally excluded from these results, as it does not describe a concrete, broadcastable context type. Values returned by these functions are defensive copies and may be safely mutated by the caller. As the schemas are published static artifacts, discovery does not require a connection to a Desktop Agent.
+
+```javascript
+import { getContextTypes, getContextSchema } from '@finos/fdc3-context';
+
+// Enumerate the standardized context types
+const types = getContextTypes();
+// ["fdc3.action", "fdc3.chart", "fdc3.contact", ...]
+
+// Retrieve a schema and validate a context object against it (e.g. with Ajv)
+const schema = getContextSchema('fdc3.instrument');
+const validate = ajv.compile(schema);
+const isValid = validate({ type: 'fdc3.instrument', id: { ticker: 'AAPL' } });
+```
+
 ## The Context Interface
 
 The Context interface defines the basic contract or "shape" for all data exchanged by FDC3 operations. As such, it is not meant to be used on its own, but is imported by more specific type definitions (standardized or custom) to provide the structure and properties shared by all FDC3 context data types.
