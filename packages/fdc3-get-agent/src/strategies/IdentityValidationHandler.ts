@@ -56,6 +56,12 @@ export class IdentityValidationHandler {
       payload: {
         identityUrl,
         actualUrl,
+        ...(this.options.receiveOwnBroadcasts !== undefined && {
+          receiveOwnBroadcasts: this.options.receiveOwnBroadcasts,
+        }),
+        ...(this.options.resolveOwnIntents !== undefined && {
+          resolveOwnIntents: this.options.resolveOwnIntents,
+        }),
       },
     };
 
