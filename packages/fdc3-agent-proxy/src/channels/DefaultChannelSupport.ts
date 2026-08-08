@@ -289,7 +289,8 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
     }
   }
 
-  async addContextListener(handler: ContextHandler, type: string | null): Promise<Listener> {
+  async addContextListener(handler: ContextHandler, type: string | string[] | null): Promise<Listener> {
+    // Note: Empty arrays are handled upstream in DesktopAgentProxy.addContextListener
     /**
      *  Utility class used to wrap the DefaultContextListener to match the internal channel id
      *  and ensure it gets removed when its unsubscribe function is called.
@@ -301,7 +302,7 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
         container: DefaultChannelSupport,
         messaging: Messaging,
         messageExchangeTimeout: number,
-        contextType: string | null,
+        contextType: string | string[] | null,
         handler: ContextHandler,
         messageType: string = 'broadcastEvent'
       ) {
@@ -321,8 +322,17 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
 
       async changeChannel(): Promise<void> {
         if (this.container.currentChannel != null) {
+          // Handle array context types for getCurrentContextWithMetadata
+          let contextTypeParam: string | undefined;
+          if (Array.isArray(this.contextType)) {
+            // Don't filter by type - let the individual listeners handle their own filtering
+            contextTypeParam = undefined;
+          } else if (this.contextType != null) {
+            contextTypeParam = this.contextType;
+          }
+
           const channel = this.container.currentChannel as DefaultChannel;
-          const result = await channel.getCurrentContextWithMetadata(this.contextType ?? undefined);
+          const result = await channel.getCurrentContextWithMetadata(contextTypeParam);
           if (result) {
             this.handler(result.context, result.metadata);
           }
@@ -338,11 +348,23 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
       }
 
       filter(m: BroadcastEvent): boolean {
+        // Handle array context types in filtering
+        let contextTypeMatch = false;
+        if (Array.isArray(this.contextType)) {
+          // For arrays, match if any type in the array matches
+          contextTypeMatch = this.contextType.includes(m.payload.context?.type ?? '');
+        } else {
+          // Single context type - use original logic
+          contextTypeMatch = m.payload.context?.type == this.contextType || this.contextType == null;
+        }
+
         return (
-          m.type == this.messageType &&
-          (this.onAMatchingChannel(m) || this.openBroadcastEvent(m)) &&
-          (m.payload.context?.type == this.contextType || this.contextType == null)
+          m.type == this.messageType && (this.onAMatchingChannel(m) || this.openBroadcastEvent(m)) && contextTypeMatch
         );
+      }
+
+      action(m: BroadcastEvent): void {
+        this.handler(m.payload.context, m.payload.metadata);
       }
     }
 

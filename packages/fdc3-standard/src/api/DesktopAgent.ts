@@ -455,6 +455,16 @@ export interface DesktopAgent {
   addContextListener(contextType: ContextType | null, handler: ContextHandler): Promise<Listener>;
 
   /**
+   * Adds a listener for incoming contexts using an array of context types.
+   *
+   * Pass multiple context types to listen for several types with one listener.
+   *
+   * See the single `contextType` overload above for full behavior details.
+   *
+   */
+  addContextListener(contextTypes: ContextType[], handler: ContextHandler): Promise<Listener>;
+
+  /**
    * Register a handler for events from the Desktop Agent. Whenever the handler function
    * is called it will be passed an event object with details related to the event.
    *

@@ -54,11 +54,28 @@
 							"type": "null"
 						}
 					]
+				},
+				"contextTypes": {
+					"title": "Context types",
+					"description": "Array of context types to listen for.",
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"minItems": 1
 				}
 			},
 			"additionalProperties": false,
 			"required": [
-				"channelId", "contextType"
+				"channelId"
+			],
+			"oneOf": [
+				{
+					"required": ["contextType"]
+				},
+				{
+					"required": ["contextTypes"]
+				}
 			]
 		}
 	}

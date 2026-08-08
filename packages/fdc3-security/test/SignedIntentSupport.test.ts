@@ -6,12 +6,12 @@
 import { Context } from '@finos/fdc3-context';
 import {
   AppIdentifier,
-  AppProvidableContextMetadata,
   ContextMetadata,
-  ContextWithMetadata,
   DesktopAgent,
   IntentResolution,
 } from '@finos/fdc3-standard';
+import type { AppProvidableContextMetadata } from '@finos/fdc3-standard/src/api/ContextMetadata';
+import type { ContextWithMetadata } from '@finos/fdc3-standard/src/api/Types';
 import * as jose from 'jose';
 import { JosePrivateFDC3Security, createJosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { JWKSResolver } from '../src/impl/JosePublicFDC3Security';
@@ -109,7 +109,7 @@ function intentResolution(resultContext: Context, resultMetadata: ContextMetadat
     intent: intent as IntentResolution['intent'],
     getResult: async () => resultContext,
     getResultMetadata: async () => resultMetadata,
-  };
+  } as IntentResolution;
 }
 
 const metadataAvailabilityCases = [
@@ -245,7 +245,7 @@ describe.each(metadataAvailabilityCases)(
       const da = new CapturingDesktopAgent(
         intentResolution(
           { type: 'demo.response', id: { plain: true } },
-          { source: { appId: 'h', instanceId: '1' }, timestamp: new Date(), traceId: 't' },
+          { source: { appId: 'h', instanceId: '1' }, timestamp: new Date(), traceId: 't' } as ContextMetadata,
           'X'
         )
       );
