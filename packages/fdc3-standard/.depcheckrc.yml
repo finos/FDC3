@@ -1,11 +1,3 @@
 ignores:
-  # No source import or package export was found; likely valid to remove.
-  - "@finos/fdc3-schema"
   # Selected as the Vitest DOM environment in vitest.config.ts.
   - jsdom
-  # No schema-generation command exists in this package; likely valid to remove.
-  - quicktype
-  # No tslib helpers are imported by the emitted code; likely valid to remove.
-  - tslib
-  # No source or test import was found; likely valid to remove.
-  - vitest-mock-extended
