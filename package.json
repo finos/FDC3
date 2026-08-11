@@ -76,7 +76,7 @@
     "lint-staged": "^15.2.10",
 
     "pixelmatch": "^6.0.0",
-    "prettier": "3.9.5",
+    "prettier": "3.9.6",
     "rimraf": "^6.0.1",
     "tsx": "^4.23.1",
     "typescript": "^5.6.3",
