@@ -39,9 +39,7 @@
     "@finos/fdc3-standard": "3.0.0-alpha.2",
     "ajv": "^8.18.0",
     "ajv-formats": "^3.0.1",
-    "jsonpath-plus": "^10.1.0",
-    "ts-node": "^10.9.2",
-    "uuid": "^14.0.1"
+    "jsonpath-plus": "^10.1.0"
   },
   "overrides": {
     "ajv-formats": {
