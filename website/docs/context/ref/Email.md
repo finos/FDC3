@@ -23,8 +23,8 @@ A collection of information to be used to initiate an email with a Contact or Co
 
 **One of:**
 
-- **type**: [Contact](Contact)
-- **type**: [ContactList](ContactList)
+- **type**: [Contact](/docs/next/context/ref/Contact)
+- **type**: [ContactList](/docs/next/context/ref/ContactList)
 
 One or more recipients for the email.
 

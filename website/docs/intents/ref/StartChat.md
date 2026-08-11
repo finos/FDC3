@@ -20,7 +20,7 @@ Initiate a chat with a contact, a list of contacts or detailed initialization se
 
 - [Contact](../../context/ref/Contact)
 - [ContactList](../../context/ref/ContactList)
-- [ChatInitSettings](../../context/ref/ChatInitSettings)
+- [ChatInitSettings](../../context/ref/chat/ChatInitSettings)
 
 ## Example
 
@@ -88,10 +88,10 @@ const chatRoom = await resolution.getResult();
 
 Context
 
-- [ChatRoom](../../context/ref/ChatRoom)
+- [ChatRoom](../../context/ref/chat/ChatRoom)
 - [Contact](../../context/ref/Contact)
 - [ContactList](../../context/ref/ContactList)
-- [ChatInitSettings](../../context/ref/ChatInitSettings)
+- [ChatInitSettings](../../context/ref/chat/ChatInitSettings)
 
 Intents
 

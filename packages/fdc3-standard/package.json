@@ -36,8 +36,12 @@
   },
   "devDependencies": {
     "@apidevtools/swagger-parser": "^10.1.1",
-    "jsdom": "^28.1.0",
-    "jsonschema": "^1.4.0"
+    "ajv": "^8.20.0",
+    "jsdom": "^30.0.0",
+    "jsonschema": "^1.4.0",
+    "quicktype": "23.0.78",
+    "tslib": "^2.7.0",
+    "vitest-mock-extended": "^5.1.1"
   },
   "type": "module",
   "engines": {
