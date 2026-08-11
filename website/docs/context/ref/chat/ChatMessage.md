@@ -21,14 +21,14 @@ A context representing a chat message. Typically used to send the message or to 
 <details>
   <summary><code>chatRoom</code> <strong>(required)</strong></summary>
 
-**type**: [ChatRoom](ChatRoom)
+**type**: [ChatRoom](/docs/next/context/ref/chat/ChatRoom)
 
 </details>
 
 <details>
   <summary><code>message</code> <strong>(required)</strong></summary>
 
-**type**: [Message](Message)
+**type**: [Message](/docs/next/context/ref/Message)
 
 </details>
 

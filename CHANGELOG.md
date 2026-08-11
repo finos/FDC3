@@ -44,6 +44,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Hardened all CI workflows: upgraded GitHub Actions to latest major versions, pinned all action references to immutable commit SHAs, and added StepSecurity harden-runner to every job ([#1948](https://github.com/finos/FDC3/pull/1948))
 - Added `min-release-age = 7` to `.npmrc` requiring packages to be at least 7 days old before resolution ([#1948](https://github.com/finos/FDC3/pull/1948))
 - Added Dependabot configuration with cooldown periods and grouped minor/patch updates ([#1948](https://github.com/finos/FDC3/pull/1948))
+* Merged the `api/ref/Metadata` and `api/ref/Types` documentation pages into a single `Types` page, added a Docusaurus redirect from the old Metadata URL, and updated `schema2Markdown.js` to generate links to the Types page for API type references in generated context docs. ([#2029](https://github.com/finos/FDC3/pull/2029))
+* Documented `getAgent()` promise caching behaviour: subsequent calls return the cached promise (ignoring parameters), and the cache is cleared on failure to allow retries. ([#2029](https://github.com/finos/FDC3/pull/2029))
+* Clarified in the Context Data overview that context types are defined in JSON Schema (source of truth) and may be represented differently in language-specific API bindings; added wire format guidance, language binding type mapping table, and links to packages and source code. ([#2029](https://github.com/finos/FDC3/pull/2029))
+* Clarified the stateful nature of channels at the start of the Context Channels section and Channel API reference page, documenting that channels retain the most recent context and metadata for each type. ([#2029](https://github.com/finos/FDC3/pull/2029))
+* Fixed broken links in the website: updated `schema2Markdown.js` to generate absolute links for context type cross-references (fixing chat and security subcategory links), fixed broken links in `api/spec.md`, `supported-platforms.md`, `context/spec.md`, intent pages, `Channel.md` and `desktopAgentCommunicationProtocol.md`. ([#2029](https://github.com/finos/FDC3/pull/2029))
 
 ### Removed
 
