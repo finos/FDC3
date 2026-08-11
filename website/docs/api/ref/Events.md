@@ -290,10 +290,6 @@ Type representing the format of `contextCleared`  events.
 
 The channel on which context was cleared is identified by `details.channelId`. This field is included for events received through both `DesktopAgent.addEventListener` and `Channel.addEventListener`, allowing the same event handler to be used with either API.
 
-Desktop Agents are compliant if they deliver only `contextCleared` events for the individual channel on which a
-listener was registered, or if they deliver events for all public channels. Applications that need to distinguish
-between channels must inspect `details.channelId`.
-
 The specific type of context is defined in `details.contextType`, which will be `null` if all contexts on the channel were cleared.
 
 
