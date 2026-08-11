@@ -22,6 +22,7 @@ const classes = {
 
 export const PrivateChannelListeners = observer(() => {
   const contextListeners: AccordionListItem[] = [];
+  const channelEvents: AccordionListItem[] = [];
 
   privateChannelStore.channelListeners.forEach(({ id, channelId, type, lastReceivedContext, metaData }) => {
     const receivedContextListenerValue = lastReceivedContext ? JSON.stringify(lastReceivedContext, undefined, 4) : '';
@@ -51,17 +52,30 @@ export const PrivateChannelListeners = observer(() => {
     contextListeners.push({ id, textPrimary: `Channel Id: ${channelId}: ${type}`, afterEachElement: contextField });
   });
 
+  privateChannelStore.privateChannelEvents.forEach(({ id, channelId, type, contextType }) => {
+    const eventDetails = type === 'disconnect' ? type : `${type}: ${contextType ?? 'all context types'}`;
+    channelEvents.push({ id, textPrimary: `Channel Id: ${channelId}: ${eventDetails}` });
+  });
+
   const handleDeleteListener = (id: string) => {
     privateChannelStore.removeContextListener(id);
   };
 
   return (
-    <AccordionList
-      title="Private Channels"
-      icon="Any context already in the channel will NOT be received automatically"
-      noItemsText="No Private Channel Listeners"
-      listItems={contextListeners}
-      onDelete={handleDeleteListener}
-    />
+    <>
+      <AccordionList
+        title="Private Channels"
+        icon="Any context already in the channel will NOT be received automatically"
+        noItemsText="No Private Channel Listeners"
+        listItems={contextListeners}
+        onDelete={handleDeleteListener}
+      />
+      <AccordionList
+        title="Private Channel Events"
+        icon="Shows context listener and disconnect events received from private channels"
+        noItemsText="No Private Channel Events"
+        listItems={channelEvents}
+      />
+    </>
   );
 });
