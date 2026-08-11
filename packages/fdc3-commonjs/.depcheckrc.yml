@@ -1,5 +1,3 @@
 ignores:
-  # No matching plugin invocation exists in rollup.config.mjs; likely valid to remove.
-  - "@rollup/plugin-typescript"
   # Invoked by the `build` package script.
   - rollup
