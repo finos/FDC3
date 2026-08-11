@@ -18,7 +18,7 @@ Open an existing chat room.
 
 ## Possible Contexts
 
-- [ChatRoom](../../context/ref/ChatRoom)
+- [ChatRoom](../../context/ref/chat/ChatRoom)
 - [Contact](../../context/ref/Contact): It will open the **direct** chat where there is the current user and the contact
 - [ContactList](../../context/ref/ContactList): It will open the **room** where there is the current user and the listed contacts. Contact List may need to display search results if there are multiple matches.
 
@@ -94,7 +94,7 @@ const chatRoom = intentResolution.getResult(): // A chatRoom will be returned as
 
 Context
 
-- [ChatRoom](../../context/ref/ChatRoom)
+- [ChatRoom](../../context/ref/chat/ChatRoom)
 - [Contact](../../context/ref/Contact)
 - [ContactList](../../context/ref/ContactList)
 
