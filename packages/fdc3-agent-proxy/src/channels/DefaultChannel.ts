@@ -167,7 +167,7 @@ export class DefaultChannel implements Channel {
         listener = new EventListener(this.messaging, type, this.id, handler);
         break;
       default:
-        throw new Error('Unsupported event type: ' + type);
+        throw new Error(ChannelError.InvalidArguments);
     }
     await listener.register();
     return listener;

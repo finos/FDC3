@@ -1,4 +1,11 @@
-import { ContextHandler, EventHandler, Listener, PrivateChannel, PrivateChannelEventTypes } from '@finos/fdc3-standard';
+import {
+  ChannelError,
+  ContextHandler,
+  EventHandler,
+  Listener,
+  PrivateChannel,
+  PrivateChannelEventTypes,
+} from '@finos/fdc3-standard';
 import { DefaultChannel } from './DefaultChannel.js';
 import { Messaging } from '../Messaging.js';
 import {
@@ -42,7 +49,7 @@ export class DefaultPrivateChannel extends DefaultChannel implements PrivateChan
       case null:
         return this.addAllEventListener(handler);
       default:
-        throw new Error('Unsupported event type: ' + type);
+        throw new Error(ChannelError.InvalidArguments);
     }
     await a.register();
     return a;

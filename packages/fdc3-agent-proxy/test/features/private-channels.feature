@@ -104,6 +104,34 @@ Feature: Basic Private Channels Support
       | contextType     |
       | fdc3.instrument |
 
+  Scenario: Unsubscribing a contextCleared event handler on a Private Channel stops event delivery
+    Given "contextClearedMessage" is a ContextClearedEvent message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
+    And "typesHandler" pipes events to "types"
+    When I call "{privateChannel}" with "addEventListener" with parameters "contextCleared" and "{typesHandler}"
+    And I refer to "{result}" as "theListener"
+    And I call "{theListener}" with "unsubscribe"
+    And messaging receives "{contextClearedMessage}"
+    Then "{types}" is an array of objects with length "0"
+
+  Scenario: Unsubscribing an all-events handler on a Private Channel stops event delivery
+    Given "contextClearedMessage" is a ContextClearedEvent message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
+    And "typesHandler" pipes events to "types"
+    When I call "{privateChannel}" with "addEventListener" with parameters "{null}" and "{typesHandler}"
+    And I refer to "{result}" as "theListener"
+    And we wait for a period of "100" ms
+    And I call "{theListener}" with "unsubscribe"
+    And messaging receives "{contextClearedMessage}"
+    Then "{types}" is an array of objects with length "0"
+    And messaging will have posts
+      | type                                          | matches_type                                  |
+      | privateChannelAddEventListenerRequest         | privateChannelAddEventListenerRequest         |
+      | privateChannelUnsubscribeEventListenerRequest | privateChannelUnsubscribeEventListenerRequest |
+
+  Scenario: Passing an invalid event type to a Private Channel returns InvalidArguments
+    Given "typesHandler" pipes events to "types"
+    When I call "{privateChannel}" with "addEventListener" with parameters "unsupported" and "{typesHandler}"
+    Then "{result}" is an error with message "InvalidArguments"
+
   Scenario: Adding and then unsubscribing an "disconnect" listener will send a notification of each event to the agent
     Given "voidHandler" is a invocation counter into "count"
     When I call "{privateChannel}" with "addEventListener" with parameters "disconnect" and "{voidHandler}"

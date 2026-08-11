@@ -1,6 +1,7 @@
 {
   "name": "fdc3-conformance",
   "version": "3.0.0-alpha.2",
+  "type": "module",
   "homepage": "https://fdc3.finos.org",
   "repository": {
     "type": "git",
@@ -10,7 +11,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "copy": "shx mkdir -p ./dist && shx cp -R static/* ./dist",
-    "build": "vite build && npm run copy",
+    "build": "vite build && npm run copy && shx cp ../../node_modules/mocha/mocha.css ./dist/lib/mocha.css",
     "serve": "npx http-server ./dist -p 3001 -c-1 --cors",
     "dev": "npm run clean && npm run build && npm run serve",
     "clean": "rimraf dist"
@@ -19,7 +20,7 @@
     "@finos/fdc3": "3.0.0-alpha.2",
     "buffer": "^6.0.3",
     "chai": "^4.3.6",
-    "mocha": "^10.0.0",
+    "mocha": "^10.8.2",
     "process": "^0.11.10",
     "source-map-support": "^0.5.21",
     "stream-browserify": "^3.0.0",
@@ -36,8 +37,8 @@
     "replace-in-file": "^6.3.5",
     "shx": "^0.4.0",
     "typescript": "^5.6.3",
-    "vite": "^7.3.5",
-    "vite-plugin-css-injected-by-js": "^4.0.1"
+    "vite": "^8.2.0",
+    "vite-plugin-css-injected-by-js": "^5.0.2"
   },
   "engines": {
     "node": ">=22"
