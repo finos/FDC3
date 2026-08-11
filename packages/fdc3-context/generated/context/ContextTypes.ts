@@ -466,16 +466,7 @@ export interface TimeRangeObject {
  * The type of chart that should be plotted
  */
 export type ChartStyle =
-  | 'line'
-  | 'bar'
-  | 'stacked-bar'
-  | 'mountain'
-  | 'candle'
-  | 'pie'
-  | 'scatter'
-  | 'histogram'
-  | 'heatmap'
-  | 'custom';
+  'line' | 'bar' | 'stacked-bar' | 'mountain' | 'candle' | 'pie' | 'scatter' | 'histogram' | 'heatmap' | 'custom';
 
 /**
  * A collection of settings to start a new chat conversation

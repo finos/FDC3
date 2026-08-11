@@ -32,7 +32,7 @@ The portfolio schema does not explicitly include identifiers in the `id` section
 <details>
   <summary><code>Items</code></summary>
 
-**type**: [Position](Position)
+**type**: [Position](/docs/next/context/ref/Position)
 
 </details>
 
