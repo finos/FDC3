@@ -8,7 +8,7 @@ sidebar_label: User Request
 
 [@experimental](/docs/fdc3-compliance#experimental-features) A request for the current user's identity, raised via the GetUser intent. An identity provider app receives this request and responds with an 'fdc3.security.user' context containing a signed JWT wrapped in the requester's public key. The request includes the requesting application's audience identifier needed for the identity provider app to create a token bound to that application and to encrypt the response.
 
-**Note:** This context type MUST be signed to be effective. The identity provider app uses the signature's public key URL to verify the requesting application's identity and to encrypt the response. See the [Security & Identity documentation](../../api/security) for details on signing context objects.
+**Note:** This context type MUST be signed to be effective. The identity provider app uses the signature's public key URL to verify the requesting application's identity and to encrypt the response. See the [Security & Identity documentation](/docs/next/api/security) for details on signing context objects.
 
 ## Schema
 
