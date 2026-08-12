@@ -1582,9 +1582,35 @@ Represented as a union type in TypeScript, however, this type may be rendered as
 
 ## `IntentResolutionResult`
 
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
 ```ts
-type IntentResolutionResult = Exclude<IntentResult, ContextWithMetadata>;
+type IntentResolutionResult = Context | Channel | void;
 ```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+interface IIntentResolutionResult { /* Marker interface implemented by IContext and Channel */ }
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type IntentResolutionResult any
+
+type IntentResolutionResultType string
+const (
+  ChannelIntentResolutionResult IntentResolutionResultType = "Channel"
+  ContextIntentResolutionResult IntentResolutionResultType = "Context"
+)
+```
+
+</TabItem>
+</Tabs>
 
 Describes results returned by [`IntentResolution.getResult()`](#intentresolution) after any `ContextWithMetadata` result from the intent handler has been unwrapped. The associated metadata is available via [`IntentResolution.getResultMetadata()`](#intentresolution).
 

@@ -107,6 +107,7 @@ type FDC3EventTypes string
 
 const (
 	UserChannelChanged     FDC3EventTypes = "userChannelChanged"
+	ContextCleared         FDC3EventTypes = "contextCleared"
 )
 ```
 
@@ -118,6 +119,44 @@ Type defining valid type strings for DesktopAgent interface events.
 **See also:**
 
 - [`DesktopAgent.addEventListener`](DesktopAgent#addeventlistener)
+
+## `ChannelEventTypes`
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+type ChannelEventTypes = "contextCleared";
+```
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+public static class ChannelEventType
+{
+    public const string ContextCleared = "contextCleared";
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type ChannelEventTypes string
+
+const (
+  ContextClearedChannelEventType ChannelEventTypes = "contextCleared"
+)
+```
+
+</TabItem>
+</Tabs>
+
+Type defining valid type strings for Channel interface events.
+
+**See also:**
+
+- [`Channel.addEventListener`](Channel#addeventlistener)
 
 ## `FDC3Event`
 
@@ -279,6 +318,20 @@ public class Fdc3ContextClearedEvent : Fdc3Event
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type FDC3ContextClearedEventDetails struct {
+  Type *string `json:"type"`
+}
+
+type FDC3ContextClearedEvent struct {
+  Type   string                        `json:"type"`
+  Details FDC3ContextClearedEventDetails `json:"details"`
+}
+```
+
+</TabItem>
 </Tabs>
 
 
@@ -293,7 +346,7 @@ The specific type of context is defined in the contextType field, which can be e
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-type PrivateChannelEventTypes = "addContextListener" | "unsubscribe" | "disconnect";
+type PrivateChannelEventTypes = ChannelEventTypes | "addContextListener" | "unsubscribe" | "disconnect";
 ```
 </TabItem>
 <TabItem value="dotnet" label=".NET">
@@ -301,6 +354,7 @@ type PrivateChannelEventTypes = "addContextListener" | "unsubscribe" | "disconne
 ```csharp
 public static class Fdc3PrivateChannelEventType
 {
+    public const string ContextCleared = "contextCleared";
     public const string AddContextListener = "addContextListener";
     public const string Unsubscribe = "unsubscribe";
     public const string Disconnect = "disconnect";
@@ -313,6 +367,7 @@ public static class Fdc3PrivateChannelEventType
 ```go
 type PrivateChannelEventTypes string 
 const (
+  ContextClearedPrivateChannelEventType PrivateChannelEventTypes = "contextCleared"
   AddContextListenerPrivateChannelEventType PrivateChannelEventTypes = "addContextListener"
   UnsubscribePrivateChannelEventType PrivateChannelEventTypes = "unsubscribe"
   DisconnectPrivateChannelEventType PrivateChannelEventTypes = "disconnect"
@@ -322,7 +377,9 @@ const (
 </TabItem>
 </Tabs>
 
-Type defining valid type strings for Private Channel events.
+Type defining valid type strings for Private Channel events. Private Channels support the
+`contextCleared` event defined by [`ChannelEventTypes`](#channeleventtypes), in addition to
+their lifecycle events.
 
 **See also:**
 

@@ -41,7 +41,7 @@ export type IntentResult = Context | ContextWithMetadata | Channel | void;
  * Describes results returned by `IntentResolution.getResult()` after any
  * `ContextWithMetadata` result from the intent handler has been unwrapped.
  */
-export type IntentResolutionResult = Exclude<IntentResult, ContextWithMetadata>;
+export type IntentResolutionResult = Context | Channel | void;
 /**
  * Describes a callback that handles a context event and may return a
  * promise of a Context, ContextWithMetadata, Channel, PrivateChannel or void
