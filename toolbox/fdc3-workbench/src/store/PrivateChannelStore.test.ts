@@ -8,12 +8,13 @@ import systemLogStore from './SystemLogStore.js';
 import { PrivateChannelStore } from './PrivateChannelStore.js';
 
 const createListener = (): Listener => ({
-  unsubscribe: vi.fn(),
+  unsubscribe: vi.fn().mockResolvedValue(undefined),
 });
 
 interface PrivateChannelHarness {
   channel: PrivateChannel;
   eventHandlers: Map<string, EventHandler>;
+  eventListeners: Listener[];
   legacyHandlers: {
     addContextListener?: (contextType?: string) => void;
     unsubscribe?: (contextType?: string) => void;
@@ -24,10 +25,13 @@ interface PrivateChannelHarness {
 
 const createPrivateChannelHarness = (): PrivateChannelHarness => {
   const eventHandlers = new Map<string, EventHandler>();
+  const eventListeners: Listener[] = [];
   const legacyHandlers: PrivateChannelHarness['legacyHandlers'] = {};
   const addEventListener = vi.fn(async (type: string, handler: EventHandler) => {
     eventHandlers.set(type, handler);
-    return createListener();
+    const listener = createListener();
+    eventListeners.push(listener);
+    return listener;
   });
   const channel = {
     id: 'private-1',
@@ -45,10 +49,10 @@ const createPrivateChannelHarness = (): PrivateChannelHarness => {
       legacyHandlers.disconnect = handler;
       return createListener();
     }),
-    disconnect: vi.fn(),
+    disconnect: vi.fn().mockResolvedValue(undefined),
   } as unknown as PrivateChannel;
 
-  return { channel, eventHandlers, legacyHandlers, addEventListener };
+  return { channel, eventHandlers, eventListeners, legacyHandlers, addEventListener };
 };
 
 const createAgentProvider = (fdc3Version: string) => async () =>
@@ -106,6 +110,27 @@ describe('PrivateChannelStore event support', () => {
     expect(broadcast).toHaveBeenCalledWith(harness.channel, instrument);
   });
 
+  it('broadcasts every configured context when an all-listener event omits contextType', async () => {
+    vi.useFakeTimers();
+    const harness = createPrivateChannelHarness();
+    const store = new PrivateChannelStore(createAgentProvider('2.2'));
+    const broadcast = vi.spyOn(store, 'broadcast').mockResolvedValue();
+    const instrument = { type: 'fdc3.instrument', id: { ticker: 'AAPL' } };
+    const contact = { type: 'fdc3.contact', id: { email: 'person@example.com' } };
+
+    await store.listenForEvents(harness.channel, { instrument, contact });
+    harness.eventHandlers.get('addContextListener')?.({
+      type: 'addContextListener',
+      details: {},
+    });
+    await vi.runAllTimersAsync();
+
+    expect(broadcast).toHaveBeenCalledTimes(2);
+    expect(broadcast).toHaveBeenCalledWith(harness.channel, instrument);
+    expect(broadcast).toHaveBeenCalledWith(harness.channel, contact);
+    expect(store.privateChannelEvents.at(-1)?.contextType).toBeNull();
+  });
+
   it('uses deprecated private channel callbacks for FDC3 2.0 and 2.1', async () => {
     const harness = createPrivateChannelHarness();
     const store = new PrivateChannelStore(createAgentProvider('2.1'));
@@ -129,5 +154,19 @@ describe('PrivateChannelStore event support', () => {
     await store.listenForEvents(harness.channel);
 
     expect(harness.addEventListener).toHaveBeenCalledTimes(3);
+  });
+
+  it('unsubscribes every event listener when disconnecting', async () => {
+    const harness = createPrivateChannelHarness();
+    const store = new PrivateChannelStore(createAgentProvider('2.2'));
+
+    await store.listenForEvents(harness.channel);
+    await store.disconnect(harness.channel);
+
+    expect(harness.eventListeners).toHaveLength(3);
+    harness.eventListeners.forEach(listener => {
+      expect(listener.unsubscribe).toHaveBeenCalledOnce();
+    });
+    expect(harness.channel.disconnect).toHaveBeenCalledOnce();
   });
 });

@@ -210,7 +210,7 @@ export const ChannelField = observer(
 
     const handleRemoveOrDisconnect = (channel: Fdc3ChannelRecord) => {
       if (isPrivateChannel) {
-        privateChannelStore.disconnect(channel.channel as PrivateChannel);
+        void privateChannelStore.disconnect(channel.channel as PrivateChannel);
       } else {
         appChannelStore.remove(channel.channel);
       }

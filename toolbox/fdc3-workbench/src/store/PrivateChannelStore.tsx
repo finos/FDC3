@@ -273,6 +273,7 @@ export class PrivateChannelStore {
       this.channelListeners
         .filter(listener => listener.channelId === channel.id)
         .forEach(listener => this.removeContextListener(listener.id));
+      void this.unsubscribeEventListeners(channel.id);
 
       runInAction(() => {
         this.privateChannelsList = this.privateChannelsList.filter(chan => chan.id !== channel.id);
@@ -308,11 +309,11 @@ export class PrivateChannelStore {
       if (versionIsAtLeast(implementationMetadata, '2.2') === true) {
         listeners = await Promise.all([
           channel.addEventListener('addContextListener', event => {
-            const contextType = (event as PrivateChannelAddContextListenerEvent).details.contextType;
+            const contextType = (event as PrivateChannelAddContextListenerEvent).details.contextType ?? null;
             this.onAddContextListenerEvent(channel, contextType, channelContexts, channelContextDelay);
           }),
           channel.addEventListener('unsubscribe', event => {
-            const contextType = (event as PrivateChannelUnsubscribeEvent).details.contextType;
+            const contextType = (event as PrivateChannelUnsubscribeEvent).details.contextType ?? null;
             this.onUnsubscribeEvent(channel, contextType);
           }),
           channel.addEventListener('disconnect', () => this.onDisconnectEvent(channel)),
@@ -340,13 +341,19 @@ export class PrivateChannelStore {
     }
   }
 
-  disconnect(channel: PrivateChannel) {
+  private async unsubscribeEventListeners(channelId: string) {
+    const listeners = this.channelEventListeners.get(channelId) ?? [];
+    this.channelEventListeners.delete(channelId);
+    await Promise.allSettled(listeners.map(listener => listener.unsubscribe()));
+  }
+
+  async disconnect(channel: PrivateChannel) {
     this.channelListeners
       .filter(listener => listener.channelId === channel.id)
       .forEach(listener => this.removeContextListener(listener.id));
     this.privateChannelsList = this.privateChannelsList.filter(chan => chan.id !== channel.id);
-    this.channelEventListeners.delete(channel.id);
-    void channel.disconnect();
+    await this.unsubscribeEventListeners(channel.id);
+    await channel.disconnect();
   }
 }
 
