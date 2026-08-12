@@ -121,17 +121,49 @@ export class DefaultChannel implements Channel {
     return null;
   }
 
-  async addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener> {
-    if (typeof contextType !== 'string' && contextType !== null) {
+  async addContextListener(
+    contextTypeOrHandler: string | null | ContextHandler | string[],
+    handler?: ContextHandler
+  ): Promise<Listener> {
+    let theContextType: string | string[] | null;
+    let theHandler: ContextHandler;
+
+    if (contextTypeOrHandler == null && typeof handler === 'function') {
+      theContextType = null;
+      theHandler = handler;
+    } else if (typeof contextTypeOrHandler === 'string' && typeof handler === 'function') {
+      theContextType = contextTypeOrHandler;
+      theHandler = handler;
+    } else if (Array.isArray(contextTypeOrHandler) && typeof handler === 'function') {
+      // Handle array-based context types
+      if (contextTypeOrHandler.length === 0) {
+        // Empty array
+        return {
+          unsubscribe: () => Promise.resolve(),
+        };
+      }
+      theContextType = contextTypeOrHandler; // Pass the array directly
+      theHandler = handler;
+    } else if (typeof contextTypeOrHandler === 'function') {
+      // deprecated one-arg version
+      theContextType = null;
+      theHandler = contextTypeOrHandler as ContextHandler;
+    } else {
+      //invalid call
+      // TODO: Replace with Standardized error when #1490 is resolved
       throw new Error('Invalid arguments passed to addContextListener!');
     }
-    if (typeof handler !== 'function') {
-      throw new Error('Invalid arguments passed to addContextListener!');
+
+    // Handle array case by creating individual listeners for each type
+    if (Array.isArray(theContextType)) {
+      // Pass the array directly to DefaultContextListener which will handle multiple listeners
+      return await this.addContextListenerInner(theContextType, theHandler);
     }
-    return await this.addContextListenerInner(contextType, handler);
+
+    return await this.addContextListenerInner(theContextType as string | null, theHandler);
   }
 
-  async addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
+  async addContextListenerInner(contextType: string | string[] | null, theHandler: ContextHandler): Promise<Listener> {
     const listener = new DefaultContextListener(
       this.messaging,
       this.messageExchangeTimeout,

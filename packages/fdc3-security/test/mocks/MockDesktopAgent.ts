@@ -10,11 +10,11 @@ import {
 import type {
   AppIdentifier,
   AppMetadata,
-  AppProvidableContextMetadata,
   ContextMetadata,
   DesktopAgent,
   Intent,
 } from '@finos/fdc3-standard';
+import type { AppProvidableContextMetadata } from '@finos/fdc3-standard/src/api/ContextMetadata';
 import { Context } from '@finos/fdc3-context';
 import { MockChannel } from './MockChannel';
 import { MockPrivateChannel } from './MockPrivateChannel';
@@ -42,6 +42,7 @@ class MockDesktopAgent implements Partial<DesktopAgent> {
       fdc3Version: this.fdc3Version,
       provider: 'fdc3-security-mock',
       optionalFeatures: {
+        OriginatingAppMetadata: true,
         UserChannelMembershipAPIs: true,
         DesktopAgentBridging: false,
       },
@@ -99,7 +100,7 @@ class MockDesktopAgent implements Partial<DesktopAgent> {
       getResultMetadata: async () => {
         return resolvedMetadata;
       },
-    };
+    } as IntentResolution;
   }
 
   async getOrCreateChannel(channelId: string): Promise<Channel> {
@@ -117,7 +118,13 @@ class MockDesktopAgent implements Partial<DesktopAgent> {
     return sharedPrivateChannels.get(id)!;
   }
 
-  async addContextListener(contextType: string | ContextHandler | null, handler?: ContextHandler): Promise<Listener> {
+  addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
+  addContextListener(contextTypes: string[], handler: ContextHandler): Promise<Listener>;
+  addContextListener(handler: ContextHandler): Promise<Listener>;
+  async addContextListener(
+    contextType: string | string[] | ContextHandler | null,
+    handler?: ContextHandler
+  ): Promise<Listener> {
     const h = typeof contextType === 'function' ? contextType : handler!;
     const chan = await this.getOrCreateChannel('fdc3.channel.1');
     return chan.addContextListener(null, h);

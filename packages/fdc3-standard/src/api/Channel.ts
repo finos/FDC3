@@ -99,6 +99,16 @@ export interface Channel {
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
 
   /**
+   * Adds a listener for incoming contexts using an array of context types.
+   *
+   * Pass multiple context types to listen for several types with one listener.
+   *
+   * See the single `contextType` overload above for full behavior details.
+   *
+   */
+  addContextListener(contextTypes: string[], handler: ContextHandler): Promise<Listener>;
+
+  /**
    * Clears context from the channel, and triggers the event listener on the `contextCleared` event to notify existing listeners that the context was cleared. Listeners added to the channel and calls to [`getCurrentContext`](#getcurrentcontext) will not receive any existing context until new context is broadcast to the channel.
    *
    * If a `contextType` is provided, only contexts of that type will be cleared.

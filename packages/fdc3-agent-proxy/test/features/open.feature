@@ -42,3 +42,4 @@ Feature: Desktop Agent Information
     And messaging will have posts
       | payload.app.appId | payload.context | payload.metadata.traceId | payload.metadata.signature.signature | payload.metadata.signature.protected | payload.metadata.antiReplay.iat | payload.metadata.antiReplay.exp | payload.metadata.antiReplay.jti | matches_type |
       | chipShop          | {null}          | trace-open               | sig-open (signature part)   | sig-open (protected part)   | {1234}                          | {2345}                          | open-jti                        | openRequest  |
+

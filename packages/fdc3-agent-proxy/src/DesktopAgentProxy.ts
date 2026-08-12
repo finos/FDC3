@@ -3,6 +3,7 @@ import {
   AppMetadata,
   AppProvidableContextMetadata,
   ContextHandler,
+  ContextType,
   DesktopAgent,
   EventHandler,
   FDC3EventTypes,
@@ -91,14 +92,40 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     }
   }
 
-  addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener> {
-    if (typeof contextType !== 'string' && contextType !== null) {
+  addContextListener(
+    contextTypeOrHandler: ContextHandler | ContextType | null | ContextType[],
+    handler?: ContextHandler
+  ): Promise<Listener> {
+    let theContextType: ContextType | ContextType[] | null;
+    let theHandler: ContextHandler;
+
+    if (contextTypeOrHandler == null && typeof handler === 'function') {
+      theContextType = null;
+      theHandler = handler;
+    } else if (typeof contextTypeOrHandler === 'string' && typeof handler === 'function') {
+      theContextType = contextTypeOrHandler;
+      theHandler = handler;
+    } else if (Array.isArray(contextTypeOrHandler) && typeof handler === 'function') {
+      // Handle array-based context types
+      if (contextTypeOrHandler.length === 0) {
+        // Empty array
+        return Promise.resolve({
+          unsubscribe: () => Promise.resolve(),
+        });
+      }
+      theContextType = contextTypeOrHandler; // Pass the array directly
+      theHandler = handler;
+    } else if (typeof contextTypeOrHandler === 'function') {
+      // deprecated one-arg version
+      theContextType = null;
+      theHandler = contextTypeOrHandler as ContextHandler;
+    } else {
+      //invalid call
+      // TODO: Replace with Standardized error when #1490 is resolved
       throw new Error('Invalid arguments passed to addContextListener!');
     }
-    if (typeof handler !== 'function') {
-      throw new Error('Invalid arguments passed to addContextListener!');
-    }
-    return this.channels.addContextListener(handler, contextType);
+
+    return this.channels.addContextListener(theHandler, theContextType as string | string[] | null);
   }
 
   getUserChannels() {

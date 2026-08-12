@@ -35,6 +35,14 @@ export interface ChannelControl {
     onComplete: (ctx: Context, metadata?: ContextMetadata) => void
   ): Promise<Listener>;
 
+  setupArrayContextListener(
+    channel: Channel | null,
+    listenContextTypes: string[],
+    expectedContextTypes: string[],
+    errorMessage: string,
+    onComplete: (ctx: Context, metadata?: ContextMetadata) => void
+  ): Promise<Listener>;
+
   setupContextChecker(
     channel: Channel,
     requestedContextType: string | null,
