@@ -40,7 +40,7 @@ interface Channel {
   getCurrentContextWithMetadata(contextType?: string): Promise<ContextWithMetadata|null>;
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
   clearContext(contextType?: string): Promise<void>;
-  addEventListener(type: string  | null, handler: EventHandler): Promise<Listener>;
+  addEventListener(type: ChannelEventTypes  | null, handler: EventHandler): Promise<Listener>;
 }
 ```
 
@@ -377,7 +377,7 @@ if listenerResultInstrument.Value != nil {
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-addEventListener(type: string  | null, handler: EventHandler): Promise<Listener>;
+addEventListener(type: ChannelEventTypes  | null, handler: EventHandler): Promise<Listener>;
 ```
 
 </TabItem>
@@ -421,6 +421,7 @@ var listener = await myChannel.AddEventListener(null, (event) => {
 
 - [Events](./Events)
 - [EventHandler](./Events#eventhandler)
+- [ChannelEventTypes](./Events#channeleventtypes)
 - [ApiEvent](./Events#apievent)
 
 ### `broadcast`
@@ -761,7 +762,7 @@ Task ClearContext(string? contextType);
 </TabItem>
 </Tabs>
 
-Used to clear the specified context type if provided, otherwise, clear all context types present in the channel. The Desktop Agent MUST update its internal representation of the context in the channel and ensure that subsequent calls to [`getCurrentContext`](#getcurrentcontext) and any new joiners to that channel (through [`joinUserChannel`](DesktopAgent#joinuserchannel) or [`addContextListener`](DesktopAgent#addcontextlistener)) will not receive anything for either the specified context type or the most recent context until new context has been broadcast to the channel. 
+Used to clear the specified context type if provided, otherwise, clear all context types present in the channel. The Desktop Agent MUST update its internal representation of the context in the channel and ensure that subsequent calls to [`getCurrentContext`](#getcurrentcontext) and any new joiners to that channel (through [`joinUserChannel`](DesktopAgent#joinuserchannel) or [`addContextListener`](DesktopAgent#addcontextlistener)) will not receive anything for either the specified context type or the most recent context until new context has been broadcast to the channel.
 Desktop Agents MUST also immediately notify the apps that are listening to `contextCleared` event for this channel. If a `contextType` parameter was provided, then the `contextType` field will be set to that type, otherwise, it is omitted. 
 
 
