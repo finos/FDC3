@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { BasicDirectory, appSupportsFdc3Version } from '../src/directory/BasicDirectory.js';
+import {
+  BasicDirectory,
+  FDC3_VERSION_RANGE_PATTERN,
+  appSupportsFdc3Version,
+} from '../src/directory/BasicDirectory.js';
 import { DirectoryApp } from '../src/directory/DirectoryInterface.js';
 
 function app(appId: string, fdc3Version?: string): DirectoryApp {
@@ -26,11 +30,22 @@ describe('BasicDirectory FDC3 version filtering', () => {
   it('excludes apps with incompatible or invalid FDC3 version metadata', () => {
     expect(appSupportsFdc3Version(app('maximum', '<=2.2'), '3.0')).toBe(false);
     expect(appSupportsFdc3Version(app('invalid', 'not-a-version'), '2.2')).toBe(false);
+    expect(appSupportsFdc3Version(app('invalid-comparator', '^^2.2'), '2.2')).toBe(false);
+    expect(appSupportsFdc3Version(app('valid-range', '^2.2'), 'not-a-version')).toBe(false);
+  });
+
+  it('uses the version-range pattern defined by the App Directory schema', async () => {
+    const schema = await import('../../../../packages/fdc3-standard/src/app-directory/specification/appd.schema.json', {
+      with: { type: 'json' },
+    });
+    const schemaPattern = schema.default.components.schemas.BaseApplication.properties.fdc3Version.pattern;
+
+    expect(FDC3_VERSION_RANGE_PATTERN.source).toBe(schemaPattern);
   });
 
   it('filters incompatible apps when the directory is populated', () => {
     const directory = new BasicDirectory(
-      [app('unversioned'), app('current', '^2.2'), app('old', '<=2.2'), app('invalid', 'not-a-version')],
+      [app('unversioned'), app('current', '^3.0'), app('old', '<=2.2'), app('invalid', 'not-a-version')],
       '3.0'
     );
 

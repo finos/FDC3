@@ -75,6 +75,8 @@ describe('App Directory Schema Validation', () => {
     ['2.2', '2.2.1', '<=2.3', '^2.2', '>=2.2', '>=2.2 <3.0', '2.2 || 3.0', '2.2 - 2.3'].forEach(range =>
       expect(rangePattern.test(range)).toBe(true)
     );
-    ['', '2', 'v2.2', '2.x', 'not-a-version'].forEach(range => expect(rangePattern.test(range)).toBe(false));
+    ['', '2', 'v2.2', '2.x', 'not-a-version', '^^2.2', '~>2.2', '=>2.2', '2.2||3.0'].forEach(range =>
+      expect(rangePattern.test(range)).toBe(false)
+    );
   });
 });

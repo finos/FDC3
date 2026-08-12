@@ -1,6 +1,10 @@
 import semver from 'semver';
 import { Directory, DirectoryApp, DirectoryIntent } from './DirectoryInterface.js';
 
+// Keep synchronized with BaseApplication.properties.fdc3Version.pattern in appd.schema.json.
+export const FDC3_VERSION_RANGE_PATTERN =
+  /^(?:(?:<=|>=|<|>|=|~|\^)?\s*\d+\.\d+(?:\.\d+)?)(?:(?:\s+(?:<=|>=|<|>|=|~|\^)?\s*\d+\.\d+(?:\.\d+)?)|(?:\s+-\s+\d+\.\d+(?:\.\d+)?)|(?:\s+\|\|\s+(?:<=|>=|<|>|=|~|\^)?\s*\d+\.\d+(?:\.\d+)?))*$/;
+
 export function genericResultTypeSame(real: string | undefined, required: string | undefined) {
   if (required == undefined) {
     return true;
@@ -21,8 +25,13 @@ export function appSupportsFdc3Version(app: DirectoryApp, fdc3Version: string): 
     return true;
   }
 
+  if (!FDC3_VERSION_RANGE_PATTERN.test(appFdc3Version)) {
+    return false;
+  }
+
   const range = semver.validRange(appFdc3Version);
-  return range != null && semver.satisfies(fdc3Version, range);
+  const normalizedFdc3Version = semver.coerce(fdc3Version)?.version;
+  return range != null && normalizedFdc3Version != null && semver.satisfies(normalizedFdc3Version, range);
 }
 
 /**
