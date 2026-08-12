@@ -43,7 +43,7 @@
     "@finos/fdc3-security": "3.0.0-alpha.2",
     "@jridgewell/trace-mapping": "^0.3.28",
     "@vitejs/plugin-react": "^6.0.5",
-    "canonicalize": "^2.1.0",
+    "canonicalize": "^3.0.0",
     "dotenv": "^16.4.0",
     "express": "^4.21.1",
     "express-rate-limit": "^7.5.0",
