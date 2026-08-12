@@ -57,8 +57,8 @@ A map of string mime-type to string content
 
 **One of:**
 
-- **type**: [Action](Action)
-- **type**: [File Attachment](FileAttachment)
+- **type**: [Action](/docs/next/context/ref/Action)
+- **type**: [File Attachment](/docs/next/context/ref/FileAttachment)
 
 </details>
 
