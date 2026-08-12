@@ -3,7 +3,7 @@ import { Directory, DirectoryApp, DirectoryIntent } from './DirectoryInterface.j
 
 // Keep synchronized with BaseApplication.properties.fdc3Version.pattern in appd.schema.json.
 export const FDC3_VERSION_RANGE_PATTERN =
-  /^(?:(?:<=|>=|<|>|=|~|\^)?\s*\d+\.\d+(?:\.\d+)?)(?:(?:\s+(?:<=|>=|<|>|=|~|\^)?\s*\d+\.\d+(?:\.\d+)?)|(?:\s+-\s+\d+\.\d+(?:\.\d+)?)|(?:\s+\|\|\s+(?:<=|>=|<|>|=|~|\^)?\s*\d+\.\d+(?:\.\d+)?))*$/;
+  /^(?:(?:<=|>=|<|>|=|~|\^)?\s*\d+\.\d+)(?:(?:\s+(?:<=|>=|<|>|=|~|\^)?\s*\d+\.\d+)|(?:\s+-\s+\d+\.\d+)|(?:\s+\|\|\s+(?:<=|>=|<|>|=|~|\^)?\s*\d+\.\d+))*$/;
 
 export function genericResultTypeSame(real: string | undefined, required: string | undefined) {
   if (required == undefined) {

@@ -24,6 +24,7 @@ describe('BasicDirectory FDC3 version filtering', () => {
   it('uses npm-style semver ranges to include compatible apps', () => {
     expect(appSupportsFdc3Version(app('exact', '2.2'), '2.2')).toBe(true);
     expect(appSupportsFdc3Version(app('caret', '^2.2'), '2.3')).toBe(true);
+    expect(appSupportsFdc3Version(app('tilde', '~2.3'), '2.3')).toBe(true);
     expect(appSupportsFdc3Version(app('minimum', '>=2.2'), '3.0')).toBe(true);
   });
 
@@ -31,6 +32,7 @@ describe('BasicDirectory FDC3 version filtering', () => {
     expect(appSupportsFdc3Version(app('maximum', '<=2.2'), '3.0')).toBe(false);
     expect(appSupportsFdc3Version(app('invalid', 'not-a-version'), '2.2')).toBe(false);
     expect(appSupportsFdc3Version(app('invalid-comparator', '^^2.2'), '2.2')).toBe(false);
+    expect(appSupportsFdc3Version(app('patch-version', '1.2.3'), '1.2')).toBe(false);
     expect(appSupportsFdc3Version(app('valid-range', '^2.2'), 'not-a-version')).toBe(false);
   });
 
