@@ -37,7 +37,7 @@ abstract class AbstractPrivateChannelEventListener extends AbstractListener<
     messageExchangeTimeout: number,
     privateChannelId: string,
     eventMessageTypes: PrivateChannelEventMessageTypes[],
-    eventType: PrivateChannelEventTypes | null,
+    eventType: BrowserTypes.PrivateChannelEventType | null,
     handler: (msg: PrivateChannelEventMessages) => void
   ) {
     super(
@@ -102,7 +102,7 @@ export class PrivateChannelNullEventListener extends AbstractPrivateChannelEvent
         'privateChannelOnUnsubscribeEvent',
         'privateChannelOnDisconnectEvent',
       ],
-      'addContextListener',
+      null,
       wrappedHandler
     );
   }

@@ -83,17 +83,59 @@ Feature: Basic Private Channels Support
     Given "onAddContextListenerMessage" is a PrivateChannelOnAddContextListenerEvent message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
     Given "onUnsubscribeListenerMessage" is a PrivateChannelOnUnsubscribeEvent message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
     Given "onDisconnectListenerMessage" is a PrivateChannelOnDisconnectEvent message on channel "{privateChannel.id}"
+    Given "contextClearedMessage" is a ContextClearedEvent message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
     And "typesHandler" pipes events to "types"
     And I call "{privateChannel}" with "addEventListener" with parameters "{null}" and "{typesHandler}"
     And we wait for a period of "100" ms
     And messaging receives "{onAddContextListenerMessage}"
     And messaging receives "{onUnsubscribeListenerMessage}"
     And messaging receives "{onDisconnectListenerMessage}"
+    And messaging receives "{contextClearedMessage}"
     Then "{types}" is an array of objects with the following contents
       | channelId           | contextType     |
       | {privateChannel.id} | fdc3.instrument |
       | {privateChannel.id} | fdc3.instrument |
       | {privateChannel.id} | {null}          |
+      | {privateChannel.id} | fdc3.instrument |
+
+  Scenario: Adding a contextCleared event handler on a Private Channel receives only events for that channel
+    Given "contextClearedMessage" is a ContextClearedEvent message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
+    Given "otherContextClearedMessage" is a ContextClearedEvent message on channel "other-channel" with contextType as "fdc3.country"
+    And "typesHandler" pipes events to "types"
+    When I call "{privateChannel}" with "addEventListener" with parameters "contextCleared" and "{typesHandler}"
+    And messaging receives "{otherContextClearedMessage}"
+    And messaging receives "{contextClearedMessage}"
+    Then "{types}" is an array of objects with the following contents
+      | contextType     |
+      | fdc3.instrument |
+
+  Scenario: Unsubscribing a contextCleared event handler on a Private Channel stops event delivery
+    Given "contextClearedMessage" is a ContextClearedEvent message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
+    And "typesHandler" pipes events to "types"
+    When I call "{privateChannel}" with "addEventListener" with parameters "contextCleared" and "{typesHandler}"
+    And I refer to "{result}" as "theListener"
+    And I call "{theListener}" with "unsubscribe"
+    And messaging receives "{contextClearedMessage}"
+    Then "{types}" is an array of objects with length "0"
+
+  Scenario: Unsubscribing an all-events handler on a Private Channel stops event delivery
+    Given "contextClearedMessage" is a ContextClearedEvent message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
+    And "typesHandler" pipes events to "types"
+    When I call "{privateChannel}" with "addEventListener" with parameters "{null}" and "{typesHandler}"
+    And I refer to "{result}" as "theListener"
+    And we wait for a period of "100" ms
+    And I call "{theListener}" with "unsubscribe"
+    And messaging receives "{contextClearedMessage}"
+    Then "{types}" is an array of objects with length "0"
+    And messaging will have posts
+      | type                                          | matches_type                                  |
+      | privateChannelAddEventListenerRequest         | privateChannelAddEventListenerRequest         |
+      | privateChannelUnsubscribeEventListenerRequest | privateChannelUnsubscribeEventListenerRequest |
+
+  Scenario: Passing an invalid event type to a Private Channel returns InvalidArguments
+    Given "typesHandler" pipes events to "types"
+    When I call "{privateChannel}" with "addEventListener" with parameters "unsupported" and "{typesHandler}"
+    Then "{result}" is an error with message "InvalidArguments"
 
   Scenario: Adding and then unsubscribing an "disconnect" listener will send a notification of each event to the agent
     Given "voidHandler" is a invocation counter into "count"
