@@ -794,7 +794,12 @@ export interface AddContextListenerResponsePayload {
  * `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).
  */
 export type PurpleError =
-  'AccessDenied' | 'CreationFailed' | 'MalformedContext' | 'NoChannelFound' | 'ApiTimeout' | 'InvalidArguments';
+  | 'AccessDenied'
+  | 'CreationFailed'
+  | 'MalformedContext'
+  | 'NoChannelFound'
+  | 'ApiTimeout'
+  | 'InvalidArguments';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
