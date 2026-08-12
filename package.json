@@ -71,8 +71,7 @@
     "eslint-config-prettier": "^9.1.0",
     "globals": "^15.14.0",
     "husky": "^9.1.7",
-
-    "jsdom": "^30.0.0",
+    "jsdom": "^30.0.1",
     "lint-staged": "^15.2.10",
 
     "pixelmatch": "^6.0.0",
