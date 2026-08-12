@@ -27,6 +27,18 @@ describe('App Directory Schema Validation', () => {
     expect(apiInfo.version).toBeDefined();
   });
 
+  it('should only expose v2 routes and schemas', () => {
+    const currentApi = api as {
+      paths: Record<string, unknown>;
+      components: { schemas: Record<string, unknown> };
+    };
+
+    expect(currentApi.paths['/v2/apps']).toBeDefined();
+    expect(currentApi.paths['/v2/apps/{appId}']).toBeDefined();
+    expect(Object.keys(currentApi.paths).filter(path => path.startsWith('/v1/'))).toEqual([]);
+    expect(Object.keys(currentApi.components.schemas).filter(schema => schema.endsWith('V1'))).toEqual([]);
+  });
+
   it('should validate myApplication.json example against the Application schema', () => {
     const examplePath = join(specificationDir, 'examples', 'application', 'myApplication.json');
     const exampleApplication = JSON.parse(readFileSync(examplePath, 'utf-8'));
