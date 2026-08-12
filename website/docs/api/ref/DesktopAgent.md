@@ -115,6 +115,7 @@ type IDesktopAgent interface {
     Open(appIdentifier AppIdentifier, context *IContext, metadata *AppProvidableContextMetadata) <-chan Result[AppIdentifier]
     FindInstances(appIdentifier AppIdentifier) <-chan Result[[]AppIdentifier]
     GetAppMetadata(appIdentifier AppIdentifier) <-chan Result[AppIdentifier]
+    Close() <-chan Result[any]
 
     // Context
     Broadcast(context IContext, metadata *AppProvidableContextMetadata) <-chan Result[any]
@@ -126,6 +127,7 @@ type IDesktopAgent interface {
     RaiseIntent(intent string, context IContext, appIdentifier *AppIdentifier, metadata *AppProvidableContextMetadata) <-chan Result[IntentResolution]
     RaiseIntentForContext(context IContext, appIdentifier *AppIdentifier, metadata *AppProvidableContextMetadata) <-chan Result[IntentResolution]
     AddIntentListener(intent string, handler IntentHandler) <-chan Result[Listener]
+    AddIntentListenerWithContext(intent string, contextType []string, handler IntentHandler) <-chan Result[Listener]
 
     // Channels
     GetOrCreateChannel(channelId string) <-chan Result[Channel]
@@ -488,6 +490,15 @@ addIntentListenerWithContext(
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (desktopAgent *DesktopAgent) AddIntentListenerWithContext(intent string, contextType []string, handler IntentHandler) <-chan Result[Listener] {
+  // Implementation here
+}
+```
+
+</TabItem>
 </Tabs>
 
 Adds a listener for incoming intents raised by other applications, via calls to [`fdc3.raiseIntent`](#raiseintent) or [`fdc3.raiseIntentForContext`](#raiseintentforcontext), filtered by one or more context types. The handler will only be invoked when the incoming intent's context `type` matches one of the supplied `contextType` values; all other behaviour is identical to [`addIntentListener`](#addintentlistener) — see that section for details, restrictions and result handling that also apply here.
@@ -517,6 +528,21 @@ const listener = await fdc3.addIntentListenerWithContext(
     return;
   }
 );
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+//Handle a raised intent filtered to a single context type
+listenerResult := <-desktopAgent.AddIntentListenerWithContext("StartChat", []string{"fdc3.contact"}, func(context IContext, contextMetadata *ContextMetadata) {
+  // start chat has been requested by another application
+})
+
+//Handle a raised intent filtered to multiple context types
+listenerResult := <-desktopAgent.AddIntentListenerWithContext("ViewChart", []string{"fdc3.instrument", "fdc3.instrumentList"}, func(context IContext, contextMetadata *ContextMetadata) {
+  // view chart has been requested by another application
+})
 ```
 
 </TabItem>
@@ -1850,6 +1876,15 @@ close(): Promise<void>;
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (desktopAgent *DesktopAgent) Close() <-chan Result[any] {
+  // Implementation here
+}
+```
+
+</TabItem>
 </Tabs>
 
 Requests that the Desktop Agent close the calling application's own window or frame. This API is limited to self-close only — it cannot be used to close another application.
@@ -1867,6 +1902,18 @@ If the Desktop Agent cannot close the app, the promise MUST be rejected with an 
 // Perform cleanup, then request close
 await saveState();
 fdc3.close();
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+// Perform cleanup, then request close
+saveState()
+result := <-desktopAgent.Close()
+if result.Err != nil {
+    // handle error
+}
 ```
 
 </TabItem>
