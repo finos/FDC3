@@ -539,7 +539,7 @@ var ResolveError = struct {
 
 ## `ResultError`
 
-Contains constants representing the errors that can be encountered when calling the [`getResult`](DesktopAgent#findintent) method on the [IntentResolution](Metadata#intentresolution) Object.
+Contains constants representing the errors that can be encountered when calling the [`getResult`](DesktopAgent#findintent) method on the [IntentResolution](Types#intentresolution) Object.
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
@@ -606,7 +606,7 @@ var ResultError = struct {
 
 - [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
 - [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
-- [`IntentResolution`](Metadata#intentresolution)
+- [`IntentResolution`](Types#intentresolution)
 
 ## `BridgingError`
 

@@ -55,7 +55,7 @@ An optional human-readable summary of the order.
 <details>
   <summary><code>product</code></summary>
 
-**type**: [Product](Product)
+**type**: [Product](/docs/next/context/ref/Product)
 
 </details>
 
