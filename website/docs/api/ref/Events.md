@@ -107,6 +107,7 @@ type FDC3EventTypes string
 
 const (
 	UserChannelChanged     FDC3EventTypes = "userChannelChanged"
+	ContextCleared         FDC3EventTypes = "contextCleared"
 )
 ```
 
