@@ -209,6 +209,22 @@ enum CloseError {
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+var CloseError = struct {
+  // Returned if the Desktop Agent cannot close the app's window or frame.
+  ErrorOnClose string
+  // Returned if a timeout occurs before a call to close is resolved for any
+  // reason other than the app being closed.
+  ApiTimeout string
+}{
+  ErrorOnClose: "ErrorOnClose",
+  ApiTimeout:  "ApiTimeout",
+}
+```
+
+</TabItem>
 </Tabs>
 
 ## `OpenError`

@@ -40,7 +40,7 @@ interface Channel {
   getCurrentContextWithMetadata(contextType?: string): Promise<ContextWithMetadata|null>;
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
   clearContext(contextType?: string): Promise<void>;
-  addEventListener(type: string  | null, handler: EventHandler): Promise<Listener>;
+  addEventListener(type: ChannelEventTypes  | null, handler: EventHandler): Promise<Listener>;
 }
 ```
 
@@ -71,6 +71,8 @@ type IChannel interface {
     GetCurrentContext(contextType string) <-chan Result[IContext]
     GetCurrentContextWithMetadata(contextType string) <-chan Result[ContextWithMetadata]
     AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener]
+    ClearContext(contextType string) <-chan Result[any]
+    AddEventListener(eventType *FDC3EventTypes, handler EventHandler) <-chan Result[Listener]
 }
 
 @experimental
@@ -377,7 +379,7 @@ if listenerResultInstrument.Value != nil {
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-addEventListener(type: string  | null, handler: EventHandler): Promise<Listener>;
+addEventListener(type: ChannelEventTypes  | null, handler: EventHandler): Promise<Listener>;
 ```
 
 </TabItem>
@@ -415,12 +417,25 @@ var listener = await myChannel.AddEventListener(null, (event) => {
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+listenerResult := <-myChannel.AddEventListener(nil, func(event ApiEvent) {
+    log.Printf("Received event %s\n\tDetails: %v", event.Type, event.Details)
+})
+if listenerResult.Err != nil {
+    // handle error
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
 
 - [Events](./Events)
 - [EventHandler](./Events#eventhandler)
+- [ChannelEventTypes](./Events#channeleventtypes)
 - [ApiEvent](./Events#apievent)
 
 ### `broadcast`
@@ -759,9 +774,18 @@ Task ClearContext(string? contextType);
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (channel *Channel) ClearContext(contextType string) <-chan Result[any] {
+  // Implementation here
+}
+```
+
+</TabItem>
 </Tabs>
 
-Used to clear the specified context type if provided, otherwise, clear all context types present in the channel. The Desktop Agent MUST update its internal representation of the context in the channel and ensure that subsequent calls to [`getCurrentContext`](#getcurrentcontext) and any new joiners to that channel (through [`joinUserChannel`](DesktopAgent#joinuserchannel) or [`addContextListener`](DesktopAgent#addcontextlistener)) will not receive anything for either the specified context type or the most recent context until new context has been broadcast to the channel. 
+Used to clear the specified context type if provided, otherwise, clear all context types present in the channel. The Desktop Agent MUST update its internal representation of the context in the channel and ensure that subsequent calls to [`getCurrentContext`](#getcurrentcontext) and any new joiners to that channel (through [`joinUserChannel`](DesktopAgent#joinuserchannel) or [`addContextListener`](DesktopAgent#addcontextlistener)) will not receive anything for either the specified context type or the most recent context until new context has been broadcast to the channel.
 Desktop Agents MUST also immediately notify the apps that are listening to `contextCleared` event for this channel. If a `contextType` parameter was provided, then the `contextType` field will be set to that type, otherwise, it is omitted. 
 
 
@@ -795,6 +819,16 @@ catch (Exception ex)
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+result := <-myChannel.ClearContext("")
+if result.Err != nil {
+    // handle error
+}
+```
+
+</TabItem>
 </Tabs>
 
 Specifying a context type:
@@ -820,6 +854,16 @@ try
 }
 catch (Exception ex)
 {
+    // handle error
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+result := <-myChannel.ClearContext("fdc3.contact")
+if result.Err != nil {
     // handle error
 }
 ```

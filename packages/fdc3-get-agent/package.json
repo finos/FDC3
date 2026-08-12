@@ -36,7 +36,7 @@
     "@cucumber/cucumber": "^13.2.1",
     "@finos/fdc3-web-impl": "3.0.0-alpha.2",
     "@finos/testing": "3.0.0-alpha.2",
-    "@types/wtfnode": "^0.7.3",
+    "@types/wtfnode": "^0.10.0",
     "quickpickle": "^1.6.1",
     "wtfnode": "^0.10.1"
   },
