@@ -27,9 +27,7 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@finos/fdc3-standard": "3.0.0-alpha.2",
-    "@types/uuid": "^10.0.0",
-    "uuid": "^14.0.1"
+    "@finos/fdc3-standard": "3.0.0-alpha.2"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^13.2.1",
@@ -37,18 +35,9 @@
     "@cucumber/messages": "^34.2.0",
     "@cucumber/pretty-formatter": "^4.0.0",
     "@finos/testing": "3.0.0-alpha.2",
-    "@types/expect": "24.3.0",
-    "@types/lodash": "4.17.25",
-    "@types/uuid": "^10.0.0",
     "cucumber-console-formatter": "1.0.0",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-prettier": "3.3.1",
-    "is-ci": "4.1.0",
-    "jsonpath-plus": "^10.1.0",
     "openapi-typescript": "^7.13.0",
-    "quickpickle": "^1.6.1",
-    "ts-node": "^10.9.2",
-    "uuid": "^14.0.1"
+    "quickpickle": "^1.6.1"
   },
   "engines": {
     "node": ">=22"
