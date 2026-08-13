@@ -32,16 +32,12 @@
     "printWidth": 120
   },
   "dependencies": {
-    "@finos/fdc3-context": "3.0.0-alpha.2",
-    "@finos/fdc3-schema": "3.0.0-alpha.2"
+    "@finos/fdc3-context": "3.0.0-alpha.2"
   },
   "devDependencies": {
     "@apidevtools/swagger-parser": "^10.1.1",
-    "jsdom": "^28.1.0",
-    "jsonschema": "^1.4.0",
-    "quicktype": "23.0.78",
-    "tslib": "^2.7.0",
-    "vitest-mock-extended": "^3.0.0"
+    "jsdom": "^30.0.1",
+    "jsonschema": "^1.4.0"
   },
   "type": "module",
   "engines": {

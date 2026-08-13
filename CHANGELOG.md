@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 * Added a Playwright contribution check that runs all non-manual conformance tests against the FDC3 for Web reference Desktop Agent, including fixes for reliable destructured-method setup and cleanup. ([#2045](https://github.com/finos/FDC3/issues/2045))
+* Added CI dependency checks for the root package and every npm workspace, with documented baselines of existing unused-dependency findings.
 * Added conformance coverage for `ChannelError.NoChannelFound`, `ChannelError.MalformedContext`, and `ChannelError.InvalidArguments`. ([#1779](https://github.com/finos/FDC3/issues/1779))
 * Added conformance coverage verifying that Desktop Agent methods continue to work when destructured from the `fdc3` object. ([#1778](https://github.com/finos/FDC3/issues/1778))
 * Added standalone Workbench examples for the FDC3 2.2 `fdc3.action`, `fdc3.fileAttachment`, `fdc3.message`, `fdc3.orderList`, `fdc3.tradeList`, and `fdc3.timeRange` context types. ([#1949](https://github.com/finos/FDC3/pull/1949))
@@ -16,6 +17,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added a classification field to Instrument context type ([#1665](https://github.com/finos/FDC3/pull/1665))
 * Added Go language binding. ([#1483](https://github.com/finos/FDC3/pull/1483))
 * Added FDC3 API Metadata support to the Go language binding. ([#1905](https://github.com/finos/FDC3/pull/1905))
+* Updated Go language binding to sync with version 3 changes. ([#2041](https://github.com/finos/FDC3/pull/2041))
 * Added details of and procedures for resolving fully-qualified appIds and unqualified appIds in the API and Bridging Parts of the Standard. ([#1523](https://github.com/finos/FDC3/pull/1523))
 * Added clarification regarding expected behavior upon repeated calls to `addContextListener` on same or overlapping types (allowed) and `addIntentListener` on same intent (rejected; new error type added). ([#1394](https://github.com/finos/FDC3/pull/1394))
 * Added `clearContext` function and associated `contextClearedEvent` to the `Channel` API, to be able to clear specific or all context types from the channel. ([#1379](https://github.com/finos/FDC3/pull/1379))
@@ -37,6 +39,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+* Added `channelId` to `FDC3ContextClearedEvent.details` and all PrivateChannel event details, aligning the standard API events with existing DACP payloads and allowing channel-related events to identify their source channel. ([#2042](https://github.com/finos/FDC3/issues/2042))
 * Clarified `userChannelChanged` event ordering after `joinUserChannel` in the API and Desktop Agent Communication Protocol documentation. ([#1967](https://github.com/finos/FDC3/pull/1967))
 * The `fdc3-agent-proxy` now enforces intent listener conflicts on the client side: `addIntentListener` and `addIntentListenerWithContext` reject with `ResolveError.IntentListenerConflict` when a new listener conflicts with an existing one for the same intent (either listener being unfiltered, or their context types overlapping). Multiple filtered listeners for the same intent with non-overlapping context types are now allowed, and the `addIntentListener`/`addIntentListenerWithContext` documentation was updated accordingly.
 * DACP `ContextMetadata` in `api.schema.json` now allows optional `antiReplay` claims on the wire (e.g. merged into `raiseIntentResultResponse.resultMetadata`). The agent proxy and reference web implementation forward `antiReplay` from app metadata on `raiseIntent` / `raiseIntentForContext` and merge it from `intentResultRequest` metadata into the intent result delivered to the raising app. Cucumber steps and features cover `iat` / `exp` / `jti` alongside signatures.
@@ -45,9 +48,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Hardened all CI workflows: upgraded GitHub Actions to latest major versions, pinned all action references to immutable commit SHAs, and added StepSecurity harden-runner to every job ([#1948](https://github.com/finos/FDC3/pull/1948))
 - Added `min-release-age = 7` to `.npmrc` requiring packages to be at least 7 days old before resolution ([#1948](https://github.com/finos/FDC3/pull/1948))
 - Added Dependabot configuration with cooldown periods and grouped minor/patch updates ([#1948](https://github.com/finos/FDC3/pull/1948))
+* Merged the `api/ref/Metadata` and `api/ref/Types` documentation pages into a single `Types` page, added a Docusaurus redirect from the old Metadata URL, and updated `schema2Markdown.js` to generate links to the Types page for API type references in generated context docs. ([#2029](https://github.com/finos/FDC3/pull/2029))
+* Documented `getAgent()` promise caching behaviour: subsequent calls return the cached promise (ignoring parameters), and the cache is cleared on failure to allow retries. ([#2029](https://github.com/finos/FDC3/pull/2029))
+* Clarified in the Context Data overview that context types are defined in JSON Schema (source of truth) and may be represented differently in language-specific API bindings; added wire format guidance, language binding type mapping table, and links to packages and source code. ([#2029](https://github.com/finos/FDC3/pull/2029))
+* Clarified the stateful nature of channels at the start of the Context Channels section and Channel API reference page, documenting that channels retain the most recent context and metadata for each type. ([#2029](https://github.com/finos/FDC3/pull/2029))
+* Fixed broken links in the website: updated `schema2Markdown.js` to generate absolute links for context type cross-references (fixing chat and security subcategory links), fixed broken links in `api/spec.md`, `supported-platforms.md`, `context/spec.md`, intent pages, `Channel.md` and `desktopAgentCommunicationProtocol.md`. ([#2029](https://github.com/finos/FDC3/pull/2029))
 
 ### Removed
 
+* Removed the deprecated App Directory v1 routes and schema definitions from the FDC3 3.0 AppD specification. ([#2094](https://github.com/finos/FDC3/issues/2094))
 * Removed deprecated functions from the Desktop Agent, Channel and PrivateChannel APIs for deprecations applied in FDC3 2.0-2.2 ([#1928](https://github.com/finos/FDC3/pull/1928))
 * Removed the deprecated `name` and `customConfig` properties from the App Directory `Application` record (`BaseApplication`) in the AppD specification, deprecated since FDC3 2.0. ([#1937](https://github.com/finos/FDC3/issues/1937))
 

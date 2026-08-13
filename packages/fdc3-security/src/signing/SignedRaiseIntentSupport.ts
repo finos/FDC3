@@ -3,7 +3,13 @@ import { PrivateFDC3Security, SigningFunction } from '../impl/PrivateFDC3Securit
 import { SignatureCheckingFunction } from '../impl/PublicFDC3Security.js';
 import { MetadataHandler } from '../delegates/MetadataHandler.js';
 import { assertIsContext } from '../impl/TypeGuards.js';
-import { AppIdentifier, ContextMetadata, DesktopAgent, IntentResolution, IntentResult } from '@finos/fdc3-standard';
+import {
+  AppIdentifier,
+  ContextMetadata,
+  DesktopAgent,
+  IntentResolution,
+  IntentResolutionResult,
+} from '@finos/fdc3-standard';
 import { ContextVerificationMetadata } from '../impl/ContextVerificationMetadata.js';
 
 /**
@@ -112,7 +118,7 @@ export class BasicSignedRaiseIntentSupport implements SignedRaiseIntentSupport {
     const originalGetResultMetadata = resolution.getResultMetadata.bind(resolution);
 
     const rewrapResult = async (): Promise<{
-      result: IntentResult;
+      result: IntentResolutionResult;
       metadata: ContextMetadata;
       verification: ContextVerificationMetadata | undefined;
     }> => {
@@ -150,7 +156,7 @@ export class BasicSignedRaiseIntentSupport implements SignedRaiseIntentSupport {
 
     let memoized:
       | Promise<{
-          result: IntentResult;
+          result: IntentResolutionResult;
           metadata: ContextMetadata;
           verification: ContextVerificationMetadata | undefined;
         }>
@@ -163,7 +169,7 @@ export class BasicSignedRaiseIntentSupport implements SignedRaiseIntentSupport {
 
     return {
       ...resolution,
-      getResult: async (): Promise<IntentResult> => (await getRewrapped()).result,
+      getResult: async (): Promise<IntentResolutionResult> => (await getRewrapped()).result,
       getResultMetadata: async (): Promise<ContextMetadata> => (await getRewrapped()).metadata,
       getVerification: async (): Promise<ContextVerificationMetadata | undefined> =>
         (await getRewrapped()).verification,

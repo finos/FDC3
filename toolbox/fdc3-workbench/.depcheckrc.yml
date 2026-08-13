@@ -1,0 +1,15 @@
+ignores:
+  # Invoked by the lint package scripts.
+  - eslint
+  # Invoked by the `build` package script.
+  - typescript
+  # Aliased for browser builds in vite.config.ts.
+  - buffer
+  # Aliased for browser builds in vite.config.ts.
+  - path-browserify
+  # Required as a peer dependency by Material UI.
+  - "@emotion/react"
+  # Required as a peer dependency by Material UI.
+  - "@emotion/styled"
+  # Used by Vite's legacy build minification rather than imported by application source.
+  - terser

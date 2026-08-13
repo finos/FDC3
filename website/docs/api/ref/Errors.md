@@ -209,6 +209,22 @@ enum CloseError {
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+var CloseError = struct {
+  // Returned if the Desktop Agent cannot close the app's window or frame.
+  ErrorOnClose string
+  // Returned if a timeout occurs before a call to close is resolved for any
+  // reason other than the app being closed.
+  ApiTimeout string
+}{
+  ErrorOnClose: "ErrorOnClose",
+  ApiTimeout:  "ApiTimeout",
+}
+```
+
+</TabItem>
 </Tabs>
 
 ## `OpenError`
@@ -523,7 +539,7 @@ var ResolveError = struct {
 
 ## `ResultError`
 
-Contains constants representing the errors that can be encountered when calling the [`getResult`](DesktopAgent#findintent) method on the [IntentResolution](Metadata#intentresolution) Object.
+Contains constants representing the errors that can be encountered when calling the [`getResult`](DesktopAgent#findintent) method on the [IntentResolution](Types#intentresolution) Object.
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
@@ -590,7 +606,7 @@ var ResultError = struct {
 
 - [`DesktopAgent.addIntentListener`](DesktopAgent#addintentlistener)
 - [`DesktopAgent.raiseIntent`](DesktopAgent#raiseintent)
-- [`IntentResolution`](Metadata#intentresolution)
+- [`IntentResolution`](Types#intentresolution)
 
 ## `BridgingError`
 
