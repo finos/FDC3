@@ -193,7 +193,7 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
   }
 
   async getOrCreate(id: string): Promise<Channel> {
-    if (typeof id !== 'string' || id.trim() === "") {
+    if (typeof id !== 'string' || id.trim() === '') {
       throw new Error(ChannelError.InvalidArguments);
     }
 
