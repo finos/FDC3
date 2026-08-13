@@ -1,19 +1,24 @@
 import path from 'path';
-import inject from '@rollup/plugin-inject';
 import { defineConfig } from 'vite';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
+import MagicString from 'magic-string';
+
+const __dirname = import.meta.dirname;
+
+const SOURCE_MAP_SUPPORT_GLOBAL = '(this.define||function(R,U){this.sourceMapSupport=U()})';
+const SOURCE_MAP_SUPPORT_GLOBAL_FIXED = '(globalThis.define||function(R,U){globalThis.sourceMapSupport=U()})';
 
 export default defineConfig({
   build: {
     outDir: 'dist/lib',
     sourcemap: true,
     rollupOptions: {
-      plugins: [
-        inject({
+      transform: {
+        inject: {
           process: 'process/browser.js',
           Buffer: ['buffer', 'Buffer'],
-        }),
-      ],
+        },
+      },
       input: {
         'fdc3-compliance': path.resolve(__dirname, './src/test/index.ts'),
         channel: path.resolve(__dirname, './src/mock/channel.ts'),
@@ -52,16 +57,24 @@ export default defineConfig({
     'global.process': 'globalThis.process',
   },
   plugins: [
-    cssInjectedByJsPlugin(),
+    cssInjectedByJsPlugin({
+      // Only the `fdc3-compliance` entry imports CSS (mocha.css); without this the plugin
+      // picks an arbitrary entry among the many mock apps.
+      jsAssetsFilterFunction: outputChunk => outputChunk.fileName === 'fdc3-compliance.js',
+    }),
     {
       name: 'fix-source-map-support-global',
       transform(code, id) {
-        if (id.includes('browser-source-map-support')) {
-          return code.replace(
-            '(this.define||function(R,U){this.sourceMapSupport=U()})',
-            '(globalThis.define||function(R,U){globalThis.sourceMapSupport=U()})'
-          );
+        if (!id.includes('browser-source-map-support')) {
+          return;
         }
+        const index = code.indexOf(SOURCE_MAP_SUPPORT_GLOBAL);
+        if (index === -1) {
+          return;
+        }
+        const s = new MagicString(code);
+        s.overwrite(index, index + SOURCE_MAP_SUPPORT_GLOBAL.length, SOURCE_MAP_SUPPORT_GLOBAL_FIXED);
+        return { code: s.toString(), map: s.generateMap({ hires: true }) };
       },
     },
   ],
