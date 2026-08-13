@@ -54,6 +54,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Removed
 
+* Removed the deprecated App Directory v1 routes and schema definitions from the FDC3 3.0 AppD specification. ([#2094](https://github.com/finos/FDC3/issues/2094))
 * Removed deprecated functions from the Desktop Agent, Channel and PrivateChannel APIs for deprecations applied in FDC3 2.0-2.2 ([#1928](https://github.com/finos/FDC3/pull/1928))
 * Removed the deprecated `name` and `customConfig` properties from the App Directory `Application` record (`BaseApplication`) in the AppD specification, deprecated since FDC3 2.0. ([#1937](https://github.com/finos/FDC3/issues/1937))
 
