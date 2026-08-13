@@ -54,7 +54,7 @@ async function raiseGetPricesIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Hand
       timestamp: new Date().toISOString(),
     });
 
-    if (intentResult?.type == 'private') {
+    if (intentResult && 'type' in intentResult && intentResult.type === 'private') {
       const pc: PrivateChannel = intentResult as PrivateChannel;
       remoteHandlers.handleRemoteChannel('demo.GetPrices', pc);
     } else {
