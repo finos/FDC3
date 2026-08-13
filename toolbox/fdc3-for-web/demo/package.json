@@ -10,7 +10,7 @@
   "devDependencies": {
     "@eslint/js": "^9.19.0",
     "@types/color": "^4.2.0",
-    "@types/express": "^4.17.21",
+    "@types/express": "^5.0.6",
     "@types/node": "^20.16.11",
     "color": "^4.2.3",
     "eslint": "^9.39.5",
@@ -22,7 +22,7 @@
   "dependencies": {
     "@finos/fdc3": "3.0.0-alpha.2",
     "@types/uuid": "^11.0.0",
-    "express": "^4.22.2",
+    "express": "^5.2.1",
     "socket.io": "^4.8.0",
     "socket.io-client": "^4.8.0",
     "tsx": "^4.23.7",
