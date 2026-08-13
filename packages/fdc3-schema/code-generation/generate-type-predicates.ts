@@ -1,17 +1,18 @@
 import type { InterfaceDeclaration, KindToNodeMappings, MethodDeclaration, TypeAliasDeclaration } from 'ts-morph';
-import { createRequire } from 'node:module';
 import { Project, SyntaxKind } from 'ts-morph';
 
-// CJS default export (message-await) via require so emitted ESM runs under plain node (no tsx/esbuild)
-const requireModule = createRequire(import.meta.url);
-const messageAwaitMod = requireModule('message-await') as { default?: (...args: unknown[]) => unknown };
-const print = (messageAwaitMod.default ?? messageAwaitMod) as (
-  message: string,
-  options?: { spinner?: boolean }
-) => {
-  updateMessage: (message: string, force?: boolean) => void;
-  complete: (success: boolean, message: string) => void;
-};
+function print(message: string, _options?: { spinner?: boolean }) {
+  process.stdout.write(`${message}\r`);
+
+  return {
+    updateMessage(updatedMessage: string, _force?: boolean) {
+      process.stdout.write(`${updatedMessage}\r`);
+    },
+    complete(success: boolean, completedMessage: string) {
+      console.log(`${completedMessage}... ${success ? '√' : '×'}`);
+    },
+  };
+}
 
 // open a new project with just BrowserTypes as the only source file
 const project = new Project();
