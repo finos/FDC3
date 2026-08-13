@@ -29,7 +29,7 @@ export class EventListener implements RegisterableListener {
     if (m.type === 'contextClearedEvent' && m.payload.channelId === this.channelId) {
       const event: FDC3ContextClearedEvent = {
         type: 'contextCleared',
-        details: { contextType: m.payload.contextType },
+        details: { channelId: m.payload.channelId, contextType: m.payload.contextType },
       };
       this.handler(event);
     }
