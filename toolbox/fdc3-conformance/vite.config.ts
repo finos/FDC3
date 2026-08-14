@@ -1,12 +1,25 @@
 import path from 'path';
 import { defineConfig } from 'vite';
 import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js';
-import MagicString from 'magic-string';
 
 const __dirname = import.meta.dirname;
 
 const SOURCE_MAP_SUPPORT_GLOBAL = '(this.define||function(R,U){this.sourceMapSupport=U()})';
 const SOURCE_MAP_SUPPORT_GLOBAL_FIXED = '(globalThis.define||function(R,U){globalThis.sourceMapSupport=U()})';
+
+/**
+ * A line-preserving identity sourcemap for `code`.
+ *
+ * The transform below rewrites a single expression and never adds or removes a line, so mapping
+ * the start of every output line to the start of the same input line is accurate. Returning it
+ * keeps the bundler from warning that the plugin dropped the sourcemap.
+ */
+function identitySourceMap(code: string, id: string) {
+  const lineCount = code.split('\n').length;
+  // VLQ segments: `AAAA` = [col 0, source 0, line 0, col 0]; `AACA` advances the source line by 1.
+  const mappings = ['AAAA', ...Array(Math.max(lineCount - 1, 0)).fill('AACA')].join(';');
+  return { version: 3 as const, sources: [id], sourcesContent: [code], names: [], mappings };
+}
 
 export default defineConfig({
   build: {
@@ -68,13 +81,14 @@ export default defineConfig({
         if (!id.includes('browser-source-map-support')) {
           return;
         }
-        const index = code.indexOf(SOURCE_MAP_SUPPORT_GLOBAL);
-        if (index === -1) {
+        if (!code.includes(SOURCE_MAP_SUPPORT_GLOBAL)) {
           return;
         }
-        const s = new MagicString(code);
-        s.overwrite(index, index + SOURCE_MAP_SUPPORT_GLOBAL.length, SOURCE_MAP_SUPPORT_GLOBAL_FIXED);
-        return { code: s.toString(), map: s.generateMap({ hires: true }) };
+        // The replacement is confined to one line, so line numbers are unchanged.
+        return {
+          code: code.replace(SOURCE_MAP_SUPPORT_GLOBAL, SOURCE_MAP_SUPPORT_GLOBAL_FIXED),
+          map: identitySourceMap(code, id),
+        };
       },
     },
   ],
