@@ -50,7 +50,6 @@
     "react-dom": "^18.3.1",
     "tsx": "^4.23.7",
     "typescript": "^7.0.2",
-    "vite": "^8.2.0",
     "ws": "^8.21.1"
   },
   "devDependencies": {
@@ -58,6 +57,7 @@
     "@types/node": "^20.16.11",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
-    "rimraf": "^6.0.1"
+    "rimraf": "^6.0.1",
+    "vite": "^8.2.1"
   }
 }
