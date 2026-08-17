@@ -283,7 +283,7 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
         });
       }
     } else if (found(copyName)) {
-      handleDuplicateExample(newValue, ++count);
+      handleDuplicateExample(newValue, count + 1);
     }
 
     setContextError(false);
