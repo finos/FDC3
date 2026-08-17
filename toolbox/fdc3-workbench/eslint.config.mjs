@@ -1,6 +1,4 @@
-import react from 'eslint-plugin-react';
-import _import from 'eslint-plugin-import';
-import { fixupPluginRules } from '@eslint/compat';
+import importX from 'eslint-plugin-import-x';
 import globals from 'globals';
 import pluginJs from '@eslint/js';
 import tseslint from 'typescript-eslint';
@@ -33,8 +31,7 @@ export default [
   eslintConfigPrettier,
   {
     plugins: {
-      react,
-      import: fixupPluginRules(_import),
+      'import-x': importX,
     },
 
     languageOptions: {
@@ -58,7 +55,6 @@ export default [
     },
 
     rules: {
-      'react/jsx-uses-vars': 2,
       'class-methods-use-this': 0,
       'no-plusplus': 0,
       'no-undef': 2,
@@ -79,7 +75,7 @@ export default [
       'arrow-parens': 1,
       'no-extra-semi': 1,
       'no-shadow': 1,
-      'import/first': 1,
+      'import-x/first': 1,
       '@typescript-eslint/no-use-before-define': 1,
       'no-redeclare': 1,
 
@@ -108,8 +104,6 @@ export default [
 
       'new-cap': 1,
       'no-case-declarations': 1,
-      'react/prop-types': 0,
-      'react/no-string-refs': 0,
     },
   },
 ];
