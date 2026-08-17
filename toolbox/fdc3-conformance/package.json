@@ -20,7 +20,7 @@
     "@finos/fdc3": "3.0.0-alpha.2",
     "buffer": "^6.0.3",
     "chai": "^4.3.6",
-    "mocha": "^10.8.2",
+    "mocha": "^11.8.0",
     "process": "^0.11.10",
     "source-map-support": "^0.5.21",
     "stream-browserify": "^3.0.0",
