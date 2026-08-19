@@ -3,6 +3,7 @@ import {
   BasicDirectory,
   FDC3_VERSION_RANGE_PATTERN,
   appSupportsFdc3Version,
+  genericResultTypeSame,
 } from '../src/directory/BasicDirectory.js';
 import { DirectoryApp } from '../src/directory/DirectoryInterface.js';
 
@@ -52,5 +53,31 @@ describe('BasicDirectory FDC3 version filtering', () => {
     );
 
     expect(directory.retrieveAllApps().map(a => a.appId)).toEqual(['unversioned', 'current']);
+  });
+
+  it('filters added apps by version and ignores duplicate app IDs', () => {
+    const directory = new BasicDirectory([app('existing')], '3.0');
+
+    directory.addApps([
+      app('existing', '^3.0'),
+      app('compatible', '>=3.0'),
+      app('incompatible', '<3.0'),
+      app('invalid', '3.0.0'),
+    ]);
+
+    expect(directory.retrieveAllApps().map(a => a.appId)).toEqual(['existing', 'compatible']);
+  });
+});
+
+describe('genericResultTypeSame', () => {
+  it('matches unspecified, exact, and channel result types', () => {
+    expect(genericResultTypeSame('ignored', undefined)).toBe(true);
+    expect(genericResultTypeSame('string', 'string')).toBe(true);
+    expect(genericResultTypeSame('channel<fdc3.instrument>', 'channel')).toBe(true);
+  });
+
+  it('rejects missing and different result types', () => {
+    expect(genericResultTypeSame(undefined, 'string')).toBe(false);
+    expect(genericResultTypeSame('number', 'string')).toBe(false);
   });
 });

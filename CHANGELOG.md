@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Added CI dependency checks for the root package and every npm workspace, with documented baselines of existing unused-dependency findings.
 * Added conformance coverage for `ChannelError.NoChannelFound`, `ChannelError.MalformedContext`, and `ChannelError.InvalidArguments`. ([#1779](https://github.com/finos/FDC3/issues/1779))
 * Added conformance coverage verifying that Desktop Agent methods continue to work when destructured from the `fdc3` object. ([#1778](https://github.com/finos/FDC3/issues/1778))
 * Added standalone Workbench examples for the FDC3 2.2 `fdc3.action`, `fdc3.fileAttachment`, `fdc3.message`, `fdc3.orderList`, `fdc3.tradeList`, and `fdc3.timeRange` context types. ([#1949](https://github.com/finos/FDC3/pull/1949))
@@ -37,6 +38,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+* Added `channelId` to `FDC3ContextClearedEvent.details` and all PrivateChannel event details, aligning the standard API events with existing DACP payloads and allowing channel-related events to identify their source channel. ([#2042](https://github.com/finos/FDC3/issues/2042))
 * Clarified `userChannelChanged` event ordering after `joinUserChannel` in the API and Desktop Agent Communication Protocol documentation. ([#1967](https://github.com/finos/FDC3/pull/1967))
 * The `fdc3-agent-proxy` now enforces intent listener conflicts on the client side: `addIntentListener` and `addIntentListenerWithContext` reject with `ResolveError.IntentListenerConflict` when a new listener conflicts with an existing one for the same intent (either listener being unfiltered, or their context types overlapping). Multiple filtered listeners for the same intent with non-overlapping context types are now allowed, and the `addIntentListener`/`addIntentListenerWithContext` documentation was updated accordingly.
 * DACP `ContextMetadata` in `api.schema.json` now allows optional `antiReplay` claims on the wire (e.g. merged into `raiseIntentResultResponse.resultMetadata`). The agent proxy and reference web implementation forward `antiReplay` from app metadata on `raiseIntent` / `raiseIntentForContext` and merge it from `intentResultRequest` metadata into the intent result delivered to the raising app. Cucumber steps and features cover `iat` / `exp` / `jti` alongside signatures.
@@ -53,6 +55,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Removed
 
+* Removed the deprecated App Directory v1 routes and schema definitions from the FDC3 3.0 AppD specification. ([#2094](https://github.com/finos/FDC3/issues/2094))
 * Removed deprecated functions from the Desktop Agent, Channel and PrivateChannel APIs for deprecations applied in FDC3 2.0-2.2 ([#1928](https://github.com/finos/FDC3/pull/1928))
 * Removed the deprecated `name` and `customConfig` properties from the App Directory `Application` record (`BaseApplication`) in the AppD specification, deprecated since FDC3 2.0. ([#1937](https://github.com/finos/FDC3/issues/1937))
 

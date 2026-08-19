@@ -6,7 +6,7 @@ import {
   IntentHandler,
   Listener,
   ResolveError,
-  IntentResult,
+  IntentResolutionResult,
   IntentResolver,
   IntentResolutionChoice,
   AppProvidableContextMetadata,
@@ -36,7 +36,7 @@ const convertIntentResult = async (
   { payload }: RaiseIntentResultResponse,
   messaging: Messaging,
   messageExchangeTimeout: number
-): Promise<IntentResult> => {
+): Promise<IntentResolutionResult> => {
   const result = payload.intentResult;
   if (result?.channel) {
     const { channel } = result;
@@ -140,7 +140,7 @@ export class DefaultIntentSupport implements IntentSupport {
   private createResultPromises(
     request: RaiseIntentRequest | RaiseIntentForContextRequest,
     source: AppIdentifier
-  ): { result: Promise<IntentResult>; resultMetadata: Promise<ContextMetadata> } {
+  ): { result: Promise<IntentResolutionResult>; resultMetadata: Promise<ContextMetadata> } {
     let resolveMetadata!: (m: ContextMetadata) => void;
     const resultMetadata = new Promise<ContextMetadata>(resolve => {
       resolveMetadata = resolve;
