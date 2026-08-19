@@ -27,6 +27,7 @@ describe('BasicDirectory FDC3 version filtering', () => {
     expect(appSupportsFdc3Version(app('caret', '^2.2'), '2.3')).toBe(true);
     expect(appSupportsFdc3Version(app('tilde', '~2.3'), '2.3')).toBe(true);
     expect(appSupportsFdc3Version(app('minimum', '>=2.2'), '3.0')).toBe(true);
+    expect(appSupportsFdc3Version(app('spaced-comparator', '>= 2.2'), '3.0')).toBe(true);
   });
 
   it('excludes apps with incompatible or invalid FDC3 version metadata', () => {
@@ -35,6 +36,14 @@ describe('BasicDirectory FDC3 version filtering', () => {
     expect(appSupportsFdc3Version(app('invalid-comparator', '^^2.2'), '2.2')).toBe(false);
     expect(appSupportsFdc3Version(app('patch-version', '1.2.3'), '1.2')).toBe(false);
     expect(appSupportsFdc3Version(app('valid-range', '^2.2'), 'not-a-version')).toBe(false);
+  });
+
+  it('rejects long invalid ranges without catastrophic backtracking', () => {
+    const repeatedVersion = `9.9${'  9.9'.repeat(10_000)}!`;
+    const repeatedOrRange = `9.9 ||${'  9.9 ||'.repeat(10_000)}!`;
+
+    expect(appSupportsFdc3Version(app('repeated-version', repeatedVersion), '3.0')).toBe(false);
+    expect(appSupportsFdc3Version(app('repeated-or-range', repeatedOrRange), '3.0')).toBe(false);
   });
 
   it('uses the version-range pattern defined by the App Directory schema', async () => {

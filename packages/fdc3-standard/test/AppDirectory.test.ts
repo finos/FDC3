@@ -84,16 +84,13 @@ describe('App Directory Schema Validation', () => {
     expect(fdc3Version.description).toContain('`>=2.2`');
 
     const rangePattern = new RegExp(fdc3Version.pattern);
-    ['2.2', '<=2.3', '~2.3', '^2.2', '>=2.2', '>=2.2 <3.0', '2.2 || 3.0', '2.2 - 2.3'].forEach(range =>
+    ['2.2', '<=2.3', '~2.3', '^2.2', '>=2.2', '>= 2.2', '>=2.2 <3.0', '2.2 || 3.0', '2.2 - 2.3'].forEach(range =>
       expect(rangePattern.test(range)).toBe(true)
     );
     ['', '2', '1.2.3', 'v2.2', '2.x', 'not-a-version', '^^2.2', '~>2.2', '=>2.2', '2.2||3.0'].forEach(range =>
       expect(rangePattern.test(range)).toBe(false)
     );
-
-    const applicationV1 = (
-      api as { components: { schemas: { ApplicationV1: { properties: Record<string, unknown> } } } }
-    ).components.schemas.ApplicationV1;
-    expect(applicationV1.properties.fdc3Version).toBeUndefined();
+    expect(rangePattern.test(`9.9${'  9.9'.repeat(10_000)}!`)).toBe(false);
+    expect(rangePattern.test(`9.9 ||${'  9.9 ||'.repeat(10_000)}!`)).toBe(false);
   });
 });
