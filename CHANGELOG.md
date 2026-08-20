@@ -33,7 +33,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   * READMEs, Glossary entries and an API spec introduction for securing inter-app communication.
 * Added engines restriction to all package.json files requiring at least node 22 for all packages. ([#1926](https://github.com/finos/FDC3/pull/1926))
 * Added labels and tooltips to dropdowns in the FDC3 for Web reference implementation demo. ([#193](https://github.com/finos/FDC3/pull/1932))
-
+* Added programmatic context schema discovery to `@finos/fdc3-context` (re-exported from `@finos/fdc3`), exposing `getContextTypes()`, `getContextSchema()`, `getAllContextSchemas()`, `getContextSchemaMetadata()` and `hasContextSchema()` so that applications and tooling can enumerate the standardized context types and retrieve their JSON Schemas at runtime. The registry is generated from the existing context schema files (the single source of truth) via a new `schemagen` build step, keeping it automatically in sync.
 * Added `fdc3.close()` API call allowing an app to request that its own window or frame be closed, with `closeRequest`/`closeResponse` DACP messages and `CloseError` enumeration ([#1918](https://github.com/finos/FDC3/pull/1918))
 
 ### Changed
