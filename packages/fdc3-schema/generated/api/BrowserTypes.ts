@@ -4012,6 +4012,15 @@ export interface RaiseIntentForContextRequestPayload {
   app?: AppIdentifier;
   context: Context;
   metadata: AppProvidableContextMetadata;
+  /**
+   * Indicates how an instance of the target application should be selected. When `true`, a
+   * new instance of the target application MUST be launched even if existing instances are
+   * available. When `false`, an existing instance MUST be used and a new instance MUST NOT be
+   * launched (if no suitable instance is available the request fails with
+   * TargetInstanceUnavailable). When omitted, the Desktop Agent applies its default
+   * resolution behavior.
+   */
+  newInstance?: boolean;
 }
 
 /**
@@ -4153,6 +4162,15 @@ export interface RaiseIntentRequestPayload {
   context: Context;
   intent: string;
   metadata: AppProvidableContextMetadata;
+  /**
+   * Indicates how an instance of the target application should be selected. When `true`, a
+   * new instance of the target application MUST be launched even if existing instances are
+   * available. When `false`, an existing instance MUST be used and a new instance MUST NOT be
+   * launched (if no suitable instance is available the request fails with
+   * TargetInstanceUnavailable). When omitted, the Desktop Agent applies its default
+   * resolution behavior.
+   */
+  newInstance?: boolean;
 }
 
 /**
@@ -6376,6 +6394,7 @@ const typeMap: any = {
       { json: 'app', js: 'app', typ: u(undefined, r('AppIdentifier')) },
       { json: 'context', js: 'context', typ: r('Context') },
       { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
+      { json: 'newInstance', js: 'newInstance', typ: u(undefined, true) },
     ],
     false
   ),
@@ -6416,6 +6435,7 @@ const typeMap: any = {
       { json: 'context', js: 'context', typ: r('Context') },
       { json: 'intent', js: 'intent', typ: '' },
       { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
+      { json: 'newInstance', js: 'newInstance', typ: u(undefined, true) },
     ],
     false
   ),
