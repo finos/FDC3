@@ -13,7 +13,7 @@ export interface IntentSupport {
   findIntentsByContext(context: Context): Promise<AppIntent[]>;
   raiseIntent(
     intent: string,
-    context: Context,
+    context?: Context | null,
     app?: AppIdentifier | null,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution>;
