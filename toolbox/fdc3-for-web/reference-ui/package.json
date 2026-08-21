@@ -16,7 +16,7 @@
     "@types/color": "^4.2.0",
     "color": "^4.2.3",
     "eslint": "^9.39.5",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-prettier": "^10.1.8",
     "globals": "^17.9.0",
     "typescript": "^7.0.2",
     "typescript-eslint": "^8.67.0",
