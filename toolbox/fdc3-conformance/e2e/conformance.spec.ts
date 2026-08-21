@@ -4,6 +4,7 @@
  */
 
 import { expect, test } from '@playwright/test';
+import { assertConformancePassed } from './conformanceResults';
 
 test('runs all automated conformance tests against the reference Desktop Agent', async ({ page }) => {
   await page.goto('/static/da/index.html');
@@ -26,9 +27,8 @@ test('runs all automated conformance tests against the reference Desktop Agent',
   const status = await results.getAttribute('data-conformance-status');
   const passes = Number(await results.getAttribute('data-conformance-passes'));
   const failures = Number(await results.getAttribute('data-conformance-failures'));
+  const tests = Number(await results.getAttribute('data-conformance-tests'));
   const failureMessages = JSON.parse((await results.getAttribute('data-conformance-failure-messages')) ?? '[]');
 
-  expect(passes, 'The automated conformance pack should execute at least one test').toBeGreaterThan(0);
-  expect(failures, failureMessages.join('\n\n')).toBe(0);
-  expect(status).toBe('passed');
+  assertConformancePassed({ status, passes, failures, tests, failureMessages });
 });
