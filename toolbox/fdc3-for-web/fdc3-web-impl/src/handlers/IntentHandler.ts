@@ -426,6 +426,13 @@ export class IntentHandler implements MessageHandler {
 
   async raiseIntentToAnyApp(arg0: IntentRequest[], sc: ServerContext<AppRegistration>): Promise<void> {
     const connectedApps = await sc.getConnectedApps();
+    // Unless the raising app opted in (via getAgent's resolveOwnIntents), its own
+    // instance is not considered when resolving an intent that it raised. Other
+    // instances of the same app remain eligible.
+    const raiser = arg0[0].from;
+    const raiserResolvesOwnIntents = raiser.instanceId
+      ? (sc.getInstanceDetails(raiser.instanceId)?.resolveOwnIntents ?? false)
+      : false;
     const matchingIntents = arg0.flatMap(i => this.directory.retrieveIntents(i.context.type, i.intent, undefined));
     const matchingRegistrations = arg0.flatMap(i =>
       this.registrations.filter(
@@ -439,29 +446,36 @@ export class IntentHandler implements MessageHandler {
 
     const allIntents = this.directory.retrieveAllIntents();
 
-    const appIntents: AppIntent[] = uniqueIntentNames.map(i => {
-      const directoryAppsWithIntent = matchingIntents.filter(mi => mi.intentName == i).map(mi => mi.appId);
-      const runningDirectoryApps = connectedApps.filter(ca => directoryAppsWithIntent.includes(ca.appId));
-      const appRegistrations = matchingRegistrations
-        .filter(registration => registration.intentName === i) // filter registrations for the current intent
-        .map(listener => ({ appId: listener.appId, instanceId: listener.instanceId, state: State.Connected }))
-        .filter(appRegistration => allIntents.every(intent => intent.appId !== appRegistration.appId)); // filter out apps that have intents registered in the directory
+    const appIntents: AppIntent[] = uniqueIntentNames
+      .map(i => {
+        const directoryAppsWithIntent = matchingIntents.filter(mi => mi.intentName == i).map(mi => mi.appId);
+        const runningDirectoryApps = connectedApps.filter(ca => directoryAppsWithIntent.includes(ca.appId));
+        const appRegistrations = matchingRegistrations
+          .filter(registration => registration.intentName === i) // filter registrations for the current intent
+          .map(listener => ({ appId: listener.appId, instanceId: listener.instanceId, state: State.Connected }))
+          .filter(appRegistration => allIntents.every(intent => intent.appId !== appRegistration.appId)); // filter out apps that have intents registered in the directory
 
-      const runningApps: AppRegistration[] = [...runningDirectoryApps, ...appRegistrations];
+        const runningApps: AppRegistration[] = [...runningDirectoryApps, ...appRegistrations].filter(
+          app => raiserResolvesOwnIntents || app.instanceId !== raiser.instanceId
+        );
 
-      return {
-        intent: {
-          name: i,
-          displayName: i,
-        },
-        apps: [
-          ...runningApps,
-          ...directoryAppsWithIntent.map(d => {
-            return { appId: d };
-          }),
-        ],
-      };
-    });
+        return {
+          intent: {
+            name: i,
+            displayName: i,
+          },
+          apps: [
+            ...runningApps,
+            ...directoryAppsWithIntent.map(d => {
+              return { appId: d };
+            }),
+          ],
+        };
+        // Drop any intent left with no resolvers (e.g. because the only handler was
+        // the raising instance, which was excluded above), so the caller receives a
+        // NoAppsFound error rather than an empty resolution.
+      })
+      .filter(appIntent => appIntent.apps.length > 0);
 
     const narrowedAppIntents = await this.narrowIntents(arg0[0].from, appIntents, arg0[0].context, sc);
 
