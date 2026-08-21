@@ -35,6 +35,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added labels and tooltips to dropdowns in the FDC3 for Web reference implementation demo. ([#193](https://github.com/finos/FDC3/pull/1932))
 
 * Added `fdc3.close()` API call allowing an app to request that its own window or frame be closed, with `closeRequest`/`closeResponse` DACP messages and `CloseError` enumeration ([#1918](https://github.com/finos/FDC3/pull/1918))
+* Added FDC3 Workbench support for `DesktopAgent` and `PrivateChannel` events, including automatic user channel updates, private channel event reporting, context-type-aware streaming, FDC3 2.0-2.1 compatibility, and copyable code examples. ([#1674](https://github.com/finos/FDC3/issues/1674))
 
 ### Changed
 
