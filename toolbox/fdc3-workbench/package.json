@@ -34,7 +34,7 @@
     ]
   },
   "devDependencies": {
-    "@apidevtools/json-schema-ref-parser": "^15.5.1",
+    "@apidevtools/json-schema-ref-parser": "^15.5.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@eslint/compat": "^2.1.0",
@@ -54,7 +54,7 @@
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-react": "^7.37.1",
     "fdc3-1.2": "npm:@finos/fdc3@1.2.x",
-    "globals": "^17.9.0",
+    "globals": "^17.11.0",
     "jsoneditor": "^9.10.5",
     "mobx": "^6.13.3",
     "mobx-react": "^7.6.0",
