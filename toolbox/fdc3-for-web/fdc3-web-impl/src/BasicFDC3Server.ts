@@ -75,9 +75,10 @@ export class DefaultFDC3Server extends BasicFDC3Server {
     sc: ServerContext<AppRegistration>,
     directory: Directory,
     userChannels: ChannelState[],
-    heartbeats: boolean | HeartbeatOptions,
+    heartbeats: boolean,
     intentTimeoutMs: number = 20000,
-    openHandlerTimeoutMs: number = 15000
+    openHandlerTimeoutMs: number = 15000,
+    heartbeatOptions: HeartbeatOptions = {}
   ) {
     const handlers: MessageHandler[] = [
       new BroadcastHandler(userChannels),
@@ -86,7 +87,6 @@ export class DefaultFDC3Server extends BasicFDC3Server {
     ];
 
     if (heartbeats) {
-      const heartbeatOptions = typeof heartbeats === 'boolean' ? {} : heartbeats;
       handlers.push(
         new HeartbeatHandler(
           heartbeatOptions.pingInterval,
