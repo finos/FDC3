@@ -57,7 +57,7 @@
     "globals": "^17.9.0",
     "jsoneditor": "^9.10.5",
     "mobx": "^6.13.3",
-    "mobx-react": "^7.6.0",
+    "mobx-react": "^10.0.0",
     "nanoid": "^3.3.7",
     "normalize.css": "^8.0.1",
     "path-browserify": "^1.0.1",
