@@ -109,7 +109,8 @@ window.addEventListener('load', () => {
           const description = document.createElement('em');
 
           if (app.instanceId) {
-            description.textContent = `${intent.intent.displayName ?? ''} on app instance ${app.instanceId} of ${app.appId}`;
+            const instanceLabel = app.instanceMetadata?.title ?? `app instance ${app.instanceId}`;
+            description.textContent = `${intent.intent.displayName ?? ''} on ${instanceLabel} of ${app.appId}`;
           } else {
             description.textContent = ` ${intent.intent.displayName ?? ''} on a new instance of ${app.appId}`;
           }
