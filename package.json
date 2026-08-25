@@ -67,7 +67,7 @@
     "concurrently": "^8.2.2",
     "eslint": "^9.39.5",
     "eslint-config-prettier": "^10.1.8",
-    "globals": "^17.9.0",
+    "globals": "^17.11.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.3.0",
     "pixelmatch": "^6.0.0",
