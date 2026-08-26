@@ -33,6 +33,37 @@ Feature: Relaying Broadcast messages
       | contextListenerUnsubscribeResponse | App2     | a2            | {null}                   |
       | broadcastResponse                  | App1     | a1            | {null}                   |
 
+  Scenario: Broadcasting app does not receive its own broadcast by default
+    When "App1/a1" adds a context listener on "one" with type "fdc3.instrument"
+    And we wait for a period of "100" ms
+    And "App1/a1" broadcasts "fdc3.instrument" on "one"
+    Then messaging will have outgoing posts
+      | msg.matches_type           | msg.payload.channelId | msg.payload.context.type |
+      | addContextListenerResponse | {null}                | {null}                   |
+      | broadcastResponse          | {null}                | {null}                   |
+
+  Scenario: Broadcasting app receives its own broadcast when opted in
+    When "App1/a1" has opted in to "receiveOwnBroadcasts"
+    And "App1/a1" adds a context listener on "one" with type "fdc3.instrument"
+    And we wait for a period of "100" ms
+    And "App1/a1" broadcasts "fdc3.instrument" on "one"
+    Then messaging will have outgoing posts
+      | msg.matches_type           | msg.payload.channelId | msg.payload.context.type | msg.payload.context.id.ticker | to.instanceId | msg.payload.metadata.source.instanceId |
+      | addContextListenerResponse | {null}                | {null}                   | {null}                        | a1            | {null}                                 |
+      | broadcastEvent             | one                   | fdc3.instrument          | AAPL                          | a1            | a1                                     |
+      | broadcastResponse          | {null}                | {null}                   | {null}                        | a1            | {null}                                 |
+
+  Scenario: Opting in to own broadcasts does not affect other apps receiving them
+    When "App1/a1" has opted in to "receiveOwnBroadcasts"
+    And "App2/a2" adds a context listener on "one" with type "fdc3.instrument"
+    And we wait for a period of "100" ms
+    And "App1/a1" broadcasts "fdc3.instrument" on "one"
+    Then messaging will have outgoing posts
+      | msg.matches_type           | msg.payload.channelId | msg.payload.context.type | to.instanceId | msg.payload.metadata.source.instanceId |
+      | addContextListenerResponse | {null}                | {null}                   | a2            | {null}                                 |
+      | broadcastEvent             | one                   | fdc3.instrument          | a2            | a1                                     |
+      | broadcastResponse          | {null}                | {null}                   | a1            | {null}                                 |
+
   Scenario: Retrieve an existing user channel via getOrCreateChannel
     When "App1/a1" creates or gets an app channel called "one"
     Then messaging will have outgoing posts

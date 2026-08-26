@@ -13,6 +13,17 @@ export type AppRegistration = {
   state: State;
   appId: string;
   instanceId: InstanceID;
+
+  /** Whether this instance opted in (via getAgent) to receiving its own
+   *  broadcasts. When falsy, the Desktop Agent does not deliver context
+   *  messages broadcast by this instance back to it. */
+  receiveOwnBroadcasts?: boolean;
+
+  /** Whether this instance opted in (via getAgent) to having its own instance
+   *  considered when resolving intents that it raises. When falsy, the Desktop
+   *  Agent excludes this instance from resolution of intents it raises (other
+   *  instances of the same app remain eligible). */
+  resolveOwnIntents?: boolean;
 };
 
 /**

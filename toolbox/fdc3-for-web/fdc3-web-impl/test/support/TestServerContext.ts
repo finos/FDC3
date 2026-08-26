@@ -137,7 +137,11 @@ export class TestServerContext implements ServerContext<ConnectionDetails> {
    * USED FOR TESTING
    */
   getInstanceUUID(appId: AppIdentifier): InstanceID {
+    // Preserve any existing registration details (e.g. self-interaction options
+    // set during connection) while ensuring the app is marked as Connected.
+    const existing = this.getInstanceDetails(appId.instanceId!);
     this.setInstanceDetails(appId.instanceId!, {
+      ...(existing ?? {}),
       appId: appId.appId,
       instanceId: appId.instanceId!,
       state: State.Connected,
