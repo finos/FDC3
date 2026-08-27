@@ -6,6 +6,7 @@
 import { AppIdentifier } from './AppIdentifier.js';
 import { Icon } from './Icon.js';
 import { Image } from './Image.js';
+import { InstanceMetadata } from './InstanceMetadata.js';
 
 /**
  * Extends an `AppIdentifier`, describing an application or instance of an application, with additional descriptive metadata that is usually provided by an FDC3 App Directory that the desktop agent connects to.
@@ -25,8 +26,8 @@ export interface AppMetadata extends AppIdentifier {
   /** The Version of the application. */
   readonly version?: string;
 
-  /** An optional set of, implementation specific, metadata fields that can be used to disambiguate instances, such as a window title or screen position. Must only be set if `instanceId` is set. */
-  readonly instanceMetadata?: { [key: string]: any };
+  /** An optional set of metadata fields that can be used to disambiguate instances, such as a window title or screen position. Must only be set if `instanceId` is set. */
+  readonly instanceMetadata?: InstanceMetadata;
 
   /** A more user-friendly application title that can be used to render UI elements  */
   readonly title?: string;

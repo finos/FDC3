@@ -210,6 +210,7 @@ export const getAgent: GetAgentType = (params?: GetAgentParams) => {
     dontSetWindowFdc3: false,
     channelSelector: true,
     intentResolver: true,
+    syncPageTitle: true,
     timeoutMs: DEFAULT_GETAGENT_TIMEOUT_MS,
     //default log levels are set in the relevant logging utils
   };

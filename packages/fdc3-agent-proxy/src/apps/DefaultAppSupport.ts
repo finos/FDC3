@@ -3,6 +3,7 @@ import {
   AppMetadata,
   AppProvidableContextMetadata,
   ImplementationMetadata,
+  InstanceMetadata,
   OpenError,
   ResolveError,
 } from '@finos/fdc3-standard';
@@ -20,6 +21,8 @@ import {
   OpenResponse,
   CloseRequest,
   CloseResponse,
+  UpdateInstanceMetadataRequest,
+  UpdateInstanceMetadataResponse,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { throwIfUndefined } from '../util/throwIfUndefined.js';
 import { Logger } from '../util/Logger.js';
@@ -35,7 +38,7 @@ export class DefaultAppSupport implements AppSupport {
     this.appLaunchTimeout = appLaunchTimeout;
   }
 
-  async findInstances(app: AppIdentifier): Promise<AppIdentifier[]> {
+  async findInstances(app: AppIdentifier): Promise<AppMetadata[]> {
     const request: FindInstancesRequest = {
       type: 'findInstancesRequest',
       payload: {
@@ -115,6 +118,22 @@ export class DefaultAppSupport implements AppSupport {
     };
 
     await this.messaging.exchange<CloseResponse>(request, 'closeResponse', this.messageExchangeTimeout);
+  }
+
+  async updateInstanceMetadata(metadata: InstanceMetadata): Promise<void> {
+    const request: UpdateInstanceMetadataRequest = {
+      type: 'updateInstanceMetadataRequest',
+      payload: {
+        instanceMetadata: metadata,
+      },
+      meta: this.messaging.createMeta(),
+    };
+
+    await this.messaging.exchange<UpdateInstanceMetadataResponse>(
+      request,
+      'updateInstanceMetadataResponse',
+      this.messageExchangeTimeout
+    );
   }
 
   async getImplementationMetadata(): Promise<ImplementationMetadata> {

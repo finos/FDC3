@@ -90,6 +90,15 @@ Feature: Opening and Requesting App Details
       | msg.matches_type      | msg.payload.appIdentifiers.length | msg.payload.appIdentifiers[0].instanceId | msg.payload.appIdentifiers[1].instanceId | to.instanceId | msg.payload.appId |
       | findInstancesResponse |                                 2 | b1                                       | b2                                       | a1            | {null}            |
 
+  Scenario: Find Instances includes instanceMetadata for instances that have set it
+    When "storageApp/b1" is opened with connection id "b1"
+    And "storageApp/b1" sets instance metadata with title "AAPL Stock Chart"
+    And "libraryApp/a1" findsInstances of "storageApp"
+    And we wait for a period of "100" ms
+    Then messaging will have outgoing posts
+      | msg.matches_type      | msg.payload.appIdentifiers.length | msg.payload.appIdentifiers[0].instanceId | msg.payload.appIdentifiers[0].instanceMetadata.title | to.instanceId |
+      | findInstancesResponse |                                 1 | b1                                       | AAPL Stock Chart                                     | a1            |
+
   Scenario: Unknown App Attempts Reconnect
     When "uuid-0" revalidates
     Then messaging will have outgoing posts
@@ -106,3 +115,25 @@ Feature: Opening and Requesting App Details
     Then messaging will have outgoing posts
       | msg.type        | msg.payload.error | to.instanceId |
       | closeResponse   | ErrorOnClose      | a2            |
+
+  Scenario: Setting instance metadata
+    When "libraryApp/a1" sets instance metadata with title "AAPL Stock Chart"
+    Then messaging will have outgoing posts
+      | msg.matches_type                  | msg.payload.error | to.instanceId |
+      | updateInstanceMetadataResponse       | {null}            | a1            |
+
+  Scenario: Setting instance metadata and retrieving it via getAppMetadata
+    When "libraryApp/a1" sets instance metadata with title "AAPL Stock Chart"
+    And "libraryApp/a1" requests metadata for "libraryApp" with instanceId "a1"
+    Then messaging will have outgoing posts
+      | msg.matches_type                  | msg.payload.appMetadata.instanceMetadata.title | to.instanceId |
+      | updateInstanceMetadataResponse       | {null}                                         | a1            |
+      | getAppMetadataResponse            | AAPL Stock Chart                               | a1            |
+
+  Scenario: Setting instance metadata and retrieving it via getInfo
+    When "libraryApp/a1" sets instance metadata with title "AAPL Stock Chart"
+    And "libraryApp/a1" requests info on the DesktopAgent
+    Then messaging will have outgoing posts
+      | msg.matches_type                  | msg.payload.implementationMetadata.appMetadata.instanceMetadata.title | to.instanceId |
+      | updateInstanceMetadataResponse       | {null}                                                                | a1            |
+      | getInfoResponse                   | AAPL Stock Chart                                                       | a1            |
