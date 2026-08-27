@@ -72,6 +72,34 @@ const basicIL1 = (fdc3: DesktopAgent, documentation: string) => {
   });
 };
 
+const basicAEL1 = (fdc3: DesktopAgent, documentation: string) => {
+  it('(BasicAEL1) addEventListener is callable and returns a Listener', async () => {
+    expect(fdc3.addEventListener, documentation).to.be.a('function');
+
+    try {
+      const listener = await fdc3.addEventListener('userChannelChanged', () => {});
+      expect(listener, documentation).to.be.an('object');
+      expect(listener, documentation).to.have.property('unsubscribe').that.is.a('function');
+      await listener.unsubscribe();
+    } catch (ex) {
+      handleFail(documentation, ex);
+    }
+  });
+};
+
+const basicAEL2 = (fdc3: DesktopAgent, documentation: string) => {
+  it('(BasicAEL2) addEventListener returns a Listener for an unfiltered listener', async () => {
+    try {
+      const listener = await fdc3.addEventListener(null, () => {});
+      expect(listener, documentation).to.be.an('object');
+      expect(listener, documentation).to.have.property('unsubscribe').that.is.a('function');
+      await listener.unsubscribe();
+    } catch (ex) {
+      handleFail(documentation, ex);
+    }
+  });
+};
+
 const basicGI1 = (fdc3: DesktopAgent, documentation: string) => {
   it('(BasicGI1) Returns ImplementationMetadata object', async () => {
     try {
@@ -307,6 +335,7 @@ declare let fdc3: DesktopAgent;
 
 const documentation_CL = '\r\nDocumentation: ' + APIDocumentation.addContextListener + '\r\nCause';
 const documentation_IL = '\r\nDocumentation: ' + APIDocumentation.addIntentListener + '\r\nCause';
+const documentation_AEL = '\r\nDocumentation: ' + APIDocumentation.addEventListener + '\r\nCause';
 const documentation_GI = '\r\nDocumentation: ' + APIDocumentation.getInfo + '\r\nCause';
 const documentation_AC = '\r\nDocumentation: ' + APIDocumentation.getOrCreateChannel + '\r\nCause';
 const documentation_UC = '\r\nDocumentation: ' + APIDocumentation.getUserChannels + '\r\nCause';
@@ -319,6 +348,8 @@ export const fdc3BasicGetAgent = async () => describe('fdc3.basicGetAgent', () =
 export const fdc3BasicCL1 = async () => describe('fdc3.basicCL1', () => basicCL1(fdc3, documentation_CL));
 export const fdc3BasicCL2 = async () => describe('fdc3.basicCL2', () => basicCL2(fdc3, documentation_CL));
 export const fdc3BasicIL1 = async () => describe('fdc3.basicIL1', () => basicIL1(fdc3, documentation_IL));
+export const fdc3BasicAEL1 = async () => describe('fdc3.basicAEL1', () => basicAEL1(fdc3, documentation_AEL));
+export const fdc3BasicAEL2 = async () => describe('fdc3.basicAEL2', () => basicAEL2(fdc3, documentation_AEL));
 export const fdc3BasicGI1 = async () => describe('fdc3.basicGI1', () => basicGI1(fdc3, documentation_GI));
 export const fdc3BasicGI2 = async () => describe('fdc3.basicGI2', () => basicGI2(fdc3, documentation_GI));
 export const fdc3BasicAC1 = async () => describe('fdc3.basicAC1', () => basicAC1(fdc3, documentation_AC));
