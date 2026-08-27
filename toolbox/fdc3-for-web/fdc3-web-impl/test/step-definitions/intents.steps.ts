@@ -174,7 +174,8 @@ function raise(
   intentName: string,
   contextType: string,
   dest: string | null,
-  meta: RaiseIntentRequest['meta']
+  meta: RaiseIntentRequest['meta'],
+  newInstance?: boolean
 ): RaiseIntentRequest {
   const destMeta = dest != null ? createMeta(cw, dest) : null;
   const message = {
@@ -186,6 +187,7 @@ function raise(
       intent: handleResolve(intentName, cw),
       context: contextMap[contextType],
       app: dest ? destMeta!.source : null,
+      ...(newInstance !== undefined && { newInstance }),
     },
   } as RaiseIntentRequest;
   return message;
@@ -284,6 +286,46 @@ When(
     const meta = createMeta(world, appStr);
     const uuid = world.sc.getInstanceUUID(meta.source)!;
     const message = raise(world, intentName, contextType, dest, meta);
+    await world.server.receive(message, uuid);
+  }
+);
+
+When(
+  '{string} raises an intent for {string} with contextType {string} on app {string} forcing a new instance',
+  async (world: CustomWorld, appStr: string, intentName: string, contextType: string, dest: string) => {
+    const meta = createMeta(world, appStr);
+    const uuid = world.sc.getInstanceUUID(meta.source)!;
+    const message = raise(world, intentName, contextType, dest, meta, true);
+    await world.server.receive(message, uuid);
+  }
+);
+
+When(
+  '{string} raises an intent for {string} with contextType {string} on app {string} requiring an existing instance',
+  async (world: CustomWorld, appStr: string, intentName: string, contextType: string, dest: string) => {
+    const meta = createMeta(world, appStr);
+    const uuid = world.sc.getInstanceUUID(meta.source)!;
+    const message = raise(world, intentName, contextType, dest, meta, false);
+    await world.server.receive(message, uuid);
+  }
+);
+
+When(
+  '{string} raises an intent for {string} with contextType {string} forcing a new instance',
+  async (world: CustomWorld, appStr: string, intentName: string, contextType: string) => {
+    const meta = createMeta(world, appStr);
+    const uuid = world.sc.getInstanceUUID(meta.source)!;
+    const message = raise(world, intentName, contextType, null, meta, true);
+    await world.server.receive(message, uuid);
+  }
+);
+
+When(
+  '{string} raises an intent for {string} with contextType {string} requiring an existing instance',
+  async (world: CustomWorld, appStr: string, intentName: string, contextType: string) => {
+    const meta = createMeta(world, appStr);
+    const uuid = world.sc.getInstanceUUID(meta.source)!;
+    const message = raise(world, intentName, contextType, null, meta, false);
     await world.server.receive(message, uuid);
   }
 );
