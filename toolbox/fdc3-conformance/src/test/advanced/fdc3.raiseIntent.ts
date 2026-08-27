@@ -102,6 +102,70 @@ export default async () =>
       expect(instances2.length).to.be.equal(1); //make sure no other instance is started
     });
 
+    const RaiseIntentNewInstanceForced =
+      "(RaiseIntentNewInstanceForced) Should launch a new instance of intent-a when raising intent 'aTestingIntent1' with context 'testContextX', newInstance=true and an instance is already running";
+    it(RaiseIntentNewInstanceForced, async () => {
+      // add app control listeners
+      errorListener = await control.listenForError();
+      const appOpen = control.receiveContext(ControlContextType.INTENT_APP_A_OPENED, 2000, 1);
+      const result = control.receiveContext(ControlContextType.A_TESTING_INTENT_LISTENER_TRIGGERED);
+
+      // Start an instance of intent-a up front so there is an existing instance available
+      const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
+      await appOpen;
+      const instancesBefore = await control.findInstances(IntentApp.IntentAppA);
+      control.validateInstances(instancesBefore, 1, appIdentifier.instanceId);
+
+      // Raise the intent targeting the appId with newInstance=true - a NEW instance MUST be launched
+      const intentResolution = await control.raiseIntent(
+        Intent.aTestingIntent,
+        ContextType.testContextX,
+        { appId: IntentApp.IntentAppA },
+        0,
+        undefined,
+        true
+      );
+      await result;
+      control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
+
+      // A second instance should now exist and the intent should NOT have been delivered to the original instance
+      const instancesAfter = await control.findInstances(IntentApp.IntentAppA);
+      expect(instancesAfter.length, 'A new instance should have been launched').to.be.equal(2);
+      expect(intentResolution.source.instanceId).to.not.be.equal(appIdentifier.instanceId);
+    });
+
+    const RaiseIntentExistingInstanceRequired =
+      "(RaiseIntentExistingInstanceRequired) Should deliver to the existing instance of intent-a when raising intent 'aTestingIntent1' with context 'testContextX' and newInstance=false";
+    it(RaiseIntentExistingInstanceRequired, async () => {
+      // add app control listeners
+      errorListener = await control.listenForError();
+      const appOpen = control.receiveContext(ControlContextType.INTENT_APP_A_OPENED, 2000, 1);
+      const result = control.receiveContext(ControlContextType.A_TESTING_INTENT_LISTENER_TRIGGERED);
+
+      // Start an instance of intent-a up front
+      const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
+      await appOpen;
+      const instancesBefore = await control.findInstances(IntentApp.IntentAppA);
+      control.validateInstances(instancesBefore, 1, appIdentifier.instanceId);
+
+      // Raise the intent targeting the appId with newInstance=false - the existing instance MUST be used
+      const intentResolution = await control.raiseIntent(
+        Intent.aTestingIntent,
+        ContextType.testContextX,
+        { appId: IntentApp.IntentAppA },
+        0,
+        undefined,
+        false
+      );
+      await result;
+      control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
+
+      // No new instance should have been started and the intent must have gone to the existing instance
+      const instancesAfter = await control.findInstances(IntentApp.IntentAppA);
+      expect(instancesAfter.length, 'No new instance should have been launched').to.be.equal(1);
+      expect(intentResolution.source.instanceId).to.be.equal(appIdentifier.instanceId);
+    });
+
     const PrivateChannelsAreNotAppChannels =
       '(PrivateChannelsAreNotAppChannels) Cannot create an app channel using a private channel id';
     it(PrivateChannelsAreNotAppChannels, async () => {
