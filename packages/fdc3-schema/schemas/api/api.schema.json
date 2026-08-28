@@ -397,8 +397,7 @@
             },
             "required": [
                 "source",
-                "timestamp",
-                "traceId"
+                "timestamp"
             ],
             "additionalProperties": false
         },
