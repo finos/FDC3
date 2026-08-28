@@ -4289,7 +4289,7 @@ export interface ContextMetadata {
    * A unique identifier for the context or intent that can be used to trace the context or
    * intent through the system.
    */
-  traceId: string;
+  traceId?: string;
 }
 
 /**
@@ -6608,7 +6608,7 @@ const typeMap: any = {
       { json: 'signature', js: 'signature', typ: u(undefined, r('DetachedSignature')) },
       { json: 'source', js: 'source', typ: r('AppIdentifier') },
       { json: 'timestamp', js: 'timestamp', typ: Date },
-      { json: 'traceId', js: 'traceId', typ: '' },
+      { json: 'traceId', js: 'traceId', typ: u(undefined, '') },
     ],
     false
   ),

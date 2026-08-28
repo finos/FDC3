@@ -204,8 +204,6 @@ export default async () =>
       control.validateIntentResult(intentResult, IntentResultType.Context, ContextType.testContextY);
       const metadata = await control.getIntentResultMetadata(intentResolution);
       control.validateResultMetadata(metadata, intentResolution.source);
-      // DA-generated traceId must be present
-      expect(metadata.traceId, 'traceId should be a non-empty string').to.be.a('string').and.not.equal('');
     });
 
     const RaiseIntentChannelResultMetadata =

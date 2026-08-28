@@ -561,7 +561,7 @@ interface IContextMetadata
 type ContextMetadata struct {
   Source     AppIdentifier          `json:"source"`
   Timestamp  time.Time              `json:"timestamp"`
-  TraceId    string                 `json:"traceId"`
+  TraceId    string                 `json:"traceId,omitempty"`
   Signature  *DetachedSignature     `json:"signature,omitempty"`
   AntiReplay *AntiReplayClaims      `json:"antiReplay,omitempty"`
   Custom     map[string]interface{} `json:"custom,omitempty"`

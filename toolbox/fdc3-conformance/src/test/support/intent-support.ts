@@ -132,9 +132,6 @@ export class RaiseIntentControl {
     expect(metadata, 'getResultMetadata() should resolve to a ContextMetadata object').to.be.an('object');
     expect(metadata).to.have.property('source');
     expect(metadata).to.have.property('timestamp');
-    expect(metadata).to.have.property('traceId');
-    expect(typeof metadata.traceId).to.equal('string');
-    expect(metadata.traceId).to.not.equal('');
     if (expectedSource) {
       expect(metadata.source.appId, 'resultMetadata.source.appId should match the resolving app').to.equal(
         expectedSource.appId
