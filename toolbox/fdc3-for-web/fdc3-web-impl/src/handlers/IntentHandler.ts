@@ -39,6 +39,13 @@ type IntentRequest = {
   from: FullAppIdentifier;
   type: 'raiseIntentResponse' | 'raiseIntentForContextResponse';
   appProvidedMetadata?: AppProvidableContextMetadata;
+  /**
+   * Caller's preference for how an instance of the target application is selected:
+   * - `true`: a new instance MUST be launched even if existing instances are available;
+   * - `false`: an existing instance MUST be used and a new instance MUST NOT be launched;
+   * - `undefined`: the Desktop Agent applies its default resolution behavior.
+   */
+  newInstance?: boolean;
 };
 
 /**
@@ -359,6 +366,61 @@ export class IntentHandler implements MessageHandler {
     }
   }
 
+  /**
+   * Handles a raiseIntent (or raiseIntentForContext) request where the caller has set
+   * `newInstance === false`, meaning a new instance MUST NOT be launched and an existing,
+   * running instance of the target application MUST be used instead.
+   *
+   * If no running instance is available the request is rejected with `TargetInstanceUnavailable`.
+   * If exactly one running instance is available the request is delivered to it. If more than one
+   * is available the available instances are returned for resolution (e.g. via a resolver UI).
+   */
+  async raiseIntentToExistingInstanceOnly(
+    arg0: IntentRequest[],
+    sc: ServerContext<AppRegistration>,
+    target: AppIdentifier
+  ): Promise<void> {
+    const runningInstances = await this.retrieveRunningInstances(target.appId, sc);
+
+    if (runningInstances.length == 0) {
+      // newInstance === false but there is no running instance to use
+      return errorResponseId(
+        sc,
+        arg0[0].requestUuid,
+        arg0[0].from,
+        ResolveError.TargetInstanceUnavailable,
+        arg0[0].type
+      );
+    }
+
+    if (runningInstances.length == 1) {
+      return this.raiseIntentRequestToSpecificInstance(arg0, sc, runningInstances[0]);
+    }
+
+    // More than one running instance - let the caller/resolver choose between existing instances only
+    const instances: AppIdentifier[] = runningInstances.map(i => ({ appId: i.appId, instanceId: i.instanceId }));
+    if (arg0[0].type == 'raiseIntentResponse') {
+      return successResponseId(
+        sc,
+        arg0[0].requestUuid,
+        arg0[0].from,
+        {
+          appIntent: {
+            intent: { name: arg0[0].intent, displayName: arg0[0].intent },
+            apps: instances,
+          },
+        },
+        arg0[0].type
+      );
+    } else {
+      const appIntents: AppIntent[] = arg0.map(ir => ({
+        intent: { name: ir.intent, displayName: ir.intent },
+        apps: instances,
+      }));
+      return successResponseId(sc, arg0[0].requestUuid, arg0[0].from, { appIntents }, arg0[0].type);
+    }
+  }
+
   async raiseIntentRequestToSpecificAppId(
     arg0: IntentRequest[],
     sc: ServerContext<AppRegistration>,
@@ -367,6 +429,11 @@ export class IntentHandler implements MessageHandler {
     const appRecords = this.directory.retrieveAppsById(target.appId);
     if (appRecords.length == 0) {
       return errorResponseId(sc, arg0[0].requestUuid, arg0[0].from, ResolveError.TargetAppUnavailable, arg0[0].type);
+    }
+
+    // If the caller explicitly requested that an existing instance be used, never launch a new one.
+    if (arg0[0].newInstance === false) {
+      return this.raiseIntentToExistingInstanceOnly(arg0, sc, target);
     }
 
     const convertDirectoryIntentsToAppIntents = (intents: DirectoryIntent[], appId: string): AppIntent[] => {
@@ -478,6 +545,27 @@ export class IntentHandler implements MessageHandler {
           ...arg0[0],
           intent: narrowedAppIntents[0].intent.name,
         };
+        const newInstance = arg0[0].newInstance;
+        const runningInstance = theAppIntent.apps.find(a => a.instanceId);
+
+        if (newInstance === true) {
+          // Caller requested a new instance - always launch one, even if instances are running
+          return this.startWithPendingIntent(ir, sc, { appId: theAppIntent.apps[0].appId });
+        } else if (newInstance === false) {
+          // Caller requires an existing instance - never launch a new one
+          if (runningInstance && isFullAppIdentifier(runningInstance)) {
+            return forwardRequest(ir, runningInstance, sc, this);
+          }
+          return errorResponseId(
+            sc,
+            arg0[0].requestUuid,
+            arg0[0].from,
+            ResolveError.TargetInstanceUnavailable,
+            arg0[0].type
+          );
+        }
+
+        // Default behavior (newInstance undefined)
         if (instanceCount == 1 && isFullAppIdentifier(theAppIntent.apps[0])) {
           // app is running
           return forwardRequest(ir, theAppIntent.apps[0], sc, this);
@@ -516,6 +604,7 @@ export class IntentHandler implements MessageHandler {
       intent: arg0.payload.intent,
       requestUuid: arg0.meta.requestUuid,
       type: 'raiseIntentResponse',
+      newInstance: arg0.payload.newInstance,
       appProvidedMetadata: {
         traceId: reqMeta.traceId,
         signature: reqMeta.signature,
@@ -563,6 +652,7 @@ export class IntentHandler implements MessageHandler {
         intent: i.intentName,
         requestUuid: arg0.meta.requestUuid,
         type: 'raiseIntentForContextResponse',
+        newInstance: arg0.payload.newInstance,
         appProvidedMetadata: {
           traceId: rifcMeta.traceId,
           signature: rifcMeta.signature,
