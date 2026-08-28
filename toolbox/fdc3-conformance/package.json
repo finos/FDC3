@@ -27,7 +27,6 @@
     "util": "^0.12.5"
   },
   "devDependencies": {
-    "@rollup/plugin-inject": "^5.0.5",
     "@types/chai": "^5.2.3",
     "@types/mocha": "^10.0.10",
     "http-server": "^14.1.1",
