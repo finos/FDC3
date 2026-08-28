@@ -52,8 +52,8 @@ export interface AntiReplayClaims {
  */
 export interface AppProvidableContextMetadata {
   /** A unique identifier for tracing the flow of context or intent messages
-   * across applications. If provided, the Desktop Agent MUST forward it.
-   * If not provided, the Desktop Agent MAY generate a new one. */
+   * across applications. If provided, the Desktop Agent SHOULD forward it.
+   * If not provided, the Desktop Agent SHOULD generate a new one. */
   traceId?: string;
 
   /** A Detached JSON Web Signature (JWS) proving the authenticity and
