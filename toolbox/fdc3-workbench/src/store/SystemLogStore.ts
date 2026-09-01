@@ -11,6 +11,7 @@ export type logMessagesName =
   | 'getFdc3'
   | 'getChannels'
   | 'getCurrentChannel'
+  | 'userChannelChanged'
   | 'joinUserChannel'
   | 'leaveChannel'
   | 'broadcast'
@@ -33,7 +34,8 @@ export type logMessagesName =
   | 'removeAppChannelContextListener'
   | 'pcAddContextListener'
   | 'pcOnUnsubscribe'
-  | 'pcOnDisconnect';
+  | 'pcOnDisconnect'
+  | 'privateChannelEventListener';
 
 export type logMessagesType = 'error' | 'success' | 'warning' | 'info';
 
