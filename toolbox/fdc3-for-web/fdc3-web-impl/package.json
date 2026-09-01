@@ -27,7 +27,8 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@finos/fdc3-standard": "3.0.0-alpha.2"
+    "@finos/fdc3-standard": "3.0.0-alpha.2",
+    "semver": "^7.5.3"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^13.2.1",
@@ -35,6 +36,7 @@
     "@cucumber/messages": "^34.2.1",
     "@cucumber/pretty-formatter": "^4.0.1",
     "@finos/testing": "3.0.0-alpha.2",
+    "@types/semver": "^7.8.0",
     "cucumber-console-formatter": "1.0.0",
     "openapi-typescript": "^7.13.0",
     "quickpickle": "^1.6.1"
