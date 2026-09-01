@@ -16,7 +16,7 @@ Feature: User Channels Support where the Desktop Agent puts the app on a channel
 
   Scenario: Adding a Typed Listener on a given User Channel
     Given "resultHandler" pipes context to "contexts"
-    And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    And I call "{api}" with "addContextListener" using arguments "fdc3.instrument" and "{resultHandler}"
     And messaging receives "{instrumentMessageOne}"
     Then "{contexts}" is an array of objects with the following contents
       | id.ticker | type            | name  |
@@ -28,7 +28,7 @@ Feature: User Channels Support where the Desktop Agent puts the app on a channel
 
   Scenario: I should be able to leave a user channel, and not receive messages on it
     Given "resultHandler" pipes context to "contexts"
-    And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    And I call "{api}" with "addContextListener" using arguments "fdc3.instrument" and "{resultHandler}"
     And I call "{api}" with "leaveCurrentChannel"
     Then messaging will have posts
       | payload.channelId | payload.contextType | payload.listenerUUID | matches_type               |

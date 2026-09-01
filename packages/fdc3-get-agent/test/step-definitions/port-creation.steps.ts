@@ -1,6 +1,6 @@
 import { Given, Then } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
-import { handleResolve } from '@finos/testing';
+import { handleResolve } from '@finos/cucumber-testing-steps';
 import wtf from 'wtfnode';
 
 Given(

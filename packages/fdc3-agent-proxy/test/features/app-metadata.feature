@@ -6,7 +6,7 @@ Feature: Desktop Agent Information
     And app "chipShop/c1"
 
   Scenario: Getting App metadata
-    When I call "{api}" with "getAppMetadata" with parameter "{c1}"
+    When I call "{api}" with "getAppMetadata" using argument "{c1}"
     Then "{result}" is an object with the following contents
       | appId    | name          | description          |
       | chipShop | Metadata Name | Metadata Description |
@@ -24,7 +24,7 @@ Feature: Desktop Agent Information
       | cucumber-app | cucumber-instance |
 
   Scenario: Getting instance information
-    When I call "{api}" with "findInstances" with parameter "{c1}"
+    When I call "{api}" with "findInstances" using argument "{c1}"
     Then "{result}" is an array of objects with the following contents
       | appId | instanceId |
       | One   |          1 |

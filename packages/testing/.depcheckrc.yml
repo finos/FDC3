@@ -1,9 +1,0 @@
-ignores:
-  # Available to downstream Cucumber runners that request the HTML formatter.
-  - "@cucumber/html-formatter"
-  # Available to downstream Cucumber runners that request the pretty formatter.
-  - "@cucumber/pretty-formatter"
-  # Imported by src/support/matching.ts for JSONPath-based result matching.
-  - jsonpath-plus
-  # Imported by the shared screenshot-comparison Cucumber steps.
-  - pixelmatch

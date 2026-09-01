@@ -38,7 +38,7 @@ Feature: Basic User Channels Support
   Scenario: Changing Channel
         You should be able to join a channel knowing it's ID.
 
-    When I call "{api}" with "joinUserChannel" with parameter "one"
+    When I call "{api}" with "joinUserChannel" using argument "one"
     When I call "{api}" with "getCurrentChannel"
     Then "{result}" is an object with the following contents
       | id  | type | displayMetadata.color |
@@ -50,8 +50,8 @@ Feature: Basic User Channels Support
 
   Scenario: Adding a Typed Listener on a given User Channel
     Given "resultHandler" pipes context to "contexts"
-    When I call "{api}" with "joinUserChannel" with parameter "one"
-    And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    When I call "{api}" with "joinUserChannel" using argument "one"
+    And I call "{api}" with "addContextListener" using arguments "fdc3.instrument" and "{resultHandler}"
     And messaging receives "{instrumentMessageOne}"
     Then "{contexts}" is an array of objects with the following contents
       | id.ticker | type            | name  |
@@ -65,8 +65,8 @@ Feature: Basic User Channels Support
 
   Scenario: Adding an Un-Typed Listener on a given User Channel
     Given "resultHandler" pipes context to "contexts"
-    When I call "{api}" with "joinUserChannel" with parameter "one"
-    And I call "{api}" with "addContextListener" with parameters "{null}" and "{resultHandler}"
+    When I call "{api}" with "joinUserChannel" using argument "one"
+    And I call "{api}" with "addContextListener" using arguments "{null}" and "{resultHandler}"
     And messaging receives "{instrumentMessageOne}"
     Then "{contexts}" is an array of objects with the following contents
       | id.ticker | type            | name  |
@@ -80,7 +80,7 @@ Feature: Basic User Channels Support
 
   Scenario: If you haven't joined a channel, your listener receives nothing
     Given "resultHandler" pipes context to "contexts"
-    When I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    When I call "{api}" with "addContextListener" using arguments "fdc3.instrument" and "{resultHandler}"
     And messaging receives "{instrumentMessageOne}"
     Then "{contexts}" is empty
     And messaging will have posts
@@ -89,8 +89,8 @@ Feature: Basic User Channels Support
 
   Scenario: After unsubscribing, my listener shouldn't receive any more messages
     Given "resultHandler" pipes context to "contexts"
-    When I call "{api}" with "joinUserChannel" with parameter "one"
-    And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    When I call "{api}" with "joinUserChannel" using argument "one"
+    And I call "{api}" with "addContextListener" using arguments "fdc3.instrument" and "{resultHandler}"
     And I refer to "{result}" as "theListener"
     And messaging receives "{instrumentMessageOne}"
     And I call "{theListener}" with "unsubscribe"
@@ -108,8 +108,8 @@ Feature: Basic User Channels Support
 
   Scenario: I should be able to leave a user channel, and not receive messages on it
     Given "resultHandler" pipes context to "contexts"
-    When I call "{api}" with "joinUserChannel" with parameter "one"
-    And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    When I call "{api}" with "joinUserChannel" using argument "one"
+    And I call "{api}" with "addContextListener" using arguments "fdc3.instrument" and "{resultHandler}"
     And I call "{api}" with "leaveCurrentChannel"
     Then messaging will have posts
       | payload.channelId | payload.contextType | payload.listenerUUID | matches_type               |
@@ -123,24 +123,24 @@ Feature: Basic User Channels Support
       | id.ticker | type | name |
 
   Scenario: Joining a user channel that doesn't exist throws an error
-    When I call "{api}" with "joinUserChannel" with parameter "nonexistent"
+    When I call "{api}" with "joinUserChannel" using argument "nonexistent"
     Then "{result}" is an error with message "NoChannelFound"
 
   Scenario: Passing invalid arguments to a user channel's addContextListener fn throws an error
     Given "resultHandler" pipes context to "contexts"
-    When I call "{api}" with "addContextListener" with parameters "{true}" and "{resultHandler}"
+    When I call "{api}" with "addContextListener" using arguments "{true}" and "{resultHandler}"
     # Specific error message not tested as its not currently standardized
     # TODO: Fix when #1490 is resolved
     Then "{result}" is an error
-    And I call "{api}" with "addContextListener" with parameters "{null}" and "{true}"
+    And I call "{api}" with "addContextListener" using arguments "{null}" and "{true}"
     Then "{result}" is an error
 
   Scenario: You can get the details of the last context type sent
     Given "resultHandler" pipes context to "contexts"
-    When I call "{api}" with "joinUserChannel" with parameter "one"
+    When I call "{api}" with "joinUserChannel" using argument "one"
     And I call "{api}" with "getCurrentChannel"
     And I refer to "{result}" as "theChannel"
-    And I call "{api}" with "broadcast" with parameter "{instrumentContext}"
+    And I call "{api}" with "broadcast" using argument "{instrumentContext}"
     And I call "{theChannel}" with "getCurrentContext"
     Then "{result}" is an object with the following contents
       | id.ticker | type            | name  |
@@ -154,17 +154,17 @@ Feature: Basic User Channels Support
 
   Scenario: Asking for a piece of context (e.g. an email) when it's not been sent returns null
     Given "resultHandler" pipes context to "contexts"
-    When I call "{api}" with "joinUserChannel" with parameter "one"
+    When I call "{api}" with "joinUserChannel" using argument "one"
     And I call "{api}" with "getCurrentChannel"
     And I refer to "{result}" as "theChannel"
     And messaging receives "{instrumentMessageOne}"
-    And I call "{theChannel}" with "getCurrentContext" with parameter "fdc3.email"
+    And I call "{theChannel}" with "getCurrentContext" using argument "fdc3.email"
     Then "{result}" is null
 
   Scenario: User Channel Updated By Desktop Agent Changes User Channel Context Listeners
     Given "resultHandler" pipes context to "contexts"
-    When I call "{api}" with "joinUserChannel" with parameter "one"
-    And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    When I call "{api}" with "joinUserChannel" using argument "one"
+    And I call "{api}" with "addContextListener" using arguments "fdc3.instrument" and "{resultHandler}"
     And I refer to "{result}" as "theListener"
     When messaging receives "{userChannelMessage2}"
     # Channel changed event handling is async
@@ -175,7 +175,7 @@ Feature: Basic User Channels Support
       | id.ticker | type | name |
 
   Scenario: User Channel Updated By Desktop Agent To A Non-Existent User Channel Sets The Channel To Null
-    When I call "{api}" with "joinUserChannel" with parameter "one"
+    When I call "{api}" with "joinUserChannel" using argument "one"
     When messaging receives "{userChannelMessageBroken}"
     # Channel changed event handling is async and this case involves an extra round trip to the DA
     And we wait for a period of "500" ms
@@ -183,7 +183,7 @@ Feature: Basic User Channels Support
 
   Scenario: Adding and removing A User Channel Changed Event Listener
     Given "typesHandler" pipes events to "types"
-    When I call "{api}" with "addEventListener" with parameters "userChannelChanged" and "{typesHandler}"
+    When I call "{api}" with "addEventListener" using arguments "userChannelChanged" and "{typesHandler}"
     And I refer to "{result}" as "theListener"
     And messaging receives "{userChannelMessage2}"
     And messaging receives "{userChannelMessage1}"
@@ -203,7 +203,7 @@ Feature: Basic User Channels Support
 
   Scenario: Adding and removing A "null" (i.e. wildcard) Event Listener
     Given "typesHandler" pipes events to "types"
-    When I call "{api}" with "addEventListener" with parameters "{null}" and "{typesHandler}"
+    When I call "{api}" with "addEventListener" using arguments "{null}" and "{typesHandler}"
     And I refer to "{result}" as "theListener"
     And messaging receives "{userChannelMessage2}"
     And messaging receives "{userChannelMessage1}"
@@ -223,13 +223,13 @@ Feature: Basic User Channels Support
 
   Scenario: Adding An Unknown Event Listener
     Given "typesHandler" pipes events to "types"
-    When I call "{api}" with "addEventListener" with parameters "unknownEventType" and "{typesHandler}"
+    When I call "{api}" with "addEventListener" using arguments "unknownEventType" and "{typesHandler}"
     Then "{result}" is an error with message "UnknownEventType"
 
   Scenario: User Channel Changed Event fires when currentChannelId field is used
     Given "typesHandler" pipes events to "types"
     And "modernMessage" is a channelChangedEvent message with currentChannelId "channelX"
-    When I call "{api}" with "addEventListener" with parameters "userChannelChanged" and "{typesHandler}"
+    When I call "{api}" with "addEventListener" using arguments "userChannelChanged" and "{typesHandler}"
     And I refer to "{result}" as "theListener"
     And messaging receives "{modernMessage}"
     Then "{types}" is an array of objects with the following contents
@@ -239,7 +239,7 @@ Feature: Basic User Channels Support
   Scenario: User Channel Changed Event fires when user leaves a channel via currentChannelId null
     Given "typesHandler" pipes events to "types"
     And "leaveMessage" is a channelChangedEvent message with currentChannelId "{null}"
-    When I call "{api}" with "addEventListener" with parameters "userChannelChanged" and "{typesHandler}"
+    When I call "{api}" with "addEventListener" using arguments "userChannelChanged" and "{typesHandler}"
     And I refer to "{result}" as "theListener"
     And messaging receives "{leaveMessage}"
     Then "{types}" is an array of objects with the following contents
@@ -249,7 +249,7 @@ Feature: Basic User Channels Support
   Scenario: User Channel Changed Event fires when user leaves a channel via deprecated newChannelId null
     Given "typesHandler" pipes events to "types"
     And "leaveMessageDeprecated" is a channelChangedEvent message on channel "{null}"
-    When I call "{api}" with "addEventListener" with parameters "userChannelChanged" and "{typesHandler}"
+    When I call "{api}" with "addEventListener" using arguments "userChannelChanged" and "{typesHandler}"
     And I refer to "{result}" as "theListener"
     And messaging receives "{leaveMessageDeprecated}"
     Then "{types}" is an array of objects with the following contents
@@ -259,7 +259,7 @@ Feature: Basic User Channels Support
   Scenario: currentChannelId takes precedence over deprecated newChannelId in channel changed events
     Given "typesHandler" pipes events to "types"
     And "bothFieldsMessage" is a channelChangedEvent message with currentChannelId "modern" and newChannelId "deprecated"
-    When I call "{api}" with "addEventListener" with parameters "userChannelChanged" and "{typesHandler}"
+    When I call "{api}" with "addEventListener" using arguments "userChannelChanged" and "{typesHandler}"
     And I refer to "{result}" as "theListener"
     And messaging receives "{bothFieldsMessage}"
     Then "{types}" is an array of objects with the following contents
@@ -268,7 +268,7 @@ Feature: Basic User Channels Support
 
   Scenario: Wildcard event listener fires and forwards non-channelChangedEvent messages
     Given "typesHandler" pipes events to "types"
-    When I call "{api}" with "addEventListener" with parameters "{null}" and "{typesHandler}"
+    When I call "{api}" with "addEventListener" using arguments "{null}" and "{typesHandler}"
     And messaging receives "{instrumentMessageOne}"
     Then "{types}" is an array of objects with the following contents
       | channelId | context.type    |
@@ -285,7 +285,7 @@ Feature: Basic User Channels Support
 
   Scenario: Destructured joinUserChannel and getCurrentChannel work correctly
     When I destructure method "joinUserChannel" from "{api}"
-    And I call destructured "joinUserChannel" with parameter "one"
+    And I call destructured "joinUserChannel" using argument "one"
     And I destructure method "getCurrentChannel" from "{api}"
     And I call destructured "getCurrentChannel"
     Then "{result}" is an object with the following contents
@@ -298,12 +298,12 @@ Feature: Basic User Channels Support
 
   Scenario: Destructured channel getCurrentContext after broadcast
     Given "resultHandler" pipes context to "contexts"
-    When I call "{api}" with "joinUserChannel" with parameter "one"
+    When I call "{api}" with "joinUserChannel" using argument "one"
     And I call "{api}" with "getCurrentChannel"
     And I refer to "{result}" as "theChannel"
     And I destructure methods "broadcast", "getCurrentContext" from "{api}"
     And I destructure method "getCurrentContext" from "{theChannel}"
-    And I call destructured "broadcast" with parameter "{instrumentContext}"
+    And I call destructured "broadcast" using argument "{instrumentContext}"
     And I call destructured "getCurrentContext"
     Then "{result}" is an object with the following contents
       | id.ticker | type            | name  |
@@ -312,8 +312,8 @@ Feature: Basic User Channels Support
   Scenario: Destructured broadcast on user channel
     Given "resultHandler" pipes context to "contexts"
     When I destructure method "broadcast" from "{api}"
-    And I call "{api}" with "joinUserChannel" with parameter "one"
-    And I call destructured "broadcast" with parameter "{instrumentContext}"
+    And I call "{api}" with "joinUserChannel" using argument "one"
+    And I call destructured "broadcast" using argument "{instrumentContext}"
     And I call "{api}" with "getCurrentChannel"
     And I refer to "{result}" as "theChannel"
     And I call "{theChannel}" with "getCurrentContext"
@@ -324,13 +324,13 @@ Feature: Basic User Channels Support
   Scenario: Destructured user channel addContextListener works correctly
     Given "resultHandler" pipes context to "contexts"
     When I destructure method "addContextListener" from "{api}"
-    And I call "{api}" with "joinUserChannel" with parameter "one"
-    And I call destructured "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    And I call "{api}" with "joinUserChannel" using argument "one"
+    And I call destructured "addContextListener" using arguments "fdc3.instrument" and "{resultHandler}"
     And messaging receives "{instrumentMessageOne}"
 
   Scenario: BroadcastEvent on app Opening
     Given "resultHandler" pipes context to "contexts"
-    And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    And I call "{api}" with "addContextListener" using arguments "fdc3.instrument" and "{resultHandler}"
     And messaging receives "{openMessage}"
     Then "{contexts}" is an array of objects with the following contents
       | id.ticker | type            | name  |
@@ -341,8 +341,8 @@ Feature: Basic User Channels Support
 
   Scenario: User channel context listener receives source metadata
     Given "resultHandler" pipes context and metadata to "contexts" and "metadatas"
-    When I call "{api}" with "joinUserChannel" with parameter "one"
-    And I call "{api}" with "addContextListener" with parameters "fdc3.instrument" and "{resultHandler}"
+    When I call "{api}" with "joinUserChannel" using argument "one"
+    And I call "{api}" with "addContextListener" using arguments "fdc3.instrument" and "{resultHandler}"
     And messaging receives "{instrumentMessageOne}"
     Then "{contexts}" is an array of objects with the following contents
       | id.ticker | type            | name  |
