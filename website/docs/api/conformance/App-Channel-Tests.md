@@ -8,6 +8,11 @@ hide_title: true
 # App Channel Tests  
 <!-- markdownlint-disable MD033 -->
 
+## Channel Errors
+
+- `ChannelErrorMalformedContext` ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue): Retrieve an App Channel and call `broadcast` with a context that has no string `type`. The promise rejects with `ChannelError.MalformedContext`.
+- `ChannelErrorInvalidArguments` ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue): Call `getOrCreateChannel` with a non-string channel id. The promise rejects with `ChannelError.InvalidArguments`.
+
 ## Basic Broadcast
 
 | App | Step                    | Details                                                                    |
@@ -115,4 +120,3 @@ hide_title: true
 
 - ACMultipleOverlappingListeners1: Perform above test
 - ACMultipleOverlappingListeners2: Perform above test, but instead of _untyped_ context listener, in step 2, use `fdc3.instrument` (handler should remain different)
-

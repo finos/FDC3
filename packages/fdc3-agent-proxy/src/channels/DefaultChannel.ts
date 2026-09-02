@@ -5,8 +5,10 @@ import {
   DisplayMetadata,
   Listener,
   Channel,
+  ChannelEventTypes,
   EventHandler,
   AppProvidableContextMetadata,
+  ChannelError,
 } from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { Messaging } from '../Messaging.js';
@@ -46,9 +48,14 @@ export class DefaultChannel implements Channel {
     this.broadcast = this.broadcast.bind(this);
     this.getCurrentContext = this.getCurrentContext.bind(this);
     this.addContextListener = this.addContextListener.bind(this);
+    this.addEventListener = this.addEventListener.bind(this);
   }
 
   async broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<void> {
+    if (!context || typeof context.type !== 'string') {
+      throw new Error(ChannelError.MalformedContext);
+    }
+
     const request: BroadcastRequest = {
       meta: this.messaging.createMeta(),
       payload: {
@@ -150,14 +157,17 @@ export class DefaultChannel implements Channel {
     await this.messaging.exchange<ClearContextResponse>(request, 'clearContextResponse', this.messageExchangeTimeout);
   }
 
-  async addEventListener(type: string | null, handler: EventHandler): Promise<Listener> {
+  async addEventListener(type: ChannelEventTypes | null, handler: EventHandler): Promise<Listener> {
     let listener: RegisterableListener;
     switch (type) {
       case 'contextCleared':
-        listener = new EventListener(this.messaging, 'contextCleared', handler);
+        listener = new EventListener(this.messaging, 'contextCleared', this.id, handler);
+        break;
+      case null:
+        listener = new EventListener(this.messaging, type, this.id, handler);
         break;
       default:
-        throw new Error('Unsupported event type: ' + type);
+        throw new Error(ChannelError.InvalidArguments);
     }
     await listener.register();
     return listener;

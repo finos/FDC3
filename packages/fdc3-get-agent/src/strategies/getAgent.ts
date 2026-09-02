@@ -164,7 +164,7 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
         }
       } else {
         //We didn't manage to find an agent.
-        Logger.error('Desktop agent not found. No error reported during discovery.');
+        Logger.warn('Desktop agent not found. No error reported during discovery.');
         //Clear the promise so a fresh call could be made later
         setTimeout(() => clearAgentPromise(), CLEAR_PROMISE_DELAY);
         throw new Error(AgentError.AgentNotFound);

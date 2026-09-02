@@ -44,7 +44,7 @@ async function raiseGetPricesIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Hand
     }
     const { signature, antiReplay } = signResult;
 
-    const resolution = await fdc3.raiseIntent('demo.GetPrices', instrument, null, { signature, antiReplay });
+    const resolution = await fdc3.raiseIntent('demo.GetPrices', instrument, null, undefined, { signature, antiReplay });
 
     const intentResult = await resolution.getResult();
 
@@ -54,7 +54,7 @@ async function raiseGetPricesIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Hand
       timestamp: new Date().toISOString(),
     });
 
-    if (intentResult?.type == 'private') {
+    if (intentResult && 'type' in intentResult && intentResult.type === 'private') {
       const pc: PrivateChannel = intentResult as PrivateChannel;
       remoteHandlers.handleRemoteChannel('demo.GetPrices', pc);
     } else {

@@ -2,9 +2,13 @@
  * SPDX-License-Identifier: Apache-2.0
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
+import path from 'path';
+import { fileURLToPath } from 'url';
 import legacy from '@vitejs/plugin-legacy';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -21,6 +25,8 @@ export default defineConfig({
     alias: {
       buffer: 'buffer',
       path: 'path-browserify',
+      react: path.resolve(__dirname, 'node_modules/react'),
+      'react-dom': path.resolve(__dirname, 'node_modules/react-dom'),
     },
   },
   plugins: [

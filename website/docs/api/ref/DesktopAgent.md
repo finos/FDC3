@@ -34,8 +34,8 @@ interface DesktopAgent {
   // intents
   findIntent(intent: string, context?: Context, resultType?: string): Promise<AppIntent>;
   findIntentsByContext(context: Context, resultType?: string): Promise<Array<AppIntent>>;
-  raiseIntent(intent: string, context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
-  raiseIntentForContext(context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
+  raiseIntent(intent: string, context: Context, app?: AppIdentifier | null, newInstance?: boolean | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
+  raiseIntentForContext(context: Context, app?: AppIdentifier | null, newInstance?: boolean | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
   addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
   addIntentListenerWithContext(intent: string, contextType: string | string[], handler: IntentHandler): Promise<Listener>;
 
@@ -115,6 +115,7 @@ type IDesktopAgent interface {
     Open(appIdentifier AppIdentifier, context *IContext, metadata *AppProvidableContextMetadata) <-chan Result[AppIdentifier]
     FindInstances(appIdentifier AppIdentifier) <-chan Result[[]AppIdentifier]
     GetAppMetadata(appIdentifier AppIdentifier) <-chan Result[AppIdentifier]
+    Close() <-chan Result[any]
 
     // Context
     Broadcast(context IContext, metadata *AppProvidableContextMetadata) <-chan Result[any]
@@ -126,6 +127,7 @@ type IDesktopAgent interface {
     RaiseIntent(intent string, context IContext, appIdentifier *AppIdentifier, metadata *AppProvidableContextMetadata) <-chan Result[IntentResolution]
     RaiseIntentForContext(context IContext, appIdentifier *AppIdentifier, metadata *AppProvidableContextMetadata) <-chan Result[IntentResolution]
     AddIntentListener(intent string, handler IntentHandler) <-chan Result[Listener]
+    AddIntentListenerWithContext(intent string, contextType []string, handler IntentHandler) <-chan Result[Listener]
 
     // Channels
     GetOrCreateChannel(channelId string) <-chan Result[Channel]
@@ -441,7 +443,7 @@ CompletionStage<Listener> addIntentListener(String intent, IntentHandler handler
 
 Adds a listener for incoming intents raised by other applications, via calls to [`fdc3.raiseIntent`](#raiseintent) or [`fdc3.raiseIntentForContext`](#raiseintentforcontext). If the application is intended to be launched to resolve raised intents, it SHOULD add its intent listeners as quickly as possible after launch or an error MAY be returned to the caller and the intent and context may not be delivered. The exact timeout used is set by the Desktop Agent implementation, but MUST be at least 15 seconds.
 
-The handler function may return void or a promise that resolves to a [`IntentResult`](Types#intentresult), which is either a [`Context`](Types#context) object, representing any data that should be returned to the app that raised the intent, or a [`Channel`](Channel), a [`PrivateChannel`](PrivateChannel) over which data responses will be sent, or `void`. The `IntentResult` will be returned to the app that raised the intent via the [`IntentResolution`](Metadata#intentresolution) and retrieved from it using the `getResult()` function.
+The handler function may return void or a promise that resolves to a [`IntentResult`](Types#intentresult), which is either a [`Context`](Types#context) object, representing any data that should be returned to the app that raised the intent, or a [`Channel`](Channel), a [`PrivateChannel`](PrivateChannel) over which data responses will be sent, or `void`. The `IntentResult` will be returned to the app that raised the intent via the [`IntentResolution`](Types#intentresolution) and retrieved from it using the `getResult()` function.
 
 The Desktop Agent MUST reject the promise returned by the `getResult()` function of `IntentResolution` if any of the following is true:
 
@@ -596,6 +598,15 @@ addIntentListenerWithContext(
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (desktopAgent *DesktopAgent) AddIntentListenerWithContext(intent string, contextType []string, handler IntentHandler) <-chan Result[Listener] {
+  // Implementation here
+}
+```
+
+</TabItem>
 </Tabs>
 
 Adds a listener for incoming intents raised by other applications, via calls to [`fdc3.raiseIntent`](#raiseintent) or [`fdc3.raiseIntentForContext`](#raiseintentforcontext), filtered by one or more context types. The handler will only be invoked when the incoming intent's context `type` matches one of the supplied `contextType` values; all other behaviour is identical to [`addIntentListener`](#addintentlistener) — see that section for details, restrictions and result handling that also apply here.
@@ -625,6 +636,21 @@ const listener = await fdc3.addIntentListenerWithContext(
     return;
   }
 );
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+//Handle a raised intent filtered to a single context type
+listenerResult := <-desktopAgent.AddIntentListenerWithContext("StartChat", []string{"fdc3.contact"}, func(context IContext, contextMetadata *ContextMetadata) {
+  // start chat has been requested by another application
+})
+
+//Handle a raised intent filtered to multiple context types
+listenerResult := <-desktopAgent.AddIntentListenerWithContext("ViewChart", []string{"fdc3.instrument", "fdc3.instrumentList"}, func(context IContext, contextMetadata *ContextMetadata) {
+  // view chart has been requested by another application
+})
 ```
 
 </TabItem>
@@ -1450,7 +1476,7 @@ CompletionStage<AppMetadata> getAppMetadata(AppIdentifier app);
 </TabItem>
 </Tabs>
 
-Retrieves the [`AppMetadata`](Metadata#appmetadata) for an [`AppIdentifier`](Types#appidentifier), which provides additional metadata (such as icons, a title and description) from the App Directory record for the application, that may be used for display purposes.
+Retrieves the [`AppMetadata`](Types#appmetadata) for an [`AppIdentifier`](Types#appidentifier), which provides additional metadata (such as icons, a title and description) from the App Directory record for the application, that may be used for display purposes.
 
 If the app is not found, the promise MUST be rejected with an `Error` Object with the `message` given by [`ResolveError.TargetAppUnavailable`](Errors#resolveerror), or (if connected to a Desktop Agent Bridge) an error from the [`BridgingError`](Errors#bridgingerror) enumeration.
 
@@ -1493,7 +1519,7 @@ AppMetadata appMetadata = desktopAgent.getAppMetadata(appIdentifier).toCompletab
 
 **See also:**
 
-- [`AppMetadata`](Metadata#appmetadata)
+- [`AppMetadata`](Types#appmetadata)
 - [`AppIdentifier`](Types#appidentifier)
 
 ### `getCurrentChannel`
@@ -1613,7 +1639,7 @@ CompletionStage<ImplementationMetadata> getInfo();
 
 Retrieves information about the FDC3 Desktop Agent implementation, including the supported version of the FDC3 specification, the name of the provider of the implementation, its own version number, details of whether optional API features are implemented and the metadata of the calling application according to the desktop agent.
 
-Returns an [`ImplementationMetadata`](Metadata#implementationmetadata) object.  This metadata object can be used to vary the behavior of an application based on the version supported by the Desktop Agent and for logging purposes.
+Returns an [`ImplementationMetadata`](Types#implementationmetadata) object.  This metadata object can be used to vary the behavior of an application based on the version supported by the Desktop Agent and for logging purposes.
 
 **Example:**
 
@@ -1702,8 +1728,8 @@ String instanceId = implementationMetadata.getAppMetadata().getInstanceId();
 
 **See also:**
 
-- [`ImplementationMetadata`](Metadata#implementationmetadata)
-- [`AppMetadata`](Metadata#appmetadata)
+- [`ImplementationMetadata`](Types#implementationmetadata)
+- [`AppMetadata`](Types#appmetadata)
 
 ### `getOrCreateChannel`
 
@@ -1936,6 +1962,8 @@ OPTIONAL function that joins the app to the specified User channel. In most case
 If an app is joined to a channel, all `fdc3.broadcast` calls will go to the channel, and all listeners assigned via `fdc3.addContextListener` will listen on the channel.
 
 If the channel already contains context that would be passed to context listeners added via `fdc3.addContextListener` then those listeners will be called immediately with that context.
+
+After a successful User channel membership change, the Desktop Agent MUST dispatch a `userChannelChanged` event to the app if it has registered a matching event listener. When the change is initiated by the app's own call to `joinUserChannel`, the event MUST be dispatched before the returned promise resolves.
 
 An app can only be joined to one channel at a time.
 
@@ -2210,7 +2238,7 @@ instanceIdentifier = desktopAgent.open(appIdentifier, context).toCompletableFutu
 
 - [`Context`](Types#context)
 - [`AppIdentifier`](Types#appidentifier)
-- [`AppMetadata`](Metadata#appmetadata)
+- [`AppMetadata`](Types#appmetadata)
 - [`OpenError`](Errors#openerror)
 
 ### `close`
@@ -2220,6 +2248,15 @@ instanceIdentifier = desktopAgent.open(appIdentifier, context).toCompletableFutu
 
 ```ts
 close(): Promise<void>;
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (desktopAgent *DesktopAgent) Close() <-chan Result[any] {
+  // Implementation here
+}
 ```
 
 </TabItem>
@@ -2243,6 +2280,18 @@ fdc3.close();
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+// Perform cleanup, then request close
+saveState()
+result := <-desktopAgent.Close()
+if result.Err != nil {
+    // handle error
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -2256,21 +2305,21 @@ fdc3.close();
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-raiseIntent(intent: string, context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
+raiseIntent(intent: string, context: Context, app?: AppIdentifier | null, newInstance?: boolean | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
 ```
 
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-Task<IIntentResolution> RaiseIntent(string intent, IContext context, IAppIdentifier? app = null);
+Task<IIntentResolution> RaiseIntent(string intent, IContext context, IAppIdentifier? app = null, bool? newInstance = null);
 ```
 
 </TabItem>
 <TabItem value="golang" label="Go">
 
 ```go
-func (desktopAgent *DesktopAgent) RaiseIntent(intent string, context IContext, appIdentifier *AppIdentifier, metadata *AppProvidableContextMetadata) <-chan Result[IntentResolution] {
+func (desktopAgent *DesktopAgent) RaiseIntent(intent string, context IContext, appIdentifier *AppIdentifier, newInstance *bool, metadata *AppProvidableContextMetadata) <-chan Result[IntentResolution] {
   // Implementation here
 }
 ```
@@ -2294,9 +2343,17 @@ If a target app for the intent cannot be found with the criteria provided or the
 
 If you wish to raise an intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
 
-An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the raised intent. If metadata is provided without a target app, `null` may be passed for the `app` parameter.
+An optional `newInstance` parameter allows the caller to express how an instance of the target application should be selected, overriding the Desktop Agent's default resolution behavior:
 
-Returns an [`IntentResolution`](Metadata#intentresolution) object with details of the app instance that was selected (or started) to respond to the intent.
+- When `newInstance` is omitted (`undefined` or `null`), the Desktop Agent applies its default behavior, which MAY present a resolver UI allowing the user to choose between launching a new instance or selecting an existing one.
+- When `newInstance` is `true`, the caller is explicitly requesting that a **new instance** of the target application be launched, even if existing instances are available. This is useful when the user has already resolved the application to target (e.g. via [`findIntent`](DesktopAgent#findintent)) and has chosen to open a fresh instance. As resolution always remains the purview of the Desktop Agent, it MAY still reject the request (for example, according to firm policy).
+- When `newInstance` is `false`, the caller is explicitly requesting that an **existing instance** of the target application be used and that a new instance MUST NOT be launched. If no suitable running instance is available, the promise MUST be rejected with an `Error` object with the `ResolveError.TargetInstanceUnavailable` string as its `message`.
+
+A `newInstance` value of `true` or `false` SHOULD be used together with an `app` argument that targets a specific `appId`. If `newInstance` is provided without a target app, `null` may be passed for the `app` parameter.
+
+An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the raised intent. If metadata is provided without a target app or `newInstance` preference, `null` and `undefined` may be passed for the `app` and `newInstance` parameters respectively.
+
+Returns an [`IntentResolution`](Types#intentresolution) object with details of the app instance that was selected (or started) to respond to the intent.
 
 Issuing apps may optionally wait on the promise that is returned by the `getResult()` member of the `IntentResolution`. This promise will resolve when the _receiving app's_ intent handler function returns and resolves a promise. The Desktop Agent resolves the issuing app's promise with the Context object, Channel object or void that is provided as resolution within the receiving app. The Desktop Agent MUST reject the issuing app's promise, with a string from the [`ResultError`](Errors#resulterror) enumeration, if: (1) the intent handling function's returned promise rejects, (2) the intent handling function doesn't return a valid response (a promise or void), or (3) the returned promise resolves to an invalid type.
 
@@ -2320,8 +2377,14 @@ await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
 //Raise an intent without a context by using the null context type
 await fdc3.raiseIntent("StartChat", {type: "fdc3.nothing"});
 
-//Raise an intent with metadata, passing null for the app parameter
-await fdc3.raiseIntent("StartChat", context, null, { traceId: 'abc123' });
+//Force a new instance of a specific app to be launched to handle the intent
+await fdc3.raiseIntent("StartChat", context, { appId: "myApp" }, true);
+
+//Require an existing instance of a specific app to be used (never launch a new one)
+await fdc3.raiseIntent("StartChat", context, { appId: "myApp" }, false);
+
+//Raise an intent with metadata, passing null for the app and newInstance parameters
+await fdc3.raiseIntent("StartChat", context, null, undefined, { traceId: 'abc123' });
 
 //Raise an intent and retrieve a result from the IntentResolution
 let resolution = await agent.raiseIntent("intentName", context);
@@ -2427,7 +2490,7 @@ try {
 - [`Context`](Types#context)
 - [`AppIdentifier`](Types#appidentifier)
 - [`IntentResult`](Types#intentresult)
-- [`IntentResolution`](Metadata#intentresolution)
+- [`IntentResolution`](Types#intentresolution)
 - [`ResolveError`](Errors#resolveerror)
 - [`ResultError`](Errors#resulterror)
 
@@ -2437,21 +2500,21 @@ try {
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-raiseIntentForContext(context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
+raiseIntentForContext(context: Context, app?: AppIdentifier | null, newInstance?: boolean | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
 ```
 
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-Task<IIntentResolution> RaiseIntentForContext(IContext context, IAppIdentifier? app = null);
+Task<IIntentResolution> RaiseIntentForContext(IContext context, IAppIdentifier? app = null, bool? newInstance = null);
 ```
 
 </TabItem>
 <TabItem value="golang" label="Go">
 
 ```go
-func (desktopAgent *DesktopAgent) RaiseIntentForContext(context IContext, appIdentifier *AppIdentifier, metadata *AppProvidableContextMetadata) <-chan Result[IntentResolution] {
+func (desktopAgent *DesktopAgent) RaiseIntentForContext(context IContext, appIdentifier *AppIdentifier, newInstance *bool, metadata *AppProvidableContextMetadata) <-chan Result[IntentResolution] {
   // Implementation here
 }
 ```
@@ -2473,7 +2536,9 @@ Alternatively, the specific app or app instance to target can also be provided, 
 
 Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.
 
-An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the raised intent. If metadata is provided without a target app, `null` may be passed for the `app` parameter.
+As with [`raiseIntent`](#raiseintent), an optional `newInstance` parameter allows the caller to express how an instance of the target application should be selected: omitting it (`undefined` or `null`) applies the Desktop Agent's default behavior, `true` requests that a **new instance** be launched even if existing instances are available, and `false` requires that an **existing instance** be used (a new instance MUST NOT be launched and, if no suitable running instance is available, the promise MUST be rejected with an `Error` object with the `ResolveError.TargetInstanceUnavailable` string as its `message`). See [`raiseIntent()`](#raiseintent) for full details.
+
+An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the raised intent. If metadata is provided without a target app or `newInstance` preference, `null` and `undefined` may be passed for the `app` and `newInstance` parameters respectively.
 
 Returns an `IntentResolution` object, see [`raiseIntent()`](#raiseintent) for details.
 
@@ -2491,8 +2556,11 @@ const intentResolution = await fdc3.raiseIntentForContext(context);
 // Resolve against all intents registered by a specific target app for the specified context
 await fdc3.raiseIntentForContext(context, targetAppIdentifier);
 
-// Resolve with metadata, passing null for the app parameter
-await fdc3.raiseIntentForContext(context, null, { traceId: 'abc123' });
+// Force a new instance of the target app to be launched
+await fdc3.raiseIntentForContext(context, { appId: "myApp" }, true);
+
+// Resolve with metadata, passing null for the app and newInstance parameters
+await fdc3.raiseIntentForContext(context, null, undefined, { traceId: 'abc123' });
 ```
 
 </TabItem>
@@ -2537,5 +2605,5 @@ desktopAgent.raiseIntentForContext(context, targetAppIdentifier);
 - [`raiseIntent()`](#raiseintent)
 - [`Context`](Types#context)
 - [`AppIdentifier`](Types#appidentifier)
-- [`IntentResolution`](Metadata#intentresolution)
+- [`IntentResolution`](Types#intentresolution)
 - [`ResolveError`](Errors#resolveerror)

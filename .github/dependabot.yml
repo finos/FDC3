@@ -23,6 +23,37 @@ updates:
       prefix: "chore(deps)"
       include: "scope"
 
+  # npm dependencies — website (separate lock file, not in workspaces)
+  - package-ecosystem: "npm"
+    directory: "/website"
+    schedule:
+      interval: "daily"
+    cooldown:
+      default-days: 7
+      semver-major-days: 10
+    groups:
+      # Docusaurus and its rendering stack must move together — they share
+      # peer dependencies on react/react-dom and layout-elk, so upgrading
+      # any one in isolation risks peer dep conflicts.
+      docusaurus:
+        patterns:
+          - "@docusaurus/*"
+          - "@mermaid-js/layout-elk"
+          - "prism-react-renderer"
+      # react and react-dom must always be the same version.
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+
   # GitHub Actions
   - package-ecosystem: "github-actions"
     directory: "/"

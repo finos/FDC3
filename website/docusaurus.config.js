@@ -21,7 +21,6 @@ module.exports = {
     "repoUrl": "https://github.com/finos/FDC3"
   },
   "onBrokenLinks": "log",
-  "onBrokenMarkdownLinks": "log",
   "presets": [
     [
       "@docusaurus/preset-classic",
@@ -44,9 +43,28 @@ module.exports = {
   ],
   markdown: {
     mermaid: true,
+    hooks: {
+      onBrokenMarkdownLinks: "log",
+    },
   },
   themes: ['@docusaurus/theme-mermaid'],
-  "plugins": [],
+  "plugins": [
+    [
+      "@docusaurus/plugin-client-redirects",
+      {
+        redirects: [
+          {
+            from: "/docs/api/ref/Metadata",
+            to: "/docs/api/ref/Types",
+          },
+          {
+            from: "/docs/next/api/ref/Metadata",
+            to: "/docs/next/api/ref/Types",
+          },
+        ],
+      },
+    ],
+  ],
   "themeConfig": {
     "prism": {
       "additionalLanguages": ["typescript", "javascript", "json", "csharp", "go", "java"],

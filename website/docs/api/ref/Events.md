@@ -125,6 +125,7 @@ type FDC3EventTypes string
 
 const (
 	UserChannelChanged     FDC3EventTypes = "userChannelChanged"
+	ContextCleared         FDC3EventTypes = "contextCleared"
 )
 ```
 
@@ -153,6 +154,44 @@ Type defining valid type strings for DesktopAgent interface events.
 **See also:**
 
 - [`DesktopAgent.addEventListener`](DesktopAgent#addeventlistener)
+
+## `ChannelEventTypes`
+
+<Tabs groupId="lang">
+<TabItem value="ts" label="TypeScript/JavaScript">
+
+```ts
+type ChannelEventTypes = "contextCleared";
+```
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+public static class ChannelEventType
+{
+    public const string ContextCleared = "contextCleared";
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type ChannelEventTypes string
+
+const (
+  ContextClearedChannelEventType ChannelEventTypes = "contextCleared"
+)
+```
+
+</TabItem>
+</Tabs>
+
+Type defining valid type strings for Channel interface events.
+
+**See also:**
+
+- [`Channel.addEventListener`](Channel#addeventlistener)
 
 ## `FDC3Event`
 
@@ -303,6 +342,8 @@ Type representing the format of `userChannelChanged`  events.
 
 The identity of the channel joined is provided as `details.currentChannelId`, which will be `null` if the app is no longer joined to any channel.
 
+Desktop Agents MUST emit this event after applying a User channel membership change when the app has registered a matching event listener. When the app initiated the change by calling `joinUserChannel`, the event MUST be dispatched before the returned promise resolves.
+
 ### `FDC3ContextClearedEvent`
 
 <Tabs groupId="lang">
@@ -312,7 +353,8 @@ The identity of the channel joined is provided as `details.currentChannelId`, wh
 export interface FDC3ContextClearedEvent extends FDC3Event {
   readonly type: 'contextCleared';
   readonly details: {
-    type: string | null;
+    channelId: string;
+    contextType: string | null;
   };
 }
 ```
@@ -322,22 +364,25 @@ export interface FDC3ContextClearedEvent extends FDC3Event {
 ```csharp
 public interface IFdc3ContextClearedEventDetails
 {
+    string ChannelId { get; }
     string? ContextType { get; }
 }
 public class Fdc3ContextClearedEventDetails : IFdc3ContextClearedEventDetails
 {
+    public string ChannelId { get; }
     public string? ContextType { get; }
 
-    public Fdc3ContextClearedEventDetails(string? contextType)
+    public Fdc3ContextClearedEventDetails(string channelId, string? contextType)
     {
+        this.ChannelId = channelId;
         this.ContextType = contextType;
     }
 }
 
 public class Fdc3ContextClearedEvent : Fdc3Event
 {
-    public Fdc3ContextClearedEvent(string? contextType)
-        : base(Fdc3EventType.ContextCleared, new Fdc3ContextClearedEventDetails(contextType))
+    public Fdc3ContextClearedEvent(string channelId, string? contextType)
+        : base(Fdc3EventType.ContextCleared, new Fdc3ContextClearedEventDetails(channelId, contextType))
     {
     }
 }
@@ -352,6 +397,17 @@ desktopAgent.addEventListener("contextCleared", event -> {
     Map<String, Object> details = (Map<String, Object>) event.getDetails();
     String contextType = (String) details.get("type");
 });
+<TabItem value="golang" label="Go">
+
+```go
+type FDC3ContextClearedEventDetails struct {
+  Type *string `json:"type"`
+}
+
+type FDC3ContextClearedEvent struct {
+  Type   string                        `json:"type"`
+  Details FDC3ContextClearedEventDetails `json:"details"`
+}
 ```
 
 </TabItem>
@@ -360,7 +416,9 @@ desktopAgent.addEventListener("contextCleared", event -> {
 
 Type representing the format of `contextCleared`  events.
 
-The specific type of context is defined in the contextType field, which can be empty if we are clearing all the contexts on the channel.
+The channel on which context was cleared is identified by `details.channelId`. This field is included for events received through both `DesktopAgent.addEventListener` and `Channel.addEventListener`, allowing the same event handler to be used with either API.
+
+The specific type of context is defined in `details.contextType`, which will be `null` if all contexts on the channel were cleared.
 
 
 ## `PrivateChannelEventTypes`
@@ -369,7 +427,7 @@ The specific type of context is defined in the contextType field, which can be e
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-type PrivateChannelEventTypes = "addContextListener" | "unsubscribe" | "disconnect";
+type PrivateChannelEventTypes = ChannelEventTypes | "addContextListener" | "unsubscribe" | "disconnect";
 ```
 </TabItem>
 <TabItem value="dotnet" label=".NET">
@@ -377,6 +435,7 @@ type PrivateChannelEventTypes = "addContextListener" | "unsubscribe" | "disconne
 ```csharp
 public static class Fdc3PrivateChannelEventType
 {
+    public const string ContextCleared = "contextCleared";
     public const string AddContextListener = "addContextListener";
     public const string Unsubscribe = "unsubscribe";
     public const string Disconnect = "disconnect";
@@ -389,6 +448,7 @@ public static class Fdc3PrivateChannelEventType
 ```go
 type PrivateChannelEventTypes string 
 const (
+  ContextClearedPrivateChannelEventType PrivateChannelEventTypes = "contextCleared"
   AddContextListenerPrivateChannelEventType PrivateChannelEventTypes = "addContextListener"
   UnsubscribePrivateChannelEventType PrivateChannelEventTypes = "unsubscribe"
   DisconnectPrivateChannelEventType PrivateChannelEventTypes = "disconnect"
@@ -406,7 +466,9 @@ const (
 </TabItem>
 </Tabs>
 
-Type defining valid type strings for Private Channel events.
+Type defining valid type strings for Private Channel events. Private Channels support the
+`contextCleared` event defined by [`ChannelEventTypes`](#channeleventtypes), in addition to
+their lifecycle events.
 
 **See also:**
 
@@ -469,6 +531,10 @@ privateChannel.addEventListener("addContextListener", event -> {
 
 Type defining the format of event objects that may be received via a PrivateChannel's `addEventListener` function.
 
+All PrivateChannel events identify the channel to which they relate through `details.channelId`. The corresponding
+DACP event payloads use the field name `privateChannelId`; Desktop Agent API implementations expose that value as
+`channelId` for consistency with other channel-related events.
+
 **See also:**
 
 - [`PrivateChannel.addEventListener`](PrivateChannel#addeventlistener)
@@ -483,6 +549,7 @@ Type defining the format of event objects that may be received via a PrivateChan
 interface PrivateChannelAddContextListenerEvent extends PrivateChannelEvent {
   readonly type: "addContextListener";
   readonly details: {
+    channelId: string;
     contextType: string | null
   };
 }
@@ -530,7 +597,8 @@ privateChannel.addEventListener("addContextListener", event -> {
 
 Type defining the format of events representing a context listener being added to the channel (`addContextListener`). Desktop Agents MUST fire this event for each invocation of `addContextListener` on the channel, including those that occurred before this handler was registered (to prevent race conditions).
 
-The context type of the listener added is provided as `details.contextType`, which will be `null` if all event types are being listened to.
+The channel is identified by `details.channelId`. The context type of the listener added is provided as
+`details.contextType`, which will be `null` if all event types are being listened to.
 
 ### `PrivateChannelUnsubscribeEvent`
 
@@ -541,6 +609,7 @@ The context type of the listener added is provided as `details.contextType`, whi
 interface PrivateChannelUnsubscribeEvent extends PrivateChannelEvent {
   readonly type: "unsubscribe";
   readonly details: {
+    channelId: string;
     contextType: string | null
   };
 }
@@ -588,7 +657,8 @@ privateChannel.addEventListener("unsubscribe", event -> {
 
 Type defining the format of events representing a context listener removed from the channel (`Listener.unsubscribe()`). Desktop Agents MUST call this when `disconnect()` is called by the other party, for each listener that they had added.
 
-The context type of the  listener removed is provided as `details.contextType`, which will be `null` if all event types were being listened to.
+The channel is identified by `details.channelId`. The context type of the listener removed is provided as
+`details.contextType`, which will be `null` if all event types were being listened to.
 
 ### `PrivateChannelDisconnectEvent`
 
@@ -598,7 +668,9 @@ The context type of the  listener removed is provided as `details.contextType`, 
 ```ts
 export interface PrivateChannelDisconnectEvent extends PrivateChannelEvent {
   readonly type: "disconnect";
-  readonly details: null | undefined;
+  readonly details: {
+    channelId: string;
+  };
 }
 ```
 </TabItem>
@@ -636,6 +708,6 @@ privateChannel.addEventListener("disconnect", event -> {
 </TabItem>
 </Tabs>
 
-Type defining the format of events representing a remote app being terminated or is otherwise disconnecting from the PrivateChannel. This event is fired in addition to unsubscribe events that will also be fired for any context listeners the disconnecting app had added.
-
-No details are provided.
+Type defining the format of events representing a remote app being terminated or otherwise disconnecting from the
+PrivateChannel. This event is fired in addition to unsubscribe events that will also be fired for any context listeners
+the disconnecting app had added. The channel is identified by `details.channelId`.

@@ -8,5 +8,5 @@
     Access-Control-Allow-Origin = "*"
     
 [build.environment]
-  NODE_VERSION = "24.0.2"
-  NPM_VERSION = "11.3.0"
+  NODE_VERSION = "24.18.0"
+  NPM_VERSION = "11.16.0"

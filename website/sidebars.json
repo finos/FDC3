@@ -21,7 +21,6 @@
           "api/ref/Channel",
           "api/ref/PrivateChannel",
           "api/ref/Types",
-          "api/ref/Metadata",
           "api/ref/Errors",
           "api/ref/Events",
           "api/security",

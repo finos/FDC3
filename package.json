@@ -41,8 +41,6 @@
     "clean": "npm run clean --workspaces --if-present",
     "build": "npm run build --workspaces --if-present",
     "test": "npm run test --workspaces --if-present",
-    "merge": "istanbul-merge --out coverage/complete.json packages/fdc3-standard/coverage/coverage-final.json packages/fdc3-get-agent/coverage/coverage-final.json packages/fdc3-agent-proxy/coverage/coverage-final.json toolbox/fdc3-for-web/fdc3-web-impl/coverage/coverage-final.json",
-    "report": "nyc report --reporter json-summary --report-dir nyc-coverage-report --exclude-after-remap false --temp-dir coverage",
     "lint": "npm run lint --workspaces --if-present",
     "syncpack": "npm exec syncpack -- fix --dependencies \"@finos/*\" && npm run version-check",
     "version-check": "node scripts/version-check.js",
@@ -58,38 +56,40 @@
     "printWidth": 120
   },
   "dependencies": {
-    "syncpack": "^14.0.0"
+    "syncpack": "^15.3.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.19.0",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^20.16.11",
-    "@vitest/coverage-v8": "^3.2.6",
-    "@vitest/ui": "^3.2.6",
+    "@types/node": "^26.2.0",
+    "@vitest/coverage-v8": "^4.1.10",
+    "@vitest/ui": "^4.1.10",
     "concurrently": "^8.2.2",
-    "eslint": "^9.32.0",
-    "eslint-config-prettier": "^9.1.0",
-    "globals": "^15.14.0",
+    "eslint": "^9.39.5",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.9.0",
     "husky": "^9.1.7",
-    "istanbul-merge": "^2.0.0",
-    "lint-staged": "^15.2.10",
-    "nyc": "17.1.0",
+    "lint-staged": "^17.3.0",
     "pixelmatch": "^6.0.0",
-    "prettier": "3.4.1",
+    "prettier": "3.9.6",
     "rimraf": "^6.0.1",
-    "tsx": "^4.19.1",
+    "tsx": "^4.23.12",
     "typescript": "^5.6.3",
-    "typescript-eslint": "^8.17.0",
-    "vitest": "^3.2.6"
+    "typescript-eslint": "^8.67.0",
+    "vitest": "^4.1.10"
   },
   "overrides": {
     "serialize-javascript": "^7.0.5",
-    "@cucumber/messages": "^27.2.0"
+    "mocha": {
+      "serialize-javascript": "^7.0.5"
+    }
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
   },
-  "engines": {
-    "node": ">=22"
+  "allowScripts": {
+    "core-js": true,
+    "esbuild": true,
+    "fsevents": true
   }
 }
