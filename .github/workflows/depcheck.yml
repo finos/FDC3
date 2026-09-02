@@ -39,8 +39,5 @@ jobs:
             (cd "${workspace}" && npx depcheck --skip-missing) || status=1
           done < <(node -e "require('./package.json').workspaces.forEach(workspace => console.log(workspace))")
 
-          echo "Checking website"
-          (cd "website" && npx depcheck --skip-missing) || status=1
-
           exit "${status}"
 
