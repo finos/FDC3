@@ -135,12 +135,12 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
 
   raiseIntent(
     intent: string,
-    context: Context,
+    context?: Context | null,
     app?: AppIdentifier | null,
     newInstance?: boolean | null,
     metadata?: AppProvidableContextMetadata
   ) {
-    return this.intents.raiseIntent(intent, context, app ?? undefined, newInstance, metadata);
+    return this.intents.raiseIntent(intent, context ?? undefined, app ?? undefined, newInstance, metadata);
   }
 
   addIntentListener(intent: string, handler: IntentHandler) {
