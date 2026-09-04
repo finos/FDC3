@@ -151,7 +151,7 @@ export class DefaultChannel implements Channel {
     } else {
       //invalid call
       // TODO: Replace with Standardized error when #1490 is resolved
-      throw new Error('Invalid arguments passed to addContextListener!');
+      throw new Error(ChannelError.InvalidArguments);
     }
 
     // Handle array case by creating individual listeners for each type
