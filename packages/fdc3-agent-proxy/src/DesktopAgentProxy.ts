@@ -122,7 +122,7 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     } else {
       //invalid call
       // TODO: Replace with Standardized error when #1490 is resolved
-      throw new Error('Invalid arguments passed to addContextListener!');
+      throw new Error(ChannelError.InvalidArguments);
     }
 
     return this.channels.addContextListener(theHandler, theContextType as string | string[] | null);
