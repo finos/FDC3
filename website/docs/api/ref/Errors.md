@@ -68,6 +68,26 @@ var AgentError = struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Agent errors are handled via FDC3ConnectionException
+public class FDC3ConnectionException extends RuntimeException {
+    public FDC3ConnectionException(String message, Throwable cause) {
+        super(message, cause);
+    }
+    
+    public FDC3ConnectionException(String message) {
+        super(message);
+    }
+    
+    public FDC3ConnectionException(Throwable cause) {
+        super(cause);
+    }
+}
+```
+
+</TabItem>
 </Tabs>
 
 ## `ChannelError`
@@ -178,6 +198,30 @@ var ChannelError = struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public enum ChannelError {
+    NoChannelFound("NoChannelFound"),
+    AccessDenied("AccessDenied"),
+    CreationFailed("CreationFailed"),
+    MalformedContext("MalformedContext"),
+    ApiTimeout("ApiTimeout"),
+    InvalidArguments("InvalidArguments");
+    
+    private final String value;
+    
+    private ChannelError(String value) {
+        this.value = value;
+    }
+    
+    public String toString() {
+        return this.value;
+    }
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -221,6 +265,20 @@ var CloseError = struct {
 }{
   ErrorOnClose: "ErrorOnClose",
   ApiTimeout:  "ApiTimeout",
+}
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public enum CloseError {
+    ErrorOnClose("ErrorOnClose"),
+    ApiTimeout("ApiTimeout");
+
+    private final String value;
+    CloseError(String value) { this.value = value; }
+    @Override public String toString() { return value; }
 }
 ```
 
@@ -343,6 +401,28 @@ var OpenError = struct {
 	ResolverUnavailable: "ResolverUnavailable",
 	MalformedContext:    "MalformedContext",
 	DesktopAgentNotFound: "DesktopAgentNotFound",
+}
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public enum OpenError {
+    AppNotFound("AppNotFound"),
+    ErrorOnLaunch("ErrorOnLaunch"),
+    AppTimeout("AppTimeout"),
+    ResolverUnavailable("ResolverUnavailable");
+    
+    private final String value;
+    
+    private OpenError(String value) {
+        this.value = value;
+    }
+    
+    public String toString() {
+        return this.value;
+    }
 }
 ```
 
@@ -528,6 +608,35 @@ var ResolveError = struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public enum ResolveError {
+    NoAppsFound("NoAppsFound"),
+    ResolverUnavailable("ResolverUnavailable"),
+    UserCancelled("UserCancelledResolution"),
+    ResolverTimeout("ResolverTimeout"),
+    TargetAppUnavailable("TargetAppUnavailable"),
+    TargetInstanceUnavailable("TargetInstanceUnavailable"),
+    IntentDeliveryFailed("IntentDeliveryFailed"),
+    MalformedContext("MalformedContext"),
+    IntentListenerConflict("IntentListenerConflict"),
+    ApiTimeout("ApiTimeout"),
+    InvalidArguments("InvalidArguments");
+    
+    private final String value;
+    
+    private ResolveError(String value) {
+        this.value = value;
+    }
+    
+    public String toString() {
+        return this.value;
+    }
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -596,6 +705,26 @@ var ResultError = struct {
 }{
 	IntentHandlerRejected: "IntentHandlerRejected",
 	NoResultReturned:      "NoResultReturned",
+}
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public enum ResultError {
+    NoResultReturned("NoResultReturned"),
+    IntentHandlerRejected("IntentHandlerRejected");
+    
+    private final String value;
+    
+    private ResultError(String value) {
+        this.value = value;
+    }
+    
+    public String toString() {
+        return this.value;
+    }
 }
 ```
 
@@ -672,6 +801,13 @@ var BridgingError = struct {
 	NotConnectedToBridge: "NotConnectedToBridge",
 	MalformedMessage: "MalformedMessage",
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Not implemented
 ```
 
 </TabItem>

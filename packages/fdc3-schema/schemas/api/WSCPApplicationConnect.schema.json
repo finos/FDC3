@@ -1,0 +1,50 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/api/WSCPApplicationConnect.schema.json",
+  "title": "WebSocket Connection Protocol Application Connect",
+  "description": "Connect message sent by a native application during the WSCP handshake. When the application is the TCP initiator it MUST include sharedSecret. When the application is the acceptor (responding to WSCPDesktopAgentConnect) it MUST NOT include sharedSecret.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "#/$defs/WSCPApplicationConnectBase"
+    },
+    {
+      "$ref": "WSCPConnectionStep.schema.json"
+    }
+  ],
+  "$defs": {
+    "WSCPApplicationConnectBase": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "title": "WSCPApplicationConnect Message Type",
+          "const": "WSCPApplicationConnect"
+        },
+        "payload": {
+          "title": "WSCPApplicationConnect Payload",
+          "type": "object",
+          "properties": {
+            "protocolVersion": {
+              "title": "Protocol version",
+              "description": "WSCP protocol version.",
+              "type": "string",
+              "const": "1.0"
+            },
+            "sharedSecret": {
+              "title": "Shared secret",
+              "description": "Pairing credential scoped to a single (fdc3Session, appInstance) pair. MUST be included when the application is the TCP initiator. MUST NOT be included when the application is the acceptor.",
+              "type": "string"
+            }
+          },
+          "additionalProperties": false,
+          "required": ["protocolVersion"]
+        },
+        "meta": {
+          "$ref": "WSCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"
+        }
+      },
+      "required": ["type", "payload", "meta"],
+      "additionalProperties": false
+    }
+  }
+}

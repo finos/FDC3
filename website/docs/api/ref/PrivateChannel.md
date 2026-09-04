@@ -62,6 +62,16 @@ func (privateChannel *PrivateChannel) Disconnect() <-Result[any]  {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public interface PrivateChannel extends Channel {
+    CompletionStage<Listener> addEventListener(String type, EventHandler handler);
+    void disconnect();
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -198,6 +208,23 @@ _desktopAgent.AddIntentListener<Instrument>("QuoteStream", async (context, metad
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+desktopAgent.addIntentListener("QuoteStream", (context, metadata) ->
+    desktopAgent.createPrivateChannel().thenCompose(channel -> {
+        String symbol = (String) context.getId().get("ticker");
+        return channel.addEventListener(FDC3Event.Type.ADD_CONTEXT_LISTENER.getValue(), event -> {
+            feed.onQuote(symbol, price -> {
+                Context quote = new Context("price");
+                quote.put("price", price);
+                channel.broadcast(quote);
+            });
+        }).thenApply(v -> Optional.of((Object) channel));
+    }));
+```
+
+</TabItem>
 </Tabs>
 
 ### 'Client-side' example
@@ -302,6 +329,25 @@ if channel, ok := result.Value.(Channel); ok {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+IntentResolution resolution = desktopAgent
+    .raiseIntent("QuoteStream", instrumentContext, null)
+    .toCompletableFuture().join();
+IntentResult result = resolution.getResult().toCompletableFuture().join();
+if (result instanceof PrivateChannel privateChannel) {
+    Listener listener = privateChannel.addContextListener("price", (quote, meta) -> {
+        System.out.println(quote);
+    }).toCompletableFuture().join();
+    privateChannel.addEventListener(FDC3Event.Type.ON_DISCONNECT.getValue(), event -> {
+        System.out.println("Quote feed went down");
+    }).toCompletableFuture().join();
+    listener.unsubscribe().toCompletableFuture().join();
+}
+```
+
+</TabItem>
 </Tabs>
 
 ## Functions
@@ -329,6 +375,13 @@ Task<IListener> AddEventListener(string? eventType, Fdc3EventHandler handler);
 func (privateChannel *PrivateChannel) AddEventListener(eventType *PrivateChannelEventTypes, handler EventHandler) <-Result[Listener] {
     // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Listener> addEventListener(String type, EventHandler handler);
 ```
 
 </TabItem>
@@ -368,6 +421,15 @@ listenerResult := AddEventListener(nil, func(event PrivateChannelEvent) {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Listener listener = privateChannel.addEventListener(null, event -> {
+    System.out.println("Received event " + event.getType());
+}).toCompletableFuture().join();
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -402,6 +464,13 @@ void Disconnect();
 func (privateChannel *PrivateChannel) Disconnect() <-Result[any] {
     // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+void disconnect();
 ```
 
 </TabItem>
