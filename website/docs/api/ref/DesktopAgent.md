@@ -2158,7 +2158,7 @@ listenerResult := <-desktopAgent.AddContextListener("", func(context IContext, c
 
 ```java
 // desktop-agent scope context listener
-Listener fdc3Listener = desktopAgent.addContextListener(null, (context, metadata) -> {}).toCompletableFuture().get();
+Listener fdc3Listener = desktopAgent.addContextListener(null, (context, metadata) -> { ... }).toCompletableFuture().get();
 
 desktopAgent.leaveCurrentChannel().toCompletableFuture().get();
 // the fdc3Listener will now cease receiving context
