@@ -2266,7 +2266,7 @@ instanceIdentifierResult := <-desktopAgent.Open(appIdentifier, &context)
 
 ```java
 // Open an app without context, using an AppIdentifier object to specify the target
-AppIdentifier appIdentifier = new AppIdentifier("myApp-v1.0.1");
+AppIdentifier appIdentifier = new AppIdentifier("MyAppId@my.appd.com");
 AppIdentifier instanceIdentifier = desktopAgent.open(appIdentifier, null).toCompletableFuture().get();
 
 // Open an app with context
