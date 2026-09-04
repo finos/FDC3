@@ -154,19 +154,30 @@ type IDesktopAgent interface {
 public interface DesktopAgent {
     // Apps
     CompletionStage<AppIdentifier> open(AppIdentifier app, Context context);
+    CompletionStage<AppIdentifier> open(AppIdentifier app, Context context, AppProvidableContextMetadata metadata);
+    CompletionStage<Void> close();
     CompletionStage<List<AppIdentifier>> findInstances(AppIdentifier app);
     CompletionStage<AppMetadata> getAppMetadata(AppIdentifier app);
 
     // Context
     CompletionStage<Void> broadcast(Context context);
+    CompletionStage<Void> broadcast(Context context, AppProvidableContextMetadata metadata);
     CompletionStage<Listener> addContextListener(String contextType, ContextHandler handler);
 
     // Intents
     CompletionStage<AppIntent> findIntent(String intent, Context context, String resultType);
     CompletionStage<List<AppIntent>> findIntentsByContext(Context context, String resultType);
     CompletionStage<IntentResolution> raiseIntent(String intent, Context context, AppIdentifier app);
+    CompletionStage<IntentResolution> raiseIntent(String intent, Context context, AppIdentifier app, AppProvidableContextMetadata metadata);
+    CompletionStage<IntentResolution> raiseIntent(String intent, Context context, AppIdentifier app, Boolean newInstance);
+    CompletionStage<IntentResolution> raiseIntent(String intent, Context context, AppIdentifier app, Boolean newInstance, AppProvidableContextMetadata metadata);
     CompletionStage<IntentResolution> raiseIntentForContext(Context context, AppIdentifier app);
+    CompletionStage<IntentResolution> raiseIntentForContext(Context context, AppIdentifier app, AppProvidableContextMetadata metadata);
+    CompletionStage<IntentResolution> raiseIntentForContext(Context context, AppIdentifier app, Boolean newInstance);
+    CompletionStage<IntentResolution> raiseIntentForContext(Context context, AppIdentifier app, Boolean newInstance, AppProvidableContextMetadata metadata);
     CompletionStage<Listener> addIntentListener(String intent, IntentHandler handler);
+    CompletionStage<Listener> addIntentListenerWithContext(String intent, String contextType, IntentHandler handler);
+    CompletionStage<Listener> addIntentListenerWithContext(String intent, List<String> contextTypes, IntentHandler handler);
 
     // Channels
     CompletionStage<Channel> getOrCreateChannel(String channelId);
@@ -561,14 +572,14 @@ listenerResult := <-desktopAgent.AddIntentListener("fdc3.contact", func(context 
 // Handle a raised intent
 Listener listener = desktopAgent.addIntentListener("StartChat", (context, metadata) -> {
     // start chat has been requested by another application
-    return CompletableFuture.completedFuture(null);
+    return CompletableFuture.completedFuture(Optional.empty());
 }).toCompletableFuture().get();
 
 // Handle a raised intent and return Context data
 desktopAgent.addIntentListener("CreateOrder", (context, metadata) -> {
     Context order = new Context("fdc3.order");
-    order.getId().put("orderId", "1234");
-    return CompletableFuture.completedFuture(order);
+    order.setId(Map.of("orderId", "1234"));
+    return CompletableFuture.completedFuture(Optional.of(order));
 });
 ```
 
@@ -604,6 +615,14 @@ addIntentListenerWithContext(
 func (desktopAgent *DesktopAgent) AddIntentListenerWithContext(intent string, contextType []string, handler IntentHandler) <-chan Result[Listener] {
   // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Listener> addIntentListenerWithContext(String intent, String contextType, IntentHandler handler);
+CompletionStage<Listener> addIntentListenerWithContext(String intent, List<String> contextTypes, IntentHandler handler);
 ```
 
 </TabItem>
@@ -654,6 +673,27 @@ listenerResult := <-desktopAgent.AddIntentListenerWithContext("ViewChart", []str
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Handle a raised intent filtered to a single context type
+Listener listener = desktopAgent.addIntentListenerWithContext("StartChat", "fdc3.contact", (context, metadata) -> {
+    // start chat has been requested by another application
+    return CompletableFuture.completedFuture(Optional.empty());
+}).toCompletableFuture().join();
+
+// Handle a raised intent filtered to multiple context types
+Listener chartListener = desktopAgent.addIntentListenerWithContext(
+    "ViewChart",
+    List.of("fdc3.instrument", "fdc3.instrumentList"),
+    (context, metadata) -> {
+        // view chart has been requested by another application
+        return CompletableFuture.completedFuture(Optional.empty());
+    }
+).toCompletableFuture().join();
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -694,6 +734,7 @@ func (desktopAgent *DesktopAgent) Broadcast(context IContext, metadata *AppProvi
 
 ```java
 CompletionStage<Void> broadcast(Context context);
+CompletionStage<Void> broadcast(Context context, AppProvidableContextMetadata metadata);
 ```
 
 </TabItem>
@@ -757,7 +798,7 @@ desktopAgent.Broadcast(context)
 
 ```java
 Context instrument = new Context("fdc3.instrument");
-instrument.getId().put("ticker", "AAPL");
+instrument.setId(Map.of("ticker", "AAPL"));
 desktopAgent.broadcast(instrument);
 ```
 
@@ -912,15 +953,15 @@ desktopAgent.AddIntentListener("QuoteStream", func(context IContext, contextMeta
 ```java
 desktopAgent.addIntentListener("QuoteStream", (context, metadata) -> {
     PrivateChannel channel = desktopAgent.createPrivateChannel().toCompletableFuture().get();
-    String symbol = context.getId().get("ticker");
+    String symbol = (String) context.getId().get("ticker");
     
-    channel.addEventListener("addContextListener", event -> {
+    channel.addEventListener(FDC3Event.Type.ADD_CONTEXT_LISTENER.getValue(), event -> {
         feed.onQuote(symbol, price -> channel.broadcast(new Context("price")));
     });
     
-    channel.addEventListener("disconnect", event -> feed.stop(symbol));
+    channel.addEventListener(FDC3Event.Type.ON_DISCONNECT.getValue(), event -> feed.stop(symbol));
     
-    return CompletableFuture.completedFuture(channel);
+    return CompletableFuture.completedFuture(Optional.of(channel));
 });
 ```
 
@@ -1138,7 +1179,7 @@ if findIntentResult.Err != nil {
 AppIntent appIntent = desktopAgent.findIntent("StartChat", null, null).toCompletableFuture().get();
 
 // raise the intent against a particular app
-desktopAgent.raiseIntent(appIntent.getIntent().getName(), context, appIntent.getApps().get(0));
+desktopAgent.raiseIntent(appIntent.getIntent().getName(), context, appIntent.getApps()[0]);
 ```
 
 </TabItem>
@@ -1426,7 +1467,7 @@ List<AppIntent> appIntentsForType = desktopAgent.findIntentsByContext(context, "
 AppIntent startChat = appIntentsForType.get(0);
 
 // target a particular app or instance
-AppMetadata selectedApp = startChat.getApps().get(0);
+AppMetadata selectedApp = startChat.getApps()[0];
 
 // raise the intent, passing the given context, targeting the app
 desktopAgent.raiseIntent(startChat.getIntent().getName(), context, selectedApp);
@@ -2123,7 +2164,7 @@ desktopAgent.leaveCurrentChannel().toCompletableFuture().get();
 // the fdc3Listener will now cease receiving context
 
 // listening on a specific channel though, will continue to work
-redChannel.addContextListener(null, channelListener);
+redChannel.addContextListener(null, (context, metadata) -> {}).toCompletableFuture().get();
 ```
 
 </TabItem>
@@ -2159,6 +2200,7 @@ func (desktopAgent *DesktopAgent) Open(appIdentifier AppIdentifier, context *ICo
 
 ```java
 CompletionStage<AppIdentifier> open(AppIdentifier app, Context context);
+CompletionStage<AppIdentifier> open(AppIdentifier app, Context context, AppProvidableContextMetadata metadata);
 ```
 
 </TabItem>
@@ -2260,6 +2302,13 @@ func (desktopAgent *DesktopAgent) Close() <-chan Result[any] {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Void> close();
+```
+
+</TabItem>
 </Tabs>
 
 Requests that the Desktop Agent close the calling application's own window or frame. This API is limited to self-close only — it cannot be used to close another application.
@@ -2289,6 +2338,15 @@ result := <-desktopAgent.Close()
 if result.Err != nil {
     // handle error
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Perform cleanup, then request close
+saveState();
+desktopAgent.close().toCompletableFuture().join();
 ```
 
 </TabItem>
@@ -2329,6 +2387,9 @@ func (desktopAgent *DesktopAgent) RaiseIntent(intent string, context IContext, a
 
 ```java
 CompletionStage<IntentResolution> raiseIntent(String intent, Context context, AppIdentifier app);
+CompletionStage<IntentResolution> raiseIntent(String intent, Context context, AppIdentifier app, AppProvidableContextMetadata metadata);
+CompletionStage<IntentResolution> raiseIntent(String intent, Context context, AppIdentifier app, Boolean newInstance);
+CompletionStage<IntentResolution> raiseIntent(String intent, Context context, AppIdentifier app, Boolean newInstance, AppProvidableContextMetadata metadata);
 ```
 
 </TabItem>
@@ -2461,7 +2522,7 @@ desktopAgent.raiseIntent("StartChat", context, null);
 AppIntent appIntent = desktopAgent.findIntent("StartChat", context, null).toCompletableFuture().get();
 
 // use the metadata of an app or app instance to describe the target app for the intent
-desktopAgent.raiseIntent("StartChat", context, appIntent.getApps().get(0));
+desktopAgent.raiseIntent("StartChat", context, appIntent.getApps()[0]);
 
 // Raise an intent without a context by using the nothing context type
 desktopAgent.raiseIntent("StartChat", new Context("fdc3.nothing"), null);
@@ -2524,6 +2585,9 @@ func (desktopAgent *DesktopAgent) RaiseIntentForContext(context IContext, appIde
 
 ```java
 CompletionStage<IntentResolution> raiseIntentForContext(Context context, AppIdentifier app);
+CompletionStage<IntentResolution> raiseIntentForContext(Context context, AppIdentifier app, AppProvidableContextMetadata metadata);
+CompletionStage<IntentResolution> raiseIntentForContext(Context context, AppIdentifier app, Boolean newInstance);
+CompletionStage<IntentResolution> raiseIntentForContext(Context context, AppIdentifier app, Boolean newInstance, AppProvidableContextMetadata metadata);
 ```
 
 </TabItem>

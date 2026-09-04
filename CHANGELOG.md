@@ -41,6 +41,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+* Corrected Java API documentation examples and type snippets to match `fdc3-java-api` (`AppIntent.getApps()` array access, `IntentHandler` `Optional<Object>` returns, `Context.setId`, `ChannelError`/`ResolveError` values, raiseIntent metadata overloads, and related usage examples).
 * Added `channelId` to `FDC3ContextClearedEvent.details` and all PrivateChannel event details, aligning the standard API events with existing DACP payloads and allowing channel-related events to identify their source channel. ([#2042](https://github.com/finos/FDC3/issues/2042))
 * Clarified `userChannelChanged` event ordering after `joinUserChannel` in the API and Desktop Agent Communication Protocol documentation. ([#1967](https://github.com/finos/FDC3/pull/1967))
 * The `fdc3-agent-proxy` now enforces intent listener conflicts on the client side: `addIntentListener` and `addIntentListenerWithContext` reject with `ResolveError.IntentListenerConflict` when a new listener conflicts with an existing one for the same intent (either listener being unfiltered, or their context types overlapping). Multiple filtered listeners for the same intent with non-overlapping context types are now allowed, and the `addIntentListener`/`addIntentListenerWithContext` documentation was updated accordingly.

@@ -136,9 +136,10 @@ const (
 // Event types are defined as FDC3Event.Type enum
 public enum Type {
     ADD_CONTEXT_LISTENER("addContextListener"),
-    ON_UNSUBSCRIBE("onUnsubscribe"),
-    ON_DISCONNECT("onDisconnect"),
-    USER_CHANNEL_CHANGED("userChannelChanged");
+    ON_UNSUBSCRIBE("unsubscribe"),
+    ON_DISCONNECT("disconnect"),
+    USER_CHANNEL_CHANGED("userChannelChanged"),
+    CONTEXT_CLEARED("contextCleared");
     
     private final String value;
     Type(String value) { this.value = value; }
@@ -182,6 +183,14 @@ type ChannelEventTypes string
 const (
   ContextClearedChannelEventType ChannelEventTypes = "contextCleared"
 )
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Channel events use FDC3Event.Type.CONTEXT_CLEARED
+channel.addEventListener(FDC3Event.Type.CONTEXT_CLEARED.getValue(), event -> { ... });
 ```
 
 </TabItem>
@@ -327,7 +336,7 @@ type FDC3ChannelChangedEventDetails struct {
 
 ```java
 // Received as FDC3Event with type USER_CHANNEL_CHANGED
-desktopAgent.addEventListener("userChannelChanged", event -> {
+desktopAgent.addEventListener(FDC3Event.Type.USER_CHANNEL_CHANGED.getValue(), event -> {
     if (event.getType() == FDC3Event.Type.USER_CHANNEL_CHANGED) {
         Map<String, Object> details = (Map<String, Object>) event.getDetails();
         String currentChannelId = (String) details.get("currentChannelId");
@@ -392,11 +401,17 @@ public class Fdc3ContextClearedEvent : Fdc3Event
 <TabItem value="java" label="Java">
 
 ```java
-// Received as FDC3Event - contextCleared not yet in FDC3Event.Type enum
-desktopAgent.addEventListener("contextCleared", event -> {
-    Map<String, Object> details = (Map<String, Object>) event.getDetails();
-    String contextType = (String) details.get("type");
+// Received as FDC3Event with type CONTEXT_CLEARED
+desktopAgent.addEventListener(FDC3Event.Type.CONTEXT_CLEARED.getValue(), event -> {
+    if (event.getType() == FDC3Event.Type.CONTEXT_CLEARED) {
+        Map<String, Object> details = (Map<String, Object>) event.getDetails();
+        String channelId = (String) details.get("channelId");
+        String contextType = (String) details.get("contextType");
+    }
 });
+```
+
+</TabItem>
 <TabItem value="golang" label="Go">
 
 ```go
@@ -519,7 +534,7 @@ type PrivateChannelEvent struct {
 
 ```java
 // PrivateChannel events are received as FDC3Event objects
-privateChannel.addEventListener("addContextListener", event -> {
+privateChannel.addEventListener(FDC3Event.Type.ADD_CONTEXT_LISTENER.getValue(), event -> {
     // event.getType() returns FDC3Event.Type.ADD_CONTEXT_LISTENER
     Map<String, Object> details = (Map<String, Object>) event.getDetails();
     String contextType = (String) details.get("contextType");
@@ -586,7 +601,7 @@ type PrivateChannelAddContextListenerEventDetails struct {
 
 ```java
 // Received as FDC3Event with type ADD_CONTEXT_LISTENER
-privateChannel.addEventListener("addContextListener", event -> {
+privateChannel.addEventListener(FDC3Event.Type.ADD_CONTEXT_LISTENER.getValue(), event -> {
     Map<String, Object> details = (Map<String, Object>) event.getDetails();
     String contextType = (String) details.get("contextType"); // may be null
 });
@@ -646,7 +661,7 @@ type PrivateChannelUnsubscribeEventDetails struct {
 
 ```java
 // Received as FDC3Event with type ON_UNSUBSCRIBE
-privateChannel.addEventListener("unsubscribe", event -> {
+privateChannel.addEventListener(FDC3Event.Type.ON_UNSUBSCRIBE.getValue(), event -> {
     Map<String, Object> details = (Map<String, Object>) event.getDetails();
     String contextType = (String) details.get("contextType"); // may be null
 });
@@ -700,7 +715,7 @@ type PrivateChannelDisconnectEvent struct {
 
 ```java
 // Received as FDC3Event with type ON_DISCONNECT
-privateChannel.addEventListener("disconnect", event -> {
+privateChannel.addEventListener(FDC3Event.Type.ON_DISCONNECT.getValue(), event -> {
     // No details for disconnect events
 });
 ```

@@ -246,6 +246,15 @@ var version = (await _desktopAgent.GetInfo()).Fdc3Version;
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+String version = desktopAgent.getInfo()
+    .thenApply(info -> info.getFdc3Version())
+    .toCompletableFuture().join();
+```
+
+</TabItem>
 </Tabs>
 
 The [`ImplementationMetadata`](ref/Types#implementationmetadata) object returned also includes the metadata for the calling application, according to the Desktop Agent. This allows the application to retrieve its own `appId`, `instanceId` and other details, e.g.:
@@ -266,6 +275,14 @@ const { appId, instanceId } = implementationMetadata.appMetadata;
 var implementationMetadata = await _desktopAgent.GetInfo();
 var appId = implementationMetadata.AppMetadata.AppId;
 var instanceId = implementationMetadata.AppMetadata.InstanceId;
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+String appId = implementationMetadata.getAppMetadata().getAppId();
+String instanceId = implementationMetadata.getAppMetadata().getInstanceId();
 ```
 
 </TabItem>
@@ -440,6 +457,14 @@ await _desktopAgent.RaiseIntent(appIntents.First().Intent.Name, context, appInte
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+desktopAgent.raiseIntent("StartChat", context, appIntent.getApps()[0])
+    .toCompletableFuture().join();
+```
+
+</TabItem>
 </Tabs>
 
 Result context types requested are represented by their type name. A channel may be requested by passing the string `"channel"` or a channel that returns a specific type via the syntax `"channel<contextType>"`, e.g. `"channel<fdc3.instrument>"`. Requesting intent resolution to an app returning a channel MUST include apps that are registered as returning a channel with a specific type.
@@ -487,6 +512,13 @@ catch (Exception ex) { }
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+desktopAgent.raiseIntent("StageOrder", context).toCompletableFuture().join();
+```
+
+</TabItem>
 </Tabs>
 
 or to raise an unspecified intent for a specific context, where the user may select an intent from a resolver dialog:
@@ -516,6 +548,22 @@ try
     }
 }
 catch (Exception ex) { }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+try {
+    IntentResolution resolution = desktopAgent.raiseIntentForContext(context)
+        .toCompletableFuture().join();
+    IntentResult result = resolution.getResult().toCompletableFuture().join();
+    if (result instanceof Context resolvedContext) {
+        Object orderId = resolvedContext.getId().get("orderId");
+    }
+} catch (CompletionException ex) {
+    // ResolveError
+}
 ```
 
 </TabItem>
@@ -549,6 +597,17 @@ try
     await _desktopAgent.RaiseIntent("UpdateOrder", context, resolution.Source);
 }
 catch (Exception ex) {  }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+IntentResolution resolution = desktopAgent.raiseIntent("StageOrder", context)
+    .toCompletableFuture().join();
+// some time later
+desktopAgent.raiseIntent("UpdateOrder", context, resolution.getSource())
+    .toCompletableFuture().join();
 ```
 
 </TabItem>
@@ -602,6 +661,24 @@ try
 catch (Exception ex)
 {
     System.Diagnostics.Debug.WriteLine($"{resolution.Source} returned an error");
+}
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+IntentResolution resolution = desktopAgent.raiseIntent("QuoteStream", instrumentContext)
+    .toCompletableFuture().join();
+try {
+    IntentResult result = resolution.getResult().toCompletableFuture().join();
+    if (result instanceof Channel channel) {
+        System.out.println(resolution.getSource() + " returned channel " + channel.getId());
+    } else if (result instanceof Context ctx) {
+        System.out.println(resolution.getSource() + " returned " + ctx);
+    }
+} catch (CompletionException ex) {
+    System.out.println(resolution.getSource() + " returned an error");
 }
 ```
 
@@ -727,6 +804,17 @@ var redChannel = allChannels.Single(c => c.Id == "red");
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+List<Channel> allChannels = desktopAgent.getUserChannels()
+    .toCompletableFuture().join();
+Channel redChannel = allChannels.stream()
+    .filter(c -> "red".equals(c.getId()))
+    .findFirst().orElseThrow();
+```
+
+</TabItem>
 </Tabs>
 
 To join a User channel, one calls:
@@ -743,6 +831,14 @@ fdc3.joinUserChannel(redChannel.id);
 
 ```csharp
 await _desktopAgent.JoinUserChannel(redChannel.Id);
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+desktopAgent.joinUserChannel(redChannel.getId())
+    .toCompletableFuture().join();
 ```
 
 </TabItem>
@@ -876,6 +972,17 @@ await appChannel.Broadcast(context);
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Channel appChannel = desktopAgent.getOrCreateChannel("my_custom_channel")
+    .toCompletableFuture().join();
+Optional<Context> current = appChannel.getCurrentContext().toCompletableFuture().join();
+appChannel.addContextListener(null, (ctx, metadata) -> { }).toCompletableFuture().join();
+appChannel.broadcast(context).toCompletableFuture().join();
+```
+
+</TabItem>
 </Tabs>
 
 An app can still explicitly receive context events on any [`Channel`](ref/Channel), regardless of the channel it is currently joined to.
@@ -917,6 +1024,17 @@ var myChannelListener = await myChannel.AddContextListener<IContext>(null, (cont
 await _desktopAgent.JoinUserChannel("blue");
 joinedChannel = await _desktopAgent.GetCurrentChannel();
 // current channel is now the "blue" channel
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Channel appChannel = desktopAgent.getOrCreateChannel("my_custom_channel")
+    .toCompletableFuture().join();
+Optional<Context> current = appChannel.getCurrentContext().toCompletableFuture().join();
+appChannel.addContextListener(null, (ctx, metadata) -> { }).toCompletableFuture().join();
+appChannel.broadcast(context).toCompletableFuture().join();
 ```
 
 </TabItem>

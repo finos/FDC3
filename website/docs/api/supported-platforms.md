@@ -181,6 +181,36 @@ FINOS' [FDC3 Java Api Project](https://github.com/finos-labs/fdc3-java-api) offe
 
 For more details, review the [README for that project](https://github.com/finos-labs/fdc3-java-api).
 
+#### Usage
+
+Native Java applications obtain a `DesktopAgent` via the `GetAgent.getAgent()` factory, which connects over WebSocket using the [WebSocket Connection Protocol (WSCP)](specs/webConnectionProtocol):
+
+```java
+import org.finos.fdc3.api.DesktopAgent;
+import org.finos.fdc3.api.context.Context;
+import org.finos.fdc3.getagent.GetAgent;
+import org.finos.fdc3.getagent.GetAgentParams;
+
+GetAgentParams params = GetAgentParams.builder()
+    .webSocketUrl("ws://localhost:8090/fdc3/ws")
+    .sharedSecret("pairing-secret-from-desktop-agent")
+    .build();
+
+GetAgent.getAgent(params)
+    .thenAccept(agent -> {
+        // use agent like window.fdc3 in JavaScript
+        agent.broadcast(new Context("fdc3.instrument"));
+    })
+    .exceptionally(error -> {
+        // FDC3ConnectionException on handshake failure
+        return null;
+    });
+```
+
+Connection parameters may also be supplied via the `FDC3_WEBSOCKET_URL` and `FDC3_CONNECTION_SECRET` environment variables (or system properties).
+
+All FDC3 API methods return `CompletionStage` — use `.thenAccept()` / `.thenCompose()` for async code, or `.toCompletableFuture().join()` for blocking examples in tests.
+
 ## Hybrid
 
 In a hybrid application, a standalone native application incorporates a web view, within which a web application runs. This may be considered a special case of the web platform where all platform-provider requirements for web applications must be satisfied, but it is the responsibility of the associated native application, rather than a platform provider, to ensure they are fulfilled. This may be achieved via either of the defined web interfaces, i.e. by injecting an implementation of the DesktopAgent API at `window.fdc3` or via the FDC3 Web Connection Protocol (`postMessage`).

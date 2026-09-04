@@ -204,7 +204,10 @@ var ChannelError = struct {
 public enum ChannelError {
     NoChannelFound("NoChannelFound"),
     AccessDenied("AccessDenied"),
-    CreationFailed("CreationFailed");
+    CreationFailed("CreationFailed"),
+    MalformedContext("MalformedContext"),
+    ApiTimeout("ApiTimeout"),
+    InvalidArguments("InvalidArguments");
     
     private final String value;
     
@@ -262,6 +265,20 @@ var CloseError = struct {
 }{
   ErrorOnClose: "ErrorOnClose",
   ApiTimeout:  "ApiTimeout",
+}
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public enum CloseError {
+    ErrorOnClose("ErrorOnClose"),
+    ApiTimeout("ApiTimeout");
+
+    private final String value;
+    CloseError(String value) { this.value = value; }
+    @Override public String toString() { return value; }
 }
 ```
 
@@ -601,7 +618,11 @@ public enum ResolveError {
     ResolverTimeout("ResolverTimeout"),
     TargetAppUnavailable("TargetAppUnavailable"),
     TargetInstanceUnavailable("TargetInstanceUnavailable"),
-    IntentDeliveryFailed("IntentDeliveryFailed");
+    IntentDeliveryFailed("IntentDeliveryFailed"),
+    MalformedContext("MalformedContext"),
+    IntentListenerConflict("IntentListenerConflict"),
+    ApiTimeout("ApiTimeout"),
+    InvalidArguments("InvalidArguments");
     
     private final String value;
     

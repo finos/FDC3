@@ -26,6 +26,18 @@ interface AntiReplayClaims {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class AntiReplayClaims {
+    private long iat;
+    private long exp;
+    private String jti;
+    // constructors, getters, setters
+}
+```
+
+</TabItem>
 </Tabs>
 
 Anti-replay claims that MUST accompany a `DetachedSignature` to prevent a captured signed message from being resubmitted by an attacker. The `jti` is a unique token ID that receiving applications MUST record and reject if seen again within the `exp` window. Note that timestamps use Unix epoch seconds (NumericDate per [RFC 7519](https://datatracker.ietf.org/doc/html/rfc7519)), not the ISO 8601 format used elsewhere in FDC3.
@@ -183,6 +195,16 @@ type AppIntent struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class AppIntent {
+    public IntentMetadata getIntent() { ... }
+    public AppMetadata[] getApps() { ... }
+}
+```
+
+</TabItem>
 </Tabs>
 
 An interface that represents the binding of an intent to apps, returned as part of intent discovery.
@@ -331,6 +353,15 @@ type AppMetadata struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class AppMetadata extends AppIdentifier {
+    // extends AppIdentifier; additional getters include getTitle(), getIcons(), getResultType(), etc.
+}
+```
+
+</TabItem>
 </Tabs>
 
 Extends an AppIdentifier, describing an application or instance of an application, with additional descriptive metadata that is usually provided by an FDC3 App Directory that the desktop agent connects to.
@@ -398,6 +429,20 @@ type AppProvidableContextMetadata struct {
   TraceId   string                 `json:"traceId,omitempty"`
   Signature string                 `json:"signature,omitempty"`
   Custom    map[string]interface{} `json:"custom,omitempty"`
+}
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Implemented by ContextMetadata for outbound metadata.
+// Extends SecurityMetadata (signature, antiReplay, authenticity, encryption).
+public interface AppProvidableContextMetadata extends SecurityMetadata {
+    String getTraceId();
+    void setTraceId(String traceId);
+    Map<String, Object> getCustom();
+    void setCustom(Map<String, Object> custom);
 }
 ```
 
@@ -535,6 +580,16 @@ type ContextHandler func(IContext, *ContextMetadata)
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+@FunctionalInterface
+public interface ContextHandler {
+    void handleContext(Context context, ContextMetadata metadata);
+}
+```
+
+</TabItem>
 </Tabs>
 
 Describes a callback that handles a context event. Used when attaching listeners for context broadcasts.
@@ -609,6 +664,16 @@ type ContextMetadata struct {
   Signature  *DetachedSignature     `json:"signature,omitempty"`
   AntiReplay *AntiReplayClaims      `json:"antiReplay,omitempty"`
   Custom     map[string]interface{} `json:"custom,omitempty"`
+}
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class ContextMetadata extends HashMap<String, Object>
+        implements AppProvidableContextMetadata, DesktopAgentProvidableContextMetadata {
+    // Typed accessors: getSource(), getTimestamp(), getTraceId(), getSignature(), getAntiReplay(), getCustom()
 }
 ```
 
@@ -713,6 +778,17 @@ type ContextWithMetadata struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class ContextWithMetadata {
+    private Context context;
+    private ContextMetadata metadata;
+    // getContext(), getMetadata(), setters
+}
+```
+
+</TabItem>
 </Tabs>
 
 Represents a context object paired with its associated metadata. Returned by [`Channel.getCurrentContextWithMetadata()`](Channel#getcurrentcontextwithmetadata) to allow retrieval of both the current context and the [`ContextMetadata`](#contextmetadata) that was provided when it was broadcast. May also be returned by an [`IntentHandler`](#intenthandler) to include app-provided metadata alongside a context result, which will be merged with Desktop Agent generated metadata and made available to the raising app via [`IntentResolution.getResultMetadata()`](#intentresolution).
@@ -724,54 +800,6 @@ Represents a context object paired with its associated metadata. Returned by [`C
 - [`Channel.getCurrentContextWithMetadata`](Channel#getcurrentcontextwithmetadata)
 - [`IntentHandler`](#intenthandler)
 - [`IntentResolution.getResultMetadata`](Metadata#intentresolution)
-
-## `ContextHandler`
-
-<Tabs groupId="lang">
-<TabItem value="ts" label="TypeScript/JavaScript">
-
-```ts
-type ContextHandler = (context: Context, metadata: ContextMetadata) => void;
-```
-
-</TabItem>
-<TabItem value="dotnet" label=".NET">
-
-```csharp
-delegate void ContextHandler<T>(T context, IContextMetadata? metadata = null) where T : IContext;
-```
-
-</TabItem>
-<TabItem value="golang" label="Go">
-
-```go
-type ContextHandler func(IContext, *ContextMetadata)
-```
-
-</TabItem>
-<TabItem value="java" label="Java">
-
-```java
-@FunctionalInterface
-public interface ContextHandler {
-    void handleContext(Context context, ContextMetadata metadata);
-}
-```
-
-</TabItem>
-</Tabs>
-
-Describes a callback that handles a context event. Used when attaching listeners for context broadcasts.
-
-Metadata about each context message received, including the app that originated the message and a timestamp, MUST be provided by the Desktop Agent implementation. Apps raising intents MAY provide additional metadata (such as a traceId, signature or custom metadata), which the Desktop Agent MUST pass on to the handler.
-
-**See also:**
-
-- [`Context`](#context)
-- [`ContextMetadata`](Metadata#contextmetadata)
-- [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
-- [`Channel.addContextListener`](Channel#addcontextlistener)
-- [`IntentResolution.getResultMetadata`](#intentresolution)
 
 ## `DesktopAgentIdentifier`
 
@@ -807,19 +835,8 @@ type DesktopAgentIdentifier struct {
 <TabItem value="java" label="Java">
 
 ```java
-/** @experimental */
-public class DesktopAgentIdentifier {
-    /** Used in Desktop Agent Bridging to attribute or target a message to a 
-     *  particular Desktop Agent.
-     */
-    private final String desktopAgent;
-    
-    public DesktopAgentIdentifier(String desktopAgent) {
-        this.desktopAgent = desktopAgent;
-    }
-    
-    public String getDesktopAgent() { return desktopAgent; }
-}
+// No separate DesktopAgentIdentifier type in the Java API.
+// Use AppIdentifier.getDesktopAgent() / setDesktopAgent(String) for bridging.
 ```
 
 </TabItem>
@@ -846,6 +863,18 @@ interface DetachedSignature {
   /** The BASE64URL-encoded digital signature computed over the protected
    *  header and the canonicalized context payload (detached). */
   readonly signature: string;
+}
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class DetachedSignature {
+    @JsonProperty("protected")
+    private String protectedHeader;
+    private String signature;
+    // getters/setters
 }
 ```
 
@@ -924,6 +953,18 @@ type DisplayMetadata struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class DisplayMetadata {
+    private String name;
+    private String color;
+    private String glyph;
+    // getters/setters
+}
+```
+
+</TabItem>
 </Tabs>
 
 A desktop agent (typically for _system_ channels) may want to provide additional information about how a channel can be represented in a UI. A common use case is for color linking.
@@ -984,6 +1025,18 @@ type Icon struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class Icon {
+    private String src;
+    private String size;
+    private String type;
+    // getters/setters
+}
+```
+
+</TabItem>
 </Tabs>
 
 Metadata relating to a single icon image at a remote URL, used to represent an application in a user interface.
@@ -1033,6 +1086,16 @@ icons := []Icon{
         Type: "image/svg+xml",
       },
     }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Icon icon = appMetadata.getIcons().stream()
+    .filter(i -> "48x48".equals(i.getSize()))
+    .findFirst()
+    .orElse(null);
 ```
 
 </TabItem>
@@ -1108,6 +1171,19 @@ type Image struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class Image {
+    private String src;
+    private String size;
+    private String type;
+    private String label;
+    // getters/setters
+}
+```
+
+</TabItem>
 </Tabs>
 
 Metadata relating to a single image at a remote URL, used to represent screenshot images.
@@ -1164,6 +1240,15 @@ icons := []Image{
         Label: "Order notifications view",
       },
     }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+for (Image image : appMetadata.getScreenshots()) {
+    System.out.println(image.getSrc());
+}
 ```
 
 </TabItem>
@@ -1288,6 +1373,20 @@ type ImplementationMetadata struct {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class ImplementationMetadata {
+    private String fdc3Version;
+    private String provider;
+    private String providerVersion;
+    private AppMetadata appMetadata;
+    private OptionalFeatures optionalFeatures;
+    // getters/setters; OptionalFeatures nested class
+}
+```
+
+</TabItem>
 </Tabs>
 
 Metadata relating to the FDC3 [DesktopAgent](DesktopAgent) object and its provider, including the supported version of the FDC3 specification, the name of the provider of the implementation, its own version number and the metadata of the calling application according to the desktop agent.
@@ -1329,7 +1428,8 @@ type IntentHandler func(IContext, *ContextMetadata) <-chan IntentResult
 ```java
 @FunctionalInterface
 public interface IntentHandler {
-    CompletionStage<Optional<IntentResult>> handleIntent(Context context, ContextMetadata metadata);
+    // Optional may contain Context, Channel, ContextWithMetadata, or be empty for void
+    CompletionStage<Optional<Object>> handleIntent(Context context, ContextMetadata metadata);
 }
 ```
 
@@ -1399,6 +1499,17 @@ type IntentMetadata struct {
   DisplayName string `json:"displayName"`
 }
 
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public class IntentMetadata {
+    private String name;
+    private String displayName;
+    // getters/setters
+}
 ```
 
 </TabItem>
@@ -1510,6 +1621,19 @@ func (resolution *IntentResolution) GetResultMetadata() <-chan Result[ContextMet
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public interface IntentResolution {
+    AppIdentifier getSource();
+    String getIntent();
+    Optional<String> getVersion();
+    CompletionStage<IntentResult> getResult();
+    CompletionStage<ContextMetadata> getResultMetadata();
+}
+```
+
+</TabItem>
 </Tabs>
 
 IntentResolution provides a standard format for data returned upon resolving an intent.
@@ -1603,6 +1727,24 @@ if channel, ok := resolutionResult.Value.(Channel); ok {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+IntentResolution resolution = desktopAgent.raiseIntent("QuoteStream", context)
+    .toCompletableFuture().join();
+try {
+    IntentResult result = resolution.getResult().toCompletableFuture().join();
+    if (result instanceof Channel channel) {
+        System.out.println("Returned channel " + channel.getId());
+    } else if (result instanceof Context ctx) {
+        System.out.println("Returned context " + ctx.getType());
+    }
+} catch (CompletionException ex) {
+    // handle ResultError
+}
+```
+
+</TabItem>
 </Tabs>
 
 IntentResolution provides a standard format for data returned upon resolving an intent.
@@ -1637,6 +1779,13 @@ getResultMetadata(): Promise<ContextMetadata>;
 
 ```go
 func (resolution *IntentResolution) GetResultMetadata() <-chan Result[ContextMetadata]
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<ContextMetadata> getResultMetadata();
 ```
 
 </TabItem>
@@ -1738,6 +1887,14 @@ const (
   ChannelIntentResolutionResult IntentResolutionResultType = "Channel"
   ContextIntentResolutionResult IntentResolutionResultType = "Context"
 )
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Returned by IntentResolution.getResult() as IntentResult or null (void)
+// Channel results may be PrivateChannel instances
 ```
 
 </TabItem>

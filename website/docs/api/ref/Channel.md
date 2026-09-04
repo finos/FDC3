@@ -95,6 +95,26 @@ const (
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public interface Channel extends IntentResult {
+    String getId();
+    Type getType();
+    DisplayMetadata getDisplayMetadata();
+
+    CompletionStage<Void> broadcast(Context context);
+    CompletionStage<Void> broadcast(Context context, AppProvidableContextMetadata metadata);
+    CompletionStage<Optional<Context>> getCurrentContext();
+    CompletionStage<Optional<Context>> getCurrentContext(String contextType);
+    CompletionStage<Optional<ContextWithMetadata>> getCurrentContextWithMetadata();
+    CompletionStage<Optional<ContextWithMetadata>> getCurrentContextWithMetadata(String contextType);
+    CompletionStage<Listener> addContextListener(String contextType, ContextHandler handler);
+    CompletionStage<Listener> addEventListener(String type, EventHandler handler);
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -128,6 +148,13 @@ string Id { get; }
 
 ```go
 Id string
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+String getId();
 ```
 
 </TabItem>
@@ -171,6 +198,17 @@ const (
 )
 ```
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+public enum Type {
+    User("user"), App("app"), Private("private");
+    private final String value;
+}
+Type getType();
+```
+
+</TabItem>
 </Tabs>
 
 Can be _user_,  _app_ or _private_.
@@ -197,6 +235,13 @@ IDisplayMetadata? DisplayMetadata { get; }
 ```go
 DisplayMetadata *DisplayMetadata
 ```
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+DisplayMetadata getDisplayMetadata();
+```
+
 </TabItem>
 </Tabs>
 
@@ -231,6 +276,13 @@ Task<IListener> AddContextListener<T>(string? contextType, ContextHandler<T> han
 func (ch *Channel) AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener]  { 
   // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Listener> addContextListener(String contextType, ContextHandler handler);
 ```
 
 </TabItem>
@@ -305,6 +357,23 @@ if listenerResult.Value != nil {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Listener listener = channel.addContextListener(null, (context, metadata) -> {
+    System.out.println("Received context from " + metadata.getSource().getAppId());
+    if ("fdc3.contact".equals(context.getType())) {
+        // handle the contact
+    } else if ("fdc3.instrument".equals(context.getType())) {
+        // handle the instrument
+    }
+}).toCompletableFuture().join();
+
+// later
+listener.unsubscribe().toCompletableFuture().join();
+```
+
+</TabItem>
 </Tabs>
 
 Adding listeners for specific types of context that is broadcast on the channel:
@@ -364,6 +433,23 @@ if listenerResultInstrument.Value != nil {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Listener contactListener = channel.addContextListener("fdc3.contact", (contact, metadata) -> {
+    // handle the contact
+}).toCompletableFuture().join();
+
+Listener instrumentListener = channel.addContextListener("fdc3.instrument", (instrument, metadata) -> {
+    // handle the instrument
+}).toCompletableFuture().join();
+
+// later
+contactListener.unsubscribe().toCompletableFuture().join();
+instrumentListener.unsubscribe().toCompletableFuture().join();
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -387,6 +473,13 @@ addEventListener(type: ChannelEventTypes  | null, handler: EventHandler): Promis
 
 ```csharp
 Task<IListener> AddEventListener(string? eventType, Fdc3EventHandler handler);
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Listener> addEventListener(String type, EventHandler handler);
 ```
 
 </TabItem>
@@ -429,6 +522,15 @@ if listenerResult.Err != nil {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Listener listener = channel.addEventListener(null, event -> {
+    System.out.println("Received event " + event.getType());
+}).toCompletableFuture().join();
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -461,6 +563,14 @@ Task Broadcast(IContext context);
 func (channel *Channel) Broadcast(context IContext, metadata *AppProvidableContextMetadata) <-chan Result[any]  { 
   // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Void> broadcast(Context context);
+CompletionStage<Void> broadcast(Context context, AppProvidableContextMetadata metadata);
 ```
 
 </TabItem>
@@ -530,6 +640,15 @@ if result.Err != null {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Context instrument = new Context("fdc3.instrument");
+instrument.setId(Map.of("ticker", "AAPL"));
+channel.broadcast(instrument).toCompletableFuture().join();
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -561,6 +680,14 @@ Task<IContext?> GetCurrentContext(string? contextType);
 func (channel *Channel) GetCurrentContext(contextType string) <-chan Result[Context]  { 
   // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Optional<Context>> getCurrentContext();
+CompletionStage<Optional<Context>> getCurrentContext(String contextType);
 ```
 
 </TabItem>
@@ -614,6 +741,14 @@ if result.Err != null {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Optional<Context> context = channel.getCurrentContext()
+    .toCompletableFuture().join();
+```
+
+</TabItem>
 </Tabs>
 
 Specifying a context type:
@@ -654,6 +789,14 @@ if result.Err != null {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+Optional<Context> contact = channel.getCurrentContext("fdc3.contact")
+    .toCompletableFuture().join();
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -685,6 +828,14 @@ Task<IContextWithMetadata?> GetCurrentContextWithMetadata(string? contextType);
 func (channel *Channel) GetCurrentContextWithMetadata(contextType string) <-chan Result[ContextWithMetadata]  { 
   // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+CompletionStage<Optional<ContextWithMetadata>> getCurrentContextWithMetadata();
+CompletionStage<Optional<ContextWithMetadata>> getCurrentContextWithMetadata(String contextType);
 ```
 
 </TabItem>
@@ -747,6 +898,21 @@ if result.Value != nil {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+try {
+    Optional<ContextWithMetadata> result = channel
+        .getCurrentContextWithMetadata("fdc3.contact")
+        .toCompletableFuture().join();
+    result.ifPresent(r -> System.out.println(
+        "Context from " + r.getMetadata().getSource().getAppId()));
+} catch (CompletionException ex) {
+    // handle ChannelError
+}
+```
+
+</TabItem>
 </Tabs>
 
 **See also:**
@@ -780,6 +946,13 @@ Task ClearContext(string? contextType);
 func (channel *Channel) ClearContext(contextType string) <-chan Result[any] {
   // Implementation here
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Not yet implemented in the Java API binding
 ```
 
 </TabItem>
@@ -829,6 +1002,13 @@ if result.Err != nil {
 ```
 
 </TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Not yet implemented in the Java API binding
+```
+
+</TabItem>
 </Tabs>
 
 Specifying a context type:
@@ -866,6 +1046,13 @@ result := <-myChannel.ClearContext("fdc3.contact")
 if result.Err != nil {
     // handle error
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// Not yet implemented in the Java API binding
 ```
 
 </TabItem>
