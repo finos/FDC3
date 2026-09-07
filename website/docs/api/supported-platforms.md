@@ -186,6 +186,7 @@ For more details, review the [README for that project](https://github.com/finos-
 Native Java applications obtain a `DesktopAgent` via the `GetAgent.getAgent()` factory, which connects over WebSocket using the [WebSocket Connection Protocol (WSCP)](specs/webSocketConnectionProtocol):
 
 ```java
+import java.util.Map;
 import org.finos.fdc3.api.DesktopAgent;
 import org.finos.fdc3.api.context.Context;
 import org.finos.fdc3.getagent.GetAgent;
@@ -199,7 +200,9 @@ GetAgentParams params = GetAgentParams.builder()
 GetAgent.getAgent(params)
     .thenAccept(agent -> {
         // use agent like window.fdc3 in JavaScript
-        agent.broadcast(new Context("fdc3.instrument"));
+        Context instrument = new Context("fdc3.instrument");
+        instrument.setId(Map.of("ticker", "AAPL"));
+        agent.broadcast(instrument);
     })
     .exceptionally(error -> {
         // FDC3ConnectionException on handshake failure

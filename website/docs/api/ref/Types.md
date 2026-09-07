@@ -517,7 +517,7 @@ type IContext interface {
 <TabItem value="java" label="Java">
 
 ```java
-// In java, Context extends HashMap with some helper functions.  
+// In Java, Context extends HashMap with some helper functions.
 public class Context extends HashMap<String, Object> implements IntentResult {
     public Context(String type) { setType(type); }
     public Context(String type, String name) { setType(type); setName(name); }

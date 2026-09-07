@@ -67,7 +67,7 @@ func (privateChannel *PrivateChannel) Disconnect() <-Result[any]  {
 ```java
 public interface PrivateChannel extends Channel {
     CompletionStage<Listener> addEventListener(String type, EventHandler handler);
-    void disconnect();
+    CompletionStage<Void> disconnect();
 }
 ```
 
@@ -470,7 +470,7 @@ func (privateChannel *PrivateChannel) Disconnect() <-Result[any] {
 <TabItem value="java" label="Java">
 
 ```java
-void disconnect();
+CompletionStage<Void> disconnect();
 ```
 
 </TabItem>
