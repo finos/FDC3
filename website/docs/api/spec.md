@@ -1030,12 +1030,12 @@ joinedChannel = await _desktopAgent.GetCurrentChannel();
 <TabItem value="java" label="Java">
 
 ```java
-Channel appChannel = desktopAgent.getOrCreateChannel("my_custom_channel")
-    .toCompletableFuture().join();
-Optional<Context> current = appChannel.getCurrentContext().toCompletableFuture().join();
-appChannel.addContextListener(null, (ctx, metadata) -> { }).toCompletableFuture().join();
-appChannel.broadcast(context).toCompletableFuture().join();
-```
+Optional<Channel> joinedChannel = desktopAgent.getCurrentChannel().toCompletableFuture().join();
+// joinedChannel is empty if the app is not currently joined to a user channel
+
+desktopAgent.joinUserChannel("blue").toCompletableFuture().join();
+joinedChannel = desktopAgent.getCurrentChannel().toCompletableFuture().join();
+// current channel is now the "blue" channel
 
 </TabItem>
 </Tabs>
