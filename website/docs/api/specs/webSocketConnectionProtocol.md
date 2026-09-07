@@ -41,7 +41,7 @@ Each `sharedSecret` is scoped to exactly one `(fdc3Session, appInstance)` pair. 
 
 1. **Authenticate the initiator** — confirm that the connecting party is allowed to join this session.
 2. **Route to the correct FDC3 session** — associate the WebSocket with the right user context on the Desktop Agent (this is useful in web contexts, where perhaps the domain is hosting multiple different users' sessions).
-3. **Bind or resume an app instance** — if the connection is interrupted, the initiator can reconnects with the same secret, reattach the existing instance (superseding any prior WebSocket for that instance).
+3. **Bind or resume an app instance** — if the connection is interrupted, the initiator can reconnect with the same secret, reattach the existing instance (superseding any prior WebSocket for that instance).
 
 The TCP **initiator** MUST include `sharedSecret` in its connect message. The **acceptor** MUST validate the secret from that message and MUST NOT echo it back in its response message.   Both parties MUST persist the `sharedSecret` locally for the lifetime of the app instance so that reconnection after interruption repeats the same two-message handshake, with the initiator presenting the same secret again.
 
