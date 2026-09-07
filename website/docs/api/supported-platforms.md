@@ -177,7 +177,7 @@ FINOS' [FDC3 Java Api Project](https://github.com/finos-labs/fdc3-java-api) offe
  - `fdc3-standard`: Interfaces covering the FDC3 Standard (included in the documentation examples on this site)
  - `fdc3-context`: Classes implementing the FDC3 standard context objects.
  - `fdc3-agent-proxy`: An implementation of the `fdc3-standard` in Java, using [Desktop Agent Communication Protocol (DACP)](specs/desktopAgentCommunicationProtocol) to communicate to a desktop agent via a WebSocket URL.
- - `fdc3-get-agent`: An java implementation of the `GetAgent` function which can be called to return a `DesktopAgent` instance in Java.
+ - `fdc3-get-agent`: A Java implementation of the `GetAgent` function which can be called to return a `DesktopAgent` instance in Java.
 
 For more details, review the [README for that project](https://github.com/finos-labs/fdc3-java-api).
 
