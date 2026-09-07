@@ -172,7 +172,7 @@ For a Go application to be FDC3-enabled, it needs to run in the context of a pla
 
 ### Java
 
-FINOS' [FDC3 Java Api Project](https://github.com/finos-labs/fdc3-java-api) offers language bindings for Java.  It is closely modelled after the structure of the main [Typescript FDC3 Library](https://github.com/finos/FDC3) and contains:
+FINOS' [FDC3 Java API Project](https://github.com/finos-labs/fdc3-java-api) offers language bindings for Java. It is closely modelled after the structure of the main [TypeScript FDC3 Library](https://github.com/finos/FDC3) and contains:
 
  - `fdc3-standard`: Interfaces covering the FDC3 Standard (included in the documentation examples on this site)
  - `fdc3-context`: Classes implementing the FDC3 standard context objects.
