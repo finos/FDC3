@@ -1084,6 +1084,7 @@ Optional<Channel> joinedChannel = desktopAgent.getCurrentChannel().toCompletable
 desktopAgent.joinUserChannel("blue").toCompletableFuture().join();
 joinedChannel = desktopAgent.getCurrentChannel().toCompletableFuture().join();
 // current channel is now the "blue" channel
+```
 
 </TabItem>
 </Tabs>
