@@ -437,7 +437,7 @@ type AppProvidableContextMetadata struct {
 
 ```java
 // Implemented by ContextMetadata for outbound metadata.
-// Extends SecurityMetadata (signature, antiReplay, authenticity, encryption).
+// Extends SecurityMetadata (signature, antiReplay).
 public interface AppProvidableContextMetadata extends SecurityMetadata {
     String getTraceId();
     void setTraceId(String traceId);
@@ -730,6 +730,15 @@ interface ContextVerificationMetadata {
    *  `fdc3.security.encryptedContext`. */
   encryption?: 'decrypted' | 'cant_decrypt' | 'not_encrypted';
 }
+```
+
+</TabItem>
+<TabItem value="java" label="Java">
+
+```java
+// No equivalent in the Java API binding: there is no Java port of
+// @finos/fdc3-security. Verification results are not metadata and are never
+// received from the Desktop Agent, so ContextMetadata does not carry them.
 ```
 
 </TabItem>
