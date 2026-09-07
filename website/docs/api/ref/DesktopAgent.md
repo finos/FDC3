@@ -403,9 +403,12 @@ var userChannelChangedListener = await _desktopAgent.AddEventListener("userChann
 Listener listener = desktopAgent.addEventListener(null, event -> { ... }).toCompletableFuture().get();
 
 // listener for a specific event type that logs its details
-Listener userChannelChangedListener = desktopAgent.addEventListener("userChannelChanged", event -> {
-    System.out.println("Received event " + event.getType() + "\n\tDetails: " + event.getDetails());
-}).toCompletableFuture().get();
+Listener userChannelChangedListener = desktopAgent.addEventListener(
+    FDC3Event.Type.USER_CHANNEL_CHANGED.getValue(),
+    event -> {
+        System.out.println("Received event " + event.getType() + "\n\tDetails: " + event.getDetails());
+    }
+).toCompletableFuture().get();
 ```
 
 </TabItem>

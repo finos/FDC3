@@ -202,8 +202,11 @@ const (
 
 ```java
 public enum Type {
+    
     User("user"), App("app"), Private("private");
     private final String value;
+
+    ...
 }
 Type getType();
 ```

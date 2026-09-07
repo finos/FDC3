@@ -460,7 +460,55 @@ await _desktopAgent.RaiseIntent(appIntents.First().Intent.Name, context, appInte
 <TabItem value="java" label="Java">
 
 ```java
+// Find apps to resolve an intent to start a chat with a given contact
+AppIntent appIntent = desktopAgent.findIntent("StartChat", context)
+    .toCompletableFuture().join();
+// use the returned AppIntent object to target one of the returned
+// chat apps or app instances using the AppMetadata object
 desktopAgent.raiseIntent("StartChat", context, appIntent.getApps()[0])
+    .toCompletableFuture().join();
+
+// Find apps to resolve an intent and return a specified context type
+AppIntent viewContactIntent = desktopAgent
+    .findIntent("ViewContact", context, "fdc3.contact")
+    .toCompletableFuture().join();
+try {
+    IntentResolution resolution = desktopAgent
+        .raiseIntent(viewContactIntent.getIntent().getName(), context, viewContactIntent.getApps()[0])
+        .toCompletableFuture().join();
+    IntentResult result = resolution.getResult().toCompletableFuture().join();
+    System.out.println(resolution.getSource() + " returned " + result);
+} catch (CompletionException ex) {
+    System.err.println("Intent resolution or result failed: " + ex.getCause());
+}
+
+// Find apps to resolve an intent and return a channel
+AppIntent quoteStreamIntent = desktopAgent
+    .findIntent("QuoteStream", context, "channel")
+    .toCompletableFuture().join();
+try {
+    IntentResolution resolution = desktopAgent
+        .raiseIntent(quoteStreamIntent.getIntent().getName(), context, quoteStreamIntent.getApps()[0])
+        .toCompletableFuture().join();
+    IntentResult result = resolution.getResult().toCompletableFuture().join();
+    if (result instanceof Channel resolvedChannel) {
+        resolvedChannel.addContextListener(null, (ctx, metadata) -> { })
+            .toCompletableFuture().join();
+    } else {
+        System.out.println("Did not return a channel");
+    }
+} catch (CompletionException ex) {
+    System.err.println("Intent resolution or result failed: " + ex.getCause());
+}
+
+// Find apps that can perform any intent with the specified context
+List<AppIntent> appIntents = desktopAgent.findIntentsByContext(context)
+    .toCompletableFuture().join();
+// use the returned AppIntent list to target one of the returned apps
+desktopAgent.raiseIntent(
+        appIntents.get(0).getIntent().getName(),
+        context,
+        appIntents.get(0).getApps()[0])
     .toCompletableFuture().join();
 ```
 
