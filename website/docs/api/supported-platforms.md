@@ -183,7 +183,7 @@ For more details, review the [README for that project](https://github.com/finos-
 
 #### Usage
 
-Native Java applications obtain a `DesktopAgent` via the `GetAgent.getAgent()` factory, which connects over WebSocket using the [WebSocket Connection Protocol (WSCP)](specs/webConnectionProtocol):
+Native Java applications obtain a `DesktopAgent` via the `GetAgent.getAgent()` factory, which connects over WebSocket using the [WebSocket Connection Protocol (WSCP)](specs/webSocketConnectionProtocol):
 
 ```java
 import org.finos.fdc3.api.DesktopAgent;
