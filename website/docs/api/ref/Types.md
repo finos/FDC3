@@ -799,7 +799,7 @@ Represents a context object paired with its associated metadata. Returned by [`C
 - [`ContextMetadata`](#contextmetadata)
 - [`Channel.getCurrentContextWithMetadata`](Channel#getcurrentcontextwithmetadata)
 - [`IntentHandler`](#intenthandler)
-- [`IntentResolution.getResultMetadata`](Metadata#intentresolution)
+- [`IntentResolution.getResultMetadata`](#intentresolution)
 
 ## `DesktopAgentIdentifier`
 
