@@ -10,7 +10,6 @@ import {
   ApiEvent,
   FDC3ChannelChangedEvent,
   FDC3EventTypes,
-  ContextMetadata,
 } from '@finos/fdc3-standard';
 import { Messaging } from '../Messaging.js';
 import { ChannelSupport } from './ChannelSupport.js';
@@ -194,7 +193,7 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
   }
 
   async getOrCreate(id: string): Promise<Channel> {
-    if (typeof id !== 'string' || id.trim() === "") {
+    if (typeof id !== 'string' || id.trim() === '') {
       throw new Error(ChannelError.InvalidArguments);
     }
 
@@ -324,7 +323,7 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
       async changeChannel(): Promise<void> {
         if (this.container.currentChannel != null) {
           const channel = this.container.currentChannel as DefaultChannel;
-          
+
           // Handle array context types for getCurrentContextWithMetadata
           let contextTypeParam: string | undefined;
           if (Array.isArray(this.contextType)) {
@@ -363,18 +362,6 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
         return (
           m.type == this.messageType && (this.onAMatchingChannel(m) || this.openBroadcastEvent(m)) && contextTypeMatch
         );
-      }
-
-      action(m: BroadcastEvent): void {
-        const metadata: ContextMetadata = {
-          source: m.payload.metadata?.source ?? { appId: 'unknown' },
-          timestamp: m.payload.metadata?.timestamp ?? m.meta.timestamp,
-          traceId: m.payload.metadata?.traceId ?? '',
-          signature: m.payload.metadata?.signature,
-          custom: m.payload.metadata?.custom,
-          antiReplay: m.payload.metadata?.antiReplay,
-        };
-        this.handler(m.payload.context, metadata);
       }
     }
 

@@ -420,7 +420,7 @@ export class BroadcastHandler implements MessageHandler {
       instanceId: from.instanceId ?? 'no-instance-id',
       channelId: channelId,
       listenerUuid: sc.createUUID(),
-      contextType: arg0.payload.contextType ?? null,
+      contextType: arg0.payload.contextType,
     };
 
     this.contextListeners.push(lr);
