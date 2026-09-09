@@ -100,7 +100,7 @@ class MockDesktopAgent implements Partial<DesktopAgent> {
       getResultMetadata: async () => {
         return resolvedMetadata;
       },
-    } as IntentResolution;
+    };
   }
 
   async getOrCreateChannel(channelId: string): Promise<Channel> {
