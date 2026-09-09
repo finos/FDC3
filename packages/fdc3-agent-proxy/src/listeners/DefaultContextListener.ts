@@ -39,7 +39,7 @@ export class DefaultContextListener
         'contextListenerUnsubscribeResponse'
       );
     } else {
-      // Single context type - use original logic
+      // Single context type
       super(
         messaging,
         messageExchangeTimeout,
