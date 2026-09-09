@@ -23,6 +23,7 @@ import {
 } from '@finos/fdc3-schema/generated/api/BrowserTypes.js';
 import { RegisterableListener } from '../listeners/RegisterableListener.js';
 import { EventListener } from '../listeners/EventListener.js';
+import { throwIfUndefined } from '../util/throwIfUndefined.js';
 
 export class DefaultChannel implements Channel {
   protected readonly messaging: Messaging;
@@ -109,13 +110,23 @@ export class DefaultChannel implements Channel {
 
     const context = response.payload.context;
     if (context) {
+      // Per the getCurrentContextResponse invariant, a non-null context MUST be accompanied by
+      // its complete ContextMetadata, so we use it directly and preserve the actual provenance
+      // rather than fabricating fallback values.
+      throwIfUndefined(
+        response.payload.metadata ?? undefined,
+        'Invalid response from Desktop Agent to getCurrentContext: metadata must be provided alongside a non-null context!',
+        response,
+        ChannelError.MalformedContext
+      );
+      const responseMetadata = response.payload.metadata!;
       const metadata: ContextMetadata = {
-        source: response.payload.metadata?.source ?? { appId: 'unknown' },
-        timestamp: response.payload.metadata?.timestamp ?? response.meta.timestamp,
-        traceId: response.payload.metadata?.traceId ?? '',
-        signature: response.payload.metadata?.signature,
-        custom: response.payload.metadata?.custom,
-        antiReplay: response.payload.metadata?.antiReplay,
+        source: responseMetadata.source,
+        timestamp: responseMetadata.timestamp,
+        traceId: responseMetadata.traceId,
+        signature: responseMetadata.signature,
+        custom: responseMetadata.custom,
+        antiReplay: responseMetadata.antiReplay,
       };
       return { context, metadata };
     }

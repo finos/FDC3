@@ -447,7 +447,12 @@ Request and response used to implement the [`Channel.getCurrentContext()`](../re
 - [`getCurrentContextRequest`](pathname:///schemas/next/api/getCurrentContextRequest.schema.json)
 - [`getCurrentContextResponse`](pathname:///schemas/next/api/getCurrentContextResponse.schema.json)
 
-The `getCurrentContextResponse` payload includes an optional `metadata` field containing the [`ContextMetadata`](../ref/Types#contextmetadata) associated with the most recently broadcast context. This field is used by `getCurrentContextWithMetadata()` to return both the context and its metadata. The `getCurrentContext()` function uses the same request/response messages but ignores the `metadata` field, returning only the context.
+The `getCurrentContextResponse` payload contains a `context` field and a `metadata` field whose values are coupled by the following normative invariant:
+
+- When `payload.context` is a non-null context object, `payload.metadata` MUST be present and MUST contain the complete [`ContextMetadata`](../ref/Types#contextmetadata) associated with that context — that is, the provenance (`source`, `timestamp` and any app-provided fields such as `traceId`, `signature`, `antiReplay` and `custom`) retained for the context by the Desktop Agent when it was broadcast. This holds regardless of whether the request was made via `getCurrentContext()` or `getCurrentContextWithMetadata()`, because the request does not identify which public method initiated it.
+- When `payload.context` is `null`, `payload.metadata` MUST also be `null` (the canonical representation for "no context available").
+
+The `metadata` field is used by [`Channel.getCurrentContextWithMetadata()`](../ref/Channel#getcurrentcontextwithmetadata) to return both the context and its metadata; because the invariant guarantees complete metadata alongside any non-null context, the Desktop Agent proxy never needs to fabricate metadata. The [`Channel.getCurrentContext()`](../ref/Channel#getcurrentcontext) function uses the same request/response messages but ignores the `metadata` field, returning only the context.
 
 ### `PrivateChannel`
 

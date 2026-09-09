@@ -60,8 +60,8 @@ Feature: Broadcasting
     And I call "{channel1}" with "broadcast" with parameter "{instrumentContext}"
     And I call "{channel1}" with "getCurrentContextWithMetadata" with parameter "fdc3.instrument"
     Then "{result}" is an object with the following contents
-      | context.type    | context.name | metadata.source.appId | metadata.traceId | metadata.signature.signature      | metadata.signature.protected      | metadata.custom.key |
-      | fdc3.instrument | Apple        | test-app              | test-trace-id    | test-signature (signature part) | test-signature (protected part) | value               |
+      | context.type    | context.name | metadata.source.appId | metadata.source.instanceId | metadata.traceId | metadata.signature.signature      | metadata.signature.protected      | metadata.custom.key |
+      | fdc3.instrument | Apple        | test-app              | test-instance              | test-trace-id    | test-signature (signature part) | test-signature (protected part) | value               |
 
   Scenario: getCurrentContextWithMetadata returns null for empty channel
     When I call "{api}" with "getOrCreateChannel" with parameter "channel-name"
