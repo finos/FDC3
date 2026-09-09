@@ -54,14 +54,9 @@ export class DefaultContextListener
 
   filter(m: BroadcastEvent): boolean {
     // Handle array context types in filtering
-    let contextTypeMatch = false;
-    if (Array.isArray(this.contextType)) {
-      // For arrays, match if any type in the array matches
-      contextTypeMatch = this.contextType.includes(m.payload.context?.type ?? '');
-    } else {
-      // Single context type
-      contextTypeMatch = m.payload.context?.type == this.contextType || this.contextType == null;
-    }
+    const contextTypeMatch = Array.isArray(this.contextType)
+      ? this.contextType.includes(m.payload.context?.type ?? '')
+      : m.payload.context?.type == this.contextType || this.contextType == null;
 
     return m.type == this.messageType && m.payload.channelId == this.channelId && contextTypeMatch;
   }

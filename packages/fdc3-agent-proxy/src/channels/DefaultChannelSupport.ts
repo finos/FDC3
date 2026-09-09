@@ -350,14 +350,9 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
 
       filter(m: BroadcastEvent): boolean {
         // Handle array context types in filtering
-        let contextTypeMatch = false;
-        if (Array.isArray(this.contextType)) {
-          // For arrays, match if any type in the array matches
-          contextTypeMatch = this.contextType.includes(m.payload.context?.type ?? '');
-        } else {
-          // Single context type - use original logic
-          contextTypeMatch = m.payload.context?.type == this.contextType || this.contextType == null;
-        }
+        const contextTypeMatch = Array.isArray(this.contextType)
+          ? this.contextType.includes(m.payload.context?.type ?? '')
+          : m.payload.context?.type == this.contextType || this.contextType == null;
 
         return (
           m.type == this.messageType && (this.onAMatchingChannel(m) || this.openBroadcastEvent(m)) && contextTypeMatch
