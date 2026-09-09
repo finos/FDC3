@@ -27,6 +27,17 @@ describe('App Directory Schema Validation', () => {
     expect(apiInfo.version).toBeDefined();
   });
 
+  it('should not expose deprecated v1 routes or schema definitions', () => {
+    const appDirectoryApi = api as {
+      paths: Record<string, unknown>;
+      components: { schemas: Record<string, unknown> };
+    };
+    const v1Schemas = ['AppImageV1', 'IconV1', 'IntentV1', 'ApplicationV1', 'ApplicationSearchResponseV1'];
+
+    expect(Object.keys(appDirectoryApi.paths).filter(path => path.startsWith('/v1/'))).toEqual([]);
+    v1Schemas.forEach(schema => expect(appDirectoryApi.components.schemas[schema]).toBeUndefined());
+  });
+
   it('should validate myApplication.json example against the Application schema', () => {
     const examplePath = join(specificationDir, 'examples', 'application', 'myApplication.json');
     const exampleApplication = JSON.parse(readFileSync(examplePath, 'utf-8'));

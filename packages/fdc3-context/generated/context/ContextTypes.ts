@@ -1870,8 +1870,8 @@ export interface EncryptedContextWrapperID {
  * **Note:** This context type MUST be signed to be effective. The key owner uses the
  * signature's public key URL to encrypt the symmetric key in the response, ensuring only
  * the requesting application can decrypt it. See the [Security & Identity
- * documentation](../../api/security) for details on signing context objects and encrypted
- * communications.
+ * documentation](/docs/next/api/security) for details on signing context objects and
+ * encrypted communications.
  */
 export interface SymmetricKeyRequest {
   /**
@@ -1949,8 +1949,8 @@ export interface User {
  *
  * **Note:** This context type MUST be signed to be effective. The identity provider app
  * uses the signature's public key URL to verify the requesting application's identity and
- * to encrypt the response. See the [Security & Identity documentation](../../api/security)
- * for details on signing context objects.
+ * to encrypt the response. See the [Security & Identity
+ * documentation](/docs/next/api/security) for details on signing context objects.
  */
 export interface UserRequest {
   /**

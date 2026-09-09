@@ -55,8 +55,8 @@ Feature: Basic Private Channels Support
     And we wait for a period of "100" ms
     And messaging receives "{onAddContextListenerMessage}"
     Then "{types}" is an array of objects with the following contents
-      | contextType     |
-      | fdc3.instrument |
+      | channelId           | contextType     |
+      | {privateChannel.id} | fdc3.instrument |
 
   Scenario: Adding and then unsubscribing an "onUnsubscribe" listener will send a notification of each event to the agent
     Given "typesHandler" pipes events to "types"
@@ -76,8 +76,8 @@ Feature: Basic Private Channels Support
     And we wait for a period of "100" ms
     And messaging receives "{onUnsubscribeListenerMessage}"
     Then "{types}" is an array of objects with the following contents
-      | contextType     |
-      | fdc3.instrument |
+      | channelId           | contextType     |
+      | {privateChannel.id} | fdc3.instrument |
 
   Scenario: Adding an event handler for all events on a given Private Channel to receive a notification
     Given "onAddContextListenerMessage" is a PrivateChannelOnAddContextListenerEvent message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
@@ -91,7 +91,12 @@ Feature: Basic Private Channels Support
     And messaging receives "{onUnsubscribeListenerMessage}"
     And messaging receives "{onDisconnectListenerMessage}"
     And messaging receives "{contextClearedMessage}"
-    Then "{types}" is an array of objects with length "4"
+    Then "{types}" is an array of objects with the following contents
+      | channelId           | contextType     |
+      | {privateChannel.id} | fdc3.instrument |
+      | {privateChannel.id} | fdc3.instrument |
+      | {privateChannel.id} | {null}          |
+      | {privateChannel.id} | fdc3.instrument |
 
   Scenario: Adding a contextCleared event handler on a Private Channel receives only events for that channel
     Given "contextClearedMessage" is a ContextClearedEvent message on channel "{privateChannel.id}" with contextType as "fdc3.instrument"
@@ -145,11 +150,13 @@ Feature: Basic Private Channels Support
 
   Scenario: Adding an "onDisconnect" on a given Private Channel to receive a notification
     Given "onDisconnectListenerMessage" is a PrivateChannelOnDisconnectEvent message on channel "{privateChannel.id}"
-    And "voidHandler" is a invocation counter into "count"
-    When I call "{privateChannel}" with "addEventListener" with parameters "disconnect" and "{voidHandler}"
+    And "typesHandler" pipes events to "types"
+    When I call "{privateChannel}" with "addEventListener" with parameters "disconnect" and "{typesHandler}"
     And we wait for a period of "100" ms
     And messaging receives "{onDisconnectListenerMessage}"
-    Then "{count}" is "1"
+    Then "{types}" is an array of objects with the following contents
+      | channelId           |
+      | {privateChannel.id} |
 
   Scenario: I can broadcast context on a private channel
     Given "instrumentContext" is a "fdc3.instrument" context

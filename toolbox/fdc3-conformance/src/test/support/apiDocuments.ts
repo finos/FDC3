@@ -6,6 +6,7 @@ export const APIDocumentation = {
   getAgent: 'https://fdc3.finos.org/docs/api/ref/GetAgent',
   desktopAgent: 'https://fdc3.finos.org/docs/api/ref/DesktopAgent',
   addContextListener: 'https://fdc3.finos.org/docs/api/ref/DesktopAgent#addcontextlistener',
+  addEventListener: 'https://fdc3.finos.org/docs/api/ref/DesktopAgent#addeventlistener',
   addIntentListener: 'https://fdc3.finos.org/docs/api/ref/DesktopAgent#addintentlistener',
   broadcast: 'https://fdc3.finos.org/docs/api/ref/DesktopAgent#broadcast',
   findIntent: 'https://fdc3.finos.org/docs/api/ref/DesktopAgent#findintent',

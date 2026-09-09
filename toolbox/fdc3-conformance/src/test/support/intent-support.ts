@@ -74,7 +74,8 @@ export class RaiseIntentControl {
     contextType: string,
     appIdentifier?: AppIdentifier,
     delayBeforeReturn: number = 0,
-    contextId?: { [key: string]: string }
+    contextId?: { [key: string]: string },
+    newInstance?: boolean
   ): Promise<IntentResolution> {
     const context: IntentUtilityContext = {
       type: contextType,
@@ -87,9 +88,9 @@ export class RaiseIntentControl {
 
     try {
       if (appIdentifier) {
-        return await this.fdc3.raiseIntent(intent, context, appIdentifier);
+        return await this.fdc3.raiseIntent(intent, context, appIdentifier, newInstance);
       } else {
-        return await this.fdc3.raiseIntent(intent, context);
+        return await this.fdc3.raiseIntent(intent, context, undefined, newInstance);
       }
     } catch (ex) {
       throw handleFail('', ex);

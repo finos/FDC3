@@ -1,0 +1,5 @@
+ignores:
+  # Invoked by the `mkdirs` package script.
+  - mkdirp
+  # Invoked directly by s2tQuicktypeUtil.cjs during schema generation.
+  - quicktype
