@@ -131,7 +131,7 @@ export class DefaultChannel implements Channel {
 
     if (Array.isArray(typeOrTypes)) {
       if (typeOrTypes.length === 0) {
-        return { unsubscribe: () => Promise.resolve() };
+        throw new Error(ChannelError.InvalidArguments);
       }
       return await this.addContextListenerInner(typeOrTypes, handler);
     }

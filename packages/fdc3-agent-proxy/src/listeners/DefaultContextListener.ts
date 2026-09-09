@@ -22,11 +22,6 @@ export class DefaultContextListener
   ) {
     // For arrays, use the contextTypes field in the payload
     if (Array.isArray(contextType)) {
-      // Handle empty array case - will be caught upstream and return dummy listener
-      if (contextType.length === 0) {
-        throw new Error('Empty arrays should be handled upstream');
-      }
-
       // Use the contextTypes field for array-based context types
       super(
         messaging,
