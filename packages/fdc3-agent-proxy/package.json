@@ -33,7 +33,7 @@
     "@finos/testing": "3.0.0-alpha.2",
     "@types/uuid": "^11.0.0",
     "quickpickle": "^1.6.1",
-    "uuid": "^14.0.1"
+    "uuid": "^14.0.2"
   },
   "engines": {
     "node": ">=22"
