@@ -122,46 +122,25 @@ export class DefaultChannel implements Channel {
     return null;
   }
 
-  async addContextListener(
-    contextTypeOrHandler: string | null | ContextHandler | string[],
-    handler?: ContextHandler
-  ): Promise<Listener> {
-    let theContextType: string | string[] | null;
-    let theHandler: ContextHandler;
-
-    if (contextTypeOrHandler == null && typeof handler === 'function') {
-      theContextType = null;
-      theHandler = handler;
-    } else if (typeof contextTypeOrHandler === 'string' && typeof handler === 'function') {
-      theContextType = contextTypeOrHandler;
-      theHandler = handler;
-    } else if (Array.isArray(contextTypeOrHandler) && typeof handler === 'function') {
-      // Handle array-based context types
-      if (contextTypeOrHandler.length === 0) {
-        // Empty array
-        return {
-          unsubscribe: () => Promise.resolve(),
-        };
-      }
-      theContextType = contextTypeOrHandler; // Pass the array directly
-      theHandler = handler;
-    } else if (typeof contextTypeOrHandler === 'function') {
-      // deprecated one-arg version
-      theContextType = null;
-      theHandler = contextTypeOrHandler as ContextHandler;
-    } else {
-      //invalid call
-      // TODO: Replace with Standardized error when #1490 is resolved
+  addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
+  addContextListener(contextTypes: string[], handler: ContextHandler): Promise<Listener>;
+  async addContextListener(typeOrTypes: string | string[] | null, handler: ContextHandler): Promise<Listener> {
+    if (typeof handler !== 'function') {
       throw new Error('Invalid arguments passed to addContextListener!');
     }
 
-    // Handle array case by creating individual listeners for each type
-    if (Array.isArray(theContextType)) {
-      // Pass the array directly to DefaultContextListener which will handle multiple listeners
-      return await this.addContextListenerInner(theContextType, theHandler);
+    if (Array.isArray(typeOrTypes)) {
+      if (typeOrTypes.length === 0) {
+        return { unsubscribe: () => Promise.resolve() };
+      }
+      return await this.addContextListenerInner(typeOrTypes, handler);
     }
 
-    return await this.addContextListenerInner(theContextType as string | null, theHandler);
+    if (typeof typeOrTypes === 'string' || typeOrTypes === null) {
+      return await this.addContextListenerInner(typeOrTypes as string | null, handler);
+    }
+
+    throw new Error('Invalid arguments passed to addContextListener!');
   }
 
   async addContextListenerInner(contextType: string | string[] | null, theHandler: ContextHandler): Promise<Listener> {

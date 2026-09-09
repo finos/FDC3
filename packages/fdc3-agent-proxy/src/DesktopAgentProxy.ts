@@ -92,40 +92,35 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     }
   }
 
+  addContextListener(contextType: ContextType | null, handler: ContextHandler): Promise<Listener>;
+  addContextListener(contextTypes: (ContextType | null)[], handler: ContextHandler): Promise<Listener>;
   addContextListener(
-    contextTypeOrHandler: ContextHandler | ContextType | null | ContextType[],
-    handler?: ContextHandler
+    contextTypeOrTypes: ContextType | null | (ContextType | null)[],
+    handler: ContextHandler
   ): Promise<Listener> {
-    let theContextType: ContextType | ContextType[] | null;
-    let theHandler: ContextHandler;
-
-    if (contextTypeOrHandler == null && typeof handler === 'function') {
-      theContextType = null;
-      theHandler = handler;
-    } else if (typeof contextTypeOrHandler === 'string' && typeof handler === 'function') {
-      theContextType = contextTypeOrHandler;
-      theHandler = handler;
-    } else if (Array.isArray(contextTypeOrHandler) && typeof handler === 'function') {
-      // Handle array-based context types
-      if (contextTypeOrHandler.length === 0) {
-        // Empty array
-        return Promise.resolve({
-          unsubscribe: () => Promise.resolve(),
-        });
-      }
-      theContextType = contextTypeOrHandler; // Pass the array directly
-      theHandler = handler;
-    } else if (typeof contextTypeOrHandler === 'function') {
-      // deprecated one-arg version
-      theContextType = null;
-      theHandler = contextTypeOrHandler as ContextHandler;
-    } else {
-      //invalid call
-      // TODO: Replace with Standardized error when #1490 is resolved
+    if (typeof handler !== 'function') {
       throw new Error('Invalid arguments passed to addContextListener!');
     }
 
-    return this.channels.addContextListener(theHandler, theContextType as string | string[] | null);
+    if (Array.isArray(contextTypeOrTypes)) {
+      if (contextTypeOrTypes.length === 0) {
+        return Promise.resolve({ unsubscribe: () => Promise.resolve() });
+      }
+      const arr = contextTypeOrTypes as (ContextType | null)[];
+      // If any null present, treat as unfiltered (null)
+      if (arr.some(t => t == null)) {
+        return this.channels.addContextListener(handler, null);
+      }
+      // Otherwise, forward concrete string types only
+      const types = arr.filter((t): t is string => typeof t === 'string') as unknown as string[];
+      return this.channels.addContextListener(handler, types);
+    }
+
+    if (typeof contextTypeOrTypes === 'string' || contextTypeOrTypes === null) {
+      return this.channels.addContextListener(handler, contextTypeOrTypes as string | null);
+    }
+
+    throw new Error('Invalid arguments passed to addContextListener!');
   }
 
   getUserChannels() {

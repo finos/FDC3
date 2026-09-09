@@ -4,8 +4,9 @@ import {
   DisplayMetadata,
   EventHandler,
   ContextHandler,
+  ChannelEventTypes,
+  ContextMetadata,
 } from '@finos/fdc3-standard';
-import type { ContextMetadata } from '@finos/fdc3-standard/src/api/ContextMetadata';
 import { Context } from '@finos/fdc3-context';
 
 export class MockChannel implements Channel {
@@ -72,7 +73,7 @@ export class MockChannel implements Channel {
   }
   async clearContext(): Promise<void> {}
 
-  async addEventListener(_type: string | null, _handler: EventHandler): Promise<Listener> {
+  async addEventListener(_type: ChannelEventTypes | null, _handler: EventHandler): Promise<Listener> {
     return { unsubscribe: async () => {} };
   }
 
