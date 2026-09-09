@@ -13,7 +13,7 @@ Feature: Basic Intents Support
     And "crazyContext" is a "fdc3.unsupported" context
 
   Scenario: Find Intent can return the same intent with multiple apps
-    When I call "{api}" with "findIntent" with parameter "Buy"
+    When I call "{api}" with "findIntent" using argument "Buy"
     Then "{result.intent}" is an object with the following contents
       | name |
       | Buy  |
@@ -26,14 +26,14 @@ Feature: Basic Intents Support
       | Buy            | findIntentRequest |
 
   Scenario: Find Intent can return an error when an intent doesn't match
-    When I call "{api}" with "findIntent" with parameter "Bob"
+    When I call "{api}" with "findIntent" using argument "Bob"
     Then "{result}" is an error with message "NoAppsFound"
     And messaging will have posts
       | payload.intent | matches_type      |
       | Bob            | findIntentRequest |
 
   Scenario: Find Intent can filter by a context type
-    When I call "{api}" with "findIntent" with parameters "Buy" and "{instrumentContext}"
+    When I call "{api}" with "findIntent" using arguments "Buy" and "{instrumentContext}"
     Then "{result.intent}" is an object with the following contents
       | name |
       | Buy  |
@@ -45,7 +45,7 @@ Feature: Basic Intents Support
       | Buy            | fdc3.instrument      | AAPL                      | findIntentRequest |
 
   Scenario: Find Intent can filter by generic result type
-    When I call "{api}" with "findIntent" with parameters "OrderFood" and "{empty}" and "channel<fdc3.chips>"
+    When I call "{api}" with "findIntent" using arguments "OrderFood", "{empty}", and "channel<fdc3.chips>"
     Then "{result.intent}" is an object with the following contents
       | name      |
       | OrderFood |
@@ -57,7 +57,7 @@ Feature: Basic Intents Support
       | OrderFood      | channel<fdc3.chips> | findIntentRequest |
 
   Scenario: Find Intents By Context
-    When I call "{api}" with "findIntentsByContext" with parameter "{instrumentContext}"
+    When I call "{api}" with "findIntentsByContext" using argument "{instrumentContext}"
     Then "{result}" is an array of objects with the following contents
       | intent.name | apps[0].appId | apps.length |
       | Buy         | bank          |           1 |
@@ -67,7 +67,7 @@ Feature: Basic Intents Support
       | fdc3.instrument      | AAPL                      | findIntentsByContextRequest |
 
   Scenario: Find Intents By Context can return an error when an intent doesn't match
-    When I call "{api}" with "findIntentsByContext" with parameter "{crazyContext}"
+    When I call "{api}" with "findIntentsByContext" using argument "{crazyContext}"
     Then "{result}" is an error with message "NoAppsFound"
     And messaging will have posts
       | payload.context.type | payload.context.bogus | matches_type                |

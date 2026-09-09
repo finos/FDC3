@@ -1,7 +1,5 @@
 import { Given, When } from 'quickpickle';
-import { SimpleIntentResolver } from '@finos/testing';
-import { CustomWorld } from '../world/index.js';
-import { CHANNEL_STATE } from '@finos/testing';
+import { SimpleIntentResolver, CHANNEL_STATE } from '../support/agentDoubles.js';
 import {
   DefaultChannelSupport,
   DefaultHeartbeatSupport,

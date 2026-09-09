@@ -40,3 +40,4 @@ jobs:
           done < <(node -e "require('./package.json').workspaces.forEach(workspace => console.log(workspace))")
 
           exit "${status}"
+

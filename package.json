@@ -21,10 +21,9 @@
     "dist"
   ],
   "workspaces": [
-    "packages/fdc3-context",
     "packages/fdc3-schema",
+    "packages/fdc3-context",
     "packages/fdc3-standard",
-    "packages/testing",
     "packages/fdc3-agent-proxy",
     "packages/fdc3-security",
     "toolbox/fdc3-for-web/fdc3-web-impl",
@@ -79,6 +78,7 @@
     "vitest": "^4.1.10"
   },
   "overrides": {
+    "json-canonicalize": "2.0.0",
     "serialize-javascript": "^7.0.5",
     "mocha": {
       "serialize-javascript": "^7.0.5"

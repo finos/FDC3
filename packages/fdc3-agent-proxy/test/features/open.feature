@@ -8,7 +8,7 @@ Feature: Desktop Agent Information
     And "nonExistent" is app identifier "nonExistent"
 
   Scenario: Open An App
-    When I call "{api}" with "open" with parameters "{c1}" and "{instrumentContext}"
+    When I call "{api}" with "open" using arguments "{c1}" and "{instrumentContext}"
     Then "{result}" is an object with the following contents
       | appId    | instanceId |
       | chipShop | abc123     |
@@ -17,7 +17,7 @@ Feature: Desktop Agent Information
       | chipShop          | fdc3.instrument      | AAPL                      | openRequest  |
 
   Scenario: Opening a non-existent App
-    When I call "{api}" with "open" with parameters "{nonExistent}" and "{instrumentContext}"
+    When I call "{api}" with "open" using arguments "{nonExistent}" and "{instrumentContext}"
     Then "{result}" is an error with message "AppNotFound"
     And messaging will have posts
       | payload.app.appId | payload.context.type | payload.context.id.ticker | matches_type |
@@ -25,7 +25,7 @@ Feature: Desktop Agent Information
 
   Scenario: Open An App - Destructured
     When I destructure method "open" from "{api}"
-    And I call destructured "open" with parameters "{c1}" and "{instrumentContext}"
+    And I call destructured "open" using arguments "{c1}" and "{instrumentContext}"
     Then "{result}" is an object with the following contents
       | appId    | instanceId |
       | chipShop | abc123     |
@@ -35,7 +35,7 @@ Feature: Desktop Agent Information
 
   Scenario: Open An App with null context and metadata
     Given "openMetadata" is metadata with traceId "trace-open" and signature "sig-open" and antiReplay claims "1234/2345/open-jti"
-    When I call "{api}" with "open" with parameters "{c1}" and "{null}" and "{openMetadata}"
+    When I call "{api}" with "open" using arguments "{c1}", "{null}", and "{openMetadata}"
     Then "{result}" is an object with the following contents
       | appId    | instanceId |
       | chipShop | abc123     |

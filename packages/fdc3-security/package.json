@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "jose": "^6.1.3",
-    "json-canonicalize": "^2.0.0",
+    "json-canonicalize": "2.0.0",
     "ws": "^8.21.3"
   },
   "peerDependencies": {
