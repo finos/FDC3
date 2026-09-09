@@ -24,7 +24,6 @@ describe('test version comparison functions', () => {
       provider: 'test',
       appMetadata: { appId: 'dummy', name: 'dummy' },
       optionalFeatures: {
-        OriginatingAppMetadata: true,
         UserChannelMembershipAPIs: false,
         DesktopAgentBridging: false,
       },
@@ -39,7 +38,6 @@ describe('test version comparison functions', () => {
       provider: 'test',
       appMetadata: { appId: 'dummy', name: 'dummy' },
       optionalFeatures: {
-        OriginatingAppMetadata: true,
         UserChannelMembershipAPIs: false,
         DesktopAgentBridging: false,
       },

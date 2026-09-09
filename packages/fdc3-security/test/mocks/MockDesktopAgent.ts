@@ -7,13 +7,7 @@ import {
   IntentResolution,
   ImplementationMetadata,
 } from '@finos/fdc3-standard';
-import type {
-  AppIdentifier,
-  AppMetadata,
-  ContextMetadata,
-  DesktopAgent,
-  Intent,
-} from '@finos/fdc3-standard';
+import type { AppIdentifier, AppMetadata, ContextMetadata, DesktopAgent, Intent } from '@finos/fdc3-standard';
 import type { AppProvidableContextMetadata } from '@finos/fdc3-standard/src/api/ContextMetadata';
 import { Context } from '@finos/fdc3-context';
 import { MockChannel } from './MockChannel';
@@ -42,7 +36,6 @@ class MockDesktopAgent implements Partial<DesktopAgent> {
       fdc3Version: this.fdc3Version,
       provider: 'fdc3-security-mock',
       optionalFeatures: {
-        OriginatingAppMetadata: true,
         UserChannelMembershipAPIs: true,
         DesktopAgentBridging: false,
       },

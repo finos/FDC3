@@ -140,7 +140,6 @@ export class DefaultAppSupport implements AppSupport {
         provider: 'unknown',
         appMetadata: { appId: 'unknown', instanceId: 'unknown' },
         optionalFeatures: {
-          OriginatingAppMetadata: false,
           UserChannelMembershipAPIs: false,
           DesktopAgentBridging: false,
         },
