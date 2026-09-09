@@ -28,7 +28,7 @@ The TradeList schema does not explicitly include identifiers in the id section, 
 <details>
   <summary><code>Items</code></summary>
 
-**type**: [Trade](Trade)
+**type**: [Trade](/docs/next/context/ref/Trade)
 
 </details>
 

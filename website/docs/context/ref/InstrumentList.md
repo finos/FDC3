@@ -53,7 +53,7 @@ An optional human-readable summary of the instrument list
 <details>
   <summary><code>Items</code></summary>
 
-**type**: [Instrument](Instrument)
+**type**: [Instrument](/docs/next/context/ref/Instrument)
 
 </details>
 

@@ -3,7 +3,7 @@
     "$id": "https://fdc3.finos.org/schemas/next/context/symmetricKeyRequest.schema.json",
     "type": "object",
     "title": "Symmetric Key Request",
-    "description": "@experimental A request to obtain a symmetric encryption key for decrypting encrypted context on a channel.\n\n**Note:** This context type MUST be signed to be effective. The key owner uses the signature's public key URL to encrypt the symmetric key in the response, ensuring only the requesting application can decrypt it. See the [Security & Identity documentation](../../api/security) for details on signing context objects and encrypted communications.",
+    "description": "@experimental A request to obtain a symmetric encryption key for decrypting encrypted context on a channel.\n\n**Note:** This context type MUST be signed to be effective. The key owner uses the signature's public key URL to encrypt the symmetric key in the response, ensuring only the requesting application can decrypt it. See the [Security & Identity documentation](/docs/next/api/security) for details on signing context objects and encrypted communications.",
     "allOf": [
         {
             "type": "object",

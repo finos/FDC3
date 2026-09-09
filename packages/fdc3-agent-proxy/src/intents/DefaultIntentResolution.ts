@@ -1,13 +1,13 @@
-import { AppIdentifier, ContextMetadata, IntentResolution, IntentResult } from '@finos/fdc3-standard';
+import { AppIdentifier, ContextMetadata, IntentResolution, IntentResolutionResult } from '@finos/fdc3-standard';
 
 export class DefaultIntentResolution implements IntentResolution {
   readonly source: AppIdentifier;
   readonly intent: string;
-  readonly result: Promise<IntentResult>;
+  readonly result: Promise<IntentResolutionResult>;
   readonly resultMetadata: Promise<ContextMetadata>;
 
   constructor(
-    result: Promise<IntentResult>,
+    result: Promise<IntentResolutionResult>,
     resultMetadata: Promise<ContextMetadata>,
     source: AppIdentifier,
     intent: string
@@ -22,7 +22,7 @@ export class DefaultIntentResolution implements IntentResolution {
     this.getResultMetadata = this.getResultMetadata.bind(this);
   }
 
-  getResult(): Promise<IntentResult> {
+  getResult(): Promise<IntentResolutionResult> {
     return this.result;
   }
 

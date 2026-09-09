@@ -333,7 +333,7 @@ Applications can sign the context objects they broadcast using their private key
 
 ### Signature Metadata
 
-When signing a context, the sender includes the `signature` and `antiReplay` fields in the `metadata` parameter passed to `broadcast()` or `raiseIntent()` (typed as [`AppProvidableContextMetadata`](ref/Metadata#appprovidablecontextmetadata)). The signature is therefore carried separately from the context object itself. When a receiving application's [`ContextHandler`](ref/Types#contexthandler) or [`IntentHandler`](ref/Types#intenthandler) is invoked, those fields are present in the [`ContextMetadata`](ref/Metadata#contextmetadata) argument alongside the Desktop Agent-provided `source` field.
+When signing a context, the sender includes the `signature` and `antiReplay` fields in the `metadata` parameter passed to `broadcast()` or `raiseIntent()` (typed as [`AppProvidableContextMetadata`](ref/Types#appprovidablecontextmetadata)). The signature is therefore carried separately from the context object itself. When a receiving application's [`ContextHandler`](ref/Types#contexthandler) or [`IntentHandler`](ref/Types#intenthandler) is invoked, those fields are present in the [`ContextMetadata`](ref/Types#contextmetadata) argument alongside the Desktop Agent-provided `source` field.
 
 | Context Metadata field | Description |
 |------------------------|-------------|
@@ -420,7 +420,7 @@ To verify a signature, the receiver:
 
 ### Authenticity Metadata
 
-After receiving a signed context, the application passes the received [`ContextMetadata`](ref/Metadata#contextmetadata) to its security implementation's verification function. That function returns a `ContextVerificationMetadata` object (exported from `@finos/fdc3-security`) containing the outcome of signature verification:
+After receiving a signed context, the application passes the received [`ContextMetadata`](ref/Types#contextmetadata) to its security implementation's verification function. That function returns a `ContextVerificationMetadata` object (exported from `@finos/fdc3-security`) containing the outcome of signature verification:
 
 ```typescript
 {

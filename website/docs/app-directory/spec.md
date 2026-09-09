@@ -18,9 +18,6 @@ or explore with the [Swagger Editor][4].
  ------------------ | ------ | -----------
  `/v2/apps`         | GET    | Retrieve all application definitions
  `/v2/apps/{appId}` | GET    | Retrieve an application definition
- `/v1/apps`         | POST   | (deprecated v1 API version) Create a new application definition
- `/v1/apps/{appId}` | GET    | (deprecated v1 API version) Retrieve an application definition
- `/v1/apps/search`  | GET    | (deprecated v1 API version) Retrieve a list of applications
 
 App Directory implementations MAY extend the list of endpoints to provide other necessary functionality. However, FDC3 Desktop Agent implementations that connect to app directories MUST support connection to app directories that only provide the minimum endpoints listed here.
 
@@ -44,8 +41,4 @@ An FDC3 Standard compliant App Directory implementation **SHOULD**:
 An FDC3 Standard compliant App Directory implementation **MAY**:
 
 - Support filtering of application records returned by user entitlement, where authentication is enabled.
-- Implement the deprecated `/v1` endpoints provided for backwards compatibility with prior version of the standard:
-  - `/v1/apps` (POST)
-  - `/v1/apps/{appId}` (GET)
-  - `/v1/apps/search` (GET)
 - Extend the implementation with additional endpoints.

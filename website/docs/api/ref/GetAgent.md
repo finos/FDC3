@@ -157,6 +157,15 @@ As web applications can navigate to or be navigated by users to different URLs a
 
 Finally, if there is still no Desktop Agent available, or an issue prevents connection to it, the `getAgent()` function will reject its promise with a message from the [`AgentError`](./Errors#agenterror) enumeration.
 
+## Promise Caching
+
+The `getAgent()` function caches its result: once a connection to a Desktop Agent has been successfully established, subsequent calls to `getAgent()` will return the same `Promise<DesktopAgent>` instance. This means that:
+
+- Any parameters passed to `getAgent()` on subsequent calls (after the first successful resolution) will be **ignored**, as the cached promise is returned immediately.
+- Applications that call `getAgent()` from multiple modules or components will all receive the same `DesktopAgent` instance without triggering additional discovery or connection attempts.
+
+If the initial `getAgent()` call **fails** (i.e. the returned promise rejects), the cached promise is cleared, allowing the application to call `getAgent()` again with the same or different parameters to retry the connection.
+
 ## Injected iframes for adaptors and user interfaces
 
 The `getAgent()` function may try to create hidden iframes within an application window in order to load either an adaptor to a Desktop Agent, or Intent Resolver and Channel Selector user interfaces when needed. The iframes are used in order to sandbox the relevant software, and are communicated with securely via the HTML Standard's Channel Messaging API ([MDN](https://developer.mozilla.org/en-US/docs/Web/API/Channel_Messaging_API), [HTML Living Standard](https://html.spec.whatwg.org/multipage/web-messaging.html)).

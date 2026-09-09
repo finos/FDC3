@@ -40,6 +40,10 @@
 				"app": {
 					"$ref": "api.schema.json#/definitions/AppIdentifier"
 				},
+				"newInstance": {
+					"type": "boolean",
+					"description": "Indicates how an instance of the target application should be selected. When `true`, a new instance of the target application MUST be launched even if existing instances are available. When `false`, an existing instance MUST be used and a new instance MUST NOT be launched (if no suitable instance is available the request fails with TargetInstanceUnavailable). When omitted, the Desktop Agent applies its default resolution behavior."
+				},
 				"metadata": {
 					"$ref": "api.schema.json#/definitions/AppProvidableContextMetadata"
 				}

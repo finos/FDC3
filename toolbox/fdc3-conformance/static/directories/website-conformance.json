@@ -4,7 +4,7 @@
       "appId": "Conformance1",
       "name": "Conformance1",
       "title": "FDC3 Conformance Framework",
-      "description": "FDC3 Conformance testing framework - developed for FINOS by Scott Logic",
+      "description": "The FINOS FDC3 Conformance testing framework, used to assess conformance of an FDC3 Desktop Agent to the FDC3 Standard",
       "type": "web",
       "details": {
         "url": "https://fdc3.finos.org/toolbox/fdc3-conformance/apps/app/index.html"

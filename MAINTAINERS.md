@@ -15,6 +15,7 @@ This file lists the maintainers of this repository.
 | @kriswest | Kris West | NatWest Group | kristopher.west@natwest.com |
 | @mistryvinay | Vinay Mistry | Symphony | mrvinaymistry@gmail.com |
 | @openfin-johans | Johan Sandersson | HERE (formerly OpenFin) | johan.sandersson@here.io |
+| @SeeWhatsOn | Chris Watson | AlphaFMC | christopher.watson@alphafmc.com |
 
 For information about maintainer responsibilities and resources, see the [FINOS Maintainers Cheatsheet](https://community.finos.org/docs/finos-maintainers-cheatsheet).
 

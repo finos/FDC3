@@ -64,6 +64,12 @@ Feature: Channel Listeners Support
     And I call "{channel1}" with "addContextListener" with parameters "{null}" and "{true}"
     Then "{result}" is an error
 
+  Scenario: Passing an invalid event type to an app Channel returns InvalidArguments
+    When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I call "{channel1}" with "addEventListener" with parameters "unsupported" and "{resultHandler}"
+    Then "{result}" is an error with message "InvalidArguments"
+
   Scenario: Destructured channel methods - broadcast and addContextListener
     When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
     And I refer to "{result}" as "channel1"

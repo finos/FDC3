@@ -1,0 +1,11 @@
+ignores:
+  # Invoked by the `lint` package script.
+  - eslint
+  # Invoked by the `dev` package script.
+  - tsx
+  # Used by tsx and Vite to compile the TypeScript sources.
+  - typescript
+  # Supplies Node.js types to the server-side TypeScript source.
+  - "@types/node"
+  # Used by vite-express at runtime rather than imported directly by this package.
+  - vite

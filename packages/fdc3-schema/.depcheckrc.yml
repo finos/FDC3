@@ -1,0 +1,7 @@
+ignores:
+  # Required by the type-predicate code generator through createRequire().
+  - message-await
+  # Invoked by the `mkdirs` package script.
+  - mkdirp
+  # Invoked directly by s2tQuicktypeUtil.cjs during schema generation.
+  - quicktype

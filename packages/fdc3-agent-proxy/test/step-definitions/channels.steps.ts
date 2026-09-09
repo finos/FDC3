@@ -8,6 +8,7 @@ import { ApiEvent, ContextMetadata } from '@finos/fdc3-standard';
 import {
   BroadcastEvent,
   ChannelChangedEvent,
+  ContextClearedEvent,
   PrivateChannelOnAddContextListenerEvent,
   PrivateChannelOnDisconnectEvent,
   PrivateChannelOnUnsubscribeEvent,
@@ -174,6 +175,22 @@ Given(
         newChannelId: handleResolve(newChannelId, world),
       },
       type: 'channelChangedEvent',
+    };
+
+    world.props[field] = message;
+  }
+);
+
+Given(
+  '{string} is a ContextClearedEvent message on channel {string} with contextType as {string}',
+  (world: CustomWorld, field: string, channel: string, contextType: string) => {
+    const message: ContextClearedEvent = {
+      meta: world.messaging!.createEventMeta(),
+      payload: {
+        channelId: handleResolve(channel, world),
+        contextType: handleResolve(contextType, world),
+      },
+      type: 'contextClearedEvent',
     };
 
     world.props[field] = message;

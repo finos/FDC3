@@ -30,7 +30,7 @@ Name to apply to the chat created
 <details>
   <summary><code>members</code></summary>
 
-**type**: [ContactList](ContactList)
+**type**: [ContactList](/docs/next/context/ref/ContactList)
 
 Contacts to add to the chat
 
@@ -42,7 +42,7 @@ Contacts to add to the chat
 **One of:**
 
 - **type**: `string`
-- **type**: [Message](Message)
+- **type**: [Message](/docs/next/context/ref/Message)
 
 An initial message to post in the chat when created.
 

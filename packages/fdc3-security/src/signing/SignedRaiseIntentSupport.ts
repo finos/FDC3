@@ -3,7 +3,13 @@ import { PrivateFDC3Security, SigningFunction } from '../impl/PrivateFDC3Securit
 import { SignatureCheckingFunction } from '../impl/PublicFDC3Security.js';
 import { MetadataHandler } from '../delegates/MetadataHandler.js';
 import { assertIsContext } from '../impl/TypeGuards.js';
-import { AppIdentifier, ContextMetadata, DesktopAgent, IntentResolution, IntentResult } from '@finos/fdc3-standard';
+import {
+  AppIdentifier,
+  ContextMetadata,
+  DesktopAgent,
+  IntentResolution,
+  IntentResolutionResult,
+} from '@finos/fdc3-standard';
 import { ContextVerificationMetadata } from '../impl/ContextVerificationMetadata.js';
 
 /**
@@ -30,14 +36,23 @@ export interface SignedRaiseIntentSupport {
    * Returns a `VerifiedIntentResolution` whose `getVerification()` method provides
    * the `ContextVerificationMetadata` for the returned context result.
    */
-  raiseIntent(intent: string, context: Context, app?: AppIdentifier): Promise<VerifiedIntentResolution>;
+  raiseIntent(
+    intent: string,
+    context: Context,
+    app?: AppIdentifier,
+    newInstance?: boolean | null
+  ): Promise<VerifiedIntentResolution>;
 
   /**
    * Raise an intent based on the context type, with a signed context, and verify the signed result (if any).
    * Returns a `VerifiedIntentResolution` whose `getVerification()` method provides
    * the `ContextVerificationMetadata` for the returned context result.
    */
-  raiseIntentForContext(context: Context, app?: AppIdentifier): Promise<VerifiedIntentResolution>;
+  raiseIntentForContext(
+    context: Context,
+    app?: AppIdentifier,
+    newInstance?: boolean | null
+  ): Promise<VerifiedIntentResolution>;
 }
 
 /**
@@ -76,26 +91,46 @@ export class BasicSignedRaiseIntentSupport implements SignedRaiseIntentSupport {
     this.signatureCheckingFunction = signatureCheckingFunction;
   }
 
-  async raiseIntent(intent: string, context: Context, app?: AppIdentifier): Promise<VerifiedIntentResolution> {
+  async raiseIntent(
+    intent: string,
+    context: Context,
+    app?: AppIdentifier,
+    newInstance?: boolean | null
+  ): Promise<VerifiedIntentResolution> {
     // Sign the outbound context on the trusted backend before raising the intent.
     const { signature, antiReplay } = await this.signingFunction(context);
     const { context: packedContext, metadata: packedMetadata } = this.metadataHandler.pack(context, {
       signature,
       antiReplay,
     });
-    const resolution = await this.desktopAgent.raiseIntent(intent as any, packedContext, app ?? null, packedMetadata);
+    const resolution = await this.desktopAgent.raiseIntent(
+      intent as any,
+      packedContext,
+      app ?? null,
+      newInstance,
+      packedMetadata
+    );
     // Wrap the resolution so that the result is unpacked and optionally verified.
     return this.wrapResolution(resolution);
   }
 
-  async raiseIntentForContext(context: Context, app?: AppIdentifier): Promise<VerifiedIntentResolution> {
+  async raiseIntentForContext(
+    context: Context,
+    app?: AppIdentifier,
+    newInstance?: boolean | null
+  ): Promise<VerifiedIntentResolution> {
     // Sign the outbound context on the trusted backend before raising the intent.
     const { signature, antiReplay } = await this.signingFunction(context);
     const { context: packedContext, metadata: packedMetadata } = this.metadataHandler.pack(context, {
       signature,
       antiReplay,
     });
-    const resolution = await this.desktopAgent.raiseIntentForContext(packedContext, app ?? null, packedMetadata);
+    const resolution = await this.desktopAgent.raiseIntentForContext(
+      packedContext,
+      app ?? null,
+      newInstance,
+      packedMetadata
+    );
     // Wrap the resolution so that the result is unpacked and optionally verified.
     return this.wrapResolution(resolution);
   }
@@ -112,7 +147,7 @@ export class BasicSignedRaiseIntentSupport implements SignedRaiseIntentSupport {
     const originalGetResultMetadata = resolution.getResultMetadata.bind(resolution);
 
     const rewrapResult = async (): Promise<{
-      result: IntentResult;
+      result: IntentResolutionResult;
       metadata: ContextMetadata;
       verification: ContextVerificationMetadata | undefined;
     }> => {
@@ -150,7 +185,7 @@ export class BasicSignedRaiseIntentSupport implements SignedRaiseIntentSupport {
 
     let memoized:
       | Promise<{
-          result: IntentResult;
+          result: IntentResolutionResult;
           metadata: ContextMetadata;
           verification: ContextVerificationMetadata | undefined;
         }>
@@ -163,7 +198,7 @@ export class BasicSignedRaiseIntentSupport implements SignedRaiseIntentSupport {
 
     return {
       ...resolution,
-      getResult: async (): Promise<IntentResult> => (await getRewrapped()).result,
+      getResult: async (): Promise<IntentResolutionResult> => (await getRewrapped()).result,
       getResultMetadata: async (): Promise<ContextMetadata> => (await getRewrapped()).metadata,
       getVerification: async (): Promise<ContextVerificationMetadata | undefined> =>
         (await getRewrapped()).verification,
