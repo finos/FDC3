@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Added basic conformance tests verifying that `DesktopAgent.addEventListener` is callable and returns a `Listener` for filtered and unfiltered event listeners. ([#1774](https://github.com/finos/FDC3/issues/1774))
 * Added CI dependency checks for the root package and every npm workspace, with documented baselines of existing unused-dependency findings.
 * Added conformance coverage for `ChannelError.NoChannelFound`, `ChannelError.MalformedContext`, and `ChannelError.InvalidArguments`. ([#1779](https://github.com/finos/FDC3/issues/1779))
 * Added conformance coverage verifying that Desktop Agent methods continue to work when destructured from the `fdc3` object. ([#1778](https://github.com/finos/FDC3/issues/1778))
@@ -65,6 +66,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+* Fixed `fdc3-context`'s `typegen` script so that it resolves the `AppIdentifier` type referenced from `action.schema.json` via a local path to `fdc3-schema`'s `api.schema.json`, instead of relying on `quicktype` fetching it over the network from the (as yet unpublished) `$id` URL. Previously, after running `npm run clean`, `npm run build` would fail across the whole monorepo because the `fdc3-context` build silently produced an empty `generated/context` directory (the underlying `quicktype` failure was swallowed) and downstream packages could not resolve `@finos/fdc3-context`.
 * Fixed the basic conformance version check to use the exported FDC3 version and accept newer compatible Desktop Agents. ([#1966](https://github.com/finos/FDC3/pull/1966))
 * Reduced normal `getAgent` discovery console noise by ignoring unrelated `postMessage` traffic and reporting expected agent-not-found timeouts as warnings instead of errors. ([#1902](https://github.com/finos/FDC3/issues/1902))
 * Prevented the FDC3 for Web reference implementation from sending channel-changed events to applications that have not registered a matching listener. ([#1806](https://github.com/finos/FDC3/issues/1806))
