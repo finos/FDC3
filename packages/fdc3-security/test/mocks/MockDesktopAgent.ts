@@ -7,8 +7,14 @@ import {
   IntentResolution,
   ImplementationMetadata,
 } from '@finos/fdc3-standard';
-import type { AppIdentifier, AppMetadata, ContextMetadata, DesktopAgent, Intent } from '@finos/fdc3-standard';
-import type { AppProvidableContextMetadata } from '@finos/fdc3-standard/src/api/ContextMetadata';
+import type {
+  AppIdentifier,
+  AppMetadata,
+  AppProvidableContextMetadata,
+  ContextMetadata,
+  DesktopAgent,
+  Intent,
+} from '@finos/fdc3-standard';
 import { Context } from '@finos/fdc3-context';
 import { MockChannel } from './MockChannel';
 import { MockPrivateChannel } from './MockPrivateChannel';
@@ -58,6 +64,7 @@ class MockDesktopAgent implements Partial<DesktopAgent> {
     intent: Intent,
     context: Context,
     _app?: AppIdentifier | null | string | undefined,
+    _newInstance?: boolean | null | undefined,
     metadata?: AppProvidableContextMetadata | undefined
   ): Promise<IntentResolution> {
     const key = String(intent);
