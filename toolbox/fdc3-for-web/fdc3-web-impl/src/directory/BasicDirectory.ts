@@ -1,7 +1,11 @@
 import semver from 'semver';
 import { Directory, DirectoryApp, DirectoryIntent } from './DirectoryInterface.js';
 
-// Keep synchronized with BaseApplication.properties.fdc3Version.pattern in appd.schema.json.
+// AppD supports npm-style ranges, but restricts each version to the two-component
+// FDC3 form (for example, `2.2`, `>=2.2`, or `2.2 || 3.0`). The semver library
+// alone cannot enforce that restriction because it also accepts forms such as
+// `1.2.3`. Keep this validation synchronized with
+// BaseApplication.properties.fdc3Version.pattern in appd.schema.json.
 export const FDC3_VERSION_RANGE_PATTERN =
   /^(?:(?:<=|>=|[<>=~^])[ \t]?\d+\.\d+|\d+\.\d+)(?:[ \t](?:-[ \t]\d+\.\d+|\|\|[ \t](?:(?:<=|>=|[<>=~^])[ \t]?\d+\.\d+|\d+\.\d+)|(?:(?:<=|>=|[<>=~^])[ \t]?\d+\.\d+|\d+\.\d+)))*$/;
 
@@ -19,7 +23,7 @@ export function genericResultTypeSame(real: string | undefined, required: string
   }
 }
 
-export function appSupportsFdc3Version(app: DirectoryApp, fdc3Version: string): boolean {
+export function appSupportsFdc3Version(app: DirectoryApp, desktopAgentFdc3Version: string): boolean {
   const appFdc3Version = app.fdc3Version;
   if (appFdc3Version == null) {
     return true;
@@ -30,7 +34,7 @@ export function appSupportsFdc3Version(app: DirectoryApp, fdc3Version: string): 
   }
 
   const range = semver.validRange(appFdc3Version);
-  const normalizedFdc3Version = semver.coerce(fdc3Version)?.version;
+  const normalizedFdc3Version = semver.coerce(desktopAgentFdc3Version)?.version;
   return range != null && normalizedFdc3Version != null && semver.satisfies(normalizedFdc3Version, range);
 }
 
@@ -39,17 +43,17 @@ export function appSupportsFdc3Version(app: DirectoryApp, fdc3Version: string): 
  */
 export class BasicDirectory implements Directory {
   allApps: DirectoryApp[];
-  readonly fdc3Version: string;
+  readonly desktopAgentFdc3Version: string;
 
-  constructor(apps: DirectoryApp[], fdc3Version = '3.0') {
-    this.fdc3Version = fdc3Version;
-    this.allApps = apps.filter(app => appSupportsFdc3Version(app, fdc3Version));
+  constructor(apps: DirectoryApp[], desktopAgentFdc3Version = '3.0') {
+    this.desktopAgentFdc3Version = desktopAgentFdc3Version;
+    this.allApps = apps.filter(app => appSupportsFdc3Version(app, desktopAgentFdc3Version));
   }
 
   addApps(apps: DirectoryApp[]): void {
     apps.forEach(app => {
       const existing = this.allApps.find(a => a.appId == app.appId);
-      if (!existing && appSupportsFdc3Version(app, this.fdc3Version)) {
+      if (!existing && appSupportsFdc3Version(app, this.desktopAgentFdc3Version)) {
         this.allApps.push(app);
       }
     });

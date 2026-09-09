@@ -44,7 +44,7 @@ async function raiseGetPricesIntent(fdc3: DesktopAgent, remoteHandlers: FDC3Hand
     }
     const { signature, antiReplay } = signResult;
 
-    const resolution = await fdc3.raiseIntent('demo.GetPrices', instrument, null, { signature, antiReplay });
+    const resolution = await fdc3.raiseIntent('demo.GetPrices', instrument, null, undefined, { signature, antiReplay });
 
     const intentResult = await resolution.getResult();
 

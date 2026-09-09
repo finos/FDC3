@@ -32,7 +32,7 @@
     "lint": "eslint generated/ --fix && npx prettier generated/ --write",
     "test": "npm run generate && tsc && vitest run",
     "test:watch": "vitest",
-    "typegen": "cd schemas && node ../s2tQuicktypeUtil.cjs context ../generated/context/ContextTypes.ts"
+    "typegen": "cd schemas && node ../s2tQuicktypeUtil.cjs ../../fdc3-schema/schemas/api/api.schema.json context ../generated/context/ContextTypes.ts"
   },
   "devDependencies": {
     "ajv": "^8.18.0",

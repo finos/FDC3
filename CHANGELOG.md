@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Added basic conformance tests verifying that `DesktopAgent.addEventListener` is callable and returns a `Listener` for filtered and unfiltered event listeners. ([#1774](https://github.com/finos/FDC3/issues/1774))
 * Added CI dependency checks for the root package and every npm workspace, with documented baselines of existing unused-dependency findings.
 * Added conformance coverage for `ChannelError.NoChannelFound`, `ChannelError.MalformedContext`, and `ChannelError.InvalidArguments`. ([#1779](https://github.com/finos/FDC3/issues/1779))
 * Added conformance coverage verifying that Desktop Agent methods continue to work when destructured from the `fdc3` object. ([#1778](https://github.com/finos/FDC3/issues/1778))
@@ -36,10 +37,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 * Added `fdc3.close()` API call allowing an app to request that its own window or frame be closed, with `closeRequest`/`closeResponse` DACP messages and `CloseError` enumeration ([#1918](https://github.com/finos/FDC3/pull/1918))
 
+* Added an optional `newInstance` parameter to the `raiseIntent` and `raiseIntentForContext` API calls, allowing an app to explicitly request that a **new instance** of the target application be launched (`newInstance: true`) or that an **existing instance** be used and a new one never launched (`newInstance: false`, which rejects with `ResolveError.TargetInstanceUnavailable` if no running instance is available). Omitting the parameter (or passing `null` or `undefined`) preserves the Desktop Agent's default resolution behavior. The parameter is carried on the `raiseIntentRequest` / `raiseIntentForContextRequest` DACP payloads, implemented in the agent proxy and reference web implementation, and covered by unit and conformance tests (`RaiseIntentNewInstanceForced`, `RaiseIntentExistingInstanceRequired`, `RaiseIntentFailExistingInstanceRequired`). ([#1940](https://github.com/finos/FDC3/issues/1940))
+
 ### Changed
 
 * Added `channelId` to `FDC3ContextClearedEvent.details` and all PrivateChannel event details, aligning the standard API events with existing DACP payloads and allowing channel-related events to identify their source channel. ([#2042](https://github.com/finos/FDC3/issues/2042))
 * Clarified `userChannelChanged` event ordering after `joinUserChannel` in the API and Desktop Agent Communication Protocol documentation. ([#1967](https://github.com/finos/FDC3/pull/1967))
+* The `context` argument of `raiseIntent` is now optional (`context?: Context | null`). Apps that only raise an intent to obtain a result no longer need to pass the `fdc3.nothing` context explicitly — when `context` is omitted (or `null`/`undefined` is passed) the Desktop Agent substitutes the `fdc3.nothing` context type, so the wire protocol is unchanged and intent listeners always receive a concrete context. This is an additive, non-breaking change for TypeScript applications. ([#1708](https://github.com/finos/FDC3/issues/1708))
 * The `fdc3-agent-proxy` now enforces intent listener conflicts on the client side: `addIntentListener` and `addIntentListenerWithContext` reject with `ResolveError.IntentListenerConflict` when a new listener conflicts with an existing one for the same intent (either listener being unfiltered, or their context types overlapping). Multiple filtered listeners for the same intent with non-overlapping context types are now allowed, and the `addIntentListener`/`addIntentListenerWithContext` documentation was updated accordingly.
 * DACP `ContextMetadata` in `api.schema.json` now allows optional `antiReplay` claims on the wire (e.g. merged into `raiseIntentResultResponse.resultMetadata`). The agent proxy and reference web implementation forward `antiReplay` from app metadata on `raiseIntent` / `raiseIntentForContext` and merge it from `intentResultRequest` metadata into the intent result delivered to the raising app. Cucumber steps and features cover `iat` / `exp` / `jti` alongside signatures.
 * Updated "Releasing FDC3 to NPM" instructions in README to reflect the current GitHub Actions release workflow. ([#1864](https://github.com/finos/FDC3/pull/1864))
@@ -63,11 +67,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+* Fixed `fdc3-context`'s `typegen` script so that it resolves the `AppIdentifier` type referenced from `action.schema.json` via a local path to `fdc3-schema`'s `api.schema.json`, instead of relying on `quicktype` fetching it over the network from the (as yet unpublished) `$id` URL. Previously, after running `npm run clean`, `npm run build` would fail across the whole monorepo because the `fdc3-context` build silently produced an empty `generated/context` directory (the underlying `quicktype` failure was swallowed) and downstream packages could not resolve `@finos/fdc3-context`.
 * Fixed the basic conformance version check to use the exported FDC3 version and accept newer compatible Desktop Agents. ([#1966](https://github.com/finos/FDC3/pull/1966))
 * Reduced normal `getAgent` discovery console noise by ignoring unrelated `postMessage` traffic and reporting expected agent-not-found timeouts as warnings instead of errors. ([#1902](https://github.com/finos/FDC3/issues/1902))
 * Prevented the FDC3 for Web reference implementation from sending channel-changed events to applications that have not registered a matching listener. ([#1806](https://github.com/finos/FDC3/issues/1806))
 * Fixed an issue in conformance test AOpensBWithWrongContext, which was not correctly waiting for the timeout and was sending close messages outside of the execution of the test. Also added logging of test starts and finishes to aid debugging. ([#1933](https://github.com/finos/FDC3/pull/1933))
 * Fixed the `BasicJC1` conformance test to skip user channel membership checks when `getInfo().optionalFeatures.UserChannelMembershipAPIs` is not advertised, while still validating `joinUserChannel`, `getCurrentChannel`, and `leaveCurrentChannel` when the feature is enabled. ([#1777](https://github.com/finos/FDC3/issues/1777))
+* Fixed intermittent failures in the `fdc3.destructuredMethods` conformance tests caused by mock apps not yet being ready when opened, and by too short a timeout when awaiting their close confirmation. ([#2114](https://github.com/finos/FDC3/issues/2114))
 
 ## [npm v2.2.3] - 2026-04-15
 

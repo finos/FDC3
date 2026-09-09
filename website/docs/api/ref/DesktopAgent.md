@@ -34,8 +34,8 @@ interface DesktopAgent {
   // intents
   findIntent(intent: string, context?: Context, resultType?: string): Promise<AppIntent>;
   findIntentsByContext(context: Context, resultType?: string): Promise<Array<AppIntent>>;
-  raiseIntent(intent: string, context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
-  raiseIntentForContext(context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
+  raiseIntent(intent: string, context: Context, app?: AppIdentifier | null, newInstance?: boolean | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
+  raiseIntentForContext(context: Context, app?: AppIdentifier | null, newInstance?: boolean | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
   addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;
   addIntentListenerWithContext(intent: string, contextType: string | string[], handler: IntentHandler): Promise<Listener>;
 
@@ -1930,21 +1930,21 @@ if result.Err != nil {
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-raiseIntent(intent: string, context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
+raiseIntent(intent: string, context?: Context | null, app?: AppIdentifier | null, newInstance?: boolean | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
 ```
 
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-Task<IIntentResolution> RaiseIntent(string intent, IContext context, IAppIdentifier? app = null);
+Task<IIntentResolution> RaiseIntent(string intent, IContext context, IAppIdentifier? app = null, bool? newInstance = null);
 ```
 
 </TabItem>
 <TabItem value="golang" label="Go">
 
 ```go
-func (desktopAgent *DesktopAgent) RaiseIntent(intent string, context IContext, appIdentifier *AppIdentifier, metadata *AppProvidableContextMetadata) <-chan Result[IntentResolution] {
+func (desktopAgent *DesktopAgent) RaiseIntent(intent string, context IContext, appIdentifier *AppIdentifier, newInstance *bool, metadata *AppProvidableContextMetadata) <-chan Result[IntentResolution] {
   // Implementation here
 }
 ```
@@ -1959,9 +1959,17 @@ Alternatively, the specific app or app instance to target can also be provided. 
 
 If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, the promise MUST be rejected with an `Error` object with a `message` chosen from the [`ResolveError`](Errors#resolveerror) enumeration, or (if connected to a Desktop Agent Bridge) the [`BridgingError`](Errors#bridgingerror) enumeration. If a specific target `app` parameter was set, but either the app or app instance is not available, the promise MUST be rejected with an `Error` object with either the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` string as its `message`. If an invalid context object is passed as an argument the promise MUST be rejected with an `Error` object with the [`ResolveError.MalformedContext`](Errors#resolveerror) string as its `message`.
 
-If you wish to raise an intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
+If you wish to raise an intent without a context, the `context` argument may be omitted (or `null`/`undefined` passed). In this case the Desktop Agent MUST substitute the `fdc3.nothing` context type, which apps may use to explicitly declare support for raising an intent without context. A `{ type: "fdc3.nothing" }` context may also be passed explicitly.
 
-An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the raised intent. If metadata is provided without a target app, `null` may be passed for the `app` parameter.
+An optional `newInstance` parameter allows the caller to express how an instance of the target application should be selected, overriding the Desktop Agent's default resolution behavior:
+
+- When `newInstance` is omitted (`undefined` or `null`), the Desktop Agent applies its default behavior, which MAY present a resolver UI allowing the user to choose between launching a new instance or selecting an existing one.
+- When `newInstance` is `true`, the caller is explicitly requesting that a **new instance** of the target application be launched, even if existing instances are available. This is useful when the user has already resolved the application to target (e.g. via [`findIntent`](DesktopAgent#findintent)) and has chosen to open a fresh instance. As resolution always remains the purview of the Desktop Agent, it MAY still reject the request (for example, according to firm policy).
+- When `newInstance` is `false`, the caller is explicitly requesting that an **existing instance** of the target application be used and that a new instance MUST NOT be launched. If no suitable running instance is available, the promise MUST be rejected with an `Error` object with the `ResolveError.TargetInstanceUnavailable` string as its `message`.
+
+A `newInstance` value of `true` or `false` SHOULD be used together with an `app` argument that targets a specific `appId`. If `newInstance` is provided without a target app, `null` may be passed for the `app` parameter.
+
+An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the raised intent. If metadata is provided without a target app or `newInstance` preference, `null` and `undefined` may be passed for the `app` and `newInstance` parameters respectively.
 
 Returns an [`IntentResolution`](Types#intentresolution) object with details of the app instance that was selected (or started) to respond to the intent.
 
@@ -1984,11 +1992,23 @@ const appIntent = await fdc3.findIntent("StartChat", context);
 // use the metadata of an app or app instance to describe the target app for the intent
 await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
 
-//Raise an intent without a context by using the null context type
+//Raise an intent without a context by omitting the context argument
+await fdc3.raiseIntent("StartCall");
+
+//Raise an intent without a context, but targeting a specific app (pass null or undefined for context)
+await fdc3.raiseIntent("StartCall", null, appIntent.apps[0]);
+
+//Raise an intent without a context by explicitly using the fdc3.nothing context type
 await fdc3.raiseIntent("StartChat", {type: "fdc3.nothing"});
 
-//Raise an intent with metadata, passing null for the app parameter
-await fdc3.raiseIntent("StartChat", context, null, { traceId: 'abc123' });
+//Force a new instance of a specific app to be launched to handle the intent
+await fdc3.raiseIntent("StartChat", context, { appId: "myApp" }, true);
+
+//Require an existing instance of a specific app to be used (never launch a new one)
+await fdc3.raiseIntent("StartChat", context, { appId: "myApp" }, false);
+
+//Raise an intent with metadata, passing null for the app and newInstance parameters
+await fdc3.raiseIntent("StartChat", context, null, undefined, { traceId: 'abc123' });
 
 //Raise an intent and retrieve a result from the IntentResolution
 let resolution = await agent.raiseIntent("intentName", context);
@@ -2073,21 +2093,21 @@ resolutionResult := <-desktopAgent.RaiseIntent("intentName", context, nil);
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-raiseIntentForContext(context: Context, app?: AppIdentifier | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
+raiseIntentForContext(context: Context, app?: AppIdentifier | null, newInstance?: boolean | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
 ```
 
 </TabItem>
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-Task<IIntentResolution> RaiseIntentForContext(IContext context, IAppIdentifier? app = null);
+Task<IIntentResolution> RaiseIntentForContext(IContext context, IAppIdentifier? app = null, bool? newInstance = null);
 ```
 
 </TabItem>
 <TabItem value="golang" label="Go">
 
 ```go
-func (desktopAgent *DesktopAgent) RaiseIntentForContext(context IContext, appIdentifier *AppIdentifier, metadata *AppProvidableContextMetadata) <-chan Result[IntentResolution] {
+func (desktopAgent *DesktopAgent) RaiseIntentForContext(context IContext, appIdentifier *AppIdentifier, newInstance *bool, metadata *AppProvidableContextMetadata) <-chan Result[IntentResolution] {
   // Implementation here
 }
 ```
@@ -2102,7 +2122,9 @@ Alternatively, the specific app or app instance to target can also be provided, 
 
 Using `raiseIntentForContext` is similar to calling `findIntentsByContext`, and then raising an intent against one of the returned apps, except in this case the desktop agent has the opportunity to provide the user with a richer selection interface where they can choose both the intent and target app.
 
-An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the raised intent. If metadata is provided without a target app, `null` may be passed for the `app` parameter.
+As with [`raiseIntent`](#raiseintent), an optional `newInstance` parameter allows the caller to express how an instance of the target application should be selected: omitting it (`undefined` or `null`) applies the Desktop Agent's default behavior, `true` requests that a **new instance** be launched even if existing instances are available, and `false` requires that an **existing instance** be used (a new instance MUST NOT be launched and, if no suitable running instance is available, the promise MUST be rejected with an `Error` object with the `ResolveError.TargetInstanceUnavailable` string as its `message`). See [`raiseIntent()`](#raiseintent) for full details.
+
+An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the raised intent. If metadata is provided without a target app or `newInstance` preference, `null` and `undefined` may be passed for the `app` and `newInstance` parameters respectively.
 
 Returns an `IntentResolution` object, see [`raiseIntent()`](#raiseintent) for details.
 
@@ -2120,8 +2142,11 @@ const intentResolution = await fdc3.raiseIntentForContext(context);
 // Resolve against all intents registered by a specific target app for the specified context
 await fdc3.raiseIntentForContext(context, targetAppIdentifier);
 
-// Resolve with metadata, passing null for the app parameter
-await fdc3.raiseIntentForContext(context, null, { traceId: 'abc123' });
+// Force a new instance of the target app to be launched
+await fdc3.raiseIntentForContext(context, { appId: "myApp" }, true);
+
+// Resolve with metadata, passing null for the app and newInstance parameters
+await fdc3.raiseIntentForContext(context, null, undefined, { traceId: 'abc123' });
 ```
 
 </TabItem>
