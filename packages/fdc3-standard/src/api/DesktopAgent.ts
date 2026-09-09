@@ -257,7 +257,7 @@ export interface DesktopAgent {
    *
    * If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, the promise MUST be rejected with an `Error` object with a `message` chosen from the `ResolveError` enumeration, or (if connected to a Desktop Agent Bridge) the `BridgingError` enumeration. If a specific target `app` parameter was set, but either the app or app instance is not available, the promise MUST be rejected with an `Error` object with either the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` string as its `message`. If an invalid context object is passed as an argument the promise MUST be rejected with an `Error` object with the `ResolveError.MalformedContext` string as its `message`.
    *
-   * If you wish to raise an Intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
+   * If you wish to raise an Intent without a context, the `context` argument may be omitted (or `null`/`undefined` passed). In this case the Desktop Agent MUST substitute the `fdc3.nothing` context type, which apps may use to explicitly declare support for raising an intent without context. You may also pass a `{ type: "fdc3.nothing" }` context explicitly.
    *
    * An optional `newInstance` parameter allows the caller to express how an instance of the target application should be selected, overriding the Desktop Agent's default resolution behavior:
    * - When `newInstance` is omitted (`undefined` or `null`), the Desktop Agent applies its default behavior, which MAY present a resolver UI allowing the user to choose between launching a new instance or selecting an existing one.
@@ -283,7 +283,13 @@ export interface DesktopAgent {
    * // use the metadata of an app or app instance to describe the target app for the intent
    * await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
    *
-   * //Raise an intent without a context by using the null context type
+   * //Raise an intent without a context by omitting the context argument
+   * await fdc3.raiseIntent("StartCall");
+   *
+   * //Raise an intent without a context, but targeting a specific app (pass null or undefined for context)
+   * await fdc3.raiseIntent("StartCall", null, appIntent.apps[0]);
+   *
+   * //Raise an intent without a context by explicitly using the fdc3.nothing context type
    * await fdc3.raiseIntent("StartChat", {type: "fdc3.nothing"});
    *
    * //Force a new instance of a specific app to be launched to handle the intent
@@ -313,7 +319,7 @@ export interface DesktopAgent {
    */
   raiseIntent(
     intent: Intent,
-    context: Context,
+    context?: Context | null,
     app?: AppIdentifier | null,
     newInstance?: boolean | null,
     metadata?: AppProvidableContextMetadata

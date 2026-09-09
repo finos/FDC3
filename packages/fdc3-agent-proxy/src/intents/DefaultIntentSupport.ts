@@ -160,17 +160,20 @@ export class DefaultIntentSupport implements IntentSupport {
 
   async raiseIntent(
     intent: string,
-    context: Context,
+    context?: Context | null,
     app?: AppIdentifier | null,
     newInstance?: boolean | null,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution> {
+    // When no context is provided, substitute the fdc3.nothing context type so that the wire
+    // message remains valid and intent listeners always receive a concrete context object.
+    const resolvedContext: Context = context ?? { type: 'fdc3.nothing' };
     const meta = this.messaging.createMeta();
     const request: RaiseIntentRequest = {
       type: 'raiseIntentRequest',
       payload: {
         intent,
-        context,
+        context: resolvedContext,
         app: app || undefined,
         ...(typeof newInstance === 'boolean' && { newInstance }),
         metadata: {
@@ -200,13 +203,13 @@ export class DefaultIntentSupport implements IntentSupport {
       // Needs further resolution, we need to invoke the resolver
       const choice: IntentResolutionChoice | void = await this.intentResolver.chooseIntent(
         [response.payload.appIntent],
-        context
+        resolvedContext
       );
       if (choice) {
         // If the user picked a specific running instance, target that instance directly and
         // drop the newInstance preference (it would conflict with an explicit instanceId).
         const chosenNewInstance = choice.appId.instanceId !== undefined ? undefined : newInstance;
-        return this.raiseIntent(intent, context, choice.appId, chosenNewInstance, metadata);
+        return this.raiseIntent(intent, resolvedContext, choice.appId, chosenNewInstance, metadata);
       } else {
         throw new Error(ResolveError.UserCancelled);
       }
