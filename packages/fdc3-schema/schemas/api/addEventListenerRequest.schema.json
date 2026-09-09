@@ -42,11 +42,17 @@
 							"type": "null"
 						}
 					]
+				},
+				"channelId": {
+					"title": "Channel Id",
+					"description": "The Id of the Channel that a Channel-scoped listener registration applies to (as registered via `Channel.addEventListener`). Set to `null` for Desktop Agent-level listener registrations (as registered via `DesktopAgent.addEventListener`), whose scope follows the app's current User channel. Currently only relevant to the `CONTEXT_CLEARED` event type.",
+					"type": ["string", "null"]
 				}
 			},
 			"additionalProperties": false,
 			"required": [
-				"type"
+				"type",
+				"channelId"
 			]
 		}
 	}

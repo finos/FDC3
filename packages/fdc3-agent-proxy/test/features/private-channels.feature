@@ -128,9 +128,11 @@ Feature: Basic Private Channels Support
     And messaging receives "{contextClearedMessage}"
     Then "{types}" is an array of objects with length "0"
     And messaging will have posts
-      | type                                          | matches_type                                  |
-      | privateChannelAddEventListenerRequest         | privateChannelAddEventListenerRequest         |
-      | privateChannelUnsubscribeEventListenerRequest | privateChannelUnsubscribeEventListenerRequest |
+      | matches_type                                  |
+      | addEventListenerRequest                       |
+      | privateChannelAddEventListenerRequest         |
+      | eventListenerUnsubscribeRequest               |
+      | privateChannelUnsubscribeEventListenerRequest |
 
   Scenario: Passing an invalid event type to a Private Channel returns InvalidArguments
     Given "typesHandler" pipes events to "types"

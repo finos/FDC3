@@ -71,6 +71,15 @@ All messages defined in the DACP follow a common structure:
 
 `meta.timestamp` fields are formatted as strings, according to the format defined by [ISO 8601-1:2019](https://www.iso.org/standard/70907.html), which is produced in JavaScript via the `Date` class's `toISOString()` function, e.g. `(new Date()).toISOString()`.
 
+#### Encoding optional API arguments
+
+A number of FDC3 API functions accept optional arguments (for example, the `contextType` argument of [`Channel.clearContext()`](../ref/Channel#clearcontext) and [`Channel.getCurrentContext()`](../ref/Channel#getcurrentcontext), or the `app` argument of [`DesktopAgent.raiseIntent()`](../ref/DesktopAgent#raiseintent)). How an omitted optional argument is represented in the corresponding DACP message payload is determined by the payload's message schema:
+
+- Where the schema marks a payload field as **required** and permits a `null` value (i.e. its type is a union that includes `null`), an omitted argument MUST be normalized to `null`. The field MUST always be present. For example, `ClearContextRequestPayload.contextType` and `GetCurrentContextRequestPayload.contextType` are both required and nullable, so an omitted `contextType` argument is encoded as `contextType: null`.
+- Where the schema marks a payload field as **optional** (i.e. it is not listed in the schema's `required` array), an omitted argument MUST be represented by omitting the field entirely, rather than setting it to `null`. For example, `RaiseIntentRequestPayload.newInstance` is optional, so an omitted `newInstance` argument is represented by an absent field.
+
+Implementations MUST follow the required-and-nullable versus optional-and-absent distinction defined by each message schema, and MUST NOT substitute one encoding for the other. Reference implementations (the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3) Desktop Agent Proxy) apply these rules.
+
 ### Context Data Encoding
 
 Context objects carried in DACP message payloads are JSON-compatible structures. When transmitted over a `MessagePort` (as used in Browser-Resident Desktop Agent implementations), context objects are serialised and deserialised by the browser's [Structured Clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm) — implementations SHOULD pass context objects directly to `postMessage` without additional serialisation steps (e.g. without calling `JSON.stringify()`). For further details on how context types are defined and how they relate to language-specific bindings, see the [Context Data specification](../../context/spec#context-schemas).
@@ -139,7 +148,7 @@ Request and response for removing the context listener ([`Listener.unsubscribe()
 
 #### `addEventListener()`
 
-Request and response used to implement the [`addEventListener()`](../ref/DesktopAgent#addeventlistener) API call:
+Request and response used to implement both the [`DesktopAgent.addEventListener()`](../ref/DesktopAgent#addeventlistener) and [`Channel.addEventListener()`](../ref/Channel#addeventlistener) API calls:
 
 - [`addEventListenerRequest`](pathname:///schemas/next/api/addEventListenerRequest.schema.json)
 - [`addEventListenerResponse`](pathname:///schemas/next/api/addEventListenerResponse.schema.json)
@@ -147,11 +156,42 @@ Request and response used to implement the [`addEventListener()`](../ref/Desktop
 Event messages used to deliver events that have occurred:
 
 - [`channelChangedEvent`](pathname:///schemas/next/api/channelChangedEvent.schema.json)
+- [`contextClearedEvent`](pathname:///schemas/next/api/contextClearedEvent.schema.json)
 
 Request and response for removing the event listener ([`Listener.unsubscribe()`](../ref/Types#listener)):
 
 - [`eventListenerUnsubscribeRequest`](pathname:///schemas/next/api/eventListenerUnsubscribeRequest.schema.json)
 - [`eventListenerUnsubscribeResponse`](pathname:///schemas/next/api/eventListenerUnsubscribeResponse.schema.json)
+
+The `addEventListenerRequest` payload has two fields:
+
+- `type`: the [`FDC3EventType`](pathname:///schemas/next/api/api.schema.json) to listen for (`USER_CHANNEL_CHANGED` or `CONTEXT_CLEARED`), or `null` to register a wildcard listener that receives all Desktop Agent event types.
+- `channelId`: identifies the scope of the registration:
+  - Set to a Channel's id for a **Channel-scoped** listener registered via [`Channel.addEventListener()`](../ref/Channel#addeventlistener). The Desktop Agent MUST route matching events for that specific channel only.
+  - Set to `null` for a **Desktop Agent-level** listener registered via [`DesktopAgent.addEventListener()`](../ref/DesktopAgent#addeventlistener). For `CONTEXT_CLEARED`, the scope of a Desktop Agent-level listener follows the app's current User channel, so the Desktop Agent MUST route a `contextClearedEvent` to the app when context is cleared on the channel the app is currently joined to. `USER_CHANNEL_CHANGED` events are inherently Desktop Agent-level and always use a `null` `channelId`.
+
+On success, the Desktop Agent responds with an `addEventListenerResponse` carrying the `listenerUUID` that identifies the registration for later unsubscription.
+
+The `contextClearedEvent` is delivered to registered listeners when context is cleared on a channel via [`Channel.clearContext()`](#clearcontext) (see the [`Channel`](#channel) section below). Its payload carries:
+
+- `channelId`: the id of the channel on which context was cleared.
+- `contextType`: the context type that was cleared, or `null` when all context types on the channel were cleared.
+
+**Routing.** The Desktop Agent has enough information from each registration's `type` and `channelId` to route events only to the apps that registered a matching listener, rather than broadcasting events to all connected apps for proxy-side filtering. A `contextClearedEvent` for a given channel MUST be routed to an app when that app has a registration whose `type` is `CONTEXT_CLEARED` (or `null` for a wildcard listener) and whose scope matches — either a Channel-scoped registration for the same channel, or a Desktop Agent-level registration held by an app whose current User channel is the cleared channel. Desktop Agents SHOULD NOT deliver a `contextClearedEvent` back to the app that triggered the clear.
+
+**Wildcard listeners.** A registration with `type: null` matches every Desktop Agent event type subject to the same channel scoping described above. A Desktop Agent-level wildcard listener therefore receives both `channelChangedEvent` and `contextClearedEvent` messages relevant to the app.
+
+**Unsubscription.** Both Desktop Agent-level and Channel-scoped event listeners are removed using the same `eventListenerUnsubscribeRequest`/`eventListenerUnsubscribeResponse` exchange, quoting the `listenerUUID` returned at registration. After unsubscription the Desktop Agent MUST NOT route further events to that listener.
+
+```mermaid
+sequenceDiagram
+    App ->> DesktopAgent: addEventListenerRequest<br/>(type CONTEXT_CLEARED, channelId)
+    DesktopAgent ->> App: addEventListenerResponse<br/>(with listenerUUID)
+    Note over DesktopAgent: context cleared on the matching channel
+    DesktopAgent ->> App: contextClearedEvent
+    App ->> DesktopAgent: eventListenerUnsubscribeRequest<br/>(with listenerUUID)
+    DesktopAgent ->> App: eventListenerUnsubscribeResponse
+```
 
 #### `addIntentListener()` / `addIntentListenerWithContext()`
 
@@ -448,6 +488,31 @@ Request and response used to implement the [`Channel.getCurrentContext()`](../re
 - [`getCurrentContextResponse`](pathname:///schemas/next/api/getCurrentContextResponse.schema.json)
 
 The `getCurrentContextResponse` payload includes an optional `metadata` field containing the [`ContextMetadata`](../ref/Types#contextmetadata) associated with the most recently broadcast context. This field is used by `getCurrentContextWithMetadata()` to return both the context and its metadata. The `getCurrentContext()` function uses the same request/response messages but ignores the `metadata` field, returning only the context.
+
+#### `clearContext()`
+
+Request and response used to implement the [`Channel.clearContext()`](../ref/Channel#clearcontext) API call:
+
+- [`clearContextRequest`](pathname:///schemas/next/api/clearContextRequest.schema.json)
+- [`clearContextResponse`](pathname:///schemas/next/api/clearContextResponse.schema.json)
+
+The public API method is `channel.clearContext(contextType?: string): Promise<void>`. The `clearContextRequest` payload carries:
+
+- `channelId`: the id of the channel on which to clear context.
+- `contextType`: the context type to clear, or `null` to clear all context types stored on the channel. This field is required and nullable in the schema; following the [convention for encoding optional API arguments](#encoding-optional-api-arguments), an omitted `contextType` argument MUST be normalized to `contextType: null`.
+
+When context is cleared, the Desktop Agent MUST notify apps that have registered a matching `contextClearedEvent` listener (see [`addEventListener()`](#addeventlistener) above) by sending them a [`contextClearedEvent`](pathname:///schemas/next/api/contextClearedEvent.schema.json). The `channelId` and `contextType` of the `contextClearedEvent` match those of the originating `clearContextRequest`.
+
+A typical exchange of messages between an app clearing context, a Desktop Agent, and an app listening for cleared context is:
+
+```mermaid
+sequenceDiagram
+    AppB ->> DesktopAgent: addEventListenerRequest<br/>(type CONTEXT_CLEARED)
+    DesktopAgent ->> AppB: addEventListenerResponse<br/>(with listenerUUID)
+    AppA ->> DesktopAgent: clearContextRequest<br/>(channelId, contextType or null)
+    DesktopAgent ->> AppB: contextClearedEvent
+    DesktopAgent ->> AppA: clearContextResponse
+```
 
 ### `PrivateChannel`
 

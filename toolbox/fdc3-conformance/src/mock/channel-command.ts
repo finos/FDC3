@@ -47,6 +47,15 @@ export class Fdc3CommandExecutor {
           });
           break;
         }
+        case commands.clearContext: {
+          await channelService.clearContext(channel!);
+          break;
+        }
+        case commands.clearContextForType: {
+          const contextType = config.contextId ? `fdc3.instrument.${config.contextId}` : 'fdc3.instrument';
+          await channelService.clearContext(channel!, contextType);
+          break;
+        }
       }
     }
 

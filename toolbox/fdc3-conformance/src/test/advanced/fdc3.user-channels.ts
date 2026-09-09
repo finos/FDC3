@@ -1,8 +1,13 @@
 import { assert, expect } from 'chai';
 import { wait } from '../../utils';
-import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from '../support/channel-control';
+import {
+  JOIN_AND_BROADCAST,
+  JOIN_AND_BROADCAST_TWICE,
+  JOIN_AND_BROADCAST_TWICE_THEN_CLEAR,
+  JOIN_AND_BROADCAST_TWICE_THEN_CLEAR_TYPE,
+} from '../support/channel-control';
 import constants from '../../constants';
-import { ChannelError, Context } from '@finos/fdc3';
+import { ChannelError, Context, FDC3ContextClearedEvent } from '@finos/fdc3';
 import { ChannelControlImpl } from '../support/channels-support';
 import { getAgent } from '@finos/fdc3';
 import { APIDocumentation } from '../support/apiDocuments';
@@ -506,6 +511,96 @@ export default async () => {
       await cc.openChannelApp(scTestId9, channel.id, JOIN_AND_BROADCAST);
       await resolveExecutionCompleteListener;
       await wait(constants.ShortWait);
+    });
+
+    const UCClearContext1 =
+      '(UCClearContext1) Should receive a contextCleared event and null current context when app B clears all context on the joined user channel';
+    it(UCClearContext1, async () => {
+      const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener\r\n- App A adds a contextCleared event listener\r\n- App B joins channel 1 and broadcasts fdc3.instrument and fdc3.contact\r\n- App B clears all context on the channel${documentation}`;
+
+      const resolveExecutionCompleteListener = cc.initCompleteListener(UCClearContext1);
+      let receivedContext = false;
+      const clearedEvents: FDC3ContextClearedEvent[] = [];
+
+      const channel = await cc.getNonGlobalUserChannel();
+      await cc.joinChannel(channel);
+      const contextListener = await cc.setupAndValidateListener(
+        null,
+        'fdc3.instrument',
+        'fdc3.instrument',
+        errorMessage,
+        () => (receivedContext = true)
+      );
+      const eventListener = await cc.setupContextClearedEventListener(null, errorMessage, event => {
+        clearedEvents.push(event);
+      });
+
+      await cc.openChannelApp(UCClearContext1, channel.id, JOIN_AND_BROADCAST_TWICE_THEN_CLEAR);
+      await resolveExecutionCompleteListener;
+      try {
+        if (!receivedContext) {
+          await wait(constants.ShortWait);
+        }
+        if (clearedEvents.length === 0) {
+          await wait(constants.ShortWait);
+        }
+        assert.isTrue(receivedContext, `No context received!\n${errorMessage}`);
+        assert.isNotEmpty(clearedEvents, `No contextCleared event received!\n${errorMessage}`);
+        const clearedEvent = clearedEvents[0];
+        expect(clearedEvent.details.channelId, errorMessage).to.be.equals(channel.id);
+        expect(clearedEvent.details.contextType, errorMessage).to.be.null;
+
+        const currentInstrument = await channel.getCurrentContext('fdc3.instrument');
+        expect(currentInstrument, `getCurrentContext should return null for a cleared type\n${errorMessage}`).to.be
+          .null;
+      } finally {
+        cc.unsubscribeListeners([contextListener, eventListener]);
+      }
+    });
+
+    const UCClearContext2 =
+      '(UCClearContext2) Should receive a contextCleared event identifying the cleared type when app B clears a specific type on the joined user channel';
+    it(UCClearContext2, async () => {
+      const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener\r\n- App A adds a contextCleared event listener\r\n- App B joins channel 1 and broadcasts fdc3.instrument and fdc3.contact\r\n- App B clears the fdc3.instrument context type on the channel${documentation}`;
+
+      const resolveExecutionCompleteListener = cc.initCompleteListener(UCClearContext2);
+      let receivedContext = false;
+      const clearedEvents: FDC3ContextClearedEvent[] = [];
+
+      const channel = await cc.getNonGlobalUserChannel();
+      await cc.joinChannel(channel);
+      const contextListener = await cc.setupAndValidateListener(
+        null,
+        'fdc3.instrument',
+        'fdc3.instrument',
+        errorMessage,
+        () => (receivedContext = true)
+      );
+      const eventListener = await cc.setupContextClearedEventListener(null, errorMessage, event => {
+        clearedEvents.push(event);
+      });
+
+      await cc.openChannelApp(UCClearContext2, channel.id, JOIN_AND_BROADCAST_TWICE_THEN_CLEAR_TYPE);
+      await resolveExecutionCompleteListener;
+      try {
+        if (!receivedContext) {
+          await wait(constants.ShortWait);
+        }
+        if (clearedEvents.length === 0) {
+          await wait(constants.ShortWait);
+        }
+        assert.isTrue(receivedContext, `No context received!\n${errorMessage}`);
+        assert.isNotEmpty(clearedEvents, `No contextCleared event received!\n${errorMessage}`);
+        const clearedEvent = clearedEvents[0];
+        expect(clearedEvent.details.channelId, errorMessage).to.be.equals(channel.id);
+        expect(clearedEvent.details.contextType, errorMessage).to.be.equals('fdc3.instrument');
+
+        const currentInstrument = await channel.getCurrentContext('fdc3.instrument');
+        expect(currentInstrument, `getCurrentContext should return null for a cleared type\n${errorMessage}`).to.be
+          .null;
+      } finally {
+        cc.unsubscribeListeners([contextListener, eventListener]);
+      }
     });
 
     const UCFilteredUsageJoin = '(UCFilteredUsageJoin) getCurrentChannel retrieves the channel that was joined';

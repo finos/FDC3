@@ -11,4 +11,6 @@ export const commands = {
   joinUserChannelOne: 'joinUserChannelOne',
   broadcastInstrumentWithTraceId: 'broadcastInstrumentWithTraceId',
   broadcastInstrumentWithSignatureCustom: 'broadcastInstrumentWithSignatureCustom',
+  clearContext: 'clearContext',
+  clearContextForType: 'clearContextForType',
 };
