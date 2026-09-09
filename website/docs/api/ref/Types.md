@@ -333,8 +333,10 @@ Note that as `AppMetadata` instances are also `AppIdentifiers` they may be passe
 
 ```ts
 interface AppProvidableContextMetadata {
-  /** A unique identifier for tracing the flow of context or intent messages
-   *  across applications. If provided, the Desktop Agent SHOULD forward it. */
+  /** An optional, app-provided unique identifier for tracing the flow of context
+   *  or intent messages across applications. The Desktop Agent MUST forward a
+   *  traceId provided here unchanged, and MUST generate one when the app does not
+   *  supply it, so the delivered ContextMetadata always carries a traceId. */
   traceId?: string;
 
   /** A detached JSON Web Signature (JWS) proving the authenticity and integrity
@@ -518,9 +520,9 @@ interface ContextMetadata {
   readonly timestamp: Date;
 
   /** A unique identifier for tracing the flow of context or intent messages
-   *  across applications. If a traceId is provided by the app, the Desktop
-   *  Agent SHOULD forward it. If no traceId is provided, the Desktop Agent
-   *  SHOULD generate a new one. */
+   *  across applications. Always present: the Desktop Agent MUST forward a
+   *  traceId provided by the originating app, and MUST generate one when the
+   *  app did not supply it. */
   readonly traceId: string;
 
   /** A detached JSON Web Signature (JWS) proving the authenticity and integrity

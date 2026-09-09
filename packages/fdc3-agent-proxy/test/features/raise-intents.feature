@@ -110,11 +110,13 @@ Feature: Basic Intents Support
       | payload.intent | payload.context.type | payload.metadata.traceId | payload.metadata.signature.signature | payload.metadata.signature.protected | payload.metadata.antiReplay.iat | payload.metadata.antiReplay.exp | payload.metadata.antiReplay.jti | payload.metadata.custom.priority | matches_type       |
       | Buy            | fdc3.instrument      | trace-123                | sig-abc (signature part)   | sig-abc (protected part)   | {1234}                          | {2345}                          | intent-null-app-jti             | high                             | raiseIntentRequest |
 
-  Scenario: Raising an intent without metadata generates a traceId but omits signature and custom
+  Scenario: Raising an intent without app-provided metadata omits the metadata field
+            traceId generation is the Desktop Agent's responsibility, so the proxy omits the
+            metadata field entirely when the app supplied no metadata argument.
     When I call "{api}" with "raiseIntent" with parameters "Buy" and "{instrumentContext}"
     And messaging will have posts
-      | payload.intent | payload.context.type | payload.metadata.signature.signature | payload.metadata.signature.protected | payload.metadata.custom | matches_type       |
-      | Buy            | fdc3.instrument      | {null}                     | {null}                     | {null}                  | raiseIntentRequest |
+      | payload.intent | payload.context.type | payload.metadata | matches_type       |
+      | Buy            | fdc3.instrument      | {undefined}      | raiseIntentRequest |
 
   Scenario: Raising an intent without a context substitutes the fdc3.nothing context type
             An app that only raises an intent to obtain a result can omit the context

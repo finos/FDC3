@@ -40,11 +40,13 @@
 					"description": "If a Context object is passed in, this object will be provided to the opened application via a contextListener. The Context argument is functionally equivalent to opening the target app with no context and broadcasting the context directly to it."
 				},
 				"metadata": {
+					"title": "App-provided Context Metadata",
+					"description": "Optional metadata supplied by the calling app (`traceId`, `signature`, `antiReplay` and `custom`) to accompany any `context` delivered to the opened app. This field carries only the app-provided portion of the metadata; the Desktop Agent adds its own `source` and `timestamp` before delivering the enriched `ContextMetadata`. It MUST be omitted when the app did not supply a metadata argument to `open()`.",
 					"$ref": "api.schema.json#/definitions/AppProvidableContextMetadata"
 				}
 			},
 			"required": [
-				"app", "metadata"
+				"app"
 			],
 			"additionalProperties": false
 		}
