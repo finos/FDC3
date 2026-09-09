@@ -64,7 +64,7 @@ export class DefaultContextListener
       // For arrays, match if any type in the array matches
       contextTypeMatch = this.contextType.includes(m.payload.context?.type ?? '');
     } else {
-      // Single context type - use original logic
+      // Single context type
       contextTypeMatch = m.payload.context?.type == this.contextType || this.contextType == null;
     }
 
