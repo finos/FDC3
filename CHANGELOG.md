@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- `StartPayment` intent and `fdc3.paymentContext` context type for ISO 20022 institutional payment settlement bridging (#2178).
 
 * Added basic conformance tests verifying that `DesktopAgent.addEventListener` is callable and returns a `Listener` for filtered and unfiltered event listeners. ([#1774](https://github.com/finos/FDC3/issues/1774))
 * Added CI dependency checks for the root package and every npm workspace, with documented baselines of existing unused-dependency findings.

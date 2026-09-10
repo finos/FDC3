@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://fdc3.finos.org/schemas/next/context/paymentContext.schema.json",
+  "type": "object",
+  "title": "PaymentContext",
+  "description": "@experimental context type representing an institutional payment instruction, specifically mapping to ISO 20022 pacs.008 (Customer Credit Transfer). To be used for bridging traditional finance workflows with blockchain and DLT networks (e.g. SynapticChain L1 DPI).\n\nThis type defines the required routing and settlement instructions, including the amount, currency, debtor, creditor, and network routing information (such as cross-chain derivation rails).",
+  "allOf": [
+    {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "fdc3.paymentContext"
+        },
+        "id": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "title": "Payment Identifiers",
+          "description": "One or more identifiers that refer to the payment in an OMS, EMS, or Settlement network (e.g., UETR, TransactionHash)."
+        },
+        "name": {
+          "type": "string",
+          "title": "Name",
+          "description": "An optional human-readable summary of the payment context."
+        },
+        "amount": {
+          "type": "number",
+          "title": "Amount",
+          "description": "The exact numerical value of the payment."
+        },
+        "currency": {
+          "type": "string",
+          "title": "Currency",
+          "description": "The ISO 4217 currency code or standard token symbol (e.g., 'USD', 'SYN', 'sUSD')."
+        },
+        "debtor": {
+          "type": "object",
+          "title": "Debtor Information",
+          "description": "The originating party initiating the payment.",
+          "properties": {
+            "name": { "type": "string" },
+            "account": { "type": "string" },
+            "agent": { "type": "string" }
+          },
+          "required": ["account"]
+        },
+        "creditor": {
+          "type": "object",
+          "title": "Creditor Information",
+          "description": "The receiving party for the payment.",
+          "properties": {
+            "name": { "type": "string" },
+            "account": { "type": "string" },
+            "agent": { "type": "string" }
+          },
+          "required": ["account"]
+        },
+        "networkRouting": {
+          "type": "object",
+          "title": "Network Routing Details",
+          "description": "Optional parameters for DLT execution, such as cross-rail derivation paths or specific lane identifiers (e.g., 256-lane parallel execution context).",
+          "additionalProperties": { "type": "string" }
+        }
+      },
+      "required": [
+        "type",
+        "id",
+        "amount",
+        "currency",
+        "debtor",
+        "creditor"
+      ],
+      "additionalProperties": true
+    },
+    { "$ref": "context.schema.json#/definitions/BaseContext" }
+  ],
+  "examples": [
+    {
+      "type": "fdc3.paymentContext",
+      "name": "ISO 20022 pacs.008 Settlement",
+      "id": {
+        "UETR": "123e4567-e89b-12d3-a456-426614174000"
+      },
+      "amount": 150000.00,
+      "currency": "sUSD",
+      "debtor": {
+        "name": "Acme Corp",
+        "account": "syn1qyz7g8v..."
+      },
+      "creditor": {
+        "name": "Zambia Reserve",
+        "account": "syn1qqy7x2w..."
+      },
+      "networkRouting": {
+        "rail": "Universal5Rail",
+        "signatureType": "CE-WOTS+",
+        "laneId": "42"
+      }
+    }
+  ]
+}
