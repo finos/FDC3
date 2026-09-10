@@ -4,11 +4,24 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-import JSONEditor, { JSONEditorOptions, ParseError, SchemaValidationError } from 'jsoneditor';
-import 'jsoneditor/dist/jsoneditor.css';
+import type JSONEditor from 'jsoneditor';
+import type { JSONEditorOptions, ParseError, SchemaValidationError } from 'jsoneditor';
 import $RefParser from '@apidevtools/json-schema-ref-parser';
 import { Theme } from '@mui/material/styles';
 import { Box } from '@mui/material';
+
+// jsoneditor is a large (~1 MB minified) dependency, so it is loaded on demand
+// the first time a JsonInput is mounted instead of being part of the initial
+// bundle.
+let jsonEditorCtor: typeof JSONEditor | undefined;
+
+async function loadJsonEditor(): Promise<typeof JSONEditor> {
+  if (!jsonEditorCtor) {
+    const [editorModule] = await Promise.all([import('jsoneditor'), import('jsoneditor/dist/jsoneditor.css')]);
+    jsonEditorCtor = editorModule.default;
+  }
+  return jsonEditorCtor;
+}
 
 interface JsonInputProps {
   json?: object | null;
@@ -116,7 +129,8 @@ export const JsonInput: React.FC<JsonInputProps> = (props: JsonInputProps) => {
           }
         }
 
-        const editor = new JSONEditor(container.current, options, props.json);
+        const JsonEditorCtor = await loadJsonEditor();
+        const editor = new JsonEditorCtor(container.current, options, props.json);
 
         setJsoneditor(editor);
       }

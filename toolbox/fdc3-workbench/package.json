@@ -1,6 +1,7 @@
 {
   "name": "fdc3-workbench",
   "version": "3.0.0-alpha.2",
+  "type": "module",
   "private": true,
   "homepage": "https://fdc3.finos.org",
   "repository": {
