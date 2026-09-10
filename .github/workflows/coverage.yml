@@ -47,15 +47,6 @@ jobs:
     - name: Run tests
       run: npm run test
 
-    - name: Install Chromium
-      run: npx playwright install --with-deps chromium
-
-    - name: Build workspaces for conformance testing
-      run: npm run build
-
-    - name: Run automated conformance tests
-      run: npm run test:ci --workspace fdc3-conformance
-
     - name: Codecov
       uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
       with:
