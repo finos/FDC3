@@ -314,6 +314,12 @@ export class BroadcastHandler implements MessageHandler {
     sc: ServerContext<AppRegistration>,
     from: FullAppIdentifier
   ) {
+    const channelId = 'channelId' in arg0.payload ? (arg0.payload.channelId ?? null) : null;
+    if (channelId !== null && this.getChannelById(channelId) === null) {
+      errorResponse(sc, arg0, from, ChannelError.NoChannelFound, 'addEventListenerResponse');
+      return;
+    }
+
     const lr: DesktopAgentEventListener = {
       appId: from.appId,
       instanceId: from.instanceId ?? 'no-instance-id',
@@ -550,9 +556,11 @@ export class BroadcastHandler implements MessageHandler {
     const contextType = arg0.payload.contextType ?? null;
 
     const channel = this.getChannelById(channelId);
-    if (channel) {
-      channel.context = contextType ? channel.context.filter(c => c.context.type !== contextType) : [];
+    if (!channel) {
+      errorResponse(sc, arg0, from, ChannelError.NoChannelFound, 'clearContextResponse');
+      return;
     }
+    channel.context = contextType ? channel.context.filter(c => c.context.type !== contextType) : [];
 
     this.fireContextClearedEvent(channelId, contextType, sc, from);
     successResponse(sc, arg0, from, {}, 'clearContextResponse');

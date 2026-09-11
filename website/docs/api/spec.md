@@ -945,7 +945,7 @@ To facilitate context linking in such situations it is recommended that applicat
 
 ### Context clearing on channels
 
-Channel interface provides the ability to [`clearContext`](ref/Channel.md#clearcontext) on the channel, either for the specific context type, if provided, or for all contexts on that channel. Applications may listen to the `contextCleared` event through either the Channel or Desktop Agent interface. The event's `channelId` field identifies the channel that was cleared. If a specific type was cleared, the `contextType` field of the event will be set to that type; otherwise, it will be `null`. Once cleared, any apps that join the channel, add new context listeners or call [`getCurrentContext`](ref/Channel.md#getcurrentcontext) will not return null to the caller until new context is broadcast to the channel.
+The `Channel` interface provides the ability to [`clearContext`](ref/Channel.md#clearcontext) on the channel, either for a specific context type, if provided, or for all contexts on that channel. Applications may listen to the `contextCleared` event through either the Channel or Desktop Agent interface. The event's `channelId` field identifies the channel that was cleared. If a specific type was cleared, the `contextType` field of the event will be set to that type; otherwise, it will be `null`. Once cleared, [`getCurrentContext`](ref/Channel.md#getcurrentcontext) returns `null` for the cleared context, and applications that join the channel or add new context listeners receive no retained context until new context is broadcast to the channel.
 
 ### Metadata & Securing Communication
 
