@@ -60,11 +60,30 @@ Feature: Broadcasting
     And I call "{channel1}" with "broadcast" with parameter "{instrumentContext}"
     And I call "{channel1}" with "getCurrentContextWithMetadata" with parameter "fdc3.instrument"
     Then "{result}" is an object with the following contents
-      | context.type    | context.name | metadata.source.appId | metadata.traceId | metadata.signature.signature      | metadata.signature.protected      | metadata.custom.key |
-      | fdc3.instrument | Apple        | test-app              | test-trace-id    | test-signature (signature part) | test-signature (protected part) | value               |
+      | context.type    | context.name | metadata.source.appId | metadata.source.instanceId | metadata.traceId | metadata.signature.signature      | metadata.signature.protected      | metadata.custom.key | metadata.antiReplay.iat | metadata.antiReplay.exp | metadata.antiReplay.jti |
+      | fdc3.instrument | Apple        | test-app              | test-instance              | test-trace-id    | test-signature (signature part)   | test-signature (protected part)   | value               | {1234}                  | {2345}                  | test-jti                |
 
   Scenario: getCurrentContextWithMetadata returns null for empty channel
     When I call "{api}" with "getOrCreateChannel" with parameter "channel-name"
     And I refer to "{result}" as "channel1"
     And I call "{channel1}" with "getCurrentContextWithMetadata" with parameter "fdc3.instrument"
     Then "{result}" is null
+
+  Scenario: Current context APIs reject malformed context and metadata pairs
+    When I call "{api}" with "getOrCreateChannel" with parameter "channel-name"
+    And I refer to "{result}" as "channel1"
+    Given the next getCurrentContext response has payload "null-without-metadata"
+    When I call "{channel1}" with "getCurrentContext"
+    Then "{result}" is an error with message "MalformedContext"
+    Given the next getCurrentContext response has payload "null-with-metadata"
+    When I call "{channel1}" with "getCurrentContextWithMetadata"
+    Then "{result}" is an error with message "MalformedContext"
+    Given the next getCurrentContext response has payload "context-with-null-metadata"
+    When I call "{channel1}" with "getCurrentContextWithMetadata"
+    Then "{result}" is an error with message "MalformedContext"
+    Given the next getCurrentContext response has payload "context-without-metadata"
+    When I call "{channel1}" with "getCurrentContextWithMetadata"
+    Then "{result}" is an error with message "MalformedContext"
+    Given the next getCurrentContext response has payload "missing-context"
+    When I call "{channel1}" with "getCurrentContextWithMetadata"
+    Then "{result}" is an error with message "MalformedContext"

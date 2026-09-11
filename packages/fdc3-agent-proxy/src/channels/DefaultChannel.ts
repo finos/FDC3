@@ -1,7 +1,6 @@
 import {
   ContextHandler,
   ContextWithMetadata,
-  ContextMetadata,
   DisplayMetadata,
   Listener,
   Channel,
@@ -23,6 +22,23 @@ import {
 } from '@finos/fdc3-schema/generated/api/BrowserTypes.js';
 import { RegisterableListener } from '../listeners/RegisterableListener.js';
 import { EventListener } from '../listeners/EventListener.js';
+
+function parseCurrentContextResponse(response: GetCurrentContextResponse): ContextWithMetadata | null {
+  const { context, metadata } = response.payload;
+
+  if (context === null) {
+    if (metadata !== null) {
+      throw new Error(ChannelError.MalformedContext);
+    }
+    return null;
+  }
+
+  if (context === undefined || metadata == null) {
+    throw new Error(ChannelError.MalformedContext);
+  }
+
+  return { context, metadata };
+}
 
 export class DefaultChannel implements Channel {
   protected readonly messaging: Messaging;
@@ -84,7 +100,7 @@ export class DefaultChannel implements Channel {
       this.messageExchangeTimeout
     );
 
-    return response.payload.context ?? null;
+    return parseCurrentContextResponse(response)?.context ?? null;
   }
 
   /**
@@ -107,19 +123,7 @@ export class DefaultChannel implements Channel {
       this.messageExchangeTimeout
     );
 
-    const context = response.payload.context;
-    if (context) {
-      const metadata: ContextMetadata = {
-        source: response.payload.metadata?.source ?? { appId: 'unknown' },
-        timestamp: response.payload.metadata?.timestamp ?? response.meta.timestamp,
-        traceId: response.payload.metadata?.traceId ?? '',
-        signature: response.payload.metadata?.signature,
-        custom: response.payload.metadata?.custom,
-        antiReplay: response.payload.metadata?.antiReplay,
-      };
-      return { context, metadata };
-    }
-    return null;
+    return parseCurrentContextResponse(response);
   }
 
   async addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener> {

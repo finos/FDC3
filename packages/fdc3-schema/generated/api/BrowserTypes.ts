@@ -794,12 +794,7 @@ export interface AddContextListenerResponsePayload {
  * `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).
  */
 export type PurpleError =
-  | 'AccessDenied'
-  | 'CreationFailed'
-  | 'MalformedContext'
-  | 'NoChannelFound'
-  | 'ApiTimeout'
-  | 'InvalidArguments';
+  'AccessDenied' | 'CreationFailed' | 'MalformedContext' | 'NoChannelFound' | 'ApiTimeout' | 'InvalidArguments';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -2891,6 +2886,12 @@ export interface GetCurrentContextResponse {
  * A payload for a response to an API call that will contain any return values or an `error`
  * property containing a standardized error message indicating that the request was
  * unsuccessful.
+ *
+ * The response payload for a getCurrentContext request. The `context` and `metadata` fields
+ * are coupled: when `context` is a non-null context object, `metadata` MUST be present and
+ * contain the complete `ContextMetadata` associated with that context (so that
+ * `getCurrentContextWithMetadata()` never needs fabricated metadata); when `context` is
+ * `null`, `metadata` MUST also be `null`.
  */
 export interface GetCurrentContextResponsePayload {
   error?: PurpleError;
@@ -2900,10 +2901,12 @@ export interface GetCurrentContextResponsePayload {
    */
   context?: null | Context;
   /**
-   * Metadata relating to the most recently broadcast context object, if available. This is
-   * not returned by the public getCurrentContext API but is used internally by the Desktop
-   * Agent proxy to deliver metadata to context listeners when replaying context after a
-   * channel change.
+   * The `ContextMetadata` associated with the returned context. When `context` is non-null
+   * this MUST be present and complete, carrying the provenance (`source`, `timestamp` and any
+   * app-provided fields such as `traceId`, `signature`, `antiReplay` and `custom`) retained
+   * for that context by the Desktop Agent. When `context` is `null` this MUST be `null`. It
+   * is used by `getCurrentContextWithMetadata()` to return both the context and its metadata;
+   * `getCurrentContext()` uses the same response but ignores this field.
    */
   metadata?: ContextMetadata | null;
 }
