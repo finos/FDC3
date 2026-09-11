@@ -515,7 +515,7 @@ export const Intents = observer(
       setContextFields(current => [
         ...current,
         <Grid container direction="row" key={contextFields.length}>
-          <Grid item sx={styles.indentLeft}>
+          <Grid sx={styles.indentLeft}>
             <TextField
               variant="outlined"
               label="Delay (ms)"
@@ -524,7 +524,7 @@ export const Intents = observer(
               onChange={e => setChannelContextDelay(e.target.value, contextFields.length)}
             />
           </Grid>
-          <Grid item sx={{ ...styles.indentLeft, ...styles.field }}>
+          <Grid sx={{ ...styles.indentLeft, ...styles.field }}>
             <ContextTemplates
               handleTabChange={handleTabChange}
               contextStateSetter={(context: ContextType | null) => {
@@ -595,14 +595,23 @@ export const Intents = observer(
 
     return (
       <div style={styles.root}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography variant="h5">Raise intent</Typography>
         </Grid>
 
         <form style={styles.form} noValidate autoComplete="off">
           <Grid container direction="row" spacing={2}>
-            <Grid container item spacing={2} justifyContent="flex-end" sx={styles.spread}>
-              <Grid item sx={styles.field}>
+            <Grid
+              container
+              spacing={2}
+              sx={[
+                {
+                  justifyContent: 'flex-end',
+                },
+                styles.spread,
+              ]}
+            >
+              <Grid sx={styles.field}>
                 <ContextTemplates handleTabChange={handleTabChange} contextStateSetter={setRaiseIntentContext} />
                 <Autocomplete
                   sx={styles.rightPadding}
@@ -670,7 +679,7 @@ export const Intents = observer(
                   )}
                 </Grid>
               </Grid>
-              <Grid item sx={styles.controls}>
+              <Grid sx={styles.controls}>
                 <Button variant="contained" color="primary" onClick={handleRaiseIntent} disabled={!intentValue}>
                   Raise intent
                 </Button>
@@ -707,11 +716,20 @@ export const Intents = observer(
               </Grid>
             </Grid>
             {intentResolution?.source && (
-              <Grid container item spacing={2} justifyContent="flex-end" sx={styles.spread}>
-                <Grid item sx={styles.textField}>
+              <Grid
+                container
+                spacing={2}
+                sx={[
+                  {
+                    justifyContent: 'flex-end',
+                  },
+                  styles.spread,
+                ]}
+              >
+                <Grid sx={styles.textField}>
                   <IntentResolutionField data={intentResolution} handleTabChange={handleTabChange} />
                 </Grid>
-                <Grid item>
+                <Grid>
                   <Button variant="contained" color="secondary" onClick={() => setIntentResolution(null)}>
                     Clear result
                   </Button>
@@ -720,11 +738,20 @@ export const Intents = observer(
             )}
             <div style={styles.border}></div>
 
-            <Grid container item spacing={2} justifyContent="flex-end" sx={styles.spread}>
-              <Grid item xs={12} sx={styles.bottomMargin}>
+            <Grid
+              container
+              spacing={2}
+              sx={[
+                {
+                  justifyContent: 'flex-end',
+                },
+                styles.spread,
+              ]}
+            >
+              <Grid sx={styles.bottomMargin} size={12}>
                 <Typography variant="h5">Raise intent for context</Typography>
               </Grid>
-              <Grid item sx={{ ...styles.field, ...styles.removeSidePadding }}>
+              <Grid sx={{ ...styles.field, ...styles.removeSidePadding }}>
                 <ContextTemplates
                   handleTabChange={handleTabChange}
                   contextStateSetter={setRaiseIntentWithContextContext}
@@ -767,7 +794,7 @@ export const Intents = observer(
                   )}
                 </Grid>
               </Grid>
-              <Grid item sx={styles.controls}>
+              <Grid sx={styles.controls}>
                 <Button
                   disabled={!raiseIntentWithContextContext}
                   variant="contained"
@@ -807,11 +834,20 @@ export const Intents = observer(
               </Grid>
             </Grid>
             {intentForContextResolution?.source && (
-              <Grid container item spacing={2} justifyContent="flex-end" sx={styles.spread}>
-                <Grid item sx={styles.textField}>
+              <Grid
+                container
+                spacing={2}
+                sx={[
+                  {
+                    justifyContent: 'flex-end',
+                  },
+                  styles.spread,
+                ]}
+              >
+                <Grid sx={styles.textField}>
                   <IntentResolutionField data={intentForContextResolution} handleTabChange={handleTabChange} />
                 </Grid>
-                <Grid item>
+                <Grid>
                   <Button variant="contained" color="secondary" onClick={() => setIntentForContextResolution(null)}>
                     Clear result
                   </Button>
@@ -820,13 +856,22 @@ export const Intents = observer(
             )}
             <div style={styles.border}></div>
 
-            <Grid container item spacing={2} justifyContent="flex-end" sx={styles.spread}>
-              <Grid item xs={12}>
+            <Grid
+              container
+              spacing={2}
+              sx={[
+                {
+                  justifyContent: 'flex-end',
+                },
+                styles.spread,
+              ]}
+            >
+              <Grid size={12}>
                 <Typography sx={styles.bottomMargin} variant="h5">
                   Add intent listener
                 </Typography>
               </Grid>
-              <Grid item sx={{ ...styles.field, ...styles.removeSidePadding }}>
+              <Grid sx={{ ...styles.field, ...styles.removeSidePadding }}>
                 <Autocomplete
                   id="intent-listener"
                   size="small"
@@ -852,7 +897,7 @@ export const Intents = observer(
                 />
               </Grid>
 
-              <Grid item sx={styles.controls}>
+              <Grid sx={styles.controls}>
                 <Button
                   variant="contained"
                   color="primary"
@@ -896,7 +941,7 @@ export const Intents = observer(
                 </Link>
               </Grid>
             </Grid>
-            <Grid item xs={12}>
+            <Grid size={12}>
               <FormGroup>
                 <FormControlLabel
                   control={
@@ -917,7 +962,7 @@ export const Intents = observer(
               </FormGroup>
             </Grid>
             {filterByContext && (
-              <Grid item xs={12} sx={styles.indentLeft}>
+              <Grid sx={styles.indentLeft} size={12}>
                 <ContextTemplates
                   ref={listenerContextRef}
                   handleTabChange={handleTabChange}
@@ -926,7 +971,7 @@ export const Intents = observer(
               </Grid>
             )}
             {window.fdc3Version === '2.0' && (
-              <Grid item xs={12}>
+              <Grid size={12}>
                 <FormGroup>
                   <FormControlLabel
                     control={
@@ -943,7 +988,7 @@ export const Intents = observer(
               </Grid>
             )}
             {sendIntentResult && (
-              <Grid item xs={12} sx={styles.indentLeft}>
+              <Grid sx={styles.indentLeft} size={12}>
                 <RadioGroup name="intent-result-type" value={resultType} onChange={e => setResultType(e.target.value)}>
                   <FormControlLabel
                     value="context-result"
@@ -951,7 +996,7 @@ export const Intents = observer(
                     label="Context result"
                   />
                   {resultType === 'context-result' && (
-                    <Grid item sx={styles.indentLeft}>
+                    <Grid sx={styles.indentLeft}>
                       <ContextTemplates handleTabChange={handleTabChange} contextStateSetter={setResultTypeContext} />
                     </Grid>
                   )}
@@ -961,7 +1006,7 @@ export const Intents = observer(
                     label="Channel result"
                   />
                   {resultType === 'channel-result' && (
-                    <Grid item sx={styles.indentLeft}>
+                    <Grid sx={styles.indentLeft}>
                       <ToggleButtonGroup
                         value={channelType}
                         exclusive
@@ -977,7 +1022,7 @@ export const Intents = observer(
                       </ToggleButtonGroup>
 
                       {channelType === 'app-channel' && (
-                        <Grid item sx={styles.field}>
+                        <Grid sx={styles.field}>
                           <TextField
                             fullWidth
                             variant="outlined"
@@ -1014,7 +1059,7 @@ export const Intents = observer(
                           {contextFields.map((field, index) => (
                             <React.Fragment key={index}>{field}</React.Fragment>
                           ))}
-                          <Grid item sx={{ ...styles.indentLeft, ...styles.controls }}>
+                          <Grid sx={{ ...styles.indentLeft, ...styles.controls }}>
                             <Tooltip
                               title="Add context result (delays will trigger sequentially)"
                               aria-label="Add context result (delays will trigger sequentially)"
@@ -1043,7 +1088,7 @@ export const Intents = observer(
                 </RadioGroup>
               </Grid>
             )}
-            <Grid item xs={12}>
+            <Grid size={12}>
               <Alert severity="info">
                 Desktop Agents often require apps that listen for intents to include the intent in their appD record.
                 Refer to your Desktop Agent&apos;s documentation if the workbench doesn&apos;t appear in the intent

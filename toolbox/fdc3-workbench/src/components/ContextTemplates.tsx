@@ -133,10 +133,12 @@ export const ContextTemplates = observer(
           container
           direction="row"
           spacing={1}
-          justifyContent="space-between"
-          sx={{ ...styles.controls, ...styles.rightAlign }}
+          sx={{
+            ...styles.controls,
+            ...styles.rightAlign,
+          }}
         >
-          <Grid item sx={styles.contextName}>
+          <Grid sx={styles.contextName}>
             <Autocomplete
               id="context-"
               size="small"

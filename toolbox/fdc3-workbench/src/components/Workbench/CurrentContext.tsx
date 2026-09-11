@@ -37,8 +37,10 @@ export const CurrentContext = observer(() => {
         variant="outlined"
         size="small"
         value={context}
-        InputProps={{
-          sx: classes.input,
+        slotProps={{
+          input: {
+            sx: classes.input,
+          },
         }}
       />
     </AccordionContent>

@@ -7,7 +7,7 @@ import { Buffer } from 'buffer';
 globalThis.Buffer = Buffer;
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import App from './App.js';
 
 //make sure URL ends with trailing / for resolution of image paths
@@ -15,9 +15,11 @@ if (!window.location.href.endsWith('/')) {
   window.location.href = `${window.location.href}/`;
 }
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const rootElement = document.getElementById('root');
+if (rootElement) {
+  createRoot(rootElement).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  );
+}

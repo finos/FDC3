@@ -227,24 +227,39 @@ export const ChannelField = observer(
           currentChannelList.map(channel => {
             const element = (
               <Grid container key={channel.id} sx={styles.spread}>
-                <Grid item sx={styles.field}>
+                <Grid sx={styles.field}>
                   <Typography variant="h5">Channel: {channel.id}</Typography>
                 </Grid>
                 <Grid container sx={styles.topMargin}>
-                  <Grid item xs={12}>
+                  <Grid size={12}>
                     <Typography variant="h6" sx={styles.h6}>
                       Broadcast
                     </Typography>
                   </Grid>
 
-                  <Grid item sm={7}>
+                  <Grid
+                    size={{
+                      sm: 7,
+                    }}
+                  >
                     <ContextTemplates
                       handleTabChange={handleTabChange}
                       contextStateSetter={handleContextStateChange}
                       channel={channel.id}
                     />
                   </Grid>
-                  <Grid item container sx={styles.controls} sm={5} justifyContent="flex-end">
+                  <Grid
+                    container
+                    sx={[
+                      {
+                        justifyContent: 'flex-end',
+                      },
+                      styles.controls,
+                    ]}
+                    size={{
+                      sm: 5,
+                    }}
+                  >
                     <Button
                       disabled={!channel.context}
                       variant="contained"
@@ -274,12 +289,17 @@ export const ChannelField = observer(
                   </Grid>
                 </Grid>
                 <Grid container sx={styles.secondMargin}>
-                  <Grid item xs={12}>
+                  <Grid size={12}>
                     <Typography variant="h6" sx={styles.h6}>
                       Add context listener
                     </Typography>
                   </Grid>
-                  <Grid item sm={7} sx={styles.rightPadding}>
+                  <Grid
+                    sx={styles.rightPadding}
+                    size={{
+                      sm: 7,
+                    }}
+                  >
                     <Autocomplete
                       size="small"
                       selectOnFocus
@@ -291,8 +311,8 @@ export const ChannelField = observer(
                       filterOptions={filterOptions}
                       options={contextListenersOptions}
                       getOptionLabel={getOptionLabel}
-                      isOptionEqualToValue={(option: ListenerOptionType, value: ListenerOptionType) =>
-                        option.type === value.type
+                      isOptionEqualToValue={(option: ListenerOptionType, value: string | ListenerOptionType) =>
+                        typeof value === 'string' ? option.type === value : option.type === value.type
                       }
                       freeSolo={true}
                       renderOption={(props: HTMLAttributes<HTMLLIElement>, option: ListenerOptionType) => (
@@ -317,7 +337,18 @@ export const ChannelField = observer(
                     />
                   </Grid>
 
-                  <Grid item container sx={styles.controls} sm={5} justifyContent="flex-end">
+                  <Grid
+                    container
+                    sx={[
+                      {
+                        justifyContent: 'flex-end',
+                      },
+                      styles.controls,
+                    ]}
+                    size={{
+                      sm: 5,
+                    }}
+                  >
                     <Button variant="contained" color="primary" onClick={() => handleAddContextListener(channel.id)}>
                       Add listener
                     </Button>

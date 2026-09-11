@@ -5,7 +5,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Grid, Paper, Tabs, Tab, Typography, Link, Snackbar, Alert, SnackbarCloseReason } from '@mui/material';
+import { Grid, Paper, Tabs, Tab, Typography, Link, Snackbar, Alert, SnackbarCloseReason, Stack } from '@mui/material';
 import { observer } from 'mobx-react';
 import 'normalize.css';
 import '@fontsource/roboto';
@@ -187,12 +187,18 @@ export const App = observer(() => {
   return (
     <ThemeProvider theme={mainTheme}>
       <Grid sx={classes.root} container>
-        <Grid sx={classes.header} container item xs={12}>
+        <Grid sx={classes.header} container size={12}>
           <Header fdc3Available={fdc3Available} />
         </Grid>
         {fdc3Available ? (
-          <Grid sx={classes.body} container spacing={2} item xs={12} style={{ marginLeft: '0px' }}>
-            <Grid item xs={12} md={8} style={{ flex: 1 }}>
+          <Grid sx={classes.body} container spacing={2} style={{ marginLeft: '0px' }} size={12}>
+            <Grid
+              style={{ flex: 1 }}
+              size={{
+                xs: 12,
+                md: 8,
+              }}
+            >
               <Paper sx={classes.paper}>
                 <Tabs
                   value={tabIndex}
@@ -225,15 +231,21 @@ export const App = observer(() => {
               </Paper>
             </Grid>
 
-            <Grid item xs={12} md={4} sx={classes.workbench}>
+            <Grid
+              sx={classes.workbench}
+              size={{
+                xs: 12,
+                md: 4,
+              }}
+            >
               <Paper sx={classes.paper}>
                 <Workbench />
               </Paper>
             </Grid>
           </Grid>
         ) : (
-          <Grid sx={classes.body} container spacing={2} item xs={12} style={{ marginLeft: '0px' }}>
-            <Grid container direction="column" justifyContent="center" alignItems="center" spacing={2} item xs={12}>
+          <Grid sx={classes.body} container spacing={2} style={{ marginLeft: '0px' }} size={12}>
+            <Stack spacing={2} sx={{ justifyContent: 'center', alignItems: 'center', width: '100%' }}>
               <Paper sx={classes.paper}>
                 <Typography variant="h4">FDC3 API not detected!</Typography>
                 <Typography variant="body1">An FDC3 desktop agent implementation was not found.</Typography>
@@ -263,11 +275,11 @@ export const App = observer(() => {
                   .
                 </Typography>
               </Paper>
-            </Grid>
+            </Stack>
           </Grid>
         )}
 
-        <Grid container item xs={12} sx={classes.footer}>
+        <Grid container sx={classes.footer} size={12}>
           <Typography variant="body1">
             Learn more about the{' '}
             <Link sx={classes.link} href="https://fdc3.finos.org/docs/api/overview" onClick={openAPIDocs}>
