@@ -1,15 +1,15 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://fdc3.finos.org/schemas/next/context/paymentContext.schema.json",
+  "$id": "https://fdc3.finos.org/schemas/next/context/payment.schema.json",
   "type": "object",
-  "title": "PaymentContext",
+  "title": "Payment",
   "description": "@experimental context type representing an institutional payment instruction, specifically mapping to ISO 20022 pacs.008 (Customer Credit Transfer). To be used for bridging traditional finance workflows with blockchain and DLT networks (e.g. SynapticChain L1 DPI).\n\nThis type defines the required routing and settlement instructions, including the amount, currency, debtor, creditor, and network routing information (such as cross-chain derivation rails).",
   "allOf": [
     {
       "type": "object",
       "properties": {
         "type": {
-          "const": "fdc3.paymentContext"
+          "const": "fdc3.payment"
         },
         "id": {
           "type": "object",
@@ -77,7 +77,7 @@
   ],
   "examples": [
     {
-      "type": "fdc3.paymentContext",
+      "type": "fdc3.payment",
       "name": "ISO 20022 pacs.008 Settlement",
       "id": {
         "UETR": "123e4567-e89b-12d3-a456-426614174000"

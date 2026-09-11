@@ -18,13 +18,13 @@ Trigger a payment initiation or settlement workflow based on the provided paymen
 
 ## Possible Contexts
 
-- [PaymentContext](../../context/ref/PaymentContext)
+- [Payment](../../context/ref/Payment)
 
 ## Example
 
 ```js
 const paymentContext = {
-    type: 'fdc3.paymentContext',
+    type: 'fdc3.payment',
     name: 'ISO 20022 pacs.008 Settlement',
     id: {
         UETR: '123e4567-e89b-12d3-a456-426614174000'
@@ -48,4 +48,4 @@ fdc3.raiseIntent('StartPayment', paymentContext)
 
 Context
 
-- [PaymentContext](../../context/ref/PaymentContext)
+- [Payment](../../context/ref/Payment)

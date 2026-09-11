@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, FileAttachment, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, PaymentContext, Portfolio, Position, Product, EncryptedContextWrapper, SymmetricKeyRequest, SymmetricKeyResponse, User, UserRequest, TimeRange, Trade, TradeList, TransactionResult, Valuation } from "./file";
+//   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, FileAttachment, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, Payment, Portfolio, Position, Product, EncryptedContextWrapper, SymmetricKeyRequest, SymmetricKeyResponse, User, UserRequest, TimeRange, Trade, TradeList, TransactionResult, Valuation } from "./file";
 //
 //   const action = Convert.toAction(json);
 //   const chart = Convert.toChart(json);
@@ -23,7 +23,7 @@
 //   const order = Convert.toOrder(json);
 //   const orderList = Convert.toOrderList(json);
 //   const organization = Convert.toOrganization(json);
-//   const paymentContext = Convert.toPaymentContext(json);
+//   const payment = Convert.toPayment(json);
 //   const portfolio = Convert.toPortfolio(json);
 //   const position = Convert.toPosition(json);
 //   const product = Convert.toProduct(json);
@@ -1694,7 +1694,7 @@ export interface OrganizationIdentifiers {
  * currency, debtor, creditor, and network routing information (such as cross-chain
  * derivation rails).
  */
-export interface PaymentContext {
+export interface Payment {
   /**
    * The exact numerical value of the payment.
    */
@@ -1725,7 +1725,7 @@ export interface PaymentContext {
    * lane identifiers (e.g., 256-lane parallel execution context).
    */
   networkRouting?: { [key: string]: string };
-  type: 'fdc3.paymentContext';
+  type: 'fdc3.payment';
   [property: string]: any;
 }
 
@@ -2406,12 +2406,12 @@ export class Convert {
     return JSON.stringify(uncast(value, r('Organization')), null, 2);
   }
 
-  public static toPaymentContext(json: string): PaymentContext {
-    return cast(JSON.parse(json), r('PaymentContext'));
+  public static toPayment(json: string): Payment {
+    return cast(JSON.parse(json), r('Payment'));
   }
 
-  public static paymentContextToJson(value: PaymentContext): string {
-    return JSON.stringify(uncast(value, r('PaymentContext')), null, 2);
+  public static paymentToJson(value: Payment): string {
+    return JSON.stringify(uncast(value, r('Payment')), null, 2);
   }
 
   public static toPortfolio(json: string): Portfolio {
@@ -3182,7 +3182,7 @@ const typeMap: any = {
     ],
     'any'
   ),
-  PaymentContext: o(
+  Payment: o(
     [
       { json: 'amount', js: 'amount', typ: 3.14 },
       { json: 'creditor', js: 'creditor', typ: r('CreditorInformation') },
@@ -3191,7 +3191,7 @@ const typeMap: any = {
       { json: 'id', js: 'id', typ: m('') },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'networkRouting', js: 'networkRouting', typ: u(undefined, m('')) },
-      { json: 'type', js: 'type', typ: r('PaymentContextType') },
+      { json: 'type', js: 'type', typ: r('PaymentType') },
     ],
     'any'
   ),
@@ -3421,7 +3421,7 @@ const typeMap: any = {
   OrderType: ['fdc3.order'],
   OrderListType: ['fdc3.orderList'],
   StickyAppID: ['fdc3.organization'],
-  PaymentContextType: ['fdc3.paymentContext'],
+  PaymentType: ['fdc3.payment'],
   PositionType: ['fdc3.position'],
   PortfolioType: ['fdc3.portfolio'],
   EncryptedContextWrapperType: ['fdc3.security.encryptedContext'],
