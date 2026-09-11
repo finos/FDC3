@@ -31,17 +31,20 @@ export const AppChannelListeners = observer(() => {
           disabled
           label={'LAST RECEIVED CONTEXT'}
           sx={classes.textField}
-          InputLabelProps={{
-            shrink: true,
-          }}
           contentEditable={false}
           fullWidth
           multiline
           variant="outlined"
           size="small"
           value={receivedContextListenerValue}
-          InputProps={{
-            sx: classes.input,
+          slotProps={{
+            input: {
+              sx: classes.input,
+            },
+
+            inputLabel: {
+              shrink: true,
+            },
           }}
         />
         {window.fdc3Version === '2.0' && <ReceivedField metaData={metaData} />}

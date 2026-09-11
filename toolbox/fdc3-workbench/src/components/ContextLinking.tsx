@@ -141,12 +141,19 @@ export const ContextLinking = observer(() => {
 
   return (
     <div style={styles.root}>
-      <Grid item xs={12}>
+      <Grid size={12}>
         <Typography variant="h5">Add context listener</Typography>
       </Grid>
 
-      <Grid container direction="row" justifyContent="space-between" sx={{ ...styles.controls, ...styles.rightAlign }}>
-        <Grid item sx={styles.contextListenerName}>
+      <Grid
+        container
+        direction="row"
+        sx={{
+          ...styles.controls,
+          ...styles.rightAlign,
+        }}
+      >
+        <Grid sx={styles.contextListenerName}>
           <Autocomplete
             id="context-listener"
             size="small"
@@ -174,14 +181,21 @@ export const ContextLinking = observer(() => {
             )}
           />
         </Grid>
-        <Grid item sx={styles.bottomAlignChildren}>
-          <Grid container direction="row" justifyContent="flex-end" spacing={1}>
-            <Grid item sx={styles.controls}>
+        <Grid sx={styles.bottomAlignChildren}>
+          <Grid
+            container
+            direction="row"
+            spacing={1}
+            sx={{
+              justifyContent: 'flex-end',
+            }}
+          >
+            <Grid sx={styles.controls}>
               <Button variant="contained" color="primary" onClick={handleAddContextListener}>
                 Add listener
               </Button>
             </Grid>
-            <Grid item sx={styles.controls}>
+            <Grid sx={styles.controls}>
               <Tooltip title="Copy code example" aria-label="Copy code example">
                 <IconButton
                   size="small"
@@ -193,7 +207,7 @@ export const ContextLinking = observer(() => {
                 </IconButton>
               </Tooltip>
             </Grid>
-            <Grid item sx={styles.controls}>
+            <Grid sx={styles.controls}>
               <Link
                 onClick={openApiDocsLink}
                 target="FDC3APIDocs"

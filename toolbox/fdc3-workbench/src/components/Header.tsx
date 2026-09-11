@@ -135,10 +135,22 @@ export const Header = (props: { fdc3Available: boolean }) => {
       <AppBar position="static" elevation={0} style={{ backgroundColor: 'transparent' }}>
         <Toolbar sx={classes.toolbar}>
           <div>
-            <Typography variant="h3" color="inherit" sx={classes.fdc3}>
+            <Typography
+              variant="h3"
+              sx={[
+                {
+                  color: 'inherit',
+                },
+                classes.fdc3,
+              ]}
+            >
               <Box component="img" src="./fdc3-logo.png" sx={classes.headerCube} />
             </Typography>
-            <Typography color="inherit">
+            <Typography
+              sx={{
+                color: 'inherit',
+              }}
+            >
               version:&nbsp;
               {supportedVersion.map((ver, index) => (
                 <span key={index}>

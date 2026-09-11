@@ -85,26 +85,26 @@ export const IntentResolutionField = observer(
         <TextField
           disabled
           label={'Resolved By'}
-          InputLabelProps={{
-            shrink: true,
-          }}
           contentEditable={false}
           fullWidth
           multiline
           variant="outlined"
           size="small"
           value={results}
-          InputProps={{
-            sx: classes.input,
+          slotProps={{
+            input: {
+              sx: classes.input,
+            },
+
+            inputLabel: {
+              shrink: true,
+            },
           }}
         />
         {resolutionResult && (
           <TextField
             disabled
             label={'Results'}
-            InputLabelProps={{
-              shrink: true,
-            }}
             contentEditable={false}
             fullWidth
             multiline
@@ -112,8 +112,14 @@ export const IntentResolutionField = observer(
             size="small"
             value={resolutionResult}
             sx={classes.textField}
-            InputProps={{
-              sx: classes.input,
+            slotProps={{
+              input: {
+                sx: classes.input,
+              },
+
+              inputLabel: {
+                shrink: true,
+              },
             }}
           />
         )}

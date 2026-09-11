@@ -136,7 +136,7 @@ export const AppChannels = observer(
 
     return (
       <Box sx={classes.root}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography variant="h5">Get Channel</Typography>
         </Grid>
 
@@ -148,7 +148,7 @@ export const AppChannels = observer(
           onSubmit={e => handleGetorCreateChannel(e)}
         >
           <Grid container direction="row" spacing={1}>
-            <Grid item sx={classes.field}>
+            <Grid sx={classes.field}>
               <TextField
                 fullWidth
                 variant="outlined"
@@ -159,7 +159,7 @@ export const AppChannels = observer(
                 value={currentAppChannelId}
               />
             </Grid>
-            <Grid item sx={classes.controls}>
+            <Grid sx={classes.controls}>
               <Button
                 variant="contained"
                 color="primary"

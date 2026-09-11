@@ -29,17 +29,20 @@ export const ReceivedField = observer(({ metaData }: { metaData: ContextMetadata
       disabled
       label={'RECEIVED FROM'}
       sx={classes.textField}
-      InputLabelProps={{
-        shrink: true,
-      }}
       contentEditable={false}
       fullWidth
       multiline
       variant="outlined"
       size="small"
       value={formattedData}
-      InputProps={{
-        sx: classes.input,
+      slotProps={{
+        input: {
+          sx: classes.input,
+        },
+
+        inputLabel: {
+          shrink: true,
+        },
       }}
     />
   );
