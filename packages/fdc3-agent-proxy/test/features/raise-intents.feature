@@ -80,9 +80,9 @@ Feature: Basic Intents Support
       | source.appId | source.instanceId |
       | chipShop     | c1                |
     And messaging will have posts
-      | payload.context.type | payload.context.id.ticker | payload.app.instanceId | matches_type                 |
-      | fdc3.instrument      | AAPL                      | {null}                 | raiseIntentForContextRequest |
-      | fdc3.instrument      | AAPL                      | c1                     | raiseIntentRequest           |
+      | payload.context.type | payload.context.id.ticker | payload.app.instanceId | payload.metadata | matches_type                 |
+      | fdc3.instrument      | AAPL                      | {null}                 | {undefined}      | raiseIntentForContextRequest |
+      | fdc3.instrument      | AAPL                      | c1                     | {undefined}      | raiseIntentRequest           |
 
   Scenario: Raising Intent By Context exactly right, so the resolver isn't required
     When I call "{api}" with "raiseIntentForContext" with parameters "{countryContext}" and "{t1}"
