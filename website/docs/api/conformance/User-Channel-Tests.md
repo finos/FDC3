@@ -93,3 +93,19 @@ As the method of setting the user channel is user interactive, it is either diff
 
 - UCMultipleOverlappingListeners1: Perform above test
 - UCMultipleOverlappingListeners2: Perform above test, but instead of _untyped_ context listener, in step 2, use `fdc3.instrument` (handler should remain different)
+
+## Array Context Listeners
+
+![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple) In FDC3 3.0, support for arrays of context types was added to `addContextListener`, allowing applications to listen for multiple specific context types with a single listener registration.
+
+| App | Step                  | Details                                                                          |
+|-----|-----------------------|----------------------------------------------------------------------------------|
+| A   | 1. addContextListener | A adds a context listener for multiple types using `addContextListener(["fdc3.instrument", "fdc3.contact"],handler)`. <br/>A promise resolving to a `Listener` object is returned <br />Check that this has an `unsubscribe` function.|
+| A   | 2. joinUserChannel    | A joins the first available user channel using standard process.|
+| B   | 3. joinUserChannel    | B joins the same channel as A. |
+| B   | 4. Broadcast          | B broadcasts: <br/> 1.`fdc3.broadcast(<fdc3.instrument>)`. <br/> 2. `fdc3.broadcast(<fdc3.contact>)` <br/> 3. `fdc3.broadcast(<fdc3.portfolio>)` |
+| A   | 5. Receive Context    | A receives both `fdc3.instrument` and `fdc3.contact` objects, matching the ones broadcast by B. <br />Check that `fdc3.portfolio` is NOT received. |
+
+- `UCArrayContextListeners1` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above test to verify array filtering works correctly.
+- `UCArrayNullContext1` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above test, but in step1 use `addContextListener(["fdc3.instrument", null],handler)` to verify arrays with null behave like direct null (receives ALL contexts).
+- `UCArrayEmptyContext1` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Attempt to create a context listener with an empty array `addContextListener([],handler)` and verify context is not received.

@@ -122,17 +122,28 @@ export class DefaultChannel implements Channel {
     return null;
   }
 
-  async addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener> {
-    if (typeof contextType !== 'string' && contextType !== null) {
-      throw new Error('Invalid arguments passed to addContextListener!');
-    }
+  addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
+  addContextListener(contextTypes: string[], handler: ContextHandler): Promise<Listener>;
+  async addContextListener(typeOrTypes: string | string[] | null, handler: ContextHandler): Promise<Listener> {
     if (typeof handler !== 'function') {
       throw new Error('Invalid arguments passed to addContextListener!');
     }
-    return await this.addContextListenerInner(contextType, handler);
+
+    if (Array.isArray(typeOrTypes)) {
+      if (typeOrTypes.length === 0) {
+        return { unsubscribe: () => Promise.resolve() };
+      }
+      return await this.addContextListenerInner(typeOrTypes, handler);
+    }
+
+    if (typeof typeOrTypes === 'string' || typeOrTypes === null) {
+      return await this.addContextListenerInner(typeOrTypes as string | null, handler);
+    }
+
+    throw new Error('Invalid arguments passed to addContextListener!');
   }
 
-  async addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
+  async addContextListenerInner(contextType: string | string[] | null, theHandler: ContextHandler): Promise<Listener> {
     const listener = new DefaultContextListener(
       this.messaging,
       this.messageExchangeTimeout,

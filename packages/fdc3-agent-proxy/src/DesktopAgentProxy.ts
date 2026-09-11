@@ -3,6 +3,7 @@ import {
   AppMetadata,
   AppProvidableContextMetadata,
   ContextHandler,
+  ContextType,
   DesktopAgent,
   EventHandler,
   FDC3EventTypes,
@@ -91,14 +92,35 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
     }
   }
 
-  addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener> {
-    if (typeof contextType !== 'string' && contextType !== null) {
-      throw new Error('Invalid arguments passed to addContextListener!');
-    }
+  addContextListener(contextType: ContextType | null, handler: ContextHandler): Promise<Listener>;
+  addContextListener(contextTypes: (ContextType | null)[], handler: ContextHandler): Promise<Listener>;
+  addContextListener(
+    contextTypeOrTypes: ContextType | null | (ContextType | null)[],
+    handler: ContextHandler
+  ): Promise<Listener> {
     if (typeof handler !== 'function') {
       throw new Error('Invalid arguments passed to addContextListener!');
     }
-    return this.channels.addContextListener(handler, contextType);
+
+    if (Array.isArray(contextTypeOrTypes)) {
+      if (contextTypeOrTypes.length === 0) {
+        return Promise.resolve({ unsubscribe: () => Promise.resolve() });
+      }
+      const arr = contextTypeOrTypes as (ContextType | null)[];
+      // If any null present, treat as unfiltered (null)
+      if (arr.some(t => t == null)) {
+        return this.channels.addContextListener(handler, null);
+      }
+      // Otherwise, forward concrete string types only
+      const types = arr.filter((t): t is string => typeof t === 'string') as unknown as string[];
+      return this.channels.addContextListener(handler, types);
+    }
+
+    if (typeof contextTypeOrTypes === 'string' || contextTypeOrTypes === null) {
+      return this.channels.addContextListener(handler, contextTypeOrTypes as string | null);
+    }
+
+    throw new Error('Invalid arguments passed to addContextListener!');
   }
 
   getUserChannels() {
