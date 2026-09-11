@@ -1,4 +1,4 @@
-import mocha from 'mocha';
+import mocha from 'mocha/mocha.js';
 import constants from '../constants';
 import fdc3FindIntent from './advanced/fdc3.findIntent';
 import fdc3FindIntentsByContext from './advanced/fdc3.findIntentsByContext';

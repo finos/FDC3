@@ -87,6 +87,35 @@ Successful runs look something like this:
 
 <img src="static/running.png" alt="Success" width="400px" />
 
+#### Running In CI
+
+The automated (non-manual) conformance pack can be run against the FDC3 for Web
+reference Desktop Agent with Playwright. Build the workspaces, install Chromium,
+and run the CI script from the repository root:
+
+```sh
+npm run build
+npx playwright install chromium
+npm run test:ci --workspace fdc3-conformance
+```
+
+Playwright starts the conformance app and reference Desktop Agent, launches the
+runner inside the Desktop Agent, and fails when any automated conformance test
+fails. Tests that require a human to use the intent resolver or channel selector
+remain excluded from this pack.
+
+The separate **Automated Conformance** workflow runs on pull requests and pushes
+to `main` that change the conformance, web-implementation, or agent-proxy source
+directories, or the conformance harness and workflow itself. Unrelated pull
+requests still run the ordinary tests and coverage without this browser pack.
+Once the workflow is on the default branch, maintainers can also use
+**Run workflow** in GitHub Actions, or call
+`.github/workflows/conformance.yml` from another workflow with `workflow_call`.
+Manual and reusable runs do not depend on the path filters. Reports and failure
+traces are retained as workflow artifacts for seven days. Since path-filtered
+workflows do not run on every pull request, this check should not be required
+unconditionally by branch protection.
+
 ### Joining The Conformance Program
 
 If you've had a clean run of all the tests locally, why not join the conformance program?
@@ -100,4 +129,3 @@ Once you have followed these steps, you will be allowed to display the FDC3 Comp
 ### Which Desktop Agents Are Conformant?
 
 We publish the details of conformant desktop agents on the [FDC3 Home Page](https://fdc3.finos.org#conformance).  Please check there to find out who FINOS has certified! 
-
