@@ -99,7 +99,7 @@ export interface Channel {
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
 
   /**
-   * Clears context from the channel, and triggers the event listener on the `contextCleared` event to notify existing listeners that the context was cleared. Listeners added to the channel and calls to [`getCurrentContext`](#getcurrentcontext) will not receive any existing context until new context is broadcast to the channel.
+   * Clears context from the channel, and triggers the event listener on the `contextCleared` event to notify existing listeners that the context was cleared. The Desktop Agent MUST NOT deliver the resulting `contextCleared` event back to the app instance that called `clearContext`. Listeners added to the channel and calls to [`getCurrentContext`](#getcurrentcontext) will not receive any existing context until new context is broadcast to the channel.
    *
    * If a `contextType` is provided, only contexts of that type will be cleared.
    *

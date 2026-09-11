@@ -319,7 +319,7 @@ export class BroadcastHandler implements MessageHandler {
       instanceId: from.instanceId ?? 'no-instance-id',
       listenerUuid: sc.createUUID(),
       eventType: arg0.payload.type ?? null,
-      channelId: arg0.payload.channelId ?? null,
+      channelId: 'channelId' in arg0.payload ? arg0.payload.channelId ?? null : null,
     };
 
     this.desktopAgentEventListeners.push(lr);
@@ -550,9 +550,11 @@ export class BroadcastHandler implements MessageHandler {
     const contextType = arg0.payload.contextType ?? null;
 
     const channel = this.getChannelById(channelId);
-    if (channel) {
-      channel.context = contextType ? channel.context.filter(c => c.context.type !== contextType) : [];
+    if (!channel) {
+      errorResponse(sc, arg0, from, ChannelError.NoChannelFound, 'clearContextResponse');
+      return;
     }
+    channel.context = contextType ? channel.context.filter(c => c.context.type !== contextType) : [];
 
     this.fireContextClearedEvent(channelId, contextType, sc, from);
     successResponse(sc, arg0, from, {}, 'clearContextResponse');

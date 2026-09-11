@@ -221,6 +221,35 @@ Feature: Basic User Channels Support
       | {null}               | getUserChannelsRequest          | getUserChannelsRequest          |
       | {null}               | eventListenerUnsubscribeRequest | eventListenerUnsubscribeRequest |
 
+  Scenario: Adding and removing a Desktop Agent contextCleared event listener
+    Given "typesHandler" pipes events to "types"
+    And "contextClearedMessage" is a ContextClearedEvent message on channel "one" with contextType as "fdc3.instrument"
+    And "allContextClearedMessage" is a ContextClearedEvent message on channel "one" with contextType as "{null}"
+    When I call "{api}" with "addEventListener" with parameters "contextCleared" and "{typesHandler}"
+    And I refer to "{result}" as "theListener"
+    And messaging receives "{contextClearedMessage}"
+    And I call "{theListener}" with "unsubscribe"
+    And messaging receives "{allContextClearedMessage}"
+    Then "{types}" is an array of objects with the following contents
+      | channelId | contextType     |
+      | one       | fdc3.instrument |
+    And messaging will have posts
+      | payload.type    | payload.channelId | matches_type                    |
+      | CONTEXT_CLEARED | {null}            | addEventListenerRequest         |
+      | {null}          | {null}            | eventListenerUnsubscribeRequest |
+
+  Scenario: A wildcard Desktop Agent event listener receives contextCleared events
+    Given "typesHandler" pipes events to "types"
+    And "contextClearedMessage" is a ContextClearedEvent message on channel "one" with contextType as "fdc3.instrument"
+    When I call "{api}" with "addEventListener" with parameters "{null}" and "{typesHandler}"
+    And messaging receives "{contextClearedMessage}"
+    Then "{types}" is an array of objects with the following contents
+      | channelId | contextType     |
+      | one       | fdc3.instrument |
+    And messaging will have posts
+      | payload.type | payload.channelId | matches_type            |
+      | {null}       | {null}            | addEventListenerRequest |
+
   Scenario: Adding An Unknown Event Listener
     Given "typesHandler" pipes events to "types"
     When I call "{api}" with "addEventListener" with parameters "unknownEventType" and "{typesHandler}"

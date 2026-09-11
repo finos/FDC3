@@ -101,3 +101,12 @@ Feature: Client can add an event Listener
     Then messaging will have outgoing posts
       | msg.matches_type     | to.instanceId | to.appId |
       | clearContextResponse | a1            | App1     |
+
+  Scenario: Clearing context on an unknown channel returns an error and emits no event
+    When "App1/a1" adds an event listener for "CONTEXT_CLEARED"
+    And "App1/a1" clears context "fdc3.instrument" on "unknown"
+    Then messaging will have outgoing posts
+      | msg.type                 | to.instanceId | to.appId | msg.payload.error |
+      | addEventListenerResponse | a1            | App1     | {undefined}       |
+      | clearContextResponse     | a1            | App1     | NoChannelFound    |
+    And messaging will have 2 posts
