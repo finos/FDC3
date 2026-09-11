@@ -1,9 +1,10 @@
-import { EventHandler, FDC3ChannelChangedEvent, FDC3EventTypes } from '@finos/fdc3-standard';
+import { EventHandler, FDC3ChannelChangedEvent, FDC3ContextClearedEvent, FDC3EventTypes } from '@finos/fdc3-standard';
 import {
   AddEventListenerRequest,
   AddEventListenerRequestPayload,
   AgentEventMessage,
   ChannelChangedEvent,
+  ContextClearedEvent,
 } from '@finos/fdc3-schema/generated/api/BrowserTypes.js';
 import { Messaging } from '../Messaging.js';
 import { AbstractListener } from './AbstractListener.js';
@@ -21,10 +22,26 @@ const handleChannelChangedEvent = (handler: EventHandler, m: ChannelChangedEvent
   handler(channelChangedEvent);
 };
 
+const handleContextClearedEvent = (handler: EventHandler, m: ContextClearedEvent) => {
+  const contextClearedEvent: FDC3ContextClearedEvent = {
+    type: 'contextCleared',
+    details: {
+      channelId: m.payload.channelId,
+      contextType: m.payload.contextType,
+    },
+  };
+
+  handler(contextClearedEvent);
+};
+
 function wrapHandler(handler: EventHandler): (msg: AgentEventMessage) => void {
   return (m: AgentEventMessage) => {
     if (m.type === 'channelChangedEvent') {
       return handleChannelChangedEvent(handler, m);
+    }
+
+    if (m.type === 'contextClearedEvent') {
+      return handleContextClearedEvent(handler, m);
     }
 
     //forward other events
@@ -39,19 +56,28 @@ function getRequestPayload(type: FDC3EventTypes | null): AddEventListenerRequest
   if (type == 'userChannelChanged') {
     return {
       type: 'USER_CHANNEL_CHANGED',
+      channelId: null,
+    };
+  } else if (type == 'contextCleared') {
+    return {
+      type: 'CONTEXT_CLEARED',
+      channelId: null,
     };
   } else if (type == null) {
     return {
       type: null,
+      channelId: null,
     };
   } else {
     throw new Error('UnknownEventType');
   }
 }
 
-function getEventType(type: FDC3EventTypes | null): ChannelChangedEvent['type'] | null {
+function getEventType(type: FDC3EventTypes | null): AgentEventMessage['type'] | null {
   if (type == 'userChannelChanged') {
     return 'channelChangedEvent';
+  } else if (type == 'contextCleared') {
+    return 'contextClearedEvent';
   } else if (type == null) {
     return null;
   } else {
@@ -60,7 +86,10 @@ function getEventType(type: FDC3EventTypes | null): ChannelChangedEvent['type'] 
 }
 
 /**
- * Listens to channel changed events (currently) from the desktop agent and forwards them to the provided handler.
+ * Listens to Desktop Agent-level events (currently `userChannelChanged` and `contextCleared`)
+ * from the Desktop Agent and forwards them to the provided handler. Desktop Agent-level
+ * listeners are registered with a `null` channelId, so their scope follows the app's current
+ * User channel.
  */
 export class DesktopAgentEventListener extends AbstractListener<
   (msg: AgentEventMessage) => void,

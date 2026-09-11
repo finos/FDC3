@@ -1,24 +1,57 @@
 import { ChannelEventTypes, EventHandler, FDC3ContextClearedEvent } from '@finos/fdc3-standard';
 import { Messaging } from '../Messaging.js';
-import { RegisterableListener } from './RegisterableListener.js';
-import { AgentEventMessage } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { AbstractListener } from './AbstractListener.js';
+import {
+  AddEventListenerRequest,
+  AddEventListenerRequestPayload,
+  AgentEventMessage,
+} from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 
-export class EventListener implements RegisterableListener {
-  readonly id: string;
-  readonly messaging: Messaging;
+function getRequestPayload(type: ChannelEventTypes | null, channelId: string): AddEventListenerRequestPayload {
+  if (type == 'contextCleared') {
+    return {
+      type: 'CONTEXT_CLEARED',
+      channelId,
+    };
+  } else if (type == null) {
+    return {
+      type: null,
+      channelId,
+    };
+  } else {
+    throw new Error('UnknownEventType');
+  }
+}
+
+/**
+ * Listens to Channel-scoped events (currently `contextCleared`) for a specific Channel.
+ * Registration is sent to the Desktop Agent over DACP with the Channel's id so the Desktop
+ * Agent can route events to this app, and inbound events are additionally filtered locally by
+ * `channelId` so that only events for this Channel are delivered to the handler.
+ */
+export class EventListener extends AbstractListener<EventHandler, AddEventListenerRequest> {
   readonly type: ChannelEventTypes | null;
   readonly channelId: string;
-  readonly handler: EventHandler;
 
-  constructor(messaging: Messaging, type: ChannelEventTypes | null, channelId: string, handler: EventHandler) {
-    this.id = `${channelId}-${type ?? 'all'}-${messaging.createUUID()}`;
-    this.messaging = messaging;
+  constructor(
+    messaging: Messaging,
+    messageExchangeTimeout: number,
+    type: ChannelEventTypes | null,
+    channelId: string,
+    handler: EventHandler
+  ) {
+    super(
+      messaging,
+      messageExchangeTimeout,
+      getRequestPayload(type, channelId),
+      handler,
+      'addEventListenerRequest',
+      'addEventListenerResponse',
+      'eventListenerUnsubscribeRequest',
+      'eventListenerUnsubscribeResponse'
+    );
     this.type = type;
     this.channelId = channelId;
-    this.handler = handler;
-
-    //bind to allow destructuring
-    this.unsubscribe = this.unsubscribe.bind(this);
   }
 
   filter(m: AgentEventMessage): boolean {
@@ -33,13 +66,5 @@ export class EventListener implements RegisterableListener {
       };
       this.handler(event);
     }
-  }
-
-  async register(): Promise<void> {
-    this.messaging.register(this);
-  }
-
-  async unsubscribe(): Promise<void> {
-    this.messaging.unregister(this.id);
   }
 }

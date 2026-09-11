@@ -10,6 +10,8 @@ import {
   BroadcastEvent,
   BroadcastRequest,
   ChannelChangedEvent,
+  ClearContextRequest,
+  ContextClearedEvent,
   ContextListenerUnsubscribeRequest,
   CreatePrivateChannelRequest,
   EventListenerUnsubscribeRequest,
@@ -35,9 +37,7 @@ type StoredContext = {
 };
 
 type PrivateChannelEvents =
-  | PrivateChannelOnAddContextListenerEvent
-  | PrivateChannelOnUnsubscribeEvent
-  | PrivateChannelOnDisconnectEvent;
+  PrivateChannelOnAddContextListenerEvent | PrivateChannelOnUnsubscribeEvent | PrivateChannelOnDisconnectEvent;
 
 type ContextListenerRegistration = {
   appId: string;
@@ -59,13 +59,18 @@ type DesktopAgentEventListener = {
   appId: string;
   instanceId: string;
   eventType: string | null;
+  /**
+   * The Channel a Channel-scoped listener applies to, or `null` for a Desktop Agent-level
+   * listener whose scope follows the app's current User channel.
+   */
+  channelId: string | null;
   listenerUuid: string;
 };
 
 export enum ChannelType {
-  'user',
-  'app',
-  'private',
+  user,
+  app,
+  private,
 }
 
 export type ChannelState = {
@@ -157,6 +162,55 @@ export class BroadcastHandler implements MessageHandler {
     sc.post(event, instanceId);
   }
 
+  /**
+   * Notifies apps that have registered a matching `CONTEXT_CLEARED` listener that context has
+   * been cleared on a channel. Routing follows the scope carried on each registration:
+   *  - Channel-scoped listeners (`channelId` set) match the cleared channel exactly.
+   *  - Desktop Agent-level listeners (`channelId` null) match when the cleared channel is the
+   *    listening app's current User channel.
+   * Wildcard listeners (`eventType` null) are matched subject to the same channel scoping.
+   */
+  fireContextClearedEvent(
+    channelId: string,
+    contextType: string | null,
+    sc: ServerContext<AppRegistration>,
+    from: FullAppIdentifier
+  ) {
+    const matchingInstanceIds = this.desktopAgentEventListeners
+      .filter(listener => listener.eventType === null || listener.eventType === 'CONTEXT_CLEARED')
+      .filter(listener => {
+        if (listener.channelId !== null) {
+          // Channel-scoped listener: only matches the exact channel that was cleared.
+          return listener.channelId === channelId;
+        }
+        // Desktop Agent-level listener: matches when the cleared channel is the app's current User channel.
+        const currentChannel = this.currentChannel[listener.instanceId];
+        return currentChannel != null && currentChannel.id === channelId;
+      })
+      // Don't deliver the event back to the app that cleared the context.
+      .filter(listener => listener.instanceId !== from.instanceId)
+      .map(listener => listener.instanceId)
+      .filter((instanceId, index, self) => self.indexOf(instanceId) === index);
+
+    if (matchingInstanceIds.length === 0) {
+      return;
+    }
+
+    const event: ContextClearedEvent = {
+      meta: {
+        eventUuid: sc.createUUID(),
+        timestamp: new Date(),
+      },
+      type: 'contextClearedEvent',
+      payload: {
+        channelId,
+        contextType,
+      },
+    };
+
+    matchingInstanceIds.forEach(instanceId => sc.post(event, instanceId));
+  }
+
   getChannelById(id: string | null): ChannelState | null {
     if (id == null) {
       return null;
@@ -210,6 +264,8 @@ export class BroadcastHandler implements MessageHandler {
         // general broadcast
         case 'broadcastRequest':
           return this.handleBroadcastRequest(msg as BroadcastRequest, sc, from);
+        case 'clearContextRequest':
+          return this.handleClearContextRequest(msg as ClearContextRequest, sc, from);
 
         // context listeners
         case 'addContextListenerRequest':
@@ -258,11 +314,18 @@ export class BroadcastHandler implements MessageHandler {
     sc: ServerContext<AppRegistration>,
     from: FullAppIdentifier
   ) {
+    const channelId = 'channelId' in arg0.payload ? (arg0.payload.channelId ?? null) : null;
+    if (channelId !== null && this.getChannelById(channelId) === null) {
+      errorResponse(sc, arg0, from, ChannelError.NoChannelFound, 'addEventListenerResponse');
+      return;
+    }
+
     const lr: DesktopAgentEventListener = {
       appId: from.appId,
       instanceId: from.instanceId ?? 'no-instance-id',
       listenerUuid: sc.createUUID(),
       eventType: arg0.payload.type ?? null,
+      channelId: arg0.payload.channelId ?? null,
     };
 
     this.desktopAgentEventListeners.push(lr);
@@ -486,6 +549,21 @@ export class BroadcastHandler implements MessageHandler {
 
     this.updateChannelState(arg0.payload.channelId, arg0.payload.context, msg.payload.metadata!);
     successResponse(sc, arg0, from, {}, 'broadcastResponse');
+  }
+
+  handleClearContextRequest(arg0: ClearContextRequest, sc: ServerContext<AppRegistration>, from: FullAppIdentifier) {
+    const channelId = arg0.payload.channelId;
+    const contextType = arg0.payload.contextType ?? null;
+
+    const channel = this.getChannelById(channelId);
+    if (!channel) {
+      errorResponse(sc, arg0, from, ChannelError.NoChannelFound, 'clearContextResponse');
+      return;
+    }
+    channel.context = contextType ? channel.context.filter(c => c.context.type !== contextType) : [];
+
+    this.fireContextClearedEvent(channelId, contextType, sc, from);
+    successResponse(sc, arg0, from, {}, 'clearContextResponse');
   }
 
   handleGetCurrentChannelRequest(
