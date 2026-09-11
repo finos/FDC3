@@ -14,7 +14,7 @@ Trigger a payment initiation or settlement workflow based on the provided paymen
 
 ## Display Name
 
-`Initiate Payment`
+`Start Payment`
 
 ## Possible Contexts
 

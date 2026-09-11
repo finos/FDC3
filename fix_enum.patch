@@ -1,0 +1,15 @@
+--- packages/fdc3-standard/src/context/ContextType.ts
++++ packages/fdc3-standard/src/context/ContextType.ts
+@@ -34,3 +34,4 @@
+   | 'fdc3.security.userRequest'
+   | 'fdc3.security.symmetricKeyRequest'
+   | 'fdc3.security.symmetricKeyResponse'
+-  | 'fdc3.security.encryptedContext';
++  | 'fdc3.security.encryptedContext'
++  | 'fdc3.paymentContext';
+ 
+@@ -69,2 +70,3 @@
+   SecuritySymmetricKeyResponse = 'fdc3.security.symmetricKeyResponse',
+   SecurityEncryptedContext = 'fdc3.security.encryptedContext',
++  PaymentContext = 'fdc3.paymentContext',
+ }
