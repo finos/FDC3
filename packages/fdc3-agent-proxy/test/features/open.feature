@@ -13,8 +13,8 @@ Feature: Desktop Agent Information
       | appId    | instanceId |
       | chipShop | abc123     |
     And messaging will have posts
-      | payload.app.appId | payload.context.type | payload.context.id.ticker | matches_type |
-      | chipShop          | fdc3.instrument      | AAPL                      | openRequest  |
+      | payload.app.appId | payload.context.type | payload.context.id.ticker | payload.metadata | matches_type |
+      | chipShop          | fdc3.instrument      | AAPL                      | {undefined}      | openRequest  |
 
   Scenario: Opening a non-existent App
     When I call "{api}" with "open" with parameters "{nonExistent}" and "{instrumentContext}"

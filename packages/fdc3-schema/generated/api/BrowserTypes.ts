@@ -794,12 +794,7 @@ export interface AddContextListenerResponsePayload {
  * `raiseIntentForContext` methods on the DesktopAgent (`fdc3`).
  */
 export type PurpleError =
-  | 'AccessDenied'
-  | 'CreationFailed'
-  | 'MalformedContext'
-  | 'NoChannelFound'
-  | 'ApiTimeout'
-  | 'InvalidArguments';
+  'AccessDenied' | 'CreationFailed' | 'MalformedContext' | 'NoChannelFound' | 'ApiTimeout' | 'InvalidArguments';
 
 /**
  * Identifies the type of the message and it is typically set to the FDC3 function name that
@@ -1388,10 +1383,23 @@ export interface BroadcastRequestPayload {
    * The context object that is to be broadcast.
    */
   context: Context;
-  metadata: AppProvidableContextMetadata;
+  /**
+   * Optional metadata supplied by the broadcasting app (`traceId`, `signature`, `antiReplay`
+   * and `custom`). This field carries only the app-provided portion of the metadata; the
+   * Desktop Agent adds its own `source` and `timestamp` before delivering the enriched
+   * `ContextMetadata` to receiving apps. It MUST be omitted when the app did not supply a
+   * metadata argument to `broadcast()`.
+   */
+  metadata?: AppProvidableContextMetadata;
 }
 
 /**
+ * Optional metadata supplied by the broadcasting app (`traceId`, `signature`, `antiReplay`
+ * and `custom`). This field carries only the app-provided portion of the metadata; the
+ * Desktop Agent adds its own `source` and `timestamp` before delivering the enriched
+ * `ContextMetadata` to receiving apps. It MUST be omitted when the app did not supply a
+ * metadata argument to `broadcast()`.
+ *
  * Metadata that can be provided by an app as part of a broadcast, raise intent or open API
  * call.
  *
@@ -1399,6 +1407,24 @@ export interface BroadcastRequestPayload {
  * (i.e. when the handler returns a ContextWithMetadata object). The Desktop Agent will
  * merge this with its own generated metadata before delivering to the raising app via
  * raiseIntentResultResponse.
+ *
+ * Optional metadata supplied by the calling app (`traceId`, `signature`, `antiReplay` and
+ * `custom`) to accompany any `context` delivered to the opened app. This field carries only
+ * the app-provided portion of the metadata; the Desktop Agent adds its own `source` and
+ * `timestamp` before delivering the enriched `ContextMetadata`. It MUST be omitted when the
+ * app did not supply a metadata argument to `open()`.
+ *
+ * Optional metadata supplied by the calling app (`traceId`, `signature`, `antiReplay` and
+ * `custom`) to accompany the `context`. This field carries only the app-provided portion of
+ * the metadata; the Desktop Agent adds its own `source` and `timestamp` before delivering
+ * the enriched `ContextMetadata`. It MUST be omitted when the app did not supply a metadata
+ * argument to `raiseIntentForContext()`.
+ *
+ * Optional metadata supplied by the calling app (`traceId`, `signature`, `antiReplay` and
+ * `custom`) to accompany the raised intent's `context`. This field carries only the
+ * app-provided portion of the metadata; the Desktop Agent adds its own `source` and
+ * `timestamp` before delivering the enriched `ContextMetadata`. It MUST be omitted when the
+ * app did not supply a metadata argument to `raiseIntent()`.
  */
 export interface AppProvidableContextMetadata {
   /**
@@ -3572,7 +3598,14 @@ export interface OpenRequestPayload {
    * target app with no context and broadcasting the context directly to it.
    */
   context?: Context;
-  metadata: AppProvidableContextMetadata;
+  /**
+   * Optional metadata supplied by the calling app (`traceId`, `signature`, `antiReplay` and
+   * `custom`) to accompany any `context` delivered to the opened app. This field carries only
+   * the app-provided portion of the metadata; the Desktop Agent adds its own `source` and
+   * `timestamp` before delivering the enriched `ContextMetadata`. It MUST be omitted when the
+   * app did not supply a metadata argument to `open()`.
+   */
+  metadata?: AppProvidableContextMetadata;
 }
 
 /**
@@ -4011,7 +4044,14 @@ export interface RaiseIntentForContextRequest {
 export interface RaiseIntentForContextRequestPayload {
   app?: AppIdentifier;
   context: Context;
-  metadata: AppProvidableContextMetadata;
+  /**
+   * Optional metadata supplied by the calling app (`traceId`, `signature`, `antiReplay` and
+   * `custom`) to accompany the `context`. This field carries only the app-provided portion of
+   * the metadata; the Desktop Agent adds its own `source` and `timestamp` before delivering
+   * the enriched `ContextMetadata`. It MUST be omitted when the app did not supply a metadata
+   * argument to `raiseIntentForContext()`.
+   */
+  metadata?: AppProvidableContextMetadata;
   /**
    * Indicates how an instance of the target application should be selected. When `true`, a
    * new instance of the target application MUST be launched even if existing instances are
@@ -4161,7 +4201,14 @@ export interface RaiseIntentRequestPayload {
   app?: AppIdentifier;
   context: Context;
   intent: string;
-  metadata: AppProvidableContextMetadata;
+  /**
+   * Optional metadata supplied by the calling app (`traceId`, `signature`, `antiReplay` and
+   * `custom`) to accompany the raised intent's `context`. This field carries only the
+   * app-provided portion of the metadata; the Desktop Agent adds its own `source` and
+   * `timestamp` before delivering the enriched `ContextMetadata`. It MUST be omitted when the
+   * app did not supply a metadata argument to `raiseIntent()`.
+   */
+  metadata?: AppProvidableContextMetadata;
   /**
    * Indicates how an instance of the target application should be selected. When `true`, a
    * new instance of the target application MUST be launched even if existing instances are
@@ -5567,7 +5614,7 @@ const typeMap: any = {
     [
       { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'context', js: 'context', typ: r('Context') },
-      { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
     ],
     false
   ),
@@ -6252,7 +6299,7 @@ const typeMap: any = {
     [
       { json: 'app', js: 'app', typ: r('AppIdentifier') },
       { json: 'context', js: 'context', typ: u(undefined, r('Context')) },
-      { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
     ],
     false
   ),
@@ -6393,7 +6440,7 @@ const typeMap: any = {
     [
       { json: 'app', js: 'app', typ: u(undefined, r('AppIdentifier')) },
       { json: 'context', js: 'context', typ: r('Context') },
-      { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'newInstance', js: 'newInstance', typ: u(undefined, true) },
     ],
     false
@@ -6434,7 +6481,7 @@ const typeMap: any = {
       { json: 'app', js: 'app', typ: u(undefined, r('AppIdentifier')) },
       { json: 'context', js: 'context', typ: r('Context') },
       { json: 'intent', js: 'intent', typ: '' },
-      { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
       { json: 'newInstance', js: 'newInstance', typ: u(undefined, true) },
     ],
     false

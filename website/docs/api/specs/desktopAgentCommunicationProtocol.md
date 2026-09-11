@@ -87,6 +87,16 @@ Further, the design of the DACP is based on the assumption that applications wil
 
 As a Desktop Agent is expected to act as a router for messages sent through the Desktop Agent API, the DACP provides message exchanges for the registration and un-registration of listeners for particular message types (e.g. events, contexts broadcast on user channels, contexts broadcast on other channel types, raised intents etc.). In most cases, apps can register multiple listeners for the same messages (often filtered for different context or event types). However, where multiple listeners are present, only a single DACP message should be sent representing the action taken in the FDC3 API (e.g. broadcasting a message to a channel) and any multiplexing to multiple listeners should be applied at the receiving end. For example, when working with the WCP, this should be handled by the Desktop Agent Proxy implementation provided by the `getAgent()` implementation.
 
+### Metadata in messages
+
+Three distinct kinds of "metadata" appear in DACP messages and MUST NOT be confused:
+
+1. **Message `meta`** — every DACP message carries a top-level `meta` field containing _transport_ metadata for the message itself (e.g. `requestUuid`, `responseUuid`, `eventUuid`, `timestamp`, and a `source` identifying the app where appropriate). This describes the message, not the context it carries.
+2. **`payload.metadata` (app-provided)** — the request payloads for [`broadcast()`](#broadcast), [`open()`](#open), [`raiseIntent()`](#raiseintent) and [`raiseIntentForContext()`](#raiseintentforcontext) carry an **optional** `payload.metadata` field of type [`AppProvidableContextMetadata`](../ref/Types#appprovidablecontextmetadata). This holds only the portion of context metadata that an app may supply — `traceId`, `signature`, `antiReplay` and `custom` — and deliberately excludes the `source` and `timestamp` that only the Desktop Agent can authoritatively set. It corresponds directly to the optional `metadata` argument of those public API methods.
+3. **Enriched `ContextMetadata`** — when the Desktop Agent delivers a context to a receiving app (via `broadcastEvent`, `intentEvent`, or in a `getCurrentContextResponse`), it provides a complete [`ContextMetadata`](../ref/Types#contextmetadata) that combines the app-provided fields above with the Desktop Agent's own generated `source` and `timestamp` (and a `traceId` if the app did not supply one).
+
+Because `payload.metadata` mirrors an optional public API argument, it follows this normative encoding rule: **a Desktop Agent proxy MUST omit `payload.metadata` entirely when the app did not supply a metadata argument, rather than sending an empty object (`{}`) or `null`.** Independent DACP implementations MUST accept a request in which `payload.metadata` is absent and treat it identically to an empty `AppProvidableContextMetadata`. This keeps the wire representation of an omitted optional argument consistent across all metadata-bearing request messages.
+
 ### Timeouts for Message Exchanges
 
 As the DACP is used to communicate with a different browsing context, timeouts are applied to message exchanges allowing them to fail and for the Desktop Agent Proxy to return an error to the caller. A default timeout of 10 seconds is applied to all message exchanges, with the exception of those that may involve the launch of an application (`open()`, `raiseIntent()` and `raiseIntentForContext()`). Implementations of the FDC3 Desktop Agent API are required to allow a minimum timeout of 15 seconds for an application to launch and add any necessary context or intent listeners (see [Desktop Agent API Compliance](../spec#desktop-agent-api-standard-compliance) for further details). However, no upper bound for the timeout is currently specified. Message exchanges that involve the launch of an application use a default timeout of 100 seconds.
@@ -222,6 +232,8 @@ Request and response used to implement the [`DesktopAgent.broadcast()`](../ref/D
 
 - [`broadcastRequest`](pathname:///schemas/next/api/broadcastRequest.schema.json)
 - [`broadcastResponse`](pathname:///schemas/next/api/broadcastResponse.schema.json)
+
+The `broadcastRequest` payload carries an optional `metadata` field of type [`AppProvidableContextMetadata`](../ref/Types#appprovidablecontextmetadata), corresponding to the optional `metadata` argument of `broadcast()`. Per [Metadata in messages](#metadata-in-messages), this field MUST be omitted when the app did not supply a metadata argument. The same optional-and-omitted rule applies to the `metadata` field of the [`openRequest`](#open), [`raiseIntentRequest`](#raiseintent) and [`raiseIntentForContextRequest`](#raiseintentforcontext) payloads.
 
 See [`addContextListener()`](#addcontextlistener) above for the `broadcastEvent` used to deliver the broadcast to other apps.
 
