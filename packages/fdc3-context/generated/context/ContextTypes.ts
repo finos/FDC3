@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, FileAttachment, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, Portfolio, Position, Product, EncryptedContextWrapper, SymmetricKeyRequest, SymmetricKeyResponse, User, UserRequest, TimeRange, Trade, TradeList, TransactionResult, Valuation } from "./file";
+//   import { Convert, Action, Chart, ChatInitSettings, ChatMessage, ChatRoom, ChatSearchCriteria, Contact, ContactList, Context, Country, Currency, Email, FileAttachment, Instrument, InstrumentList, Interaction, Message, Nothing, Order, OrderList, Organization, Payment, Portfolio, Position, Product, EncryptedContextWrapper, SymmetricKeyRequest, SymmetricKeyResponse, User, UserRequest, TimeRange, Trade, TradeList, TransactionResult, Valuation } from "./file";
 //
 //   const action = Convert.toAction(json);
 //   const chart = Convert.toChart(json);
@@ -23,6 +23,7 @@
 //   const order = Convert.toOrder(json);
 //   const orderList = Convert.toOrderList(json);
 //   const organization = Convert.toOrganization(json);
+//   const payment = Convert.toPayment(json);
 //   const portfolio = Convert.toPortfolio(json);
 //   const position = Convert.toPosition(json);
 //   const product = Convert.toProduct(json);
@@ -466,16 +467,7 @@ export interface TimeRangeObject {
  * The type of chart that should be plotted
  */
 export type ChartStyle =
-  | 'line'
-  | 'bar'
-  | 'stacked-bar'
-  | 'mountain'
-  | 'candle'
-  | 'pie'
-  | 'scatter'
-  | 'histogram'
-  | 'heatmap'
-  | 'custom';
+  'line' | 'bar' | 'stacked-bar' | 'mountain' | 'candle' | 'pie' | 'scatter' | 'histogram' | 'heatmap' | 'custom';
 
 /**
  * A collection of settings to start a new chat conversation
@@ -1693,6 +1685,71 @@ export interface OrganizationIdentifiers {
 }
 
 /**
+ * @experimental context type representing an institutional payment instruction,
+ * specifically mapping to ISO 20022 pacs.008 (Customer Credit Transfer). To be used for
+ * bridging traditional finance workflows with blockchain and DLT networks (e.g.
+ * SynapticChain L1 DPI).
+ *
+ * This type defines the required routing and settlement instructions, including the amount,
+ * currency, debtor, creditor, and network routing information (such as cross-chain
+ * derivation rails).
+ */
+export interface Payment {
+  /**
+   * The exact numerical value of the payment.
+   */
+  amount: number;
+  /**
+   * The receiving party for the payment.
+   */
+  creditor: CreditorInformation;
+  /**
+   * The ISO 4217 currency code or standard token symbol (e.g., 'USD', 'SYN', 'sUSD').
+   */
+  currency: string;
+  /**
+   * The originating party initiating the payment.
+   */
+  debtor: DebtorInformation;
+  /**
+   * One or more identifiers that refer to the payment in an OMS, EMS, or Settlement network
+   * (e.g., UETR, TransactionHash).
+   */
+  id: { [key: string]: string };
+  /**
+   * An optional human-readable summary of the payment context.
+   */
+  name?: string;
+  /**
+   * Optional parameters for DLT execution, such as cross-rail derivation paths or specific
+   * lane identifiers (e.g., 256-lane parallel execution context).
+   */
+  networkRouting?: { [key: string]: string };
+  type: 'fdc3.payment';
+  [property: string]: any;
+}
+
+/**
+ * The receiving party for the payment.
+ */
+export interface CreditorInformation {
+  account: string;
+  agent?: string;
+  name?: string;
+  [property: string]: any;
+}
+
+/**
+ * The originating party initiating the payment.
+ */
+export interface DebtorInformation {
+  account: string;
+  agent?: string;
+  name?: string;
+  [property: string]: any;
+}
+
+/**
  * A financial portfolio made up of multiple positions (holdings) in several instruments.
  * Contrast this with e.g. the [InstrumentList](InstrumentList) type, which is just a list
  * of instruments.
@@ -2347,6 +2404,14 @@ export class Convert {
 
   public static organizationToJson(value: Organization): string {
     return JSON.stringify(uncast(value, r('Organization')), null, 2);
+  }
+
+  public static toPayment(json: string): Payment {
+    return cast(JSON.parse(json), r('Payment'));
+  }
+
+  public static paymentToJson(value: Payment): string {
+    return JSON.stringify(uncast(value, r('Payment')), null, 2);
   }
 
   public static toPortfolio(json: string): Portfolio {
@@ -3117,6 +3182,35 @@ const typeMap: any = {
     ],
     'any'
   ),
+  Payment: o(
+    [
+      { json: 'amount', js: 'amount', typ: 3.14 },
+      { json: 'creditor', js: 'creditor', typ: r('CreditorInformation') },
+      { json: 'currency', js: 'currency', typ: '' },
+      { json: 'debtor', js: 'debtor', typ: r('DebtorInformation') },
+      { json: 'id', js: 'id', typ: m('') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+      { json: 'networkRouting', js: 'networkRouting', typ: u(undefined, m('')) },
+      { json: 'type', js: 'type', typ: r('PaymentType') },
+    ],
+    'any'
+  ),
+  CreditorInformation: o(
+    [
+      { json: 'account', js: 'account', typ: '' },
+      { json: 'agent', js: 'agent', typ: u(undefined, '') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
+  DebtorInformation: o(
+    [
+      { json: 'account', js: 'account', typ: '' },
+      { json: 'agent', js: 'agent', typ: u(undefined, '') },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
+    ],
+    'any'
+  ),
   Portfolio: o(
     [
       { json: 'id', js: 'id', typ: u(undefined, m('')) },
@@ -3327,6 +3421,7 @@ const typeMap: any = {
   OrderType: ['fdc3.order'],
   OrderListType: ['fdc3.orderList'],
   StickyAppID: ['fdc3.organization'],
+  PaymentType: ['fdc3.payment'],
   PositionType: ['fdc3.position'],
   PortfolioType: ['fdc3.portfolio'],
   EncryptedContextWrapperType: ['fdc3.security.encryptedContext'],
