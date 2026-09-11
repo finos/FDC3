@@ -1,7 +1,6 @@
 import {
   ContextHandler,
   ContextWithMetadata,
-  ContextMetadata,
   DisplayMetadata,
   Listener,
   Channel,
@@ -23,7 +22,23 @@ import {
 } from '@finos/fdc3-schema/generated/api/BrowserTypes.js';
 import { RegisterableListener } from '../listeners/RegisterableListener.js';
 import { EventListener } from '../listeners/EventListener.js';
-import { throwIfUndefined } from '../util/throwIfUndefined.js';
+
+function parseCurrentContextResponse(response: GetCurrentContextResponse): ContextWithMetadata | null {
+  const { context, metadata } = response.payload;
+
+  if (context === null) {
+    if (metadata !== null) {
+      throw new Error(ChannelError.MalformedContext);
+    }
+    return null;
+  }
+
+  if (context === undefined || metadata == null) {
+    throw new Error(ChannelError.MalformedContext);
+  }
+
+  return { context, metadata };
+}
 
 export class DefaultChannel implements Channel {
   protected readonly messaging: Messaging;
@@ -85,7 +100,7 @@ export class DefaultChannel implements Channel {
       this.messageExchangeTimeout
     );
 
-    return response.payload.context ?? null;
+    return parseCurrentContextResponse(response)?.context ?? null;
   }
 
   /**
@@ -108,29 +123,7 @@ export class DefaultChannel implements Channel {
       this.messageExchangeTimeout
     );
 
-    const context = response.payload.context;
-    if (context) {
-      // Per the getCurrentContextResponse invariant, a non-null context MUST be accompanied by
-      // its complete ContextMetadata, so we use it directly and preserve the actual provenance
-      // rather than fabricating fallback values.
-      throwIfUndefined(
-        response.payload.metadata ?? undefined,
-        'Invalid response from Desktop Agent to getCurrentContext: metadata must be provided alongside a non-null context!',
-        response,
-        ChannelError.MalformedContext
-      );
-      const responseMetadata = response.payload.metadata!;
-      const metadata: ContextMetadata = {
-        source: responseMetadata.source,
-        timestamp: responseMetadata.timestamp,
-        traceId: responseMetadata.traceId,
-        signature: responseMetadata.signature,
-        custom: responseMetadata.custom,
-        antiReplay: responseMetadata.antiReplay,
-      };
-      return { context, metadata };
-    }
-    return null;
+    return parseCurrentContextResponse(response);
   }
 
   async addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener> {

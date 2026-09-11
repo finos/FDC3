@@ -9,10 +9,13 @@ import {
   BroadcastEvent,
   ChannelChangedEvent,
   ContextClearedEvent,
+  GetCurrentContextRequest,
+  GetCurrentContextResponse,
   PrivateChannelOnAddContextListenerEvent,
   PrivateChannelOnDisconnectEvent,
   PrivateChannelOnUnsubscribeEvent,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { createResponseMeta } from '../support/responses/support.js';
 
 const contextMap: Record<string, Context> = {
   'fdc3.instrument': {
@@ -38,6 +41,40 @@ const contextMap: Record<string, Context> = {
     type: 'fdc3.cancel-me',
   },
 };
+
+Given('the next getCurrentContext response has payload {string}', (world: CustomWorld, shape: string) => {
+  const context = contextMap['fdc3.instrument'];
+  const metadata: ContextMetadata = {
+    source: { appId: 'test-app', instanceId: 'test-instance' },
+    timestamp: new Date(),
+    traceId: 'test-trace-id',
+  };
+  const payloads: Record<string, object> = {
+    'null-without-metadata': { context: null },
+    'null-with-metadata': { context: null, metadata },
+    'context-with-null-metadata': { context, metadata: null },
+    'context-without-metadata': { context },
+    'missing-context': { metadata },
+  };
+  const payload = payloads[shape];
+  if (!payload) {
+    throw new Error(`Unknown getCurrentContext response shape: ${shape}`);
+  }
+
+  world.messaging!.automaticResponses.unshift({
+    filter: type => type === 'getCurrentContextRequest',
+    action: (input, messaging) => {
+      const request = input as GetCurrentContextRequest;
+      const response = {
+        meta: createResponseMeta(request.meta),
+        payload,
+        type: 'getCurrentContextResponse',
+      } as GetCurrentContextResponse;
+      setTimeout(() => messaging.receive(response), 0);
+      return Promise.resolve();
+    },
+  });
+});
 
 Given('{string} is a {string} context', (world: CustomWorld, field: string, type: string) => {
   world.props[field] = contextMap[type];
