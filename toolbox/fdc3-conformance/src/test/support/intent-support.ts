@@ -170,13 +170,14 @@ export class RaiseIntentControl {
     switch (expectedIntentResultType) {
       case IntentResultType.Context: {
         if (expectedContextType) {
+          const context = intentResult as Context;
           expect(
             intentResult,
             `The promise received by Test from resolution.getResult() should resolve to a ${expectedContextType} instance`
           ).to.have.property('type');
           expect(
-            intentResult?.type,
-            `The promise received by Test from resolution.getResult() should resolve to a ${expectedContextType} instance. Instead resolved to ${intentResult?.type}`
+            context.type,
+            `The promise received by Test from resolution.getResult() should resolve to a ${expectedContextType} instance. Instead resolved to ${context.type}`
           ).to.be.equal(expectedContextType);
           break;
         }
@@ -190,18 +191,20 @@ export class RaiseIntentControl {
         break;
       }
       case IntentResultType.Channel: {
+        const channel = intentResult as Channel;
         expect(intentResult).to.have.property('id');
         expect(intentResult).to.have.property('type');
-        expect(intentResult?.type).to.be.equal('app');
-        expect(intentResult?.id).to.be.equal('test-channel');
+        expect(channel.type).to.be.equal('app');
+        expect(channel.id).to.be.equal('test-channel');
         break;
       }
       case IntentResultType.PrivateChannel: {
+        const privateChannel = intentResult as PrivateChannel;
         expect(intentResult).to.have.property('addEventListener');
         expect(intentResult).to.have.property('disconnect');
         expect(intentResult).to.have.property('id');
         expect(intentResult).to.have.property('type');
-        expect(intentResult?.type).to.be.equal('private');
+        expect(privateChannel.type).to.be.equal('private');
       }
     }
   }
