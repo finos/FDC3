@@ -17,6 +17,14 @@ let current = await fdc3.getCurrentChannel();
 //leave the current channel\nawait fdc3.leaveCurrentChannel();
 //the fdc3Listener will now cease receiving context`,
 
+  userChannelChangedEvent: `// FDC3 2.2+
+const listener = await fdc3.addEventListener('userChannelChanged', event => {
+    console.log('Current user channel:', event.details.currentChannelId);
+});
+
+// Stop listening when the event is no longer needed
+await listener.unsubscribe();`,
+
   broadcast: `const instrument = {
     type: 'fdc3.instrument',
     id: {
@@ -78,6 +86,19 @@ const contactListener = appChannel.addContextListener('fdc3.contact', contact =>
     //add context handling code here
 });`,
 
+  privateChannelEvents: `// FDC3 2.2+
+const added = await privateChannel.addEventListener('addContextListener', event => {
+    console.log('Listener added for:', event.details.contextType ?? 'all');
+});
+
+const removed = await privateChannel.addEventListener('unsubscribe', event => {
+    console.log('Listener removed for:', event.details.contextType ?? 'all');
+});
+
+const disconnected = await privateChannel.addEventListener('disconnect', () => {
+    console.log('The other participant disconnected');
+});`,
+
   intentListener: `const listener = fdc3.addIntentListener('StartChat', context => {
   // start chat has been requested by another application
 });`,
@@ -100,9 +121,20 @@ const listener = fdc3.addIntentListener('StartChat', context => {
 	return channel;
 });`,
 
-  intentListenerWithPrivateChannel: `const listener = fdc3.addIntentListener('StartChat', context => {
+  intentListenerWithPrivateChannel: `const listener = fdc3.addIntentListener('StartChat', async context => {
 	// start chat has been requested by another application
 	const channel = await fdc3.createPrivateChannel();
+
+	await channel.addEventListener('addContextListener', event => {
+		console.log('Listener added for:', event.details.contextType ?? 'all');
+	});
+	await channel.addEventListener('unsubscribe', event => {
+		console.log('Listener removed for:', event.details.contextType ?? 'all');
+	});
+	await channel.addEventListener('disconnect', () => {
+		console.log('The other participant disconnected');
+	});
+
 	return channel;
 });`,
 
