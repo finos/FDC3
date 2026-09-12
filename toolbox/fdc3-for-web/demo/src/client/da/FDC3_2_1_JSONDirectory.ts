@@ -18,19 +18,12 @@ const convertToDirectoryList = (data: any): DirectoryApp[] => {
 };
 
 export class FDC3_2_1_JSONDirectory extends BasicDirectory {
-  constructor() {
-    super([]);
+  constructor(desktopAgentFdc3Version = '3.0') {
+    super([], desktopAgentFdc3Version);
   }
 
   async load(url: string) {
-    const aa = this.allApps;
     const apps = await load(url);
-
-    apps.forEach((app: DirectoryApp) => {
-      const existing = aa.find(a => a.appId == app.appId);
-      if (!existing) {
-        aa.push(app);
-      }
-    });
+    this.addApps(apps);
   }
 }

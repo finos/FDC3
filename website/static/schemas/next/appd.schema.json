@@ -215,6 +215,11 @@
 			  "type": "string",
 			  "description": "Version of the application. This allows multiple app versions to be defined using the same app name. This can be a triplet but can also include things like 1.2.5 (BETA)"
 			},
+			"fdc3Version": {
+			  "type": "string",
+			  "pattern": "^(?:(?:<=|>=|[<>=~^])[ \\t]?\\d+\\.\\d+|\\d+\\.\\d+)(?:[ \\t](?:-[ \\t]\\d+\\.\\d+|\\|\\|[ \\t](?:(?:<=|>=|[<>=~^])[ \\t]?\\d+\\.\\d+|\\d+\\.\\d+)|(?:(?:<=|>=|[<>=~^])[ \\t]?\\d+\\.\\d+|\\d+\\.\\d+)))*$",
+			  "description": "The FDC3 version or versions supported by the application, expressed as an npm-style semantic version range using two-component FDC3 versions, for example `2.2`, `<=2.3`, `~2.3`, `^2.2`, or `>=2.2`. JSON Schema and OpenAPI do not define a standard semantic-version-range format, so this field uses a pattern that accepts two-component numeric FDC3 versions with npm range comparators, compound ranges, and hyphen ranges. Range clauses and hyphen or OR operators are separated by one space or tab; a comparator may be followed by one optional space or tab. Desktop Agents MAY use this value to filter applications that are incompatible with the FDC3 version they provide."
+			},
 			"tooltip": {
 			  "type": "string",
 			  "description": "Optional tooltip description e.g. for a launcher"
@@ -632,6 +637,7 @@
 			  "training"
 			],
 			"version": "1.0.0",
+			"fdc3Version": ">=2.2",
 			"tooltip": "FDC3 Workbench",
 			"lang": "en-US",
 			"icons": [
@@ -723,6 +729,7 @@
 			  "news"
 			],
 			"version": "1.0.0",
+			"fdc3Version": "^2.2",
 			"tooltip": "My example application definition",
 			"lang": "en-US",
 			"icons": [
@@ -870,6 +877,7 @@
 				  "news"
 				],
 				"version": "1.0.0",
+				"fdc3Version": "^2.2",
 				"tooltip": "My example application definition",
 				"lang": "en-US",
 				"icons": [
@@ -1011,6 +1019,7 @@
 				  "training"
 				],
 				"version": "1.0.0",
+				"fdc3Version": ">=2.2",
 				"tooltip": "FDC3 Workbench",
 				"lang": "en-US",
 				"icons": [
