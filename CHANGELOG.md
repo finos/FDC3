@@ -41,6 +41,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+* Clarified that `fdc3.open` waits for a launched application to initialize FDC3 and rejects with `OpenError.ApiTimeout` if it does not, whether or not context was passed. `OpenError.AppTimeout` remains specific to an initialized application failing to add the required context listener.
 * Added `channelId` to `FDC3ContextClearedEvent.details` and all PrivateChannel event details, aligning the standard API events with existing DACP payloads and allowing channel-related events to identify their source channel. ([#2042](https://github.com/finos/FDC3/issues/2042))
 * Clarified `userChannelChanged` event ordering after `joinUserChannel` in the API and Desktop Agent Communication Protocol documentation. ([#1967](https://github.com/finos/FDC3/pull/1967))
 * The `context` argument of `raiseIntent` is now optional (`context?: Context | null`). Apps that only raise an intent to obtain a result no longer need to pass the `fdc3.nothing` context explicitly — when `context` is omitted (or `null`/`undefined` is passed) the Desktop Agent substitutes the `fdc3.nothing` context type, so the wire protocol is unchanged and intent listeners always receive a concrete context. This is an additive, non-breaking change for TypeScript applications. ([#1708](https://github.com/finos/FDC3/issues/1708))

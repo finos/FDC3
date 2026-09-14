@@ -39,7 +39,7 @@ export enum OpenError {
   /** Returned if the specified application fails to launch correctly.*/
   ErrorOnLaunch = 'ErrorOnLaunch',
 
-  /** Returned if the specified application launches but fails to add a context listener in order to receive the context passed to the `fdc3.open` call.*/
+  /** Returned if the specified application launches and initializes FDC3, but fails to add a context listener in order to receive the context passed to the `fdc3.open` call.*/
   AppTimeout = 'AppTimeout',
 
   /** Returned if the FDC3 desktop agent implementation is not currently able to handle the request.*/
@@ -51,7 +51,7 @@ export enum OpenError {
   /** @experimental Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.*/
   DesktopAgentNotFound = 'DesktopAgentNotFound',
 
-  /** Returned if a timeout occurs before a call to open is resolved for any reason other than the not adding its context listener in time.*/
+  /** Returned if a timeout occurs before a call to open is resolved for any reason other than the app not adding its context listener in time. This includes an application launching but failing to initialize FDC3, whether or not context was passed to the call.*/
   ApiTimeout = 'ApiTimeout',
 
   /** Returned when incorrect arguments are passed to API calls.*/
