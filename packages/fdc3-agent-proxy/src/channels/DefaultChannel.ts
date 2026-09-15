@@ -61,7 +61,9 @@ export class DefaultChannel implements Channel {
       payload: {
         channelId: this.id,
         context,
-        metadata: metadata ?? {},
+        // Only include app-provided metadata on the wire when the app supplied it; omit the
+        // field entirely otherwise (rather than sending an empty object).
+        ...(metadata && { metadata }),
       },
       type: 'broadcastRequest',
     };

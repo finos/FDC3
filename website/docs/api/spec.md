@@ -132,6 +132,7 @@ An FDC3 Standard compliant Desktop Agent implementation **MUST**:
 - Implement the [`fdc3.close()`](../api/ref/DesktopAgent#close) API call, allowing an app to request that its own window or frame be closed. On success, the app MUST be closed without delivering a success `closeResponse`. On failure, the Desktop Agent MUST respond with a `closeResponse` containing an error from the [`CloseError`](../api/ref/Errors#closeerror) enumeration while the app remains connected.
 - For web applications: All public methods of FDC3 interface objects (e.g. `DesktopAgent`, `Channel`, `PrivateChannel`, `IntentResolution`) **MUST** be bound to their respective instances (e.g. using `.bind(this)` in constructors) to support correct behavior when methods are destructured in JavaScript.  See [DesktopAgentProxy implementation](https://github.com/finos/FDC3/blob/main/packages/fdc3-agent-proxy/src/DesktopAgentProxy.ts) for a reference.
 - Make metadata about each context message or intent and context message received (including the app that originated the message, timestamp, and any supported metadata provided by that application including `traceId`, `signature`, `antiReplay` and `custom` fields) available to the receiving application. Desktop Agents MUST NOT modify or strip `signature` or `antiReplay` fields.
+- Provide a `traceId` in the [`ContextMetadata`](ref/Types#contextmetadata) delivered to receiving applications: the Desktop Agent MUST forward a `traceId` supplied by the originating application unchanged, and MUST generate a `traceId` when the originating application did not supply one, so that a `traceId` is always present. (The optional `metadata` argument of `broadcast`, `open`, `raiseIntent` and `raiseIntentForContext` carries only app-provided metadata and MAY omit `traceId`; the guarantee of a present `traceId` applies to the enriched `ContextMetadata` the Desktop Agent delivers, not to the request payload.)
 - Substitute an [`fdc3.nothing`](../context/ref/Nothing) context when [`raiseIntent`](ref/DesktopAgent#raiseintent) is called without a `context` argument, or with the argument set to `null` or `undefined`.
 
 An FDC3 Standard compliant Desktop Agent implementation **SHOULD**:
@@ -967,20 +968,20 @@ Registered listeners MUST receive:
 
 - `timestamp` – Indicates when the message was delivered.
 - `source` – Identifies the originating app (`AppIdentifier`).
+- `traceId` – A unique identifier for tracing the flow of context or intent messages across applications. The Desktop Agent MUST forward a `traceId` provided by the originating app, and MUST generate one when the app did not provide it, so a `traceId` is always present.
 
 Registered listeners MAY receive:
 
-- `traceId` – A unique identifier for tracing the flow of context or intent messages across applications.
 - `signature` – A detached [JSON Web Signature (JWS)](https://datatracker.ietf.org/doc/html/rfc7515) (`DetachedSignature`) that can be used to verify the authenticity and integrity of the context or intent message. MUST be accompanied by `antiReplay` when present.
 - `antiReplay` – Anti-replay claims (`AntiReplayClaims`: `iat`, `exp`, `jti`) used alongside `signature` to prevent replay attacks.
 - `custom` – Implementation-specific metadata.
 
 ### Trace Information
 
-The Desktop Agent MAY provide a `traceId` to intent handlers.
+The Desktop Agent MUST provide a `traceId` to context and intent handlers, so that receiving applications can always rely on a `traceId` being present in the [`ContextMetadata`](ref/Types#contextmetadata) they receive.
 
-- If the originating app provides a `traceId`, the Desktop Agent MUST forward it.
-- If no `traceId` is provided by the app, the Desktop Agent MAY generate a new one.
+- If the originating app provides a `traceId`, the Desktop Agent MUST forward it unchanged.
+- If no `traceId` is provided by the app, the Desktop Agent MUST generate a new one.
 
 Apps MAY propagate `traceId` when performing actions as a result of another FDC3 action. This supports observability and correlation across workflows.
 

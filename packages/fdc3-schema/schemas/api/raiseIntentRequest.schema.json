@@ -45,11 +45,13 @@
 					"description": "Indicates how an instance of the target application should be selected. When `true`, a new instance of the target application MUST be launched even if existing instances are available. When `false`, an existing instance MUST be used and a new instance MUST NOT be launched (if no suitable instance is available the request fails with TargetInstanceUnavailable). When omitted, the Desktop Agent applies its default resolution behavior."
 				},
 				"metadata": {
+					"title": "App-provided Context Metadata",
+					"description": "Optional metadata supplied by the calling app (`traceId`, `signature`, `antiReplay` and `custom`) to accompany the raised intent's `context`. This field carries only the app-provided portion of the metadata; the Desktop Agent adds its own `source` and `timestamp` before delivering the enriched `ContextMetadata`. It MUST be omitted when the app did not supply a metadata argument to `raiseIntent()`.",
 					"$ref": "api.schema.json#/definitions/AppProvidableContextMetadata"
 				}
 			},
 			"required": [
-				"intent", "context", "metadata"
+				"intent", "context"
 			],
 			"additionalProperties": false
 		}
