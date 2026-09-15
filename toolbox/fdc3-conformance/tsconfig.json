@@ -1,28 +1,18 @@
 {
-  "compilerOptions": {
-    "target": "esnext",
-    "useDefineForClassFields": true,
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": false,
-    "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "types": ["vite/client"]
-  },
-  "include": ["src"],
-  "references": [
-    {
-      "path": "../../packages/fdc3"
-    }
-  ]
+    "extends": "../../tsconfig.root.json",
+    "compilerOptions": {
+        "rootDir": "src",
+        "moduleResolution": "bundler",
+        "module": "ESNext",
+        "outDir": "dist",
+        "noEmit": true,
+    },
+    "include": [
+        "src"
+    ],
+    "references": [
+        {
+            "path": "../../packages/fdc3"
+        }
+    ]
 }

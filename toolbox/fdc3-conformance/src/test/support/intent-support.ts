@@ -176,8 +176,8 @@ export class RaiseIntentControl {
             `The promise received by Test from resolution.getResult() should resolve to a ${expectedContextType} instance`
           ).to.have.property('type');
           expect(
-            context.type,
-            `The promise received by Test from resolution.getResult() should resolve to a ${expectedContextType} instance. Instead resolved to ${context.type}`
+            context?.type,
+            `The promise received by Test from resolution.getResult() should resolve to a ${expectedContextType} instance. Instead resolved to ${context?.type}`
           ).to.be.equal(expectedContextType);
           break;
         }
@@ -192,19 +192,19 @@ export class RaiseIntentControl {
       }
       case IntentResultType.Channel: {
         const channel = intentResult as Channel;
-        expect(intentResult).to.have.property('id');
-        expect(intentResult).to.have.property('type');
-        expect(channel.type).to.be.equal('app');
-        expect(channel.id).to.be.equal('test-channel');
+        expect(channel).to.have.property('id');
+        expect(channel).to.have.property('type');
+        expect(channel?.type).to.be.equal('app');
+        expect(channel?.id).to.be.equal('test-channel');
         break;
       }
       case IntentResultType.PrivateChannel: {
-        const privateChannel = intentResult as PrivateChannel;
-        expect(intentResult).to.have.property('addEventListener');
-        expect(intentResult).to.have.property('disconnect');
-        expect(intentResult).to.have.property('id');
-        expect(intentResult).to.have.property('type');
-        expect(privateChannel.type).to.be.equal('private');
+        const channel = intentResult as PrivateChannel;
+        expect(channel).to.have.property('addEventListener');
+        expect(channel).to.have.property('disconnect');
+        expect(channel).to.have.property('id');
+        expect(channel).to.have.property('type');
+        expect(channel?.type).to.be.equal('private');
       }
     }
   }

@@ -45,6 +45,15 @@ export default defineConfig({
       buffer: 'buffer',
       stream: 'stream-browserify',
       util: 'util',
+      events: 'events',
+      // Node's `node:`-prefixed builtin specifiers are not matched by the bare aliases above
+      // and would otherwise be externalised to empty browser stubs (breaking, e.g. mocha's
+      // `require('node:util').inherits`). Map them explicitly to their browser polyfills.
+      'node:util': 'util',
+      'node:events': 'events',
+      'node:path': 'path-browserify',
+      'node:stream': 'stream-browserify',
+      'node:buffer': 'buffer',
     },
   },
   define: {
