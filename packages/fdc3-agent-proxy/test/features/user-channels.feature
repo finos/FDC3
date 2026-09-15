@@ -225,7 +225,7 @@ Feature: Basic User Channels Support
     Given "typesHandler" pipes events to "types"
     And "contextClearedMessage" is a ContextClearedEvent message on channel "one" with contextType as "fdc3.instrument"
     And "allContextClearedMessage" is a ContextClearedEvent message on channel "one" with contextType as "{null}"
-    When I call "{api}" with "addEventListener" with parameters "contextCleared" and "{typesHandler}"
+    When I call "{api}" with "addEventListener" using arguments "contextCleared" and "{typesHandler}"
     And I refer to "{result}" as "theListener"
     And messaging receives "{contextClearedMessage}"
     And I call "{theListener}" with "unsubscribe"
@@ -241,7 +241,7 @@ Feature: Basic User Channels Support
   Scenario: A wildcard Desktop Agent event listener receives contextCleared events
     Given "typesHandler" pipes events to "types"
     And "contextClearedMessage" is a ContextClearedEvent message on channel "one" with contextType as "fdc3.instrument"
-    When I call "{api}" with "addEventListener" with parameters "{null}" and "{typesHandler}"
+    When I call "{api}" with "addEventListener" using arguments "{null}" and "{typesHandler}"
     And messaging receives "{contextClearedMessage}"
     Then "{types}" is an array of objects with the following contents
       | channelId | contextType     |
