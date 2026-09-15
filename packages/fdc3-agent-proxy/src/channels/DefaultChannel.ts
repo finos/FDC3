@@ -142,7 +142,7 @@ export class DefaultChannel implements Channel {
       return await this.addContextListenerInner(typeOrTypes as string | null, handler);
     }
 
-    throw new Error('Invalid arguments passed to addContextListener!');
+    throw new Error(ChannelError.InvalidArguments);
   }
 
   async addContextListenerInner(contextType: string | string[] | null, theHandler: ContextHandler): Promise<Listener> {
