@@ -128,7 +128,7 @@ export class DefaultChannel implements Channel {
   addContextListener(contextTypes: string[], handler: ContextHandler): Promise<Listener>;
   async addContextListener(typeOrTypes: string | string[] | null, handler: ContextHandler): Promise<Listener> {
     if (typeof handler !== 'function') {
-      throw new Error('Invalid arguments passed to addContextListener!');
+      throw new Error(ChannelError.InvalidArguments);
     }
 
     if (Array.isArray(typeOrTypes)) {
