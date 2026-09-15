@@ -14,6 +14,8 @@ export interface IChannelService {
     metadata: AppProvidableContextMetadata
   ): Promise<void>;
 
+  clearContext(channel: Channel, contextType?: string): Promise<void>;
+
   closeWindowOnCompletion(testId: string): Promise<void>;
 
   notifyTestOnCompletion(testId: string): Promise<void>;
