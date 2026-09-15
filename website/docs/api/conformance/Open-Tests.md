@@ -19,6 +19,18 @@ hide_title: true
   - `fdc3.open({appId:"<app-B-ID>"})`
 - `AOpensB4` ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue):   **A** uses an `AppIdentifier` to open B and retrieves an updated `AppIdentifier` with an `instanceId` set via `const instanceIdentifier = await fdc3.open({appId:"<app-B-ID>"})`. Ensure that the `appId` matches that requested and that an `instanceId` property has been set.
 
+## A Opens An App That Does Not Initialize FDC3
+
+| App | Step                    | Description |
+|-----|-------------------------|-------------|
+| A   | 1. Open without context | Open app B, which launches but does not initialize FDC3, via `fdc3.open({appId:"<app-B-ID>"})` |
+| A   | 2. Check result         | Confirm that the promise resolves with B's `AppIdentifier`, including an `instanceId` |
+| A   | 3. Open with context    | Open B again and supply `{type: "fdc3.nothing"}` as context |
+| A   | 4. Check error          | Confirm that the promise rejects with an Error whose message is `ApiTimeout` |
+
+- `AOpensNonFDC3AppWithoutContext` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-blue): Perform steps 1 and 2 to confirm that opening without context does not wait for FDC3 initialization and does not throw `ApiTimeout`.
+- `AOpensNonFDC3AppWithContext` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-blue): Perform steps 3 and 4 to confirm that `ApiTimeout` is thrown when context is provided and the opened app does not initialize FDC3.
+
 ## A Fails To Open Another App
 
 | App | Step                    | Description                                              |

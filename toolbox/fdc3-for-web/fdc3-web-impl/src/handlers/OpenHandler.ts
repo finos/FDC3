@@ -91,7 +91,9 @@ class PendingApp {
   }
 
   private onError() {
-    errorResponse(this.sc, this.msg, this.source, OpenError.AppTimeout, 'openResponse');
+    const error = this.state == AppState.Opening ? OpenError.ApiTimeout : OpenError.AppTimeout;
+    this.state = AppState.Done;
+    errorResponse(this.sc, this.msg, this.source, error, 'openResponse');
   }
 
   setOpened(openedApp: AppIdentifier) {
@@ -273,14 +275,29 @@ export class OpenHandler implements MessageHandler {
     try {
       const reqMeta = arg0.payload.metadata ?? {};
       const uuid = await sc.open(toOpen.appId, from);
-      this.pending.set(
-        uuid,
-        new PendingApp(sc, arg0, context, from, this.timeoutMs, {
-          traceId: reqMeta.traceId,
-          signature: reqMeta.signature,
-          custom: reqMeta.custom,
-        })
-      );
+      if (context) {
+        this.pending.set(
+          uuid,
+          new PendingApp(sc, arg0, context, from, this.timeoutMs, {
+            traceId: reqMeta.traceId,
+            signature: reqMeta.signature,
+            custom: reqMeta.custom,
+          })
+        );
+      } else {
+        successResponse(
+          sc,
+          arg0,
+          from,
+          {
+            appIdentifier: {
+              appId: toOpen.appId,
+              instanceId: uuid,
+            },
+          },
+          'openResponse'
+        );
+      }
     } catch (e) {
       errorResponse(sc, arg0, from, (e as Error).message ?? e, 'openResponse');
     }
