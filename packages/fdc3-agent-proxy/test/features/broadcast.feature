@@ -16,6 +16,14 @@ Feature: Broadcasting
       | payload.channelId | payload.context.type | payload.context.name | matches_type     |
       | channel-name      | fdc3.instrument      | Apple                | broadcastRequest |
 
+  Scenario: Broadcasting without app-provided metadata omits the metadata field
+    When I call "{api}" with "getOrCreateChannel" with parameter "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I call "{channel1}" with "broadcast" with parameter "{instrumentContext}"
+    Then messaging will have posts
+      | payload.channelId | payload.context.type | payload.metadata | matches_type     |
+      | channel-name      | fdc3.instrument      | {undefined}      | broadcastRequest |
+
   Scenario: Broadcasting using the api directly, with no user channel set
     When I call "{api}" with "broadcast" with parameter "{instrumentContext}"
     Then messaging will have posts

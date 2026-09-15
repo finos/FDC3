@@ -64,6 +64,55 @@ Feature: Channel Listeners Support
     And I call "{channel1}" with "addContextListener" with parameters "{null}" and "{true}"
     Then "{result}" is an error
 
+  Scenario: Adding a contextCleared event listener registers it with the Desktop Agent, scoped to the channel
+    Given "typesHandler" pipes events to "types"
+    When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I call "{channel1}" with "addEventListener" with parameters "contextCleared" and "{typesHandler}"
+    And we wait for a period of "100" ms
+    Then messaging will have posts
+      | payload.type    | payload.channelId | matches_type            |
+      | CONTEXT_CLEARED | channel-name      | addEventListenerRequest |
+
+  Scenario: Adding a "null" (wildcard) event listener on a channel registers a channel-scoped registration
+    Given "typesHandler" pipes events to "types"
+    When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I call "{channel1}" with "addEventListener" with parameters "{null}" and "{typesHandler}"
+    And we wait for a period of "100" ms
+    Then messaging will have posts
+      | payload.type | payload.channelId | matches_type            |
+      | {null}       | channel-name      | addEventListenerRequest |
+
+  Scenario: A channel contextCleared listener receives only events for its channel
+    Given "typesHandler" pipes events to "types"
+    And "contextClearedMessage" is a ContextClearedEvent message on channel "channel-name" with contextType as "fdc3.instrument"
+    And "otherContextClearedMessage" is a ContextClearedEvent message on channel "other-channel" with contextType as "fdc3.country"
+    When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I call "{channel1}" with "addEventListener" with parameters "contextCleared" and "{typesHandler}"
+    And messaging receives "{otherContextClearedMessage}"
+    And messaging receives "{contextClearedMessage}"
+    Then "{types}" is an array of objects with the following contents
+      | channelId    | contextType     |
+      | channel-name | fdc3.instrument |
+
+  Scenario: Unsubscribing a channel contextCleared listener stops event delivery and notifies the Desktop Agent
+    Given "typesHandler" pipes events to "types"
+    And "contextClearedMessage" is a ContextClearedEvent message on channel "channel-name" with contextType as "fdc3.instrument"
+    When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I call "{channel1}" with "addEventListener" with parameters "contextCleared" and "{typesHandler}"
+    And I refer to "{result}" as "theListener"
+    And we wait for a period of "100" ms
+    And I call "{theListener}" with "unsubscribe"
+    And messaging receives "{contextClearedMessage}"
+    Then "{types}" is an array of objects with length "0"
+    And messaging will have posts
+      | payload.channelId | payload.listenerUUID | matches_type                    |
+      | channel-name      | {null}               | addEventListenerRequest         |
+      | {null}            | {theListener.id}     | eventListenerUnsubscribeRequest |
+
   Scenario: Passing an invalid event type to an app Channel returns InvalidArguments
     When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
     And I refer to "{result}" as "channel1"

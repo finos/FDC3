@@ -42,6 +42,14 @@ const contextMap: Record<string, Context> = {
   },
 };
 
+Given('{string} is an app-provided metadata object', (world: CustomWorld, field: string) => {
+  world.props[field] = {
+    traceId: 'app-trace-id',
+    signature: { protected: 'app-protected', signature: 'app-signature' },
+    custom: { region: 'EMEA' },
+  };
+});
+
 Given('the next getCurrentContext response has payload {string}', (world: CustomWorld, shape: string) => {
   const context = contextMap['fdc3.instrument'];
   const metadata: ContextMetadata = {

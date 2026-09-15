@@ -71,6 +71,15 @@ All messages defined in the DACP follow a common structure:
 
 `meta.timestamp` fields are formatted as strings, according to the format defined by [ISO 8601-1:2019](https://www.iso.org/standard/70907.html), which is produced in JavaScript via the `Date` class's `toISOString()` function, e.g. `(new Date()).toISOString()`.
 
+#### Encoding optional API arguments
+
+A number of FDC3 API functions accept optional arguments (for example, the `contextType` argument of [`Channel.clearContext()`](../ref/Channel#clearcontext) and [`Channel.getCurrentContext()`](../ref/Channel#getcurrentcontext), or the `app` argument of [`DesktopAgent.raiseIntent()`](../ref/DesktopAgent#raiseintent)). How an omitted optional argument is represented in the corresponding DACP message payload is determined by the payload's message schema:
+
+- Where the schema marks a payload field as **required** and permits a `null` value (i.e. its type is a union that includes `null`), an omitted argument MUST be normalized to `null`. The field MUST always be present. For example, `ClearContextRequestPayload.contextType` and `GetCurrentContextRequestPayload.contextType` are both required and nullable, so an omitted `contextType` argument is encoded as `contextType: null`.
+- Where the schema marks a payload field as **optional** (i.e. it is not listed in the schema's `required` array), an omitted argument MUST be represented by omitting the field entirely, rather than setting it to `null`. For example, `RaiseIntentRequestPayload.newInstance` is optional, so an omitted `newInstance` argument is represented by an absent field.
+
+Implementations MUST follow the required-and-nullable versus optional-and-absent distinction defined by each message schema, and MUST NOT substitute one encoding for the other. Reference implementations (the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3) Desktop Agent Proxy) apply these rules.
+
 ### Context Data Encoding
 
 Context objects carried in DACP message payloads are JSON-compatible structures. When transmitted over a `MessagePort` (as used in Browser-Resident Desktop Agent implementations), context objects are serialised and deserialised by the browser's [Structured Clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm) — implementations SHOULD pass context objects directly to `postMessage` without additional serialisation steps (e.g. without calling `JSON.stringify()`). For further details on how context types are defined and how they relate to language-specific bindings, see the [Context Data specification](../../context/spec#context-schemas).
@@ -87,9 +96,19 @@ Further, the design of the DACP is based on the assumption that applications wil
 
 As a Desktop Agent is expected to act as a router for messages sent through the Desktop Agent API, the DACP provides message exchanges for the registration and un-registration of listeners for particular message types (e.g. events, contexts broadcast on user channels, contexts broadcast on other channel types, raised intents etc.). In most cases, apps can register multiple listeners for the same messages (often filtered for different context or event types). However, where multiple listeners are present, only a single DACP message should be sent representing the action taken in the FDC3 API (e.g. broadcasting a message to a channel) and any multiplexing to multiple listeners should be applied at the receiving end. For example, when working with the WCP, this should be handled by the Desktop Agent Proxy implementation provided by the `getAgent()` implementation.
 
+### Metadata in messages
+
+Three distinct kinds of "metadata" appear in DACP messages and MUST NOT be confused:
+
+1. **Message `meta`** — every DACP message carries a top-level `meta` field containing _transport_ metadata for the message itself (e.g. `requestUuid`, `responseUuid`, `eventUuid`, `timestamp`, and a `source` identifying the app where appropriate). This describes the message, not the context it carries.
+2. **`payload.metadata` (app-provided)** — the request payloads for [`broadcast()`](#broadcast), [`open()`](#open), [`raiseIntent()`](#raiseintent) and [`raiseIntentForContext()`](#raiseintentforcontext) carry an **optional** `payload.metadata` field of type [`AppProvidableContextMetadata`](../ref/Types#appprovidablecontextmetadata). This holds only the portion of context metadata that an app may supply — `traceId`, `signature`, `antiReplay` and `custom` — and deliberately excludes the `source` and `timestamp` that only the Desktop Agent can authoritatively set. It corresponds directly to the optional `metadata` argument of those public API methods.
+3. **Enriched `ContextMetadata`** — when the Desktop Agent delivers a context to a receiving app (via `broadcastEvent`, `intentEvent`, or in a `getCurrentContextResponse`), it provides a complete [`ContextMetadata`](../ref/Types#contextmetadata) that combines the app-provided fields above with the Desktop Agent's own generated `source` and `timestamp` (and a `traceId` if the app did not supply one).
+
+Because `payload.metadata` mirrors an optional public API argument, it follows this normative encoding rule: **a Desktop Agent proxy MUST omit `payload.metadata` entirely when the app did not supply a metadata argument, rather than sending an empty object (`{}`) or `null`.** Independent DACP implementations MUST accept a request in which `payload.metadata` is absent and treat it identically to an empty `AppProvidableContextMetadata`. This keeps the wire representation of an omitted optional argument consistent across all metadata-bearing request messages.
+
 ### Timeouts for Message Exchanges
 
-As the DACP is used to communicate with a different browsing context, timeouts are applied to message exchanges allowing them to fail and for the Desktop Agent Proxy to return an error to the caller. A default timeout of 10 seconds is applied to all message exchanges, with the exception of those that may involve the launch of an application (`open()`, `raiseIntent()` and `raiseIntentForContext()`). Implementations of the FDC3 Desktop Agent API are required to allow a minimum timeout of 15 seconds for an application to launch and add any necessary context or intent listeners (see [Desktop Agent API Compliance](../spec#desktop-agent-api-standard-compliance) for further details). However, no upper bound for the timeout is currently specified. Message exchanges that involve the launch of an application use a default timeout of 100 seconds.
+As the DACP is used to communicate with a different browsing context, timeouts are applied to message exchanges allowing them to fail and for the Desktop Agent Proxy to return an error to the caller. A default timeout of 10 seconds is applied to all message exchanges, with the exception of those that may involve the launch of an application (`open()`, `raiseIntent()` and `raiseIntentForContext()`). Implementations of the FDC3 Desktop Agent API are required to allow a minimum timeout of 15 seconds for an application to initialize FDC3 and add any necessary context or intent listeners when context or an intent is to be delivered on launch (see [Desktop Agent API Compliance](../spec#desktop-agent-api-standard-compliance) for further details). However, no upper bound for the timeout is currently specified. Message exchanges that involve the launch of an application use a default timeout of 100 seconds.
 
 Desktop Agents may specify custom values for both the default message exchange timeout and the timeout used for exchanges that may involve the launch of an application. Custom values are passed to the Desktop Agent proxy by setting the optional `payload.messageExchangeTimeout` and `payload.appLaunchTimeout` fields in the `WCP3Handshake` Response sent by the Desktop Agent to an application connecting to it. `payload.messageExchangeTimeout` MUST be set to a value greater than or equal to 100 ms, and `payload.appLaunchTimeout`  MUST be set to a value greater than or equal to 15,000 ms.
 
@@ -111,7 +130,7 @@ export const DEFAULT_APP_LAUNCH_TIMEOUT_MS = 100000;
 
 :::info
 
-The message exchange timeouts are used to detect a lack of response from the Desktop Agent, which will be reported via the `ApiTimeout` error message. However, there are also defined error messages for apps failing to add an expected context listener (`OpenError.AppTimeout`) or intent listener (`ResolveError.IntentDeliveryFailed`) after launch. To return these errors, the Desktop Agent should set a longer timeout via the `payload.appLaunchTimeout` field in its `WCP3Handshake` message than it uses internally to detect such failures. Doing so will ensure that timeouts can be separately attributed to the App or to the Desktop Agent.
+The message exchange timeouts are used to detect a lack of response from the Desktop Agent, which will be reported via the `ApiTimeout` error message. When context is passed to `fdc3.open`, `OpenError.ApiTimeout` is also used if the launched application does not initialize FDC3 within the Desktop Agent's timeout. However, there are also defined error messages for apps that initialize FDC3 but fail to add an expected context listener (`OpenError.AppTimeout`) or intent listener (`ResolveError.IntentDeliveryFailed`) after launch. To return these errors, the Desktop Agent should set a longer timeout via the `payload.appLaunchTimeout` field in its `WCP3Handshake` message than it uses internally to detect such failures. Doing so will ensure that timeouts can be separately attributed to the App or to the Desktop Agent.
 
 :::
 
@@ -139,7 +158,7 @@ Request and response for removing the context listener ([`Listener.unsubscribe()
 
 #### `addEventListener()`
 
-Request and response used to implement the [`addEventListener()`](../ref/DesktopAgent#addeventlistener) API call:
+Request and response used to implement both the [`DesktopAgent.addEventListener()`](../ref/DesktopAgent#addeventlistener) and [`Channel.addEventListener()`](../ref/Channel#addeventlistener) API calls:
 
 - [`addEventListenerRequest`](pathname:///schemas/next/api/addEventListenerRequest.schema.json)
 - [`addEventListenerResponse`](pathname:///schemas/next/api/addEventListenerResponse.schema.json)
@@ -147,11 +166,42 @@ Request and response used to implement the [`addEventListener()`](../ref/Desktop
 Event messages used to deliver events that have occurred:
 
 - [`channelChangedEvent`](pathname:///schemas/next/api/channelChangedEvent.schema.json)
+- [`contextClearedEvent`](pathname:///schemas/next/api/contextClearedEvent.schema.json)
 
 Request and response for removing the event listener ([`Listener.unsubscribe()`](../ref/Types#listener)):
 
 - [`eventListenerUnsubscribeRequest`](pathname:///schemas/next/api/eventListenerUnsubscribeRequest.schema.json)
 - [`eventListenerUnsubscribeResponse`](pathname:///schemas/next/api/eventListenerUnsubscribeResponse.schema.json)
+
+The `addEventListenerRequest` payload has two fields:
+
+- `type`: the [`FDC3EventType`](pathname:///schemas/next/api/api.schema.json) to listen for (`USER_CHANNEL_CHANGED` or `CONTEXT_CLEARED`), or `null` to register a wildcard listener that receives all Desktop Agent event types.
+- `channelId`: identifies the scope of the registration:
+  - Set to a Channel's id for a **Channel-scoped** listener registered via [`Channel.addEventListener()`](../ref/Channel#addeventlistener). The Desktop Agent MUST route matching events for that specific channel only.
+  - Set to `null` for a **Desktop Agent-level** listener registered via [`DesktopAgent.addEventListener()`](../ref/DesktopAgent#addeventlistener). For `CONTEXT_CLEARED`, the scope of a Desktop Agent-level listener follows the app's current User channel, so the Desktop Agent MUST route a `contextClearedEvent` to the app when context is cleared on the channel the app is currently joined to. `USER_CHANNEL_CHANGED` events are inherently Desktop Agent-level and always use a `null` `channelId`.
+
+On success, the Desktop Agent responds with an `addEventListenerResponse` carrying the `listenerUUID` that identifies the registration for later unsubscription.
+
+The `contextClearedEvent` is delivered to registered listeners when context is cleared on a channel via [`Channel.clearContext()`](#clearcontext) (see the [`Channel`](#channel) section below). Its payload carries:
+
+- `channelId`: the id of the channel on which context was cleared.
+- `contextType`: the context type that was cleared, or `null` when all context types on the channel were cleared.
+
+**Routing.** The Desktop Agent has enough information from each registration's `type` and `channelId` to route events only to the apps that registered a matching listener, rather than broadcasting events to all connected apps for proxy-side filtering. A `contextClearedEvent` for a given channel MUST be routed to an app when that app has a registration whose `type` is `CONTEXT_CLEARED` (or `null` for a wildcard listener) and whose scope matches — either a Channel-scoped registration for the same channel, or a Desktop Agent-level registration held by an app whose current User channel is the cleared channel. The Desktop Agent MUST NOT deliver a `contextClearedEvent` back to the app instance that triggered the clear.
+
+**Wildcard listeners.** A registration with `type: null` matches every Desktop Agent event type subject to the same channel scoping described above. A Desktop Agent-level wildcard listener therefore receives both `channelChangedEvent` and `contextClearedEvent` messages relevant to the app.
+
+**Unsubscription.** Both Desktop Agent-level and Channel-scoped event listeners are removed using the same `eventListenerUnsubscribeRequest`/`eventListenerUnsubscribeResponse` exchange, quoting the `listenerUUID` returned at registration. After unsubscription the Desktop Agent MUST NOT route further events to that listener.
+
+```mermaid
+sequenceDiagram
+    App ->> DesktopAgent: addEventListenerRequest<br/>(type CONTEXT_CLEARED, channelId)
+    DesktopAgent ->> App: addEventListenerResponse<br/>(with listenerUUID)
+    Note over DesktopAgent: context cleared on the matching channel
+    DesktopAgent ->> App: contextClearedEvent
+    App ->> DesktopAgent: eventListenerUnsubscribeRequest<br/>(with listenerUUID)
+    DesktopAgent ->> App: eventListenerUnsubscribeResponse
+```
 
 #### `addIntentListener()` / `addIntentListenerWithContext()`
 
@@ -222,6 +272,8 @@ Request and response used to implement the [`DesktopAgent.broadcast()`](../ref/D
 
 - [`broadcastRequest`](pathname:///schemas/next/api/broadcastRequest.schema.json)
 - [`broadcastResponse`](pathname:///schemas/next/api/broadcastResponse.schema.json)
+
+The `broadcastRequest` payload carries an optional `metadata` field of type [`AppProvidableContextMetadata`](../ref/Types#appprovidablecontextmetadata), corresponding to the optional `metadata` argument of `broadcast()`. Per [Metadata in messages](#metadata-in-messages), this field MUST be omitted when the app did not supply a metadata argument. The same optional-and-omitted rule applies to the `metadata` field of the [`openRequest`](#open), [`raiseIntentRequest`](#raiseintent) and [`raiseIntentForContextRequest`](#raiseintentforcontext) payloads.
 
 See [`addContextListener()`](#addcontextlistener) above for the `broadcastEvent` used to deliver the broadcast to other apps.
 
@@ -331,7 +383,9 @@ Request and response used to implement the [`open()`](../ref/DesktopAgent#open) 
 - [`openRequest`](pathname:///schemas/next/api/openRequest.schema.json)
 - [`openResponse`](pathname:///schemas/next/api/openResponse.schema.json)
 
-Where a context object is passed (e.g. `fdc3.open(app, context)`) the `broadcastEvent` message described above in [`addContextListener`](#addcontextlistener) should be used to deliver it after the context listener has been added:
+When an `openRequest` does not include context, the Desktop Agent MAY send a successful `openResponse` as soon as the application launches. The response does not confirm that the opened application has initialized FDC3. To wait for FDC3 initialization—for example, before expecting the opened application to work with channels—the caller can include an [`fdc3.nothing`](../../context/ref/Nothing) context in the request.
+
+Where a context object is passed (e.g. `fdc3.open(app, context)`), the Desktop Agent MUST wait for the application to initialize FDC3. If it does not initialize within the timeout, the Desktop Agent MUST send an `openResponse` with the `ApiTimeout` error from the [`OpenError`](../ref/Errors#openerror) enumeration. After the application initializes and adds a matching context listener, the `broadcastEvent` message described above in [`addContextListener`](#addcontextlistener) should be used to deliver the context:
 
 ```mermaid
 sequenceDiagram
@@ -346,11 +400,11 @@ sequenceDiagram
     DesktopAgent ->> AppA: openResponse<br/>(with AppIdentifier)
 ```
 
-However, if the app opened doesn't add a context listener within a timeout (defined by the Desktop Agent) then the `openResponse` should be sent with `AppTimeout` error from the [`OpenError`](../ref/Errors#openerror) enumeration.
+However, if the opened app initializes FDC3 but doesn't add a matching context listener within a timeout (defined by the Desktop Agent), then the `openResponse` should be sent with the `AppTimeout` error from the [`OpenError`](../ref/Errors#openerror) enumeration.
 
 :::tip
 
-Desktop Agents MUST allow at least 15 seconds for an app to add a context listener before timing out (see [Desktop Agent API Standard Compliance](https://fdc3.finos.org/docs/next/api/spec#desktop-agent-api-standard-compliance) for more detail) and applications SHOULD add their listeners as soon as possible to keep the delay short (see the [addContextListener reference doc](https://fdc3.finos.org/docs/next/api/ref/DesktopAgent#addcontextlistener)).
+When context is passed, Desktop Agents MUST allow at least 15 seconds for an app to initialize FDC3 and add a context listener before timing out (see [Desktop Agent API Standard Compliance](https://fdc3.finos.org/docs/next/api/spec#desktop-agent-api-standard-compliance) for more detail) and applications SHOULD initialize FDC3 and add their listeners as soon as possible to keep the delay short (see the [addContextListener reference doc](https://fdc3.finos.org/docs/next/api/ref/DesktopAgent#addcontextlistener)).
 
 :::
 
@@ -453,6 +507,31 @@ The `getCurrentContextResponse` payload contains a `context` field and a `metada
 - When `payload.context` is `null`, `payload.metadata` MUST also be `null` (the canonical representation for "no context available").
 
 The `metadata` field is used by [`Channel.getCurrentContextWithMetadata()`](../ref/Channel#getcurrentcontextwithmetadata) to return both the context and its metadata; because the invariant guarantees complete metadata alongside any non-null context, the Desktop Agent proxy never needs to fabricate metadata. The [`Channel.getCurrentContext()`](../ref/Channel#getcurrentcontext) function uses the same request/response messages but ignores the `metadata` field, returning only the context.
+
+#### `clearContext()`
+
+Request and response used to implement the [`Channel.clearContext()`](../ref/Channel#clearcontext) API call:
+
+- [`clearContextRequest`](pathname:///schemas/next/api/clearContextRequest.schema.json)
+- [`clearContextResponse`](pathname:///schemas/next/api/clearContextResponse.schema.json)
+
+The public API method is `channel.clearContext(contextType?: string): Promise<void>`. The `clearContextRequest` payload carries:
+
+- `channelId`: the id of the channel on which to clear context.
+- `contextType`: the context type to clear, or `null` to clear all context types stored on the channel. This field is required and nullable in the schema; following the [convention for encoding optional API arguments](#encoding-optional-api-arguments), an omitted `contextType` argument MUST be normalized to `contextType: null`.
+
+When context is cleared, the Desktop Agent MUST notify apps that have registered a matching `contextClearedEvent` listener (see [`addEventListener()`](#addeventlistener) above) by sending them a [`contextClearedEvent`](pathname:///schemas/next/api/contextClearedEvent.schema.json). The `channelId` and `contextType` of the `contextClearedEvent` match those of the originating `clearContextRequest`.
+
+A typical exchange of messages between an app clearing context, a Desktop Agent, and an app listening for cleared context is:
+
+```mermaid
+sequenceDiagram
+    AppB ->> DesktopAgent: addEventListenerRequest<br/>(type CONTEXT_CLEARED)
+    DesktopAgent ->> AppB: addEventListenerResponse<br/>(with listenerUUID)
+    AppA ->> DesktopAgent: clearContextRequest<br/>(channelId, contextType or null)
+    DesktopAgent ->> AppB: contextClearedEvent
+    DesktopAgent ->> AppA: clearContextResponse
+```
 
 ### `PrivateChannel`
 
