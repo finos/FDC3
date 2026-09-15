@@ -80,6 +80,22 @@ As the method of setting the user channel is user interactive, it is either diff
 
 - `ChannelChangedEvent` ![2.2+](https://img.shields.io/badge/FDC3-2.2+-purple): Perform the above test.
 
+## Clearing Context
+
+| App | Step                    | Details                                                         |
+|-----|-------------------------|-----------------------------------------------------------------|
+| A   | 1. joinUserChannel      | A joins the first available (non-global) user channel using: <br />`getUserChannels()` (check **user** channels are returned) then `fdc3.joinUserChannel(<channelId>)` on the first non-global channel. |
+| A   | 2. Add Context Listener | Add a _typed_ context listener for `fdc3.instrument`, using: <br />`await fdc3.addContextListener("fdc3.instrument",handler)`|
+| B   | 3. joinUserChannel      | B joins the same channel as A, via the same process in 1.|
+| B   | 4. Broadcast            | B broadcasts both an `fdc3.instrument` context and an `fdc3.contact` context, using: <br /> `fdc3.broadcast(<fdc3.instrument>)` <br /> `fdc3.broadcast(<fdc3.contact>)`|
+| A   | 5. Receive Context      | An `fdc3.instrument` context is received by the handler added in step 2.<br />Ensure that the `fdc3.instrument` received by A is identical to that sent by B<br />Ensure that the `fdc3.contact` context is NOT received.|
+| A   | 6. Add Event Listener   | Add an event listener for the `contextCleared` event, using: <br />`await fdc3.addEventListener("contextCleared",handler)`  |
+| B   | 7. Clear Context        | B clears context using `fdc3.getCurrentChannel()` then `channel.clearContext()`|
+| A   | 8. Received Event       | A receives the event added in step 6. The event's `channelId` matches the joined channel and (for `UCClearContext2`) its `contextType` matches the cleared type.<br />A call to `getCurrentContext()` for the cleared type returns `null`. |
+
+- `UCClearContext1` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above test.
+- `UCClearContext2` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above test, but pass the specific context type being cleared to `channel.clearContext()`.
+
 
 ## Broadcast With Multiple Listeners On The Same or Overlapping Types
 
