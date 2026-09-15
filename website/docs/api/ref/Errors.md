@@ -264,10 +264,8 @@ enum OpenError {
    * */
   DesktopAgentNotFound = "DesktopAgentNotFound",
 
-  /** Returned if a timeout occurs before a call to open is resolved for any
-   *  reason other than the app not adding its context listener in time. This
-   *  includes an application launching but failing to initialize FDC3, whether
-   *  or not context was passed to the call.
+  /** Returned if context is passed to `fdc3.open` and the specified application
+   *  launches but fails to initialize FDC3 in time.
    */
   ApiTimeout = 'ApiTimeout',
 
@@ -354,7 +352,7 @@ var OpenError = struct {
 </TabItem>
 </Tabs>
 
-If the application launches but does not initialize FDC3 within the timeout defined by the Desktop Agent, the promise returned by `fdc3.open` MUST be rejected with an `Error` whose `message` is `OpenError.ApiTimeout`. This applies whether or not a context was passed to the call. `OpenError.AppTimeout` is reserved for cases where the application initializes FDC3 but does not add the context listener required to receive a context passed to `fdc3.open`.
+When context is passed to `fdc3.open`, `OpenError.ApiTimeout` indicates that the application launched but did not initialize FDC3 within the timeout defined by the Desktop Agent. `OpenError.AppTimeout` indicates that the application initialized FDC3 but did not add the context listener required to receive that context. Neither error applies to waiting for initialization or a listener when no context was passed.
 
 **See also:**
 

@@ -51,7 +51,7 @@ export enum OpenError {
   /** @experimental Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.*/
   DesktopAgentNotFound = 'DesktopAgentNotFound',
 
-  /** Returned if a timeout occurs before a call to open is resolved for any reason other than the app not adding its context listener in time. This includes an application launching but failing to initialize FDC3, whether or not context was passed to the call.*/
+  /** Returned if context is passed to `fdc3.open` and the specified application launches but fails to initialize FDC3 in time.*/
   ApiTimeout = 'ApiTimeout',
 
   /** Returned when incorrect arguments are passed to API calls.*/

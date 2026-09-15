@@ -95,4 +95,16 @@ export class OpenControlImpl implements OpenControl {
       expect(ex).to.have.property('message', OpenError.AppTimeout, openDocs);
     }
   };
+
+  expectApiTimeoutErrorOnOpen = async (targetApp: AppIdentifier) => {
+    try {
+      await Promise.race([
+        this.fdc3.open(targetApp, { type: 'fdc3.nothing' }),
+        failAfterTimeout(constants.NoListenerTimeout),
+      ]);
+      assert.fail('fdc3.open resolved even though the opened app did not initialize FDC3', openDocs);
+    } catch (ex) {
+      expect(ex).to.have.property('message', OpenError.ApiTimeout, openDocs);
+    }
+  };
 }

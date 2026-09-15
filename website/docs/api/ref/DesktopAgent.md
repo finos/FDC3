@@ -1813,9 +1813,9 @@ An optional `metadata` parameter may be provided to include additional metadata 
 
 Returns an [`AppIdentifier`](Types#appidentifier) object with the `instanceId` field set to identify the instance of the application opened by this call.
 
-The Desktop Agent MUST NOT resolve the promise returned by `open` until a newly launched application has initialized FDC3 and connected to the Desktop Agent. If the application launches but does not initialize FDC3 within the timeout defined by the Desktop Agent, the promise MUST be rejected with an `Error` whose `message` is `OpenError.ApiTimeout`. This applies whether or not a context was passed to the call.
+If no context is passed, the promise returned by `open` MAY resolve as soon as the application launches. This does not confirm that the opened application has initialized FDC3. If you expect the opened application to work with channels, or otherwise want to confirm that FDC3 is available in it, pass an [`fdc3.nothing`](../../context/ref/Nothing) context: `{ type: 'fdc3.nothing' }`.
 
-Where context was passed and the application initializes FDC3 but does not add a matching context listener within the timeout, the promise MUST instead be rejected with an `Error` whose `message` is `OpenError.AppTimeout`.
+If context is passed, the Desktop Agent MUST NOT resolve the promise until the newly launched application has initialized FDC3 and added a matching context listener. If the application does not initialize FDC3 within the timeout, the promise MUST be rejected with an `Error` whose `message` is `OpenError.ApiTimeout`. If the application initializes FDC3 but does not add a matching context listener within the timeout, the promise MUST instead be rejected with an `Error` whose `message` is `OpenError.AppTimeout`.
 
 If an error occurs while opening the app, the promise MUST be rejected with an `Error` Object with a `message` chosen from the [`OpenError`](Errors#openerror) enumeration, or (if connected to a Desktop Agent Bridge) the [`BridgingError`](Errors#bridgingerror) enumeration.
 
