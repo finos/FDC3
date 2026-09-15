@@ -61,7 +61,9 @@ export class DefaultChannel implements Channel {
       payload: {
         channelId: this.id,
         context,
-        metadata: metadata ?? {},
+        // Only include app-provided metadata on the wire when the app supplied it; omit the
+        // field entirely otherwise (rather than sending an empty object).
+        ...(metadata && { metadata }),
       },
       type: 'broadcastRequest',
     };
@@ -172,10 +174,10 @@ export class DefaultChannel implements Channel {
     let listener: RegisterableListener;
     switch (type) {
       case 'contextCleared':
-        listener = new EventListener(this.messaging, 'contextCleared', this.id, handler);
+        listener = new EventListener(this.messaging, this.messageExchangeTimeout, 'contextCleared', this.id, handler);
         break;
       case null:
-        listener = new EventListener(this.messaging, type, this.id, handler);
+        listener = new EventListener(this.messaging, this.messageExchangeTimeout, type, this.id, handler);
         break;
       default:
         throw new Error(ChannelError.InvalidArguments);

@@ -1,29 +1,98 @@
 version: 2
 
+# ---------------------------------------------------------------------------
+# CVE resolutions vs. routine evergreening
+# ---------------------------------------------------------------------------
+# Dependabot distinguishes two kinds of update via a group's `applies-to`:
+#
+#   * security-updates — raised to resolve a known CVE/advisory. These take
+#     priority. Security updates are NEVER subject to `cooldown` (Dependabot
+#     applies no cooldown to security updates), so they are raised as soon as a
+#     fixed version exists — effectively same/next-day. They are also exempt
+#     from `open-pull-requests-limit`. Each of these is grouped under a group
+#     named "security", and that group identifier appears in the PR title and
+#     branch name (e.g. "…/security-…" / "Bump the security group"), which is
+#     how CVE PRs are differentiated from evergreening PRs. Dependabot also
+#     applies its automatic "dependencies" label plus any SemVer labels.
+#
+#   * version-updates — routine evergreening. These carry a longer `cooldown`
+#     to let newly published versions bake (supply-chain mitigation) and are
+#     grouped aggressively (by tooling domain) to reduce PR noise and merge
+#     conflicts. Their group names (cucumber, linting, vitest, types, …) mark
+#     them as routine in the PR title/branch.
+#
+# NOTES / limitations:
+#   * `labels` and `commit-message` are ecosystem-wide in dependabot.yml — they
+#     cannot differ per group — so CVE-vs-evergreen differentiation is carried
+#     by the GROUP NAME (surfaced in the title/branch), not by a bespoke label.
+#   * `cooldown` only applies to version updates, so the "1 day" target for CVE
+#     work is achieved by security updates bypassing cooldown entirely.
+#   * The "let new releases bake" supply-chain protection lives HERE (this
+#     cooldown), not in .npmrc. `min-release-age` was removed from .npmrc
+#     because it re-validates the lockfile on every install and would fail CI
+#     on same-day releases — see the note in .npmrc for details.
+#   * This relies on Dependabot security updates (+ dependency graph + alerts)
+#     being enabled for the repository.
+# ---------------------------------------------------------------------------
+
 updates:
-  # npm dependencies
+  # ---- npm dependencies (workspaces root) --------------------------------
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
       interval: "daily"
-    # Use cooldown to align with min-release-age in .npmrc — skip versions
-    # published fewer than 7 days ago, giving time for malicious packages to
-    # be detected and removed before they reach this repo.
     cooldown:
+      # Applies to evergreening (version) updates only. Security updates are
+      # never delayed by cooldown.
       default-days: 7
       semver-major-days: 10
-    # Group minor and patch updates into a single PR to reduce noise.
     groups:
+      # CVE resolutions — grouped and prioritised; the "security" group name
+      # surfaces in the PR title/branch to differentiate from evergreening.
+      security:
+        applies-to: security-updates
+        patterns:
+          - "*"
+      # Evergreening — recurring cross-package dev tooling grouped together so
+      # a single PR updates them in lockstep and avoids conflicting PRs.
+      cucumber:
+        applies-to: version-updates
+        patterns:
+          - "@cucumber/*"
+          - "quickpickle"
+      linting:
+        applies-to: version-updates
+        patterns:
+          - "eslint"
+          - "@eslint/*"
+          - "typescript-eslint"
+          - "eslint-config-prettier"
+          - "eslint-plugin-*"
+          - "globals"
+          - "prettier"
+          - "lint-staged"
+      vitest:
+        applies-to: version-updates
+        patterns:
+          - "vitest"
+          - "@vitest/*"
+      types:
+        applies-to: version-updates
+        patterns:
+          - "@types/*"
       minor-and-patch:
+        applies-to: version-updates
         update-types:
           - "minor"
           - "patch"
     open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
     commit-message:
       prefix: "chore(deps)"
       include: "scope"
 
-  # npm dependencies — website (separate lock file, not in workspaces)
+  # ---- npm dependencies — website (separate lock file, not in workspaces)
   - package-ecosystem: "npm"
     directory: "/website"
     schedule:
@@ -32,42 +101,62 @@ updates:
       default-days: 7
       semver-major-days: 10
     groups:
+      # CVE resolutions — prioritised; differentiated by the "security" group
+      # name in the PR title/branch.
+      security:
+        applies-to: security-updates
+        patterns:
+          - "*"
       # Docusaurus and its rendering stack must move together — they share
       # peer dependencies on react/react-dom and layout-elk, so upgrading
       # any one in isolation risks peer dep conflicts.
       docusaurus:
+        applies-to: version-updates
         patterns:
           - "@docusaurus/*"
           - "@mermaid-js/layout-elk"
           - "prism-react-renderer"
       # react and react-dom must always be the same version.
       react:
+        applies-to: version-updates
         patterns:
           - "react"
           - "react-dom"
       minor-and-patch:
+        applies-to: version-updates
         update-types:
           - "minor"
           - "patch"
     open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
     commit-message:
       prefix: "chore(deps)"
       include: "scope"
 
-  # GitHub Actions
+  # ---- GitHub Actions -----------------------------------------------------
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
       interval: "daily"
     cooldown:
       default-days: 7
-    # Group all actions updates into a single PR.
     groups:
+      # CVE resolutions — prioritised; differentiated by the "security" group
+      # name in the PR title/branch.
+      security:
+        applies-to: security-updates
+        patterns:
+          - "*"
+      # Evergreening — all actions in a single PR.
       actions-minor-and-patch:
+        applies-to: version-updates
         update-types:
           - "minor"
           - "patch"
     open-pull-requests-limit: 10
+    labels:
+      - "dependencies"
     commit-message:
       prefix: "ci(deps)"
       include: "scope"

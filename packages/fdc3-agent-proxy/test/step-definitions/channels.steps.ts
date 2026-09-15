@@ -51,6 +51,14 @@ Given('{string} is an empty array', (world: CustomWorld, field: string) => {
   world.props[field] = [];
 });
 
+Given('{string} is an app-provided metadata object', (world: CustomWorld, field: string) => {
+  world.props[field] = {
+    traceId: 'app-trace-id',
+    signature: { protected: 'app-protected', signature: 'app-signature' },
+    custom: { region: 'EMEA' },
+  };
+});
+
 Given(
   '{string} is a BroadcastEvent message on channel {string} with context {string}',
   (world: CustomWorld, field: string, channel: string, context: string) => {
