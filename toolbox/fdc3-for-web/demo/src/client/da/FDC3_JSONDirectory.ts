@@ -17,7 +17,7 @@ const convertToDirectoryList = (data: any): DirectoryApp[] => {
   return data.applications as DirectoryApp[];
 };
 
-export class FDC3_2_1_JSONDirectory extends BasicDirectory {
+export class FDC3_JSONDirectory extends BasicDirectory {
   constructor(desktopAgentFdc3Version = '3.0') {
     super([], desktopAgentFdc3Version);
   }

@@ -3,7 +3,7 @@ import { io } from 'socket.io-client';
 import { v4 as uuid } from 'uuid';
 import { APP_GOODBYE, DA_HELLO, FDC3_APP_EVENT } from '../../message-types.js';
 import { DemoServerContext } from './DemoServerContext.js';
-import { FDC3_2_1_JSONDirectory } from './FDC3_2_1_JSONDirectory.js';
+import { FDC3_JSONDirectory } from './FDC3_JSONDirectory.js';
 import {
   AppRegistration,
   ChannelState,
@@ -197,7 +197,7 @@ window.addEventListener('load', () => {
   socket.on('connect', async () => {
     socket.emit(DA_HELLO, desktopAgentUUID);
 
-    const directory = new FDC3_2_1_JSONDirectory(FDC3_VERSION);
+    const directory = new FDC3_JSONDirectory(FDC3_VERSION);
 
     const directoryUrls = [
       'http://localhost:4005/static/generated/fdc3-example-apps.json',
