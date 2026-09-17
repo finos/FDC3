@@ -139,9 +139,9 @@ export class DefaultChannel implements Channel {
       if (typeOrTypes.length === 0) {
         throw new Error(ChannelError.InvalidArguments);
       }
-      // If any null present in array, treat as unfiltered (null) - same as DesktopAgentProxy
-      if ((typeOrTypes as (string | null)[]).some(t => t == null)) {
-        return await this.addContextListenerInner(null, handler);
+      // Validate all elements are strings
+      if (!typeOrTypes.every(t => typeof t === 'string')) {
+        throw new Error(ChannelError.InvalidArguments);
       }
       return await this.addContextListenerInner(typeOrTypes, handler);
     }

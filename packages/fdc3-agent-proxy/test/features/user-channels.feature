@@ -406,16 +406,12 @@ Feature: Basic User Channels Support
       | fdc3.instrument | Apple  |
       | fdc3.country    | Sweden |
 
-  Scenario: Adding a context listener with an empty array on user channel returns dummy listener
+  Scenario: Adding a context listener with an empty array on user channel throws error
     Given "resultHandler" pipes context to "contexts"
     Given "emptyArray" is an empty array
     When I call "{api}" with "joinUserChannel" with parameter "one"
     And I call "{api}" with "addContextListener" with parameters "{emptyArray}" and "{resultHandler}"
-    And I refer to "{result}" as "theListener"
-    And messaging receives "{instrumentMessageOne}"
-    Then "{contexts}" is empty
-    And I call "{theListener}" with "unsubscribe"
-    Then "{result}" is undefined
+    Then "{result}" is an error with message "Empty array passed to addContextListener"
 
   Scenario: Array context listener replays context when joining a channel
     Given "resultHandler" pipes context to "contexts"

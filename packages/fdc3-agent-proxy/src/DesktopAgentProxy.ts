@@ -106,14 +106,11 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
       if (contextTypeOrTypes.length === 0) {
         throw new Error('Empty array passed to addContextListener');
       }
-      const arr = contextTypeOrTypes as (ContextType | null)[];
-      // If any null present, treat as unfiltered (null)
-      if (arr.some(t => t == null)) {
-        return this.channels.addContextListener(handler, null);
+      // Validate all elements are strings
+      if (!contextTypeOrTypes.every(t => typeof t === 'string')) {
+        throw new Error('Invalid arguments passed to addContextListener: array must contain only strings');
       }
-      // Otherwise, forward concrete string types only
-      const types = arr.filter((t): t is string => typeof t === 'string') as unknown as string[];
-      return this.channels.addContextListener(handler, types);
+      return this.channels.addContextListener(handler, contextTypeOrTypes as string[]);
     }
 
     if (typeof contextTypeOrTypes === 'string' || contextTypeOrTypes === null) {
