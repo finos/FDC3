@@ -43,6 +43,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 * Added conformance test definitions and implementations for clearing context on channels: `ACClearContext1`/`ACClearContext2` for App channels and new `UCClearContext1`/`UCClearContext2` for User channels. Each test verifies that a `contextCleared` event is delivered (carrying the correct `channelId` and `contextType`, or `null` when all types are cleared) and that `getCurrentContext` returns `null` for a cleared type. The User channel tests exercise a Desktop Agent-level `contextCleared` listener scoped to the app's current User channel. ([#2187](https://github.com/finos/FDC3/issues/2187))
 
+* Added an optional `fdc3Version` semver range to App Directory application records, and updated the FDC3 for Web reference implementation to filter records for compatibility with the Desktop Agent's FDC3 version. ([#1965](https://github.com/finos/FDC3/pull/1965))
+
 ### Changed
 
 * Clarified that `fdc3.open` only waits for a launched application to initialize FDC3 when context is passed. If that application does not initialize FDC3, the call rejects with `OpenError.ApiTimeout`; if it initializes but does not add the required context listener, it rejects with `OpenError.AppTimeout`. Calls without context may resolve as soon as the application launches. The reference web implementation and conformance suite now cover this distinction.
