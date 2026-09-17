@@ -36,11 +36,11 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Run tests
-        run: npm run test
-
       - name: Build
         run: npm run build
+
+      - name: Run tests
+        run: npm run test
 
       - name: Verify version consistency across workspaces
         run: npm run version-check

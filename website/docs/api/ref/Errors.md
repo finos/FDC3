@@ -242,8 +242,9 @@ enum OpenError {
   /** Returned if the specified application fails to launch correctly.*/
   ErrorOnLaunch = "ErrorOnLaunch",
 
-  /** Returned if the specified application launches but fails to add a context
-   *  listener in order to receive the context passed to the `fdc3.open` call.
+  /** Returned if the specified application launches and initializes FDC3, but
+   *  fails to add a context listener in order to receive the context passed to
+   *  the `fdc3.open` call.
    */
   AppTimeout = "AppTimeout",
 
@@ -263,8 +264,8 @@ enum OpenError {
    * */
   DesktopAgentNotFound = "DesktopAgentNotFound",
 
-  /** Returned if a timeout occurs before a call to open is resolved for any
-   *  reason other than the not adding its context listener in time.  
+  /** Returned if context is passed to `fdc3.open` and the specified application
+   *  launches but fails to initialize FDC3 in time.
    */
   ApiTimeout = 'ApiTimeout',
 
@@ -291,8 +292,9 @@ public static class OpenError
     public static readonly string ErrorOnLaunch = nameof(ErrorOnLaunch);
 
     /// <summary>
-    /// Returned if the specified application launches but fails to add a context
-    /// listener in order to receive the context passed to the `Open` call.
+    /// Returned if the specified application launches and initializes FDC3, but
+    /// fails to add a context listener in order to receive the context passed to
+    /// the `Open` call.
     /// </summary>
     public static readonly string AppTimeout = nameof(AppTimeout);
 
@@ -325,8 +327,9 @@ var OpenError = struct {
 	AppNotFound string
 	// Returned if the specified application fails to launch correctly.
 	ErrorOnLaunch string
-	// Returned if the specified application launches but fails to add a context
-	// listener in order to receive the context passed to the `fdc3.open` call.
+	// Returned if the specified application launches and initializes FDC3, but
+	// fails to add a context listener in order to receive the context passed to
+	// the `fdc3.open` call.
 	AppTimeout string
 	// Returned if the FDC3 desktop agent implementation is not currently able to handle the request.
 	ResolverUnavailable string
@@ -348,6 +351,8 @@ var OpenError = struct {
 
 </TabItem>
 </Tabs>
+
+When context is passed to `fdc3.open`, `OpenError.ApiTimeout` indicates that the application launched but did not initialize FDC3 within the timeout defined by the Desktop Agent. `OpenError.AppTimeout` indicates that the application initialized FDC3 but did not add the context listener required to receive that context. Neither error applies to waiting for initialization or a listener when no context was passed.
 
 **See also:**
 
