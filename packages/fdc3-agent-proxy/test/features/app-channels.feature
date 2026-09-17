@@ -203,3 +203,15 @@ Feature: Channel Listeners Support
     Then "{contexts}" is empty
     And I call "{theListener}" with "unsubscribe"
     Then "{result}" is undefined
+
+  Scenario: Adding a context listener with array containing null receives all contexts
+    Given "arrayWithNull" is an array of context types with null "fdc3.instrument, {null}"
+    When I call "{api1}" with "getOrCreateChannel" with parameter "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I call "{channel1}" with "addContextListener" with parameters "{arrayWithNull}" and "{resultHandler}"
+    And messaging receives "{instrumentMessageOne}"
+    And messaging receives "{countryMessageOne}"
+    Then "{contexts}" is an array of objects with the following contents
+      | type            | name   |
+      | fdc3.instrument | Apple  |
+      | fdc3.country    | Sweden |

@@ -427,6 +427,15 @@ Feature: Basic User Channels Support
       | type            | name  |
       | fdc3.instrument | Apple |
 
+  Scenario: Array context listener does NOT replay non-matching cached context when joining a channel
+    Given "resultHandler" pipes context to "contexts"
+    Given "contextTypes" is an array of context types "fdc3.instrument"
+    Given "contactContext" is a "fdc3.contact" context
+    Given channel "one" has context "{contactContext}"
+    When I call "{api}" with "addContextListener" with parameters "{contextTypes}" and "{resultHandler}"
+    And I call "{api}" with "joinUserChannel" with parameter "one"
+    Then "{contexts}" is empty
+
   Scenario: Array context listener receives broadcast after joining channel
     Given "resultHandler" pipes context to "contexts"
     Given "contextTypes" is an array of context types "fdc3.instrument, fdc3.country"

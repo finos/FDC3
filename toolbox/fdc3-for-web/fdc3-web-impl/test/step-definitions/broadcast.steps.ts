@@ -48,6 +48,25 @@ When(
 );
 
 When(
+  '{string} adds a context listener on {string} with types {string}',
+  (world: CustomWorld, app: string, channelId: string, contextTypes: string) => {
+    const meta = createMeta(world, app);
+    const uuid = world.sc.getInstanceUUID(meta.source)!;
+    const types = contextTypes.split(',').map(t => t.trim());
+    const message = {
+      meta,
+      payload: {
+        channelId: handleResolve(channelId, world),
+        contextTypes: types,
+      },
+      type: 'addContextListenerRequest',
+    } as AddContextListenerRequest;
+
+    world.server.receive(message, uuid);
+  }
+);
+
+When(
   '{string} asks for the latest context on {string} with type {string}',
   (world: CustomWorld, app: string, channelId: string, contextType: string) => {
     const meta = createMeta(world, app);

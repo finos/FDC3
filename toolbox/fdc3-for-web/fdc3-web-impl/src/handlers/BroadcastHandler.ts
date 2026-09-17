@@ -37,14 +37,17 @@ type StoredContext = {
 };
 
 type PrivateChannelEvents =
-  PrivateChannelOnAddContextListenerEvent | PrivateChannelOnUnsubscribeEvent | PrivateChannelOnDisconnectEvent;
+  | PrivateChannelOnAddContextListenerEvent
+  | PrivateChannelOnUnsubscribeEvent
+  | PrivateChannelOnDisconnectEvent;
 
 type ContextListenerRegistration = {
   appId: string;
   instanceId: string;
   listenerUuid: string;
   channelId: string | null;
-  contextType: string | null;
+  /** null = all types, string = single type, string[] = multiple specific types */
+  contextType: string | string[] | null;
 };
 
 type PrivateChannelEventListener = {
@@ -113,7 +116,7 @@ export class BroadcastHandler implements MessageHandler {
         'unsubscribe',
         'privateChannelOnUnsubscribeEvent',
         sc,
-        u.contextType ?? undefined
+        u.contextType
       );
       if (u.channelId) {
         privateChannelsToDisconnect.add(u.channelId);
@@ -450,7 +453,7 @@ export class BroadcastHandler implements MessageHandler {
         'unsubscribe',
         'privateChannelOnUnsubscribeEvent',
         sc,
-        rl.contextType ?? undefined
+        rl.contextType
       );
       this.contextListeners.splice(i, 1);
       successResponse(sc, arg0, from, {}, 'contextListenerUnsubscribeResponse');
@@ -478,12 +481,16 @@ export class BroadcastHandler implements MessageHandler {
       }
     }
 
+    // Support both singular contextType and plural contextTypes from the request
+    // Normalize to a single contextType field: null (all), string (single), or string[] (array)
+    const contextTypes =
+      'contextTypes' in arg0.payload ? (arg0.payload.contextTypes as string[] | undefined) : undefined;
     const lr: ContextListenerRegistration = {
       appId: from.appId,
       instanceId: from.instanceId ?? 'no-instance-id',
       channelId: channelId,
       listenerUuid: sc.createUUID(),
-      contextType: arg0.payload.contextType ?? null,
+      contextType: contextTypes ?? arg0.payload.contextType ?? null,
     };
 
     this.contextListeners.push(lr);
@@ -492,7 +499,7 @@ export class BroadcastHandler implements MessageHandler {
       'addContextListener',
       'privateChannelOnAddContextListenerEvent',
       sc,
-      arg0.payload.contextType ?? undefined
+      lr.contextType
     );
     successResponse(sc, arg0, from, { listenerUUID: lr.listenerUuid }, 'addContextListenerResponse');
   }
@@ -508,11 +515,22 @@ export class BroadcastHandler implements MessageHandler {
       return r.channelId == null && ucId == arg0.payload.channelId;
     };
 
+    const matchesContextType = (r: ContextListenerRegistration) => {
+      // null = all types, string = single type match, string[] = array match
+      if (r.contextType == null) {
+        return true;
+      }
+      if (Array.isArray(r.contextType)) {
+        return r.contextType.includes(arg0.payload.context.type);
+      }
+      return r.contextType == arg0.payload.context.type;
+    };
+
     const matchingListeners = this.contextListeners
       // Deliver the message to apps listening to the right channel
       .filter(r => matchesExactChannel(r) || matchesUserChannel(r))
       // Deliver the message to apps with matching context type listeners
-      .filter(r => r.contextType == null || r.contextType == arg0.payload.context.type)
+      .filter(r => matchesContextType(r))
       // Don't deliver messages back to the broadcasting app
       .filter(r => r.instanceId !== from.instanceId);
 
@@ -708,19 +726,26 @@ export class BroadcastHandler implements MessageHandler {
       | 'privateChannelOnUnsubscribeEvent'
       | 'privateChannelOnDisconnectEvent',
     sc: ServerContext<AppRegistration>,
-    contextType?: string
+    contextType?: string | string[] | null
   ) {
     if (privateChannelId) {
+      // Build payload based on whether we have a single type, array, or null
+      const payload: { privateChannelId: string; contextType?: string | null; contextTypes?: string[] } = {
+        privateChannelId,
+      };
+      if (Array.isArray(contextType)) {
+        payload.contextTypes = contextType;
+      } else {
+        payload.contextType = contextType;
+      }
+
       const msg: PrivateChannelEvents = {
         type: messageType,
         meta: {
           eventUuid: sc.createUUID(),
           timestamp: new Date(),
         },
-        payload: {
-          privateChannelId,
-          contextType: contextType,
-        },
+        payload,
       } as PrivateChannelEvents; //Typescript doesn't like comparing an object with a union property (messageType) with a union of object types
 
       console.debug('invokePrivateChannelEventListeners msg: ', msg);

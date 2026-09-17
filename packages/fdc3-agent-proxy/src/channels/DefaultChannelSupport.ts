@@ -324,18 +324,21 @@ export class DefaultChannelSupport implements ChannelSupport, Connectable {
         if (this.container.currentChannel != null) {
           const channel = this.container.currentChannel as DefaultChannel;
 
-          // Handle array context types for getCurrentContextWithMetadata
-          let contextTypeParam: string | undefined;
           if (Array.isArray(this.contextType)) {
-            // Don't filter by type - let the individual listeners handle their own filtering
-            contextTypeParam = undefined;
-          } else if (this.contextType != null) {
-            contextTypeParam = this.contextType;
-          }
-
-          const result = await channel.getCurrentContextWithMetadata(contextTypeParam);
-          if (result) {
-            this.handler(result.context, result.metadata);
+            // For array context types, fetch cached context for each type individually
+            for (const ct of this.contextType) {
+              const result = await channel.getCurrentContextWithMetadata(ct);
+              if (result) {
+                this.handler(result.context, result.metadata);
+              }
+            }
+          } else {
+            // Single type or null (all types)
+            const contextTypeParam = this.contextType ?? undefined;
+            const result = await channel.getCurrentContextWithMetadata(contextTypeParam);
+            if (result) {
+              this.handler(result.context, result.metadata);
+            }
           }
         }
       }

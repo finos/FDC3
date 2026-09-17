@@ -4,6 +4,7 @@ import constants from '../../constants';
 import {
   APP_CHANNEL_AND_BROADCAST,
   APP_CHANNEL_AND_BROADCAST_TWICE,
+  APP_CHANNEL_AND_BROADCAST_THRICE,
   APP_CHANNEL_AND_BROADCAST_TWICE_THEN_CLEAR,
   APP_CHANNEL_AND_BROADCAST_TWICE_THEN_CLEAR_TYPE,
 } from '../support/channel-control';
@@ -403,9 +404,9 @@ export default async () => {
     });
 
     const ACArrayContextListeners1 =
-      '(ACArrayContextListeners1) Should receive context for multiple types when using array-based addContextListener on app channel';
+      '(ACArrayContextListeners1) Should receive context for multiple types and reject non-matching types when using array-based addContextListener on app channel';
     it(ACArrayContextListeners1, async () => {
-      const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds context listener for ["fdc3.instrument", "fdc3.contact"]\r\n- App B retrieves the same app channel\r\n- App B broadcasts fdc3.instrument and fdc3.contact contexts${documentation}`;
+      const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds context listener for ["fdc3.instrument", "fdc3.contact"]\r\n- App B retrieves the same app channel\r\n- App B broadcasts fdc3.instrument, fdc3.contact, and fdc3.portfolio contexts\r\n- App A should receive instrument and contact but NOT portfolio${documentation}`;
 
       const testChannel = await cc.createRandomTestChannel();
       const resolveExecutionCompleteListener = cc.initCompleteListener(ACArrayContextListeners1);
@@ -421,7 +422,7 @@ export default async () => {
         }
       );
 
-      await cc.openChannelApp(ACArrayContextListeners1, testChannel.id, APP_CHANNEL_AND_BROADCAST_TWICE);
+      await cc.openChannelApp(ACArrayContextListeners1, testChannel.id, APP_CHANNEL_AND_BROADCAST_THRICE);
       await resolveExecutionCompleteListener;
 
       try {
@@ -429,42 +430,18 @@ export default async () => {
         // Should receive both instrument and contact
         expect(receivedContextTypes).to.include('fdc3.instrument', errorMessage);
         expect(receivedContextTypes).to.include('fdc3.contact', errorMessage);
-        // Should have received exactly 2 contexts
-        expect(receivedContextTypes.length).to.equal(2, `Should receive exactly 2 contexts, received: ${receivedContextTypes.join(', ')}`);
+        // Should NOT receive portfolio (non-matching type)
+        expect(receivedContextTypes).to.not.include(
+          'fdc3.portfolio',
+          `Should NOT receive fdc3.portfolio context\n${errorMessage}`
+        );
+        // Should have received exactly 2 contexts (not 3)
+        expect(receivedContextTypes.length).to.equal(
+          2,
+          `Should receive exactly 2 contexts (not portfolio), received: ${receivedContextTypes.join(', ')}`
+        );
       } finally {
         cc.unsubscribeListeners([listener]);
-      }
-    });
-
-    const ACArrayNullContext1 =
-      '(ACArrayNullContext1) Should receive all contexts when using array with null in addContextListener on app channel';
-    it(ACArrayNullContext1, async () => {
-      const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds context listener for ["fdc3.instrument", null]\r\n- App B retrieves the same app channel\r\n- App B broadcasts fdc3.instrument and fdc3.contact contexts${documentation}`;
-
-      const testChannel = await cc.createRandomTestChannel();
-      const resolveExecutionCompleteListener = cc.initCompleteListener(ACArrayNullContext1);
-      const receivedContextTypes: string[] = [];
-
-      // Array containing null should behave like passing null directly (receives all contexts)
-      const listener = await testChannel.addContextListener(
-        ['fdc3.instrument', null] as unknown as string[],
-        (context: Context) => {
-          receivedContextTypes.push(context.type);
-        }
-      );
-
-      await cc.openChannelApp(ACArrayNullContext1, testChannel.id, APP_CHANNEL_AND_BROADCAST_TWICE);
-      await resolveExecutionCompleteListener;
-
-      try {
-        await wait(constants.ShortWait);
-        // Should receive BOTH contexts because null means "all contexts"
-        expect(receivedContextTypes).to.include('fdc3.instrument', errorMessage);
-        expect(receivedContextTypes).to.include('fdc3.contact', errorMessage);
-      } finally {
-        if (listener && listener.unsubscribe) {
-          listener.unsubscribe();
-        }
       }
     });
 

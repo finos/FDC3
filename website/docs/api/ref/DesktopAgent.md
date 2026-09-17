@@ -186,7 +186,7 @@ func (desktopAgent *DesktopAgent) AddContextListener(contextType string, handler
 
 Adds a listener for incoming context broadcasts from the Desktop Agent (via a User channel or [`fdc3.open`](#open) API call). If the consumer is only interested in a context of a particular type, they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
 
-Alternatively, you can pass an array of context types to listen for multiple specific types at once. If the array contains `null`, it will be treated as if `null` was passed directly (meaning listen to all context types), so any other context types are ignored as the listener will receive all context types. Empty arrays will be ignored.
+Alternatively, you can pass an array of context types to listen for multiple specific types at once. Empty arrays will be ignored.
 
 Context broadcasts are primarily received from apps that are joined to the same User Channel as the listening application, hence, if the application is not currently joined to a User Channel no broadcasts will be received from User channels. If this function is called after the app has already joined a channel and the channel already contains context that matches the type of the context listener, then it will be called immediately and the context passed to the handler function. If `null` was passed as the context type for the listener and the channel contains context, then the handler function will be called immediately with the most recent context - regardless of type.
 
@@ -219,14 +219,6 @@ const multiListener = await fdc3.addContextListener(
   ['fdc3.instrument', 'fdc3.contact', 'fdc3.portfolio'], 
   (context, metadata) => {
     console.log(`Received ${context.type} from ${metadata?.source}`);
-  }
-);
-
-// Listen for specific types plus all others (null in array - treated as if null was passed)
-const combinedListener = await fdc3.addContextListener(
-  ['fdc3.instrument', null], 
-  (context, metadata) => {
-    // Handles ALL context types (because null is in the array)
   }
 );
 ```

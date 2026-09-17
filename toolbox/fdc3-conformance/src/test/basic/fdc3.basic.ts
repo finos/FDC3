@@ -76,25 +76,8 @@ const basicCL3 = (fdc3: DesktopAgent, documentation: string) => {
   });
 };
 
-
 const basicCL4 = (fdc3: DesktopAgent, documentation: string) => {
-  it('(BasicCL4) Array with null behaves like null (receives all contexts)', async () => {
-    try {
-      // Array containing null should behave like passing null directly
-      const listener = await fdc3.addContextListener(['fdc3.instrument', null] as unknown as string[], () => {});
-      assert.isTrue(listener && typeof listener === 'object', documentation);
-      expect(typeof listener.unsubscribe, documentation).to.be.equals('function');
-      if (listener !== undefined) {
-        listener.unsubscribe();
-      }
-    } catch (ex) {
-      handleFail(documentation, ex);
-    }
-  });
-};
-
-const basicCL5 = (fdc3: DesktopAgent, documentation: string) => {
-  it('(BasicCL5) Empty array context listener should be ignored', async () => {
+  it('(BasicCL4) Empty array context listener should be ignored', async () => {
     try {
       // Empty array should return a dummy listener
       const listener = await fdc3.addContextListener([], () => {});
@@ -404,7 +387,6 @@ export const fdc3BasicCL1 = async () => describe('fdc3.basicCL1', () => basicCL1
 export const fdc3BasicCL2 = async () => describe('fdc3.basicCL2', () => basicCL2(fdc3, documentation_CL));
 export const fdc3BasicCL3 = async () => describe('fdc3.basicCL3', () => basicCL3(fdc3, documentation_CL));
 export const fdc3BasicCL4 = async () => describe('fdc3.basicCL4', () => basicCL4(fdc3, documentation_CL));
-export const fdc3BasicCL5 = async () => describe('fdc3.basicCL5', () => basicCL5(fdc3, documentation_CL));
 export const fdc3BasicIL1 = async () => describe('fdc3.basicIL1', () => basicIL1(fdc3, documentation_IL));
 export const fdc3BasicAEL1 = async () => describe('fdc3.basicAEL1', () => basicAEL1(fdc3, documentation_AEL));
 export const fdc3BasicAEL2 = async () => describe('fdc3.basicAEL2', () => basicAEL2(fdc3, documentation_AEL));

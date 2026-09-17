@@ -243,7 +243,7 @@ func (ch *Channel) AddContextListener(contextType string, handler ContextHandler
 
 Adds a listener for incoming contexts of the specified _context type_ whenever a broadcast happens on this channel.
 
-Alternatively, you can pass an array of context types to listen for multiple specific types at once. If the array contains `null`, it will be treated as if `null` was passed directly (meaning listen to all context types), so any other context types are ignored as the listener will receive all context types. Empty arrays will be ignored.
+Alternatively, you can pass an array of context types to listen for multiple specific types at once. Empty arrays will be ignored.
 
 If, when this function is called, the channel already contains context that would be passed to the listener it is NOT called or passed this context automatically (this behavior differs from that of the [`fdc3.addContextListener`](DesktopAgent#addcontextlistener) function). Apps wishing to access to the current context of the channel should instead call the [`getCurrentContext(contextType)`](#getcurrentcontext) function.
 
@@ -328,17 +328,8 @@ const multiListener = await channel.addContextListener(
   }
 );
 
-// Listen for specific types plus all others (null in array - treated as if null was passed)
-const combinedListener = await channel.addContextListener(
-  ['fdc3.instrument', null], 
-  (context, metadata) => {
-    // Handles ALL context types (because null is in the array)
-  }
-);
-
 // later
 multiListener.unsubscribe();
-combinedListener.unsubscribe();
 ```
 
 </TabItem>
