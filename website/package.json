@@ -15,13 +15,15 @@
     "copy-explained": "del-cli static/toolbox/fdc3-explained && cpy \"../toolbox/fdc3-explained\" ./static/toolbox/",
     "copy-conformance": "del-cli static/toolbox/fdc3-conformance && cpy \"../toolbox/fdc3-conformance/dist/**\" static/toolbox/fdc3-conformance",
     "replace-conformance-urls": "node replaceConformanceUrls.js",
-    "version": "cross-env-shell VERSION=2.2 npm run version-run",
-    "version-run": "cross-env-shell \"echo Creating version: \\$VERSION... && npm run prebuild && npm run docusaurus docs:version $VERSION && npm run version:docs-schema && npm run version:docs-replace && npm run version:schemas && npm run version:schemas-replace && npm run version:appd-replace\"",
+    "version": "cross-env-shell VERSION=3.0 npm run version-run",
+    "version-run": "cross-env-shell \"echo Creating version: \\$VERSION... && npm run prebuild && npm run docusaurus docs:version $VERSION && npm run version:docs-schema && npm run version:docs-replace && npm run version:schemas && npm run version:schemas-replace && npm run version:appd-replace && npm run version:conformance && npm run version:conformance-replace\"",
     "version:docs-schema": "cross-env-shell replace-in-files --string=/schemas/next --replacement=/schemas/$VERSION versioned_docs/version-$VERSION/*/*.md versioned_docs/version-$VERSION/*/*/*.md",
     "version:docs-replace": "cross-env-shell replace-in-files --string='\\(next\\)' --replacement='\\($VERSION\\)' versioned_docs/version-$VERSION/*/*.md versioned_docs/version-$VERSION/*/*/*.md",
     "version:schemas": "cross-env-shell cpy static/schemas/next/** static/schemas/$VERSION",
     "version:schemas-replace": "cross-env-shell replace-in-files --string=/schemas/next --replacement=/schemas/$VERSION static/schemas/$VERSION/**/*.schema.json",
     "version:appd-replace": "cross-env-shell replace-in-files --string=\"\"next\"\" --replacement=\"\"$VERSION\"\" static/schemas/$VERSION/appd.schema.json",
+    "version:conformance": "cross-env-shell cpy \"static/toolbox/fdc3-conformance/**\" static/toolbox/$VERSION/fdc3-conformance",
+    "version:conformance-replace": "cross-env-shell replace-in-files --string=__FDC3_VERSION__ --replacement=$VERSION static/toolbox/$VERSION/fdc3-conformance/lib/fdc3-compliance.js",
     "swizzle": "docusaurus swizzle",
     "deploy": "docusaurus deploy",
     "docusaurus": "docusaurus"
@@ -47,7 +49,10 @@
   },
   "overrides": {
     "serialize-javascript": "^7.0.5",
-    "webpack": "~5.105.0"
+    "webpack": "~5.105.0",
+    "@docusaurus/theme-mermaid": {
+      "@mermaid-js/layout-elk": "^0.2.3"
+    }
   },
   "allowScripts": {}
 }
