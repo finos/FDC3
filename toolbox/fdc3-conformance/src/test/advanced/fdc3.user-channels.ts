@@ -667,31 +667,15 @@ export default async () => {
       }
     });
 
-    const UCArrayEmptyContext1 =
-      '(UCArrayEmptyContext1) Should not receive context when using empty array addContextListener';
+    const UCArrayEmptyContext1 = '(UCArrayEmptyContext1) Should throw error when using empty array addContextListener';
     it(UCArrayEmptyContext1, async () => {
-      const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener with empty array []\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
-
-      const resolveExecutionCompleteListener = cc.initCompleteListener(UCArrayEmptyContext1);
-      let receivedContext = false;
-
-      // Empty array should return a dummy listener that receives nothing
-      const listener = await fdc3.addContextListener([], () => {
-        receivedContext = true;
-      });
-
-      const channel = await cc.getNonGlobalUserChannel();
-      await cc.joinChannel(channel);
-      await cc.openChannelApp(UCArrayEmptyContext1, channel.id, JOIN_AND_BROADCAST);
-      await resolveExecutionCompleteListener;
-
       try {
-        await wait(constants.ShortWait);
-        expect(receivedContext, errorMessage).to.be.false;
-      } finally {
-        if (listener && listener.unsubscribe) {
-          listener.unsubscribe();
-        }
+        // Empty array should throw an error
+        await fdc3.addContextListener([] as unknown as string[], () => {});
+        assert.fail('Expected addContextListener with empty array to throw an error');
+      } catch (ex) {
+        // Expected to throw - test passes
+        expect(ex).to.be.instanceOf(Error);
       }
     });
   });

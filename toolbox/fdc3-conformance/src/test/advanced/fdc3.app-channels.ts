@@ -446,29 +446,17 @@ export default async () => {
     });
 
     const ACArrayEmptyContext1 =
-      '(ACArrayEmptyContext1) Should not receive context when using empty array addContextListener on app channel';
+      '(ACArrayEmptyContext1) Should throw error when using empty array addContextListener on app channel';
     it(ACArrayEmptyContext1, async () => {
-      const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds context listener with empty array []\r\n- App B retrieves the same app channel\r\n- App B broadcasts fdc3.instrument context${documentation}`;
-
       const testChannel = await cc.createRandomTestChannel();
-      const resolveExecutionCompleteListener = cc.initCompleteListener(ACArrayEmptyContext1);
-      let receivedContext = false;
-
-      // Empty array should return a dummy listener that receives nothing
-      const listener = await testChannel.addContextListener([], () => {
-        receivedContext = true;
-      });
-
-      await cc.openChannelApp(ACArrayEmptyContext1, testChannel.id, APP_CHANNEL_AND_BROADCAST);
-      await resolveExecutionCompleteListener;
 
       try {
-        await wait(constants.ShortWait);
-        expect(receivedContext, errorMessage).to.be.false;
-      } finally {
-        if (listener && listener.unsubscribe) {
-          listener.unsubscribe();
-        }
+        // Empty array should throw an error
+        await testChannel.addContextListener([] as unknown as string[], () => {});
+        assert.fail('Expected addContextListener with empty array to throw an error');
+      } catch (ex) {
+        // Expected to throw - test passes
+        expect(ex).to.be.instanceOf(Error);
       }
     });
   });

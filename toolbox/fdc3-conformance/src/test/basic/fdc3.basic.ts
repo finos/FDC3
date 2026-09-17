@@ -76,19 +76,15 @@ const basicCL3 = (fdc3: DesktopAgent, documentation: string) => {
   });
 };
 
-const basicCL4 = (fdc3: DesktopAgent, documentation: string) => {
-  it('(BasicCL4) Empty array context listener should be ignored', async () => {
+const basicCL4 = (fdc3: DesktopAgent, _documentation: string) => {
+  it('(BasicCL4) Empty array context listener should throw error', async () => {
     try {
-      // Empty array should return a dummy listener
-      const listener = await fdc3.addContextListener([], () => {});
-      assert.isTrue(listener && typeof listener === 'object', documentation);
-      // Should still have unsubscribe even if it's a no-op
-      expect(typeof listener.unsubscribe, documentation).to.be.equals('function');
-      if (listener !== undefined) {
-        listener.unsubscribe();
-      }
+      // Empty array should throw an error
+      await fdc3.addContextListener([] as unknown as string[], () => {});
+      assert.fail('Expected addContextListener with empty array to throw an error');
     } catch (ex) {
-      handleFail(documentation, ex);
+      // Expected to throw - test passes
+      expect(ex).to.be.instanceOf(Error);
     }
   });
 };

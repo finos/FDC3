@@ -104,7 +104,7 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
 
     if (Array.isArray(contextTypeOrTypes)) {
       if (contextTypeOrTypes.length === 0) {
-        return Promise.resolve({ unsubscribe: () => Promise.resolve() });
+        throw new Error('Empty array passed to addContextListener');
       }
       const arr = contextTypeOrTypes as (ContextType | null)[];
       // If any null present, treat as unfiltered (null)

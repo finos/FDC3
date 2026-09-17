@@ -243,7 +243,7 @@ func (ch *Channel) AddContextListener(contextType string, handler ContextHandler
 
 Adds a listener for incoming contexts of the specified _context type_ whenever a broadcast happens on this channel.
 
-Alternatively, you can pass an array of context types to listen for multiple specific types at once. Empty arrays will be ignored.
+Alternatively, you can pass an array of context types to listen for multiple specific types at once. Empty arrays will throw an error.
 
 If, when this function is called, the channel already contains context that would be passed to the listener it is NOT called or passed this context automatically (this behavior differs from that of the [`fdc3.addContextListener`](DesktopAgent#addcontextlistener) function). Apps wishing to access to the current context of the channel should instead call the [`getCurrentContext(contextType)`](#getcurrentcontext) function.
 

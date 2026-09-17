@@ -133,7 +133,7 @@ export class DefaultChannel implements Channel {
 
     if (Array.isArray(typeOrTypes)) {
       if (typeOrTypes.length === 0) {
-        return { unsubscribe: () => Promise.resolve() };
+        throw new Error(ChannelError.InvalidArguments);
       }
       // If any null present in array, treat as unfiltered (null) - same as DesktopAgentProxy
       if ((typeOrTypes as (string | null)[]).some(t => t == null)) {
