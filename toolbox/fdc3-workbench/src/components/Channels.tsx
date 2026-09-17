@@ -176,6 +176,46 @@ export const Channels = observer(
         <div style={styles.border}></div>
 
         <Grid item xs={12}>
+          <Typography variant="h5">User channel events</Typography>
+        </Grid>
+        <Grid container direction="row" justifyContent="space-between" sx={styles.controls}>
+          <Grid item sx={styles.dropDown}>
+            <Typography variant="body1">
+              {channelStore.isUserChannelChangedListenerActive
+                ? 'Listening for userChannelChanged events'
+                : 'Event listener unavailable (requires FDC3 2.2+)'}
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Grid container direction="row" justifyContent="flex-end" spacing={1}>
+              <Grid item sx={styles.controls}>
+                <Tooltip title="Copy code example" aria-label="Copy code example">
+                  <IconButton
+                    size="small"
+                    aria-label="Copy code example"
+                    color="primary"
+                    onClick={copyToClipboard(codeExamples.userChannelChangedEvent, 'userChannelChanged')}
+                  >
+                    <FileCopyIcon />
+                  </IconButton>
+                </Tooltip>
+              </Grid>
+              <Grid item sx={styles.controls}>
+                <Link
+                  onClick={openApiDocsLink}
+                  target="FDC3APIDocs"
+                  href="https://fdc3.finos.org/docs/api/ref/DesktopAgent#addeventlistener"
+                >
+                  <InfoOutlinedIcon />
+                </Link>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
+
+        <div style={styles.border}></div>
+
+        <Grid item xs={12}>
           <Typography variant="h5">Join user channels</Typography>
         </Grid>
 

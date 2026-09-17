@@ -210,7 +210,7 @@ export const ChannelField = observer(
 
     const handleRemoveOrDisconnect = (channel: Fdc3ChannelRecord) => {
       if (isPrivateChannel) {
-        privateChannelStore.disconnect(channel.channel as PrivateChannel);
+        void privateChannelStore.disconnect(channel.channel as PrivateChannel);
       } else {
         appChannelStore.remove(channel.channel);
       }
@@ -341,6 +341,37 @@ export const ChannelField = observer(
                     </Link>
                   </Grid>
                 </Grid>
+                {isPrivateChannel && (
+                  <Grid container sx={styles.secondMargin} alignItems="center">
+                    <Grid item sx={styles.field}>
+                      <Typography variant="h6" sx={styles.h6}>
+                        Private channel events
+                      </Typography>
+                      <Typography variant="body2">
+                        Received events are shown in the Workbench listeners panel.
+                      </Typography>
+                    </Grid>
+                    <Grid item container sx={styles.controls} sm={5} justifyContent="flex-end">
+                      <Tooltip title="Copy code example" aria-label="Copy code example">
+                        <IconButton
+                          size="small"
+                          aria-label="Copy code example"
+                          color="primary"
+                          onClick={copyToClipboard(codeExamples.privateChannelEvents, 'privateChannelEvents')}
+                        >
+                          <FileCopyIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Link
+                        onClick={openApiDocsLink}
+                        target="FDC3APIDocs"
+                        href="https://fdc3.finos.org/docs/api/ref/PrivateChannel#addeventlistener"
+                      >
+                        <InfoOutlinedIcon />
+                      </Link>
+                    </Grid>
+                  </Grid>
+                )}
                 <Button
                   variant="contained"
                   color="secondary"

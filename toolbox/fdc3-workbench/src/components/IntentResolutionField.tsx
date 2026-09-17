@@ -61,6 +61,7 @@ export const IntentResolutionField = observer(
               setPrivateChannel(true);
               setChannelsList([{ id: channel.id, channel: channel }]);
               privateChannelStore.addChannelListener(channel as PrivateChannel, 'all');
+              await privateChannelStore.listenForEvents(channel as PrivateChannel);
             }
             setResolutionResult(null);
           } else if (result) {

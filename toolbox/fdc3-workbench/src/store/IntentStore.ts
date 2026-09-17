@@ -64,10 +64,7 @@ class IntentStore {
         if (isPrivate && !channelName) {
           channel = await privateChannelStore.createPrivateChannel();
           privateChannelStore.addChannelListener(<PrivateChannel>channel, 'all');
-
-          privateChannelStore.onDisconnect(<PrivateChannel>channel);
-          privateChannelStore.onUnsubscribe(<PrivateChannel>channel);
-          privateChannelStore.onAddContextListener(<PrivateChannel>channel, channelContexts, channelContextDelay);
+          await privateChannelStore.listenForEvents(<PrivateChannel>channel, channelContexts, channelContextDelay);
         }
 
         if (!isPrivate && channel) {
