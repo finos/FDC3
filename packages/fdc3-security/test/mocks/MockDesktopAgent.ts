@@ -76,10 +76,7 @@ class MockDesktopAgent implements Partial<DesktopAgent> {
     const contextWithMetadata = result && 'context' in result && 'metadata' in result;
     const resolvedMetadata = (contextWithMetadata ? result.metadata : {}) as ContextMetadata;
     let resolvedResult = (contextWithMetadata ? result.context : result) as
-      | Context
-      | Channel
-      | PrivateChannel
-      | undefined;
+      Context | Channel | PrivateChannel | undefined;
 
     switch (type) {
       case 'user':
@@ -118,7 +115,13 @@ class MockDesktopAgent implements Partial<DesktopAgent> {
     return sharedPrivateChannels.get(id)!;
   }
 
-  async addContextListener(contextType: string | ContextHandler | null, handler?: ContextHandler): Promise<Listener> {
+  addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
+  addContextListener(contextTypes: string[], handler: ContextHandler): Promise<Listener>;
+  addContextListener(handler: ContextHandler): Promise<Listener>;
+  async addContextListener(
+    contextType: string | string[] | ContextHandler | null,
+    handler?: ContextHandler
+  ): Promise<Listener> {
     const h = typeof contextType === 'function' ? contextType : handler!;
     const chan = await this.getOrCreateChannel('fdc3.channel.1');
     return chan.addContextListener(null, h);

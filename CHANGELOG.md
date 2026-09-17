@@ -34,16 +34,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   * READMEs, Glossary entries and an API spec introduction for securing inter-app communication.
 * Added engines restriction to all package.json files requiring at least node 22 for all packages. ([#1926](https://github.com/finos/FDC3/pull/1926))
 * Added labels and tooltips to dropdowns in the FDC3 for Web reference implementation demo. ([#193](https://github.com/finos/FDC3/pull/1932))
-
 * Added `fdc3.close()` API call allowing an app to request that its own window or frame be closed, with `closeRequest`/`closeResponse` DACP messages and `CloseError` enumeration ([#1918](https://github.com/finos/FDC3/pull/1918))
+<<<<<<< HEAD
 * Integrated Redocusaurus to render the App Directory OpenAPI documentation, updated `docusaurus.config.js` and sidebars to point to the new Redoc routes, and removed obsolete generated `app-directory.html` files.
 
 
+=======
+>>>>>>> main
 * Added an optional `newInstance` parameter to the `raiseIntent` and `raiseIntentForContext` API calls, allowing an app to explicitly request that a **new instance** of the target application be launched (`newInstance: true`) or that an **existing instance** be used and a new one never launched (`newInstance: false`, which rejects with `ResolveError.TargetInstanceUnavailable` if no running instance is available). Omitting the parameter (or passing `null` or `undefined`) preserves the Desktop Agent's default resolution behavior. The parameter is carried on the `raiseIntentRequest` / `raiseIntentForContextRequest` DACP payloads, implemented in the agent proxy and reference web implementation, and covered by unit and conformance tests (`RaiseIntentNewInstanceForced`, `RaiseIntentExistingInstanceRequired`, `RaiseIntentFailExistingInstanceRequired`). ([#1940](https://github.com/finos/FDC3/issues/1940))
-
 * Added a complete DACP registration mechanism for `contextCleared` event listeners. The `AddEventListenerRequestPayload` now supports a `CONTEXT_CLEARED` event type (added to the `FDC3EventType` enum) and a required, nullable `channelId` that identifies the scope of the registration: a Channel's id for Channel-scoped listeners registered via `Channel.addEventListener`, or `null` for Desktop Agent-level listeners registered via `DesktopAgent.addEventListener` (whose scope follows the app's current User channel). Both public forms of `contextCleared` listener registration are now representable over DACP, giving the Desktop Agent enough information to route `contextClearedEvent` messages only to registered apps. Implemented in the agent proxy (Channel-scoped listeners now register over DACP rather than filtering locally) and the reference web implementation (which stores the registration scope, handles `clearContextRequest`, and emits `contextClearedEvent` to matching listeners), and covered by unit tests. ([#2164](https://github.com/finos/FDC3/issues/2164))
-
 * Added conformance test definitions and implementations for clearing context on channels: `ACClearContext1`/`ACClearContext2` for App channels and new `UCClearContext1`/`UCClearContext2` for User channels. Each test verifies that a `contextCleared` event is delivered (carrying the correct `channelId` and `contextType`, or `null` when all types are cleared) and that `getCurrentContext` returns `null` for a cleared type. The User channel tests exercise a Desktop Agent-level `contextCleared` listener scoped to the app's current User channel. ([#2187](https://github.com/finos/FDC3/issues/2187))
+* Added an optional `fdc3Version` semver range to App Directory application records, and updated the FDC3 for Web reference implementation to filter records for compatibility with the Desktop Agent's FDC3 version. ([#1965](https://github.com/finos/FDC3/pull/1965))
 
 ### Changed
 
@@ -77,6 +78,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+* Decoupled heartbeat timing configuration in `DefaultFDC3Server` from the open handler timeout. ([#1678](https://github.com/finos/FDC3/issues/1678))
 * Fixed a three-way inconsistency in the API specification regarding what `getCurrentContext` returns for a cleared context type. The spec now states consistently that `getCurrentContext` returns `null` for a cleared type until new context is broadcast, removing the contradictory prose that claimed an `fdc3.nothing` context (with a non-existent `subType` field) was returned instead. ([#2187](https://github.com/finos/FDC3/issues/2187))
 * Fixed `fdc3-context`'s `typegen` script so that it resolves the `AppIdentifier` type referenced from `action.schema.json` via a local path to `fdc3-schema`'s `api.schema.json`, instead of relying on `quicktype` fetching it over the network from the (as yet unpublished) `$id` URL. Previously, after running `npm run clean`, `npm run build` would fail across the whole monorepo because the `fdc3-context` build silently produced an empty `generated/context` directory (the underlying `quicktype` failure was swallowed) and downstream packages could not resolve `@finos/fdc3-context`.
 * Fixed the basic conformance version check to use the exported FDC3 version and accept newer compatible Desktop Agents. ([#1966](https://github.com/finos/FDC3/pull/1966))
@@ -102,6 +104,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Ported FDC3 Conformance Project as-is into the FDC3 Monorepo, just including minimal fixes for typescript compilation. ([#1576](https://github.com/finos/FDC3/pull/1576))
 * Added Conformance tests for FDC3 2.2 ([#1586](https://github.com/finos/FDC3/pull/1586))
 * Added custom mocha test runner for conformance tests to better display test progress. ([#1769](https://github.com/finos/FDC3/pull/1769))
+* Added support for arrays of context types in `addContextListener` methods across DesktopAgent, Channel, and PrivateChannel interfaces. This allows applications to listen for multiple specific context types with a single listener registration, improving code conciseness and performance. The array may contain `null` to listen for all context types in addition to specific types. ([#1646](https://github.com/finos/FDC3/issues/1646))
 
 ### Changed
 
