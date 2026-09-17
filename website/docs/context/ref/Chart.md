@@ -33,7 +33,7 @@ In addition to handling requests to plot charts, a charting application may use 
 <details>
   <summary><code>Items</code></summary>
 
-**type**: [Instrument](Instrument)
+**type**: [Instrument](/docs/next/context/ref/Instrument)
 
 </details>
 
@@ -44,7 +44,7 @@ An array of instrument contexts whose data should be plotted.
 <details>
   <summary><code>range</code></summary>
 
-**type**: [TimeRange](TimeRange)
+**type**: [TimeRange](/docs/next/context/ref/TimeRange)
 
 The time range that should be plotted
 

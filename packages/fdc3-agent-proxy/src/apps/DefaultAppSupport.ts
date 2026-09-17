@@ -90,7 +90,9 @@ export class DefaultAppSupport implements AppSupport {
           instanceId: app.instanceId,
         },
         context: context || undefined,
-        metadata: metadata ?? {},
+        // Only include app-provided metadata on the wire when the app supplied it; omit the
+        // field entirely otherwise (rather than sending an empty object).
+        ...(metadata && { metadata }),
       },
       meta: this.messaging.createMeta(),
     };

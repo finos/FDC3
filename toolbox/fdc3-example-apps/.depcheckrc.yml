@@ -1,0 +1,5 @@
+ignores:
+  # Invoked by the `build` package script and used by tsx/Vite compilation.
+  - typescript
+  # Invoked by the `clean` package script.
+  - rimraf

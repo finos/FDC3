@@ -1,0 +1,11 @@
+ignores:
+  # Available to Cucumber runs that request the HTML formatter.
+  - "@cucumber/html-formatter"
+  # Used by Cucumber formatters through their plugin API rather than a source import.
+  - "@cucumber/messages"
+  # Available to Cucumber runs that request the pretty formatter.
+  - "@cucumber/pretty-formatter"
+  # Loaded by Cucumber as a formatter plugin rather than imported by source.
+  - cucumber-console-formatter
+  # Invoked by the `directory-openapi` package script.
+  - openapi-typescript

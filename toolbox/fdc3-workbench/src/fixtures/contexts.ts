@@ -8,6 +8,34 @@ import { v4 as uuidv4 } from 'uuid';
 export const contexts: ContextItem[] = [
   {
     uuid: uuidv4(),
+    id: 'Action example',
+    template: {
+      type: 'fdc3.action',
+      action: 'broadcast',
+      channelId: 'Channel 1',
+      title: 'Click to view Chart',
+      context: {
+        type: 'fdc3.chart',
+        instruments: [
+          {
+            type: 'fdc3.instrument',
+            id: {
+              ticker: 'EURUSD',
+            },
+          },
+        ],
+        range: {
+          type: 'fdc3.timeRange',
+          startTime: '2020-09-01T08:00:00.000Z',
+          endTime: '2020-10-31T08:00:00.000Z',
+        },
+        style: 'candle',
+      },
+    },
+    schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context/action.schema.json'),
+  },
+  {
+    uuid: uuidv4(),
     id: 'Chart example',
     template: {
       type: 'fdc3.chart',
@@ -151,6 +179,9 @@ export const contexts: ContextItem[] = [
         {
           type: 'fdc3.organization',
           name: 'Symphony',
+          id: {
+            FDS_ID: 'SYMPHONY',
+          },
         },
         '#OrderID45788422',
       ],
@@ -233,6 +264,19 @@ export const contexts: ContextItem[] = [
       textBody: 'Blah, blah, blah ...',
     },
     schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context/email.schema.json'),
+  },
+  {
+    uuid: uuidv4(),
+    id: 'File attachment example',
+    template: {
+      type: 'fdc3.fileAttachment',
+      data: {
+        name: 'myImage.png',
+        dataUri:
+          'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII',
+      },
+    },
+    schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context/fileAttachment.schema.json'),
   },
   {
     uuid: uuidv4(),
@@ -326,6 +370,49 @@ export const contexts: ContextItem[] = [
   },
   {
     uuid: uuidv4(),
+    id: 'Message example',
+    template: {
+      type: 'fdc3.message',
+      text: {
+        'text/plain': 'Hey all, can we discuss the issue together? I attached a screenshot and a chart link.',
+      },
+      entities: {
+        picture1: {
+          type: 'fdc3.fileAttachment',
+          data: {
+            name: 'myImage.png',
+            dataUri:
+              'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAIAQMAAAD+wSzIAAAABlBMVEX///+/v7+jQ3Y5AAAADklEQVQI12P4AIX8EAgALgAD/aNpbtEAAAAASUVORK5CYII',
+          },
+        },
+        viewChart: {
+          type: 'fdc3.action',
+          title: 'Click to view Chart',
+          intent: 'ViewChart',
+          context: {
+            type: 'fdc3.chart',
+            instruments: [
+              {
+                type: 'fdc3.instrument',
+                id: {
+                  ticker: 'EURUSD',
+                },
+              },
+            ],
+            range: {
+              type: 'fdc3.timeRange',
+              startTime: '2020-09-01T08:00:00.000Z',
+              endTime: '2020-10-31T08:00:00.000Z',
+            },
+            style: 'candle',
+          },
+        },
+      },
+    },
+    schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context/message.schema.json'),
+  },
+  {
+    uuid: uuidv4(),
     id: 'Nothing example',
     template: {
       type: 'fdc3.nothing',
@@ -357,6 +444,28 @@ export const contexts: ContextItem[] = [
       },
     },
     schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context/order.schema.json'),
+  },
+  {
+    uuid: uuidv4(),
+    id: 'OrderList example',
+    template: {
+      type: 'fdc3.orderList',
+      orders: [
+        {
+          type: 'fdc3.order',
+          id: {
+            myOMS: 'ABC123',
+          },
+        },
+        {
+          type: 'fdc3.order',
+          id: {
+            myOMS: 'DEF456',
+          },
+        },
+      ],
+    },
+    schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context/orderList.schema.json'),
   },
   {
     uuid: uuidv4(),
@@ -445,6 +554,16 @@ export const contexts: ContextItem[] = [
   },
   {
     uuid: uuidv4(),
+    id: 'TimeRange example',
+    template: {
+      type: 'fdc3.timeRange',
+      startTime: '2022-03-30T15:44:44Z',
+      endTime: '2022-04-30T23:59:59Z',
+    },
+    schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context/timeRange.schema.json'),
+  },
+  {
+    uuid: uuidv4(),
     id: 'Trade example',
     template: {
       type: 'fdc3.trade',
@@ -466,6 +585,53 @@ export const contexts: ContextItem[] = [
       },
     },
     schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context/trade.schema.json'),
+  },
+  {
+    uuid: uuidv4(),
+    id: 'TradeList example',
+    template: {
+      type: 'fdc3.tradeList',
+      trades: [
+        {
+          type: 'fdc3.trade',
+          name: '...',
+          id: {
+            myEMS: '12345',
+          },
+          product: {
+            type: 'fdc3.product',
+            id: {
+              productId: 'ABC123',
+            },
+            instrument: {
+              type: 'fdc3.instrument',
+              id: {
+                ticker: 'MSFT',
+              },
+            },
+          },
+        },
+        {
+          type: 'fdc3.trade',
+          id: {
+            myEMS: '67890',
+          },
+          product: {
+            type: 'fdc3.product',
+            id: {
+              productId: 'DEF456',
+            },
+            instrument: {
+              type: 'fdc3.instrument',
+              id: {
+                ticker: 'TSLA',
+              },
+            },
+          },
+        },
+      ],
+    },
+    schemaUrl: new URL('https://fdc3.finos.org/schemas/next/context/tradeList.schema.json'),
   },
   {
     uuid: uuidv4(),

@@ -22,9 +22,7 @@ type PrivateChannelOnDisconnectEvent = BrowserTypes.PrivateChannelOnDisconnectEv
 type PrivateChannelOnUnsubscribeEvent = BrowserTypes.PrivateChannelOnUnsubscribeEvent;
 
 type PrivateChannelEventMessages =
-  | PrivateChannelOnAddContextListenerEvent
-  | PrivateChannelOnUnsubscribeEvent
-  | PrivateChannelOnDisconnectEvent;
+  PrivateChannelOnAddContextListenerEvent | PrivateChannelOnUnsubscribeEvent | PrivateChannelOnDisconnectEvent;
 type PrivateChannelEventMessageTypes = PrivateChannelEventMessages['type'];
 
 abstract class AbstractPrivateChannelEventListener extends AbstractListener<
@@ -39,7 +37,7 @@ abstract class AbstractPrivateChannelEventListener extends AbstractListener<
     messageExchangeTimeout: number,
     privateChannelId: string,
     eventMessageTypes: PrivateChannelEventMessageTypes[],
-    eventType: PrivateChannelEventTypes | null,
+    eventType: BrowserTypes.PrivateChannelEventType | null,
     handler: (msg: PrivateChannelEventMessages) => void
   ) {
     super(
@@ -76,15 +74,15 @@ export class PrivateChannelNullEventListener extends AbstractPrivateChannelEvent
       switch (msg.type) {
         case 'privateChannelOnAddContextListenerEvent':
           type = 'addContextListener';
-          details = { contextType: msg.payload.contextType };
+          details = { channelId: msg.payload.privateChannelId, contextType: msg.payload.contextType };
           break;
         case 'privateChannelOnUnsubscribeEvent':
           type = 'unsubscribe';
-          details = { contextType: msg.payload.contextType };
+          details = { channelId: msg.payload.privateChannelId, contextType: msg.payload.contextType };
           break;
         case 'privateChannelOnDisconnectEvent':
           type = 'disconnect';
-          details = null;
+          details = { channelId: msg.payload.privateChannelId };
           break;
       }
 
@@ -104,7 +102,7 @@ export class PrivateChannelNullEventListener extends AbstractPrivateChannelEvent
         'privateChannelOnUnsubscribeEvent',
         'privateChannelOnDisconnectEvent',
       ],
-      'addContextListener',
+      null,
       wrappedHandler
     );
   }
@@ -116,7 +114,7 @@ export class PrivateChannelDisconnectEventListener extends AbstractPrivateChanne
       if (isPrivateChannelOnDisconnectEvent(msg)) {
         const event: PrivateChannelDisconnectEvent = {
           type: 'disconnect',
-          details: null,
+          details: { channelId: msg.payload.privateChannelId },
         };
         handler(event);
       } else {
@@ -141,7 +139,7 @@ export class PrivateChannelAddContextEventListener extends AbstractPrivateChanne
       if (isPrivateChannelOnAddContextListenerEvent(msg)) {
         const event: ApiEvent = {
           type: 'addContextListener',
-          details: { contextType: msg.payload.contextType },
+          details: { channelId: msg.payload.privateChannelId, contextType: msg.payload.contextType },
         };
         handler(event);
       } else {
@@ -165,7 +163,7 @@ export class PrivateChannelUnsubscribeEventListener extends AbstractPrivateChann
       if (isPrivateChannelOnUnsubscribeEvent(msg)) {
         const event: ApiEvent = {
           type: 'unsubscribe',
-          details: { contextType: msg.payload.contextType },
+          details: { channelId: msg.payload.privateChannelId, contextType: msg.payload.contextType },
         };
         handler(event);
       } else {

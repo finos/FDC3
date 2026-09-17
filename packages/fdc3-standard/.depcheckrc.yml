@@ -1,0 +1,3 @@
+ignores:
+  # Selected as the Vitest DOM environment in vitest.config.ts.
+  - jsdom

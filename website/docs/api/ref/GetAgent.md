@@ -151,17 +151,22 @@ enum LogLevel {
 
 :::note
 
+When several FDC3-enabled applications are hosted on the same origin (e.g. `https://myplatform.example.com/trade` and `https://myplatform.example.com/watchlist`), each should be registered as a separate AppD record using a URL that includes the distinguishing path. 
+
 As web applications can navigate to or be navigated by users to different URLs and become different applications, validation of an app's identity is necessary. The web application's current URL is passed to web browser-based Desktop Agents to allow them to establish the app's identity - usually connecting it with an App Directory record already known to the Desktop Agent. For more details on identity validation see the identity validation section of the  [Web Connection Protocol (WCP)](../specs/webConnectionProtocol).
 
 :::
 
 Finally, if there is still no Desktop Agent available, or an issue prevents connection to it, the `getAgent()` function will reject its promise with a message from the [`AgentError`](./Errors#agenterror) enumeration.
 
-::: note 
+## Promise Caching
 
-When several FDC3-enabled applications are hosted on the same origin (e.g. `https://myplatform.example.com/trade` and `https://myplatform.example.com/watchlist`), each should be registered as a separate AppD record using a URL that includes the distinguishing path.  
+The `getAgent()` function caches its result: once a connection to a Desktop Agent has been successfully established, subsequent calls to `getAgent()` will return the same `Promise<DesktopAgent>` instance. This means that:
 
-:::
+- Any parameters passed to `getAgent()` on subsequent calls (after the first successful resolution) will be **ignored**, as the cached promise is returned immediately.
+- Applications that call `getAgent()` from multiple modules or components will all receive the same `DesktopAgent` instance without triggering additional discovery or connection attempts.
+
+If the initial `getAgent()` call **fails** (i.e. the returned promise rejects), the cached promise is cleared, allowing the application to call `getAgent()` again with the same or different parameters to retry the connection.
 
 ## Injected iframes for adaptors and user interfaces
 

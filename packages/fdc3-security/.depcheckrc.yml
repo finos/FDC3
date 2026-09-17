@@ -1,0 +1,17 @@
+ignores:
+  # Invoked by the `lint` package script.
+  - eslint
+  # Invoked by the build and test package scripts.
+  - typescript
+  # Supplies Jest globals to the TypeScript test build.
+  - "@types/jest"
+  # Invoked by the `test-jest` package script.
+  - jest
+  # Configured as a reporter in jest.config.mjs.
+  - jest-junit
+  # Configured as the ESM TypeScript transform in jest.config.mjs.
+  - ts-jest
+  # Invoked by the `clean` package script.
+  - rimraf
+  # Used to execute the standalone TypeScript examples documented in samples/README.md.
+  - tsx

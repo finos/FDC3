@@ -27,7 +27,7 @@ The position schema does not explicitly include identifiers in the `id` section,
 <details>
   <summary><code>instrument</code> <strong>(required)</strong></summary>
 
-**type**: [Instrument](Instrument)
+**type**: [Instrument](/docs/next/context/ref/Instrument)
 
 
 
