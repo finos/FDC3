@@ -1,7 +1,7 @@
 export * from '@finos/fdc3-context';
 
-import { BrowserTypes, BridgingTypes } from '@finos/fdc3-schema';
-export { BridgingTypes, BrowserTypes };
+import { BrowserTypes, BrowserTypesValidation, BridgingTypes, BridgingTypesValidation } from '@finos/fdc3-schema';
+export { BridgingTypes, BridgingTypesValidation, BrowserTypes, BrowserTypesValidation };
 
 import { DesktopAgent, AppIdentifier } from '@finos/fdc3-standard';
 export * from '@finos/fdc3-standard';
