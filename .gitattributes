@@ -1,0 +1,5 @@
+# Keep source and configuration files consistent across platforms.
+*.ts text eol=lf
+*.feature text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
