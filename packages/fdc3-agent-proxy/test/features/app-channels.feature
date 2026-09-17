@@ -166,3 +166,43 @@ Feature: Channel Listeners Support
     And "{metadatas}" is an array of objects with the following contents
       | source.appId      | source.instanceId     |
       | cucumber-app   | cucumber-instance |
+
+  Scenario: Adding a context listener with an array of context types receives matching contexts
+    Given "contextTypes" is an array of context types "fdc3.instrument, fdc3.country"
+    When I call "{api1}" with "getOrCreateChannel" using argument "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I call "{channel1}" with "addContextListener" using arguments "{contextTypes}" and "{resultHandler}"
+    And messaging receives "{instrumentMessageOne}"
+    And messaging receives "{countryMessageOne}"
+    Then "{contexts}" is an array of objects with the following contents
+      | type            | name   |
+      | fdc3.instrument | Apple  |
+      | fdc3.country    | Sweden |
+
+  Scenario: Adding a context listener with an array of context types filters non-matching contexts
+    Given "unsupportedMessage" is a BroadcastEvent message on channel "channel-name" with context "fdc3.unsupported"
+    Given "contextTypes" is an array of context types "fdc3.instrument, fdc3.country"
+    When I call "{api1}" with "getOrCreateChannel" using argument "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I call "{channel1}" with "addContextListener" using arguments "{contextTypes}" and "{resultHandler}"
+    And messaging receives "{instrumentMessageOne}"
+    And messaging receives "{unsupportedMessage}"
+    And messaging receives "{countryMessageOne}"
+    Then "{contexts}" is an array of objects with the following contents
+      | type            | name   |
+      | fdc3.instrument | Apple  |
+      | fdc3.country    | Sweden |
+
+  Scenario: Adding a context listener with an empty array throws error
+    Given "emptyArray" is an empty array
+    When I call "{api1}" with "getOrCreateChannel" using argument "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I call "{channel1}" with "addContextListener" using arguments "{emptyArray}" and "{resultHandler}"
+    Then "{result}" is an error with message "InvalidArguments"
+
+  Scenario: Adding a context listener with array containing null throws error
+    Given "arrayWithNull" is an array of context types with null "fdc3.instrument, {null}"
+    When I call "{api1}" with "getOrCreateChannel" using argument "channel-name"
+    And I refer to "{result}" as "channel1"
+    And I call "{channel1}" with "addContextListener" using arguments "{arrayWithNull}" and "{resultHandler}"
+    Then "{result}" is an error with message "InvalidArguments"

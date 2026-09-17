@@ -726,7 +726,13 @@ export interface AddContextListenerRequestPayload {
    * The type of context to listen for OR `null` indicating that it should listen to all
    * context types.
    */
-  contextType: null | string;
+  contextType?: null | string;
+  /**
+   * Array of context types to listen for. May contain `null` to listen to all context types
+   * in addition to specific types. When `null` is present, other context types are ignored as
+   * the listener will receive all context types.
+   */
+  contextTypes?: Array<null | string>;
 }
 
 /**
@@ -2926,6 +2932,12 @@ export interface GetCurrentContextResponse {
  * A payload for a response to an API call that will contain any return values or an `error`
  * property containing a standardized error message indicating that the request was
  * unsuccessful.
+ *
+ * The response payload for a getCurrentContext request. The `context` and `metadata` fields
+ * are coupled: when `context` is a non-null context object, `metadata` MUST be present and
+ * contain the complete `ContextMetadata` associated with that context (so that
+ * `getCurrentContextWithMetadata()` never needs fabricated metadata); when `context` is
+ * `null`, `metadata` MUST also be `null`.
  */
 export interface GetCurrentContextResponsePayload {
   error?: PurpleError;
@@ -2935,10 +2947,12 @@ export interface GetCurrentContextResponsePayload {
    */
   context?: null | Context;
   /**
-   * Metadata relating to the most recently broadcast context object, if available. This is
-   * not returned by the public getCurrentContext API but is used internally by the Desktop
-   * Agent proxy to deliver metadata to context listeners when replaying context after a
-   * channel change.
+   * The `ContextMetadata` associated with the returned context. When `context` is non-null
+   * this MUST be present and complete, carrying the provenance (`source`, `timestamp` and any
+   * app-provided fields such as `traceId`, `signature`, `antiReplay` and `custom`) retained
+   * for that context by the Desktop Agent. When `context` is `null` this MUST be `null`. It
+   * is used by `getCurrentContextWithMetadata()` to return both the context and its metadata;
+   * `getCurrentContext()` uses the same response but ignores this field.
    */
   metadata?: ContextMetadata | null;
 }
@@ -5420,7 +5434,8 @@ const typeMap: any = {
   AddContextListenerRequestPayload: o(
     [
       { json: 'channelId', js: 'channelId', typ: u(null, '') },
-      { json: 'contextType', js: 'contextType', typ: u(null, '') },
+      { json: 'contextType', js: 'contextType', typ: u(undefined, u(null, '')) },
+      { json: 'contextTypes', js: 'contextTypes', typ: u(undefined, a(u(null, ''))) },
     ],
     false
   ),

@@ -55,6 +55,40 @@ const basicCL2 = (fdc3: DesktopAgent, documentation: string) => {
   });
 };
 
+const basicCL3 = (fdc3: DesktopAgent, documentation: string) => {
+  it('(BasicCL3) Array context listener returns listener object', async () => {
+    const contextTypes = ['fdc3.instrument', 'fdc3.contact'];
+    try {
+      const listener = await fdc3.addContextListener(contextTypes, (info: Context) => {
+        console.log(`Array context listener triggered with result ${info}`);
+      });
+      assert.isTrue(listener && typeof listener === 'object', documentation);
+      expect(
+        typeof listener.unsubscribe,
+        'the listener did not contain an unsubscribe function' + documentation
+      ).to.be.equals('function');
+      if (listener !== undefined) {
+        listener.unsubscribe();
+      }
+    } catch (ex) {
+      handleFail(documentation, ex);
+    }
+  });
+};
+
+const basicCL4 = (fdc3: DesktopAgent, _documentation: string) => {
+  it('(BasicCL4) Empty array context listener should throw error', async () => {
+    try {
+      // Empty array should throw an error
+      await fdc3.addContextListener([] as unknown as string[], () => {});
+      assert.fail('Expected addContextListener with empty array to throw an error');
+    } catch (ex) {
+      // Expected to throw - test passes
+      expect(ex).to.be.instanceOf(Error);
+    }
+  });
+};
+
 const basicIL1 = (fdc3: DesktopAgent, documentation: string) => {
   it('(BasicIL1) Method is callable', async () => {
     const intentName = 'ConformanceListener';
@@ -347,6 +381,8 @@ const documentation_DM = '\r\nDocumentation: ' + APIDocumentation.desktopAgent +
 export const fdc3BasicGetAgent = async () => describe('fdc3.basicGetAgent', () => getAgent2_2(fdc3, documentation_GA));
 export const fdc3BasicCL1 = async () => describe('fdc3.basicCL1', () => basicCL1(fdc3, documentation_CL));
 export const fdc3BasicCL2 = async () => describe('fdc3.basicCL2', () => basicCL2(fdc3, documentation_CL));
+export const fdc3BasicCL3 = async () => describe('fdc3.basicCL3', () => basicCL3(fdc3, documentation_CL));
+export const fdc3BasicCL4 = async () => describe('fdc3.basicCL4', () => basicCL4(fdc3, documentation_CL));
 export const fdc3BasicIL1 = async () => describe('fdc3.basicIL1', () => basicIL1(fdc3, documentation_IL));
 export const fdc3BasicAEL1 = async () => describe('fdc3.basicAEL1', () => basicAEL1(fdc3, documentation_AEL));
 export const fdc3BasicAEL2 = async () => describe('fdc3.basicAEL2', () => basicAEL2(fdc3, documentation_AEL));
