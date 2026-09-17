@@ -76,10 +76,7 @@ class MockDesktopAgent implements Partial<DesktopAgent> {
     const contextWithMetadata = result && 'context' in result && 'metadata' in result;
     const resolvedMetadata = (contextWithMetadata ? result.metadata : {}) as ContextMetadata;
     let resolvedResult = (contextWithMetadata ? result.context : result) as
-      | Context
-      | Channel
-      | PrivateChannel
-      | undefined;
+      Context | Channel | PrivateChannel | undefined;
 
     switch (type) {
       case 'user':

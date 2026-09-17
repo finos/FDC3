@@ -37,9 +37,7 @@ type StoredContext = {
 };
 
 type PrivateChannelEvents =
-  | PrivateChannelOnAddContextListenerEvent
-  | PrivateChannelOnUnsubscribeEvent
-  | PrivateChannelOnDisconnectEvent;
+  PrivateChannelOnAddContextListenerEvent | PrivateChannelOnUnsubscribeEvent | PrivateChannelOnDisconnectEvent;
 
 type ContextListenerRegistration = {
   appId: string;
