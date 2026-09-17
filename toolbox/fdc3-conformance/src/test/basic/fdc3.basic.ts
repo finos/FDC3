@@ -1,4 +1,4 @@
-import { Context, DesktopAgent, FDC3_VERSION, Listener, versionIsAtLeast } from '@finos/fdc3';
+import { Context, DesktopAgent, FDC3_VERSION, versionIsAtLeast } from '@finos/fdc3';
 
 import { APIDocumentation } from '../support/apiDocuments';
 import { ContextType, Intent } from '../support/intent-support';

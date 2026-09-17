@@ -42,6 +42,8 @@ export interface DesktopAgent {
    *
    * Returns an `AppIdentifier` object with the `instanceId` field set identifying the instance of the application opened by this call.
    *
+   * If no context is passed, this call may resolve as soon as the application launches and does not confirm that the opened application has initialized FDC3. To wait for the application to initialize FDC3—for example, before expecting it to work with channels—pass an `{ type: 'fdc3.nothing' }` context.
+   *
    * If an error occurs while opening the app, the promise MUST be rejected with an `Error` Object with a `message` chosen from the `OpenError` enumeration, or (if connected to a Desktop Agent Bridge) the `BridgingError` enumeration.
    *
    * ```javascript

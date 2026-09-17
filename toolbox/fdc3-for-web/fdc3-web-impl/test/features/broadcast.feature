@@ -52,6 +52,12 @@ Feature: Relaying Broadcast messages
       | msg.matches_type          | to.appId | to.instanceId | msg.payload.context.id.ticker | msg.payload.context.type |
       | getCurrentContextResponse | App1     | a1            | AAPL                          | fdc3.instrument          |
 
+  Scenario: Getting the latest context from an empty channel returns null context and null metadata
+    When "App1/a1" asks for the latest context on "one" with type "fdc3.instrument"
+    Then messaging will have outgoing posts
+      | msg.matches_type          | to.appId | to.instanceId | msg.payload.context | msg.payload.metadata |
+      | getCurrentContextResponse | App1     | a1            | {null}              | {null}               |
+
   Scenario: Broadcast with app-provided metadata forwards traceId, signature, antiReplay and custom
     When "App2/a2" adds a context listener on "one" with type "fdc3.instrument"
     And we wait for a period of "100" ms

@@ -108,7 +108,7 @@ Because `payload.metadata` mirrors an optional public API argument, it follows t
 
 ### Timeouts for Message Exchanges
 
-As the DACP is used to communicate with a different browsing context, timeouts are applied to message exchanges allowing them to fail and for the Desktop Agent Proxy to return an error to the caller. A default timeout of 10 seconds is applied to all message exchanges, with the exception of those that may involve the launch of an application (`open()`, `raiseIntent()` and `raiseIntentForContext()`). Implementations of the FDC3 Desktop Agent API are required to allow a minimum timeout of 15 seconds for an application to launch and add any necessary context or intent listeners (see [Desktop Agent API Compliance](../spec#desktop-agent-api-standard-compliance) for further details). However, no upper bound for the timeout is currently specified. Message exchanges that involve the launch of an application use a default timeout of 100 seconds.
+As the DACP is used to communicate with a different browsing context, timeouts are applied to message exchanges allowing them to fail and for the Desktop Agent Proxy to return an error to the caller. A default timeout of 10 seconds is applied to all message exchanges, with the exception of those that may involve the launch of an application (`open()`, `raiseIntent()` and `raiseIntentForContext()`). Implementations of the FDC3 Desktop Agent API are required to allow a minimum timeout of 15 seconds for an application to initialize FDC3 and add any necessary context or intent listeners when context or an intent is to be delivered on launch (see [Desktop Agent API Compliance](../spec#desktop-agent-api-standard-compliance) for further details). However, no upper bound for the timeout is currently specified. Message exchanges that involve the launch of an application use a default timeout of 100 seconds.
 
 Desktop Agents may specify custom values for both the default message exchange timeout and the timeout used for exchanges that may involve the launch of an application. Custom values are passed to the Desktop Agent proxy by setting the optional `payload.messageExchangeTimeout` and `payload.appLaunchTimeout` fields in the `WCP3Handshake` Response sent by the Desktop Agent to an application connecting to it. `payload.messageExchangeTimeout` MUST be set to a value greater than or equal to 100 ms, and `payload.appLaunchTimeout`  MUST be set to a value greater than or equal to 15,000 ms.
 
@@ -130,7 +130,7 @@ export const DEFAULT_APP_LAUNCH_TIMEOUT_MS = 100000;
 
 :::info
 
-The message exchange timeouts are used to detect a lack of response from the Desktop Agent, which will be reported via the `ApiTimeout` error message. However, there are also defined error messages for apps failing to add an expected context listener (`OpenError.AppTimeout`) or intent listener (`ResolveError.IntentDeliveryFailed`) after launch. To return these errors, the Desktop Agent should set a longer timeout via the `payload.appLaunchTimeout` field in its `WCP3Handshake` message than it uses internally to detect such failures. Doing so will ensure that timeouts can be separately attributed to the App or to the Desktop Agent.
+The message exchange timeouts are used to detect a lack of response from the Desktop Agent, which will be reported via the `ApiTimeout` error message. When context is passed to `fdc3.open`, `OpenError.ApiTimeout` is also used if the launched application does not initialize FDC3 within the Desktop Agent's timeout. However, there are also defined error messages for apps that initialize FDC3 but fail to add an expected context listener (`OpenError.AppTimeout`) or intent listener (`ResolveError.IntentDeliveryFailed`) after launch. To return these errors, the Desktop Agent should set a longer timeout via the `payload.appLaunchTimeout` field in its `WCP3Handshake` message than it uses internally to detect such failures. Doing so will ensure that timeouts can be separately attributed to the App or to the Desktop Agent.
 
 :::
 
@@ -383,7 +383,9 @@ Request and response used to implement the [`open()`](../ref/DesktopAgent#open) 
 - [`openRequest`](pathname:///schemas/next/api/openRequest.schema.json)
 - [`openResponse`](pathname:///schemas/next/api/openResponse.schema.json)
 
-Where a context object is passed (e.g. `fdc3.open(app, context)`) the `broadcastEvent` message described above in [`addContextListener`](#addcontextlistener) should be used to deliver it after the context listener has been added:
+When an `openRequest` does not include context, the Desktop Agent MAY send a successful `openResponse` as soon as the application launches. The response does not confirm that the opened application has initialized FDC3. To wait for FDC3 initialization—for example, before expecting the opened application to work with channels—the caller can include an [`fdc3.nothing`](../../context/ref/Nothing) context in the request.
+
+Where a context object is passed (e.g. `fdc3.open(app, context)`), the Desktop Agent MUST wait for the application to initialize FDC3. If it does not initialize within the timeout, the Desktop Agent MUST send an `openResponse` with the `ApiTimeout` error from the [`OpenError`](../ref/Errors#openerror) enumeration. After the application initializes and adds a matching context listener, the `broadcastEvent` message described above in [`addContextListener`](#addcontextlistener) should be used to deliver the context:
 
 ```mermaid
 sequenceDiagram
@@ -398,11 +400,11 @@ sequenceDiagram
     DesktopAgent ->> AppA: openResponse<br/>(with AppIdentifier)
 ```
 
-However, if the app opened doesn't add a context listener within a timeout (defined by the Desktop Agent) then the `openResponse` should be sent with `AppTimeout` error from the [`OpenError`](../ref/Errors#openerror) enumeration.
+However, if the opened app initializes FDC3 but doesn't add a matching context listener within a timeout (defined by the Desktop Agent), then the `openResponse` should be sent with the `AppTimeout` error from the [`OpenError`](../ref/Errors#openerror) enumeration.
 
 :::tip
 
-Desktop Agents MUST allow at least 15 seconds for an app to add a context listener before timing out (see [Desktop Agent API Standard Compliance](https://fdc3.finos.org/docs/next/api/spec#desktop-agent-api-standard-compliance) for more detail) and applications SHOULD add their listeners as soon as possible to keep the delay short (see the [addContextListener reference doc](https://fdc3.finos.org/docs/next/api/ref/DesktopAgent#addcontextlistener)).
+When context is passed, Desktop Agents MUST allow at least 15 seconds for an app to initialize FDC3 and add a context listener before timing out (see [Desktop Agent API Standard Compliance](https://fdc3.finos.org/docs/next/api/spec#desktop-agent-api-standard-compliance) for more detail) and applications SHOULD initialize FDC3 and add their listeners as soon as possible to keep the delay short (see the [addContextListener reference doc](https://fdc3.finos.org/docs/next/api/ref/DesktopAgent#addcontextlistener)).
 
 :::
 
@@ -499,7 +501,12 @@ Request and response used to implement the [`Channel.getCurrentContext()`](../re
 - [`getCurrentContextRequest`](pathname:///schemas/next/api/getCurrentContextRequest.schema.json)
 - [`getCurrentContextResponse`](pathname:///schemas/next/api/getCurrentContextResponse.schema.json)
 
-The `getCurrentContextResponse` payload includes an optional `metadata` field containing the [`ContextMetadata`](../ref/Types#contextmetadata) associated with the most recently broadcast context. This field is used by `getCurrentContextWithMetadata()` to return both the context and its metadata. The `getCurrentContext()` function uses the same request/response messages but ignores the `metadata` field, returning only the context.
+The `getCurrentContextResponse` payload contains a `context` field and a `metadata` field whose values are coupled by the following normative invariant:
+
+- When `payload.context` is a non-null context object, `payload.metadata` MUST be present and MUST contain the complete [`ContextMetadata`](../ref/Types#contextmetadata) associated with that context — that is, the provenance (`source`, `timestamp` and any app-provided fields such as `traceId`, `signature`, `antiReplay` and `custom`) retained for the context by the Desktop Agent when it was broadcast. This holds regardless of whether the request was made via `getCurrentContext()` or `getCurrentContextWithMetadata()`, because the request does not identify which public method initiated it.
+- When `payload.context` is `null`, `payload.metadata` MUST also be `null` (the canonical representation for "no context available").
+
+The `metadata` field is used by [`Channel.getCurrentContextWithMetadata()`](../ref/Channel#getcurrentcontextwithmetadata) to return both the context and its metadata; because the invariant guarantees complete metadata alongside any non-null context, the Desktop Agent proxy never needs to fabricate metadata. The [`Channel.getCurrentContext()`](../ref/Channel#getcurrentcontext) function uses the same request/response messages but ignores the `metadata` field, returning only the context.
 
 #### `clearContext()`
 
