@@ -50,7 +50,7 @@ A human-readable summary of the product.
 <details>
   <summary><code>instrument</code></summary>
 
-**type**: [Instrument](Instrument)
+**type**: [Instrument](/docs/next/context/ref/Instrument)
 
 A financial instrument that relates to the definition of this product
 

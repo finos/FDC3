@@ -6,7 +6,7 @@ import {
   IntentHandler,
   Listener,
   ResolveError,
-  IntentResult,
+  IntentResolutionResult,
   IntentResolver,
   IntentResolutionChoice,
   AppProvidableContextMetadata,
@@ -30,13 +30,12 @@ import {
   RaiseIntentResultResponse,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { throwIfUndefined } from '../util/throwIfUndefined.js';
-import { v4 } from 'uuid';
 
 const convertIntentResult = async (
   { payload }: RaiseIntentResultResponse,
   messaging: Messaging,
   messageExchangeTimeout: number
-): Promise<IntentResult> => {
+): Promise<IntentResolutionResult> => {
   const result = payload.intentResult;
   if (result?.channel) {
     const { channel } = result;
@@ -140,7 +139,7 @@ export class DefaultIntentSupport implements IntentSupport {
   private createResultPromises(
     request: RaiseIntentRequest | RaiseIntentForContextRequest,
     source: AppIdentifier
-  ): { result: Promise<IntentResult>; resultMetadata: Promise<ContextMetadata> } {
+  ): { result: Promise<IntentResolutionResult>; resultMetadata: Promise<ContextMetadata> } {
     let resolveMetadata!: (m: ContextMetadata) => void;
     const resultMetadata = new Promise<ContextMetadata>(resolve => {
       resolveMetadata = resolve;
@@ -160,23 +159,26 @@ export class DefaultIntentSupport implements IntentSupport {
 
   async raiseIntent(
     intent: string,
-    context: Context,
+    context?: Context | null,
     app?: AppIdentifier | null,
+    newInstance?: boolean | null,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution> {
+    // When no context is provided, substitute the fdc3.nothing context type so that the wire
+    // message remains valid and intent listeners always receive a concrete context object.
+    const resolvedContext: Context = context ?? { type: 'fdc3.nothing' };
     const meta = this.messaging.createMeta();
     const request: RaiseIntentRequest = {
       type: 'raiseIntentRequest',
       payload: {
         intent,
-        context,
+        context: resolvedContext,
         app: app || undefined,
-        metadata: {
-          traceId: metadata?.traceId ?? v4(),
-          ...(metadata?.signature !== undefined && { signature: metadata.signature }),
-          ...(metadata?.antiReplay !== undefined && { antiReplay: metadata.antiReplay }),
-          ...(metadata?.custom !== undefined && { custom: metadata.custom }),
-        },
+        ...(typeof newInstance === 'boolean' && { newInstance }),
+        // Forward only the app-provided metadata; omit the field entirely when the app did not
+        // supply any. traceId generation (and source/timestamp) is the Desktop Agent's
+        // responsibility, applied when it enriches the ContextMetadata for delivery.
+        ...(metadata && { metadata }),
       },
       meta,
     };
@@ -198,10 +200,13 @@ export class DefaultIntentSupport implements IntentSupport {
       // Needs further resolution, we need to invoke the resolver
       const choice: IntentResolutionChoice | void = await this.intentResolver.chooseIntent(
         [response.payload.appIntent],
-        context
+        resolvedContext
       );
       if (choice) {
-        return this.raiseIntent(intent, context, choice.appId, metadata);
+        // If the user picked a specific running instance, target that instance directly and
+        // drop the newInstance preference (it would conflict with an explicit instanceId).
+        const chosenNewInstance = choice.appId.instanceId !== undefined ? undefined : newInstance;
+        return this.raiseIntent(intent, resolvedContext, choice.appId, chosenNewInstance, metadata);
       } else {
         throw new Error(ResolveError.UserCancelled);
       }
@@ -219,6 +224,7 @@ export class DefaultIntentSupport implements IntentSupport {
   async raiseIntentForContext(
     context: Context,
     app?: AppIdentifier | null,
+    newInstance?: boolean | null,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution> {
     const meta = this.messaging.createMeta();
@@ -227,12 +233,11 @@ export class DefaultIntentSupport implements IntentSupport {
       payload: {
         context,
         app: app || undefined,
-        metadata: {
-          traceId: metadata?.traceId ?? v4(),
-          ...(metadata?.signature !== undefined && { signature: metadata.signature }),
-          ...(metadata?.antiReplay !== undefined && { antiReplay: metadata.antiReplay }),
-          ...(metadata?.custom !== undefined && { custom: metadata.custom }),
-        },
+        ...(typeof newInstance === 'boolean' && { newInstance }),
+        // Forward only the app-provided metadata; omit the field entirely when the app did not
+        // supply any. traceId generation (and source/timestamp) is the Desktop Agent's
+        // responsibility, applied when it enriches the ContextMetadata for delivery.
+        ...(metadata && { metadata }),
       },
       meta,
     };
@@ -257,7 +262,10 @@ export class DefaultIntentSupport implements IntentSupport {
         context
       );
       if (choice) {
-        return this.raiseIntent(choice.intent, context, choice.appId, metadata);
+        // If the user picked a specific running instance, target that instance directly and
+        // drop the newInstance preference (it would conflict with an explicit instanceId).
+        const chosenNewInstance = choice.appId.instanceId !== undefined ? undefined : newInstance;
+        return this.raiseIntent(choice.intent, context, choice.appId, chosenNewInstance, metadata);
       } else {
         throw new Error(ResolveError.UserCancelled);
       }

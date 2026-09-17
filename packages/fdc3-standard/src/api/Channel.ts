@@ -7,7 +7,7 @@ import { Context } from '@finos/fdc3-context';
 import { ContextHandler, ContextWithMetadata } from './Types.js';
 import { DisplayMetadata } from './DisplayMetadata.js';
 import { Listener } from './Listener.js';
-import { EventHandler } from './Events.js';
+import { ChannelEventTypes, EventHandler } from './Events.js';
 import type { AppProvidableContextMetadata } from './ContextMetadata.js';
 
 /**
@@ -99,7 +99,7 @@ export interface Channel {
   addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
 
   /**
-   * Clears context from the channel, and triggers the event listener on the `contextCleared` event to notify existing listeners that the context was cleared. Listeners added to the channel and calls to [`getCurrentContext`](#getcurrentcontext) will not receive any existing context until new context is broadcast to the channel.
+   * Clears context from the channel, and triggers the event listener on the `contextCleared` event to notify existing listeners that the context was cleared. The Desktop Agent MUST NOT deliver the resulting `contextCleared` event back to the app instance that called `clearContext`. Listeners added to the channel and calls to [`getCurrentContext`](#getcurrentcontext) will not receive any existing context until new context is broadcast to the channel.
    *
    * If a `contextType` is provided, only contexts of that type will be cleared.
    *
@@ -124,9 +124,9 @@ export interface Channel {
    * );
    * ```
    *
-   * @param {string | null} type If non-null, only events of the specified type will be received by the handler.
+   * @param {ChannelEventTypes | null} type If non-null, only events of the specified type will be received by the handler.
    * @param {EventHandler} handler A function that events received will be passed to.
    *
    */
-  addEventListener(type: string | null, handler: EventHandler): Promise<Listener>;
+  addEventListener(type: ChannelEventTypes | null, handler: EventHandler): Promise<Listener>;
 }

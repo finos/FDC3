@@ -289,6 +289,7 @@ When making non-trivial changes:
 
 - `packages/fdc3-schema/generated/` — These files are generated. Edit the `.schema.json` sources instead.
 - `packages/fdc3-context/generated/` — Same: edit the context schemas.
+- `website/docs/context/ref/` — These markdown files are **generated** by `website/schema2Markdown.js` from JSON Schema files in `website/static/schemas/next/context/`. Do NOT edit them directly. Instead: fix the generation logic in `schema2Markdown.js` or fix the source schema file (in both `packages/fdc3-context/schemas/context/` AND `website/static/schemas/next/context/`), then re-run with `cd website && node schema2Markdown.js` and verify with `npx docusaurus build`. Context types with a subcategory in their `type` field (e.g. `fdc3.chat.message`, `fdc3.security.userRequest`) are output to a subdirectory matching the category name (e.g. `context/ref/chat/`, `context/ref/security/`).
 - `website/versioned_docs/` and `website/versioned_sidebars/` — These are snapshots of documentation from previous FDC3 releases. Only edit `website/docs/` for current work. Do not edit these unless a correction is specifically requested.
 - `website/static/schemas/` — Snapshots of JSON schemas from previous FDC3 releases. Do not edit unless a correction is specifically requested.
 - `packages/fdc3/` and `packages/fdc3-commonjs/` — These are roll-up packages with only `import`/`export` statements. Don't add logic here.

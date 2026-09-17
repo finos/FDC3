@@ -1,10 +1,10 @@
 import {
   ContextHandler,
   ContextWithMetadata,
-  ContextMetadata,
   DisplayMetadata,
   Listener,
   Channel,
+  ChannelEventTypes,
   EventHandler,
   AppProvidableContextMetadata,
   ChannelError,
@@ -22,6 +22,23 @@ import {
 } from '@finos/fdc3-schema/generated/api/BrowserTypes.js';
 import { RegisterableListener } from '../listeners/RegisterableListener.js';
 import { EventListener } from '../listeners/EventListener.js';
+
+function parseCurrentContextResponse(response: GetCurrentContextResponse): ContextWithMetadata | null {
+  const { context, metadata } = response.payload;
+
+  if (context === null) {
+    if (metadata !== null) {
+      throw new Error(ChannelError.MalformedContext);
+    }
+    return null;
+  }
+
+  if (context === undefined || metadata == null) {
+    throw new Error(ChannelError.MalformedContext);
+  }
+
+  return { context, metadata };
+}
 
 export class DefaultChannel implements Channel {
   protected readonly messaging: Messaging;
@@ -60,7 +77,9 @@ export class DefaultChannel implements Channel {
       payload: {
         channelId: this.id,
         context,
-        metadata: metadata ?? {},
+        // Only include app-provided metadata on the wire when the app supplied it; omit the
+        // field entirely otherwise (rather than sending an empty object).
+        ...(metadata && { metadata }),
       },
       type: 'broadcastRequest',
     };
@@ -83,7 +102,7 @@ export class DefaultChannel implements Channel {
       this.messageExchangeTimeout
     );
 
-    return response.payload.context ?? null;
+    return parseCurrentContextResponse(response)?.context ?? null;
   }
 
   /**
@@ -106,19 +125,7 @@ export class DefaultChannel implements Channel {
       this.messageExchangeTimeout
     );
 
-    const context = response.payload.context;
-    if (context) {
-      const metadata: ContextMetadata = {
-        source: response.payload.metadata?.source ?? { appId: 'unknown' },
-        timestamp: response.payload.metadata?.timestamp ?? response.meta.timestamp,
-        traceId: response.payload.metadata?.traceId ?? '',
-        signature: response.payload.metadata?.signature,
-        custom: response.payload.metadata?.custom,
-        antiReplay: response.payload.metadata?.antiReplay,
-      };
-      return { context, metadata };
-    }
-    return null;
+    return parseCurrentContextResponse(response);
   }
 
   async addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener> {
@@ -156,17 +163,17 @@ export class DefaultChannel implements Channel {
     await this.messaging.exchange<ClearContextResponse>(request, 'clearContextResponse', this.messageExchangeTimeout);
   }
 
-  async addEventListener(type: string | null, handler: EventHandler): Promise<Listener> {
+  async addEventListener(type: ChannelEventTypes | null, handler: EventHandler): Promise<Listener> {
     let listener: RegisterableListener;
     switch (type) {
       case 'contextCleared':
-        listener = new EventListener(this.messaging, 'contextCleared', handler);
+        listener = new EventListener(this.messaging, this.messageExchangeTimeout, 'contextCleared', this.id, handler);
         break;
       case null:
-        listener = new EventListener(this.messaging, type, handler);
+        listener = new EventListener(this.messaging, this.messageExchangeTimeout, type, this.id, handler);
         break;
       default:
-        throw new Error('Unsupported event type: ' + type);
+        throw new Error(ChannelError.InvalidArguments);
     }
     await listener.register();
     return listener;

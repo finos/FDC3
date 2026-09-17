@@ -661,7 +661,8 @@
             "description": "The type of a (non-context and non-intent) event that may be received via the FDC3 API's addEventListener function.",
             "type": "string",
             "enum": [
-                "USER_CHANNEL_CHANGED"
+                "USER_CHANNEL_CHANGED",
+                "CONTEXT_CLEARED"
             ]
         },
         "FDC3Event": {

@@ -53,7 +53,7 @@ An optional human-readable summary of the order list
 <details>
   <summary><code>Items</code></summary>
 
-**type**: [Order](Order)
+**type**: [Order](/docs/next/context/ref/Order)
 
 </details>
 

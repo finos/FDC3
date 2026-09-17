@@ -30,9 +30,9 @@ A context type that represents a simple search criterion, based on a list of oth
 
 **One of:**
 
-- **type**: [Instrument](Instrument)
-- **type**: [Organization](Organization)
-- **type**: [Contact](Contact)
+- **type**: [Instrument](/docs/next/context/ref/Instrument)
+- **type**: [Organization](/docs/next/context/ref/Organization)
+- **type**: [Contact](/docs/next/context/ref/Contact)
 - **type**: `string`
 
 An individual criteria against which to match chat messages, based on an FDC3 context or free-text string.

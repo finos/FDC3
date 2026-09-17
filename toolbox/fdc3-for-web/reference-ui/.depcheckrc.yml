@@ -1,0 +1,5 @@
+ignores:
+  # Invoked by the `lint` package script.
+  - eslint
+  # Invoked by the `build` package script.
+  - typescript

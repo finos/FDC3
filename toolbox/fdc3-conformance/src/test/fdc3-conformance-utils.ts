@@ -24,7 +24,7 @@ export async function closeMockAppWindow(testId: string, count: number = 1) {
 
 const broadcastCloseWindow = async (currentTest: string) => {
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-  appControlChannel.broadcast({
+  await appControlChannel.broadcast({
     type: 'closeWindow',
     testId: currentTest,
   } as AppControlContext);
@@ -34,7 +34,8 @@ export const waitForContext = async (
   contextType: string,
   testId: string,
   channel: Channel,
-  count = 1
+  count = 1,
+  timeoutMs = constants.WaitTime
 ): Promise<AppControlContextListener & { listener: Listener }> => {
   let promiseResolve: (c: Context) => void;
   let promiseReject: (x: unknown) => void;
@@ -46,9 +47,9 @@ export const waitForContext = async (
 
   setTimeout(() => {
     if (count > 0) {
-      promiseReject(new Error("App didn't return close context within 1 sec"));
+      promiseReject(new Error(`App didn't return ${contextType} context within ${timeoutMs} ms`));
     }
-  }, 1000);
+  }, timeoutMs);
 
   const listener = await channel.addContextListener(contextType, ctx => {
     if (ctx['testId'] == testId) {

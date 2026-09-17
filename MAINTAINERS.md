@@ -7,7 +7,6 @@ This file lists the maintainers of this repository.
 | GitHub Username | Name | Organization | Email |
 |----------------|------|--------------|-------|
 | @Roaders | Giles Roadnight | Morgan Stanley | Giles.Roadnight@morganstanley.com |
-| @Yannick-Malins | Yannick | @SymphonyOSF | yannick.malins@symphony.com |
 | @bingenito | Brian Ingenito | Morgan Stanley  | Brian.Ingenito@morganstanley.com |
 | @hughtroeger | Hugh Troeger | FactSet Research Systems | htroeger@factset.com |
 | @julianna-ciq | Julianna Mealin | interop.io | julianna.mealin@interop.io |
@@ -15,6 +14,7 @@ This file lists the maintainers of this repository.
 | @kriswest | Kris West | NatWest Group | kristopher.west@natwest.com |
 | @mistryvinay | Vinay Mistry | Symphony | mrvinaymistry@gmail.com |
 | @openfin-johans | Johan Sandersson | HERE (formerly OpenFin) | johan.sandersson@here.io |
+| @SeeWhatsOn | Chris Watson | AlphaFMC | christopher.watson@alphafmc.com |
 
 For information about maintainer responsibilities and resources, see the [FINOS Maintainers Cheatsheet](https://community.finos.org/docs/finos-maintainers-cheatsheet).
 

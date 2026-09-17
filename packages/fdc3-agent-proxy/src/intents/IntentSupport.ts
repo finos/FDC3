@@ -13,13 +13,15 @@ export interface IntentSupport {
   findIntentsByContext(context: Context): Promise<AppIntent[]>;
   raiseIntent(
     intent: string,
-    context: Context,
+    context?: Context | null,
     app?: AppIdentifier | null,
+    newInstance?: boolean | null,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution>;
   raiseIntentForContext(
     context: Context,
     app?: AppIdentifier | null,
+    newInstance?: boolean | null,
     metadata?: AppProvidableContextMetadata
   ): Promise<IntentResolution>;
   addIntentListener(intent: string, handler: IntentHandler): Promise<Listener>;

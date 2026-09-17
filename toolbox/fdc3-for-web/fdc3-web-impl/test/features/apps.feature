@@ -31,11 +31,16 @@ Feature: Opening and Requesting App Details
 
   Scenario: Opening An App
     When "libraryApp/a1" opens app "storageApp"
-    And "uuid-0" sends validate
     Then messaging will have outgoing posts
-      | msg.matches_type                | msg.payload.appIdentifier.appId | msg.payload.appIdentifier.instanceId | msg.payload.appId | msg.payload.instanceId | to.instanceId | to.appId   |
-      | WCP5ValidateAppIdentityResponse | {null}                          | {null}                               | storageApp        | uuid-0                 | uuid-0        | storageApp |
-      | openResponse                    | storageApp                      | uuid-0                               | {null}            | {null}                 | a1            | libraryApp |
+      | msg.matches_type | msg.payload.appIdentifier.appId | msg.payload.appIdentifier.instanceId | to.instanceId | to.appId   |
+      | openResponse     | storageApp                      | uuid-0                               | a1            | libraryApp |
+
+  Scenario: Opening An App With Context, But App Does Not Initialize FDC3
+    When "libraryApp/a1" opens app "storageApp" with context data "fdc3.instrument"
+    And we wait for the listener timeout
+    Then messaging will have outgoing posts
+      | msg.type     | msg.payload.error | to.instanceId | to.appId   |
+      | openResponse | ApiTimeout        | a1            | libraryApp |
 
   Scenario: Storage App Reconnects
     When "libraryApp/a1" opens app "storageApp"
@@ -44,8 +49,8 @@ Feature: Opening and Requesting App Details
     And "uuid-0" revalidates
     Then messaging will have outgoing posts
       | msg.matches_type                | msg.payload.appIdentifier.appId | msg.payload.appIdentifier.instanceId | msg.payload.appId | msg.payload.instanceId | to.instanceId | to.appId   |
-      | WCP5ValidateAppIdentityResponse | {null}                          | {null}                               | storageApp        | uuid-0                 | uuid-0        | storageApp |
       | openResponse                    | storageApp                      | uuid-0                               | {null}            | {null}                 | a1            | libraryApp |
+      | WCP5ValidateAppIdentityResponse | {null}                          | {null}                               | storageApp        | uuid-0                 | uuid-0        | storageApp |
       | WCP5ValidateAppIdentityResponse | {null}                          | {null}                               | storageApp        | uuid-0                 | uuid-0        | storageApp |
 
   Scenario: Opening An App With Context

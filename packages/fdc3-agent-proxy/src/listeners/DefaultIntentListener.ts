@@ -1,6 +1,7 @@
 import {
   IntentHandler,
   IntentResult,
+  IntentResolutionResult,
   AppIdentifier,
   AppProvidableContextMetadata,
   ContextWithMetadata,
@@ -65,7 +66,7 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIn
   }
 
   private intentResultRequestMessage(
-    ir: IntentResult,
+    ir: IntentResolutionResult,
     appMetadata: AppProvidableContextMetadata | undefined,
     m: IntentEvent
   ): IntentResultRequest {
@@ -106,8 +107,8 @@ export class DefaultIntentListener extends AbstractListener<IntentHandler, AddIn
   }
 }
 
-function unwrapIntentResult(raw: IntentResult | ContextWithMetadata): {
-  result: IntentResult;
+function unwrapIntentResult(raw: IntentResult): {
+  result: IntentResolutionResult;
   appMetadata: AppProvidableContextMetadata | undefined;
 } {
   if (raw && typeof raw === 'object' && 'context' in raw && 'metadata' in raw && !('type' in raw) && !('id' in raw)) {
@@ -115,10 +116,10 @@ function unwrapIntentResult(raw: IntentResult | ContextWithMetadata): {
     const cwm = raw as ContextWithMetadata;
     return { result: cwm.context, appMetadata: cwm.metadata };
   }
-  return { result: raw as IntentResult, appMetadata: undefined };
+  return { result: raw as IntentResolutionResult, appMetadata: undefined };
 }
 
-function convertIntentResult(intentResult: IntentResult): IntentResultRequest['payload']['intentResult'] {
+function convertIntentResult(intentResult: IntentResolutionResult): IntentResultRequest['payload']['intentResult'] {
   if (!intentResult) {
     //consider any falsy result to be void...
     return {}; // void result
