@@ -4,6 +4,7 @@ import constants from '../../constants';
 import {
   APP_CHANNEL_AND_BROADCAST,
   APP_CHANNEL_AND_BROADCAST_TWICE,
+  APP_CHANNEL_AND_BROADCAST_THRICE,
   APP_CHANNEL_AND_BROADCAST_TWICE_THEN_CLEAR,
   APP_CHANNEL_AND_BROADCAST_TWICE_THEN_CLEAR_TYPE,
 } from '../support/channel-control';
@@ -399,6 +400,63 @@ export default async () => {
         assert.fail('Did not retrieve last broadcast context from app B', errorMessage);
       } else {
         expect(context.type).to.be.equals('fdc3.contact', errorMessage);
+      }
+    });
+
+    const ACArrayContextListeners1 =
+      '(ACArrayContextListeners1) Should receive context for multiple types and reject non-matching types when using array-based addContextListener on app channel';
+    it(ACArrayContextListeners1, async () => {
+      const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds context listener for ["fdc3.instrument", "fdc3.contact"]\r\n- App B retrieves the same app channel\r\n- App B broadcasts fdc3.instrument, fdc3.contact, and fdc3.portfolio contexts\r\n- App A should receive instrument and contact but NOT portfolio${documentation}`;
+
+      const testChannel = await cc.createRandomTestChannel();
+      const resolveExecutionCompleteListener = cc.initCompleteListener(ACArrayContextListeners1);
+      const receivedContextTypes: string[] = [];
+
+      const listener = await cc.setupArrayContextListener(
+        testChannel,
+        ['fdc3.instrument', 'fdc3.contact'],
+        ['fdc3.instrument', 'fdc3.contact'],
+        errorMessage,
+        (context: Context) => {
+          receivedContextTypes.push(context.type);
+        }
+      );
+
+      await cc.openChannelApp(ACArrayContextListeners1, testChannel.id, APP_CHANNEL_AND_BROADCAST_THRICE);
+      await resolveExecutionCompleteListener;
+
+      try {
+        await wait(constants.ShortWait);
+        // Should receive both instrument and contact
+        expect(receivedContextTypes).to.include('fdc3.instrument', errorMessage);
+        expect(receivedContextTypes).to.include('fdc3.contact', errorMessage);
+        // Should NOT receive portfolio (non-matching type)
+        expect(receivedContextTypes).to.not.include(
+          'fdc3.portfolio',
+          `Should NOT receive fdc3.portfolio context\n${errorMessage}`
+        );
+        // Should have received exactly 2 contexts (not 3)
+        expect(receivedContextTypes.length).to.equal(
+          2,
+          `Should receive exactly 2 contexts (not portfolio), received: ${receivedContextTypes.join(', ')}`
+        );
+      } finally {
+        cc.unsubscribeListeners([listener]);
+      }
+    });
+
+    const ACArrayEmptyContext1 =
+      '(ACArrayEmptyContext1) Should throw error when using empty array addContextListener on app channel';
+    it(ACArrayEmptyContext1, async () => {
+      const testChannel = await cc.createRandomTestChannel();
+
+      try {
+        // Empty array should throw an error
+        await testChannel.addContextListener([] as unknown as string[], () => {});
+        assert.fail('Expected addContextListener with empty array to throw an error');
+      } catch (ex) {
+        // Expected to throw - test passes
+        expect(ex).to.be.instanceOf(Error);
       }
     });
   });

@@ -25,6 +25,13 @@ const contextMap: Record<string, Context> = {
       ticker: 'AAPL',
     },
   },
+  'fdc3.contact': {
+    type: 'fdc3.contact',
+    name: 'John Doe',
+    id: {
+      email: 'john.doe@example.com',
+    },
+  },
   'fdc3.country': {
     type: 'fdc3.country',
     name: 'Sweden',
@@ -41,6 +48,28 @@ const contextMap: Record<string, Context> = {
     type: 'fdc3.cancel-me',
   },
 };
+
+Given('{string} is a {string} context', (world: CustomWorld, field: string, type: string) => {
+  world.props[field] = contextMap[type];
+});
+
+Given('{string} is an array of context types {string}', (world: CustomWorld, field: string, types: string) => {
+  world.props[field] = types.split(',').map(t => t.trim());
+});
+
+Given(
+  '{string} is an array of context types with null {string}',
+  (world: CustomWorld, field: string, types: string) => {
+    world.props[field] = types.split(',').map(t => {
+      const trimmed = t.trim();
+      return trimmed === '{null}' ? null : trimmed;
+    });
+  }
+);
+
+Given('{string} is an empty array', (world: CustomWorld, field: string) => {
+  world.props[field] = [];
+});
 
 Given('{string} is an app-provided metadata object', (world: CustomWorld, field: string) => {
   world.props[field] = {
@@ -82,10 +111,6 @@ Given('the next getCurrentContext response has payload {string}', (world: Custom
       return Promise.resolve();
     },
   });
-});
-
-Given('{string} is a {string} context', (world: CustomWorld, field: string, type: string) => {
-  world.props[field] = contextMap[type];
 });
 
 Given(

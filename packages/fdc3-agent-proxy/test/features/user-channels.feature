@@ -379,3 +379,67 @@ Feature: Basic User Channels Support
     And "{metadatas}" is an array of objects with the following contents
       | source.appId      | source.instanceId     |
       | cucumber-app   | cucumber-instance |
+
+  Scenario: Adding a context listener with an array of context types on user channel
+    Given "resultHandler" pipes context to "contexts"
+    Given "contextTypes" is an array of context types "fdc3.instrument, fdc3.country"
+    When I call "{api}" with "joinUserChannel" with parameter "one"
+    And I call "{api}" with "addContextListener" with parameters "{contextTypes}" and "{resultHandler}"
+    And messaging receives "{instrumentMessageOne}"
+    And messaging receives "{countryMessageOne}"
+    Then "{contexts}" is an array of objects with the following contents
+      | type            | name   |
+      | fdc3.instrument | Apple  |
+      | fdc3.country    | Sweden |
+
+  Scenario: Array context listener on user channel filters non-matching contexts
+    Given "resultHandler" pipes context to "contexts"
+    Given "unsupportedMessageOne" is a BroadcastEvent message on channel "one" with context "fdc3.unsupported"
+    Given "contextTypes" is an array of context types "fdc3.instrument, fdc3.country"
+    When I call "{api}" with "joinUserChannel" with parameter "one"
+    And I call "{api}" with "addContextListener" with parameters "{contextTypes}" and "{resultHandler}"
+    And messaging receives "{instrumentMessageOne}"
+    And messaging receives "{unsupportedMessageOne}"
+    And messaging receives "{countryMessageOne}"
+    Then "{contexts}" is an array of objects with the following contents
+      | type            | name   |
+      | fdc3.instrument | Apple  |
+      | fdc3.country    | Sweden |
+
+  Scenario: Adding a context listener with an empty array on user channel throws error
+    Given "resultHandler" pipes context to "contexts"
+    Given "emptyArray" is an empty array
+    When I call "{api}" with "joinUserChannel" with parameter "one"
+    And I call "{api}" with "addContextListener" with parameters "{emptyArray}" and "{resultHandler}"
+    Then "{result}" is an error with message "Empty array passed to addContextListener"
+
+  Scenario: Array context listener replays context when joining a channel
+    Given "resultHandler" pipes context to "contexts"
+    Given "contextTypes" is an array of context types "fdc3.instrument, fdc3.country"
+    Given channel "one" has context "{instrumentContext}"
+    When I call "{api}" with "addContextListener" with parameters "{contextTypes}" and "{resultHandler}"
+    And I call "{api}" with "joinUserChannel" with parameter "one"
+    Then "{contexts}" is an array of objects with the following contents
+      | type            | name  |
+      | fdc3.instrument | Apple |
+
+  Scenario: Array context listener does NOT replay non-matching cached context when joining a channel
+    Given "resultHandler" pipes context to "contexts"
+    Given "contextTypes" is an array of context types "fdc3.instrument"
+    Given "contactContext" is a "fdc3.contact" context
+    Given channel "one" has context "{contactContext}"
+    When I call "{api}" with "addContextListener" with parameters "{contextTypes}" and "{resultHandler}"
+    And I call "{api}" with "joinUserChannel" with parameter "one"
+    Then "{contexts}" is empty
+
+  Scenario: Array context listener receives broadcast after joining channel
+    Given "resultHandler" pipes context to "contexts"
+    Given "contextTypes" is an array of context types "fdc3.instrument, fdc3.country"
+    When I call "{api}" with "addContextListener" with parameters "{contextTypes}" and "{resultHandler}"
+    And I call "{api}" with "joinUserChannel" with parameter "one"
+    And messaging receives "{instrumentMessageOne}"
+    And messaging receives "{countryMessageOne}"
+    Then "{contexts}" is an array of objects with the following contents
+      | type            | name   |
+      | fdc3.instrument | Apple  |
+      | fdc3.country    | Sweden |

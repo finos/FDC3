@@ -128,17 +128,32 @@ export class DefaultChannel implements Channel {
     return parseCurrentContextResponse(response);
   }
 
-  async addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener> {
-    if (typeof contextType !== 'string' && contextType !== null) {
-      throw new Error('Invalid arguments passed to addContextListener!');
-    }
+  addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
+  addContextListener(contextTypes: string[], handler: ContextHandler): Promise<Listener>;
+  async addContextListener(typeOrTypes: string | string[] | null, handler: ContextHandler): Promise<Listener> {
     if (typeof handler !== 'function') {
-      throw new Error('Invalid arguments passed to addContextListener!');
+      throw new Error(ChannelError.InvalidArguments);
     }
-    return await this.addContextListenerInner(contextType, handler);
+
+    if (Array.isArray(typeOrTypes)) {
+      if (typeOrTypes.length === 0) {
+        throw new Error(ChannelError.InvalidArguments);
+      }
+      // Validate all elements are strings
+      if (!typeOrTypes.every(t => typeof t === 'string')) {
+        throw new Error(ChannelError.InvalidArguments);
+      }
+      return await this.addContextListenerInner(typeOrTypes, handler);
+    }
+
+    if (typeof typeOrTypes === 'string' || typeOrTypes === null) {
+      return await this.addContextListenerInner(typeOrTypes as string | null, handler);
+    }
+
+    throw new Error(ChannelError.InvalidArguments);
   }
 
-  async addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
+  async addContextListenerInner(contextType: string | string[] | null, theHandler: ContextHandler): Promise<Listener> {
     const listener = new DefaultContextListener(
       this.messaging,
       this.messageExchangeTimeout,

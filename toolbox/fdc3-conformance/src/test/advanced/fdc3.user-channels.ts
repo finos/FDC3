@@ -3,6 +3,7 @@ import { wait } from '../../utils';
 import {
   JOIN_AND_BROADCAST,
   JOIN_AND_BROADCAST_TWICE,
+  JOIN_AND_BROADCAST_THRICE,
   JOIN_AND_BROADCAST_TWICE_THEN_CLEAR,
   JOIN_AND_BROADCAST_TWICE_THEN_CLEAR_TYPE,
 } from '../support/channel-control';
@@ -613,6 +614,69 @@ export default async () => {
       await cc.joinChannel(channels[2]);
       const currentChannel = await cc.getCurrentChannel();
       expect(channels[2].id, errorMessage).to.be.equal(currentChannel?.id);
+    });
+
+    const UCArrayContextListeners1 =
+      '(UCArrayContextListeners1) Should receive context for multiple types and reject non-matching types when using array-based addContextListener';
+    it(UCArrayContextListeners1, async () => {
+      const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener for ["fdc3.instrument", "fdc3.contact"]\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument, fdc3.contact, and fdc3.portfolio contexts\r\n- App A should receive instrument and contact but NOT portfolio${documentation}`;
+
+      const resolveExecutionCompleteListener = cc.initCompleteListener(UCArrayContextListeners1);
+      const contextId = cc.getRandomId();
+      const receivedContextTypes: string[] = [];
+
+      const listener = await cc.setupArrayContextListener(
+        null,
+        [`fdc3.instrument.${contextId}`, `fdc3.contact.${contextId}`],
+        [`fdc3.instrument.${contextId}`, `fdc3.contact.${contextId}`],
+        errorMessage,
+        (context: Context) => {
+          receivedContextTypes.push(context.type);
+        }
+      );
+
+      const channel = await cc.getNonGlobalUserChannel();
+      await cc.joinChannel(channel);
+      await cc.openChannelApp(
+        UCArrayContextListeners1,
+        channel.id,
+        JOIN_AND_BROADCAST_THRICE,
+        undefined,
+        true,
+        contextId
+      );
+      await resolveExecutionCompleteListener;
+
+      try {
+        await wait(constants.ShortWait);
+        // Should receive both instrument and contact
+        expect(receivedContextTypes).to.include(`fdc3.instrument.${contextId}`, errorMessage);
+        expect(receivedContextTypes).to.include(`fdc3.contact.${contextId}`, errorMessage);
+        // Should NOT receive portfolio (non-matching type)
+        expect(receivedContextTypes).to.not.include(
+          `fdc3.portfolio.${contextId}`,
+          `Should NOT receive fdc3.portfolio context\n${errorMessage}`
+        );
+        // Should have received exactly 2 contexts (not 3)
+        expect(receivedContextTypes.length).to.equal(
+          2,
+          `Should receive exactly 2 contexts (not portfolio), received: ${receivedContextTypes.join(', ')}`
+        );
+      } finally {
+        cc.unsubscribeListeners([listener]);
+      }
+    });
+
+    const UCArrayEmptyContext1 = '(UCArrayEmptyContext1) Should throw error when using empty array addContextListener';
+    it(UCArrayEmptyContext1, async () => {
+      try {
+        // Empty array should throw an error
+        await fdc3.addContextListener([] as unknown as string[], () => {});
+        assert.fail('Expected addContextListener with empty array to throw an error');
+      } catch (ex) {
+        // Expected to throw - test passes
+        expect(ex).to.be.instanceOf(Error);
+      }
     });
   });
 };

@@ -35,6 +35,14 @@ export interface ChannelControl {
     onComplete: (ctx: Context, metadata?: ContextMetadata) => void
   ): Promise<Listener>;
 
+  setupArrayContextListener(
+    channel: Channel | null,
+    listenContextTypes: string[],
+    expectedContextTypes: string[],
+    errorMessage: string,
+    onComplete: (ctx: Context, metadata?: ContextMetadata) => void
+  ): Promise<Listener>;
+
   setupContextChecker(
     channel: Channel,
     requestedContextType: string | null,
@@ -77,6 +85,7 @@ export const commands = {
   retrieveTestAppChannel: 'retrieveTestAppChannel',
   broadcastInstrumentContext: 'broadcastInstrumentContext',
   broadcastContactContext: 'broadcastContactContext',
+  broadcastPortfolioContext: 'broadcastPortfolioContext',
   broadcastInstrumentWithTraceId: 'broadcastInstrumentWithTraceId',
   broadcastInstrumentWithSignatureCustom: 'broadcastInstrumentWithSignatureCustom',
   clearContext: 'clearContext',
@@ -91,12 +100,26 @@ export const APP_CHANNEL_AND_BROADCAST_TWICE = [
   commands.broadcastContactContext,
 ];
 
+export const APP_CHANNEL_AND_BROADCAST_THRICE = [
+  commands.retrieveTestAppChannel,
+  commands.broadcastInstrumentContext,
+  commands.broadcastContactContext,
+  commands.broadcastPortfolioContext,
+];
+
 export const JOIN_AND_BROADCAST = [commands.joinRetrievedUserChannel, commands.broadcastInstrumentContext];
 
 export const JOIN_AND_BROADCAST_TWICE = [
   commands.joinRetrievedUserChannel,
   commands.broadcastInstrumentContext,
   commands.broadcastContactContext,
+];
+
+export const JOIN_AND_BROADCAST_THRICE = [
+  commands.joinRetrievedUserChannel,
+  commands.broadcastInstrumentContext,
+  commands.broadcastContactContext,
+  commands.broadcastPortfolioContext,
 ];
 
 export const JOIN_AND_BROADCAST_WITH_TRACE_ID = [
