@@ -94,5 +94,21 @@ export default async () => {
       await result;
       await control.closeMockApp(AOpensB4);
     });
+
+    const AOpensNonFDC3AppWithoutContext =
+      '(AOpensNonFDC3AppWithoutContext) Opening an app without context does not wait for it to initialize FDC3';
+    it(AOpensNonFDC3AppWithoutContext, async () => {
+      const targetApp = control.createTargetAppIdentifier(openApp.e.id);
+      const instanceIdentifier = await control.openMockApp(targetApp);
+      expect(appIdMatches(instanceIdentifier.appId, openApp.e.id)).to.equal(true);
+      expect(instanceIdentifier).to.have.property('instanceId');
+    });
+
+    const AOpensNonFDC3AppWithContext =
+      '(AOpensNonFDC3AppWithContext) Opening an app with context receives ApiTimeout if it does not initialize FDC3';
+    it(AOpensNonFDC3AppWithContext, async () => {
+      const targetApp = control.createTargetAppIdentifier(openApp.e.id);
+      await control.expectApiTimeoutErrorOnOpen(targetApp);
+    }).timeout(constants.NoListenerTimeout + 2000);
   });
 };
