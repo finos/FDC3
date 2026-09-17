@@ -113,10 +113,6 @@ Given('the next getCurrentContext response has payload {string}', (world: Custom
   });
 });
 
-Given('{string} is a {string} context', (world: CustomWorld, field: string, type: string) => {
-  world.props[field] = contextMap[type];
-});
-
 Given(
   '{string} is a BroadcastEvent message on channel {string} with context {string}',
   (world: CustomWorld, field: string, channel: string, context: string) => {
