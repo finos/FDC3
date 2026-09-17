@@ -281,7 +281,7 @@ npm run syncpack
 
 When making non-trivial changes:
 
-- **`CHANGELOG.md`** — Add entries under `[Unreleased]` in the appropriate section (`Added`, `Changed`, `Deprecated`, `Fixed`).
+- **`CHANGELOG.md`** — Add entries under `[Unreleased]` in the appropriate section (`Added`, `Changed`, `Deprecated`, `Fixed`). Append each new entry to the bottom of its section; do not add entries to the top of a list.
 - **`website/docs/`** — Keep documentation in sync with API and schema changes.
 - **Tests** — Maintain or improve coverage. Both Cucumber feature files and step definitions may need updates.
 
