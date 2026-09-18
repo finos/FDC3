@@ -127,9 +127,9 @@ cd packages/fdc3-agent-proxy && npm test
 cd toolbox/fdc3-for-web/fdc3-web-impl && npm test
 ```
 
-**Test framework:** Both `fdc3-agent-proxy` and `fdc3-web-impl` use **Cucumber/Gherkin** via `quickpickle` + `vitest`. Test files are `.feature` files in `test/features/`, with step definitions in `test/step-definitions/`.
+**Test framework:** Both `fdc3-agent-proxy` and `fdc3-web-impl` use **Cucumber/Gherkin** via `quickpickle` + `vitest`. Test files are `.feature` files in `test/features/`, with step definitions in `test/step-definitions/`. Feature files under `fdc3-agent-proxy` are included in the published package (`test/features`) for reuse outside this repo.
 
-**Cucumber test steps:** Generic steps come from [`@finos/cucumber-testing-steps`](https://github.com/finos/cucumber-testing-steps) (via `setupGenericSteps()`). FDC3-specific `matches_type` validation and schema loading are in `@finos/fdc3-schema/cucumber`. FDC3-only test doubles (intent resolver, channel selector, etc.) live in each consumer's `test/support/`.
+**Cucumber test steps:** Generic steps come from [`@finos/cucumber-testing-steps`](https://github.com/finos/cucumber-testing-steps) (via `setupGenericSteps()`). FDC3-specific `matches_type` validation and schema loading live in `packages/fdc3-schema/test/` and are imported in-workspace as `@finos/fdc3-schema/test/...` — these helpers are monorepo-only and are **not** part of the published `@finos/fdc3-schema` API. FDC3-only test doubles (intent resolver, channel selector, etc.) live in each consumer's `test/support/`.
 
 **Coverage policy:** Contributions to `fdc3-agent-proxy`, `fdc3-get-agent`, `fdc3-standard`, and `fdc3-web-impl` must maintain or improve test coverage. Coverage is reported in PR comments.
 
@@ -288,6 +288,7 @@ When making non-trivial changes:
 
 - `packages/fdc3-schema/generated/` — These files are generated. Edit the `.schema.json` sources instead.
 - `packages/fdc3-context/generated/` — Same: edit the context schemas.
+- `website/docs/context/ref/` — These markdown files are **generated** by `website/schema2Markdown.js` from JSON Schema files in `website/static/schemas/next/context/`. Do NOT edit them directly. Instead: fix the generation logic in `schema2Markdown.js` or fix the source schema file (in both `packages/fdc3-context/schemas/context/` AND `website/static/schemas/next/context/`), then re-run with `cd website && node schema2Markdown.js` and verify with `npx docusaurus build`. Context types with a subcategory in their `type` field (e.g. `fdc3.chat.message`, `fdc3.security.userRequest`) are output to a subdirectory matching the category name (e.g. `context/ref/chat/`, `context/ref/security/`).
 - `website/versioned_docs/` and `website/versioned_sidebars/` — These are snapshots of documentation from previous FDC3 releases. Only edit `website/docs/` for current work. Do not edit these unless a correction is specifically requested.
 - `website/static/schemas/` — Snapshots of JSON schemas from previous FDC3 releases. Do not edit unless a correction is specifically requested.
 - `packages/fdc3/` and `packages/fdc3-commonjs/` — These are roll-up packages with only `import`/`export` statements. Don't add logic here.
