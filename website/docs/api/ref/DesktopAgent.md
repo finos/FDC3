@@ -208,7 +208,11 @@ public interface DesktopAgent {
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
+// Single context type
 addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
+
+// Array of context types
+addContextListener(contextTypes: string[], handler: ContextHandler): Promise<Listener>;
 ```
 
 </TabItem>
@@ -239,6 +243,8 @@ CompletionStage<Listener> addContextListener(String contextType, ContextHandler 
 
 Adds a listener for incoming context broadcasts from the Desktop Agent (via a User channel or [`fdc3.open`](#open) API call). If the consumer is only interested in a context of a particular type, they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
 
+Alternatively, you can pass an array of context types to listen for multiple specific types at once. Empty arrays or arrays containing non-string elements will throw an error.
+
 Context broadcasts are primarily received from apps that are joined to the same User Channel as the listening application, hence, if the application is not currently joined to a User Channel no broadcasts will be received from User channels. If this function is called after the app has already joined a channel and the channel already contains context that matches the type of the context listener, then it will be called immediately and the context passed to the handler function. If `null` was passed as the context type for the listener and the channel contains context, then the handler function will be called immediately with the most recent context - regardless of type.
 
 Context may also be received via this listener if the application was launched via a call to  [`fdc3.open`](#open), where context was passed as an argument. In order to receive this, applications SHOULD add their context listener as quickly as possible after launch, or an error MAY be returned to the caller and the context may not be delivered. The exact timeout used is set by the Desktop Agent implementation, but MUST be at least 15 seconds.
@@ -264,6 +270,14 @@ const contactListener = await fdc3.addContextListener('fdc3.contact', (contact, 
   console.log(`Received context message\nContext: ${contact}\nOriginating app: ${metadata?.source}`);
   //do something else with the context
 });
+
+// Listen for multiple specific context types
+const multiListener = await fdc3.addContextListener(
+  ['fdc3.instrument', 'fdc3.contact', 'fdc3.portfolio'], 
+  (context, metadata) => {
+    console.log(`Received ${context.type} from ${metadata?.source}`);
+  }
+);
 ```
 
 </TabItem>
@@ -2221,6 +2235,10 @@ An optional `metadata` parameter may be provided to include additional metadata 
 
 Returns an [`AppIdentifier`](Types#appidentifier) object with the `instanceId` field set to identify the instance of the application opened by this call.
 
+If no context is passed, the promise returned by `open` MAY resolve as soon as the application launches. This does not confirm that the opened application has initialized FDC3. If you expect the opened application to work with channels, or otherwise want to confirm that FDC3 is available in it, pass an [`fdc3.nothing`](../../context/ref/Nothing) context: `{ type: 'fdc3.nothing' }`.
+
+If context is passed, the Desktop Agent MUST NOT resolve the promise until the newly launched application has initialized FDC3 and added a matching context listener. If the application does not initialize FDC3 within the timeout, the promise MUST be rejected with an `Error` whose `message` is `OpenError.ApiTimeout`. If the application initializes FDC3 but does not add a matching context listener within the timeout, the promise MUST instead be rejected with an `Error` whose `message` is `OpenError.AppTimeout`.
+
 If an error occurs while opening the app, the promise MUST be rejected with an `Error` Object with a `message` chosen from the [`OpenError`](Errors#openerror) enumeration, or (if connected to a Desktop Agent Bridge) the [`BridgingError`](Errors#bridgingerror) enumeration.
 
 **Example:**
@@ -2366,7 +2384,7 @@ desktopAgent.close().toCompletableFuture().join();
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
-raiseIntent(intent: string, context: Context, app?: AppIdentifier | null, newInstance?: boolean | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
+raiseIntent(intent: string, context?: Context | null, app?: AppIdentifier | null, newInstance?: boolean | null, metadata?: AppProvidableContextMetadata): Promise<IntentResolution>;
 ```
 
 </TabItem>
@@ -2405,7 +2423,7 @@ Alternatively, the specific app or app instance to target can also be provided. 
 
 If a target app for the intent cannot be found with the criteria provided or the user either closes the resolver UI or otherwise cancels resolution, the promise MUST be rejected with an `Error` object with a `message` chosen from the [`ResolveError`](Errors#resolveerror) enumeration, or (if connected to a Desktop Agent Bridge) the [`BridgingError`](Errors#bridgingerror) enumeration. If a specific target `app` parameter was set, but either the app or app instance is not available, the promise MUST be rejected with an `Error` object with either the `ResolveError.TargetAppUnavailable` or `ResolveError.TargetInstanceUnavailable` string as its `message`. If an invalid context object is passed as an argument the promise MUST be rejected with an `Error` object with the [`ResolveError.MalformedContext`](Errors#resolveerror) string as its `message`.
 
-If you wish to raise an intent without a context, use the `fdc3.nothing` context type. This type exists so that apps can explicitly declare support for raising an intent without context.
+If you wish to raise an intent without a context, the `context` argument may be omitted (or `null`/`undefined` passed). In this case the Desktop Agent MUST substitute the `fdc3.nothing` context type, which apps may use to explicitly declare support for raising an intent without context. A `{ type: "fdc3.nothing" }` context may also be passed explicitly.
 
 An optional `newInstance` parameter allows the caller to express how an instance of the target application should be selected, overriding the Desktop Agent's default resolution behavior:
 
@@ -2438,7 +2456,13 @@ const appIntent = await fdc3.findIntent("StartChat", context);
 // use the metadata of an app or app instance to describe the target app for the intent
 await fdc3.raiseIntent("StartChat", context, appIntent.apps[0]);
 
-//Raise an intent without a context by using the null context type
+//Raise an intent without a context by omitting the context argument
+await fdc3.raiseIntent("StartCall");
+
+//Raise an intent without a context, but targeting a specific app (pass null or undefined for context)
+await fdc3.raiseIntent("StartCall", null, appIntent.apps[0]);
+
+//Raise an intent without a context by explicitly using the fdc3.nothing context type
 await fdc3.raiseIntent("StartChat", {type: "fdc3.nothing"});
 
 //Force a new instance of a specific app to be launched to handle the intent

@@ -1,4 +1,4 @@
-import { Context, ContextMetadata, Channel, Listener } from '@finos/fdc3';
+import { Context, ContextMetadata, Channel, Listener, FDC3ContextClearedEvent } from '@finos/fdc3';
 
 /**
  * This interface wraps channel functionality
@@ -35,6 +35,14 @@ export interface ChannelControl {
     onComplete: (ctx: Context, metadata?: ContextMetadata) => void
   ): Promise<Listener>;
 
+  setupArrayContextListener(
+    channel: Channel | null,
+    listenContextTypes: string[],
+    expectedContextTypes: string[],
+    errorMessage: string,
+    onComplete: (ctx: Context, metadata?: ContextMetadata) => void
+  ): Promise<Listener>;
+
   setupContextChecker(
     channel: Channel,
     requestedContextType: string | null,
@@ -42,6 +50,12 @@ export interface ChannelControl {
     errorMessage: string,
     onComplete: (ctx: Context) => void
   ): Promise<void>;
+
+  setupContextClearedEventListener(
+    channel: Channel | null,
+    errorMessage: string,
+    onComplete: (event: FDC3ContextClearedEvent) => void
+  ): Promise<Listener>;
 
   // helpers
   getRandomId(): string;
@@ -71,8 +85,11 @@ export const commands = {
   retrieveTestAppChannel: 'retrieveTestAppChannel',
   broadcastInstrumentContext: 'broadcastInstrumentContext',
   broadcastContactContext: 'broadcastContactContext',
+  broadcastPortfolioContext: 'broadcastPortfolioContext',
   broadcastInstrumentWithTraceId: 'broadcastInstrumentWithTraceId',
   broadcastInstrumentWithSignatureCustom: 'broadcastInstrumentWithSignatureCustom',
+  clearContext: 'clearContext',
+  clearContextForType: 'clearContextForType',
 };
 
 export const APP_CHANNEL_AND_BROADCAST = [commands.retrieveTestAppChannel, commands.broadcastInstrumentContext];
@@ -83,12 +100,26 @@ export const APP_CHANNEL_AND_BROADCAST_TWICE = [
   commands.broadcastContactContext,
 ];
 
+export const APP_CHANNEL_AND_BROADCAST_THRICE = [
+  commands.retrieveTestAppChannel,
+  commands.broadcastInstrumentContext,
+  commands.broadcastContactContext,
+  commands.broadcastPortfolioContext,
+];
+
 export const JOIN_AND_BROADCAST = [commands.joinRetrievedUserChannel, commands.broadcastInstrumentContext];
 
 export const JOIN_AND_BROADCAST_TWICE = [
   commands.joinRetrievedUserChannel,
   commands.broadcastInstrumentContext,
   commands.broadcastContactContext,
+];
+
+export const JOIN_AND_BROADCAST_THRICE = [
+  commands.joinRetrievedUserChannel,
+  commands.broadcastInstrumentContext,
+  commands.broadcastContactContext,
+  commands.broadcastPortfolioContext,
 ];
 
 export const JOIN_AND_BROADCAST_WITH_TRACE_ID = [
@@ -109,4 +140,32 @@ export const APP_CHANNEL_AND_BROADCAST_WITH_TRACE_ID = [
 export const APP_CHANNEL_AND_BROADCAST_WITH_SIGNATURE_CUSTOM = [
   commands.retrieveTestAppChannel,
   commands.broadcastInstrumentWithSignatureCustom,
+];
+
+export const APP_CHANNEL_AND_BROADCAST_TWICE_THEN_CLEAR = [
+  commands.retrieveTestAppChannel,
+  commands.broadcastInstrumentContext,
+  commands.broadcastContactContext,
+  commands.clearContext,
+];
+
+export const APP_CHANNEL_AND_BROADCAST_TWICE_THEN_CLEAR_TYPE = [
+  commands.retrieveTestAppChannel,
+  commands.broadcastInstrumentContext,
+  commands.broadcastContactContext,
+  commands.clearContextForType,
+];
+
+export const JOIN_AND_BROADCAST_TWICE_THEN_CLEAR = [
+  commands.joinRetrievedUserChannel,
+  commands.broadcastInstrumentContext,
+  commands.broadcastContactContext,
+  commands.clearContext,
+];
+
+export const JOIN_AND_BROADCAST_TWICE_THEN_CLEAR_TYPE = [
+  commands.joinRetrievedUserChannel,
+  commands.broadcastInstrumentContext,
+  commands.broadcastContactContext,
+  commands.clearContextForType,
 ];

@@ -1,4 +1,13 @@
+import semver from 'semver';
 import { Directory, DirectoryApp, DirectoryIntent } from './DirectoryInterface.js';
+
+// AppD supports npm-style ranges, but restricts each version to the two-component
+// FDC3 form (for example, `2.2`, `>=2.2`, or `2.2 || 3.0`). The semver library
+// alone cannot enforce that restriction because it also accepts forms such as
+// `1.2.3`. Keep this validation synchronized with
+// BaseApplication.properties.fdc3Version.pattern in appd.schema.json.
+export const FDC3_VERSION_RANGE_PATTERN =
+  /^(?:(?:<=|>=|[<>=~^])[ \t]?\d+\.\d+|\d+\.\d+)(?:[ \t](?:-[ \t]\d+\.\d+|\|\|[ \t](?:(?:<=|>=|[<>=~^])[ \t]?\d+\.\d+|\d+\.\d+)|(?:(?:<=|>=|[<>=~^])[ \t]?\d+\.\d+|\d+\.\d+)))*$/;
 
 export function genericResultTypeSame(real: string | undefined, required: string | undefined) {
   if (required == undefined) {
@@ -14,14 +23,40 @@ export function genericResultTypeSame(real: string | undefined, required: string
   }
 }
 
+export function appSupportsFdc3Version(app: DirectoryApp, desktopAgentFdc3Version: string): boolean {
+  const appFdc3Version = app.fdc3Version;
+  if (appFdc3Version == null) {
+    return true;
+  }
+
+  if (!FDC3_VERSION_RANGE_PATTERN.test(appFdc3Version)) {
+    return false;
+  }
+
+  const range = semver.validRange(appFdc3Version);
+  const normalizedFdc3Version = semver.coerce(desktopAgentFdc3Version)?.version;
+  return range != null && normalizedFdc3Version != null && semver.satisfies(normalizedFdc3Version, range);
+}
+
 /**
  * Basic directory implementation that allows queries over a set of apps.
  */
 export class BasicDirectory implements Directory {
   allApps: DirectoryApp[];
+  readonly desktopAgentFdc3Version: string;
 
-  constructor(apps: DirectoryApp[]) {
-    this.allApps = apps;
+  constructor(apps: DirectoryApp[], desktopAgentFdc3Version = '3.0') {
+    this.desktopAgentFdc3Version = desktopAgentFdc3Version;
+    this.allApps = apps.filter(app => appSupportsFdc3Version(app, desktopAgentFdc3Version));
+  }
+
+  addApps(apps: DirectoryApp[]): void {
+    apps.forEach(app => {
+      const existing = this.allApps.find(a => a.appId == app.appId);
+      if (!existing && appSupportsFdc3Version(app, this.desktopAgentFdc3Version)) {
+        this.allApps.push(app);
+      }
+    });
   }
 
   private intentMatches(
