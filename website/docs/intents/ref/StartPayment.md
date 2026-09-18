@@ -6,7 +6,7 @@ hide_title: true
 ---
 # `StartPayment`
 
-Trigger a payment initiation or settlement workflow based on the provided payment context. This intent is typically resolved by banking portals, OMS/EMS systems, or DLT wallets (such as SynapticChain L1 DPI) that execute the ISO 20022 `pacs.008` equivalent instruction.
+Trigger a payment initiation or settlement workflow based on the provided payment context. This intent is typically resolved by banking portals, OMS/EMS systems, or DLT wallets that execute an ISO 20022 `pacs.008` instruction.
 
 ## Intent Name
 
@@ -30,14 +30,14 @@ const paymentContext = {
         UETR: '123e4567-e89b-12d3-a456-426614174000'
     },
     amount: 150000.00,
-    currency: 'sUSD',
+    currency: 'USD',
     debtor: {
         name: 'Acme Corp',
-        account: 'syn1qyz7g8v...'
+        account: 'GB33BUKB20201555555555'
     },
     creditor: {
-        name: 'Zambia Reserve',
-        account: 'syn1qqy7x2w...'
+        name: 'Global Treasury Ltd',
+        account: 'US33CHAS021000021'
     }
 }
 

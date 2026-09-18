@@ -1686,13 +1686,9 @@ export interface OrganizationIdentifiers {
 
 /**
  * @experimental context type representing an institutional payment instruction,
- * specifically mapping to ISO 20022 pacs.008 (Customer Credit Transfer). To be used for
- * bridging traditional finance workflows with blockchain and DLT networks (e.g.
- * SynapticChain L1 DPI).
- *
- * This type defines the required routing and settlement instructions, including the amount,
- * currency, debtor, creditor, and network routing information (such as cross-chain
- * derivation rails).
+ * mapping to ISO 20022 pacs.008 (FIToFICustomerCreditTransfer). This type defines routing
+ * and settlement details including amount, currency, debtor, creditor, and optional
+ * network routing information.
  */
 export interface Payment {
   /**
@@ -1704,7 +1700,7 @@ export interface Payment {
    */
   creditor: CreditorInformation;
   /**
-   * The ISO 4217 currency code or standard token symbol (e.g., 'USD', 'SYN', 'sUSD').
+   * The ISO 4217 currency code or standard asset identifier (e.g., 'USD', 'EUR', 'GBP').
    */
   currency: string;
   /**
@@ -1721,8 +1717,8 @@ export interface Payment {
    */
   name?: string;
   /**
-   * Optional parameters for DLT execution, such as cross-rail derivation paths or specific
-   * lane identifiers (e.g., 256-lane parallel execution context).
+   * Optional parameters for payment routing and settlement execution, such as clearing system
+   * identifiers, rail routing codes, or network-specific execution parameters.
    */
   networkRouting?: { [key: string]: string };
   type: 'fdc3.payment';
