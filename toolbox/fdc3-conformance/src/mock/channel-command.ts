@@ -33,6 +33,11 @@ export class Fdc3CommandExecutor {
           await channelService.broadcastContextItem(contextType, channel!, config.historyItems ?? 1, config.testId);
           break;
         }
+        case commands.broadcastPortfolioContext: {
+          const contextType = config.contextId ? `fdc3.portfolio.${config.contextId}` : 'fdc3.portfolio';
+          await channelService.broadcastContextItem(contextType, channel!, config.historyItems ?? 1, config.testId);
+          break;
+        }
         case commands.broadcastInstrumentWithTraceId: {
           await channelService.broadcastContextItemWithMetadata('fdc3.instrument', channel!, config.testId, {
             traceId: 'test-trace-123',
@@ -45,6 +50,15 @@ export class Fdc3CommandExecutor {
             antiReplay: { exp: 1234, iat: 2345, jti: 'anti-replay-123' },
             custom: { region: 'EMEA' },
           });
+          break;
+        }
+        case commands.clearContext: {
+          await channelService.clearContext(channel!);
+          break;
+        }
+        case commands.clearContextForType: {
+          const contextType = config.contextId ? `fdc3.instrument.${config.contextId}` : 'fdc3.instrument';
+          await channelService.clearContext(channel!, contextType);
           break;
         }
       }

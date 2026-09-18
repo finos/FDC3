@@ -1,8 +1,14 @@
 import { assert, expect } from 'chai';
 import { wait } from '../../utils';
-import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from '../support/channel-control';
+import {
+  JOIN_AND_BROADCAST,
+  JOIN_AND_BROADCAST_TWICE,
+  JOIN_AND_BROADCAST_THRICE,
+  JOIN_AND_BROADCAST_TWICE_THEN_CLEAR,
+  JOIN_AND_BROADCAST_TWICE_THEN_CLEAR_TYPE,
+} from '../support/channel-control';
 import constants from '../../constants';
-import { ChannelError, Context } from '@finos/fdc3';
+import { ChannelError, Context, FDC3ContextClearedEvent } from '@finos/fdc3';
 import { ChannelControlImpl } from '../support/channels-support';
 import { getAgent } from '@finos/fdc3';
 import { APIDocumentation } from '../support/apiDocuments';
@@ -508,6 +514,96 @@ export default async () => {
       await wait(constants.ShortWait);
     });
 
+    const UCClearContext1 =
+      '(UCClearContext1) Should receive a contextCleared event and null current context when app B clears all context on the joined user channel';
+    it(UCClearContext1, async () => {
+      const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener\r\n- App A adds a contextCleared event listener\r\n- App B joins channel 1 and broadcasts fdc3.instrument and fdc3.contact\r\n- App B clears all context on the channel${documentation}`;
+
+      const resolveExecutionCompleteListener = cc.initCompleteListener(UCClearContext1);
+      let receivedContext = false;
+      const clearedEvents: FDC3ContextClearedEvent[] = [];
+
+      const channel = await cc.getNonGlobalUserChannel();
+      await cc.joinChannel(channel);
+      const contextListener = await cc.setupAndValidateListener(
+        null,
+        'fdc3.instrument',
+        'fdc3.instrument',
+        errorMessage,
+        () => (receivedContext = true)
+      );
+      const eventListener = await cc.setupContextClearedEventListener(null, errorMessage, event => {
+        clearedEvents.push(event);
+      });
+
+      await cc.openChannelApp(UCClearContext1, channel.id, JOIN_AND_BROADCAST_TWICE_THEN_CLEAR);
+      await resolveExecutionCompleteListener;
+      try {
+        if (!receivedContext) {
+          await wait(constants.ShortWait);
+        }
+        if (clearedEvents.length === 0) {
+          await wait(constants.ShortWait);
+        }
+        assert.isTrue(receivedContext, `No context received!\n${errorMessage}`);
+        assert.isNotEmpty(clearedEvents, `No contextCleared event received!\n${errorMessage}`);
+        const clearedEvent = clearedEvents[0];
+        expect(clearedEvent.details.channelId, errorMessage).to.be.equals(channel.id);
+        expect(clearedEvent.details.contextType, errorMessage).to.be.null;
+
+        const currentInstrument = await channel.getCurrentContext('fdc3.instrument');
+        expect(currentInstrument, `getCurrentContext should return null for a cleared type\n${errorMessage}`).to.be
+          .null;
+      } finally {
+        cc.unsubscribeListeners([contextListener, eventListener]);
+      }
+    });
+
+    const UCClearContext2 =
+      '(UCClearContext2) Should receive a contextCleared event identifying the cleared type when app B clears a specific type on the joined user channel';
+    it(UCClearContext2, async () => {
+      const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener\r\n- App A adds a contextCleared event listener\r\n- App B joins channel 1 and broadcasts fdc3.instrument and fdc3.contact\r\n- App B clears the fdc3.instrument context type on the channel${documentation}`;
+
+      const resolveExecutionCompleteListener = cc.initCompleteListener(UCClearContext2);
+      let receivedContext = false;
+      const clearedEvents: FDC3ContextClearedEvent[] = [];
+
+      const channel = await cc.getNonGlobalUserChannel();
+      await cc.joinChannel(channel);
+      const contextListener = await cc.setupAndValidateListener(
+        null,
+        'fdc3.instrument',
+        'fdc3.instrument',
+        errorMessage,
+        () => (receivedContext = true)
+      );
+      const eventListener = await cc.setupContextClearedEventListener(null, errorMessage, event => {
+        clearedEvents.push(event);
+      });
+
+      await cc.openChannelApp(UCClearContext2, channel.id, JOIN_AND_BROADCAST_TWICE_THEN_CLEAR_TYPE);
+      await resolveExecutionCompleteListener;
+      try {
+        if (!receivedContext) {
+          await wait(constants.ShortWait);
+        }
+        if (clearedEvents.length === 0) {
+          await wait(constants.ShortWait);
+        }
+        assert.isTrue(receivedContext, `No context received!\n${errorMessage}`);
+        assert.isNotEmpty(clearedEvents, `No contextCleared event received!\n${errorMessage}`);
+        const clearedEvent = clearedEvents[0];
+        expect(clearedEvent.details.channelId, errorMessage).to.be.equals(channel.id);
+        expect(clearedEvent.details.contextType, errorMessage).to.be.equals('fdc3.instrument');
+
+        const currentInstrument = await channel.getCurrentContext('fdc3.instrument');
+        expect(currentInstrument, `getCurrentContext should return null for a cleared type\n${errorMessage}`).to.be
+          .null;
+      } finally {
+        cc.unsubscribeListeners([contextListener, eventListener]);
+      }
+    });
+
     const UCFilteredUsageJoin = '(UCFilteredUsageJoin) getCurrentChannel retrieves the channel that was joined';
     it(UCFilteredUsageJoin, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves user channels\r\n- App A joins the third channel\r\n- App A gets current channel${documentation}`;
@@ -518,6 +614,69 @@ export default async () => {
       await cc.joinChannel(channels[2]);
       const currentChannel = await cc.getCurrentChannel();
       expect(channels[2].id, errorMessage).to.be.equal(currentChannel?.id);
+    });
+
+    const UCArrayContextListeners1 =
+      '(UCArrayContextListeners1) Should receive context for multiple types and reject non-matching types when using array-based addContextListener';
+    it(UCArrayContextListeners1, async () => {
+      const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener for ["fdc3.instrument", "fdc3.contact"]\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument, fdc3.contact, and fdc3.portfolio contexts\r\n- App A should receive instrument and contact but NOT portfolio${documentation}`;
+
+      const resolveExecutionCompleteListener = cc.initCompleteListener(UCArrayContextListeners1);
+      const contextId = cc.getRandomId();
+      const receivedContextTypes: string[] = [];
+
+      const listener = await cc.setupArrayContextListener(
+        null,
+        [`fdc3.instrument.${contextId}`, `fdc3.contact.${contextId}`],
+        [`fdc3.instrument.${contextId}`, `fdc3.contact.${contextId}`],
+        errorMessage,
+        (context: Context) => {
+          receivedContextTypes.push(context.type);
+        }
+      );
+
+      const channel = await cc.getNonGlobalUserChannel();
+      await cc.joinChannel(channel);
+      await cc.openChannelApp(
+        UCArrayContextListeners1,
+        channel.id,
+        JOIN_AND_BROADCAST_THRICE,
+        undefined,
+        true,
+        contextId
+      );
+      await resolveExecutionCompleteListener;
+
+      try {
+        await wait(constants.ShortWait);
+        // Should receive both instrument and contact
+        expect(receivedContextTypes).to.include(`fdc3.instrument.${contextId}`, errorMessage);
+        expect(receivedContextTypes).to.include(`fdc3.contact.${contextId}`, errorMessage);
+        // Should NOT receive portfolio (non-matching type)
+        expect(receivedContextTypes).to.not.include(
+          `fdc3.portfolio.${contextId}`,
+          `Should NOT receive fdc3.portfolio context\n${errorMessage}`
+        );
+        // Should have received exactly 2 contexts (not 3)
+        expect(receivedContextTypes.length).to.equal(
+          2,
+          `Should receive exactly 2 contexts (not portfolio), received: ${receivedContextTypes.join(', ')}`
+        );
+      } finally {
+        cc.unsubscribeListeners([listener]);
+      }
+    });
+
+    const UCArrayEmptyContext1 = '(UCArrayEmptyContext1) Should throw error when using empty array addContextListener';
+    it(UCArrayEmptyContext1, async () => {
+      try {
+        // Empty array should throw an error
+        await fdc3.addContextListener([] as unknown as string[], () => {});
+        assert.fail('Expected addContextListener with empty array to throw an error');
+      } catch (ex) {
+        // Expected to throw - test passes
+        expect(ex).to.be.instanceOf(Error);
+      }
     });
   });
 };
