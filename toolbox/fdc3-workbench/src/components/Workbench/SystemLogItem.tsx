@@ -60,8 +60,10 @@ export const SystemLogItem: React.FC<SystemLogItemProps> = (props: SystemLogItem
           variant="outlined"
           size="small"
           value={logItem.body}
-          InputProps={{
-            sx: classes.input,
+          slotProps={{
+            input: {
+              sx: classes.input,
+            },
           }}
         />
       )}

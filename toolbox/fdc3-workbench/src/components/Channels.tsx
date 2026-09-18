@@ -124,31 +124,40 @@ export const Channels = observer(
 
     return (
       <div style={styles.root}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography variant="h5">Current channel</Typography>
         </Grid>
         <Grid
           container
           direction="row"
-          justifyContent="space-between"
-          sx={{ ...styles.controls, ...styles.rightAlign }}
+          sx={{
+            ...styles.controls,
+            ...styles.rightAlign,
+          }}
         >
-          <Grid item sx={styles.dropDown}>
+          <Grid sx={styles.dropDown}>
             <Typography variant="body1">{channelStore.currentUserChannel?.id ?? 'None'}</Typography>
           </Grid>
-          <Grid item>
-            <Grid container direction="row" justifyContent="flex-end" spacing={1}>
-              <Grid item sx={styles.controls}>
+          <Grid>
+            <Grid
+              container
+              direction="row"
+              spacing={1}
+              sx={{
+                justifyContent: 'flex-end',
+              }}
+            >
+              <Grid sx={styles.controls}>
                 <Button variant="contained" color="primary" onClick={handleRefreshUserChannel}>
                   Refresh
                 </Button>
               </Grid>
-              <Grid item sx={styles.controls}>
+              <Grid sx={styles.controls}>
                 <Button variant="contained" color="primary" onClick={handleLeaveUserChannel}>
                   Leave
                 </Button>
               </Grid>
-              <Grid item sx={styles.controls}>
+              <Grid sx={styles.controls}>
                 <Tooltip title="Copy code example" aria-label="Copy code example">
                   <IconButton
                     size="small"
@@ -160,7 +169,7 @@ export const Channels = observer(
                   </IconButton>
                 </Tooltip>
               </Grid>
-              <Grid item sx={styles.controls}>
+              <Grid sx={styles.controls}>
                 <Link
                   onClick={openApiDocsLink}
                   target="FDC3APIDocs"
@@ -175,17 +184,19 @@ export const Channels = observer(
 
         <div style={styles.border}></div>
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography variant="h5">Join user channels</Typography>
         </Grid>
 
         <Grid
           container
           direction="row"
-          justifyContent="space-between"
-          sx={{ ...styles.controls, ...styles.rightAlign }}
+          sx={{
+            ...styles.controls,
+            ...styles.rightAlign,
+          }}
         >
-          <Grid item sx={styles.dropDown}>
+          <Grid sx={styles.dropDown}>
             <FormControl variant="outlined" sx={styles.channelsSelect} size="small" error={isError}>
               <InputLabel id="channel">Channel</InputLabel>
               <Select
@@ -221,14 +232,27 @@ export const Channels = observer(
               {isError && <FormHelperText>Select channel from list</FormHelperText>}
             </FormControl>
           </Grid>
-          <Grid item xs={12} sm={3} sx={styles.bottomAlignChildren}>
-            <Grid container direction="row" justifyContent="flex-end" spacing={1}>
-              <Grid item sx={styles.controls}>
+          <Grid
+            sx={styles.bottomAlignChildren}
+            size={{
+              xs: 12,
+              sm: 3,
+            }}
+          >
+            <Grid
+              container
+              direction="row"
+              spacing={1}
+              sx={{
+                justifyContent: 'flex-end',
+              }}
+            >
+              <Grid sx={styles.controls}>
                 <Button variant="contained" color="primary" onClick={handleJoinUserChannel}>
                   Join
                 </Button>
               </Grid>
-              <Grid item sx={styles.controls}>
+              <Grid sx={styles.controls}>
                 <Tooltip title="Copy code example" aria-label="Copy code example">
                   <IconButton
                     size="small"
@@ -240,7 +264,7 @@ export const Channels = observer(
                   </IconButton>
                 </Tooltip>
               </Grid>
-              <Grid item sx={styles.controls}>
+              <Grid sx={styles.controls}>
                 <Link
                   onClick={openApiDocsLink}
                   target="FDC3APIDocs"
@@ -255,27 +279,36 @@ export const Channels = observer(
 
         <div style={styles.border}></div>
 
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography variant="h5">Broadcast context</Typography>
         </Grid>
 
         <Grid
           container
           direction="row"
-          justifyContent="space-between"
-          sx={{ ...styles.controls, ...styles.rightAlign }}
+          sx={{
+            ...styles.controls,
+            ...styles.rightAlign,
+          }}
         >
-          <Grid item sx={styles.dropDown}>
+          <Grid sx={styles.dropDown}>
             <ContextTemplates handleTabChange={handleTabChange} contextStateSetter={setBroadcastContext} />
           </Grid>
-          <Grid item sx={styles.bottomAlignChildren}>
-            <Grid container direction="row" justifyContent="flex-end" spacing={1}>
-              <Grid item sx={styles.controls}>
+          <Grid sx={styles.bottomAlignChildren}>
+            <Grid
+              container
+              direction="row"
+              spacing={1}
+              sx={{
+                justifyContent: 'flex-end',
+              }}
+            >
+              <Grid sx={styles.controls}>
                 <Button disabled={!broadcastContext} variant="contained" color="primary" onClick={handleBroadcast}>
                   Broadcast
                 </Button>
               </Grid>
-              <Grid item sx={styles.controls}>
+              <Grid sx={styles.controls}>
                 <Tooltip title="Copy code example" aria-label="Copy code example">
                   <IconButton
                     size="small"
@@ -287,7 +320,7 @@ export const Channels = observer(
                   </IconButton>
                 </Tooltip>
               </Grid>
-              <Grid item sx={styles.controls}>
+              <Grid sx={styles.controls}>
                 <Link
                   onClick={openApiDocsLink}
                   target="FDC3APIDocs"

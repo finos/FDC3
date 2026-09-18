@@ -37,7 +37,6 @@ function buildMsalConfiguration(config: EntraConfig): Configuration {
     },
     cache: {
       cacheLocation: 'sessionStorage',
-      storeAuthStateInCookie: false,
     },
   };
 }

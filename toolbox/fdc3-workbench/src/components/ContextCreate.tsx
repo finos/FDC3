@@ -338,10 +338,10 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
     <Box sx={classes.root}>
       <DialogModal open={open} onClose={handleClose} onAgree={handleDeleteExample} selectedValue={deleteContext} />
       <Grid container spacing={1}>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <Typography variant="h5">Context examples:</Typography>
         </Grid>
-        <Grid item xs={12}>
+        <Grid size={12}>
           <TableContainer sx={classes.tableContainer}>
             <Table>
               <TableBody>
@@ -401,12 +401,12 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
       </Grid>
       <Box component="form" sx={classes.form} noValidate autoComplete="off">
         <Grid container direction="row" spacing={1}>
-          <Grid item sx={classes.controls}>
+          <Grid sx={classes.controls}>
             <Button sx={classes.button} variant="contained" color="primary" onClick={handleCreateExample}>
               Create new example
             </Button>
           </Grid>
-          <Grid item sx={classes.controls}>
+          <Grid sx={classes.controls}>
             <Button sx={classes.button} variant="contained" color="primary" onClick={handleResetExample}>
               Reset examples
             </Button>
@@ -416,9 +416,9 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
 
       <Box component="form" sx={classes.form} noValidate autoComplete="off" onSubmit={e => handleSaveExample(e)}>
         <Grid container direction="row" spacing={1} sx={classes.rightAlign}>
-          <Grid item xs={12} sx={{ ...classes.controls, ...classes.exampleSelect }}>
-            <Grid item xs={6} sx={classes.field}>
-              <Grid item xs={12} sx={classes.textField}>
+          <Grid sx={{ ...classes.controls, ...classes.exampleSelect }} size={12}>
+            <Grid sx={classes.field} size={6}>
+              <Grid sx={classes.textField} size={12}>
                 <Typography variant="h5">Edit example:</Typography>
               </Grid>
               <TemplateTextField
@@ -432,7 +432,7 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
             </Grid>
           </Grid>
 
-          <Grid item xs={12} sx={classes.controls}>
+          <Grid sx={classes.controls} size={12}>
             <JsonInput
               json={context?.template}
               onChange={handleContextChange}
@@ -444,7 +444,7 @@ export const ContextCreate = observer(({ contextName }: { contextName: string })
             />
           </Grid>
 
-          <Grid item>
+          <Grid>
             <Tooltip title="Copy code" aria-label="Copy code">
               <IconButton
                 size="small"
