@@ -21,7 +21,8 @@
     "test": "tsc && vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "clean": "rimraf dist coverage node_modules test-results.xml",
+    "view": "vite preview --outDir html-test-results",
+    "clean": "rimraf dist coverage node_modules test-results.xml html-test-results",
     "lint": "eslint src/"
   },
   "dependencies": {
@@ -34,8 +35,9 @@
   },
   "devDependencies": {
     "@cucumber/cucumber": "^13.2.1",
+
+    "@finos/cucumber-testing-steps": "1.2.3",
     "@finos/fdc3-web-impl": "3.0.0-alpha.2",
-    "@finos/testing": "3.0.0-alpha.2",
     "@types/wtfnode": "^0.10.0",
     "quickpickle": "^1.6.1",
     "wtfnode": "^0.10.1"

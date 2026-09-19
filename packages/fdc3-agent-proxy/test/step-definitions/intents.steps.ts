@@ -1,6 +1,7 @@
-import { Given } from 'quickpickle';
+import { Given, When } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
-import { handleResolve, parseAntiReplayClaims } from '@finos/testing';
+import { handleResolve } from '@finos/cucumber-testing-steps';
+import { parseAntiReplayClaims } from '@finos/fdc3-schema/test/parseAntiReplayClaims.js';
 import { Context } from '@finos/fdc3-context';
 import { ContextMetadata, ResolveError } from '@finos/fdc3-standard';
 import { IntentEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
@@ -239,5 +240,35 @@ Given(
       antiReplay: parseAntiReplayClaims(antiReplayClaims),
       custom: { priority: 'high' },
     };
+  }
+);
+
+Given(
+  '{string} is an array of contexts including {string} and {string}',
+  (world: CustomWorld, field: string, valueOne: string, valueTwo: string) => {
+    world.props[field] = [valueOne, valueTwo];
+  }
+);
+
+When(
+  'I call {string} with {string} using arguments {string}, {string}, {string}, {string}, and {string}',
+  async (
+    world: CustomWorld,
+    field: string,
+    fnName: string,
+    p1: string,
+    p2: string,
+    p3: string,
+    p4: string,
+    p5: string
+  ) => {
+    try {
+      const object = handleResolve(field, world) as Record<string, (...args: unknown[]) => unknown>;
+      const fn = object[fnName];
+      const resolved = [p1, p2, p3, p4, p5].map(param => handleResolve(param, world));
+      world.props['result'] = await fn.call(object, ...resolved);
+    } catch (error) {
+      world.props['result'] = error;
+    }
   }
 );

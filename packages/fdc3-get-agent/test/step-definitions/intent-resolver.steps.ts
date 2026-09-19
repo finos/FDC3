@@ -1,6 +1,6 @@
-import { Given, When } from 'quickpickle';
+import { Given } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
-import { handleResolve } from '@finos/testing';
+import { handleResolve } from '@finos/cucumber-testing-steps';
 import { DefaultDesktopAgentIntentResolver } from '../../src/ui/DefaultDesktopAgentIntentResolver.js';
 import { INTENT_RESOLVER_URL } from '../support/MockFDC3Server.js';
 import { FDC3_USER_INTERFACE_RESOLVE_ACTION_TYPE } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
@@ -59,22 +59,6 @@ Given('{string} is an AppIntents array with a ViewNews intent and two apps', (wo
     },
   ];
 });
-
-When(
-  'I call {string} with {string} with parameters {string} and {string} for a promise',
-  (world: CustomWorld, field: string, fnName: string, param1: string, param2: string) => {
-    try {
-      const object = handleResolve(field, world);
-      const fn = object[fnName];
-      const arg0 = handleResolve(param1, world);
-      const arg1 = handleResolve(param2, world);
-      const result = fn.call(object, arg0, arg1);
-      world.props['result'] = result;
-    } catch (error) {
-      world.props['result'] = error;
-    }
-  }
-);
 
 Given('The intent resolver sends an intent selection message', async (world: CustomWorld) => {
   const port = handleResolve('{childDoc.iframes[0].messageChannels[0].port2}', world);
