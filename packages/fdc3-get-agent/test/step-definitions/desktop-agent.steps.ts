@@ -1,7 +1,7 @@
 import { After, Given, Then, When } from 'quickpickle';
 import { DataTable } from '@cucumber/cucumber';
 import { CustomWorld } from '../world/index.js';
-import { doesRowMatch, handleResolve } from '@finos/testing';
+import { doesRowMatch, getJobsMap, handleResolve } from '@finos/cucumber-testing-steps';
 import { MockDocument } from '../support/MockDocument.js';
 import { MockWindow } from '../support/MockWindow.js';
 import { fdc3Ready, getAgent } from '../../src/index.js';
@@ -253,22 +253,28 @@ Given(
   }
 );
 
-When('I call getAgent for a promise result', (world: CustomWorld) => {
+When('I call getAgent for a promise result as {string}', (world: CustomWorld, jobName: string) => {
   try {
     const params: GetAgentParams = {
       logLevels: loggingSettings,
     };
-    world.props['result'] = getAgent(params);
+    const promise = getAgent(params);
+    getJobsMap(world).set(jobName, promise);
+    world.props['result'] = promise;
   } catch (error) {
     world.props['result'] = error;
+    getJobsMap(world).set(jobName, Promise.reject(error));
   }
 });
 
-When('I call fdc3Ready for a promise result', (world: CustomWorld) => {
+When('I call fdc3Ready for a promise result as {string}', (world: CustomWorld, jobName: string) => {
   try {
-    world.props['result'] = fdc3Ready();
+    const promise = fdc3Ready();
+    getJobsMap(world).set(jobName, promise);
+    world.props['result'] = promise;
   } catch (error) {
     world.props['result'] = error;
+    getJobsMap(world).set(jobName, Promise.reject(error));
   }
 });
 
@@ -277,6 +283,30 @@ After((world: CustomWorld) => {
   clearAgentPromise();
   MockDocument.shutdownAllDocuments();
 });
+
+When(
+  'I call getAgent for a promise result with the following options as {string}',
+  (world: CustomWorld, jobName: string, dt: DataTable) => {
+    try {
+      const first = dt.hashes()[0];
+      const toArgs: GetAgentParams = Object.fromEntries(
+        Object.entries(first).map(([k, v]) => {
+          const val = handleResolve(v, world);
+          const val2 = isNaN(val) ? val : Number(val);
+          const val3 = val2 === 'true' ? true : val2 === 'false' ? false : val2;
+          return [k, val3];
+        })
+      );
+      toArgs.logLevels = loggingSettings;
+      const promise = getAgent(toArgs);
+      getJobsMap(world).set(jobName, promise);
+      world.props['result'] = promise;
+    } catch (error) {
+      world.props['result'] = error;
+      getJobsMap(world).set(jobName, Promise.reject(error));
+    }
+  }
+);
 
 When('I call getAgent for a promise result with the following options', (world: CustomWorld, dt: DataTable) => {
   try {
