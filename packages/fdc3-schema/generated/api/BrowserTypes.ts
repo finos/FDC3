@@ -728,11 +728,9 @@ export interface AddContextListenerRequestPayload {
    */
   contextType?: null | string;
   /**
-   * Array of context types to listen for. May contain `null` to listen to all context types
-   * in addition to specific types. When `null` is present, other context types are ignored as
-   * the listener will receive all context types.
+   * Array of context types to listen for.
    */
-  contextTypes?: Array<null | string>;
+  contextTypes?: string[];
 }
 
 /**
@@ -3887,7 +3885,11 @@ export interface PrivateChannelOnAddContextListenerEventPayload {
    * The type of the context listener added to the channel by another app, or null if it will
    * listen to all types.
    */
-  contextType: null | string;
+  contextType?: null | string;
+  /**
+   * Array of context types the listener was added for.
+   */
+  contextTypes?: string[];
   /**
    * The Id of the PrivateChannel that the listener was added to.
    */
@@ -3966,7 +3968,11 @@ export interface PrivateChannelOnUnsubscribeEventPayload {
    * The type of the context listener unsubscribed from the channel by another app, or null if
    * it was listening to all types.
    */
-  contextType: null | string;
+  contextType?: null | string;
+  /**
+   * Array of context types the listener was unsubscribed for.
+   */
+  contextTypes?: string[];
   /**
    * The Id of the PrivateChannel that the listener was unsubscribed from.
    */
@@ -5435,7 +5441,7 @@ const typeMap: any = {
     [
       { json: 'channelId', js: 'channelId', typ: u(null, '') },
       { json: 'contextType', js: 'contextType', typ: u(undefined, u(null, '')) },
-      { json: 'contextTypes', js: 'contextTypes', typ: u(undefined, a(u(null, ''))) },
+      { json: 'contextTypes', js: 'contextTypes', typ: u(undefined, a('')) },
     ],
     false
   ),
@@ -6409,7 +6415,8 @@ const typeMap: any = {
   ),
   PrivateChannelOnAddContextListenerEventPayload: o(
     [
-      { json: 'contextType', js: 'contextType', typ: u(null, '') },
+      { json: 'contextType', js: 'contextType', typ: u(undefined, u(null, '')) },
+      { json: 'contextTypes', js: 'contextTypes', typ: u(undefined, a('')) },
       { json: 'privateChannelId', js: 'privateChannelId', typ: '' },
     ],
     false
@@ -6433,7 +6440,8 @@ const typeMap: any = {
   ),
   PrivateChannelOnUnsubscribeEventPayload: o(
     [
-      { json: 'contextType', js: 'contextType', typ: u(null, '') },
+      { json: 'contextType', js: 'contextType', typ: u(undefined, u(null, '')) },
+      { json: 'contextTypes', js: 'contextTypes', typ: u(undefined, a('')) },
       { json: 'privateChannelId', js: 'privateChannelId', typ: '' },
     ],
     false
