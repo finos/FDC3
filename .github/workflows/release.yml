@@ -116,18 +116,18 @@ jobs:
         with:
           node-version: 24.18.0
           registry-url: https://registry.npmjs.org
-          always-auth: true
+          scope: '@finos'
 
-      - name: Publish tarballs to npmjs.org (with provenance and dist-tag)
+      - name: Publish tarballs to npmjs.org (trusted publishing with provenance and dist-tag)
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}   # npm automation token
           PUBLISH_TAG: ${{ needs.build_and_pack.outputs.publish_tag }}
         run: |
           set -euo pipefail
           shopt -s nullglob
           for tgz in ./dist-tarballs/*.tgz; do
             echo "Publishing $tgz to npmjs.org with tag '${PUBLISH_TAG}' ..."
-            # --access public needed for first publish of public packages
+            # npmjs.org trusted publishing uses GitHub OIDC from the workflow's id-token permission.
+            # --access public remains required for public scoped packages on first publish.
             npm publish "$tgz" --provenance --access public --tag "${PUBLISH_TAG}"
           done
 
@@ -153,7 +153,6 @@ jobs:
           node-version: 24.18.0
           registry-url: https://npm.pkg.github.com
           scope: '@finos'
-          always-auth: true
 
       - name: Publish tarballs to GitHub Packages (with dist-tag)
         env:

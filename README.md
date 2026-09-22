@@ -109,6 +109,8 @@ For installation and usage instructions, see: <https://fdc3.finos.org/docs/suppo
 
 Publishing to npm is handled automatically by the [Publish To NPM](.github/workflows/release.yml) GitHub Actions workflow, which is triggered when a GitHub Release is published. The workflow will lint, test and build the project, then publish all public workspace packages to both npmjs.org and GitHub Packages.
 
+The npmjs.org publish step uses npm trusted publishing with GitHub Actions OIDC and provenance attestation, so maintainers should configure npm trusted publishers for the public `@finos/*` packages instead of relying on a long-lived npm automation token.
+
 The npm dist-tag is determined by the version in the root `package.json`: versions containing a hyphen (e.g. `2.3.0-beta.1`) are published with the `prerelease` tag, while all other versions are published with the `latest` tag.
 
 1.  **Create a release branch**
