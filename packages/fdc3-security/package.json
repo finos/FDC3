@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3-security",
-  "version": "3.0.0-alpha.2",
+  "version": "3.0.0-alpha.4",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -37,10 +37,10 @@
     "ws": "^8.21.3"
   },
   "peerDependencies": {
-    "@finos/fdc3-agent-proxy": "3.0.0-alpha.2",
-    "@finos/fdc3-context": "3.0.0-alpha.2",
-    "@finos/fdc3-schema": "3.0.0-alpha.2",
-    "@finos/fdc3-standard": "3.0.0-alpha.2"
+    "@finos/fdc3-agent-proxy": "3.0.0-alpha.4",
+    "@finos/fdc3-context": "3.0.0-alpha.4",
+    "@finos/fdc3-schema": "3.0.0-alpha.4",
+    "@finos/fdc3-standard": "3.0.0-alpha.4"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

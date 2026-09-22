@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3-web-impl",
-  "version": "3.0.0-alpha.2",
+  "version": "3.0.0-alpha.4",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -28,7 +28,7 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@finos/fdc3-standard": "3.0.0-alpha.2",
+    "@finos/fdc3-standard": "3.0.0-alpha.4",
     "semver": "^7.8.5"
   },
   "devDependencies": {
