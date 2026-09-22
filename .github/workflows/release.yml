@@ -116,11 +116,9 @@ jobs:
         with:
           node-version: 24.18.0
           registry-url: https://registry.npmjs.org
-          always-auth: true
 
       - name: Publish tarballs to npmjs.org (with provenance and dist-tag)
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}   # npm automation token
           PUBLISH_TAG: ${{ needs.build_and_pack.outputs.publish_tag }}
         run: |
           set -euo pipefail
