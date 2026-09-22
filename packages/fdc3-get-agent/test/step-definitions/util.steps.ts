@@ -4,7 +4,7 @@ import { expect } from 'vitest';
 import { Logger } from '../../src/util/Logger.js';
 import { createUUID } from '../../src/util/Uuid.js';
 import { HelloHandler } from '../../src/strategies/HelloHandler.js';
-import { LogLevel } from '@finos/fdc3-standard';
+import { FDC3_VERSION, LogLevel } from '@finos/fdc3-standard';
 
 const TEST_ERROR = 'Test error - This is expected on the console';
 const CONSOLE_METHODS = ['debug', 'log', 'warn', 'error'] as const;
@@ -149,7 +149,7 @@ When(
           timestamp: new Date(),
         },
         payload: {
-          fdc3Version: '2.2',
+          fdc3Version: FDC3_VERSION,
           intentResolverUrl: true,
           channelSelectorUrl: true,
         },
