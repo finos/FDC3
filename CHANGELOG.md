@@ -62,7 +62,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Clarified the stateful nature of channels at the start of the Context Channels section and Channel API reference page, documenting that channels retain the most recent context and metadata for each type. ([#2029](https://github.com/finos/FDC3/pull/2029))
 * Fixed broken links in the website: updated `schema2Markdown.js` to generate absolute links for context type cross-references (fixing chat and security subcategory links), fixed broken links in `api/spec.md`, `supported-platforms.md`, `context/spec.md`, intent pages, `Channel.md` and `desktopAgentCommunicationProtocol.md`. ([#2029](https://github.com/finos/FDC3/pull/2029))
 * Documented the context-clearing messages in the Desktop Agent Communication Protocol specification: the `clearContextRequest`/`clearContextResponse` exchange and the `contextClearedEvent`, including listener registration, routing, scope and unsubscription behaviour for both Desktop Agent and Channel listeners, the meaning of `channelId` and `contextType` in each message, and message-sequence diagrams. Added a protocol-wide convention describing when an omitted optional API argument is represented by an absent field versus normalized to `null` (required-and-nullable schema fields, such as `clearContext()`'s `contextType`, are normalized to `null`). ([#2165](https://github.com/finos/FDC3/issues/2165))
-* `getAgent` / WCP hello now requests FDC3 version `3.0` via `FDC3_VERSION`. Updated `@finos/cucumber-testing-steps` to `1.3.0` and removed the duplicate five-argument call step from agent-proxy IntentSteps.
+* `getAgent` / WCP hello now requests FDC3 version `3.0` via `FDC3_VERSION`. Updated `@finos/cucumber-testing-steps` to `1.3.0` and removed the duplicate five-argument call step from agent-proxy IntentSteps. ([#2243](https://github.com/finos/FDC3/pull/2243))
 
 ### Removed
 
@@ -83,7 +83,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Fixed an issue in conformance test AOpensBWithWrongContext, which was not correctly waiting for the timeout and was sending close messages outside of the execution of the test. Also added logging of test starts and finishes to aid debugging. ([#1933](https://github.com/finos/FDC3/pull/1933))
 * Fixed the `BasicJC1` conformance test to skip user channel membership checks when `getInfo().optionalFeatures.UserChannelMembershipAPIs` is not advertised, while still validating `joinUserChannel`, `getCurrentChannel`, and `leaveCurrentChannel` when the feature is enabled. ([#1777](https://github.com/finos/FDC3/issues/1777))
 * Fixed intermittent failures in the `fdc3.destructuredMethods` conformance tests caused by mock apps not yet being ready when opened, and by too short a timeout when awaiting their close confirmation. ([#2114](https://github.com/finos/FDC3/issues/2114))
-* Fixed `@finos/fdc3-example-apps` SPA fallback routing for Express 5 by replacing `app.get('*')` with `app.get('/{*splat}')`, so `npx @finos/fdc3-example-apps` can start successfully.
+* Fixed `@finos/fdc3-example-apps` SPA fallback routing for Express 5 by replacing `app.get('*')` with `app.get('/{*splat}')`, so `npx @finos/fdc3-example-apps` can start successfully. ([#2243](https://github.com/finos/FDC3/pull/2243))
 
 ## [npm v2.2.3] - 2026-04-15
 
