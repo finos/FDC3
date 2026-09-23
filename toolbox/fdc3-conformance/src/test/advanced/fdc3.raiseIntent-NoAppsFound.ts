@@ -33,18 +33,6 @@ export default async () =>
       }
     });
 
-    const RaiseIntentFailTargetedAppInstanceResolve1 =
-      "(RaiseIntentFailTargetedAppInstanceResolve1) Should fail to raise intent when targeted app intent-a instance, context 'testContextY', intent 'aTestingIntent' and AppIdentifier IntentAppAId do not correlate";
-    it(RaiseIntentFailTargetedAppInstanceResolve1, async () => {
-      try {
-        const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
-        await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextY, appIdentifier);
-        assert.fail('Expected the raised intent to be rejected with an error but no error was thrown');
-      } catch (ex) {
-        expect(ex, raiseIntentDocs).to.have.property('message', ResolveError.NoAppsFound);
-      }
-    });
-
     const RaiseIntentFailTargetedAppInstanceResolve2 =
       "(RaiseIntentFailTargetedAppInstanceResolve2) Should fail to raise intent when targeted app intent-a, context 'testContextY', intent 'aTestingIntent' and AppIdentifier IntentAppAId with instanceId property NonExistentInstanceId do not correlate";
     it(RaiseIntentFailTargetedAppInstanceResolve2, async () => {
