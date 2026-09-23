@@ -123,6 +123,14 @@ jobs:
         run: |
           set -euo pipefail
           shopt -s nullglob
+          # setup-node with registry-url writes _authToken=${NODE_AUTH_TOKEN}; when that
+          # secret is unset (Trusted Publishing / OIDC), the empty token suppresses npm's
+          # OIDC exchange and publish fails with a misleading E404. Remove it so OIDC runs.
+          # See https://github.com/actions/setup-node/issues/1551
+          npmrc="${NPM_CONFIG_USERCONFIG:-$HOME/.npmrc}"
+          if [ -f "$npmrc" ]; then
+            sed -i '/:_authToken/d' "$npmrc"
+          fi
           for tgz in ./dist-tarballs/*.tgz; do
             echo "Publishing $tgz to npmjs.org with tag '${PUBLISH_TAG}' ..."
             # --access public needed for first publish of public packages

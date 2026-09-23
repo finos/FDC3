@@ -84,6 +84,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Fixed the `BasicJC1` conformance test to skip user channel membership checks when `getInfo().optionalFeatures.UserChannelMembershipAPIs` is not advertised, while still validating `joinUserChannel`, `getCurrentChannel`, and `leaveCurrentChannel` when the feature is enabled. ([#1777](https://github.com/finos/FDC3/issues/1777))
 * Fixed intermittent failures in the `fdc3.destructuredMethods` conformance tests caused by mock apps not yet being ready when opened, and by too short a timeout when awaiting their close confirmation. ([#2114](https://github.com/finos/FDC3/issues/2114))
 * Fixed `@finos/fdc3-example-apps` SPA fallback routing for Express 5 by replacing `app.get('*')` with `app.get('/{*splat}')`, so `npx @finos/fdc3-example-apps` can start successfully. ([#2243](https://github.com/finos/FDC3/pull/2243))
+* Fixed Trusted Publishing to npmjs.org after removal of `NPM_TOKEN`: strip the empty `_authToken` that `actions/setup-node` writes when `registry-url` is set, so npm can perform the OIDC exchange instead of failing the `PUT` with a misleading E404.
 
 ## [npm v2.2.3] - 2026-04-15
 
