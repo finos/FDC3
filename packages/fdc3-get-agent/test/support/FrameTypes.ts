@@ -8,6 +8,7 @@ import {
   isFdc3UserInterfaceHandshake,
   WebConnectionProtocol3Handshake,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { FDC3_VERSION } from '@finos/fdc3-standard';
 
 /**
  * This handles the frame communications when we're using the embedded iframe approach
@@ -35,7 +36,7 @@ export function handleEmbeddedIframeComms(_value: string, parent: MockWindow, so
           timestamp: new Date(),
         },
         payload: {
-          fdc3Version: '2.2',
+          fdc3Version: FDC3_VERSION,
           channelSelectorUrl: CHANNEL_SELECTOR_URL,
           intentResolverUrl: INTENT_RESOLVER_URL,
         },
