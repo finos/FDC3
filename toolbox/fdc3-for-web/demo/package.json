@@ -1,7 +1,7 @@
 {
   "name": "@finos/demo",
   "private": true,
-  "version": "3.0.0-alpha.4",
+  "version": "3.0.0-alpha.5",
   "license": "Apache-2.0",
   "scripts": {
     "dev": "tsx src/server/main.ts",
@@ -20,7 +20,7 @@
     "vite": "^8.2.2"
   },
   "dependencies": {
-    "@finos/fdc3": "3.0.0-alpha.4",
+    "@finos/fdc3": "3.0.0-alpha.5",
     "@types/uuid": "^11.0.0",
     "express": "^5.2.1",
     "socket.io": "^4.8.0",

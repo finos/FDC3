@@ -1,6 +1,6 @@
 {
   "name": "fdc3-workbench",
-  "version": "3.0.0-alpha.4",
+  "version": "3.0.0-alpha.5",
   "private": true,
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -38,7 +38,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@eslint/js": "^10.0.1",
-    "@finos/fdc3": "3.0.0-alpha.4",
+    "@finos/fdc3": "3.0.0-alpha.5",
     "@fontsource/roboto": "5.3.0",
     "@fontsource/source-code-pro": "5.3.0",
     "@mui/icons-material": "^5.15.20",
