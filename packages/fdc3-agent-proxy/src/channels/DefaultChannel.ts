@@ -1,7 +1,6 @@
 import {
   ContextHandler,
   ContextWithMetadata,
-  ContextMetadata,
   DisplayMetadata,
   Listener,
   Channel,
@@ -23,6 +22,23 @@ import {
 } from '@finos/fdc3-schema/generated/api/BrowserTypes.js';
 import { RegisterableListener } from '../listeners/RegisterableListener.js';
 import { EventListener } from '../listeners/EventListener.js';
+
+function parseCurrentContextResponse(response: GetCurrentContextResponse): ContextWithMetadata | null {
+  const { context, metadata } = response.payload;
+
+  if (context === null) {
+    if (metadata !== null) {
+      throw new Error(ChannelError.MalformedContext);
+    }
+    return null;
+  }
+
+  if (context === undefined || metadata == null) {
+    throw new Error(ChannelError.MalformedContext);
+  }
+
+  return { context, metadata };
+}
 
 export class DefaultChannel implements Channel {
   protected readonly messaging: Messaging;
@@ -61,7 +77,9 @@ export class DefaultChannel implements Channel {
       payload: {
         channelId: this.id,
         context,
-        metadata: metadata ?? {},
+        // Only include app-provided metadata on the wire when the app supplied it; omit the
+        // field entirely otherwise (rather than sending an empty object).
+        ...(metadata && { metadata }),
       },
       type: 'broadcastRequest',
     };
@@ -84,7 +102,7 @@ export class DefaultChannel implements Channel {
       this.messageExchangeTimeout
     );
 
-    return response.payload.context ?? null;
+    return parseCurrentContextResponse(response)?.context ?? null;
   }
 
   /**
@@ -107,32 +125,35 @@ export class DefaultChannel implements Channel {
       this.messageExchangeTimeout
     );
 
-    const context = response.payload.context;
-    if (context) {
-      const metadata: ContextMetadata = {
-        source: response.payload.metadata?.source ?? { appId: 'unknown' },
-        timestamp: response.payload.metadata?.timestamp ?? response.meta.timestamp,
-        traceId: response.payload.metadata?.traceId ?? '',
-        signature: response.payload.metadata?.signature,
-        custom: response.payload.metadata?.custom,
-        antiReplay: response.payload.metadata?.antiReplay,
-      };
-      return { context, metadata };
-    }
-    return null;
+    return parseCurrentContextResponse(response);
   }
 
-  async addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener> {
-    if (typeof contextType !== 'string' && contextType !== null) {
-      throw new Error('Invalid arguments passed to addContextListener!');
-    }
+  addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
+  addContextListener(contextTypes: string[], handler: ContextHandler): Promise<Listener>;
+  async addContextListener(typeOrTypes: string | string[] | null, handler: ContextHandler): Promise<Listener> {
     if (typeof handler !== 'function') {
-      throw new Error('Invalid arguments passed to addContextListener!');
+      throw new Error(ChannelError.InvalidArguments);
     }
-    return await this.addContextListenerInner(contextType, handler);
+
+    if (Array.isArray(typeOrTypes)) {
+      if (typeOrTypes.length === 0) {
+        throw new Error(ChannelError.InvalidArguments);
+      }
+      // Validate all elements are strings
+      if (!typeOrTypes.every(t => typeof t === 'string')) {
+        throw new Error(ChannelError.InvalidArguments);
+      }
+      return await this.addContextListenerInner(typeOrTypes, handler);
+    }
+
+    if (typeof typeOrTypes === 'string' || typeOrTypes === null) {
+      return await this.addContextListenerInner(typeOrTypes as string | null, handler);
+    }
+
+    throw new Error(ChannelError.InvalidArguments);
   }
 
-  async addContextListenerInner(contextType: string | null, theHandler: ContextHandler): Promise<Listener> {
+  async addContextListenerInner(contextType: string | string[] | null, theHandler: ContextHandler): Promise<Listener> {
     const listener = new DefaultContextListener(
       this.messaging,
       this.messageExchangeTimeout,
@@ -161,10 +182,10 @@ export class DefaultChannel implements Channel {
     let listener: RegisterableListener;
     switch (type) {
       case 'contextCleared':
-        listener = new EventListener(this.messaging, 'contextCleared', this.id, handler);
+        listener = new EventListener(this.messaging, this.messageExchangeTimeout, 'contextCleared', this.id, handler);
         break;
       case null:
-        listener = new EventListener(this.messaging, type, this.id, handler);
+        listener = new EventListener(this.messaging, this.messageExchangeTimeout, type, this.id, handler);
         break;
       default:
         throw new Error(ChannelError.InvalidArguments);

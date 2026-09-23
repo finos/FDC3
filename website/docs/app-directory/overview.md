@@ -8,7 +8,7 @@ An application directory (appD) is a structured repository of information about 
 
 This section provides a conceptual overview of the App Directory, explaining what it is, who uses it, and how it fits into an FDC3-enabled desktop. It is intended for readers who are new to App Directory concepts, before moving on to the more detailed API and specification sections.
 
-The application metadata stored in appD records may include: the app name, type, details about how to run the application, its icons, publisher, support contact details and so on. It may also include links to or embed manifest formats defined elsewhere, such as proprietary manifests for launching the app in a container product or a Web Application Manifest (as [defined by the W3C](https://www.w3.org/TR/appmanifest/)).
+The application metadata stored in appD records may include: the app name, type, details about how to run the application, the FDC3 version range the application supports, its icons, publisher, support contact details and so on. It may also include links to or embed manifest formats defined elsewhere, such as proprietary manifests for launching the app in a container product or a Web Application Manifest (as [defined by the W3C](https://www.w3.org/TR/appmanifest/)).
 
 All this information is readily available in one place and can be used both to populate a launcher or app catalog UI for your users, and by the Desktop Agent managing the apps on your desktop. In fact, if your desktop platform supports the FDC3 standard, appD is the primary way that the FDC3 Desktop Agent implementation should receive the details about apps available to run on your desktop. Conversely, if an app is not listed in appD, the Desktop Agent can’t ensure its participation in context sharing or use it to resolve intents.
 
@@ -97,9 +97,15 @@ The AppD API specification defines the optional use of an access token to identi
 
 The specification does not define or make mandatory any authorizations or roles that a provider or enterprise can define.
 
-A key concept in the App Directory is how applications are identified and referenced across different environments. Application identifiers are used both to uniquely describe apps within a directory and, in some cases, to locate the directory instance that hosts an application’s record.
+## Application `interop` Metadata
+
+AppD records include an optional `interop` field that describes how the application uses FDC3 APIs. This metadata serves multiple purposes: it supports intent resolution by declaring what intents the app listens for (`interop.intents.listensFor`) and raises (`interop.intents.raises`); it enables app catalog UIs to surface apps that interoperate with a given application; and it documents the app's interactions with User Channels (`interop.userChannels`) and App Channels (`interop.appChannels`) for other developers and desktop assemblers. See the [App Directory specification](pathname:///schemas/next/app-directory.html) (or the raw [OpenAPI schema](https://fdc3.finos.org/schemas/next/appd.schema.json)) for the full definition of the `interop` field.
+
+Applications only need to complete the elements of the `interop` element that they make use of.  An app that only listens to context on a user channel need only complete this section, for example.
 
 ## Application Identifiers
+
+A key concept in the App Directory is how applications are identified and referenced across different environments. Application identifiers are used both to uniquely describe apps within a directory and, in some cases, to locate the directory instance that hosts an application's record.
 
 Application Records served by an app directory are each labelled with an identifier, `appId`, which should be unique within the app directory instance and may be used to refer to or retrieve the application's record via the [app directory API](spec). This identifier may be made globally unique through a nested namespace approach and email address construction (`appId@fqdn`) where `@` followed by the app directory instance's host name is appended to it. The resulting globally unique identifier is known as a 'fully qualified application identifier'.
 

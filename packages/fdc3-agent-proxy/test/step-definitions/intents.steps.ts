@@ -1,6 +1,7 @@
 import { Given } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
-import { handleResolve, parseAntiReplayClaims } from '@finos/testing';
+import { handleResolve } from '@finos/cucumber-testing-steps';
+import { parseAntiReplayClaims } from '@finos/fdc3-schema/test/parseAntiReplayClaims.js';
 import { Context } from '@finos/fdc3-context';
 import { ContextMetadata, ResolveError } from '@finos/fdc3-standard';
 import { IntentEvent } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
@@ -239,5 +240,12 @@ Given(
       antiReplay: parseAntiReplayClaims(antiReplayClaims),
       custom: { priority: 'high' },
     };
+  }
+);
+
+Given(
+  '{string} is an array of contexts including {string} and {string}',
+  (world: CustomWorld, field: string, valueOne: string, valueTwo: string) => {
+    world.props[field] = [valueOne, valueTwo];
   }
 );

@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3-web-impl",
-  "version": "3.0.0-alpha.2",
+  "version": "3.0.0-alpha.4",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -22,19 +22,22 @@
     "directory-openapi": "npx openapi-typescript ../../../packages/fdc3-standard/src/app-directory/specification/appd.schema.json -o generated/directory-schema.ts",
     "test": "npm run directory-openapi && tsc && vitest run",
     "test:watch": "vitest",
+    "view": "vite preview --outDir html-test-results",
     "test:coverage": "vitest run --coverage",
     "build": "npm run directory-openapi && tsc",
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@finos/fdc3-standard": "3.0.0-alpha.2"
+    "@finos/fdc3-standard": "3.0.0-alpha.4",
+    "semver": "^7.8.5"
   },
   "devDependencies": {
+    "@finos/cucumber-testing-steps": "1.3.0",
     "@cucumber/cucumber": "^13.2.1",
     "@cucumber/html-formatter": "^24.1.1",
     "@cucumber/messages": "^34.2.1",
     "@cucumber/pretty-formatter": "^4.0.2",
-    "@finos/testing": "3.0.0-alpha.2",
+    "@types/semver": "^7.8.0",
     "cucumber-console-formatter": "1.0.0",
     "openapi-typescript": "^7.13.0",
     "quickpickle": "^1.6.1"

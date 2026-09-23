@@ -1,0 +1,11 @@
+specials:
+  # Detects binaries invoked from package.json scripts (cpy, del-cli, cross-env, etc.).
+  - bin
+
+ignores:
+  # Loaded from docusaurus.config.js rather than a direct source import.
+  - "@docusaurus/plugin-client-redirects"
+  - "@docusaurus/preset-classic"
+  - "@docusaurus/theme-mermaid"
+  # Optional Mermaid layout engine configured by the Docusaurus Mermaid theme.
+  - "@mermaid-js/layout-elk"

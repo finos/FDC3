@@ -158,7 +158,11 @@ type IDesktopAgent interface {
 <TabItem value="ts" label="TypeScript/JavaScript">
 
 ```ts
+// Single context type
 addContextListener(contextType: string | null, handler: ContextHandler): Promise<Listener>;
+
+// Array of context types
+addContextListener(contextTypes: string[], handler: ContextHandler): Promise<Listener>;
 ```
 
 </TabItem>
@@ -181,6 +185,8 @@ func (desktopAgent *DesktopAgent) AddContextListener(contextType string, handler
 </Tabs>
 
 Adds a listener for incoming context broadcasts from the Desktop Agent (via a User channel or [`fdc3.open`](#open) API call). If the consumer is only interested in a context of a particular type, they can specify that type. If the consumer is able to receive context of any type or will inspect types received, then they can pass `null` as the `contextType` parameter to receive all context types.
+
+Alternatively, you can pass an array of context types to listen for multiple specific types at once. Empty arrays or arrays containing non-string elements will throw an error.
 
 Context broadcasts are primarily received from apps that are joined to the same User Channel as the listening application, hence, if the application is not currently joined to a User Channel no broadcasts will be received from User channels. If this function is called after the app has already joined a channel and the channel already contains context that matches the type of the context listener, then it will be called immediately and the context passed to the handler function. If `null` was passed as the context type for the listener and the channel contains context, then the handler function will be called immediately with the most recent context - regardless of type.
 
@@ -207,6 +213,14 @@ const contactListener = await fdc3.addContextListener('fdc3.contact', (contact, 
   console.log(`Received context message\nContext: ${contact}\nOriginating app: ${metadata?.source}`);
   //do something else with the context
 });
+
+// Listen for multiple specific context types
+const multiListener = await fdc3.addContextListener(
+  ['fdc3.instrument', 'fdc3.contact', 'fdc3.portfolio'], 
+  (context, metadata) => {
+    console.log(`Received ${context.type} from ${metadata?.source}`);
+  }
+);
 ```
 
 </TabItem>
@@ -1812,6 +1826,10 @@ If a [`Context`](Types#context) object is passed in, this object will be provide
 An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the context being passed to the opened application. If metadata is provided without a context, `null` may be passed for the `context` parameter.
 
 Returns an [`AppIdentifier`](Types#appidentifier) object with the `instanceId` field set to identify the instance of the application opened by this call.
+
+If no context is passed, the promise returned by `open` MAY resolve as soon as the application launches. This does not confirm that the opened application has initialized FDC3. If you expect the opened application to work with channels, or otherwise want to confirm that FDC3 is available in it, pass an [`fdc3.nothing`](../../context/ref/Nothing) context: `{ type: 'fdc3.nothing' }`.
+
+If context is passed, the Desktop Agent MUST NOT resolve the promise until the newly launched application has initialized FDC3 and added a matching context listener. If the application does not initialize FDC3 within the timeout, the promise MUST be rejected with an `Error` whose `message` is `OpenError.ApiTimeout`. If the application initializes FDC3 but does not add a matching context listener within the timeout, the promise MUST instead be rejected with an `Error` whose `message` is `OpenError.AppTimeout`.
 
 If an error occurs while opening the app, the promise MUST be rejected with an `Error` Object with a `message` chosen from the [`OpenError`](Errors#openerror) enumeration, or (if connected to a Desktop Agent Bridge) the [`BridgingError`](Errors#bridgingerror) enumeration.
 

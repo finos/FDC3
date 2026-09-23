@@ -10,37 +10,55 @@ export class DefaultContextListener
 {
   private readonly channelId: string | null;
   protected readonly messageType: string;
-  protected readonly contextType: string | null;
+  protected readonly contextType: string | string[] | null;
 
   constructor(
     messaging: Messaging,
     messageExchangeTimeout: number,
     channelId: string | null,
-    contextType: string | null,
+    contextType: string | string[] | null,
     handler: ContextHandler,
     messageType: string = 'broadcastEvent'
   ) {
-    super(
-      messaging,
-      messageExchangeTimeout,
-      { channelId, contextType },
-      handler,
-      'addContextListenerRequest',
-      'addContextListenerResponse',
-      'contextListenerUnsubscribeRequest',
-      'contextListenerUnsubscribeResponse'
-    );
+    // For arrays, use the contextTypes field in the payload
+    if (Array.isArray(contextType)) {
+      // Use the contextTypes field for array-based context types
+      super(
+        messaging,
+        messageExchangeTimeout,
+        { channelId, contextType: undefined, contextTypes: contextType },
+        handler,
+        'addContextListenerRequest',
+        'addContextListenerResponse',
+        'contextListenerUnsubscribeRequest',
+        'contextListenerUnsubscribeResponse'
+      );
+    } else {
+      // Single context type
+      super(
+        messaging,
+        messageExchangeTimeout,
+        { channelId, contextType },
+        handler,
+        'addContextListenerRequest',
+        'addContextListenerResponse',
+        'contextListenerUnsubscribeRequest',
+        'contextListenerUnsubscribeResponse'
+      );
+    }
+
     this.channelId = channelId;
     this.messageType = messageType;
     this.contextType = contextType;
   }
 
   filter(m: BroadcastEvent): boolean {
-    return (
-      m.type == this.messageType &&
-      m.payload.channelId == this.channelId &&
-      (m.payload.context?.type == this.contextType || this.contextType == null)
-    );
+    // Handle array context types in filtering
+    const contextTypeMatch = Array.isArray(this.contextType)
+      ? this.contextType.includes(m.payload.context?.type ?? '')
+      : m.payload.context?.type == this.contextType || this.contextType == null;
+
+    return m.type == this.messageType && m.payload.channelId == this.channelId && contextTypeMatch;
   }
 
   action(m: BroadcastEvent): void {
