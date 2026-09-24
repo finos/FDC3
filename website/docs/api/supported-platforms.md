@@ -112,11 +112,11 @@ For JavaScript implementations of the FDC3 API, all public methods on objects su
 
 ## Native
 
-The FDC3 Standard currently only defines language specific API bindings for JavaScript/TypeScript and .NET, but is intended to be implemented in other languages (which can make use of the [Desktop Agent Communication Protocol (DACP)](specs/desktopAgentCommunicationProtocol) as a wire protocol, but need to define a suitable connection protocol, which includes a defined communication channel to do so).  
+The FDC3 Standard defines language-specific API bindings for JavaScript/TypeScript, .NET, and Java (with an experimental Go binding). Other languages MAY implement the Standard using the [Desktop Agent Communication Protocol (DACP)](specs/desktopAgentCommunicationProtocol) as a wire protocol together with the [WebSocket Connection Protocol (WSCP)](specs/webSocketConnectionProtocol) (or another suitable connection protocol and communication channel).
 
 Hence, for a native application to be FDC3-enabled, it needs to either:
 
-- Make use of a shared library (such as a .NET DLL or JAR file) that provides it with an implementation of the FDC3 API (which ties it to a specific Desktop Agent implementation).
+- Make use of a shared library (such as a .NET DLL or JAR file) that provides it with an implementation of the FDC3 API. Vendor-specific libraries may tie the app to a particular Desktop Agent; the FINOS Java reference stack connects over WebSocket using [WSCP](specs/webSocketConnectionProtocol) and DACP and is not tied to a single agent implementation.
 - Model itself as a Desktop Agent (rather than just an app working with one) and use the Agent Bridging protocol to connect to a Desktop Agent Bridge and work through it to interoperate with apps managed by other Desktop Agents.
 
 ### .NET
@@ -170,6 +170,56 @@ For a Go application to be FDC3-enabled, it needs to run in the context of a pla
 - Golang has no strict requirement for a type to declare that it implements an interface: if a type implements a specific method, then it implements that interface implicitly. The Go language binding for FDC3 includes `interface`, `struct` and `func` types for all of the entities defined in the FDC3 API Part (i.e. `DesktopAgent`, `Channel`, `AppIdentifier`, `ContextHandler` etc.) . However, to be able to use the interfaces, specific types need to be created with the implementation of that interface, even if they are empty structs. Hence, types for these are defined alongside the interface (ex. [`DesktopAgent` is an empty struct, but it would implement methods of the IDesktopAgent interface](../api/ref/DesktopAgent)).
 - Deprecated functions with the same name as other functions are omitted in golang, as it does not allow function/method overloading. In the event that additional function/method overloads are added to FDC3 these should be handled in the Go binding with a different function name to the overloaded function.
 
+### Java
+
+FINOS' [FDC3 Java API Project](https://github.com/finos-labs/fdc3-java-api) offers language bindings for Java. It is closely modelled after the structure of the main [TypeScript FDC3 Library](https://github.com/finos/FDC3) and contains:
+
+ - `fdc3-standard`: Interfaces covering the FDC3 Standard (included in the documentation examples on this site)
+ - `fdc3-schema`: Generated DACP and WSCP message types and JSON helpers
+ - `fdc3-context`: Classes implementing the FDC3 standard context objects
+ - `fdc3-agent-proxy`: An implementation of the `fdc3-standard` in Java, using [Desktop Agent Communication Protocol (DACP)](specs/desktopAgentCommunicationProtocol) to communicate to a desktop agent via a WebSocket URL
+ - `fdc3-get-agent`: A Java implementation of the `GetAgent` function which can be called to return a `DesktopAgent` instance in Java
+ - `fdc3-example-app`: A sample Swing application demonstrating WSCP connection and FDC3 API usage
+ - `fdc3-java-workbench`: A JavaFX workbench for interactively testing FDC3 APIs from a native Java app
+
+For more details, review the [README for that project](https://github.com/finos-labs/fdc3-java-api).
+
+#### Usage
+
+Native Java applications obtain a `DesktopAgent` via the `GetAgent.getAgent()` factory, which opens a WebSocket to the Desktop Agent and completes the [WebSocket Connection Protocol (WSCP)](specs/webSocketConnectionProtocol) handshake:
+
+```java
+import java.util.Map;
+import org.finos.fdc3.api.DesktopAgent;
+import org.finos.fdc3.api.context.Context;
+import org.finos.fdc3.getagent.GetAgent;
+import org.finos.fdc3.getagent.GetAgentParams;
+
+GetAgentParams params = GetAgentParams.builder()
+    .webSocketUrl("ws://localhost:8090/fdc3/ws")
+    .sharedSecret("pairing-secret-from-desktop-agent")
+    // optional: .timeoutMs(10000)
+    // optional: .channelSelector(myChannelSelector)
+    // optional: .intentResolver(myIntentResolver)
+    // optional: .allowInsecureTransport(true) // required for non-loopback ws://
+    .build();
+
+GetAgent.getAgent(params)
+    .thenAccept(agent -> {
+        // use agent like window.fdc3 in JavaScript
+        Context instrument = new Context("fdc3.instrument", null, Map.of("ticker", "AAPL"));
+        agent.broadcast(instrument);
+    })
+    .exceptionally(error -> {
+        // FDC3ConnectionException on handshake failure (often as the cause)
+        return null;
+    });
+```
+
+`webSocketUrl` and `sharedSecret` are required. They may also be supplied via the `FDC3_WEBSOCKET_URL` and `FDC3_CONNECTION_SECRET` environment variables (or system properties); builder setters override those defaults. Prefer `wss://`. Plain `ws://` is allowed for loopback hosts (`localhost`, `127.*`, `::1`); for a remote `ws://` URL the builder requires `.allowInsecureTransport(true)`.
+
+All FDC3 API methods return `CompletionStage` — use `.thenAccept()` / `.thenCompose()` for async code, or `.toCompletableFuture().join()` for blocking examples in tests.
+
 ## Hybrid
 
 In a hybrid application, a standalone native application incorporates a web view, within which a web application runs. This may be considered a special case of the web platform where all platform-provider requirements for web applications must be satisfied, but it is the responsibility of the associated native application, rather than a platform provider, to ensure they are fulfilled. This may be achieved via either of the defined web interfaces, i.e. by injecting an implementation of the DesktopAgent API at `window.fdc3` or via the FDC3 Web Connection Protocol (`postMessage`).
@@ -178,4 +228,4 @@ In a hybrid application, a standalone native application incorporates a web view
 
 Support for each platform is optional and compliance with the FDC3 standard should be assessed for each platform implemented independently of any other, with the exception of ensuring that where applications running on multiple platforms are used together, communication between them still complies with the standard.
 
-The Web API binding is expressed using TypeScript syntax that defines the API interface (for both TypeScript and JavaScript). Adherence to the specific binding is required for Web application platforms. No specific API binding for native platforms is currently expressed in the Standard. Hence, native applications may be implemented with any programming language binding that supports the constructs required by the API specification, until such time that the FDC3 Standard introduces an appropriate language-specific binding.
+The Web API binding is expressed using TypeScript syntax that defines the API interface (for both TypeScript and JavaScript). Adherence to the specific binding is required for Web application platforms. Native platforms documented in this Standard (.NET, Java, and experimental Go) express their bindings in the language TabItems of the [API reference](ref/DesktopAgent). Applications on other native platforms MAY use any programming language binding that supports the constructs required by the API specification.

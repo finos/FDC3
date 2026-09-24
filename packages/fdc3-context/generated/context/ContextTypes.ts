@@ -1928,6 +1928,8 @@ export interface User {
    * unique token identifier).
    */
   wrappedJwt: string;
+  id?: { [key: string]: any };
+  name?: string;
   [property: string]: any;
 }
 
@@ -3185,8 +3187,10 @@ const typeMap: any = {
   ),
   User: o(
     [
-      { json: 'type', js: 'type', typ: r('Type') },
+      { json: 'type', js: 'type', typ: r('UserType') },
       { json: 'wrappedJwt', js: 'wrappedJwt', typ: '' },
+      { json: 'id', js: 'id', typ: u(undefined, m('any')) },
+      { json: 'name', js: 'name', typ: u(undefined, '') },
     ],
     'any'
   ),
@@ -3323,7 +3327,7 @@ const typeMap: any = {
   EncryptedContextWrapperType: ['fdc3.security.encryptedContext'],
   SymmetricKeyRequestType: ['fdc3.security.symmetricKeyRequest'],
   SymmetricKeyResponseType: ['fdc3.security.symmetricKeyResponse'],
-  Type: ['fdc3.security.user'],
+  UserType: ['fdc3.security.user'],
   UserRequestType: ['fdc3.security.userRequest'],
   TradeType: ['fdc3.trade'],
   TradeListType: ['fdc3.tradeList'],
