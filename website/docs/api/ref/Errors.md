@@ -71,16 +71,35 @@ var AgentError = struct {
 <TabItem value="java" label="Java">
 
 ```java
-// Agent errors are handled via FDC3ConnectionException
+public enum AgentError {
+    AgentNotFound("AgentNotFound"),
+    AccessDenied("AccessDenied"),
+    ErrorOnConnect("ErrorOnConnect"),
+    InvalidFailover("InvalidFailover"),
+    ApiTimeout("ApiTimeout");
+
+    private final String value;
+
+    AgentError(String value) {
+        this.value = value;
+    }
+
+    public String toString() {
+        return value;
+    }
+}
+
+// Connection establishment via GetAgent fails with FDC3ConnectionException
+// rather than rejecting with AgentError string constants.
 public class FDC3ConnectionException extends RuntimeException {
     public FDC3ConnectionException(String message, Throwable cause) {
         super(message, cause);
     }
-    
+
     public FDC3ConnectionException(String message) {
         super(message);
     }
-    
+
     public FDC3ConnectionException(Throwable cause) {
         super(cause);
     }
@@ -415,7 +434,11 @@ public enum OpenError {
     AppNotFound("AppNotFound"),
     ErrorOnLaunch("ErrorOnLaunch"),
     AppTimeout("AppTimeout"),
-    ResolverUnavailable("ResolverUnavailable");
+    ResolverUnavailable("ResolverUnavailable"),
+    MalformedContext("MalformedContext"),
+    DesktopAgentNotFound("DesktopAgentNotFound"),
+    ApiTimeout("ApiTimeout"),
+    InvalidArguments("InvalidArguments");
     
     private final String value;
     
@@ -626,6 +649,7 @@ public enum ResolveError {
     IntentDeliveryFailed("IntentDeliveryFailed"),
     MalformedContext("MalformedContext"),
     IntentListenerConflict("IntentListenerConflict"),
+    DesktopAgentNotFound("DesktopAgentNotFound"),
     ApiTimeout("ApiTimeout"),
     InvalidArguments("InvalidArguments");
     

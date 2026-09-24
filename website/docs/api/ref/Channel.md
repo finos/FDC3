@@ -110,6 +110,8 @@ public interface Channel extends IntentResult {
     CompletionStage<Optional<Context>> getCurrentContext(String contextType);
     CompletionStage<Optional<ContextWithMetadata>> getCurrentContextWithMetadata();
     CompletionStage<Optional<ContextWithMetadata>> getCurrentContextWithMetadata(String contextType);
+    CompletionStage<Void> clearContext();
+    CompletionStage<Void> clearContext(String contextType);
     CompletionStage<Listener> addContextListener(String contextType, ContextHandler handler);
     CompletionStage<Listener> addEventListener(String type, EventHandler handler);
 }
@@ -983,7 +985,8 @@ func (channel *Channel) ClearContext(contextType string) <-chan Result[any] {
 <TabItem value="java" label="Java">
 
 ```java
-// Not yet implemented in the Java API binding
+CompletionStage<Void> clearContext();
+CompletionStage<Void> clearContext(String contextType);
 ```
 
 </TabItem>
@@ -1036,7 +1039,11 @@ if result.Err != nil {
 <TabItem value="java" label="Java">
 
 ```java
-// Not yet implemented in the Java API binding
+try {
+    channel.clearContext().toCompletableFuture().join();
+} catch (CompletionException e) {
+    // handle ChannelError
+}
 ```
 
 </TabItem>
@@ -1083,7 +1090,11 @@ if result.Err != nil {
 <TabItem value="java" label="Java">
 
 ```java
-// Not yet implemented in the Java API binding
+try {
+    channel.clearContext("fdc3.contact").toCompletableFuture().join();
+} catch (CompletionException e) {
+    // handle ChannelError
+}
 ```
 
 </TabItem>
