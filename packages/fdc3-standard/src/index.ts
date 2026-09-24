@@ -34,7 +34,7 @@ export * from './ui/IntentResolver.js';
 export * from './ui/ChannelSelector.js';
 export * from './ui/Connectable.js';
 
-export const FDC3_VERSION = '2.2';
+export const FDC3_VERSION = '3.0';
 
 declare global {
   interface Window {

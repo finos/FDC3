@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3-example-apps",
-  "version": "3.0.0-alpha.2",
+  "version": "3.0.0-alpha.5",
   "description": "FDC3 example web applications and a local App Directory server for Desktop Agent demos",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
@@ -39,8 +39,8 @@
   },
   "dependencies": {
     "@azure/msal-browser": "^4.12.0",
-    "@finos/fdc3": "3.0.0-alpha.2",
-    "@finos/fdc3-security": "3.0.0-alpha.2",
+    "@finos/fdc3": "3.0.0-alpha.5",
+    "@finos/fdc3-security": "3.0.0-alpha.5",
     "@vitejs/plugin-react": "^6.1.1",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
