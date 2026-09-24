@@ -21,7 +21,7 @@
           "const": "WSCPGoodbye"
         },
         "meta": {
-          "$ref": "WSCPConnectionStep.schema.json#/$defs/DisconnectStepMeta"
+          "$ref": "WSCPConnectionStep.schema.json#/$defs/WSCPDisconnectStepMeta"
         }
       },
       "required": ["type", "meta"],

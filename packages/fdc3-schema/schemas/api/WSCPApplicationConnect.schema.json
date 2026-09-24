@@ -40,7 +40,7 @@
           "required": ["protocolVersion"]
         },
         "meta": {
-          "$ref": "WSCPConnectionStep.schema.json#/$defs/ConnectionStepMeta"
+          "$ref": "WSCPConnectionStep.schema.json#/$defs/WSCPConnectionStepMeta"
         }
       },
       "required": ["type", "payload", "meta"],

@@ -90,11 +90,12 @@ Sent by the Desktop Agent during the handshake.  When the DA is the **TCP initia
     "sharedSecret": "b2c3d4e5-f6a7-8901-bcde-f12345678901",
     "implementationMetadata": {
       // same shape as fdc3.getInfo() — see ImplementationMetadata in the API spec
-      "fdc3Version": "2.2",
+      "fdc3Version": "3.0",
       "provider": "ExampleDA",
       "providerVersion": "1.0.0",
       "optionalFeatures": {
-        "OriginatingAppMetadata": true
+        "UserChannelMembershipAPIs": true,
+        "DesktopAgentBridging": false
       },
       "appMetadata": {
         // assigned app identity — MUST include appId and instanceId
@@ -118,11 +119,12 @@ When the DA is **accepting** the handshake, it follows this form:
   "payload": {
     "protocolVersion": "1.0",
     "implementationMetadata": {
-      "fdc3Version": "2.2",
+      "fdc3Version": "3.0",
       "provider": "ExampleDA",
       "providerVersion": "1.0.0",
       "optionalFeatures": {
-        "OriginatingAppMetadata": true
+        "UserChannelMembershipAPIs": true,
+        "DesktopAgentBridging": false
       },
       "appMetadata": {
         "appId": "my-native-app",
@@ -235,10 +237,11 @@ sequenceDiagram
 
 1. The user provides the native app's listen `webSocketUrl` and `sharedSecret` to the DA from the app's UI or config.
 2. The DA opens a WebSocket TCP connection to the application's `webSocketUrl`.
-3. The DA sends `WSCPDesktopAgentConnect` as described above.
+3. The DA sends `WSCPDesktopAgentConnect` as described above (including `sharedSecret` and `implementationMetadata`).
 4. The application reads assigned identity from `implementationMetadata.appMetadata`.
 5. The application validates `sharedSecret` from the DA's message. If the secret is recognized as belonging to an existing app instance, the application MUST supersede any prior WebSocket connection for that instance.
-6. DACP begins.
+6. The application sends `WSCPApplicationConnect` (**without** `sharedSecret`) quoting the initiator's `connectionAttemptUuid`, or `WSCPConnectFailed` on failure.
+7. Both parties exchange DACP messages on the same WebSocket.
 
 ---
 

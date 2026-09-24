@@ -23,14 +23,14 @@
       "additionalProperties": true
     },
     "meta": {
-      "title": "Connection Step Metadata",
+      "title": "WSCP Connection Step Metadata",
       "description": "Metadata for a WebSocket Connection Protocol message.",
       "oneOf": [
         {
-          "$ref": "#/$defs/DisconnectStepMeta"
+          "$ref": "#/$defs/WSCPDisconnectStepMeta"
         },
         {
-          "$ref": "#/$defs/ConnectionStepMeta"
+          "$ref": "#/$defs/WSCPConnectionStepMeta"
         }
       ]
     }
@@ -41,7 +41,7 @@
   ],
   "additionalProperties": false,
   "$defs": {
-    "ConnectionStepMeta": {
+    "WSCPConnectionStepMeta": {
       "type": "object",
       "properties": {
         "connectionAttemptUuid": {
@@ -57,7 +57,7 @@
       ],
       "additionalProperties": false
     },
-    "DisconnectStepMeta": {
+    "WSCPDisconnectStepMeta": {
       "type": "object",
       "properties": {
         "timestamp": {

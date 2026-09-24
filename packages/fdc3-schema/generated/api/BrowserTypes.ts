@@ -606,7 +606,7 @@ export interface WebConnectionProtocolMessage {
   /**
    * Metadata for a Web Connection Protocol message.
    */
-  meta: WebConnectionProtocolMessageConnectionStepMetadata;
+  meta: ConnectionStepMetadata;
   /**
    * The message payload, containing data pertaining to this connection step.
    */
@@ -620,7 +620,7 @@ export interface WebConnectionProtocolMessage {
 /**
  * Metadata for a Web Connection Protocol message.
  */
-export interface WebConnectionProtocolMessageConnectionStepMetadata {
+export interface ConnectionStepMetadata {
   timestamp: Date;
   connectionAttemptUuid?: string;
 }
@@ -731,7 +731,7 @@ export interface WebSocketConnectionProtocolMessage {
   /**
    * Metadata for a WebSocket Connection Protocol message.
    */
-  meta: WebSocketConnectionProtocolMessageConnectionStepMetadata;
+  meta: WSCPConnectionStepMetadata;
   /**
    * The message payload, containing data pertaining to this connection step.
    */
@@ -745,7 +745,7 @@ export interface WebSocketConnectionProtocolMessage {
 /**
  * Metadata for a WebSocket Connection Protocol message.
  */
-export interface WebSocketConnectionProtocolMessageConnectionStepMetadata {
+export interface WSCPConnectionStepMetadata {
   timestamp: Date;
   connectionAttemptUuid?: string;
 }
@@ -5657,13 +5657,13 @@ const typeMap: any = {
   WebConnectionProtocol6GoodbyeMeta: o([{ json: 'timestamp', js: 'timestamp', typ: Date }], false),
   WebConnectionProtocolMessage: o(
     [
-      { json: 'meta', js: 'meta', typ: r('WebConnectionProtocolMessageConnectionStepMetadata') },
+      { json: 'meta', js: 'meta', typ: r('ConnectionStepMetadata') },
       { json: 'payload', js: 'payload', typ: u(undefined, m('any')) },
       { json: 'type', js: 'type', typ: r('WebConnectionProtocolMessageType') },
     ],
     false
   ),
-  WebConnectionProtocolMessageConnectionStepMetadata: o(
+  ConnectionStepMetadata: o(
     [
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'connectionAttemptUuid', js: 'connectionAttemptUuid', typ: u(undefined, '') },
@@ -5703,13 +5703,13 @@ const typeMap: any = {
   WebSocketConnectionProtocolConnectFailedPayload: o([{ json: 'message', js: 'message', typ: '' }], false),
   WebSocketConnectionProtocolMessage: o(
     [
-      { json: 'meta', js: 'meta', typ: r('WebSocketConnectionProtocolMessageConnectionStepMetadata') },
+      { json: 'meta', js: 'meta', typ: r('WSCPConnectionStepMetadata') },
       { json: 'payload', js: 'payload', typ: u(undefined, m('any')) },
       { json: 'type', js: 'type', typ: r('WebSocketConnectionProtocolMessageType') },
     ],
     false
   ),
-  WebSocketConnectionProtocolMessageConnectionStepMetadata: o(
+  WSCPConnectionStepMetadata: o(
     [
       { json: 'timestamp', js: 'timestamp', typ: Date },
       { json: 'connectionAttemptUuid', js: 'connectionAttemptUuid', typ: u(undefined, '') },
