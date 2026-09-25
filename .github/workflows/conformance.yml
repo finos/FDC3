@@ -1,0 +1,69 @@
+name: Automated Conformance
+
+on:
+  workflow_dispatch:
+  workflow_call:
+  pull_request:
+    paths:
+      - 'toolbox/fdc3-conformance/src/**'
+      - 'toolbox/fdc3-for-web/fdc3-web-impl/src/**'
+      - 'packages/fdc3-agent-proxy/src/**'
+      - 'toolbox/fdc3-conformance/e2e/**'
+      - 'toolbox/fdc3-conformance/playwright.config.ts'
+      - 'toolbox/fdc3-conformance/package.json'
+      - '.github/workflows/conformance.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'toolbox/fdc3-conformance/src/**'
+      - 'toolbox/fdc3-for-web/fdc3-web-impl/src/**'
+      - 'packages/fdc3-agent-proxy/src/**'
+      - 'toolbox/fdc3-conformance/e2e/**'
+      - 'toolbox/fdc3-conformance/playwright.config.ts'
+      - 'toolbox/fdc3-conformance/package.json'
+      - '.github/workflows/conformance.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: audit
+
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24.18.0
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Build workspaces
+        run: npm run build
+
+      - name: Run automated conformance tests
+        run: npm run test:ci --workspace fdc3-conformance
+
+      - name: Upload conformance report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: conformance-report-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            toolbox/fdc3-conformance/playwright-report/
+            toolbox/fdc3-conformance/test-results/
+          if-no-files-found: ignore
+          retention-days: 7
