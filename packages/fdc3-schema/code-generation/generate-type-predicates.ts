@@ -28,17 +28,23 @@ const AGENT_EVENT_MESSAGE = 'AgentEventMessage';
 
 const project = new Project();
 
-// Types + fast (is<X>) predicates: what every internal consumer (fdc3-get-agent, fdc3-agent-proxy,
-// fdc3-web-impl) actually uses. Message unions are only meaningful for the browser API schema.
+// Quicktype writes its raw output directly to the "Core" path (see the typegen-browser/typegen-bridging
+// npm scripts). This script slims that file down to types + fast (is<X>) predicates - what every internal
+// consumer (fdc3-get-agent, fdc3-agent-proxy, fdc3-web-impl) actually uses - splits the Convert
+// class/isValid<X>/runtime helpers out into a companion "Validation" file, and writes a compat barrel at
+// the original file name that re-exports both, so `BrowserTypes`/`BridgingTypes` keep working exactly as
+// before for anyone already depending on them. Message unions are only meaningful for the browser API schema.
 processGeneratedFile({
-  typesPath: './generated/api/BrowserTypes.ts',
+  corePath: './generated/api/BrowserTypesCore.ts',
   validationPath: './generated/api/BrowserTypesValidation.ts',
+  compatPath: './generated/api/BrowserTypes.ts',
   generatePredicates: true,
 });
 
 processGeneratedFile({
-  typesPath: './generated/bridging/BridgingTypes.ts',
+  corePath: './generated/bridging/BridgingTypesCore.ts',
   validationPath: './generated/bridging/BridgingTypesValidation.ts',
+  compatPath: './generated/bridging/BridgingTypes.ts',
   generatePredicates: false,
 });
 
@@ -49,15 +55,24 @@ project.saveSync();
  * - (optionally) rewrites the request/response/event message unions and writes is<X> / isValid<X> / <X>_TYPE
  * - extracts the runtime validation machinery (the `Convert` class, the quicktype helper functions it relies
  *   on, and its type map) into a companion "Validation" file
+ * - writes a compat barrel (`export * from Core; export * from Validation;`) at the original file name
  *
  * Nothing in this repo uses `isValid<X>` or `Convert` directly - only the `is<X>` fast predicates and the
  * plain interfaces are used internally - but leaving that ~150KB runtime inline made it unavoidably reachable
  * (and therefore un-tree-shakeable) for every consumer of `@finos/fdc3-schema`, including ones that only ever
- * call `getAgent()`. See https://github.com/finos/FDC3/issues/1901.
+ * call `getAgent()`. The internal consumers listed above import the "Core" file directly, so their bundles
+ * never reach the validation runtime; the compat barrel exists purely so `import { BrowserTypes } from
+ * '@finos/fdc3-schema'; BrowserTypes.isValidX(...)` keeps working unchanged for existing external consumers.
+ * See https://github.com/finos/FDC3/issues/1901.
  */
-function processGeneratedFile(options: { typesPath: string; validationPath: string; generatePredicates: boolean }) {
-  const { typesPath, validationPath, generatePredicates } = options;
-  const sourceFile = project.addSourceFileAtPath(typesPath);
+function processGeneratedFile(options: {
+  corePath: string;
+  validationPath: string;
+  compatPath: string;
+  generatePredicates: boolean;
+}) {
+  const { corePath, validationPath, compatPath, generatePredicates } = options;
+  const sourceFile = project.addSourceFileAtPath(corePath);
 
   // Snapshot the runtime pieces quicktype emitted, before this script adds anything of its own.
   const convertClass = sourceFile.getClass('Convert');
@@ -87,20 +102,37 @@ function processGeneratedFile(options: { typesPath: string; validationPath: stri
 
     // Inserted as raw leading text (rather than via createSourceFile's initial content, or ts-morph's
     // statement-insertion APIs) because ts-morph's statement-insertion machinery errors on a file this large.
-    const typesModuleSpecifier = `./${typesPath.split('/').pop()!.replace(/\.ts$/, '.js')}`;
+    const coreModuleSpecifier = `./${corePath.split('/').pop()!.replace(/\.ts$/, '.js')}`;
     const importStatement =
       referencedTypeNames.length > 0
-        ? `import type { ${referencedTypeNames.join(', ')} } from '${typesModuleSpecifier}';\n\n`
+        ? `import type { ${referencedTypeNames.join(', ')} } from '${coreModuleSpecifier}';\n\n`
         : '';
     validationSourceFile.insertText(
       0,
       `${importStatement}/**
- * Runtime validation for the message types in ${typesModuleSpecifier}.
+ * Runtime validation for the message types in ${coreModuleSpecifier}.
  *
  * Split out from the main generated file so that consumers who only need the message type
  * interfaces and the fast \`is<X>\` predicates (i.e. everyone using getAgent()) don't pull this
  * validation runtime into their bundles. See https://github.com/finos/FDC3/issues/1901.
  */
+`
+    );
+
+    const validationModuleSpecifier = `./${validationPath.split('/').pop()!.replace(/\.ts$/, '.js')}`;
+    const compatExportName = compatPath.split('/').pop()!.replace(/\.ts$/, '');
+    const compatSourceFile = project.createSourceFile(compatPath, '', { overwrite: true });
+    compatSourceFile.insertText(
+      0,
+      `/**
+ * Compatibility barrel re-exporting both ${coreModuleSpecifier} (types + fast \`is<X>\` predicates) and
+ * ${validationModuleSpecifier} (the \`Convert\` class + \`isValid<X>\` predicates), so existing code doing
+ * \`import { ${compatExportName} } from '@finos/fdc3-schema'; ${compatExportName}.isValidX(...)\` keeps working unchanged.
+ * Internal consumers import ${coreModuleSpecifier} directly instead of this barrel, so their bundles never
+ * reach the validation runtime. See https://github.com/finos/FDC3/issues/1901.
+ */
+export * from '${coreModuleSpecifier}';
+export * from '${validationModuleSpecifier}';
 `
     );
   }

@@ -64,10 +64,10 @@ import type {
   RaiseIntentResultAgentResponse,
   RaiseIntentResultBridgeErrorResponse,
   RaiseIntentResultBridgeResponse,
-} from './BridgingTypes.js';
+} from './BridgingTypesCore.js';
 
 /**
- * Runtime validation for the message types in ./BridgingTypes.js.
+ * Runtime validation for the message types in ./BridgingTypesCore.js.
  *
  * Split out from the main generated file so that consumers who only need the message type
  * interfaces and the fast `is<X>` predicates (i.e. everyone using getAgent()) don't pull this

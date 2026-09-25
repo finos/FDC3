@@ -85,10 +85,10 @@ import type {
   WebConnectionProtocol5ValidateAppIdentitySuccessResponse,
   WebConnectionProtocol6Goodbye,
   WebConnectionProtocolMessage,
-} from './BrowserTypes.js';
+} from './BrowserTypesCore.js';
 
 /**
- * Runtime validation for the message types in ./BrowserTypes.js.
+ * Runtime validation for the message types in ./BrowserTypesCore.js.
  *
  * Split out from the main generated file so that consumers who only need the message type
  * interfaces and the fast `is<X>` predicates (i.e. everyone using getAgent()) don't pull this
