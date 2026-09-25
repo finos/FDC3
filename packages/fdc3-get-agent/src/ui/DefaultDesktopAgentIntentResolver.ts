@@ -3,9 +3,9 @@ import { IntentResolver, IntentResolutionChoice } from '@finos/fdc3-standard';
 import { AbstractUIComponent, DEFAULT_UI_ROOT_URL } from './AbstractUIComponent.js';
 import { Context } from '@finos/fdc3-context';
 import { Logger } from '../util/Logger.js';
-import { BrowserTypes } from '@finos/fdc3-schema';
-const { isFdc3UserInterfaceResolveAction } = BrowserTypes;
-type Fdc3UserInterfaceResolve = BrowserTypes.Fdc3UserInterfaceResolve;
+import { BrowserTypesCore } from '@finos/fdc3-schema';
+const { isFdc3UserInterfaceResolveAction } = BrowserTypesCore;
+type Fdc3UserInterfaceResolve = BrowserTypesCore.Fdc3UserInterfaceResolve;
 
 /**
  * Handles communication between an injected Intent Resolver UI and the getAgent implementation.

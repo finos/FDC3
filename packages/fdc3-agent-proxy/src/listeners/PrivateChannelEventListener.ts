@@ -9,17 +9,17 @@ import {
   PrivateChannelEventTypes,
   PrivateChannelUnsubscribeEvent,
 } from '@finos/fdc3-standard';
-import { BrowserTypes } from '@finos/fdc3-schema';
+import { BrowserTypesCore } from '@finos/fdc3-schema';
 import { Logger } from '../util/Logger.js';
 const {
   isPrivateChannelOnAddContextListenerEvent,
   isPrivateChannelOnDisconnectEvent,
   isPrivateChannelOnUnsubscribeEvent,
-} = BrowserTypes;
-type PrivateChannelAddEventListenerRequest = BrowserTypes.PrivateChannelAddEventListenerRequest;
-type PrivateChannelOnAddContextListenerEvent = BrowserTypes.PrivateChannelOnAddContextListenerEvent;
-type PrivateChannelOnDisconnectEvent = BrowserTypes.PrivateChannelOnDisconnectEvent;
-type PrivateChannelOnUnsubscribeEvent = BrowserTypes.PrivateChannelOnUnsubscribeEvent;
+} = BrowserTypesCore;
+type PrivateChannelAddEventListenerRequest = BrowserTypesCore.PrivateChannelAddEventListenerRequest;
+type PrivateChannelOnAddContextListenerEvent = BrowserTypesCore.PrivateChannelOnAddContextListenerEvent;
+type PrivateChannelOnDisconnectEvent = BrowserTypesCore.PrivateChannelOnDisconnectEvent;
+type PrivateChannelOnUnsubscribeEvent = BrowserTypesCore.PrivateChannelOnUnsubscribeEvent;
 
 type PrivateChannelEventMessages =
   PrivateChannelOnAddContextListenerEvent | PrivateChannelOnUnsubscribeEvent | PrivateChannelOnDisconnectEvent;
@@ -37,7 +37,7 @@ abstract class AbstractPrivateChannelEventListener extends AbstractListener<
     messageExchangeTimeout: number,
     privateChannelId: string,
     eventMessageTypes: PrivateChannelEventMessageTypes[],
-    eventType: BrowserTypes.PrivateChannelEventType | null,
+    eventType: BrowserTypesCore.PrivateChannelEventType | null,
     handler: (msg: PrivateChannelEventMessages) => void
   ) {
     super(
