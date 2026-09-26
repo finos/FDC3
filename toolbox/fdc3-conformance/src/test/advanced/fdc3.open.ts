@@ -6,6 +6,7 @@ import { DesktopAgent, getAgent } from '@finos/fdc3';
 import { assert, expect } from 'chai';
 import { ControlContextType } from '../support/intent-support';
 import { appIdMatches } from '../../utils';
+import { closeNonFdc3OpenAppBWindows } from '../fdc3-conformance-utils';
 
 const documentation = '\r\nDocumentation: ' + APIDocumentation + '\r\nCause:';
 
@@ -98,17 +99,25 @@ export default async () => {
     const AOpensNonFDC3AppWithoutContext =
       '(AOpensNonFDC3AppWithoutContext) Opening an app without context does not wait for it to initialize FDC3';
     it(AOpensNonFDC3AppWithoutContext, async () => {
-      const targetApp = control.createTargetAppIdentifier(openApp.e.id);
-      const instanceIdentifier = await control.openMockApp(targetApp);
-      expect(appIdMatches(instanceIdentifier.appId, openApp.e.id)).to.equal(true);
-      expect(instanceIdentifier).to.have.property('instanceId');
+      try {
+        const targetApp = control.createTargetAppIdentifier(openApp.e.id);
+        const instanceIdentifier = await control.openMockApp(targetApp);
+        expect(appIdMatches(instanceIdentifier.appId, openApp.e.id)).to.equal(true);
+        expect(instanceIdentifier).to.have.property('instanceId');
+      } finally {
+        await closeNonFdc3OpenAppBWindows();
+      }
     });
 
     const AOpensNonFDC3AppWithContext =
       '(AOpensNonFDC3AppWithContext) Opening an app with context receives ApiTimeout if it does not initialize FDC3';
     it(AOpensNonFDC3AppWithContext, async () => {
-      const targetApp = control.createTargetAppIdentifier(openApp.e.id);
-      await control.expectApiTimeoutErrorOnOpen(targetApp);
-    }).timeout(constants.NoListenerTimeout + 2000);
+      try {
+        const targetApp = control.createTargetAppIdentifier(openApp.e.id);
+        await control.expectApiTimeoutErrorOnOpen(targetApp);
+      } finally {
+        await closeNonFdc3OpenAppBWindows();
+      }
+    }).timeout(constants.NoListenerTimeout + constants.WaitTime + constants.WindowCloseWaitTime);
   });
 };

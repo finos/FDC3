@@ -273,6 +273,18 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
     await this.setAppState(instanceId, State.Terminated);
   }
 
+  closeConformanceOpenBFrame(source: Window, origin: string): boolean {
+    const registration = this.connections.find(
+      app => app.appId === 'OpenAppBId' && app.iframe?.contentWindow === source && new URL(app.url).origin === origin
+    );
+
+    if (!registration?.iframe) return false;
+
+    registration.iframe.remove();
+    void this.setAppState(registration.instanceId, State.Terminated);
+    return true;
+  }
+
   async setAppState(app: InstanceID, newState: State): Promise<void> {
     const found = this.connections.find(a => a.instanceId == app);
 
