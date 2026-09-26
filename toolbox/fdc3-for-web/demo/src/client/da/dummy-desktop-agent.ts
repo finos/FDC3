@@ -4,6 +4,7 @@ import { v4 as uuid } from 'uuid';
 import { APP_GOODBYE, DA_HELLO, FDC3_APP_EVENT } from '../../message-types.js';
 import { DemoServerContext } from './DemoServerContext.js';
 import { FDC3_JSONDirectory } from './FDC3_JSONDirectory.js';
+import { installConformanceFixtureCleanup } from './conformance-cleanup.js';
 import {
   AppRegistration,
   ChannelState,
@@ -213,6 +214,7 @@ window.addEventListener('load', () => {
     }
 
     const sc = new DemoServerContext(socket, directory);
+    installConformanceFixtureCleanup(sc);
 
     const channelDetails: ChannelState[] = [
       {

@@ -22,6 +22,47 @@ export async function closeMockAppWindow(testId: string, count: number = 1) {
   await wait(constants.WindowCloseWaitTime); // wait for window to close
 }
 
+/**
+ * Close the non-FDC3 Open App B fixture. It cannot receive the FDC3 control-channel
+ * message used by closeMockAppWindow, so this uses a same-origin BroadcastChannel.
+ */
+export async function closeNonFdc3OpenAppBWindows() {
+  if (!('BroadcastChannel' in window)) {
+    console.warn('BroadcastChannel is unavailable; cannot request cleanup of non-FDC3 Open App B windows');
+    return;
+  }
+
+  const channel = new BroadcastChannel('fdc3-conformance-open-b-cleanup');
+  const requestId = crypto.randomUUID();
+  let retryTimer: number | undefined;
+  let timeout: number | undefined;
+
+  try {
+    await new Promise<void>(resolve => {
+      const finish = () => {
+        if (retryTimer !== undefined) window.clearInterval(retryTimer);
+        if (timeout !== undefined) window.clearTimeout(timeout);
+        resolve();
+      };
+
+      channel.addEventListener('message', event => {
+        if (event.data?.type === 'close-open-b-ack' && event.data.requestId === requestId) {
+          finish();
+        }
+      });
+
+      const sendCloseRequest = () => channel.postMessage({ type: 'close-open-b', requestId });
+      sendCloseRequest();
+      retryTimer = window.setInterval(sendCloseRequest, constants.ShortWait / 4);
+      timeout = window.setTimeout(finish, constants.WaitTime);
+    });
+  } finally {
+    channel.close();
+  }
+
+  await wait(constants.WindowCloseWaitTime);
+}
+
 const broadcastCloseWindow = async (currentTest: string) => {
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   await appControlChannel.broadcast({

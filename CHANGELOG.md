@@ -76,6 +76,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+* Fixed the non-FDC3 `open-b` conformance fixture by removing its missing script reference and adding test-only cleanup through a same-origin `BroadcastChannel`; the reference Desktop Agent also removes the fixture iframe when running in frame mode. ([#2248](https://github.com/finos/FDC3/issues/2248))
 * Decoupled heartbeat timing configuration in `DefaultFDC3Server` from the open handler timeout. ([#1678](https://github.com/finos/FDC3/issues/1678))
 * Fixed a three-way inconsistency in the API specification regarding what `getCurrentContext` returns for a cleared context type. The spec now states consistently that `getCurrentContext` returns `null` for a cleared type until new context is broadcast, removing the contradictory prose that claimed an `fdc3.nothing` context (with a non-existent `subType` field) was returned instead. ([#2187](https://github.com/finos/FDC3/issues/2187))
 * Fixed `fdc3-context`'s `typegen` script so that it resolves the `AppIdentifier` type referenced from `action.schema.json` via a local path to `fdc3-schema`'s `api.schema.json`, instead of relying on `quicktype` fetching it over the network from the (as yet unpublished) `$id` URL. Previously, after running `npm run clean`, `npm run build` would fail across the whole monorepo because the `fdc3-context` build silently produced an empty `generated/context` directory (the underlying `quicktype` failure was swallowed) and downstream packages could not resolve `@finos/fdc3-context`.
