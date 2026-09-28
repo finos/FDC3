@@ -20,6 +20,9 @@
                 "type",
                 "wrappedJwt"
             ]
+        },
+        {
+            "$ref": "context.schema.json#/definitions/BaseContext"
         }
     ],
     "examples": [
