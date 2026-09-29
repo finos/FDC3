@@ -2,7 +2,7 @@ import { AppIdentifier, Context } from '@finos/fdc3';
 
 export interface OpenControl {
   //test control
-  openMockApp(targetApp: AppIdentifier, context?: Context): Promise<AppIdentifier>;
+  openMockApp(targetApp: AppIdentifier, context?: Context): void;
   closeMockApp(testId: string): Promise<void>;
 
   // helper method
@@ -16,7 +16,6 @@ export interface OpenControl {
   confirmAppNotFoundErrorReceived(exception: unknown): void;
   validateReceivedContext(contextReceiver: Context, expectedContextType: string): Promise<void>;
   expectAppTimeoutErrorOnOpen(appId: AppIdentifier): Promise<void>;
-  expectApiTimeoutErrorOnOpen(appId: AppIdentifier): Promise<void>;
 }
 
 export const openApp = {
