@@ -2,6 +2,7 @@ import { io } from 'socket.io-client';
 import { link, UI, UI_URLS } from './util.js';
 import { APP_HELLO } from '../../message-types.js';
 import { isWebConnectionProtocol1Hello } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { FDC3_VERSION } from '@finos/fdc3';
 
 const appWindow = window.parent;
 
@@ -77,7 +78,7 @@ const helloListener = (e: MessageEvent) => {
             timestamp: new Date(),
           },
           payload: {
-            fdc3Version: '2.2',
+            fdc3Version: FDC3_VERSION,
             ...ui,
           },
         },

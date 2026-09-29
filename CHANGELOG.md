@@ -87,6 +87,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Fixed intermittent failures in the `fdc3.destructuredMethods` conformance tests caused by mock apps not yet being ready when opened, and by too short a timeout when awaiting their close confirmation. ([#2114](https://github.com/finos/FDC3/issues/2114))
 * Fixed `@finos/fdc3-example-apps` SPA fallback routing for Express 5 by replacing `app.get('*')` with `app.get('/{*splat}')`, so `npx @finos/fdc3-example-apps` can start successfully. ([#2243](https://github.com/finos/FDC3/pull/2243))
 * Fixed Trusted Publishing to npmjs.org after removal of `NPM_TOKEN`: strip the empty `_authToken` that `actions/setup-node` writes when `registry-url` is set, so npm can perform the OIDC exchange instead of failing the `PUT` with a misleading E404.
+* Fixed the FDC3 for Web reference implementation to advertise FDC3 3.0 consistently through `getInfo()` and both Web Connection Protocol handshake paths, allowing it to pass the FDC3 3.0 conformance version check. Also prevented the app-channel and user-channel empty-array conformance tests from running mock-app cleanup when they did not open a mock app. ([#2252](https://github.com/finos/FDC3/issues/2252))
 
 ## [npm v2.2.3] - 2026-04-15
 
