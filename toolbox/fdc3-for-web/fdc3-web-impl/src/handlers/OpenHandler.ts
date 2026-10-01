@@ -275,29 +275,14 @@ export class OpenHandler implements MessageHandler {
     try {
       const reqMeta = arg0.payload.metadata ?? {};
       const uuid = await sc.open(toOpen.appId, from);
-      if (context) {
-        this.pending.set(
-          uuid,
-          new PendingApp(sc, arg0, context, from, this.timeoutMs, {
-            traceId: reqMeta.traceId,
-            signature: reqMeta.signature,
-            custom: reqMeta.custom,
-          })
-        );
-      } else {
-        successResponse(
-          sc,
-          arg0,
-          from,
-          {
-            appIdentifier: {
-              appId: toOpen.appId,
-              instanceId: uuid,
-            },
-          },
-          'openResponse'
-        );
-      }
+      this.pending.set(
+        uuid,
+        new PendingApp(sc, arg0, context, from, this.timeoutMs, {
+          traceId: reqMeta.traceId,
+          signature: reqMeta.signature,
+          custom: reqMeta.custom,
+        })
+      );
     } catch (e) {
       errorResponse(sc, arg0, from, (e as Error).message ?? e, 'openResponse');
     }

@@ -1825,11 +1825,11 @@ If a [`Context`](Types#context) object is passed in, this object will be provide
 
 An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the context being passed to the opened application. If metadata is provided without a context, `null` may be passed for the `context` parameter.
 
+The Desktop Agent MUST NOT resolve the promise until the launched application has initialized FDC3, regardless of whether a context is passed. If the application does not initialize FDC3 within the timeout, the promise MUST be rejected with an `Error` whose `message` is `OpenError.ApiTimeout`. Consequently, attempting to open a non-FDC3 application will launch the application but the `fdc3.open` call will reject with `OpenError.ApiTimeout`.
+
+If context is passed and the application initializes FDC3 but does not add a matching context listener within the timeout, the promise MUST instead be rejected with an `Error` whose `message` is `OpenError.AppTimeout`.
+
 Returns an [`AppIdentifier`](Types#appidentifier) object with the `instanceId` field set to identify the instance of the application opened by this call.
-
-If no context is passed, the promise returned by `open` MAY resolve as soon as the application launches. This does not confirm that the opened application has initialized FDC3. If you expect the opened application to work with channels, or otherwise want to confirm that FDC3 is available in it, pass an [`fdc3.nothing`](../../context/ref/Nothing) context: `{ type: 'fdc3.nothing' }`.
-
-If context is passed, the Desktop Agent MUST NOT resolve the promise until the newly launched application has initialized FDC3 and added a matching context listener. If the application does not initialize FDC3 within the timeout, the promise MUST be rejected with an `Error` whose `message` is `OpenError.ApiTimeout`. If the application initializes FDC3 but does not add a matching context listener within the timeout, the promise MUST instead be rejected with an `Error` whose `message` is `OpenError.AppTimeout`.
 
 If an error occurs while opening the app, the promise MUST be rejected with an `Error` Object with a `message` chosen from the [`OpenError`](Errors#openerror) enumeration, or (if connected to a Desktop Agent Bridge) the [`BridgingError`](Errors#bridgingerror) enumeration.
 
