@@ -36,6 +36,14 @@ export class ChannelServiceImpl implements IChannelService {
     await broadcastService.broadcast(contextType, historyItems, channel, testId);
   }
 
+  async clearContext(channel: Channel, contextType?: string): Promise<void> {
+    if (contextType) {
+      await channel.clearContext(contextType);
+    } else {
+      await channel.clearContext();
+    }
+  }
+
   async closeWindowOnCompletion(testId: string): Promise<void> {
     console.log(Date.now() + ` Setting up closeWindow listener`);
     const appControlChannel = await this.fdc3.getOrCreateChannel(constants.ControlChannel);

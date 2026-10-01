@@ -11,7 +11,7 @@ Feature: Default Channel Selector
     Then "{cb}" is "one"
 
   Scenario: Updating channel information in the channel selector
-    Given I call "{channel-selector}" with "updateChannel" with parameters "one" and "{channel-list}"
+    Given I call "{channel-selector}" with "updateChannel" using arguments "one" and "{channel-list}"
     And we wait for a period of "200" ms
     Then "{lastChannelSelectorMessage}" is an object with the following contents
       | type           | payload.selected | payload.userChannels[0].id | payload.userChannels[1].id | payload.userChannels[2].id |

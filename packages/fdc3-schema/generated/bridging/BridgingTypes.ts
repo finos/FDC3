@@ -600,7 +600,14 @@ export interface BroadcastAgentRequestPayload {
    * The context object that is to be broadcast.
    */
   context: Context;
-  metadata: AppProvidableContextMetadata;
+  /**
+   * Optional metadata supplied by the broadcasting app (`traceId`, `signature`, `antiReplay`
+   * and `custom`). This field carries only the app-provided portion of the metadata; the
+   * Desktop Agent adds its own `source` and `timestamp` before delivering the enriched
+   * `ContextMetadata` to receiving apps. It MUST be omitted when the app did not supply a
+   * metadata argument to `broadcast()`.
+   */
+  metadata?: AppProvidableContextMetadata;
 }
 
 /**
@@ -662,6 +669,12 @@ export interface Context {
 }
 
 /**
+ * Optional metadata supplied by the broadcasting app (`traceId`, `signature`, `antiReplay`
+ * and `custom`). This field carries only the app-provided portion of the metadata; the
+ * Desktop Agent adds its own `source` and `timestamp` before delivering the enriched
+ * `ContextMetadata` to receiving apps. It MUST be omitted when the app did not supply a
+ * metadata argument to `broadcast()`.
+ *
  * Metadata that can be provided by an app as part of a broadcast, raise intent or open API
  * call.
  */
@@ -853,7 +866,14 @@ export interface BroadcastBridgeRequestPayload {
    * The context object that is to be broadcast.
    */
   context: Context;
-  metadata: AppProvidableContextMetadata;
+  /**
+   * Optional metadata supplied by the broadcasting app (`traceId`, `signature`, `antiReplay`
+   * and `custom`). This field carries only the app-provided portion of the metadata; the
+   * Desktop Agent adds its own `source` and `timestamp` before delivering the enriched
+   * `ContextMetadata` to receiving apps. It MUST be omitted when the app did not supply a
+   * metadata argument to `broadcast()`.
+   */
+  metadata?: AppProvidableContextMetadata;
 }
 
 /**
@@ -5243,7 +5263,7 @@ const typeMap: any = {
     [
       { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'context', js: 'context', typ: r('Context') },
-      { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
     ],
     false
   ),
@@ -5307,7 +5327,7 @@ const typeMap: any = {
     [
       { json: 'channelId', js: 'channelId', typ: '' },
       { json: 'context', js: 'context', typ: r('Context') },
-      { json: 'metadata', js: 'metadata', typ: r('AppProvidableContextMetadata') },
+      { json: 'metadata', js: 'metadata', typ: u(undefined, r('AppProvidableContextMetadata')) },
     ],
     false
   ),

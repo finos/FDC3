@@ -1,5 +1,13 @@
 import { assert, expect } from 'chai';
-import { Channel, Context, ContextMetadata, Listener, DesktopAgent } from '@finos/fdc3';
+import {
+  Channel,
+  Context,
+  ContextMetadata,
+  Listener,
+  DesktopAgent,
+  ApiEvent,
+  FDC3ContextClearedEvent,
+} from '@finos/fdc3';
 import constants from '../../constants';
 import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from '../support/channel-control';
 import { closeMockAppWindow, waitForContext } from '../fdc3-conformance-utils';
@@ -116,6 +124,34 @@ export class ChannelControlImpl implements ChannelControl {
     return listener;
   };
 
+  setupArrayContextListener = async (
+    channel: Channel | null,
+    listenContextTypes: string[],
+    expectedContextTypes: string[],
+    errorMessage: string,
+    onComplete: (ctx: Context, metadata?: ContextMetadata) => void
+  ): Promise<Listener> => {
+    let listener;
+    if (channel) {
+      listener = await channel.addContextListener(listenContextTypes, (context, metadata) => {
+        if (expectedContextTypes.length > 0) {
+          expect(expectedContextTypes).to.include(context.type, errorMessage);
+        }
+        onComplete(context, metadata);
+      });
+    } else {
+      listener = await this.fdc3.addContextListener(listenContextTypes, (context, metadata) => {
+        if (expectedContextTypes.length > 0) {
+          expect(expectedContextTypes).to.include(context.type, errorMessage);
+        }
+        onComplete(context, metadata);
+      });
+    }
+
+    validateListenerObject(listener);
+    return listener;
+  };
+
   setupContextChecker = async (
     channel: Channel,
     requestedContextType: string | null,
@@ -136,6 +172,24 @@ export class ChannelControlImpl implements ChannelControl {
     if (context) {
       onComplete(context);
     }
+  };
+
+  setupContextClearedEventListener = async (
+    channel: Channel | null,
+    errorMessage: string,
+    onComplete: (event: FDC3ContextClearedEvent) => void
+  ): Promise<Listener> => {
+    const handler = (event: ApiEvent) => {
+      expect(event.type).to.be.equals('contextCleared', errorMessage);
+      onComplete(event as FDC3ContextClearedEvent);
+    };
+
+    const listener = channel
+      ? await channel.addEventListener('contextCleared', handler)
+      : await this.fdc3.addEventListener('contextCleared', handler);
+
+    validateListenerObject(listener);
+    return listener;
   };
 
   getRandomId(): string {

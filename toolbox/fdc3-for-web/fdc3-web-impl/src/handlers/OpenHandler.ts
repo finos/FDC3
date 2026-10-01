@@ -91,7 +91,9 @@ class PendingApp {
   }
 
   private onError() {
-    errorResponse(this.sc, this.msg, this.source, OpenError.AppTimeout, 'openResponse');
+    const error = this.state == AppState.Opening ? OpenError.ApiTimeout : OpenError.AppTimeout;
+    this.state = AppState.Done;
+    errorResponse(this.sc, this.msg, this.source, error, 'openResponse');
   }
 
   setOpened(openedApp: AppIdentifier) {

@@ -9,6 +9,7 @@ export function ensureContextMetadata(metadata?: ContextMetadata): ContextMetada
   return {
     timestamp: new Date(),
     source: { appId: 'fdc3-example-apps', instanceId: 'local' },
+    traceId: crypto.randomUUID(),
   };
 }
 

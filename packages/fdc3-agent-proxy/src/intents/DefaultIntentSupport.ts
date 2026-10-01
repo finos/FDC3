@@ -30,7 +30,6 @@ import {
   RaiseIntentResultResponse,
 } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
 import { throwIfUndefined } from '../util/throwIfUndefined.js';
-import { v4 } from 'uuid';
 
 const convertIntentResult = async (
   { payload }: RaiseIntentResultResponse,
@@ -176,12 +175,10 @@ export class DefaultIntentSupport implements IntentSupport {
         context: resolvedContext,
         app: app || undefined,
         ...(typeof newInstance === 'boolean' && { newInstance }),
-        metadata: {
-          traceId: metadata?.traceId ?? v4(),
-          ...(metadata?.signature !== undefined && { signature: metadata.signature }),
-          ...(metadata?.antiReplay !== undefined && { antiReplay: metadata.antiReplay }),
-          ...(metadata?.custom !== undefined && { custom: metadata.custom }),
-        },
+        // Forward only the app-provided metadata; omit the field entirely when the app did not
+        // supply any. traceId generation (and source/timestamp) is the Desktop Agent's
+        // responsibility, applied when it enriches the ContextMetadata for delivery.
+        ...(metadata && { metadata }),
       },
       meta,
     };
@@ -237,12 +234,10 @@ export class DefaultIntentSupport implements IntentSupport {
         context,
         app: app || undefined,
         ...(typeof newInstance === 'boolean' && { newInstance }),
-        metadata: {
-          traceId: metadata?.traceId ?? v4(),
-          ...(metadata?.signature !== undefined && { signature: metadata.signature }),
-          ...(metadata?.antiReplay !== undefined && { antiReplay: metadata.antiReplay }),
-          ...(metadata?.custom !== undefined && { custom: metadata.custom }),
-        },
+        // Forward only the app-provided metadata; omit the field entirely when the app did not
+        // supply any. traceId generation (and source/timestamp) is the Desktop Agent's
+        // responsibility, applied when it enriches the ContextMetadata for delivery.
+        ...(metadata && { metadata }),
       },
       meta,
     };

@@ -142,8 +142,12 @@ export class ClientSideHandlersImpl implements FDC3Handlers {
     const channel = this.channels.get(acl.payload.channelId!);
     const id = this.messaging.createUUID();
     if (channel) {
+      // Support both singular contextType and plural contextTypes from the request
+      const contextTypes =
+        'contextTypes' in acl.payload ? (acl.payload.contextTypes as string[] | undefined) : undefined;
+      const contextTypeOrTypes = contextTypes ?? acl.payload.contextType ?? null;
       const cl = await channel.addContextListener(
-        acl.payload.contextType,
+        contextTypeOrTypes as any,
         async (context: Context, metadata?: ContextMetadata) => {
           const msg: BroadcastEvent = {
             type: 'broadcastEvent',
