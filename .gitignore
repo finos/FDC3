@@ -10,7 +10,10 @@ lib/core/MetadataBlog.js
 
 website/translated_docs
 website/build/
-website/static/toolbox
+website/static/toolbox/fdc3-conformance
+website/static/toolbox/fdc3-explained
+website/static/toolbox/fdc3-reference-ui
+website/static/toolbox/fdc3-workbench
 website/node_modules
 website/i18n/*
 website/.docusaurus/

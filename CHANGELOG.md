@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Integrated Redocusaurus to render the App Directory OpenAPI documentation, updated `docusaurus.config.js` and sidebars to point to the new Redoc routes, and removed obsolete generated `app-directory.html` files.
 * Added basic conformance tests verifying that `DesktopAgent.addEventListener` is callable and returns a `Listener` for filtered and unfiltered event listeners. ([#1774](https://github.com/finos/FDC3/issues/1774))
 * Added CI dependency checks for the root package and every npm workspace, with documented baselines of existing unused-dependency findings.
 * Added conformance coverage for `ChannelError.NoChannelFound`, `ChannelError.MalformedContext`, and `ChannelError.InvalidArguments`. ([#1779](https://github.com/finos/FDC3/issues/1779))
@@ -39,6 +40,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added a complete DACP registration mechanism for `contextCleared` event listeners. The `AddEventListenerRequestPayload` now supports a `CONTEXT_CLEARED` event type (added to the `FDC3EventType` enum) and a required, nullable `channelId` that identifies the scope of the registration: a Channel's id for Channel-scoped listeners registered via `Channel.addEventListener`, or `null` for Desktop Agent-level listeners registered via `DesktopAgent.addEventListener` (whose scope follows the app's current User channel). Both public forms of `contextCleared` listener registration are now representable over DACP, giving the Desktop Agent enough information to route `contextClearedEvent` messages only to registered apps. Implemented in the agent proxy (Channel-scoped listeners now register over DACP rather than filtering locally) and the reference web implementation (which stores the registration scope, handles `clearContextRequest`, and emits `contextClearedEvent` to matching listeners), and covered by unit tests. ([#2164](https://github.com/finos/FDC3/issues/2164))
 * Added conformance test definitions and implementations for clearing context on channels: `ACClearContext1`/`ACClearContext2` for App channels and new `UCClearContext1`/`UCClearContext2` for User channels. Each test verifies that a `contextCleared` event is delivered (carrying the correct `channelId` and `contextType`, or `null` when all types are cleared) and that `getCurrentContext` returns `null` for a cleared type. The User channel tests exercise a Desktop Agent-level `contextCleared` listener scoped to the app's current User channel. ([#2187](https://github.com/finos/FDC3/issues/2187))
 * Added an optional `fdc3Version` semver range to App Directory application records, and updated the FDC3 for Web reference implementation to filter records for compatibility with the Desktop Agent's FDC3 version. ([#1965](https://github.com/finos/FDC3/pull/1965))
+* Added versioned snapshots of the `fdc3-conformance` runner to the website. When a documentation version is cut, the built conformance runner is copied to `static/toolbox/<version>/fdc3-conformance` and the runner UI displays the fixed two-digit FDC3 version, mirroring the existing versioned schema hosting. The live, unversioned snapshot at `static/toolbox/fdc3-conformance` continues to display `next`. Documented where each snapshot and its App Directory are hosted in the conformance Overview.
 
 ### Changed
 
@@ -84,6 +86,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Fixed the `BasicJC1` conformance test to skip user channel membership checks when `getInfo().optionalFeatures.UserChannelMembershipAPIs` is not advertised, while still validating `joinUserChannel`, `getCurrentChannel`, and `leaveCurrentChannel` when the feature is enabled. ([#1777](https://github.com/finos/FDC3/issues/1777))
 * Fixed intermittent failures in the `fdc3.destructuredMethods` conformance tests caused by mock apps not yet being ready when opened, and by too short a timeout when awaiting their close confirmation. ([#2114](https://github.com/finos/FDC3/issues/2114))
 * Fixed `@finos/fdc3-example-apps` SPA fallback routing for Express 5 by replacing `app.get('*')` with `app.get('/{*splat}')`, so `npx @finos/fdc3-example-apps` can start successfully. ([#2243](https://github.com/finos/FDC3/pull/2243))
+* Fixed Trusted Publishing to npmjs.org after removal of `NPM_TOKEN`: strip the empty `_authToken` that `actions/setup-node` writes when `registry-url` is set, so npm can perform the OIDC exchange instead of failing the `PUT` with a misleading E404.
 
 ## [npm v2.2.3] - 2026-04-15
 
