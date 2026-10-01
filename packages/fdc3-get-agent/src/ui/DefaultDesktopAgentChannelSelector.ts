@@ -1,10 +1,10 @@
 import { Channel } from '@finos/fdc3-standard';
 import { ChannelSelector } from '@finos/fdc3-standard';
 import { AbstractUIComponent, DEFAULT_UI_ROOT_URL } from './AbstractUIComponent.js';
-import { BrowserTypes } from '@finos/fdc3-schema';
+import { BrowserTypesCore } from '@finos/fdc3-schema';
 import { Logger } from '../util/Logger.js';
-const { isFdc3UserInterfaceChannelSelected } = BrowserTypes;
-type Fdc3UserInterfaceChannels = BrowserTypes.Fdc3UserInterfaceChannels;
+const { isFdc3UserInterfaceChannelSelected } = BrowserTypesCore;
+type Fdc3UserInterfaceChannels = BrowserTypesCore.Fdc3UserInterfaceChannels;
 
 /**
  * Handles communication between an injected Channel Selector UI and the getAgent implementation.

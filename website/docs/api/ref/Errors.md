@@ -264,8 +264,9 @@ enum OpenError {
    * */
   DesktopAgentNotFound = "DesktopAgentNotFound",
 
-  /** Returned if context is passed to `fdc3.open` and the specified application
-   *  launches but fails to initialize FDC3 in time.
+  /** Returned if the specified application launches but fails to initialize
+   *  FDC3 in time, regardless of whether context was passed to `fdc3.open`.
+   *  Opening a non-FDC3 application will result in this error.
    */
   ApiTimeout = 'ApiTimeout',
 
@@ -312,6 +313,13 @@ public static class OpenError
     public static readonly string MalformedContext = nameof(MalformedContext);
 
     /// <summary>
+    /// Returned if the specified application launches but fails to initialize
+    /// FDC3 in time, regardless of whether context was passed to `Open`.
+    /// Opening a non-FDC3 application will result in this error.
+    /// </summary>
+    public static readonly string ApiTimeout = nameof(ApiTimeout);
+
+    /// <summary>
     /// Returned if invalid arguments are passed to the api call.
     /// </summary>
     public static readonly string InvalidArguments = nameof(InvalidArguments);
@@ -338,7 +346,11 @@ var OpenError = struct {
 	// that has a `string` value.
 	MalformedContext string
 	// Experimental: Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.
-	DesktopAgentNotFound string,
+	DesktopAgentNotFound string
+	// Returned if the specified application launches but fails to initialize FDC3
+	// in time, regardless of whether context was passed to `fdc3.open`. Opening a
+	// non-FDC3 application will result in this error.
+	ApiTimeout string
 }{
 	AppNotFound:         "AppNotFound",
 	ErrorOnLaunch:       "ErrorOnLaunch",
@@ -346,13 +358,14 @@ var OpenError = struct {
 	ResolverUnavailable: "ResolverUnavailable",
 	MalformedContext:    "MalformedContext",
 	DesktopAgentNotFound: "DesktopAgentNotFound",
+	ApiTimeout:           "ApiTimeout",
 }
 ```
 
 </TabItem>
 </Tabs>
 
-When context is passed to `fdc3.open`, `OpenError.ApiTimeout` indicates that the application launched but did not initialize FDC3 within the timeout defined by the Desktop Agent. `OpenError.AppTimeout` indicates that the application initialized FDC3 but did not add the context listener required to receive that context. Neither error applies to waiting for initialization or a listener when no context was passed.
+`OpenError.ApiTimeout` and `OpenError.AppTimeout` represent distinct failure stages. `ApiTimeout` means that the launched application did not initialize FDC3 before the timeout and applies whether or not the caller supplied context. A non-FDC3 application therefore always causes the `fdc3.open` call to reject with `ApiTimeout`. `AppTimeout` means that the application initialized FDC3, but context was supplied and the application did not add a matching context listener in time.
 
 **See also:**
 

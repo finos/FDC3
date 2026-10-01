@@ -1,10 +1,10 @@
 import { Connectable, FDC3_VERSION } from '@finos/fdc3-standard';
 import { Logger } from '../util/Logger.js';
-import { BrowserTypes } from '@finos/fdc3-schema';
-const { isFdc3UserInterfaceHello, isFdc3UserInterfaceRestyle } = BrowserTypes;
-type Fdc3UserInterfaceHandshake = BrowserTypes.Fdc3UserInterfaceHandshake;
-type InitialCSS = BrowserTypes.InitialCSS;
-type UpdatedCSS = BrowserTypes.UpdatedCSS;
+import { BrowserTypesCore } from '@finos/fdc3-schema';
+const { isFdc3UserInterfaceHello, isFdc3UserInterfaceRestyle } = BrowserTypesCore;
+type Fdc3UserInterfaceHandshake = BrowserTypesCore.Fdc3UserInterfaceHandshake;
+type InitialCSS = BrowserTypesCore.InitialCSS;
+type UpdatedCSS = BrowserTypesCore.UpdatedCSS;
 
 export interface CSSPositioning {
   [key: string]: string;
