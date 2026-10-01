@@ -23,7 +23,7 @@ export default async () => {
     beforeEach(cc.leaveChannel);
 
     afterEach(async function afterEach() {
-      if (!this.currentTest?.title.startsWith('(ChannelError')) {
+      if (!this.currentTest?.title.startsWith('(ChannelError') && this.currentTest?.title !== ACArrayEmptyContext1) {
         await cc.closeMockApp(this.currentTest!.title);
       }
     });

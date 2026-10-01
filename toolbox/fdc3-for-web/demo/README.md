@@ -1,6 +1,6 @@
 # FDC3 Demo Desktop Agent
 
-This repository contains a [FDC3 2.0 Conformant](../../fdc3-conformance/README.md) Desktop Agent reference implementation, built on top of the [FDC3 Web Implementation](../fdc3-web-impl/README.md).
+This repository contains an [FDC3 3.0 Conformant](../../fdc3-conformance/README.md) Desktop Agent reference implementation, built on top of the [FDC3 Web Implementation](../fdc3-web-impl/README.md).
 
 ## Running The Demo
 
@@ -72,9 +72,7 @@ Here are screenshots of the two different UIs provided for intent resolution:
 
 ![AppD Configuration](./images/appd.png)
 
-The Demo Desktop Agent doesn't provide UI for selecting the app directory, however it is trivial to change this by modifying the `dummy-desktop-agent.ts` file.  You are able to specify as many different app directories to load as you want.  Note, `appd.json` and `local-conformance-2_0.v2.json` are provided in the `static/da` directory for you.
-
-The `appd.json` file is a simple JSON file that specifies some demo apps (see below).  The `local-conformance-2_0.v2.json` file is for running 2.0 conformance tests.
+The Demo Desktop Agent doesn't provide UI for selecting the app directory, however it is trivial to change this by modifying the `dummy-desktop-agent.ts` file. You are able to specify as many different app directories to load as you want. The demo loads its local `appd.json` plus the app directories served by the Workbench, example apps, and current conformance runner when those services are available.
 
 ## Demo Applications
 
@@ -96,4 +94,4 @@ As shown in the screenshot above, there are 7 demo applications provided by Demo
 
 - **Intent Result 2**: On launch, raises a `ViewNews` intent with an `fdc3.instrument` context.    Tip: Try changing the intent resolver in the UI to the default one and see what happens.
 
-- **FDC3 Conformance 2.0**: This app is used to run the FDC3 2.0 conformance tests.  If you start with `npm run dev` from the root directory, the conformance tests will be started and running on their own port.   See [/toolbox/fdc3-conformance/README.md#running-the-conformance-tests](../../fdc3-conformance/README.md#running-the-conformance-tests#running-the-conformance-tests) for more details.  
+- **FDC3 Conformance Framework**: This app runs the current FDC3 3.0 conformance tests. If you start with `npm run dev` from the root directory, the conformance runner starts on its own port. See [the conformance test instructions](../../fdc3-conformance/README.md#running-the-conformance-tests) for more details.

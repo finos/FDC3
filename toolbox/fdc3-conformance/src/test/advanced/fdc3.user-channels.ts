@@ -24,7 +24,11 @@ export default async () => {
     beforeEach(cc.leaveChannel);
 
     afterEach(async function afterEach() {
-      if (this.currentTest?.title !== UCFilteredUsageJoin && !this.currentTest?.title.startsWith('(ChannelError'))
+      if (
+        this.currentTest?.title !== UCFilteredUsageJoin &&
+        this.currentTest?.title !== UCArrayEmptyContext1 &&
+        !this.currentTest?.title.startsWith('(ChannelError')
+      )
         await cc.closeMockApp(this.currentTest?.title ?? 'Some-Test-Title');
     });
 
