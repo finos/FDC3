@@ -1,11 +1,11 @@
 import { FDC3_VERSION, GetAgentParams, WebDesktopAgentType } from '@finos/fdc3-standard';
 import { ConnectionDetails } from '../messaging/MessagePortMessaging.js';
 import { Logger } from '../util/Logger.js';
-import { BrowserTypes } from '@finos/fdc3-schema';
+import { BrowserTypesCore } from '@finos/fdc3-schema';
 import { DEFAULT_MESSAGE_EXCHANGE_TIMEOUT_MS, DEFAULT_APP_LAUNCH_TIMEOUT_MS } from './Timeouts.js';
-const { isWebConnectionProtocol2LoadURL, isWebConnectionProtocol3Handshake } = BrowserTypes;
-type WebConnectionProtocolMessage = BrowserTypes.WebConnectionProtocolMessage;
-type WebConnectionProtocol1Hello = BrowserTypes.WebConnectionProtocol1Hello;
+const { isWebConnectionProtocol2LoadURL, isWebConnectionProtocol3Handshake } = BrowserTypesCore;
+type WebConnectionProtocolMessage = BrowserTypesCore.WebConnectionProtocolMessage;
+type WebConnectionProtocol1Hello = BrowserTypesCore.WebConnectionProtocol1Hello;
 
 export class HelloHandler {
   constructor(
