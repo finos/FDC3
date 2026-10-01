@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
-
+* Added `StartPayment` intent and `fdc3.payment` context type for ISO 20022 institutional payment settlement bridging. ([#2204](https://github.com/finos/FDC3/pull/2204))
 * Integrated Redocusaurus to render the App Directory OpenAPI documentation, updated `docusaurus.config.js` and sidebars to point to the new Redoc routes, and removed obsolete generated `app-directory.html` files.
 * Added basic conformance tests verifying that `DesktopAgent.addEventListener` is callable and returns a `Listener` for filtered and unfiltered event listeners. ([#1774](https://github.com/finos/FDC3/issues/1774))
 * Added CI dependency checks for the root package and every npm workspace, with documented baselines of existing unused-dependency findings.
