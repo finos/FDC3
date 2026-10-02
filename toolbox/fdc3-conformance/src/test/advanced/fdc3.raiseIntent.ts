@@ -8,7 +8,6 @@ import {
   Intent,
   ControlContextType,
 } from '../support/intent-support';
-import { closeMockAppWindow } from '../fdc3-conformance-utils';
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md
@@ -25,7 +24,7 @@ export default async () =>
     });
 
     afterEach(async function afterEach() {
-      await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test');
+      await control.closeMockAppIfOpened(this.currentTest?.title ?? 'Unknown Test');
 
       if (errorListener) {
         errorListener.unsubscribe();
@@ -38,7 +37,15 @@ export default async () =>
     it(RaiseIntentSingleResolve, async () => {
       errorListener = await control.listenForError();
       const result = control.receiveContext(ControlContextType.A_TESTING_INTENT_LISTENER_TRIGGERED);
-      const intentResolution = await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextX);
+      const intentResolution = await control.raiseIntent(
+        Intent.aTestingIntent,
+        ContextType.testContextX,
+        undefined,
+        0,
+        undefined,
+        undefined,
+        RaiseIntentSingleResolve
+      );
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       await result;
     });
@@ -48,9 +55,15 @@ export default async () =>
     it(RaiseIntentTargetedAppResolve, async () => {
       errorListener = await control.listenForError();
       const result = control.receiveContext(ControlContextType.SHARED_TESTING_INTENT1_LISTENER_TRIGGERED);
-      const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent1, ContextType.testContextX, {
-        appId: IntentApp.IntentAppB,
-      });
+      const intentResolution = await control.raiseIntent(
+        Intent.sharedTestingIntent1,
+        ContextType.testContextX,
+        { appId: IntentApp.IntentAppB },
+        0,
+        undefined,
+        undefined,
+        RaiseIntentTargetedAppResolve
+      );
       control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
       await result;
     });
@@ -63,9 +76,10 @@ export default async () =>
       const confirmAppOpened = control.receiveContext('intent-app-a-opened');
       const result = control.receiveContext(ControlContextType.A_TESTING_INTENT_LISTENER_TRIGGERED);
 
-      const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
+      const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA, RaiseIntentTargetedInstanceResolveOpen);
       await confirmAppOpened;
 
+      // raiseIntent targets the already-running instance, so no additional mock app is opened
       const intentResolution = await control.raiseIntent(
         Intent.aTestingIntent,
         ContextType.testContextX,
@@ -86,7 +100,10 @@ export default async () =>
       const result = control.receiveContext(ControlContextType.A_TESTING_INTENT_LISTENER_TRIGGERED);
 
       const appOpen = control.receiveContext(ControlContextType.INTENT_APP_A_OPENED, 2000, 1);
-      const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
+      const appIdentifier = await control.openIntentApp(
+        IntentApp.IntentAppA,
+        RaiseIntentTargetedInstanceResolveFindInstances
+      );
 
       await appOpen;
 
@@ -94,6 +111,7 @@ export default async () =>
       control.validateInstances(instances, 1, appIdentifier.instanceId);
       await confirmAppOpened;
 
+      // raiseIntent targets the already-running instance, so no additional mock app is opened
       const intentResolution = await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextX, instances[0]);
       await result;
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
@@ -111,7 +129,7 @@ export default async () =>
       const result = control.receiveContext(ControlContextType.A_TESTING_INTENT_LISTENER_TRIGGERED);
 
       // Start an instance of intent-a up front so there is an existing instance available
-      const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
+      const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA, RaiseIntentNewInstanceForced);
       await appOpen;
       const instancesBefore = await control.findInstances(IntentApp.IntentAppA);
       control.validateInstances(instancesBefore, 1, appIdentifier.instanceId);
@@ -123,7 +141,8 @@ export default async () =>
         { appId: IntentApp.IntentAppA },
         0,
         undefined,
-        true
+        true,
+        RaiseIntentNewInstanceForced
       );
       await result;
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
@@ -143,12 +162,13 @@ export default async () =>
       const result = control.receiveContext(ControlContextType.A_TESTING_INTENT_LISTENER_TRIGGERED);
 
       // Start an instance of intent-a up front
-      const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
+      const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA, RaiseIntentExistingInstanceRequired);
       await appOpen;
       const instancesBefore = await control.findInstances(IntentApp.IntentAppA);
       control.validateInstances(instancesBefore, 1, appIdentifier.instanceId);
 
-      // Raise the intent targeting the appId with newInstance=false - the existing instance MUST be used
+      // Raise the intent targeting the appId with newInstance=false - the existing instance MUST be used,
+      // so no additional mock app is opened
       const intentResolution = await control.raiseIntent(
         Intent.aTestingIntent,
         ContextType.testContextX,
@@ -194,7 +214,9 @@ export default async () =>
         ContextType.privateChannelDetails,
         undefined,
         undefined,
-        { key: privChan2.id }
+        { key: privChan2.id },
+        undefined,
+        PrivateChannelsAreNotAppChannels
       );
       control.validateIntentResolution(IntentApp.IntentAppJ, intentResolution);
       const result = await control.getIntentResult(intentResolution);
@@ -206,9 +228,15 @@ export default async () =>
     it(PrivateChannelsLifecycleEvents, async () => {
       errorListener = await control.listenForError();
       const onUnsubscribeReceiver = control.receiveContext(ControlContextType.ON_UNSUBSCRIBE_TRIGGERED);
-      const intentResolution = await control.raiseIntent(Intent.kTestingIntent, ContextType.testContextX, {
-        appId: IntentApp.IntentAppK,
-      });
+      const intentResolution = await control.raiseIntent(
+        Intent.kTestingIntent,
+        ContextType.testContextX,
+        { appId: IntentApp.IntentAppK },
+        0,
+        undefined,
+        undefined,
+        PrivateChannelsLifecycleEvents
+      );
       control.validateIntentResolution(IntentApp.IntentAppK, intentResolution);
       const result = await control.getIntentResult(intentResolution);
       control.validateIntentResult(result, IntentResultType.PrivateChannel);
