@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 /**
  * Custom Mocha reporter that shows an amber in-progress indicator when each test
  * starts, then updates the indicator to a green tick or red cross when the test completes.
@@ -60,6 +61,8 @@ export class ProgressReporter extends Mocha.reporters.Base {
     runner.on('test', test => this.onTest(test));
     runner.on('pass', test => this.onPass(test));
     runner.on('fail', (test, err) => this.onFail(test, err));
+    runner.on('pending', test => this.onPending(test));
+    runner.on('test end', () => this.updateStats());
     runner.on('end', () => this.onEnd());
   }
 
@@ -83,8 +86,7 @@ export class ProgressReporter extends Mocha.reporters.Base {
     if (this.suiteStack.length > 1) this.suiteStack.pop();
   }
 
-  private onTest(test: Mocha.Test) {
-    console.log('Executing test: ', test.title);
+  private createRunnableElement(test: Mocha.Runnable): HTMLElement {
     const li = document.createElement('li');
     li.className = 'test running';
     const h2 = document.createElement('h2');
@@ -93,6 +95,17 @@ export class ProgressReporter extends Mocha.reporters.Base {
     this.suiteStack[this.suiteStack.length - 1].appendChild(li);
     this.testElements.set(test.fullTitle(), li);
     li.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    return li;
+  }
+
+  private onTest(test: Mocha.Test) {
+    console.log('Executing test: ', test.title);
+    this.createRunnableElement(test);
+  }
+
+  private onPending(test: Mocha.Test) {
+    const li = this.testElements.get(test.fullTitle()) ?? this.createRunnableElement(test);
+    li.className = 'test pending';
   }
 
   private onPass(test: Mocha.Test) {
@@ -105,23 +118,23 @@ export class ProgressReporter extends Mocha.reporters.Base {
     this.updateStats();
   }
 
-  private onFail(test: Mocha.Test, err: Error) {
+  private onFail(test: Mocha.Test | Mocha.Hook, err: Error) {
     console.log('Test FAILED: ', test.title);
-    const li = this.testElements.get(test.fullTitle());
-    if (li) {
-      li.className = 'test fail';
-      this.addDuration(li, test);
-      const pre = document.createElement('pre');
-      pre.className = 'error';
-      pre.textContent = err.message;
-      li.appendChild(pre);
-    }
+    // Hooks emit failures without a preceding "test" event, so need their own row.
+    const li = this.testElements.get(test.fullTitle()) ?? this.createRunnableElement(test);
+    li.className = 'test fail';
+    this.addDuration(li, test);
+    const pre = document.createElement('pre');
+    pre.className = 'error';
+    pre.textContent = err.stack || err.message || String(err);
+    li.appendChild(pre);
     this.updateStats();
   }
 
   private onEnd() {
     clearInterval(this.durationTimer);
     this.updateDuration();
+    this.updateStats();
   }
 
   private getSpeedClass(test: Mocha.Test): string {
@@ -132,7 +145,7 @@ export class ProgressReporter extends Mocha.reporters.Base {
     return 'fast';
   }
 
-  private addDuration(li: HTMLElement, test: Mocha.Test) {
+  private addDuration(li: HTMLElement, test: Mocha.Runnable) {
     if (test.duration !== undefined) {
       const h2 = li.querySelector('h2')!;
       const span = document.createElement('span');
@@ -168,8 +181,9 @@ export class ProgressReporter extends Mocha.reporters.Base {
 
     // Draw progress ring
     const total = this.runner.total;
-    const completed = passes + failures;
-    const percent = total > 0 ? completed / total : 0;
+    // Mocha's failures include hooks; tests counts only completed tests, including pending tests.
+    const completed = this.stats.tests;
+    const percent = total > 0 ? Math.min(completed / total, 1) : 0;
     const ctx = this.canvas.getContext('2d')!;
     const x = this.canvas.width / 2;
     const y = this.canvas.height / 2;

@@ -92,6 +92,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 * Fixed startup and teardown races in instance, destructured-method, and metadata conformance tests by waiting for each mock app's listeners and closing every opened instance, including after assertion failures.
 * Fixed the targeted-instance intent rejection test to wait for readiness, filter App A's listener to its declared context types, and always clean up the opened instance.
+* Fixed the conformance reporter to display setup and cleanup hook failures and pending tests, and calculate completion from finished tests without counting hook failures as extra tests.
 
 ## [npm v2.2.3] - 2026-04-15
 
