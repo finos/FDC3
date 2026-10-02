@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import { APIDocumentation } from '../support/apiDocuments';
 import { MetadataFdc3Api, MetadataValidator } from '../support/metadata-support';
-import { closeMockAppWindow } from '../fdc3-conformance-utils';
 import { handleFail } from '../../utils';
 
 const getMetadataDocs = '\r\nDocumentation: ' + APIDocumentation.appMetadata + '\r\nCause: ';
@@ -10,8 +9,8 @@ const api = new MetadataFdc3Api();
 
 export default async () =>
   describe('fdc3.getAppMetadata', () => {
-    after(async () => {
-      await closeMockAppWindow(appInstanceMetadata);
+    afterEach(async function afterEach() {
+      await api.closeMockAppIfOpened(this.currentTest?.title ?? 'Unknown Test');
     });
 
     it('Method is callable', async () => {
@@ -35,10 +34,10 @@ export default async () =>
     const appInstanceMetadata = '(AppInstanceMetadata) App instance metadata is valid';
     it(appInstanceMetadata, async () => {
       try {
-        const appIdentifier1 = await api.openMetadataApp();
+        const appIdentifier1 = await api.openMetadataApp(undefined, appInstanceMetadata);
         validator.validateAppIdentifier(appIdentifier1);
 
-        const appIdentifier2 = await api.openMetadataApp(); //open a second instance of the same app
+        const appIdentifier2 = await api.openMetadataApp(undefined, appInstanceMetadata); //open a second instance of the same app
         validator.validateAppIdentifier(appIdentifier2);
 
         // check instanceId is different for both instantiations of the app
