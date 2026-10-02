@@ -9,8 +9,10 @@ getAgent().then(async fdc3 => {
   await closeWindowOnCompletion(fdc3);
 
   //used in 'Raise Intent Result (void result)' and 'Raise Intent (Ignoring any results)'
-  await fdc3.addIntentListener(
+  // Match the AppD declaration: an unfiltered listener would also accept testContextY.
+  await fdc3.addIntentListenerWithContext(
     Intent.aTestingIntent,
+    [ContextType.testContextX, ContextType.testContextZ],
     async (context: IntentUtilityContext, metadata?: ContextMetadata): Promise<IntentResult> => {
       validateContext(fdc3, context.type, ContextType.testContextX);
       await delayExecution(context.delayBeforeReturn);

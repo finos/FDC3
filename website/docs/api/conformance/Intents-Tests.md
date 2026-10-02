@@ -116,8 +116,11 @@ Finally, please note that this is a larger set of apps than were required for 1.
   - **Note:  Test will need an extended timeout to allow for this to be returned in time by the desktop agent, which will have a vendor-defined timeout.**
 - `RaiseIntentFailTargetedAppInstanceResolve1` ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue): Perform above test, but:
   - First spawn an instance of App **A** and collect its `AppIdentifier` with `const appIdentifier = await fdc3.open({appId:"<A's-appId>"})`.
+  - Wait for that instance's readiness message to confirm it has registered its intent and test control listeners. Initializing FDC3 does not guarantee these listeners are ready.
+  - For FDC3 3.0, register A's `aTestingIntent` listener with `addIntentListenerWithContext` for its declared context types (`testContextX` and `testContextZ`), so a running instance does not accept `testContextY` through an unfiltered listener.
   - Then use `fdc3.raiseIntent("aTestingIntent",testContextY,appIdentifier)` to target that instance.  
   - You should receive a JavaScript Error with the message `ResolveError.NoAppsFound` (since A doesn't support this context type).
+  - Close the instance after the test, including when the assertion fails.
 - `RaiseIntentFailTargetedAppInstanceResolve2` ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue): Perform above test, but:
   - Use `fdc3.raiseIntent("aTestingIntent",testContextX, {appId:"<A's-appId>",instanceId:"NonExistentInstanceId"})`.  
   - You should receive a JavaScript Error with the message `ResolveError.TargetInstanceUnavailable`.

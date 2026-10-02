@@ -1,10 +1,11 @@
+// SPDX-License-Identifier: Apache-2.0
 import { DesktopAgent, getAgent, ResolveError } from '@finos/fdc3';
 import { assert, expect } from 'chai';
 import { APIDocumentation } from '../support/apiDocuments';
-import { ContextType, IntentApp, Intent, RaiseIntentControl } from '../support/intent-support';
+import { ContextType, ControlContextType, IntentApp, Intent, RaiseIntentControl } from '../support/intent-support';
 import constants from '../../constants';
 import { wait } from '../../utils';
-import { closeMockAppWindow } from '../fdc3-conformance-utils';
+import { closeMockAppWindow, listenForMockAppReady } from '../fdc3-conformance-utils';
 
 const raiseIntentDocs = '\r\nDocumentation: ' + APIDocumentation.raiseIntent + '\r\nCause';
 
@@ -36,12 +37,21 @@ export default async () =>
     const RaiseIntentFailTargetedAppInstanceResolve1 =
       "(RaiseIntentFailTargetedAppInstanceResolve1) Should fail to raise intent when targeted app intent-a instance, context 'testContextY', intent 'aTestingIntent' and AppIdentifier IntentAppAId do not correlate";
     it(RaiseIntentFailTargetedAppInstanceResolve1, async () => {
+      const readiness = await listenForMockAppReady(fdc3, ControlContextType.INTENT_APP_A_OPENED);
+      let opened = false;
       try {
         const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
-        await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextY, appIdentifier);
-        assert.fail('Expected the raised intent to be rejected with an error but no error was thrown');
-      } catch (ex) {
-        expect(ex, raiseIntentDocs).to.have.property('message', ResolveError.NoAppsFound);
+        opened = true;
+        await readiness.waitFor(appIdentifier);
+        try {
+          await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextY, appIdentifier);
+          assert.fail('Expected the raised intent to be rejected with an error but no error was thrown');
+        } catch (ex) {
+          expect(ex, raiseIntentDocs).to.have.property('message', ResolveError.NoAppsFound);
+        }
+      } finally {
+        readiness.unsubscribe();
+        if (opened) await closeMockAppWindow(RaiseIntentFailTargetedAppInstanceResolve1);
       }
     });
 

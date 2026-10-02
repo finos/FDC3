@@ -91,6 +91,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Fixed the FDC3 for Web reference implementation to advertise FDC3 3.0 consistently through `getInfo()` and both Web Connection Protocol handshake paths, allowing it to pass the FDC3 3.0 conformance version check. Also prevented the app-channel and user-channel empty-array conformance tests from running mock-app cleanup when they did not open a mock app. ([#2252](https://github.com/finos/FDC3/issues/2252))
 
 * Fixed startup and teardown races in instance, destructured-method, and metadata conformance tests by waiting for each mock app's listeners and closing every opened instance, including after assertion failures.
+* Fixed the targeted-instance intent rejection test to wait for readiness, filter App A's listener to its declared context types, and always clean up the opened instance.
 
 ## [npm v2.2.3] - 2026-04-15
 
