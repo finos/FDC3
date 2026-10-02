@@ -1,45 +1,58 @@
 {
-  "name": "fdc3-conformance",
+  "name": "@finos/fdc3-conformance",
   "version": "2.2.3",
+  "description": "Static FDC3 2.2 conformance test site, local App Directory records, and a server to run them",
+  "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/finos/FDC3.git"
+    "url": "git+https://github.com/finos/FDC3.git",
+    "directory": "toolbox/fdc3-conformance"
   },
-  "private": true,
+  "publishConfig": {
+    "access": "public",
+    "tag": "latest"
+  },
   "license": "Apache-2.0",
+  "bin": {
+    "fdc3-conformance": "./bin/serve.mjs"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "!dist/**/*.d.ts"
+  ],
   "scripts": {
     "copy": "shx mkdir -p ./dist && shx cp -R static/* ./dist",
-    "build": "webpack build && npm run copy",
-    "serve": "npx http-server ./dist -p 3001 -c-1",
+    "build": "npm run clean && webpack build && npm run copy",
+    "prepack": "npm run build",
+    "serve": "node ./bin/serve.mjs",
+    "start": "node ./bin/serve.mjs",
     "dev": "npm run clean && npm run build && npm run serve",
     "clean": "rimraf dist"
   },
-  "dependencies": {
-    "@finos/fdc3": "2.2.3",
-    "buffer": "^6.0.3",
-    "chai": "^4.3.6",
-    "get-func-name": "^2.0.2",
-    "mocha": "^10.0.0",
-    "process": "^0.11.10",
-    "source-map-support": "^0.5.21",
-    "stream-browserify": "^3.0.0",
-    "type-detect": "^4.1.0",
-    "util": "^0.12.4",
-    "window": "^1.0.0"
-  },
   "devDependencies": {
+    "@finos/fdc3": "2.2.3",
     "@types/chai": "^4.3.0",
     "@types/mocha": "^10.0.10",
+    "buffer": "^6.0.3",
+    "chai": "^4.3.6",
     "css-loader": "^6.7.2",
-    "http-server": "^14.1.1",
+    "get-func-name": "^2.0.2",
+    "mocha": "^10.0.0",
     "prettier": "3.4.1",
+    "process": "^0.11.10",
     "replace-in-file": "^6.3.5",
     "shx": "^0.3.4",
+    "source-map-support": "^0.5.21",
+    "stream-browserify": "^3.0.0",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.2.7",
+    "type-detect": "^4.1.0",
     "typescript": "^5.6.3",
+    "util": "^0.12.4",
     "webpack": "^5.69.1",
-    "webpack-cli": "^4.9.2"
+    "webpack-cli": "^4.9.2",
+    "window": "^1.0.0"
   }
 }
