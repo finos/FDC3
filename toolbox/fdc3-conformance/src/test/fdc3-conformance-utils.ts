@@ -5,6 +5,25 @@ import { wait } from '../utils';
 
 declare let fdc3: DesktopAgent;
 
+/**
+ * Tracks which test ids have opened a mock app, so that cleanup code can close only the
+ * mock apps that were actually opened instead of relying on hard-coded per-test exclusion lists.
+ */
+export class MockAppTracker {
+  private readonly openedTestIds = new Set<string>();
+
+  markOpened(testId: string): void {
+    this.openedTestIds.add(testId);
+  }
+
+  async closeIfOpened(testId: string): Promise<void> {
+    if (this.openedTestIds.has(testId)) {
+      this.openedTestIds.delete(testId);
+      await closeMockAppWindow(testId);
+    }
+  }
+}
+
 export async function closeMockAppWindow(testId: string, count: number = 1) {
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   const { listenerPromise: contextPromise, listener } = await waitForContext(

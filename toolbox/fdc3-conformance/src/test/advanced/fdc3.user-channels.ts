@@ -24,12 +24,7 @@ export default async () => {
     beforeEach(cc.leaveChannel);
 
     afterEach(async function afterEach() {
-      if (
-        this.currentTest?.title !== UCFilteredUsageJoin &&
-        this.currentTest?.title !== UCArrayEmptyContext1 &&
-        !this.currentTest?.title.startsWith('(ChannelError')
-      )
-        await cc.closeMockApp(this.currentTest?.title ?? 'Some-Test-Title');
+      await cc.closeMockAppIfOpened(this.currentTest?.title ?? 'Some-Test-Title');
     });
 
     it('(ChannelErrorNoChannelFound) Should reject joinUserChannel with NoChannelFound for an unknown user channel', async function (this: Mocha.Context) {
