@@ -1,3 +1,28 @@
+const fs = require('fs');
+const path = require('path');
+
+const versionedAppDirectorySpecs = fs
+  .readdirSync(path.join(__dirname, 'static/schemas'), { withFileTypes: true })
+  .filter((directory) => {
+    if (!directory.isDirectory() || directory.name === 'next') {
+      return false;
+    }
+
+    return (
+      directory.name === '2.0' ||
+      fs.existsSync(path.join(__dirname, 'static/schemas', directory.name, 'appd.schema.json'))
+    );
+  })
+  .sort((a, b) => b.name.localeCompare(a.name, undefined, { numeric: true }))
+  .map(({ name }) => {
+    const filename = name === '2.0' ? 'app-directory.yaml' : 'appd.schema.json';
+
+    return {
+      spec: `./static/schemas/${name}/${filename}`,
+      route: `/docs/${name}/app-directory/api`,
+    };
+  });
+
 module.exports = {
   "title": "FDC3",
   "tagline": "Open standards for the financial desktop",
@@ -44,18 +69,7 @@ module.exports = {
             spec: '../packages/fdc3-standard/src/app-directory/specification/appd.schema.json',
             route: '/docs/next/app-directory/api'
           },
-          {
-            spec: './static/schemas/2.2/appd.schema.json',
-            route: '/docs/2.2/app-directory/api'
-          },
-          {
-            spec: './static/schemas/2.1/appd.schema.json',
-            route: '/docs/2.1/app-directory/api'
-          },
-          {
-            spec: './static/schemas/2.0/app-directory.yaml',
-            route: '/docs/2.0/app-directory/api'
-          }
+          ...versionedAppDirectorySpecs
         ],
         theme: {
           primaryColor: '#1890ff'
