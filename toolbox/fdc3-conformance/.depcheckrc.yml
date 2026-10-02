@@ -13,7 +13,5 @@ ignores:
   - events
   # Injected as a browser polyfill by vite.config.ts (node:path alias).
   - path-browserify
-  # Invoked by the `serve` package script.
-  - http-server
   # Invoked by the `copy` package script.
   - shx

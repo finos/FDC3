@@ -14,6 +14,7 @@ export default [
       },
     },
   },
+  { files: ['bin/**/*.mjs'], languageOptions: { globals: globals.node } },
   pluginJs.configs.recommended,
   ...tseslint.configs.recommended,
   eslintConfigPrettier,

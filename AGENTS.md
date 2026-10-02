@@ -38,7 +38,7 @@ fdc3-schema ───┘                   │                       │
 | `fdc3-commonjs` | `packages/fdc3-commonjs` | `@finos/fdc3-commonjs` | CommonJS backwards-compatibility roll-up |
 | `demo` | `toolbox/fdc3-for-web/demo` | — | Reference Desktop Agent implementation |
 | `fdc3-workbench` | `toolbox/fdc3-workbench` | — | Interactive FDC3 testing tool |
-| `fdc3-conformance` | `toolbox/fdc3-conformance` | — | Conformance test suite definitions |
+| `fdc3-conformance` | `toolbox/fdc3-conformance` | `@finos/fdc3-conformance` | Static conformance site, local AppD records, and `fdc3-conformance` server |
 
 ## Critical Relationships
 

@@ -70,8 +70,21 @@ npm run dev
 
 4.  **Set Up Your Desktop Agent**
 
-You will need to set up your desktop agent so that it has an _App Directory containing all the conformance apps_.   
-This step is vendor-dependent, but examples of `AppD` records can be found in `/toolbox/fdc3-for-web/demo/static/da/local-conformance.v2.json`.
+Point the Desktop Agent at the local App Directory served with the suite:
+
+`http://localhost:3001/directories/localhost-conformance.json`
+
+That file is `static/directories/localhost-conformance.json`. Its application URLs all use `http://localhost:3001`.
+
+### Running From The npm Package
+
+`@finos/fdc3-conformance` ships the built site and a server. From any machine with Node.js 22 or newer:
+
+```sh
+npx @finos/fdc3-conformance
+```
+
+The command serves `dist/` on port 3001 (override with `PORT`) and prints the local App Directory URL. Copy that `dist/` directory onto any static host when you want the same HTML and JavaScript on a website. `dist/directories/website-conformance.json` is the App Directory whose URLs point at `https://fdc3.finos.org`.
 
 ### Running The Tests
 
