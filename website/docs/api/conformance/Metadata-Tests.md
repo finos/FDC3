@@ -36,13 +36,15 @@ You will need to pre-populate the AppDirectory with the following items:
 
 - `AppInstanceMetadata` ![2.0+](https://img.shields.io/badge/FDC3-2.0+-blue): Perform the above steps.
 
+Wait for a readiness message from each instance before querying its metadata and performing teardown. Close both instances after the test, including when an assertion fails, and wait for both cleanup acknowledgements.
+
 ## Finding Instances
 
 | App  | Step              | Details                                                                                           |
 |------|-------------------|---------------------------------------------------------------------------------------------------|
 | Test | 1. Open1          | Open the first instance of App A using <br/> `const appIdentifier1 = await fdc3.open({appId:"<A's-appId>"})` <br/>and confirm that its `AppIdentifier` contains an `instanceId`.  |
 | Test | 2. Open2          | Open a second instance of App A using <br />`const appIdentifier2 = await fdc3.open({appId:"<A's-appId>"})` <br/>and confirm that its `AppIdentifier` contains an `instanceId` and that its value differs from that returned for the first instance. |
-| Test | 3. FindInstances  | Retrieve details of open instances of app A with <br/> `let instances = await fdc3.findInstances({appId:"<A's-appId>"})` <br/> confirm that both `appIdentifier1` and `appIdentifier2` are both present in the array. |
+| Test | 3. FindInstances  | Wait for both instances of App A to finish registering their intent and test control listeners (using a readiness message from each instance). Initializing FDC3 does not guarantee these listeners are ready. Retrieve details of open instances of app A with <br/> `let instances = await fdc3.findInstances({appId:"<A's-appId>"})` <br/> confirm that both `appIdentifier1` and `appIdentifier2` are both present in the array. |
 | Test | 4. RaiseIntent    | Use `appIdentifier1` to raise an intent and target that instance, with<br/> `const resolution = fdc3.raiseIntent("aTestingIntent",{"type":"testContextX"},appIdentifier1)` |
 | Test | 5. Confirm1       | Check that `resolution.source` matches `appIdentifier1` |
 | A    | 6. ConfirmReceipt | Ensure that the instance of app A represented by `appIdentifier1` received the raised intent |

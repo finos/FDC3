@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 import { assert, expect } from 'chai';
 import {
   AppIdentifier,
@@ -314,6 +315,7 @@ export enum ControlContextType {
   ERROR = 'error',
   A_TESTING_INTENT_LISTENER_TRIGGERED = 'aTestingIntent-listener-triggered',
   INTENT_APP_A_OPENED = 'intent-app-a-opened',
+  METADATA_APP_OPENED = 'metadata-app-opened',
   SHARED_TESTING_INTENT1_LISTENER_TRIGGERED = 'sharedTestingIntent1-listener-triggered',
   SHARED_TESTING_INTENT_2_RESULT_SENT = 'sharedTestingIntent2-result-sent',
   ON_UNSUBSCRIBE_TRIGGERED = 'onUnsubscribeTriggered',

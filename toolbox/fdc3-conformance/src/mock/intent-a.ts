@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 import { closeWindowOnCompletion, sendContextToTests, validateContext } from './mock-functions';
 import { wait } from '../utils';
 import { IntentUtilityContext } from '../context-types';
@@ -8,7 +9,7 @@ getAgent().then(async fdc3 => {
   await closeWindowOnCompletion(fdc3);
 
   //used in 'Raise Intent Result (void result)' and 'Raise Intent (Ignoring any results)'
-  fdc3.addIntentListener(
+  await fdc3.addIntentListener(
     Intent.aTestingIntent,
     async (context: IntentUtilityContext, metadata?: ContextMetadata): Promise<IntentResult> => {
       validateContext(fdc3, context.type, ContextType.testContextX);
@@ -38,16 +39,19 @@ getAgent().then(async fdc3 => {
     }
   );
 
-  fdc3.addIntentListener(Intent.sharedTestingIntent1, async (context: IntentUtilityContext): Promise<IntentResult> => {
-    validateContext(fdc3, context.type, ContextType.testContextY);
-    await delayExecution(context.delayBeforeReturn);
+  await fdc3.addIntentListener(
+    Intent.sharedTestingIntent1,
+    async (context: IntentUtilityContext): Promise<IntentResult> => {
+      validateContext(fdc3, context.type, ContextType.testContextY);
+      await delayExecution(context.delayBeforeReturn);
 
-    await sendContextToTests(fdc3, {
-      type: ControlContextType.SHARED_TESTING_INTENT1_LISTENER_TRIGGERED,
-    });
+      await sendContextToTests(fdc3, {
+        type: ControlContextType.SHARED_TESTING_INTENT1_LISTENER_TRIGGERED,
+      });
 
-    return context;
-  });
+      return context;
+    }
+  );
 
   await sendContextToTests(fdc3, {
     type: ControlContextType.INTENT_APP_A_OPENED,

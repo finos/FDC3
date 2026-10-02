@@ -1,10 +1,10 @@
+// SPDX-License-Identifier: Apache-2.0
 import { AppIdentifier, DesktopAgent, getAgent, IntentResolution, PrivateChannel } from '@finos/fdc3';
 import { expect } from 'chai';
-import constants from '../../constants';
-import { handleFail, wait } from '../../utils';
-import { closeMockAppWindow } from '../fdc3-conformance-utils';
+import { handleFail } from '../../utils';
+import { closeMockAppWindow, listenForMockAppReady } from '../fdc3-conformance-utils';
 import { APIDocumentation } from '../support/apiDocuments';
-import { ContextType, Intent, IntentApp } from '../support/intent-support';
+import { ContextType, ControlContextType, Intent, IntentApp } from '../support/intent-support';
 
 const documentation = '\r\nDocumentation: ' + APIDocumentation.desktopAgent + '\r\nCause';
 
@@ -12,13 +12,16 @@ export default async () =>
   describe('fdc3.destructuredMethods', () => {
     let fdc3: DesktopAgent;
     let openedWindows = 0;
+    let readiness: Awaited<ReturnType<typeof listenForMockAppReady>>;
 
     beforeEach(async () => {
       fdc3 = await getAgent();
       openedWindows = 0;
+      readiness = await listenForMockAppReady(fdc3, ControlContextType.INTENT_APP_A_OPENED);
     });
 
     afterEach(async function afterEach() {
+      readiness.unsubscribe();
       if (openedWindows > 0) {
         await closeMockAppWindow(this.currentTest?.title ?? 'Unknown test', openedWindows);
       }
@@ -54,8 +57,8 @@ export default async () =>
         const appIdentifier = await open({ appId: IntentApp.IntentAppA });
         openedWindows = 1;
 
-        // open() may resolve before the mock app has registered its close listener.
-        await wait(constants.ShortWait);
+        // Wait until the mock app has registered its intent and close listeners.
+        await readiness.waitFor(appIdentifier);
 
         validateAppIdentifier(appIdentifier);
       } catch (ex) {
@@ -67,11 +70,13 @@ export default async () =>
       try {
         const { findInstances, open } = fdc3;
         const appIdentifier1 = await open({ appId: IntentApp.IntentAppA });
+        openedWindows = 1;
+        await readiness.waitFor(appIdentifier1);
         const appIdentifier2 = await open({ appId: IntentApp.IntentAppA });
         openedWindows = 2;
 
         // Ensure both mock apps are ready before querying and later closing them.
-        await wait(constants.ShortWait);
+        await readiness.waitFor(appIdentifier2);
 
         const instances = await findInstances({ appId: IntentApp.IntentAppA });
 

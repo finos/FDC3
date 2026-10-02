@@ -1,4 +1,5 @@
-import { Channel, Context, DesktopAgent, Listener } from '@finos/fdc3';
+// SPDX-License-Identifier: Apache-2.0
+import { AppIdentifier, Channel, Context, DesktopAgent, Listener } from '@finos/fdc3';
 import { AppControlContext, AppControlContextListener } from '../context-types';
 import constants from '../constants';
 import { wait } from '../utils';
@@ -70,3 +71,39 @@ export const waitForContext = async (
     listener,
   };
 };
+
+/** Register before opening an app, since its readiness broadcast may precede open() resolving. */
+export async function listenForMockAppReady(agent: DesktopAgent, contextType: string) {
+  const channel = await agent.getOrCreateChannel(constants.ControlChannel);
+  const readyInstances = new Set<string>();
+  const pending = new Map<string, () => void>();
+  const key = (app: AppIdentifier) => JSON.stringify([app.appId, app.instanceId]);
+  const listener = await channel.addContextListener(contextType, (_context, metadata) => {
+    if (metadata?.source.instanceId) {
+      const instance = key(metadata.source);
+      readyInstances.add(instance);
+      pending.get(instance)?.();
+    }
+  });
+
+  return {
+    async waitFor(app: AppIdentifier): Promise<void> {
+      const instance = key(app);
+      if (readyInstances.has(instance)) return;
+      let timeout: ReturnType<typeof setTimeout> | undefined;
+      try {
+        await new Promise<void>((resolve, reject) => {
+          pending.set(instance, resolve);
+          timeout = setTimeout(
+            () => reject(new Error(`Mock app ${instance} did not broadcast ${contextType}`)),
+            constants.WaitTime
+          );
+        });
+      } finally {
+        clearTimeout(timeout);
+        pending.delete(instance);
+      }
+    },
+    unsubscribe: () => listener.unsubscribe(),
+  };
+}

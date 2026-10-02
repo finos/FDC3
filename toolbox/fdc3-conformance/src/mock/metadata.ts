@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: Apache-2.0
 import { closeWindowOnCompletion, sendContextToTests } from './mock-functions';
 import { getAgent } from '@finos/fdc3';
 import { ControlContextType } from '../test/support/intent-support';
@@ -16,4 +17,5 @@ getAgent().then(async fdc3 => {
 
     sendContextToTests(fdc3, metadataContext);
   });
+  await sendContextToTests(fdc3, { type: ControlContextType.METADATA_APP_OPENED });
 });

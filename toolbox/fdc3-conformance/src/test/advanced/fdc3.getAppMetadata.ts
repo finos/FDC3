@@ -1,7 +1,10 @@
+// SPDX-License-Identifier: Apache-2.0
+import { getAgent } from '@finos/fdc3';
 import { expect } from 'chai';
 import { APIDocumentation } from '../support/apiDocuments';
 import { MetadataFdc3Api, MetadataValidator } from '../support/metadata-support';
-import { closeMockAppWindow } from '../fdc3-conformance-utils';
+import { closeMockAppWindow, listenForMockAppReady } from '../fdc3-conformance-utils';
+import { ControlContextType } from '../support/intent-support';
 import { handleFail } from '../../utils';
 
 const getMetadataDocs = '\r\nDocumentation: ' + APIDocumentation.appMetadata + '\r\nCause: ';
@@ -10,8 +13,12 @@ const api = new MetadataFdc3Api();
 
 export default async () =>
   describe('fdc3.getAppMetadata', () => {
-    after(async () => {
-      await closeMockAppWindow(appInstanceMetadata);
+    let openedWindows = 0;
+    afterEach(async function () {
+      if (openedWindows > 0) {
+        await closeMockAppWindow(this.currentTest!.title, openedWindows);
+        openedWindows = 0;
+      }
     });
 
     it('Method is callable', async () => {
@@ -34,11 +41,16 @@ export default async () =>
 
     const appInstanceMetadata = '(AppInstanceMetadata) App instance metadata is valid';
     it(appInstanceMetadata, async () => {
+      const readiness = await listenForMockAppReady(await getAgent(), ControlContextType.METADATA_APP_OPENED);
       try {
         const appIdentifier1 = await api.openMetadataApp();
+        openedWindows++;
+        await readiness.waitFor(appIdentifier1);
         validator.validateAppIdentifier(appIdentifier1);
 
         const appIdentifier2 = await api.openMetadataApp(); //open a second instance of the same app
+        openedWindows++;
+        await readiness.waitFor(appIdentifier2);
         validator.validateAppIdentifier(appIdentifier2);
 
         // check instanceId is different for both instantiations of the app
@@ -68,6 +80,8 @@ export default async () =>
         );
       } catch (ex) {
         handleFail(getMetadataDocs, ex);
+      } finally {
+        readiness.unsubscribe();
       }
     });
   });

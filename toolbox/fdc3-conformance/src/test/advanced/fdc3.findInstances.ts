@@ -1,7 +1,9 @@
+// SPDX-License-Identifier: Apache-2.0
 import { assert, expect } from 'chai';
 import { APIDocumentation } from '../support/apiDocuments';
 import { handleFail, wrapPromise } from '../../utils';
-import { closeMockAppWindow } from '../fdc3-conformance-utils';
+import constants from '../../constants';
+import { closeMockAppWindow, listenForMockAppReady } from '../fdc3-conformance-utils';
 import { IntentUtilityContext } from '../../context-types';
 import { MetadataFdc3Api } from '../support/metadata-support';
 import { ContextType, ControlContextType, Intent, IntentApp, RaiseIntentControl } from '../support/intent-support';
@@ -11,18 +13,25 @@ const findInstancesDocs = '\r\nDocumentation: ' + APIDocumentation.findInstances
 
 export default async () =>
   describe('fdc3.findInstances', function () {
-    this.timeout(5000);
+    this.timeout(constants.TestTimeout);
 
     let control: RaiseIntentControl;
     let fdc3: DesktopAgent;
+    let openedWindows = 0;
+    let readiness: Awaited<ReturnType<typeof listenForMockAppReady>>;
 
     beforeEach(async () => {
       fdc3 = await getAgent();
       control = new RaiseIntentControl(fdc3);
+      openedWindows = 0;
+      readiness = await listenForMockAppReady(fdc3, ControlContextType.INTENT_APP_A_OPENED);
     });
 
-    after(async function after() {
-      await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test', 2);
+    afterEach(async function afterEach() {
+      readiness.unsubscribe();
+      if (openedWindows > 0) {
+        await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test', openedWindows);
+      }
     });
 
     const findInstances = '(FindInstances) valid appID when opening multiple instances of the same app';
@@ -32,7 +41,11 @@ export default async () =>
 
       try {
         const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA); // open IntentAppA
+        openedWindows++;
+        await readiness.waitFor(appIdentifier);
         const appIdentifier2 = await control.openIntentApp(IntentApp.IntentAppA); // open second instance of IntentAppA
+        openedWindows++;
+        await readiness.waitFor(appIdentifier2);
 
         //confirm that the instanceId for both app instantiations is different
         expect(
@@ -88,12 +101,10 @@ function validateInstances(instances: AppIdentifier[], appIdentifier: AppIdentif
   const compareAppIdentifiers = (a: AppIdentifier, b: AppIdentifier) =>
     a.appId === b.appId && a.instanceId === b.instanceId;
 
-  if (
-    !(
-      instances.some(instance => compareAppIdentifiers(instance, appIdentifier)) &&
-      instances.some(instance => compareAppIdentifiers(instance, appIdentifier2))
-    )
-  ) {
+  if (!(
+    instances.some(instance => compareAppIdentifiers(instance, appIdentifier)) &&
+    instances.some(instance => compareAppIdentifiers(instance, appIdentifier2))
+  )) {
     assert.fail(
       `At least one AppIdentifier object is missing from the AppIdentifier array returned after calling fdc3.findInstances(app: AppIdentifier)${findInstancesDocs}`
     );
