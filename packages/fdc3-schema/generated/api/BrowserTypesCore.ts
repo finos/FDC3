@@ -1039,7 +1039,6 @@ export interface AgentEventMessageMeta {
  * the message relates to, e.g. 'findIntent', with 'Response' appended.
  */
 export type EventMessageType =
-  | 'addEventListenerEvent'
   | 'broadcastEvent'
   | 'channelChangedEvent'
   | 'heartbeatEvent'
