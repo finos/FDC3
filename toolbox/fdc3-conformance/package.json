@@ -32,7 +32,6 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.62.1",
-    "@rollup/plugin-inject": "^5.0.5",
     "@types/chai": "^5.2.3",
     "@types/mocha": "^10.0.10",
     "http-server": "^14.1.1",

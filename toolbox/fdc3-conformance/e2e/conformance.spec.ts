@@ -9,7 +9,7 @@ import { assertConformancePassed } from './conformanceResults';
 test('runs all automated conformance tests against the reference Desktop Agent', async ({ page }) => {
   await page.goto('/static/da/index.html');
 
-  const conformanceApp = page.locator('.da-app-card').filter({ hasText: 'FDC3 2.0 Conformance Framework' });
+  const conformanceApp = page.locator('.da-app-card').filter({ hasText: 'FDC3 Conformance Framework' });
   await expect(conformanceApp).toBeVisible();
   await conformanceApp.getByRole('button', { name: 'Start' }).click();
 
