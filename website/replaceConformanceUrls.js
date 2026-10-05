@@ -36,7 +36,7 @@ function getBaseUrl() {
 }
 
 const baseUrl = getBaseUrl();
-const filePath = path.join(__dirname, 'static/toolbox/fdc3-conformance/directories/website-conformance.v2.json');
+const filePath = path.join(__dirname, 'static/toolbox/fdc3-conformance/directories/website-conformance.json');
 
 // Check if file exists
 if (!fs.existsSync(filePath)) {

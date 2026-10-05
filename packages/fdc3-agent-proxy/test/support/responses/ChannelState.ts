@@ -138,6 +138,11 @@ export class ChannelState implements AutomaticResponse {
                 signature: 'test-signature (signature part)',
               },
               custom: { key: 'value' },
+              antiReplay: {
+                iat: 1234,
+                exp: 2345,
+                jti: 'test-jti',
+              },
             }
           : null,
       },

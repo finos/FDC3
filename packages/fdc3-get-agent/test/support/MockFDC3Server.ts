@@ -16,6 +16,7 @@ import {
 } from '@finos/fdc3-schema/generated/api/BrowserTypes';
 import { AddEventListener } from './responses/AddEventListener';
 import { UnsubscribeEventListener } from './responses/UnsubscribeEventListener';
+import { FDC3_VERSION } from '@finos/fdc3-standard';
 
 export const EMBED_URL = 'http://localhost:8080/static/da/embed.html';
 export const CHANNEL_SELECTOR_URL = 'https://mock.fdc3.com/channelSelector';
@@ -135,7 +136,7 @@ export class MockFDC3Server implements FDC3Server {
                 timestamp: new Date(),
               },
               payload: {
-                fdc3Version: '2.2',
+                fdc3Version: FDC3_VERSION,
                 intentResolverUrl: this.useDefaultUIUrls ? true : INTENT_RESOLVER_URL,
                 channelSelectorUrl: this.useDefaultUIUrls ? true : CHANNEL_SELECTOR_URL,
                 messageExchangeTimeout: 1000,

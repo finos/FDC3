@@ -2,7 +2,7 @@ import { AppIdentifier, DesktopAgent, getAgent, IntentResolution, PrivateChannel
 import { expect } from 'chai';
 import constants from '../../constants';
 import { handleFail, wait } from '../../utils';
-import { closeMockAppWindow } from '../fdc3-conformance-utils';
+import { MockAppTracker } from '../fdc3-conformance-utils';
 import { APIDocumentation } from '../support/apiDocuments';
 import { ContextType, Intent, IntentApp } from '../support/intent-support';
 
@@ -11,17 +11,14 @@ const documentation = '\r\nDocumentation: ' + APIDocumentation.desktopAgent + '\
 export default async () =>
   describe('fdc3.destructuredMethods', () => {
     let fdc3: DesktopAgent;
-    let openedWindows = 0;
+    const mockAppTracker = new MockAppTracker();
 
     beforeEach(async () => {
       fdc3 = await getAgent();
-      openedWindows = 0;
     });
 
     afterEach(async function afterEach() {
-      if (openedWindows > 0) {
-        await closeMockAppWindow(this.currentTest?.title ?? 'Unknown test', openedWindows);
-      }
+      await mockAppTracker.closeIfOpened(this.currentTest?.title ?? 'Unknown test');
     });
 
     it('(DestructuredFindIntent) findIntent should remain callable when destructured', async () => {
@@ -48,11 +45,12 @@ export default async () =>
       }
     });
 
-    it('(DestructuredOpen) open should remain callable when destructured', async () => {
+    const destructuredOpen = '(DestructuredOpen) open should remain callable when destructured';
+    it(destructuredOpen, async () => {
       try {
         const { open } = fdc3;
         const appIdentifier = await open({ appId: IntentApp.IntentAppA });
-        openedWindows = 1;
+        mockAppTracker.markOpened(destructuredOpen);
 
         // open() may resolve before the mock app has registered its close listener.
         await wait(constants.ShortWait);
@@ -63,12 +61,15 @@ export default async () =>
       }
     });
 
-    it('(DestructuredFindInstances) findInstances should remain callable when destructured', async () => {
+    const destructuredFindInstances =
+      '(DestructuredFindInstances) findInstances should remain callable when destructured';
+    it(destructuredFindInstances, async () => {
       try {
         const { findInstances, open } = fdc3;
         const appIdentifier1 = await open({ appId: IntentApp.IntentAppA });
         const appIdentifier2 = await open({ appId: IntentApp.IntentAppA });
-        openedWindows = 2;
+        mockAppTracker.markOpened(destructuredFindInstances);
+        mockAppTracker.markOpened(destructuredFindInstances);
 
         // Ensure both mock apps are ready before querying and later closing them.
         await wait(constants.ShortWait);
@@ -99,11 +100,12 @@ export default async () =>
       }
     });
 
-    it('(DestructuredRaiseIntent) raiseIntent should remain callable when destructured', async () => {
+    const destructuredRaiseIntent = '(DestructuredRaiseIntent) raiseIntent should remain callable when destructured';
+    it(destructuredRaiseIntent, async () => {
       try {
         const { raiseIntent } = fdc3;
         const intentResolution = await raiseIntent(Intent.aTestingIntent, { type: ContextType.testContextX });
-        openedWindows = 1;
+        mockAppTracker.markOpened(destructuredRaiseIntent);
 
         validateIntentResolution(intentResolution);
       } catch (ex) {
@@ -111,11 +113,13 @@ export default async () =>
       }
     });
 
-    it('(DestructuredRaiseIntentForContext) raiseIntentForContext should remain callable when destructured', async () => {
+    const destructuredRaiseIntentForContext =
+      '(DestructuredRaiseIntentForContext) raiseIntentForContext should remain callable when destructured';
+    it(destructuredRaiseIntentForContext, async () => {
       try {
         const { raiseIntentForContext } = fdc3;
         const intentResolution = await raiseIntentForContext({ type: ContextType.testContextZ });
-        openedWindows = 1;
+        mockAppTracker.markOpened(destructuredRaiseIntentForContext);
 
         validateIntentResolution(intentResolution);
       } catch (ex) {

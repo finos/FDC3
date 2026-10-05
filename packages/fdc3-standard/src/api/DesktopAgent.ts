@@ -40,6 +40,10 @@ export interface DesktopAgent {
    *
    * An optional `metadata` parameter may be provided to include additional metadata such as `traceId` or `signature` with the context being passed to the opened application.
    *
+   * The promise MUST NOT resolve until the launched application has initialized FDC3, regardless of whether a context is passed. Opening an application that does not initialize FDC3, including a non-FDC3 application, MUST reject with `OpenError.ApiTimeout` after the timeout defined by the Desktop Agent.
+   *
+   * If a context is passed and the launched application initializes FDC3 but does not add a matching context listener within the timeout, the promise MUST reject with `OpenError.AppTimeout`.
+   *
    * Returns an `AppIdentifier` object with the `instanceId` field set identifying the instance of the application opened by this call.
    *
    * If an error occurs while opening the app, the promise MUST be rejected with an `Error` Object with a `message` chosen from the `OpenError` enumeration, or (if connected to a Desktop Agent Bridge) the `BridgingError` enumeration.
@@ -479,6 +483,16 @@ export interface DesktopAgent {
    * ```
    */
   addContextListener(contextType: ContextType | null, handler: ContextHandler): Promise<Listener>;
+
+  /**
+   * Adds a listener for incoming contexts using an array of context types.
+   *
+   * Pass multiple context types to listen for several types with one listener.
+   *
+   * See the single `contextType` overload above for full behavior details.
+   *
+   */
+  addContextListener(contextTypes: ContextType[], handler: ContextHandler): Promise<Listener>;
 
   /**
    * Register a handler for events from the Desktop Agent. Whenever the handler function

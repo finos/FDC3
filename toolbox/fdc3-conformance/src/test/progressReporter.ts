@@ -106,17 +106,35 @@ export class ProgressReporter extends Mocha.reporters.Base {
   }
 
   private onFail(test: Mocha.Test, err: Error) {
-    console.log('Test FAILED: ', test.title);
+    console.error(`Test FAILED: ${test.fullTitle()}\n${err.stack ?? err.message}`);
     const li = this.testElements.get(test.fullTitle());
     if (li) {
+      // Failure of a tracked `it()` test - mark its existing row as failed.
       li.className = 'test fail';
       this.addDuration(li, test);
-      const pre = document.createElement('pre');
-      pre.className = 'error';
-      pre.textContent = err.message;
-      li.appendChild(pre);
+      this.appendError(li, test, err);
+    } else {
+      // Failure of something not tracked by onTest - most commonly a before/after/beforeEach/afterEach
+      // hook. Mocha rewrites hook.title to include the test it ran for (e.g. `"after each" hook for
+      // "<test title>"`), so the error is still attributable, but there is no existing row to update.
+      // Render a dedicated row so the failure is visible instead of only being reflected in the tally.
+      const hookLi = document.createElement('li');
+      hookLi.className = 'test fail hook-failure';
+      const h2 = document.createElement('h2');
+      h2.textContent = `⚠ Hook failure: ${test.title}`;
+      hookLi.appendChild(h2);
+      this.appendError(hookLi, test, err);
+      this.suiteStack[this.suiteStack.length - 1].appendChild(hookLi);
+      hookLi.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
     this.updateStats();
+  }
+
+  private appendError(li: HTMLElement, test: Mocha.Test, err: Error) {
+    const pre = document.createElement('pre');
+    pre.className = 'error';
+    pre.textContent = `${test.fullTitle()}\n${err.stack ?? err.message}`;
+    li.appendChild(pre);
   }
 
   private onEnd() {

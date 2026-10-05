@@ -37,6 +37,20 @@ Feature: Opening and Requesting App Details
       | WCP5ValidateAppIdentityResponse | {null}                          | {null}                               | storageApp        | uuid-0                 | uuid-0        | storageApp |
       | openResponse                    | storageApp                      | uuid-0                               | {null}            | {null}                 | a1            | libraryApp |
 
+  Scenario: Opening An App Without Context, But App Does Not Initialize FDC3
+    When "libraryApp/a1" opens app "storageApp"
+    And we wait for the listener timeout
+    Then messaging will have outgoing posts
+      | msg.type     | msg.payload.error | to.instanceId | to.appId   |
+      | openResponse | ApiTimeout        | a1            | libraryApp |
+
+  Scenario: Opening An App With Context, But App Does Not Initialize FDC3
+    When "libraryApp/a1" opens app "storageApp" with context data "fdc3.instrument"
+    And we wait for the listener timeout
+    Then messaging will have outgoing posts
+      | msg.type     | msg.payload.error | to.instanceId | to.appId   |
+      | openResponse | ApiTimeout        | a1            | libraryApp |
+
   Scenario: Storage App Reconnects
     When "libraryApp/a1" opens app "storageApp"
     And "uuid-0" sends validate

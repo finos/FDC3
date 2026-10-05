@@ -216,8 +216,8 @@ async function startApp(appName: string, appRoot: string, port: number) {
     skip: (req: Request) => req.path.startsWith('/api'),
   });
 
-  // Serve index.html for unknown routes
-  app.get('*', spaIndexLimiter, (req, res, next) => {
+  // Serve index.html for unknown routes (Express 5 / path-to-regexp requires named splat)
+  app.get('/{*splat}', spaIndexLimiter, (req, res, next) => {
     if (req.path.startsWith('/api')) return next();
     const indexPath = resolveWithinRoot(normalizedAppRoot, 'index.html');
     if (fs.existsSync(indexPath)) {

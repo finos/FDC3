@@ -151,6 +151,8 @@ enum LogLevel {
 
 :::note
 
+When several FDC3-enabled applications are hosted on the same origin (e.g. `https://myplatform.example.com/trade` and `https://myplatform.example.com/watchlist`), each should be registered as a separate AppD record using a URL that includes the distinguishing path. 
+
 As web applications can navigate to or be navigated by users to different URLs and become different applications, validation of an app's identity is necessary. The web application's current URL is passed to web browser-based Desktop Agents to allow them to establish the app's identity - usually connecting it with an App Directory record already known to the Desktop Agent. For more details on identity validation see the identity validation section of the  [Web Connection Protocol (WCP)](../specs/webConnectionProtocol).
 
 :::

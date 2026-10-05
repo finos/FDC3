@@ -8,7 +8,7 @@ export default defineConfig({
     }),
   ],
   test: {
-    include: ['test/features/**/*.feature'],
+    include: ['test/features/**/*.feature', 'test/**/*.test.ts'],
     setupFiles: ['test/steps.ts'],
     testTimeout: 30000,
     reporters: ['default', 'junit', 'html'],

@@ -1,6 +1,5 @@
 import { DesktopAgent, getAgent, Listener } from '@finos/fdc3';
 import { expect } from 'chai';
-import { closeMockAppWindow } from '../fdc3-conformance-utils';
 import {
   RaiseIntentControl,
   IntentResultType,
@@ -23,7 +22,7 @@ export default async () =>
     });
 
     afterEach(async function afterEach() {
-      await closeMockAppWindow(this.currentTest?.title ?? 'Unknown test');
+      await control.closeMockAppIfOpened(this.currentTest?.title ?? 'Unknown test');
 
       if (errorListener) {
         errorListener.unsubscribe();
@@ -34,7 +33,15 @@ export default async () =>
     const RaiseIntentVoidResult0secs = '(RaiseIntentVoidResult0secs) App A receives a void IntentResult';
     it(RaiseIntentVoidResult0secs, async () => {
       errorListener = await control.listenForError();
-      const intentResolution = await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextX);
+      const intentResolution = await control.raiseIntent(
+        Intent.aTestingIntent,
+        ContextType.testContextX,
+        undefined,
+        0,
+        undefined,
+        undefined,
+        RaiseIntentVoidResult0secs
+      );
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       const intentResult = await control.getIntentResult(intentResolution);
       control.validateIntentResult(intentResult, IntentResultType.Void);
@@ -49,7 +56,10 @@ export default async () =>
         Intent.aTestingIntent,
         ContextType.testContextX,
         undefined,
-        5000
+        5000,
+        undefined,
+        undefined,
+        RaiseIntentVoidResult5secs
       );
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       const intentResultPromise = control.getIntentResult(intentResolution);
@@ -64,7 +74,15 @@ export default async () =>
     const RaiseIntentContextResult0secs = '(RaiseIntentContextResult0secs) IntentResult resolves to testContextY';
     it(RaiseIntentContextResult0secs, async () => {
       errorListener = await control.listenForError();
-      const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent1, ContextType.testContextY);
+      const intentResolution = await control.raiseIntent(
+        Intent.sharedTestingIntent1,
+        ContextType.testContextY,
+        undefined,
+        0,
+        undefined,
+        undefined,
+        RaiseIntentContextResult0secs
+      );
       control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
       const intentResult = await control.getIntentResult(intentResolution);
       control.validateIntentResult(intentResult, IntentResultType.Context, ContextType.testContextY);
@@ -79,7 +97,10 @@ export default async () =>
         Intent.sharedTestingIntent1,
         ContextType.testContextY,
         undefined,
-        5000
+        5000,
+        undefined,
+        undefined,
+        RaiseIntentContextResult5secs
       );
       control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
       const intentResultPromise = control.getIntentResult(intentResolution);
@@ -98,9 +119,15 @@ export default async () =>
         ControlContextType.SHARED_TESTING_INTENT_2_RESULT_SENT,
         constants.WaitTime
       );
-      const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent2, ContextType.testContextY, {
-        appId: IntentApp.IntentAppE,
-      });
+      const intentResolution = await control.raiseIntent(
+        Intent.sharedTestingIntent2,
+        ContextType.testContextY,
+        { appId: IntentApp.IntentAppE },
+        0,
+        undefined,
+        undefined,
+        RaiseIntentChannelResult
+      );
       control.validateIntentResolution(IntentApp.IntentAppE, intentResolution);
       const intentResultPromise = control.getIntentResult(intentResolution);
       await receiver;
@@ -119,9 +146,15 @@ export default async () =>
         ControlContextType.SHARED_TESTING_INTENT_2_RESULT_SENT,
         constants.WaitTime
       );
-      const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent2, ContextType.testContextY, {
-        appId: IntentApp.IntentAppF,
-      });
+      const intentResolution = await control.raiseIntent(
+        Intent.sharedTestingIntent2,
+        ContextType.testContextY,
+        { appId: IntentApp.IntentAppF },
+        0,
+        undefined,
+        undefined,
+        RaiseIntentPrivateChannelResult
+      );
       control.validateIntentResolution(IntentApp.IntentAppF, intentResolution);
       const intentResultPromise = control.getIntentResult(intentResolution);
       await receiver;
@@ -141,7 +174,10 @@ export default async () =>
         Intent.aTestingIntent,
         ContextType.testContextX,
         undefined,
-        61000
+        61000,
+        undefined,
+        undefined,
+        RaiseIntentVoidResult61secs
       );
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       const intentResultPromise = control.getIntentResult(intentResolution);
@@ -162,7 +198,10 @@ export default async () =>
         Intent.sharedTestingIntent1,
         ContextType.testContextY,
         undefined,
-        61000
+        61000,
+        undefined,
+        undefined,
+        RaiseIntentContextResult61secs
       );
       control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
       const intentResultPromise = control.getIntentResult(intentResolution);
@@ -178,7 +217,15 @@ export default async () =>
       '(RaiseIntentContextResultMetadata) getResultMetadata returns DA-generated metadata for a context result';
     it(RaiseIntentContextResultMetadata, async () => {
       errorListener = await control.listenForError();
-      const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent1, ContextType.testContextY);
+      const intentResolution = await control.raiseIntent(
+        Intent.sharedTestingIntent1,
+        ContextType.testContextY,
+        undefined,
+        0,
+        undefined,
+        undefined,
+        RaiseIntentContextResultMetadata
+      );
       control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
       await control.getIntentResult(intentResolution);
       const metadata = await control.getIntentResultMetadata(intentResolution);
@@ -196,7 +243,9 @@ export default async () =>
         ContextType.testContextY,
         { appId: IntentApp.IntentAppB },
         0,
-        { returnWithMetadata: 'true' }
+        { returnWithMetadata: 'true' },
+        undefined,
+        RaiseIntentContextWithMetadataResult
       );
       control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
       const intentResult = await control.getIntentResult(intentResolution);
@@ -216,9 +265,15 @@ export default async () =>
         ControlContextType.SHARED_TESTING_INTENT_2_RESULT_SENT,
         constants.WaitTime
       );
-      const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent2, ContextType.testContextY, {
-        appId: IntentApp.IntentAppE,
-      });
+      const intentResolution = await control.raiseIntent(
+        Intent.sharedTestingIntent2,
+        ContextType.testContextY,
+        { appId: IntentApp.IntentAppE },
+        0,
+        undefined,
+        undefined,
+        RaiseIntentChannelResultMetadata
+      );
       control.validateIntentResolution(IntentApp.IntentAppE, intentResolution);
       await receiver;
       await control.getIntentResult(intentResolution);
@@ -230,7 +285,15 @@ export default async () =>
       '(RaiseIntentVoidResultMetadata) getResultMetadata returns DA-generated metadata for a void result';
     it(RaiseIntentVoidResultMetadata, async () => {
       errorListener = await control.listenForError();
-      const intentResolution = await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextX);
+      const intentResolution = await control.raiseIntent(
+        Intent.aTestingIntent,
+        ContextType.testContextX,
+        undefined,
+        0,
+        undefined,
+        undefined,
+        RaiseIntentVoidResultMetadata
+      );
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       await control.getIntentResult(intentResolution);
       const metadata = await control.getIntentResultMetadata(intentResolution);

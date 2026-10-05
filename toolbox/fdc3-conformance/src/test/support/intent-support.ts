@@ -14,11 +14,13 @@ import { APIDocumentation } from './apiDocuments';
 import constants from '../../constants';
 import { appIdMatches, handleFail, wait, wrapPromise } from '../../utils';
 import { AppControlContext, IntentUtilityContext } from '../../context-types';
+import { MockAppTracker } from '../fdc3-conformance-utils';
 
 const raiseIntentDocs = '\r\nDocumentation: ' + APIDocumentation.raiseIntent + '\r\nCause';
 
 export class RaiseIntentControl {
   private readonly fdc3: DesktopAgent;
+  private readonly mockAppTracker = new MockAppTracker();
 
   constructor(fdc3: DesktopAgent) {
     this.fdc3 = fdc3;
@@ -49,12 +51,24 @@ export class RaiseIntentControl {
     });
   }
 
-  async openIntentApp(appId: string): Promise<AppIdentifier> {
+  async openIntentApp(appId: string, testId?: string): Promise<AppIdentifier> {
     try {
-      return await this.fdc3.open({ appId: appId });
+      const appIdentifier = await this.fdc3.open({ appId: appId });
+      if (testId) {
+        this.mockAppTracker.markOpened(testId);
+      }
+      return appIdentifier;
     } catch (ex) {
       handleFail('Error while attempting to open the mock app', ex);
     }
+  }
+
+  async closeMockAppIfOpened(testId: string): Promise<void> {
+    await this.mockAppTracker.closeIfOpened(testId);
+  }
+
+  markAppOpened(testId: string): void {
+    this.mockAppTracker.markOpened(testId);
   }
 
   async createAppChannel(channelId: string): Promise<Channel> {
@@ -75,7 +89,8 @@ export class RaiseIntentControl {
     appIdentifier?: AppIdentifier,
     delayBeforeReturn: number = 0,
     contextId?: { [key: string]: string },
-    newInstance?: boolean
+    newInstance?: boolean,
+    testId?: string
   ): Promise<IntentResolution> {
     const context: IntentUtilityContext = {
       type: contextType,
@@ -87,11 +102,13 @@ export class RaiseIntentControl {
     }
 
     try {
-      if (appIdentifier) {
-        return await this.fdc3.raiseIntent(intent, context, appIdentifier, newInstance);
-      } else {
-        return await this.fdc3.raiseIntent(intent, context, undefined, newInstance);
+      const intentResolution = appIdentifier
+        ? await this.fdc3.raiseIntent(intent, context, appIdentifier, newInstance)
+        : await this.fdc3.raiseIntent(intent, context, undefined, newInstance);
+      if (testId) {
+        this.mockAppTracker.markOpened(testId);
       }
+      return intentResolution;
     } catch (ex) {
       throw handleFail('', ex);
     }
@@ -170,13 +187,14 @@ export class RaiseIntentControl {
     switch (expectedIntentResultType) {
       case IntentResultType.Context: {
         if (expectedContextType) {
+          const context = intentResult as Context;
           expect(
             intentResult,
             `The promise received by Test from resolution.getResult() should resolve to a ${expectedContextType} instance`
           ).to.have.property('type');
           expect(
-            intentResult?.type,
-            `The promise received by Test from resolution.getResult() should resolve to a ${expectedContextType} instance. Instead resolved to ${intentResult?.type}`
+            context?.type,
+            `The promise received by Test from resolution.getResult() should resolve to a ${expectedContextType} instance. Instead resolved to ${context?.type}`
           ).to.be.equal(expectedContextType);
           break;
         }
@@ -190,18 +208,20 @@ export class RaiseIntentControl {
         break;
       }
       case IntentResultType.Channel: {
-        expect(intentResult).to.have.property('id');
-        expect(intentResult).to.have.property('type');
-        expect(intentResult?.type).to.be.equal('app');
-        expect(intentResult?.id).to.be.equal('test-channel');
+        const channel = intentResult as Channel;
+        expect(channel).to.have.property('id');
+        expect(channel).to.have.property('type');
+        expect(channel?.type).to.be.equal('app');
+        expect(channel?.id).to.be.equal('test-channel');
         break;
       }
       case IntentResultType.PrivateChannel: {
-        expect(intentResult).to.have.property('addEventListener');
-        expect(intentResult).to.have.property('disconnect');
-        expect(intentResult).to.have.property('id');
-        expect(intentResult).to.have.property('type');
-        expect(intentResult?.type).to.be.equal('private');
+        const channel = intentResult as PrivateChannel;
+        expect(channel).to.have.property('addEventListener');
+        expect(channel).to.have.property('disconnect');
+        expect(channel).to.have.property('id');
+        expect(channel).to.have.property('type');
+        expect(channel?.type).to.be.equal('private');
       }
     }
   }

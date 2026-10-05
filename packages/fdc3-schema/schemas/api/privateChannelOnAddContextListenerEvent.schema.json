@@ -47,12 +47,28 @@
 							"type": "null"
 						}
 					]
+				},
+				"contextTypes": {
+					"title": "Context types",
+					"description": "Array of context types the listener was added for.",
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"minItems": 1
 				}
 			},
 			"additionalProperties": false,
 			"required": [
-				"privateChannelId",
-				"contextType"
+				"privateChannelId"
+			],
+			"oneOf": [
+				{
+					"required": ["contextType"]
+				},
+				{
+					"required": ["contextTypes"]
+				}
 			]
 		}
 	}

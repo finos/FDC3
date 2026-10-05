@@ -2,7 +2,8 @@ import { When } from 'quickpickle';
 import { CustomWorld } from '../world/index.js';
 import { createMeta } from './generic.steps.js';
 import {} from '@finos/fdc3-standard';
-import { handleResolve, parseAntiReplayClaims } from '@finos/testing';
+import { handleResolve } from '@finos/cucumber-testing-steps';
+import { parseAntiReplayClaims } from '@finos/fdc3-schema/test/parseAntiReplayClaims.js';
 import { contextMap } from './generic.steps.js';
 import { BrowserTypes } from '@finos/fdc3-schema';
 
@@ -39,6 +40,25 @@ When(
       payload: {
         channelId: null, // null indicates it's added at the DesktopAgent level and listens on the current user-channel
         contextType: handleResolve(contextType, world),
+      },
+      type: 'addContextListenerRequest',
+    } as AddContextListenerRequest;
+
+    world.server.receive(message, uuid);
+  }
+);
+
+When(
+  '{string} adds a context listener on {string} with types {string}',
+  (world: CustomWorld, app: string, channelId: string, contextTypes: string) => {
+    const meta = createMeta(world, app);
+    const uuid = world.sc.getInstanceUUID(meta.source)!;
+    const types = contextTypes.split(',').map(t => t.trim());
+    const message = {
+      meta,
+      payload: {
+        channelId: handleResolve(channelId, world),
+        contextTypes: types,
       },
       type: 'addContextListenerRequest',
     } as AddContextListenerRequest;

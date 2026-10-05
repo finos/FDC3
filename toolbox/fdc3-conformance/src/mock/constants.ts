@@ -8,7 +8,10 @@ export const commands = {
   retrieveTestAppChannel: 'retrieveTestAppChannel',
   broadcastInstrumentContext: 'broadcastInstrumentContext',
   broadcastContactContext: 'broadcastContactContext',
+  broadcastPortfolioContext: 'broadcastPortfolioContext',
   joinUserChannelOne: 'joinUserChannelOne',
   broadcastInstrumentWithTraceId: 'broadcastInstrumentWithTraceId',
   broadcastInstrumentWithSignatureCustom: 'broadcastInstrumentWithSignatureCustom',
+  clearContext: 'clearContext',
+  clearContextForType: 'clearContextForType',
 };

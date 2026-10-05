@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3-context",
-  "version": "3.0.0-alpha.2",
+  "version": "3.0.0-alpha.5",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -11,6 +11,7 @@
     "tag": "latest"
   },
   "license": "Apache-2.0",
+  "sideEffects": false,
   "type": "module",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",

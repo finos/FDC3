@@ -3,7 +3,7 @@ import { io } from 'socket.io-client';
 import { v4 as uuid } from 'uuid';
 import { APP_GOODBYE, DA_HELLO, FDC3_APP_EVENT } from '../../message-types.js';
 import { DemoServerContext } from './DemoServerContext.js';
-import { FDC3_2_1_JSONDirectory } from './FDC3_2_1_JSONDirectory.js';
+import { FDC3_JSONDirectory } from './FDC3_JSONDirectory.js';
 import {
   AppRegistration,
   ChannelState,
@@ -15,6 +15,7 @@ import {
 import { UI, UI_URLS } from './util.js';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { WebConnectionProtocol3Handshake } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { FDC3_VERSION } from '@finos/fdc3';
 
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL;
 
@@ -195,7 +196,7 @@ window.addEventListener('load', () => {
   socket.on('connect', async () => {
     socket.emit(DA_HELLO, desktopAgentUUID);
 
-    const directory = new FDC3_2_1_JSONDirectory();
+    const directory = new FDC3_JSONDirectory(FDC3_VERSION);
 
     const directoryUrls = [
       'http://localhost:4005/static/generated/fdc3-example-apps.json',
@@ -393,7 +394,7 @@ window.addEventListener('load', () => {
                 timestamp: new Date(),
               },
               payload: {
-                fdc3Version: '2.2',
+                fdc3Version: FDC3_VERSION,
                 ...ui,
               },
             };
