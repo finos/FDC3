@@ -13,6 +13,7 @@ export type StandardIntent =
   | 'StartCall'
   | 'StartChat'
   | 'StartEmail'
+  | 'StartPayment'
   | 'ViewAnalysis'
   | 'ViewChat'
   | 'ViewChart'
@@ -42,6 +43,7 @@ export enum Intents {
   StartCall = 'StartCall',
   StartChat = 'StartChat',
   StartEmail = 'StartEmail',
+  StartPayment = 'StartPayment',
   ViewAnalysis = 'ViewAnalysis',
   ViewChat = 'ViewChat',
   ViewChart = 'ViewChart',

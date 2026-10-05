@@ -6,6 +6,7 @@
     "StartCall",
     "StartChat",
     "StartEmail",
+    "StartPayment",
     "ViewAnalysis",
     "ViewChat",
     "ViewChart",
