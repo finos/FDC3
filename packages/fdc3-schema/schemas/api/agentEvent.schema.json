@@ -9,7 +9,6 @@
       "title": "Event Message Type",
       "type": "string",
       "enum": [
-        "addEventListenerEvent",
         "broadcastEvent",
         "channelChangedEvent",
         "heartbeatEvent",
