@@ -59,11 +59,15 @@ var AgentError = struct {
   // Returned if the failover function is not a function, or it did not
   // resolve to one of the allowed types.
   InvalidFailover string
+  // Returned if an API call rejects after a timeout. Used where an API call
+  // is not aligned to another error enumeration.
+  ApiTimeout string
 }{
 	AgentNotFound:    "AgentNotFound",
 	AccessDenied:     "AccessDenied",
 	ErrorOnConnect:   "ErrorOnConnect",
 	InvalidFailover:  "InvalidFailover",
+	ApiTimeout:       "ApiTimeout",
 }
 ```
 
@@ -144,6 +148,11 @@ public static class ChannelError
     public static readonly string MalformedContext = nameof(MalformedContext);
 
     /// <summary>
+    /// Returned if a timeout occurs before any Channel related API call is resolved.
+    /// </summary>
+    public static readonly string ApiTimeout = nameof(ApiTimeout);
+
+    /// <summary>
     /// Returned if invalid arguments are passed to the api call.
     /// </summary>
     public static readonly string InvalidArguments = nameof(InvalidArguments);
@@ -169,11 +178,17 @@ var ChannelError = struct {
 	// context argument. Contexts should be Objects with at least a `type` field
 	// that has a `string` value.
 	MalformedContext string
+	// Returned if a timeout occurs before any Channel related API call is resolved.
+	ApiTimeout string
+	// Returned if invalid arguments are passed to the API call.
+	InvalidArguments string
 }{
 	NoChannelFound: "NoChannelFound",
 	AccessDenied:   "AccessDenied",
 	CreationFailed: "CreationFailed",
 	MalformedContext: "MalformedContext",
+	ApiTimeout: "ApiTimeout",
+	InvalidArguments: "InvalidArguments",
 }
 ```
 
@@ -205,6 +220,25 @@ enum CloseError {
    *  reason other than the app being closed.
    */
   ApiTimeout = "ApiTimeout",
+}
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+public static class CloseError
+{
+    /// <summary>
+    /// Returned if the Desktop Agent cannot close the app's window or frame.
+    /// </summary>
+    public static readonly string ErrorOnClose = nameof(ErrorOnClose);
+
+    /// <summary>
+    /// Returned if a timeout occurs before a call to Close is resolved for any
+    /// reason other than the app being closed.
+    /// </summary>
+    public static readonly string ApiTimeout = nameof(ApiTimeout);
 }
 ```
 
@@ -313,6 +347,11 @@ public static class OpenError
     public static readonly string MalformedContext = nameof(MalformedContext);
 
     /// <summary>
+    /// Experimental: Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.
+    /// </summary>
+    public static readonly string DesktopAgentNotFound = nameof(DesktopAgentNotFound);
+
+    /// <summary>
     /// Returned if the specified application launches but fails to initialize
     /// FDC3 in time, regardless of whether context was passed to `Open`.
     /// Opening a non-FDC3 application will result in this error.
@@ -351,6 +390,8 @@ var OpenError = struct {
 	// in time, regardless of whether context was passed to `fdc3.open`. Opening a
 	// non-FDC3 application will result in this error.
 	ApiTimeout string
+	// Returned if invalid arguments are passed to the API call.
+	InvalidArguments string
 }{
 	AppNotFound:         "AppNotFound",
 	ErrorOnLaunch:       "ErrorOnLaunch",
@@ -359,6 +400,7 @@ var OpenError = struct {
 	MalformedContext:    "MalformedContext",
 	DesktopAgentNotFound: "DesktopAgentNotFound",
 	ApiTimeout:           "ApiTimeout",
+	InvalidArguments:     "InvalidArguments",
 }
 ```
 
@@ -499,6 +541,18 @@ public static class ResolveError
     public static readonly string MalformedContext = nameof(MalformedContext);
 
     /// <summary>
+    /// Experimental: Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.
+    /// </summary>
+    public static readonly string DesktopAgentNotFound = nameof(DesktopAgentNotFound);
+
+    /// <summary>
+    /// Returned if a timeout occurs before the API call is resolved for any reason other than the
+    /// resolver timing out (use ResolverTimeout) or an app launched by a RaiseIntent function doesn't
+    /// add its intent listener in time (use IntentDeliveryFailed).
+    /// </summary>
+    public static readonly string ApiTimeout = nameof(ApiTimeout);
+
+    /// <summary>
     /// Returned if invalid arguments are passed to the api call.
     /// </summary>
     public static readonly string InvalidArguments = nameof(InvalidArguments);
@@ -533,6 +587,14 @@ var ResolveError = struct {
 	// invalid context argument. Contexts should be Objects with at least a `Type`
 	// field that has a `string` value.
 	MalformedContext string
+	// Experimental: Returned if the specified Desktop Agent is not found, via a connected Desktop Agent Bridge.
+	DesktopAgentNotFound string
+	// Returned if a timeout occurs before the API call is resolved for any reason other than the
+	// resolver timing out (use ResolverTimeout) or an app launched by a RaiseIntent function doesn't
+	// add its intent listener in time (use IntentDeliveryFailed).
+	ApiTimeout string
+	// Returned if invalid arguments are passed to the API call.
+	InvalidArguments string
 }{
 	NoAppsFound:               "NoAppsFound",
 	ResolverUnavailable:       "ResolverUnavailable",
@@ -542,6 +604,9 @@ var ResolveError = struct {
 	TargetInstanceUnavailable: "TargetInstanceUnavailable",
 	IntentDeliveryFailed:      "IntentDeliveryFailed",
 	MalformedContext:          "MalformedContext",
+	DesktopAgentNotFound:      "DesktopAgentNotFound",
+	ApiTimeout:                "ApiTimeout",
+	InvalidArguments:          "InvalidArguments",
 }
 ```
 
@@ -597,6 +662,11 @@ public static class ResultError
     /// throws an error.
     /// </summary>
     public static readonly string IntentHandlerRejected = nameof(IntentHandlerRejected);
+
+    /// <summary>
+    /// Returned if a timeout occurs before the GetResult() API call is resolved.
+    /// </summary>
+    public static readonly string ApiTimeout = nameof(ApiTimeout);
 }
 ```
 
@@ -611,9 +681,12 @@ var ResultError = struct {
 	// NoResultReturned Returned if the `IntentHandler` exited without returning a Promise or that
 	// Promise was not resolved with a Context or Channel object.
 	NoResultReturned string
+	// ApiTimeout Returned if a timeout occurs before the getResult() API call is resolved.
+	ApiTimeout string
 }{
 	IntentHandlerRejected: "IntentHandlerRejected",
 	NoResultReturned:      "NoResultReturned",
+	ApiTimeout:            "ApiTimeout",
 }
 ```
 
@@ -685,7 +758,7 @@ var BridgingError = struct {
 	// for that message sufficiently that it could not be processed.
 	MalformedMessage string
 }{
-	ResponseTimedOut: "ResponseTimedOut",
+	ResponseTimedOut: "ResponseToBridgeTimedOut",
 	AgentDisconnected:      "AgentDisconnected",
 	NotConnectedToBridge: "NotConnectedToBridge",
 	MalformedMessage: "MalformedMessage",

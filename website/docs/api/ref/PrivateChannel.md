@@ -51,12 +51,12 @@ type PrivateChannel struct {
 }
 
 @experimental
-func (privateChannel *PrivateChannel) AddEventListener(eventType *PrivateChannelEventTypes, handler EventHandler) <-Result[Listener] {
+func (privateChannel *PrivateChannel) AddEventListener(eventType *PrivateChannelEventTypes, handler EventHandler) <-chan Result[Listener] {
     // Implementation here
 }
 
 @experimental
-func (privateChannel *PrivateChannel) Disconnect() <-Result[any]  {
+func (privateChannel *PrivateChannel) Disconnect() <-chan Result[any]  {
     // Implementation here
 }
 ```
@@ -326,7 +326,7 @@ Task<IListener> AddEventListener(string? eventType, Fdc3EventHandler handler);
 <TabItem value="golang" label="Go">
 
 ```go
-func (privateChannel *PrivateChannel) AddEventListener(eventType *PrivateChannelEventTypes, handler EventHandler) <-Result[Listener] {
+func (privateChannel *PrivateChannel) AddEventListener(eventType *PrivateChannelEventTypes, handler EventHandler) <-chan Result[Listener] {
     // Implementation here
 }
 ```
@@ -362,8 +362,8 @@ var listener = await myPrivateChannel.AddEventListener(null, (event) => {
 <TabItem value="golang" label="Go">
 
 ```go
-listenerResult := AddEventListener(nil, func(event PrivateChannelEvent) {
-    fmt.Printf("Received event %v\n\tDetails: %v", event.Type, event.Details)
+listenerResult := <-myPrivateChannel.AddEventListener(nil, func(event PrivateChannelEvent) {
+    fmt.Printf("Received event %v\n\tDetails: %v\n", event.Type, event.Details)
 })
 ```
 
@@ -392,14 +392,14 @@ disconnect(): Promise<void>;
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-void Disconnect();
+Task Disconnect();
 ```
 
 </TabItem>
 <TabItem value="golang" label="Go">
 
 ```go
-func (privateChannel *PrivateChannel) Disconnect() <-Result[any] {
+func (privateChannel *PrivateChannel) Disconnect() <-chan Result[any] {
     // Implementation here
 }
 ```
