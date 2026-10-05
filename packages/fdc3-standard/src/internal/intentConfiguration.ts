@@ -8,6 +8,7 @@ const STANDARD_INTENTS = exhaustiveStringTuple<StandardIntent>()(
   'StartCall',
   'StartChat',
   'StartEmail',
+  'StartPayment',
   'ViewAnalysis',
   'ViewChat',
   'ViewChart',
