@@ -10,11 +10,12 @@ import {
 } from '@finos/fdc3';
 import constants from '../../constants';
 import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from '../support/channel-control';
-import { closeMockAppWindow, waitForContext } from '../fdc3-conformance-utils';
+import { MockAppTracker, waitForContext } from '../fdc3-conformance-utils';
 
 export class ChannelControlImpl implements ChannelControl {
   private readonly testAppChannelName = 'test-channel';
   private readonly fdc3: DesktopAgent;
+  private readonly mockAppTracker = new MockAppTracker();
 
   constructor(fdc3: DesktopAgent) {
     this.fdc3 = fdc3;
@@ -90,10 +91,11 @@ export class ChannelControlImpl implements ChannelControl {
 
     //Open ChannelsApp then execute commands in order
     await this.fdc3.open({ appId: 'ChannelsAppId' }, buildChannelsAppContext(commands, channelsAppConfig));
+    this.mockAppTracker.markOpened(testId);
   };
 
-  async closeMockApp(testId: string) {
-    await closeMockAppWindow(testId);
+  async closeMockAppIfOpened(testId: string) {
+    await this.mockAppTracker.closeIfOpened(testId);
   }
 
   setupAndValidateListener = async (

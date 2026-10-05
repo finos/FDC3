@@ -16,6 +16,7 @@
     "import": "./dist/index.cjs"
   },
   "license": "Apache-2.0",
+  "sideEffects": false,
   "files": [
     "dist"
   ],

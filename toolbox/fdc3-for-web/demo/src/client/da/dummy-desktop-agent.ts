@@ -15,10 +15,9 @@ import {
 import { UI, UI_URLS } from './util.js';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { WebConnectionProtocol3Handshake } from '@finos/fdc3-schema/dist/generated/api/BrowserTypes.js';
+import { FDC3_VERSION } from '@finos/fdc3';
 
 type WebConnectionProtocol2LoadURL = BrowserTypes.WebConnectionProtocol2LoadURL;
-
-const FDC3_VERSION = '3.0';
 
 function primaryIconSrc(app: DirectoryApp): string | undefined {
   const icons = app.icons;

@@ -10,7 +10,7 @@ import {
 import { Socket } from 'socket.io-client';
 import { v4 as uuid } from 'uuid';
 import { FDC3_DA_EVENT } from '../../message-types.js';
-import { AppIdentifier, AppIntent, CloseError, OpenError } from '@finos/fdc3';
+import { AppIdentifier, AppIntent, CloseError, FDC3_VERSION, OpenError } from '@finos/fdc3';
 
 enum Opener {
   Tab,
@@ -311,6 +311,6 @@ export class DemoServerContext implements ServerContext<DemoAppRegistration> {
   }
 
   fdc3Version(): string {
-    return '2.2';
+    return FDC3_VERSION;
   }
 }

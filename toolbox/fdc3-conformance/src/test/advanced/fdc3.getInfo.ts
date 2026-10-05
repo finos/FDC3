@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import { handleFail, wrapPromise } from '../../utils';
-import { closeMockAppWindow } from '../fdc3-conformance-utils';
 import { ImplementationMetadata, Listener } from '@finos/fdc3';
 import { MetadataValidator, MetadataContext, MetadataFdc3Api } from '../support/metadata-support';
 import { APIDocumentation } from '../support/apiDocuments';
@@ -31,7 +30,8 @@ export default async () =>
       }
     });
 
-    it('(GetInfo2) Returns a valid ImplementationMetadata object', async function () {
+    const getInfo2 = '(GetInfo2) Returns a valid ImplementationMetadata object';
+    it(getInfo2, async function () {
       this.timeout(10000);
 
       try {
@@ -48,7 +48,7 @@ export default async () =>
           }
         );
 
-        const appIdentifier = await api.openMetadataApp('metadataAppContext');
+        const appIdentifier = await api.openMetadataApp('metadataAppContext', getInfo2);
         validator.validateAppIdentifier(appIdentifier);
 
         await wrapper.promise; // wait for listener above to receive context
@@ -73,7 +73,7 @@ export default async () =>
         const metadata = await api.getAppMetadata();
         validator.validateAppMetadata(metadata);
       } finally {
-        await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test');
+        await api.closeMockAppIfOpened(getInfo2);
 
         if (listener) {
           listener.unsubscribe();

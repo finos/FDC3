@@ -28,6 +28,7 @@
     "lint": "eslint src/"
   },
   "dependencies": {
+    "@finos/fdc3-schema": "3.0.0-alpha.5",
     "@finos/fdc3-standard": "3.0.0-alpha.5",
     "semver": "^7.8.5"
   },

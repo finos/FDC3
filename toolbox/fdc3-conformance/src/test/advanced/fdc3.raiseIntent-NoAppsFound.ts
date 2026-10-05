@@ -21,6 +21,10 @@ export default async () =>
       control = new RaiseIntentControl(fdc3);
     });
 
+    afterEach(async function afterEach() {
+      await control.closeMockAppIfOpened(this.currentTest?.title ?? 'Unknown Test');
+    });
+
     const RaiseIntentFailedResolve =
       "(RaiseIntentFailedResolve) Should fail to raise intent when targeted app intent-a, context 'testContextY' and intent 'aTestingIntent' do not correlate";
 
@@ -37,7 +41,10 @@ export default async () =>
       "(RaiseIntentFailTargetedAppInstanceResolve1) Should fail to raise intent when targeted app intent-a instance, context 'testContextY', intent 'aTestingIntent' and AppIdentifier IntentAppAId do not correlate";
     it(RaiseIntentFailTargetedAppInstanceResolve1, async () => {
       try {
-        const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
+        const appIdentifier = await control.openIntentApp(
+          IntentApp.IntentAppA,
+          RaiseIntentFailTargetedAppInstanceResolve1
+        );
         await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextY, appIdentifier);
         assert.fail('Expected the raised intent to be rejected with an error but no error was thrown');
       } catch (ex) {
@@ -119,8 +126,10 @@ export default async () =>
         assert.fail('Expected the raised intent to be rejected with an error but no error was thrown');
       } catch (ex) {
         expect(ex, raiseIntentDocs).to.have.property('message', ResolveError.IntentDeliveryFailed);
+      } finally {
+        // IntentAppH was still opened to attempt delivery, even though it was rejected
+        control.markAppOpened(RaiseIntentFailTargetedAppResolve3);
       }
-      await closeMockAppWindow(RaiseIntentFailTargetedAppResolve3);
     }).timeout(constants.NoListenerTimeout + 1000);
 
     const RaiseIntentFailTargetedAppResolve4 =
@@ -133,7 +142,9 @@ export default async () =>
         assert.fail('Expected the raised intent to be rejected with an error but no error was thrown');
       } catch (ex) {
         expect(ex, raiseIntentDocs).to.have.property('message', ResolveError.IntentDeliveryFailed);
+      } finally {
+        // IntentAppI was still opened to attempt delivery, even though it was rejected
+        control.markAppOpened(RaiseIntentFailTargetedAppResolve4);
       }
-      await closeMockAppWindow(RaiseIntentFailTargetedAppResolve4);
     }).timeout(constants.NoListenerTimeout + 1000);
   });
