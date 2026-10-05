@@ -2,17 +2,18 @@ import { assert, expect } from 'chai';
 import { getAgent } from '@finos/fdc3';
 import { RaiseIntentControl, ContextType, ControlContextType, Intent, IntentApp } from '../support/intent-support';
 import { ContextMetadataControlContext } from '../support/context-metadata-support';
-import { closeMockAppWindow } from '../fdc3-conformance-utils';
+import { MockAppTracker } from '../fdc3-conformance-utils';
 import { wrapPromise } from '../../utils';
 import constants from '../../constants';
 
 export default async () => {
   const fdc3 = await getAgent();
   const control = new RaiseIntentControl(fdc3);
+  const mockAppTracker = new MockAppTracker();
 
   return describe('fdc3.intentContextMetadata', () => {
     afterEach(async function afterEach() {
-      await closeMockAppWindow(this.currentTest?.title ?? 'Unknown Test');
+      await mockAppTracker.closeIfOpened(this.currentTest?.title ?? 'Unknown Test');
     });
 
     const intentMetadata =
@@ -35,6 +36,7 @@ export default async () => {
       const resolution = await control.raiseIntent(Intent.lTestingIntent, ContextType.testContextX, {
         appId: IntentApp.IntentAppL,
       });
+      mockAppTracker.markOpened(intentMetadata);
       control.validateIntentResolution(IntentApp.IntentAppL, resolution);
 
       await wrapper.promise;
@@ -74,6 +76,7 @@ export default async () => {
           jti: 'anti-replay-123',
         },
       });
+      mockAppTracker.markOpened(intentMetadataWithAppMeta);
 
       await wrapper.promise;
       listener.unsubscribe();

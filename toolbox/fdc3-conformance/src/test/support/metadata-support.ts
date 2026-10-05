@@ -11,6 +11,7 @@ import {
 } from '@finos/fdc3';
 import constants from '../../constants';
 import { APIDocumentation } from './apiDocuments';
+import { MockAppTracker } from '../fdc3-conformance-utils';
 
 const getMetadataDocs = '\r\nDocumentation: ' + APIDocumentation.appMetadata + '\r\nCause: ';
 const getInfoDocs = '\r\nDocumentation: ' + APIDocumentation.getInfo + '\r\nCause';
@@ -81,19 +82,21 @@ export class MetadataValidator {
 }
 
 export class MetadataFdc3Api {
-  async openMetadataApp(contextType?: string): Promise<AppIdentifier> {
-    if (contextType) {
-      return await fdc3.open(
-        {
-          appId: 'MetadataAppId',
-        },
-        { type: contextType }
-      );
-    } else {
-      return await fdc3.open({
-        appId: 'MetadataAppId',
-      });
+  private readonly mockAppTracker = new MockAppTracker();
+
+  async openMetadataApp(contextType?: string, testId?: string): Promise<AppIdentifier> {
+    const appIdentifier = contextType
+      ? await fdc3.open({ appId: 'MetadataAppId' }, { type: contextType })
+      : await fdc3.open({ appId: 'MetadataAppId' });
+
+    if (testId) {
+      this.mockAppTracker.markOpened(testId);
     }
+    return appIdentifier;
+  }
+
+  async closeMockAppIfOpened(testId: string): Promise<void> {
+    await this.mockAppTracker.closeIfOpened(testId);
   }
 
   async getAppInstances(): Promise<AppIdentifier[]> {

@@ -22,7 +22,7 @@ export interface ChannelControl {
     notify?: boolean,
     contextId?: string
   ): Promise<void>;
-  closeMockApp(testId: string): Promise<void>;
+  closeMockAppIfOpened(testId: string): Promise<void>;
 
   // listening
   initCompleteListener(testId: string): Promise<Context>;

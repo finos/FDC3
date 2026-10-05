@@ -6,13 +6,14 @@ import { failAfterTimeout } from '../../utils';
 import { AppControlContext } from '../../context-types';
 import { OpenControl } from './open-control';
 import { APIDocumentation } from './apiDocuments';
-import { closeMockAppWindow } from '../fdc3-conformance-utils';
+import { MockAppTracker } from '../fdc3-conformance-utils';
 import { ControlContextType } from './intent-support';
 
 const openDocs = '\r\nDocumentation: ' + APIDocumentation.open + '\r\nCause:';
 
 export class OpenControlImpl implements OpenControl {
   private readonly fdc3: DesktopAgent;
+  private readonly mockAppTracker = new MockAppTracker();
 
   constructor(fdc3: DesktopAgent) {
     this.fdc3 = fdc3;
@@ -50,19 +51,19 @@ export class OpenControlImpl implements OpenControl {
     }
   };
 
-  openMockApp = async (targetApp: AppIdentifier, context?: Context) => {
+  openMockApp = async (testId: string, targetApp: AppIdentifier, context?: Context) => {
     let instanceIdentifier: AppIdentifier;
     if (context) {
       instanceIdentifier = await this.fdc3.open(targetApp, context);
     } else {
       instanceIdentifier = await this.fdc3.open(targetApp);
     }
+    this.mockAppTracker.markOpened(testId);
     return instanceIdentifier;
   };
 
-  //Close mock app using the interface implementation so that common tests can switch freely between different closeMockAppWindow implementations
-  async closeMockApp(testId: string) {
-    await closeMockAppWindow(testId);
+  async closeMockAppIfOpened(testId: string) {
+    await this.mockAppTracker.closeIfOpened(testId);
   }
 
   createTargetAppIdentifier(appId: string) {
@@ -84,7 +85,8 @@ export class OpenControlImpl implements OpenControl {
     expect(context.context?.type).to.eq(expectedContextType, openDocs);
   };
 
-  expectAppTimeoutErrorOnOpen = async (targetApp: AppIdentifier) => {
+  expectAppTimeoutErrorOnOpen = async (testId: string, targetApp: AppIdentifier) => {
+    this.mockAppTracker.markOpened(testId);
     try {
       //wait for the open promise to be rejected
       await Promise.race([
