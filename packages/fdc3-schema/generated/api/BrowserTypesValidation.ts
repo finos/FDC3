@@ -3368,7 +3368,6 @@ const typeMap: any = {
   ],
   AddIntentListenerResponseType: ['addIntentListenerResponse'],
   EventMessageType: [
-    'addEventListenerEvent',
     'broadcastEvent',
     'channelChangedEvent',
     'contextClearedEvent',

@@ -147,6 +147,8 @@ Request and response used to implement the [`DesktopAgent.addContextListener()`]
 - [`addContextListenerRequest`](pathname:///schemas/next/api/addContextListenerRequest.schema.json)
 - [`addContextListenerResponse`](pathname:///schemas/next/api/addContextListenerResponse.schema.json)
 
+The `addContextListenerRequest` payload's `contextType` and `contextTypes` fields are mutually exclusive (exactly one MUST be present). The single-context-type overloads of `addContextListener()` (where `contextType` is a `string` or `null`) MUST set the `contextType` field, while the array-of-types overload (where `contextTypes` is a `string[]`) MUST set the `contextTypes` field, sending a single registration request rather than one request per type. The Desktop Agent MUST deliver a `broadcastEvent` to the listener for any context whose type matches one of the registered types.
+
 Event message used to deliver context objects that have been broadcast to listeners:
 
 - [`broadcastEvent`](pathname:///schemas/next/api/broadcastEvent.schema.json)
@@ -541,18 +543,14 @@ The [`PrivateChannel`](../ref/PrivateChannel) interface extends [`Channel`](../r
 
 Request and response used to implement the [`PrivateChannel.addEventListener`](../ref/PrivateChannel#addeventlistener) API call:
 
-- [`privateChanneladdEventListenerRequest`](pathname:///schemas/next/api/privateChanneladdEventListenerRequest.schema.json)
-- [`privateChanneladdEventListenerResponse`](pathname:///schemas/next/api/privateChanneladdEventListenerResponse.schema.json)
+- [`privateChannelAddEventListenerRequest`](pathname:///schemas/next/api/privateChannelAddEventListenerRequest.schema.json)
+- [`privateChannelAddEventListenerResponse`](pathname:///schemas/next/api/privateChannelAddEventListenerResponse.schema.json)
 
 Event messages used to deliver events that have occurred:
 
 - [`privateChannelOnAddContextListenerEvent`](pathname:///schemas/next/api/privateChannelOnAddContextListenerEvent.schema.json)
 - [`privateChannelOnDisconnectEvent`](pathname:///schemas/next/api/privateChannelOnDisconnectEvent.schema.json)
 - [`privateChannelOnUnsubscribeEvent`](pathname:///schemas/next/api/privateChannelOnUnsubscribeEvent.schema.json)
-
-:::tip
-
-:::
 
 Message exchange for removing the event listener [`Listener.unsubscribe`](../ref/Types#listener):
 
@@ -566,12 +564,14 @@ Request and response used to implement the [`PrivateChannel.disconnect()`](../re
 - [`privateChannelDisconnectRequest`](pathname:///schemas/next/api/privateChannelDisconnectRequest.schema.json)
 - [`privateChannelDisconnectResponse`](pathname:///schemas/next/api/privateChannelDisconnectResponse.schema.json)
 
+Before completing the exchange, the Desktop Agent MUST call `Listener.unsubscribe()` for each context listener the disconnecting party had registered on the channel, emitting the corresponding [`privateChannelOnUnsubscribeEvent`](pathname:///schemas/next/api/privateChannelOnUnsubscribeEvent.schema.json) message(s) to the remote party for each. Only once all such unsubscribe events have been sent MUST the Desktop Agent emit the [`privateChannelOnDisconnectEvent`](pathname:///schemas/next/api/privateChannelOnDisconnectEvent.schema.json) message, so that the remote party's `unsubscribe` handlers always run before its `disconnect` handler for the same channel.
+
 ### Checking apps are alive
 
 Depending on the connection over which the Desktop Agent and app are connected, it may be necessary for the Desktop Agent to check whether the application is still alive. This can be done, either periodically or on demand (for example to validate options that will be provided in an [`AppIntent`](../ref/Types#appintent) as part of a `findIntentResponse` or `raiseIntentResponse` and displayed in an intent resolver interface), using the following message exchange:
 
 - [`heartbeatEvent`](pathname:///schemas/next/api/heartbeatEvent.schema.json)
-- [`heartbeatAcknowledgment`](pathname:///schemas/next/api/heartbeatAcknowledgment.schema.json)
+- [`heartbeatAcknowledgementRequest`](pathname:///schemas/next/api/heartbeatAcknowledgementRequest.schema.json)
 
 As a Desktop Agent initiated exchange, it is initiated with an `AgentEvent` message and completed via an `AppRequest` message as an acknowledgement.
 
@@ -585,7 +585,7 @@ Additional procedures are defined in the [Browser Resident Desktop Agents specif
 
 Desktop Agent implementations, such as those based on the [Browser Resident Desktop Agents specification](./browserResidentDesktopAgents) and [Web Connection Protocol](./webConnectionProtocol), may either provide their own user interfaces (or other appropriate mechanisms) for the selection of User Channels or Intent Resolution, or they may work with implementations injected into the application (for example, as described in the [Web Connection Protocol](./webConnectionProtocol#providing-channel-selector-and-intent-resolver-uis) and implemented in [`getAgent()`](../ref/GetAgent)).
 
-Where injected user interfaces are used, standardized messaging is needed to communicate with those interfaces. This is provided in the DACP via the following 'iframe' messages, which are governed by the [`Fdc3UserInterfaceMessage`](pathname:///schemas/next/api/fdc3UserInterface.schema.json) schema. The following messages are provided:
+Where injected user interfaces are used, standardized messaging is needed to communicate with those interfaces. This is provided in the DACP via the following 'iframe' messages, which are governed by the [`Fdc3UserInterfaceMessage`](pathname:///schemas/next/api/fdc3UserInterfaceMessage.schema.json) schema. The following messages are provided:
 
 - [`Fdc3UserInterfaceHello`](pathname:///schemas/next/api/fdc3UserInterfaceHello.schema.json): Sent by the iframe to its `window.parent` frame to initiate communication and to provide initial CSS to apply to the frame. This message should have a `MessagePort` appended over which further communication will be conducted.
 - [`Fdc3UserInterfaceHandshake`](pathname:///schemas/next/api/fdc3UserInterfaceHandshake.schema.json):  Response to the `Fdc3UserInterfaceHello` message sent by the application frame, which should be sent over the `MessagePort`. Includes details of the FDC3 version that the application is using.
