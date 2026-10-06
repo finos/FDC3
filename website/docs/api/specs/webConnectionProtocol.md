@@ -51,7 +51,7 @@ import { BrowserTypes } from "@finos/fdc3";
 
 :::
 
-WCP messages are derived from a base schema, [`WCPConnectionStep`](pathname:///schemas/next/api/.schema.json), which defines a common structure for the messages:
+WCP messages are derived from a base schema, [`WCPConnectionStep`](pathname:///schemas/next/api/WCPConnectionStep.schema.json), which defines a common structure for the messages:
 
 ```json
 {
