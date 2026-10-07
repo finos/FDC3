@@ -1,3 +1,4 @@
+import { beforeAll, describe, expect, it } from 'vitest';
 import { JWKSResolver } from '../src/impl/JosePublicFDC3Security';
 import { JosePrivateFDC3Security, createJosePrivateFDC3Security } from '../src/impl/JosePrivateFDC3Security';
 import { Context } from '@finos/fdc3-context';

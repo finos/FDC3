@@ -3,6 +3,7 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
+import { describe, expect, it } from 'vitest';
 import { BrowserTypes } from '@finos/fdc3-schema';
 import { AntiReplayChecker, DefaultAntiReplayChecker } from '../src/impl/AntiReplayChecker';
 

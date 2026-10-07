@@ -3,6 +3,7 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
+import { beforeAll, describe, expect, it } from 'vitest';
 import { Context } from '@finos/fdc3-context';
 import {
   AppIdentifier,
