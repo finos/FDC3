@@ -193,7 +193,7 @@ _desktopAgent.AddIntentListener<Instrument>("QuoteStream", async (context, metad
         result := make(chan types.IntentResult)
         result <- channelResult.Value
         return result
-    }
+    },
 )
 ```
 
@@ -286,7 +286,7 @@ if resolutionResult.Err != nil {
 
 result := resolutionResult.Value.GetResult()
 if channel, ok := result.Value.(Channel); ok {
-    listenerResult := <-channel.AddContextListener("price", func(quote, metadata) => {
+    listenerResult := <-channel.AddContextListener("price", func(quote IContext, metadata *ContextMetadata) {
         log.Printf("%v", quote)
     })
     if channel.Type == Private {

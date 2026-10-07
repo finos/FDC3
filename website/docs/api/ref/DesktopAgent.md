@@ -145,7 +145,7 @@ type IDesktopAgent interface {
     LeaveCurrentChannel() <-chan Result[any]
 
     // non-context events 
-    AddEventListener(type *FDC3EventTypes, handler EventHandler) <-Result[Listener];
+    AddEventListener(eventType *FDC3EventTypes, handler EventHandler) <-chan Result[Listener];
 
     //implementation info
     GetInfo() <-chan Result[ImplementationMetadata]
@@ -319,7 +319,7 @@ Task<IListener> AddEventListener(string? eventType, Fdc3EventHandler handler);
 <TabItem value="golang" label="Go">
 
 ```go
-func (desktopAgent *DesktopAgent) AddEventListener(type *FDC3EventTypes, handler EventHandler) <-Result[Listener]  { 
+func (desktopAgent *DesktopAgent) AddEventListener(eventType *FDC3EventTypes, handler EventHandler) <-chan Result[Listener]  { 
   // Implmentation here
 }
 ```
