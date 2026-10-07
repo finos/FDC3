@@ -123,5 +123,5 @@ As the method of setting the user channel is user interactive, it is either diff
 | A   | 5. Receive Context    | A receives both `fdc3.instrument` and `fdc3.contact` objects, matching the ones broadcast by B. <br />Check that `fdc3.portfolio` is NOT received. |
 
 - `UCArrayContextListeners1` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above test to verify array filtering works correctly.
-- `UCArrayNullContext1` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform above test, but in step1 use `addContextListener(["fdc3.instrument", null],handler)` to verify arrays with null behave like direct null (receives ALL contexts).
-- `UCArrayEmptyContext1` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Attempt to create a context listener with an empty array `addContextListener([],handler)` and verify context is not received.
+- `UCArrayNullContext1` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Call `addContextListener(["fdc3.instrument", null],handler)` and verify that the returned promise rejects with `ChannelError.InvalidArguments` because arrays may contain only strings.
+- `UCArrayEmptyContext1` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Call `addContextListener([],handler)` and verify that the returned promise rejects with `ChannelError.InvalidArguments` because arrays must contain at least one context type.

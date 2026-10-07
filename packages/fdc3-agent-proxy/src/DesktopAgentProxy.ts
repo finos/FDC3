@@ -2,6 +2,7 @@ import {
   AppIdentifier,
   AppMetadata,
   AppProvidableContextMetadata,
+  ChannelError,
   ContextHandler,
   ContextType,
   DesktopAgent,
@@ -93,31 +94,30 @@ export class DesktopAgentProxy implements DesktopAgent, Connectable {
   }
 
   addContextListener(contextType: ContextType | null, handler: ContextHandler): Promise<Listener>;
-  addContextListener(contextTypes: (ContextType | null)[], handler: ContextHandler): Promise<Listener>;
-  addContextListener(
-    contextTypeOrTypes: ContextType | null | (ContextType | null)[],
+  addContextListener(contextTypes: ContextType[], handler: ContextHandler): Promise<Listener>;
+  async addContextListener(
+    contextTypeOrTypes: ContextType | null | ContextType[],
     handler: ContextHandler
   ): Promise<Listener> {
     if (typeof handler !== 'function') {
-      throw new Error('Invalid arguments passed to addContextListener!');
+      throw new Error(ChannelError.InvalidArguments);
     }
 
     if (Array.isArray(contextTypeOrTypes)) {
       if (contextTypeOrTypes.length === 0) {
-        throw new Error('Empty array passed to addContextListener');
+        throw new Error(ChannelError.InvalidArguments);
       }
-      // Validate all elements are strings
       if (!contextTypeOrTypes.every(t => typeof t === 'string')) {
-        throw new Error('Invalid arguments passed to addContextListener: array must contain only strings');
+        throw new Error(ChannelError.InvalidArguments);
       }
-      return this.channels.addContextListener(handler, contextTypeOrTypes as string[]);
+      return this.channels.addContextListener(handler, contextTypeOrTypes);
     }
 
     if (typeof contextTypeOrTypes === 'string' || contextTypeOrTypes === null) {
-      return this.channels.addContextListener(handler, contextTypeOrTypes as string | null);
+      return this.channels.addContextListener(handler, contextTypeOrTypes);
     }
 
-    throw new Error('Invalid arguments passed to addContextListener!');
+    throw new Error(ChannelError.InvalidArguments);
   }
 
   getUserChannels() {

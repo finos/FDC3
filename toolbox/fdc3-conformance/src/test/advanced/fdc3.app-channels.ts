@@ -444,18 +444,29 @@ export default async () => {
     });
 
     const ACArrayEmptyContext1 =
-      '(ACArrayEmptyContext1) Should throw error when using empty array addContextListener on app channel';
+      '(ACArrayEmptyContext1) Should reject an empty array addContextListener on an app channel with InvalidArguments';
     it(ACArrayEmptyContext1, async () => {
       const testChannel = await cc.createRandomTestChannel();
+      const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A calls addContextListener with an empty array\r\n- The promise should reject with ChannelError.InvalidArguments${documentation}`;
 
-      try {
-        // Empty array should throw an error
-        await testChannel.addContextListener([] as unknown as string[], () => {});
-        assert.fail('Expected addContextListener with empty array to throw an error');
-      } catch (ex) {
-        // Expected to throw - test passes
-        expect(ex).to.be.instanceOf(Error);
-      }
+      await expectChannelError(
+        () => testChannel.addContextListener([] as string[], () => {}),
+        ChannelError.InvalidArguments,
+        errorMessage
+      );
+    });
+
+    const ACArrayNullContext1 =
+      '(ACArrayNullContext1) Should reject an array containing null addContextListener on an app channel with InvalidArguments';
+    it(ACArrayNullContext1, async () => {
+      const testChannel = await cc.createRandomTestChannel();
+      const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A calls addContextListener with ["fdc3.instrument", null]\r\n- The promise should reject with ChannelError.InvalidArguments${documentation}`;
+
+      await expectChannelError(
+        () => testChannel.addContextListener(['fdc3.instrument', null] as unknown as string[], () => {}),
+        ChannelError.InvalidArguments,
+        errorMessage
+      );
     });
   });
 };

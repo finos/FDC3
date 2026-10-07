@@ -255,7 +255,7 @@ func (ch *Channel) AddContextListenerForTypes(contextTypes []string, handler Con
 
 Adds a listener for incoming contexts of the specified _context type_ whenever a broadcast happens on this channel.
 
-Alternatively, you can pass an array of context types to listen for multiple specific types at once. Empty arrays or arrays containing non-string elements will throw an error.
+Alternatively, you can pass an array of context types to listen for multiple specific types at once. The array MUST contain at least one item and every item MUST be a string. Empty arrays or arrays containing non-string elements, including `null`, MUST cause the returned Promise to reject with `ChannelError.InvalidArguments`. To receive all context types, pass `null` directly instead of including it in an array.
 
 If, when this function is called, the channel already contains context that would be passed to the listener it is NOT called or passed this context automatically (this behavior differs from that of the [`fdc3.addContextListener`](DesktopAgent#addcontextlistener) function). Apps wishing to access to the current context of the channel should instead call the [`getCurrentContext(contextType)`](#getcurrentcontext) function.
 

@@ -102,6 +102,7 @@ export interface Channel {
    * Adds a listener for incoming contexts using an array of context types.
    *
    * Pass multiple context types to listen for several types with one listener.
+   * The array MUST contain at least one item and every item MUST be a string. Otherwise, the returned Promise MUST reject with `ChannelError.InvalidArguments`.
    *
    * See the single `contextType` overload above for full behavior details.
    *
