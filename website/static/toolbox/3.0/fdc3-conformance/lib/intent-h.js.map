@@ -1,0 +1,1 @@
+{"version":3,"file":"intent-h.js","names":[],"sources":["../../src/mock/intent-h.ts"],"sourcesContent":["import { getAgent } from '@finos/fdc3';\nimport { closeWindowOnCompletion } from './mock-functions';\n\ngetAgent().then(async fdc3 => {\n  await closeWindowOnCompletion(fdc3);\n});\n"],"mappings":"qGAGA,EAAS,CAAC,CAAC,KAAK,KAAM,IAAQ,CAC5B,MAAM,EAAwB,CAAI,CACpC,CAAC"}

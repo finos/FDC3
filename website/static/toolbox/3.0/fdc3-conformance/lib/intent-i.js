@@ -1,0 +1,2 @@
+import{t as e}from"./assets/getAgent-BN4GOEpJ.js";import{t}from"./assets/mock-functions-D9HvAfC-.js";e().then(async e=>{await t(e),e.addIntentListener(`MadeUpIntent`,async e=>e)});
+//# sourceMappingURL=intent-i.js.map

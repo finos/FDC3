@@ -1,0 +1,2 @@
+import{t as e}from"./assets/getAgent-BN4GOEpJ.js";import{n as t}from"./assets/intent-support-CkcXZXuy.js";import{n,t as r}from"./assets/mock-functions-D9HvAfC-.js";e().then(async e=>{await r(e),await e.addContextListener(`shouldNotReceiveThisContext`,async r=>{r.type!==`shouldNotReceiveThisContext`&&await n(e,{type:t.CONTEXT_RECEIVED,errorMessage:`Listener received incorrect context type. Listener listening for 'shouldNotReceiveThisContext' type received '${r.type}' type`})})});
+//# sourceMappingURL=open-a.js.map

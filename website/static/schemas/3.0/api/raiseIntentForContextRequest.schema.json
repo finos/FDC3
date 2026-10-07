@@ -1,0 +1,56 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/3.0/api/raiseIntentForContextRequest.schema.json",
+	"type": "object",
+	"title": "RaiseIntentForContext Request",
+	"description": "A request to raise an unspecified intent for a specified context.",
+	"allOf": [
+		{
+			"$ref": "appRequest.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/RaiseIntentForContextRequestType"
+				},
+				"payload": {
+					"$ref": "#/$defs/RaiseIntentForContextRequestPayload"
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"RaiseIntentForContextRequestType": {
+			"title": "RaiseIntentForContext Request Message Type",
+			"const": "raiseIntentForContextRequest"
+		},
+		"RaiseIntentForContextRequestPayload": {
+			"title": "RaiseIntentForContext Request Payload",
+			"type": "object",
+			"properties": {
+				"context": {
+					"$ref": "../context/context.schema.json"
+				},
+				"app": {
+					"$ref": "api.schema.json#/definitions/AppIdentifier"
+				},
+				"newInstance": {
+					"type": "boolean",
+					"description": "Indicates how an instance of the target application should be selected. When `true`, a new instance of the target application MUST be launched even if existing instances are available. When `false`, an existing instance MUST be used and a new instance MUST NOT be launched (if no suitable instance is available the request fails with TargetInstanceUnavailable). When omitted, the Desktop Agent applies its default resolution behavior."
+				},
+				"metadata": {
+					"title": "App-provided Context Metadata",
+					"description": "Optional metadata supplied by the calling app (`traceId`, `signature`, `antiReplay` and `custom`) to accompany the `context`. This field carries only the app-provided portion of the metadata; the Desktop Agent adds its own `source` and `timestamp` before delivering the enriched `ContextMetadata`. It MUST be omitted when the app did not supply a metadata argument to `raiseIntentForContext()`.",
+					"$ref": "api.schema.json#/definitions/AppProvidableContextMetadata"
+				}
+			},
+			"required": [
+				"context"
+			],
+			"additionalProperties": false
+		}
+	}
+}
