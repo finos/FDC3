@@ -6,6 +6,7 @@
  * (subscribe / broadcast / unsubscribe / private disconnect) across the secure WebSocket boundary.
  */
 
+import { describe, expect, it } from 'vitest';
 import { AppIdentifier, Context } from '@finos/fdc3-context';
 import { Channel, PrivateChannel } from '@finos/fdc3-standard';
 import { WebSocket } from 'ws';

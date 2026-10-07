@@ -3,6 +3,7 @@
  * Copyright FINOS FDC3 contributors - see NOTICE file
  */
 
+import { describe, expect, it } from 'vitest';
 import { Context } from '@finos/fdc3-context';
 import type { ContextMetadata } from '@finos/fdc3-standard';
 import { DefaultFDC3Handlers } from '../src/secure-boundary/FDC3Handlers';
