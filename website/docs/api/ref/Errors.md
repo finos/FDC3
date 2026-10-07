@@ -76,7 +76,7 @@ var AgentError = struct {
 
 ## `ChannelError`
 
-Contains constants representing the errors that can be encountered when calling channels using the [`joinUserChannel`](DesktopAgent#joinuserchannel) or [`getOrCreateChannel`](DesktopAgent#getorcreatechannel) methods, or the [`getCurrentContext`](Channel#getcurrentcontext), [`broadcast`](Channel#broadcast) or [`addContextListener`](Channel#addcontextlistener) methods on the `Channel` object.
+Contains constants representing the errors that can be encountered when calling channels using the [`joinUserChannel`](DesktopAgent#joinuserchannel) or [`getOrCreateChannel`](DesktopAgent#getorcreatechannel) methods, the [`addContextListener`](DesktopAgent#addcontextlistener) method on the `DesktopAgent` object, or the [`getCurrentContext`](Channel#getcurrentcontext), [`broadcast`](Channel#broadcast) or [`addContextListener`](Channel#addcontextlistener) methods on the `Channel` object.
 
 <Tabs groupId="lang">
 <TabItem value="ts" label="TypeScript/JavaScript">
@@ -200,6 +200,7 @@ var ChannelError = struct {
 - [`DesktopAgent.createPrivateChannel`](DesktopAgent#createprivatechannel)
 - [`DesktopAgent.joinUserChannel`](DesktopAgent#joinuserchannel)
 - [`DesktopAgent.getOrCreateChannel`](DesktopAgent#getorcreatechannel)
+- [`DesktopAgent.addContextListener`](DesktopAgent#addcontextlistener)
 - [`Channel.broadcast`](Channel#broadcast)
 - [`Channel.addContextListener`](Channel#addcontextlistener)
 - [`Channel.getCurrentContext`](Channel#getcurrentcontext)

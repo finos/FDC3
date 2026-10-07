@@ -129,11 +129,9 @@ Feature: Basic User Channels Support
   Scenario: Passing invalid arguments to a user channel's addContextListener fn throws an error
     Given "resultHandler" pipes context to "contexts"
     When I call "{api}" with "addContextListener" using arguments "{true}" and "{resultHandler}"
-    # Specific error message not tested as its not currently standardized
-    # TODO: Fix when #1490 is resolved
-    Then "{result}" is an error
+    Then "{result}" is an error with message "InvalidArguments"
     And I call "{api}" with "addContextListener" using arguments "{null}" and "{true}"
-    Then "{result}" is an error
+    Then "{result}" is an error with message "InvalidArguments"
 
   Scenario: You can get the details of the last context type sent
     Given "resultHandler" pipes context to "contexts"
@@ -411,7 +409,14 @@ Feature: Basic User Channels Support
     Given "emptyArray" is an empty array
     When I call "{api}" with "joinUserChannel" using argument "one"
     And I call "{api}" with "addContextListener" using arguments "{emptyArray}" and "{resultHandler}"
-    Then "{result}" is an error with message "Empty array passed to addContextListener"
+    Then "{result}" is an error with message "InvalidArguments"
+
+  Scenario: Adding a context listener with an array containing null on user channel throws error
+    Given "resultHandler" pipes context to "contexts"
+    Given "arrayWithNull" is an array of context types with null "fdc3.instrument, {null}"
+    When I call "{api}" with "joinUserChannel" using argument "one"
+    And I call "{api}" with "addContextListener" using arguments "{arrayWithNull}" and "{resultHandler}"
+    Then "{result}" is an error with message "InvalidArguments"
 
   Scenario: Array context listener replays context when joining a channel
     Given "resultHandler" pipes context to "contexts"

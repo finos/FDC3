@@ -67,8 +67,8 @@ In FDC3 3.0, support for arrays of context types was added to `addContextListene
 | A   | 5. Receive Context      | Handler receives `fdc3.instrument` and `fdc3.contact` contexts only.<br/>Verify that `fdc3.portfolio` is NOT received.                                                                   |
 
 - `ACArrayContextListeners1`: Perform above test to verify array filtering works correctly.
-- `ACArrayNullContext1`: Perform above test, but in step2 use `await testChannel.addContextListener(["fdc3.instrument", null],handler)` to verify arrays with null behave like direct null (receives ALL contexts).
-- `ACArrayEmptyContext1`: Attempt to create a context listener with an empty array `await testChannel.addContextListener([],handler)` and verify context is not recieved.
+- `ACArrayNullContext1`: Call `await testChannel.addContextListener(["fdc3.instrument", null],handler)` and verify that the returned promise rejects with `ChannelError.InvalidArguments` because arrays may contain only strings.
+- `ACArrayEmptyContext1`: Call `await testChannel.addContextListener([],handler)` and verify that the returned promise rejects with `ChannelError.InvalidArguments` because arrays must contain at least one context type.
 
 ### App Channel History
 
