@@ -26,6 +26,43 @@ interface AntiReplayClaims {
 ```
 
 </TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+interface IAntiReplayClaims
+{
+    /// <summary>
+    /// Issued-at time as a Unix timestamp (seconds since epoch).
+    /// </summary>
+    long Iat { get; }
+
+    /// <summary>
+    /// Expiration time as a Unix timestamp (seconds since epoch).
+    /// </summary>
+    long Exp { get; }
+
+    /// <summary>
+    /// Unique identifier for this signed context instance (UUID).
+    /// </summary>
+    string Jti { get; }
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type AntiReplayClaims struct {
+  // Issued-at time as a Unix timestamp (seconds since epoch).
+  Iat int64  `json:"iat"`
+  // Expiration time as a Unix timestamp (seconds since epoch).
+  Exp int64  `json:"exp"`
+  // Unique identifier for this signed context instance (UUID).
+  Jti string `json:"jti"`
+}
+```
+
+</TabItem>
 </Tabs>
 
 Anti-replay claims that MUST accompany a `DetachedSignature` to prevent a captured signed message from being resubmitted by an attacker. The `jti` is a unique token ID that receiving applications MUST record and reject if seen again within the `exp` window. Note that timestamps use Unix epoch seconds (NumericDate per [RFC 7519](https://datatracker.ietf.org/doc/html/rfc7519)), not the ISO 8601 format used elsewhere in FDC3.
@@ -84,6 +121,12 @@ interface IAppIdentifier
     /// An optional instance identifier, indicating that this object represents a specific instance of the application described.
     /// </summary>
     string? InstanceId { get; }
+
+    /// <summary>
+    /// The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to identify the Desktop Agent to target.
+    /// </summary>
+    [Experimental]
+    string? DesktopAgent { get; }
 }
 ```
 
@@ -96,6 +139,8 @@ type AppIdentifier struct {
   AppId      string `json:"appId"`
   // An optional instance identifier, indicating that this object represents a specific instance of the application described.
   InstanceId string `json:"instanceId"`
+  // Experimental: The Desktop Agent that the app is available on. Used in Desktop Agent Bridging to identify the Desktop Agent to target.
+  DesktopAgent string `json:"desktopAgent,omitempty"`
 }
 ```
 
@@ -274,6 +319,12 @@ interface IAppMetadata : IAppIdentifier
     /// channel, or channel with specified type
     /// </summary>
     string? ResultType { get; }
+
+    /// <summary>
+    /// An optional set of, implementation specific, metadata fields that can be used to disambiguate instances,
+    /// such as a window title or screen position. Must only be set if InstanceId is set.
+    /// </summary>
+    IDictionary<string, object>? InstanceMetadata { get; }
 }
 ```
 
@@ -364,7 +415,8 @@ interface AppProvidableContextMetadata {
 interface IAppProvidableContextMetadata
 {
     string? TraceId { get; set; }
-    string? Signature { get; set; }
+    IDetachedSignature? Signature { get; set; }
+    IAntiReplayClaims? AntiReplay { get; set; }
     IDictionary<string, object>? Custom { get; set; }
 }
 ```
@@ -374,9 +426,10 @@ interface IAppProvidableContextMetadata
 
 ```go
 type AppProvidableContextMetadata struct {
-  TraceId   string                 `json:"traceId,omitempty"`
-  Signature string                 `json:"signature,omitempty"`
-  Custom    map[string]interface{} `json:"custom,omitempty"`
+  TraceId    string                 `json:"traceId,omitempty"`
+  Signature  *DetachedSignature     `json:"signature,omitempty"`
+  AntiReplay *AntiReplayClaims      `json:"antiReplay,omitempty"`
+  Custom     map[string]interface{} `json:"custom,omitempty"`
 }
 ```
 
@@ -709,7 +762,7 @@ Not implemented
 
 ```go
 type DesktopAgentIdentifier struct {
-  DesktopAgent string
+  DesktopAgent string `json:"desktopAgent"`
 }
 ```
 
@@ -737,6 +790,40 @@ interface DetachedSignature {
   /** The BASE64URL-encoded digital signature computed over the protected
    *  header and the canonicalized context payload (detached). */
   readonly signature: string;
+}
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+interface IDetachedSignature
+{
+    /// <summary>
+    /// The BASE64URL-encoded JWS protected header. When decoded, contains fields including:
+    /// alg (signature algorithm), jku (JWKS URL for key verification), and kid (key identifier).
+    /// </summary>
+    string Protected { get; }
+
+    /// <summary>
+    /// The BASE64URL-encoded digital signature computed over the protected header and the
+    /// canonicalized context payload (detached).
+    /// </summary>
+    string Signature { get; }
+}
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+type DetachedSignature struct {
+  // The BASE64URL-encoded JWS protected header. When decoded, contains fields including:
+  // alg (signature algorithm), jku (JWKS URL for key verification), and kid (key identifier).
+  Protected string `json:"protected"`
+  // The BASE64URL-encoded digital signature computed over the protected header and the
+  // canonicalized context payload (detached).
+  Signature string `json:"signature"`
 }
 ```
 
@@ -1152,6 +1239,11 @@ class OptionalDesktopAgentFeatures
     /// are implemented by the Desktop Agent.
     /// </summary>
     public bool UserChannelMembershipAPIs { get; set; }
+
+    /// <summary>
+    /// Used to indicate whether the experimental Desktop Agent Bridging feature is implemented by the Desktop Agent.
+    /// </summary>
+    public bool DesktopAgentBridging { get; set; }
 }
 ```
 
@@ -1172,6 +1264,8 @@ type ImplementationMetadata struct {
     // Used to indicate whether the optional 'JoinUserChannel', 'GetCurrentChannel', and 'LeaveCurrentChannel'
     // are implemented by the Desktop Agent.
     UserChannelMembershipAPIs bool `json:"UserChannelMembershipAPIs"`
+    // Used to indicate whether the experimental Desktop Agent Bridging feature is implemented by the Desktop Agent.
+    DesktopAgentBridging bool `json:"DesktopAgentBridging"`
 	} `json:"optionalFeatures"`
   // The calling application instance's own metadata according to the Desktop Agent
   AppMetadata AppMetadata `json:"appMetadata"`
@@ -1356,12 +1450,12 @@ interface IIntentResolution
     /// </summary>
     string Intent { get; }
 
-    /// <summary>
-    /// The version number of the Intents schema being used.
-    /// </summary>
-    string? Version { get; }
-
     Task<IIntentResult> GetResult();
+
+    /// <summary>
+    /// Retrieves the ContextMetadata for the intent result.
+    /// </summary>
+    Task<IContextMetadata> GetResultMetadata();
 }
 ```
 
@@ -1374,8 +1468,6 @@ type IntentResolution struct {
   Source  AppIdentifier `json:"source"`
   // The intent that was raised.
   Intent  string        `json:"intent"`
-  // The version number of the Intents schema being used.
-  Version string        `json:"version"`
 }
 
 type IntentResult any
@@ -1511,6 +1603,13 @@ If an error occurs (i.e. an error is thrown by the handler function, the promise
 
 ```ts
 getResultMetadata(): Promise<ContextMetadata>;
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+Task<IContextMetadata> GetResultMetadata();
 ```
 
 </TabItem>

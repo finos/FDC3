@@ -54,9 +54,11 @@ interface IChannel: IIntentResult
     string Id { get; }
     ChannelType Type { get; }
     IDisplayMetadata? DisplayMetadata { get; }
-    Task Broadcast(IContext context);
+    Task Broadcast(IContext context, IAppProvidableContextMetadata? metadata = null);
     Task<IContext?> GetCurrentContext(string? contextType);
+    Task<IContextWithMetadata?> GetCurrentContextWithMetadata(string? contextType);
     Task<IListener> AddContextListener<T>(string? contextType, ContextHandler<T> handler) where T : IContext;
+    Task<IListener> AddContextListener<T>(string[] contextTypes, ContextHandler<T> handler) where T : IContext;
     Task ClearContext(string? contextType);
     Task<IListener> AddEventListener(string? eventType, Fdc3EventHandler handler);
 }
@@ -72,6 +74,7 @@ type IChannel interface {
     GetCurrentContext(contextType string) <-chan Result[IContext]
     GetCurrentContextWithMetadata(contextType string) <-chan Result[ContextWithMetadata]
     AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener]
+    AddContextListenerForTypes(contextTypes []string, handler ContextHandler) <-chan Result[Listener]
     ClearContext(contextType string) <-chan Result[any]
     AddEventListener(eventType *FDC3EventTypes, handler EventHandler) <-chan Result[Listener]
 }
@@ -91,7 +94,6 @@ const (
 	App     ChannelType = "app"
 	Private ChannelType = "private"
 	User    ChannelType = "user"
-	System  ChannelType = "system"
 )
 ```
 
@@ -166,8 +168,8 @@ public enum ChannelType
 type ChannelType string
 
 const (
+	User    ChannelType = "user"
 	App     ChannelType = "app"
-	System  ChannelType = "system"
 	Private ChannelType = "private"
 )
 ```
@@ -226,14 +228,24 @@ public addContextListener(contextTypes: string[], handler: ContextHandler): Prom
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
+// Single context type
 Task<IListener> AddContextListener<T>(string? contextType, ContextHandler<T> handler) where T : IContext;
+
+// Array of context types
+Task<IListener> AddContextListener<T>(string[] contextTypes, ContextHandler<T> handler) where T : IContext;
 ```
 
 </TabItem>
 <TabItem value="golang" label="Go">
 
 ```go
+// Single context type
 func (ch *Channel) AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener]  { 
+  // Implementation here
+}
+
+// Array of context types
+func (ch *Channel) AddContextListenerForTypes(contextTypes []string, handler ContextHandler) <-chan Result[Listener]  { 
   // Implementation here
 }
 ```
@@ -333,6 +345,38 @@ multiListener.unsubscribe();
 ```
 
 </TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+IChannel channel;
+var multiListener = await channel.AddContextListener<IContext>(
+    new[] { "fdc3.instrument", "fdc3.contact", "fdc3.portfolio" },
+    (context, metadata) => {
+        System.Diagnostics.Debug.WriteLine($"Received {context.Type} from {metadata?.Source}");
+    }
+);
+
+// later
+multiListener.Unsubscribe();
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+multiListenerResult := <-channel.AddContextListenerForTypes([]string{"fdc3.instrument", "fdc3.contact", "fdc3.portfolio"}, func(context IContext, contextMetadata *ContextMetadata) {
+    if contextMetadata != nil {
+        log.Printf("Received %v from %v", context, contextMetadata.Source)
+    }
+})
+
+// later
+if multiListenerResult.Value != nil {
+    multiListenerResult.Value.Unsubscribe()
+}
+```
+
+</TabItem>
 </Tabs>
 
 Adding listeners for specific types of context that is broadcast on the channel:
@@ -418,6 +462,15 @@ Task<IListener> AddEventListener(string? eventType, Fdc3EventHandler handler);
 ```
 
 </TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+func (channel *Channel) AddEventListener(eventType *FDC3EventTypes, handler EventHandler) <-chan Result[Listener] {
+  // Implementation here
+}
+```
+
+</TabItem>
 </Tabs>
 
 Register a handler for events from the Channel. Whenever the handler function is called it will be passed an event object with details related to the event.
@@ -479,7 +532,7 @@ public broadcast(context: Context, metadata?: AppProvidableContextMetadata): Pro
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-Task Broadcast(IContext context);
+Task Broadcast(IContext context, IAppProvidableContextMetadata? metadata = null);
 ```
 
 </TabItem>

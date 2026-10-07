@@ -64,20 +64,24 @@ interface DesktopAgent {
 interface IDesktopAgent
 {
     // Apps
-    Task<IAppIdentifier> Open(IAppIdentifier app, IContext? context = null);
+    Task<IAppIdentifier> Open(IAppIdentifier app, IContext? context = null, IAppProvidableContextMetadata? metadata = null);
+    Task Close();
     Task<IEnumerable<IAppIdentifier>> FindInstances(IAppIdentifier app);
     Task<IAppMetadata> GetAppMetadata(IAppIdentifier app);
 
     // Context
-    Task Broadcast(IContext context);
+    Task Broadcast(IContext context, IAppProvidableContextMetadata? metadata = null);
     Task<IListener> AddContextListener<T>(string? contextType, ContextHandler<T> handler) where T : IContext;
+    Task<IListener> AddContextListener<T>(string[] contextTypes, ContextHandler<T> handler) where T : IContext;
 
     // Intents
     Task<IAppIntent> FindIntent(string intent, IContext? context = null, string? resultType = null);
     Task<IEnumerable<IAppIntent>> FindIntentsByContext(IContext context, string? resultType = null);
-    Task<IIntentResolution> RaiseIntent(string intent, IContext context, IAppIdentifier? app = null);
-    Task<IIntentResolution> RaiseIntentForContext(IContext context, IAppIdentifier? app = null);
+    Task<IIntentResolution> RaiseIntent(string intent, IContext context, IAppIdentifier? app = null, bool? newInstance = null, IAppProvidableContextMetadata? metadata = null);
+    Task<IIntentResolution> RaiseIntentForContext(IContext context, IAppIdentifier? app = null, bool? newInstance = null, IAppProvidableContextMetadata? metadata = null);
     Task<IListener> AddIntentListener<T>(string intent, IntentHandler<T> handler) where T : IContext;
+    Task<IListener> AddIntentListenerWithContext<T>(string intent, string contextType, IntentHandler<T> handler) where T : IContext;
+    Task<IListener> AddIntentListenerWithContext<T>(string intent, string[] contextTypes, IntentHandler<T> handler) where T : IContext;
 
     // Channels
     Task<IChannel> GetOrCreateChannel(string channelId);
@@ -120,6 +124,7 @@ type IDesktopAgent interface {
     // Context
     Broadcast(context IContext, metadata *AppProvidableContextMetadata) <-chan Result[any]
     AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener]
+    AddContextListenerForTypes(contextTypes []string, handler ContextHandler) <-chan Result[Listener]
 
     // Intents
     FindIntent(intent string, context *IContext, resultType *string) <-chan Result[AppIntent]
@@ -140,7 +145,7 @@ type IDesktopAgent interface {
     LeaveCurrentChannel() <-chan Result[any]
 
     // non-context events 
-    AddEventListener(type *FDC3EventTypes, handler EventHandler) <-Result[Listener];
+    AddEventListener(eventType *FDC3EventTypes, handler EventHandler) <-chan Result[Listener];
 
     //implementation info
     GetInfo() <-chan Result[ImplementationMetadata]
@@ -169,14 +174,24 @@ addContextListener(contextTypes: string[], handler: ContextHandler): Promise<Lis
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
+// Single context type
 Task<IListener> AddContextListener<T>(string? contextType, ContextHandler<T> handler) where T : IContext;
+
+// Array of context types
+Task<IListener> AddContextListener<T>(string[] contextTypes, ContextHandler<T> handler) where T : IContext;
 ```
 
 </TabItem>
 <TabItem value="golang" label="Go">
 
 ```go
+// Single context type
 func (desktopAgent *DesktopAgent) AddContextListener(contextType string, handler ContextHandler) <-chan Result[Listener] { 
+  // Implementation here
+}
+
+// Array of context types
+func (desktopAgent *DesktopAgent) AddContextListenerForTypes(contextTypes []string, handler ContextHandler) <-chan Result[Listener] { 
   // Implementation here
 }
 ```
@@ -238,6 +253,14 @@ var contactListener = await _desktopAgent.AddContextListener<Contact>("fdc3.cont
   System.Diagnostics.Debug.WriteLine($"Received context message\nContext: {contact}\nOriginating app: {metadata?.Source}");
   // do something else with the context
 });
+
+// Listen for multiple specific context types
+var multiListener = await _desktopAgent.AddContextListener<IContext>(
+  new[] { "fdc3.instrument", "fdc3.contact", "fdc3.portfolio" },
+  (context, metadata) => {
+    System.Diagnostics.Debug.WriteLine($"Received {context.Type} from {metadata?.Source}");
+  }
+);
 ```
 
 </TabItem>
@@ -257,6 +280,13 @@ listenerResult := <-desktopAgent.AddContextListener("fdc3.contact", func(context
 } else {
     log.Printf("Received context message\nContext: %v", context)
 }
+})
+
+// Listen for multiple specific context types
+listenerResult := <-desktopAgent.AddContextListenerForTypes([]string{"fdc3.instrument", "fdc3.contact", "fdc3.portfolio"}, func(context IContext, contextMetadata *ContextMetadata) {
+  if contextMetadata != nil {
+    log.Printf("Received %v from %v", context.Type, contextMetadata.Source)
+  }
 })
 ```
 
@@ -289,7 +319,7 @@ Task<IListener> AddEventListener(string? eventType, Fdc3EventHandler handler);
 <TabItem value="golang" label="Go">
 
 ```go
-func (desktopAgent *DesktopAgent) AddEventListener(type *FDC3EventTypes, handler EventHandler) <-Result[Listener]  { 
+func (desktopAgent *DesktopAgent) AddEventListener(eventType *FDC3EventTypes, handler EventHandler) <-chan Result[Listener]  { 
   // Implmentation here
 }
 ```
@@ -326,6 +356,20 @@ var listener = await _desktopAgent.AddEventListener(null, (event) => { ... });
 var userChannelChangedListener = await _desktopAgent.AddEventListener("userChannelChanged", (event) => {
   System.Diagnostics.Debug.Write($"Received event ${event.Type}\n\tDetails: ${event.Details}");
 });
+```
+
+</TabItem>
+<TabItem value="golang" label="Go">
+
+```go
+// any event type
+listenerResult := <-desktopAgent.AddEventListener(nil, func(event ApiEvent) { ... })
+
+// listener for a specific event type that logs its details
+userChannelChangedType := FDC3EventTypes.UserChannelChanged
+userChannelChangedListenerResult := <-desktopAgent.AddEventListener(&userChannelChangedType, func(event ApiEvent) {
+  log.Printf("Received event %v\n\tDetails: %v", event.Type, event.Details)
+})
 ```
 
 </TabItem>
@@ -448,6 +492,33 @@ var listener = await _desktopAgent.AddIntentListener<IContext>("StartChat", (con
     System.Diagnostics.Debug.Write($"Received intent StartChat\nContext: {contact}\nOriginating app: {metadata?.Source}");
     // return IIntentResult;
 });
+
+//Handle a raised intent and return Context data as the result
+var listener = await _desktopAgent.AddIntentListener<IContext>("CreateOrder", (context, metadata) => {
+    // go create the order
+    return new Order(new OrderID() { OrderId = "1234" });
+});
+
+//Handle a raised intent and return a PrivateChannel over which the response will be sent
+var listener = await _desktopAgent.AddIntentListener<Instrument>("QuoteStream", async (context, metadata) => {
+    var channel = await _desktopAgent.CreatePrivateChannel();
+    var symbol = context?.ID?.Ticker;
+
+    // Called when the remote side adds a context listener
+    var addContextListener = await channel.AddEventListener("addContextListener", (evt) => {
+        // broadcast price quotes as they come in from our quote feed
+        _feed.OnQuote(symbol, (price) => {
+            channel.Broadcast(new Price(price));
+        });
+    });
+
+    // Stop the feed if the remote side closes
+    var disconnectListener = await channel.AddEventListener("disconnect", (evt) => {
+        _feed.Stop(symbol);
+    });
+
+    return channel;
+});
 ```
 
 </TabItem>
@@ -468,13 +539,36 @@ listenerResult := <-desktopAgent.AddIntentListener("StartChat", func(context ICo
 }
 })
 
-// listener that logs metadata for the message of a specific type
-listenerResult := <-desktopAgent.AddIntentListener("fdc3.contact", func(context IContext, contextMetadata *ContextMetadata) {
-  if contextMetadata != nil {
-    log.Printf("Received context message\nContext: %v\nOriginating app: %v", context, contextMetadata.Source)
-} else {
-    log.Printf("Received context message\nContext: %v", context)
-}
+//Handle a raised intent and return Context data as the result
+listenerResult := <-desktopAgent.AddIntentListener("CreateOrder", func(context IContext, contextMetadata *ContextMetadata) {
+  // go create the order
+  return Context{Type: "fdc3.order", Id: map[string]string{"orderId": "1234"}}
+})
+
+//Handle a raised intent and return a PrivateChannel over which the response will be sent
+listenerResult := <-desktopAgent.AddIntentListener("QuoteStream", func(context IContext, contextMetadata *ContextMetadata) {
+  channelResult := <-desktopAgent.CreatePrivateChannel()
+  if channelResult.Err != nil {
+    return
+  }
+  channel := channelResult.Value
+  symbol := context.Id["ticker"]
+
+  // Called when the remote side adds a context listener
+  addContextListenerType := PrivateChannelEventTypes.AddContextListener
+  <-channel.AddEventListener(&addContextListenerType, func(event PrivateChannelEvent) {
+    feed.OnQuote(symbol, func(price string) {
+      channel.Broadcast(Context{Type: "price", Id: map[string]string{"price": price}})
+    })
+  })
+
+  // Stop the feed if the remote side closes
+  disconnectType := PrivateChannelEventTypes.Disconnect
+  <-channel.AddEventListener(&disconnectType, func(event PrivateChannelEvent) {
+    feed.Stop(symbol)
+  })
+
+  return channel
 })
 ```
 
@@ -501,6 +595,17 @@ addIntentListenerWithContext(
   contextType: string | string[],
   handler: IntentHandler
 ): Promise<Listener>;
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+// Single context type
+Task<IListener> AddIntentListenerWithContext<T>(string intent, string contextType, IntentHandler<T> handler) where T : IContext;
+
+// Array of context types
+Task<IListener> AddIntentListenerWithContext<T>(string intent, string[] contextTypes, IntentHandler<T> handler) where T : IContext;
 ```
 
 </TabItem>
@@ -545,6 +650,25 @@ const listener = await fdc3.addIntentListenerWithContext(
 ```
 
 </TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+//Handle a raised intent filtered to a single context type
+var listener = await _desktopAgent.AddIntentListenerWithContext<IContext>("StartChat", "fdc3.contact", (context, metadata) => {
+    // start chat has been requested by another application
+});
+
+//Handle a raised intent filtered to multiple context types
+var listener = await _desktopAgent.AddIntentListenerWithContext<IContext>(
+    "ViewChart",
+    new[] { "fdc3.instrument", "fdc3.instrumentList" },
+    (context, metadata) => {
+        // view chart has been requested by another application
+    }
+);
+```
+
+</TabItem>
 <TabItem value="golang" label="Go">
 
 ```go
@@ -583,7 +707,7 @@ broadcast(context: Context, metadata?: AppProvidableContextMetadata): Promise<vo
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-Task Broadcast(IContext context);
+Task Broadcast(IContext context, IAppProvidableContextMetadata? metadata = null);
 ```
 
 </TabItem>
@@ -780,10 +904,23 @@ desktopAgent.AddIntentListener("QuoteStream", func(context IContext, contextMeta
   channel := channelResult.Value
 
   // This gets called when the remote side adds a context listener
-  <-channel.AddEventListener(&PrivateChannelEventTypes.AddContextListener, func(event PrivateChannelEvent) {
+  addContextListenerType := PrivateChannelEventTypes.AddContextListener
+  <-channel.AddEventListener(&addContextListenerType, func(event PrivateChannelEvent) {
     feed.OnQuote(symbol, func(price string) {
       channel.Broadcast(Context{Type: price})
     })
+  })
+
+  // This gets called when the remote side calls Listener.unsubscribe()
+  unsubscribeType := PrivateChannelEventTypes.Unsubscribe
+  <-channel.AddEventListener(&unsubscribeType, func(event PrivateChannelEvent) {
+    feed.Stop(symbol)
+  })
+
+  // This gets called if the remote side closes
+  disconnectType := PrivateChannelEventTypes.Disconnect
+  <-channel.AddEventListener(&disconnectType, func(event PrivateChannelEvent) {
+    feed.Stop(symbol)
   })
 })
 
@@ -1800,7 +1937,7 @@ open(app: AppIdentifier, context?: Context | null, metadata?: AppProvidableConte
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-Task<IAppIdentifier> Open(IAppIdentifier app, IContext? context = null);
+Task<IAppIdentifier> Open(IAppIdentifier app, IContext? context = null, IAppProvidableContextMetadata? metadata = null);
 ```
 
 </TabItem>
@@ -1860,6 +1997,9 @@ var instanceIdentifier = await _desktopAgent.Open(appIdentifier);
 
 // Open an app with context
 var instanceIdentifier = await _desktopAgent.Open(appIdentifier, context);
+
+// Open an app with metadata but no context, passing null for the context parameter
+var instanceIdentifier = await _desktopAgent.Open(appIdentifier, null, new AppProvidableContextMetadata { TraceId = "abc123" });
 ```
 
 </TabItem>
@@ -1868,10 +2008,14 @@ var instanceIdentifier = await _desktopAgent.Open(appIdentifier, context);
 ```go
 // Open an app without context, using an AppIdentifier object to specify the target
 appIdentifier := AppIdentifier{AppId: "myApp-v1.0.1"}
-instanceIdentifierResult := <-desktopAgent.Open(appIdentifier, nil)
+instanceIdentifierResult := <-desktopAgent.Open(appIdentifier, nil, nil)
 
 // Open an app with context 
-instanceIdentifierResult := <-desktopAgent.Open(appIdentifier, &context)
+instanceIdentifierResult := <-desktopAgent.Open(appIdentifier, &context, nil)
+
+// Open an app with metadata but no context, passing nil for the context parameter
+traceId := "abc123"
+instanceIdentifierResult := <-desktopAgent.Open(appIdentifier, nil, &AppProvidableContextMetadata{TraceId: &traceId})
 ```
 
 </TabItem>
@@ -1891,6 +2035,13 @@ instanceIdentifierResult := <-desktopAgent.Open(appIdentifier, &context)
 
 ```ts
 close(): Promise<void>;
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+Task Close();
 ```
 
 </TabItem>
@@ -1920,6 +2071,15 @@ If the Desktop Agent cannot close the app, the promise MUST be rejected with an 
 // Perform cleanup, then request close
 await saveState();
 fdc3.close();
+```
+
+</TabItem>
+<TabItem value="dotnet" label=".NET">
+
+```csharp
+// Perform cleanup, then request close
+await SaveState();
+await _desktopAgent.Close();
 ```
 
 </TabItem>
@@ -1955,7 +2115,7 @@ raiseIntent(intent: string, context?: Context | null, app?: AppIdentifier | null
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-Task<IIntentResolution> RaiseIntent(string intent, IContext context, IAppIdentifier? app = null, bool? newInstance = null);
+Task<IIntentResolution> RaiseIntent(string intent, IContext context, IAppIdentifier? app = null, bool? newInstance = null, IAppProvidableContextMetadata? metadata = null);
 ```
 
 </TabItem>
@@ -2063,6 +2223,15 @@ await _desktopAgent.RaiseIntent("StartChat", context, appIntent.Apps.First());
 //Raise an intent without a context by using the null context type
 await _desktopAgent.RaiseIntent("StartChat", ContextType.Nothing);
 
+//Force a new instance of a specific app to be launched to handle the intent
+await _desktopAgent.RaiseIntent("StartChat", context, new AppIdentifier("myApp"), true);
+
+//Require an existing instance of a specific app to be used (never launch a new one)
+await _desktopAgent.RaiseIntent("StartChat", context, new AppIdentifier("myApp"), false);
+
+//Raise an intent with metadata, passing null for the app and newInstance parameters
+await _desktopAgent.RaiseIntent("StartChat", context, null, null, new AppProvidableContextMetadata { TraceId = "abc123" });
+
 //Raise an intent and retrieve a result from the IntentResolution
 IIntentResolution resolution = await _desktopAgent.RaiseIntent("intentName", context);
 ```
@@ -2074,7 +2243,7 @@ IIntentResolution resolution = await _desktopAgent.RaiseIntent("intentName", con
 // raise an intent for resolution by the desktop agent
 // a resolver UI may be displayed, or another method of resolving the intent to a
 // target applied, if more than one application can resolve the intent
-<-desktopAgent.RaiseIntent("StartChat", context, nil)
+<-desktopAgent.RaiseIntent("StartChat", context, nil, nil, nil)
 
 // or find apps to resolve an intent to start a chat with a given contact
 appIntentResult := <-desktopAgent.FindIntent("StartChat", &context, nil);
@@ -2083,13 +2252,25 @@ if appIntentResult.Err != nil || len(appIntentResult.Vlaue.Apps) == 0 {
 }
 
 // use the metadata of an app or app instance to describe the target app for the intent
-<-desktopAgent.RaiseIntent("StartChat", context, appIntentResult.Vlaue.Apps[0])
+<-desktopAgent.RaiseIntent("StartChat", context, appIntentResult.Vlaue.Apps[0], nil, nil)
 
 //Raise an intent without a context by using the null context type
-<-desktopAgent.RaiseIntent("StartChat", Context{Type: "fdc3.nothing"}, nil)
+<-desktopAgent.RaiseIntent("StartChat", Context{Type: "fdc3.nothing"}, nil, nil, nil)
+
+//Force a new instance of a specific app to be launched to handle the intent
+newInstance := true
+<-desktopAgent.RaiseIntent("StartChat", context, &AppIdentifier{AppId: "myApp"}, &newInstance, nil)
+
+//Require an existing instance of a specific app to be used (never launch a new one)
+requireExisting := false
+<-desktopAgent.RaiseIntent("StartChat", context, &AppIdentifier{AppId: "myApp"}, &requireExisting, nil)
+
+//Raise an intent with metadata, passing nil for the app and newInstance parameters
+traceId := "abc123"
+<-desktopAgent.RaiseIntent("StartChat", context, nil, nil, &AppProvidableContextMetadata{TraceId: &traceId})
 
 //Raise an intent and retrieve a result from the IntentResolution
-resolutionResult := <-desktopAgent.RaiseIntent("intentName", context, nil);
+resolutionResult := <-desktopAgent.RaiseIntent("intentName", context, nil, nil, nil);
 ```
 
 </TabItem>
@@ -2118,7 +2299,7 @@ raiseIntentForContext(context: Context, app?: AppIdentifier | null, newInstance?
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-Task<IIntentResolution> RaiseIntentForContext(IContext context, IAppIdentifier? app = null, bool? newInstance = null);
+Task<IIntentResolution> RaiseIntentForContext(IContext context, IAppIdentifier? app = null, bool? newInstance = null, IAppProvidableContextMetadata? metadata = null);
 ```
 
 </TabItem>
@@ -2176,6 +2357,12 @@ var intentResolution = await _desktopAgent.RaiseIntentForContext(context);
 
 // Resolve against all intents registered by a specific target app for the specified context
 await _desktopAgent.RaiseIntentForContext(context, targetAppIdentifier);
+
+// Force a new instance of the target app to be launched
+await _desktopAgent.RaiseIntentForContext(context, new AppIdentifier("myApp"), true);
+
+// Resolve with metadata, passing null for the app and newInstance parameters
+await _desktopAgent.RaiseIntentForContext(context, null, null, new AppProvidableContextMetadata { TraceId = "abc123" });
 ```
 
 </TabItem>
@@ -2183,10 +2370,18 @@ await _desktopAgent.RaiseIntentForContext(context, targetAppIdentifier);
 
 ```go
 // Display a resolver UI for the user to select an intent and application to resolve it
-intentResolutionResult := <-desktopAgent.RaiseIntentForContext(context, nil)
+intentResolutionResult := <-desktopAgent.RaiseIntentForContext(context, nil, nil, nil)
 
 // Resolve against all intents registered by a specific target app for the specified context
-intentResolutionResult := <-desktopAgent.RaiseIntentForContext(context, &targetAppIdentifier)
+intentResolutionResult := <-desktopAgent.RaiseIntentForContext(context, &targetAppIdentifier, nil, nil)
+
+// Force a new instance of the target app to be launched
+newInstance := true
+intentResolutionResult := <-desktopAgent.RaiseIntentForContext(context, &AppIdentifier{AppId: "myApp"}, &newInstance, nil)
+
+// Resolve with metadata, passing nil for the app and newInstance parameters
+traceId := "abc123"
+intentResolutionResult := <-desktopAgent.RaiseIntentForContext(context, nil, nil, &AppProvidableContextMetadata{TraceId: &traceId})
 ```
 
 </TabItem>

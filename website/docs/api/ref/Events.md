@@ -264,7 +264,7 @@ type FDC3ChannelChangedEvent struct {
 }
 
 type FDC3ChannelChangedEventDetails struct {
-  currentChannelId *string
+  CurrentChannelId *string `json:"currentChannelId"`
 }
 ```
 
@@ -326,11 +326,12 @@ public class Fdc3ContextClearedEvent : Fdc3Event
 
 ```go
 type FDC3ContextClearedEventDetails struct {
-  Type *string `json:"type"`
+  ChannelId   string  `json:"channelId"`
+  ContextType *string `json:"contextType"`
 }
 
 type FDC3ContextClearedEvent struct {
-  Type   string                        `json:"type"`
+  Type    string                         `json:"type"`
   Details FDC3ContextClearedEventDetails `json:"details"`
 }
 ```
@@ -421,6 +422,10 @@ public class Fdc3PrivateChannelEventDetails : IFdc3PrivateChannelEventDetails
 }
 ```
 
+:::note
+`PrivateChannelAddContextListenerEvent` and `PrivateChannelUnsubscribeEvent` additionally carry a `ChannelId`, provided via `Fdc3PrivateChannelAddContextListenerEventDetails` and `Fdc3PrivateChannelUnsubscribeEventDetails` respectively (both extend `Fdc3PrivateChannelEventDetails`). See those event types below for details.
+:::
+
 </TabItem>
 <TabItem value="golang" label="Go">
 
@@ -463,10 +468,21 @@ interface PrivateChannelAddContextListenerEvent extends PrivateChannelEvent {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
+public class Fdc3PrivateChannelAddContextListenerEventDetails : Fdc3PrivateChannelEventDetails
+{
+    public string ChannelId { get; }
+
+    public Fdc3PrivateChannelAddContextListenerEventDetails(string channelId, string? contextType)
+        : base(contextType)
+    {
+        this.ChannelId = channelId;
+    }
+}
+
 public class Fdc3PrivateChannelAddContextListenerEvent : Fdc3Event
 {
-    public Fdc3PrivateChannelAddContextListenerEvent(string? contextType)
-        : base(Fdc3PrivateChannelEventType.AddContextListener, new Fdc3PrivateChannelEventDetails(contextType))
+    public Fdc3PrivateChannelAddContextListenerEvent(string channelId, string? contextType)
+        : base(Fdc3PrivateChannelEventType.AddContextListener, new Fdc3PrivateChannelAddContextListenerEventDetails(channelId, contextType))
   {
   }
 }
@@ -482,7 +498,8 @@ type PrivateChannelAddContextListenerEvent struct {
 }
 
 type PrivateChannelAddContextListenerEventDetails struct {
-  contextType *string
+  ChannelId   string  `json:"channelId"`
+  ContextType *string `json:"contextType"`
 }
 ```
 
@@ -512,10 +529,21 @@ interface PrivateChannelUnsubscribeEvent extends PrivateChannelEvent {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
+public class Fdc3PrivateChannelUnsubscribeEventDetails : Fdc3PrivateChannelEventDetails
+{
+    public string ChannelId { get; }
+
+    public Fdc3PrivateChannelUnsubscribeEventDetails(string channelId, string? contextType)
+        : base(contextType)
+    {
+        this.ChannelId = channelId;
+    }
+}
+
 public class Fdc3PrivateChannelUnsubscribeListenerEvent : Fdc3Event
 {
-    public Fdc3PrivateChannelUnsubscribeListenerEvent(string? contextType)
-            : base(Fdc3PrivateChannelEventType.Unsubscribe, new Fdc3PrivateChannelEventDetails(contextType))
+    public Fdc3PrivateChannelUnsubscribeListenerEvent(string channelId, string? contextType)
+            : base(Fdc3PrivateChannelEventType.Unsubscribe, new Fdc3PrivateChannelUnsubscribeEventDetails(channelId, contextType))
     {
     }
 }
@@ -531,7 +559,8 @@ type PrivateChannelUnsubscribeEvent struct {
 }
 
 type PrivateChannelUnsubscribeEventDetails struct {
-  contextType *string
+  ChannelId   string  `json:"channelId"`
+  ContextType *string `json:"contextType"`
 }
 ```
 
@@ -560,10 +589,20 @@ export interface PrivateChannelDisconnectEvent extends PrivateChannelEvent {
 <TabItem value="dotnet" label=".NET">
 
 ```csharp
-public class Fdc3PrivateChanneDisconnectEvent : Fdc3Event
+public class Fdc3PrivateChannelDisconnectEventDetails
 {
-    public Fdc3PrivateChanneDisconnectEvent()
-        : base(Fdc3PrivateChannelEventType.Disconnect)
+    public string ChannelId { get; }
+
+    public Fdc3PrivateChannelDisconnectEventDetails(string channelId)
+    {
+        this.ChannelId = channelId;
+    }
+}
+
+public class Fdc3PrivateChannelDisconnectEvent : Fdc3Event
+{
+    public Fdc3PrivateChannelDisconnectEvent(string channelId)
+        : base(Fdc3PrivateChannelEventType.Disconnect, new Fdc3PrivateChannelDisconnectEventDetails(channelId))
     {
     }
 }
@@ -575,6 +614,11 @@ public class Fdc3PrivateChanneDisconnectEvent : Fdc3Event
 ```go
 type PrivateChannelDisconnectEvent struct {
   PrivateChannelEvent
+  Details PrivateChannelDisconnectEventDetails
+}
+
+type PrivateChannelDisconnectEventDetails struct {
+  ChannelId string `json:"channelId"`
 }
 ```
 
