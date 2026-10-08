@@ -268,6 +268,20 @@ The optional `newInstance` argument to `raiseIntent` lets a calling application 
 
 - `PrivateChannelsLifecycleEvents`: ![2.2+](https://img.shields.io/badge/FDC3-2.2+-purple) Perform the above test.
 
+## Clearing Context on a PrivateChannel
+
+| App  | Step                         | Details |
+|------|------------------------------|---------|
+| Test | 1. Raise intent              | Raise `kTestingIntent` targeted at app K and await the returned `PrivateChannel`. |
+| K    | 2. Register listeners        | Add a context listener for `testContextX` and an event listener with `privChan.addEventListener("contextCleared", handler)`, then return the `PrivateChannel`. |
+| Test | 3. Broadcast context         | Broadcast `testContextX` on the returned channel and confirm K receives it. For the typed-clear variant, also broadcast `testContextY`. |
+| Test | 4. Clear context             | Call `privChan.clearContext()` to clear all retained context, or `privChan.clearContext("testContextX")` for the typed-clear variant. |
+| K    | 5. Receive event             | Receive a `contextCleared` event whose `details.channelId` matches the Private Channel and whose `details.contextType` is `null` when all context was cleared, or `testContextX` for the typed-clear variant. |
+| Test | 6. Verify retained context   | Confirm `getCurrentContext("testContextX")` returns `null`. For the typed-clear variant, confirm `testContextY` remains available. |
+
+- `PCClearContext1` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform the above test by clearing all context.
+- `PCClearContext2` ![3.0+](https://img.shields.io/badge/FDC3-3.0+-purple): Perform the above test by clearing only `testContextX`.
+
 ## Resolving Ambiguous Intents
 
 An FDC3 Desktop Agent MUST provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to raiseIntentForContext that return multiple options). This is often accomplished by providing a user interface allowing the user to select the desired target application or intent and application.

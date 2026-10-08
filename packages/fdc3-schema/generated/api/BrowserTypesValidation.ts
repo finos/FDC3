@@ -3538,7 +3538,7 @@ const typeMap: any = {
     'ResponseToBridgeTimedOut',
   ],
   OpenResponseType: ['openResponse'],
-  PrivateChannelEventType: ['addContextListener', 'disconnect', 'unsubscribe'],
+  PrivateChannelEventType: ['addContextListener', 'contextCleared', 'disconnect', 'unsubscribe'],
   PrivateChannelAddEventListenerRequestType: ['privateChannelAddEventListenerRequest'],
   PrivateChannelAddEventListenerResponseType: ['privateChannelAddEventListenerResponse'],
   PrivateChannelDisconnectRequestType: ['privateChannelDisconnectRequest'],

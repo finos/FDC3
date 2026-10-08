@@ -11,6 +11,8 @@ export interface AppControlContext extends CommonContext {
   instanceId?: string;
   Context?: CommonContext;
   errorMessage?: string;
+  channelId?: string;
+  contextType?: string | null;
 }
 
 export interface AppControlContextListener {
