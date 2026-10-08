@@ -44,7 +44,8 @@ export type ExperimentalContextType =
   | 'fdc3.security.userRequest'
   | 'fdc3.security.symmetricKeyRequest'
   | 'fdc3.security.symmetricKeyResponse'
-  | 'fdc3.security.encryptedContext';
+  | 'fdc3.security.encryptedContext'
+  | 'fdc3.payment';
 
 /**
  * @see https://fdc3.finos.org/docs/context/spec
@@ -88,4 +89,5 @@ export enum ContextTypes {
   SecuritySymmetricKeyRequest = 'fdc3.security.symmetricKeyRequest',
   SecuritySymmetricKeyResponse = 'fdc3.security.symmetricKeyResponse',
   SecurityEncryptedContext = 'fdc3.security.encryptedContext',
+  Payment = 'fdc3.payment',
 }
