@@ -1,0 +1,2 @@
+import{a as e}from"./getAgent-BN4GOEpJ.js";var t=async t=>{let n=await t.getOrCreateChannel(e.ControlChannel);await n.addContextListener(`closeWindow`,async e=>{let r={type:`windowClosed`,testId:e.testId};await n.broadcast(r),t.close()})},n=async(t,n)=>{await(await t.getOrCreateChannel(e.ControlChannel)).broadcast(n)},r=(e,t,r)=>{r!==t&&n(e,{type:`error`,errorMessage:`Incorrect context received for intent 'aTestingIntent. Expected ${r}, got ${t}`})};export{n,r,t};
+//# sourceMappingURL=mock-functions-D9HvAfC-.js.map

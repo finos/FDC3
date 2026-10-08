@@ -1,0 +1,603 @@
+---
+id: desktopAgentCommunicationProtocol
+sidebar_label: Desktop Agent Communication Protocol 
+title: Desktop Agent Communication Protocol (3.0)
+---
+
+:::info _[@experimental](../../fdc3-compliance#experimental-features)_
+
+FDC3's Desktop Agent Communication Protocol (DACP) is an experimental feature added to FDC3 in 2.2. Limited aspects of its design may change in future versions and it is exempted from the FDC3 Standard's normal versioning and deprecation polices in order to facilitate any necessary change.
+
+:::
+
+The Desktop Agent Communication Protocol (DACP) constitutes a set of standardized JSON messages or 'wire protocol' that can be used to implement an interface to a Desktop Agent, encompassing all API calls events defined in the [Desktop Agent API](../ref/DesktopAgent.md). For example, the DACP is used by the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3) to communicate with Browser-Resident Desktop Agents or a connection setup via the [FDC3 Web Connection Protocol](./webConnectionProtocol).
+
+## Protocol conventions
+
+DACP messages are defined in [JSON Schema](https://json-schema.org/) in the [FDC3 github repository](https://github.com/finos/FDC3/tree/fdc3-for-web/schemas/api).
+
+:::tip
+
+TypeScript types representing all DACP and WCP messages are generated from the JSON Schema source and can be imported from the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3):
+
+```ts
+import { BrowserTypes } from "@finos/fdc3";
+```
+
+:::
+
+The protocol is composed of several different classes of message, each governed by a message schema:
+
+1. **App Request Messages** ([`AppRequest` schema](pathname:///schemas/3.0/api/appRequest.schema.json)):
+    - Messages sent by an application representing an API call, such as [`DesktopAgent.broadcast`](../ref/DesktopAgent#broadcast), [`Channel.addContextListener`](../ref/Channel#addcontextlistener), or [`Listener.unsubscribe`](../ref/Types#listener).
+    - Message names all end in 'Request'.
+    - Each instance of a request message sent is uniquely identified by a `meta.requestUuid` field.
+
+2. **Agent Response Messages** ([`AgentResponse` schema](pathname:///schemas/3.0/api/agentResponse.schema.json)):
+    - Response messages sent from the DA to the application, each relating to a corresponding _App Request Message_.
+    - Message names all end in 'Response'.
+    - Each instance of an Agent Response Message is uniquely identified by a `meta.responseUuid` field.
+    - Each instance of an Agent Response Message quotes the `meta.requestUuid` value of the message it is responding to.
+
+3. **Agent Event Messages** ([`AgentEvent` schema](pathname:///schemas/3.0/api/agentEvent.schema.json)):
+    - Messages sent from the DA to the application that are due to actions in other applications, such as an inbound context resulting from another app's broadcast.
+    - Message names all end in 'Event'.
+    - Each instance of an Agent Response Message is uniquely identified by a `meta.eventUuid` field.
+
+Each individual message is also governed by a message schema, which is composed with the schema for the message type.
+
+:::info
+
+In rare cases, the payload of a request or event message may quote the `requestUuid` or `eventUuid` of another message that it represents a response to, e.g. `intentResultRequest` quotes the `eventUuid` of the `intentEvent` that delivered the intent and context to the app, as well as the `requestUuid` of the `raiseIntentRequest` message that originally raised the intent.
+
+:::
+
+All messages defined in the DACP follow a common structure:
+
+```json
+{
+    "type": "string", // string identifying the message type
+    "payload": {
+        //message payload fields defined for each message type 
+    },
+    "meta": {
+        "timestamp": "2024-09-17T10:15:39+00:00"
+        //other meta fields determined by each 'class' of message
+        //  these include requestUuid, responseUuid and eventUuid
+        //  and a source field identifying an app where appropriate
+    }
+}
+```
+
+`meta.timestamp` fields are formatted as strings, according to the format defined by [ISO 8601-1:2019](https://www.iso.org/standard/70907.html), which is produced in JavaScript via the `Date` class's `toISOString()` function, e.g. `(new Date()).toISOString()`.
+
+#### Encoding optional API arguments
+
+A number of FDC3 API functions accept optional arguments (for example, the `contextType` argument of [`Channel.clearContext()`](../ref/Channel#clearcontext) and [`Channel.getCurrentContext()`](../ref/Channel#getcurrentcontext), or the `app` argument of [`DesktopAgent.raiseIntent()`](../ref/DesktopAgent#raiseintent)). How an omitted optional argument is represented in the corresponding DACP message payload is determined by the payload's message schema:
+
+- Where the schema marks a payload field as **required** and permits a `null` value (i.e. its type is a union that includes `null`), an omitted argument MUST be normalized to `null`. The field MUST always be present. For example, `ClearContextRequestPayload.contextType` and `GetCurrentContextRequestPayload.contextType` are both required and nullable, so an omitted `contextType` argument is encoded as `contextType: null`.
+- Where the schema marks a payload field as **optional** (i.e. it is not listed in the schema's `required` array), an omitted argument MUST be represented by omitting the field entirely, rather than setting it to `null`. For example, `RaiseIntentRequestPayload.newInstance` is optional, so an omitted `newInstance` argument is represented by an absent field.
+
+Implementations MUST follow the required-and-nullable versus optional-and-absent distinction defined by each message schema, and MUST NOT substitute one encoding for the other. Reference implementations (the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3) Desktop Agent Proxy) apply these rules.
+
+### Context Data Encoding
+
+Context objects carried in DACP message payloads are JSON-compatible structures. When transmitted over a `MessagePort` (as used in Browser-Resident Desktop Agent implementations), context objects are serialised and deserialised by the browser's [Structured Clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm) — implementations SHOULD pass context objects directly to `postMessage` without additional serialisation steps (e.g. without calling `JSON.stringify()`). For further details on how context types are defined and how they relate to language-specific bindings, see the [Context Data specification](../../context/spec#context-schemas).
+
+### Routing, Registering Listeners & Multiplexing
+
+The design of the Desktop Agent Communication Protocol is guided by the following sentence from the introduction to the Desktop Agent overview:
+
+> A Desktop Agent is a desktop component (or aggregate of components) that serves as a launcher and message router (broker) for applications in its domain.
+
+Hence, that design is based on the assumption that all messaging between applications passes through an entity that acts as the 'Desktop Agent' and routes those messages on to the appropriate recipients (for example, a context message broadcast by an app to a channel is routed onto other apps that have added a listener to that channel, or an intent and context pair raised by an application is routed to another app chosen to resolve that intent). While implementations based on a shared bus are possible, they have not been specifically considered in the design of the DACP messages.
+
+Further, the design of the DACP is based on the assumption that applications will interact with an implementation of the [`DesktopAgent`](../ref/DesktopAgent) interface, with the DACP used behind the scenes to support communication between the implementation of that interface and an entity acting as the Desktop Agent which is running in another process or location, necessitating the use of a 'wire protocol' for communication. For example, [Browser-Resident Desktop Agent](./browserResidentDesktopAgents) implementations use the [FDC3 Web Communication Protocol (WCP)](./webConnectionProtocol.md) to connect a 'Desktop Agent Proxy', provided by the `getAgent()` implementation in the [`@finos/fdc3` npm module](https://www.npmjs.com/package/@finos/fdc3), and a Desktop Agent running in another frame or window which is communicated with via the DACP.
+
+As a Desktop Agent is expected to act as a router for messages sent through the Desktop Agent API, the DACP provides message exchanges for the registration and un-registration of listeners for particular message types (e.g. events, contexts broadcast on user channels, contexts broadcast on other channel types, raised intents etc.). In most cases, apps can register multiple listeners for the same messages (often filtered for different context or event types). However, where multiple listeners are present, only a single DACP message should be sent representing the action taken in the FDC3 API (e.g. broadcasting a message to a channel) and any multiplexing to multiple listeners should be applied at the receiving end. For example, when working with the WCP, this should be handled by the Desktop Agent Proxy implementation provided by the `getAgent()` implementation.
+
+### Metadata in messages
+
+Three distinct kinds of "metadata" appear in DACP messages and MUST NOT be confused:
+
+1. **Message `meta`** — every DACP message carries a top-level `meta` field containing _transport_ metadata for the message itself (e.g. `requestUuid`, `responseUuid`, `eventUuid`, `timestamp`, and a `source` identifying the app where appropriate). This describes the message, not the context it carries.
+2. **`payload.metadata` (app-provided)** — the request payloads for [`broadcast()`](#broadcast), [`open()`](#open), [`raiseIntent()`](#raiseintent) and [`raiseIntentForContext()`](#raiseintentforcontext) carry an **optional** `payload.metadata` field of type [`AppProvidableContextMetadata`](../ref/Types#appprovidablecontextmetadata). This holds only the portion of context metadata that an app may supply — `traceId`, `signature`, `antiReplay` and `custom` — and deliberately excludes the `source` and `timestamp` that only the Desktop Agent can authoritatively set. It corresponds directly to the optional `metadata` argument of those public API methods.
+3. **Enriched `ContextMetadata`** — when the Desktop Agent delivers a context to a receiving app (via `broadcastEvent`, `intentEvent`, or in a `getCurrentContextResponse`), it provides a complete [`ContextMetadata`](../ref/Types#contextmetadata) that combines the app-provided fields above with the Desktop Agent's own generated `source` and `timestamp` (and a `traceId` if the app did not supply one).
+
+Because `payload.metadata` mirrors an optional public API argument, it follows this normative encoding rule: **a Desktop Agent proxy MUST omit `payload.metadata` entirely when the app did not supply a metadata argument, rather than sending an empty object (`{}`) or `null`.** Independent DACP implementations MUST accept a request in which `payload.metadata` is absent and treat it identically to an empty `AppProvidableContextMetadata`. This keeps the wire representation of an omitted optional argument consistent across all metadata-bearing request messages.
+
+### Timeouts for Message Exchanges
+
+As the DACP is used to communicate with a different browsing context, timeouts are applied to message exchanges allowing them to fail and for the Desktop Agent Proxy to return an error to the caller. A default timeout of 10 seconds is applied to all message exchanges, with the exception of those that may involve the launch of an application (`open()`, `raiseIntent()` and `raiseIntentForContext()`). Implementations of the FDC3 Desktop Agent API are required to allow a minimum timeout of 15 seconds for an application to initialize FDC3 and add any necessary context or intent listeners (see [Desktop Agent API Compliance](../spec#desktop-agent-api-standard-compliance) for further details). For `open()`, initialization is required regardless of whether context was supplied. However, no upper bound for the timeout is currently specified. Message exchanges that involve the launch of an application use a default timeout of 100 seconds.
+
+Desktop Agents may specify custom values for both the default message exchange timeout and the timeout used for exchanges that may involve the launch of an application. Custom values are passed to the Desktop Agent proxy by setting the optional `payload.messageExchangeTimeout` and `payload.appLaunchTimeout` fields in the `WCP3Handshake` Response sent by the Desktop Agent to an application connecting to it. `payload.messageExchangeTimeout` MUST be set to a value greater than or equal to 100 ms, and `payload.appLaunchTimeout`  MUST be set to a value greater than or equal to 15,000 ms.
+
+```ts
+/** Default timeout used by a DesktopAgentProxy for all message exchanges
+ * with a DesktopAgent, except those that involve the launch of an application.
+ * May be overridden by a DesktopAgent by passing a value in the
+ * payload.messageExchangeTimeout of a WCP3Handshake message.
+ */
+export const DEFAULT_MESSAGE_EXCHANGE_TIMEOUT_MS = 10000;
+
+/** Default timeout used by a DesktopAgentProxy for message exchanges with a
+ * DesktopAgent that involve launching applications. May be overridden by a 
+ * DesktopAgent by passing a value in the payload.appLaunchTimeout of a 
+ * WCP3Handshake message.
+ * */
+export const DEFAULT_APP_LAUNCH_TIMEOUT_MS = 100000;
+```
+
+:::info
+
+The message exchange timeouts are used to detect a lack of response from the Desktop Agent, which will be reported via the `ApiTimeout` error message. `OpenError.ApiTimeout` is also returned when an application launched by `fdc3.open` does not initialize FDC3, regardless of whether context was supplied; this means opening a non-FDC3 application results in `OpenError.ApiTimeout`. `OpenError.AppTimeout` is distinct: it is returned when the application initializes FDC3 but fails to add the context listener required to receive supplied context. `ResolveError.IntentDeliveryFailed` similarly reports a launched app failing to add an expected intent listener. To return these errors, the Desktop Agent should set a longer timeout via the `payload.appLaunchTimeout` field in its `WCP3Handshake` message than it uses internally to detect such failures. Doing so will ensure that timeouts can be separately attributed to the App or to the Desktop Agent.
+
+:::
+
+## Message Definitions Supporting FDC3 API calls
+
+This section provides details of the messages defined in the DACP, grouped according to the FDC3 API functions that they support, and defined by JSON Schema files. Many of these message definitions make use of JSON versions of [types and metadata](../ref/Types) defined by the Desktop Agent API, the JSON versions of which can be found in [api.schema.json](pathname:///schemas/3.0/api/api.schema.json), while a number of DACP specific object definitions that are reused through the messages can be found in [common.schema.json](pathname:///schemas/3.0/api/common.schema.json).
+
+### `DesktopAgent`
+
+#### `addContextListener()`
+
+Request and response used to implement the [`DesktopAgent.addContextListener()`](../ref/DesktopAgent#addcontextlistener) and [`Channel.addContextListener()`](../ref/Channel#addcontextlistener) API calls:
+
+- [`addContextListenerRequest`](pathname:///schemas/3.0/api/addContextListenerRequest.schema.json)
+- [`addContextListenerResponse`](pathname:///schemas/3.0/api/addContextListenerResponse.schema.json)
+
+The `addContextListenerRequest` payload's `contextType` and `contextTypes` fields are mutually exclusive (exactly one MUST be present). The single-context-type overloads of `addContextListener()` (where `contextType` is a `string` or `null`) MUST set the `contextType` field, while the array-of-types overload (where `contextTypes` is a `string[]`) MUST set the `contextTypes` field, sending a single registration request rather than one request per type. The Desktop Agent MUST deliver a `broadcastEvent` to the listener for any context whose type matches one of the registered types.
+
+Event message used to deliver context objects that have been broadcast to listeners:
+
+- [`broadcastEvent`](pathname:///schemas/3.0/api/broadcastEvent.schema.json)
+
+Request and response for removing the context listener ([`Listener.unsubscribe()`](../ref/Types#listener)):
+
+- [`contextListenerUnsubscribeRequest`](pathname:///schemas/3.0/api/contextListenerUnsubscribeRequest.schema.json)
+- [`contextListenerUnsubscribeResponse`](pathname:///schemas/3.0/api/contextListenerUnsubscribeResponse.schema.json)
+
+#### `addEventListener()`
+
+Request and response used to implement both the [`DesktopAgent.addEventListener()`](../ref/DesktopAgent#addeventlistener) and [`Channel.addEventListener()`](../ref/Channel#addeventlistener) API calls:
+
+- [`addEventListenerRequest`](pathname:///schemas/3.0/api/addEventListenerRequest.schema.json)
+- [`addEventListenerResponse`](pathname:///schemas/3.0/api/addEventListenerResponse.schema.json)
+
+Event messages used to deliver events that have occurred:
+
+- [`channelChangedEvent`](pathname:///schemas/3.0/api/channelChangedEvent.schema.json)
+- [`contextClearedEvent`](pathname:///schemas/3.0/api/contextClearedEvent.schema.json)
+
+Request and response for removing the event listener ([`Listener.unsubscribe()`](../ref/Types#listener)):
+
+- [`eventListenerUnsubscribeRequest`](pathname:///schemas/3.0/api/eventListenerUnsubscribeRequest.schema.json)
+- [`eventListenerUnsubscribeResponse`](pathname:///schemas/3.0/api/eventListenerUnsubscribeResponse.schema.json)
+
+The `addEventListenerRequest` payload has two fields:
+
+- `type`: the [`FDC3EventType`](pathname:///schemas/3.0/api/api.schema.json) to listen for (`USER_CHANNEL_CHANGED` or `CONTEXT_CLEARED`), or `null` to register a wildcard listener that receives all Desktop Agent event types.
+- `channelId`: identifies the scope of the registration:
+  - Set to a Channel's id for a **Channel-scoped** listener registered via [`Channel.addEventListener()`](../ref/Channel#addeventlistener). The Desktop Agent MUST route matching events for that specific channel only.
+  - Set to `null` for a **Desktop Agent-level** listener registered via [`DesktopAgent.addEventListener()`](../ref/DesktopAgent#addeventlistener). For `CONTEXT_CLEARED`, the scope of a Desktop Agent-level listener follows the app's current User channel, so the Desktop Agent MUST route a `contextClearedEvent` to the app when context is cleared on the channel the app is currently joined to. `USER_CHANNEL_CHANGED` events are inherently Desktop Agent-level and always use a `null` `channelId`.
+
+On success, the Desktop Agent responds with an `addEventListenerResponse` carrying the `listenerUUID` that identifies the registration for later unsubscription.
+
+The `contextClearedEvent` is delivered to registered listeners when context is cleared on a channel via [`Channel.clearContext()`](#clearcontext) (see the [`Channel`](#channel) section below). Its payload carries:
+
+- `channelId`: the id of the channel on which context was cleared.
+- `contextType`: the context type that was cleared, or `null` when all context types on the channel were cleared.
+
+**Routing.** The Desktop Agent has enough information from each registration's `type` and `channelId` to route events only to the apps that registered a matching listener, rather than broadcasting events to all connected apps for proxy-side filtering. A `contextClearedEvent` for a given channel MUST be routed to an app when that app has a registration whose `type` is `CONTEXT_CLEARED` (or `null` for a wildcard listener) and whose scope matches — either a Channel-scoped registration for the same channel, or a Desktop Agent-level registration held by an app whose current User channel is the cleared channel. The Desktop Agent MUST NOT deliver a `contextClearedEvent` back to the app instance that triggered the clear.
+
+**Wildcard listeners.** A registration with `type: null` matches every Desktop Agent event type subject to the same channel scoping described above. A Desktop Agent-level wildcard listener therefore receives both `channelChangedEvent` and `contextClearedEvent` messages relevant to the app.
+
+**Unsubscription.** Both Desktop Agent-level and Channel-scoped event listeners are removed using the same `eventListenerUnsubscribeRequest`/`eventListenerUnsubscribeResponse` exchange, quoting the `listenerUUID` returned at registration. After unsubscription the Desktop Agent MUST NOT route further events to that listener.
+
+```mermaid
+sequenceDiagram
+    App ->> DesktopAgent: addEventListenerRequest<br/>(type CONTEXT_CLEARED, channelId)
+    DesktopAgent ->> App: addEventListenerResponse<br/>(with listenerUUID)
+    Note over DesktopAgent: context cleared on the matching channel
+    DesktopAgent ->> App: contextClearedEvent
+    App ->> DesktopAgent: eventListenerUnsubscribeRequest<br/>(with listenerUUID)
+    DesktopAgent ->> App: eventListenerUnsubscribeResponse
+```
+
+#### `addIntentListener()` / `addIntentListenerWithContext()`
+
+Request and response used to implement both the [`addIntentListener()`](../ref/DesktopAgent#addintentlistener) and [`addIntentListenerWithContext()`](../ref/DesktopAgent#addintentlistenerwithcontext) API calls:
+
+- [`addIntentListenerRequest`](pathname:///schemas/3.0/api/addIntentListenerRequest.schema.json)
+- [`addIntentListenerResponse`](pathname:///schemas/3.0/api/addIntentListenerResponse.schema.json)
+
+The `addIntentListenerRequest` payload includes an optional `contextTypes` field (an array of context type strings) used to restrict the listener to incoming intents whose context type matches one of the supplied values. When `addIntentListener()` is used the field is omitted (meaning all context types match); when `addIntentListenerWithContext()` is used the field MUST be populated. Desktop Agents MUST use this field both when matching intent listeners during intent resolution and when delivering raised intents, so that listeners are only invoked for matching context types.
+
+Event message used to a raised intent and context object from another app to the listener:
+
+- [`intentEvent`](pathname:///schemas/3.0/api/intentEvent.schema.json)
+
+An additional request and response used to deliver an [`IntentResult`](../ref/Types#intentresult) from the intent handler to the Desktop Agent, so that it can convey it back to the raising application:
+
+- [`intentResultRequest`](pathname:///schemas/3.0/api/intentResultRequest.schema.json)
+- [`intentResultResponse`](pathname:///schemas/3.0/api/intentResultResponse.schema.json)
+
+Please note this exchange (and the `IntentResolution.getResult()` API call) support `void` results from a raised intent and hence this message exchange should occur for all raised intents, including those that do not return a result. In such cases, the void intent result allows resolution of the `IntentResolution.getResult()` API call and indicates that the intent handler has finished running.
+
+The `intentResultRequest` payload includes an optional `metadata` field of type `AppProvidableContextMetadata`. This is populated by the agent-proxy when the intent handler returns a [`ContextWithMetadata`](../ref/Types#contextwithmetadata) result, carrying the app-provided portion of the metadata (e.g. `traceId`, `signature`, `custom`). The Desktop Agent merges this with its own generated metadata and delivers the combined [`ContextMetadata`](../ref/Types#contextmetadata) to the raising app via the `resultMetadata` field of the `raiseIntentResultResponse`.
+
+Request and response for removing the intent listener ([`Listener.unsubscribe()`](../ref/Types#listener)):
+
+- [`intentListenerUnsubscribeRequest`](pathname:///schemas/3.0/api/intentListenerUnsubscribeRequest.schema.json)
+- [`intentListenerUnsubscribeResponse`](pathname:///schemas/3.0/api/intentListenerUnsubscribeResponse.schema.json)
+
+A typical exchange of messages between an app raising an intent, a Desktop agent and an app resolving an intent is:
+
+```mermaid
+sequenceDiagram
+    AppA ->> DesktopAgent: raiseIntentRequest
+    DesktopAgent ->> AppB: intentEvent
+    DesktopAgent ->> AppA: raiseIntentResponse
+    AppB ->> DesktopAgent: intentResultRequest
+    DesktopAgent ->> AppB: intentResultResponse
+    DesktopAgent ->> AppA: raiseIntentResultResponse
+```
+
+The above flow assumes that AppB has already been launched and added an intent listener. As apps can be launched to resolve an intent a typical message exchange (that includes registration of the intent listener) is:
+
+```mermaid
+sequenceDiagram
+    AppA ->> DesktopAgent: raiseIntentRequest
+    break intent resolution determines a new instance of AppB should be launched
+        DesktopAgent -->> AppB: Launch
+        AppB -->> DesktopAgent: Connect via WCP
+    end
+    AppB ->> DesktopAgent: addIntentListenerRequest
+    DesktopAgent ->> AppB: addIntentListenerResponse
+    DesktopAgent ->> AppB: intentEvent
+    DesktopAgent ->> AppA: raiseIntentResponse
+    AppB ->> DesktopAgent: intentResultRequest
+    DesktopAgent ->> AppB: intentResultResponse
+    DesktopAgent ->> AppA: raiseIntentResultResponse
+```
+
+:::tip
+
+See [`raiseIntent`](#raiseintent) below for further examples of message exchanges involved in raising intents and intent resolution.
+
+:::
+
+#### `broadcast()`
+
+Request and response used to implement the [`DesktopAgent.broadcast()`](../ref/DesktopAgent#broadcast) and [`Channel.broadcast()`](../ref/Channel#broadcast) API calls:
+
+- [`broadcastRequest`](pathname:///schemas/3.0/api/broadcastRequest.schema.json)
+- [`broadcastResponse`](pathname:///schemas/3.0/api/broadcastResponse.schema.json)
+
+The `broadcastRequest` payload carries an optional `metadata` field of type [`AppProvidableContextMetadata`](../ref/Types#appprovidablecontextmetadata), corresponding to the optional `metadata` argument of `broadcast()`. Per [Metadata in messages](#metadata-in-messages), this field MUST be omitted when the app did not supply a metadata argument. The same optional-and-omitted rule applies to the `metadata` field of the [`openRequest`](#open), [`raiseIntentRequest`](#raiseintent) and [`raiseIntentForContextRequest`](#raiseintentforcontext) payloads.
+
+See [`addContextListener()`](#addcontextlistener) above for the `broadcastEvent` used to deliver the broadcast to other apps.
+
+#### `createPrivateChannel()`
+
+Request and response used to implement the [`createPrivateChannel()`](../ref/DesktopAgent#createprivatechannel) API call:
+
+- [`createPrivateChannelRequest`](pathname:///schemas/3.0/api/createPrivateChannelRequest.schema.json)
+- [`createPrivateChannelResponse`](pathname:///schemas/3.0/api/createPrivateChannelResponse.schema.json)
+
+#### `findInstances()`
+
+Request and response used to implement the [`findInstances()`](../ref/DesktopAgent#findinstances) API call:
+
+- [`findInstancesRequest`](pathname:///schemas/3.0/api/findInstancesRequest.schema.json)
+- [`findInstancesResponse`](pathname:///schemas/3.0/api/findInstancesResponse.schema.json)
+
+#### `findIntent()`
+
+Request and response used to implement the [`findIntent()`](../ref/DesktopAgent#findintent) API call:
+
+- [`findIntentRequest`](pathname:///schemas/3.0/api/findIntentRequest.schema.json)
+- [`findIntentResponse`](pathname:///schemas/3.0/api/findIntentResponse.schema.json)
+
+#### `findIntentsByContext()`
+
+Request and response used to implement the [`findIntentsByContext()`](../ref/DesktopAgent#findintentsbycontext) API call:
+
+- [`findIntentsByContextRequest`](pathname:///schemas/3.0/api/findIntentsByContextRequest.schema.json)
+- [`findIntentsByContextResponse`](pathname:///schemas/3.0/api/findIntentsByContextResponse.schema.json)
+
+#### `getAppMetadata()`
+
+Request and response used to implement the [`getAppMetadata()`](../ref/DesktopAgent#getappmetadata) API call:
+
+- [`getAppMetadataRequest`](pathname:///schemas/3.0/api/getAppMetadataRequest.schema.json)
+- [`getAppMetadataResponse`](pathname:///schemas/3.0/api/getAppMetadataResponse.schema.json)
+
+#### `getCurrentChannel()`
+
+Request and response used to implement the [`getCurrentChannel()`](../ref/DesktopAgent#getcurrentchannel) API call:
+
+- [`getCurrentChannelRequest`](pathname:///schemas/3.0/api/getCurrentChannelRequest.schema.json)
+- [`getCurrentChannelResponse`](pathname:///schemas/3.0/api/getCurrentChannelResponse.schema.json)
+
+#### `getInfo()`
+
+Request and response used to implement the [`getInfo()`](../ref/DesktopAgent#getinfo) API call:
+
+- [`getInfoRequest`](pathname:///schemas/3.0/api/getInfoRequest.schema.json)
+- [`getInfoResponse`](pathname:///schemas/3.0/api/getInfoResponse.schema.json)
+
+#### `getOrCreateChannel()`
+
+Request and response used to implement the [`getOrCreateChannel()`](../ref/DesktopAgent#getorcreatechannel) API call:
+
+- [`getOrCreateChannelRequest`](pathname:///schemas/3.0/api/getOrCreateChannelRequest.schema.json)
+- [`getOrCreateChannelResponse`](pathname:///schemas/3.0/api/getOrCreateChannelResponse.schema.json)
+
+#### `getUserChannels()`
+
+Request and response used to implement the [`getUserChannels()`](../ref/DesktopAgent#getuserchannels) API call:
+
+- [`getUserChannelsRequest`](pathname:///schemas/3.0/api/getUserChannelsRequest.schema.json)
+- [`getUserChannelsResponse`](pathname:///schemas/3.0/api/getUserChannelsResponse.schema.json)
+
+#### `joinUserChannel()`
+
+Request and response used to implement the [`joinUserChannel()`](../ref/DesktopAgent#joinuserchannel) API call:
+
+- [`joinUserChannelRequest`](pathname:///schemas/3.0/api/joinUserChannelRequest.schema.json)
+- [`joinUserChannelResponse`](pathname:///schemas/3.0/api/joinUserChannelResponse.schema.json)
+
+On success, if the requesting app has registered a matching event listener, the Desktop Agent MUST send a [`channelChangedEvent`](pathname:///schemas/3.0/api/channelChangedEvent.schema.json) after applying the membership change and before the successful `joinUserChannelResponse` is sent. This ordering dispatches the event before the promise returned by `joinUserChannel()` resolves.
+
+#### `leaveCurrentChannel()`
+
+Request and response used to implement the [`leaveCurrentChannel()`](../ref/DesktopAgent#leavecurrentchannel) API call:
+
+- [`leaveCurrentChannelRequest`](pathname:///schemas/3.0/api/leaveCurrentChannelRequest.schema.json)
+- [`leaveCurrentChannelResponse`](pathname:///schemas/3.0/api/leaveCurrentChannelResponse.schema.json)
+
+#### `close()`
+
+Request and response used to implement the [`close()`](../ref/DesktopAgent#close) API call:
+
+- [`closeRequest`](pathname:///schemas/3.0/api/closeRequest.schema.json)
+- [`closeResponse`](pathname:///schemas/3.0/api/closeResponse.schema.json)
+
+On a successful close, the app container is torn down before a success `closeResponse` can be delivered. The calling app will therefore never receive a successful `closeResponse` — only an error `closeResponse` is possible (when the Desktop Agent cannot complete the close).
+
+```mermaid
+sequenceDiagram
+    App ->> DesktopAgent: closeRequest
+    alt close succeeds
+        DesktopAgent ->> DesktopAgent: close app window/frame
+        Note over App: app destroyed — no closeResponse received
+    else close fails
+        DesktopAgent ->> App: closeResponse with error
+    end
+```
+
+#### `open()`
+
+Request and response used to implement the [`open()`](../ref/DesktopAgent#open) API call:
+
+- [`openRequest`](pathname:///schemas/3.0/api/openRequest.schema.json)
+- [`openResponse`](pathname:///schemas/3.0/api/openResponse.schema.json)
+
+The Desktop Agent MUST wait for the opened application to initialize FDC3 before sending a successful `openResponse`, regardless of whether the `openRequest` contains context. If the application does not initialize FDC3 within the timeout, including when the target is a non-FDC3 application, the Desktop Agent MUST send an `openResponse` with the `ApiTimeout` error from the [`OpenError`](../ref/Errors#openerror) enumeration.
+
+Where a context object is passed (e.g. `fdc3.open(app, context)`), the `broadcastEvent` message described above in [`addContextListener`](#addcontextlistener) should be used to deliver it after the context listener has been added:
+
+```mermaid
+sequenceDiagram
+    AppA ->> DesktopAgent: openRequest<br>(with context)
+    break Desktop Agent launches AppB
+        DesktopAgent -->> AppB: Launch
+        AppB -->> DesktopAgent: Connect via WCP
+    end
+    AppB ->> DesktopAgent: addContextListenerRequest
+    DesktopAgent ->> AppB: addContextListenerResponse
+    DesktopAgent ->> AppB: broadcastEvent
+    DesktopAgent ->> AppA: openResponse<br/>(with AppIdentifier)
+```
+
+If the opened app initializes FDC3 but doesn't add a matching context listener within a timeout (defined by the Desktop Agent), then the `openResponse` should be sent with the `AppTimeout` error from the [`OpenError`](../ref/Errors#openerror) enumeration.
+
+:::tip
+
+Desktop Agents MUST allow at least 15 seconds for an app to initialize FDC3 and, when context was supplied, add a matching context listener before timing out (see [Desktop Agent API Standard Compliance](https://fdc3.finos.org/docs/next/api/spec#desktop-agent-api-standard-compliance) for more detail). Applications SHOULD initialize FDC3 and add required listeners as soon as possible to keep the delay short (see the [addContextListener reference doc](https://fdc3.finos.org/docs/next/api/ref/DesktopAgent#addcontextlistener)).
+
+:::
+
+#### `raiseIntent()`
+
+Request and response used to implement the [`raiseIntent()`](../ref/DesktopAgent#raiseintent) API call:
+
+- [`raiseIntentRequest`](pathname:///schemas/3.0/api/raiseIntentRequest.schema.json)
+- [`raiseIntentResponse`](pathname:///schemas/3.0/api/raiseIntentResponse.schema.json)
+
+An additional response message is provided for the delivery of an `IntentResult` from the resolving application to the raising application (which is collected via the [`IntentResolution.getResult()`](../ref/Types#intentresolution) API call), which should quote the `requestUuid` from the original `raiseIntentRequest`:
+
+- [`raiseIntentResultResponse`](pathname:///schemas/3.0/api/raiseIntentResultResponse.schema.json)
+
+The `raiseIntentRequest` payload includes an optional `newInstance` field of type `boolean` that carries the caller's preference for how an instance of the target application should be selected. When `newInstance` is `true`, the Desktop Agent MUST launch a new instance of the resolved application even if existing instances are available. When `newInstance` is `false`, the Desktop Agent MUST use an existing instance and MUST NOT launch a new one, responding with a `TargetInstanceUnavailable` error if no suitable running instance is available. When the field is omitted, the Desktop Agent applies its default resolution behavior.
+
+There is no request message to indicate a call to the `resolution.getResult()` function of `IntentResolution`. Hence, Desktop Agents MUST send this additional response message to indicate the status of the intent handling function and to deliver its result (or void if none was returned).
+
+The `raiseIntentResultResponse` success payload includes an optional `resultMetadata` field of type [`ContextMetadata`](../ref/Types#contextmetadata). The Desktop Agent MUST populate this field by merging any app-provided metadata from the `intentResultRequest`'s `metadata` field with its own generated fields (`source`, `timestamp`, `traceId`). This metadata is always present, even for `Channel` or `void` results, and is retrieved by the raising app via [`IntentResolution.getResultMetadata()`](../ref/Types#intentresolution).
+
+:::tip
+
+See [`addIntentListener`](#addintentlistener--addintentlistenerwithcontext) above for details of the messages used for the resolving app to deliver the result to the Desktop Agent.
+
+:::
+
+Where there are multiple options for resolving a raised intent, there are two possible versions of the resulting message exchanges. Which to use depends on whether the Desktop Agent uses an intent resolver user interface (or other suitable mechanism) that it controls, or one injected into the application (for example an iframe injected by a `getAgent()` implementation into an application window) to perform resolution.
+
+When working with an injected interface, the Desktop Agent should respond with a `raiseIntentResponse` containing a `RaiseIntentNeedsResolutionResponsePayload`:
+
+```mermaid
+---
+title: Intent resolution with injected Intent Resolver iframe
+---
+sequenceDiagram
+    AppA ->> DesktopAgent: raiseIntentRequest
+    DesktopAgent ->> AppA: raiseIntentResponse
+    Note left of DesktopAgent: raiseIntentResponse includes a<br/> RaiseIntentNeedsResolutionResponsePayload<br/>containing an AppIntent
+    break when AppIntent return with multiple options
+        DesktopAgent --> AppA: getAgent displays IntentResolver
+        AppA --> DesktopAgent: User picks an option
+    end
+    AppA ->> DesktopAgent: raiseIntentRequest
+    Note left of DesktopAgent: New request includes a<br/>specific 'app' target<br/>and new requestUuid
+    DesktopAgent ->> AppB: intentEvent
+    DesktopAgent ->> AppA: raiseIntentResponse
+    AppB ->> DesktopAgent: intentResultRequest
+    DesktopAgent ->> AppB: intentResultResponse
+    DesktopAgent ->> AppA: raiseIntentResultResponse
+```
+
+Alternatively, if the Desktop Agent is able to provide its own user interface or another suitable means of resolving the intent, then it may do so and respond with a `raiseIntentResponse` containing a `RaiseIntentSuccessResponsePayload`:
+
+```mermaid
+---
+title: Intent resolution with Desktop Agent provided Intent Resolver
+---
+sequenceDiagram
+    AppA ->> DesktopAgent: raiseIntentRequest
+    break DA determines there are multiple options
+        DesktopAgent-->AppA: Desktop Agent displays an<br/>IntentResolver UI
+        AppA-->DesktopAgent: User picks an option
+    end
+    DesktopAgent ->> AppB: intentEvent
+    DesktopAgent ->> AppA: raiseIntentResponse
+    Note left of DesktopAgent: DesktopAgent responds<br/>to the original<br/>raiseIntentRequest message with<br/>a RaiseIntentSuccessResponsePayload
+    AppB ->> DesktopAgent: intentResultRequest
+    DesktopAgent ->> AppB: intentResultResponse
+    DesktopAgent ->> AppA: raiseIntentResultResponse
+```
+
+#### `raiseIntentForContext()`
+
+Request and response used to implement the [`raiseIntentForContext()`](../ref/DesktopAgent#raiseintentforcontext) API call:
+
+- [`raiseIntentForContextRequest`](pathname:///schemas/3.0/api/raiseIntentForContextRequest.schema.json)
+- [`raiseIntentForContextResponse`](pathname:///schemas/3.0/api/raiseIntentForContextResponse.schema.json)
+
+Message exchanges for handling `raiseIntentForContext()` are the same as for `raiseIntent`, except for the substitution of `raiseIntentForContextRequest` for `raiseIntentRequest` and `raiseIntentForContextResponse` for `raiseIntentResponse`. Hence, please see [`raiseIntent`](#raiseintent) and [`addIntentListener`](#addintentlistener--addintentlistenerwithcontext) for further details.
+
+### `Channel`
+
+Owing to the significant overlap between the FDC3 [`DesktopAgent`](../ref/DesktopAgent) and [`Channel`](../ref/Channel) interfaces, which includes the ability to retrieve and work with User channels as App Channels, most of the messaging for the `Channel` API is shared with `DesktopAgent`. Specifically, all messages defined in the the [`broadcast`](#broadcast) and [`addContextListener`](#addcontextlistener) sections above are reused, with a few minor differences to note:
+
+- When working with a specific channel, the `channelId` property in `addContextListenerRequest` should be set to the ID of the channel, where it is set to `null` to work with the current user channel.
+- When receiving a `broadcastEvent` a `channelId` that is `null` indicates that the context was sent via a call to `fdc3.open` and does not relate to a channel.
+
+The following additional function is unique to the `Channel` interface:
+
+#### `getCurrentContext()` / `getCurrentContextWithMetadata()`
+
+Request and response used to implement the [`Channel.getCurrentContext()`](../ref/Channel#getcurrentcontext) and [`Channel.getCurrentContextWithMetadata()`](../ref/Channel#getcurrentcontextwithmetadata) API calls:
+
+- [`getCurrentContextRequest`](pathname:///schemas/3.0/api/getCurrentContextRequest.schema.json)
+- [`getCurrentContextResponse`](pathname:///schemas/3.0/api/getCurrentContextResponse.schema.json)
+
+The `getCurrentContextResponse` payload contains a `context` field and a `metadata` field whose values are coupled by the following normative invariant:
+
+- When `payload.context` is a non-null context object, `payload.metadata` MUST be present and MUST contain the complete [`ContextMetadata`](../ref/Types#contextmetadata) associated with that context — that is, the provenance (`source`, `timestamp` and any app-provided fields such as `traceId`, `signature`, `antiReplay` and `custom`) retained for the context by the Desktop Agent when it was broadcast. This holds regardless of whether the request was made via `getCurrentContext()` or `getCurrentContextWithMetadata()`, because the request does not identify which public method initiated it.
+- When `payload.context` is `null`, `payload.metadata` MUST also be `null` (the canonical representation for "no context available").
+
+The `metadata` field is used by [`Channel.getCurrentContextWithMetadata()`](../ref/Channel#getcurrentcontextwithmetadata) to return both the context and its metadata; because the invariant guarantees complete metadata alongside any non-null context, the Desktop Agent proxy never needs to fabricate metadata. The [`Channel.getCurrentContext()`](../ref/Channel#getcurrentcontext) function uses the same request/response messages but ignores the `metadata` field, returning only the context.
+
+#### `clearContext()`
+
+Request and response used to implement the [`Channel.clearContext()`](../ref/Channel#clearcontext) API call:
+
+- [`clearContextRequest`](pathname:///schemas/3.0/api/clearContextRequest.schema.json)
+- [`clearContextResponse`](pathname:///schemas/3.0/api/clearContextResponse.schema.json)
+
+The public API method is `channel.clearContext(contextType?: string): Promise<void>`. The `clearContextRequest` payload carries:
+
+- `channelId`: the id of the channel on which to clear context.
+- `contextType`: the context type to clear, or `null` to clear all context types stored on the channel. This field is required and nullable in the schema; following the [convention for encoding optional API arguments](#encoding-optional-api-arguments), an omitted `contextType` argument MUST be normalized to `contextType: null`.
+
+When context is cleared, the Desktop Agent MUST notify apps that have registered a matching `contextClearedEvent` listener (see [`addEventListener()`](#addeventlistener) above) by sending them a [`contextClearedEvent`](pathname:///schemas/3.0/api/contextClearedEvent.schema.json). The `channelId` and `contextType` of the `contextClearedEvent` match those of the originating `clearContextRequest`.
+
+A typical exchange of messages between an app clearing context, a Desktop Agent, and an app listening for cleared context is:
+
+```mermaid
+sequenceDiagram
+    AppB ->> DesktopAgent: addEventListenerRequest<br/>(type CONTEXT_CLEARED)
+    DesktopAgent ->> AppB: addEventListenerResponse<br/>(with listenerUUID)
+    AppA ->> DesktopAgent: clearContextRequest<br/>(channelId, contextType or null)
+    DesktopAgent ->> AppB: contextClearedEvent
+    DesktopAgent ->> AppA: clearContextResponse
+```
+
+### `PrivateChannel`
+
+The [`PrivateChannel`](../ref/PrivateChannel) interface extends [`Channel`](../ref/Channel) with a number of additional functions that are supported by the following messages:
+
+#### `addEventListener()`
+
+Request and response used to implement the [`PrivateChannel.addEventListener`](../ref/PrivateChannel#addeventlistener) API call:
+
+- [`privateChannelAddEventListenerRequest`](pathname:///schemas/3.0/api/privateChannelAddEventListenerRequest.schema.json)
+- [`privateChannelAddEventListenerResponse`](pathname:///schemas/3.0/api/privateChannelAddEventListenerResponse.schema.json)
+
+Event messages used to deliver events that have occurred:
+
+- [`privateChannelOnAddContextListenerEvent`](pathname:///schemas/3.0/api/privateChannelOnAddContextListenerEvent.schema.json)
+- [`privateChannelOnDisconnectEvent`](pathname:///schemas/3.0/api/privateChannelOnDisconnectEvent.schema.json)
+- [`privateChannelOnUnsubscribeEvent`](pathname:///schemas/3.0/api/privateChannelOnUnsubscribeEvent.schema.json)
+
+Message exchange for removing the event listener [`Listener.unsubscribe`](../ref/Types#listener):
+
+- [`privateChannelUnsubscribeEventListenerRequest`](pathname:///schemas/3.0/api/privateChannelUnsubscribeEventListenerRequest.schema.json)
+- [`privateChannelUnsubscribeEventListenerResponse`](pathname:///schemas/3.0/api/privateChannelUnsubscribeEventListenerResponse.schema.json)
+
+#### `disconnect()`
+
+Request and response used to implement the [`PrivateChannel.disconnect()`](../ref/PrivateChannel#disconnect) API call:
+
+- [`privateChannelDisconnectRequest`](pathname:///schemas/3.0/api/privateChannelDisconnectRequest.schema.json)
+- [`privateChannelDisconnectResponse`](pathname:///schemas/3.0/api/privateChannelDisconnectResponse.schema.json)
+
+Before completing the exchange, the Desktop Agent MUST call `Listener.unsubscribe()` for each context listener the disconnecting party had registered on the channel, emitting the corresponding [`privateChannelOnUnsubscribeEvent`](pathname:///schemas/3.0/api/privateChannelOnUnsubscribeEvent.schema.json) message(s) to the remote party for each. Only once all such unsubscribe events have been sent MUST the Desktop Agent emit the [`privateChannelOnDisconnectEvent`](pathname:///schemas/3.0/api/privateChannelOnDisconnectEvent.schema.json) message, so that the remote party's `unsubscribe` handlers always run before its `disconnect` handler for the same channel.
+
+### Checking apps are alive
+
+Depending on the connection over which the Desktop Agent and app are connected, it may be necessary for the Desktop Agent to check whether the application is still alive. This can be done, either periodically or on demand (for example to validate options that will be provided in an [`AppIntent`](../ref/Types#appintent) as part of a `findIntentResponse` or `raiseIntentResponse` and displayed in an intent resolver interface), using the following message exchange:
+
+- [`heartbeatEvent`](pathname:///schemas/3.0/api/heartbeatEvent.schema.json)
+- [`heartbeatAcknowledgementRequest`](pathname:///schemas/3.0/api/heartbeatAcknowledgementRequest.schema.json)
+
+As a Desktop Agent initiated exchange, it is initiated with an `AgentEvent` message and completed via an `AppRequest` message as an acknowledgement.
+
+:::tip
+
+Additional procedures are defined in the [Browser Resident Desktop Agents specification](./browserResidentDesktopAgents#disconnects) and [Web Connection Protocol](./webConnectionProtocol#step-5-disconnection) for the detection of app disconnection or closure. Implementations will often need to make use of multiple procedures to catch all forms of disconnection in a web browser.
+
+:::
+
+### Controlling Injected User Interfaces
+
+Desktop Agent implementations, such as those based on the [Browser Resident Desktop Agents specification](./browserResidentDesktopAgents) and [Web Connection Protocol](./webConnectionProtocol), may either provide their own user interfaces (or other appropriate mechanisms) for the selection of User Channels or Intent Resolution, or they may work with implementations injected into the application (for example, as described in the [Web Connection Protocol](./webConnectionProtocol#providing-channel-selector-and-intent-resolver-uis) and implemented in [`getAgent()`](../ref/GetAgent)).
+
+Where injected user interfaces are used, standardized messaging is needed to communicate with those interfaces. This is provided in the DACP via the following 'iframe' messages, which are governed by the [`Fdc3UserInterfaceMessage`](pathname:///schemas/3.0/api/fdc3UserInterfaceMessage.schema.json) schema. The following messages are provided:
+
+- [`Fdc3UserInterfaceHello`](pathname:///schemas/3.0/api/fdc3UserInterfaceHello.schema.json): Sent by the iframe to its `window.parent` frame to initiate communication and to provide initial CSS to apply to the frame. This message should have a `MessagePort` appended over which further communication will be conducted.
+- [`Fdc3UserInterfaceHandshake`](pathname:///schemas/3.0/api/fdc3UserInterfaceHandshake.schema.json):  Response to the `Fdc3UserInterfaceHello` message sent by the application frame, which should be sent over the `MessagePort`. Includes details of the FDC3 version that the application is using.
+- [`Fdc3UserInterfaceDrag`](pathname:///schemas/3.0/api/fdc3UserInterfaceDrag.schema.json): Message sent by the iframe to indicate that it is being dragged to a new position and including offsets to indicate direction and distance.
+- [`Fdc3UserInterfaceRestyle`](pathname:///schemas/3.0/api/fdc3UserInterfaceRestyle.schema.json): Message sent by the iframe to indicate that its frame should have updated CSS applied to it, for example to support a channel selector interface that can be 'popped open' or an intent resolver that wishes to resize itself to show additional content.
+
+Messages are also provided that are specific to each user interface type provided by a Desktop Agent. The following messages are specific to Channel Selector user interfaces:
+
+- [`Fdc3UserInterfaceChannels`](pathname:///schemas/3.0/api/fdc3UserInterfaceChannels.schema.json): Sent by the parent frame to initialize a Channel Selector user interface by providing metadata for the Desktop Agent's user channels and details of any channel that is already selected. This message will typically be sent by a `getAgent()` implementation immediately after the `fdc3UserInterfaceHandshake` and before making the injected iframe visible.
+- [`Fdc3UserInterfaceChannelSelected`](pathname:///schemas/3.0/api/fdc3UserInterfaceChannelSelected.schema.json): Sent by the Channel Selector to indicate that a channel has been selected or deselected.
+
+Messages specific to Intent Resolver user interfaces:
+
+- [`Fdc3UserInterfaceResolve`](pathname:///schemas/3.0/api/fdc3UserInterfaceResolve.schema.json): Sent by the parent frame to initialize an Intent Resolver user interface to resolve a raised intent, before making the iframe visible. The message includes the context object sent with the intent and an array of one or more [`AppIntent`](../ref/Types#appintent) objects representing the resolution options for the intent ([`raiseIntent`](../ref/DesktopAgent#raiseintent)) or context ([`raiseIntentForContext`](../ref/DesktopAgent#raiseintentforcontext)) that was raised.
+- [`Fdc3UserInterfaceResolveAction`](pathname:///schemas/3.0/api/fdc3UserInterfaceResolveAction.schema.json): Sent by the Intent Resolver to indicate actions taken by the user in the interface, including hovering over an option, clicking a cancel button, or selecting a resolution option. The Intent Resolver should be hidden by the `getAgent()` implementation after a resolution option is selected to ensure that it does not interfere with user's ongoing interaction with the app's user interface.

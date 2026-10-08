@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3",
-  "version": "3.0.0-alpha.5",
+  "version": "3.0.0-beta.1",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -23,10 +23,10 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@finos/fdc3-context": "3.0.0-alpha.5",
-    "@finos/fdc3-get-agent": "3.0.0-alpha.5",
-    "@finos/fdc3-schema": "3.0.0-alpha.5",
-    "@finos/fdc3-standard": "3.0.0-alpha.5"
+    "@finos/fdc3-context": "3.0.0-beta.1",
+    "@finos/fdc3-get-agent": "3.0.0-beta.1",
+    "@finos/fdc3-schema": "3.0.0-beta.1",
+    "@finos/fdc3-standard": "3.0.0-beta.1"
   },
   "engines": {
     "node": ">=22"

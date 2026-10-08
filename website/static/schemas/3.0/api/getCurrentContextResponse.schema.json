@@ -1,0 +1,94 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://fdc3.finos.org/schemas/3.0/api/getCurrentContextResponse.schema.json",
+	"type": "object",
+	"title": "GetCurrentContext Response",
+	"description": "A response to a getCurrentContext request.",
+	"allOf": [
+		{
+			"$ref": "agentResponse.schema.json"
+		},
+		{
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/$defs/GetCurrentContextResponseType"
+				},
+				"payload": {
+					"oneOf": [
+						{
+							"$ref": "#/$defs/GetCurrentContextSuccessResponsePayload"
+						},
+						{
+							"$ref": "#/$defs/GetCurrentContextErrorResponsePayload"
+						}
+					]
+				},
+				"meta": true
+			},
+			"additionalProperties": false
+		}
+	],
+	"$defs": {
+		"GetCurrentContextResponseType": {
+			"title": "GetCurrentContext Response Message Type",
+			"const": "getCurrentContextResponse"
+		},
+		"GetCurrentContextSuccessResponsePayload": {
+			"title": "GetCurrentContext Response Payload",
+			"description": "The response payload for a getCurrentContext request. The `context` and `metadata` fields are coupled: when `context` is a non-null context object, `metadata` MUST be present and contain the complete `ContextMetadata` associated with that context (so that `getCurrentContextWithMetadata()` never needs fabricated metadata); when `context` is `null`, `metadata` MUST also be `null`.",
+			"type": "object",
+			"properties": {
+				"context": {
+					"title": "Current Context",
+					"description": "The most recently broadcast context object (of the specified type, if one was specified), or `null` if none was available in the channel.",
+					"oneOf": [
+						{ "$ref": "../context/context.schema.json" },
+						{ "type": "null" }
+					]
+				},
+				"metadata": {
+					"title": "Context Metadata",
+					"description": "The `ContextMetadata` associated with the returned context. When `context` is non-null this MUST be present and complete, carrying the provenance (`source`, `timestamp` and any app-provided fields such as `traceId`, `signature`, `antiReplay` and `custom`) retained for that context by the Desktop Agent. When `context` is `null` this MUST be `null`. It is used by `getCurrentContextWithMetadata()` to return both the context and its metadata; `getCurrentContext()` uses the same response but ignores this field.",
+					"oneOf": [
+						{ "$ref": "api.schema.json#/definitions/ContextMetadata" },
+						{ "type": "null" }
+					]
+				}
+			},
+			"required": [
+				"context",
+				"metadata"
+			],
+			"additionalProperties": false,
+			"if": {
+				"properties": {
+					"context": { "type": "null" }
+				}
+			},
+			"then": {
+				"properties": {
+					"metadata": { "type": "null" }
+				}
+			},
+			"else": {
+				"properties": {
+					"metadata": { "$ref": "api.schema.json#/definitions/ContextMetadata" }
+				}
+			}
+		},
+		"GetCurrentContextErrorResponsePayload": {
+			"title": "GetCurrentContext Error Response Payload",
+			"type": "object",
+			"properties": {
+				"error": {
+					"$ref": "api.schema.json#/definitions/ChannelError"
+				}
+			},
+			"required": [
+				"error"
+			],
+			"additionalProperties": false
+		}
+	}
+}

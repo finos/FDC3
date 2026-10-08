@@ -1,0 +1,2 @@
+import{a as e,t}from"./assets/getAgent-BN4GOEpJ.js";import{n,r,t as i}from"./assets/intent-support-CkcXZXuy.js";import{n as a,r as o,t as s}from"./assets/mock-functions-D9HvAfC-.js";t().then(async t=>{await s(t);let{appMetadata:c}=await t.getInfo();t.addIntentListener(r.sharedTestingIntent2,async r=>{o(t,r.type,i.testContextY);let s=await t.getOrCreateChannel(`test-channel`);return setTimeout(async()=>{await a(t,{type:n.SHARED_TESTING_INTENT_2_RESULT_SENT,id:{key:`uniqueId`},instanceId:c.instanceId})},e.ShortWait),s})});
+//# sourceMappingURL=intent-e.js.map

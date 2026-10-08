@@ -1,0 +1,2 @@
+import{t as e}from"./assets/getAgent-BN4GOEpJ.js";import{t}from"./assets/utils-CiR5LuOJ.js";import{n,t as r}from"./assets/mock-functions-D9HvAfC-.js";e().then(async e=>{await r(e);let{appId:i}=(await e.getInfo()).appMetadata,a={type:`fdc3-conformance-opened`};t(i,`MockAppId`)||(a.errorMessage=`Incorrect appId retrieved from getInfo(). Expected MockAppId, got ${i}`),await n(e,a),await e.addContextListener(`fdc3.instrument`,async t=>{await n(e,{type:`context-received`,context:t})})});
+//# sourceMappingURL=general.js.map

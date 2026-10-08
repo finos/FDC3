@@ -1,6 +1,6 @@
 {
   "name": "@finos/fdc3-agent-proxy",
-  "version": "3.0.0-alpha.5",
+  "version": "3.0.0-beta.1",
   "author": "Fintech Open Source Foundation (FINOS)",
   "homepage": "https://fdc3.finos.org",
   "repository": {
@@ -29,8 +29,8 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@finos/fdc3-schema": "3.0.0-alpha.5",
-    "@finos/fdc3-standard": "3.0.0-alpha.5"
+    "@finos/fdc3-schema": "3.0.0-beta.1",
+    "@finos/fdc3-standard": "3.0.0-beta.1"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^13.3.0",
