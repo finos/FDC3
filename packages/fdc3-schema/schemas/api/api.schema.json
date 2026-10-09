@@ -691,6 +691,7 @@
             "description": "Type defining valid type strings for Private Channel events.",
             "type": "string",
             "enum": [
+                "contextCleared",
                 "addContextListener",
                 "unsubscribe",
                 "disconnect"

@@ -99,6 +99,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Bumped `mocha` to `^12.0.3` in `fdc3-conformance`, resolving a high-severity `diff` denial-of-service vulnerability (ReDoS in `parsePatch`/`applyPatch`) pulled in transitively via `mocha`'s bundled `diff` dependency. ([#2273](https://github.com/finos/FDC3/pull/2273))
 * Migrated `fdc3-security` from Jest to Vitest, aligning it with the test tooling used by every other package in the monorepo. This removes `jest`, `ts-jest`, `jest-junit` and `@types/jest`, eliminating the `babel-plugin-istanbul` → `@istanbuljs/load-nyc-config` → `js-yaml` → `argparse` → `sprintf-js` dependency chain entirely (a moderate denial-of-service vulnerability in `sprintf-js` via unbounded precision specifiers) rather than merely avoiding it via the package's existing `coverageProvider: 'v8'` setting. ([#2273](https://github.com/finos/FDC3/pull/2273))
 * Corrected the FDC3 3.0 array-based `addContextListener` conformance tests and documentation: `null` is a wildcard only when passed directly, while empty arrays and arrays containing non-string elements reject with `ChannelError.InvalidArguments`. The agent proxy now uses the standardized error consistently. ([#2275](https://github.com/finos/FDC3/pull/2275))
+* Added the missing `contextCleared` member to the DACP `PrivateChannelEventType` schema and added conformance coverage for clearing all or typed context on a Private Channel. ([#2281](https://github.com/finos/FDC3/issues/2281))
 
 ## [npm v2.2.3] - 2026-04-15
 

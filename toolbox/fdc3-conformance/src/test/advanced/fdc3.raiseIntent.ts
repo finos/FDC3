@@ -257,4 +257,65 @@ export default async () =>
       await onDisconnectReceiver;
       control.unsubscribeListener(listener2);
     });
+
+    const PCClearContext1 =
+      '(PCClearContext1) Should receive a contextCleared event and null current context when all context is cleared on a PrivateChannel';
+    it(PCClearContext1, async () => {
+      errorListener = await control.listenForError();
+      const intentResolution = await control.raiseIntent(
+        Intent.kTestingIntent,
+        ContextType.testContextX,
+        { appId: IntentApp.IntentAppK },
+        0,
+        undefined,
+        undefined,
+        PCClearContext1
+      );
+      const privateChannel = (await control.getIntentResult(intentResolution)) as PrivateChannel;
+      control.validateIntentResult(privateChannel, IntentResultType.PrivateChannel);
+
+      const contextReceived = control.receiveContext(ContextType.testContextX);
+      await privateChannel.broadcast({ type: ContextType.testContextX });
+      await contextReceived;
+      expect(await privateChannel.getCurrentContext(ContextType.testContextX)).to.not.be.null;
+
+      const contextCleared = control.receiveContext(ControlContextType.PRIVATE_CHANNEL_CONTEXT_CLEARED);
+      await privateChannel.clearContext();
+      const event = await contextCleared;
+
+      expect(event.channelId).to.equal(privateChannel.id);
+      expect(event.contextType).to.be.null;
+      expect(await privateChannel.getCurrentContext(ContextType.testContextX)).to.be.null;
+    });
+
+    const PCClearContext2 =
+      '(PCClearContext2) Should receive a contextCleared event identifying the type cleared on a PrivateChannel';
+    it(PCClearContext2, async () => {
+      errorListener = await control.listenForError();
+      const intentResolution = await control.raiseIntent(
+        Intent.kTestingIntent,
+        ContextType.testContextX,
+        { appId: IntentApp.IntentAppK },
+        0,
+        undefined,
+        undefined,
+        PCClearContext2
+      );
+      const privateChannel = (await control.getIntentResult(intentResolution)) as PrivateChannel;
+      control.validateIntentResult(privateChannel, IntentResultType.PrivateChannel);
+
+      const contextReceived = control.receiveContext(ContextType.testContextX);
+      await privateChannel.broadcast({ type: ContextType.testContextX });
+      await contextReceived;
+      await privateChannel.broadcast({ type: ContextType.testContextY });
+
+      const contextCleared = control.receiveContext(ControlContextType.PRIVATE_CHANNEL_CONTEXT_CLEARED);
+      await privateChannel.clearContext(ContextType.testContextX);
+      const event = await contextCleared;
+
+      expect(event.channelId).to.equal(privateChannel.id);
+      expect(event.contextType).to.equal(ContextType.testContextX);
+      expect(await privateChannel.getCurrentContext(ContextType.testContextX)).to.be.null;
+      expect(await privateChannel.getCurrentContext(ContextType.testContextY)).to.not.be.null;
+    });
   });

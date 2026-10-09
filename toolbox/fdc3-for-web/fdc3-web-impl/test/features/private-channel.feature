@@ -30,6 +30,14 @@ Feature: Relaying Private Channel Broadcast messages
       | broadcastEvent             | {channel1Id}          | AAPL                          | fdc3.instrument          | App2     | a2            | App1                              | a1                                     |
       | broadcastResponse          | {null}                | {null}                        | {null}                   | App1     | a1            | {null}                            | {null}                                 |
 
+  Scenario: A contextCleared listener receives events for a private channel
+    When "App2/a2" adds an event listener for "CONTEXT_CLEARED" on channel "{channel1Id}"
+    And "App1/a1" clears context "fdc3.instrument" on "{channel1Id}"
+    Then messaging will have outgoing posts
+      | msg.matches_type         | to.instanceId | to.appId | msg.payload.channelId | msg.payload.contextType |
+      | contextClearedEvent      | a2            | App2     | {channel1Id}          | fdc3.instrument         |
+      | clearContextResponse     | a1            | App1     | {null}                | {null}                  |
+
   Scenario: Event Listener created for addContextListener and unsubscribe
     When "App2/a2" adds an "addContextListener" event listener on "{channel1Id}"
     And "App2/a2" adds an "unsubscribe" event listener on "{channel1Id}"
