@@ -1,0 +1,73 @@
+fonts:
+  - Gotham Bold
+  - Gotham Medium
+
+versions:
+  "1.2":
+    palette:
+      blue:
+        # Primary badge body colour from 1.2 assets
+        rgb: [0, 84, 166]
+        hex: "#0054A6"
+      blue-light:
+        # Banner / secondary blue
+        rgb: [93, 147, 205]
+        hex: "#5D93CD"
+      blue-accent:
+        # Tip / accent highlight
+        rgb: [152, 166, 212]
+        hex: "#98A6D4"
+      black:
+        pms: "PMS C BLACK 6"
+        cmyk: [100, 79, 44, 93]
+        rgb: [16, 24, 32]
+        hex: "#101820"
+
+  "2.0":
+    palette:
+      blue:
+        # Primary badge body colour from 2.0 assets
+        rgb: [0, 84, 166]
+        hex: "#0054A6"
+      blue-light:
+        # Banner / secondary blue
+        rgb: [93, 147, 205]
+        hex: "#5D93CD"
+      grey-accent:
+        # Tip / accent highlight
+        rgb: [109, 113, 128]
+        hex: "#6D7180"
+      black:
+        pms: "PMS C BLACK 6"
+        cmyk: [100, 79, 44, 93]
+        rgb: [16, 24, 32]
+        hex: "#101820"
+
+  "2.2":
+    palette:
+      purple:
+        pms: "PMS C 266"
+        cmyk: [67, 83, 0, 0]
+        rgb: [117, 59, 189]
+        hex: "#753BBD"
+      black:
+        pms: "PMS C BLACK 6"
+        cmyk: [100, 79, 44, 93]
+        rgb: [16, 24, 32]
+        hex: "#101820"
+
+  "3.0":
+    palette:
+      grey:
+        # Primary badge body colour used for 3.0 assets
+        rgb: [109, 113, 128]
+        hex: "#6D7180"
+      grey-light:
+        # Tip / accent highlight
+        rgb: [168, 171, 179]
+        hex: "#A8ABB3"
+      black:
+        pms: "PMS C BLACK 6"
+        cmyk: [100, 79, 44, 93]
+        rgb: [16, 24, 32]
+        hex: "#101820"
