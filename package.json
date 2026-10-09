@@ -70,7 +70,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^17.5.0",
     "pixelmatch": "^6.0.0",
-    "prettier": "3.9.6",
+    "prettier": "3.9.9",
     "rimraf": "^6.0.1",
     "tsx": "^4.23.13",
     "typescript": "^5.6.3",
