@@ -12,6 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 * Added details of and procedures for resolving fully-qualified appIds and unqualified appIds in the API and Bridging Parts of the Standard. ([#1523](https://github.com/finos/FDC3/pull/1523))
 * Added clarification regarding expected behavior upon repeated calls to `addContextListener` on same or overlapping types (allowed) and `addIntentListener` on same intent (rejected; new error type added). ([#1394](https://github.com/finos/FDC3/pull/1394))
 * Added `clearContext` function and associated `contextClearedEvent` to the `Channel` API, to be able to clear specific or all context types from the channel. ([#1379](https://github.com/finos/FDC3/pull/1379))
+* Published `@finos/fdc3-conformance` for the 2.2 conformance suite, shipping the static site (HTML and JavaScript), local App Directory records, and an `fdc3-conformance` command that serves them.([#2266](https://github.com/finos/FDC3/pull/2266))
 
 ### Changed
 
