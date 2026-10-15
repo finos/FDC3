@@ -1,5 +1,5 @@
 import { closeWindowOnCompletion, sendContextToTests, validateContext } from './mock-functions';
-import { getAgent } from '@finos/fdc3';
+import { getAgent, type FDC3ContextClearedEvent } from '@finos/fdc3';
 import { wait } from '../utils';
 import { IntentUtilityContext } from '../context-types';
 import { ContextType, ControlContextType, Intent } from '../test/support/intent-support';
@@ -43,6 +43,15 @@ getAgent().then(async fdc3 => {
     await privChan.addEventListener('disconnect', async () => {
       //let test know disconnect event was triggered
       await sendContextToTests(fdc3, { type: ControlContextType.ON_DISCONNECT_TRIGGERED });
+    });
+
+    await privChan.addEventListener('contextCleared', async event => {
+      const contextClearedEvent = event as FDC3ContextClearedEvent;
+      await sendContextToTests(fdc3, {
+        type: ControlContextType.PRIVATE_CHANNEL_CONTEXT_CLEARED,
+        channelId: contextClearedEvent.details.channelId ?? undefined,
+        contextType: contextClearedEvent.details.contextType,
+      });
     });
 
     return privChan;
