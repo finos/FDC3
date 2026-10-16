@@ -122,6 +122,24 @@ Scenario: Connecting but identity validation times out
       | fdc3Ready | {null}                 |
     And I call "{desktopAgent}" with "disconnect"
 
+  Scenario: Embedded iframe strategy reports a specific error when the adaptor iframe fails to complete a handshake
+  Here the Desktop Agent directs us to load an adaptor iframe (WCP2LoadUrl), the iframe loads (its 'load' event
+  fires, as it would in a browser even when blocked by CORS/CSP/X-Frame-Options), but it never completes a
+  handshake (WCP3Handshake) - simulating the scenario from https://github.com/finos/FDC3/issues/1733. This should
+  produce an ErrorOnConnect rather than a generic/uninformative AgentNotFound, with a log message identifying the
+  adaptor iframe as the cause.
+
+    Given console output is captured
+    And Parent Window desktop "da" listens for postMessage events in "{parentWin}", returns an iframe response that never completes a handshake
+    And we wait for a period of "200" ms
+    And I call getAgent for a promise result with the following options as "theAPIPromise"
+      | dontSetWindowFdc3 | timeoutMs | intentResolver | channelSelector |
+      | true              |     1500  | false          | false           |
+    Then I wait for job "theAPIPromise"
+    And "{result}" is an error with message "ErrorOnConnect"
+    And captured console warn output should contain "adaptor iframe"
+    And captured console warn output should contain "loaded but did not complete a handshake"
+
   Scenario: Desktop Agent Preload (injected after the getAgent call with no event)
     In this scenario, window.fdc3 is set by the electron container and returned by getAgent
 

@@ -107,6 +107,27 @@ Given(
 );
 
 Given(
+  'Parent Window desktop {string} listens for postMessage events in {string}, returns an iframe response that never completes a handshake',
+  async (world: CustomWorld, field: string, w: string) => {
+    const mockWindow = handleResolve(w, world);
+    world.mockFDC3Server = new MockFDC3Server(
+      mockWindow,
+      true,
+      world.mockContext,
+      false,
+      false,
+      false,
+      undefined,
+      undefined,
+      true
+    );
+    world.props[field] = world.mockFDC3Server;
+    world.mockContext.open(dummyInstanceDetails[0].appId);
+    world.mockContext.open(dummyInstanceDetails[1].appId);
+  }
+);
+
+Given(
   '{string} is a function which opens an iframe for communications on {string}',
   (world: CustomWorld, fn: string, doc: string) => {
     world.props[fn] = () => {

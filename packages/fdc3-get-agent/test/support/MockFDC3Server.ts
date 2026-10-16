@@ -19,6 +19,7 @@ import { UnsubscribeEventListener } from './responses/UnsubscribeEventListener';
 import { FDC3_VERSION } from '@finos/fdc3-standard';
 
 export const EMBED_URL = 'http://localhost:8080/static/da/embed.html';
+export const UNRESPONSIVE_EMBED_URL = 'http://localhost:8080/static/da/unresponsive-embed.html';
 export const CHANNEL_SELECTOR_URL = 'https://mock.fdc3.com/channelSelector';
 export const INTENT_RESOLVER_URL = 'https://mock.fdc3.com/resolver';
 
@@ -26,6 +27,7 @@ export class MockFDC3Server implements FDC3Server {
   private useIframe: boolean;
   private useDefaultUIUrls: boolean;
   private timeOutIdValidation: boolean;
+  private unresponsiveIframe: boolean;
   private window: MockWindow;
   private tsc: TestServerContext;
   private receivedGoodbye = false;
@@ -42,11 +44,13 @@ export class MockFDC3Server implements FDC3Server {
     timeOutIdValidation: boolean = false,
     timeoutMessageExchanges: boolean = false,
     messageExchangeTimeout?: number,
-    appLaunchTimeout?: number
+    appLaunchTimeout?: number,
+    unresponsiveIframe: boolean = false
   ) {
     this.useIframe = useIframe;
     this.useDefaultUIUrls = useDefaultUIUrls;
     this.timeOutIdValidation = timeOutIdValidation;
+    this.unresponsiveIframe = unresponsiveIframe;
     this.window = window;
     this.tsc = ctx;
     if (messageExchangeTimeout) {
@@ -115,6 +119,10 @@ export class MockFDC3Server implements FDC3Server {
       }
       if (data.type == 'WCP1Hello') {
         if (this.useIframe) {
+          //an unresponsive iframe URL doesn't match EMBED_URL, so the mock iframe
+          //will fire its 'load' event (as a real browser would for e.g. a
+          //CORS/CSP/X-Frame-Options block) but never complete a WCP handshake
+          const baseUrl = this.unresponsiveIframe ? UNRESPONSIVE_EMBED_URL : EMBED_URL;
           const message: WebConnectionProtocol2LoadURL = {
             type: 'WCP2LoadUrl',
             meta: {
@@ -122,7 +130,7 @@ export class MockFDC3Server implements FDC3Server {
               timestamp: new Date(),
             },
             payload: {
-              iframeUrl: EMBED_URL + '?connectionAttemptUuid=' + data.meta.connectionAttemptUuid,
+              iframeUrl: baseUrl + '?connectionAttemptUuid=' + data.meta.connectionAttemptUuid,
             },
           };
           source.postMessage(message, origin);
