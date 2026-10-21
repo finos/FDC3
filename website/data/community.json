@@ -13,6 +13,7 @@
     "//badges3": "FDC3 2.0 Supported: Indicates that this product advertises compatibility with the FDC3 2.0 Standard.",
     "//badges4": "FDC3 1.2 Compliant: This badge is applied to desktop agents that have passed the FINOS FDC3 1.2 Conformance testing process.",
     "//badges5": "FDC3 2.0 Compliant: This badge is applied to desktop agents that have passed the FINOS FDC3 2.0 Conformance testing process.",
+    "//badges6": "FDC3 3.0 Compliant: This badge is applied to desktop agents that have passed the FINOS FDC3 3.0 Conformance testing process.",
     "//conformance": "Indicate that a desktop agent has passed a FINOS FDC3 Conformance testing process - see other entries for examples of how to set this.",
     "//description": "A description to be displayed by your entry. Please limit to 100 words and avoid the use of superlatives (e.g. easiest, best, most powerful etc.) or other descriptive content that may be disputed by other community members."
   },
@@ -78,6 +79,15 @@
             "link": "https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents"
           }
         ]
+      },
+      {
+        "src": "/img/community/certified-3.0.png",
+        "items": [
+          {
+            "text": "FDC3 Sail 3.0.0-alpha.1 Certified Conformant With FDC3 3.0 Specification in October 2026",
+            "link": "https://www.finos.org/blog/fdc3-3.0-three-conforming-desktop-agents-and-a-new-chapter-for-interoperability"
+          }
+        ]
       }
     ],
     "description": "<p>This project provides a fully open source implementation of the FDC3 interoperability standard. </p><p>Includes a fully featured and secure electron desktop agent featuring intent resolution, channel linking, directory search and a local file-based app directory implementation. </p>"
@@ -90,7 +100,7 @@
     "docsLink": "https://docs.interop.io/",
     "type": "platform-provider",
     "badges": [],
-    "conformance": [{"src": "/img/community/certified-2.0.png","items": [{"text": "io.Connect Desktop v10.0 Certified Conformant With FDC3 2.0 Specification on 9th June 2023","link": "https://www.finos.org/press/finos-announces-new-fdc3-2.0-conformance-program-and-new-fdc3-certified-desktop-agents"},{"text": "io.Connect Browser v10.0 Certified Conformant With FDC3 2.0 Specification on 9th June 2023","link": "https://www.finos.org/press/finos-announces-new-fdc3-2.0-conformance-program-and-new-fdc3-certified-desktop-agents"}]}],
+    "conformance": [{"src": "/img/community/certified-2.0.png","items": [{"text": "io.Connect Desktop v10.0 Certified Conformant With FDC3 2.0 Specification on 9th June 2023","link": "https://www.finos.org/press/finos-announces-new-fdc3-2.0-conformance-program-and-new-fdc3-certified-desktop-agents"},{"text": "io.Connect Browser v10.0 Certified Conformant With FDC3 2.0 Specification on 9th June 2023","link": "https://www.finos.org/press/finos-announces-new-fdc3-2.0-conformance-program-and-new-fdc3-certified-desktop-agents"}]},{"src": "/img/community/certified-3.0.png","items": [{"text": "io.Connect Browser 5.0 Certified Conformant With FDC3 3.0 Specification in October 2026","link": "https://www.finos.org/blog/fdc3-3.0-three-conforming-desktop-agents-and-a-new-chapter-for-interoperability"}]}],
     "description": "<p>interop.io was formed in June 2023 through the merger of Finsemble and Glue42 to create the global powerhouse driving application interoperability in capital markets and beyond. Leveraging FDC3 and workflow automation, interop.io allows clients to create Straight Through Workflows™ and benefit from unparalleled levels of business agility, a more productive workforce and better operational control.</p><p>The firm employs over 170 people including 110 full time R&D and implementation engineers located in New York, Charlottesville, London, and Sofia. For more information, visit <a href='https://interop.io' alt='interop.io website'>interop.io</a>.</p>"
   },
   {
@@ -489,6 +499,15 @@
           {
             "text": "Morgan Stanley ComposeUI version alpha-5 Certified Conformant With FDC3 2.0 Specification on 30th September 2024",
             "link": "https://www.finos.org/press/fdc3-2.0-blackrock-morgan-stanley-lead-charge"
+          }
+        ]
+      },
+      {
+        "src": "/img/community/certified-3.0.png",
+        "items": [
+          {
+            "text": "Morgan Stanley FDC3-Web v3.0 Certified Conformant With FDC3 3.0 Specification in October 2026",
+            "link": "https://www.finos.org/blog/fdc3-3.0-three-conforming-desktop-agents-and-a-new-chapter-for-interoperability"
           }
         ]
       }
