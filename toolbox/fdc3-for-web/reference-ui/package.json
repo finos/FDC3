@@ -20,7 +20,7 @@
     "globals": "^17.12.0",
     "typescript": "^7.0.2",
     "typescript-eslint": "^8.71.2",
-    "vite": "^8.2.2"
+    "vite": "^8.3.4"
   },
   "dependencies": {
     "@finos/fdc3": "3.0.0-beta.1"
