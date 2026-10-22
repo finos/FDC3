@@ -64,7 +64,7 @@
     "terser": "^5.51.2",
     "typescript": "^7.0.2",
     "typescript-eslint": "^8.71.2",
-    "uuid": "^14.0.2",
+    "uuid": "^14.0.3",
     "vite": "^8.2.2"
   },
   "engines": {
