@@ -41,7 +41,7 @@
     "cross-env": "^10.1.0",
     "del-cli": "7.0.0",
     "fs-extra": "^11.4.1",
-    "js-yaml": "^5.4.3",
+    "js-yaml": "^5.5.0",
     "prism-react-renderer": "^2.4.1",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
