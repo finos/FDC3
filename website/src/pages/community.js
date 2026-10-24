@@ -19,7 +19,8 @@ const badgeTitles = {
 	"FDC3 1.2 Supported": "Indicates that this product advertises compatibility with the FDC3 1.2 Standard. ",
 	"FDC3 2.0 Supported ": "Indicates that this product advertises compatibility with the FDC3 2.0 Standard. ",
 	"FDC3 1.2 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 1.2 Conformance testing process.",
-	"FDC3 2.0 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 2.0 Conformance testing process."
+	"FDC3 2.0 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 2.0 Conformance testing process.",
+	"FDC3 3.0 Compliant": "This badge is applied to desktop agents that have passed the FINOS FDC3 3.0 Conformance testing process."
 }
 
 //remove content guidelines, which are the first entry in the data file
