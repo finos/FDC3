@@ -5,7 +5,14 @@ export function updateStatus(status: string, message: string): void {
   const statusEl = document.getElementById('status') as HTMLDivElement;
   if (statusEl) {
     statusEl.className = `status-indicator status-${status}`;
-    statusEl.innerHTML = `<span class="status-dot">●</span>${message}`;
+    statusEl.replaceChildren();
+
+    const dot = document.createElement('span');
+    dot.className = 'status-dot';
+    dot.textContent = '●';
+
+    statusEl.appendChild(dot);
+    statusEl.appendChild(document.createTextNode(message));
   }
 }
 
@@ -13,7 +20,7 @@ export function updateStatus(status: string, message: string): void {
 export function clearLog(): void {
   const log = document.getElementById('log');
   if (log) {
-    log.innerHTML = '';
+    log.replaceChildren();
   }
 }
 
@@ -67,10 +74,17 @@ export function createLogEntry(
     Object.entries(channelInfo).forEach(([key, value]) => {
       const infoCard = document.createElement('div');
       infoCard.className = 'info-card';
-      infoCard.innerHTML = `
-        <div class="info-label">${key}:</div>
-        <div class="info-value">${value}</div>
-      `;
+
+      const labelEl = document.createElement('div');
+      labelEl.className = 'info-label';
+      labelEl.textContent = `${key}:`;
+
+      const valueEl = document.createElement('div');
+      valueEl.className = 'info-value';
+      valueEl.textContent = value;
+
+      infoCard.appendChild(labelEl);
+      infoCard.appendChild(valueEl);
       channelInfoEl.appendChild(infoCard);
     });
 
