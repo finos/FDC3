@@ -34,7 +34,7 @@
     ]
   },
   "devDependencies": {
-    "@apidevtools/json-schema-ref-parser": "^15.5.1",
+    "@apidevtools/json-schema-ref-parser": "^16.0.5",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@eslint/js": "^10.0.1",
