@@ -70,6 +70,15 @@ test('mixed severities: overview counts, fix text, pipe escaping', () => {
   assert.equal(tierStatus('toolbox', { findings: [finding()] }), '⚠️ findings');
 });
 
+test('backslashes are escaped before pipes so a title cannot break out of its table cell', () => {
+  const md = renderTier('library', {
+    findings: [finding({ title: 'path\\|injected' })],
+    suppressed: [],
+  });
+  // `\` -> `\\` and `|` -> `\|`, giving `path\\\|injected`
+  assert.ok(md.includes('path\\\\\\|injected'));
+});
+
 test('suppressed findings are listed with their reason', () => {
   const md = renderTier('toolbox', {
     findings: [],

@@ -81,6 +81,9 @@ export function fixText(f) {
 
 const esc = s =>
   String(s ?? '')
+    // Escape backslashes first, otherwise a title containing `\|` would turn into `\\|`,
+    // leaving the pipe unescaped and breaking out of the table cell.
+    .replace(/\\/g, '\\\\')
     .replace(/\|/g, '\\|')
     .replace(/\r?\n/g, ' ');
 
