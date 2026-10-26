@@ -4,9 +4,9 @@ title: FDC3 3.0
 sidebar_label: Abstract
 ---
 
-**Status:** Draft  
-_**adopted:** ..._  
-_**released:** ..._
+**Status:** Current  
+_**adopted:** 26th October 2026_  
+_**released:** 26th October 2026_
 
 ## Abstract
 

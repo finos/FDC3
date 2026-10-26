@@ -1685,10 +1685,10 @@ export interface OrganizationIdentifiers {
 }
 
 /**
- * @experimental context type representing an institutional payment instruction,
- * mapping to ISO 20022 pacs.008 (FIToFICustomerCreditTransfer). This type defines routing
- * and settlement details including amount, currency, debtor, creditor, and optional
- * network routing information.
+ * @experimental context type representing an institutional payment instruction, mapping to
+ * ISO 20022 pacs.008 (FIToFICustomerCreditTransfer). This type defines routing and
+ * settlement details including amount, currency, debtor, creditor, and optional network
+ * routing information.
  */
 export interface Payment {
   /**

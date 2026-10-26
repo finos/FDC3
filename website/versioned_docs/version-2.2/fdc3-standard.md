@@ -4,9 +4,10 @@ title: FDC3 2.2
 sidebar_label: Abstract
 ---
 
-**Status:** Current  
+**Status:** Superseded  
 _**adopted:** 1st April 2025_  
 _**released:** 8th April 2025_  
+_**superseded:** 26th October 2026_  
 
 ## Abstract
 

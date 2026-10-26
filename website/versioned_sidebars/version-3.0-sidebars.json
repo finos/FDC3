@@ -110,6 +110,7 @@
           "context/ref/Order",
           "context/ref/OrderList",
           "context/ref/Organization",
+          "context/ref/Payment",
           "context/ref/Portfolio",
           "context/ref/Position",
           "context/ref/Product",
