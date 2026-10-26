@@ -8,7 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+* Added a dependency review check on pull requests that blocks new high/critical vulnerabilities in runtime dependencies, and a `scripts/cve` toolset (with `npm run test:cve`) behind the CVE scanning workflow.
+
 ### Changed
+
+* Reworked the nightly CVE scanning workflow to report by area (library packages, toolbox, website, GitHub Actions) with runtime/dev scope, severity and fix availability, a run summary and one auto-updated tracking issue per area. Only high/critical runtime vulnerabilities in the library packages fail the run. `allow-list.json` entries now support an `expires` date and a `ghsa` alias. Moved `syncpack` to the root `devDependencies`.
 
 ### Removed
 
