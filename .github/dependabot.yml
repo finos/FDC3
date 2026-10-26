@@ -53,12 +53,24 @@ updates:
         applies-to: security-updates
         patterns:
           - "*"
-      # Evergreening — recurring cross-package dev tooling grouped together so
-      # a single PR updates them in lockstep and avoids conflicting PRs.
+      # Evergreening — dependencies that are coupled by peer-dependency ranges,
+      # shared runtime state, or matching type packages are grouped so that a
+      # single PR (of ANY update type, including major) moves them in lockstep.
+      #
+      # IMPORTANT: Dependabot assigns a dependency to the FIRST group (in file
+      # order) that matches it. Groups that claim specific `@types/*` packages
+      # therefore MUST be listed before the generic `types` group, and the
+      # generic `minor-and-patch` catch-all must stay last.
+      #
+      # Major updates for anything NOT matched by a named group below are
+      # deliberately left as individual PRs, so one breaking library does not
+      # block unrelated updates.
       cucumber:
         applies-to: version-updates
         patterns:
           - "@cucumber/*"
+          - "@finos/cucumber-testing-steps"
+          - "cucumber-console-formatter"
           - "quickpickle"
       linting:
         applies-to: version-updates
@@ -71,11 +83,139 @@ updates:
           - "globals"
           - "prettier"
           - "lint-staged"
-      vitest:
+          - "husky"
+      # TypeScript compiler and the tools that parse/emit against its API.
+      typescript:
         applies-to: version-updates
         patterns:
+          - "typescript"
+          - "ts-morph"
+          - "rollup-plugin-dts"
+      # Vite and everything that declares a peer range on it (vitest, the
+      # vite plugins, vite-express) plus the vitest test environment.
+      vite:
+        applies-to: version-updates
+        patterns:
+          - "vite"
+          - "@vitejs/*"
+          - "vite-plugin-*"
+          - "vite-express"
           - "vitest"
           - "@vitest/*"
+          - "jsdom"
+      rollup:
+        applies-to: version-updates
+        patterns:
+          - "rollup"
+          - "@rollup/*"
+      # React runtime, its type packages and the state library bound to it
+      # (mobx-react has a peer range on react). NOTE: workspaces currently span
+      # react 17 (fdc3-workbench), 18 (fdc3-example-apps) — a major bump of this
+      # group will touch both and must be tested against each.
+      react:
+        applies-to: version-updates
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+          - "mobx"
+          - "mobx-react"
+          - "mobx-react-lite"
+      # MUI and its required emotion peers (workbench UI).
+      mui:
+        applies-to: version-updates
+        patterns:
+          - "@mui/*"
+          - "@emotion/*"
+      # JSON Schema validators / parsers that must agree on draft support.
+      json-schema:
+        applies-to: version-updates
+        patterns:
+          - "ajv"
+          - "ajv-formats"
+          - "jsonschema"
+          - "@apidevtools/*"
+          - "openapi-typescript"
+      # Server framework and its types/middleware.
+      express:
+        applies-to: version-updates
+        patterns:
+          - "express"
+          - "@types/express"
+          - "express-rate-limit"
+      # socket.io client and server must be protocol compatible.
+      socket-io:
+        applies-to: version-updates
+        patterns:
+          - "socket.io"
+          - "socket.io-client"
+      # Mocha test runner, assertion library and their types (conformance).
+      mocha-chai:
+        applies-to: version-updates
+        patterns:
+          - "mocha"
+          - "chai"
+          - "@types/mocha"
+          - "@types/chai"
+      # uuid ships its own types from v11+; @types/uuid is kept in step.
+      uuid:
+        applies-to: version-updates
+        patterns:
+          - "uuid"
+          - "@types/uuid"
+      # Libraries paired with a separate types package.
+      jsoneditor:
+        applies-to: version-updates
+        patterns:
+          - "jsoneditor"
+          - "@types/jsoneditor"
+      color:
+        applies-to: version-updates
+        patterns:
+          - "color"
+          - "@types/color"
+      semver:
+        applies-to: version-updates
+        patterns:
+          - "semver"
+          - "@types/semver"
+      # @types/node tracks the Node.js runtime (engines / .nvmrc), not other
+      # libraries, so it moves independently of the rest of the types.
+      node-types:
+        applies-to: version-updates
+        patterns:
+          - "@types/node"
+      # Browser polyfills used together by the bundled web apps.
+      browser-polyfills:
+        applies-to: version-updates
+        patterns:
+          - "buffer"
+          - "events"
+          - "process"
+          - "util"
+          - "path-browserify"
+          - "stream-browserify"
+      fontsource:
+        applies-to: version-updates
+        patterns:
+          - "@fontsource/*"
+      # Build/CLI helper utilities — low coupling, but frequent major bumps that
+      # only change supported Node versions; one PR is enough.
+      build-utils:
+        applies-to: version-updates
+        patterns:
+          - "cpy-cli"
+          - "del-cli"
+          - "rimraf"
+          - "mkdirp"
+          - "fs-extra"
+          - "shx"
+          - "cross-env"
+          - "concurrently"
+          - "replace-in-files-cli"
+          - "replace-json-property"
+      # Remaining @types/* (react, node, express, mocha, … are claimed above).
       types:
         applies-to: version-updates
         patterns:
@@ -107,21 +247,32 @@ updates:
         applies-to: security-updates
         patterns:
           - "*"
-      # Docusaurus and its rendering stack must move together — they share
-      # peer dependencies on react/react-dom and layout-elk, so upgrading
-      # any one in isolation risks peer dep conflicts.
+      # Docusaurus, its rendering stack AND react/react-dom must move together.
+      # Docusaurus declares peer ranges on react/react-dom, redocusaurus is a
+      # Docusaurus preset with its own peer range, and layout-elk /
+      # prism-react-renderer are consumed through Docusaurus themes. A react
+      # major on its own would break the peer range, so react lives in this
+      # group (react and react-dom must also always share a version).
       docusaurus:
         applies-to: version-updates
         patterns:
           - "@docusaurus/*"
+          - "redocusaurus"
           - "@mermaid-js/layout-elk"
           - "prism-react-renderer"
-      # react and react-dom must always be the same version.
-      react:
-        applies-to: version-updates
-        patterns:
           - "react"
           - "react-dom"
+      # Build/CLI helper utilities — one PR is enough.
+      build-utils:
+        applies-to: version-updates
+        patterns:
+          - "cpy-cli"
+          - "del-cli"
+          - "rimraf"
+          - "fs-extra"
+          - "cross-env"
+          - "replace-in-files-cli"
+          - "replace-json-property"
       minor-and-patch:
         applies-to: version-updates
         update-types:
