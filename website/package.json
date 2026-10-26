@@ -39,7 +39,7 @@
     "clsx": "^2.1.1",
     "cpy-cli": "7.0.0",
     "cross-env": "^10.1.0",
-    "del-cli": "7.0.0",
+    "del-cli": "8.0.1",
     "fs-extra": "^11.4.1",
     "js-yaml": "^5.5.0",
     "prism-react-renderer": "^2.4.1",
