@@ -7,6 +7,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+
+### Changed
+
+### Removed
+
+### Deprecated
+
+### Fixed
+
+## [FDC3 Standard 3.0](https://github.com/finos/FDC3/compare/v2.2..v3.0) - 2026-10-26
+
+### Added
 * Added `StartPayment` intent and `fdc3.payment` context type for ISO 20022 institutional payment settlement bridging. ([#2204](https://github.com/finos/FDC3/pull/2204))
 * Fixed website versioning for App Directory OpenAPI schemas: versioned schemas now copy correctly, Redocusaurus registers each versioned AppD route, and generated documentation links point to the matching version. ([#2255](https://github.com/finos/FDC3/pull/2255))
 * Integrated Redocusaurus to render the App Directory OpenAPI documentation, updated `docusaurus.config.js` and sidebars to point to the new Redoc routes, and removed obsolete generated `app-directory.html` files. ([#2001](https://github.com/finos/FDC3/pull/2001))
