@@ -158,6 +158,8 @@ function initAgentPromise(options: GetAgentParams): Promise<DesktopAgent> {
 
           return selection.agent;
         } catch (e) {
+          //Clear the promise so a fresh call could be made later
+          setTimeout(() => clearAgentPromise(), CLEAR_PROMISE_DELAY);
           //n.b. FailoverHandler throws Error Objects so we can return this directly
           Logger.error('Desktop agent not found. Error reported during failover: ', e);
           const error = new Error(e as string) as Error & { cause?: unknown };
