@@ -1,0 +1,49 @@
+name: Dependency Review
+
+# Blocks pull requests that introduce high/critical vulnerabilities in RUNTIME dependencies and
+# comments on the PR with the details. Dev-only dependencies (including everything in the
+# website, which is only a dev tool) do not block. The nightly CVE scan (cve-scanning.yml)
+# covers everything else. Accepted risks are shared with that scan via allow-list.json.
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      # Needed to comment on the pull request. Fork PRs get a read-only token, so for those the
+      # report is only available in the run summary.
+      pull-requests: write
+    steps:
+      - name: Harden runner
+        uses: step-security/harden-runner@dc2769abcc0fcfbadfc1df54081c1608579ef6b2 # v2.22.2
+        with:
+          egress-policy: audit
+
+      - name: Checkout repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Use Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+
+      # Advisories accepted in allow-list.json (active, non-expired entries only).
+      - name: Read allowed advisories
+        id: allowlist
+        run: echo "ghsas=$(node scripts/cve/allowlist.mjs --ghsas)" >> "$GITHUB_OUTPUT"
+
+      - name: Dependency review
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          fail-on-severity: high
+          fail-on-scopes: runtime
+          allow-ghsas: ${{ steps.allowlist.outputs.ghsas }}
+          comment-summary-in-pr: on-failure
