@@ -2454,7 +2454,7 @@ const typeMap: any = {
   OpenAgentErrorResponseType: ['openResponse'],
   OpenAgentRequestType: ['openRequest'],
   PrivateChannelBroadcastAgentRequestType: ['PrivateChannel.broadcast'],
-  PrivateChannelEventType: ['addContextListener', 'disconnect', 'unsubscribe'],
+  PrivateChannelEventType: ['addContextListener', 'contextCleared', 'disconnect', 'unsubscribe'],
   PrivateChannelEventListenerAddedAgentRequestType: ['PrivateChannel.eventListenerAdded'],
   PrivateChannelEventListenerRemovedAgentRequestType: ['PrivateChannel.eventListenerRemoved'],
   PrivateChannelOnAddContextListenerAgentRequestType: ['PrivateChannel.onAddContextListener'],

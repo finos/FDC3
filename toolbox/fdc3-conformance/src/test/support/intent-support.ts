@@ -335,6 +335,7 @@ export enum ControlContextType {
   SHARED_TESTING_INTENT_2_RESULT_SENT = 'sharedTestingIntent2-result-sent',
   ON_UNSUBSCRIBE_TRIGGERED = 'onUnsubscribeTriggered',
   ON_DISCONNECT_TRIGGERED = 'onDisconnectTriggered',
+  PRIVATE_CHANNEL_CONTEXT_CLEARED = 'privateChannelContextCleared',
   CONTEXT_LISTENER_TRIGGERED = 'context-listener-triggered',
   INTENT_LISTENER_TRIGGERED = 'intent-listener-triggered',
 }
