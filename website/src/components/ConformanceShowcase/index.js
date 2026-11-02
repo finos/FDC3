@@ -7,7 +7,7 @@ export default () => {
 
 	let relevant = community.filter(c => c.conformance)
 
-	let badges = ["/img/community/certified-1.2.png", "/img/community/certified-2.0.png"]
+	let badges = ["/img/community/certified-1.2.png", "/img/community/certified-2.0.png", "/img/community/certified-3.0.png"]
 
 	let publishers = relevant.map(r => r.publisher).filter((x, i, a) => a.indexOf(x) === i).sort((a, b) => a.localeCompare(b, undefined, {sensitivity: 'base'}))
 
@@ -38,8 +38,11 @@ export default () => {
 					publishers.map(p =>
 						<tr>
 							<td><Publisher name={p} /></td>
-							<td><ConformanceItem publisher={p} badge={badges[0]} /></td>
-							<td><ConformanceItem publisher={p} badge={badges[1]} /></td>
+							{
+								badges.map(b =>
+									<td><ConformanceItem publisher={p} badge={b} /></td>
+								)
+							}
 						</tr>
 					)
 				}
