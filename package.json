@@ -61,7 +61,7 @@
     "@eslint/js": "^10.0.1",
     "@types/mocha": "^10.0.10",
     "@types/node": "^26.6.5",
-    "@vitest/coverage-v8": "^4.1.11",
+    "@vitest/coverage-v8": "^5.0.5",
     "@vitest/ui": "^4.1.11",
     "concurrently": "^10.0.6",
     "eslint": "^10.13.0",
