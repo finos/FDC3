@@ -1,5 +1,9 @@
 {
     "ignore": [
-        { "id": "CVE-2023-45857", "reason": "False positive as already on 0.28.1" }
+        {
+            "id": "CVE-2023-45857",
+            "reason": "False positive as already on 0.28.1. axios is no longer in either lockfile; remove this entry if Sonatype stops reporting it.",
+            "expires": "2027-01-26"
+        }
     ]
 }
