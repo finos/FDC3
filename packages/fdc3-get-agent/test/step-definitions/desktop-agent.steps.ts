@@ -473,3 +473,59 @@ When(
 When('The Desktop Agent receives a WCP6Goodbye message', async (world: CustomWorld) => {
   expect(world.mockFDC3Server?.hasReceivedGoodbye).toBeTruthy();
 });
+
+When('a getAgent failover rejects once and then succeeds', async (world: CustomWorld) => {
+  let failoverCalls = 0;
+  const desktopAgent = {
+    async getInfo(): Promise<ImplementationMetadata> {
+      return {
+        fdc3Version: '3.0',
+        optionalFeatures: {
+          DesktopAgentBridging: false,
+          UserChannelMembershipAPIs: false,
+        },
+        appMetadata: {
+          appId: 'retry-app',
+          instanceId: 'retry-instance',
+        },
+        provider: 'retry-provider',
+      };
+    },
+  } as DesktopAgent;
+
+  const failover = async () => {
+    failoverCalls++;
+    if (failoverCalls === 1) {
+      throw new Error('expected failover failure');
+    }
+    return desktopAgent;
+  };
+
+  world.props['retryFailover'] = failover;
+  world.props['retryDesktopAgent'] = desktopAgent;
+  world.props['retryFailoverCalls'] = () => failoverCalls;
+
+  await expect(
+    getAgent({
+      timeoutMs: 1,
+      failover,
+      dontSetWindowFdc3: true,
+      logLevels: loggingSettings,
+    })
+  ).rejects.toBeInstanceOf(Error);
+});
+
+Then('a second getAgent call retries the failover successfully', async (world: CustomWorld) => {
+  // getAgent deliberately clears a failed cached promise after CLEAR_PROMISE_DELAY (500 ms).
+  await new Promise(resolve => setTimeout(resolve, 550));
+
+  const result = await getAgent({
+    timeoutMs: 1,
+    failover: world.props['retryFailover'],
+    dontSetWindowFdc3: true,
+    logLevels: loggingSettings,
+  });
+
+  expect(result).toBe(world.props['retryDesktopAgent']);
+  expect(world.props['retryFailoverCalls']()).toBe(2);
+});
