@@ -3,17 +3,25 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { parseAuditJsOutput, severityFromCvss, parsePurl, buildSonatypeFindings } from './sonatype.mjs';
+import {
+  parseAuditJsOutput,
+  severityFromCvss,
+  parsePurl,
+  buildSonatypeFindings,
+  libraryRuntimeCoverage,
+} from './sonatype.mjs';
 import { mergeFindings } from './report.mjs';
 
 const rootPkg = { workspaces: ['packages/lib', 'toolbox/app'] };
 const lock = {
   packages: {
     '': { name: 'root' },
-    'packages/lib': { name: 'lib', dependencies: { '@s/core': '1' } },
+    'packages/lib': { name: 'lib', dependencies: { '@s/core': '1' }, devDependencies: { libdev: '1' } },
     'toolbox/app': { name: 'app', dependencies: { express: '1' } },
     'node_modules/@s/core': { version: '1.2.3' },
     'node_modules/express': { version: '4.0.0' },
+    'node_modules/libdev': { version: '1.0.0' },
+    'node_modules/orphan': { version: '1.0.0' },
   },
 };
 
@@ -73,4 +81,36 @@ test('sonatype and npm-audit findings merge on a shared CVE/GHSA id', () => {
   const merged = mergeFindings([npm, s]);
   assert.equal(merged.length, 1);
   assert.deepEqual(merged[0].sources, ['npm-audit', 'sonatype']);
+});
+
+test('components only reachable as dev dependencies are scoped dev; unreachable ones fall back to toolbox dev', () => {
+  const out = buildSonatypeFindings(
+    [
+      result('pkg:npm/libdev@1.0.0', [vuln({ id: 'sonatype-2024-0003', cve: '' })]),
+      result('pkg:npm/orphan@1.0.0', [vuln({ id: 'sonatype-2024-0004', cve: '' })]),
+    ],
+    lock,
+    rootPkg
+  );
+  assert.deepEqual(
+    out.library.map(f => [f.package, f.scope, f.workspace]),
+    [['libdev', 'dev', ['packages/lib']]]
+  );
+  assert.deepEqual(
+    out.toolbox.map(f => [f.package, f.scope, f.workspace]),
+    [['orphan', 'dev', []]]
+  );
+});
+
+test('coverage check detects a scan that did not include the library runtime dependencies', () => {
+  // workspace directories (packages/lib) are not counted, only installed third-party packages
+  assert.deepEqual(libraryRuntimeCoverage([], lock, rootPkg), { total: 1, covered: 0 });
+  assert.deepEqual(libraryRuntimeCoverage([result('pkg:npm/express@4.0.0', [])], lock, rootPkg), {
+    total: 1,
+    covered: 0,
+  });
+  assert.deepEqual(libraryRuntimeCoverage([result('pkg:npm/%40s/core@1.2.3', [])], lock, rootPkg), {
+    total: 1,
+    covered: 1,
+  });
 });

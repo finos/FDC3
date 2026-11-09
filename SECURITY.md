@@ -29,7 +29,7 @@ Known vulnerabilities in dependencies are checked by two workflows. Findings are
 | Website | `website/` (separate lockfile, not shipped to downstream apps) | Informational |
 | GitHub Actions | `.github/workflows` | Reported only. Includes actions with known vulnerabilities (Dependabot does not alert on SHA-pinned actions) and workflow hardening issues. |
 
-- **Nightly scan** (`.github/workflows/cve-scanning.yml`) runs `npm audit` for each area, Sonatype Guide (AuditJS) on runtime dependencies, and [zizmor](https://docs.zizmor.sh) on workflows. Runtime vs dev scope is worked out from the lockfile (`scripts/cve`). Each run writes a summary table by area, severity and fix availability to the run page, and keeps **one tracking issue per area** (labelled `cve-scan` and `cve-scan:<area>`) up to date. Issues are closed automatically when the area is clean. It can also be started manually from the Actions tab; outside `main` it only reports what it would do to issues.
+- **Nightly scan** (`.github/workflows/cve-scanning.yml`) runs `npm audit` for each area, Sonatype Guide (AuditJS) on all installed dependencies, and [zizmor](https://docs.zizmor.sh) on workflows. Runtime vs dev scope is worked out from the lockfile (`scripts/cve`). Each run writes a summary table by area, severity and fix availability to the run page, and keeps **one tracking issue per area** (labelled `cve-scan` and `cve-scan:<area>`) up to date. Issues are closed automatically when the area is clean. It can also be started manually from the Actions tab; outside `main` it only reports what it would do to issues.
 - **Pull requests** (`.github/workflows/dependency-review.yml`) are blocked if they add a high/critical vulnerability in a runtime dependency.
 
 ### Accepting a risk

@@ -7,11 +7,17 @@
  *   auditjs guide --json ... > sonatype-raw.json
  *   node scripts/cve/sonatype.mjs sonatype-raw.json
  *
- * AuditJS scans the runtime dependencies of the whole repo (no --dev). We attribute each
- * component to a tier using lockfile reachability: anything the library workspaces pull in at
- * runtime is "library"; the rest is "toolbox". Writes findings-library-sonatype.json and
- * findings-toolbox-sonatype.json. Exits 1 when the library tier has unsuppressed high/critical
- * runtime findings and 2 when the AuditJS output is unusable (e.g. authentication failure).
+ * AuditJS must be run with --dev: it reads the root package's installed dependency tree
+ * (read-installed) and does not understand npm workspaces, so without --dev it sees only the
+ * root's own runtime dependencies, which are none, and scans nothing. With --dev it sees every
+ * installed package. We then attribute each component to a tier and to runtime/dev scope using
+ * lockfile reachability (see lockfile.mjs): reachable at runtime from the library workspaces ->
+ * library/runtime; else from the toolbox workspaces -> toolbox/runtime; else dev in the library or
+ * toolbox tier. Writes findings-library-sonatype.json and findings-toolbox-sonatype.json.
+ *
+ * Exits 1 when the library tier has unsuppressed high/critical runtime findings, and 2 when the
+ * AuditJS output is unusable: unparseable, empty, or not covering the library's runtime
+ * dependencies (a scan that checks nothing must never look clean).
  */
 
 import fs from 'node:fs';
@@ -54,30 +60,73 @@ function lockPathsFor(lock, name, version) {
     .map(([p]) => p);
 }
 
+function rootsWithReach(tier, lock, rootPackageJson) {
+  return rootsFor(tier, rootPackageJson).map(r => ({ name: r.name, ...reachableFrom(lock, r.path) }));
+}
+
+/**
+ * How much of the library's runtime dependency set the scan covered.
+ * @returns {{ total: number, covered: number }} lock entries reachable at runtime from the library
+ *   workspaces, and how many of those appear (by name@version) in the scan results.
+ */
+export function libraryRuntimeCoverage(results, lock, rootPackageJson) {
+  const scanned = new Set(
+    results
+      .map(r => parsePurl(r.coordinates))
+      .filter(Boolean)
+      .map(c => `${c.name}@${c.version}`)
+  );
+  const runtime = new Set();
+  for (const root of rootsWithReach('library', lock, rootPackageJson)) {
+    for (const p of root.runtime) runtime.add(p);
+  }
+  // Installed third-party packages only: skip workspace directories (no node_modules/ in the path) and links.
+  const external = [...runtime].filter(
+    p => p.includes('node_modules/') && lock.packages?.[p]?.version && !lock.packages[p].link
+  );
+  const covered = external.filter(p => scanned.has(`${nameOfLockPath(p)}@${lock.packages[p].version}`)).length;
+  return { total: external.length, covered };
+}
+
+function nameOfLockPath(lockPath) {
+  return lockPath.slice(lockPath.lastIndexOf('node_modules/') + 'node_modules/'.length);
+}
+
 /** @returns {{library: object[], toolbox: object[]}} */
 export function buildSonatypeFindings(results, lock, rootPackageJson) {
-  const libraryRoots = rootsFor('library', rootPackageJson).map(r => ({
-    name: r.name,
-    ...reachableFrom(lock, r.path),
-  }));
-  const toolboxRoots = rootsFor('toolbox', rootPackageJson).map(r => ({
-    name: r.name,
-    ...reachableFrom(lock, r.path),
-  }));
+  const libraryRoots = rootsWithReach('library', lock, rootPackageJson);
+  const toolboxRoots = rootsWithReach('toolbox', lock, rootPackageJson);
   const out = { library: [], toolbox: [] };
+
+  /** First matching bucket wins: runtime beats dev, library beats toolbox. */
+  const classify = paths => {
+    const reaching = (roots, set) => roots.filter(r => paths.some(p => r[set].has(p)));
+    for (const [tier, roots] of [
+      ['library', libraryRoots],
+      ['toolbox', toolboxRoots],
+    ]) {
+      const hits = reaching(roots, 'runtime');
+      if (hits.length) return { tier, scope: 'runtime', hits };
+    }
+    for (const [tier, roots] of [
+      ['library', libraryRoots],
+      ['toolbox', toolboxRoots],
+    ]) {
+      const hits = reaching(roots, 'all');
+      if (hits.length) return { tier, scope: 'dev', hits };
+    }
+    return { tier: 'toolbox', scope: 'dev', hits: [] }; // installed but not reachable from any workspace
+  };
 
   for (const result of results) {
     const component = parsePurl(result.coordinates);
     if (!component || !result.vulnerabilities?.length) continue;
-    const paths = lockPathsFor(lock, component.name, component.version);
-    const libHits = libraryRoots.filter(r => paths.some(p => r.runtime.has(p)));
-    const tier = libHits.length ? 'library' : 'toolbox';
-    const hits = libHits.length ? libHits : toolboxRoots.filter(r => paths.some(p => r.runtime.has(p)));
+    const { tier, scope, hits } = classify(lockPathsFor(lock, component.name, component.version));
 
     for (const v of result.vulnerabilities) {
       out[tier].push({
         tier,
-        scope: 'runtime',
+        scope,
         workspace: hits.map(h => h.name),
         package: component.name,
         version: component.version,
@@ -108,6 +157,18 @@ function main(argv) {
   const rootPkg = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'package.json'), 'utf8'));
   const lock = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, 'package-lock.json'), 'utf8'));
   const entries = loadAllowlist();
+
+  // Guard against a scan that silently checked nothing (see header comment).
+  const { total, covered } = libraryRuntimeCoverage(results, lock, rootPkg);
+  console.log(
+    `sonatype scanned ${results.length} components, covering ${covered} of ${total} library runtime dependencies`
+  );
+  if (results.length === 0 || (total > 0 && covered === 0)) {
+    console.error(
+      '::error::Sonatype scan did not cover the library runtime dependencies. AuditJS must run with --dev from the repo root after npm ci.'
+    );
+    process.exit(2);
+  }
   const byTier = buildSonatypeFindings(results, lock, rootPkg);
 
   let fail = false;
