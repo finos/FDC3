@@ -12,6 +12,7 @@ import {
   rootsFor,
   tierOfWorkspace,
   normaliseSeverity,
+  assertAuditSucceeded,
 } from './npm-audit.mjs';
 
 // Root has a dev-only dep (devtool -> vulnlib), lib workspace has runtime dep (a -> nested b) and
@@ -147,4 +148,14 @@ test('tier mapping', () => {
     ['toolbox/x', '(root)']
   );
   assert.equal(rootsFor('website', pkg)[0].lockDir, 'website');
+});
+
+test('an npm audit error report is not mistaken for a clean result', () => {
+  // Shape printed by `npm audit --json` when the registry is unreachable
+  const failed = { message: 'request failed, reason: connect ECONNREFUSED', error: { summary: '', detail: '' } };
+  assert.throws(() => assertAuditSucceeded(failed), /did not complete: request failed/);
+  assert.throws(() => assertAuditSucceeded({ error: { summary: 'E503', detail: '' } }), /E503/);
+  assert.throws(() => assertAuditSucceeded({}), /no vulnerabilities data/);
+  // A genuinely clean report has an empty vulnerabilities object
+  assert.deepEqual(assertAuditSucceeded({ vulnerabilities: {} }), { vulnerabilities: {} });
 });

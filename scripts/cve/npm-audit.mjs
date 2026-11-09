@@ -166,6 +166,18 @@ export function addCveAliases(findings, entries, lookup = resolveCveAliases) {
   });
 }
 
+/**
+ * npm audit still prints valid JSON when it could not audit (e.g. the registry is unreachable), with
+ * an `error` key and no `vulnerabilities`. That must not be mistaken for a clean result.
+ */
+export function assertAuditSucceeded(report) {
+  if (report?.error || typeof report?.vulnerabilities !== 'object' || report.vulnerabilities === null) {
+    const reason = report?.message || report?.error?.summary || report?.error?.detail || 'no vulnerabilities data';
+    throw new Error(`npm audit did not complete: ${reason}`);
+  }
+  return report;
+}
+
 function runAudit(cwd) {
   // npm audit exits non-zero when it finds vulnerabilities; the JSON on stdout is still valid.
   const res = spawnSync('npm', ['audit', '--json', '--package-lock-only'], {
@@ -173,11 +185,13 @@ function runAudit(cwd) {
     encoding: 'utf8',
     maxBuffer: 256 * 1024 * 1024,
   });
+  let report;
   try {
-    return JSON.parse(res.stdout);
+    report = JSON.parse(res.stdout);
   } catch {
     throw new Error(`npm audit did not return JSON in ${cwd}: ${res.stderr || res.stdout}`);
   }
+  return assertAuditSucceeded(report);
 }
 
 function main(argv) {
