@@ -12,7 +12,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
-* Reworked the nightly CVE scanning workflow to report by area (library packages, toolbox, website, GitHub Actions) with runtime/dev scope, severity and fix availability, a run summary and one auto-updated tracking issue per area. Only high/critical runtime vulnerabilities in the library packages fail the run. `allow-list.json` entries now support an `expires` date and a `ghsa` alias. Moved `syncpack` to the root `devDependencies`. ([#2339](https://github.com/finos/FDC3/pull/2339))
+* Reworked the nightly CVE scanning workflow, replacing the AuditJS/Sonatype scan with `npm audit` and `zizmor`, to report by area (library packages, toolbox, website, GitHub Actions) with runtime/dev scope, severity and fix availability, a run summary and one auto-updated tracking issue per area. Only high/critical runtime vulnerabilities in the library packages fail the run. `allow-list.json` entries now support an `expires` date and a `ghsa` alias. Moved `syncpack` to the root `devDependencies`. ([#2339](https://github.com/finos/FDC3/pull/2339))
 
 ### Removed
 

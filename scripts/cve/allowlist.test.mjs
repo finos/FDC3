@@ -3,14 +3,7 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {
-  validateAllowlist,
-  isExpired,
-  findSuppression,
-  toAuditJsFormat,
-  toGhsaList,
-  loadAllowlist,
-} from './allowlist.mjs';
+import { validateAllowlist, isExpired, findSuppression, toGhsaList, loadAllowlist } from './allowlist.mjs';
 
 const NOW = new Date('2026-06-01T12:00:00Z');
 const GHSA = 'GHSA-2222-3333-4444';
@@ -44,14 +37,6 @@ test('findSuppression matches CVE or GHSA alias and ignores expired entries', ()
   assert.equal(findSuppression({ ids: [GHSA] }, entries, NOW)?.reason, 'a');
   assert.equal(findSuppression({ ids: ['CVE-2024-0002'] }, entries, NOW), null);
   assert.equal(findSuppression({ ids: ['CVE-2024-9999'] }, entries, NOW), null);
-});
-
-test('toAuditJsFormat strips extra fields and expired entries', () => {
-  const entries = [
-    { id: 'CVE-2024-0001', reason: 'a', ghsa: GHSA, expires: '2027-01-01' },
-    { id: 'CVE-2024-0002', reason: 'b', expires: '2026-01-01' },
-  ];
-  assert.deepEqual(toAuditJsFormat(entries, NOW), { ignore: [{ id: 'CVE-2024-0001', reason: 'a' }] });
 });
 
 test('toGhsaList collects GHSA ids and aliases only', () => {

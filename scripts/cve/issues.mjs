@@ -19,7 +19,7 @@
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { TIERS, loadResults, mergeFindings, renderTier } from './report.mjs';
+import { TIERS, loadResults, renderTier } from './report.mjs';
 
 export const BASE_LABEL = 'cve-scan';
 const MAX_BODY = 60000; // GitHub's limit is 65536 characters
@@ -60,7 +60,7 @@ export function buildTitle(tier, count) {
  */
 export function decide(tier, result, existing, repo) {
   if (!result) return { action: 'none', reason: 'no scan results (scan job failed?)' };
-  const count = mergeFindings(result.findings).length;
+  const count = result.findings.length;
   if (count === 0) {
     return existing ? { action: 'close', number: existing.number } : { action: 'none', reason: 'clean' };
   }

@@ -6,15 +6,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import {
-  renderReport,
-  renderTier,
-  renderOverview,
-  mergeFindings,
-  fixText,
-  loadResults,
-  tierStatus,
-} from './report.mjs';
+import { renderReport, renderTier, renderOverview, fixText, loadResults, tierStatus } from './report.mjs';
 
 const finding = (over = {}) => ({
   tier: 'library',
@@ -88,27 +80,6 @@ test('suppressed findings are listed with their reason', () => {
   assert.match(md, /not reachable/);
 });
 
-test('findings from two scanners for one advisory are merged', () => {
-  const merged = mergeFindings([
-    finding(),
-    finding({
-      source: 'sonatype',
-      ids: ['CVE-2024-1', 'ghsa-2222-3333-4444'],
-      workspace: ['packages/y'],
-      fixAvailable: false,
-    }),
-    finding({ package: 'other', ids: ['CVE-2024-2'], source: 'sonatype' }),
-  ]);
-  assert.equal(merged.length, 2);
-  assert.deepEqual(merged[0].sources, ['npm-audit', 'sonatype']);
-  assert.deepEqual(merged[0].workspace, ['packages/x', 'packages/y']);
-  assert.ok(merged[0].ids.includes('CVE-2024-1'));
-  assert.match(
-    renderTier('library', { findings: [finding(), finding({ source: 'sonatype' })], suppressed: [] }),
-    /Source/
-  );
-});
-
 test('actions tier counts all workflow findings in the first column', () => {
   const md = renderOverview({
     actions: { tier: 'actions', findings: [finding({ scope: 'workflow', severity: 'medium' })], suppressed: [] },
@@ -122,7 +93,7 @@ test('fixText', () => {
   assert.equal(fixText({ fixAvailable: true, fixIsMajor: true }), 'major bump');
 });
 
-test('loadResults reads nested artifact directories and combines scanners per tier', () => {
+test('loadResults reads nested artifact directories and ignores other files', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cve-'));
   try {
     fs.mkdirSync(path.join(dir, 'a'));
@@ -131,14 +102,12 @@ test('loadResults reads nested artifact directories and combines scanners per ti
       path.join(dir, 'a', 'findings-library.json'),
       JSON.stringify({ tier: 'library', findings: [finding()], suppressed: [] })
     );
-    fs.writeFileSync(
-      path.join(dir, 'b', 'findings-library-sonatype.json'),
-      JSON.stringify({ tier: 'library', findings: [finding({ source: 'sonatype' })] })
-    );
+    fs.writeFileSync(path.join(dir, 'b', 'findings-website.json'), JSON.stringify({ tier: 'website', findings: [] }));
     fs.writeFileSync(path.join(dir, 'ignored.json'), '{}');
     const results = loadResults(dir);
-    assert.deepEqual(Object.keys(results), ['library']);
-    assert.equal(results.library.findings.length, 2);
+    assert.deepEqual(Object.keys(results).sort(), ['library', 'website']);
+    assert.equal(results.library.findings.length, 1);
+    assert.deepEqual(results.website.suppressed, []);
   } finally {
     fs.rmSync(dir, { recursive: true });
   }

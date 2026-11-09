@@ -7,8 +7,8 @@
  * Entries live in `allow-list.json` at the repo root:
  *   { "ignore": [{ "id": "CVE-...|GHSA-...", "reason": "...", "ghsa"?: "GHSA-...", "expires"?: "YYYY-MM-DD" }] }
  *
- * The same file is consumed by AuditJS (which only understands `id` and `reason`),
- * by our npm audit normaliser, and by dependency-review-action (GHSA IDs).
+ * The same file is consumed by our npm audit and zizmor normalisers and by dependency-review-action
+ * (GHSA IDs).
  * Entries with a past `expires` date no longer suppress anything.
  */
 
@@ -16,7 +16,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const ID_PATTERN = /^(CVE-\d{4}-\d{4,}|GHSA(-[23456789cfghjmpqrvwx]{4}){3}|sonatype-\d{4}-\d+)$/i;
+const ID_PATTERN = /^(CVE-\d{4}-\d{4,}|GHSA(-[23456789cfghjmpqrvwx]{4}){3})$/i;
 const DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
 export const DEFAULT_ALLOWLIST_PATH = path.resolve(
@@ -37,7 +37,7 @@ export function validateAllowlist(data) {
       return;
     }
     if (typeof entry.id !== 'string' || !ID_PATTERN.test(entry.id)) {
-      problems.push(`${where}: "id" must be a CVE, GHSA or sonatype ID`);
+      problems.push(`${where}: "id" must be a CVE or GHSA ID`);
     }
     if (typeof entry.reason !== 'string' || entry.reason.trim() === '') {
       problems.push(`${where}: "reason" is required`);
@@ -74,7 +74,7 @@ export function activeEntries(entries, now = new Date()) {
 
 /**
  * Finds the active entry (if any) suppressing a finding.
- * `finding.ids` holds every known identifier (GHSA, CVE, sonatype) for the advisory.
+ * `finding.ids` holds every known identifier (GHSA, CVE) for the advisory.
  */
 export function findSuppression(finding, entries, now = new Date()) {
   const ids = new Set((finding.ids ?? []).map(i => i.toLowerCase()));
@@ -83,11 +83,6 @@ export function findSuppression(finding, entries, now = new Date()) {
       e => ids.has(e.id.toLowerCase()) || (e.ghsa !== undefined && ids.has(e.ghsa.toLowerCase()))
     ) ?? null
   );
-}
-
-/** AuditJS format: only `id` + `reason`, expired entries removed. */
-export function toAuditJsFormat(entries, now = new Date()) {
-  return { ignore: activeEntries(entries, now).map(({ id, reason }) => ({ id, reason })) };
 }
 
 /** GHSA IDs for dependency-review-action `allow-ghsas`. */
@@ -107,14 +102,10 @@ function main(argv) {
     const expired = entries.filter(e => isExpired(e));
     for (const e of expired) console.warn(`::warning::Allowlist entry ${e.id} expired on ${e.expires}`);
     console.log(`allow-list.json OK: ${entries.length} entries, ${expired.length} expired`);
-  } else if (flag === '--auditjs') {
-    const out = argv[3];
-    if (!out) throw new Error('usage: allowlist.mjs --auditjs <output-file>');
-    fs.writeFileSync(out, JSON.stringify(toAuditJsFormat(entries), null, 2));
   } else if (flag === '--ghsas') {
     console.log(toGhsaList(entries).join(','));
   } else {
-    throw new Error('usage: allowlist.mjs --check | --auditjs <file> | --ghsas');
+    throw new Error('usage: allowlist.mjs --check | --ghsas');
   }
 }
 

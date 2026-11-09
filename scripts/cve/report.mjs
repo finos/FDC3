@@ -32,45 +32,12 @@ export function loadResults(dir) {
       if (entry.isDirectory()) visit(full);
       else if (/^findings-.+\.json$/.test(entry.name)) {
         const data = JSON.parse(fs.readFileSync(full, 'utf8'));
-        const existing = results[data.tier];
-        // Several scanners can report on one tier (e.g. npm audit + Sonatype): combine them.
-        results[data.tier] = existing
-          ? {
-              ...existing,
-              findings: [...existing.findings, ...data.findings],
-              suppressed: [...existing.suppressed, ...(data.suppressed ?? [])],
-            }
-          : { ...data, suppressed: data.suppressed ?? [] };
+        results[data.tier] = { ...data, suppressed: data.suppressed ?? [] };
       }
     }
   };
   if (fs.existsSync(dir)) visit(dir);
   return results;
-}
-
-/**
- * Merges findings reported by different scanners for the same advisory.
- * Two findings match when they are for the same package and share an advisory ID.
- */
-export function mergeFindings(findings) {
-  const merged = [];
-  for (const f of findings) {
-    const match = merged.find(
-      m =>
-        m.package === f.package &&
-        m.scope === f.scope &&
-        f.ids.some(id => m.ids.map(i => i.toLowerCase()).includes(id.toLowerCase()))
-    );
-    if (!match) {
-      merged.push({ ...f, sources: [f.source], ids: [...f.ids], workspace: [...(f.workspace ?? [])] });
-      continue;
-    }
-    for (const id of f.ids) if (!match.ids.some(i => i.toLowerCase() === id.toLowerCase())) match.ids.push(id);
-    for (const w of f.workspace ?? []) if (!match.workspace.includes(w)) match.workspace.push(w);
-    if (!match.sources.includes(f.source)) match.sources.push(f.source);
-    match.fixAvailable = match.fixAvailable || f.fixAvailable;
-  }
-  return merged;
 }
 
 export function fixText(f) {
@@ -86,15 +53,6 @@ const esc = s =>
     .replace(/\\/g, '\\\\')
     .replace(/\|/g, '\\|')
     .replace(/\r?\n/g, ' ');
-
-export function countBy(findings) {
-  const counts = { runtime: {}, dev: {}, other: {} };
-  for (const f of findings) {
-    const bucket = counts[f.scope] ?? counts.other;
-    bucket[f.severity] = (bucket[f.severity] ?? 0) + 1;
-  }
-  return counts;
-}
 
 export function tierStatus(tier, result) {
   if (!result) return '⚠️ no results (job failed?)';
@@ -116,11 +74,11 @@ function summariseCounts(findings, scope) {
 export function renderOverview(results) {
   const rows = TIERS.map(t => {
     const r = results[t.id];
-    const merged = r ? mergeFindings(r.findings) : [];
+    const findings = r ? r.findings : [];
     // Workflow findings have no runtime/dev split: show them all in the first column.
     const workflow = t.id === 'actions';
-    const first = !r ? '-' : workflow ? summariseCounts(merged, () => true) : summariseCounts(merged, 'runtime');
-    const second = !r || workflow ? '-' : summariseCounts(merged, 'dev');
+    const first = !r ? '-' : workflow ? summariseCounts(findings, () => true) : summariseCounts(findings, 'runtime');
+    const second = !r || workflow ? '-' : summariseCounts(findings, 'dev');
     return `| ${t.label} | ${tierStatus(t.id, r)} | ${first} | ${second} | ${t.policy} |`;
   });
   return ['| Area | Status | Runtime | Dev | Policy |', '| --- | --- | --- | --- | --- |', ...rows].join('\n');
@@ -132,22 +90,18 @@ export function renderTier(tier, result) {
   const lines = [`### ${meta?.label ?? tier}`, ''];
   if (!result) return [...lines, '_No results were produced for this area. Check the scan job._', ''].join('\n');
 
-  const findings = mergeFindings(result.findings);
+  const findings = result.findings;
   if (!findings.length) {
     lines.push('No unsuppressed vulnerabilities found.', '');
   } else {
-    const multiSource = findings.some(f => f.sources.length > 1 || f.sources[0] !== 'npm-audit');
-    lines.push(
-      `| Severity | Scope | Package | Advisory | Affected | Fix |${multiSource ? ' Source |' : ''}`,
-      `| --- | --- | --- | --- | --- | --- |${multiSource ? ' --- |' : ''}`
-    );
+    lines.push('| Severity | Scope | Package | Advisory | Affected | Fix |', '| --- | --- | --- | --- | --- | --- |');
     for (const f of findings) {
       const id = f.ids[0] ? (f.url ? `[${f.ids[0]}](${f.url})` : f.ids[0]) : f.url ? `[advisory](${f.url})` : '-';
       const where = (f.workspace ?? []).length ? f.workspace.map(w => `\`${w}\``).join(', ') : '-';
       lines.push(
         `| ${SEVERITY_ICON[f.severity] ?? ''} ${f.severity} | ${f.scope} | \`${esc(f.package)}\`${
           f.version ? ` ${esc(f.version)}` : ''
-        } | ${id}: ${esc(f.title)} | ${where} | ${fixText(f)} |${multiSource ? ` ${f.sources.join(' + ')} |` : ''}`
+        } | ${id}: ${esc(f.title)} | ${where} | ${fixText(f)} |`
       );
     }
     lines.push('');
