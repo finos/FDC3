@@ -53,4 +53,6 @@ If a finding is a false positive or an accepted risk, add an entry to `allow-lis
 
 Dependabot [malware alerts](https://docs.github.com/en/code-security/dependabot) are a repository setting rather than a workflow option. Maintainers with admin access should enable them in the repository's code security settings.
 
-Tests for the scanning scripts run with `npm run test:cve`.
+### Testing the scanning scripts
+
+The scripts behind these workflows live in `scripts/cve`. Their unit tests are for local sanity checking only and are not run in CI. Run them with `npm run test:cve` whenever you change anything in `scripts/cve`, `allow-list.json` handling, or the `cve-scanning.yml` workflow. They need no network access or tokens. They cannot test the workflows themselves, so after changing a workflow also start it manually from the Actions tab.
