@@ -1495,11 +1495,10 @@ export interface AppMetadata {
    */
   instanceId?: string;
   /**
-   * An optional set of, implementation specific, metadata fields that can be used to
-   * disambiguate instances, such as a window title or screen position. Must only be set if
-   * `instanceId` is set.
+   * An optional set of metadata fields that can be used to disambiguate instances, such as an
+   * instance title. Must only be set if `instanceId` is set.
    */
-  instanceMetadata?: { [key: string]: any };
+  instanceMetadata?: InstanceMetadata;
   /**
    * The 'friendly' app name.
    * This field was used with the `open` and `raiseIntent` calls in FDC3 <2.0, which now
@@ -1549,6 +1548,25 @@ export interface Icon {
    * Icon media type. If not present the Desktop Agent may use the src file extension.
    */
   type?: string;
+}
+
+/**
+ * An optional set of metadata fields that can be used to disambiguate instances, such as an
+ * instance title. Must only be set if `instanceId` is set.
+ *
+ * Metadata that describes a specific instance of an application, which can be used to
+ * disambiguate instances in UI elements such as a resolver or intent picker.
+ */
+export interface InstanceMetadata {
+  /**
+   * A user-friendly title for this specific instance that can be used to render UI elements,
+   * such as a resolver or intent picker, to help distinguish it from other instances of the
+   * same application. Apps SHOULD include their application title within the instance title
+   * where appropriate, and Desktop Agents SHOULD display both the application title and the
+   * instance title when both are available.
+   */
+  instanceTitle?: string;
+  [property: string]: any;
 }
 
 /**

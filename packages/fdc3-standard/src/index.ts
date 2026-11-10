@@ -19,6 +19,7 @@ export * from './api/GetAgent.js';
 export * from './api/Icon.js';
 export * from './api/Image.js';
 export * from './api/ImplementationMetadata.js';
+export * from './api/InstanceMetadata.js';
 export * from './api/IntentMetadata.js';
 export * from './api/IntentResolution.js';
 export * from './api/Listener.js';

@@ -7,6 +7,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+* Updated both intent resolver UIs (the `demo` reference Desktop Agent resolver and the `reference-ui` resolver) to display an open app instance's `instanceMetadata.instanceTitle`, when set, alongside the app title when listing apps to resolve an intent.
+* Added an "Info" tab to the FDC3 Workbench with a "Get Info" button that calls `fdc3.getInfo()` and displays the returned `ImplementationMetadata` in the System Log (the workbench automatically switches to the System Log tab when the Info tab is selected). The tab also provides an instance title text field with an "Update Title" button (which updates `document.title`, triggering an automatic `updateInstanceMetadata()` call) and an "Update Metadata" button (which calls `fdc3.updateInstanceMetadata()` directly).
+* Added `InstanceMetadata` type and `updateInstanceMetadata()` method to `DesktopAgent`, allowing apps to update their instance-specific metadata (e.g. `instanceTitle`) so Desktop Agents can display meaningful information in resolver UIs to disambiguate multiple instances of the same app. Updated `AppMetadata.instanceMetadata` to use the new `InstanceMetadata` type. Added DACP `updateInstanceMetadataRequest`/`updateInstanceMetadataResponse` message schemas. Widened `findInstances()` to resolve to `AppMetadata[]` (rather than `AppIdentifier[]`, which it extends) so that each running instance's `instanceMetadata` is returned alongside its `instanceId`. ([#1930](https://github.com/finos/FDC3/pull/1930))
+* Added automatic synchronization of the page title (`document.title`) to the Desktop Agent's instance metadata for proxy connections established via `getAgent`. An initial `updateInstanceMetadata` request is sent on connection and further requests are sent automatically whenever the page title changes (empty/whitespace-only titles are never sent). This behavior is enabled by default and can be disabled via the new `syncPageTitle: false` option on `getAgent`. ([#1930](https://github.com/finos/FDC3/pull/1930))
 
 ### Changed
 
@@ -15,6 +19,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Deprecated
 
 ### Fixed
+* Fixed `getInfo()` not including an instance's `instanceMetadata` (e.g. the title set via `updateInstanceMetadata()`) in the returned `ImplementationMetadata.appMetadata`. The web-impl `getImplementationMetadata` now looks up and includes the stored instance metadata, consistent with `getAppMetadata()`.
+* Fixed running app instances returned in the `appIntent`/`appIntents` of `raiseIntent` and `raiseIntentForContext` responses not including their `instanceMetadata` (e.g. the title set via `updateInstanceMetadata()`). The web-impl now enriches resolved app instances with their stored instance metadata so intent resolver UIs can display instance-specific titles.
 
 ## [FDC3 Standard 3.0](https://github.com/finos/FDC3/compare/v2.2..v3.0) - 2026-10-26
 

@@ -238,7 +238,7 @@ interface AppMetadata extends AppIdentifier {
   readonly version?: string;
 
   /** An optional set of, implementation specific, metadata fields that can be
-   *  used to disambiguate instances, such as a window title or screen position.
+   *  used to disambiguate instances, such as an instance title.
    *  Must only be set if `instanceId` is set. 
    */
   readonly instanceMetadata?: Record<string, any>;
@@ -322,7 +322,7 @@ interface IAppMetadata : IAppIdentifier
 
     /// <summary>
     /// An optional set of, implementation specific, metadata fields that can be used to disambiguate instances,
-    /// such as a window title or screen position. Must only be set if InstanceId is set.
+    /// such as an instance title. Must only be set if InstanceId is set.
     /// </summary>
     IDictionary<string, object>? InstanceMetadata { get; }
 }
@@ -352,7 +352,7 @@ type AppMetadata struct {
   // channel, or channel with specified type
   ResultType       string                 `json:"resultType"`
   // An optional set of, implementation specific, metadata fields that can be
-  // used to disambiguate instances, such as a window title or screen position.
+  // used to disambiguate instances, such as an instance title.
   // Must only be set if `instanceId` is set. 
   InstanceMetadata map[string]interface{} `json:"instanceMetadata"`
 }

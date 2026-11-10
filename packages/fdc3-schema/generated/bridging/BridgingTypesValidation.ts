@@ -1202,7 +1202,7 @@ const typeMap: any = {
       { json: 'desktopAgent', js: 'desktopAgent', typ: u(undefined, '') },
       { json: 'icons', js: 'icons', typ: u(undefined, a(r('Icon'))) },
       { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
-      { json: 'instanceMetadata', js: 'instanceMetadata', typ: u(undefined, m('any')) },
+      { json: 'instanceMetadata', js: 'instanceMetadata', typ: u(undefined, r('InstanceMetadata')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'resultType', js: 'resultType', typ: u(undefined, u(null, '')) },
       { json: 'screenshots', js: 'screenshots', typ: u(undefined, a(r('Image'))) },
@@ -1220,6 +1220,7 @@ const typeMap: any = {
     ],
     false
   ),
+  InstanceMetadata: o([{ json: 'instanceTitle', js: 'instanceTitle', typ: u(undefined, '') }], 'any'),
   Image: o(
     [
       { json: 'label', js: 'label', typ: u(undefined, '') },

@@ -119,6 +119,7 @@ An FDC3 Standard compliant Desktop Agent implementation **MUST**:
   - [`open`](ref/DesktopAgent#open)
   - [`raiseIntent`](ref/DesktopAgent#raiseintent)
   - [`raiseIntentForContext`](ref/DesktopAgent#raiseintentforcontext)
+  - [`updateInstanceMetadata`](ref/DesktopAgent#updateinstancemetadata)
 - Provide a method of resolving ambiguous intents (i.e. those that might be resolved by multiple applications) or unspecified intents (calls to `raiseIntentForContext` that return multiple options), such as a resolver UI.
   - Intent resolution MUST take into account any specified input or return context types
   - Requests for resolution to apps returning a channel MUST include any apps that are registered as returning a channel with a specific type.

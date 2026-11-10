@@ -77,6 +77,8 @@ import type {
   RaiseIntentRequest,
   RaiseIntentResponse,
   RaiseIntentResultResponse,
+  UpdateInstanceMetadataRequest,
+  UpdateInstanceMetadataResponse,
   WebConnectionProtocol1Hello,
   WebConnectionProtocol2LoadURL,
   WebConnectionProtocol3Handshake,
@@ -1106,6 +1108,30 @@ export function isValidRaiseIntentResultResponse(value: any): value is RaiseInte
     return false;
   }
 }
+
+/**
+ * Returns true if value is a valid UpdateInstanceMetadataRequest. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidUpdateInstanceMetadataRequest(value: any): value is UpdateInstanceMetadataRequest {
+  try {
+    Convert.updateInstanceMetadataRequestToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
+
+/**
+ * Returns true if value is a valid UpdateInstanceMetadataResponse. This checks the type against the json schema for the message and will be slower
+ */
+export function isValidUpdateInstanceMetadataResponse(value: any): value is UpdateInstanceMetadataResponse {
+  try {
+    Convert.updateInstanceMetadataResponseToJson(value);
+    return true;
+  } catch (_e: any) {
+    return false;
+  }
+}
 export class Convert {
   public static toWebConnectionProtocol1Hello(json: string): WebConnectionProtocol1Hello {
     return cast(JSON.parse(json), r('WebConnectionProtocol1Hello'));
@@ -1812,6 +1838,22 @@ export class Convert {
   public static raiseIntentResultResponseToJson(value: RaiseIntentResultResponse): string {
     return JSON.stringify(uncast(value, r('RaiseIntentResultResponse')), null, 2);
   }
+
+  public static toUpdateInstanceMetadataRequest(json: string): UpdateInstanceMetadataRequest {
+    return cast(JSON.parse(json), r('UpdateInstanceMetadataRequest'));
+  }
+
+  public static updateInstanceMetadataRequestToJson(value: UpdateInstanceMetadataRequest): string {
+    return JSON.stringify(uncast(value, r('UpdateInstanceMetadataRequest')), null, 2);
+  }
+
+  public static toUpdateInstanceMetadataResponse(json: string): UpdateInstanceMetadataResponse {
+    return cast(JSON.parse(json), r('UpdateInstanceMetadataResponse'));
+  }
+
+  public static updateInstanceMetadataResponseToJson(value: UpdateInstanceMetadataResponse): string {
+    return JSON.stringify(uncast(value, r('UpdateInstanceMetadataResponse')), null, 2);
+  }
 }
 
 function invalidValue(typ: any, val: any, key: any, parent: any = ''): never {
@@ -2096,7 +2138,7 @@ const typeMap: any = {
       { json: 'desktopAgent', js: 'desktopAgent', typ: u(undefined, '') },
       { json: 'icons', js: 'icons', typ: u(undefined, a(r('Icon'))) },
       { json: 'instanceId', js: 'instanceId', typ: u(undefined, '') },
-      { json: 'instanceMetadata', js: 'instanceMetadata', typ: u(undefined, m('any')) },
+      { json: 'instanceMetadata', js: 'instanceMetadata', typ: u(undefined, r('InstanceMetadata')) },
       { json: 'name', js: 'name', typ: u(undefined, '') },
       { json: 'resultType', js: 'resultType', typ: u(undefined, u(null, '')) },
       { json: 'screenshots', js: 'screenshots', typ: u(undefined, a(r('Image'))) },
@@ -2114,6 +2156,7 @@ const typeMap: any = {
     ],
     false
   ),
+  InstanceMetadata: o([{ json: 'instanceTitle', js: 'instanceTitle', typ: u(undefined, '') }], 'any'),
   Image: o(
     [
       { json: 'label', js: 'label', typ: u(undefined, '') },
@@ -3296,6 +3339,30 @@ const typeMap: any = {
     ],
     false
   ),
+  UpdateInstanceMetadataRequest: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerRequestMeta') },
+      { json: 'payload', js: 'payload', typ: r('UpdateInstanceMetadataRequestPayload') },
+      { json: 'type', js: 'type', typ: r('UpdateInstanceMetadataRequestType') },
+    ],
+    false
+  ),
+  UpdateInstanceMetadataRequestPayload: o(
+    [{ json: 'instanceMetadata', js: 'instanceMetadata', typ: r('InstanceMetadata') }],
+    false
+  ),
+  UpdateInstanceMetadataResponse: o(
+    [
+      { json: 'meta', js: 'meta', typ: r('AddContextListenerResponseMeta') },
+      { json: 'payload', js: 'payload', typ: r('UpdateInstanceMetadataResponsePayload') },
+      { json: 'type', js: 'type', typ: r('UpdateInstanceMetadataResponseType') },
+    ],
+    false
+  ),
+  UpdateInstanceMetadataResponsePayload: o(
+    [{ json: 'error', js: 'error', typ: u(undefined, r('FindInstancesErrors')) }],
+    false
+  ),
   WebConnectionProtocol1HelloType: ['WCP1Hello'],
   WebConnectionProtocol2LoadURLType: ['WCP2LoadUrl'],
   WebConnectionProtocol3HandshakeType: ['WCP3Handshake'],
@@ -3407,6 +3474,7 @@ const typeMap: any = {
     'raiseIntentForContextResponse',
     'raiseIntentResponse',
     'raiseIntentResultResponse',
+    'updateInstanceMetadataResponse',
   ],
   RequestMessageType: [
     'addContextListenerRequest',
@@ -3438,6 +3506,7 @@ const typeMap: any = {
     'privateChannelUnsubscribeEventListenerRequest',
     'raiseIntentForContextRequest',
     'raiseIntentRequest',
+    'updateInstanceMetadataRequest',
   ],
   BroadcastEventType: ['broadcastEvent'],
   BroadcastRequestType: ['broadcastRequest'],
@@ -3553,4 +3622,6 @@ const typeMap: any = {
   RaiseIntentRequestType: ['raiseIntentRequest'],
   RaiseIntentResponseType: ['raiseIntentResponse'],
   RaiseIntentResultResponseType: ['raiseIntentResultResponse'],
+  UpdateInstanceMetadataRequestType: ['updateInstanceMetadataRequest'],
+  UpdateInstanceMetadataResponseType: ['updateInstanceMetadataResponse'],
 };

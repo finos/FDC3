@@ -13,3 +13,4 @@ import './step-definitions/channels.steps.js';
 import './step-definitions/channelSelector.steps.js';
 import './step-definitions/intents.steps.js';
 import './step-definitions/util.steps.js';
+import './step-definitions/page-title.steps.js';

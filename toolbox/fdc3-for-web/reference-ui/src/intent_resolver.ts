@@ -137,13 +137,15 @@ const fillList = (
   const openList = document.getElementById('open-list')!;
   openList.innerHTML = '';
 
-  openApps.forEach(({ appId, title, icons, instanceId }) => {
+  openApps.forEach(({ appId, title, icons, instanceId, instanceMetadata }) => {
     const node = document.createElement('div');
     node.setAttribute('tabIndex', '0');
     node.setAttribute('data-appId', appId);
 
     const span = document.createElement('span');
-    span.textContent = title ?? appId;
+    const appTitle = title ?? appId;
+    const instanceTitle = instanceMetadata?.instanceTitle;
+    span.textContent = instanceTitle ? `${appTitle}: ${instanceTitle}` : appTitle;
 
     const img = createIcon(icons);
 
