@@ -17,6 +17,7 @@ import { Workbench } from './components/Workbench/Workbench.js';
 import { ContextCreate } from './components/ContextCreate.js';
 import { Intents } from './components/Intents.js';
 import { AppChannels } from './components/AppChannels.js';
+import { Info } from './components/Info.js';
 import snackbarStore from './store/SnackbarStore.js';
 import './App.css' with { type: 'css' };
 import { getWorkbenchAgent } from './utility/Fdc3Api.js';
@@ -153,10 +154,18 @@ export const App = observer(() => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [tabIndex, setTabIndex] = useState(0);
   const [contextName, setContextName] = useState('');
+  const [workbenchTabIndex, setWorkbenchTabIndex] = useState(0);
+
+  const INFO_TAB_INDEX = 4;
+  const SYSTEM_LOG_TAB_INDEX = 1;
 
   const handleTabChange = (event: React.ChangeEvent<object> | null, newIndex: number, name: string = '') => {
     setContextName(name);
     setTabIndex(newIndex);
+    //when the Info tab is selected, switch the workbench to the System Log tab so the output is visible
+    if (newIndex === INFO_TAB_INDEX) {
+      setWorkbenchTabIndex(SYSTEM_LOG_TAB_INDEX);
+    }
   };
 
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: SnackbarCloseReason) => {
@@ -209,6 +218,7 @@ export const App = observer(() => {
                   <Tab label="Intents" />
                   <Tab label="User Channels" />
                   <Tab label="App Channels" />
+                  <Tab label="Info" />
                 </Tabs>
                 <TabPanel value={tabIndex} index={0}>
                   <ContextCreate contextName={contextName} />
@@ -222,12 +232,15 @@ export const App = observer(() => {
                 <TabPanel value={tabIndex} index={3}>
                   <AppChannels handleTabChange={handleTabChange} />
                 </TabPanel>
+                <TabPanel value={tabIndex} index={INFO_TAB_INDEX}>
+                  <Info />
+                </TabPanel>
               </Paper>
             </Grid>
 
             <Grid item xs={12} md={4} sx={classes.workbench}>
               <Paper sx={classes.paper}>
-                <Workbench />
+                <Workbench tabValue={workbenchTabIndex} onTabChange={setWorkbenchTabIndex} />
               </Paper>
             </Grid>
           </Grid>

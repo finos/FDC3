@@ -61,11 +61,18 @@ const a11yProps = (index: number) => {
   };
 };
 
-export const Workbench = observer(() => {
-  const [tabValue, setTabValue] = useState<number>(0);
+interface WorkbenchProps {
+  tabValue?: number;
+  onTabChange?: (newValue: number) => void;
+}
+
+export const Workbench = observer(({ tabValue: controlledTabValue, onTabChange }: WorkbenchProps = {}) => {
+  const [internalTabValue, setInternalTabValue] = useState<number>(0);
+  const tabValue = controlledTabValue ?? internalTabValue;
 
   const handleTabChange = (event: React.ChangeEvent<object>, newValue: number) => {
-    setTabValue(newValue);
+    setInternalTabValue(newValue);
+    onTabChange?.(newValue);
   };
 
   return (

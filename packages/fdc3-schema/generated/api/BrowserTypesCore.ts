@@ -1,6 +1,6 @@
 // To parse this data:
 //
-//   import { Convert, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ClearContextRequest, ClearContextResponse, CloseRequest, CloseResponse, ContextClearedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceChannels, Fdc3UserInterfaceDrag, Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, Fdc3UserInterfaceMessage, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse } from "./file";
+//   import { Convert, WebConnectionProtocol1Hello, WebConnectionProtocol2LoadURL, WebConnectionProtocol3Handshake, WebConnectionProtocol4ValidateAppIdentity, WebConnectionProtocol5ValidateAppIdentityFailedResponse, WebConnectionProtocol5ValidateAppIdentitySuccessResponse, WebConnectionProtocol6Goodbye, WebConnectionProtocolMessage, AddContextListenerRequest, AddContextListenerResponse, AddEventListenerRequest, AddEventListenerResponse, AddIntentListenerRequest, AddIntentListenerResponse, AgentEventMessage, AgentResponseMessage, AppRequestMessage, BroadcastEvent, BroadcastRequest, BroadcastResponse, ChannelChangedEvent, ClearContextRequest, ClearContextResponse, CloseRequest, CloseResponse, ContextClearedEvent, ContextListenerUnsubscribeRequest, ContextListenerUnsubscribeResponse, CreatePrivateChannelRequest, CreatePrivateChannelResponse, EventListenerUnsubscribeRequest, EventListenerUnsubscribeResponse, Fdc3UserInterfaceChannelSelected, Fdc3UserInterfaceChannels, Fdc3UserInterfaceDrag, Fdc3UserInterfaceHandshake, Fdc3UserInterfaceHello, Fdc3UserInterfaceMessage, Fdc3UserInterfaceResolve, Fdc3UserInterfaceResolveAction, Fdc3UserInterfaceRestyle, FindInstancesRequest, FindInstancesResponse, FindIntentRequest, FindIntentResponse, FindIntentsByContextRequest, FindIntentsByContextResponse, GetAppMetadataRequest, GetAppMetadataResponse, GetCurrentChannelRequest, GetCurrentChannelResponse, GetCurrentContextRequest, GetCurrentContextResponse, GetInfoRequest, GetInfoResponse, GetOrCreateChannelRequest, GetOrCreateChannelResponse, GetUserChannelsRequest, GetUserChannelsResponse, HeartbeatAcknowledgementRequest, HeartbeatEvent, IntentEvent, IntentListenerUnsubscribeRequest, IntentListenerUnsubscribeResponse, IntentResultRequest, IntentResultResponse, JoinUserChannelRequest, JoinUserChannelResponse, LeaveCurrentChannelRequest, LeaveCurrentChannelResponse, OpenRequest, OpenResponse, PrivateChannelAddEventListenerRequest, PrivateChannelAddEventListenerResponse, PrivateChannelDisconnectRequest, PrivateChannelDisconnectResponse, PrivateChannelOnAddContextListenerEvent, PrivateChannelOnDisconnectEvent, PrivateChannelOnUnsubscribeEvent, PrivateChannelUnsubscribeEventListenerRequest, PrivateChannelUnsubscribeEventListenerResponse, RaiseIntentForContextRequest, RaiseIntentForContextResponse, RaiseIntentRequest, RaiseIntentResponse, RaiseIntentResultResponse, UpdateInstanceMetadataRequest, UpdateInstanceMetadataResponse } from "./file";
 //
 //   const webConnectionProtocol1Hello = Convert.toWebConnectionProtocol1Hello(json);
 //   const webConnectionProtocol2LoadURL = Convert.toWebConnectionProtocol2LoadURL(json);
@@ -88,6 +88,8 @@
 //   const raiseIntentRequest = Convert.toRaiseIntentRequest(json);
 //   const raiseIntentResponse = Convert.toRaiseIntentResponse(json);
 //   const raiseIntentResultResponse = Convert.toRaiseIntentResultResponse(json);
+//   const updateInstanceMetadataRequest = Convert.toUpdateInstanceMetadataRequest(json);
+//   const updateInstanceMetadataResponse = Convert.toUpdateInstanceMetadataResponse(json);
 //
 // These functions will throw an error if the JSON doesn't
 // match the expected interface, even if the JSON is valid.
@@ -457,11 +459,10 @@ export interface AppMetadata {
    */
   instanceId?: string;
   /**
-   * An optional set of, implementation specific, metadata fields that can be used to
-   * disambiguate instances, such as a window title or screen position. Must only be set if
-   * `instanceId` is set.
+   * An optional set of metadata fields that can be used to disambiguate instances, such as an
+   * instance title. Must only be set if `instanceId` is set.
    */
-  instanceMetadata?: { [key: string]: any };
+  instanceMetadata?: InstanceMetadata;
   /**
    * The 'friendly' app name.
    * This field was used with the `open` and `raiseIntent` calls in FDC3 <2.0, which now
@@ -511,6 +512,25 @@ export interface Icon {
    * Icon media type. If not present the Desktop Agent may use the src file extension.
    */
   type?: string;
+}
+
+/**
+ * An optional set of metadata fields that can be used to disambiguate instances, such as an
+ * instance title. Must only be set if `instanceId` is set.
+ *
+ * Metadata that describes a specific instance of an application, which can be used to
+ * disambiguate instances in UI elements such as a resolver or intent picker.
+ */
+export interface InstanceMetadata {
+  /**
+   * A user-friendly title for this specific instance that can be used to render UI elements,
+   * such as a resolver or intent picker, to help distinguish it from other instances of the
+   * same application. Apps SHOULD include their application title within the instance title
+   * where appropriate, and Desktop Agents SHOULD display both the application title and the
+   * instance title when both are available.
+   */
+  instanceTitle?: string;
+  [property: string]: any;
 }
 
 /**
@@ -1103,6 +1123,7 @@ export type ResponseMessageType =
   | 'privateChannelUnsubscribeEventListenerResponse'
   | 'raiseIntentForContextResponse'
   | 'raiseIntentResponse'
+  | 'updateInstanceMetadataResponse'
   | 'raiseIntentResultResponse'
   | 'clearContextResponse'
   | 'closeResponse';
@@ -1154,6 +1175,7 @@ export type RequestMessageType =
   | 'privateChannelUnsubscribeEventListenerRequest'
   | 'raiseIntentForContextRequest'
   | 'raiseIntentRequest'
+  | 'updateInstanceMetadataRequest'
   | 'clearContextRequest'
   | 'closeRequest';
 
@@ -4358,6 +4380,77 @@ export interface RaiseIntentResultResponsePayload {
   resultMetadata?: ContextMetadata;
 }
 
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Response' appended.
+ */
+
+/**
+ * A request to update the instance metadata for the calling application instance.
+ *
+ * A request message from an FDC3-enabled app to a Desktop Agent.
+ */
+export interface UpdateInstanceMetadataRequest {
+  /**
+   * Metadata for a request message sent by an FDC3-enabled app to a Desktop Agent.
+   */
+  meta: AddContextListenerRequestMeta;
+  /**
+   * The message payload typically contains the arguments to FDC3 API functions.
+   */
+  payload: UpdateInstanceMetadataRequestPayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Request' appended.
+   */
+  type: 'updateInstanceMetadataRequest';
+}
+
+/**
+ * The message payload typically contains the arguments to FDC3 API functions.
+ */
+export interface UpdateInstanceMetadataRequestPayload {
+  instanceMetadata: InstanceMetadata;
+}
+
+/**
+ * Identifies the type of the message and it is typically set to the FDC3 function name that
+ * the message relates to, e.g. 'findIntent', with 'Request' appended.
+ */
+
+/**
+ * A response to a updateInstanceMetadata request.
+ *
+ * A message from a Desktop Agent to an FDC3-enabled app responding to an API call. If the
+ * payload contains an `error` property, the request was unsuccessful.
+ */
+export interface UpdateInstanceMetadataResponse {
+  /**
+   * Metadata for messages sent by a Desktop Agent to an app in response to an API call.
+   */
+  meta: AddContextListenerResponseMeta;
+  /**
+   * A payload for a response to an API call that will contain any return values or an `error`
+   * property containing a standardized error message indicating that the request was
+   * unsuccessful.
+   */
+  payload: UpdateInstanceMetadataResponsePayload;
+  /**
+   * Identifies the type of the message and it is typically set to the FDC3 function name that
+   * the message relates to, e.g. 'findIntent', with 'Response' appended.
+   */
+  type: 'updateInstanceMetadataResponse';
+}
+
+/**
+ * A payload for a response to an API call that will contain any return values or an `error`
+ * property containing a standardized error message indicating that the request was
+ * unsuccessful.
+ */
+export interface UpdateInstanceMetadataResponsePayload {
+  error?: FindInstancesErrors;
+}
+
 export type AppRequestMessage =
   | AddContextListenerRequest
   | AddEventListenerRequest
@@ -4387,7 +4480,8 @@ export type AppRequestMessage =
   | PrivateChannelDisconnectRequest
   | PrivateChannelUnsubscribeEventListenerRequest
   | RaiseIntentForContextRequest
-  | RaiseIntentRequest;
+  | RaiseIntentRequest
+  | UpdateInstanceMetadataRequest;
 
 export type AgentResponseMessage =
   | AddContextListenerResponse
@@ -4418,7 +4512,8 @@ export type AgentResponseMessage =
   | PrivateChannelUnsubscribeEventListenerResponse
   | RaiseIntentForContextResponse
   | RaiseIntentResponse
-  | RaiseIntentResultResponse;
+  | RaiseIntentResultResponse
+  | UpdateInstanceMetadataResponse;
 
 export type AgentEventMessage =
   | BroadcastEvent
@@ -5177,3 +5272,21 @@ export function isRaiseIntentResultResponse(value: any): value is RaiseIntentRes
 }
 
 export const RAISE_INTENT_RESULT_RESPONSE_TYPE = 'RaiseIntentResultResponse';
+
+/**
+ * Returns true if the value has a type property with value 'updateInstanceMetadataRequest'. This is a fast check that does not check the format of the message
+ */
+export function isUpdateInstanceMetadataRequest(value: any): value is UpdateInstanceMetadataRequest {
+  return value != null && value.type === 'updateInstanceMetadataRequest';
+}
+
+export const UPDATE_INSTANCE_METADATA_REQUEST_TYPE = 'UpdateInstanceMetadataRequest';
+
+/**
+ * Returns true if the value has a type property with value 'updateInstanceMetadataResponse'. This is a fast check that does not check the format of the message
+ */
+export function isUpdateInstanceMetadataResponse(value: any): value is UpdateInstanceMetadataResponse {
+  return value != null && value.type === 'updateInstanceMetadataResponse';
+}
+
+export const UPDATE_INSTANCE_METADATA_RESPONSE_TYPE = 'UpdateInstanceMetadataResponse';
