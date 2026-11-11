@@ -76,9 +76,9 @@ The FDC3 Standards include a set of [definitions for conformance tests](api/conf
 
 The current set of tests focus on the Desktop Agent API and the interface to it. Tests are not yet defined for the App Directory API or Bridging API Parts of the FDC3 Standard, hence, conformance to those parts of the Standard must be determined manually.
 
-The FDC3 Conformance tests are implemented for JavaScript/TypeScript web applications by the [FDC3 Conformance Framework](https://github.com/finos/FDC3-conformance-framework). Desktop Agent implementors working with web interfaces (Desktop Agent Preload or Desktop Agent Proxy) can clone the conformance framework and run the tests locally to determine if their agent is compliant with the Standard.
+The FDC3 Conformance tests are implemented for JavaScript/TypeScript web applications by the [FDC3 Conformance Framework](https://github.com/finos/FDC3/tree/main/toolbox/fdc3-conformance) in the FDC3 repository. Desktop Agent implementors working with web interfaces (Desktop Agent Preload or Desktop Agent Proxy) can clone the conformance framework and run the tests locally to determine if their agent is compliant with the Standard.
 
-Once a Desktop Agent has passed the conformance tests locally, its authors can [apply for a formal certification of compliance with the Standard from FINOS](https://github.com/finos/FDC3-conformance-framework/blob/main/instructions.md). Please note the [Terms and Conditions](https://github.com/finos/FDC3-conformance-framework/blob/main/terms-conditions/FDC3-Certified-Terms.md) of the Conformance Program.
+Once a Desktop Agent has passed the conformance tests locally, its authors can [apply for a formal certification of compliance with the Standard from FINOS](https://github.com/finos/FDC3/blob/main/toolbox/fdc3-conformance/instructions.md). Please note the [Terms and Conditions](https://github.com/finos/FDC3/blob/main/toolbox/fdc3-conformance/terms-conditions/participation-form.md) of the Conformance Program.
 
 import badge_12 from '/img/community/certified-1.2.png';
 import badge_20 from '/img/community/certified-2.0.png';

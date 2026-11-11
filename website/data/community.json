@@ -121,7 +121,7 @@
     "title": "FDC3 Conformance Framework",
     "publisher": "FDC3 / FINOS / ScottLogic",
     "image": "/img/community/conformance.svg",
-    "infoLink": "https://github.com/finos/FDC3-conformance-framework",
+    "infoLink": "https://fdc3.finos.org/docs/api/conformance/Conformance-Overview",
     "docsLink": "https://github.com/finos/FDC3/blob/main/toolbox/fdc3-conformance/README.md",
     "type": "tools-and-training",
     "badges": [
