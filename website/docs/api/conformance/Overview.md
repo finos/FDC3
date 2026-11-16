@@ -24,7 +24,7 @@ There are currently 6 sections to the tests.
 - [Metadata Tests](Metadata-Tests.md)
 - [Intents Tests](Intents-Tests.md)
 
-You can find the implementation of these tests in the [FDC3 Conformance Framework](https://github.com/finos/FDC3-conformance-framework) project.
+You can find the implementation of these tests in the [FDC3 Conformance Framework](https://github.com/finos/FDC3/tree/main/toolbox/fdc3-conformance) in the FDC3 repository.
 
 ## Running the Conformance Tests
 
