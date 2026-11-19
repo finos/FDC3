@@ -1,10 +1,15 @@
 # FDC3 Web Implementation
 
+> [!WARNING]
+> **Not for production use.** This is the FDC3 reference implementation of the Desktop Agent side of the FDC3 For-The-Web protocol. We use it to clarify the standard and to test `@finos/fdc3-get-agent` and `@finos/fdc3-agent-proxy`. It does **not** follow semantic versioning, so any release may contain breaking changes.
+>
+> If you're building a web-based Desktop Agent, take a look at [FDC3-Sail](https://github.com/finos/FDC3-Sail), a FINOS project working towards a production-ready open-source implementation. You're welcome to copy code from this package, but please don't depend on it.
+
 This repository contains a [FDC3 2.2 Conformant](../../fdc3-conformance/README.md), headless implementation of the FDC3 DACP protocol. 
 
 This package forms the basis of the implementation of the FDC3 Desktop Agent reference implementation, found in [the demo module](../demo/README.md) as well as the web-version of [FDC3-Sail](https://github.com/finos/FDC3-Sail/).
 
-It is expected that Desktop Agent implementations can either use this package as the basis for their own FDC3 implementation, use the tests provided here to test their implementation or rake inspiration from the codebase to implement their own FDC3 Desktop Agent from scratch.
+Desktop Agent implementers are welcome to use the tests provided here to test their own implementation, or to take inspiration from (or copy) the codebase when building their own FDC3 Desktop Agent. Please don't depend on this package directly (see the warning above).
 
 ## How This Works
 
