@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 
 * Added a dependency review check on pull requests that blocks new high/critical vulnerabilities in runtime dependencies, and a `scripts/cve` toolset (with `npm run test:cve`) behind the CVE scanning workflow. ([#2339](https://github.com/finos/FDC3/pull/2339))
+* Added a Getting Started section to the FDC3 introduction page covering core concepts, connecting with `getAgent()`, broadcasting context on User Channels and raising intents, with links to the Workbench and training resources. ([#1395](https://github.com/finos/FDC3/issues/1395))
 
 ### Changed
 
